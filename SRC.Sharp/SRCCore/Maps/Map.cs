@@ -1677,29 +1677,7 @@ namespace SRCCore.Maps
         public void AreaInSpeed(Unit u, bool ByJump = false)
         {
             // 移動能力の可否を調べておく
-            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
-            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
-            var is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
-            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
-            var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
-            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
-            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
-            var allowed_terrains = new List<string>();
-            if (u.IsFeatureAvailable("移動制限"))
-            {
-                if (u.Area != "空中" && u.Area != "地中")
-                {
-                    allowed_terrains = u.Feature("移動制限").DataL.Skip(1).ToList();
-                }
-            }
-            var prohibited_terrains = new List<string>();
-            if (u.IsFeatureAvailable("進入不可"))
-            {
-                if (u.Area != "空中" && u.Area != "地中")
-                {
-                    prohibited_terrains = u.Feature("進入不可").DataL.Skip(1).ToList();
-                }
-            }
+            var unitProps = new UnitMoveProps(u);
 
             var cur_cost = new int[TotalMoveCost.GetLength(0), TotalMoveCost.GetLength(1)];
             var move_cost = new int[TotalMoveCost.GetLength(0), TotalMoveCost.GetLength(1)];
@@ -2188,7 +2166,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_adaptable_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2198,7 +2176,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2208,7 +2186,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2232,7 +2210,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2256,7 +2234,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2266,7 +2244,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2294,7 +2272,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2323,7 +2301,7 @@ namespace SRCCore.Maps
                                         case "陸":
                                         case "屋内":
                                             {
-                                                if (!is_trans_available_in_sky && !is_trans_available_on_ground)
+                                                if (!unitProps.is_trans_available_in_sky && !unitProps.is_trans_available_on_ground)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2333,7 +2311,7 @@ namespace SRCCore.Maps
 
                                         case "空":
                                             {
-                                                if (!is_trans_available_in_sky || td.MoveCost > 10)
+                                                if (!unitProps.is_trans_available_in_sky || td.MoveCost > 10)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2343,7 +2321,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
+                                                if (!unitProps.is_trans_available_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_adaptable_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2353,7 +2331,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -2367,15 +2345,15 @@ namespace SRCCore.Maps
                         }
 
                         // 移動制限
-                        if (allowed_terrains.Any())
+                        if (unitProps.allowed_terrains.Any())
                         {
-                            MaskData[i, j] = MaskData[i, j] || !allowed_terrains.Any(x => x == Terrain(i, j).Name);
+                            MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
                         }
 
                         // 進入不可
-                        if (prohibited_terrains.Any())
+                        if (unitProps.prohibited_terrains.Any())
                         {
-                            MaskData[i, j] = MaskData[i, j] || prohibited_terrains.Any(x => x == Terrain(i, j).Name);
+                            MaskData[i, j] = MaskData[i, j] || unitProps.prohibited_terrains.Any(x => x == Terrain(i, j).Name);
                         }
 
                     NextLoop2:
@@ -2511,13 +2489,7 @@ namespace SRCCore.Maps
         private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2)
         {
             // 移動能力の可否を調べておく
-            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
-            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
-            var is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
-            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
-            var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
-            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
-            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
+            var unitProps = new UnitMoveProps(u);
 
             x1 = Math.Max(1, x1);
             x2 = Math.Min(MapWidth, x2);
@@ -2539,12 +2511,12 @@ namespace SRCCore.Maps
                                     break;
 
                                 case "宇宙":
-                                    if (is_adaptable_in_space)
+                                    if (unitProps.is_adaptable_in_space)
                                     {
                                         move_cost[i, j] = Terrain(i, j).MoveCost;
-                                        for (var k = 0; k < adopted_terrain.Count; k++)
+                                        for (var k = 0; k < unitProps.adopted_terrain.Count; k++)
                                         {
-                                            if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                                            if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                                             {
                                                 move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                                                 break;
@@ -2581,13 +2553,13 @@ namespace SRCCore.Maps
                             //    case "陸":
                             //    case "屋内":
                             //    case "月面":
-                            //        if (is_trans_available_on_ground)
+                            //        if (unitProps.is_trans_available_on_ground)
                             //        {
                             //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo9 = Information.UBound(adopted_terrain);
+                            //            var loopTo9 = Information.UBound(unitProps.adopted_terrain);
                             //            for (k = 1; k <= loopTo9; k++)
                             //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2602,17 +2574,17 @@ namespace SRCCore.Maps
                             //        break;
 
                             //    case "水":
-                            //        if (is_trans_available_in_water || is_trans_available_on_water)
+                            //        if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
                             //        {
                             //            move_cost[x, y] = 2;
                             //        }
-                            //        else if (is_adaptable_in_water)
+                            //        else if (unitProps.is_adaptable_in_water)
                             //        {
                             //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo10 = Information.UBound(adopted_terrain);
+                            //            var loopTo10 = Information.UBound(unitProps.adopted_terrain);
                             //            for (k = 1; k <= loopTo10; k++)
                             //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2627,7 +2599,7 @@ namespace SRCCore.Maps
                             //        break;
 
                             //    case "深水":
-                            //        if (is_trans_available_in_water || is_trans_available_on_water)
+                            //        if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
                             //        {
                             //            move_cost[x, y] = 2;
                             //        }
@@ -2647,13 +2619,13 @@ namespace SRCCore.Maps
                             //        break;
 
                             //    case "宇宙":
-                            //        if (is_adaptable_in_space)
+                            //        if (unitProps.is_adaptable_in_space)
                             //        {
                             //            move_cost[x, y] = TerrainMoveCost(x, y);
-                            //            var loopTo11 = Information.UBound(adopted_terrain);
+                            //            var loopTo11 = Information.UBound(unitProps.adopted_terrain);
                             //            for (k = 1; k <= loopTo11; k++)
                             //            {
-                            //                if ((Terrain(x, y).Name ?? "") == (adopted_terrain[k] ?? ""))
+                            //                if ((Terrain(x, y).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                             //                {
                             //                    move_cost[x, y] = Math.Min(move_cost[x, y], 2);
                             //                    break;
@@ -2686,13 +2658,13 @@ namespace SRCCore.Maps
                     //                    case "屋内":
                     //                    case "月面":
                     //                        {
-                    //                            if (is_trans_available_on_ground)
+                    //                            if (unitProps.is_trans_available_on_ground)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo14 = Information.UBound(adopted_terrain);
+                    //                                var loopTo14 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo14; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2722,13 +2694,13 @@ namespace SRCCore.Maps
 
                     //                    case "宇宙":
                     //                        {
-                    //                            if (is_adaptable_in_space)
+                    //                            if (unitProps.is_adaptable_in_space)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo15 = Information.UBound(adopted_terrain);
+                    //                                var loopTo15 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo15; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2763,13 +2735,13 @@ namespace SRCCore.Maps
                     //                    case "屋内":
                     //                    case "月面":
                     //                        {
-                    //                            if (is_trans_available_on_ground)
+                    //                            if (unitProps.is_trans_available_on_ground)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo18 = Information.UBound(adopted_terrain);
+                    //                                var loopTo18 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo18; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2786,17 +2758,17 @@ namespace SRCCore.Maps
 
                     //                    case "水":
                     //                        {
-                    //                            if (is_trans_available_in_water)
+                    //                            if (unitProps.is_trans_available_in_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
                     //                            else
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo19 = Information.UBound(adopted_terrain);
+                    //                                var loopTo19 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo19; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2809,7 +2781,7 @@ namespace SRCCore.Maps
 
                     //                    case "深水":
                     //                        {
-                    //                            if (is_trans_available_in_water)
+                    //                            if (unitProps.is_trans_available_in_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
@@ -2833,13 +2805,13 @@ namespace SRCCore.Maps
 
                     //                    case "宇宙":
                     //                        {
-                    //                            if (is_adaptable_in_space)
+                    //                            if (unitProps.is_adaptable_in_space)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo20 = Information.UBound(adopted_terrain);
+                    //                                var loopTo20 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo20; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2873,10 +2845,10 @@ namespace SRCCore.Maps
                     //                    case "宇宙":
                     //                        {
                     //                            move_cost[i, j] = td.MoveCost;
-                    //                            var loopTo23 = Information.UBound(adopted_terrain);
+                    //                            var loopTo23 = Information.UBound(unitProps.adopted_terrain);
                     //                            for (k = 1; k <= loopTo23; k++)
                     //                            {
-                    //                                if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                {
                     //                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                    break;
@@ -2889,17 +2861,17 @@ namespace SRCCore.Maps
                     //                    case "陸":
                     //                    case "屋内":
                     //                        {
-                    //                            if (is_trans_available_in_sky)
+                    //                            if (unitProps.is_trans_available_in_sky)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
-                    //                            else if (is_trans_available_on_ground)
+                    //                            else if (unitProps.is_trans_available_on_ground)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo24 = Information.UBound(adopted_terrain);
+                    //                                var loopTo24 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo24; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2916,17 +2888,17 @@ namespace SRCCore.Maps
 
                     //                    case "月面":
                     //                        {
-                    //                            if (is_trans_available_in_moon_sky)
+                    //                            if (unitProps.is_trans_available_in_moon_sky)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
-                    //                            else if (is_trans_available_on_ground)
+                    //                            else if (unitProps.is_trans_available_on_ground)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo25 = Information.UBound(adopted_terrain);
+                    //                                var loopTo25 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo25; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2943,17 +2915,17 @@ namespace SRCCore.Maps
 
                     //                    case "水":
                     //                        {
-                    //                            if (is_trans_available_in_water || is_trans_available_on_water)
+                    //                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
-                    //                            else if (is_adaptable_in_water)
+                    //                            else if (unitProps.is_adaptable_in_water)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo26 = Information.UBound(adopted_terrain);
+                    //                                var loopTo26 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo26; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -2970,7 +2942,7 @@ namespace SRCCore.Maps
 
                     //                    case "深水":
                     //                        {
-                    //                            if (is_trans_available_in_water || is_trans_available_on_water)
+                    //                            if (unitProps.is_trans_available_in_water || unitProps.is_trans_available_on_water)
                     //                            {
                     //                                move_cost[i, j] = 2;
                     //                            }
@@ -2988,13 +2960,13 @@ namespace SRCCore.Maps
 
                     //                    case "空":
                     //                        {
-                    //                            if (is_trans_available_in_sky)
+                    //                            if (unitProps.is_trans_available_in_sky)
                     //                            {
                     //                                move_cost[i, j] = td.MoveCost;
-                    //                                var loopTo27 = Information.UBound(adopted_terrain);
+                    //                                var loopTo27 = Information.UBound(unitProps.adopted_terrain);
                     //                                for (k = 1; k <= loopTo27; k++)
                     //                                {
-                    //                                    if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                    //                                    if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
                     //                                    {
                     //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
                     //                                        break;
@@ -3070,17 +3042,17 @@ namespace SRCCore.Maps
             //}
 
             //// 移動制限
-            //allowed_terrains = new string[1];
+            //unitProps.allowed_terrains = new string[1];
             //if (currentUnit.IsFeatureAvailable("移動制限"))
             //{
             //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(currentUnit.FeatureData("移動制限"));
-            //        allowed_terrains = new string[(n + 1)];
+            //        unitProps.allowed_terrains = new string[(n + 1)];
             //        var loopTo32 = n;
             //        for (i = 2; i <= loopTo32; i++)
             //        {
-            //            allowed_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("移動制限"), i);
+            //            unitProps.allowed_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("移動制限"), i);
             //        }
 
             //        if (!ByJump)
@@ -3094,7 +3066,7 @@ namespace SRCCore.Maps
             //                    var loopTo35 = n;
             //                    for (k = 2; k <= loopTo35; k++)
             //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
             //                        {
             //                            break;
             //                        }
@@ -3111,17 +3083,17 @@ namespace SRCCore.Maps
             //}
 
             //// 進入不可
-            //prohibited_terrains = new string[1];
+            //unitProps.prohibited_terrains = new string[1];
             //if (currentUnit.IsFeatureAvailable("進入不可"))
             //{
             //    if (currentUnit.Area != "空中" && currentUnit.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(currentUnit.FeatureData("進入不可"));
-            //        prohibited_terrains = new string[(n + 1)];
+            //        unitProps.prohibited_terrains = new string[(n + 1)];
             //        var loopTo36 = n;
             //        for (i = 2; i <= loopTo36; i++)
             //        {
-            //            prohibited_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("進入不可"), i);
+            //            unitProps.prohibited_terrains[i] = GeneralLib.LIndex(currentUnit.FeatureData("進入不可"), i);
             //        }
 
             //        if (!ByJump)
@@ -3135,7 +3107,7 @@ namespace SRCCore.Maps
             //                    var loopTo39 = n;
             //                    for (k = 2; k <= loopTo39; k++)
             //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
             //                        {
             //                            move_cost[i, j] = 1000000;
             //                            break;
@@ -3189,55 +3161,38 @@ namespace SRCCore.Maps
         // 最大距離 lv を指定可能。(省略時は移動力＋テレポートレベル)
         public void AreaInTeleport(Unit currentUnit, int lv = 0)
         {
-            //bool is_trans_available_on_ground;
-            //bool is_trans_available_in_water;
-            //var is_trans_available_on_water = default(bool);
-            //bool is_trans_available_in_sky;
-            //var is_adaptable_in_water = default(bool);
-            //var is_adaptable_in_space = default(bool);
-            //string[] allowed_terrains;
-            //string[] prohibited_terrains;
-            //int n, j, i, k, r;
-            //string buf;
-            //Unit u2;
             // 移動能力の可否を調べておく
-            var is_trans_available_on_ground = currentUnit.IsTransAvailable("陸") && currentUnit.get_Adaption(2) != 0;
-            var is_trans_available_in_water = currentUnit.IsTransAvailable("水") && currentUnit.get_Adaption(3) != 0;
-            var is_trans_available_in_sky = currentUnit.IsTransAvailable("空") && currentUnit.get_Adaption(1) != 0;
-            var is_adaptable_in_water = Strings.Mid(currentUnit.Data.Adaption, 3, 1) != "-" || currentUnit.IsFeatureAvailable("水中移動");
-            var is_adaptable_in_space = Strings.Mid(currentUnit.Data.Adaption, 4, 1) != "-" || currentUnit.IsFeatureAvailable("宇宙移動");
-            var is_trans_available_on_water = currentUnit.IsFeatureAvailable("水上移動") || currentUnit.IsFeatureAvailable("ホバー移動");
-            var adopted_terrain = GeneralLib.ToL(currentUnit.FeatureData("地形適応")).Skip(1).ToList();
+            var unitProps = new UnitMoveProps(currentUnit);
 
             // TODO Ref FillMoveCost
             //// 移動制限
-            //allowed_terrains = new string[1];
+            //unitProps.allowed_terrains = new string[1];
             //if (u.IsFeatureAvailable("移動制限"))
             //{
             //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
-            //        allowed_terrains = new string[(n + 1)];
+            //        unitProps.allowed_terrains = new string[(n + 1)];
             //        var loopTo = n;
             //        for (i = 2; i <= loopTo; i++)
             //        {
-            //            allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
+            //            unitProps.allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
             //        }
             //    }
             //}
 
             //// 進入不可
-            //prohibited_terrains = new string[1];
+            //unitProps.prohibited_terrains = new string[1];
             //if (u.IsFeatureAvailable("進入不可"))
             //{
             //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
-            //        prohibited_terrains = new string[(n + 1)];
+            //        unitProps.prohibited_terrains = new string[(n + 1)];
             //        var loopTo1 = n;
             //        for (i = 2; i <= loopTo1; i++)
             //        {
-            //            prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
+            //            unitProps.prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
             //        }
             //    }
             //}
@@ -3293,7 +3248,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_adaptable_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3303,7 +3258,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3313,7 +3268,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3337,7 +3292,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3347,7 +3302,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3375,7 +3330,7 @@ namespace SRCCore.Maps
 
                                         case "宇宙":
                                             {
-                                                if (!is_adaptable_in_space)
+                                                if (!unitProps.is_adaptable_in_space)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3404,7 +3359,7 @@ namespace SRCCore.Maps
                                         case "陸":
                                         case "屋内":
                                             {
-                                                if (!is_trans_available_in_sky && !is_trans_available_on_ground)
+                                                if (!unitProps.is_trans_available_in_sky && !unitProps.is_trans_available_on_ground)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3414,7 +3369,7 @@ namespace SRCCore.Maps
 
                                         case "空":
                                             {
-                                                if (!is_trans_available_in_sky || Terrain(i, j).MoveCost > 100)
+                                                if (!unitProps.is_trans_available_in_sky || Terrain(i, j).MoveCost > 100)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3424,7 +3379,7 @@ namespace SRCCore.Maps
 
                                         case "水":
                                             {
-                                                if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
+                                                if (!unitProps.is_trans_available_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_adaptable_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3434,7 +3389,7 @@ namespace SRCCore.Maps
 
                                         case "深水":
                                             {
-                                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+                                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
                                                 {
                                                     MaskData[i, j] = true;
                                                 }
@@ -3448,28 +3403,28 @@ namespace SRCCore.Maps
                         }
 
                         //// 移動制限
-                        //if (Information.UBound(allowed_terrains) > 0)
+                        //if (Information.UBound(unitProps.allowed_terrains) > 0)
                         //{
-                        //    var loopTo6 = Information.UBound(allowed_terrains);
+                        //    var loopTo6 = Information.UBound(unitProps.allowed_terrains);
                         //    for (k = 2; k <= loopTo6; k++)
                         //    {
-                        //        if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
+                        //        if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
                         //        {
                         //            break;
                         //        }
                         //    }
 
-                        //    if (k > Information.UBound(allowed_terrains))
+                        //    if (k > Information.UBound(unitProps.allowed_terrains))
                         //    {
                         //        MaskData[i, j] = true;
                         //    }
                         //}
 
                         //// 進入不可
-                        //var loopTo7 = Information.UBound(prohibited_terrains);
+                        //var loopTo7 = Information.UBound(unitProps.prohibited_terrains);
                         //for (k = 2; k <= loopTo7; k++)
                         //{
-                        //    if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
+                        //    if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
                         //    {
                         //        MaskData[i, j] = true;
                         //        break;
@@ -3504,42 +3459,36 @@ namespace SRCCore.Maps
             ClearMask();
 
             // 移動能力の可否を調べておく
-            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
-            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
-            var is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
-            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
-            var is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
-            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
-            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
+            var unitProps = new UnitMoveProps(u);
 
             //// 移動制限
-            //allowed_terrains = new string[1];
+            //unitProps.allowed_terrains = new string[1];
             //if (u.IsFeatureAvailable("移動制限"))
             //{
             //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("移動制限"));
-            //        allowed_terrains = new string[(n + 1)];
+            //        unitProps.allowed_terrains = new string[(n + 1)];
             //        var loopTo4 = n;
             //        for (i = 2; i <= loopTo4; i++)
             //        {
-            //            allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
+            //            unitProps.allowed_terrains[i] = GeneralLib.LIndex(u.FeatureData("移動制限"), i);
             //        }
             //    }
             //}
 
             //// 進入不可
-            //prohibited_terrains = new string[1];
+            //unitProps.prohibited_terrains = new string[1];
             //if (u.IsFeatureAvailable("進入不可"))
             //{
             //    if (u.Area != "空中" && u.Area != "地中")
             //    {
             //        n = GeneralLib.LLength(u.FeatureData("進入不可"));
-            //        prohibited_terrains = new string[(n + 1)];
+            //        unitProps.prohibited_terrains = new string[(n + 1)];
             //        var loopTo5 = n;
             //        for (i = 2; i <= loopTo5; i++)
             //        {
-            //            prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
+            //            unitProps.prohibited_terrains[i] = GeneralLib.LIndex(u.FeatureData("進入不可"), i);
             //        }
             //    }
             //}
@@ -3584,7 +3533,7 @@ namespace SRCCore.Maps
 
             //                        case "水":
             //                            {
-            //                                if (!is_adaptable_in_water && !is_trans_available_on_water && !is_trans_available_in_water)
+            //                                if (!unitProps.is_adaptable_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3594,7 +3543,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3604,7 +3553,7 @@ namespace SRCCore.Maps
 
             //                        case "宇宙":
             //                            {
-            //                                if (!is_adaptable_in_space)
+            //                                if (!unitProps.is_adaptable_in_space)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3628,7 +3577,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3638,7 +3587,7 @@ namespace SRCCore.Maps
 
             //                        case "宇宙":
             //                            {
-            //                                if (!is_adaptable_in_space)
+            //                                if (!unitProps.is_adaptable_in_space)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3666,7 +3615,7 @@ namespace SRCCore.Maps
 
             //                        case "宇宙":
             //                            {
-            //                                if (!is_adaptable_in_space)
+            //                                if (!unitProps.is_adaptable_in_space)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3695,7 +3644,7 @@ namespace SRCCore.Maps
             //                        case "陸":
             //                        case "屋内":
             //                            {
-            //                                if (!is_trans_available_in_sky && !is_trans_available_on_ground)
+            //                                if (!unitProps.is_trans_available_in_sky && !unitProps.is_trans_available_on_ground)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3705,7 +3654,7 @@ namespace SRCCore.Maps
 
             //                        case "空":
             //                            {
-            //                                if (!is_trans_available_in_sky || td.MoveCost > 100)
+            //                                if (!unitProps.is_trans_available_in_sky || td.MoveCost > 100)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3715,7 +3664,7 @@ namespace SRCCore.Maps
 
             //                        case "水":
             //                            {
-            //                                if (!is_trans_available_in_water && !is_trans_available_on_water && !is_adaptable_in_water)
+            //                                if (!unitProps.is_trans_available_in_water && !unitProps.is_trans_available_on_water && !unitProps.is_adaptable_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3725,7 +3674,7 @@ namespace SRCCore.Maps
 
             //                        case "深水":
             //                            {
-            //                                if (!is_trans_available_on_water && !is_trans_available_in_water)
+            //                                if (!unitProps.is_trans_available_on_water && !unitProps.is_trans_available_in_water)
             //                                {
             //                                    goto NextLoop;
             //                                }
@@ -3735,28 +3684,28 @@ namespace SRCCore.Maps
             //                    }
 
             //                    // 移動制限
-            //                    if (Information.UBound(allowed_terrains) > 0)
+            //                    if (Information.UBound(unitProps.allowed_terrains) > 0)
             //                    {
-            //                        var loopTo8 = Information.UBound(allowed_terrains);
+            //                        var loopTo8 = Information.UBound(unitProps.allowed_terrains);
             //                        for (k = 2; k <= loopTo8; k++)
             //                        {
-            //                            if ((Terrain(i, j).Name ?? "") == (allowed_terrains[k] ?? ""))
+            //                            if ((Terrain(i, j).Name ?? "") == (unitProps.allowed_terrains[k] ?? ""))
             //                            {
             //                                break;
             //                            }
             //                        }
 
-            //                        if (k > Information.UBound(allowed_terrains))
+            //                        if (k > Information.UBound(unitProps.allowed_terrains))
             //                        {
             //                            goto NextLoop;
             //                        }
             //                    }
 
             //                    // 進入不可
-            //                    var loopTo9 = Information.UBound(prohibited_terrains);
+            //                    var loopTo9 = Information.UBound(unitProps.prohibited_terrains);
             //                    for (k = 2; k <= loopTo9; k++)
             //                    {
-            //                        if ((Terrain(i, j).Name ?? "") == (prohibited_terrains[k] ?? ""))
+            //                        if ((Terrain(i, j).Name ?? "") == (unitProps.prohibited_terrains[k] ?? ""))
             //                        {
             //                            goto NextLoop;
             //                        }
@@ -3771,28 +3720,28 @@ namespace SRCCore.Maps
             //        // Set td = TDList.Item(MapData(i, j, 0))
             //        // With td
             //        // If .IsFeatureAvailable("侵入禁止") Then
-            //        // For k = 1 To UBound(adopted_terrain)
-            //        // If .Name = adopted_terrain(k) Then
+            //        // For k = 1 To UBound(unitProps.adopted_terrain)
+            //        // If .Name = unitProps.adopted_terrain(k) Then
             //        // Exit For
             //        // End If
             //        // Next
-            //        // If k > UBound(adopted_terrain) Then
+            //        // If k > UBound(unitProps.adopted_terrain) Then
             //        // GoTo NextLoop
             //        // End If
             //        // End If
             //        // End With
             //        if (TerrainDoNotEnter(i, j))
             //        {
-            //            var loopTo10 = Information.UBound(adopted_terrain);
+            //            var loopTo10 = Information.UBound(unitProps.adopted_terrain);
             //            for (k = 1; k <= loopTo10; k++)
             //            {
-            //                if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+            //                if ((Terrain(i, j).Name ?? "") == (unitProps.adopted_terrain[k] ?? ""))
             //                {
             //                    break;
             //                }
             //            }
 
-            //            if (k > Information.UBound(adopted_terrain))
+            //            if (k > Information.UBound(unitProps.adopted_terrain))
             //            {
             //                goto NextLoop;
             //            }
