@@ -21,7 +21,7 @@ namespace SRCSharpForm
                     .SetMinimumLevel(LogLevel.Debug)
                     .AddDebug();
             });
-            Log = LoggerFactory.CreateLogger("SRCSharpForm");
+            UpdateLogger();
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -30,6 +30,11 @@ namespace SRCSharpForm
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new RootForm());
+        }
+
+        internal static void UpdateLogger()
+        {
+            Log = LoggerFactory.CreateLogger("SRCSharpForm");
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -38,6 +38,7 @@ namespace SRCSharpForm
                 new LoggerConfiguration().MinimumLevel.Information()
                     .WriteTo.File("logs\\srcsform..log", rollingInterval: RollingInterval.Day)
                     .CreateLogger()));
+            Program.UpdateLogger();
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
             SRC.SystemConfig = config;
