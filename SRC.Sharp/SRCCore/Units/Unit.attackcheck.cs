@@ -5585,8 +5585,10 @@ namespace SRCCore.Units
         }
 
         // クリティカルによる特殊効果
-        public bool CauseEffect(UnitWeapon w, Unit t, string msg, string critical_type, string def_mode, bool will_die)
+        public bool CauseEffect(UnitWeapon w, Unit t, out string msg, out string critical_type, string def_mode, bool will_die)
         {
+            msg = "";
+            critical_type = "";
             var wname = w.WeaponNickname();
 
             // 特殊効果発生確率

@@ -1167,7 +1167,7 @@ namespace SRCCore.Units
             }
 
             // 特殊効果
-            CauseEffect(w, t, msg, critical_type, def_mode, dmg >= t.HP);
+            CauseEffect(w, t, out msg, out critical_type, def_mode, dmg >= t.HP);
             if (Strings.InStr(critical_type, "即死") > 0 && !use_support_guard && !use_protect_msg)
             {
                 if (t.IsHero())
