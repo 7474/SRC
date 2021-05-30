@@ -35,28 +35,6 @@ namespace SRCCore.Units
         public bool ExecuteAbility(UnitAbility a, Unit t, bool is_map_ability = false, bool is_event = false)
         {
             bool ExecuteAbilityRet = false;
-            //var partners = default(Unit[]);
-            //int num, j, i, k, w = default;
-            //string aclass, aname, anickname, atype = default;
-            //string edata;
-            //double elevel, elevel2;
-            //double elv_mod, elv_mod2;
-            //int epower;
-            //int prev_value;
-            //bool is_useful = default, flag;
-            //Unit u;
-            //Pilot p;
-            //string buf, msg;
-            //string uname = default, pname, fname;
-            //string ftype, fdata;
-            //double flevel;
-            //string ftype2, fdata2;
-            //double flevel2;
-            //var is_anime_played = default(bool);
-            //double hp_ratio, en_ratio;
-            //int tx, ty;
-            //int tx2, ty2;
-            //string cname;
             bool is_useful = false;
             var is_anime_played = false;
 
