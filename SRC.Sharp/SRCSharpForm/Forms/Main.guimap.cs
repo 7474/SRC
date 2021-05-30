@@ -26,8 +26,18 @@ namespace SRCSharpForm
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
         private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
-        private Image mainBuffer;
-        private Image mainBufferBack;
+        public Image BackgroundBuffer { get; private set; }
+        /// <summary>
+        /// 最終的な画面描画バッファ。
+        /// </summary>        
+        public Image MainBuffer { get; private set; }
+        /// <summary>
+        /// <see cref="SaveScreen"/> で MainBuffer を退避、復元できるようにするための領域。
+        /// </summary>
+        public Image MainBufferBack { get; private set; }
+        /// <summary>
+        /// 画像リソースの総合的なバッファ。
+        /// </summary>
         private ImageBuffer imageBuffer;
 
         public void Init(ImageBuffer imageBuffer)
@@ -38,12 +48,10 @@ namespace SRCSharpForm
 
         private void InitMainBuffer(int w, int h)
         {
-            mainBuffer = new Bitmap(w, h);
-            mainBufferBack = new Bitmap(w, h);
+            MainBuffer = new Bitmap(w, h);
+            MainBufferBack = new Bitmap(w, h);
         }
 
-        public Image MainBuffer => mainBuffer;
-        public Image MainBufferBack => mainBufferBack;
 
         public void InitStatus()
         {
@@ -154,8 +162,6 @@ namespace SRCSharpForm
             // マップウィンドウのサイズを設定
             _picMain_0.Location = new Point(0, 0);
             _picMain_0.Size = new Size(MainPWidth, MainPHeight);
-            _picMain_1.Location = new Point(0, 0);
-            _picMain_1.Size = new Size(MainPWidth, MainPHeight);
             InitMainBuffer(MainPWidth, MainPHeight);
 
             //    // MOD START MARGE
@@ -179,23 +185,7 @@ namespace SRCSharpForm
             MapHeight = h;
 
             // マップ画像サイズを決定
-            picBack.Location = new Point(0, 0);
-            picBack.Size = new Size(MapPWidth, MapPHeight);
-            BackBitmap = new Bitmap(MapPWidth, MapPHeight);
-            using (var g = Graphics.FromImage(BackBitmap))
-            {
-                g.FillRectangle(Brushes.Black, 0, 0, MapPWidth, MapPHeight);
-            }
-            picBack.Image = BackBitmap;
-
-            picMaskedBack.Location = new Point(0, 0);
-            picMaskedBack.Size = new Size(MapPWidth, MapPHeight);
-            MaskedBackBitmap = new Bitmap(MapPWidth, MapPHeight);
-            using (var g = Graphics.FromImage(MaskedBackBitmap))
-            {
-                g.FillRectangle(Brushes.Transparent, 0, 0, MapPWidth, MapPHeight);
-            }
-            picMaskedBack.Image = MaskedBackBitmap;
+            InitBackgroundBuffer();
 
             // スクロールバーの移動範囲を決定
             if (HScrollBar.Maximum != MapWidth)
@@ -219,6 +209,28 @@ namespace SRCSharpForm
                 //}
             }
         }
+
+        public void InitBackgroundBufferIfInvalid()
+        {
+            if (BackgroundBuffer == null)
+            {
+                InitBackgroundBuffer();
+            }
+        }
+
+        private void InitBackgroundBuffer()
+        {
+            if (BackgroundBuffer != null)
+            {
+                BackgroundBuffer.Dispose();
+            }
+            BackgroundBuffer = new Bitmap(MapPWidth, MapPHeight);
+            using (var g = Graphics.FromImage(BackgroundBuffer))
+            {
+                g.FillRectangle(Brushes.Black, 0, 0, MapPWidth, MapPHeight);
+            }
+        }
+
         public void SetupBackground(string draw_mode, string draw_option, Color filter_color, double filter_trans_par)
         {
             Map.MapDrawMode = draw_mode;
@@ -230,12 +242,12 @@ namespace SRCSharpForm
             GUI.IsCursorVisible = false;
 
             // TODO Impl
-            using (var g = Graphics.FromImage(picBack.Image))
+            using (var g = Graphics.FromImage(BackgroundBuffer))
             {
                 switch (draw_option ?? "")
                 {
                     case "ステータス":
-                        g.FillRectangle(Brushes.Black, 0, 0, picBack.Image.Width, picBack.Image.Height);
+                        g.FillRectangle(Brushes.Black, 0, 0, BackgroundBuffer.Width, BackgroundBuffer.Height);
                         return;
 
                     default:
@@ -273,34 +285,34 @@ namespace SRCSharpForm
             switch (draw_mode ?? "")
             {
                 case "夜":
-                    picBack.Image.Dark();
+                    BackgroundBuffer.Dark();
                     break;
 
                 case "セピア":
-                    picBack.Image.Sepia();
+                    BackgroundBuffer.Sepia();
                     break;
 
                 case "白黒":
-                    picBack.Image.Monotone();
+                    BackgroundBuffer.Monotone();
                     break;
 
                 case "夕焼け":
-                    picBack.Image.Sunset();
+                    BackgroundBuffer.Sunset();
                     break;
 
                 case "水中":
-                    picBack.Image.Water();
+                    BackgroundBuffer.Water();
                     break;
 
                 case "フィルタ":
-                    picBack.Image.ColorFilter(filter_color, (float)filter_trans_par);
+                    BackgroundBuffer.ColorFilter(filter_color, (float)filter_trans_par);
                     break;
             }
 
             // マス目の表示
             if (SRC.ShowSquareLine)
             {
-                using (var g = Graphics.FromImage(picBack.Image))
+                using (var g = Graphics.FromImage(BackgroundBuffer))
                 {
                     g.DrawRectangle(MapLinePen, 0, 0, MapPWidth, MapPHeight);
                     for (var x = 1; x <= Map.MapWidth - 1; x++)
@@ -324,7 +336,7 @@ namespace SRCSharpForm
         public void ClearScrean()
         {
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど
-            using (var g = Graphics.FromImage(mainBuffer))
+            using (var g = Graphics.FromImage(MainBuffer))
             {
                 // マップウィンドウの内容を消去
                 g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
@@ -336,7 +348,7 @@ namespace SRCSharpForm
         public void RefreshScreen(int mapX, int mapY, bool without_refresh, bool delay_refresh)
         {
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど
-            using (var g = Graphics.FromImage(mainBuffer))
+            using (var g = Graphics.FromImage(MainBuffer))
             {
                 if (!without_refresh)
                 {
@@ -433,7 +445,7 @@ namespace SRCSharpForm
                         var fromRect = new Rectangle(MapCellPx * (sx + i - 1), MapCellPx * (sy + j - 1), MapCellPx, MapCellPx);
                         // 地形
                         // XXX これバルクで転送でいいんじゃないかな。バッファの関係だろうか。ダブルバッファすればいい？
-                        g.DrawImage(picBack.Image, destRect, fromRect, GraphicsUnit.Pixel);
+                        g.DrawImage(BackgroundBuffer, destRect, fromRect, GraphicsUnit.Pixel);
 
                         if (u != null)
                         {
@@ -473,7 +485,7 @@ namespace SRCSharpForm
             {
                 using (var g = _picMain_0.CreateGraphics())
                 {
-                    g.DrawImage(mainBuffer, 0, 0);
+                    g.DrawImage(MainBuffer, 0, 0);
                 }
                 _picMain_0.Update();
             }
@@ -658,7 +670,7 @@ namespace SRCSharpForm
             using (var g = _picMain_0.CreateGraphics())
             {
                 // マップの全体画像を作成
-                bufG.DrawImage(picBack.Image, 0, 0);
+                bufG.DrawImage(BackgroundBuffer, 0, 0);
                 for (var i = 0; i < Map.MapWidth; i++)
                 {
                     var xx = MapCellPx * i;
