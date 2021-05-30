@@ -17,9 +17,6 @@ namespace SRCSharpForm
         public int MainPWidth => GUI.MainWidth * MapCellPx;
         public int MainPHeight => GUI.MainHeight * MapCellPx;
 
-        private Bitmap BackBitmap;
-        private Bitmap MaskedBackBitmap;
-
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
         //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
         //private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
@@ -49,6 +46,8 @@ namespace SRCSharpForm
 
         /// <summary>
         /// 画像リソースの総合的なバッファ。
+        /// ユニットタイル（picNeautral など）以外の画像はこのバッファで取り扱う。
+        /// TODO ユニットタイルの読み込み元を変える
         /// </summary>
         private ImageBuffer imageBuffer;
 
