@@ -7,6 +7,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Commands
@@ -353,14 +354,6 @@ namespace SRCCore.Commands
         // 「アビリティ」コマンドを終了
         private void FinishAbilityCommand()
         {
-            throw new NotImplementedException();
-            //int i;
-            //var partners = default(Unit[]);
-            //string aname;
-            //// ADD START MARGE
-            //bool is_p_ability;
-            //// ADD END MARGE
-
             //// MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
@@ -369,207 +362,197 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //GUI.LockGUI();
+            GUI.LockGUI();
+            var currentUnit = SelectedUnit;
+            var unitAbility = currentUnit.Ability(SelectedAbility);
 
-            //// 合体技のパートナーを設定
-            //{
-            //    var withBlock = SelectedUnit;
-            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "合"))
-            //    {
-            //        if (withBlock.AbilityMaxRange(SelectedAbility) == 1)
-            //        {
-            //            withBlock.CombinationPartner("アビリティ", SelectedAbility, partners, SelectedTarget.x, SelectedTarget.y);
-            //        }
-            //        else
-            //        {
-            //            withBlock.CombinationPartner("アビリティ", SelectedAbility, partners);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
-            //}
+            // 合体技のパートナーを設定
+            IList<Unit> partners = new List<Unit>();
+            {
+                if (unitAbility.IsAbilityClassifiedAs("合"))
+                {
+                    if (unitAbility.AbilityMaxRange() == 1)
+                    {
+                        partners = unitAbility.CombinationPartner(SelectedTarget.x, SelectedTarget.y);
+                    }
+                    else
+                    {
+                        partners = unitAbility.CombinationPartner();
+                    }
+                }
+                else
+                {
+                    SelectedPartners.Clear();
+                }
+            }
 
-            //aname = unitAbility.Data.Name;
-            //SelectedAbilityName = aname;
+            var aname = unitAbility.Data.Name;
+            SelectedAbilityName = aname;
 
-            //// ADD START MARGE
-            //// 移動後使用後可能なアビリティか記録しておく
-            //is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | SelectedUnit.AbilityMaxRange(SelectedAbility) == 1 && !SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
-            //// ADD END MARGE
+            // 移動後使用後可能なアビリティか記録しておく
+            var is_p_ability = unitAbility.IsAbilityClassifiedAs("Ｐ")
+                        || unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ");
 
-            //// 使用イベント
-            //Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, aname);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners.Clear();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // 使用イベント
+            Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                SelectedPartners.Clear();
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    SelectedPartners.Clear();
-            //    WaitCommand();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                SelectedPartners.Clear();
+                WaitCommand();
+                return;
+            }
 
-            //{
-            //    var withBlock1 = SelectedUnit;
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        if (u.Status == "出撃")
-            //        {
-            //            Map.MaskData[u.x, u.y] = true;
-            //        }
-            //    }
+            {
+                foreach (Unit u in SRC.UList.Items)
+                {
+                    if (u.Status == "出撃")
+                    {
+                        Map.MaskData[u.x, u.y] = true;
+                    }
+                }
 
-            //    // 合体技パートナーのハイライト表示
-            //    if (withBlock1.IsAbilityClassifiedAs(SelectedAbility, "合"))
-            //    {
-            //        var loopTo = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            {
-            //                var withBlock2 = partners[i];
-            //                Map.MaskData[withBlock2.x, withBlock2.y] = false;
-            //            }
-            //        }
-            //    }
+                // 合体技パートナーのハイライト表示
+                foreach (var pu in partners)
+                {
+                    Map.MaskData[pu.x, pu.y] = false;
+                }
 
-            //    Map.MaskData[withBlock1.x, withBlock1.y] = false;
-            //    Map.MaskData[SelectedTarget.x, SelectedTarget.y] = false;
-            //    if (!SRC.BattleAnimation)
-            //    {
-            //        GUI.MaskScreen();
-            //    }
+                Map.MaskData[currentUnit.x, currentUnit.y] = false;
+                Map.MaskData[SelectedTarget.x, SelectedTarget.y] = false;
+                if (!SRC.BattleAnimation)
+                {
+                    GUI.MaskScreen();
+                }
 
-            //    // アビリティを実行
-            //    withBlock1.ExecuteAbility(SelectedAbility, SelectedTarget);
-            //    SelectedUnit = withBlock1.CurrentForm();
-            //    GUI.CloseMessageForm();
-            //    Status.ClearUnitStatus();
-            //}
+                // アビリティを実行
+                currentUnit.ExecuteAbility(unitAbility, SelectedTarget);
+                SelectedUnit = currentUnit.CurrentForm();
+                GUI.CloseMessageForm();
+                Status.ClearUnitStatus();
+            }
 
-            //// 破壊イベント
-            //{
-            //    var withBlock3 = SelectedUnit;
-            //    if (withBlock3.Status == "破壊")
-            //    {
-            //        if (withBlock3.CountPilot() > 0)
-            //        {
-            //            Event.HandleEvent("破壊", withBlock3.MainPilot().ID);
-            //            if (SRC.IsScenarioFinished)
-            //            {
-            //                SRC.IsScenarioFinished = false;
-            //                SelectedPartners.Clear();
-            //                GUI.UnlockGUI();
-            //                return;
-            //            }
+            // 破壊イベント
+            {
+                if (currentUnit.Status == "破壊")
+                {
+                    if (currentUnit.CountPilot() > 0)
+                    {
+                        Event.HandleEvent("破壊", currentUnit.MainPilot().ID);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            SRC.IsScenarioFinished = false;
+                            SelectedPartners.Clear();
+                            GUI.UnlockGUI();
+                            return;
+                        }
 
-            //            if (SRC.IsCanceled)
-            //            {
-            //                SRC.IsCanceled = false;
-            //                SelectedPartners.Clear();
-            //                GUI.UnlockGUI();
-            //                return;
-            //            }
-            //        }
+                        if (SRC.IsCanceled)
+                        {
+                            SRC.IsCanceled = false;
+                            SelectedPartners.Clear();
+                            GUI.UnlockGUI();
+                            return;
+                        }
+                    }
 
-            //        WaitCommand();
-            //        return;
-            //    }
-            //}
+                    WaitCommand();
+                    return;
+                }
+            }
 
-            //// 使用後イベント
-            //{
-            //    var withBlock4 = SelectedUnit;
-            //    if (withBlock4.CountPilot() > 0)
-            //    {
-            //        Event.HandleEvent("使用後", withBlock4.MainPilot().ID, aname);
-            //        if (SRC.IsScenarioFinished)
-            //        {
-            //            SRC.IsScenarioFinished = false;
-            //            SelectedPartners.Clear();
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
+            // 使用後イベント
+            {
+                var withBlock4 = SelectedUnit;
+                if (withBlock4.CountPilot() > 0)
+                {
+                    Event.HandleEvent("使用後", withBlock4.MainPilot().ID, aname);
+                    if (SRC.IsScenarioFinished)
+                    {
+                        SRC.IsScenarioFinished = false;
+                        SelectedPartners.Clear();
+                        GUI.UnlockGUI();
+                        return;
+                    }
 
-            //        if (SRC.IsCanceled)
-            //        {
-            //            SRC.IsCanceled = false;
-            //            SelectedPartners.Clear();
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
-            //    }
-            //}
+                    if (SRC.IsCanceled)
+                    {
+                        SRC.IsCanceled = false;
+                        SelectedPartners.Clear();
+                        GUI.UnlockGUI();
+                        return;
+                    }
+                }
+            }
 
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo1 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo1; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
-            //SelectedPartners.Clear();
+            SelectedPartners.Clear();
 
-            //// ADD START MARGE
-            //// 再移動
-            //if (is_p_ability && SelectedUnit.Status == "出撃")
-            //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
-            //    {
-            //        // 進入イベント
-            //        if (SelectedUnitMoveCost > 0)
-            //        {
-            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
-            //            if (SRC.IsScenarioFinished)
-            //            {
-            //                SRC.IsScenarioFinished = false;
-            //                return;
-            //            }
-            //        }
+            // 再移動
+            if (is_p_ability && SelectedUnit.Status == "出撃")
+            {
+                if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+                {
+                    // 進入イベント
+                    if (SelectedUnitMoveCost > 0)
+                    {
+                        Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            SRC.IsScenarioFinished = false;
+                            return;
+                        }
+                    }
 
-            //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status != "出撃")
-            //        {
-            //            GUI.RedrawScreen();
-            //            Status.ClearUnitStatus();
-            //            return;
-            //        }
+                    // ユニットが既に出撃していない？
+                    if (SelectedUnit.Status != "出撃")
+                    {
+                        GUI.RedrawScreen();
+                        Status.ClearUnitStatus();
+                        return;
+                    }
 
-            //        SelectedCommand = "再移動";
-            //        Map.AreaInSpeed(SelectedUnit);
-            //        if (!Expression.IsOptionDefined("大型マップ"))
-            //        {
-            //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
-            //        }
+                    SelectedCommand = "再移動";
+                    Map.AreaInSpeed(SelectedUnit);
+                    if (!Expression.IsOptionDefined("大型マップ"))
+                    {
+                        GUI.Center(SelectedUnit.x, SelectedUnit.y);
+                    }
 
-            //        GUI.MaskScreen();
-            //        if (GUI.NewGUIMode)
-            //        {
-            //            Application.DoEvents();
-            //            Status.ClearUnitStatus();
-            //        }
-            //        else
-            //        {
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //        }
+                    GUI.MaskScreen();
+                    //if (GUI.NewGUIMode)
+                    //{
+                    //    Application.DoEvents();
+                    //    Status.ClearUnitStatus();
+                    //}
+                    //else
+                    {
+                        Status.DisplayUnitStatus(SelectedUnit);
+                    }
 
-            //        CommandState = "ターゲット選択";
-            //        return;
-            //    }
-            //}
-            //// ADD END MARGE
+                    CommandState = "ターゲット選択";
+                    return;
+                }
+            }
 
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
 
         // マップ型「アビリティ」コマンドを終了
