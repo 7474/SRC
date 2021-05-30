@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -126,75 +127,39 @@ namespace SRCCore.Commands
                 });
             }
 
-            //// ユニット用特殊能力
-            //// 付加された特殊能力より先に固有の特殊能力を表示
-            //if (currentUnit.CountAllFeature() > currentUnit.AdditionalFeaturesNum)
-            //{
-            //    i = (currentUnit.AdditionalFeaturesNum + 1);
-            //}
-            //else
-            //{
-            //    i = 1;
-            //}
+            // ユニット用特殊能力
+            // 付加された特殊能力より先に固有の特殊能力を表示
+            foreach (var i in Enumerable.Range(
+                        currentUnit.AdditionalFeaturesNum + 1,
+                        currentUnit.AllFeatures.Count - currentUnit.AdditionalFeaturesNum)
+                    .AppendRange(Enumerable.Range(1, currentUnit.AdditionalFeaturesNum)))
+            {
+                var fd = currentUnit.AllFeature(i);
+                var fname = fd.FeatureName(currentUnit);
+                // 非表示の特殊能力を排除
+                if (string.IsNullOrEmpty(fname))
+                {
+                    continue;
+                }
 
-            //while (i <= currentUnit.CountAllFeature())
-            //{
-            //    // 非表示の特殊能力を排除
-            //    if (string.IsNullOrEmpty(currentUnit.AllFeatureName(i)))
-            //    {
-            //        goto NextFeature;
-            //    }
+                // 合体の場合は合体後の形態が作成されていなければならない
+                if (fd.Name == "合体" && !SRC.UList.IsDefined(GeneralLib.LIndex(fd.Data, 2)))
+                {
+                    continue;
+                }
 
-            //    // 合体の場合は合体後の形態が作成されていなければならない
-            //    string localAllFeature() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+                // 既に表示していればスキップ
+                if (list.Any(x => x.Text == fname))
+                {
+                    continue;
+                }
 
-            //    string localAllFeatureData() { object argIndex1 = i; var ret = currentUnit.AllFeatureData(argIndex1); return ret; }
-
-            //    string localLIndex() { string arglist = hs7afb75fef08b43c283a05523ef7388cb(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //    bool localIsDefined() { object argIndex1 = (object)hse6256782c58b487b8147a3f247066e6f(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //    if (localAllFeature() == "合体" && !localIsDefined())
-            //    {
-            //        goto NextFeature;
-            //    }
-
-            //    // 既に表示していればスキップ
-            //    var loopTo4 = Information.UBound(list);
-            //    for (j = 1; j <= loopTo4; j++)
-            //    {
-            //        string localAllFeatureName() { object argIndex1 = i; var ret = currentUnit.AllFeatureName(argIndex1); return ret; }
-
-            //        if ((list[j] ?? "") == (localAllFeatureName() ?? ""))
-            //        {
-            //            goto NextFeature;
-            //        }
-            //    }
-
-            //    // リストに追加
-            //    Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //    Array.Resize(id_list, Information.UBound(list) + 1);
-            //    Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-            //    list[Information.UBound(list)] = currentUnit.AllFeatureName(i);
-            //    id_list[Information.UBound(list)] = SrcFormatter.Format(i);
-            //    is_unit_feature[Information.UBound(list)] = true;
-            //NextFeature:
-            //    ;
-            //    if (i == currentUnit.AdditionalFeaturesNum)
-            //    {
-            //        break;
-            //    }
-            //    else if (i == currentUnit.CountFeature())
-            //    {
-            //        // 付加された特殊能力は後から表示
-            //        if (currentUnit.AdditionalFeaturesNum > 0)
-            //        {
-            //            i = 0;
-            //        }
-            //    }
-
-            //    i = (i + 1);
-            //}
+                // リストに追加
+                list.Add(new ListBoxItem<ItemKind>(fname, "" + i)
+                {
+                    ListItemObject = ItemKind.Unit,
+                });
+            }
 
             // アビリティで付加・強化されたパイロット用特殊能力
             foreach (var cond in currentUnit.Conditions)
