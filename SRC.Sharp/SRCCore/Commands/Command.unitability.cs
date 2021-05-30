@@ -153,7 +153,7 @@ namespace SRCCore.Commands
                 }
 
                 // 変身アビリティの場合は行動終了しない
-                if (!is_transformation | CommandState == "移動後コマンド選択")
+                if (!is_transformation || CommandState == "移動後コマンド選択")
                 {
                     WaitCommand();
                 }
@@ -558,192 +558,185 @@ namespace SRCCore.Commands
         // マップ型「アビリティ」コマンドを終了
         private void MapAbilityCommand()
         {
-            throw new NotImplementedException();
-            //int i;
-            //var partners = default(Unit[]);
-            //// ADD START MARGE
-            //bool is_p_ability;
-            //// ADD END MARGE
+            GUI.LockGUI();
+            var currentUnit = SelectedUnit;
+            var unitAbility = currentUnit.Ability(SelectedAbility);
 
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // ADD START MARGE
-            //    // 移動後使用後可能なアビリティか記録しておく
-            //    is_p_ability = withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | withBlock.AbilityMaxRange(SelectedAbility) == 1 && !withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
-            //    // ADD END MARGE
+            // 移動後使用後可能なアビリティか記録しておく
+            var is_p_ability = unitAbility.IsAbilityClassifiedAs("Ｐ")
+                        || unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ");
 
-            //    // 目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティ
-            //    // の場合は再度プレイヤーの選択を促す必要がある
-            //    if (CommandState == "ターゲット選択" | CommandState == "移動後ターゲット選択")
-            //    {
-            //        if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ投"))
-            //        {
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
+            // 目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティの場合は再度プレイヤーの選択を促す必要がある
+            if (CommandState == "ターゲット選択" || CommandState == "移動後ターゲット選択")
+            {
+                if (unitAbility.IsAbilityClassifiedAs("Ｍ投"))
+                {
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
 
-            //            // 目標地点
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
+                    // 目標地点
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
 
-            //            // 効果範囲を設定
-            //            Map.AreaInRange(SelectedX, SelectedY, withBlock.AbilityLevel(SelectedAbility, "Ｍ投"), 1, "味方");
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
-            //        {
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
-            //            if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
-            //            {
-            //                GUI.MaskScreen();
-            //                return;
-            //            }
+                    // 効果範囲を設定
+                    Map.AreaInRange(SelectedX, SelectedY, (int)unitAbility.AbilityLevel("Ｍ投"), 1, "味方");
+                    GUI.MaskScreen();
+                    return;
+                }
+                else if (unitAbility.IsAbilityClassifiedAs("Ｍ移"))
+                {
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
+                    {
+                        GUI.MaskScreen();
+                        return;
+                    }
 
-            //            // 目標地点
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
+                    // 目標地点
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
 
-            //            // 効果範囲を設定
-            //            Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｍ線"))
-            //        {
-            //            if (CommandState == "ターゲット選択")
-            //            {
-            //                CommandState = "マップ攻撃使用";
-            //            }
-            //            else
-            //            {
-            //                CommandState = "移動後マップ攻撃使用";
-            //            }
+                    // 効果範囲を設定
+                    Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);
+                    GUI.MaskScreen();
+                    return;
+                }
+                else if (unitAbility.IsAbilityClassifiedAs("Ｍ線"))
+                {
+                    if (CommandState == "ターゲット選択")
+                    {
+                        CommandState = "マップ攻撃使用";
+                    }
+                    else
+                    {
+                        CommandState = "移動後マップ攻撃使用";
+                    }
 
-            //            // 目標地点
-            //            SelectedX = GUI.PixelToMapX(GUI.MouseX);
-            //            SelectedY = GUI.PixelToMapY(GUI.MouseY);
+                    // 目標地点
+                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
+                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
 
-            //            // 効果範囲を設定
-            //            Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
-            //            GUI.MaskScreen();
-            //            return;
-            //        }
-            //    }
+                    // 効果範囲を設定
+                    Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);
+                    GUI.MaskScreen();
+                    return;
+                }
+            }
 
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
-            //}
+            // 合体技のパートナーを設定
+            IList<Unit> partners = new List<Unit>();
+            {
+                if (unitAbility.IsAbilityClassifiedAs("合"))
+                {
+                    if (unitAbility.AbilityMaxRange() == 1)
+                    {
+                        partners = unitAbility.CombinationPartner(SelectedTarget.x, SelectedTarget.y);
+                    }
+                    else
+                    {
+                        partners = unitAbility.CombinationPartner();
+                    }
+                }
+                else
+                {
+                    SelectedPartners.Clear();
+                }
+            }
 
-            //if (GUI.MainWidth != 15)
-            //{
-            //    Status.ClearUnitStatus();
-            //}
+                // アビリティを実行
+                currentUnit.ExecuteAbility(unitAbility, SelectedTarget);
+                SelectedUnit = currentUnit.CurrentForm();
+            SelectedTarget = null;
 
-            //GUI.LockGUI();
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                SelectedPartners.Clear();
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //// アビリティを実行
-            //SelectedUnit.ExecuteMapAbility(SelectedAbility, SelectedX, SelectedY);
-            //SelectedUnit = SelectedUnit.CurrentForm();
-            //// UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //SelectedTarget = null;
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners.Clear();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                SelectedPartners.Clear();
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    SelectedPartners.Clear();
-            //    WaitCommand();
-            //    return;
-            //}
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            SelectedPartners.Clear();
 
-            //SelectedPartners.Clear();
+            // 再移動
+            if (is_p_ability && SelectedUnit.Status == "出撃")
+            {
+                if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+                {
+                    // 進入イベント
+                    if (SelectedUnitMoveCost > 0)
+                    {
+                        Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            SRC.IsScenarioFinished = false;
+                            return;
+                        }
+                    }
 
-            //// ADD START MARGE
-            //// 再移動
-            //if (is_p_ability && SelectedUnit.Status == "出撃")
-            //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
-            //    {
-            //        // 進入イベント
-            //        if (SelectedUnitMoveCost > 0)
-            //        {
-            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
-            //            if (SRC.IsScenarioFinished)
-            //            {
-            //                SRC.IsScenarioFinished = false;
-            //                return;
-            //            }
-            //        }
+                    // ユニットが既に出撃していない？
+                    if (SelectedUnit.Status != "出撃")
+                    {
+                        GUI.RedrawScreen();
+                        Status.ClearUnitStatus();
+                        return;
+                    }
 
-            //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status != "出撃")
-            //        {
-            //            GUI.RedrawScreen();
-            //            Status.ClearUnitStatus();
-            //            return;
-            //        }
+                    SelectedCommand = "再移動";
+                    Map.AreaInSpeed(SelectedUnit);
+                    if (!Expression.IsOptionDefined("大型マップ"))
+                    {
+                        GUI.Center(SelectedUnit.x, SelectedUnit.y);
+                    }
 
-            //        SelectedCommand = "再移動";
-            //        Map.AreaInSpeed(SelectedUnit);
-            //        if (!Expression.IsOptionDefined("大型マップ"))
-            //        {
-            //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
-            //        }
+                    GUI.MaskScreen();
+                    //if (GUI.NewGUIMode)
+                    //{
+                    //    Application.DoEvents();
+                    //    Status.ClearUnitStatus();
+                    //}
+                    //else
+                    {
+                        Status.DisplayUnitStatus(SelectedUnit);
+                    }
 
-            //        GUI.MaskScreen();
-            //        if (GUI.NewGUIMode)
-            //        {
-            //            Application.DoEvents();
-            //            Status.ClearUnitStatus();
-            //        }
-            //        else
-            //        {
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //        }
+                    CommandState = "ターゲット選択";
+                    return;
+                }
+            }
 
-            //        CommandState = "ターゲット選択";
-            //        return;
-            //    }
-            //}
-            //// ADD END MARGE
-
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
     }
 }
