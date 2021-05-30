@@ -656,9 +656,9 @@ namespace SRCCore.Commands
                 }
             }
 
-                // アビリティを実行
-                currentUnit.ExecuteAbility(unitAbility, SelectedTarget);
-                SelectedUnit = currentUnit.CurrentForm();
+            // アビリティを実行
+            currentUnit.ExecuteMapAbility(unitAbility, SelectedX, SelectedY);
+            SelectedUnit = currentUnit.CurrentForm();
             SelectedTarget = null;
 
             if (SRC.IsScenarioFinished)
