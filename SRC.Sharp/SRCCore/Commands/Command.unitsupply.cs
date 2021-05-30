@@ -174,7 +174,7 @@ namespace SRCCore.Commands
                     if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is object)
                     {
                         var t = Map.MapDataForUnit[i, j];
-                        Map.MaskData[i, j] = t.CanSupply;
+                        Map.MaskData[i, j] = !t.CanSupply;
                     }
                 }
             }
@@ -224,66 +224,57 @@ namespace SRCCore.Commands
         // 「補給」コマンドを終了
         private void FinishSupplyCommand()
         {
-            throw new NotImplementedException();
+            GUI.LockGUI();
+            GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
+            var currentUnit = SelectedUnit;
+            // 選択内容を変更
+            Event.SelectedUnitForEvent = SelectedUnit;
+            Event.SelectedTargetForEvent = SelectedTarget;
 
-            //GUI.LockGUI();
-            //GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // 選択内容を変更
-            //    Event.SelectedUnitForEvent = SelectedUnit;
-            //    Event.SelectedTargetForEvent = SelectedTarget;
+            // 補給メッセージ＆特殊効果
+            if (currentUnit.IsMessageDefined("補給"))
+            {
+                currentUnit.PilotMessage("補給", msg_mode: "");
+            }
 
-            //    // 補給メッセージ＆特殊効果
-            //    if (withBlock.IsMessageDefined("補給"))
-            //    {
-            //        withBlock.PilotMessage("補給", msg_mode: "");
-            //    }
+            if (currentUnit.IsAnimationDefined("補給", currentUnit.FeatureName("補給装置")))
+            {
+                currentUnit.PlayAnimation("補給", currentUnit.FeatureName("補給装置"));
+            }
+            else
+            {
+                currentUnit.SpecialEffect("補給", currentUnit.FeatureName("補給装置"));
+            }
 
-            //    if (withBlock.IsAnimationDefined("補給", withBlock.FeatureName(argIndex3)))
-            //    {
-            //        withBlock.PlayAnimation("補給", withBlock.FeatureName("補給装置"));
-            //    }
-            //    else
-            //    {
-            //        withBlock.SpecialEffect("補給", withBlock.FeatureName(argIndex2));
-            //    }
+            GUI.DisplaySysMessage(currentUnit.Nickname + "は" + SelectedTarget.Nickname + "に" + currentUnit.FeatureName("補給装置") + "を使った。");
 
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName("補給装置") + "を使った。");
+            // 補給を実施
+            SelectedTarget.FullSupply();
+            SelectedTarget.IncreaseMorale(-10);
 
-            //    // 補給を実施
-            //    SelectedTarget.FullSupply();
-            //    SelectedTarget.IncreaseMorale(-10);
-            //    string localLIndex2() { object argIndex1 = "補給装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            if (Information.IsNumeric(GeneralLib.LIndex(currentUnit.FeatureData("補給装置"), 2)))
+            {
+                currentUnit.EN = currentUnit.EN - Conversions.ToInteger(GeneralLib.LIndex(currentUnit.FeatureData("補給装置"), 2));
+            }
 
-            //    if (Information.IsNumeric(localLIndex2()))
-            //    {
-            //        string localLIndex() { object argIndex1 = "補給装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
+            GUI.DisplaySysMessage(SelectedTarget.Nickname + "の弾数と" + Expression.Term("ＥＮ", SelectedTarget) + "が全快した。");
 
-            //        string localLIndex1() { object argIndex1 = "補給装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+            // 経験値を獲得
+            currentUnit.GetExp(SelectedTarget, "補給", exp_mode: "");
+            if (GUI.MessageWait < 10000)
+            {
+                GUI.Sleep(GUI.MessageWait);
+            }
 
-            //        withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
-            //    }
+            // 形態変化のチェック
+            SelectedTarget.Update();
+            SelectedTarget.CurrentForm().CheckAutoHyperMode();
+            SelectedTarget.CurrentForm().CheckAutoNormalMode();
+            GUI.CloseMessageForm();
 
-            //    GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
-            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の弾数と" + Expression.Term("ＥＮ", SelectedTarget) + "が全快した。");
-
-            //    // 経験値を獲得
-            //    withBlock.GetExp(SelectedTarget, "補給", exp_mode: "");
-            //    if (GUI.MessageWait < 10000)
-            //    {
-            //        GUI.Sleep(GUI.MessageWait);
-            //    }
-            //}
-
-            //// 形態変化のチェック
-            //SelectedTarget.Update();
-            //SelectedTarget.CurrentForm().CheckAutoHyperMode();
-            //SelectedTarget.CurrentForm().CheckAutoNormalMode();
-            //GUI.CloseMessageForm();
-
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
     }
 }

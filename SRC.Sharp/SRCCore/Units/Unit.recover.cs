@@ -125,48 +125,50 @@ namespace SRCCore.Units
         {
             // ＥＮ回復
             EN = MaxEN;
-
-            // TODO Impl
-            //    // 弾数回復
-            //    var loopTo = CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //        dblBullet[i] = 1d;
-            //    var loopTo1 = CountAbility();
-            //    for (i = 1; i <= loopTo1; i++)
-            //        dblStock[i] = 1d;
-
             // 他形態も回復
             foreach (var of in OtherForms)
             {
                 of.EN = of.MaxEN;
-                //var loopTo3 = withBlock.CountWeapon();
-                //for (j = 1; j <= loopTo3; j++)
-                //    withBlock.SetBullet(j, withBlock.MaxBullet(j));
-                //var loopTo4 = withBlock.CountAbility();
-                //for (j = 1; j <= loopTo4; j++)
-                //    withBlock.SetStock(j, withBlock.MaxStock(j));
             }
+
+            // 弾数回復
+            BulletSupply();
+            StockSupply();
         }
 
         // 弾数のみを回復
         public void BulletSupply()
         {
-            //    short i, j;
-            //    var loopTo = CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //        dblBullet[i] = 1d;
+            foreach (var uw in Weapons)
+            {
+                uw.SetBulletFull();
+            }
 
-            //    // 他形態も回復
-            //    var loopTo1 = CountOtherForm();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            var loopTo2 = withBlock.CountWeapon();
-            //            for (j = 1; j <= loopTo2; j++)
-            //                withBlock.SetBullet(j, withBlock.MaxBullet(j));
-            //        }
-            //    }
+            // 他形態も回復
+            foreach (var of in OtherForms)
+            {
+                foreach (var uw in of.Weapons)
+                {
+                    uw.SetBulletFull();
+                }
+            }
+        }
+
+        public void StockSupply()
+        {
+            foreach (var ua in Abilities)
+            {
+                ua.SetStockFull();
+            }
+
+            // 他形態も回復
+            foreach (var of in OtherForms)
+            {
+                foreach (var ua in of.Abilities)
+                {
+                    ua.SetStockFull();
+                }
+            }
         }
 
         // ＨＰを percent ％回復
