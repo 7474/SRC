@@ -697,7 +697,7 @@ namespace SRCCore.Commands
                             {
                                 // 指定された属性の解説を表示
                                 GUI.CloseListBox();
-                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), currentAbility.AbilityNo());
+                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), currentAbility.AbilityNo(), true);
                             }
                         }
                     }
