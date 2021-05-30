@@ -1191,7 +1191,7 @@ namespace SRCCore.Units
                                     //            // 通常の特殊能力
                                     //            if (elm.get_AliasLevelIsPlusMod(j))
                                     //            {
-                                    //                if (flevel == SRC.DEFAULT_LEVEL)
+                                    //                if (flevel == Constants.DEFAULT_LEVEL)
                                     //                {
                                     //                    flevel = 1d;
                                     //                }
@@ -1200,14 +1200,14 @@ namespace SRCCore.Units
                                     //            }
                                     //            else if (adata.get_AliasLevelIsMultMod(j))
                                     //            {
-                                    //                if (flevel == SRC.DEFAULT_LEVEL)
+                                    //                if (flevel == Constants.DEFAULT_LEVEL)
                                     //                {
                                     //                    flevel = 1d;
                                     //                }
 
                                     //                flevel2 = flevel * adata.get_AliasLevel(j);
                                     //            }
-                                    //            else if (flevel != SRC.DEFAULT_LEVEL)
+                                    //            else if (flevel != Constants.DEFAULT_LEVEL)
                                     //            {
                                     //                flevel2 = flevel;
                                     //            }
@@ -1391,7 +1391,7 @@ namespace SRCCore.Units
                                     //                ftype2 = GeneralLib.LIndex(fdata, 1);
                                     //            }
 
-                                    //            flevel2 = SRC.DEFAULT_LEVEL;
+                                    //            flevel2 = Constants.DEFAULT_LEVEL;
                                     //            fdata2 = withBlock31.get_AliasData(j);
                                     //            t.AddCondition(ftype2 + "付加", elevel2, flevel2, fdata2);
                                     //        }
@@ -1400,14 +1400,14 @@ namespace SRCCore.Units
                                     //            // 通常の特殊能力
                                     //            if (withBlock31.get_AliasLevelIsMultMod(j))
                                     //            {
-                                    //                if (flevel == SRC.DEFAULT_LEVEL)
+                                    //                if (flevel == Constants.DEFAULT_LEVEL)
                                     //                {
                                     //                    flevel = 1d;
                                     //                }
 
                                     //                flevel2 = flevel * withBlock31.get_AliasLevel(j);
                                     //            }
-                                    //            else if (flevel != SRC.DEFAULT_LEVEL)
+                                    //            else if (flevel != Constants.DEFAULT_LEVEL)
                                     //            {
                                     //                flevel2 = flevel;
                                     //            }

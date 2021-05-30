@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json;
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
@@ -281,7 +282,7 @@ namespace SRCCore
                         }
                     }
 
-                    if (w == 0)
+                    if (w <= 0)
                     {
                         // 護衛するユニットは安全。護衛するユニットの近くへ移動する
                         goto Move;
@@ -691,6 +692,12 @@ namespace SRCCore
             ;
 
             // 敵を攻撃
+            // TODO 武器選択に失敗してるケースがある
+            if (w <= 0)
+            {
+                SRC.LogWarn("Weapon not found. " + JsonConvert.SerializeObject(Commands.SelectedUnit), null);
+                goto EndOfOperation;
+            }
 
             // 敵をUpdate
             Commands.SelectedTarget.Update();
@@ -705,7 +712,7 @@ namespace SRCCore
             {
                 var selectedUnit = Commands.SelectedUnit;
                 var selectedWeapon = selectedUnit.Weapon(w);
-                // 移動後攻撃可能な武器の場合は攻撃前に移動を行う
+                //  
                 // ただし合体技は移動後の位置によって攻撃できない場合があるので例外
                 if (selectedWeapon.IsWeaponClassifiedAs("移動後攻撃可")
                     && !selectedWeapon.IsWeaponClassifiedAs("合")
@@ -2097,7 +2104,6 @@ namespace SRCCore
         SearchNearestEnemy:
             ;
 
-
             // もっとも近くにいる敵を探す
             searched_nearest_enemy = true;
             Commands.SelectedTarget = SearchNearestEnemy(Commands.SelectedUnit);
@@ -2113,7 +2119,6 @@ namespace SRCCore
             dst_y = Commands.SelectedTarget.y;
         Move:
             ;
-
 
             // 目標地点
             Commands.SelectedX = dst_x;
@@ -2612,7 +2617,6 @@ namespace SRCCore
 
         EndOfOperation:
             ;
-
 
             // 行動終了
             Commands.SelectedPartners.Clear();

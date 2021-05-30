@@ -206,16 +206,12 @@ namespace SRCCore.Commands
                     DismissCommand();
                     break;
 
-                case OrderCmdID: // 命令/換装
-                    // XXX 何で換装と共有してるんだ？
-                    if (command.Label == "命令")
-                    {
-                        StartOrderCommand();
-                    }
-                    else
-                    {
-                        ExchangeFormCommand();
-                    }
+                case OrderCmdID: // 命令
+                    StartOrderCommand();
+                    break;
+
+                case ExchangeFormCmdID: // 換装
+                    ExchangeFormCommand();
                     break;
 
                 case FeatureListCmdID: // 特殊能力一覧

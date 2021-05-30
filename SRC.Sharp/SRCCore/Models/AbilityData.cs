@@ -876,7 +876,7 @@ namespace SRCCore.Models
 
         //                            if (string.IsNullOrEmpty(EffectNameRet) || EffectNameRet == "非表示")
         //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(Constants.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2) + "付加";
         //                                }
@@ -887,7 +887,7 @@ namespace SRCCore.Models
         //                            }
         //                            else
         //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(Constants.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ae.Data, 2);
         //                                }
