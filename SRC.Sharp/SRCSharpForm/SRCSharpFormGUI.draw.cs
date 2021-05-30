@@ -10,12 +10,6 @@ namespace SRCSharpForm
 {
     public partial class SRCSharpFormGUI
     {
-        // XXX ファイルシステム周りはインタフェースを切って環境毎に実装してやるのがよさそう。
-        // SRCクラスにある XXDataPath もそちらに切り出すとよいはず。
-        private bool init_draw_pitcure;
-        private IList<string> existBitmapDirectories;
-        private IList<string> existMapBitmapDirectories;
-
         private Color GetDrawBgColor(bool transparent)
         {
             return transparent ? Color.Transparent : BGColor;

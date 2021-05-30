@@ -39,7 +39,7 @@ namespace SRCSharpForm
         public PictureBox picUnit;
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
-        public PictureBox _picMain_0;
+        public PictureBox picMain;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -59,13 +59,14 @@ namespace SRCSharpForm
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.HScrollBar = new SRCSharpForm.Lib.SrcHScrollBar();
             this.VScrollBar = new SRCSharpForm.Lib.SrcVScrollBar();
-            this._picMain_0 = new System.Windows.Forms.PictureBox();
+            this.picMain = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNeautral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEnemy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPilotStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnitStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMain)).BeginInit();
             this.SuspendLayout();
             // 
             // mnuUnitCommand
@@ -193,23 +194,23 @@ namespace SRCSharpForm
             this.VScrollBar.Value = 1;
             this.VScrollBar.ValueChanged += new System.EventHandler(this.VScrollBar_ValueChanged);
             // 
-            // _picMain_0
+            // picMain
             // 
-            this._picMain_0.BackColor = System.Drawing.Color.White;
-            this._picMain_0.Cursor = System.Windows.Forms.Cursors.Default;
-            this._picMain_0.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this._picMain_0.ForeColor = System.Drawing.Color.White;
-            this._picMain_0.Location = new System.Drawing.Point(12, 12);
-            this._picMain_0.Name = "_picMain_0";
-            this._picMain_0.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._picMain_0.Size = new System.Drawing.Size(81, 32);
-            this._picMain_0.TabIndex = 0;
-            this._picMain_0.TabStop = true;
-            this._picMain_0.DoubleClick += new System.EventHandler(this.picMain_DoubleClick);
-            this._picMain_0.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseClick);
-            this._picMain_0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseDown);
-            this._picMain_0.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseMove);
-            this._picMain_0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseUp);
+            this.picMain.BackColor = System.Drawing.Color.White;
+            this.picMain.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picMain.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.picMain.ForeColor = System.Drawing.Color.White;
+            this.picMain.Location = new System.Drawing.Point(12, 12);
+            this.picMain.Name = "picMain";
+            this.picMain.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picMain.Size = new System.Drawing.Size(81, 32);
+            this.picMain.TabIndex = 0;
+            this.picMain.TabStop = false;
+            this.picMain.DoubleClick += new System.EventHandler(this.picMain_DoubleClick);
+            this.picMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseClick);
+            this.picMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseDown);
+            this.picMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseMove);
+            this.picMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseUp);
             // 
             // frmMain
             // 
@@ -225,7 +226,7 @@ namespace SRCSharpForm
             this.Controls.Add(this.picUnitStatus);
             this.Controls.Add(this.HScrollBar);
             this.Controls.Add(this.VScrollBar);
-            this.Controls.Add(this._picMain_0);
+            this.Controls.Add(this.picMain);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("ＭＳ 明朝", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -246,6 +247,7 @@ namespace SRCSharpForm
             ((System.ComponentModel.ISupportInitialize)(this.picUnit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPilotStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnitStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMain)).EndInit();
             this.ResumeLayout(false);
 
         }

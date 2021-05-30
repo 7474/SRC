@@ -120,7 +120,7 @@ namespace SRCSharpForm
                 var loopTo = (division * GeneralLib.MaxLng(Math.Abs((x2 - x1)), Math.Abs((y2 - y1))));
                 for (var i = 1; i <= loopTo; i++)
                 {
-                    using (var g = _picMain_0.CreateGraphics())
+                    using (var g = Graphics.FromImage(MainDoubleBuffer))
                     {
                         // 画像を消去
                         var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
@@ -133,8 +133,7 @@ namespace SRCSharpForm
                         // 画像を描画
                         g.DrawImage(unitImage, xx, yy);
                     }
-
-                    _picMain_0.Update();
+                    UpdataMain();
 
                     if (wait_time > 0)
                     {
@@ -180,7 +179,7 @@ namespace SRCSharpForm
                 var loopTo1 = (division * GeneralLib.MinLng(Math.Abs((x2 - x1)), Math.Abs((y2 - y1))));
                 for (var i = 1; i <= loopTo1; i++)
                 {
-                    using (var g = _picMain_0.CreateGraphics())
+                    using (var g = Graphics.FromImage(MainDoubleBuffer))
                     {
                         // 画像を消去
                         var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
@@ -194,7 +193,7 @@ namespace SRCSharpForm
                         g.DrawImage(unitImage, xx, yy);
                     }
 
-                    _picMain_0.Update();
+                    UpdataMain();
 
                     if (wait_time > 0)
                     {
@@ -247,7 +246,7 @@ namespace SRCSharpForm
                     // 移動の描画
                     for (var j = 0; j < division; j++)
                     {
-                        using (var g = _picMain_0.CreateGraphics())
+                        using (var g = Graphics.FromImage(MainDoubleBuffer))
                         {
                             // 画像を消去
                             var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
@@ -262,7 +261,7 @@ namespace SRCSharpForm
                             g.DrawImage(unitImage, xx, yy);
                         }
 
-                        _picMain_0.Update();
+                        UpdataMain();
 
                         if (wait_time > 0)
                         {

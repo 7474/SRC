@@ -34,13 +34,19 @@ namespace SRCSharpForm
         public Image BackgroundBuffer { get; private set; }
         /// <summary>
         /// 最終的な画面描画バッファ。
-        /// <see cref="IGUI.RefreshScreen"/> 時にはこのバッファを単に画面に転送する。
+        /// <see cref="IGUI.RefreshScreen"/> などではこのバッファを単に画面に転送する。
         /// </summary>        
         public Image MainBuffer { get; private set; }
         /// <summary>
         /// <see cref="SaveScreen"/> で MainBuffer を退避、復元できるようにするための領域。
         /// </summary>
         public Image MainBufferBack { get; private set; }
+        /// <summary>
+        /// 画面のダブルバッファ背景面。
+        /// MainBuffer をベースにこのバッファ上で編集する場面もある。
+        /// </summary>
+        public Image MainDoubleBuffer { get; private set; }
+
         /// <summary>
         /// 画像リソースの総合的なバッファ。
         /// </summary>
@@ -54,10 +60,43 @@ namespace SRCSharpForm
 
         private void InitMainBuffer(int w, int h)
         {
+            if (MainBuffer != null) { MainBuffer.Dispose(); }
+            if (MainBufferBack != null) { MainBufferBack.Dispose(); }
+            if (MainDoubleBuffer != null) { MainDoubleBuffer.Dispose(); }
             MainBuffer = new Bitmap(w, h);
             MainBufferBack = new Bitmap(w, h);
+            MainDoubleBuffer = new Bitmap(w, h);
         }
 
+        private void UpdataMain()
+        {
+            using (var g = Graphics.FromImage(picMain.NewImageIfNull().Image))
+            {
+                g.DrawImage(MainDoubleBuffer, 0, 0);
+            }
+            picMain.Invalidate();
+        }
+
+        public void InitBackgroundBufferIfInvalid()
+        {
+            if (BackgroundBuffer == null)
+            {
+                InitBackgroundBuffer();
+            }
+        }
+
+        private void InitBackgroundBuffer()
+        {
+            if (BackgroundBuffer != null)
+            {
+                BackgroundBuffer.Dispose();
+            }
+            BackgroundBuffer = new Bitmap(MapPWidth, MapPHeight);
+            using (var g = Graphics.FromImage(BackgroundBuffer))
+            {
+                g.FillRectangle(Brushes.Black, 0, 0, MapPWidth, MapPHeight);
+            }
+        }
 
         public void InitStatus()
         {
@@ -166,8 +205,8 @@ namespace SRCSharpForm
             //}
 
             // マップウィンドウのサイズを設定
-            _picMain_0.Location = new Point(0, 0);
-            _picMain_0.Size = new Size(MainPWidth, MainPHeight);
+            picMain.Location = new Point(0, 0);
+            picMain.Size = new Size(MainPWidth, MainPHeight);
             InitMainBuffer(MainPWidth, MainPHeight);
 
             //    // MOD START MARGE
@@ -213,27 +252,6 @@ namespace SRCSharpForm
                 //    // MOD  END  240a
                 //    withBlock2.Visible = true;
                 //}
-            }
-        }
-
-        public void InitBackgroundBufferIfInvalid()
-        {
-            if (BackgroundBuffer == null)
-            {
-                InitBackgroundBuffer();
-            }
-        }
-
-        private void InitBackgroundBuffer()
-        {
-            if (BackgroundBuffer != null)
-            {
-                BackgroundBuffer.Dispose();
-            }
-            BackgroundBuffer = new Bitmap(MapPWidth, MapPHeight);
-            using (var g = Graphics.FromImage(BackgroundBuffer))
-            {
-                g.FillRectangle(Brushes.Black, 0, 0, MapPWidth, MapPHeight);
             }
         }
 
@@ -489,11 +507,11 @@ namespace SRCSharpForm
         {
             if (Visible)
             {
-                using (var g = _picMain_0.CreateGraphics())
+                using (var g = Graphics.FromImage(MainDoubleBuffer))
                 {
                     g.DrawImage(MainBuffer, 0, 0);
                 }
-                _picMain_0.Update();
+                UpdataMain();
             }
         }
 
@@ -673,7 +691,7 @@ namespace SRCSharpForm
             }
             using (var buf = new Bitmap(Map.MapWidth * MapCellPx, Map.MapHeight * MapCellPx))
             using (var bufG = Graphics.FromImage(buf))
-            using (var g = _picMain_0.CreateGraphics())
+            using (var g = Graphics.FromImage(MainDoubleBuffer))
             {
                 // マップの全体画像を作成
                 bufG.DrawImage(BackgroundBuffer, 0, 0);
@@ -704,7 +722,7 @@ namespace SRCSharpForm
                     new Rectangle(0, 0, buf.Width, buf.Height),
                     GraphicsUnit.Pixel);
             }
-            _picMain_0.Update();
+            UpdataMain();
         }
 
         private bool IsInsideWindow(int x, int y)
