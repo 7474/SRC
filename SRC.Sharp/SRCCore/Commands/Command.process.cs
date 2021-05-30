@@ -622,7 +622,7 @@ namespace SRCCore.Commands
                             var caption = SRC.ALDList.RefName("換装");
                             if (currentUnit.Feature("換装").DataL.Any(uname => currentUnit.OtherForm(uname).IsAvailable()))
                             {
-                                unitCommands.Add(new UiCommand(OrderCmdID, caption));
+                                unitCommands.Add(new UiCommand(ExchangeFormCmdID, caption));
                             }
                         }
                     }
