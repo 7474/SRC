@@ -998,6 +998,10 @@ namespace SRCSharpForm
                 ListItemFlag = !x.CanUse,
                 ListItemID = "",
             }).ToList();
+            if (list.Count == 1 && lb_mode != "一覧" && !is_item)
+            {
+                return abilities.Items[0].Ability;
+            }
             var ret = ListBox(new ListBoxArgs
             {
                 Items = list,
