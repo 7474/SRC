@@ -64,7 +64,7 @@ namespace SRCCore.Commands
                     .Where(x => GeneralLib.LIndex(x.Data, 1) == unitAbility.Data.Name)
                     .Select(x => Sound.SearchMidiFile(Strings.Mid(x.Data, Strings.InStr(x.Data, " ") + 1)))
                     .FirstOrDefault();
-                if(!string.IsNullOrEmpty(BGM))
+                if (!string.IsNullOrEmpty(BGM))
                 {
                     Sound.ChangeBGM(BGM);
                 }
@@ -180,13 +180,14 @@ namespace SRCCore.Commands
                 return;
             }
 
-            var partners = default(Unit[]);
+            // アビリティの射程を求めておく
+            var min_range = unitAbility.AbilityMinRange();
+            var max_range = unitAbility.AbilityMaxRange();
             {
-                var withBlock3 = SelectedUnit;
                 // マップ型アビリティかどうかで今後のコマンド処理の進行の仕方が異なる
                 if (is_item)
                 {
-                    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ"))
+                    if (unitAbility.IsAbilityClassifiedAs("Ｍ"))
                     {
                         SelectedCommand = "マップアイテム";
                     }
@@ -197,7 +198,7 @@ namespace SRCCore.Commands
                 }
                 else
                 {
-                    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ"))
+                    if (unitAbility.IsAbilityClassifiedAs("Ｍ"))
                     {
                         SelectedCommand = "マップアビリティ";
                     }
@@ -207,141 +208,92 @@ namespace SRCCore.Commands
                     }
                 }
 
-                // アビリティの射程を求めておく
-                min_range = withBlock3.AbilityMinRange(SelectedAbility);
-                max_range = withBlock3.AbilityMaxRange(SelectedAbility);
 
                 // アビリティの効果範囲を設定
-                if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ直"))
+                if (unitAbility.IsAbilityClassifiedAs("Ｍ直"))
                 {
-                    Map.AreaInCross(withBlock3.x, withBlock3.y, min_range, max_range);
+                    Map.AreaInCross(currentUnit.x, currentUnit.y, min_range, max_range);
                 }
-                else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ拡"))
+                else if (unitAbility.IsAbilityClassifiedAs("Ｍ拡"))
                 {
-                    Map.AreaInWideCross(withBlock3.x, withBlock3.y, min_range, max_range);
+                    Map.AreaInWideCross(currentUnit.x, currentUnit.y, min_range, max_range);
                 }
-                else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ扇"))
+                else if (unitAbility.IsAbilityClassifiedAs("Ｍ扇"))
                 {
-                    Map.AreaInSectorCross(withBlock3.x, withBlock3.y, min_range, max_range, withBlock3.AbilityLevel(SelectedAbility, "Ｍ扇"));
+                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, (int)unitAbility.AbilityLevel("Ｍ扇"));
                 }
-                else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
+                else if (unitAbility.IsAbilityClassifiedAs("Ｍ移"))
                 {
                     Map.AreaInMoveAction(SelectedUnit, max_range);
                 }
                 else
                 {
-                    Map.AreaInRange(withBlock3.x, withBlock3.y, max_range, min_range, "すべて");
+                    Map.AreaInRange(currentUnit.x, currentUnit.y, max_range, min_range, "すべて");
                 }
 
                 // 射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
-                if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "合") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ") & withBlock3.Ability(SelectedAbility).MaxRange == 1)
+                if (unitAbility.IsAbilityClassifiedAs("合") && !unitAbility.IsAbilityClassifiedAs("Ｍ") && unitAbility.Data.MaxRange == 1)
                 {
-                    for (i = 1; i <= 4; i++)
+                    foreach (var t in Map.AdjacentUnit(currentUnit))
                     {
-                        // UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                        t = null;
-                        switch (i)
+                        if (currentUnit.IsAlly(t))
                         {
-                            case 1:
-                                {
-                                    if (withBlock3.x > 1)
-                                    {
-                                        t = Map.MapDataForUnit[withBlock3.x - 1, withBlock3.y];
-                                    }
-
-                                    break;
-                                }
-
-                            case 2:
-                                {
-                                    if (withBlock3.x < Map.MapWidth)
-                                    {
-                                        t = Map.MapDataForUnit[withBlock3.x + 1, withBlock3.y];
-                                    }
-
-                                    break;
-                                }
-
-                            case 3:
-                                {
-                                    if (withBlock3.y > 1)
-                                    {
-                                        t = Map.MapDataForUnit[withBlock3.x, withBlock3.y - 1];
-                                    }
-
-                                    break;
-                                }
-
-                            case 4:
-                                {
-                                    if (withBlock3.y < Map.MapHeight)
-                                    {
-                                        t = Map.MapDataForUnit[withBlock3.x, withBlock3.y + 1];
-                                    }
-
-                                    break;
-                                }
-                        }
-
-                        if (t is object)
-                        {
-                            if (withBlock3.IsAlly(t))
+                            var partners = unitAbility.CombinationPartner(t.x, t.y);
+                            if (partners.Count == 0)
                             {
-                                withBlock3.CombinationPartner("アビリティ", SelectedAbility, partners, t.x, t.y);
-                                if (Information.UBound(partners) == 0)
-                                {
-                                    Map.MaskData[t.x, t.y] = true;
-                                }
+                                Map.MaskData[t.x, t.y] = true;
                             }
                         }
                     }
                 }
-
-                // ユニットがいるマスの処理
-                if (!withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ投") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ線") & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, "Ｍ移"))
-                {
-                    var loopTo2 = GeneralLib.MinLng(withBlock3.x + max_range, Map.MapWidth);
-                    for (i = GeneralLib.MaxLng(withBlock3.x - max_range, 1); i <= loopTo2; i++)
-                    {
-                        var loopTo3 = GeneralLib.MinLng(withBlock3.y + max_range, Map.MapHeight);
-                        for (j = GeneralLib.MaxLng(withBlock3.y - max_range, 1); j <= loopTo3; j++)
-                        {
-                            if (!Map.MaskData[i, j])
-                            {
-                                t = Map.MapDataForUnit[i, j];
-                                if (t is object)
-                                {
-                                    // 有効？
-                                    if (withBlock3.IsAbilityEffective(SelectedAbility, t))
-                                    {
-                                        Map.MaskData[i, j] = false;
-                                    }
-                                    else
-                                    {
-                                        Map.MaskData[i, j] = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // 支援専用アビリティは自分には使用できない
-                if (!Map.MaskData[withBlock3.x, withBlock3.y])
-                {
-                    if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, "援"))
-                    {
-                        Map.MaskData[withBlock3.x, withBlock3.y] = true;
-                    }
-                }
-
-                if (!Expression.IsOptionDefined("大型マップ"))
-                {
-                    GUI.Center(withBlock3.x, withBlock3.y);
-                }
-
-                GUI.MaskScreen();
             }
+
+            // ユニットがいるマスの処理
+            if (!unitAbility.IsAbilityClassifiedAs("Ｍ投")
+                && !unitAbility.IsAbilityClassifiedAs("Ｍ線")
+                && !unitAbility.IsAbilityClassifiedAs("Ｍ移"))
+            {
+                var loopTo2 = GeneralLib.MinLng(currentUnit.x + max_range, Map.MapWidth);
+                for (var i = GeneralLib.MaxLng(currentUnit.x - max_range, 1); i <= loopTo2; i++)
+                {
+                    var loopTo3 = GeneralLib.MinLng(currentUnit.y + max_range, Map.MapHeight);
+                    for (var j = GeneralLib.MaxLng(currentUnit.y - max_range, 1); j <= loopTo3; j++)
+                    {
+                        if (!Map.MaskData[i, j])
+                        {
+                            var t = Map.MapDataForUnit[i, j];
+                            if (t is object)
+                            {
+                                // 有効？
+                                if (unitAbility.IsAbilityEffective(t))
+                                {
+                                    Map.MaskData[i, j] = false;
+                                }
+                                else
+                                {
+                                    Map.MaskData[i, j] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 支援専用アビリティは自分には使用できない
+            if (!Map.MaskData[currentUnit.x, currentUnit.y])
+            {
+                if (unitAbility.IsAbilityClassifiedAs("援"))
+                {
+                    Map.MaskData[currentUnit.x, currentUnit.y] = true;
+                }
+            }
+
+            if (!Expression.IsOptionDefined("大型マップ"))
+            {
+                GUI.Center(currentUnit.x, currentUnit.y);
+            }
+
+            GUI.MaskScreen();
 
             if (CommandState == "コマンド選択")
             {
@@ -360,41 +312,41 @@ namespace SRCCore.Commands
             }
 
             // 自分から最も近い味方ユニットを探す
-            // UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            t = null;
-            foreach (Unit u in SRC.UList)
             {
-                if (u.Status == "出撃" & u.Party == "味方")
+                Unit t = null;
+                foreach (Unit u in SRC.UList.Items)
                 {
-                    if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
+                    if (u.Status == "出撃" && u.Party == "味方")
                     {
-                        if (t is null)
+                        if (Map.MaskData[u.x, u.y] == false && !ReferenceEquals(u, SelectedUnit))
                         {
-                            t = u;
-                        }
-                        else if (Math.Pow(Math.Abs((SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - t.y)), 2d))
-                        {
-                            t = u;
+                            if (t is null)
+                            {
+                                t = u;
+                            }
+                            else if (Math.Pow(Math.Abs((SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - t.y)), 2d))
+                            {
+                                t = u;
+                            }
                         }
                     }
                 }
+
+                // 適当がユニットがなければ自分自身を選択
+                if (t is null)
+                {
+                    t = SelectedUnit;
+                }
+
+                // カーソルを移動
+                GUI.MoveCursorPos("ユニット選択", t);
+
+                // ターゲットのステータスを表示
+                if (!ReferenceEquals(SelectedUnit, t))
+                {
+                    Status.DisplayUnitStatus(t);
+                }
             }
-
-            // 適当がユニットがなければ自分自身を選択
-            if (t is null)
-            {
-                t = SelectedUnit;
-            }
-
-            // カーソルを移動
-            GUI.MoveCursorPos("ユニット選択", t);
-
-            // ターゲットのステータスを表示
-            if (!ReferenceEquals(SelectedUnit, t))
-            {
-                Status.DisplayUnitStatus(t);
-            }
-
             GUI.UnlockGUI();
         }
 
@@ -445,7 +397,7 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 移動後使用後可能なアビリティか記録しておく
-            //is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | SelectedUnit.AbilityMaxRange(SelectedAbility) == 1 & !SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
+            //is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | SelectedUnit.AbilityMaxRange(SelectedAbility) == 1 && !SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
             //// ADD END MARGE
 
             //// 使用イベント
@@ -569,9 +521,9 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 再移動
-            //if (is_p_ability & SelectedUnit.Status == "出撃")
+            //if (is_p_ability && SelectedUnit.Status == "出撃")
             //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
             //    {
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
@@ -634,7 +586,7 @@ namespace SRCCore.Commands
             //    var withBlock = SelectedUnit;
             //    // ADD START MARGE
             //    // 移動後使用後可能なアビリティか記録しておく
-            //    is_p_ability = withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | withBlock.AbilityMaxRange(SelectedAbility) == 1 & !withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
+            //    is_p_ability = withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") | withBlock.AbilityMaxRange(SelectedAbility) == 1 && !withBlock.IsAbilityClassifiedAs(SelectedAbility, "Ｑ");
             //    // ADD END MARGE
 
             //    // 目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティ
@@ -760,9 +712,9 @@ namespace SRCCore.Commands
 
             //// ADD START MARGE
             //// 再移動
-            //if (is_p_ability & SelectedUnit.Status == "出撃")
+            //if (is_p_ability && SelectedUnit.Status == "出撃")
             //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") & SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
             //    {
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
