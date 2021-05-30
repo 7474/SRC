@@ -1724,6 +1724,108 @@ namespace SRCCore.Units
             //return IsTargetReachableForAbilityRet;
         }
 
+        // アビリティの使用によるＥＮ、使用回数の消費等を行う
+        public void UseAbility()
+        {
+            // TODO Impl
+            //int i, lv;
+            //double hp_ratio, en_ratio;
+            //if (this.a.Ability().ENConsumption > 0)
+            //{
+            //    EN = EN - a.AbilityENConsumption();
+            //}
+
+            //if (this.a.Ability().Stock > 0)
+            //{
+            //    a.SetStock((a.Stock() - 1));
+
+            //    // 一斉使用
+            //    if (a.IsAbilityClassifiedAs("斉"))
+            //    {
+            //        var loopTo = Information.UBound(dblStock);
+            //        for (i = 1; i <= loopTo; i++)
+            //            SetStock(i, GeneralLib.MinLng((MaxStock(i) * a.Stock()) / a.MaxStock(), Stock(i)));
+            //    }
+            //    else
+            //    {
+            //        var loopTo1 = Information.UBound(dblStock);
+            //        for (i = 1; i <= loopTo1; i++)
+            //        {
+            //            if (IsAbilityClassifiedAs(i, "斉"))
+            //            {
+            //                SetStock(i, GeneralLib.MinLng(((MaxStock(i) * a.Stock()) / a.MaxStock() + 0.49999d), Stock(i)));
+            //            }
+            //        }
+            //    }
+
+            //    // 弾数・使用回数共有の処理
+            //    SyncBullet();
+            //}
+
+            //// 消耗技
+            //if (a.IsAbilityClassifiedAs("消"))
+            //{
+            //    AddCondition("消耗", 1, cdata: "");
+            //}
+
+            //// 全ＥＮ消費アビリティ
+            //if (a.IsAbilityClassifiedAs("尽"))
+            //{
+            //    EN = 0;
+            //}
+
+            //// チャージ式アビリティ
+            //if (a.IsAbilityClassifiedAs("Ｃ") && IsConditionSatisfied("チャージ完了"))
+            //{
+            //    DeleteCondition("チャージ完了");
+            //}
+
+            //// 自動充填式アビリティ
+            //if (a.AbilityLevel("Ａ") > 0d)
+            //{
+            //    AddCondition(a.AbilityNickname() + "充填中", a.AbilityLevel("Ａ"), cdata: "");
+            //}
+
+            //// 気力を消費
+            //if (a.IsAbilityClassifiedAs("気"))
+            //{
+            //    IncreaseMorale((-5 * a.AbilityLevel("気")));
+            //}
+
+            //// 霊力の消費
+            //if (a.IsAbilityClassifiedAs("霊"))
+            //{
+            //    hp_ratio = 100 * HP / (double)MaxHP;
+            //    en_ratio = 100 * EN / (double)MaxEN;
+            //    MainPilot().Plana = (this.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
+            //    HP = (MaxHP * hp_ratio / 100d);
+            //    EN = (MaxEN * en_ratio / 100d);
+            //}
+            //else if (a.IsAbilityClassifiedAs("プ"))
+            //{
+            //    hp_ratio = 100 * HP / (double)MaxHP;
+            //    en_ratio = 100 * EN / (double)MaxEN;
+            //    MainPilot().Plana = (this.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
+            //    HP = (MaxHP * hp_ratio / 100d);
+            //    EN = (MaxEN * en_ratio / 100d);
+            //}
+
+            //// 資金消費アビリティ
+            //if (Party == "味方")
+            //{
+            //    if (a.IsAbilityClassifiedAs("銭"))
+            //    {
+            //        SRC.IncrMoney(-GeneralLib.MaxLng(a.AbilityLevel("銭"), 1) * Value / 10);
+            //    }
+            //}
+
+            //// ＨＰ消費アビリティ
+            //if (a.IsAbilityClassifiedAs("失"))
+            //{
+            //    HP = GeneralLib.MaxLng((HP - (long)(MaxHP * a.AbilityLevel("失")) / 10L), 0);
+            //}
+        }
+
         // アビリティの残り使用回数
         public int Stock()
         {
