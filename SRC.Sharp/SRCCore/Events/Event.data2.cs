@@ -496,7 +496,7 @@ namespace SRCCore.Events
         //                {
         //                    if (GeneralLib.LIndex(vvalue, 2) == "解説")
         //                    {
-        //                        vvalue = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL) + " 解説 " + GeneralLib.ListTail(vvalue, 3);
+        //                        vvalue = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Constants.DEFAULT_LEVEL) + " 解説 " + GeneralLib.ListTail(vvalue, 3);
         //                    }
         //                }
         //            }

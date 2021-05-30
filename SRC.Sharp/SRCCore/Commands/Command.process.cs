@@ -456,7 +456,14 @@ namespace SRCCore.Commands
                 if (currentUnit.Party != "味方" || currentUnit.IsConditionSatisfied("非操作") || ViewMode)
                 {
                     // 召喚ユニットは命令コマンドを使用可能
-                    if (currentUnit.Party == "ＮＰＣ" && currentUnit.IsFeatureAvailable("召喚ユニット") && !currentUnit.IsConditionSatisfied("魅了") && !currentUnit.IsConditionSatisfied("混乱") && !currentUnit.IsConditionSatisfied("恐怖") && !currentUnit.IsConditionSatisfied("暴走") && !currentUnit.IsConditionSatisfied("狂戦士") && !ViewMode)
+                    if (currentUnit.Party == "ＮＰＣ"
+                        && currentUnit.IsFeatureAvailable("召喚ユニット")
+                        && !currentUnit.IsConditionSatisfied("魅了")
+                        && !currentUnit.IsConditionSatisfied("混乱")
+                        && !currentUnit.IsConditionSatisfied("恐怖")
+                        && !currentUnit.IsConditionSatisfied("暴走")
+                        && !currentUnit.IsConditionSatisfied("狂戦士")
+                        && !ViewMode)
                     {
                         if (currentUnit.Summoner is object)
                         {
@@ -468,7 +475,13 @@ namespace SRCCore.Commands
                     }
 
                     // 魅了したユニットに対しても命令コマンドを使用可能
-                    if (currentUnit.Party == "ＮＰＣ" && currentUnit.IsConditionSatisfied("魅了") && !currentUnit.IsConditionSatisfied("混乱") && !currentUnit.IsConditionSatisfied("恐怖") && !currentUnit.IsConditionSatisfied("暴走") && !currentUnit.IsConditionSatisfied("狂戦士") && !ViewMode)
+                    if (currentUnit.Party == "ＮＰＣ"
+                        && currentUnit.IsConditionSatisfied("魅了")
+                        && !currentUnit.IsConditionSatisfied("混乱")
+                        && !currentUnit.IsConditionSatisfied("恐怖")
+                        && !currentUnit.IsConditionSatisfied("暴走")
+                        && !currentUnit.IsConditionSatisfied("狂戦士")
+                        && !ViewMode)
                     {
                         if (currentUnit.Master is object)
                         {
