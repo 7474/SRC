@@ -22,7 +22,6 @@ namespace SRCCore.Units
             return Abilities.Count;
         }
 
-
         // === アビリティ発動関連処理 ===
 
         // XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。
