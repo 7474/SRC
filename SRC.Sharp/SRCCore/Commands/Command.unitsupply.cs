@@ -83,89 +83,81 @@ namespace SRCCore.Commands
         // 「修理」コマンドを終了
         private void FinishFixCommand()
         {
-            throw new NotImplementedException();
-            //int tmp;
-            //GUI.LockGUI();
-            //GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
-            //{
-            //    var withBlock = SelectedUnit;
-            //    // 選択内容を変更
-            //    Event.SelectedUnitForEvent = SelectedUnit;
-            //    Event.SelectedTargetForEvent = SelectedTarget;
+            GUI.LockGUI();
+            GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
+            {
+                var currentUnit = SelectedUnit;
+                // 選択内容を変更
+                Event.SelectedUnitForEvent = SelectedUnit;
+                Event.SelectedTargetForEvent = SelectedTarget;
 
-            //    // 修理メッセージ＆特殊効果
-            //    if (withBlock.IsMessageDefined("修理"))
-            //    {
-            //        withBlock.PilotMessage("修理", msg_mode: "");
-            //    }
+                // 修理メッセージ＆特殊効果
+                if (currentUnit.IsMessageDefined("修理"))
+                {
+                    currentUnit.PilotMessage("修理", msg_mode: "");
+                }
 
-            //    if (withBlock.IsAnimationDefined("修理", withBlock.FeatureName(argIndex3)))
-            //    {
-            //        withBlock.PlayAnimation("修理", withBlock.FeatureName(argIndex1));
-            //    }
-            //    else
-            //    {
-            //        withBlock.SpecialEffect("修理", withBlock.FeatureName(argIndex2));
-            //    }
+                if (currentUnit.IsAnimationDefined("修理", currentUnit.FeatureName("修理装置")))
+                {
+                    currentUnit.PlayAnimation("修理", currentUnit.FeatureName("修理装置"));
+                }
+                else
+                {
+                    currentUnit.SpecialEffect("修理", currentUnit.FeatureName("修理装置"));
+                }
 
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は" + SelectedTarget.Nickname + "に" + withBlock.FeatureName("修理装置") + "を使った。");
+                GUI.DisplaySysMessage(currentUnit.Nickname + "は" + SelectedTarget.Nickname + "に" + currentUnit.FeatureName("修理装置") + "を使った。");
 
-            //    // 修理を実行
-            //    tmp = SelectedTarget.HP;
-            //    switch (withBlock.FeatureLevel("修理装置"))
-            //    {
-            //        case 1d:
-            //        case -1:
-            //            {
-            //                SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
-            //                break;
-            //            }
+                // 修理を実行
+                var tmp = SelectedTarget.HP;
+                switch (currentUnit.FeatureLevel("修理装置"))
+                {
+                    case 1d:
+                    case -1:
+                        {
+                            SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
+                            break;
+                        }
 
-            //        case 2d:
-            //            {
-            //                SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
-            //                break;
-            //            }
+                    case 2d:
+                        {
+                            SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
+                            break;
+                        }
 
-            //        case 3d:
-            //            {
-            //                SelectedTarget.RecoverHP(100d);
-            //                break;
-            //            }
-            //    }
+                    case 3d:
+                        {
+                            SelectedTarget.RecoverHP(100d);
+                            break;
+                        }
+                }
 
-            //    string localLIndex2() { object "修理装置" = "修理装置"; string arglist = withBlock.FeatureData("修理装置"); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                if (Information.IsNumeric(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2)))
+                {
+                    currentUnit.EN = currentUnit.EN - Conversions.ToInteger(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2));
+                }
 
-            //    if (Information.IsNumeric(localLIndex2()))
-            //    {
-            //        string localLIndex() { object argIndex1 = "修理装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, "+" + SrcFormatter.Format(SelectedTarget.HP - tmp));
+                GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
+                GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term("ＨＰ", SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
 
-            //        string localLIndex1() { object argIndex1 = "修理装置"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                // 経験値獲得
+                currentUnit.GetExp(SelectedTarget, "修理", exp_mode: "");
+                if (GUI.MessageWait < 10000)
+                {
+                    GUI.Sleep(GUI.MessageWait);
+                }
+            }
 
-            //        withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
-            //    }
+            GUI.CloseMessageForm();
 
-            //    GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, "+" + SrcFormatter.Format(SelectedTarget.HP - tmp));
-            //    GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
-            //    GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term("ＨＰ", SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
+            // 形態変化のチェック
+            SelectedTarget.Update();
+            SelectedTarget.CurrentForm().CheckAutoHyperMode();
+            SelectedTarget.CurrentForm().CheckAutoNormalMode();
 
-            //    // 経験値獲得
-            //    withBlock.GetExp(SelectedTarget, "修理", exp_mode: "");
-            //    if (GUI.MessageWait < 10000)
-            //    {
-            //        GUI.Sleep(GUI.MessageWait);
-            //    }
-            //}
-
-            //GUI.CloseMessageForm();
-
-            //// 形態変化のチェック
-            //SelectedTarget.Update();
-            //SelectedTarget.CurrentForm().CheckAutoHyperMode();
-            //SelectedTarget.CurrentForm().CheckAutoNormalMode();
-
-            //// 行動終了
-            //WaitCommand();
+            // 行動終了
+            WaitCommand();
         }
 
         // 「補給」コマンドを開始

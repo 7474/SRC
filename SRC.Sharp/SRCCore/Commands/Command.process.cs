@@ -1082,12 +1082,12 @@ namespace SRCCore.Commands
 
                         if (!(Information.IsNumeric(en) && currentUnit.EN < Conversions.ToInteger(en)))
                         {
-                            unitCommands.Add(new UiCommand(SupplyCmdID, caption));
+                            unitCommands.Add(new UiCommand(FixCmdID, caption));
                         }
                     }
                     else
                     {
-                        unitCommands.Add(new UiCommand(SupplyCmdID, "修理装置"));
+                        unitCommands.Add(new UiCommand(FixCmdID, "修理装置"));
                     }
                 }
             }
