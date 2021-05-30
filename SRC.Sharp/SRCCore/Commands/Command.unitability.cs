@@ -3,8 +3,11 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -52,43 +55,20 @@ namespace SRCCore.Commands
             }
             SelectedAbility = unitAbility.AbilityNo();
 
-            throw new NotImplementedException();
-            //int i, j;
-            //Unit t;
-            //int min_range, max_range;
+            var currentUnit = SelectedUnit;
 
-            //// アビリティ専用ＢＧＭがあればそれを演奏
-            //string BGM;
-            //{
-            //    var withBlock = SelectedUnit;
-            //    if (withBlock.IsFeatureAvailable("アビリティＢＧＭ"))
-            //    {
-            //        var loopTo = withBlock.CountFeature();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = withBlock.Feature(argIndex1); return ret; }
-
-            //            string localFeatureData2() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex() { string arglist = hs8866f19275ca4c5cbfc3bb7415f2da30(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //            if (localFeature() == "アビリティＢＧＭ" & (localLIndex() ?? "") == (withBlock.Ability(SelectedAbility).Name ?? ""))
-            //            {
-            //                string localFeatureData() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //                string localFeatureData1() { object argIndex1 = i; var ret = withBlock.FeatureData(argIndex1); return ret; }
-
-            //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
-            //                if (Strings.Len(BGM) > 0)
-            //                {
-            //                    Sound.ChangeBGM(BGM);
-            //                }
-
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+            // アビリティ専用ＢＧＭがあればそれを演奏
+            if (currentUnit.IsFeatureAvailable("アビリティＢＧＭ"))
+            {
+                var BGM = currentUnit.Features.Where(x => x.Name == "アビリティＢＧＭ")
+                    .Where(x => GeneralLib.LIndex(x.Data, 1) == unitAbility.Data.Name)
+                    .Select(x => Sound.SearchMidiFile(Strings.Mid(x.Data, Strings.InStr(x.Data, " ") + 1)))
+                    .FirstOrDefault();
+                if(!string.IsNullOrEmpty(BGM))
+                {
+                    Sound.ChangeBGM(BGM);
+                }
+            }
 
             //// 射程0のアビリティはその場で実行
             //var is_transformation = default(bool);
