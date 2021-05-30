@@ -14,407 +14,346 @@ namespace SRCCore.Commands
 {
     public partial class Command
     {
+        private enum ItemKind
+        {
+            None,
+            Unit,
+            Pilot
+        }
         // 「特殊能力一覧」コマンド
         private void FeatureListCommand()
         {
             LogDebug();
 
-            throw new NotImplementedException();
-            //string[] list;
-            //var id_list = default(string[]);
-            //bool[] is_unit_feature;
-            //int i, j;
-            //var ret = default;
-            //string fname0, fname, ftype;
-            //GUI.LockGUI();
+            GUI.LockGUI();
 
-            //// 表示する特殊能力名一覧の作成
-            //list = new string[1];
-            //var id_ist = new object[1];
-            //is_unit_feature = new bool[1];
+            // 表示する特殊能力名一覧の作成
+            var list = new List<ListBoxItem<ItemKind>>();
 
-            //// 武器・防具クラス
-            //if (Expression.IsOptionDefined("アイテム交換"))
+            var currentUnit = SelectedUnit;
+            // 武器・防具クラス
+            if (Expression.IsOptionDefined("アイテム交換"))
+            {
+                if (currentUnit.IsFeatureAvailable("武器クラス") || currentUnit.IsFeatureAvailable("防具クラス"))
+                {
+                    list.Add(new ListBoxItem<ItemKind>("武器・防具クラス", "武器・防具クラス"));
+                }
+            }
+
+            var p = SelectedUnit.MainPilot();
+            // パイロット特殊能力
+            var loopTo = p.CountSkill();
+            for (var i = 1; i <= loopTo; i++)
+            {
+                string fname = "";
+                switch (p.Skill(i) ?? "")
+                {
+                    case "得意技":
+                    case "不得手":
+                        {
+                            fname = p.Skill(i);
+                            break;
+                        }
+
+                    default:
+                        {
+                            fname = p.SkillName(i);
+                            break;
+                        }
+                }
+
+                // 非表示の能力は除く
+                if (Strings.InStr(fname, "非表示") > 0)
+                {
+                    continue;
+                }
+
+                // 既に表示されていればスキップ
+                if (list.Any(x => x.Text == fname))
+                {
+                    continue;
+                }
+
+                // リストに追加
+                list.Add(new ListBoxItem<ItemKind>(fname, "" + i)
+                {
+                    ListItemObject = ItemKind.Pilot,
+                });
+            }
+
+            // 付加・強化されたパイロット用特殊能力
+            foreach (var cond in currentUnit.Conditions)
+            {
+                // パイロット能力付加または強化？
+                if (Strings.Right(cond.Name, 3) != "付加２" && Strings.Right(cond.Name, 3) != "強化２")
+                {
+                    continue;
+                }
+
+                var ftype = Strings.Left(cond.Name, Strings.Len(cond.Name) - 3);
+
+                // 非表示の能力？
+                switch (GeneralLib.LIndex(cond.StrData, 1) ?? "")
+                {
+                    case "非表示":
+                    case "解説":
+                        continue;
+                }
+
+                // 有効時間が残っている？
+                if (!cond.IsEnable)
+                {
+                    continue;
+                }
+
+                // 表示名称
+                var fname = currentUnit.MainPilot().SkillName(ftype);
+                if (Strings.InStr(fname, "非表示") > 0)
+                {
+                    continue;
+                }
+
+                // 既に表示していればスキップ
+                if (list.Any(x => x.Text == fname))
+                {
+                    continue;
+                }
+
+                // リストに追加
+                list.Add(new ListBoxItem<ItemKind>(fname, ftype)
+                {
+                    ListItemObject = ItemKind.Pilot,
+                });
+            }
+
+            //// ユニット用特殊能力
+            //// 付加された特殊能力より先に固有の特殊能力を表示
+            //if (currentUnit.CountAllFeature() > currentUnit.AdditionalFeaturesNum)
             //{
-            //    {
-            //        var withBlock = SelectedUnit;
-            //        if (withBlock.IsFeatureAvailable("武器クラス") || withBlock.IsFeatureAvailable("武器クラス"1))
-            //        {
-            //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //            Array.Resize(id_list, Information.UBound(list) + 1);
-            //            Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-            //            list[Information.UBound(list)] = "武器・防具クラス";
-            //            id_list[Information.UBound(list)] = "武器・防具クラス";
-            //            is_unit_feature[Information.UBound(list)] = true;
-            //        }
-            //    }
+            //    i = (currentUnit.AdditionalFeaturesNum + 1);
+            //}
+            //else
+            //{
+            //    i = 1;
             //}
 
+            //while (i <= currentUnit.CountAllFeature())
             //{
-            //    var withBlock1 = SelectedUnit.MainPilot();
-            //    // パイロット特殊能力
-            //    var loopTo = withBlock1.CountSkill();
-            //    for (i = 1; i <= loopTo; i++)
+            //    // 非表示の特殊能力を排除
+            //    if (string.IsNullOrEmpty(currentUnit.AllFeatureName(i)))
             //    {
-            //        switch (withBlock1.Skill(i) ?? "")
-            //        {
-            //            case "得意技":
-            //            case "不得手":
-            //                {
-            //                    fname = withBlock1.Skill(i);
-            //                    break;
-            //                }
-
-            //            default:
-            //                {
-            //                    fname = withBlock1.SkillName(i);
-            //                    break;
-            //                }
-            //        }
-
-            //        // 非表示の能力は除く
-            //        if (Strings.InStr(fname, "非表示") > 0)
-            //        {
-            //            goto NextSkill;
-            //        }
-
-            //        // 既に表示されていればスキップ
-            //        var loopTo1 = Information.UBound(list);
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if ((list[j] ?? "") == (fname ?? ""))
-            //            {
-            //                goto NextSkill;
-            //            }
-            //        }
-
-            //        // リストに追加
-            //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //        Array.Resize(id_list, Information.UBound(list) + 1);
-            //        list[Information.UBound(list)] = fname;
-            //        id_list[Information.UBound(list)] = SrcFormatter.Format(i);
-            //    NextSkill:
-            //        ;
-            //    }
-            //}
-
-            //{
-            //    var withBlock2 = SelectedUnit;
-            //    // 付加・強化されたパイロット用特殊能力
-            //    var loopTo2 = withBlock2.CountCondition();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        // パイロット能力付加または強化？
-            //        string localCondition() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        string localCondition1() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        if (Strings.Right(localCondition(), 3) != "付加２" && Strings.Right(localCondition1(), 3) != "強化２")
-            //        {
-            //            goto NextSkill2;
-            //        }
-
-            //        string localCondition2() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        string localCondition3() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        ftype = Strings.Left(localCondition2(), Strings.Len(localCondition3()) - 3);
-
-            //        // 非表示の能力？
-            //        string localConditionData() { object argIndex1 = i; var ret = withBlock2.ConditionData(argIndex1); return ret; }
-
-            //        switch (GeneralLib.LIndex(localConditionData(), 1) ?? "")
-            //        {
-            //            case "非表示":
-            //            case "解説":
-            //                {
-            //                    goto NextSkill2;
-            //                    break;
-            //                }
-            //        }
-
-            //        // 有効時間が残っている？
-            //        if (withBlock2.ConditionLifetime(i) == 0)
-            //        {
-            //            goto NextSkill2;
-            //        }
-
-            //        // 表示名称
-            //        fname = withBlock2.MainPilot().SkillName(ftype);
-            //        if (Strings.InStr(fname, "非表示") > 0)
-            //        {
-            //            goto NextSkill2;
-            //        }
-
-            //        // 既に表示していればスキップ
-            //        var loopTo3 = Information.UBound(list);
-            //        for (j = 1; j <= loopTo3; j++)
-            //        {
-            //            if ((list[j] ?? "") == (fname ?? ""))
-            //            {
-            //                goto NextSkill2;
-            //            }
-            //        }
-
-            //        // リストに追加
-            //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //        Array.Resize(id_list, Information.UBound(list) + 1);
-            //        list[Information.UBound(list)] = fname;
-            //        id_list[Information.UBound(list)] = ftype;
-            //    NextSkill2:
-            //        ;
+            //        goto NextFeature;
             //    }
 
+            //    // 合体の場合は合体後の形態が作成されていなければならない
+            //    string localAllFeature() { object argIndex1 = i; var ret = currentUnit.AllFeature(argIndex1); return ret; }
+
+            //    string localAllFeatureData() { object argIndex1 = i; var ret = currentUnit.AllFeatureData(argIndex1); return ret; }
+
+            //    string localLIndex() { string arglist = hs7afb75fef08b43c283a05523ef7388cb(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+
+            //    bool localIsDefined() { object argIndex1 = (object)hse6256782c58b487b8147a3f247066e6f(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
+
+            //    if (localAllFeature() == "合体" && !localIsDefined())
+            //    {
+            //        goto NextFeature;
+            //    }
+
+            //    // 既に表示していればスキップ
+            //    var loopTo4 = Information.UBound(list);
+            //    for (j = 1; j <= loopTo4; j++)
+            //    {
+            //        string localAllFeatureName() { object argIndex1 = i; var ret = currentUnit.AllFeatureName(argIndex1); return ret; }
+
+            //        if ((list[j] ?? "") == (localAllFeatureName() ?? ""))
+            //        {
+            //            goto NextFeature;
+            //        }
+            //    }
+
+            //    // リストに追加
+            //    Array.Resize(list, Information.UBound(list) + 1 + 1);
+            //    Array.Resize(id_list, Information.UBound(list) + 1);
             //    Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-
-            //    // ユニット用特殊能力
-            //    // 付加された特殊能力より先に固有の特殊能力を表示
-            //    if (withBlock2.CountAllFeature() > withBlock2.AdditionalFeaturesNum)
+            //    list[Information.UBound(list)] = currentUnit.AllFeatureName(i);
+            //    id_list[Information.UBound(list)] = SrcFormatter.Format(i);
+            //    is_unit_feature[Information.UBound(list)] = true;
+            //NextFeature:
+            //    ;
+            //    if (i == currentUnit.AdditionalFeaturesNum)
             //    {
-            //        i = (withBlock2.AdditionalFeaturesNum + 1);
+            //        break;
             //    }
-            //    else
+            //    else if (i == currentUnit.CountFeature())
             //    {
-            //        i = 1;
-            //    }
-
-            //    while (i <= withBlock2.CountAllFeature())
-            //    {
-            //        // 非表示の特殊能力を排除
-            //        if (string.IsNullOrEmpty(withBlock2.AllFeatureName(i)))
+            //        // 付加された特殊能力は後から表示
+            //        if (currentUnit.AdditionalFeaturesNum > 0)
             //        {
-            //            goto NextFeature;
+            //            i = 0;
             //        }
-
-            //        // 合体の場合は合体後の形態が作成されていなければならない
-            //        string localAllFeature() { object argIndex1 = i; var ret = withBlock2.AllFeature(argIndex1); return ret; }
-
-            //        string localAllFeatureData() { object argIndex1 = i; var ret = withBlock2.AllFeatureData(argIndex1); return ret; }
-
-            //        string localLIndex() { string arglist = hs7afb75fef08b43c283a05523ef7388cb(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //        bool localIsDefined() { object argIndex1 = (object)hse6256782c58b487b8147a3f247066e6f(); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //        if (localAllFeature() == "合体" && !localIsDefined())
-            //        {
-            //            goto NextFeature;
-            //        }
-
-            //        // 既に表示していればスキップ
-            //        var loopTo4 = Information.UBound(list);
-            //        for (j = 1; j <= loopTo4; j++)
-            //        {
-            //            string localAllFeatureName() { object argIndex1 = i; var ret = withBlock2.AllFeatureName(argIndex1); return ret; }
-
-            //            if ((list[j] ?? "") == (localAllFeatureName() ?? ""))
-            //            {
-            //                goto NextFeature;
-            //            }
-            //        }
-
-            //        // リストに追加
-            //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //        Array.Resize(id_list, Information.UBound(list) + 1);
-            //        Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-            //        list[Information.UBound(list)] = withBlock2.AllFeatureName(i);
-            //        id_list[Information.UBound(list)] = SrcFormatter.Format(i);
-            //        is_unit_feature[Information.UBound(list)] = true;
-            //    NextFeature:
-            //        ;
-            //        if (i == withBlock2.AdditionalFeaturesNum)
-            //        {
-            //            break;
-            //        }
-            //        else if (i == withBlock2.CountFeature())
-            //        {
-            //            // 付加された特殊能力は後から表示
-            //            if (withBlock2.AdditionalFeaturesNum > 0)
-            //            {
-            //                i = 0;
-            //            }
-            //        }
-
-            //        i = (i + 1);
             //    }
 
-            //    // アビリティで付加・強化されたパイロット用特殊能力
-            //    var loopTo5 = withBlock2.CountCondition();
-            //    for (i = 1; i <= loopTo5; i++)
-            //    {
-            //        // パイロット能力付加または強化？
-            //        string localCondition4() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        string localCondition5() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        if (Strings.Right(localCondition4(), 2) != "付加" && Strings.Right(localCondition5(), 2) != "強化")
-            //        {
-            //            goto NextSkill3;
-            //        }
-
-            //        string localCondition6() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        string localCondition7() { object argIndex1 = i; var ret = withBlock2.Condition(argIndex1); return ret; }
-
-            //        ftype = Strings.Left(localCondition6(), Strings.Len(localCondition7()) - 2);
-
-            //        // 非表示の能力？
-            //        if (ftype == "メッセージ")
-            //        {
-            //            goto NextSkill3;
-            //        }
-
-            //        string localConditionData1() { object argIndex1 = i; var ret = withBlock2.ConditionData(argIndex1); return ret; }
-
-            //        switch (GeneralLib.LIndex(localConditionData1(), 1) ?? "")
-            //        {
-            //            case "非表示":
-            //            case "解説":
-            //                {
-            //                    goto NextSkill3;
-            //                    break;
-            //                }
-            //        }
-
-            //        // 有効時間が残っている？
-            //        if (withBlock2.ConditionLifetime(i) == 0)
-            //        {
-            //            goto NextSkill3;
-            //        }
-
-            //        // 表示名称
-            //        if (string.IsNullOrEmpty(withBlock2.FeatureName0(ftype)))
-            //        {
-            //            goto NextSkill3;
-            //        }
-
-            //        fname = withBlock2.MainPilot().SkillName0(ftype);
-            //        if (Strings.InStr(fname, "非表示") > 0)
-            //        {
-            //            goto NextSkill3;
-            //        }
-
-            //        // 付加されたユニット用特殊能力として既に表示していればスキップ
-            //        var loopTo6 = Information.UBound(list);
-            //        for (j = 1; j <= loopTo6; j++)
-            //        {
-            //            if ((list[j] ?? "") == (fname ?? ""))
-            //            {
-            //                goto NextSkill3;
-            //            }
-            //        }
-
-            //        fname = withBlock2.MainPilot().SkillName(ftype);
-            //        if (Strings.InStr(fname, "Lv") > 0)
-            //        {
-            //            fname0 = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
-            //        }
-            //        else
-            //        {
-            //            fname0 = fname;
-            //        }
-
-            //        // パイロット用特殊能力として既に表示していればスキップ
-            //        var loopTo7 = Information.UBound(list);
-            //        for (j = 1; j <= loopTo7; j++)
-            //        {
-            //            if ((list[j] ?? "") == (fname ?? "") || (list[j] ?? "") == (fname0 ?? ""))
-            //            {
-            //                goto NextSkill3;
-            //            }
-            //        }
-
-            //        // リストに追加
-            //        Array.Resize(list, Information.UBound(list) + 1 + 1);
-            //        Array.Resize(id_list, Information.UBound(list) + 1);
-            //        Array.Resize(is_unit_feature, Information.UBound(list) + 1);
-            //        list[Information.UBound(list)] = fname;
-            //        id_list[Information.UBound(list)] = ftype;
-            //        is_unit_feature[Information.UBound(list)] = false;
-            //    NextSkill3:
-            //        ;
-            //    }
+            //    i = (i + 1);
             //}
 
-            //GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            //switch (Information.UBound(list))
-            //{
-            //    case 0:
-            //        {
-            //            break;
-            //        }
+            // アビリティで付加・強化されたパイロット用特殊能力
+            foreach (var cond in currentUnit.Conditions)
+            {
+                // パイロット能力付加または強化？
+                if (Strings.Right(cond.Name, 2) != "付加" && Strings.Right(cond.Name, 2) != "強化")
+                {
+                    continue;
+                }
 
-            //    case 1:
-            //        {
-            //            if (SRC.AutoMoveCursor)
-            //            {
-            //                GUI.SaveCursorPos();
-            //            }
+                var ftype = Strings.Left(cond.Name, Strings.Len(cond.Name) - 2);
 
-            //            if (id_list[ret] == "武器・防具クラス")
-            //            {
-            //                Help.FeatureHelp(SelectedUnit, id_list[1], false);
-            //            }
-            //            else if (is_unit_feature[1])
-            //            {
-            //                Help.FeatureHelp(SelectedUnit, id_list[1], GeneralLib.StrToLng(id_list[1]) <= SelectedUnit.AdditionalFeaturesNum);
-            //            }
-            //            else
-            //            {
-            //                Help.SkillHelp(SelectedUnit.MainPilot(), id_list[1]);
-            //            }
+                // 非表示の能力？
+                if (ftype == "メッセージ")
+                {
+                    continue;
+                }
+                switch (GeneralLib.LIndex(cond.StrData, 1) ?? "")
+                {
+                    case "非表示":
+                    case "解説":
+                        continue;
+                }
 
-            //            if (SRC.AutoMoveCursor)
-            //            {
-            //                GUI.RestoreCursorPos();
-            //            }
+                // 有効時間が残っている？
+                if (!cond.IsEnable)
+                {
+                    continue;
+                }
 
-            //            break;
-            //        }
+                // 表示名称
+                var fname = currentUnit.MainPilot().SkillName0(ftype);
+                if (string.IsNullOrEmpty(fname))
+                {
+                    continue;
+                }
+                if (Strings.InStr(fname, "非表示") > 0)
+                {
+                    continue;
+                }
 
-            //    default:
-            //        {
-            //            GUI.TopItem = 1;
-            //            ret = GUI.ListBox("特殊能力一覧", list, "能力名", "表示のみ");
-            //            if (SRC.AutoMoveCursor)
-            //            {
-            //                GUI.MoveCursorPos("ダイアログ");
-            //            }
+                // 付加されたユニット用特殊能力として既に表示していればスキップ
+                if (list.Any(x => x.Text == fname))
+                {
+                    continue;
+                }
 
-            //            while (true)
-            //            {
-            //                ret = GUI.ListBox("特殊能力一覧", list, "能力名", "連続表示");
-            //                // listが一定なので連続表示を流用
-            //                My.MyProject.Forms.frmListBox.Hide();
-            //                if (ret == 0)
-            //                {
-            //                    break;
-            //                }
+                fname = currentUnit.MainPilot().SkillName(ftype);
+                string fname0;
+                if (Strings.InStr(fname, "Lv") > 0)
+                {
+                    fname0 = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
+                }
+                else
+                {
+                    fname0 = fname;
+                }
 
-            //                if (id_list[ret] == "武器・防具クラス")
-            //                {
-            //                    Help.FeatureHelp(SelectedUnit, id_list[ret], false);
-            //                }
-            //                else if (is_unit_feature[ret])
-            //                {
-            //                    Help.FeatureHelp(SelectedUnit, id_list[ret], Conversions.ToDouble(id_list[ret]) <= SelectedUnit.AdditionalFeaturesNum);
-            //                }
-            //                else
-            //                {
-            //                    Help.SkillHelp(SelectedUnit.MainPilot(), id_list[ret]);
-            //                }
-            //            }
+                // パイロット用特殊能力として既に表示していればスキップ
+                if (list.Any(x => x.Text == fname || x.Text == fname0))
+                {
+                    continue;
+                }
 
-            //            if (SRC.AutoMoveCursor)
-            //            {
-            //                GUI.RestoreCursorPos();
-            //            }
+                // リストに追加
+                list.Add(new ListBoxItem<ItemKind>(fname, ftype)
+                {
+                    ListItemObject = ItemKind.Pilot,
+                });
+            }
 
-            //            break;
-            //        }
-            //}
+            switch (list.Count)
+            {
+                case 0:
+                    break;
 
-            //CommandState = "ユニット選択";
-            //GUI.UnlockGUI();
+                case 1:
+                    {
+                        if (SRC.AutoMoveCursor)
+                        {
+                            GUI.SaveCursorPos();
+                        }
+
+                        var retItem = list.First();
+                        if (retItem.ListItemID == "武器・防具クラス")
+                        {
+                            Help.FeatureHelp(SelectedUnit, "武器・防具クラス", false);
+                        }
+                        else if (retItem.ListItemObject == ItemKind.Unit)
+                        {
+                            Help.FeatureHelp(SelectedUnit, GeneralLib.StrToLng(retItem.ListItemID), GeneralLib.StrToLng(retItem.ListItemID) <= SelectedUnit.AdditionalFeaturesNum);
+                        }
+                        else
+                        {
+                            Help.SkillHelp(SelectedUnit.MainPilot(), retItem.ListItemID);
+                        }
+
+                        if (SRC.AutoMoveCursor)
+                        {
+                            GUI.RestoreCursorPos();
+                        }
+                    }
+                    break;
+
+                default:
+                    {
+                        GUI.TopItem = 1;
+                        var ret = GUI.ListBox(new ListBoxArgs
+                        {
+                            lb_caption = "特殊能力一覧",
+                            Items = list.Cast<ListBoxItem>().ToList(),
+                            lb_info = "能力名",
+                            lb_mode = "表示のみ",
+                        });
+                        if (SRC.AutoMoveCursor)
+                        {
+                            GUI.MoveCursorPos("ダイアログ");
+                        }
+
+                        while (true)
+                        {
+                            ret = GUI.ListBox(new ListBoxArgs
+                            {
+                                lb_caption = "特殊能力一覧",
+                                Items = list.Cast<ListBoxItem>().ToList(),
+                                lb_info = "能力名",
+                                lb_mode = "連続表示",
+                            });
+                            GUI.CloseListBox();
+                            if (ret == 0)
+                            {
+                                break;
+                            }
+
+                            var retItem = list[ret - 1];
+                            if (retItem.ListItemID == "武器・防具クラス")
+                            {
+                                Help.FeatureHelp(SelectedUnit, "武器・防具クラス", false);
+                            }
+                            else if (retItem.ListItemObject == ItemKind.Unit)
+                            {
+                                Help.FeatureHelp(SelectedUnit, GeneralLib.StrToLng(retItem.ListItemID), GeneralLib.StrToLng(retItem.ListItemID) <= SelectedUnit.AdditionalFeaturesNum);
+                            }
+                            else
+                            {
+                                Help.SkillHelp(SelectedUnit.MainPilot(), retItem.ListItemID);
+                            }
+                        }
+
+                        if (SRC.AutoMoveCursor)
+                        {
+                            GUI.RestoreCursorPos();
+                        }
+                        break;
+                    }
+            }
+
+            CommandState = "ユニット選択";
+            GUI.UnlockGUI();
         }
 
         // 「武器一覧」コマンド

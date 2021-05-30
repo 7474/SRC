@@ -11,10 +11,13 @@ namespace SRCCore.Models
         // 名称
         public string Name;
         // 有効期間
+        // XXX 負数は無期限（多分）
         public int Lifetime;
         // レベル
         public double Level;
         // データ
         public string StrData;
+
+        public bool IsEnable => Lifetime != 0;
     }
 }
