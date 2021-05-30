@@ -5,9 +5,10 @@ namespace SRCCore.Units
     // === ステータス回復関連処理 ===
     public partial class Unit
     {
+        public bool CanHPRecovery => HP < MaxHP && !IsConditionSatisfied("ゾンビ");
         public bool CanFix(Unit fixer)
         {
-            var canFix = HP < MaxHP && !IsConditionSatisfied("ゾンビ");
+            var canFix = CanHPRecovery;
 
             if (canFix && fixer != null && IsFeatureAvailable("修理不可"))
             {
@@ -33,10 +34,10 @@ namespace SRCCore.Units
 
             return canFix;
         }
-
-        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ")
-                    || Weapons.Any(uw => uw.Bullet() < uw.MaxBullet())
-                    || Abilities.Any(ua => ua.Stock() < ua.MaxStock());
+        public bool CanENRecovery => EN < MaxEN && !IsConditionSatisfied("ゾンビ");
+        public bool CanBulletRecovery => Weapons.Any(uw => uw.Bullet() < uw.MaxBullet());
+        public bool CanStockRecovery => Abilities.Any(ua => ua.Stock() < ua.MaxStock());
+        public bool CanSupply => CanENRecovery || CanBulletRecovery || CanStockRecovery;
 
         // ステータスを全回復
         public void FullRecover()

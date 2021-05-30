@@ -2712,24 +2712,15 @@ namespace SRCCore.Units
                         }
                     }
                 }
-
                 // アイテムを消費
                 else if (w.WeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
                 {
                     // アイテムを削除
-                    var num = Data.CountWeapon();
-                    num += AllPilots.Sum(x => x.Data.CountWeapon());
-
-                    foreach (Item itm in colItem.List)
+                    var itm = ItemList.FirstOrDefault(itm => itm.Data.Weapons.Any(x => x.Name == w.WeaponData.Name));
+                    if (itm != null)
                     {
-                        // XXX もうちょいいいアイテムの特定ができそう、武器が何由来かを持っておけばよさそう
-                        num = (num + itm.CountWeapon());
-                        if (w.WeaponNo() <= num)
-                        {
-                            itm.Exist = false;
-                            DeleteItem(itm);
-                            break;
-                        }
+                        itm.Exist = false;
+                        DeleteItem(itm);
                     }
                 }
                 else if (is_hit && (w.IsWeaponClassifiedAs("写")

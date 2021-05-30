@@ -613,7 +613,7 @@ namespace SRCCore.Commands
                             {
                                 i = GUI.ListBox(new ListBoxArgs
                                 {
-                                    lb_caption = "武器属性一覧",
+                                    lb_caption = "アビリティ属性一覧",
                                     Items = list.Select(x => new ListBoxItem(x)).ToList(),
                                     lb_info = "属性    効果",
                                     lb_mode = "連続表示",
@@ -697,7 +697,7 @@ namespace SRCCore.Commands
                             {
                                 // 指定された属性の解説を表示
                                 GUI.CloseListBox();
-                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), currentAbility.AbilityNo());
+                                Help.AttributeHelp(SelectedUnit, GeneralLib.LIndex(list[i - 1], 1), currentAbility.AbilityNo(), true);
                             }
                         }
                     }
