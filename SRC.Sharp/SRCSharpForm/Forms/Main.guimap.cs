@@ -26,9 +26,15 @@ namespace SRCSharpForm
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
         private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
+        /// <summary>
+        /// マップ画面全体のバッファ。
+        /// 地形や 背景 オプション指定時の描画先。
+        /// <see cref="IGUI.RedrawScreen"/> 時にはこのバッファを元に画面を再描画する。
+        /// </summary>
         public Image BackgroundBuffer { get; private set; }
         /// <summary>
         /// 最終的な画面描画バッファ。
+        /// <see cref="IGUI.RefreshScreen"/> 時にはこのバッファを単に画面に転送する。
         /// </summary>        
         public Image MainBuffer { get; private set; }
         /// <summary>
