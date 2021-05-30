@@ -1,5 +1,7 @@
 using SRCCore.Extensions;
+using SRCCore.Items;
 using SRCCore.Lib;
+using SRCCore.Models;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,104 +42,90 @@ namespace SRCCore.Units
             //    short pmorale;
             //    bool is_stable, is_uncontrollable, is_invisible;
 
-            //    // ＨＰとＥＮの値を記録
-            //    hp_ratio = 100 * HP / (double)MaxHP;
-            //    en_ratio = 100 * EN / (double)MaxEN;
+            // ＨＰとＥＮの値を記録
+            var hp_ratio = 100 * HP / (double)MaxHP;
+            var en_ratio = 100 * EN / (double)MaxEN;
 
             //    // ユニット用画像ファイル名を記録しておく
             //    ubitmap = get_Bitmap(false);
 
-            //    // 非表示かどうか記録しておく
-            //    is_invisible = IsFeatureAvailable("非表示");
+            // 非表示かどうか記録しておく
+            var is_invisible = IsFeatureAvailable("非表示");
 
-            //    // 制御不可がどうかを記録しておく
-            //    is_uncontrollable = IsFeatureAvailable("制御不可");
+            // 制御不可がどうかを記録しておく
+            var is_uncontrollable = IsFeatureAvailable("制御不可");
 
-            //    // 不安定がどうかを記録しておく
-            //    is_stable = IsFeatureAvailable("不安定");
-            //TryAgain:
-            //    ;
+            // 不安定がどうかを記録しておく
+            var is_stable = IsFeatureAvailable("不安定");
+        TryAgain:
+            ;
 
 
-            //    // アイテムが現在の形態で効力を発揮してくれるか判定
-            //    foreach (Item currentItm in colItem)
-            //    {
-            //        itm = currentItm;
-            //        itm.Activated = itm.IsAvailable(this);
-            //    }
+            // アイテムが現在の形態で効力を発揮してくれるか判定
+            foreach (Item currentItm in colItem)
+            {
+                currentItm.Activated = currentItm.IsAvailable(this);
+            }
 
-            //    // ランクアップによるデータ変更
-            //    while (Data.IsFeatureAvailable("ランクアップ"))
-            //    {
-            //        {
-            //            var withBlock = Data;
-            //            if (Rank < withBlock.FeatureLevel("ランクアップ"))
-            //            {
-            //                break;
-            //            }
+            // ランクアップによるデータ変更
+            while (Data.IsFeatureAvailable("ランクアップ"))
+            {
+                var fd = Data.Feature("ランクアップ");
+                if (Rank < fd.FeatureLevel)
+                {
+                    break;
+                }
 
-            //            bool localIsNecessarySkillSatisfied() { object argIndex1 = "ランクアップ"; string argnabilities = withBlock.FeatureNecessarySkill(argIndex1); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
+                if (!IsNecessarySkillSatisfied(fd.NecessarySkill))
+                {
+                    break;
+                }
 
-            //            if (!localIsNecessarySkillSatisfied())
-            //            {
-            //                break;
-            //            }
+                if (!SRC.UDList.IsDefined(fd.Data))
+                {
+                    GUI.ErrorMessage(Name + "のランクアップ先ユニット「" + fd.Data + "」のデータが定義されていません");
+                    SRC.TerminateSRC();
+                }
 
-            //            fdata = withBlock.FeatureData("ランクアップ");
-            //        }
-
-            //        {
-            //            var withBlock1 = SRC.UDList;
-            //            bool localIsDefined() { object argIndex1 = fdata; var ret = withBlock1.IsDefined(argIndex1); return ret; }
-
-            //            if (!localIsDefined())
-            //            {
-            //                GUI.ErrorMessage(Name + "のランクアップ先ユニット「" + fdata + "」のデータが定義されていません");
-            //                SRC.TerminateSRC();
-            //            }
-
-            //            Data = withBlock1.Item(fdata);
-            //        }
-            //    }
+                Data = SRC.UDList.Item(fd.Data);
+            }
 
             // 特殊能力を更新
 
             // まず特殊能力リストをクリア
             colFeature.Clear();
 
-            //    // 付加された特殊能力
-            //    foreach (Condition cnd in colCondition)
-            //    {
-            //        if (cnd.Lifetime != 0)
-            //        {
-            //            if (Strings.Right(cnd.Name, 2) == "付加")
-            //            {
-            //                fd = new FeatureData();
-            //                fd.Name = Strings.Left(cnd.Name, Strings.Len(cnd.Name) - 2);
-            //                fd.Level = cnd.Level;
-            //                fd.StrData = cnd.StrData;
-            //                colFeature.Add(fd, fd.Name);
-            //            }
-            //        }
-            //    }
+            // 付加された特殊能力
+            foreach (Condition cnd in colCondition)
+            {
+                if (cnd.Lifetime != 0)
+                {
+                    if (Strings.Right(cnd.Name, 2) == "付加")
+                    {
+                      var  fd = new FeatureData();
+                        fd.Name = Strings.Left(cnd.Name, Strings.Len(cnd.Name) - 2);
+                        fd.Level = cnd.Level;
+                        fd.StrData = cnd.StrData;
+                        colFeature.Add(fd, fd.Name);
+                    }
+                }
+            }
 
-            //    AdditionalFeaturesNum = colFeature.Count;
+            AdditionalFeaturesNum = colFeature.Count;
 
             // ユニットデータで定義されている特殊能力
             AddFeatures(Data.Features);
 
-            //    // アイテムで得られた特殊能力
-            //    var loopTo = CountItem();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        {
-            //            var withBlock3 = Item(i);
-            //            if (withBlock3.Activated)
-            //            {
-            //                AddFeatures(withBlock3.Data.colFeature, true);
-            //            }
-            //        }
-            //    }
+            // アイテムで得られた特殊能力
+            foreach (Item currentItm in colItem)
+            {
+                {
+                    if (currentItm.Activated)
+                    {
+                        AddFeatures(currentItm.Data.Features, true);
+                    }
+                }
+            }
 
             //    // パイロットデータで定義されている特殊能力
             //    if (CountPilot() > 0)
@@ -564,8 +552,8 @@ namespace SRCCore.Units
             //        goto AddSkills;
             //    }
 
-            //    // パイロット用特殊能力の付加＆強化が完了したので必要技能の判定が可能になった。
-            //    UpdateFeatures();
+            // パイロット用特殊能力の付加＆強化が完了したので必要技能の判定が可能になった。
+            UpdateFeatures();
 
             //    // アイテムが必要技能を満たすか再度チェック。
             //    found = false;

@@ -392,6 +392,17 @@ namespace SRCCore
         public string ListItemID { get; set; }
     }
 
+    public class ListBoxItem<T> : ListBoxItem
+    {
+        public ListBoxItem() : base() { }
+        public ListBoxItem(string text) : base(text) { }
+
+        public ListBoxItem(string text, string id) : base(text, id) { }
+
+        // その他識別情報
+        public T ListItemObject { get; set; }
+    }
+
     public class ListBoxArgs
     {
         public IList<ListBoxItem> Items { get; set; } = new List<ListBoxItem>();

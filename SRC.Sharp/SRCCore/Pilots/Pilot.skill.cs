@@ -320,7 +320,7 @@ namespace SRCCore.Pilots
         }
         private static string SkillData(string Index, SkillData sd)
         {
-            string sname = sd.Name;
+            string sname = sd?.Name;
             string SkillDataRet = sd?.StrData;
             return SkillDataRet;
             // TODO Impl
@@ -563,7 +563,7 @@ namespace SRCCore.Pilots
 
             //                                    double localConditionLevel() { object argIndex1 = sname + "付加２"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                    SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel());
+            //                                    SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(localConditionLevel());
             //                                }
             //                            }
 
@@ -598,7 +598,7 @@ namespace SRCCore.Pilots
 
             //                                    double localConditionLevel1() { object argIndex1 = sname + "付加"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                    SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel1());
+            //                                    SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(localConditionLevel1());
             //                                }
             //                            }
 
@@ -631,13 +631,13 @@ namespace SRCCore.Pilots
             //                                    {
             //                                        double localConditionLevel2() { object argIndex1 = sname + "強化２"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                        SkillNameRet = SkillNameRet + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel2());
+            //                                        SkillNameRet = SkillNameRet + "+" + SrcFormatter.Format(localConditionLevel2());
             //                                    }
             //                                    else
             //                                    {
             //                                        double localConditionLevel3() { object argIndex1 = sname + "強化２"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                        SkillNameRet = SkillNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel3());
+            //                                        SkillNameRet = SkillNameRet + SrcFormatter.Format(localConditionLevel3());
             //                                    }
             //                                }
             //                            }
@@ -671,13 +671,13 @@ namespace SRCCore.Pilots
             //                                    {
             //                                        double localConditionLevel4() { object argIndex1 = sname + "強化"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                        SkillNameRet = SkillNameRet + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel4());
+            //                                        SkillNameRet = SkillNameRet + "+" + SrcFormatter.Format(localConditionLevel4());
             //                                    }
             //                                    else
             //                                    {
             //                                        double localConditionLevel5() { object argIndex1 = sname + "強化"; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
-            //                                        SkillNameRet = SkillNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel5());
+            //                                        SkillNameRet = SkillNameRet + SrcFormatter.Format(localConditionLevel5());
             //                                    }
             //                                }
             //                            }
@@ -752,63 +752,57 @@ namespace SRCCore.Pilots
 
         private static string SkillName(SkillData sd)
         {
-            return sd?.Name ?? "";
-            // TODO Impl SkillName 仕様が重い
-            //sname = sd.Name;
-            //            // 能力強化系は非表示
-            //            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
-            //            {
-            //                SkillNameRet = "非表示";
-            //                return SkillNameRet;
-            //            }
+            var sname = sd?.Name ?? "";
+            // 能力強化系は非表示
+            if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
+            {
+                return "非表示";
+            }
 
-            //            switch (sname ?? "")
-            //            {
-            //                case "追加レベル":
-            //                case "メッセージ":
-            //                case "魔力所有":
-            //                    {
-            //                        // 非表示の能力
-            //                        SkillNameRet = "非表示";
-            //                        return SkillNameRet;
-            //                    }
+            switch (sname ?? "")
+            {
+                case "追加レベル":
+                case "メッセージ":
+                case "魔力所有":
+                    // 非表示の能力
+                    return "非表示";
 
-            //                case "得意技":
-            //                case "不得手":
-            //                    {
-            //                        // 別名指定が存在しない能力
-            //                        SkillNameRet = sname;
-            //                        return SkillNameRet;
-            //                    }
-            //            }
+                case "得意技":
+                case "不得手":
+                    // 別名指定が存在しない能力
+                    return sname;
+            }
 
-            //            if (Strings.Len(sd.StrData) > 0)
-            //            {
-            //                SkillNameRet = GeneralLib.LIndex(sd.StrData, 1);
-            //                switch (SkillNameRet ?? "")
-            //                {
-            //                    case "非表示":
-            //                        {
-            //                            return SkillNameRet;
-            //                        }
+            var SkillNameRet = "";
+            if (Strings.Len(sd.StrData) > 0)
+            {
+                SkillNameRet = GeneralLib.LIndex(sd.StrData, 1);
+                switch (SkillNameRet ?? "")
+                {
+                    case "非表示":
+                        {
+                            return SkillNameRet;
+                        }
 
-            //                    case "解説":
-            //                        {
-            //                            SkillNameRet = "非表示";
-            //                            return SkillNameRet;
-            //                        }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                SkillNameRet = sname;
-            //            }
+                    case "解説":
+                        {
+                            SkillNameRet = "非表示";
+                            return SkillNameRet;
+                        }
+                }
+            }
+            else
+            {
+                SkillNameRet = sname;
+            }
 
-            //            // レベル指定
-            //            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0 & Strings.Left(SkillNameRet, 1) != "(")
-            //            {
-            //                SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(sd.Level);
-            //            }
+            // レベル指定
+            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0 & Strings.Left(SkillNameRet, 1) != "(")
+            {
+                SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(sd.Level);
+            }
+
+            return SkillNameRet;
         }
 
         // 特殊能力名称（レベル表示抜き）

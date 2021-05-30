@@ -1,7 +1,9 @@
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Units
 {
@@ -317,151 +319,77 @@ namespace SRCCore.Units
         //            IsAllFeatureRegisteredRet = false;
         //        }
 
-        //        // 特殊能力が必要条件を満たしているかどうか判定し、満たしていない能力を削除する
-        //        // fnameが指定された場合、指定された特殊能力に対してのみ必要技能を判定
-        //        private void UpdateFeatures(string fname = "")
-        //        {
-        //            FeatureData fd;
-        //            FeatureData[] farray;
-        //            int i;
-        //            bool found;
-        //            if (!string.IsNullOrEmpty(fname))
-        //            {
-        //                // 必要技能＆条件を満たしてない特殊能力を削除。
-        //                found = false;
-        //                i = 1;
-        //                {
-        //                    var withBlock = colFeature;
-        //                    while (i <= withBlock.Count)
-        //                    {
-        //                        // 必要技能を満たしている？
-        //                        // UPGRADE_WARNING: オブジェクト colFeature.Item(i).Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(fname, withBlock[i].Name, false)))
-        //                        {
-        //                            // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessaryCondition の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                            // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessarySkill の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                            bool localIsNecessarySkillSatisfied() { string argnabilities = Conversions.ToString(withBlock[i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
+        // 特殊能力が必要条件を満たしているかどうか判定し、満たしていない能力を削除する
+        // fnameが指定された場合、指定された特殊能力に対してのみ必要技能を判定
+        private void UpdateFeatures(string fname = "")
+        {
+            var found = false;
+            if (!string.IsNullOrEmpty(fname))
+            {
+                // XXX colAllFeature の更新要らんの？
+                // 必要技能＆条件を満たしてない特殊能力を削除。
+                foreach (var fd in colFeature.List.Where(fd => fd.Name == fname)
+                    .Where(fd => !IsNecessarySkillSatisfied(fd.NecessarySkill) 
+                        || !IsNecessarySkillSatisfied(fd.NecessaryCondition)))
+                {
+                    // 必要技能を満たしていないので削除
+                    colFeature.Remove(fd);
+                    found = true;
+                }
+            }
+            else
+            {
+                // 必要技能を満たしてない特殊能力を削除。
+                foreach (var fd in colFeature.List.Where(fd => !IsNecessarySkillSatisfied(fd.NecessarySkill)))
+                {
+                    // 必要技能を満たしていないので削除
+                    colFeature.Remove(fd);
+                    found = true;
+                }
 
-        //                            bool localIsNecessarySkillSatisfied1() { string argnabilities = Conversions.ToString(withBlock[i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
+                // 必要条件を適用する前の特殊能力を保存
+                {
+                    colAllFeature.Clear();
+                    foreach (FeatureData fd in colFeature)
+                    {
+                        if (!colAllFeature.ContainsKey(fd.Name))
+                        {
+                            colAllFeature.Add(fd, fd.Name);
+                        }
+                        else
+                        {
+                            colAllFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colAllFeature.Count + 1));
+                        }
+                    }
+                }
 
-        //                            if (!localIsNecessarySkillSatisfied() | !localIsNecessarySkillSatisfied1())
-        //                            {
-        //                                // 必要技能＆条件を満たしていないので削除
-        //                                withBlock.Remove(i);
-        //                                found = true;
-        //                            }
-        //                            else
-        //                            {
-        //                                i = (i + 1);
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            i = (i + 1);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // 必要技能を満たしてない特殊能力を削除。
-        //                found = false;
-        //                i = 1;
-        //                {
-        //                    var withBlock1 = colFeature;
-        //                    while (i <= withBlock1.Count)
-        //                    {
-        //                        // 必要技能を満たしている？
-        //                        // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessarySkill の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                        bool localIsNecessarySkillSatisfied2() { string argnabilities = Conversions.ToString(withBlock1[i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
+                // 必要条件を満たしてない特殊能力を削除。
+                foreach (var fd in colFeature.List.Where(fd => !IsNecessarySkillSatisfied(fd.NecessaryCondition)))
+                {
+                    // 必要条件を満たしていないので削除
+                    colFeature.Remove(fd);
+                    found = true;
+                }
+            }
 
-        //                        if (!localIsNecessarySkillSatisfied2())
-        //                        {
-        //                            // 必要技能を満たしていないので削除
-        //                            withBlock1.Remove(i);
-        //                            found = true;
-        //                        }
-        //                        else
-        //                        {
-        //                            i = (i + 1);
-        //                        }
-        //                    }
-        //                }
-
-        //                // 必要条件を適用する前の特殊能力を保存
-        //                {
-        //                    var withBlock2 = colAllFeature;
-        //                    foreach (FeatureData currentFd in colAllFeature)
-        //                    {
-        //                        fd = currentFd;
-        //                        withBlock2.Remove(1);
-        //                    }
-
-        //                    foreach (FeatureData currentFd1 in colFeature)
-        //                    {
-        //                        fd = currentFd1;
-        //                        if (!IsAllFeatureRegistered(fd.Name))
-        //                        {
-        //                            withBlock2.Add(fd, fd.Name);
-        //                        }
-        //                        else
-        //                        {
-        //                            withBlock2.Add(fd, fd.Name + ":" + SrcFormatter.Format(withBlock2.Count + 1));
-        //                        }
-        //                    }
-        //                }
-
-        //                // 必要条件を満たしてない特殊能力を削除。
-        //                i = 1;
-        //                {
-        //                    var withBlock3 = colFeature;
-        //                    while (i <= withBlock3.Count)
-        //                    {
-        //                        // 必要条件を満たしている？
-        //                        // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessaryCondition の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                        bool localIsNecessarySkillSatisfied3() { string argnabilities = Conversions.ToString(withBlock3[i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
-
-        //                        if (!localIsNecessarySkillSatisfied3())
-        //                        {
-        //                            // 必要条件を満たしていないので削除
-        //                            withBlock3.Remove(i);
-        //                            found = true;
-        //                        }
-        //                        else
-        //                        {
-        //                            i = (i + 1);
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            // 特殊能力が削除された場合、特殊能力の保持判定が正しく行われるように特殊能力を
-        //            // 登録しなおす必要がある。
-        //            if (found)
-        //            {
-        //                {
-        //                    var withBlock4 = colFeature;
-        //                    farray = new FeatureData[withBlock4.Count + 1];
-        //                    var loopTo = withBlock4.Count;
-        //                    for (i = 1; i <= loopTo; i++)
-        //                        farray[i] = (FeatureData)withBlock4[i];
-        //                    var loopTo1 = withBlock4.Count;
-        //                    for (i = 1; i <= loopTo1; i++)
-        //                        withBlock4.Remove(1);
-        //                    var loopTo2 = Information.UBound(farray);
-        //                    for (i = 1; i <= loopTo2; i++)
-        //                    {
-        //                        if (!IsFeatureRegistered(farray[i].Name))
-        //                        {
-        //                            withBlock4.Add(farray[i], farray[i].Name);
-        //                        }
-        //                        else
-        //                        {
-        //                            withBlock4.Add(farray[i], farray[i].Name + ":" + SrcFormatter.Format(i));
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
+            // 特殊能力が削除された場合、特殊能力の保持判定が正しく行われるように特殊能力を
+            // 登録しなおす必要がある。
+            if (found)
+            {
+                var cloneList = colFeature.List.CloneList();
+                colFeature.Clear();
+                foreach (FeatureData fd in cloneList)
+                {
+                    if (!colFeature.ContainsKey(fd.Name))
+                    {
+                        colFeature.Add(fd, fd.Name);
+                    }
+                    else
+                    {
+                        colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colAllFeature.Count + 1));
+                    }
+                }
+            }
+        }
     }
 }

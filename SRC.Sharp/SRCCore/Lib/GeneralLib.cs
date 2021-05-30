@@ -220,7 +220,7 @@ namespace SRCCore.Lib
             int paren = 0;
             var current = new StringBuilder();
             var result = new List<string>();
-            foreach (var c in list.ToCharArray())
+            foreach (var c in (list ?? "").ToCharArray())
             {
                 i++;
                 if (!in_single_quote & !in_double_quote & paren == 0)

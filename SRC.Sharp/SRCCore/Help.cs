@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
+using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -1303,43 +1304,56 @@ namespace SRCCore
             return SkillHelpMessageRet;
         }
 
-
         // ユニット u の findex 番目の特殊能力の解説を表示
         public void FeatureHelp(Unit u, int findex, bool is_additional)
         {
             // 特殊能力の名称を調べる
             var fname = u.AllFeature(findex).FeatureName(u);
-
-            FeatureHelpInternal(u, fname, is_additional);
+            var msg = FeatureHelpMessage(u, findex, is_additional);
+            FeatureHelpInternal(fname, msg);
         }
-
         public void FeatureHelp(Unit u, string findex, bool is_additional)
         {
-            // 特殊能力の名称を調べる
-            string fname;
             if (findex == "武器・防具クラス")
             {
                 // XXX 意味わからん混ざり方している
-                fname = findex;
+                var fname = Conversions.ToString(findex);
+                var fdata = Strings.Trim(u.WeaponProficiency());
+                var msg = "";
+                if (!string.IsNullOrEmpty(fdata))
+                {
+                    msg = "武器【" + fdata + "】;";
+                }
+                else
+                {
+                    msg = "武器【-】;";
+                }
+
+                fdata = Strings.Trim(u.ArmorProficiency());
+                if (!string.IsNullOrEmpty(fdata))
+                {
+                    msg = msg + "防具【" + fdata + "】";
+                }
+                else
+                {
+                    msg = msg + "防具【-】";
+                }
+                FeatureHelpInternal(fname, msg);
             }
             else
             {
-                fname = u.AllFeature(findex).FeatureName(u);
+                var fname = u.AllFeature(findex).FeatureName(u);
+                var msg = FeatureHelpMessage(u, findex, is_additional);
+                FeatureHelpInternal(fname, msg);
             }
-            FeatureHelpInternal(u, fname, is_additional);
         }
 
-        public void FeatureHelpInternal(Unit u, string fname, bool is_additional)
+        public void FeatureHelpInternal(string fname, string msg)
         {
-            string msg;
-            bool prev_mode;
-
-            msg = FeatureHelpMessage(u, fname, is_additional);
-
             // 解説の表示
             if (Strings.Len(msg) > 0)
             {
-                prev_mode = GUI.AutoMessageMode;
+                var prev_mode = GUI.AutoMessageMode;
                 GUI.AutoMessageMode = false;
                 GUI.OpenMessageForm(u1: null, u2: null);
                 if (SRC.AutoMoveCursor)
@@ -1356,10 +1370,13 @@ namespace SRCCore
         // ユニット u の findex 番目の特殊能力の解説
         public string FeatureHelpMessage(Unit u, int findex, bool is_additional)
         {
-            return FeatureHelpMessage(u, u.AllFeature(findex).Name, is_additional);
+            return FeatureHelpMessage(u, u.AllFeature(findex), is_additional);
         }
-
         public string FeatureHelpMessage(Unit u, string findex, bool is_additional)
+        {
+            return FeatureHelpMessage(u, u.AllFeature(findex), is_additional);
+        }
+        public string FeatureHelpMessage(Unit u, FeatureData fd, bool is_additional)
         {
             string FeatureHelpMessageRet = default;
             var fid = default(int);
@@ -1380,22 +1397,12 @@ namespace SRCCore
                 p = u.MainPilot();
 
                 // 特殊能力の名称、レベル、データを調べる
-                var fd = u.AllFeature(findex);
-                if (findex == "武器・防具クラス")
-                {
-                    // XXX 意味わからん混ざり方している
-                    ftype = Conversions.ToString(findex);
-                    fname = Conversions.ToString(findex);
-                }
-                else
-                {
-                    ftype = fd.Name;
-                    fname = fd.FeatureName(u);
-                    fdata = fd.Data;
-                    flevel = fd.Level;
-                    flevel_specified = fd.HasLevel;
-                    fid = u.AllFeatures.IndexOf(fd) + 1;
-                }
+                ftype = fd.Name;
+                fname = fd.FeatureName(u);
+                fdata = fd.Data;
+                flevel = fd.Level;
+                flevel_specified = fd.HasLevel;
+                fid = u.AllFeatures.IndexOf(fd) + 1;
 
                 if (Strings.InStr(fname, "Lv") > 0)
                 {
@@ -4488,7 +4495,7 @@ namespace SRCCore
                         {
                             if (SRC.UDList.IsDefined(GeneralLib.LIndex(fdata, i)))
                             {
-                                msg = msg + SRC.UDList.Item(GeneralLib.LIndex(fdata,i)).Nickname + "  ";
+                                msg = msg + SRC.UDList.Item(GeneralLib.LIndex(fdata, i)).Nickname + "  ";
                             }
                             else
                             {
@@ -4880,31 +4887,6 @@ namespace SRCCore
                         break;
                     }
 
-                case "武器・防具クラス":
-                    {
-                        fdata = Strings.Trim(u.WeaponProficiency());
-                        if (!string.IsNullOrEmpty(fdata))
-                        {
-                            msg = "武器【" + fdata + "】;";
-                        }
-                        else
-                        {
-                            msg = "武器【-】;";
-                        }
-
-                        fdata = Strings.Trim(u.ArmorProficiency());
-                        if (!string.IsNullOrEmpty(fdata))
-                        {
-                            msg = msg + "防具【" + fdata + "】";
-                        }
-                        else
-                        {
-                            msg = msg + "防具【-】";
-                        }
-
-                        break;
-                    }
-
                 case "追加攻撃":
                     {
                         if (GeneralLib.LIndex(fdata, 3) != "全")
@@ -5133,7 +5115,7 @@ namespace SRCCore
                                 msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                             }
                         }
-                        else if (u.AllFeature(fname).DataL.First() != "解説")
+                        else if (u.AllFeature(fname).DataL.FirstOrDefault() != "解説")
                         {
                             // 解説がない場合
                             return FeatureHelpMessageRet;
