@@ -39,7 +39,7 @@ namespace SRCSharpForm
         public PictureBox picUnit;
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
-        public Panel _picMain_0;
+        public PictureBox _picMain_0;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -59,7 +59,7 @@ namespace SRCSharpForm
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.HScrollBar = new SRCSharpForm.Lib.SrcHScrollBar();
             this.VScrollBar = new SRCSharpForm.Lib.SrcVScrollBar();
-            this._picMain_0 = new System.Windows.Forms.Panel();
+            this._picMain_0 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNeautral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEnemy)).BeginInit();
