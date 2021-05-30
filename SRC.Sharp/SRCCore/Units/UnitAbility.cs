@@ -1765,6 +1765,11 @@ namespace SRCCore.Units
             }
         }
 
+        public void SetStockFull()
+        {
+            dblStock = 1d;
+        }
+
         // 合体技アビリティに必要なパートナーが見つかるか？
         public bool IsCombinationAbilityAvailable(bool check_formation = false)
         {

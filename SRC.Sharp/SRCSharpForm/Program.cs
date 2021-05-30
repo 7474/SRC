@@ -23,7 +23,7 @@ namespace SRCSharpForm
             });
             UpdateLogger();
 
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);

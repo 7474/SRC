@@ -27,7 +27,7 @@ namespace SRCCore.Models
 
         public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
 
-        public double FeatureLevel => HasLevel ? Level : 0d;
+        public double FeatureLevel => HasLevel ? Level : 1d;
         public string Data => StrData ?? "";
         public IList<string> DataL => GeneralLib.ToL(Data);
 

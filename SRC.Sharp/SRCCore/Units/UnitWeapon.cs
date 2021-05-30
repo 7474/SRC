@@ -5123,11 +5123,15 @@ namespace SRCCore.Units
             }
         }
 
+        public void SetBulletFull()
+        {
+            SetBulletRate(1d);
+        }
+
         private void SetBulletRate(double new_bullet_rate)
         {
             dblBulletRate = new_bullet_rate;
         }
-
 
         public bool IsMatchFeatureTarget(IList<string> targets)
         {

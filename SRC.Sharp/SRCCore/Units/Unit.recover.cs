@@ -1,10 +1,42 @@
+using System.Linq;
+
 namespace SRCCore.Units
 {
     // === ステータス回復関連処理 ===
     public partial class Unit
     {
-        public bool CanFix => HP < MaxHP && !IsConditionSatisfied("ゾンビ");
-        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ");
+        public bool CanFix(Unit fixer)
+        {
+            var canFix = HP < MaxHP && !IsConditionSatisfied("ゾンビ");
+
+            if (canFix && fixer != null && IsFeatureAvailable("修理不可"))
+            {
+                var fixFd = fixer.Feature("修理装置");
+                var fixFname = fixFd?.FeatureName0(fixer) ?? "修理装置";
+                var fd = Feature("修理不可");
+
+                foreach (var fname in fd.DataL.Skip(1))
+                {
+                    // XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？
+                    if (fname.StartsWith("!") && fname != "!" + fixFname)
+                    {
+                        canFix = false;
+                        break;
+                    }
+                    else if (fname == fixFname)
+                    {
+                        canFix = false;
+                        break;
+                    }
+                }
+            }
+
+            return canFix;
+        }
+
+        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ")
+                    || Weapons.Any(uw => uw.Bullet() < uw.MaxBullet())
+                    || Abilities.Any(ua => ua.Stock() < ua.MaxStock());
 
         // ステータスを全回復
         public void FullRecover()
@@ -92,48 +124,50 @@ namespace SRCCore.Units
         {
             // ＥＮ回復
             EN = MaxEN;
-
-            // TODO Impl
-            //    // 弾数回復
-            //    var loopTo = CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //        dblBullet[i] = 1d;
-            //    var loopTo1 = CountAbility();
-            //    for (i = 1; i <= loopTo1; i++)
-            //        dblStock[i] = 1d;
-
             // 他形態も回復
             foreach (var of in OtherForms)
             {
                 of.EN = of.MaxEN;
-                //var loopTo3 = withBlock.CountWeapon();
-                //for (j = 1; j <= loopTo3; j++)
-                //    withBlock.SetBullet(j, withBlock.MaxBullet(j));
-                //var loopTo4 = withBlock.CountAbility();
-                //for (j = 1; j <= loopTo4; j++)
-                //    withBlock.SetStock(j, withBlock.MaxStock(j));
             }
+
+            // 弾数回復
+            BulletSupply();
+            StockSupply();
         }
 
         // 弾数のみを回復
         public void BulletSupply()
         {
-            //    short i, j;
-            //    var loopTo = CountWeapon();
-            //    for (i = 1; i <= loopTo; i++)
-            //        dblBullet[i] = 1d;
+            foreach (var uw in Weapons)
+            {
+                uw.SetBulletFull();
+            }
 
-            //    // 他形態も回復
-            //    var loopTo1 = CountOtherForm();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            var loopTo2 = withBlock.CountWeapon();
-            //            for (j = 1; j <= loopTo2; j++)
-            //                withBlock.SetBullet(j, withBlock.MaxBullet(j));
-            //        }
-            //    }
+            // 他形態も回復
+            foreach (var of in OtherForms)
+            {
+                foreach (var uw in of.Weapons)
+                {
+                    uw.SetBulletFull();
+                }
+            }
+        }
+
+        public void StockSupply()
+        {
+            foreach (var ua in Abilities)
+            {
+                ua.SetStockFull();
+            }
+
+            // 他形態も回復
+            foreach (var of in OtherForms)
+            {
+                foreach (var ua in of.Abilities)
+                {
+                    ua.SetStockFull();
+                }
+            }
         }
 
         // ＨＰを percent ％回復
