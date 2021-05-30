@@ -315,7 +315,7 @@ namespace SRCSharpForm
                         //    }
                         //}
                         // 画像ファイルを読み込んで表示
-                        var image = imageBuffer.GetTransparent(fname);
+                        var image = imageBuffer.Get(fname);
                         picFace.Image = image;
                     }
                     // パイロット愛称
