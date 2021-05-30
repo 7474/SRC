@@ -6,9 +6,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using System.Drawing.Imaging;
+using SRCSharpForm.Extensions;
 
 namespace SRCSharpForm.Resoruces
 {
+    /// <summary>
+    /// 画像のバッファ。
+    /// <see cref="MemoryCache"/>のほぼ既定の設定でキャッシュしている。
+    /// </summary>
     public class ImageBuffer
     {
         // キャッシュインスタンスの共有を考えてキーに空間を持っておく。
@@ -50,36 +56,22 @@ namespace SRCSharpForm.Resoruces
             {
                 return false;
             }
-            var image = NormalizeImage(path, Image.FromFile(path));
+            var image = NormalizeImage(name, Image.FromFile(path));
             cache.Add(ToKey(name), image, cacheItemPolicy);
             return true;
         }
 
-        private Bitmap NormalizeImage(string path, Image image)
+        private Bitmap NormalizeImage(string name, Image image)
         {
-            //// bmpなら真っ白を抜く
-            ////if (path.ToLower().EndsWith("bmp"))
-            //if (!image.PixelFormat.HasFlag(PixelFormat.Alpha))
-            //{
-            //    var bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
-            //    using (var g = Graphics.FromImage(bitmap))
-            //    {
-            //        g.DrawImage(image, 0, 0);
-            //    }
-            //    // XXX 色を入れ替えとかできそうな気はする
-            //    var white = Color.White.ToArgb();
-            //    for (var x = 0; x < bitmap.Width; x++)
-            //    {
-            //        for (var y = 0; y < bitmap.Width; y++)
-            //        {
-            //            if (bitmap.GetPixel(x, y).ToArgb() == white)
-            //            {
-            //                bitmap.SetPixel(x, y, Color.Transparent);
-            //            }
-            //        }
-            //    }
-            //    return bitmap;
-            //}
+            if (image.PixelFormat.HasFlag(PixelFormat.Alpha))
+            {
+                // 画像がアルファチャネルを持っているなら透過画像として登録
+                // TODO アルファチャネル精査
+                // フォーマット上アルファチャネルがあるかと、実際に透過されているかはまた別なのでちょっと微妙かもしれない。
+                Transparent(ToTransparentKey(name), image);
+                // アルファチャネルを消して返す
+                image = image.RemoveAlpha(Color.White);
+            }
 
             return new Bitmap(image);
         }
@@ -129,6 +121,13 @@ namespace SRCSharpForm.Resoruces
             return transparentImage;
         }
 
+        private Image Transparent(string key, Image image)
+        {
+            var transparentImage = new Bitmap(image);
+            cache.Add(key, transparentImage, cacheItemPolicy);
+            return transparentImage;
+        }
+
         public string ToKey(string name)
         {
             return IMAGE_KEY_PREFIX + name.ToLower();
@@ -153,6 +152,7 @@ namespace SRCSharpForm.Resoruces
 
         public void InitFileSystemInfo()
         {
+            // TODO この辺りは走査順だけ定義して他は FileSystem に任せる
             // 各フォルダにBitmapフォルダがあるかチェック
             var baseDirectories = new List<string>()
             {
