@@ -186,6 +186,9 @@ namespace SRCCore.Commands
                         }
                     }
 
+                    // 部隊表
+                    mapCommands.Add(new UiCommand(UnitListCmdID, "部隊表"));
+
                     // 全体マップ
                     mapCommands.Add(new UiCommand(GlobalMapCmdID, "全体マップ"));
 
@@ -226,7 +229,6 @@ namespace SRCCore.Commands
                 {
                     // パイロットステータス・ユニットステータスのステージ
                 }
-
                 // スペシャルパワー検索
                 if (SRC.PList.Items.Any(p => p.Party == "味方" && p.CountSpecialPower > 0))
                 {
