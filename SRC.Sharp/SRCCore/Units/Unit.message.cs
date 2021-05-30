@@ -1169,6 +1169,19 @@ namespace SRCCore.Units
             return false;
         }
 
+        public bool SysMessageIfDefined(string[] situations)
+        {
+            foreach(var situation in situations)
+            {
+                if (IsSysMessageDefined(situation))
+                {
+                    SysMessage(situation);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // 解説メッセージを表示
         public void SysMessage(string main_situation, string sub_situation = "", string add_msg = "")
         {
