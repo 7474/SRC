@@ -53,167 +53,156 @@ namespace SRCCore.Models
         // アビリティに効果を追加
         public void SetEffect(string elist)
         {
-            // TODO Impl
-            //    int j, i, k;
-            //    string buf;
-            //    AbilityEffect dat;
-            //    string elevel, etype, edata;
-            //    GeneralLib.TrimString(elist);
-            //    var loopTo = GeneralLib.ListLength(elist);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        dat = NewAbilityEffect();
-            //        buf = GeneralLib.ListIndex(elist, i);
-            //        j = Strings.InStr(buf, "Lv");
-            //        k = Strings.InStr(buf, "=");
-            //        if (j > 0 & (k == 0 | j < k))
-            //        {
-            //            // レベル指定のある効果(データ指定があるものを含む)
-            //            dat.Name = Strings.Left(buf, j - 1);
-            //            if (k > 0)
-            //            {
-            //                // データ指定があるもの
-            //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
-            //                buf = Strings.Mid(buf, k + 1);
-            //                if (Strings.Left(buf, 1) == "\"")
-            //                {
-            //                    buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //                }
+            elist = (elist ?? "").Trim();
+            foreach (var eelm in GeneralLib.ToList(elist))
+            {
+                var dat = new AbilityEffect();
+                var buf = eelm;
+                var j = Strings.InStr(buf, "Lv");
+                var k = Strings.InStr(buf, "=");
+                string etype;
+                string elevel;
+                string edata;
+                if (j > 0 && (k == 0 || j < k))
+                {
+                    // レベル指定のある効果(データ指定があるものを含む)
+                    dat.Name = Strings.Left(buf, j - 1);
+                    if (k > 0)
+                    {
+                        // データ指定があるもの
+                        dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
+                        buf = Strings.Mid(buf, k + 1);
+                        if (Strings.Left(buf, 1) == "\"")
+                        {
+                            buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                        }
 
-            //                j = Strings.InStr(buf, "Lv");
-            //                k = Strings.InStr(buf, "=");
-            //                if (j > 0 & (k == 0 | j < k))
-            //                {
-            //                    // データ指定内にレベル指定がある
-            //                    etype = Strings.Left(buf, j - 1);
-            //                    if (k > 0)
-            //                    {
-            //                        elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-            //                        edata = Strings.Mid(buf, k + 1);
-            //                    }
-            //                    else
-            //                    {
-            //                        elevel = Strings.Mid(buf, j + 2);
-            //                        edata = "";
-            //                    }
-            //                }
-            //                else if (k > 0)
-            //                {
-            //                    // データ指定内にデータ指定がある
-            //                    etype = Strings.Left(buf, k - 1);
-            //                    elevel = "";
-            //                    edata = Strings.Mid(buf, k + 1);
-            //                }
-            //                else
-            //                {
-            //                    // 単純なデータ指定
-            //                    etype = buf;
-            //                    elevel = "";
-            //                    edata = "";
-            //                }
+                        j = Strings.InStr(buf, "Lv");
+                        k = Strings.InStr(buf, "=");
+                        if (j > 0 && (k == 0 || j < k))
+                        {
+                            // データ指定内にレベル指定がある
+                            etype = Strings.Left(buf, j - 1);
+                            if (k > 0)
+                            {
+                                elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+                                edata = Strings.Mid(buf, k + 1);
+                            }
+                            else
+                            {
+                                elevel = Strings.Mid(buf, j + 2);
+                                edata = "";
+                            }
+                        }
+                        else if (k > 0)
+                        {
+                            // データ指定内にデータ指定がある
+                            etype = Strings.Left(buf, k - 1);
+                            elevel = "";
+                            edata = Strings.Mid(buf, k + 1);
+                        }
+                        else
+                        {
+                            // 単純なデータ指定
+                            etype = buf;
+                            elevel = "";
+                            edata = "";
+                        }
 
-            //                if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
-            //                {
-            //                    elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
-            //                }
+                        if (dat.Name == "付加" && string.IsNullOrEmpty(elevel))
+                        {
+                            elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
+                        }
 
-            //                dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
-            //            }
-            //            else
-            //            {
-            //                // データ指定がないもの
-            //                dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2));
-            //            }
-            //        }
-            //        else if (k > 0)
-            //        {
-            //            // データ指定を含む効果
-            //            dat.Name = Strings.Left(buf, k - 1);
-            //            buf = Strings.Mid(buf, k + 1);
-            //            if (Strings.Asc(buf) == 34) // "
-            //            {
-            //                buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //            }
+                        dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
+                    }
+                    else
+                    {
+                        // データ指定がないもの
+                        dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2));
+                    }
+                }
+                else if (k > 0)
+                {
+                    // データ指定を含む効果
+                    dat.Name = Strings.Left(buf, k - 1);
+                    buf = Strings.Mid(buf, k + 1);
+                    if (Strings.Asc(buf) == 34) // "
+                    {
+                        buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                    }
 
-            //            j = Strings.InStr(buf, "Lv");
-            //            k = Strings.InStr(buf, "=");
-            //            if (dat.Name == "解説")
-            //            {
-            //                // 解説の指定
-            //                etype = buf;
-            //                elevel = "";
-            //                edata = "";
-            //            }
-            //            else if (j > 0)
-            //            {
-            //                // データ指定内にレベル指定がある
-            //                etype = Strings.Left(buf, j - 1);
-            //                if (k > 0)
-            //                {
-            //                    elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-            //                    edata = Strings.Mid(buf, k + 1);
-            //                }
-            //                else
-            //                {
-            //                    elevel = Strings.Mid(buf, j + 2);
-            //                    edata = "";
-            //                }
-            //            }
-            //            else if (k > 0)
-            //            {
-            //                // データ指定内にデータ指定がある
-            //                etype = Strings.Left(buf, k - 1);
-            //                elevel = "";
-            //                edata = Strings.Mid(buf, k + 1);
-            //            }
-            //            else
-            //            {
-            //                // 単純なデータ指定
-            //                etype = buf;
-            //                elevel = "";
-            //                edata = "";
-            //            }
+                    j = Strings.InStr(buf, "Lv");
+                    k = Strings.InStr(buf, "=");
+                    if (dat.Name == "解説")
+                    {
+                        // 解説の指定
+                        etype = buf;
+                        elevel = "";
+                        edata = "";
+                    }
+                    else if (j > 0)
+                    {
+                        // データ指定内にレベル指定がある
+                        etype = Strings.Left(buf, j - 1);
+                        if (k > 0)
+                        {
+                            elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+                            edata = Strings.Mid(buf, k + 1);
+                        }
+                        else
+                        {
+                            elevel = Strings.Mid(buf, j + 2);
+                            edata = "";
+                        }
+                    }
+                    else if (k > 0)
+                    {
+                        // データ指定内にデータ指定がある
+                        etype = Strings.Left(buf, k - 1);
+                        elevel = "";
+                        edata = Strings.Mid(buf, k + 1);
+                    }
+                    else
+                    {
+                        // 単純なデータ指定
+                        etype = buf;
+                        elevel = "";
+                        edata = "";
+                    }
 
-            //            if (dat.Name == "付加" & string.IsNullOrEmpty(elevel))
-            //            {
-            //                elevel = SrcFormatter.Format(SRC.DEFAULT_LEVEL);
-            //            }
+                    if (dat.Name == "付加" && string.IsNullOrEmpty(elevel))
+                    {
+                        elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
+                    }
 
-            //            dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
-            //        }
-            //        else
-            //        {
-            //            // 効果名のみ
-            //            dat.Name = buf;
-            //        }
+                    dat.Data = Strings.Trim(etype + " " + elevel + " " + edata);
+                }
+                else
+                {
+                    // 効果名のみ
+                    dat.Name = buf;
+                }
 
-            //        j = 1;
-            //        foreach (AbilityEffect dat2 in colEffects)
-            //        {
-            //            if ((dat.Name ?? "") == (dat2.Name ?? ""))
-            //            {
-            //                j = (j + 1);
-            //            }
-            //        }
+                j = 1;
+                foreach (AbilityEffect dat2 in colEffects)
+                {
+                    if ((dat.Name ?? "") == (dat2.Name ?? ""))
+                    {
+                        j = (j + 1);
+                    }
+                }
 
-            //        if (j == 1)
-            //        {
-            //            colEffects.Add(dat, dat.Name);
-            //        }
-            //        else
-            //        {
-            //            colEffects.Add(dat, dat.Name + SrcFormatter.Format(j));
-            //        }
-            //    }
+                if (j == 1)
+                {
+                    colEffects.Add(dat, dat.Name);
+                }
+                else
+                {
+                    colEffects.Add(dat, dat.Name + SrcFormatter.Format(j));
+                }
+            }
         }
-
-        //private AbilityEffect NewAbilityEffect()
-        //{
-        //    AbilityEffect NewAbilityEffectRet = default;
-        //    var dat = new AbilityEffect();
-        //    NewAbilityEffectRet = dat;
-        //    return NewAbilityEffectRet;
-        //}
 
         //// 効果の総数
         //public int CountEffect()
@@ -534,7 +523,7 @@ namespace SRCCore.Models
         //                        }
         //                }
 
-        //                if (0d < elevel2 & elevel2 <= 10d)
+        //                if (0d < elevel2 && elevel2 <= 10d)
         //                {
         //                    EffectNameRet = cname + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
@@ -786,7 +775,7 @@ namespace SRCCore.Models
 
         //                            int localStrToLng10() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-        //                            if (localStrToLng3() <= 5 & localStrToLng4() >= 0)
+        //                            if (localStrToLng3() <= 5 && localStrToLng4() >= 0)
         //                            {
         //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
@@ -797,7 +786,7 @@ namespace SRCCore.Models
         //                                    EffectNameRet = "空への適応を変化";
         //                                }
         //                            }
-        //                            else if (localStrToLng5() <= 5 & localStrToLng6() >= 0)
+        //                            else if (localStrToLng5() <= 5 && localStrToLng6() >= 0)
         //                            {
         //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
@@ -808,7 +797,7 @@ namespace SRCCore.Models
         //                                    EffectNameRet = "陸への適応を変化";
         //                                }
         //                            }
-        //                            else if (localStrToLng7() <= 5 & localStrToLng8() >= 0)
+        //                            else if (localStrToLng7() <= 5 && localStrToLng8() >= 0)
         //                            {
         //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
@@ -819,7 +808,7 @@ namespace SRCCore.Models
         //                                    EffectNameRet = "水中への適応を変化";
         //                                }
         //                            }
-        //                            else if (localStrToLng9() <= 5 & localStrToLng10() >= 0)
+        //                            else if (localStrToLng9() <= 5 && localStrToLng10() >= 0)
         //                            {
         //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
         //                                {
@@ -885,9 +874,9 @@ namespace SRCCore.Models
         //                                EffectNameRet = GeneralLib.ListIndex(Strings.Mid(EffectNameRet, 2, Strings.Len(EffectNameRet) - 2), 1);
         //                            }
 
-        //                            if (string.IsNullOrEmpty(EffectNameRet) | EffectNameRet == "非表示")
+        //                            if (string.IsNullOrEmpty(EffectNameRet) || EffectNameRet == "非表示")
         //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2) + "付加";
         //                                }
@@ -898,7 +887,7 @@ namespace SRCCore.Models
         //                            }
         //                            else
         //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") & GeneralLib.LLength(ae.Data) <= 3)
+        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(SRC.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
         //                                {
         //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ae.Data, 2);
         //                                }
@@ -912,7 +901,7 @@ namespace SRCCore.Models
 
         //                if (!string.IsNullOrEmpty(EffectNameRet))
         //                {
-        //                    if (0d < elevel2 & elevel2 <= 10d)
+        //                    if (0d < elevel2 && elevel2 <= 10d)
         //                    {
         //                        EffectNameRet = EffectNameRet + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                    }
@@ -924,7 +913,7 @@ namespace SRCCore.Models
         //        case "強化":
         //            {
         //                EffectNameRet = GeneralLib.ListIndex(ae.Data, 3);
-        //                if (string.IsNullOrEmpty(EffectNameRet) | EffectNameRet == "非表示")
+        //                if (string.IsNullOrEmpty(EffectNameRet) || EffectNameRet == "非表示")
         //                {
         //                    if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 2)) > 0)
         //                    {
@@ -936,7 +925,7 @@ namespace SRCCore.Models
         //                    }
         //                }
 
-        //                if (0d < elevel2 & elevel2 <= 10d)
+        //                if (0d < elevel2 && elevel2 <= 10d)
         //                {
         //                    EffectNameRet = EffectNameRet + "強化(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
@@ -981,7 +970,7 @@ namespace SRCCore.Models
         //                    return EffectNameRet;
         //                }
 
-        //                if (0d < elevel2 & elevel2 <= 10d)
+        //                if (0d < elevel2 && elevel2 <= 10d)
         //                {
         //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
@@ -999,7 +988,7 @@ namespace SRCCore.Models
 
         //        case "能力コピー":
         //            {
-        //                if (0d < elevel2 & elevel2 <= 10d)
+        //                if (0d < elevel2 && elevel2 <= 10d)
         //                {
         //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
         //                }
@@ -1039,7 +1028,7 @@ namespace SRCCore.Models
         //private string WeaponType(string wclass)
         //{
         //    string WeaponTypeRet = default;
-        //    if (wclass == "全" | string.IsNullOrEmpty(wclass))
+        //    if (wclass == "全" || string.IsNullOrEmpty(wclass))
         //    {
         //        WeaponTypeRet = "武器";
         //    }
