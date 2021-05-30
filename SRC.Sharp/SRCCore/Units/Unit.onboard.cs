@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Extensions;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -26,6 +27,15 @@ namespace SRCCore.Units
             {
                 colUnitOnBoard.Remove(u);
                 return;
+            }
+        }
+
+        public void UnloadAllUnitForEscape()
+        {
+            foreach (Unit u in colUnitOnBoard.List.CloneList())
+            {
+                u.Status = "待機";
+                colUnitOnBoard.Remove(u.ID);
             }
         }
 

@@ -691,84 +691,56 @@ namespace SRCCore.Units
         // マップ上から脱出
         public void Escape(string smode = "")
         {
-            Status = "待機";
-            // TODO Impl Escape
-            //    Unit u;
-            //    int i, j;
+            // 母艦に乗っていた場合は降りておく
+            if (Status == "格納")
+            {
+                SRC.UList.Unload(this);
+            }
 
-            //    // 母艦に乗っていた場合は降りておく
-            //    if (Status == "格納")
-            //    {
-            //        foreach (Unit currentU in SRC.UList)
-            //        {
-            //            u = currentU;
-            //            var loopTo = u.CountUnitOnBoard();
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                Unit localUnitOnBoard() { object argIndex1 = i; var ret = u.UnitOnBoard(argIndex1); return ret; }
+            // 出撃している場合は画面上からユニットを消去
+            if (Status == "出撃" || Status == "破壊")
+            {
+                if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
+                {
+                    Map.MapDataForUnit[x, y] = null;
+                    if (smode == "非同期" | GUI.IsPictureVisible | string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        GUI.EraseUnitBitmap(x, y, false);
+                    }
+                    else
+                    {
+                        GUI.EraseUnitBitmap(x, y, true);
+                    }
 
-            //                if ((ID ?? "") == (localUnitOnBoard().ID ?? ""))
-            //                {
-            //                    u.UnloadUnit(ID);
-            //                    goto EndLoop;
-            //                }
-            //            }
-            //        }
+                    SRC.PList.UpdateSupportMod(this);
+                }
+            }
 
-            //    EndLoop:
-            //        ;
-            //    }
+            if (Status == "出撃" || Status == "格納")
+            {
+                Status = "待機";
+            }
 
-            //    // 出撃している場合は画面上からユニットを消去
-            //    if (Status == "出撃" | Status == "破壊")
-            //    {
-            //        if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
-            //        {
-            //            // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            Map.MapDataForUnit[x, y] = null;
-            //            if (smode == "非同期" | GUI.IsPictureVisible | string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                GUI.EraseUnitBitmap(x, y, false);
-            //            }
-            //            else
-            //            {
-            //                GUI.EraseUnitBitmap(x, y, true);
-            //            }
+            // 破壊をキャンセル状態は解除
+            if (IsConditionSatisfied("破壊キャンセル"))
+            {
+                DeleteCondition("破壊キャンセル");
+            }
 
-            //            SRC.PList.UpdateSupportMod(this);
-            //        }
-            //    }
+            // ユニットを格納していたら降ろす
+            UnloadAllUnitForEscape();
 
-            //    if (Status == "出撃" | Status == "格納")
-            //    {
-            //        Status = "待機";
-            //    }
+            // 召喚したユニットを解放
+            DismissServant();
 
-            //    // 破壊をキャンセル状態は解除
-            //    if (IsConditionSatisfied("破壊キャンセル"))
-            //    {
-            //        DeleteCondition("破壊キャンセル");
-            //    }
+            // 魅了・憑依したユニットを解放
+            DismissSlave();
 
-            //    // ユニットを格納していたら降ろす
-            //    foreach (Unit currentU1 in colUnitOnBoard)
-            //    {
-            //        u = currentU1;
-            //        u.Status = "待機";
-            //        colUnitOnBoard.Remove(u.ID);
-            //    }
-
-            //    // 召喚したユニットを解放
-            //    DismissServant();
-
-            //    // 魅了・憑依したユニットを解放
-            //    DismissSlave();
-
-            //    // ステータス表示中の場合は表示を解除
-            //    if (ReferenceEquals(this, Status.DisplayedUnit))
-            //    {
-            //        Status.ClearUnitStatus();
-            //    }
+            // ステータス表示中の場合は表示を解除
+            if (ReferenceEquals(this, SRC.GUIStatus.DisplayedUnit))
+            {
+                SRC.GUIStatus.ClearUnitStatus();
+            }
         }
 
         // 母艦 u に着艦
