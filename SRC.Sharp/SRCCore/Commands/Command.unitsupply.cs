@@ -85,68 +85,67 @@ namespace SRCCore.Commands
         {
             GUI.LockGUI();
             GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
+
+            var currentUnit = SelectedUnit;
+            // 選択内容を変更
+            Event.SelectedUnitForEvent = SelectedUnit;
+            Event.SelectedTargetForEvent = SelectedTarget;
+
+            // 修理メッセージ＆特殊効果
+            if (currentUnit.IsMessageDefined("修理"))
             {
-                var currentUnit = SelectedUnit;
-                // 選択内容を変更
-                Event.SelectedUnitForEvent = SelectedUnit;
-                Event.SelectedTargetForEvent = SelectedTarget;
+                currentUnit.PilotMessage("修理", msg_mode: "");
+            }
 
-                // 修理メッセージ＆特殊効果
-                if (currentUnit.IsMessageDefined("修理"))
-                {
-                    currentUnit.PilotMessage("修理", msg_mode: "");
-                }
+            if (currentUnit.IsAnimationDefined("修理", currentUnit.FeatureName("修理装置")))
+            {
+                currentUnit.PlayAnimation("修理", currentUnit.FeatureName("修理装置"));
+            }
+            else
+            {
+                currentUnit.SpecialEffect("修理", currentUnit.FeatureName("修理装置"));
+            }
 
-                if (currentUnit.IsAnimationDefined("修理", currentUnit.FeatureName("修理装置")))
-                {
-                    currentUnit.PlayAnimation("修理", currentUnit.FeatureName("修理装置"));
-                }
-                else
-                {
-                    currentUnit.SpecialEffect("修理", currentUnit.FeatureName("修理装置"));
-                }
+            GUI.DisplaySysMessage(currentUnit.Nickname + "は" + SelectedTarget.Nickname + "に" + currentUnit.FeatureName("修理装置") + "を使った。");
 
-                GUI.DisplaySysMessage(currentUnit.Nickname + "は" + SelectedTarget.Nickname + "に" + currentUnit.FeatureName("修理装置") + "を使った。");
+            // 修理を実行
+            var tmp = SelectedTarget.HP;
+            switch (currentUnit.FeatureLevel("修理装置"))
+            {
+                case 1d:
+                case -1:
+                    {
+                        SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
+                        break;
+                    }
 
-                // 修理を実行
-                var tmp = SelectedTarget.HP;
-                switch (currentUnit.FeatureLevel("修理装置"))
-                {
-                    case 1d:
-                    case -1:
-                        {
-                            SelectedTarget.RecoverHP(30d + 3d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
-                            break;
-                        }
+                case 2d:
+                    {
+                        SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
+                        break;
+                    }
 
-                    case 2d:
-                        {
-                            SelectedTarget.RecoverHP(50d + 5d * SelectedUnit.MainPilot().SkillLevel("修理", ref_mode: ""));
-                            break;
-                        }
+                case 3d:
+                    {
+                        SelectedTarget.RecoverHP(100d);
+                        break;
+                    }
+            }
 
-                    case 3d:
-                        {
-                            SelectedTarget.RecoverHP(100d);
-                            break;
-                        }
-                }
+            if (Information.IsNumeric(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2)))
+            {
+                currentUnit.EN = currentUnit.EN - Conversions.ToInteger(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2));
+            }
 
-                if (Information.IsNumeric(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2)))
-                {
-                    currentUnit.EN = currentUnit.EN - Conversions.ToInteger(GeneralLib.LIndex(currentUnit.FeatureData("修理装置"), 2));
-                }
+            GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, "+" + SrcFormatter.Format(SelectedTarget.HP - tmp));
+            GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
+            GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term("ＨＰ", SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
 
-                GUI.DrawSysString(SelectedTarget.x, SelectedTarget.y, "+" + SrcFormatter.Format(SelectedTarget.HP - tmp));
-                GUI.UpdateMessageForm(SelectedTarget, SelectedUnit);
-                GUI.DisplaySysMessage(SelectedTarget.Nickname + "の" + Expression.Term("ＨＰ", SelectedTarget) + "が" + SrcFormatter.Format(SelectedTarget.HP - tmp) + "回復した。");
-
-                // 経験値獲得
-                currentUnit.GetExp(SelectedTarget, "修理", exp_mode: "");
-                if (GUI.MessageWait < 10000)
-                {
-                    GUI.Sleep(GUI.MessageWait);
-                }
+            // 経験値獲得
+            currentUnit.GetExp(SelectedTarget, "修理", exp_mode: "");
+            if (GUI.MessageWait < 10000)
+            {
+                GUI.Sleep(GUI.MessageWait);
             }
 
             GUI.CloseMessageForm();
@@ -163,99 +162,63 @@ namespace SRCCore.Commands
         // 「補給」コマンドを開始
         private void StartSupplyCommand()
         {
-            throw new NotImplementedException();
-            //int j, i, k;
-            //Unit t;
-            //SelectedCommand = "補給";
+            SelectedCommand = "補給";
 
-            //// 射程範囲？を表示
-            //{
-            //    var withBlock = SelectedUnit;
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "味方");
-            //    var loopTo = Map.MapWidth;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = Map.MapHeight;
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is object)
-            //            {
-            //                Map.MaskData[i, j] = true;
-            //                {
-            //                    var withBlock1 = Map.MapDataForUnit[i, j];
-            //                    if (withBlock1.EN < withBlock1.MaxEN && !withBlock1.IsConditionSatisfied("ゾンビ"))
-            //                    {
-            //                        Map.MaskData[i, j] = false;
-            //                    }
-            //                    else
-            //                    {
-            //                        var loopTo2 = withBlock1.CountWeapon();
-            //                        for (k = 1; k <= loopTo2; k++)
-            //                        {
-            //                            if (withBlock1.Bullet(k) < withBlock1.MaxBullet(k))
-            //                            {
-            //                                Map.MaskData[i, j] = false;
-            //                                break;
-            //                            }
-            //                        }
+            // 射程範囲？を表示
+            var currentUnit = SelectedUnit;
+            Map.AreaInRange(currentUnit.x, currentUnit.y, 1, 1, "味方");
+            for (var i = 1; i <= Map.MapWidth; i++)
+            {
+                for (var j = 1; j <= Map.MapHeight; j++)
+                {
+                    if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is object)
+                    {
+                        var t = Map.MapDataForUnit[i, j];
+                        Map.MaskData[i, j] = t.CanSupply;
+                    }
+                }
+            }
 
-            //                        var loopTo3 = withBlock1.CountAbility();
-            //                        for (k = 1; k <= loopTo3; k++)
-            //                        {
-            //                            if (withBlock1.Stock(k) < withBlock1.MaxStock(k))
-            //                            {
-            //                                Map.MaskData[i, j] = false;
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+            Map.MaskData[currentUnit.x, currentUnit.y] = false;
 
-            //    Map.MaskData[withBlock.x, withBlock.y] = false;
-            //}
+            GUI.MaskScreen();
 
-            //GUI.MaskScreen();
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                Unit t = null;
+                foreach (Unit u in SRC.UList.Items)
+                {
+                    if (u.Status == "出撃" && u.Party == "味方")
+                    {
+                        if (Map.MaskData[u.x, u.y] == false && !ReferenceEquals(u, SelectedUnit))
+                        {
+                            t = u;
+                            break;
+                        }
+                    }
+                }
 
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    // UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    t = null;
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        if (u.Status == "出撃" && u.Party == "味方")
-            //        {
-            //            if (Map.MaskData[u.x, u.y] == false && !ReferenceEquals(u, SelectedUnit))
-            //            {
-            //                t = u;
-            //                break;
-            //            }
-            //        }
-            //    }
+                if (t is null)
+                {
+                    t = SelectedUnit;
+                }
 
-            //    if (t is null)
-            //    {
-            //        t = SelectedUnit;
-            //    }
+                GUI.MoveCursorPos("ユニット選択", t);
+                if (!ReferenceEquals(SelectedUnit, t))
+                {
+                    Status.DisplayUnitStatus(t);
+                }
+            }
 
-            //    GUI.MoveCursorPos("ユニット選択", t);
-            //    if (!ReferenceEquals(SelectedUnit, t))
-            //    {
-            //        Status.DisplayUnitStatus(t);
-            //    }
-            //}
-
-            //if (CommandState == "コマンド選択")
-            //{
-            //    CommandState = "ターゲット選択";
-            //}
-            //else
-            //{
-            //    CommandState = "移動後ターゲット選択";
-            //}
+            if (CommandState == "コマンド選択")
+            {
+                CommandState = "ターゲット選択";
+            }
+            else
+            {
+                CommandState = "移動後ターゲット選択";
+            }
         }
 
         // 「補給」コマンドを終了

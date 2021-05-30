@@ -34,7 +34,10 @@ namespace SRCCore.Units
 
             return canFix;
         }
-        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ");
+
+        public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ")
+                    || Weapons.Any(uw => uw.Bullet() < uw.MaxBullet())
+                    || Abilities.Any(ua => ua.Stock() < ua.MaxStock());
 
         // ステータスを全回復
         public void FullRecover()
