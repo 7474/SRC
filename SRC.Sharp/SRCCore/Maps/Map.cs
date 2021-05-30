@@ -162,6 +162,7 @@ namespace SRCCore.Maps
             return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
+        // uに隣接しているユニット
         public IList<Unit> AdjacentUnit(Unit u)
         {
             return AdjacentUnit(u.x, u.y);

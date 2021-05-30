@@ -1072,7 +1072,7 @@ namespace SRCCore.Commands
             {
                 if (Map.AdjacentUnit(currentUnit)
                     .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                        && u.CanFix))
+                        && u.CanFix(currentUnit)))
                 {
                     var fd = currentUnit.Feature("修理装置");
                     if (!string.IsNullOrEmpty(fd.Data))

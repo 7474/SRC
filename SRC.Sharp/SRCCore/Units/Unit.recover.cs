@@ -1,9 +1,39 @@
+using SRCCore.Models;
+using System.Linq;
+
 namespace SRCCore.Units
 {
     // === ステータス回復関連処理 ===
     public partial class Unit
     {
-        public bool CanFix => HP < MaxHP && !IsConditionSatisfied("ゾンビ");
+        public bool CanFix(Unit fixer)
+        {
+            var canFix = HP < MaxHP && !IsConditionSatisfied("ゾンビ");
+
+            if (canFix && fixer != null && IsFeatureAvailable("修理不可"))
+            {
+                var fixFd = fixer.Feature("修理装置");
+                var fixFname = fixFd?.FeatureName0(fixer) ?? "修理装置";
+                var fd = Feature("修理不可");
+
+                foreach (var fname in fd.DataL.Skip(1))
+                {
+                    // XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？
+                    if (fname.StartsWith("!") && fname != "!" + fixFname)
+                    {
+                        canFix = false;
+                        break;
+                    }
+                    else if (fname == fixFname)
+                    {
+                        canFix = false;
+                        break;
+                    }
+                }
+            }
+
+            return canFix;
+        }
         public bool CanSupply => EN < MaxEN && !IsConditionSatisfied("ゾンビ");
 
         // ステータスを全回復

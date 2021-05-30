@@ -3,6 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
+using SRCCore.Units;
+using SRCCore.VB;
 using System;
 
 namespace SRCCore.Commands
@@ -12,109 +15,69 @@ namespace SRCCore.Commands
         // 「修理」コマンドを開始
         private void StartFixCommand()
         {
-            throw new NotImplementedException();
-            //int j, i, k;
-            //Unit t;
-            //string fname;
-            //SelectedCommand = "修理";
+            SelectedCommand = "修理";
 
-            //// 射程範囲？を表示
-            //{
-            //    var withBlock = SelectedUnit;
-            //    Map.AreaInRange(withBlock.x, withBlock.y, 1, 1, "味方");
-            //    var loopTo = Map.MapWidth;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = Map.MapHeight;
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if (!Map.MaskData[i, j] & Map.MapDataForUnit[i, j] is object)
-            //            {
-            //                {
-            //                    var withBlock1 = Map.MapDataForUnit[i, j];
-            //                    if (withBlock1.HP == withBlock1.MaxHP | withBlock1.IsConditionSatisfied("ゾンビ"))
-            //                    {
-            //                        Map.MaskData[i, j] = true;
-            //                    }
+            // 射程範囲？を表示
+            var currentUnit = SelectedUnit;
+            Map.AreaInRange(currentUnit.x, currentUnit.y, 1, 1, "味方");
+            for (var i = 1; i <= Map.MapWidth; i++)
+            {
+                for (var j = 1; j <= Map.MapHeight; j++)
+                {
+                    if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is object)
+                    {
+                        var t = Map.MapDataForUnit[i, j];
+                        Map.MaskData[i, j] = !t.CanFix(SelectedUnit);
+                    }
+                }
+            }
 
-            //                    if (withBlock1.IsFeatureAvailable("修理不可"))
-            //                    {
-            //                        var loopTo2 = Conversions.ToInteger(withBlock1.FeatureData("修理不可"));
-            //                        for (k = 2; k <= loopTo2; k++)
-            //                        {
-            //                            fname = GeneralLib.LIndex(withBlock1.FeatureData(argIndex2), k);
-            //                            if (Strings.Left(fname, 1) == "!")
-            //                            {
-            //                                fname = Strings.Mid(fname, 2);
-            //                                if ((fname ?? "") != (SelectedUnit.FeatureName0("修理装置") ?? ""))
-            //                                {
-            //                                    Map.MaskData[i, j] = true;
-            //                                    break;
-            //                                }
-            //                            }
-            //                            else
-            //                            {
-            //                                if ((fname ?? "") == (SelectedUnit.FeatureName0("修理装置") ?? ""))
-            //                                {
-            //                                    Map.MaskData[i, j] = true;
-            //                                    break;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+            Map.MaskData[currentUnit.x, currentUnit.y] = false;
 
-            //    Map.MaskData[withBlock.x, withBlock.y] = false;
-            //}
+            GUI.MaskScreen();
 
-            //GUI.MaskScreen();
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                Unit t = null;
+                foreach (Unit u in SRC.UList.Items)
+                {
+                    if (u.Status == "出撃" && u.Party == "味方")
+                    {
+                        if (Map.MaskData[u.x, u.y] == false && !ReferenceEquals(u, SelectedUnit))
+                        {
+                            if (t is null)
+                            {
+                                t = u;
+                            }
+                            else if (u.MaxHP - u.HP > t.MaxHP - t.HP)
+                            {
+                                t = u;
+                            }
+                        }
+                    }
+                }
 
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    // UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    t = null;
-            //    foreach (Unit u in SRC.UList)
-            //    {
-            //        if (u.Status == "出撃" & u.Party == "味方")
-            //        {
-            //            if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
-            //            {
-            //                if (t is null)
-            //                {
-            //                    t = u;
-            //                }
-            //                else if (u.MaxHP - u.HP > t.MaxHP - t.HP)
-            //                {
-            //                    t = u;
-            //                }
-            //            }
-            //        }
-            //    }
+                if (t is null)
+                {
+                    t = SelectedUnit;
+                }
 
-            //    if (t is null)
-            //    {
-            //        t = SelectedUnit;
-            //    }
+                GUI.MoveCursorPos("ユニット選択", t);
+                if (!ReferenceEquals(SelectedUnit, t))
+                {
+                    Status.DisplayUnitStatus(t);
+                }
+            }
 
-            //    GUI.MoveCursorPos("ユニット選択", t);
-            //    if (!ReferenceEquals(SelectedUnit, t))
-            //    {
-            //        Status.DisplayUnitStatus(t);
-            //    }
-            //}
-
-            //if (CommandState == "コマンド選択")
-            //{
-            //    CommandState = "ターゲット選択";
-            //}
-            //else
-            //{
-            //    CommandState = "移動後ターゲット選択";
-            //}
+            if (CommandState == "コマンド選択")
+            {
+                CommandState = "ターゲット選択";
+            }
+            else
+            {
+                CommandState = "移動後ターゲット選択";
+            }
         }
 
         // 「修理」コマンドを終了
@@ -223,12 +186,12 @@ namespace SRCCore.Commands
             //        var loopTo1 = Map.MapHeight;
             //        for (j = 1; j <= loopTo1; j++)
             //        {
-            //            if (!Map.MaskData[i, j] & Map.MapDataForUnit[i, j] is object)
+            //            if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is object)
             //            {
             //                Map.MaskData[i, j] = true;
             //                {
             //                    var withBlock1 = Map.MapDataForUnit[i, j];
-            //                    if (withBlock1.EN < withBlock1.MaxEN & !withBlock1.IsConditionSatisfied("ゾンビ"))
+            //                    if (withBlock1.EN < withBlock1.MaxEN && !withBlock1.IsConditionSatisfied("ゾンビ"))
             //                    {
             //                        Map.MaskData[i, j] = false;
             //                    }
@@ -271,9 +234,9 @@ namespace SRCCore.Commands
             //    t = null;
             //    foreach (Unit u in SRC.UList)
             //    {
-            //        if (u.Status == "出撃" & u.Party == "味方")
+            //        if (u.Status == "出撃" && u.Party == "味方")
             //        {
-            //            if (Map.MaskData[u.x, u.y] == false & !ReferenceEquals(u, SelectedUnit))
+            //            if (Map.MaskData[u.x, u.y] == false && !ReferenceEquals(u, SelectedUnit))
             //            {
             //                t = u;
             //                break;
