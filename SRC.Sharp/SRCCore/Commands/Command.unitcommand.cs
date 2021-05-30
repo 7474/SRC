@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.Commands
 {
@@ -371,14 +372,14 @@ namespace SRCCore.Commands
             // コマンド終了時はターゲットを解除
             SelectedTarget = null;
 
-            //// ユニットにパイロットが乗っていない？
-            //if (SelectedUnit.CountPilot() == 0)
-            //{
-            //    CommandState = "ユニット選択";
-            //    GUI.RedrawScreen();
-            //    Status.ClearUnitStatus();
-            //    return;
-            //}
+            // ユニットにパイロットが乗っていない？
+            if (SelectedUnit.CountPilot() == 0)
+            {
+                CommandState = "ユニット選択";
+                GUI.RedrawScreen();
+                Status.ClearUnitStatus();
+                return;
+            }
 
             if (!WithoutAction)
             {
@@ -394,93 +395,42 @@ namespace SRCCore.Commands
 
             CommandState = "ユニット選択";
 
-            //// アップデート
-            //SelectedUnit.Update();
-            //SRC.PList.UpdateSupportMod(SelectedUnit);
+            // アップデート
+            SelectedUnit.Update();
+            SRC.PList.UpdateSupportMod(SelectedUnit);
 
-            //// ユニットが既に出撃していない？
-            //if (SelectedUnit.Status != "出撃")
-            //{
-            //    GUI.RedrawScreen();
-            //    Status.ClearUnitStatus();
-            //    return;
-            //}
+            // ユニットが既に出撃していない？
+            if (SelectedUnit.Status != "出撃")
+            {
+                GUI.RedrawScreen();
+                Status.ClearUnitStatus();
+                return;
+            }
 
             GUI.LockGUI();
             GUI.RedrawScreen();
-            //p = SelectedUnit.Pilot(1);
+            var p = SelectedUnit.Pilots.First();
 
-            //// 接触イベント
-            //for (i = 1; i <= 4; i++)
-            //{
-            //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    SelectedTarget = null;
-            //    {
-            //        var unit = SelectedUnit;
-            //        switch (i)
-            //        {
-            //            case 1:
-            //                {
-            //                    if (unit.x > 1)
-            //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[unit.x - 1, unit.y];
-            //                    }
+            // 接触イベント
+            foreach (var unit in Map.AdjacentUnit(SelectedUnit))
+            {
+                SelectedTarget = unit;
+                Event.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+                SelectedTarget = null;
+                if (SRC.IsScenarioFinished)
+                {
+                    SRC.IsScenarioFinished = false;
+                    return;
+                }
 
-            //                    break;
-            //                }
-
-            //            case 2:
-            //                {
-            //                    if (unit.x < Map.MapWidth)
-            //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[unit.x + 1, unit.y];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 3:
-            //                {
-            //                    if (unit.y > 1)
-            //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[unit.x, unit.y - 1];
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case 4:
-            //                {
-            //                    if (unit.y < Map.MapHeight)
-            //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[unit.x, unit.y + 1];
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-            //    }
-
-            //    if (SelectedTarget is object)
-            //    {
-            //        Event.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
-            //        // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        SelectedTarget = null;
-            //        if (SRC.IsScenarioFinished)
-            //        {
-            //            SRC.IsScenarioFinished = false;
-            //            return;
-            //        }
-
-            //        if (SelectedUnit.Status != "出撃")
-            //        {
-            //            GUI.RedrawScreen();
-            //            Status.ClearUnitStatus();
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
-            //    }
-            //}
+                if (SelectedUnit.Status != "出撃")
+                {
+                    GUI.RedrawScreen();
+                    Status.ClearUnitStatus();
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
             // 進入イベント
             Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
@@ -490,13 +440,13 @@ namespace SRCCore.Commands
                 return;
             }
 
-            //if (SelectedUnit.CountPilot() == 0)
-            //{
-            //    GUI.RedrawScreen();
-            //    Status.ClearUnitStatus();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SelectedUnit.CountPilot() == 0)
+            {
+                GUI.RedrawScreen();
+                Status.ClearUnitStatus();
+                GUI.UnlockGUI();
+                return;
+            }
 
             // 行動終了イベント
             Event.HandleEvent("行動終了", SelectedUnit.MainPilot().ID);
@@ -506,31 +456,31 @@ namespace SRCCore.Commands
                 return;
             }
 
-            //if (SelectedUnit.CountPilot() == 0)
-            //{
-            //    GUI.RedrawScreen();
-            //    Status.ClearUnitStatus();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SelectedUnit.CountPilot() == 0)
+            {
+                GUI.RedrawScreen();
+                Status.ClearUnitStatus();
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (p.Unit is object)
-            //{
-            //    SelectedUnit = p.Unit;
-            //}
+            if (p.Unit is object)
+            {
+                SelectedUnit = p.Unit;
+            }
 
-            //if (SelectedUnit.Action > 0 & SelectedUnit.CountPilot() > 0)
-            //{
-            //    // カーソル自動移動
-            //    if (SRC.AutoMoveCursor)
-            //    {
-            //        GUI.MoveCursorPos("ユニット選択", SelectedUnit);
-            //    }
-            //}
+            if (SelectedUnit.Action > 0 & SelectedUnit.CountPilot() > 0)
+            {
+                // カーソル自動移動
+                if (SRC.AutoMoveCursor)
+                {
+                    GUI.MoveCursorPos("ユニット選択", SelectedUnit);
+                }
+            }
 
-            //// ハイパーモード・ノーマルモードの自動発動をチェック
-            //SelectedUnit.CurrentForm().CheckAutoHyperMode();
-            //SelectedUnit.CurrentForm().CheckAutoNormalMode();
+            // ハイパーモード・ノーマルモードの自動発動をチェック
+            SelectedUnit.CurrentForm().CheckAutoHyperMode();
+            SelectedUnit.CurrentForm().CheckAutoNormalMode();
             if (GUI.IsPictureVisible || GUI.IsCursorVisible)
             {
                 GUI.RedrawScreen();
