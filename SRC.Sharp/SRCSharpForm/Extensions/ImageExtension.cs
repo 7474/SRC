@@ -119,5 +119,16 @@ namespace SRCSharpForm.Extensions
                 return image;
             }
         }
+
+        public static Image RemoveAlpha(this Image image, Color background)
+        {
+            using (var orgImage = new Bitmap(image))
+            using (var g = Graphics.FromImage(image))
+            {
+                g.Clear(background);
+                g.DrawImage(orgImage, 0, 0);
+                return image;
+            }
+        }
     }
 }

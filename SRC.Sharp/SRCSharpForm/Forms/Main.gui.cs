@@ -13,9 +13,9 @@ namespace SRCSharpForm
     {
         public void SaveScreen()
         {
-            using (var g = Graphics.FromImage(mainBufferBack))
+            using (var g = Graphics.FromImage(MainBufferBack))
             {
-                g.DrawImage(mainBuffer, 0, 0);
+                g.DrawImage(MainBuffer, 0, 0);
             }
         }
         public void EraseUnitBitmap(int X, int Y, bool do_refresh)
@@ -45,13 +45,13 @@ namespace SRCSharpForm
 
         private void EraseMapPoint(int X, int Y)
         {
-            using (var g = Graphics.FromImage(mainBuffer))
+            using (var g = Graphics.FromImage(MainBuffer))
             {
                 var xx = GUI.MapToPixelX(X);
                 var yy = GUI.MapToPixelY(Y);
                 var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
                 var destRect = new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
-                g.DrawImage(picBack.Image, sourceRect, destRect, GraphicsUnit.Pixel);
+                g.DrawImage(BackgroundBuffer, sourceRect, destRect, GraphicsUnit.Pixel);
             }
         }
 
@@ -120,11 +120,11 @@ namespace SRCSharpForm
                 var loopTo = (division * GeneralLib.MaxLng(Math.Abs((x2 - x1)), Math.Abs((y2 - y1))));
                 for (var i = 1; i <= loopTo; i++)
                 {
-                    using (var g = _picMain_0.CreateGraphics())
+                    using (var g = Graphics.FromImage(MainDoubleBuffer))
                     {
                         // 画像を消去
                         var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
-                        g.DrawImage(mainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
+                        g.DrawImage(MainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
 
                         // 座標を移動
                         xx = (xx + MapCellPx * vx / division);
@@ -133,8 +133,7 @@ namespace SRCSharpForm
                         // 画像を描画
                         g.DrawImage(unitImage, xx, yy);
                     }
-
-                    _picMain_0.Update();
+                    UpdataMain();
 
                     if (wait_time > 0)
                     {
@@ -180,11 +179,11 @@ namespace SRCSharpForm
                 var loopTo1 = (division * GeneralLib.MinLng(Math.Abs((x2 - x1)), Math.Abs((y2 - y1))));
                 for (var i = 1; i <= loopTo1; i++)
                 {
-                    using (var g = _picMain_0.CreateGraphics())
+                    using (var g = Graphics.FromImage(MainDoubleBuffer))
                     {
                         // 画像を消去
                         var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
-                        g.DrawImage(mainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
+                        g.DrawImage(MainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
 
                         // 座標を移動
                         xx = (xx + MapCellPx * vx / division);
@@ -194,7 +193,7 @@ namespace SRCSharpForm
                         g.DrawImage(unitImage, xx, yy);
                     }
 
-                    _picMain_0.Update();
+                    UpdataMain();
 
                     if (wait_time > 0)
                     {
@@ -247,11 +246,11 @@ namespace SRCSharpForm
                     // 移動の描画
                     for (var j = 0; j < division; j++)
                     {
-                        using (var g = _picMain_0.CreateGraphics())
+                        using (var g = Graphics.FromImage(MainDoubleBuffer))
                         {
                             // 画像を消去
                             var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
-                            g.DrawImage(mainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
+                            g.DrawImage(MainBuffer, sourceRect, sourceRect, GraphicsUnit.Pixel);
 
                             // XXX 誤差大丈夫なんか？
                             // 座標を移動
@@ -262,7 +261,7 @@ namespace SRCSharpForm
                             g.DrawImage(unitImage, xx, yy);
                         }
 
-                        _picMain_0.Update();
+                        UpdataMain();
 
                         if (wait_time > 0)
                         {
@@ -302,7 +301,7 @@ namespace SRCSharpForm
             Image buffer;
             if (smode == "リフレッシュ無し" && GUI.ScreenIsSaved)
             {
-                buffer = mainBufferBack;
+                buffer = MainBufferBack;
                 //// 表示画像を消去する際に使う描画領域を設定
                 //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(xx, 0));
                 //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(yy, 0));
@@ -311,7 +310,7 @@ namespace SRCSharpForm
             }
             else
             {
-                buffer = mainBuffer;
+                buffer = MainBuffer;
             }
 
             // ユニット画像の書き込み

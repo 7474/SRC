@@ -198,7 +198,7 @@ namespace SRCSharpForm
                 g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
 
                 // マップ画像表示
-                g.DrawImage(picBack.Image, 0, 48,
+                g.DrawImage(BackgroundBuffer, 0, 48,
                     new Rectangle((xx - 1) * MapCellPx, (yy - 1) * MapCellPx, MapCellPx, MapCellPx),
                     GraphicsUnit.Pixel);
 

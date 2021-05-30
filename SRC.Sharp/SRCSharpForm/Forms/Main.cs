@@ -216,7 +216,7 @@ namespace SRCSharpForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            mnuUnitCommand.Show(_picMain_0, new Point((int)GUI.MouseX, (int)GUI.MouseY));
+            mnuUnitCommand.Show(picMain, new Point((int)GUI.MouseX, (int)GUI.MouseY));
         }
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
@@ -233,7 +233,7 @@ namespace SRCSharpForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            mnuMapCommand.Show(_picMain_0, new Point((int)GUI.MouseX, (int)GUI.MouseY));
+            mnuMapCommand.Show(picMain, new Point((int)GUI.MouseX, (int)GUI.MouseY));
         }
 
         // ステータスウィンドウのパイロット画像上をクリック

@@ -10,13 +10,6 @@ namespace SRCSharpForm
 {
     public partial class SRCSharpFormGUI
     {
-        // XXX ファイルシステム周りはインタフェースを切って環境毎に実装してやるのがよさそう。
-        // SRCクラスにある XXDataPath もそちらに切り出すとよいはず。
-        private bool init_draw_pitcure;
-        private IList<string> existBitmapDirectories;
-        private IList<string> existMapBitmapDirectories;
-
-
         private Color GetDrawBgColor(bool transparent)
         {
             return transparent ? Color.Transparent : BGColor;
@@ -281,8 +274,8 @@ namespace SRCSharpForm
             else if (permanent)
             {
                 //// 背景への描画
-                MainForm.picBack.NewImageIfNull();
-                g = Graphics.FromImage(MainForm.picBack.Image);
+                MainForm.InitBackgroundBufferIfInvalid();
+                g = Graphics.FromImage(MainForm.BackgroundBuffer);
             }
             else
             {
@@ -1110,8 +1103,8 @@ namespace SRCSharpForm
             {
                 // 背景書き込み
                 //// 背景への描画
-                MainForm.picBack.NewImageIfNull();
-                g = Graphics.FromImage(MainForm.picBack.Image);
+                MainForm.InitBackgroundBufferIfInvalid();
+                g = Graphics.FromImage(MainForm.BackgroundBuffer);
                 //// フォント設定を変更
                 //{
                 //    var withBlock = MainForm.picBack;
@@ -1279,7 +1272,7 @@ namespace SRCSharpForm
 
         public SizeF MeasureString(string msg)
         {
-            using var g = Graphics.FromImage(MainForm.picBack.Image);
+            using var g = Graphics.FromImage(MainForm.BackgroundBuffer);
             return g.MeasureStringWithoutRightMargin(msg, currentDrawFont);
         }
     }
