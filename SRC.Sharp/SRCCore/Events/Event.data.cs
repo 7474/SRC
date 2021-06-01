@@ -66,7 +66,7 @@ namespace SRCCore.Events
             ObjColor = Color.White;
             ObjFillColor = Color.White;
             // XXX マッピング先が微妙。実装見て見直す。
-            ObjFillStyle = HatchStyle.Min;
+            ObjFillStyle = FillStyle.VbFSTransparent;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
 

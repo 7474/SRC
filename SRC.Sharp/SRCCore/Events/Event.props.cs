@@ -108,7 +108,7 @@ namespace SRCCore.Events
         // オブジェクトの背景色
         public Color ObjFillColor;
         // オブジェクトの背景描画方法
-        public HatchStyle ObjFillStyle;
+        public FillStyle ObjFillStyle;
         // オブジェクトの描画方法
         public string ObjDrawOption;
 

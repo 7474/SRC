@@ -1227,13 +1227,6 @@ namespace SRCCore.Units
         ApplyDamage:
             ;
 
-            //// XXX 仮メッセージ
-            //GUI.DisplaySysMessage(
-            //    $"{Name}({w.Name}) -> {t.Name}" +
-            //    Environment.NewLine +
-            //    $"{prob}%...{(is_hit ? "Hit" : "Miss")} {dmg}",
-            //    SRC.BattleAnimation);
-
             // ダメージの適用
             t.HP = t.HP - dmg;
             {
@@ -2479,7 +2472,6 @@ namespace SRCCore.Units
                             }
                             else if (cfw.IsWeaponClassifiedAs("変"))
                             {
-                                // XXX 変形技
                                 if (cf.IsFeatureAvailable("変形技"))
                                 {
                                     var uname = "";

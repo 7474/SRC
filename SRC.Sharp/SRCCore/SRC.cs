@@ -22,6 +22,7 @@ namespace SRCCore
         public IGUI GUI { get; set; }
         public IGUIMap GUIMap { get; set; }
         public IGUIStatus GUIStatus { get; set; }
+        public IGUIScrean GUIScrean { get; set; }
         public IFileSystem FileSystem { get; set; }
 
         public Help Help { get; }
