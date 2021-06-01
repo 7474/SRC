@@ -133,6 +133,7 @@ namespace SRCSharpForm
             };
             SRC.GUIMap = MainForm;
             SRC.GUIStatus = MainForm;
+            SRC.GUIScrean = MainForm;
             MainForm.Init(imageBuffer);
 
             frmListBox = new frmListBox()

@@ -12,12 +12,12 @@ namespace SRCCore
     // 画面描画のGUIインタフェース
     public interface IGUIScrean
     {
-        void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, double start_angle, double end_angle);
+        void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle);
     }
 
     public class ScreanDrawOption
     {
-        public ScreanDrawMode DrawMode { get; set; }
+        public ScreanDrawMode DrawOption { get; set; }
         public Color ForeColor { get; set; }
         public int DrawWidth { get; set; }
         public Color FillColor { get; set; }
@@ -26,7 +26,7 @@ namespace SRCCore
         public ScreanDrawOption() { }
         public ScreanDrawOption(Events.Event e, Color foreColor)
         {
-            DrawMode = GUIScreanExtension.ScreanDrawModeFrom(e.ObjDrawOption);
+            DrawOption = GUIScreanExtension.ScreanDrawModeFrom(e.ObjDrawOption);
             ForeColor = foreColor;
             DrawWidth = e.ObjDrawWidth;
             FillColor = e.ObjFillColor;

@@ -22,8 +22,10 @@ namespace SRCCore.CmdDatas.Commands
             var x1 = (GetArgAsLong(2) + Event.BaseX);
             var y1 = (GetArgAsLong(3) + Event.BaseY);
             var rad = GetArgAsLong(4);
-            var start_angle = Math.PI * GetArgAsDouble(5) / 180d;
-            var end_angle = Math.PI * GetArgAsDouble(6) / 180d;
+            // TODO 回転方向逆だがインタフェースをどうするか
+            // 円弧の開始・終了角度はstart,end で指定します。角度の指定は右向きが0度で、そこから時計と逆周りに増加していきます(例 上向きが90)。0から360までの値で指定して下さい。
+            var start_angle = GetArgAsDouble(5) % 360;
+            var end_angle = GetArgAsDouble(6) % 360;
 
             // TODO 振る舞い確認していない
             // 塗りつぶしの際は角度を負の値にする必要がある
@@ -60,61 +62,8 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Arcコマンドに不正なオプション「" + opt + "」が使われています");
                 }
             }
-            var drawOption = new ScreanDrawOption(Event, clr);
-            SRC.GUIScrean.ArcCmd(drawOption, x1, y1, rad, start_angle, end_angle);
 
-            //// 描画先
-            //switch (Event.ObjDrawOption ?? "")
-            //{
-            //    case "背景":
-            //        {
-            //            pic = GUI.MainForm.picBack;
-            //            pic2 = GUI.MainForm.picMaskedBack;
-            //            Map.IsMapDirty = true;
-            //            break;
-            //        }
-
-            //    case "保持":
-            //        {
-            //            pic = GUI.MainForm.picMain(0);
-            //            pic2 = GUI.MainForm.picMain(1);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            pic = GUI.MainForm.picMain(0);
-            //            break;
-            //        }
-            //}
-
-            //// 描画領域
-            //short tmp;
-            //if (Event.ObjDrawOption != "背景")
-            //{
-            //    GUI.IsPictureVisible = true;
-            //    tmp = (rad + Event.ObjDrawWidth - 1);
-            //    GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-            //    GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-            //    GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
-            //    GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
-            //}
-
-            //pic.Circle(x1, y1);
-            //pic.DrawWidth = 1;
-            //pic.FillColor = ColorTranslator.ToOle(Color.White);
-            //pic.FillStyle = vbFSTransparent;
-            //if (pic2 is object)
-            //{
-            //    pic2.DrawWidth = Event.ObjDrawWidth;
-            //    pic2.FillColor = Event.ObjFillColor;
-            //    pic2.FillStyle = Event.ObjFillStyle;
-
-            //    pic2.Circle(x1, y1);
-            //    pic2.DrawWidth = 1;
-            //    pic2.FillColor = ColorTranslator.ToOle(Color.White);
-            //    pic2.FillStyle = vbFSTransparent;
-            //}
+            SRC.GUIScrean.ArcCmd(new ScreanDrawOption(Event, clr), x1, y1, rad, (float)start_angle, (float)end_angle);
 
             return EventData.NextID;
         }
