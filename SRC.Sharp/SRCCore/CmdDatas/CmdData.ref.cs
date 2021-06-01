@@ -25,8 +25,8 @@
 //            x1 = (GetArgAsLong(2) + Event.BaseX);
 //            y1 = (GetArgAsLong(3) + Event.BaseY);
 //            rad = GetArgAsLong(4);
-//            start_angle = 3.1415926535d * GetArgAsDouble(5) / 180d;
-//            end_angle = 3.1415926535d * GetArgAsDouble(6) / 180d;
+//            start_angle = Math.PI * GetArgAsDouble(5) / 180d;
+//            end_angle = Math.PI * GetArgAsDouble(6) / 180d;
 
 //            // 塗りつぶしの際は角度を負の値にする必要がある
 //            if (Event.ObjFillStyle != vbFSTransparent)

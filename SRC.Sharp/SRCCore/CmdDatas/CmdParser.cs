@@ -36,7 +36,7 @@ namespace SRCCore.CmdDatas
                 switch (Strings.LCase(list[0]) ?? "")
                 {
                     case "arc":
-                        return new NotImplementedCmd(src, data);
+                        return new ArcCmd(src, data);
 
                     case "array":
                         return new ArrayCmd(src, data);

@@ -393,7 +393,7 @@ namespace SRCCore.Events
             // XXX これはEventsが持ってていいのか？
             ObjColor = Color.White;
             ObjFillColor = Color.White;
-            ObjFillStyle = HatchStyle.Min; //vbFSTransparent;
+            ObjFillStyle = FillStyle.VbFSTransparent;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
 

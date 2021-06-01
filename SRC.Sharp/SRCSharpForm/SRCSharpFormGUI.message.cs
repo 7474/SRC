@@ -1,4 +1,5 @@
 using SRCCore;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -1577,14 +1578,12 @@ namespace SRCSharpForm
                                                         {
                                                             if (Strings.Asc(cname) == 35 && cname.Length == 7) // #
                                                             {
-                                                                try
-                                                                {
-                                                                    currentMessageFontColor = new SolidBrush(ColorTranslator.FromHtml(cname));
-                                                                }
-                                                                catch (Exception)
+                                                                Color color;
+                                                                if (!ColorExtension.TryFromHexString(cname, out color))
                                                                 {
                                                                     throw new Exception($"色の指定が不正です。[{cname}]");
                                                                 }
+                                                                currentMessageFontColor = new SolidBrush(color);
                                                             }
                                                             break;
                                                         }
