@@ -398,7 +398,7 @@ namespace SRCSharpForm
 
         public int MakeUnitBitmap(Unit u)
         {
-            throw new NotImplementedException();
+            return -1;
         }
 
         public void PaintUnitBitmap(Unit u, string smode)
