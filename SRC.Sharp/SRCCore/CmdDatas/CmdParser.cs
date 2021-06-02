@@ -93,7 +93,7 @@ namespace SRCCore.CmdDatas
                         return new ChangeUnitBitmapCmd(src, data);
 
                     case "charge":
-                        return new NotImplementedCmd(src, data);
+                        return new ChargeCmd(src, data);
 
                     case "circle":
                         return new NotImplementedCmd(src, data);
