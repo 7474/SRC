@@ -102,7 +102,7 @@ namespace SRCCore.Units
                 {
                     if (Strings.Right(cnd.Name, 2) == "付加")
                     {
-                      var  fd = new FeatureData();
+                        var fd = new FeatureData();
                         fd.Name = Strings.Left(cnd.Name, Strings.Len(cnd.Name) - 2);
                         fd.Level = cnd.Level;
                         fd.StrData = cnd.StrData;
@@ -671,275 +671,257 @@ namespace SRCCore.Units
             intMobility = Data.Mobility + 5 * Rank;
             intSpeed = Data.Speed;
 
-            //    // ボスランクによる修正
-            //    if (IsHero() || Expression.IsOptionDefined("等身大基準"))
-            //    {
-            //        switch (BossRank)
-            //        {
-            //            case 1:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP;
-            //                    break;
-            //                }
+            // ボスランクによる修正
+            if (IsHero() || Expression.IsOptionDefined("等身大基準"))
+            {
+                switch (BossRank)
+                {
+                    case 1:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP;
+                            break;
+                        }
 
-            //            case 2:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 10000;
-            //                    break;
-            //                }
+                    case 2:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 10000;
+                            break;
+                        }
 
-            //            case 3:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 20000;
-            //                    break;
-            //                }
+                    case 3:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 20000;
+                            break;
+                        }
 
-            //            case 4:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 40000;
-            //                    break;
-            //                }
+                    case 4:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 40000;
+                            break;
+                        }
 
-            //            case 5:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 80000;
-            //                    break;
-            //                }
-            //        }
+                    case 5:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 80000;
+                            break;
+                        }
+                }
 
-            //        if (BossRank > 0)
-            //        {
-            //            lngArmor = lngArmor + 200 * BossRank;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        switch (BossRank)
-            //        {
-            //            case 1:
-            //                {
-            //                    lngMaxHP = (int)(lngMaxHP + 0.5d * Data.HP);
-            //                    break;
-            //                }
+                if (BossRank > 0)
+                {
+                    lngArmor = lngArmor + 200 * BossRank;
+                }
+            }
+            else
+            {
+                switch (BossRank)
+                {
+                    case 1:
+                        {
+                            lngMaxHP = (int)(lngMaxHP + 0.5d * Data.HP);
+                            break;
+                        }
 
-            //            case 2:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP;
-            //                    break;
-            //                }
+                    case 2:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP;
+                            break;
+                        }
 
-            //            case 3:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 10000;
-            //                    break;
-            //                }
+                    case 3:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 10000;
+                            break;
+                        }
 
-            //            case 4:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 20000;
-            //                    break;
-            //                }
+                    case 4:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 20000;
+                            break;
+                        }
 
-            //            case 5:
-            //                {
-            //                    lngMaxHP = lngMaxHP + Data.HP + 40000;
-            //                    break;
-            //                }
-            //        }
+                    case 5:
+                        {
+                            lngMaxHP = lngMaxHP + Data.HP + 40000;
+                            break;
+                        }
+                }
 
-            //        if (Expression.IsOptionDefined("BossRank装甲修正低下"))
-            //        {
-            //            if (BossRank > 0)
-            //            {
-            //                lngArmor = lngArmor + 300 * BossRank;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            switch (BossRank)
-            //            {
-            //                case 1:
-            //                    {
-            //                        lngArmor = lngArmor + 300;
-            //                        break;
-            //                    }
+                if (Expression.IsOptionDefined("BossRank装甲修正低下"))
+                {
+                    if (BossRank > 0)
+                    {
+                        lngArmor = lngArmor + 300 * BossRank;
+                    }
+                }
+                else
+                {
+                    switch (BossRank)
+                    {
+                        case 1:
+                            {
+                                lngArmor = lngArmor + 300;
+                                break;
+                            }
 
-            //                case 2:
-            //                    {
-            //                        lngArmor = lngArmor + 600;
-            //                        break;
-            //                    }
+                        case 2:
+                            {
+                                lngArmor = lngArmor + 600;
+                                break;
+                            }
 
-            //                case 3:
-            //                    {
-            //                        lngArmor = lngArmor + 1000;
-            //                        break;
-            //                    }
+                        case 3:
+                            {
+                                lngArmor = lngArmor + 1000;
+                                break;
+                            }
 
-            //                case 4:
-            //                    {
-            //                        lngArmor = lngArmor + 1500;
-            //                        break;
-            //                    }
+                        case 4:
+                            {
+                                lngArmor = lngArmor + 1500;
+                                break;
+                            }
 
-            //                case 5:
-            //                    {
-            //                        lngArmor = lngArmor + 2500;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+                        case 5:
+                            {
+                                lngArmor = lngArmor + 2500;
+                                break;
+                            }
+                    }
+                }
+            }
 
-            //    if (BossRank > 0)
-            //    {
-            //        intMaxEN = (intMaxEN + 20 * BossRank);
-            //        intMobility = (intMobility + 5 * BossRank);
-            //    }
+            if (BossRank > 0)
+            {
+                intMaxEN = (intMaxEN + 20 * BossRank);
+                intMobility = (intMobility + 5 * BossRank);
+            }
 
-            //    // ＨＰ成長オプション
-            //    if (Expression.IsOptionDefined("ＨＰ成長"))
-            //    {
-            //        if (CountPilot() > 0)
-            //        {
-            //            lngMaxHP = GeneralLib.MinLng((int)(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
-            //        }
-            //    }
+            // ＨＰ成長オプション
+            if (Expression.IsOptionDefined("ＨＰ成長"))
+            {
+                if (CountPilot() > 0)
+                {
+                    lngMaxHP = GeneralLib.MinLng((int)(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
+                }
+            }
 
-            //    // ＥＮ成長オプション
-            //    if (Expression.IsOptionDefined("ＥＮ成長"))
-            //    {
-            //        if (CountPilot() > 0)
-            //        {
-            //            intMaxEN = GeneralLib.MinLng((int)(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
-            //        }
-            //    }
+            // ＥＮ成長オプション
+            if (Expression.IsOptionDefined("ＥＮ成長"))
+            {
+                if (CountPilot() > 0)
+                {
+                    intMaxEN = GeneralLib.MinLng((int)(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
+                }
+            }
 
-            //    // 特殊能力による修正
-            //    if (CountPilot() > 0)
-            //    {
-            //        pmorale = MainPilot().Morale;
-            //    }
-            //    else
-            //    {
-            //        pmorale = 100;
-            //    }
+            // 特殊能力による修正
+            int pmorale;
+            if (CountPilot() > 0)
+            {
+                pmorale = MainPilot().Morale;
+            }
+            else
+            {
+                pmorale = 100;
+            }
 
-            //    foreach (FeatureData currentFd2 in colFeature)
-            //    {
-            //        fd = currentFd2;
-            //        switch (fd.Name ?? "")
-            //        {
-            //            // 固定値による強化
-            //            case "ＨＰ強化":
-            //                {
-            //                    int localStrToLng() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+            foreach (FeatureData fd in colFeature.List)
+            {
+                switch (fd.Name ?? "")
+                {
+                    // 固定値による強化
+                    case "ＨＰ強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                lngMaxHP = (int)(lngMaxHP + 200d * fd.Level);
+                            }
 
-            //                    if (pmorale >= localStrToLng())
-            //                    {
-            //                        lngMaxHP = (int)(lngMaxHP + 200d * fd.Level);
-            //                    }
+                            break;
+                        }
 
-            //                    break;
-            //                }
+                    case "ＥＮ強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                intMaxEN = (int)(intMaxEN + 10d * fd.Level);
+                            }
 
-            //            case "ＥＮ強化":
-            //                {
-            //                    int localStrToLng1() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+                            break;
+                        }
 
-            //                    if (pmorale >= localStrToLng1())
-            //                    {
-            //                        intMaxEN = (intMaxEN + 10d * fd.Level);
-            //                    }
+                    case "装甲強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                lngArmor = (int)(lngArmor + 100d * fd.Level);
+                            }
 
-            //                    break;
-            //                }
+                            break;
+                        }
 
-            //            case "装甲強化":
-            //                {
-            //                    int localStrToLng2() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+                    case "運動性強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                intMobility = (int)(intMobility + 5d * fd.Level);
+                            }
 
-            //                    if (pmorale >= localStrToLng2())
-            //                    {
-            //                        lngArmor = (int)(lngArmor + 100d * fd.Level);
-            //                    }
+                            break;
+                        }
 
-            //                    break;
-            //                }
+                    case "移動力強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                intSpeed = (int)(intSpeed + fd.Level);
+                            }
 
-            //            case "運動性強化":
-            //                {
-            //                    int localStrToLng3() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+                            break;
+                        }
+                    // 割合による強化
+                    case "ＨＰ割合強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                lngMaxHP = (int)(lngMaxHP + (long)(Data.HP * fd.Level) / 20L);
+                            }
 
-            //                    if (pmorale >= localStrToLng3())
-            //                    {
-            //                        intMobility = (intMobility + 5d * fd.Level);
-            //                    }
+                            break;
+                        }
 
-            //                    break;
-            //                }
+                    case "ＥＮ割合強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                intMaxEN = (int)(intMaxEN + (long)(Data.EN * fd.Level) / 20L);
+                            }
 
-            //            case "移動力強化":
-            //                {
-            //                    int localStrToLng4() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+                            break;
+                        }
 
-            //                    if (pmorale >= localStrToLng4())
-            //                    {
-            //                        intSpeed = (intSpeed + fd.Level);
-            //                    }
+                    case "装甲割合強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                lngArmor = (int)(lngArmor + (long)(Data.Armor * fd.Level) / 20L);
+                            }
 
-            //                    break;
-            //                }
-            //            // 割合による強化
-            //            case "ＨＰ割合強化":
-            //                {
-            //                    int localStrToLng5() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
+                            break;
+                        }
 
-            //                    if (pmorale >= localStrToLng5())
-            //                    {
-            //                        lngMaxHP = (int)(lngMaxHP + (long)(Data.HP * fd.Level) / 20L);
-            //                    }
+                    case "運動性割合強化":
+                        {
+                            if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
+                            {
+                                intMobility = (int)(intMobility + (long)(Data.Mobility * fd.Level) / 20L);
+                            }
 
-            //                    break;
-            //                }
-
-            //            case "ＥＮ割合強化":
-            //                {
-            //                    int localStrToLng6() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                    if (pmorale >= localStrToLng6())
-            //                    {
-            //                        intMaxEN = (intMaxEN + (long)(Data.EN * fd.Level) / 20L);
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "装甲割合強化":
-            //                {
-            //                    int localStrToLng7() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                    if (pmorale >= localStrToLng7())
-            //                    {
-            //                        lngArmor = (int)(lngArmor + (long)(Data.Armor * fd.Level) / 20L);
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "運動性割合強化":
-            //                {
-            //                    int localStrToLng8() { string argexpr = GeneralLib.LIndex(fd.StrData, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                    if (pmorale >= localStrToLng8())
-            //                    {
-            //                        intMobility = (intMobility + (long)(Data.Mobility * fd.Level) / 20L);
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-            //    }
+                            break;
+                        }
+                }
+            }
 
             //    // アイテムによる修正
             //    foreach (Item currentItm2 in colItem)
