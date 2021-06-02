@@ -72,7 +72,7 @@ namespace SRCCore.CmdDatas
                         return new CenterCmd(src, data);
 
                     case "changearea":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeAreaCmd(src, data);
 
                     case "changelayer":
                         return new NotImplementedCmd(src, data);
