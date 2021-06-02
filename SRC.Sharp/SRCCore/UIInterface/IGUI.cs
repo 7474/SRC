@@ -176,6 +176,7 @@ namespace SRCCore
 
         // === ユニット画像表示に関する処理 ===
 
+        // TODO 掃除
         // ユニットのビットマップを作成
         int MakeUnitBitmap(Unit u);
         // ユニットのビットマップをロード

@@ -51,7 +51,7 @@ namespace SRCCore.CmdDatas
                         return new AutoTalkCmd(src, data);
 
                     case "bossrank":
-                        return new NotImplementedCmd(src, data);
+                        return new BossRankCmd(src, data);
 
                     case "break":
                         return new BreakCmd(src, data);
@@ -72,7 +72,7 @@ namespace SRCCore.CmdDatas
                         return new CenterCmd(src, data);
 
                     case "changearea":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeAreaCmd(src, data);
 
                     case "changelayer":
                         return new NotImplementedCmd(src, data);
@@ -90,10 +90,10 @@ namespace SRCCore.CmdDatas
                         return new ChangeTerrainCmd(src, data);
 
                     case "changeunitbitmap":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeUnitBitmapCmd(src, data);
 
                     case "charge":
-                        return new NotImplementedCmd(src, data);
+                        return new ChargeCmd(src, data);
 
                     case "circle":
                         return new NotImplementedCmd(src, data);
