@@ -551,17 +551,11 @@ namespace SRCSharpForm
                     break;
             }
 
-            // XXX BitmapMissing
-            // TODO 対象画像の解決
-            var unitImage = imageBuffer.GetTransparent(SRC.FileSystem.PathCombine("Unit", u.CurrentForm().Data.Bitmap));
+            var unitImage = imageBuffer.GetTransparent(u.CurrentForm().CurrentBitmap());
             // (発光している場合は２度塗りを防ぐため描画しない)
             if (unitImage != null && !emit_light)
             {
                 g.DrawImage(unitImage, destRect);
-            }
-            else
-            {
-                u.CurrentForm().Data.IsBitmapMissing = true;
             }
 
             // TODO Impl フィルタ

@@ -993,32 +993,38 @@ namespace SRCCore.Units
             //    return MobilityRet;
         }
 
+        // 描画すべきビットマップ
+        public string CurrentBitmap()
+        {
+            if (IsConditionSatisfied("非表示付加"))
+            {
+                return "-.bmp";
+            }
+            // TODO Unitフォルダ以外の走査
+            return SRC.FileSystem.PathCombine("Unit", CurrentForm().get_Bitmap(false));
+        }
+
         // ビットマップ
         public string get_Bitmap(bool use_orig)
         {
-            string BitmapRet = default;
             if (IsConditionSatisfied("ユニット画像"))
             {
-                BitmapRet = GeneralLib.LIndex(Condition("ユニット画像").StrData, 2);
-                return default;
+                return GeneralLib.LIndex(Condition("ユニット画像").StrData, 2);
             }
 
             if (IsFeatureAvailable("ユニット画像"))
             {
-                BitmapRet = FeatureData("ユニット画像");
-                return default;
+                return FeatureData("ユニット画像");
             }
 
             if (use_orig)
             {
-                BitmapRet = Data.Bitmap0;
+                return Data.Bitmap0;
             }
             else
             {
-                BitmapRet = Data.Bitmap;
+                return Data.Bitmap;
             }
-
-            return BitmapRet;
         }
 
         // 修理費(獲得資金)

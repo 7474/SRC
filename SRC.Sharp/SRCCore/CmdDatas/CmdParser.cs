@@ -90,7 +90,7 @@ namespace SRCCore.CmdDatas
                         return new ChangeTerrainCmd(src, data);
 
                     case "changeunitbitmap":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeUnitBitmapCmd(src, data);
 
                     case "charge":
                         return new NotImplementedCmd(src, data);
