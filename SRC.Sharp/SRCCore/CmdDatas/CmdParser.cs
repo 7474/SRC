@@ -51,7 +51,7 @@ namespace SRCCore.CmdDatas
                         return new AutoTalkCmd(src, data);
 
                     case "bossrank":
-                        return new NotImplementedCmd(src, data);
+                        return new BossRankCmd(src, data);
 
                     case "break":
                         return new BreakCmd(src, data);
