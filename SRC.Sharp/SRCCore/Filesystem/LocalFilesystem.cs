@@ -1,4 +1,5 @@
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,11 +12,13 @@ namespace SRCCore.Filesystem
     public class LocalFileSystem : IFileSystem
     {
         private IList<ILocalFileSystemEntrySet> entrySets;
+        private IList<ILocalFileSystemEntrySet> safeEntrySets;
 
         public LocalFileSystem()
         {
             entrySets = new List<ILocalFileSystemEntrySet>();
             entrySets.Add(new LocalFileSystemAbsolute());
+            safeEntrySets = new List<ILocalFileSystemEntrySet>();
         }
 
         public string PathCombine(params string[] paths)
@@ -60,6 +63,30 @@ namespace SRCCore.Filesystem
             entrySets.Insert(1, entrySet);
         }
 
+        public void AddSafePath(string basePath)
+        {
+            if (Directory.Exists(basePath))
+            {
+                safeEntrySets.Add(new LocalFileSystemPath(
+                    basePath
+                ));
+            }
+        }
+
+        public Stream OpenSafe(SafeOpenMode mode, params string[] paths)
+        {
+            var path = PathCombine(paths);
+            var entry = safeEntrySets.FirstOrDefault(x => x.Exists(path));
+            if (entry == null) { return null; }
+            switch (mode)
+            {
+                case SafeOpenMode.Read: return entry.OpenRead(path);
+                case SafeOpenMode.Write: return entry.OpenWrite(path);
+                case SafeOpenMode.Append: return entry.OpenAppend(path);
+                default: throw new NotImplementedException();
+            }
+        }
+
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
         {
             return ToRelativePath(scenarioPath, a).ToLower() == ToRelativePath(scenarioPath, b).ToLower();
@@ -87,6 +114,8 @@ namespace SRCCore.Filesystem
     {
         bool Exists(string entryName);
         Stream OpenRead(string entryName);
+        Stream OpenWrite(string entryName);
+        Stream OpenAppend(string entryName);
     }
 
     public class LocalFileSystemAbsolute : ILocalFileSystemEntrySet
@@ -109,6 +138,16 @@ namespace SRCCore.Filesystem
         {
             var info = GetFileInfo(entryName);
             return info?.Exists ?? false ? info.OpenRead() : null;
+        }
+
+        public Stream OpenWrite(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Stream OpenAppend(string entryName)
+        {
+            throw new NotSupportedException();
         }
     }
 
@@ -148,6 +187,18 @@ namespace SRCCore.Filesystem
             var info = GetFileInfo(entryName);
             return info?.Exists ?? false ? info.OpenRead() : null;
         }
+
+        public Stream OpenWrite(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            return info?.OpenWrite();
+        }
+
+        public Stream OpenAppend(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
+        }
     }
 
     public class LocalFileSystemArchive : ILocalFileSystemEntrySet
@@ -179,7 +230,7 @@ namespace SRCCore.Filesystem
 
         private ZipArchiveEntry GetEntry(string entryName)
         {
-            while(!_entryMapResolveTask.IsCompleted)
+            while (!_entryMapResolveTask.IsCompleted)
             {
                 Task.Delay(100).Wait();
             }
@@ -207,6 +258,16 @@ namespace SRCCore.Filesystem
         public Stream OpenRead(string entryName)
         {
             return GetEntry(entryName).Open();
+        }
+
+        public Stream OpenWrite(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Stream OpenAppend(string entryName)
+        {
+            throw new NotSupportedException();
         }
     }
 }
