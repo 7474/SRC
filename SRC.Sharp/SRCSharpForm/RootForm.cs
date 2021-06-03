@@ -74,6 +74,7 @@ namespace SRCSharpForm
                 {
                     Hide();
                     SRC.FileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
+                    SRC.FileSystem.AddSafePath(Path.GetDirectoryName(fbd.FileName));
                     SRC.Execute(fbd.FileName);
                 }
             }
