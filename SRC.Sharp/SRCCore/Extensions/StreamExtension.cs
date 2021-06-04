@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
+using ShiftJISExtension;
 using System.IO;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SRCCore.Extensions
 {
@@ -23,6 +22,20 @@ namespace SRCCore.Extensions
             finally
             {
                 stream.Dispose();
+            }
+        }
+
+        public static Stream ToTextStream(this Stream stream, SRCCompatibilityMode srcCompatibilityMode)
+        {
+            if (srcCompatibilityMode.HasFlag(SRCCompatibilityMode.Read))
+            {
+                // XXX あまりいい同期化ではないはず
+                // Streamには同期メソッドがあるはずなので、同期処理したいなら同期メソッドを一貫して使うメソッドにするのがよさそう
+                return Task.Run(() => stream.ToUTF8Async()).Result;
+            }
+            else
+            {
+                return stream;
             }
         }
     }

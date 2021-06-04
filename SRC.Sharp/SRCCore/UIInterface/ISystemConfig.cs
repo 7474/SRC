@@ -7,7 +7,7 @@ namespace SRCCore
     // システムオプション
     public interface ISystemConfig
     {
-        bool SRCCompatibilityMode { get; set; }
+        SRCCompatibilityMode SRCCompatibilityMode { get; set; }
 
         // 敵フェイズにはＢＧＭを変更しないか
         bool KeepEnemyBGM { get; set; }
@@ -55,5 +55,13 @@ namespace SRCCore
 
         void Save();
         void Load();
+    }
+
+    public enum SRCCompatibilityMode
+    {
+        None = 0,
+        Read = 1,
+        Write = 2,
+        ReadWrite = 3,
     }
 }
