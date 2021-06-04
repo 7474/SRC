@@ -25,18 +25,12 @@ namespace SRCCore.Filesystem
 
         //
         /// <summary>
-        /// シナリオから読み込み操作できるパスを追加します。
+        /// シナリオから操作できるパスを追加します。
         /// </summary>
         /// <param name="basePath"></param>
-        void AddSafeReadPath(string basePath);
+        void AddSafePath(string basePath);
         /// <summary>
-        /// シナリオから書き込み操作できるパスを追加します。
-        /// </summary>
-        /// <param name="basePath"></param>
-        void AddSafeWritePath(string basePath);
-
-        /// <summary>
-        /// <see cref="AddSafeReadPath"/>で追加したパスからの相対パスでファイルを開きます。
+        /// <see cref="AddSafePath"/>で追加したパスからの相対パスでファイルを開きます。
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="paths"></param>

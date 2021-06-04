@@ -12,15 +12,13 @@ namespace SRCCore.Filesystem
     public class LocalFileSystem : IFileSystem
     {
         private IList<ILocalFileSystemEntrySet> entrySets;
-        private IList<ILocalFileSystemEntrySet> safeReadEntrySets;
-        private IList<ILocalFileSystemEntrySet> safeWriteEntrySets;
+        private IList<ILocalFileSystemEntrySet> safeEntrySets;
 
         public LocalFileSystem()
         {
             entrySets = new List<ILocalFileSystemEntrySet>();
             entrySets.Add(new LocalFileSystemAbsolute());
-            safeReadEntrySets = new List<ILocalFileSystemEntrySet>();
-            safeWriteEntrySets = new List<ILocalFileSystemEntrySet>();
+            safeEntrySets = new List<ILocalFileSystemEntrySet>();
         }
 
         public string PathCombine(params string[] paths)
@@ -65,20 +63,11 @@ namespace SRCCore.Filesystem
             entrySets.Insert(1, entrySet);
         }
 
-        public void AddSafeReadPath(string basePath)
+        public void AddSafePath(string basePath)
         {
             if (Directory.Exists(basePath))
             {
-                safeReadEntrySets.Add(new LocalFileSystemPath(
-                    basePath
-                ));
-            }
-        }
-        public void AddSafeWritePath(string basePath)
-        {
-            if (Directory.Exists(basePath))
-            {
-                safeWriteEntrySets.Add(new LocalFileSystemPath(
+                safeEntrySets.Add(new LocalFileSystemPath(
                     basePath
                 ));
             }
@@ -87,8 +76,7 @@ namespace SRCCore.Filesystem
         public Stream OpenSafe(SafeOpenMode mode, params string[] paths)
         {
             var path = PathCombine(paths);
-            var entry = (mode == SafeOpenMode.Read ? safeReadEntrySets : safeWriteEntrySets)
-                .FirstOrDefault(x => x.Exists(path));
+            var entry = safeEntrySets.FirstOrDefault(x => x.Exists(path));
             if (entry == null) { return null; }
             switch (mode)
             {
