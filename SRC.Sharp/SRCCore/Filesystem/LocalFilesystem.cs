@@ -77,7 +77,14 @@ namespace SRCCore.Filesystem
         {
             var path = PathCombine(paths);
             var entry = safeEntrySets.FirstOrDefault(x => x.Exists(path));
-            if (entry == null) { return null; }
+            if (entry == null)
+            {
+                if (mode == SafeOpenMode.Read)
+                {
+                    return null;
+                }
+                entry = safeEntrySets.First();
+            }
             switch (mode)
             {
                 case SafeOpenMode.Read: return entry.OpenRead(path);
