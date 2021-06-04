@@ -24,9 +24,30 @@ namespace SRCCore.Filesystem
         void AddAchive(string basePath, string archivePath);
 
         //
+        /// <summary>
+        /// シナリオから操作できるパスを追加します。
+        /// </summary>
+        /// <param name="basePath"></param>
+        void AddSafePath(string basePath);
+        /// <summary>
+        /// <see cref="AddSafePath"/>で追加したパスからの相対パスでファイルを開きます。
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        Stream OpenSafe(SafeOpenMode mode, params string[] paths);
+
+        //
         bool RelativePathEuqals(string scenarioPath, string a, string b);
         string ToAbsolutePath(string scenarioPath, string path);
         string ToRelativePath(string scenarioPath, string path);
         string NormalizePath(string path);
+    }
+
+    public enum SafeOpenMode
+    {
+        Read,
+        Write,
+        Append,
     }
 }

@@ -132,7 +132,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "close":
-                        return new NotImplementedCmd(src, data);
+                        return new CloseCmd(src, data);
 
                     case "color":
                         return new NotImplementedCmd(src, data);
@@ -312,7 +312,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "lineread":
-                        return new NotImplementedCmd(src, data);
+                        return new LineReadCmd(src, data);
 
                     case "load":
                         return new NotImplementedCmd(src, data);
@@ -350,7 +350,7 @@ namespace SRCCore.CmdDatas
                         return new NoonCmd(src, data);
 
                     case "open":
-                        return new NotImplementedCmd(src, data);
+                        return new OpenCmd(src, data);
 
                     case "option":
                         return new OptionCmd(src, data);
@@ -383,7 +383,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "print":
-                        return new NotImplementedCmd(src, data);
+                        return new PrintCmd(src, data);
 
                     case "pset":
                         return new NotImplementedCmd(src, data);

@@ -24,6 +24,7 @@ namespace SRCCore
         public IGUIStatus GUIStatus { get; set; }
         public IGUIScrean GUIScrean { get; set; }
         public IFileSystem FileSystem { get; set; }
+        public FileHandleManager FileHandleManager { get; private set; }
 
         public Help Help { get; }
         public Expression Expression { get; }
@@ -163,6 +164,7 @@ namespace SRCCore
             COM = new COM(this);
             // TODO 個別にインスタンス化してるの消す
             InterMission = new InterMission(this);
+            FileHandleManager = new FileHandleManager();
 
             PDList = new PilotDataList(this);
             NPDList = new NonPilotDataList(this);

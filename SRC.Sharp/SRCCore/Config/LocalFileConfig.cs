@@ -11,7 +11,7 @@ namespace SRCCore.Config
     // XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。
     public class LocalFileConfig : ISystemConfig
     {
-        public bool SRCCompatibilityMode { get; set; }
+        public SRCCompatibilityMode SRCCompatibilityMode { get; set; }
         public bool ShowSquareLine { get; set; }
         public bool KeepEnemyBGM { get; set; }
         public string ExtDataPath { get; set; }
@@ -47,7 +47,7 @@ namespace SRCCore.Config
             ExtDataPath2 = "";
 
             // 互換モードは既定でOnにしておく
-            SRCCompatibilityMode = true;
+            SRCCompatibilityMode = SRCCompatibilityMode.ReadWrite;
             SoundVolume = 50;
         }
 
