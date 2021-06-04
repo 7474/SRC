@@ -29,6 +29,8 @@ namespace SRCCore.Filesystem
             var h = Get(handle);
             if (h != null)
             {
+                if (h.Reader != null) { h.Reader.Close(); }
+                if (h.Writer != null) { h.Writer.Close(); }
                 h.Dispose();
                 _handles.Remove(handle);
             }
