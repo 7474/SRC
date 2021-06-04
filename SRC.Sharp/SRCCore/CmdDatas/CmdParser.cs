@@ -383,7 +383,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "print":
-                        return new NotImplementedCmd(src, data);
+                        return new PrintCmd(src, data);
 
                     case "pset":
                         return new NotImplementedCmd(src, data);
