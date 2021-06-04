@@ -312,7 +312,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "lineread":
-                        return new NotImplementedCmd(src, data);
+                        return new LineReadCmd(src, data);
 
                     case "load":
                         return new NotImplementedCmd(src, data);

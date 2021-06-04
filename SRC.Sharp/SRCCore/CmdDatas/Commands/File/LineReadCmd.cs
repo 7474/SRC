@@ -1,5 +1,5 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,8 +11,14 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            if (ArgNum != 3)
+            {
+                throw new EventErrorException(this, "LineReadコマンドの引数の数が違います");
+            }
+
+            var buf = SRC.FileHandleManager.Get(GetArgAsLong(2)).Reader.ReadLine();
+            Expression.SetVariableAsString(GetArg(3), buf);
+            return EventData.NextID;
         }
     }
 }
