@@ -937,7 +937,7 @@ namespace SRCCore
                     GUI.CloseNowLoadingForm();
 
                     // インターミッション
-                    new InterMission(this).InterMissionCommand(true);
+                    InterMission.InterMissionCommand(true);
                     if (!IsSubStage)
                     {
                         if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))

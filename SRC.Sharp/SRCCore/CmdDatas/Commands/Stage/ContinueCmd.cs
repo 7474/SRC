@@ -178,7 +178,7 @@ namespace SRCCore.CmdDatas.Commands
             // インターミッションに移行
             if (!SRC.IsSubStage)
             {
-                new InterMission(SRC).InterMissionCommand();
+                SRC.InterMission.InterMissionCommand();
                 if (!SRC.IsSubStage)
                 {
                     if (string.IsNullOrEmpty(Expression.GetValueAsString("次ステージ")))
