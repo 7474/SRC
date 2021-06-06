@@ -1,6 +1,7 @@
 using ShiftJISExtension;
 using SRCCore.Exceptions;
 using SRCCore.Filesystem;
+using SRCCore.TestLib;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -22,7 +23,7 @@ namespace SRCDataLinter
             var SRC = new SRCCore.SRC();
             SRC.SystemConfig.AppPath = AppContext.BaseDirectory;
             SRC.ScenarioPath = Environment.CurrentDirectory;
-            SRC.GUI = new LinterGUI();
+            SRC.GUI = new MockGUI();
             SRC.FileSystem = new LocalFileSystem();
             SRC.Event.InitEventData();
             SRC.Event.SkipExternalSourceLoad = true;
