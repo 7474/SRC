@@ -51,7 +51,6 @@ namespace SRCCore.CmdDatas.Commands
             else if (new_bmp == "非表示")
             {
                 u.AddCondition("非表示付加", -1, 0d, "非表示");
-                u.BitmapID = -1;
                 GUI.EraseUnitBitmap(u.x, u.y, false);
             }
             else if (new_bmp == "非表示解除")
@@ -60,17 +59,10 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     u.DeleteCondition("非表示付加");
                 }
-
-                u.BitmapID = GUI.MakeUnitBitmap(u);
             }
             else
             {
                 throw new EventErrorException(this, "ビットマップファイル名が不正です");
-            }
-
-            if ((u.get_Bitmap(false) ?? "") != (prev_bmp ?? ""))
-            {
-                u.BitmapID = GUI.MakeUnitBitmap(u);
             }
 
             GUI.PaintUnitBitmap(u, "リフレッシュ無し");

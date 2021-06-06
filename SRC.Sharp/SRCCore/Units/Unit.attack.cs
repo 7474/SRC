@@ -2353,7 +2353,6 @@ namespace SRCCore.Units
                 if (t.IsConditionSatisfied("ユニット画像"))
                 {
                     t.DeleteCondition("ユニット画像");
-                    t.BitmapID = GUI.MakeUnitBitmap(t);
                     if (t.Status == "出撃")
                     {
                         GUI.PaintUnitBitmap(t, "リフレッシュ無し");
@@ -2363,7 +2362,6 @@ namespace SRCCore.Units
                 if (t.IsConditionSatisfied("非表示付加"))
                 {
                     t.DeleteCondition("非表示付加");
-                    t.BitmapID = GUI.MakeUnitBitmap(t);
                     if (t.Status == "出撃")
                     {
                         GUI.PaintUnitBitmap(t, "リフレッシュ無し");
@@ -2743,14 +2741,12 @@ namespace SRCCore.Units
                     if (cf.IsConditionSatisfied("ユニット画像"))
                     {
                         cf.DeleteCondition("ユニット画像");
-                        cf.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                         GUI.PaintUnitBitmap(CurrentForm());
                     }
 
                     if (cf.IsConditionSatisfied("非表示付加"))
                     {
                         cf.DeleteCondition("非表示付加");
-                        cf.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                         GUI.PaintUnitBitmap(CurrentForm());
                     }
 
@@ -2761,14 +2757,12 @@ namespace SRCCore.Units
                             if (pcf.IsConditionSatisfied("ユニット画像"))
                             {
                                 pcf.DeleteCondition("ユニット画像");
-                                pcf.BitmapID = GUI.MakeUnitBitmap(partner.CurrentForm());
                                 GUI.PaintUnitBitmap(partner.CurrentForm());
                             }
 
                             if (pcf.IsConditionSatisfied("非表示付加"))
                             {
                                 pcf.DeleteCondition("非表示付加");
-                                pcf.BitmapID = GUI.MakeUnitBitmap(partner.CurrentForm());
                                 GUI.PaintUnitBitmap(partner.CurrentForm());
                             }
                         }

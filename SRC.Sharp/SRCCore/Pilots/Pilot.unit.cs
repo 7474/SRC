@@ -12,6 +12,8 @@ namespace SRCCore.Pilots
     // === ユニット搭乗＆下乗関連処理 ===
     public partial class Pilot
     {
+        public bool IsMainPilot => Unit?.MainPilot() == this;
+
         // ユニット u に搭乗
         public void Ride(Unit u, bool is_support = false)
         {

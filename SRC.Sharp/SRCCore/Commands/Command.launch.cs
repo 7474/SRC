@@ -82,20 +82,20 @@ namespace SRCCore.Commands
                 // 母艦を中央表示
                 GUI.Center(launchUnit.x, launchUnit.y);
 
-                // 発進させるユニットを母艦の代わりに表示
-                if (launchUnit.BitmapID == 0)
-                {
-                    // TODO なんか別のやり方考えたいね。
-                    //var withBlock3 = SRC.UList.Item(launchUnit.Name);
-                    //if ((SelectedTarget.Party0 ?? "") == (withBlock3.Party0 ?? "") & withBlock3.BitmapID != 0 & (SelectedTarget.get_Bitmap(false) ?? "") == (withBlock3.get_Bitmap(false) ?? ""))
-                    //{
-                    //    SelectedTarget.BitmapID = withBlock3.BitmapID;
-                    //}
-                    //else
-                    //{
-                    //    SelectedTarget.BitmapID = GUI.MakeUnitBitmap(SelectedTarget);
-                    //}
-                }
+                // TODO 発進させるユニットを母艦の代わりに表示
+                //// 発進させるユニットを母艦の代わりに表示
+                //if (launchUnit.BitmapID == 0)
+                //{
+                //    var withBlock3 = SRC.UList.Item(launchUnit.Name);
+                //    if ((SelectedTarget.Party0 ?? "") == (withBlock3.Party0 ?? "") & withBlock3.BitmapID != 0 & (SelectedTarget.get_Bitmap(false) ?? "") == (withBlock3.get_Bitmap(false) ?? ""))
+                //    {
+                //        SelectedTarget.BitmapID = withBlock3.BitmapID;
+                //    }
+                //    else
+                //    {
+                //        SelectedTarget.BitmapID = GUI.MakeUnitBitmap(SelectedTarget);
+                //    }
+                //}
 
                 GUI.MaskScreen();
             }

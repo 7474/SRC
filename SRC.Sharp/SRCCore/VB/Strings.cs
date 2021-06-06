@@ -162,5 +162,12 @@ namespace SRCCore.VB
         {
             return string.IsNullOrEmpty(str) ? "" : str.Trim();
         }
+
+        // ---- xxxB
+        public static int LenB(string str)
+        {
+            // TODO LenB
+            return Len(str);
+        }
     }
 }
