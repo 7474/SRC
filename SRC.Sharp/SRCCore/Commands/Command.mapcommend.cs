@@ -454,7 +454,7 @@ namespace SRCCore.Commands
                 };
                 // 検索するスペシャルパワーを選択
                 GUI.TopItem = 1;
-                // TODO Impl
+                // TODO Impl MultiColumnListBox
                 //ret = GUI.MultiColumnListBox(, list, true);
                 var ret = GUI.ListBox(listArgs);
                 if (ret == 0)

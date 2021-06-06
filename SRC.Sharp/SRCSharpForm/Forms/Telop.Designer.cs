@@ -8,7 +8,6 @@ namespace Project1
     [DesignerGenerated()]
     internal partial class frmTelop
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmTelop() : base()
         {
@@ -82,6 +81,5 @@ namespace Project1
             ResumeLayout(false);
             PerformLayout();
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

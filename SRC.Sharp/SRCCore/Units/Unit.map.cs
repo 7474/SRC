@@ -249,7 +249,7 @@ namespace SRCCore.Units
             // マップに登録
             Map.MapDataForUnit[x, y] = this;
 
-            // TODO Impl
+            // TODO Impl ビットマップを作成
             //// ビットマップを作成
             //if (BitmapID == 0)
             //{
@@ -883,7 +883,7 @@ namespace SRCCore.Units
             // 気力減少
             if (!by_cancel)
             {
-                // TODO Impl
+                // TODO Impl 気力減少
                 //{
                 //    var withBlock1 = MainPilot();
                 //    if (withBlock1.Personality != "機械")
@@ -1077,7 +1077,7 @@ namespace SRCCore.Units
                 Summoner = null;
 
                 // アイテム受け継ぎ
-                // TODO Impl
+                // TODO Impl アイテム受け継ぎ
                 //var loopTo2 = CountItem();
                 //for (i = 1; i <= loopTo2; i++)
                 //{
@@ -1224,7 +1224,7 @@ namespace SRCCore.Units
 
                 u.Update();
 
-                // TODO Impl
+                // TODO Impl 弾数データを記録
                 //// 弾数データを記録
                 //wname = new string[(CountWeapon() + 1)];
                 //wbullet = new int[(CountWeapon() + 1)];
@@ -1466,7 +1466,7 @@ namespace SRCCore.Units
                         }
                     }
 
-                    // TODO Impl
+                    // TODO Impl 出撃
                     //bool localIsMessageDefined1() { string argmain_situation = "合体(" + u.Name + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
                     //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }

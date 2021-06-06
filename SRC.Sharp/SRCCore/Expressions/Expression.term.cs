@@ -15,7 +15,7 @@ namespace SRCCore.Expressions
         public string Term(string tname, Unit u = null, short tlen = 0)
         {
             return tname;
-            // TODO Impl
+            // TODO Impl 用語tnameの表示名を参照する
             //string TermRet = default;
             //string vname;
             //short i;

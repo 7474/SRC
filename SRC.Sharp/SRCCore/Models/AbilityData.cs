@@ -40,7 +40,7 @@ namespace SRCCore.Models
         {
             string NicknameRet = default;
             NicknameRet = Name;
-            // TODO Impl
+            // TODO Impl Nickname
             //Expression.ReplaceSubExpression(NicknameRet);
             //if (Strings.InStr(NicknameRet, "(") > 0)
             //{

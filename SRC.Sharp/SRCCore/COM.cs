@@ -1324,7 +1324,7 @@ namespace SRCCore
             }
 
             // サポートアタックのパートナーを探す
-            // TODO Impl
+            // TODO Impl サポートアタックのパートナーを探す
             {
                 //var withBlock14 = Commands.SelectedUnit;
                 //if (withBlock14.Status == "出撃" && Commands.SelectedTarget.Status == "出撃")
@@ -1494,7 +1494,7 @@ namespace SRCCore
                 }
             }
 
-            // TODO Impl
+            // TODO Impl SupportAttackUnit
             if (Commands.SupportAttackUnit is object)
             {
                 //if (Commands.SelectedUnit.MaxSyncAttack() > Commands.SelectedUnit.UsedSyncAttack)
@@ -1666,7 +1666,7 @@ namespace SRCCore
                 }
             }
 
-            // TODO Impl
+            // TODO Impl SupportAttackUnit
             if (Commands.SupportAttackUnit is object)
             {
                 //{
@@ -2630,7 +2630,7 @@ namespace SRCCore
         // ハイパーモードが可能であればハイパーモード発動
         private void TryHyperMode()
         {
-            // TODO Impl
+            // TODO Impl TryHyperMode
             //string uname;
             //Unit u;
             //string fname, fdata;
@@ -2786,7 +2786,7 @@ namespace SRCCore
         // 戦闘形態への変形が可能であれば変形する
         public bool TryBattleTransform()
         {
-            // TODO Impl
+            // TODO Impl TryBattleTransform
             bool TryBattleTransformRet = default;
             //string uname;
             //Unit u;
@@ -3034,7 +3034,7 @@ namespace SRCCore
         // 移動形態への変形が可能であれば変形する
         private bool TryMoveTransform()
         {
-            // TODO Impl
+            // TODO Impl TryMoveTransform
             bool TryMoveTransformRet = default;
             //string uname;
             //Unit u;
@@ -3314,7 +3314,7 @@ namespace SRCCore
         // 実行時間を必要としないアビリティがあれば使っておく
         public void TryInstantAbility()
         {
-            // TODO Impl
+            // TODO Impl TryInstantAbility
             //int i, j;
             //string aname;
             //var partners = default(Unit[]);
@@ -3463,7 +3463,7 @@ namespace SRCCore
         // 召喚が可能であれば召喚する
         public bool TrySummonning()
         {
-            // TODO Impl
+            // TODO Impl TrySummonning
             bool TrySummonningRet = default;
             //int i, j;
             //string aname;
@@ -3555,7 +3555,7 @@ namespace SRCCore
         // マップ型回復アビリティ使用に関する処理
         public bool TryMapHealing(bool moved)
         {
-            // TODO Impl
+            // TODO Impl TryMapHealing
             bool TryMapHealingRet = default;
             //int a;
             //var apower = default;
@@ -3850,7 +3850,7 @@ namespace SRCCore
         // 可能であれば回復アビリティを使う
         public bool TryHealing(bool moved, [Optional, DefaultParameterValue(null)] Unit t)
         {
-            // TODO Impl
+            // TODO Impl TryHealing
             bool TryHealingRet = default;
             //int i, a, j;
             //string aname;
@@ -4266,7 +4266,7 @@ namespace SRCCore
         // 修理が可能であれば修理装置を使う
         public bool TryFix(bool moved, [Optional, DefaultParameterValue(null)] Unit t)
         {
-            // TODO Impl
+            // TODO Impl TryFix
             bool TryFixRet = default;
             //var TmpMaskData = default(bool[]);
             //int j, i, k;
@@ -5106,7 +5106,7 @@ namespace SRCCore
         // スペシャルパワーを使用する
         public void TrySpecialPower(Pilot p)
         {
-            // TODO Impl
+            // TODO Impl TrySpecialPower
             //string slist;
             //SpecialPowerData sd;
             //int i, tnum;
@@ -5409,7 +5409,7 @@ namespace SRCCore
 
         private bool IsSPEffectUseful(SpecialPowerData sd, string ename)
         {
-            // TODO Impl
+            // TODO Impl IsSPEffectUseful
             bool IsSPEffectUsefulRet = default;
             //// UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             //if (Conversions.ToBoolean(sd.IsEffectAvailable(ename)))
@@ -5494,7 +5494,7 @@ namespace SRCCore
                 smode = "移動前";
             }
 
-            // TODO Impl
+            // TODO Impl サポートアタックをしてくれるユニットがいるかどうか
             //// サポートアタックをしてくれるユニットがいるかどうか
             //if (Strings.InStr(amode, "反撃") == 0 && Strings.InStr(amode, "サポート") == 0)
             //{
@@ -5599,7 +5599,6 @@ namespace SRCCore
                 }
 
                 // 味方ユニットの場合、最後の一発は使用しない
-                // TODO Impl
                 if (u.Party == "味方" && u.Party0 == "味方" && Strings.InStr(amode, "イベント") == 0)
                 {
                     // 自爆攻撃は武器を手動選択する場合にのみ使用
@@ -5761,7 +5760,7 @@ namespace SRCCore
                 prob = selectedWeapon.HitProbability(t, use_true_value);
 
                 // 特殊能力による回避を認識する？
-                // TODO Impl
+                // TODO Impl 特殊能力による回避を認識する？
                 if ((u.MainPilot().TacticalTechnique() >= 150 || u.Party == "味方") && !u.IsUnderSpecialPowerEffect("絶対命中"))
                 {
                     //// 切り払い可能な場合は命中率を低下
@@ -5852,7 +5851,7 @@ namespace SRCCore
                 ct_prob = selectedWeapon.CriticalProbability(t);
 
                 // 特殊効果を与える確率を計算
-                // TODO Impl
+                // TODO Impl 特殊効果を与える確率を計算
                 sp_prob = 0d;
                 wclass = selectedWeapon.WeaponClass();
                 {

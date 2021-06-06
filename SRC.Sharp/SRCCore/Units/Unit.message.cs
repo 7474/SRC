@@ -646,7 +646,7 @@ namespace SRCCore.Units
         // ダイアログの再生
         public void PlayDialog(Dialog dd, string wname)
         {
-            // TODO Impl
+            // TODO Impl PlayDialog
             //string msg, buf;
             //int i, idx;
             //Unit t;
@@ -879,7 +879,7 @@ namespace SRCCore.Units
             // 画像描画が行われたかどうかの判定のためにフラグを初期化
             GUI.IsPictureDrawn = false;
 
-            // TODO Impl
+            // TODO Impl 画像描画が行われたかどうかの判定
             //// ユニット名
             //while (Strings.InStr(msg, "$(ユニット)") > 0)
             //{
@@ -1185,7 +1185,7 @@ namespace SRCCore.Units
         // 解説メッセージを表示
         public void SysMessage(string main_situation, string sub_situation = "", string add_msg = "")
         {
-            // TODO Impl
+            // TODO Impl SysMessage
             //    string uname, msg, uclass;
             //    string[] situations;
             //    string idx, buf;
@@ -1807,7 +1807,7 @@ namespace SRCCore.Units
         public bool IsSysMessageDefined(string main_situation, string sub_situation = "")
         {
             return false;
-            // TODO Impl
+            // TODO Impl IsSysMessageDefined
             //bool IsSysMessageDefinedRet = default;
             //string uclass, uname, msg;
             //string[] situations;

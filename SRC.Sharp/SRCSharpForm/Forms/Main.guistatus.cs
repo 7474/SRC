@@ -304,7 +304,7 @@ namespace SRCSharpForm
                     {
                         // パイロット画像を表示
                         var fname = SRC.FileSystem.PathCombine("Pilot", p.get_Bitmap(false));
-                        // TODO Impl
+                        // TODO Impl ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
                         //if (My.MyProject.Forms.frmMultiSelectListBox.Visible)
                         //{
                         //    // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
@@ -849,7 +849,7 @@ namespace SRCSharpForm
                     }
 
                     {
-                        // TODO Impl
+                        // TODO Impl 表示するパイロット能力のリストを作成
                         //// 表示するパイロット能力のリストを作成
                         //var name_list = p.Skills.Select(x => x.Name).ToList();
                         //// 付加されたパイロット特殊能力
@@ -1652,7 +1652,7 @@ namespace SRCSharpForm
 
                     // ユニットにかかっている特殊ステータス
                     {
-                        // TODO Impl
+                        // TODO Impl ユニットにかかっている特殊ステータス
                         //name_list = new string[1];
                         //var loopTo8 = u.CountCondition();
                         //for (i = 1; i <= loopTo8; i++)

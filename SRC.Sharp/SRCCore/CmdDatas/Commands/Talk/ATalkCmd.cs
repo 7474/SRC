@@ -43,7 +43,7 @@ namespace SRCCore.CmdDatas.Commands
                                 pname = "";
                             }
 
-                            // TODO Impl
+                            // TODO Impl メインパイロットの強制指定
                             //if (Strings.Left(pname, 1) == "@")
                             //{
                             //    // メインパイロットの強制指定
@@ -174,11 +174,10 @@ namespace SRCCore.CmdDatas.Commands
                                 case 1:
                                     {
                                         // 引数なし
-                                        // TODO Impl
-                                        //if (!My.MyProject.Forms.frmMessage.Visible)
-                                        //{
-                                        //    GUI.OpenMessageForm(u1: null, u2: null);
-                                        //}
+                                        if (!GUI.MainFormVisible)
+                                        {
+                                            GUI.OpenMessageForm(u1: null, u2: null);
+                                        }
 
                                         // メッセージウィンドウのパイロット画像を以前指定された
                                         // ものに確定させる
@@ -220,7 +219,6 @@ namespace SRCCore.CmdDatas.Commands
                                     CenterUnit(pname, without_cursor);
                                     break;
 
-                                // TODO Impl
                                 case 3:
                                     current_pname = pname;
                                     switch (currentCmd.GetArgAsString(3) ?? "")

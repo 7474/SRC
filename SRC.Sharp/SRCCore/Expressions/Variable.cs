@@ -252,7 +252,7 @@ namespace SRCCore.Expressions
             var is_subroutine_local_array = default(bool);
 
             // 左辺値を伴う関数
-            // TODO Impl
+            // TODO Impl 左辺値を伴う関数
             ret = Strings.InStr(vname, "(");
             if (ret > 1 & Strings.Right(vname, 1) == ")")
             {

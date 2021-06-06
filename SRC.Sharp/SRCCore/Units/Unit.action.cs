@@ -106,7 +106,7 @@ namespace SRCCore.Units
             {
                 string PartyRet = strParty;
 
-                // TODO Impl
+                // TODO Impl 魅了されている場合
                 //// 魅了されている場合
                 //if (IsConditionSatisfied("魅了") & Master is object)
                 //{
@@ -148,7 +148,7 @@ namespace SRCCore.Units
             get
             {
                 return strMode;
-                // TODO Impl
+                // TODO Impl Mode
                 //string ModeRet = default;
                 //int i;
                 //if (IsUnderSpecialPowerEffect("挑発"))

@@ -34,7 +34,7 @@ namespace SRCCore.Pilots
         {
             return Nickname0;
         }
-        // TODO Impl
+        // TODO Impl get_Nickname
         //    string NicknameRet = default;
         //    int idx;
         //    Unit u;
@@ -125,7 +125,7 @@ namespace SRCCore.Pilots
         //}
 
         // 読み仮名
-        // TODO Impl
+        // TODO Impl KanaName
         public string KanaName
         {
             get { return Nickname0; }

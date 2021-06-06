@@ -63,7 +63,7 @@ namespace SRCCore.Models
             {
                 string NicknameRet = default;
                 NicknameRet = proNickname;
-                // TODO Impl
+                // TODO Impl Nickname
                 //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
@@ -87,7 +87,7 @@ namespace SRCCore.Models
             {
                 string KanaNameRet = default;
                 KanaNameRet = proKanaName;
-                // TODO Impl
+                // TODO Impl KanaName
                 //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
                 //    if (Expression.IsVariableDefined(ref KanaNameRet + "読み仮名"))

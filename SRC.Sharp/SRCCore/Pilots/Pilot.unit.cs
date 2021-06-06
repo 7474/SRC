@@ -24,7 +24,7 @@ namespace SRCCore.Pilots
                 return;
             }
 
-            // TODO Impl
+            // TODO Impl Ride
             {
                 //var u = u;
                 //hp_ratio = 100 * u.HP / (double)u.MaxHP;

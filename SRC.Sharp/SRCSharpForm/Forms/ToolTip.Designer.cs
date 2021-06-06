@@ -8,7 +8,6 @@ namespace Project1
     [Microsoft.VisualBasic.CompilerServices.DesignerGenerated()]
     internal partial class frmToolTip
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmToolTip() : base()
         {
@@ -83,6 +82,5 @@ namespace Project1
             ResumeLayout(false);
             PerformLayout();
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

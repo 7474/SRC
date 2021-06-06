@@ -55,7 +55,7 @@ namespace SRCCore.CmdDatas.Commands
                                 GUI.Sleep(25);
                             }
 
-                            // TODO Impl
+                            // TODO Impl マウスの左ボタンが押された場合はホットポイントの判定を行う
                             //// マウスの左ボタンが押された場合はホットポイントの判定を行う
                             //if (string.IsNullOrEmpty(Event.SelectedAlternative) & (int)GUI.MouseButton == 1)
                             //{

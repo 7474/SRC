@@ -460,19 +460,19 @@ namespace SRCSharpForm
 
         public void AddPartsToListBox()
         {
-            // TODO Impl
+            // TODO Impl AddPartsToListBox
             //throw new NotImplementedException();
         }
 
         public void RemovePartsOnListBox()
         {
-            // TODO Impl
+            // TODO Impl AddPartsToListBox
             //throw new NotImplementedException();
         }
 
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
-            // TODO Impl
+            // TODO Impl WeaponListBox
             //short WeaponListBoxRet = default;
             //short ret, j, i, k, w;
             //string[] list;
@@ -990,7 +990,7 @@ namespace SRCSharpForm
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
-            // TODO Impl
+            // TODO Impl AbilityListBox
             TopItem = -1;
             var list = abilities.Items.Select(x => new ListBoxItem()
             {

@@ -91,7 +91,7 @@ namespace SRCCore
             // 演奏をストップ
             StopBGM();
 
-            // TODO Impl
+            // TODO Impl 同じＢＧＭにバリエーションがあればランダムで選択
             //// 同じＢＧＭにバリエーションがあればランダムで選択
             //i = 1;
             //if (Strings.InStr(fname, SRC.ScenarioPath) > 0)
@@ -271,7 +271,7 @@ namespace SRCCore
 
             return existFile;
 
-            // TODO Impl
+            // TODO Impl 検索の整理
             //string SearchMidiFileRet = default;
             //string fname, fname_mp3 = default;
             //;
@@ -597,7 +597,7 @@ namespace SRCCore
         public string BGMName(string bgm_name)
         {
             return bgm_name + ".mid";
-            // TODO Impl
+            // TODO Impl BGMName
             //string BGMNameRet = default;
             //string vname;
 
@@ -625,15 +625,6 @@ namespace SRCCore
         // Waveファイルを再生する
         public void PlayWave(string wave_name)
         {
-
-            // TODO Impl
-            //// 初めて実行する際に、各フォルダにSoundフォルダがあるかチェック
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
-                     init_play_wave As Boolean
-                     scenario_sound_dir_exists As Boolean
-                     extdata_sound_dir_exists As Boolean
-             */
-
             // 特殊なファイル名
             switch (Strings.LCase(wave_name) ?? "")
             {

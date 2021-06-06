@@ -97,7 +97,7 @@ namespace SRCCore.Units
             }
             else
             {
-                // TODO Impl
+                // TODO Impl ErrorMessage
                 //GUI.ErrorMessage("ユニットデータ「" + uname + "」が見つかりません");
             }
             return null;
@@ -123,7 +123,7 @@ namespace SRCCore.Units
         // 不要な形態を削除
         public void DeleteTemporaryOtherForm()
         {
-            // TODO Impl
+            // TODO Impl DeleteTemporaryOtherForm
             //    string[] uarray;
             //    string fname, fdata;
             //    int k, i, j, n;

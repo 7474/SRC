@@ -354,7 +354,7 @@ namespace SRCCore.Maps
                         }
                     }
 
-                    // TODO Impl
+                    // TODO Impl レイヤーデータ読み込み
                     //// ADD START 240a
                     //// レイヤーデータ読み込み
                     //if (!FileSystem.EOF(FileNumber))

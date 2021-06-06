@@ -970,7 +970,7 @@ namespace SRCCore.Models
                                     buf = Strings.Mid(buf, ret + 1);
                                 }
 
-                                // TODO Impl
+                                // TODO Impl SRC.SPDList.IsDefined
                                 //bool localIsDefined() { object argIndex1 = (object)sname; var ret = SRC.SPDList.IsDefined(argIndex1); return ret; }
                                 bool localIsDefined() => true;
 

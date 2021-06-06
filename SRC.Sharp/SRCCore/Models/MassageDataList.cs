@@ -156,7 +156,7 @@ namespace SRCCore.Models
         public void AddDefaultAnimation()
         {
             return;
-            // TODO Impl
+            // TODO Impl AddDefaultAnimation
 
             //// アニメデータが用意されていない場合は Data\System\animation.txt を読み込む
             //if (Count() == 0)

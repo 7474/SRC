@@ -1253,7 +1253,7 @@ namespace SRCSharpForm
                             DisplayedPilot = "";
                             DisplayMode = "";
 
-                            // TODO
+                            // TODO パイロット画像が存在しないことを記録しておく
                             //// パイロット画像が存在しないことを記録しておく
                             //if (SRC.PList.IsDefined(pname))
                             //{
@@ -1288,7 +1288,7 @@ namespace SRCSharpForm
                     DisplayMode = "";
                 }
 
-                // TODO
+                // TODO out left_margin
                 left_margin = "  ";
                 //if (Expression.IsOptionDefined("会話パイロット名改行"))
                 //{

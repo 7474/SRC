@@ -92,7 +92,7 @@ namespace SRCCore.Units
         }
 
         // 読み仮名
-        // TODO Impl
+        // TODO Impl KanaName
         public string KanaName
         {
             get { return Nickname0; }
@@ -274,7 +274,7 @@ namespace SRCCore.Units
             {
                 int MaxHPRet = lngMaxHP;
 
-                // TODO Impl
+                // TODO Impl MaxHP
                 //// パイロットによる修正
                 //if (CountPilot() > 0)
                 //{
@@ -308,7 +308,7 @@ namespace SRCCore.Units
             {
                 int MaxENRet = intMaxEN;
 
-                // TODO Impl
+                // TODO Impl MaxEN
                 //// パイロットによる修正
                 //if (CountPilot() > 0)
                 //{
@@ -869,7 +869,7 @@ namespace SRCCore.Units
         public int get_Armor(string ref_mode)
         {
             return lngArmor;
-            // TODO Impl
+            // TODO Impl get_Armor
             //int ArmorRet = lngArmor;
             //// ステータス表示用
             //switch (ref_mode ?? "")
@@ -948,7 +948,7 @@ namespace SRCCore.Units
         public int get_Mobility(string ref_mode)
         {
             return intMobility;
-            // TODO Impl
+            // TODO Impl get_Mobility
             //    int MobilityRet = default;
             //    MobilityRet = intMobility;
             //    switch (ref_mode ?? "")

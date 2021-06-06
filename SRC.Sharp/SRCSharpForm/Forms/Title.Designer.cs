@@ -7,7 +7,6 @@ namespace SRCSharpForm
     [DesignerGenerated()]
     internal partial class frmTitle
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmTitle() : base()
         {
@@ -190,6 +189,5 @@ namespace SRCSharpForm
         private Label labAuthor;
         private Label labTitle;
         private Label label1;
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

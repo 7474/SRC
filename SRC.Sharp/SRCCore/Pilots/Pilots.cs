@@ -570,7 +570,7 @@ namespace SRCCore.Pilots
         // パイロットの支援修正を更新
         public void UpdateSupportMod(Unit u = null)
         {
-            // TODO Impl
+            // TODO Impl UpdateSupportMod
             //int xx, i, yy;
             //int max_range, range;
             //if (string.IsNullOrEmpty(Map.MapFileName))

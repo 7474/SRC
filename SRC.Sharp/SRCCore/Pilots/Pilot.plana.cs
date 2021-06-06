@@ -21,7 +21,7 @@ namespace SRCCore.Pilots
                     PlanaRet = proPlana;
                 }
 
-                // TODO Impl
+                // TODO Impl Plana
                 //// 追加パイロットかどうか判定
                 //if (Unit is null)
                 //{
@@ -83,7 +83,7 @@ namespace SRCCore.Pilots
                     proPlana = value;
                 }
 
-                // TODO Impl
+                // TODO Impl Plana
                 //// 追加パイロットかどうか判定
                 //if (Unit is null)
                 //{
@@ -157,7 +157,7 @@ namespace SRCCore.Pilots
                 // 霊力能力を持たない場合
                 MaxPlanaRet = 0;
 
-                // TODO Impl
+                // TODO Impl MaxPlana
                 // XXX ぼちぼち追加パイロット厳しくなってきた
                 //// 追加パイロットの場合は第１パイロットの霊力を代わりに使う
                 //if (Unit is object)

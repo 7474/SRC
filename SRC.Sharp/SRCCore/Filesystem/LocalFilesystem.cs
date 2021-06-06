@@ -66,10 +66,21 @@ namespace SRCCore.Filesystem
         public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
         {
             // TODO ILocalFileSystemEntrySet 対応、アーカイブを検索
-            return Directory.GetFileSystemEntries(path, searchPattern)
-                            .Where(x => enumerationOptions == EntryOption.All
-                                || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                || enumerationOptions == EntryOption.File && Directory.Exists(x));
+            try
+            {
+                return Directory.GetFileSystemEntries(path, searchPattern)
+                                .Where(x => enumerationOptions == EntryOption.All
+                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
+                                    || enumerationOptions == EntryOption.File && Directory.Exists(x));
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return new string[] { };
+            }
+            catch (Exception)
+            {
+                return new string[] { };
+            }
         }
 
         public void AddSafePath(string basePath)

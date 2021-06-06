@@ -7,7 +7,6 @@ namespace SRCSharpForm
     [DesignerGenerated()]
     internal partial class frmNowLoading
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmNowLoading() : base()
         {
@@ -106,6 +105,5 @@ namespace SRCSharpForm
         }
 
         private ProgressBar progressBar;
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

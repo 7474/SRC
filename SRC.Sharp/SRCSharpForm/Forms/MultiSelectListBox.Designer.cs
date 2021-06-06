@@ -10,7 +10,6 @@ namespace Project1
     [DesignerGenerated()]
     internal partial class frmMultiSelectListBox
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmMultiSelectListBox() : base()
         {
@@ -411,6 +410,5 @@ namespace Project1
             ResumeLayout(false);
             PerformLayout();
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

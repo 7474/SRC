@@ -14,7 +14,7 @@ namespace SRCCore.Pilots
         // 能力値を更新
         public void Update()
         {
-            // TODO Impl
+            // TODO Impl Update
             //    short skill_num;
             //    var skill_name = new string[65];
             //    var skill_data = new SkillData[65];
@@ -60,7 +60,7 @@ namespace SRCCore.Pilots
                 }
             }
 
-            // TODO Impl
+            // TODO Impl SetSkillコマンドで付加された特殊能力を検索
             //    // SetSkillコマンドで付加された特殊能力を検索
             //    string sname, alist, sdata;
             //    string buf;
@@ -655,7 +655,7 @@ namespace SRCCore.Pilots
         public void UpdateSupportMod()
         {
         }
-        // TODO Impl
+        // TODO Impl UpdateSupportMod
         //    Unit u, my_unit;
         //    string my_party;
         //    short my_cmd_rank;
