@@ -110,7 +110,7 @@ namespace SRCCore.Filesystem
                 case SafeOpenMode.Read: return entry.OpenRead(path);
                 case SafeOpenMode.Write: return entry.OpenWrite(path);
                 case SafeOpenMode.Append: return entry.OpenAppend(path);
-                default: throw new NotImplementedException();
+                default: throw new NotSupportedException();
             }
         }
 

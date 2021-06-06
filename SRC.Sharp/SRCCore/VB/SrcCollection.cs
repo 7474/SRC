@@ -42,7 +42,7 @@ namespace SRCCore.VB
             get => index <= 0 || index > dict.Count
                 ? throw new IndexOutOfRangeException($"{index} is out of range.")
                 : dict.Values.Cast<V>().Skip(index - 1).First();
-            set => throw new NotImplementedException();
+            set => throw new NotSupportedException();
         }
 
         public V this[string key]
@@ -61,14 +61,14 @@ namespace SRCCore.VB
 
         public void Add(V item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         // Obsolete して string, string での呼び出しを警告しつつ Value, Key での追加を可能にしておく。
         [Obsolete]
         public void Add(string key, string value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
         public void Add(V value, string key)
         {
@@ -109,12 +109,12 @@ namespace SRCCore.VB
 
         public void CopyTo(V[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void CopyTo(KeyValuePair<string, V>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public IEnumerator<V> GetEnumerator()
@@ -129,7 +129,7 @@ namespace SRCCore.VB
 
         public void Insert(int index, V item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public bool Remove(V item)

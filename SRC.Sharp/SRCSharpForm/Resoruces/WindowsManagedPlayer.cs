@@ -114,11 +114,6 @@ namespace SRCSharpForm.Resoruces
             }
         }
 
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode)
         {
             Stop(channel);
