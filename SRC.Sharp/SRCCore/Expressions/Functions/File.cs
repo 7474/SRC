@@ -7,7 +7,6 @@ using System.IO;
 namespace SRCCore.Expressions.Functions
 {
     //ファイル処理関数
-    // TODO Impl 当面は実装しない
     //Dirファイルの存在判定
     //EOFファイルの末尾か判定
     //LoadFileDialog読み出し用ファイルの選択ダイアログを表示
