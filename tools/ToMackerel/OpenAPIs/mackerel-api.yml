@@ -1,0 +1,367 @@
+swagger: "2.0"
+info:
+  description: This is part of Makerel API.
+  version: 0.1.0
+  title: Makerel API
+  termsOfService: "https://mackerel.io/ja/api-docs/"
+  contact:
+    url: "https://mackerel.io/"
+  license:
+    name: "-"
+host: api.mackerelio.com
+basePath: /api/v0
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    name: "X-Api-Key"
+    in: header
+security:
+  - apiKey: []
+tags:
+  - name: host
+  - name: hostMetric
+  - name: serviceMetric
+  - name: alert
+  - name: graphAnnotation
+paths:
+  "/hosts":
+    get:
+      tags:
+        - host
+      operationId: getHosts
+      parameters:
+        - name: service
+          in: query
+          type: string
+          description: optional サービス名。
+        - name: role
+          in: query
+          type: string
+          description: サービス内のロール名。複数指定可能（結果は各ロールに所属するホスト群の和集合となります）。serviceが指定されていない場合は無効です。
+        - name: name
+          in: query
+          type: string
+          description: optional ホスト名。
+        - name: status
+          in: query
+          type: string
+          description: optional ホストのステータスを絞り込む。複数指定可能。デフォルトは working と standbyです。
+        - name: customIdentifier
+          in: query
+          type: string
+          description: optional ホスト情報の登録やホスト情報の更新で登録したユーザー独自の識別子。
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/HostsResponse"
+  "/hosts/{hostId}":
+    get:
+      tags:
+        - host
+      operationId: getHost
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/HostResponse"
+  "/hosts/{hostId}/status":
+    post:
+      tags:
+        - host
+      operationId: postHostStatus
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: hostStatus
+          required: true
+          schema:
+            $ref: "#/definitions/HostStatusRequest"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  "/tsdb":
+    post:
+      tags:
+        - hostMetric
+      operationId: postHostMetric
+      parameters:
+        - name: hostMetrics
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/HostMetricValue"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  "/services/{serviceName}/tsdb":
+    post:
+      tags:
+        - serviceMetric
+      operationId: postServiceMetric
+      parameters:
+        - name: serviceName
+          in: path
+          type: string
+          required: true
+        - name: serviceMetrics
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceMetricValue"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  "/alerts":
+    get:
+      tags:
+        - alert
+      operationId: getAlerts
+      parameters:
+        - name: withClosed
+          in: query
+          type: boolean
+        - name: nextId
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: number
+      responses:
+        "200":
+          description: 並び順は、アラートの発生時刻が新しい順です。 一覧は最大100件まで取得されます。nextId はアラートがlimit件より多くあるときに取得されます。
+          schema:
+            $ref: "#/definitions/AlertsResponse"
+  "/graph-annotations":
+    post:
+      tags:
+        - graphAnnotation
+      operationId: postGraphAnnotation
+      parameters:
+        - name: graphAnnotation
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/GraphAnnotationBody"
+      responses:
+        "200":
+          description: 入力にidが付与されて返却されます。
+          schema:
+            $ref: "#/definitions/GraphAnnotation"
+definitions:
+  HostsResponse:
+    type: object
+    required:
+      - hosts
+    properties:
+      hosts:
+        type: array
+        items:
+          $ref: "#/definitions/Host"
+  HostResponse:
+    type: object
+    required:
+      - host
+    properties:
+      host:
+        $ref: "#/definitions/Host"
+  HostStatusRequest:
+    type: object
+    required:
+      - status
+    properties:
+      status:
+        type: string
+        enum: ["standby", "working", "maintenance", "poweroff"]
+  ApiResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  AlertsResponse:
+    type: object
+    properties:
+      alerts:
+        type: array
+        items:
+          $ref: "#/definitions/Alert"
+      nextId:
+        type: string
+  HostMetricValue:
+    type: object
+    required:
+      - hostId
+      - name
+      - time
+      - value
+    properties:
+      hostId:
+        type: string
+      name:
+        type: string
+      time:
+        type: number
+      value:
+        type: number
+  ServiceMetricValue:
+    type: object
+    required:
+      - name
+      - time
+      - value
+    properties:
+      name:
+        type: string
+      time:
+        type: number
+      value:
+        type: number
+  Alert:
+    type: object
+    required:
+      - id
+      - status
+      - monitorId
+      - type
+      - openedAt
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+      monitorId:
+        type: string
+      type:
+        type: string
+      hostId:
+        type: string
+      value:
+        type: number
+      message:
+        type: string
+      reason:
+        type: string
+      openedAt:
+        type: integer
+      closedAt:
+        type: integer
+  Host:
+    type: object
+    required:
+      - createdAt
+      - id
+      - name
+      - meta
+      - interfaces
+      - type
+      - status
+      - memo
+      - isRetired
+      - retiredAt
+      - roles
+    properties:
+      createdAt:
+        type: number
+        description: ホストの登録時刻（epoch秒）
+      id:
+        type: string
+        description: ホストID
+      name:
+        type: string
+        description: ホスト名
+      displayName:
+        type: string
+        description: optional ホストの管理名
+      customIdentifier:
+        type: string
+        description: optional ホストに対するユーザー独自の識別子
+      meta:
+        type: object
+        description: ホストのメタ情報
+      interfaces:
+        type: array
+        items:
+          type: object
+        description: ホストのネットワークインターフェース情報
+      type:
+        type: string
+        description: ホストの種別（"agent", "container-agent", "cloud" など）
+      status:
+        type: string
+        description: ホストのステータス（"working", "standby" など）
+      memo:
+        type: string
+        description: ホストに関するメモ。メモは管理画面から編集できます。
+      isRetired:
+        type: boolean
+        description: ホストが退役しているかどうか
+      retiredAt:
+        type: number
+        description: optional ホストの退役時刻（epoch秒）
+      roles:
+        type: object
+        # hash[array[string]]
+        description: ホストが所属しているロールの一覧。キーはサービス名、値はそのサービスにおけるロール名の配列です。
+  GraphAnnotationBody:
+    type: object
+    required:
+      - title
+      - from
+      - to
+      - service
+    properties:
+      title:
+        type: string
+        description: アノテーションのタイトル
+      description:
+        type: string
+        description: アノテーションの詳細
+      from:
+        type: number
+        description: 開始時刻 (epoch秒)
+      to:
+        type: number
+        description: 終了時刻 (epoch秒)
+      service:
+        type: string
+        description: サービス名
+      roles:
+        type: array
+        items:
+          type: string
+        description: ロール名の配列。このフィールドを指定しない場合は、サービスに紐づくアノテーションとなる
+  GraphAnnotation:
+    allOf:
+      - $ref: "#/definitions/Id"
+      - $ref: "#/definitions/GraphAnnotationBody"
+  Id:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
