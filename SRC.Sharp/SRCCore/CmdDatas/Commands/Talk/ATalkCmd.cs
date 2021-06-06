@@ -1,5 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
+using System.Drawing;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -131,25 +133,18 @@ namespace SRCCore.CmdDatas.Commands
                                             options = options + "左回転 " + currentCmd.GetArgAsString(j) + " ";
                                             break;
 
-                                        // TODO 色指定の処理全般保留
-                                        //case "フィルタ":
-                                        //    {
-                                        //        j = (j + 1);
-                                        //        buf = currentCmd.GetArgAsString(j);
-                                        //        cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                                        //        StringType.MidStmtStr(cname, 1, 2, "&H");
-                                        //        var midTmp = Strings.Mid(buf, 6, 2);
-                                        //        StringType.MidStmtStr(cname, 3, 2, midTmp);
-                                        //        var midTmp1 = Strings.Mid(buf, 4, 2);
-                                        //        StringType.MidStmtStr(cname, 5, 2, midTmp1);
-                                        //        var midTmp2 = Strings.Mid(buf, 2, 2);
-                                        //        StringType.MidStmtStr(cname, 7, 2, midTmp2);
-                                        //        tcolor = Conversions.ToInteger(cname);
-                                        //        j = (j + 1);
-                                        //        // 空白のオプションをスキップ
-                                        //        options = options + "フィルタ " + SrcFormatter.Format(tcolor) + " " + currentCmd.GetArgAsString(j) + " ";
-                                        //        break;
-                                        //    }
+                                        case "フィルタ":
+                                            {
+                                                j = (j + 1);
+                                                var buf = currentCmd.GetArgAsString(j);
+                                                Color filterColor = ColorExtension.FromHexString(buf);
+                                                j = (j + 1);
+                                                // 空白のオプションをスキップ
+                                                options = options
+                                                    + "フィルタ " + (filterColor.IsEmpty ? Color.Transparent : filterColor).ToHexString()
+                                                    + " " + currentCmd.GetArgAsString(j) + " ";
+                                                break;
+                                            }
 
                                         case var @case when @case == "":
                                             break;

@@ -1,5 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System.Drawing;
@@ -87,23 +88,14 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if (Strings.Asc(buf) == 35 && Strings.Len(buf) == 7)
                             {
-                                // TODO
-                                //cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                                //StringType.MidStmtStr(cname, 1, 2, "&H");
-                                //var midTmp = Strings.Mid(buf, 6, 2);
-                                //StringType.MidStmtStr(cname, 3, 2, midTmp);
-                                //var midTmp1 = Strings.Mid(buf, 4, 2);
-                                //StringType.MidStmtStr(cname, 5, 2, midTmp1);
-                                //var midTmp2 = Strings.Mid(buf, 2, 2);
-                                //StringType.MidStmtStr(cname, 7, 2, midTmp2);
-                                //if (Information.IsNumeric(cname))
-                                //{
-                                //    tcolor = Conversions.ToInteger(cname);
-                                //    if (tcolor != ColorTranslator.ToOle(Color.White) | GetArgAsString((i - 1)) == "フィルタ")
-                                //    {
-                                //        options = options + SrcFormatter.Format((object)tcolor) + " ";
-                                //    }
-                                //}
+                                Color filterColor = ColorExtension.FromHexString(buf);
+                                if (!filterColor.IsEmpty)
+                                {
+                                    if (GetArgAsString((i - 1)) == "フィルタ")
+                                    {
+                                        options = options + filterColor.ToHexString() + " ";
+                                    }
+                                }
                             }
                             else if (Information.IsNumeric(buf))
                             {

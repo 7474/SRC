@@ -1,9 +1,9 @@
 using SRCCore;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace SRCSharpForm
@@ -36,7 +36,7 @@ namespace SRCSharpForm
             // マスク画像に影響するオプション
             var pic_option2 = "";
             // フィルタ時の透過度を初期化
-            double trans_par = -1;
+            float trans_par = -1;
             bool permanent = false;
             bool transparent = false;
             int bright_count = 0;
@@ -102,7 +102,7 @@ namespace SRCSharpForm
                             case "フィルタ":
                                 is_colorfilter = true;
                                 fcolor = Map.MapDrawFilterColor;
-                                pic_option2 = pic_option2 + " フィルタ=" + Map.MapDrawFilterColor.ToString();
+                                pic_option2 = pic_option2 + " フィルタ=" + Map.MapDrawFilterColor.ToHexString();
                                 break;
                         }
 
@@ -232,9 +232,10 @@ namespace SRCSharpForm
                         break;
 
                     default:
+                        // フィルタオプションの解決をここでしている様子
                         if (Strings.Right(opt, 1) == "%" & Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
                         {
-                            trans_par = Math.Max(0d, Math.Min(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
+                            trans_par = (float)Math.Max(0d, Math.Min(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
                             pic_option2 = pic_option2 + " フィルタ透過度=" + opt;
                         }
                         else if (is_colorfilter)
@@ -244,11 +245,9 @@ namespace SRCSharpForm
                         }
                         else
                         {
-                            // XXX int（OLE時代）から整合性取ってない
                             BGColor = ColorTranslator.FromHtml(opt);
                             pic_option2 = pic_option2 + " " + opt;
                         }
-
                         break;
                 }
             }
@@ -906,16 +905,15 @@ namespace SRCSharpForm
                     //    Graphics.NegPosReverse(transparent);
                     //}
 
-                    //// フィルタ
-                    //if (is_colorfilter)
-                    //{
-                    //    if (trans_par < 0d)
-                    //    {
-                    //        trans_par = 0.5d;
-                    //    }
-
-                    //    Graphics.ColorFilter(fcolor, trans_par, transparent);
-                    //}
+                    // フィルタ
+                    if (is_colorfilter)
+                    {
+                        if (trans_par < 0f)
+                        {
+                            trans_par = 0.5f;
+                        }
+                        drawBuffer.ColorFilter(fcolor, trans_par);
+                    }
 
                     //// 明 (多段指定可能)
                     //var loopTo9 = bright_count;
