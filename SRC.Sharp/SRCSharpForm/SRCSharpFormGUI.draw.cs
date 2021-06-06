@@ -27,7 +27,7 @@ namespace SRCSharpForm
                     return false;
             }
 
-            // Debug.Print fname, draw_option
+            SRC.LogTrace($"{fname} {draw_option}");
 
             // オプションの解析
             var BGColor = Color.White;
@@ -289,7 +289,7 @@ namespace SRCSharpForm
             }
             try
             {
-
+                // TODO 特殊なファイル名を解決
                 #region TODO
                 //            // 読み込むファイルの探索
 
@@ -721,13 +721,6 @@ namespace SRCSharpForm
                     return false;
                 }
 
-                //FoundPicture:
-                //    // ファイル名を記録しておく
-                //    last_fname = fname;
-                //    last_exists = true;
-                //    pfname = fpath + fname;
-                //LoadedOrigPicture:
-
                 var orig_width = image.Width;
                 var orig_height = image.Height;
                 Bitmap drawBuffer = null;
@@ -766,41 +759,11 @@ namespace SRCSharpForm
                 {
                     drawBuffer.MakeTransparent(BGColor);
                 }
-
                 //LoadedPicture:
 
                 // TODO Impl 画像の加工
                 using (var gBuf = Graphics.FromImage(drawBuffer))
                 {
-                    // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
-                    // -> 常に描画毎にバッファを使う
-                    //if (top_part || bottom_part || left_part || right_part || tleft_part || tright_part || bleft_part || bright_part || is_monotone || is_sepia || is_sunset || is_water || negpos || is_sil || vrev || hrev || bright_count > 0 || dark_count > 0 || angle % 360 != 0 || is_colorfilter)
-                    //{
-                    //    // 使用するpicBufを選択
-                    //    i = GUI.GetPicBuf(display_byte_pixel * orig_width * orig_height);
-                    //    PicBufFname[i] = fname;
-                    //    PicBufOption[i] = pic_option;
-                    //    PicBufOption2[i] = pic_option2;
-                    //    PicBufDW[i] = Constants.DEFAULT_LEVEL;
-                    //    PicBufDH[i] = Constants.DEFAULT_LEVEL;
-                    //    PicBufSX[i] = sx;
-                    //    PicBufSY[i] = sy;
-                    //    PicBufSW[i] = sw;
-                    //    PicBufSH[i] = sh;
-                    //    PicBufIsMask[i] = false;
-                    //    // Debug.Print "Use " & Format$(i) & " As Edited"
-
-                    //    // 画像をコピー
-                    //    {
-                    //        var withBlock8 = MainForm.picBuf(i);
-                    //        withBlock8.Picture = Image.FromFile("");
-                    //        withBlock8.width = orig_width;
-                    //        withBlock8.Height = orig_height;
-                    //        ret = BitBlt(withBlock8.hDC, 0, 0, orig_width, orig_height, orig_pic.hDC, 0, 0, SRCCOPY);
-                    //    }
-                    //    orig_pic = MainForm.picBuf(i);
-                    //}
-
                     // 画像の一部を塗りつぶして描画する場合
                     if (top_part)
                     {
@@ -1103,33 +1066,6 @@ namespace SRCSharpForm
                 //// 背景への描画
                 MainForm.InitBackgroundBufferIfInvalid();
                 g = Graphics.FromImage(MainForm.BackgroundBuffer);
-                //// フォント設定を変更
-                //{
-                //    var withBlock = MainForm.picBack;
-                //    withBlock.ForeColor = MainForm.picMain(0).ForeColor;
-                //    if (withBlock.Font.Name != MainForm.picMain(0).Font.Name)
-                //    {
-                //        sf = (Font)Control.DefaultFont.Clone();
-                //        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
-                //        withBlock.Font = sf;
-                //    }
-                //    withBlock.Font.Size = MainForm.picMain(0).Font.Size;
-                //    withBlock.Font.Bold = MainForm.picMain(0).Font.Bold;
-                //    withBlock.Font.Italic = MainForm.picMain(0).Font.Italic;
-                //}
-                //{
-                //    var withBlock1 = MainForm.picMaskedBack;
-                //    withBlock1.ForeColor = MainForm.picMain(0).ForeColor;
-                //    if (withBlock1.Font.Name != MainForm.picMain(0).Font.Name)
-                //    {
-                //        sf = (Font)Control.DefaultFont.Clone();
-                //        sf = SrcFormatter.FontChangeName(sf, MainForm.picMain(0).Font.Name);
-                //        withBlock1.Font = sf;
-                //    }
-                //    withBlock1.Font.Size = MainForm.picMain(0).Font.Size;
-                //    withBlock1.Font.Bold = MainForm.picMain(0).Font.Bold;
-                //    withBlock1.Font.Italic = MainForm.picMain(0).Font.Italic;
-                //}
             }
             else
             {
@@ -1141,18 +1077,6 @@ namespace SRCSharpForm
 
             try
             {
-                //// フォントがスムージング表示されているか参照
-                //if (!init_draw_string)
-                //{
-                //    GUI.GetSystemParametersInfo((int)SPI_GETFONTSMOOTHING, 0, font_smoothing, 0);
-                //    init_draw_string = true;
-                //}
-
-                //// フォントをスムージングするように設定
-                //if (font_smoothing == 0)
-                //{
-                //    SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 1, 0, 0);
-                //}
                 // 現在のX位置を記録しておく
                 var prev_cx = currentDrawStringPoint.X;
                 float tx = currentDrawStringPoint.X;
@@ -1182,13 +1106,6 @@ namespace SRCSharpForm
                 // 背景書き込みの場合
                 if (PermanentStringMode)
                 {
-                    // XXX マスクは使ってない
-                    //{
-                    //    var withBlock2 = MainForm.picMaskedBack;
-                    //    withBlock2.CurrentX = tx;
-                    //    withBlock2.CurrentY = ty;
-                    //}
-                    //MainForm.picMaskedBack.Print(msg);
                     Map.IsMapDirty = true;
                 }
 
@@ -1206,12 +1123,6 @@ namespace SRCSharpForm
                 currentDrawStringPoint = new PointF(
                     X != Constants.DEFAULT_LEVEL ? X : prev_cx,
                     without_cr ? ty : ty + currentDrawFont.GetHeight(g));
-
-                //// フォントのスムージングに関する設定を元に戻す
-                //if (font_smoothing == 0)
-                //{
-                //    SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 0, 0, 0);
-                //}
 
                 if (!PermanentStringMode)
                 {
