@@ -2558,7 +2558,7 @@ namespace SRCCore.Maps
                         break;
                     }
                 default:
-                    throw new NotImplementedException("Invalid terrain.");
+                    throw new NotSupportedException("Invalid terrain.");
             }
 
             // 線路移動

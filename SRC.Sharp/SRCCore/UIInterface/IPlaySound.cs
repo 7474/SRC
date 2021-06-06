@@ -21,9 +21,6 @@ namespace SRCCore
         /// </summary>
         float SoundVolume { get; set; }
 
-        // XXX 今呼んでない。
-        void Initialize();
-
         void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode);
 
         void Stop(int channel);

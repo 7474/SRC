@@ -7,12 +7,12 @@ namespace SRCCore.CmdDatas.Commands
     {
         public PlayFlashCmd(SRC src, EventDataLine eventData) : base(src, CmdType.PlayFlashCmd, eventData)
         {
-            throw new NotImplementedException("PlayFlashコマンドはサポートされていません。");
+            throw new NotSupportedException("PlayFlashコマンドはサポートされていません。");
         }
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
