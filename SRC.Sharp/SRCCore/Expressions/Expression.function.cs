@@ -67,6 +67,8 @@ namespace SRCCore.Expressions
             new Sin(),
             new Sqr(),
             new Tan(),
+            // File
+            new EOF(),
             // String
             new Format(),
             new InStr(),

@@ -223,36 +223,21 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
-            num_result = 0d;
+            var f = SRC.FileHandleManager.Get(SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
 
-            // TODO Impl Eof
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            if (FileSystem.EOF(GetValueAsLong(@params[1], is_term[1])))
-            //                            {
-            //                                str_result = "1";
-            //                            }
-            //                            else
-            //                            {
-            //                                str_result = "0";
-            //                            }
-
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            if (FileSystem.EOF(GetValueAsLong(@params[1], is_term[1])))
-            //                            {
-            //                                num_result = 1d;
-            //                            }
-
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+            if (f.Reader.EndOfStream)
+            {
+                str_result = "1";
+                num_result = 1d;
+            }
+            else
+            {
+                str_result = "0";
+                num_result = 0d;
+            }
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
