@@ -1,4 +1,3 @@
-using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Units;
 using System;
@@ -6,9 +5,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace SRCCoreTests.TestLib
+namespace SRCCore.TestLib
 {
-    class MockGUI : IGUI
+    public class MockGUI : IGUI
     {
         public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

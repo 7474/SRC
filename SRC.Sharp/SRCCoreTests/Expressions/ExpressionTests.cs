@@ -1,12 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SRCCore.Expressions;
-using SRCCoreTests.TestLib;
-using System;
-using System.Collections.Generic;
+using SRCCore.TestLib;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SRCCore.Expressions.Tests
 {
