@@ -13,7 +13,7 @@ on:
       - SRC.Sharp/**
 
 jobs:
-  build:
+  build-and-test-srcs:
     runs-on: windows-latest    
 
     steps:
@@ -32,3 +32,6 @@ jobs:
 
     - name: Test
       run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal
+
+    - name: Try Publish
+      run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
