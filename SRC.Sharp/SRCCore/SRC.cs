@@ -162,7 +162,6 @@ namespace SRCCore
             Sound = new Sound(this);
             Effect = new Effect(this);
             COM = new COM(this);
-            // TODO 個別にインスタンス化してるの消す
             InterMission = new InterMission(this);
             FileHandleManager = new FileHandleManager();
 
