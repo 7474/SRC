@@ -5316,6 +5316,14 @@ namespace SRCCore.Units
             return baseCondition;
         }
 
+        // 迎撃に使用できるか
+        public bool CanUseIntercept()
+        {
+            return IsWeaponAvailable("移動後")
+                && IsWeaponClassifiedAs("射撃系")
+                && (WeaponData.Bullet >= 10 || WeaponData.Bullet == 0 && WeaponData.ENConsumption <= 5);
+        }
+
         public bool CanUseFor(WeaponListMode mode, Unit targetUnit)
         {
             var display = IsDisplayFor(mode);

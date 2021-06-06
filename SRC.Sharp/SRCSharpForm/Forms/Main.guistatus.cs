@@ -255,44 +255,8 @@ namespace SRCSharpForm
                         goto UnitStatus;
                     }
 
-                    // XXX 表示対象の解決は外に求めてる
-                    //// 表示するパイロットを選択
-                    //if (pindex == 0)
-                    //{
-                    //    // メインパイロット
-                    //    p = u.MainPilot();
-                    //    if ((u.MainPilot().get_Nickname(false) ?? "") == (u.Pilot(1).get_Nickname(false) ?? "") || u.Data.PilotNum == 1)
-                    //    {
-                    //        DisplayedPilotInd = 1;
-                    //    }
-                    //}
-                    //else if (pindex == 1)
-                    //{
-                    //    // メインパイロットまたは１番目のパイロット
-                    //    if ((u.MainPilot().get_Nickname(false) ?? "") != (u.Pilot(1).get_Nickname(false) ?? "") && u.Data.PilotNum != 1)
-                    //    {
-                    //        p = u.Pilot(1);
-                    //    }
-                    //    else
-                    //    {
-                    //        p = u.MainPilot();
-                    //    }
-                    //}
-                    //else if (pindex <= u.CountPilot())
-                    //{
-                    //    // サブパイロット
-                    //    p = u.Pilot(pindex);
-                    //}
-                    //else if (pindex <= (u.CountPilot() + u.CountSupport()))
-                    //{
-                    //    // サポートパイロット
-                    //    p = u.Support(pindex - u.CountPilot());
-                    //}
-                    //else
-                    //{
-                    //    // 追加サポート
-                    //    p = u.AdditionalSupport();
-                    //}
+                    // 表示するパイロットを選択
+                    // 表示対象の解決は外に求めてる
                     // 指定がなければメインパイロット
                     if (p == null)
                     {
@@ -849,521 +813,421 @@ namespace SRCSharpForm
                     }
 
                     {
-                        // TODO Impl 表示するパイロット能力のリストを作成
-                        //// 表示するパイロット能力のリストを作成
-                        //var name_list = p.Skills.Select(x => x.Name).ToList();
-                        //// 付加されたパイロット特殊能力
-                        //var loopTo2 = u.CountCondition();
-                        //for (var i = 1; i <= loopTo2; i++)
-                        //{
-                        //    if (u.ConditionLifetime(i) != 0)
-                        //    {
-                        //        string localCondition2() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
-
-                        //        switch (Strings.Right(localCondition2(), 3) ?? "")
-                        //        {
-                        //            case "付加２":
-                        //            case "強化２":
-                        //                {
-                        //                    string localConditionData() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
-
-                        //                    switch (GeneralLib.LIndex(localConditionData(), 1) ?? "")
-                        //                    {
-                        //                        // 非表示の能力
-                        //                        case "非表示":
-                        //                        case "解説":
-                        //                            {
-                        //                                break;
-                        //                            }
-
-                        //                        default:
-                        //                            {
-                        //                                string localCondition() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
-
-                        //                                string localCondition1() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
-
-                        //                                stype = Strings.Left(localCondition(), Strings.Len(localCondition1()) - 3);
-                        //                                switch (stype ?? "")
-                        //                                {
-                        //                                    case "ハンター":
-                        //                                    case "ＳＰ消費減少":
-                        //                                    case "スペシャルパワー自動発動":
-                        //                                        {
-                        //                                            // 重複可能な能力
-                        //                                            Array.Resize(name_list, Information.UBound(name_list) + 1 + 1);
-                        //                                            name_list[Information.UBound(name_list)] = stype;
-                        //                                            break;
-                        //                                        }
-
-                        //                                    default:
-                        //                                        {
-                        //                                            // 既に所有している能力であればスキップ
-                        //                                            var loopTo3 = Information.UBound(name_list);
-                        //                                            for (j = 1; j <= loopTo3; j++)
-                        //                                            {
-                        //                                                if ((stype ?? "") == (name_list[j] ?? ""))
-                        //                                                {
-                        //                                                    break;
-                        //                                                }
-                        //                                            }
-
-                        //                                            if (j > Information.UBound(name_list))
-                        //                                            {
-                        //                                                Array.Resize(name_list, Information.UBound(name_list) + 1 + 1);
-                        //                                                name_list[Information.UBound(name_list)] = stype;
-                        //                                            }
-
-                        //                                            break;
-                        //                                        }
-                        //                                }
-
-                        //                                break;
-                        //                            }
-                        //                    }
-
-                        //                    break;
-                        //                }
-                        //        }
-                        //    }
-                        //}
-
-                        //// パイロット能力を表示
-                        //var n = 0;
-                        //var loopTo4 = Information.UBound(name_list);
-                        //for (i = 1; i <= loopTo4; i++)
-                        //{
-                        //    // ADD START 240a
-                        //    // 文字色をリセット
-                        //    upic.SetColor(StatusFontColorNormalString);                    // ADD  END  240a
-                        //    stype = name_list[i];
-                        //    if (i <= p.CountSkill())
-                        //    {
-                        //        sname = p.SkillName(i);
-                        //        double localSkillLevel() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                        //        double localSkillLevel1() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                        //        slevel = localSkillLevel1().ToString();
-                        //    }
-                        //    else
-                        //    {
-                        //        sname = p.SkillName(stype);
-                        //        double localSkillLevel2() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                        //        double localSkillLevel3() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
-
-                        //        slevel = localSkillLevel3().ToString();
-                        //    }
-
-                        //    if (Strings.InStr(sname, "非表示") > 0)
-                        //    {
-                        //        goto NextSkill;
-                        //    }
-
-                        //    switch (stype ?? "")
-                        //    {
-                        //        case "オーラ":
-                        //            {
-                        //                if (DisplayedPilotInd == 1)
-                        //                {
-                        //                    if (u.AuraLevel(true) < u.AuraLevel() && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    if (u.AuraLevel(true) > Conversions.ToDouble(slevel))
-                        //                    {
-                        //                        sname = sname + "+" + SrcFormatter.Format(u.AuraLevel(true) - Conversions.ToDouble(slevel));
-                        //                    }
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "超能力":
-                        //            {
-                        //                if (DisplayedPilotInd == 1)
-                        //                {
-                        //                    if (u.PsychicLevel(true) < u.PsychicLevel() && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    if (u.PsychicLevel(true) > Conversions.ToDouble(slevel))
-                        //                    {
-                        //                        sname = sname + "+" + SrcFormatter.Format(u.PsychicLevel(true) - Conversions.ToDouble(slevel));
-                        //                    }
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "底力":
-                        //        case "超底力":
-                        //        case "覚悟":
-                        //            {
-                        //                if (u.HP <= u.MaxHP / 4)
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = vbBlue
-                        //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                    // MOD  END  240a
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "不屈":
-                        //            {
-                        //                if (u.HP <= u.MaxHP / 2)
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = vbBlue
-                        //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                    // MOD  END  240a
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "潜在力開放":
-                        //            {
-                        //                if (p.Morale >= 130)
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = vbBlue
-                        //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                    // MOD  END  240a
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "スペシャルパワー自動発動":
-                        //            {
-                        //                if (i <= p.CountSkill())
-                        //                {
-                        //                    string localSkillData() { object argIndex1 = i; var ret = p.SkillData(argIndex1); return ret; }
-
-                        //                    string localLIndex() { string arglist = hs4c6b0a8a8b874cdb8c87b94121d03278(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-                        //                    int localStrToLng() { string argexpr = hs23c31b1421414ea0be207e3875c77613(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                        //                    if (p.Morale >= localStrToLng())
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = vbBlue
-                        //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                        // MOD  END  240a
-                        //                    }
-                        //                }
-                        //                else
-                        //                {
-                        //                    string localSkillData1() { object argIndex1 = stype; var ret = p.SkillData(argIndex1); return ret; }
-
-                        //                    string localLIndex1() { string arglist = hs5a6fb85244614ee5b61690cdbec6b0f9(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
-
-                        //                    int localStrToLng1() { string argexpr = hsa5a03d2c426146729603becc658cd7bc(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                        //                    if (p.Morale >= localStrToLng1())
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = vbBlue
-                        //                        upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                        // MOD  END  240a
-                        //                    }
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "Ｓ防御":
-                        //            {
-                        //                if (!u.IsFeatureAvailable("シールド") && !u.IsFeatureAvailable("大型シールド") && !u.IsFeatureAvailable("小型シールド") && !u.IsFeatureAvailable("エネルギーシールド") && !u.IsFeatureAvailable("アクティブシールド") && !u.IsFeatureAvailable("盾") && !u.IsFeatureAvailable("バリアシールド") && !u.IsFeatureAvailable("アクティブフィールド") && !u.IsFeatureAvailable("アクティブプロテクション") && Strings.InStr(u.FeatureData("阻止"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData("広域阻止"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData("反射"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData("当て身技"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData("自動反撃"), "Ｓ防御") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = rgb(150, 0, 0)
-                        //                    upic.SetColor(StatusFontColorAbilityDisable);
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "切り払い":
-                        //            {
-                        //                var loopTo5 = u.CountWeapon();
-                        //                for (j = 1; j <= loopTo5; j++)
-                        //                {
-                        //                    if (u.IsWeaponClassifiedAs(j, "武"))
-                        //                    {
-                        //                        if (!u.IsDisabled(u.Weapon(j).Name))
-                        //                        {
-                        //                            break;
-                        //                        }
-                        //                    }
-                        //                }
-
-                        //                if (u.IsFeatureAvailable("格闘武器"))
-                        //                {
-                        //                    j = 0;
-                        //                }
-
-                        //                if (j > u.CountWeapon() && Strings.InStr(u.FeatureData("阻止"), "切り払い") == 0 && Strings.InStr(u.FeatureData("広域阻止"), "切り払い") == 0 && Strings.InStr(u.FeatureData("反射"), "切り払い") == 0 && Strings.InStr(u.FeatureData("当て身技"), "切り払い") == 0 && Strings.InStr(u.FeatureData("自動反撃"), "切り払い") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = rgb(150, 0, 0)
-                        //                    upic.SetColor(StatusFontColorAbilityDisable);
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "迎撃":
-                        //            {
-                        //                var loopTo6 = u.CountWeapon();
-                        //                for (j = 1; j <= loopTo6; j++)
-                        //                {
-                        //                    if (u.IsWeaponAvailable(j, "移動後") && u.IsWeaponClassifiedAs(j, "射撃系") && (u.Weapon(j).Bullet >= 10 || u.Weapon(j).Bullet == 0 && u.Weapon(j).ENConsumption <= 5))
-                        //                    {
-                        //                        break;
-                        //                    }
-                        //                }
-
-                        //                if (u.IsFeatureAvailable("迎撃武器"))
-                        //                {
-                        //                    j = 0;
-                        //                }
-
-                        //                if (j > u.CountWeapon() && Strings.InStr(u.FeatureData("阻止"), "迎撃") == 0 && Strings.InStr(u.FeatureData("広域阻止"), "迎撃") == 0 && Strings.InStr(u.FeatureData("反射"), "迎撃") == 0 && Strings.InStr(u.FeatureData("当て身技"), "迎撃") == 0 && Strings.InStr(u.FeatureData("自動反撃"), "迎撃") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = rgb(150, 0, 0)
-                        //                    upic.SetColor(StatusFontColorAbilityDisable);
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "浄化":
-                        //            {
-                        //                var loopTo7 = u.CountWeapon();
-                        //                for (j = 1; j <= loopTo7; j++)
-                        //                {
-                        //                    if (u.IsWeaponClassifiedAs(j, "浄"))
-                        //                    {
-                        //                        if (!u.IsDisabled(u.Weapon(j).Name))
-                        //                        {
-                        //                            break;
-                        //                        }
-                        //                    }
-                        //                }
-
-                        //                if (j > u.CountWeapon() && !string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = rgb(150, 0, 0)
-                        //                    upic.SetColor(StatusFontColorAbilityDisable);
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "援護":
-                        //            {
-                        //                if (!string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    if ((u.Party ?? "") == (SRC.Stage ?? ""))
-                        //                    {
-                        //                        ret = GeneralLib.MaxLng(u.MaxSupportAttack() - u.UsedSupportAttack, 0);
-                        //                    }
-                        //                    else
-                        //                    {
-                        //                        if (u.IsUnderSpecialPowerEffect("サポートガード不能"))
-                        //                        {
-                        //                            // MOD START 240a
-                        //                            // upic.ForeColor = rgb(150, 0, 0)
-                        //                            upic.SetColor(StatusFontColorAbilityDisable);
-                        //                        }
-
-                        //                        ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
-                        //                    }
-
-                        //                    if (ret == 0)
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "援護攻撃":
-                        //            {
-                        //                if (!string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    ret = GeneralLib.MaxLng(u.MaxSupportAttack() - u.UsedSupportAttack, 0);
-                        //                    if (ret == 0)
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "援護防御":
-                        //            {
-                        //                if (!string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
-                        //                    if (ret == 0 || u.IsUnderSpecialPowerEffect("サポートガード不能"))
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "統率":
-                        //            {
-                        //                if (!string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    ret = GeneralLib.MaxLng(u.MaxSyncAttack() - u.UsedSyncAttack, 0);
-                        //                    if (ret == 0)
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                    }
-
-                        //                    sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "カウンター":
-                        //            {
-                        //                if (!string.IsNullOrEmpty(Map.MapFileName))
-                        //                {
-                        //                    ret = GeneralLib.MaxLng(u.MaxCounterAttack() - u.UsedCounterAttack, 0);
-                        //                    if (ret > 100)
-                        //                    {
-                        //                        sname = sname + " (残り∞回)";
-                        //                    }
-                        //                    else if (ret > 0)
-                        //                    {
-                        //                        sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
-                        //                    }
-                        //                    else
-                        //                    {
-                        //                        // MOD START 240a
-                        //                        // upic.ForeColor = rgb(150, 0, 0)
-                        //                        upic.SetColor(StatusFontColorAbilityDisable);
-                        //                        sname = sname + " (残り0回)";
-                        //                    }
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "先手必勝":
-                        //            {
-                        //                if (u.MaxCounterAttack() > 100)
-                        //                {
-                        //                    // MOD START 240a
-                        //                    // upic.ForeColor = vbBlue
-                        //                    upic.ForeColor = ColorTranslator.FromOle(Conversions.ToIntegereger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityEnable, ColorTranslator.ToOle(Color.Blue))));
-                        //                    // MOD  END  240a
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "耐久":
-                        //            {
-                        //                if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
-                        //                {
-                        //                    goto NextSkill;
-                        //                }
-
-                        //                break;
-                        //            }
-
-                        //        case "霊力":
-                        //        case "同調率":
-                        //        case "得意技":
-                        //        case "不得手":
-                        //            {
-                        //                goto NextSkill;
-                        //                break;
-                        //            }
-                        //    }
-
-                        //    // 特殊能力名を表示
-                        //    if (LenB(Strings.StrConv(sname, vbFromUnicode)) > 19)
-                        //    {
-                        //        if (n > 0)
-                        //        {
-                        //            upic.Print();
-                        //            // ADD START 240a
-                        //            if (GUI.NewGUIMode)
-                        //            {
-                        //                upic.CurrentX = 5;
-                        //            }
-                        //            // ADD  END  240a
-                        //        }
-                        //        upic.Print(sname);
-                        //        n = 2;
-                        //    }
-                        //    else
-                        //    {
-                        //        upic.Print(GeneralLib.RightPaddedString(sname, 19));
-                        //        n = (n + 1);
-                        //    }
-
-                        //    upic.ForeColor = Color.Black;
-
-                        //    // 必要に応じて改行
-                        //    if (n > 1)
-                        //    {
-                        //        upic.Print();
-                        //        // ADD START 240a
-                        //        if (GUI.NewGUIMode)
-                        //        {
-                        //            upic.CurrentX = 5;
-                        //        }
-                        //        // ADD  END  240a
-                        //        n = 0;
-                        //    }
-
-                        //NextSkill:
-                        //    ;
-                        //}
-
-                        //if (n > 0)
-                        //{
-                        //    upic.Print();
-                        //}
-
-                        //upic.CurrentY = upic.CurrentY + 8;
+                        // 表示するパイロット能力のリストを作成
+                        var name_list = p.Skills.Select(x => x.Name).ToList();
+                        // 付加されたパイロット特殊能力
+                        foreach (var cond in u.Conditions.Where(x => x.IsEnable))
+                        {
+                            switch (Strings.Right(cond.Name, 3) ?? "")
+                            {
+                                case "付加２":
+                                case "強化２":
+                                    {
+                                        switch (GeneralLib.LIndex(cond.StrData, 1) ?? "")
+                                        {
+                                            // 非表示の能力
+                                            case "非表示":
+                                            case "解説":
+                                                {
+                                                    break;
+                                                }
+
+                                            default:
+                                                {
+                                                    var stype = Strings.Left(cond.Name, Strings.Len(cond.Name) - 3);
+                                                    switch (stype ?? "")
+                                                    {
+                                                        case "ハンター":
+                                                        case "ＳＰ消費減少":
+                                                        case "スペシャルパワー自動発動":
+                                                            {
+                                                                // 重複可能な能力
+                                                                name_list.Add(stype);
+                                                                break;
+                                                            }
+
+                                                        default:
+                                                            {
+                                                                // 既に所有している能力であればスキップ
+                                                                if (!name_list.Contains(stype))
+                                                                {
+                                                                    name_list.Add(stype);
+                                                                }
+                                                                break;
+                                                            }
+                                                    }
+
+                                                    break;
+                                                }
+                                        }
+
+                                        break;
+                                    }
+                            }
+                        }
+
+                        // パイロット能力を表示
+                        var n = 0;
+                        var i = 0;
+                        foreach (var stype in name_list)
+                        {
+                            i++;
+                            string sname;
+                            string slevel;
+                            // 文字色をリセット
+                            upic.SetColor(StatusFontColorNormalString);
+                            if (i <= p.CountSkill())
+                            {
+                                sname = p.SkillName(i);
+                                slevel = p.SkillLevel(i).ToString();
+                            }
+                            else
+                            {
+                                sname = p.SkillName(stype);
+                                slevel = p.SkillLevel(stype).ToString();
+                            }
+
+                            if (Strings.InStr(sname, "非表示") > 0)
+                            {
+                                goto NextSkill;
+                            }
+
+                            switch (stype ?? "")
+                            {
+                                case "オーラ":
+                                    {
+                                        if (p.IsMainPilot)
+                                        {
+                                            if (u.AuraLevel(true) < u.AuraLevel() && !string.IsNullOrEmpty(Map.MapFileName))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            if (u.AuraLevel(true) > Conversions.ToDouble(slevel))
+                                            {
+                                                sname = sname + "+" + SrcFormatter.Format(u.AuraLevel(true) - Conversions.ToDouble(slevel));
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "超能力":
+                                    {
+                                        if (p.IsMainPilot)
+                                        {
+                                            if (u.PsychicLevel(true) < u.PsychicLevel() && !string.IsNullOrEmpty(Map.MapFileName))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            if (u.PsychicLevel(true) > Conversions.ToDouble(slevel))
+                                            {
+                                                sname = sname + "+" + SrcFormatter.Format(u.PsychicLevel(true) - Conversions.ToDouble(slevel));
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "底力":
+                                case "超底力":
+                                case "覚悟":
+                                    {
+                                        if (u.HP <= u.MaxHP / 4)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityEnable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "不屈":
+                                    {
+                                        if (u.HP <= u.MaxHP / 2)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityEnable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "潜在力開放":
+                                    {
+                                        if (p.Morale >= 130)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityEnable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "スペシャルパワー自動発動":
+                                    {
+                                        if (i <= p.CountSkill())
+                                        {
+                                            if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(p.SkillData(i), 3)))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityEnable);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(p.SkillData(i), 3)))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityEnable);
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "Ｓ防御":
+                                    {
+                                        if (!u.IsFeatureAvailable("シールド")
+                                            && !u.IsFeatureAvailable("大型シールド")
+                                            && !u.IsFeatureAvailable("小型シールド")
+                                            && !u.IsFeatureAvailable("エネルギーシールド")
+                                            && !u.IsFeatureAvailable("アクティブシールド")
+                                            && !u.IsFeatureAvailable("盾")
+                                            && !u.IsFeatureAvailable("バリアシールド")
+                                            && !u.IsFeatureAvailable("アクティブフィールド")
+                                            && !u.IsFeatureAvailable("アクティブプロテクション")
+                                            && Strings.InStr(u.FeatureData("阻止"), "Ｓ防御") == 0
+                                            && Strings.InStr(u.FeatureData("広域阻止"), "Ｓ防御") == 0
+                                            && Strings.InStr(u.FeatureData("反射"), "Ｓ防御") == 0
+                                            && Strings.InStr(u.FeatureData("当て身技"), "Ｓ防御") == 0
+                                            && Strings.InStr(u.FeatureData("自動反撃"), "Ｓ防御") == 0
+                                            && !Map.IsStatusView)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "切り払い":
+                                    {
+                                        if (!u.IsFeatureAvailable("格闘武器")
+                                            && !u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("武"))
+                                            && Strings.InStr(u.FeatureData("阻止"), "切り払い") == 0
+                                            && Strings.InStr(u.FeatureData("広域阻止"), "切り払い") == 0
+                                            && Strings.InStr(u.FeatureData("反射"), "切り払い") == 0
+                                            && Strings.InStr(u.FeatureData("当て身技"), "切り払い") == 0
+                                            && Strings.InStr(u.FeatureData("自動反撃"), "切り払い") == 0
+                                            && !Map.IsStatusView)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "迎撃":
+                                    {
+                                        if (!u.IsFeatureAvailable("迎撃武器")
+                                            && !u.Weapons.Any(uw => uw.CanUseIntercept())
+                                            && Strings.InStr(u.FeatureData("阻止"), "迎撃") == 0
+                                            && Strings.InStr(u.FeatureData("広域阻止"), "迎撃") == 0
+                                            && Strings.InStr(u.FeatureData("反射"), "迎撃") == 0
+                                            && Strings.InStr(u.FeatureData("当て身技"), "迎撃") == 0
+                                            && Strings.InStr(u.FeatureData("自動反撃"), "迎撃") == 0
+                                            && !Map.IsStatusView)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "浄化":
+                                    {
+                                        if (!u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("浄"))
+                                            && !Map.IsStatusView)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityDisable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "援護":
+                                    {
+                                        if (!string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            int ret;
+                                            if ((u.Party ?? "") == (SRC.Stage ?? ""))
+                                            {
+                                                ret = GeneralLib.MaxLng(u.MaxSupportAttack() - u.UsedSupportAttack, 0);
+                                            }
+                                            else
+                                            {
+                                                if (u.IsUnderSpecialPowerEffect("サポートガード不能"))
+                                                {
+                                                    // MOD START 240a
+                                                    // upic.ForeColor = rgb(150, 0, 0)
+                                                    upic.SetColor(StatusFontColorAbilityDisable);
+                                                }
+
+                                                ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
+                                            }
+
+                                            if (ret == 0)
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
+                                        }
+
+                                        break;
+                                    }
+
+                                case "援護攻撃":
+                                    {
+                                        if (!string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            var ret = GeneralLib.MaxLng(u.MaxSupportAttack() - u.UsedSupportAttack, 0);
+                                            if (ret == 0)
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
+                                        }
+
+                                        break;
+                                    }
+
+                                case "援護防御":
+                                    {
+                                        if (!string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            var ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
+                                            if (ret == 0 || u.IsUnderSpecialPowerEffect("サポートガード不能"))
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
+                                        }
+
+                                        break;
+                                    }
+
+                                case "統率":
+                                    {
+                                        if (!string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            var ret = GeneralLib.MaxLng(u.MaxSyncAttack() - u.UsedSyncAttack, 0);
+                                            if (ret == 0)
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                            }
+
+                                            sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
+                                        }
+
+                                        break;
+                                    }
+
+                                case "カウンター":
+                                    {
+                                        if (!string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            var ret = GeneralLib.MaxLng(u.MaxCounterAttack() - u.UsedCounterAttack, 0);
+                                            if (ret > 100)
+                                            {
+                                                sname = sname + " (残り∞回)";
+                                            }
+                                            else if (ret > 0)
+                                            {
+                                                sname = sname + " (残り" + SrcFormatter.Format(ret) + "回)";
+                                            }
+                                            else
+                                            {
+                                                upic.SetColor(StatusFontColorAbilityDisable);
+                                                sname = sname + " (残り0回)";
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                case "先手必勝":
+                                    {
+                                        if (u.MaxCounterAttack() > 100)
+                                        {
+                                            upic.SetColor(StatusFontColorAbilityEnable);
+                                        }
+
+                                        break;
+                                    }
+
+                                case "耐久":
+                                    {
+                                        if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
+                                        {
+                                            goto NextSkill;
+                                        }
+
+                                        break;
+                                    }
+
+                                case "霊力":
+                                case "同調率":
+                                case "得意技":
+                                case "不得手":
+                                    goto NextSkill;
+                            }
+
+                            // 特殊能力名を表示
+                            if (Strings.LenB(sname) > 19)
+                            {
+                                if (n > 0)
+                                {
+                                    upic.Print();
+                                    //// ADD START 240a
+                                    //if (GUI.NewGUIMode)
+                                    //{
+                                    //    upic.CurrentX = 5;
+                                    //}
+                                    //// ADD  END  240a
+                                }
+                                upic.Print(sname);
+                                n = 2;
+                            }
+                            else
+                            {
+                                upic.Print(GeneralLib.RightPaddedString(sname, 19));
+                                n = (n + 1);
+                            }
+
+                            upic.SetColor(StatusFontColorNormalString);
+
+                            // 必要に応じて改行
+                            if (n > 1)
+                            {
+                                upic.Print();
+                                //// ADD START 240a
+                                //if (GUI.NewGUIMode)
+                                //{
+                                //    upic.CurrentX = 5;
+                                //}
+                                //// ADD  END  240a
+                                n = 0;
+                            }
+
+                        NextSkill:
+                            ;
+                        }
+
+                        if (n > 0)
+                        {
+                            upic.Print();
+                        }
+
+                        upic.CurrentY = upic.CurrentY + 8;
                     }
                 UnitStatus:
                     ;
@@ -1737,9 +1601,9 @@ namespace SRCSharpForm
                         //            {
                         //                string localConditionData3() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
 
-                        //                string localCondition3() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                upic.Print(localConditionData3() + localCondition3());
+                        //                upic.Print(localConditionData3() + cond.Name);
                         //                int localConditionLifetime4() { object argIndex1 = i; var ret = u.ConditionLifetime(argIndex1); return ret; }
 
                         //                int localConditionLifetime5() { object argIndex1 = i; var ret = u.ConditionLifetime(argIndex1); return ret; }
@@ -2095,24 +1959,24 @@ namespace SRCSharpForm
                         //        default:
                         //            {
                         //                // 充填中？
-                        //                string localCondition7() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                if (Strings.Right(localCondition7(), 3) == "充填中")
+                        //                if (Strings.Right(cond.Name, 3) == "充填中")
                         //                {
                         //                    if (u.IsHero())
                         //                    {
-                        //                        string localCondition4() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                        string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                        string localCondition5() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                        string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                        upic.Print(Strings.Left(localCondition4(), Strings.Len(localCondition5()) - 3));
+                        //                        upic.Print(Strings.Left(cond.Name, Strings.Len(cond.Name) - 3));
                         //                        upic.Print("準備中");
                         //                    }
                         //                    else
                         //                    {
-                        //                        string localCondition6() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                        string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                        upic.Print(localCondition6());
+                        //                        upic.Print(cond.Name);
                         //                    }
                         //                    int localConditionLifetime50() { object argIndex1 = i; var ret = u.ConditionLifetime(argIndex1); return ret; }
 
@@ -2121,32 +1985,32 @@ namespace SRCSharpForm
                         //                }
 
                         //                // パイロット特殊能力付加＆強化による状態は表示しない
-                        //                string localCondition8() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                string localCondition9() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                if (Strings.Right(localCondition8(), 3) == "付加２" || Strings.Right(localCondition9(), 3) == "強化２")
+                        //                if (Strings.Right(cond.Name, 3) == "付加２" || Strings.Right(cond.Name, 3) == "強化２")
                         //                {
                         //                    goto NextCondition;
                         //                }
 
-                        //                string localCondition12() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
                         //                string localConditionData15() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
 
-                        //                string localCondition13() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
                         //                string localConditionData16() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
 
                         //                double localConditionLevel9() { object argIndex1 = i; var ret = u.ConditionLevel(argIndex1); return ret; }
 
-                        //                if (Strings.Right(localCondition12(), 2) == "付加" && !string.IsNullOrEmpty(localConditionData15()))
+                        //                if (Strings.Right(cond.Name, 2) == "付加" && !string.IsNullOrEmpty(localConditionData15()))
                         //                {
                         //                    string localConditionData13() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
 
                         //                    buf = GeneralLib.LIndex(localConditionData13(), 1) + "付加";
                         //                }
-                        //                else if (Strings.Right(localCondition13(), 2) == "強化" && !string.IsNullOrEmpty(localConditionData16()))
+                        //                else if (Strings.Right(cond.Name, 2) == "強化" && !string.IsNullOrEmpty(localConditionData16()))
                         //                {
                         //                    // 強化アビリティ
                         //                    string localConditionData14() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
@@ -2160,13 +2024,13 @@ namespace SRCSharpForm
                         //                else if (localConditionLevel9() > 0d)
                         //                {
                         //                    // 付加アビリティ(レベル指定あり)
-                        //                    string localCondition10() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                    string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                        //                    string localCondition11() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
+                        //                    string cond.Name { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
                         //                    double localConditionLevel8() { object argIndex1 = i; var ret = u.ConditionLevel(argIndex1); return ret; }
 
-                        //                    buf = Strings.Left(localCondition10(), Strings.Len(localCondition11()) - 2) + "Lv" + SrcFormatter.Format(localConditionLevel8()) + "付加";
+                        //                    buf = Strings.Left(cond.Name, Strings.Len(cond.Name) - 2) + "Lv" + SrcFormatter.Format(localConditionLevel8()) + "付加";
                         //                }
                         //                else
                         //                {
