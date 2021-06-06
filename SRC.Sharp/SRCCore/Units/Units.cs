@@ -1093,29 +1093,6 @@ namespace SRCCore.Units
             }
         }
 
-        //        // ユニットリストに登録されたユニットのビットマップIDをクリア
-        //        public void ClearUnitBitmap()
-        //        {
-
-        //            {
-        //                var withBlock = GUI.MainForm.picUnitBitmap;
-        //                if (withBlock.Width == 32)
-        //                {
-        //                    // 既にクリアされていればそのまま終了
-        //                    return;
-        //                }
-
-        //                // 画像をクリア
-        //                withBlock.Picture = Image.FromFile("");
-        //                withBlock.Move(0, 0, 32, 96);
-        //            }
-
-        //            // BitmapIDをクリア
-        //            foreach (Unit u in colUnits)
-        //                u.BitmapID = 0;
-        //        }
-
-
         // ハイパーモードの自動発動チェック
         public void CheckAutoHyperMode()
         {

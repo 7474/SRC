@@ -428,10 +428,6 @@ namespace SRCCore.Units
             // 陣営を変更
             Party = new_party;
 
-            //// ビットマップを作り直す
-            // XXX 事前に画像を作っておく系はなしにしたい
-            //BitmapID = GUI.MakeUnitBitmap(this);
-
             // パイロットの陣営を変更
             foreach (var p in Pilots.Concat(SupportPilots))
             {
@@ -447,8 +443,6 @@ namespace SRCCore.Units
             foreach (var of in OtherForms)
             {
                 of.ChangeParty(new_party);
-                // XXX
-                //localOtherForm1().BitmapID = 0;
             }
 
             // 出撃中？

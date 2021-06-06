@@ -569,7 +569,6 @@ namespace SRCCore.Units
             if (IsConditionSatisfied("ユニット画像"))
             {
                 DeleteCondition("ユニット画像");
-                BitmapID = GUI.MakeUnitBitmap(this);
                 if (GUI.IsPictureVisible)
                 {
                     GUI.PaintUnitBitmap(this, "リフレッシュ無し");
@@ -583,7 +582,6 @@ namespace SRCCore.Units
             if (IsConditionSatisfied("非表示付加"))
             {
                 DeleteCondition("非表示付加");
-                BitmapID = GUI.MakeUnitBitmap(this);
                 if (GUI.IsPictureVisible)
                 {
                     GUI.PaintUnitBitmap(this, "リフレッシュ無し");
@@ -600,14 +598,12 @@ namespace SRCCore.Units
                 if (u.IsConditionSatisfied("ユニット画像"))
                 {
                     u.DeleteCondition("ユニット画像");
-                    //u.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
                     GUI.PaintUnitBitmap(pu.CurrentForm());
                 }
 
                 if (u.IsConditionSatisfied("非表示付加"))
                 {
                     u.DeleteCondition("非表示付加");
-                    //u.BitmapID = GUI.MakeUnitBitmap(partners[i].CurrentForm());
                     GUI.PaintUnitBitmap(pu.CurrentForm());
                 }
             }

@@ -489,18 +489,6 @@ namespace SRCCore
                 Commands.SelectedUnit = null;
                 Commands.SelectedTarget = null;
 
-                //    // ユニット画像生成
-                //    foreach (Unit u in UList)
-                //    {
-                //        {
-                //            var withBlock = u;
-                //            if (withBlock.BitmapID == 0)
-                //            {
-                //                withBlock.BitmapID = GUI.MakeUnitBitmap(u);
-                //            }
-                //        }
-                //    }
-
                 // 画面更新
                 GUI.Center(GUI.MapX, GUI.MapY);
                 if (!quick_load)

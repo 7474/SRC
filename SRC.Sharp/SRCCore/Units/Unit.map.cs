@@ -249,13 +249,7 @@ namespace SRCCore.Units
             // マップに登録
             Map.MapDataForUnit[x, y] = this;
 
-            // TODO Impl ビットマップを作成
-            //// ビットマップを作成
-            //if (BitmapID == 0)
-            //{
-            //    BitmapID = GUI.MakeUnitBitmap(this);
-            //}
-
+            // TODO Impl 登場時アニメを表示他
             //// 登場時アニメを表示
             //// MOD START MARGE
             //// If (smode = "出撃" Or smode = "部隊配置") _
@@ -845,21 +839,6 @@ namespace SRCCore.Units
                     UsedSupportGuard = 0;
                     UsedSyncAttack = 0;
                     UsedCounterAttack = 0;
-                    // XXX BitmapID 周り処理するなら
-                    //if (BitmapID == 0)
-                    //{
-                    //    {
-                    //        var withBlock = SRC.UList.Item(Name);
-                    //        if ((withBlock.Party0 ?? "") == (Party0 ?? "") & withBlock.BitmapID != 0 & (withBlock.get_Bitmap(false) ?? "") == (get_Bitmap(false) ?? ""))
-                    //        {
-                    //            BitmapID = withBlock.BitmapID;
-                    //        }
-                    //        else
-                    //        {
-                    //            BitmapID = GUI.MakeUnitBitmap(this);
-                    //        }
-                    //    }
-                    //}
 
                     if (IsFeatureAvailable("制御不可"))
                     {
@@ -1051,13 +1030,11 @@ namespace SRCCore.Units
             if (IsConditionSatisfied("ユニット画像"))
             {
                 DeleteCondition("ユニット画像");
-                BitmapID = GUI.MakeUnitBitmap(this);
             }
 
             if (IsConditionSatisfied("非表示付加"))
             {
                 DeleteCondition("非表示付加");
-                BitmapID = GUI.MakeUnitBitmap(this);
             }
 
             int counter;

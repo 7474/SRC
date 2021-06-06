@@ -2286,14 +2286,12 @@ namespace SRCCore.Units
                 if (withBlock39.IsConditionSatisfied("ユニット画像"))
                 {
                     withBlock39.DeleteCondition("ユニット画像");
-                    withBlock39.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
 
                 if (withBlock39.IsConditionSatisfied("非表示付加"))
                 {
                     withBlock39.DeleteCondition("非表示付加");
-                    withBlock39.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
             }
@@ -2305,14 +2303,12 @@ namespace SRCCore.Units
                     if (cf.IsConditionSatisfied("ユニット画像"))
                     {
                         cf.DeleteCondition("ユニット画像");
-                        cf.BitmapID = GUI.MakeUnitBitmap(cf);
                         GUI.PaintUnitBitmap(cf);
                     }
 
                     if (cf.IsConditionSatisfied("非表示付加"))
                     {
                         cf.DeleteCondition("非表示付加");
-                        cf.BitmapID = GUI.MakeUnitBitmap(cf);
                         GUI.PaintUnitBitmap(cf);
                     }
                 }
@@ -2742,14 +2738,12 @@ namespace SRCCore.Units
                 if (withBlock3.IsConditionSatisfied("ユニット画像"))
                 {
                     withBlock3.DeleteCondition("ユニット画像");
-                    withBlock3.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
 
                 if (withBlock3.IsConditionSatisfied("非表示付加"))
                 {
                     withBlock3.DeleteCondition("非表示付加");
-                    withBlock3.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
             }
@@ -2761,14 +2755,12 @@ namespace SRCCore.Units
                     if (cf.IsConditionSatisfied("ユニット画像"))
                     {
                         cf.DeleteCondition("ユニット画像");
-                        cf.BitmapID = GUI.MakeUnitBitmap(cf);
                         GUI.PaintUnitBitmap(cf);
                     }
 
                     if (cf.IsConditionSatisfied("非表示付加"))
                     {
                         cf.DeleteCondition("非表示付加");
-                        cf.BitmapID = GUI.MakeUnitBitmap(cf);
                         GUI.PaintUnitBitmap(cf);
                     }
                 }
@@ -3073,14 +3065,12 @@ namespace SRCCore.Units
                 if (withBlock39.IsConditionSatisfied("ユニット画像"))
                 {
                     withBlock39.DeleteCondition("ユニット画像");
-                    withBlock39.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
 
                 if (withBlock39.IsConditionSatisfied("非表示付加"))
                 {
                     withBlock39.DeleteCondition("非表示付加");
-                    withBlock39.BitmapID = GUI.MakeUnitBitmap(CurrentForm());
                     GUI.PaintUnitBitmap(CurrentForm());
                 }
             }

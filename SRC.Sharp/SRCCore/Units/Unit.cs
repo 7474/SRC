@@ -70,10 +70,6 @@ namespace SRCCore.Units
         [JsonProperty]
         public string ID;
 
-        // ビットマップID
-        // 同種のユニットは同じIDを共有
-        public int BitmapID;
-
         // Ｘ座標
         [JsonProperty]
         public int x;

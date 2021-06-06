@@ -283,7 +283,7 @@ namespace SRCSharpForm
 
         public void PaintUnitBitmap(Unit u, string smode)
         {
-            //// 非表示？
+            //// TODO ユニット非表示？
             //if (u.BitmapID == -1)
             //{
             //    return;

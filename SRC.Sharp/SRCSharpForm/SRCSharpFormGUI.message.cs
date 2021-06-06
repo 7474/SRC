@@ -299,25 +299,6 @@ namespace SRCSharpForm
                 {
                     MainForm.DrawUnit(g, Map.CellAtPoint(lu.x, lu.y), lu, new Rectangle(0, 0, frmMessage.picUnit1.Width, frmMessage.picUnit1.Height));
                 }
-                // TODO BitmapID
-                //if (lu.BitmapID > 0)
-                //{
-
-                //    if (string.IsNullOrEmpty(Map.MapDrawMode))
-                //    {
-                //        ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * (lu.BitmapID % 15), 96 * (lu.BitmapID / 15), SRCCOPY);
-                //    }
-                //    else
-                //    {
-                //        LoadUnitBitmap(lu, frmMessage.picUnit1, 0, 0, true, fname: "");
-                //        frmMessage.picUnit1 = argpic;
-                //    }
-                //}
-                //else
-                //{
-                //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
-                //    ret = BitBlt(frmMessage.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (lu.x - 1), 32 * (lu.y - 1), SRCCOPY);
-                //}
 
                 frmMessage.picUnit1.Refresh();
 
@@ -419,24 +400,6 @@ namespace SRCSharpForm
                 {
                     MainForm.DrawUnit(g, Map.CellAtPoint(ru.x, ru.y), ru, new Rectangle(0, 0, frmMessage.picUnit2.Width, frmMessage.picUnit2.Height));
                 }
-                // TODO BitmapID
-                //if (ru.BitmapID > 0)
-                //{
-                //    if (string.IsNullOrEmpty(Map.MapDrawMode))
-                //    {
-                //        ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * (ru.BitmapID % 15), 96 * (ru.BitmapID / 15), SRCCOPY);
-                //    }
-                //    else
-                //    {
-                //        LoadUnitBitmap(ru, frmMessage.picUnit2, 0, 0, true, fname: "");
-                //        frmMessage.picUnit2 = argpic1;
-                //    }
-                //}
-                //else
-                //{
-                //    // 非表示のユニットの場合はユニットのいる地形タイルを表示
-                //    ret = BitBlt(frmMessage.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (ru.x - 1), 32 * (ru.y - 1), SRCCOPY);
-                //}
 
                 frmMessage.picUnit2.Refresh();
 
