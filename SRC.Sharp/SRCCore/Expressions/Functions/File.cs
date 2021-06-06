@@ -1,4 +1,8 @@
+using SRCCore.Filesystem;
 using SRCCore.Lib;
+using SRCCore.VB;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -11,211 +15,47 @@ namespace SRCCore.Expressions.Functions
 
     public class Dir : AFunction
     {
+        private IEnumerator<string> _lastResults;
+
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Dir
-            //                        CallFunctionRet = ValueType.StringType;
-            //                        switch (pcount)
-            //                        {
-            //                            case 2:
-            //                                {
-            //                                    fname = GetValueAsString(@params[1], is_term[1]);
-
-            //                                    // フルパス指定でなければシナリオフォルダを起点に検索
-            //                                    if (Strings.Mid(fname, 2, 1) != ":")
-            //                                    {
-            //                                        fname = SRC.ScenarioPath + fname;
-            //                                    }
-
-            //                                    switch (GetValueAsString(@params[2], is_term[2]) ?? "")
-            //                                    {
-            //                                        case "ファイル":
-            //                                            {
-            //                                                num = Constants.vbNormal;
-            //                                                break;
-            //                                            }
-
-            //                                        case "フォルダ":
-            //                                            {
-            //                                                num = FileAttribute.Directory;
-            //                                                break;
-            //                                            }
-            //                                    }
-            //                                    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                    str_result = FileSystem.Dir(fname, (FileAttribute)num);
-            //                                    if (Strings.Len(str_result) == 0)
-            //                                    {
-            //                                        return CallFunctionRet;
-            //                                    }
-
-            //                                    // ファイル属性チェック用に検索パスを作成
-            //                                    dir_path = fname;
-            //                                    if (num == FileAttribute.Directory)
-            //                                    {
-            //                                        i = GeneralLib.InStr2(fname, @"\");
-            //                                        if (i > 0)
-            //                                        {
-            //                                            dir_path = Strings.Left(fname, i);
-            //                                        }
-            //                                    }
-
-            //                                    // 単一ファイルの検索？
-            //                                    if (Strings.InStr(fname, "*") == 0)
-            //                                    {
-            //                                        // フォルダの検索の場合は見つかったファイルがフォルダ
-            //                                        // かどうかチェックする
-            //                                        if (num == FileAttribute.Directory)
-            //                                        {
-            //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) == 0)
-            //                                            {
-            //                                                str_result = "";
-            //                                            }
-            //                                        }
-
-            //                                        return CallFunctionRet;
-            //                                    }
-
-            //                                    if (str_result == ".")
-            //                                    {
-            //                                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                        str_result = FileSystem.Dir();
-            //                                    }
-
-            //                                    if (str_result == "..")
-            //                                    {
-            //                                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                        str_result = FileSystem.Dir();
-            //                                    }
-
-            //                                    // 検索されたファイル一覧を作成
-            //                                    dir_list = new string[1];
-            //                                    if (num == FileAttribute.Directory)
-            //                                    {
-            //                                        while (Strings.Len(str_result) > 0)
-            //                                        {
-            //                                            // フォルダの検索の場合は見つかったファイルがフォルダ
-            //                                            // かどうかチェックする
-            //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) != 0)
-            //                                            {
-            //                                                Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
-            //                                                dir_list[Information.UBound(dir_list)] = str_result;
-            //                                            }
-            //                                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                            str_result = FileSystem.Dir();
-            //                                        }
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        while (Strings.Len(str_result) > 0)
-            //                                        {
-            //                                            Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
-            //                                            dir_list[Information.UBound(dir_list)] = str_result;
-            //                                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                            str_result = FileSystem.Dir();
-            //                                        }
-            //                                    }
-
-            //                                    if (Information.UBound(dir_list) > 0)
-            //                                    {
-            //                                        str_result = dir_list[1];
-            //                                        dir_index = 2;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        str_result = "";
-            //                                        dir_index = 1;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 1:
-            //                                {
-            //                                    fname = GetValueAsString(@params[1], is_term[1]);
-
-            //                                    // フルパス指定でなければシナリオフォルダを起点に検索
-            //                                    if (Strings.Mid(fname, 2, 1) != ":")
-            //                                    {
-            //                                        fname = SRC.ScenarioPath + fname;
-            //                                    }
-
-            //                                    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                    str_result = FileSystem.Dir(fname, FileAttribute.Directory);
-            //                                    if (Strings.Len(str_result) == 0)
-            //                                    {
-            //                                        return CallFunctionRet;
-            //                                    }
-
-            //                                    // 単一ファイルの検索？
-            //                                    if (Strings.InStr(fname, "*") == 0)
-            //                                    {
-            //                                        return CallFunctionRet;
-            //                                    }
-
-            //                                    if (str_result == ".")
-            //                                    {
-            //                                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                        str_result = FileSystem.Dir();
-            //                                    }
-
-            //                                    if (str_result == "..")
-            //                                    {
-            //                                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                        str_result = FileSystem.Dir();
-            //                                    }
-
-            //                                    // 検索されたファイル一覧を作成
-            //                                    dir_list = new string[1];
-            //                                    while (Strings.Len(str_result) > 0)
-            //                                    {
-            //                                        Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
-            //                                        dir_list[Information.UBound(dir_list)] = str_result;
-            //                                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                                        str_result = FileSystem.Dir();
-            //                                    }
-
-            //                                    if (Information.UBound(dir_list) > 0)
-            //                                    {
-            //                                        str_result = dir_list[1];
-            //                                        dir_index = 2;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        str_result = "";
-            //                                        dir_index = 1;
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case 0:
-            //                                {
-            //                                    if (dir_index <= Information.UBound(dir_list))
-            //                                    {
-            //                                        str_result = dir_list[dir_index];
-            //                                        dir_index = (dir_index + 1);
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        str_result = "";
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-
-            if (etype == ValueType.StringType)
+            if (pcount > 0)
             {
-                str_result = GeneralLib.FormatNum(num_result);
-                return ValueType.StringType;
+                var fname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                // フルパス指定でなければシナリオフォルダを起点に検索
+                if (!SRC.FileSystem.IsAbsolutePath(fname))
+                {
+                    fname = SRC.FileSystem.PathCombine(SRC.ScenarioPath, fname);
+                }
+
+                var searchOption = EntryOption.All;
+                if (pcount > 2)
+                {
+                    switch (SRC.Expression.GetValueAsString(@params[2], is_term[2]) ?? "")
+                    {
+                        case "ファイル":
+                            searchOption = EntryOption.File;
+                            break;
+
+                        case "フォルダ":
+                            searchOption = EntryOption.Directory;
+                            break;
+                    }
+                }
+
+                _lastResults = SRC.FileSystem.GetFileSystemEntries(
+                    Path.GetDirectoryName(fname), Path.GetFileName(fname), searchOption)
+                    .GetEnumerator();
             }
-            else
+
+            if (_lastResults != null && _lastResults.MoveNext())
             {
-                return ValueType.NumericType;
+                str_result = _lastResults.Current;
             }
+            return ValueType.StringType;
         }
     }
 
@@ -223,36 +63,21 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
-            num_result = 0d;
+            var f = SRC.FileHandleManager.Get(SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
 
-            // TODO Impl Eof
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            if (FileSystem.EOF(GetValueAsLong(@params[1], is_term[1])))
-            //                            {
-            //                                str_result = "1";
-            //                            }
-            //                            else
-            //                            {
-            //                                str_result = "0";
-            //                            }
-
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            if (FileSystem.EOF(GetValueAsLong(@params[1], is_term[1])))
-            //                            {
-            //                                num_result = 1d;
-            //                            }
-
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+            if (f.Reader.EndOfStream)
+            {
+                str_result = "1";
+                num_result = 1d;
+            }
+            else
+            {
+                str_result = "0";
+                num_result = 0d;
+            }
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else

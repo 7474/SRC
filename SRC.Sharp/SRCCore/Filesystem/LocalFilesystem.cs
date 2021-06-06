@@ -63,6 +63,15 @@ namespace SRCCore.Filesystem
             entrySets.Insert(1, entrySet);
         }
 
+        public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
+        {
+            // TODO ILocalFileSystemEntrySet 対応、アーカイブを検索
+            return Directory.GetFileSystemEntries(path, searchPattern)
+                            .Where(x => enumerationOptions == EntryOption.All
+                                || enumerationOptions == EntryOption.File && !Directory.Exists(x)
+                                || enumerationOptions == EntryOption.File && Directory.Exists(x));
+        }
+
         public void AddSafePath(string basePath)
         {
             if (Directory.Exists(basePath))
@@ -97,6 +106,11 @@ namespace SRCCore.Filesystem
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
         {
             return ToRelativePath(scenarioPath, a).ToLower() == ToRelativePath(scenarioPath, b).ToLower();
+        }
+
+        public bool IsAbsolutePath(string path)
+        {
+            return Path.IsPathRooted(path);
         }
 
         public string ToAbsolutePath(string scenarioPath, string path)
