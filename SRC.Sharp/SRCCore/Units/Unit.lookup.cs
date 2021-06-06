@@ -577,7 +577,7 @@ namespace SRCCore.Units
         public Unit LookForSupportGuard(Unit t, UnitWeapon tw)
         {
             return null;
-            // TODO Impl
+            // TODO Impl LookForSupportGuard
             //Unit LookForSupportGuardRet = default;
             //Unit u;
             //int i;
@@ -915,7 +915,7 @@ namespace SRCCore.Units
         public int LookForSupport(int tx, int ty, bool for_attack = false)
         {
             return 0;
-            // TODO Impl
+            // TODO Impl LookForSupport
             //int LookForSupportRet = default;
             //Unit u;
             //int i;
@@ -1063,7 +1063,7 @@ namespace SRCCore.Units
         public bool IsAbleToEnter(int tx, int ty)
         {
             return true;
-            // TODO Impl
+            // TODO Impl IsAbleToEnter
             //bool IsAbleToEnterRet = default;
             //bool ignore_move_cost;
 
@@ -1191,7 +1191,7 @@ namespace SRCCore.Units
         public bool IsAvailable()
         {
             return true;
-            // TODO Impl
+            // TODO Impl IsAvailable
             //bool IsAvailableRet = default;
             //int i;
             //IsAvailableRet = true;
@@ -1267,7 +1267,7 @@ namespace SRCCore.Units
         public bool IsNecessarySkillSatisfied(string nabilities, [Optional, DefaultParameterValue(null)] Pilot p)
         {
             return true;
-            // TODO Impl
+            // TODO Impl IsNecessarySkillSatisfied
             //bool IsNecessarySkillSatisfiedRet = default;
             //int i, num;
             //var nskill_list = new string[101];
@@ -1335,7 +1335,7 @@ namespace SRCCore.Units
         public bool IsNecessarySkillSatisfied2(string ndata, Pilot p)
         {
             return true;
-            // TODO Impl
+            // TODO Impl IsNecessarySkillSatisfied2
             //bool IsNecessarySkillSatisfied2Ret = default;
             //string stype2, stype, sname;
             //double slevel;

@@ -111,7 +111,7 @@ namespace SRCSharpForm
             picUnitStatus.Location = new Point(MainPWidth + 16 + 4, 4 + 68 + 4);
             // XXX 幅ぎりぎりまで使うってことか？
             picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
-            // TODO Impl
+            // TODO Impl InitStatus
             //    // MOD START MARGE
             //    // If MainWidth = 15 Then
             //    // .picFace.Move MainPWidth + 24, 4
@@ -264,7 +264,7 @@ namespace SRCSharpForm
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
 
-            // TODO Impl
+            // TODO Impl SetupBackground
             using (var g = Graphics.FromImage(BackgroundBuffer))
             {
                 switch (draw_option ?? "")
