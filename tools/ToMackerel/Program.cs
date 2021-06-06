@@ -22,7 +22,7 @@ namespace ToMackerel
                 .SelectMany(f =>
                 {
                     // Console.WriteLine(f + " --------");
-                    return File.ReadAllLines(f).Select(l => new CodeInfo(l));
+                    return File.ReadAllLines(f).Select(l => new CodeInfo(Path.GetFileName(f), l));
                 })
                 .Aggregate((x, y) => new CodeInfo(x.TodoCount + y.TodoCount, x.NotImplCount + y.NotImplCount));
             Console.WriteLine(path + " -> " + JsonConvert.SerializeObject(info));
@@ -58,14 +58,14 @@ namespace ToMackerel
         public int TodoCount { get; }
         public int NotImplCount { get; }
 
-        public CodeInfo(string line)
+        public CodeInfo(string filename, string line)
         {
             TodoCount = line.ToLower().Replace(" ", "").Contains("//todo") ? 1 : 0;
             NotImplCount = line.Contains("NotImplementedException") ? 1 : 0;
 
             if (TodoCount > 0 || NotImplCount > 0)
             {
-                Console.WriteLine(line);
+                Console.WriteLine(filename + ": " + line);
             }
         }
 
