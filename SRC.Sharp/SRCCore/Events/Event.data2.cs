@@ -1,3 +1,5 @@
+using SRCCore.VB;
+using System.Drawing;
 using System.Linq;
 
 namespace SRCCore.Events
@@ -26,10 +28,9 @@ namespace SRCCore.Events
             ForIndex = 0;
             UpVarLevel = 0;
             HotPointList = new HotPoint[1];
-            // TODO Impl
-            //ObjColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //ObjFillStyle = vbFSTransparent;
+            ObjColor = Color.White;
+            ObjFillColor = Color.White;
+            ObjFillStyle = FillStyle.VbFSTransparent;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
             GUI.IsPictureVisible = false;

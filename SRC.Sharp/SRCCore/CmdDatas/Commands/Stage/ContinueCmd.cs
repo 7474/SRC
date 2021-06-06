@@ -30,7 +30,7 @@ namespace SRCCore.CmdDatas.Commands
 
             SRC.GUIStatus.ClearUnitStatus();
 
-            // TODO Impl
+            // TODO Impl 経験し取得などの後処理
             //// 追加経験値を得るパイロットや破壊されたユニットがいなければ処理をスキップ
             //n = 0;
             //foreach (Unit currentU in SRC.UList.Items)
@@ -147,7 +147,7 @@ namespace SRCCore.CmdDatas.Commands
             // エピローグイベントを実行
             if (Event.IsEventDefined("エピローグ"))
             {
-                // TODO Impl
+                // TODO Impl エピローグイベントを実行
                 //// ハイパーモードや変身、能力コピーを解除
                 //foreach (Unit currentU1 in SRC.UList)
                 //{

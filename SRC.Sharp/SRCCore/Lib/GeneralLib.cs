@@ -101,7 +101,7 @@ namespace SRCCore.Lib
                 return max;
             }
             return random.Next(max) + 1;
-            // TODO Impl
+            // TODO Impl 乱数系列
             //if (Expression.IsOptionDefined("乱数系列非保存"))
             //{
             //    DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);

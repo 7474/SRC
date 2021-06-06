@@ -990,7 +990,7 @@ namespace SRCSharpForm
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
-            // TODO Impl
+            // TODO Impl AbilityListBox
             TopItem = -1;
             var list = abilities.Items.Select(x => new ListBoxItem()
             {

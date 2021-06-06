@@ -58,7 +58,7 @@ namespace SRCCore.Pilots
                 // レベル上限チェック
                 if (value / 500 > 0)
                 {
-                    // TODO Impl
+                    // TODO Impl レベル上限チェック
                     //if (Expression.IsOptionDefined(ref "レベル限界突破"))
                     //{
                     //    if (proLevel > 999) // レベル999で打ち止め

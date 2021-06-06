@@ -125,7 +125,7 @@ namespace SRCCore.Commands
 
                 var uname = forms[ret - 1].ListItemID;
                 var targetUnit = SRC.UDList.Item(uname);
-                // TODO Impl
+                // TODO Impl BGM
                 string BGM;
                 {
                     var u = SelectedUnit;
@@ -497,7 +497,7 @@ namespace SRCCore.Commands
                     Status.DisplayUnitStatus(Map.MapDataForUnit[u.x, u.y]);
                 }
 
-                // TODO Impl
+                // TODO Impl ユニットリストの表示を更新
                 //// ユニットリストの表示を更新
                 //Event.MakeUnitList(smode: "");
 
@@ -673,7 +673,7 @@ namespace SRCCore.Commands
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoHyperMode();
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoNormalMode();
 
-                    // TODO Impl
+                    // TODO Impl ユニットリストの表示を更新
                     //// ユニットリストの表示を更新
                     //Event.MakeUnitList(smode: "");
 
@@ -725,7 +725,7 @@ namespace SRCCore.Commands
                 SRC.UList.CheckAutoHyperMode();
                 SRC.UList.CheckAutoNormalMode();
 
-                // TODO Impl
+                // TODO Impl ユニットリストの表示を更新
                 //// ユニットリストの表示を更新
                 //Event.MakeUnitList(smode: "");
 

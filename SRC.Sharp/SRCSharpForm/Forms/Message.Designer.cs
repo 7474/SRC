@@ -7,7 +7,6 @@ namespace SRCSharpForm
     [DesignerGenerated()]
     internal partial class frmMessage
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmMessage() : base()
         {
@@ -360,6 +359,5 @@ namespace SRCSharpForm
             this.PerformLayout();
 
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

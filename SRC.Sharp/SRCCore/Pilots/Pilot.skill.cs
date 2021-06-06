@@ -50,7 +50,7 @@ namespace SRCCore.Pilots
             // 特殊能力付加＆強化による修正
             if (Unit != null)
             {
-                // TODO Impl
+                // TODO Impl IsSkillAvailable
                 //var u = Unit;
                 //if (u.CountCondition() == 0)
                 //{
@@ -184,7 +184,7 @@ namespace SRCCore.Pilots
             }
 
             {
-                // TODO Impl
+                // TODO Impl 特殊能力付加＆強化による修正
                 //if (Unit.CountCondition() == 0)
                 //{
                 //    return SkillLevelRet;
@@ -323,7 +323,7 @@ namespace SRCCore.Pilots
             string sname = sd?.Name;
             string SkillDataRet = sd?.StrData;
             return SkillDataRet;
-            // TODO Impl
+            // TODO Impl SkillData
             //ErrorHandler:
             //    ;
             //    if (string.IsNullOrEmpty(sname))

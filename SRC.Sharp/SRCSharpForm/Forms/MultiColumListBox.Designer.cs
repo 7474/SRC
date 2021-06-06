@@ -10,7 +10,6 @@ namespace Project1
     [DesignerGenerated()]
     internal partial class frmMultiColumnListBox
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmMultiColumnListBox() : base()
         {
@@ -141,6 +140,5 @@ namespace Project1
             ResumeLayout(false);
             PerformLayout();
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

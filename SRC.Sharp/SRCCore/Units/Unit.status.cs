@@ -15,7 +15,7 @@ namespace SRCCore.Units
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
         {
-            // TODO Impl
+            // TODO Impl Update
             //    WeaponData[] prev_wdata;
             //    double[] prev_wbullets;
             //    AbilityData[] prev_adata;

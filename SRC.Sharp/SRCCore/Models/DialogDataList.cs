@@ -106,7 +106,7 @@ namespace SRCCore.Models
 
                             var pname = Strings.Left(line_buf, ret - 1);
 
-                            // TODO Impl
+                            // TODO Impl 指定した話者のデータが存在するかチェック。
                             //// 指定した話者のデータが存在するかチェック。
                             //// ただし合体技のパートナーは場合は他の作品のパイロットであることも
                             //// あるので話者チェックを行わない。

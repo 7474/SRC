@@ -1910,7 +1910,7 @@ namespace SRCCore.Units
             }
 
             // 合体技のパートナーの弾数＆ＥＮの消費
-            // TODO Impl
+            // TODO Impl 合体技のパートナーの弾数＆ＥＮの消費
             {
                 //foreach (var pu in partners)
                 //{
@@ -2104,7 +2104,7 @@ namespace SRCCore.Units
             }
 
             // 変身した場合
-            // TODO Impl
+            // TODO Impl 変身した場合
             {
                 //if (Status == "他形態")
                 //{
@@ -2489,7 +2489,7 @@ namespace SRCCore.Units
             // 起点からの距離に応じて並べ替え
             targets = targets.OrderBy(t => Math.Abs(t.x - rx) + Math.Abs(t.y - ry)).ToList();
 
-            // TODO Impl
+            // TODO Impl 合体技
             // 合体技
             var partners = a.CombinationPartner();
             //    bool[] TmpMaskData;

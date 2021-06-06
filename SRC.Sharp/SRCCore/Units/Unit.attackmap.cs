@@ -704,7 +704,7 @@ namespace SRCCore.Units
 
                         var msg = withBlock8.get_Nickname(false) + "は" + SrcFormatter.Format(earned_exp) + "の経験値を獲得し、" + "レベル[" + SrcFormatter.Format(withBlock8.Level) + "]にレベルアップ。";
 
-                        // TODO Impl
+                        // TODO Impl 特殊能力の習得
                         //// 特殊能力の習得
                         //var loopTo18 = withBlock8.CountSkill();
                         //for (var i = 1; i <= loopTo18; i++)
@@ -838,7 +838,7 @@ namespace SRCCore.Units
                 }
             }
 
-            // TODO Impl
+            // TODO Impl 合体技のパートナーの弾数＆ＥＮを消費
             //// 合体技のパートナーの弾数＆ＥＮを消費
             //var loopTo25 = Information.UBound(partners);
             //for (i = 1; i <= loopTo25; i++)
@@ -1032,7 +1032,7 @@ namespace SRCCore.Units
             //    }
             //}
 
-            // TODO IMpl
+            // TODO IMpl 以下の特殊効果は武器データが変化する可能性があるため、同時には適用されない
             //// 以下の特殊効果は武器データが変化する可能性があるため、同時には適用されない
 
             //// 自爆の処理

@@ -7,7 +7,7 @@ namespace SRCCore.CmdDatas.Commands
     {
         public PaintStringCmd(SRC src, EventDataLine eventData) : base(src, CmdType.PaintStringCmd, eventData)
         {
-            // TODO Impl
+            // TODO Impl PaintString文の処理の高速化のため、あらかじめ構文解析しておく
             // PaintString文の処理の高速化のため、あらかじめ構文解析しておく
 
             //// 「;」を含む場合は改めて項に分解

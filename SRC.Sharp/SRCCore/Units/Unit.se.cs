@@ -116,7 +116,7 @@ namespace SRCCore.Units
         // 特殊効果データを再生
         public void SpecialEffect(string main_situation, string sub_situation = "", bool keep_message_form = false)
         {
-            // TODO Impl
+            // TODO Impl SpecialEffect
             //            string anime, sname;
             //            string[] animes;
             //            int idx, i, j, w = default;

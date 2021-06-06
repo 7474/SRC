@@ -78,7 +78,7 @@ namespace SRCCore.Events
             colSysNormalLabelList.Clear();
 
             // デバッグモードの設定
-            // TODO Impl
+            // TODO Impl 
             //if (Strings.LCase(GeneralLib.ReadIni("Option", "DebugMode")) == "on")
             //{
             //    if (!Expression.IsOptionDefined("デバッグ"))
@@ -1082,7 +1082,7 @@ namespace SRCCore.Events
             // ローカルデータの読みこみ
             if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
-                // TODO Impl
+                // TODO Impl ローカルデータの読みこみ
                 //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Data\alias.txt"))
                 //{
                 //    SRC.ALDList.Load(SRC.ScenarioPath + @"Data\alias.txt");
@@ -1208,7 +1208,7 @@ namespace SRCCore.Events
                         else
                         {
                             // 他のイベントファイルの読み込み
-                            // TODO Impl
+                            // TODO Impl 他のイベントファイルの読み込み
                             var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2);
                             if (fname2 != @"Lib\スペシャルパワー.eve" & fname2 != @"Lib\汎用戦闘アニメ\include.eve" & fname2 != @"Lib\include.eve")
                             {
