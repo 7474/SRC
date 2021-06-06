@@ -68,6 +68,7 @@ namespace SRCCore.Expressions
             new Sqr(),
             new Tan(),
             // File
+            new Dir(),
             new EOF(),
             // String
             new Format(),

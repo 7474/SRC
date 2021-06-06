@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 
 namespace SRCCore.Filesystem
@@ -23,6 +24,8 @@ namespace SRCCore.Filesystem
         /// <param name="archivePath">アーカイブファイルのパス</param>
         void AddAchive(string basePath, string archivePath);
 
+        IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions);
+
         //
         /// <summary>
         /// シナリオから操作できるパスを追加します。
@@ -39,9 +42,17 @@ namespace SRCCore.Filesystem
 
         //
         bool RelativePathEuqals(string scenarioPath, string a, string b);
+        bool IsAbsolutePath(string path);
         string ToAbsolutePath(string scenarioPath, string path);
         string ToRelativePath(string scenarioPath, string path);
         string NormalizePath(string path);
+    }
+
+    public enum EntryOption
+    {
+        File = 1,
+        Directory = 2,
+        All = 3,
     }
 
     public enum SafeOpenMode
