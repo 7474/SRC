@@ -1,0 +1,26 @@
+name: CodeInfo
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - .github/workflows/CodeInfo.yml
+      - SRC.Sharp/**
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Code Info To Mackerel
+      run: |
+        cd tools/ToMackerel
+        dotnet run ../../SRC.Sharp
+      env:
+        MACKEREL_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
