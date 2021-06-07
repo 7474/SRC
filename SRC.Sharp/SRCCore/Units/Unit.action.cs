@@ -106,32 +106,31 @@ namespace SRCCore.Units
             {
                 string PartyRet = strParty;
 
-                // TODO Impl 魅了されている場合
-                //// 魅了されている場合
-                //if (IsConditionSatisfied("魅了") & Master is object)
-                //{
-                //    PartyRet = Master.Party;
-                //    if (PartyRet == "味方")
-                //    {
-                //        // 味方になっても自分では操作できない
-                //        PartyRet = "ＮＰＣ";
-                //    }
-                //}
+                // 魅了されている場合
+                if (IsConditionSatisfied("魅了") && Master is object)
+                {
+                    PartyRet = Master.Party;
+                    if (PartyRet == "味方")
+                    {
+                        // 味方になっても自分では操作できない
+                        PartyRet = "ＮＰＣ";
+                    }
+                }
 
-                //// 憑依されている場合
-                //if (IsConditionSatisfied("憑依") & Master is object)
-                //{
-                //    PartyRet = Master.Party;
-                //}
+                // 憑依されている場合
+                if (IsConditionSatisfied("憑依") && Master is object)
+                {
+                    PartyRet = Master.Party;
+                }
 
-                //// コントロール不能の味方ユニットはＮＰＣとして扱う
-                //if (PartyRet == "味方")
-                //{
-                //    if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("恐怖") | IsConditionSatisfied("踊り") | IsConditionSatisfied("狂戦士"))
-                //    {
-                //        PartyRet = "ＮＰＣ";
-                //    }
-                //}
+                // コントロール不能の味方ユニットはＮＰＣとして扱う
+                if (PartyRet == "味方")
+                {
+                    if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("恐怖") | IsConditionSatisfied("踊り") | IsConditionSatisfied("狂戦士"))
+                    {
+                        PartyRet = "ＮＰＣ";
+                    }
+                }
 
                 return PartyRet;
             }
