@@ -1658,8 +1658,6 @@ namespace SRCSharpForm
 
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)
         {
-            // XXX 初めて実行する際に、各フォルダにBitmapフォルダがあるかチェック
-
             ResetMessage();
             try
             {
@@ -1821,27 +1819,16 @@ namespace SRCSharpForm
 
                                         default:
                                             {
-                                                // TODO Impl 透過色設定
-                                                //if (Strings.Asc(buf2) == 35 && Strings.Len(buf2) == 7)
-                                                //{
-                                                //    // 透過色設定
-                                                //    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                                                //    StringType.MidStmtStr(cname, 1, 2, "&H");
-                                                //    var midTmp = Strings.Mid(buf2, 6, 2);
-                                                //    StringType.MidStmtStr(cname, 3, 2, midTmp);
-                                                //    var midTmp1 = Strings.Mid(buf2, 4, 2);
-                                                //    StringType.MidStmtStr(cname, 5, 2, midTmp1);
-                                                //    var midTmp2 = Strings.Mid(buf2, 2, 2);
-                                                //    StringType.MidStmtStr(cname, 7, 2, midTmp2);
-                                                //    if (Information.IsNumeric(cname))
-                                                //    {
-                                                //        if (Conversions.ToInteger(cname) != ColorTranslator.ToOle(Color.White))
-                                                //        {
-                                                //            options = options + SrcFormatter.Format(Conversions.ToInteger(cname)) + " ";
-                                                //        }
-                                                //    }
-                                                //}
-                                                //else if (Information.IsNumeric(buf2))
+                                                if (Strings.Asc(buf2) == 35 && Strings.Len(buf2) == 7)
+                                                {
+                                                    // 透過色設定
+                                                    var transparentColor = ColorExtension.FromHexString(buf2);
+                                                    if (!transparentColor.IsEmpty)
+                                                    {
+                                                        options = options + transparentColor.ToHexString() + " ";
+                                                    }
+                                                }
+                                                else if (Information.IsNumeric(buf2))
                                                 {
                                                     // スキップ
                                                     opt_n = (j + 1);
@@ -2007,9 +1994,7 @@ namespace SRCSharpForm
                                     need_refresh = true;
                                     if (wait_time > 0)
                                     {
-                                        // XXX picMain
                                         RefreshScreen();
-                                        //MainForm.picMain(0).Refresh();
                                         need_refresh = false;
                                         var cur_time = GeneralLib.timeGetTime();
                                         if (cur_time < start_time + wait_time)
@@ -2034,9 +2019,7 @@ namespace SRCSharpForm
 
                                         DrawPicture(fname, Conversions.ToInteger(dx), Conversions.ToInteger(dy), Conversions.ToInteger(dw), Conversions.ToInteger(dh), 0, 0, 0, 0, options);
 
-                                        // XXX picMain
                                         RefreshScreen();
-                                        //MainForm.picMain(0).Refresh();
                                         if (wait_time > 0)
                                         {
                                             wait_time2 = wait_time * (j - first_id + 1) / (last_id - first_id);
@@ -2069,9 +2052,7 @@ namespace SRCSharpForm
                                 {
                                     if (need_refresh)
                                     {
-                                        // XXX picMain
                                         RefreshScreen();
-                                        //MainForm.picMain(0).Refresh();
                                         need_refresh = false;
                                     }
 
