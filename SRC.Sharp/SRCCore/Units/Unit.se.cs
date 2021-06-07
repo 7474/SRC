@@ -141,7 +141,7 @@ namespace SRCCore.Units
             //            GeneralLib.TrimString(anime);
 
             //            // 表示キャンセル
-            //            if (string.IsNullOrEmpty(anime) | anime == "-")
+            //            if (string.IsNullOrEmpty(anime) || anime == "-")
             //            {
             //                return;
             //            }
@@ -172,12 +172,12 @@ namespace SRCCore.Units
             //                    {
             //                        case "swing.wav":
             //                            {
-            //                                if (Strings.InStr(main_situation, "槍") > 0 | Strings.InStr(main_situation, "スピア") > 0 | Strings.InStr(main_situation, "ランス") > 0 | Strings.InStr(main_situation, "ジャベリン") > 0)
+            //                                if (Strings.InStr(main_situation, "槍") > 0 || Strings.InStr(main_situation, "スピア") > 0 || Strings.InStr(main_situation, "ランス") > 0 || Strings.InStr(main_situation, "ジャベリン") > 0)
             //                                {
             //                                    Effect.ShowAnimation("刺突攻撃");
             //                                    return;
             //                                }
-            //                                else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "武"1))
+            //                                else if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "武"1))
             //                                {
             //                                    Effect.ShowAnimation("白兵武器攻撃");
             //                                    return;

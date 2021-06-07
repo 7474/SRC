@@ -105,7 +105,7 @@ namespace SRCCore.CmdDatas.Commands
             //            // 引数が３個の場合
 
             //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) && (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+            //            if ((list[2] == "-" || Information.IsNumeric(list[2]) || Expression.IsExpr(list[2])) && (list[3] == "-" || Information.IsNumeric(list[3]) || Expression.IsExpr(list[3])))
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;
@@ -193,7 +193,7 @@ namespace SRCCore.CmdDatas.Commands
             //            // 引数が４個以上の場合
 
             //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) && (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+            //            if ((list[2] == "-" || Information.IsNumeric(list[2]) || Expression.IsExpr(list[2])) && (list[3] == "-" || Information.IsNumeric(list[3]) || Expression.IsExpr(list[3])))
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;

@@ -18,7 +18,7 @@ namespace SRCCore.Units
             {
                 if ((cnd.Name ?? "") == (cname ?? ""))
                 {
-                    if (cnd.Lifetime < 0 | ltime < 0)
+                    if (cnd.Lifetime < 0 || ltime < 0)
                     {
                         cnd.Lifetime = -1;
                     }
@@ -180,7 +180,7 @@ namespace SRCCore.Units
                         default:
                             {
                                 // 特殊能力付加を解除
-                                if (Strings.Right(cnd.Name, 2) == "付加" | Strings.Right(cnd.Name, 2) == "強化")
+                                if (Strings.Right(cnd.Name, 2) == "付加" || Strings.Right(cnd.Name, 2) == "強化")
                                 {
                                     update_is_necessary = true;
                                 }

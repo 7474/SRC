@@ -523,7 +523,7 @@ namespace SRCCore.Units
 
                             default:
                                 {
-                                    if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) && get_Adaption(4) >= get_Adaption(2))
+                                    if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && get_Adaption(4) >= get_Adaption(2))
                                     {
                                         Area = "宇宙";
                                     }
@@ -697,7 +697,7 @@ namespace SRCCore.Units
                 if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
                 {
                     Map.MapDataForUnit[x, y] = null;
-                    if (smode == "非同期" | GUI.IsPictureVisible | string.IsNullOrEmpty(Map.MapFileName))
+                    if (smode == "非同期" || GUI.IsPictureVisible || string.IsNullOrEmpty(Map.MapFileName))
                     {
                         GUI.EraseUnitBitmap(x, y, false);
                     }
@@ -791,7 +791,7 @@ namespace SRCCore.Units
 
                         case "月面":
                             {
-                                if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) && Strings.Mid(strAdaption, 4, 1) == "A")
+                                if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && Strings.Mid(strAdaption, 4, 1) == "A")
                                 {
                                     Area = "宇宙";
                                 }
@@ -1319,7 +1319,7 @@ namespace SRCCore.Units
                         var prev_y = y;
                         u.UsedAction = UsedAction;
                         u.StandBy(x, y);
-                        if (u.x != prev_x | u.y != prev_y)
+                        if (u.x != prev_x || u.y != prev_y)
                         {
                             GUI.EraseUnitBitmap(prev_x, prev_y, false);
                         }
@@ -1448,7 +1448,7 @@ namespace SRCCore.Units
 
                     //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    //if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("合体"))
+                    //if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("合体"))
                     //{
                     //    if (IsFeatureAvailable("合体ＢＧＭ"))
                     //    {
@@ -1644,7 +1644,7 @@ namespace SRCCore.Units
                 if (ru.IsFeatureAvailable("召喚ユニット"))
                 {
                     // 召喚ユニットの場合はパイロットの乗せ換えは行わない
-                    if (Strings.InStr(ru.MainPilot().Name, "(ザコ)") > 0 | Strings.InStr(ru.MainPilot().Name, "(汎用)") > 0)
+                    if (Strings.InStr(ru.MainPilot().Name, "(ザコ)") > 0 || Strings.InStr(ru.MainPilot().Name, "(汎用)") > 0)
                     {
                         // 汎用パイロットの場合は削除
                         ru.MainPilot().Alive = false;
@@ -1996,12 +1996,12 @@ namespace SRCCore.Units
                         Pilot p;
                         if (u.IsFeatureAvailable("召喚ユニット"))
                         {
-                            if (Status == "出撃" | Status == "格納")
+                            if (Status == "出撃" || Status == "格納")
                             {
                                 pname = u.FeatureData("追加パイロット");
                                 var addPilot = SRC.PDList.Item(pname);
 
-                                if (Strings.InStr(addPilot.Name, "(ザコ)") > 0 | Strings.InStr(addPilot.Name, "(汎用)") > 0)
+                                if (Strings.InStr(addPilot.Name, "(ザコ)") > 0 || Strings.InStr(addPilot.Name, "(汎用)") > 0)
                                 {
                                     p = SRC.PList.Add(pname, MainPilot().Level, Party, gid: "");
                                     p.FullRecover();

@@ -82,7 +82,7 @@ namespace SRCCore.Models
             //                    // 喋れるかどうかチェック
             //                    if (!ignore_condition)
             //                    {
-            //                        if (withBlock1.IsConditionSatisfied("睡眠") | withBlock1.IsConditionSatisfied("麻痺") | withBlock1.IsConditionSatisfied("石化") | withBlock1.IsConditionSatisfied("恐怖") | withBlock1.IsConditionSatisfied("沈黙") | withBlock1.IsConditionSatisfied("混乱"))
+            //                        if (withBlock1.IsConditionSatisfied("睡眠") || withBlock1.IsConditionSatisfied("麻痺") || withBlock1.IsConditionSatisfied("石化") || withBlock1.IsConditionSatisfied("恐怖") || withBlock1.IsConditionSatisfied("沈黙") || withBlock1.IsConditionSatisfied("混乱"))
             //                        {
             //                            IsAvailableRet = false;
             //                            return default;
@@ -125,7 +125,7 @@ namespace SRCCore.Models
             //            // 表情パターンかどうか判定
             //            bool localIsDefined2() { object argIndex1 = pname2; var ret = SRC.NPDList.IsDefined2(argIndex1); return ret; }
 
-            //            if (SRC.PDList.IsDefined2(pname2) | localIsDefined2())
+            //            if (SRC.PDList.IsDefined2(pname2) || localIsDefined2())
             //            {
             //                // 表情パターンとみなす
             //                pname = pname2;
@@ -188,7 +188,7 @@ namespace SRCCore.Models
             //            {
             //                {
             //                    var withBlock4 = withBlock3.Unit;
-            //                    if (withBlock4.IsConditionSatisfied("睡眠") | withBlock4.IsConditionSatisfied("麻痺") | withBlock4.IsConditionSatisfied("石化") | withBlock4.IsConditionSatisfied("恐怖") | withBlock4.IsConditionSatisfied("沈黙") | withBlock4.IsConditionSatisfied("混乱"))
+            //                    if (withBlock4.IsConditionSatisfied("睡眠") || withBlock4.IsConditionSatisfied("麻痺") || withBlock4.IsConditionSatisfied("石化") || withBlock4.IsConditionSatisfied("恐怖") || withBlock4.IsConditionSatisfied("沈黙") || withBlock4.IsConditionSatisfied("混乱"))
             //                    {
             //                        IsAvailableRet = false;
             //                        return default;

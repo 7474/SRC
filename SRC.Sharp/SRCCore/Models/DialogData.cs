@@ -383,14 +383,14 @@ namespace SRCCore.Models
         //        }
 
         //        // 対ザコ
-        //        if (Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") > 0 && (u.MainPilot().Technique > withBlock.MainPilot().Technique | u.HP > withBlock.HP / 2))
+        //        if (Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") > 0 && (u.MainPilot().Technique > withBlock.MainPilot().Technique || u.HP > withBlock.HP / 2))
         //        {
         //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
         //            sub_situations[Information.UBound(sub_situations)] = "(対ザコ)";
         //        }
 
         //        // 対強敵
-        //        if (withBlock.BossRank >= 0 | Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") == 0 && u.MainPilot().Technique <= withBlock.MainPilot().Technique)
+        //        if (withBlock.BossRank >= 0 || Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") == 0 && u.MainPilot().Technique <= withBlock.MainPilot().Technique)
         //        {
         //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
         //            sub_situations[Information.UBound(sub_situations)] = "(対強敵)";
@@ -549,7 +549,7 @@ namespace SRCCore.Models
         //    if (list_num > 0)
         //    {
         //        SelectDialogRet = Dialoges[list[GeneralLib.Dice(list_num)]];
-        //        if (GeneralLib.Dice(2) == 1 | Strings.InStr(msg_situation, "(とどめ)") > 0 | msg_situation == "挑発" | msg_situation == "脱力" | msg_situation == "魅惑" | msg_situation == "威圧" | (u.Party ?? "") == (t.Party ?? ""))
+        //        if (GeneralLib.Dice(2) == 1 || Strings.InStr(msg_situation, "(とどめ)") > 0 || msg_situation == "挑発" || msg_situation == "脱力" || msg_situation == "魅惑" || msg_situation == "威圧" || (u.Party ?? "") == (t.Party ?? ""))
         //        {
         //            return SelectDialogRet;
         //        }

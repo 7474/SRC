@@ -143,7 +143,7 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             {
                                 var withBlock1 = p.Unit;
-                                if (withBlock1.Status == "出撃" | withBlock1.Status == "格納")
+                                if (withBlock1.Status == "出撃" || withBlock1.Status == "格納")
                                 {
                                     flag = true;
                                 }
@@ -176,7 +176,7 @@ namespace SRCCore.CmdDatas.Commands
                             }
                             else
                             {
-                                if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
+                                if (p.Unit.Status == "出撃" || p.Unit.Status == "格納")
                                 {
                                     flag = false;
                                 }

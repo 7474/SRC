@@ -93,7 +93,7 @@ namespace SRCCore.Models
                 string NicknameRet = default;
                 NicknameRet = proNickname;
                 // TODO Impl Nickname
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
                 //}
@@ -116,7 +116,7 @@ namespace SRCCore.Models
                 string KanaNameRet = default;
                 KanaNameRet = proKanaName;
                 // TODO Impl KanaName
-                //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
+                //if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
                 //    if (Expression.IsVariableDefined(KanaNameRet + "読み仮名"))
                 //    {
@@ -261,7 +261,7 @@ namespace SRCCore.Models
                     }
                 }
 
-                if (aliasElement.blnAliasLevelIsPlusMod | aliasElement.blnAliasLevelIsMultMod)
+                if (aliasElement.blnAliasLevelIsPlusMod || aliasElement.blnAliasLevelIsMultMod)
                 {
                     sd.StrData = sd.StrData + "Lv" + SrcFormatter.Format(slevel);
                 }
@@ -362,7 +362,7 @@ namespace SRCCore.Models
             lv2 = 0;
             foreach (SkillData sd in colSkill)
             {
-                if ((sname ?? "") == (sd.Name ?? "") | (sname ?? "") == (sd.StrData ?? ""))
+                if ((sname ?? "") == (sd.Name ?? "") || (sname ?? "") == (sd.StrData ?? ""))
                 {
                     if (sd.NecessaryLevel > lv)
                     {
@@ -486,7 +486,7 @@ namespace SRCCore.Models
             string SkillTypeRet = default;
             foreach (SkillData sd in colSkill)
             {
-                if ((sname ?? "") == (sd.Name ?? "") | (sname ?? "") == (sd.StrData ?? ""))
+                if ((sname ?? "") == (sd.Name ?? "") || (sname ?? "") == (sd.StrData ?? ""))
                 {
                     SkillTypeRet = sd.Name;
                     return SkillTypeRet;

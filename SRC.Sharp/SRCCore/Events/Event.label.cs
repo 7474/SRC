@@ -332,7 +332,7 @@ namespace SRCCore.Events
                     {
                         // パイロットで比較
                         var p = SRC.PList.Item(str2);
-                        if ((str2 ?? "") == (p.Data.Name ?? "") | (str2 ?? "") == (p.Data.Nickname ?? ""))
+                        if ((str2 ?? "") == (p.Data.Name ?? "") || (str2 ?? "") == (p.Data.Nickname ?? ""))
                         {
                             // グループＩＤが付けられていない場合は
                             // パイロット名で比較
@@ -550,7 +550,7 @@ namespace SRCCore.Events
                 foreach (LabelData currentLab1 in colEventLabelList)
                 {
                     lab = currentLab1;
-                    if (lab.EventDataId == eventDataId - i | lab.EventDataId == eventDataId + i)
+                    if (lab.EventDataId == eventDataId - i || lab.EventDataId == eventDataId + i)
                     {
                         lab.Enable = false;
                         return;

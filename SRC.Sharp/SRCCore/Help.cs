@@ -2972,7 +2972,7 @@ namespace SRCCore
                                 msg = msg + "受け止め、";
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -3160,7 +3160,7 @@ namespace SRCCore
                                 msg = msg + "反射。";
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -3344,7 +3344,7 @@ namespace SRCCore
                                 // MOD END MARGE
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -3539,7 +3539,7 @@ namespace SRCCore
                                 msg = msg + "阻止。";
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -3634,7 +3634,7 @@ namespace SRCCore
                                 msg = msg + buf + "%の確率で、";
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -4911,7 +4911,7 @@ namespace SRCCore
                                 msg = msg + buf + "%の確率で";
                             }
                         }
-                        else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
@@ -6014,7 +6014,7 @@ namespace SRCCore
 
             if (is_ability)
             {
-                if (Strings.Right(AttributeNameRet, 2) == "攻撃" | Strings.Right(AttributeNameRet, 2) == "武器")
+                if (Strings.Right(AttributeNameRet, 2) == "攻撃" || Strings.Right(AttributeNameRet, 2) == "武器")
                 {
                     AttributeNameRet = Strings.Left(AttributeNameRet, Strings.Len(AttributeNameRet) - 2) + Expression.Term("アビリティ", u);
                 }

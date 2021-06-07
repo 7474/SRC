@@ -27,7 +27,7 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             {
                                 var withBlock = p.Unit;
-                                if ((withBlock.Name ?? "") == (uname ?? "") | (withBlock.ID ?? "") == (uname ?? ""))
+                                if ((withBlock.Name ?? "") == (uname ?? "") || (withBlock.ID ?? "") == (uname ?? ""))
                                 {
                                     return EventData.NextID;
                                 }

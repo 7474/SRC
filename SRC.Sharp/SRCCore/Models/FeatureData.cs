@@ -140,7 +140,7 @@ namespace SRCCore.Models
             {
                 // 別名の指定あり
                 resultName = GeneralLib.ListIndex(fd.StrData, 1);
-                if (resultName == "非表示" | resultName == "解説")
+                if (resultName == "非表示" || resultName == "解説")
                 {
                     resultName = "";
                 }

@@ -158,7 +158,7 @@ namespace SRCCore.Models
                         throw reader.InvalidDataException("番号の設定が間違っています。", line_buf);
                     }
 
-                    if (data_id < 0 | data_id >= Map.MAX_TERRAIN_DATA_NUM)
+                    if (data_id < 0 || data_id >= Map.MAX_TERRAIN_DATA_NUM)
                     {
                         throw reader.InvalidDataException("番号の設定が間違っています。", line_buf);
                     }

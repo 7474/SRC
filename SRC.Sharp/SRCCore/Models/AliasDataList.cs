@@ -95,7 +95,7 @@ namespace SRCCore.Models
                         throw reader.InvalidDataException("名称に半角スペースは使用出来ません。", data_name);
                     }
 
-                    if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
+                    if (Strings.InStr(data_name, "（") > 0 || Strings.InStr(data_name, "）") > 0)
                     {
                         throw reader.InvalidDataException("名称に全角括弧は使用出来ません。", data_name);
                     }

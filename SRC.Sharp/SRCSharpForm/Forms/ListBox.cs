@@ -632,7 +632,7 @@ namespace SRCSharpForm
             var itm = lstItems.IndexFromPoint(point);
 
             // カーソル上のアイテムをハイライト表示
-            if (itm < 0 | itm >= lstItems.Items.Count)
+            if (itm < 0 || itm >= lstItems.Items.Count)
             {
                 lstItems.SelectedIndex = -1;
                 return;
@@ -674,7 +674,7 @@ namespace SRCSharpForm
         private void Timer2_Tick(object eventSender, EventArgs eventArgs)
         {
             //            Unit u;
-            //            if (!Visible | !GUI.MainForm.Visible)
+            //            if (!Visible || !GUI.MainForm.Visible)
             //            {
             //                return;
             //            }

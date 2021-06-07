@@ -718,7 +718,7 @@ namespace SRCCore.Expressions
 
                 case OperatorType.EqOp: // =
                     {
-                        if (GeneralLib.IsNumber(lop) | GeneralLib.IsNumber(rop))
+                        if (GeneralLib.IsNumber(lop) || GeneralLib.IsNumber(rop))
                         {
                             if (is_lop_term)
                             {
@@ -814,7 +814,7 @@ namespace SRCCore.Expressions
 
                 case OperatorType.NotEqOp: // <>, !=
                     {
-                        if (GeneralLib.IsNumber(lop) | GeneralLib.IsNumber(rop))
+                        if (GeneralLib.IsNumber(lop) || GeneralLib.IsNumber(rop))
                         {
                             if (is_lop_term)
                             {

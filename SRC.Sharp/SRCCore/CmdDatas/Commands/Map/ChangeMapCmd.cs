@@ -40,7 +40,7 @@ namespace SRCCore.CmdDatas.Commands
             // 出撃中のユニットを撤退させる
             foreach (Unit u in SRC.UList.Items)
             {
-                if (u.Status == "出撃" | u.Status == "格納")
+                if (u.Status == "出撃" || u.Status == "格納")
                 {
                     if (late_refresh)
                     {

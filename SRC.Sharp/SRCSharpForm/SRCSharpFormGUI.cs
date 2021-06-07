@@ -1400,7 +1400,7 @@ namespace SRCSharpForm
             {
                 if (u.Status == "出撃" || u.Status == "格納")
                 {
-                    if (u.Party0 == "味方" | u.Party0 == "ＮＰＣ")
+                    if (u.Party0 == "味方" || u.Party0 == "ＮＰＣ")
                     {
                         num = (num + 1);
                     }

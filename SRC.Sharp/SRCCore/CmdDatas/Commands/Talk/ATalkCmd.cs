@@ -191,7 +191,7 @@ namespace SRCCore.CmdDatas.Commands
 
                                     // 話者中心に画面位置を変更
                                     // プロローグイベントやエピローグイベント時はキャンセル
-                                    if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+                                    if (SRC.Stage == "プロローグ" || SRC.Stage == "エピローグ")
                                     {
                                         break;
                                     }

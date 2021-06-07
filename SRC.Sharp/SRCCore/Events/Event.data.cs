@@ -541,7 +541,7 @@ namespace SRCCore.Events
 
                     case CmdType.NextCmd:
                         {
-                            if (command.ArgNum == 1 | command.ArgNum == 2)
+                            if (command.ArgNum == 1 || command.ArgNum == 2)
                             {
                                 if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
                                 {

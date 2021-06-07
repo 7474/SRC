@@ -397,7 +397,7 @@ namespace SRCCore.Pilots
             get
             {
                 int DefenseRet = default;
-                if (Expression.IsOptionDefined("防御力成長") | Expression.IsOptionDefined("防御力レベルアップ"))
+                if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                 {
                     DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
                     if (Expression.IsOptionDefined("防御力低成長"))

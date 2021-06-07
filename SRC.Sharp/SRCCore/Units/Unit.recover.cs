@@ -88,7 +88,7 @@ namespace SRCCore.Units
 
                 //    string localCondition6() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
 
-                //    if (localCondition() == "残り時間" | localCondition1() == "非操作" | Strings.Right(localCondition2(), 2) == "付加" | Strings.Right(localCondition3(), 2) == "強化" | Strings.Right(localCondition4(), 3) == "付加２" | Strings.Right(localCondition5(), 3) == "強化２" | Strings.Right(localCondition6(), 2) == "ＵＰ")
+                //    if (localCondition() == "残り時間" || localCondition1() == "非操作" || Strings.Right(localCondition2(), 2) == "付加" || Strings.Right(localCondition3(), 2) == "強化" || Strings.Right(localCondition4(), 3) == "付加２" || Strings.Right(localCondition5(), 3) == "強化２" || Strings.Right(localCondition6(), 2) == "ＵＰ")
                 //    {
                 //        i = (short)(i + 1);
                 //    }
@@ -351,7 +351,7 @@ namespace SRCCore.Units
             //            }
             //        }
 
-            //        if (IsConditionSatisfied("スペシャルパワー自動発動付加") | IsConditionSatisfied("スペシャルパワー自動発動付加２"))
+            //        if (IsConditionSatisfied("スペシャルパワー自動発動付加") || IsConditionSatisfied("スペシャルパワー自動発動付加２"))
             //        {
             //            spname = GeneralLib.LIndex(withBlock4.SkillData("スペシャルパワー自動発動"), 2);
             //            string localLIndex1() { object argIndex1 = "スペシャルパワー自動発動"; string arglist = withBlock4.SkillData(argIndex1); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
@@ -535,7 +535,7 @@ namespace SRCCore.Units
             //        else if (Effective("毒"))
             //        {
             //        }
-            //        else if (Immune("毒") | Absorb("毒"))
+            //        else if (Immune("毒") || Absorb("毒"))
             //        {
             //            plv = 0;
             //        }
@@ -1500,7 +1500,7 @@ namespace SRCCore.Units
 
             //                                                    bool localImmune4() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-            //                                                    if (localSpecialEffectImmune() | localAbsorb4() | localImmune4())
+            //                                                    if (localSpecialEffectImmune() || localAbsorb4() || localImmune4())
             //                                                    {
             //                                                        cname = "";
             //                                                    }
@@ -1513,7 +1513,7 @@ namespace SRCCore.Units
 
             //                                                    bool localImmune5() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-            //                                                    if (localSpecialEffectImmune1() | localAbsorb5() | localImmune5())
+            //                                                    if (localSpecialEffectImmune1() || localAbsorb5() || localImmune5())
             //                                                    {
             //                                                        cname = "";
             //                                                    }
@@ -1728,7 +1728,7 @@ namespace SRCCore.Units
 
             //            bool localIsMessageDefined3() { object argIndex1 = "分離"; string argmain_situation = "分離(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //            if (localIsMessageDefined2() | localIsMessageDefined3() | IsMessageDefined("分離"))
+            //            if (localIsMessageDefined2() || localIsMessageDefined3() || IsMessageDefined("分離"))
             //            {
             //                if (IsFeatureAvailable("分離ＢＧＭ"))
             //                {
@@ -1830,7 +1830,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 発動条件を満たす？
-            //    if (this.MainPilot().Morale < (short)(10d * flevel) + 100 && (HP > MaxHP / 4 | Strings.InStr(fdata, "気力発動") > 0))
+            //    if (this.MainPilot().Morale < (short)(10d * flevel) + 100 && (HP > MaxHP / 4 || Strings.InStr(fdata, "気力発動") > 0))
             //    {
             //        return;
             //    }
@@ -1860,7 +1860,7 @@ namespace SRCCore.Units
 
             //            case "深水":
             //                {
-            //                    if (withBlock.IsTransAvailable("空") | withBlock.IsTransAvailable("水") | withBlock.IsTransAvailable("水上"))
+            //                    if (withBlock.IsTransAvailable("空") || withBlock.IsTransAvailable("水") || withBlock.IsTransAvailable("水上"))
             //                    {
             //                        is_available = true;
             //                    }
@@ -1937,7 +1937,7 @@ namespace SRCCore.Units
 
             //    bool localIsMessageDefined4() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //    if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4() | IsMessageDefined("ハイパーモード"))
+            //    if (localIsMessageDefined2() || localIsMessageDefined3() || localIsMessageDefined4() || IsMessageDefined("ハイパーモード"))
             //    {
             //        GUI.Center(x, y);
             //        GUI.RefreshScreen();
@@ -2133,7 +2133,7 @@ namespace SRCCore.Units
 
             //    bool localIsMessageDefined2() { string argmain_situation = "ノーマルモード(" + uname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //    if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("ノーマルモード"))
+            //    if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("ノーマルモード"))
             //    {
             //        // ＢＧＭを切り替え
             //        if (IsFeatureAvailable("ノーマルモードＢＧＭ"))

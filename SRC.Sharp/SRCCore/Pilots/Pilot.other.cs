@@ -136,7 +136,7 @@ namespace SRCCore.Pilots
         // 射撃能力が「魔力」と表示されるかどうか
         public bool HasMana()
         {
-            if (IsSkillAvailable("術") | IsSkillAvailable("魔力所有"))
+            if (IsSkillAvailable("術") || IsSkillAvailable("魔力所有"))
             {
                 return true;
             }

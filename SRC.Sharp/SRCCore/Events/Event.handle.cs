@@ -350,13 +350,13 @@ namespace SRCCore.Events
                     while (ret > 0);
 
                     // ステージが終了 or キャンセル？
-                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                    if (SRC.IsScenarioFinished || SRC.IsCanceled)
                     {
                         break;
                     }
                 }
                 // ステージが終了 or キャンセル？
-                if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
                     break;
                 }

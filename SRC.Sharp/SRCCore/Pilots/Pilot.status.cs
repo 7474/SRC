@@ -35,7 +35,7 @@ namespace SRCCore.Pilots
                 {
                     SkillData registerd;
                     // 既に登録済み？
-                    if (sd.Name == "ＳＰ消費減少" | sd.Name == "スペシャルパワー自動発動" | sd.Name == "ハンター")
+                    if (sd.Name == "ＳＰ消費減少" || sd.Name == "スペシャルパワー自動発動" || sd.Name == "ハンター")
                     {
                         // これらの特殊能力は同種の能力を複数持つことが出来る
                         // ただしデータ指定まで同一であれば同じ能力と見なす
@@ -78,7 +78,7 @@ namespace SRCCore.Pilots
             //            sdata = GeneralLib.ListTail(buf, 2);
 
             //            // 既に登録済み？
-            //            if (sname == "ＳＰ消費減少" | sname == "スペシャルパワー自動発動" | sname == "ハンター")
+            //            if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
             //            {
             //                // これらの特殊能力は同種の能力を複数持つことが出来る
             //                var loopTo4 = skill_num;

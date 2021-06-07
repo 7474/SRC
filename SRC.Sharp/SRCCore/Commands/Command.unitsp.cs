@@ -368,7 +368,7 @@ namespace SRCCore.Commands
                                         {
                                             {
                                                 var withBlock9 = u;
-                                                if (withBlock9.Party == "味方" && withBlock9.Party0 == "味方" | withBlock9.Party == "ＮＰＣ" && withBlock9.Party0 == "ＮＰＣ")
+                                                if (withBlock9.Party == "味方" && withBlock9.Party0 == "味方" || withBlock9.Party == "ＮＰＣ" && withBlock9.Party0 == "ＮＰＣ")
                                                 {
                                                     goto NextLoop;
                                                 }
@@ -411,7 +411,7 @@ namespace SRCCore.Commands
                         //    foreach (Unit currentU in SRC.UList)
                         //    {
                         //        u = currentU;
-                        //        if (u.Party0 == "味方" && u.Status == "破壊" && (u.CountPilot() > 0 | u.Data.PilotNum == 0))
+                        //        if (u.Party0 == "味方" && u.Status == "破壊" && (u.CountPilot() > 0 || u.Data.PilotNum == 0))
                         //        {
                         //            Array.Resize(list, Information.UBound(list) + 1 + 1);
                         //            Array.Resize(id_list, Information.UBound(list) + 1);

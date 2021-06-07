@@ -49,7 +49,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var uparty = GetArgAsString(2);
-            if (!(uparty == "味方" | uparty == "ＮＰＣ" | uparty == "敵" | uparty == "中立"))
+            if (!(uparty == "味方" || uparty == "ＮＰＣ" || uparty == "敵" || uparty == "中立"))
             {
                 throw new EventErrorException(this, "所属の指定「" + uparty + "」が間違っています");
             }

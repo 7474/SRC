@@ -382,7 +382,7 @@ namespace SRCCore.Lib
         //            }
 
         //            // 空白があれば置き換え
-        //            if (i != 1 | j != lstr)
+        //            if (i != 1 || j != lstr)
         //            {
         //                str = Strings.Mid(str, i, j - i + 1);
         //            }
@@ -727,7 +727,7 @@ namespace SRCCore.Lib
             ch = Strings.Mid(aname, i, 1);
             // 弱、効、剋があればその次の文字まで一緒に取得する。
             // 入れ子可能なため弱、効、剋が続く限りループ
-            while (ch == "弱" | ch == "効" | ch == "剋")
+            while (ch == "弱" || ch == "効" || ch == "剋")
             {
                 // 属性指定の最後の文字が弱効剋だった場合、属性なし
                 if (i >= Strings.Len(aname))

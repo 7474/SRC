@@ -390,7 +390,7 @@ namespace SRCCore.Units
             // 無効化や弱点と違い、クリティカル率のみなので
             // 「火」に対する防御特性が「弱火」のクリティカル率に影響する点について
             // 直接関数内に記述できる。
-            if (Strings.Left(aname, 1) == "弱" | Strings.Left(aname, 1) == "効")
+            if (Strings.Left(aname, 1) == "弱" || Strings.Left(aname, 1) == "効")
             {
                 if (GeneralLib.InStrNotNest(strSpecialEffectImmune, aname) > 0)
                 {

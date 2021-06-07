@@ -176,7 +176,7 @@ namespace SRCCore.Models
                     throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
                 }
 
-                if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
+                if (Strings.InStr(data_name, "（") > 0 || Strings.InStr(data_name, "）") > 0)
                 {
                     throw reader.InvalidDataException(@"名称に全角括弧は使用出来ません。", data_name);
                 }
@@ -720,7 +720,7 @@ namespace SRCCore.Models
                 {
                     break;
                 }
-                else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
+                else if (string.IsNullOrEmpty(buf2) || Information.IsNumeric(buf2))
                 {
                     SRC.AddDataError(reader.InvalidData("行頭から" + i + "番目の特殊能力の設定が間違っています。", data_name));
                 }

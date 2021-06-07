@@ -428,7 +428,7 @@ namespace Project1
             //itm = (short)(itm + lstItems.TopIndex);
 
             //// カーソルがあるアイテムをハイライト表示
-            //if (itm < 0 | itm >= lstItems.Items.Count)
+            //if (itm < 0 || itm >= lstItems.Items.Count)
             //{
             //    lstItems.SelectedIndex = -1;
             //    return;

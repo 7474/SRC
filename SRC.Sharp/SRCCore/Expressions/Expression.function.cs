@@ -496,7 +496,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock3 = withBlock2.Unit;
-            //                                                    if (withBlock3.Status == "出撃" | withBlock3.Status == "格納")
+            //                                                    if (withBlock3.Status == "出撃" || withBlock3.Status == "格納")
             //                                                    {
             //                                                        num_result = (double)withBlock3.Action;
             //                                                    }
@@ -1392,7 +1392,7 @@ namespace SRCCore.Expressions
             //                                }
             //                        }
 
-            //                        if (i == Keys.LButton | i == Keys.RButton)
+            //                        if (i == Keys.LButton || i == Keys.RButton)
             //                        {
             //                            // マウスカーソルの位置を参照
             //                            GUI.GetCursorPos(PT);
@@ -1546,7 +1546,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock18 = withBlock17.Unit;
-            //                                                    if (withBlock18.Status == "出撃" | withBlock18.Status == "格納")
+            //                                                    if (withBlock18.Status == "出撃" || withBlock18.Status == "格納")
             //                                                    {
             //                                                        flag = true;
             //                                                    }
@@ -1587,7 +1587,7 @@ namespace SRCCore.Expressions
             //                                            {
             //                                                {
             //                                                    var withBlock20 = withBlock19.Unit;
-            //                                                    if (withBlock20.Status == "出撃" | withBlock20.Status == "格納")
+            //                                                    if (withBlock20.Status == "出撃" || withBlock20.Status == "格納")
             //                                                    {
             //                                                        flag = false;
             //                                                    }
