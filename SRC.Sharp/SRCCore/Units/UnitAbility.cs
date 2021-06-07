@@ -633,7 +633,7 @@ namespace SRCCore.Units
 
             //            string localLIndex1() { string arglist = hsc19c10c9cae54732ac7c9c2e90257bd2(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //            if (localFeature() == "変形技" & (localLIndex1() ?? "") == (ad.Name ?? ""))
+            //            if (localFeature() == "変形技" && (localLIndex1() ?? "") == (ad.Name ?? ""))
             //            {
             //                string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -822,7 +822,7 @@ namespace SRCCore.Units
 
             //        // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
             //        // ない場合、そのユニットが既に出撃中であれば使用不可
-            //        if (Strings.InStr(pname, "(汎用)") == 0 & Strings.InStr(pname, "(ザコ)") == 0)
+            //        if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
             //        {
             //            if (SRC.PList.IsDefined(pname))
             //            {
@@ -1020,7 +1020,7 @@ namespace SRCCore.Units
             //        case "味方":
             //        case "ＮＰＣ":
             //            {
-            //                if (withBlock.Party != "味方" & withBlock.Party0 != "味方" & withBlock.Party != "ＮＰＣ" & withBlock.Party0 != "ＮＰＣ")
+            //                if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
             //                {
             //                    return IsAbilityEffectiveRet;
             //                }
@@ -1030,7 +1030,7 @@ namespace SRCCore.Units
 
             //        default:
             //            {
-            //                if ((withBlock.Party ?? "") != (Party ?? "") & (withBlock.Party0 ?? "") != (Party ?? ""))
+            //                if ((withBlock.Party ?? "") != (Party ?? "") && (withBlock.Party0 ?? "") != (Party ?? ""))
             //                {
             //                    return IsAbilityEffectiveRet;
             //                }
@@ -1225,7 +1225,7 @@ namespace SRCCore.Units
             //                    {
             //                        {
             //                            var withBlock1 = withBlock.MainPilot();
-            //                            if (withBlock1.Morale < withBlock1.MaxMorale & withBlock1.Personality != "機械")
+            //                            if (withBlock1.Morale < withBlock1.MaxMorale && withBlock1.Personality != "機械")
             //                            {
             //                                IsAbilityEffectiveRet = true;
             //                                return IsAbilityEffectiveRet;
@@ -1237,7 +1237,7 @@ namespace SRCCore.Units
             //                        {
             //                            {
             //                                var withBlock2 = withBlock.Pilot(j);
-            //                                if (withBlock2.Morale < withBlock2.MaxMorale & withBlock2.Personality != "機械")
+            //                                if (withBlock2.Morale < withBlock2.MaxMorale && withBlock2.Personality != "機械")
             //                                {
             //                                    IsAbilityEffectiveRet = true;
             //                                    return IsAbilityEffectiveRet;
@@ -1250,7 +1250,7 @@ namespace SRCCore.Units
             //                        {
             //                            {
             //                                var withBlock3 = withBlock.Support(j);
-            //                                if (withBlock3.Morale < withBlock3.MaxMorale & withBlock3.Personality != "機械")
+            //                                if (withBlock3.Morale < withBlock3.MaxMorale && withBlock3.Personality != "機械")
             //                                {
             //                                    IsAbilityEffectiveRet = true;
             //                                    return IsAbilityEffectiveRet;
@@ -1262,7 +1262,7 @@ namespace SRCCore.Units
             //                        {
             //                            {
             //                                var withBlock4 = withBlock.AdditionalSupport();
-            //                                if (withBlock4.Morale < withBlock4.MaxMorale & withBlock4.Personality != "機械")
+            //                                if (withBlock4.Morale < withBlock4.MaxMorale && withBlock4.Personality != "機械")
             //                                {
             //                                    IsAbilityEffectiveRet = true;
             //                                    return IsAbilityEffectiveRet;
@@ -1359,7 +1359,7 @@ namespace SRCCore.Units
             //                        goto NextEffect;
             //                    }
 
-            //                    if (withBlock.Action == 0 & withBlock.MaxAction() > 0)
+            //                    if (withBlock.Action == 0 && withBlock.MaxAction() > 0)
             //                    {
             //                        IsAbilityEffectiveRet = true;
             //                        return IsAbilityEffectiveRet;
@@ -1537,7 +1537,7 @@ namespace SRCCore.Units
             //string fname;
             //if (IsAbilityClassifiedAs("封"))
             //{
-            //    if (!t.Weakness(Data.Class) & !t.Effective(Data.Class))
+            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
             //    {
             //        return IsAbilityApplicableRet;
             //    }
@@ -1549,7 +1549,7 @@ namespace SRCCore.Units
 
             //    bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
 
-            //    if (!localWeakness() & !localEffective())
+            //    if (!localWeakness() && !localEffective())
             //    {
             //        return IsAbilityApplicableRet;
             //    }
@@ -1569,7 +1569,7 @@ namespace SRCCore.Units
             //// 無効化の対象になる場合は使用出来ない
             //if (t.Immune(Data.Class))
             //{
-            //    if (!t.Weakness(Data.Class) & !t.Effective(Data.Class))
+            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
             //    {
             //        return IsAbilityApplicableRet;
             //    }
@@ -1683,7 +1683,7 @@ namespace SRCCore.Units
 
             //// 合体技で射程が１の場合は相手を囲んでいる必要がある
             //var partners = default(Unit[]);
-            //if (IsAbilityClassifiedAs("合") & !IsAbilityClassifiedAs("Ｍ") & AbilityMaxRange() == 1)
+            //if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
             //{
             //    CombinationPartner("アビリティ", a, partners, t.x, t.y);
             //    if (Information.UBound(partners) == 0)
@@ -1884,7 +1884,7 @@ namespace SRCCore.Units
             //    // 出撃時以外は相手が仲間にいるだけでＯＫ
             //    CombinationPartner("アビリティ", a, partners, x, y);
             //}
-            //else if (AbilityMaxRange(a) == 1 & !IsAbilityClassifiedAs(a, "Ｍ"))
+            //else if (AbilityMaxRange(a) == 1 && !IsAbilityClassifiedAs(a, "Ｍ"))
             //{
             //    // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
             //    if (x > 1)
