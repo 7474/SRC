@@ -1215,31 +1215,6 @@ namespace SRCSharpForm
                             frmMessage.picFace.Refresh();
                             DisplayedPilot = "";
                             DisplayMode = "";
-
-                            // TODO パイロット画像が存在しないことを記録しておく
-                            //// パイロット画像が存在しないことを記録しておく
-                            //if (SRC.PList.IsDefined(pname))
-                            //{
-                            //    {
-                            //        var withBlock = SRC.PList.Item(pname);
-                            //        if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
-                            //        {
-                            //            withBlock.Data.IsBitmapMissing = true;
-                            //        }
-                            //    }
-                            //}
-                            //else if (SRC.PDList.IsDefined(pname))
-                            //{
-                            //    PilotData localItem6() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-                            //    localItem6().IsBitmapMissing = true;
-                            //}
-                            //else if (SRC.NPDList.IsDefined(pname))
-                            //{
-                            //    NonPilotData localItem7() { object argIndex1 = pname; var ret = SRC.NPDList.Item(argIndex1); return ret; }
-
-                            //    localItem7().IsBitmapMissing = true;
-                            //}
                         }
                     }
                 }
