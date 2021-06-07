@@ -81,7 +81,7 @@ namespace SRCCore.Models
             {
                 string NicknameRet = proNickname;
                 // TODO Impl Nickname
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
                 //}
@@ -103,7 +103,7 @@ namespace SRCCore.Models
             {
                 string KanaNameRet = proKanaName;
                 // TODO Impl KanaName
-                //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
+                //if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
                 //    if (Expression.IsVariableDefined(ref KanaNameRet + "読み仮名"))
                 //    {
@@ -195,7 +195,7 @@ namespace SRCCore.Models
             flevel = Constants.DEFAULT_LEVEL;
             i = Strings.InStr(buf, "Lv");
             j = Strings.InStr(buf, "=");
-            if (i > 0 & j > 0 & i > j)
+            if (i > 0 && j > 0 && i > j)
             {
                 i = 0;
             }
@@ -321,7 +321,7 @@ namespace SRCCore.Models
             //                        fd.Level = withBlock.get_AliasLevel(i);
             //                    }
 
-            //                    if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
+            //                    if (!string.IsNullOrEmpty(fdata) && Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
             //                    {
             //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
 
@@ -342,7 +342,7 @@ namespace SRCCore.Models
             //                else
             //                {
             //                    // 特殊能力解説の定義
-            //                    if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(ref fdata, 1) != "非表示")
+            //                    if (!string.IsNullOrEmpty(fdata) && GeneralLib.LIndex(ref fdata, 1) != "非表示")
             //                    {
             //                        fd.Name = GeneralLib.LIndex(ref fdata, 1);
             //                    }

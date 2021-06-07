@@ -106,7 +106,7 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 options = options + buf + " ";
                             }
-                            else if (Strings.Right(buf, 1) == "%" & Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
+                            else if (Strings.Right(buf, 1) == "%" && Information.IsNumeric(Strings.Left(buf, Strings.Len(buf) - 1)))
                             {
                                 options = options + buf + " ";
                             }

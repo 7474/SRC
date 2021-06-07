@@ -390,7 +390,7 @@ namespace SRCCore.Expressions.Functions
             //                                    y2 = y1 + withBlock15.picMain(0).Height;
             //                                }
 
-            //                                if (x1 <= PT.X & PT.X <= x2 & y1 <= PT.Y & PT.Y <= y2)
+            //                                if (x1 <= PT.X && PT.X <= x2 && y1 <= PT.Y && PT.Y <= y2)
             //                                {
             //                                    in_window = true;
             //                                }
@@ -420,7 +420,7 @@ namespace SRCCore.Expressions.Functions
             //                        }
 
             //                        // キーの状態を参照
-            //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) & 0x8000))
+            //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) && 0x8000))
             //                        {
             //                            num_result = 1d;
             //                        }

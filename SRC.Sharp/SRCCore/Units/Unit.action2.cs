@@ -32,7 +32,7 @@ namespace SRCCore.Units
             //string msg;
 
             //// 経験値を入手するのは味方ユニット及びＮＰＣの召喚ユニットのみ
-            //if ((Party != "味方" | Party0 != "味方") & (Party != "ＮＰＣ" | Party0 != "ＮＰＣ" | !IsFeatureAvailable("召喚ユニット")))
+            //if ((Party != "味方" || Party0 != "味方") && (Party != "ＮＰＣ" || Party0 != "ＮＰＣ" || !IsFeatureAvailable("召喚ユニット")))
             //{
             //    return GetExpRet;
             //}
@@ -98,7 +98,7 @@ namespace SRCCore.Units
             //        case "破壊":
             //            {
             //                xp = t.ExpValue + t.MainPilot().ExpValue;
-            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
+            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
             //                {
             //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
             //                }
@@ -109,7 +109,7 @@ namespace SRCCore.Units
             //        case "攻撃":
             //            {
             //                xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
-            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
+            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
             //                {
             //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
             //                }
@@ -144,7 +144,7 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    if (!IsUnderSpecialPowerEffect("獲得経験値増加") | Expression.IsOptionDefined("収得効果重複"))
+            //    if (!IsUnderSpecialPowerEffect("獲得経験値増加") || Expression.IsOptionDefined("収得効果重複"))
             //    {
             //        if (p.IsSkillAvailable("素質"))
             //        {
@@ -476,7 +476,7 @@ namespace SRCCore.Units
             // メインパイロット
             {
                 var withBlock = MainPilot();
-                if (withBlock.Personality != "機械" | is_event)
+                if (withBlock.Personality != "機械" || is_event)
                 {
                     withBlock.Morale = withBlock.Morale + num;
                 }
@@ -486,7 +486,7 @@ namespace SRCCore.Units
             foreach (Pilot currentP in colPilot)
             {
                 p = currentP;
-                if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
+                if ((MainPilot().ID ?? "") != (p.ID ?? "") && (p.Personality != "機械" || is_event))
                 {
                     p.Morale = p.Morale + num;
                 }
@@ -496,7 +496,7 @@ namespace SRCCore.Units
             foreach (Pilot currentP1 in colSupport)
             {
                 p = currentP1;
-                if (p.Personality != "機械" | is_event)
+                if (p.Personality != "機械" || is_event)
                 {
                     p.Morale = p.Morale + num;
                 }
@@ -507,7 +507,7 @@ namespace SRCCore.Units
             {
                 {
                     var withBlock1 = AdditionalSupport();
-                    if (withBlock1.Personality != "機械" | is_event)
+                    if (withBlock1.Personality != "機械" || is_event)
                     {
                         withBlock1.Morale = withBlock1.Morale + num;
                     }
@@ -579,11 +579,11 @@ namespace SRCCore.Units
             //            pname = GeneralLib.LIndex(FeatureData("支配"), i);
             //            foreach (Pilot p in SRC.PList)
             //            {
-            //                if ((p.Name ?? "") == (pname ?? "") | (p.get_Nickname(false) ?? "") == (pname ?? ""))
+            //                if ((p.Name ?? "") == (pname ?? "") || (p.get_Nickname(false) ?? "") == (pname ?? ""))
             //                {
             //                    if (p.Unit is object)
             //                    {
-            //                        if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
+            //                        if (p.Unit.Status == "出撃" || p.Unit.Status == "格納")
             //                        {
             //                            p.Unit.Die(true);
             //                        }
@@ -720,7 +720,7 @@ namespace SRCCore.Units
             //            {
             //                var withBlock = t;
             //                GUI.ClearMessageForm();
-            //                if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
+            //                if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
             //                {
             //                    GUI.UpdateMessageForm(t, CurrentForm());
             //                }
@@ -749,7 +749,7 @@ namespace SRCCore.Units
             //                // 特殊能力「不安定」による暴走チェック
             //                if (withBlock.IsFeatureAvailable("不安定"))
             //                {
-            //                    if (withBlock.HP <= withBlock.MaxHP / 4 & !withBlock.IsConditionSatisfied("暴走"))
+            //                    if (withBlock.HP <= withBlock.MaxHP / 4 && !withBlock.IsConditionSatisfied("暴走"))
             //                    {
             //                        withBlock.AddCondition("暴走", -1, cdata: "");
             //                        withBlock.Update();
@@ -762,7 +762,7 @@ namespace SRCCore.Units
             //                    withBlock.DeleteCondition("睡眠");
             //                }
 
-            //                if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
+            //                if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
             //                {
             //                    GUI.UpdateMessageForm(t, CurrentForm());
             //                }

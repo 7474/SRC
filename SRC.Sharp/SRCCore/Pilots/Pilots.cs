@@ -53,7 +53,7 @@ namespace SRCCore.Pilots
             if (string.IsNullOrEmpty(gid))
             {
                 // グループＩＤが指定されていない場合
-                if (Strings.InStr(new_pilot.Name, "(ザコ)") == 0 & Strings.InStr(new_pilot.Name, "(汎用)") == 0)
+                if (Strings.InStr(new_pilot.Name, "(ザコ)") == 0 && Strings.InStr(new_pilot.Name, "(汎用)") == 0)
                 {
                     key = new_pilot.Name;
                     if (SRC.PList.IsDefined2(key))
@@ -266,7 +266,7 @@ namespace SRCCore.Pilots
         //            foreach (Pilot currentP in colPilots)
         //            {
         //                p = currentP;
-        //                if (!p.IsAdditionalPilot & !p.IsAdditionalSupport)
+        //                if (!p.IsAdditionalPilot && !p.IsAdditionalSupport)
         //                {
         //                    num = (num + 1);
         //                }
@@ -277,7 +277,7 @@ namespace SRCCore.Pilots
         //            {
         //                p = currentP1;
         //                // 追加パイロットや追加サポートはセーブしない
-        //                if (!p.IsAdditionalPilot & !p.IsAdditionalSupport)
+        //                if (!p.IsAdditionalPilot && !p.IsAdditionalSupport)
         //                {
         //                    if ((p.Name ?? "") == (p.ID ?? ""))
         //                    {
@@ -603,7 +603,7 @@ namespace SRCCore.Pilots
             //        max_range = GeneralLib.MaxLng(max_range, 2);
             //    }
 
-            //    if (Expression.IsOptionDefined("信頼補正") & Strings.InStr(withBlock.Name, "(ザコ)") == 0)
+            //    if (Expression.IsOptionDefined("信頼補正") && Strings.InStr(withBlock.Name, "(ザコ)") == 0)
             //    {
             //        if (Expression.IsOptionDefined("信頼補正範囲拡大"))
             //        {

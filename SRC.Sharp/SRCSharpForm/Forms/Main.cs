@@ -420,14 +420,14 @@ namespace SRCSharpForm
                 //{
                 //    {
                 //        var withBlock = Event.HotPointList[i];
-                //        if (withBlock.Left <= GUI.MouseX & GUI.MouseX < withBlock.Left + withBlock.width & withBlock.Top <= GUI.MouseY & GUI.MouseY < withBlock.Top + withBlock.Height)
+                //        if (withBlock.Left <= GUI.MouseX && GUI.MouseX < withBlock.Left + withBlock.width && withBlock.Top <= GUI.MouseY && GUI.MouseY < withBlock.Top + withBlock.Height)
                 //        {
-                //            if (withBlock.Caption == "非表示" | string.IsNullOrEmpty(withBlock.Caption))
+                //            if (withBlock.Caption == "非表示" || string.IsNullOrEmpty(withBlock.Caption))
                 //            {
                 //                break;
                 //            }
 
-                //            if ((withBlock.Name ?? "") != (LastHostSpot ?? "") & !string.IsNullOrEmpty(LastHostSpot))
+                //            if ((withBlock.Name ?? "") != (LastHostSpot ?? "") && !string.IsNullOrEmpty(LastHostSpot))
                 //            {
                 //                break;
                 //            }
@@ -457,7 +457,7 @@ namespace SRCSharpForm
             }
 
             // マップが設定されていない場合はこれ以降の判定は不要
-            if (Map.MapWidth < 15 | Map.MapHeight < 15)
+            if (Map.MapWidth < 15 || Map.MapHeight < 15)
             {
                 return;
             }
@@ -502,9 +502,9 @@ namespace SRCSharpForm
             //// '                And SelectedCommand <> "テレポート" _
             //// '                And SelectedCommand <> "ジャンプ") _
             //// '        Then
-            //else if (Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択" | Commands.CommandState == "ユニット選択")
+            //else if (Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択" || Commands.CommandState == "ユニット選択")
             //{
-            //    if (1 <= xx & xx <= Map.MapWidth & 1 <= yy & yy <= Map.MapHeight)
+            //    if (1 <= xx && xx <= Map.MapWidth && 1 <= yy && yy <= Map.MapHeight)
             //    {
             //        if (Map.MapDataForUnit[xx, yy] is object)
             //        {
@@ -519,7 +519,7 @@ namespace SRCSharpForm
             //        }
             //    }
             //}
-            //else if (GUI.MouseX != (float)LastMouseX | GUI.MouseY != (float)LastMouseY)
+            //else if (GUI.MouseX != (float)LastMouseX || GUI.MouseY != (float)LastMouseY)
             //{
             //    Status.ClearUnitStatus();
             //}
@@ -570,7 +570,7 @@ namespace SRCSharpForm
 
                     // XXX LastXXX保存しないような気がする
                     // マップ画面を新しい座標で更新
-                    if (!(GUI.MapX == LastMapX) | !(GUI.MapY == LastMapY))
+                    if (!(GUI.MapX == LastMapX) || !(GUI.MapY == LastMapY))
                     {
                         GUI.RefreshScreen();
                     }

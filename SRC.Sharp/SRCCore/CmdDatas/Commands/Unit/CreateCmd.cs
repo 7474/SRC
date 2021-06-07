@@ -43,13 +43,13 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "Createコマンドのパラメータの括弧の対応が取れていません");
             }
-            else if (num != 8 & num != 9)
+            else if (num != 8 && num != 9)
             {
                 throw new EventErrorException(this, "Createコマンドの引数の数が違います");
             }
 
             var uparty = GetArgAsString(2);
-            if (!(uparty == "味方" | uparty == "ＮＰＣ" | uparty == "敵" | uparty == "中立"))
+            if (!(uparty == "味方" || uparty == "ＮＰＣ" || uparty == "敵" || uparty == "中立"))
             {
                 throw new EventErrorException(this, "所属の指定「" + uparty + "」が間違っています");
             }
@@ -146,7 +146,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             p.Ride(u);
-            if (opt != "非同期" & GUI.MainFormVisible & !GUI.IsPictureVisible)
+            if (opt != "非同期" && GUI.MainFormVisible && !GUI.IsPictureVisible)
             {
                 GUI.Center(ux, uy);
                 GUI.RefreshScreen();

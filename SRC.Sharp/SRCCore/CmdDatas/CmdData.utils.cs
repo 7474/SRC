@@ -31,7 +31,7 @@ namespace SRCCore.CmdDatas
                 // 母艦を中央表示
                 foreach (Unit u in SRC.UList.Items)
                 {
-                    if (u.Party0 == "味方" & u.Status == "出撃")
+                    if (u.Party0 == "味方" && u.Status == "出撃")
                     {
                         if (u.IsFeatureAvailable("母艦"))
                         {

@@ -270,7 +270,7 @@ namespace SRCCore.Units
                 }
 
                 // 封印されている？
-                if (IsDisabled(fd.Name) | IsDisabled(GeneralLib.LIndex(fd.StrData, 1)))
+                if (IsDisabled(fd.Name) || IsDisabled(GeneralLib.LIndex(fd.StrData, 1)))
                 {
                     continue;
                 }

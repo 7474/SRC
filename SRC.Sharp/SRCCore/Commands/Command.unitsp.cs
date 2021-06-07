@@ -157,7 +157,7 @@ namespace SRCCore.Commands
                 //{
                 //    {
                 //        var withBlock5 = SRC.SPDList.Item(i);
-                //        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" & withBlock5.intName != "非表示")
+                //        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" && withBlock5.intName != "非表示")
                 //        {
                 //            Array.Resize(list, Information.UBound(list) + 1 + 1);
                 //            Array.Resize(strkey_list, Information.UBound(list) + 1);
@@ -208,7 +208,7 @@ namespace SRCCore.Commands
                 //        {
                 //            if (p.Unit is object)
                 //            {
-                //                if (p.Unit.Status == "出撃" & !p.Unit.IsConditionSatisfied("憑依"))
+                //                if (p.Unit.Status == "出撃" && !p.Unit.IsConditionSatisfied("憑依"))
                 //                {
                 //                    // 本当に乗っている？
                 //                    found = false;
@@ -271,7 +271,7 @@ namespace SRCCore.Commands
                 //    var loopTo12 = Information.UBound(list);
                 //    for (i = 1; i <= loopTo12; i++)
                 //    {
-                //        if (!GUI.ListItemFlag[i] & withBlock7.SP >= 2 * withBlock7.SpecialPowerCost(list[i]))
+                //        if (!GUI.ListItemFlag[i] && withBlock7.SP >= 2 * withBlock7.SpecialPowerCost(list[i]))
                 //        {
                 //            if (!withBlock7.IsSpecialPowerUseful(list[i]))
                 //            {
@@ -355,7 +355,7 @@ namespace SRCCore.Commands
                                         {
                                             {
                                                 var withBlock8 = u;
-                                                if (withBlock8.Party != "味方" & withBlock8.Party0 != "味方" & withBlock8.Party != "ＮＰＣ" & withBlock8.Party0 != "ＮＰＣ")
+                                                if (withBlock8.Party != "味方" && withBlock8.Party0 != "味方" && withBlock8.Party != "ＮＰＣ" && withBlock8.Party0 != "ＮＰＣ")
                                                 {
                                                     goto NextLoop;
                                                 }
@@ -368,7 +368,7 @@ namespace SRCCore.Commands
                                         {
                                             {
                                                 var withBlock9 = u;
-                                                if (withBlock9.Party == "味方" & withBlock9.Party0 == "味方" | withBlock9.Party == "ＮＰＣ" & withBlock9.Party0 == "ＮＰＣ")
+                                                if (withBlock9.Party == "味方" && withBlock9.Party0 == "味方" || withBlock9.Party == "ＮＰＣ" && withBlock9.Party0 == "ＮＰＣ")
                                                 {
                                                     goto NextLoop;
                                                 }
@@ -411,7 +411,7 @@ namespace SRCCore.Commands
                         //    foreach (Unit currentU in SRC.UList)
                         //    {
                         //        u = currentU;
-                        //        if (u.Party0 == "味方" & u.Status == "破壊" & (u.CountPilot() > 0 | u.Data.PilotNum == 0))
+                        //        if (u.Party0 == "味方" && u.Status == "破壊" && (u.CountPilot() > 0 || u.Data.PilotNum == 0))
                         //        {
                         //            Array.Resize(list, Information.UBound(list) + 1 + 1);
                         //            Array.Resize(id_list, Information.UBound(list) + 1);

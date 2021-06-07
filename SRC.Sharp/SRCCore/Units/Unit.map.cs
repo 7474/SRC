@@ -91,7 +91,7 @@ namespace SRCCore.Units
 
                             case "水":
                                 {
-                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") & get_Adaption(3) == 0)
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && get_Adaption(3) == 0)
                                     {
                                         goto NextLoop;
                                     }
@@ -101,7 +101,7 @@ namespace SRCCore.Units
 
                             case "深水":
                                 {
-                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & !IsTransAvailable("水"))
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && !IsTransAvailable("水"))
                                     {
                                         goto NextLoop;
                                     }
@@ -127,7 +127,7 @@ namespace SRCCore.Units
             ;
 
             // 空いた場所がなかった？
-            if (x == 0 & y == 0)
+            if (x == 0 && y == 0)
             {
                 Status = "待機";
                 return;
@@ -169,7 +169,7 @@ namespace SRCCore.Units
                     break;
 
                 case "陸":
-                    if (IsTransAvailable("地中") & Area == "地中")
+                    if (IsTransAvailable("地中") && Area == "地中")
                     {
                         Area = "地中";
                     }
@@ -323,7 +323,7 @@ namespace SRCCore.Units
             //}
 
             //// ユニット画像をマップに描画
-            //if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+            //if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
             //{
             //    // MOD START MARGE
             //    // If smode = "非同期" Then
@@ -490,7 +490,7 @@ namespace SRCCore.Units
 
                             case "宇宙":
                                 {
-                                    if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                                    if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                                     {
                                         Area = "空中";
                                     }
@@ -523,7 +523,7 @@ namespace SRCCore.Units
 
                             default:
                                 {
-                                    if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
+                                    if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && get_Adaption(4) >= get_Adaption(2))
                                     {
                                         Area = "宇宙";
                                     }
@@ -631,7 +631,7 @@ namespace SRCCore.Units
                             case "水":
                             case "深水":
                                 {
-                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && get_Adaption(3) == 0)
                                     {
                                         goto NextLoop;
                                     }
@@ -697,7 +697,7 @@ namespace SRCCore.Units
                 if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
                 {
                     Map.MapDataForUnit[x, y] = null;
-                    if (smode == "非同期" | GUI.IsPictureVisible | string.IsNullOrEmpty(Map.MapFileName))
+                    if (smode == "非同期" || GUI.IsPictureVisible || string.IsNullOrEmpty(Map.MapFileName))
                     {
                         GUI.EraseUnitBitmap(x, y, false);
                     }
@@ -773,7 +773,7 @@ namespace SRCCore.Units
                         case "陸":
                         case "屋内":
                             {
-                                if (IsTransAvailable("空") & Strings.Mid(strAdaption, 1, 1) == "A")
+                                if (IsTransAvailable("空") && Strings.Mid(strAdaption, 1, 1) == "A")
                                 {
                                     Area = "空中";
                                 }
@@ -791,7 +791,7 @@ namespace SRCCore.Units
 
                         case "月面":
                             {
-                                if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & Strings.Mid(strAdaption, 4, 1) == "A")
+                                if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && Strings.Mid(strAdaption, 4, 1) == "A")
                                 {
                                     Area = "宇宙";
                                 }
@@ -854,7 +854,7 @@ namespace SRCCore.Units
             x = u.x;
             y = u.y;
             Status = "格納";
-            if (Area != "宇宙" & Area != "空中")
+            if (Area != "宇宙" && Area != "空中")
             {
                 Area = "地上";
             }
@@ -883,7 +883,7 @@ namespace SRCCore.Units
                 //{
                 //    {
                 //        var withBlock2 = Pilot(i);
-                //        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") & withBlock2.Personality != "機械")
+                //        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") && withBlock2.Personality != "機械")
                 //        {
                 //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                 //            {
@@ -1234,7 +1234,7 @@ namespace SRCCore.Units
                 //    var loopTo26 = Information.UBound(wname);
                 //    for (j = counter; j <= loopTo26; j++)
                 //    {
-                //        if ((u.Weapon(i).Name ?? "") == (wname[j] ?? "") & u.MaxBullet(i) > 0 & wmaxbullet[j] > 0)
+                //        if ((u.Weapon(i).Name ?? "") == (wname[j] ?? "") && u.MaxBullet(i) > 0 && wmaxbullet[j] > 0)
                 //        {
                 //            u.SetBullet(i, ((wbullet[j] * u.MaxBullet(i)) / wmaxbullet[j]));
                 //            idx = (j + 1);
@@ -1251,7 +1251,7 @@ namespace SRCCore.Units
                 //    var loopTo28 = Information.UBound(aname);
                 //    for (j = counter; j <= loopTo28; j++)
                 //    {
-                //        if ((u.Ability(i).Name ?? "") == (aname[j] ?? "") & u.MaxStock(i) > 0 & amaxstock[j] > 0)
+                //        if ((u.Ability(i).Name ?? "") == (aname[j] ?? "") && u.MaxStock(i) > 0 && amaxstock[j] > 0)
                 //        {
                 //            u.SetStock(i, ((astock[j] * u.MaxStock(i)) / amaxstock[j]));
                 //            idx = (j + 1);
@@ -1304,7 +1304,7 @@ namespace SRCCore.Units
                         u.AddCondition("残り時間", Conversions.ToInteger(u.FeatureData("制限時間")), cdata: "");
                     }
                 }
-                else if (!u.IsFeatureAvailable("ノーマルモード") & !u.IsFeatureAvailable("制限時間"))
+                else if (!u.IsFeatureAvailable("ノーマルモード") && !u.IsFeatureAvailable("制限時間"))
                 {
                     // 残り時間が必要ない形態にTransformコマンドで強制変形された？
                     u.DeleteCondition("残り時間");
@@ -1319,7 +1319,7 @@ namespace SRCCore.Units
                         var prev_y = y;
                         u.UsedAction = UsedAction;
                         u.StandBy(x, y);
-                        if (u.x != prev_x | u.y != prev_y)
+                        if (u.x != prev_x || u.y != prev_y)
                         {
                             GUI.EraseUnitBitmap(prev_x, prev_y, false);
                         }
@@ -1448,7 +1448,7 @@ namespace SRCCore.Units
 
                     //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    //if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("合体"))
+                    //if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("合体"))
                     //{
                     //    if (IsFeatureAvailable("合体ＢＧＭ"))
                     //    {
@@ -1461,7 +1461,7 @@ namespace SRCCore.Units
 
                     //            string localLIndex8() { string arglist = hs8b8df815445f4c329f8d70f276cd46e5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                    //            if (localFeature2() == "合体ＢＧＭ" & (localLIndex8() ?? "") == (u.Name ?? ""))
+                    //            if (localFeature2() == "合体ＢＧＭ" && (localLIndex8() ?? "") == (u.Name ?? ""))
                     //            {
                     //                string localFeatureData11() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -1644,7 +1644,7 @@ namespace SRCCore.Units
                 if (ru.IsFeatureAvailable("召喚ユニット"))
                 {
                     // 召喚ユニットの場合はパイロットの乗せ換えは行わない
-                    if (Strings.InStr(ru.MainPilot().Name, "(ザコ)") > 0 | Strings.InStr(ru.MainPilot().Name, "(汎用)") > 0)
+                    if (Strings.InStr(ru.MainPilot().Name, "(ザコ)") > 0 || Strings.InStr(ru.MainPilot().Name, "(汎用)") > 0)
                     {
                         // 汎用パイロットの場合は削除
                         ru.MainPilot().Alive = false;
@@ -1996,12 +1996,12 @@ namespace SRCCore.Units
                         Pilot p;
                         if (u.IsFeatureAvailable("召喚ユニット"))
                         {
-                            if (Status == "出撃" | Status == "格納")
+                            if (Status == "出撃" || Status == "格納")
                             {
                                 pname = u.FeatureData("追加パイロット");
                                 var addPilot = SRC.PDList.Item(pname);
 
-                                if (Strings.InStr(addPilot.Name, "(ザコ)") > 0 | Strings.InStr(addPilot.Name, "(汎用)") > 0)
+                                if (Strings.InStr(addPilot.Name, "(ザコ)") > 0 || Strings.InStr(addPilot.Name, "(汎用)") > 0)
                                 {
                                     p = SRC.PList.Add(pname, MainPilot().Level, Party, gid: "");
                                     p.FullRecover();
@@ -2071,7 +2071,7 @@ namespace SRCCore.Units
                 //    var loopTo13 = u.CountWeapon();
                 //    for (k = counter; k <= loopTo13; k++)
                 //    {
-                //        if ((Weapon(j).Name ?? "") == (u.Weapon(k).Name ?? "") & this.Weapon(j).Bullet > 0 & u.Weapon(k).Bullet > 0)
+                //        if ((Weapon(j).Name ?? "") == (u.Weapon(k).Name ?? "") && this.Weapon(j).Bullet > 0 && u.Weapon(k).Bullet > 0)
                 //        {
                 //            u.SetBullet(k, ((u.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
                 //            idx = (k + 1);
@@ -2093,7 +2093,7 @@ namespace SRCCore.Units
                 //            var loopTo16 = withBlock2.CountWeapon();
                 //            for (l = counter; l <= loopTo16; l++)
                 //            {
-                //                if ((Weapon(k).Name ?? "") == (withBlock2.Weapon(l).Name ?? "") & this.Weapon(k).Bullet > 0 & withBlock2.Weapon(l).Bullet > 0)
+                //                if ((Weapon(k).Name ?? "") == (withBlock2.Weapon(l).Name ?? "") && this.Weapon(k).Bullet > 0 && withBlock2.Weapon(l).Bullet > 0)
                 //                {
                 //                    withBlock2.SetBullet(l, ((withBlock2.MaxBullet(l) * Bullet(k)) / MaxBullet(k)));
                 //                    idx = (l + 1);
@@ -2113,7 +2113,7 @@ namespace SRCCore.Units
                 //    var loopTo18 = u.CountAbility();
                 //    for (k = counter; k <= loopTo18; k++)
                 //    {
-                //        if ((Ability(j).Name ?? "") == (u.Ability(k).Name ?? "") & this.Ability(j).Stock > 0 & u.Ability(k).Stock > 0)
+                //        if ((Ability(j).Name ?? "") == (u.Ability(k).Name ?? "") && this.Ability(j).Stock > 0 && u.Ability(k).Stock > 0)
                 //        {
                 //            u.SetStock(k, ((u.Ability(k).Stock * Stock(j)) / MaxStock(j)));
                 //            idx = (k + 1);
@@ -2135,7 +2135,7 @@ namespace SRCCore.Units
                 //            var loopTo21 = withBlock3.CountAbility();
                 //            for (l = counter; l <= loopTo21; l++)
                 //            {
-                //                if ((Ability(k).Name ?? "") == (withBlock3.Ability(l).Name ?? "") & this.Ability(k).Stock > 0 & withBlock3.Ability(l).Stock > 0)
+                //                if ((Ability(k).Name ?? "") == (withBlock3.Ability(l).Name ?? "") && this.Ability(k).Stock > 0 && withBlock3.Ability(l).Stock > 0)
                 //                {
                 //                    withBlock3.SetStock(l, ((withBlock3.Ability(l).Stock * Stock(k)) / MaxStock(k)));
                 //                    idx = (l + 1);

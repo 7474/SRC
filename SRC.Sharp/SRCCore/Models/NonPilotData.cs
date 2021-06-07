@@ -34,7 +34,7 @@ namespace SRCCore.Models
 
                 // Impl
                 //// イベントで愛称が変更されている？
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
                 //}
@@ -73,7 +73,7 @@ namespace SRCCore.Models
                 //            }
 
                 //            // パイロットはメインパイロット？
-                //            if ((pname ?? "") != (withBlock1.MainPilot().Name ?? "") & (pname ?? "") != (withBlock1.MainPilot().Data.Nickname ?? ""))
+                //            if ((pname ?? "") != (withBlock1.MainPilot().Name ?? "") && (pname ?? "") != (withBlock1.MainPilot().Data.Nickname ?? ""))
                 //            {
                 //                return default;
                 //            }

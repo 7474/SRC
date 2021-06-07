@@ -515,7 +515,7 @@ namespace Project1
         public static void SetNewGUIMode()
         {
             // Optionで定義されているのにNewGUIModeがfalseの場合、LoadFormsを呼ぶ
-            if (Expression.IsOptionDefined(ref "新ＧＵＩ") & !NewGUIMode)
+            if (Expression.IsOptionDefined(ref "新ＧＵＩ") && !NewGUIMode)
             {
                 LoadForms();
             }
@@ -586,7 +586,7 @@ namespace Project1
                 else if (u2 is null)
                 {
                     // ユニット表示１体のみ
-                    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                    if (u1.Party == "味方" || u1.Party == "ＮＰＣ")
                     {
                         withBlock.labHP1.Visible = false;
                         withBlock.labEN1.Visible = false;
@@ -656,7 +656,7 @@ namespace Project1
                 }
 
                 // メッセージウィンドウの位置設定
-                if (MainForm.Visible & !((int)MainForm.WindowState == 1))
+                if (MainForm.Visible && !((int)MainForm.WindowState == 1))
                 {
                     // メインウィンドウが表示されていればメインウィンドウの下端に合わせて表示
                     if (!My.MyProject.Forms.frmMessage.Visible)
@@ -745,7 +745,7 @@ namespace Project1
                 // ウィンドウにユニット情報が表示されていない場合はそのまま終了
                 if (withBlock.Visible)
                 {
-                    if (!withBlock.picUnit1.Visible & !withBlock.picUnit2.Visible)
+                    if (!withBlock.picUnit1.Visible && !withBlock.picUnit2.Visible)
                     {
                         return;
                     }
@@ -756,7 +756,7 @@ namespace Project1
                 if (Information.IsNothing(u2))
                 {
                     // １体のユニットのみ表示
-                    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+                    if (u1.Party == "味方" || u1.Party == "ＮＰＣ")
                     {
                         // UPGRADE_NOTE: オブジェクト lu をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                         lu = null;
@@ -776,7 +776,7 @@ namespace Project1
                     lu = LeftUnit;
                     ru = RightUnit;
                 }
-                else if ((ReferenceEquals(u2, LeftUnit) | ReferenceEquals(u1, RightUnit)) & !ReferenceEquals(LeftUnit, RightUnit))
+                else if ((ReferenceEquals(u2, LeftUnit) || ReferenceEquals(u1, RightUnit)) && !ReferenceEquals(LeftUnit, RightUnit))
                 {
                     lu = (Unit)u2;
                     ru = u1;
@@ -788,7 +788,7 @@ namespace Project1
                 }
 
                 // 現在表示されている順番に応じてユニットの入れ替え
-                if (ReferenceEquals(lu, RightUnit) & ReferenceEquals(ru, LeftUnit) & !ReferenceEquals(LeftUnit, RightUnit))
+                if (ReferenceEquals(lu, RightUnit) && ReferenceEquals(ru, LeftUnit) && !ReferenceEquals(LeftUnit, RightUnit))
                 {
                     lu = LeftUnit;
                     ru = RightUnit;
@@ -824,7 +824,7 @@ namespace Project1
                 }
 
                 // 未表示のユニットを表示する
-                if (lu is object & !ReferenceEquals(lu, LeftUnit))
+                if (lu is object && !ReferenceEquals(lu, LeftUnit))
                 {
                     // 左のユニットが未表示なので表示する
 
@@ -889,7 +889,7 @@ namespace Project1
 
                     // ＨＰゲージ
                     withBlock.picHP1.Cls();
-                    if (lu.HP > 0 | i < num)
+                    if (lu.HP > 0 || i < num)
                     {
                         withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     }
@@ -934,7 +934,7 @@ namespace Project1
 
                     // ＥＮゲージ
                     withBlock.picEN1.Cls();
-                    if (lu.EN > 0 | i < num)
+                    if (lu.EN > 0 || i < num)
                     {
                         withBlock.picEN1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     }
@@ -945,7 +945,7 @@ namespace Project1
                     LeftUnitENRatio = lu.EN / (double)lu.MaxEN;
                 }
 
-                if (ru is object & !ReferenceEquals(RightUnit, ru))
+                if (ru is object && !ReferenceEquals(RightUnit, ru))
                 {
                     // 右のユニットが未表示なので表示する
 
@@ -1010,7 +1010,7 @@ namespace Project1
 
                     // ＨＰゲージ
                     withBlock.picHP2.Cls();
-                    if (ru.HP > 0 | i < num)
+                    if (ru.HP > 0 || i < num)
                     {
                         withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     }
@@ -1055,7 +1055,7 @@ namespace Project1
 
                     // ＥＮゲージ
                     withBlock.picEN2.Cls();
-                    if (ru.EN > 0 | i < num)
+                    if (ru.EN > 0 || i < num)
                     {
                         withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                     }
@@ -1072,7 +1072,7 @@ namespace Project1
                 num = 0;
                 if (lu is object)
                 {
-                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio | lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
+                    if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio || lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
                     {
                         num = 8;
                     }
@@ -1080,7 +1080,7 @@ namespace Project1
 
                 if (ru is object)
                 {
-                    if (ru.HP != RightUnitHPRatio | ru.EN != RightUnitENRatio)
+                    if (ru.HP != RightUnitHPRatio || ru.EN != RightUnitENRatio)
                     {
                         num = 8;
                     }
@@ -1133,7 +1133,7 @@ namespace Project1
                             }
 
                             withBlock.picHP1.Cls();
-                            if (lu.HP > 0 | i < num)
+                            if (lu.HP > 0 || i < num)
                             {
                                 withBlock.picHP1.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                             }
@@ -1171,7 +1171,7 @@ namespace Project1
                             }
 
                             withBlock.picEN1.Cls();
-                            if (lu.EN > 0 | i < num)
+                            if (lu.EN > 0 || i < num)
                             {
                                 withBlock.picEN1.Line(-1, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                             }
@@ -1213,7 +1213,7 @@ namespace Project1
                             }
 
                             withBlock.picHP2.Cls();
-                            if (ru.HP > 0 | i < num)
+                            if (ru.HP > 0 || i < num)
                             {
                                 withBlock.picHP2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                             }
@@ -1251,7 +1251,7 @@ namespace Project1
                             }
 
                             withBlock.picEN2.Cls();
-                            if (ru.EN > 0 | i < num)
+                            if (ru.EN > 0 || i < num)
                             {
                                 withBlock.picEN2.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
                             }
@@ -1335,7 +1335,7 @@ namespace Project1
                 // メッセージウィンドウが表示されていない場合は表示する
                 OpenMessageForm(ref SavedLeftUnit, ref SavedRightUnit);
             }
-            else if (LeftUnit is null & RightUnit is null & (SavedLeftUnit is object | SavedRightUnit is object))
+            else if (LeftUnit is null && RightUnit is null && (SavedLeftUnit is object || SavedRightUnit is object))
             {
                 // メッセージウィンドウからユニット表示が消えてしまった場合は再表示
                 OpenMessageForm(ref SavedLeftUnit, ref SavedRightUnit);
@@ -1416,7 +1416,7 @@ namespace Project1
                 if (fname != "-.bmp")
                 {
                     fname = @"Pilot\" + fname;
-                    if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
+                    if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
                         if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref "メッセージ " + msg_mode))
                         {
@@ -1506,19 +1506,19 @@ namespace Project1
                         // 基本的にはそのまま使用するが、せりふ表示の代用の場合は
                         // せりふ表示用の処理を行う
                         i = 0;
-                        if (Strings.InStr(msg, "「") > 0 & Strings.Right(msg, 1) == "」")
+                        if (Strings.InStr(msg, "「") > 0 && Strings.Right(msg, 1) == "」")
                         {
                             i = (short)Strings.InStr(msg, "「");
                         }
-                        else if (Strings.InStr(msg, "『") > 0 & Strings.Right(msg, 1) == "』")
+                        else if (Strings.InStr(msg, "『") > 0 && Strings.Right(msg, 1) == "』")
                         {
                             i = (short)Strings.InStr(msg, "『");
                         }
-                        else if (Strings.InStr(msg, "(") > 0 & Strings.Right(msg, 1) == ")")
+                        else if (Strings.InStr(msg, "(") > 0 && Strings.Right(msg, 1) == ")")
                         {
                             i = (short)Strings.InStr(msg, "(");
                         }
-                        else if (Strings.InStr(msg, "（") > 0 & Strings.Right(msg, 1) == "）")
+                        else if (Strings.InStr(msg, "（") > 0 && Strings.Right(msg, 1) == "）")
                         {
                             i = (short)Strings.InStr(msg, "（");
                         }
@@ -1529,7 +1529,7 @@ namespace Project1
 
                             bool localIsDefined5() { object argIndex1 = Strings.Trim(Strings.Left(msg, i - 1)); var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
 
-                            if (i < 8 | localIsDefined4() | localIsDefined5())
+                            if (i < 8 || localIsDefined4() || localIsDefined5())
                             {
                                 is_character_message = true;
                                 bool localIsSpace() { string argch = Strings.Mid(msg, i - 1, 1); var ret = GeneralLib.IsSpace(ref argch); return ret; }
@@ -1548,13 +1548,13 @@ namespace Project1
                 default:
                     {
                         is_character_message = true;
-                        if ((Strings.Left(msg, 1) == "(" | Strings.Left(msg, 1) == "（") & (Strings.Right(msg, 1) == ")" | Strings.Right(msg, 1) == "）"))
+                        if ((Strings.Left(msg, 1) == "(" || Strings.Left(msg, 1) == "（") && (Strings.Right(msg, 1) == ")" || Strings.Right(msg, 1) == "）"))
                         {
                             // モノローグ
                             msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                             msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref "会話パイロット名改行"), ";", " ")), "（"), msg), "）"));
                         }
-                        else if (Strings.Left(msg, 1) == "『" & Strings.Right(msg, 1) == "』")
+                        else if (Strings.Left(msg, 1) == "『" && Strings.Right(msg, 1) == "』")
                         {
                             msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                             msg = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(pnickname, Interaction.IIf(Expression.IsOptionDefined(ref "会話パイロット名改行"), ";", " ")), "『"), msg), "』"));
@@ -1651,7 +1651,7 @@ namespace Project1
                         {
                             PrintMessage(ref Strings.Mid(buf, line_head, j - line_head));
                             lnum = (short)(lnum + 1);
-                            if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                            if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                             {
                                 p.Print(left_margin);
                             }
@@ -1681,7 +1681,7 @@ namespace Project1
                     {
                         PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                         lnum = (short)(lnum + 1);
-                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                        if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                         {
                             p.Print(left_margin);
                         }
@@ -1761,7 +1761,7 @@ namespace Project1
                                 {
                                     PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                                    if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1778,7 +1778,7 @@ namespace Project1
                                 {
                                     PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                                    if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1793,14 +1793,14 @@ namespace Project1
                             {
                                 ch = Strings.Mid(buf, j - 1, 1);
                                 // スペースが文の区切りに使われているかどうか判定
-                                if (pname != "システム" & (ch == "！" | ch == "？" | ch == "…" | ch == "‥" | ch == "・" | ch == "･" | ch == "～"))
+                                if (pname != "システム" && (ch == "！" || ch == "？" || ch == "…" || ch == "‥" || ch == "・" || ch == "･" || ch == "～"))
                                 {
                                     // 文の区切り
                                     if (MessageLen(Strings.Mid(buf, line_head, j - line_head)) > cl_margin[1] * SrcFormatter.PixelsToTwipsX(p.Width))
                                     {
                                         PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                         lnum = (short)(lnum + 1);
-                                        if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                                        if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                         {
                                             p.Print(left_margin);
                                         }
@@ -1813,7 +1813,7 @@ namespace Project1
                                 {
                                     PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                                    if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1830,7 +1830,7 @@ namespace Project1
                                 {
                                     PrintMessage(ref Strings.Mid(buf, line_head, j - line_head + 1));
                                     lnum = (short)(lnum + 1);
-                                    if (is_character_message & (lnum > 1 & Expression.IsOptionDefined(ref "会話パイロット名改行") | lnum > 0 & !Expression.IsOptionDefined(ref "会話パイロット名改行")))
+                                    if (is_character_message && (lnum > 1 && Expression.IsOptionDefined(ref "会話パイロット名改行") || lnum > 0 && !Expression.IsOptionDefined(ref "会話パイロット名改行")))
                                     {
                                         p.Print(left_margin);
                                     }
@@ -1906,11 +1906,11 @@ namespace Project1
                     {
                         {
                             var withBlock1 = My.MyProject.Forms.frmMessage;
-                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                             {
                                 lstate = GetAsyncKeyState(LButtonID);
                                 rstate = GetAsyncKeyState(RButtonID);
-                                if ((lstate & 0x8000) != 0)
+                                if ((lstate && 0x8000) != 0)
                                 {
                                     if (start_time + wait_time < GeneralLib.timeGetTime())
                                     {
@@ -1918,7 +1918,7 @@ namespace Project1
                                         break;
                                     }
                                 }
-                                else if ((rstate & 0x8000) != 0)
+                                else if ((rstate && 0x8000) != 0)
                                 {
                                     // 右ボタンでメッセージの早送り
                                     break;
@@ -1932,11 +1932,11 @@ namespace Project1
                     {
                         {
                             var withBlock2 = MainForm;
-                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock2.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock2.Left) + SrcFormatter.PixelsToTwipsX(withBlock2.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock2.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock2.Top) + SrcFormatter.PixelsToTwipsY(withBlock2.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+                            if ((long)SrcFormatter.PixelsToTwipsX(withBlock2.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock2.Left) + SrcFormatter.PixelsToTwipsX(withBlock2.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock2.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock2.Top) + SrcFormatter.PixelsToTwipsY(withBlock2.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                             {
                                 lstate = GetAsyncKeyState(LButtonID);
                                 rstate = GetAsyncKeyState(RButtonID);
-                                if ((lstate & 0x8000) != 0)
+                                if ((lstate && 0x8000) != 0)
                                 {
                                     if (start_time + wait_time < GeneralLib.timeGetTime())
                                     {
@@ -1944,7 +1944,7 @@ namespace Project1
                                         break;
                                     }
                                 }
-                                else if ((rstate & 0x8000) != 0)
+                                else if ((rstate && 0x8000) != 0)
                                 {
                                     // 右ボタンでメッセージの早送り
                                     break;
@@ -2056,7 +2056,7 @@ namespace Project1
                 {
                     case "<":
                         {
-                            if (!in_tag & escape_depth == 0)
+                            if (!in_tag && escape_depth == 0)
                             {
                                 // タグ開始
                                 in_tag = true;
@@ -2338,7 +2338,7 @@ namespace Project1
             }
 
             // 終了していないタグ、もしくはエスケープシーケンスはただの文字列と見なす
-            if (in_tag | escape_depth > 0)
+            if (in_tag || escape_depth > 0)
             {
                 head = (short)(head - 1);
             }
@@ -2575,7 +2575,7 @@ namespace Project1
                 My.MyProject.Forms.frmMessage.picFace.Refresh();
                 DisplayedPilot = "";
             }
-            else if (!string.IsNullOrEmpty(pname) & pname != "-")
+            else if (!string.IsNullOrEmpty(pname) && pname != "-")
             {
                 // どのキャラ画像を使うか？
                 bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
@@ -2618,7 +2618,7 @@ namespace Project1
                 if (fname != "-.bmp")
                 {
                     fname = @"Pilot\" + fname;
-                    if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
+                    if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
                         if (DrawPicture(ref fname, 0, 0, 64, 64, 0, 0, 0, 0, ref "メッセージ " + msg_mode))
                         {
@@ -2765,7 +2765,7 @@ namespace Project1
 
                             // アニメ指定かどうか判定
                             j = (short)Strings.InStr(fname, "[");
-                            if (j > 0 & Strings.InStr(fname, "].") == Strings.Len(fname) - 4)
+                            if (j > 0 && Strings.InStr(fname, "].") == Strings.Len(fname) - 4)
                             {
                                 fname0 = Strings.Left(fname, j - 1);
                                 fsuffix = Strings.Right(fname, 4);
@@ -2844,7 +2844,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (Strings.Asc(buf2) == 35 & Strings.Len(buf2) == 7)
+                                            if (Strings.Asc(buf2) == 35 && Strings.Len(buf2) == 7)
                                             {
                                                 // 透過色設定
                                                 cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
@@ -3155,12 +3155,12 @@ namespace Project1
 
                 // 話者名と括弧の表示処理
                 is_char_message = false;
-                if (pname != "システム" & (!string.IsNullOrEmpty(pname) & pname != "-" | Strings.Left(buf, 1) == "「" & Strings.Right(buf, 1) == "」" | Strings.Left(buf, 1) == "『" & Strings.Right(buf, 1) == "』"))
+                if (pname != "システム" && (!string.IsNullOrEmpty(pname) && pname != "-" || Strings.Left(buf, 1) == "「" && Strings.Right(buf, 1) == "」" || Strings.Left(buf, 1) == "『" && Strings.Right(buf, 1) == "』"))
                 {
                     is_char_message = true;
 
                     // 話者のグラフィックを表示
-                    if (pname == "-" & Commands.SelectedUnit is object)
+                    if (pname == "-" && Commands.SelectedUnit is object)
                     {
                         if (Commands.SelectedUnit.CountPilot() > 0)
                         {
@@ -3175,7 +3175,7 @@ namespace Project1
                     }
 
                     // 話者名を表示
-                    if (string.IsNullOrEmpty(pnickname) & pname == "-" & Commands.SelectedUnit is object)
+                    if (string.IsNullOrEmpty(pnickname) && pname == "-" && Commands.SelectedUnit is object)
                     {
                         if (Commands.SelectedUnit.CountPilot() > 0)
                         {
@@ -3200,7 +3200,7 @@ namespace Project1
                     }
 
                     // 括弧を付加
-                    if ((Strings.Left(buf, 1) == "(" | Strings.Left(buf, 1) == "（") & (!with_footer | Strings.Right(buf, 1) == ")" | Strings.Right(buf, 1) == "）"))
+                    if ((Strings.Left(buf, 1) == "(" || Strings.Left(buf, 1) == "（") && (!with_footer || Strings.Right(buf, 1) == ")" || Strings.Right(buf, 1) == "）"))
                     {
                         // モノローグ
                         if (with_footer)
@@ -3214,11 +3214,11 @@ namespace Project1
                             buf = "（" + buf;
                         }
                     }
-                    else if (Strings.Left(buf, 1) == "「" & (!with_footer | Strings.Right(buf, 1) == "」"))
+                    else if (Strings.Left(buf, 1) == "「" && (!with_footer || Strings.Right(buf, 1) == "」"))
                     {
                     }
                     // 「」の括弧が既にあるので変更しない
-                    else if (Strings.Left(buf, 1) == "『" & (!with_footer | Strings.Right(buf, 1) == "』"))
+                    else if (Strings.Left(buf, 1) == "『" && (!with_footer || Strings.Right(buf, 1) == "』"))
                     {
                     }
                     // 『』の括弧が既にあるので変更しない
@@ -3610,14 +3610,14 @@ namespace Project1
                 }
 
                 // 禁則処理
-                if (ch == "。" | ch == "、")
+                if (ch == "。" || ch == "、")
                 {
                     goto NextLoop;
                 }
 
                 if (i < Strings.Len(msg))
                 {
-                    if (Strings.Mid(msg, i + 1, 1) == "。" | Strings.Mid(msg, i + 1, 1) == "、")
+                    if (Strings.Mid(msg, i + 1, 1) == "。" || Strings.Mid(msg, i + 1, 1) == "、")
                     {
                         goto NextLoop;
                     }
@@ -3629,7 +3629,7 @@ namespace Project1
                     goto NextLoop;
                 }
 
-                if (GeneralLib.IsSpace(ref ch) & MessageLen(Strings.Mid(msg, line_head, i - line_head)) > 0.5d * SrcFormatter.PixelsToTwipsX(p.Width))
+                if (GeneralLib.IsSpace(ref ch) && MessageLen(Strings.Mid(msg, line_head, i - line_head)) > 0.5d * SrcFormatter.PixelsToTwipsX(p.Width))
                 {
                     buf = Strings.Mid(msg, line_head, i - line_head);
                     PrintMessage(ref buf, true);
@@ -3737,7 +3737,7 @@ namespace Project1
                 Map.MapDrawFilterColor = filter_color;
                 Map.MapDrawFilterTransPercent = filter_trans_par;
             }
-            else if (draw_mode == "フィルタ" & (Map.MapDrawFilterColor != filter_color | Map.MapDrawFilterTransPercent != filter_trans_par))
+            else if (draw_mode == "フィルタ" && (Map.MapDrawFilterColor != filter_color || Map.MapDrawFilterTransPercent != filter_trans_par))
             {
                 SRC.UList.ClearUnitBitmap();
                 Map.MapDrawMode = draw_mode;
@@ -3893,7 +3893,7 @@ namespace Project1
                         // DEL  END  240a
                         // ADD START 240a
                         // レイヤー描画する必要がある場合は描画する
-                        if ((int)Map.BoxTypes.Upper == (int)Map.MapData[i, j, Map.MapDataIndex.BoxType] | (int)Map.BoxTypes.UpperBmpOnly == (int)Map.MapData[i, j, Map.MapDataIndex.BoxType])
+                        if ((int)Map.BoxTypes.Upper == (int)Map.MapData[i, j, Map.MapDataIndex.BoxType] || (int)Map.BoxTypes.UpperBmpOnly == (int)Map.MapData[i, j, Map.MapDataIndex.BoxType])
                         {
                             // 画像ファイルを探す
                             fname = Map.SearchTerrainImageFile(Map.MapData[i, j, Map.MapDataIndex.LayerType], Map.MapData[i, j, Map.MapDataIndex.LayerBitmapNo], i, j);
@@ -4003,7 +4003,7 @@ namespace Project1
             }
 
             // 画面を更新
-            if (!string.IsNullOrEmpty(Map.MapFileName) & string.IsNullOrEmpty(draw_option))
+            if (!string.IsNullOrEmpty(Map.MapFileName) && string.IsNullOrEmpty(draw_option))
             {
                 RefreshScreen();
             }
@@ -4199,7 +4199,7 @@ namespace Project1
                         var loopTo1 = (short)(dh - 1);
                         for (j = 0; j <= loopTo1; j++)
                         {
-                            if (sx + i < 1 | (short)(sx + i) > Map.MapWidth | sy + j < 1 | (short)(sy + j) > Map.MapHeight)
+                            if (sx + i < 1 || (short)(sx + i) > Map.MapWidth || sy + j < 1 || (short)(sy + j) > Map.MapHeight)
                             {
                                 goto NextLoop;
                             }
@@ -4218,7 +4218,7 @@ namespace Project1
                             }
                             else
                             {
-                                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
+                                if (u.Action > 0 || u.IsFeatureAvailable(ref "地形ユニット"))
                                 {
                                     // ユニット
                                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -4283,7 +4283,7 @@ namespace Project1
                         var loopTo3 = (short)(dh - 1);
                         for (j = 0; j <= loopTo3; j++)
                         {
-                            if (sx + i < 1 | (short)(sx + i) > Map.MapWidth | sy + j < 1 | (short)(sy + j) > Map.MapHeight)
+                            if (sx + i < 1 || (short)(sx + i) > Map.MapWidth || sy + j < 1 || (short)(sy + j) > Map.MapHeight)
                             {
                                 goto NextLoop2;
                             }
@@ -4410,7 +4410,7 @@ namespace Project1
 
                 // 画面が書き換えられたことを記録
                 ScreenIsSaved = false;
-                if (!without_refresh & !delay_refresh)
+                if (!without_refresh && !delay_refresh)
                 {
                     withBlock.picMain(0).Refresh();
                 }
@@ -4559,7 +4559,7 @@ namespace Project1
                         for (j = 0; j <= loopTo1; j++)
                         {
                             yy = (short)(32 * (dy + j - 1));
-                            if (sx + i < 1 | (short)(sx + i) > Map.MapWidth | sy + j < 1 | (short)(sy + j) > Map.MapHeight)
+                            if (sx + i < 1 || (short)(sx + i) > Map.MapWidth || sy + j < 1 || (short)(sy + j) > Map.MapHeight)
                             {
                                 goto NextLoop;
                             }
@@ -4580,7 +4580,7 @@ namespace Project1
                                 }
                                 else
                                 {
-                                    if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
+                                    if (u.Action > 0 || u.IsFeatureAvailable(ref "地形ユニット"))
                                     {
                                         // ユニット
                                         ret = BitBlt(pic.hDC, 0, yy, 16, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15) + 16, 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -4643,7 +4643,7 @@ namespace Project1
                             }
                             else
                             {
-                                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
+                                if (u.Action > 0 || u.IsFeatureAvailable(ref "地形ユニット"))
                                 {
                                     // ユニット
                                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -4709,7 +4709,7 @@ namespace Project1
                         for (j = 0; j <= loopTo3; j++)
                         {
                             yy = (short)(32 * (dy + j - 1));
-                            if (sx + i < 1 | (short)(sx + i) > Map.MapWidth | sy + j < 1 | (short)(sy + j) > Map.MapHeight)
+                            if (sx + i < 1 || (short)(sx + i) > Map.MapWidth || sy + j < 1 || (short)(sy + j) > Map.MapHeight)
                             {
                                 goto NextLoop2;
                             }
@@ -4948,7 +4948,7 @@ namespace Project1
 
                 // 画面が書き換えられたことを記録
                 ScreenIsSaved = false;
-                if (!without_refresh & !delay_refresh)
+                if (!without_refresh && !delay_refresh)
                 {
                     withBlock.picMain(0).Refresh();
                 }
@@ -5107,7 +5107,7 @@ namespace Project1
             short i, j;
             // インターミッションでのパイロットステータス表示の場合は
             // 特殊な処理が必要
-            if (u.IsFeatureAvailable(ref "ダミーユニット") & Strings.InStr(u.Name, "ステータス表示用ユニット") == 0)
+            if (u.IsFeatureAvailable(ref "ダミーユニット") && Strings.InStr(u.Name, "ステータス表示用ユニット") == 0)
             {
                 if (u.CountPilot() == 0)
                 {
@@ -5174,7 +5174,7 @@ namespace Project1
                 fname = u.get_Bitmap(false);
                 bool localFileExists5() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + fname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname) | localFileExists5())
+                if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + fname) || localFileExists5())
                 {
                     fname = @"Bitmap\Map\" + fname;
                 }
@@ -5223,7 +5223,7 @@ namespace Project1
                     {
                         bool localFileExists4() { string argfname = SRC.ScenarioPath + @"Bitmap\Map\" + tname; var ret = SRC.FileSystem.FileExists(ref argfname); return ret; }
 
-                        if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname) | localFileExists4())
+                        if (SRC.FileSystem.FileExists(ref SRC.AppPath + @"Bitmap\Map\" + tname) || localFileExists4())
                         {
                             fname = @"Bitmap\Map\" + tname;
                         }
@@ -5406,7 +5406,7 @@ namespace Project1
                 var loopTo = bitmap_num;
                 for (i = 1; i <= loopTo; i++)
                 {
-                    if ((fname ?? "") == (fname_list[i] ?? "") & (uparty ?? "") == (party_list[i] ?? ""))
+                    if ((fname ?? "") == (fname_list[i] ?? "") && (uparty ?? "") == (party_list[i] ?? ""))
                     {
                         // 一致したものが見つかった
                         MakeUnitBitmapRet = i;
@@ -5460,7 +5460,7 @@ namespace Project1
 
                 // 画像をそのまま使用する場合
                 // 画像の読み込み
-                if (Strings.InStr(fname, @"\Pilot\") > 0 | u.FeatureData(ref "ダミーユニット") == "ユニット画像使用")
+                if (Strings.InStr(fname, @"\Pilot\") > 0 || u.FeatureData(ref "ダミーユニット") == "ユニット画像使用")
                 {
                     ;
                     withBlock.picTmp = Image.FromFile(fname);
@@ -5472,7 +5472,7 @@ namespace Project1
                 }
 
                 // ユニットが自分で発光しているかをあらかじめチェック
-                if (Map.MapDrawMode == "夜" & !Map.MapDrawIsMapOnly & !use_orig_color & u.IsFeatureAvailable(ref "発光"))
+                if (Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !use_orig_color && u.IsFeatureAvailable(ref "発光"))
                 {
                     emit_light = true;
                 }
@@ -5484,7 +5484,7 @@ namespace Project1
                     ;
 
                     // 画像のサイズが正しいかチェック
-                    if (withBlock.picTmp32(0).width != 32 | withBlock.picTmp32(0).Height != 32)
+                    if (withBlock.picTmp32(0).width != 32 || withBlock.picTmp32(0).Height != 32)
                     {
                         {
                             var withBlock1 = withBlock.picTmp32(0);
@@ -5602,7 +5602,7 @@ namespace Project1
                 }
 
                 // 色をステージの状況に合わせて変更
-                if (!use_orig_color & !Map.MapDrawIsMapOnly)
+                if (!use_orig_color && !Map.MapDrawIsMapOnly)
                 {
                     switch (Map.MapDrawMode ?? "")
                     {
@@ -5695,7 +5695,7 @@ namespace Project1
             }
 
             // 画面外？
-            if (u.x < MapX - (MainWidth + 1) / 2 | MapX + (MainWidth + 1) / 2 < u.x | u.y < MapY - (MainHeight + 1) / 2 | MapY + (MainHeight + 1) / 2 < u.y)
+            if (u.x < MapX - (MainWidth + 1) / 2 || MapX + (MainWidth + 1) / 2 < u.x || u.y < MapY - (MainHeight + 1) / 2 || MapY + (MainHeight + 1) / 2 < u.y)
             {
                 return;
             }
@@ -5705,7 +5705,7 @@ namespace Project1
             yy = MapToPixelY(u.y);
             {
                 var withBlock = MainForm;
-                if (smode == "リフレッシュ無し" & ScreenIsSaved)
+                if (smode == "リフレッシュ無し" && ScreenIsSaved)
                 {
                     pic = withBlock.picMain(1);
                     // 表示画像を消去する際に使う描画領域を設定
@@ -5720,7 +5720,7 @@ namespace Project1
                 }
 
                 // ユニット画像の書き込み
-                if (u.Action > 0 | u.IsFeatureAvailable(ref "地形ユニット"))
+                if (u.Action > 0 || u.IsFeatureAvailable(ref "地形ユニット"))
                 {
                     // 通常の表示
                     ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
@@ -5793,7 +5793,7 @@ namespace Project1
             int ret;
 
             // 画面外？
-            if (X < MapX - (MainWidth + 1) / 2 | MapX + (MainWidth + 1) / 2 < X | Y < MapY - (MainHeight + 1) / 2 | MapY + (MainHeight + 1) / 2 < Y)
+            if (X < MapX - (MainWidth + 1) / 2 || MapX + (MainWidth + 1) / 2 < X || Y < MapY - (MainHeight + 1) / 2 || MapY + (MainHeight + 1) / 2 < Y)
             {
                 return;
             }
@@ -6225,7 +6225,7 @@ namespace Project1
                 }
 
                 // 表示位置を設定
-                if (MainForm.Visible & withBlock.HorizontalSize == "S")
+                if (MainForm.Visible && withBlock.HorizontalSize == "S")
                 {
                     withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX(MainForm.Left));
                 }
@@ -6234,7 +6234,7 @@ namespace Project1
                     withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
                 }
 
-                if (MainForm.Visible & !((int)MainForm.WindowState == 1) & withBlock.VerticalSize == "M" & Strings.InStr(lb_mode, "中央表示") == 0)
+                if (MainForm.Visible && !((int)MainForm.WindowState == 1) && withBlock.VerticalSize == "M" && Strings.InStr(lb_mode, "中央表示") == 0)
                 {
                     withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
@@ -6304,7 +6304,7 @@ namespace Project1
                     {
                         Application.DoEvents();
                         // 右ボタンでのダブルクリックの実現
-                        if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                        if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                         {
                             is_rbutton_released = true;
                         }
@@ -6335,7 +6335,7 @@ namespace Project1
                     {
                         Application.DoEvents();
                         // 右ボタンでのダブルクリックの実現
-                        if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                        if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                         {
                             is_rbutton_released = true;
                         }
@@ -6348,7 +6348,7 @@ namespace Project1
                     }
 
                     withBlock.Hide();
-                    if (Strings.InStr(lb_mode, "カーソル移動") > 0 & Strings.InStr(lb_mode, "カーソル移動(行きのみ)") == 0)
+                    if (Strings.InStr(lb_mode, "カーソル移動") > 0 && Strings.InStr(lb_mode, "カーソル移動(行きのみ)") == 0)
                     {
                         if (SRC.AutoMoveCursor)
                         {
@@ -6822,7 +6822,7 @@ namespace Project1
                                     break;
                                 }
                             }
-                            else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+                            else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 && withBlock.Weapon(warray[i - j]).Bullet == 0)
                             {
                                 break;
                             }
@@ -6838,7 +6838,7 @@ namespace Project1
 
             list = new string[1];
             wlist = new short[1];
-            if (lb_mode == "移動前" | lb_mode == "移動後" | lb_mode == "一覧")
+            if (lb_mode == "移動前" || lb_mode == "移動後" || lb_mode == "一覧")
             {
                 // 通常の武器選択時の表示
                 var loopTo4 = u.CountWeapon();
@@ -7011,7 +7011,7 @@ namespace Project1
                     ;
                 }
 
-                if (lb_mode == "移動前" | lb_mode == "移動後")
+                if (lb_mode == "移動前" || lb_mode == "移動後")
                 {
                     if (u.LookForSupportAttack(ref null) is object)
                     {
@@ -7049,7 +7049,7 @@ namespace Project1
                     {
                         Application.DoEvents();
                         // 右ボタンでのダブルクリックの実現
-                        if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                        if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                         {
                             is_rbutton_released = true;
                         }
@@ -7144,7 +7144,7 @@ namespace Project1
                             // ダメージを与えられる
                             ListItemFlag[Information.UBound(list) + 1] = false;
                         }
-                        else if (!withBlock3.IsNormalWeapon(w) & withBlock3.CriticalProbability(w, ref Commands.SelectedUnit) > 0)
+                        else if (!withBlock3.IsNormalWeapon(w) && withBlock3.CriticalProbability(w, ref Commands.SelectedUnit) > 0)
                         {
                             // 特殊効果を与えられる
                             ListItemFlag[Information.UBound(list) + 1] = false;
@@ -7279,12 +7279,12 @@ namespace Project1
                 var withBlock = u;
                 // アビリティが一つしかない場合は自動的にそのアビリティを選択する。
                 // リストボックスの表示は行わない。
-                if (lb_mode != "一覧" & !is_item & MainForm.mnuUnitCommandItem(Commands.AbilityCmdID).Caption != Expression.Term(ref "アビリティ", ref u))
+                if (lb_mode != "一覧" && !is_item && MainForm.mnuUnitCommandItem(Commands.AbilityCmdID).Caption != Expression.Term(ref "アビリティ", ref u))
                 {
                     var loopTo = withBlock.CountAbility();
                     for (i = 1; i <= loopTo; i++)
                     {
-                        if (!withBlock.Ability(i).IsItem() & withBlock.IsAbilityMastered(i))
+                        if (!withBlock.Ability(i).IsItem() && withBlock.IsAbilityMastered(i))
                         {
                             AbilityListBoxRet = i;
                             return AbilityListBoxRet;
@@ -7554,7 +7554,7 @@ namespace Project1
             {
                 Application.DoEvents();
                 // 右ボタンでのダブルクリックの実現
-                if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                 {
                     is_rbutton_released = true;
                 }
@@ -7596,7 +7596,7 @@ namespace Project1
 
                 // 表示位置を設定
                 withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
-                if (MainForm.Visible == true & !((int)MainForm.WindowState == 1))
+                if (MainForm.Visible == true && !((int)MainForm.WindowState == 1))
                 {
                     withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
@@ -7673,7 +7673,7 @@ namespace Project1
 
                 // 表示位置を設定
                 withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
-                if (MainForm.Visible == true & !((int)MainForm.WindowState == 1) & !is_center)
+                if (MainForm.Visible == true && !((int)MainForm.WindowState == 1) && !is_center)
                 {
                     withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height));
                 }
@@ -8842,7 +8842,7 @@ namespace Project1
 
                     default:
                         {
-                            if (Strings.Right(opt, 1) == "%" & Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
+                            if (Strings.Right(opt, 1) == "%" && Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
                             {
                                 trans_par = GeneralLib.MaxDbl(0d, GeneralLib.MinDbl(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
                                 pic_option2 = pic_option2 + " フィルタ透過度=" + opt;
@@ -8913,7 +8913,7 @@ namespace Project1
                 if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 {
                     // オプションも同じ？
-                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] == dw & PicBufDH[i] == dh & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] == dw && PicBufDH[i] == dh && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                     {
                         // 同じファイル、オプションによる画像が見つかった
 
@@ -8925,7 +8925,7 @@ namespace Project1
                             orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock.Width);
                             orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock.Height);
                         }
-                        // Debug.Print "Reuse " & Format$(i) & " As Stretched"
+                        // Debug.Print "Reuse " && Format$(i) && " As Stretched"
                         goto EditedPicture;
                     }
                 }
@@ -8939,7 +8939,7 @@ namespace Project1
                 if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 {
                     // オプションも同じ？
-                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] == Constants.DEFAULT_LEVEL && PicBufDH[i] == Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                     {
                         // 同じファイル、オプションによる画像が見つかった
 
@@ -8951,7 +8951,7 @@ namespace Project1
                             orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock1.Width);
                             orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock1.Height);
                         }
-                        // Debug.Print "Reuse " & Format$(i) & " As Edited"
+                        // Debug.Print "Reuse " && Format$(i) && " As Edited"
                         found_orig = true;
                         goto EditedPicture;
                     }
@@ -8967,7 +8967,7 @@ namespace Project1
                     // 同じファイル？
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
-                        if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] == Constants.DEFAULT_LEVEL && PicBufDH[i] == Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                         {
                             // 以前使用した部分画像をそのまま利用
                             UsePicBuf(i);
@@ -8977,7 +8977,7 @@ namespace Project1
                                 orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock2.Width);
                                 orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock2.Height);
                             }
-                            // Debug.Print "Reuse " & Format$(i) & " As Partial"
+                            // Debug.Print "Reuse " && Format$(i) && " As Partial"
                             goto LoadedOrigPicture;
                         }
                     }
@@ -8991,7 +8991,7 @@ namespace Project1
                 // 同じファイル？
                 if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 {
-                    if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] == Constants.DEFAULT_LEVEL & PicBufDH[i] == Constants.DEFAULT_LEVEL & PicBufSW[i] == 0)
+                    if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] == Constants.DEFAULT_LEVEL && PicBufDH[i] == Constants.DEFAULT_LEVEL && PicBufSW[i] == 0)
                     {
                         // 以前使用した原画像をそのまま利用
                         UsePicBuf(i);
@@ -9001,7 +9001,7 @@ namespace Project1
                             orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock3.Width);
                             orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock3.Height);
                         }
-                        // Debug.Print "Reuse " & Format$(i) & " As Orig"
+                        // Debug.Print "Reuse " && Format$(i) && " As Orig"
                         goto LoadedOrigPicture;
                     }
                 }
@@ -9270,7 +9270,7 @@ namespace Project1
                 }
             }
             // 地形画像検索用の地形画像ディレクトリ名と4桁ファイル名を作成
-            else if (LikeOperator.LikeString(fname, "*#.bmp", CompareMethod.Binary) & LikeOperator.LikeString(Strings.Left(fname, 1), "[a-z]", CompareMethod.Binary))
+            else if (LikeOperator.LikeString(fname, "*#.bmp", CompareMethod.Binary) && LikeOperator.LikeString(Strings.Left(fname, 1), "[a-z]", CompareMethod.Binary))
             {
                 i = (short)(Strings.Len(fname) - 5);
                 while (i > 0)
@@ -9734,7 +9734,7 @@ namespace Project1
             PicBufSW[i] = 0;
             PicBufSH[i] = 0;
             PicBufIsMask[i] = false;
-            // Debug.Print "Use " & Format$(i) & " As Orig"
+            // Debug.Print "Use " && Format$(i) && " As Orig"
 
             Susie.LoadPicture2(ref orig_pic, ref pfname);
 
@@ -9755,7 +9755,7 @@ namespace Project1
             // 原画像の一部のみを描画？
             if (sw != 0)
             {
-                if (sw != orig_width | sh != orig_height)
+                if (sw != orig_width || sh != orig_height)
                 {
                     // 使用するpicBufを選択
                     i = GUI.GetPicBuf(display_byte_pixel * sw * sh);
@@ -9769,7 +9769,7 @@ namespace Project1
                     PicBufSW[i] = (short)sw;
                     PicBufSH[i] = (short)sh;
                     PicBufIsMask[i] = false;
-                    // Debug.Print "Use " & Format$(i) & " As Partial"
+                    // Debug.Print "Use " && Format$(i) && " As Partial"
 
                     // 原画像から描画部分をコピー
                     {
@@ -9800,7 +9800,7 @@ namespace Project1
 
 
             // 原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
-            if (top_part | bottom_part | left_part | right_part | tleft_part | tright_part | bleft_part | bright_part | is_monotone | is_sepia | is_sunset | is_water | negpos | is_sil | vrev | hrev | bright_count > 0 | dark_count > 0 | angle % 360 != 0 | is_colorfilter)
+            if (top_part || bottom_part || left_part || right_part || tleft_part || tright_part || bleft_part || bright_part || is_monotone || is_sepia || is_sunset || is_water || negpos || is_sil || vrev || hrev || bright_count > 0 || dark_count > 0 || angle % 360 != 0 || is_colorfilter)
             {
                 // 使用するpicBufを選択
                 i = GUI.GetPicBuf(display_byte_pixel * orig_width * orig_height);
@@ -9814,7 +9814,7 @@ namespace Project1
                 PicBufSW[i] = (short)sw;
                 PicBufSH[i] = (short)sh;
                 PicBufIsMask[i] = false;
-                // Debug.Print "Use " & Format$(i) & " As Edited"
+                // Debug.Print "Use " && Format$(i) && " As Edited"
 
                 // 画像をコピー
                 {
@@ -9885,7 +9885,7 @@ namespace Project1
             }
 
             // 特殊効果
-            if (is_monotone | is_sepia | is_sunset | is_water | is_colorfilter | bright_count > 0 | dark_count > 0 | negpos | is_sil | vrev | hrev | angle != 0)
+            if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
             {
                 // 画像のサイズをチェック
                 if (orig_width * orig_height % 4 != 0)
@@ -10019,7 +10019,7 @@ namespace Project1
             }
             // ユニット上で画像のセンタリングを行うことを意図している
             // 場合は修正が必要
-            else if (Strings.InStr(fname, "EFFECT_") > 0 | Strings.InStr(fname, @"スペシャルパワー\") > 0 | Strings.InStr(fname, @"精神コマンド\") > 0)
+            else if (Strings.InStr(fname, "EFFECT_") > 0 || Strings.InStr(fname, @"スペシャルパワー\") > 0 || Strings.InStr(fname, @"精神コマンド\") > 0)
             {
                 if (dx == Constants.DEFAULT_LEVEL)
                 {
@@ -10054,7 +10054,7 @@ namespace Project1
             }
 
             // 描画先が画面外の場合や描画サイズが0の場合は画像のロードのみを行う
-            if (dx >= SrcFormatter.PixelsToTwipsX(pic.Width) | dy >= SrcFormatter.PixelsToTwipsY(pic.Height) | dx + dw <= 0 | dy + dh <= 0 | dw <= 0 | dh <= 0)
+            if (dx >= SrcFormatter.PixelsToTwipsX(pic.Width) || dy >= SrcFormatter.PixelsToTwipsY(pic.Height) || dx + dw <= 0 || dy + dh <= 0 || dw <= 0 || dh <= 0)
             {
                 load_only = true;
             }
@@ -10071,7 +10071,7 @@ namespace Project1
             // (8) 拡大画像を作らずにStretchBltで直接拡大透過描画 (拡大処理あり、透過処理あり)
 
             // 画面に描画する
-            if (!transparent & dw == orig_width & dh == orig_height)
+            if (!transparent && dw == orig_width && dh == orig_height)
             {
                 // 原画像をそのまま描画
 
@@ -10085,7 +10085,7 @@ namespace Project1
                 // 画像を描画先に描画
                 ret = BitBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, SRCCOPY);
             }
-            else if (SRC.KeepStretchedImage & !transparent & (!found_orig | load_only) & dw <= 480 & dh <= 480)
+            else if (SRC.KeepStretchedImage && !transparent && (!found_orig || load_only) && dw <= 480 && dh <= 480)
             {
                 // 拡大画像を作成し、バッファリングして描画
 
@@ -10101,7 +10101,7 @@ namespace Project1
                 PicBufSY[i] = (short)sy;
                 PicBufSW[i] = (short)sw;
                 PicBufSH[i] = (short)sh;
-                // Debug.Print "Use " & Format$(i) & " As Stretched"
+                // Debug.Print "Use " && Format$(i) && " As Stretched"
 
                 // バッファの初期化
                 stretched_pic = MainForm.picBuf(i);
@@ -10139,7 +10139,7 @@ namespace Project1
                 // 拡大した画像を描画先に描画
                 ret = StretchBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY);
             }
-            else if (SRC.UseTransparentBlt & (dw != orig_width | dh != orig_height) & found_orig & !load_only & (dw * dh < 40000 | orig_width * orig_height > 40000))
+            else if (SRC.UseTransparentBlt && (dw != orig_width || dh != orig_height) && found_orig && !load_only && (dw * dh < 40000 || orig_width * orig_height > 40000))
             {
                 // TransparentBltの方が高速に描画できる場合に限り
                 // TransparentBltを使って拡大透過描画
@@ -10154,7 +10154,7 @@ namespace Project1
                 // 画像を描画先に透過描画
                 ret = TransparentBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, BGColor);
             }
-            else if (dw == orig_width & dh == orig_height)
+            else if (dw == orig_width && dh == orig_height)
             {
                 // 原画像をそのまま透過描画
 
@@ -10168,12 +10168,12 @@ namespace Project1
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
                         // オプションも同じ？
-                        if (PicBufIsMask[i] & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & PicBufDW[i] == orig_width & PicBufDH[i] == orig_height & PicBufSX[i] == sx & PicBufSX[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (PicBufIsMask[i] && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && PicBufDW[i] == orig_width && PicBufDH[i] == orig_height && PicBufSX[i] == sx && PicBufSX[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                         {
                             // 以前使用したマスク画像をそのまま利用
                             UsePicBuf(i);
                             mask_pic = MainForm.picBuf(i);
-                            // Debug.Print "Reuse " & Format$(i) & " As Mask"
+                            // Debug.Print "Reuse " && Format$(i) && " As Mask"
                             break;
                         }
                     }
@@ -10195,7 +10195,7 @@ namespace Project1
                     PicBufSY[i] = (short)sy;
                     PicBufSW[i] = (short)sw;
                     PicBufSH[i] = (short)sh;
-                    // Debug.Print "Use " & Format$(i) & " As Mask"
+                    // Debug.Print "Use " && Format$(i) && " As Mask"
 
                     // バッファの初期化
                     mask_pic = MainForm.picBuf(i);
@@ -10238,7 +10238,7 @@ namespace Project1
                     ReleasePicBuf(i);
                 }
             }
-            else if (SRC.KeepStretchedImage & (!found_orig | load_only) & dw <= 480 & dh <= 480)
+            else if (SRC.KeepStretchedImage && (!found_orig || load_only) && dw <= 480 && dh <= 480)
             {
                 // 拡大画像を作成し、バッファリングして透過描画
 
@@ -10254,7 +10254,7 @@ namespace Project1
                 PicBufSY[i] = (short)sy;
                 PicBufSW[i] = (short)sw;
                 PicBufSH[i] = (short)sh;
-                // Debug.Print "Use " & Format$(i) & " As Stretched"
+                // Debug.Print "Use " && Format$(i) && " As Stretched"
 
                 // バッファの初期化
                 stretched_pic = MainForm.picBuf(i);
@@ -10278,12 +10278,12 @@ namespace Project1
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
                         // オプションも同じ？
-                        if (PicBufIsMask[i] & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & PicBufDW[i] == dw & PicBufDH[i] == dh & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (PicBufIsMask[i] && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && PicBufDW[i] == dw && PicBufDH[i] == dh && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                         {
                             // 以前使用した拡大マスク画像をそのまま利用
                             UsePicBuf(i);
                             stretched_mask_pic = MainForm.picBuf(i);
-                            // Debug.Print "Reuse " & Format$(i) & " As StretchedMask"
+                            // Debug.Print "Reuse " && Format$(i) && " As StretchedMask"
                             break;
                         }
                     }
@@ -10317,7 +10317,7 @@ namespace Project1
                     PicBufSY[i] = (short)sy;
                     PicBufSW[i] = (short)sw;
                     PicBufSH[i] = (short)sh;
-                    // Debug.Print "Use " & Format$(i) & " As StretchedMask"
+                    // Debug.Print "Use " && Format$(i) && " As StretchedMask"
 
                     // バッファを初期化
                     stretched_mask_pic = MainForm.picBuf(i);
@@ -10360,7 +10360,7 @@ namespace Project1
                     ReleasePicBuf(i);
                 }
             }
-            else if (dw <= 480 & dh <= 480)
+            else if (dw <= 480 && dh <= 480)
             {
                 // 拡大画像を作成した後、バッファリングせずに透過描画
 
@@ -10382,12 +10382,12 @@ namespace Project1
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
                         // オプションも同じ？
-                        if (PicBufIsMask[i] & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & PicBufDW[i] == orig_width & PicBufDH[i] == orig_height & PicBufSX[i] == sx & PicBufSX[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (PicBufIsMask[i] && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && PicBufDW[i] == orig_width && PicBufDH[i] == orig_height && PicBufSX[i] == sx && PicBufSX[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                         {
                             // 以前使用したマスク画像をそのまま利用
                             UsePicBuf(i);
                             mask_pic = MainForm.picBuf(i);
-                            // Debug.Print "Reuse " & Format$(i) & " As Mask"
+                            // Debug.Print "Reuse " && Format$(i) && " As Mask"
                             break;
                         }
                     }
@@ -10409,7 +10409,7 @@ namespace Project1
                     PicBufSY[i] = (short)sy;
                     PicBufSW[i] = (short)sw;
                     PicBufSH[i] = (short)sh;
-                    // Debug.Print "Use " & Format$(i) & " As Mask"
+                    // Debug.Print "Use " && Format$(i) && " As Mask"
 
                     // バッファを初期化
                     mask_pic = MainForm.picBuf(i);
@@ -10485,12 +10485,12 @@ namespace Project1
                     if ((PicBufFname[i] ?? "") == (fname ?? ""))
                     {
                         // オプションも同じ？
-                        if (PicBufIsMask[i] & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & PicBufDW[i] == orig_width & PicBufDH[i] == orig_height & PicBufSX[i] == sx & PicBufSX[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                        if (PicBufIsMask[i] && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && PicBufDW[i] == orig_width && PicBufDH[i] == orig_height && PicBufSX[i] == sx && PicBufSX[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                         {
                             // 以前使用したマスク画像をそのまま利用
                             UsePicBuf(i);
                             mask_pic = MainForm.picBuf(i);
-                            // Debug.Print "Reuse " & Format$(i) & " As Mask"
+                            // Debug.Print "Reuse " && Format$(i) && " As Mask"
                             break;
                         }
                     }
@@ -10512,7 +10512,7 @@ namespace Project1
                     PicBufSY[i] = (short)sy;
                     PicBufSW[i] = (short)sw;
                     PicBufSH[i] = (short)sh;
-                    // Debug.Print "Use " & Format$(i) & " As Mask"
+                    // Debug.Print "Use " && Format$(i) && " As Mask"
 
                     // バッファを初期化
                     mask_pic = MainForm.picBuf(i);
@@ -10574,7 +10574,7 @@ namespace Project1
                     }
                 }
             }
-            else if (!on_msg_window & !on_status_window)
+            else if (!on_msg_window && !on_status_window)
             {
                 // 表示画像を消去する際に使う描画領域を設定
                 PaintedAreaX1 = (short)GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
@@ -10648,7 +10648,7 @@ namespace Project1
             // MaxImageBufferByteSize以下になるまでバッファを開放する。
             // ただし一度の描画で最大で5枚のバッファが使われるため、最新の4つの
             // バッファはキープしておく。
-            while (total_size > SRC.MaxImageBufferByteSize & used_buf_num > 4)
+            while (total_size > SRC.MaxImageBufferByteSize && used_buf_num > 4)
             {
                 // 最も長い間使われていないバッファを探す
                 tmp = 100000000;
@@ -10944,7 +10944,7 @@ namespace Project1
             Font sf;
 
             // 表示位置が画面外？
-            if (X < MapX - MainWidth / 2 | MapX + MainWidth / 2 < X | Y < MapY - MainHeight / 2 | MapY + MainHeight / 2 < Y)
+            if (X < MapX - MainWidth / 2 || MapX + MainWidth / 2 < X || Y < MapY - MainHeight / 2 || MapY + MainHeight / 2 < Y)
             {
                 return;
             }
@@ -11051,7 +11051,7 @@ namespace Project1
             IsCursorVisible = false;
             pawidth = (short)(PaintedAreaX2 - PaintedAreaX1 + 1);
             paheight = (short)(PaintedAreaY2 - PaintedAreaY1 + 1);
-            if (pawidth < 1 | paheight < 1)
+            if (pawidth < 1 || paheight < 1)
             {
                 return;
             }
@@ -11128,7 +11128,7 @@ namespace Project1
             GetCursorPos(ref PT);
 
             // 現在の位置を記録しておく
-            if (PrevCursorX == 0 & cursor_mode != "メッセージウィンドウ")
+            if (PrevCursorX == 0 && cursor_mode != "メッセージウィンドウ")
             {
                 SaveCursorPos();
             }
@@ -11193,7 +11193,7 @@ namespace Project1
                             i = withBlock1.lstItems.Items.Count;
                             do
                             {
-                                if (!ListItemFlag[i] & Strings.InStr(SrcFormatter.GetItemString(withBlock1.lstItems, i), "援護攻撃：") == 0)
+                                if (!ListItemFlag[i] && Strings.InStr(SrcFormatter.GetItemString(withBlock1.lstItems, i), "援護攻撃：") == 0)
                                 {
                                     break;
                                 }
@@ -11289,7 +11289,7 @@ namespace Project1
             }
 
             // 戻るべき位置が設定されていない？
-            if (PrevCursorX == 0 & PrevCursorY == 0)
+            if (PrevCursorX == 0 && PrevCursorY == 0)
             {
                 return;
             }
@@ -11397,14 +11397,14 @@ namespace Project1
 
             // 現在のディスプレイ設定を参照
             ret = GUI.EnumDisplaySettings(ref Constants.vbNullString, (int)ENUM_CURRENT_SETTINGS, ref dm);
-            if (w != 0 & h != 0)
+            if (w != 0 && h != 0)
             {
                 // 画面の解像度を w x h に変更する場合
 
                 // 現在の解像度を記録しておく
                 orig_width = (short)dm.dmPelsWidth;
                 orig_height = (short)dm.dmPelsHeight;
-                if (dm.dmPelsWidth == w & dm.dmPelsHeight == h)
+                if (dm.dmPelsWidth == w && dm.dmPelsHeight == h)
                 {
                     // 既に使用したい解像度になっていればそのまま終了
                     return;
@@ -11418,13 +11418,13 @@ namespace Project1
             {
                 // 画面の解像度を元の解像度に戻す場合
 
-                if (Conversions.ToBoolean(Conversions.ToShort((int)orig_width == 0) & orig_height))
+                if (Conversions.ToBoolean(Conversions.ToShort((int)orig_width == 0) && orig_height))
                 {
                     // 解像度を変更していなければ終了
                     return;
                 }
 
-                if (dm.dmPelsWidth == (int)orig_width & dm.dmPelsHeight == (int)orig_width)
+                if (dm.dmPelsWidth == (int)orig_width && dm.dmPelsHeight == (int)orig_width)
                 {
                     // 解像度が変化していなければそのまま終了
                     return;
@@ -11526,7 +11526,7 @@ namespace Project1
             }
 
             // なにも指定されていない？
-            if (string.IsNullOrEmpty(dname) & string.IsNullOrEmpty(msg))
+            if (string.IsNullOrEmpty(dname) && string.IsNullOrEmpty(msg))
             {
                 err_msg = err_msg + "データが不正です。" + Constants.vbCr + Constants.vbLf;
             }
@@ -11546,7 +11546,7 @@ namespace Project1
             var PT = default(POINTAPI);
 
             // メッセージがウエイト無しならスキップ
-            if (!ignore_message_wait & MessageWait == 0)
+            if (!ignore_message_wait && MessageWait == 0)
             {
                 IsRButtonPressedRet = true;
                 return IsRButtonPressedRet;
@@ -11558,9 +11558,9 @@ namespace Project1
                 GetCursorPos(ref PT);
                 {
                     var withBlock = MainForm;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                     {
-                        if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+                        if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
                         {
                             // 右ボタンでスキップ
                             IsRButtonPressedRet = true;
@@ -11575,9 +11575,9 @@ namespace Project1
                 GetCursorPos(ref PT);
                 {
                     var withBlock1 = My.MyProject.Forms.frmMessage;
-                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X & PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() & (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+                    if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
                     {
-                        if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+                        if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
                         {
                             // 右ボタンでスキップ
                             IsRButtonPressedRet = true;
@@ -11608,7 +11608,7 @@ namespace Project1
                     withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(800d);
                 }
 
-                if (MainForm.Visible == true & !((int)MainForm.WindowState == 1))
+                if (MainForm.Visible == true && !((int)MainForm.WindowState == 1))
                 {
                     withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX((double)MainForm.Left) + (MainForm.picMain(0).width * SrcFormatter.PixelsToTwipsX((double)MainForm.Width) / SrcFormatter.PixelsToTwipsX((double)MainForm.ClientRectangle.Width) - SrcFormatter.PixelsToTwipsX((double)withBlock.Width)) / 2);
                     withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + (long)(SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2L);
@@ -11629,7 +11629,7 @@ namespace Project1
                 withBlock.Refresh();
             }
 
-            if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+            if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
             {
                 Sleep(1000);
             }

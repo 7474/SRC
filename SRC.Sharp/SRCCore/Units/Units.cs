@@ -459,7 +459,7 @@ namespace SRCCore.Units
             //    foreach (Unit currentU4 in colUnits)
             //    {
             //        u = currentU4;
-            //        if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
+            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
             //        {
             //            if (u.IsFeatureAvailable("ノーマルモード"))
             //            {
@@ -511,7 +511,7 @@ namespace SRCCore.Units
 
             //        int localLLength() { object argIndex1 = "分離"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
-            //        if (localLLength() > 3 & !u.IsFeatureAvailable("制限時間"))
+            //        if (localLLength() > 3 && !u.IsFeatureAvailable("制限時間"))
             //        {
             //            goto NextLoop1;
             //        }
@@ -574,7 +574,7 @@ namespace SRCCore.Units
             //    foreach (Unit currentU6 in colUnits)
             //    {
             //        u = currentU6;
-            //        if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
+            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
             //        {
             //            if (u.IsFeatureAvailable("合体"))
             //            {
@@ -599,7 +599,7 @@ namespace SRCCore.Units
 
             //                    {
             //                        var withBlock1 = SRC.UList.Item(uname);
-            //                        if (u.Status == "待機" & withBlock1.CurrentForm().Status == "離脱")
+            //                        if (u.Status == "待機" && withBlock1.CurrentForm().Status == "離脱")
             //                        {
             //                            goto NextLoop2;
             //                        }
@@ -613,7 +613,7 @@ namespace SRCCore.Units
 
             //                        int localLLength1() { string arglist = hs7335ed59602e416aa1b2600f4949cf4c(); var ret = GeneralLib.LLength(arglist); return ret; }
 
-            //                        if (!withBlock1.IsFeatureAvailable("主形態") & localLLength1() == 3)
+            //                        if (!withBlock1.IsFeatureAvailable("主形態") && localLLength1() == 3)
             //                        {
             //                            goto NextLoop2;
             //                        }
@@ -669,7 +669,7 @@ namespace SRCCore.Units
             //    foreach (Unit currentU7 in colUnits)
             //    {
             //        u = currentU7;
-            //        if (u.Party0 == "味方" & u.Status != "他形態" & u.Status != "旧主形態" & u.Status != "旧形態")
+            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
             //        {
             //            if (u.IsFeatureAvailable("変形"))
             //            {

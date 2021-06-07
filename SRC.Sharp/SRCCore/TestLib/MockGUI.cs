@@ -267,11 +267,6 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
-        public int MakeUnitBitmap(Unit u)
-        {
-            throw new NotImplementedException();
-        }
-
         public int MapToPixelX(int X)
         {
             throw new NotImplementedException();

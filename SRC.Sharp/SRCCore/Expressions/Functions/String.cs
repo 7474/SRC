@@ -95,7 +95,7 @@ namespace SRCCore.Expressions.Functions
             var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
             var buf2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
             int i;
-            if (Strings.Len(buf2) > 0 & Strings.Len(buf) >= Strings.Len(buf2))
+            if (Strings.Len(buf2) > 0 && Strings.Len(buf) >= Strings.Len(buf2))
             {
                 int num;
                 if (pcount == 2)

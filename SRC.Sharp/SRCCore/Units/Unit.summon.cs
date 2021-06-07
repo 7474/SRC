@@ -85,7 +85,7 @@ namespace SRCCore.Units
                             }
                         }
                         var lastf = cf.CurrentForm();
-                        if (lastf.Status == "出撃" | lastf.Status == "格納")
+                        if (lastf.Status == "出撃" || lastf.Status == "格納")
                         {
                             lastf.Escape();
                             lastf.Status = "破棄";

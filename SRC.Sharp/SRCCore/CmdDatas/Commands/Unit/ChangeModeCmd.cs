@@ -24,7 +24,7 @@ namespace SRCCore.CmdDatas.Commands
                     break;
 
                 case 3:
-                    if (GetArgAsLong(2) > 0 & GetArgAsLong(3) > 0)
+                    if (GetArgAsLong(2) > 0 && GetArgAsLong(3) > 0)
                     {
                         targetUnits.Add(Event.SelectedUnitForEvent);
                         var dst_x = GetArgAsLong(2);

@@ -144,7 +144,7 @@ namespace SRCCore.Commands
 
                     //        string localLIndex() { string arglist = hs6c18ebb7075745309751cd168b7bf5f0(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                    //        if (localFeature() == "変形ＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+                    //        if (localFeature() == "変形ＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
                     //        {
                     //            string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
 
@@ -300,7 +300,7 @@ namespace SRCCore.Commands
             // ハイパーモードを発動可能かどうかチェック
             {
                 var withBlock1 = SelectedUnit.OtherForm(uname);
-                if (!withBlock1.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) & !string.IsNullOrEmpty(Map.MapFileName))
+                if (!withBlock1.IsAbleToEnter(SelectedUnit.x, SelectedUnit.y) && !string.IsNullOrEmpty(Map.MapFileName))
                 {
                     GUI.Confirm("この地形では変形できません", "", GuiConfirmOption.Ok);
                     GUI.UnlockGUI();
@@ -665,7 +665,7 @@ namespace SRCCore.Commands
             {
                 // ユニットステータスコマンドの時
                 // パーツ合体ならば……
-                if (command.Label == "パーツ合体" & currentUnit.IsFeatureAvailable("パーツ合体"))
+                if (command.Label == "パーツ合体" && currentUnit.IsFeatureAvailable("パーツ合体"))
                 {
                     // パーツ合体を実施
                     currentUnit.Transform(currentUnit.FeatureData("パーツ合体"));
@@ -839,7 +839,7 @@ namespace SRCCore.Commands
             //                var loopTo1 = withBlock1.CountWeapon();
             //                for (j = 1; j <= loopTo1; j++)
             //                {
-            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, "合"))
+            //                    if (withBlock1.IsWeaponMastered(j) && !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) && !withBlock1.IsWeaponClassifiedAs(j, "合"))
             //                    {
             //                        if (withBlock1.WeaponPower(j, "") > max_value)
             //                        {
@@ -857,7 +857,7 @@ namespace SRCCore.Commands
             //                var loopTo2 = withBlock1.CountWeapon();
             //                for (j = 1; j <= loopTo2; j++)
             //                {
-            //                    if (withBlock1.IsWeaponMastered(j) & !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) & !withBlock1.IsWeaponClassifiedAs(j, "合"))
+            //                    if (withBlock1.IsWeaponMastered(j) && !withBlock1.IsDisabled(withBlock1.Weapon(j).Name) && !withBlock1.IsWeaponClassifiedAs(j, "合"))
             //                    {
             //                        if (withBlock1.WeaponMaxRange(j) > max_value)
             //                        {

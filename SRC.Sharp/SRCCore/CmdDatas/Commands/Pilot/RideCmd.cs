@@ -27,7 +27,7 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             {
                                 var withBlock = p.Unit;
-                                if ((withBlock.Name ?? "") == (uname ?? "") | (withBlock.ID ?? "") == (uname ?? ""))
+                                if ((withBlock.Name ?? "") == (uname ?? "") || (withBlock.ID ?? "") == (uname ?? ""))
                                 {
                                     return EventData.NextID;
                                 }
@@ -71,9 +71,9 @@ namespace SRCCore.CmdDatas.Commands
                         // パイロットが足りていないものを優先
                         foreach (Unit u in SRC.UList.Items)
                         {
-                            if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status != "破棄")
+                            if ((u.Name ?? "") == (uname ?? "") && (u.Party0 ?? "") == (p.Party ?? "") && u.Status != "破棄")
                             {
-                                if (p.IsSupport(u) & !u.IsFeatureAvailable("ダミーユニット"))
+                                if (p.IsSupport(u) && !u.IsFeatureAvailable("ダミーユニット"))
                                 {
                                     p.Ride(u.CurrentForm());
                                     return EventData.NextID;
@@ -90,7 +90,7 @@ namespace SRCCore.CmdDatas.Commands
                         // 空きがなければ今までRideコマンドで指定されてないユニットに乗り込む
                         foreach (Unit u in SRC.UList.Items)
                         {
-                            if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status != "破棄")
+                            if ((u.Name ?? "") == (uname ?? "") && (u.Party0 ?? "") == (p.Party ?? "") && u.Status != "破棄")
                             {
                                 if ((int)u.CurrentForm().CountPilot() > 0)
                                 {
@@ -111,7 +111,7 @@ namespace SRCCore.CmdDatas.Commands
                         // それでも見つからなければ無差別で……
                         foreach (Unit u in SRC.UList.Items)
                         {
-                            if ((u.Name ?? "") == (uname ?? "") & (u.Party0 ?? "") == (p.Party ?? "") & u.Status != "破棄")
+                            if ((u.Name ?? "") == (uname ?? "") && (u.Party0 ?? "") == (p.Party ?? "") && u.Status != "破棄")
                             {
                                 if (u.CurrentForm().CountPilot() > 0)
                                 {
@@ -139,7 +139,7 @@ namespace SRCCore.CmdDatas.Commands
 
                         {
                             var withBlock2 = Event.SelectedUnitForEvent;
-                            if (withBlock2.CountPilot() == Math.Abs(withBlock2.Data.PilotNum) & !p.IsSupport(Event.SelectedUnitForEvent))
+                            if (withBlock2.CountPilot() == Math.Abs(withBlock2.Data.PilotNum) && !p.IsSupport(Event.SelectedUnitForEvent))
                             {
                                 withBlock2.Pilots.First().GetOff(true);
                             }

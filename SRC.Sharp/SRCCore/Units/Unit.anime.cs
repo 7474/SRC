@@ -281,7 +281,7 @@ namespace SRCCore.Units
             if (GUI.IsRButtonPressed())
             {
                 // アニメの終了処理はキャンセルしない
-                if (main_situation != "終了" & Strings.Right(main_situation, 4) != "(終了)")
+                if (main_situation != "終了" && Strings.Right(main_situation, 4) != "(終了)")
                 {
                     // 式評価のみ行う
                     Expression.FormatMessage(ref anime);
@@ -319,7 +319,7 @@ namespace SRCCore.Units
             // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             // 自分自身をターゲットに設定する
             // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
-            if (!is_weapon & !is_ability)
+            if (!is_weapon && !is_ability)
             {
                 if (Event.SelectedTargetForEvent is null)
                 {
@@ -612,7 +612,7 @@ namespace SRCCore.Units
                     Event.RestoreBasePoint();
 
                     // 画像を消去しておく
-                    if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
+                    if (GUI.IsPictureDrawn && Strings.LCase(buf) != "keep")
                     {
                         GUI.ClearPicture();
                         GUI.UpdateScreen();
@@ -636,14 +636,14 @@ namespace SRCCore.Units
                 }
 
                 // 画像を消去しておく
-                if (GUI.IsPictureDrawn & string.IsNullOrEmpty(sname) & Strings.InStr(main_situation, "(準備)") == 0 & Strings.LCase(anime) != "keep")
+                if (GUI.IsPictureDrawn && string.IsNullOrEmpty(sname) && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
                 {
                     GUI.ClearPicture();
                     GUI.UpdateScreen();
                 }
 
                 // 最初から表示されていたのでなければメッセージウィンドウを閉じる
-                if (!is_message_form_opened & !keep_message_form)
+                if (!is_message_form_opened && !keep_message_form)
                 {
                     GUI.CloseMessageForm();
                 }

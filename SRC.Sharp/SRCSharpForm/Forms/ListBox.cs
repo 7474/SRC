@@ -309,7 +309,7 @@ namespace SRCSharpForm
                 {
                     Application.DoEvents();
                     //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                     //{
                     //    is_rbutton_released = true;
                     //}
@@ -340,7 +340,7 @@ namespace SRCSharpForm
                 {
                     Application.DoEvents();
                     //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                     //{
                     //    is_rbutton_released = true;
                     //}
@@ -574,7 +574,7 @@ namespace SRCSharpForm
                     // ユニットステータスを表示しているユニットを入れ替え
                     if (GUI.MainFormVisible)
                     {
-                        if (Status.DisplayedUnit is object & Commands.SelectedUnit is object & Commands.SelectedTarget is object)
+                        if (Status.DisplayedUnit is object && Commands.SelectedUnit is object && Commands.SelectedTarget is object)
                         {
                             if ((Status.DisplayedUnit.ID ?? "") == (Commands.SelectedUnit.ID ?? ""))
                             {
@@ -632,7 +632,7 @@ namespace SRCSharpForm
             var itm = lstItems.IndexFromPoint(point);
 
             // カーソル上のアイテムをハイライト表示
-            if (itm < 0 | itm >= lstItems.Items.Count)
+            if (itm < 0 || itm >= lstItems.Items.Count)
             {
                 lstItems.SelectedIndex = -1;
                 return;
@@ -674,7 +674,7 @@ namespace SRCSharpForm
         private void Timer2_Tick(object eventSender, EventArgs eventArgs)
         {
             //            Unit u;
-            //            if (!Visible | !GUI.MainForm.Visible)
+            //            if (!Visible || !GUI.MainForm.Visible)
             //            {
             //                return;
             //            }

@@ -173,7 +173,7 @@ namespace SRCCore.Models
                     throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
                 }
 
-                if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
+                if (Strings.InStr(data_name, "（") > 0 || Strings.InStr(data_name, "）") > 0)
                 {
                     throw reader.InvalidDataException(@"名称に全角括弧は使用出来ません", data_name);
                 }
@@ -372,7 +372,7 @@ namespace SRCCore.Models
                         ret = Strings.InStr(buf, ",");
                         // 「"」が使われているか検索
                         int ret2 = Strings.InStr(buf, "\"");
-                        if (ret2 < ret & ret2 > 0)
+                        if (ret2 < ret && ret2 > 0)
                         {
                             // 「"」が見つかった場合、次の「"」後のコンマを検索
                             bool in_quote = true;
@@ -456,7 +456,7 @@ namespace SRCCore.Models
 
                             if (Strings.InStr(buf2, " ") > 0)
                             {
-                                if (Strings.Left(buf2, 4) != "先手必勝" & Strings.Left(buf2, 6) != "ＳＰ消費減少" & Strings.Left(buf2, 12) != "スペシャルパワー自動発動" & Strings.Left(buf2, 4) != "ハンター" & Strings.InStr(buf2, "=解説 ") == 0)
+                                if (Strings.Left(buf2, 4) != "先手必勝" && Strings.Left(buf2, 6) != "ＳＰ消費減少" && Strings.Left(buf2, 12) != "スペシャルパワー自動発動" && Strings.Left(buf2, 4) != "ハンター" && Strings.InStr(buf2, "=解説 ") == 0)
                                 {
                                     if (string.IsNullOrEmpty(aname))
                                     {
@@ -578,7 +578,7 @@ namespace SRCCore.Models
                         ret = Strings.InStr(buf, ",");
                         // 「"」が使われているか検索
                         int ret2 = Strings.InStr(buf, "\"");
-                        if (ret2 < ret & ret2 > 0)
+                        if (ret2 < ret && ret2 > 0)
                         {
                             // 「"」が見つかった場合、次の「"」後のコンマを検索
                             bool in_quote = true;
@@ -910,7 +910,7 @@ namespace SRCCore.Models
 
                             buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
                             buf = Strings.Mid(line_buf, ret + 1);
-                            if (buf2 != "ＳＰ" & buf2 != "精神")
+                            if (buf2 != "ＳＰ" && buf2 != "精神")
                             {
                                 throw reader.InvalidDataException(@"スペシャルパワーの設定が抜けています。", data_name);
                             }

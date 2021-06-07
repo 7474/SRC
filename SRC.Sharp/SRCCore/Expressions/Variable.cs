@@ -254,7 +254,7 @@ namespace SRCCore.Expressions
             // 左辺値を伴う関数
             // TODO Impl 左辺値を伴う関数
             ret = Strings.InStr(vname, "(");
-            if (ret > 1 & Strings.Right(vname, 1) == ")")
+            if (ret > 1 && Strings.Right(vname, 1) == ")")
             {
                 //    switch (Strings.LCase(Strings.Left(vname, ret - 1)) ?? "")
                 //    {
@@ -331,7 +331,7 @@ namespace SRCCore.Expressions
                 //                        u.EN = GeneralLib.StrToLng(str_value);
                 //                    }
 
-                //                    if (u.EN == 0 & u.Status == "出撃")
+                //                    if (u.EN == 0 && u.Status == "出撃")
                 //                    {
                 //                        GUI.PaintUnitBitmap(u);
                 //                    }

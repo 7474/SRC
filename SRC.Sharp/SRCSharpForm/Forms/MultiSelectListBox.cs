@@ -75,7 +75,7 @@ namespace Project1
             //}
 
             //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //{
             //    if (!cmdFinish.Enabled)
             //    {
@@ -123,7 +123,7 @@ namespace Project1
             //}
 
             //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //{
             //    if (!cmdFinish.Enabled)
             //    {
@@ -303,7 +303,7 @@ namespace Project1
             //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //        {
             //            if (!cmdFinish.Enabled)
             //            {
@@ -328,7 +328,7 @@ namespace Project1
             //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //        {
             //            if (!cmdFinish.Enabled)
             //            {
@@ -374,7 +374,7 @@ namespace Project1
             //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //        {
             //            if (!cmdFinish.Enabled)
             //            {
@@ -399,7 +399,7 @@ namespace Project1
             //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
 
             //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 & SelectedItemNum <= GUI.MaxListItem)
+            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
             //        {
             //            if (!cmdFinish.Enabled)
             //            {
@@ -428,7 +428,7 @@ namespace Project1
             //itm = (short)(itm + lstItems.TopIndex);
 
             //// カーソルがあるアイテムをハイライト表示
-            //if (itm < 0 | itm >= lstItems.Items.Count)
+            //if (itm < 0 || itm >= lstItems.Items.Count)
             //{
             //    lstItems.SelectedIndex = -1;
             //    return;

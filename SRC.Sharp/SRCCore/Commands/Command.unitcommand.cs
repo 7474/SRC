@@ -465,7 +465,7 @@ namespace SRCCore.Commands
                 SelectedUnit = p.Unit;
             }
 
-            if (SelectedUnit.Action > 0 & SelectedUnit.CountPilot() > 0)
+            if (SelectedUnit.Action > 0 && SelectedUnit.CountPilot() > 0)
             {
                 // カーソル自動移動
                 if (SRC.AutoMoveCursor)
@@ -485,7 +485,7 @@ namespace SRCCore.Commands
             GUI.UnlockGUI();
 
             //// ステータスウィンドウの表示内容を更新
-            //if (SelectedUnit.Status == "出撃" & GUI.MainWidth == 15)
+            //if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
             //{
             //    Status.DisplayUnitStatus(SelectedUnit);
             //}

@@ -396,11 +396,6 @@ namespace SRCSharpForm
             return Y / frmMain.MapCellPx + 1 + MapY - (MainHeight + 1) / 2;
         }
 
-        public int MakeUnitBitmap(Unit u)
-        {
-            return -1;
-        }
-
         public void PaintUnitBitmap(Unit u, string smode)
         {
             MainForm.PaintUnitBitmap(u, smode);
@@ -1405,7 +1400,7 @@ namespace SRCSharpForm
             {
                 if (u.Status == "出撃" || u.Status == "格納")
                 {
-                    if (u.Party0 == "味方" | u.Party0 == "ＮＰＣ")
+                    if (u.Party0 == "味方" || u.Party0 == "ＮＰＣ")
                     {
                         num = (num + 1);
                     }

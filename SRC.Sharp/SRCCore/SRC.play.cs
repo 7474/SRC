@@ -157,7 +157,7 @@ namespace SRCCore
 
             // プロローグ
             Stage = "プロローグ";
-            if (!IsSubStage & Event.IsEventDefined("プロローグ", true))
+            if (!IsSubStage && Event.IsEventDefined("プロローグ", true))
             {
                 Sound.StopBGM();
                 Sound.StartBGM(Sound.BGMName("Briefing"), true);
@@ -495,7 +495,7 @@ namespace SRCCore
                 // 味方フェイズのプレイヤーによるユニット操作前の処理
 
                 // ターン数を表示
-                if (Turn > 1 & Expression.IsOptionDefined("デバッグ"))
+                if (Turn > 1 && Expression.IsOptionDefined("デバッグ"))
                 {
                     GUI.DisplayTelop("ターン" + SrcFormatter.Format(Turn));
                 }
@@ -522,7 +522,7 @@ namespace SRCCore
                     max_lv = 0;
                     foreach (Unit cuttentUnit in UList.Items)
                     {
-                        if (cuttentUnit.Party == "味方" & cuttentUnit.Status == "出撃")
+                        if (cuttentUnit.Party == "味方" && cuttentUnit.Status == "出撃")
                         {
                             if (cuttentUnit.MainPilot().Level > max_lv)
                             {
@@ -717,7 +717,7 @@ namespace SRCCore
                         // 接触イベント
                         {
                             var withBlock13 = Commands.SelectedUnit;
-                            if (withBlock13.Status == "出撃" & withBlock13.x > 1)
+                            if (withBlock13.Status == "出撃" && withBlock13.x > 1)
                             {
                                 if (Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y] is object)
                                 {
@@ -733,7 +733,7 @@ namespace SRCCore
 
                         {
                             var withBlock14 = Commands.SelectedUnit;
-                            if (withBlock14.Status == "出撃" & withBlock14.x < Map.MapWidth)
+                            if (withBlock14.Status == "出撃" && withBlock14.x < Map.MapWidth)
                             {
                                 if (Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y] is object)
                                 {
@@ -749,7 +749,7 @@ namespace SRCCore
 
                         {
                             var withBlock15 = Commands.SelectedUnit;
-                            if (withBlock15.Status == "出撃" & withBlock15.y > 1)
+                            if (withBlock15.Status == "出撃" && withBlock15.y > 1)
                             {
                                 if (Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1] is object)
                                 {
@@ -765,7 +765,7 @@ namespace SRCCore
 
                         {
                             var withBlock16 = Commands.SelectedUnit;
-                            if (withBlock16.Status == "出撃" & withBlock16.y < Map.MapHeight)
+                            if (withBlock16.Status == "出撃" && withBlock16.y < Map.MapHeight)
                             {
                                 if (Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1] is object)
                                 {

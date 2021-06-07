@@ -366,7 +366,7 @@ namespace Project1
                     {
                         {
                             var withBlock = MainPilot();
-                            if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 & Strings.InStr(withBlock.Name, "(汎用)") == 0)
+                            if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 && Strings.InStr(withBlock.Name, "(汎用)") == 0)
                             {
                                 NicknameRet = MainPilot().get_Nickname(false);
                                 return default;
@@ -721,7 +721,7 @@ namespace Project1
                 SpeedRet = Speed0;
 
                 // 元々移動力が0の場合は0のまま
-                if (SpeedRet == 0 & !IsFeatureAvailable("テレポート") & !IsFeatureAvailable("ジャンプ"))
+                if (SpeedRet == 0 && !IsFeatureAvailable("テレポート") && !IsFeatureAvailable("ジャンプ"))
                 {
                     return default;
                 }
@@ -1443,7 +1443,7 @@ namespace Project1
                 PartyRet = strParty;
 
                 // 魅了されている場合
-                if (IsConditionSatisfied("魅了") & Master is object)
+                if (IsConditionSatisfied("魅了") && Master is object)
                 {
                     PartyRet = Master.Party;
                     if (PartyRet == "味方")
@@ -1454,7 +1454,7 @@ namespace Project1
                 }
 
                 // 憑依されている場合
-                if (IsConditionSatisfied("憑依") & Master is object)
+                if (IsConditionSatisfied("憑依") && Master is object)
                 {
                     PartyRet = Master.Party;
                 }
@@ -1462,7 +1462,7 @@ namespace Project1
                 // コントロール不能の味方ユニットはＮＰＣとして扱う
                 if (PartyRet == "味方")
                 {
-                    if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("恐怖") | IsConditionSatisfied("踊り") | IsConditionSatisfied("狂戦士"))
+                    if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("恐怖") || IsConditionSatisfied("踊り") || IsConditionSatisfied("狂戦士"))
                     {
                         PartyRet = "ＮＰＣ";
                     }
@@ -1502,7 +1502,7 @@ namespace Project1
                     }
                 }
 
-                if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("憑依") | IsConditionSatisfied("狂戦士"))
+                if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("憑依") || IsConditionSatisfied("狂戦士"))
                 {
                     // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
                     // 常に通常モードとして扱う
@@ -1551,7 +1551,7 @@ namespace Project1
             // 水上移動の場合
             if (area_name == "水上")
             {
-                if (IsFeatureAvailable("水上移動") | IsFeatureAvailable("ホバー移動"))
+                if (IsFeatureAvailable("水上移動") || IsFeatureAvailable("ホバー移動"))
                 {
                     IsTransAvailableRet = true;
                 }
@@ -1717,7 +1717,7 @@ namespace Project1
             {
                 // 別名の指定あり
                 FeatureNameIntRet = GeneralLib.ListIndex(fd.StrData, 1);
-                if (FeatureNameIntRet == "非表示" | FeatureNameIntRet == "解説")
+                if (FeatureNameIntRet == "非表示" || FeatureNameIntRet == "解説")
                 {
                     FeatureNameIntRet = "";
                 }
@@ -2465,7 +2465,7 @@ namespace Project1
                                                 }
                                             }
 
-                                            if (withBlock4.get_AliasLevelIsPlusMod(j) | withBlock4.get_AliasLevelIsMultMod(j))
+                                            if (withBlock4.get_AliasLevelIsPlusMod(j) || withBlock4.get_AliasLevelIsMultMod(j))
                                             {
                                                 sdata2 = GeneralLib.LIndex(sdata2, 1) + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel) + " " + GeneralLib.ListTail(sdata2, 2);
                                                 sdata2 = Strings.Trim(sdata2);
@@ -2673,7 +2673,7 @@ namespace Project1
             }
             // 必要技能＆必要条件付きのパイロット能力付加＆強化がある場合は付加や強化の結果、
             // 必要技能＆必要条件が満たされることがあるので一度だけやり直す
-            if (!flag & found)
+            if (!flag && found)
             {
                 flag = true;
                 goto AddSkills;
@@ -2762,7 +2762,7 @@ namespace Project1
                     {
                         if (Status == "出撃")
                         {
-                            if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+                            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
                             {
                                 GUI.PaintUnitBitmap(this);
                             }
@@ -2776,7 +2776,7 @@ namespace Project1
             {
                 if (Status == "出撃")
                 {
-                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
                     {
                         BitmapID = GUI.MakeUnitBitmap(this);
                         if (IsFeatureAvailable("非表示"))
@@ -2802,7 +2802,7 @@ namespace Project1
             }
 
             // ボスランクによる修正
-            if (IsHero() | Expression.IsOptionDefined("等身大基準"))
+            if (IsHero() || Expression.IsOptionDefined("等身大基準"))
             {
                 switch (BossRank)
                 {
@@ -3290,13 +3290,13 @@ namespace Project1
                                 if (GeneralLib.LIndex(fd.StrData, 5) == "強制")
                                 {
                                     // 強制変更の場合
-                                    if (num >= 0 & num <= 5)
+                                    if (num >= 0 && num <= 5)
                                     {
                                         uadaption[i] = num;
                                     }
                                 }
                                 // 高いほうを優先する場合
-                                else if (num > uadaption[i] & num <= 5)
+                                else if (num > uadaption[i] && num <= 5)
                                 {
                                     uadaption[i] = num;
                                 }
@@ -3351,7 +3351,7 @@ namespace Project1
             }
 
             // 空中に留まることが出来るかチェック
-            if (Status == "出撃" & Area == "空中" & !IsTransAvailable("空"))
+            if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
             {
                 // 地上(水中)に戻す
                 switch (Map.TerrainClass(x, y) ?? "")
@@ -3381,7 +3381,7 @@ namespace Project1
 
                 if (!without_refresh)
                 {
-                    if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
                     {
                         GUI.PaintUnitBitmap(this);
                     }
@@ -3728,7 +3728,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = true;
                                             }
@@ -3738,7 +3738,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -3790,7 +3790,7 @@ namespace Project1
                             }
 
                             // 属性を追加
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 buf = GeneralLib.LIndex(fdata, 1);
                                 if (buf == "非表示")
@@ -3806,12 +3806,12 @@ namespace Project1
                                     for (k = 1; k <= loopTo28; k++)
                                     {
                                         ch = GeneralLib.GetClassBundle(buf, k);
-                                        if (!Information.IsNumeric(ch) & ch != "L" & ch != ".")
+                                        if (!Information.IsNumeric(ch) && ch != "L" && ch != ".")
                                         {
                                             skipped = false;
                                         }
 
-                                        if ((GeneralLib.InStrNotNest(strWeaponClass[i], ch) == 0 | Information.IsNumeric(ch) | ch == "L" | ch == ".") & !skipped)
+                                        if ((GeneralLib.InStrNotNest(strWeaponClass[i], ch) == 0 || Information.IsNumeric(ch) || ch == "L" || ch == ".") && !skipped)
                                         {
                                             if (ch == "魔")
                                             {
@@ -3976,7 +3976,7 @@ namespace Project1
                                 {
                                     // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
                                     // いずれかで行われた場合にのみ強化
-                                    if (wtype == "固" | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                    if (wtype == "固" || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                     {
                                         found = true;
                                     }
@@ -3993,7 +3993,7 @@ namespace Project1
 
                                         case "物":
                                             {
-                                                if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                                if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                                 {
                                                     found = true;
                                                 }
@@ -4003,7 +4003,7 @@ namespace Project1
 
                                         default:
                                             {
-                                                if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                                if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                                 {
                                                     found = true;
                                                 }
@@ -4054,7 +4054,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -4119,7 +4119,7 @@ namespace Project1
                                 {
                                     // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
                                     // いずれかで行われた場合にのみ強化
-                                    if (wtype == "固" | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                    if (wtype == "固" || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                     {
                                         found = true;
                                     }
@@ -4136,7 +4136,7 @@ namespace Project1
 
                                         case "物":
                                             {
-                                                if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                                if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                                 {
                                                     found = true;
                                                 }
@@ -4146,7 +4146,7 @@ namespace Project1
 
                                         default:
                                             {
-                                                if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                                if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                                 {
                                                     found = true;
                                                 }
@@ -4197,7 +4197,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel1() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -4222,7 +4222,7 @@ namespace Project1
                         // レベル設定されている場合、増加量をレベル×１０×ランクにする
                         lngWeaponPower[i] = (lngWeaponPower[i] + 10d * WeaponLevel(i, "Ｒ") * (Rank + num));
                         // オ・シ・超と併用した場合
-                        if (IsWeaponClassifiedAs(i, "オ") | IsWeaponClassifiedAs(i, "超") | IsWeaponClassifiedAs(i, "シ"))
+                        if (IsWeaponClassifiedAs(i, "オ") || IsWeaponClassifiedAs(i, "超") || IsWeaponClassifiedAs(i, "シ"))
                         {
                             lngWeaponPower[i] = (lngWeaponPower[i] + 10d * (10d - WeaponLevel(i, "Ｒ")) * (Rank + num));
 
@@ -4257,7 +4257,7 @@ namespace Project1
                         lngWeaponPower[i] = lngWeaponPower[i] + 50 * (Rank + num);
 
                         // オ・シ・超と併用した場合
-                        if (IsWeaponClassifiedAs(i, "オ") | IsWeaponClassifiedAs(i, "超") | IsWeaponClassifiedAs(i, "シ"))
+                        if (IsWeaponClassifiedAs(i, "オ") || IsWeaponClassifiedAs(i, "超") || IsWeaponClassifiedAs(i, "シ"))
                         {
                             lngWeaponPower[i] = lngWeaponPower[i] + 50 * (Rank + num);
 
@@ -4409,7 +4409,7 @@ namespace Project1
                 }
 
                 // 接近戦武器には適用されない
-                if (GeneralLib.InStrNotNest(strWeaponClass[i], "武") > 0 | GeneralLib.InStrNotNest(strWeaponClass[i], "突") > 0 | GeneralLib.InStrNotNest(strWeaponClass[i], "接") > 0)
+                if (GeneralLib.InStrNotNest(strWeaponClass[i], "武") > 0 || GeneralLib.InStrNotNest(strWeaponClass[i], "突") > 0 || GeneralLib.InStrNotNest(strWeaponClass[i], "接") > 0)
                 {
                     goto NextWeapon2;
                 }
@@ -4480,7 +4480,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = true;
                                             }
@@ -4490,7 +4490,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -4539,7 +4539,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel2() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -4626,7 +4626,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = true;
                                             }
@@ -4636,7 +4636,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -4685,7 +4685,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel3() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -4704,7 +4704,7 @@ namespace Project1
                 intWeaponCritical[i] = Weapon(i).Critical;
 
                 // ＣＴ率強化による修正
-                if (IsFeatureAvailable("ＣＴ率強化") & IsNormalWeapon(i))
+                if (IsFeatureAvailable("ＣＴ率強化") && IsNormalWeapon(i))
                 {
                     {
                         var withBlock22 = Weapon(i);
@@ -4763,7 +4763,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = !with_not;
                                             }
@@ -4773,7 +4773,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -4822,7 +4822,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel4() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -4833,7 +4833,7 @@ namespace Project1
                 }
 
                 // 特殊効果発動率強化による修正
-                if (IsFeatureAvailable("特殊効果発動率強化") & !IsNormalWeapon(i))
+                if (IsFeatureAvailable("特殊効果発動率強化") && !IsNormalWeapon(i))
                 {
                     {
                         var withBlock23 = Weapon(i);
@@ -4892,7 +4892,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = true;
                                             }
@@ -4902,7 +4902,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -4951,7 +4951,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel5() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -5040,7 +5040,7 @@ namespace Project1
 
                                     case "物":
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                            if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                             {
                                                 found = true;
                                             }
@@ -5050,7 +5050,7 @@ namespace Project1
 
                                     default:
                                         {
-                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 | (wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                                            if (GeneralLib.InStrNotNest(wclass, wtype) > 0 || (wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                                             {
                                                 found = true;
                                             }
@@ -5099,7 +5099,7 @@ namespace Project1
                                 }
                             }
 
-                            if (flag | false_count == 0)
+                            if (flag || false_count == 0)
                             {
                                 double localFeatureLevel6() { object argIndex1 = j; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -5134,7 +5134,7 @@ namespace Project1
                 var loopTo56 = Information.UBound(prev_wdata);
                 for (j = 1; j <= loopTo56; j++)
                 {
-                    if (ReferenceEquals(WData[i], prev_wdata[j]) & !flags[j])
+                    if (ReferenceEquals(WData[i], prev_wdata[j]) && !flags[j])
                     {
                         dblBullet[i] = prev_wbullets[j];
                         flags[j] = true;
@@ -5245,7 +5245,7 @@ namespace Project1
                 var loopTo67 = Information.UBound(prev_adata);
                 for (j = 1; j <= loopTo67; j++)
                 {
-                    if (ReferenceEquals(adata[i], prev_adata[j]) & !flags[j])
+                    if (ReferenceEquals(adata[i], prev_adata[j]) && !flags[j])
                     {
                         dblStock[i] = prev_astocks[j];
                         flags[j] = true;
@@ -5326,7 +5326,7 @@ namespace Project1
                 // 封印されている？
                 bool localIsDisabled() { string argfname = GeneralLib.LIndex(fd.StrData, 1); var ret = IsDisabled(argfname); return ret; }
 
-                if (IsDisabled(fd.Name) | localIsDisabled())
+                if (IsDisabled(fd.Name) || localIsDisabled())
                 {
                     goto NextFeature;
                 }
@@ -5419,7 +5419,7 @@ namespace Project1
 
                             bool localIsNecessarySkillSatisfied1() { string argnabilities = Conversions.ToString(withBlock[i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
 
-                            if (!localIsNecessarySkillSatisfied() | !localIsNecessarySkillSatisfied1())
+                            if (!localIsNecessarySkillSatisfied() || !localIsNecessarySkillSatisfied1())
                             {
                                 // 必要技能＆条件を満たしていないので削除
                                 withBlock.Remove(i);
@@ -5982,7 +5982,7 @@ namespace Project1
                         MainPilotRet = pltAdditionalPilot;
                         {
                             var withBlock = pltAdditionalPilot;
-                            if (withBlock.IsAdditionalPilot & !ReferenceEquals(withBlock.Unit, this))
+                            if (withBlock.IsAdditionalPilot && !ReferenceEquals(withBlock.Unit, this))
                             {
                                 withBlock.Unit = this;
                                 withBlock.Party = Party0;
@@ -6024,7 +6024,7 @@ namespace Project1
                                 pltAdditionalPilot = localOtherForm().pltAdditionalPilot;
                                 withBlock1.Party = Party0;
                                 withBlock1.Unit = this;
-                                if (withBlock1.IsAdditionalPilot & !ReferenceEquals(withBlock1.Unit, this))
+                                if (withBlock1.IsAdditionalPilot && !ReferenceEquals(withBlock1.Unit, this))
                                 {
                                     withBlock1.Level = Pilot(1).Level;
                                     withBlock1.Exp = Pilot(1).Exp;
@@ -6067,7 +6067,7 @@ namespace Project1
                 if (SRC.PList.IsDefined(pname))
                 {
                     p = SRC.PList.Item(pname);
-                    if (!p.IsAdditionalPilot | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
+                    if (!p.IsAdditionalPilot || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
                     {
                         pltAdditionalPilot = p;
                         {
@@ -6259,7 +6259,7 @@ namespace Project1
             if (SRC.PList.IsDefined(pname))
             {
                 p = SRC.PList.Item(pname);
-                if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 & Strings.InStr(pname, "(汎用)") == 0)
+                if (!p.IsAdditionalSupport || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
                 {
                     pltAdditionalSupport = p;
                     {
@@ -6587,7 +6587,7 @@ namespace Project1
             }
 
             // オーラ変換器レベルによる制限
-            if (IsFeatureAvailable("オーラ変換器") & !no_limit)
+            if (IsFeatureAvailable("オーラ変換器") && !no_limit)
             {
                 if (IsFeatureLevelSpecified("オーラ変換器"))
                 {
@@ -6635,7 +6635,7 @@ namespace Project1
             }
 
             // サイキックドライブによる制限
-            if (IsFeatureAvailable("サイキックドライブ") & !no_limit)
+            if (IsFeatureAvailable("サイキックドライブ") && !no_limit)
             {
                 if (IsFeatureLevelSpecified("サイキックドライブ"))
                 {
@@ -6658,7 +6658,7 @@ namespace Project1
             SyncLevelRet = MainPilot().SynchroRate();
 
             // シンクロドライブレベルによる制限
-            if (IsFeatureAvailable("シンクロドライブ") & !no_limit)
+            if (IsFeatureAvailable("シンクロドライブ") && !no_limit)
             {
                 if (IsFeatureLevelSpecified("シンクロドライブ"))
                 {
@@ -6681,7 +6681,7 @@ namespace Project1
             PlanaLevelRet = MainPilot().Plana;
 
             // 霊力変換器レベルによる制限
-            if (IsFeatureAvailable("霊力変換器") & !no_limit)
+            if (IsFeatureAvailable("霊力変換器") && !no_limit)
             {
                 if (IsFeatureLevelSpecified("霊力変換器"))
                 {
@@ -6763,7 +6763,7 @@ namespace Project1
         {
             int MaxActionRet = default;
             // ステータス異常？
-            if (IsConditionSatisfied("行動不能") | IsConditionSatisfied("麻痺") | IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("睡眠") | IsConditionSatisfied("チャージ") | IsConditionSatisfied("消耗") | IsUnderSpecialPowerEffect("行動不能"))
+            if (IsConditionSatisfied("行動不能") || IsConditionSatisfied("麻痺") || IsConditionSatisfied("石化") || IsConditionSatisfied("凍結") || IsConditionSatisfied("睡眠") || IsConditionSatisfied("チャージ") || IsConditionSatisfied("消耗") || IsUnderSpecialPowerEffect("行動不能"))
             {
                 return MaxActionRet;
             }
@@ -7107,7 +7107,7 @@ namespace Project1
             }
 
             // メッセージウィンドウが元から表示されていなければ閉じておく
-            if (!is_message_form_visible & My.MyProject.Forms.frmMessage.Visible)
+            if (!is_message_form_visible && My.MyProject.Forms.frmMessage.Visible)
             {
                 GUI.CloseMessageForm();
             }
@@ -7163,7 +7163,7 @@ namespace Project1
             {
                 if ((cnd.Name ?? "") == (cname ?? ""))
                 {
-                    if (cnd.Lifetime < 0 | ltime < 0)
+                    if (cnd.Lifetime < 0 || ltime < 0)
                     {
                         cnd.Lifetime = -1;
                     }
@@ -7197,7 +7197,7 @@ namespace Project1
                 // 特殊能力付加の場合はユニットのステータスをアップデート
                 // UPGRADE_WARNING: オブジェクト colCondition.Item().StrData の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 // UPGRADE_WARNING: オブジェクト colCondition.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Strings.Right(Conversions.ToString(withBlock.Name), 2) == "付加" & Strings.InStr(Conversions.ToString(withBlock.StrData), "パイロット能力付加") == 0)
+                if (Strings.Right(Conversions.ToString(withBlock.Name), 2) == "付加" && Strings.InStr(Conversions.ToString(withBlock.StrData), "パイロット能力付加") == 0)
                 {
                     Update();
                 }
@@ -7348,7 +7348,7 @@ namespace Project1
                         default:
                             {
                                 // 特殊能力付加を解除
-                                if (Strings.Right(cnd.Name, 2) == "付加" | Strings.Right(cnd.Name, 2) == "強化")
+                                if (Strings.Right(cnd.Name, 2) == "付加" || Strings.Right(cnd.Name, 2) == "強化")
                                 {
                                     update_is_necessary = true;
                                 }
@@ -7722,7 +7722,7 @@ namespace Project1
             }
 
             // ユニットの地形適応値の計算に使用する適応値を決定
-            if (!IsWeaponClassifiedAs(w, "武") & !IsWeaponClassifiedAs(w, "突") & !IsWeaponClassifiedAs(w, "接"))
+            if (!IsWeaponClassifiedAs(w, "武") && !IsWeaponClassifiedAs(w, "突") && !IsWeaponClassifiedAs(w, "接"))
             {
                 // 格闘戦以外の場合はユニットがいる地形を参照
                 switch (Area ?? "")
@@ -7828,7 +7828,7 @@ namespace Project1
                     case "宇宙":
                         {
                             uad = get_Adaption(4);
-                            if (Area == "地上" & Map.TerrainClass(x, y) == "月面")
+                            if (Area == "地上" && Map.TerrainClass(x, y) == "月面")
                             {
                                 // 月面からのジャンプ攻撃
                                 if (IsWeaponClassifiedAs(w, "Ｊ"))
@@ -8071,7 +8071,7 @@ namespace Project1
             }
 
             // 接近戦武器には適用されない
-            if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+            if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
             {
                 return WeaponMaxRangeRet;
             }
@@ -8381,7 +8381,7 @@ namespace Project1
 
                 case "移動後攻撃可":
                     {
-                        if (IsUnderSpecialPowerEffect("全武器移動後使用可能") & GeneralLib.InStrNotNest(wclass, "Ｍ") == 0 & GeneralLib.InStrNotNest(wclass, "Ｑ") == 0)
+                        if (IsUnderSpecialPowerEffect("全武器移動後使用可能") && GeneralLib.InStrNotNest(wclass, "Ｍ") == 0 && GeneralLib.InStrNotNest(wclass, "Ｑ") == 0)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
@@ -8663,7 +8663,7 @@ namespace Project1
             }
 
             // ステータス表示では必要技能だけ満たしていればＯＫ
-            if (ref_mode == "インターミッション" | string.IsNullOrEmpty(ref_mode))
+            if (ref_mode == "インターミッション" || string.IsNullOrEmpty(ref_mode))
             {
                 IsWeaponAvailableRet = true;
                 return IsWeaponAvailableRet;
@@ -8841,7 +8841,7 @@ namespace Project1
             // 術および音は沈黙状態では使用不能
             if (IsConditionSatisfied("沈黙"))
             {
-                if (IsSpellWeapon(w) | GeneralLib.InStrNotNest(wclass, "音") > 0)
+                if (IsSpellWeapon(w) || GeneralLib.InStrNotNest(wclass, "音") > 0)
                 {
                     return IsWeaponAvailableRet;
                 }
@@ -8870,7 +8870,7 @@ namespace Project1
 
                         string localLIndex1() { string arglist = hs333745e4b9954fad9f002aac9fe60516(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature() == "変形技" & (localLIndex1() ?? "") == (wd.Name ?? ""))
+                        if (localFeature() == "変形技" && (localLIndex1() ?? "") == (wd.Name ?? ""))
                         {
                             string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -8959,7 +8959,7 @@ namespace Project1
             }
 
             // 能力コピー
-            if (GeneralLib.InStrNotNest(wclass, "写") > 0 | GeneralLib.InStrNotNest(wclass, "化") > 0)
+            if (GeneralLib.InStrNotNest(wclass, "写") > 0 || GeneralLib.InStrNotNest(wclass, "化") > 0)
             {
                 if (IsFeatureAvailable("ノーマルモード"))
                 {
@@ -9001,7 +9001,7 @@ namespace Project1
             if ((Party ?? "") != (SRC.Stage ?? ""))
             {
                 // 反撃ではマップ攻撃、合体技は使用できない
-                if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0 | GeneralLib.InStrNotNest(wclass, "合") > 0)
+                if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0 || GeneralLib.InStrNotNest(wclass, "合") > 0)
                 {
                     return IsWeaponAvailableRet;
                 }
@@ -9037,14 +9037,14 @@ namespace Project1
             }
 
             // 移動前か後か……
-            if (ref_mode == "移動前" | ref_mode == "必要技能無視" | !ReferenceEquals(Commands.SelectedUnit, this))
+            if (ref_mode == "移動前" || ref_mode == "必要技能無視" || !ReferenceEquals(Commands.SelectedUnit, this))
             {
                 IsWeaponAvailableRet = true;
                 return IsWeaponAvailableRet;
             }
 
             // 移動後の場合
-            if (IsUnderSpecialPowerEffect("全武器移動後使用可能") & !(GeneralLib.InStrNotNest(wclass, "Ｍ") > 0))
+            if (IsUnderSpecialPowerEffect("全武器移動後使用可能") && !(GeneralLib.InStrNotNest(wclass, "Ｍ") > 0))
             {
                 IsWeaponAvailableRet = true;
             }
@@ -9107,7 +9107,7 @@ namespace Project1
 
             // 扇型マップ攻撃は特殊なので判定ができない
             // 移動型マップ攻撃は移動手段として使うことを考慮
-            if (IsWeaponClassifiedAs(w, "Ｍ扇") | IsWeaponClassifiedAs(w, "Ｍ移"))
+            if (IsWeaponClassifiedAs(w, "Ｍ扇") || IsWeaponClassifiedAs(w, "Ｍ移"))
             {
                 IsWeaponUsefulRet = true;
                 return IsWeaponUsefulRet;
@@ -9144,7 +9144,7 @@ namespace Project1
                                         case "ＮＰＣ":
                                             {
                                                 // ステータス異常の場合は味方ユニットでも排除可能
-                                                if (!withBlock.IsConditionSatisfied("暴走") & !withBlock.IsConditionSatisfied("混乱") & !withBlock.IsConditionSatisfied("魅了") & !withBlock.IsConditionSatisfied("憑依") & !withBlock.IsConditionSatisfied("睡眠"))
+                                                if (!withBlock.IsConditionSatisfied("暴走") && !withBlock.IsConditionSatisfied("混乱") && !withBlock.IsConditionSatisfied("魅了") && !withBlock.IsConditionSatisfied("憑依") && !withBlock.IsConditionSatisfied("睡眠"))
                                                 {
                                                     goto NextUnit;
                                                 }
@@ -9161,7 +9161,7 @@ namespace Project1
                                     if ((Party ?? "") == (withBlock.Party ?? ""))
                                     {
                                         // ステータス異常の場合は味方ユニットでも排除可能
-                                        if (!withBlock.IsConditionSatisfied("暴走") & !withBlock.IsConditionSatisfied("混乱") & !withBlock.IsConditionSatisfied("魅了") & !withBlock.IsConditionSatisfied("憑依"))
+                                        if (!withBlock.IsConditionSatisfied("暴走") && !withBlock.IsConditionSatisfied("混乱") && !withBlock.IsConditionSatisfied("魅了") && !withBlock.IsConditionSatisfied("憑依"))
                                         {
                                             goto NextUnit;
                                         }
@@ -9241,7 +9241,7 @@ namespace Project1
                     lv = 3;
                 }
 
-                if (!t.IsConditionSatisfied("ステルス無効") & !IsFeatureAvailable("ステルス無効化") & distance > lv)
+                if (!t.IsConditionSatisfied("ステルス無効") && !IsFeatureAvailable("ステルス無効化") && distance > lv)
                 {
                     IsTargetWithinRangeRet = false;
                     return IsTargetWithinRangeRet;
@@ -9266,7 +9266,7 @@ namespace Project1
             }
 
             // 合体技で射程が１の場合は相手を囲んでいる必要がある
-            if (IsWeaponClassifiedAs(w, "合") & !IsWeaponClassifiedAs(w, "Ｍ") & max_range == 1)
+            if (IsWeaponClassifiedAs(w, "合") && !IsWeaponClassifiedAs(w, "Ｍ") && max_range == 1)
             {
                 CombinationPartner("武装", w, partners, t.x, t.y);
                 if (Information.UBound(partners) == 0)
@@ -9307,7 +9307,7 @@ namespace Project1
             min_range = Weapon(w).MinRange;
             max_range = WeaponMaxRange(w);
             // 敵がステルスの場合
-            if (t.IsFeatureAvailable("ステルス") & !t.IsConditionSatisfied("ステルス無効") & !IsFeatureAvailable("ステルス無効化"))
+            if (t.IsFeatureAvailable("ステルス") && !t.IsConditionSatisfied("ステルス無効") && !IsFeatureAvailable("ステルス無効化"))
             {
                 if (t.IsFeatureLevelSpecified("ステルス"))
                 {
@@ -9320,11 +9320,11 @@ namespace Project1
             }
 
             // 隣接していれば必ず届く
-            if (min_range == 1 & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+            if (min_range == 1 && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
             {
                 // ただし合体技の場合は例外……
                 // 合体技で射程が１の場合は相手を囲んでいる必要がある
-                if (IsWeaponClassifiedAs(w, "合") & !IsWeaponClassifiedAs(w, "Ｍ") & WeaponMaxRange(w) == 1)
+                if (IsWeaponClassifiedAs(w, "合") && !IsWeaponClassifiedAs(w, "Ｍ") && WeaponMaxRange(w) == 1)
                 {
                     CombinationPartner("武装", w, partners, t.x, t.y);
                     if (Information.UBound(partners) == 0)
@@ -9394,7 +9394,7 @@ namespace Project1
             mpskill = MainPilot().TacticalTechnique();
 
             // スペシャルパワーによる影響
-            if (is_true_value | mpskill >= 160)
+            if (is_true_value || mpskill >= 160)
             {
                 if (t.IsUnderSpecialPowerEffect("絶対回避"))
                 {
@@ -9459,7 +9459,7 @@ namespace Project1
             {
                 var withBlock2 = t;
                 // 地形修正
-                if (withBlock2.Area != "空中" & (withBlock2.Area != "宇宙" | Map.TerrainClass(withBlock2.x, withBlock2.y) != "月面"))
+                if (withBlock2.Area != "空中" && (withBlock2.Area != "宇宙" || Map.TerrainClass(withBlock2.x, withBlock2.y) != "月面"))
                 {
                     // 地形修正を一時保存
                     ed_aradap = ed_aradap * (100 - Map.TerrainEffectForHit(withBlock2.x, withBlock2.y)) / 100d;
@@ -9470,7 +9470,7 @@ namespace Project1
                 {
 
                     // 接近戦攻撃の場合はターゲット側の地形を参照
-                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                     {
                         tarea = withBlock2.Area;
                         tx = withBlock2.x;
@@ -9489,9 +9489,9 @@ namespace Project1
                             {
                                 uadaption = get_AdaptionMod(1, 0);
                                 // ジャンプ攻撃の場合はＪ属性による修正を加える
-                                if ((withBlock2.Area == "空中" | withBlock2.Area == "宇宙") & Area != "空中" & Area != "宇宙" & !IsTransAvailable("空"))
+                                if ((withBlock2.Area == "空中" || withBlock2.Area == "宇宙") && Area != "空中" && Area != "宇宙" && !IsTransAvailable("空"))
                                 {
-                                    if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "武") | GeneralLib.InStrNotNest(wclass, "突") | GeneralLib.InStrNotNest(wclass, "接")))
+                                    if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "武") || GeneralLib.InStrNotNest(wclass, "突") || GeneralLib.InStrNotNest(wclass, "接")))
                                     {
                                         uadaption = get_AdaptionMod(1, WeaponLevel(w, "Ｊ"));
                                     }
@@ -9605,7 +9605,7 @@ namespace Project1
             }
 
             // 不意打ち
-            if (IsFeatureAvailable("ステルス") & !IsConditionSatisfied("ステルス無効") & !t.IsFeatureAvailable("ステルス無効化"))
+            if (IsFeatureAvailable("ステルス") && !IsConditionSatisfied("ステルス無効") && !t.IsFeatureAvailable("ステルス無効化"))
             {
                 prob = prob + 20;
             }
@@ -9650,12 +9650,12 @@ namespace Project1
                     }
                 }
 
-                if (GeneralLib.InStrNotNest(wclass, "サ") == 0 & GeneralLib.InStrNotNest(wclass, "有") == 0 & GeneralLib.InStrNotNest(wclass, "誘") == 0 & GeneralLib.InStrNotNest(wclass, "追") == 0 & GeneralLib.InStrNotNest(wclass, "武") == 0 & GeneralLib.InStrNotNest(wclass, "突") == 0 & GeneralLib.InStrNotNest(wclass, "接") == 0)
+                if (GeneralLib.InStrNotNest(wclass, "サ") == 0 && GeneralLib.InStrNotNest(wclass, "有") == 0 && GeneralLib.InStrNotNest(wclass, "誘") == 0 && GeneralLib.InStrNotNest(wclass, "追") == 0 && GeneralLib.InStrNotNest(wclass, "武") == 0 && GeneralLib.InStrNotNest(wclass, "突") == 0 && GeneralLib.InStrNotNest(wclass, "接") == 0)
                 {
                     // 距離修正
                     if (Expression.IsOptionDefined("距離修正"))
                     {
-                        if (GeneralLib.InStrNotNest(wclass, "Ｈ") == 0 & GeneralLib.InStrNotNest(wclass, "Ｍ") == 0)
+                        if (GeneralLib.InStrNotNest(wclass, "Ｈ") == 0 && GeneralLib.InStrNotNest(wclass, "Ｍ") == 0)
                         {
                             if (Expression.IsOptionDefined("大型マップ"))
                             {
@@ -9813,7 +9813,7 @@ namespace Project1
                 }
 
                 // ステルスによる補正
-                if (withBlock3.IsFeatureAvailable("ステルス") & !IsFeatureAvailable("ステルス無効化"))
+                if (withBlock3.IsFeatureAvailable("ステルス") && !IsFeatureAvailable("ステルス無効化"))
                 {
                     if (withBlock3.IsFeatureLevelSpecified("ステルス"))
                     {
@@ -9829,9 +9829,9 @@ namespace Project1
                 }
 
                 // 地上から空中の敵に攻撃する
-                if ((withBlock3.Area == "空中" | withBlock3.Area == "宇宙") & Area != "空中" & Area != "宇宙")
+                if ((withBlock3.Area == "空中" || withBlock3.Area == "宇宙") && Area != "空中" && Area != "宇宙")
                 {
-                    if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "武") | GeneralLib.InStrNotNest(wclass, "突") | GeneralLib.InStrNotNest(wclass, "接")))
+                    if (Conversions.ToBoolean(GeneralLib.InStrNotNest(wclass, "武") || GeneralLib.InStrNotNest(wclass, "突") || GeneralLib.InStrNotNest(wclass, "接")))
                     {
                         // ジャンプ攻撃
                         if (!Expression.IsOptionDefined("地形適応命中率修正"))
@@ -9909,7 +9909,7 @@ namespace Project1
                             // 発動可能？
                             bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = withBlock3.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                            if (withBlock3.MainPilot().Morale >= nmorale & localIsAttributeClassified())
+                            if (withBlock3.MainPilot().Morale >= nmorale && localIsAttributeClassified())
                             {
                                 // 攻撃回避発動
                                 prob_mod = prob_mod + flevel;
@@ -9921,14 +9921,14 @@ namespace Project1
                 }
 
                 // 動けなければ絶対に命中
-                if (withBlock3.IsConditionSatisfied("行動不能") | withBlock3.IsConditionSatisfied("麻痺") | withBlock3.IsConditionSatisfied("睡眠") | withBlock3.IsConditionSatisfied("石化") | withBlock3.IsConditionSatisfied("凍結") | withBlock3.IsUnderSpecialPowerEffect("行動不能"))
+                if (withBlock3.IsConditionSatisfied("行動不能") || withBlock3.IsConditionSatisfied("麻痺") || withBlock3.IsConditionSatisfied("睡眠") || withBlock3.IsConditionSatisfied("石化") || withBlock3.IsConditionSatisfied("凍結") || withBlock3.IsUnderSpecialPowerEffect("行動不能"))
                 {
                     HitProbabilityRet = 1000;
                     return HitProbabilityRet;
                 }
 
                 // ステータス異常による修正
-                if (GeneralLib.InStrNotNest(wclass, "Ｈ") == 0 & GeneralLib.InStrNotNest(wclass, "追") == 0)
+                if (GeneralLib.InStrNotNest(wclass, "Ｈ") == 0 && GeneralLib.InStrNotNest(wclass, "追") == 0)
                 {
                     if (IsConditionSatisfied("撹乱"))
                     {
@@ -10004,7 +10004,7 @@ namespace Project1
                 }
 
                 // スペシャルパワー及び特殊状態による補正
-                if (is_true_value | mpskill >= 160)
+                if (is_true_value || mpskill >= 160)
                 {
                     if (IsUnderSpecialPowerEffect("命中強化"))
                     {
@@ -10120,7 +10120,7 @@ namespace Project1
                 goto SkipArmor;
             }
             // ザコはアーマーを考慮しない
-            if (!is_true_value & mpskill < 150)
+            if (!is_true_value && mpskill < 150)
             {
                 goto SkipArmor;
             }
@@ -10295,7 +10295,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                    if (t.MainPilot().Morale >= nmorale & localIsAttributeClassified() & !neautralize)
+                    if (t.MainPilot().Morale >= nmorale && localIsAttributeClassified() && !neautralize)
                     {
                         // アーマー発動
                         arm_mod = (arm_mod + 100d * flevel + slevel);
@@ -10417,7 +10417,7 @@ namespace Project1
                 arm = 0;
             }
 
-            if (is_true_value | mpskill >= 160)
+            if (is_true_value || mpskill >= 160)
             {
                 // スペシャルパワーによる修正
                 // 装甲強化
@@ -10464,7 +10464,7 @@ namespace Project1
                 }
             }
 
-            if (is_true_value | mpskill >= 140)
+            if (is_true_value || mpskill >= 140)
             {
                 // 弱点
                 if (t.Weakness(wclass))
@@ -10472,7 +10472,7 @@ namespace Project1
                     arm = arm / 2;
                 }
                 // 吸収する場合は装甲を無視して判定
-                else if (!t.Effective(wclass) & t.Absorb(wclass))
+                else if (!t.Effective(wclass) && t.Absorb(wclass))
                 {
                     arm = 0;
                 }
@@ -10609,7 +10609,7 @@ namespace Project1
             // 距離修正
             if (Expression.IsOptionDefined("距離修正"))
             {
-                if (GeneralLib.InStrNotNest(wclass, "実") == 0 & GeneralLib.InStrNotNest(wclass, "武") == 0 & GeneralLib.InStrNotNest(wclass, "突") == 0 & GeneralLib.InStrNotNest(wclass, "接") == 0 & GeneralLib.InStrNotNest(wclass, "爆") == 0)
+                if (GeneralLib.InStrNotNest(wclass, "実") == 0 && GeneralLib.InStrNotNest(wclass, "武") == 0 && GeneralLib.InStrNotNest(wclass, "突") == 0 && GeneralLib.InStrNotNest(wclass, "接") == 0 && GeneralLib.InStrNotNest(wclass, "爆") == 0)
                 {
                     if (Expression.IsOptionDefined("大型マップ"))
                     {
@@ -10744,7 +10744,7 @@ namespace Project1
                 {
                     // 属性をひとまとめずつ取得
                     ch = GeneralLib.GetClassBundle(buf, i);
-                    if (ch != "物" & ch != "魔")
+                    if (ch != "物" && ch != "魔")
                     {
                         if (GeneralLib.InStrNotNest(wclass, ch) > 0)
                         {
@@ -10770,7 +10770,7 @@ namespace Project1
                 {
                     // 属性をひとまとめずつ取得
                     ch = GeneralLib.GetClassBundle(buf, i);
-                    if (ch != "物" & ch != "魔")
+                    if (ch != "物" && ch != "魔")
                     {
                         if (GeneralLib.InStrNotNest(wclass, ch) > idx)
                         {
@@ -10797,10 +10797,10 @@ namespace Project1
                 }
             }
 
-            if (is_true_value | mpskill >= 140)
+            if (is_true_value || mpskill >= 140)
             {
                 // 弱点、有効、吸収を優先
-                if (!t.Weakness(wclass) & !t.Effective(wclass) & !t.Absorb(wclass))
+                if (!t.Weakness(wclass) && !t.Effective(wclass) && !t.Absorb(wclass))
                 {
                     // 無効化
                     if (t.Immune(wclass))
@@ -10817,7 +10817,7 @@ namespace Project1
             }
 
             // 盲目状態には視覚攻撃は効かない
-            if (is_true_value | mpskill >= 140)
+            if (is_true_value || mpskill >= 140)
             {
                 if (GeneralLib.InStrNotNest(wclass, "視") > 0)
                 {
@@ -10830,7 +10830,7 @@ namespace Project1
             }
 
             // 機械には精神攻撃は効かない
-            if (is_true_value | mpskill >= 140)
+            if (is_true_value || mpskill >= 140)
             {
                 if (GeneralLib.InStrNotNest(wclass, "精") > 0)
                 {
@@ -10943,7 +10943,7 @@ namespace Project1
                         for (j = 2; j <= loopTo7; j++)
                         {
                             tname = GeneralLib.LIndex(sdata, j);
-                            if ((t.Name ?? "") == (tname ?? "") | (t.Class0 ?? "") == (tname ?? "") | (t.Size + "サイズ" ?? "") == (tname ?? "") | (t.MainPilot().Name ?? "") == (tname ?? "") | (t.MainPilot().Sex ?? "") == (tname ?? ""))
+                            if ((t.Name ?? "") == (tname ?? "") || (t.Class0 ?? "") == (tname ?? "") || (t.Size + "サイズ" ?? "") == (tname ?? "") || (t.MainPilot().Name ?? "") == (tname ?? "") || (t.MainPilot().Sex ?? "") == (tname ?? ""))
                             {
                                 break;
                             }
@@ -10959,14 +10959,14 @@ namespace Project1
                     }
                 }
 
-                if (IsConditionSatisfied("ハンター付加") | IsConditionSatisfied("ハンター付加２"))
+                if (IsConditionSatisfied("ハンター付加") || IsConditionSatisfied("ハンター付加２"))
                 {
                     sdata = MainPilot().SkillData("ハンター");
                     var loopTo8 = GeneralLib.LLength(sdata);
                     for (i = 2; i <= loopTo8; i++)
                     {
                         tname = GeneralLib.LIndex(sdata, i);
-                        if ((t.Name ?? "") == (tname ?? "") | (t.Class0 ?? "") == (tname ?? "") | (t.Size + "サイズ" ?? "") == (tname ?? "") | (t.MainPilot().Name ?? "") == (tname ?? "") | (t.MainPilot().Sex ?? "") == (tname ?? ""))
+                        if ((t.Name ?? "") == (tname ?? "") || (t.Class0 ?? "") == (tname ?? "") || (t.Size + "サイズ" ?? "") == (tname ?? "") || (t.MainPilot().Name ?? "") == (tname ?? "") || (t.MainPilot().Sex ?? "") == (tname ?? ""))
                         {
                             break;
                         }
@@ -10981,7 +10981,7 @@ namespace Project1
 
             // スペシャルパワー、特殊状態によるダメージ増加
             dmg_mod = 1d;
-            if (IsConditionSatisfied("攻撃力ＵＰ") | IsConditionSatisfied("狂戦士"))
+            if (IsConditionSatisfied("攻撃力ＵＰ") || IsConditionSatisfied("狂戦士"))
             {
                 if (Expression.IsOptionDefined("ダメージ倍率低下"))
                 {
@@ -10995,7 +10995,7 @@ namespace Project1
             // サポートアタックの場合はスペシャルパワーによる修正が無い
             if (!is_support_attack)
             {
-                if (is_true_value | mpskill >= 160)
+                if (is_true_value || mpskill >= 160)
                 {
                     // スペシャルパワーによるダメージ増加は特殊状態による増加と重複しない
                     dmg_mod = GeneralLib.MaxDbl(dmg_mod, 1d + 0.1d * SpecialPowerEffectLevel("ダメージ増加"));
@@ -11006,7 +11006,7 @@ namespace Project1
             DamageRet = (dmg_mod * DamageRet);
 
             // スペシャルパワー、特殊状態、サポートアタックによるダメージ低下
-            if (is_true_value | mpskill >= 160)
+            if (is_true_value || mpskill >= 160)
             {
                 dmg_mod = 1d;
                 dmg_mod = dmg_mod - 0.1d * SpecialPowerEffectLevel("ダメージ低下");
@@ -11040,7 +11040,7 @@ namespace Project1
                 goto SkipResist;
             }
             // ザコはレジストを考慮しない
-            if (!is_true_value & mpskill < 150)
+            if (!is_true_value && mpskill < 150)
             {
                 goto SkipResist;
             }
@@ -11214,7 +11214,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                    if (t.MainPilot().Morale >= nmorale & localIsAttributeClassified1() & !neautralize)
+                    if (t.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && !neautralize)
                     {
                         // レジスト発動
                         dmg_mod = dmg_mod + 10d * flevel + slevel;
@@ -11261,13 +11261,13 @@ namespace Project1
             }
 
             // ダメージを吸収する場合は最後に反転
-            if (is_true_value | mpskill >= 140)
+            if (is_true_value || mpskill >= 140)
             {
                 // 弱点、有効を優先
-                if (!t.Weakness(wclass) & !t.Effective(wclass))
+                if (!t.Weakness(wclass) && !t.Effective(wclass))
                 {
                     // 吸収
-                    if (DamageRet > 0 & t.Absorb(wclass))
+                    if (DamageRet > 0 && t.Absorb(wclass))
                     {
                         DamageRet = -DamageRet / 2;
                     }
@@ -11292,7 +11292,7 @@ namespace Project1
                 // 通常攻撃
 
                 // スペシャルパワーとの効果の重ね合わせが禁止されている場合
-                if (Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効") | Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効"1))
+                if (Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効") || Expression.IsOptionDefined("スペシャルパワー使用時クリティカル無効"1))
                 {
                     if (IsUnderSpecialPowerEffect("ダメージ増加"))
                     {
@@ -11369,7 +11369,7 @@ namespace Project1
                 // 底力、超底力、覚悟による修正
                 if (HP <= MaxHP / 4)
                 {
-                    if (MainPilot().IsSkillAvailable("底力") | MainPilot().IsSkillAvailable("超底力") | MainPilot().IsSkillAvailable("覚悟"))
+                    if (MainPilot().IsSkillAvailable("底力") || MainPilot().IsSkillAvailable("超底力") || MainPilot().IsSkillAvailable("覚悟"))
                     {
                         prob = (prob + 50);
                     }
@@ -11458,13 +11458,13 @@ namespace Project1
             }
 
             // 不意打ち
-            if (IsFeatureAvailable("ステルス") & !IsConditionSatisfied("ステルス無効") & !t.IsFeatureAvailable("ステルス無効化") & IsWeaponClassifiedAs(w, "忍"))
+            if (IsFeatureAvailable("ステルス") && !IsConditionSatisfied("ステルス無効") && !t.IsFeatureAvailable("ステルス無効化") && IsWeaponClassifiedAs(w, "忍"))
             {
                 prob = (prob + 10);
             }
 
             // 相手が動けなければ確率アップ
-            if (t.IsConditionSatisfied("行動不能") | t.IsConditionSatisfied("石化") | t.IsConditionSatisfied("凍結") | t.IsConditionSatisfied("麻痺") | t.IsConditionSatisfied("睡眠") | t.IsUnderSpecialPowerEffect("行動不能"))
+            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能"))
             {
                 prob = (prob + 10);
             }
@@ -11483,7 +11483,7 @@ namespace Project1
                     {
                         // 属性をひとまとめずつ取得
                         c = GeneralLib.GetClassBundle(buf, i);
-                        if (c != "物" & c != "魔")
+                        if (c != "物" && c != "魔")
                         {
                             if (GeneralLib.InStrNotNest(wclass, c) > 0)
                             {
@@ -11509,7 +11509,7 @@ namespace Project1
                     {
                         // 属性をひとまとめずつ取得
                         c = GeneralLib.GetClassBundle(buf, i);
-                        if (c != "物" & c != "魔")
+                        if (c != "物" && c != "魔")
                         {
                             if (GeneralLib.InStrNotNest(wclass, c) > idx)
                             {
@@ -11736,7 +11736,7 @@ namespace Project1
             if (dmg <= 0)
             {
                 // 地形適応や封印武器、限定武器、性別限定武器、無効化、吸収が原因であれば期待値は0
-                if (WeaponAdaption(w, t.Area) == 0d | GeneralLib.InStrNotNest(wclass, "封") > 0 | GeneralLib.InStrNotNest(wclass, "限") > 0 | GeneralLib.InStrNotNest(wclass, "♂") > 0 | GeneralLib.InStrNotNest(wclass, "♀") > 0 | t.Immune(wclass) | t.Absorb(wclass))
+                if (WeaponAdaption(w, t.Area) == 0d || GeneralLib.InStrNotNest(wclass, "封") > 0 || GeneralLib.InStrNotNest(wclass, "限") > 0 || GeneralLib.InStrNotNest(wclass, "♂") > 0 || GeneralLib.InStrNotNest(wclass, "♀") > 0 || t.Immune(wclass) || t.Absorb(wclass))
                 {
                     return ExpDamageRet;
                 }
@@ -11750,7 +11750,7 @@ namespace Project1
             }
 
             // バリア無効化
-            if (GeneralLib.InStrNotNest(wclass, "無") > 0 | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (GeneralLib.InStrNotNest(wclass, "無") > 0 || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 // 抹殺攻撃は一撃で相手を倒せない限り効果がない
                 if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
@@ -11768,7 +11768,7 @@ namespace Project1
             // 技量の低い敵はバリアを考慮せず攻撃をかける
             {
                 var withBlock = MainPilot();
-                if (!is_true_value & withBlock.TacticalTechnique() < 150)
+                if (!is_true_value && withBlock.TacticalTechnique() < 150)
                 {
                     // 抹殺攻撃は一撃で相手を倒せない限り効果がない
                     if (GeneralLib.InStrNotNest(wclass, "殺") > 0)
@@ -11834,7 +11834,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリア")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         neautralize = true;
                                     }
@@ -11844,7 +11844,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリア")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("バリア");
                                         if (flevel <= 0d)
@@ -11858,7 +11858,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 | GeneralLib.InStrNotNest(wclass, "突") > 0 | GeneralLib.InStrNotNest(wclass, "接") > 0)
+                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 || GeneralLib.InStrNotNest(wclass, "突") > 0 || GeneralLib.InStrNotNest(wclass, "接") > 0)
                                     {
                                         neautralize = true;
                                     }
@@ -11990,7 +11990,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified() & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified() && !neautralize)
                     {
                         // バリア発動
                         if (dmg <= 1000d * flevel + slevel)
@@ -12053,7 +12053,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("フィールド")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         neautralize = true;
                                     }
@@ -12063,7 +12063,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("フィールド")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("フィールド");
                                         if (flevel <= 0d)
@@ -12077,7 +12077,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 | GeneralLib.InStrNotNest(wclass, "突") > 0 | GeneralLib.InStrNotNest(wclass, "接") > 0)
+                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 || GeneralLib.InStrNotNest(wclass, "突") > 0 || GeneralLib.InStrNotNest(wclass, "接") > 0)
                                     {
                                         neautralize = true;
                                     }
@@ -12209,7 +12209,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified1() & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && !neautralize)
                     {
                         // フィールド発動
                         if (dmg <= 500d * flevel + slevel)
@@ -12217,7 +12217,7 @@ namespace Project1
                             ExpDamageRet = w;
                             return ExpDamageRet;
                         }
-                        else if (flevel > 0d | slevel > 0d)
+                        else if (flevel > 0d || slevel > 0d)
                         {
                             dmg = (dmg - 500d * flevel - slevel);
                         }
@@ -12276,7 +12276,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         neautralize = true;
                                     }
@@ -12286,7 +12286,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("プロテクション");
                                         if (flevel <= 0d)
@@ -12300,7 +12300,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 | GeneralLib.InStrNotNest(wclass, "突") > 0 | GeneralLib.InStrNotNest(wclass, "接") > 0)
+                                    if (GeneralLib.InStrNotNest(wclass, "武") > 0 || GeneralLib.InStrNotNest(wclass, "突") > 0 || GeneralLib.InStrNotNest(wclass, "接") > 0)
                                     {
                                         neautralize = true;
                                     }
@@ -12432,7 +12432,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified2() { string argaclass1 = GeneralLib.LIndex(fdata, 2); var ret = t.IsAttributeClassified(argaclass1, wclass); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified2() & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
                     {
                         // プロテクション発動
                         dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
@@ -12466,7 +12466,7 @@ namespace Project1
             }
 
             // 盾防御
-            if (t.IsFeatureAvailable("盾") & t.MainPilot().IsSkillAvailable("Ｓ防御") & t.MaxAction() > 0 & !IsWeaponClassifiedAs(w, "精") & !IsWeaponClassifiedAs(w, "浸") & !IsWeaponClassifiedAs(w, "殺") & (t.IsConditionSatisfied("盾付加") | t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
+            if (t.IsFeatureAvailable("盾") && t.MainPilot().IsSkillAvailable("Ｓ防御") && t.MaxAction() > 0 && !IsWeaponClassifiedAs(w, "精") && !IsWeaponClassifiedAs(w, "浸") && !IsWeaponClassifiedAs(w, "殺") && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
             {
                 if (IsWeaponClassifiedAs(w, "破"))
                 {
@@ -12537,7 +12537,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 AbsorbRet = true;
                                 break;
@@ -12551,7 +12551,7 @@ namespace Project1
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aname, "魔") > 0)
                             {
-                                if (GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                                if (GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                                 {
                                     AbsorbRet = true;
                                     break;
@@ -12616,7 +12616,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -12628,7 +12628,7 @@ namespace Project1
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -12692,7 +12692,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -12704,7 +12704,7 @@ namespace Project1
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -12766,7 +12766,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 WeaknessRet = true;
                                 break;
@@ -12828,7 +12828,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 EffectiveRet = true;
                                 break;
@@ -12880,7 +12880,7 @@ namespace Project1
             // 無効化や弱点と違い、クリティカル率のみなので
             // 「火」に対する防御特性が「弱火」のクリティカル率に影響する点について
             // 直接関数内に記述できる。
-            if (Strings.Left(aname, 1) == "弱" | Strings.Left(aname, 1) == "効")
+            if (Strings.Left(aname, 1) == "弱" || Strings.Left(aname, 1) == "効")
             {
                 if (GeneralLib.InStrNotNest(strSpecialEffectImmune, aname) > 0)
                 {
@@ -12937,7 +12937,7 @@ namespace Project1
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 & GeneralLib.InStrNotNest(aclass2, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 && GeneralLib.InStrNotNest(aclass2, "精") == 0)
                             {
                                 IsAttributeClassifiedRet = true;
                                 break;
@@ -12951,7 +12951,7 @@ namespace Project1
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aclass2, "魔") > 0)
                             {
-                                if (GeneralLib.InStrNotNest(aclass2, "魔武") == 0 & GeneralLib.InStrNotNest(aclass2, "魔突") == 0 & GeneralLib.InStrNotNest(aclass2, "魔接") == 0 & GeneralLib.InStrNotNest(aclass2, "魔銃") == 0 & GeneralLib.InStrNotNest(aclass2, "魔実") == 0)
+                                if (GeneralLib.InStrNotNest(aclass2, "魔武") == 0 && GeneralLib.InStrNotNest(aclass2, "魔突") == 0 && GeneralLib.InStrNotNest(aclass2, "魔接") == 0 && GeneralLib.InStrNotNest(aclass2, "魔銃") == 0 && GeneralLib.InStrNotNest(aclass2, "魔実") == 0)
                                 {
                                     IsAttributeClassifiedRet = true;
                                 }
@@ -13078,7 +13078,7 @@ namespace Project1
             }
 
             // パイロットのセリフを表示するかどうかを判定
-            if (attack_mode == "マップ攻撃" | attack_mode == "反射" | attack_mode == "当て身技" | attack_mode == "自動反撃")
+            if (attack_mode == "マップ攻撃" || attack_mode == "反射" || attack_mode == "当て身技" || attack_mode == "自動反撃")
             {
                 be_quiet = true;
             }
@@ -13137,9 +13137,9 @@ namespace Project1
             dmg = Damage(w, t, true, Strings.InStr(attack_mode, "援護攻撃") > 0);
 
             // 特殊効果を持たない武器ならクリティカルの可能性あり
-            if (IsNormalWeapon(w) & dmg > 0)
+            if (IsNormalWeapon(w) && dmg > 0)
             {
-                if (CriticalProbability(w, t, def_mode) >= GeneralLib.Dice(100) | attack_mode == "統率" | attack_mode == "同時援護攻撃")
+                if (CriticalProbability(w, t, def_mode) >= GeneralLib.Dice(100) || attack_mode == "統率" || attack_mode == "同時援護攻撃")
                 {
                     is_critical = true;
                 }
@@ -13147,7 +13147,7 @@ namespace Project1
 
             partners = new Unit[1];
             Commands.SelectedPartners = new Unit[1];
-            if (attack_mode != "マップ攻撃" & attack_mode != "反射" & !second_attack)
+            if (attack_mode != "マップ攻撃" && attack_mode != "反射" && !second_attack)
             {
                 if (IsWeaponClassifiedAs(w, "合"))
                 {
@@ -13175,7 +13175,7 @@ namespace Project1
                         GUI.MaskScreen();
                     }
                 }
-                else if (!is_critical & dmg > 0 & Strings.InStr(attack_mode, "援護攻撃") == 0)
+                else if (!is_critical && dmg > 0 && Strings.InStr(attack_mode, "援護攻撃") == 0)
                 {
                     // 連携攻撃が発動するかを判定
                     // （連携攻撃は合体技では発動しない）
@@ -13270,7 +13270,7 @@ namespace Project1
                 {
                     PlayAnimation(wname + "(準備)", sub_situation: "");
                 }
-                else if (IsAnimationDefined(wname, sub_situation: "") & !Expression.IsOptionDefined("武器準備アニメ非表示") & SRC.WeaponAnimation)
+                else if (IsAnimationDefined(wname, sub_situation: "") && !Expression.IsOptionDefined("武器準備アニメ非表示") && SRC.WeaponAnimation)
                 {
                     PlayAnimation(wname + "(準備)", sub_situation: "");
                 }
@@ -13312,7 +13312,7 @@ namespace Project1
                 {
                     PilotMessage("カウンター", msg_mode: "");
                 }
-                else if (IsMessageDefined(wname) & wname != "格闘" & wname != "射撃" & wname != "攻撃" & !IsWeaponClassifiedAs(w, "合"))
+                else if (IsMessageDefined(wname) && wname != "格闘" && wname != "射撃" && wname != "攻撃" && !IsWeaponClassifiedAs(w, "合"))
                 {
                     if (IsMessageDefined("かけ声(" + wname + ")"))
                     {
@@ -13347,11 +13347,11 @@ namespace Project1
 
                 bool localIsAnimationDefined1() { string argmain_situation = wname + "(攻撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                if (IsDefense() & localIsAnimationDefined())
+                if (IsDefense() && localIsAnimationDefined())
                 {
                     PlayAnimation(wname + "(反撃)", sub_situation: "");
                 }
-                else if (localIsAnimationDefined1() | IsAnimationDefined(wname, sub_situation: ""))
+                else if (localIsAnimationDefined1() || IsAnimationDefined(wname, sub_situation: ""))
                 {
                     PlayAnimation(wname + "(攻撃)", sub_situation: "");
                 }
@@ -13371,11 +13371,11 @@ namespace Project1
 
                 bool localIsAnimationDefined3() { string argmain_situation = wname + "(攻撃)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                if (IsDefense() & localIsAnimationDefined2())
+                if (IsDefense() && localIsAnimationDefined2())
                 {
                     PlayAnimation(wname + "(反撃)", sub_situation: "");
                 }
-                else if (localIsAnimationDefined3() | IsAnimationDefined(wname, sub_situation: ""))
+                else if (localIsAnimationDefined3() || IsAnimationDefined(wname, sub_situation: ""))
                 {
                     PlayAnimation(wname + "(攻撃)", sub_situation: "");
                 }
@@ -13389,7 +13389,7 @@ namespace Project1
                 }
             }
 
-            if (attack_mode != "マップ攻撃" & attack_mode != "反射")
+            if (attack_mode != "マップ攻撃" && attack_mode != "反射")
             {
                 // 武器使用による弾数＆ＥＮの消費
                 UseWeapon(w);
@@ -13400,7 +13400,7 @@ namespace Project1
             // 防御手段による命中率低下
             if (def_mode == "回避")
             {
-                if (!IsUnderSpecialPowerEffect("絶対命中") & !t.IsUnderSpecialPowerEffect("無防備") & !t.IsFeatureAvailable("回避不可") & !t.IsConditionSatisfied("移動不能"))
+                if (!IsUnderSpecialPowerEffect("絶対命中") && !t.IsUnderSpecialPowerEffect("無防備") && !t.IsFeatureAvailable("回避不可") && !t.IsConditionSatisfied("移動不能"))
                 {
                     prob = (prob / 2);
                 }
@@ -13471,7 +13471,7 @@ namespace Project1
                 }
 
                 // ジャンプ攻撃
-                if (t.Area == "空中" & (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接")) & !IsTransAvailable("空"))
+                if (t.Area == "空中" && (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接")) && !IsTransAvailable("空"))
                 {
                     msg = msg + "ジャンプし、";
                 }
@@ -13480,13 +13480,13 @@ namespace Project1
                 {
                     msg = msg + "再度";
                 }
-                else if (attack_mode == "カウンター" | attack_mode == "先制攻撃")
+                else if (attack_mode == "カウンター" || attack_mode == "先制攻撃")
                 {
                     msg = "先制攻撃！;" + msg + "先手を取り";
                 }
 
                 // 攻撃の種類によってメッセージを切り替え
-                if (Strings.Right(wnickname, 2) == "攻撃" | Strings.Right(wnickname, 4) == "アタック" | wnickname == "突撃")
+                if (Strings.Right(wnickname, 2) == "攻撃" || Strings.Right(wnickname, 4) == "アタック" || wnickname == "突撃")
                 {
                     msg = msg + "[" + wnickname + "]をかけた。;";
                 }
@@ -13513,11 +13513,11 @@ namespace Project1
                 {
                     msg = msg + "[" + t.Nickname + "]の技を習得しようと試みた。;";
                 }
-                else if (IsWeaponClassifiedAs(w, "実") & (Strings.InStr(wnickname, "ミサイル") > 0 | Strings.InStr(wnickname, "ロケット") > 0))
+                else if (IsWeaponClassifiedAs(w, "実") && (Strings.InStr(wnickname, "ミサイル") > 0 || Strings.InStr(wnickname, "ロケット") > 0))
                 {
                     msg = msg + "[" + wnickname + "]を発射した。;";
                 }
-                else if (Strings.Right(wnickname, 1) == "息" | Strings.Right(wnickname, 3) == "ブレス" | Strings.Right(wnickname, 2) == "光線" | Strings.Right(wnickname, 1) == "光" | Strings.Right(wnickname, 3) == "ビーム" | Strings.Right(wnickname, 4) == "レーザー")
+                else if (Strings.Right(wnickname, 1) == "息" || Strings.Right(wnickname, 3) == "ブレス" || Strings.Right(wnickname, 2) == "光線" || Strings.Right(wnickname, 1) == "光" || Strings.Right(wnickname, 3) == "ビーム" || Strings.Right(wnickname, 4) == "レーザー")
                 {
                     msg = msg + "[" + wnickname + "]を放った。;";
                 }
@@ -13596,7 +13596,7 @@ namespace Project1
             }
 
             // スペシャルパワー「必殺」「瀕死」
-            if (IsUnderSpecialPowerEffect("絶対破壊") | IsUnderSpecialPowerEffect("絶対瀕死"))
+            if (IsUnderSpecialPowerEffect("絶対破壊") || IsUnderSpecialPowerEffect("絶対瀕死"))
             {
                 if (!be_quiet)
                 {
@@ -13605,7 +13605,7 @@ namespace Project1
 
                 bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+                if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
                 {
                     PlayAnimation(wname + "(命中)", sub_situation: "");
                 }
@@ -13626,7 +13626,7 @@ namespace Project1
                     // Else
                     // dmg = 0
                     // End If
-                    if (Expression.IsOptionDefined("ダメージ下限解除") | Expression.IsOptionDefined("ダメージ下限１"))
+                    if (Expression.IsOptionDefined("ダメージ下限解除") || Expression.IsOptionDefined("ダメージ下限１"))
                     {
                         if (t.HP > 1)
                         {
@@ -13801,7 +13801,7 @@ namespace Project1
                         i = (i + 1);
                     }
                 }
-                else if (!is_event & def_mode != "マップ攻撃" & def_mode != "援護防御")
+                else if (!is_event && def_mode != "マップ攻撃" && def_mode != "援護防御")
                 {
                     if (t.IsDefense())
                     {
@@ -13830,7 +13830,7 @@ namespace Project1
                     su.Update();
 
                     // メッセージウィンドウの表示を入れ替え
-                    if (Party == "味方" | Party == "ＮＰＣ")
+                    if (Party == "味方" || Party == "ＮＰＣ")
                     {
                         GUI.UpdateMessageForm(su, this);
                     }
@@ -13980,7 +13980,7 @@ namespace Project1
             }
 
             // 受けの処理
-            if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet | use_protect_msg))
+            if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
             {
                 dmg = 0;
                 goto EndAttack;
@@ -13989,7 +13989,7 @@ namespace Project1
             // 防御＆かばう時はダメージを半減
             if (!IsWeaponClassifiedAs(w, "殺"))
             {
-                if (def_mode == "防御" & !t.IsUnderSpecialPowerEffect("無防備") & !t.IsFeatureAvailable("防御不可"))
+                if (def_mode == "防御" && !t.IsUnderSpecialPowerEffect("無防備") && !t.IsFeatureAvailable("防御不可"))
                 {
                     dmg = dmg / 2;
                 }
@@ -14010,7 +14010,7 @@ namespace Project1
             CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
 
             // 防御能力の処理
-            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet | use_protect_msg, is_penetrated))
+            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
             {
                 if (!be_quiet)
                 {
@@ -14031,7 +14031,7 @@ namespace Project1
 
             bool localIsSpecialEffectDefined3() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+            if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
             {
                 PlayAnimation(wname + "(命中)", sub_situation: "");
             }
@@ -14071,10 +14071,10 @@ namespace Project1
             }
 
             // ターゲット位置を変更する攻撃はサポートガードの場合は無効
-            if (su is null & def_mode != "援護防御")
+            if (su is null && def_mode != "援護防御")
             {
                 // 吹き飛ばし
-                if (IsWeaponClassifiedAs(w, "吹") | IsWeaponClassifiedAs(w, "Ｋ"))
+                if (IsWeaponClassifiedAs(w, "吹") || IsWeaponClassifiedAs(w, "Ｋ"))
                 {
                     CheckBlowAttack(w, t, dmg, msg, attack_mode, def_mode, critical_type);
                 }
@@ -14125,7 +14125,7 @@ namespace Project1
                     }
                 }
 
-                if (t.IsFeatureAvailable("エネルギーシールド") & t.EN > 5 & !IsWeaponClassifiedAs(w, "無") & !IsUnderSpecialPowerEffect("防御能力無効化"))
+                if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !IsWeaponClassifiedAs(w, "無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
                 {
                     t.EN = t.EN - 5;
                     if (IsWeaponClassifiedAs(w, "破"))
@@ -14179,13 +14179,13 @@ namespace Project1
             }
 
             // 最低ダメージは10
-            if (dmg > 0 & dmg < 10)
+            if (dmg > 0 && dmg < 10)
             {
                 dmg = 10;
             }
 
             // 都合により破壊させない場合
-            if (IsUnderSpecialPowerEffect("てかげん") & this.MainPilot().Technique > t.MainPilot().Technique & Strings.InStr(attack_mode, "援護攻撃") == 0 | t.IsConditionSatisfied("不死身"))
+            if (IsUnderSpecialPowerEffect("てかげん") && this.MainPilot().Technique > t.MainPilot().Technique && Strings.InStr(attack_mode, "援護攻撃") == 0 || t.IsConditionSatisfied("不死身"))
             {
                 if (t.HP <= 10)
                 {
@@ -14199,7 +14199,7 @@ namespace Project1
 
             // 特殊効果
             CauseEffect(w, t, msg, critical_type, def_mode, dmg >= t.HP);
-            if (Strings.InStr(critical_type, "即死") > 0 & !use_support_guard & !use_protect_msg)
+            if (Strings.InStr(critical_type, "即死") > 0 && !use_support_guard && !use_protect_msg)
             {
                 if (t.IsHero())
                 {
@@ -14220,12 +14220,12 @@ namespace Project1
 
             // 確実に発生する特殊効果
             int prev_en;
-            if (IsWeaponClassifiedAs(w, "減") & !t.SpecialEffectImmune("減"))
+            if (IsWeaponClassifiedAs(w, "減") && !t.SpecialEffectImmune("減"))
             {
                 msg = msg + wnickname + "が[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を低下させた。;";
                 t.EN = GeneralLib.MaxLng((t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
             }
-            else if (IsWeaponClassifiedAs(w, "奪") & !t.SpecialEffectImmune("奪"))
+            else if (IsWeaponClassifiedAs(w, "奪") && !t.SpecialEffectImmune("奪"))
             {
                 msg = msg + Nickname + "は[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を吸収した。;";
                 prev_en = t.EN;
@@ -14234,7 +14234,7 @@ namespace Project1
             }
 
             // クリティカル時メッセージ
-            if (is_critical | Strings.Len(critical_type) > 0)
+            if (is_critical || Strings.Len(critical_type) > 0)
             {
                 if (!be_quiet)
                 {
@@ -14253,7 +14253,7 @@ namespace Project1
                 }
                 else
                 {
-                    Effect.CriticalEffect(critical_type, w, use_support_guard | use_protect_msg);
+                    Effect.CriticalEffect(critical_type, w, use_support_guard || use_protect_msg);
                 }
             }
 
@@ -14264,7 +14264,7 @@ namespace Project1
             t.HP = t.HP - dmg;
 
             // ＨＰ吸収
-            if (IsWeaponClassifiedAs(w, "吸") & !t.SpecialEffectImmune("吸"))
+            if (IsWeaponClassifiedAs(w, "吸") && !t.SpecialEffectImmune("吸"))
             {
                 if (HP < MaxHP)
                 {
@@ -14291,7 +14291,7 @@ namespace Project1
             }
 
             // ダメージ量表示前にカットインは一旦消去しておく
-            if (!Expression.IsOptionDefined("戦闘中画面初期化無効") | attack_mode == "マップ攻撃")
+            if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
             {
                 if (GUI.IsPictureVisible)
                 {
@@ -14302,7 +14302,7 @@ namespace Project1
             }
 
             // ダメージ量をマップウィンドウに表示
-            if (!Expression.IsOptionDefined("ダメージ表示無効") | attack_mode == "マップ攻撃")
+            if (!Expression.IsOptionDefined("ダメージ表示無効") || attack_mode == "マップ攻撃")
             {
                 if (IsAnimationDefined(wname + "(ダメージ表示)", sub_situation: ""))
                 {
@@ -14314,9 +14314,9 @@ namespace Project1
                 }
                 else
                 {
-                    if (!SRC.BattleAnimation | WeaponPower(w, "") > 0 | dmg > 0)
+                    if (!SRC.BattleAnimation || WeaponPower(w, "") > 0 || dmg > 0)
                     {
-                        if (!SRC.BattleAnimation & su is object)
+                        if (!SRC.BattleAnimation && su is object)
                         {
                             GUI.DrawSysString(prev_x, prev_y, Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg));
                         }
@@ -14331,7 +14331,7 @@ namespace Project1
             // 自動反撃発動
             if (t.HP > 0)
             {
-                CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet | use_protect_msg);
+                CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
                 if (Status != "出撃")
                 {
                     goto EndAttack;
@@ -14379,7 +14379,7 @@ namespace Project1
             }
 
             // 破壊メッセージ
-            if (attack_mode != "マップ攻撃" & !use_protect_msg & !use_shield_msg)
+            if (attack_mode != "マップ攻撃" && !use_protect_msg && !use_shield_msg)
             {
                 if (t.HP == 0)
                 {
@@ -14446,7 +14446,7 @@ namespace Project1
             if (t.HP == 0)
             {
                 // どどめアニメ
-                if (attack_mode != "マップ攻撃" & attack_mode != "反射")
+                if (attack_mode != "マップ攻撃" && attack_mode != "反射")
                 {
                     if (IsAnimationDefined(wname + "(とどめ)", sub_situation: ""))
                     {
@@ -14458,7 +14458,7 @@ namespace Project1
                     }
                 }
             }
-            else if ((dmg <= 0.05d * t.MaxHP & t.HP >= 0.25d * t.MaxHP | dmg <= 10) & Strings.Len(critical_type) == 0)
+            else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
             {
                 // ダメージが非常に小さい
                 if (t.IsAnimationDefined("ダメージ小", sub_situation: ""))
@@ -14482,7 +14482,7 @@ namespace Project1
                     t.SpecialEffect("ダメージ大", sub_situation: "");
                 }
             }
-            else if (t.HP > 0.8d * t.MaxHP & Strings.Len(critical_type) == 0)
+            else if (t.HP > 0.8d * t.MaxHP && Strings.Len(critical_type) == 0)
             {
                 // ダメージ小
                 if (t.IsAnimationDefined("ダメージ小", sub_situation: ""))
@@ -14508,13 +14508,13 @@ namespace Project1
             }
 
             // ダメージメッセージ
-            if (attack_mode != "マップ攻撃" & !use_protect_msg & !use_shield_msg)
+            if (attack_mode != "マップ攻撃" && !use_protect_msg && !use_shield_msg)
             {
                 if (t.HP == 0)
                 {
                 }
                 // 破壊時メッセージは既に表示している
-                else if ((dmg <= 0.05d * t.MaxHP & t.HP >= 0.25d * t.MaxHP | dmg <= 10) & Strings.Len(critical_type) == 0)
+                else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
                 {
                     // ダメージが非常に小さい
                     t.PilotMessage("ダメージ小", msg_mode: "");
@@ -14524,11 +14524,11 @@ namespace Project1
                     // ダメージ大
                     t.PilotMessage("ダメージ大", msg_mode: "");
                 }
-                else if (is_penetrated & t.IsMessageDefined("バリア貫通"))
+                else if (is_penetrated && t.IsMessageDefined("バリア貫通"))
                 {
                     t.PilotMessage("バリア貫通", msg_mode: "");
                 }
-                else if (t.HP >= 0.8d * t.MaxHP & Strings.Len(critical_type) == 0)
+                else if (t.HP >= 0.8d * t.MaxHP && Strings.Len(critical_type) == 0)
                 {
                     // ステータス異常が起こった場合は最低でもダメージ中のメッセージ
                     t.PilotMessage("ダメージ小", msg_mode: "");
@@ -14540,7 +14540,7 @@ namespace Project1
             }
 
             // シールド防御
-            if (use_shield & t.HP > 0)
+            if (use_shield && t.HP > 0)
             {
                 if (t.IsFeatureAvailable("シールド"))
                 {
@@ -14554,7 +14554,7 @@ namespace Project1
                         msg = msg + t.Nickname + "は[" + fname + "]で防御した。;";
                     }
                 }
-                else if (t.IsFeatureAvailable("エネルギーシールド") & t.EN > 5 & !IsWeaponClassifiedAs(w, "無") & !IsUnderSpecialPowerEffect("防御能力無効化"))
+                else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !IsWeaponClassifiedAs(w, "無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
                 {
                     t.EN = t.EN - 5;
                     fname = t.FeatureName("エネルギーシールド");
@@ -14666,7 +14666,7 @@ namespace Project1
                             GUI.DisplaySysMessage(msg + t.Nickname + "は習得可能な技を持っていなかった。");
                         }
                     }
-                    else if (IsWeaponClassifiedAs(w, "写") | IsWeaponClassifiedAs(w, "化"))
+                    else if (IsWeaponClassifiedAs(w, "写") || IsWeaponClassifiedAs(w, "化"))
                     {
                     }
                     // 能力コピーの判定はこれから
@@ -14697,7 +14697,7 @@ namespace Project1
                 // 特殊能力「不安定」による暴走チェック
                 if (t.IsFeatureAvailable("不安定"))
                 {
-                    if (t.HP <= t.MaxHP / 4 & !t.IsConditionSatisfied("暴走"))
+                    if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
                     {
                         t.AddCondition("暴走", -1, cdata: "");
                         t.Update();
@@ -14720,14 +14720,14 @@ namespace Project1
                 }
 
                 // ダメージを受ければ眠りからさめる
-                if (t.IsConditionSatisfied("睡眠") & !IsWeaponClassifiedAs(w, "眠"))
+                if (t.IsConditionSatisfied("睡眠") && !IsWeaponClassifiedAs(w, "眠"))
                 {
                     t.DeleteCondition("睡眠");
                     GUI.DisplaySysMessage(t.Nickname + "は眠りから覚めた。");
                 }
 
                 // ダメージを受けると凍結解除
-                if (t.IsConditionSatisfied("凍結") & !IsWeaponClassifiedAs(w, "凍"))
+                if (t.IsConditionSatisfied("凍結") && !IsWeaponClassifiedAs(w, "凍"))
                 {
                     t.DeleteCondition("凍結");
                     GUI.DisplaySysMessage(t.Nickname + "は凍結状態から開放された。");
@@ -14766,7 +14766,7 @@ namespace Project1
                 }
 
                 // パイロット用特殊能力「英雄」＆「再生」
-                if (!is_event & !IsUnderSpecialPowerEffect("絶対破壊"))
+                if (!is_event && !IsUnderSpecialPowerEffect("絶対破壊"))
                 {
                     if (GeneralLib.Dice(16) <= t.MainPilot().SkillLevel("英雄", ref_mode: ""))
                     {
@@ -15347,7 +15347,7 @@ namespace Project1
                             }
 
                             // 味方の場合の気力変化量はオプションで変化する
-                            if (p.Party == "味方" & Expression.IsOptionDefined("破壊時味方気力変化５倍"))
+                            if (p.Party == "味方" && Expression.IsOptionDefined("破壊時味方気力変化５倍"))
                             {
                                 p.Morale = (p.Morale + 5 * morale_mod);
                             }
@@ -15365,7 +15365,7 @@ namespace Project1
                 // 脱出メッセージの表示
                 bool localIsEventDefined() { string arglname = "破壊 " + t.MainPilot().ID; var ret = Event.IsEventDefined(arglname, true); return ret; }
 
-                if (t.IsMessageDefined("脱出") & !is_event & !localIsEventDefined())
+                if (t.IsMessageDefined("脱出") && !is_event && !localIsEventDefined())
                 {
                     t.PilotMessage("脱出", msg_mode: "");
                 }
@@ -15394,10 +15394,10 @@ namespace Project1
 
             EndAttack:
             ;
-            if (Status == "出撃" & t.Status == "出撃" & Strings.InStr(attack_mode, "援護攻撃") == 0 & attack_mode != "マップ攻撃" & attack_mode != "反射" & !IsWeaponClassifiedAs(w, "合") & HP > 0 & t.HP > 0)
+            if (Status == "出撃" && t.Status == "出撃" && Strings.InStr(attack_mode, "援護攻撃") == 0 && attack_mode != "マップ攻撃" && attack_mode != "反射" && !IsWeaponClassifiedAs(w, "合") && HP > 0 && t.HP > 0)
             {
                 // 再攻撃
-                if (!second_attack & IsWeaponAvailable(w, "ステータス") & IsTargetWithinRange(w, t))
+                if (!second_attack && IsWeaponAvailable(w, "ステータス") && IsTargetWithinRange(w, t))
                 {
                     // スペシャルパワー効果「再攻撃」
                     if (IsUnderSpecialPowerEffect("再攻撃"))
@@ -15507,7 +15507,7 @@ namespace Project1
             if (is_hit)
             {
                 // 攻撃を命中させたことによる気力増加
-                if (attack_mode != "マップ攻撃" & attack_mode != "反射")
+                if (attack_mode != "マップ攻撃" && attack_mode != "反射")
                 {
                     {
                         var withBlock7 = CurrentForm();
@@ -15528,7 +15528,7 @@ namespace Project1
             else
             {
                 // 攻撃を外したことによる気力増加
-                if (attack_mode != "マップ攻撃" & attack_mode != "反射")
+                if (attack_mode != "マップ攻撃" && attack_mode != "反射")
                 {
                     {
                         var withBlock8 = CurrentForm();
@@ -15583,12 +15583,12 @@ namespace Project1
                 var withBlock9 = CurrentForm();
                 if (Expression.IsOptionDefined("ユニット情報隠蔽"))
                 {
-                    if (withBlock9.Party0 == "敵" | withBlock9.Party0 == "中立")
+                    if (withBlock9.Party0 == "敵" || withBlock9.Party0 == "中立")
                     {
                         withBlock9.AddCondition("識別済み", -1, 0d, "非表示");
                     }
 
-                    if (t.Party0 == "敵" | t.Party0 == "中立")
+                    if (t.Party0 == "敵" || t.Party0 == "中立")
                     {
                         t.AddCondition("識別済み", -1, 0d, "非表示");
                     }
@@ -15628,7 +15628,7 @@ namespace Project1
                 if (IsWeaponClassifiedAs(w, "忍"))
                 {
                     // 暗殺武器の場合、相手を倒すか行動不能にすればステルス継続
-                    if (t.CurrentForm().Status == "出撃" & t.CurrentForm().MaxAction() > 0)
+                    if (t.CurrentForm().Status == "出撃" && t.CurrentForm().MaxAction() > 0)
                     {
                         AddCondition("ステルス無効", 1, cdata: "");
                     }
@@ -15677,7 +15677,7 @@ namespace Project1
                                     withBlock10.Die();
                                 }
                             }
-                            else if (withBlock10.IsWeaponClassifiedAs(j, "失") & withBlock10.HP == 0)
+                            else if (withBlock10.IsWeaponClassifiedAs(j, "失") && withBlock10.HP == 0)
                             {
                                 withBlock10.Die();
                             }
@@ -15695,7 +15695,7 @@ namespace Project1
 
                                         string localLIndex1() { string arglist = hs343c2cd9fcb6419f8281c931401bbbc0(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                        if (localFeature() == "変形技" & (localLIndex1() ?? "") == (wname ?? ""))
+                                        if (localFeature() == "変形技" && (localLIndex1() ?? "") == (wname ?? ""))
                                         {
                                             string localFeatureData() { object argIndex1 = k; var ret = withBlock10.FeatureData(argIndex1); return ret; }
 
@@ -15754,7 +15754,7 @@ namespace Project1
                             withBlock10.AddCondition("消耗", 1, cdata: "");
                         }
 
-                        if (IsWeaponClassifiedAs(w, "Ｃ") & withBlock10.IsConditionSatisfied("チャージ完了"))
+                        if (IsWeaponClassifiedAs(w, "Ｃ") && withBlock10.IsConditionSatisfied("チャージ完了"))
                         {
                             withBlock10.DeleteCondition("チャージ完了");
                         }
@@ -15812,7 +15812,7 @@ namespace Project1
                                 withBlock10.Die();
                             }
                         }
-                        else if (IsWeaponClassifiedAs(w, "失") & withBlock10.HP == 0)
+                        else if (IsWeaponClassifiedAs(w, "失") && withBlock10.HP == 0)
                         {
                             withBlock10.Die();
                         }
@@ -15909,7 +15909,7 @@ namespace Project1
                     Die();
                 }
             }
-            else if (IsWeaponClassifiedAs(w, "失") & HP == 0)
+            else if (IsWeaponClassifiedAs(w, "失") && HP == 0)
             {
                 Die();
             }
@@ -15926,7 +15926,7 @@ namespace Project1
 
                         string localLIndex2() { string arglist = hsd78be329e21a495e9d12e8227830c1b1(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature1() == "変形技" & (localLIndex2() ?? "") == (wname ?? ""))
+                        if (localFeature1() == "変形技" && (localLIndex2() ?? "") == (wname ?? ""))
                         {
                             string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -15969,7 +15969,7 @@ namespace Project1
             }
 
             // アイテムを消費
-            else if (Weapon(w).IsItem() & Bullet(w) == 0 & MaxBullet(w) > 0)
+            else if (Weapon(w).IsItem() && Bullet(w) == 0 && MaxBullet(w) > 0)
             {
                 // アイテムを削除
                 num = Data.CountWeapon();
@@ -16006,7 +16006,7 @@ namespace Project1
                     }
                 }
             }
-            else if (is_hit & (IsWeaponClassifiedAs(w, "写") | IsWeaponClassifiedAs(w, "化")) & (dmg > 0 | !IsWeaponClassifiedAs(w, "殺")))
+            else if (is_hit && (IsWeaponClassifiedAs(w, "写") || IsWeaponClassifiedAs(w, "化")) && (dmg > 0 || !IsWeaponClassifiedAs(w, "殺")))
             {
                 CheckMetamorphAttack(w, t, def_mode);
             }
@@ -16066,7 +16066,7 @@ namespace Project1
             }
 
             // カットインは消去しておく
-            if (!Expression.IsOptionDefined("戦闘中画面初期化無効") | attack_mode == "マップ攻撃")
+            if (!Expression.IsOptionDefined("戦闘中画面初期化無効") || attack_mode == "マップ攻撃")
             {
                 if (GUI.IsPictureVisible)
                 {
@@ -16108,13 +16108,13 @@ namespace Project1
             string team, uteam;
 
             // スペシャルパワーで回避能力が無効化されている？
-            if ((IsUnderSpecialPowerEffect("絶対命中") | IsUnderSpecialPowerEffect("回避能力無効化")) & !t.IsUnderSpecialPowerEffect("特殊防御発動"))
+            if ((IsUnderSpecialPowerEffect("絶対命中") || IsUnderSpecialPowerEffect("回避能力無効化")) && !t.IsUnderSpecialPowerEffect("特殊防御発動"))
             {
                 return CheckDodgeFeatureRet;
             }
 
             // 能動防御は行動できなければ発動しない
-            if (t.MaxAction() == 0 | t.IsUnderSpecialPowerEffect("無防備"))
+            if (t.MaxAction() == 0 || t.IsUnderSpecialPowerEffect("無防備"))
             {
                 return CheckDodgeFeatureRet;
             }
@@ -16123,7 +16123,7 @@ namespace Project1
             team = MainPilot().SkillData("チーム");
 
             // 阻止無効化
-            if (IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 goto SkipBlock;
             }
@@ -16140,7 +16140,7 @@ namespace Project1
                 var loopTo1 = GeneralLib.MinLng(ty + 3, Map.MapHeight);
                 for (j = GeneralLib.MaxLng(ty - 3, 1); j <= loopTo1; j++)
                 {
-                    if (Map.MapDataForUnit[i, j] is null | Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
+                    if (Map.MapDataForUnit[i, j] is null || Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
                     {
                         goto NextPoint;
                     }
@@ -16164,7 +16164,7 @@ namespace Project1
 
                         // 同じチームに属している？
                         uteam = withBlock.MainPilot().SkillData("チーム");
-                        if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                        if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                         {
                             goto NextPoint;
                         }
@@ -16208,7 +16208,7 @@ namespace Project1
                                 // 発動条件を満たしている？
                                 bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = WeaponClass(w); var ret = withBlock.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                                if (withBlock.EN >= ecost & withBlock.MainPilot().Morale >= nmorale & localIsAttributeClassified() & (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange & (Math.Abs((x - i)) + Math.Abs((y - j))) > frange & (!ReferenceEquals(Map.MapDataForUnit[i, j], t) | !t.IsFeatureAvailable("阻止")))
+                                if (withBlock.EN >= ecost && withBlock.MainPilot().Morale >= nmorale && localIsAttributeClassified() && (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange && (Math.Abs((x - i)) + Math.Abs((y - j))) > frange && (!ReferenceEquals(Map.MapDataForUnit[i, j], t) || !t.IsFeatureAvailable("阻止")))
                                 {
                                     if (withBlock.FeatureLevel(k) > flevel)
                                     {
@@ -16253,7 +16253,7 @@ namespace Project1
                 {
                     prob = Conversions.Toint(buf);
                 }
-                else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                 {
                     i = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                     prob = (100d * (u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.Toint(Strings.Mid(buf, i))) / 16d);
@@ -16270,7 +16270,7 @@ namespace Project1
                 }
 
                 // 必中がかかっていれば阻止は無効
-                if (IsUnderSpecialPowerEffect("絶対命中") & !u.IsUnderSpecialPowerEffect("特殊防御発動"))
+                if (IsUnderSpecialPowerEffect("絶対命中") && !u.IsUnderSpecialPowerEffect("特殊防御発動"))
                 {
                     prob = 0;
                 }
@@ -16335,7 +16335,7 @@ namespace Project1
 
 
             // 分身(ユニット用特殊能力)
-            if (t.IsFeatureAvailable("分身") & t.MainPilot().Morale >= 130 & !t.IsFeatureLevelSpecified("分身") & (GeneralLib.Dice(2) == 1 | t.IsUnderSpecialPowerEffect("特殊防御発動")))
+            if (t.IsFeatureAvailable("分身") && t.MainPilot().Morale >= 130 && !t.IsFeatureLevelSpecified("分身") && (GeneralLib.Dice(2) == 1 || t.IsUnderSpecialPowerEffect("特殊防御発動")))
             {
                 fname = t.FeatureName("分身");
 
@@ -16435,7 +16435,7 @@ namespace Project1
                 }
 
                 // 発動条件を満たしている？
-                if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & prob >= GeneralLib.Dice(10))
+                if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && prob >= GeneralLib.Dice(10))
                 {
                     // ＥＮ消費
                     if (ecost != 0)
@@ -16540,7 +16540,7 @@ namespace Project1
                 }
 
                 // 発動条件を満たしている？
-                if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & prob >= GeneralLib.Dice(10))
+                if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && prob >= GeneralLib.Dice(10))
                 {
 
                     // 逃げ場所がある？
@@ -16548,7 +16548,7 @@ namespace Project1
 
                     Map.AreaInTeleport(t, localStrToLng());
                     Map.SafetyPoint(t, new_x, new_y);
-                    if ((t.x != new_x | t.y != new_y) & new_x != 0 & new_y != 0)
+                    if ((t.x != new_x || t.y != new_y) && new_x != 0 && new_y != 0)
                     {
                         // ＥＮ消費
                         if (ecost != 0)
@@ -16698,13 +16698,13 @@ namespace Project1
             string buf;
 
             // スペシャルパワーで回避能力が無効化されている？
-            if ((IsUnderSpecialPowerEffect("絶対命中") | IsUnderSpecialPowerEffect("回避能力無効化")) & !t.IsUnderSpecialPowerEffect("特殊防御発動"))
+            if ((IsUnderSpecialPowerEffect("絶対命中") || IsUnderSpecialPowerEffect("回避能力無効化")) && !t.IsUnderSpecialPowerEffect("特殊防御発動"))
             {
                 return CheckParryFeatureRet;
             }
 
             // 能動防御は行動できなければ発動しない
-            if (t.MaxAction() == 0 | t.IsUnderSpecialPowerEffect("無防備"))
+            if (t.MaxAction() == 0 || t.IsUnderSpecialPowerEffect("無防備"))
             {
                 return CheckParryFeatureRet;
             }
@@ -16726,7 +16726,7 @@ namespace Project1
                 var loopTo = t.CountWeapon();
                 for (i = 1; i <= loopTo; i++)
                 {
-                    if (t.IsWeaponClassifiedAs(i, "武") & t.IsWeaponAvailable(i, "移動前"))
+                    if (t.IsWeaponClassifiedAs(i, "武") && t.IsWeaponAvailable(i, "移動前"))
                     {
                         wname2 = t.WeaponNickname(i);
                         break;
@@ -16734,7 +16734,7 @@ namespace Project1
                 }
             }
             // 発動条件を満たしている？
-            if (IsWeaponClassifiedAs(w, "実") & (slevel > t.MainPilot().SkillLevel("切り払い", ref_mode: "") | slevel > 0d & Strings.Len(wname2) == 0))
+            if (IsWeaponClassifiedAs(w, "実") && (slevel > t.MainPilot().SkillLevel("切り払い", ref_mode: "") || slevel > 0d && Strings.Len(wname2) == 0))
             {
                 // 迎撃武器を検索
                 i = 0;
@@ -16761,7 +16761,7 @@ namespace Project1
                     var loopTo2 = t.CountWeapon();
                     for (i = 1; i <= loopTo2; i++)
                     {
-                        if (t.IsWeaponAvailable(i, "移動後") & t.IsWeaponClassifiedAs(i, "移動後攻撃可") & t.IsWeaponClassifiedAs(i, "射撃系") & (t.Weapon(i).Bullet >= 10 | t.Weapon(i).Bullet == 0 & t.Weapon(i).ENConsumption <= 5) & t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale)
+                        if (t.IsWeaponAvailable(i, "移動後") && t.IsWeaponClassifiedAs(i, "移動後攻撃可") && t.IsWeaponClassifiedAs(i, "射撃系") && (t.Weapon(i).Bullet >= 10 || t.Weapon(i).Bullet == 0 && t.Weapon(i).ENConsumption <= 5) && t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale)
                         {
                             break;
                         }
@@ -16769,7 +16769,7 @@ namespace Project1
                 }
 
                 // 迎撃用武器が弾切れ、ＥＮ不足の場合は迎撃不可
-                if (0 < i & i <= t.CountWeapon())
+                if (0 < i && i <= t.CountWeapon())
                 {
                     if (!t.IsWeaponAvailable(i, "ステータス"))
                     {
@@ -16778,7 +16778,7 @@ namespace Project1
                 }
 
                 // 迎撃を実行
-                if (0 < i & i <= t.CountWeapon() & (slevel >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                if (0 < i && i <= t.CountWeapon() && (slevel >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // メッセージ
                     if (!be_quiet)
@@ -16831,7 +16831,7 @@ namespace Project1
                     GUI.DisplaySysMessage(t.Nickname + "は[" + t.WeaponNickname(i) + "]で[" + wname + "]を阻止した。");
 
                     // 迎撃された永続武器は使用回数を減らす
-                    if (IsWeaponClassifiedAs(w, "永") & this.Weapon(w).Bullet > 0)
+                    if (IsWeaponClassifiedAs(w, "永") && this.Weapon(w).Bullet > 0)
                     {
                         SetBullet(w, (Bullet(w) - 1));
                         SyncBullet();
@@ -16846,7 +16846,7 @@ namespace Project1
             }
 
             // 無属性武器には阻止が効かない
-            if (IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 goto SkipBlock;
             }
@@ -16871,7 +16871,7 @@ namespace Project1
                     {
                         prob = Conversions.Toint(buf);
                     }
-                    else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                         prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
@@ -16888,7 +16888,7 @@ namespace Project1
                     }
 
                     // 必中がかかっていれば阻止は無効
-                    if (IsUnderSpecialPowerEffect("絶対命中") & !t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                    if (IsUnderSpecialPowerEffect("絶対命中") && !t.IsUnderSpecialPowerEffect("特殊防御発動"))
                     {
                         prob = 0;
                     }
@@ -16920,7 +16920,7 @@ namespace Project1
                         nmorale = 0;
                     }
 
-                    if (t.EN < ecost | t.MainPilot().Morale < nmorale)
+                    if (t.EN < ecost || t.MainPilot().Morale < nmorale)
                     {
                         prob = 0;
                     }
@@ -16953,7 +16953,7 @@ namespace Project1
                                 {
                                     string localLIndex() { object argIndex1 = "阻止"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex() ?? "") & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex() ?? "") && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         msg = msg + Nickname + "は[" + fname + "]を中和した。;";
                                         prob = 0;
@@ -16966,7 +16966,7 @@ namespace Project1
                                 {
                                     string localLIndex1() { object argIndex1 = "阻止"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex1() ?? "") & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex1() ?? "") && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("阻止");
                                         if (flevel <= 0d)
@@ -16981,7 +16981,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         prob = 0;
                                     }
@@ -17178,7 +17178,7 @@ namespace Project1
 
 
             // マップ攻撃や無属性武器には当て身技は効かない
-            if (IsWeaponClassifiedAs(w, "Ｍ") | IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "Ｍ") || IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 goto SkipParryAttack;
             }
@@ -17209,7 +17209,7 @@ namespace Project1
                     {
                         prob = Conversions.Toint(buf);
                     }
-                    else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                         prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
@@ -17226,13 +17226,13 @@ namespace Project1
                     }
 
                     // 必中がかかっていれば当て身技は無効
-                    if (IsUnderSpecialPowerEffect("絶対命中") & !t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                    if (IsUnderSpecialPowerEffect("絶対命中") && !t.IsUnderSpecialPowerEffect("特殊防御発動"))
                     {
                         break;
                     }
 
                     // 自分の反射や当て身技に対して当て身技は出来ない
-                    if (attack_mode == "反射" | attack_mode == "当て身技")
+                    if (attack_mode == "反射" || attack_mode == "当て身技")
                     {
                         break;
                     }
@@ -17264,7 +17264,7 @@ namespace Project1
                         nmorale = 0;
                     }
 
-                    if (t.EN < ecost | t.MainPilot().Morale < nmorale)
+                    if (t.EN < ecost || t.MainPilot().Morale < nmorale)
                     {
                         prob = 0;
                     }
@@ -17295,7 +17295,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("当て身技")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("当て身技")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         prob = 0;
                                     }
@@ -17305,7 +17305,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("当て身技")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("当て身技")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("当て身技");
                                         if (flevel <= 0d)
@@ -17319,7 +17319,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         prob = 0;
                                     }
@@ -17467,7 +17467,7 @@ namespace Project1
                     }
 
                     // 当て身技発動
-                    if (prob >= GeneralLib.Dice(100) & w2 > 0)
+                    if (prob >= GeneralLib.Dice(100) && w2 > 0)
                     {
                         if (ecost != 0)
                         {
@@ -17517,7 +17517,7 @@ namespace Project1
                             {
                                 Effect.ShowAnimation("打突命中");
                             }
-                            else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接") | IsWeaponClassifiedAs(w, "実"))
+                            else if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接") || IsWeaponClassifiedAs(w, "実"))
                             {
                                 Sound.PlayWave("Sword.wav");
                             }
@@ -17560,7 +17560,7 @@ namespace Project1
                 var loopTo8 = t.CountWeapon();
                 for (i = 1; i <= loopTo8; i++)
                 {
-                    if (t.IsWeaponClassifiedAs(i, "武") & !t.IsWeaponClassifiedAs(i, "合") & t.IsWeaponMastered(i) & t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale & !t.IsDisabled(t.Weapon(i).Name))
+                    if (t.IsWeaponClassifiedAs(i, "武") && !t.IsWeaponClassifiedAs(i, "合") && t.IsWeaponMastered(i) && t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale && !t.IsDisabled(t.Weapon(i).Name))
                     {
                         wname2 = t.WeaponNickname(i);
                         break;
@@ -17569,7 +17569,7 @@ namespace Project1
             }
 
             // 切り払い出来る？
-            if (t.MainPilot().SkillLevel("切り払い", ref_mode: "") > 0d & Strings.Len(wname2) > 0)
+            if (t.MainPilot().SkillLevel("切り払い", ref_mode: "") > 0d && Strings.Len(wname2) > 0)
             {
                 // 武属性や突属性を持っていても切り払いの対象外になります
                 if (IsWeaponClassifiedAs(w, "実"))
@@ -17648,7 +17648,7 @@ namespace Project1
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を叩き落とした。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (IsWeaponClassifiedAs(w, "永") & this.Weapon(w).Bullet > 0)
+                        if (IsWeaponClassifiedAs(w, "永") && this.Weapon(w).Bullet > 0)
                         {
                             SetBullet(w, (Bullet(w) - 1));
                             SyncBullet();
@@ -17724,7 +17724,7 @@ namespace Project1
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受け流した。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (IsWeaponClassifiedAs(w, "永") & this.Weapon(w).Bullet > 0)
+                        if (IsWeaponClassifiedAs(w, "永") && this.Weapon(w).Bullet > 0)
                         {
                             SetBullet(w, (Bullet(w) - 1));
                             SyncBullet();
@@ -17797,7 +17797,7 @@ namespace Project1
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受けとめた。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (IsWeaponClassifiedAs(w, "永") & this.Weapon(w).Bullet > 0)
+                        if (IsWeaponClassifiedAs(w, "永") && this.Weapon(w).Bullet > 0)
                         {
                             SetBullet(w, (Bullet(w) - 1));
                             SyncBullet();
@@ -17811,7 +17811,7 @@ namespace Project1
             }
 
             // 反射無効化
-            if (IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 return CheckParryFeatureRet;
             }
@@ -17848,7 +17848,7 @@ namespace Project1
                     {
                         prob = Conversions.Toint(buf);
                     }
-                    else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                         prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
@@ -17877,7 +17877,7 @@ namespace Project1
                     }
 
                     // 必中がかかっていれば反射は無効
-                    if (IsUnderSpecialPowerEffect("絶対命中") & !t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                    if (IsUnderSpecialPowerEffect("絶対命中") && !t.IsUnderSpecialPowerEffect("特殊防御発動"))
                     {
                         break;
                     }
@@ -17909,7 +17909,7 @@ namespace Project1
                         nmorale = 0;
                     }
 
-                    if (t.EN < ecost | t.MainPilot().Morale < nmorale)
+                    if (t.EN < ecost || t.MainPilot().Morale < nmorale)
                     {
                         prob = 0;
                     }
@@ -17942,7 +17942,7 @@ namespace Project1
                                 {
                                     string localLIndex2() { object argIndex1 = "阻止"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex2() ?? "") & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex2() ?? "") && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         msg = msg + Nickname + "は[" + fname + "]を中和した。;";
                                         prob = 0;
@@ -17955,7 +17955,7 @@ namespace Project1
                                 {
                                     string localLIndex3() { object argIndex1 = "阻止"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex3() ?? "") & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if ((GeneralLib.LIndex(fdata, 1) ?? "") == (localLIndex3() ?? "") && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("阻止");
                                         if (flevel <= 0d)
@@ -17970,7 +17970,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         prob = 0;
                                     }
@@ -18158,7 +18158,7 @@ namespace Project1
                                     Effect.ShowAnimation("反射発動 - " + fname);
                                 }
                             }
-                            else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接") | IsWeaponClassifiedAs(w, "実"))
+                            else if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接") || IsWeaponClassifiedAs(w, "実"))
                             {
                                 Sound.PlayWave("Sword.wav");
                             }
@@ -18182,7 +18182,7 @@ namespace Project1
                         }
 
                         // 攻撃を反射
-                        if (!IsWeaponClassifiedAs(w, "Ｍ") & attack_mode != "反射")
+                        if (!IsWeaponClassifiedAs(w, "Ｍ") && attack_mode != "反射")
                         {
                             Attack(w, this, "反射", "");
                         }
@@ -18214,7 +18214,7 @@ namespace Project1
 
                 bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+                if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
                 {
                     PlayAnimation(wname + "(命中)", sub_situation: "");
                 }
@@ -18291,7 +18291,7 @@ namespace Project1
 
                     bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
                     {
                         PlayAnimation(wname + "(命中)", sub_situation: "");
                     }
@@ -18382,13 +18382,13 @@ namespace Project1
             }
 
             // 行動可能？
-            if (t.IsConditionSatisfied("行動不能") | t.IsConditionSatisfied("麻痺") | t.IsConditionSatisfied("石化") | t.IsConditionSatisfied("凍結") | t.IsConditionSatisfied("睡眠") | t.IsUnderSpecialPowerEffect("行動不能") | t.IsUnderSpecialPowerEffect("行動不能"1))
+            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能") || t.IsUnderSpecialPowerEffect("行動不能"1))
             {
                 return default;
             }
 
             // シールド防御出来ない武器？
-            if (IsWeaponClassifiedAs(w, "精") | IsWeaponClassifiedAs(w, "殺") | IsWeaponClassifiedAs(w, "浸"))
+            if (IsWeaponClassifiedAs(w, "精") || IsWeaponClassifiedAs(w, "殺") || IsWeaponClassifiedAs(w, "浸"))
             {
                 return default;
             }
@@ -18410,7 +18410,7 @@ namespace Project1
                 prob = t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
                 fname = t.FeatureName("小型シールド");
             }
-            else if (t.IsFeatureAvailable("エネルギーシールド") & t.EN > 5 & !IsWeaponClassifiedAs(w, "無") & !IsUnderSpecialPowerEffect("防御能力無効化"))
+            else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !IsWeaponClassifiedAs(w, "無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 prob = t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
                 fname = t.FeatureName("エネルギーシールド");
@@ -18432,7 +18432,7 @@ namespace Project1
             }
 
             // シールド発動確率を満たしている？
-            if (prob >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動"))
+            if (prob >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
             {
                 use_shield = true;
                 if (IsWeaponClassifiedAs(w, "破"))
@@ -18458,12 +18458,12 @@ namespace Project1
                     }
                 }
 
-                if (dmg > 0 & dmg < 10)
+                if (dmg > 0 && dmg < 10)
                 {
                     dmg = 10;
                 }
 
-                if (dmg < t.HP & !be_quiet)
+                if (dmg < t.HP && !be_quiet)
                 {
                     if (t.IsMessageDefined("シールド防御(" + fname + ")"))
                     {
@@ -18534,9 +18534,9 @@ namespace Project1
             }
 
             // 攻撃無効化
-            if (dmg == 0 & this.Weapon(w).Power > 0)
+            if (dmg == 0 && this.Weapon(w).Power > 0)
             {
-                if (IsWeaponClassifiedAs(w, "封") | IsWeaponClassifiedAs(w, "限"))
+                if (IsWeaponClassifiedAs(w, "封") || IsWeaponClassifiedAs(w, "限"))
                 {
                     GUI.DisplaySysMessage(msg + t.Nickname + "には[" + wname + "]は通用しない。");
                 }
@@ -18553,7 +18553,7 @@ namespace Project1
             if (!IsNormalWeapon(w))
             {
                 // 特殊効果を伴う武器
-                if (CriticalProbability(w, t, def_mode) == 0 & this.Weapon(w).Power == 0)
+                if (CriticalProbability(w, t, def_mode) == 0 && this.Weapon(w).Power == 0)
                 {
                     // 攻撃力が0の攻撃は、クリティカル発生率が0の場合も無効化されていると見なす
                     Effect.NegateEffect(this, t, w, wname, dmg, "", "", 0, msg, be_quiet);
@@ -18563,7 +18563,7 @@ namespace Project1
             }
 
             // バリア無効化
-            if (IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 goto SkipBarrier;
             }
@@ -18580,7 +18580,7 @@ namespace Project1
                 var loopTo1 = GeneralLib.MinLng(ty + 3, Map.MapHeight);
                 for (j = GeneralLib.MaxLng(ty - 3, 1); j <= loopTo1; j++)
                 {
-                    if (Map.MapDataForUnit[i, j] is null | Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
+                    if (Map.MapDataForUnit[i, j] is null || Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
                     {
                         goto NextPoint;
                     }
@@ -18613,7 +18613,7 @@ namespace Project1
 
                         // 同じチームに属している？
                         uteam = withBlock.MainPilot().SkillData("チーム");
-                        if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                        if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                         {
                             goto NextPoint;
                         }
@@ -18663,7 +18663,7 @@ namespace Project1
                                 // 発動可能かチェック
                                 bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = WeaponClass(w); var ret = withBlock.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                                if (withBlock.EN >= ecost & withBlock.MainPilot().Morale >= nmorale & localIsAttributeClassified() & (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange & (Math.Abs((x - i)) + Math.Abs((y - j))) > frange & (!ReferenceEquals(Map.MapDataForUnit[i, j], t) | !t.IsFeatureAvailable("バリア")) & !withBlock.IsConditionSatisfied("バリア無効化"))
+                                if (withBlock.EN >= ecost && withBlock.MainPilot().Morale >= nmorale && localIsAttributeClassified() && (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange && (Math.Abs((x - i)) + Math.Abs((y - j))) > frange && (!ReferenceEquals(Map.MapDataForUnit[i, j], t) || !t.IsFeatureAvailable("バリア")) && !withBlock.IsConditionSatisfied("バリア無効化"))
                                 {
                                     if (withBlock.FeatureLevel(k) > flevel)
                                     {
@@ -18747,7 +18747,7 @@ namespace Project1
                         GUI.DisplaySysMessage(u.Nickname + "は[" + fname + "]を発動させた。");
                     }
 
-                    if (fname == "広域バリア" | fname == "バリア")
+                    if (fname == "広域バリア" || fname == "バリア")
                     {
                         u.AddCondition("バリア発動", 1, cdata: "");
                     }
@@ -18781,7 +18781,7 @@ namespace Project1
                 var loopTo4 = GeneralLib.MinLng(ty + 3, Map.MapHeight);
                 for (j = GeneralLib.MaxLng(ty - 3, 1); j <= loopTo4; j++)
                 {
-                    if (Map.MapDataForUnit[i, j] is null | Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
+                    if (Map.MapDataForUnit[i, j] is null || Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
                     {
                         goto NextPoint2;
                     }
@@ -18814,7 +18814,7 @@ namespace Project1
 
                         // 同じチームに属している？
                         uteam = withBlock1.MainPilot().SkillData("チーム");
-                        if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                        if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                         {
                             goto NextPoint2;
                         }
@@ -18864,7 +18864,7 @@ namespace Project1
                                 // 発動可能かチェック
                                 bool localIsAttributeClassified1() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = WeaponClass(w); var ret = withBlock1.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                                if (withBlock1.EN >= ecost & withBlock1.MainPilot().Morale >= nmorale & localIsAttributeClassified1() & (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange & (Math.Abs((x - i)) + Math.Abs((y - j))) > frange & (!ReferenceEquals(Map.MapDataForUnit[i, j], t) | !t.IsFeatureAvailable("フィールド")) & !withBlock1.IsConditionSatisfied("バリア無効化"))
+                                if (withBlock1.EN >= ecost && withBlock1.MainPilot().Morale >= nmorale && localIsAttributeClassified1() && (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange && (Math.Abs((x - i)) + Math.Abs((y - j))) > frange && (!ReferenceEquals(Map.MapDataForUnit[i, j], t) || !t.IsFeatureAvailable("フィールド")) && !withBlock1.IsConditionSatisfied("バリア無効化"))
                                 {
                                     if (withBlock1.FeatureLevel(k) > flevel)
                                     {
@@ -18948,7 +18948,7 @@ namespace Project1
                         GUI.DisplaySysMessage(u.Nickname + "は[" + fname + "]を発動させた。");
                     }
 
-                    if (fname == "広域フィールド" | fname == "フィールド")
+                    if (fname == "広域フィールド" || fname == "フィールド")
                     {
                         u.AddCondition("フィールド発動", 1, cdata: "");
                     }
@@ -18983,7 +18983,7 @@ namespace Project1
                 var loopTo7 = GeneralLib.MinLng(ty + 3, Map.MapHeight);
                 for (j = GeneralLib.MaxLng(ty - 3, 1); j <= loopTo7; j++)
                 {
-                    if (Map.MapDataForUnit[i, j] is null | Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
+                    if (Map.MapDataForUnit[i, j] is null || Math.Abs((tx - i)) + Math.Abs((ty - j)) > 3)
                     {
                         goto NextPoint3;
                     }
@@ -19016,7 +19016,7 @@ namespace Project1
 
                         // 同じチームに属している？
                         uteam = withBlock2.MainPilot().SkillData("チーム");
-                        if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                        if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                         {
                             goto NextPoint3;
                         }
@@ -19066,7 +19066,7 @@ namespace Project1
                                 // 発動可能かチェック
                                 bool localIsAttributeClassified2() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = WeaponClass(w); var ret = withBlock2.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                                if (withBlock2.EN >= ecost & withBlock2.MainPilot().Morale >= nmorale & localIsAttributeClassified2() & (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange & (Math.Abs((x - i)) + Math.Abs((y - j))) > frange & (!ReferenceEquals(Map.MapDataForUnit[i, j], t) | !t.IsFeatureAvailable("プロテクション")) & !withBlock2.IsConditionSatisfied("バリア無効化"))
+                                if (withBlock2.EN >= ecost && withBlock2.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && (Math.Abs((tx - i)) + Math.Abs((ty - j))) <= frange && (Math.Abs((x - i)) + Math.Abs((y - j))) > frange && (!ReferenceEquals(Map.MapDataForUnit[i, j], t) || !t.IsFeatureAvailable("プロテクション")) && !withBlock2.IsConditionSatisfied("バリア無効化"))
                                 {
                                     if (withBlock2.FeatureLevel(k) > flevel)
                                     {
@@ -19150,7 +19150,7 @@ namespace Project1
                         GUI.DisplaySysMessage(u.Nickname + "は[" + fname + "]を発動させた。");
                     }
 
-                    if (fname == "広域プロテクション" | fname == "プロテクション")
+                    if (fname == "広域プロテクション" || fname == "プロテクション")
                     {
                         u.AddCondition("プロテクション発動", 1, cdata: "");
                     }
@@ -19237,7 +19237,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリア")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         string localFeatureName() { object argIndex1 = i; var ret = t.FeatureName(argIndex1); return ret; }
 
@@ -19250,7 +19250,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリア")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリア")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("バリア");
                                         if (flevel <= 0d)
@@ -19265,7 +19265,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -19402,7 +19402,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified3() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified3() & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified3() && !neautralize)
                     {
                         // バリア発動
                         t.EN = t.EN - ecost;
@@ -19424,7 +19424,7 @@ namespace Project1
                             CheckDefenseFeatureRet = true;
                             return CheckDefenseFeatureRet;
                         }
-                        else if (flevel > 0d | slevel > 0d)
+                        else if (flevel > 0d || slevel > 0d)
                         {
                             if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
                             {
@@ -19507,7 +19507,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData(argIndex54)) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData(argIndex54)) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         msg = msg + Nickname + "は[" + fname + "]を中和した。;";
                                         neautralize = true;
@@ -19518,7 +19518,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("フィールド")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("フィールド")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("フィールド");
                                         if (flevel <= 0d)
@@ -19533,7 +19533,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -19670,7 +19670,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified4() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified4() & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified4() && !neautralize)
                     {
                         // フィールド発動
                         t.EN = t.EN - ecost;
@@ -19692,7 +19692,7 @@ namespace Project1
                             CheckDefenseFeatureRet = true;
                             return CheckDefenseFeatureRet;
                         }
-                        else if (flevel > 0d | slevel > 0d)
+                        else if (flevel > 0d || slevel > 0d)
                         {
                             dmg = (dmg - 500d * flevel - slevel);
                             if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
@@ -19767,7 +19767,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("プロテクション")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         msg = msg + Nickname + "は[" + fname + "]を中和した。;";
                                         neautralize = true;
@@ -19778,7 +19778,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData(argIndex65)) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData(argIndex65)) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("プロテクション");
                                         if (flevel <= 0d)
@@ -19793,7 +19793,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -19930,7 +19930,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified5() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified5() & !neautralize & dmg > 0)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified5() && !neautralize && dmg > 0)
                     {
                         // プロテクション発動
                         dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
@@ -19955,7 +19955,7 @@ namespace Project1
                             CheckDefenseFeatureRet = true;
                             return CheckDefenseFeatureRet;
                         }
-                        else if (flevel > 0d | slevel > 0d)
+                        else if (flevel > 0d || slevel > 0d)
                         {
                             if (Strings.InStr(msg, "[" + fname + "]") == 0)
                             {
@@ -19967,7 +19967,7 @@ namespace Project1
             }
 
             // バリアシールド、アクティブフィールド、アクティブプロテクションは能動防御
-            if (t.MaxAction() == 0 | t.IsUnderSpecialPowerEffect("無防備"))
+            if (t.MaxAction() == 0 || t.IsUnderSpecialPowerEffect("無防備"))
             {
                 goto SkipActiveBarrier;
             }
@@ -20035,7 +20035,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリアシールド")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリアシールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         string localFeatureName1() { object argIndex1 = i; var ret = t.FeatureName(argIndex1); return ret; }
 
@@ -20048,7 +20048,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("バリアシールド")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("バリアシールド")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("バリアシールド");
                                         if (flevel <= 0d)
@@ -20063,7 +20063,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -20200,10 +20200,10 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified6() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified6() & t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified6() && t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d && !neautralize)
                     {
                         // バリアシールド発動
-                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
                         {
                             t.EN = t.EN - ecost;
                             if (dmg <= 1000d * flevel + slevel)
@@ -20224,7 +20224,7 @@ namespace Project1
                                 CheckDefenseFeatureRet = true;
                                 return CheckDefenseFeatureRet;
                             }
-                            else if (flevel > 0d | slevel > 0d)
+                            else if (flevel > 0d || slevel > 0d)
                             {
                                 if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
                                 {
@@ -20308,7 +20308,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("アクティブフィールド")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("アクティブフィールド")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         string localFeatureName2() { object argIndex1 = i; var ret = t.FeatureName(argIndex1); return ret; }
 
@@ -20321,7 +20321,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("アクティブフィールド")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("アクティブフィールド")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("アクティブフィールド");
                                         if (flevel <= 0d)
@@ -20336,7 +20336,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -20473,10 +20473,10 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified7() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified7() & t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d & !neautralize)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified7() && t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d && !neautralize)
                     {
                         // アクティブフィールド発動
-                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
                         {
                             t.EN = t.EN - ecost;
                             if (dmg <= 500d * flevel + slevel)
@@ -20497,7 +20497,7 @@ namespace Project1
                                 CheckDefenseFeatureRet = true;
                                 return CheckDefenseFeatureRet;
                             }
-                            else if (flevel > 0d | slevel > 0d)
+                            else if (flevel > 0d || slevel > 0d)
                             {
                                 dmg = (dmg - 500d * flevel - slevel);
                                 if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
@@ -20573,7 +20573,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("アクティブプロテクション")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("アクティブプロテクション")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         string localFeatureName3() { object argIndex1 = i; var ret = t.FeatureName(argIndex1); return ret; }
 
@@ -20586,7 +20586,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("アクティブプロテクション")) & Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("アクティブプロテクション")) && Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("アクティブプロテクション");
                                         if (flevel <= 0d)
@@ -20601,7 +20601,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         neautralize = true;
                                     }
@@ -20738,10 +20738,10 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified8() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.EN >= ecost & t.MainPilot().Morale >= nmorale & localIsAttributeClassified8() & t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d & !neautralize & dmg > 0)
+                    if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified8() && t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") > 0d && !neautralize && dmg > 0)
                     {
                         // アクティブプロテクション発動
-                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                        if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
                         {
                             dmg = ((long)(dmg * (100d - 10d * flevel - slevel)) / 100L);
                             if (ecost != 0)
@@ -20765,7 +20765,7 @@ namespace Project1
                                 CheckDefenseFeatureRet = true;
                                 return CheckDefenseFeatureRet;
                             }
-                            else if (flevel > 0d | slevel > 0d)
+                            else if (flevel > 0d || slevel > 0d)
                             {
                                 if (Strings.InStr(msg, "[" + fname + "]") == 0)
                                 {
@@ -20803,7 +20803,7 @@ namespace Project1
                     // 発動可能？
                     bool localIsAttributeClassified9() { string argaclass1 = GeneralLib.LIndex(fdata, 2); string argaclass2 = WeaponClass(w); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-                    if (t.MainPilot().Morale >= nmorale & localIsAttributeClassified9())
+                    if (t.MainPilot().Morale >= nmorale && localIsAttributeClassified9())
                     {
                         t.EN = (t.EN + 0.01d * flevel * dmg);
                     }
@@ -20835,7 +20835,7 @@ namespace Project1
             }
 
             // 盾防御
-            if (t.IsFeatureAvailable("盾") & t.MainPilot().IsSkillAvailable("Ｓ防御") & t.MaxAction() > 0 & !IsWeaponClassifiedAs(w, "精") & !IsWeaponClassifiedAs(w, "浸") & !IsWeaponClassifiedAs(w, "殺") & !IsUnderSpecialPowerEffect("シールド防御無効化") & !t.IsUnderSpecialPowerEffect("無防備") & (t.IsConditionSatisfied("盾付加") | t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
+            if (t.IsFeatureAvailable("盾") && t.MainPilot().IsSkillAvailable("Ｓ防御") && t.MaxAction() > 0 && !IsWeaponClassifiedAs(w, "精") && !IsWeaponClassifiedAs(w, "浸") && !IsWeaponClassifiedAs(w, "殺") && !IsUnderSpecialPowerEffect("シールド防御無効化") && !t.IsUnderSpecialPowerEffect("無防備") && (t.IsConditionSatisfied("盾付加") || t.FeatureLevel("盾") > t.ConditionLevel("盾ダメージ")))
             {
                 fname = t.FeatureName0("盾");
                 if (!be_quiet)
@@ -20891,7 +20891,7 @@ namespace Project1
 
                     bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
                     {
                         PlayAnimation(wname + "(命中)", sub_situation: "");
                     }
@@ -20958,7 +20958,7 @@ namespace Project1
             if (t.IsFeatureAvailable("融合"))
             {
                 // 融合可能？
-                if (!IsWeaponClassifiedAs(w, "武") & !IsWeaponClassifiedAs(w, "突") & !IsWeaponClassifiedAs(w, "接") & (t.FeatureLevel("融合") >= GeneralLib.Dice(16) | t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                if (!IsWeaponClassifiedAs(w, "武") && !IsWeaponClassifiedAs(w, "突") && !IsWeaponClassifiedAs(w, "接") && (t.FeatureLevel("融合") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // 融合発動
                     t.HP = t.HP + dmg;
@@ -21047,13 +21047,13 @@ namespace Project1
             string buf;
 
             // 反撃系の攻撃に対しては自動反撃を行わない
-            if (attack_mode == "自動反撃" | attack_mode == "反射" | attack_mode == "当て身技")
+            if (attack_mode == "自動反撃" || attack_mode == "反射" || attack_mode == "当て身技")
             {
                 return;
             }
 
             // マップ攻撃、間接攻撃、無属性武器には自動反撃出来ない
-            if (IsWeaponClassifiedAs(w, "Ｍ") | IsWeaponClassifiedAs(w, "間") | IsWeaponClassifiedAs(w, "無") | IsUnderSpecialPowerEffect("防御能力無効化"))
+            if (IsWeaponClassifiedAs(w, "Ｍ") || IsWeaponClassifiedAs(w, "間") || IsWeaponClassifiedAs(w, "無") || IsUnderSpecialPowerEffect("防御能力無効化"))
             {
                 return;
             }
@@ -21083,7 +21083,7 @@ namespace Project1
                     {
                         prob = Conversions.Toint(buf);
                     }
-                    else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                         prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
@@ -21126,7 +21126,7 @@ namespace Project1
                         nmorale = 0;
                     }
 
-                    if (t.EN < ecost | t.MainPilot().Morale < nmorale)
+                    if (t.EN < ecost || t.MainPilot().Morale < nmorale)
                     {
                         prob = 0;
                     }
@@ -21166,7 +21166,7 @@ namespace Project1
                         {
                             case "相殺":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         prob = 0;
                                     }
@@ -21176,7 +21176,7 @@ namespace Project1
 
                             case "中和":
                                 {
-                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) & Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
                                     {
                                         flevel = flevel - FeatureLevel("自動反撃");
                                         if (flevel <= 0d)
@@ -21190,7 +21190,7 @@ namespace Project1
 
                             case "近接無効":
                                 {
-                                    if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                    if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                     {
                                         prob = 0;
                                     }
@@ -21330,7 +21330,7 @@ namespace Project1
                         {
                             if (t.IsWeaponAvailable(j, "必要技能無視"))
                             {
-                                if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "突") | IsWeaponClassifiedAs(w, "接"))
+                                if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "突") || IsWeaponClassifiedAs(w, "接"))
                                 {
                                     w2 = j;
                                 }
@@ -21348,7 +21348,7 @@ namespace Project1
                     }
 
                     // 自動反撃発動
-                    if (prob >= GeneralLib.Dice(100) & w2 > 0)
+                    if (prob >= GeneralLib.Dice(100) && w2 > 0)
                     {
                         if (ecost != 0)
                         {
@@ -21398,7 +21398,7 @@ namespace Project1
                         // 自動反撃で攻撃をかける
                         t.Attack(w2, this, "自動反撃", "");
                         t = t.CurrentForm();
-                        if (Status != "出撃" | t.Status != "出撃")
+                        if (Status != "出撃" || t.Status != "出撃")
                         {
                             return;
                         }
@@ -21454,7 +21454,7 @@ namespace Project1
                     {
                         prob = Conversions.Toint(buf);
                     }
-                    else if (Strings.InStr(buf, "+") > 0 | Strings.InStr(buf, "-") > 0)
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                         prob = (100d * (SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
@@ -21471,7 +21471,7 @@ namespace Project1
                     {
                         // 武器名または必要技能による指定
                         wtype = Strings.Mid(wtype, 2);
-                        if ((wname ?? "") == (wtype ?? "") | (wnickname ?? "") == (wtype ?? ""))
+                        if ((wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
                         {
                             found = true;
                         }
@@ -21507,7 +21507,7 @@ namespace Project1
 
                             case "物":
                                 {
-                                    if (GeneralLib.InStrNotNest(wclass, "魔") == 0 | GeneralLib.InStrNotNest(wclass, "魔武") > 0 | GeneralLib.InStrNotNest(wclass, "魔突") > 0 | GeneralLib.InStrNotNest(wclass, "魔接") > 0 | GeneralLib.InStrNotNest(wclass, "魔銃") > 0 | GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                    if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
                                     {
                                         found = true;
                                     }
@@ -21551,7 +21551,7 @@ namespace Project1
                         nmorale = 0;
                     }
 
-                    if (EN < ecost | this.MainPilot().Morale < nmorale)
+                    if (EN < ecost || this.MainPilot().Morale < nmorale)
                     {
                         prob = 0;
                     }
@@ -21559,7 +21559,7 @@ namespace Project1
                     // 連鎖不可
                     if (Strings.InStr(fdata, "連鎖不可") > 0)
                     {
-                        if (attack_count > 0 | attack_mode == "追加攻撃")
+                        if (attack_count > 0 || attack_mode == "追加攻撃")
                         {
                             prob = 0;
                         }
@@ -21594,7 +21594,7 @@ namespace Project1
                     }
 
                     // 追加攻撃反撃発動
-                    if (prob >= GeneralLib.Dice(100) & w2 > 0)
+                    if (prob >= GeneralLib.Dice(100) && w2 > 0)
                     {
                         if (ecost != 0)
                         {
@@ -21637,7 +21637,7 @@ namespace Project1
                         // 追加攻撃をかける
                         Attack(w2, t, "追加攻撃", def_mode);
                         t = t.CurrentForm();
-                        if (Status != "出撃" | t.Status != "出撃")
+                        if (Status != "出撃" || t.Status != "出撃")
                         {
                             return;
                         }
@@ -21682,7 +21682,7 @@ namespace Project1
             // 捕縛攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "縛") & !t.SpecialEffectImmune("縛"))
+                if (IsWeaponClassifiedAs(w, "縛") && !t.SpecialEffectImmune("縛"))
                 {
                     msg = msg + "[" + t.Nickname + "]の自由を奪った。;";
                     if (IsWeaponLevelSpecified(w, "縛"))
@@ -21702,7 +21702,7 @@ namespace Project1
             // ショック攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "Ｓ") & !t.SpecialEffectImmune("Ｓ"))
+                if (IsWeaponClassifiedAs(w, "Ｓ") && !t.SpecialEffectImmune("Ｓ"))
                 {
                     msg = msg + "[" + t.Nickname + "]を一時的に行動不能にした。;";
                     if (IsWeaponLevelSpecified(w, "Ｓ"))
@@ -21722,7 +21722,7 @@ namespace Project1
             // 装甲劣化攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "劣") & !t.SpecialEffectImmune("劣"))
+                if (IsWeaponClassifiedAs(w, "劣") && !t.SpecialEffectImmune("劣"))
                 {
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("装甲", t) + "を劣化させた。;";
                     if (IsWeaponLevelSpecified(w, "劣"))
@@ -21742,10 +21742,10 @@ namespace Project1
             // バリア中和攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "中") & !t.SpecialEffectImmune("中") & (t.IsFeatureAvailable("バリア") | t.IsFeatureAvailable("バリアシールド") | t.IsFeatureAvailable("広域バリア") | t.IsFeatureAvailable("フィールド") | t.IsFeatureAvailable("アクティブフィールド") | t.IsFeatureAvailable("広域フィールド") | t.IsFeatureAvailable("プロテクション") | t.IsFeatureAvailable("アクティプロテクション") | t.IsFeatureAvailable("広域プロテクション")))
+                if (IsWeaponClassifiedAs(w, "中") && !t.SpecialEffectImmune("中") && (t.IsFeatureAvailable("バリア") || t.IsFeatureAvailable("バリアシールド") || t.IsFeatureAvailable("広域バリア") || t.IsFeatureAvailable("フィールド") || t.IsFeatureAvailable("アクティブフィールド") || t.IsFeatureAvailable("広域フィールド") || t.IsFeatureAvailable("プロテクション") || t.IsFeatureAvailable("アクティプロテクション") || t.IsFeatureAvailable("広域プロテクション")))
                 {
                     fname = "バリア";
-                    if (t.IsFeatureAvailable("バリア") & Strings.InStr(t.FeatureData("バリア"), "バリア無効化無効") == 0)
+                    if (t.IsFeatureAvailable("バリア") && Strings.InStr(t.FeatureData("バリア"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("バリア");
                         if (Strings.Len(fname) == 0)
@@ -21753,7 +21753,7 @@ namespace Project1
                             fname = "バリア";
                         }
                     }
-                    else if (t.IsFeatureAvailable("バリアシールド") & Strings.InStr(t.FeatureData("バリアシールド"), "バリア無効化無効") == 0)
+                    else if (t.IsFeatureAvailable("バリアシールド") && Strings.InStr(t.FeatureData("バリアシールド"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("バリアシールド");
                         if (Strings.Len(fname) == 0)
@@ -21769,7 +21769,7 @@ namespace Project1
                             fname = "広域バリア";
                         }
                     }
-                    else if (t.IsFeatureAvailable("フィールド") & Strings.InStr(t.FeatureData("フィールド"), "バリア無効化無効") == 0)
+                    else if (t.IsFeatureAvailable("フィールド") && Strings.InStr(t.FeatureData("フィールド"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("フィールド");
                         if (Strings.Len(fname) == 0)
@@ -21777,7 +21777,7 @@ namespace Project1
                             fname = "フィールド";
                         }
                     }
-                    else if (t.IsFeatureAvailable("アクティブフィールド") & Strings.InStr(t.FeatureData("アクティブフィールド"), "バリア無効化無効") == 0)
+                    else if (t.IsFeatureAvailable("アクティブフィールド") && Strings.InStr(t.FeatureData("アクティブフィールド"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("アクティブフィールド");
                         if (Strings.Len(fname) == 0)
@@ -21793,7 +21793,7 @@ namespace Project1
                             fname = "広域フィールド";
                         }
                     }
-                    else if (t.IsFeatureAvailable("プロテクション") & Strings.InStr(t.FeatureData("プロテクション"), "バリア無効化無効") == 0)
+                    else if (t.IsFeatureAvailable("プロテクション") && Strings.InStr(t.FeatureData("プロテクション"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("プロテクション");
                         if (Strings.Len(fname) == 0)
@@ -21801,7 +21801,7 @@ namespace Project1
                             fname = "プロテクション";
                         }
                     }
-                    else if (t.IsFeatureAvailable("アクティブプロテクション") & Strings.InStr(t.FeatureData("アクティブプロテクション"), "バリア無効化無効") == 0)
+                    else if (t.IsFeatureAvailable("アクティブプロテクション") && Strings.InStr(t.FeatureData("アクティブプロテクション"), "バリア無効化無効") == 0)
                     {
                         fname = t.FeatureName0("アクティブプロテクション");
                         if (Strings.Len(fname) == 0)
@@ -21836,7 +21836,7 @@ namespace Project1
             // 石化攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "石") & !t.SpecialEffectImmune("石") & t.BossRank < 0)
+                if (IsWeaponClassifiedAs(w, "石") && !t.SpecialEffectImmune("石") && t.BossRank < 0)
                 {
                     msg = msg + "[" + t.Nickname + "]を石化させた。;";
                     if (IsWeaponLevelSpecified(w, "石"))
@@ -21856,7 +21856,7 @@ namespace Project1
             // 凍結攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "凍") & !t.SpecialEffectImmune("凍"))
+                if (IsWeaponClassifiedAs(w, "凍") && !t.SpecialEffectImmune("凍"))
                 {
                     msg = msg + "[" + t.Nickname + "]を凍らせた。;";
                     if (IsWeaponLevelSpecified(w, "凍"))
@@ -21876,7 +21876,7 @@ namespace Project1
             // 麻痺攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "痺") & !t.SpecialEffectImmune("痺"))
+                if (IsWeaponClassifiedAs(w, "痺") && !t.SpecialEffectImmune("痺"))
                 {
                     msg = msg + "[" + t.Nickname + "]を麻痺させた。;";
                     if (IsWeaponLevelSpecified(w, "痺"))
@@ -21896,7 +21896,7 @@ namespace Project1
             // 催眠攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "眠") & !t.SpecialEffectImmune("眠") & !(t.MainPilot().Personality == "機械"))
+                if (IsWeaponClassifiedAs(w, "眠") && !t.SpecialEffectImmune("眠") && !(t.MainPilot().Personality == "機械"))
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]を眠らせた。;";
                     if (IsWeaponLevelSpecified(w, "眠"))
@@ -21916,7 +21916,7 @@ namespace Project1
             // 混乱攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "乱") & !t.SpecialEffectImmune("乱"))
+                if (IsWeaponClassifiedAs(w, "乱") && !t.SpecialEffectImmune("乱"))
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]を混乱させた。;";
                     if (IsWeaponLevelSpecified(w, "乱"))
@@ -21938,7 +21938,7 @@ namespace Project1
                 // 魅了攻撃
                 if (prob >= GeneralLib.Dice(100))
                 {
-                    if (IsWeaponClassifiedAs(w, "魅") & !t.SpecialEffectImmune("魅") & !t.IsConditionSatisfied("魅了") & !t.IsConditionSatisfied("憑依"))
+                    if (IsWeaponClassifiedAs(w, "魅") && !t.SpecialEffectImmune("魅") && !t.IsConditionSatisfied("魅了") && !t.IsConditionSatisfied("憑依"))
                     {
                         msg = msg + MainPilot().get_Nickname(false) + "が[" + t.MainPilot().get_Nickname(false) + "]を魅了した。;";
                         if (IsWeaponLevelSpecified(w, "魅"))
@@ -21967,7 +21967,7 @@ namespace Project1
                 // 憑依攻撃
                 if (prob >= GeneralLib.Dice(100))
                 {
-                    if (IsWeaponClassifiedAs(w, "憑") & !t.SpecialEffectImmune("憑") & !t.IsConditionSatisfied("憑依") & t.BossRank < 0)
+                    if (IsWeaponClassifiedAs(w, "憑") && !t.SpecialEffectImmune("憑") && !t.IsConditionSatisfied("憑依") && t.BossRank < 0)
                     {
                         msg = msg + MainPilot().get_Nickname(false) + "が[" + t.Nickname + "]を乗っ取った。;";
                         if (t.IsConditionSatisfied("魅了"))
@@ -22002,7 +22002,7 @@ namespace Project1
             // 撹乱攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "撹") & !t.SpecialEffectImmune("撹"))
+                if (IsWeaponClassifiedAs(w, "撹") && !t.SpecialEffectImmune("撹"))
                 {
                     msg = msg + "[" + t.Nickname + "]を撹乱した。;";
                     if (IsWeaponLevelSpecified(w, "撹"))
@@ -22022,7 +22022,7 @@ namespace Project1
             // 恐怖攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "恐") & !t.SpecialEffectImmune("恐"))
+                if (IsWeaponClassifiedAs(w, "恐") && !t.SpecialEffectImmune("恐"))
                 {
                     msg = msg + t.MainPilot().get_Nickname(false) + "は恐怖に陥った。;";
                     if (IsWeaponLevelSpecified(w, "恐"))
@@ -22042,7 +22042,7 @@ namespace Project1
             // 目潰し攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "盲") & !t.SpecialEffectImmune("盲"))
+                if (IsWeaponClassifiedAs(w, "盲") && !t.SpecialEffectImmune("盲"))
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]の視力を奪った。;";
                     if (IsWeaponLevelSpecified(w, "盲"))
@@ -22062,7 +22062,7 @@ namespace Project1
             // 毒攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "毒") & !t.SpecialEffectImmune("毒"))
+                if (IsWeaponClassifiedAs(w, "毒") && !t.SpecialEffectImmune("毒"))
                 {
                     msg = msg + t.Nickname + "は毒を受けた。;";
                     if (IsWeaponLevelSpecified(w, "毒"))
@@ -22082,7 +22082,7 @@ namespace Project1
             // 攻撃封印攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "不") & !t.SpecialEffectImmune("不"))
+                if (IsWeaponClassifiedAs(w, "不") && !t.SpecialEffectImmune("不"))
                 {
                     msg = msg + "[" + t.Nickname + "]の攻撃能力を奪った。;";
                     if (IsWeaponLevelSpecified(w, "不"))
@@ -22102,7 +22102,7 @@ namespace Project1
             // 足止め攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "止") & !t.SpecialEffectImmune("止"))
+                if (IsWeaponClassifiedAs(w, "止") && !t.SpecialEffectImmune("止"))
                 {
                     msg = msg + "[" + t.Nickname + "]の動きを止めた。;";
                     if ((t.Party ?? "") != (SRC.Stage ?? ""))
@@ -22136,7 +22136,7 @@ namespace Project1
             // 沈黙攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "黙") & !t.SpecialEffectImmune("黙"))
+                if (IsWeaponClassifiedAs(w, "黙") && !t.SpecialEffectImmune("黙"))
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]を沈黙させた。;";
                     if (IsWeaponLevelSpecified(w, "黙"))
@@ -22156,7 +22156,7 @@ namespace Project1
             // 踊らせ攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "踊") & !t.SpecialEffectImmune("踊"))
+                if (IsWeaponClassifiedAs(w, "踊") && !t.SpecialEffectImmune("踊"))
                 {
                     msg = msg + "[" + t.Nickname + "]は突然踊りだした。;";
                     if (IsWeaponLevelSpecified(w, "踊"))
@@ -22176,7 +22176,7 @@ namespace Project1
             // 狂戦士化攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "狂") & !t.SpecialEffectImmune("狂"))
+                if (IsWeaponClassifiedAs(w, "狂") && !t.SpecialEffectImmune("狂"))
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]は狂戦士と化した。;";
                     if (IsWeaponLevelSpecified(w, "狂"))
@@ -22196,7 +22196,7 @@ namespace Project1
             // ゾンビ化攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "ゾ") & !t.SpecialEffectImmune("ゾ"))
+                if (IsWeaponClassifiedAs(w, "ゾ") && !t.SpecialEffectImmune("ゾ"))
                 {
                     msg = msg + "[" + t.Nickname + "]はゾンビと化した。;";
                     if (IsWeaponLevelSpecified(w, "ゾ"))
@@ -22216,7 +22216,7 @@ namespace Project1
             // 回復能力阻害攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "害") & !t.SpecialEffectImmune("害"))
+                if (IsWeaponClassifiedAs(w, "害") && !t.SpecialEffectImmune("害"))
                 {
                     msg = msg + "[" + t.Nickname + "]の自己回復能力は封じられた。;";
                     if (IsWeaponLevelSpecified(w, "害"))
@@ -22236,7 +22236,7 @@ namespace Project1
             // 特殊効果除去攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "除") & !t.SpecialEffectImmune("除"))
+                if (IsWeaponClassifiedAs(w, "除") && !t.SpecialEffectImmune("除"))
                 {
                     var loopTo = t.CountCondition();
                     for (i = 1; i <= loopTo; i++)
@@ -22251,7 +22251,7 @@ namespace Project1
 
                         int localConditionLifetime() { object argIndex1 = i; var ret = t.ConditionLifetime(argIndex1); return ret; }
 
-                        if ((Strings.InStr(localCondition(), "付加") > 0 | Strings.InStr(localCondition1(), "強化") > 0 | Strings.InStr(localCondition2(), "ＵＰ") > 0) & localCondition3() != "ノーマルモード付加" & localConditionLifetime() > 0)
+                        if ((Strings.InStr(localCondition(), "付加") > 0 || Strings.InStr(localCondition1(), "強化") > 0 || Strings.InStr(localCondition2(), "ＵＰ") > 0) && localCondition3() != "ノーマルモード付加" && localConditionLifetime() > 0)
                         {
                             break;
                         }
@@ -22272,7 +22272,7 @@ namespace Project1
 
                             int localConditionLifetime1() { object argIndex1 = i; var ret = t.ConditionLifetime(argIndex1); return ret; }
 
-                            if ((Strings.InStr(localCondition4(), "付加") > 0 | Strings.InStr(localCondition5(), "強化") > 0 | Strings.InStr(localCondition6(), "ＵＰ") > 0) & localCondition7() != "ノーマルモード付加" & localConditionLifetime1() > 0)
+                            if ((Strings.InStr(localCondition4(), "付加") > 0 || Strings.InStr(localCondition5(), "強化") > 0 || Strings.InStr(localCondition6(), "ＵＰ") > 0) && localCondition7() != "ノーマルモード付加" && localConditionLifetime1() > 0)
                             {
                                 t.DeleteCondition(i);
                             }
@@ -22295,7 +22295,7 @@ namespace Project1
 
                 bool localEffective() { string arganame = WeaponClass(w); var ret = t.Effective(arganame); return ret; }
 
-                if (IsWeaponClassifiedAs(w, "即") & (!t.SpecialEffectImmune("即") | localWeakness() | localEffective()) & t.BossRank < 0 & (!IsUnderSpecialPowerEffect("てかげん") | this.MainPilot().Technique <= t.MainPilot().Technique) & !t.IsConditionSatisfied("不死身"))
+                if (IsWeaponClassifiedAs(w, "即") && (!t.SpecialEffectImmune("即") || localWeakness() || localEffective()) && t.BossRank < 0 && (!IsUnderSpecialPowerEffect("てかげん") || this.MainPilot().Technique <= t.MainPilot().Technique) && !t.IsConditionSatisfied("不死身"))
                 {
                     critical_type = critical_type + " 即死";
                     CauseEffectRet = true;
@@ -22306,7 +22306,7 @@ namespace Project1
             // 死の宣告
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "告") & !t.SpecialEffectImmune("告") & t.BossRank < 0)
+                if (IsWeaponClassifiedAs(w, "告") && !t.SpecialEffectImmune("告") && t.BossRank < 0)
                 {
                     msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]に死の宣告が下された。;";
                     if (Strings.InStr(WeaponClass(w), "告L") > 0)
@@ -22335,7 +22335,7 @@ namespace Project1
                 // 気力減少攻撃
                 if (prob >= GeneralLib.Dice(100))
                 {
-                    if (IsWeaponClassifiedAs(w, "脱") & !t.SpecialEffectImmune("脱"))
+                    if (IsWeaponClassifiedAs(w, "脱") && !t.SpecialEffectImmune("脱"))
                     {
                         msg = msg + "[" + t.MainPilot().get_Nickname(false) + "]の" + Expression.Term("気力", t) + "を低下させた。;";
                         if (IsWeaponLevelSpecified(w, "脱"))
@@ -22355,7 +22355,7 @@ namespace Project1
                 // 気力吸収攻撃
                 if (prob >= GeneralLib.Dice(100))
                 {
-                    if (IsWeaponClassifiedAs(w, "Ｄ") & !t.SpecialEffectImmune("Ｄ"))
+                    if (IsWeaponClassifiedAs(w, "Ｄ") && !t.SpecialEffectImmune("Ｄ"))
                     {
                         msg = msg + MainPilot().get_Nickname(false) + "は[" + t.MainPilot().get_Nickname(false) + "]の" + Expression.Term("気力", t) + "を吸い取った。;";
                         if (IsWeaponLevelSpecified(w, "Ｄ"))
@@ -22378,7 +22378,7 @@ namespace Project1
             // 攻撃力低下攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "低攻") & !t.SpecialEffectImmune("低攻"))
+                if (IsWeaponClassifiedAs(w, "低攻") && !t.SpecialEffectImmune("低攻"))
                 {
                     msg = msg + "[" + t.Nickname + "]の攻撃力を低下させた。;";
                     if (t.IsConditionSatisfied("攻撃力ＵＰ"))
@@ -22405,7 +22405,7 @@ namespace Project1
             // 防御力低下攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "低防") & !t.SpecialEffectImmune("低防"))
+                if (IsWeaponClassifiedAs(w, "低防") && !t.SpecialEffectImmune("低防"))
                 {
                     msg = msg + "[" + t.Nickname + "]の防御力を低下させた。;";
                     if (t.IsConditionSatisfied("防御力ＵＰ"))
@@ -22432,7 +22432,7 @@ namespace Project1
             // 運動性低下攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "低運") & !t.SpecialEffectImmune("低運"))
+                if (IsWeaponClassifiedAs(w, "低運") && !t.SpecialEffectImmune("低運"))
                 {
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("運動性", t) + "を低下させた。;";
                     if (t.IsConditionSatisfied("運動性ＵＰ"))
@@ -22459,7 +22459,7 @@ namespace Project1
             // 移動力低下攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "低移") & !t.SpecialEffectImmune("低移"))
+                if (IsWeaponClassifiedAs(w, "低移") && !t.SpecialEffectImmune("低移"))
                 {
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("移動力", t) + "を低下させた。;";
                     if (t.IsConditionSatisfied("移動力ＵＰ"))
@@ -22486,7 +22486,7 @@ namespace Project1
             // ＨＰ減衰攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "衰") & !t.SpecialEffectImmune("衰"))
+                if (IsWeaponClassifiedAs(w, "衰") && !t.SpecialEffectImmune("衰"))
                 {
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＨＰ", t) + "を";
                     if (t.BossRank >= 0)
@@ -22551,7 +22551,7 @@ namespace Project1
             // ＥＮ減衰攻撃
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "滅") & !t.SpecialEffectImmune("滅"))
+                if (IsWeaponClassifiedAs(w, "滅") && !t.SpecialEffectImmune("滅"))
                 {
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を";
                     if (t.BossRank >= 0)
@@ -22650,7 +22650,7 @@ namespace Project1
                 if (prob >= GeneralLib.Dice(100))
                 {
                     // 既に相手が指定属性を弱点として持っている場合無効
-                    if (!t.Weakness(ch) & !t.SpecialEffectImmune(ch))
+                    if (!t.Weakness(ch) && !t.SpecialEffectImmune(ch))
                     {
                         msg = msg + "[" + t.Nickname + "]に[" + ch + "]属性が有効になった。;";
                         if (IsWeaponLevelSpecified(w, "効" + ch))
@@ -22704,7 +22704,7 @@ namespace Project1
 
                             case "サ":
                                 {
-                                    if (t.MainPilot().IsSkillAvailable("超感覚") & t.MainPilot(Conversions.ToBoolean(0)).IsSkillAvailable("知覚強化"))
+                                    if (t.MainPilot().IsSkillAvailable("超感覚") && t.MainPilot(Conversions.ToBoolean(0)).IsSkillAvailable("知覚強化"))
                                     {
                                         Skill = new string[2];
                                         Skill[0] = "超感覚";
@@ -22804,7 +22804,7 @@ namespace Project1
             string iname;
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "盗") & !t.SpecialEffectImmune("盗") & !t.IsConditionSatisfied("すかんぴん") & (Party == "味方" & t.Party0 != "味方" | Party != "味方" & t.Party0 == "味方"))
+                if (IsWeaponClassifiedAs(w, "盗") && !t.SpecialEffectImmune("盗") && !t.IsConditionSatisfied("すかんぴん") && (Party == "味方" && t.Party0 != "味方" || Party != "味方" && t.Party0 == "味方"))
                 {
                     if (t.Party0 == "味方")
                     {
@@ -22823,7 +22823,7 @@ namespace Project1
                         critical_type = critical_type + " 盗み";
                         CauseEffectRet = true;
                     }
-                    else if (GeneralLib.Dice(8) == 1 & t.IsFeatureAvailable("レアアイテム所有"))
+                    else if (GeneralLib.Dice(8) == 1 && t.IsFeatureAvailable("レアアイテム所有"))
                     {
                         // レアアイテムを盗んだ場合
                         iname = t.FeatureData("レアアイテム所有");
@@ -22908,7 +22908,7 @@ namespace Project1
             string sname, stype, vname;
             if (prob >= GeneralLib.Dice(100))
             {
-                if (IsWeaponClassifiedAs(w, "習") & t.IsFeatureAvailable("ラーニング可能技") & Party0 == "味方")
+                if (IsWeaponClassifiedAs(w, "習") && t.IsFeatureAvailable("ラーニング可能技") && Party0 == "味方")
                 {
                     stype = GeneralLib.LIndex(t.FeatureData("ラーニング可能技"), 1);
                     switch (GeneralLib.LIndex(t.FeatureData("ラーニング可能技"), 2) ?? "")
@@ -22992,12 +22992,12 @@ namespace Project1
             TerrainData td;
 
             // 特殊効果無効？
-            if (IsWeaponClassifiedAs(w, "吹") & t.SpecialEffectImmune("吹"))
+            if (IsWeaponClassifiedAs(w, "吹") && t.SpecialEffectImmune("吹"))
             {
                 return CheckBlowAttackRet;
             }
 
-            if (IsWeaponClassifiedAs(w, "Ｋ") & t.SpecialEffectImmune("Ｋ"))
+            if (IsWeaponClassifiedAs(w, "Ｋ") && t.SpecialEffectImmune("Ｋ"))
             {
                 return CheckBlowAttackRet;
             }
@@ -23039,7 +23039,7 @@ namespace Project1
                 {
                     case "SS":
                         {
-                            if (t.Size != "SS" & t.Size != "S")
+                            if (t.Size != "SS" && t.Size != "S")
                             {
                                 return CheckBlowAttackRet;
                             }
@@ -23049,7 +23049,7 @@ namespace Project1
 
                     case "S":
                         {
-                            if (t.Size == "L" | t.Size == "LL")
+                            if (t.Size == "L" || t.Size == "LL")
                             {
                                 return CheckBlowAttackRet;
                             }
@@ -23075,7 +23075,7 @@ namespace Project1
                 return CheckBlowAttackRet;
             }
 
-            if (t.Data.Speed == 0 & t.Speed == 0)
+            if (t.Data.Speed == 0 && t.Speed == 0)
             {
                 return CheckBlowAttackRet;
             }
@@ -23168,7 +23168,7 @@ namespace Project1
                     dx = -1;
                 }
             }
-            else if (sx == tx & sx == ty)
+            else if (sx == tx && sx == ty)
             {
                 switch (GeneralLib.Dice(4))
                 {
@@ -23245,7 +23245,7 @@ namespace Project1
                         }
                 }
                 // MOD START 240a
-                if (t.Area == "地上" & (td.Class == "陸" | td.Class == "屋内" | td.Class == "月面") | t.Area == "水中" & (td.Class == "水" | td.Class == "深水") | (t.Area ?? "") == (Class ?? ""))
+                if (t.Area == "地上" && (td.Class == "陸" || td.Class == "屋内" || td.Class == "月面") || t.Area == "水中" && (td.Class == "水" || td.Class == "深水") || (t.Area ?? "") == (Class ?? ""))
                 {
                     if (td.IsFeatureAvailable("摩擦"))
                     {
@@ -23254,7 +23254,7 @@ namespace Project1
                 }
 
                 // マップ端
-                if (nx < 1 | Map.MapWidth < nx | ny < 1 | Map.MapHeight < ny)
+                if (nx < 1 || Map.MapWidth < nx || ny < 1 || Map.MapHeight < ny)
                 {
                     nx = (nx - dx);
                     ny = (ny - dy);
@@ -23262,7 +23262,7 @@ namespace Project1
                 }
 
                 // 進入不能？
-                if (!t.IsAbleToEnter(nx, ny) | Map.MapDataForUnit[nx, ny] is object)
+                if (!t.IsAbleToEnter(nx, ny) || Map.MapDataForUnit[nx, ny] is object)
                 {
                     is_crashed = true;
                     if (Map.MapDataForUnit[nx, ny] is object)
@@ -23288,7 +23288,7 @@ namespace Project1
             }
 
             // ユニットを強制移動
-            if (tx != nx | ty != ny)
+            if (tx != nx || ty != ny)
             {
                 GUI.EraseUnitBitmap(tx, ty);
                 if (IsAnimationDefined("吹き飛ばし", sub_situation: ""))
@@ -23323,7 +23323,7 @@ namespace Project1
             }
 
             // 巻き添え
-            if (t2 is object & !ReferenceEquals(t2, t))
+            if (t2 is object && !ReferenceEquals(t2, t))
             {
                 dmg2 = (orig_dmg - t2.get_Armor("") * t2.MainPilot().Morale / 100) / 2;
 
@@ -23356,7 +23356,7 @@ namespace Project1
                 }
 
                 // ダメージ量表示
-                if (!Expression.IsOptionDefined("ダメージ表示無効") | attack_mode == "マップ攻撃")
+                if (!Expression.IsOptionDefined("ダメージ表示無効") || attack_mode == "マップ攻撃")
                 {
                     GUI.DrawSysString(t2.x, t2.y, Microsoft.VisualBasic.Compatibility.VB6.Support.Format(dmg2), true);
                 }
@@ -23364,7 +23364,7 @@ namespace Project1
                 // 特殊能力「不安定」による暴走チェック
                 if (t2.IsFeatureAvailable("不安定"))
                 {
-                    if (t2.HP <= t2.MaxHP / 4 & !t2.IsConditionSatisfied("暴走"))
+                    if (t2.HP <= t2.MaxHP / 4 && !t2.IsConditionSatisfied("暴走"))
                     {
                         t2.AddCondition("暴走", -1, cdata: "");
                         t2.Update();
@@ -23372,7 +23372,7 @@ namespace Project1
                 }
 
                 // ダメージを受ければ眠りからさめる
-                if (t2.IsConditionSatisfied("睡眠") & !IsWeaponClassifiedAs(w, "眠"))
+                if (t2.IsConditionSatisfied("睡眠") && !IsWeaponClassifiedAs(w, "眠"))
                 {
                     t2.DeleteCondition("睡眠");
                 }
@@ -23423,7 +23423,7 @@ namespace Project1
                 return CheckDrawAttackRet;
             }
 
-            if (t.Data.Speed == 0 & t.Speed == 0)
+            if (t.Data.Speed == 0 && t.Speed == 0)
             {
                 return CheckDrawAttackRet;
             }
@@ -23467,7 +23467,7 @@ namespace Project1
             ty = t.y;
 
             // 既に引き寄せの中心位置にいる？
-            if (sx == tx & sy == ty)
+            if (sx == tx && sy == ty)
             {
                 return CheckDrawAttackRet;
             }
@@ -23635,7 +23635,7 @@ namespace Project1
             }
 
             // 結局動いてない？
-            if (nx == tx & ny == ty)
+            if (nx == tx && ny == ty)
             {
                 return CheckDrawAttackRet;
             }
@@ -23644,7 +23644,7 @@ namespace Project1
             t.Jump(nx, ny);
 
             // 本当に動いた？
-            if (t.x == tx & t.y == ty)
+            if (t.x == tx && t.y == ty)
             {
                 return CheckDrawAttackRet;
             }
@@ -23683,7 +23683,7 @@ namespace Project1
                 return CheckTeleportAwayAttackRet;
             }
 
-            if (t.Data.Speed == 0 & t.Speed == 0)
+            if (t.Data.Speed == 0 && t.Speed == 0)
             {
                 return CheckTeleportAwayAttackRet;
             }
@@ -23735,7 +23735,7 @@ namespace Project1
                     ny = (ty - d);
                 }
 
-                if (1 <= nx & nx <= Map.MapWidth & 1 <= ny & ny <= Map.MapHeight)
+                if (1 <= nx && nx <= Map.MapWidth && 1 <= ny && ny <= Map.MapHeight)
                 {
                     break;
                 }
@@ -23751,7 +23751,7 @@ namespace Project1
             t.Jump(nx, ny);
 
             // 本当に動いた？
-            if (t.x == tx & t.y == ty)
+            if (t.x == tx && t.y == ty)
             {
                 return CheckTeleportAwayAttackRet;
             }
@@ -24028,15 +24028,15 @@ namespace Project1
             }
             else if (IsWeaponClassifiedAs(w, "Ｍ拡"))
             {
-                if (ty < y & Math.Abs((y - ty)) > Math.Abs((x - tx)))
+                if (ty < y && Math.Abs((y - ty)) > Math.Abs((x - tx)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "N");
                 }
-                else if (ty > y & Math.Abs((y - ty)) > Math.Abs((x - tx)))
+                else if (ty > y && Math.Abs((y - ty)) > Math.Abs((x - tx)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "S");
                 }
-                else if (tx < x & Math.Abs((x - tx)) > Math.Abs((y - ty)))
+                else if (tx < x && Math.Abs((x - tx)) > Math.Abs((y - ty)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "W");
                 }
@@ -24047,15 +24047,15 @@ namespace Project1
             }
             else if (IsWeaponClassifiedAs(w, "Ｍ扇"))
             {
-                if (ty < y & Math.Abs((y - ty)) >= Math.Abs((x - tx)))
+                if (ty < y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "N", WeaponLevel(w, "Ｍ扇"));
                 }
-                else if (ty > y & Math.Abs((y - ty)) >= Math.Abs((x - tx)))
+                else if (ty > y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "S", WeaponLevel(w, "Ｍ扇"));
                 }
-                else if (tx < x & Math.Abs((x - tx)) >= Math.Abs((y - ty)))
+                else if (tx < x && Math.Abs((x - tx)) >= Math.Abs((y - ty)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "W", WeaponLevel(w, "Ｍ扇"));
                 }
@@ -24072,7 +24072,7 @@ namespace Project1
             {
                 Map.AreaInRange(x, y, max_range, min_range, "すべて");
             }
-            else if (IsWeaponClassifiedAs(w, "Ｍ移") | IsWeaponClassifiedAs(w, "Ｍ線"))
+            else if (IsWeaponClassifiedAs(w, "Ｍ移") || IsWeaponClassifiedAs(w, "Ｍ線"))
             {
                 Map.AreaInPointToPoint(x, y, tx, ty);
             }
@@ -24080,7 +24080,7 @@ namespace Project1
             Map.MaskData[x, y] = false;
 
             // 識別型マップ攻撃
-            if (IsWeaponClassifiedAs(w, "識") | IsUnderSpecialPowerEffect("識別攻撃"))
+            if (IsWeaponClassifiedAs(w, "識") || IsUnderSpecialPowerEffect("識別攻撃"))
             {
                 foreach (Unit currentU in SRC.UList)
                 {
@@ -24089,7 +24089,7 @@ namespace Project1
                         var withBlock = u;
                         if (withBlock.Status == "出撃")
                         {
-                            if (IsAlly(u) | WeaponAdaption(w, withBlock.Area) == 0d)
+                            if (IsAlly(u) || WeaponAdaption(w, withBlock.Area) == 0d)
                             {
                                 Map.MaskData[withBlock.x, withBlock.y] = true;
                             }
@@ -24173,7 +24173,7 @@ namespace Project1
                             goto NextLoop;
                         }
 
-                        if (IsWeaponClassifiedAs(w, "識") | IsUnderSpecialPowerEffect("識別攻撃"))
+                        if (IsWeaponClassifiedAs(w, "識") || IsUnderSpecialPowerEffect("識別攻撃"))
                         {
                             if (IsAlly(t))
                             {
@@ -24273,7 +24273,7 @@ namespace Project1
                     Commands.SelectedTarget = t;
                     Event.HandleEvent("攻撃", MainPilot().ID, t.MainPilot().ID);
                     Commands.RestoreSelections();
-                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                    if (SRC.IsScenarioFinished || SRC.IsCanceled)
                     {
                         return;
                     }
@@ -24283,7 +24283,7 @@ namespace Project1
             // まだ攻撃可能？
             if (!is_event)
             {
-                if (Status != "出撃" | MaxAction(true) == 0 | IsConditionSatisfied("攻撃不能"))
+                if (Status != "出撃" || MaxAction(true) == 0 || IsConditionSatisfied("攻撃不能"))
                 {
                     return;
                 }
@@ -24331,7 +24331,7 @@ namespace Project1
             {
                 PlayAnimation(wname + "(準備)", sub_situation: "");
             }
-            else if (IsAnimationDefined(wname, sub_situation: "") & !Expression.IsOptionDefined("武器準備アニメ非表示") & SRC.WeaponAnimation)
+            else if (IsAnimationDefined(wname, sub_situation: "") && !Expression.IsOptionDefined("武器準備アニメ非表示") && SRC.WeaponAnimation)
             {
                 PlayAnimation(wname + "(準備)", sub_situation: "");
             }
@@ -24357,7 +24357,7 @@ namespace Project1
             PilotMessage(wname, "攻撃");
 
             // 戦闘アニメ or 効果音
-            if (IsAnimationDefined(wname + "(攻撃)", sub_situation: "") | IsAnimationDefined(wname, sub_situation: ""))
+            if (IsAnimationDefined(wname + "(攻撃)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
             {
                 PlayAnimation(wname + "(攻撃)", sub_situation: "");
             }
@@ -24450,7 +24450,7 @@ namespace Project1
                 }
 
                 // 攻撃の種類によってメッセージを切り替え
-                if (Strings.Right(wnickname, 2) == "攻撃" | Strings.Right(wnickname, 4) == "アタック" | wnickname == "突撃")
+                if (Strings.Right(wnickname, 2) == "攻撃" || Strings.Right(wnickname, 4) == "アタック" || wnickname == "突撃")
                 {
                     msg = msg + "[" + wnickname + "]をかけた。";
                 }
@@ -24469,11 +24469,11 @@ namespace Project1
                         msg = msg + "[" + wnickname + "]の呪文を唱えた。";
                     }
                 }
-                else if (IsWeaponClassifiedAs(w, "実") & (Strings.InStr(wnickname, "ミサイル") > 0 | Strings.InStr(wnickname, "ロケット") > 0))
+                else if (IsWeaponClassifiedAs(w, "実") && (Strings.InStr(wnickname, "ミサイル") > 0 || Strings.InStr(wnickname, "ロケット") > 0))
                 {
                     msg = msg + "[" + wnickname + "]を発射した。";
                 }
-                else if (Strings.Right(wnickname, 1) == "息" | Strings.Right(wnickname, 3) == "ブレス" | Strings.Right(wnickname, 2) == "光線" | Strings.Right(wnickname, 1) == "光" | Strings.Right(wnickname, 3) == "ビーム" | Strings.Right(wnickname, 4) == "レーザー")
+                else if (Strings.Right(wnickname, 1) == "息" || Strings.Right(wnickname, 3) == "ブレス" || Strings.Right(wnickname, 2) == "光線" || Strings.Right(wnickname, 1) == "光" || Strings.Right(wnickname, 3) == "ビーム" || Strings.Right(wnickname, 4) == "レーザー")
                 {
                     msg = msg + "[" + wnickname + "]を放った。";
                 }
@@ -24538,7 +24538,7 @@ namespace Project1
                 t = targets[i].CurrentForm();
                 if (t.Status == "出撃")
                 {
-                    if (Party == "味方" | Party == "ＮＰＣ")
+                    if (Party == "味方" || Party == "ＮＰＣ")
                     {
                         GUI.UpdateMessageForm(t, this);
                     }
@@ -24560,7 +24560,7 @@ namespace Project1
                     }
 
                     // これ以上攻撃を続けられない場合
-                    if (Status != "出撃" | CountPilot() == 0 | IsMapAttackCanceled)
+                    if (Status != "出撃" || CountPilot() == 0 || IsMapAttackCanceled)
                     {
                         GUI.CloseMessageForm();
                         SelectedMapAttackPower = 0;
@@ -24661,7 +24661,7 @@ namespace Project1
                 }
             }
 
-            if (Party == "味方" & !is_event)
+            if (Party == "味方" && !is_event)
             {
                 // 経験値＆資金の獲得
                 var loopTo15 = Information.UBound(targets);
@@ -24699,7 +24699,7 @@ namespace Project1
                         // パイロット能力による獲得資金増加
                         if (IsSkillAvailable("資金獲得"))
                         {
-                            if (!IsUnderSpecialPowerEffect("獲得資金増加") | Expression.IsOptionDefined("収得効果重複"))
+                            if (!IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
                                 earnings = GeneralLib.MinDbl(earnings * ((10d + SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
                             }
@@ -24874,7 +24874,7 @@ namespace Project1
                     {
                         {
                             var withBlock9 = targets[i].CurrentForm();
-                            if (withBlock9.Status == "出撃" & withBlock9.MaxAction() > 0)
+                            if (withBlock9.Status == "出撃" && withBlock9.MaxAction() > 0)
                             {
                                 AddCondition("ステルス無効", 1, cdata: "");
                                 break;
@@ -24926,7 +24926,7 @@ namespace Project1
                                     withBlock10.Die();
                                 }
                             }
-                            else if (withBlock10.IsWeaponClassifiedAs(j, "失") & withBlock10.HP == 0)
+                            else if (withBlock10.IsWeaponClassifiedAs(j, "失") && withBlock10.HP == 0)
                             {
                                 withBlock10.Die();
                             }
@@ -24943,7 +24943,7 @@ namespace Project1
 
                                         string localLIndex() { string arglist = hs681d62aaff664a9daf19517e6120dc9d(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                        if (localFeature() == "変形技" & (localLIndex() ?? "") == (wname ?? ""))
+                                        if (localFeature() == "変形技" && (localLIndex() ?? "") == (wname ?? ""))
                                         {
                                             string localFeatureData() { object argIndex1 = k; var ret = withBlock10.FeatureData(argIndex1); return ret; }
 
@@ -25002,7 +25002,7 @@ namespace Project1
                             withBlock10.AddCondition("消耗", 1, cdata: "");
                         }
 
-                        if (IsWeaponClassifiedAs(w, "Ｃ") & withBlock10.IsConditionSatisfied("チャージ完了"))
+                        if (IsWeaponClassifiedAs(w, "Ｃ") && withBlock10.IsConditionSatisfied("チャージ完了"))
                         {
                             withBlock10.DeleteCondition("チャージ完了");
                         }
@@ -25060,7 +25060,7 @@ namespace Project1
                                 withBlock10.Die();
                             }
                         }
-                        else if (IsWeaponClassifiedAs(w, "失") & withBlock10.HP == 0)
+                        else if (IsWeaponClassifiedAs(w, "失") && withBlock10.HP == 0)
                         {
                             withBlock10.Die();
                         }
@@ -25168,7 +25168,7 @@ namespace Project1
                     }
                 }
             }
-            else if (IsWeaponClassifiedAs(w, "失") & HP == 0)
+            else if (IsWeaponClassifiedAs(w, "失") && HP == 0)
             {
                 Die();
                 GUI.CloseMessageForm();
@@ -25194,7 +25194,7 @@ namespace Project1
 
                         string localLIndex1() { string arglist = hs367294acea73430b9129abf82f13a58e(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature1() == "変形技" & (localLIndex1() ?? "") == (wname ?? ""))
+                        if (localFeature1() == "変形技" && (localLIndex1() ?? "") == (wname ?? ""))
                         {
                             string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -25237,7 +25237,7 @@ namespace Project1
             }
 
             // アイテムを消費
-            else if (Weapon(w).IsItem() & Bullet(w) == 0 & MaxBullet(w) > 0)
+            else if (Weapon(w).IsItem() && Bullet(w) == 0 && MaxBullet(w) > 0)
             {
                 // アイテムを削除
                 num = Data.CountWeapon();
@@ -25296,7 +25296,7 @@ namespace Project1
                         Commands.SwapSelections();
                         Event.HandleEvent("マップ攻撃破壊", t.MainPilot().ID);
                         Commands.RestoreSelections();
-                        if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                        if (SRC.IsScenarioFinished || SRC.IsCanceled)
                         {
                             return;
                         }
@@ -25310,7 +25310,7 @@ namespace Project1
                             Commands.SwapSelections();
                             Event.HandleEvent("損傷率", t.MainPilot().ID, 100 * (t.MaxHP - t.HP) / t.MaxHP);
                             Commands.RestoreSelections();
-                            if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                            if (SRC.IsScenarioFinished || SRC.IsCanceled)
                             {
                                 return;
                             }
@@ -25319,10 +25319,10 @@ namespace Project1
                         // ターゲットが動いていたら進入イベントを発生
                         {
                             var withBlock14 = t.CurrentForm();
-                            if (withBlock14.Status == "出撃" & (withBlock14.x != targets_x[i] | withBlock14.y != targets_y[i]))
+                            if (withBlock14.Status == "出撃" && (withBlock14.x != targets_x[i] || withBlock14.y != targets_y[i]))
                             {
                                 Event.HandleEvent("進入", withBlock14.MainPilot().ID, withBlock14.x, withBlock14.y);
-                                if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                                if (SRC.IsScenarioFinished || SRC.IsCanceled)
                                 {
                                     return;
                                 }
@@ -25367,7 +25367,7 @@ namespace Project1
                     {
                         {
                             var withBlock15 = targets[j].CurrentForm();
-                            if ((withBlock15.Party0 ?? "") == (uparty ?? "") & withBlock15.Status != "出撃")
+                            if ((withBlock15.Party0 ?? "") == (uparty ?? "") && withBlock15.Status != "出撃")
                             {
                                 found = true;
                                 break;
@@ -25381,7 +25381,7 @@ namespace Project1
                         foreach (Unit currentU1 in SRC.UList)
                         {
                             u = currentU1;
-                            if ((u.Party0 ?? "") == (uparty ?? "") & u.Status == "出撃" & !u.IsConditionSatisfied("憑依"))
+                            if ((u.Party0 ?? "") == (uparty ?? "") && u.Status == "出撃" && !u.IsConditionSatisfied("憑依"))
                             {
                                 found = true;
                                 break;
@@ -25391,7 +25391,7 @@ namespace Project1
                         if (!found)
                         {
                             Event.HandleEvent("全滅", uparty);
-                            if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                            if (SRC.IsScenarioFinished || SRC.IsCanceled)
                             {
                                 return;
                             }
@@ -25403,7 +25403,7 @@ namespace Project1
                 if (CurrentForm().Status == "出撃")
                 {
                     Event.HandleEvent("使用後", CurrentForm().MainPilot().ID, wname);
-                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                    if (SRC.IsScenarioFinished || SRC.IsCanceled)
                     {
                         return;
                     }
@@ -25453,7 +25453,7 @@ namespace Project1
             }
 
             // 弾数消費
-            if (this.Weapon(w).Bullet > 0 & !IsWeaponClassifiedAs(w, "永"))
+            if (this.Weapon(w).Bullet > 0 && !IsWeaponClassifiedAs(w, "永"))
             {
                 SetBullet(w, (Bullet(w) - 1));
 
@@ -25490,7 +25490,7 @@ namespace Project1
                 EN = 0;
             }
 
-            if (IsWeaponClassifiedAs(w, "Ｃ") & IsConditionSatisfied("チャージ完了"))
+            if (IsWeaponClassifiedAs(w, "Ｃ") && IsConditionSatisfied("チャージ完了"))
             {
                 DeleteCondition("チャージ完了");
             }
@@ -25591,7 +25591,7 @@ namespace Project1
                     var loopTo1 = CountWeapon();
                     for (i = 1; i <= loopTo1; i++)
                     {
-                        if (w != i & IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxBullet(w) > 0)
+                        if (w != i && IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxBullet(w) > 0)
                         {
                             if (MaxBullet(i) > MaxBullet(w))
                             {
@@ -25607,7 +25607,7 @@ namespace Project1
                     var loopTo2 = CountAbility();
                     for (i = 1; i <= loopTo2; i++)
                     {
-                        if (IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxBullet(w) > 0)
+                        if (IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxBullet(w) > 0)
                         {
                             if (MaxStock(i) > MaxBullet(w))
                             {
@@ -25633,7 +25633,7 @@ namespace Project1
                     var loopTo4 = CountAbility();
                     for (i = 1; i <= loopTo4; i++)
                     {
-                        if (a != i & IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxStock(a) > 0)
+                        if (a != i && IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxStock(a) > 0)
                         {
                             if (MaxStock(i) > MaxStock(a))
                             {
@@ -25649,7 +25649,7 @@ namespace Project1
                     var loopTo5 = CountWeapon();
                     for (i = 1; i <= loopTo5; i++)
                     {
-                        if (IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxStock(a) > 0)
+                        if (IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxStock(a) > 0)
                         {
                             if (MaxBullet(i) > MaxStock(a))
                             {
@@ -25674,7 +25674,7 @@ namespace Project1
                     var loopTo7 = CountWeapon();
                     for (i = 1; i <= loopTo7; i++)
                     {
-                        if (w != i & MaxBullet(i) > 0)
+                        if (w != i && MaxBullet(i) > 0)
                         {
                             SetBullet(w, GeneralLib.MinLng(Bullet(w), (MaxBullet(w) * Bullet(i) / (double)MaxBullet(i) + 0.49999d)));
                         }
@@ -25697,7 +25697,7 @@ namespace Project1
                         var loopTo10 = withBlock.CountWeapon();
                         for (k = counter; k <= loopTo10; k++)
                         {
-                            if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") & MaxBullet(j) > 0 & withBlock.MaxBullet(k) > 0)
+                            if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") && MaxBullet(j) > 0 && withBlock.MaxBullet(k) > 0)
                             {
                                 withBlock.SetBullet(k, ((withBlock.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
                                 idx = (k + 1);
@@ -25714,7 +25714,7 @@ namespace Project1
                         var loopTo12 = withBlock.CountAbility();
                         for (k = counter; k <= loopTo12; k++)
                         {
-                            if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") & MaxStock(j) > 0 & withBlock.MaxStock(k) > 0)
+                            if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") && MaxStock(j) > 0 && withBlock.MaxStock(k) > 0)
                             {
                                 withBlock.SetStock(k, ((withBlock.MaxStock(k) * Stock(j)) / MaxStock(j)));
                                 idx = (k + 1);
@@ -26150,7 +26150,7 @@ namespace Project1
             }
 
             // ステータス表示では必要技能だけ満たしていればＯＫ
-            if (ref_mode == "インターミッション" | string.IsNullOrEmpty(ref_mode))
+            if (ref_mode == "インターミッション" || string.IsNullOrEmpty(ref_mode))
             {
                 IsAbilityAvailableRet = true;
                 return IsAbilityAvailableRet;
@@ -26316,7 +26316,7 @@ namespace Project1
             {
                 {
                     var withBlock1 = MainPilot();
-                    if (IsSpellAbility(a) | IsAbilityClassifiedAs(a, "音"))
+                    if (IsSpellAbility(a) || IsAbilityClassifiedAs(a, "音"))
                     {
                         return IsAbilityAvailableRet;
                     }
@@ -26358,7 +26358,7 @@ namespace Project1
 
                         string localLIndex1() { string arglist = hsc19c10c9cae54732ac7c9c2e90257bd2(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature() == "変形技" & (localLIndex1() ?? "") == (ad.Name ?? ""))
+                        if (localFeature() == "変形技" && (localLIndex1() ?? "") == (ad.Name ?? ""))
                         {
                             string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -26508,7 +26508,7 @@ namespace Project1
 
                                                     {
                                                         var withBlock4 = localItem().CurrentForm();
-                                                        if (withBlock4.Status == "出撃" | withBlock4.Status == "格納")
+                                                        if (withBlock4.Status == "出撃" || withBlock4.Status == "格納")
                                                         {
                                                             return IsAbilityAvailableRet;
                                                         }
@@ -26547,7 +26547,7 @@ namespace Project1
 
                     // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
                     // ない場合、そのユニットが既に出撃中であれば使用不可
-                    if (Strings.InStr(pname, "(汎用)") == 0 & Strings.InStr(pname, "(ザコ)") == 0)
+                    if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
                     {
                         if (SRC.PList.IsDefined(pname))
                         {
@@ -26556,7 +26556,7 @@ namespace Project1
                             u = localItem2().Unit;
                             if (u is object)
                             {
-                                if (u.Status == "出撃" | u.Status == "格納")
+                                if (u.Status == "出撃" || u.Status == "格納")
                                 {
                                     return IsAbilityAvailableRet;
                                 }
@@ -26609,7 +26609,7 @@ namespace Project1
                 return IsAbilityAvailableRet;
             }
 
-            if (AbilityMaxRange(a) > 1 | AbilityMaxRange(a) == 0)
+            if (AbilityMaxRange(a) > 1 || AbilityMaxRange(a) == 0)
             {
                 if (IsAbilityClassifiedAs(a, "Ｐ"))
                 {
@@ -26667,7 +26667,7 @@ namespace Project1
 
             // 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
             // 移動型マップアビリティは移動手段として使うことを考慮
-            if (IsAbilityClassifiedAs(a, "Ｍ投") | IsAbilityClassifiedAs(a, "Ｍ投"1) | IsAbilityClassifiedAs(a, "Ｍ投"2))
+            if (IsAbilityClassifiedAs(a, "Ｍ投") || IsAbilityClassifiedAs(a, "Ｍ投"1) || IsAbilityClassifiedAs(a, "Ｍ投"2))
             {
                 IsAbilityUsefulRet = true;
                 return IsAbilityUsefulRet;
@@ -26737,7 +26737,7 @@ namespace Project1
                     case "味方":
                     case "ＮＰＣ":
                         {
-                            if (withBlock.Party != "味方" & withBlock.Party0 != "味方" & withBlock.Party != "ＮＰＣ" & withBlock.Party0 != "ＮＰＣ")
+                            if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
                             {
                                 return IsAbilityEffectiveRet;
                             }
@@ -26747,7 +26747,7 @@ namespace Project1
 
                     default:
                         {
-                            if ((withBlock.Party ?? "") != (Party ?? "") & (withBlock.Party0 ?? "") != (Party ?? ""))
+                            if ((withBlock.Party ?? "") != (Party ?? "") && (withBlock.Party0 ?? "") != (Party ?? ""))
                             {
                                 return IsAbilityEffectiveRet;
                             }
@@ -26799,7 +26799,7 @@ namespace Project1
                             {
                                 if (string.IsNullOrEmpty(edata))
                                 {
-                                    if (withBlock.ConditionLifetime("攻撃不能") > 0 | withBlock.ConditionLifetime("移動不能") > 0 | withBlock.ConditionLifetime("装甲劣化") > 0 | withBlock.ConditionLifetime("混乱") > 0 | withBlock.ConditionLifetime("恐怖") > 0 | withBlock.ConditionLifetime("踊り") > 0 | withBlock.ConditionLifetime("狂戦士") > 0 | withBlock.ConditionLifetime("ゾンビ") > 0 | withBlock.ConditionLifetime("回復不能") > 0 | withBlock.ConditionLifetime("石化") > 0 | withBlock.ConditionLifetime("凍結") > 0 | withBlock.ConditionLifetime("麻痺") > 0 | withBlock.ConditionLifetime("睡眠") > 0 | withBlock.ConditionLifetime("毒") > 0 | withBlock.ConditionLifetime("盲目") > 0 | withBlock.ConditionLifetime("沈黙") > 0 | withBlock.ConditionLifetime("魅了") > 0 | withBlock.ConditionLifetime("憑依") > 0 | withBlock.ConditionLifetime("オーラ使用不能") > 0 | withBlock.ConditionLifetime("超能力使用不能") > 0 | withBlock.ConditionLifetime("同調率使用不能") > 0 | withBlock.ConditionLifetime("超感覚使用不能") > 0 | withBlock.ConditionLifetime("知覚強化使用不能") > 0 | withBlock.ConditionLifetime("霊力使用不能") > 0 | withBlock.ConditionLifetime("術使用不能") > 0 | withBlock.ConditionLifetime("技使用不能") > 0)
+                                    if (withBlock.ConditionLifetime("攻撃不能") > 0 || withBlock.ConditionLifetime("移動不能") > 0 || withBlock.ConditionLifetime("装甲劣化") > 0 || withBlock.ConditionLifetime("混乱") > 0 || withBlock.ConditionLifetime("恐怖") > 0 || withBlock.ConditionLifetime("踊り") > 0 || withBlock.ConditionLifetime("狂戦士") > 0 || withBlock.ConditionLifetime("ゾンビ") > 0 || withBlock.ConditionLifetime("回復不能") > 0 || withBlock.ConditionLifetime("石化") > 0 || withBlock.ConditionLifetime("凍結") > 0 || withBlock.ConditionLifetime("麻痺") > 0 || withBlock.ConditionLifetime("睡眠") > 0 || withBlock.ConditionLifetime("毒") > 0 || withBlock.ConditionLifetime("盲目") > 0 || withBlock.ConditionLifetime("沈黙") > 0 || withBlock.ConditionLifetime("魅了") > 0 || withBlock.ConditionLifetime("憑依") > 0 || withBlock.ConditionLifetime("オーラ使用不能") > 0 || withBlock.ConditionLifetime("超能力使用不能") > 0 || withBlock.ConditionLifetime("同調率使用不能") > 0 || withBlock.ConditionLifetime("超感覚使用不能") > 0 || withBlock.ConditionLifetime("知覚強化使用不能") > 0 || withBlock.ConditionLifetime("霊力使用不能") > 0 || withBlock.ConditionLifetime("術使用不能") > 0 || withBlock.ConditionLifetime("技使用不能") > 0)
                                     {
                                         IsAbilityEffectiveRet = true;
                                         return IsAbilityEffectiveRet;
@@ -26942,7 +26942,7 @@ namespace Project1
                                 {
                                     {
                                         var withBlock1 = withBlock.MainPilot();
-                                        if (withBlock1.Morale < withBlock1.MaxMorale & withBlock1.Personality != "機械")
+                                        if (withBlock1.Morale < withBlock1.MaxMorale && withBlock1.Personality != "機械")
                                         {
                                             IsAbilityEffectiveRet = true;
                                             return IsAbilityEffectiveRet;
@@ -26954,7 +26954,7 @@ namespace Project1
                                     {
                                         {
                                             var withBlock2 = withBlock.Pilot(j);
-                                            if (withBlock2.Morale < withBlock2.MaxMorale & withBlock2.Personality != "機械")
+                                            if (withBlock2.Morale < withBlock2.MaxMorale && withBlock2.Personality != "機械")
                                             {
                                                 IsAbilityEffectiveRet = true;
                                                 return IsAbilityEffectiveRet;
@@ -26967,7 +26967,7 @@ namespace Project1
                                     {
                                         {
                                             var withBlock3 = withBlock.Support(j);
-                                            if (withBlock3.Morale < withBlock3.MaxMorale & withBlock3.Personality != "機械")
+                                            if (withBlock3.Morale < withBlock3.MaxMorale && withBlock3.Personality != "機械")
                                             {
                                                 IsAbilityEffectiveRet = true;
                                                 return IsAbilityEffectiveRet;
@@ -26979,7 +26979,7 @@ namespace Project1
                                     {
                                         {
                                             var withBlock4 = withBlock.AdditionalSupport();
-                                            if (withBlock4.Morale < withBlock4.MaxMorale & withBlock4.Personality != "機械")
+                                            if (withBlock4.Morale < withBlock4.MaxMorale && withBlock4.Personality != "機械")
                                             {
                                                 IsAbilityEffectiveRet = true;
                                                 return IsAbilityEffectiveRet;
@@ -27014,7 +27014,7 @@ namespace Project1
                                     {
                                         if (withBlock.Bullet(j) < withBlock.MaxBullet(j))
                                         {
-                                            if ((withBlock.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock.Weapon(j).Class, edata) > 0)
+                                            if ((withBlock.WeaponNickname(j) ?? "") == (edata ?? "") || GeneralLib.InStrNotNest(withBlock.Weapon(j).Class, edata) > 0)
                                             {
                                                 IsAbilityEffectiveRet = true;
                                                 return IsAbilityEffectiveRet;
@@ -27031,7 +27031,7 @@ namespace Project1
                             {
                                 bool localIsConditionSatisfied() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "付加"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
 
-                                if (!localIsConditionSatisfied() | IsAbilityClassifiedAs(a, "除"))
+                                if (!localIsConditionSatisfied() || IsAbilityClassifiedAs(a, "除"))
                                 {
                                     IsAbilityEffectiveRet = true;
                                     return IsAbilityEffectiveRet;
@@ -27045,7 +27045,7 @@ namespace Project1
                             {
                                 bool localIsConditionSatisfied1() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "強化"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
 
-                                if (!localIsConditionSatisfied1() | IsAbilityClassifiedAs(a, "除"))
+                                if (!localIsConditionSatisfied1() || IsAbilityClassifiedAs(a, "除"))
                                 {
                                     IsAbilityEffectiveRet = true;
                                     return IsAbilityEffectiveRet;
@@ -27076,7 +27076,7 @@ namespace Project1
                                     goto NextEffect;
                                 }
 
-                                if (withBlock.Action == 0 & withBlock.MaxAction() > 0)
+                                if (withBlock.Action == 0 && withBlock.MaxAction() > 0)
                                 {
                                     IsAbilityEffectiveRet = true;
                                     return IsAbilityEffectiveRet;
@@ -27100,7 +27100,7 @@ namespace Project1
 
                         case "能力コピー":
                             {
-                                if (ReferenceEquals(t, this) | IsFeatureAvailable("ノーマルモード") | Conversions.ToInteger(withBlock.IsConditionSatisfied("混乱")) > 0 | withBlock.IsEnemy(this) | IsEnemy(t))
+                                if (ReferenceEquals(t, this) || IsFeatureAvailable("ノーマルモード") || Conversions.ToInteger(withBlock.IsConditionSatisfied("混乱")) > 0 || withBlock.IsEnemy(this) || IsEnemy(t))
                                 {
                                     IsAbilityEffectiveRet = false;
                                     goto NextEffect;
@@ -27252,7 +27252,7 @@ namespace Project1
             string fname;
             if (IsAbilityClassifiedAs(a, "封"))
             {
-                if (!t.Weakness(Ability(a).Class) & !t.Effective(Ability(a).Class))
+                if (!t.Weakness(Ability(a).Class) && !t.Effective(Ability(a).Class))
                 {
                     return IsAbilityApplicableRet;
                 }
@@ -27264,7 +27264,7 @@ namespace Project1
 
                 bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Ability(a).Class, GeneralLib.InStrNotNest(Ability(a).Class, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
 
-                if (!localWeakness() & !localEffective())
+                if (!localWeakness() && !localEffective())
                 {
                     return IsAbilityApplicableRet;
                 }
@@ -27284,7 +27284,7 @@ namespace Project1
             // 無効化の対象になる場合は使用出来ない
             if (t.Immune(Ability(a).Class))
             {
-                if (!t.Weakness(Ability(a).Class) & !t.Effective(Ability(a).Class))
+                if (!t.Weakness(Ability(a).Class) && !t.Effective(Ability(a).Class))
                 {
                     return IsAbilityApplicableRet;
                 }
@@ -27396,7 +27396,7 @@ namespace Project1
 
             // 合体技で射程が１の場合は相手を囲んでいる必要がある
             var partners = default(Unit[]);
-            if (IsAbilityClassifiedAs(a, "合") & !IsAbilityClassifiedAs(a, "Ｍ") & AbilityMaxRange(a) == 1)
+            if (IsAbilityClassifiedAs(a, "合") && !IsAbilityClassifiedAs(a, "Ｍ") && AbilityMaxRange(a) == 1)
             {
                 CombinationPartner("アビリティ", a, partners, t.x, t.y);
                 if (Information.UBound(partners) == 0)
@@ -27633,7 +27633,7 @@ namespace Project1
                     PilotMessage("かけ声(" + aname + ")", msg_mode: "");
                 }
 
-                if (IsMessageDefined(aname) | IsMessageDefined("アビリティ"))
+                if (IsMessageDefined(aname) || IsMessageDefined("アビリティ"))
                 {
                     if (!My.MyProject.Forms.frmMessage.Visible)
                     {
@@ -27655,7 +27655,7 @@ namespace Project1
                     PlayAnimation(aname + "(使用)", "", true);
                 }
 
-                if (IsAnimationDefined(aname + "(発動)", sub_situation: "") | IsAnimationDefined(aname, sub_situation: ""))
+                if (IsAnimationDefined(aname + "(発動)", sub_situation: "") || IsAnimationDefined(aname, sub_situation: ""))
                 {
                     PlayAnimation(aname + "(発動)", "", true);
                     is_anime_played = true;
@@ -27757,7 +27757,7 @@ namespace Project1
 
                 if (IsSpellAbility(a))
                 {
-                    if (t is object & this.Ability(a).MaxRange != 0)
+                    if (t is object && this.Ability(a).MaxRange != 0)
                     {
                         if (ReferenceEquals(this, t))
                         {
@@ -27792,7 +27792,7 @@ namespace Project1
                 }
                 else
                 {
-                    if (t is object & this.Ability(a).MaxRange != 0)
+                    if (t is object && this.Ability(a).MaxRange != 0)
                     {
                         if (ReferenceEquals(this, t))
                         {
@@ -27841,7 +27841,7 @@ namespace Project1
 
                     SysMessage("アビリティ", sub_situation: "", add_msg: "");
                 }
-                else if (atype == "変身" & this.Ability(a).MaxRange == 0)
+                else if (atype == "変身" && this.Ability(a).MaxRange == 0)
                 {
                 }
                 // 変身の場合はメッセージなし
@@ -27875,7 +27875,7 @@ namespace Project1
             else
             {
                 // マップアビリティの場合
-                if (IsAnimationDefined(aname + "(発動)", sub_situation: "") | IsAnimationDefined(aname, sub_situation: ""))
+                if (IsAnimationDefined(aname + "(発動)", sub_situation: "") || IsAnimationDefined(aname, sub_situation: ""))
                 {
                     PlayAnimation(aname + "(発動)", sub_situation: "");
                     is_anime_played = true;
@@ -27914,7 +27914,7 @@ namespace Project1
 
                     int localConditionLifetime() { object argIndex1 = i; var ret = t.ConditionLifetime(argIndex1); return ret; }
 
-                    if ((Strings.InStr(localCondition(), "付加") > 0 | Strings.InStr(localCondition1(), "強化") > 0 | Strings.InStr(localCondition2(), "ＵＰ") > 0) & localCondition3() != "ノーマルモード付加" & localConditionLifetime() != 0)
+                    if ((Strings.InStr(localCondition(), "付加") > 0 || Strings.InStr(localCondition1(), "強化") > 0 || Strings.InStr(localCondition2(), "ＵＰ") > 0) && localCondition3() != "ノーマルモード付加" && localConditionLifetime() != 0)
                     {
                         t.DeleteCondition(i);
                     }
@@ -27996,7 +27996,7 @@ namespace Project1
 
                                     if (!is_anime_played)
                                     {
-                                        if (IsSpellAbility(a) | IsAbilityClassifiedAs(a, "魔"))
+                                        if (IsSpellAbility(a) || IsAbilityClassifiedAs(a, "魔"))
                                         {
                                             Effect.ShowAnimation("回復魔法発動");
                                         }
@@ -28088,7 +28088,7 @@ namespace Project1
 
                                     if (!is_anime_played)
                                     {
-                                        if (IsSpellAbility(a) | IsAbilityClassifiedAs(a, "魔"))
+                                        if (IsSpellAbility(a) || IsAbilityClassifiedAs(a, "魔"))
                                         {
                                             Effect.ShowAnimation("回復魔法発動");
                                         }
@@ -28467,7 +28467,7 @@ namespace Project1
                                                 var loopTo14 = withBlock25.CountWeapon();
                                                 for (k = 1; k <= loopTo14; k++)
                                                 {
-                                                    if (withBlock25.IsWeaponClassifiedAs(k, "共") & withBlock25.AbilityLevel(j, "共") == withBlock25.WeaponLevel(k, "共"))
+                                                    if (withBlock25.IsWeaponClassifiedAs(k, "共") && withBlock25.AbilityLevel(j, "共") == withBlock25.WeaponLevel(k, "共"))
                                                     {
                                                         withBlock25.SetStock(j, withBlock25.MaxStock(j));
                                                     }
@@ -28487,7 +28487,7 @@ namespace Project1
                                     {
                                         if (withBlock25.Bullet(j) < withBlock25.MaxBullet(j))
                                         {
-                                            if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class, edata) > 0)
+                                            if ((withBlock25.WeaponNickname(j) ?? "") == (edata ?? "") || GeneralLib.InStrNotNest(withBlock25.Weapon(j).Class, edata) > 0)
                                             {
                                                 withBlock25.SetBullet(j, withBlock25.MaxBullet(j));
                                                 flag = true;
@@ -28506,7 +28506,7 @@ namespace Project1
                                             {
                                                 if (withBlock26.Bullet(k) < withBlock26.MaxBullet(k))
                                                 {
-                                                    if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") | GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class, edata) > 0)
+                                                    if ((withBlock26.WeaponNickname(k) ?? "") == (edata ?? "") || GeneralLib.InStrNotNest(withBlock26.Weapon(k).Class, edata) > 0)
                                                     {
                                                         withBlock26.SetBullet(k, withBlock26.MaxBullet(k));
                                                     }
@@ -28523,7 +28523,7 @@ namespace Project1
                                             var loopTo18 = withBlock25.CountWeapon();
                                             for (j = 1; j <= loopTo18; j++)
                                             {
-                                                if (withBlock25.IsWeaponClassifiedAs(j, "共") & withBlock25.WeaponLevel(j, "共") == withBlock25.WeaponLevel(w, "共"))
+                                                if (withBlock25.IsWeaponClassifiedAs(j, "共") && withBlock25.WeaponLevel(j, "共") == withBlock25.WeaponLevel(w, "共"))
                                                 {
                                                     withBlock25.SetBullet(j, withBlock25.MaxBullet(j));
                                                 }
@@ -28532,7 +28532,7 @@ namespace Project1
                                             var loopTo19 = withBlock25.CountAbility();
                                             for (j = 1; j <= loopTo19; j++)
                                             {
-                                                if (withBlock25.IsAbilityClassifiedAs(j, "共") & withBlock25.AbilityLevel(j, "共") == withBlock25.WeaponLevel(w, "共"))
+                                                if (withBlock25.IsAbilityClassifiedAs(j, "共") && withBlock25.AbilityLevel(j, "共") == withBlock25.WeaponLevel(w, "共"))
                                                 {
                                                     withBlock25.SetStock(j, withBlock25.MaxStock(j));
                                                 }
@@ -28563,7 +28563,7 @@ namespace Project1
                                 var withBlock27 = t;
                                 if (!is_anime_played)
                                 {
-                                    if (IsSpellAbility(a) | IsAbilityClassifiedAs(a, "魔"))
+                                    if (IsSpellAbility(a) || IsAbilityClassifiedAs(a, "魔"))
                                     {
                                         Effect.ShowAnimation("回復魔法発動");
                                     }
@@ -28732,7 +28732,7 @@ namespace Project1
 
                                         int localConditionLifetime1() { object argIndex1 = (object)hs35eef8b33aab4975b1c788eecf306c48(); var ret = withBlock27.ConditionLifetime(argIndex1); return ret; }
 
-                                        if (Strings.Len(localCondition5()) > 6 & Strings.Right(localCondition6(), 6) == "属性使用不能" & localConditionLifetime1() > 0)
+                                        if (Strings.Len(localCondition5()) > 6 && Strings.Right(localCondition6(), 6) == "属性使用不能" && localConditionLifetime1() > 0)
                                         {
                                             string localCondition4() { object argIndex1 = j; var ret = withBlock27.Condition(argIndex1); return ret; }
 
@@ -28825,7 +28825,7 @@ namespace Project1
                                 for (j = 3; j <= loopTo20; j++)
                                     fdata = fdata + GeneralLib.LIndex(edata, j) + " ";
                                 fdata = Strings.Trim(fdata);
-                                if (Strings.Left(fdata, 1) == "\"" & Strings.Right(fdata, 1) == "\"")
+                                if (Strings.Left(fdata, 1) == "\"" && Strings.Right(fdata, 1) == "\"")
                                 {
                                     fdata = Strings.Trim(Strings.Mid(fdata, 2, Strings.Len(fdata) - 2));
                                 }
@@ -28983,7 +28983,7 @@ namespace Project1
                                         {
                                             // 付加する能力名
                                             fname = GeneralLib.ListIndex(fdata, 1);
-                                            if (string.IsNullOrEmpty(fname) | fname == "非表示")
+                                            if (string.IsNullOrEmpty(fname) || fname == "非表示")
                                             {
                                                 if ((GeneralLib.LIndex(edata, 2) ?? "") != (Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL) ?? ""))
                                                 {
@@ -29114,7 +29114,7 @@ namespace Project1
 
                                 // 強化する能力名
                                 fname = GeneralLib.LIndex(edata, 3);
-                                if (string.IsNullOrEmpty(fname) | fname == "非表示")
+                                if (string.IsNullOrEmpty(fname) || fname == "非表示")
                                 {
                                     fname = GeneralLib.LIndex(edata, 1);
                                 }
@@ -29160,7 +29160,7 @@ namespace Project1
                                 // 状態発動アニメーション表示
                                 bool localIsAnimationDefined() { string argmain_situation = aname + "(発動)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-                                if (!localIsAnimationDefined() & !IsAnimationDefined(aname, sub_situation: ""))
+                                if (!localIsAnimationDefined() && !IsAnimationDefined(aname, sub_situation: ""))
                                 {
                                     switch (edata ?? "")
                                     {
@@ -29389,7 +29389,7 @@ namespace Project1
 
                                 PilotData localItem2() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
-                                if (Strings.InStr(localItem1().Name, "(ザコ)") > 0 | Strings.InStr(localItem2().Name, "(汎用)") > 0)
+                                if (Strings.InStr(localItem1().Name, "(ザコ)") > 0 || Strings.InStr(localItem2().Name, "(汎用)") > 0)
                                 {
                                     p = SRC.PList.Add(pname, MainPilot().Level, Party, gid: "");
                                     Party = argpparty1;
@@ -29458,11 +29458,11 @@ namespace Project1
                                 }
 
                                 // ユニットを配置
-                                if (Map.MapDataForUnit[tx, ty] is null & u.IsAbleToEnter(tx, ty))
+                                if (Map.MapDataForUnit[tx, ty] is null && u.IsAbleToEnter(tx, ty))
                                 {
                                     u.StandBy(tx, ty, "出撃");
                                 }
-                                else if (Map.MapDataForUnit[tx2, ty2] is null & u.IsAbleToEnter(tx2, ty2))
+                                else if (Map.MapDataForUnit[tx2, ty2] is null && u.IsAbleToEnter(tx2, ty2))
                                 {
                                     u.StandBy(tx2, ty2, "出撃");
                                 }
@@ -29549,7 +29549,7 @@ namespace Project1
                         {
                             if (!ReferenceEquals(t, CurrentForm()))
                             {
-                                if (t.Action == 0 & t.MaxAction() > 0)
+                                if (t.Action == 0 && t.MaxAction() > 0)
                                 {
                                     if (t.UsedAction > t.MaxAction())
                                     {
@@ -29630,7 +29630,7 @@ namespace Project1
                                     withBlock34.Die();
                                 }
                             }
-                            else if (withBlock34.IsAbilityClassifiedAs(j, "失") & withBlock34.HP == 0)
+                            else if (withBlock34.IsAbilityClassifiedAs(j, "失") && withBlock34.HP == 0)
                             {
                                 withBlock34.Die();
                             }
@@ -29647,7 +29647,7 @@ namespace Project1
 
                                         string localLIndex2() { string arglist = hsd94f2b67de0b4586a4a3a3d57d84bb20(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                        if (localFeature() == "変形技" & (localLIndex2() ?? "") == (aname ?? ""))
+                                        if (localFeature() == "変形技" && (localLIndex2() ?? "") == (aname ?? ""))
                                         {
                                             string localFeatureData() { object argIndex1 = k; var ret = withBlock34.FeatureData(argIndex1); return ret; }
 
@@ -29706,7 +29706,7 @@ namespace Project1
                             withBlock34.AddCondition("消耗", 1, cdata: "");
                         }
 
-                        if (IsAbilityClassifiedAs(a, "Ｃ") & withBlock34.IsConditionSatisfied("チャージ完了"))
+                        if (IsAbilityClassifiedAs(a, "Ｃ") && withBlock34.IsConditionSatisfied("チャージ完了"))
                         {
                             withBlock34.DeleteCondition("チャージ完了");
                         }
@@ -29764,7 +29764,7 @@ namespace Project1
                                 withBlock34.Die();
                             }
                         }
-                        else if (IsAbilityClassifiedAs(a, "失") & withBlock34.HP == 0)
+                        else if (IsAbilityClassifiedAs(a, "失") && withBlock34.HP == 0)
                         {
                             withBlock34.Die();
                         }
@@ -29797,7 +29797,7 @@ namespace Project1
                         if ((withBlock37.Ability(i).Name ?? "") == (aname ?? ""))
                         {
                             // アイテムを消費
-                            if (withBlock37.Ability(i).IsItem() & withBlock37.Stock(i) == 0 & withBlock37.MaxStock(i) > 0)
+                            if (withBlock37.Ability(i).IsItem() && withBlock37.Stock(i) == 0 && withBlock37.MaxStock(i) > 0)
                             {
                                 var loopTo31 = withBlock37.CountItem();
                                 for (j = 1; j <= loopTo31; j++)
@@ -29843,7 +29843,7 @@ namespace Project1
             }
 
             // 経験値の獲得
-            if (is_useful & !is_event & !Expression.IsOptionDefined("アビリティ経験値無効"))
+            if (is_useful && !is_event && !Expression.IsOptionDefined("アビリティ経験値無効"))
             {
                 GetExp(t, "アビリティ", exp_mode: "");
                 if (!Expression.IsOptionDefined("合体技パートナー経験値無効"))
@@ -29925,7 +29925,7 @@ namespace Project1
                     Die();
                 }
             }
-            else if (IsAbilityClassifiedAs(a, "失") & HP == 0)
+            else if (IsAbilityClassifiedAs(a, "失") && HP == 0)
             {
                 Die();
             }
@@ -29942,7 +29942,7 @@ namespace Project1
 
                         string localLIndex3() { string arglist = hs943d006232364b899ee9a8aea8dcca5a(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature1() == "変形技" & (localLIndex3() ?? "") == (Ability(a).Name ?? ""))
+                        if (localFeature1() == "変形技" && (localLIndex3() ?? "") == (Ability(a).Name ?? ""))
                         {
                             string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -29985,7 +29985,7 @@ namespace Project1
             }
 
             // アイテムを消費
-            else if (Ability(a).IsItem() & Stock(a) == 0 & MaxStock(a) > 0)
+            else if (Ability(a).IsItem() && Stock(a) == 0 && MaxStock(a) > 0)
             {
                 // アイテムを削除
                 num = Data.CountAbility();
@@ -30132,15 +30132,15 @@ namespace Project1
             }
             else if (IsAbilityClassifiedAs(a, "Ｍ拡"))
             {
-                if (ty < y & Math.Abs((y - ty)) > Math.Abs((x - tx)))
+                if (ty < y && Math.Abs((y - ty)) > Math.Abs((x - tx)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "N");
                 }
-                else if (ty > y & Math.Abs((y - ty)) > Math.Abs((x - tx)))
+                else if (ty > y && Math.Abs((y - ty)) > Math.Abs((x - tx)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "S");
                 }
-                else if (tx < x & Math.Abs((x - tx)) > Math.Abs((y - ty)))
+                else if (tx < x && Math.Abs((x - tx)) > Math.Abs((y - ty)))
                 {
                     Map.AreaInCone(x, y, min_range, max_range, "W");
                 }
@@ -30151,15 +30151,15 @@ namespace Project1
             }
             else if (IsAbilityClassifiedAs(a, "Ｍ扇"))
             {
-                if (ty < y & Math.Abs((y - ty)) >= Math.Abs((x - tx)))
+                if (ty < y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "N", AbilityLevel(a, "Ｍ扇"));
                 }
-                else if (ty > y & Math.Abs((y - ty)) >= Math.Abs((x - tx)))
+                else if (ty > y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "S", AbilityLevel(a, "Ｍ扇"));
                 }
-                else if (tx < x & Math.Abs((x - tx)) >= Math.Abs((y - ty)))
+                else if (tx < x && Math.Abs((x - tx)) >= Math.Abs((y - ty)))
                 {
                     Map.AreaInSector(x, y, min_range, max_range, "W", AbilityLevel(a, "Ｍ扇"));
                 }
@@ -30176,7 +30176,7 @@ namespace Project1
             {
                 Map.AreaInRange(x, y, max_range, min_range, "すべて");
             }
-            else if (IsAbilityClassifiedAs(a, "Ｍ移") | IsAbilityClassifiedAs(a, "Ｍ線"))
+            else if (IsAbilityClassifiedAs(a, "Ｍ移") || IsAbilityClassifiedAs(a, "Ｍ線"))
             {
                 Map.AreaInPointToPoint(x, y, tx, ty);
             }
@@ -30580,7 +30580,7 @@ namespace Project1
             }
 
             // 獲得した経験値の表示
-            if (is_useful & !is_event & !Expression.IsOptionDefined("アビリティ経験値無効"))
+            if (is_useful && !is_event && !Expression.IsOptionDefined("アビリティ経験値無効"))
             {
                 GetExp(max_lv_t, "アビリティ", exp_mode: "");
                 if (!Expression.IsOptionDefined("合体技パートナー経験値無効"))
@@ -30632,7 +30632,7 @@ namespace Project1
                                     withBlock5.Die();
                                 }
                             }
-                            else if (withBlock5.IsAbilityClassifiedAs(j, "失") & withBlock5.HP == 0)
+                            else if (withBlock5.IsAbilityClassifiedAs(j, "失") && withBlock5.HP == 0)
                             {
                                 withBlock5.Die();
                             }
@@ -30649,7 +30649,7 @@ namespace Project1
 
                                         string localLIndex() { string arglist = hsa17e1f441163458982d95695a4abb266(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                        if (localFeature() == "変形技" & (localLIndex() ?? "") == (aname ?? ""))
+                                        if (localFeature() == "変形技" && (localLIndex() ?? "") == (aname ?? ""))
                                         {
                                             string localFeatureData() { object argIndex1 = k; var ret = withBlock5.FeatureData(argIndex1); return ret; }
 
@@ -30708,7 +30708,7 @@ namespace Project1
                             withBlock5.AddCondition("消耗", 1, cdata: "");
                         }
 
-                        if (IsAbilityClassifiedAs(a, "Ｃ") & withBlock5.IsConditionSatisfied("チャージ完了"))
+                        if (IsAbilityClassifiedAs(a, "Ｃ") && withBlock5.IsConditionSatisfied("チャージ完了"))
                         {
                             withBlock5.DeleteCondition("チャージ完了");
                         }
@@ -30766,7 +30766,7 @@ namespace Project1
                                 withBlock5.Die();
                             }
                         }
-                        else if (IsAbilityClassifiedAs(a, "失") & withBlock5.HP == 0)
+                        else if (IsAbilityClassifiedAs(a, "失") && withBlock5.HP == 0)
                         {
                             withBlock5.Die();
                         }
@@ -30884,7 +30884,7 @@ namespace Project1
                     }
                 }
             }
-            else if (IsAbilityClassifiedAs(a, "失") & HP == 0)
+            else if (IsAbilityClassifiedAs(a, "失") && HP == 0)
             {
                 Die();
                 if (!is_event)
@@ -30909,7 +30909,7 @@ namespace Project1
 
                         string localLIndex1() { string arglist = hs60551c61d0954d3e93ffb43a55a73d66(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature1() == "変形技" & (localLIndex1() ?? "") == (Ability(a).Name ?? ""))
+                        if (localFeature1() == "変形技" && (localLIndex1() ?? "") == (Ability(a).Name ?? ""))
                         {
                             string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -30952,7 +30952,7 @@ namespace Project1
             }
 
             // アイテムを消費
-            else if (Ability(a).IsItem() & Stock(a) == 0 & MaxStock(a) > 0)
+            else if (Ability(a).IsItem() && Stock(a) == 0 && MaxStock(a) > 0)
             {
                 // アイテムを削除
                 num = Data.CountAbility();
@@ -30994,7 +30994,7 @@ namespace Project1
             if (!is_event)
             {
                 Event.HandleEvent("使用後", CurrentForm().MainPilot().ID, aname);
-                if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
                     return;
                 }
@@ -31057,7 +31057,7 @@ namespace Project1
             }
 
             // チャージ式アビリティ
-            if (IsAbilityClassifiedAs(a, "Ｃ") & IsConditionSatisfied("チャージ完了"))
+            if (IsAbilityClassifiedAs(a, "Ｃ") && IsConditionSatisfied("チャージ完了"))
             {
                 DeleteCondition("チャージ完了");
             }
@@ -31128,7 +31128,7 @@ namespace Project1
 
                     string localFeatureData1() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                    if (localFeature() == "ハードポイント" & (localFeatureData() == "強化パーツ" | localFeatureData1() == "アイテム"))
+                    if (localFeature() == "ハードポイント" && (localFeatureData() == "強化パーツ" || localFeatureData1() == "アイテム"))
                     {
                         double localFeatureLevel() { object argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
 
@@ -31211,7 +31211,7 @@ namespace Project1
                 case "強化パーツ":
                 case "アイテム":
                     {
-                        if (itm.FeatureData("ハードポイント") != "強化パーツ" & itm.FeatureData("ハードポイント") != "アイテム")
+                        if (itm.FeatureData("ハードポイント") != "強化パーツ" && itm.FeatureData("ハードポイント") != "アイテム")
                         {
                             // 装備している強化パーツ数をカウント
                             num = 0;
@@ -31220,7 +31220,7 @@ namespace Project1
                                 itm2 = currentItm2;
                                 {
                                     var withBlock = itm2;
-                                    if (withBlock.Part() == "強化パーツ" | withBlock.Part() == "アイテム")
+                                    if (withBlock.Part() == "強化パーツ" || withBlock.Part() == "アイテム")
                                     {
                                         num = (num + withBlock.Size());
                                     }
@@ -31231,7 +31231,7 @@ namespace Project1
                             num = (num + itm.FeatureLevel("大型アイテム"));
 
                             // 何れかを外さなければならない場合
-                            while (num >= MaxItemNum() & num > 0)
+                            while (num >= MaxItemNum() && num > 0)
                             {
                                 found_item = false;
 
@@ -31241,7 +31241,7 @@ namespace Project1
                                     itm2 = currentItm21;
                                     {
                                         var withBlock1 = itm2;
-                                        if (withBlock1.Part() == "強化パーツ" | withBlock1.Part() == "アイテム")
+                                        if (withBlock1.Part() == "強化パーツ" || withBlock1.Part() == "アイテム")
                                         {
                                             if (!withBlock1.IsFeatureAvailable("ハードポイント"))
                                             {
@@ -31296,7 +31296,7 @@ namespace Project1
                         foreach (Item currentItm22 in colItem)
                         {
                             itm2 = currentItm22;
-                            if (itm2.Part() == "両手" | itm2.Part() == "片手" | itm2.Part() == "盾")
+                            if (itm2.Part() == "両手" || itm2.Part() == "片手" || itm2.Part() == "盾")
                             {
                                 if (Party0 != "味方")
                                 {
@@ -31423,7 +31423,7 @@ namespace Project1
                         foreach (Item currentItm26 in colItem)
                         {
                             itm2 = currentItm26;
-                            if (itm2.Part() == "両肩" | itm2.Part() == "肩")
+                            if (itm2.Part() == "両肩" || itm2.Part() == "肩")
                             {
                                 if (Party0 != "味方")
                                 {
@@ -31494,7 +31494,7 @@ namespace Project1
 
                             string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                            if (localFeature() == "ハードポイント" & (localFeatureData() ?? "") == (itm.Part() ?? ""))
+                            if (localFeature() == "ハードポイント" && (localFeatureData() ?? "") == (itm.Part() ?? ""))
                             {
                                 // まず空きスロット数を計算
                                 empty_slot = ItemSlotSize(itm.Part());
@@ -31710,7 +31710,7 @@ namespace Project1
 
                         string localFeatureData2() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
-                        if (localFeatureData1() != "強化パーツ" & localFeatureData2() != "アイテム")
+                        if (localFeatureData1() != "強化パーツ" && localFeatureData2() != "アイテム")
                         {
                             var loopTo5 = Information.UBound(prev_hard_point);
                             for (j = 1; j <= loopTo5; j++)
@@ -31751,11 +31751,11 @@ namespace Project1
                     foreach (Item currentItm in colItem)
                     {
                         itm = currentItm;
-                        if (itm.Part() == "強化パーツ" | itm.Part() == "アイテム")
+                        if (itm.Part() == "強化パーツ" || itm.Part() == "アイテム")
                         {
                             i = (i + 1);
                             // ハードポイントを持たないアイテムから選んで削除
-                            if (i > num & !itm.IsFeatureAvailable("ハードポイント"))
+                            if (i > num && !itm.IsFeatureAvailable("ハードポイント"))
                             {
                                 colItem.Remove(itm.ID);
                                 if (itm.Unit is object)
@@ -31787,7 +31787,7 @@ namespace Project1
                     foreach (Item currentItm1 in colItem)
                     {
                         itm = currentItm1;
-                        if (itm.Part() == "強化パーツ" | itm.Part() == "アイテム")
+                        if (itm.Part() == "強化パーツ" || itm.Part() == "アイテム")
                         {
                             i = (i + 1);
                             if (i > num)
@@ -31905,7 +31905,7 @@ namespace Project1
                 }
 
                 // 両手利きで無くなってしまった場合は二個目の片手アイテムを外す
-                if (is_ambidextrous & !IsFeatureAvailable("両手利き"))
+                if (is_ambidextrous && !IsFeatureAvailable("両手利き"))
                 {
                     num = 0;
                     foreach (Item currentItm3 in colItem)
@@ -32103,7 +32103,7 @@ namespace Project1
             if (iclass == "汎用")
             {
                 // ただし強化パーツのチェックは必要
-                if (it.Part() == "強化パーツ" & IsHero())
+                if (it.Part() == "強化パーツ" && IsHero())
                 {
                     IsAbleToEquipRet = false;
                     return IsAbleToEquipRet;
@@ -32143,7 +32143,7 @@ namespace Project1
                             else if (Strings.InStr(iclass, "専用)") > 0)
                             {
                                 // ユニットクラス、ユニット名による専用指定？
-                                if (Strings.InStr(iclass, eclass0 + "(") == 1 & (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + Name + "専用)") > 0 | Strings.InStr(iclass, "(" + Nickname + "専用)") > 0))
+                                if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + Name + "専用)") > 0 || Strings.InStr(iclass, "(" + Nickname + "専用)") > 0))
                                 {
                                     IsAbleToEquipRet = true;
                                     return IsAbleToEquipRet;
@@ -32181,7 +32181,7 @@ namespace Project1
                                     else if (Strings.InStr(iclass, "専用)") > 0)
                                     {
                                         // ユニットクラス、ユニット名による専用指定？
-                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 & (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock.Name + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock.Nickname + "専用)") > 0))
+                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock.Nickname + "専用)") > 0))
                                         {
                                             IsAbleToEquipRet = true;
                                             return IsAbleToEquipRet;
@@ -32221,7 +32221,7 @@ namespace Project1
                             else if (Strings.InStr(iclass, "専用)") > 0)
                             {
                                 // ユニットクラス、ユニット名による専用指定？
-                                if (Strings.InStr(iclass, eclass0 + "(") == 1 & (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + Name + "専用)") > 0 | Strings.InStr(iclass, "(" + Nickname + "専用)") > 0))
+                                if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + Name + "専用)") > 0 || Strings.InStr(iclass, "(" + Nickname + "専用)") > 0))
                                 {
                                     IsAbleToEquipRet = true;
                                     return IsAbleToEquipRet;
@@ -32259,7 +32259,7 @@ namespace Project1
                                     else if (Strings.InStr(iclass, "専用)") > 0)
                                     {
                                         // ユニットクラス、ユニット名による専用指定？
-                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 & (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock1.Name + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock1.Nickname + "専用)") > 0))
+                                        if (Strings.InStr(iclass, eclass0 + "(") == 1 && (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock1.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock1.Nickname + "専用)") > 0))
                                         {
                                             IsAbleToEquipRet = true;
                                             return IsAbleToEquipRet;
@@ -32303,7 +32303,7 @@ namespace Project1
                         }
 
                         // ユニットクラス、ユニット名による専用指定？
-                        if (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + Name + "専用)") > 0 | Strings.InStr(iclass, "(" + Nickname + "専用)") > 0)
+                        if (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + Name + "専用)") > 0 || Strings.InStr(iclass, "(" + Nickname + "専用)") > 0)
                         {
                             IsAbleToEquipRet = true;
                             return IsAbleToEquipRet;
@@ -32325,7 +32325,7 @@ namespace Project1
                         {
                             {
                                 var withBlock2 = OtherForm(i);
-                                if (Strings.InStr(iclass, "(" + withBlock2.Class0 + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock2.Name + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock2.Nickname + "専用)") > 0)
+                                if (Strings.InStr(iclass, "(" + withBlock2.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock2.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock2.Nickname + "専用)") > 0)
                                 {
                                     IsAbleToEquipRet = true;
                                     return IsAbleToEquipRet;
@@ -32346,7 +32346,7 @@ namespace Project1
                         }
 
                         // ユニットクラス、ユニット名による専用指定？
-                        if (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 | Strings.InStr(iclass, "(" + Name + "専用)") > 0 | Strings.InStr(iclass, "(" + Nickname + "専用)") > 0)
+                        if (Strings.InStr(iclass, "(" + uclass + "専用)") > 0 || Strings.InStr(iclass, "(" + Name + "専用)") > 0 || Strings.InStr(iclass, "(" + Nickname + "専用)") > 0)
                         {
                             IsAbleToEquipRet = true;
                             return IsAbleToEquipRet;
@@ -32368,7 +32368,7 @@ namespace Project1
                         {
                             {
                                 var withBlock3 = OtherForm(i);
-                                if (Strings.InStr(iclass, "(" + withBlock3.Class0 + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock3.Name + "専用)") > 0 | Strings.InStr(iclass, "(" + withBlock3.Nickname + "専用)") > 0)
+                                if (Strings.InStr(iclass, "(" + withBlock3.Class0 + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock3.Name + "専用)") > 0 || Strings.InStr(iclass, "(" + withBlock3.Nickname + "専用)") > 0)
                                 {
                                     IsAbleToEquipRet = true;
                                     return IsAbleToEquipRet;
@@ -32446,7 +32446,7 @@ namespace Project1
 
                 default:
                     {
-                        if (msg_mode == "攻撃" | msg_mode == "カウンター")
+                        if (msg_mode == "攻撃" || msg_mode == "カウンター")
                         {
                             // 攻撃メッセージ
                             wname = situations[1];
@@ -32457,7 +32457,7 @@ namespace Project1
                             {
                                 {
                                     var withBlock = Weapon(w);
-                                    if ((Situation ?? "") == (withBlock.Name ?? "") | (Situation ?? "") == (withBlock.Nickname() ?? ""))
+                                    if ((Situation ?? "") == (withBlock.Name ?? "") || (Situation ?? "") == (withBlock.Nickname() ?? ""))
                                     {
                                         break;
                                     }
@@ -32512,7 +32512,7 @@ namespace Project1
                             Array.Resize(situations, 3);
                             situations[2] = "アビリティ";
                         }
-                        else if (Strings.InStr(Situation, "(命中)") > 0 | Strings.InStr(Situation, "(回避)") > 0 | Strings.InStr(Situation, "(とどめ)") > 0 | Strings.InStr(Situation, "(クリティカル)") > 0)
+                        else if (Strings.InStr(Situation, "(命中)") > 0 || Strings.InStr(Situation, "(回避)") > 0 || Strings.InStr(Situation, "(とどめ)") > 0 || Strings.InStr(Situation, "(クリティカル)") > 0)
                         {
                             // サブシチュエーション付きの攻撃メッセージ
 
@@ -32523,7 +32523,7 @@ namespace Project1
                             {
                                 {
                                     var withBlock1 = Weapon(w);
-                                    if ((wname ?? "") == (withBlock1.Name ?? "") | (wname ?? "") == (withBlock1.Nickname() ?? ""))
+                                    if ((wname ?? "") == (withBlock1.Name ?? "") || (wname ?? "") == (withBlock1.Nickname() ?? ""))
                                     {
                                         break;
                                     }
@@ -32576,14 +32576,14 @@ namespace Project1
                         // 攻撃メッセージでなくても一応攻撃武器名を設定
                         else if (ReferenceEquals(Commands.SelectedUnit, this))
                         {
-                            if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= CountWeapon())
+                            if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= CountWeapon())
                             {
                                 wname = Weapon(Commands.SelectedWeapon).Name;
                             }
                         }
                         else if (ReferenceEquals(Commands.SelectedTarget, this))
                         {
-                            if (0 < Commands.SelectedTWeapon & Commands.SelectedTWeapon <= CountWeapon())
+                            if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= CountWeapon())
                             {
                                 wname = Weapon(Commands.SelectedTWeapon).Name;
                             }
@@ -32607,7 +32607,7 @@ namespace Project1
                     break;
                 }
 
-                if (situations[i] == "格闘" | situations[i] == "射撃")
+                if (situations[i] == "格闘" || situations[i] == "射撃")
                 {
                     buf = "Message(" + MainPilot().ID + ",攻撃)";
                     if (Expression.IsLocalVariableDefined(buf))
@@ -32620,7 +32620,7 @@ namespace Project1
                     }
                 }
 
-                if (situations[i] == "格闘(反撃)" | situations[i] == "射撃(反撃)")
+                if (situations[i] == "格闘(反撃)" || situations[i] == "射撃(反撃)")
                 {
                     buf = "Message(" + MainPilot().ID + ",攻撃(反撃))";
                     if (Expression.IsLocalVariableDefined(buf))
@@ -32657,13 +32657,13 @@ namespace Project1
             // そちらを使用。
             if (string.IsNullOrEmpty(selected_msg))
             {
-                if (IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("麻痺"))
+                if (IsConditionSatisfied("石化") || IsConditionSatisfied("凍結") || IsConditionSatisfied("麻痺"))
                 {
                     // 意識不明
                     return;
                 }
 
-                if (IsConditionSatisfied("沈黙") | IsConditionSatisfied("憑依"))
+                if (IsConditionSatisfied("沈黙") || IsConditionSatisfied("憑依"))
                 {
                     // 無言
                     if (Strings.InStr(Situation, "(") == 0)
@@ -32931,7 +32931,7 @@ namespace Project1
             }
 
             // ゲッターのようなユニットは必ずメインパイロットを使ってメッセージを表示
-            if (Data.PilotNum > 0 & ReferenceEquals(MainPilot(), Pilot(1)) & (Situation ?? "") != (Commands.SelectedSpecialPower ?? ""))
+            if (Data.PilotNum > 0 && ReferenceEquals(MainPilot(), Pilot(1)) && (Situation ?? "") != (Commands.SelectedSpecialPower ?? ""))
             {
                 i = GeneralLib.Dice(CountPilot() + CountSupport());
             }
@@ -32959,7 +32959,7 @@ namespace Project1
 
                 bool localIsDefined5() { object argIndex1 = 1; object argIndex2 = Pilot(argIndex1).MessageType; var ret = SRC.MDList.IsDefined(argIndex2); Pilot(argIndex1).MessageType = Conversions.ToString(argIndex2); return ret; }
 
-                if (!localIsDefined4() & !localIsDefined5())
+                if (!localIsDefined4() && !localIsDefined5())
                 {
                     goto TrySelectedMessage;
                 }
@@ -33105,7 +33105,7 @@ namespace Project1
             ;
 
             // メッセージを表示
-            if (!string.IsNullOrEmpty(selected_msg) & selected_msg != "-")
+            if (!string.IsNullOrEmpty(selected_msg) && selected_msg != "-")
             {
                 if (!string.IsNullOrEmpty(selected_pilot))
                 {
@@ -33284,7 +33284,7 @@ namespace Project1
                     // 相手武器名
                     while (Strings.InStr(msg, "$(相手武器)") > 0)
                     {
-                        if (1 <= tw & tw <= t.CountWeapon())
+                        if (1 <= tw && tw <= t.CountWeapon())
                         {
                             buf = t.WeaponNickname(tw);
                         }
@@ -33504,7 +33504,7 @@ namespace Project1
                 // 相手武器名
                 while (Strings.InStr(msg, "$(相手武器)") > 0)
                 {
-                    if (1 <= tw & tw <= t.CountWeapon())
+                    if (1 <= tw && tw <= t.CountWeapon())
                     {
                         buf = t.WeaponNickname(tw);
                     }
@@ -33562,20 +33562,20 @@ namespace Project1
             // しゃべれない場合
             if (!ignore_condition)
             {
-                if (IsConditionSatisfied("沈黙") | IsConditionSatisfied("憑依") | IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("麻痺") | IsConditionSatisfied("睡眠"))
+                if (IsConditionSatisfied("沈黙") || IsConditionSatisfied("憑依") || IsConditionSatisfied("石化") || IsConditionSatisfied("凍結") || IsConditionSatisfied("麻痺") || IsConditionSatisfied("睡眠"))
                 {
                     IsMessageDefinedRet = false;
                     return IsMessageDefinedRet;
                 }
 
                 // 特殊状態用メッセージが定義されているか確認する場合を考慮
-                if (IsConditionSatisfied("恐怖") & main_situation != "恐怖")
+                if (IsConditionSatisfied("恐怖") && main_situation != "恐怖")
                 {
                     IsMessageDefinedRet = false;
                     return IsMessageDefinedRet;
                 }
 
-                if (IsConditionSatisfied("混乱") & main_situation != "混乱")
+                if (IsConditionSatisfied("混乱") && main_situation != "混乱")
                 {
                     IsMessageDefinedRet = false;
                     return IsMessageDefinedRet;
@@ -33707,7 +33707,7 @@ namespace Project1
             string idx, buf;
             int i, ret;
             string wname;
-            if (string.IsNullOrEmpty(sub_situation) | (main_situation ?? "") == (sub_situation ?? ""))
+            if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
             {
                 situations = new string[2];
                 situations[1] = main_situation + "(解説)";
@@ -34326,7 +34326,7 @@ namespace Project1
             string uclass, uname, msg;
             string[] situations;
             int i, ret;
-            if (string.IsNullOrEmpty(sub_situation) | (main_situation ?? "") == (sub_situation ?? ""))
+            if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
             {
                 situations = new string[2];
                 situations[1] = main_situation + "(解説)";
@@ -34698,7 +34698,7 @@ namespace Project1
             int i, ret;
 
             // シチュエーションのリストを構築
-            if (string.IsNullOrEmpty(sub_situation) | (main_situation ?? "") == (sub_situation ?? ""))
+            if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
             {
                 situations = new string[2];
                 situations[1] = main_situation;
@@ -34844,7 +34844,7 @@ namespace Project1
             GeneralLib.TrimString(anime);
 
             // 表示キャンセル
-            if (string.IsNullOrEmpty(anime) | anime == "-")
+            if (string.IsNullOrEmpty(anime) || anime == "-")
             {
                 return;
             }
@@ -34857,7 +34857,7 @@ namespace Project1
                 return;
             }
 
-            if (SRC.BattleAnimation & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+            if (SRC.BattleAnimation && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             {
                 var loopTo = CountWeapon();
                 for (i = 1; i <= loopTo; i++)
@@ -34875,12 +34875,12 @@ namespace Project1
                     {
                         case "swing.wav":
                             {
-                                if (Strings.InStr(main_situation, "槍") > 0 | Strings.InStr(main_situation, "スピア") > 0 | Strings.InStr(main_situation, "ランス") > 0 | Strings.InStr(main_situation, "ジャベリン") > 0)
+                                if (Strings.InStr(main_situation, "槍") > 0 || Strings.InStr(main_situation, "スピア") > 0 || Strings.InStr(main_situation, "ランス") > 0 || Strings.InStr(main_situation, "ジャベリン") > 0)
                                 {
                                     Effect.ShowAnimation("刺突攻撃");
                                     return;
                                 }
-                                else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "実"))
+                                else if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "実"))
                                 {
                                     Effect.ShowAnimation("白兵武器攻撃");
                                     return;
@@ -35040,7 +35040,7 @@ namespace Project1
             // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             // 自分自身をターゲットに設定する
             // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
-            if (!is_weapon & !is_ability)
+            if (!is_weapon && !is_ability)
             {
                 if (Event.SelectedTargetForEvent is null)
                 {
@@ -35226,7 +35226,7 @@ namespace Project1
                 ;
             }
 
-            if (SRC.BattleAnimation & !GUI.IsPictureDrawn & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+            if (SRC.BattleAnimation && !GUI.IsPictureDrawn && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             {
                 if (w > 0)
                 {
@@ -35253,7 +35253,7 @@ namespace Project1
             }
 
             // 画像を消去しておく
-            if (GUI.IsPictureDrawn & Strings.InStr(main_situation, "(準備)") == 0 & Strings.LCase(anime) != "keep")
+            if (GUI.IsPictureDrawn && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
             {
                 GUI.ClearPicture();
                 // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -35261,7 +35261,7 @@ namespace Project1
             }
 
             // 最初から表示されていたのでなければメッセージウィンドウを閉じる
-            if (!is_message_form_opened & !keep_message_form)
+            if (!is_message_form_opened && !keep_message_form)
             {
                 GUI.CloseMessageForm();
             }
@@ -35322,7 +35322,7 @@ namespace Project1
             }
 
             // シチュエーションのリストを構築
-            if (string.IsNullOrEmpty(sub_situation) | (main_situation ?? "") == (sub_situation ?? ""))
+            if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
             {
                 situations = new string[2];
                 situations[1] = main_situation;
@@ -35615,7 +35615,7 @@ namespace Project1
             GeneralLib.TrimString(anime);
 
             // 表示キャンセル
-            if (string.IsNullOrEmpty(anime) | anime == "-")
+            if (string.IsNullOrEmpty(anime) || anime == "-")
             {
                 return;
             }
@@ -35628,7 +35628,7 @@ namespace Project1
                 // FormatMessage anime
                 // Exit Sub
                 // アニメの終了処理はキャンセルしない
-                if (main_situation != "終了" & Strings.Right(main_situation, 4) != "(終了)")
+                if (main_situation != "終了" && Strings.Right(main_situation, 4) != "(終了)")
                 {
                     // 式評価のみ行う
                     Expression.FormatMessage(anime);
@@ -35683,7 +35683,7 @@ namespace Project1
             // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             // 自分自身をターゲットに設定する
             // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
-            if (!is_weapon & !is_ability)
+            if (!is_weapon && !is_ability)
             {
                 if (Event.SelectedTargetForEvent is null)
                 {
@@ -36004,7 +36004,7 @@ namespace Project1
                 Event.RestoreBasePoint();
 
                 // 画像を消去しておく
-                if (GUI.IsPictureDrawn & Strings.LCase(buf) != "keep")
+                if (GUI.IsPictureDrawn && Strings.LCase(buf) != "keep")
                 {
                     GUI.ClearPicture();
                     // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -36030,7 +36030,7 @@ namespace Project1
             }
 
             // 画像を消去しておく
-            if (GUI.IsPictureDrawn & string.IsNullOrEmpty(sname) & Strings.InStr(main_situation, "(準備)") == 0 & Strings.LCase(anime) != "keep")
+            if (GUI.IsPictureDrawn && string.IsNullOrEmpty(sname) && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
             {
                 GUI.ClearPicture();
                 // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -36038,7 +36038,7 @@ namespace Project1
             }
 
             // 最初から表示されていたのでなければメッセージウィンドウを閉じる
-            if (!is_message_form_opened & !keep_message_form)
+            if (!is_message_form_opened && !keep_message_form)
             {
                 GUI.CloseMessageForm();
             }
@@ -36179,7 +36179,7 @@ namespace Project1
 
                             case "水":
                                 {
-                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && get_Adaption(3) == 0)
                                     {
                                         goto NextLoop;
                                     }
@@ -36189,7 +36189,7 @@ namespace Project1
 
                             case "深水":
                                 {
-                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & !IsTransAvailable("水"))
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && !IsTransAvailable("水"))
                                     {
                                         goto NextLoop;
                                     }
@@ -36216,7 +36216,7 @@ namespace Project1
 
 
             // 空いた場所がなかった？
-            if (x == 0 & y == 0)
+            if (x == 0 && y == 0)
             {
                 Status = "待機";
                 return;
@@ -36286,11 +36286,11 @@ namespace Project1
 
                 case "陸":
                     {
-                        if (IsTransAvailable("地中") & Area == "地中")
+                        if (IsTransAvailable("地中") && Area == "地中")
                         {
                             Area = "地中";
                         }
-                        else if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                        else if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                         {
                             Area = "空中";
                         }
@@ -36308,7 +36308,7 @@ namespace Project1
 
                 case "屋内":
                     {
-                        if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                         {
                             Area = "空中";
                         }
@@ -36326,7 +36326,7 @@ namespace Project1
 
                 case "月面":
                     {
-                        if (IsTransAvailable("空") | IsTransAvailable("宇宙"))
+                        if (IsTransAvailable("空") || IsTransAvailable("宇宙"))
                         {
                             Area = "宇宙";
                         }
@@ -36345,7 +36345,7 @@ namespace Project1
                 case "水":
                 case "深水":
                     {
-                        if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                        if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                         {
                             Area = "空中";
                         }
@@ -36393,7 +36393,7 @@ namespace Project1
             // '    Then
             var fname = default(string);
             int start_time, current_time;
-            if ((Strings.InStr(smode, "出撃") > 0 | Strings.InStr(smode, "部隊配置") > 0) & GUI.MainForm.Visible & !GUI.IsPictureVisible & !GUI.IsRButtonPressed() & BitmapID > 0)
+            if ((Strings.InStr(smode, "出撃") > 0 || Strings.InStr(smode, "部隊配置") > 0) && GUI.MainForm.Visible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && BitmapID > 0)
             {
                 // MOD END MARGE
 
@@ -36456,7 +36456,7 @@ namespace Project1
             }
 
             // ユニット画像をマップに描画
-            if (!GUI.IsPictureVisible & !string.IsNullOrEmpty(Map.MapFileName))
+            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
             {
                 // MOD START MARGE
                 // If smode = "非同期" Then
@@ -36545,7 +36545,7 @@ namespace Project1
 
                         int localLLength() { string arglist = hsb631fea4c5cf49098946ae0a91f0346e(); var ret = GeneralLib.LLength(arglist); return ret; }
 
-                        if (localFeature() == "合体" & localLLength() == 3)
+                        if (localFeature() == "合体" && localLLength() == 3)
                         {
                             string localFeatureData1() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
 
@@ -36604,7 +36604,7 @@ namespace Project1
 
                             case "宇宙":
                                 {
-                                    if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                                    if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                                     {
                                         Area = "空中";
                                     }
@@ -36637,7 +36637,7 @@ namespace Project1
 
                             default:
                                 {
-                                    if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
+                                    if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && get_Adaption(4) >= get_Adaption(2))
                                     {
                                         Area = "宇宙";
                                     }
@@ -36699,7 +36699,7 @@ namespace Project1
             // ユニット描画
             if (!GUI.IsPictureVisible)
             {
-                if (SRC.MoveAnimation & !by_cancel & !by_teleport_or_jump)
+                if (SRC.MoveAnimation && !by_cancel && !by_teleport_or_jump)
                 {
                     GUI.MoveUnitBitmap2(this, 20);
                 }
@@ -36795,7 +36795,7 @@ namespace Project1
                             case "水":
                             case "深水":
                                 {
-                                    if (!IsTransAvailable("水上") & !IsTransAvailable("空") & get_Adaption(3) == 0)
+                                    if (!IsTransAvailable("水上") && !IsTransAvailable("空") && get_Adaption(3) == 0)
                                     {
                                         goto NextLoop;
                                     }
@@ -36861,7 +36861,7 @@ namespace Project1
 
                             case "宇宙":
                                 {
-                                    if (IsTransAvailable("空") & get_Adaption(1) >= get_Adaption(2))
+                                    if (IsTransAvailable("空") && get_Adaption(1) >= get_Adaption(2))
                                     {
                                         Area = "空中";
                                     }
@@ -36894,7 +36894,7 @@ namespace Project1
 
                             default:
                                 {
-                                    if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & get_Adaption(4) >= get_Adaption(2))
+                                    if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && get_Adaption(4) >= get_Adaption(2))
                                     {
                                         Area = "宇宙";
                                     }
@@ -36994,13 +36994,13 @@ namespace Project1
             }
 
             // 出撃している場合は画面上からユニットを消去
-            if (Status == "出撃" | Status == "破壊")
+            if (Status == "出撃" || Status == "破壊")
             {
                 if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
                 {
                     // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                     Map.MapDataForUnit[x, y] = null;
-                    if (smode == "非同期" | GUI.IsPictureVisible | string.IsNullOrEmpty(Map.MapFileName))
+                    if (smode == "非同期" || GUI.IsPictureVisible || string.IsNullOrEmpty(Map.MapFileName))
                     {
                         GUI.EraseUnitBitmap(x, y, false);
                     }
@@ -37013,7 +37013,7 @@ namespace Project1
                 }
             }
 
-            if (Status == "出撃" | Status == "格納")
+            if (Status == "出撃" || Status == "格納")
             {
                 Status = "待機";
             }
@@ -37054,7 +37054,7 @@ namespace Project1
             // Landコマンドで着艦した場合
             if (is_event)
             {
-                if (Status == "出撃" | Status == "格納")
+                if (Status == "出撃" || Status == "格納")
                 {
                     Escape();
                 }
@@ -37083,7 +37083,7 @@ namespace Project1
                         case "陸":
                         case "屋内":
                             {
-                                if (IsTransAvailable("空") & Strings.Mid(strAdaption, 1, 1) == "A")
+                                if (IsTransAvailable("空") && Strings.Mid(strAdaption, 1, 1) == "A")
                                 {
                                     Area = "空中";
                                 }
@@ -37101,7 +37101,7 @@ namespace Project1
 
                         case "月面":
                             {
-                                if ((IsTransAvailable("空") | IsTransAvailable("宇宙")) & Strings.Mid(strAdaption, 4, 1) == "A")
+                                if ((IsTransAvailable("空") || IsTransAvailable("宇宙")) && Strings.Mid(strAdaption, 4, 1) == "A")
                                 {
                                     Area = "宇宙";
                                 }
@@ -37153,7 +37153,7 @@ namespace Project1
                     {
                         {
                             var withBlock = SRC.UList.Item(Name);
-                            if ((withBlock.Party0 ?? "") == (Party0 ?? "") & withBlock.BitmapID != 0 & (withBlock.get_Bitmap(false) ?? "") == (get_Bitmap(false) ?? ""))
+                            if ((withBlock.Party0 ?? "") == (Party0 ?? "") && withBlock.BitmapID != 0 && (withBlock.get_Bitmap(false) ?? "") == (get_Bitmap(false) ?? ""))
                             {
                                 BitmapID = withBlock.BitmapID;
                             }
@@ -37180,7 +37180,7 @@ namespace Project1
             x = u.x;
             y = u.y;
             Status = "格納";
-            if (Area != "宇宙" & Area != "空中")
+            if (Area != "宇宙" && Area != "空中")
             {
                 Area = "地上";
             }
@@ -37208,7 +37208,7 @@ namespace Project1
                 {
                     {
                         var withBlock2 = Pilot(i);
-                        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") & withBlock2.Personality != "機械")
+                        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") && withBlock2.Personality != "機械")
                         {
                             if (Expression.IsOptionDefined("母艦収納時気力低下小"))
                             {
@@ -37421,7 +37421,7 @@ namespace Project1
 
                     string localConditionData2() { object argIndex1 = i; var ret = ConditionData(argIndex1); return ret; }
 
-                    if (localConditionLifetime1() != 0 & Strings.InStr(localConditionData1(), "パイロット能力付加") == 0 & Strings.InStr(localConditionData2(), "パイロット能力強化") == 0)
+                    if (localConditionLifetime1() != 0 && Strings.InStr(localConditionData1(), "パイロット能力付加") == 0 && Strings.InStr(localConditionData2(), "パイロット能力強化") == 0)
                     {
                         string localCondition() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
 
@@ -37443,7 +37443,7 @@ namespace Project1
 
                 // パイロットの乗せ換え
                 list = FeatureData("変形");
-                if (GeneralLib.LLength(list) > 0 & Data.PilotNum == -GeneralLib.LLength(list) & CountPilot() == GeneralLib.LLength(list))
+                if (GeneralLib.LLength(list) > 0 && Data.PilotNum == -GeneralLib.LLength(list) && CountPilot() == GeneralLib.LLength(list))
                 {
                     // 変形によりパイロットの順番が変化する場合
                     var loopTo6 = GeneralLib.LLength(list);
@@ -37606,7 +37606,7 @@ namespace Project1
 
                     if (localSupport4().SupportIndex > 0)
                     {
-                        if (IsFeatureAvailable("分離") & withBlock.IsFeatureAvailable("分離"))
+                        if (IsFeatureAvailable("分離") && withBlock.IsFeatureAvailable("分離"))
                         {
                             var loopTo22 = GeneralLib.LLength(withBlock.FeatureData("分離"));
                             for (j = 2; j <= loopTo22; j++)
@@ -37661,7 +37661,7 @@ namespace Project1
                     var loopTo26 = Information.UBound(wname);
                     for (j = counter; j <= loopTo26; j++)
                     {
-                        if ((withBlock.Weapon(i).Name ?? "") == (wname[j] ?? "") & withBlock.MaxBullet(i) > 0 & wmaxbullet[j] > 0)
+                        if ((withBlock.Weapon(i).Name ?? "") == (wname[j] ?? "") && withBlock.MaxBullet(i) > 0 && wmaxbullet[j] > 0)
                         {
                             withBlock.SetBullet(i, ((wbullet[j] * withBlock.MaxBullet(i)) / wmaxbullet[j]));
                             idx = (j + 1);
@@ -37678,7 +37678,7 @@ namespace Project1
                     var loopTo28 = Information.UBound(aname);
                     for (j = counter; j <= loopTo28; j++)
                     {
-                        if ((withBlock.Ability(i).Name ?? "") == (aname[j] ?? "") & withBlock.MaxStock(i) > 0 & amaxstock[j] > 0)
+                        if ((withBlock.Ability(i).Name ?? "") == (aname[j] ?? "") && withBlock.MaxStock(i) > 0 && amaxstock[j] > 0)
                         {
                             withBlock.SetStock(i, ((astock[j] * withBlock.MaxStock(i)) / amaxstock[j]));
                             idx = (j + 1);
@@ -37739,7 +37739,7 @@ namespace Project1
                         withBlock.AddCondition("残り時間", Conversions.Toint(withBlock.FeatureData("制限時間")), cdata: "");
                     }
                 }
-                else if (!withBlock.IsFeatureAvailable("ノーマルモード") & !withBlock.IsFeatureAvailable("制限時間"))
+                else if (!withBlock.IsFeatureAvailable("ノーマルモード") && !withBlock.IsFeatureAvailable("制限時間"))
                 {
                     // 残り時間が必要ない形態にTransformコマンドで強制変形された？
                     withBlock.DeleteCondition("残り時間");
@@ -37756,7 +37756,7 @@ namespace Project1
                             prev_y = y;
                             withBlock.UsedAction = UsedAction;
                             withBlock.StandBy(x, y);
-                            if (withBlock.x != prev_x | withBlock.y != prev_y)
+                            if (withBlock.x != prev_x || withBlock.y != prev_y)
                             {
                                 GUI.EraseUnitBitmap(prev_x, prev_y, false);
                             }
@@ -37837,7 +37837,7 @@ namespace Project1
                         fdata = FeatureData(i);
                         bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                        if (GeneralLib.LLength(fdata) == 3 & Map.MapDataForUnit[x, y].Name == GeneralLib.LIndex(fdata, 3) & localIsDefined())
+                        if (GeneralLib.LLength(fdata) == 3 && Map.MapDataForUnit[x, y].Name == GeneralLib.LIndex(fdata, 3) && localIsDefined())
                         {
                             string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -37861,7 +37861,7 @@ namespace Project1
                             fdata = FeatureData(i);
                             bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
-                            if (GeneralLib.LLength(fdata) == 3 & Map.MapDataForUnit[x, y].IsEqual(GeneralLib.LIndex(fdata, 3)) & localIsDefined1())
+                            if (GeneralLib.LLength(fdata) == 3 && Map.MapDataForUnit[x, y].IsEqual(GeneralLib.LIndex(fdata, 3)) && localIsDefined1())
                             {
                                 Unit localItem1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.Item(argIndex1); return ret; }
 
@@ -37898,7 +37898,7 @@ namespace Project1
 
                     string localLIndex4() { string arglist = hs55605004ddf144379941d1bb4dbdc993(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                    if (localFeature() == "分離" & localLLength() == 3 & (IsEqual(localLIndex1()) & Map.MapDataForUnit[x, y].IsEqual(localLIndex2()) | IsEqual(localLIndex3()) & Map.MapDataForUnit[x, y].IsEqual(localLIndex4())))
+                    if (localFeature() == "分離" && localLLength() == 3 && (IsEqual(localLIndex1()) && Map.MapDataForUnit[x, y].IsEqual(localLIndex2()) || IsEqual(localLIndex3()) && Map.MapDataForUnit[x, y].IsEqual(localLIndex4())))
                     {
                         break;
                     }
@@ -37929,7 +37929,7 @@ namespace Project1
 
                     int localLLength1() { string arglist = hs19d13409c3c14abeb6633b778b53f517(); var ret = GeneralLib.LLength(arglist); return ret; }
 
-                    if (localFeature1() == "分離" & localLLength1() > 2)
+                    if (localFeature1() == "分離" && localLLength1() > 2)
                     {
                         break;
                     }
@@ -38003,7 +38003,7 @@ namespace Project1
 
                     bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("合体"))
+                    if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("合体"))
                     {
                         if (IsFeatureAvailable("合体ＢＧＭ"))
                         {
@@ -38016,7 +38016,7 @@ namespace Project1
 
                                 string localLIndex8() { string arglist = hs8b8df815445f4c329f8d70f276cd46e5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                if (localFeature2() == "合体ＢＧＭ" & (localLIndex8() ?? "") == (u.Name ?? ""))
+                                if (localFeature2() == "合体ＢＧＭ" && (localLIndex8() ?? "") == (u.Name ?? ""))
                                 {
                                     string localFeatureData11() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -38229,7 +38229,7 @@ namespace Project1
                     if (withBlock4.IsFeatureAvailable("召喚ユニット"))
                     {
                         // 召喚ユニットの場合はパイロットの乗せ換えは行わない
-                        if (Strings.InStr(withBlock4.MainPilot().Name, "(ザコ)") > 0 | Strings.InStr(withBlock4.MainPilot().Name, "(汎用)") > 0)
+                        if (Strings.InStr(withBlock4.MainPilot().Name, "(ザコ)") > 0 || Strings.InStr(withBlock4.MainPilot().Name, "(汎用)") > 0)
                         {
                             // 汎用パイロットの場合は削除
                             withBlock4.MainPilot().Alive = false;
@@ -38652,14 +38652,14 @@ namespace Project1
                         {
                             if (withBlock1.IsFeatureAvailable("召喚ユニット"))
                             {
-                                if (Status == "出撃" | Status == "格納")
+                                if (Status == "出撃" || Status == "格納")
                                 {
                                     pname = withBlock1.FeatureData("追加パイロット");
                                     PilotData localItem1() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
                                     PilotData localItem2() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
-                                    if (Strings.InStr(localItem1().Name, "(ザコ)") > 0 | Strings.InStr(localItem2().Name, "(汎用)") > 0)
+                                    if (Strings.InStr(localItem1().Name, "(ザコ)") > 0 || Strings.InStr(localItem2().Name, "(汎用)") > 0)
                                     {
                                         p = SRC.PList.Add(pname, MainPilot().Level, Party, gid: "");
                                         Party = argpparty;
@@ -38743,7 +38743,7 @@ namespace Project1
                         var loopTo13 = withBlock1.CountWeapon();
                         for (k = counter; k <= loopTo13; k++)
                         {
-                            if ((Weapon(j).Name ?? "") == (withBlock1.Weapon(k).Name ?? "") & this.Weapon(j).Bullet > 0 & withBlock1.Weapon(k).Bullet > 0)
+                            if ((Weapon(j).Name ?? "") == (withBlock1.Weapon(k).Name ?? "") && this.Weapon(j).Bullet > 0 && withBlock1.Weapon(k).Bullet > 0)
                             {
                                 withBlock1.SetBullet(k, ((withBlock1.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
                                 idx = (k + 1);
@@ -38765,7 +38765,7 @@ namespace Project1
                                 var loopTo16 = withBlock2.CountWeapon();
                                 for (l = counter; l <= loopTo16; l++)
                                 {
-                                    if ((Weapon(k).Name ?? "") == (withBlock2.Weapon(l).Name ?? "") & this.Weapon(k).Bullet > 0 & withBlock2.Weapon(l).Bullet > 0)
+                                    if ((Weapon(k).Name ?? "") == (withBlock2.Weapon(l).Name ?? "") && this.Weapon(k).Bullet > 0 && withBlock2.Weapon(l).Bullet > 0)
                                     {
                                         withBlock2.SetBullet(l, ((withBlock2.MaxBullet(l) * Bullet(k)) / MaxBullet(k)));
                                         idx = (l + 1);
@@ -38785,7 +38785,7 @@ namespace Project1
                         var loopTo18 = withBlock1.CountAbility();
                         for (k = counter; k <= loopTo18; k++)
                         {
-                            if ((Ability(j).Name ?? "") == (withBlock1.Ability(k).Name ?? "") & this.Ability(j).Stock > 0 & withBlock1.Ability(k).Stock > 0)
+                            if ((Ability(j).Name ?? "") == (withBlock1.Ability(k).Name ?? "") && this.Ability(j).Stock > 0 && withBlock1.Ability(k).Stock > 0)
                             {
                                 withBlock1.SetStock(k, ((withBlock1.Ability(k).Stock * Stock(j)) / MaxStock(j)));
                                 idx = (k + 1);
@@ -38807,7 +38807,7 @@ namespace Project1
                                 var loopTo21 = withBlock3.CountAbility();
                                 for (l = counter; l <= loopTo21; l++)
                                 {
-                                    if ((Ability(k).Name ?? "") == (withBlock3.Ability(l).Name ?? "") & this.Ability(k).Stock > 0 & withBlock3.Ability(l).Stock > 0)
+                                    if ((Ability(k).Name ?? "") == (withBlock3.Ability(l).Name ?? "") && this.Ability(k).Stock > 0 && withBlock3.Ability(l).Stock > 0)
                                     {
                                         withBlock3.SetStock(l, ((withBlock3.Ability(l).Stock * Stock(k)) / MaxStock(k)));
                                         idx = (l + 1);
@@ -38981,7 +38981,7 @@ namespace Project1
             string msg;
 
             // 経験値を入手するのは味方ユニット及びＮＰＣの召喚ユニットのみ
-            if ((Party != "味方" | Party0 != "味方") & (Party != "ＮＰＣ" | Party0 != "ＮＰＣ" | !IsFeatureAvailable("召喚ユニット")))
+            if ((Party != "味方" || Party0 != "味方") && (Party != "ＮＰＣ" || Party0 != "ＮＰＣ" || !IsFeatureAvailable("召喚ユニット")))
             {
                 return GetExpRet;
             }
@@ -39047,7 +39047,7 @@ namespace Project1
                     case "破壊":
                         {
                             xp = t.ExpValue + t.MainPilot().ExpValue;
-                            if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
+                            if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
                             {
                                 xp = (xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
                             }
@@ -39058,7 +39058,7 @@ namespace Project1
                     case "攻撃":
                         {
                             xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
-                            if (IsUnderSpecialPowerEffect("獲得経験値増加") & exp_mode != "パートナー")
+                            if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
                             {
                                 xp = (xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
                             }
@@ -39093,7 +39093,7 @@ namespace Project1
                         }
                 }
 
-                if (!IsUnderSpecialPowerEffect("獲得経験値増加") | Expression.IsOptionDefined("収得効果重複"))
+                if (!IsUnderSpecialPowerEffect("獲得経験値増加") || Expression.IsOptionDefined("収得効果重複"))
                 {
                     if (p.IsSkillAvailable("素質"))
                     {
@@ -39447,7 +39447,7 @@ namespace Project1
             // メインパイロット
             {
                 var withBlock = MainPilot();
-                if (withBlock.Personality != "機械" | is_event)
+                if (withBlock.Personality != "機械" || is_event)
                 {
                     withBlock.Morale = (withBlock.Morale + num);
                 }
@@ -39457,7 +39457,7 @@ namespace Project1
             foreach (Pilot currentP in colPilot)
             {
                 p = currentP;
-                if ((MainPilot().ID ?? "") != (p.ID ?? "") & (p.Personality != "機械" | is_event))
+                if ((MainPilot().ID ?? "") != (p.ID ?? "") && (p.Personality != "機械" || is_event))
                 {
                     p.Morale = (p.Morale + num);
                 }
@@ -39467,7 +39467,7 @@ namespace Project1
             foreach (Pilot currentP1 in colSupport)
             {
                 p = currentP1;
-                if (p.Personality != "機械" | is_event)
+                if (p.Personality != "機械" || is_event)
                 {
                     p.Morale = (p.Morale + num);
                 }
@@ -39478,7 +39478,7 @@ namespace Project1
             {
                 {
                     var withBlock1 = AdditionalSupport();
-                    if (withBlock1.Personality != "機械" | is_event)
+                    if (withBlock1.Personality != "機械" || is_event)
                     {
                         withBlock1.Morale = (withBlock1.Morale + num);
                     }
@@ -39553,11 +39553,11 @@ namespace Project1
                     pname = GeneralLib.LIndex(FeatureData("支配"), i);
                     foreach (Pilot p in SRC.PList)
                     {
-                        if ((p.Name ?? "") == (pname ?? "") | (p.get_Nickname(false) ?? "") == (pname ?? ""))
+                        if ((p.Name ?? "") == (pname ?? "") || (p.get_Nickname(false) ?? "") == (pname ?? ""))
                         {
                             if (p.Unit is object)
                             {
-                                if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
+                                if (p.Unit.Status == "出撃" || p.Unit.Status == "格納")
                                 {
                                     p.Unit.Die(true);
                                 }
@@ -39693,7 +39693,7 @@ namespace Project1
                     {
                         var withBlock = t;
                         GUI.ClearMessageForm();
-                        if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
+                        if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
                         {
                             GUI.UpdateMessageForm(t, CurrentForm());
                         }
@@ -39722,7 +39722,7 @@ namespace Project1
                         // 特殊能力「不安定」による暴走チェック
                         if (withBlock.IsFeatureAvailable("不安定"))
                         {
-                            if (withBlock.HP <= withBlock.MaxHP / 4 & !withBlock.IsConditionSatisfied("暴走"))
+                            if (withBlock.HP <= withBlock.MaxHP / 4 && !withBlock.IsConditionSatisfied("暴走"))
                             {
                                 withBlock.AddCondition("暴走", -1, cdata: "");
                                 withBlock.Update();
@@ -39735,7 +39735,7 @@ namespace Project1
                             withBlock.DeleteCondition("睡眠");
                         }
 
-                        if (CurrentForm().Party == "味方" | CurrentForm().Party == "ＮＰＣ")
+                        if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
                         {
                             GUI.UpdateMessageForm(t, CurrentForm());
                         }
@@ -39875,7 +39875,7 @@ namespace Project1
 
                     string localCondition6() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                    if (localCondition() == "残り時間" | localCondition1() == "非操作" | Strings.Right(localCondition2(), 2) == "付加" | Strings.Right(localCondition3(), 2) == "強化" | Strings.Right(localCondition4(), 3) == "付加２" | Strings.Right(localCondition5(), 3) == "強化２" | Strings.Right(localCondition6(), 2) == "ＵＰ")
+                    if (localCondition() == "残り時間" || localCondition1() == "非操作" || Strings.Right(localCondition2(), 2) == "付加" || Strings.Right(localCondition3(), 2) == "強化" || Strings.Right(localCondition4(), 3) == "付加２" || Strings.Right(localCondition5(), 3) == "強化２" || Strings.Right(localCondition6(), 2) == "ＵＰ")
                     {
                         i = (i + 1);
                     }
@@ -39977,7 +39977,7 @@ namespace Project1
             // 特殊能力「不安定」による暴走チェック
             if (IsFeatureAvailable("不安定"))
             {
-                if (HP <= MaxHP / 4 & !IsConditionSatisfied("暴走"))
+                if (HP <= MaxHP / 4 && !IsConditionSatisfied("暴走"))
                 {
                     AddCondition("暴走", -1, cdata: "");
                 }
@@ -40013,7 +40013,7 @@ namespace Project1
             // ADD END MARGE
 
             // 味方ステージの1ターン目(スタートイベント直後)は回復を行わない
-            if (SRC.Stage == "味方" & SRC.Turn == 1)
+            if (SRC.Stage == "味方" && SRC.Turn == 1)
             {
                 return;
             }
@@ -40133,7 +40133,7 @@ namespace Project1
 
                         int localStrToLng() { string argexpr = hsa615f5f7d41941adb5ff8c50a645e7c9(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-                        if (withBlock4.Morale >= localStrToLng() & !IsSpecialPowerInEffect(spname))
+                        if (withBlock4.Morale >= localStrToLng() && !IsSpecialPowerInEffect(spname))
                         {
                             GUI.Center(x, y);
                             withBlock4.UseSpecialPower(spname, 0d);
@@ -40145,14 +40145,14 @@ namespace Project1
                     }
                 }
 
-                if (IsConditionSatisfied("スペシャルパワー自動発動付加") | IsConditionSatisfied("スペシャルパワー自動発動付加２"))
+                if (IsConditionSatisfied("スペシャルパワー自動発動付加") || IsConditionSatisfied("スペシャルパワー自動発動付加２"))
                 {
                     spname = GeneralLib.LIndex(withBlock4.SkillData("スペシャルパワー自動発動"), 2);
                     string localLIndex1() { object argIndex1 = "スペシャルパワー自動発動"; string arglist = withBlock4.SkillData(argIndex1); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
                     int localStrToLng1() { string argexpr = hs007c2f9d021b4299932cdd690ee4914e(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-                    if (withBlock4.Morale >= localStrToLng1() & !IsSpecialPowerInEffect(spname))
+                    if (withBlock4.Morale >= localStrToLng1() && !IsSpecialPowerInEffect(spname))
                     {
                         GUI.Center(x, y);
                         withBlock4.UseSpecialPower(spname, 0d);
@@ -40183,7 +40183,7 @@ namespace Project1
 
                             int localStrToLng2() { string argexpr = hs1050a377ee804d6d86fc7e98398e12ee(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-                            if (withBlock5.Morale >= localStrToLng2() & !IsSpecialPowerInEffect(spname))
+                            if (withBlock5.Morale >= localStrToLng2() && !IsSpecialPowerInEffect(spname))
                             {
                                 GUI.Center(x, y);
                                 withBlock5.UseSpecialPower(spname, 0d);
@@ -40216,7 +40216,7 @@ namespace Project1
 
                             int localStrToLng3() { string argexpr = hsaaa9e6d3323e4453a1b656c0d1ba1987(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-                            if (withBlock6.Morale >= localStrToLng3() & !IsSpecialPowerInEffect(spname))
+                            if (withBlock6.Morale >= localStrToLng3() && !IsSpecialPowerInEffect(spname))
                             {
                                 GUI.Center(x, y);
                                 withBlock6.UseSpecialPower(spname, 0d);
@@ -40248,7 +40248,7 @@ namespace Project1
 
                             int localStrToLng4() { string argexpr = hsd3fcfdcfd593490696f3d091f42d35e5(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-                            if (withBlock7.Morale >= localStrToLng4() & !IsSpecialPowerInEffect(spname))
+                            if (withBlock7.Morale >= localStrToLng4() && !IsSpecialPowerInEffect(spname))
                             {
                                 GUI.Center(x, y);
                                 withBlock7.UseSpecialPower(spname, 0d);
@@ -40265,7 +40265,7 @@ namespace Project1
             // 起死回生
             {
                 var withBlock8 = MainPilot();
-                if (withBlock8.IsSkillAvailable("起死回生") & withBlock8.SP <= withBlock8.MaxSP / 5 & HP <= MaxHP / 5 & EN <= MaxEN / 5)
+                if (withBlock8.IsSkillAvailable("起死回生") && withBlock8.SP <= withBlock8.MaxSP / 5 && HP <= MaxHP / 5 && EN <= MaxEN / 5)
                 {
                     withBlock8.SP = withBlock8.MaxSP;
                     HP = MaxHP;
@@ -40284,7 +40284,7 @@ namespace Project1
             // ＨＰとＥＮ回復＆消費
             // MOD START MARGE
             // If Not IsConditionSatisfied("回復不能") Then
-            if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+            if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
             {
                 // MOD END MARGE
                 if (IsFeatureAvailable("ＨＰ回復"))
@@ -40312,7 +40312,7 @@ namespace Project1
             int plv;
             if (IsConditionSatisfied("毒"))
             {
-                if (Expression.IsOptionDefined("毒効果大") & BossRank < 0)
+                if (Expression.IsOptionDefined("毒効果大") && BossRank < 0)
                 {
                     plv = 25;
                 }
@@ -40329,7 +40329,7 @@ namespace Project1
                 else if (Effective("毒"))
                 {
                 }
-                else if (Immune("毒") | Absorb("毒"))
+                else if (Immune("毒") || Absorb("毒"))
                 {
                     plv = 0;
                 }
@@ -40394,7 +40394,7 @@ namespace Project1
             }
 
             // 付加された移動能力が切れた場合の処理
-            if (Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "出撃" && !string.IsNullOrEmpty(Map.MapFileName))
             {
                 switch (Area ?? "")
                 {
@@ -40446,7 +40446,7 @@ namespace Project1
 
                     case "水上":
                         {
-                            if (!IsFeatureAvailable("水上移動") & !IsFeatureAvailable("ホバー移動"))
+                            if (!IsFeatureAvailable("水上移動") && !IsFeatureAvailable("ホバー移動"))
                             {
                                 if (!IsAbleToEnter(x, y))
                                 {
@@ -40497,7 +40497,7 @@ namespace Project1
                 // 格納時は回復率ＵＰ
                 // MOD START MARGE
                 // If Not IsConditionSatisfied("回復不能") Then
-                if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+                if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
                 {
                     // MOD END MARGE
                     hp_recovery = hp_recovery + 50;
@@ -40693,21 +40693,21 @@ namespace Project1
                 // Case Else
                 // If Len(cname) > 6 Then
                 // If Right$(cname, 6) = "属性弱点付加" Then
-                // If SpecialEffectImmune("弱" & Left$(cname, Len(cname) - 6)) _
+                // If SpecialEffectImmune("弱" && Left$(cname, Len(cname) - 6)) _
                 // '                                            Or Absorb(Left$(cname, Len(cname) - 6)) _
                 // '                                            Or Immune(Left$(cname, Len(cname) - 6)) _
                 // '                                        Then
                 // cname = ""
                 // End If
                 // ElseIf Right$(cname, 6) = "属性有効付加" Then
-                // If SpecialEffectImmune("有" & Left$(cname, Len(cname) - 6)) _
+                // If SpecialEffectImmune("有" && Left$(cname, Len(cname) - 6)) _
                 // '                                            Or Absorb(Left$(cname, Len(cname) - 6)) _
                 // '                                            Or Immune(Left$(cname, Len(cname) - 6)) _
                 // '                                        Then
                 // cname = ""
                 // End If
                 // ElseIf Right$(cname, 6) = "属性使用不能" Then
-                // If SpecialEffectImmune("剋" & Left$(cname, Len(cname) - 6)) Then
+                // If SpecialEffectImmune("剋" && Left$(cname, Len(cname) - 6)) Then
                 // cname = ""
                 // End If
                 // End If
@@ -40797,7 +40797,7 @@ namespace Project1
                     var loopTo12 = td.CountFeature();
                     for (i = 1; i <= loopTo12; i++)
                     {
-                        if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+                        if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
                         {
                             switch (td.Feature(i) ?? "")
                             {
@@ -41294,7 +41294,7 @@ namespace Project1
 
                                                             bool localImmune4() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-                                                            if (localSpecialEffectImmune() | localAbsorb4() | localImmune4())
+                                                            if (localSpecialEffectImmune() || localAbsorb4() || localImmune4())
                                                             {
                                                                 cname = "";
                                                             }
@@ -41307,7 +41307,7 @@ namespace Project1
 
                                                             bool localImmune5() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-                                                            if (localSpecialEffectImmune1() | localAbsorb5() | localImmune5())
+                                                            if (localSpecialEffectImmune1() || localAbsorb5() || localImmune5())
                                                             {
                                                                 cname = "";
                                                             }
@@ -41353,7 +41353,7 @@ namespace Project1
             // If Not IsConditionSatisfied("回復不能") _
             // '        And Not IsOptionDefined("ＥＮ自然回復無効") _
             // '    Then
-            if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能") & !Expression.IsOptionDefined("ＥＮ自然回復無効"))
+            if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能") && !Expression.IsOptionDefined("ＥＮ自然回復無効"))
             {
                 // MOD END MARGE
                 EN = EN + 5;
@@ -41369,7 +41369,7 @@ namespace Project1
             // 特殊能力「不安定」による暴走チェック
             if (IsFeatureAvailable("不安定"))
             {
-                if (HP <= MaxHP / 4 & !IsConditionSatisfied("暴走"))
+                if (HP <= MaxHP / 4 && !IsConditionSatisfied("暴走"))
                 {
                     AddCondition("暴走", -1, cdata: "");
                 }
@@ -41416,7 +41416,7 @@ namespace Project1
                     {
                         {
                             var withBlock9 = OtherForm(GeneralLib.LIndex(buf, i));
-                            if (withBlock9.IsAbleToEnter(x, y) & !withBlock9.IsFeatureAvailable("ＥＮ消費"))
+                            if (withBlock9.IsAbleToEnter(x, y) && !withBlock9.IsFeatureAvailable("ＥＮ消費"))
                             {
                                 Transform(GeneralLib.LIndex(buf, i));
                                 break;
@@ -41522,7 +41522,7 @@ namespace Project1
 
                     bool localIsMessageDefined3() { object argIndex1 = "分離"; string argmain_situation = "分離(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-                    if (localIsMessageDefined2() | localIsMessageDefined3() | IsMessageDefined("分離"))
+                    if (localIsMessageDefined2() || localIsMessageDefined3() || IsMessageDefined("分離"))
                     {
                         if (IsFeatureAvailable("分離ＢＧＭ"))
                         {
@@ -41624,7 +41624,7 @@ namespace Project1
             }
 
             // 発動条件を満たす？
-            if (this.MainPilot().Morale < (10d * flevel) + 100 & (HP > MaxHP / 4 | Strings.InStr(fdata, "気力発動") > 0))
+            if (this.MainPilot().Morale < (10d * flevel) + 100 && (HP > MaxHP / 4 || Strings.InStr(fdata, "気力発動") > 0))
             {
                 return;
             }
@@ -41654,7 +41654,7 @@ namespace Project1
 
                     case "深水":
                         {
-                            if (withBlock.IsTransAvailable("空") | withBlock.IsTransAvailable("水") | withBlock.IsTransAvailable("水上"))
+                            if (withBlock.IsTransAvailable("空") || withBlock.IsTransAvailable("水") || withBlock.IsTransAvailable("水上"))
                             {
                                 is_available = true;
                             }
@@ -41711,7 +41711,7 @@ namespace Project1
 
                     string localLIndex() { string arglist = hs2eb6d7953f284c87970de1e6c7ca058d(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                    if (localFeature() == "ハイパーモードＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+                    if (localFeature() == "ハイパーモードＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
                     {
                         string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -41731,7 +41731,7 @@ namespace Project1
 
             bool localIsMessageDefined4() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4() | IsMessageDefined("ハイパーモード"))
+            if (localIsMessageDefined2() || localIsMessageDefined3() || localIsMessageDefined4() || IsMessageDefined("ハイパーモード"))
             {
                 GUI.Center(x, y);
                 GUI.RefreshScreen();
@@ -41926,7 +41926,7 @@ namespace Project1
 
             bool localIsMessageDefined2() { string argmain_situation = "ノーマルモード(" + uname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("ノーマルモード"))
+            if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("ノーマルモード"))
             {
                 // ＢＧＭを切り替え
                 if (IsFeatureAvailable("ノーマルモードＢＧＭ"))
@@ -41940,7 +41940,7 @@ namespace Project1
 
                         string localLIndex() { string arglist = hsbe3464a93f8d41b68a3072a6446fded5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                        if (localFeature() == "ノーマルモードＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+                        if (localFeature() == "ノーマルモードＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
                         {
                             string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -42184,9 +42184,9 @@ namespace Project1
 
             // 味方ユニットは暴走、憑依、魅了したユニットを排除可能
             // (暴走した味方ユニットのPartyはＮＰＣとみなされる)
-            if (myparty == "味方" & tparty == "ＮＰＣ")
+            if (myparty == "味方" && tparty == "ＮＰＣ")
             {
-                if (t.IsConditionSatisfied("暴走") | t.IsConditionSatisfied("憑依") | t.IsConditionSatisfied("魅了"))
+                if (t.IsConditionSatisfied("暴走") || t.IsConditionSatisfied("憑依") || t.IsConditionSatisfied("魅了"))
                 {
                     IsEnemyRet = true;
                     return IsEnemyRet;
@@ -42365,7 +42365,7 @@ namespace Project1
                 case "味方":
                 case "ＮＰＣ":
                     {
-                        if (t.Party == "味方" | t.Party == "ＮＰＣ")
+                        if (t.Party == "味方" || t.Party == "ＮＰＣ")
                         {
                             IsAllyRet = true;
                         }
@@ -42595,7 +42595,7 @@ namespace Project1
 
                                 {
                                     var withBlock1 = withBlock.CurrentForm();
-                                    if (withBlock1.Status == "出撃" | withBlock1.Status == "格納")
+                                    if (withBlock1.Status == "出撃" || withBlock1.Status == "格納")
                                     {
                                         withBlock1.Escape();
                                         withBlock1.Status = "破棄";
@@ -42696,7 +42696,7 @@ namespace Project1
             {
                 {
                     var withBlock = Slave(1).CurrentForm();
-                    if (withBlock.IsConditionSatisfied("魅了") & withBlock.Master is object)
+                    if (withBlock.IsConditionSatisfied("魅了") && withBlock.Master is object)
                     {
                         if (ReferenceEquals(withBlock.Master.CurrentForm(), this))
                         {
@@ -42706,7 +42706,7 @@ namespace Project1
                         }
                     }
 
-                    if (withBlock.IsConditionSatisfied("憑依") & withBlock.Master is object)
+                    if (withBlock.IsConditionSatisfied("憑依") && withBlock.Master is object)
                     {
                         if (ReferenceEquals(withBlock.Master.CurrentForm(), this))
                         {
@@ -43446,7 +43446,7 @@ namespace Project1
                 }
 
                 // 正常な判断力がある？
-                if (u.IsConditionSatisfied("混乱") | u.IsConditionSatisfied("暴走") | u.IsConditionSatisfied("魅了") | u.IsConditionSatisfied("憑依") | u.IsConditionSatisfied("恐怖") | u.IsConditionSatisfied("狂戦士"))
+                if (u.IsConditionSatisfied("混乱") || u.IsConditionSatisfied("暴走") || u.IsConditionSatisfied("魅了") || u.IsConditionSatisfied("憑依") || u.IsConditionSatisfied("恐怖") || u.IsConditionSatisfied("狂戦士"))
                 {
                     goto NextLoop;
                 }
@@ -43456,7 +43456,7 @@ namespace Project1
 
                 bool localIsMessageDefined1() { string argmain_situation = "連携攻撃(" + u.MainPilot().get_Nickname(false) + ")"; var ret = IsMessageDefined(argmain_situation, true); return ret; }
 
-                if (!localIsMessageDefined() & !localIsMessageDefined1())
+                if (!localIsMessageDefined() && !localIsMessageDefined1())
                 {
                     goto NextLoop;
                 }
@@ -43558,7 +43558,7 @@ namespace Project1
                     }
 
                     // 正常な判断力がある？
-                    if (withBlock.IsConditionSatisfied("混乱") | withBlock.IsConditionSatisfied("暴走") | withBlock.IsConditionSatisfied("魅了") | withBlock.IsConditionSatisfied("憑依") | withBlock.IsConditionSatisfied("恐怖") | withBlock.IsConditionSatisfied("狂戦士"))
+                    if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("暴走") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
                     {
                         goto NextLoop;
                     }
@@ -43568,7 +43568,7 @@ namespace Project1
 
                     bool localIsMessageDefined1() { string argmain_situation = "かばう(" + MainPilot().get_Nickname(false) + ")"; var ret = withBlock.IsMessageDefined(argmain_situation, true); return ret; }
 
-                    if (!localIsMessageDefined() & !localIsMessageDefined1())
+                    if (!localIsMessageDefined() && !localIsMessageDefined1())
                     {
                         goto NextLoop;
                     }
@@ -43613,7 +43613,7 @@ namespace Project1
                                 {
                                     if (Map.TerrainClass(x, y) == "月面")
                                     {
-                                        if (!withBlock.IsTransAvailable("空") & !withBlock.IsTransAvailable("宇宙"))
+                                        if (!withBlock.IsTransAvailable("空") && !withBlock.IsTransAvailable("宇宙"))
                                         {
                                             goto NextLoop;
                                         }
@@ -43629,7 +43629,7 @@ namespace Project1
                     }
 
                     // ダメージを算出
-                    if (withBlock.IsFeatureAvailable("防御不可") | t.IsWeaponClassifiedAs(tw, "殺"))
+                    if (withBlock.IsFeatureAvailable("防御不可") || t.IsWeaponClassifiedAs(tw, "殺"))
                     {
                         ratio = 1d;
                     }
@@ -43833,7 +43833,7 @@ namespace Project1
                 }
 
                 // 正常な判断が可能？
-                if (u.IsConditionSatisfied("混乱") | u.IsConditionSatisfied("暴走") | u.IsConditionSatisfied("恐怖") | u.IsConditionSatisfied("狂戦士") | u.IsConditionSatisfied("踊り"))
+                if (u.IsConditionSatisfied("混乱") || u.IsConditionSatisfied("暴走") || u.IsConditionSatisfied("恐怖") || u.IsConditionSatisfied("狂戦士") || u.IsConditionSatisfied("踊り"))
                 {
                     goto NextUnit;
                 }
@@ -43869,7 +43869,7 @@ namespace Project1
 
                 // 同じチームに属している？
                 uteam = u.MainPilot().SkillData("チーム");
-                if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                 {
                     goto NextUnit;
                 }
@@ -43913,7 +43913,7 @@ namespace Project1
                         goto NextWeapon;
                     }
 
-                    if (u.Party == "味方" & u.Party0 == "味方")
+                    if (u.Party == "味方" && u.Party0 == "味方")
                     {
                         // 味方ユニットは自爆攻撃をサポートアタックには使用しない
                         if (u.IsWeaponClassifiedAs(w, "自"))
@@ -43927,7 +43927,7 @@ namespace Project1
                         {
                             if (!u.IsWeaponClassifiedAs(w, "永"))
                             {
-                                if (u.Bullet(w) == 1 | u.MaxBullet(w) == 2 | u.MaxBullet(w) == 3)
+                                if (u.Bullet(w) == 1 || u.MaxBullet(w) == 2 || u.MaxBullet(w) == 3)
                                 {
                                     goto NextWeapon;
                                 }
@@ -43935,7 +43935,7 @@ namespace Project1
 
                             if (u.WeaponENConsumption(w) > 0)
                             {
-                                if (u.WeaponENConsumption(w) >= u.EN / 2 | u.WeaponENConsumption(w) >= u.MaxEN / 4)
+                                if (u.WeaponENConsumption(w) >= u.EN / 2 || u.WeaponENConsumption(w) >= u.MaxEN / 4)
                                 {
                                     goto NextWeapon;
                                 }
@@ -43989,7 +43989,7 @@ namespace Project1
             }
 
             // 同士討ちの場合は本来の陣営に属するユニットのみを守る
-            if ((Party ?? "") == (t.Party ?? "") | Party == "ＮＰＣ" & t.Party == "味方")
+            if ((Party ?? "") == (t.Party ?? "") || Party == "ＮＰＣ" && t.Party == "味方")
             {
                 if ((Party ?? "") != (Party0 ?? ""))
                 {
@@ -44008,11 +44008,11 @@ namespace Project1
             // かばう必要がない？
             // 手動反撃で味方の場合はダメージにかかわらず常にかばう
             // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            if (Party != "味方" | GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
+            if (Party != "味方" || GUI.MainForm.mnuMapCommandItem(Commands.AutoDefenseCmdID).Checked)
             {
                 if (t.IsNormalWeapon(tw))
                 {
-                    if (my_dmg < MaxHP / 20 & my_dmg < HP / 5)
+                    if (my_dmg < MaxHP / 20 && my_dmg < HP / 5)
                     {
                         return LookForSupportGuardRet;
                     }
@@ -44105,7 +44105,7 @@ namespace Project1
                     }
 
                     // 正常な判断が可能？
-                    if (withBlock.IsConditionSatisfied("混乱") | withBlock.IsConditionSatisfied("暴走") | withBlock.IsConditionSatisfied("恐怖") | withBlock.IsConditionSatisfied("狂戦士"))
+                    if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("暴走") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
                     {
                         goto NextUnit;
                     }
@@ -44175,7 +44175,7 @@ namespace Project1
 
                     // 同じチームに属している？
                     uteam = withBlock.MainPilot().SkillData("チーム");
-                    if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+                    if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
                     {
                         goto NextUnit;
                     }
@@ -44238,7 +44238,7 @@ namespace Project1
                     }
 
                     // ダメージを算出
-                    if (withBlock.IsFeatureAvailable("防御不可") | t.IsWeaponClassifiedAs(tw, "殺"))
+                    if (withBlock.IsFeatureAvailable("防御不可") || t.IsWeaponClassifiedAs(tw, "殺"))
                     {
                         ratio = 1d;
                     }
@@ -44275,7 +44275,7 @@ namespace Project1
                     if (withBlock.BossRank > BossRank)
                     {
                         // 被るダメージが少ない場合は別だけど……
-                        if (dmg >= withBlock.MaxHP / 20 | dmg >= withBlock.HP / 5)
+                        if (dmg >= withBlock.MaxHP / 20 || dmg >= withBlock.HP / 5)
                         {
                             goto NextUnit;
                         }
@@ -44311,7 +44311,7 @@ namespace Project1
             {
                 var withBlock = MainPilot();
                 // 自分自身がサポートを行うことが出来るか？
-                if (withBlock.IsSkillAvailable("援護") | withBlock.IsSkillAvailable("援護攻撃") | withBlock.IsSkillAvailable("援護防御") | withBlock.IsSkillAvailable("指揮") | withBlock.IsSkillAvailable("広域サポート"))
+                if (withBlock.IsSkillAvailable("援護") || withBlock.IsSkillAvailable("援護攻撃") || withBlock.IsSkillAvailable("援護防御") || withBlock.IsSkillAvailable("指揮") || withBlock.IsSkillAvailable("広域サポート"))
                 {
                     do_support = true;
                 }
@@ -44379,20 +44379,20 @@ namespace Project1
                 {
                     var withBlock1 = u;
                     // 正常な判断が可能？
-                    if (withBlock1.IsConditionSatisfied("混乱") | withBlock1.IsConditionSatisfied("暴走") | withBlock1.IsConditionSatisfied("恐怖") | withBlock1.IsConditionSatisfied("狂戦士"))
+                    if (withBlock1.IsConditionSatisfied("混乱") || withBlock1.IsConditionSatisfied("暴走") || withBlock1.IsConditionSatisfied("恐怖") || withBlock1.IsConditionSatisfied("狂戦士"))
                     {
                         goto NextUnit;
                     }
 
                     // 味方？
-                    if (IsEnemy(u) | withBlock1.IsEnemy(this))
+                    if (IsEnemy(u) || withBlock1.IsEnemy(this))
                     {
                         goto NextUnit;
                     }
 
                     // 同じチームに属している？
                     uteam = withBlock1.MainPilot().SkillData("チーム");
-                    if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(team) & !string.IsNullOrEmpty(uteam))
+                    if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(team) && !string.IsNullOrEmpty(uteam))
                     {
                         goto NextUnit;
                     }
@@ -44415,7 +44415,7 @@ namespace Project1
                     // サポート能力を持っている？
                     {
                         var withBlock2 = withBlock1.MainPilot();
-                        if (withBlock2.IsSkillAvailable("援護") | withBlock2.IsSkillAvailable("援護攻撃"))
+                        if (withBlock2.IsSkillAvailable("援護") || withBlock2.IsSkillAvailable("援護攻撃"))
                         {
                             LookForSupportRet = (LookForSupportRet + 1);
                             // これから攻撃する場合、相手が行動出来ればサポートアタックが可能
@@ -44432,7 +44432,7 @@ namespace Project1
                                 }
                             }
                         }
-                        else if (withBlock2.IsSkillAvailable("援護防御") | withBlock2.IsSkillAvailable("指揮") | withBlock2.IsSkillAvailable("広域サポート"))
+                        else if (withBlock2.IsSkillAvailable("援護防御") || withBlock2.IsSkillAvailable("指揮") || withBlock2.IsSkillAvailable("広域サポート"))
                         {
                             LookForSupportRet = (LookForSupportRet + 1);
                         }
@@ -44535,7 +44535,7 @@ namespace Project1
             }
 
             // 出撃していない場合
-            if (Status != "出撃" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status != "出撃" || string.IsNullOrEmpty(Map.MapFileName))
             {
                 // パートナーが仲間にいるだけでよい
                 var loopTo1 = cnum;
@@ -44548,7 +44548,7 @@ namespace Project1
                     {
                         {
                             var withBlock = SRC.UList.Item(uname);
-                            if (withBlock.Status == "出撃" | withBlock.Status == "待機")
+                            if (withBlock.Status == "出撃" || withBlock.Status == "待機")
                             {
                                 goto NextPartner;
                             }
@@ -44568,7 +44568,7 @@ namespace Project1
 
                             {
                                 var withBlock1 = localItem().Unit;
-                                if (withBlock1.Status == "出撃" | withBlock1.Status == "待機")
+                                if (withBlock1.Status == "出撃" || withBlock1.Status == "待機")
                                 {
                                     goto NextPartner;
                                 }
@@ -44699,7 +44699,7 @@ namespace Project1
 
                         case 5:
                             {
-                                if (tx > 1 & ty > 1)
+                                if (tx > 1 && ty > 1)
                                 {
                                     u = Map.MapDataForUnit[tx - 1, ty - 1];
                                 }
@@ -44709,7 +44709,7 @@ namespace Project1
 
                         case 6:
                             {
-                                if (tx < Map.MapWidth & ty < Map.MapHeight)
+                                if (tx < Map.MapWidth && ty < Map.MapHeight)
                                 {
                                     u = Map.MapDataForUnit[tx + 1, ty + 1];
                                 }
@@ -44719,7 +44719,7 @@ namespace Project1
 
                         case 7:
                             {
-                                if (tx > 1 & ty < Map.MapHeight)
+                                if (tx > 1 && ty < Map.MapHeight)
                                 {
                                     u = Map.MapDataForUnit[tx - 1, ty + 1];
                                 }
@@ -44729,7 +44729,7 @@ namespace Project1
 
                         case 8:
                             {
-                                if (tx < Map.MapWidth & ty > 1)
+                                if (tx < Map.MapWidth && ty > 1)
                                 {
                                     u = Map.MapDataForUnit[tx + 1, ty - 1];
                                 }
@@ -44819,7 +44819,7 @@ namespace Project1
                         }
 
                         // 行動出来なければだめ
-                        if (withBlock2.MaxAction() == 0 | withBlock2.IsConditionSatisfied("混乱") | withBlock2.IsConditionSatisfied("恐怖") | withBlock2.IsConditionSatisfied("憑依"))
+                        if (withBlock2.MaxAction() == 0 || withBlock2.IsConditionSatisfied("混乱") || withBlock2.IsConditionSatisfied("恐怖") || withBlock2.IsConditionSatisfied("憑依"))
                         {
                             goto NextNeighbor;
                         }
@@ -44827,7 +44827,7 @@ namespace Project1
                         // 合体技にレベルが設定されていればパイロット間の信頼度をチェック
                         if (clevel > 0)
                         {
-                            if (MainPilot().Relation(withBlock2.MainPilot()) < clevel | withBlock2.MainPilot().Relation(MainPilot()) < clevel)
+                            if (MainPilot().Relation(withBlock2.MainPilot()) < clevel || withBlock2.MainPilot().Relation(MainPilot()) < clevel)
                             {
                                 goto NextNeighbor;
                             }
@@ -45081,12 +45081,12 @@ namespace Project1
             bool IsCombinationAttackAvailableRet = default;
             Unit[] partners;
             partners = new Unit[1];
-            if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
             {
                 // 出撃時以外は相手が仲間にいるだけでＯＫ
                 CombinationPartner("武装", w, partners, x, y);
             }
-            else if (WeaponMaxRange(w) == 1 & !IsWeaponClassifiedAs(w, "Ｍ"))
+            else if (WeaponMaxRange(w) == 1 && !IsWeaponClassifiedAs(w, "Ｍ"))
             {
                 // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
                 if (x > 1)
@@ -45167,12 +45167,12 @@ namespace Project1
             bool IsCombinationAbilityAvailableRet = default;
             Unit[] partners;
             partners = new Unit[1];
-            if (Status == "待機" | string.IsNullOrEmpty(Map.MapFileName))
+            if (Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
             {
                 // 出撃時以外は相手が仲間にいるだけでＯＫ
                 CombinationPartner("アビリティ", a, partners, x, y);
             }
-            else if (AbilityMaxRange(a) == 1 & !IsAbilityClassifiedAs(a, "Ｍ"))
+            else if (AbilityMaxRange(a) == 1 && !IsAbilityClassifiedAs(a, "Ｍ"))
             {
                 // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
                 if (x > 1)
@@ -45268,7 +45268,7 @@ namespace Project1
             }
 
             // マップ外？
-            if (tx < 1 | Map.MapWidth < tx | ty < 1 | Map.MapHeight < ty)
+            if (tx < 1 || Map.MapWidth < tx || ty < 1 || Map.MapHeight < ty)
             {
                 IsAbleToEnterRet = false;
                 return IsAbleToEnterRet;
@@ -45279,7 +45279,7 @@ namespace Project1
             {
                 case "空":
                     {
-                        if (!IsTransAvailable("空") & !CurrentForm().IsFeatureAvailable("空中移動"))
+                        if (!IsTransAvailable("空") && !CurrentForm().IsFeatureAvailable("空中移動"))
                         {
                             IsAbleToEnterRet = false;
                             return IsAbleToEnterRet;
@@ -45290,13 +45290,13 @@ namespace Project1
 
                 case "水":
                     {
-                        if (IsTransAvailable("空") | CurrentForm().IsFeatureAvailable("空中移動") | IsTransAvailable("水上"))
+                        if (IsTransAvailable("空") || CurrentForm().IsFeatureAvailable("空中移動") || IsTransAvailable("水上"))
                         {
                             IsAbleToEnterRet = true;
                             return IsAbleToEnterRet;
                         }
 
-                        if (get_Adaption(3) == 0 & !CurrentForm().IsFeatureAvailable("水中移動"))
+                        if (get_Adaption(3) == 0 && !CurrentForm().IsFeatureAvailable("水中移動"))
                         {
                             IsAbleToEnterRet = false;
                             return IsAbleToEnterRet;
@@ -45307,13 +45307,13 @@ namespace Project1
 
                 case "深水":
                     {
-                        if (IsTransAvailable("空") | CurrentForm().IsFeatureAvailable("空中移動") | IsTransAvailable("水上"))
+                        if (IsTransAvailable("空") || CurrentForm().IsFeatureAvailable("空中移動") || IsTransAvailable("水上"))
                         {
                             IsAbleToEnterRet = true;
                             return IsAbleToEnterRet;
                         }
 
-                        if (!IsTransAvailable("水") & !CurrentForm().IsFeatureAvailable("水中移動"))
+                        if (!IsTransAvailable("水") && !CurrentForm().IsFeatureAvailable("水中移動"))
                         {
                             IsAbleToEnterRet = false;
                             return IsAbleToEnterRet;
@@ -45324,7 +45324,7 @@ namespace Project1
 
                 case "宇宙":
                     {
-                        if (get_Adaption(4) == 0 & !CurrentForm().IsFeatureAvailable("宇宙移動"))
+                        if (get_Adaption(4) == 0 && !CurrentForm().IsFeatureAvailable("宇宙移動"))
                         {
                             IsAbleToEnterRet = false;
                             return IsAbleToEnterRet;
@@ -45335,7 +45335,7 @@ namespace Project1
 
                 case "月面":
                     {
-                        if (IsTransAvailable("空") | CurrentForm().IsFeatureAvailable("空中移動") | IsTransAvailable("宇") | CurrentForm().IsFeatureAvailable("宇宙移動"))
+                        if (IsTransAvailable("空") || CurrentForm().IsFeatureAvailable("空中移動") || IsTransAvailable("宇") || CurrentForm().IsFeatureAvailable("宇宙移動"))
                         {
                             IsAbleToEnterRet = true;
                             return IsAbleToEnterRet;
@@ -45346,13 +45346,13 @@ namespace Project1
 
                 default:
                     {
-                        if (IsTransAvailable("空") | CurrentForm().IsFeatureAvailable("空中移動"))
+                        if (IsTransAvailable("空") || CurrentForm().IsFeatureAvailable("空中移動"))
                         {
                             IsAbleToEnterRet = true;
                             return IsAbleToEnterRet;
                         }
 
-                        if (!IsTransAvailable("陸") & !CurrentForm().IsFeatureAvailable("陸上移動"))
+                        if (!IsTransAvailable("陸") && !CurrentForm().IsFeatureAvailable("陸上移動"))
                         {
                             IsAbleToEnterRet = false;
                             return IsAbleToEnterRet;
@@ -45402,7 +45402,7 @@ namespace Project1
             {
                 var withBlock = CurrentForm();
                 // 技能チェックが必要？
-                if (withBlock.CountPilot() == 0 | !IsFeatureAvailable("必要技能") & !IsFeatureAvailable("不必要技能"))
+                if (withBlock.CountPilot() == 0 || !IsFeatureAvailable("必要技能") && !IsFeatureAvailable("不必要技能"))
                 {
                     return IsAvailableRet;
                 }
@@ -45526,7 +45526,7 @@ namespace Project1
             // ステータスコマンド実行時は条件が満たされていると見なす？
             if (Strings.Left(ndata, 1) == "+")
             {
-                if (Status == "出撃" & InterMission.InStatusCommand())
+                if (Status == "出撃" && InterMission.InStatusCommand())
                 {
                     IsNecessarySkillSatisfied2Ret = true;
                     return IsNecessarySkillSatisfied2Ret;
@@ -46230,7 +46230,7 @@ namespace Project1
                         if (mp is object)
                         {
                             // 特定パイロット専用？
-                            if ((sname ?? "") == (mp.Name ?? "") | (sname ?? "") == (mp.get_Nickname(false) ?? ""))
+                            if ((sname ?? "") == (mp.Name ?? "") || (sname ?? "") == (mp.get_Nickname(false) ?? ""))
                             {
                                 slevel = 1d;
                             }
@@ -46252,7 +46252,7 @@ namespace Project1
                                 {
                                     {
                                         var withBlock4 = Pilot(i);
-                                        if ((sname ?? "") == (withBlock4.Name ?? "") | (sname ?? "") == (withBlock4.get_Nickname(false) ?? ""))
+                                        if ((sname ?? "") == (withBlock4.Name ?? "") || (sname ?? "") == (withBlock4.get_Nickname(false) ?? ""))
                                         {
                                             slevel = 1d;
                                             break;
@@ -46281,7 +46281,7 @@ namespace Project1
                             {
                                 {
                                     var withBlock5 = Support(i);
-                                    if ((sname ?? "") == (withBlock5.Name ?? "") | (sname ?? "") == (withBlock5.get_Nickname(false) ?? ""))
+                                    if ((sname ?? "") == (withBlock5.Name ?? "") || (sname ?? "") == (withBlock5.get_Nickname(false) ?? ""))
                                     {
                                         slevel = 1d;
                                         break;
@@ -46304,11 +46304,11 @@ namespace Project1
                             }
 
                             // 追加サポートの技能を検索
-                            if (IsFeatureAvailable("追加サポート") & CountPilot() > 0)
+                            if (IsFeatureAvailable("追加サポート") && CountPilot() > 0)
                             {
                                 {
                                     var withBlock6 = AdditionalSupport();
-                                    if ((sname ?? "") == (withBlock6.Name ?? "") | (sname ?? "") == (withBlock6.get_Nickname(false) ?? ""))
+                                    if ((sname ?? "") == (withBlock6.Name ?? "") || (sname ?? "") == (withBlock6.get_Nickname(false) ?? ""))
                                     {
                                         slevel = 1d;
                                     }
@@ -46335,7 +46335,7 @@ namespace Project1
                         if (slevel == 0d)
                         {
                             // ユニット名またはクラスに該当？
-                            if ((sname ?? "") == (Name ?? "") | (sname ?? "") == (Nickname0 ?? "") | (sname ?? "") == (Class0 ?? ""))
+                            if ((sname ?? "") == (Name ?? "") || (sname ?? "") == (Nickname0 ?? "") || (sname ?? "") == (Class0 ?? ""))
                             {
                                 slevel = 1d;
                             }
@@ -46346,7 +46346,7 @@ namespace Project1
                             if (Strings.Left(sname, 1) == "@")
                             {
                                 // 地形を指定した必要技能
-                                if (Status == "出撃" & 1 <= x & x <= Map.MapWidth & 1 <= y & y <= Map.MapHeight)
+                                if (Status == "出撃" && 1 <= x && x <= Map.MapWidth && 1 <= y && y <= Map.MapHeight)
                                 {
                                     if ((Strings.Mid(sname, 2) ?? "") == (Map.TerrainName(x, y) ?? ""))
                                     {
@@ -46365,7 +46365,7 @@ namespace Project1
                                         var withBlock7 = Item(i);
                                         if (withBlock7.Activated)
                                         {
-                                            if ((iname ?? "") == (withBlock7.Name ?? "") | (iname ?? "") == (withBlock7.Class0() ?? ""))
+                                            if ((iname ?? "") == (withBlock7.Name ?? "") || (iname ?? "") == (withBlock7.Class0() ?? ""))
                                             {
                                                 slevel = 1d;
                                                 break;
@@ -46374,7 +46374,7 @@ namespace Project1
                                     }
                                 }
                             }
-                            else if (Strings.Right(sname, 2) == "隣接" | Strings.Right(sname, 4) == "マス以内")
+                            else if (Strings.Right(sname, 2) == "隣接" || Strings.Right(sname, 4) == "マス以内")
                             {
                                 // 特定のユニットが近くにいることを指定した必要技能
                                 if (Status == "出撃")
@@ -46411,7 +46411,7 @@ namespace Project1
                                             }
 
                                             // ユニットが自分？
-                                            if (ReferenceEquals(u, this) | x == i & y == j)
+                                            if (ReferenceEquals(u, this) || x == i && y == j)
                                             {
                                                 goto NextNeighbor;
                                             }
@@ -46429,13 +46429,13 @@ namespace Project1
                                                     goto NextNeighbor;
                                                 }
                                             }
-                                            else if ((u.Name ?? "") != (uname ?? "") & (u.MainPilot().Name ?? "") != (uname ?? ""))
+                                            else if ((u.Name ?? "") != (uname ?? "") && (u.MainPilot().Name ?? "") != (uname ?? ""))
                                             {
                                                 goto NextNeighbor;
                                             }
 
                                             // 行動出来なければだめ
-                                            if (u.MaxAction() == 0 | u.IsConditionSatisfied("混乱") | u.IsConditionSatisfied("恐怖") | u.IsConditionSatisfied("憑依"))
+                                            if (u.MaxAction() == 0 || u.IsConditionSatisfied("混乱") || u.IsConditionSatisfied("恐怖") || u.IsConditionSatisfied("憑依"))
                                             {
                                                 goto NextNeighbor;
                                             }

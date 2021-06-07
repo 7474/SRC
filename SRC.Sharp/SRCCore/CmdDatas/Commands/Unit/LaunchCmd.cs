@@ -91,7 +91,7 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Launchコマンドの引数の数が違います");
             }
 
-            if (opt != "非同期" & GUI.MainFormVisible & !GUI.IsPictureVisible)
+            if (opt != "非同期" && GUI.MainFormVisible && !GUI.IsPictureVisible)
             {
                 GUI.Center(ux, uy);
                 GUI.RefreshScreen();

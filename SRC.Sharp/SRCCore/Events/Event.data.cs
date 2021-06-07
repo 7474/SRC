@@ -541,7 +541,7 @@ namespace SRCCore.Events
 
                     case CmdType.NextCmd:
                         {
-                            if (command.ArgNum == 1 | command.ArgNum == 2)
+                            if (command.ArgNum == 1 || command.ArgNum == 2)
                             {
                                 if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
                                 {
@@ -894,7 +894,7 @@ namespace SRCCore.Events
                                 //                                    break;
                                 //                                }
                                 //                        }
-                                //                        if ((buf ?? "") != (buf2 ?? "") & buf != "end" & buf != "suspend" & Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
+                                //                        if ((buf ?? "") != (buf2 ?? "") && buf != "end" && buf != "suspend" && Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
                                 //                        {
                                 //                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 //                            cmdStack.Pop();
@@ -1210,7 +1210,7 @@ namespace SRCCore.Events
                             // 他のイベントファイルの読み込み
                             // TODO Impl 他のイベントファイルの読み込み
                             var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2);
-                            if (fname2 != @"Lib\スペシャルパワー.eve" & fname2 != @"Lib\汎用戦闘アニメ\include.eve" & fname2 != @"Lib\include.eve")
+                            if (fname2 != @"Lib\スペシャルパワー.eve" && fname2 != @"Lib\汎用戦闘アニメ\include.eve" && fname2 != @"Lib\include.eve")
                             {
                                 foreach (var dir in new string[]
                                 {

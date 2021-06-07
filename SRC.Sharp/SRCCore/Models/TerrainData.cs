@@ -46,7 +46,7 @@ namespace SRCCore.Models
             flevel = Constants.DEFAULT_LEVEL;
             i = Strings.InStr(buf, "Lv");
             j = Strings.InStr(buf, "=");
-            if (i > 0 & j > 0 & i > j)
+            if (i > 0 && j > 0 && i > j)
             {
                 i = 0;
             }

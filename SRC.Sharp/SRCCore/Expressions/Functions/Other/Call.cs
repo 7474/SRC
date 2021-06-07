@@ -89,7 +89,7 @@ namespace SRCCore.Expressions.Functions
                     }
 
                     var cmd = SRC.Event.EventCmd[SRC.Event.CurrentLineNum];
-                    if (cur_depth == SRC.Event.CallDepth & cmd.Name == Events.CmdType.ReturnCmd)
+                    if (cur_depth == SRC.Event.CallDepth && cmd.Name == Events.CmdType.ReturnCmd)
                     {
                         break;
                     }

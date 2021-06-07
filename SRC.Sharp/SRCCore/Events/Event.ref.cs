@@ -556,7 +556,7 @@ namespace Project1
 
                 bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
 
-                if (localFileExists17() | localFileExists18() | localFileExists19())
+                if (localFileExists17() || localFileExists18() || localFileExists19())
                 {
                     // システムデータのロードをやり直す
                     EventData = new string[1];
@@ -1090,7 +1090,7 @@ namespace Project1
 
                             case CmdType.NextCmd:
                                 {
-                                    if (withBlock5.ArgNum == 1 | withBlock5.ArgNum == 2)
+                                    if (withBlock5.ArgNum == 1 || withBlock5.ArgNum == 2)
                                     {
                                         if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
                                         {
@@ -1708,7 +1708,7 @@ namespace Project1
                 SRC.IncludeData(ref new_titles[i]);
 
             // ローカルデータの読みこみ
-            if (!SRC.IsLocalDataLoaded | Information.UBound(new_titles) > 0)
+            if (!SRC.IsLocalDataLoaded || Information.UBound(new_titles) > 0)
             {
                 if (GeneralLib.FileExists(ref SRC.ScenarioPath + @"Data\alias.txt"))
                 {
@@ -2401,7 +2401,7 @@ namespace Project1
                     while (ret > 0);
 
                     // ステージが終了 or キャンセル？
-                    if (SRC.IsScenarioFinished | SRC.IsCanceled)
+                    if (SRC.IsScenarioFinished || SRC.IsCanceled)
                     {
                         goto ExitLoop;
                     }
@@ -2776,7 +2776,7 @@ namespace Project1
                     if (str2 == "全")
                     {
                         // だだし、「ターン 全」が２回実行されるのは防ぐ
-                        if (ltype != LabelType.TurnEventLabel | i != 2)
+                        if (ltype != LabelType.TurnEventLabel || i != 2)
                         {
                             goto NextPara;
                         }
@@ -2813,7 +2813,7 @@ namespace Project1
 
                         bool localIsDefined2() { object argIndex1 = str2; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
 
-                        if (str2 == "味方" | str2 == "ＮＰＣ" | str2 == "敵" | str2 == "中立")
+                        if (str2 == "味方" || str2 == "ＮＰＣ" || str2 == "敵" || str2 == "中立")
                         {
                             // 陣営名で比較
                             if (str1 != "味方" & str1 != "ＮＰＣ" & str1 != "敵" & str1 != "中立")
@@ -2831,7 +2831,7 @@ namespace Project1
                             // パイロットで比較
                             {
                                 var withBlock = SRC.PList.Item(ref str2);
-                                if ((str2 ?? "") == (withBlock.Data.Name ?? "") | (str2 ?? "") == (withBlock.Data.Nickname ?? ""))
+                                if ((str2 ?? "") == (withBlock.Data.Name ?? "") || (str2 ?? "") == (withBlock.Data.Nickname ?? ""))
                                 {
                                     // グループＩＤが付けられていない場合は
                                     // パイロット名で比較
@@ -3162,7 +3162,7 @@ namespace Project1
                 foreach (LabelData currentLab1 in colEventLabelList)
                 {
                     lab = currentLab1;
-                    if (lab.LineNum == lnum - i | lab.LineNum == lnum + i)
+                    if (lab.LineNum == lnum - i || lab.LineNum == lnum + i)
                     {
                         lab.Enable = false;
                         return;
@@ -4047,7 +4047,7 @@ namespace Project1
                     u = currentU1;
                     {
                         var withBlock1 = u;
-                        if (withBlock1.Status_Renamed == "出撃" | withBlock1.Status_Renamed == "待機")
+                        if (withBlock1.Status_Renamed == "出撃" || withBlock1.Status_Renamed == "待機")
                         {
                             i = (short)(i + 1);
                             unit_list[i] = u;
@@ -4218,7 +4218,7 @@ namespace Project1
                     u = currentU2;
                     {
                         var withBlock2 = u;
-                        if (withBlock2.Status_Renamed == "出撃" | withBlock2.Status_Renamed == "待機")
+                        if (withBlock2.Status_Renamed == "出撃" || withBlock2.Status_Renamed == "待機")
                         {
                             i = (short)(i + 1);
                             unit_list[i] = u;

@@ -35,7 +35,7 @@ namespace SRCCore.Pilots
                 {
                     SkillData registerd;
                     // 既に登録済み？
-                    if (sd.Name == "ＳＰ消費減少" | sd.Name == "スペシャルパワー自動発動" | sd.Name == "ハンター")
+                    if (sd.Name == "ＳＰ消費減少" || sd.Name == "スペシャルパワー自動発動" || sd.Name == "ハンター")
                     {
                         // これらの特殊能力は同種の能力を複数持つことが出来る
                         // ただしデータ指定まで同一であれば同じ能力と見なす
@@ -78,7 +78,7 @@ namespace SRCCore.Pilots
             //            sdata = GeneralLib.ListTail(buf, 2);
 
             //            // 既に登録済み？
-            //            if (sname == "ＳＰ消費減少" | sname == "スペシャルパワー自動発動" | sname == "ハンター")
+            //            if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
             //            {
             //                // これらの特殊能力は同種の能力を複数持つことが出来る
             //                var loopTo4 = skill_num;
@@ -309,7 +309,7 @@ namespace SRCCore.Pilots
             //        }
 
             //        // サブパイロット＆サポートパイロットによるサポート
-            //        if (ReferenceEquals(this, withBlock4.MainPilot()) & withBlock4.Status == "出撃")
+            //        if (ReferenceEquals(this, withBlock4.MainPilot()) && withBlock4.Status == "出撃")
             //        {
             //            var loopTo9 = withBlock4.CountPilot();
             //            for (i = 2; i <= loopTo9; i++)
@@ -744,7 +744,7 @@ namespace SRCCore.Pilots
         //        }
         //        else
         //        {
-        //            if (Strings.InStr(Name, "(ザコ)") == 0 & Strings.InStr(Name, "(汎用)") == 0)
+        //            if (Strings.InStr(Name, "(ザコ)") == 0 && Strings.InStr(Name, "(汎用)") == 0)
         //            {
         //                my_cmd_rank = Constants.DEFAULT_LEVEL;
         //            }
@@ -840,7 +840,7 @@ namespace SRCCore.Pilots
         //                    var withBlock2 = u.MainPilot(true);
         //                    // 同じチームに所属している？
         //                    uteam = withBlock2.SkillData("チーム");
-        //                    if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+        //                    if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
         //                    {
         //                        goto NextUnit;
         //                    }

@@ -35,7 +35,7 @@ namespace Project1
         {
             //GUI.TopItem = (short)(lstItems.TopIndex + 1);
             //GUI.IsFormClicked = true;
-            //if (!GUI.IsMordal & Visible)
+            //if (!GUI.IsMordal && Visible)
             //{
             //    Cancel = 1;
             //}
@@ -60,7 +60,7 @@ namespace Project1
             //                return;
             //            }
 
-            //            if (lstItems.SelectedIndex < 0 | GUI.ListItemFlag[lstItems.SelectedIndex + 1])
+            //            if (lstItems.SelectedIndex < 0 || GUI.ListItemFlag[lstItems.SelectedIndex + 1])
             //            {
             //                return;
             //            }
@@ -137,7 +137,7 @@ namespace Project1
             //    itm = (short)(itm + withBlock.TopIndex);
 
             //    // カーソル上のアイテムをハイライト表示
-            //    if (itm < 0 | itm >= withBlock.Items.Count)
+            //    if (itm < 0 || itm >= withBlock.Items.Count)
             //    {
             //        withBlock.SelectedIndex = -1;
             //        return;

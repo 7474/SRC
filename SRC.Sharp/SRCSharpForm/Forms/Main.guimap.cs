@@ -455,7 +455,7 @@ namespace SRCSharpForm
                     var xx = MapCellPx * (dx + i - 1);
                     for (var j = 0; j < dh; j++)
                     {
-                        if (sx + i < 1 | (sx + i) > Map.MapWidth | sy + j < 1 | (sy + j) > Map.MapHeight)
+                        if (sx + i < 1 || (sx + i) > Map.MapWidth || sy + j < 1 || (sy + j) > Map.MapHeight)
                         {
                             continue;
                         }

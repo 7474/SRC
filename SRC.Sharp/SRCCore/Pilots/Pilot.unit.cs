@@ -49,7 +49,7 @@ namespace SRCCore.Pilots
 
                 //short localLLength() { string arglist = Class; var ret = GeneralLib.LLength(arglist); this.Class = arglist; return ret; }
 
-                //if (localInStrNotNest1() > 0 & localLLength() == 1 & !u.IsFeatureAvailable("ダミーユニット"))
+                //if (localInStrNotNest1() > 0 && localLLength() == 1 && !u.IsFeatureAvailable("ダミーユニット"))
                 //{
                 //    // サポートにしかなれないパイロットの場合
                 //    u.AddSupport(this);
@@ -60,7 +60,7 @@ namespace SRCCore.Pilots
                 //    // がいける場合は通常パイロットを優先
                 //    short localInStrNotNest() { string argstring1 = Class; string argstring2 = u.Class0 + " "; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
 
-                //    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) & localInStrNotNest() > 0 & !is_support)
+                //    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) && localInStrNotNest() > 0 && !is_support)
                 //    {
                 //        u.AddPilot(this);
                 //    }
@@ -244,7 +244,7 @@ namespace SRCCore.Pilots
 
             // 人間ユニット指定を除いて判定
             string uclass;
-            if (Strings.Left(u.Class, 1) == "(" & Strings.Right(u.Class, 1) == ")")
+            if (Strings.Left(u.Class, 1) == "(" && Strings.Right(u.Class, 1) == ")")
             {
                 uclass = Strings.Mid(u.Class, 2, Strings.Len(u.Class) - 2);
             }
@@ -282,7 +282,7 @@ namespace SRCCore.Pilots
             // 必要技能＆不必要技能をチェック
 
             // 両能力を持っていない場合はチェック不要
-            if (!u.IsFeatureAvailable("必要技能") & !u.IsFeatureAvailable("不必要技能"))
+            if (!u.IsFeatureAvailable("必要技能") && !u.IsFeatureAvailable("不必要技能"))
             {
                 return true;
             }

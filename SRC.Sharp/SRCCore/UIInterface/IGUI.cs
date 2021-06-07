@@ -176,12 +176,6 @@ namespace SRCCore
 
         // === ユニット画像表示に関する処理 ===
 
-        // TODO 掃除
-        // ユニットのビットマップを作成
-        int MakeUnitBitmap(Unit u);
-        // ユニットのビットマップをロード
-        // XXX
-        //void LoadUnitBitmap(Unit u, PictureBox pic, int dx, int dy, bool use_orig_color = false, string fname = "");
         // ユニット画像の描画
         void PaintUnitBitmap(Unit u, string smode = "");
         // ユニット画像の表示を消す

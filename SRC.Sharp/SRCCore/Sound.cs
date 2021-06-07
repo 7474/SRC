@@ -344,7 +344,7 @@ namespace SRCCore
             //        buf2 = Strings.LCase(GeneralLib.ListIndex(midi_name, j));
 
             //        // 全体が()で囲まれている場合は()を外す
-            //        if (Strings.Left(buf2, 1) == "(" & Strings.Right(buf2, 1) == ")")
+            //        if (Strings.Left(buf2, 1) == "(" && Strings.Right(buf2, 1) == ")")
             //        {
             //            buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
             //        }

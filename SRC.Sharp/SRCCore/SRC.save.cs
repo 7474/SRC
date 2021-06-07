@@ -441,7 +441,7 @@ namespace SRCCore
                 Sound.BossBGM = data.BossBGM;
 
                 //    // 乱数系列を復元
-                //    if (!Expression.IsOptionDefined("デバッグ") & !Expression.IsOptionDefined("乱数系列非保存") & !FileSystem.EOF(SaveDataFileNumber))
+                //    if (!Expression.IsOptionDefined("デバッグ") && !Expression.IsOptionDefined("乱数系列非保存") && !FileSystem.EOF(SaveDataFileNumber))
                 //    {
                 //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndSeed);
                 //        GeneralLib.RndReset();

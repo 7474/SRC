@@ -87,7 +87,7 @@ namespace SRCCore.Commands
                 //if (launchUnit.BitmapID == 0)
                 //{
                 //    var withBlock3 = SRC.UList.Item(launchUnit.Name);
-                //    if ((SelectedTarget.Party0 ?? "") == (withBlock3.Party0 ?? "") & withBlock3.BitmapID != 0 & (SelectedTarget.get_Bitmap(false) ?? "") == (withBlock3.get_Bitmap(false) ?? ""))
+                //    if ((SelectedTarget.Party0 ?? "") == (withBlock3.Party0 ?? "") && withBlock3.BitmapID != 0 && (SelectedTarget.get_Bitmap(false) ?? "") == (withBlock3.get_Bitmap(false) ?? ""))
                 //    {
                 //        SelectedTarget.BitmapID = withBlock3.BitmapID;
                 //    }

@@ -14,7 +14,7 @@ namespace SRCCore.Units
         {
             int MaxActionRet;
             //// ステータス異常？
-            //if (IsConditionSatisfied("行動不能") | IsConditionSatisfied("麻痺") | IsConditionSatisfied("石化") | IsConditionSatisfied("凍結") | IsConditionSatisfied("睡眠") | IsConditionSatisfied("チャージ") | IsConditionSatisfied("消耗") | IsUnderSpecialPowerEffect("行動不能"))
+            //if (IsConditionSatisfied("行動不能") || IsConditionSatisfied("麻痺") || IsConditionSatisfied("石化") || IsConditionSatisfied("凍結") || IsConditionSatisfied("睡眠") || IsConditionSatisfied("チャージ") || IsConditionSatisfied("消耗") || IsUnderSpecialPowerEffect("行動不能"))
             //{
             //    return MaxActionRet;
             //}
@@ -106,32 +106,31 @@ namespace SRCCore.Units
             {
                 string PartyRet = strParty;
 
-                // TODO Impl 魅了されている場合
-                //// 魅了されている場合
-                //if (IsConditionSatisfied("魅了") & Master is object)
-                //{
-                //    PartyRet = Master.Party;
-                //    if (PartyRet == "味方")
-                //    {
-                //        // 味方になっても自分では操作できない
-                //        PartyRet = "ＮＰＣ";
-                //    }
-                //}
+                // 魅了されている場合
+                if (IsConditionSatisfied("魅了") && Master is object)
+                {
+                    PartyRet = Master.Party;
+                    if (PartyRet == "味方")
+                    {
+                        // 味方になっても自分では操作できない
+                        PartyRet = "ＮＰＣ";
+                    }
+                }
 
-                //// 憑依されている場合
-                //if (IsConditionSatisfied("憑依") & Master is object)
-                //{
-                //    PartyRet = Master.Party;
-                //}
+                // 憑依されている場合
+                if (IsConditionSatisfied("憑依") && Master is object)
+                {
+                    PartyRet = Master.Party;
+                }
 
-                //// コントロール不能の味方ユニットはＮＰＣとして扱う
-                //if (PartyRet == "味方")
-                //{
-                //    if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("恐怖") | IsConditionSatisfied("踊り") | IsConditionSatisfied("狂戦士"))
-                //    {
-                //        PartyRet = "ＮＰＣ";
-                //    }
-                //}
+                // コントロール不能の味方ユニットはＮＰＣとして扱う
+                if (PartyRet == "味方")
+                {
+                    if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("恐怖") || IsConditionSatisfied("踊り") || IsConditionSatisfied("狂戦士"))
+                    {
+                        PartyRet = "ＮＰＣ";
+                    }
+                }
 
                 return PartyRet;
             }
@@ -168,7 +167,7 @@ namespace SRCCore.Units
                 //    }
                 //}
 
-                //if (IsConditionSatisfied("暴走") | IsConditionSatisfied("混乱") | IsConditionSatisfied("憑依") | IsConditionSatisfied("狂戦士"))
+                //if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("憑依") || IsConditionSatisfied("狂戦士"))
                 //{
                 //    // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
                 //    // 常に通常モードとして扱う

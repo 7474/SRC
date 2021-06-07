@@ -88,7 +88,7 @@ namespace SRCCore.Units
 
                 //    string localCondition6() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
 
-                //    if (localCondition() == "残り時間" | localCondition1() == "非操作" | Strings.Right(localCondition2(), 2) == "付加" | Strings.Right(localCondition3(), 2) == "強化" | Strings.Right(localCondition4(), 3) == "付加２" | Strings.Right(localCondition5(), 3) == "強化２" | Strings.Right(localCondition6(), 2) == "ＵＰ")
+                //    if (localCondition() == "残り時間" || localCondition1() == "非操作" || Strings.Right(localCondition2(), 2) == "付加" || Strings.Right(localCondition3(), 2) == "強化" || Strings.Right(localCondition4(), 3) == "付加２" || Strings.Right(localCondition5(), 3) == "強化２" || Strings.Right(localCondition6(), 2) == "ＵＰ")
                 //    {
                 //        i = (short)(i + 1);
                 //    }
@@ -219,7 +219,7 @@ namespace SRCCore.Units
             //    // ADD END MARGE
 
             // 味方ステージの1ターン目(スタートイベント直後)は回復を行わない
-            if (SRC.Stage == "味方" & SRC.Turn == 1)
+            if (SRC.Stage == "味方" && SRC.Turn == 1)
             {
                 return;
             }
@@ -339,7 +339,7 @@ namespace SRCCore.Units
 
             //                int localStrToLng() { string argexpr = hsa615f5f7d41941adb5ff8c50a645e7c9(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-            //                if (withBlock4.Morale >= localStrToLng() & !IsSpecialPowerInEffect(spname))
+            //                if (withBlock4.Morale >= localStrToLng() && !IsSpecialPowerInEffect(spname))
             //                {
             //                    GUI.Center(x, y);
             //                    withBlock4.UseSpecialPower(spname, 0d);
@@ -351,14 +351,14 @@ namespace SRCCore.Units
             //            }
             //        }
 
-            //        if (IsConditionSatisfied("スペシャルパワー自動発動付加") | IsConditionSatisfied("スペシャルパワー自動発動付加２"))
+            //        if (IsConditionSatisfied("スペシャルパワー自動発動付加") || IsConditionSatisfied("スペシャルパワー自動発動付加２"))
             //        {
             //            spname = GeneralLib.LIndex(withBlock4.SkillData("スペシャルパワー自動発動"), 2);
             //            string localLIndex1() { object argIndex1 = "スペシャルパワー自動発動"; string arglist = withBlock4.SkillData(argIndex1); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
             //            int localStrToLng1() { string argexpr = hs007c2f9d021b4299932cdd690ee4914e(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-            //            if (withBlock4.Morale >= localStrToLng1() & !IsSpecialPowerInEffect(spname))
+            //            if (withBlock4.Morale >= localStrToLng1() && !IsSpecialPowerInEffect(spname))
             //            {
             //                GUI.Center(x, y);
             //                withBlock4.UseSpecialPower(spname, 0d);
@@ -389,7 +389,7 @@ namespace SRCCore.Units
 
             //                    int localStrToLng2() { string argexpr = hs1050a377ee804d6d86fc7e98398e12ee(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-            //                    if (withBlock5.Morale >= localStrToLng2() & !IsSpecialPowerInEffect(spname))
+            //                    if (withBlock5.Morale >= localStrToLng2() && !IsSpecialPowerInEffect(spname))
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock5.UseSpecialPower(spname, 0d);
@@ -422,7 +422,7 @@ namespace SRCCore.Units
 
             //                    int localStrToLng3() { string argexpr = hsaaa9e6d3323e4453a1b656c0d1ba1987(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-            //                    if (withBlock6.Morale >= localStrToLng3() & !IsSpecialPowerInEffect(spname))
+            //                    if (withBlock6.Morale >= localStrToLng3() && !IsSpecialPowerInEffect(spname))
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock6.UseSpecialPower(spname, 0d);
@@ -454,7 +454,7 @@ namespace SRCCore.Units
 
             //                    int localStrToLng4() { string argexpr = hsd3fcfdcfd593490696f3d091f42d35e5(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
-            //                    if (withBlock7.Morale >= localStrToLng4() & !IsSpecialPowerInEffect(spname))
+            //                    if (withBlock7.Morale >= localStrToLng4() && !IsSpecialPowerInEffect(spname))
             //                    {
             //                        GUI.Center(x, y);
             //                        withBlock7.UseSpecialPower(spname, 0d);
@@ -471,7 +471,7 @@ namespace SRCCore.Units
             //    // 起死回生
             //    {
             //        var withBlock8 = MainPilot();
-            //        if (withBlock8.IsSkillAvailable("起死回生") & withBlock8.SP <= withBlock8.MaxSP / 5 & HP <= MaxHP / 5 & EN <= MaxEN / 5)
+            //        if (withBlock8.IsSkillAvailable("起死回生") && withBlock8.SP <= withBlock8.MaxSP / 5 && HP <= MaxHP / 5 && EN <= MaxEN / 5)
             //        {
             //            withBlock8.SP = withBlock8.MaxSP;
             //            HP = MaxHP;
@@ -490,7 +490,7 @@ namespace SRCCore.Units
             //    // ＨＰとＥＮ回復＆消費
             //    // MOD START MARGE
             //    // If Not IsConditionSatisfied("回復不能") Then
-            //    if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+            //    if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
             //    {
             //        // MOD END MARGE
             //        if (IsFeatureAvailable("ＨＰ回復"))
@@ -518,7 +518,7 @@ namespace SRCCore.Units
             //    short plv;
             //    if (IsConditionSatisfied("毒"))
             //    {
-            //        if (Expression.IsOptionDefined("毒効果大") & BossRank < 0)
+            //        if (Expression.IsOptionDefined("毒効果大") && BossRank < 0)
             //        {
             //            plv = 25;
             //        }
@@ -535,7 +535,7 @@ namespace SRCCore.Units
             //        else if (Effective("毒"))
             //        {
             //        }
-            //        else if (Immune("毒") | Absorb("毒"))
+            //        else if (Immune("毒") || Absorb("毒"))
             //        {
             //            plv = 0;
             //        }
@@ -600,7 +600,7 @@ namespace SRCCore.Units
             }
 
             //    // 付加された移動能力が切れた場合の処理
-            //    if (Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+            //    if (Status == "出撃" && !string.IsNullOrEmpty(Map.MapFileName))
             //    {
             //        switch (Area ?? "")
             //        {
@@ -652,7 +652,7 @@ namespace SRCCore.Units
 
             //            case "水上":
             //                {
-            //                    if (!IsFeatureAvailable("水上移動") & !IsFeatureAvailable("ホバー移動"))
+            //                    if (!IsFeatureAvailable("水上移動") && !IsFeatureAvailable("ホバー移動"))
             //                    {
             //                        if (!IsAbleToEnter(x, y))
             //                        {
@@ -703,7 +703,7 @@ namespace SRCCore.Units
             //        // 格納時は回復率ＵＰ
             //        // MOD START MARGE
             //        // If Not IsConditionSatisfied("回復不能") Then
-            //        if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+            //        if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
             //        {
             //            // MOD END MARGE
             //            hp_recovery = hp_recovery + 50;
@@ -899,21 +899,21 @@ namespace SRCCore.Units
             //        // Case Else
             //        // If Len(cname) > 6 Then
             //        // If Right$(cname, 6) = "属性弱点付加" Then
-            //        // If SpecialEffectImmune("弱" & Left$(cname, Len(cname) - 6)) _
+            //        // If SpecialEffectImmune("弱" && Left$(cname, Len(cname) - 6)) _
             //        // '                                            Or Absorb(Left$(cname, Len(cname) - 6)) _
             //        // '                                            Or Immune(Left$(cname, Len(cname) - 6)) _
             //        // '                                        Then
             //        // cname = ""
             //        // End If
             //        // ElseIf Right$(cname, 6) = "属性有効付加" Then
-            //        // If SpecialEffectImmune("有" & Left$(cname, Len(cname) - 6)) _
+            //        // If SpecialEffectImmune("有" && Left$(cname, Len(cname) - 6)) _
             //        // '                                            Or Absorb(Left$(cname, Len(cname) - 6)) _
             //        // '                                            Or Immune(Left$(cname, Len(cname) - 6)) _
             //        // '                                        Then
             //        // cname = ""
             //        // End If
             //        // ElseIf Right$(cname, 6) = "属性使用不能" Then
-            //        // If SpecialEffectImmune("剋" & Left$(cname, Len(cname) - 6)) Then
+            //        // If SpecialEffectImmune("剋" && Left$(cname, Len(cname) - 6)) Then
             //        // cname = ""
             //        // End If
             //        // End If
@@ -1003,7 +1003,7 @@ namespace SRCCore.Units
             //            var loopTo12 = td.CountFeature();
             //            for (i = 1; i <= loopTo12; i++)
             //            {
-            //                if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能"))
+            //                if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能"))
             //                {
             //                    switch (td.Feature(i) ?? "")
             //                    {
@@ -1500,7 +1500,7 @@ namespace SRCCore.Units
 
             //                                                    bool localImmune4() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-            //                                                    if (localSpecialEffectImmune() | localAbsorb4() | localImmune4())
+            //                                                    if (localSpecialEffectImmune() || localAbsorb4() || localImmune4())
             //                                                    {
             //                                                        cname = "";
             //                                                    }
@@ -1513,7 +1513,7 @@ namespace SRCCore.Units
 
             //                                                    bool localImmune5() { string arganame = Strings.Left(cname, Strings.Len(cname) - 6); var ret = Immune(arganame); return ret; }
 
-            //                                                    if (localSpecialEffectImmune1() | localAbsorb5() | localImmune5())
+            //                                                    if (localSpecialEffectImmune1() || localAbsorb5() || localImmune5())
             //                                                    {
             //                                                        cname = "";
             //                                                    }
@@ -1559,7 +1559,7 @@ namespace SRCCore.Units
             //    // If Not IsConditionSatisfied("回復不能") _
             //    // '        And Not IsOptionDefined("ＥＮ自然回復無効") _
             //    // '    Then
-            //    if (!IsConditionSatisfied("回復不能") & !IsSpecialPowerInEffect("回復不能") & !Expression.IsOptionDefined("ＥＮ自然回復無効"))
+            //    if (!IsConditionSatisfied("回復不能") && !IsSpecialPowerInEffect("回復不能") && !Expression.IsOptionDefined("ＥＮ自然回復無効"))
             //    {
             //        // MOD END MARGE
             //        EN = EN + 5;
@@ -1575,7 +1575,7 @@ namespace SRCCore.Units
             //    // 特殊能力「不安定」による暴走チェック
             //    if (IsFeatureAvailable("不安定"))
             //    {
-            //        if (HP <= MaxHP / 4 & !IsConditionSatisfied("暴走"))
+            //        if (HP <= MaxHP / 4 && !IsConditionSatisfied("暴走"))
             //        {
             //            AddCondition("暴走", -1, cdata: "");
             //        }
@@ -1622,7 +1622,7 @@ namespace SRCCore.Units
             //            {
             //                {
             //                    var withBlock9 = OtherForm(GeneralLib.LIndex(buf, i));
-            //                    if (withBlock9.IsAbleToEnter(x, y) & !withBlock9.IsFeatureAvailable("ＥＮ消費"))
+            //                    if (withBlock9.IsAbleToEnter(x, y) && !withBlock9.IsFeatureAvailable("ＥＮ消費"))
             //                    {
             //                        Transform(GeneralLib.LIndex(buf, i));
             //                        break;
@@ -1728,7 +1728,7 @@ namespace SRCCore.Units
 
             //            bool localIsMessageDefined3() { object argIndex1 = "分離"; string argmain_situation = "分離(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //            if (localIsMessageDefined2() | localIsMessageDefined3() | IsMessageDefined("分離"))
+            //            if (localIsMessageDefined2() || localIsMessageDefined3() || IsMessageDefined("分離"))
             //            {
             //                if (IsFeatureAvailable("分離ＢＧＭ"))
             //                {
@@ -1830,7 +1830,7 @@ namespace SRCCore.Units
             //    }
 
             //    // 発動条件を満たす？
-            //    if (this.MainPilot().Morale < (short)(10d * flevel) + 100 & (HP > MaxHP / 4 | Strings.InStr(fdata, "気力発動") > 0))
+            //    if (this.MainPilot().Morale < (short)(10d * flevel) + 100 && (HP > MaxHP / 4 || Strings.InStr(fdata, "気力発動") > 0))
             //    {
             //        return;
             //    }
@@ -1860,7 +1860,7 @@ namespace SRCCore.Units
 
             //            case "深水":
             //                {
-            //                    if (withBlock.IsTransAvailable("空") | withBlock.IsTransAvailable("水") | withBlock.IsTransAvailable("水上"))
+            //                    if (withBlock.IsTransAvailable("空") || withBlock.IsTransAvailable("水") || withBlock.IsTransAvailable("水上"))
             //                    {
             //                        is_available = true;
             //                    }
@@ -1917,7 +1917,7 @@ namespace SRCCore.Units
 
             //            string localLIndex() { string arglist = hs2eb6d7953f284c87970de1e6c7ca058d(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //            if (localFeature() == "ハイパーモードＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+            //            if (localFeature() == "ハイパーモードＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
             //            {
             //                string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -1937,7 +1937,7 @@ namespace SRCCore.Units
 
             //    bool localIsMessageDefined4() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //    if (localIsMessageDefined2() | localIsMessageDefined3() | localIsMessageDefined4() | IsMessageDefined("ハイパーモード"))
+            //    if (localIsMessageDefined2() || localIsMessageDefined3() || localIsMessageDefined4() || IsMessageDefined("ハイパーモード"))
             //    {
             //        GUI.Center(x, y);
             //        GUI.RefreshScreen();
@@ -2133,7 +2133,7 @@ namespace SRCCore.Units
 
             //    bool localIsMessageDefined2() { string argmain_situation = "ノーマルモード(" + uname + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
 
-            //    if (localIsMessageDefined1() | localIsMessageDefined2() | IsMessageDefined("ノーマルモード"))
+            //    if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("ノーマルモード"))
             //    {
             //        // ＢＧＭを切り替え
             //        if (IsFeatureAvailable("ノーマルモードＢＧＭ"))
@@ -2147,7 +2147,7 @@ namespace SRCCore.Units
 
             //                string localLIndex() { string arglist = hsbe3464a93f8d41b68a3072a6446fded5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //                if (localFeature() == "ノーマルモードＢＧＭ" & (localLIndex() ?? "") == (uname ?? ""))
+            //                if (localFeature() == "ノーマルモードＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
             //                {
             //                    string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
 
@@ -2364,7 +2364,7 @@ namespace SRCCore.Units
             //        var loopTo1 = CountWeapon();
             //        for (i = 1; i <= loopTo1; i++)
             //        {
-            //            if (w != i & IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxBullet(w) > 0)
+            //            if (w != i && IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxBullet(w) > 0)
             //            {
             //                if (MaxBullet(i) > MaxBullet(w))
             //                {
@@ -2380,7 +2380,7 @@ namespace SRCCore.Units
             //        var loopTo2 = CountAbility();
             //        for (i = 1; i <= loopTo2; i++)
             //        {
-            //            if (IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxBullet(w) > 0)
+            //            if (IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxBullet(w) > 0)
             //            {
             //                if (MaxStock(i) > MaxBullet(w))
             //                {
@@ -2406,7 +2406,7 @@ namespace SRCCore.Units
             //        var loopTo4 = CountAbility();
             //        for (i = 1; i <= loopTo4; i++)
             //        {
-            //            if (a != i & IsAbilityClassifiedAs(i, "共") & lv == AbilityLevel(i, "共") & MaxStock(a) > 0)
+            //            if (a != i && IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxStock(a) > 0)
             //            {
             //                if (MaxStock(i) > MaxStock(a))
             //                {
@@ -2422,7 +2422,7 @@ namespace SRCCore.Units
             //        var loopTo5 = CountWeapon();
             //        for (i = 1; i <= loopTo5; i++)
             //        {
-            //            if (IsWeaponClassifiedAs(i, "共") & lv == WeaponLevel(i, "共") & MaxStock(a) > 0)
+            //            if (IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxStock(a) > 0)
             //            {
             //                if (MaxBullet(i) > MaxStock(a))
             //                {
@@ -2447,7 +2447,7 @@ namespace SRCCore.Units
             //        var loopTo7 = CountWeapon();
             //        for (i = 1; i <= loopTo7; i++)
             //        {
-            //            if (w != i & MaxBullet(i) > 0)
+            //            if (w != i && MaxBullet(i) > 0)
             //            {
             //                SetBullet(w, GeneralLib.MinLng(Bullet(w), (MaxBullet(w) * Bullet(i) / (double)MaxBullet(i) + 0.49999d)));
             //            }
@@ -2470,7 +2470,7 @@ namespace SRCCore.Units
             //            var loopTo10 = withBlock.CountWeapon();
             //            for (k = counter; k <= loopTo10; k++)
             //            {
-            //                if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") & MaxBullet(j) > 0 & withBlock.MaxBullet(k) > 0)
+            //                if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") && MaxBullet(j) > 0 && withBlock.MaxBullet(k) > 0)
             //                {
             //                    withBlock.SetBullet(k, ((withBlock.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
             //                    idx = (k + 1);
@@ -2487,7 +2487,7 @@ namespace SRCCore.Units
             //            var loopTo12 = withBlock.CountAbility();
             //            for (k = counter; k <= loopTo12; k++)
             //            {
-            //                if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") & MaxStock(j) > 0 & withBlock.MaxStock(k) > 0)
+            //                if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") && MaxStock(j) > 0 && withBlock.MaxStock(k) > 0)
             //                {
             //                    withBlock.SetStock(k, ((withBlock.MaxStock(k) * Stock(j)) / MaxStock(j)));
             //                    idx = (k + 1);

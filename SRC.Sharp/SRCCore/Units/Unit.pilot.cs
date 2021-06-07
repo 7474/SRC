@@ -253,7 +253,7 @@ namespace SRCCore.Units
             //    if (SRC.PList.IsDefined(pname))
             //    {
             //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalPilot | Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
+            //        if (!p.IsAdditionalPilot || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalPilot = p;
             //            {
@@ -466,7 +466,7 @@ namespace SRCCore.Units
             //    if (SRC.PList.IsDefined(pname))
             //    {
             //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalSupport | Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
+            //        if (!p.IsAdditionalSupport || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
             //        {
             //            pltAdditionalSupport = p;
             //            {

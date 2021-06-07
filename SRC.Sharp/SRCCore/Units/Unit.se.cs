@@ -141,7 +141,7 @@ namespace SRCCore.Units
             //            GeneralLib.TrimString(anime);
 
             //            // 表示キャンセル
-            //            if (string.IsNullOrEmpty(anime) | anime == "-")
+            //            if (string.IsNullOrEmpty(anime) || anime == "-")
             //            {
             //                return;
             //            }
@@ -154,7 +154,7 @@ namespace SRCCore.Units
             //                return;
             //            }
 
-            //            if (SRC.BattleAnimation & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+            //            if (SRC.BattleAnimation && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             //            {
             //                var loopTo = CountWeapon();
             //                for (i = 1; i <= loopTo; i++)
@@ -172,12 +172,12 @@ namespace SRCCore.Units
             //                    {
             //                        case "swing.wav":
             //                            {
-            //                                if (Strings.InStr(main_situation, "槍") > 0 | Strings.InStr(main_situation, "スピア") > 0 | Strings.InStr(main_situation, "ランス") > 0 | Strings.InStr(main_situation, "ジャベリン") > 0)
+            //                                if (Strings.InStr(main_situation, "槍") > 0 || Strings.InStr(main_situation, "スピア") > 0 || Strings.InStr(main_situation, "ランス") > 0 || Strings.InStr(main_situation, "ジャベリン") > 0)
             //                                {
             //                                    Effect.ShowAnimation("刺突攻撃");
             //                                    return;
             //                                }
-            //                                else if (IsWeaponClassifiedAs(w, "武") | IsWeaponClassifiedAs(w, "武"1))
+            //                                else if (IsWeaponClassifiedAs(w, "武") || IsWeaponClassifiedAs(w, "武"1))
             //                                {
             //                                    Effect.ShowAnimation("白兵武器攻撃");
             //                                    return;
@@ -337,7 +337,7 @@ namespace SRCCore.Units
             //            // 攻撃でもアビリティでもない場合、ターゲットが設定されていなければ
             //            // 自分自身をターゲットに設定する
             //            // (発動アニメではアニメ表示にSelectedTargetForEventが使われるため)
-            //            if (!is_weapon & !is_ability)
+            //            if (!is_weapon && !is_ability)
             //            {
             //                if (Event.SelectedTargetForEvent is null)
             //                {
@@ -523,7 +523,7 @@ namespace SRCCore.Units
             //                ;
             //            }
 
-            //            if (SRC.BattleAnimation & !GUI.IsPictureDrawn & !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+            //            if (SRC.BattleAnimation && !GUI.IsPictureDrawn && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             //            {
             //                if (w > 0)
             //                {
@@ -550,7 +550,7 @@ namespace SRCCore.Units
             //            }
 
             //            // 画像を消去しておく
-            //            if (GUI.IsPictureDrawn & Strings.InStr(main_situation, "(準備)") == 0 & Strings.LCase(anime) != "keep")
+            //            if (GUI.IsPictureDrawn && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
             //            {
             //                GUI.ClearPicture();
             //                // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -558,7 +558,7 @@ namespace SRCCore.Units
             //            }
 
             //            // 最初から表示されていたのでなければメッセージウィンドウを閉じる
-            //            if (!is_message_form_opened & !keep_message_form)
+            //            if (!is_message_form_opened && !keep_message_form)
             //            {
             //                GUI.CloseMessageForm();
             //            }

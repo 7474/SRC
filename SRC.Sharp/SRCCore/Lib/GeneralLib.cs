@@ -223,7 +223,7 @@ namespace SRCCore.Lib
             foreach (var c in (list ?? "").ToCharArray())
             {
                 i++;
-                if (!in_single_quote & !in_double_quote & paren == 0)
+                if (!in_single_quote && !in_double_quote && paren == 0)
                 {
                     if (c == ' ' || c == '\t')
                     {
@@ -382,7 +382,7 @@ namespace SRCCore.Lib
         //            }
 
         //            // 空白があれば置き換え
-        //            if (i != 1 | j != lstr)
+        //            if (i != 1 || j != lstr)
         //            {
         //                str = Strings.Mid(str, i, j - i + 1);
         //            }
@@ -529,7 +529,7 @@ namespace SRCCore.Lib
         //            // シナリオ側に Src.ini ファイルがあればそちらを優先
         //            bool localFileExists() { string argfname = SRC.ScenarioPath + "Src.ini"; var ret = FileExists(argfname); return ret; }
 
-        //            if (Strings.Len(SRC.ScenarioPath) > 0 & localFileExists())
+        //            if (Strings.Len(SRC.ScenarioPath) > 0 && localFileExists())
         //            {
         //                // エントリが存在するかチェック
         //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.ScenarioPath + "Src.ini");
@@ -727,7 +727,7 @@ namespace SRCCore.Lib
             ch = Strings.Mid(aname, i, 1);
             // 弱、効、剋があればその次の文字まで一緒に取得する。
             // 入れ子可能なため弱、効、剋が続く限りループ
-            while (ch == "弱" | ch == "効" | ch == "剋")
+            while (ch == "弱" || ch == "効" || ch == "剋")
             {
                 // 属性指定の最後の文字が弱効剋だった場合、属性なし
                 if (i >= Strings.Len(aname))
@@ -746,7 +746,7 @@ namespace SRCCore.Lib
                 }
 
                 ch = Strings.Mid(aname, i, 1);
-                if (ch != "攻" & ch != "防" & ch != "運" & ch != "移")
+                if (ch != "攻" && ch != "防" && ch != "運" && ch != "移")
                 {
                     goto NotFoundClass;
                 }
@@ -785,7 +785,7 @@ namespace SRCCore.Lib
                 {
                     c = Strings.Mid(string1, i - 1, 1);
                     // 検知した文字の前の文字が弱効剋でなかったら、InStrの結果を返す
-                    if (c != "弱" & c != "効" & c != "剋")
+                    if (c != "弱" && c != "効" && c != "剋")
                     {
                         break;
                     }

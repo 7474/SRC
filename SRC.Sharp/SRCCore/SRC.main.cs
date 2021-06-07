@@ -113,7 +113,7 @@ namespace SRCCore
             //                Environment.Exit(0);
             //            }
             //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain\plain0000.bmp")) == 0 & Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0000.bmp")) == 0 & Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0.bmp")) == 0)
+            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain\plain0000.bmp")) == 0 && Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0000.bmp")) == 0 && Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0.bmp")) == 0)
             //            {
             //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             //                if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\Map", FileAttribute.Directory)) > 0)
@@ -738,7 +738,7 @@ namespace SRCCore
 
         private void ConfigureExecuteFile(string fname)
         {
-            //if (Strings.LCase(Strings.Right(fname, 4)) != ".src" & Strings.LCase(Strings.Right(fname, 4)) != ".eve")
+            //if (Strings.LCase(Strings.Right(fname, 4)) != ".src" && Strings.LCase(Strings.Right(fname, 4)) != ".eve")
             //{
             #region            //    // ダイアログを表示して読み込むファイルを指定する場合
 
@@ -918,7 +918,7 @@ namespace SRCCore
             //    TerminateSRC();
             //}
 
-            //if (Strings.InStr(fname, "不要ファイル削除") == 0 & Strings.InStr(fname, "必須修正") == 0)
+            //if (Strings.InStr(fname, "不要ファイル削除") == 0 && Strings.InStr(fname, "必須修正") == 0)
             //{
             //    // 開いたフォルダをSrc.iniにセーブしておく
             //    SystemConfig.SetItem("Log", "LastFolder", ScenarioPath);

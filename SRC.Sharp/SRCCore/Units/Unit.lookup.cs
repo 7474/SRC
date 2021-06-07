@@ -461,7 +461,6 @@ namespace SRCCore.Units
                                 case "中立":
                                     {
                                         goto NextUnit;
-                                        break;
                                     }
                             }
 
