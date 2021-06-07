@@ -309,7 +309,7 @@ namespace SRCSharpForm
                 {
                     Application.DoEvents();
                     //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                     //{
                     //    is_rbutton_released = true;
                     //}
@@ -340,7 +340,7 @@ namespace SRCSharpForm
                 {
                     Application.DoEvents();
                     //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) & 0x8000) == 0)
+                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
                     //{
                     //    is_rbutton_released = true;
                     //}
@@ -574,7 +574,7 @@ namespace SRCSharpForm
                     // ユニットステータスを表示しているユニットを入れ替え
                     if (GUI.MainFormVisible)
                     {
-                        if (Status.DisplayedUnit is object & Commands.SelectedUnit is object & Commands.SelectedTarget is object)
+                        if (Status.DisplayedUnit is object && Commands.SelectedUnit is object && Commands.SelectedTarget is object)
                         {
                             if ((Status.DisplayedUnit.ID ?? "") == (Commands.SelectedUnit.ID ?? ""))
                             {

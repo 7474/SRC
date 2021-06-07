@@ -180,7 +180,7 @@ namespace SRCCore.Models
         public void AddSkill(string sname, double slevel, string sdata, int lv)
         {
             // データ定義が省略されている場合は前回と同じ物を使う
-            if ((last_sname ?? "") == (sname ?? "") & Strings.Len(sdata) == 0)
+            if ((last_sname ?? "") == (sname ?? "") && Strings.Len(sdata) == 0)
             {
                 sdata = last_sdata;
             }
@@ -255,7 +255,7 @@ namespace SRCCore.Models
                 sd.StrData = aliasElement.strAliasData;
                 if (!string.IsNullOrEmpty(sdata))
                 {
-                    if (aliasElement.strAliasData != "非表示" & GeneralLib.LIndex(aliasElement.strAliasData, 1) != "解説")
+                    if (aliasElement.strAliasData != "非表示" && GeneralLib.LIndex(aliasElement.strAliasData, 1) != "解説")
                     {
                         sd.StrData = Strings.Trim(sdata + " " + GeneralLib.ListTail(aliasElement.strAliasData, 2));
                     }
@@ -457,9 +457,9 @@ namespace SRCCore.Models
                             SkillNameRet = sname;
                         }
 
-                        if (sname != "同調率" & sname != "霊力")
+                        if (sname != "同調率" && sname != "霊力")
                         {
-                            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0)
+                            if (sd.Level != Constants.DEFAULT_LEVEL && Strings.InStr(SkillNameRet, "Lv") == 0)
                             {
                                 SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(sd.Level);
                             }
@@ -617,7 +617,7 @@ namespace SRCCore.Models
             flevel = Constants.DEFAULT_LEVEL;
             i = Strings.InStr(buf, "Lv");
             j = Strings.InStr(buf, "=");
-            if (i > 0 & j > 0 & i > j)
+            if (i > 0 && j > 0 && i > j)
             {
                 i = 0;
             }
@@ -712,7 +712,7 @@ namespace SRCCore.Models
             //                        fd.Level = withBlock.get_AliasLevel(i);
             //                    }
 
-            //                    if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
+            //                    if (!string.IsNullOrEmpty(fdata) && Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
             //                    {
             //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, (GeneralLib.LLength(fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
 
@@ -733,7 +733,7 @@ namespace SRCCore.Models
             //                else
             //                {
             //                    特殊能力解説の定義
-            //                    if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(fdata, 1) != "非表示")
+            //                    if (!string.IsNullOrEmpty(fdata) && GeneralLib.LIndex(fdata, 1) != "非表示")
             //                    {
             //                        fd.Name = GeneralLib.LIndex(fdata, 1);
             //                    }

@@ -426,7 +426,7 @@ namespace SRCCore.Expressions
             //                        str_result = GeneralLib.ListIndex(GetValueAsString(@params[1], is_term[1]), GetValueAsLong(@params[2], is_term[2]));
 
             //                        // 全体が()で囲まれている場合は()を外す
-            //                        if (Strings.Left(str_result, 1) == "(" & Strings.Right(str_result, 1) == ")")
+            //                        if (Strings.Left(str_result, 1) == "(" && Strings.Right(str_result, 1) == ")")
             //                        {
             //                            str_result = Strings.Mid(str_result, 2, Strings.Len(str_result) - 2);
             //                        }
@@ -775,7 +775,7 @@ namespace SRCCore.Expressions
             //                                            foreach (Item currentIt in SRC.IList)
             //                                            {
             //                                                it = currentIt;
-            //                                                if (it.Unit is null & it.Exist)
+            //                                                if (it.Unit is null && it.Exist)
             //                                                {
             //                                                    num = (num + 1);
             //                                                }
@@ -1012,7 +1012,7 @@ namespace SRCCore.Expressions
             //                                        // かどうかチェックする
             //                                        if (num == FileAttribute.Directory)
             //                                        {
-            //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) == 0)
+            //                                            if ((FileSystem.GetAttr(dir_path + str_result) && num) == 0)
             //                                            {
             //                                                str_result = "";
             //                                            }
@@ -1041,7 +1041,7 @@ namespace SRCCore.Expressions
             //                                        {
             //                                            // フォルダの検索の場合は見つかったファイルがフォルダ
             //                                            // かどうかチェックする
-            //                                            if ((FileSystem.GetAttr(dir_path + str_result) & num) != 0)
+            //                                            if ((FileSystem.GetAttr(dir_path + str_result) && num) != 0)
             //                                            {
             //                                                Array.Resize(dir_list, Information.UBound(dir_list) + 1 + 1);
             //                                                dir_list[Information.UBound(dir_list)] = str_result;
@@ -1408,7 +1408,7 @@ namespace SRCCore.Expressions
             //                                    y2 = y1 + withBlock15.picMain(0).Height;
             //                                }
 
-            //                                if (x1 <= PT.X & PT.X <= x2 & y1 <= PT.Y & PT.Y <= y2)
+            //                                if (x1 <= PT.X && PT.X <= x2 && y1 <= PT.Y && PT.Y <= y2)
             //                                {
             //                                    in_window = true;
             //                                }
@@ -1438,7 +1438,7 @@ namespace SRCCore.Expressions
             //                        }
 
             //                        // キーの状態を参照
-            //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) & 0x8000))
+            //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) && 0x8000))
             //                        {
             //                            num_result = 1d;
             //                        }
@@ -1652,7 +1652,7 @@ namespace SRCCore.Expressions
             //                    {
             //                        buf = GetValueAsString(@params[1], is_term[1]);
             //                        buf2 = GetValueAsString(@params[2], is_term[2]);
-            //                        if (Strings.Len(buf2) > 0 & Strings.Len(buf) >= Strings.Len(buf2))
+            //                        if (Strings.Len(buf2) > 0 && Strings.Len(buf) >= Strings.Len(buf2))
             //                        {
             //                            if (pcount == 2)
             //                            {
@@ -1700,7 +1700,7 @@ namespace SRCCore.Expressions
             //                        buf = GetValueAsString(@params[1], is_term[1]);
             //                        buf2 = GetValueAsString(@params[2], is_term[2]);
 
-            //                        if (LenB(buf2) > 0 & LenB(buf) >= LenB(buf2))
+            //                        if (LenB(buf2) > 0 && LenB(buf) >= LenB(buf2))
             //                        {
             //                            if (pcount == 2)
             //                            {
@@ -2090,7 +2090,7 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
             //                                        {
             //                                            var withBlock24 = SRC.UList.Item2((object)pname);
-            //                                            if (1 <= i & i <= withBlock24.CountItem())
+            //                                            if (1 <= i && i <= withBlock24.CountItem())
             //                                            {
             //                                                Item localItem8() { object argIndex1 = (object)i; var ret = withBlock24.Item(argIndex1); return ret; }
 
@@ -2107,7 +2107,7 @@ namespace SRCCore.Expressions
             //                                            foreach (Item currentIt1 in SRC.IList)
             //                                            {
             //                                                it = currentIt1;
-            //                                                if (it.Unit is null & it.Exist)
+            //                                                if (it.Unit is null && it.Exist)
             //                                                {
             //                                                    i = (i + 1);
             //                                                    if (i == j)
@@ -2126,7 +2126,7 @@ namespace SRCCore.Expressions
 
             //                                        {
             //                                            var withBlock25 = localItem10().Unit;
-            //                                            if (1 <= i & i <= withBlock25.CountItem())
+            //                                            if (1 <= i && i <= withBlock25.CountItem())
             //                                            {
             //                                                Item localItem9() { object argIndex1 = (object)i; var ret = withBlock25.Item(argIndex1); return ret; }
 
@@ -2145,7 +2145,7 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[1], is_term[1]);
             //                                        {
             //                                            var withBlock26 = Event.SelectedUnitForEvent;
-            //                                            if (1 <= i & i <= withBlock26.CountItem())
+            //                                            if (1 <= i && i <= withBlock26.CountItem())
             //                                            {
             //                                                Item localItem13() { object argIndex1 = (object)i; var ret = withBlock26.Item(argIndex1); return ret; }
 
@@ -2180,7 +2180,7 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
             //                                        {
             //                                            var withBlock27 = SRC.UList.Item2((object)pname);
-            //                                            if (1 <= i & i <= withBlock27.CountItem())
+            //                                            if (1 <= i && i <= withBlock27.CountItem())
             //                                            {
             //                                                Item localItem14() { object argIndex1 = (object)i; var ret = withBlock27.Item(argIndex1); return ret; }
 
@@ -2197,7 +2197,7 @@ namespace SRCCore.Expressions
             //                                            foreach (Item currentIt2 in SRC.IList)
             //                                            {
             //                                                it = currentIt2;
-            //                                                if (it.Unit is null & it.Exist)
+            //                                                if (it.Unit is null && it.Exist)
             //                                                {
             //                                                    i = (i + 1);
             //                                                    if (i == j)
@@ -2216,7 +2216,7 @@ namespace SRCCore.Expressions
 
             //                                        {
             //                                            var withBlock28 = localItem16().Unit;
-            //                                            if (1 <= i & i <= withBlock28.CountItem())
+            //                                            if (1 <= i && i <= withBlock28.CountItem())
             //                                            {
             //                                                Item localItem15() { object argIndex1 = (object)i; var ret = withBlock28.Item(argIndex1); return ret; }
 
@@ -2235,7 +2235,7 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[1], is_term[1]);
             //                                        {
             //                                            var withBlock29 = Event.SelectedUnitForEvent;
-            //                                            if (1 <= i & i <= withBlock29.CountItem())
+            //                                            if (1 <= i && i <= withBlock29.CountItem())
             //                                            {
             //                                                Item localItem19() { object argIndex1 = (object)i; var ret = withBlock29.Item(argIndex1); return ret; }
 
@@ -2656,7 +2656,7 @@ namespace SRCCore.Expressions
             //                        {
             //                            str_result = Event.SelectedUnitForEvent.ID;
             //                        }
-            //                        else if (1 <= i & i <= Information.UBound(Commands.SelectedPartners))
+            //                        else if (1 <= i && i <= Information.UBound(Commands.SelectedPartners))
             //                        {
             //                            str_result = Commands.SelectedPartners[i].ID;
             //                        }
@@ -2717,13 +2717,13 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
             //                                        {
             //                                            var withBlock32 = SRC.UList.Item((object)uname);
-            //                                            if (0 < i & i <= withBlock32.CountPilot())
+            //                                            if (0 < i && i <= withBlock32.CountPilot())
             //                                            {
             //                                                Pilot localPilot() { object argIndex1 = (object)i; var ret = withBlock32.Pilot(argIndex1); return ret; }
 
             //                                                str_result = localPilot().Name;
             //                                            }
-            //                                            else if (withBlock32.CountPilot() < i & i <= (withBlock32.CountPilot() + withBlock32.CountSupport()))
+            //                                            else if (withBlock32.CountPilot() < i && i <= (withBlock32.CountPilot() + withBlock32.CountSupport()))
             //                                            {
             //                                                Pilot localSupport() { object argIndex1 = (object)(i - withBlock32.CountPilot()); var ret = withBlock32.Support(argIndex1); return ret; }
 
@@ -2747,13 +2747,13 @@ namespace SRCCore.Expressions
             //                                            i = Conversions.Toint(uname);
             //                                            {
             //                                                var withBlock33 = Event.SelectedUnitForEvent;
-            //                                                if (0 < i & i <= withBlock33.CountPilot())
+            //                                                if (0 < i && i <= withBlock33.CountPilot())
             //                                                {
             //                                                    Pilot localPilot1() { object argIndex1 = (object)i; var ret = withBlock33.Pilot(argIndex1); return ret; }
 
             //                                                    str_result = localPilot1().Name;
             //                                                }
-            //                                                else if (withBlock33.CountPilot() < i & i <= (withBlock33.CountPilot() + withBlock33.CountSupport()))
+            //                                                else if (withBlock33.CountPilot() < i && i <= (withBlock33.CountPilot() + withBlock33.CountSupport()))
             //                                                {
             //                                                    Pilot localSupport1() { object argIndex1 = (object)(i - withBlock33.CountPilot()); var ret = withBlock33.Support(argIndex1); return ret; }
 
@@ -2809,13 +2809,13 @@ namespace SRCCore.Expressions
             //                                        i = GetValueAsLong(@params[2], is_term[2]);
             //                                        {
             //                                            var withBlock36 = SRC.UList.Item((object)uname);
-            //                                            if (0 < i & i <= withBlock36.CountPilot())
+            //                                            if (0 < i && i <= withBlock36.CountPilot())
             //                                            {
             //                                                Pilot localPilot2() { object argIndex1 = (object)i; var ret = withBlock36.Pilot(argIndex1); return ret; }
 
             //                                                str_result = localPilot2().ID;
             //                                            }
-            //                                            else if (withBlock36.CountPilot() < i & i <= (withBlock36.CountPilot() + withBlock36.CountSupport()))
+            //                                            else if (withBlock36.CountPilot() < i && i <= (withBlock36.CountPilot() + withBlock36.CountSupport()))
             //                                            {
             //                                                Pilot localSupport2() { object argIndex1 = (object)(i - withBlock36.CountPilot()); var ret = withBlock36.Support(argIndex1); return ret; }
 
@@ -2839,13 +2839,13 @@ namespace SRCCore.Expressions
             //                                            i = Conversions.Toint(uname);
             //                                            {
             //                                                var withBlock37 = Event.SelectedUnitForEvent;
-            //                                                if (0 < i & i <= withBlock37.CountPilot())
+            //                                                if (0 < i && i <= withBlock37.CountPilot())
             //                                                {
             //                                                    Pilot localPilot3() { object argIndex1 = (object)i; var ret = withBlock37.Pilot(argIndex1); return ret; }
 
             //                                                    str_result = localPilot3().ID;
             //                                                }
-            //                                                else if (withBlock37.CountPilot() < i & i <= (withBlock37.CountPilot() + withBlock37.CountSupport()))
+            //                                                else if (withBlock37.CountPilot() < i && i <= (withBlock37.CountPilot() + withBlock37.CountSupport()))
             //                                                {
             //                                                    Pilot localSupport3() { object argIndex1 = (object)(i - withBlock37.CountPilot()); var ret = withBlock37.Support(argIndex1); return ret; }
 
@@ -4473,7 +4473,7 @@ namespace SRCCore.Expressions
 
                     {
                         var withBlock49 = Event.EventCmd[Event.CurrentLineNum];
-                        if (cur_depth == Event.CallDepth & withBlock49.Name == CmdType.ReturnCmd)
+                        if (cur_depth == Event.CallDepth && withBlock49.Name == CmdType.ReturnCmd)
                         {
                             break;
                         }

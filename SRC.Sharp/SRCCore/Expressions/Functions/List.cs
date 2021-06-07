@@ -49,7 +49,7 @@ namespace SRCCore.Expressions.Functions
                 SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
 
             // 全体が()で囲まれている場合は()を外す
-            if (Strings.Left(str_result, 1) == "(" & Strings.Right(str_result, 1) == ")")
+            if (Strings.Left(str_result, 1) == "(" && Strings.Right(str_result, 1) == ")")
             {
                 str_result = Strings.Mid(str_result, 2, Strings.Len(str_result) - 2);
             }

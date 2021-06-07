@@ -243,7 +243,7 @@ namespace SRCCore.Commands
                 // 移動後に着艦または合体した？
                 if (!ReferenceEquals(Map.MapDataForUnit[SelectedX, SelectedY], SelectedUnit))
                 {
-                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") & !u.IsFeatureAvailable("母艦") & u.CountPilot() > 0)
+                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !u.IsFeatureAvailable("母艦") && u.CountPilot() > 0)
                     {
                         // 着艦メッセージ表示
                         if (u.IsMessageDefined("着艦(" + u.Name + ")"))
@@ -397,7 +397,7 @@ namespace SRCCore.Commands
                 // 移動後に着艦または合体した？
                 if (!ReferenceEquals(Map.MapDataForUnit[SelectedX, SelectedY], SelectedUnit))
                 {
-                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") & !u.IsFeatureAvailable("母艦") & u.CountPilot() > 0)
+                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !u.IsFeatureAvailable("母艦") && u.CountPilot() > 0)
                     {
                         // 着艦メッセージ表示
                         if (u.IsMessageDefined("着艦(" + u.Name + ")"))

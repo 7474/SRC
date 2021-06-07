@@ -11,7 +11,7 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            if (ArgNum != 6 & ArgNum != 8)
+            if (ArgNum != 6 && ArgNum != 8)
             {
                 throw new EventErrorException(this, "Forコマンドの引数の数が違います");
             }

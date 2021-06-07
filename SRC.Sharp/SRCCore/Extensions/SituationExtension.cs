@@ -225,14 +225,14 @@ namespace SRCCore.Extensions
             //    }
 
             //    // 対ザコ
-            //    if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0 & (u.MainPilot().Technique > t.MainPilot().Technique || u.HP > t.HP / 2))
+            //    if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0 && (u.MainPilot().Technique > t.MainPilot().Technique || u.HP > t.HP / 2))
             //    {
             //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
             //        sub_situations.Add("(対ザコ)";
             //    }
 
             //    // 対強敵
-            //    if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0 & u.MainPilot().Technique <= t.MainPilot().Technique)
+            //    if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0 && u.MainPilot().Technique <= t.MainPilot().Technique)
             //    {
             //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
             //        sub_situations.Add("(対強敵)";
@@ -242,14 +242,14 @@ namespace SRCCore.Extensions
             //    w = 0;
             //    if (ReferenceEquals(Commands.SelectedUnit, u))
             //    {
-            //        if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= u.CountWeapon())
+            //        if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= u.CountWeapon())
             //        {
             //            w = Commands.SelectedWeapon;
             //        }
             //    }
             //    else if (ReferenceEquals(Commands.SelectedTarget, u))
             //    {
-            //        if (0 < Commands.SelectedTWeapon & Commands.SelectedTWeapon <= u.CountWeapon())
+            //        if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= u.CountWeapon())
             //        {
             //            w = Commands.SelectedTWeapon;
             //        }
@@ -285,14 +285,14 @@ namespace SRCCore.Extensions
             //    tw = 0;
             //    if (ReferenceEquals(Commands.SelectedUnit, t))
             //    {
-            //        if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= t.CountWeapon())
+            //        if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= t.CountWeapon())
             //        {
             //            tw = Commands.SelectedWeapon;
             //        }
             //    }
             //    else if (ReferenceEquals(Commands.SelectedTarget, t))
             //    {
-            //        if (0 < Commands.SelectedTWeapon & Commands.SelectedTWeapon <= t.CountWeapon())
+            //        if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= t.CountWeapon())
             //        {
             //            tw = Commands.SelectedTWeapon;
             //        }
@@ -384,7 +384,7 @@ namespace SRCCore.Extensions
                             if (ReferenceEquals(SRC.Commands.SelectedUnit, u))
                             {
                                 // 自分が使用する武器をチェック
-                                if (0 < SRC.Commands.SelectedWeapon & SRC.Commands.SelectedWeapon <= u.CountWeapon())
+                                if (0 < SRC.Commands.SelectedWeapon && SRC.Commands.SelectedWeapon <= u.CountWeapon())
                                 {
                                     sub_situations.Add("(" + u.Weapon(SRC.Commands.SelectedWeapon).WeaponNickname() + ")");
                                 }

@@ -309,7 +309,7 @@ namespace SRCCore.Pilots
             //        }
 
             //        // サブパイロット＆サポートパイロットによるサポート
-            //        if (ReferenceEquals(this, withBlock4.MainPilot()) & withBlock4.Status == "出撃")
+            //        if (ReferenceEquals(this, withBlock4.MainPilot()) && withBlock4.Status == "出撃")
             //        {
             //            var loopTo9 = withBlock4.CountPilot();
             //            for (i = 2; i <= loopTo9; i++)
@@ -744,7 +744,7 @@ namespace SRCCore.Pilots
         //        }
         //        else
         //        {
-        //            if (Strings.InStr(Name, "(ザコ)") == 0 & Strings.InStr(Name, "(汎用)") == 0)
+        //            if (Strings.InStr(Name, "(ザコ)") == 0 && Strings.InStr(Name, "(汎用)") == 0)
         //            {
         //                my_cmd_rank = Constants.DEFAULT_LEVEL;
         //            }
@@ -840,7 +840,7 @@ namespace SRCCore.Pilots
         //                    var withBlock2 = u.MainPilot(true);
         //                    // 同じチームに所属している？
         //                    uteam = withBlock2.SkillData("チーム");
-        //                    if ((team ?? "") != (uteam ?? "") & !string.IsNullOrEmpty(uteam))
+        //                    if ((team ?? "") != (uteam ?? "") && !string.IsNullOrEmpty(uteam))
         //                    {
         //                        goto NextUnit;
         //                    }

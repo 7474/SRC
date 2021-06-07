@@ -386,7 +386,7 @@
 //                withBlock.Update();
 
 //                // 未確認ユニットかどうか判定しておく
-//                if (Expression.IsOptionDefined(ref "ユニット情報隠蔽") & !withBlock.IsConditionSatisfied(ref "識別済み") & (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied(ref "ユニット情報隠蔽"))
+//                if (Expression.IsOptionDefined(ref "ユニット情報隠蔽") && !withBlock.IsConditionSatisfied(ref "識別済み") && (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied(ref "ユニット情報隠蔽"))
 //                {
 //                    is_unknown = true;
 //                }
@@ -479,7 +479,7 @@
 //                else if (pindex == 1)
 //                {
 //                    // メインパイロットまたは１番目のパイロット
-//                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") != (withBlock.Pilot(ref 1).get_Nickname(false) ?? "") & withBlock.Data.PilotNum != 1)
+//                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") != (withBlock.Pilot(ref 1).get_Nickname(false) ?? "") && withBlock.Data.PilotNum != 1)
 //                    {
 //                        p = withBlock.Pilot(ref 1);
 //                    }
@@ -1503,7 +1503,7 @@
 //                            {
 //                                if (DisplayedPilotInd == 1)
 //                                {
-//                                    if (u.AuraLevel(true) < u.AuraLevel() & !string.IsNullOrEmpty(Map.MapFileName))
+//                                    if (u.AuraLevel(true) < u.AuraLevel() && !string.IsNullOrEmpty(Map.MapFileName))
 //                                    {
 //                                        // MOD START 240a
 //                                        // upic.ForeColor = rgb(150, 0, 0)
@@ -1524,7 +1524,7 @@
 //                            {
 //                                if (DisplayedPilotInd == 1)
 //                                {
-//                                    if (u.PsychicLevel(true) < u.PsychicLevel() & !string.IsNullOrEmpty(Map.MapFileName))
+//                                    if (u.PsychicLevel(true) < u.PsychicLevel() && !string.IsNullOrEmpty(Map.MapFileName))
 //                                    {
 //                                        // MOD START 240a
 //                                        // upic.ForeColor = rgb(150, 0, 0)
@@ -1622,7 +1622,7 @@
 
 //                        case "Ｓ防御":
 //                            {
-//                                if (!u.IsFeatureAvailable(ref "シールド") & !u.IsFeatureAvailable(ref "大型シールド") & !u.IsFeatureAvailable(ref "小型シールド") & !u.IsFeatureAvailable(ref "エネルギーシールド") & !u.IsFeatureAvailable(ref "アクティブシールド") & !u.IsFeatureAvailable(ref "盾") & !u.IsFeatureAvailable(ref "バリアシールド") & !u.IsFeatureAvailable(ref "アクティブフィールド") & !u.IsFeatureAvailable(ref "アクティブプロテクション") & Strings.InStr(u.FeatureData(ref "阻止"), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref "広域阻止"), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref "反射"), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref "当て身技"), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref "自動反撃"), "Ｓ防御") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+//                                if (!u.IsFeatureAvailable(ref "シールド") && !u.IsFeatureAvailable(ref "大型シールド") && !u.IsFeatureAvailable(ref "小型シールド") && !u.IsFeatureAvailable(ref "エネルギーシールド") && !u.IsFeatureAvailable(ref "アクティブシールド") && !u.IsFeatureAvailable(ref "盾") && !u.IsFeatureAvailable(ref "バリアシールド") && !u.IsFeatureAvailable(ref "アクティブフィールド") && !u.IsFeatureAvailable(ref "アクティブプロテクション") && Strings.InStr(u.FeatureData(ref "阻止"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData(ref "広域阻止"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData(ref "反射"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData(ref "当て身技"), "Ｓ防御") == 0 && Strings.InStr(u.FeatureData(ref "自動反撃"), "Ｓ防御") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -1652,7 +1652,7 @@
 //                                    j = 0;
 //                                }
 
-//                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(ref "阻止"), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref "広域阻止"), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref "反射"), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref "当て身技"), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref "自動反撃"), "切り払い") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+//                                if (j > u.CountWeapon() && Strings.InStr(u.FeatureData(ref "阻止"), "切り払い") == 0 && Strings.InStr(u.FeatureData(ref "広域阻止"), "切り払い") == 0 && Strings.InStr(u.FeatureData(ref "反射"), "切り払い") == 0 && Strings.InStr(u.FeatureData(ref "当て身技"), "切り払い") == 0 && Strings.InStr(u.FeatureData(ref "自動反撃"), "切り払い") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -1668,7 +1668,7 @@
 //                                var loopTo6 = u.CountWeapon();
 //                                for (j = 1; j <= loopTo6; j++)
 //                                {
-//                                    if (u.IsWeaponAvailable(j, ref "移動後") & u.IsWeaponClassifiedAs(j, ref "射撃系") & (u.Weapon(j).Bullet >= 10 | u.Weapon(j).Bullet == 0 & u.Weapon(j).ENConsumption <= 5))
+//                                    if (u.IsWeaponAvailable(j, ref "移動後") && u.IsWeaponClassifiedAs(j, ref "射撃系") && (u.Weapon(j).Bullet >= 10 | u.Weapon(j).Bullet == 0 && u.Weapon(j).ENConsumption <= 5))
 //                                    {
 //                                        break;
 //                                    }
@@ -1679,7 +1679,7 @@
 //                                    j = 0;
 //                                }
 
-//                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(ref "阻止"), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref "広域阻止"), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref "反射"), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref "当て身技"), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref "自動反撃"), "迎撃") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+//                                if (j > u.CountWeapon() && Strings.InStr(u.FeatureData(ref "阻止"), "迎撃") == 0 && Strings.InStr(u.FeatureData(ref "広域阻止"), "迎撃") == 0 && Strings.InStr(u.FeatureData(ref "反射"), "迎撃") == 0 && Strings.InStr(u.FeatureData(ref "当て身技"), "迎撃") == 0 && Strings.InStr(u.FeatureData(ref "自動反撃"), "迎撃") == 0 && !string.IsNullOrEmpty(Map.MapFileName))
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -1704,7 +1704,7 @@
 //                                    }
 //                                }
 
-//                                if (j > u.CountWeapon() & !string.IsNullOrEmpty(Map.MapFileName))
+//                                if (j > u.CountWeapon() && !string.IsNullOrEmpty(Map.MapFileName))
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -1945,7 +1945,7 @@
 //                upic.Print(withBlock.Nickname0);
 //                upic.Font = SrcFormatter.FontChangeBold(upic.Font, false);
 //                upic.Font = SrcFormatter.FontChangeSize(upic.Font, 9f);
-//                if (withBlock.Status == "出撃" & !string.IsNullOrEmpty(Map.MapFileName))
+//                if (withBlock.Status == "出撃" && !string.IsNullOrEmpty(Map.MapFileName))
 //                {
 
 //                    // 地形情報の表示
@@ -2214,7 +2214,7 @@
 //                    upic.Print("？");
 
 //                    // サポートアタックを得られるかどうかのみ表示
-//                    if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object)
+//                    if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object)
 //                    {
 //                        if (withBlock.Party == "敵" | withBlock.Party == "中立" | withBlock.IsConditionSatisfied(ref "暴走") | withBlock.IsConditionSatisfied(ref "魅了") | withBlock.IsConditionSatisfied(ref "憑依"))
 //                        {
@@ -2232,7 +2232,7 @@
 //                            // MOD  END  240a
 //                            upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
 //                            // サポートアタックを得られる？
-//                            if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "合") & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "Ｍ"))
+//                            if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "合") && !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "Ｍ"))
 //                            {
 //                                if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
 //                                {
@@ -2246,7 +2246,7 @@
 //                }
 
 //                // 実行中の命令
-//                if (withBlock.Party == "ＮＰＣ" & !withBlock.IsConditionSatisfied(ref "混乱") & !withBlock.IsConditionSatisfied(ref "恐怖") & !withBlock.IsConditionSatisfied(ref "暴走") & !withBlock.IsConditionSatisfied(ref "狂戦士"))
+//                if (withBlock.Party == "ＮＰＣ" && !withBlock.IsConditionSatisfied(ref "混乱") && !withBlock.IsConditionSatisfied(ref "恐怖") && !withBlock.IsConditionSatisfied(ref "暴走") && !withBlock.IsConditionSatisfied(ref "狂戦士"))
 //                {
 //                    // 思考モードを見れば実行している命令が分かるので……
 //                    buf = "";
@@ -2261,7 +2261,7 @@
 //                        }
 //                    }
 
-//                    if (withBlock.IsFeatureAvailable(ref "召喚ユニット") & !withBlock.IsConditionSatisfied(ref "魅了"))
+//                    if (withBlock.IsFeatureAvailable(ref "召喚ユニット") && !withBlock.IsConditionSatisfied(ref "魅了"))
 //                    {
 //                        if (withBlock.Summoner is object)
 //                        {
@@ -2378,7 +2378,7 @@
 
 //                                short localConditionLifetime2() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime1() & localConditionLifetime2() < 100)
+//                                if (0 < localConditionLifetime1() && localConditionLifetime2() < 100)
 //                                {
 //                                    short localConditionLifetime() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2402,7 +2402,7 @@
 
 //                                short localConditionLifetime5() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime4() & localConditionLifetime5() < 100)
+//                                if (0 < localConditionLifetime4() && localConditionLifetime5() < 100)
 //                                {
 //                                    short localConditionLifetime3() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2421,7 +2421,7 @@
 
 //                                short localConditionLifetime8() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime7() & localConditionLifetime8() < 100)
+//                                if (0 < localConditionLifetime7() && localConditionLifetime8() < 100)
 //                                {
 //                                    short localConditionLifetime6() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2442,7 +2442,7 @@
 
 //                                short localConditionLifetime11() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime10() & localConditionLifetime11() < 100)
+//                                if (0 < localConditionLifetime10() && localConditionLifetime11() < 100)
 //                                {
 //                                    short localConditionLifetime9() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2468,7 +2468,7 @@
 
 //                                short localConditionLifetime14() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime13() & localConditionLifetime14() < 100)
+//                                if (0 < localConditionLifetime13() && localConditionLifetime14() < 100)
 //                                {
 //                                    short localConditionLifetime12() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2494,7 +2494,7 @@
 
 //                                short localConditionLifetime17() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime16() & localConditionLifetime17() < 100)
+//                                if (0 < localConditionLifetime16() && localConditionLifetime17() < 100)
 //                                {
 //                                    short localConditionLifetime15() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2520,7 +2520,7 @@
 
 //                                short localConditionLifetime20() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime19() & localConditionLifetime20() < 100)
+//                                if (0 < localConditionLifetime19() && localConditionLifetime20() < 100)
 //                                {
 //                                    short localConditionLifetime18() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2546,7 +2546,7 @@
 
 //                                short localConditionLifetime23() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime22() & localConditionLifetime23() < 100)
+//                                if (0 < localConditionLifetime22() && localConditionLifetime23() < 100)
 //                                {
 //                                    short localConditionLifetime21() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2563,7 +2563,7 @@
 
 //                                short localConditionLifetime26() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime25() & localConditionLifetime26() < 100)
+//                                if (0 < localConditionLifetime25() && localConditionLifetime26() < 100)
 //                                {
 //                                    short localConditionLifetime24() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2587,7 +2587,7 @@
 
 //                                short localConditionLifetime29() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime28() & localConditionLifetime29() < 100)
+//                                if (0 < localConditionLifetime28() && localConditionLifetime29() < 100)
 //                                {
 //                                    short localConditionLifetime27() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2619,7 +2619,7 @@
 
 //                                short localConditionLifetime32() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime31() & localConditionLifetime32() < 100)
+//                                if (0 < localConditionLifetime31() && localConditionLifetime32() < 100)
 //                                {
 //                                    short localConditionLifetime30() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2672,7 +2672,7 @@
 
 //                                short localConditionLifetime37() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime36() & localConditionLifetime37() < 20)
+//                                if (0 < localConditionLifetime36() && localConditionLifetime37() < 20)
 //                                {
 //                                    short localConditionLifetime35() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2689,7 +2689,7 @@
 
 //                                short localConditionLifetime40() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime39() & localConditionLifetime40() < 20)
+//                                if (0 < localConditionLifetime39() && localConditionLifetime40() < 20)
 //                                {
 //                                    short localConditionLifetime38() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2706,7 +2706,7 @@
 
 //                                short localConditionLifetime43() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime42() & localConditionLifetime43() < 20)
+//                                if (0 < localConditionLifetime42() && localConditionLifetime43() < 20)
 //                                {
 //                                    short localConditionLifetime41() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2723,7 +2723,7 @@
 
 //                                short localConditionLifetime46() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime45() & localConditionLifetime46() < 20)
+//                                if (0 < localConditionLifetime45() && localConditionLifetime46() < 20)
 //                                {
 //                                    short localConditionLifetime44() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2740,7 +2740,7 @@
 
 //                                short localConditionLifetime49() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime48() & localConditionLifetime49() < 20)
+//                                if (0 < localConditionLifetime48() && localConditionLifetime49() < 20)
 //                                {
 //                                    short localConditionLifetime47() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -2798,13 +2798,13 @@
 
 //                                double localConditionLevel9() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
 
-//                                if (Strings.Right(localCondition12(), 2) == "付加" & !string.IsNullOrEmpty(localConditionData15()))
+//                                if (Strings.Right(localCondition12(), 2) == "付加" && !string.IsNullOrEmpty(localConditionData15()))
 //                                {
 //                                    string localConditionData13() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
 
 //                                    buf = GeneralLib.LIndex(ref localConditionData13(), 1) + "付加";
 //                                }
-//                                else if (Strings.Right(localCondition13(), 2) == "強化" & !string.IsNullOrEmpty(localConditionData16()))
+//                                else if (Strings.Right(localCondition13(), 2) == "強化" && !string.IsNullOrEmpty(localConditionData16()))
 //                                {
 //                                    // 強化アビリティ
 //                                    string localConditionData14() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
@@ -2855,7 +2855,7 @@
 
 //                                short localConditionLifetime53() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
-//                                if (0 < localConditionLifetime52() & localConditionLifetime53() < 20)
+//                                if (0 < localConditionLifetime52() && localConditionLifetime53() < 20)
 //                                {
 //                                    short localConditionLifetime51() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
 
@@ -3084,7 +3084,7 @@
 //                // MOD  END  240a
 //                string localLIndex5() { object argIndex1 = "テレポート"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-//                if (withBlock.IsFeatureAvailable(ref "テレポート") & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
+//                if (withBlock.IsFeatureAvailable(ref "テレポート") && (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
 //                {
 //                    upic.Print(SrcFormatter.Format(withBlock.Speed + withBlock.FeatureLevel(ref "テレポート")));
 //                }
@@ -3174,7 +3174,7 @@
 //                }
 //                // ADD  END  240a
 //                // 吸収
-//                if (Strings.Len(withBlock.strAbsorb) > 0 & Strings.InStr(withBlock.strAbsorb, "非表示") == 0)
+//                if (Strings.Len(withBlock.strAbsorb) > 0 && Strings.InStr(withBlock.strAbsorb, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strAbsorb) > 5)
 //                    {
@@ -3210,7 +3210,7 @@
 //                }
 
 //                // 無効化
-//                if (Strings.Len(withBlock.strImmune) > 0 & Strings.InStr(withBlock.strImmune, "非表示") == 0)
+//                if (Strings.Len(withBlock.strImmune) > 0 && Strings.InStr(withBlock.strImmune, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strImmune) > 5)
 //                    {
@@ -3252,7 +3252,7 @@
 //                }
 
 //                // 耐性
-//                if (Strings.Len(withBlock.strResist) > 0 & Strings.InStr(withBlock.strResist, "非表示") == 0)
+//                if (Strings.Len(withBlock.strResist) > 0 && Strings.InStr(withBlock.strResist, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strResist) > 5)
 //                    {
@@ -3270,7 +3270,7 @@
 //                        n = 2;
 //                    }
 
-//                    if (n == 0 & GUI.NewGUIMode)
+//                    if (n == 0 && GUI.NewGUIMode)
 //                    {
 //                        upic.CurrentX = 5;
 //                    }
@@ -3299,7 +3299,7 @@
 //                }
 
 //                // 弱点
-//                if (Strings.Len(withBlock.strWeakness) > 0 & Strings.InStr(withBlock.strWeakness, "非表示") == 0)
+//                if (Strings.Len(withBlock.strWeakness) > 0 && Strings.InStr(withBlock.strWeakness, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strWeakness) > 5)
 //                    {
@@ -3317,7 +3317,7 @@
 //                        n = 2;
 //                    }
 
-//                    if (n == 0 & GUI.NewGUIMode)
+//                    if (n == 0 && GUI.NewGUIMode)
 //                    {
 //                        upic.CurrentX = 5;
 //                    }
@@ -3346,7 +3346,7 @@
 //                }
 
 //                // 有効
-//                if (Strings.Len(withBlock.strEffective) > 0 & Strings.InStr(withBlock.strEffective, "非表示") == 0)
+//                if (Strings.Len(withBlock.strEffective) > 0 && Strings.InStr(withBlock.strEffective, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strEffective) > 5)
 //                    {
@@ -3364,7 +3364,7 @@
 //                        n = 2;
 //                    }
 
-//                    if (n == 0 & GUI.NewGUIMode)
+//                    if (n == 0 && GUI.NewGUIMode)
 //                    {
 //                        upic.CurrentX = 5;
 //                    }
@@ -3393,7 +3393,7 @@
 //                }
 
 //                // 特殊効果無効化
-//                if (Strings.Len(withBlock.strSpecialEffectImmune) > 0 & Strings.InStr(withBlock.strSpecialEffectImmune, "非表示") == 0)
+//                if (Strings.Len(withBlock.strSpecialEffectImmune) > 0 && Strings.InStr(withBlock.strSpecialEffectImmune, "非表示") == 0)
 //                {
 //                    if (Strings.Len(withBlock.strSpecialEffectImmune) > 5)
 //                    {
@@ -3411,7 +3411,7 @@
 //                        n = 2;
 //                    }
 
-//                    if (n == 0 & GUI.NewGUIMode)
+//                    if (n == 0 && GUI.NewGUIMode)
 //                    {
 //                        upic.CurrentX = 5;
 //                    }
@@ -3653,7 +3653,7 @@
 
 //                                double localFeatureLevel1() { object argIndex1 = i; var ret = withBlock.FeatureLevel(ref argIndex1); return ret; }
 //                                // MOD  END  240a
-//                                if (pmorale < (short)(10d * localFeatureLevel1()) + 100 & withBlock.HP > withBlock.MaxHP / 4)
+//                                if (pmorale < (short)(10d * localFeatureLevel1()) + 100 && withBlock.HP > withBlock.MaxHP / 4)
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -3821,7 +3821,7 @@
 //                                    nmorale = 0;
 //                                }
 
-//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -3907,7 +3907,7 @@
 //                                    nmorale = 0;
 //                                }
 
-//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -3998,7 +3998,7 @@
 //                                    nmorale = 0;
 //                                }
 
-//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") & Strings.InStr(fdata, "バリア無効化無効") == 0)
+//                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref "バリア無効化") && Strings.InStr(fdata, "バリア無効化無効") == 0)
 //                                {
 //                                    // MOD START 240a
 //                                    // upic.ForeColor = rgb(150, 0, 0)
@@ -4394,7 +4394,7 @@
 //                                if (j >= 1)
 //                                {
 //                                    GeneralLib.ReplaceString(ref fdata, ref Constants.vbTab, ref " ");
-//                                    if (Strings.InStr(fdata, " 直線") > 0 | Strings.InStr(fdata, " 垂直") > 0 & Strings.InStr(fdata, " 水平") > 0)
+//                                    if (Strings.InStr(fdata, " 直線") > 0 | Strings.InStr(fdata, " 垂直") > 0 && Strings.InStr(fdata, " 水平") > 0)
 //                                    {
 //                                        buf = "直線";
 //                                    }
@@ -4590,7 +4590,7 @@
 //                // ターゲット選択時の攻撃結果予想表示
 
 //                // 攻撃時にのみ表示
-//                if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") & (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") & Commands.SelectedUnit is object & Commands.SelectedWeapon > 0 & SRC.Stage != "プロローグ" & SRC.Stage != "エピローグ")
+//                if ((Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" | Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object && Commands.SelectedWeapon > 0 && SRC.Stage != "プロローグ" && SRC.Stage != "エピローグ")
 //                {
 //                }
 //                // 攻撃時と判定
@@ -4600,7 +4600,7 @@
 //                }
 
 //                // 相手が敵の場合にのみ表示
-//                if (withBlock.Party != "敵" & withBlock.Party != "中立" & !withBlock.IsConditionSatisfied(ref "暴走") & !withBlock.IsConditionSatisfied(ref "魅了") & !withBlock.IsConditionSatisfied(ref "憑依") & !withBlock.IsConditionSatisfied(ref "混乱") & !withBlock.IsConditionSatisfied(ref "睡眠"))
+//                if (withBlock.Party != "敵" && withBlock.Party != "中立" && !withBlock.IsConditionSatisfied(ref "暴走") && !withBlock.IsConditionSatisfied(ref "魅了") && !withBlock.IsConditionSatisfied(ref "憑依") && !withBlock.IsConditionSatisfied(ref "混乱") && !withBlock.IsConditionSatisfied(ref "睡眠"))
 //                {
 //                    goto SkipAttackExpResult;
 //                }
@@ -4625,7 +4625,7 @@
 //                // MOD  END  240a
 //                upic.Print(Commands.SelectedUnit.WeaponNickname(Commands.SelectedWeapon));
 //                // サポートアタックを得られる？
-//                if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "合") & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "Ｍ") & Commands.UseSupportAttack)
+//                if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "合") && !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref "Ｍ") && Commands.UseSupportAttack)
 //                {
 //                    if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
 //                    {
@@ -4679,7 +4679,7 @@
 //                        dmg = dmg / 2;
 //                    }
 
-//                    if (dmg >= withBlock.HP & !withBlock.IsConditionSatisfied(ref "データ不明"))
+//                    if (dmg >= withBlock.HP && !withBlock.IsConditionSatisfied(ref "データ不明"))
 //                    {
 //                        upic.ForeColor = ColorTranslator.FromOle(Information.RGB(190, 0, 0));
 //                    }
@@ -4894,7 +4894,7 @@
 //                                    break;
 //                                }
 //                            }
-//                            else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+//                            else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 && withBlock.Weapon(warray[i - j]).Bullet == 0)
 //                            {
 //                                break;
 //                            }
@@ -5199,7 +5199,7 @@
 //            u = Map.MapDataForUnit[X, Y];
 
 //            // 発進コマンドの場合は母艦ではなく発進するユニットを使う
-//            if (Commands.CommandState == "ターゲット選択" & Commands.SelectedCommand == "発進")
+//            if (Commands.CommandState == "ターゲット選択" && Commands.SelectedCommand == "発進")
 //            {
 //                if (ReferenceEquals(u, Commands.SelectedUnit))
 //                {

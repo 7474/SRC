@@ -154,7 +154,7 @@ namespace SRCCore
                     scenario_data_dir_exists = true;
                 }
 
-                if (Strings.Len(ExtDataPath) > 0 & (ScenarioPath ?? "") != (ExtDataPath ?? ""))
+                if (Strings.Len(ExtDataPath) > 0 && (ScenarioPath ?? "") != (ExtDataPath ?? ""))
                 {
                     if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
                     {
@@ -162,7 +162,7 @@ namespace SRCCore
                     }
                 }
 
-                if (Strings.Len(ExtDataPath2) > 0 & (ScenarioPath ?? "") != (ExtDataPath2 ?? ""))
+                if (Strings.Len(ExtDataPath2) > 0 && (ScenarioPath ?? "") != (ExtDataPath2 ?? ""))
                 {
                     if (Strings.Len(Lib.FileSystem.Dir(FileSystem.PathCombine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
                     {

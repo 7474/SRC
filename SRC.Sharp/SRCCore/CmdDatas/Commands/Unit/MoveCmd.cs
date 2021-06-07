@@ -91,7 +91,7 @@ namespace SRCCore.CmdDatas.Commands
 
             if (string.IsNullOrEmpty(opt) || Strings.InStr(opt, "アニメ表示") == 1)
             {
-                if (GUI.MainFormVisible & !GUI.IsPictureVisible)
+                if (GUI.MainFormVisible && !GUI.IsPictureVisible)
                 {
                     GUI.RedrawScreen();
                 }

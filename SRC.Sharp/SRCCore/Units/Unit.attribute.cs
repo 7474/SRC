@@ -47,7 +47,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 AbsorbRet = true;
                                 break;
@@ -61,7 +61,7 @@ namespace SRCCore.Units
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aname, "魔") > 0)
                             {
-                                if (GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                                if (GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                                 {
                                     AbsorbRet = true;
                                     break;
@@ -126,7 +126,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -138,7 +138,7 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ImmuneRet = true;
                                 break;
@@ -202,7 +202,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -214,7 +214,7 @@ namespace SRCCore.Units
                     case "魔":
                         {
                             // 魔法武器以外の魔属性なら特性が有効
-                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 & GeneralLib.InStrNotNest(aname, "魔武") == 0 & GeneralLib.InStrNotNest(aname, "魔突") == 0 & GeneralLib.InStrNotNest(aname, "魔接") == 0 & GeneralLib.InStrNotNest(aname, "魔銃") == 0 & GeneralLib.InStrNotNest(aname, "魔実") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
                                 ResistRet = true;
                                 break;
@@ -276,7 +276,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 WeaknessRet = true;
                                 break;
@@ -338,7 +338,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 & GeneralLib.InStrNotNest(aname, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
                                 EffectiveRet = true;
                                 break;
@@ -447,7 +447,7 @@ namespace SRCCore.Units
                 {
                     case "物":
                         {
-                            if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 & GeneralLib.InStrNotNest(aclass2, "精") == 0)
+                            if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 && GeneralLib.InStrNotNest(aclass2, "精") == 0)
                             {
                                 IsAttributeClassifiedRet = true;
                                 break;
@@ -461,7 +461,7 @@ namespace SRCCore.Units
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aclass2, "魔") > 0)
                             {
-                                if (GeneralLib.InStrNotNest(aclass2, "魔武") == 0 & GeneralLib.InStrNotNest(aclass2, "魔突") == 0 & GeneralLib.InStrNotNest(aclass2, "魔接") == 0 & GeneralLib.InStrNotNest(aclass2, "魔銃") == 0 & GeneralLib.InStrNotNest(aclass2, "魔実") == 0)
+                                if (GeneralLib.InStrNotNest(aclass2, "魔武") == 0 && GeneralLib.InStrNotNest(aclass2, "魔突") == 0 && GeneralLib.InStrNotNest(aclass2, "魔接") == 0 && GeneralLib.InStrNotNest(aclass2, "魔銃") == 0 && GeneralLib.InStrNotNest(aclass2, "魔実") == 0)
                                 {
                                     IsAttributeClassifiedRet = true;
                                 }

@@ -135,7 +135,7 @@ namespace SRCCore.Events
         //        // Input #SaveDataFileNumber, fname
         //        // AdditionalEventFileNames(i) = fname
         //        // If InStr(fname, ":") = 0 Then
-        //        // fname = ScenarioPath & fname
+        //        // fname = ScenarioPath && fname
         //        // End If
         //        // 
         //        // '既に読み込まれている場合はスキップ
@@ -159,7 +159,7 @@ namespace SRCCore.Events
         //        // For i = file_head To UBound(EventData) - 1
         //        // If Right$(EventData(i), 1) = "_" Then
         //        // EventData(i + 1) = _
-        //        // '                    Left$(EventData(i), Len(EventData(i)) - 1) & EventData(i + 1)
+        //        // '                    Left$(EventData(i), Len(EventData(i)) - 1) && EventData(i + 1)
         //        // EventData(i) = " "
         //        // End If
         //        // Next

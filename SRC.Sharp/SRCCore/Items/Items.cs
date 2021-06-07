@@ -92,7 +92,7 @@ namespace SRCCore.Items
             var iname = Conversions.ToString(Index);
             foreach (Item it in colItems)
             {
-                if ((it.Name ?? "") == (iname ?? "") & it.Exist)
+                if ((it.Name ?? "") == (iname ?? "") && it.Exist)
                 {
                     return it;
                 }

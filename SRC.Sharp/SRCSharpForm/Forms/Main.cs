@@ -420,14 +420,14 @@ namespace SRCSharpForm
                 //{
                 //    {
                 //        var withBlock = Event.HotPointList[i];
-                //        if (withBlock.Left <= GUI.MouseX & GUI.MouseX < withBlock.Left + withBlock.width & withBlock.Top <= GUI.MouseY & GUI.MouseY < withBlock.Top + withBlock.Height)
+                //        if (withBlock.Left <= GUI.MouseX && GUI.MouseX < withBlock.Left + withBlock.width && withBlock.Top <= GUI.MouseY && GUI.MouseY < withBlock.Top + withBlock.Height)
                 //        {
                 //            if (withBlock.Caption == "非表示" | string.IsNullOrEmpty(withBlock.Caption))
                 //            {
                 //                break;
                 //            }
 
-                //            if ((withBlock.Name ?? "") != (LastHostSpot ?? "") & !string.IsNullOrEmpty(LastHostSpot))
+                //            if ((withBlock.Name ?? "") != (LastHostSpot ?? "") && !string.IsNullOrEmpty(LastHostSpot))
                 //            {
                 //                break;
                 //            }
@@ -504,7 +504,7 @@ namespace SRCSharpForm
             //// '        Then
             //else if (Commands.CommandState == "ターゲット選択" | Commands.CommandState == "移動後ターゲット選択" | Commands.CommandState == "ユニット選択")
             //{
-            //    if (1 <= xx & xx <= Map.MapWidth & 1 <= yy & yy <= Map.MapHeight)
+            //    if (1 <= xx && xx <= Map.MapWidth && 1 <= yy && yy <= Map.MapHeight)
             //    {
             //        if (Map.MapDataForUnit[xx, yy] is object)
             //        {

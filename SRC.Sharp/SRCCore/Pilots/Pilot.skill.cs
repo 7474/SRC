@@ -62,7 +62,7 @@ namespace SRCCore.Pilots
                 //    return false;
                 //}
 
-                //if (!ReferenceEquals(this, u.MainPilot()) & !ReferenceEquals(this, u.Pilot(1)))
+                //if (!ReferenceEquals(this, u.MainPilot()) && !ReferenceEquals(this, u.Pilot(1)))
                 //{
                 //    return false;
                 //}
@@ -195,7 +195,7 @@ namespace SRCCore.Pilots
                 //    return SkillLevelRet;
                 //}
 
-                //if (!ReferenceEquals(this, Unit.MainPilot()) & !ReferenceEquals(this, Unit.Pilot(1)))
+                //if (!ReferenceEquals(this, Unit.MainPilot()) && !ReferenceEquals(this, Unit.Pilot(1)))
                 //{
                 //    return SkillLevelRet;
                 //}
@@ -275,7 +275,7 @@ namespace SRCCore.Pilots
                     return false;
                 }
 
-                if (!ReferenceEquals(this, u.MainPilot()) & !ReferenceEquals(this, u.Pilots.First()))
+                if (!ReferenceEquals(this, u.MainPilot()) && !ReferenceEquals(this, u.Pilots.First()))
                 {
                     return false;
                 }
@@ -373,7 +373,7 @@ namespace SRCCore.Pilots
             //            return SkillDataRet;
             //        }
 
-            //        if (!ReferenceEquals(this, withBlock.MainPilot()) & !ReferenceEquals(this, withBlock.Pilot(1)))
+            //        if (!ReferenceEquals(this, withBlock.MainPilot()) && !ReferenceEquals(this, withBlock.Pilot(1)))
             //        {
             //            return SkillDataRet;
             //        }
@@ -528,7 +528,7 @@ namespace SRCCore.Pilots
             //            {
             //                {
             //                    var withBlock = Unit;
-            //                    if (withBlock.CountCondition() > 0 & withBlock.CountPilot() > 0)
+            //                    if (withBlock.CountCondition() > 0 && withBlock.CountPilot() > 0)
             //                    {
             //                        if (ReferenceEquals(withBlock.MainPilot(), this) || ReferenceEquals(withBlock.Pilot(1), this))
             //                        {
@@ -625,7 +625,7 @@ namespace SRCCore.Pilots
             //                                    SkillNameRet = SkillNameRet + "Lv0";
             //                                }
 
-            //                                if (sname != "同調率" & sname != "霊力")
+            //                                if (sname != "同調率" && sname != "霊力")
             //                                {
             //                                    if (withBlock.ConditionLevel(sname + "強化２") >= 0d)
             //                                    {
@@ -665,7 +665,7 @@ namespace SRCCore.Pilots
             //                                    SkillNameRet = SkillNameRet + "Lv0";
             //                                }
 
-            //                                if (sname != "同調率" & sname != "霊力")
+            //                                if (sname != "同調率" && sname != "霊力")
             //                                {
             //                                    if (withBlock.ConditionLevel(sname + "強化") >= 0d)
             //                                    {
@@ -797,7 +797,7 @@ namespace SRCCore.Pilots
             }
 
             // レベル指定
-            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0 & Strings.Left(SkillNameRet, 1) != "(")
+            if (sd.Level != Constants.DEFAULT_LEVEL && Strings.InStr(SkillNameRet, "Lv") == 0 && Strings.Left(SkillNameRet, 1) != "(")
             {
                 SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(sd.Level);
             }
@@ -883,7 +883,7 @@ namespace SRCCore.Pilots
             {
                 {
                     var u = Unit;
-                    if (u.CountCondition() > 0 & u.CountPilot() > 0)
+                    if (u.CountCondition() > 0 && u.CountPilot() > 0)
                     {
                         if (ReferenceEquals(u.MainPilot(), this) || ReferenceEquals(u.Pilots.First(), this))
                         {
@@ -1141,7 +1141,7 @@ namespace SRCCore.Pilots
         //            {
         //                {
         //                    var withBlock = Unit;
-        //                    if (withBlock.CountCondition() > 0 & withBlock.CountPilot() > 0)
+        //                    if (withBlock.CountCondition() > 0 && withBlock.CountPilot() > 0)
         //                    {
         //                        if (ReferenceEquals(this, withBlock.MainPilot()) || ReferenceEquals(this, withBlock.Pilot(1)))
         //                        {

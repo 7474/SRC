@@ -73,7 +73,7 @@ namespace SRCCore.Models
                 //            }
 
                 //            // パイロットはメインパイロット？
-                //            if ((pname ?? "") != (withBlock1.MainPilot().Name ?? "") & (pname ?? "") != (withBlock1.MainPilot().Data.Nickname ?? ""))
+                //            if ((pname ?? "") != (withBlock1.MainPilot().Name ?? "") && (pname ?? "") != (withBlock1.MainPilot().Data.Nickname ?? ""))
                 //            {
                 //                return default;
                 //            }

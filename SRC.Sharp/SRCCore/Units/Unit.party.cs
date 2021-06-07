@@ -48,7 +48,7 @@ namespace SRCCore.Units
 
             // 味方ユニットは暴走、憑依、魅了したユニットを排除可能
             // (暴走した味方ユニットのPartyはＮＰＣとみなされる)
-            if (myparty == "味方" & tparty == "ＮＰＣ")
+            if (myparty == "味方" && tparty == "ＮＰＣ")
             {
                 if (t.IsConditionSatisfied("暴走") | t.IsConditionSatisfied("憑依") | t.IsConditionSatisfied("魅了"))
                 {

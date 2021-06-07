@@ -35,7 +35,7 @@ namespace Project1
         {
             //GUI.TopItem = (short)(lstItems.TopIndex + 1);
             //GUI.IsFormClicked = true;
-            //if (!GUI.IsMordal & Visible)
+            //if (!GUI.IsMordal && Visible)
             //{
             //    Cancel = 1;
             //}

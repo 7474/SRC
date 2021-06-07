@@ -324,7 +324,7 @@ namespace SRCCore.Events
                     }
                     else if (SRC.PDList.IsDefined(strParas[i]))
                     {
-                        if (Strings.InStr(strParas[i], "主人公") != 1 & Strings.InStr(strParas[i], "ヒロイン") != 1)
+                        if (Strings.InStr(strParas[i], "主人公") != 1 && Strings.InStr(strParas[i], "ヒロイン") != 1)
                         {
                             blnConst[i] = true;
                         }
@@ -362,7 +362,7 @@ namespace SRCCore.Events
                                 break;
 
                             default:
-                                if (Strings.Left(strParas[i], 1) == "\"" & Strings.Right(strParas[i], 1) == "\"")
+                                if (Strings.Left(strParas[i], 1) == "\"" && Strings.Right(strParas[i], 1) == "\"")
                                 {
                                     if (Strings.InStr(strParas[i], "$(") == 0)
                                     {

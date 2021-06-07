@@ -233,7 +233,7 @@ namespace SRCSharpForm
 
                     default:
                         // フィルタオプションの解決をここでしている様子
-                        if (Strings.Right(opt, 1) == "%" & Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
+                        if (Strings.Right(opt, 1) == "%" && Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
                         {
                             trans_par = (float)Math.Max(0d, Math.Min(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
                             pic_option2 = pic_option2 + " フィルタ透過度=" + opt;
@@ -312,7 +312,7 @@ namespace SRCSharpForm
                 //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 //                {
                 //                    // オプションも同じ？
-                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] == dw & PicBufDH[i] == dh & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] == dw && PicBufDH[i] == dh && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                 //                    {
                 //                        // 同じファイル、オプションによる画像が見つかった
 
@@ -324,7 +324,7 @@ namespace SRCSharpForm
                 //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock.Width);
                 //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock.Height);
                 //                        }
-                //                        // Debug.Print "Reuse " & Format$(i) & " As Stretched"
+                //                        // Debug.Print "Reuse " && Format$(i) && " As Stretched"
                 //                        goto EditedPicture;
                 //                    }
                 //                }
@@ -338,7 +338,7 @@ namespace SRCSharpForm
                 //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 //                {
                 //                    // オプションも同じ？
-                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") & (PicBufOption2[i] ?? "") == (pic_option2 ?? "") & !PicBufIsMask[i] & PicBufDW[i] ==  Constants.DEFAULT_LEVEL & PicBufDH[i] ==  Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                 //                    {
                 //                        // 同じファイル、オプションによる画像が見つかった
 
@@ -350,7 +350,7 @@ namespace SRCSharpForm
                 //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock1.Width);
                 //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock1.Height);
                 //                        }
-                //                        // Debug.Print "Reuse " & Format$(i) & " As Edited"
+                //                        // Debug.Print "Reuse " && Format$(i) && " As Edited"
                 //                        found_orig = true;
                 //                        goto EditedPicture;
                 //                    }
@@ -366,7 +366,7 @@ namespace SRCSharpForm
                 //                    // 同じファイル？
                 //                    if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 //                    {
-                //                        if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] ==  Constants.DEFAULT_LEVEL & PicBufDH[i] ==  Constants.DEFAULT_LEVEL & PicBufSX[i] == sx & PicBufSY[i] == sy & PicBufSW[i] == sw & PicBufSH[i] == sh)
+                //                        if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
                 //                        {
                 //                            // 以前使用した部分画像をそのまま利用
                 //                            UsePicBuf(i);
@@ -376,7 +376,7 @@ namespace SRCSharpForm
                 //                                orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock2.Width);
                 //                                orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock2.Height);
                 //                            }
-                //                            // Debug.Print "Reuse " & Format$(i) & " As Partial"
+                //                            // Debug.Print "Reuse " && Format$(i) && " As Partial"
                 //                            goto LoadedOrigPicture;
                 //                        }
                 //                    }
@@ -390,7 +390,7 @@ namespace SRCSharpForm
                 //                // 同じファイル？
                 //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
                 //                {
-                //                    if (string.IsNullOrEmpty(PicBufOption[i]) & string.IsNullOrEmpty(PicBufOption2[i]) & !PicBufIsMask[i] & PicBufDW[i] ==  Constants.DEFAULT_LEVEL & PicBufDH[i] ==  Constants.DEFAULT_LEVEL & PicBufSW[i] == 0)
+                //                    if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSW[i] == 0)
                 //                    {
                 //                        // 以前使用した原画像をそのまま利用
                 //                        UsePicBuf(i);
@@ -400,7 +400,7 @@ namespace SRCSharpForm
                 //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock3.Width);
                 //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock3.Height);
                 //                        }
-                //                        // Debug.Print "Reuse " & Format$(i) & " As Orig"
+                //                        // Debug.Print "Reuse " && Format$(i) && " As Orig"
                 //                        goto LoadedOrigPicture;
                 //                    }
                 //                }
@@ -669,7 +669,7 @@ namespace SRCSharpForm
                 //                }
                 //            }
                 //            // 地形画像検索用の地形画像ディレクトリ名と4桁ファイル名を作成
-                //            else if (LikeOperator.LikeString(fname, "*#.bmp", CompareMethod.Binary) & LikeOperator.LikeString(Strings.Left(fname, 1), "[a-z]", CompareMethod.Binary))
+                //            else if (LikeOperator.LikeString(fname, "*#.bmp", CompareMethod.Binary) && LikeOperator.LikeString(Strings.Left(fname, 1), "[a-z]", CompareMethod.Binary))
                 //            {
                 //                i = (Strings.Len(fname) - 5);
                 //                while (i > 0)

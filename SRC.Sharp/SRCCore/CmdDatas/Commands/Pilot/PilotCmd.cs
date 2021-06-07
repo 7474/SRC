@@ -15,7 +15,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "Pilotコマンドのパラメータの括弧の対応が取れていません");
             }
-            else if (ArgNum != 3 & ArgNum != 4)
+            else if (ArgNum != 3 && ArgNum != 4)
             {
                 throw new EventErrorException(this, "Pilotコマンドの引数の数が違います");
             }

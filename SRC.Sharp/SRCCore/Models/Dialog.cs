@@ -73,7 +73,7 @@ namespace SRCCore.Models
             //                    // パートナーの名前と一致する？
             //                    {
             //                        var withBlock2 = withBlock1.MainPilot();
-            //                        if ((pname ?? "") != (withBlock2.Name ?? "") & Strings.InStr(pname, withBlock2.Name + "(") != 1 & (pname ?? "") != (withBlock2.get_Nickname(false) ?? "") & Strings.InStr(pname, withBlock2.get_Nickname(false) + "(") != 1)
+            //                        if ((pname ?? "") != (withBlock2.Name ?? "") && Strings.InStr(pname, withBlock2.Name + "(") != 1 && (pname ?? "") != (withBlock2.get_Nickname(false) ?? "") && Strings.InStr(pname, withBlock2.get_Nickname(false) + "(") != 1)
             //                        {
             //                            goto NextPartner;
             //                        }
@@ -109,7 +109,7 @@ namespace SRCCore.Models
 
             //        bool localIsDefined22() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined2(argIndex1); return ret; }
 
-            //        if (!localIsDefined21() & localIsDefined22())
+            //        if (!localIsDefined21() && localIsDefined22())
             //        {
             //            // 括弧部分を削除
             //            var loopTo2 = (int)Strings.Len(pname);
@@ -184,7 +184,7 @@ namespace SRCCore.Models
             //            }
 
             //            // 喋れるかどうかチェック
-            //            if (!ignore_condition & withBlock3.Unit is object)
+            //            if (!ignore_condition && withBlock3.Unit is object)
             //            {
             //                {
             //                    var withBlock4 = withBlock3.Unit;

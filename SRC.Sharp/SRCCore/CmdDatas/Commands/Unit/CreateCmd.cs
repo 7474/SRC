@@ -43,7 +43,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "Createコマンドのパラメータの括弧の対応が取れていません");
             }
-            else if (num != 8 & num != 9)
+            else if (num != 8 && num != 9)
             {
                 throw new EventErrorException(this, "Createコマンドの引数の数が違います");
             }
@@ -146,7 +146,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             p.Ride(u);
-            if (opt != "非同期" & GUI.MainFormVisible & !GUI.IsPictureVisible)
+            if (opt != "非同期" && GUI.MainFormVisible && !GUI.IsPictureVisible)
             {
                 GUI.Center(ux, uy);
                 GUI.RefreshScreen();

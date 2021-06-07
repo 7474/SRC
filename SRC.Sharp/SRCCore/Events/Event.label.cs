@@ -204,7 +204,7 @@ namespace SRCCore.Events
                 // パラメータ数が一致している？
                 if (llen != lab.CountPara())
                 {
-                    if (ltype != LabelType.MapCommandEventLabel & ltype != LabelType.UnitCommandEventLabel)
+                    if (ltype != LabelType.MapCommandEventLabel && ltype != LabelType.UnitCommandEventLabel)
                     {
                         continue;
                     }

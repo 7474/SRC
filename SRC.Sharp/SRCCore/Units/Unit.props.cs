@@ -77,7 +77,7 @@ namespace SRCCore.Units
                     {
                         {
                             var withBlock = MainPilot();
-                            if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 & Strings.InStr(withBlock.Name, "(汎用)") == 0)
+                            if (Strings.InStr(withBlock.Name, "(ザコ)") == 0 && Strings.InStr(withBlock.Name, "(汎用)") == 0)
                             {
                                 NicknameRet = MainPilot().get_Nickname(false);
                                 return default;

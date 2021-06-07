@@ -116,7 +116,7 @@ namespace SRCCore.Models
 
                             //    bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
 
-                            //    if (!localIsDefined() & !localIsDefined1() & pname != "システム")
+                            //    if (!localIsDefined() && !localIsDefined1() && pname != "システム")
                             //    {
                             //        err_msg = "パイロット「" + pname + "」が定義されていません。";
                             //    }

@@ -383,14 +383,14 @@ namespace SRCCore.Models
         //        }
 
         //        // 対ザコ
-        //        if (Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") > 0 & (u.MainPilot().Technique > withBlock.MainPilot().Technique | u.HP > withBlock.HP / 2))
+        //        if (Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") > 0 && (u.MainPilot().Technique > withBlock.MainPilot().Technique | u.HP > withBlock.HP / 2))
         //        {
         //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
         //            sub_situations[Information.UBound(sub_situations)] = "(対ザコ)";
         //        }
 
         //        // 対強敵
-        //        if (withBlock.BossRank >= 0 | Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") == 0 & u.MainPilot().Technique <= withBlock.MainPilot().Technique)
+        //        if (withBlock.BossRank >= 0 | Strings.InStr(withBlock.MainPilot().Name, "(ザコ)") == 0 && u.MainPilot().Technique <= withBlock.MainPilot().Technique)
         //        {
         //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
         //            sub_situations[Information.UBound(sub_situations)] = "(対強敵)";
@@ -400,14 +400,14 @@ namespace SRCCore.Models
         //        w = 0;
         //        if (ReferenceEquals(Commands.SelectedUnit, u))
         //        {
-        //            if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= u.CountWeapon())
+        //            if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= u.CountWeapon())
         //            {
         //                w = Commands.SelectedWeapon;
         //            }
         //        }
         //        else if (ReferenceEquals(Commands.SelectedTarget, u))
         //        {
-        //            if (0 < Commands.SelectedTWeapon & Commands.SelectedTWeapon <= u.CountWeapon())
+        //            if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= u.CountWeapon())
         //            {
         //                w = Commands.SelectedTWeapon;
         //            }
@@ -446,14 +446,14 @@ namespace SRCCore.Models
         //        tw = 0;
         //        if (ReferenceEquals(Commands.SelectedUnit, t))
         //        {
-        //            if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= withBlock.CountWeapon())
+        //            if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= withBlock.CountWeapon())
         //            {
         //                tw = Commands.SelectedWeapon;
         //            }
         //        }
         //        else if (ReferenceEquals(Commands.SelectedTarget, t))
         //        {
-        //            if (0 < Commands.SelectedTWeapon & Commands.SelectedTWeapon <= withBlock.CountWeapon())
+        //            if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= withBlock.CountWeapon())
         //            {
         //                tw = Commands.SelectedTWeapon;
         //            }
@@ -576,7 +576,7 @@ namespace SRCCore.Models
         //                    if (ReferenceEquals(Commands.SelectedUnit, u))
         //                    {
         //                        // 自分が使用する武器をチェック
-        //                        if (0 < Commands.SelectedWeapon & Commands.SelectedWeapon <= u.CountWeapon())
+        //                        if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= u.CountWeapon())
         //                        {
         //                            Array.Resize(sub_situations, 5);
         //                            sub_situations[4] = "(" + u.WeaponNickname(Commands.SelectedWeapon) + ")";

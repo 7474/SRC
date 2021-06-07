@@ -43,7 +43,7 @@ namespace SRCCore.CmdDatas.Commands
             //            buf = list[2];
 
             //            // 表示文字列が式の場合にも対応
-            //            if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
+            //            if (Strings.Left(buf, 1) == "\"" && Strings.Right(buf, 1) == "\"")
             //            {
             //                if (Strings.InStr(buf, "$(") > 0)
             //                {
@@ -55,7 +55,7 @@ namespace SRCCore.CmdDatas.Commands
             //                    ArgsType[2] = Expressions.ValueType.StringType;
             //                }
             //            }
-            //            else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
+            //            else if (Strings.Left(buf, 1) == "`" && Strings.Right(buf, 1) == "`")
             //            {
             //                strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
             //                ArgsType[2] = Expressions.ValueType.StringType;
@@ -105,7 +105,7 @@ namespace SRCCore.CmdDatas.Commands
             //            // 引数が３個の場合
 
             //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) && (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;
@@ -159,7 +159,7 @@ namespace SRCCore.CmdDatas.Commands
 
             //            // 座標指定があった場合の表示文字列
             //            buf = list[4];
-            //            if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
+            //            if (Strings.Left(buf, 1) == "\"" && Strings.Right(buf, 1) == "\"")
             //            {
             //                if (Strings.InStr(buf, "$(") > 0)
             //                {
@@ -171,7 +171,7 @@ namespace SRCCore.CmdDatas.Commands
             //                    ArgsType[4] = Expressions.ValueType.StringType;
             //                }
             //            }
-            //            else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
+            //            else if (Strings.Left(buf, 1) == "`" && Strings.Right(buf, 1) == "`")
             //            {
             //                strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
             //                ArgsType[4] = Expressions.ValueType.StringType;
@@ -193,7 +193,7 @@ namespace SRCCore.CmdDatas.Commands
             //            // 引数が４個以上の場合
 
             //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+            //            if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) && (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;
