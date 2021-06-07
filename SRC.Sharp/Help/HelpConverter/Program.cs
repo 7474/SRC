@@ -8,7 +8,7 @@ namespace HelpConverter
 {
     class FileConverter
     {
-        static readonly Regex nameRegex = new Regex("<TITLE>(.+)</TITLE>", RegexOptions.IgnoreCase || RegexOptions.Multiline);
+        static readonly Regex nameRegex = new Regex("<TITLE>(.+)</TITLE>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         static readonly Regex anchorRegex = new Regex("<A HREF=\"(.+?.htm?)\">(.+?)</A>", RegexOptions.IgnoreCase);
         static readonly Regex tagRegex = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
 
