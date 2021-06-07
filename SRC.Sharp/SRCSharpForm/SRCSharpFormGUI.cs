@@ -396,11 +396,6 @@ namespace SRCSharpForm
             return Y / frmMain.MapCellPx + 1 + MapY - (MainHeight + 1) / 2;
         }
 
-        public int MakeUnitBitmap(Unit u)
-        {
-            return -1;
-        }
-
         public void PaintUnitBitmap(Unit u, string smode)
         {
             MainForm.PaintUnitBitmap(u, smode);
