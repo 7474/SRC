@@ -189,7 +189,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "escape":
-                        return new NotImplementedCmd(src, data);
+                        return new EscapeCmd(src, data);
 
                     case "exchangeitem":
                         return new NotImplementedCmd(src, data);
