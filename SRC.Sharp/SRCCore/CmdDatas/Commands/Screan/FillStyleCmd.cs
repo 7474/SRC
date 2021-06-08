@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,82 +14,61 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum != 2)
             {
-                Event.EventErrorMessage = "FillStyleコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 246504
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "FillStyleコマンドの引数の数が違います");
             }
 
             switch (GetArgAsString(2) ?? "")
             {
                 case "塗りつぶし":
                     {
-                        Event.ObjFillStyle = vbFSSolid;
+                        Event.ObjFillStyle = FillStyle.VbFSSolid;
                         break;
                     }
 
                 case "透明":
                     {
-                        Event.ObjFillStyle = vbFSTransparent;
+                        Event.ObjFillStyle = FillStyle.VbFSTransparent;
                         break;
                     }
 
                 case "横線":
                     {
-                        Event.ObjFillStyle = vbHorizontalLine;
+                        Event.ObjFillStyle = FillStyle.VbHorizontalLine;
                         break;
                     }
 
                 case "縦線":
                     {
-                        Event.ObjFillStyle = vbVerticalLine;
+                        Event.ObjFillStyle = FillStyle.VbVerticalLine;
                         break;
                     }
 
                 case "斜線":
                     {
-                        Event.ObjFillStyle = vbUpwardDiagonal;
+                        Event.ObjFillStyle = FillStyle.VbUpwardDiagonal;
                         break;
                     }
 
                 case "斜線２":
                     {
-                        Event.ObjFillStyle = vbDownwardDiagonal;
+                        Event.ObjFillStyle = FillStyle.VbDownwardDiagonal;
                         break;
                     }
 
                 case "クロス":
                     {
-                        Event.ObjFillStyle = vbCross;
+                        Event.ObjFillStyle = FillStyle.VbCross;
                         break;
                     }
 
                 case "網かけ":
                     {
-                        Event.ObjFillStyle = vbDiagonalCross;
+                        Event.ObjFillStyle = FillStyle.VbDiagonalCross;
                         break;
                     }
 
                 default:
-                    {
-                        Event.EventErrorMessage = "背景描画方法の指定が不正です";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 248728
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "背景描画方法の指定が不正です");
             }
 
             return EventData.NextID;
