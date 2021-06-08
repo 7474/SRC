@@ -183,7 +183,7 @@ namespace SRCCore.CmdDatas
                         return new DrawWidthCmd(src, data);
 
                     case "enable":
-                        return new NotImplementedCmd(src, data);
+                        return new EnableCmd(src, data);
 
                     case "equip":
                         return new NotImplementedCmd(src, data);
