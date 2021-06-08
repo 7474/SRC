@@ -177,7 +177,7 @@ namespace SRCCore.CmdDatas
                         return new LoopCmd(src, data);
 
                     case "drawoption":
-                        return new NotImplementedCmd(src, data);
+                        return new DrawOptionCmd(src, data);
 
                     case "drawwidth":
                         return new NotImplementedCmd(src, data);

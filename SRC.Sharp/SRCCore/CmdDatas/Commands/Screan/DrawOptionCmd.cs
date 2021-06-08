@@ -1,4 +1,5 @@
 using SRCCore.Events;
+using SRCCore.Exceptions;
 using System;
 
 namespace SRCCore.CmdDatas.Commands
@@ -11,8 +12,13 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            if (ArgNum != 2)
+            {
+                throw new EventErrorException(this, "DrawOptionコマンドの引数の数が違います");
+            }
+
+            Event.ObjDrawOption = GetArgAsString(2);
+            return EventData.NextID;
         }
     }
 }
