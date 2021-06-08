@@ -1,5 +1,5 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,8 +11,13 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            if (ArgNum != 2)
+            {
+                throw new EventErrorException(this, "DrawWidthコマンドの引数の数が違います");
+            }
+
+            Event.ObjDrawWidth = GetArgAsLong(2);
+            return EventData.NextID;
         }
     }
 }

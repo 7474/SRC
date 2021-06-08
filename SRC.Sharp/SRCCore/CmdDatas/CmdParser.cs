@@ -180,7 +180,7 @@ namespace SRCCore.CmdDatas
                         return new DrawOptionCmd(src, data);
 
                     case "drawwidth":
-                        return new NotImplementedCmd(src, data);
+                        return new DrawWidthCmd(src, data);
 
                     case "enable":
                         return new NotImplementedCmd(src, data);

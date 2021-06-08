@@ -1,6 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
