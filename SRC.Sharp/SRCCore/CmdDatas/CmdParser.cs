@@ -96,7 +96,7 @@ namespace SRCCore.CmdDatas
                         return new ChargeCmd(src, data);
 
                     case "circle":
-                        return new NotImplementedCmd(src, data);
+                        return new CircleCmd(src, data);
 
                     case "clearevent":
                         return new ClearEventCmd(src, data);
