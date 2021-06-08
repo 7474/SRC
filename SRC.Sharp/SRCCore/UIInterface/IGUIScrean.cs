@@ -13,6 +13,7 @@ namespace SRCCore
     public interface IGUIScrean
     {
         void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle);
+        void CircleCmd(ScreanDrawOption option, int x1, int y1, int rad);
     }
 
     public class ScreanDrawOption

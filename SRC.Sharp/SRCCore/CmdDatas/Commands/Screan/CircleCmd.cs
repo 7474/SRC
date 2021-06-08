@@ -1,4 +1,7 @@
 using SRCCore.Events;
+using SRCCore.Exceptions;
+using SRCCore.Extensions;
+using SRCCore.VB;
 using System;
 
 namespace SRCCore.CmdDatas.Commands
@@ -13,138 +16,32 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum < 4)
             {
-                Event.EventErrorMessage = "Circleコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 152388
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "Circleコマンドの引数の数が違います");
             }
 
-            x1 = (GetArgAsLong(2) + Event.BaseX);
-            y1 = (GetArgAsLong(3) + Event.BaseY);
-            rad = GetArgAsLong(4);
+            var x1 = (GetArgAsLong(2) + Event.BaseX);
+            var y1 = (GetArgAsLong(3) + Event.BaseY);
+            var rad = GetArgAsLong(4);
             GUI.SaveScreen();
 
-            // 描画先
-            switch (Event.ObjDrawOption ?? "")
+            var clr = Event.ObjColor;
+            for (var i = 5; i <= ArgNum; i++)
             {
-                case "背景":
-                    {
-                        pic = GUI.MainForm.picBack;
-                        pic2 = GUI.MainForm.picMaskedBack;
-                        Map.IsMapDirty = true;
-                        break;
-                    }
-
-                case "保持":
-                    {
-                        pic = GUI.MainForm.picMain(0);
-                        pic2 = GUI.MainForm.picMain(1);
-                        break;
-                    }
-
-                default:
-                    {
-                        pic = GUI.MainForm.picMain(0);
-                        break;
-                    }
-            }
-
-            // 描画領域
-            short tmp;
-            if (Event.ObjDrawOption != "背景")
-            {
-                GUI.IsPictureVisible = true;
-                tmp = (rad + Event.ObjDrawWidth - 1);
-                GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-                GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-                GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MapPWidth - 1));
-                GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MapPHeight - 1));
-            }
-
-            clr = Event.ObjColor;
-            var loopTo = ArgNum;
-            for (i = 5; i <= loopTo; i++)
-            {
-                opt = GetArgAsString(i);
+                var opt = GetArgAsString(i);
                 if (Strings.Asc(opt) == 35) // #
                 {
-                    if (Strings.Len(opt) != 7)
+                    if (!ColorExtension.TryFromHexString(opt, out clr))
                     {
-                        Event.EventErrorMessage = "色指定が不正です";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155229
-
-
-                        Input:
-                                            Error(0)
-
-                         */
+                        throw new EventErrorException(this, "色指定が不正です");
                     }
-
-                    cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                    StringType.MidStmtStr(cname, 1, 2, "&H");
-                    var midTmp = Strings.Mid(opt, 6, 2);
-                    StringType.MidStmtStr(cname, 3, 2, midTmp);
-                    var midTmp1 = Strings.Mid(opt, 4, 2);
-                    StringType.MidStmtStr(cname, 5, 2, midTmp1);
-                    var midTmp2 = Strings.Mid(opt, 2, 2);
-                    StringType.MidStmtStr(cname, 7, 2, midTmp2);
-                    if (!Information.IsNumeric(cname))
-                    {
-                        Event.EventErrorMessage = "色指定が不正です";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155739
-
-
-                        Input:
-                                            Error(0)
-
-                         */
-                    }
-
-                    clr = Conversions.ToInteger(cname);
                 }
                 else
                 {
-                    Event.EventErrorMessage = "Circleコマンドに不正なオプション「" + opt + "」が使われています";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 155895
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw new EventErrorException(this, "Circleコマンドに不正なオプション「" + opt + "」が使われています");
                 }
             }
-            pic.DrawWidth = Event.ObjDrawWidth;
-            pic.FillColor = Event.ObjFillColor;
-            pic.FillStyle = Event.ObjFillStyle;
+            SRC.GUIScrean.CircleCmd(new ScreanDrawOption(Event, clr), x1, y1, rad);
 
-            pic.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            pic.DrawWidth = 1;
-            pic.FillColor = ColorTranslator.ToOle(Color.White);
-            pic.FillStyle = vbFSTransparent;
-            if (pic2 is object)
-            {
-                pic2.DrawWidth = Event.ObjDrawWidth;
-                pic2.FillColor = Event.ObjFillColor;
-                pic2.FillStyle = Event.ObjFillStyle;
-
-                pic2.Circle(x1, y1);/* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                pic2.DrawWidth = 1;
-                pic2.FillColor = ColorTranslator.ToOle(Color.White);
-                pic2.FillStyle = vbFSTransparent;
-            }
             return EventData.NextID;
         }
     }
