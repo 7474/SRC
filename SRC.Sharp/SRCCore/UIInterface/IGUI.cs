@@ -234,6 +234,7 @@ namespace SRCCore
         void ResetDrawString();
         // 文字列描画のプリセットモードを設定する
         void SetDrawString(DrawStringMode mode);
+        void SetDrawFont(DrawFontOption option);
 
         // === 画像消去に関する処理 ===
 
@@ -325,6 +326,15 @@ namespace SRCCore
     {
         Default,
         Status,
+    }
+
+    public class DrawFontOption
+    {
+        public string FontFamily { get; set; }
+        public bool Bold { get; set; }
+        public bool Italic { get; set; }
+        public float Size { get; set; }
+        public Color Color { get; set; }
     }
 
     public enum TransionPattern

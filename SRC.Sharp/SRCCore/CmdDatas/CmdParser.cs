@@ -180,16 +180,16 @@ namespace SRCCore.CmdDatas
                         return new DrawOptionCmd(src, data);
 
                     case "drawwidth":
-                        return new NotImplementedCmd(src, data);
+                        return new DrawWidthCmd(src, data);
 
                     case "enable":
-                        return new NotImplementedCmd(src, data);
+                        return new EnableCmd(src, data);
 
                     case "equip":
                         return new NotImplementedCmd(src, data);
 
                     case "escape":
-                        return new NotImplementedCmd(src, data);
+                        return new EscapeCmd(src, data);
 
                     case "exchangeitem":
                         return new NotImplementedCmd(src, data);
@@ -213,10 +213,10 @@ namespace SRCCore.CmdDatas
                         return new FadeOutCmd(src, data);
 
                     case "fillcolor":
-                        return new NotImplementedCmd(src, data);
+                        return new FillColorCmd(src, data);
 
                     case "fillstyle":
-                        return new NotImplementedCmd(src, data);
+                        return new FillStyleCmd(src, data);
 
                     case "finish":
                         return new FinishCmd(src, data);
@@ -234,7 +234,7 @@ namespace SRCCore.CmdDatas
                         return new NextCmd(src, data);
 
                     case "font":
-                        return new NotImplementedCmd(src, data);
+                        return new FontCmd(src, data);
 
                     case "forget":
                         return new NotImplementedCmd(src, data);

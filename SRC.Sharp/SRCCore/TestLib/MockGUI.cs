@@ -412,6 +412,11 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public void SetDrawFont(DrawFontOption option)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetDrawString(DrawStringMode mode)
         {
             throw new NotImplementedException();
