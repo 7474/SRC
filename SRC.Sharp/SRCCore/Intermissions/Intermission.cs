@@ -1781,132 +1781,93 @@ namespace SRCCore
                 //while (true)
                 //{
                 //    // アイテムの装備個所一覧を作成
-                //    part_list = new string[1];
+                //    var part_list = new List<string>();
                 //    if (u.IsFeatureAvailable("装備個所"))
                 //    {
-                //        buf = u.FeatureData("装備個所");
+                //        var buf = u.FeatureData("装備個所");
                 //        if (Strings.InStr(buf, "腕") > 0)
                 //        {
-                //            arm_point = (Information.UBound(part_list) + 1);
-                //            Array.Resize(part_list, Information.UBound(part_list) + 2 + 1);
-                //            part_list[1] = "右手";
-                //            part_list[2] = "左手";
+                //            part_list.Add("右手");
+                //            part_list.Add("左手");
                 //        }
 
                 //        if (Strings.InStr(buf, "肩") > 0)
                 //        {
-                //            shoulder_point = (Information.UBound(part_list) + 1);
-                //            Array.Resize(part_list, Information.UBound(part_list) + 2 + 1);
-                //            part_list[Information.UBound(part_list) - 1] = "右肩";
-                //            part_list[Information.UBound(part_list)] = "左肩";
+                //            part_list.Add("右肩");
+                //            part_list.Add("左肩");
+                //            //shoulder_point = (Information.UBound(part_list) + 1);
                 //        }
 
                 //        if (Strings.InStr(buf, "体") > 0)
                 //        {
-                //            Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
-                //            part_list[Information.UBound(part_list)] = "体";
+                //            part_list.Add("体");
                 //        }
 
                 //        if (Strings.InStr(buf, "頭") > 0)
                 //        {
-                //            Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
-                //            part_list[Information.UBound(part_list)] = "頭";
+                //            part_list.Add("頭");
                 //        }
                 //    }
 
-                //    var loopTo15 = u.CountFeature();
-                //    for (i = 1; i <= loopTo15; i++)
+                //    foreach (var fd in u.Features.Where(x => x.Name == "ハードポイント"))
                 //    {
-                //        if (u.Feature(i) == "ハードポイント")
+                //        var ipart = fd.Data;
+                //        switch (ipart)
                 //        {
-                //            ipart = u.FeatureData(i);
-                //            switch (ipart ?? "")
-                //            {
-                //                // 表示しない
-                //                case "強化パーツ":
-                //                case "アイテム":
-                //                case "非表示":
+                //            // 表示しない
+                //            case "強化パーツ":
+                //            case "アイテム":
+                //            case "非表示":
+                //                {
+                //                    break;
+                //                }
+
+                //            default:
+                //                {
+                //                    if (!part_list.Contains(ipart))
                 //                    {
-                //                        break;
-                //                    }
-
-                //                default:
-                //                    {
-                //                        var loopTo16 = Information.UBound(part_list);
-                //                        for (j = 1; j <= loopTo16; j++)
+                //                        for (var i = 0; i < u.ItemSlotSize(ipart); i++)
                 //                        {
-                //                            if ((part_list[j] ?? "") == (ipart ?? ""))
-                //                            {
-                //                                break;
-                //                            }
+                //                            part_list.Add(ipart);
                 //                        }
-
-                //                        if (j > Information.UBound(part_list))
-                //                        {
-                //                            Array.Resize(part_list, Information.UBound(part_list) + u.ItemSlotSize(ipart) + 1);
-                //                            var loopTo17 = Information.UBound(part_list);
-                //                            for (j = (Information.UBound(part_list) - u.ItemSlotSize(ipart) + 1); j <= loopTo17; j++)
-                //                                part_list[j] = ipart;
-                //                        }
-
-                //                        break;
                 //                    }
-                //            }
+                //                    break;
+                //                }
                 //        }
                 //    }
 
-                //    Array.Resize(part_list, Information.UBound(part_list) + u.MaxItemNum() + 1);
-                //    if (u.IsHero())
+                //    for (var i = 0; i < u.MaxItemNum(); i++)
                 //    {
-                //        var loopTo18 = Information.UBound(part_list);
-                //        for (i = (Information.UBound(part_list) - u.MaxItemNum() + 1); i <= loopTo18; i++)
-                //            part_list[i] = "アイテム";
-                //    }
-                //    else
-                //    {
-                //        var loopTo19 = Information.UBound(part_list);
-                //        for (i = (Information.UBound(part_list) - u.MaxItemNum() + 1); i <= loopTo19; i++)
-                //            part_list[i] = "強化パーツ";
+                //        part_list.Add(u.IsHero() ? "アイテム" : "強化パーツ");
                 //    }
 
                 //    // 特定の装備個所のアイテムのみを交換する？
                 //    if (!string.IsNullOrEmpty(selected_part))
                 //    {
-                //        tmp_part_list = new string[Information.UBound(part_list) + 1];
-                //        var loopTo20 = Information.UBound(part_list);
-                //        for (i = 1; i <= loopTo20; i++)
-                //            tmp_part_list[i] = part_list[i];
-                //        part_list = new string[1];
-                //        arm_point = 0;
-                //        shoulder_point = 0;
-                //        var loopTo21 = Information.UBound(tmp_part_list);
-                //        for (i = 1; i <= loopTo21; i++)
-                //        {
-                //            if ((tmp_part_list[i] ?? "") == (selected_part ?? "") || (selected_part == "片手" || selected_part == "両手" || selected_part == "盾") && (tmp_part_list[i] == "右手" || tmp_part_list[i] == "左手") || (selected_part == "肩" || selected_part == "両肩") && (tmp_part_list[i] == "右肩" || tmp_part_list[i] == "左肩") || (selected_part == "アイテム" || selected_part == "強化パーツ") && (tmp_part_list[i] == "アイテム" || tmp_part_list[i] == "強化パーツ"))
-                //            {
-                //                Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
-                //                part_list[Information.UBound(part_list)] = tmp_part_list[i];
-                //                switch (part_list[Information.UBound(part_list)] ?? "")
-                //                {
-                //                    case "右手":
-                //                        {
-                //                            arm_point = Information.UBound(part_list);
-                //                            break;
-                //                        }
-
-                //                    case "右肩":
-                //                        {
-                //                            shoulder_point = Information.UBound(part_list);
-                //                            break;
-                //                        }
-                //                }
-                //            }
-                //        }
+                //        part_list = part_list.Where(x => x == selected_part
+                //                || (selected_part == "片手" || selected_part == "両手" || selected_part == "盾")
+                //                    && (x == "右手" || x == "左手")
+                //                || (selected_part == "肩" || selected_part == "両肩")
+                //                    && (x == "右肩" || x == "左肩")
+                //                || (selected_part == "アイテム" || selected_part == "強化パーツ")
+                //                    && (x == "アイテム" || x == "強化パーツ"))
+                //            .ToList();
                 //    }
 
-                //    part_item = new string[Information.UBound(part_list) + 1];
-
                 //    // 装備個所に現在装備しているアイテムを割り当て
+                //    var part_item = new List<Items.Item>();
+                //    foreach (var itm in u.ItemList.Where(x => x.Class() != "固定" && !x.IsFeatureAvailable("非表示")))
+                //    {
+                //        comment += itm.Nickname() + "";
+                //        if (itm.Part() == "強化パーツ" || itm.Part() == "アイテム")
+                //        {
+                //            inum += itm.Size();
+                //        }
+                //        else
+                //        {
+                //            inum2 += itm.Size();
+                //        }
+                //    }
                 //    var loopTo22 = u.CountItem();
                 //    for (i = 1; i <= loopTo22; i++)
                 //    {
