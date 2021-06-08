@@ -49,11 +49,6 @@ namespace SRCSharpForm
             if (option.DrawOption != ScreanDrawMode.Background)
             {
                 GUI.IsPictureVisible = true;
-                //tmp = (rad + Event.ObjDrawWidth - 1);
-                //GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-                //GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-                //GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
-                //GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
             }
 
             using (var pen = GetPen(option))
@@ -83,11 +78,6 @@ namespace SRCSharpForm
             if (option.DrawOption != ScreanDrawMode.Background)
             {
                 GUI.IsPictureVisible = true;
-                //tmp = (rad + Event.ObjDrawWidth - 1);
-                //GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-                //GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-                //GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
-                //GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
             }
 
             using (var pen = GetPen(option))
