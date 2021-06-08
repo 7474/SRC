@@ -1,5 +1,7 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Lib;
+using SRCCore.Units;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,7 +13,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            num = ArgNum;
+            var opt = "";
+            var num = ArgNum;
             if (num > 1)
             {
                 if (GetArgAsString(num) == "非同期")
@@ -21,6 +24,9 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
+            var pname = "";
+            var uparty = "";
+            var ucount = 0;
             switch (num)
             {
                 case 2:
@@ -29,27 +35,23 @@ namespace SRCCore.CmdDatas.Commands
                         if (pname == "味方" || pname == "ＮＰＣ" || pname == "敵" || pname == "中立")
                         {
                             uparty = pname;
-                            foreach (Unit currentU in SRC.UList)
+                            foreach (Unit u in SRC.UList.Items)
                             {
-                                u = currentU;
+                                if ((u.Party0 ?? "") == (uparty ?? ""))
                                 {
-                                    var withBlock = u;
-                                    if ((withBlock.Party0 ?? "") == (uparty ?? ""))
+                                    if (u.Status == "出撃")
                                     {
-                                        if (withBlock.Status == "出撃")
+                                        u.Escape(opt);
+                                        ucount = (ucount + 1);
+                                    }
+                                    else if (u.Status == "破壊")
+                                    {
+                                        if (1 <= u.x && u.x <= Map.MapWidth && 1 <= u.y && u.y <= Map.MapHeight)
                                         {
-                                            withBlock.Escape(opt);
-                                            ucount = (ucount + 1);
-                                        }
-                                        else if (withBlock.Status == "破壊")
-                                        {
-                                            if (1 <= withBlock.x && withBlock.x <= Map.MapWidth && 1 <= withBlock.y && withBlock.y <= Map.MapHeight)
+                                            if (ReferenceEquals(u, Map.MapDataForUnit[u.x, u.y]))
                                             {
-                                                if (ReferenceEquals(u, Map.MapDataForUnit[withBlock.x, withBlock.y]))
-                                                {
-                                                    // 破壊キャンセルで画面上に残っていた
-                                                    withBlock.Escape(opt);
-                                                }
+                                                // 破壊キャンセルで画面上に残っていた
+                                                u.Escape(opt);
                                             }
                                         }
                                     }
@@ -58,31 +60,14 @@ namespace SRCCore.CmdDatas.Commands
                         }
                         else
                         {
-                            u = SRC.UList.Item2((object)pname);
+                            var u = SRC.UList.Item2(pname);
                             if (u is null)
                             {
+                                if (!SRC.PList.IsDefined(pname))
                                 {
-                                    var withBlock1 = SRC.PList;
-                                    bool localIsDefined() { object argIndex1 = (object)pname; var ret = withBlock1.IsDefined(argIndex1); return ret; }
-
-                                    if (!localIsDefined())
-                                    {
-                                        Event.EventErrorMessage = "「" + pname + "」というパイロットが見つかりません";
-                                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 228167
-
-
-                                        Input:
-                                                                        Error(0)
-
-                                         */
-                                    }
-
-                                    Pilot localItem() { object argIndex1 = (object)pname; var ret = withBlock1.Item(argIndex1); return ret; }
-
-                                    u = localItem().Unit;
+                                    throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                 }
+                                u = SRC.PList.Item(pname).Unit;
                             }
 
                             if (u is object)
@@ -118,41 +103,27 @@ namespace SRCCore.CmdDatas.Commands
 
                 default:
                     {
-                        Event.EventErrorMessage = "Escapeコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 228757
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
+                        throw new EventErrorException(this, "Escapeコマンドの引数の数が違います");
                     }
             }
 
             // Escapeコマンドによって全滅したかを判定
             if (uparty != "ＮＰＣ" && uparty != "味方" && ucount > 0)
             {
-                foreach (Unit currentU1 in SRC.UList)
+                foreach (Unit u in SRC.UList.Items)
                 {
-                    u = currentU1;
                     if ((u.Party0 ?? "") == (uparty ?? "") && (u.Status == "出撃" || u.Status == "格納") && !u.IsConditionSatisfied("憑依"))
                     {
-                        ExecEscapeCmdRet = LineNum + 1;
-                        return ExecEscapeCmdRet;
+                        return EventData.NextID;
                     }
                 }
 
                 // 戦闘時以外のイベント中の撤退は無視
-                var loopTo = Information.UBound(Event.EventQue);
-                for (i = 1; i <= loopTo; i++)
+                foreach(var m in Event.EventQue)
                 {
-                    if (Event.EventQue[i] == "プロローグ" || Event.EventQue[i] == "エピローグ" || Event.EventQue[i] == "スタート" || GeneralLib.LIndex(Event.EventQue[i], 1) == "マップ攻撃破壊")
+                    if (m == "プロローグ" || m == "エピローグ" || m == "スタート" || GeneralLib.LIndex(m, 1) == "マップ攻撃破壊")
                     {
-                        ExecEscapeCmdRet = LineNum + 1;
-                        return ExecEscapeCmdRet;
+                        return EventData.NextID;
                     }
                 }
 
