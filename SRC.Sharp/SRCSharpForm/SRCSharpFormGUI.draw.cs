@@ -1051,10 +1051,27 @@ namespace SRCSharpForm
             currentDrawFont = defaultDrawFont;
             currentDrawFontColor = Brushes.White;
         }
+
         public void SetDrawString(DrawStringMode mode)
         {
-            currentDrawFont = statusDrawFont;
-            currentDrawFontColor = Brushes.White;
+            switch (mode)
+            {
+                case DrawStringMode.Status:
+                    currentDrawFont = statusDrawFont;
+                    currentDrawFontColor = Brushes.White;
+                    break;
+                default:
+                    ResetDrawString();
+                    break;
+            }
+        }
+
+        public void SetDrawFont(DrawFontOption option)
+        {
+            var style = FontStyle.Regular;
+            if (option.Bold) { style |= FontStyle.Bold; }
+            if (option.Italic) { style |= FontStyle.Italic; }
+            currentDrawFont = new Font(option.FontFamily, option.Size, style);
         }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
