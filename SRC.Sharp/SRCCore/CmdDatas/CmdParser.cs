@@ -234,7 +234,7 @@ namespace SRCCore.CmdDatas
                         return new NextCmd(src, data);
 
                     case "font":
-                        return new NotImplementedCmd(src, data);
+                        return new FontCmd(src, data);
 
                     case "forget":
                         return new NotImplementedCmd(src, data);
