@@ -213,10 +213,10 @@ namespace SRCCore.CmdDatas
                         return new FadeOutCmd(src, data);
 
                     case "fillcolor":
-                        return new NotImplementedCmd(src, data);
+                        return new FillColorCmd(src, data);
 
                     case "fillstyle":
-                        return new NotImplementedCmd(src, data);
+                        return new FillStyleCmd(src, data);
 
                     case "finish":
                         return new FinishCmd(src, data);
