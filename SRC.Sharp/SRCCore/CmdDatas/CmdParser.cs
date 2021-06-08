@@ -45,7 +45,7 @@ namespace SRCCore.CmdDatas
                         return new AskCmd(src, data);
 
                     case "attack":
-                        return new NotImplementedCmd(src, data);
+                        return new AttackCmd(src, data);
 
                     case "autotalk":
                         return new AutoTalkCmd(src, data);
