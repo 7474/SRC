@@ -1072,6 +1072,10 @@ namespace SRCSharpForm
             if (option.Bold) { style |= FontStyle.Bold; }
             if (option.Italic) { style |= FontStyle.Italic; }
             currentDrawFont = new Font(option.FontFamily, option.Size, style);
+            if (CurrentPaintColor != option.Color)
+            {
+                currentDrawFontColor = new SolidBrush(option.Color);
+            }
         }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
