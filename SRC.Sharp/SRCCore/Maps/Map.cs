@@ -180,43 +180,8 @@ namespace SRCCore.Maps
         }
 
         // 指定したマップ画像を検索する
-        // XXX レイヤ対応はしてない
         public string SearchTerrainImageFile(MapCell cell)
         {
-            //// ADD START 240a
-            //// 画像無が確定してるなら処理しない
-            //if (tid == NO_LAYER_NUM)
-            //{
-            //    return SearchTerrainImageFileRet;
-            //}
-            //else if (tbitmap == NO_LAYER_NUM)
-            //{
-            //    return SearchTerrainImageFileRet;
-            //}
-            //// ADD  END  240a
-
-            //// 初めて実行する際に、各フォルダにBitmap\Mapフォルダがあるかチェック
-            //if (!init_setup_background)
-            //{
-            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //    if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //    {
-            //        scenario_map_dir_exists = true;
-            //    }
-            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //    if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //    {
-            //        extdata_map_dir_exists = true;
-            //    }
-            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //    if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //    {
-            //        extdata2_map_dir_exists = true;
-            //    }
-
-            //    init_setup_background = true;
-            //}
-
             // マップ画像のファイル名を作成
             var tbmpname = cell.UnderTerrain.Bitmap;
             var tbitmap = cell.BitmapNo;
@@ -226,33 +191,40 @@ namespace SRCCore.Maps
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
-            var dnames = new string[]
+            // ビットマップを探す
+            foreach (var file in fnames)
             {
-                SRC.ScenarioPath,
-                SRC.ExtDataPath,
-                SRC.ExtDataPath2,
-                SRC.AppPath,
+                if (SRC.FileSystem.FileExists(file))
+                {
+                    // ビットマップ名記録
+                    MapUnderImageFilePath[cell.X, cell.Y] = file;
+                    return file;
+                }
+            }
+            return null;
+        }
+
+        // TODO レイヤ対応
+        public string SearchLayerImageFile(MapCell cell)
+        {
+            if (cell.UpperTerrain == null) { return null; }
+            // マップ画像のファイル名を作成
+            var tbmpname = cell.UpperTerrain.Bitmap;
+            var tbitmap = cell.LayerBitmapNo;
+            var fnames = new string[]
+            {
+                SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
             // ビットマップを探す
-            foreach (var dir in dnames)
+            foreach (var file in fnames)
             {
-                //if (scenario_map_dir_exists)
-                //if (extdata_map_dir_exists)
-                //if (extdata2_map_dir_exists)
-                if (Directory.Exists(dir))
+                if (SRC.FileSystem.FileExists(file))
                 {
-                    foreach (var file in fnames)
-                    {
-                        var fpath = SRC.FileSystem.PathCombine(dir, file);
-                        if (File.Exists(fpath))
-                        {
-                            // TODO ビットマップ名記録
-                            //MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-                            MapUnderImageFilePath[cell.X, cell.Y] = fpath;
-                            // MapUpperImageFilePath
-                            return fpath;
-                        }
-                    }
+                    // ビットマップ名記録
+                    MapUpperImageFilePath[cell.X, cell.Y] = file;
+                    return file;
                 }
             }
             return null;

@@ -292,8 +292,7 @@ namespace SRCSharpForm
                         var bitmapPath = Map.SearchTerrainImageFile(cell);
                         if (!string.IsNullOrEmpty(bitmapPath))
                         {
-                            // XXX 初回だけとはいえキャッシュはしたほうがいいやろな
-                            g.DrawImage(Image.FromFile(bitmapPath), xpx, ypx);
+                            g.DrawImage(imageBuffer.Get(bitmapPath), xpx, ypx);
                         }
                         else
                         {

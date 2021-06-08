@@ -60,9 +60,8 @@ namespace SRCCore.CmdDatas.Commands
             var fname = Map.SearchTerrainImageFile(cell);
             if (string.IsNullOrEmpty(fname))
             {
-                // TODO Fix Bitmap名
                 throw new EventErrorException(this, "マップビットマップ「"
-                    + "XXX" +
+                    + cell.UnderTerrain?.Bitmap + cell.BitmapNo +
                     "」が見つかりません");
             }
 
