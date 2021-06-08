@@ -45,7 +45,7 @@ namespace SRCCore.CmdDatas
                         return new AskCmd(src, data);
 
                     case "attack":
-                        return new NotImplementedCmd(src, data);
+                        return new AttackCmd(src, data);
 
                     case "autotalk":
                         return new AutoTalkCmd(src, data);
@@ -96,7 +96,7 @@ namespace SRCCore.CmdDatas
                         return new ChargeCmd(src, data);
 
                     case "circle":
-                        return new NotImplementedCmd(src, data);
+                        return new CircleCmd(src, data);
 
                     case "clearevent":
                         return new ClearEventCmd(src, data);
@@ -177,7 +177,7 @@ namespace SRCCore.CmdDatas
                         return new LoopCmd(src, data);
 
                     case "drawoption":
-                        return new NotImplementedCmd(src, data);
+                        return new DrawOptionCmd(src, data);
 
                     case "drawwidth":
                         return new NotImplementedCmd(src, data);

@@ -49,11 +49,6 @@ namespace SRCSharpForm
             if (option.DrawOption != ScreanDrawMode.Background)
             {
                 GUI.IsPictureVisible = true;
-                //tmp = (rad + Event.ObjDrawWidth - 1);
-                //GUI.PaintedAreaX1 = GeneralLib.MinLng(GUI.PaintedAreaX1, GeneralLib.MaxLng(x1 - tmp, 0));
-                //GUI.PaintedAreaY1 = GeneralLib.MinLng(GUI.PaintedAreaY1, GeneralLib.MaxLng(y1 - tmp, 0));
-                //GUI.PaintedAreaX2 = GeneralLib.MaxLng(GUI.PaintedAreaX2, GeneralLib.MinLng(x1 + tmp, GUI.MainPWidth - 1));
-                //GUI.PaintedAreaY2 = GeneralLib.MaxLng(GUI.PaintedAreaY2, GeneralLib.MinLng(y1 + tmp, GUI.MainPHeight - 1));
             }
 
             using (var pen = GetPen(option))
@@ -69,6 +64,34 @@ namespace SRCSharpForm
 
                         }
                         g.DrawArc(pen, GetCircleRect(x1, y1, rad), start_angle, end_angle - start_angle);
+                    }
+                }
+            }
+        }
+
+        public void CircleCmd(ScreanDrawOption option, int x1, int y1, int rad)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            using (var brush = GetBrush(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        {
+                            g.FillEllipse(brush, GetCircleRect(x1, y1, rad));
+                        }
+                        g.DrawEllipse(pen, GetCircleRect(x1, y1, rad));
                     }
                 }
             }
