@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Units;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,7 +12,9 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-
+            var aname = "";
+            var uname = "";
+            var vname = "";
             switch (ArgNum)
             {
                 case 2:
@@ -29,17 +32,7 @@ namespace SRCCore.CmdDatas.Commands
 
                 default:
                     {
-                        Event.EventErrorMessage = "Enableコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 222673
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
+                        throw new EventErrorException(this, "Enableコマンドの引数の数が違います");
                     }
             }
 
@@ -60,26 +53,20 @@ namespace SRCCore.CmdDatas.Commands
             else
             {
                 // 既に設定済みであればそのまま終了
-                ExecEnableCmdRet = LineNum + 1;
-                return ExecEnableCmdRet;
+                return EventData.NextID;
             }
 
             // ユニットのステータスを更新
             if (!string.IsNullOrEmpty(uname))
             {
+                if (SRC.UList.IsDefined(uname))
                 {
-                    var withBlock = SRC.UList;
-                    if (withBlock.IsDefined(uname))
-                    {
-                        Unit localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
-
-                        localItem().CurrentForm().Update();
-                    }
+                    SRC.UList.Item(uname).CurrentForm().Update();
                 }
             }
             else
             {
-                foreach (Unit u in SRC.UList)
+                foreach (Unit u in SRC.UList.Items)
                 {
                     if (u.Status == "出撃")
                     {
