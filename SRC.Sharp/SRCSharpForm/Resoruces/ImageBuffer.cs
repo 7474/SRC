@@ -1,13 +1,11 @@
-using System.Runtime.Caching;
+using Microsoft.Extensions.Logging;
 using SRCCore;
-using SRCCore.Lib;
+using SRCSharpForm.Extensions;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using Microsoft.Extensions.Logging;
 using System.Drawing.Imaging;
-using SRCSharpForm.Extensions;
+using System.Linq;
+using System.Runtime.Caching;
 
 namespace SRCSharpForm.Resoruces
 {
@@ -27,8 +25,7 @@ namespace SRCSharpForm.Resoruces
 
         private SRC SRC;
 
-        private IList<string> existBitmapDirectories;
-        private IList<string> existMapBitmapDirectories;
+        private IList<string> bitmapDirectories;
 
         public ImageBuffer(SRC src)
         {
@@ -56,7 +53,7 @@ namespace SRCSharpForm.Resoruces
             {
                 return false;
             }
-            var image = NormalizeImage(name, Image.FromFile(path));
+            var image = NormalizeImage(name, Image.FromStream(SRC.FileSystem.Open(path)));
             cache.Add(ToKey(name), image, cacheItemPolicy);
             return true;
         }
@@ -140,31 +137,24 @@ namespace SRCSharpForm.Resoruces
 
         public string SearchFile(string name)
         {
-            return ImageFilders()
+            var path =  ImageFilders()
                 .Select(x => SRC.FileSystem.PathCombine(x, name))
-                .FirstOrDefault(x => File.Exists(x));
+                .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            SRC.LogDebug($"{name} -> {path}");
+            return path;
         }
 
         private IEnumerable<string> ImageFilders()
         {
-            return existBitmapDirectories;
+            return bitmapDirectories;
         }
 
         public void InitFileSystemInfo()
         {
-            // TODO この辺りは走査順だけ定義して他は FileSystem に任せる
-            // 各フォルダにBitmapフォルダがあるかチェック
-            var baseDirectories = new List<string>()
-            {
-                SRC.ScenarioPath,
-                SRC.ExtDataPath,
-                SRC.ExtDataPath2,
-                SRC.AppPath,
-            }.Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
-            .ToList();
-
+            // 当面事前チェックやマップ向けディレクトリの特別視はしない
             var subDirectories = new List<string>()
             {
+                "",
                 SRC.FileSystem.PathCombine("Bitmap"),
                 SRC.FileSystem.PathCombine("Bitmap", "Anime"),
                 SRC.FileSystem.PathCombine("Bitmap", "Event"),
@@ -173,17 +163,8 @@ namespace SRCSharpForm.Resoruces
                 SRC.FileSystem.PathCombine("Bitmap", "Unit"),
                 SRC.FileSystem.PathCombine("Bitmap", "Map"),
             };
-
-            // XXX 走査順とか多分固定的に持ったほうがよさそう。
-            existBitmapDirectories = subDirectories
-                .SelectMany(x => baseDirectories.Select(y => SRC.FileSystem.PathCombine(y, x)))
-                .Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
+            bitmapDirectories = subDirectories
                 .ToList();
-            existMapBitmapDirectories = existBitmapDirectories.Where(x => x.EndsWith("Map")).ToList();
-
-            //// 画面の色数を参照
-            //display_byte_pixel = GetDeviceCaps(MainForm.picMain(0).hDC, BITSPIXEL) / 8;
-            //init_draw_pitcure = true;
         }
     }
 }
