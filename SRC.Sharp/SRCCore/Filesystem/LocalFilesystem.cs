@@ -24,7 +24,7 @@ namespace SRCCore.Filesystem
         public string PathCombine(params string[] paths)
         {
             // 先頭の `\` は絶対パスのルートとして扱われないことを期待されている。
-            return Path.Combine(paths.Select(x => Regex.Replace(x, @"^\\", "")).ToArray());
+            return Path.Combine(paths.Select(x => Regex.Replace(x ?? "", @"^\\", "")).ToArray());
         }
 
         public bool FileExists(params string[] paths)

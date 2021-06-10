@@ -212,6 +212,11 @@ namespace SRCCore.TestLib
             Console.Error.WriteLine(msg);
         }
 
+        public bool GetKeyState(int key)
+        {
+            throw new NotImplementedException();
+        }
+
         public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
         {
             throw new NotImplementedException();

@@ -349,91 +349,15 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Keystate GUIに横流しすることになりそう
-            //                        if (pcount != 1)
-            //                        {
-            //                            return CallFunctionRet;
-            //                        }
+            if (pcount != 1)
+            {
+                return ValueType.UndefinedType;
+            }
 
-            //                        // キー番号
-            //                        i = GetValueAsLong(@params[1], is_term[1]);
-
-            //                        // 左利き設定に対応
-            //                        switch (i)
-            //                        {
-            //                            case Keys.LButton:
-            //                                {
-            //                                    i = GUI.LButtonID;
-            //                                    break;
-            //                                }
-
-            //                            case Keys.RButton:
-            //                                {
-            //                                    i = GUI.RButtonID;
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        if (i == Keys.LButton || i == Keys.RButton)
-            //                        {
-            //                            // マウスカーソルの位置を参照
-            //                            GUI.GetCursorPos(PT);
-
-            //                            // メインウインドウ上でマウスボタンを押している？
-            //                            if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //                            {
-            //                                {
-            //                                    var withBlock15 = GUI.MainForm;
-            //                                    x1 = (long)SrcFormatter.PixelsToTwipsX((double)withBlock15.Left) / (long)SrcFormatter.TwipsPerPixelX() + withBlock15.picMain(0).Left + 3;
-            //                                    y1 = (long)SrcFormatter.PixelsToTwipsY((double)withBlock15.Top) / (long)SrcFormatter.TwipsPerPixelY() + withBlock15.picMain(0).Top + 28;
-            //                                    x2 = x1 + withBlock15.picMain(0).Width;
-            //                                    y2 = y1 + withBlock15.picMain(0).Height;
-            //                                }
-
-            //                                if (x1 <= PT.X && PT.X <= x2 && y1 <= PT.Y && PT.Y <= y2)
-            //                                {
-            //                                    in_window = true;
-            //                                }
-            //                            }
-            //                        }
-            //                        // メインウィンドウがアクティブになっている？
-            //                        else if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //                        {
-            //                            in_window = true;
-            //                        }
-
-            //                        // ウィンドウが選択されていない場合は常に0を返す
-            //                        if (!in_window)
-            //                        {
-            //                            num_result = 0d;
-            //                            if (etype == ValueType.StringType)
-            //                            {
-            //                                str_result = "0";
-            //                                CallFunctionRet = ValueType.StringType;
-            //                            }
-            //                            else
-            //                            {
-            //                                CallFunctionRet = ValueType.NumericType;
-            //                            }
-
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // キーの状態を参照
-            //                        if (Conversions.ToBoolean(GUI.GetAsyncKeyState(i) && 0x8000))
-            //                        {
-            //                            num_result = 1d;
-            //                        }
-
-            //                        if (etype == ValueType.StringType)
-            //                        {
-            //                            str_result = GeneralLib.FormatNum(num_result);
-            //                            CallFunctionRet = ValueType.StringType;
-            //                        }
-            //                        else
-            //                        {
-            //                            CallFunctionRet = ValueType.NumericType;
-            //                        }
+            // キー番号
+            var i = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+            var state = SRC.GUI.GetKeyState(i);
+            num_result = state ? 1 : 0;
 
             if (etype == ValueType.StringType)
             {

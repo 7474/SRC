@@ -60,6 +60,9 @@ namespace SRCCore
         double PrevMouseX { get; set; }
         double PrevMouseY { get; set; }
 
+        // 指定したキーが入力されているか
+        bool GetKeyState(int key);
+
         // 移動前のユニットの情報
         int PrevUnitX { get; set; }
         int PrevUnitY { get; set; }
