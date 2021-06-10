@@ -182,6 +182,7 @@ namespace SRCCore.Maps
         // 指定したマップ画像を検索する
         public string SearchTerrainImageFile(MapCell cell)
         {
+            if (cell?.UnderTerrain == null) { return null; }
             // マップ画像のファイル名を作成
             var tbmpname = cell.UnderTerrain.Bitmap;
             var tbitmap = cell.BitmapNo;
@@ -207,7 +208,7 @@ namespace SRCCore.Maps
         // TODO レイヤ対応
         public string SearchLayerImageFile(MapCell cell)
         {
-            if (cell.UpperTerrain == null) { return null; }
+            if (cell?.UpperTerrain == null) { return null; }
             // マップ画像のファイル名を作成
             var tbmpname = cell.UpperTerrain.Bitmap;
             var tbitmap = cell.LayerBitmapNo;
