@@ -295,6 +295,9 @@ namespace SRCCore
         // ウィンドウなどのタイトルを設定する
         void SetTitle(string title);
 
+        // ホットポイントの変化を反映する
+        void UpdateHotPoint();
+
 
         // === MainForm 操作へのバイパス ===
 

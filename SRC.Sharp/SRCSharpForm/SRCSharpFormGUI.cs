@@ -1423,5 +1423,9 @@ namespace SRCSharpForm
             RefreshScreen();
         }
 
+        public void UpdateHotPoint()
+        {
+            MainForm.UpdateHotPointTooltip();
+        }
     }
 }

@@ -472,6 +472,11 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public void UpdateHotPoint()
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateMessageForm(Unit u1, Unit u2 = null)
         {
             throw new NotImplementedException();

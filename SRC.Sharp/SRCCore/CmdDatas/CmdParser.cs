@@ -102,13 +102,13 @@ namespace SRCCore.CmdDatas
                         return new ClearEventCmd(src, data);
 
                     case "clearimage":
-                        return new NotImplementedCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     case "clearlayer":
                         return new NotImplementedCmd(src, data);
 
                     case "clearobj":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearObjCmd(src, data);
 
                     case "clearpicture":
                         return new ClearPictureCmd(src, data);
@@ -261,7 +261,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "hotpoint":
-                        return new NotImplementedCmd(src, data);
+                        return new HotPointCmd(src, data);
 
                     case "if":
                         return new IfCmd(src, data);
@@ -509,7 +509,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "showimage":
-                        return new NotImplementedCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     case "showunitstatus":
                         return new NotImplementedCmd(src, data);
@@ -550,10 +550,10 @@ namespace SRCCore.CmdDatas
                         return new SwitchCmd(src, data);
 
                     case "playflash":
-                        return new PlayFlashCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     case "clearflash":
-                        return new ClearFlashCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     case "case":
                         if (list.Length == 2)

@@ -55,23 +55,18 @@ namespace SRCCore.CmdDatas.Commands
                                 GUI.Sleep(25);
                             }
 
-                            // TODO Impl マウスの左ボタンが押された場合はホットポイントの判定を行う
-                            //// マウスの左ボタンが押された場合はホットポイントの判定を行う
-                            //if (string.IsNullOrEmpty(Event.SelectedAlternative) && (int)GUI.MouseButton == 1)
-                            //{
-                            //    var loopTo = Information.UBound(Event.HotPointList);
-                            //    for (i = 1; i <= loopTo; i++)
-                            //    {
-                            //        {
-                            //            var withBlock1 = Event.HotPointList[(int)i];
-                            //            if ((float)withBlock1.Left <= GUI.MouseX && GUI.MouseX < (float)(withBlock1.Left + withBlock1.width) && (float)withBlock1.Top <= GUI.MouseY && GUI.MouseY < (float)(withBlock1.Top + withBlock1.Height))
-                            //            {
-                            //                Event.SelectedAlternative = withBlock1.Name;
-                            //                break;
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                            // マウスの左ボタンが押された場合はホットポイントの判定を行う
+                            if (string.IsNullOrEmpty(Event.SelectedAlternative) && GUI.MouseButton == GuiButton.Left)
+                            {
+                                foreach (var hpoint in Event.HotPointList)
+                                {
+                                    if (hpoint.Left <= GUI.MouseX && GUI.MouseX < (hpoint.Left + hpoint.width) && hpoint.Top <= GUI.MouseY && GUI.MouseY < (hpoint.Top + hpoint.Height))
+                                    {
+                                        Event.SelectedAlternative = hpoint.Name;
+                                        break;
+                                    }
+                                }
+                            }
 
                             Commands.WaitClickMode = false;
                             GUI.IsFormClicked = false;
