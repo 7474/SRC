@@ -4,6 +4,7 @@ using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCSharpForm.Forms;
+using SRCSharpForm.Lib;
 using SRCSharpForm.Resoruces;
 using System;
 using System.Collections.Generic;
@@ -1426,6 +1427,63 @@ namespace SRCSharpForm
         public void UpdateHotPoint()
         {
             MainForm.UpdateHotPointTooltip();
+        }
+
+        public bool GetKeyState(int i)
+        {
+            var key = (Keys)i;
+            // TODO 左利き設定に対応
+            //switch (key)
+            //{
+            //    case Keys.LButton:
+            //        {
+            //            key = GUI.LButtonID;
+            //            break;
+            //        }
+
+            //    case Keys.RButton:
+            //        {
+            //            key = GUI.RButtonID;
+            //            break;
+            //        }
+            //}
+
+            var in_window = false;
+            if (key == Keys.LButton || key == Keys.RButton)
+            {
+                // マウスカーソルの位置を参照
+                var pt = Control.MousePosition;
+
+                // メインウインドウ上でマウスボタンを押している？
+                if (Form.ActiveForm == MainForm)
+                {
+                    // picMainはMainFormに内接している前提
+                    var clientRect = MainForm.RectangleToScreen(MainForm.picMain.ClientRectangle);
+                    var x1 = clientRect.Left;
+                    var y1 = clientRect.Top;
+                    var x2 = clientRect.Left + clientRect.Width;
+                    var y2 = clientRect.Top + clientRect.Height;
+                    if (x1 <= pt.X && pt.X <= x2 && y1 <= pt.Y && pt.Y <= y2)
+                    {
+                        in_window = true;
+                    }
+                }
+            }
+            // メインウィンドウがアクティブになっている？
+            else
+            if (ReferenceEquals(Form.ActiveForm, MainForm))
+            {
+                in_window = true;
+            }
+
+            // ウィンドウが選択されていない場合は常に0を返す
+            if (!in_window)
+            {
+                return false;
+            }
+
+            // キーの状態を参照
+            return Windows.GetKeyState((int)key) < 0;
         }
     }
 }
