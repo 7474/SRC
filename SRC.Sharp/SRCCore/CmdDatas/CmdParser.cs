@@ -108,7 +108,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "clearobj":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearObjCmd(src, data);
 
                     case "clearpicture":
                         return new ClearPictureCmd(src, data);
