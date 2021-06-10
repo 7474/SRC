@@ -57,6 +57,10 @@ namespace SRCCore.Items
             SRC = src;
         }
 
+        public bool IsFix => SRC.Expression.IsGlobalVariableDefined("Fix(" + Name + ")")
+            || Class() == "固定"
+            || IsFeatureAvailable("呪い");
+
         // 名称
         public string Name
         {

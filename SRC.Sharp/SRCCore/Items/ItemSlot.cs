@@ -15,6 +15,7 @@ namespace SRCCore.Items
         /// 他のパーツで埋まったスロットかどうか
         /// </summary>
         public bool IsOccupied { get; set; }
+        public bool IsEmpty => Item == null;
 
         public bool IsMatch(string partName)
         {
@@ -42,7 +43,92 @@ namespace SRCCore.Items
 
         public void FillSlot(Unit u)
         {
+            foreach (var itm in u.ItemList.Where(x => x.Class() != "固定" && !x.IsFeatureAvailable("非表示")))
+            {
 
+                switch (itm.Part() ?? "")
+                {
+                    case "両手":
+                        {
+                            var slots = Slots.Where(x => x.IsMatch("両手")).ToList();
+                            if (slots.Count == 2)
+                            {
+                                slots[0].Item = itm;
+                                slots[0].IsOccupied = false;
+                                slots[1].Item = itm;
+                                slots[1].IsOccupied = true;
+                            }
+                            break;
+                        }
+
+                    case "片手":
+                        {
+                            var slot = Slots.Where(x => x.IsMatch("片手") && x.IsEmpty).FirstOrDefault();
+                            if (slot != null)
+                            {
+                                slot.Item = itm;
+                                slot.IsOccupied = false;
+                            }
+                            break;
+                        }
+
+                    case "盾":
+                        {
+                            var slot = Slots.Where(x => x.IsMatch("盾") && x.IsEmpty).FirstOrDefault();
+                            if (slot != null)
+                            {
+                                slot.Item = itm;
+                                slot.IsOccupied = false;
+                            }
+                            break;
+                        }
+
+                    case "両肩":
+                        {
+                            var slots = Slots.Where(x => x.IsMatch("両肩")).ToList();
+                            if (slots.Count == 2)
+                            {
+                                slots[0].Item = itm;
+                                slots[0].IsOccupied = false;
+                                slots[1].Item = itm;
+                                slots[1].IsOccupied = true;
+                            }
+                            break;
+                        }
+
+                    case "肩":
+                        {
+                            var slot = Slots.Where(x => x.IsMatch("肩") && x.IsEmpty).FirstOrDefault();
+                            if (slot != null)
+                            {
+                                slot.Item = itm;
+                                slot.IsOccupied = false;
+                            }
+                            break;
+                        }
+                    // 無視
+                    case "非表示":
+                        {
+                            break;
+                        }
+
+                    default:
+                        {
+                            var slots = Slots.Where(x => x.IsMatch(itm.Part()) && x.IsEmpty).ToList();
+                            if (slots.Count >= itm.Size())
+                            {
+                                slots[0].Item = itm;
+                                slots[0].IsOccupied = false;
+                                slots.Skip(1).Take(itm.Size() - 1).ToList().ForEach(slot =>
+                                {
+                                    slot.Item = itm;
+                                    slot.IsOccupied = true;
+                                });
+                            }
+                            break;
+                        }
+                }
+            }
         }
 
         public static IList<string> GetPartList(Unit u)
