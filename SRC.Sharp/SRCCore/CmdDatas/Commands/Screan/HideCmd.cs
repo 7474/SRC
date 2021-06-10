@@ -11,8 +11,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            GUI.MainFormHide();
+            return EventData.NextID;
         }
     }
 }

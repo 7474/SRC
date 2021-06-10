@@ -11,8 +11,18 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //return EventData.NextID;
+            if (!GUI.MainFormVisible)
+            {
+                GUI.MainFormShow();
+                GUI.UpdateScreen();
+                GUI.Sleep(0, true);
+            }
+
+            if (!GUI.IsPictureVisible)
+            {
+                GUI.RedrawScreen();
+            }
+            return EventData.NextID;
         }
     }
 }
