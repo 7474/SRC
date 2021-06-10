@@ -258,7 +258,7 @@ namespace SRCCore.CmdDatas
                         return new GotoCmd(src, data);
 
                     case "hide":
-                        return new NotImplementedCmd(src, data);
+                        return new HideCmd(src, data);
 
                     case "hotpoint":
                         return new HotPointCmd(src, data);
@@ -506,7 +506,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "show":
-                        return new NotImplementedCmd(src, data);
+                        return new ShowCmd(src, data);
 
                     case "showimage":
                         return new NotSupportedCmd(src, data);
