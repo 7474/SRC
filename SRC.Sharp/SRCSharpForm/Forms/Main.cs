@@ -133,8 +133,8 @@ namespace SRCSharpForm
         // フォーム上でマウスを動かす
         private void frmMain_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
-            //// ツールチップを消す
-            UpdateHotPointTooltip();
+            // ツールチップを消す
+            HideToolTip();
         }
 
         private void mnuUnitCommand_MouseClick(object sender, MouseEventArgs e)
@@ -409,6 +409,7 @@ namespace SRCSharpForm
                 UpdateHotPointTooltip();
                 return;
             }
+            HideToolTip();
 
             // マップが設定されていない場合はこれ以降の判定は不要
             if (Map.MapWidth < 15 || Map.MapHeight < 15)
@@ -559,10 +560,15 @@ namespace SRCSharpForm
             }
 
             // ホットポイント上にカーソルがなければツールチップを消す
+            HideToolTip();
+            return;
+        }
+
+        private void HideToolTip()
+        {
             ToolTip1.Hide(this);
             LastHostSpot = "";
             picMain.Cursor = Cursors.Default;
-            return;
         }
 
         // マップ画面上でマウスボタンを離す
