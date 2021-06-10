@@ -1432,7 +1432,7 @@ namespace SRCSharpForm
         public bool GetKeyState(int i)
         {
             var key = (Keys)i;
-            // TODO 左利き設定に対応、カーソル位置処理
+            // TODO 左利き設定に対応
             //switch (key)
             //{
             //    case Keys.LButton:
@@ -1449,29 +1449,28 @@ namespace SRCSharpForm
             //}
 
             var in_window = false;
-            //if (key == Keys.LButton || key == Keys.RButton)
-            //{
-            //    // マウスカーソルの位置を参照
-            //    var pt = Control.MousePosition;
+            if (key == Keys.LButton || key == Keys.RButton)
+            {
+                // マウスカーソルの位置を参照
+                var pt = Control.MousePosition;
 
-            //    // メインウインドウ上でマウスボタンを押している？
-            //    if (Form.ActiveForm == MainForm)
-            //    {
-            //        MainForm.picMain.ClientRectangle.;
-            //        var x1 = MainForm.Left + MainForm.picMain(0).Left + 3;
-            //        var y1 = MainForm.Top + MainForm.picMain(0).Top + 28;
-            //        var x2 = x1 + MainForm.picMain(0).Width;
-            //        var y2 = y1 + MainForm.picMain(0).Height;
-
-
-            //        if (x1 <= pt.X && pt.X <= x2 && y1 <= pt.Y && pt.Y <= y2)
-            //        {
-            //            in_window = true;
-            //        }
-            //    }
-            //}
-            //// メインウィンドウがアクティブになっている？
-            //else
+                // メインウインドウ上でマウスボタンを押している？
+                if (Form.ActiveForm == MainForm)
+                {
+                    // picMainはMainFormに内接している前提
+                    var clientRect = MainForm.RectangleToScreen(MainForm.picMain.ClientRectangle);
+                    var x1 = clientRect.Left;
+                    var y1 = clientRect.Top;
+                    var x2 = clientRect.Left + clientRect.Width;
+                    var y2 = clientRect.Top + clientRect.Height;
+                    if (x1 <= pt.X && pt.X <= x2 && y1 <= pt.Y && pt.Y <= y2)
+                    {
+                        in_window = true;
+                    }
+                }
+            }
+            // メインウィンドウがアクティブになっている？
+            else
             if (ReferenceEquals(Form.ActiveForm, MainForm))
             {
                 in_window = true;
