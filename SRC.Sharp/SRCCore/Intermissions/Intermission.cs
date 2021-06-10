@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Extensions;
+using SRCCore.Items;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -1777,69 +1778,11 @@ namespace SRCCore
             // 選択されたユニットが装備しているアイテム一覧の作成
             string[] tmp_part_list;
             {
-                //var u = selectedUnit;
+                var u = selectedUnit;
                 //while (true)
                 //{
                 //    // アイテムの装備個所一覧を作成
-                //    var part_list = new List<string>();
-                //    if (u.IsFeatureAvailable("装備個所"))
-                //    {
-                //        var buf = u.FeatureData("装備個所");
-                //        if (Strings.InStr(buf, "腕") > 0)
-                //        {
-                //            part_list.Add("右手");
-                //            part_list.Add("左手");
-                //        }
-
-                //        if (Strings.InStr(buf, "肩") > 0)
-                //        {
-                //            part_list.Add("右肩");
-                //            part_list.Add("左肩");
-                //            //shoulder_point = (Information.UBound(part_list) + 1);
-                //        }
-
-                //        if (Strings.InStr(buf, "体") > 0)
-                //        {
-                //            part_list.Add("体");
-                //        }
-
-                //        if (Strings.InStr(buf, "頭") > 0)
-                //        {
-                //            part_list.Add("頭");
-                //        }
-                //    }
-
-                //    foreach (var fd in u.Features.Where(x => x.Name == "ハードポイント"))
-                //    {
-                //        var ipart = fd.Data;
-                //        switch (ipart)
-                //        {
-                //            // 表示しない
-                //            case "強化パーツ":
-                //            case "アイテム":
-                //            case "非表示":
-                //                {
-                //                    break;
-                //                }
-
-                //            default:
-                //                {
-                //                    if (!part_list.Contains(ipart))
-                //                    {
-                //                        for (var i = 0; i < u.ItemSlotSize(ipart); i++)
-                //                        {
-                //                            part_list.Add(ipart);
-                //                        }
-                //                    }
-                //                    break;
-                //                }
-                //        }
-                //    }
-
-                //    for (var i = 0; i < u.MaxItemNum(); i++)
-                //    {
-                //        part_list.Add(u.IsHero() ? "アイテム" : "強化パーツ");
-                //    }
+                var itemSlot = new ItemSlots(u);
 
                 //    // 特定の装備個所のアイテムのみを交換する？
                 //    if (!string.IsNullOrEmpty(selected_part))
