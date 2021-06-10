@@ -533,7 +533,7 @@ namespace SRCSharpForm
             }
         }
 
-        private void UpdateHotPointTooltip()
+        internal void UpdateHotPointTooltip()
         {
             // ホットポイントが定義されている場合はツールチップを変更
             foreach (var hpoint in SRC.Event.HotPointList)
