@@ -38,6 +38,8 @@ namespace SRCSharpForm
         // ポップアップメニュー選択が右クリックだったか？
         private bool IsRightClick;
 
+        private string LastHostSpot = "";
+
         // フォーム上でキーを押す
         private void frmMain_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
@@ -131,17 +133,8 @@ namespace SRCSharpForm
         // フォーム上でマウスを動かす
         private void frmMain_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
-            //Program.Log.LogDebug("frmMain_MouseMove {0}", JsonConvert.SerializeObject(eventArgs));
-            //int Button = (eventArgs.Button / 0x100000);
-            //int Shift = (ModifierKeys / 0x10000);
-            //float X = eventArgs.X;
-            //float Y = eventArgs.Y;
             //// ツールチップを消す
-            //My.MyProject.Forms.frmToolTip.Hide();
-            //if (object.ReferenceEquals(picMain[0].Cursor, vbCustom))
-            //{
-            //    picMain[0].Cursor = Cursors.Default;
-            //}
+            UpdateHotPointTooltip();
         }
 
         private void mnuUnitCommand_MouseClick(object sender, MouseEventArgs e)
@@ -413,46 +406,7 @@ namespace SRCSharpForm
                 {
                     return;
                 }
-
-                //// ホットポイントが定義されている場合はツールチップを変更
-                //var loopTo = Information.UBound(Event.HotPointList);
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock = Event.HotPointList[i];
-                //        if (withBlock.Left <= GUI.MouseX && GUI.MouseX < withBlock.Left + withBlock.width && withBlock.Top <= GUI.MouseY && GUI.MouseY < withBlock.Top + withBlock.Height)
-                //        {
-                //            if (withBlock.Caption == "非表示" || string.IsNullOrEmpty(withBlock.Caption))
-                //            {
-                //                break;
-                //            }
-
-                //            if ((withBlock.Name ?? "") != (LastHostSpot ?? "") && !string.IsNullOrEmpty(LastHostSpot))
-                //            {
-                //                break;
-                //            }
-
-                //            // ツールチップの表示
-                //            My.MyProject.Forms.frmToolTip.ShowToolTip(ref withBlock.Caption);
-                //            {
-                //                var withBlock1 = picMain[0];
-                //                if (!withBlock1.Cursor.Equals(99))
-                //                {
-                //                    withBlock1.Refresh();
-                //                    withBlock1.Cursor = vbCustom;
-                //                }
-                //            }
-
-                //            LastHostSpot = withBlock.Name;
-                //            return;
-                //        }
-                //    }
-                //}
-
-                //// ホットポイント上にカーソルがなければツールチップを消す
-                //My.MyProject.Forms.frmToolTip.Hide();
-                //LastHostSpot = "";
-                //picMain[0].Cursor = Cursors.Default;
+                UpdateHotPointTooltip();
                 return;
             }
 
@@ -576,6 +530,39 @@ namespace SRCSharpForm
                     }
                 }
             }
+        }
+
+        private void UpdateHotPointTooltip()
+        {
+            // ホットポイントが定義されている場合はツールチップを変更
+            foreach (var hpoint in SRC.Event.HotPointList)
+            {
+                if (hpoint.Left <= GUI.MouseX && GUI.MouseX < hpoint.Left + hpoint.width && hpoint.Top <= GUI.MouseY && GUI.MouseY < hpoint.Top + hpoint.Height)
+                {
+                    if (hpoint.Caption == "非表示" || string.IsNullOrEmpty(hpoint.Caption))
+                    {
+                        break;
+                    }
+
+                    if (hpoint.Name != LastHostSpot && !string.IsNullOrEmpty(LastHostSpot))
+                    {
+                        break;
+                    }
+
+                    // ツールチップの表示
+                    ToolTip1.Show(hpoint.Caption, this, (int)GUI.MouseX, (int)GUI.MouseY);
+                    // ここではマウスイベントを処理しつつカーソルの状態を変えるのでグローバルなカーソル状態操作にはしない
+                    picMain.Cursor = Cursors.Hand;
+                    LastHostSpot = hpoint.Name;
+                    return;
+                }
+            }
+
+            // ホットポイント上にカーソルがなければツールチップを消す
+            ToolTip1.Hide(this);
+            LastHostSpot = "";
+            picMain.Cursor = Cursors.Default;
+            return;
         }
 
         // マップ画面上でマウスボタンを離す
