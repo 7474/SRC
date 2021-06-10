@@ -261,7 +261,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "hotpoint":
-                        return new NotImplementedCmd(src, data);
+                        return new HotPointCmd(src, data);
 
                     case "if":
                         return new IfCmd(src, data);
