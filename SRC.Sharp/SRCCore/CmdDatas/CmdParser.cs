@@ -288,7 +288,7 @@ namespace SRCCore.CmdDatas
                         return new IntermissionCommandCmd(src, data);
 
                     case "item":
-                        return new NotImplementedCmd(src, data);
+                        return new ItemCmd(src, data);
 
                     case "join":
                         return new NotImplementedCmd(src, data);

@@ -464,364 +464,71 @@ namespace SRCCore.Units
         // アイテムをはずす
         public void DeleteItem(Item itm, bool without_refresh = false)
         {
-            // TODO impl DeleteItem
-            //int num, i, j, num2;
-            //int prev_max_item_num;
-            //string[] prev_hard_point;
-            //int[] prev_hard_point_size;
-            //string[] cur_hard_point;
-            //int[] cur_hard_point_size;
-            //bool is_changed;
-            //bool is_ambidextrous;
+            // 存在しないアイテム？
+            if (itm is null)
+            {
+                return;
+            }
 
-            //// 存在しないアイテム？
-            //if (itm is null)
-            //{
-            //    return;
-            //}
+            // この辺のシーケンスはSRCと比べて簡便化している
+            DeleteItemInternal(itm);
+            Update();
+            // 元は以下のようなことをしていた
+            // 削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
+            // 削除するアイテムによって付加された武器・アビリティのデータを削除する。
 
-            //// 削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
-            //// 削除するアイテムによって付加された武器・アビリティのデータを削除する。
-            //num = Data.CountWeapon();
-            //num2 = Data.CountAbility();
-            //if (CountPilot() > 0)
-            //{
-            //    num = (num + MainPilot().Data.CountWeapon());
-            //    num2 = (num2 + MainPilot().Data.CountAbility());
-            //    var loopTo = CountPilot();
-            //    for (i = 2; i <= loopTo; i++)
-            //    {
-            //        Pilot localPilot() { string argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+            // ハードポイントを持つアイテムをはずした場合は他のアイテムを連続してはずす必要がある
+            // XXX 未疎通
+            bool is_changed;
+            do
+            {
+                is_changed = false;
+                var is_ambidextrous = IsFeatureAvailable("両手利き");
+                // ハードポイントを持たないアイテムから選んで削除されるようにFill順を指定
+                var slots = new ItemSlots(this).FillSlot((x) => x.IsFeatureAvailable("ハードポイント") ? 0 : 1);
+                var deleteItems = ItemList.Except(slots.Slots.Where(x => !x.IsEmpty).Select(x => x.Item))
+                    .Where(x => x.IsVisible)
+                    .ToList();
 
-            //        num = (num + localPilot().Data.CountWeapon());
-            //        Pilot localPilot1() { string argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+                foreach (var delItm in deleteItems)
+                {
+                    DeleteItemInternal(delItm);
+                    is_changed = true;
+                }
 
-            //        num2 = (num2 + localPilot1().Data.CountAbility());
-            //    }
+                // 両手利きで無くなってしまった場合は二個目の片手アイテムを外す
+                if (is_ambidextrous && !IsFeatureAvailable("両手利き"))
+                {
+                    DeleteItemInternal(ItemList.Where(x => x.Part() == "片手").Skip(1).FirstOrDefault());
+                    is_changed = true;
+                }
+            }
+            while (is_changed);
+        }
 
-            //    var loopTo1 = CountSupport();
-            //    for (i = 2; i <= loopTo1; i++)
-            //    {
-            //        Pilot localSupport() { string argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //        num = (num + localSupport().Data.CountWeapon());
-            //        Pilot localSupport1() { string argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //        num2 = (num2 + localSupport1().Data.CountAbility());
-            //    }
-
-            //    if (IsFeatureAvailable("追加サポート"))
-            //    {
-            //        num = (num + AdditionalSupport().Data.CountWeapon());
-            //        num2 = (num2 + AdditionalSupport().Data.CountAbility());
-            //    }
-            //}
-
-            //foreach (Item itm2 in colItem)
-            //{
-            //    if (ReferenceEquals(itm, itm2))
-            //    {
-            //        var loopTo2 = (num + itm2.CountWeapon());
-            //        for (i = (num + 1); i <= loopTo2; i++)
-            //        {
-            //            if (i <= CountWeapon())
-            //            {
-            //                // UPGRADE_NOTE: オブジェクト WData() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                WData[i] = null;
-            //            }
-            //        }
-
-            //        var loopTo3 = (num2 + itm2.CountAbility());
-            //        for (i = (num2 + 1); i <= loopTo3; i++)
-            //        {
-            //            if (i <= CountAbility())
-            //            {
-            //                // UPGRADE_NOTE: オブジェクト adata() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                adata[i] = null;
-            //            }
-            //        }
-
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        num = (num + itm2.CountWeapon());
-            //        num2 = (num2 + itm2.CountAbility());
-            //    }
-            //}
-
-            //colItem.Remove(itm.ID);
-            //if (itm.Unit is string)
-            //{
-            //    if (itm.Unit.ID == ID)
-            //    {
-            //        // UPGRADE_NOTE: オブジェクト itm.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        itm.Unit = null;
-            //    }
-            //    // 追加パイロットを持つアイテムを削除する場合
-            //    if (itm.IsFeatureAvailable("追加パイロット"))
-            //    {
-            //        if (SRC.PList.IsDefined(itm.FeatureData(argIndex3)))
-            //        {
-            //            {
-            //                var withBlock = SRC.PList.Item(itm.FeatureData(argIndex1));
-            //                withBlock.Alive = false;
-            //                // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                withBlock.Unit = null;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// ハードポイントを持つアイテムをはずした場合は他のアイテムを連続してはずす必要がある
-            //do
-            //{
-            //    is_changed = false;
-
-            //    // 現在のアイテム装備可能回数を記録
-            //    prev_max_item_num = MaxItemNum();
-            //    prev_hard_point = new string[1];
-            //    prev_hard_point_size = new int[1];
-            //    foreach (var fd in Features)
-            //    {
-            //        if (fd.Name == "ハードポイント")
-            //        {
-            //            if (FeatureData("追加パイロット") != "強化パーツ" && fd.Data != "アイテム")
-            //            {
-            //                var loopTo5 = Information.UBound(prev_hard_point);
-            //                for (j = 1; j <= loopTo5; j++)
-            //                {
-            //                    string localFeatureData() { string argIndex1 = i;
-            //                        var ret = FeatureData(argIndex1); return ret; }
-
-            //                    if ((prev_hard_point[j] ?? "") == (localFeatureData() ?? ""))
-            //                    {
-            //                        double localFeatureLevel() { string argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
-
-            //                        prev_hard_point_size[j] = (prev_hard_point_size[j] + localFeatureLevel());
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (j > Information.UBound(prev_hard_point))
-            //                {
-            //                    Array.Resize(prev_hard_point, Information.UBound(prev_hard_point) + 1 + 1);
-            //                    Array.Resize(prev_hard_point_size, Information.UBound(prev_hard_point) + 1);
-            //                    prev_hard_point[Information.UBound(prev_hard_point)] = FeatureData(i);
-            //                    prev_hard_point_size[Information.UBound(prev_hard_point)] = FeatureLevel(i);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    is_ambidextrous = IsFeatureAvailable("両手利き");
-
-            //    // アイテムを外したことによるステータスの変化
-            //    Update(without_refresh);
-
-            //    // アイテム装備可能数が減少？
-            //    if (prev_max_item_num > MaxItemNum())
-            //    {
-            //        is_changed = true;
-            //        num = MaxItemNum();
-            //        i = 0;
-            //        foreach (Item currentItm in colItem)
-            //        {
-            //            itm = currentItm;
-            //            if (itm.Part() == "強化パーツ" || itm.Part() == "アイテム")
-            //            {
-            //                i = (i + 1);
-            //                // ハードポイントを持たないアイテムから選んで削除
-            //                if (i > num && !itm.IsFeatureAvailable("ハードポイント"))
-            //                {
-            //                    colItem.Remove(itm.ID);
-            //                    if (itm.Unit is string)
-            //                    {
-            //                        if (itm.Unit.ID == ID)
-            //                        {
-            //                            // UPGRADE_NOTE: オブジェクト itm.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                            itm.Unit = null;
-            //                        }
-            //                    }
-            //                    // 追加パイロットを持つアイテムを削除する場合
-            //                    if (itm.IsFeatureAvailable("追加パイロット"))
-            //                    {
-            //                        if (SRC.PList.IsDefined(itm.FeatureData(argIndex10)))
-            //                        {
-            //                            {
-            //                                var withBlock1 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
-            //                                withBlock1.Alive = false;
-            //                                // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                                withBlock1.Unit = null;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        i = 0;
-            //        foreach (Item currentItm1 in colItem)
-            //        {
-            //            itm = currentItm1;
-            //            if (itm.Part() == "強化パーツ" || itm.Part() == "アイテム")
-            //            {
-            //                i = (i + 1);
-            //                if (i > num)
-            //                {
-            //                    colItem.Remove(itm.ID);
-            //                    if (itm.Unit is string)
-            //                    {
-            //                        if (itm.Unit.ID == ID)
-            //                        {
-            //                            // UPGRADE_NOTE: オブジェクト itm.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                            itm.Unit = null;
-            //                        }
-            //                    }
-            //                    // 追加パイロットを持つアイテムを削除する場合
-            //                    if (itm.IsFeatureAvailable("追加パイロット"))
-            //                    {
-            //                        if (SRC.PList.IsDefined(itm.FeatureData("追加パイロット")))
-            //                        {
-            //                            {
-            //                                var withBlock2 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
-            //                                withBlock2.Alive = false;
-            //                                // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                                withBlock2.Unit = null;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 現在のアイテム装備可能回数を記録
-            //    cur_hard_point = new string[1];
-            //    cur_hard_point_size = new int[1];
-            //    var loopTo6 = CountFeature();
-            //    for (i = 1; i <= loopTo6; i++)
-            //    {
-            //        if (Feature(i) == "ハードポイント")
-            //        {
-            //            var loopTo7 = Information.UBound(cur_hard_point);
-            //            for (j = 1; j <= loopTo7; j++)
-            //            {
-            //                string localFeatureData3() { string argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                if ((cur_hard_point[j] ?? "") == (localFeatureData3() ?? ""))
-            //                {
-            //                    double localFeatureLevel1() { string argIndex1 = i; var ret = FeatureLevel(argIndex1); return ret; }
-
-            //                    cur_hard_point_size[j] = (cur_hard_point_size[j] + localFeatureLevel1());
-            //                    break;
-            //                }
-            //            }
-
-            //            if (j > Information.UBound(cur_hard_point))
-            //            {
-            //                Array.Resize(cur_hard_point, Information.UBound(cur_hard_point) + 1 + 1);
-            //                Array.Resize(cur_hard_point_size, Information.UBound(cur_hard_point) + 1);
-            //                cur_hard_point[Information.UBound(cur_hard_point)] = FeatureData(i);
-            //                cur_hard_point_size[Information.UBound(cur_hard_point)] = FeatureLevel(i);
-            //            }
-            //        }
-            //    }
-
-            //    // ハードポイントが減少？
-            //    var loopTo8 = Information.UBound(prev_hard_point);
-            //    for (i = 1; i <= loopTo8; i++)
-            //    {
-            //        num = 0;
-            //        var loopTo9 = Information.UBound(cur_hard_point);
-            //        for (j = 1; j <= loopTo9; j++)
-            //        {
-            //            if ((prev_hard_point[i] ?? "") == (cur_hard_point[j] ?? ""))
-            //            {
-            //                num = cur_hard_point_size[j];
-            //            }
-            //        }
-
-            //        if (num < prev_hard_point_size[i])
-            //        {
-            //            is_changed = true;
-            //            foreach (Item currentItm2 in colItem)
-            //            {
-            //                itm = currentItm2;
-            //                if ((itm.Part() ?? "") == (prev_hard_point[i] ?? ""))
-            //                {
-            //                    num = (num - itm.Size());
-            //                    if (num < 0)
-            //                    {
-            //                        colItem.Remove(itm.ID);
-            //                        if (itm.Unit is string)
-            //                        {
-            //                            if (itm.Unit.ID == ID)
-            //                            {
-            //                                // UPGRADE_NOTE: オブジェクト itm.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                                itm.Unit = null;
-            //                            }
-            //                        }
-            //                        // 追加パイロットを持つアイテムを削除する場合
-            //                        if (itm.IsFeatureAvailable("追加パイロット"))
-            //                        {
-            //                            if (SRC.PList.IsDefined(itm.FeatureData("追加パイロット")))
-            //                            {
-            //                                {
-            //                                    var withBlock3 = SRC.PList.Item(itm.FeatureData(argIndex19));
-            //                                    withBlock3.Alive = false;
-            //                                    // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                                    withBlock3.Unit = null;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 両手利きで無くなってしまった場合は二個目の片手アイテムを外す
-            //    if (is_ambidextrous && !IsFeatureAvailable("両手利き"))
-            //    {
-            //        num = 0;
-            //        foreach (Item currentItm3 in colItem)
-            //        {
-            //            itm = currentItm3;
-            //            if (itm.Part() == "片手")
-            //            {
-            //                num = (num + 1);
-            //                if (num > 1)
-            //                {
-            //                    is_changed = true;
-            //                    colItem.Remove(itm.ID);
-            //                    if (itm.Unit is string)
-            //                    {
-            //                        if (itm.Unit.ID == ID)
-            //                        {
-            //                            // UPGRADE_NOTE: オブジェクト itm.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                            itm.Unit = null;
-            //                        }
-            //                    }
-            //                    // 追加パイロットを持つアイテムを削除する場合
-            //                    if (itm.IsFeatureAvailable("追加パイロット"))
-            //                    {
-            //                        if (SRC.PList.IsDefined(itm.FeatureData("追加パイロット")))
-            //                        {
-            //                            {
-            //                                var withBlock4 = SRC.PList.Item(itm.FeatureData("追加パイロット"));
-            //                                withBlock4.Alive = false;
-            //                                // UPGRADE_NOTE: オブジェクト PList.Item().Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                                withBlock4.Unit = null;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //while (is_changed);
+        private void DeleteItemInternal(Item itm)
+        {
+            if (itm == null) { return; }
+            colItem.Remove(itm.ID);
+            if (itm.Unit != null)
+            {
+                if (itm.Unit.ID == ID)
+                {
+                    itm.Unit = null;
+                }
+                // 追加パイロットを持つアイテムを削除する場合
+                if (itm.IsFeatureAvailable("追加パイロット"))
+                {
+                    if (SRC.PList.IsDefined(itm.FeatureData("追加パイロット")))
+                    {
+                        {
+                            var p = SRC.PList.Item(itm.FeatureData("追加パイロット"));
+                            p.Alive = false;
+                            p.Unit = null;
+                        }
+                    }
+                }
+            }
         }
 
         // 装備個所が ipart のアイテムの装備可能数
