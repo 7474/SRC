@@ -1982,7 +1982,10 @@ namespace SRCCore.Units
             //}
 
             // アビリティデータを更新
-            AData = Data.Abilities.Select(x => new UnitAbility(SRC, this, x)).ToList();
+            AData = Data.Abilities
+                .AppendRange(Pilots.Any() ? AllPilots.SelectMany(x => x.Data.Abilities) : new AbilityData[] { })
+                .AppendRange(ItemList.Where(x => x.Activated).SelectMany(x => x.Data.Abilities))
+                .Select(x => new UnitAbility(SRC, this, x)).ToList();
             //    prev_adata = new AbilityData[Information.UBound(adata) + 1];
             //    prev_astocks = new double[Information.UBound(adata) + 1];
             //    var loopTo57 = Information.UBound(adata);
