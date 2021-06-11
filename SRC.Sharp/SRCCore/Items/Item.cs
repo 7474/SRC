@@ -61,6 +61,9 @@ namespace SRCCore.Items
             || Class() == "固定"
             || IsFeatureAvailable("呪い");
 
+        public bool IsVisible => (Class() != "固定" || !IsFeatureAvailable("非表示")) && Part() != "非表示";
+        public bool IsHidden => !IsVisible;
+
         public bool IsMatch(string slotName)
         {
             var partName = Part();

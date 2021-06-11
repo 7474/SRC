@@ -1710,7 +1710,7 @@ namespace SRCCore
             GUI.TopItem = top_item1;
             var ret = GUI.ListBox(new ListBoxArgs
             {
-                Items = units.ToList(),
+                Items = units.Prepend(new ListBoxItem("▽並べ替え▽", "▽並べ替え▽")).ToList(),
                 lb_caption = caption,
                 lb_info = info,
                 lb_mode = "連続表示,コメント",
@@ -1816,7 +1816,7 @@ namespace SRCCore
                                 : GeneralLib.RightPaddedString(x.Item.Nickname(), 22) + " " + x.SlotName,
                         ListItemComment = x.IsEmpty ? "" : x.Item.Data.Comment,
                         ListItemID = x.IsEmpty ? "" : x.Item.ID,
-                        ListItemFlag = x.IsEmpty ? true : x.Item.IsFix,
+                        ListItemFlag = x.IsEmpty ? false : x.Item.IsFix,
                     })
                     .ToList();
                     // 交換するアイテムを選択
@@ -1931,6 +1931,7 @@ namespace SRCCore
                                         .Count();
                                     inum2 = SRC.IList.List.Where(itm => itm.Name == x.Name)
                                         .Where(x => x.Exist)
+                                        // XXX 何か微妙
                                         .Where(x => x.Unit != null && x.Unit.Status != "離脱" && !x.IsFeatureAvailable("呪い"))
                                         .Count();
                                     msg += GeneralLib.RightPaddedString("" + inum2, 2) + "/" + GeneralLib.RightPaddedString("" + inum, 2);
@@ -1969,177 +1970,98 @@ namespace SRCCore
 
                             var selectedItem = itemList[itemRet - 1].Item;
 
-                            //        // 未装備のアイテムがあるかどうか探す
-                            //        foreach (Item currentIt2 in SRC.IList)
-                            //        {
-                            //            it = currentIt2;
-                            //            {
-                            //                var withBlock18 = it;
-                            //                if ((withBlock18.Name ?? "") == (iname ?? "") && withBlock18.Exist)
-                            //                {
-                            //                    if (withBlock18.Unit is null)
-                            //                    {
-                            //                        // 未装備の装備が見つかったのでそれを装備
-                            //                        if (!string.IsNullOrEmpty(iid))
-                            //                        {
-                            //                            selectedUnit.DeleteItem(iid);
-                            //                        }
-                            //                        // 呪いのアイテムを装備……
-                            //                        if (withBlock18.IsFeatureAvailable("呪い"))
-                            //                        {
-                            //                            Interaction.MsgBox(withBlock18.Nickname() + "は呪われていた！");
-                            //                        }
+                            // 未装備のアイテムがあるかどうか探す
+                            var targetItem = SRC.IList.List.FirstOrDefault(x => x.Name == selectedItem.Name);
+                            if (targetItem == null)
+                            {
+                                // 選択されたアイテムを列挙
+                                var unitList = new List<ListBoxItem>();
+                                if (!selectedItem.IsFeatureAvailable("呪い"))
+                                {
+                                    unitList = SRC.IList.List.Where(x => x.Exist)
+                                       .Where(x => x.Unit != null && x.Unit.Status != "離脱" && x.Unit.Party != "味方")
+                                       .Select(x =>
+                                       {
+                                           var msg = "";
+                                           if (!Expression.IsOptionDefined("等身大基準") && x.Unit.CountPilot() > 0)
+                                           {
+                                               msg += GeneralLib.RightPaddedString(x.Unit.Nickname0, 36) + " " + x.Unit.MainPilot().get_Nickname(false);
+                                           }
+                                           else
+                                           {
+                                               msg += x.Unit.Nickname0;
+                                           }
 
-                            //                        selectedUnit.AddItem(it);
-                            //                        if (string.IsNullOrEmpty(Map.MapFileName))
-                            //                        {
-                            //                            selectedUnit.FullRecover();
-                            //                        }
+                                           var comment = string.Join("", x.Unit.ItemList.Where(x => x.IsVisible).Select(x => x.Nickname()));
+                                           return new
+                                           {
+                                               Message = msg,
+                                               Comment = comment,
+                                               Item = x,
+                                           };
+                                       })
+                                       .Select(x => new ListBoxItem(x.Message, x.Item.ID)
+                                       {
+                                           ListItemComment = x.Comment,
+                                       })
+                                       .ToList();
+                                }
 
-                            //                        if (GUI.MainForm.Visible)
-                            //                        {
-                            //                            Status.DisplayUnitStatus(selectedUnit);
-                            //                        }
+                                // どのアイテムを装備するか選択
+                                caption_str = selectedItem.Nickname + "の入手先を選択 ： " + u.Nickname;
+                                if (u.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
+                                {
+                                    caption_str = caption_str + " (" + u.MainPilot().get_Nickname(false) + ")";
+                                }
 
-                            //                        break;
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
+                                caption_str = caption_str + "  " + Expression.Term("ＨＰ", selectedUnit) + "=" + SrcFormatter.Format(u.MaxHP) + " " + Expression.Term("ＥＮ", selectedUnit) + "=" + SrcFormatter.Format(u.MaxEN) + " " + Expression.Term("装甲", selectedUnit) + "=" + SrcFormatter.Format(u.get_Armor("")) + " " + Expression.Term("運動性", selectedUnit) + "=" + SrcFormatter.Format(u.get_Mobility("")) + " " + Expression.Term("移動力", selectedUnit) + "=" + SrcFormatter.Format(u.Speed);
+                                GUI.TopItem = 1;
+                                if (Expression.IsOptionDefined("等身大基準"))
+                                {
+                                    info = "ユニット";
+                                }
+                                else
+                                {
+                                    info = "ユニット                             パイロット";
+                                }
+                                var unitRet = GUI.ListBox(new ListBoxArgs
+                                {
+                                    lb_caption = caption_str,
+                                    Items = itemList.Select(x => new ListBoxItem(x.Message, x.Item.Name)).ToList(),
+                                    lb_info = info,
+                                    lb_mode = "連続表示,コメント",
+                                });
 
-                            //        // 選択されたアイテムを列挙
-                            //        list = new string[1];
-                            //        id_list = new string[1];
-                            //        GUI.ListItemComment = new string[1];
-                            //        inum = 0;
-                            //        ItemData localItem7() { object argIndex1 = iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
+                                // アイテムを交換
+                                if (unitRet > 0)
+                                {
+                                    targetItem = SRC.IList.Item(unitList[unitRet - 1].ListItemID);
+                                    targetItem.Unit.DeleteItem(targetItem);
+                                }
+                            }
+                            if (targetItem != null)
+                            {
+                                if (!slot.IsEmpty)
+                                {
+                                    u.DeleteItem(slot.Item);
+                                }
+                                // 呪いのアイテムを装備……
+                                if (targetItem.IsFeatureAvailable("呪い"))
+                                {
+                                    GUI.Confirm(targetItem.Nickname() + "は呪われていた！", "", GuiConfirmOption.Ok);
+                                }
 
-                            //        if (!localItem7().IsFeatureAvailable("呪い"))
-                            //        {
-                            //            foreach (Item currentIt3 in SRC.IList)
-                            //            {
-                            //                it = currentIt3;
-                            //                if ((it.Name ?? "") != (iname ?? "") || !it.Exist)
-                            //                {
-                            //                    goto NextItem2;
-                            //                }
+                                selectedUnit.AddItem(targetItem);
+                                if (Map.IsStatusView)
+                                {
+                                    selectedUnit.FullRecover();
+                                }
 
-                            //                if (it.Unit is null)
-                            //                {
-                            //                    goto NextItem2;
-                            //                }
-
-                            //                {
-                            //                    var withBlock19 = it.Unit.CurrentForm();
-                            //                    if (withBlock19.Status == "離脱")
-                            //                    {
-                            //                        goto NextItem2;
-                            //                    }
-
-                            //                    if (withBlock19.Party != "味方")
-                            //                    {
-                            //                        goto NextItem2;
-                            //                    }
-
-                            //                    Array.Resize(list, Information.UBound(list) + 1 + 1);
-                            //                    Array.Resize(id_list, Information.UBound(list) + 1);
-                            //                    Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
-                            //                    if (!Expression.IsOptionDefined("等身大基準") && withBlock19.CountPilot() > 0)
-                            //                    {
-                            //                        string localRightPaddedString2() { string argbuf = withBlock19.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 36); withBlock19.Nickname0 = argbuf; return ret; }
-
-                            //                        list[Information.UBound(list)] = localRightPaddedString2() + " " + withBlock19.MainPilot().get_Nickname(false);
-                            //                    }
-                            //                    else
-                            //                    {
-                            //                        list[Information.UBound(list)] = withBlock19.Nickname0;
-                            //                    }
-
-                            //                    id_list[Information.UBound(list)] = it.ID;
-                            //                    var loopTo40 = withBlock19.CountItem();
-                            //                    for (i = 1; i <= loopTo40; i++)
-                            //                    {
-                            //                        {
-                            //                            var withBlock20 = withBlock19.Item(i);
-                            //                            if ((withBlock20.Class() != "固定" || !withBlock20.IsFeatureAvailable("非表示")) && withBlock20.Part() != "非表示")
-                            //                            {
-                            //                                GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock20.Nickname() + " ";
-                            //                            }
-                            //                        }
-                            //                    }
-
-                            //                    inum = (inum + 1);
-                            //                }
-
-                            //            NextItem2:
-                            //                ;
-                            //            }
-                            //        }
-
-                            //        GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                            //        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
-
-                            //        // どのアイテムを装備するか選択
-                            //        Item localItem8() { var tmp = id_list; object argIndex1 = tmp[1]; var ret = SRC.IList.Item(argIndex1); return ret; }
-
-                            //        caption_str = localItem8().Nickname() + "の入手先を選択 ： " + u.Nickname;
-                            //        if (u.CountPilot() > 0 && !Expression.IsOptionDefined("等身大基準"))
-                            //        {
-                            //            caption_str = caption_str + " (" + u.MainPilot().get_Nickname(false) + ")";
-                            //        }
-
-                            //        caption_str = caption_str + "  " + Expression.Term("ＨＰ", selectedUnit) + "=" + SrcFormatter.Format(u.MaxHP) + " " + Expression.Term("ＥＮ", selectedUnit) + "=" + SrcFormatter.Format(u.MaxEN) + " " + Expression.Term("装甲", selectedUnit) + "=" + SrcFormatter.Format(u.get_Armor("")) + " " + Expression.Term("運動性", selectedUnit) + "=" + SrcFormatter.Format(u.get_Mobility("")) + " " + Expression.Term("移動力", selectedUnit) + "=" + SrcFormatter.Format(u.Speed);
-                            //        GUI.TopItem = 1;
-                            //        if (Expression.IsOptionDefined("等身大基準"))
-                            //        {
-                            //            ret = GUI.ListBox(caption_str, list, "ユニット", "連続表示,コメント");
-                            //        }
-                            //        else
-                            //        {
-                            //            ret = GUI.ListBox(caption_str, list, "ユニット                             パイロット", "連続表示,コメント");
-                            //        }
-
-                            //        // アイテムを交換
-                            //        if (ret > 0)
-                            //        {
-                            //            if (!string.IsNullOrEmpty(iid))
-                            //            {
-                            //                u.DeleteItem(iid);
-                            //            }
-
-                            //            var tmp7 = id_list;
-                            //            {
-                            //                var withBlock21 = SRC.IList.Item(tmp7[ret]);
-                            //                if (withBlock21.Unit is object)
-                            //                {
-                            //                    withBlock21.Unit.DeleteItem(withBlock21.ID);
-                            //                }
-
-                            //                // 呪いのアイテムを装備……
-                            //                if (withBlock21.IsFeatureAvailable("呪い"))
-                            //                {
-                            //                    Interaction.MsgBox(withBlock21.Nickname() + "は呪われていた！");
-                            //                }
-                            //            }
-
-                            //            Item localItem9() { var tmp = id_list; object argIndex1 = tmp[ret]; var ret = SRC.IList.Item(argIndex1); return ret; }
-
-                            //            u.AddItem(localItem9());
-                            //            if (string.IsNullOrEmpty(Map.MapFileName))
-                            //            {
-                            //                u.FullRecover();
-                            //            }
-
-                            //            if (GUI.MainForm.Visible)
-                            //            {
-                            //                Status.DisplayUnitStatus(selectedUnit);
-                            //            }
-
-                            //            break;
-                            //        }
-
-                            //    NextLoop:
-                            //        ;
+                                if (GUI.MainFormVisible)
+                                {
+                                    SRC.GUIStatus.DisplayUnitStatus(selectedUnit);
+                                }
+                            }
                         }
                     }
                 }
