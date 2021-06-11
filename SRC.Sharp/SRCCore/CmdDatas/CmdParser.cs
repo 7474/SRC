@@ -186,7 +186,7 @@ namespace SRCCore.CmdDatas
                         return new EnableCmd(src, data);
 
                     case "equip":
-                        return new NotImplementedCmd(src, data);
+                        return new EquipCmd(src, data);
 
                     case "escape":
                         return new EscapeCmd(src, data);
