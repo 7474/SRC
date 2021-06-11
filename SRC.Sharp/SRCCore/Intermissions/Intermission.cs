@@ -1904,7 +1904,7 @@ namespace SRCCore
                                 .Where(x => !x.IsFix)
                                 // 離脱したユニットが装備している
                                 // 敵ユニットが装備している
-                                .Where(x => !(x.Unit != null && x.Unit.Status == "離脱" || x.Unit.Party != "味方"))
+                                .Where(x => !(x.Unit != null && (x.Unit.Status == "離脱" || x.Unit.Party != "味方")))
                                 .Where(x => u.IsAbleToEquip(x))
                                 // 装備スロットが空いている？
                                 .Where(x => itemSlots.IsAvalable(x.Part(), x.Size()))
@@ -1916,7 +1916,7 @@ namespace SRCCore
                             var itemList = itemNameList.Select(x => SRC.IDList.Item(x))
                                 .Select(x =>
                                 {
-                                    var msg = " ";
+                                    var msg = GeneralLib.RightPaddedString(x.Nickname, 22) + " ";
                                     if (x.IsFeatureAvailable("大型アイテム"))
                                     {
                                         msg += x.Part + "[" + SrcFormatter.Format(x.Size()) + "]";
@@ -1971,40 +1971,45 @@ namespace SRCCore
                             var selectedItem = itemList[itemRet - 1].Item;
 
                             // 未装備のアイテムがあるかどうか探す
-                            var targetItem = SRC.IList.List.FirstOrDefault(x => x.Name == selectedItem.Name);
+                            var targetItem = SRC.IList.List
+                                .Where(x => x.Exist)
+                                .Where(x => x.Name == selectedItem.Name)
+                                .FirstOrDefault(x => x.Unit == null);
                             if (targetItem == null)
                             {
                                 // 選択されたアイテムを列挙
                                 var unitList = new List<ListBoxItem>();
                                 if (!selectedItem.IsFeatureAvailable("呪い"))
                                 {
-                                    unitList = SRC.IList.List.Where(x => x.Exist)
-                                       .Where(x => x.Unit != null && x.Unit.Status != "離脱" && x.Unit.Party != "味方")
-                                       .Select(x =>
-                                       {
-                                           var msg = "";
-                                           if (!Expression.IsOptionDefined("等身大基準") && x.Unit.CountPilot() > 0)
-                                           {
-                                               msg += GeneralLib.RightPaddedString(x.Unit.Nickname0, 36) + " " + x.Unit.MainPilot().get_Nickname(false);
-                                           }
-                                           else
-                                           {
-                                               msg += x.Unit.Nickname0;
-                                           }
+                                    unitList = SRC.IList.List
+                                        .Where(x => x.Exist)
+                                        .Where(x => x.Name == selectedItem.Name)
+                                        .Where(x => x.Unit != null && x.Unit.Status != "離脱" && x.Unit.Party == "味方")
+                                        .Select(x =>
+                                        {
+                                            var msg = "";
+                                            if (!Expression.IsOptionDefined("等身大基準") && x.Unit.CountPilot() > 0)
+                                            {
+                                                msg += GeneralLib.RightPaddedString(x.Unit.Nickname0, 36) + " " + x.Unit.MainPilot().get_Nickname(false);
+                                            }
+                                            else
+                                            {
+                                                msg += x.Unit.Nickname0;
+                                            }
 
-                                           var comment = string.Join("", x.Unit.ItemList.Where(x => x.IsVisible).Select(x => x.Nickname()));
-                                           return new
-                                           {
-                                               Message = msg,
-                                               Comment = comment,
-                                               Item = x,
-                                           };
-                                       })
-                                       .Select(x => new ListBoxItem(x.Message, x.Item.ID)
-                                       {
-                                           ListItemComment = x.Comment,
-                                       })
-                                       .ToList();
+                                            var comment = string.Join("", x.Unit.ItemList.Where(x => x.IsVisible).Select(x => x.Nickname()));
+                                            return new
+                                            {
+                                                Message = msg,
+                                                Comment = comment,
+                                                Item = x,
+                                            };
+                                        })
+                                        .Select(x => new ListBoxItem(x.Message, x.Item.ID)
+                                        {
+                                            ListItemComment = x.Comment,
+                                        })
+                                        .ToList();
                                 }
 
                                 // どのアイテムを装備するか選択
@@ -2027,7 +2032,7 @@ namespace SRCCore
                                 var unitRet = GUI.ListBox(new ListBoxArgs
                                 {
                                     lb_caption = caption_str,
-                                    Items = itemList.Select(x => new ListBoxItem(x.Message, x.Item.Name)).ToList(),
+                                    Items = unitList,
                                     lb_info = info,
                                     lb_mode = "連続表示,コメント",
                                 });
@@ -2062,6 +2067,7 @@ namespace SRCCore
                                     SRC.GUIStatus.DisplayUnitStatus(selectedUnit);
                                 }
                             }
+                            break;
                         }
                     }
                 }

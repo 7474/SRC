@@ -693,17 +693,15 @@ namespace SRCCore
                 }
             }
 
-            //            // 汎用アイテムデータをロード
-            //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = FileSystem.FileExists(argfname); return ret; }
-
-            //            if (FileSystem.FileExists(ScenarioPath + @"Data\System\item.txt"))
-            //            {
-            //                IDList.Load(ScenarioPath + @"Data\System\item.txt");
-            //            }
-            //            else if (localFileExists5())
-            //            {
-            //                IDList.Load(AppPath + @"Data\System\item.txt");
-            //            }
+            // 汎用アイテムデータをロード
+            if (FileSystem.FileExists(ScenarioPath, @"Data\System\item.txt"))
+            {
+                IDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\System\item.txt"));
+            }
+            else if (FileSystem.FileExists(AppPath, @"Data\System\item.txt"))
+            {
+                IDList.Load(FileSystem.PathCombine(AppPath, @"Data\System\item.txt"));
+            }
             // 地形データをロード
             string appTerrainPath = FileSystem.PathCombine(AppPath, "Data", "System", "terrain.txt");
             if (FileSystem.FileExists(appTerrainPath))
