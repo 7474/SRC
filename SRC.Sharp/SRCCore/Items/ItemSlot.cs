@@ -44,9 +44,15 @@ namespace SRCCore.Items
             }).ToList();
         }
 
-        public void FillSlot(Unit u)
+        public ItemSlots FillSlot(Func<Item, int> keySelector = null)
         {
-            foreach (var itm in u.ItemList.Where(x => x.Class() != "固定" && !x.IsFeatureAvailable("非表示")))
+            Unit u = Unit;
+            IEnumerable<Item> items = u.ItemList;
+            if(keySelector!=null)
+            {
+                items = items.OrderBy(keySelector);
+            }
+            foreach (var itm in items.Where(x => x.Class() != "固定" && !x.IsFeatureAvailable("非表示")))
             {
                 switch (itm.Part() ?? "")
                 {
@@ -131,6 +137,7 @@ namespace SRCCore.Items
                         }
                 }
             }
+            return this;
         }
 
         public static IList<string> GetPartList(Unit u)

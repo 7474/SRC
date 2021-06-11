@@ -1782,9 +1782,8 @@ namespace SRCCore
                 while (true)
                 {
                     // アイテムの装備個所一覧を作成
-                    var itemSlots = new ItemSlots(u);
                     // 装備個所に現在装備しているアイテムを割り当て
-                    itemSlots.FillSlot(u);
+                    var itemSlots = new ItemSlots(u).FillSlot();
 
                     // 特定の装備個所のアイテムのみを交換する？
                     if (!string.IsNullOrEmpty(selected_part))
