@@ -16,6 +16,7 @@ namespace SRCCore.Items
         /// </summary>
         public bool IsOccupied { get; set; }
         public bool IsEmpty => Item == null;
+        public bool IsAvalable => IsEmpty || !Item.IsFix;
 
         public bool IsMatch(string partName)
         {
@@ -31,10 +32,12 @@ namespace SRCCore.Items
 
     public class ItemSlots
     {
+        public Unit Unit { get; set; }
         public IList<ItemSlot> Slots { get; set; } = new List<ItemSlot>();
 
         public ItemSlots(Unit u)
         {
+            Unit = u;
             Slots = GetPartList(u).Select(x => new ItemSlot
             {
                 SlotName = x,
@@ -45,7 +48,6 @@ namespace SRCCore.Items
         {
             foreach (var itm in u.ItemList.Where(x => x.Class() != "固定" && !x.IsFeatureAvailable("非表示")))
             {
-
                 switch (itm.Part() ?? "")
                 {
                     case "両手":
@@ -192,6 +194,32 @@ namespace SRCCore.Items
                 part_list.Add(u.IsHero() ? "アイテム" : "強化パーツ");
             }
             return part_list;
+        }
+
+        public bool IsAvalable(string partName, int size)
+        {
+            var slots = Slots.Where(x => x.IsMatch(partName))
+                .Where(x => x.IsAvalable)
+                .ToList();
+            switch (partName)
+            {
+                case "両手":
+                    return slots.Count >= 2;
+
+                case "片手":
+                    return Unit.IsFeatureAvailable("両手持ち") && slots.Any()
+                        || slots.Any(x => x.SlotName == "右手");
+
+                case "盾":
+                    return slots.Any(x => x.SlotName == "左手");
+
+                case "両肩":
+                    return slots.Count >= 2;
+
+                default:
+                    break;
+            }
+            return slots.Count >= size;
         }
     }
 }

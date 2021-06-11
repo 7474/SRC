@@ -61,6 +61,18 @@ namespace SRCCore.Items
             || Class() == "固定"
             || IsFeatureAvailable("呪い");
 
+        public bool IsMatch(string slotName)
+        {
+            var partName = Part();
+            return slotName == partName
+                   || (partName == "片手" || partName == "両手" || partName == "盾")
+                       && (slotName == "右手" || slotName == "左手")
+                   || (partName == "肩" || partName == "両肩")
+                       && (slotName == "右肩" || slotName == "左肩")
+                   || (partName == "アイテム" || partName == "強化パーツ")
+                       && (slotName == "アイテム" || slotName == "強化パーツ");
+        }
+
         // 名称
         public string Name
         {
@@ -307,7 +319,6 @@ namespace SRCCore.Items
             SizeRet = Data.Size();
             return SizeRet;
         }
-
 
         // アイテムが使用可能か？
         public bool IsAvailable(Unit u)
