@@ -8,7 +8,6 @@ namespace SRCSharpForm
     [DesignerGenerated()]
     internal partial class frmListBox
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmListBox() : base()
         {
@@ -648,6 +647,5 @@ namespace SRCSharpForm
             this.PerformLayout();
 
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
