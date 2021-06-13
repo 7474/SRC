@@ -1,5 +1,8 @@
 using SRCCore.Events;
+using SRCCore.Exceptions;
+using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,105 +16,51 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum != 3)
             {
-                Event.EventErrorMessage = "CopyFileコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 208824
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "CopyFileコマンドの引数の数が違います");
             }
 
-            fname1 = GetArgAsString(2);
-            bool localFileExists() { string argfname = SRC.ExtDataPath + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-
-            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-
-            bool localFileExists2() { string argfname = SRC.AppPath + fname1; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-
-            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname1))
+            var fname1 = GetArgAsString(2);
+            var sourceFileDirs = new string[]
             {
-                fname1 = SRC.ScenarioPath + fname1;
-            }
-            else if (localFileExists())
+                SRC.ScenarioPath,
+                SRC.ExtDataPath,
+                SRC.ExtDataPath2,
+                SRC.AppPath,
+            };
+            var sourceFilePath = sourceFileDirs.Select(x => SRC.FileSystem.PathCombine(x, fname1))
+                .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            if (string.IsNullOrEmpty(sourceFilePath))
             {
-                fname1 = SRC.ExtDataPath + fname1;
-            }
-            else if (localFileExists1())
-            {
-                fname1 = SRC.ExtDataPath2 + fname1;
-            }
-            else if (localFileExists2())
-            {
-                fname1 = SRC.AppPath + fname1;
-            }
-            else
-            {
-                ExecCopyFileCmdRet = LineNum + 1;
-                return ExecCopyFileCmdRet;
+                return EventData.NextID;
             }
 
             if (Strings.InStr(fname1, @"..\") > 0)
             {
-                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 209700
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname1, "../") > 0)
             {
-                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 209871
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
 
-            fname2 = SRC.ScenarioPath + GetArgAsString(3);
+            var fname2 = GetArgAsString(3);
+            var destFilePath = SRC.FileSystem.PathCombine(SRC.ScenarioPath, GetArgAsString(3));
             if (Strings.InStr(fname2, @"..\") > 0)
             {
-                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 210118
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname2, "../") > 0)
             {
-                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 210289
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
 
-            FileSystem.FileCopy(fname1, fname2);
+            using (var source = SRC.FileSystem.Open(sourceFilePath))
+            using (var dest = SRC.FileSystem.OpenSafe(Filesystem.SafeOpenMode.Write, destFilePath))
+            {
+                source.CopyTo(dest);
+            }
             return EventData.NextID;
         }
     }
