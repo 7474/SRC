@@ -39,8 +39,10 @@ namespace SRCCore.Filesystem
         /// <param name="paths"></param>
         /// <returns></returns>
         Stream OpenSafe(SafeOpenMode mode, params string[] paths);
+        bool Remove(params string[] paths);
 
         bool MkDir(params string[] paths);
+        bool RmDir(params string[] paths);
 
         //
         bool RelativePathEuqals(string scenarioPath, string a, string b);

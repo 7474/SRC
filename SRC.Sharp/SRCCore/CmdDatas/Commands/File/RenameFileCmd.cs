@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,105 +14,49 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum != 3)
             {
-                Event.EventErrorMessage = "RenameFileコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431259
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "RenameFileコマンドの引数の数が違います");
             }
 
-            fname1 = SRC.ScenarioPath + GetArgAsString(2);
-            fname2 = SRC.ScenarioPath + GetArgAsString(3);
+            var fname1 = GetArgAsString(2);
+            var fname2 = GetArgAsString(3);
+            var sourceFilePath = SRC.FileSystem.PathCombine(SRC.ScenarioPath, fname1);
+            var destFilePath = SRC.FileSystem.PathCombine(SRC.ScenarioPath, fname2);
             if (Strings.InStr(fname1, @"..\") > 0)
             {
-                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431574
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname1, "../") > 0)
             {
-                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431745
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
-
             if (Strings.InStr(fname2, @"..\") > 0)
             {
-                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 431916
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname2, "../") > 0)
             {
-                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432087
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
 
-            if (!SRC.FileSystem.FileExists(fname1))
+            if (!SRC.FileSystem.FileExists(sourceFilePath))
             {
-                Event.EventErrorMessage = "元のファイル" + "「" + fname1 + "」が見つかりません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432267
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "元のファイル" + "「" + fname1 + "」が見つかりません");
             }
 
-            if (SRC.FileSystem.FileExists(fname2))
+            if (SRC.FileSystem.FileExists(destFilePath))
             {
-                Event.EventErrorMessage = "既に" + "「" + fname2 + "」が存在しています";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 432435
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "既に" + "「" + fname2 + "」が存在しています");
             }
 
-            FileSystem.Rename(fname1, fname2);
+            using (var source = SRC.FileSystem.Open(sourceFilePath))
+            using (var dest = SRC.FileSystem.OpenSafe(Filesystem.SafeOpenMode.Write, destFilePath))
+            {
+                source.CopyTo(dest);
+            }
+            SRC.FileSystem.Remove(sourceFilePath);
+
             return EventData.NextID;
         }
     }

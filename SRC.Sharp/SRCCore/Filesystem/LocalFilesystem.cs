@@ -114,13 +114,35 @@ namespace SRCCore.Filesystem
             }
         }
 
+        public bool Remove(params string[] paths)
+        {
+            var path = PathCombine(paths);
+            var entry = safeEntrySets.FirstOrDefault(x => x.Exists(path));
+            if (entry != null)
+            {
+                return entry.Remove(path);
+            }
+            return false;
+        }
+
         public bool MkDir(params string[] paths)
         {
             var path = PathCombine(paths);
             var target = safeEntrySets.FirstOrDefault(x => x.MatchRoot(path));
             if (target != null)
             {
-                target.MkDir(path);
+                return target.MkDir(path);
+            }
+            return false;
+        }
+
+        public bool RmDir(params string[] paths)
+        {
+            var path = PathCombine(paths);
+            var target = safeEntrySets.FirstOrDefault(x => x.MatchRoot(path));
+            if (target != null)
+            {
+                return target.RmDir(path);
             }
             return false;
         }
@@ -160,7 +182,9 @@ namespace SRCCore.Filesystem
         Stream OpenRead(string entryName);
         Stream OpenWrite(string entryName);
         Stream OpenAppend(string entryName);
+        bool Remove(string entryName);
         bool MkDir(string entryName);
+        bool RmDir(string entryName);
     }
 
     public class LocalFileSystemAbsolute : ILocalFileSystemEntrySet
@@ -200,7 +224,17 @@ namespace SRCCore.Filesystem
             throw new NotSupportedException();
         }
 
+        public bool Remove(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
         public bool MkDir(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool RmDir(string entryName)
         {
             throw new NotSupportedException();
         }
@@ -260,11 +294,33 @@ namespace SRCCore.Filesystem
             return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
         }
 
+        public bool Remove(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            if (info?.Exists ?? false)
+            {
+                info.Delete();
+                return true;
+            }
+            return false;
+        }
+
         public bool MkDir(string entryName)
         {
             var info = GetFileInfo(entryName);
             Directory.CreateDirectory(info.FullName);
             return true;
+        }
+
+        public bool RmDir(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            if (Directory.Exists(info.FullName))
+            {
+                Directory.Delete(info.FullName);
+                return true;
+            }
+            return false;
         }
     }
 
@@ -341,7 +397,17 @@ namespace SRCCore.Filesystem
             throw new NotSupportedException();
         }
 
+        public bool Remove(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
         public bool MkDir(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool RmDir(string entryName)
         {
             throw new NotSupportedException();
         }

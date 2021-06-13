@@ -44,7 +44,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var fname2 = GetArgAsString(3);
-            var destFilePath = SRC.FileSystem.PathCombine(SRC.ScenarioPath, GetArgAsString(3));
+            var destFilePath = SRC.FileSystem.PathCombine(SRC.ScenarioPath, fname2);
             if (Strings.InStr(fname2, @"..\") > 0)
             {
                 throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");

@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,50 +14,24 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (ArgNum != 2)
             {
-                Event.EventErrorMessage = "RemoveFileコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 410742
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "RemoveFileコマンドの引数の数が違います");
             }
 
-            fname = SRC.ScenarioPath + GetArgAsString(2);
+            var fname = GetArgAsString(2);
             if (Strings.InStr(fname, @"..\") > 0)
             {
-                Event.EventErrorMessage = @"ファイル指定に「..\」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 410987
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname, "../") > 0)
             {
-                Event.EventErrorMessage = "ファイル指定に「../」は使えません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 411157
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
 
-            if (SRC.FileSystem.FileExists(fname))
+            var path = SRC.FileSystem.PathCombine(SRC.ScenarioPath, fname);
+            if (SRC.FileSystem.FileExists(path))
             {
-                FileSystem.Kill(fname);
+                SRC.FileSystem.Remove(path);
             }
 
             return EventData.NextID;
