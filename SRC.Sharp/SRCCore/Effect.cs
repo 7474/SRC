@@ -213,7 +213,7 @@ namespace SRCCore
             wtype = CheckWeaponType(wname, wclass);
             if (wtype == "手裏剣")
             {
-                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うのでy
+                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うので
                 return;
             }
 
@@ -225,34 +225,29 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // TODO Impl item
-                //// 装備しているアイテムから武器を検索
-                //var loopTo = u.CountItem();
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock1 = u.Item(i);
-                //        if (withBlock1.Activated
-                //&& (withBlock1.Part() == "両手"
-                //|| withBlock1.Part() == "片手"
-                //|| withBlock1.Part() == "武器"))
-                //        {
-                //            wtype = CheckWeaponType(withBlock1.Nickname(), "");
-                //            if (!string.IsNullOrEmpty(wtype))
-                //            {
-                //                goto FoundWeaponType;
-                //            }
+                // 装備しているアイテムから武器を検索
+                foreach (var itm in u.ItemList)
+                {
+                    if (itm.Activated
+                        && (itm.Part() == "両手"
+                            || itm.Part() == "片手"
+                            || itm.Part() == "武器"))
+                    {
+                        wtype = CheckWeaponType(itm.Nickname(), "");
+                        if (!string.IsNullOrEmpty(wtype))
+                        {
+                            goto FoundWeaponType;
+                        }
 
-                //            wtype = CheckWeaponType(withBlock1.Class0(), "");
-                //            if (!string.IsNullOrEmpty(wtype))
-                //            {
-                //                goto FoundWeaponType;
-                //            }
+                        wtype = CheckWeaponType(itm.Class0(), "");
+                        if (!string.IsNullOrEmpty(wtype))
+                        {
+                            goto FoundWeaponType;
+                        }
 
-                //            break;
-                //        }
-                //    }
-                //}
+                        break;
+                    }
+                }
 
                 goto SkipShootingWeapon;
             }
@@ -6603,8 +6598,8 @@ namespace SRCCore
         {
             var defined = default(bool);
             if (GeneralLib.LIndex(fdata, 1) == "Ｂ"
-|| GeneralLib.LIndex(fdata, 2) == "Ｂ"
-|| GeneralLib.LIndex(fdata, 3) == "Ｂ")
+        || GeneralLib.LIndex(fdata, 2) == "Ｂ"
+        || GeneralLib.LIndex(fdata, 3) == "Ｂ")
             {
                 if (!be_quiet)
                 {
@@ -6706,7 +6701,7 @@ namespace SRCCore
                 else if (SRC.BattleAnimation)
                 {
                     if (Strings.InStr(fdata, "バリア無効化無効") == 0
-|| ecost > 0)
+        || ecost > 0)
                     {
                         if (fname == "バリア")
                         {
