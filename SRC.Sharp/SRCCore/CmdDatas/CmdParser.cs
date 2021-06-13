@@ -153,13 +153,13 @@ namespace SRCCore.CmdDatas
                         return new CopyArrayCmd(src, data);
 
                     case "copyfile":
-                        return new NotImplementedCmd(src, data);
+                        return new CopyFileCmd(src, data);
 
                     case "create":
                         return new CreateCmd(src, data);
 
                     case "createfolder":
-                        return new NotImplementedCmd(src, data);
+                        return new CreateFolderCmd(src, data);
 
                     case "debug":
                         return new NotImplementedCmd(src, data);
@@ -425,10 +425,10 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "removefile":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveFileCmd(src, data);
 
                     case "removefolder":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveFolderCmd(src, data);
 
                     case "removeitem":
                         return new NotImplementedCmd(src, data);
@@ -443,7 +443,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "renamefile":
-                        return new NotImplementedCmd(src, data);
+                        return new RenameFileCmd(src, data);
 
                     case "renameterm":
                         return new NotImplementedCmd(src, data);
