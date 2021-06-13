@@ -153,7 +153,7 @@ namespace SRCCore.CmdDatas
                         return new CopyArrayCmd(src, data);
 
                     case "copyfile":
-                        return new NotImplementedCmd(src, data);
+                        return new CopyFileCmd(src, data);
 
                     case "create":
                         return new CreateCmd(src, data);
