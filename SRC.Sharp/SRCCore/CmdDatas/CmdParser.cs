@@ -425,10 +425,10 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "removefile":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveFileCmd(src, data);
 
                     case "removefolder":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveFolderCmd(src, data);
 
                     case "removeitem":
                         return new NotImplementedCmd(src, data);
@@ -443,7 +443,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "renamefile":
-                        return new NotImplementedCmd(src, data);
+                        return new RenameFileCmd(src, data);
 
                     case "renameterm":
                         return new NotImplementedCmd(src, data);
