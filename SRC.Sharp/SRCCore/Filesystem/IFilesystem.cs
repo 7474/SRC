@@ -40,6 +40,8 @@ namespace SRCCore.Filesystem
         /// <returns></returns>
         Stream OpenSafe(SafeOpenMode mode, params string[] paths);
 
+        bool MkDir(params string[] paths);
+
         //
         bool RelativePathEuqals(string scenarioPath, string a, string b);
         bool IsAbsolutePath(string path);

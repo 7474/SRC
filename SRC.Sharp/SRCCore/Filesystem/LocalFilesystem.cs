@@ -114,6 +114,17 @@ namespace SRCCore.Filesystem
             }
         }
 
+        public bool MkDir(params string[] paths)
+        {
+            var path = PathCombine(paths);
+            var target = safeEntrySets.FirstOrDefault(x => x.MatchRoot(path));
+            if (target != null)
+            {
+                target.MkDir(path);
+            }
+            return false;
+        }
+
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
         {
             return ToRelativePath(scenarioPath, a).ToLower() == ToRelativePath(scenarioPath, b).ToLower();
@@ -144,16 +155,23 @@ namespace SRCCore.Filesystem
 
     public interface ILocalFileSystemEntrySet
     {
+        bool MatchRoot(string entryName);
         bool Exists(string entryName);
         Stream OpenRead(string entryName);
         Stream OpenWrite(string entryName);
         Stream OpenAppend(string entryName);
+        bool MkDir(string entryName);
     }
 
     public class LocalFileSystemAbsolute : ILocalFileSystemEntrySet
     {
         public LocalFileSystemAbsolute()
         {
+        }
+
+        public bool MatchRoot(string entryName)
+        {
+            return Path.IsPathRooted(entryName);
         }
 
         private FileInfo GetFileInfo(string entryName)
@@ -181,6 +199,11 @@ namespace SRCCore.Filesystem
         {
             throw new NotSupportedException();
         }
+
+        public bool MkDir(string entryName)
+        {
+            throw new NotSupportedException();
+        }
     }
 
     public class LocalFileSystemPath : ILocalFileSystemEntrySet
@@ -194,6 +217,11 @@ namespace SRCCore.Filesystem
                 tmpBasePath += "/";
             }
             BasePath = tmpBasePath;
+        }
+
+        public bool MatchRoot(string entryName)
+        {
+            return entryName.Replace("\\", "/").StartsWith(BasePath);
         }
 
         private FileInfo GetFileInfo(string entryName)
@@ -231,6 +259,13 @@ namespace SRCCore.Filesystem
             var info = GetFileInfo(entryName);
             return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
         }
+
+        public bool MkDir(string entryName)
+        {
+            var info = GetFileInfo(entryName);
+            Directory.CreateDirectory(info.FullName);
+            return true;
+        }
     }
 
     public class LocalFileSystemArchive : ILocalFileSystemEntrySet
@@ -258,6 +293,10 @@ namespace SRCCore.Filesystem
                     _entryMap[entry.FullName] = entry;
                 }
             });
+        }
+        public bool MatchRoot(string entryName)
+        {
+            return entryName.Replace("\\", "/").StartsWith(BasePath);
         }
 
         private ZipArchiveEntry GetEntry(string entryName)
@@ -298,6 +337,11 @@ namespace SRCCore.Filesystem
         }
 
         public Stream OpenAppend(string entryName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool MkDir(string entryName)
         {
             throw new NotSupportedException();
         }
