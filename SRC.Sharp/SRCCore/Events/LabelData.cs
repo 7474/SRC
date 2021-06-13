@@ -333,11 +333,10 @@ namespace SRCCore.Events
                     {
                         blnConst[i] = true;
                     }
-                    // TODO Impl
-                    //else if (SRC.IDList.IsDefined(strParas[i]))
-                    //{
-                    //    blnConst[i] = true;
-                    //}
+                    else if (SRC.IDList.IsDefined(strParas[i]))
+                    {
+                        blnConst[i] = true;
+                    }
                     else
                     {
                         switch (strParas[i] ?? "")
