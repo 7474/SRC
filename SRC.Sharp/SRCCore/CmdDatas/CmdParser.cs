@@ -159,7 +159,7 @@ namespace SRCCore.CmdDatas
                         return new CreateCmd(src, data);
 
                     case "createfolder":
-                        return new NotImplementedCmd(src, data);
+                        return new CreateFolderCmd(src, data);
 
                     case "debug":
                         return new NotImplementedCmd(src, data);

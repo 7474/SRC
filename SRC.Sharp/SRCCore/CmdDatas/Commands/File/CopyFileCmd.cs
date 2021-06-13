@@ -1,7 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.VB;
-using System;
 using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
