@@ -339,8 +339,7 @@ namespace SRCCore.Commands
                         GUI.RestoreCursorPos();
                     }
 
-                    // TODO リストボックス消す
-                    //My.MyProject.Forms.frmListBox.Hide();
+                    GUI.CloseListBox();
                     GUI.UnlockGUI();
                     CommandState = "ユニット選択";
                     return;
@@ -531,8 +530,7 @@ namespace SRCCore.Commands
                         GUI.RestoreCursorPos();
                     }
 
-                    // TODO リストボックス消す
-                    //My.MyProject.Forms.frmListBox.Hide();
+                    GUI.CloseListBox();
                     GUI.UnlockGUI();
                     CommandState = "ユニット選択";
                     return;

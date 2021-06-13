@@ -8,7 +8,6 @@ namespace SRCSharpForm
     [DesignerGenerated()]
     internal partial class frmConfiguration
     {
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
         [DebuggerNonUserCode()]
         public frmConfiguration() : base()
         {
@@ -483,6 +482,5 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }

@@ -126,42 +126,27 @@ namespace SRCCore.Commands
 
                 var uname = forms[ret - 1].ListItemID;
                 var targetUnit = SRC.UDList.Item(uname);
-                // TODO Impl BGM
                 string BGM;
                 {
                     var u = SelectedUnit;
                     // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
                     AddAdditionalPilotIfNotExist(uname, u);
 
-                    //// ＢＧＭの変更
-                    //if (u.IsFeatureAvailable("変形ＢＧＭ"))
-                    //{
-                    //    var loopTo2 = u.CountFeature();
-                    //    for (i = 1; i <= loopTo2; i++)
-                    //    {
-                    //        string localFeature() { object argIndex1 = i; var ret = u.Feature(argIndex1); return ret; }
-
-                    //        string localFeatureData2() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-                    //        string localLIndex() { string arglist = hs6c18ebb7075745309751cd168b7bf5f0(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-                    //        if (localFeature() == "変形ＢＧＭ" && (localLIndex() ?? "") == (uname ?? ""))
-                    //        {
-                    //            string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-                    //            string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
-
-                    //            BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1));
-                    //            if (Strings.Len(BGM) > 0)
-                    //            {
-                    //                Sound.ChangeBGM(BGM);
-                    //                GUI.Sleep(500);
-                    //            }
-
-                    //            break;
-                    //        }
-                    //    }
-                    //}
+                    // ＢＧＭの変更
+                    if (u.IsFeatureAvailable("変形ＢＧＭ"))
+                    {
+                        foreach (var fd in u.Features.Where(x => x.Name == "変形ＢＧＭ")
+                            .Where(x => GeneralLib.LIndex(x.Data, 1) == uname))
+                        {
+                            BGM = Sound.SearchMidiFile(Strings.Mid(fd.Data, Strings.InStr(fd.Data, " ") + 1));
+                            if (Strings.Len(BGM) > 0)
+                            {
+                                Sound.ChangeBGM(BGM);
+                                GUI.Sleep(500);
+                            }
+                            break;
+                        }
+                    }
 
                     // メッセージを表示
                     SelectedUnit.PilotMassageIfDefined(new string[] {

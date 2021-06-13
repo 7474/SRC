@@ -251,14 +251,6 @@ namespace SRCCore.Commands
                             // 条件を満たした場合のみ実行できるコマンド
                             mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
                         }
-                        // TODO 上限儲けるなら適当に打ち切る
-                        //GUI.MainForm.mnuMapCommandItem(i).Caption = lab.Para(2);
-                        //MapCommandLabelList[i - MapCommand1CmdID + 1] = lab.LineNum.ToString();
-                        //i = (i + 1);
-                        //if (i > MapCommand10CmdID)
-                        //{
-                        //    break;
-                        //}
                     }
                 }
 
@@ -1162,7 +1154,6 @@ namespace SRCCore.Commands
                         unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
                     }
                 }
-                // TODO 上限儲けるなら適当に打ち切る
             }
         }
 

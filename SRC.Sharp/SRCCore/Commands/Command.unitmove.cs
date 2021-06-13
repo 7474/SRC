@@ -368,18 +368,15 @@ namespace SRCCore.Commands
                 }
 
                 // アニメ表示
-                // TODO Impl アニメ表示
-                //bool localIsSpecialEffectDefined() { string argmain_situation = "ジャンプ"; object argIndex1 = "ジャンプ"; string argsub_situation = u.FeatureName(argIndex1); var ret = u.IsSpecialEffectDefined(argmain_situation, argsub_situation); return ret; }
-
-                //if (u.IsAnimationDefined("ジャンプ", u.FeatureName(argIndex5)))
-                //{
-                //    u.PlayAnimation("ジャンプ", u.FeatureName("ジャンプ"));
-                //}
-                //else if (localIsSpecialEffectDefined())
-                //{
-                //    u.SpecialEffect("ジャンプ", u.FeatureName("ジャンプ"));
-                //}
-                //else
+                if (u.IsAnimationDefined("ジャンプ", u.FeatureName("ジャンプ")))
+                {
+                    u.PlayAnimation("ジャンプ", u.FeatureName("ジャンプ"));
+                }
+                else if (u.IsSpecialEffectDefined("ジャンプ", u.FeatureName("ジャンプ")))
+                {
+                    u.SpecialEffect("ジャンプ", u.FeatureName("ジャンプ"));
+                }
+                else
                 {
                     Sound.PlayWave("Swing.wav");
                 }

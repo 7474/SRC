@@ -213,7 +213,7 @@ namespace SRCCore
             wtype = CheckWeaponType(wname, wclass);
             if (wtype == "手裏剣")
             {
-                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うのでy
+                // 手裏剣は構えずにいきなり投げたほうがかっこいいと思うので
                 return;
             }
 
@@ -225,34 +225,29 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // TODO Impl item
-                //// 装備しているアイテムから武器を検索
-                //var loopTo = u.CountItem();
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock1 = u.Item(i);
-                //        if (withBlock1.Activated
-                //&& (withBlock1.Part() == "両手"
-                //|| withBlock1.Part() == "片手"
-                //|| withBlock1.Part() == "武器"))
-                //        {
-                //            wtype = CheckWeaponType(withBlock1.Nickname(), "");
-                //            if (!string.IsNullOrEmpty(wtype))
-                //            {
-                //                goto FoundWeaponType;
-                //            }
+                // 装備しているアイテムから武器を検索
+                foreach (var itm in u.ItemList)
+                {
+                    if (itm.Activated
+                        && (itm.Part() == "両手"
+                            || itm.Part() == "片手"
+                            || itm.Part() == "武器"))
+                    {
+                        wtype = CheckWeaponType(itm.Nickname(), "");
+                        if (!string.IsNullOrEmpty(wtype))
+                        {
+                            goto FoundWeaponType;
+                        }
 
-                //            wtype = CheckWeaponType(withBlock1.Class0(), "");
-                //            if (!string.IsNullOrEmpty(wtype))
-                //            {
-                //                goto FoundWeaponType;
-                //            }
+                        wtype = CheckWeaponType(itm.Class0(), "");
+                        if (!string.IsNullOrEmpty(wtype))
+                        {
+                            goto FoundWeaponType;
+                        }
 
-                //            break;
-                //        }
-                //    }
-                //}
+                        break;
+                    }
+                }
 
                 goto SkipShootingWeapon;
             }
@@ -1631,79 +1626,74 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // TODO Impl item
-                //// 装備しているアイテムから武器を検索
-                //var loopTo = u.CountItem();
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock = u.Item(i);
-                //        if (withBlock.Activated
-                //&& (withBlock.Part() == "両手"
-                //|| withBlock.Part() == "片手"
-                //|| withBlock.Part() == "武器"))
-                //        {
-                //            wtype = CheckWeaponType(withBlock.Nickname(), "");
-                //            if (string.IsNullOrEmpty(wtype))
-                //            {
-                //                wtype = CheckWeaponType(withBlock.Class0(), "");
-                //            }
+                // 装備しているアイテムから武器を検索
+                foreach (var itm in u.ItemList)
+                {
+                    if (itm.Activated
+                        && (itm.Part() == "両手"
+                            || itm.Part() == "片手"
+                            || itm.Part() == "武器"))
+                    {
+                        wtype = CheckWeaponType(itm.Nickname(), "");
+                        if (string.IsNullOrEmpty(wtype))
+                        {
+                            wtype = CheckWeaponType(itm.Class0(), "");
+                        }
 
-                //            break;
-                //        }
-                //    }
-                //}
+                        break;
+                    }
+                }
 
-                //switch (wtype ?? "")
-                //{
-                //    case "スピア":
-                //    case "ランス":
-                //    case "トライデント":
-                //    case "和槍":
-                //    case "エストック":
-                //        {
-                //            if (combo_attack)
-                //            {
-                //                wtype = "乱突";
-                //            }
-                //            else if (double_attack)
-                //            {
-                //                wtype = "連突";
-                //            }
-                //            else
-                //            {
-                //                wtype = "刺突";
-                //            }
+                switch (wtype ?? "")
+                {
+                    case "スピア":
+                    case "ランス":
+                    case "トライデント":
+                    case "和槍":
+                    case "エストック":
+                        {
+                            if (combo_attack)
+                            {
+                                wtype = "乱突";
+                            }
+                            else if (double_attack)
+                            {
+                                wtype = "連突";
+                            }
+                            else
+                            {
+                                wtype = "刺突";
+                            }
 
-                //            break;
-                //        }
+                            break;
+                        }
 
-                //    default:
-                //        {
-                //            if (combo_attack)
-                //            {
-                //                wtype = "白兵乱撃";
-                //            }
-                //            else if (double_attack)
-                //            {
-                //                wtype = "白兵連撃";
-                //            }
-                //            else if (Strings.InStr(wname, "回転") > 0)
-                //            {
-                //                wtype = "白兵回転";
-                //            }
-                //            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
-                //            {
-                //                wtype = "振り上げ";
-                //            }
-                //            else
-                //            {
-                //                wtype = "白兵武器";
-                //            }
+                    default:
+                        {
+                            if (combo_attack)
+                            {
+                                wtype = "白兵乱撃";
+                            }
+                            else if (double_attack)
+                            {
+                                wtype = "白兵連撃";
+                            }
+                            else if (Strings.InStr(wname, "回転") > 0)
+                            {
+                                wtype = "白兵回転";
+                            }
+                            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
+                            {
+                                wtype = "振り上げ";
+                            }
+                            else
+                            {
+                                wtype = "白兵武器";
+                            }
 
-                //            break;
-                //        }
-                //}
+                            break;
+                        }
+                }
 
                 goto FoundWeaponType;
             }
@@ -4108,91 +4098,86 @@ namespace SRCCore
             // 詳細が分からなかった武器
             if (GeneralLib.InStrNotNest(wclass, "武") > 0)
             {
-                // TODO Impl item
-                //// 装備しているアイテムから武器を検索
-                //var loopTo = u.CountItem();
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock = u.Item(i);
-                //        if (withBlock.Activated
-                //&& (withBlock.Part() == "両手"
-                //|| withBlock.Part() == "片手"
-                //|| withBlock.Part() == "武器"))
-                //        {
-                //            wtype = CheckWeaponType(withBlock.Nickname(), "");
-                //            if (string.IsNullOrEmpty(wtype))
-                //            {
-                //                wtype = CheckWeaponType(withBlock.Class0(), "");
-                //            }
+                // 装備しているアイテムから武器を検索
+                foreach (var itm in u.ItemList)
+                {
+                    if (itm.Activated
+                        && (itm.Part() == "両手"
+                            || itm.Part() == "片手"
+                            || itm.Part() == "武器"))
+                    {
+                        wtype = CheckWeaponType(itm.Nickname(), "");
+                        if (string.IsNullOrEmpty(wtype))
+                        {
+                            wtype = CheckWeaponType(itm.Class0(), "");
+                        }
 
-                //            break;
-                //        }
-                //    }
-                //}
+                        break;
+                    }
+                }
 
-                //switch (wtype ?? "")
-                //{
-                //    case "スピア":
-                //    case "ランス":
-                //    case "トライデント":
-                //    case "和槍":
-                //    case "エストック":
-                //        {
-                //            if (combo_attack)
-                //            {
-                //                wtype = "乱突";
-                //            }
-                //            else if (double_attack)
-                //            {
-                //                wtype = "連突";
-                //            }
-                //            else
-                //            {
-                //                wtype = "刺突";
-                //            }
+                switch (wtype ?? "")
+                {
+                    case "スピア":
+                    case "ランス":
+                    case "トライデント":
+                    case "和槍":
+                    case "エストック":
+                        {
+                            if (combo_attack)
+                            {
+                                wtype = "乱突";
+                            }
+                            else if (double_attack)
+                            {
+                                wtype = "連突";
+                            }
+                            else
+                            {
+                                wtype = "刺突";
+                            }
 
-                //            break;
-                //        }
+                            break;
+                        }
 
-                //    default:
-                //        {
-                //            if (combo_attack)
-                //            {
-                //                wtype = "斬撃乱舞";
-                //            }
-                //            else if (double_weapon)
-                //            {
-                //                wtype = "ダブル斬撃";
-                //            }
-                //            else if (double_attack)
-                //            {
-                //                wtype = "連斬撃";
-                //            }
-                //            else if (GeneralLib.InStrNotNest(wclass, "火") > 0)
-                //            {
-                //                wtype = "炎斬撃";
-                //            }
-                //            else if (GeneralLib.InStrNotNest(wclass, "雷") > 0)
-                //            {
-                //                wtype = "雷斬撃";
-                //            }
-                //            else if (GeneralLib.InStrNotNest(wclass, "冷") > 0)
-                //            {
-                //                wtype = "凍斬撃";
-                //            }
-                //            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
-                //            {
-                //                wtype = "斬り上げ";
-                //            }
-                //            else
-                //            {
-                //                wtype = "斬撃";
-                //            }
+                    default:
+                        {
+                            if (combo_attack)
+                            {
+                                wtype = "斬撃乱舞";
+                            }
+                            else if (double_weapon)
+                            {
+                                wtype = "ダブル斬撃";
+                            }
+                            else if (double_attack)
+                            {
+                                wtype = "連斬撃";
+                            }
+                            else if (GeneralLib.InStrNotNest(wclass, "火") > 0)
+                            {
+                                wtype = "炎斬撃";
+                            }
+                            else if (GeneralLib.InStrNotNest(wclass, "雷") > 0)
+                            {
+                                wtype = "雷斬撃";
+                            }
+                            else if (GeneralLib.InStrNotNest(wclass, "冷") > 0)
+                            {
+                                wtype = "凍斬撃";
+                            }
+                            else if (GeneralLib.InStrNotNest(wclass, "Ｊ") > 0)
+                            {
+                                wtype = "斬り上げ";
+                            }
+                            else
+                            {
+                                wtype = "斬撃";
+                            }
 
-                //            break;
-                //        }
-                //}
+                            break;
+                        }
+                }
 
                 goto FoundWeaponType;
             }
@@ -6603,8 +6588,8 @@ namespace SRCCore
         {
             var defined = default(bool);
             if (GeneralLib.LIndex(fdata, 1) == "Ｂ"
-|| GeneralLib.LIndex(fdata, 2) == "Ｂ"
-|| GeneralLib.LIndex(fdata, 3) == "Ｂ")
+        || GeneralLib.LIndex(fdata, 2) == "Ｂ"
+        || GeneralLib.LIndex(fdata, 3) == "Ｂ")
             {
                 if (!be_quiet)
                 {
@@ -6706,7 +6691,7 @@ namespace SRCCore
                 else if (SRC.BattleAnimation)
                 {
                     if (Strings.InStr(fdata, "バリア無効化無効") == 0
-|| ecost > 0)
+        || ecost > 0)
                     {
                         if (fname == "バリア")
                         {
