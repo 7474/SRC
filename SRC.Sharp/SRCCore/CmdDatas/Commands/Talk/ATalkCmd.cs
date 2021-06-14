@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Extensions;
+using SRCCore.VB;
 using System.Drawing;
 
 namespace SRCCore.CmdDatas.Commands
@@ -45,20 +46,19 @@ namespace SRCCore.CmdDatas.Commands
                                 pname = "";
                             }
 
-                            // TODO Impl メインパイロットの強制指定
-                            //if (Strings.Left(pname, 1) == "@")
-                            //{
-                            //    // メインパイロットの強制指定
-                            //    pname = Strings.Mid(pname, 2);
-                            //    if (SRC.PList.IsDefined(pname))
-                            //    {
-                            //        var p = SRC.PList.Item(pname);
-                            //        if (p.Unit != null)
-                            //        {
-                            //            pname = p.Unit.MainPilot().Name;
-                            //        }
-                            //    }
-                            //}
+                            if (Strings.Left(pname, 1) == "@")
+                            {
+                                // メインパイロットの強制指定
+                                pname = Strings.Mid(pname, 2);
+                                if (SRC.PList.IsDefined(pname))
+                                {
+                                    var p = SRC.PList.Item(pname);
+                                    if (p.Unit != null)
+                                    {
+                                        pname = p.Unit.MainPilot().Name;
+                                    }
+                                }
+                            }
 
                             // 話者名チェック
                             if (
