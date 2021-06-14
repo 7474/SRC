@@ -950,7 +950,6 @@ namespace SRCCore.Expressions
             string str_result = null;
             double num_result = 0d;
             // システム変数？
-            // TODO Impl
             switch (vname ?? "")
             {
                 case "対象ユニット":
