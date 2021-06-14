@@ -24,7 +24,7 @@ namespace SRCCore.CmdDatas.Commands
                         }
 
                         Expression.SetVariableAsLong(vname, 1);
-                        // TODO NewGUI
+                        // XXX NewGUIMode
                         //if (vname == "Option(新ＧＵＩ)")
                         //{
                         //    // 新ＧＵＩが指定されたら即反映するためにメイン画面をロードしなおす
