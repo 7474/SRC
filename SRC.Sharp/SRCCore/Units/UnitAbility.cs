@@ -1427,131 +1427,124 @@ namespace SRCCore.Units
         // アビリティがターゲットtに対して適用可能かどうか
         public bool IsAbilityApplicable(Unit t)
         {
+            if (IsAbilityClassifiedAs("封"))
+            {
+                if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
+                {
+                    return false;
+                }
+            }
+
+            if (IsAbilityClassifiedAs("限"))
+            {
+                bool localWeakness()
+                {
+                    string argstring2 = "限";
+                    string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1);
+                    var ret = t.Weakness(arganame); return ret;
+                }
+
+                bool localEffective()
+                {
+                    string argstring2 = "限";
+                    string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1);
+                    var ret = t.Effective(arganame); return ret;
+                }
+
+                if (!localWeakness() && !localEffective())
+                {
+                    return false;
+                }
+            }
+
+            if (Unit == t)
+            {
+                // 支援専用アビリティは自分には使用できない
+                if (!IsAbilityClassifiedAs("援"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            // 無効化の対象になる場合は使用出来ない
+            if (t.Immune(Data.Class))
+            {
+                if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
+                {
+                    return false;
+                }
+            }
+
+            if (IsAbilityClassifiedAs("視"))
+            {
+                if (t.IsConditionSatisfied("盲目"))
+                {
+                    return false;
+                }
+            }
+
+            {
+                var p = t.MainPilot();
+                if (IsAbilityClassifiedAs("対"))
+                {
+                    if (p.Level % AbilityLevel("対") != 0d)
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("精"))
+                {
+                    if (p.Personality == "機械")
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("♂"))
+                {
+                    if (p.Sex != "男性")
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("♀"))
+                {
+                    if (p.Sex != "女性")
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // 修理不可
+            if (t.IsFeatureAvailable("修理不可"))
+            {
+                if(Data.Effects.Any(x => x.Name == "回復"))
+                {
+                    foreach(var _fname in t.Feature("修理不可").DataL.Skip(1))
+                    {
+                        var fname = _fname;
+                        if (Strings.Left(fname, 1) == "!")
+                        {
+                            fname = Strings.Mid(fname, 2);
+                            if ((fname ?? "") != (AbilityNickname() ?? ""))
+                            {
+                                return false;
+                            }
+                        }
+                        else if ((fname ?? "") == (AbilityNickname() ?? ""))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             return true;
-            // TODO Impl
-            //bool IsAbilityApplicableRet = default;
-            //int i;
-            //string fname;
-            //if (IsAbilityClassifiedAs("封"))
-            //{
-            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (IsAbilityClassifiedAs("限"))
-            //{
-            //    bool localWeakness() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Weakness(arganame); return ret; }
-
-            //    bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
-
-            //    if (!localWeakness() && !localEffective())
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (ReferenceEquals(this, t))
-            //{
-            //    // 支援専用アビリティは自分には使用できない
-            //    if (!IsAbilityClassifiedAs("援"))
-            //    {
-            //        IsAbilityApplicableRet = true;
-            //    }
-
-            //    return IsAbilityApplicableRet;
-            //}
-
-            //// 無効化の対象になる場合は使用出来ない
-            //if (t.Immune(Data.Class))
-            //{
-            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (IsAbilityClassifiedAs("視"))
-            //{
-            //    if (t.IsConditionSatisfied("盲目"))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //{
-            //    var withBlock = t.MainPilot();
-            //    if (IsAbilityClassifiedAs("対"))
-            //    {
-            //        // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (withBlock.Level % AbilityLevel("対") != 0d)
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("精"))
-            //    {
-            //        if (withBlock.Personality == "機械")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("♂"))
-            //    {
-            //        if (withBlock.Sex != "男性")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("♀"))
-            //    {
-            //        if (withBlock.Sex != "女性")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-            //}
-
-            //// 修理不可
-            //if (t.IsFeatureAvailable("修理不可"))
-            //{
-            //    var loopTo = Data.CountEffect();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (Data.EffectType(i) == "回復")
-            //        {
-            //            break;
-            //        }
-            //    }
-
-            //    if (i <= Data.CountEffect())
-            //    {
-            //        var loopTo1 = Conversions.ToInteger(t.FeatureData("修理不可"));
-            //        for (i = 2; i <= loopTo1; i++)
-            //        {
-            //            fname = GeneralLib.LIndex(t.FeatureData("修理不可"), i);
-            //            if (Strings.Left(fname, 1) == "!")
-            //            {
-            //                fname = Strings.Mid(fname, 2);
-            //                if ((fname ?? "") != (AbilityNickname() ?? ""))
-            //                {
-            //                    return IsAbilityApplicableRet;
-            //                }
-            //            }
-            //            else if ((fname ?? "") == (AbilityNickname() ?? ""))
-            //            {
-            //                return IsAbilityApplicableRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //IsAbilityApplicableRet = true;
-            //return IsAbilityApplicableRet;
         }
 
         // ユニット t がアビリティ a の射程範囲内にいるかをチェック
