@@ -316,688 +316,585 @@ namespace SRCCore.Units
         // アビリティ a が術かどうか
         public bool IsSpellAbility()
         {
-            return false;
-            // TODO Impl
-            //bool IsSpellAbilityRet = default;
-            //int i;
-            //string nskill;
-            //if (IsAbilityClassifiedAs("術"))
-            //{
-            //    IsSpellAbilityRet = true;
-            //    return IsSpellAbilityRet;
-            //}
+            bool IsSpellAbilityRet = default;
+            int i;
+            string nskill;
+            if (IsAbilityClassifiedAs("術"))
+            {
+                IsSpellAbilityRet = true;
+                return IsSpellAbilityRet;
+            }
 
-            //{
-            //    var p = Unit.MainPilot();
-            //    var loopTo = GeneralLib.LLength(Data.NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(Data.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (p.SkillType(nskill) == "術")
-            //        {
-            //            IsSpellAbilityRet = true;
-            //            return IsSpellAbilityRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "術")
+                    {
+                        IsSpellAbilityRet = true;
+                        return IsSpellAbilityRet;
+                    }
+                }
+            }
 
-            //return IsSpellAbilityRet;
+            return IsSpellAbilityRet;
         }
 
         // アビリティ a が技かどうか
         public bool IsFeatAbility()
         {
-            return false;
-            // TODO Impl
-            //bool IsFeatAbilityRet = default;
-            //int i;
-            //string nskill;
-            //if (IsAbilityClassifiedAs("技"))
-            //{
-            //    IsFeatAbilityRet = true;
-            //    return IsFeatAbilityRet;
-            //}
+            bool IsFeatAbilityRet = default;
+            int i;
+            string nskill;
+            if (IsAbilityClassifiedAs("技"))
+            {
+                IsFeatAbilityRet = true;
+                return IsFeatAbilityRet;
+            }
 
-            //{
-            //    var withBlock = MainPilot();
-            //    var loopTo = GeneralLib.LLength(Data.NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(Data.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (withBlock.SkillType(nskill) == "技")
-            //        {
-            //            IsFeatAbilityRet = true;
-            //            return IsFeatAbilityRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "技")
+                    {
+                        IsFeatAbilityRet = true;
+                        return IsFeatAbilityRet;
+                    }
+                }
+            }
 
-            //return IsFeatAbilityRet;
+            return IsFeatAbilityRet;
         }
 
         // アビリティ a が使用可能かどうか
-        //_mode はユニットの状態（移動前、移動後）を示す
-        public bool IsAbilityAvailable(string mode)
+        // ref_mode はユニットの状態（移動前、移動後）を示す
+        public bool IsAbilityAvailable(string ref_mode)
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityAvailableRet = default;
-            //int j, i, k;
-            //AbilityData ad;
-            //string uname, pname;
-            //Unit u;
-            //IsAbilityAvailableRet = false;
-            //ad = Data;
-
-            //// イベントコマンド「Disable」
-            //if (IsDisabled(ad.Name))
-            //{
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// パイロットが乗っていなければ常に使用可能と判定
-            //if (CountPilot() == 0)
-            //{
-            //    IsAbilityAvailableRet = true;
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// 必要技能
-            //if (!IsAbilityMastered())
-            //{
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// 必要条件
-            //if (!IsAbilityEnabled())
-            //{
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// ステータス表示では必要技能だけ満たしていればＯＫ
-            //if (ref_mode == "インターミッション" || string.IsNullOrEmpty(ref_mode))
-            //{
-            //    IsAbilityAvailableRet = true;
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //{
-            //    var withBlock = MainPilot();
-            //    // 必要気力
-            //    if (ad.NecessaryMorale > 0)
-            //    {
-            //        if (withBlock.Morale < ad.NecessaryMorale)
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-
-            //    // 霊力消費アビリティ
-            //    if (IsAbilityClassifiedAs("霊"))
-            //    {
-            //        if (withBlock.Plana < AbilityLevel("霊") * 5d)
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-            //    else if (IsAbilityClassifiedAs("プ"))
-            //    {
-            //        if (withBlock.Plana < AbilityLevel("プ") * 5d)
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-            //}
-
-            //// 属性使用不能状態
-            //if (ConditionLifetime("オーラ使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("オ"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("超能力使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("超"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("同調率使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("シ"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("超感覚使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("サ"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("知覚強化使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("サ"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("霊力使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("霊"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("術使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("術"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //if (ConditionLifetime("技使用不能") > 0)
-            //{
-            //    if (IsAbilityClassifiedAs("技"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //var loopTo = CountCondition();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    string localCondition3() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
-
-            //    if (Strings.Len(localCondition3()) > 6)
-            //    {
-            //        string localCondition2() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
-
-            //        if (Strings.Right(localCondition2(), 6) == "属性使用不能")
-            //        {
-            //            string localCondition() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
-
-            //            string localCondition1() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
-
-            //            if (GeneralLib.InStrNotNest(Data.Class, Strings.Left(localCondition(), Strings.Len(localCondition1()) - 6)) > 0)
-            //            {
-            //                return IsAbilityAvailableRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 弾数が足りるか
-            //if (MaxStock() > 0)
-            //{
-            //    if (Stock() < 1)
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// ＥＮが足りるか
-            //if (ad.ENConsumption > 0)
-            //{
-            //    if (EN < AbilityENConsumption())
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// お金が足りるか……
-            //if (Party == "味方")
-            //{
-            //    if (IsAbilityClassifiedAs("銭"))
-            //    {
-            //        if (SRC.Money < GeneralLib.MaxLng(AbilityLevel("銭"), 1) * Value / 10)
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-            //}
-
-            //// 移動不能時には移動型マップアビリティは使用不能
-            //if (IsConditionSatisfied("移動不能"))
-            //{
-            //    if (IsAbilityClassifiedAs("Ｍ移"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// 術及び音声技は沈黙状態では使用不能
-            //if (IsConditionSatisfied("沈黙"))
-            //{
-            //    {
-            //        var withBlock1 = MainPilot();
-            //        if (IsSpellAbility() || IsAbilityClassifiedAs("音"))
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-            //}
-
-            //// 術は狂戦士状態では使用不能
-            //if (Unit.IsConditionSatisfied("狂戦士"))
-            //{
-            //    {
-            //        var withBlock2 = MainPilot();
-            //        if (IsSpellAbility())
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-            //}
-
-            //// 合体技の処理
-            //if (IsAbilityClassifiedAs("合"))
-            //{
-            //    if (!IsCombinationAbilityAvailable())
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// この地形で変形できるか？
-            //if (IsAbilityClassifiedAs("変"))
-            //{
-            //    if (IsFeatureAvailable("変形技"))
-            //    {
-            //        var loopTo1 = CountFeature();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
-
-            //            string localFeatureData1() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //            string localLIndex1() { string arglist = hsc19c10c9cae54732ac7c9c2e90257bd2(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //            if (localFeature() == "変形技" && (localLIndex1() ?? "") == (ad.Name ?? ""))
-            //            {
-            //                string localFeatureData() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-            //                string localLIndex() { string arglist = hs999a427db36f427e9868be6a72c4f4c0(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                Unit localOtherForm() { object argIndex1 = (object)hsb208b29f50af4a41be714b7083a85c98(); var ret = OtherForm(argIndex1); return ret; }
-
-            //                if (!localOtherForm().IsAbleToEnter(x, y))
-            //                {
-            //                    return IsAbilityAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else if (IsFeatureAvailable("ノーマルモード"))
-            //    {
-            //        string localLIndex2() { object argIndex1 = "ノーマルモード"; string arglist = FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //        Unit localOtherForm1() { object argIndex1 = (object)hs89e8cc23250142a2b15ab7b087ddcbd2(); var ret = OtherForm(argIndex1); return ret; }
-
-            //        if (!localOtherForm1().IsAbleToEnter(x, y))
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-            //    }
-
-            //    if (IsConditionSatisfied("形態固定"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-
-            //    if (IsConditionSatisfied("機体固定"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// 瀕死時限定
-            //if (IsAbilityClassifiedAs("瀕"))
-            //{
-            //    if (HP > MaxHP / 4)
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //// 自動チャージアビリティを充填中
-            //if (IsConditionSatisfied(AbilityNickname() + "充填中"))
-            //{
-            //    return IsAbilityAvailableRet;
-            //}
-            //// 共有武器＆アビリティが充填中の場合も使用不可
-            //int lv;
-            //if (IsAbilityClassifiedAs("共"))
-            //{
-            //    lv = AbilityLevel("共");
-            //    var loopTo2 = CountAbility();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        if (IsAbilityClassifiedAs(i, "共"))
-            //        {
-            //            if (lv == AbilityLevel(i, "共"))
-            //            {
-            //                if (IsConditionSatisfied(AbilityNickname(i) + "充填中"))
-            //                {
-            //                    return IsAbilityAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    var loopTo3 = CountAbility();
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        if (IsAbilityClassifiedAs(i, "共"))
-            //        {
-            //            if (lv == AbilityLevel(i, "共"))
-            //            {
-            //                if (IsConditionSatisfied(AbilityNickname(i) + "充填中"))
-            //                {
-            //                    return IsAbilityAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 使用禁止
-            //if (Conversions.ToInteger(IsAbilityClassifiedAs("禁")) > 0)
-            //{
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// チャージ判定であればここまででＯＫ
-            //if (ref_mode == "チャージ")
-            //{
-            //    IsAbilityAvailableRet = true;
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //// チャージ式アビリティ
-            //if (IsAbilityClassifiedAs("Ｃ"))
-            //{
-            //    if (!IsConditionSatisfied("チャージ完了"))
-            //    {
-            //        return IsAbilityAvailableRet;
-            //    }
-            //}
-
-            //var loopTo4 = ad.CountEffect();
-            //for (i = 1; i <= loopTo4; i++)
-            //{
-            //    if (ad.EffectType(i) == "召喚")
-            //    {
-            //        // 召喚は既に召喚を行っている場合には不可能
-            //        var loopTo5 = CountServant();
-            //        for (j = 1; j <= loopTo5; j++)
-            //        {
-            //            Unit localServant() { object argIndex1 = j; var ret = Servant(argIndex1); return ret; }
-
-            //            {
-            //                var withBlock3 = localServant().CurrentForm();
-            //                switch (withBlock3.Status ?? "")
-            //                {
-            //                    case "出撃":
-            //                    case "格納":
-            //                        {
-            //                            // 使用不可
-            //                            return IsAbilityAvailableRet;
-            //                        }
-
-            //                    case "旧主形態":
-            //                    case "旧形態":
-            //                        {
-            //                            // 合体後の形態が出撃中なら使用不可
-            //                            var loopTo6 = withBlock3.CountFeature();
-            //                            for (k = 1; k <= loopTo6; k++)
-            //                            {
-            //                                if (withBlock3.Feature(k) == "合体")
-            //                                {
-            //                                    string localFeatureData2() { object argIndex1 = k; var ret = withBlock3.FeatureData(argIndex1); return ret; }
-
-            //                                    uname = GeneralLib.LIndex(localFeatureData2(), 2);
-            //                                    if (SRC.UList.IsDefined(uname))
-            //                                    {
-            //                                        Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //                                        {
-            //                                            var withBlock4 = localItem().CurrentForm();
-            //                                            if (withBlock4.Status == "出撃" || withBlock4.Status == "格納")
-            //                                            {
-            //                                                return IsAbilityAvailableRet;
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-
-            //        // 召喚ユニットのデータがちゃんと定義されているかチェック
-            //        string localEffectData() { object argIndex1 = i; var ret = ad.EffectData(argIndex1); return ret; }
-
-            //        bool localIsDefined() { object argIndex1 = (object)hsdeb28db1320b43f3b566123058fdd2af(); var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            //        if (!localIsDefined())
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-
-            //        string localEffectData1() { object argIndex1 = i; var ret = ad.EffectData(argIndex1); return ret; }
-
-            //        UnitData localItem1() { object argIndex1 = (object)hsdcada415e8eb41c68f44c81ef2bb94c6(); var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //        pname = localItem1().FeatureData("追加パイロット");
-            //        bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-            //        if (!localIsDefined1())
-            //        {
-            //            return IsAbilityAvailableRet;
-            //        }
-
-            //        // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
-            //        // ない場合、そのユニットが既に出撃中であれば使用不可
-            //        if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
-            //        {
-            //            if (SRC.PList.IsDefined(pname))
-            //            {
-            //                Pilot localItem2() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //                u = localItem2().Unit;
-            //                if (u is object)
-            //                {
-            //                    if (u.Status == "出撃" || u.Status == "格納")
-            //                    {
-            //                        return IsAbilityAvailableRet;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (ref_mode == "ステータス")
-            //{
-            //    IsAbilityAvailableRet = true;
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //var loopTo7 = ad.CountEffect();
-            //for (i = 1; i <= loopTo7; i++)
-            //{
-            //    if (ad.EffectType(i) == "変身")
-            //    {
-            //        // 自分を変身させる場合
-            //        if (this.Data.MaxRange == 0)
-            //        {
-            //            // ノーマルモードを持つユニットは変身できない
-            //            // (変身からの復帰が出来ないため)
-            //            if (IsFeatureAvailable("ノーマルモード"))
-            //            {
-            //                return IsAbilityAvailableRet;
-            //            }
-
-            //            // その場所で変身可能か？
-            //            string localEffectData2() { object argIndex1 = i; var ret = Data.EffectData(argIndex1); return ret; }
-
-            //            string localLIndex3() { string arglist = hsc2f37474313640f6843767ac6d51a5dd(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-            //            {
-            //                var withBlock5 = OtherForm(localLIndex3());
-            //                if (!withBlock5.IsAbleToEnter(x, y))
-            //                {
-            //                    return IsAbilityAvailableRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (ref_mode == "移動前")
-            //{
-            //    IsAbilityAvailableRet = true;
-            //    return IsAbilityAvailableRet;
-            //}
-
-            //if (AbilityMaxRange() > 1 || AbilityMaxRange() == 0)
-            //{
-            //    if (IsAbilityClassifiedAs("Ｐ"))
-            //    {
-            //        IsAbilityAvailableRet = true;
-            //    }
-            //    else
-            //    {
-            //        IsAbilityAvailableRet = false;
-            //    }
-            //}
-            //else
-            //{
-            //    if (IsAbilityClassifiedAs("Ｑ"))
-            //    {
-            //        IsAbilityAvailableRet = false;
-            //    }
-            //    else
-            //    {
-            //        IsAbilityAvailableRet = true;
-            //    }
-            //}
-
-            //return IsAbilityAvailableRet;
+            bool IsAbilityAvailableRet = default;
+            int j, i, k;
+            AbilityData ad;
+            string uname, pname;
+            Unit u;
+            IsAbilityAvailableRet = false;
+            ad = Data;
+
+            // イベントコマンド「Disable」
+            if (Unit.IsDisabled(ad.Name))
+            {
+                return IsAbilityAvailableRet;
+            }
+
+            // パイロットが乗っていなければ常に使用可能と判定
+            if (Unit.CountPilot() == 0)
+            {
+                IsAbilityAvailableRet = true;
+                return IsAbilityAvailableRet;
+            }
+
+            // 必要技能
+            if (!IsAbilityMastered())
+            {
+                return IsAbilityAvailableRet;
+            }
+
+            // 必要条件
+            if (!IsAbilityEnabled())
+            {
+                return IsAbilityAvailableRet;
+            }
+
+            // ステータス表示では必要技能だけ満たしていればＯＫ
+            if (ref_mode == "インターミッション" || string.IsNullOrEmpty(ref_mode))
+            {
+                IsAbilityAvailableRet = true;
+                return IsAbilityAvailableRet;
+            }
+
+            {
+                var p = Unit.MainPilot();
+                // 必要気力
+                if (ad.NecessaryMorale > 0)
+                {
+                    if (p.Morale < ad.NecessaryMorale)
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+
+                // 霊力消費アビリティ
+                if (IsAbilityClassifiedAs("霊"))
+                {
+                    if (p.Plana < AbilityLevel("霊") * 5d)
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+                else if (IsAbilityClassifiedAs("プ"))
+                {
+                    if (p.Plana < AbilityLevel("プ") * 5d)
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+            }
+
+            // 属性使用不能状態
+            if (Unit.ConditionLifetime("オーラ使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("オ"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("超能力使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("超"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("同調率使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("シ"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("超感覚使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("サ"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("知覚強化使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("サ"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("霊力使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("霊"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("術使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("術"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            if (Unit.ConditionLifetime("技使用不能") > 0)
+            {
+                if (IsAbilityClassifiedAs("技"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+            foreach (var cond in Unit.Conditions)
+            {
+                if (Strings.Len(cond.Name) > 6)
+                {
+                    if (Strings.Right(cond.Name, 6) == "属性使用不能")
+                    {
+                        if (GeneralLib.InStrNotNest(Data.Class, Strings.Left(cond.Name, Strings.Len(cond.Name) - 6)) > 0)
+                        {
+                            return IsAbilityAvailableRet;
+                        }
+                    }
+                }
+            }
+
+            // 弾数が足りるか
+            if (MaxStock() > 0)
+            {
+                if (Stock() < 1)
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // ＥＮが足りるか
+            if (ad.ENConsumption > 0)
+            {
+                if (Unit.EN < AbilityENConsumption())
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // お金が足りるか……
+            if (Unit.Party == "味方")
+            {
+                if (IsAbilityClassifiedAs("銭"))
+                {
+                    if (SRC.Money < GeneralLib.MaxLng((int)AbilityLevel("銭"), 1) * Unit.Value / 10)
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+            }
+
+            // 移動不能時には移動型マップアビリティは使用不能
+            if (Unit.IsConditionSatisfied("移動不能"))
+            {
+                if (IsAbilityClassifiedAs("Ｍ移"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // 術及び音声技は沈黙状態では使用不能
+            if (Unit.IsConditionSatisfied("沈黙"))
+            {
+                {
+                    var withBlock1 = Unit.MainPilot();
+                    if (IsSpellAbility() || IsAbilityClassifiedAs("音"))
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+            }
+
+            // 術は狂戦士状態では使用不能
+            if (Unit.IsConditionSatisfied("狂戦士"))
+            {
+                {
+                    var withBlock2 = Unit.MainPilot();
+                    if (IsSpellAbility())
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+            }
+
+            // 合体技の処理
+            if (IsAbilityClassifiedAs("合"))
+            {
+                if (!IsCombinationAbilityAvailable())
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // この地形で変形できるか？
+            if (IsAbilityClassifiedAs("変"))
+            {
+                if (Unit.IsConditionSatisfied("形態固定"))
+                {
+                    return false;
+                }
+
+                if (Unit.IsConditionSatisfied("機体固定"))
+                {
+                    return false;
+                }
+
+                // XXX 変形技が妥当に定義されていなかった場合
+                if (Unit.IsFeatureAvailable("変形技"))
+                {
+                    foreach (var feature in Unit.Features
+                        .Where(x => x.Name == "変形技")
+                        .Where(x => x.DataL.FirstOrDefault() == Data.Name))
+                    {
+                        if (!Unit.OtherForm(feature.DataL.Skip(1).FirstOrDefault()).IsAbleToEnter(Unit.x, Unit.y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (Unit.IsFeatureAvailable("ノーマルモード"))
+                {
+                    if (!Unit.OtherForm(GeneralLib.LIndex(Unit.FeatureData("ノーマルモード"), 1)).IsAbleToEnter(Unit.x, Unit.y))
+                    {
+                        return false;
+                    }
+                }
+
+                if (Unit.IsConditionSatisfied("形態固定"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+
+                if (Unit.IsConditionSatisfied("機体固定"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // 瀕死時限定
+            if (IsAbilityClassifiedAs("瀕"))
+            {
+                if (Unit.HP > Unit.MaxHP / 4)
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            // 自動チャージアビリティを充填中
+            if (Unit.IsConditionSatisfied(AbilityNickname() + "充填中"))
+            {
+                return IsAbilityAvailableRet;
+            }
+            // 共有武器＆アビリティが充填中の場合も使用不可
+            if (IsAbilityClassifiedAs("共"))
+            {
+                int lv = (int)AbilityLevel("共");
+                if (Unit.Weapons
+                    .Where(x => x.IsWeaponClassifiedAs("共"))
+                    .Where(x => x.WeaponLevel("共") == lv)
+                    .Where(x => Unit.IsConditionSatisfied(x.WeaponNickname() + "充填中"))
+                    .Any())
+                {
+                    return false;
+                }
+
+                if (Unit.Abilities
+                    .Where(x => x.IsAbilityClassifiedAs("共"))
+                    .Where(x => x.AbilityLevel("共") == lv)
+                    .Where(x => Unit.IsConditionSatisfied(x.AbilityNickname() + "充填中"))
+                    .Any())
+                {
+                    return false;
+                }
+            }
+
+            // 使用禁止
+            if (IsAbilityClassifiedAs("禁"))
+            {
+                return IsAbilityAvailableRet;
+            }
+
+            // チャージ判定であればここまででＯＫ
+            if (ref_mode == "チャージ")
+            {
+                IsAbilityAvailableRet = true;
+                return IsAbilityAvailableRet;
+            }
+
+            // チャージ式アビリティ
+            if (IsAbilityClassifiedAs("Ｃ"))
+            {
+                if (!Unit.IsConditionSatisfied("チャージ完了"))
+                {
+                    return IsAbilityAvailableRet;
+                }
+            }
+
+            foreach (var effect in ad.Effects.Where(x => x.EffectType == "召喚"))
+            {
+                // 召喚は既に召喚を行っている場合には不可能
+                foreach (var su in Unit.Servants)
+                {
+                    var cf = su.CurrentForm();
+                    switch (cf.Status ?? "")
+                    {
+                        case "出撃":
+                        case "格納":
+                            {
+                                // 使用不可
+                                return IsAbilityAvailableRet;
+                            }
+
+                        case "旧主形態":
+                        case "旧形態":
+                            {
+                                // 合体後の形態が出撃中なら使用不可
+                                foreach (var cffd in cf.Features.Where(x => x.Name == "合体"))
+                                {
+                                    uname = GeneralLib.LIndex(cffd.Data, 2);
+                                    if (SRC.UList.IsDefined(uname))
+                                    {
+                                        var cu = SRC.UList.Item(uname).CurrentForm();
+                                        if (cu.Status == "出撃" || cu.Status == "格納")
+                                        {
+                                            return IsAbilityAvailableRet;
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+
+                    // 召喚ユニットのデータがちゃんと定義されているかチェック
+                    if (!SRC.UDList.IsDefined(effect.Data))
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                    pname = SRC.UDList.Item(effect.Data).FeatureData("追加パイロット");
+                    if (!SRC.PDList.IsDefined(pname))
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+
+                    // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
+                    // ない場合、そのユニットが既に出撃中であれば使用不可
+                    if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
+                    {
+                        if (SRC.PList.IsDefined(pname))
+                        {
+                            u = SRC.PList.Item(pname).Unit;
+                            if (u is object)
+                            {
+                                if (u.Status == "出撃" || u.Status == "格納")
+                                {
+                                    return IsAbilityAvailableRet;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (ref_mode == "ステータス")
+            {
+                IsAbilityAvailableRet = true;
+                return IsAbilityAvailableRet;
+            }
+
+            foreach (var effect in ad.Effects.Where(x => x.EffectType == "変身"))
+            {
+                // 自分を変身させる場合
+                if (Data.MaxRange == 0)
+                {
+                    // ノーマルモードを持つユニットは変身できない
+                    // (変身からの復帰が出来ないため)
+                    if (Unit.IsFeatureAvailable("ノーマルモード"))
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                    var of = Unit.OtherForm(GeneralLib.LIndex(effect.Data, 1));
+                    if (!of.IsAbleToEnter(Unit.x, Unit.y))
+                    {
+                        return IsAbilityAvailableRet;
+                    }
+                }
+            }
+
+            if (ref_mode == "移動前")
+            {
+                IsAbilityAvailableRet = true;
+                return IsAbilityAvailableRet;
+            }
+
+            if (AbilityMaxRange() > 1 || AbilityMaxRange() == 0)
+            {
+                if (IsAbilityClassifiedAs("Ｐ"))
+                {
+                    IsAbilityAvailableRet = true;
+                }
+                else
+                {
+                    IsAbilityAvailableRet = false;
+                }
+            }
+            else
+            {
+                if (IsAbilityClassifiedAs("Ｑ"))
+                {
+                    IsAbilityAvailableRet = false;
+                }
+                else
+                {
+                    IsAbilityAvailableRet = true;
+                }
+            }
+
+            return IsAbilityAvailableRet;
         }
 
         // アビリティ a の必要技能を満たしているか。
         public bool IsAbilityMastered()
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityMasteredRet = default;
-            //IsAbilityMasteredRet = IsNecessarySkillSatisfied(Data.NecessarySkill, p: null);
-            //return IsAbilityMasteredRet;
+            return Unit.IsNecessarySkillSatisfied(Data.NecessarySkill, p: null);
         }
 
         // アビリティ a の必要条件を満たしているか。
         public bool IsAbilityEnabled()
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityEnabledRet = default;
-            //IsAbilityEnabledRet = IsNecessarySkillSatisfied(Data.NecessaryCondition, p: null);
-            //return IsAbilityEnabledRet;
+            return Unit.IsNecessarySkillSatisfied(Data.NecessaryCondition, p: null);
         }
 
         // アビリティが使用可能であり、かつ射程内に有効なターゲットがいるかどうか
-        public bool IsAbilityUseful(string mode)
+        public bool IsAbilityUseful(string ref_mode)
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityUsefulRet = default;
-            //int i, j;
-            //int max_range, min_range;
+            // アビリティが使用可能か？
+            if (!IsAbilityAvailable(ref_mode))
+            {
+                return false;
+            }
 
-            //// アビリティが使用可能か？
-            //if (!IsAbilityAvailable(_mode))
-            //{
-            //    IsAbilityUsefulRet = false;
-            //    return IsAbilityUsefulRet;
-            //}
+            // 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
+            // 移動型マップアビリティは移動手段として使うことを考慮
+            if (IsAbilityClassifiedAs("Ｍ投") || IsAbilityClassifiedAs("Ｍ扇") || IsAbilityClassifiedAs("Ｍ移"))
+            {
+                return true;
+            }
 
-            //// 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
-            //// 移動型マップアビリティは移動手段として使うことを考慮
-            //if (IsAbilityClassifiedAs("Ｍ投") || IsAbilityClassifiedAs("Ｍ投"1) || IsAbilityClassifiedAs("Ｍ投"2))
-            //{
-            //    IsAbilityUsefulRet = true;
-            //    return IsAbilityUsefulRet;
-            //}
+            // 召喚は常に有用
+            if (Data.Effects.Any(x => x.EffectType == "召喚"))
+            {
+                return true;
+            }
 
-            //// 召喚は常に有用
-            //var loopTo = Data.CountEffect();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if (Data.EffectType(i) == "召喚")
-            //    {
-            //        IsAbilityUsefulRet = true;
-            //        return IsAbilityUsefulRet;
-            //    }
-            //}
+            var min_range = AbilityMinRange();
+            var max_range = AbilityMaxRange();
 
-            //min_range = AbilityMinRange();
-            //max_range = AbilityMaxRange();
+            // 使用する相手がいるか検索
+            var loopTo1 = GeneralLib.MinLng(Unit.x + max_range, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(Unit.x - max_range, 1); i <= loopTo1; i++)
+            {
+                var loopTo2 = GeneralLib.MinLng(Unit.y + max_range, Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(Unit.y - max_range, 1); j <= loopTo2; j++)
+                {
+                    if ((Math.Abs((Unit.x - i)) + Math.Abs((Unit.y - j))) > max_range)
+                    {
+                        goto NextLoop;
+                    }
 
-            //// 使用する相手がいるか検索
-            //var loopTo1 = GeneralLib.MinLng(x + max_range, Map.MapWidth);
-            //for (i = GeneralLib.MaxLng(x - max_range, 1); i <= loopTo1; i++)
-            //{
-            //    var loopTo2 = GeneralLib.MinLng(y + max_range, Map.MapHeight);
-            //    for (j = GeneralLib.MaxLng(y - max_range, 1); j <= loopTo2; j++)
-            //    {
-            //        if ((Math.Abs((x - i)) + Math.Abs((y - j))) > max_range)
-            //        {
-            //            goto NextLoop;
-            //        }
+                    if (Map.MapDataForUnit[i, j] is null)
+                    {
+                        goto NextLoop;
+                    }
 
-            //        if (Map.MapDataForUnit[i, j] is null)
-            //        {
-            //            goto NextLoop;
-            //        }
+                    if (IsAbilityEffective(Map.MapDataForUnit[i, j]))
+                    {
+                        return true;
+                    }
 
-            //        if (IsAbilityEffective(Map.MapDataForUnit[i, j]))
-            //        {
-            //            IsAbilityUsefulRet = true;
-            //            return IsAbilityUsefulRet;
-            //        }
+                NextLoop:
+                    ;
+                }
+            }
 
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
-
-            //IsAbilityUsefulRet = false;
-            //return IsAbilityUsefulRet;
+            return false;
         }
 
         // アビリティがターゲットtに対して有効(役に立つ)かどうか
@@ -1530,300 +1427,272 @@ namespace SRCCore.Units
         // アビリティがターゲットtに対して適用可能かどうか
         public bool IsAbilityApplicable(Unit t)
         {
+            if (IsAbilityClassifiedAs("封"))
+            {
+                if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
+                {
+                    return false;
+                }
+            }
+
+            if (IsAbilityClassifiedAs("限"))
+            {
+                bool localWeakness()
+                {
+                    string argstring2 = "限";
+                    string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1);
+                    var ret = t.Weakness(arganame); return ret;
+                }
+
+                bool localEffective()
+                {
+                    string argstring2 = "限";
+                    string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1);
+                    var ret = t.Effective(arganame); return ret;
+                }
+
+                if (!localWeakness() && !localEffective())
+                {
+                    return false;
+                }
+            }
+
+            if (Unit == t)
+            {
+                // 支援専用アビリティは自分には使用できない
+                if (!IsAbilityClassifiedAs("援"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            // 無効化の対象になる場合は使用出来ない
+            if (t.Immune(Data.Class))
+            {
+                if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
+                {
+                    return false;
+                }
+            }
+
+            if (IsAbilityClassifiedAs("視"))
+            {
+                if (t.IsConditionSatisfied("盲目"))
+                {
+                    return false;
+                }
+            }
+
+            {
+                var p = t.MainPilot();
+                if (IsAbilityClassifiedAs("対"))
+                {
+                    if (p.Level % AbilityLevel("対") != 0d)
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("精"))
+                {
+                    if (p.Personality == "機械")
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("♂"))
+                {
+                    if (p.Sex != "男性")
+                    {
+                        return false;
+                    }
+                }
+
+                if (IsAbilityClassifiedAs("♀"))
+                {
+                    if (p.Sex != "女性")
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // 修理不可
+            if (t.IsFeatureAvailable("修理不可"))
+            {
+                if(Data.Effects.Any(x => x.Name == "回復"))
+                {
+                    foreach(var _fname in t.Feature("修理不可").DataL.Skip(1))
+                    {
+                        var fname = _fname;
+                        if (Strings.Left(fname, 1) == "!")
+                        {
+                            fname = Strings.Mid(fname, 2);
+                            if ((fname ?? "") != (AbilityNickname() ?? ""))
+                            {
+                                return false;
+                            }
+                        }
+                        else if ((fname ?? "") == (AbilityNickname() ?? ""))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             return true;
-            // TODO Impl
-            //bool IsAbilityApplicableRet = default;
-            //int i;
-            //string fname;
-            //if (IsAbilityClassifiedAs("封"))
-            //{
-            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (IsAbilityClassifiedAs("限"))
-            //{
-            //    bool localWeakness() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Weakness(arganame); return ret; }
-
-            //    bool localEffective() { string argstring2 = "限"; string arganame = Strings.Mid(Data.Class, GeneralLib.InStrNotNest(Data.Class, argstring2) + 1); var ret = t.Effective(arganame); return ret; }
-
-            //    if (!localWeakness() && !localEffective())
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (ReferenceEquals(this, t))
-            //{
-            //    // 支援専用アビリティは自分には使用できない
-            //    if (!IsAbilityClassifiedAs("援"))
-            //    {
-            //        IsAbilityApplicableRet = true;
-            //    }
-
-            //    return IsAbilityApplicableRet;
-            //}
-
-            //// 無効化の対象になる場合は使用出来ない
-            //if (t.Immune(Data.Class))
-            //{
-            //    if (!t.Weakness(Data.Class) && !t.Effective(Data.Class))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //if (IsAbilityClassifiedAs("視"))
-            //{
-            //    if (t.IsConditionSatisfied("盲目"))
-            //    {
-            //        return IsAbilityApplicableRet;
-            //    }
-            //}
-
-            //{
-            //    var withBlock = t.MainPilot();
-            //    if (IsAbilityClassifiedAs("対"))
-            //    {
-            //        // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (withBlock.Level % AbilityLevel("対") != 0d)
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("精"))
-            //    {
-            //        if (withBlock.Personality == "機械")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("♂"))
-            //    {
-            //        if (withBlock.Sex != "男性")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-
-            //    if (IsAbilityClassifiedAs("♀"))
-            //    {
-            //        if (withBlock.Sex != "女性")
-            //        {
-            //            return IsAbilityApplicableRet;
-            //        }
-            //    }
-            //}
-
-            //// 修理不可
-            //if (t.IsFeatureAvailable("修理不可"))
-            //{
-            //    var loopTo = Data.CountEffect();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (Data.EffectType(i) == "回復")
-            //        {
-            //            break;
-            //        }
-            //    }
-
-            //    if (i <= Data.CountEffect())
-            //    {
-            //        var loopTo1 = Conversions.ToInteger(t.FeatureData("修理不可"));
-            //        for (i = 2; i <= loopTo1; i++)
-            //        {
-            //            fname = GeneralLib.LIndex(t.FeatureData("修理不可"), i);
-            //            if (Strings.Left(fname, 1) == "!")
-            //            {
-            //                fname = Strings.Mid(fname, 2);
-            //                if ((fname ?? "") != (AbilityNickname() ?? ""))
-            //                {
-            //                    return IsAbilityApplicableRet;
-            //                }
-            //            }
-            //            else if ((fname ?? "") == (AbilityNickname() ?? ""))
-            //            {
-            //                return IsAbilityApplicableRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //IsAbilityApplicableRet = true;
-            //return IsAbilityApplicableRet;
         }
 
         // ユニット t がアビリティ a の射程範囲内にいるかをチェック
         public bool IsTargetWithinAbilityRange(Unit t)
         {
+            int distance = (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)));
+
+            // 最小射程チェック
+            if (distance < AbilityMinRange())
+            {
+                return false;
+            }
+
+            // 最大射程チェック
+            if (distance > AbilityMaxRange())
+            {
+                return false;
+            }
+
+            // 合体技で射程が１の場合は相手を囲んでいる必要がある
+            if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
+            {
+                var partners = CombinationPartner(t.x, t.y);
+                if (partners.Count > 0)
+                {
+                    return false;
+                }
+            }
+
             return true;
-            // TODO Impl
-            //bool IsTargetWithinAbilityRangeRet = default;
-            //int distance;
-            //IsTargetWithinAbilityRangeRet = true;
-            //distance = (Math.Abs((x - t.x)) + Math.Abs((y - t.y)));
-
-            //// 最小射程チェック
-            //if (distance < AbilityMinRange())
-            //{
-            //    IsTargetWithinAbilityRangeRet = false;
-            //    return IsTargetWithinAbilityRangeRet;
-            //}
-
-            //// 最大射程チェック
-            //if (distance > AbilityMaxRange())
-            //{
-            //    IsTargetWithinAbilityRangeRet = false;
-            //    return IsTargetWithinAbilityRangeRet;
-            //}
-
-            //// 合体技で射程が１の場合は相手を囲んでいる必要がある
-            //var partners = default(Unit[]);
-            //if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
-            //{
-            //    CombinationPartner("アビリティ", a, partners, t.x, t.y);
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        IsTargetWithinAbilityRangeRet = false;
-            //        return IsTargetWithinAbilityRangeRet;
-            //    }
-            //}
-
-            //return IsTargetWithinAbilityRangeRet;
         }
 
         // 移動を併用した場合にユニット t がアビリティ a の射程範囲内にいるかをチェック
         public bool IsTargetReachableForAbility(Unit t)
         {
-            return true;
-            // TODO Impl
-            //bool IsTargetReachableForAbilityRet = default;
-            //int i, j;
-            //int max_range;
-            //IsTargetReachableForAbilityRet = true;
-            //// 移動範囲から敵に攻撃が届くかをチェック
-            //max_range = AbilityMaxRange();
-            //var loopTo = GeneralLib.MinLng(t.x + max_range, Map.MapWidth);
-            //for (i = GeneralLib.MaxLng(t.x - max_range, 1); i <= loopTo; i++)
-            //{
-            //    var loopTo1 = GeneralLib.MinLng(t.y + (max_range - Math.Abs((t.x - i))), Map.MapHeight);
-            //    for (j = GeneralLib.MaxLng(t.y - (max_range - Math.Abs((t.x - i))), 1); j <= loopTo1; j++)
-            //    {
-            //        if (!Map.MaskData[i, j])
-            //        {
-            //            return IsTargetReachableForAbilityRet;
-            //        }
-            //    }
-            //}
+            // 移動範囲から敵に攻撃が届くかをチェック
+            var max_range = AbilityMaxRange();
+            var loopTo = GeneralLib.MinLng(t.x + max_range, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(t.x - max_range, 1); i <= loopTo; i++)
+            {
+                var loopTo1 = GeneralLib.MinLng(t.y + (max_range - Math.Abs((t.x - i))), Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(t.y - (max_range - Math.Abs((t.x - i))), 1); j <= loopTo1; j++)
+                {
+                    if (!Map.MaskData[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
 
-            //IsTargetReachableForAbilityRet = false;
-            //return IsTargetReachableForAbilityRet;
+            return false;
         }
 
         // アビリティの使用によるＥＮ、使用回数の消費等を行う
         public void UseAbility()
         {
-            // TODO Impl
-            //int i, lv;
-            //double hp_ratio, en_ratio;
-            //if (this.a.Ability().ENConsumption > 0)
-            //{
-            //    EN = EN - a.AbilityENConsumption();
-            //}
+            int i, lv;
+            double hp_ratio, en_ratio;
 
-            //if (this.a.Ability().Stock > 0)
-            //{
-            //    a.SetStock((a.Stock() - 1));
+            // ＥＮ消費
+            if (Data.ENConsumption > 0)
+            {
+                Unit.EN = Unit.EN - AbilityENConsumption();
+            }
 
-            //    // 一斉使用
-            //    if (a.IsAbilityClassifiedAs("斉"))
-            //    {
-            //        var loopTo = Information.UBound(dblStock);
-            //        for (i = 1; i <= loopTo; i++)
-            //            SetStock(i, GeneralLib.MinLng((MaxStock(i) * a.Stock()) / a.MaxStock(), Stock(i)));
-            //    }
-            //    else
-            //    {
-            //        var loopTo1 = Information.UBound(dblStock);
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            if (IsAbilityClassifiedAs(i, "斉"))
-            //            {
-            //                SetStock(i, GeneralLib.MinLng(((MaxStock(i) * a.Stock()) / a.MaxStock() + 0.49999d), Stock(i)));
-            //            }
-            //        }
-            //    }
+            // 弾数消費
+            if (Data.Stock > 0 && !IsAbilityClassifiedAs("永"))
+            {
+                SetStock((Stock() - 1));
 
-            //    // 弾数・使用回数共有の処理
-            //    SyncBullet();
-            //}
+                // 一斉使用
+                if (IsAbilityClassifiedAs("斉"))
+                {
+                    foreach (var ua in Unit.Abilities)
+                    {
+                        ua.SetStockRate(dblStock);
+                    }
+                }
+                else
+                {
+                    foreach (var ua in Unit.Abilities)
+                    {
+                        if (ua.IsAbilityClassifiedAs("斉"))
+                        {
+                            // XXX これどういう式なのかいまいち分からん
+                            ua.SetStock(GeneralLib.MinLng((int)(ua.MaxStock() * dblStock + 0.49999d), ua.Stock()));
+                        }
+                    }
+                }
 
-            //// 消耗技
-            //if (a.IsAbilityClassifiedAs("消"))
-            //{
-            //    AddCondition("消耗", 1, cdata: "");
-            //}
+                // 弾数・使用回数共有の処理
+                Unit.SyncBullet();
+            }
 
-            //// 全ＥＮ消費アビリティ
-            //if (a.IsAbilityClassifiedAs("尽"))
-            //{
-            //    EN = 0;
-            //}
+            if (IsAbilityClassifiedAs("消"))
+            {
+                Unit.AddCondition("消耗", 1, cdata: "");
+            }
 
-            //// チャージ式アビリティ
-            //if (a.IsAbilityClassifiedAs("Ｃ") && IsConditionSatisfied("チャージ完了"))
-            //{
-            //    DeleteCondition("チャージ完了");
-            //}
+            if (IsAbilityClassifiedAs("尽"))
+            {
+                Unit.EN = 0;
+            }
 
-            //// 自動充填式アビリティ
-            //if (a.AbilityLevel("Ａ") > 0d)
-            //{
-            //    AddCondition(a.AbilityNickname() + "充填中", a.AbilityLevel("Ａ"), cdata: "");
-            //}
+            if (IsAbilityClassifiedAs("Ｃ") && Unit.IsConditionSatisfied("チャージ完了"))
+            {
+                Unit.DeleteCondition("チャージ完了");
+            }
 
-            //// 気力を消費
-            //if (a.IsAbilityClassifiedAs("気"))
-            //{
-            //    IncreaseMorale((-5 * a.AbilityLevel("気")));
-            //}
+            if (AbilityLevel("Ａ") > 0d)
+            {
+                Unit.AddCondition(AbilityNickname() + "充填中", (int)AbilityLevel("Ａ"), cdata: "");
+            }
 
-            //// 霊力の消費
-            //if (a.IsAbilityClassifiedAs("霊"))
-            //{
-            //    hp_ratio = 100 * HP / (double)MaxHP;
-            //    en_ratio = 100 * EN / (double)MaxEN;
-            //    MainPilot().Plana = (this.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
-            //    HP = (MaxHP * hp_ratio / 100d);
-            //    EN = (MaxEN * en_ratio / 100d);
-            //}
-            //else if (a.IsAbilityClassifiedAs("プ"))
-            //{
-            //    hp_ratio = 100 * HP / (double)MaxHP;
-            //    en_ratio = 100 * EN / (double)MaxEN;
-            //    MainPilot().Plana = (this.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
-            //    HP = (MaxHP * hp_ratio / 100d);
-            //    EN = (MaxEN * en_ratio / 100d);
-            //}
+            if (IsAbilityClassifiedAs("気"))
+            {
+                Unit.IncreaseMorale((int)(-5 * AbilityLevel("気")));
+            }
 
-            //// 資金消費アビリティ
-            //if (Party == "味方")
-            //{
-            //    if (a.IsAbilityClassifiedAs("銭"))
-            //    {
-            //        SRC.IncrMoney(-GeneralLib.MaxLng(a.AbilityLevel("銭"), 1) * Value / 10);
-            //    }
-            //}
+            if (IsAbilityClassifiedAs("霊"))
+            {
+                hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
+                en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
+                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("霊"));
+                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+            }
+            else if (IsAbilityClassifiedAs("プ"))
+            {
+                hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
+                en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
+                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("プ"));
+                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+            }
 
-            //// ＨＰ消費アビリティ
-            //if (a.IsAbilityClassifiedAs("失"))
-            //{
-            //    HP = GeneralLib.MaxLng((HP - (long)(MaxHP * a.AbilityLevel("失")) / 10L), 0);
-            //}
+            if (Unit.Party == "味方")
+            {
+                if (IsAbilityClassifiedAs("銭"))
+                {
+                    SRC.IncrMoney(-GeneralLib.MaxLng((int)AbilityLevel("銭"), 1) * Unit.Value / 10);
+                }
+            }
+
+            if (IsAbilityClassifiedAs("失"))
+            {
+                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - (long)(Unit.MaxHP * AbilityLevel("失")) / 10L), 0);
+            }
         }
 
         // アビリティの残り使用回数
@@ -1867,6 +1736,11 @@ namespace SRCCore.Units
             }
         }
 
+        private void SetStockRate(double new_stock)
+        {
+            dblStock = new_stock;
+        }
+
         public void SetStockFull()
         {
             dblStock = 1d;
@@ -1875,88 +1749,28 @@ namespace SRCCore.Units
         // 合体技アビリティに必要なパートナーが見つかるか？
         public bool IsCombinationAbilityAvailable(bool check_formation = false)
         {
-            throw new NotImplementedException();
-            //bool IsCombinationAbilityAvailableRet = default;
-            //Unit[] partners;
-            //partners = new Unit[1];
-            //if (Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // 出撃時以外は相手が仲間にいるだけでＯＫ
-            //    CombinationPartner("アビリティ", a, partners, x, y);
-            //}
-            //else if (AbilityMaxRange(a) == 1 && !IsAbilityClassifiedAs(a, "Ｍ"))
-            //{
-            //    // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
-            //    if (x > 1)
-            //    {
-            //        if (Map.MapDataForUnit[x - 1, y] is object)
-            //        {
-            //            if (IsAlly(Map.MapDataForUnit[x - 1, y]))
-            //            {
-            //                CombinationPartner("アビリティ", a, partners, (x - 1), y, check_formation);
-            //            }
-            //        }
-            //    }
+            IList<Unit> partners;
+            if (Unit.Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // 出撃時以外は相手が仲間にいるだけでＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y);
+            }
+            else if (AbilityMaxRange() == 1 && !IsAbilityClassifiedAs("Ｍ"))
+            {
+                // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
+                partners = Map.AdjacentUnit(Unit)
+                    .Where(t => Unit.IsEnemy(t))
+                    .Select(t => CombinationPartner(t.x, t.y))
+                    .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
+            }
+            else
+            {
+                // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y, check_formation);
+            }
 
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (x < Map.MapWidth)
-            //        {
-            //            if (Map.MapDataForUnit[x + 1, y] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x + 1, y]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, (x + 1), y, check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y > 1)
-            //        {
-            //            if (Map.MapDataForUnit[x, y - 1] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x, y - 1]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, x, (y - 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y > Map.MapHeight)
-            //        {
-            //            if (Map.MapDataForUnit[x, y + 1] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x, y + 1]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, x, (y + 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
-            //    CombinationPartner("アビリティ", a, partners, x, y, check_formation);
-            //}
-
-            //// 条件を満たすパートナーの組が見つかったか判定
-            //if (Information.UBound(partners) > 0)
-            //{
-            //    IsCombinationAbilityAvailableRet = true;
-            //}
-            //else
-            //{
-            //    IsCombinationAbilityAvailableRet = false;
-            //}
-
-            //return IsCombinationAbilityAvailableRet;
+            // 条件を満たすパートナーの組が見つかったか判定
+            return partners.Count > 0;
         }
 
         public bool IdDisplayFor(AbilityListMode mode)
