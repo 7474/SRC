@@ -1557,40 +1557,31 @@ namespace SRCCore.Units
         // ユニット t がアビリティ a の射程範囲内にいるかをチェック
         public bool IsTargetWithinAbilityRange(Unit t)
         {
+            int distance = (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)));
+
+            // 最小射程チェック
+            if (distance < AbilityMinRange())
+            {
+                return false;
+            }
+
+            // 最大射程チェック
+            if (distance > AbilityMaxRange())
+            {
+                return false;
+            }
+
+            // 合体技で射程が１の場合は相手を囲んでいる必要がある
+            if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
+            {
+                var partners = CombinationPartner(t.x, t.y);
+                if (partners.Count > 0)
+                {
+                    return false;
+                }
+            }
+
             return true;
-            // TODO Impl
-            //bool IsTargetWithinAbilityRangeRet = default;
-            //int distance;
-            //IsTargetWithinAbilityRangeRet = true;
-            //distance = (Math.Abs((x - t.x)) + Math.Abs((y - t.y)));
-
-            //// 最小射程チェック
-            //if (distance < AbilityMinRange())
-            //{
-            //    IsTargetWithinAbilityRangeRet = false;
-            //    return IsTargetWithinAbilityRangeRet;
-            //}
-
-            //// 最大射程チェック
-            //if (distance > AbilityMaxRange())
-            //{
-            //    IsTargetWithinAbilityRangeRet = false;
-            //    return IsTargetWithinAbilityRangeRet;
-            //}
-
-            //// 合体技で射程が１の場合は相手を囲んでいる必要がある
-            //var partners = default(Unit[]);
-            //if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
-            //{
-            //    CombinationPartner("アビリティ", a, partners, t.x, t.y);
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        IsTargetWithinAbilityRangeRet = false;
-            //        return IsTargetWithinAbilityRangeRet;
-            //    }
-            //}
-
-            //return IsTargetWithinAbilityRangeRet;
         }
 
         // 移動を併用した場合にユニット t がアビリティ a の射程範囲内にいるかをチェック
