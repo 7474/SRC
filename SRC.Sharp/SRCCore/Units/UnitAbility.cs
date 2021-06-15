@@ -316,73 +316,69 @@ namespace SRCCore.Units
         // アビリティ a が術かどうか
         public bool IsSpellAbility()
         {
-            return false;
-            // TODO Impl
-            //bool IsSpellAbilityRet = default;
-            //int i;
-            //string nskill;
-            //if (IsAbilityClassifiedAs("術"))
-            //{
-            //    IsSpellAbilityRet = true;
-            //    return IsSpellAbilityRet;
-            //}
+            bool IsSpellAbilityRet = default;
+            int i;
+            string nskill;
+            if (IsAbilityClassifiedAs("術"))
+            {
+                IsSpellAbilityRet = true;
+                return IsSpellAbilityRet;
+            }
 
-            //{
-            //    var p = Unit.MainPilot();
-            //    var loopTo = GeneralLib.LLength(Data.NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(Data.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (p.SkillType(nskill) == "術")
-            //        {
-            //            IsSpellAbilityRet = true;
-            //            return IsSpellAbilityRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "術")
+                    {
+                        IsSpellAbilityRet = true;
+                        return IsSpellAbilityRet;
+                    }
+                }
+            }
 
-            //return IsSpellAbilityRet;
+            return IsSpellAbilityRet;
         }
 
         // アビリティ a が技かどうか
         public bool IsFeatAbility()
         {
-            return false;
-            // TODO Impl
-            //bool IsFeatAbilityRet = default;
-            //int i;
-            //string nskill;
-            //if (IsAbilityClassifiedAs("技"))
-            //{
-            //    IsFeatAbilityRet = true;
-            //    return IsFeatAbilityRet;
-            //}
+            bool IsFeatAbilityRet = default;
+            int i;
+            string nskill;
+            if (IsAbilityClassifiedAs("技"))
+            {
+                IsFeatAbilityRet = true;
+                return IsFeatAbilityRet;
+            }
 
-            //{
-            //    var withBlock = MainPilot();
-            //    var loopTo = GeneralLib.LLength(Data.NecessarySkill);
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
-            //        if (Strings.InStr(nskill, "Lv") > 0)
-            //        {
-            //            nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
-            //        }
+            {
+                var p = Unit.MainPilot();
+                var loopTo = GeneralLib.LLength(Data.NecessarySkill);
+                for (i = 1; i <= loopTo; i++)
+                {
+                    nskill = GeneralLib.LIndex(Data.NecessarySkill, i);
+                    if (Strings.InStr(nskill, "Lv") > 0)
+                    {
+                        nskill = Strings.Left(nskill, Strings.InStr(nskill, "Lv") - 1);
+                    }
 
-            //        if (withBlock.SkillType(nskill) == "技")
-            //        {
-            //            IsFeatAbilityRet = true;
-            //            return IsFeatAbilityRet;
-            //        }
-            //    }
-            //}
+                    if (p.SkillType(nskill) == "技")
+                    {
+                        IsFeatAbilityRet = true;
+                        return IsFeatAbilityRet;
+                    }
+                }
+            }
 
-            //return IsFeatAbilityRet;
+            return IsFeatAbilityRet;
         }
 
         // アビリティ a が使用可能かどうか
@@ -913,21 +909,13 @@ namespace SRCCore.Units
         // アビリティ a の必要技能を満たしているか。
         public bool IsAbilityMastered()
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityMasteredRet = default;
-            //IsAbilityMasteredRet = IsNecessarySkillSatisfied(Data.NecessarySkill, p: null);
-            //return IsAbilityMasteredRet;
+            return Unit.IsNecessarySkillSatisfied(Data.NecessarySkill, p: null);
         }
 
         // アビリティ a の必要条件を満たしているか。
         public bool IsAbilityEnabled()
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityEnabledRet = default;
-            //IsAbilityEnabledRet = IsNecessarySkillSatisfied(Data.NecessaryCondition, p: null);
-            //return IsAbilityEnabledRet;
+            return Unit.IsNecessarySkillSatisfied(Data.NecessaryCondition, p: null);
         }
 
         // アビリティが使用可能であり、かつ射程内に有効なターゲットがいるかどうか
