@@ -1587,29 +1587,22 @@ namespace SRCCore.Units
         // 移動を併用した場合にユニット t がアビリティ a の射程範囲内にいるかをチェック
         public bool IsTargetReachableForAbility(Unit t)
         {
-            return true;
-            // TODO Impl
-            //bool IsTargetReachableForAbilityRet = default;
-            //int i, j;
-            //int max_range;
-            //IsTargetReachableForAbilityRet = true;
-            //// 移動範囲から敵に攻撃が届くかをチェック
-            //max_range = AbilityMaxRange();
-            //var loopTo = GeneralLib.MinLng(t.x + max_range, Map.MapWidth);
-            //for (i = GeneralLib.MaxLng(t.x - max_range, 1); i <= loopTo; i++)
-            //{
-            //    var loopTo1 = GeneralLib.MinLng(t.y + (max_range - Math.Abs((t.x - i))), Map.MapHeight);
-            //    for (j = GeneralLib.MaxLng(t.y - (max_range - Math.Abs((t.x - i))), 1); j <= loopTo1; j++)
-            //    {
-            //        if (!Map.MaskData[i, j])
-            //        {
-            //            return IsTargetReachableForAbilityRet;
-            //        }
-            //    }
-            //}
+            // 移動範囲から敵に攻撃が届くかをチェック
+            var max_range = AbilityMaxRange();
+            var loopTo = GeneralLib.MinLng(t.x + max_range, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(t.x - max_range, 1); i <= loopTo; i++)
+            {
+                var loopTo1 = GeneralLib.MinLng(t.y + (max_range - Math.Abs((t.x - i))), Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(t.y - (max_range - Math.Abs((t.x - i))), 1); j <= loopTo1; j++)
+                {
+                    if (!Map.MaskData[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
 
-            //IsTargetReachableForAbilityRet = false;
-            //return IsTargetReachableForAbilityRet;
+            return false;
         }
 
         // アビリティの使用によるＥＮ、使用回数の消費等を行う
