@@ -843,73 +843,58 @@ namespace SRCCore.Units
         }
 
         // アビリティが使用可能であり、かつ射程内に有効なターゲットがいるかどうか
-        public bool IsAbilityUseful(string mode)
+        public bool IsAbilityUseful(string ref_mode)
         {
-            return true;
-            // TODO Impl
-            //bool IsAbilityUsefulRet = default;
-            //int i, j;
-            //int max_range, min_range;
+            // アビリティが使用可能か？
+            if (!IsAbilityAvailable(ref_mode))
+            {
+                return false;
+            }
 
-            //// アビリティが使用可能か？
-            //if (!IsAbilityAvailable(_mode))
-            //{
-            //    IsAbilityUsefulRet = false;
-            //    return IsAbilityUsefulRet;
-            //}
+            // 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
+            // 移動型マップアビリティは移動手段として使うことを考慮
+            if (IsAbilityClassifiedAs("Ｍ投") || IsAbilityClassifiedAs("Ｍ扇") || IsAbilityClassifiedAs("Ｍ移"))
+            {
+                return true;
+            }
 
-            //// 投下型マップアビリティと扇型マップアビリティは特殊なので判定ができない
-            //// 移動型マップアビリティは移動手段として使うことを考慮
-            //if (IsAbilityClassifiedAs("Ｍ投") || IsAbilityClassifiedAs("Ｍ投"1) || IsAbilityClassifiedAs("Ｍ投"2))
-            //{
-            //    IsAbilityUsefulRet = true;
-            //    return IsAbilityUsefulRet;
-            //}
+            // 召喚は常に有用
+            if (Data.Effects.Any(x => x.EffectType == "召喚"))
+            {
+                return true;
+            }
 
-            //// 召喚は常に有用
-            //var loopTo = Data.CountEffect();
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    if (Data.EffectType(i) == "召喚")
-            //    {
-            //        IsAbilityUsefulRet = true;
-            //        return IsAbilityUsefulRet;
-            //    }
-            //}
+            var min_range = AbilityMinRange();
+            var max_range = AbilityMaxRange();
 
-            //min_range = AbilityMinRange();
-            //max_range = AbilityMaxRange();
+            // 使用する相手がいるか検索
+            var loopTo1 = GeneralLib.MinLng(Unit.x + max_range, Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(Unit.x - max_range, 1); i <= loopTo1; i++)
+            {
+                var loopTo2 = GeneralLib.MinLng(Unit.y + max_range, Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(Unit.y - max_range, 1); j <= loopTo2; j++)
+                {
+                    if ((Math.Abs((Unit.x - i)) + Math.Abs((Unit.y - j))) > max_range)
+                    {
+                        goto NextLoop;
+                    }
 
-            //// 使用する相手がいるか検索
-            //var loopTo1 = GeneralLib.MinLng(x + max_range, Map.MapWidth);
-            //for (i = GeneralLib.MaxLng(x - max_range, 1); i <= loopTo1; i++)
-            //{
-            //    var loopTo2 = GeneralLib.MinLng(y + max_range, Map.MapHeight);
-            //    for (j = GeneralLib.MaxLng(y - max_range, 1); j <= loopTo2; j++)
-            //    {
-            //        if ((Math.Abs((x - i)) + Math.Abs((y - j))) > max_range)
-            //        {
-            //            goto NextLoop;
-            //        }
+                    if (Map.MapDataForUnit[i, j] is null)
+                    {
+                        goto NextLoop;
+                    }
 
-            //        if (Map.MapDataForUnit[i, j] is null)
-            //        {
-            //            goto NextLoop;
-            //        }
+                    if (IsAbilityEffective(Map.MapDataForUnit[i, j]))
+                    {
+                        return true;
+                    }
 
-            //        if (IsAbilityEffective(Map.MapDataForUnit[i, j]))
-            //        {
-            //            IsAbilityUsefulRet = true;
-            //            return IsAbilityUsefulRet;
-            //        }
+                NextLoop:
+                    ;
+                }
+            }
 
-            //    NextLoop:
-            //        ;
-            //    }
-            //}
-
-            //IsAbilityUsefulRet = false;
-            //return IsAbilityUsefulRet;
+            return false;
         }
 
         // アビリティがターゲットtに対して有効(役に立つ)かどうか
