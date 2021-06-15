@@ -1787,88 +1787,28 @@ namespace SRCCore.Units
         // 合体技アビリティに必要なパートナーが見つかるか？
         public bool IsCombinationAbilityAvailable(bool check_formation = false)
         {
-            throw new NotImplementedException();
-            //bool IsCombinationAbilityAvailableRet = default;
-            //Unit[] partners;
-            //partners = new Unit[1];
-            //if (Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // 出撃時以外は相手が仲間にいるだけでＯＫ
-            //    CombinationPartner("アビリティ", a, partners, x, y);
-            //}
-            //else if (AbilityMaxRange(a) == 1 && !IsAbilityClassifiedAs(a, "Ｍ"))
-            //{
-            //    // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
-            //    if (x > 1)
-            //    {
-            //        if (Map.MapDataForUnit[x - 1, y] is object)
-            //        {
-            //            if (IsAlly(Map.MapDataForUnit[x - 1, y]))
-            //            {
-            //                CombinationPartner("アビリティ", a, partners, (x - 1), y, check_formation);
-            //            }
-            //        }
-            //    }
+            IList<Unit> partners;
+            if (Unit.Status == "待機" || string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // 出撃時以外は相手が仲間にいるだけでＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y);
+            }
+            else if (AbilityMaxRange() == 1 && !IsAbilityClassifiedAs("Ｍ"))
+            {
+                // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
+                partners = Map.AdjacentUnit(Unit)
+                    .Where(t => Unit.IsEnemy(t))
+                    .Select(t => CombinationPartner(t.x, t.y))
+                    .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
+            }
+            else
+            {
+                // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
+                partners = CombinationPartner(Unit.x, Unit.y, check_formation);
+            }
 
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (x < Map.MapWidth)
-            //        {
-            //            if (Map.MapDataForUnit[x + 1, y] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x + 1, y]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, (x + 1), y, check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y > 1)
-            //        {
-            //            if (Map.MapDataForUnit[x, y - 1] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x, y - 1]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, x, (y - 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (Information.UBound(partners) == 0)
-            //    {
-            //        if (y > Map.MapHeight)
-            //        {
-            //            if (Map.MapDataForUnit[x, y + 1] is object)
-            //            {
-            //                if (IsAlly(Map.MapDataForUnit[x, y + 1]))
-            //                {
-            //                    CombinationPartner("アビリティ", a, partners, x, (y + 1), check_formation);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // 射程２以上の場合は自分の周りにパートナーがいればＯＫ
-            //    CombinationPartner("アビリティ", a, partners, x, y, check_formation);
-            //}
-
-            //// 条件を満たすパートナーの組が見つかったか判定
-            //if (Information.UBound(partners) > 0)
-            //{
-            //    IsCombinationAbilityAvailableRet = true;
-            //}
-            //else
-            //{
-            //    IsCombinationAbilityAvailableRet = false;
-            //}
-
-            //return IsCombinationAbilityAvailableRet;
+            // 条件を満たすパートナーの組が見つかったか判定
+            return partners.Count > 0;
         }
 
         public bool IdDisplayFor(AbilityListMode mode)
