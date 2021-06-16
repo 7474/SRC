@@ -1223,6 +1223,47 @@ namespace SRCSharpForm
         public void DisplayTelop(string msg)
         {
             Console.WriteLine("DisplayTelop: " + msg);
+            Load(My.MyProject.Forms.frmTelop);
+            {
+                var withBlock = My.MyProject.Forms.frmTelop;
+                Expression.FormatMessage(ref msg);
+                if (Strings.InStr(msg, ".") > 0)
+                {
+                    StringType.MidStmtStr(ref msg, Strings.InStr(msg, "."), Constants.vbCr.Length, Constants.vbCr);
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(1170d);
+                }
+                else
+                {
+                    withBlock.Height = (int)SrcFormatter.TwipsToPixelsY(800d);
+                }
+
+                if (MainForm.Visible == true && !((int)MainForm.WindowState == 1))
+                {
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX(SrcFormatter.PixelsToTwipsX((double)MainForm.Left) + (MainForm.picMain(0).width * SrcFormatter.PixelsToTwipsX((double)MainForm.Width) / SrcFormatter.PixelsToTwipsX((double)MainForm.ClientRectangle.Width) - SrcFormatter.PixelsToTwipsX((double)withBlock.Width)) / 2);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(MainForm.Top) + (long)(SrcFormatter.PixelsToTwipsY(MainForm.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2L);
+                }
+                else
+                {
+                    withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+                    withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
+                }
+
+                if (Strings.InStr(msg, ".") > 0)
+                {
+                    StringType.MidStmtStr(ref msg, Strings.InStr(msg, "."), Constants.vbCr.Length, Constants.vbCr);
+                }
+
+                withBlock.Label1.Text = msg;
+                withBlock.Show();
+                withBlock.Refresh();
+            }
+
+            if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
+            {
+                Sleep(1000);
+            }
+
+            My.MyProject.Forms.frmTelop.Close();
         }
 
         public void SetTitle(string title)
