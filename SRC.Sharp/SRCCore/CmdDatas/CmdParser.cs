@@ -611,7 +611,7 @@ namespace SRCCore.CmdDatas
                         return new WhiteOutCmd(src, data);
 
                     case "write":
-                        return new NotImplementedCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     default:
                         {
