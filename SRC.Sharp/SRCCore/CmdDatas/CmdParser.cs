@@ -578,7 +578,7 @@ namespace SRCCore.CmdDatas
                         return new SuspendCmd(src, data);
 
                     case "telop":
-                        return new NotImplementedCmd(src, data);
+                        return new TelopCmd(src, data);
 
                     case "transform":
                         return new NotImplementedCmd(src, data);
