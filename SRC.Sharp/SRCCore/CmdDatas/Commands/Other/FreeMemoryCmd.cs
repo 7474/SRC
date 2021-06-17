@@ -12,6 +12,9 @@ namespace SRCCore.CmdDatas.Commands
         protected override int ExecInternal()
         {
             throw new NotImplementedException();
+            //            SRC.UList.Clean();
+            //            SRC.PList.Clean();
+            //            SRC.IList.Update();
             //return EventData.NextID;
         }
     }
