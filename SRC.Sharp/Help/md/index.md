@@ -1,3 +1,7 @@
+---
+layout: default
+title: SRC#Help
+---
 # SRC#Help
 
 ** 2021-03-22現在SRC2.2.33の内容を変換しただけのものです **
