@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
     [DesignerGenerated()]
     internal partial class frmTelop
