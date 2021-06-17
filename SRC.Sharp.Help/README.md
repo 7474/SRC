@@ -2,8 +2,7 @@
 
 ## 閲覧
 
-- リポジトリ上 [Index](./src/index.md)
-- ホスティング先 https://srch.7474.jp/
+https://srch.7474.jp/
 
 ## Develop
 
@@ -11,3 +10,7 @@
 bundle install
 jekyll serve --incremental
 ```
+
+## Theme
+
+https://github.com/pages-themes/primer
