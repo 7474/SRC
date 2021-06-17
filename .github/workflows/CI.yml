@@ -3,14 +3,14 @@ name: CI
 on:
   push:
     branches: [ master ]
-    paths: 
-      - .github/workflows/CI.yml
-      - SRC.Sharp/**
+#     paths: 
+#       - .github/workflows/CI.yml
+#       - SRC.Sharp/**
   pull_request:
     branches: [ master ]
-    paths: 
-      - .github/workflows/CI.yml
-      - SRC.Sharp/**
+#     paths: 
+#       - .github/workflows/CI.yml
+#       - SRC.Sharp/**
 
 jobs:
   build-and-test-srcs:
