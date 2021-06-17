@@ -217,6 +217,7 @@
         - [CopyFileコマンド](CopyFileコマンド.md)
         - [Createコマンド](Createコマンド.md)
         - [CreateFolderコマンド](CreateFolderコマンド.md)
+        - [Debugコマンド](Debugコマンド.md)
         - [Destroyコマンド](Destroyコマンド.md)
         - [Disableコマンド](Disableコマンド.md)
         - [Doコマンド](Doコマンド.md)

@@ -235,7 +235,7 @@ namespace SRCCore
         {
             try
             {
-                Log.LogDebug(message
+                Log.LogInformation(message
                     + " "
                     + string.Join(", ", param));
             }
