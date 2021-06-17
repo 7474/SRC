@@ -6,7 +6,7 @@ on:
       - master
     paths: 
       - .github/workflows/azure-static-web-apps-yellow-pebble-0ddb1c400.yml
-      - SRC.Sharp/Help/**
+      - SRC.Sharp.Help/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
