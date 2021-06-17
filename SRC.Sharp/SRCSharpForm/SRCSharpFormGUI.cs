@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using SRCSharpForm.Forms;
 using SRCSharpForm.Lib;
 using SRCSharpForm.Resoruces;
@@ -1408,10 +1408,10 @@ namespace SRCSharpForm
 
             // セーブ先はシナリオフォルダ？
             var save_path = Path.GetDirectoryName(fname);
-            if (SRCCore.Lib.FileSystem.Dir(save_path, SRCCore.Lib.FileAttribute.Directory) != SRCCore.Lib.FileSystem.Dir(SRC.ScenarioPath, SRCCore.Lib.FileAttribute.Directory))
+            if (FileSystem.Dir(save_path, FileAttribute.Directory) != FileSystem.Dir(SRC.ScenarioPath, FileAttribute.Directory))
             {
-                if (Confirm("セーブファイルはシナリオフォルダにないと読み込めません。" + Environment.NewLine + "このままセーブしますか？",
-                    "セーブ",
+                if (Confirm("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？",
+                   "セーブ",
                     GuiConfirmOption.OkCancel | GuiConfirmOption.Question) != GuiDialogResult.Ok)
                 {
                     return null;
