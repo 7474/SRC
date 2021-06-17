@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
@@ -102,6 +103,17 @@ namespace SRCCore.CmdDatas
             }
 
             GUI.UpdateScreen();
+        }
+
+        protected void UpdateSelectedState(Unit fromUnit, Unit toUnit)
+        {
+            foreach (var state in Commands.SavedStates.Append(Commands.SelectedState))
+            {
+                if (state.SelectedUnit == fromUnit) { state.SelectedUnit = toUnit; }
+                if (state.SelectedUnitForEvent == fromUnit) { state.SelectedUnitForEvent = toUnit; }
+                if (state.SelectedTarget == fromUnit) { state.SelectedTarget = toUnit; }
+                if (state.SelectedTargetForEvent == fromUnit) { state.SelectedTargetForEvent = toUnit; }
+            }
         }
     }
 }
