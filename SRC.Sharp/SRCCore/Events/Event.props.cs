@@ -43,8 +43,8 @@ namespace SRCCore.Events
         public int CurrentLineNum;
 
         // イベントで選択されているユニット・ターゲット
-        public Unit SelectedUnitForEvent;
-        public Unit SelectedTargetForEvent;
+        public Unit SelectedUnitForEvent { get => SRC.Commands.SelectedState.SelectedUnitForEvent; set { SRC.Commands.SelectedState.SelectedUnitForEvent = value; } }
+        public Unit SelectedTargetForEvent { get => SRC.Commands.SelectedState.SelectedTargetForEvent; set { SRC.Commands.SelectedState.SelectedTargetForEvent = value; } }
 
         // イベント呼び出しのキュー
         public Queue<string> EventQue;

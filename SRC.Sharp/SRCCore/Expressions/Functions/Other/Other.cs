@@ -464,14 +464,11 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Windowwidth
+            str_result = "" + SRC.GUI.MainPWidth;
+            num_result = SRC.GUI.MainPWidth;
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
@@ -485,14 +482,11 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
-            num_result = 0d;
-
-            // TODO Impl Windowheight
+            str_result = "" + SRC.GUI.MainPHeight;
+            num_result = SRC.GUI.MainPHeight;
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else

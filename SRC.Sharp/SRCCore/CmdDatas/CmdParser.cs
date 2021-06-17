@@ -590,13 +590,13 @@ namespace SRCCore.CmdDatas
                         return new UnSetCmd(src, data);
 
                     case "upgrade":
-                        return new NotImplementedCmd(src, data);
+                        return new UpgradeCmd(src, data);
 
                     case "upvar":
                         return new UpVarCmd(src, data);
 
                     case "useability":
-                        return new NotImplementedCmd(src, data);
+                        return new UseAbilityCmd(src, data);
 
                     case "wait":
                         return new WaitCmd(src, data);
