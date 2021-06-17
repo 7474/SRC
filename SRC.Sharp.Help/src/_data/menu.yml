@@ -1,0 +1,739 @@
+toc:
+  - title: お使いになる前に
+    subfolderitems:
+      - page: はじめに
+        url: はじめに.md
+      - page: 動作環境
+        url: 動作環境.md
+      - page: 使用条件
+        url: 使用条件.md
+      - page: SRCとの互換性
+        url: SRCとの互換性.md
+  - title: インストールとアンインストール
+    subfolderitems:
+      - page: インストールの手順
+        url: インストールの手順.md
+      - page: ランタイムライブラリのインストール
+        url: ランタイムライブラリのインストール.md
+      - page: SRCのインストール
+        url: SRCのインストール.md
+      - page: サンプルシナリオをプレイする
+        url: サンプルシナリオをプレイする.md
+      - page: インストール時のエラーへの対処
+        url: インストール時のエラーへの対処.md
+      - page: 他のシナリオをプレイする
+        url: 他のシナリオをプレイする.md
+      - page: MIDIファイルのインストール
+        url: MIDIファイルのインストール.md
+      - page: 更新インストール
+        url: 更新インストール.md
+      - page: アンインストール
+        url: アンインストール.md
+  - title: 操作方法
+    subfolderitems:
+      - page: SRCの起動
+        url: SRCの起動.md
+      - page: ゲームの流れ
+        url: ゲームの流れ.md
+      - page: 基本操作
+        url: 基本操作.md
+      - title: 画面の説明
+        subfolderitems:
+          - page: 画面の説明
+            url: 画面の説明.md
+          - page: マップウインドウ
+            url: マップウインドウ.md
+          - page: ステータスウインドウ
+            url: ステータスウインドウ.md
+          - page: メッセージウインドウ
+            url: メッセージウインドウ.md
+      - title: ユニットコマンド
+        subfolderitems:
+          - page: 移動
+            url: 移動.md
+          - page: 攻撃
+            url: 攻撃.md
+          - page: アビリティ
+            url: アビリティ.md
+          - page: 会話
+            url: 会話.md
+          - page: 修理
+            url: 修理.md
+          - page: 補給
+            url: 補給.md
+          - page: チャージ
+            url: チャージ.md
+          - page: スペシャルパワー
+            url: スペシャルパワー.md
+          - page: 変形
+            url: 変形.md
+          - page: 分離
+            url: 分離.md
+          - page: ハイパーモード
+            url: ハイパーモード.md
+          - page: 合体
+            url: 合体.md
+          - page: 地上
+            url: 地上.md
+          - page: 空中
+            url: 空中.md
+          - page: 地中
+            url: 地中.md
+          - page: 水上
+            url: 水上.md
+          - page: 水中
+            url: 水中.md
+          - page: 発進
+            url: 発進.md
+          - page: アイテム
+            url: アイテム.md
+          - page: 召喚解除
+            url: 召喚解除.md
+          - page: 命令
+            url: 命令.md
+          - page: 特殊能力一覧
+            url: 特殊能力一覧.md
+          - page: 武装一覧
+            url: 武装一覧.md
+          - page: アビリティ一覧
+            url: アビリティ一覧.md
+          - page: 待機
+            url: 待機.md
+      - title: マップコマンド
+        subfolderitems:
+          - page: ターン終了
+            url: ターン終了.md
+          - page: 中断
+            url: 中断.md
+          - page: 部隊表
+            url: 部隊表.md
+          - page: スペシャルパワー検索
+            url: スペシャルパワー検索.md
+          - page: 全体マップ
+            url: 全体マップ.md
+          - page: 作戦目的
+            url: 作戦目的.md
+          - page: 自動反撃モード
+            url: 自動反撃モード.md
+          - page: 設定変更
+            url: 設定変更.md
+          - page: リスタート
+            url: リスタート.md
+          - page: クイックロード
+            url: クイックロード.md
+          - page: クイックセーブ
+            url: クイックセーブ.md
+      - title: インターミッションコマンド
+        subfolderitems:
+          - page: SRCを終了
+            url: SRCを終了.md
+          - page: 次のマップへ
+            url: 次のマップへ.md
+          - page: データーセーブ
+            url: データーセーブ.md
+          - page: 機体改造
+            url: 機体改造.md
+          - page: 乗り換え
+            url: 乗り換え.md
+          - page: アイテム交換
+            url: アイテム交換.md
+          - page: 換装
+            url: 換装.md
+          - page: パイロットステータス
+            url: パイロットステータス.md
+          - page: ユニットステータス
+            url: ユニットステータス.md
+  - title: データの作成
+    subfolderitems:
+      - page: データを作成する前に
+        url: データを作成する前に.md
+      - page: データ形式
+        url: データ形式.md
+      - page: パイロットデータ
+        url: パイロットデータ.md
+      - page: パイロット用特殊能力
+        url: パイロット用特殊能力.md
+      - page: 非戦闘員データ
+        url: 非戦闘員データ.md
+      - page: ユニットデータ
+        url: ユニットデータ.md
+      - page: ユニット用特殊能力
+        url: ユニット用特殊能力.md
+      - page: 武器属性
+        url: 武器属性.md
+      - page: 必要技能
+        url: 必要技能.md
+      - page: アビリティ効果
+        url: アビリティ効果.md
+      - page: メッセージデータ
+        url: メッセージデータ.md
+      - page: ダイアログデータ
+        url: ダイアログデータ.md
+      - page: 戦闘アニメデータ
+        url: 戦闘アニメデータ.md
+      - page: 特殊効果データ
+        url: 特殊効果データ.md
+      - page: アイテムデータ
+        url: アイテムデータ.md
+      - page: スペシャルパワーデータ
+        url: スペシャルパワーデータ.md
+      - page: エリアスデータ
+        url: エリアスデータ.md
+      - page: 地形データ
+        url: 地形データ.md
+      - page: 戦闘システム詳細
+        url: 戦闘システム詳細.md
+      - page: バトルコンフィグデータ
+        url: バトルコンフィグデータ.md
+      - page: 行動パターン
+        url: 行動パターン.md
+      - title: パイロット用特殊能力リファレンス
+        subfolderitems:
+          - page: 防御・回避に関する特殊能力
+            url: 防御・回避に関する特殊能力.md
+          - page: 攻撃に関する特殊能力
+            url: 攻撃に関する特殊能力.md
+          - page: 特異資質に関する特殊能力
+            url: 特異資質に関する特殊能力.md
+          - page: 瀕死時に発動する特殊能力
+            url: 瀕死時に発動する特殊能力.md
+          - page: 援護行動に関する特殊能力
+            url: 援護行動に関する特殊能力.md
+          - page: サポート系特殊能力
+            url: サポート系特殊能力.md
+          - page: パイロット成長に関する特殊能力
+            url: パイロット成長に関する特殊能力.md
+          - page: スペシャルパワーに関する特殊能力
+            url: スペシャルパワーに関する特殊能力.md
+          - page: 気力に関する特殊能力
+            url: 気力に関する特殊能力.md
+          - page: その他の特殊能力
+            url: その他の特殊能力.md
+      - title: ユニット用特殊能力リファレンス
+        subfolderitems:
+          - page: 防御特性に関する特殊能力
+            url: 防御特性に関する特殊能力.md
+          - page: 防御系特殊能力
+            url: 防御系特殊能力.md
+          - page: 回避系特殊能力
+            url: 回避系特殊能力.md
+          - page: 回復系特殊能力
+            url: 回復系特殊能力.md
+          - page: コンバータ系特殊能力
+            url: コンバータ系特殊能力.md
+          - page: 移動系特殊能力
+            url: 移動系特殊能力.md
+          - page: 変形系特殊能力
+            url: 変形系特殊能力.md
+          - page: パイロット関連特殊能力
+            url: パイロット関連特殊能力.md
+          - page: アイテム関連特殊能力
+            url: アイテム関連特殊能力.md
+          - page: 武器関連特殊能力
+            url: 武器関連特殊能力.md
+          - page: ＢＧＭ関連特殊能力
+            url: ＢＧＭ関連特殊能力.md
+          - page: ユニット改造関連特殊能力
+            url: ユニット改造関連特殊能力.md
+          - page: ユニット強化関連特殊能力
+            url: ユニット強化関連特殊能力.md
+          - page: その他の特殊能力
+            url: その他の特殊能力.md
+      - title: 武器属性リファレンス
+        subfolderitems:
+          - page: ダメージ算出方法に関する属性
+            url: ダメージ算出方法に関する属性.md
+          - page: 使用可能時に関する属性
+            url: 使用可能時に関する属性.md
+          - page: 攻撃種類に関する属性
+            url: 攻撃種類に関する属性.md
+          - page: 攻撃の実行手順に関する属性
+            url: 攻撃の実行手順に関する属性.md
+          - page: マップ攻撃に関する属性
+            url: マップ攻撃に関する属性.md
+          - page: パイロット能力と連動する属性
+            url: パイロット能力と連動する属性.md
+          - page: 攻撃対象を特定する属性
+            url: 攻撃対象を特定する属性.md
+          - page: 使用時のペナルティに関する属性
+            url: 使用時のペナルティに関する属性.md
+          - page: ＥＮ消費量に関する属性
+            url: ＥＮ消費量に関する属性.md
+          - page: 弾数に関する属性
+            url: 弾数に関する属性.md
+          - page: チャージ攻撃に関する属性
+            url: チャージ攻撃に関する属性.md
+          - page: 合体技に関する属性
+            url: 合体技に関する属性.md
+          - page: 変形技に関する属性
+            url: 変形技に関する属性.md
+          - page: 特殊効果攻撃属性
+            url: 特殊効果攻撃属性.md
+          - page: 防御能力を無効化する属性
+            url: 防御能力を無効化する属性.md
+          - page: 吸収攻撃に関する属性
+            url: 吸収攻撃に関する属性.md
+          - page: 攻撃力変動に関する属性
+            url: 攻撃力変動に関する属性.md
+          - page: 命中率変動に関する属性
+            url: 命中率変動に関する属性.md
+          - page: クリティカル率変動に関する属性
+            url: クリティカル率変動に関する属性.md
+          - page: クリティカル時のダメージ増加量に関する属性
+            url: クリティカル時のダメージ増加量に関する属性.md
+  - title: シナリオの作成
+    subfolderitems:
+      - page: シナリオを作成する前に
+        url: シナリオを作成する前に.md
+      - page: シナリオの構成
+        url: シナリオの構成.md
+      - page: イベントデータ
+        url: イベントデータ.md
+      - page: イベントラベル
+        url: イベントラベル.md
+      - page: イベントコマンド
+        url: イベントコマンド.md
+      - page: 式
+        url: 式.md
+      - page: 変数
+        url: 変数.md
+      - page: 関数
+        url: 関数.md
+      - page: Systemフォルダ
+        url: Systemフォルダ.md
+      - page: マップデータ
+        url: マップデータ.md
+      - title: イベントラベルリファレンス
+        subfolderitems:
+          - page: プロローグイベント
+            url: プロローグイベント.md
+          - page: スタートイベント
+            url: スタートイベント.md
+          - page: エピローグイベント
+            url: エピローグイベント.md
+          - page: ターンイベント
+            url: ターンイベント.md
+          - page: 損傷率イベント
+            url: 損傷率イベント.md
+          - page: 破壊イベント
+            url: 破壊イベント.md
+          - page: 全滅イベント
+            url: 全滅イベント.md
+          - page: 攻撃イベント
+            url: 攻撃イベント.md
+          - page: 攻撃後イベント
+            url: 攻撃後イベント.md
+          - page: 会話イベント
+            url: 会話イベント.md
+          - page: 接触イベント
+            url: 接触イベント.md
+          - page: 進入イベント
+            url: 進入イベント.md
+          - page: 脱出イベント
+            url: 脱出イベント.md
+          - page: 収納イベント
+            url: 収納イベント.md
+          - page: 使用イベント
+            url: 使用イベント.md
+          - page: 使用後イベント
+            url: 使用後イベント.md
+          - page: 変形イベント
+            url: 変形イベント.md
+          - page: 合体イベント
+            url: 合体イベント.md
+          - page: 分離イベント
+            url: 分離イベント.md
+          - page: 行動終了イベント
+            url: 行動終了イベント.md
+          - page: レベルアップイベント
+            url: レベルアップイベント.md
+          - page: 勝利条件イベント
+            url: 勝利条件イベント.md
+          - page: 再開イベント
+            url: 再開イベント.md
+          - page: マップコマンドイベント
+            url: マップコマンドイベント.md
+          - page: ユニットコマンドイベント
+            url: ユニットコマンドイベント.md
+      - title: イベントコマンドリファレンス
+        subfolderitems:
+          - page: Arcコマンド
+            url: Arcコマンド.md
+          - page: Arrayコマンド
+            url: Arrayコマンド.md
+          - page: Askコマンド
+            url: Askコマンド.md
+          - page: Attackコマンド
+            url: Attackコマンド.md
+          - page: AutoTalkコマンド
+            url: AutoTalkコマンド.md
+          - page: BossRankコマンド
+            url: BossRankコマンド.md
+          - page: Breakコマンド
+            url: Breakコマンド.md
+          - page: Callコマンド
+            url: Callコマンド.md
+          - page: Cancelコマンド
+            url: Cancelコマンド.md
+          - page: Centerコマンド
+            url: Centerコマンド.md
+          - page: ChangeAreaコマンド
+            url: ChangeAreaコマンド.md
+          - page: ChangeMapコマンド
+            url: ChangeMapコマンド.md
+          - page: ChangeModeコマンド
+            url: ChangeModeコマンド.md
+          - page: ChangePartyコマンド
+            url: ChangePartyコマンド.md
+          - page: ChangeTerrainコマンド
+            url: ChangeTerrainコマンド.md
+          - page: ChangeUnitBitmapコマンド
+            url: ChangeUnitBitmapコマンド.md
+          - page: Chargeコマンド
+            url: Chargeコマンド.md
+          - page: Circleコマンド
+            url: Circleコマンド.md
+          - page: ClearObjコマンド
+            url: ClearObjコマンド.md
+          - page: ClearPictureコマンド
+            url: ClearPictureコマンド.md
+          - page: ClearSkillコマンド
+            url: ClearSkillコマンド.md
+          - page: ClearSpecialPowerコマンド
+            url: ClearSpecialPowerコマンド.md
+          - page: ClearStatusコマンド
+            url: ClearStatusコマンド.md
+          - page: Closeコマンド
+            url: Closeコマンド.md
+          - page: Clsコマンド
+            url: Clsコマンド.md
+          - page: Colorコマンド
+            url: Colorコマンド.md
+          - page: ColorFilterコマンド
+            url: ColorFilterコマンド.md
+          - page: Combineコマンド
+            url: Combineコマンド.md
+          - page: Confirmコマンド
+            url: Confirmコマンド.md
+          - page: Continueコマンド
+            url: Continueコマンド.md
+          - page: CopyArrayコマンド
+            url: CopyArrayコマンド.md
+          - page: CopyFileコマンド
+            url: CopyFileコマンド.md
+          - page: Createコマンド
+            url: Createコマンド.md
+          - page: CreateFolderコマンド
+            url: CreateFolderコマンド.md
+          - page: Debugコマンド
+            url: Debugコマンド.md
+          - page: Destroyコマンド
+            url: Destroyコマンド.md
+          - page: Disableコマンド
+            url: Disableコマンド.md
+          - page: Doコマンド
+            url: Doコマンド.md
+          - page: DrawOptionコマンド
+            url: DrawOptionコマンド.md
+          - page: DrawWidthコマンド
+            url: DrawWidthコマンド.md
+          - page: Enableコマンド
+            url: Enableコマンド.md
+          - page: Equipコマンド
+            url: Equipコマンド.md
+          - page: Escapeコマンド
+            url: Escapeコマンド.md
+          - page: ExchangeItemコマンド
+            url: ExchangeItemコマンド.md
+          - page: Exitコマンド
+            url: Exitコマンド.md
+          - page: Explodeコマンド
+            url: Explodeコマンド.md
+          - page: ExpUpコマンド
+            url: ExpUpコマンド.md
+          - page: FadeInコマンド
+            url: FadeInコマンド.md
+          - page: FadeOutコマンド
+            url: FadeOutコマンド.md
+          - page: FillColorコマンド
+            url: FillColorコマンド.md
+          - page: FillStyleコマンド
+            url: FillStyleコマンド.md
+          - page: Finishコマンド
+            url: Finishコマンド.md
+          - page: Fixコマンド
+            url: Fixコマンド.md
+          - page: Fontコマンド
+            url: Fontコマンド.md
+          - page: Forコマンド
+            url: Forコマンド.md
+          - page: ForEachコマンド
+            url: ForEachコマンド.md
+          - page: Forgetコマンド
+            url: Forgetコマンド.md
+          - page: FreeMemoryコマンド
+            url: FreeMemoryコマンド.md
+          - page: GameClearコマンド
+            url: GameClearコマンド.md
+          - page: GameOverコマンド
+            url: GameOverコマンド.md
+          - page: GetOffコマンド
+            url: GetOffコマンド.md
+          - page: Globalコマンド
+            url: Globalコマンド.md
+          - page: GoToコマンド
+            url: GoToコマンド.md
+          - page: Hideコマンド
+            url: Hideコマンド.md
+          - page: HotPointコマンド
+            url: HotPointコマンド.md
+          - page: Ifコマンド
+            url: Ifコマンド.md
+          - page: Incrコマンド
+            url: Incrコマンド.md
+          - page: IncreaseMoraleコマンド
+            url: IncreaseMoraleコマンド.md
+          - page: Inputコマンド
+            url: Inputコマンド.md
+          - page: IntermissionCommandコマンド
+            url: IntermissionCommandコマンド.md
+          - page: Itemコマンド
+            url: Itemコマンド.md
+          - page: Joinコマンド
+            url: Joinコマンド.md
+          - page: KeepBGMコマンド
+            url: KeepBGMコマンド.md
+          - page: Landコマンド
+            url: Landコマンド.md
+          - page: Launchコマンド
+            url: Launchコマンド.md
+          - page: Leaveコマンド
+            url: Leaveコマンド.md
+          - page: LevelUpコマンド
+            url: LevelUpコマンド.md
+          - page: Lineコマンド
+            url: Lineコマンド.md
+          - page: LineReadコマンド
+            url: LineReadコマンド.md
+          - page: Loadコマンド
+            url: Loadコマンド.md
+          - page: Localコマンド
+            url: Localコマンド.md
+          - page: MakePilotListコマンド
+            url: MakePilotListコマンド.md
+          - page: MakeUnitListコマンド
+            url: MakeUnitListコマンド.md
+          - page: MapAbilityコマンド
+            url: MapAbilityコマンド.md
+          - page: MapAttackコマンド
+            url: MapAttackコマンド.md
+          - page: Moneyコマンド
+            url: Moneyコマンド.md
+          - page: Monotoneコマンド
+            url: Monotoneコマンド.md
+          - page: Moveコマンド
+            url: Moveコマンド.md
+          - page: Nightコマンド
+            url: Nightコマンド.md
+          - page: Noonコマンド
+            url: Noonコマンド.md
+          - page: Openコマンド
+            url: Openコマンド.md
+          - page: Optionコマンド
+            url: Optionコマンド.md
+          - page: Organizeコマンド
+            url: Organizeコマンド.md
+          - page: Ovalコマンド
+            url: Ovalコマンド.md
+          - page: PaintPictureコマンド
+            url: PaintPictureコマンド.md
+          - page: PaintStringコマンド
+            url: PaintStringコマンド.md
+          - page: Pilotコマンド
+            url: Pilotコマンド.md
+          - page: PlayFlashコマンド
+            url: PlayFlashコマンド.md
+          - page: PlayMIDIコマンド
+            url: PlayMIDIコマンド.md
+          - page: PlaySoundコマンド
+            url: PlaySoundコマンド.md
+          - page: Polygonコマンド
+            url: Polygonコマンド.md
+          - page: Printコマンド
+            url: Printコマンド.md
+          - page: PSetコマンド
+            url: PSetコマンド.md
+          - page: Questionコマンド
+            url: Questionコマンド.md
+          - page: Quitコマンド
+            url: Quitコマンド.md
+          - page: QuickLoadコマンド
+            url: QuickLoadコマンド.md
+          - page: RankUpコマンド
+            url: RankUpコマンド.md
+          - page: RecoverENコマンド
+            url: RecoverENコマンド.md
+          - page: RecoverHPコマンド
+            url: RecoverHPコマンド.md
+          - page: RecoverPlanaコマンド
+            url: RecoverPlanaコマンド.md
+          - page: RecoverSPコマンド
+            url: RecoverSPコマンド.md
+          - page: Redrawコマンド
+            url: Redrawコマンド.md
+          - page: Refreshコマンド
+            url: Refreshコマンド.md
+          - page: Releaseコマンド
+            url: Releaseコマンド.md
+          - page: RemoveFileコマンド
+            url: RemoveFileコマンド.md
+          - page: RemoveFolderコマンド
+            url: RemoveFolderコマンド.md
+          - page: RemoveItemコマンド
+            url: RemoveItemコマンド.md
+          - page: RemovePilotコマンド
+            url: RemovePilotコマンド.md
+          - page: RemoveUnitコマンド
+            url: RemoveUnitコマンド.md
+          - page: RenameBGMコマンド
+            url: RenameBGMコマンド.md
+          - page: RenameFileコマンド
+            url: RenameFileコマンド.md
+          - page: RenameTermコマンド
+            url: RenameTermコマンド.md
+          - page: ReplacePilotコマンド
+            url: ReplacePilotコマンド.md
+          - page: Requireコマンド
+            url: Requireコマンド.md
+          - page: RestoreEventコマンド
+            url: RestoreEventコマンド.md
+          - page: Returnコマンド
+            url: Returnコマンド.md
+          - page: Rideコマンド
+            url: Rideコマンド.md
+          - page: Selectコマンド
+            url: Selectコマンド.md
+          - page: SelectTargetコマンド
+            url: SelectTargetコマンド.md
+          - page: Sepiaコマンド
+            url: Sepiaコマンド.md
+          - page: Setコマンド
+            url: Setコマンド.md
+          - page: SetBulletコマンド
+            url: SetBulletコマンド.md
+          - page: SetMessageコマンド
+            url: SetMessageコマンド.md
+          - page: SetRelationコマンド
+            url: SetRelationコマンド.md
+          - page: SetSkillコマンド
+            url: SetSkillコマンド.md
+          - page: SetStatusコマンド
+            url: SetStatusコマンド.md
+          - page: SetStockコマンド
+            url: SetStockコマンド.md
+          - page: Showコマンド
+            url: Showコマンド.md
+          - page: ShowUnitStatusコマンド
+            url: ShowUnitStatusコマンド.md
+          - page: Skipコマンド
+            url: Skipコマンド.md
+          - page: Sortコマンド
+            url: Sortコマンド.md
+          - page: SpecialPowerコマンド
+            url: SpecialPowerコマンド.md
+          - page: Splitコマンド
+            url: Splitコマンド.md
+          - page: StartBGMコマンド
+            url: StartBGMコマンド.md
+          - page: StopBGMコマンド
+            url: StopBGMコマンド.md
+          - page: StopSummoningコマンド
+            url: StopSummoningコマンド.md
+          - page: Sunsetコマンド
+            url: Sunsetコマンド.md
+          - page: Supplyコマンド
+            url: Supplyコマンド.md
+          - page: Swapコマンド
+            url: Swapコマンド.md
+          - page: Switchコマンド
+            url: Switchコマンド.md
+          - page: Talkコマンド
+            url: Talkコマンド.md
+          - page: Telopコマンド
+            url: Telopコマンド.md
+          - page: Transformコマンド
+            url: Transformコマンド.md
+          - page: Unitコマンド
+            url: Unitコマンド.md
+          - page: UnSetコマンド
+            url: UnSetコマンド.md
+          - page: Upgradeコマンド
+            url: Upgradeコマンド.md
+          - page: UpVarコマンド
+            url: UpVarコマンド.md
+          - page: UseAbilityコマンド
+            url: UseAbilityコマンド.md
+          - page: Waitコマンド
+            url: Waitコマンド.md
+          - page: Waterコマンド
+            url: Waterコマンド.md
+          - page: WhiteInコマンド
+            url: WhiteInコマンド.md
+          - page: WhiteOutコマンド
+            url: WhiteOutコマンド.md
+      - title: 関数リファレンス
+        subfolderitems:
+          - page: ユニット情報関数
+            url: ユニット情報関数.md
+          - page: パイロット情報関数
+            url: パイロット情報関数.md
+          - page: Info関数
+            url: Info関数.md
+          - page: 文字列処理関数
+            url: 文字列処理関数.md
+          - page: リスト処理関数
+            url: リスト処理関数.md
+          - page: 算術処理関数
+            url: 算術処理関数.md
+          - page: ファイル処理関数
+            url: ファイル処理関数.md
+          - page: 描画処理関数
+            url: 描画処理関数.md
+          - page: 時間データ処理関数
+            url: 時間データ処理関数.md
+          - page: 正規表現関数
+            url: 正規表現関数.md
+          - page: その他の関数
+            url: その他の関数.md
+  - title: 最後に
+    subfolderitems:
+      - page: 更新履歴(2010)
+        url: 更新履歴%282010%29.md
+      - page: 更新履歴(2008)
+        url: 更新履歴%282008%29.md
+      - page: 更新履歴(2007)
+        url: 更新履歴%282007%29.md
+      - page: 更新履歴(2006)
+        url: 更新履歴%282006%29.md
+      - page: 更新履歴(2005)
+        url: 更新履歴%282005%29.md
+      - page: 更新履歴(2004)
+        url: 更新履歴%282004%29.md
+      - page: 更新履歴(2003)
+        url: 更新履歴%282003%29.md
+      - page: 更新履歴(2002)
+        url: 更新履歴%282002%29.md
+      - page: 更新履歴(2001)
+        url: 更新履歴%282001%29.md
+      - page: 更新履歴(2000)
+        url: 更新履歴%282000%29.md
+      - page: 更新履歴(1999)
+        url: 更新履歴%281999%29.md
+      - page: 更新履歴(1998)
+        url: 更新履歴%281998%29.md
+      - page: 更新履歴(1997)
+        url: 更新履歴%281997%29.md
+      - page: サポート情報
+        url: サポート情報.md
+      - page: スペシャルサンクス
+        url: スペシャルサンクス.md
