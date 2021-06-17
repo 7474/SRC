@@ -9,7 +9,7 @@ github_username: 7474
 
 # Build settings
 source: src
-theme: jekyll-theme-primer
+theme: just-the-docs
 plugins: 
   - jekyll-relative-links
 
