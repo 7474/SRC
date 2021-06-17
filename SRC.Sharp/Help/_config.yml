@@ -9,7 +9,7 @@ github_username: 7474
 
 # Build settings
 source: src
-theme: minima
+theme: jekyll-theme-primer
 plugins: 
   - jekyll-relative-links
 
