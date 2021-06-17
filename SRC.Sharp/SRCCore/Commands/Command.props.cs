@@ -15,7 +15,7 @@ namespace SRCCore.Commands
         public bool ViewMode;
 
         // 現在選択されているもの
-        private SelectedState SelectedState = new SelectedState();
+        internal SelectedState SelectedState = new SelectedState();
         public Unit SelectedUnit { get => SelectedState.SelectedUnit; set { SelectedState.SelectedUnit = value; } } // ユニット
         public string SelectedCommand { get => SelectedState.SelectedCommand; set { SelectedState.SelectedCommand = value; } } // コマンド
         public Unit SelectedTarget { get => SelectedState.SelectedTarget; set { SelectedState.SelectedTarget = value; } } // ターゲット
@@ -35,7 +35,8 @@ namespace SRCCore.Commands
         public int SelectedUnitMoveCost { get => SelectedState.SelectedUnitMoveCost; set { SelectedState.SelectedUnitMoveCost = value; } } // 選択したユニットの移動力消費量
 
         // 選択状況の記録用変数
-        private Stack<SelectedState> SavedState = new Stack<SelectedState>();
+        private Stack<SelectedState> SavedStateStack = new Stack<SelectedState>();
+        public IEnumerable<SelectedState> SavedStates => SavedStateStack;
 
         // 援護を使うかどうか
         public bool UseSupportAttack;

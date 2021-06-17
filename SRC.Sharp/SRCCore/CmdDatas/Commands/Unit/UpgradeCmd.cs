@@ -1,5 +1,8 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Extensions;
+using SRCCore.Units;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,6 +14,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
+            Unit u1;
+            string uname;
             switch (ArgNum)
             {
                 case 2:
@@ -23,76 +28,30 @@ namespace SRCCore.CmdDatas.Commands
                 case 3:
                     {
                         uname = GetArgAsString(2);
-                        bool localIsDefined() { object argIndex1 = (object)uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-                        if (!localIsDefined())
+                        if (!SRC.UList.IsDefined(uname))
                         {
-                            Event.EventErrorMessage = uname + "というユニットはありません";
-                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516265
-
-
-                            Input:
-                                                Error(0)
-
-                             */
+                            throw new EventErrorException(this, uname + "というユニットはありません");
                         }
 
-                        Unit localItem() { object argIndex1 = (object)uname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-                        u1 = localItem().CurrentForm();
+                        u1 = SRC.UList.Item(uname).CurrentForm();
                         uname = GetArgAsString(3);
                         break;
                     }
 
                 default:
-                    {
-                        Event.EventErrorMessage = "Upgradeコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516484
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "Upgradeコマンドの引数の数が違います");
             }
 
-            bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-            if (!localIsDefined1())
+            if (!SRC.UDList.IsDefined(uname))
             {
-                Event.EventErrorMessage = "ユニット「" + uname + "」のデータが見つかりません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516662
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "ユニット「" + uname + "」のデータが見つかりません");
             }
 
-            prev_status = u1.Status;
-            u2 = SRC.UList.Add(uname, u1.Rank, u1.Party0);
-            u1.Party0 = arguparty;
+            var prev_status = u1.Status;
+            var u2 = SRC.UList.Add(uname, u1.Rank, u1.Party0);
             if (u2 is null)
             {
-                Event.EventErrorMessage = uname + "のユニットデータが不正です";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 516898
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, uname + "のユニットデータが不正です");
             }
 
             if (u1.BossRank > 0)
@@ -102,98 +61,58 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // パイロットの乗せ換え
-            Pilot[] pilot_list;
-            Pilot[] support_list;
             if (u1.CountPilot() > 0)
             {
-                pilot_list = new Pilot[(u1.CountPilot() + 1)];
-                support_list = new Pilot[(u1.CountSupport() + 1)];
-                var loopTo = Information.UBound(pilot_list);
-                for (i = 1; i <= loopTo; i++)
-                {
-                    pilot_list[i] = u1.Pilot(i);
-                }
+                var pilot_list = u1.Pilots.CloneList();
+                var support_list = u1.Supports.ToList();
 
-                var loopTo1 = Information.UBound(support_list);
-                for (i = 1; i <= loopTo1; i++)
+                u1.Pilots.First().GetOff();
+                foreach (var p in pilot_list)
                 {
-                    support_list[i] = u1.Support(i);
+                    p.Ride(u2);
                 }
-
-                u1.Pilot(1).GetOff();
-                var loopTo2 = Information.UBound(pilot_list);
-                for (i = 1; i <= loopTo2; i++)
-                    pilot_list[i].Ride(u2);
-                var loopTo3 = Information.UBound(support_list);
-                for (i = 1; i <= loopTo3; i++)
-                    support_list[i].Ride(u2);
+                foreach (var p in support_list)
+                {
+                    p.Ride(u2);
+                }
             }
 
             // アイテムの交換
-            var loopTo4 = u1.CountItem();
-            for (i = 1; i <= loopTo4; i++)
+            foreach (var itm in u1.ItemList)
             {
-                Item localItem1() { object argIndex1 = i; var ret = u1.Item(argIndex1); return ret; }
-
-                u2.AddItem(localItem1());
+                u2.AddItem(itm);
             }
-
-            var loopTo5 = u1.CountItem();
-            for (i = 1; i <= loopTo5; i++)
+            foreach (var itm in u1.ItemList.CloneList())
             {
-                u1.DeleteItem(1);
+                u1.DeleteItem(itm);
             }
 
             // リンクの付け替え
             u2.Master = u1.Master;
-            // UPGRADE_NOTE: オブジェクト u1.Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             u1.Master = null;
             u2.Summoner = u1.Summoner;
-            // UPGRADE_NOTE: オブジェクト u1.Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             u1.Summoner = null;
 
             // 召喚ユニットの交換
-            var loopTo6 = u1.CountServant();
-            for (i = 1; i <= loopTo6; i++)
+            foreach (var u in u1.Servants)
             {
-                Unit localServant() { object argIndex1 = i; var ret = u1.Servant(argIndex1); return ret; }
-
-                u2.AddServant(localServant());
+                u2.AddServant(u);
             }
-
-            var loopTo7 = u1.CountServant();
-            for (i = 1; i <= loopTo7; i++)
+            foreach (var u in u1.Servants.CloneList())
             {
-                u1.DeleteServant(1);
+                u1.DeleteServant(u.ID);
             }
 
             // 収納ユニットの交換
             if (u1.IsFeatureAvailable("母艦"))
             {
-                var loopTo8 = u1.CountOtherForm();
-                for (i = 1; i <= loopTo8; i++)
+                foreach (var of in u1.OtherForms.Where(x => x.Status == "格納"))
                 {
-                    Unit localOtherForm1() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
-
-                    if (localOtherForm1().Status == "格納")
-                    {
-                        Unit localOtherForm() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
-
-                        u2.AddOtherForm(localOtherForm());
-                    }
+                    u2.AddOtherForm(of);
                 }
-
-                var loopTo9 = u2.CountOtherForm();
-                for (i = 1; i <= loopTo9; i++)
+                foreach (var of in u2.OtherForms.Where(x => x.Status == "格納"))
                 {
-                    Unit localOtherForm3() { object argIndex1 = i; var ret = u2.OtherForm(argIndex1); return ret; }
-
-                    if (localOtherForm3().Status == "格納")
-                    {
-                        Unit localOtherForm2() { object argIndex1 = i; var ret = u2.OtherForm(argIndex1); return ret; }
-
-                        u1.DeleteOtherForm((object)localOtherForm2().ID);
-                    }
+                    u1.DeleteOtherForm(of.ID);
                 }
             }
 
@@ -201,17 +120,9 @@ namespace SRCCore.CmdDatas.Commands
 
             // 元のユニットを削除
             u1.Status = "破棄";
-            var loopTo10 = u1.CountOtherForm();
-            for (i = 1; i <= loopTo10; i++)
+            foreach (var of in u1.OtherForms.Where(x => x.Status == "他形態"))
             {
-                Unit localOtherForm5() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
-
-                if (localOtherForm5().Status == "他形態")
-                {
-                    Unit localOtherForm4() { object argIndex1 = i; var ret = u1.OtherForm(argIndex1); return ret; }
-
-                    localOtherForm4().Status = "破棄";
-                }
+                of.Status = "破棄";
             }
 
             u2.UsedAction = u1.UsedAction;
@@ -223,7 +134,6 @@ namespace SRCCore.CmdDatas.Commands
             {
                 case "出撃":
                     {
-                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                         Map.MapDataForUnit[u1.x, u1.y] = null;
                         u2.StandBy(u1.x, u1.y);
                         if (!GUI.IsPictureVisible)
@@ -239,7 +149,6 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         if (ReferenceEquals(Map.MapDataForUnit[u1.x, u1.y], u1))
                         {
-                            // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
                             Map.MapDataForUnit[u1.x, u1.y] = null;
                         }
 
@@ -254,27 +163,7 @@ namespace SRCCore.CmdDatas.Commands
 
                 case "格納":
                     {
-                        foreach (Unit u in SRC.UList)
-                        {
-                            {
-                                var withBlock = u;
-                                var loopTo11 = withBlock.CountUnitOnBoard();
-                                for (i = 1; i <= loopTo11; i++)
-                                {
-                                    Unit localUnitOnBoard() { object argIndex1 = i; var ret = withBlock.UnitOnBoard(argIndex1); return ret; }
-
-                                    if ((u1.ID ?? "") == (localUnitOnBoard().ID ?? ""))
-                                    {
-                                        withBlock.UnloadUnit((object)u1.ID);
-                                        u2.Land(u, true);
-                                        goto ExitLoop;
-                                    }
-                                }
-                            }
-                        }
-
-                    ExitLoop:
-                        ;
+                        SRC.UList.SwapOnBardUnit(u1, u2);
                         break;
                     }
 
@@ -306,30 +195,13 @@ namespace SRCCore.CmdDatas.Commands
                 Event.SelectedTargetForEvent = u2;
             }
 
-            var loopTo12 = Commands.SelectionStackIndex;
-            for (i = 1; i <= loopTo12; i++)
+            foreach (var state in Commands.SavedStates.Append(Commands.SelectedState))
             {
-                if (ReferenceEquals(u1, Commands.SavedSelectedUnit[i]))
-                {
-                    Commands.SavedSelectedUnit[i] = u2;
-                }
-
-                if (ReferenceEquals(u1, Commands.SavedSelectedUnitForEvent[i]))
-                {
-                    Commands.SavedSelectedUnitForEvent[i] = u2;
-                }
-
-                if (ReferenceEquals(u1, Commands.SavedSelectedTarget[i]))
-                {
-                    Commands.SavedSelectedTarget[i] = u2;
-                }
-
-                if (ReferenceEquals(u1, Commands.SavedSelectedTargetForEvent[i]))
-                {
-                    Commands.SavedSelectedTargetForEvent[i] = u2;
-                }
+                if (state.SelectedUnit == u1) { state.SelectedUnit = u2; }
+                if (state.SelectedUnitForEvent == u1) { state.SelectedUnitForEvent = u2; }
+                if (state.SelectedTarget == u1) { state.SelectedTarget = u2; }
+                if (state.SelectedTargetForEvent == u1) { state.SelectedTargetForEvent = u2; }
             }
-
             return EventData.NextID;
         }
     }

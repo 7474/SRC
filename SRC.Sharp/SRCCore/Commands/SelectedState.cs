@@ -7,6 +7,7 @@ namespace SRCCore.Commands
 {
     public class SelectedState
     {
+        // Command
         public Unit SelectedUnit; // ユニット
         public string SelectedCommand; // コマンド
         public Unit SelectedTarget; // ターゲット
@@ -24,6 +25,9 @@ namespace SRCCore.Commands
         public string SelectedSpecialPower; // スペシャルパワー
         public IList<Unit> SelectedPartners; // 合体技のパートナー
         public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
+        // Event
+        public Unit SelectedUnitForEvent;   // イベントで選択されているユニット
+        public Unit SelectedTargetForEvent;   // イベントで選択されているターゲット
 
         public SelectedState()
         {

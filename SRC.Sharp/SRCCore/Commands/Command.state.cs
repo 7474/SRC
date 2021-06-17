@@ -13,19 +13,19 @@ namespace SRCCore.Commands
         // 現在の選択状況を記録
         public void SaveSelections()
         {
-            SavedState.Push(SelectedState.Clone());
+            SavedStateStack.Push(SelectedState.Clone());
         }
 
         // 選択状況を復元
         public void RestoreSelections()
         {
             // スタックに積まれていない？
-            if (SavedState.Count == 0)
+            if (SavedStateStack.Count == 0)
             {
                 return;
             }
 
-            SelectedState = SavedState.Pop();
+            SelectedState = SavedStateStack.Pop();
         }
 
         // 選択を入れ替える
