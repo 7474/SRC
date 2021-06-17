@@ -4,10 +4,16 @@ on:
   push:
     branches:
       - master
+    paths: 
+      - .github/workflows/azure-static-web-apps-yellow-pebble-0ddb1c400.yml
+      - SRC.Sharp/Help/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths: 
+      - .github/workflows/azure-static-web-apps-yellow-pebble-0ddb1c400.yml
+      - SRC.Sharp.Help/**
 
 jobs:
   build_and_deploy_job:
@@ -25,7 +31,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_PEBBLE_0DDB1C400 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "/SRC.Sharp/Help/"
+          app_location: "/SRC.Sharp.Help/"
           api_location: "" 
           output_location: "_site" 
 

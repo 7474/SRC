@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "HBs3gavVR4GWijSoT8BDw1hAfz8QgXLKtYWdG+jCeqs5rYmFPF2A956cjMfND+SbsV7cg1E8xOX9uQp6V1KwKQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\koudenpa\\source\\repos\\src\\SRC\\SRC.Sharp\\Help\\ExampleConv\\ExampleConv.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\koudenpa\\.nuget\\packages\\htmlagilitypack\\1.11.30\\htmlagilitypack.1.11.30.nupkg.sha512",
+    "C:\\Users\\koudenpa\\.nuget\\packages\\reversemarkdown\\3.19.0\\reversemarkdown.3.19.0.nupkg.sha512"
+  ],
+  "logs": []
+}
