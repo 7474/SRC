@@ -1,3 +1,7 @@
+---
+layout: default
+title: SRCのルートフォルダ
+---
 ** 内容はSRC2.2.33のものです **
 
 Src.exeのあるフォルダです。

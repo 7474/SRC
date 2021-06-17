@@ -1,3 +1,7 @@
+---
+layout: default
+title: Localコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **Localコマンド**

@@ -1,3 +1,7 @@
+---
+layout: default
+title: SpecialPowerコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **SpecialPowerコマンド**

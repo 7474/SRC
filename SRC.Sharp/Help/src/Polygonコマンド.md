@@ -1,3 +1,7 @@
+---
+layout: default
+title: Polygonコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **Polygonコマンド**

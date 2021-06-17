@@ -1,3 +1,7 @@
+---
+layout: default
+title: SRCの起動
+---
 ** 内容はSRC2.2.33のものです **
 
 **SRCの起動**

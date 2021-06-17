@@ -1,3 +1,7 @@
+---
+layout: default
+title: ExchangeItemコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **ExchangeItemコマンド**

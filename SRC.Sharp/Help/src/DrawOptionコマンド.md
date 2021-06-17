@@ -1,3 +1,7 @@
+---
+layout: default
+title: DrawOptionコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **DrawOptionコマンド**

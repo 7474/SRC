@@ -1,3 +1,7 @@
+---
+layout: default
+title: RenameBGMコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **RenameBGMコマンド**

@@ -1,3 +1,7 @@
+---
+layout: default
+title: Confirmコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **Confirmコマンド**

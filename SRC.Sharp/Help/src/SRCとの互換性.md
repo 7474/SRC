@@ -1,3 +1,7 @@
+---
+layout: default
+title: SRCとの互換性
+---
 # SRCとの互換性
 
 SRCとSRC#の互換性について。

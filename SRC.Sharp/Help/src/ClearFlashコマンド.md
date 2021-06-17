@@ -1,3 +1,7 @@
+---
+layout: default
+title: ClearFlashコマンド
+---
 ***SRC#ではFlashの再生はサポートされていません。***
 
 ----

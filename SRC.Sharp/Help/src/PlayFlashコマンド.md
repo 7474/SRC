@@ -1,3 +1,7 @@
+---
+layout: default
+title: PlayFlashコマンド
+---
 ***SRC#ではFlashの再生はサポートされていません。***
 
 ----

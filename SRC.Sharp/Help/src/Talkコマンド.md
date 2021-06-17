@@ -1,3 +1,7 @@
+---
+layout: default
+title: Talkコマンド
+---
 ** 内容はSRC2.2.33のものです **
 
 **Talkコマンド**

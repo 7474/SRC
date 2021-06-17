@@ -1,3 +1,7 @@
+---
+layout: default
+title: Info関数
+---
 ** 内容はSRC2.2.33のものです **
 
 **Info関数**

@@ -1,3 +1,7 @@
+---
+layout: default
+title: Debugコマンド
+---
 **Debugコマンド**
 
 デバッグログの出力

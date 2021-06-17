@@ -1,3 +1,7 @@
+---
+layout: default
+title: SRCを終了
+---
 ** 内容はSRC2.2.33のものです **
 
 **SRCを終了**
