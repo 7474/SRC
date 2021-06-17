@@ -4,10 +4,16 @@ on:
   push:
     branches:
       - master
+    paths: 
+      - .github/workflows/azure-static-web-apps-yellow-pebble-0ddb1c400.yml
+      - SRC.Sharp/Help/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+    paths: 
+      - .github/workflows/azure-static-web-apps-yellow-pebble-0ddb1c400.yml
+      - SRC.Sharp/Help/**
 
 jobs:
   build_and_deploy_job:
