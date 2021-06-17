@@ -1,5 +1,7 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Units;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,35 +13,21 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
+            Unit u1;
+            Unit u2;
+            string aname;
+            UnitAbility ua;
             switch (ArgNum)
             {
                 case 4:
                     {
                         u1 = GetArgAsUnit(2);
                         aname = GetArgAsString(3);
-                        var loopTo = u1.CountAbility();
-                        for (a = 1; a <= loopTo; a++)
+                        ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
+                        if (ua == null)
                         {
-                            if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
-                            {
-                                break;
-                            }
+                            throw new EventErrorException(this, "アビリティ名が間違っています");
                         }
-
-                        if (a > u1.CountAbility())
-                        {
-                            Event.EventErrorMessage = "アビリティ名が間違っています";
-                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 522554
-
-
-                            Input:
-                                                Error(0)
-
-                             */
-                        }
-
                         u2 = GetArgAsUnit(4);
                         break;
                     }
@@ -50,16 +38,9 @@ namespace SRCCore.CmdDatas.Commands
                         if (u1 is object)
                         {
                             aname = GetArgAsString(2);
-                            var loopTo1 = u1.CountAbility();
-                            for (a = 1; a <= loopTo1; a++)
-                            {
-                                if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
-                                {
-                                    break;
-                                }
-                            }
+                            ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
 
-                            if (a <= u1.CountAbility())
+                            if (ua == null)
                             {
                                 u2 = GetArgAsUnit(3);
                             }
@@ -67,29 +48,12 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 u1 = GetArgAsUnit(2);
                                 aname = GetArgAsString(3);
-                                var loopTo2 = u1.CountAbility();
-                                for (a = 1; a <= loopTo2; a++)
+                                ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
+
+                                if (ua == null)
                                 {
-                                    if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
-                                    {
-                                        break;
-                                    }
+                                    throw new EventErrorException(this, "アビリティ名が間違っています");
                                 }
-
-                                if (a > u1.CountAbility())
-                                {
-                                    Event.EventErrorMessage = "アビリティ名が間違っています";
-                                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 523270
-
-
-                                    Input:
-                                                                Error(0)
-
-                                     */
-                                }
-
                                 u2 = u1;
                             }
                         }
@@ -97,29 +61,11 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             u1 = GetArgAsUnit(2);
                             aname = GetArgAsString(3);
-                            var loopTo3 = u1.CountAbility();
-                            for (a = 1; a <= loopTo3; a++)
+                            ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
+                            if (ua == null)
                             {
-                                if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
-                                {
-                                    break;
-                                }
+                                throw new EventErrorException(this, "アビリティ名が間違っています");
                             }
-
-                            if (a > u1.CountAbility())
-                            {
-                                Event.EventErrorMessage = "アビリティ名が間違っています";
-                                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 523646
-
-
-                                Input:
-                                                        Error(0)
-
-                                 */
-                            }
-
                             u2 = u1;
                         }
 
@@ -130,64 +76,25 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         u1 = Event.SelectedUnitForEvent;
                         aname = GetArgAsString(2);
-                        var loopTo4 = u1.CountAbility();
-                        for (a = 1; a <= loopTo4; a++)
+                        ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
+                        if (ua == null)
                         {
-                            if ((aname ?? "") == (u1.Ability(a).Name ?? ""))
-                            {
-                                break;
-                            }
+                            throw new EventErrorException(this, "アビリティ名が間違っています");
                         }
-
-                        if (a > u1.CountAbility())
-                        {
-                            Event.EventErrorMessage = "アビリティ名が間違っています";
-                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524040
-
-
-                            Input:
-                                                Error(0)
-
-                             */
-                        }
-
                         u2 = Event.SelectedUnitForEvent;
                         break;
                     }
 
                 default:
-                    {
-                        Event.EventErrorMessage = "UseAbilityコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524229
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "UseAbilityコマンドの引数の数が違います");
             }
 
             if (u1.Status != "出撃")
             {
-                Event.EventErrorMessage = u1.Nickname + "は出撃していません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 524387
-
-
-                Input:
-                                Error(0)
-
-                 */
+                throw new EventErrorException(this, u1.Nickname + "は出撃していません");
             }
 
-            u1.ExecuteAbility(a, u2, false, true);
+            u1.ExecuteAbility(ua, u2, false, true);
             GUI.CloseMessageForm();
             GUI.RedrawScreen();
             return EventData.NextID;
