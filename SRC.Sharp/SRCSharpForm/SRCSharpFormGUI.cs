@@ -3,6 +3,7 @@ using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using SRCSharpForm.Forms;
 using SRCSharpForm.Lib;
 using SRCSharpForm.Resoruces;
@@ -1190,7 +1191,7 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock = MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)((withBlock.Left) + (withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)((withBlock.Top) + (withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
             //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
@@ -1206,7 +1207,7 @@ namespace SRCSharpForm
             //    GetCursorPos(PT);
             //    {
             //        var withBlock1 = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        if ((long)(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X && PT.X <= (long)((withBlock1.Left) + (withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX() && (long)(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y && PT.Y <= (long)((withBlock1.Top) + (withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
             //        {
             //            if ((GetAsyncKeyState(RButtonID) && 0x8000) != 0)
             //            {
@@ -1223,6 +1224,41 @@ namespace SRCSharpForm
         public void DisplayTelop(string msg)
         {
             Console.WriteLine("DisplayTelop: " + msg);
+            using (var telop = new frmTelop())
+            {
+                Expression.FormatMessage(ref msg);
+                if (Strings.InStr(msg, ".") > 0)
+                {
+                    msg = msg.Replace(".", Environment.NewLine);
+                    telop.Height = 78;
+                }
+                else
+                {
+                    telop.Height = 53;
+                }
+
+                if (MainForm.Visible == true && !(MainForm.WindowState == FormWindowState.Minimized))
+                {
+                    telop.Left = MainForm.Left + (MainForm.picMain.Width * MainForm.Width / MainForm.ClientRectangle.Width - telop.Width) / 2;
+                    telop.Top = MainForm.Top + (MainForm.Height - telop.Height) / 2;
+                }
+                else
+                {
+                    telop.Left = (int)((Screen.PrimaryScreen.Bounds.Width - telop.Width) / 2d);
+                    telop.Top = (int)((Screen.PrimaryScreen.Bounds.Height - telop.Height) / 2d);
+                }
+
+                telop.Label1.Text = msg;
+                telop.Show();
+                telop.Refresh();
+                if (!IsRButtonPressed())
+                {
+                    Sleep(1000);
+                }
+                telop.Close();
+            }
+
+
         }
 
         public void SetTitle(string title)
@@ -1375,7 +1411,7 @@ namespace SRCSharpForm
             if (FileSystem.Dir(save_path, FileAttribute.Directory) != FileSystem.Dir(SRC.ScenarioPath, FileAttribute.Directory))
             {
                 if (Confirm("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？",
-                    "セーブ",
+                   "セーブ",
                     GuiConfirmOption.OkCancel | GuiConfirmOption.Question) != GuiDialogResult.Ok)
                 {
                     return null;
