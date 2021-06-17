@@ -4472,13 +4472,13 @@ namespace SRCCore.Expressions
                     }
 
                     {
-                        var withBlock49 = Event.EventCmd[Event.CurrentLineNum];
-                        if (cur_depth == Event.CallDepth && withBlock49.Name == CmdType.ReturnCmd)
+                        var cmd = Event.EventCmd[Event.CurrentLineNum];
+                        if (cur_depth == Event.CallDepth && cmd.Name == CmdType.ReturnCmd)
                         {
                             break;
                         }
 
-                        ret = withBlock49.Exec();
+                        ret = cmd.Exec();
                     }
                 }
                 while (ret >= 0);

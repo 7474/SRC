@@ -114,34 +114,32 @@ namespace SRCCore.CmdDatas
                         return new ClearPictureCmd(src, data);
 
                     case "clearskill":
-                        return new NotImplementedCmd(src, data);
-
+                        return new ClearSkillCmd(src, data);
                     case "clearability":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearSkillCmd(src, data);
 
                     case "clearspecialpower":
-                        return new NotImplementedCmd(src, data);
-
+                        return new ClearSpecialPowerCmd(src, data);
                     case "clearmind":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearSpecialPowerCmd(src, data);
 
                     case "clearstatus":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearStatusCmd(src, data);
 
                     case "cls":
-                        return new NotImplementedCmd(src, data);
+                        return new ClsCmd(src, data);
 
                     case "close":
                         return new CloseCmd(src, data);
 
                     case "color":
-                        return new NotImplementedCmd(src, data);
+                        return new ColorCmd(src, data);
 
                     case "colorfilter":
                         return new ColorFilterCmd(src, data);
 
                     case "combine":
-                        return new NotImplementedCmd(src, data);
+                        return new CombineCmd(src, data);
 
                     case "confirm":
                         return new ConfirmCmd(src, data);
@@ -162,13 +160,13 @@ namespace SRCCore.CmdDatas
                         return new CreateFolderCmd(src, data);
 
                     case "debug":
-                        return new NotImplementedCmd(src, data);
+                        return new DebugCmd(src, data);
 
                     case "destroy":
-                        return new NotImplementedCmd(src, data);
+                        return new DestroyCmd(src, data);
 
                     case "disable":
-                        return new NotImplementedCmd(src, data);
+                        return new DisableCmd(src, data);
 
                     case "do":
                         return new DoCmd(src, data);
@@ -192,7 +190,7 @@ namespace SRCCore.CmdDatas
                         return new EscapeCmd(src, data);
 
                     case "exchangeitem":
-                        return new NotImplementedCmd(src, data);
+                        return new ExchangeItemCmd(src, data);
 
                     case "exec":
                         return new NotImplementedCmd(src, data);
@@ -201,10 +199,10 @@ namespace SRCCore.CmdDatas
                         return new ExitCmd(src, data);
 
                     case "explode":
-                        return new NotImplementedCmd(src, data);
+                        return new ExplodeCmd(src, data);
 
                     case "expup":
-                        return new NotImplementedCmd(src, data);
+                        return new ExpUpCmd(src, data);
 
                     case "fadein":
                         return new FadeInCmd(src, data);
@@ -222,7 +220,7 @@ namespace SRCCore.CmdDatas
                         return new FinishCmd(src, data);
 
                     case "fix":
-                        return new NotImplementedCmd(src, data);
+                        return new FixCmd(src, data);
 
                     case "for":
                         return new ForCmd(src, data);
@@ -237,7 +235,7 @@ namespace SRCCore.CmdDatas
                         return new FontCmd(src, data);
 
                     case "forget":
-                        return new NotImplementedCmd(src, data);
+                        return new ForgetCmd(src, data);
 
                     case "gameclear":
                         return new GameClearCmd(src, data);
@@ -246,10 +244,10 @@ namespace SRCCore.CmdDatas
                         return new GameOverCmd(src, data);
 
                     case "freememory":
-                        return new NotImplementedCmd(src, data);
+                        return new FreeMemoryCmd(src, data);
 
                     case "getoff":
-                        return new NotImplementedCmd(src, data);
+                        return new GetOffCmd(src, data);
 
                     case "global":
                         return new GlobalCmd(src, data);
@@ -291,31 +289,31 @@ namespace SRCCore.CmdDatas
                         return new ItemCmd(src, data);
 
                     case "join":
-                        return new NotImplementedCmd(src, data);
+                        return new JoinCmd(src, data);
 
                     case "keepbgm":
                         return new KeepBGMCmd(src, data);
 
                     case "land":
-                        return new NotImplementedCmd(src, data);
+                        return new LandCmd(src, data);
 
                     case "launch":
                         return new LaunchCmd(src, data);
 
                     case "leave":
-                        return new NotImplementedCmd(src, data);
+                        return new LeaveCmd(src, data);
 
                     case "levelup":
-                        return new NotImplementedCmd(src, data);
+                        return new LevelUpCmd(src, data);
 
                     case "line":
-                        return new NotImplementedCmd(src, data);
+                        return new LineCmd(src, data);
 
                     case "lineread":
                         return new LineReadCmd(src, data);
 
                     case "load":
-                        return new NotImplementedCmd(src, data);
+                        return new LoadCmd(src, data);
 
                     case "local":
                         return new LocalCmd(src, data);
@@ -327,15 +325,15 @@ namespace SRCCore.CmdDatas
                         return new MakeUnitListCmd(src, data);
 
                     case "mapability":
-                        return new NotImplementedCmd(src, data);
+                        return new MapAbilityCmd(src, data);
 
                     case "mapattack":
-                        return new NotImplementedCmd(src, data);
+                        return new MapAttackCmd(src, data);
                     case "mapweapon":
-                        return new NotImplementedCmd(src, data);
+                        return new MapAttackCmd(src, data);
 
                     case "money":
-                        return new NotImplementedCmd(src, data);
+                        return new MoneyCmd(src, data);
 
                     case "monotone":
                         return new MonotoneCmd(src, data);
@@ -356,10 +354,10 @@ namespace SRCCore.CmdDatas
                         return new OptionCmd(src, data);
 
                     case "organize":
-                        return new NotImplementedCmd(src, data);
+                        return new OrganizeCmd(src, data);
 
                     case "oval":
-                        return new NotImplementedCmd(src, data);
+                        return new OvalCmd(src, data);
 
                     case "paintpicture":
                         return new PaintPictureCmd(src, data);
@@ -380,40 +378,40 @@ namespace SRCCore.CmdDatas
                         return new PlaySoundCmd(src, data);
 
                     case "polygon":
-                        return new NotImplementedCmd(src, data);
+                        return new PolygonCmd(src, data);
 
                     case "print":
                         return new PrintCmd(src, data);
 
                     case "pset":
-                        return new NotImplementedCmd(src, data);
+                        return new PSetCmd(src, data);
 
                     case "question":
                         return new QuestionCmd(src, data);
 
                     case "quickload":
-                        return new NotImplementedCmd(src, data);
+                        return new QuickLoadCmd(src, data);
 
                     case "quit":
                         return new QuitCmd(src, data);
 
                     case "rankup":
-                        return new NotImplementedCmd(src, data);
+                        return new RankUpCmd(src, data);
 
                     case "read":
-                        return new NotImplementedCmd(src, data);
+                        return new NotSupportedCmd(src, data);
 
                     case "recoveren":
-                        return new NotImplementedCmd(src, data);
+                        return new RecoverENCmd(src, data);
 
                     case "recoverhp":
-                        return new NotImplementedCmd(src, data);
+                        return new RecoverHPCmd(src, data);
 
                     case "recoverplana":
-                        return new NotImplementedCmd(src, data);
+                        return new RecoverPlanaCmd(src, data);
 
                     case "recoversp":
-                        return new NotImplementedCmd(src, data);
+                        return new RecoverSPCmd(src, data);
 
                     case "redraw":
                         return new RedrawCmd(src, data);
@@ -422,7 +420,7 @@ namespace SRCCore.CmdDatas
                         return new RefreshCmd(src, data);
 
                     case "release":
-                        return new NotImplementedCmd(src, data);
+                        return new ReleaseCmd(src, data);
 
                     case "removefile":
                         return new RemoveFileCmd(src, data);
@@ -431,28 +429,28 @@ namespace SRCCore.CmdDatas
                         return new RemoveFolderCmd(src, data);
 
                     case "removeitem":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveItemCmd(src, data);
 
                     case "removepilot":
-                        return new NotImplementedCmd(src, data);
+                        return new RemovePilotCmd(src, data);
 
                     case "removeunit":
-                        return new NotImplementedCmd(src, data);
+                        return new RemoveUnitCmd(src, data);
 
                     case "renamebgm":
-                        return new NotImplementedCmd(src, data);
+                        return new RenameBGMCmd(src, data);
 
                     case "renamefile":
                         return new RenameFileCmd(src, data);
 
                     case "renameterm":
-                        return new NotImplementedCmd(src, data);
+                        return new RenameTermCmd(src, data);
 
                     case "replacepilot":
-                        return new NotImplementedCmd(src, data);
+                        return new ReplacePilotCmd(src, data);
 
                     case "require":
-                        return new NotImplementedCmd(src, data);
+                        return new RequireCmd(src, data);
 
                     case "restoreevent":
                         return new RestoreEventCmd(src, data);
@@ -461,13 +459,13 @@ namespace SRCCore.CmdDatas
                         return new RideCmd(src, data);
 
                     case "select":
-                        return new NotImplementedCmd(src, data);
+                        return new SelectCmd(src, data);
 
                     case "savedata":
                         return new NotImplementedCmd(src, data);
 
                     case "selecttarget":
-                        return new NotImplementedCmd(src, data);
+                        return new SelectTargetCmd(src, data);
 
                     case "sepia":
                         return new SepiaCmd(src, data);
@@ -476,28 +474,27 @@ namespace SRCCore.CmdDatas
                         return new SetCmd(src, data);
 
                     case "setbullet":
-                        return new NotImplementedCmd(src, data);
+                        return new SetBulletCmd(src, data);
 
                     case "setmessage":
-                        return new NotImplementedCmd(src, data);
+                        return new SetMessageCmd(src, data);
 
                     case "setrelation":
-                        return new NotImplementedCmd(src, data);
+                        return new SetRelationCmd(src, data);
 
                     case "setskill":
-                        return new NotImplementedCmd(src, data);
-
+                        return new SetSkillCmd(src, data);
                     case "setability":
-                        return new NotImplementedCmd(src, data);
+                        return new SetSkillCmd(src, data);
 
                     case "setstatus":
-                        return new NotImplementedCmd(src, data);
+                        return new SetStatusCmd(src, data);
 
                     case "setstatusstringcolor":
                         return new NotImplementedCmd(src, data);
 
                     case "setstock":
-                        return new NotImplementedCmd(src, data);
+                        return new SetStockCmd(src, data);
 
                     case "setwindowcolor":
                         return new NotImplementedCmd(src, data);
@@ -512,7 +509,7 @@ namespace SRCCore.CmdDatas
                         return new NotSupportedCmd(src, data);
 
                     case "showunitstatus":
-                        return new NotImplementedCmd(src, data);
+                        return new ShowUnitStatusCmd(src, data);
 
                     case "skip":
                         return new SkipCmd(src, data);
@@ -521,9 +518,9 @@ namespace SRCCore.CmdDatas
                         return new SortCmd(src, data);
 
                     case "specialpower":
-                        return new NotImplementedCmd(src, data);
+                        return new SpecialPowerCmd(src, data);
                     case "mind":
-                        return new NotImplementedCmd(src, data);
+                        return new SpecialPowerCmd(src, data);
 
                     case "split":
                         return new SplitCmd(src, data);
@@ -535,10 +532,10 @@ namespace SRCCore.CmdDatas
                         return new StopBGMCmd(src, data);
 
                     case "stopsummoning":
-                        return new NotImplementedCmd(src, data);
+                        return new StopSummoningCmd(src, data);
 
                     case "supply":
-                        return new NotImplementedCmd(src, data);
+                        return new SupplyCmd(src, data);
 
                     case "sunset":
                         return new SunsetCmd(src, data);
