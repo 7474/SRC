@@ -526,7 +526,7 @@ namespace SRCCore.CmdDatas
                         return new NotImplementedCmd(src, data);
 
                     case "split":
-                        return new NotImplementedCmd(src, data);
+                        return new SplitCmd(src, data);
 
                     case "startbgm":
                         return new StartBGMCmd(src, data);
