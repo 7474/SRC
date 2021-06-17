@@ -175,33 +175,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // グローバル変数の更新
-            if (ReferenceEquals(u1, Commands.SelectedUnit))
-            {
-                Commands.SelectedUnit = u2;
-            }
-
-            if (ReferenceEquals(u1, Event.SelectedUnitForEvent))
-            {
-                Event.SelectedUnitForEvent = u2;
-            }
-
-            if (ReferenceEquals(u1, Commands.SelectedTarget))
-            {
-                Commands.SelectedTarget = u2;
-            }
-
-            if (ReferenceEquals(u1, Event.SelectedTargetForEvent))
-            {
-                Event.SelectedTargetForEvent = u2;
-            }
-
-            foreach (var state in Commands.SavedStates.Append(Commands.SelectedState))
-            {
-                if (state.SelectedUnit == u1) { state.SelectedUnit = u2; }
-                if (state.SelectedUnitForEvent == u1) { state.SelectedUnitForEvent = u2; }
-                if (state.SelectedTarget == u1) { state.SelectedTarget = u2; }
-                if (state.SelectedTargetForEvent == u1) { state.SelectedTargetForEvent = u2; }
-            }
+            UpdateSelectedState(u1, u2);
             return EventData.NextID;
         }
     }
