@@ -1,6 +1,9 @@
 # SRC#Help
 
--> [Index](./md/index.md)
+## 閲覧
+
+- リポジトリ上 [Index](./src/index.md)
+- ホスティング先 https://srch.7474.jp/
 
 ## Develop
 
