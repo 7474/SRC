@@ -10,11 +10,19 @@ github_username: 7474
 # Build settings
 source: src
 theme: minima
-plugins: []
+plugins: 
+  - jekyll-relative-links
+
+relative_links:
+  enabled:     true
+  collections: false
+
 markdown_ext: "md"
 markdown: kramdown
 kramdown:
   input: GFM
   parse_block_html: true
+  auto_ids: true
+
 permalink: pretty
 encoding: UTF-8
