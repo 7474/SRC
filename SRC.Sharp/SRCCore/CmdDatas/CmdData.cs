@@ -59,10 +59,14 @@ namespace SRCCore.CmdDatas
                 Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
                 return -1;
             }
-            catch(Exception ex)
+            catch (NotImplementedException ex)
+            {
+                SRC.Log.LogWarning("NotImplemented: " + EventData.Data);
+                return EventData.NextID;
+            }
+            catch (Exception ex)
             {
                 SRC.Log.LogError(ex.Message, ex);
-                // TODO Impl
                 if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
                 {
                     Event.DisplayEventErrorMessage(EventData.ID, "Talkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
