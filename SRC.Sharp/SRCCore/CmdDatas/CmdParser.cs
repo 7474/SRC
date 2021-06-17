@@ -581,7 +581,7 @@ namespace SRCCore.CmdDatas
                         return new TelopCmd(src, data);
 
                     case "transform":
-                        return new NotImplementedCmd(src, data);
+                        return new TransformCmd(src, data);
 
                     case "unit":
                         return new UnitCmd(src, data);
