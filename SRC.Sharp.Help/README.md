@@ -1,5 +1,7 @@
 # SRC#Help
 
+SRC#Form のヘルプ。
+
 ## 閲覧
 
 https://srch.7474.jp/
@@ -13,4 +15,4 @@ jekyll serve --incremental
 
 ## Theme
 
-https://github.com/pages-themes/primer
+https://github.com/pmarsceill/just-the-docs
