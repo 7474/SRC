@@ -3,18 +3,27 @@ email: koudenpa@hotmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   SRC#のヘルプページ
 baseurl: ""
-url: "https://srch.7474.jp"
+# url: "https://srch.7474.jp"
 twitter_username: koudenpa
 github_username: 7474
 
 # Build settings
 source: src
 theme: just-the-docs
-plugins: 
+#logo: "/assets/images/just-the-docs.png"
+search_enabled: true
+gh_edit_link: true
+gh_edit_link_text: Edit this page on GitHub.
+gh_edit_repository: https://github.com/7474/SRC
+gh_edit_branch: master
+gh_edit_source: SRC.Sharp.Help/src
+gh_edit_view_mode: edit
+
+plugins:
   - jekyll-relative-links
 
 relative_links:
-  enabled:     true
+  enabled: true
   collections: false
 
 markdown_ext: "md"
