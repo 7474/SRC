@@ -8,7 +8,7 @@ twitter_username: koudenpa
 github_username: 7474
 
 # Build settings
-source: md
+source: src
 theme: minima
 plugins: []
 markdown_ext: "md"
