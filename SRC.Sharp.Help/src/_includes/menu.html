@@ -1,6 +1,9 @@
-<!-- https://jekyllrb.com/tutorials/navigation/ -->
-{% if site.data.menu.toc[0] %}
-  <ul class="nav-list">
+<!-- 
+  https://jekyllrb.com/tutorials/navigation/ 
+  https://github.com/pmarsceill/just-the-docs/blob/master/_includes/nav.html
+-->
+<ul class="nav-list">
+  {% if site.data.menu.toc[0] %}
     {% for item in site.data.menu.toc %}
       {% assign active = false %}
       {% for entry in item.subfolderitems %}
@@ -16,7 +19,7 @@
         {% if item.subfolderitems[0] %}
           <a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a>
         {%- endif -%} 
-        {{ item.title }}
+        <a href="{{ item.subfolderitems[0].url }}" class="nav-list-link">{{ item.title }}</a>
         {% if item.subfolderitems[0] %}
           <ul class="nav-list ">
             {% for entry in item.subfolderitems %}
@@ -32,7 +35,7 @@
                   <a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a>
                 {%- endif -%}
                 {% if entry.title %}
-                  {{ entry.title }}
+                  <a href="{{ entry.subfolderitems[0].url }}" class="nav-list-link">{{ entry.title }}</a>
                 {% endif %}
                 {% if entry.url %}
                   <a href="{{ entry.url }}"
@@ -54,5 +57,5 @@
         {% endif %}
       </li>
     {% endfor %}
-  </ul>
-{% endif %}
+  {% endif %}
+</ul>
