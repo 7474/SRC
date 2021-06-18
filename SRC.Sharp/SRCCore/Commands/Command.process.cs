@@ -569,7 +569,7 @@ namespace SRCCore.Commands
                         }
                         else if (currentUnit.IsFeatureAvailable("パーツ合体"))
                         {
-                            unitCommands.Add(new UiCommand(SplitCmdID, "パーツ合体"));
+                            unitCommands.Add(new UiCommand(CombineCmdID, "パーツ合体"));
                         }
 
                         if (!currentUnit.IsConditionSatisfied("ノーマルモード付加"))

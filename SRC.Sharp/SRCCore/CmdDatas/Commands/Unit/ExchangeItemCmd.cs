@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Units;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,48 +12,35 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            Unit u;
-            //            var ipart = default(string);
-            //            switch (ArgNum)
-            //            {
-            //                case 1:
-            //                    {
-            //                        u = Event.SelectedUnitForEvent;
-            //                        break;
-            //                    }
+            Unit u;
+            string ipart = "";
+            switch (ArgNum)
+            {
+                case 1:
+                    {
+                        u = Event.SelectedUnitForEvent;
+                        break;
+                    }
 
-            //                case 2:
-            //                    {
-            //                        u = GetArgAsUnit(2);
-            //                        break;
-            //                    }
+                case 2:
+                    {
+                        u = GetArgAsUnit(2);
+                        break;
+                    }
 
-            //                case 3:
-            //                    {
-            //                        u = GetArgAsUnit(2);
-            //                        ipart = GetArgAsString(3);
-            //                        break;
-            //                    }
+                case 3:
+                    {
+                        u = GetArgAsUnit(2);
+                        ipart = GetArgAsString(3);
+                        break;
+                    }
 
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "ExchangeItemコマンドの引数の数が違います";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 235024
+                default:
+                    throw new EventErrorException(this, "ExchangeItemコマンドの引数の数が違います");
+            }
 
-
-            //                        Input:
-            //                                        Error(0)
-
-            //                         */
-            //                        break;
-            //                    }
-            //            }
-
-            //            InterMission.ExchangeItemCommand(u, ipart);
-            //return EventData.NextID;
+            SRC.InterMission.ExchangeItemCommand(u, ipart);
+            return EventData.NextID;
         }
     }
 }
