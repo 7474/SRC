@@ -1324,47 +1324,42 @@ namespace SRCCore
             }
 
             // サポートアタックのパートナーを探す
-            // TODO Impl サポートアタックのパートナーを探す
             {
-                //var withBlock14 = Commands.SelectedUnit;
-                //if (withBlock14.Status == "出撃" && Commands.SelectedTarget.Status == "出撃")
-                //{
-                //    Commands.SupportAttackUnit = withBlock14.LookForSupportAttack(Commands.SelectedTarget);
+                var currentUnit = Commands.SelectedUnit;
+                if (currentUnit.Status == "出撃" && Commands.SelectedTarget.Status == "出撃")
+                {
+                    Commands.SupportAttackUnit = currentUnit.LookForSupportAttack(Commands.SelectedTarget);
 
-                //    // 合体技ではサポートアタック不能
-                //    if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= withBlock14.CountWeapon())
-                //    {
-                //        if (withBlock14.IsWeaponClassifiedAs(Commands.SelectedWeapon, "合"))
-                //        {
-                //            // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //            Commands.SupportAttackUnit = null;
-                //        }
-                //    }
+                    // 合体技ではサポートアタック不能
+                    if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= currentUnit.CountWeapon())
+                    {
+                        if (currentUnit.Weapon(Commands.SelectedWeapon).IsWeaponClassifiedAs("合"))
+                        {
+                            Commands.SupportAttackUnit = null;
+                        }
+                    }
 
-                //    // 魅了された場合
-                //    if (withBlock14.IsConditionSatisfied("魅了") && ReferenceEquals(withBlock14.Master, Commands.SelectedTarget))
-                //    {
-                //        // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //        Commands.SupportAttackUnit = null;
-                //    }
+                    // 魅了された場合
+                    if (currentUnit.IsConditionSatisfied("魅了") && ReferenceEquals(currentUnit.Master, Commands.SelectedTarget))
+                    {
+                        Commands.SupportAttackUnit = null;
+                    }
 
-                //    // 憑依された場合
-                //    if (withBlock14.IsConditionSatisfied("憑依"))
-                //    {
-                //        if ((withBlock14.Master.Party ?? "") == (Commands.SelectedTarget.Party ?? ""))
-                //        {
-                //            // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //            Commands.SupportAttackUnit = null;
-                //        }
-                //    }
+                    // 憑依された場合
+                    if (currentUnit.IsConditionSatisfied("憑依"))
+                    {
+                        if ((currentUnit.Master.Party ?? "") == (Commands.SelectedTarget.Party ?? ""))
+                        {
+                            Commands.SupportAttackUnit = null;
+                        }
+                    }
 
-                //    // 踊らされた場合
-                //    if (withBlock14.IsConditionSatisfied("踊り"))
-                //    {
-                //        // UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                //        Commands.SupportAttackUnit = null;
-                //    }
-                //}
+                    // 踊らされた場合
+                    if (currentUnit.IsConditionSatisfied("踊り"))
+                    {
+                        Commands.SupportAttackUnit = null;
+                    }
+                }
             }
 
             // 攻撃の実施
