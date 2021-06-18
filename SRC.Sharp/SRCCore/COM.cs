@@ -1494,62 +1494,61 @@ namespace SRCCore
                 }
             }
 
-            // TODO Impl SupportAttackUnit
             if (Commands.SupportAttackUnit is object)
             {
-                //if (Commands.SelectedUnit.MaxSyncAttack() > Commands.SelectedUnit.UsedSyncAttack)
-                //{
-                //    {
-                //        var withBlock16 = Commands.SupportAttackUnit;
-                //        // サポートアタックに使う武器を決定
-                //        w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", max_prob: 0, max_dmg: 0);
-                //        if (w2 > 0)
-                //        {
-                //            // サポートアタックを実施
-                //            Map.MaskData[withBlock16.x, withBlock16.y] = false;
-                //            if (!SRC.BattleAnimation)
-                //            {
-                //                GUI.MaskScreen();
-                //            }
+                if (Commands.SelectedUnit.MaxSyncAttack() > Commands.SelectedUnit.UsedSyncAttack)
+                {
+                    {
+                        var sau = Commands.SupportAttackUnit;
+                        // サポートアタックに使う武器を決定
+                        w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", out _, out _);
+                        if (w2 > 0)
+                        {
+                            // サポートアタックを実施
+                            Map.MaskData[sau.x, sau.y] = false;
+                            if (!SRC.BattleAnimation)
+                            {
+                                GUI.MaskScreen();
+                            }
 
-                //            if (withBlock16.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
-                //            {
-                //                withBlock16.PlayAnimation("サポートアタック開始", sub_situation: "");
-                //            }
+                            if (sau.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
+                            {
+                                sau.PlayAnimation("サポートアタック開始", sub_situation: "");
+                            }
 
-                //            GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
-                //            withBlock16.Attack(w2, Commands.SelectedTarget, "同時援護攻撃", def_mode);
-                //        }
-                //    }
+                            GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
+                            sau.Attack(sau.Weapon(w2), Commands.SelectedTarget, "同時援護攻撃", def_mode);
+                        }
+                    }
 
-                //    // 後始末
-                //    {
-                //        var withBlock17 = Commands.SupportAttackUnit.CurrentForm();
-                //        if (w2 > 0)
-                //        {
-                //            if (withBlock17.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
-                //            {
-                //                withBlock17.PlayAnimation("サポートアタック終了", sub_situation: "");
-                //            }
+                    // 後始末
+                    {
+                        var safcf = Commands.SupportAttackUnit.CurrentForm();
+                        if (w2 > 0)
+                        {
+                            if (safcf.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
+                            {
+                                safcf.PlayAnimation("サポートアタック終了", sub_situation: "");
+                            }
 
-                //            // サポートアタックの残り回数を減らす
-                //            withBlock17.UsedSupportAttack = (withBlock17.UsedSupportAttack + 1);
+                            // サポートアタックの残り回数を減らす
+                            safcf.UsedSupportAttack = (safcf.UsedSupportAttack + 1);
 
-                //            // 同時援護攻撃の残り回数を減らす
-                //            Commands.SelectedUnit.UsedSyncAttack = (Commands.SelectedUnit.UsedSyncAttack + 1);
-                //        }
-                //    }
+                            // 同時援護攻撃の残り回数を減らす
+                            Commands.SelectedUnit.UsedSyncAttack = (Commands.SelectedUnit.UsedSyncAttack + 1);
+                        }
+                    }
 
-                //    support_attack_done = true;
+                    support_attack_done = true;
 
-                //    // 防御側のユニットがかばわれた場合は本来の防御ユニットデータと
-                //    // 入れ替えて記録
-                //    if (Commands.SupportGuardUnit is object)
-                //    {
-                //        defense_target = Commands.SupportGuardUnit;
-                //        defense_target_hp_ratio = Commands.SupportGuardUnitHPRatio;
-                //    }
-                //}
+                    // 防御側のユニットがかばわれた場合は本来の防御ユニットデータと
+                    // 入れ替えて記録
+                    if (Commands.SupportGuardUnit is object)
+                    {
+                        defense_target = Commands.SupportGuardUnit;
+                        defense_target_hp_ratio = Commands.SupportGuardUnitHPRatio;
+                    }
+                }
             }
 
             {
@@ -1666,46 +1665,45 @@ namespace SRCCore
                 }
             }
 
-            // TODO Impl SupportAttackUnit
             if (Commands.SupportAttackUnit is object)
             {
-                //{
-                //    var withBlock19 = Commands.SupportAttackUnit;
-                //    // サポートアタックに使う武器を決定
-                //    w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", max_prob: 0, max_dmg: 0);
-                //    if (w2 > 0)
-                //    {
-                //        // サポートアタックを実施
-                //        Map.MaskData[withBlock19.x, withBlock19.y] = false;
-                //        if (!SRC.BattleAnimation)
-                //        {
-                //            GUI.MaskScreen();
-                //        }
+                {
+                    var sau = Commands.SupportAttackUnit;
+                    // サポートアタックに使う武器を決定
+                    w2 = SelectWeapon(Commands.SupportAttackUnit, Commands.SelectedTarget, "サポートアタック", out _, out _);
+                    if (w2 > 0)
+                    {
+                        // サポートアタックを実施
+                        Map.MaskData[sau.x, sau.y] = false;
+                        if (!SRC.BattleAnimation)
+                        {
+                            GUI.MaskScreen();
+                        }
 
-                //        if (withBlock19.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
-                //        {
-                //            withBlock19.PlayAnimation("サポートアタック開始", sub_situation: "");
-                //        }
+                        if (sau.IsAnimationDefined("サポートアタック開始", sub_situation: ""))
+                        {
+                            sau.PlayAnimation("サポートアタック開始", sub_situation: "");
+                        }
 
-                //        GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
-                //        withBlock19.Attack(w2, Commands.SelectedTarget, "援護攻撃", def_mode);
-                //    }
-                //}
+                        GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SupportAttackUnit);
+                        sau.Attack(sau.Weapon(w2), Commands.SelectedTarget, "援護攻撃", def_mode);
+                    }
+                }
 
-                //// 後始末
-                //{
-                //    var withBlock20 = Commands.SupportAttackUnit.CurrentForm();
-                //    if (withBlock20.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
-                //    {
-                //        withBlock20.PlayAnimation("サポートアタック終了", sub_situation: "");
-                //    }
+                // 後始末
+                {
+                    var saucf = Commands.SupportAttackUnit.CurrentForm();
+                    if (saucf.IsAnimationDefined("サポートアタック終了", sub_situation: ""))
+                    {
+                        saucf.PlayAnimation("サポートアタック終了", sub_situation: "");
+                    }
 
-                //    // サポートアタックの残り回数を減らす
-                //    if (w2 > 0)
-                //    {
-                //        withBlock20.UsedSupportAttack = (withBlock20.UsedSupportAttack + 1);
-                //    }
-                //}
+                    // サポートアタックの残り回数を減らす
+                    if (w2 > 0)
+                    {
+                        saucf.UsedSupportAttack = (saucf.UsedSupportAttack + 1);
+                    }
+                }
 
                 // 防御側のユニットがかばわれた場合は本来の防御ユニットデータと
                 // 入れ替えて記録
