@@ -483,9 +483,8 @@ namespace SRCCore.Commands
                     Status.DisplayUnitStatus(Map.MapDataForUnit[u.x, u.y]);
                 }
 
-                // TODO Impl ユニットリストの表示を更新
-                //// ユニットリストの表示を更新
-                //Event.MakeUnitList(smode: "");
+                // ユニットリストの表示を更新
+                Event.MakeUnitList(smode: "");
 
                 // コマンドを終了
                 CommandState = "ユニット選択";
@@ -658,9 +657,8 @@ namespace SRCCore.Commands
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoHyperMode();
                     Map.MapDataForUnit[currentUnit.x, currentUnit.y].CheckAutoNormalMode();
 
-                    // TODO Impl ユニットリストの表示を更新
-                    //// ユニットリストの表示を更新
-                    //Event.MakeUnitList(smode: "");
+                    // ユニットリストの表示を更新
+                    Event.MakeUnitList(smode: "");
 
                     // コマンドを終了
                     CommandState = "ユニット選択";
@@ -710,9 +708,8 @@ namespace SRCCore.Commands
                 SRC.UList.CheckAutoHyperMode();
                 SRC.UList.CheckAutoNormalMode();
 
-                // TODO Impl ユニットリストの表示を更新
-                //// ユニットリストの表示を更新
-                //Event.MakeUnitList(smode: "");
+                // ユニットリストの表示を更新
+                Event.MakeUnitList(smode: "");
 
                 // コマンドを終了
                 CommandState = "ユニット選択";
