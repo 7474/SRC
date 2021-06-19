@@ -1,5 +1,7 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Pilots;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,91 +13,73 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            string pname;
-            //            Pilot p;
-            //            short prev_lv;
-            //            double hp_ratio = default, en_ratio = default;
-            //            short num;
-            //            switch (ArgNum)
-            //            {
-            //                case 3:
-            //                    {
-            //                        p = GetArgAsPilot(2);
-            //                        num = GetArgAsLong(3);
-            //                        break;
-            //                    }
+            Pilot p;
+            int num;
+            switch (ArgNum)
+            {
+                case 3:
+                    {
+                        p = GetArgAsPilot(2);
+                        num = GetArgAsLong(3);
+                        break;
+                    }
 
-            //                case 2:
-            //                    {
-            //                        {
-            //                            var withBlock = Event.SelectedUnitForEvent;
-            //                            if (withBlock.CountPilot() > 0)
-            //                            {
-            //                                p = withBlock.Pilot((object)1);
-            //                            }
-            //                            else
-            //                            {
-            //                                ExecExpUpCmdRet = LineNum + 1;
-            //                                return ExecExpUpCmdRet;
-            //                            }
-            //                        }
+                case 2:
+                    {
+                        {
+                            var u = Event.SelectedUnitForEvent;
+                            if (u.CountPilot() > 0)
+                            {
+                                p = u.Pilots.First();
+                            }
+                            else
+                            {
+                                return EventData.NextID;
+                            }
+                        }
 
-            //                        num = GetArgAsLong(2);
-            //                        break;
-            //                    }
+                        num = GetArgAsLong(2);
+                        break;
+                    }
 
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "ExpUpコマンドの引数の数が違います";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 236403
+                default:
+                    throw new EventErrorException(this, "ExpUpコマンドの引数の数が違います");
+            }
 
+            var hp_ratio = 0d;
+            var en_ratio = 0d;
+            if (p.Unit is object)
+            {
+                var u = p.Unit;
+                hp_ratio = 100 * u.HP / (double)u.MaxHP;
+                en_ratio = 100 * u.EN / (double)u.MaxEN;
+            }
 
-            //                        Input:
-            //                                        Error(0)
+            var prev_lv = p.Level;
+            p.Exp = p.Exp + num;
+            if (p.Level == prev_lv)
+            {
+                return EventData.NextID;
+            }
 
-            //                         */
-            //                        break;
-            //                    }
-            //            }
+            p.Update();
 
-            //            if (p.Unit is object)
-            //            {
-            //                {
-            //                    var withBlock1 = p.Unit;
-            //                    hp_ratio = 100 * withBlock1.HP / (double)withBlock1.MaxHP;
-            //                    en_ratio = 100 * withBlock1.EN / (double)withBlock1.MaxEN;
-            //                }
-            //            }
+            // ＳＰ＆霊力をアップデート
+            p.SP = p.SP;
+            p.Plana = p.Plana;
+            if (p.Unit is object)
+            {
+                {
+                    var u = p.Unit;
+                    u.Update();
+                    u.HP = ((int)(u.MaxHP * hp_ratio / 100d));
+                    u.EN = ((int)(u.MaxEN * en_ratio / 100d));
+                }
 
-            //            prev_lv = p.Level;
-            //            p.Exp = p.Exp + num;
-            //            if (p.Level == prev_lv)
-            //            {
-            //                ExecExpUpCmdRet = LineNum + 1;
-            //                return ExecExpUpCmdRet;
-            //            }
+                SRC.PList.UpdateSupportMod(p.Unit);
+            }
 
-            //            p.Update();
-
-            //            // ＳＰ＆霊力をアップデート
-            //            p.SP = p.SP;
-            //            p.Plana = p.Plana;
-            //            if (p.Unit is object)
-            //            {
-            //                {
-            //                    var withBlock2 = p.Unit;
-            //                    withBlock2.Update();
-            //                    withBlock2.HP = (withBlock2.MaxHP * hp_ratio / 100d);
-            //                    withBlock2.EN = (withBlock2.MaxEN * en_ratio / 100d);
-            //                }
-
-            //                SRC.PList.UpdateSupportMod(p.Unit);
-            //            }
-
-            //return EventData.NextID;
+            return EventData.NextID;
         }
     }
 }
