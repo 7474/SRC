@@ -458,6 +458,9 @@ namespace SRCCore.Events
             new_label.Enable = true;
             if (new_label.Name == LabelType.NormalLabel)
             {
+                // 登録済なら無視
+                if (colNormalLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+
                 // 通常ラベルを追加
                 if (FindNormalLabel0(lname) < 0)
                 {
@@ -467,8 +470,10 @@ namespace SRCCore.Events
             }
             else
             {
-                // イベントラベルを追加
+                // 登録済なら無視
+                if (colEventLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
 
+                // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
                 lname2 = string.Join(" ", GeneralLib.ToList(lname));
@@ -499,6 +504,9 @@ namespace SRCCore.Events
             new_label.Enable = true;
             if (new_label.Name == LabelType.NormalLabel)
             {
+                // 登録済なら無視
+                if(colSysNormalLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+
                 // 通常ラベルを追加
                 if (FindSysNormalLabel(lname) < 0)
                 {
@@ -511,8 +519,10 @@ namespace SRCCore.Events
             }
             else
             {
-                // イベントラベルを追加
+                // 登録済なら無視
+                if (colEventLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
 
+                // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
                 lname2 = string.Join(" ", GeneralLib.ToList(lname));

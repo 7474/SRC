@@ -326,7 +326,7 @@ namespace SRCCore.Events
             }
         }
 
-        private void RegisterLabel()
+        public void RegisterLabel()
         {
             foreach (var line in EventData)
             {
