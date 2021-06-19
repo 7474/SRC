@@ -5,7 +5,7 @@ describe('Init Blazor Application', function () {
         // 本体のレンダリング
         cy.get('input[type="file"]').should('exist');
         // タイトルリストのロード完了
-        cy.document().its('fonts.status').should('loaded');
+        cy.document().its('fonts.status').should('equal', 'loaded');
         cy.get('.navbar .navbar-menu .fa-folder').should('exist');
         cy.percySnapshot();
     });
