@@ -356,7 +356,7 @@ namespace SRCCore.Events
             }
         }
 
-        private void ParseCommand()
+        internal void ParseCommand()
         {
             // 構文解析と書式チェックその１
             // 制御構造

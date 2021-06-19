@@ -17,5 +17,10 @@ namespace SRCCore.CmdDatas
 
         // 引数の型
         public Expressions.ValueType argType { get; set; }
+
+        public override string ToString()
+        {
+            return $"{strArg}({lngArg}L)({dblArg}d)";
+        }
     }
 }

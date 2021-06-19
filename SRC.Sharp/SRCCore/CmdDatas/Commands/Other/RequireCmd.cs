@@ -48,24 +48,9 @@ namespace SRCCore.CmdDatas.Commands
             // ラベルを登録
             Event.RegisterLabel();
 
-            // XXX 多分要らん
-            //// コマンドデータ配列を設定
-            //if (Information.UBound(Event.EventData) > Information.UBound(Event.EventCmd))
-            //{
-            //    Array.Resize(Event.EventCmd, Information.UBound(Event.EventData) + 1);
-            //    i = Information.UBound(Event.EventData);
-            //    while (Event.EventCmd[i] is null)
-            //    {
-            //        Event.EventCmd[i] = new CmdData();
-            //        Event.EventCmd[i].LineNum = i;
-            //        i = i - 1;
-            //    }
-            //}
-
-            //var loopTo4 = Information.UBound(Event.EventData);
-            //for (i = file_head; i <= loopTo4; i++)
-            //    Event.EventCmd[i].Name = Event.CmdType.NullCmd;
-
+            // コマンドデータ配列を設定
+            Event.ParseCommand();
+ 
             return EventData.NextID;
         }
     }

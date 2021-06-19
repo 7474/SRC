@@ -47,7 +47,7 @@ namespace SRCCore.CmdDatas.Commands
                 Name = hname,
                 Left = hx,
                 Top = hy,
-                width = hw,
+                Width = hw,
                 Height = hh,
                 Caption = hcaption,
             });

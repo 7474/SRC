@@ -538,7 +538,7 @@ namespace SRCSharpForm
             // ホットポイントが定義されている場合はツールチップを変更
             foreach (var hpoint in SRC.Event.HotPointList)
             {
-                if (hpoint.Left <= GUI.MouseX && GUI.MouseX < hpoint.Left + hpoint.width && hpoint.Top <= GUI.MouseY && GUI.MouseY < hpoint.Top + hpoint.Height)
+                if (hpoint.Left <= GUI.MouseX && GUI.MouseX < hpoint.Left + hpoint.Width && hpoint.Top <= GUI.MouseY && GUI.MouseY < hpoint.Top + hpoint.Height)
                 {
                     if (hpoint.Caption == "非表示" || string.IsNullOrEmpty(hpoint.Caption))
                     {

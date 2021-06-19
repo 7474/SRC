@@ -34,6 +34,11 @@ namespace SRCCore.CmdDatas
             ParseArgs(eventData.Data);
         }
 
+        public override string ToString()
+        {
+            return $"{Name}: {EventData}";
+        }
+
         // コマンドの種類
         public CmdType Name { get; private set; }
 
