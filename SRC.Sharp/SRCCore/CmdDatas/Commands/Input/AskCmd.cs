@@ -20,15 +20,6 @@ namespace SRCCore.CmdDatas.Commands
             var use_continuous_mode = false;
             var enable_rbutton_cancel = false;
             string msg;
-            //string[] list;
-            //string msg;
-            //string vname;
-            //int i;
-            //string buf;
-            //VarData var;
-            //list = new string[1];
-            //GUI.ListItemID = new string[1];
-            //GUI.ListItemFlag = new bool[1];
 
             // 表示オプションの処理
             var argIndex = ArgNum;
@@ -54,8 +45,7 @@ namespace SRCCore.CmdDatas.Commands
                         break;
 
                     case "終了":
-                        //TODO Impl
-                        //My.MyProject.Forms.frmListBox.Hide();
+                        GUI.CloseListBox();
                         if (SRC.AutoMoveCursor)
                         {
                             GUI.RestoreCursorPos();
@@ -187,7 +177,6 @@ namespace SRCCore.CmdDatas.Commands
                             vname = vname + "[";
                         }
 
-                        // TODO 列挙順確認しないとだめかも
                         foreach (VarData v in Event.LocalVariableList.Values)
                         {
                             if (Strings.InStr(v.Name, vname) == 1)

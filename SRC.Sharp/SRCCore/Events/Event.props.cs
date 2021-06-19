@@ -34,9 +34,8 @@ namespace SRCCore.Events
         private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();
 
         // 変数用のコレクション
-        // XXX 列挙時の順番がDictionaryだと問題になるかも
-        public IDictionary<string, VarData> GlobalVariableList = new Dictionary<string, VarData>();
-        public IDictionary<string, VarData> LocalVariableList = new Dictionary<string, VarData>();
+        public SrcCollection<VarData> GlobalVariableList = new SrcCollection<VarData>();
+        public SrcCollection<VarData> LocalVariableList = new SrcCollection<VarData>();
         public BCVariable BCVariable = new BCVariable();
 
         // 現在の行番号

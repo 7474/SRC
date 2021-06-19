@@ -1,5 +1,7 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Units;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,61 +13,47 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            Unit u;
-            //            switch (ArgNum)
-            //            {
-            //                case 1:
-            //                    {
-            //                        u = Event.SelectedUnitForEvent;
-            //                        break;
-            //                    }
+            Unit u;
+            switch (ArgNum)
+            {
+                case 1:
+                    {
+                        u = Event.SelectedUnitForEvent;
+                        break;
+                    }
 
-            //                case 2:
-            //                    {
-            //                        u = GetArgAsUnit(2, true);
-            //                        break;
-            //                    }
+                case 2:
+                    {
+                        u = GetArgAsUnit(2, true);
+                        break;
+                    }
 
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "GetOffコマンドの引数の数が違います";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 284690
+                default:
+                    throw new EventErrorException(this, "GetOffコマンドの引数の数が違います");
+            }
 
+            if (u is object)
+            {
+                if (u.CountPilot() > 0)
+                {
+                    if (u.Status == "出撃")
+                    {
+                        // ユニットをマップ上から削除した状態で支援効果を更新
+                        Map.MapDataForUnit[u.x, u.y] = null;
+                        SRC.PList.UpdateSupportMod(u);
+                    }
 
-            //                        Input:
-            //                                        Error(0)
+                    // パイロットを下ろす
+                    u.Pilots.First().GetOff(true);
+                    if (u.Status == "出撃")
+                    {
+                        // ユニットをマップ上に戻す
+                        Map.MapDataForUnit[u.x, u.y] = u;
+                    }
+                }
+            }
 
-            //                         */
-            //                        break;
-            //                    }
-            //            }
-
-            //            if (u is object)
-            //            {
-            //                if (u.CountPilot() > 0)
-            //                {
-            //                    if (u.Status == "出撃")
-            //                    {
-            //                        // ユニットをマップ上から削除した状態で支援効果を更新
-            //                        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                        Map.MapDataForUnit[u.x, u.y] = null;
-            //                        SRC.PList.UpdateSupportMod(u);
-            //                    }
-
-            //                    // パイロットを下ろす
-            //                    u.Pilot(1).GetOff(true);
-            //                    if (u.Status == "出撃")
-            //                    {
-            //                        // ユニットをマップ上に戻す
-            //                        Map.MapDataForUnit[u.x, u.y] = u;
-            //                    }
-            //                }
-            //            }
-
-            //return EventData.NextID;
+            return EventData.NextID;
         }
     }
 }
