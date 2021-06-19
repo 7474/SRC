@@ -32,8 +32,8 @@ namespace SRCSharpForm
             _lblMessage = new Label();
             _lblMessage.Dock = DockStyle.Fill;
 
-            _flpButtons.FlowDirection = FlowDirection.RightToLeft;
-            _flpButtons.Dock = DockStyle.Fill;
+            _flpButtons.FlowDirection = FlowDirection.LeftToRight;
+            _flpButtons.Dock = DockStyle.Right;
 
             _plHeader.Dock = DockStyle.Fill;
             _plHeader.Padding = new Padding(20);
@@ -253,7 +253,7 @@ namespace SRCSharpForm
         private void InitRetryCancelButtons()
         {
             Button btnRetry = new Button();
-            btnRetry.Text = "OK";
+            btnRetry.Text = "Retry";
             btnRetry.Click += ButtonClick;
 
             Button btnCancel = new Button();
