@@ -25,7 +25,13 @@ namespace SRCCore
         public Color FillColor { get; set; }
         public FillStyle FillStyle { get; set; }
 
-        public ScreanDrawOption() { }
+        public ScreanDrawOption()
+        {
+            DrawOption = ScreanDrawMode.Front;
+            DrawWidth = 1;
+            FillStyle = FillStyle.VbFSTransparent;
+        }
+
         public ScreanDrawOption(Events.Event e, Color foreColor)
         {
             DrawOption = GUIScreanExtension.ScreanDrawModeFrom(e.ObjDrawOption);
