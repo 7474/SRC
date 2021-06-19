@@ -26,8 +26,11 @@ namespace SRCSharpForm
         private MsgBox()
         {
             StartPosition = FormStartPosition.CenterScreen;
-            Padding = new System.Windows.Forms.Padding(3);
-            Width = 400;
+            Width = 300;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowIcon = false;
+            ShowInTaskbar = false;
 
             _lblMessage = new Label();
             _lblMessage.Dock = DockStyle.Fill;
@@ -36,44 +39,25 @@ namespace SRCSharpForm
             _flpButtons.Dock = DockStyle.Right;
 
             _plHeader.Dock = DockStyle.Fill;
-            _plHeader.Padding = new Padding(20);
+            _plHeader.Padding = new Padding(8, 16, 8, 8);
             _plHeader.Controls.Add(_lblMessage);
 
             _plFooter.Dock = DockStyle.Bottom;
-            _plFooter.Padding = new Padding(20);
-            _plFooter.Height = 80;
+            _plFooter.Height = 48;
             _plFooter.Controls.Add(_flpButtons);
 
             _picIcon.Width = 32;
             _picIcon.Height = 32;
-            _picIcon.Location = new Point(30, 50);
+            _picIcon.Location = new Point(16, 24);
 
             _plIcon.Dock = DockStyle.Left;
-            _plIcon.Padding = new Padding(20);
-            _plIcon.Width = 70;
+            _plIcon.Padding = new Padding(8);
+            _plIcon.Width = 64;
             _plIcon.Controls.Add(_picIcon);
 
             Controls.Add(_plHeader);
             Controls.Add(_plIcon);
             Controls.Add(_plFooter);
-
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            SuspendLayout();
-            // 
-            // MsgBox
-            // 
-            ClientSize = new System.Drawing.Size(284, 261);
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "MsgBox";
-            ShowIcon = false;
-            ShowInTaskbar = false;
-            ResumeLayout(false);
-
         }
 
         private static void ShowMsgBox(IWin32Window owner)
@@ -340,14 +324,14 @@ namespace SRCSharpForm
         private static Size MessageSize(string message)
         {
             Graphics g = _msgBox.CreateGraphics();
-            int width = 350;
-            int height = 230;
+            int width = 300;
+            int height = 180;
 
             SizeF size = g.MeasureString(message, _msgBox._lblMessage.Font);
 
             if (message.Length < 150)
             {
-                if ((int)size.Width > 350)
+                if ((int)size.Width > 300)
                 {
                     width = (int)size.Width;
                 }
