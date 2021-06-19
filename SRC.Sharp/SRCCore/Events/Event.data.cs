@@ -326,7 +326,7 @@ namespace SRCCore.Events
             }
         }
 
-        public void RegisterLabel()
+        private void RegisterLabel()
         {
             foreach (var line in EventData)
             {
@@ -356,7 +356,7 @@ namespace SRCCore.Events
             }
         }
 
-        internal void ParseCommand()
+        private void ParseCommand()
         {
             // 構文解析と書式チェックその１
             // 制御構造
@@ -1256,6 +1256,25 @@ namespace SRCCore.Events
                 SRC.TerminateSRC();
                 throw;
             }
+        }
+
+        // シナリオ開始後の動的なファイル読み込み
+        public void LoadDynamic(string fname)
+        {
+            // 既に読み込まれている場合はスキップ
+            if (EventFileNames.Contains(fname))
+            {
+                return;
+            }
+
+            // ファイルをロード
+            LoadEventData2(fname, EventDataSource.Scenario);
+
+            // ラベルを登録
+            RegisterLabel();
+
+            // コマンドデータ配列を設定
+            ParseCommand();
         }
     }
 }

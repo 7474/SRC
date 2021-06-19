@@ -1,6 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -30,27 +29,14 @@ namespace SRCCore.CmdDatas.Commands
             // 読み込むファイル名
             var fname = SRC.FileSystem.PathCombine(SRC.ScenarioPath, argFname);
 
-            // 既に読み込まれている場合はスキップ
-            if (Event.EventFileNames.Contains(fname))
-            {
-                return EventData.NextID;
-            }
-
             // ファイルが存在する？
             if (!SRC.FileSystem.FileExists(fname))
             {
                 throw new EventErrorException(this, "指定されたファイル「" + fname + "」が見つかりません。");
             }
 
-            // ファイルをロード
-            Event.LoadEventData2(fname, EventDataSource.Scenario);
+            Event.LoadDynamic(fname);
 
-            // ラベルを登録
-            Event.RegisterLabel();
-
-            // コマンドデータ配列を設定
-            Event.ParseCommand();
- 
             return EventData.NextID;
         }
     }
