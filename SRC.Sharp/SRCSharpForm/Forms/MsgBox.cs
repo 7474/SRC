@@ -75,23 +75,37 @@ namespace SRCSharpForm
 
         }
 
-        public static void Show(string message)
+        private static void ShowMsgBox(IWin32Window owner)
+        {
+            if (owner != null)
+            {
+                _msgBox.StartPosition = FormStartPosition.CenterParent;
+                _msgBox.ShowDialog(owner);
+            }
+            else
+            {
+                _msgBox.StartPosition = FormStartPosition.CenterScreen;
+                _msgBox.ShowDialog();
+            }
+        }
+
+        public static void Show(IWin32Window owner, string message)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
-            _msgBox.ShowDialog();
+            ShowMsgBox(owner);
         }
 
-        public static void Show(string message, string title)
+        public static void Show(IWin32Window owner, string message, string title)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
             _msgBox.Text = title;
             _msgBox.Size = MessageSize(message);
-            _msgBox.ShowDialog();
+            ShowMsgBox(owner);
         }
 
-        public static DialogResult Show(string message, string title, Buttons buttons)
+        public static DialogResult Show(IWin32Window owner, string message, string title, Buttons buttons)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
@@ -101,11 +115,11 @@ namespace SRCSharpForm
             InitButtons(buttons);
 
             _msgBox.Size = MessageSize(message);
-            _msgBox.ShowDialog();
+            ShowMsgBox(owner);
             return _buttonResult;
         }
 
-        public static DialogResult Show(string message, string title, Buttons buttons, BoxIcon icon)
+        public static DialogResult Show(IWin32Window owner, string message, string title, Buttons buttons, BoxIcon icon)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
@@ -115,7 +129,7 @@ namespace SRCSharpForm
             InitIcon(icon);
 
             _msgBox.Size = MessageSize(message);
-            _msgBox.ShowDialog();
+            ShowMsgBox(owner);
             return _buttonResult;
         }
 
