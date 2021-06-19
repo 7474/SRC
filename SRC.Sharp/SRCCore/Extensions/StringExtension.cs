@@ -1,3 +1,4 @@
+using SRCCore.VB;
 using System.Text.RegularExpressions;
 
 namespace SRCCore.Extensions
@@ -31,6 +32,58 @@ namespace SRCCore.Extensions
         public static string ReplaceNewLine(this string str, string replace)
         {
             return NewLineRegex.Replace(str, replace);
+        }
+
+        public static string RemoveLineComment(this string buf)
+        {
+            if (Strings.InStr(buf, "//") > 0)
+            {
+                var in_single_quote = false;
+                var in_double_quote = false;
+                char lastChar = default;
+                for (var i = 0; i < buf.Length; i++)
+                {
+                    var c = buf[i];
+                    switch (c)
+                    {
+                        case '\'':
+                            {
+                                // シングルクオート
+                                if (!in_double_quote)
+                                {
+                                    in_single_quote = !in_single_quote;
+                                }
+
+                                break;
+                            }
+
+                        case '"':
+                            {
+                                // ダブルクオート
+                                if (!in_single_quote)
+                                {
+                                    in_double_quote = !in_double_quote;
+                                }
+
+                                break;
+                            }
+
+                        case '/':
+                            {
+                                // コメント？
+                                if (!in_double_quote && !in_single_quote && lastChar == '/')
+                                {
+                                    buf = Strings.Left(buf, i - 1);
+                                }
+
+                                break;
+                            }
+                    }
+                    lastChar = c;
+                }
+            }
+
+            return buf;
         }
     }
 }

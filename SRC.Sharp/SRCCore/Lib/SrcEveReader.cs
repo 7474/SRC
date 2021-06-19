@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.IO;
@@ -54,54 +55,7 @@ namespace SRCCore.Lib
                 }
 
                 // コメント部分を削除
-
-
-                if (Strings.InStr(buf, "//") > 0)
-                {
-                    var in_single_quote = false;
-                    var in_double_quote = false;
-                    char lastChar = default;
-                    for (var i = 0; i < buf.Length; i++)
-                    {
-                        var c = buf[i];
-                        switch (c)
-                        {
-                            case '\'':
-                                {
-                                    // シングルクオート
-                                    if (!in_double_quote)
-                                    {
-                                        in_single_quote = !in_single_quote;
-                                    }
-
-                                    break;
-                                }
-
-                            case '"':
-                                {
-                                    // ダブルクオート
-                                    if (!in_single_quote)
-                                    {
-                                        in_double_quote = !in_double_quote;
-                                    }
-
-                                    break;
-                                }
-
-                            case '/':
-                                {
-                                    // コメント？
-                                    if (!in_double_quote && !in_single_quote && lastChar == '/')
-                                    {
-                                        buf = Strings.Left(buf, i);
-                                    }
-
-                                    break;
-                                }
-                        }
-                        lastChar = c;
-                    }
-                }
+                buf = buf.RemoveLineComment();
 
                 // 行末が「_」でなければ行の読み込みを完了
                 if (Strings.Right(buf, 1) != "_")
@@ -115,6 +69,7 @@ namespace SRCCore.Lib
             }
             return line_buf;
         }
+
 
         public InvalidSrcData InvalidData(string msg, string dname)
         {
