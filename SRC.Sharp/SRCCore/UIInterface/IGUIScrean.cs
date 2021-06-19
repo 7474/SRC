@@ -13,6 +13,7 @@ namespace SRCCore
     {
         void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle);
         void CircleCmd(ScreanDrawOption option, int x1, int y1, int rad);
+        void OvalCmd(ScreanDrawOption option, int x1, int y1, int rad, float oval_ratio);
         void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
         void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
     }
