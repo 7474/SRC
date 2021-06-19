@@ -1,5 +1,5 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,23 +11,13 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            if (ArgNum != 2)
-            //            {
-            //                Event.EventErrorMessage = "Moneyコマンドの引数の数が間違っています";
-            //                ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 343971
+            if (ArgNum != 2)
+            {
+                throw new EventErrorException(this, "Moneyコマンドの引数の数が間違っています");
+            }
 
-
-            //                Input:
-            //                            Error(0)
-
-            //                 */
-            //            }
-
-            //            SRC.IncrMoney(GetArgAsLong(2));
-            //return EventData.NextID;
+            SRC.IncrMoney(GetArgAsLong(2));
+            return EventData.NextID;
         }
     }
 }
