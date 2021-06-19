@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,8 +27,7 @@ namespace SRCCore
         public int TotalTurn { get; set; }
         public int Money { get; set; }
 
-        // XXX 列挙時の順番がDictionaryだと問題になるかも
-        public IDictionary<string, VarData> GlobalVariableList;
+        public SrcCollection<VarData> GlobalVariableList;
 
         public Pilots.Pilots PList { get; set; }
         public Units.Units UList { get; set; }
@@ -38,8 +38,7 @@ namespace SRCCore
     {
         public string ScenarioFileName { get; set; }
         public int Turn { get; set; }
-        // XXX 列挙時の順番がDictionaryだと問題になるかも
-        public IDictionary<string, VarData> LocalVariableList { get; set; }
+        public SrcCollection<VarData> LocalVariableList { get; set; }
         public IList<string> DisableEventLabels { get; set; }
         public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
