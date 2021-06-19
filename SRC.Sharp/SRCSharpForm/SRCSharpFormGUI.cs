@@ -28,6 +28,7 @@ namespace SRCSharpForm
         {
             Sleep(0, true);
         }
+
         public void Sleep(int dwMilliseconds, bool withEvents = true)
         {
             if (withEvents)

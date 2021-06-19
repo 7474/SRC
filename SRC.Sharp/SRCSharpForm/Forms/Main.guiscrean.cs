@@ -111,7 +111,7 @@ namespace SRCSharpForm
                 {
                     using (var g = Graphics.FromImage(buffer))
                     {
-                        g.DrawLine(pen, x1, y1,  x2,  y2);
+                        g.DrawLine(pen, x1, y1, x2, y2);
                     }
                 }
             }
@@ -128,6 +128,8 @@ namespace SRCSharpForm
                 GUI.IsPictureVisible = true;
             }
 
+            var w = x2 - x1;
+            var h = y2 - y1;
             using (var pen = GetPen(option))
             using (var brush = GetBrush(option))
             {
@@ -137,9 +139,9 @@ namespace SRCSharpForm
                     {
                         if (option.FillStyle != FillStyle.VbFSTransparent)
                         {
-                            g.FillRectangle(brush, x1, y1, x2, y2);
+                            g.FillRectangle(brush, x1, y1, w, h);
                         }
-                        g.DrawRectangle(pen, x1, y1, x2, y2);
+                        g.DrawRectangle(pen, x1, y1, w, h);
                     }
                 }
             }
