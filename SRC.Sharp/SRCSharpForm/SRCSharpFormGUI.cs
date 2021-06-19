@@ -1329,19 +1329,19 @@ namespace SRCSharpForm
             }
 
             var buttons = option.HasFlag(GuiConfirmOption.OkCancel)
-                ? MessageBoxButtons.OKCancel
-                : MessageBoxButtons.OK;
-            MessageBoxIcon? icon = option.HasFlag(GuiConfirmOption.Question) ? MessageBoxIcon.Question : null;
+                ? MsgBoxButtons.OKCancel
+                : MsgBoxButtons.OK;
+            MsgBoxIcon? icon = option.HasFlag(GuiConfirmOption.Question) ? MsgBoxIcon.Question : null;
 
             DialogResult res;
             if (icon.HasValue)
             {
-                res = MessageBox.Show(message, title, buttons, icon.Value);
+                res = MsgBox.Show(owner, message, title, buttons, icon.Value);
 
             }
             else
             {
-                res = MessageBox.Show(message, title, buttons);
+                res = MsgBox.Show(owner, message, title, buttons);
             }
             return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
         }
