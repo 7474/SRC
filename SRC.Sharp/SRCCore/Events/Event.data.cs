@@ -365,7 +365,7 @@ namespace SRCCore.Events
             var cmdStack = new Stack<CmdType>();
             var cmdPosStack = new Stack<int>();
             EventCmd.Clear();
-            // XXX 無駄解析しないようにする
+            // TODO 無駄解析しないようにする
             //foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
             foreach (var eventDataLine in EventData)
             {
