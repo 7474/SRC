@@ -1141,8 +1141,11 @@ namespace SRCSharpForm
 
         public void DisplayLoadingProgress()
         {
-            frmNowLoading.Progress();
-            Application.DoEvents();
+            if (frmNowLoading != null)
+            {
+                frmNowLoading.Progress();
+                Application.DoEvents();
+            }
         }
 
         public void SetLoadImageSize(int new_size)

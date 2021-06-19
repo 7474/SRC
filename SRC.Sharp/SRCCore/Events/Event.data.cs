@@ -1072,7 +1072,23 @@ namespace SRCCore.Events
 
             // ロードサイズを設定
             GUI.SetLoadImageSize(progressMax);
+            LoadTitles(new_titles);
 
+            // マップデータをロード
+            if (SRC.FileSystem.FileExists(mapFileName))
+            {
+                Map.LoadMapData(mapFileName);
+                GUI.SetupBackground(draw_mode: "", draw_option: "");
+                GUI.RedrawScreen();
+                GUI.DisplayLoadingProgress();
+            }
+
+            // ロード画面を閉じる
+            GUI.CloseNowLoadingForm();
+        }
+
+        public void LoadTitles(IList<string> new_titles)
+        {
             // 使用しているタイトルのデータをロード
             foreach (var title in new_titles)
             {
@@ -1152,18 +1168,6 @@ namespace SRCCore.Events
 
             // デフォルトの戦闘アニメデータを設定
             SRC.ADList.AddDefaultAnimation();
-
-            // マップデータをロード
-            if (SRC.FileSystem.FileExists(mapFileName))
-            {
-                Map.LoadMapData(mapFileName);
-                GUI.SetupBackground(draw_mode: "", draw_option: "");
-                GUI.RedrawScreen();
-                GUI.DisplayLoadingProgress();
-            }
-
-            // ロード画面を閉じる
-            GUI.CloseNowLoadingForm();
         }
 
         public bool LoadEventData2IfExist(string fname, EventDataSource source)
