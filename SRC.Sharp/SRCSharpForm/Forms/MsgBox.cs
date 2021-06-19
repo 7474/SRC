@@ -107,7 +107,7 @@ namespace SRCSharpForm
             ShowMsgBox(owner);
         }
 
-        public static DialogResult Show(IWin32Window owner, string message, string title, Buttons buttons)
+        public static DialogResult Show(IWin32Window owner, string message, string title, MsgBoxButtons buttons)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
@@ -121,7 +121,7 @@ namespace SRCSharpForm
             return _buttonResult;
         }
 
-        public static DialogResult Show(IWin32Window owner, string message, string title, Buttons buttons, BoxIcon icon)
+        public static DialogResult Show(IWin32Window owner, string message, string title, MsgBoxButtons buttons, MsgBoxIcon icon)
         {
             _msgBox = new MsgBox();
             _msgBox._lblMessage.Text = message;
@@ -135,31 +135,31 @@ namespace SRCSharpForm
             return _buttonResult;
         }
 
-        private static void InitButtons(Buttons buttons)
+        private static void InitButtons(MsgBoxButtons buttons)
         {
             switch (buttons)
             {
-                case Buttons.AbortRetryIgnore:
+                case MsgBoxButtons.AbortRetryIgnore:
                     _msgBox.InitAbortRetryIgnoreButtons();
                     break;
 
-                case Buttons.OK:
+                case MsgBoxButtons.OK:
                     _msgBox.InitOKButton();
                     break;
 
-                case Buttons.OKCancel:
+                case MsgBoxButtons.OKCancel:
                     _msgBox.InitOKCancelButtons();
                     break;
 
-                case Buttons.RetryCancel:
+                case MsgBoxButtons.RetryCancel:
                     _msgBox.InitRetryCancelButtons();
                     break;
 
-                case Buttons.YesNo:
+                case MsgBoxButtons.YesNo:
                     _msgBox.InitYesNoButtons();
                     break;
 
-                case Buttons.YesNoCancel:
+                case MsgBoxButtons.YesNoCancel:
                     _msgBox.InitYesNoCancelButtons();
                     break;
             }
@@ -173,35 +173,35 @@ namespace SRCSharpForm
             }
         }
 
-        private static void InitIcon(BoxIcon icon)
+        private static void InitIcon(MsgBoxIcon icon)
         {
             switch (icon)
             {
-                case BoxIcon.Application:
+                case MsgBoxIcon.Application:
                     _msgBox._picIcon.Image = SystemIcons.Application.ToBitmap();
                     break;
 
-                case BoxIcon.Exclamation:
+                case MsgBoxIcon.Exclamation:
                     _msgBox._picIcon.Image = SystemIcons.Exclamation.ToBitmap();
                     break;
 
-                case BoxIcon.Error:
+                case MsgBoxIcon.Error:
                     _msgBox._picIcon.Image = SystemIcons.Error.ToBitmap();
                     break;
 
-                case BoxIcon.Info:
+                case MsgBoxIcon.Info:
                     _msgBox._picIcon.Image = SystemIcons.Information.ToBitmap();
                     break;
 
-                case BoxIcon.Question:
+                case MsgBoxIcon.Question:
                     _msgBox._picIcon.Image = SystemIcons.Question.ToBitmap();
                     break;
 
-                case BoxIcon.Shield:
+                case MsgBoxIcon.Shield:
                     _msgBox._picIcon.Image = SystemIcons.Shield.ToBitmap();
                     break;
 
-                case BoxIcon.Warning:
+                case MsgBoxIcon.Warning:
                     _msgBox._picIcon.Image = SystemIcons.Warning.ToBitmap();
                     break;
             }
@@ -361,27 +361,27 @@ namespace SRCSharpForm
             }
             return new Size(width, height);
         }
+    }
 
-        public enum Buttons
-        {
-            AbortRetryIgnore = 1,
-            OK = 2,
-            OKCancel = 3,
-            RetryCancel = 4,
-            YesNo = 5,
-            YesNoCancel = 6
-        }
+    public enum MsgBoxButtons
+    {
+        AbortRetryIgnore = 1,
+        OK = 2,
+        OKCancel = 3,
+        RetryCancel = 4,
+        YesNo = 5,
+        YesNoCancel = 6
+    }
 
-        public enum BoxIcon
-        {
-            Application = 1,
-            Exclamation = 2,
-            Error = 3,
-            Warning = 4,
-            Info = 5,
-            Question = 6,
-            Shield = 7,
-            Search = 8
-        }
+    public enum MsgBoxIcon
+    {
+        Application = 1,
+        Exclamation = 2,
+        Error = 3,
+        Warning = 4,
+        Info = 5,
+        Question = 6,
+        Shield = 7,
+        Search = 8
     }
 }
