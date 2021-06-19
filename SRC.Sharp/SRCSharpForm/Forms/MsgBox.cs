@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -77,6 +78,7 @@ namespace SRCSharpForm
 
         private static void ShowMsgBox(IWin32Window owner)
         {
+            _buttonResult = DialogResult.None;
             if (owner != null)
             {
                 _msgBox.StartPosition = FormStartPosition.CenterParent;
