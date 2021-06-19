@@ -28,6 +28,7 @@ namespace SRCSharpForm
         {
             Sleep(0, true);
         }
+
         public void Sleep(int dwMilliseconds, bool withEvents = true)
         {
             if (withEvents)
@@ -1140,8 +1141,11 @@ namespace SRCSharpForm
 
         public void DisplayLoadingProgress()
         {
-            frmNowLoading.Progress();
-            Application.DoEvents();
+            if (frmNowLoading != null)
+            {
+                frmNowLoading.Progress();
+                Application.DoEvents();
+            }
         }
 
         public void SetLoadImageSize(int new_size)

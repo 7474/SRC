@@ -60,7 +60,7 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 foreach (var hpoint in Event.HotPointList)
                                 {
-                                    if (hpoint.Left <= GUI.MouseX && GUI.MouseX < (hpoint.Left + hpoint.width) && hpoint.Top <= GUI.MouseY && GUI.MouseY < (hpoint.Top + hpoint.Height))
+                                    if (hpoint.Left <= GUI.MouseX && GUI.MouseX < (hpoint.Left + hpoint.Width) && hpoint.Top <= GUI.MouseY && GUI.MouseY < (hpoint.Top + hpoint.Height))
                                     {
                                         Event.SelectedAlternative = hpoint.Name;
                                         break;

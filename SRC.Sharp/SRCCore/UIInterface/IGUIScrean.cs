@@ -3,7 +3,6 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRCCore.Units;
 using SRCCore.VB;
 using System.Drawing;
 
@@ -14,6 +13,8 @@ namespace SRCCore
     {
         void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle);
         void CircleCmd(ScreanDrawOption option, int x1, int y1, int rad);
+        void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
+        void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
     }
 
     public class ScreanDrawOption

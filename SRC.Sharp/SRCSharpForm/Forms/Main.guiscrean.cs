@@ -1,8 +1,5 @@
 using SRCCore;
-using SRCCore.Maps;
 using SRCCore.VB;
-using SRCSharpForm.Extensions;
-using SRCSharpForm.Resoruces;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -32,7 +29,7 @@ namespace SRCSharpForm
         private Brush GetBrush(ScreanDrawOption option)
         {
             //TODO FillStyle
-            return new SolidBrush(option.ForeColor);
+            return new SolidBrush(option.FillColor);
         }
 
         private Rectangle GetCircleRect(int centerX, int centerY, int rad)
@@ -92,6 +89,59 @@ namespace SRCSharpForm
                             g.FillEllipse(brush, GetCircleRect(x1, y1, rad));
                         }
                         g.DrawEllipse(pen, GetCircleRect(x1, y1, rad));
+                    }
+                }
+            }
+        }
+
+        public void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        g.DrawLine(pen, x1, y1, x2, y2);
+                    }
+                }
+            }
+        }
+
+        public void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            var w = x2 - x1;
+            var h = y2 - y1;
+            using (var pen = GetPen(option))
+            using (var brush = GetBrush(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        {
+                            g.FillRectangle(brush, x1, y1, w, h);
+                        }
+                        g.DrawRectangle(pen, x1, y1, w, h);
                     }
                 }
             }

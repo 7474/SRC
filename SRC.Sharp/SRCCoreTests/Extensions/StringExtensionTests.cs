@@ -40,5 +40,16 @@ namespace SRCCore.Extensions.Tests
 
 789".ReplaceNewLine(" "));
         }
+
+        [TestMethod()]
+        public void RemoveLineCommentTest()
+        {
+            Assert.AreEqual("", "// hoge".RemoveLineComment());
+            Assert.AreEqual("a", "a// hoge".RemoveLineComment());
+            Assert.AreEqual("a ", "a // hoge".RemoveLineComment());
+            Assert.AreEqual("'// hoge'", "'// hoge'".RemoveLineComment());
+            Assert.AreEqual("'// hoge'", "'// hoge'// fuga".RemoveLineComment());
+            Assert.AreEqual("\"// hoge", "\"// hoge".RemoveLineComment());
+        }
     }
 }

@@ -37,6 +37,11 @@ namespace SRCCore.Events
             SRC = src;
         }
 
+        public override string ToString()
+        {
+            return $"{EventDataId}: {StrData}";
+        }
+
         // パラメータの個数
         public int CountPara()
         {

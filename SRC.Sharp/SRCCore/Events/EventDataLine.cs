@@ -33,5 +33,10 @@ namespace SRCCore.Events
             LineNum = lineNum;
             Data = data;
         }
+
+        public override string ToString()
+        {
+            return $"{ID}: {Data}";
+        }
     }
 }
