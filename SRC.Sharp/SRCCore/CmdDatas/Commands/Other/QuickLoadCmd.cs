@@ -16,7 +16,7 @@ namespace SRCCore.CmdDatas.Commands
             if (SRC.FileSystem.FileExists(SRC.LastSaveDataFileName))
             {
                 // セーブしたファイルが存在すればそれをロード
-                SRC.RestoreData(SRC.LastSaveDataFileName, true);
+                SRC.RestoreData(SRC.LastSaveDataFileName, SRCSaveKind.Quik);
             }
             else
             {
