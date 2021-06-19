@@ -1121,66 +1121,41 @@ namespace SRCCore.Units
             }
         }
 
-        //        // 破棄されたユニットを削除
-        //        public void Clean()
-        //        {
-        //            Unit u;
-        //            int i;
-        //            foreach (Unit currentU in colUnits)
-        //            {
-        //                u = currentU;
-        //                // 出撃していないユニットは味方ユニット以外全て削除
-        //                if (u.Party0 != "味方")
-        //                {
-        //                    if (u.Status == "待機" || u.Status == "破壊")
-        //                    {
-        //                        u.Status = "破棄";
-        //                        var loopTo = u.CountOtherForm();
-        //                        for (i = 1; i <= loopTo; i++)
-        //                        {
-        //                            Unit localOtherForm() { object argIndex1 = i; var ret = u.OtherForm(argIndex1); return ret; }
+        // 破棄されたユニットを削除
+        public void Clean()
+        {
+            // 出撃していないユニットは味方ユニット以外全て削除
+            foreach (Unit u in colUnits.List.CloneList()
+                .Where(u => u.Party0 != "味方"))
+            {
+                if (u.Status == "待機" || u.Status == "破壊")
+                {
+                    u.Status = "破棄";
+                    foreach (var of in u.OtherForms)
+                    {
+                        of.Status = "破棄";
+                    }
+                }
+            }
 
-        //                            localOtherForm().Status = "破棄";
-        //                        }
-        //                    }
-        //                }
-        //            }
+            // 破棄されたユニットを削除
+            foreach (Unit u in colUnits.List.CloneList()
+                .Where(u => u.Status == "破棄"))
+            {
+                // ユニットに乗っているパイロットも破棄
+                foreach (var p in u.AllRawPilots)
+                {
+                    p.Alive = false;
+                }
 
-        //            foreach (Unit currentU1 in colUnits)
-        //            {
-        //                u = currentU1;
-        //                // 破棄されたユニットを削除
-        //                if (u.Status == "破棄")
-        //                {
-        //                    // ユニットに乗っているパイロットも破棄
-        //                    var loopTo1 = u.CountPilot();
-        //                    for (i = 1; i <= loopTo1; i++)
-        //                    {
-        //                        Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
+                // ユニットが装備しているアイテムも破棄
+                foreach (var itm in u.ItemList)
+                {
+                    itm.Exist = false;
+                }
 
-        //                        localPilot().Alive = false;
-        //                    }
-
-        //                    var loopTo2 = u.CountSupport();
-        //                    for (i = 1; i <= loopTo2; i++)
-        //                    {
-        //                        Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
-
-        //                        localSupport().Alive = false;
-        //                    }
-
-        //                    // ユニットが装備しているアイテムも破棄
-        //                    var loopTo3 = u.CountItem();
-        //                    for (i = 1; i <= loopTo3; i++)
-        //                    {
-        //                        Item localItem() { object argIndex1 = i; var ret = u.Item(argIndex1); return ret; }
-
-        //                        localItem().Exist = false;
-        //                    }
-
-        //                    Delete(u.ID);
-        //                }
-        //            }
-        //        }
+                Delete(u.ID);
+            }
+        }
     }
 }
