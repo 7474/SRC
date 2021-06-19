@@ -136,6 +136,29 @@ namespace SRCSharpForm
             }
         }
 
+        public void PSetCmd(ScreanDrawOption option, int x1, int y1)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        g.DrawRectangle(pen, x1, y1, 1, 1);
+                    }
+                }
+            }
+        }
+
         public void OvalCmd(ScreanDrawOption option, int x1, int y1, int rad, float oval_ratio)
         {
             // 描画先

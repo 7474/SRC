@@ -16,6 +16,7 @@ namespace SRCCore
         void OvalCmd(ScreanDrawOption option, int x1, int y1, int rad, float oval_ratio);
         void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
         void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
+        void PSetCmd(ScreanDrawOption option, int x1, int y1);
     }
 
     public class ScreanDrawOption
