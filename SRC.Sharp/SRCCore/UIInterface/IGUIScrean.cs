@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace SRCCore
@@ -17,6 +18,7 @@ namespace SRCCore
         void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
         void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2);
         void PSetCmd(ScreanDrawOption option, int x1, int y1);
+        void PolygonCmd(ScreanDrawOption option, Point[] points);
     }
 
     public class ScreanDrawOption

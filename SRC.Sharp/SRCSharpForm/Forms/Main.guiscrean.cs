@@ -187,5 +187,33 @@ namespace SRCSharpForm
                 }
             }
         }
+
+        public void PolygonCmd(ScreanDrawOption option, Point[] points)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            using (var brush = GetBrush(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        {
+                            g.FillPolygon(brush, points);
+                        }
+                        g.DrawPolygon(pen, points);
+                    }
+                }
+            }
+        }
     }
 }
