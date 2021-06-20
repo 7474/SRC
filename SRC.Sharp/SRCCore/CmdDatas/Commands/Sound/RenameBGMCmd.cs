@@ -1,5 +1,5 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,64 +11,42 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            string bname, vname;
-            //            if (ArgNum != 3)
-            //            {
-            //                Event.EventErrorMessage = "RenameBGMの引数の数が違います";
-            //                ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 430445
+            string bname, vname;
+            if (ArgNum != 3)
+            {
+                throw new EventErrorException(this, "RenameBGMの引数の数が違います");
+            }
 
+            bname = GetArgAsString(2);
+            switch (bname ?? "")
+            {
+                case "Map1":
+                case "Map2":
+                case "Map3":
+                case "Map4":
+                case "Map5":
+                case "Map6":
+                case "Briefing":
+                case "Intermission":
+                case "Subtitle":
+                case "End":
+                case "default":
+                    {
+                        vname = "BGM(" + bname + ")";
+                        break;
+                    }
 
-            //                Input:
-            //                            Error(0)
+                default:
+                    throw new EventErrorException(this, "BGM名が不正です");
+            }
 
-            //                 */
-            //            }
+            if (!Expression.IsGlobalVariableDefined(vname))
+            {
+                Expression.DefineGlobalVariable(vname);
+            }
 
-            //            bname = GetArgAsString(2);
-            //            switch (bname ?? "")
-            //            {
-            //                case "Map1":
-            //                case "Map2":
-            //                case "Map3":
-            //                case "Map4":
-            //                case "Map5":
-            //                case "Map6":
-            //                case "Briefing":
-            //                case "Intermission":
-            //                case "Subtitle":
-            //                case "End":
-            //                case "default":
-            //                    {
-            //                        vname = "BGM(" + bname + ")";
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "BGM名が不正です";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 430755
-
-
-            //                        Input:
-            //                                        Error(0)
-
-            //                         */
-            //                        break;
-            //                    }
-            //            }
-
-            //            if (!Expression.IsGlobalVariableDefined(vname))
-            //            {
-            //                Expression.DefineGlobalVariable(vname);
-            //            }
-
-            //            Expression.SetVariableAsString(vname, GetArgAsString(3));
-            //return EventData.NextID;
+            Expression.SetVariableAsString(vname, GetArgAsString(3));
+            return EventData.NextID;
         }
     }
 }
