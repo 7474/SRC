@@ -22,37 +22,30 @@ namespace SRCCore.Units
             colPilot.Remove(p);
         }
 
-        //// パイロットの入れ替え
-        //public void ReplacePilot(Pilot p, string Index)
-        //{
-        //    int i;
-        //    Pilot prev_p;
-        //    Pilot[] pilot_list;
-        //    p.Unit = this;
-        //    prev_p = (Pilot)colPilot[Index];
-        //    pilot_list = new Pilot[colPilot.Count + 1];
-        //    var loopTo = Information.UBound(pilot_list);
-        //    for (i = 1; i <= loopTo; i++)
-        //        pilot_list[i] = (Pilot)colPilot[i];
-        //    var loopTo1 = Information.UBound(pilot_list);
-        //    for (i = 1; i <= loopTo1; i++)
-        //        colPilot.Remove(1);
-        //    var loopTo2 = Information.UBound(pilot_list);
-        //    for (i = 1; i <= loopTo2; i++)
-        //    {
-        //        if (erenceEquals(pilot_list[i], prev_p))
-        //        {
-        //            colPilot.Add(p, p.ID);
-        //        }
-        //        else
-        //        {
-        //            colPilot.Add(pilot_list[i], pilot_list[i].ID);
-        //        }
-        //    }
-        //    // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //    prev_p.Unit = null;
-        //    prev_p.Alive = false;
-        //}
+        // パイロットの入れ替え
+        public void ReplacePilot(Pilot orgPilot, Pilot newPilot)
+        {
+            var newList = new List<Pilot>();
+
+            foreach (var p0 in Pilots)
+            {
+                if (p0.ID == orgPilot.ID)
+                {
+                    newList.Add(newPilot);
+                    orgPilot.Unit = null;
+                    orgPilot.Alive = false;
+                }
+                else
+                {
+                    newList.Add(p0);
+                }
+            }
+            colPilot.Clear();
+            foreach (var p0 in newList)
+            {
+                AddPilot(p0);
+            }
+        }
 
         // 搭乗員数
         public int CountPilot()
@@ -364,37 +357,30 @@ namespace SRCCore.Units
             colSupport.Remove(p);
         }
 
-        //// サポートパイロットの入れ替え
-        //public void ReplaceSupport(Pilot p, string Index)
-        //{
-        //    int i;
-        //    Pilot prev_p;
-        //    Pilot[] support_list;
-        //    p.Unit = this;
-        //    prev_p = (Pilot)colSupport[Index];
-        //    support_list = new Pilot[colSupport.Count + 1];
-        //    var loopTo = Information.UBound(support_list);
-        //    for (i = 1; i <= loopTo; i++)
-        //        support_list[i] = (Pilot)colSupport[i];
-        //    var loopTo1 = Information.UBound(support_list);
-        //    for (i = 1; i <= loopTo1; i++)
-        //        colSupport.Remove(1);
-        //    var loopTo2 = Information.UBound(support_list);
-        //    for (i = 1; i <= loopTo2; i++)
-        //    {
-        //        if ((support_list[i].ID ?? "") == (prev_p.ID ?? ""))
-        //        {
-        //            colSupport.Add(p, p.ID);
-        //        }
-        //        else
-        //        {
-        //            colSupport.Add(support_list[i], support_list[i].ID);
-        //        }
-        //    }
-        //    // UPGRADE_NOTE: オブジェクト prev_p.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //    prev_p.Unit = null;
-        //    prev_p.Alive = false;
-        //}
+        // サポートパイロットの入れ替え
+        public void ReplaceSupport(Pilot orgPilot, Pilot newPilot)
+        {
+            var newList = new List<Pilot>();
+
+            foreach (var p0 in Supports)
+            {
+                if (p0.ID == orgPilot.ID)
+                {
+                    newList.Add(newPilot);
+                    orgPilot.Unit = null;
+                    orgPilot.Alive = false;
+                }
+                else
+                {
+                    newList.Add(p0);
+                }
+            }
+            colSupport.Clear();
+            foreach (var p0 in newList)
+            {
+                AddSupport(p0);
+            }
+        }
 
         // 総サポートパイロット数
         public int CountSupport()
@@ -907,7 +893,7 @@ namespace SRCCore.Units
             // パイロット数が負の場合はメインパイロットの能力のみが有効
             if (Data.PilotNum > 0)
             {
-                foreach(var p in SubPilots)
+                foreach (var p in SubPilots)
                 {
                     SkillName0Ret = p.SkillName0(sname);
                     if ((SkillName0Ret ?? "") != (sname ?? ""))
