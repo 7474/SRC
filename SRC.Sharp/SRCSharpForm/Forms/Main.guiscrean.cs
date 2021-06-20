@@ -136,6 +136,29 @@ namespace SRCSharpForm
             }
         }
 
+        public void PSetCmd(ScreanDrawOption option, int x1, int y1)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        g.DrawRectangle(pen, x1, y1, 1, 1);
+                    }
+                }
+            }
+        }
+
         public void OvalCmd(ScreanDrawOption option, int x1, int y1, int rad, float oval_ratio)
         {
             // 描画先
@@ -160,6 +183,34 @@ namespace SRCSharpForm
                             g.FillEllipse(brush, rect);
                         }
                         g.DrawEllipse(pen, rect);
+                    }
+                }
+            }
+        }
+
+        public void PolygonCmd(ScreanDrawOption option, Point[] points)
+        {
+            // 描画先
+            var buffers = TargetImages(option);
+
+            // 描画領域
+            if (option.DrawOption != ScreanDrawMode.Background)
+            {
+                GUI.IsPictureVisible = true;
+            }
+
+            using (var pen = GetPen(option))
+            using (var brush = GetBrush(option))
+            {
+                foreach (var buffer in buffers)
+                {
+                    using (var g = Graphics.FromImage(buffer))
+                    {
+                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        {
+                            g.FillPolygon(brush, points);
+                        }
+                        g.DrawPolygon(pen, points);
                     }
                 }
             }

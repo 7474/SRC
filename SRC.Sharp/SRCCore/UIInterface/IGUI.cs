@@ -222,8 +222,6 @@ namespace SRCCore
 
         // 画像をウィンドウに描画
         bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option);
-        // 画像バッファを作成
-        void MakePicBuf();
 
         // === 文字列描画に関する処理 ===
 
