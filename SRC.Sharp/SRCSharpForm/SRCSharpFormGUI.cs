@@ -205,7 +205,7 @@ namespace SRCSharpForm
 
         public void SetNewGUIMode()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
         public void MainFormShow()
         {
@@ -1024,11 +1024,6 @@ namespace SRCSharpForm
         }
 
         public int MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MakePicBuf()
         {
             throw new NotImplementedException();
         }
