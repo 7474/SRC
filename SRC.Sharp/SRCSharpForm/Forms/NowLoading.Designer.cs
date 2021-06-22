@@ -1,10 +1,8 @@
-using Microsoft.VisualBasic.CompilerServices;
 using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    [DesignerGenerated()]
     internal partial class frmNowLoading
     {
         [DebuggerNonUserCode()]

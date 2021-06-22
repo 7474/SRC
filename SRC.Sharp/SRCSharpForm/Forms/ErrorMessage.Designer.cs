@@ -1,11 +1,9 @@
-using Microsoft.VisualBasic.CompilerServices;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    [DesignerGenerated()]
     internal partial class frmErrorMessage
     {
         [DebuggerNonUserCode()]
@@ -65,7 +63,7 @@ namespace SRCSharpForm
             Name = "frmErrorMessage";
             txtMessage.AutoSize = false;
             txtMessage.BackColor = Color.White;
-            txtMessage.Font = new Font("ＭＳ ゴシック", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            txtMessage.Font = new Font("ＭＳ ゴシック", 12f, FontStyle.Regular, GraphicsUnit.Point);
             txtMessage.ForeColor = Color.Black;
             txtMessage.Size = new Size(659, 106);
             txtMessage.Location = new Point(6, 6);
