@@ -385,7 +385,7 @@ namespace SRCCore.Commands
                                 }
 
                                 Map.MaskData[i, j] = false;
-                            NextLoop:
+                                NextLoop:
                                 ;
                             }
                         }
@@ -511,85 +511,76 @@ namespace SRCCore.Commands
         // スペシャルパワーコマンドを終了
         private void FinishSpecialPowerCommand()
         {
-            throw new NotImplementedException();
-            //int i, ret;
-            //GUI.LockGUI();
+            GUI.LockGUI();
 
-            //// 自爆を選択した場合は確認を取る
-            //{
-            //    var withBlock = SRC.SPDList.Item(SelectedSpecialPower);
-            //    var loopTo = withBlock.CountEffect();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (withBlock.EffectType(i) == "自爆")
-            //        {
-            //            ret = Interaction.MsgBox("自爆させますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "自爆");
-            //            if (ret == MsgBoxResult.Cancel)
-            //            {
-            //                CommandState = "ユニット選択";
-            //                GUI.UnlockGUI();
-            //                return;
-            //            }
+            // 自爆を選択した場合は確認を取る
+            {
+                var spd = SRC.SPDList.Item(SelectedSpecialPower);
+                if (spd.Effects.Any(x => x.strEffectType == "自爆"))
+                {
+                    if (GUI.Confirm("自爆させますか？", "自爆", GuiConfirmOption.OkCancel | GuiConfirmOption.Question) != GuiDialogResult.Ok)
+                    {
+                        CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        return;
+                    }
+                }
+            }
 
-            //            break;
-            //        }
-            //    }
-            //}
+            // 使用イベント
+            Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, SelectedSpecialPower);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //// 使用イベント
-            //Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, SelectedSpecialPower);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                CommandState = "ユニット選択";
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    CommandState = "ユニット選択";
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // スペシャルパワーを使用
+            if (WithDoubleSPConsumption)
+            {
+                SelectedPilot.UseSpecialPower(SelectedSpecialPower, 2d);
+            }
+            else
+            {
+                SelectedPilot.UseSpecialPower(SelectedSpecialPower);
+            }
 
-            //// スペシャルパワーを使用
-            //if (WithDoubleSPConsumption)
-            //{
-            //    SelectedPilot.UseSpecialPower(SelectedSpecialPower, 2d);
-            //}
-            //else
-            //{
-            //    SelectedPilot.UseSpecialPower(SelectedSpecialPower);
-            //}
+            SelectedUnit = SelectedUnit.CurrentForm();
 
-            //SelectedUnit = SelectedUnit.CurrentForm();
+            // ステータスウィンドウを更新
+            if (SelectedTarget is object)
+            {
+                if (SelectedTarget.CurrentForm().Status == "出撃")
+                {
+                    Status.DisplayUnitStatus(SelectedTarget);
+                }
+            }
 
-            //// ステータスウィンドウを更新
-            //if (SelectedTarget is object)
-            //{
-            //    if (SelectedTarget.CurrentForm().Status == "出撃")
-            //    {
-            //        Status.DisplayUnitStatus(SelectedTarget);
-            //    }
-            //}
+            // 使用後イベント
+            Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, SelectedSpecialPower);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+            }
 
-            //// 使用後イベント
-            //Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, SelectedSpecialPower);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //}
-
-            //SelectedSpecialPower = "";
-            //GUI.UnlockGUI();
-            //CommandState = "ユニット選択";
+            SelectedSpecialPower = "";
+            GUI.UnlockGUI();
+            CommandState = "ユニット選択";
         }
     }
 }
