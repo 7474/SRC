@@ -2,8 +2,10 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Pilots;
+using SRCCore.VB;
 using System;
 using System.Linq;
 
@@ -547,7 +549,7 @@ namespace SRCCore.Units
                 Effect.DieAnimation(this);
             }
 
-        SkipExplode:
+            SkipExplode:
             ;
 
             // TODO Impl Die
@@ -603,241 +605,211 @@ namespace SRCCore.Units
         // スペシャルパワー自爆による自爆
         public void SuicidalExplosion(bool is_event = false)
         {
-            throw new NotImplementedException();
-            //    int i, j;
-            //    int prev_hp;
-            //    Unit u, t;
-            //    int dmg, tdmg;
-            //    string uname, fname;
-            //    PilotMessage("自爆", msg_mode: "");
-            //    GUI.DisplaySysMessage(Nickname + "は自爆した。");
+            PilotMessage("自爆", msg_mode: "");
+            GUI.DisplaySysMessage(Nickname + "は自爆した。");
 
-            //    // ダメージ量設定
-            //    dmg = HP;
+            // ダメージ量設定
+            var dmg = HP;
 
-            //    // 効果範囲の設定
-            //    Map.AreaInRange(x, y, 1, 1, "");
-            //    Map.MaskData[x, y] = true;
+            // 効果範囲の設定
+            Map.AreaInRange(x, y, 1, 1, "");
+            Map.MaskData[x, y] = true;
 
-            //    // 爆発
-            //    GUI.EraseUnitBitmap(x, y);
-            //    Effect.ExplodeAnimation(Size, x, y);
-            //    this.Size = argtsize;
+            // 爆発
+            GUI.EraseUnitBitmap(x, y);
+            Effect.ExplodeAnimation(Size, x, y);
 
-            //    // パーツ分離できれば自爆後にパーツ分離
-            //    if (IsFeatureAvailable("パーツ分離"))
-            //    {
-            //        uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
-            //        Unit localOtherForm() { object argIndex1 = uname; var ret = OtherForm(argIndex1); return ret; }
+            // パーツ分離できれば自爆後にパーツ分離
+            if (IsFeatureAvailable("パーツ分離"))
+            {
+                var uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
+                if (OtherForm(uname).IsAbleToEnter(x, y))
+                {
+                    Transform(uname);
+                    {
+                        var cf = CurrentForm();
+                        cf.HP = cf.MaxHP;
+                        cf.UsedAction = cf.MaxAction();
+                    }
 
-            //        if (localOtherForm().IsAbleToEnter(x, y))
-            //        {
-            //            Transform(uname);
-            //            Map.MapDataForUnit[x, y].HP = Map.MapDataForUnit[x, y].MaxHP;
-            //            fname = FeatureName("パーツ分離");
-            //            bool localIsSysMessageDefined() { string argmain_situation = "破壊時分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    var fname = FeatureName("パーツ分離");
+                    if (!SysMessageIfDefined(new string[]
+                    {
+                            "破壊時分離(" + Name + ")",
+                            "破壊時分離(" + fname + ")",
+                            "破壊時分離",
+                            "分離(" + Name + ")",
+                            "分離(" + fname + ")",
+                            "分離",
+                    }))
+                    {
+                        GUI.DisplaySysMessage(Nickname + "は破壊されたパーツを分離させた。");
+                    }
+                    goto SkipSuicide;
+                }
+            }
 
-            //            bool localIsSysMessageDefined1() { string argmain_situation = "分離(" + Name + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+            // 自分を破壊
+            HP = 0;
+            GUI.UpdateMessageForm(this, u2: null);
+            // 既に爆発アニメーションを表示しているので
+            AddCondition("破壊キャンセル", 1, cdata: "");
+            Map.MapDataForUnit[x, y] = null;
+            Die();
+            if (!is_event)
+            {
+                var u = Commands.SelectedUnit;
+                Commands.SelectedUnit = this;
+                Event.HandleEvent("破壊", MainPilot().ID);
+                Commands.SelectedUnit = u;
+                if (SRC.IsScenarioFinished)
+                {
+                    SRC.IsScenarioFinished = false;
+                    return;
+                }
+            }
 
-            //            bool localIsSysMessageDefined2() { string argmain_situation = "分離(" + fname + ")"; string argsub_situation = ""; var ret = IsSysMessageDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //            if (IsSysMessageDefined("破壊時分離(" + Name + ")", sub_situation: ""))
-            //            {
-            //                SysMessage("破壊時分離(" + Name + ")", sub_situation: "", add_msg: "");
-            //            }
-            //            else if (localIsSysMessageDefined())
-            //            {
-            //                SysMessage("破壊時分離(" + fname + ")", sub_situation: "", add_msg: "");
-            //            }
-            //            else if (IsSysMessageDefined("破壊時分離", sub_situation: ""))
-            //            {
-            //                SysMessage("破壊時分離", sub_situation: "", add_msg: "");
-            //            }
-            //            else if (localIsSysMessageDefined1())
-            //            {
-            //                SysMessage("分離(" + Name + ")", sub_situation: "", add_msg: "");
-            //            }
-            //            else if (localIsSysMessageDefined2())
-            //            {
-            //                SysMessage("分離(" + fname + ")", sub_situation: "", add_msg: "");
-            //            }
-            //            else if (IsSysMessageDefined("分離", sub_situation: ""))
-            //            {
-            //                SysMessage("分離", sub_situation: "", add_msg: "");
-            //            }
-            //            else
-            //            {
-            //                GUI.DisplaySysMessage(Nickname + "は破壊されたパーツを分離させた。");
-            //            }
-
-            //            goto SkipSuicide;
-            //        }
-            //    }
-
-            //    // 自分を破壊
-            //    HP = 0;
-            //    GUI.UpdateMessageForm(this, u2: null);
-            //    // 既に爆発アニメーションを表示しているので
-            //    AddCondition("破壊キャンセル", 1, cdata: "");
-            //    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Map.MapDataForUnit[x, y] = null;
-            //    Die();
-            //    if (!is_event)
-            //    {
-            //        u = Commands.SelectedUnit;
-            //        Commands.SelectedUnit = this;
-            //        Event.HandleEvent("破壊", MainPilot().ID);
-            //        Commands.SelectedUnit = u;
-            //        if (SRC.IsScenarioFinished)
-            //        {
-            //            SRC.IsScenarioFinished = false;
-            //            return;
-            //        }
-            //    }
-
-            //SkipSuicide:
-            //    ;
+            SkipSuicide:
+            ;
 
 
-            //    // 周りのエリアに爆発効果を適用
-            //    var loopTo = Map.MapWidth;
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        var loopTo1 = Map.MapHeight;
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if (Map.MaskData[i, j])
-            //            {
-            //                goto NextLoop;
-            //            }
+            // 周りのエリアに爆発効果を適用
+            var loopTo = Map.MapWidth;
+            for (var i = 1; i <= loopTo; i++)
+            {
+                var loopTo1 = Map.MapHeight;
+                for (var j = 1; j <= loopTo1; j++)
+                {
+                    if (Map.MaskData[i, j])
+                    {
+                        goto NextLoop;
+                    }
 
-            //            t = Map.MapDataForUnit[i, j];
-            //            if (t is null)
-            //            {
-            //                goto NextLoop;
-            //            }
+                    var t = Map.MapDataForUnit[i, j];
+                    if (t is null)
+                    {
+                        goto NextLoop;
+                    }
 
-            //            {
-            //                var withBlock = t;
-            //                GUI.ClearMessageForm();
-            //                if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
-            //                {
-            //                    GUI.UpdateMessageForm(t, CurrentForm());
-            //                }
-            //                else
-            //                {
-            //                    GUI.UpdateMessageForm(CurrentForm(), t);
-            //                }
+                    {
+                        GUI.ClearMessageForm();
+                        if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
+                        {
+                            GUI.UpdateMessageForm(t, CurrentForm());
+                        }
+                        else
+                        {
+                            GUI.UpdateMessageForm(CurrentForm(), t);
+                        }
 
-            //                // ダメージの適用
-            //                prev_hp = withBlock.HP;
-            //                if (withBlock.IsConditionSatisfied("無敵"))
-            //                {
-            //                    tdmg = 0;
-            //                }
-            //                else if (withBlock.IsConditionSatisfied("不死身"))
-            //                {
-            //                    withBlock.HP = GeneralLib.MaxLng(withBlock.HP - dmg, 10);
-            //                    tdmg = prev_hp - withBlock.HP;
-            //                }
-            //                else
-            //                {
-            //                    withBlock.HP = withBlock.HP - dmg;
-            //                    tdmg = prev_hp - withBlock.HP;
-            //                }
+                        // ダメージの適用
+                        var prev_hp = t.HP;
+                        int tdmg;
+                        if (t.IsConditionSatisfied("無敵"))
+                        {
+                            tdmg = 0;
+                        }
+                        else if (t.IsConditionSatisfied("不死身"))
+                        {
+                            t.HP = GeneralLib.MaxLng(t.HP - dmg, 10);
+                            tdmg = prev_hp - t.HP;
+                        }
+                        else
+                        {
+                            t.HP = t.HP - dmg;
+                            tdmg = prev_hp - t.HP;
+                        }
 
-            //                // 特殊能力「不安定」による暴走チェック
-            //                if (withBlock.IsFeatureAvailable("不安定"))
-            //                {
-            //                    if (withBlock.HP <= withBlock.MaxHP / 4 && !withBlock.IsConditionSatisfied("暴走"))
-            //                    {
-            //                        withBlock.AddCondition("暴走", -1, cdata: "");
-            //                        withBlock.Update();
-            //                    }
-            //                }
+                        // 特殊能力「不安定」による暴走チェック
+                        if (t.IsFeatureAvailable("不安定"))
+                        {
+                            if (t.HP <= t.MaxHP / 4 && !t.IsConditionSatisfied("暴走"))
+                            {
+                                t.AddCondition("暴走", -1, cdata: "");
+                                t.Update();
+                            }
+                        }
 
-            //                // ダメージを受ければ眠りからさめる
-            //                if (withBlock.IsConditionSatisfied("睡眠"))
-            //                {
-            //                    withBlock.DeleteCondition("睡眠");
-            //                }
+                        // ダメージを受ければ眠りからさめる
+                        if (t.IsConditionSatisfied("睡眠"))
+                        {
+                            t.DeleteCondition("睡眠");
+                        }
 
-            //                if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
-            //                {
-            //                    GUI.UpdateMessageForm(t, CurrentForm());
-            //                }
-            //                else
-            //                {
-            //                    GUI.UpdateMessageForm(CurrentForm(), t);
-            //                }
+                        if (CurrentForm().Party == "味方" || CurrentForm().Party == "ＮＰＣ")
+                        {
+                            GUI.UpdateMessageForm(t, CurrentForm());
+                        }
+                        else
+                        {
+                            GUI.UpdateMessageForm(CurrentForm(), t);
+                        }
 
-            //                if (withBlock.HP > 0)
-            //                {
-            //                    GUI.DrawSysString(withBlock.x, withBlock.y, SrcFormatter.Format(tdmg));
-            //                    GUI.MainForm.picMain(0).Refresh();
-            //                }
+                        if (t.HP > 0)
+                        {
+                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(tdmg));
+                            GUI.RefreshScreen();
+                        }
 
-            //                if (withBlock.HP == 0)
-            //                {
-            //                    if (withBlock.IsUnderSpecialPowerEffect("復活"))
-            //                    {
-            //                        withBlock.HP = withBlock.MaxHP;
-            //                        withBlock.RemoveSpecialPowerInEffect("破壊");
-            //                        GUI.DisplaySysMessage(withBlock.Nickname + "は復活した！");
-            //                        goto NextLoop;
-            //                    }
+                        if (t.HP == 0)
+                        {
+                            if (t.IsUnderSpecialPowerEffect("復活"))
+                            {
+                                t.HP = t.MaxHP;
+                                t.RemoveSpecialPowerInEffect("破壊");
+                                GUI.DisplaySysMessage(t.Nickname + "は復活した！");
+                                goto NextLoop;
+                            }
 
-            //                    if (withBlock.IsFeatureAvailable("パーツ分離"))
-            //                    {
-            //                        uname = GeneralLib.LIndex(withBlock.FeatureData("パーツ分離"), 2);
-            //                        Unit localOtherForm1() { object argIndex1 = uname; var ret = withBlock.OtherForm(argIndex1); return ret; }
+                            if (t.IsFeatureAvailable("パーツ分離"))
+                            {
+                                var uname = GeneralLib.LIndex(t.FeatureData("パーツ分離"), 2);
+                                if (t.OtherForm(uname).IsAbleToEnter(t.x, t.y))
+                                {
+                                    t.Transform(uname);
+                                    {
+                                        var cf = t.CurrentForm();
+                                        cf.HP = cf.MaxHP;
+                                        cf.UsedAction = cf.MaxAction();
+                                    }
 
-            //                        if (localOtherForm1().IsAbleToEnter(withBlock.x, withBlock.y))
-            //                        {
-            //                            withBlock.Transform(uname);
-            //                            {
-            //                                var withBlock1 = withBlock.CurrentForm();
-            //                                withBlock1.HP = withBlock1.MaxHP;
-            //                                withBlock1.UsedAction = withBlock1.MaxAction();
-            //                            }
+                                    GUI.DisplaySysMessage(t.Nickname + "は破壊されたパーツを分離させた。");
+                                    goto NextLoop;
+                                }
+                            }
 
-            //                            GUI.DisplaySysMessage(withBlock.Nickname + "は破壊されたパーツを分離させた。");
-            //                            goto NextLoop;
-            //                        }
-            //                    }
+                            t.Die();
+                        }
 
-            //                    withBlock.Die();
-            //                }
+                        if (!is_event)
+                        {
+                            var u = Commands.SelectedUnit;
+                            Commands.SelectedUnit = t.CurrentForm();
+                            Commands.SelectedTarget = this;
+                            if (t.Status == "破壊")
+                            {
+                                GUI.DisplaySysMessage((string)(t.Nickname + "は破壊された"));
+                                Event.HandleEvent("破壊", t.MainPilot().ID);
+                            }
+                            else
+                            {
+                                GUI.DisplaySysMessage(t.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(t.HP) + "（損傷率 = " + 100 * (t.MaxHP - t.HP) / t.MaxHP + "％）");
+                                Event.HandleEvent("損傷率", t.MainPilot().ID, "" + (int)(100 - t.HP * 100 / t.MaxHP));
+                            }
 
-            //                if (!is_event)
-            //                {
-            //                    u = Commands.SelectedUnit;
-            //                    Commands.SelectedUnit = withBlock.CurrentForm();
-            //                    Commands.SelectedTarget = this;
-            //                    if (withBlock.Status == "破壊")
-            //                    {
-            //                        GUI.DisplaySysMessage(withBlock.Nickname + "は破壊された");
-            //                        Event.HandleEvent("破壊", withBlock.MainPilot().ID);
-            //                    }
-            //                    else
-            //                    {
-            //                        GUI.DisplaySysMessage(withBlock.Nickname + "は" + tdmg + "のダメージを受けた。;" + "残りＨＰは" + SrcFormatter.Format(withBlock.HP) + "（損傷率 = " + 100 * (withBlock.MaxHP - withBlock.HP) / withBlock.MaxHP + "％）");
-            //                        Event.HandleEvent("損傷率", withBlock.MainPilot().ID, 100 - withBlock.HP * 100 / withBlock.MaxHP);
-            //                    }
+                            Commands.SelectedUnit = u;
+                            if (SRC.IsScenarioFinished)
+                            {
+                                SRC.IsScenarioFinished = false;
+                                return;
+                            }
+                        }
+                    }
 
-            //                    Commands.SelectedUnit = u;
-            //                    if (SRC.IsScenarioFinished)
-            //                    {
-            //                        SRC.IsScenarioFinished = false;
-            //                        return;
-            //                    }
-            //                }
-            //            }
-
-            //        NextLoop:
-            //            ;
-            //        }
-            //    }
+                    NextLoop:
+                    ;
+                }
+            }
         }
     }
 }
