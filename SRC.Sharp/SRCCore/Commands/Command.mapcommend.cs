@@ -164,7 +164,7 @@ namespace SRCCore.Commands
             var uparty = "味方";
             var sort_mode = "レベル";
             var pilot_status_mode = false;
-        Beginning:
+            Beginning:
             ;
 
             // ユニット一覧のリストを作成
@@ -248,7 +248,7 @@ namespace SRCCore.Commands
                 })
                 .ToList();
 
-        SortList:
+            SortList:
             ;
 
             // ソート
@@ -567,7 +567,7 @@ namespace SRCCore.Commands
             }
 
             GUI.LockGUI();
-            SRC.RestoreData(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"), SRCSaveKind.Quik);
+            SRC.RestoreData(GUI.OpenQuikSaveStream(FileAccess.Read), SRCSaveKind.Quik);
 
             // 画面を書き直してステータスを表示
             GUI.RedrawScreen();
@@ -584,7 +584,7 @@ namespace SRCCore.Commands
             GUI.ChangeStatus(GuiStatus.WaitCursor);
 
             // 中断データをセーブ
-            SRC.DumpData(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"), SRCSaveKind.Quik);
+            SRC.DumpData(GUI.OpenQuikSaveStream(FileAccess.Write), SRCSaveKind.Quik);
             GUI.UnlockGUI();
 
             // マウスカーソルを元に戻す
