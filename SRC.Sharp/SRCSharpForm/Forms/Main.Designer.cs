@@ -1,11 +1,9 @@
-using Microsoft.VisualBasic.CompilerServices;
 using SRCSharpForm.Lib;
 using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    [DesignerGenerated()]
     internal partial class frmMain
     {
         [DebuggerNonUserCode()]

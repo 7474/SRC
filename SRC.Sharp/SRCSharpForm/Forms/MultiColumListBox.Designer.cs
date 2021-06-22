@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,7 +6,6 @@ using System.Windows.Forms;
 
 namespace Project1
 {
-    [DesignerGenerated()]
     internal partial class frmMultiColumnListBox
     {
         [DebuggerNonUserCode()]
@@ -98,7 +96,7 @@ namespace Project1
             WindowState = FormWindowState.Normal;
             Name = "frmMultiColumnListBox";
             _lstItems.BackColor = Color.White;
-            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
             _lstItems.ForeColor = Color.Black;
             _lstItems.Size = new Size(654, 407);
             _lstItems.Location = new Point(8, 8);
@@ -117,7 +115,7 @@ namespace Project1
             _lstItems.ColumnWidth = 164;
             _lstItems.Name = "_lstItems";
             labCaption.BackColor = Color.White;
-            labCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            labCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
             labCaption.ForeColor = Color.Black;
             labCaption.Size = new Size(654, 23);
             labCaption.Location = new Point(8, 416);

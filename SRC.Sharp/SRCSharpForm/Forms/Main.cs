@@ -3,7 +3,6 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Commands;
@@ -657,10 +656,10 @@ namespace SRCSharpForm
             //}
 
             // SRCを終了するか確認
-            var ret = Interaction.MsgBox("SRCを終了しますか？", MsgBoxStyle.OkCancel | MsgBoxStyle.Question, "終了");
+            var ret = MsgBox.Show(this, "SRCを終了しますか？", "終了", MsgBoxButtons.OKCancel, MsgBoxIcon.Question);
             switch (ret)
             {
-                case MsgBoxResult.Ok:
+                case DialogResult.OK:
                     // SRCを終了
                     Hide();
                     SRC.TerminateSRC();

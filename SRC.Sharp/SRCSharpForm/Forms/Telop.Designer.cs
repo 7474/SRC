@@ -1,11 +1,9 @@
-using Microsoft.VisualBasic.CompilerServices;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    [DesignerGenerated()]
     internal partial class frmTelop
     {
         [DebuggerNonUserCode()]
@@ -63,7 +61,7 @@ namespace SRCSharpForm
             Name = "frmTelop";
             Label1.TextAlign = ContentAlignment.TopCenter;
             Label1.Text = "シナリオタイトル";
-            Label1.Font = new Font("ＭＳ Ｐ明朝", 15.75f, FontStyle.Bold | FontStyle.Italic | FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            Label1.Font = new Font("ＭＳ Ｐ明朝", 15.75f, FontStyle.Bold | FontStyle.Italic | FontStyle.Regular, GraphicsUnit.Point);
             Label1.ForeColor = Color.Black;
             Label1.Size = new Size(357, 57);
             Label1.Location = new Point(8, 16);

@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,7 +6,6 @@ using System.Windows.Forms;
 
 namespace Project1
 {
-    [DesignerGenerated()]
     internal partial class frmMultiSelectListBox
     {
         [DebuggerNonUserCode()]
@@ -262,7 +260,7 @@ namespace Project1
             Text = "MultiSelectListBox";
             ClientSize = new Size(497, 331);
             Location = new Point(60, 165);
-            Font = new Font("ＭＳ ゴシック", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            Font = new Font("ＭＳ ゴシック", 12f, FontStyle.Regular, GraphicsUnit.Point);
             Icon = (Icon)resources.GetObject("frmMultiSelectListBox.Icon");
             MaximizeBox = false;
             AutoScaleMode = AutoScaleMode.Font;
@@ -279,7 +277,7 @@ namespace Project1
             _cmdResume.TextAlign = ContentAlignment.MiddleCenter;
             _cmdResume.BackColor = SystemColors.Control;
             _cmdResume.Text = "マップを見る";
-            _cmdResume.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _cmdResume.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
             _cmdResume.Size = new Size(137, 29);
             _cmdResume.Location = new Point(96, 296);
             _cmdResume.TabIndex = 7;
@@ -293,7 +291,7 @@ namespace Project1
             _cmdSort.TextAlign = ContentAlignment.MiddleCenter;
             _cmdSort.BackColor = SystemColors.Control;
             _cmdSort.Text = "名称順に並べ替え";
-            _cmdSort.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _cmdSort.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
             _cmdSort.Size = new Size(145, 29);
             _cmdSort.Location = new Point(336, 264);
             _cmdSort.TabIndex = 6;
@@ -307,7 +305,7 @@ namespace Project1
             _cmdSelectAll2.TextAlign = ContentAlignment.MiddleCenter;
             _cmdSelectAll2.BackColor = Color.FromArgb(192, 192, 192);
             _cmdSelectAll2.Text = "最後から選択";
-            _cmdSelectAll2.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _cmdSelectAll2.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
             _cmdSelectAll2.Size = new Size(161, 29);
             _cmdSelectAll2.Location = new Point(168, 264);
             _cmdSelectAll2.TabIndex = 5;
@@ -321,7 +319,7 @@ namespace Project1
             _cmdSelectAll.TextAlign = ContentAlignment.MiddleCenter;
             _cmdSelectAll.BackColor = Color.FromArgb(192, 192, 192);
             _cmdSelectAll.Text = "先頭から選択";
-            _cmdSelectAll.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _cmdSelectAll.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
             _cmdSelectAll.Size = new Size(153, 29);
             _cmdSelectAll.Location = new Point(8, 264);
             _cmdSelectAll.TabIndex = 4;
@@ -338,7 +336,7 @@ namespace Project1
             _cmdFinish.BackColor = Color.FromArgb(192, 192, 192);
             _cmdFinish.Text = "終了";
             _cmdFinish.Enabled = false;
-            _cmdFinish.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Bold | FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _cmdFinish.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Bold | FontStyle.Regular, GraphicsUnit.Point);
             _cmdFinish.Size = new Size(137, 29);
             _cmdFinish.Location = new Point(264, 296);
             _cmdFinish.TabIndex = 1;
@@ -349,7 +347,7 @@ namespace Project1
             _cmdFinish.RightToLeft = RightToLeft.No;
             _cmdFinish.Name = "_cmdFinish";
             _lstItems.BackColor = Color.White;
-            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
             _lstItems.ForeColor = Color.Black;
             _lstItems.Size = new Size(479, 231);
             _lstItems.Location = new Point(8, 32);
@@ -369,7 +367,7 @@ namespace Project1
             lblNumber.TextAlign = ContentAlignment.TopCenter;
             lblNumber.BackColor = Color.White;
             lblNumber.Text = "Label1";
-            lblNumber.Font = new Font("ＭＳ 明朝", 15.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            lblNumber.Font = new Font("ＭＳ 明朝", 15.75f, FontStyle.Regular, GraphicsUnit.Point);
             lblNumber.ForeColor = Color.Black;
             lblNumber.Size = new Size(57, 29);
             lblNumber.Location = new Point(424, 296);
@@ -384,7 +382,7 @@ namespace Project1
             lblNumber.Name = "lblNumber";
             lblCaption.BackColor = Color.White;
             lblCaption.Text = "Label1";
-            lblCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            lblCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
             lblCaption.ForeColor = Color.Black;
             lblCaption.Size = new Size(479, 22);
             lblCaption.Location = new Point(8, 6);
