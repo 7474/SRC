@@ -361,7 +361,7 @@ namespace SRCCore
             list.Add(new ListBoxItem("▽並べ替え▽", "▽並べ替え▽"));
 
 
-        Beginning:
+            Beginning:
             ;
 
             var units = SRC.UList.Items
@@ -1140,7 +1140,7 @@ namespace SRCCore
             // デフォルトのソート方法
             var sort_mode = "レベル";
             var sort_mode2 = "名称";
-        Beginning:
+            Beginning:
             ;
 
 
@@ -1245,7 +1245,7 @@ namespace SRCCore
                     };
                 }).ToList();
 
-        SortAgain:
+            SortAgain:
             ;
 
             // ソート
@@ -1367,7 +1367,7 @@ namespace SRCCore
                         };
                     })
                     .ToList();
-            SortAgain2:
+                SortAgain2:
                 ;
 
 
@@ -1571,7 +1571,7 @@ namespace SRCCore
             var list = new List<ListBoxItem>();
             list.Add(new ListBoxItem("▽並べ替え▽", "▽並べ替え▽"));
 
-        Beginning:
+            Beginning:
             ;
 
             var units = SRC.UList.Items
@@ -1642,7 +1642,7 @@ namespace SRCCore
                 })
                 .ToList();
 
-        SortAgain:
+            SortAgain:
             ;
 
             // ソート
@@ -1764,7 +1764,7 @@ namespace SRCCore
             // ユニットを選択
             selectedUnit = SRC.UList.Item(units[ret - 2].ListItemID);
 
-        MakeEquipedItemList:
+            MakeEquipedItemList:
             ;
 
             // 選択されたユニットが装備しているアイテム一覧の作成
@@ -2089,7 +2089,7 @@ namespace SRCCore
         private void ExchangeFormCommand()
         {
             var top_item = 1;
-        Beginning:
+            Beginning:
             ;
 
             // 換装可能なユニットのリストを作成
@@ -2248,17 +2248,18 @@ namespace SRCCore
         // ステータスコマンド中かどうかを返す
         public bool InStatusCommand()
         {
-            throw new NotImplementedException();
-            //    bool InStatusCommandRet = default;
-            //    if (string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        if (Strings.InStr(SRC.ScenarioFileName, @"\ユニットステータス表示.eve") > 0 || Strings.InStr(SRC.ScenarioFileName, @"\パイロットステータス表示.eve") > 0 || SRC.IsSubStage)
-            //        {
-            //            InStatusCommandRet = true;
-            //        }
-            //    }
-
-            //    return InStatusCommandRet;
+            if (!Map.IsStatusView)
+            {
+                // XXX 処理系によってはファイル名が取れないかもしれない
+                var fname = Path.GetFileName(SRC.ScenarioFileName).ToLower();
+                if (fname == "ユニットステータス表示.eve"
+                    || fname == "パイロットステータス表示.eve"
+                    || SRC.IsSubStage)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
