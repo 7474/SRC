@@ -1481,54 +1481,43 @@ namespace SRCCore.Models
 
                     case "装填":
                         {
-                            throw new NotImplementedException();
-                            // TODO Impl 装填
-                            //// 効果が適用可能かどうか判定
-                            //var loopTo4 = t.CountWeapon();
-                            //for (j = 1; j <= loopTo4; j++)
-                            //{
-                            //    if (t.Bullet(j) < t.MaxBullet(j))
-                            //    {
-                            //        break;
-                            //    }
-                            //}
+                            // 効果が適用可能かどうか判定
+                            if(!t.Weapons.Any(x => x.Bullet() < x.MaxBullet()))
+                            {
+                                goto NextEffect;
+                            }
 
-                            //if (j > t.CountWeapon())
-                            //{
-                            //    goto NextEffect;
-                            //}
+                            if (!is_event)
+                            {
+                                if (ReferenceEquals(t, Commands.SelectedUnit))
+                                {
+                                    if (!GUI.MessageFormVisible)
+                                    {
+                                        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
+                                    }
+                                    else
+                                    {
+                                        GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
+                                    }
+                                }
+                                else if (!GUI.MessageFormVisible)
+                                {
+                                    GUI.OpenMessageForm(t, Commands.SelectedUnit);
+                                }
+                                else
+                                {
+                                    GUI.UpdateMessageForm(t, Commands.SelectedUnit);
+                                }
+                            }
 
-                            //if (!is_event)
-                            //{
-                            //    if (ReferenceEquals(t, Commands.SelectedUnit))
-                            //    {
-                            //        if (!GUI.MessageFormVisible)
-                            //        {
-                            //            GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
-                            //        }
-                            //        else
-                            //        {
-                            //            GUI.UpdateMessageForm(Commands.SelectedUnit, u2: null);
-                            //        }
-                            //    }
-                            //    else if (!GUI.MessageFormVisible)
-                            //    {
-                            //        GUI.OpenMessageForm(t, Commands.SelectedUnit);
-                            //    }
-                            //    else
-                            //    {
-                            //        GUI.UpdateMessageForm(t, Commands.SelectedUnit);
-                            //    }
-                            //}
+                            // 弾薬を補給
+                            t.BulletSupply();
+                            if (!is_event)
+                            {
+                                GUI.DisplaySysMessage(t.Nickname + "の弾数が全快した。");
+                            }
 
-                            //// 弾薬を補給
-                            //t.BulletSupply();
-                            //if (!is_event)
-                            //{
-                            //    GUI.DisplaySysMessage(t.Nickname + "の弾数が全快した。");
-                            //}
-
-                            //break;
+                            break;
                         }
 
                     case "状態回復":
