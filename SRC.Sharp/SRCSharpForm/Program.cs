@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -6,7 +8,7 @@ namespace SRCSharpForm
 {
     static class Program
     {
-        internal static ILogger Log { get; private set; }
+        internal static Microsoft.Extensions.Logging.ILogger Log { get; private set; }
         internal static ILoggerFactory LoggerFactory { get; private set; }
 
         /// <summary>
@@ -18,9 +20,15 @@ namespace SRCSharpForm
             LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
             {
                 builder
-                    .SetMinimumLevel(LogLevel.Debug)
-                    .AddDebug();
+                    .SetMinimumLevel(LogLevel.Debug);
             });
+            LoggerFactory.AddProvider(new SerilogLoggerProvider(
+                new LoggerConfiguration().MinimumLevel.Debug()
+                    .Enrich.WithThreadId()
+                    .WriteTo.Debug(
+                        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] <{ThreadId}> {Message:lj}{NewLine}{Exception}"
+                    )
+                    .CreateLogger()));
             UpdateLogger();
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);

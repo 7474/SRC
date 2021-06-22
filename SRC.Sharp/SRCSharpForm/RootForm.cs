@@ -36,7 +36,11 @@ namespace SRCSharpForm
             // TODO ログの設定
             Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(
                 new LoggerConfiguration().MinimumLevel.Information()
-                    .WriteTo.File("logs\\srcsform..log", rollingInterval: RollingInterval.Day)
+                    .Enrich.WithThreadId()
+                    .WriteTo.File("logs\\srcsform..log",
+                        rollingInterval: RollingInterval.Day,
+                        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] <{ThreadId}> {Message:lj}{NewLine}{Exception}"
+                    )
                     .CreateLogger()));
             Program.UpdateLogger();
 
