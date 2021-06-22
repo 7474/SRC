@@ -381,9 +381,6 @@ namespace SRCCore.Commands
         // 「変身解除」コマンド
         private void CancelTransformationCommand()
         {
-            throw new NotImplementedException();
-            //int ret;
-
             //// MOD START MARGE
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
@@ -392,59 +389,59 @@ namespace SRCCore.Commands
             //    Status.ClearUnitStatus();
             //}
 
-            //GUI.LockGUI();
-            //{
-            //    var withBlock = SelectedUnit;
-            //    if (string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        // ユニットステータスコマンドの場合
-            //        string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+            GUI.LockGUI();
+            {
+                var u = SelectedUnit;
+                if (Map.IsStatusView)
+                {
+                    // ユニットステータスコマンドの場合
+                    u.Transform(GeneralLib.LIndex(u.FeatureData("ノーマルモード"), 1));
+                    Event.MakeUnitList(smode: "");
+                    Status.DisplayUnitStatus(u.CurrentForm());
+                    GUI.UnlockGUI();
+                    CommandState = "ユニット選択";
+                    return;
+                }
 
-            //        withBlock.Transform(localLIndex());
-            //        Event.MakeUnitList(smode: "");
-            //        Status.DisplayUnitStatus(withBlock.CurrentForm());
-            //        GUI.UnlockGUI();
-            //        CommandState = "ユニット選択";
-            //        return;
-            //    }
+                string caption, info;
+                if (u.IsHero())
+                {
+                    caption = "変身を解除しますか？";
+                    info = "変身解除";
+                }
+                else
+                {
+                    caption = "特殊モードを解除しますか？";
+                    info = "特殊モード解除";
+                }
 
-            //    if (withBlock.IsHero())
-            //    {
-            //        ret = Interaction.MsgBox("変身を解除しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "変身解除");
-            //    }
-            //    else
-            //    {
-            //        ret = Interaction.MsgBox("特殊モードを解除しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "特殊モード解除");
-            //    }
+                var confirmRes = GUI.Confirm(caption, info, GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+                if (confirmRes == GuiDialogResult.Cancel)
+                {
+                    GUI.UnlockGUI();
+                    CancelCommand();
+                    return;
+                }
 
-            //    if (ret == MsgBoxResult.Cancel)
-            //    {
-            //        GUI.UnlockGUI();
-            //        CancelCommand();
-            //        return;
-            //    }
+                u.Transform(GeneralLib.LIndex(u.FeatureData("ノーマルモード"), 1));
+                SelectedUnit = Map.MapDataForUnit[u.x, u.y];
+            }
 
-            //    string localLIndex1() { object argIndex1 = "ノーマルモード"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+            // カーソル自動移動
+            if (SRC.AutoMoveCursor)
+            {
+                GUI.MoveCursorPos("ユニット選択", SelectedUnit);
+            }
 
-            //    withBlock.Transform(localLIndex1());
-            //    SelectedUnit = Map.MapDataForUnit[withBlock.x, withBlock.y];
-            //}
+            Status.DisplayUnitStatus(SelectedUnit);
+            GUI.RedrawScreen();
 
-            //// カーソル自動移動
-            //if (SRC.AutoMoveCursor)
-            //{
-            //    GUI.MoveCursorPos("ユニット選択", SelectedUnit);
-            //}
-
-            //Status.DisplayUnitStatus(SelectedUnit);
-            //GUI.RedrawScreen();
-
-            //// 変形イベント
-            //Event.HandleEvent("変形", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
-            //SRC.IsScenarioFinished = false;
-            //SRC.IsCanceled = false;
-            //CommandState = "ユニット選択";
-            //GUI.UnlockGUI();
+            // 変形イベント
+            Event.HandleEvent("変形", SelectedUnit.MainPilot().ID, SelectedUnit.Name);
+            SRC.IsScenarioFinished = false;
+            SRC.IsCanceled = false;
+            CommandState = "ユニット選択";
+            GUI.UnlockGUI();
         }
 
         // 「分離」コマンド

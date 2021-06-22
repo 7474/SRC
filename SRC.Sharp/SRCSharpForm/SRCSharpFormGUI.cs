@@ -1417,12 +1417,18 @@ namespace SRCSharpForm
                 }
             }
             return new FileInfo(fname).Open(FileMode.Create);
-            //return File.OpenWrite(fname);
         }
 
         public Stream OpenQuikSaveStream(FileAccess fileAccess)
         {
-            throw new NotImplementedException();
+            if (fileAccess == FileAccess.Read)
+            {
+                return new FileInfo(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq")).Open(FileMode.Open);
+            }
+            else
+            {
+                return new FileInfo(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq")).Open(FileMode.Create);
+            }
         }
 
         public void DisplayGlobalMap()
