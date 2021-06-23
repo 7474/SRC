@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SRCSharpForm": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
