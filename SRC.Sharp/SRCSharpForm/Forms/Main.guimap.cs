@@ -50,6 +50,7 @@ namespace SRCSharpForm
         /// TODO ユニットタイルの読み込み元を変える
         /// </summary>
         private ImageBuffer imageBuffer;
+        public ImageBuffer ImageBuffer => imageBuffer;
 
         public void Init(ImageBuffer imageBuffer)
         {
@@ -292,7 +293,7 @@ namespace SRCSharpForm
                         var bitmapPath = Map.SearchTerrainImageFile(cell);
                         if (!string.IsNullOrEmpty(bitmapPath))
                         {
-                            g.DrawImage(imageBuffer.Get(bitmapPath), xpx, ypx);
+                            g.DrawImage(ImageBuffer.Get(bitmapPath), xpx, ypx);
                         }
                         else
                         {
@@ -550,7 +551,7 @@ namespace SRCSharpForm
                     break;
             }
 
-            var unitImage = imageBuffer.GetTransparent(u.CurrentForm().CurrentBitmap());
+            var unitImage = ImageBuffer.GetTransparent(u.CurrentForm().CurrentBitmap());
             // (発光している場合は２度塗りを防ぐため描画しない)
             if (unitImage != null && !emit_light)
             {

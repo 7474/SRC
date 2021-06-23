@@ -142,6 +142,7 @@ namespace SRCSharpForm
             frmListBox = new frmListBox()
             {
                 SRC = SRC,
+                MainForm = MainForm,
             };
 
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
@@ -458,14 +459,12 @@ namespace SRCSharpForm
 
         public void AddPartsToListBox()
         {
-            // TODO Impl AddPartsToListBox
-            //throw new NotImplementedException();
+            frmListBox.AddPartsToListBox();
         }
 
         public void RemovePartsOnListBox()
         {
-            // TODO Impl AddPartsToListBox
-            //throw new NotImplementedException();
+            frmListBox.RemovePartsOnListBox();
         }
 
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)

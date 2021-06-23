@@ -202,8 +202,10 @@ namespace SRCSharpForm
             Application.DoEvents();
         }
 
+        // XXX 他所にもある
         private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
         private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
+
         public void UpdateMessageForm(Unit u1, Unit u2)
         {
             Unit lu, ru;
