@@ -1,10 +1,21 @@
 version: 2
 updates:
 - package-ecosystem: nuget
-  directory: "/"
+  directory: "/SRC.Sharp/SRCCore/"
   schedule:
     interval: daily
-  open-pull-requests-limit: 10
+- package-ecosystem: nuget
+  directory: "/SRC.Sharp/SRCDataLinter/"
+  schedule:
+    interval: daily
+- package-ecosystem: nuget
+  directory: "/SRC.Sharp/SRCSharpForm/"
+  schedule:
+    interval: daily
+- package-ecosystem: nuget
+  directory: "/SRC.Sharp/SRCTestBlazor/"
+  schedule:
+    interval: daily
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
