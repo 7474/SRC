@@ -1319,7 +1319,8 @@ namespace SRCSharpForm
 
         public void ChangeDisplaySize(int w, int h)
         {
-            throw new NotImplementedException();
+            // 当面全画面はサポートしない
+            throw new NotSupportedException();
         }
 
         public void ErrorMessage(string msg)
@@ -1336,7 +1337,34 @@ namespace SRCSharpForm
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
-            throw new NotImplementedException();
+            string err_msg;
+
+            // エラーが発生したファイル名と行番号
+            err_msg = fname + "：" + line_num + "行目" + Constants.vbCr + Constants.vbLf;
+
+            // エラーが発生したデータ名
+            if (Strings.Len(dname) > 0)
+            {
+                err_msg = err_msg + dname + "のデータが不正です。" + Constants.vbCr + Constants.vbLf;
+            }
+
+            // エラーの原因
+            if (Strings.Len(msg) > 0)
+            {
+                err_msg = err_msg + msg + Constants.vbCr + Constants.vbLf;
+            }
+
+            // なにも指定されていない？
+            if (string.IsNullOrEmpty(dname) && string.IsNullOrEmpty(msg))
+            {
+                err_msg = err_msg + "データが不正です。" + Constants.vbCr + Constants.vbLf;
+            }
+
+            // エラーが発生したデータ行
+            err_msg = err_msg + line_buf;
+
+            // エラーメッセージを表示
+            ErrorMessage(err_msg);
         }
 
         public bool IsRButtonPressed(bool ignore_message_wait = false)

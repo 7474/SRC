@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.Units;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,44 +12,31 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            Unit u;
-            //            switch (ArgNum)
-            //            {
-            //                case 2:
-            //                    {
-            //                        u = GetArgAsUnit(2);
-            //                        break;
-            //                    }
+            Unit u;
+            switch (ArgNum)
+            {
+                case 2:
+                    {
+                        u = GetArgAsUnit(2);
+                        break;
+                    }
 
-            //                case 1:
-            //                    {
-            //                        u = Event.SelectedUnitForEvent;
-            //                        break;
-            //                    }
+                case 1:
+                    {
+                        u = Event.SelectedUnitForEvent;
+                        break;
+                    }
 
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "Supplyコマンドの引数の数が違います";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 499859
+                default:
+                    throw new EventErrorException(this, "Supplyコマンドの引数の数が違います");
+            }
 
+            if (u is object)
+            {
+                u.FullSupply();
+            }
 
-            //                        Input:
-            //                                        Error(0)
-
-            //                         */
-            //                        break;
-            //                    }
-            //            }
-
-            //            if (u is object)
-            //            {
-            //                u.FullSupply();
-            //            }
-
-            //return EventData.NextID;
+            return EventData.NextID;
         }
     }
 }
