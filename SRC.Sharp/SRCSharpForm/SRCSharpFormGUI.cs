@@ -1319,7 +1319,8 @@ namespace SRCSharpForm
 
         public void ChangeDisplaySize(int w, int h)
         {
-            throw new NotImplementedException();
+            // 当面全画面はサポートしない
+            throw new NotSupportedException();
         }
 
         public void ErrorMessage(string msg)
