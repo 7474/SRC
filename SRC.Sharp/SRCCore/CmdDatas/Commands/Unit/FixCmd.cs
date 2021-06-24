@@ -1,5 +1,6 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -12,77 +13,47 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            string buf;
-            //            switch (ArgNum)
-            //            {
-            //                case 1:
-            //                    {
-            //                        buf = Event.SelectedUnitForEvent.Pilot((object)1).Name;
-            //                        break;
-            //                    }
+            string buf;
+            switch (ArgNum)
+            {
+                case 1:
+                    {
+                        buf = Event.SelectedUnitForEvent.Pilots.First().Name;
+                        break;
+                    }
 
-            //                case 2:
-            //                    {
-            //                        buf = GetArgAsString(2);
-            //                        bool localIsDefined() { object argIndex1 = (object)buf; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+                case 2:
+                    {
+                        buf = GetArgAsString(2);
+                        if (!SRC.PList.IsDefined(buf) && !SRC.IList.IsDefined(buf))
+                        {
+                            throw new EventErrorException(this, "パイロット名またはアイテム名" + buf + "が間違っています");
+                        }
 
-            //                        bool localIsDefined1() { object argIndex1 = (object)buf; var ret = SRC.IList.IsDefined(argIndex1); return ret; }
+                        if (SRC.PList.IsDefined(buf))
+                        {
+                            buf = SRC.PList.Item(buf).Name;
+                        }
+                        else
+                        {
+                            buf = SRC.IList.Item(buf).Name;
+                        }
 
-            //                        if (!localIsDefined() && !localIsDefined1())
-            //                        {
-            //                            Event.EventErrorMessage = "パイロット名またはアイテム名" + buf + "が間違っています";
-            //                            ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 249941
+                        break;
+                    }
 
+                default:
+                    throw new EventErrorException(this, "Fixコマンドの引数の数が違います");
+            }
 
-            //                            Input:
-            //                                                Error(0)
+            buf = "Fix(" + buf + ")";
+            if (!Expression.IsGlobalVariableDefined(buf))
+            {
+                Expression.DefineGlobalVariable(buf);
+            }
 
-            //                             */
-            //                        }
-
-            //                        if (SRC.PList.IsDefined((object)buf))
-            //                        {
-            //                            Pilot localItem() { object argIndex1 = (object)buf; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //                            buf = localItem().Name;
-            //                        }
-            //                        else
-            //                        {
-            //                            Item localItem1() { object argIndex1 = (object)buf; var ret = SRC.IList.Item(argIndex1); return ret; }
-
-            //                            buf = localItem1().Name;
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        Event.EventErrorMessage = "Fixコマンドの引数の数が違います";
-            //                        ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 250238
-
-
-            //                        Input:
-            //                                        Error(0)
-
-            //                         */
-            //                        break;
-            //                    }
-            //            }
-
-            //            buf = "Fix(" + buf + ")";
-            //            if (!Expression.IsGlobalVariableDefined(buf))
-            //            {
-            //                Expression.DefineGlobalVariable(buf);
-            //            }
-
-            //            Expression.SetVariableAsLong(buf, 1);
-            //return EventData.NextID;
+            Expression.SetVariableAsLong(buf, 1);
+            return EventData.NextID;
         }
     }
 }

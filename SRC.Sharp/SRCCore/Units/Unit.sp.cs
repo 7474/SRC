@@ -198,6 +198,10 @@ namespace SRCCore.Units
         {
             colSpecialPowerInEffect.Remove(colSpecialPowerInEffect[Index]);
         }
+        public void RemoveSpecialPowerInEffect2(string Index)
+        {
+            colSpecialPowerInEffect.Remove(Index);
+        }
 
         // 全てのスペシャルパワーの効果を取り除く
         public void RemoveAllSpecialPowerInEffect()
