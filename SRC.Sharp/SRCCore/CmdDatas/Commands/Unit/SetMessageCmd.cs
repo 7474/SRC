@@ -1,7 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
-using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
 
@@ -27,33 +26,24 @@ namespace SRCCore.CmdDatas.Commands
                         u = SRC.UList.Item2(pname);
                         if (u is null)
                         {
+                            if (!SRC.PList.IsDefined(pname))
                             {
-                                var withBlock = SRC.PList;
-                                bool localIsDefined1() { object argIndex1 = (object)pname; var ret = withBlock.IsDefined(argIndex1); return ret; }
-
-                                if (!localIsDefined1())
+                                pname0 = pname;
+                                if (Strings.InStr(pname0, "(") > 0)
                                 {
-                                    pname0 = pname;
-                                    if (Strings.InStr(pname0, "(") > 0)
-                                    {
-                                        pname0 = Strings.Left(pname0, GeneralLib.InStr2(pname0, "(") - 1);
-                                    }
-
-                                    bool localIsDefined() { object argIndex1 = (object)pname0; var ret = withBlock.IsDefined(argIndex1); return ret; }
-
-                                    if (!localIsDefined())
-                                    {
-                                        throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
-                                    }
-
-                                    Pilot localItem() { object argIndex1 = (object); var ret = ; return ret; }
-
-                                    u = withBlock.Item(pname0).Unit;
+                                    pname0 = Strings.Left(pname0, GeneralLib.InStr2(pname0, "(") - 1);
                                 }
-                                else
+
+                                if (!SRC.PList.IsDefined(pname0))
                                 {
-                                    u = withBlock.Item(pname).Unit;
+                                    throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                 }
+
+                                u = SRC.PList.Item(pname0).Unit;
+                            }
+                            else
+                            {
+                                u = SRC.PList.Item(pname).Unit;
                             }
 
                             if (u is null)
