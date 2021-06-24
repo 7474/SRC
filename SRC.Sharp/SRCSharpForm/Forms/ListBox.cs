@@ -42,6 +42,8 @@ namespace SRCSharpForm
         private int LastSelectedItem;
 
         private IList<ListBoxItem> ListBoxItems;
+        public IList<ListBoxItem> Items => ListBoxItems;
+        public ListBox ListBox => lstItems;
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
         private bool HasFlag;
 
