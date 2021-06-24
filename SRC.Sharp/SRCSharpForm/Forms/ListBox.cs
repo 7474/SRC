@@ -5,8 +5,10 @@
 using SRCCore;
 using SRCCore.Lib;
 using SRCCore.VB;
+using SRCSharpForm.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -20,6 +22,11 @@ namespace SRCSharpForm
         private IGUI GUI => SRC.GUI;
         private SRCCore.Commands.Command Commands => SRC.Commands;
         private IGUIStatus Status => SRC.GUIStatus;
+        // XXX この参照は微妙
+        public frmMain MainForm;
+        // XXX 他所にもある
+        private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
+        private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
 
         // リストボックスのサイズ (通常:M 大型:L)
         // 幅
@@ -35,6 +42,8 @@ namespace SRCSharpForm
         private int LastSelectedItem;
 
         private IList<ListBoxItem> ListBoxItems;
+        public IList<ListBoxItem> Items => ListBoxItems;
+        public ListBox ListBox => lstItems;
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
         private bool HasFlag;
 
@@ -119,6 +128,205 @@ namespace SRCSharpForm
                     HorizontalSize = "S";
                     break;
             }
+        }
+
+        public void AddPartsToListBox()
+        {
+            var u = Commands.SelectedUnit;
+            var t = Commands.SelectedTarget;
+            // リストボックスにユニットやＨＰのゲージを追加
+            Height = Height + 35;
+            labCaption.Top = 42;
+            lstItems.Top = 69;
+            imgPilot1.Visible = true;
+            labLevel1.Visible = true;
+            txtLevel1.Visible = true;
+            labMorale1.Visible = true;
+            txtMorale1.Visible = true;
+            picUnit1.Visible = true;
+            labHP1.Visible = true;
+            txtHP1.Visible = true;
+            picHP1.Visible = true;
+            labEN1.Visible = true;
+            txtEN1.Visible = true;
+            picEN1.Visible = true;
+            imgPilot2.Visible = true;
+            labLevel2.Visible = true;
+            txtLevel2.Visible = true;
+            labMorale2.Visible = true;
+            txtMorale2.Visible = true;
+            picUnit2.Visible = true;
+            labHP2.Visible = true;
+            txtHP2.Visible = true;
+            picHP2.Visible = true;
+            labEN2.Visible = true;
+            txtEN2.Visible = true;
+            picEN2.Visible = true;
+
+            // ユニット側の表示
+            // XXX これリークしてく？
+            imgPilot1.Image = MainForm.ImageBuffer.Get(SRC.FileSystem.PathCombine("Pilot", u.MainPilot().get_Bitmap(false)));
+
+            txtLevel1.Text = SrcFormatter.Format(u.MainPilot().Level);
+            txtMorale1.Text = SrcFormatter.Format(u.MainPilot().Morale);
+
+            using (var g = Graphics.FromImage(picUnit1.NewImageIfNull().Image))
+            {
+                MainForm.DrawUnit(g, SRC.Map.CellAtPoint(u.x, u.y), u, new Rectangle(0, 0, frmMain.MapCellPx, frmMain.MapCellPx));
+            }
+            picUnit1.Refresh();
+            if (u.IsConditionSatisfied("データ不明"))
+            {
+                labHP1.Text = SRC.Expression.Term("HP", u: null);
+                txtHP1.Text = "?????/?????";
+            }
+            else
+            {
+                labHP1.Text = SRC.Expression.Term("HP", u: null);
+                if (u.HP < 100000)
+                {
+                    txtHP1.Text = SrcFormatter.Format(u.HP);
+                }
+                else
+                {
+                    txtHP1.Text = "?????";
+                }
+
+                if (u.MaxHP < 100000)
+                {
+                    txtHP1.Text = txtHP1.Text + "/" + SrcFormatter.Format(u.MaxHP);
+                }
+                else
+                {
+                    txtHP1.Text = txtHP1.Text + "/?????";
+                }
+            }
+            picHP1.DrawBar((float)u.HP / u.MaxHP, BarBackBrush, BarForeBrush);
+            if (u.IsConditionSatisfied("データ不明"))
+            {
+                labEN1.Text = SRC.Expression.Term("EN", u: null);
+                txtEN1.Text = "???/???";
+            }
+            else
+            {
+                labEN1.Text = SRC.Expression.Term("EN", t);
+                if (u.EN < 1000)
+                {
+                    txtEN1.Text = SrcFormatter.Format(u.EN);
+                }
+                else
+                {
+                    txtEN1.Text = "???";
+                }
+
+                if (u.MaxEN < 1000)
+                {
+                    txtEN1.Text = txtEN1.Text + "/" + SrcFormatter.Format(u.MaxEN);
+                }
+                else
+                {
+                    txtEN1.Text = txtEN1.Text + "/???";
+                }
+            }
+            picEN1.DrawBar((float)u.EN / u.MaxEN, BarBackBrush, BarForeBrush);
+
+            // ターゲット側の表示
+            // XXX これリークしてく？
+            imgPilot2.Image = MainForm.ImageBuffer.Get(SRC.FileSystem.PathCombine("Pilot", t.MainPilot().get_Bitmap(false)));
+
+            txtLevel2.Text = SrcFormatter.Format(t.MainPilot().Level);
+            txtMorale2.Text = SrcFormatter.Format(t.MainPilot().Morale);
+
+            using (var g = Graphics.FromImage(picUnit2.NewImageIfNull().Image))
+            {
+                MainForm.DrawUnit(g, SRC.Map.CellAtPoint(t.x, t.y), t, new Rectangle(0, 0, frmMain.MapCellPx, frmMain.MapCellPx));
+            }
+            picUnit2.Refresh();
+            if (t.IsConditionSatisfied("データ不明"))
+            {
+                labHP2.Text = SRC.Expression.Term("HP", u: null);
+                txtHP2.Text = "?????/?????";
+            }
+            else
+            {
+                labHP2.Text = SRC.Expression.Term("HP", t);
+                if (t.HP < 100000)
+                {
+                    txtHP2.Text = SrcFormatter.Format(t.HP);
+                }
+                else
+                {
+                    txtHP2.Text = "?????";
+                }
+
+                if (t.MaxHP < 100000)
+                {
+                    txtHP2.Text = txtHP2.Text + "/" + SrcFormatter.Format(t.MaxHP);
+                }
+                else
+                {
+                    txtHP2.Text = txtHP2.Text + "/?????";
+                }
+            }
+            picHP2.DrawBar((float)t.HP / t.MaxHP, BarBackBrush, BarForeBrush);
+            if (t.IsConditionSatisfied("データ不明"))
+            {
+                labEN2.Text = SRC.Expression.Term("EN", u: null);
+                txtEN2.Text = "???/???";
+            }
+            else
+            {
+                labEN2.Text = SRC.Expression.Term("EN", t);
+                if (t.EN < 1000)
+                {
+                    txtEN2.Text = SrcFormatter.Format(t.EN);
+                }
+                else
+                {
+                    txtEN2.Text = "???";
+                }
+
+                if (t.MaxEN < 1000)
+                {
+                    txtEN2.Text = txtEN2.Text + "/" + SrcFormatter.Format(t.MaxEN);
+                }
+                else
+                {
+                    txtEN2.Text = txtEN2.Text + "/???";
+                }
+            }
+            picEN2.DrawBar((float)t.EN / t.MaxEN, BarBackBrush, BarForeBrush);
+        }
+
+        public void RemovePartsOnListBox()
+        {
+            Height = Height - 35;
+            labCaption.Top = 4;
+            lstItems.Top = 32;
+            imgPilot1.Visible = false;
+            labLevel1.Visible = false;
+            txtLevel1.Visible = false;
+            labMorale1.Visible = false;
+            txtMorale1.Visible = false;
+            picUnit1.Visible = false;
+            labHP1.Visible = false;
+            txtHP1.Visible = false;
+            picHP1.Visible = false;
+            labEN1.Visible = false;
+            txtEN1.Visible = false;
+            picEN1.Visible = false;
+            imgPilot2.Visible = false;
+            labLevel2.Visible = false;
+            txtLevel2.Visible = false;
+            labMorale2.Visible = false;
+            txtMorale2.Visible = false;
+            picUnit2.Visible = false;
+            labHP2.Visible = false;
+            txtHP2.Visible = false;
+            picHP2.Visible = false;
+            labEN2.Visible = false;
+            txtEN2.Visible = false;
+            picEN2.Visible = false;
         }
 
         public void ShowItems(frmMain MainForm, ListBoxArgs args)

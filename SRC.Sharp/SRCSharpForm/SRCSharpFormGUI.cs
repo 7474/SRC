@@ -142,6 +142,7 @@ namespace SRCSharpForm
             frmListBox = new frmListBox()
             {
                 SRC = SRC,
+                MainForm = MainForm,
             };
 
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
@@ -458,14 +459,12 @@ namespace SRCSharpForm
 
         public void AddPartsToListBox()
         {
-            // TODO Impl AddPartsToListBox
-            //throw new NotImplementedException();
+            frmListBox.AddPartsToListBox();
         }
 
         public void RemovePartsOnListBox()
         {
-            // TODO Impl AddPartsToListBox
-            //throw new NotImplementedException();
+            frmListBox.RemovePartsOnListBox();
         }
 
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
@@ -1087,19 +1086,188 @@ namespace SRCSharpForm
             MainForm.HScrollBar.Enabled = true;
         }
 
+        // カーソル位置自動変更前のマウスカーソルの座標
+        private int PrevCursorX;
+        private int PrevCursorY;
+        // カーソル位置自動変更後のマウスカーソルの座標
+        private int NewCursorX;
+        private int NewCursorY;
+
         public void SaveCursorPos()
         {
-            throw new NotImplementedException();
+            var pos = Control.MousePosition;
+            PrevCursorX = pos.X;
+            PrevCursorY = pos.Y;
+            NewCursorX = 0;
+            NewCursorY = 0;
         }
 
         public void MoveCursorPos(string cursor_mode, Unit t)
         {
-            throw new NotImplementedException();
+            // マウスカーソルの位置を収得
+            var pos = Control.MousePosition;
+
+            // 現在の位置を記録しておく
+            if (PrevCursorX == 0 & cursor_mode != "メッセージウィンドウ")
+            {
+                SaveCursorPos();
+            }
+
+            // カーソル自動移動
+            int tx, ty;
+            if (t is null)
+            {
+                if (cursor_mode == "メッセージウィンドウ")
+                {
+                    // メッセージウィンドウまで移動
+                    {
+                        if (pos.X < frmMessage.Left + 0.05d * frmMessage.Width)
+                        {
+                            tx = (int)(frmMessage.Left + 0.05d * frmMessage.Width);
+                        }
+                        else if (pos.X > frmMessage.Left + 0.95d * frmMessage.Width)
+                        {
+                            tx = (int)(frmMessage.Left + 0.95d * frmMessage.Width);
+                        }
+                        else
+                        {
+                            tx = pos.X;
+                        }
+
+                        if (pos.Y < frmMessage.Top + frmMessage.Height - frmMessage.ClientRectangle.Height + frmMessage.picMessage.Top)
+                        {
+                            ty = frmMessage.Top + frmMessage.Height - frmMessage.ClientRectangle.Height + frmMessage.picMessage.Top;
+                        }
+                        else if (pos.Y > frmMessage.Top + 0.9d * frmMessage.Height)
+                        {
+                            ty = (int)(frmMessage.Top + 0.9d * frmMessage.Height);
+                        }
+                        else
+                        {
+                            ty = pos.Y;
+                        }
+                    }
+                }
+                else
+                {
+                    // リストボックスまで移動
+                    {
+                        if (pos.X < frmListBox.Left + 0.1d * frmListBox.Width)
+                        {
+                            tx = (int)(frmListBox.Left + 0.1d * frmListBox.Width);
+                        }
+                        else if (pos.X > frmListBox.Left + 0.9d * frmListBox.Width)
+                        {
+                            tx = (int)(frmListBox.Left + 0.9d * frmListBox.Width);
+                        }
+                        else
+                        {
+                            tx = pos.X;
+                        }
+
+                        // 選択するアイテム
+                        int i;
+                        if (cursor_mode == "武器選択")
+                        {
+                            // 武器選択の場合は選択可能な最後のアイテムに
+                            // XXX 援護攻撃：は厳しい。
+                            var item = frmListBox.Items.Last(x => !x.ListItemFlag && !x.Text.Contains("援護攻撃："));
+                            i = item != null ? frmListBox.Items.IndexOf(item) + 1 : 1;
+                        }
+                        else
+                        {
+                            // そうでなければ最初のアイテムに
+                            i = TopItem;
+                        }
+
+                        // XXX これでいい感じが維持されるかは分からん
+                        ty = frmListBox.Top + frmListBox.Height - frmListBox.ClientRectangle.Height
+                            + frmListBox.ListBox.Top + 16 * (i - frmListBox.ListBox.TopIndex) - 8;
+                    }
+                }
+            }
+            else
+            {
+                // ユニット上まで移動
+                {
+                    //var withBlock2 = MainForm;
+                    //if (NewGUIMode)
+                    //{
+                    //    tx = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 4L);
+                    //    ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 16d);
+                    //}
+                    //else
+                    {
+                        tx = MainForm.Left + 32 * (t.x - (MapX - MainWidth / 2)) + 24;
+                        ty = MainForm.Top + MainForm.Height - MainForm.ClientRectangle.Height + 32 * (t.y - (MapY - MainHeight / 2)) + 20;
+                    }
+                }
+            }
+
+            // 何回に分けて移動するか計算
+            var num = (int)((long)Math.Sqrt(Math.Pow(tx - pos.X, 2d) + Math.Pow(ty - pos.Y, 2d)) / 25L + 1L);
+
+            // カーソルを移動
+            var prev_lock = IsGUILocked;
+            IsGUILocked = true;
+            // XXX
+            //Status.IsStatusWindowDisabled = true;
+            for (var i = 1; i <= num; i++)
+            {
+                Cursor.Position = new Point(
+                    (tx * i + pos.X * (num - i)) / num,
+                    (ty * i + pos.Y * (num - i)) / num
+                );
+                Sleep(10, true);
+            }
+            //Status.IsStatusWindowDisabled = false;
+            IsGUILocked = prev_lock;
+
+            // 新しいカーソル位置を記録
+            if (NewCursorX == 0)
+            {
+                NewCursorX = tx;
+                NewCursorY = ty;
+            }
         }
 
         public void RestoreCursorPos()
         {
-            throw new NotImplementedException();
+            // ユニットが選択されていればその場所まで戻す
+            if (Commands.SelectedUnit is object)
+            {
+                if (Commands.SelectedUnit.Status == "出撃")
+                {
+                    MoveCursorPos("ユニット選択", Commands.SelectedUnit);
+                    return;
+                }
+            }
+
+            // 戻るべき位置が設定されていない？
+            if (PrevCursorX == 0 && PrevCursorY == 0)
+            {
+                return;
+            }
+
+            // 現在のカーソル位置収得
+            var pos = Control.MousePosition;
+
+            // 以前の位置までカーソル自動移動
+            var tx = PrevCursorX;
+            var ty = PrevCursorY;
+            var num = (short)((long)Math.Sqrt(Math.Pow(tx - pos.X, 2d) + Math.Pow(ty - pos.Y, 2d)) / 50L + 1L);
+            for (var i = 1; i <= num; i++)
+            {
+                Cursor.Position = new Point(
+                    (tx * i + pos.X * (num - i)) / num,
+                    (ty * i + pos.Y * (num - i)) / num
+                );
+                Sleep(10, true);
+            }
+
+            // 戻り位置を初期化
+            PrevCursorX = 0;
+            PrevCursorY = 0;
         }
 
         public void OpenTitleForm()
