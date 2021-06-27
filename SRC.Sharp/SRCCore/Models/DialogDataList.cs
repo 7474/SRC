@@ -106,21 +106,16 @@ namespace SRCCore.Models
 
                             var pname = Strings.Left(line_buf, ret - 1);
 
-                            // TODO Impl 指定した話者のデータが存在するかチェック。
-                            //// 指定した話者のデータが存在するかチェック。
-                            //// ただし合体技のパートナーは場合は他の作品のパイロットであることも
-                            //// あるので話者チェックを行わない。
-                            //if (Strings.Left(pname, 1) != "@")
-                            //{
-                            //    bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-                            //    bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(argIndex1); return ret; }
-
-                            //    if (!localIsDefined() && !localIsDefined1() && pname != "システム")
-                            //    {
-                            //        err_msg = "パイロット「" + pname + "」が定義されていません。";
-                            //    }
-                            //}
+                            // 指定した話者のデータが存在するかチェック。
+                            // ただし合体技のパートナーは場合は他の作品のパイロットであることも
+                            // あるので話者チェックを行わない。
+                            if (Strings.Left(pname, 1) != "@")
+                            {
+                                if (!SRC.PDList.IsDefined(pname) && !SRC.NPDList.IsDefined(pname) && pname != "システム")
+                                {
+                                    throw reader.InvalidDataException("パイロット「" + pname + "」が定義されていません。", pilot_list);
+                                }
+                            }
 
                             // メッセージ
                             if (Strings.Len(line_buf) == ret)
