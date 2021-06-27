@@ -37,9 +37,8 @@ namespace SRCCore.CmdDatas.Commands
                                     b = cmd.GetArgAsString(j);
                                     if ((b ?? "") == (cmd.GetArg(j) ?? ""))
                                     {
-                                        // TODO Impl
-                                        //// 文字列として識別済みにする
-                                        //cmd.SetArgsType(j, Expression.ValueType.StringType);
+                                        // 文字列として識別済みにする
+                                        cmd.GetArgRaw(j).argType = Expressions.ValueType.StringType;
                                     }
                                 }
                                 else
