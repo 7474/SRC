@@ -399,6 +399,8 @@ namespace SRCCore
         public string ListItemComment { get; set; }
         // リスト表示の呼び出し側での識別用ID
         public string ListItemID { get; set; }
+
+        public string TextWithFlag => (ListItemFlag ? "×" : "  ") + Text;
     }
 
     public class ListBoxItem<T> : ListBoxItem

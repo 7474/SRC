@@ -164,7 +164,7 @@ namespace SRCCore.Commands
             var uparty = "味方";
             var sort_mode = "レベル";
             var pilot_status_mode = false;
-            Beginning:
+        Beginning:
             ;
 
             // ユニット一覧のリストを作成
@@ -248,7 +248,7 @@ namespace SRCCore.Commands
                 })
                 .ToList();
 
-            SortList:
+        SortList:
             ;
 
             // ソート
@@ -454,9 +454,7 @@ namespace SRCCore.Commands
                 };
                 // 検索するスペシャルパワーを選択
                 GUI.TopItem = 1;
-                // TODO Impl MultiColumnListBox
-                //ret = GUI.MultiColumnListBox(, list, true);
-                var ret = GUI.ListBox(listArgs);
+                var ret = GUI.MultiColumnListBox(listArgs, true);
                 if (ret == 0)
                 {
                     CancelCommand();
