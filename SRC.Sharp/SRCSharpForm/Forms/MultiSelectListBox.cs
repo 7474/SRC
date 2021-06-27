@@ -54,6 +54,7 @@ namespace SRCSharpForm
             {
                 item.ListItemFlag = false;
             }
+            UpdateList();
             SRC.GUIStatus.ClearUnitStatus();
             Close();
         }
@@ -124,132 +125,41 @@ namespace SRCSharpForm
         // リストボックス上でダブルクリック
         private void lstItems_DoubleClick(object eventSender, EventArgs eventArgs)
         {
-            //int i;
-            //i = (int)lstItems.SelectedIndex;
-            //if (i >= 0)
-            //{
-            //    if (ItemFlag[i])
-            //    {
-            //        // 選択取り消し
-
-            //        // 選択されたユニット数を減らす
-            //        SelectedItemNum = (int)(SelectedItemNum - 1);
-            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //        ItemFlag[i] = false;
-
-            //        // 選択状態の表示を更新
-            //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
-
-            //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //        {
-            //            if (!cmdFinish.Enabled)
-            //            {
-            //                cmdFinish.Enabled = true;
-            //            }
-            //        }
-            //        else if (cmdFinish.Enabled)
-            //        {
-            //            cmdFinish.Enabled = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 選択
-
-            //        // 選択されたユニット数を増やす
-            //        SelectedItemNum = (int)(SelectedItemNum + 1);
-            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //        ItemFlag[i] = true;
-
-            //        // 選択状態の表示を更新
-            //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
-
-            //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //        {
-            //            if (!cmdFinish.Enabled)
-            //            {
-            //                cmdFinish.Enabled = true;
-            //            }
-            //        }
-            //        else if (cmdFinish.Enabled)
-            //        {
-            //            cmdFinish.Enabled = false;
-            //        }
-            //    }
-            //}
+            var item = lstItems.SelectedItem as MultiSelectListBoxItem;
+            if (item != null)
+            {
+                var preIndex = lstItems.TopIndex;
+                item.ListItemFlag = !item.ListItemFlag;
+                UpdateList(item);
+                lstItems.TopIndex = preIndex;
+            }
         }
 
         // リストボックス上でマウスボタンを押す
         private void lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            //int Button = (int)((int)eventArgs.Button / 0x100000);
-            //int Shift = (int)((int)ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //int i;
+            // 左クリック以外は無視
+            if (ResolveMouseButton(eventArgs) != GuiButton.Left)
+            {
+                return;
+            }
 
-            //// 左クリック以外は無視
-            //if (Button != 1)
-            //{
-            //    return;
-            //}
+            var item = lstItems.SelectedItem as MultiSelectListBoxItem;
+            if (item != null)
+            {
+                var preIndex = lstItems.TopIndex;
+                item.ListItemFlag = !item.ListItemFlag;
+                UpdateList(item);
+                lstItems.TopIndex = preIndex;
+            }
+        }
 
-            //i = (int)lstItems.SelectedIndex;
-            //if (i >= 0)
-            //{
-            //    if (ItemFlag[i])
-            //    {
-            //        // 選択取り消し
-
-            //        // 選択されたユニット数を減らす
-            //        SelectedItemNum = (int)(SelectedItemNum - 1);
-            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //        ItemFlag[i] = false;
-
-            //        // 選択状態の表示を更新
-            //        SrcFormatter.SetItemString(lstItems, i, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
-
-            //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //        {
-            //            if (!cmdFinish.Enabled)
-            //            {
-            //                cmdFinish.Enabled = true;
-            //            }
-            //        }
-            //        else if (cmdFinish.Enabled)
-            //        {
-            //            cmdFinish.Enabled = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 選択
-
-            //        // 選択されたユニット数を増やす
-            //        SelectedItemNum = (int)(SelectedItemNum + 1);
-            //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //        ItemFlag[i] = true;
-
-            //        // 選択状態の表示を更新
-            //        SrcFormatter.SetItemString(lstItems, i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i), 2));
-
-            //        // 選択終了が可能か判定
-            //        if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //        {
-            //            if (!cmdFinish.Enabled)
-            //            {
-            //                cmdFinish.Enabled = true;
-            //            }
-            //        }
-            //        else if (cmdFinish.Enabled)
-            //        {
-            //            cmdFinish.Enabled = false;
-            //        }
-            //    }
-            //}
+        private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
+        {
+            // 右でなければ左とみなす
+            return eventArgs.Button.HasFlag(MouseButtons.Right)
+                ? GuiButton.Right
+                : GuiButton.Left;
         }
 
         // リストボックス上でマウスカーソルを移動
@@ -306,12 +216,19 @@ namespace SRCSharpForm
             //}
         }
 
-        private void UpdateList()
+        private void UpdateList(MultiSelectListBoxItem item = null)
         {
             SelectedItemNum = ListBoxItems.Count(x => x.ListItemFlag);
             lblNumber.Text = $"{SelectedItemNum}/{MaxListItem}";
 
-            ListBoxItems.ResetBindings();
+            if (item == null)
+            {
+                ListBoxItems.ResetBindings();
+            }
+            else
+            {
+                ListBoxItems.ResetItem(ListBoxItems.IndexOf(item));
+            }
 
             if (SelectedItemNum > 0 && SelectedItemNum <= MaxListItem)
             {
