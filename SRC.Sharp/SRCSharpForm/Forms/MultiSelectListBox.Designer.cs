@@ -196,7 +196,7 @@ namespace SRCSharpForm
             this._cmdResume.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdResume.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._cmdResume.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdResume.Location = new System.Drawing.Point(96, 296);
+            this._cmdResume.Location = new System.Drawing.Point(91, 296);
             this._cmdResume.Name = "_cmdResume";
             this._cmdResume.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdResume.Size = new System.Drawing.Size(137, 29);
@@ -212,7 +212,7 @@ namespace SRCSharpForm
             this._cmdSort.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdSort.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._cmdSort.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdSort.Location = new System.Drawing.Point(336, 264);
+            this._cmdSort.Location = new System.Drawing.Point(331, 264);
             this._cmdSort.Name = "_cmdSort";
             this._cmdSort.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdSort.Size = new System.Drawing.Size(145, 29);
@@ -228,7 +228,7 @@ namespace SRCSharpForm
             this._cmdSelectAll2.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdSelectAll2.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._cmdSelectAll2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdSelectAll2.Location = new System.Drawing.Point(168, 264);
+            this._cmdSelectAll2.Location = new System.Drawing.Point(163, 264);
             this._cmdSelectAll2.Name = "_cmdSelectAll2";
             this._cmdSelectAll2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdSelectAll2.Size = new System.Drawing.Size(161, 29);
@@ -244,7 +244,7 @@ namespace SRCSharpForm
             this._cmdSelectAll.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdSelectAll.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._cmdSelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdSelectAll.Location = new System.Drawing.Point(8, 264);
+            this._cmdSelectAll.Location = new System.Drawing.Point(3, 264);
             this._cmdSelectAll.Name = "_cmdSelectAll";
             this._cmdSelectAll.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdSelectAll.Size = new System.Drawing.Size(153, 29);
@@ -261,7 +261,7 @@ namespace SRCSharpForm
             this._cmdFinish.Enabled = false;
             this._cmdFinish.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this._cmdFinish.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdFinish.Location = new System.Drawing.Point(264, 296);
+            this._cmdFinish.Location = new System.Drawing.Point(259, 296);
             this._cmdFinish.Name = "_cmdFinish";
             this._cmdFinish.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdFinish.Size = new System.Drawing.Size(137, 29);
@@ -278,7 +278,7 @@ namespace SRCSharpForm
             this._lstItems.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._lstItems.ForeColor = System.Drawing.Color.Black;
             this._lstItems.ItemHeight = 16;
-            this._lstItems.Location = new System.Drawing.Point(8, 32);
+            this._lstItems.Location = new System.Drawing.Point(0, 32);
             this._lstItems.Name = "_lstItems";
             this._lstItems.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._lstItems.Size = new System.Drawing.Size(479, 228);
@@ -294,10 +294,10 @@ namespace SRCSharpForm
             this.lblNumber.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblNumber.Font = new System.Drawing.Font("ＭＳ 明朝", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblNumber.ForeColor = System.Drawing.Color.Black;
-            this.lblNumber.Location = new System.Drawing.Point(424, 296);
+            this.lblNumber.Location = new System.Drawing.Point(417, 297);
             this.lblNumber.Name = "lblNumber";
             this.lblNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblNumber.Size = new System.Drawing.Size(57, 29);
+            this.lblNumber.Size = new System.Drawing.Size(57, 25);
             this.lblNumber.TabIndex = 3;
             this.lblNumber.Text = "Label1";
             this.lblNumber.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -309,7 +309,7 @@ namespace SRCSharpForm
             this.lblCaption.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblCaption.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblCaption.ForeColor = System.Drawing.Color.Black;
-            this.lblCaption.Location = new System.Drawing.Point(8, 6);
+            this.lblCaption.Location = new System.Drawing.Point(0, 7);
             this.lblCaption.Name = "lblCaption";
             this.lblCaption.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblCaption.Size = new System.Drawing.Size(479, 22);
@@ -321,7 +321,7 @@ namespace SRCSharpForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(497, 331);
+            this.ClientSize = new System.Drawing.Size(479, 331);
             this.Controls.Add(this._cmdResume);
             this.Controls.Add(this._cmdSort);
             this.Controls.Add(this._cmdSelectAll2);
