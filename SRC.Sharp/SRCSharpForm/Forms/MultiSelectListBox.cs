@@ -5,6 +5,7 @@
 using SRCCore;
 using SRCCore.Lib;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace SRCSharpForm
         // 最大選択数
         private int MaxListItem;
 
+        private List<MultiSelectListBoxItem> ListBoxItemSource;
         private BindingList<MultiSelectListBoxItem> ListBoxItems;
 
         public void Init(SRC src, ListBoxArgs args, int max_num)
@@ -30,7 +32,8 @@ namespace SRCSharpForm
             lblCaption.Text = "　" + args.lb_info;
             cmdSort.Text = "名称順に並べ替え";
 
-            ListBoxItems = new BindingList<MultiSelectListBoxItem>(args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList());
+            ListBoxItemSource = args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList();
+            ListBoxItems = new BindingList<MultiSelectListBoxItem>(ListBoxItemSource);
             MaxListItem = max_num;
 
             lstItems.DataSource = ListBoxItems;
@@ -88,133 +91,24 @@ namespace SRCSharpForm
         // 「～順」ボタンをクリック
         private void cmdSort_Click(object eventSender, EventArgs eventArgs)
         {
-            //string[] item_list;
-            //int[] key_list;
-            //string[] strkey_list;
-            //int max_item;
-            //int max_value;
-            //string max_str;
-            //int i, j;
-            //string buf;
-            //bool flag;
-
-            //// 現在のリスト表示内容をコピー
-            //{
-            //    var withBlock = lstItems;
-            //    item_list = new string[withBlock.Items.Count + 1];
-            //    var loopTo = (int)withBlock.Items.Count;
-            //    for (i = 1; i <= loopTo; i++)
-            //        item_list[i] = SrcFormatter.GetItemString(lstItems, i - 1);
-            //}
-
-            //if (cmdSort.Text == "レベル順に並べ替え")
-            //{
-            //    // メインパイロットのレベル順に並べ替え
-            //    key_list = new int[Information.UBound(item_list) + 1];
-            //    {
-            //        var withBlock1 = SRC.UList;
-            //        var loopTo1 = (int)Information.UBound(item_list);
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            Unit localItem() { var tmp = GUI.ListItemID; object argIndex1 = tmp[i]; var ret = withBlock1.Item(ref argIndex1); return ret; }
-
-            //            {
-            //                var withBlock2 = localItem().MainPilot();
-            //                key_list[i] = 500 * withBlock2.Level + withBlock2.Exp;
-            //            }
-            //        }
-            //    }
-
-            //    var loopTo2 = (int)(Information.UBound(item_list) - 1);
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        max_item = i;
-            //        max_value = key_list[i];
-            //        var loopTo3 = (int)Information.UBound(item_list);
-            //        for (j = (int)(i + 1); j <= loopTo3; j++)
-            //        {
-            //            if (key_list[j] > max_value)
-            //            {
-            //                max_item = j;
-            //                max_value = key_list[j];
-            //            }
-            //        }
-
-            //        if (max_item != i)
-            //        {
-            //            buf = item_list[i];
-            //            item_list[i] = item_list[max_item];
-            //            item_list[max_item] = buf;
-            //            buf = GUI.ListItemID[i];
-            //            GUI.ListItemID[i] = GUI.ListItemID[max_item];
-            //            GUI.ListItemID[max_item] = buf;
-            //            flag = ItemFlag[i - 1];
-            //            ItemFlag[i - 1] = ItemFlag[max_item - 1];
-            //            ItemFlag[max_item - 1] = flag;
-            //            key_list[max_item] = key_list[i];
-            //        }
-            //    }
-            //    // 並べ替え方法をトグルで切り替え
-            //    cmdSort.Text = "名称順に並べ替え";
-            //}
-            //else
-            //{
-            //    // ユニットの名称順に並べ替え
-            //    strkey_list = new string[Information.UBound(item_list) + 1];
-            //    {
-            //        var withBlock3 = SRC.UList;
-            //        var loopTo4 = (int)Information.UBound(item_list);
-            //        for (i = 1; i <= loopTo4; i++)
-            //        {
-            //            Unit localItem1() { var tmp = GUI.ListItemID; object argIndex1 = tmp[i]; var ret = withBlock3.Item(ref argIndex1); return ret; }
-
-            //            strkey_list[i] = localItem1().KanaName;
-            //        }
-            //    }
-
-            //    var loopTo5 = (int)(Information.UBound(item_list) - 1);
-            //    for (i = 1; i <= loopTo5; i++)
-            //    {
-            //        max_item = i;
-            //        max_str = strkey_list[i];
-            //        var loopTo6 = (int)Information.UBound(item_list);
-            //        for (j = (int)(i + 1); j <= loopTo6; j++)
-            //        {
-            //            if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
-            //            {
-            //                max_item = j;
-            //                max_str = strkey_list[j];
-            //            }
-            //        }
-
-            //        if (max_item != i)
-            //        {
-            //            buf = item_list[i];
-            //            item_list[i] = item_list[max_item];
-            //            item_list[max_item] = buf;
-            //            buf = GUI.ListItemID[i];
-            //            GUI.ListItemID[i] = GUI.ListItemID[max_item];
-            //            GUI.ListItemID[max_item] = buf;
-            //            flag = ItemFlag[i - 1];
-            //            ItemFlag[i - 1] = ItemFlag[max_item - 1];
-            //            ItemFlag[max_item - 1] = flag;
-            //            strkey_list[max_item] = strkey_list[i];
-            //        }
-            //    }
-            //    // 並べ替え方法をトグルで切り替え
-            //    cmdSort.Text = "レベル順に並べ替え";
-            //}
-
-            //// リスト表示を更新する
-            //{
-            //    var withBlock4 = lstItems;
-            //    withBlock4.Visible = false;
-            //    var loopTo7 = (int)withBlock4.Items.Count;
-            //    for (i = 1; i <= loopTo7; i++)
-            //        SrcFormatter.SetItemString(lstItems, i - 1, item_list[i]);
-            //    withBlock4.TopIndex = 0;
-            //    withBlock4.Visible = true;
-            //}
+            if (cmdSort.Text == "レベル順に並べ替え")
+            {
+                // メインパイロットのレベル順に並べ替え
+                ListBoxItemSource.Sort((x, y) => SRC.UList.Item(x.ListItemID).MainPilot().Level
+                    .CompareTo(SRC.UList.Item(y.ListItemID).MainPilot().Level));
+                ListBoxItems.ResetBindings();
+                // 並べ替え方法をトグルで切り替え
+                cmdSort.Text = "名称順に並べ替え";
+            }
+            else
+            {
+                // ユニットの名称順に並べ替え
+                ListBoxItemSource.Sort((x, y) => -SRC.UList.Item(x.ListItemID).KanaName
+                    .CompareTo(SRC.UList.Item(y.ListItemID).KanaName));
+                ListBoxItems.ResetBindings();
+                // 並べ替え方法をトグルで切り替え
+                cmdSort.Text = "レベル順に並べ替え";
+            }
         }
 
         // フォームを表示
