@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
     internal partial class frmMultiSelectListBox
     {
@@ -141,32 +141,6 @@ namespace Project1
             }
         }
 
-        private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
-
         private Button _cmdFinish;
 
         public Button cmdFinish
@@ -195,34 +169,6 @@ namespace Project1
 
         private ListBox _lstItems;
 
-        public ListBox lstItems
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _lstItems;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick -= lstItems_DoubleClick;
-                    _lstItems.MouseDown -= lstItems_MouseDown;
-                    _lstItems.MouseMove -= lstItems_MouseMove;
-                }
-
-                _lstItems = value;
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick += lstItems_DoubleClick;
-                    _lstItems.MouseDown += lstItems_MouseDown;
-                    _lstItems.MouseMove += lstItems_MouseMove;
-                }
-            }
-        }
-
         public Label lblNumber;
         public Label lblCaption;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
@@ -231,182 +177,172 @@ namespace Project1
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.Resources.ResourceManager(typeof(frmMultiSelectListBox));
-            components = new System.ComponentModel.Container();
-            ToolTip1 = new ToolTip(components);
-            _cmdResume = new Button();
-            _cmdResume.Click += new EventHandler(cmdResume_Click);
-            _cmdSort = new Button();
-            _cmdSort.Click += new EventHandler(cmdSort_Click);
-            _cmdSelectAll2 = new Button();
-            _cmdSelectAll2.Click += new EventHandler(cmdSelectAll2_Click);
-            _cmdSelectAll = new Button();
-            _cmdSelectAll.Click += new EventHandler(cmdSelectAll_Click);
-            _Timer1 = new Timer(components);
-            _Timer1.Tick += new EventHandler(Timer1_Tick);
-            _cmdFinish = new Button();
-            _cmdFinish.Click += new EventHandler(cmdFinish_Click);
-            _lstItems = new ListBox();
-            _lstItems.DoubleClick += new EventHandler(lstItems_DoubleClick);
-            _lstItems.MouseDown += new MouseEventHandler(lstItems_MouseDown);
-            _lstItems.MouseMove += new MouseEventHandler(lstItems_MouseMove);
-            lblNumber = new Label();
-            lblCaption = new Label();
-            SuspendLayout();
-            ToolTip1.Active = true;
-            StartPosition = FormStartPosition.Manual;
-            BackColor = Color.FromArgb(192, 192, 192);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Text = "MultiSelectListBox";
-            ClientSize = new Size(497, 331);
-            Location = new Point(60, 165);
-            Font = new Font("ＭＳ ゴシック", 12f, FontStyle.Regular, GraphicsUnit.Point);
-            Icon = (Icon)resources.GetObject("frmMultiSelectListBox.Icon");
-            MaximizeBox = false;
-            AutoScaleMode = AutoScaleMode.Font;
-            ControlBox = true;
-            Enabled = true;
-            KeyPreview = false;
-            MinimizeBox = true;
-            Cursor = Cursors.Default;
-            RightToLeft = RightToLeft.No;
-            ShowInTaskbar = true;
-            HelpButton = false;
-            WindowState = FormWindowState.Normal;
-            Name = "frmMultiSelectListBox";
-            _cmdResume.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdResume.BackColor = SystemColors.Control;
-            _cmdResume.Text = "マップを見る";
-            _cmdResume.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
-            _cmdResume.Size = new Size(137, 29);
-            _cmdResume.Location = new Point(96, 296);
-            _cmdResume.TabIndex = 7;
-            _cmdResume.TabStop = false;
-            _cmdResume.CausesValidation = true;
-            _cmdResume.Enabled = true;
-            _cmdResume.ForeColor = SystemColors.ControlText;
-            _cmdResume.Cursor = Cursors.Default;
-            _cmdResume.RightToLeft = RightToLeft.No;
-            _cmdResume.Name = "_cmdResume";
-            _cmdSort.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdSort.BackColor = SystemColors.Control;
-            _cmdSort.Text = "名称順に並べ替え";
-            _cmdSort.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
-            _cmdSort.Size = new Size(145, 29);
-            _cmdSort.Location = new Point(336, 264);
-            _cmdSort.TabIndex = 6;
-            _cmdSort.TabStop = false;
-            _cmdSort.CausesValidation = true;
-            _cmdSort.Enabled = true;
-            _cmdSort.ForeColor = SystemColors.ControlText;
-            _cmdSort.Cursor = Cursors.Default;
-            _cmdSort.RightToLeft = RightToLeft.No;
-            _cmdSort.Name = "_cmdSort";
-            _cmdSelectAll2.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdSelectAll2.BackColor = Color.FromArgb(192, 192, 192);
-            _cmdSelectAll2.Text = "最後から選択";
-            _cmdSelectAll2.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
-            _cmdSelectAll2.Size = new Size(161, 29);
-            _cmdSelectAll2.Location = new Point(168, 264);
-            _cmdSelectAll2.TabIndex = 5;
-            _cmdSelectAll2.TabStop = false;
-            _cmdSelectAll2.CausesValidation = true;
-            _cmdSelectAll2.Enabled = true;
-            _cmdSelectAll2.ForeColor = SystemColors.ControlText;
-            _cmdSelectAll2.Cursor = Cursors.Default;
-            _cmdSelectAll2.RightToLeft = RightToLeft.No;
-            _cmdSelectAll2.Name = "_cmdSelectAll2";
-            _cmdSelectAll.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdSelectAll.BackColor = Color.FromArgb(192, 192, 192);
-            _cmdSelectAll.Text = "先頭から選択";
-            _cmdSelectAll.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
-            _cmdSelectAll.Size = new Size(153, 29);
-            _cmdSelectAll.Location = new Point(8, 264);
-            _cmdSelectAll.TabIndex = 4;
-            _cmdSelectAll.TabStop = false;
-            _cmdSelectAll.CausesValidation = true;
-            _cmdSelectAll.Enabled = true;
-            _cmdSelectAll.ForeColor = SystemColors.ControlText;
-            _cmdSelectAll.Cursor = Cursors.Default;
-            _cmdSelectAll.RightToLeft = RightToLeft.No;
-            _cmdSelectAll.Name = "_cmdSelectAll";
-            _Timer1.Interval = 100;
-            _Timer1.Enabled = true;
-            _cmdFinish.TextAlign = ContentAlignment.MiddleCenter;
-            _cmdFinish.BackColor = Color.FromArgb(192, 192, 192);
-            _cmdFinish.Text = "終了";
-            _cmdFinish.Enabled = false;
-            _cmdFinish.Font = new Font("ＭＳ Ｐゴシック", 9.75f, FontStyle.Bold | FontStyle.Regular, GraphicsUnit.Point);
-            _cmdFinish.Size = new Size(137, 29);
-            _cmdFinish.Location = new Point(264, 296);
-            _cmdFinish.TabIndex = 1;
-            _cmdFinish.TabStop = false;
-            _cmdFinish.CausesValidation = true;
-            _cmdFinish.ForeColor = SystemColors.ControlText;
-            _cmdFinish.Cursor = Cursors.Default;
-            _cmdFinish.RightToLeft = RightToLeft.No;
-            _cmdFinish.Name = "_cmdFinish";
-            _lstItems.BackColor = Color.White;
-            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
-            _lstItems.ForeColor = Color.Black;
-            _lstItems.Size = new Size(479, 231);
-            _lstItems.Location = new Point(8, 32);
-            _lstItems.TabIndex = 0;
-            _lstItems.BorderStyle = BorderStyle.Fixed3D;
-            _lstItems.CausesValidation = true;
-            _lstItems.Enabled = true;
-            _lstItems.IntegralHeight = true;
-            _lstItems.Cursor = Cursors.Default;
-            _lstItems.SelectionMode = SelectionMode.One;
-            _lstItems.RightToLeft = RightToLeft.No;
-            _lstItems.Sorted = false;
-            _lstItems.TabStop = true;
-            _lstItems.Visible = true;
-            _lstItems.MultiColumn = false;
-            _lstItems.Name = "_lstItems";
-            lblNumber.TextAlign = ContentAlignment.TopCenter;
-            lblNumber.BackColor = Color.White;
-            lblNumber.Text = "Label1";
-            lblNumber.Font = new Font("ＭＳ 明朝", 15.75f, FontStyle.Regular, GraphicsUnit.Point);
-            lblNumber.ForeColor = Color.Black;
-            lblNumber.Size = new Size(57, 29);
-            lblNumber.Location = new Point(424, 296);
-            lblNumber.TabIndex = 3;
-            lblNumber.Enabled = true;
-            lblNumber.Cursor = Cursors.Default;
-            lblNumber.RightToLeft = RightToLeft.No;
-            lblNumber.UseMnemonic = true;
-            lblNumber.Visible = true;
-            lblNumber.AutoSize = false;
-            lblNumber.BorderStyle = BorderStyle.Fixed3D;
-            lblNumber.Name = "lblNumber";
-            lblCaption.BackColor = Color.White;
-            lblCaption.Text = "Label1";
-            lblCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
-            lblCaption.ForeColor = Color.Black;
-            lblCaption.Size = new Size(479, 22);
-            lblCaption.Location = new Point(8, 6);
-            lblCaption.TabIndex = 2;
-            lblCaption.TextAlign = ContentAlignment.TopLeft;
-            lblCaption.Enabled = true;
-            lblCaption.Cursor = Cursors.Default;
-            lblCaption.RightToLeft = RightToLeft.No;
-            lblCaption.UseMnemonic = true;
-            lblCaption.Visible = true;
-            lblCaption.AutoSize = false;
-            lblCaption.BorderStyle = BorderStyle.Fixed3D;
-            lblCaption.Name = "lblCaption";
-            Controls.Add(_cmdResume);
-            Controls.Add(_cmdSort);
-            Controls.Add(_cmdSelectAll2);
-            Controls.Add(_cmdSelectAll);
-            Controls.Add(_cmdFinish);
-            Controls.Add(_lstItems);
-            Controls.Add(lblNumber);
-            Controls.Add(lblCaption);
-            Activated += new EventHandler(frmMultiSelectListBox_Activated);
-            ResumeLayout(false);
-            PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMultiSelectListBox));
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this._cmdResume = new System.Windows.Forms.Button();
+            this._cmdSort = new System.Windows.Forms.Button();
+            this._cmdSelectAll2 = new System.Windows.Forms.Button();
+            this._cmdSelectAll = new System.Windows.Forms.Button();
+            this._cmdFinish = new System.Windows.Forms.Button();
+            this._lstItems = new System.Windows.Forms.ListBox();
+            this.lblNumber = new System.Windows.Forms.Label();
+            this.lblCaption = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // _cmdResume
+            // 
+            this._cmdResume.BackColor = System.Drawing.SystemColors.Control;
+            this._cmdResume.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdResume.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._cmdResume.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdResume.Location = new System.Drawing.Point(91, 296);
+            this._cmdResume.Name = "_cmdResume";
+            this._cmdResume.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdResume.Size = new System.Drawing.Size(137, 29);
+            this._cmdResume.TabIndex = 7;
+            this._cmdResume.TabStop = false;
+            this._cmdResume.Text = "マップを見る";
+            this._cmdResume.UseVisualStyleBackColor = false;
+            this._cmdResume.Click += new System.EventHandler(this.cmdResume_Click);
+            // 
+            // _cmdSort
+            // 
+            this._cmdSort.BackColor = System.Drawing.SystemColors.Control;
+            this._cmdSort.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdSort.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._cmdSort.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdSort.Location = new System.Drawing.Point(331, 264);
+            this._cmdSort.Name = "_cmdSort";
+            this._cmdSort.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdSort.Size = new System.Drawing.Size(145, 29);
+            this._cmdSort.TabIndex = 6;
+            this._cmdSort.TabStop = false;
+            this._cmdSort.Text = "名称順に並べ替え";
+            this._cmdSort.UseVisualStyleBackColor = false;
+            this._cmdSort.Click += new System.EventHandler(this.cmdSort_Click);
+            // 
+            // _cmdSelectAll2
+            // 
+            this._cmdSelectAll2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._cmdSelectAll2.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdSelectAll2.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._cmdSelectAll2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdSelectAll2.Location = new System.Drawing.Point(163, 264);
+            this._cmdSelectAll2.Name = "_cmdSelectAll2";
+            this._cmdSelectAll2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdSelectAll2.Size = new System.Drawing.Size(161, 29);
+            this._cmdSelectAll2.TabIndex = 5;
+            this._cmdSelectAll2.TabStop = false;
+            this._cmdSelectAll2.Text = "最後から選択";
+            this._cmdSelectAll2.UseVisualStyleBackColor = false;
+            this._cmdSelectAll2.Click += new System.EventHandler(this.cmdSelectAll2_Click);
+            // 
+            // _cmdSelectAll
+            // 
+            this._cmdSelectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._cmdSelectAll.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdSelectAll.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._cmdSelectAll.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdSelectAll.Location = new System.Drawing.Point(3, 264);
+            this._cmdSelectAll.Name = "_cmdSelectAll";
+            this._cmdSelectAll.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdSelectAll.Size = new System.Drawing.Size(153, 29);
+            this._cmdSelectAll.TabIndex = 4;
+            this._cmdSelectAll.TabStop = false;
+            this._cmdSelectAll.Text = "先頭から選択";
+            this._cmdSelectAll.UseVisualStyleBackColor = false;
+            this._cmdSelectAll.Click += new System.EventHandler(this.cmdSelectAll_Click);
+            // 
+            // _cmdFinish
+            // 
+            this._cmdFinish.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this._cmdFinish.Cursor = System.Windows.Forms.Cursors.Default;
+            this._cmdFinish.Enabled = false;
+            this._cmdFinish.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this._cmdFinish.ForeColor = System.Drawing.SystemColors.ControlText;
+            this._cmdFinish.Location = new System.Drawing.Point(259, 296);
+            this._cmdFinish.Name = "_cmdFinish";
+            this._cmdFinish.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._cmdFinish.Size = new System.Drawing.Size(137, 29);
+            this._cmdFinish.TabIndex = 1;
+            this._cmdFinish.TabStop = false;
+            this._cmdFinish.Text = "終了";
+            this._cmdFinish.UseVisualStyleBackColor = false;
+            this._cmdFinish.Click += new System.EventHandler(this.cmdFinish_Click);
+            // 
+            // _lstItems
+            // 
+            this._lstItems.BackColor = System.Drawing.Color.White;
+            this._lstItems.Cursor = System.Windows.Forms.Cursors.Default;
+            this._lstItems.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._lstItems.ForeColor = System.Drawing.Color.Black;
+            this._lstItems.ItemHeight = 16;
+            this._lstItems.Location = new System.Drawing.Point(0, 32);
+            this._lstItems.Name = "_lstItems";
+            this._lstItems.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._lstItems.Size = new System.Drawing.Size(479, 228);
+            this._lstItems.TabIndex = 0;
+            this._lstItems.DoubleClick += new System.EventHandler(this._lstItems_DoubleClick);
+            this._lstItems.MouseDown += new System.Windows.Forms.MouseEventHandler(this._lstItems_MouseDown);
+            this._lstItems.MouseMove += new System.Windows.Forms.MouseEventHandler(this._lstItems_MouseMove);
+            // 
+            // lblNumber
+            // 
+            this.lblNumber.BackColor = System.Drawing.Color.White;
+            this.lblNumber.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblNumber.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lblNumber.Font = new System.Drawing.Font("ＭＳ 明朝", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblNumber.ForeColor = System.Drawing.Color.Black;
+            this.lblNumber.Location = new System.Drawing.Point(417, 297);
+            this.lblNumber.Name = "lblNumber";
+            this.lblNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblNumber.Size = new System.Drawing.Size(57, 25);
+            this.lblNumber.TabIndex = 3;
+            this.lblNumber.Text = "Label1";
+            this.lblNumber.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lblCaption
+            // 
+            this.lblCaption.BackColor = System.Drawing.Color.White;
+            this.lblCaption.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCaption.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lblCaption.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCaption.ForeColor = System.Drawing.Color.Black;
+            this.lblCaption.Location = new System.Drawing.Point(0, 7);
+            this.lblCaption.Name = "lblCaption";
+            this.lblCaption.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblCaption.Size = new System.Drawing.Size(479, 22);
+            this.lblCaption.TabIndex = 2;
+            this.lblCaption.Text = "Label1";
+            // 
+            // frmMultiSelectListBox
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientSize = new System.Drawing.Size(479, 331);
+            this.Controls.Add(this._cmdResume);
+            this.Controls.Add(this._cmdSort);
+            this.Controls.Add(this._cmdSelectAll2);
+            this.Controls.Add(this._cmdSelectAll);
+            this.Controls.Add(this._cmdFinish);
+            this.Controls.Add(this._lstItems);
+            this.Controls.Add(this.lblNumber);
+            this.Controls.Add(this.lblCaption);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(60, 165);
+            this.MaximizeBox = false;
+            this.Name = "frmMultiSelectListBox";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "MultiSelectListBox";
+            this.Activated += new System.EventHandler(this.frmMultiSelectListBox_Activated);
+            this.ResumeLayout(false);
+
         }
     }
 }
