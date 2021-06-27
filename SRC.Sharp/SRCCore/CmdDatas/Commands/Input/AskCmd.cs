@@ -215,7 +215,6 @@ namespace SRCCore.CmdDatas.Commands
                             vname = vname + "[";
                         }
 
-                        // TODO 列挙順確認しないとだめかも
                         foreach (VarData v in Event.GlobalVariableList.Values)
                         {
                             string buf;
