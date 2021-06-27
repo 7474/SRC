@@ -22,6 +22,9 @@ namespace SRCSharpForm.Lib
             set => currentPoint.Y = value;
         }
 
+        public float CellWidth => gridCellWidth;
+        public Graphics Graphics => g;
+
         public Printer(Graphics g, Font font, Color color, float gridCellWidth)
         {
             this.g = g;
