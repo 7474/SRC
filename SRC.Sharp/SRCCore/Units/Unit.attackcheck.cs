@@ -14,7 +14,7 @@ namespace SRCCore.Units
         // 回避用特殊能力の判定
         public bool CheckDodgeFeature(UnitWeapon w, Unit t, int tx, int ty, string attack_mode, string def_mode, int dmg, bool be_quiet)
         {
-            // TODO Impl
+            // TODO Impl CheckDodgeFeature
             return false;
             //    bool CheckDodgeFeatureRet = default;
             //    string wname;
@@ -606,8 +606,8 @@ namespace SRCCore.Units
         // (命中時に発動し、発動すれば必ずダメージが0になる能力)
         public bool CheckParryFeature(UnitWeapon w, Unit t, int tx, int ty, string attack_mode, string def_mode, int dmg, string msg, bool be_quiet)
         {
-            // TODO Impl
-            return false;
+            // TODO Impl CheckParryFeature
+            return false; 
             //    bool CheckParryFeatureRet = default;
             //    string wname, wname2;
             //    int w2;
@@ -2122,7 +2122,7 @@ namespace SRCCore.Units
         // ダミー能力のチェック
         private bool CheckDummyFeature(UnitWeapon w, Unit t, bool be_quiet)
         {
-            // TODO Impl
+            // TODO Impl CheckDummyFeature
             return false;
             //bool CheckDummyFeatureRet = default;
             //string wname;
@@ -2291,7 +2291,7 @@ namespace SRCCore.Units
         // シールド防御能力のチェック
         private bool CheckShieldFeature(UnitWeapon w, Unit t, int dmg, bool be_quiet, bool use_shield, bool use_shield_msg)
         {
-            // TODO Impl
+            // TODO Impl CheckShieldFeature
             return false;
             //int prob;
             //string fname;
@@ -2424,7 +2424,7 @@ namespace SRCCore.Units
         // バリアなどの防御能力のチェック
         private bool CheckDefenseFeature(UnitWeapon w, Unit t, int tx, int ty, string attack_mode, string def_mode, int dmg, string msg, bool be_quiet, bool is_penetrated)
         {
-            // TODO Impl
+            // TODO Impl CheckDefenseFeature
             return false;
             //    bool CheckDefenseFeatureRet = default;
             //    string wname;
@@ -4964,7 +4964,7 @@ namespace SRCCore.Units
         // 自動反撃のチェック
         public void CheckAutoAttack(UnitWeapon w, Unit t, string attack_mode, string def_mode, int dmg, bool be_quiet)
         {
-            // TODO Impl
+            // TODO Impl CheckAutoAttack
             return;
             //string wname2;
             //int w2;
@@ -5343,7 +5343,7 @@ namespace SRCCore.Units
         // 追加攻撃のチェック
         public void CheckAdditionalAttack(UnitWeapon w, Unit t, bool be_quiet, string attack_mode, string def_mode, int dmg)
         {
-            // TODO Impl
+            // TODO Impl CheckAdditionalAttack
             return;
             //string wnskill, wname, wnickname, wclass;
             //string wtype, sname;
@@ -5604,7 +5604,6 @@ namespace SRCCore.Units
 
             bool CauseEffectRet = false;
 
-            // TODO Impl
             if (will_die)
             {
                 // メッセージ等がうっとうしいので破壊が確定している場合は
@@ -6172,7 +6171,7 @@ namespace SRCCore.Units
                 }
             }
 
-            // TODO Impl
+            // TODO Impl 特殊効果除去攻撃
             //// 特殊効果除去攻撃
             //if (prob >= GeneralLib.Dice(100))
             //{
@@ -6553,7 +6552,7 @@ namespace SRCCore.Units
                 }
             }
 
-        // TODO Impl
+        // TODO Impl 弱点付加属性 有効付加属性
         //// 弱点付加属性（弱が存在するだけループ）
         //i = GeneralLib.InStrNotNest(strWeaponClass[w], "弱");
         //while (i > 0)
@@ -6906,7 +6905,7 @@ namespace SRCCore.Units
         // 吹き飛ばしチェック
         public bool CheckBlowAttack(UnitWeapon w, Unit t, int dmg, string msg, string attack_mode, string def_mode, string critical_type)
         {
-            // TODO Impl
+            // TODO Impl CheckBlowAttack
             return false;
             //bool CheckBlowAttackRet = default;
             //int tx, ty;
@@ -7323,7 +7322,7 @@ namespace SRCCore.Units
         // 引き寄せチェック
         public bool CheckDrawAttack(UnitWeapon w, Unit t, string msg, string def_mode, string critical_type)
         {
-            // TODO Impl
+            // TODO Impl CheckDrawAttack
             return false;
             //bool CheckDrawAttackRet = default;
             //int tx = default, ty = default;
@@ -7592,7 +7591,7 @@ namespace SRCCore.Units
         // 強制転移チェック
         public bool CheckTeleportAwayAttack(UnitWeapon w, Unit t, string msg, string def_mode, string critical_type)
         {
-            // TODO Impl
+            // TODO Impl CheckTeleportAwayAttack
             return false;
             //bool CheckTeleportAwayAttackRet = default;
             //int tx, ty;
@@ -7701,7 +7700,7 @@ namespace SRCCore.Units
         // 能力コピーチェック
         public bool CheckMetamorphAttack(UnitWeapon w, Unit t, string def_mode)
         {
-            // TODO Impl
+            // TODO Impl CheckMetamorphAttack
             return false;
             //bool CheckMetamorphAttackRet = default;
             //int prob, wlv;

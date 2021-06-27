@@ -970,18 +970,15 @@ namespace SRCCore.Models
                                     buf = Strings.Mid(buf, ret + 1);
                                 }
 
-                                // TODO Impl SRC.SPDList.IsDefined
-                                //bool localIsDefined() { object argIndex1 = (object)sname; var ret = SRC.SPDList.IsDefined(argIndex1); return ret; }
-                                bool localIsDefined() => true;
-
                                 if (string.IsNullOrEmpty(sname))
                                 {
                                     SRC.AddDataError(reader.InvalidData(@"スペシャルパワーの指定が抜けています。", data_name));
                                 }
-                                else if (!localIsDefined())
-                                {
-                                    SRC.AddDataError(reader.InvalidData(@sname + "というスペシャルパワーは存在しません。", data_name));
-                                }
+                                // TODO ビューワでSP設定しとく
+                                //else if (!SRC.SPDList.IsDefined(sname))
+                                //{
+                                //    SRC.AddDataError(reader.InvalidData(@sname + "というスペシャルパワーは存在しません。", data_name));
+                                //}
                                 else if (!Information.IsNumeric(buf2))
                                 {
                                     SRC.AddDataError(reader.InvalidData(@"スペシャルパワー「" + sname + "」の獲得レベルが間違っています。", data_name));

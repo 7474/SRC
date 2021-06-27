@@ -901,7 +901,7 @@ namespace SRCCore.Units
         public bool IsAbilityEffective(Unit t)
         {
             return true;
-            // TODO Impl
+            // TODO Impl IsAbilityEffective
             //bool IsAbilityEffectiveRet = default;
             //int i, j;
             //string edata;
