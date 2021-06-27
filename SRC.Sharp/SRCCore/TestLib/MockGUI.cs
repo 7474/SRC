@@ -232,7 +232,7 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
-        public int LIPS(string lb_caption, string[] list, string lb_info, int time_limit)
+        public int LIPS(ListBoxArgs args, int time_limit)
         {
             throw new NotImplementedException();
         }
@@ -307,12 +307,12 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
-        public int MultiColumnListBox(string lb_caption, string[] list, bool is_center)
+        public int MultiColumnListBox(ListBoxArgs args, bool is_center)
         {
             throw new NotImplementedException();
         }
 
-        public int MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num)
+        public int MultiSelectListBox(ListBoxArgs args, int max_num)
         {
             throw new NotImplementedException();
         }
