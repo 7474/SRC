@@ -1031,9 +1031,9 @@ namespace SRCSharpForm
             using (var box = new frmMultiSelectListBox())
             {
                 box.Init(SRC, args, max_num);
-                //box.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left));
-                //box.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(box.Height)) / 2d);
-                box.ShowDialog(MainForm);
+                box.Left = MainForm.Left;
+                box.Top = MainForm.Top + (MainForm.Height - box.Height) / 2;
+                box.ShowDialog();
 
                 // 選択された項目数を返す
                 return box.SelectedItemNum;
