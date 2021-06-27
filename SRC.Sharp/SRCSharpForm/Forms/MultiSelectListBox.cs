@@ -36,8 +36,8 @@ namespace SRCSharpForm
             ListBoxItems = new BindingList<MultiSelectListBoxItem>(ListBoxItemSource);
             MaxListItem = max_num;
 
-            lstItems.DataSource = ListBoxItems;
-            lstItems.DisplayMember = "Text";
+            _lstItems.DataSource = ListBoxItems;
+            _lstItems.DisplayMember = "Text";
         }
 
         // 選択終了ボタンをクリック
@@ -71,7 +71,7 @@ namespace SRCSharpForm
                 item.ListItemFlag = true;
             }
             UpdateList();
-            lstItems.TopIndex = 0;
+            _lstItems.TopIndex = 0;
         }
 
         // 「最後から選択」ボタンをクリック
@@ -86,7 +86,7 @@ namespace SRCSharpForm
                 item.ListItemFlag = true;
             }
             UpdateList();
-            lstItems.TopIndex = GeneralLib.MaxLng(lstItems.Items.Count - 14, 0);
+            _lstItems.TopIndex = GeneralLib.MaxLng(_lstItems.Items.Count - 14, 0);
         }
 
         // 「～順」ボタンをクリック
@@ -123,20 +123,20 @@ namespace SRCSharpForm
         }
 
         // リストボックス上でダブルクリック
-        private void lstItems_DoubleClick(object eventSender, EventArgs eventArgs)
+        private void _lstItems_DoubleClick(object eventSender, EventArgs eventArgs)
         {
-            var item = lstItems.SelectedItem as MultiSelectListBoxItem;
+            var item = _lstItems.SelectedItem as MultiSelectListBoxItem;
             if (item != null)
             {
-                var preIndex = lstItems.TopIndex;
+                var preIndex = _lstItems.TopIndex;
                 item.ListItemFlag = !item.ListItemFlag;
                 UpdateList(item);
-                lstItems.TopIndex = preIndex;
+                _lstItems.TopIndex = preIndex;
             }
         }
 
         // リストボックス上でマウスボタンを押す
-        private void lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
+        private void _lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
             // 左クリック以外は無視
             if (ResolveMouseButton(eventArgs) != GuiButton.Left)
@@ -144,13 +144,13 @@ namespace SRCSharpForm
                 return;
             }
 
-            var item = lstItems.SelectedItem as MultiSelectListBoxItem;
+            var item = _lstItems.SelectedItem as MultiSelectListBoxItem;
             if (item != null)
             {
-                var preIndex = lstItems.TopIndex;
+                var preIndex = _lstItems.TopIndex;
                 item.ListItemFlag = !item.ListItemFlag;
                 UpdateList(item);
-                lstItems.TopIndex = preIndex;
+                _lstItems.TopIndex = preIndex;
             }
         }
 
@@ -163,57 +163,24 @@ namespace SRCSharpForm
         }
 
         // リストボックス上でマウスカーソルを移動
-        private void lstItems_MouseMove(object eventSender, MouseEventArgs eventArgs)
+        private void _lstItems_MouseMove(object sender, MouseEventArgs e)
         {
-            //int Button = (int)((int)eventArgs.Button / 0x100000);
-            //int Shift = (int)((int)ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //int itm;
+            // カーソルがあるアイテムを算出
+            var point = _lstItems.PointToClient(Cursor.Position);
+            int index = _lstItems.IndexFromPoint(point);
+            if (index >= 0 && index != _lstItems.SelectedIndex)
+            {
+                // カーソルがあるアイテムをハイライト表示
+                _lstItems.SelectedIndex = index;
+                _lstItems.Update();
 
-            //// カーソルがあるアイテムを算出
-            //itm = (int)(((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
-            //itm = (int)(itm + lstItems.TopIndex);
-
-            //// カーソルがあるアイテムをハイライト表示
-            //if (itm < 0 || itm >= lstItems.Items.Count)
-            //{
-            //    lstItems.SelectedIndex = -1;
-            //    return;
-            //}
-
-            //if (lstItems.SelectedIndex == itm)
-            //{
-            //    return;
-            //}
-
-            //lstItems.SelectedIndex = itm;
-        }
-
-        // カーソルが指すユニットを一定時間ごとに調べてステータスウィンドウに表示
-        private void Timer1_Tick(object eventSender, EventArgs eventArgs)
-        {
-            //Unit u;
-            //if (!Visible)
-            //{
-            //    return;
-            //}
-
-            //if (lstItems.SelectedIndex == -1)
-            //{
-            //    return;
-            //}
-
-            //var tmp = GUI.ListItemID;
-            //u = SRC.UList.Item(ref tmp[lstItems.SelectedIndex + 1]);
-            //if (!ReferenceEquals(Status.DisplayedUnit, u))
-            //{
-            //    // ユニット選択中だけ
-            //    if (Commands.CommandState == "ユニット選択")
-            //    {
-            //        Status.DisplayUnitStatus(ref u);
-            //    }
-            //}
+                // ユニット選択中だけ
+                if (SRC.Commands.CommandState == "ユニット選択")
+                {
+                    SRC.GUIStatus.DisplayUnitStatus(
+                        SRC.UList.Item((_lstItems.SelectedItem as MultiSelectListBoxItem)?.ListItemID));
+                }
+            }
         }
 
         private void UpdateList(MultiSelectListBoxItem item = null)
@@ -242,6 +209,7 @@ namespace SRCSharpForm
                 cmdFinish.Enabled = false;
             }
         }
+
     }
     class MultiSelectListBoxItem
     {

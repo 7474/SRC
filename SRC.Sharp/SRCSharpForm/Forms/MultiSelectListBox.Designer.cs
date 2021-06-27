@@ -141,32 +141,6 @@ namespace SRCSharpForm
             }
         }
 
-        private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
-
         private Button _cmdFinish;
 
         public Button cmdFinish
@@ -195,34 +169,6 @@ namespace SRCSharpForm
 
         private ListBox _lstItems;
 
-        public ListBox lstItems
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _lstItems;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick -= lstItems_DoubleClick;
-                    _lstItems.MouseDown -= lstItems_MouseDown;
-                    _lstItems.MouseMove -= lstItems_MouseMove;
-                }
-
-                _lstItems = value;
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick += lstItems_DoubleClick;
-                    _lstItems.MouseDown += lstItems_MouseDown;
-                    _lstItems.MouseMove += lstItems_MouseMove;
-                }
-            }
-        }
-
         public Label lblNumber;
         public Label lblCaption;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
@@ -238,7 +184,6 @@ namespace SRCSharpForm
             this._cmdSort = new System.Windows.Forms.Button();
             this._cmdSelectAll2 = new System.Windows.Forms.Button();
             this._cmdSelectAll = new System.Windows.Forms.Button();
-            this._Timer1 = new System.Windows.Forms.Timer(this.components);
             this._cmdFinish = new System.Windows.Forms.Button();
             this._lstItems = new System.Windows.Forms.ListBox();
             this.lblNumber = new System.Windows.Forms.Label();
@@ -309,11 +254,6 @@ namespace SRCSharpForm
             this._cmdSelectAll.UseVisualStyleBackColor = false;
             this._cmdSelectAll.Click += new System.EventHandler(this.cmdSelectAll_Click);
             // 
-            // _Timer1
-            // 
-            this._Timer1.Enabled = true;
-            this._Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
             // _cmdFinish
             // 
             this._cmdFinish.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
@@ -343,9 +283,9 @@ namespace SRCSharpForm
             this._lstItems.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._lstItems.Size = new System.Drawing.Size(479, 228);
             this._lstItems.TabIndex = 0;
-            this._lstItems.DoubleClick += new System.EventHandler(this.lstItems_DoubleClick);
-            this._lstItems.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstItems_MouseDown);
-            this._lstItems.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lstItems_MouseMove);
+            this._lstItems.DoubleClick += new System.EventHandler(this._lstItems_DoubleClick);
+            this._lstItems.MouseDown += new System.Windows.Forms.MouseEventHandler(this._lstItems_MouseDown);
+            this._lstItems.MouseMove += new System.Windows.Forms.MouseEventHandler(this._lstItems_MouseMove);
             // 
             // lblNumber
             // 
