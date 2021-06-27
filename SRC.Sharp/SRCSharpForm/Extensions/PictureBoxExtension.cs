@@ -28,8 +28,7 @@ namespace SRCSharpForm.Extensions
 
             using (var g = Graphics.FromImage(pic.Image))
             {
-                g.FillRectangle(back, g.VisibleClipBounds);
-                g.FillRectangle(fore, 0f, 0f, g.VisibleClipBounds.Width * ratio, g.VisibleClipBounds.Height);
+                g.DrawBar(g.VisibleClipBounds, ratio, back, fore);
             }
         }
     }

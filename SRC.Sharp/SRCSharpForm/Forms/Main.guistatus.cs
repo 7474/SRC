@@ -57,6 +57,12 @@ namespace SRCSharpForm
 
         private const float UnitStatusGridColumnWidth = 112f;
 
+        // XXX 他所にもある
+        private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
+        private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
+        private Brush BarShadowLightBruch = new SolidBrush(SystemColors.ControlLight);
+        private Brush BarShadowDarkBruch = new SolidBrush(SystemColors.ControlDarkDark);
+
         public void DisplayGlobalStatus()
         {
             ClearUnitStatus();
@@ -2079,20 +2085,6 @@ namespace SRCSharpForm
                     }
 
                     // ＨＰ
-                    // TODO Impl HP Bar
-                    //cx = upic.CurrentX;
-                    //cy = upic.CurrentY;
-                    //upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(117, cy + 8); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(118 + GUI.GauageWidth, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //if (u.HP > 0)
-                    //{
-                    //    upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //}
-                    //upic.CurrentX = cx;
-                    //upic.CurrentY = cy;
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("ＨＰ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
@@ -2121,22 +2113,17 @@ namespace SRCSharpForm
                         }
                     }
                     upic.PushGrid();
+                    // HP Bar
+                    upic.Graphics.DrawBarWithShadow(
+                        new RectangleF(upic.CurrentX + 2, upic.CurrentY + 2, upic.CellWidth - 10, 8),
+                        u.HP * 1f / u.MaxHP,
+                        BarBackBrush,
+                        BarForeBrush,
+                        BarShadowLightBruch,
+                        BarShadowDarkBruch);
+                    upic.Print();
 
                     // ＥＮ
-                    // TODO Impl EN Bar
-                    //cx = upic.CurrentX;
-                    //cy = upic.CurrentY;
-                    //upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(116, cy + 2); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(117, cy + 8); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(118 + GUI.GauageWidth, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //if (u.EN > 0)
-                    //{
-                    //    upic.Line(117, cy + 3); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                    //}
-                    //upic.CurrentX = cx;
-                    //upic.CurrentY = cy;
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("ＥＮ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
@@ -2165,6 +2152,15 @@ namespace SRCSharpForm
                         }
                     }
                     upic.PushGrid();
+                    // EN Bar
+                    upic.Graphics.DrawBarWithShadow(
+                        new RectangleF(upic.CurrentX + 2, upic.CurrentY + 2, upic.CellWidth - 10, 8),
+                        u.EN * 1f / u.MaxEN,
+                        BarBackBrush,
+                        BarForeBrush,
+                        BarShadowLightBruch,
+                        BarShadowDarkBruch);
+                    upic.Print();
 
                     // 装甲
                     upic.SetColor(StatusFontColorAbilityName);

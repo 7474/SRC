@@ -23,5 +23,19 @@ namespace SRCSharpForm.Extensions
             }
             return size;
         }
+
+        public static void DrawBar(this Graphics g, RectangleF rect, float ratio, Brush back, Brush fore)
+        {
+            g.FillRectangle(back, rect);
+            g.FillRectangle(fore, rect.Left, rect.Top, rect.Width * ratio, rect.Height);
+        }
+
+        public static void DrawBarWithShadow(this Graphics g, RectangleF rect, float ratio, Brush back, Brush fore, Brush light, Brush dark)
+        {
+            g.FillRectangle(light, rect);
+            g.FillRectangle(dark, new RectangleF(rect.Left, rect.Top, rect.Width - 1, rect.Height - 1));
+
+            g.DrawBar(new RectangleF(rect.Left + 1, rect.Top + 1, rect.Width - 2, rect.Height - 2), ratio, back, fore);
+        }
     }
 }
