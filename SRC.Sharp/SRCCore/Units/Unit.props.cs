@@ -1,6 +1,7 @@
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
+using System.Linq;
 
 namespace SRCCore.Units
 {
@@ -178,6 +179,68 @@ namespace SRCCore.Units
 
                 // パラメータを更新
                 Update();
+            }
+        }
+
+        public void RankUp(int incrRank = 1, double hp_ratio = 1d, double en_ratio = 1d)
+        {
+            Rank = Rank + incrRank;
+            HP = (int)(MaxHP * hp_ratio);
+            EN = (int)(MaxEN * en_ratio);
+
+            // 他形態のランクも上げておく
+            foreach (var of in OtherForms)
+            {
+                of.Rank = Rank;
+            }
+            // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
+            // ランクも上げる
+            if (IsFeatureAvailable("合体"))
+            {
+                var mu = Features.Where(fd => fd.Name == "合体")
+                    .Select(fd => new
+                    {
+                        u = SRC.UDList.Item(GeneralLib.LIndex(fd.Data, 2)),
+                        fd = fd,
+                    })
+                    .Where(x => x.u != null)
+                    .Where(x => (GeneralLib.LLength(x.fd.Data) == 3 && x.u.IsFeatureAvailable("主形態"))
+                        || (GeneralLib.LLength(x.fd.Data) != 3 && !x.u.IsFeatureAvailable("制限時間")))
+                    .Select(x => x.u)
+                    .FirstOrDefault();
+                if (mu != null)
+                {
+                    if (mu.IsFeatureAvailable("分離"))
+                    {
+                        var buf = mu.FeatureData("分離");
+                        foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                        {
+                            pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
+                            foreach (var of in pu.OtherForms)
+                            {
+                                of.Rank = pu.Rank;
+                                pu.HP = (int)(pu.MaxHP * hp_ratio);
+                                pu.EN = (int)(pu.MaxEN * en_ratio);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 合体ユニットの場合は分離形態のユニットのランクも上げる
+            if (IsFeatureAvailable("分離"))
+            {
+                var buf = FeatureData("分離");
+                foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                {
+                    pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
+                    foreach (var of in pu.OtherForms)
+                    {
+                        of.Rank = pu.Rank;
+                        pu.HP = (int)(pu.MaxHP * hp_ratio);
+                        pu.EN = (int)(pu.MaxEN * en_ratio);
+                    }
+                }
             }
         }
 
