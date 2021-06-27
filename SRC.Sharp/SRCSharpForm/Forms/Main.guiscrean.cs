@@ -67,12 +67,13 @@ namespace SRCSharpForm
                 {
                     using (var g = Graphics.FromImage(buffer))
                     {
+                        // GraphicsのインタフェースとSRCのインタフェースで回転方向が逆
                         if (option.FillStyle != FillStyle.VbFSTransparent)
                         {
-                            g.FillPie(brush, GetCircleRect(x1, y1, rad), start_angle, end_angle - start_angle);
+                            g.FillPie(brush, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
 
                         }
-                        g.DrawArc(pen, GetCircleRect(x1, y1, rad), start_angle, end_angle - start_angle);
+                        g.DrawArc(pen, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
                     }
                 }
             }

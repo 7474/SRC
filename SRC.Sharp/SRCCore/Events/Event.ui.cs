@@ -38,7 +38,7 @@ namespace SRCCore.Events
                 var afterLine = EventData[line.ID + 1];
                 buf = buf + afterLine.LineNum + ": " + afterLine.Data + Constants.vbCr + Constants.vbLf;
             }
-
+            SRC.LogError(buf);
             GUI.ErrorMessage(buf);
         }
     }

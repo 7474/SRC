@@ -642,9 +642,8 @@ namespace SRCCore.CmdDatas
             }
             catch (Exception ex)
             {
-                // TODO Impl 読み込み失敗時のエラー表示
                 src.Log.LogError(ex.Message, ex);
-                //Event.DisplayEventErrorMessage(EventDataId, "イベントコマンドの内容が不正です");
+                src.Event.DisplayEventErrorMessage(data.LineNum, "イベントコマンドの内容が不正です");
                 return new NopCmd(src, data);
             }
         }

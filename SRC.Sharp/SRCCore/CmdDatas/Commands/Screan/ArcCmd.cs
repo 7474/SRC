@@ -22,7 +22,6 @@ namespace SRCCore.CmdDatas.Commands
             var x1 = (GetArgAsLong(2) + Event.BaseX);
             var y1 = (GetArgAsLong(3) + Event.BaseY);
             var rad = GetArgAsLong(4);
-            // TODO 回転方向逆だがインタフェースをどうするか
             // 円弧の開始・終了角度はstart,end で指定します。角度の指定は右向きが0度で、そこから時計と逆周りに増加していきます(例 上向きが90)。0から360までの値で指定して下さい。
             var start_angle = GetArgAsDouble(5) % 360;
             var end_angle = GetArgAsDouble(6) % 360;

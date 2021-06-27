@@ -191,6 +191,10 @@ namespace SRCCore
         {
             LogError("", ex);
         }
+        public void LogError(string message)
+        {
+            LogError(message, null);
+        }
         public void LogError(string message, Exception ex, params string[] param)
         {
             try
