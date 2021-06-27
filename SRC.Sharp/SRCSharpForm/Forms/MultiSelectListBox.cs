@@ -5,7 +5,7 @@
 using SRCCore;
 using SRCCore.Lib;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -21,7 +21,7 @@ namespace SRCSharpForm
         // 最大選択数
         private int MaxListItem;
 
-        private IList<MultiSelectListBoxItem> ListBoxItems;
+        private BindingList<MultiSelectListBoxItem> ListBoxItems;
 
         public void Init(SRC src, ListBoxArgs args, int max_num)
         {
@@ -30,7 +30,7 @@ namespace SRCSharpForm
             lblCaption.Text = "　" + args.lb_info;
             cmdSort.Text = "名称順に並べ替え";
 
-            ListBoxItems = args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList();
+            ListBoxItems = new BindingList<MultiSelectListBoxItem>(args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList());
             MaxListItem = max_num;
 
             lstItems.DataSource = ListBoxItems;
@@ -417,8 +417,7 @@ namespace SRCSharpForm
             SelectedItemNum = ListBoxItems.Count(x => x.ListItemFlag);
             lblNumber.Text = $"{SelectedItemNum}/{MaxListItem}";
 
-            // XXX
-            lstItems.Update();
+            ListBoxItems.ResetBindings();
 
             if (SelectedItemNum > 0 && SelectedItemNum <= MaxListItem)
             {
