@@ -974,10 +974,11 @@ namespace SRCCore.Models
                                 {
                                     SRC.AddDataError(reader.InvalidData(@"スペシャルパワーの指定が抜けています。", data_name));
                                 }
-                                else if (!SRC.SPDList.IsDefined(sname))
-                                {
-                                    SRC.AddDataError(reader.InvalidData(@sname + "というスペシャルパワーは存在しません。", data_name));
-                                }
+                                // TODO ビューワでSP設定しとく
+                                //else if (!SRC.SPDList.IsDefined(sname))
+                                //{
+                                //    SRC.AddDataError(reader.InvalidData(@sname + "というスペシャルパワーは存在しません。", data_name));
+                                //}
                                 else if (!Information.IsNumeric(buf2))
                                 {
                                     SRC.AddDataError(reader.InvalidData(@"スペシャルパワー「" + sname + "」の獲得レベルが間違っています。", data_name));
