@@ -1019,7 +1019,35 @@ namespace SRCSharpForm
 
         public int MultiColumnListBox(ListBoxArgs args, bool is_center)
         {
-            throw new NotImplementedException();
+            using (var box = new frmMultiColumnListBox())
+            {
+                box.Init(SRC, args);
+
+                // 表示位置を設定
+                box.Left = MainForm.Left;
+                if (MainForm.Visible == true && MainForm.WindowState != FormWindowState.Minimized && !is_center)
+                {
+                    box.Top = MainForm.Top + MainForm.Height - box.Height;
+                }
+                else
+                {
+                    box.Top = MainForm.Top + (MainForm.Height - box.Height) / 2;
+                }
+                Commands.SelectedItem = 0;
+                Sleep(0, true);
+                IsFormClicked = false;
+
+                // リストボックスを表示
+                IsMordal = false;
+                box.Show();
+                while (!IsFormClicked)
+                {
+                    Sleep(0, true);
+                }
+
+                return Commands.SelectedItem;
+            }
+
         }
 
         public int MultiSelectListBox(ListBoxArgs args, int max_num)

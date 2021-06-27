@@ -1,10 +1,7 @@
-using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
     internal partial class frmMultiColumnListBox
     {
@@ -33,33 +30,6 @@ namespace Project1
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
         private ListBox _lstItems;
-
-        public ListBox lstItems
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _lstItems;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_lstItems != null)
-                {
-                    _lstItems.MouseDown -= lstItems_MouseDown;
-                    _lstItems.MouseMove -= lstItems_MouseMove;
-                }
-
-                _lstItems = value;
-                if (_lstItems != null)
-                {
-                    _lstItems.MouseDown += lstItems_MouseDown;
-                    _lstItems.MouseMove += lstItems_MouseMove;
-                }
-            }
-        }
-
         public Label labCaption;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
@@ -67,76 +37,67 @@ namespace Project1
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.Resources.ResourceManager(typeof(frmMultiColumnListBox));
-            components = new System.ComponentModel.Container();
-            ToolTip1 = new ToolTip(components);
-            _lstItems = new ListBox();
-            _lstItems.MouseDown += new MouseEventHandler(lstItems_MouseDown);
-            _lstItems.MouseMove += new MouseEventHandler(lstItems_MouseMove);
-            labCaption = new Label();
-            SuspendLayout();
-            ToolTip1.Active = true;
-            StartPosition = FormStartPosition.Manual;
-            BackColor = Color.FromArgb(192, 192, 192);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            Text = "MultiColumListBox";
-            ClientSize = new Size(670, 446);
-            Location = new Point(72, 116);
-            Icon = (Icon)resources.GetObject("frmMultiColumnListBox.Icon");
-            MaximizeBox = false;
-            AutoScaleMode = AutoScaleMode.Font;
-            ControlBox = true;
-            Enabled = true;
-            KeyPreview = false;
-            MinimizeBox = true;
-            Cursor = Cursors.Default;
-            RightToLeft = RightToLeft.No;
-            ShowInTaskbar = true;
-            HelpButton = false;
-            WindowState = FormWindowState.Normal;
-            Name = "frmMultiColumnListBox";
-            _lstItems.BackColor = Color.White;
-            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
-            _lstItems.ForeColor = Color.Black;
-            _lstItems.Size = new Size(654, 407);
-            _lstItems.Location = new Point(8, 8);
-            _lstItems.TabIndex = 0;
-            _lstItems.BorderStyle = BorderStyle.Fixed3D;
-            _lstItems.CausesValidation = true;
-            _lstItems.Enabled = true;
-            _lstItems.IntegralHeight = true;
-            _lstItems.Cursor = Cursors.Default;
-            _lstItems.SelectionMode = SelectionMode.One;
-            _lstItems.RightToLeft = RightToLeft.No;
-            _lstItems.Sorted = false;
-            _lstItems.TabStop = true;
-            _lstItems.Visible = true;
-            _lstItems.MultiColumn = true;
-            _lstItems.ColumnWidth = 164;
-            _lstItems.Name = "_lstItems";
-            labCaption.BackColor = Color.White;
-            labCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point);
-            labCaption.ForeColor = Color.Black;
-            labCaption.Size = new Size(654, 23);
-            labCaption.Location = new Point(8, 416);
-            labCaption.TabIndex = 1;
-            labCaption.TextAlign = ContentAlignment.TopLeft;
-            labCaption.Enabled = true;
-            labCaption.Cursor = Cursors.Default;
-            labCaption.RightToLeft = RightToLeft.No;
-            labCaption.UseMnemonic = true;
-            labCaption.Visible = true;
-            labCaption.AutoSize = false;
-            labCaption.BorderStyle = BorderStyle.Fixed3D;
-            labCaption.Name = "labCaption";
-            Controls.Add(_lstItems);
-            Controls.Add(labCaption);
-            Activated += new EventHandler(frmMultiColumnListBox_Activated);
-            Load += new EventHandler(frmMultiColumnListBox_Load);
-            FormClosed += new FormClosedEventHandler(frmMultiColumnListBox_FormClosed);
-            MouseDown += new MouseEventHandler(frmMultiColumnListBox_MouseDown);
-            ResumeLayout(false);
-            PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMultiColumnListBox));
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this._lstItems = new System.Windows.Forms.ListBox();
+            this.labCaption = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // _lstItems
+            // 
+            this._lstItems.BackColor = System.Drawing.Color.White;
+            this._lstItems.ColumnWidth = 164;
+            this._lstItems.Cursor = System.Windows.Forms.Cursors.Default;
+            this._lstItems.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._lstItems.ForeColor = System.Drawing.Color.Black;
+            this._lstItems.ItemHeight = 16;
+            this._lstItems.Location = new System.Drawing.Point(8, 8);
+            this._lstItems.MultiColumn = true;
+            this._lstItems.Name = "_lstItems";
+            this._lstItems.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this._lstItems.Size = new System.Drawing.Size(654, 404);
+            this._lstItems.TabIndex = 0;
+            this._lstItems.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstItems_MouseDown);
+            this._lstItems.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lstItems_MouseMove);
+            // 
+            // labCaption
+            // 
+            this.labCaption.BackColor = System.Drawing.Color.White;
+            this.labCaption.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.labCaption.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labCaption.Font = new System.Drawing.Font("ＭＳ 明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labCaption.ForeColor = System.Drawing.Color.Black;
+            this.labCaption.Location = new System.Drawing.Point(8, 416);
+            this.labCaption.Name = "labCaption";
+            this.labCaption.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labCaption.Size = new System.Drawing.Size(654, 23);
+            this.labCaption.TabIndex = 1;
+            // 
+            // frmMultiColumnListBox
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientSize = new System.Drawing.Size(670, 446);
+            this.Controls.Add(this._lstItems);
+            this.Controls.Add(this.labCaption);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(72, 116);
+            this.MaximizeBox = false;
+            this.Name = "frmMultiColumnListBox";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "MultiColumListBox";
+            this.TopMost = true;
+            this.Activated += new System.EventHandler(this.frmMultiColumnListBox_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMultiColumnListBox_FormClosing);
+            this.Load += new System.EventHandler(this.frmMultiColumnListBox_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMultiColumnListBox_MouseDown);
+            this.ResumeLayout(false);
+
         }
     }
 }

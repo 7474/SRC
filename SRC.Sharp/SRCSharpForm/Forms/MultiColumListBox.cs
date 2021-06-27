@@ -1,158 +1,150 @@
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using SRCCore;
+using SRCCore.Lib;
 using System;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
+    // 多段のリストボックスのフォーム
     internal partial class frmMultiColumnListBox : Form
     {
+        private SRCCore.SRC SRC { get; set; }
 
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
+        public void Init(SRC src, ListBoxArgs args)
+        {
+            SRC = src;
+            Text = args.lb_caption;
 
-        // 多段のリストボックスのフォーム
+            _lstItems.DataSource = args.Items;
+            _lstItems.DisplayMember = "TextWithFlag";
+
+            // 先頭に表示するアイテムを設定
+            if (SRC.GUI.TopItem > 0)
+            {
+                if (_lstItems.TopIndex != SRC.GUI.TopItem - 1)
+                {
+                    _lstItems.TopIndex = GeneralLib.MinLng(SRC.GUI.TopItem, _lstItems.Items.Count) - 1;
+                }
+            }
+        }
 
         // フォームを表示
-        // UPGRADE_WARNING: Form イベント frmMultiColumnListBox.Activate には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void frmMultiColumnListBox_Activated(object eventSender, EventArgs eventArgs)
         {
-            //Commands.SelectedItem = 0;
-            //labCaption.Text = "";
+            SRC.Commands.SelectedItem = 0;
+            labCaption.Text = "";
         }
 
         // フォームをロード
         private void frmMultiColumnListBox_Load(object eventSender, EventArgs eventArgs)
         {
-            int ret;
-
             // 常に手前に表示
-            //ret = GUI.SetWindowPos(Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
-        }
-
-        // フォームを閉じる
-        private void frmMultiColumnListBox_FormClosed(object eventSender, FormClosedEventArgs eventArgs)
-        {
-            //GUI.TopItem = (short)(lstItems.TopIndex + 1);
-            //GUI.IsFormClicked = true;
-            //if (!GUI.IsMordal && Visible)
-            //{
-            //    Cancel = 1;
-            //}
-
-            Hide();
+            TopMost = true;
         }
 
         // フォーム上でマウスボタンを押す
         private void lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            //short Button = (short)((int)eventArgs.Button / 0x100000);
-            //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //switch (Button)
-            //{
-            //    case 1:
-            //        {
-            //            // 選択
-            //            if (!Visible)
-            //            {
-            //                return;
-            //            }
+            switch (ResolveMouseButton(eventArgs))
+            {
 
-            //            if (lstItems.SelectedIndex < 0 || GUI.ListItemFlag[lstItems.SelectedIndex + 1])
-            //            {
-            //                return;
-            //            }
+                case GuiButton.Left:
+                    {
+                        // 選択
+                        if (!Visible)
+                        {
+                            return;
+                        }
 
-            //            Commands.SelectedItem = (short)(lstItems.SelectedIndex + 1);
-            //            GUI.TopItem = (short)(lstItems.TopIndex + 1);
-            //            if (GUI.IsFormClicked)
-            //            {
-            //                Hide();
-            //            }
+                        if (_lstItems.SelectedIndex < 0 || ((_lstItems.SelectedItem as ListBoxItem)?.ListItemFlag ?? true))
+                        {
+                            return;
+                        }
 
-            //            GUI.IsFormClicked = true;
-            //            break;
-            //        }
+                        SRC.Commands.SelectedItem = _lstItems.SelectedIndex + 1;
+                        SRC.GUI.TopItem = _lstItems.TopIndex + 1;
+                        if (SRC.GUI.IsFormClicked)
+                        {
+                            Hide();
+                        }
 
-            //    case 2:
-            //        {
-            //            // キャンセル
-            //            Commands.SelectedItem = 0;
-            //            GUI.TopItem = (short)(lstItems.TopIndex + 1);
-            //            if (GUI.IsFormClicked)
-            //            {
-            //                Hide();
-            //            }
+                        SRC.GUI.IsFormClicked = true;
+                        break;
+                    }
 
-            //            GUI.IsFormClicked = true;
-            //            break;
-            //        }
-            //}
+                default:
+                    {
+                        // キャンセル
+                        SRC.Commands.SelectedItem = 0;
+                        SRC.GUI.TopItem = _lstItems.TopIndex + 1;
+                        if (SRC.GUI.IsFormClicked)
+                        {
+                            Hide();
+                        }
+
+                        SRC.GUI.IsFormClicked = true;
+                        break;
+                    }
+            }
+        }
+
+        // フォームを閉じる
+        private void frmMultiColumnListBox_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SRC.GUI.TopItem = _lstItems.TopIndex + 1;
+            SRC.GUI.IsFormClicked = true;
+            if (!SRC.GUI.IsMordal && Visible)
+            {
+                e.Cancel = true;
+            }
+
+            Hide();
         }
 
         // フォーム上でマウスボタンを押す
         private void frmMultiColumnListBox_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            //short Button = (short)((int)eventArgs.Button / 0x100000);
-            //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = eventArgs.X;
-            //float Y = eventArgs.Y;
-            //if (Button == 2)
-            //{
-            //    // キャンセルのみ受け付け
-            //    Commands.SelectedItem = 0;
-            //    GUI.TopItem = (short)lstItems.TopIndex;
-            //    if (GUI.IsFormClicked)
-            //    {
-            //        Hide();
-            //    }
+            if (ResolveMouseButton(eventArgs) == GuiButton.Right)
+            {
+                // キャンセルのみ受け付け
+                SRC.Commands.SelectedItem = 0;
+                SRC.GUI.TopItem = _lstItems.TopIndex;
+                if (SRC.GUI.IsFormClicked)
+                {
+                    Hide();
+                }
 
-            //    GUI.IsFormClicked = true;
-            //}
+                SRC.GUI.IsFormClicked = true;
+            }
         }
 
         // リストボックス上でマウスカーソルを移動
         private void lstItems_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
-            //short Button = (short)((int)eventArgs.Button / 0x100000);
-            //short Shift = (short)((int)ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //short itm;
-            //short lines;
-            //{
-            //    var withBlock = lstItems;
-            //    // リストボックスの行数
-            //    lines = 25;
-            //    if (withBlock.Items.Count > lines * withBlock.Columns)
-            //    {
-            //        lines = (short)(lines - 1);
-            //    }
+            // カーソルがあるアイテムを算出
+            var point = _lstItems.PointToClient(Cursor.Position);
+            int index = _lstItems.IndexFromPoint(point);
+            if (index >= 0 && index != _lstItems.SelectedIndex)
+            {
+                // カーソルがあるアイテムをハイライト表示
+                _lstItems.SelectedIndex = index;
+                _lstItems.Update();
 
-            //    // マウスカーソルがあるアイテムを算出
-            //    itm = (long)(X * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) / (withBlock.Width / withBlock.Columns) * lines;
-            //    itm = (short)(itm + ((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
-            //    itm = (short)(itm + withBlock.TopIndex);
+                // 解説の表示
+                labCaption.Text = (_lstItems.SelectedItem as ListBoxItem)?.ListItemComment;
+            }
+        }
 
-            //    // カーソル上のアイテムをハイライト表示
-            //    if (itm < 0 || itm >= withBlock.Items.Count)
-            //    {
-            //        withBlock.SelectedIndex = -1;
-            //        return;
-            //    }
-
-            //    if (withBlock.SelectedIndex == itm)
-            //    {
-            //        return;
-            //    }
-
-            //    withBlock.SelectedIndex = itm;
-
-            //    // 解説の表示
-            //    labCaption.Text = GUI.ListItemComment[itm + 1];
-            //}
+        private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
+        {
+            // 右でなければ左とみなす
+            return eventArgs.Button.HasFlag(MouseButtons.Right)
+                ? GuiButton.Right
+                : GuiButton.Left;
         }
     }
 }
