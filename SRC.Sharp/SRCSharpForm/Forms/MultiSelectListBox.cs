@@ -1,139 +1,88 @@
+// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using SRCCore;
+using SRCCore.Lib;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SRCSharpForm
 {
+    // 出撃ユニット選択用リストボックスのフォーム
     internal partial class frmMultiSelectListBox : Form
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // 出撃ユニット選択用リストボックスのフォーム
+        private SRCCore.SRC SRC { get; set; }
 
         // 選択されたユニットの数
-        private short SelectedItemNum;
-        // ユニットが選択されたかどうかを示すフラグ
-        private bool[] ItemFlag;
+        public int SelectedItemNum { get; private set; }
+        // 最大選択数
+        private int MaxListItem;
+
+        private IList<MultiSelectListBoxItem> ListBoxItems;
+
+        public void Init(SRC src, ListBoxArgs args, int max_num)
+        {
+            SRC = src;
+            Text = args.lb_caption;
+            lblCaption.Text = "　" + args.lb_info;
+            cmdSort.Text = "名称順に並べ替え";
+
+            ListBoxItems = args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList();
+            MaxListItem = max_num;
+
+            lstItems.DataSource = ListBoxItems;
+            lstItems.DisplayMember = "Text";
+        }
 
         // 選択終了ボタンをクリック
         private void cmdFinish_Click(object eventSender, EventArgs eventArgs)
         {
-            //short i;
-            //var loopTo = (short)Information.UBound(GUI.ListItemFlag);
-            //for (i = 1; i <= loopTo; i++)
-            //    GUI.ListItemFlag[i] = ItemFlag[i - 1];
-            //Status.ClearUnitStatus();
+            SRC.GUIStatus.ClearUnitStatus();
             Close();
         }
 
         // マップを見るボタンをクリック
         private void cmdResume_Click(object eventSender, EventArgs eventArgs)
         {
-            //short i;
-            //var loopTo = (short)Information.UBound(GUI.ListItemFlag);
-            //for (i = 1; i <= loopTo; i++)
-            //    GUI.ListItemFlag[i] = false;
-            //Status.ClearUnitStatus();
+            foreach (var item in ListBoxItems)
+            {
+                item.ListItemFlag = false;
+            }
+            SRC.GUIStatus.ClearUnitStatus();
             Close();
         }
 
         // 「先頭から選択」ボタンをクリック
         private void cmdSelectAll_Click(object eventSender, EventArgs eventArgs)
         {
-            //short i;
-            //lstItems.Visible = false;
-            //var loopTo = (short)lstItems.Items.Count;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    ItemFlag[i - 1] = false;
-            //    SrcFormatter.SetItemString(lstItems, i - 1, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
-            //}
-
-            //var loopTo1 = (short)GeneralLib.MinLng(GUI.MaxListItem, lstItems.Items.Count);
-            //for (i = 1; i <= loopTo1; i++)
-            //{
-            //    if (!ItemFlag[i - 1])
-            //    {
-            //        ItemFlag[i - 1] = true;
-            //        SrcFormatter.SetItemString(lstItems, i - 1, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
-            //    }
-            //}
-
-            //lstItems.TopIndex = 0;
-            //lstItems.Visible = true;
-            //SelectedItemNum = 0;
-            //var loopTo2 = (short)(lstItems.Items.Count - 1);
-            //for (i = 0; i <= loopTo2; i++)
-            //{
-            //    if (ItemFlag[i])
-            //    {
-            //        SelectedItemNum = (short)(SelectedItemNum + 1);
-            //    }
-            //}
-
-            //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //{
-            //    if (!cmdFinish.Enabled)
-            //    {
-            //        cmdFinish.Enabled = true;
-            //    }
-            //}
-            //else if (cmdFinish.Enabled)
-            //{
-            //    cmdFinish.Enabled = false;
-            //}
+            foreach (var item in ListBoxItems)
+            {
+                item.ListItemFlag = false;
+            }
+            foreach (var item in ListBoxItems.Take(MaxListItem))
+            {
+                item.ListItemFlag = true;
+            }
+            UpdateList();
+            lstItems.TopIndex = 0;
         }
 
         // 「最後から選択」ボタンをクリック
         private void cmdSelectAll2_Click(object eventSender, EventArgs eventArgs)
         {
-            //short i;
-            //lstItems.Visible = false;
-            //var loopTo = (short)lstItems.Items.Count;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    ItemFlag[i - 1] = false;
-            //    SrcFormatter.SetItemString(lstItems, i - 1, "　" + Strings.Mid(SrcFormatter.GetItemString(lstItems, i - 1), 2));
-            //}
-
-            //var loopTo1 = (short)GeneralLib.MinLng(GUI.MaxListItem, lstItems.Items.Count);
-            //for (i = 1; i <= loopTo1; i++)
-            //{
-            //    if (!ItemFlag[lstItems.Items.Count - i])
-            //    {
-            //        ItemFlag[lstItems.Items.Count - i] = true;
-            //        SrcFormatter.SetItemString(lstItems, lstItems.Items.Count - i, "○" + Strings.Mid(SrcFormatter.GetItemString(lstItems, lstItems.Items.Count - i), 2));
-            //    }
-            //}
-
-            //lstItems.TopIndex = GeneralLib.MaxLng(lstItems.Items.Count - 14, 0);
-            //lstItems.Visible = true;
-            //SelectedItemNum = 0;
-            //var loopTo2 = (short)(lstItems.Items.Count - 1);
-            //for (i = 0; i <= loopTo2; i++)
-            //{
-            //    if (ItemFlag[i])
-            //    {
-            //        SelectedItemNum = (short)(SelectedItemNum + 1);
-            //    }
-            //}
-
-            //lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
-            //if (SelectedItemNum > 0 && SelectedItemNum <= GUI.MaxListItem)
-            //{
-            //    if (!cmdFinish.Enabled)
-            //    {
-            //        cmdFinish.Enabled = true;
-            //    }
-            //}
-            //else if (cmdFinish.Enabled)
-            //{
-            //    cmdFinish.Enabled = false;
-            //}
+            foreach (var item in ListBoxItems)
+            {
+                item.ListItemFlag = false;
+            }
+            foreach (var item in ListBoxItems.Reverse().Take(MaxListItem))
+            {
+                item.ListItemFlag = true;
+            }
+            UpdateList();
+            lstItems.TopIndex = GeneralLib.MaxLng(lstItems.Items.Count - 14, 0);
         }
 
         // 「～順」ボタンをクリック
@@ -142,10 +91,10 @@ namespace Project1
             //string[] item_list;
             //int[] key_list;
             //string[] strkey_list;
-            //short max_item;
+            //int max_item;
             //int max_value;
             //string max_str;
-            //short i, j;
+            //int i, j;
             //string buf;
             //bool flag;
 
@@ -153,7 +102,7 @@ namespace Project1
             //{
             //    var withBlock = lstItems;
             //    item_list = new string[withBlock.Items.Count + 1];
-            //    var loopTo = (short)withBlock.Items.Count;
+            //    var loopTo = (int)withBlock.Items.Count;
             //    for (i = 1; i <= loopTo; i++)
             //        item_list[i] = SrcFormatter.GetItemString(lstItems, i - 1);
             //}
@@ -164,7 +113,7 @@ namespace Project1
             //    key_list = new int[Information.UBound(item_list) + 1];
             //    {
             //        var withBlock1 = SRC.UList;
-            //        var loopTo1 = (short)Information.UBound(item_list);
+            //        var loopTo1 = (int)Information.UBound(item_list);
             //        for (i = 1; i <= loopTo1; i++)
             //        {
             //            Unit localItem() { var tmp = GUI.ListItemID; object argIndex1 = tmp[i]; var ret = withBlock1.Item(ref argIndex1); return ret; }
@@ -176,13 +125,13 @@ namespace Project1
             //        }
             //    }
 
-            //    var loopTo2 = (short)(Information.UBound(item_list) - 1);
+            //    var loopTo2 = (int)(Information.UBound(item_list) - 1);
             //    for (i = 1; i <= loopTo2; i++)
             //    {
             //        max_item = i;
             //        max_value = key_list[i];
-            //        var loopTo3 = (short)Information.UBound(item_list);
-            //        for (j = (short)(i + 1); j <= loopTo3; j++)
+            //        var loopTo3 = (int)Information.UBound(item_list);
+            //        for (j = (int)(i + 1); j <= loopTo3; j++)
             //        {
             //            if (key_list[j] > max_value)
             //            {
@@ -214,7 +163,7 @@ namespace Project1
             //    strkey_list = new string[Information.UBound(item_list) + 1];
             //    {
             //        var withBlock3 = SRC.UList;
-            //        var loopTo4 = (short)Information.UBound(item_list);
+            //        var loopTo4 = (int)Information.UBound(item_list);
             //        for (i = 1; i <= loopTo4; i++)
             //        {
             //            Unit localItem1() { var tmp = GUI.ListItemID; object argIndex1 = tmp[i]; var ret = withBlock3.Item(ref argIndex1); return ret; }
@@ -223,13 +172,13 @@ namespace Project1
             //        }
             //    }
 
-            //    var loopTo5 = (short)(Information.UBound(item_list) - 1);
+            //    var loopTo5 = (int)(Information.UBound(item_list) - 1);
             //    for (i = 1; i <= loopTo5; i++)
             //    {
             //        max_item = i;
             //        max_str = strkey_list[i];
-            //        var loopTo6 = (short)Information.UBound(item_list);
-            //        for (j = (short)(i + 1); j <= loopTo6; j++)
+            //        var loopTo6 = (int)Information.UBound(item_list);
+            //        for (j = (int)(i + 1); j <= loopTo6; j++)
             //        {
             //            if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
             //            {
@@ -260,7 +209,7 @@ namespace Project1
             //{
             //    var withBlock4 = lstItems;
             //    withBlock4.Visible = false;
-            //    var loopTo7 = (short)withBlock4.Items.Count;
+            //    var loopTo7 = (int)withBlock4.Items.Count;
             //    for (i = 1; i <= loopTo7; i++)
             //        SrcFormatter.SetItemString(lstItems, i - 1, item_list[i]);
             //    withBlock4.TopIndex = 0;
@@ -269,25 +218,20 @@ namespace Project1
         }
 
         // フォームを表示
-        // UPGRADE_WARNING: Form イベント frmMultiSelectListBox.Activate には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void frmMultiSelectListBox_Activated(object eventSender, EventArgs eventArgs)
         {
-            //SelectedItemNum = 0;
-            //lblNumber.Text = "0/" + SrcFormatter.Format(GUI.MaxListItem);
-            //ItemFlag = new bool[lstItems.Items.Count + 1];
-            //if (lstItems.Items.Count > 0)
-            //{
-            //    Unit localItem() { var tmp = GUI.ListItemID; object argIndex1 = tmp[1]; var ret = SRC.UList.Item(ref argIndex1); return ret; }
-
-            //    Status.DisplayUnitStatus(ref localItem());
-            //}
+            if (ListBoxItems.Any())
+            {
+                SRC.GUIStatus.DisplayUnitStatus(SRC.UList.Item(ListBoxItems.First().ListItemID));
+            }
+            UpdateList();
         }
 
         // リストボックス上でダブルクリック
         private void lstItems_DoubleClick(object eventSender, EventArgs eventArgs)
         {
-            //short i;
-            //i = (short)lstItems.SelectedIndex;
+            //int i;
+            //i = (int)lstItems.SelectedIndex;
             //if (i >= 0)
             //{
             //    if (ItemFlag[i])
@@ -295,7 +239,7 @@ namespace Project1
             //        // 選択取り消し
 
             //        // 選択されたユニット数を減らす
-            //        SelectedItemNum = (short)(SelectedItemNum - 1);
+            //        SelectedItemNum = (int)(SelectedItemNum - 1);
             //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = false;
 
@@ -320,7 +264,7 @@ namespace Project1
             //        // 選択
 
             //        // 選択されたユニット数を増やす
-            //        SelectedItemNum = (short)(SelectedItemNum + 1);
+            //        SelectedItemNum = (int)(SelectedItemNum + 1);
             //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = true;
 
@@ -346,11 +290,11 @@ namespace Project1
         // リストボックス上でマウスボタンを押す
         private void lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            //short Button = (short)((int)eventArgs.Button / 0x100000);
-            //short Shift = (short)((int)ModifierKeys / 0x10000);
+            //int Button = (int)((int)eventArgs.Button / 0x100000);
+            //int Shift = (int)((int)ModifierKeys / 0x10000);
             //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
             //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //short i;
+            //int i;
 
             //// 左クリック以外は無視
             //if (Button != 1)
@@ -358,7 +302,7 @@ namespace Project1
             //    return;
             //}
 
-            //i = (short)lstItems.SelectedIndex;
+            //i = (int)lstItems.SelectedIndex;
             //if (i >= 0)
             //{
             //    if (ItemFlag[i])
@@ -366,7 +310,7 @@ namespace Project1
             //        // 選択取り消し
 
             //        // 選択されたユニット数を減らす
-            //        SelectedItemNum = (short)(SelectedItemNum - 1);
+            //        SelectedItemNum = (int)(SelectedItemNum - 1);
             //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = false;
 
@@ -391,7 +335,7 @@ namespace Project1
             //        // 選択
 
             //        // 選択されたユニット数を増やす
-            //        SelectedItemNum = (short)(SelectedItemNum + 1);
+            //        SelectedItemNum = (int)(SelectedItemNum + 1);
             //        lblNumber.Text = SrcFormatter.Format(SelectedItemNum) + "/" + SrcFormatter.Format(GUI.MaxListItem);
             //        ItemFlag[i] = true;
 
@@ -417,15 +361,15 @@ namespace Project1
         // リストボックス上でマウスカーソルを移動
         private void lstItems_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
-            //short Button = (short)((int)eventArgs.Button / 0x100000);
-            //short Shift = (short)((int)ModifierKeys / 0x10000);
+            //int Button = (int)((int)eventArgs.Button / 0x100000);
+            //int Shift = (int)((int)ModifierKeys / 0x10000);
             //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
             //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
-            //short itm;
+            //int itm;
 
             //// カーソルがあるアイテムを算出
-            //itm = (short)(((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
-            //itm = (short)(itm + lstItems.TopIndex);
+            //itm = (int)(((long)(Y * ClientRectangle.Width) / (long)SrcFormatter.PixelsToTwipsX(Width) + 1L) / 16L);
+            //itm = (int)(itm + lstItems.TopIndex);
 
             //// カーソルがあるアイテムをハイライト表示
             //if (itm < 0 || itm >= lstItems.Items.Count)
@@ -466,6 +410,40 @@ namespace Project1
             //        Status.DisplayUnitStatus(ref u);
             //    }
             //}
+        }
+
+        private void UpdateList()
+        {
+            SelectedItemNum = ListBoxItems.Count(x => x.ListItemFlag);
+            lblNumber.Text = $"{SelectedItemNum}/{MaxListItem}";
+
+            // XXX
+            lstItems.Update();
+
+            if (SelectedItemNum > 0 && SelectedItemNum <= MaxListItem)
+            {
+                if (!cmdFinish.Enabled)
+                {
+                    cmdFinish.Enabled = true;
+                }
+            }
+            else if (cmdFinish.Enabled)
+            {
+                cmdFinish.Enabled = false;
+            }
+        }
+    }
+    class MultiSelectListBoxItem
+    {
+        private ListBoxItem _item;
+
+        public string ListItemID => _item.ListItemID;
+        public bool ListItemFlag { get => _item.ListItemFlag; set => _item.ListItemFlag = value; }
+        public string Text => (_item.ListItemFlag ? "○" : "　") + _item.Text;
+
+        public MultiSelectListBoxItem(ListBoxItem item)
+        {
+            _item = item;
         }
     }
 }

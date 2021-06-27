@@ -1024,7 +1024,20 @@ namespace SRCSharpForm
 
         public int MultiSelectListBox(ListBoxArgs args, int max_num)
         {
-            throw new NotImplementedException();
+            // ステータスウィンドウに攻撃の命中率などを表示させないようにする
+            Commands.CommandState = "ユニット選択";
+
+            // リストボックスを作成して表示
+            using (var box = new frmMultiSelectListBox())
+            {
+                box.Init(SRC, args, max_num);
+                //box.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(MainForm.Left));
+                //box.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(box.Height)) / 2d);
+                box.ShowDialog(MainForm);
+
+                // 選択された項目数を返す
+                return box.SelectedItemNum;
+            }
         }
 
         public void SaveScreen()
