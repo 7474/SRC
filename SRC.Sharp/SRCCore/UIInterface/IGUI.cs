@@ -212,11 +212,11 @@ namespace SRCCore
         // アビリティ選択用リストボックス
         UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false);
         // 入力時間制限付きのリストボックスを表示
-        int LIPS(string lb_caption, string[] list, string lb_info, int time_limit);
+        int LIPS(ListBoxArgs args, int time_limit);
         // 複数段のリストボックスを表示
-        int MultiColumnListBox(string lb_caption, string[] list, bool is_center);
+        int MultiColumnListBox(ListBoxArgs args, bool is_center);
         // 複数のアイテム選択可能なリストボックスを表示
-        int MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num);
+        int MultiSelectListBox(ListBoxArgs args, int max_num);
 
         // === 画像描画に関する処理 ===
 
