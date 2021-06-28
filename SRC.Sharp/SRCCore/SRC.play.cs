@@ -1,4 +1,3 @@
-using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
@@ -28,50 +27,36 @@ namespace SRCCore
                 TerminateSRC();
             }
 
-            //// ウィンドウのタイトルを設定
-            //if (My.MyProject.Application.Info.Version.Minor % 2 == 0)
-            //{
-            //    GUI.MainForm.Text = "SRC";
-            //}
-            //else
-            //{
-            //    GUI.MainForm.Text = "SRC開発版";
-            //}
+            // XXX ウィンドウのタイトルを設定するなら IGUI.MainFormText を見直す
 
             ScenarioFileName = fname;
             if (!IsSubStage)
             {
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Date", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のDataフォルダ名がDateになっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Date" + Constants.vbCr + Constants.vbLf + "フォルダ名をDataに直してください。");
                 //        TerminateSRC();
                 //    }
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｄａｔａ", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のDataフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｄａｔａ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
                 //        TerminateSRC();
                 //    }
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｂｉｔｍａｐ", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のBitmapフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
                 //        TerminateSRC();
                 //    }
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｌｉｂ", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のLibフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｌｉｂ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
                 //        TerminateSRC();
                 //    }
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｍｉｄｉ", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のMidiフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｍｉｄｉ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
                 //        TerminateSRC();
                 //    }
-                //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                 //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｓｏｕｎｄ", FileAttribute.Directory)) > 0)
                 //    {
                 //        GUI.ErrorMessage("シナリオ側のSoundフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
@@ -123,33 +108,16 @@ namespace SRCCore
             Commands.CommandState = "ユニット選択";
             Commands.SelectedPartners.Clear();
 
-            //// フォント設定をデフォルトに戻す
-            //{
-            //    var withBlock1 = GUI.MainForm.picMain(0);
-            //    withBlock1.ForeColor = Information.RGB(255, 255, 255);
-            //    if (withBlock1.Font.Name != "ＭＳ Ｐ明朝")
-            //    {
-            //        sf = (Font)Control.DefaultFont.Clone();
-            //        sf = SrcFormatter.FontChangeName(sf, "ＭＳ Ｐ明朝");
-            //        withBlock1.Font = sf;
-            //    }
-            //    withBlock1.Font.Size = 16;
-            //    withBlock1.Font.Bold = true;
-            //    withBlock1.Font.Italic = false;
-            //    GUI.PermanentStringMode = false;
-            //    GUI.KeepStringMode = false;
-            //}
+            // フォント設定をデフォルトに戻す
+            GUI.ResetDrawString();
+            GUI.PermanentStringMode = false;
+            GUI.KeepStringMode = false;
 
-            //// 描画の基準座標位置をリセット
-            //Event.ResetBasePoint();
-
-            //// メモリを消費し過ぎないようにユニット画像をクリア
-            //if (!IsSubStage)
-            //{
-            //    UList.ClearUnitBitmap();
-            //}
+            // 描画の基準座標位置をリセット
+            Event.ResetBasePoint();
 
             GUI.LockGUI();
+            // XXX Mapサイズ処理が要りそうなら処理する
             //if (Map.MapWidth == 1)
             //{
             //    Map.SetMapSize(15, 15);
