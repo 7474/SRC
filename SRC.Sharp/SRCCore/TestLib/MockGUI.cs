@@ -57,6 +57,8 @@ namespace SRCCore.TestLib
 
         public Color CurrentPaintColor => throw new NotImplementedException();
 
+        public string MainFormText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             throw new NotImplementedException();

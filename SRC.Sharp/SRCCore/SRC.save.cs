@@ -306,9 +306,8 @@ namespace SRCCore
                 var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
                 if (scenario_file_is_different)
                 {
-                    // TODO Impl ウィンドウのタイトルを設定
                     // ウィンドウのタイトルを設定
-                    //GUI.MainFormText = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
+                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(ScenarioFileName);
                 }
                 Titles = data.Titles;
                 TotalTurn = data.TotalTurn;
