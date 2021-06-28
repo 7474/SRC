@@ -92,35 +92,35 @@ namespace SRCCore
             // 演奏をストップ
             StopBGM();
 
-            // TODO Impl 同じＢＧＭにバリエーションがあればランダムで選択
-            //// 同じＢＧＭにバリエーションがあればランダムで選択
-            //i = 1;
-            //if (Strings.InStr(fname, SRC.ScenarioPath) > 0)
-            //{
-            //    // シナリオ側にファイルが見つかった場合はバリエーションもシナリオ側からのみ選択
-            //    do
-            //    {
-            //        i = (i + 1);
-            //        fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
-            //    }
-            //    while (Strings.InStr(fname2, SRC.ScenarioPath) > 0);
-            //}
-            //else
-            //{
-            //    // そうでなければ両方から選択
-            //    do
-            //    {
-            //        i = (i + 1);
-            //        fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
-            //    }
-            //    while (!string.IsNullOrEmpty(fname2));
-            //}
+            // TODO 同じＢＧＭにバリエーションがあればランダムで選択 のパス解決
+            // 同じＢＧＭにバリエーションがあればランダムで選択
+            i = 1;
+            if (!string.IsNullOrEmpty(SRC.ScenarioPath) && Strings.InStr(fname, SRC.ScenarioPath) > 0)
+            {
+                // シナリオ側にファイルが見つかった場合はバリエーションもシナリオ側からのみ選択
+                do
+                {
+                    i = (i + 1);
+                    fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
+                }
+                while (Strings.InStr(fname2, SRC.ScenarioPath) > 0);
+            }
+            else
+            {
+                // そうでなければ両方から選択
+                do
+                {
+                    i = (i + 1);
+                    fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
+                }
+                while (!string.IsNullOrEmpty(fname2));
+            }
 
-            //i = Conversion.Int((i - 1) * VBMath.Rnd() + 1f);
-            //if (i > 1)
-            //{
-            //    fname = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
-            //}
+            i = (int)(i * SRC.Rand());
+            if (i > 1)
+            {
+                fname = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
+            }
 
             // ＢＧＭを連続演奏？
             RepeatMode = is_repeat_mode;
