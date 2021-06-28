@@ -221,7 +221,6 @@ namespace SRCCore
         // 陣営upartyのフェイズを実行
         public void StartTurn(string uparty)
         {
-            // TODO Impl StartTurn
             Stage = uparty;
             Sound.BossBGM = false;
             if (uparty == "味方")
