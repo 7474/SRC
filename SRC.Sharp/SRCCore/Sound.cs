@@ -7,6 +7,7 @@ using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -250,341 +251,70 @@ namespace SRCCore
         // 各Midiフォルダから指定されたMIDIファイルを検索する
         public string SearchMidiFile(string midi_name)
         {
-            // TODO FileSystemに逃がす
-            var baseDirs = new string[]
+            // ダミーのファイル名？
+            if (Strings.Len(midi_name) < 5)
             {
-                SRC.ScenarioPath,
-                SRC.ExtDataPath,
-                SRC.ExtDataPath2,
-                SRC.AppPath,
+                return null;
             }
-            // TODO Directory.Exists
-            //.Where(x => Directory.Exists(x))
-                .Select(x => SRC.FileSystem.PathCombine(x, "Midi"))
-                //.Where(x => Directory.Exists(x))
-                .ToList();
 
-            var midiNames = GeneralLib.ToList(midi_name, true);
-            var existFile = midiNames
-                .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
-                .FirstOrDefault(x => File.Exists(x));
+            // 引数1として渡された文字列をリストとして扱い、左から順にMIDIを検索
+            var midiNames = GeneralLib.ToList(midi_name);
+            var i = 0;
+            while (i < midiNames.Count)
+            {
+                // スペースを含むファイル名への対応
+                var buf = "";
+                for (var j = i; j < midiNames.Count; j++)
+                {
+                    var buf2 = midiNames[j];
 
-            return existFile;
+                    // 全体が()で囲まれている場合は()を外す
+                    if (Strings.Left(buf2, 1) == "(" && Strings.Right(buf2, 1) == ")")
+                    {
+                        buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
+                    }
 
-            // TODO Impl 検索の整理
-            //string SearchMidiFileRet = default;
-            //string fname, fname_mp3 = default;
-            //;
-            ///* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
-            //         scenario_midi_dir_exists As Boolean
-            //         extdata_midi_dir_exists As Boolean
-            //         extdata2_midi_dir_exists As Boolean
-            // */
-            //;
-            ////  fpath_history As New Collection     DEL MARGE
-            //int j, i, num;
-            //string buf, buf2;
-            //var sub_folder = default(string);
+                    buf = buf + " " + buf2;
+                    if (buf.ToLower().EndsWith(".mid"))
+                    {
+                        i = j + 1;
+                        break;
+                    }
+                }
 
-            //// 初めて実行する際に、各フォルダにMidiフォルダがあるかチェック
-            //if (!IsMidiSearchPathInitialized)
-            //{
-            //    if (Strings.Len(SRC.ScenarioPath) > 0)
-            //    {
-            //        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + "Midi", FileAttribute.Directory)) > 0)
-            //        {
-            //            scenario_midi_dir_exists = true;
-            //        }
-            //    }
+                buf = Strings.Trim(buf);
+                // 同名のMP3ファイルがある場合はMIDIファイルの代わりにMP3ファイルを使う
+                var fname = buf;
+                var fnameMp3 = Strings.Left(buf, Strings.Len(buf) - 4) + ".mp3";
+                var fnames = new List<string>();
+                if (FileSystem.IsAbsolutePath(fname))
+                {
+                    fnames.Add(fnameMp3);
+                    fnames.Add(fname);
+                }
+                else
+                {
+                    // TODO 一度検索したものを再検索している感じ
+                    // なので Midi ディレクトリ無し指定もしてるがイマイチ、絶対パスで返すAPI作る？
+                    fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
+                    fnames.Add(FileSystem.PathCombine("Midi", fname));
+                    fnames.Add(fnameMp3);
+                    fnames.Add(fname);
+                }
+                //// XXX これ何に作用してるの？
+                //// サブフォルダ指定あり？
+                //if (Strings.InStr(buf, "_") > 0)
+                //{
+                //    sub_folder = Strings.Left(buf, Strings.InStr(buf, "_") - 1) + @"\";
+                //}
+                var existFileName = fnames.FirstOrDefault(x => FileSystem.FileExists(x));
 
-            //    if (Strings.Len(SRC.ExtDataPath) > 0)
-            //    {
-            //        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + "Midi", FileAttribute.Directory)) > 0)
-            //        {
-            //            extdata_midi_dir_exists = true;
-            //        }
-            //    }
-
-            //    if (Strings.Len(SRC.ExtDataPath2) > 0)
-            //    {
-            //        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + "Midi", FileAttribute.Directory)) > 0)
-            //        {
-            //            extdata2_midi_dir_exists = true;
-            //        }
-            //    }
-
-            //    // MP3が演奏可能かどうかも調べておく
-            //    if (SRC.FileSystem.FileExists(SRC.AppPath + "VBMP3.dll"))
-            //    {
-            //        is_mp3_available = true;
-            //    }
-
-            //    IsMidiSearchPathInitialized = true;
-            //}
-
-            //// ダミーのファイル名？
-            //if (Strings.Len(midi_name) < 5)
-            //{
-            //    return SearchMidiFileRet;
-            //}
-
-            //// 引数1として渡された文字列をリストとして扱い、左から順にMIDIを検索
-            //num = GeneralLib.ListLength(midi_name);
-            //i = 1;
-            //while (i <= num)
-            //{
-            //    // スペースを含むファイル名への対応
-            //    buf = "";
-            //    var loopTo = num;
-            //    for (j = i; j <= loopTo; j++)
-            //    {
-            //        buf2 = Strings.LCase(GeneralLib.ListIndex(midi_name, j));
-
-            //        // 全体が()で囲まれている場合は()を外す
-            //        if (Strings.Left(buf2, 1) == "(" && Strings.Right(buf2, 1) == ")")
-            //        {
-            //            buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
-            //        }
-
-            //        buf = buf + " " + buf2;
-            //        if (Strings.Right(buf, 4) == ".mid")
-            //        {
-            //            break;
-            //        }
-            //    }
-
-            //    buf = Strings.Trim(buf);
-
-            //    // 同名のMP3ファイルがある場合はMIDIファイルの代わりにMP3ファイルを使う
-            //    if (is_mp3_available)
-            //    {
-            //        fname_mp3 = Strings.Left(buf, Strings.Len(buf) - 4) + ".mp3";
-            //    }
-
-            //    // フルパスでの指定？
-            //    if (Strings.InStr(buf, ":") == 2)
-            //    {
-            //        if (is_mp3_available)
-            //        {
-            //            if (SRC.FileSystem.FileExists(fname_mp3))
-            //            {
-            //                SearchMidiFileRet = fname_mp3;
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        if (SRC.FileSystem.FileExists(buf))
-            //        {
-            //            SearchMidiFileRet = buf;
-            //        }
-
-            //        return SearchMidiFileRet;
-            //    }
-
-            //    // DEL START MARGE
-            //    // '履歴を検索してみる
-            //    // On Error GoTo NotFound
-            //    // fname = fpath_history.Item(buf)
-            //    // 
-            //    // '履歴上にファイルを発見
-            //    // SearchMidiFile = fname
-            //    // Exit Function
-
-            //    // NotFound:
-            //    // '履歴になかった
-            //    // On Error GoTo 0
-            //    // DEL END MARGE
-
-            //    // サブフォルダ指定あり？
-            //    if (Strings.InStr(buf, "_") > 0)
-            //    {
-            //        sub_folder = Strings.Left(buf, Strings.InStr(buf, "_") - 1) + @"\";
-            //    }
-
-            //    // シナリオ側のMidiフォルダ
-            //    if (scenario_midi_dir_exists)
-            //    {
-            //        if (is_mp3_available)
-            //        {
-            //            if (!string.IsNullOrEmpty(sub_folder))
-            //            {
-            //                fname = SRC.ScenarioPath + @"Midi\" + sub_folder + fname_mp3;
-            //                if (SRC.FileSystem.FileExists(fname))
-            //                {
-            //                    SearchMidiFileRet = fname;
-            //                    // fpath_history.Add fname, buf   DEL MARGE
-            //                    return SearchMidiFileRet;
-            //                }
-            //            }
-
-            //            fname = SRC.ScenarioPath + @"Midi\" + fname_mp3;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        if (!string.IsNullOrEmpty(sub_folder))
-            //        {
-            //            fname = SRC.ScenarioPath + @"Midi\" + sub_folder + buf;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        fname = SRC.ScenarioPath + @"Midi\" + buf;
-            //        if (SRC.FileSystem.FileExists(fname))
-            //        {
-            //            SearchMidiFileRet = fname;
-            //            // fpath_history.Add fname, buf   DEL MARGE
-            //            return SearchMidiFileRet;
-            //        }
-            //    }
-
-            //    // ExtDataPath側のMidiフォルダ
-            //    if (extdata_midi_dir_exists)
-            //    {
-            //        if (is_mp3_available)
-            //        {
-            //            if (!string.IsNullOrEmpty(sub_folder))
-            //            {
-            //                fname = SRC.ExtDataPath + @"Midi\" + sub_folder + fname_mp3;
-            //                if (SRC.FileSystem.FileExists(fname))
-            //                {
-            //                    SearchMidiFileRet = fname;
-            //                    // fpath_history.Add fname, buf   DEL MARGE
-            //                    return SearchMidiFileRet;
-            //                }
-            //            }
-
-            //            fname = SRC.ExtDataPath + @"Midi\" + fname_mp3;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        if (!string.IsNullOrEmpty(sub_folder))
-            //        {
-            //            fname = SRC.ExtDataPath + @"Midi\" + sub_folder + buf;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        fname = SRC.ExtDataPath + @"Midi\" + buf;
-            //        if (SRC.FileSystem.FileExists(fname))
-            //        {
-            //            SearchMidiFileRet = fname;
-            //            // fpath_history.Add fname, buf   DEL MARGE
-            //            return SearchMidiFileRet;
-            //        }
-            //    }
-
-            //    // ExtDataPath2側のMidiフォルダ
-            //    if (extdata2_midi_dir_exists)
-            //    {
-            //        if (is_mp3_available)
-            //        {
-            //            if (!string.IsNullOrEmpty(sub_folder))
-            //            {
-            //                fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + fname_mp3;
-            //                if (SRC.FileSystem.FileExists(fname))
-            //                {
-            //                    SearchMidiFileRet = fname;
-            //                    // fpath_history.Add fname, buf   DEL MARGE
-            //                    return SearchMidiFileRet;
-            //                }
-            //            }
-
-            //            fname = SRC.ExtDataPath2 + @"Midi\" + fname_mp3;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        if (!string.IsNullOrEmpty(sub_folder))
-            //        {
-            //            fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + buf;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        fname = SRC.ExtDataPath2 + @"Midi\" + buf;
-            //        if (SRC.FileSystem.FileExists(fname))
-            //        {
-            //            SearchMidiFileRet = fname;
-            //            // fpath_history.Add fname, buf   DEL MARGE
-            //            return SearchMidiFileRet;
-            //        }
-            //    }
-
-            //    // 本体側のMidiフォルダ
-            //    if (is_mp3_available)
-            //    {
-            //        if (!string.IsNullOrEmpty(sub_folder))
-            //        {
-            //            fname = SRC.AppPath + @"Midi\" + sub_folder + fname_mp3;
-            //            if (SRC.FileSystem.FileExists(fname))
-            //            {
-            //                SearchMidiFileRet = fname;
-            //                // fpath_history.Add fname, buf   DEL MARGE
-            //                return SearchMidiFileRet;
-            //            }
-            //        }
-
-            //        fname = SRC.AppPath + @"Midi\" + fname_mp3;
-            //        if (SRC.FileSystem.FileExists(fname))
-            //        {
-            //            SearchMidiFileRet = fname;
-            //            // fpath_history.Add fname, buf   DEL MARGE
-            //            return SearchMidiFileRet;
-            //        }
-            //    }
-
-            //    if (!string.IsNullOrEmpty(sub_folder))
-            //    {
-            //        fname = SRC.AppPath + @"Midi\" + sub_folder + buf;
-            //        if (SRC.FileSystem.FileExists(fname))
-            //        {
-            //            SearchMidiFileRet = fname;
-            //            // fpath_history.Add fname, buf   DEL MARGE
-            //            return SearchMidiFileRet;
-            //        }
-            //    }
-
-            //    fname = SRC.AppPath + @"Midi\" + buf;
-            //    if (SRC.FileSystem.FileExists(fname))
-            //    {
-            //        SearchMidiFileRet = fname;
-            //        // fpath_history.Add fname, buf   DEL MARGE
-            //        return SearchMidiFileRet;
-            //    }
-
-            //    i = (j + 1);
-            //}
-
-            //return SearchMidiFileRet;
+                if (!string.IsNullOrEmpty(existFileName))
+                {
+                    return existFileName;
+                }
+            }
+            return null;
         }
 
         // MIDIファイルのサーチパスをリセットする
@@ -652,10 +382,10 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }
-            // TODO Directory.Exists
-            //.Where(x => Directory.Exists(x))
+                // TODO Directory.Exists
+                //.Where(x => Directory.Exists(x))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-            //    .Where(x => Directory.Exists(x))
+                //    .Where(x => Directory.Exists(x))
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？
