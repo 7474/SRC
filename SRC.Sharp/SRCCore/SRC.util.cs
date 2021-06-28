@@ -50,6 +50,13 @@ namespace SRCCore
             Money = GeneralLib.MaxLng(Money, 0);
         }
 
+        private Random _generalRand = new Random();
+        // ゲーム処理とは独立した0以上、1未満の乱数を返す
+        public double Rand()
+        {
+            return _generalRand.NextDouble();
+        }
+
         // バージョンを取得、設定する
         // 既定値は実行ファイルのバージョン
         // EntryAssemblyが取れない場合はCoreのバージョンを返す
