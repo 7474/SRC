@@ -183,62 +183,61 @@ namespace SRCCore
                 return;
             }
 
-            // XXX StartBGM でやればよくない？
-            //// 正しいファイル名？
-            //if (Strings.Len(bgm_name) < 5)
-            //{
-            //    return;
-            //}
+            // 正しいファイル名？
+            if (Strings.Len(bgm_name) < 5)
+            {
+                return;
+            }
 
-            //// ファイル名の本体部分を抜き出す
-            //fname = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
-            //if (GeneralLib.InStr2(fname, @"\") > 0)
-            //{
-            //    fname = Strings.Mid(fname, GeneralLib.InStr2(fname, @"\") + 1);
-            //}
+            // ファイル名の本体部分を抜き出す
+            fname = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
+            if (GeneralLib.InStr2(fname, @"\") > 0)
+            {
+                fname = Strings.Mid(fname, GeneralLib.InStr2(fname, @"\") + 1);
+            }
 
-            //// 既に同じMIDIが演奏されていればそのまま演奏し続ける
-            //if (Strings.Len(BGMFileName) > 0)
-            //{
-            //    if (Strings.InStr(BGMFileName, @"\" + fname + ".") > 0)
-            //    {
-            //        return;
-            //    }
-            //}
+            // 既に同じMIDIが演奏されていればそのまま演奏し続ける
+            if (Strings.Len(BGMFileName) > 0)
+            {
+                if (Strings.InStr(BGMFileName, @"\" + fname + ".") > 0)
+                {
+                    return;
+                }
+            }
 
-            //// 番号違い？
-            //if (Strings.Len(BGMFileName) > 5)
-            //{
-            //    fname2 = Strings.Left(BGMFileName, Strings.Len(BGMFileName) - 4);
-            //    if (GeneralLib.InStr2(fname2, @"\") > 0)
-            //    {
-            //        fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, @"\") + 1);
-            //    }
+            // 番号違い？
+            if (Strings.Len(BGMFileName) > 5)
+            {
+                fname2 = Strings.Left(BGMFileName, Strings.Len(BGMFileName) - 4);
+                if (GeneralLib.InStr2(fname2, @"\") > 0)
+                {
+                    fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, @"\") + 1);
+                }
 
-            //    if (Strings.Len(fname2) > 4)
-            //    {
-            //        switch (Strings.Right(fname2, 3) ?? "")
-            //        {
-            //            case "(2)":
-            //            case "(3)":
-            //            case "(4)":
-            //            case "(5)":
-            //            case "(6)":
-            //            case "(7)":
-            //            case "(8)":
-            //            case "(9)":
-            //                {
-            //                    fname2 = Strings.Left(fname2, Strings.Len(fname2) - 3);
-            //                    break;
-            //                }
-            //        }
-            //    }
+                if (Strings.Len(fname2) > 4)
+                {
+                    switch (Strings.Right(fname2, 3) ?? "")
+                    {
+                        case "(2)":
+                        case "(3)":
+                        case "(4)":
+                        case "(5)":
+                        case "(6)":
+                        case "(7)":
+                        case "(8)":
+                        case "(9)":
+                            {
+                                fname2 = Strings.Left(fname2, Strings.Len(fname2) - 3);
+                                break;
+                            }
+                    }
+                }
 
-            //    if ((fname ?? "") == (fname2 ?? ""))
-            //    {
-            //        return;
-            //    }
-            //}
+                if ((fname ?? "") == (fname2 ?? ""))
+                {
+                    return;
+                }
+            }
 
             // XXX なんで？
             // 繰り返し演奏に設定
