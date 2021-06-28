@@ -226,6 +226,7 @@ namespace SRCSharpForm
         public bool MessageFormVisible => frmMessage.Visible;
 
         public bool MainFormVisible => MainForm.Visible;
+        public string MainFormText { get => MainForm.Text; set => MainForm.Text = value; }
 
         private string DisplayedPilot;
         private string DisplayMode;

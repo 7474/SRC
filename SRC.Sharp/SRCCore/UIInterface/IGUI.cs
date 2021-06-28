@@ -303,6 +303,7 @@ namespace SRCCore
         // === MainForm 操作へのバイパス ===
 
         bool MainFormVisible { get; }
+        string MainFormText { get; set; }
         void MainFormShow();
         void MainFormHide();
 

@@ -244,7 +244,7 @@ namespace SRCCore
                     ScenarioFileName = ScenarioFileName,
                     Turn = Turn,
                     LocalVariableList = Event.LocalVariableList,
-                    DisableEventLabels = Event.colEventLabelList.List.Select(x => x.Data).ToList(),
+                    DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).ToList(),
                     AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
                     // TODO ファイルパスの正規化
@@ -306,9 +306,8 @@ namespace SRCCore
                 var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
                 if (scenario_file_is_different)
                 {
-                    // TODO Impl ウィンドウのタイトルを設定
                     // ウィンドウのタイトルを設定
-                    //GUI.MainFormText = "SRC - " + Strings.Left(fname2, Strings.Len(fname2) - 4);
+                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(ScenarioFileName);
                 }
                 Titles = data.Titles;
                 TotalTurn = data.TotalTurn;
@@ -470,20 +469,19 @@ namespace SRCCore
                 //    PList.UpdateSupportMod();
 
                 // 背景書き換え
-                // XXX 常に書き換えでない理由何かある？
-                //if (Map.IsMapDirty)
-                //{
-                int map_x, map_y;
-                map_x = GUI.MapX;
-                map_y = GUI.MapY;
-                GUI.SetupBackground(Map.MapDrawMode, "非同期");
-                GUI.MapX = map_x;
-                GUI.MapY = map_y;
+                if (Map.IsMapDirty)
+                {
+                    int map_x, map_y;
+                    map_x = GUI.MapX;
+                    map_y = GUI.MapY;
+                    GUI.SetupBackground(Map.MapDrawMode, "非同期");
+                    GUI.MapX = map_x;
+                    GUI.MapY = map_y;
 
-                // 再開イベントによるマップ画像の書き換え処理を行う
-                Event.HandleEvent("再開");
-                Map.IsMapDirty = false;
-                //}
+                    // 再開イベントによるマップ画像の書き換え処理を行う
+                    Event.HandleEvent("再開");
+                    Map.IsMapDirty = false;
+                }
 
                 Commands.SelectedUnit = null;
                 Commands.SelectedTarget = null;
