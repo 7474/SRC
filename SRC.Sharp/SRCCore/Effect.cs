@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -91,19 +92,13 @@ namespace SRCCore
                     GUI.UpdateScreen();
                 }
             }
+            catch (EventErrorException ex)
+            {
+                Event.DisplayEventErrorMessage(ex);
+            }
             catch (Exception ex)
             {
-                throw;
-                // TODO 戦闘アニメ実行中に発生したエラーの処理
-                //if (Strings.Len(Event.EventErrorMessage) > 0)
-                //{
-                //    Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
-                //    Event.EventErrorMessage = "";
-                //}
-                //else
-                //{
-                //    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
-                //}
+                Event.DisplayEventErrorMessage(Event.CurrentLineNum, ex.Message);
             }
         }
 
