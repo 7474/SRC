@@ -19,66 +19,58 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Printコマンドの引数の数が違います");
             }
 
-            try
+            var f = SRC.FileHandleManager.Get(GetArgAsLong(2));
+            var msg = GeneralLib.ListTail(EventData.Data, 3);
+            if (Strings.Right(msg, 1) != ";")
             {
-                var f = SRC.FileHandleManager.Get(GetArgAsLong(2));
-                var msg = GeneralLib.ListTail(EventData.Data, 3);
-                if (Strings.Right(msg, 1) != ";")
+                if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
                 {
-                    if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
+                    if (Strings.Left(msg, 2) == "$(")
                     {
-                        if (Strings.Left(msg, 2) == "$(")
+                        if (Strings.Right(msg, 1) == ")")
                         {
-                            if (Strings.Right(msg, 1) == ")")
-                            {
-                                msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
-                            }
+                            msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
                         }
-                        else if (GeneralLib.ListLength(msg) == 1)
-                        {
-                            msg = Expression.GetValueAsString(msg);
-                        }
-
-                        Expression.ReplaceSubExpression(ref msg);
                     }
-                    else
+                    else if (GeneralLib.ListLength(msg) == 1)
                     {
-                        msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
+                        msg = Expression.GetValueAsString(msg);
                     }
 
-                    f.Writer.WriteLine(msg);
+                    Expression.ReplaceSubExpression(ref msg);
                 }
                 else
                 {
-                    msg = Strings.Left(msg, Strings.Len(msg) - 1);
-                    if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
-                    {
-                        if (Strings.Left(msg, 2) == "$(")
-                        {
-                            if (Strings.Right(msg, 1) == ")")
-                            {
-                                msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
-                            }
-                        }
-                        else if (GeneralLib.ListLength(msg) == 1)
-                        {
-                            msg = Expression.GetValueAsString(msg);
-                        }
-
-                        Expression.ReplaceSubExpression(ref msg);
-                    }
-                    else
-                    {
-                        msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
-                    }
-
-                    f.Writer.WriteLine(msg);
+                    msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                 }
+
+                f.Writer.WriteLine(msg);
             }
-            catch (Exception ex)
+            else
             {
-                SRC.LogError(ex);
-                throw new EventErrorException(this, "Printコマンドに失敗しました");
+                msg = Strings.Left(msg, Strings.Len(msg) - 1);
+                if (Strings.Left(msg, 1) != "`" || Strings.Right(msg, 1) != "`")
+                {
+                    if (Strings.Left(msg, 2) == "$(")
+                    {
+                        if (Strings.Right(msg, 1) == ")")
+                        {
+                            msg = Expression.GetValueAsString(Strings.Mid(msg, 3, Strings.Len(msg) - 3));
+                        }
+                    }
+                    else if (GeneralLib.ListLength(msg) == 1)
+                    {
+                        msg = Expression.GetValueAsString(msg);
+                    }
+
+                    Expression.ReplaceSubExpression(ref msg);
+                }
+                else
+                {
+                    msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
+                }
+
+                f.Writer.WriteLine(msg);
             }
 
             return EventData.NextID;
