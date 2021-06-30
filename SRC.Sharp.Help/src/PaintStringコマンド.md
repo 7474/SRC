@@ -73,37 +73,22 @@ Font
 ```
 
 **例２**
-
+```sh
 Call TypeWrite 100 100 "消えた海賊船を追え！"
-
 # ルパン３世オープニング風タイプライターメッセージ
-
 # (X座標, Y座標, メッセージ)
-
 TypeWrite:
-
 Local i
-
 #メッセージの書きこみ位置を設定
-
 PaintString Args(1) Args(2) "";
-
 For i = 1 To Len(Args(3))
-
 #タイプ音を鳴らす
-
 PlaySound Type.wav
-
 #改行を行わずにメッセージを１文字だけ書き込む
-
 PaintString Mid(Args(3),i,1);
-
 #ウェイト処理とともに画面を更新し、書き込んだ文字を表示
-
 Wait 1
-
 Next
-
 Wait 2
-
 Return
+```
