@@ -152,13 +152,6 @@ namespace SRCCore.Events
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                    // TODO Impl
-                    //if (Strings.LCase(GeneralLib.ReadIni("Option", "BattleAnimation")) != "off")
-                    //{
-                    //    SRC.BattleAnimation = true;
-                    //}
-
-
                     bool battleAnimeIncludeLoaded =
                         LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
