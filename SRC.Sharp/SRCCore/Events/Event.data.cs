@@ -78,16 +78,15 @@ namespace SRCCore.Events
             colSysNormalLabelList.Clear();
 
             // デバッグモードの設定
-            // TODO Impl 
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "DebugMode")) == "on")
-            //{
-            //    if (!Expression.IsOptionDefined("デバッグ"))
-            //    {
-            //        Expression.DefineGlobalVariable("Option(デバッグ)");
-            //    }
+            if (SRC.SystemConfig.GetFlag("Option", "DebugMode"))
+            {
+                if (!Expression.IsOptionDefined("デバッグ"))
+                {
+                    Expression.DefineGlobalVariable("Option(デバッグ)");
+                }
 
-            //    Expression.SetVariableAsLong("Option(デバッグ)", 1);
-            //}
+                Expression.SetVariableAsLong("Option(デバッグ)", 1);
+            }
 
             // システム側のイベントデータのロード
             if (load_mode == "システム")
@@ -153,13 +152,6 @@ namespace SRCCore.Events
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                    // TODO Impl
-                    //if (Strings.LCase(GeneralLib.ReadIni("Option", "BattleAnimation")) != "off")
-                    //{
-                    //    SRC.BattleAnimation = true;
-                    //}
-
-
                     bool battleAnimeIncludeLoaded =
                         LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
@@ -370,7 +362,6 @@ namespace SRCCore.Events
                 // システムデータなら無視しておく
                 if (eventDataLine.IsSystemData) { continue; }
 
-                // TODO Impl
                 // リスト長がマイナスのときは括弧の対応が取れていない
                 if (command.ArgNum <= -1)
                 {
@@ -970,12 +961,12 @@ namespace SRCCore.Events
                 error_found = true;
             }
 
-            // TODO まだエラー出ないようになってない
-            //// 書式エラーが見つかった場合はSRCを終了
-            //if (error_found)
-            //{
-            //    SRC.TerminateSRC();
-            //}
+            // TODO まだエラー出ないようになってない -> 終了するようにして様子を見る
+            // 書式エラーが見つかった場合はSRCを終了
+            if (error_found)
+            {
+                SRC.TerminateSRC();
+            }
         }
 
         private bool ValidateCommandArgs()
@@ -1202,9 +1193,12 @@ namespace SRCCore.Events
                         else
                         {
                             // 他のイベントファイルの読み込み
-                            // TODO Impl 他のイベントファイルの読み込み
-                            var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2);
-                            if (fname2 != @"Lib\スペシャルパワー.eve" && fname2 != @"Lib\汎用戦闘アニメ\include.eve" && fname2 != @"Lib\include.eve")
+                            // '<filepath>' -> 'filepath'
+                            var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2).Trim();
+                            if (!SRC.FileSystem.PathEquals(fname2, @"Lib\スペシャルパワー.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\汎用戦闘アニメ\include.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\include.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\スペシャルパワー.eve"))
                             {
                                 foreach (var dir in new string[]
                                 {
@@ -1221,26 +1215,6 @@ namespace SRCCore.Events
                                         break;
                                     }
                                 }
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ScenarioPath + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ExtDataPath + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ExtDataPath2 + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.AppPath + fname2, source);
-                                //}
                             }
                         }
                     }

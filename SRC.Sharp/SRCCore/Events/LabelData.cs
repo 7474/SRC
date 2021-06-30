@@ -80,7 +80,6 @@ namespace SRCCore.Events
                 // ラベル全体
                 StrData = value;
 
-                //        TODO Impl
                 int i;
                 string lname;
 
@@ -310,10 +309,8 @@ namespace SRCCore.Events
                 intParaNum = GeneralLib.ListLength(value);
                 if (intParaNum == -1)
                 {
-                    // TODO Impl
-                    throw new TerminateException("ラベルの引数の括弧の対応が取れていません");
-                    //Event.DisplayEventErrorMessage(Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
-                    //return;
+                    SRC.Event.DisplayEventErrorMessage(SRC.Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
+                    return;
                 }
 
                 strParas = new string[(intParaNum + 1)];

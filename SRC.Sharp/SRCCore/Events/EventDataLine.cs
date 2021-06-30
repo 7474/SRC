@@ -4,11 +4,14 @@ namespace SRCCore.Events
 {
     public enum EventDataSource
     {
+        Unknown,
         System,
         Scenario,
     }
     public class EventDataLine
     {
+        public static readonly EventDataLine Empty = new EventDataLine(-1, EventDataSource.Unknown, "-", -1, "-");
+
         public int ID { get; }
         public EventDataSource Source { get; }
         // イベントファイルのファイル名

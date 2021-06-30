@@ -6,6 +6,7 @@ namespace SRCCore.Filesystem
     public interface IFileSystem
     {
         string PathCombine(params string[] paths);
+        bool PathEquals(string a, string b);
         bool FileExists(params string[] paths);
         Stream Open(params string[] paths);
 

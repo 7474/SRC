@@ -17,6 +17,11 @@ namespace SRCCore.Events
             }
         }
 
+        public void DisplayEventErrorMessage(EventErrorException ex)
+        {
+            DisplayEventErrorMessage(ex?.EventData ?? EventDataLine.Empty, ex.Message);
+        }
+
         public void DisplayEventErrorMessage(EventDataLine line, string msg)
         {
             SRC.DataErrors.Add(new InvalidSrcData(msg, line.File, line.LineNum, line.Data, "eve"));

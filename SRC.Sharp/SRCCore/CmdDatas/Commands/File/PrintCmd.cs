@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -18,7 +19,6 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Printコマンドの引数の数が違います");
             }
 
-            // TODO ファイル出力例外処理
             var f = SRC.FileHandleManager.Get(GetArgAsLong(2));
             var msg = GeneralLib.ListTail(EventData.Data, 3);
             if (Strings.Right(msg, 1) != ";")

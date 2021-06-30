@@ -27,6 +27,12 @@ namespace SRCCore.Filesystem
             return Path.Combine(paths.Select(x => Regex.Replace(x ?? "", @"^\\", "")).ToArray());
         }
 
+        public bool PathEquals(string a, string b)
+        {
+            // XXX NormalizePath で先頭 `\` を処理する？
+            return NormalizePath(PathCombine(a)).ToLower() == NormalizePath(PathCombine(b)).ToLower();
+        }
+
         public bool FileExists(params string[] paths)
         {
             string path = PathCombine(paths);
