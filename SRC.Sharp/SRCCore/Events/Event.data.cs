@@ -1193,9 +1193,12 @@ namespace SRCCore.Events
                         else
                         {
                             // 他のイベントファイルの読み込み
-                            // TODO Impl 他のイベントファイルの読み込み
-                            var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2);
-                            if (fname2 != @"Lib\スペシャルパワー.eve" && fname2 != @"Lib\汎用戦闘アニメ\include.eve" && fname2 != @"Lib\include.eve")
+                            // '<filepath>' -> 'filepath'
+                            var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2).Trim();
+                            if (!SRC.FileSystem.PathEquals(fname2, @"Lib\スペシャルパワー.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\汎用戦闘アニメ\include.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\include.eve")
+                                && !SRC.FileSystem.PathEquals(fname2, @"Lib\スペシャルパワー.eve"))
                             {
                                 foreach (var dir in new string[]
                                 {
@@ -1212,26 +1215,6 @@ namespace SRCCore.Events
                                         break;
                                     }
                                 }
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ScenarioPath + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ExtDataPath + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.ExtDataPath2 + fname2, source);
-                                //}
-                                //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                                //else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
-                                //{
-                                //    LoadEventData2(SRC.AppPath + fname2, source);
-                                //}
                             }
                         }
                     }
