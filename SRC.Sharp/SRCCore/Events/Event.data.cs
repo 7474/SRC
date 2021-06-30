@@ -362,7 +362,6 @@ namespace SRCCore.Events
                 // システムデータなら無視しておく
                 if (eventDataLine.IsSystemData) { continue; }
 
-                // TODO Impl
                 // リスト長がマイナスのときは括弧の対応が取れていない
                 if (command.ArgNum <= -1)
                 {
