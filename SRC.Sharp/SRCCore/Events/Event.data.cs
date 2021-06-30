@@ -78,16 +78,15 @@ namespace SRCCore.Events
             colSysNormalLabelList.Clear();
 
             // デバッグモードの設定
-            // TODO Impl 
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "DebugMode")) == "on")
-            //{
-            //    if (!Expression.IsOptionDefined("デバッグ"))
-            //    {
-            //        Expression.DefineGlobalVariable("Option(デバッグ)");
-            //    }
+            if (SRC.SystemConfig.GetFlag("Option", "DebugMode"))
+            {
+                if (!Expression.IsOptionDefined("デバッグ"))
+                {
+                    Expression.DefineGlobalVariable("Option(デバッグ)");
+                }
 
-            //    Expression.SetVariableAsLong("Option(デバッグ)", 1);
-            //}
+                Expression.SetVariableAsLong("Option(デバッグ)", 1);
+            }
 
             // システム側のイベントデータのロード
             if (load_mode == "システム")
