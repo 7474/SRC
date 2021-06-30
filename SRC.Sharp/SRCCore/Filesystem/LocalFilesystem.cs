@@ -29,7 +29,8 @@ namespace SRCCore.Filesystem
 
         public bool PathEquals(string a, string b)
         {
-            return NormalizePath(a).ToLower() == NormalizePath(b).ToLower();
+            // XXX NormalizePath で先頭 `\` を処理する？
+            return NormalizePath(PathCombine(a)).ToLower() == NormalizePath(PathCombine(b)).ToLower();
         }
 
         public bool FileExists(params string[] paths)
