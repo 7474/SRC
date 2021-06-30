@@ -80,7 +80,6 @@ namespace SRCCore.Events
                 // ラベル全体
                 StrData = value;
 
-                //        TODO Impl
                 int i;
                 string lname;
 
