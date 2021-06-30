@@ -30,6 +30,11 @@ namespace SRCCore.CmdDatas
         {
             SRC = src;
             Name = name;
+            SetEventData(eventData);
+        }
+
+        protected void SetEventData(EventDataLine eventData)
+        {
             EventData = eventData;
             ParseArgs(eventData.Data);
         }
@@ -40,10 +45,10 @@ namespace SRCCore.CmdDatas
         }
 
         // コマンドの種類
-        public CmdType Name { get; private set; }
+        public CmdType Name { get; }
 
         // コマンドのEventData
-        public EventDataLine EventData { get; }
+        public EventDataLine EventData { get; private set; }
 
         // 引数の数（コマンド名も含む点に留意すること）
         public int ArgNum { get; private set; }

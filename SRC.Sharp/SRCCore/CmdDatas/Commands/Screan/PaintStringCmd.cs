@@ -1,30 +1,34 @@
 using SRCCore.Events;
+using SRCCore.Lib;
 using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
     public class PaintStringCmd : CmdData
     {
+        private bool without_cr;
+
         public PaintStringCmd(SRC src, EventDataLine eventData) : base(src, CmdType.PaintStringCmd, eventData)
         {
-            // TODO Impl PaintString文の処理の高速化のため、あらかじめ構文解析しておく
+            without_cr = false;
+
+            // TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく
             // PaintString文の処理の高速化のため、あらかじめ構文解析しておく
+            // 「;」を含む場合は改めて項に分解
+            // (正しくリストの処理が行えないため)
+            var orgEdata = eventData.Data;
+            if (Strings.Right(orgEdata, 1) == ";")
+            {
+                without_cr = true;
 
-            //// 「;」を含む場合は改めて項に分解
-            //// (正しくリストの処理が行えないため)
-            //if (Strings.Right(buf, 1) == ";")
-            //{
-            //    buf = edata;
-            //    CmdName = CmdType.PaintStringRCmd;
-            //    buf = Strings.Left(buf, Strings.Len(buf) - 1);
-            //    if (Strings.Right(buf, 1) == " ")
-            //    {
-            //        // メッセージが空文字列
-            //        buf = buf + "\"\"";
-            //    }
-
-            //    ArgNum = GeneralLib.ListSplit(buf, list);
-            //}
+                var edata = Strings.Left(orgEdata, Strings.Len(orgEdata) - 1);
+                if (Strings.Right(orgEdata, 1) == " ")
+                {
+                    // メッセージが空文字列
+                    edata = edata + "\"\"";
+                }
+                SetEventData(new EventDataLine(eventData.ID, eventData.Source, eventData.File, eventData.LineNum, edata));
+            }
 
             //switch (ArgNum)
             //{
@@ -32,13 +36,9 @@ namespace SRCCore.CmdDatas.Commands
             //        {
             //            // 引数が１個の場合
             //            ArgNum = 2;
-            //            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            strArgs = new string[3];
-            //            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            lngArgs = new int[3];
-            //            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            dblArgs = new double[3];
-            //            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            ArgsType = new Expressions.ValueType[3];
             //            buf = list[2];
 
@@ -76,13 +76,9 @@ namespace SRCCore.CmdDatas.Commands
             //        {
             //            // 引数が２個の場合
             //            ArgNum = 2;
-            //            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            strArgs = new string[3];
-            //            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            lngArgs = new int[3];
-            //            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            dblArgs = new double[3];
-            //            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //            ArgsType = new Expressions.ValueType[3];
 
             //            // 表示文字列は必ず文字列
@@ -109,13 +105,9 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;
-            //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                strArgs = new string[5];
-            //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                lngArgs = new int[5];
-            //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                dblArgs = new double[5];
-            //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                ArgsType = new Expressions.ValueType[5];
             //                strArgs[2] = list[2];
             //                strArgs[3] = list[3];
@@ -133,13 +125,9 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                // 実行時まで座標指定があるかどうか不明
             //                ArgNum = 5;
-            //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                strArgs = new string[6];
-            //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                lngArgs = new int[6];
-            //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                dblArgs = new double[6];
-            //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                ArgsType = new Expressions.ValueType[6];
             //                strArgs[2] = list[2];
             //                strArgs[3] = list[3];
@@ -197,13 +185,9 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                // 座標指定があることが確定
             //                ArgNum = 4;
-            //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                strArgs = new string[5];
-            //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                lngArgs = new int[5];
-            //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                dblArgs = new double[5];
-            //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                ArgsType = new Expressions.ValueType[5];
             //                strArgs[2] = list[2];
             //                strArgs[3] = list[3];
@@ -221,13 +205,9 @@ namespace SRCCore.CmdDatas.Commands
             //            {
             //                // 実行時まで座標指定があるかどうか不明
             //                ArgNum = 5;
-            //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                strArgs = new string[6];
-            //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                lngArgs = new int[6];
-            //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                dblArgs = new double[6];
-            //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
             //                ArgsType = new Expressions.ValueType[6];
             //                strArgs[2] = list[2];
             //                strArgs[3] = list[3];
@@ -266,11 +246,6 @@ namespace SRCCore.CmdDatas.Commands
         {
             string sx, sy;
             int xx, yy;
-            var without_cr = default(bool);
-            if (Name != CmdType.PaintStringCmd)
-            {
-                without_cr = true;
-            }
 
             // PaintStringはあらかじめ構文解析済み
             switch (ArgNum)
