@@ -114,25 +114,11 @@ namespace SRCCore.Pilots
                 // 霊力能力を持たない場合
                 MaxPlanaRet = 0;
 
-                // TODO Impl MaxPlana
-                // XXX ぼちぼち追加パイロット厳しくなってきた
-                //// 追加パイロットの場合は第１パイロットの霊力を代わりに使う
-                //if (Unit is object)
-                //{
-                //    {
-                //        var withBlock = Unit;
-                //        if (withBlock.CountPilot() > 0)
-                //        {
-                //            if (!ReferenceEquals(withBlock.Pilot(1), this))
-                //            {
-                //                if (ReferenceEquals(withBlock.MainPilot(), this))
-                //                {
-                //                    MaxPlanaRet = withBlock.Pilot(1).MaxPlana();
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                // 追加パイロットの場合は第１パイロットの霊力を代わりに使う
+                if (IsMainAdditionalPilot)
+                {
+                    MaxPlanaRet = Unit.Pilots.First().MaxPlana();
+                }
 
                 return MaxPlanaRet;
             }
