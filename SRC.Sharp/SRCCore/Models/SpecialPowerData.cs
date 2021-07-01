@@ -2420,20 +2420,10 @@ namespace SRCCore.Models
                 return true;
             }
 
-            // TODO Impl オブジェクト色等
-            //// オブジェクト色等を記録しておく
-            //prev_obj_color = Event.ObjColor;
-            //prev_obj_fill_color = Event.ObjFillColor;
-            //prev_obj_fill_style = Event.ObjFillStyle;
-            //prev_obj_draw_width = Event.ObjDrawWidth;
-            //prev_obj_draw_option = Event.ObjDrawOption;
-
-            //// オブジェクト色等をデフォルトに戻す
-            //Event.ObjColor = Color.White;
-            //Event.ObjFillColor =Color.White;
-            //Event.ObjFillStyle = System.Drawing.Drawing2D.HatchStyle.Min;
-            //Event.ObjDrawWidth = 1;
-            //Event.ObjDrawOption = "";
+            // オブジェクト色等を記録しておく
+            var prevObjectDrawSetting = Event.GetObjectDrawSetting();
+            // オブジェクト色等をデフォルトに戻す
+            Event.ResetObjectDrawSetting();
 
             // アニメ指定を分割
             var animes = Animation.Split(";").ToList();
@@ -2603,12 +2593,8 @@ namespace SRCCore.Models
                 // メッセージウィンドウを閉じる
                 GUI.CloseMessageForm();
 
-                //// オブジェクト色等を元に戻す
-                //Event.ObjColor = prev_obj_color;
-                //Event.ObjFillColor = prev_obj_fill_color;
-                //Event.ObjFillStyle = prev_obj_fill_style;
-                //Event.ObjDrawWidth = prev_obj_draw_width;
-                //Event.ObjDrawOption = prev_obj_draw_option;
+                // オブジェクト色等を元に戻す
+                Event.SetObjectDrawSetting(prevObjectDrawSetting);
                 return true;
             }
             catch (EventErrorException ex)

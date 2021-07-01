@@ -111,6 +111,39 @@ namespace SRCCore.Events
         // オブジェクトの描画方法
         public string ObjDrawOption;
 
+        public ObjectDrawSetting GetObjectDrawSetting()
+        {
+            return new ObjectDrawSetting
+            {
+                ObjColor = ObjColor,
+                ObjDrawWidth = ObjDrawWidth,
+                ObjFillColor = ObjFillColor,
+                ObjFillStyle = ObjFillStyle,
+                ObjDrawOption = ObjDrawOption,
+            };
+        }
+        public void SetObjectDrawSetting(ObjectDrawSetting setting)
+        {
+            ObjColor = setting.ObjColor;
+            ObjDrawWidth = setting.ObjDrawWidth;
+            ObjFillColor = setting.ObjFillColor;
+            ObjFillStyle = setting.ObjFillStyle;
+            ObjDrawOption = setting.ObjDrawOption;
+        }
+        public void ResetObjectDrawSetting()
+        {
+            SetObjectDrawSetting(DefaultObjectDrawSetting);
+        }
+        // XXX GUIの責務にしたい
+        public ObjectDrawSetting DefaultObjectDrawSetting = new ObjectDrawSetting
+        {
+            ObjColor = Color.White,
+            ObjDrawWidth = 1,
+            ObjFillColor = Color.White,
+            ObjFillStyle = FillStyle.VbFSTransparent,
+            ObjDrawOption = "",
+        };
+
         // ホットポイント
         public IList<HotPoint> HotPointList;
 
@@ -122,5 +155,19 @@ namespace SRCCore.Events
         /// Lint目的などで指定する。
         /// </summary>
         public bool SkipExternalSourceLoad { get; set; }
+    }
+
+    public class ObjectDrawSetting
+    {
+        // オブジェクトの色
+        public Color ObjColor;
+        // オブジェクトの線の太さ
+        public int ObjDrawWidth;
+        // オブジェクトの背景色
+        public Color ObjFillColor;
+        // オブジェクトの背景描画方法
+        public FillStyle ObjFillStyle;
+        // オブジェクトの描画方法
+        public string ObjDrawOption;
     }
 }
