@@ -2141,12 +2141,11 @@ namespace SRCCore.Models
                                 t.PilotMessage("復活", msg_mode: "");
                             }
 
-                            // TODO Impl Animation
-                            //if (t.IsAnimationDefined("復活", sub_situation: ""))
-                            //{
-                            //    t.PlayAnimation("復活", sub_situation: "");
-                            //}
-                            //else
+                            if (t.IsAnimationDefined("復活", sub_situation: ""))
+                            {
+                                t.PlayAnimation("復活", sub_situation: "");
+                            }
+                            else
                             {
                                 t.SpecialEffect("復活", sub_situation: "");
                             }
