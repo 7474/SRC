@@ -370,22 +370,21 @@ namespace SRCCore.Units
             {
                 int MaxENRet = intMaxEN;
 
-                // TODO Impl MaxEN
-                //// パイロットによる修正
-                //if (CountPilot() > 0)
-                //{
-                //    // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
-                //    if (IsFeatureAvailable("霊力変換器"))
-                //    {
-                //        MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
-                //    }
+                // パイロットによる修正
+                if (CountPilot() > 0)
+                {
+                    // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
+                    if (IsFeatureAvailable("霊力変換器"))
+                    {
+                        MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
+                    }
 
-                //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
-                //    if (IsFeatureAvailable("オーラ変換器"))
-                //    {
-                //        MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
-                //    }
-                //}
+                    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
+                    if (IsFeatureAvailable("オーラ変換器"))
+                    {
+                        MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
+                    }
+                }
 
                 // 最大ＥＮは最低でも5
                 if (MaxENRet < 5)
