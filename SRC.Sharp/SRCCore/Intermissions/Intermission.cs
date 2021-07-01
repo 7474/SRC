@@ -2016,14 +2016,6 @@ namespace SRCCore
             if (selected_unit is object)
             {
                 GUI.CloseListBox();
-                // TODO txtComment Visible
-                //if (withBlock22.txtComment.Enabled)
-                //{
-                //    withBlock22.txtComment.Enabled = false;
-                //    withBlock22.txtComment.Visible = false;
-                //    withBlock22.Height = SrcFormatter.TwipsToPixelsY(SrcFormatter.PixelsToTwipsY(withBlock22.Height) - 600d);
-                //}
-
                 GUI.ReduceListBoxHeight();
                 GUI.EnlargeListBoxWidth();
                 return;

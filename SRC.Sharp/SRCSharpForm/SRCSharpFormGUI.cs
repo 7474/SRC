@@ -435,6 +435,13 @@ namespace SRCSharpForm
             if (frmListBox.Visible)
             {
                 frmListBox.Hide();
+                // ShowItems に設定しているので要らんかも
+                if (frmListBox.txtComment.Enabled)
+                {
+                    frmListBox.txtComment.Visible = false;
+                    frmListBox.txtComment.Enabled = false;
+                    frmListBox.Height = frmListBox.Height - 40;
+                }
             }
         }
 
