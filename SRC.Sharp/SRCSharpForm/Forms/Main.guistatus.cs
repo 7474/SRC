@@ -2695,8 +2695,6 @@ namespace SRCSharpForm
                                     {
                                         if (u.EN < 5)
                                         {
-                                            // MOD START 240a
-                                            // upic.ForeColor = rgb(150, 0, 0)
                                             upic.SetColor(StatusFontColorAbilityDisable);
                                         }
 
