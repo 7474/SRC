@@ -870,11 +870,11 @@ namespace SRCSharpForm
                     //    Graphics.Silhouette();
                     //}
 
-                    //// ネガポジ反転
-                    //if (negpos)
-                    //{
-                    //    Graphics.NegPosReverse(transparent);
-                    //}
+                    // ネガポジ反転
+                    if (negpos)
+                    {
+                        drawBuffer.NegPosReverse();
+                    }
 
                     // フィルタ
                     if (is_colorfilter)

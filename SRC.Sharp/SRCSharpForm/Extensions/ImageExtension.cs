@@ -50,6 +50,13 @@ namespace SRCSharpForm.Extensions
             new float[]{0, 0, 0, 1, 0},
             new float[]{0, 0, 0, 0, 1}
         });
+        private static readonly ColorMatrix negPosReverseMatrix = new ColorMatrix(new float[][]{
+            new float[]{-1, 0, 0, 0, 0},
+            new float[]{0, -1, 0, 0, 0},
+            new float[]{0, 0, -1, 0, 0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{1, 1, 1, 0, 1}
+        });
 
         public static Image ApplyColorMatrix(this Image image, ColorMatrix matrix)
         {
@@ -91,6 +98,11 @@ namespace SRCSharpForm.Extensions
         public static Image Water(this Image image)
         {
             return image.ApplyColorMatrix(waterMatrix);
+        }
+
+        public static Image NegPosReverse(this Image image)
+        {
+            return image.ApplyColorMatrix(negPosReverseMatrix);
         }
 
         public static Image ColorFilter(this Image image, Color color, float alpha)
