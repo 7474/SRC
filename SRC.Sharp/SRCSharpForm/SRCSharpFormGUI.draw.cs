@@ -761,7 +761,6 @@ namespace SRCSharpForm
                 }
                 //LoadedPicture:
 
-                // TODO Impl 画像の加工
                 using (var gBuf = Graphics.FromImage(drawBuffer))
                 {
                     // 画像の一部を塗りつぶして描画する場合
@@ -789,37 +788,45 @@ namespace SRCSharpForm
                         gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
                     }
 
-                    //if (tleft_part)
-                    //{
-                    //    // 左上
-                    //    var loopTo5 = (orig_width - 1);
-                    //    for (i = 0; i <= loopTo5; i++)
-                    //        orig_pic.Line(i, orig_height - 1 - i);
-                    //}
+                    if (tleft_part)
+                    {
+                        // 左上
+                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            new Point(orig_width -1,0),
+                            new Point(orig_width -1,orig_height - 1),
+                            new Point(0,orig_height - 1),
+                        });
+                    }
 
-                    //if (tright_part)
-                    //{
-                    //    // 右上
-                    //    var loopTo6 = (orig_width - 1);
-                    //    for (i = 0; i <= loopTo6; i++)
-                    //        orig_pic.Line(i, i); 
-                    //}
+                    if (tright_part)
+                    {
+                        // 右上
+                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            new Point(0,0),
+                            new Point(orig_width -1,orig_height - 1),
+                            new Point(0,orig_height - 1),
+                        });
+                    }
 
-                    //if (bleft_part)
-                    //{
-                    //    // 左下
-                    //    var loopTo7 = (orig_width - 1);
-                    //    for (i = 0; i <= loopTo7; i++)
-                    //        orig_pic.Line(i, 0);
-                    //}
+                    if (bleft_part)
+                    {
+                        // 左下
+                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            new Point(0,0),
+                            new Point(orig_width -1,0),
+                            new Point(orig_width -1,orig_height - 1),
+                        });
+                    }
 
-                    //if (bright_part)
-                    //{
-                    //    // 右下
-                    //    var loopTo8 = (orig_width - 1);
-                    //    for (i = 0; i <= loopTo8; i++)
-                    //        orig_pic.Line(i, 0); 
-                    //}
+                    if (bright_part)
+                    {
+                        // 右下
+                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            new Point(0,0),
+                            new Point(orig_width -1,0),
+                            new Point(0,orig_height - 1),
+                        });
+                    }
                 }
                 // 特殊効果
                 if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
@@ -838,6 +845,7 @@ namespace SRCSharpForm
                         drawBuffer.Monotone();
                     }
 
+                    // TODO Impl 画像の加工
                     //// セピア
                     //if (is_sepia)
                     //{
