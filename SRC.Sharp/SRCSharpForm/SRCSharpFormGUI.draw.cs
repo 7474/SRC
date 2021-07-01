@@ -845,25 +845,25 @@ namespace SRCSharpForm
                         drawBuffer.Monotone();
                     }
 
+                    // セピア
+                    if (is_sepia)
+                    {
+                        drawBuffer.Sepia();
+                    }
+
+                    // 夕焼け
+                    if (is_sunset)
+                    {
+                        drawBuffer.Sunset();
+                    }
+
+                    // 水中
+                    if (is_water)
+                    {
+                        drawBuffer.Water();
+                    }
+
                     // TODO Impl 画像の加工
-                    //// セピア
-                    //if (is_sepia)
-                    //{
-                    //    Graphics.Sepia(transparent);
-                    //}
-
-                    //// 夕焼け
-                    //if (is_sunset)
-                    //{
-                    //    Graphics.Sunset(transparent);
-                    //}
-
-                    //// 水中
-                    //if (is_water)
-                    //{
-                    //    Graphics.Water(transparent);
-                    //}
-
                     //// シルエット
                     //if (is_sil)
                     //{
@@ -887,13 +887,11 @@ namespace SRCSharpForm
                     }
 
                     //// 明 (多段指定可能)
-                    //var loopTo9 = bright_count;
-                    //for (i = 1; i <= loopTo9; i++)
+                    //for (i = 1; i <= bright_count; i++)
                     //    Graphics.Bright(transparent);
 
                     //// 暗 (多段指定可能)
-                    //var loopTo10 = dark_count;
-                    //for (i = 1; i <= loopTo10; i++)
+                    //for (i = 1; i <= dark_count; i++)
                     //    Graphics.Dark(transparent);
 
                     // 左右反転
