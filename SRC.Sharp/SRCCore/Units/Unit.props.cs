@@ -337,28 +337,27 @@ namespace SRCCore.Units
             {
                 int MaxHPRet = lngMaxHP;
 
-                // TODO Impl MaxHP
-                //// パイロットによる修正
-                //if (CountPilot() > 0)
-                //{
-                //    // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
-                //    if (IsFeatureAvailable("霊力変換器"))
-                //    {
-                //        MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
-                //    }
+                // パイロットによる修正
+                if (CountPilot() > 0)
+                {
+                    // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
+                    if (IsFeatureAvailable("霊力変換器"))
+                    {
+                        MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
+                    }
 
-                //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
-                //    if (IsFeatureAvailable("オーラ変換器"))
-                //    {
-                //        MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
-                //    }
-                //}
+                    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
+                    if (IsFeatureAvailable("オーラ変換器"))
+                    {
+                        MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
+                    }
+                }
 
-                //// 最大ＨＰは最低でも1
-                //if (MaxHPRet < 1)
-                //{
-                //    MaxHPRet = 1;
-                //}
+                // 最大ＨＰは最低でも1
+                if (MaxHPRet < 1)
+                {
+                    MaxHPRet = 1;
+                }
 
                 return MaxHPRet;
             }
