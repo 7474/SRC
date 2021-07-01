@@ -118,7 +118,6 @@ namespace SRCCore.CmdDatas.Commands
 
                 // 選択肢を配列で指定する場合
                 case 3:
-                    // TODO Impl
                     cancelResult = "";
                     var vname = GetArg(2);
                     msg = GetArgAsString(3);

@@ -150,7 +150,7 @@ namespace SRCCore.CmdDatas.Commands
                 u.AddCondition("非操作", -1, cdata: "");
 
                 // パイロットの愛称を表示
-                // TODO セルサイズ
+                // TODO セルサイズというかGUIに切り出す
                 GUI.DrawString(p.get_Nickname(false), 32 * xx + 2, 32 * yy - 31);
                 switch (key_type ?? "")
                 {

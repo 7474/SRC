@@ -57,15 +57,6 @@ namespace SRCCore.Maps
             var mh = map.MapHeight;
             SetMapSize(mw, mh);
 
-            // 各地形
-
-            // 表示位置
-            // SetupBackgroundでMapX,MapYが書き換えられてしまうため、この位置で
-            // 値を参照する必要がある。
-            // TODO Impl 表示位置
-            //GUI.MapX = data.MapX;
-            //GUI.MapY = data.MapY;
-
             // ユニット配置
             foreach (Unit u in SRC.UList.Items)
             {
@@ -100,7 +91,7 @@ namespace SRCCore.Maps
         public string MapDrawMode;
         // フィルタ色
         [JsonProperty]
-        public Color MapDrawFilterColor;
+        public Color MapDrawFilterColor = Color.Black;
         // フィルタの透過度
         [JsonProperty]
         public double MapDrawFilterTransPercent;

@@ -13,6 +13,11 @@ namespace SRCCore.Pilots
     public partial class Pilot
     {
         public bool IsMainPilot => Unit?.MainPilot() == this;
+        public bool IsMainAdditionalPilot =>
+            Unit != null
+            && Unit.Pilots.Any()
+            && Unit.Pilots.First() != this
+            && Unit.MainPilot() == this;
 
         // ユニット u に搭乗
         public void Ride(Unit u, bool is_support = false)

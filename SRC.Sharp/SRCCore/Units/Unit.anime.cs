@@ -292,20 +292,10 @@ namespace SRCCore.Units
             // メッセージウィンドウは表示されている？
             var is_message_form_opened = GUI.MessageFormVisible;
 
-            // TODO Impl オブジェクト色等
-            //// オブジェクト色等を記録しておく
-            //prev_obj_color = Event.ObjColor;
-            //prev_obj_fill_color = Event.ObjFillColor;
-            //prev_obj_fill_style = Event.ObjFillStyle;
-            //prev_obj_draw_width = Event.ObjDrawWidth;
-            //prev_obj_draw_option = Event.ObjDrawOption;
-
-            //// オブジェクト色等をデフォルトに戻す
-            //Event.ObjColor = ColorTranslator.ToOle(Color.White);
-            //Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //Event.ObjFillStyle = vbFSTransparent;
-            //Event.ObjDrawWidth = 1;
-            //Event.ObjDrawOption = "";
+            // オブジェクト色等を記録しておく
+            var prevObjectDrawSetting = Event.GetObjectDrawSetting();
+            // オブジェクト色等をデフォルトに戻す
+            Event.ResetObjectDrawSetting();
 
             // 検索するシチュエーションが武器名かどうか調べる
             var is_weapon = Weapons.Any(w => main_situation == w.Name + "(攻撃)");
@@ -648,12 +638,8 @@ namespace SRCCore.Units
                     GUI.CloseMessageForm();
                 }
 
-                //// オブジェクト色等を元に戻す
-                //Event.ObjColor = prev_obj_color;
-                //Event.ObjFillColor = prev_obj_fill_color;
-                //Event.ObjFillStyle = prev_obj_fill_style;
-                //Event.ObjDrawWidth = prev_obj_draw_width;
-                //Event.ObjDrawOption = prev_obj_draw_option;
+                // オブジェクト色等を元に戻す
+                Event.SetObjectDrawSetting(prevObjectDrawSetting);
 
                 // イベント用ターゲットを元に戻す
                 Event.SelectedTargetForEvent = prev_selected_target;

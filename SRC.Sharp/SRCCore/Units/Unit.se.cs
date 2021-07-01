@@ -294,20 +294,10 @@ namespace SRCCore.Units
             //            // メッセージウィンドウは表示されている？
             //            is_message_form_opened = My.MyProject.Forms.frmMessage.Visible;
 
-            //            // オブジェクト色等を記録しておく
-            //            prev_obj_color = Event.ObjColor;
-            //            prev_obj_fill_color = Event.ObjFillColor;
-            //            prev_obj_fill_style = Event.ObjFillStyle;
-            //            prev_obj_draw_width = Event.ObjDrawWidth;
-            //            prev_obj_draw_option = Event.ObjDrawOption;
-
-            //            // オブジェクト色等をデフォルトに戻す
-            //            Event.ObjColor = ColorTranslator.ToOle(Color.White);
-            //            Event.ObjFillColor = ColorTranslator.ToOle(Color.White);
-            //            // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //            Event.ObjFillStyle = vbFSTransparent;
-            //            Event.ObjDrawWidth = 1;
-            //            Event.ObjDrawOption = "";
+            // オブジェクト色等を記録しておく
+            var prevObjectDrawSetting = Event.GetObjectDrawSetting();
+            // オブジェクト色等をデフォルトに戻す
+            Event.ResetObjectDrawSetting();
 
             //            // 検索するシチュエーションが武器名かどうか調べる
             //            var loopTo1 = CountWeapon();
@@ -563,12 +553,8 @@ namespace SRCCore.Units
             //                GUI.CloseMessageForm();
             //            }
 
-            //            // オブジェクト色等を元に戻す
-            //            Event.ObjColor = prev_obj_color;
-            //            Event.ObjFillColor = prev_obj_fill_color;
-            //            Event.ObjFillStyle = prev_obj_fill_style;
-            //            Event.ObjDrawWidth = prev_obj_draw_width;
-            //            Event.ObjDrawOption = prev_obj_draw_option;
+            // オブジェクト色等を元に戻す
+            Event.SetObjectDrawSetting(prevObjectDrawSetting);
 
             //            // イベント用ターゲットを元に戻す
             //            Event.SelectedTargetForEvent = prev_selected_target;

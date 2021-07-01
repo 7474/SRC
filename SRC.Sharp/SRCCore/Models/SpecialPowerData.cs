@@ -1324,149 +1324,71 @@ namespace SRCCore.Models
                                 GUI.Sleep(150);
                             }
 
-                            // TODO Impl SP回復
-                            //// 回復対象となるパイロット数を算出
-                            //n = (t.CountPilot() + t.CountSupport());
-                            //if (t.IsFeatureAvailable("追加サポート"))
-                            //{
-                            //    n = (n + 1);
-                            //}
+                            // 回復対象となるパイロット数を算出
+                            var n = t.AllPilots.Count();
+                            // ＳＰを回復
+                            if (n == 1)
+                            {
+                                // メインパイロットのみのＳＰを回復
+                                var tmp = t.MainPilot().SP;
+                                t.MainPilot().SP = (int)(t.MainPilot().SP + 10d * effect.dblEffectLevel);
+                                if (!is_event)
+                                {
+                                    if (!displayed_string)
+                                    {
+                                        if (effect.dblEffectLevel >= 0d)
+                                        {
+                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
+                                        }
+                                        else
+                                        {
+                                            GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
+                                        }
+                                    }
 
-                            //// ＳＰを回復
-                            //if (n == 1)
-                            //{
-                            //    // メインパイロットのみのＳＰを回復
-                            //    tmp = t.MainPilot().SP;
-                            //    t.MainPilot().SP = (t.MainPilot().SP + 10d * effect.dblEffectLevel);
-                            //    if (!is_event)
-                            //    {
-                            //        if (!displayed_string)
-                            //        {
-                            //            if (effect.dblEffectLevel >= 0d)
-                            //            {
-                            //                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
-                            //            }
-                            //            else
-                            //            {
-                            //                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
-                            //            }
-                            //        }
+                                    displayed_string = true;
+                                    if (effect.dblEffectLevel >= 0d)
+                                    {
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
+                                    }
+                                    else
+                                    {
+                                        GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                foreach (var tp in t.AllPilots)
+                                {
+                                    var tmp = tp.SP;
+                                    tp.SP = (int)(tp.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                                    if (!is_event)
+                                    {
+                                        if (!displayed_string)
+                                        {
+                                            if (effect.dblEffectLevel >= 0d)
+                                            {
+                                                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(tp.SP - tmp));
+                                            }
+                                            else
+                                            {
+                                                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(tp.SP - tmp));
+                                            }
+                                        }
 
-                            //        displayed_string = true;
-                            //        if (effect.dblEffectLevel >= 0d)
-                            //        {
-                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
-                            //        }
-                            //        else
-                            //        {
-                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
-                            //        }
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    // メインパイロットのＳＰを回復
-                            //    tmp = t.MainPilot().SP;
-                            //    t.MainPilot().SP = (t.MainPilot().SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                            //    if (!is_event)
-                            //    {
-                            //        if (!displayed_string)
-                            //        {
-                            //            if (effect.dblEffectLevel >= 0d)
-                            //            {
-                            //                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.MainPilot().SP - tmp));
-                            //            }
-                            //            else
-                            //            {
-                            //                GUI.DrawSysString(t.x, t.y, SrcFormatter.Format(t.MainPilot().SP - tmp));
-                            //            }
-                            //        }
-
-                            //        displayed_string = true;
-                            //        if (effect.dblEffectLevel >= 0d)
-                            //        {
-                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(t.MainPilot().SP - tmp) + "回復した。");
-                            //        }
-                            //        else
-                            //        {
-                            //            GUI.DisplaySysMessage(t.MainPilot().get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - t.MainPilot().SP) + "減少した。");
-                            //        }
-                            //    }
-
-                            //    // サブパイロットのＳＰを回復
-                            //    var loopTo2 = t.CountPilot();
-                            //    for (j = 2; j <= loopTo2; j++)
-                            //    {
-                            //        {
-                            //            var withBlock3 = t.Pilot(j);
-                            //            tmp = withBlock3.SP;
-                            //            withBlock3.SP = (withBlock3.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                            //            if (!is_event)
-                            //            {
-                            //                if (withBlock3.SP != tmp)
-                            //                {
-                            //                    if (effect.dblEffectLevel >= 0d)
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
-                            //                    }
-                            //                    else
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-
-                            //    // サポートパイロットのＳＰを回復
-                            //    var loopTo3 = t.CountSupport();
-                            //    for (j = 1; j <= loopTo3; j++)
-                            //    {
-                            //        {
-                            //            var withBlock4 = t.Support(j);
-                            //            tmp = withBlock4.SP;
-                            //            withBlock4.SP = (withBlock4.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                            //            if (!is_event)
-                            //            {
-                            //                if (withBlock4.SP != tmp)
-                            //                {
-                            //                    if (effect.dblEffectLevel >= 0d)
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
-                            //                    }
-                            //                    else
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-
-                            //    // 追加サポートパイロットのＳＰを回復
-                            //    if (t.IsFeatureAvailable("追加サポート"))
-                            //    {
-                            //        {
-                            //            var withBlock5 = t.AdditionalSupport();
-                            //            tmp = withBlock5.SP;
-                            //            withBlock5.SP = (withBlock5.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
-                            //            if (!is_event)
-                            //            {
-                            //                if (withBlock5.SP != tmp)
-                            //                {
-                            //                    if (effect.dblEffectLevel >= 0d)
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
-                            //                    }
-                            //                    else
-                            //                    {
-                            //                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                                        displayed_string = true;
+                                        if (effect.dblEffectLevel >= 0d)
+                                        {
+                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tp.SP - tmp) + "回復した。");
+                                        }
+                                        else
+                                        {
+                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - tp.SP) + "減少した。");
+                                        }
+                                    }
+                                }
+                            }
 
                             if (!is_event)
                             {
@@ -1482,7 +1404,7 @@ namespace SRCCore.Models
                     case "装填":
                         {
                             // 効果が適用可能かどうか判定
-                            if(!t.Weapons.Any(x => x.Bullet() < x.MaxBullet()))
+                            if (!t.Weapons.Any(x => x.Bullet() < x.MaxBullet()))
                             {
                                 goto NextEffect;
                             }
@@ -2219,12 +2141,11 @@ namespace SRCCore.Models
                                 t.PilotMessage("復活", msg_mode: "");
                             }
 
-                            // TODO Impl Animation
-                            //if (t.IsAnimationDefined("復活", sub_situation: ""))
-                            //{
-                            //    t.PlayAnimation("復活", sub_situation: "");
-                            //}
-                            //else
+                            if (t.IsAnimationDefined("復活", sub_situation: ""))
+                            {
+                                t.PlayAnimation("復活", sub_situation: "");
+                            }
+                            else
                             {
                                 t.SpecialEffect("復活", sub_situation: "");
                             }
@@ -2499,20 +2420,10 @@ namespace SRCCore.Models
                 return true;
             }
 
-            // TODO Impl オブジェクト色等
-            //// オブジェクト色等を記録しておく
-            //prev_obj_color = Event.ObjColor;
-            //prev_obj_fill_color = Event.ObjFillColor;
-            //prev_obj_fill_style = Event.ObjFillStyle;
-            //prev_obj_draw_width = Event.ObjDrawWidth;
-            //prev_obj_draw_option = Event.ObjDrawOption;
-
-            //// オブジェクト色等をデフォルトに戻す
-            //Event.ObjColor = Color.White;
-            //Event.ObjFillColor =Color.White;
-            //Event.ObjFillStyle = System.Drawing.Drawing2D.HatchStyle.Min;
-            //Event.ObjDrawWidth = 1;
-            //Event.ObjDrawOption = "";
+            // オブジェクト色等を記録しておく
+            var prevObjectDrawSetting = Event.GetObjectDrawSetting();
+            // オブジェクト色等をデフォルトに戻す
+            Event.ResetObjectDrawSetting();
 
             // アニメ指定を分割
             var animes = Animation.Split(";").ToList();
@@ -2682,12 +2593,8 @@ namespace SRCCore.Models
                 // メッセージウィンドウを閉じる
                 GUI.CloseMessageForm();
 
-                //// オブジェクト色等を元に戻す
-                //Event.ObjColor = prev_obj_color;
-                //Event.ObjFillColor = prev_obj_fill_color;
-                //Event.ObjFillStyle = prev_obj_fill_style;
-                //Event.ObjDrawWidth = prev_obj_draw_width;
-                //Event.ObjDrawOption = prev_obj_draw_option;
+                // オブジェクト色等を元に戻す
+                Event.SetObjectDrawSetting(prevObjectDrawSetting);
                 return true;
             }
             catch (EventErrorException ex)
