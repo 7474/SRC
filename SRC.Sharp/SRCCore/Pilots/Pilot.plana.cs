@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Lib;
+using System.Linq;
 
 namespace SRCCore.Pilots
 {
@@ -21,47 +22,26 @@ namespace SRCCore.Pilots
                     PlanaRet = proPlana;
                 }
 
-                // TODO Impl Plana
-                //// 追加パイロットかどうか判定
-                //if (Unit is null)
-                //{
-                //    return default;
-                //}
-
-                //{
-                //    var withBlock = Unit;
-                //    if (withBlock.CountPilot() == 0)
-                //    {
-                //        return default;
-                //    }
-
-                //    if (ReferenceEquals(withBlock.Pilot(1), this))
-                //    {
-                //        return default;
-                //    }
-
-                //    if (!ReferenceEquals(withBlock.MainPilot(), this))
-                //    {
-                //        return default;
-                //    }
-
-                //    // 追加パイロットだったので第１パイロットの霊力を代わりに使う
-                //    if (IsSkillAvailable("霊力"))
-                //    {
-                //        {
-                //            var withBlock1 = withBlock.Pilot(1);
-                //            if (withBlock1.MaxPlana() > 0)
-                //            {
-                //                proPlana = (MaxPlana() * withBlock1.Plana0 / withBlock1.MaxPlana());
-                //                PlanaRet = proPlana;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        PlanaRet = withBlock.Pilot(1).Plana0;
-                //    }
-                //}
+                // 追加パイロットかどうか判定
+                if (IsMainAdditionalPilot)
+                {
+                    // 追加パイロットだったので第１パイロットの霊力を代わりに使う
+                    if (IsSkillAvailable("霊力"))
+                    {
+                        {
+                            var p = Unit.Pilots.First();
+                            if (p.MaxPlana() > 0)
+                            {
+                                proPlana = (MaxPlana() * p.Plana0 / p.MaxPlana());
+                                PlanaRet = proPlana;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        PlanaRet = Unit.Pilots.First().Plana0;
+                    }
+                }
 
                 return PlanaRet;
             }
