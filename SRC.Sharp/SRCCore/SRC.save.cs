@@ -42,6 +42,9 @@ namespace SRCCore
         public IList<string> DisableEventLabels { get; set; }
         public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
+        public int MapX { get; set; }
+        public int MapY { get; set; }
+
 
         public string BGMFileName { get; set; }
         public bool RepeatMode { get; set; }
@@ -247,6 +250,8 @@ namespace SRCCore
                     DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).ToList(),
                     AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
+                    MapX = GUI.MapX,
+                    MapY = GUI.MapY,
                     // TODO ファイルパスの正規化
                     BGMFileName = Sound.BGMFileName,
                     RepeatMode = Sound.RepeatMode,
@@ -320,6 +325,8 @@ namespace SRCCore
                 ScenarioFileName = FileSystem.ToAbsolutePath(ScenarioPath, data.ScenarioFileName);
                 Turn = data.Turn;
                 Event.LocalVariableList = data.LocalVariableList;
+                GUI.MapX = data.MapX;
+                GUI.MapY = data.MapY;
 
                 // 使用するデータをロード
                 if (!quick_load)
@@ -469,7 +476,8 @@ namespace SRCCore
                 //    PList.UpdateSupportMod();
 
                 // 背景書き換え
-                if (Map.IsMapDirty)
+                // XXX 元はマップがロードに伴って変化した時のみ処理していたが一律処理する
+                //if (Map.IsMapDirty)
                 {
                     int map_x, map_y;
                     map_x = GUI.MapX;
