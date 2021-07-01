@@ -929,80 +929,78 @@ namespace SRCCore.Units
         // 装甲
         public int get_Armor(string ref_mode)
         {
-            return lngArmor;
-            // TODO Impl get_Armor
-            //int ArmorRet = lngArmor;
-            //// ステータス表示用
-            //switch (ref_mode ?? "")
-            //{
-            //    case "基本値":
-            //        {
-            //            if (IsConditionSatisfied("装甲劣化"))
-            //            {
-            //                ArmorRet = ArmorRet / 2;
-            //            }
+            int ArmorRet = lngArmor;
+            // ステータス表示用
+            switch (ref_mode ?? "")
+            {
+                case "基本値":
+                    {
+                        if (IsConditionSatisfied("装甲劣化"))
+                        {
+                            ArmorRet = ArmorRet / 2;
+                        }
 
-            //            if (IsConditionSatisfied("石化"))
-            //            {
-            //                ArmorRet = 2 * ArmorRet;
-            //            }
+                        if (IsConditionSatisfied("石化"))
+                        {
+                            ArmorRet = 2 * ArmorRet;
+                        }
 
-            //            if (IsConditionSatisfied("凍結"))
-            //            {
-            //                ArmorRet = ArmorRet / 2;
-            //            }
+                        if (IsConditionSatisfied("凍結"))
+                        {
+                            ArmorRet = ArmorRet / 2;
+                        }
 
-            //            return default;
-            //        }
+                        return ArmorRet;
+                    }
 
-            //    case "修正値":
-            //        {
-            //            ArmorRet = 0;
-            //            break;
-            //        }
-            //}
+                case "修正値":
+                    {
+                        ArmorRet = 0;
+                        break;
+                    }
+            }
 
-            //// パイロットによる修正
-            //if (CountPilot() > 0)
-            //{
-            //    // 霊力による装甲修正
-            //    if (IsFeatureAvailable("霊力変換器"))
-            //    {
-            //        ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
-            //    }
+            // パイロットによる修正
+            if (CountPilot() > 0)
+            {
+                // 霊力による装甲修正
+                if (IsFeatureAvailable("霊力変換器"))
+                {
+                    ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
+                }
 
-            //    // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
-            //    if (IsFeatureAvailable("サイキックドライブ"))
-            //    {
-            //        ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
-            //    }
+                // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
+                if (IsFeatureAvailable("サイキックドライブ"))
+                {
+                    ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
+                }
 
-            //    // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
-            //    if (IsFeatureAvailable("オーラ変換器"))
-            //    {
-            //        ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
-            //    }
-            //}
+                // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
+                if (IsFeatureAvailable("オーラ変換器"))
+                {
+                    ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
+                }
+            }
 
-            //// 装甲が劣化している場合は装甲値は半減
-            //if (IsConditionSatisfied("装甲劣化"))
-            //{
-            //    ArmorRet = ArmorRet / 2;
-            //}
+            // 装甲が劣化している場合は装甲値は半減
+            if (IsConditionSatisfied("装甲劣化"))
+            {
+                ArmorRet = ArmorRet / 2;
+            }
 
-            //// 石化しているユニットはとても固い……
-            //if (IsConditionSatisfied("石化"))
-            //{
-            //    ArmorRet = 2 * ArmorRet;
-            //}
+            // 石化しているユニットはとても固い……
+            if (IsConditionSatisfied("石化"))
+            {
+                ArmorRet = 2 * ArmorRet;
+            }
 
-            //// 凍っているユニットは脆くなる
-            //if (IsConditionSatisfied("凍結"))
-            //{
-            //    ArmorRet = ArmorRet / 2;
-            //}
+            // 凍っているユニットは脆くなる
+            if (IsConditionSatisfied("凍結"))
+            {
+                ArmorRet = ArmorRet / 2;
+            }
 
-            //return ArmorRet;
+            return ArmorRet;
         }
 
         // 運動性
