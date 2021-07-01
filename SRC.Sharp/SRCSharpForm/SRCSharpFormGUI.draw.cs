@@ -863,12 +863,11 @@ namespace SRCSharpForm
                         drawBuffer.Water();
                     }
 
-                    // TODO Impl 画像の加工
-                    //// シルエット
-                    //if (is_sil)
-                    //{
-                    //    Graphics.Silhouette();
-                    //}
+                    // シルエット
+                    if (is_sil)
+                    {
+                        drawBuffer.Silhouette();
+                    }
 
                     // ネガポジ反転
                     if (negpos)

@@ -50,6 +50,14 @@ namespace SRCSharpForm.Extensions
             new float[]{0, 0, 0, 1, 0},
             new float[]{0, 0, 0, 0, 1}
         });
+        // 真っ白以外が真っ黒になるようにする
+        private static readonly ColorMatrix silhouetteMatrix = new ColorMatrix(new float[][]{
+            new float[]{255, 255, 255, 0, 0},
+            new float[]{255, 255, 255, 0, 0},
+            new float[]{255, 255, 255, 0, 0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{-764, -764, -764, 0, 1}
+        });
         private static readonly ColorMatrix negPosReverseMatrix = new ColorMatrix(new float[][]{
             new float[]{-1, 0, 0, 0, 0},
             new float[]{0, -1, 0, 0, 0},
@@ -98,6 +106,11 @@ namespace SRCSharpForm.Extensions
         public static Image Water(this Image image)
         {
             return image.ApplyColorMatrix(waterMatrix);
+        }
+
+        public static Image Silhouette(this Image image)
+        {
+            return image.ApplyColorMatrix(silhouetteMatrix);
         }
 
         public static Image NegPosReverse(this Image image)
