@@ -63,57 +63,34 @@ namespace SRCCore.Pilots
                     proPlana = value;
                 }
 
-                // TODO Impl Plana
-                //// 追加パイロットかどうか判定
-                //if (Unit is null)
-                //{
-                //    return;
-                //}
-
-                //{
-                //    var withBlock = Unit;
-                //    if (withBlock.CountPilot() == 0)
-                //    {
-                //        return;
-                //    }
-
-                //    if (ReferenceEquals(withBlock.Pilot(1), this))
-                //    {
-                //        return;
-                //    }
-
-                //    if (!ReferenceEquals(withBlock.MainPilot(), this))
-                //    {
-                //        return;
-                //    }
-
-                //    // 追加パイロットだったので第１パイロットの霊力値を代わりに使う
-                //    {
-                //        var withBlock1 = withBlock.Pilot(1);
-                //        if (IsSkillAvailable("霊力"))
-                //        {
-                //            // 追加パイロットが霊力を持つ場合は第１パイロットと消費率を一致させる
-                //            if (withBlock1.MaxSP > 0)
-                //            {
-                //                withBlock1.Plana0 = withBlock1.MaxPlana() * proPlana / MaxPlana();
-                //                proPlana = (MaxPlana() * withBlock1.Plana0 / withBlock1.MaxPlana());
-                //            }
-                //        }
-                //        // 追加パイロットが霊力を持たない場合は第１パイロットの霊力値をそのまま使う
-                //        else if (value > withBlock1.MaxPlana())
-                //        {
-                //            withBlock1.Plana0 = withBlock1.MaxPlana();
-                //        }
-                //        else if (value < 0)
-                //        {
-                //            withBlock1.Plana0 = 0;
-                //        }
-                //        else
-                //        {
-                //            withBlock1.Plana0 = value;
-                //        }
-                //    }
-                //}
+                // 追加パイロットかどうか判定
+                if (IsMainAdditionalPilot)
+                // 追加パイロットだったので第１パイロットの霊力値を代わりに使う
+                {
+                    var p = Unit.Pilots.First();
+                    if (IsSkillAvailable("霊力"))
+                    {
+                        // 追加パイロットが霊力を持つ場合は第１パイロットと消費率を一致させる
+                        if (p.MaxSP > 0)
+                        {
+                            p.Plana0 = p.MaxPlana() * proPlana / MaxPlana();
+                            proPlana = (MaxPlana() * p.Plana0 / p.MaxPlana());
+                        }
+                    }
+                    // 追加パイロットが霊力を持たない場合は第１パイロットの霊力値をそのまま使う
+                    else if (value > p.MaxPlana())
+                    {
+                        p.Plana0 = p.MaxPlana();
+                    }
+                    else if (value < 0)
+                    {
+                        p.Plana0 = 0;
+                    }
+                    else
+                    {
+                        p.Plana0 = value;
+                    }
+                }
             }
         }
 
