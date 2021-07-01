@@ -896,17 +896,17 @@ namespace SRCSharpForm
                     //for (i = 1; i <= loopTo10; i++)
                     //    Graphics.Dark(transparent);
 
-                    //// 左右反転
-                    //if (vrev)
-                    //{
-                    //    Graphics.VReverse();
-                    //}
+                    // 左右反転
+                    if (vrev)
+                    {
+                        drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                    }
 
-                    //// 上下反転
-                    //if (hrev)
-                    //{
-                    //    Graphics.HReverse();
-                    //}
+                    // 上下反転
+                    if (hrev)
+                    {
+                        drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    }
 
                     // 回転
                     if (angle != 0)
