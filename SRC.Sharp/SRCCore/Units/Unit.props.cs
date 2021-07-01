@@ -1006,50 +1006,47 @@ namespace SRCCore.Units
         // 運動性
         public int get_Mobility(string ref_mode)
         {
-            return intMobility;
-            // TODO Impl get_Mobility
-            //    int MobilityRet = default;
-            //    MobilityRet = intMobility;
-            //    switch (ref_mode ?? "")
-            //    {
-            //        case "基本値":
-            //            {
-            //                return default;
-            //            }
+            int MobilityRet = intMobility;
+            switch (ref_mode ?? "")
+            {
+                case "基本値":
+                    {
+                        return MobilityRet;
+                    }
 
-            //        case "修正値":
-            //            {
-            //                MobilityRet = 0;
-            //                break;
-            //            }
-            //    }
+                case "修正値":
+                    {
+                        MobilityRet = 0;
+                        break;
+                    }
+            }
 
-            //    // パイロットによる修正
-            //    if (CountPilot() > 0)
-            //    {
-            //        // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
-            //        if (IsFeatureAvailable("サイキックドライブ"))
-            //        {
-            //            MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
-            //        }
+            // パイロットによる修正
+            if (CountPilot() > 0)
+            {
+                // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
+                if (IsFeatureAvailable("サイキックドライブ"))
+                {
+                    MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
+                }
 
-            //        // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
-            //        if (IsFeatureAvailable("オーラ変換器"))
-            //        {
-            //            MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
-            //        }
+                // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
+                if (IsFeatureAvailable("オーラ変換器"))
+                {
+                    MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
+                }
 
-            //        // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
-            //        if (IsFeatureAvailable("シンクロドライブ"))
-            //        {
-            //            if (MainPilot().SynchroRate() > 0)
-            //            {
-            //                MobilityRet = (int)(MobilityRet + (long)(SyncLevel() - 50d) / 2L);
-            //            }
-            //        }
-            //    }
+                // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
+                if (IsFeatureAvailable("シンクロドライブ"))
+                {
+                    if (MainPilot().SynchroRate() > 0)
+                    {
+                        MobilityRet = (int)(MobilityRet + (long)(SyncLevel() - 50d) / 2L);
+                    }
+                }
+            }
 
-            //    return MobilityRet;
+            return MobilityRet;
         }
 
         // 描画すべきビットマップ
