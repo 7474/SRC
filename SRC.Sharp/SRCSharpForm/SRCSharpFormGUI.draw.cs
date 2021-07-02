@@ -289,749 +289,382 @@ namespace SRCSharpForm
             }
             try
             {
-                // TODO 特殊なファイル名を解決
-                #region TODO
-                //            // 読み込むファイルの探索
-
-                //            // 前回の画像ファイルと同じ？
-                //            if ((fname ?? "") == (last_fname ?? ""))
-                //            {
-                //                // 前回ファイルは見つかっていたのか？
-                //                if (!last_exists)
-                //                {
-                //                    DrawPictureRet = false;
-                //                    return DrawPictureRet;
-                //                }
-                //            }
-
-                //            // 以前表示した拡大画像が利用可能？
-                //            var loopTo = (SRC.ImageBufferSize - 1);
-                //            for (i = 0; i <= loopTo; i++)
-                //            {
-                //                // 同じファイル？
-                //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
-                //                {
-                //                    // オプションも同じ？
-                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] == dw && PicBufDH[i] == dh && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
-                //                    {
-                //                        // 同じファイル、オプションによる画像が見つかった
-
-                //                        // 以前表示した画像をそのまま利用
-                //                        UsePicBuf(i);
-                //                        orig_pic = MainForm.picBuf(i);
-                //                        {
-                //                            var withBlock = orig_pic;
-                //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock.Width);
-                //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock.Height);
-                //                        }
-                //                        // Debug.Print "Reuse " && Format$(i) && " As Stretched"
-                //                        goto EditedPicture;
-                //                    }
-                //                }
-                //            }
-
-                //            // 以前表示した画像が利用可能？
-                //            var loopTo1 = (SRC.ImageBufferSize - 1);
-                //            for (i = 0; i <= loopTo1; i++)
-                //            {
-                //                // 同じファイル？
-                //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
-                //                {
-                //                    // オプションも同じ？
-                //                    if ((PicBufOption[i] ?? "") == (pic_option ?? "") && (PicBufOption2[i] ?? "") == (pic_option2 ?? "") && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
-                //                    {
-                //                        // 同じファイル、オプションによる画像が見つかった
-
-                //                        // 以前表示した画像をそのまま利用
-                //                        UsePicBuf(i);
-                //                        orig_pic = MainForm.picBuf(i);
-                //                        {
-                //                            var withBlock1 = orig_pic;
-                //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock1.Width);
-                //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock1.Height);
-                //                        }
-                //                        // Debug.Print "Reuse " && Format$(i) && " As Edited"
-                //                        found_orig = true;
-                //                        goto EditedPicture;
-                //                    }
-                //                }
-                //            }
-
-                //            // 以前使用した部分画像が利用可能？
-                //            if (sw != 0)
-                //            {
-                //                var loopTo2 = (SRC.ImageBufferSize - 1);
-                //                for (i = 0; i <= loopTo2; i++)
-                //                {
-                //                    // 同じファイル？
-                //                    if ((PicBufFname[i] ?? "") == (fname ?? ""))
-                //                    {
-                //                        if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSX[i] == sx && PicBufSY[i] == sy && PicBufSW[i] == sw && PicBufSH[i] == sh)
-                //                        {
-                //                            // 以前使用した部分画像をそのまま利用
-                //                            UsePicBuf(i);
-                //                            orig_pic = MainForm.picBuf(i);
-                //                            {
-                //                                var withBlock2 = orig_pic;
-                //                                orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock2.Width);
-                //                                orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock2.Height);
-                //                            }
-                //                            // Debug.Print "Reuse " && Format$(i) && " As Partial"
-                //                            goto LoadedOrigPicture;
-                //                        }
-                //                    }
-                //                }
-                //            }
-
-                //            // 以前使用した原画像が利用可能？
-                //            var loopTo3 = (SRC.ImageBufferSize - 1);
-                //            for (i = 0; i <= loopTo3; i++)
-                //            {
-                //                // 同じファイル？
-                //                if ((PicBufFname[i] ?? "") == (fname ?? ""))
-                //                {
-                //                    if (string.IsNullOrEmpty(PicBufOption[i]) && string.IsNullOrEmpty(PicBufOption2[i]) && !PicBufIsMask[i] && PicBufDW[i] ==  Constants.DEFAULT_LEVEL && PicBufDH[i] ==  Constants.DEFAULT_LEVEL && PicBufSW[i] == 0)
-                //                    {
-                //                        // 以前使用した原画像をそのまま利用
-                //                        UsePicBuf(i);
-                //                        orig_pic = MainForm.picBuf(i);
-                //                        {
-                //                            var withBlock3 = orig_pic;
-                //                            orig_width = (int)SrcFormatter.PixelsToTwipsX(withBlock3.Width);
-                //                            orig_height = (int)SrcFormatter.PixelsToTwipsY(withBlock3.Height);
-                //                        }
-                //                        // Debug.Print "Reuse " && Format$(i) && " As Orig"
-                //                        goto LoadedOrigPicture;
-                //                    }
-                //                }
-                //            }
-
-                //            // 特殊なファイル名
-                //            switch (Strings.LCase(fname) ?? "")
-                //            {
-                //                case "black.bmp":
-                //                case @"event\black.bmp":
-                //                    {
-                //                        // 黒で塗りつぶし
-                //                        if (dx ==  Constants.DEFAULT_LEVEL)
-                //                        {
-                //                            dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
-                //                        }
-
-                //                        if (dy ==  Constants.DEFAULT_LEVEL)
-                //                        {
-                //                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
-                //                        }
-                //                        ret = PatBlt(pic.hDC, dx, dy, dw, dh, BLACKNESS);
-                //                        goto DrewPicture;
-                //                        break;
-                //                    }
-
-                //                case "white.bmp":
-                //                case @"event\white.bmp":
-                //                    {
-                //                        // 白で塗りつぶし
-                //                        if (dx ==  Constants.DEFAULT_LEVEL)
-                //                        {
-                //                            dx = (int)((long)(SrcFormatter.PixelsToTwipsX(pic.Width) - dw) / 2L);
-                //                        }
-
-                //                        if (dy ==  Constants.DEFAULT_LEVEL)
-                //                        {
-                //                            dy = (int)((long)(SrcFormatter.PixelsToTwipsY(pic.Height) - dh) / 2L);
-                //                        }
-                //                        ret = PatBlt(pic.hDC, dx, dy, dw, dh, WHITENESS);
-                //                        goto DrewPicture;
-                //                        break;
-                //                    }
-
-                //                case @"common\effect_tile(ally).bmp":
-                //                case @"anime\common\effect_tile(ally).bmp":
-                //                    {
-                //                        // 味方ユニットタイル
-                //                        orig_pic = MainForm.picUnit;
-                //                        orig_width = 32;
-                //                        orig_height = 32;
-                //                        goto LoadedOrigPicture;
-                //                        break;
-                //                    }
-
-                //                case @"common\effect_tile(enemy).bmp":
-                //                case @"anime\common\effect_tile(enemy).bmp":
-                //                    {
-                //                        // 敵ユニットタイル
-                //                        orig_pic = MainForm.picEnemy;
-                //                        orig_width = 32;
-                //                        orig_height = 32;
-                //                        goto LoadedOrigPicture;
-                //                        break;
-                //                    }
-
-                //                case @"common\effect_tile(neutral).bmp":
-                //                case @"anime\common\effect_tile(neutral).bmp":
-                //                    {
-                //                        // 中立ユニットタイル
-                //                        orig_pic = MainForm.picNeautral;
-                //                        orig_width = 32;
-                //                        orig_height = 32;
-                //                        goto LoadedOrigPicture;
-                //                        break;
-                //                    }
-                //            }
-
-                //            // フルパスで指定されている？
-                //            if (Strings.InStr(fname, ":") == 2)
-                //            {
-                //                fpath = "";
-                //                last_path = "";
-                //                // 登録を避けるため
-                //                in_history = true;
-                //                goto FoundPicture;
-
-                //                // 履歴を検索してみる
-                //            };
-                //            // UPGRADE_WARNING: オブジェクト fpath_history.Item() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //            fpath = Conversions.ToString(fpath_history[fname]);
-
-                //            // 履歴上にファイルを発見
-                //            last_path = "";
-                //            ;
-                //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-                //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToZeroStatement not implemented, please report this issue in 'On Error GoTo 0' at character 333274
-
-
-                //            Input:
-
-                //                    '履歴上にファイルを発見
-                //                    On Error GoTo 0
-
-                //             */
-                //            if (string.IsNullOrEmpty(fpath))
-                //            {
-                //                // ファイルは存在しない
-                //                last_fname = fname;
-                //                last_exists = false;
-                //                DrawPictureRet = false;
-                //                return DrawPictureRet;
-                //            }
-
-                //            in_history = true;
-                //            goto FoundPicture;
-
-
-                //        // 履歴になかった
-                //        NotFound:
-                //            ;
-                //            ;
-
-                //            // 戦闘アニメ用？
-                //            if (Strings.InStr(fname, @"\EFFECT_") > 0)
-                //            {
-                //                if (scenario_anime_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\" + fname))
-                //                    {
-                //                        fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
-                //                        last_path = "";
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (extdata_anime_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath + @"Bitmap\Anime\" + fname))
-                //                    {
-                //                        fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
-                //                        last_path = "";
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (extdata2_anime_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname))
-                //                    {
-                //                        fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
-                //                        last_path = "";
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (SRC.FileSystem.FileExists(SRC.AppPath + @"Bitmap\Anime\" + fname))
-                //                {
-                //                    fpath = SRC.AppPath + @"Bitmap\Anime\";
-                //                    last_path = "";
-                //                    goto FoundPicture;
-                //                }
-                //            }
-
-                //            // 前回と同じパス？
-                //            if (Strings.Len(last_path) > 0)
-                //            {
-                //                if (SRC.FileSystem.FileExists(last_path + fname))
-                //                {
-                //                    fpath = last_path;
-                //                    goto FoundPicture;
-                //                }
-                //            }
-
-                //            // パス名入り？
-                //            if (Strings.InStr(fname, @"Bitmap\") > 0)
-                //            {
-                //                if (scenario_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname))
-                //                    {
-                //                        fpath = SRC.ScenarioPath;
-                //                        last_path = fpath;
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (SRC.FileSystem.FileExists(SRC.AppPath + fname))
-                //                {
-                //                    fpath = SRC.AppPath;
-                //                    last_path = "";
-                //                    goto FoundPicture;
-                //                }
-
-                //                if (Strings.Mid(fname, 2, 1) == ":")
-                //                {
-                //                    fpath = "";
-                //                    last_path = "";
-                //                    goto FoundPicture;
-                //                }
-                //            }
-
-                //            // フォルダ指定あり？
-                //            if (Strings.InStr(fname, @"\") > 0)
-                //            {
-                //                if (scenario_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\" + fname))
-                //                    {
-                //                        fpath = SRC.ScenarioPath + @"Bitmap\";
-                //                        last_path = fpath;
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (extdata_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath + @"Bitmap\" + fname))
-                //                    {
-                //                        fpath = SRC.ExtDataPath + @"Bitmap\";
-                //                        last_path = "";
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (extdata2_bitmap_dir_exists)
-                //                {
-                //                    if (SRC.FileSystem.FileExists(SRC.ExtDataPath2 + @"Bitmap\" + fname))
-                //                    {
-                //                        fpath = SRC.ExtDataPath2 + @"Bitmap\";
-                //                        last_path = "";
-                //                        goto FoundPicture;
-                //                    }
-                //                }
-
-                //                if (SRC.FileSystem.FileExists(SRC.AppPath + @"Bitmap\" + fname))
-                //                {
-                //                    fpath = SRC.AppPath + @"Bitmap\";
-                //                    last_path = "";
-                //                    goto FoundPicture;
-                //                }
-
-                //                if (Strings.LCase(Strings.Left(fname, 4)) == @"map\")
-                //                {
-                //                    tname = Strings.Mid(fname, 5);
-                //                    if (Strings.InStr(tname, @"\") == 0)
-                //                    {
-                //                        i = (Strings.Len(tname) - 5);
-                //                        while (i > 0)
-                //                        {
-                //                            if (LikeOperator.LikeString(Strings.Mid(tname, i, 1), "[!-0-9]", CompareMethod.Binary))
-                //                            {
-                //                                break;
-                //                            }
-
-                //                            i = (i - 1);
-                //                        }
-
-                //                        if (i > 0)
-                //                        {
-                //                            tdir = Strings.Left(tname, i) + @"\";
-                //                            tnum = Strings.Mid(tname, i + 1, Strings.Len(tname) - i - 4);
-                //                            tname = Strings.Left(tname, i) + SrcFormatter.Format(GeneralLib.StrToLng(tnum), "0000") + ".bmp";
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //            // 地形画像検索用の地形画像ディレクトリ名と4桁ファイル名を作成
-                //            else if (LikeOperator.LikeString(fname, "*#.bmp", CompareMethod.Binary) && LikeOperator.LikeString(Strings.Left(fname, 1), "[a-z]", CompareMethod.Binary))
-                //            {
-                //                i = (Strings.Len(fname) - 5);
-                //                while (i > 0)
-                //                {
-                //                    if (LikeOperator.LikeString(Strings.Mid(fname, i, 1), "[!-0-9]", CompareMethod.Binary))
-                //                    {
-                //                        break;
-                //                    }
-
-                //                    i = (i - 1);
-                //                }
-
-                //                if (i > 0)
-                //                {
-                //                    tdir = Strings.Left(fname, i);
-                //                    {
-                //                        var withBlock4 = SRC.TDList;
-                //                        var loopTo4 = withBlock4.Count;
-                //                        for (j = 1; j <= loopTo4; j++)
-                //                        {
-                //                            if (tdir == withBlock4.Item(withBlock4.OrderedID(j)).Bitmap)
-                //                            {
-                //                                tnum = Strings.Mid(fname, i + 1, Strings.Len(fname) - i - 4);
-                //                                tname = Strings.Left(fname, i) + SrcFormatter.Format(GeneralLib.StrToLng(tnum), "0000") + ".bmp";
-                //                                break;
-                //                            }
-                //                        }
-
-                //                        if (j <= withBlock4.Count)
-                //                        {
-                //                            tdir = tdir + @"\";
-                //                        }
-                //                        else
-                //                        {
-                //                            tdir = "";
-                //                        }
-                //                    }
-                //                }
-                //            }
-                #endregion
-
-                // 各フォルダを検索する
-                var image = transparent && BGColor == Color.White
-                    ? imageBuffer.GetTransparent(fname)
-                    : imageBuffer.Get(fname);
-                if (image == null)
+                using (var fillIamge = new Bitmap((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height))
                 {
-                    // 表示を中止
-                    return false;
-                }
 
-                var orig_width = image.Width;
-                var orig_height = image.Height;
-                Bitmap drawBuffer = null;
+                    // 特殊なファイル名を解決
+                    // 読み込むファイルの探索
+                    Image image = null;
 
-                // 原画像の一部のみを描画？
-                if (sw != 0)
-                {
-                    if (sw != orig_width || sh != orig_height)
+                    // 特殊なファイル名
+                    switch (Strings.LCase(fname) ?? "")
                     {
-                        // 原画像から描画部分をコピー
+                        case "black.bmp":
+                        case @"event\black.bmp":
+                            // 黒で塗りつぶし
+                            using(var fillG = Graphics.FromImage(fillIamge))
+                            {
+                                fillG.FillRectangle(Brushes.Black, g.VisibleClipBounds);
+                            }
+                            image = fillIamge;
+                            break;
+
+                        case "white.bmp":
+                        case @"event\white.bmp":
+                            // 白で塗りつぶし
+                            using (var fillG = Graphics.FromImage(fillIamge))
+                            {
+                                fillG.FillRectangle(Brushes.White, g.VisibleClipBounds);
+                            }
+                            image = fillIamge;
+                            break;
+
+                        case @"common\effect_tile(ally).bmp":
+                        case @"anime\common\effect_tile(ally).bmp":
+                            // 味方ユニットタイル
+                            image = MainForm.picUnit.Image;
+                            break;
+
+                        case @"common\effect_tile(enemy).bmp":
+                        case @"anime\common\effect_tile(enemy).bmp":
+                            // 敵ユニットタイル
+                            image = MainForm.picEnemy.Image;
+                            break;
+
+                        case @"common\effect_tile(neutral).bmp":
+                        case @"anime\common\effect_tile(neutral).bmp":
+                            // 中立ユニットタイル
+                            image = MainForm.picNeautral.Image;
+                            break;
+                    }
+
+                    if (image == null)
+                    {
+                        // 各フォルダを検索する
+                        image = transparent && BGColor == Color.White
+                           ? imageBuffer.GetTransparent(fname)
+                           : imageBuffer.Get(fname);
+                    }
+
+                    if (image == null)
+                    {
+                        // 表示を中止
+                        return false;
+                    }
+
+                    var orig_width = image.Width;
+                    var orig_height = image.Height;
+                    Bitmap drawBuffer = null;
+
+
+                    // 原画像の一部のみを描画？
+                    if (sw != 0)
+                    {
+                        if (sw != orig_width || sh != orig_height)
                         {
-                            if (sx == Constants.DEFAULT_LEVEL)
+                            // 原画像から描画部分をコピー
                             {
-                                sx = (orig_width - sw) / 2;
-                            }
+                                if (sx == Constants.DEFAULT_LEVEL)
+                                {
+                                    sx = (orig_width - sw) / 2;
+                                }
 
-                            if (sy == Constants.DEFAULT_LEVEL)
-                            {
-                                sy = (orig_height - sh) / 2;
+                                if (sy == Constants.DEFAULT_LEVEL)
+                                {
+                                    sy = (orig_height - sh) / 2;
+                                }
+                                drawBuffer = new Bitmap(sw, sh);
+                                using (var gBuf = Graphics.FromImage(drawBuffer))
+                                {
+                                    gBuf.DrawImage(image, new Rectangle(0, 0, sw, sh), new Rectangle(sx, sy, sw, sh), GraphicsUnit.Pixel);
+                                }
                             }
-                            drawBuffer = new Bitmap(sw, sh);
-                            using (var gBuf = Graphics.FromImage(drawBuffer))
-                            {
-                                gBuf.DrawImage(image, new Rectangle(0, 0, sw, sh), new Rectangle(sx, sy, sw, sh), GraphicsUnit.Pixel);
-                            }
+                            orig_width = sw;
+                            orig_height = sh;
                         }
-                        orig_width = sw;
-                        orig_height = sh;
                     }
-                }
-                if (drawBuffer == null)
-                {
-                    drawBuffer = new Bitmap(image);
-                }
-                if (transparent && BGColor != Color.White)
-                {
-                    drawBuffer.MakeTransparent(BGColor);
-                }
-                //LoadedPicture:
-
-                using (var gBuf = Graphics.FromImage(drawBuffer))
-                {
-                    // 画像の一部を塗りつぶして描画する場合
-                    if (top_part)
+                    if (drawBuffer == null)
                     {
-                        // 上半分
-                        gBuf.FillRectangle(CurrentPaintBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                        drawBuffer = new Bitmap(image);
                     }
-
-                    if (bottom_part)
+                    if (transparent && BGColor != Color.White)
                     {
-                        // 下半分
-                        gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                        drawBuffer.MakeTransparent(BGColor);
                     }
+                    //LoadedPicture:
 
-                    if (left_part)
+                    using (var gBuf = Graphics.FromImage(drawBuffer))
                     {
-                        // 左半分
-                        gBuf.FillRectangle(CurrentPaintBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
-                    }
+                        // 画像の一部を塗りつぶして描画する場合
+                        if (top_part)
+                        {
+                            // 上半分
+                            gBuf.FillRectangle(CurrentPaintBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                        }
 
-                    if (right_part)
-                    {
-                        // 右半分
-                        gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
-                    }
+                        if (bottom_part)
+                        {
+                            // 下半分
+                            gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                        }
 
-                    if (tleft_part)
-                    {
-                        // 左上
-                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                        if (left_part)
+                        {
+                            // 左半分
+                            gBuf.FillRectangle(CurrentPaintBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                        }
+
+                        if (right_part)
+                        {
+                            // 右半分
+                            gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                        }
+
+                        if (tleft_part)
+                        {
+                            // 左上
+                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
                             new Point(orig_width -1,0),
                             new Point(orig_width -1,orig_height - 1),
                             new Point(0,orig_height - 1),
                         });
-                    }
+                        }
 
-                    if (tright_part)
-                    {
-                        // 右上
-                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                        if (tright_part)
+                        {
+                            // 右上
+                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,orig_height - 1),
                             new Point(0,orig_height - 1),
                         });
-                    }
+                        }
 
-                    if (bleft_part)
-                    {
-                        // 左下
-                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                        if (bleft_part)
+                        {
+                            // 左下
+                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,0),
                             new Point(orig_width -1,orig_height - 1),
                         });
-                    }
+                        }
 
-                    if (bright_part)
-                    {
-                        // 右下
-                        gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                        if (bright_part)
+                        {
+                            // 右下
+                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,0),
                             new Point(0,orig_height - 1),
                         });
-                    }
-                }
-                // 特殊効果
-                if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
-                {
-                    // 画像のサイズをチェック
-                    // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
-                    //if (orig_width * orig_height % 4 != 0)
-                    //{
-                    //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
-                    //    return DrawPictureRet;
-                    //}
-
-                    // 白黒
-                    if (is_monotone)
-                    {
-                        drawBuffer.Monotone();
-                    }
-
-                    // セピア
-                    if (is_sepia)
-                    {
-                        drawBuffer.Sepia();
-                    }
-
-                    // 夕焼け
-                    if (is_sunset)
-                    {
-                        drawBuffer.Sunset();
-                    }
-
-                    // 水中
-                    if (is_water)
-                    {
-                        drawBuffer.Water();
-                    }
-
-                    // シルエット
-                    if (is_sil)
-                    {
-                        drawBuffer.Silhouette();
-                    }
-
-                    // ネガポジ反転
-                    if (negpos)
-                    {
-                        drawBuffer.NegPosReverse();
-                    }
-
-                    // フィルタ
-                    if (is_colorfilter)
-                    {
-                        if (trans_par < 0f)
-                        {
-                            trans_par = 0.5f;
-                        }
-                        drawBuffer.ColorFilter(fcolor, trans_par);
-                    }
-
-                    //// 明 (多段指定可能)
-                    //for (i = 1; i <= bright_count; i++)
-                    //    Graphics.Bright(transparent);
-
-                    //// 暗 (多段指定可能)
-                    //for (i = 1; i <= dark_count; i++)
-                    //    Graphics.Dark(transparent);
-
-                    // 左右反転
-                    if (vrev)
-                    {
-                        drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipY);
-                    }
-
-                    // 上下反転
-                    if (hrev)
-                    {
-                        drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                    }
-
-                    // 回転
-                    if (angle != 0)
-                    {
-                        drawBuffer.Rotate(angle, GetDrawBgColor(transparent));
-                    }
-                }
-                //EditedPicture:
-
-                // クリッピング処理
-                if (dw == Constants.DEFAULT_LEVEL)
-                {
-                    dw = orig_width;
-                }
-
-                if (dh == Constants.DEFAULT_LEVEL)
-                {
-                    dh = orig_height;
-                }
-
-                if (permanent)
-                {
-                    // 背景描画の場合、センタリングはマップ中央に
-                    if (dx == Constants.DEFAULT_LEVEL)
-                    {
-                        dx = (MapPWidth - dw) / 2;
-                    }
-
-                    if (dy == Constants.DEFAULT_LEVEL)
-                    {
-                        if (Map.IsStatusView)
-                        {
-                            // XXX
-                            dy = (frmMain.MapCellPx * 15 - dh) / 2;
-                        }
-                        else
-                        {
-                            dy = (MapPHeight - dh) / 2;
                         }
                     }
-                }
-                // ユニット上で画像のセンタリングを行うことを意図している
-                // 場合は修正が必要
-                else if (Strings.InStr(fname, "EFFECT_") > 0
-                    || Strings.InStr(fname, @"スペシャルパワー\") > 0
-                    || Strings.InStr(fname, @"精神コマンド\") > 0)
-                {
-                    if (dx == Constants.DEFAULT_LEVEL)
+                    // 特殊効果
+                    if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
                     {
-                        dx = (MainPWidth - dw) / 2;
-                        if (MainWidth % 2 == 0)
+                        // 画像のサイズをチェック
+                        // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
+                        //if (orig_width * orig_height % 4 != 0)
+                        //{
+                        //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
+                        //    return DrawPictureRet;
+                        //}
+
+                        // 白黒
+                        if (is_monotone)
                         {
-                            dx = dx - 16;
+                            drawBuffer.Monotone();
+                        }
+
+                        // セピア
+                        if (is_sepia)
+                        {
+                            drawBuffer.Sepia();
+                        }
+
+                        // 夕焼け
+                        if (is_sunset)
+                        {
+                            drawBuffer.Sunset();
+                        }
+
+                        // 水中
+                        if (is_water)
+                        {
+                            drawBuffer.Water();
+                        }
+
+                        // シルエット
+                        if (is_sil)
+                        {
+                            drawBuffer.Silhouette();
+                        }
+
+                        // ネガポジ反転
+                        if (negpos)
+                        {
+                            drawBuffer.NegPosReverse();
+                        }
+
+                        // フィルタ
+                        if (is_colorfilter)
+                        {
+                            if (trans_par < 0f)
+                            {
+                                trans_par = 0.5f;
+                            }
+                            drawBuffer.ColorFilter(fcolor, trans_par);
+                        }
+
+                        //// 明 (多段指定可能)
+                        //for (i = 1; i <= bright_count; i++)
+                        //    Graphics.Bright(transparent);
+
+                        //// 暗 (多段指定可能)
+                        //for (i = 1; i <= dark_count; i++)
+                        //    Graphics.Dark(transparent);
+
+                        // 左右反転
+                        if (vrev)
+                        {
+                            drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                        }
+
+                        // 上下反転
+                        if (hrev)
+                        {
+                            drawBuffer.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                        }
+
+                        // 回転
+                        if (angle != 0)
+                        {
+                            drawBuffer.Rotate(angle, GetDrawBgColor(transparent));
+                        }
+                    }
+                    //EditedPicture:
+
+                    // クリッピング処理
+                    if (dw == Constants.DEFAULT_LEVEL)
+                    {
+                        dw = orig_width;
+                    }
+
+                    if (dh == Constants.DEFAULT_LEVEL)
+                    {
+                        dh = orig_height;
+                    }
+
+                    if (permanent)
+                    {
+                        // 背景描画の場合、センタリングはマップ中央に
+                        if (dx == Constants.DEFAULT_LEVEL)
+                        {
+                            dx = (MapPWidth - dw) / 2;
+                        }
+
+                        if (dy == Constants.DEFAULT_LEVEL)
+                        {
+                            if (Map.IsStatusView)
+                            {
+                                // XXX
+                                dy = (frmMain.MapCellPx * 15 - dh) / 2;
+                            }
+                            else
+                            {
+                                dy = (MapPHeight - dh) / 2;
+                            }
+                        }
+                    }
+                    // ユニット上で画像のセンタリングを行うことを意図している
+                    // 場合は修正が必要
+                    else if (Strings.InStr(fname, "EFFECT_") > 0
+                        || Strings.InStr(fname, @"スペシャルパワー\") > 0
+                        || Strings.InStr(fname, @"精神コマンド\") > 0)
+                    {
+                        if (dx == Constants.DEFAULT_LEVEL)
+                        {
+                            dx = (MainPWidth - dw) / 2;
+                            if (MainWidth % 2 == 0)
+                            {
+                                dx = dx - 16;
+                            }
+                        }
+
+                        if (dy == Constants.DEFAULT_LEVEL)
+                        {
+                            dy = (MainPHeight - dh) / 2;
+                            if (MainHeight % 2 == 0)
+                            {
+                                dy = dy - 16;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 通常描画の場合、センタリングは画面中央に
+                        if (dx == Constants.DEFAULT_LEVEL)
+                        {
+                            dx = (MainPWidth - dw) / 2;
+                        }
+
+                        if (dy == Constants.DEFAULT_LEVEL)
+                        {
+                            dy = (MainPHeight - dh) / 2;
                         }
                     }
 
-                    if (dy == Constants.DEFAULT_LEVEL)
+                    // 描画先が画面外の場合や描画サイズが0の場合は画像のロードのみを行う
+                    if (dx >= g.VisibleClipBounds.Width
+                        || dy >= g.VisibleClipBounds.Height
+                        || dx + dw <= 0
+                        || dy + dh <= 0
+                        || dw <= 0
+                        || dh <= 0)
                     {
-                        dy = (MainPHeight - dh) / 2;
-                        if (MainHeight % 2 == 0)
+                        //load_only = true;
+                        return true;
+                    }
+                    g.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
+
+                    //DrewPicture:
+                    if (permanent)
+                    {
+                        // 背景への描き込み
+                        Map.IsMapDirty = true;
+                        // XXX マスクは動的にやってるから要らん
+                        //// マスク入り背景画像画面にも画像を描き込む
+                        //ret = BitBlt(withBlock17.picMaskedBack.hDC, dx, dy, dw, dh, pic.hDC, dx, dy, SRCCOPY);
+                        //var loopTo15 = ((dx + dw - 1) / 32);
+                        //for (i = (dx / 32); i <= loopTo15; i++)
+                        //{
+                        //    var loopTo16 = ((dy + dh - 1) / 32);
+                        //    for (j = (dy / 32); j <= loopTo16; j++)
+                        //    {
+                        //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask.hDC, 0, 0, SRCAND);
+                        //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask2.hDC, 0, 0, SRCINVERT);
+                        //    }
+                        //}
+                    }
+                    else if (!on_msg_window && !on_status_window)
+                    {
+                        // 表示画像を消去する際に使う描画領域を設定
+                        // XXX ダーティエリアは使わない
+                        //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
+                        //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(dy, 0));
+                        //PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(dx + dw, MainPWidth - 1));
+                        //PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(dy + dh, MainPHeight - 1));
+                        IsPictureDrawn = true;
+                        IsPictureVisible = true;
+                        IsCursorVisible = false;
+                        if (keep_picture)
                         {
-                            dy = dy - 16;
-                        }
-                    }
-                }
-                else
-                {
-                    // 通常描画の場合、センタリングは画面中央に
-                    if (dx == Constants.DEFAULT_LEVEL)
-                    {
-                        dx = (MainPWidth - dw) / 2;
-                    }
-
-                    if (dy == Constants.DEFAULT_LEVEL)
-                    {
-                        dy = (MainPHeight - dh) / 2;
-                    }
-                }
-
-                // 描画先が画面外の場合や描画サイズが0の場合は画像のロードのみを行う
-                if (dx >= g.VisibleClipBounds.Width
-                    || dy >= g.VisibleClipBounds.Height
-                    || dx + dw <= 0
-                    || dy + dh <= 0
-                    || dw <= 0
-                    || dh <= 0)
-                {
-                    //load_only = true;
-                    return true;
-                }
-                g.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
-
-                //DrewPicture:
-                if (permanent)
-                {
-                    // 背景への描き込み
-                    Map.IsMapDirty = true;
-                    // XXX マスクは動的にやってるから要らん
-                    //// マスク入り背景画像画面にも画像を描き込む
-                    //ret = BitBlt(withBlock17.picMaskedBack.hDC, dx, dy, dw, dh, pic.hDC, dx, dy, SRCCOPY);
-                    //var loopTo15 = ((dx + dw - 1) / 32);
-                    //for (i = (dx / 32); i <= loopTo15; i++)
-                    //{
-                    //    var loopTo16 = ((dy + dh - 1) / 32);
-                    //    for (j = (dy / 32); j <= loopTo16; j++)
-                    //    {
-                    //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask.hDC, 0, 0, SRCAND);
-                    //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask2.hDC, 0, 0, SRCINVERT);
-                    //    }
-                    //}
-                }
-                else if (!on_msg_window && !on_status_window)
-                {
-                    // 表示画像を消去する際に使う描画領域を設定
-                    // XXX ダーティエリアは使わない
-                    //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
-                    //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(dy, 0));
-                    //PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(dx + dw, MainPWidth - 1));
-                    //PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(dy + dh, MainPHeight - 1));
-                    IsPictureDrawn = true;
-                    IsPictureVisible = true;
-                    IsCursorVisible = false;
-                    if (keep_picture)
-                    {
-                        // picMain(1)にも描画
-                        using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
-                        {
-                            gBack.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
+                            // picMain(1)にも描画
+                            using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
+                            {
+                                gBack.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
+                            }
                         }
                     }
                 }
