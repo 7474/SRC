@@ -54,14 +54,14 @@ namespace SRCCore.Expressions.Functions
                 str_result = Strings.Mid(str_result, 2, Strings.Len(str_result) - 2);
             }
 
-            if (etype == ValueType.StringType)
-            {
-                return ValueType.StringType;
-            }
-            else
+            if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
                 return ValueType.NumericType;
+            }
+            else
+            {
+                return ValueType.StringType;
             }
         }
     }
