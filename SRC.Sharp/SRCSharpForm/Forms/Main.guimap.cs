@@ -157,19 +157,12 @@ namespace SRCSharpForm
 
             VScrollBar.Visible = false;
             HScrollBar.Visible = false;
-            //Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
-            //Height = Height - ClientRectangle.Height + (MainPHeight + 24);
+
+            // メインウィンドウの位置＆サイズを設定
             Width = Width - ClientRectangle.Width + (MainPWidth + 16 + 4 + 225 + 4);
             Height = Height - ClientRectangle.Height + (MainPHeight + 16);
-
-            // TODO Impl オフセットあるのダルいから原点0にしようかな。
-            ////{
-            ////    var withBlock = MainForm;
-            //// メインウィンドウの位置＆サイズを設定
-            //// If MainWidth = 15 Then
             //if (!NewGUIMode)
             //{
-            //    // MOD END MARGE
             //    withBlock.Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
             //    withBlock.Height = Height - ClientRectangle.Height + (MainPHeight + 24);
             //}
