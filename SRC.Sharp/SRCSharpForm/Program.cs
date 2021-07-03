@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -15,6 +17,16 @@ namespace SRCSharpForm
         [STAThread]
         static void Main()
         {
+            var mutex = new Mutex(false, "SRC_SHARP_FORM");
+            if (mutex.WaitOne(0, false) == false)
+            {
+                // 多分多重起動して不整合は起きないと思うけれど
+                // いいこともないだろうから抑制しておく
+                Debug.WriteLine("２重起動はできません");
+                Console.Error.WriteLine("２重起動はできません");
+                return;
+            }
+
             LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
             {
                 builder
