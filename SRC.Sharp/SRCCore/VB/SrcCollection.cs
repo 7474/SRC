@@ -26,10 +26,8 @@ namespace SRCCore.VB
         [OnDeserialized]
         private void Restore(StreamingContext context)
         {
-            UpdateList();
         }
 
-        // XXX List でなく Enumerable でにしたほうが嬉しそう
         public IList<V> List => dict.Values.Cast<V>().ToList();
 
         /// <summary>
@@ -76,9 +74,7 @@ namespace SRCCore.VB
         }
         public void Add(string key, V value)
         {
-            // TODO 既存だった時の振る舞いどうなってんねん
             dict.Add(key, value);
-            UpdateList();
         }
 
         public void Add(KeyValuePair<string, V> item)
@@ -89,7 +85,6 @@ namespace SRCCore.VB
         public void Clear()
         {
             dict.Clear();
-            //list.Clear();
         }
 
         public bool Contains(V item)
@@ -150,7 +145,6 @@ namespace SRCCore.VB
             if (ContainsKey(key))
             {
                 dict.Remove(key);
-                UpdateList();
                 return true;
             }
             return false;
@@ -164,7 +158,6 @@ namespace SRCCore.VB
         public void RemoveAt(int index)
         {
             Remove(this[index]);
-            UpdateList();
         }
 
         public bool TryGetValue(string key, out V value)
@@ -191,12 +184,6 @@ namespace SRCCore.VB
             return dict.Keys.Cast<string>()
                 .Select(k => new KeyValuePair<string, V>(k, (V)dict[k]))
                 .GetEnumerator();
-        }
-
-        private void UpdateList()
-        {
-            //// XXX reallocもったいない。参照時にCastしてListしたほうがいい？
-            //list = dict.Values.Cast<V>().ToList();
         }
     }
 }
