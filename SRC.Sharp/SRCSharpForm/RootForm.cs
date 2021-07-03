@@ -53,7 +53,7 @@ namespace SRCSharpForm
             // XXX ファイルシステムへのエントリー追加はお試し中
             try
             {
-                fileSystem.AddAchive(SRC.AppPath, "assets.zip");
+                fileSystem.AddAchive(SRC.AppPath, fileSystem.PathCombine(SRC.AppPath, "assets.zip"));
                 fileSystem.AddPath(SRC.AppPath);
                 fileSystem.AddPath(SRC.ExtDataPath2);
                 fileSystem.AddPath(SRC.ExtDataPath);
