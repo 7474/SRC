@@ -40,8 +40,7 @@ namespace SRCSharpForm
             UpdateLogger();
 
             Application.ApplicationExit += Application_ApplicationExit;
-
-            // TODO この辺の例外処理設定シケてる
+            Application.ThreadException += Application_ThreadException;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -68,13 +67,31 @@ namespace SRCSharpForm
             Log = LoggerFactory.CreateLogger("SRCSharpForm");
         }
 
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            ProccessUnknownError(e.Exception);
+            Environment.Exit(-1);
+        }
+
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Log.LogError(e.ExceptionObject as Exception, "UnhandledException");
-            MessageBox.Show($@"不明なエラーが発生しました。
-詳細はログを確認してください。
-{(e.ExceptionObject as Exception)?.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ProccessUnknownError(e.ExceptionObject as Exception);
             Environment.Exit(-1);
+        }
+
+        private static void ProccessUnknownError(Exception ex)
+        {
+            try
+            {
+                Log.LogError(ex, "UnhandledException");
+                MessageBox.Show($@"不明なエラーが発生しました。
+詳細はログを確認してください。
+{ex?.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }
