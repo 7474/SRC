@@ -101,30 +101,11 @@ namespace SRCSharpForm
         public void InitStatus()
         {
             // ステータスウィンドウを設置
-            //picFace.Location = new Point(MainPWidth + 24, 4);
-            //picPilotStatus.Location = new Point(MainPWidth + 24 + 68 + 4, 4);
-            //picPilotStatus.Size = new Size(155, 72);
-            //picUnitStatus.Location = new Point(MainPWidth + 24, 4 + 68 + 4);
-            //picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
             picFace.Location = new Point(MainPWidth + 16 + 4, 4);
             picPilotStatus.Location = new Point(MainPWidth + 16 + 4 + 68 + 4, 4);
             picPilotStatus.Size = new Size(155, 72);
             picUnitStatus.Location = new Point(MainPWidth + 16 + 4, 4 + 68 + 4);
-            // XXX 幅ぎりぎりまで使うってことか？
             picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
-            // TODO Impl InitStatus
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
-            //    // .picFace.Move MainPWidth + 24, 4
-            //    // .picPilotStatus.Move MainPWidth + 24 + 68 + 4, 4, 155, 72
-            //    // .picUnitStatus.Move MainPWidth + 24, 4 + 68 + 4, _
-            //    // '                225 + 5, MainPHeight - 64 + 16
-            //    // Else
-            //    // .picUnitStatus.Move MainPWidth - 230 - 10, 10, 230, MainPHeight - 20
-            //    // .picUnitStatus.Visible = False
-            //    // .picPilotStatus.Visible = False
-            //    // .picFace.Visible = False
-            //    // End If
             //    if (NewGUIMode)
             //    {
             //        withBlock.picUnitStatus.Move(MainPWidth - 230 - 10, 10, 230, MainPHeight - 20);
@@ -146,8 +127,6 @@ namespace SRCSharpForm
             //        withBlock.picPilotStatus.Move(MainPWidth + 24 + 68 + 4, 4, 155, 72);
             //        withBlock.picUnitStatus.Move(MainPWidth + 24, 4 + 68 + 4, 225 + 5, MainPHeight - 64 + 16);
             //    }
-            //    // MOD END MARGE
-
         }
 
         public void InitMapSize(int w, int h)
@@ -199,11 +178,8 @@ namespace SRCSharpForm
             picMain.Size = new Size(MainPWidth, MainPHeight);
             InitMainBuffer(MainPWidth, MainPHeight);
 
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
             //    if (!NewGUIMode)
             //    {
-            //        // MOD END MARGE
             //        withBlock.picMain(0).Move(4, 4, MainPWidth, MainPHeight);
             //        withBlock.picMain(1).Move(4, 4, MainPWidth, MainPHeight);
             //    }
@@ -212,7 +188,6 @@ namespace SRCSharpForm
             //        withBlock.picMain(0).Move(0, 0, MainPWidth, MainPHeight);
             //        withBlock.picMain(1).Move(0, 0, MainPWidth, MainPHeight);
             //    }
-            //}
         }
         public void SetMapSize(int w, int h)
         {
@@ -226,20 +201,16 @@ namespace SRCSharpForm
             if (HScrollBar.Maximum != MapWidth)
             {
                 HScrollBar.Maximum = MapWidth;
-                // If MainWidth = 15 Then
                 //if (!GUI.NewGUIMode)
                 //{
-                //    // MOD  END  240a
                 //    withBlock2.Visible = true;
                 //}
             }
             if (VScrollBar.Maximum != MapHeight)
             {
                 VScrollBar.Maximum = MapHeight;
-                // If MainWidth = 15 Then
                 //if (!GUI.NewGUIMode)
                 //{
-                //    // MOD  END  240a
                 //    withBlock2.Visible = true;
                 //}
             }
