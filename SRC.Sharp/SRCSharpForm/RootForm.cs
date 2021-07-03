@@ -5,6 +5,7 @@ using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -14,6 +15,16 @@ namespace SRCSharpForm
         private SRCCore.SRC SRC;
         private string[] _args;
         private bool _firstShown;
+
+        private bool IsDebugLogEnabled()
+        {
+            return _args.Any(x => x == "-v");
+        }
+
+        private bool IsTraceLogEnabled()
+        {
+            return _args.Any(x => x == "-vv");
+        }
 
         public RootForm(string[] args)
             : base()
@@ -38,11 +49,24 @@ namespace SRCSharpForm
             // XXX 単位変更をこんな感じでやるのは下策だなー
             soundPlayer.SoundVolume = config.SoundVolume / 100f;
 
-            // TODO ログの設定
-            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(
-                new LoggerConfiguration().MinimumLevel.Information()
-                    .WriteTo.File("logs\\srcsform..log", rollingInterval: RollingInterval.Day)
-                    .CreateLogger()));
+            var logConf = new LoggerConfiguration()
+                .WriteTo.File(
+                    // 実行ファイル配下の logs フォルダに出力する
+                    Path.Combine(AppContext.BaseDirectory, "logs\\srcsform..log"),
+                    rollingInterval: RollingInterval.Day);
+            if (IsTraceLogEnabled())
+            {
+                logConf = logConf.MinimumLevel.Verbose();
+            }
+            else if (IsDebugLogEnabled())
+            {
+                logConf = logConf.MinimumLevel.Debug();
+            }
+            else
+            {
+                logConf = logConf.MinimumLevel.Information();
+            }
+            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(logConf.CreateLogger()));
             Program.UpdateLogger();
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
@@ -98,9 +122,9 @@ namespace SRCSharpForm
             if (_firstShown)
             {
                 _firstShown = false;
-                if (_args.Length > 0)
+                foreach (var arg in _args.Where(x => File.Exists(x)))
                 {
-                    ExecuteFile(_args[0]);
+                    ExecuteFile(arg);
                     executed = true;
                 }
             }
