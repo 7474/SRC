@@ -172,9 +172,9 @@ namespace SRCSharpForm
             //    withBlock.Height = Height - ClientRectangle.Height + MainPHeight;
             //}
 
-            //// TODO 画面中央に出す？
-            ////withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
-            ////withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
+            // XXX 画面中央に出すなら出す
+            //withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
+            //withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
 
             // スクロールバーの位置を設定
             VScrollBar.Location = new Point(MainPHeight, 0);
@@ -183,11 +183,8 @@ namespace SRCSharpForm
             HScrollBar.Location = new Point(0, MainPHeight);
             HScrollBar.Size = new Size(MainPWidth, 16);
             HScrollBar.Visible = true;
-            //// MOD START MARGE
-            //// If MainWidth = 15 Then
             //if (!NewGUIMode)
             //{
-            //    // MOD END MARGE
             //    withBlock.VScroll.Move(MainPWidth + 4, 4, 16, MainPWidth);
             //    withBlock.HScroll.Move(4, MainPHeight + 4, MainPWidth, 16);
             //}
