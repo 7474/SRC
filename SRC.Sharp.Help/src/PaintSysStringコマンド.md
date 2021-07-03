@@ -28,7 +28,7 @@ title: PaintSysStringコマンド
 
 表示位置はx y にマップ座標で指定して行います。[PaintStringコマンド](PaintStringコマンド.md)等で使われているピクセル座標とは異なるので注意してください。
 
-optionには「非同期」を指定することが出来ます。この場合、PaintSysStringコマンドを実行しても画面は更新されません。画面を更新したいタイミングでRefreshコマンドを実行して下さい。
+optionには「非同期」を指定することが出来ます。この場合、PaintSysStringコマンドを実行しても画面は更新されません。画面を更新したいタイミングで[Refreshコマンド](Refreshコマンド.md)を実行して下さい。
 
 
 **例**
