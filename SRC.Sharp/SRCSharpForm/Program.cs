@@ -15,7 +15,7 @@ namespace SRCSharpForm
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             var mutex = new Mutex(false, "SRC_SHARP_FORM");
             if (mutex.WaitOne(0, false) == false)
@@ -35,13 +35,14 @@ namespace SRCSharpForm
             });
             UpdateLogger();
 
+            // TODO この辺の例外処理設定シケてる
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RootForm());
+            Application.Run(new RootForm(args));
         }
 
         internal static void UpdateLogger()
@@ -52,6 +53,10 @@ namespace SRCSharpForm
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Log.LogError(e.ExceptionObject as Exception, "UnhandledException");
+            MessageBox.Show($@"不明なエラーが発生しました。
+詳細はログを確認してください。
+{(e.ExceptionObject as Exception)?.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(-1);
         }
     }
 }

@@ -12,9 +12,14 @@ namespace SRCSharpForm
     public partial class RootForm : Form
     {
         private SRCCore.SRC SRC;
+        private string[] _args;
+        private bool _firstShown;
 
-        public RootForm()
+        public RootForm(string[] args)
+            : base()
         {
+            _args = args;
+            _firstShown = true;
             InitializeComponent();
 
             var config = new LocalFileConfig();
@@ -72,18 +77,37 @@ namespace SRCSharpForm
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    Hide();
-                    SRC.FileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
-                    SRC.FileSystem.AddSafePath(Path.GetDirectoryName(fbd.FileName));
-                    SRC.Execute(fbd.FileName);
+                    var filePath = fbd.FileName;
+                    ExecuteFile(filePath);
                 }
             }
         }
 
+        private void ExecuteFile(string filePath)
+        {
+            Hide();
+            SRC.FileSystem.AddPath(Path.GetDirectoryName(filePath));
+            SRC.FileSystem.AddSafePath(Path.GetDirectoryName(filePath));
+            SRC.Execute(filePath);
+        }
+
         private void SRCSharpForm_Shown(object sender, EventArgs e)
         {
-            // TODO 引数を参照して指定があればそれを読む。
-            LoadGameFile();
+            // 引数を参照して指定があればそれを読む。
+            var executed = false;
+            if (_firstShown)
+            {
+                _firstShown = false;
+                if (_args.Length > 0)
+                {
+                    ExecuteFile(_args[0]);
+                    executed = true;
+                }
+            }
+            if (!executed)
+            {
+                LoadGameFile();
+            }
         }
 
         private void btnSelectFile_Click(object sender, EventArgs e)
