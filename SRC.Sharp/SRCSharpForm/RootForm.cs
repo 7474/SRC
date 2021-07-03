@@ -146,5 +146,25 @@ namespace SRCSharpForm
         {
             SRC.GUI.Configure();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // 投げっぱなしのタスクの例外は浮くので良しなにやる
+            // https://docs.microsoft.com/ja-jp/dotnet/standard/parallel-programming/exception-handling-task-parallel-library
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                throw new Exception("hoge");
+            });
+
+            // CurrentDomain.UnhandledException
+            //var newThread = new System.Threading.Thread(() =>
+            //{
+            //    throw new Exception("hoge");
+            //});
+            //newThread.Start();
+
+            // ThreadException（UIスレッド）
+            //throw new Exception("hoge");
+        }
     }
 }
