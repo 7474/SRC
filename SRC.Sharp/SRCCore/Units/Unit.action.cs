@@ -141,56 +141,44 @@ namespace SRCCore.Units
             }
         }
 
-        //// 思考モード
+        // 思考モード
         public string Mode
         {
             get
             {
+                if (IsUnderSpecialPowerEffect("挑発"))
+                {
+                    // 挑発を最優先
+                    var loopTo = CountSpecialPower();
+                    for (var i = 1; i <= loopTo; i++)
+                    {
+                        if (SpecialPower(i).IsEffectAvailable("挑発"))
+                        {
+                            return SpecialPowerData(i);
+                        }
+                    }
+                }
+
+                if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("憑依") || IsConditionSatisfied("狂戦士"))
+                {
+                    // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
+                    // 常に通常モードとして扱う
+                    return "通常";
+                }
+
+                if (IsConditionSatisfied("恐怖"))
+                {
+                    // 恐怖にかられた場合は逃亡
+                    return "逃亡";
+                }
+
+                if (IsConditionSatisfied("踊り"))
+                {
+                    // 踊るのに忙しい……
+                    return "固定";
+                }
+
                 return strMode;
-                // TODO Impl Mode
-                //string ModeRet = default;
-                //int i;
-                //if (IsUnderSpecialPowerEffect("挑発"))
-                //{
-                //    // 挑発を最優先
-                //    var loopTo = CountSpecialPower();
-                //    for (i = 1; i <= loopTo; i++)
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト SpecialPower(i).IsEffectAvailable(挑発) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        SpecialPowerData localSpecialPower() { object argIndex1 = i; var ret = SpecialPower(argIndex1); return ret; }
-
-                //        if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable("挑発")))
-                //        {
-                //            ModeRet = SpecialPowerData(i);
-                //            return default;
-                //        }
-                //    }
-                //}
-
-                //if (IsConditionSatisfied("暴走") || IsConditionSatisfied("混乱") || IsConditionSatisfied("憑依") || IsConditionSatisfied("狂戦士"))
-                //{
-                //    // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
-                //    // 常に通常モードとして扱う
-                //    ModeRet = "通常";
-                //    return default;
-                //}
-
-                //if (IsConditionSatisfied("恐怖"))
-                //{
-                //    // 恐怖にかられた場合は逃亡
-                //    ModeRet = "逃亡";
-                //    return default;
-                //}
-
-                //if (IsConditionSatisfied("踊り"))
-                //{
-                //    // 踊るのに忙しい……
-                //    ModeRet = "固定";
-                //    return default;
-                //}
-
-                //ModeRet = strMode;
-                //return ModeRet;
             }
 
             set
