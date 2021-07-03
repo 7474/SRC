@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 using SRCCore.Config;
@@ -68,6 +69,7 @@ namespace SRCSharpForm
             }
             Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(logConf.CreateLogger()));
             Program.UpdateLogger();
+            Program.Log.LogInformation("SRC#Form起動");
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
             SRC.SystemConfig = config;
@@ -109,6 +111,7 @@ namespace SRCSharpForm
 
         private void ExecuteFile(string filePath)
         {
+            Program.Log.LogInformation($"ExecuteFile {filePath}");
             Hide();
             SRC.FileSystem.AddPath(Path.GetDirectoryName(filePath));
             SRC.FileSystem.AddSafePath(Path.GetDirectoryName(filePath));
