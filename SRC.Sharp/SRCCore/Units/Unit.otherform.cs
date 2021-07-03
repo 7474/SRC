@@ -97,8 +97,7 @@ namespace SRCCore.Units
             }
             else
             {
-                // TODO Impl ErrorMessage
-                //GUI.ErrorMessage("ユニットデータ「" + uname + "」が見つかりません");
+                GUI.ErrorMessage("ユニットデータ「" + uname + "」が見つかりません");
             }
             return null;
         }
