@@ -393,6 +393,8 @@ toc:
             url: /Chargeコマンド
           - page: Circleコマンド
             url: /Circleコマンド
+          - page: ClearEventコマンド
+            url: /ClearEventコマンド
           - page: ClearObjコマンド
             url: /ClearObjコマンド
           - page: ClearPictureコマンド
@@ -557,8 +559,6 @@ toc:
             url: /PaintSysStringコマンド
           - page: Pilotコマンド
             url: /Pilotコマンド
-          - page: PlayFlashコマンド
-            url: /PlayFlashコマンド
           - page: PlayMIDIコマンド
             url: /PlayMIDIコマンド
           - page: PlaySoundコマンド
