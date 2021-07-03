@@ -715,6 +715,8 @@ toc:
             url: /その他の関数
   - title: 最後に
     subfolderitems:
+      - page: 更新履歴(移植中)
+        url: /更新履歴%28移植中%29
       - page: 更新履歴(v2.3)
         url: /更新履歴%28v2.3%29
       - page: 更新履歴(2010)
