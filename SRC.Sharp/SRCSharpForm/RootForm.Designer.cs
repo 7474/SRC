@@ -34,6 +34,7 @@ namespace SRCSharpForm
             this.labTitle = new System.Windows.Forms.Label();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.btnConfigure = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -77,11 +78,23 @@ namespace SRCSharpForm
             this.btnConfigure.UseVisualStyleBackColor = true;
             this.btnConfigure.Click += new System.EventHandler(this.btnConfigure_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(217, 166);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // RootForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 201);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnConfigure);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.label1);
@@ -103,6 +116,7 @@ namespace SRCSharpForm
         private System.Windows.Forms.Label labTitle;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.Button btnConfigure;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 using SRCCore.Config;
@@ -5,6 +6,7 @@ using SRCCore.Filesystem;
 using SRCSharpForm.Resoruces;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -12,9 +14,24 @@ namespace SRCSharpForm
     public partial class RootForm : Form
     {
         private SRCCore.SRC SRC;
+        private string[] _args;
+        private bool _firstShown;
 
-        public RootForm()
+        private bool IsDebugLogEnabled()
         {
+            return _args.Any(x => x == "-v");
+        }
+
+        private bool IsTraceLogEnabled()
+        {
+            return _args.Any(x => x == "-vv");
+        }
+
+        public RootForm(string[] args)
+            : base()
+        {
+            _args = args;
+            _firstShown = true;
             InitializeComponent();
 
             var config = new LocalFileConfig();
@@ -33,12 +50,26 @@ namespace SRCSharpForm
             // XXX 単位変更をこんな感じでやるのは下策だなー
             soundPlayer.SoundVolume = config.SoundVolume / 100f;
 
-            // TODO ログの設定
-            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(
-                new LoggerConfiguration().MinimumLevel.Information()
-                    .WriteTo.File("logs\\srcsform..log", rollingInterval: RollingInterval.Day)
-                    .CreateLogger()));
+            var logConf = new LoggerConfiguration()
+                .WriteTo.File(
+                    // 実行ファイル配下の logs フォルダに出力する
+                    Path.Combine(AppContext.BaseDirectory, "logs\\srcsform..log"),
+                    rollingInterval: RollingInterval.Day);
+            if (IsTraceLogEnabled())
+            {
+                logConf = logConf.MinimumLevel.Verbose();
+            }
+            else if (IsDebugLogEnabled())
+            {
+                logConf = logConf.MinimumLevel.Debug();
+            }
+            else
+            {
+                logConf = logConf.MinimumLevel.Information();
+            }
+            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(logConf.CreateLogger()));
             Program.UpdateLogger();
+            Program.Log.LogInformation("SRC#Form起動");
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
             SRC.SystemConfig = config;
@@ -48,7 +79,7 @@ namespace SRCSharpForm
             // XXX ファイルシステムへのエントリー追加はお試し中
             try
             {
-                fileSystem.AddAchive(SRC.AppPath, "assets.zip");
+                fileSystem.AddAchive(SRC.AppPath, fileSystem.PathCombine(SRC.AppPath, "assets.zip"));
                 fileSystem.AddPath(SRC.AppPath);
                 fileSystem.AddPath(SRC.ExtDataPath2);
                 fileSystem.AddPath(SRC.ExtDataPath);
@@ -72,18 +103,38 @@ namespace SRCSharpForm
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    Hide();
-                    SRC.FileSystem.AddPath(Path.GetDirectoryName(fbd.FileName));
-                    SRC.FileSystem.AddSafePath(Path.GetDirectoryName(fbd.FileName));
-                    SRC.Execute(fbd.FileName);
+                    var filePath = fbd.FileName;
+                    ExecuteFile(filePath);
                 }
             }
         }
 
+        private void ExecuteFile(string filePath)
+        {
+            Program.Log.LogInformation($"ExecuteFile {filePath}");
+            Hide();
+            SRC.FileSystem.AddPath(Path.GetDirectoryName(filePath));
+            SRC.FileSystem.AddSafePath(Path.GetDirectoryName(filePath));
+            SRC.Execute(filePath);
+        }
+
         private void SRCSharpForm_Shown(object sender, EventArgs e)
         {
-            // TODO 引数を参照して指定があればそれを読む。
-            LoadGameFile();
+            // 引数を参照して指定があればそれを読む。
+            var executed = false;
+            if (_firstShown)
+            {
+                _firstShown = false;
+                foreach (var arg in _args.Where(x => File.Exists(x)))
+                {
+                    ExecuteFile(arg);
+                    executed = true;
+                }
+            }
+            if (!executed)
+            {
+                LoadGameFile();
+            }
         }
 
         private void btnSelectFile_Click(object sender, EventArgs e)
@@ -94,6 +145,26 @@ namespace SRCSharpForm
         private void btnConfigure_Click(object sender, EventArgs e)
         {
             SRC.GUI.Configure();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // 投げっぱなしのタスクの例外は浮くので良しなにやる
+            // https://docs.microsoft.com/ja-jp/dotnet/standard/parallel-programming/exception-handling-task-parallel-library
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                throw new Exception("hoge");
+            });
+
+            // CurrentDomain.UnhandledException
+            //var newThread = new System.Threading.Thread(() =>
+            //{
+            //    throw new Exception("hoge");
+            //});
+            //newThread.Start();
+
+            // ThreadException（UIスレッド）
+            //throw new Exception("hoge");
         }
     }
 }
