@@ -646,16 +646,7 @@ namespace SRCCore.Units
             }
             catch (Exception ex)
             {
-                // TODO Handle error
-                //if (Strings.Len(Event.EventErrorMessage) > 0)
-                //{
-                //    Event.DisplayEventErrorMessage(Event.CurrentLineNum, Event.EventErrorMessage);
-                //    Event.EventErrorMessage = "";
-                //}
-                //else
-                //{
-                //    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "");
-                //}
+                SRC.LogError(ex);
                 Event.DisplayEventErrorMessage(Event.CurrentLineNum, ex.Message);
             }
         }
