@@ -417,6 +417,8 @@ toc:
             url: /Confirmコマンド
           - page: Continueコマンド
             url: /Continueコマンド
+          - page: Execコマンド
+            url: /Execコマンド
           - page: CopyArrayコマンド
             url: /CopyArrayコマンド
           - page: CopyFileコマンド
@@ -429,6 +431,8 @@ toc:
             url: /Debugコマンド
           - page: Destroyコマンド
             url: /Destroyコマンド
+          - page: CallIntermissionCommandコマンド
+            url: /CallIntermissionCommandコマンド
           - page: Disableコマンド
             url: /Disableコマンド
           - page: Doコマンド
@@ -549,6 +553,8 @@ toc:
             url: /PaintPictureコマンド
           - page: PaintStringコマンド
             url: /PaintStringコマンド
+          - page: PaintSysStringコマンド
+            url: /PaintSysStringコマンド
           - page: Pilotコマンド
             url: /Pilotコマンド
           - page: PlayFlashコマンド
@@ -605,6 +611,8 @@ toc:
             url: /ReplacePilotコマンド
           - page: Requireコマンド
             url: /Requireコマンド
+          - page: SaveDataコマンド
+            url: /SaveDataコマンド
           - page: RestoreEventコマンド
             url: /RestoreEventコマンド
           - page: Returnコマンド
@@ -707,6 +715,8 @@ toc:
             url: /その他の関数
   - title: 最後に
     subfolderitems:
+      - page: 更新履歴(v2.3)
+        url: /更新履歴%28v2.3%29
       - page: 更新履歴(2010)
         url: /更新履歴%282010%29
       - page: 更新履歴(2008)
