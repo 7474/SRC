@@ -39,6 +39,8 @@ namespace SRCSharpForm
                     .CreateLogger()));
             UpdateLogger();
 
+            Application.ApplicationExit += Application_ApplicationExit;
+
             // TODO この辺の例外処理設定シケてる
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -47,6 +49,18 @@ namespace SRCSharpForm
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new RootForm(args));
+        }
+
+        private static void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            try
+            {
+                Log.LogInformation("SRC#Form終了");
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         internal static void UpdateLogger()
