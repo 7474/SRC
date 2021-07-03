@@ -2,7 +2,7 @@
 layout: default
 title: SRCのインストール
 ---
-** 内容はSRC2.2.33のものです **
+** 内容はSRC2.2.33のものに一部2.3系のものを反映したものです **
 
 **SRCのインストール**
 
@@ -36,59 +36,36 @@ SRCの本体を解凍します。ダウンロードしたファイルをダブ�
 
 解凍が正しく行われた場合には解凍後のフォルダ内にDataフォルダ、Libフォルダ、Midiフォルダ、Sourceフォルダが生成されているはずです。
 
+```
 【SRCのフォルダ】
-
 │
-
 ├ FlashControl.ocx
-
 ├ MapEdit.exe
-
 ├ Readme.txt
-
 ├ Src.cnt
-
 ├ Src.exe
-
 ├ Src.hlp
-
 ├ Ver.2.0系からの変更点.html
-
 │
-
 ├── Data
-
-│     └── System
-
-│            └── alias.txt
-
+│            ├── alias.txt
+│            ├── sp.txt
+│            └── terrain.txt
 │
-
 ├── Lib
-
 │     ├── パイロットステータス表示.eve
-
 │     └── ユニットステータス表示.eve
-
 │
-
 ├── Midi
-
 │     ├── Reset(GM).mid
-
 │     ├── Reset(GS).mid
-
 │     └── Reset(XG).mid
-
 │
-
-└── Source
-
+├── Source
 ├── Readme.txt
-
 ├── Help
-
 └── Src
+```
 
 解凍後に生成されたフォルダを以後、[SRCのルートフォルダ](SRCのルートフォルダ.md)と呼びます。
 
