@@ -549,51 +549,47 @@ namespace SRCCore.Units
                 Effect.DieAnimation(this);
             }
 
-            SkipExplode:
+        SkipExplode:
             ;
 
-            // TODO Impl Die
-            //    // 召喚したユニットを解放
-            //    DismissServant();
+            // 召喚したユニットを解放
+            DismissServant();
 
-            //    // 魅了・憑依したユニットを解放
-            //    DismissSlave();
-            //    if (Master is object)
-            //    {
-            //        Master.CurrentForm().DeleteSlave(ID);
-            //        // UPGRADE_NOTE: オブジェクト Master をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Master = null;
-            //    }
+            // 魅了・憑依したユニットを解放
+            DismissSlave();
+            if (Master is object)
+            {
+                Master.CurrentForm().DeleteSlave(ID);
+                Master = null;
+            }
 
-            //    if (Summoner is object)
-            //    {
-            //        Summoner.CurrentForm().DeleteServant(ID);
-            //        // UPGRADE_NOTE: オブジェクト Summoner をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Summoner = null;
-            //    }
+            if (Summoner is object)
+            {
+                Summoner.CurrentForm().DeleteServant(ID);
+                Summoner = null;
+            }
 
-            //    // 支配しているユニットを強制退却
-            //    if (IsFeatureAvailable("支配"))
-            //    {
-            //        var loopTo = GeneralLib.LLength(FeatureData("支配"));
-            //        for (i = 2; i <= loopTo; i++)
-            //        {
-            //            pname = GeneralLib.LIndex(FeatureData("支配"), i);
-            //            foreach (Pilot p in SRC.PList)
-            //            {
-            //                if ((p.Name ?? "") == (pname ?? "") || (p.get_Nickname(false) ?? "") == (pname ?? ""))
-            //                {
-            //                    if (p.Unit is object)
-            //                    {
-            //                        if (p.Unit.Status == "出撃" || p.Unit.Status == "格納")
-            //                        {
-            //                            p.Unit.Die(true);
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+            // 支配しているユニットを強制退却
+            if (IsFeatureAvailable("支配"))
+            {
+                var fd = Feature("支配");
+                foreach (var pname in fd.DataL.Skip(1))
+                {
+                    foreach (Pilot p in SRC.PList.Items)
+                    {
+                        if ((p.Name ?? "") == (pname ?? "") || (p.get_Nickname(false) ?? "") == (pname ?? ""))
+                        {
+                            if (p.Unit is object)
+                            {
+                                if (p.Unit.Status == "出撃" || p.Unit.Status == "格納")
+                                {
+                                    p.Unit.Die(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             // 情報更新
             if (!without_update)
@@ -669,7 +665,7 @@ namespace SRCCore.Units
                 }
             }
 
-            SkipSuicide:
+        SkipSuicide:
             ;
 
 
@@ -806,7 +802,7 @@ namespace SRCCore.Units
                         }
                     }
 
-                    NextLoop:
+                NextLoop:
                     ;
                 }
             }
