@@ -827,7 +827,7 @@ namespace SRCCore.Events
                             }
                             else
                             {
-                                // TODO Impl
+                                // TODO Impl イベントファイルのロード時の禁則処理
                                 // XXX これ要るの？
                                 //        switch (cmdStack.Peek())
                                 //        {

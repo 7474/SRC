@@ -4,6 +4,8 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
+using SRCCore.Pilots;
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
 
@@ -252,218 +254,207 @@ namespace SRCCore.Expressions
             var is_subroutine_local_array = default(bool);
 
             // 左辺値を伴う関数
-            // TODO Impl 左辺値を伴う関数
             ret = Strings.InStr(vname, "(");
             if (ret > 1 && Strings.Right(vname, 1) == ")")
             {
-                //    switch (Strings.LCase(Strings.Left(vname, ret - 1)) ?? "")
-                //    {
-                //        case "hp":
-                //            {
-                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                //                idx = GetValueAsString(idx);
-                //                bool localIsDefined() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+                switch (Strings.LCase(Strings.Left(vname, ret - 1)) ?? "")
+                {
+                    case "hp":
+                        {
+                            Unit u;
+                            var idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                            idx = GetValueAsString(idx);
 
-                //                if (SRC.UList.IsDefined2(idx))
-                //                {
-                //                    u = SRC.UList.Item2(idx);
-                //                }
-                //                else if (localIsDefined())
-                //                {
-                //                    Pilot localItem() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
+                            if (SRC.UList.IsDefined2(idx))
+                            {
+                                u = SRC.UList.Item2(idx);
+                            }
+                            else if (SRC.PList.IsDefined(idx))
+                            {
+                                u = SRC.PList.Item(idx).Unit;
+                            }
+                            else
+                            {
+                                u = Event.SelectedUnitForEvent;
+                            }
 
-                //                    u = localItem().Unit;
-                //                }
-                //                else
-                //                {
-                //                    u = Event.SelectedUnitForEvent;
-                //                }
+                            if (u is object)
+                            {
+                                if (etype == ValueType.NumericType)
+                                {
+                                    u.HP = (int)num_value;
+                                }
+                                else
+                                {
+                                    u.HP = GeneralLib.StrToLng(str_value);
+                                }
 
-                //                if (u is object)
-                //                {
-                //                    if (etype == ValueType.NumericType)
-                //                    {
-                //                        u.HP = num_value;
-                //                    }
-                //                    else
-                //                    {
-                //                        u.HP = GeneralLib.StrToLng(str_value);
-                //                    }
+                                if (u.HP <= 0)
+                                {
+                                    u.HP = 1;
+                                }
+                            }
 
-                //                    if (u.HP <= 0)
-                //                    {
-                //                        u.HP = 1;
-                //                    }
-                //                }
+                            return;
+                        }
 
-                //                return;
-                //            }
+                    case "en":
+                        {
+                            Unit u;
+                            var idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                            idx = GetValueAsString(idx);
 
-                //        case "en":
-                //            {
-                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                //                idx = GetValueAsString(idx);
-                //                bool localIsDefined1() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+                            if (SRC.UList.IsDefined2(idx))
+                            {
+                                u = SRC.UList.Item2(idx);
+                            }
+                            else if (SRC.PList.IsDefined(idx))
+                            {
+                                u = SRC.PList.Item(idx).Unit;
+                            }
+                            else
+                            {
+                                u = Event.SelectedUnitForEvent;
+                            }
 
-                //                if (SRC.UList.IsDefined2(idx))
-                //                {
-                //                    u = SRC.UList.Item2(idx);
-                //                }
-                //                else if (localIsDefined1())
-                //                {
-                //                    Pilot localItem1() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
+                            if (u is object)
+                            {
+                                if (etype == ValueType.NumericType)
+                                {
+                                    u.EN = (int)num_value;
+                                }
+                                else
+                                {
+                                    u.EN = GeneralLib.StrToLng(str_value);
+                                }
 
-                //                    u = localItem1().Unit;
-                //                }
-                //                else
-                //                {
-                //                    u = Event.SelectedUnitForEvent;
-                //                }
+                                if (u.EN == 0 && u.Status == "出撃")
+                                {
+                                    GUI.PaintUnitBitmap(u);
+                                }
+                            }
 
-                //                if (u is object)
-                //                {
-                //                    if (etype == ValueType.NumericType)
-                //                    {
-                //                        u.EN = num_value;
-                //                    }
-                //                    else
-                //                    {
-                //                        u.EN = GeneralLib.StrToLng(str_value);
-                //                    }
+                            return;
+                        }
 
-                //                    if (u.EN == 0 && u.Status == "出撃")
-                //                    {
-                //                        GUI.PaintUnitBitmap(u);
-                //                    }
-                //                }
+                    case "sp":
+                        {
+                            Pilot p;
+                            var idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                            idx = GetValueAsString(idx);
 
-                //                return;
-                //            }
+                            if (SRC.UList.IsDefined2(idx))
+                            {
+                                p = SRC.UList.Item2(idx).MainPilot();
+                            }
+                            else if (SRC.PList.IsDefined(idx))
+                            {
+                                p = SRC.PList.Item(idx);
+                            }
+                            else
+                            {
+                                p = Event.SelectedUnitForEvent.MainPilot();
+                            }
 
-                //        case "sp":
-                //            {
-                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                //                idx = GetValueAsString(idx);
-                //                bool localIsDefined2() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+                            if (p is object)
+                            {
+                                {
+                                    var withBlock = p;
+                                    if (withBlock.MaxSP > 0)
+                                    {
+                                        if (etype == ValueType.NumericType)
+                                        {
+                                            withBlock.SP = (int)num_value;
+                                        }
+                                        else
+                                        {
+                                            withBlock.SP = GeneralLib.StrToLng(str_value);
+                                        }
+                                    }
+                                }
+                            }
 
-                //                if (SRC.UList.IsDefined2(idx))
-                //                {
-                //                    Unit localItem2() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
+                            return;
+                        }
 
-                //                    p = localItem2().MainPilot();
-                //                }
-                //                else if (localIsDefined2())
-                //                {
-                //                    p = SRC.PList.Item(idx);
-                //                }
-                //                else
-                //                {
-                //                    p = Event.SelectedUnitForEvent.MainPilot();
-                //                }
+                    case "plana":
+                        {
+                            Pilot p;
+                            var idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                            idx = GetValueAsString(idx);
 
-                //                if (p is object)
-                //                {
-                //                    {
-                //                        var withBlock = p;
-                //                        if (withBlock.MaxSP > 0)
-                //                        {
-                //                            if (etype == ValueType.NumericType)
-                //                            {
-                //                                withBlock.SP = num_value;
-                //                            }
-                //                            else
-                //                            {
-                //                                withBlock.SP = GeneralLib.StrToLng(str_value);
-                //                            }
-                //                        }
-                //                    }
-                //                }
+                            if (SRC.UList.IsDefined2(idx))
+                            {
+                                p = SRC.UList.Item2(idx).MainPilot();
+                            }
+                            else if (SRC.PList.IsDefined(idx))
+                            {
+                                p = SRC.PList.Item(idx);
+                            }
+                            else
+                            {
+                                p = Event.SelectedUnitForEvent.MainPilot();
+                            }
 
-                //                return;
-                //            }
+                            if (p is object)
+                            {
+                                if (p.MaxPlana() > 0)
+                                {
+                                    if (etype == ValueType.NumericType)
+                                    {
+                                        p.Plana = (int)num_value;
+                                    }
+                                    else
+                                    {
+                                        p.Plana = GeneralLib.StrToLng(str_value);
+                                    }
+                                }
+                            }
 
-                //        case "plana":
-                //            {
-                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                //                idx = GetValueAsString(idx);
-                //                bool localIsDefined3() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+                            return;
+                        }
 
-                //                if (SRC.UList.IsDefined2(idx))
-                //                {
-                //                    Unit localItem21() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
+                    case "action":
+                        {
+                            Unit u;
+                            var idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                            idx = GetValueAsString(idx);
 
-                //                    p = localItem21().MainPilot();
-                //                }
-                //                else if (localIsDefined3())
-                //                {
-                //                    p = SRC.PList.Item(idx);
-                //                }
-                //                else
-                //                {
-                //                    p = Event.SelectedUnitForEvent.MainPilot();
-                //                }
+                            if (SRC.UList.IsDefined2(idx))
+                            {
+                                u = SRC.UList.Item2(idx);
+                            }
+                            else if (SRC.PList.IsDefined(idx))
+                            {
+                                u = SRC.PList.Item(idx).Unit;
+                            }
+                            else
+                            {
+                                u = Event.SelectedUnitForEvent;
+                            }
 
-                //                if (p is object)
-                //                {
-                //                    if (p.MaxPlana() > 0)
-                //                    {
-                //                        if (etype == ValueType.NumericType)
-                //                        {
-                //                            p.Plana = num_value;
-                //                        }
-                //                        else
-                //                        {
-                //                            p.Plana = GeneralLib.StrToLng(str_value);
-                //                        }
-                //                    }
-                //                }
+                            if (u is object)
+                            {
+                                if (etype == ValueType.NumericType)
+                                {
+                                    u.UsedAction = (int)(u.MaxAction() - num_value);
+                                }
+                                else
+                                {
+                                    u.UsedAction = (u.MaxAction() - GeneralLib.StrToLng(str_value));
+                                }
+                            }
 
-                //                return;
-                //            }
+                            return;
+                        }
 
-                //        case "action":
-                //            {
-                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                //                idx = GetValueAsString(idx);
-                //                bool localIsDefined4() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //                if (SRC.UList.IsDefined2(idx))
-                //                {
-                //                    u = SRC.UList.Item2(idx);
-                //                }
-                //                else if (localIsDefined4())
-                //                {
-                //                    Pilot localItem3() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                    u = localItem3().Unit;
-                //                }
-                //                else
-                //                {
-                //                    u = Event.SelectedUnitForEvent;
-                //                }
-
-                //                if (u is object)
-                //                {
-                //                    if (etype == ValueType.NumericType)
-                //                    {
-                //                        u.UsedAction = (u.MaxAction() - num_value);
-                //                    }
-                //                    else
-                //                    {
-                //                        u.UsedAction = (u.MaxAction() - GeneralLib.StrToLng(str_value));
-                //                    }
-                //                }
-
-                //                return;
-                //            }
-
-                //        case "eval":
-                //            {
-                //                vname = Strings.Trim(Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1));
-                //                vname = GetValueAsString(vname);
-                //                break;
-                //            }
-                //    }
+                    case "eval":
+                        {
+                            vname = Strings.Trim(Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1));
+                            vname = GetValueAsString(vname);
+                            break;
+                        }
+                }
             }
 
             // 変数が配列？
@@ -539,8 +530,7 @@ namespace SRCCore.Expressions
                         {
                             Event.BaseX = GeneralLib.StrToLng(str_value);
                         }
-                        // TODO GUI
-                        //GUI.MainForm.picMain(0).CurrentX = Event.BaseX;
+                        GUI.UpdateBaseX(Event.BaseX);
                         return;
                     }
 
@@ -554,8 +544,7 @@ namespace SRCCore.Expressions
                         {
                             Event.BaseY = GeneralLib.StrToLng(str_value);
                         }
-                        // TODO GUI
-                        //GUI.MainForm.picMain(0).CurrentY = Event.BaseY;
+                        GUI.UpdateBaseY(Event.BaseY);
                         return;
                     }
 
@@ -1367,518 +1356,517 @@ namespace SRCCore.Expressions
             }
 
             // コンフィグ変数？
-            // TODO Impl
-            //if (BCVariable.IsConfig)
+            if (BCVariable.IsConfig)
             {
-                //    switch (vname ?? "")
-                //    {
-                //        case "攻撃値":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.AttackExp);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.AttackExp;
-                //                    etype = ValueType.NumericType;
-                //                }
+                switch (vname ?? "")
+                {
+                    case "攻撃値":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.AttackExp);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.AttackExp;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "攻撃側ユニットＩＤ":
-                //            {
-                //                str_result = BCVariable.AtkUnit.ID;
-                //                etype = ValueType.StringType;
-                //                break;
-                //            }
+                    case "攻撃側ユニットＩＤ":
+                        {
+                            str_result = BCVariable.AtkUnit.ID;
+                            etype = ValueType.StringType;
+                            break;
+                        }
 
-                //        case "防御側ユニットＩＤ":
-                //            {
-                //                if (BCVariable.DefUnit is object)
-                //                {
-                //                    str_result = BCVariable.DefUnit.ID;
-                //                    etype = ValueType.StringType;
-                //                    break;
-                //                }
+                    case "防御側ユニットＩＤ":
+                        {
+                            if (BCVariable.DefUnit is object)
+                            {
+                                str_result = BCVariable.DefUnit.ID;
+                                etype = ValueType.StringType;
+                                break;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "武器番号":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.WeaponNumber);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.WeaponNumber;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "武器番号":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.WeaponNumber);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.WeaponNumber;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "地形適応":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.TerrainAdaption);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.TerrainAdaption;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "地形適応":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.TerrainAdaption);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.TerrainAdaption;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "武器威力":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.WeaponPower);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.WeaponPower;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "武器威力":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.WeaponPower);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.WeaponPower;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "サイズ補正":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.SizeMod);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.SizeMod;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "サイズ補正":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.SizeMod);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.SizeMod;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "装甲値":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.Armor);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.Armor;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "装甲値":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.Armor);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.Armor;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "最終値":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.LastVariable);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.LastVariable;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "最終値":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.LastVariable);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.LastVariable;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "攻撃側補正":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.AttackVariable);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.AttackVariable;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "攻撃側補正":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.AttackVariable);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.AttackVariable;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "防御側補正":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.DffenceVariable);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.DffenceVariable;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "防御側補正":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.DffenceVariable);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.DffenceVariable;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
+                            break;
+                        }
 
-                //        case "ザコ補正":
-                //            {
-                //                if (etype == ValueType.StringType)
-                //                {
-                //                    str_result = SrcFormatter.Format(BCVariable.CommonEnemy);
-                //                    etype = ValueType.StringType;
-                //                }
-                //                else
-                //                {
-                //                    num_result = BCVariable.CommonEnemy;
-                //                    etype = ValueType.NumericType;
-                //                }
+                    case "ザコ補正":
+                        {
+                            if (etype == ValueType.StringType)
+                            {
+                                str_result = SrcFormatter.Format(BCVariable.CommonEnemy);
+                                etype = ValueType.StringType;
+                            }
+                            else
+                            {
+                                num_result = BCVariable.CommonEnemy;
+                                etype = ValueType.NumericType;
+                            }
 
-                //                break;
-                //            }
-                //    }
+                            break;
+                        }
+                }
 
-                //    // パイロットに関する変数
-                //    {
-                //        var withBlock16 = BCVariable.MeUnit.MainPilot();
-                //        switch (vname ?? "")
-                //        {
-                //            case "気力":
-                //                {
-                //                    num = 0;
-                //                    if (IsOptionDefined("気力効果小"))
-                //                    {
-                //                        num = (50 + (withBlock16.Morale + withBlock16.MoraleMod) / 2); // 気力の補正込み値を代入
-                //                    }
-                //                    else
-                //                    {
-                //                        num = (withBlock16.Morale + withBlock16.MoraleMod);
-                //                    } // 気力の補正込み値を代入
+                // パイロットに関する変数
+                {
+                    var withBlock16 = BCVariable.MeUnit.MainPilot();
+                    switch (vname ?? "")
+                    {
+                        case "気力":
+                            {
+                                var num = 0;
+                                if (IsOptionDefined("気力効果小"))
+                                {
+                                    num = (50 + (withBlock16.Morale + withBlock16.MoraleMod) / 2); // 気力の補正込み値を代入
+                                }
+                                else
+                                {
+                                    num = (withBlock16.Morale + withBlock16.MoraleMod);
+                                } // 気力の補正込み値を代入
 
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(num);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = num;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(num);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = num;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "耐久":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Defense);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Defense;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "耐久":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Defense);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Defense;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "ＬＶ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Level);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Level;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "ＬＶ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Level);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Level;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "経験":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Exp);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Exp;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "経験":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Exp);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Exp;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "ＳＰ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.SP);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.SP;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "ＳＰ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.SP);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.SP;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "霊力":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Plana);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Plana;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "霊力":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Plana);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Plana;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "格闘":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Infight);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Infight;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "格闘":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Infight);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Infight;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "射撃":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Shooting);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Shooting;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "射撃":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Shooting);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Shooting;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "命中":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Hit);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Hit;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "命中":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Hit);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Hit;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "回避":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Dodge);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Dodge;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "回避":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Dodge);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Dodge;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "技量":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Technique);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Technique;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "技量":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Technique);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Technique;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "反応":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock16.Intuition);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock16.Intuition;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "反応":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock16.Intuition);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock16.Intuition;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
-                //        }
-                //    }
+                                break;
+                            }
+                    }
+                }
 
-                //    // ユニットに関する変数
-                //    {
-                //        var withBlock17 = BCVariable.MeUnit;
-                //        switch (vname ?? "")
-                //        {
-                //            case "最大ＨＰ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.MaxHP);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.MaxHP;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                // ユニットに関する変数
+                {
+                    var withBlock17 = BCVariable.MeUnit;
+                    switch (vname ?? "")
+                    {
+                        case "最大ＨＰ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.MaxHP);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.MaxHP;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "現在ＨＰ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.HP);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.HP;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "現在ＨＰ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.HP);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.HP;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "最大ＥＮ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.MaxEN);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.MaxEN;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "最大ＥＮ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.MaxEN);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.MaxEN;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "現在ＥＮ":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.EN);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.EN;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "現在ＥＮ":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.EN);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.EN;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "移動力":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.Speed);
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.Speed;
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "移動力":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.Speed);
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.Speed;
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "装甲":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.get_Armor(""));
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.get_Armor("");
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "装甲":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.get_Armor(""));
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.get_Armor("");
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
+                                break;
+                            }
 
-                //            case "運動性":
-                //                {
-                //                    if (etype == ValueType.StringType)
-                //                    {
-                //                        str_result = SrcFormatter.Format(withBlock17.get_Mobility(""));
-                //                        etype = ValueType.StringType;
-                //                    }
-                //                    else
-                //                    {
-                //                        num_result = withBlock17.get_Mobility("");
-                //                        etype = ValueType.NumericType;
-                //                    }
+                        case "運動性":
+                            {
+                                if (etype == ValueType.StringType)
+                                {
+                                    str_result = SrcFormatter.Format(withBlock17.get_Mobility(""));
+                                    etype = ValueType.StringType;
+                                }
+                                else
+                                {
+                                    num_result = withBlock17.get_Mobility("");
+                                    etype = ValueType.NumericType;
+                                }
 
-                //                    break;
-                //                }
-                //        }
-                //    }
+                                break;
+                            }
+                    }
+                }
             }
 
             if (etype != ValueType.UndefinedType)

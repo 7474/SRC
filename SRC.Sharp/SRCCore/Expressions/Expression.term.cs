@@ -4,7 +4,10 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.Expressions
 {
@@ -12,82 +15,68 @@ namespace SRCCore.Expressions
     {
         // 用語tnameの表示名を参照する
         // tlenが指定された場合は文字列長を強制的にtlenに合わせる
-        public string Term(string tname, Unit u = null, short tlen = 0)
+        public string Term(string tname, Unit u = null, int tlen = 0)
         {
-            return tname;
-            // TODO Impl 用語tnameの表示名を参照する
-            //string TermRet = default;
-            //string vname;
-            //short i;
+            var TermRet = "";
+            // ユニットが用語名能力を持っている場合はそちらを優先
+            if (u != null)
+            {
+                if (u.IsFeatureAvailable("用語名"))
+                {
+                    foreach (var fd in u.Features.Where(x => x.Name == "用語名"))
+                    {
 
-            //// ユニットが用語名能力を持っている場合はそちらを優先
-            //if (u is object)
-            //{
-            //    if (u.IsFeatureAvailable("用語名"))
-            //    {
-            //        var loopTo = u.CountFeature();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            if (u.Feature(i) == "用語名")
-            //            {
-            //                string localFeatureData1() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
+                        if ((GeneralLib.LIndex(fd.Data, 1) ?? "") == (tname ?? ""))
+                        {
+                            TermRet = GeneralLib.LIndex(fd.Data, 2);
+                            break;
+                        }
+                    }
+                }
+            }
 
-            //                if ((GeneralLib.LIndex(localFeatureData1(), 1) ?? "") == (tname ?? ""))
-            //                {
-            //                    string localFeatureData() { object argIndex1 = i; var ret = u.FeatureData(argIndex1); return ret; }
+            // RenameTermで用語名が変更されているかチェック
+            if (Strings.Len(TermRet) == 0)
+            {
+                string vname;
+                switch (tname ?? "")
+                {
+                    case "HP":
+                    case "EN":
+                    case "SP":
+                    case "CT":
+                        {
+                            vname = "ShortTerm(" + tname + ")";
+                            break;
+                        }
 
-            //                    TermRet = GeneralLib.LIndex(localFeatureData(), 2);
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                    default:
+                        {
+                            vname = "Term(" + tname + ")";
+                            break;
+                        }
+                }
 
-            //// RenameTermで用語名が変更されているかチェック
-            //if (Strings.Len(TermRet) == 0)
-            //{
-            //    switch (tname ?? "")
-            //    {
-            //        case "HP":
-            //        case "EN":
-            //        case "SP":
-            //        case "CT":
-            //            {
-            //                vname = "ShortTerm(" + tname + ")";
-            //                break;
-            //            }
+                if (IsGlobalVariableDefined(vname))
+                {
+                    TermRet = Conversions.ToString(Event.GlobalVariableList[vname].StringValue);
+                }
+                else
+                {
+                    TermRet = tname;
+                }
+            }
 
-            //        default:
-            //            {
-            //                vname = "Term(" + tname + ")";
-            //                break;
-            //            }
-            //    }
+            // 表示幅の調整
+            if (tlen > 0)
+            {
+                if (Strings.LenB(TermRet) < tlen)
+                {
+                    TermRet = GeneralLib.RightPaddedString(TermRet, tlen);
+                }
+            }
 
-            //    if (IsGlobalVariableDefined(vname))
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        TermRet = Conversions.ToString(Event.GlobalVariableList[vname].StringValue);
-            //    }
-            //    else
-            //    {
-            //        TermRet = tname;
-            //    }
-            //}
-
-            //// 表示幅の調整
-            //if (tlen > 0)
-            //{
-            //    // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            //    // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
-            //    if (LenB(Strings.StrConv(TermRet, vbFromUnicode)) < tlen)
-            //    {
-            //        TermRet = GeneralLib.RightPaddedString(TermRet, tlen);
-            //    }
-            //}
-
-            //return TermRet;
+            return TermRet;
         }
     }
 }
