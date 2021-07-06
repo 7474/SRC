@@ -12,6 +12,7 @@ namespace SRCCore.Expressions
     {
         protected SRC SRC { get; }
         private Event Event => SRC.Event;
+        private BCVariable BCVariable => Event.BCVariable;
         private Commands.Command Commands => SRC.Commands;
         private IGUI GUI => SRC.GUI;
 
