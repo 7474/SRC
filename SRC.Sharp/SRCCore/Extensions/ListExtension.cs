@@ -32,7 +32,6 @@ namespace SRCCore.Extensions
 
         public static List<T> CloneList<T>(this IList<T> list)
         {
-            // TODO 浅いコピーでクローンする実装の確認
             return list.ToList();
         }
 
