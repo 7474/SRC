@@ -1365,7 +1365,7 @@ namespace SRCCore.Expressions
             }
 
             // コンフィグ変数？
-            // TODO Impl
+            // TODO Impl コンフィグ変数
             //if (BCVariable.IsConfig)
             {
                 //    switch (vname ?? "")
