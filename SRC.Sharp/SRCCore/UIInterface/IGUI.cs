@@ -237,6 +237,9 @@ namespace SRCCore
         void SetDrawString(DrawStringMode mode);
         void SetDrawFont(DrawFontOption option);
 
+        void UpdateBaseX(int newX);
+        void UpdateBaseY(int newY);
+
         // === 画像消去に関する処理 ===
 
         // 描画した画像を消去できるように元画像を保存する

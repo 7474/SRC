@@ -539,8 +539,7 @@ namespace SRCCore.Expressions
                         {
                             Event.BaseX = GeneralLib.StrToLng(str_value);
                         }
-                        // TODO GUI
-                        //GUI.MainForm.picMain(0).CurrentX = Event.BaseX;
+                        GUI.UpdateBaseX(Event.BaseX);
                         return;
                     }
 
@@ -554,8 +553,7 @@ namespace SRCCore.Expressions
                         {
                             Event.BaseY = GeneralLib.StrToLng(str_value);
                         }
-                        // TODO GUI
-                        //GUI.MainForm.picMain(0).CurrentY = Event.BaseY;
+                        GUI.UpdateBaseY(Event.BaseY);
                         return;
                     }
 

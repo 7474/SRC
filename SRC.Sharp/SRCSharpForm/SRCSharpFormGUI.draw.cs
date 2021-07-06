@@ -715,6 +715,14 @@ namespace SRCSharpForm
                 currentDrawFontColor = new SolidBrush(option.Color);
             }
         }
+        public void UpdateBaseX(int newX)
+        {
+            currentDrawStringPoint.X = newX;
+        }
+        public void UpdateBaseY(int newY)
+        {
+            currentDrawStringPoint.Y = newY;
+        }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
         {

@@ -474,6 +474,16 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public void UpdateBaseX(int newX)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBaseY(int newY)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateHotPoint()
         {
             throw new NotImplementedException();
