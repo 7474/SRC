@@ -1,4 +1,4 @@
-﻿using SRCCore.Lib;
+using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -152,196 +152,178 @@ namespace SRCCore.Extensions
                 sub_situations.Add("(対" + t.FeatureData("メッセージクラス") + ")");
             }
 
-            // TODO Impl sub_situations
-            //    // 対性別
-            //    switch (t.MainPilot().Sex ?? "")
-            //    {
-            //        case "男性":
-            //            {
-            //                sub_situations.Add("(対男性)");
-            //                break;
-            //            }
+            // 対性別
+            switch (t.MainPilot().Sex ?? "")
+            {
+                case "男性":
+                    {
+                        sub_situations.Add("(対男性)");
+                        break;
+                    }
 
-            //        case "女性":
-            //            {
-            //                sub_situations.Add("(対女性)");
-            //                break;
-            //            }
-            //    }
+                case "女性":
+                    {
+                        sub_situations.Add("(対女性)");
+                        break;
+                    }
+            }
 
-            //    // 対特殊能力
-            //    {
-            //        var p = t.MainPilot();
-            //        var loopTo5 = p.CountSkill();
-            //        for (i = 1; i <= loopTo5; i++)
-            //        {
-            //            string localSkillName0() { object argIndex1 = i; var ret = p.SkillName0(argIndex1); return ret; }
+            // 対特殊能力
+            {
+                var p = t.MainPilot();
+                var loopTo5 = p.CountSkill();
+                for (var i = 1; i <= loopTo5; i++)
+                {
+                    var subSituationName = "(対" + p.SkillName0(i) + ")";
+                    if (subSituationName == "(対非表示)")
+                    {
+                        subSituationName = "(対" + p.Skill(i) + ")";
+                    }
+                    sub_situations.Add(subSituationName);
+                }
+            }
 
-            //            sub_situations.Add("(対" + localSkillName0() + ")";
-            //            if (sub_situations[Information.UBound(sub_situations)] == "(対非表示)")
-            //            {
-            //                string localSkill() { object argIndex1 = i; var ret = p.Skill(argIndex1); return ret; }
+            foreach (var fd in t.Features)
+            {
+                var subSituationName = "(対" + fd.FeatureName0(t) + ")";
+                if (subSituationName == "(対)")
+                {
+                    subSituationName = "(対" + fd.Name + ")";
+                }
+                sub_situations.Add(subSituationName);
+            }
 
-            //                sub_situations.Add("(対" + localSkill() + ")";
-            //            }
-            //        }
-            //    }
+            // 対弱点
+            if (Strings.Len(t.strWeakness) > 0)
+            {
+                var loopTo7 = Strings.Len(t.strWeakness);
+                for (var i = 1; i <= loopTo7; i++)
+                {
+                    sub_situations.Add("(対弱点=" + GeneralLib.GetClassBundle(t.strWeakness, ref i) + ")");
+                }
+            }
 
-            //    var loopTo6 = t.CountFeature();
-            //    for (i = 1; i <= loopTo6; i++)
-            //    {
-            //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //        string localFeatureName0() { object argIndex1 = i; var ret = t.FeatureName0(argIndex1); return ret; }
+            // 対有効
+            if (Strings.Len(t.strEffective) > 0)
+            {
+                var loopTo8 = Strings.Len(t.strEffective);
+                for (var i = 1; i <= loopTo8; i++)
+                {
+                    sub_situations.Add("(対有効=" + GeneralLib.GetClassBundle(t.strEffective, ref i) + ")");
+                }
+            }
 
-            //        sub_situations.Add("(対" + localFeatureName0() + ")";
-            //        if (sub_situations[Information.UBound(sub_situations)] == "(対)")
-            //        {
-            //            string localFeature() { object argIndex1 = i; var ret = t.Feature(argIndex1); return ret; }
+            // 対ザコ
+            if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0
+                && (u.MainPilot().Technique > t.MainPilot().Technique || u.HP > t.HP / 2))
+            {
+                sub_situations.Add("(対ザコ)");
+            }
 
-            //            sub_situations.Add("(対" + localFeature() + ")";
-            //        }
-            //    }
+            // 対強敵
+            if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0
+                && u.MainPilot().Technique <= t.MainPilot().Technique)
+            {
+                sub_situations.Add("(対強敵)");
+            }
 
-            //    // 対弱点
-            //    if (Strings.Len((string)t.strWeakness) > 0)
-            //    {
-            //        var loopTo7 = (short)Strings.Len((string)t.strWeakness);
-            //        for (i = 1; i <= loopTo7; i++)
-            //        {
-            //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //            sub_situations.Add("(対弱点=" + GeneralLib.GetClassBundle((string)t.strWeakness, i) + ")";
-            //        }
-            //    }
+            // 自分が使用する武器をチェック
+            var w = 0;
+            if (ReferenceEquals(SRC.Commands.SelectedUnit, u))
+            {
+                if (0 < SRC.Commands.SelectedWeapon && SRC.Commands.SelectedWeapon <= u.CountWeapon())
+                {
+                    w = SRC.Commands.SelectedWeapon;
+                }
+            }
+            else if (ReferenceEquals(SRC.Commands.SelectedTarget, u))
+            {
+                if (0 < SRC.Commands.SelectedTWeapon && SRC.Commands.SelectedTWeapon <= u.CountWeapon())
+                {
+                    w = SRC.Commands.SelectedTWeapon;
+                }
+            }
 
-            //    // 対有効
-            //    if (Strings.Len((string)t.strEffective) > 0)
-            //    {
-            //        var loopTo8 = (short)Strings.Len((string)t.strEffective);
-            //        for (i = 1; i <= loopTo8; i++)
-            //        {
-            //            Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //            sub_situations.Add("(対有効=" + GeneralLib.GetClassBundle((string)t.strEffective, i) + ")";
-            //        }
-            //    }
+            if (w > 0)
+            {
+                var uw = u.Weapon(w);
+                // 対瀕死
+                if (t.HP <= uw.Damage(t, u.Party == "味方"))
+                {
+                    sub_situations.Add("(対瀕死)");
+                }
 
-            //    // 対ザコ
-            //    if (Strings.InStr(t.MainPilot().Name, "(ザコ)") > 0 && (u.MainPilot().Technique > t.MainPilot().Technique || u.HP > t.HP / 2))
-            //    {
-            //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //        sub_situations.Add("(対ザコ)";
-            //    }
+                switch (uw.HitProbability(t, u.Party == "味方"))
+                {
+                    case var @case when @case < 50:
+                        {
+                            // 対高回避率
+                            sub_situations.Add("(対高回避率)");
+                            break;
+                        }
 
-            //    // 対強敵
-            //    if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0 && u.MainPilot().Technique <= t.MainPilot().Technique)
-            //    {
-            //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //        sub_situations.Add("(対強敵)";
-            //    }
+                    case var case1 when case1 >= 100:
+                        {
+                            // 対低回避率
+                            sub_situations.Add("(対低回避率)");
+                            break;
+                        }
+                }
+            }
 
-            //    // 自分が使用する武器をチェック
-            //    w = 0;
-            //    if (ReferenceEquals(Commands.SelectedUnit, u))
-            //    {
-            //        if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= u.CountWeapon())
-            //        {
-            //            w = Commands.SelectedWeapon;
-            //        }
-            //    }
-            //    else if (ReferenceEquals(Commands.SelectedTarget, u))
-            //    {
-            //        if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= u.CountWeapon())
-            //        {
-            //            w = Commands.SelectedTWeapon;
-            //        }
-            //    }
+            // 相手が使用する武器をチェック
+            var tw = 0;
+            if (ReferenceEquals(SRC.Commands.SelectedUnit, t))
+            {
+                if (0 < SRC.Commands.SelectedWeapon && SRC.Commands.SelectedWeapon <= t.CountWeapon())
+                {
+                    tw = SRC.Commands.SelectedWeapon;
+                }
+            }
+            else if (ReferenceEquals(SRC.Commands.SelectedTarget, t))
+            {
+                if (0 < SRC.Commands.SelectedTWeapon && SRC.Commands.SelectedTWeapon <= t.CountWeapon())
+                {
+                    tw = SRC.Commands.SelectedTWeapon;
+                }
+            }
 
-            //    if (w > 0)
-            //    {
-            //        // 対瀕死
-            //        if (t.HP <= u.Damage(w, t, u.Party == "味方"))
-            //        {
-            //            sub_situations.Add("(対瀕死)";
-            //        }
+            if (tw > 0)
+            {
+                var tuw = t.Weapon(tw);
+                // 対武器名
+                sub_situations.Add("(対" + t.Weapon(tw).Name + ")");
 
-            //        switch (u.HitProbability(w, t, u.Party == "味方"))
-            //        {
-            //            case var @case when @case < 50:
-            //                {
-            //                    // 対高回避率
-            //                    sub_situations.Add("(対高回避率)";
-            //                    break;
-            //                }
+                // 対武器属性
+                var wclass = tuw.WeaponClass();
+                var loopTo9 = Strings.Len(wclass);
+                for (var i = 1; i <= loopTo9; i++)
+                {
+                    var ch = GeneralLib.GetClassBundle(wclass, ref i).FirstOrDefault();
+                    // TODO .NET 6
+                    //if(!ch.IsAscii)
+                    {
+                        sub_situations.Add("(対" + ch + "属性)");
+                    }
+                }
 
-            //            case var case1 when case1 >= 100:
-            //                {
-            //                    // 対低回避率
-            //                    sub_situations.Add("(対低回避率)";
-            //                    break;
-            //                }
-            //        }
-            //    }
+                switch (tuw.HitProbability(u, t.Party == "味方"))
+                {
+                    case var case3 when case3 > 75:
+                        {
+                            // 対高命中率
+                            sub_situations.Add("(対高命中率)");
+                            break;
+                        }
 
-            //    // 相手が使用する武器をチェック
-            //    tw = 0;
-            //    if (ReferenceEquals(Commands.SelectedUnit, t))
-            //    {
-            //        if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= t.CountWeapon())
-            //        {
-            //            tw = Commands.SelectedWeapon;
-            //        }
-            //    }
-            //    else if (ReferenceEquals(Commands.SelectedTarget, t))
-            //    {
-            //        if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= t.CountWeapon())
-            //        {
-            //            tw = Commands.SelectedTWeapon;
-            //        }
-            //    }
-
-            //    if (tw > 0)
-            //    {
-            //        // 対武器名
-            //        Array.Resize(sub_situations, Information.UBound(sub_situations) + 1 + 1);
-            //        sub_situations.Add("(対" + t.Weapon(tw).Name + ")";
-
-            //        // 対武器属性
-            //        wclass = t.WeaponClass(tw);
-            //        var loopTo9 = (short)Strings.Len(wclass);
-            //        for (i = 1; i <= loopTo9; i++)
-            //        {
-            //            ch = GeneralLib.GetClassBundle(wclass, i);
-            //            switch (ch ?? "")
-            //            {
-            //                case var case2 when 0.ToString() <= case2 && case2 <= 127.ToString():
-            //                    {
-            //                        break;
-            //                    }
-
-            //                default:
-            //                    {
-            //                        sub_situations.Add("(対" + ch + "属性)";
-            //                        break;
-            //                    }
-            //            }
-            //        }
-
-            //        switch (t.HitProbability(tw, u, t.Party == "味方"))
-            //        {
-            //            case var case3 when case3 > 75:
-            //                {
-            //                    // 対高命中率
-            //                    sub_situations.Add("(対高命中率)";
-            //                    break;
-            //                }
-
-            //            case var case4 when case4 < 25:
-            //                {
-            //                    // 対低命中率
-            //                    sub_situations.Add("(対低命中率)";
-            //                    break;
-            //                }
-            //        }
-            //    }
+                    case var case4 when case4 < 25:
+                        {
+                            // 対低命中率
+                            sub_situations.Add("(対低命中率)");
+                            break;
+                        }
+                }
+            }
 
 
             // 定義されている相手限定メッセージのうち、状況に合ったメッセージを抜き出す
