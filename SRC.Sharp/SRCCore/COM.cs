@@ -3093,6 +3093,7 @@ namespace SRCCore
             var u = Commands.SelectedUnit;
             UnitAbility selUa = null;
             // 実行時間を必要としないアビリティを探す
+            // TODO EN以外の使用条件見ておく
             foreach (var ua in u.Abilities)
             {
                 // 使用可能＆効果あり？
@@ -3139,6 +3140,8 @@ namespace SRCCore
                 return;
             }
             Commands.SelectedAbility = selUa.AbilityNo();
+            var aname = selUa.Data.Name;
+            Commands.SelectedAbilityName = aname;
 
             // 合体技パートナーの設定
             IList<Unit> partners;
@@ -3152,9 +3155,6 @@ namespace SRCCore
                 partners = new List<Unit>();
             }
 
-            var aname = selUa.Data.Name;
-            Commands.SelectedAbilityName = aname;
-
             // アビリティの使用イベント
             Event.HandleEvent("使用", u.MainPilot().ID, aname);
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
@@ -3167,7 +3167,7 @@ namespace SRCCore
             u.ExecuteAbility(selUa, Commands.SelectedUnit);
             GUI.CloseMessageForm();
             Commands.SelectedUnit = u.CurrentForm();
-            
+
             // アビリティの使用後イベント
             SRC.Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
@@ -3198,100 +3198,86 @@ namespace SRCCore
                     pu.CurrentForm().UseAction();
                 }
             }
-
             Commands.SelectedPartners.Clear();
         }
 
         // 召喚が可能であれば召喚する
         public bool TrySummonning()
         {
-            // TODO Impl TrySummonning
-            bool TrySummonningRet = default;
-            //int i, j;
-            //string aname;
-            //var partners = default(Unit[]);
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 召喚アビリティを検索
-            //    var loopTo = withBlock.CountAbility();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        if (withBlock.IsAbilityAvailable(i, "移動前"))
-            //        {
-            //            var loopTo1 = withBlock.Ability(i).CountEffect();
-            //            for (j = 1; j <= loopTo1; j++)
-            //            {
-            //                if (withBlock.Ability(i).EffectType(j) == "召喚")
-            //                {
-            //                    Commands.SelectedAbility = i;
-            //                    goto UseSummonning;
-            //                }
-            //            }
-            //        }
-            //    }
+            var u = Commands.SelectedUnit;
+            // 召喚アビリティを検索
+            UnitAbility selUa = u.Abilities
+                .Where(x => x.IsAbilityAvailable("移動前"))
+                .Where(x => x.Data.Effects.Any(y => y.EffectType == "召喚"))
+                .FirstOrDefault();
 
-            //    // 使用可能な召喚アビリティを持っていなかった
-            //    return TrySummonningRet;
-            //UseSummonning:
-            //    ;
-            //    TrySummonningRet = true;
-            //    aname = withBlock.Ability(Commands.SelectedAbility).Name;
-            //    Commands.SelectedAbilityName = aname;
+            // 使用可能な召喚アビリティを持っていなかった
+            if (selUa == null)
+            {
+                return false;
 
-            //    // 召喚アビリティの使用イベント
-            //    Event.HandleEvent("使用", withBlock.MainPilot().ID, aname);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        return TrySummonningRet;
-            //    }
+            }
 
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
+            Commands.SelectedAbility = selUa.AbilityNo();
+            var aname = selUa.Data.Name;
+            Commands.SelectedAbilityName = aname;
 
-            //    // 召喚アビリティを使用
-            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
-            //    withBlock.ExecuteAbility(Commands.SelectedAbility, Commands.SelectedUnit);
-            //    GUI.CloseMessageForm();
-            //    Commands.SelectedUnit = withBlock.CurrentForm();
-            //}
 
-            //// 召喚アビリティの使用後イベント
-            //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
-            //if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //{
-            //    Commands.SelectedPartners.Clear();
-            //    return TrySummonningRet;
-            //}
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (selUa.IsAbilityClassifiedAs("合"))
+            {
+                partners = selUa.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //// 自爆アビリティの破壊イベント
-            //if (Commands.SelectedUnit.Status == "破壊")
-            //{
-            //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TrySummonningRet;
-            //    }
-            //}
+            // 召喚アビリティの使用イベント
+            Event.HandleEvent("使用", u.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                // XXX true でいいのか？
+                return true;
+            }
 
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo2 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo2; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
+            // 召喚アビリティを使用
+            GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
+            u.ExecuteAbility(selUa, Commands.SelectedUnit);
+            GUI.CloseMessageForm();
+            Commands.SelectedUnit = u.CurrentForm();
 
-            //Commands.SelectedPartners.Clear();
-            return TrySummonningRet;
+            // 召喚アビリティの使用後イベント
+            Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                Commands.SelectedPartners.Clear();
+                return true;
+            }
+
+            // 自爆アビリティの破壊イベント
+            if (Commands.SelectedUnit.Status == "破壊")
+            {
+                Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                {
+                    Commands.SelectedPartners.Clear();
+                    return true;
+                }
+            }
+
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
+            Commands.SelectedPartners.Clear();
+            return true;
         }
 
         // マップ型回復アビリティ使用に関する処理
