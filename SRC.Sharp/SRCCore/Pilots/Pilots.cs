@@ -44,6 +44,7 @@ namespace SRCCore.Pilots
             string key;
             int i;
 
+            // TODO PDList になければTerminate
             var new_pilot = new Pilot(SRC, SRC.PDList.Item(pname));
             new_pilot.Level = plevel;
             new_pilot.Party = pparty;
