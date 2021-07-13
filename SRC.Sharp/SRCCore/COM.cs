@@ -3283,296 +3283,249 @@ namespace SRCCore
         // マップ型回復アビリティ使用に関する処理
         public bool TryMapHealing(bool moved)
         {
-            // TODO Impl TryMapHealing
-            bool TryMapHealingRet = default;
-            //int a;
-            //var apower = default;
-            //int max_range, min_range;
-            //int xx, tx = default, ty = default, yy;
-            //int y1, x1, x2, y2;
-            //int i, j;
-            //int num;
-            //int score, max_score = default;
-            //Pilot p;
-            //Unit t;
-            //var partners = default(Unit[]);
-            //int tmp_num, tmp_score;
-            //int mlv;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    Commands.SelectedAbility = 0;
+            var u = Commands.SelectedUnit;
+            Commands.SelectedAbility = 0;
 
-            //    // 狂戦士状態の際は回復アビリティを使わない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return TryMapHealingRet;
-            //    }
+            // 狂戦士状態の際は回復アビリティを使わない
+            if (u.IsConditionSatisfied("狂戦士"))
+            {
+                return false;
+            }
 
-            //    p = withBlock.MainPilot();
-            //    a = withBlock.CountAbility();
-            //    while (a > 0)
-            //    {
-            //        // マップアビリティかどうか
-            //        if (!withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
-            //        {
-            //            continue;
-            //        }
+            int tx = 0;
+            int ty = 0;
+            var p = u.MainPilot();
+            var max_score = 0;
+            UnitAbility selUa = null;
+            foreach (var ua in u.Abilities.Reverse())
+            {
+                // マップアビリティかどうか
+                if (!ua.IsAbilityClassifiedAs("Ｍ"))
+                {
+                    continue;
+                }
 
-            //        // アビリティの使用可否を判定
-            //        if (moved)
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
-            //            {
-            //                continue;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
-            //            {
-            //                continue;
-            //            }
-            //        }
+                // アビリティの使用可否を判定
+                if (moved)
+                {
+                    if (!ua.IsAbilityAvailable("移動後"))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (!ua.IsAbilityAvailable("移動前"))
+                    {
+                        continue;
+                    }
+                }
 
-            //        // 回復アビリティかどうか
-            //        var loopTo = withBlock.Ability(a).CountEffect();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            if (withBlock.Ability(a).EffectType(i) == "回復")
-            //            {
-            //                // 回復量を算出しておく
-            //                if (withBlock.IsSpellAbility(a))
-            //                {
-            //                    double localEffectLevel() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                // 回復アビリティかどうか
+                var healEffect = ua.Data.Effects.FirstOrDefault(x => x.EffectType == "回復");
+                if (healEffect == null)
+                {
+                    // 回復アビリティではなかった
+                    continue;
+                }
+                // 回復量を算出しておく
+                int apower;
+                if (ua.IsSpellAbility())
+                {
+                    apower = (int)(5d * healEffect.Level * p.Shooting);
+                }
+                else
+                {
+                    apower = (int)(500d * healEffect.Level);
+                }
 
-            //                    apower = (5d * localEffectLevel() * p.Shooting);
-            //                }
-            //                else
-            //                {
-            //                    double localEffectLevel1() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                var max_range = ua.AbilityMaxRange();
+                var min_range = ua.AbilityMinRange();
+                var x1 = GeneralLib.MaxLng(u.x - max_range, 1);
+                var x2 = GeneralLib.MinLng(u.x + max_range, Map.MapWidth);
+                var y1 = GeneralLib.MaxLng(u.y - max_range, 1);
+                var y2 = GeneralLib.MinLng(u.y + max_range, Map.MapHeight);
 
-            //                    apower = (500d * localEffectLevel1());
-            //                }
+                // アビリティの効果範囲に応じてアビリティが有効かどうか判断する
+                var num = 0;
+                var score = 0;
+                if (ua.IsAbilityClassifiedAs("Ｍ全"))
+                {
+                    Map.AreaInRange(u.x, u.y, max_range, min_range, u.Party);
 
-            //                break;
-            //            }
-            //        }
+                    // 支援専用アビリティの場合は自分には効果がない
+                    if (ua.IsAbilityClassifiedAs("援"))
+                    {
+                        Map.MaskData[u.x, u.y] = true;
+                    }
 
-            //        if (i > withBlock.Ability(a).CountEffect())
-            //        {
-            //            // 回復アビリティではなかった
-            //            continue;
-            //        }
+                    // 効果範囲内にいるターゲットをカウント
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            if (Map.MaskData[i, j])
+                            {
+                                continue;
+                            }
 
-            //        max_range = withBlock.AbilityMaxRange(a);
-            //        min_range = withBlock.AbilityMinRange(a);
-            //        x1 = GeneralLib.MaxLng(withBlock.x - max_range, 1);
-            //        x2 = GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
-            //        y1 = GeneralLib.MaxLng(withBlock.y - max_range, 1);
-            //        y2 = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
+                            var t = Map.MapDataForUnit[i, j];
+                            if (t is null)
+                            {
+                                continue;
+                            }
 
-            //        // アビリティの効果範囲に応じてアビリティが有効かどうか判断する
-            //        num = 0;
-            //        score = 0;
-            //        if (withBlock.IsAbilityClassifiedAs(a, "Ｍ全"))
-            //        {
-            //            // MOD START マージ
-            //            // AreaInRange .X, .Y, min_range, max_range, .Party
-            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, withBlock.Party);
-            //            withBlock.Party = arguparty;
-            //            // MOD END マージ
+                            // アビリティが適用可能？
+                            if (!ua.IsAbilityApplicable(t))
+                            {
+                                continue;
+                            }
 
-            //            // 支援専用アビリティの場合は自分には効果がない
-            //            if (withBlock.IsAbilityClassifiedAs(a, "援"))
-            //            {
-            //                Map.MaskData[withBlock.x, withBlock.y] = true;
-            //            }
+                            {
+                                var withBlock1 = t;
+                                // ゾンビ？
+                                // XXX Unit.CanFix
+                                if (withBlock1.IsConditionSatisfied("ゾンビ"))
+                                {
+                                    continue;
+                                }
 
-            //            // 効果範囲内にいるターゲットをカウント
-            //            var loopTo1 = x2;
-            //            for (i = x1; i <= loopTo1; i++)
-            //            {
-            //                var loopTo2 = y2;
-            //                for (j = y1; j <= loopTo2; j++)
-            //                {
-            //                    if (Map.MaskData[i, j])
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                                if (100 * withBlock1.HP / withBlock1.MaxHP < 90)
+                                {
+                                    num = (num + 1);
+                                }
 
-            //                    t = Map.MapDataForUnit[i, j];
-            //                    if (t is null)
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                                score = score + 100 * GeneralLib.MinLng(withBlock1.MaxHP - withBlock1.HP, apower) / withBlock1.MaxHP;
+                            }
+                        }
+                    }
 
-            //                    // アビリティが適用可能？
-            //                    if (!withBlock.IsAbilityApplicable(a, t))
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                    // 不要？
+                    tx = u.x;
+                    ty = u.y;
+                }
+                else if (ua.IsAbilityClassifiedAs("Ｍ投"))
+                {
+                    var mlv = (int)ua.AbilityLevel("Ｍ投");
 
-            //                    {
-            //                        var withBlock1 = t;
-            //                        // ゾンビ？
-            //                        if (withBlock1.IsConditionSatisfied("ゾンビ"))
-            //                        {
-            //                            goto NextUnit1;
-            //                        }
+                    // 投下位置を変えながら試してみる
+                    for (var xx = x1; xx <= x2; xx++)
+                    {
+                        for (var yy = y1; yy <= y2; yy++)
+                        {
+                            if ((Math.Abs((u.x - xx)) + Math.Abs((u.y - yy))) > max_range || (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy))) < min_range)
+                            {
+                                continue;
+                            }
 
-            //                        if (100 * withBlock1.HP / withBlock1.MaxHP < 90)
-            //                        {
-            //                            num = (num + 1);
-            //                        }
+                            Map.AreaInRange(xx, yy, 1, mlv, u.Party);
+                            Map.AreaInRange(xx, yy, mlv, 1, u.Party);
 
-            //                        score = score + 100 * GeneralLib.MinLng(withBlock1.MaxHP - withBlock1.HP, apower) / withBlock1.MaxHP;
-            //                    }
+                            // 支援専用アビリティの場合は自分には効果がない
+                            if (ua.IsAbilityClassifiedAs("援"))
+                            {
+                                Map.MaskData[u.x, u.y] = true;
+                            }
 
-            //                NextUnit1:
-            //                    ;
-            //                }
-            //            }
+                            // 効果範囲内にいるターゲットをカウント
+                            var tmp_num = 0;
+                            var tmp_score = 0;
+                            var loopTo5 = GeneralLib.MinLng(xx + mlv, Map.MapWidth);
+                            for (var i = GeneralLib.MaxLng(xx - mlv, 1); i <= loopTo5; i++)
+                            {
+                                var loopTo6 = GeneralLib.MinLng(yy + mlv, Map.MapHeight);
+                                for (var j = GeneralLib.MaxLng(yy - mlv, 1); j <= loopTo6; j++)
+                                {
+                                    if (Map.MaskData[i, j])
+                                    {
+                                        continue;
+                                    }
 
-            //            // 不要？
-            //            tx = withBlock.x;
-            //            ty = withBlock.y;
-            //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(a, "Ｍ投"))
-            //        {
-            //            mlv = withBlock.AbilityLevel(a, "Ｍ投");
+                                    var t = Map.MapDataForUnit[i, j];
+                                    if (t is null)
+                                    {
+                                        continue;
+                                    }
 
-            //            // 投下位置を変えながら試してみる
-            //            var loopTo3 = x2;
-            //            for (xx = x1; xx <= loopTo3; xx++)
-            //            {
-            //                var loopTo4 = y2;
-            //                for (yy = y1; yy <= loopTo4; yy++)
-            //                {
-            //                    if ((Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) > max_range || (Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) < min_range)
-            //                    {
-            //                        goto NextPoint;
-            //                    }
+                                    // アビリティが適用可能？
+                                    if (!ua.IsAbilityApplicable(t))
+                                    {
+                                        continue;
+                                    }
+                                    // ゾンビ？
+                                    // XXX Unit.CanFix
+                                    if (t.IsConditionSatisfied("ゾンビ"))
+                                    {
+                                        continue;
+                                    }
 
-            //                    // MOD START マージ
-            //                    Map.AreaInRange(xx, yy, 1, mlv, withBlock.Party);
-            //                    withBlock.Party = arguparty1;
-            //                    Map.AreaInRange(xx, yy, mlv, 1, withBlock.Party);
-            //                    withBlock.Party = arguparty2;
-            //                    // MOD END マージ
+                                    if (100 * t.HP / t.MaxHP < 90)
+                                    {
+                                        tmp_num = (tmp_num + 1);
+                                    }
 
-            //                    // 支援専用アビリティの場合は自分には効果がない
-            //                    if (withBlock.IsAbilityClassifiedAs(a, "援"))
-            //                    {
-            //                        Map.MaskData[withBlock.x, withBlock.y] = true;
-            //                    }
+                                    tmp_score = (tmp_score + 100 * GeneralLib.MinLng(t.MaxHP - t.HP, apower) / t.MaxHP);
+                                }
+                            }
 
-            //                    // 効果範囲内にいるターゲットをカウント
-            //                    tmp_num = 0;
-            //                    tmp_score = 0;
-            //                    var loopTo5 = GeneralLib.MinLng(xx + mlv, Map.MapWidth);
-            //                    for (i = GeneralLib.MaxLng(xx - mlv, 1); i <= loopTo5; i++)
-            //                    {
-            //                        var loopTo6 = GeneralLib.MinLng(yy + mlv, Map.MapHeight);
-            //                        for (j = GeneralLib.MaxLng(yy - mlv, 1); j <= loopTo6; j++)
-            //                        {
-            //                            if (Map.MaskData[i, j])
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+                            if (tmp_num > 2 && tmp_score > score)
+                            {
+                                num = tmp_num;
+                                score = tmp_score;
+                                tx = xx;
+                                ty = yy;
+                            }
+                        }
+                    }
+                }
 
-            //                            t = Map.MapDataForUnit[i, j];
-            //                            if (t is null)
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+                if (num > 1 && score > max_score)
+                {
+                    selUa = ua;
+                    max_score = score;
+                }
+            }
 
-            //                            // アビリティが適用可能？
-            //                            if (!withBlock.IsAbilityApplicable(a, t))
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
-            //                            // ゾンビ？
-            //                            if (t.IsConditionSatisfied("ゾンビ"))
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+            // 有効なマップアビリティがなかった
+            if (selUa == null)
+            {
+                return false;
+            }
 
-            //                            if (100 * t.HP / t.MaxHP < 90)
-            //                            {
-            //                                tmp_num = (tmp_num + 1);
-            //                            }
+            Commands.SelectedAbility = selUa.AbilityNo();
+            Commands.SelectedAbilityName = selUa.Data.Name;
 
-            //                            tmp_score = (tmp_score + 100 * GeneralLib.MinLng(t.MaxHP - t.HP, apower) / t.MaxHP);
-            //                        NextUnit2:
-            //                            ;
-            //                        }
-            //                    }
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (selUa.IsAbilityClassifiedAs("合"))
+            {
+                partners = selUa.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //                    if (tmp_num > 2 && tmp_score > score)
-            //                    {
-            //                        num = tmp_num;
-            //                        score = tmp_score;
-            //                        tx = xx;
-            //                        ty = yy;
-            //                    }
+            // アビリティを使用
+            u.ExecuteMapAbility(selUa, tx, ty);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                Commands.SelectedPartners.Clear();
+                // XXX false でいいのか？
+                return false;
+            }
 
-            //                NextPoint:
-            //                    ;
-            //                }
-            //            }
-            //        }
-
-            //        if (num > 1 && score > max_score)
-            //        {
-            //            Commands.SelectedAbility = a;
-            //            max_score = score;
-            //        }
-
-            //    NextAbility:
-            //        ;
-            //        a = (a - 1);
-            //    }
-
-            //    if (Commands.SelectedAbility == 0)
-            //    {
-            //        // 有効なマップアビリティがなかった
-            //        return TryMapHealingRet;
-            //    }
-
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
-
-            //    Commands.SelectedAbilityName = withBlock.Ability(Commands.SelectedAbility).Name;
-
-            //    // アビリティを使用
-            //    withBlock.ExecuteMapAbility(Commands.SelectedAbility, tx, ty);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TryMapHealingRet;
-            //    }
-
-            //    // 合体技のパートナーの行動数を減らす
-            //    if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //    {
-            //        var loopTo7 = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo7; i++)
-            //            partners[i].CurrentForm().UseAction();
-            //    }
-
-            //    Commands.SelectedPartners.Clear();
-            //}
-
-            //TryMapHealingRet = true;
-            return TryMapHealingRet;
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
+            Commands.SelectedPartners.Clear();
+            return true;
         }
 
         // 可能であれば回復アビリティを使う
