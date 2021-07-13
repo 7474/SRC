@@ -2876,281 +2876,208 @@ namespace SRCCore
         // 移動形態への変形が可能であれば変形する
         private bool TryMoveTransform()
         {
-            // TODO Impl TryMoveTransform
-            bool TryMoveTransformRet = default;
-            //string uname;
-            //Unit u;
-            //int xx, yy;
-            //int tx, ty = default;
-            //int speed1, speed2;
-            //int i;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 変形が可能？
-            //    if (!withBlock.IsFeatureAvailable("変形") || withBlock.IsConditionSatisfied("形態固定") || withBlock.IsConditionSatisfied("機体固定"))
-            //    {
-            //        return TryMoveTransformRet;
-            //    }
+            var bu = Commands.SelectedUnit;
+            // 変形が可能？
+            if (!bu.IsFeatureAvailable("変形") || bu.IsConditionSatisfied("形態固定") || bu.IsConditionSatisfied("機体固定"))
+            {
+                return false;
+            }
 
-            //    xx = withBlock.x;
-            //    yy = withBlock.y;
+            var xx = bu.x;
+            var yy = bu.y;
+            int tx, ty;
 
-            //    // 地形に邪魔されて移動できなくならないか調べるため、目的地の方向にある
-            //    // 隣接するマスの座標を調べる
-            //    if (Math.Abs((Commands.SelectedX - xx)) > Math.Abs((Commands.SelectedY - yy)))
-            //    {
-            //        if (Commands.SelectedX > xx)
-            //        {
-            //            tx = (xx + 1);
-            //        }
-            //        else
-            //        {
-            //            tx = (xx - 1);
-            //        }
+            // 地形に邪魔されて移動できなくならないか調べるため、目的地の方向にある
+            // 隣接するマスの座標を調べる
+            if (Math.Abs((Commands.SelectedX - xx)) > Math.Abs((Commands.SelectedY - yy)))
+            {
+                if (Commands.SelectedX > xx)
+                {
+                    tx = (xx + 1);
+                }
+                else
+                {
+                    tx = (xx - 1);
+                }
 
-            //        ty = yy;
-            //    }
-            //    else
-            //    {
-            //        tx = xx;
-            //        if (Commands.SelectedY > ty)
-            //        {
-            //            ty = (yy + 1);
-            //        }
-            //        else
-            //        {
-            //            ty = (yy - 1);
-            //        }
-            //    }
+                ty = yy;
+            }
+            else
+            {
+                tx = xx;
+                if (Commands.SelectedY > yy)
+                {
+                    ty = (yy + 1);
+                }
+                else
+                {
+                    ty = (yy - 1);
+                }
+            }
 
-            //    // 最も移動力が高い形態に変形
-            //    u = Commands.SelectedUnit;
-            //    var loopTo = GeneralLib.LLength(withBlock.FeatureData("変形"));
-            //    for (i = 2; i <= loopTo; i++)
-            //    {
-            //        uname = GeneralLib.LIndex(withBlock.FeatureData("変形"), i);
-            //        {
-            //            var withBlock1 = withBlock.OtherForm(uname);
-            //            // その形態に変形可能？
-            //            if (withBlock1.IsConditionSatisfied("行動不能") || !withBlock1.IsAbleToEnter(xx, yy))
-            //            {
-            //                goto NextForm;
-            //            }
+            // 最も移動力が高い形態に変形
+            var u = bu;
+            foreach (var tfuname in bu.Feature("変形").DataL.Skip(1))
+            {
+                var tfu = bu.OtherForm(tfuname);
+                // その形態に変形可能？
+                if (tfu.IsConditionSatisfied("行動不能") || !tfu.IsAbleToEnter(xx, yy))
+                {
+                    continue;
+                }
 
-            //            // 目的地方面に移動可能？
-            //            if (u.IsAbleToEnter(tx, ty) && !withBlock1.IsAbleToEnter(tx, ty))
-            //            {
-            //                goto NextForm;
-            //            }
+                // 目的地方面に移動可能？
+                if (u.IsAbleToEnter(tx, ty) && !tfu.IsAbleToEnter(tx, ty))
+                {
+                    continue;
+                }
 
-            //            // 移動力が高い方を優先
-            //            speed1 = withBlock1.Data.Speed;
-            //            if (withBlock1.Data.IsFeatureAvailable("テレポート"))
-            //            {
-            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel("テレポート") + 1d);
-            //            }
+                // 移動力が高い方を優先
+                var speed1 = tfu.Data.Speed;
+                if (tfu.Data.IsFeatureAvailable("テレポート"))
+                {
+                    speed1 = (int)(speed1 + tfu.Data.FeatureLevel("テレポート") + 1d);
+                }
 
-            //            if (withBlock1.Data.IsFeatureAvailable("ジャンプ"))
-            //            {
-            //                speed1 = (speed1 + withBlock1.Data.FeatureLevel("ジャンプ") + 1d);
-            //            }
-            //            // 移動可能な地形タイプも考慮
-            //            switch (Map.TerrainClass(xx, yy) ?? "")
-            //            {
-            //                case "水":
-            //                case "深海":
-            //                    {
-            //                        if (Strings.InStr(withBlock1.Data.Transportation, "水") > 0 || Strings.InStr(withBlock1.Data.Transportation, "空") > 0)
-            //                        {
-            //                            speed1 = (speed1 + 1);
-            //                        }
+                if (tfu.Data.IsFeatureAvailable("ジャンプ"))
+                {
+                    speed1 = (int)(speed1 + tfu.Data.FeatureLevel("ジャンプ") + 1d);
+                }
+                // 移動可能な地形タイプも考慮
+                switch (Map.Terrain(xx, yy).Class)
+                {
+                    case "水":
+                    case "深海":
+                        {
+                            if (Strings.InStr(tfu.Data.Transportation, "水") > 0 || Strings.InStr(tfu.Data.Transportation, "空") > 0)
+                            {
+                                speed1 = (speed1 + 1);
+                            }
 
-            //                        break;
-            //                    }
-            //                // 宇宙や屋内では差が出ない
-            //                case "宇宙":
-            //                case "屋内":
-            //                    {
-            //                        break;
-            //                    }
+                            break;
+                        }
+                    // 宇宙や屋内では差が出ない
+                    case "宇宙":
+                    case "屋内":
+                        {
+                            break;
+                        }
 
-            //                default:
-            //                    {
-            //                        if (Strings.InStr(withBlock1.Data.Transportation, "空") > 0)
-            //                        {
-            //                            speed1 = (speed1 + 1);
-            //                        }
+                    default:
+                        {
+                            if (Strings.InStr(tfu.Data.Transportation, "空") > 0)
+                            {
+                                speed1 = (speed1 + 1);
+                            }
 
-            //                        break;
-            //                    }
-            //            }
+                            break;
+                        }
+                }
 
-            //            speed2 = u.Data.Speed;
-            //            if (u.Data.IsFeatureAvailable("テレポート"))
-            //            {
-            //                speed2 = (speed2 + u.Data.FeatureLevel("テレポート") + 1d);
-            //            }
+                var speed2 = u.Data.Speed;
+                if (u.Data.IsFeatureAvailable("テレポート"))
+                {
+                    speed2 = (int)(speed2 + u.Data.FeatureLevel("テレポート") + 1d);
+                }
 
-            //            if (u.Data.IsFeatureAvailable("ジャンプ"))
-            //            {
-            //                speed2 = (speed2 + u.Data.FeatureLevel("ジャンプ") + 1d);
-            //            }
-            //            // 移動可能な地形タイプも考慮
-            //            switch (Map.TerrainClass(xx, yy) ?? "")
-            //            {
-            //                case "水":
-            //                case "深海":
-            //                    {
-            //                        if (Strings.InStr(u.Data.Transportation, "水") > 0 || Strings.InStr(u.Data.Transportation, "空") > 0)
-            //                        {
-            //                            speed2 = (speed2 + 1);
-            //                        }
+                if (u.Data.IsFeatureAvailable("ジャンプ"))
+                {
+                    speed2 = (int)(speed2 + u.Data.FeatureLevel("ジャンプ") + 1d);
+                }
+                // 移動可能な地形タイプも考慮
+                switch (Map.Terrain(xx, yy).Class)
+                {
+                    case "水":
+                    case "深海":
+                        {
+                            if (Strings.InStr(u.Data.Transportation, "水") > 0 || Strings.InStr(u.Data.Transportation, "空") > 0)
+                            {
+                                speed2 = (speed2 + 1);
+                            }
 
-            //                        break;
-            //                    }
-            //                // 宇宙や屋内では差が出ない
-            //                case "宇宙":
-            //                case "屋内":
-            //                    {
-            //                        break;
-            //                    }
+                            break;
+                        }
+                    // 宇宙や屋内では差が出ない
+                    case "宇宙":
+                    case "屋内":
+                        {
+                            break;
+                        }
 
-            //                default:
-            //                    {
-            //                        if (Strings.InStr(u.Data.Transportation, "空") > 0)
-            //                        {
-            //                            speed2 = (speed2 + 1);
-            //                        }
+                    default:
+                        {
+                            if (Strings.InStr(u.Data.Transportation, "空") > 0)
+                            {
+                                speed2 = (speed2 + 1);
+                            }
 
-            //                        break;
-            //                    }
-            //            }
+                            break;
+                        }
+                }
 
-            //            if (speed2 > speed1)
-            //            {
-            //                goto NextForm;
-            //            }
-            //            else if (speed2 == speed1)
-            //            {
-            //                // 移動力が同じなら装甲が高い方を優先
-            //                if (u.Data.Armor >= withBlock1.Data.Armor)
-            //                {
-            //                    goto NextForm;
-            //                }
-            //            }
-            //        }
+                if (speed2 > speed1)
+                {
+                    continue;
+                }
+                else if (speed2 == speed1)
+                {
+                    // 移動力が同じなら装甲が高い方を優先
+                    if (u.Data.Armor >= tfu.Data.Armor)
+                    {
+                        continue;
+                    }
+                }
 
-            //        u = withBlock.OtherForm(uname);
-            //    NextForm:
-            //        ;
-            //    }
+                u = bu.OtherForm(tfuname);
+            }
 
-            //    // 現在の形態が最も移動に適している？
-            //    if (ReferenceEquals(Commands.SelectedUnit, u))
-            //    {
-            //        return TryMoveTransformRet;
-            //    }
+            // 現在の形態が最も移動に適している？
+            if (u == bu)
+            {
+                return false;
+            }
 
-            //    // 形態uに変形決定
-            //    uname = u.Name;
+            // 形態uに変形決定
+            var uname = u.Name;
 
-            //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    if (u.IsFeatureAvailable("追加パイロット"))
-            //    {
-            //        bool localIsDefined1() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
+            // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
+            if (u.IsFeatureAvailable("追加パイロット"))
+            {
+                if (!SRC.PList.IsDefined("追加パイロット"))
+                {
+                    SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
+                }
+            }
 
-            //        if (!localIsDefined1())
-            //        {
-            //            bool localIsDefined() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PDList.IsDefined(argIndex2); return ret; }
+            // 変形メッセージ
+            bu.PilotMassageIfDefined(new string[]
+            {
+                "変形(" + bu.Name + "=>" + uname + ")",
+                "変形(" + uname + ")",
+                "変形(" + bu.FeatureName("変形") + ")",
+            });
 
-            //            if (!localIsDefined())
-            //            {
-            //                GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
-            //                SRC.TerminateSRC();
-            //            }
+            // アニメ表示
+            bu.PlayAnimationIfDefined(new string[]
+            {
+                "変形(" + bu.Name + "=>" + uname + ")",
+                "変形(" + uname + ")",
+                "変形(" + bu.FeatureName("変形") + ")",
+            });
 
-            //            SRC.PList.Add(u.FeatureData("追加パイロット"), withBlock.MainPilot().Level, withBlock.Party0, gid: "");
-            //            withBlock.Party0 = argpparty;
-            //        }
-            //    }
+            // 変形
+            bu.Transform(uname);
 
-            //    // 変形メッセージ
-            //    bool localIsMessageDefined() { string argmain_situation = "変形(" + uname + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
+            // 変形イベント
+            var cf = u.CurrentForm();
+            Event.HandleEvent("変形", cf.MainPilot().ID, cf.Name);
 
-            //    bool localIsMessageDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
-
-            //    if (withBlock.IsMessageDefined("変形(" + withBlock.Name + "=>" + uname + ")"))
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("変形(" + withBlock.Name + "=>" + uname + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (localIsMessageDefined())
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("変形(" + uname + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (localIsMessageDefined1())
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("変形(" + withBlock.FeatureName("変形") + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-
-            //    // アニメ表示
-            //    bool localIsAnimationDefined() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsAnimationDefined1() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined() { string argmain_situation = "変形(" + withBlock.Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined1() { string argmain_situation = "変形(" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined2() { object argIndex1 = "変形"; string argmain_situation = "変形(" + withBlock.FeatureName(argIndex1) + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    if (withBlock.IsAnimationDefined("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: ""))
-            //    {
-            //        withBlock.PlayAnimation("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined())
-            //    {
-            //        withBlock.PlayAnimation("変形(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined1())
-            //    {
-            //        withBlock.PlayAnimation("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined())
-            //    {
-            //        withBlock.SpecialEffect("変形(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined1())
-            //    {
-            //        withBlock.SpecialEffect("変形(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined2())
-            //    {
-            //        withBlock.SpecialEffect("変形(" + withBlock.FeatureName("変形") + ")", sub_situation: "");
-            //    }
-
-            //    // 変形
-            //    withBlock.Transform(uname);
-            //}
-
-            //// 変形イベント
-            //{
-            //    var withBlock2 = u.CurrentForm();
-            //    Event.HandleEvent("変形", withBlock2.MainPilot().ID, withBlock2.Name);
-            //}
-
-            //// ハイパーモード＆ノーマルモードの自動発動
-            //u.CurrentForm().CheckAutoHyperMode();
-            //u.CurrentForm().CheckAutoNormalMode();
-            //Commands.SelectedUnit = u.CurrentForm();
-            //Status.DisplayUnitStatus(Commands.SelectedUnit);
-            //TryMoveTransformRet = true;
-            return TryMoveTransformRet;
+            // ハイパーモード＆ノーマルモードの自動発動
+            u.CurrentForm().CheckAutoHyperMode();
+            u.CurrentForm().CheckAutoNormalMode();
+            Commands.SelectedUnit = u.CurrentForm();
+            SRC.GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
+            return true;
         }
 
         // 実行時間を必要としないアビリティがあれば使っておく
