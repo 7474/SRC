@@ -3083,150 +3083,123 @@ namespace SRCCore
         // 実行時間を必要としないアビリティがあれば使っておく
         public void TryInstantAbility()
         {
-            // TODO Impl TryInstantAbility
-            //int i, j;
-            //string aname;
-            //var partners = default(Unit[]);
+            // ５マス以内に敵がいるかチェック
+            if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
+            {
+                // 周りに敵はいないのでアビリティは使わない
+                return;
+            }
 
-            //// ５マス以内に敵がいるかチェック
-            //if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
-            //{
-            //    // 周りに敵はいないのでアビリティは使わない
-            //    return;
-            //}
+            var u = Commands.SelectedUnit;
+            UnitAbility selUa = null;
+            // 実行時間を必要としないアビリティを探す
+            foreach (var ua in u.Abilities)
+            {
+                // 使用可能＆効果あり？
+                if (!ua.IsAbilityUseful("移動前"))
+                {
+                    continue;
+                }
 
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 実行時間を必要としないアビリティを探す
-            //    var loopTo = withBlock.CountAbility();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        // 使用可能＆効果あり？
-            //        if (!withBlock.IsAbilityUseful(i, "移動前"))
-            //        {
-            //            goto NextAbility;
-            //        }
+                // ＥＮ消費が多すぎない？
+                if (ua.AbilityENConsumption() > 0)
+                {
+                    if (ua.AbilityENConsumption() >= u.EN / 2)
+                    {
+                        continue;
+                    }
+                }
 
-            //        // ＥＮ消費が多すぎない？
-            //        if (withBlock.AbilityENConsumption(i) > 0)
-            //        {
-            //            if (withBlock.AbilityENConsumption(i) >= withBlock.EN / 2)
-            //            {
-            //                goto NextAbility;
-            //            }
-            //        }
+                {
+                    // 自己強化のアビリティのみが対象
+                    if (ua.Data.MaxRange != 0)
+                    {
+                        continue;
+                    }
 
-            //        {
-            //            var withBlock1 = withBlock.Ability(i);
-            //            // 自己強化のアビリティのみが対象
-            //            if (withBlock1.MaxRange != 0)
-            //            {
-            //                goto NextAbility;
-            //            }
+                    // 実行時間を必要としない？
+                    if (!ua.Data.Effects.Any(x => x.EffectType == "再行動"))
+                    {
+                        continue;
+                    }
 
-            //            // 実行時間を必要としない？
-            //            var loopTo1 = withBlock1.CountEffect();
-            //            for (j = 1; j <= loopTo1; j++)
-            //            {
-            //                if (withBlock1.EffectType(j) == "再行動")
-            //                {
-            //                    break;
-            //                }
-            //            }
+                    // 強化用アビリティ？
+                    if (ua.Data.Effects.Any(x => x.EffectType == "状態" || x.EffectType == "付加" || x.EffectType == "強化"))
+                    {
+                        // 強化用アビリティが見つかった
+                        selUa = ua;
+                        break;
+                    }
+                }
+            }
 
-            //            if (j > withBlock1.CountEffect())
-            //            {
-            //                goto NextAbility;
-            //            }
+            // ここに来る時は使用できるアビリティがなかった場合
+            if (selUa == null)
+            {
+                return;
+            }
+            Commands.SelectedAbility = selUa.AbilityNo();
 
-            //            // 強化用アビリティ？
-            //            var loopTo2 = withBlock1.CountEffect();
-            //            for (j = 1; j <= loopTo2; j++)
-            //            {
-            //                string localEffectType() { object argIndex1 = j; var ret = withBlock1.EffectType(argIndex1); return ret; }
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (selUa.IsAbilityClassifiedAs("合"))
+            {
+                partners = selUa.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //                string localEffectType1() { object argIndex1 = j; var ret = withBlock1.EffectType(argIndex1); return ret; }
+            var aname = selUa.Data.Name;
+            Commands.SelectedAbilityName = aname;
 
-            //                string localEffectType2() { object argIndex1 = j; var ret = withBlock1.EffectType(argIndex1); return ret; }
+            // アビリティの使用イベント
+            Event.HandleEvent("使用", u.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                return;
+            }
 
-            //                if (localEffectType() == "状態" || localEffectType1() == "付加" || localEffectType2() == "強化")
-            //                {
-            //                    // 強化用アビリティが見つかった
-            //                    Commands.SelectedAbility = i;
-            //                    goto UseInstantAbility;
-            //                }
-            //            }
-            //        }
+            // アビリティを使用
+            GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
+            u.ExecuteAbility(selUa, Commands.SelectedUnit);
+            GUI.CloseMessageForm();
+            Commands.SelectedUnit = u.CurrentForm();
+            
+            // アビリティの使用後イベント
+            SRC.Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                Commands.SelectedPartners.Clear();
+                return;
+            }
 
-            //    NextAbility:
-            //        ;
-            //    }
+            // 自爆アビリティの破壊イベント
+            if (Commands.SelectedUnit.Status == "破壊")
+            {
+                Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                {
+                    Commands.SelectedPartners.Clear();
+                    return;
+                }
+            }
 
-            //    // ここに来る時は使用できるアビリティがなかった場合
-            //    return;
-            //UseInstantAbility:
-            //    ;
+            // 行動数を消費しておく
+            Commands.SelectedUnit.UseAction();
 
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
 
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
-
-            //    aname = withBlock.Ability(Commands.SelectedAbility).Name;
-            //    Commands.SelectedAbilityName = aname;
-
-            //    // アビリティの使用イベント
-            //    Event.HandleEvent("使用", withBlock.MainPilot().ID, aname);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        return;
-            //    }
-
-            //    // アビリティを使用
-            //    GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
-            //    withBlock.ExecuteAbility(Commands.SelectedAbility, Commands.SelectedUnit);
-            //    GUI.CloseMessageForm();
-            //    Commands.SelectedUnit = withBlock.CurrentForm();
-            //}
-
-            //// アビリティの使用後イベント
-            //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
-            //if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //{
-            //    Commands.SelectedPartners.Clear();
-            //    return;
-            //}
-
-            //// 自爆アビリティの破壊イベント
-            //if (Commands.SelectedUnit.Status == "破壊")
-            //{
-            //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return;
-            //    }
-            //}
-
-            //// 行動数を消費しておく
-            //Commands.SelectedUnit.UseAction();
-
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo3 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo3; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
-
-            //Commands.SelectedPartners.Clear();
+            Commands.SelectedPartners.Clear();
         }
 
         // 召喚が可能であれば召喚する
@@ -3356,7 +3329,7 @@ namespace SRCCore
             //        // マップアビリティかどうか
             //        if (!withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
             //        {
-            //            goto NextAbility;
+            //            continue;
             //        }
 
             //        // アビリティの使用可否を判定
@@ -3364,14 +3337,14 @@ namespace SRCCore
             //        {
             //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
             //            {
-            //                goto NextAbility;
+            //                continue;
             //            }
             //        }
             //        else
             //        {
             //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
             //            {
-            //                goto NextAbility;
+            //                continue;
             //            }
             //        }
 
@@ -3402,7 +3375,7 @@ namespace SRCCore
             //        if (i > withBlock.Ability(a).CountEffect())
             //        {
             //            // 回復アビリティではなかった
-            //            goto NextAbility;
+            //            continue;
             //        }
 
             //        max_range = withBlock.AbilityMaxRange(a);
