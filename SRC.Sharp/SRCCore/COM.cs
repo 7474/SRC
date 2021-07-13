@@ -2623,157 +2623,89 @@ namespace SRCCore
         // ハイパーモードが可能であればハイパーモード発動
         private void TryHyperMode()
         {
-            // TODO Impl TryHyperMode
-            //string uname;
-            //Unit u;
-            //string fname, fdata;
-            //double flevel;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // ハイパーモードを持っている？
-            //    if (!withBlock.IsFeatureAvailable("ハイパーモード"))
-            //    {
-            //        return;
-            //    }
+            var bu = Commands.SelectedUnit;
+            // ハイパーモードを持っている？
+            if (!bu.IsFeatureAvailable("ハイパーモード"))
+            {
+                return;
+            }
 
-            //    fname = withBlock.FeatureName("ハイパーモード");
-            //    flevel = withBlock.FeatureLevel("ハイパーモード");
-            //    fdata = withBlock.FeatureData("ハイパーモード");
+            var fname = bu.FeatureName("ハイパーモード");
+            var flevel = bu.FeatureLevel("ハイパーモード");
+            var fdata = bu.FeatureData("ハイパーモード");
 
-            //    // 発動条件を満たす？
-            //    if (withBlock.MainPilot().Morale < 100 + (10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || withBlock.HP > withBlock.MaxHP / 4))
-            //    {
-            //        return;
-            //    }
+            // 発動条件を満たす？
+            if (bu.MainPilot().Morale < 100 + (10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || bu.HP > bu.MaxHP / 4))
+            {
+                return;
+            }
 
-            //    // ハイパーモードが禁止されている？
-            //    if (withBlock.IsConditionSatisfied("形態固定"))
-            //    {
-            //        return;
-            //    }
+            // ハイパーモードが禁止されている？
+            if (bu.IsConditionSatisfied("形態固定"))
+            {
+                return;
+            }
 
-            //    if (withBlock.IsConditionSatisfied("機体固定"))
-            //    {
-            //        return;
-            //    }
+            if (bu.IsConditionSatisfied("機体固定"))
+            {
+                return;
+            }
 
-            //    // 変身中・能力コピー中はハイパーモードを使用できない
-            //    if (withBlock.IsConditionSatisfied("ノーマルモード付加"))
-            //    {
-            //        return;
-            //    }
+            // 変身中・能力コピー中はハイパーモードを使用できない
+            if (bu.IsConditionSatisfied("ノーマルモード付加"))
+            {
+                return;
+            }
 
-            //    // ハイパーモード先の形態を調べる
-            //    uname = GeneralLib.LIndex(fdata, 2);
-            //    u = withBlock.OtherForm(uname);
+            // ハイパーモード先の形態を調べる
+            var uname = GeneralLib.LIndex(fdata, 2);
+            var u = bu.OtherForm(uname);
 
-            //    // ハイパーモード先の形態は使用可能？
-            //    if (u.IsConditionSatisfied("行動不能") || !u.IsAbleToEnter(withBlock.x, withBlock.y))
-            //    {
-            //        return;
-            //    }
+            // ハイパーモード先の形態は使用可能？
+            if (u.IsConditionSatisfied("行動不能") || !u.IsAbleToEnter(bu.x, bu.y))
+            {
+                return;
+            }
 
-            //    // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
-            //    if (u.IsFeatureAvailable("追加パイロット"))
-            //    {
-            //        bool localIsDefined() { object argIndex1 = "追加パイロット"; object argIndex2 = u.FeatureData(argIndex1); var ret = SRC.PList.IsDefined(argIndex2); return ret; }
+            // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
+            if (u.IsFeatureAvailable("追加パイロット"))
+            {
+                if (!SRC.PList.IsDefined("追加パイロット"))
+                {
+                    SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
+                }
+            }
 
-            //        if (!localIsDefined())
-            //        {
-            //            SRC.PList.Add(u.FeatureData("追加パイロット"), withBlock.MainPilot().Level, withBlock.Party0, gid: "");
-            //            withBlock.Party0 = argpparty;
-            //        }
-            //    }
+            // ハイパーモードメッセージ
+            bu.PilotMassageIfDefined(new string[]
+            {
+                "ハイパーモード(" + bu.Name + "=>" + uname + ")",
+                "ハイパーモード(" + uname + ")",
+                "ハイパーモード(" + fname + ")",
+                "ハイパーモード",
+            });
 
-            //    // ハイパーモードメッセージ
-            //    bool localIsMessageDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
+            // アニメ表示
+            bu.PlayAnimationIfDefined(new string[]
+            {
+                "ハイパーモード(" + bu.Name + "=>" + uname + ")",
+                "ハイパーモード(" + uname + ")",
+                "ハイパーモード(" + fname + ")",
+                "ハイパーモード",
+            });
 
-            //    bool localIsMessageDefined1() { string argmain_situation = "ハイパーモード(" + fname + ")"; var ret = withBlock.IsMessageDefined(argmain_situation); return ret; }
+            // ハイパーモード発動
+            bu.Transform(uname);
 
-            //    if (withBlock.IsMessageDefined("ハイパーモード(" + withBlock.Name + "=>" + uname + ")"))
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (localIsMessageDefined())
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("ハイパーモード(" + uname + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (localIsMessageDefined1())
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("ハイパーモード(" + fname + ")", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
-            //    else if (withBlock.IsMessageDefined("ハイパーモード"))
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //        withBlock.PilotMessage("ハイパーモード", msg_mode: "");
-            //        GUI.CloseMessageForm();
-            //    }
+            // ハイパーモードイベント
+            var cf = u.CurrentForm();
+            Event.HandleEvent("ハイパーモード", cf.MainPilot().ID, cf.Name);
 
-            //    // アニメ表示
-            //    bool localIsAnimationDefined() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsAnimationDefined1() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock.IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined() { string argmain_situation = "ハイパーモード(" + withBlock.Name + "=>" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined1() { string argmain_situation = "ハイパーモード(" + uname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    bool localIsSpecialEffectDefined2() { string argmain_situation = "ハイパーモード(" + fname + ")"; string argsub_situation = ""; var ret = withBlock.IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
-
-            //    if (withBlock.IsAnimationDefined("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: ""))
-            //    {
-            //        withBlock.PlayAnimation("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined())
-            //    {
-            //        withBlock.PlayAnimation("ハイパーモード(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsAnimationDefined1())
-            //    {
-            //        withBlock.PlayAnimation("ハイパーモード(" + fname + ")", sub_situation: "");
-            //    }
-            //    else if (withBlock.IsAnimationDefined("ハイパーモード", sub_situation: ""))
-            //    {
-            //        withBlock.PlayAnimation("ハイパーモード", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined())
-            //    {
-            //        withBlock.SpecialEffect("ハイパーモード(" + withBlock.Name + "=>" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined1())
-            //    {
-            //        withBlock.SpecialEffect("ハイパーモード(" + uname + ")", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined2())
-            //    {
-            //        withBlock.SpecialEffect("ハイパーモード(" + fname + ")", sub_situation: "");
-            //    }
-            //    else if (withBlock.IsSpecialEffectDefined("ハイパーモード", sub_situation: ""))
-            //    {
-            //        withBlock.SpecialEffect("ハイパーモード", sub_situation: "");
-            //    }
-
-            //    // ハイパーモード発動
-            //    withBlock.Transform(uname);
-            //}
-
-            //// ハイパーモードイベント
-            //{
-            //    var withBlock1 = u.CurrentForm();
-            //    Event.HandleEvent("ハイパーモード", withBlock1.MainPilot().ID, withBlock1.Name);
-            //}
-
-            //// ハイパーモード＆ノーマルモードの自動発動
-            //u.CurrentForm().CheckAutoHyperMode();
-            //u.CurrentForm().CheckAutoNormalMode();
-            //Commands.SelectedUnit = u.CurrentForm();
-            //Status.DisplayUnitStatus(Commands.SelectedUnit);
+            // ハイパーモード＆ノーマルモードの自動発動
+            u.CurrentForm().CheckAutoHyperMode();
+            u.CurrentForm().CheckAutoNormalMode();
+            Commands.SelectedUnit = u.CurrentForm();
+            SRC.GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
         }
 
         // 戦闘形態への変形が可能であれば変形する
