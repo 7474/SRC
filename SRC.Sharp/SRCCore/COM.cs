@@ -3908,309 +3908,298 @@ namespace SRCCore
         // 修理が可能であれば修理装置を使う
         public bool TryFix(bool moved, [Optional, DefaultParameterValue(null)] Unit t)
         {
-            // TODO Impl TryFix
-            bool TryFixRet = default;
-            //var TmpMaskData = default(bool[]);
-            //int j, i, k;
-            //int new_x, new_y;
-            //int max_dmg;
-            //int tmp;
-            //Unit u;
-            //string fname;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 修理装置を使用可能？
-            //    if (!withBlock.IsFeatureAvailable("修理装置") || withBlock.Area == "地中")
-            //    {
-            //        return TryFixRet;
-            //    }
+            var u = Commands.SelectedUnit;
+            // 修理装置を使用可能？
+            if (!u.IsFeatureAvailable("修理装置") || u.Area == "地中")
+            {
+                return false;
+            }
 
-            //    // 狂戦士状態の際は修理装置を使わない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return TryFixRet;
-            //    }
+            // 狂戦士状態の際は修理装置を使わない
+            if (u.IsConditionSatisfied("狂戦士"))
+            {
+                return false;
+            }
+            bool[,] TmpMaskData = null;
+            // 修理装置を使用可能な領域を設定
+            if (moved || u.Mode == "固定")
+            {
+                // 移動でない場合
+                var loopTo = Map.MapWidth;
+                for (var i = 1; i <= loopTo; i++)
+                {
+                    var loopTo1 = Map.MapHeight;
+                    for (var j = 1; j <= loopTo1; j++)
+                        Map.MaskData[i, j] = true;
+                }
 
-            //    // 修理装置を使用可能な領域を設定
-            //    if (moved || withBlock.Mode == "固定")
-            //    {
-            //        // 移動でない場合
-            //        var loopTo = Map.MapWidth;
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            var loopTo1 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo1; j++)
-            //                Map.MaskData[i, j] = true;
-            //        }
+                if (u.x > 1)
+                {
+                    Map.MaskData[u.x - 1, u.y] = false;
+                }
 
-            //        if (withBlock.x > 1)
-            //        {
-            //            Map.MaskData[withBlock.x - 1, withBlock.y] = false;
-            //        }
+                if (u.x < Map.MapWidth)
+                {
+                    Map.MaskData[u.x + 1, u.y] = false;
+                }
 
-            //        if (withBlock.x < Map.MapWidth)
-            //        {
-            //            Map.MaskData[withBlock.x + 1, withBlock.y] = false;
-            //        }
+                if (u.y > 1)
+                {
+                    Map.MaskData[u.x, u.y - 1] = false;
+                }
 
-            //        if (withBlock.y > 1)
-            //        {
-            //            Map.MaskData[withBlock.x, withBlock.y - 1] = false;
-            //        }
+                if (u.y < Map.MapHeight)
+                {
+                    Map.MaskData[u.x, u.y + 1] = false;
+                }
+            }
+            else
+            {
+                // 移動可能な場合
+                TmpMaskData = new bool[Map.MapWidth + 1 + 1, Map.MapHeight + 1 + 1];
+                Map.AreaInSpeed(Commands.SelectedUnit);
+                var loopTo2 = Map.MapWidth;
+                for (var i = 1; i <= loopTo2; i++)
+                {
+                    var loopTo3 = Map.MapHeight;
+                    for (var j = 1; j <= loopTo3; j++)
+                        TmpMaskData[i, j] = Map.MaskData[i, j];
+                }
 
-            //        if (withBlock.y < Map.MapHeight)
-            //        {
-            //            Map.MaskData[withBlock.x, withBlock.y + 1] = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 移動可能な場合
-            //        TmpMaskData = new bool[Map.MapWidth + 1 + 1, Map.MapHeight + 1 + 1];
-            //        Map.AreaInSpeed(Commands.SelectedUnit);
-            //        var loopTo2 = Map.MapWidth;
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            var loopTo3 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo3; j++)
-            //                TmpMaskData[i, j] = Map.MaskData[i, j];
-            //        }
+                var loopTo4 = Map.MapWidth;
+                for (var i = 0; i <= loopTo4; i++)
+                {
+                    TmpMaskData[i, 0] = true;
+                    TmpMaskData[i, Map.MapHeight + 1] = true;
+                }
 
-            //        var loopTo4 = Map.MapWidth;
-            //        for (i = 0; i <= loopTo4; i++)
-            //        {
-            //            TmpMaskData[i, 0] = true;
-            //            TmpMaskData[i, Map.MapHeight + 1] = true;
-            //        }
+                var loopTo5 = Map.MapHeight;
+                for (var i = 0; i <= loopTo5; i++)
+                {
+                    TmpMaskData[0, i] = true;
+                    TmpMaskData[Map.MapWidth + 1, i] = true;
+                }
 
-            //        var loopTo5 = Map.MapHeight;
-            //        for (i = 0; i <= loopTo5; i++)
-            //        {
-            //            TmpMaskData[0, i] = true;
-            //            TmpMaskData[Map.MapWidth + 1, i] = true;
-            //        }
+                var loopTo6 = GeneralLib.MinLng(u.x + (u.Speed + 1), Map.MapWidth);
+                for (var i = GeneralLib.MaxLng(u.x - (u.Speed + 1), 1); i <= loopTo6; i++)
+                {
+                    var loopTo7 = GeneralLib.MinLng(u.y + (u.Speed + 1), Map.MapHeight);
+                    for (var j = GeneralLib.MaxLng(u.y - (u.Speed + 1), 1); j <= loopTo7; j++)
+                        Map.MaskData[i, j] = TmpMaskData[i, j] && TmpMaskData[i - 1, j] && TmpMaskData[i + 1, j] && TmpMaskData[i, j - 1] && TmpMaskData[i, j + 1];
+                }
 
-            //        var loopTo6 = GeneralLib.MinLng(withBlock.x + (withBlock.Speed + 1), Map.MapWidth);
-            //        for (i = GeneralLib.MaxLng(withBlock.x - (withBlock.Speed + 1), 1); i <= loopTo6; i++)
-            //        {
-            //            var loopTo7 = GeneralLib.MinLng(withBlock.y + (withBlock.Speed + 1), Map.MapHeight);
-            //            for (j = GeneralLib.MaxLng(withBlock.y - (withBlock.Speed + 1), 1); j <= loopTo7; j++)
-            //                Map.MaskData[i, j] = TmpMaskData[i, j] && TmpMaskData[i - 1, j] && TmpMaskData[i + 1, j] && TmpMaskData[i, j - 1] && TmpMaskData[i, j + 1];
-            //        }
+                Map.MaskData[u.x, u.y] = true;
+            }
 
-            //        Map.MaskData[withBlock.x, withBlock.y] = true;
-            //    }
+            // ターゲットを探す
+            Commands.SelectedTarget = null;
+            var max_dmg = 90;
+            var loopTo8 = GeneralLib.MinLng(u.x + (u.Speed + 1), Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(u.x - (u.Speed + 1), 1); i <= loopTo8; i++)
+            {
+                var loopTo9 = GeneralLib.MinLng(u.y + (u.Speed + 1), Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(u.y - (u.Speed + 1), 1); j <= loopTo9; j++)
+                {
+                    if (Map.MaskData[i, j])
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //    // ターゲットを探す
-            //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Commands.SelectedTarget = null;
-            //    max_dmg = 90;
-            //    var loopTo8 = GeneralLib.MinLng(withBlock.x + (withBlock.Speed + 1), Map.MapWidth);
-            //    for (i = GeneralLib.MaxLng(withBlock.x - (withBlock.Speed + 1), 1); i <= loopTo8; i++)
-            //    {
-            //        var loopTo9 = GeneralLib.MinLng(withBlock.y + (withBlock.Speed + 1), Map.MapHeight);
-            //        for (j = GeneralLib.MaxLng(withBlock.y - (withBlock.Speed + 1), 1); j <= loopTo9; j++)
-            //        {
-            //            if (Map.MaskData[i, j])
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    var tu = Map.MapDataForUnit[i, j];
+                    if (tu is null)
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            u = Map.MapDataForUnit[i, j];
-            //            if (u is null)
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // デフォルトのターゲットが指定されている場合はそのユニット以外を
+                    // ターゲットにはしない
+                    if (t is object)
+                    {
+                        if (!ReferenceEquals(tu, t))
+                        {
+                            goto NextFixTarget;
+                        }
+                    }
 
-            //            // デフォルトのターゲットが指定されている場合はそのユニット以外を
-            //            // ターゲットにはしない
-            //            if (t is object)
-            //            {
-            //                if (!ReferenceEquals(u, t))
-            //                {
-            //                    goto NextFixTarget;
-            //                }
-            //            }
+                    // 現在の選択しているターゲットよりダメージが少なければ選択しない
+                    if (100 * tu.HP / tu.MaxHP > max_dmg)
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // 現在の選択しているターゲットよりダメージが少なければ選択しない
-            //            if (100 * u.HP / u.MaxHP > max_dmg)
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // 味方かどうか判定
+                    if (!u.IsAlly(tu))
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // 味方かどうか判定
-            //            if (!withBlock.IsAlly(u))
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // ゾンビ？
+                    if (tu.IsConditionSatisfied("ゾンビ"))
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // ゾンビ？
-            //            if (u.IsConditionSatisfied("ゾンビ"))
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // 修理不可？
+                    if (tu.IsFeatureAvailable("修理不可"))
+                    {
+                        var fd = tu.Feature("修理不可");
+                        foreach (var fname0 in fd.DataL.Skip(1))
+                        {
+                            var fname = fname0;
+                            if (Strings.Left(fname, 1) == "!")
+                            {
+                                fname = Strings.Mid(fname, 2);
+                                if ((fname ?? "") != (u.FeatureName0("修理装置") ?? ""))
+                                {
+                                    goto NextFixTarget;
+                                }
+                            }
+                            else
+                            {
+                                if ((fname ?? "") == (u.FeatureName0("修理装置") ?? ""))
+                                {
+                                    goto NextFixTarget;
+                                }
+                            }
+                        }
+                    }
 
-            //            // 修理不可？
-            //            if (u.IsFeatureAvailable("修理不可"))
-            //            {
-            //                var loopTo10 = Conversions.ToIntegereger(u.FeatureData("修理不可"));
-            //                for (k = 2; k <= loopTo10; k++)
-            //                {
-            //                    fname = GeneralLib.LIndex(u.FeatureData("修理不可"), k);
-            //                    if (Strings.Left(fname, 1) == "!")
-            //                    {
-            //                        fname = Strings.Mid(fname, 2);
-            //                        if ((fname ?? "") != (withBlock.FeatureName0("修理装置") ?? ""))
-            //                        {
-            //                            goto NextFixTarget;
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        if ((fname ?? "") == (withBlock.FeatureName0("修理装置") ?? ""))
-            //                        {
-            //                            goto NextFixTarget;
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    Commands.SelectedTarget = tu;
+                    max_dmg = 100 * tu.HP / tu.MaxHP;
+                NextFixTarget:
+                    ;
+                }
+            }
 
-            //            Commands.SelectedTarget = u;
-            //            max_dmg = 100 * u.HP / u.MaxHP;
-            //        NextFixTarget:
-            //            ;
-            //        }
-            //    }
+            // ターゲットが見つからない
+            if (Commands.SelectedTarget is null)
+            {
+                return false;
+            }
 
-            //    // ターゲットが見つからない
-            //    if (Commands.SelectedTarget is null)
-            //    {
-            //        return TryFixRet;
-            //    }
+            // ターゲットに隣接するように移動
+            if (!moved && u.Mode != "固定")
+            {
+                var new_x = u.x;
+                var new_y = u.y;
+                {
+                    var withBlock1 = Commands.SelectedTarget;
+                    // 現在位置から修理が可能であれば現在位置を優先
+                    int tmp;
+                    if (Math.Abs((withBlock1.x - new_x)) + Math.Abs((withBlock1.y - new_y)) == 1)
+                    {
+                        tmp = 1;
+                    }
+                    else
+                    {
+                        tmp = 10000;
+                    }
 
-            //    // ターゲットに隣接するように移動
-            //    if (!moved && withBlock.Mode != "固定")
-            //    {
-            //        new_x = withBlock.x;
-            //        new_y = withBlock.y;
-            //        {
-            //            var withBlock1 = Commands.SelectedTarget;
-            //            // 現在位置から修理が可能であれば現在位置を優先
-            //            if (Math.Abs((withBlock1.x - new_x)) + Math.Abs((withBlock1.y - new_y)) == 1)
-            //            {
-            //                tmp = 1;
-            //            }
-            //            else
-            //            {
-            //                tmp = 10000;
-            //            }
+                    var loopTo11 = Map.MapWidth;
+                    for (var i = 1; i <= loopTo11; i++)
+                    {
+                        var loopTo12 = Map.MapHeight;
+                        for (var j = 1; j <= loopTo12; j++)
+                            Map.MaskData[i, j] = TmpMaskData[i, j];
+                    }
 
-            //            var loopTo11 = Map.MapWidth;
-            //            for (i = 1; i <= loopTo11; i++)
-            //            {
-            //                var loopTo12 = Map.MapHeight;
-            //                for (j = 1; j <= loopTo12; j++)
-            //                    Map.MaskData[i, j] = TmpMaskData[i, j];
-            //            }
+                    // 適切な場所を探す
+                    var loopTo13 = GeneralLib.MinLng(withBlock1.x + 1, Map.MapWidth);
+                    for (var i = GeneralLib.MaxLng(withBlock1.x - 1, 1); i <= loopTo13; i++)
+                    {
+                        var loopTo14 = GeneralLib.MinLng(withBlock1.y + 1, Map.MapHeight);
+                        for (var j = GeneralLib.MaxLng(withBlock1.y - 1, 1); j <= loopTo14; j++)
+                        {
+                            if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && Math.Abs((withBlock1.x - i)) + Math.Abs((withBlock1.y - j)) == 1)
+                            {
+                                {
+                                    var withBlock2 = Commands.SelectedUnit;
+                                    if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < tmp)
+                                    {
+                                        new_x = i;
+                                        new_y = j;
+                                        tmp = (int)(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //            // 適切な場所を探す
-            //            var loopTo13 = GeneralLib.MinLng(withBlock1.x + 1, Map.MapWidth);
-            //            for (i = GeneralLib.MaxLng(withBlock1.x - 1, 1); i <= loopTo13; i++)
-            //            {
-            //                var loopTo14 = GeneralLib.MinLng(withBlock1.y + 1, Map.MapHeight);
-            //                for (j = GeneralLib.MaxLng(withBlock1.y - 1, 1); j <= loopTo14; j++)
-            //                {
-            //                    if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && Math.Abs((withBlock1.x - i)) + Math.Abs((withBlock1.y - j)) == 1)
-            //                    {
-            //                        {
-            //                            var withBlock2 = Commands.SelectedUnit;
-            //                            if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < tmp)
-            //                            {
-            //                                new_x = i;
-            //                                new_y = j;
-            //                                tmp = (Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
+                if (new_x != u.x || new_y != u.y)
+                {
+                    // 適切な場所が見つかったので移動
+                    u.Move(new_x, new_y);
+                    moved = true;
+                }
+            }
 
-            //        if (new_x != withBlock.x || new_y != withBlock.y)
-            //        {
-            //            // 適切な場所が見つかったので移動
-            //            withBlock.Move(new_x, new_y);
-            //            moved = true;
-            //        }
-            //    }
+            // 選択内容を変更
+            Event.SelectedUnitForEvent = Commands.SelectedUnit;
+            Event.SelectedTargetForEvent = Commands.SelectedTarget;
 
-            //    // 選択内容を変更
-            //    Event.SelectedUnitForEvent = Commands.SelectedUnit;
-            //    Event.SelectedTargetForEvent = Commands.SelectedTarget;
+            // メッセージ表示
+            GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
+            if (u.IsMessageDefined("修理"))
+            {
+                u.PilotMessage("修理", msg_mode: "");
+            }
 
-            //    // メッセージ表示
-            //    GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    if (withBlock.IsMessageDefined("修理"))
-            //    {
-            //        withBlock.PilotMessage("修理", msg_mode: "");
-            //    }
+            // アニメ表示
+            if (u.IsAnimationDefined("修理", u.FeatureName("修理")))
+            {
+                u.PlayAnimation("修理", u.FeatureName("修理"));
+            }
+            else
+            {
+                u.SpecialEffect("修理", u.FeatureName("修理"));
+            }
 
-            //    // アニメ表示
-            //    if (withBlock.IsAnimationDefined("修理", withBlock.FeatureName("修理")))
-            //    {
-            //        withBlock.PlayAnimation("修理", withBlock.FeatureName("修理"));
-            //    }
-            //    else
-            //    {
-            //        withBlock.SpecialEffect("修理", withBlock.FeatureName("修理"));
-            //    }
+            GUI.DisplaySysMessage(u.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + u.FeatureName0("修理装置") + "]を使った。");
 
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + withBlock.FeatureName0("修理装置") + "]を使った。");
+            // 修理実行
+            {
+                var tmp = Commands.SelectedTarget.HP;
+                switch (u.FeatureLevel("修理装置"))
+                {
+                    case 1d:
+                    case -1:
+                        {
+                            Commands.SelectedTarget.RecoverHP(30d + 3d * u.MainPilot().SkillLevel("修理技能", ref_mode: ""));
+                            break;
+                        }
 
-            //    // 修理実行
-            //    tmp = Commands.SelectedTarget.HP;
-            //    switch (withBlock.FeatureLevel("修理装置"))
-            //    {
-            //        case 1d:
-            //        case -1:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(30d + 3d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
-            //                break;
-            //            }
+                    case 2d:
+                        {
+                            Commands.SelectedTarget.RecoverHP(50d + 5d * u.MainPilot().SkillLevel("修理技能", ref_mode: ""));
+                            break;
+                        }
 
-            //        case 2d:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(50d + 5d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
-            //                break;
-            //            }
+                    case 3d:
+                        {
+                            Commands.SelectedTarget.RecoverHP(100d);
+                            break;
+                        }
+                }
 
-            //        case 3d:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(100d);
-            //                break;
-            //            }
-            //    }
+                GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp));
+                GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
+                GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
+            }
+            // 経験値獲得
+            Commands.SelectedUnit.GetExp(Commands.SelectedTarget, "修理", exp_mode: "");
+            if (GUI.MessageWait < 10000)
+            {
+                GUI.Sleep(GUI.MessageWait);
+            }
 
-            //    GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp));
-            //    GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
-            //}
+            GUI.CloseMessageForm();
 
-            //// 経験値獲得
-            //Commands.SelectedUnit.GetExp(Commands.SelectedTarget, "修理", exp_mode: "");
-            //if (GUI.MessageWait < 10000)
-            //{
-            //    GUI.Sleep(GUI.MessageWait);
-            //}
-
-            //GUI.CloseMessageForm();
-
-            //// 形態変化のチェック
-            //Commands.SelectedTarget.Update();
-            //Commands.SelectedTarget.CurrentForm().CheckAutoHyperMode();
-            //Commands.SelectedTarget.CurrentForm().CheckAutoNormalMode();
-            //TryFixRet = true;
-            return TryFixRet;
+            // 形態変化のチェック
+            Commands.SelectedTarget.Update();
+            Commands.SelectedTarget.CurrentForm().CheckAutoHyperMode();
+            Commands.SelectedTarget.CurrentForm().CheckAutoNormalMode();
+            return true;
         }
 
         // マップ攻撃使用に関する処理
