@@ -3615,7 +3615,7 @@ namespace SRCCore
                     }
 
                     // 味方かどうかを判定
-                    if (!tu.IsAlly(tu))
+                    if (!u.IsAlly(tu))
                     {
                         continue;
                     }
@@ -4737,305 +4737,290 @@ namespace SRCCore
         // スペシャルパワーを使用する
         public void TrySpecialPower(Pilot p)
         {
-            // TODO Impl TrySpecialPower
-            //string slist;
-            //SpecialPowerData sd;
-            //int i, tnum;
-            //Commands.SelectedPilot = p;
+            // ザコパイロットはスペシャルパワーを使わない
+            if (Strings.InStr(p.Name, "(ザコ)") > 0)
+            {
+                return;
+            }
 
-            //// ザコパイロットはスペシャルパワーを使わない
-            //if (Strings.InStr(p.Name, "(ザコ)") > 0)
-            //{
-            //    return;
-            //}
+            // 技量が高いほどスペシャルパワーの発動確率が高い
+            if (GeneralLib.Dice(100) > p.TacticalTechnique0() - 100)
+            {
+                return;
+            }
 
-            //// 技量が高いほどスペシャルパワーの発動確率が高い
-            //if (GeneralLib.Dice(100) > p.TacticalTechnique0() - 100)
-            //{
-            //    return;
-            //}
+            {
+                var withBlock = Commands.SelectedUnit;
+                // 正常な判断力がある？
+                if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
+                {
+                    return;
+                }
 
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 正常な判断力がある？
-            //    if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return;
-            //    }
+                // スペシャルパワー使用不能
+                if (withBlock.IsConditionSatisfied("スペシャルパワー使用不能"))
+                {
+                    return;
+                }
+            }
 
-            //    // スペシャルパワー使用不能
-            //    if (withBlock.IsConditionSatisfied("スペシャルパワー使用不能"))
-            //    {
-            //        return;
-            //    }
-            //}
+            // 使用する可能性のあるスペシャルパワーの一覧を作成
+            var slist = new List<SpecialPowerData>();
+            var loopTo = p.CountSpecialPower;
+            for (var i = 1; i <= loopTo; i++)
+            {
+                Commands.SelectedSpecialPower = p.get_SpecialPower(i);
+                var sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
 
-            //// 使用する可能性のあるスペシャルパワーの一覧を作成
-            //slist = "";
-            //var loopTo = p.CountSpecialPower;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    Commands.SelectedSpecialPower = p.get_SpecialPower(i);
-            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
+                // ＳＰが足りている？
+                if (p.SP < p.SpecialPowerCost(Commands.SelectedSpecialPower))
+                {
+                    continue;
+                }
 
-            //    // ＳＰが足りている？
-            //    if (p.SP < p.SpecialPowerCost(Commands.SelectedSpecialPower))
-            //    {
-            //        goto NextSpecialPower;
-            //    }
+                // 既に実行済み？
+                if (Commands.SelectedUnit.IsSpecialPowerInEffect(Commands.SelectedSpecialPower))
+                {
+                    continue;
+                }
 
-            //    // 既に実行済み？
-            //    if (Commands.SelectedUnit.IsSpecialPowerInEffect(Commands.SelectedSpecialPower))
-            //    {
-            //        goto NextSpecialPower;
-            //    }
+                // ターゲットを選択する必要のあるスペシャルパワーは判断が難しいので
+                // 使用しない
+                switch (sd.TargetType ?? "")
+                {
+                    case "味方":
+                    case "敵":
+                    case "任意":
+                        continue;
+                }
 
-            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
-            //    {
-            //        var withBlock1 = sd;
-            //        // ターゲットを選択する必要のあるスペシャルパワーは判断が難しいので
-            //        // 使用しない
-            //        switch (withBlock1.TargetType ?? "")
-            //        {
-            //            case "味方":
-            //            case "敵":
-            //            case "任意":
-            //                {
-            //                    goto NextSpecialPower;
-            //                    break;
-            //                }
-            //        }
+                // ターゲットがいなければ使用しない
+                var tnum = sd.CountTarget(p);
+                if (tnum == 0)
+                {
+                    continue;
+                }
 
-            //        // ターゲットがいなければ使用しない
-            //        tnum = withBlock1.CountTarget(p);
-            //        if (tnum == 0)
-            //        {
-            //            goto NextSpecialPower;
-            //        }
+                // 複数のユニットをターゲットにするスペシャルパワーはターゲットが
+                // 少ない場合は使用しない
+                switch (sd.TargetType ?? "")
+                {
+                    case "全味方":
+                    case "全敵":
+                        if (tnum < 3)
+                        {
+                            continue;
+                        }
+                        break;
 
-            //        // 複数のユニットをターゲットにするスペシャルパワーはターゲットが
-            //        // 少ない場合は使用しない
-            //        switch (withBlock1.TargetType ?? "")
-            //        {
-            //            case "全味方":
-            //            case "全敵":
-            //                {
-            //                    if (tnum < 3)
-            //                    {
-            //                        goto NextSpecialPower;
-            //                    }
+                }
 
-            //                    break;
-            //                }
-            //        }
+                // 使用に適した状況下にある？
+                if (sd.IsEffectAvailable("ＨＰ回復"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (Commands.SelectedUnit.HP < 0.7d * Commands.SelectedUnit.MaxHP)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        if (SRC.Turn >= 3)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
+                if (sd.IsEffectAvailable("ＥＮ回復"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (Commands.SelectedUnit.EN < 0.3d * Commands.SelectedUnit.MaxEN)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        if (SRC.Turn >= 4)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        // 使用に適した状況下にある？
+                if (sd.IsEffectAvailable("気力増加"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (p.Morale < p.MaxMorale)
+                        {
+                            if (p.CountSpecialPower == 1 || p.SP > p.MaxSP / 2)
+                            {
+                                goto AddSpecialPower;
+                            }
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＨＰ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＨＰ回復")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (Commands.SelectedUnit.HP < 0.7d * Commands.SelectedUnit.MaxHP)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                if (SRC.Turn >= 3)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("行動数増加"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＥＮ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＥＮ回復")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (Commands.SelectedUnit.EN < 0.3d * Commands.SelectedUnit.MaxEN)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                if (SRC.Turn >= 4)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("復活"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(気力増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("気力増加")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (p.Morale < p.MaxMorale)
-            //                {
-            //                    if (p.CountSpecialPower == 1 || p.SP > p.MaxSP / 2)
-            //                    {
-            //                        goto AddSpecialPower;
-            //                    }
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "絶対命中") || IsSPEffectUseful(sd, "ダメージ増加") || IsSPEffectUseful(sd, "クリティカル率増加") || IsSPEffectUseful(sd, "命中強化") || IsSPEffectUseful(sd, "貫通攻撃") || IsSPEffectUseful(sd, "再攻撃") || IsSPEffectUseful(sd, "隠れ身"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || sd.Duration == "攻撃")
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(行動数増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("行動数増加")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "絶対回避") || IsSPEffectUseful(sd, "被ダメージ低下") || IsSPEffectUseful(sd, "装甲強化") || IsSPEffectUseful(sd, "回避強化"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || sd.Duration == "防御")
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(復活) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("復活")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "移動力強化"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "絶対命中") || IsSPEffectUseful(sd, "ダメージ増加") || IsSPEffectUseful(sd, "クリティカル率増加") || IsSPEffectUseful(sd, "命中強化") || IsSPEffectUseful(sd, "貫通攻撃") || IsSPEffectUseful(sd, "再攻撃") || IsSPEffectUseful(sd, "隠れ身"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || withBlock1.Duration == "攻撃")
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "射程延長"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
+                        {
+                            case 5:
+                            case 6:
+                                {
+                                    goto AddSpecialPower;
+                                    break;
+                                }
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "絶対回避") || IsSPEffectUseful(sd, "被ダメージ低下") || IsSPEffectUseful(sd, "装甲強化") || IsSPEffectUseful(sd, "回避強化"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || withBlock1.Duration == "防御")
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("気力低下")
+                    || sd.IsEffectAvailable("ランダムダメージ")
+                    || sd.IsEffectAvailable("ＨＰ減少")
+                    || sd.IsEffectAvailable("ＥＮ減少")
+                    || sd.IsEffectAvailable("挑発"))
+                {
+                    if (sd.TargetType == "全敵")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "移動力強化"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("ダメージ低下")
+                    || sd.IsEffectAvailable("被ダメージ増加")
+                    || sd.IsEffectAvailable("命中低下")
+                    || sd.IsEffectAvailable("回避低下")
+                    || sd.IsEffectAvailable("命中率低下")
+                    || sd.IsEffectAvailable("移動力低下")
+                    || sd.IsEffectAvailable("サポートガード不能"))
+                {
+                    if (sd.TargetType == "全敵")
+                    {
+                        if (SRC.Turn >= 3)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "射程延長"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
-            //                {
-            //                    case 5:
-            //                    case 6:
-            //                        {
-            //                            goto AddSpecialPower;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                // 有用な効果が見つからなかった
+                continue;
+            AddSpecialPower:
+                ;
 
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("気力低下"), withBlock1.IsEffectAvailable("ランダムダメージ")), withBlock1.IsEffectAvailable("ＨＰ減少")), withBlock1.IsEffectAvailable("ＥＮ減少")), withBlock1.IsEffectAvailable("挑発"))))
-            //        {
-            //            if (withBlock1.TargetType == "全敵")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                // スペシャルパワーを候補リストに追加
+                slist.Add(sd);
+            }
 
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("ダメージ低下"), withBlock1.IsEffectAvailable("被ダメージ増加")), withBlock1.IsEffectAvailable("命中低下")), withBlock1.IsEffectAvailable("回避低下")), withBlock1.IsEffectAvailable("命中率低下")), withBlock1.IsEffectAvailable("移動力低下")), withBlock1.IsEffectAvailable("サポートガード不能"))))
-            //        {
-            //            if (withBlock1.TargetType == "全敵")
-            //            {
-            //                if (SRC.Turn >= 3)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
-            //    }
+            // 使用可能なスペシャルパワーを所有していない
+            if (!slist.Any())
+            {
+                Commands.SelectedSpecialPower = "";
+                return;
+            }
 
-            //    // 有用な効果が見つからなかった
-            //    goto NextSpecialPower;
-            //AddSpecialPower:
-            //    ;
+            // 使用するスペシャルパワーをランダムに選択
+            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1].Name;
 
+            // 使用イベント
+            Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                return;
+            }
 
-            //    // スペシャルパワーを候補リストに追加
-            //    slist = slist + " " + Commands.SelectedSpecialPower;
-            //NextSpecialPower:
-            //    ;
-            //}
+            // 選択したスペシャルパワーを実行する
+            p.UseSpecialPower(Commands.SelectedSpecialPower);
+            Commands.SelectedUnit = Commands.SelectedUnit.CurrentForm();
 
-            //// 使用可能なスペシャルパワーを所有していない
-            //if (string.IsNullOrEmpty(slist))
-            //{
-            //    Commands.SelectedSpecialPower = "";
-            //    return;
-            //}
+            // ステータスウィンドウ更新
+            if (!GUI.IsRButtonPressed())
+            {
+                SRC.GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
+            }
 
-            //// 使用するスペシャルパワーをランダムに選択
-            //Commands.SelectedSpecialPower = GeneralLib.LIndex(slist, GeneralLib.Dice(GeneralLib.LLength(slist)));
-
-            //// 使用イベント
-            //Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
-            //if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //{
-            //    return;
-            //}
-
-            //// 選択したスペシャルパワーを実行する
-            //p.UseSpecialPower(Commands.SelectedSpecialPower);
-            //Commands.SelectedUnit = Commands.SelectedUnit.CurrentForm();
-
-            //// ステータスウィンドウ更新
-            //if (!GUI.IsRButtonPressed())
-            //{
-            //    Status.DisplayUnitStatus(Commands.SelectedUnit);
-            //}
-
-            //// 使用後イベント
-            //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
-            //Commands.SelectedSpecialPower = "";
+            // 使用後イベント
+            Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
+            Commands.SelectedSpecialPower = "";
         }
 
         private bool IsSPEffectUseful(SpecialPowerData sd, string ename)

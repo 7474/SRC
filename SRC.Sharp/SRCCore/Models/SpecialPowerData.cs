@@ -2189,187 +2189,172 @@ namespace SRCCore.Models
         }
 
 
-        //        // スペシャルパワーが有効なターゲットの総数を返す
-        //        // (パイロット p が使用した場合)
-        //        public int CountTarget(Pilot p)
-        //        {
-        //            int CountTargetRet = default;
-        //            Unit u;
-        //            int i;
-        //            switch (TargetType ?? "")
-        //            {
-        //                case "自分":
-        //                    {
-        //                        if (Effective(p, p.Unit))
-        //                        {
-        //                            CountTargetRet = 1;
-        //                        }
+        // スペシャルパワーが有効なターゲットの総数を返す
+        // (パイロット p が使用した場合)
+        public int CountTarget(Pilot p)
+        {
+            int CountTargetRet = 0;
+            switch (TargetType ?? "")
+            {
+                case "自分":
+                    {
+                        if (Effective(p, p.Unit))
+                        {
+                            CountTargetRet = 1;
+                        }
 
-        //                        break;
-        //                    }
+                        break;
+                    }
 
-        //                case "味方":
-        //                case "全味方":
-        //                    {
-        //                        foreach (Unit currentU in SRC.UList)
-        //                        {
-        //                            u = currentU;
-        //                            {
-        //                                var withBlock = u;
-        //                                // 出撃している？
-        //                                if (withBlock.Status != "出撃")
-        //                                {
-        //                                    goto NextUnit1;
-        //                                }
+                case "味方":
+                case "全味方":
+                    {
+                        foreach (Unit u in SRC.UList.Items)
+                        {
+                            // 出撃している？
+                            if (u.Status != "出撃")
+                            {
+                                goto NextUnit1;
+                            }
 
-        //                                // 味方ユニット？
-        //                                switch (p.Party ?? "")
-        //                                {
-        //                                    case "味方":
-        //                                    case "ＮＰＣ":
-        //                                        {
-        //                                            if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
-        //                                            {
-        //                                                goto NextUnit1;
-        //                                            }
+                            // 味方ユニット？
+                            switch (p.Party ?? "")
+                            {
+                                case "味方":
+                                case "ＮＰＣ":
+                                    {
+                                        if (u.Party != "味方" && u.Party0 != "味方" && u.Party != "ＮＰＣ" && u.Party0 != "ＮＰＣ")
+                                        {
+                                            goto NextUnit1;
+                                        }
 
-        //                                            break;
-        //                                        }
+                                        break;
+                                    }
 
-        //                                    default:
-        //                                        {
-        //                                            if ((p.Party ?? "") != (withBlock.Party ?? ""))
-        //                                            {
-        //                                                goto NextUnit1;
-        //                                            }
+                                default:
+                                    {
+                                        if ((p.Party ?? "") != (u.Party ?? ""))
+                                        {
+                                            goto NextUnit1;
+                                        }
 
-        //                                            break;
-        //                                        }
-        //                                }
+                                        break;
+                                    }
+                            }
 
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    CountTargetRet = (CountTargetRet + 1);
-        //                                }
-        //                            }
+                            // 効果がある？
+                            if (Effective(p, u))
+                            {
+                                CountTargetRet = (CountTargetRet + 1);
+                            }
 
-        //                        NextUnit1:
-        //                            ;
-        //                        }
+                        NextUnit1:
+                            ;
+                        }
 
-        //                        break;
-        //                    }
+                        break;
+                    }
 
-        //                case "破壊味方":
-        //                    {
-        //                        foreach (Unit currentU1 in SRC.UList)
-        //                        {
-        //                            u = currentU1;
-        //                            {
-        //                                var withBlock1 = u;
-        //                                // 破壊されている？
-        //                                if (withBlock1.Status != "破壊")
-        //                                {
-        //                                    goto NextUnit2;
-        //                                }
+                case "破壊味方":
+                    {
+                        foreach (Unit u in SRC.UList.Items)
+                        {
+                            // 破壊されている？
+                            if (u.Status != "破壊")
+                            {
+                                goto NextUnit2;
+                            }
 
-        //                                // 味方ユニット？
-        //                                if ((p.Party ?? "") != (withBlock1.Party0 ?? ""))
-        //                                {
-        //                                    goto NextUnit2;
-        //                                }
+                            // 味方ユニット？
+                            if ((p.Party ?? "") != (u.Party0 ?? ""))
+                            {
+                                goto NextUnit2;
+                            }
 
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    CountTargetRet = (CountTargetRet + 1);
-        //                                }
-        //                            }
+                            // 効果がある？
+                            if (Effective(p, u))
+                            {
+                                CountTargetRet = (CountTargetRet + 1);
+                            }
 
-        //                        NextUnit2:
-        //                            ;
-        //                        }
+                        NextUnit2:
+                            ;
+                        }
 
-        //                        break;
-        //                    }
+                        break;
+                    }
 
-        //                case "敵":
-        //                case "全敵":
-        //                    {
-        //                        foreach (Unit currentU2 in SRC.UList)
-        //                        {
-        //                            u = currentU2;
-        //                            {
-        //                                var withBlock2 = u;
-        //                                // 出撃している？
-        //                                if (withBlock2.Status != "出撃")
-        //                                {
-        //                                    goto NextUnit3;
-        //                                }
+                case "敵":
+                case "全敵":
+                    {
+                        foreach (Unit u in SRC.UList.Items)
+                        {
+                            // 出撃している？
+                            if (u.Status != "出撃")
+                            {
+                                goto NextUnit3;
+                            }
 
-        //                                // 敵ユニット？
-        //                                switch (p.Party ?? "")
-        //                                {
-        //                                    case "味方":
-        //                                    case "ＮＰＣ":
-        //                                        {
-        //                                            if (withBlock2.Party == "味方" && withBlock2.Party0 == "味方" || withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ")
-        //                                            {
-        //                                                goto NextUnit3;
-        //                                            }
+                            // 敵ユニット？
+                            switch (p.Party ?? "")
+                            {
+                                case "味方":
+                                case "ＮＰＣ":
+                                    {
+                                        if (u.Party == "味方" && u.Party0 == "味方" || u.Party == "ＮＰＣ" && u.Party0 == "ＮＰＣ")
+                                        {
+                                            goto NextUnit3;
+                                        }
 
-        //                                            break;
-        //                                        }
+                                        break;
+                                    }
 
-        //                                    default:
-        //                                        {
-        //                                            if ((p.Party ?? "") == (withBlock2.Party ?? ""))
-        //                                            {
-        //                                                goto NextUnit3;
-        //                                            }
+                                default:
+                                    {
+                                        if ((p.Party ?? "") == (u.Party ?? ""))
+                                        {
+                                            goto NextUnit3;
+                                        }
 
-        //                                            break;
-        //                                        }
-        //                                }
+                                        break;
+                                    }
+                            }
 
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    CountTargetRet = (CountTargetRet + 1);
-        //                                }
-        //                            }
+                            // 効果がある？
+                            if (Effective(p, u))
+                            {
+                                CountTargetRet = (CountTargetRet + 1);
+                            }
 
-        //                        NextUnit3:
-        //                            ;
-        //                        }
+                        NextUnit3:
+                            ;
+                        }
 
-        //                        break;
-        //                    }
+                        break;
+                    }
 
-        //                case "任意":
-        //                case "全":
-        //                    {
-        //                        foreach (Unit currentU3 in SRC.UList)
-        //                        {
-        //                            u = currentU3;
-        //                            // 出撃している？
-        //                            if (u.Status == "出撃")
-        //                            {
-        //                                // 効果がある？
-        //                                if (Effective(p, u))
-        //                                {
-        //                                    CountTargetRet = (CountTargetRet + 1);
-        //                                }
-        //                            }
-        //                        }
+                case "任意":
+                case "全":
+                    {
+                        foreach (Unit u in SRC.UList.Items)
+                        {
+                            // 出撃している？
+                            if (u.Status == "出撃")
+                            {
+                                // 効果がある？
+                                if (Effective(p, u))
+                                {
+                                    CountTargetRet = (CountTargetRet + 1);
+                                }
+                            }
+                        }
 
-        //                        break;
-        //                    }
-        //            }
+                        break;
+                    }
+            }
 
-        //            return CountTargetRet;
-        //        }
+            return CountTargetRet;
+        }
 
         // スペシャルパワーのアニメーションを表示
         public bool PlayAnimation()
