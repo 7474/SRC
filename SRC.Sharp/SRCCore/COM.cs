@@ -3239,6 +3239,7 @@ namespace SRCCore
             Event.HandleEvent("使用", u.MainPilot().ID, aname);
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
             {
+                Commands.SelectedPartners.Clear();
                 // XXX true でいいのか？
                 return true;
             }
@@ -3283,1020 +3284,922 @@ namespace SRCCore
         // マップ型回復アビリティ使用に関する処理
         public bool TryMapHealing(bool moved)
         {
-            // TODO Impl TryMapHealing
-            bool TryMapHealingRet = default;
-            //int a;
-            //var apower = default;
-            //int max_range, min_range;
-            //int xx, tx = default, ty = default, yy;
-            //int y1, x1, x2, y2;
-            //int i, j;
-            //int num;
-            //int score, max_score = default;
-            //Pilot p;
-            //Unit t;
-            //var partners = default(Unit[]);
-            //int tmp_num, tmp_score;
-            //int mlv;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    Commands.SelectedAbility = 0;
+            var u = Commands.SelectedUnit;
+            Commands.SelectedAbility = 0;
 
-            //    // 狂戦士状態の際は回復アビリティを使わない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return TryMapHealingRet;
-            //    }
+            // 狂戦士状態の際は回復アビリティを使わない
+            if (u.IsConditionSatisfied("狂戦士"))
+            {
+                return false;
+            }
 
-            //    p = withBlock.MainPilot();
-            //    a = withBlock.CountAbility();
-            //    while (a > 0)
-            //    {
-            //        // マップアビリティかどうか
-            //        if (!withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
-            //        {
-            //            continue;
-            //        }
+            int tx = 0;
+            int ty = 0;
+            var p = u.MainPilot();
+            var max_score = 0;
+            UnitAbility selUa = null;
+            foreach (var ua in u.Abilities)
+            {
+                // マップアビリティかどうか
+                if (!ua.IsAbilityClassifiedAs("Ｍ"))
+                {
+                    continue;
+                }
 
-            //        // アビリティの使用可否を判定
-            //        if (moved)
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
-            //            {
-            //                continue;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
-            //            {
-            //                continue;
-            //            }
-            //        }
+                // アビリティの使用可否を判定
+                if (moved)
+                {
+                    if (!ua.IsAbilityAvailable("移動後"))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (!ua.IsAbilityAvailable("移動前"))
+                    {
+                        continue;
+                    }
+                }
 
-            //        // 回復アビリティかどうか
-            //        var loopTo = withBlock.Ability(a).CountEffect();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            if (withBlock.Ability(a).EffectType(i) == "回復")
-            //            {
-            //                // 回復量を算出しておく
-            //                if (withBlock.IsSpellAbility(a))
-            //                {
-            //                    double localEffectLevel() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                // 回復アビリティかどうか
+                var healEffect = ua.Data.Effects.FirstOrDefault(x => x.EffectType == "回復");
+                if (healEffect == null)
+                {
+                    // 回復アビリティではなかった
+                    continue;
+                }
+                // 回復量を算出しておく
+                int apower;
+                if (ua.IsSpellAbility())
+                {
+                    apower = (int)(5d * healEffect.Level * p.Shooting);
+                }
+                else
+                {
+                    apower = (int)(500d * healEffect.Level);
+                }
 
-            //                    apower = (5d * localEffectLevel() * p.Shooting);
-            //                }
-            //                else
-            //                {
-            //                    double localEffectLevel1() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                var max_range = ua.AbilityMaxRange();
+                var min_range = ua.AbilityMinRange();
+                var x1 = GeneralLib.MaxLng(u.x - max_range, 1);
+                var x2 = GeneralLib.MinLng(u.x + max_range, Map.MapWidth);
+                var y1 = GeneralLib.MaxLng(u.y - max_range, 1);
+                var y2 = GeneralLib.MinLng(u.y + max_range, Map.MapHeight);
 
-            //                    apower = (500d * localEffectLevel1());
-            //                }
+                // アビリティの効果範囲に応じてアビリティが有効かどうか判断する
+                var num = 0;
+                var score = 0;
+                if (ua.IsAbilityClassifiedAs("Ｍ全"))
+                {
+                    Map.AreaInRange(u.x, u.y, max_range, min_range, u.Party);
 
-            //                break;
-            //            }
-            //        }
+                    // 支援専用アビリティの場合は自分には効果がない
+                    if (ua.IsAbilityClassifiedAs("援"))
+                    {
+                        Map.MaskData[u.x, u.y] = true;
+                    }
 
-            //        if (i > withBlock.Ability(a).CountEffect())
-            //        {
-            //            // 回復アビリティではなかった
-            //            continue;
-            //        }
+                    // 効果範囲内にいるターゲットをカウント
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            if (Map.MaskData[i, j])
+                            {
+                                continue;
+                            }
 
-            //        max_range = withBlock.AbilityMaxRange(a);
-            //        min_range = withBlock.AbilityMinRange(a);
-            //        x1 = GeneralLib.MaxLng(withBlock.x - max_range, 1);
-            //        x2 = GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
-            //        y1 = GeneralLib.MaxLng(withBlock.y - max_range, 1);
-            //        y2 = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
+                            var t = Map.MapDataForUnit[i, j];
+                            if (t is null)
+                            {
+                                continue;
+                            }
 
-            //        // アビリティの効果範囲に応じてアビリティが有効かどうか判断する
-            //        num = 0;
-            //        score = 0;
-            //        if (withBlock.IsAbilityClassifiedAs(a, "Ｍ全"))
-            //        {
-            //            // MOD START マージ
-            //            // AreaInRange .X, .Y, min_range, max_range, .Party
-            //            Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, withBlock.Party);
-            //            withBlock.Party = arguparty;
-            //            // MOD END マージ
+                            // アビリティが適用可能？
+                            if (!ua.IsAbilityApplicable(t))
+                            {
+                                continue;
+                            }
 
-            //            // 支援専用アビリティの場合は自分には効果がない
-            //            if (withBlock.IsAbilityClassifiedAs(a, "援"))
-            //            {
-            //                Map.MaskData[withBlock.x, withBlock.y] = true;
-            //            }
+                            {
+                                var withBlock1 = t;
+                                // ゾンビ？
+                                // XXX Unit.CanFix
+                                if (withBlock1.IsConditionSatisfied("ゾンビ"))
+                                {
+                                    continue;
+                                }
 
-            //            // 効果範囲内にいるターゲットをカウント
-            //            var loopTo1 = x2;
-            //            for (i = x1; i <= loopTo1; i++)
-            //            {
-            //                var loopTo2 = y2;
-            //                for (j = y1; j <= loopTo2; j++)
-            //                {
-            //                    if (Map.MaskData[i, j])
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                                if (100 * withBlock1.HP / withBlock1.MaxHP < 90)
+                                {
+                                    num = (num + 1);
+                                }
 
-            //                    t = Map.MapDataForUnit[i, j];
-            //                    if (t is null)
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                                score = score + 100 * GeneralLib.MinLng(withBlock1.MaxHP - withBlock1.HP, apower) / withBlock1.MaxHP;
+                            }
+                        }
+                    }
 
-            //                    // アビリティが適用可能？
-            //                    if (!withBlock.IsAbilityApplicable(a, t))
-            //                    {
-            //                        goto NextUnit1;
-            //                    }
+                    // 不要？
+                    tx = u.x;
+                    ty = u.y;
+                }
+                else if (ua.IsAbilityClassifiedAs("Ｍ投"))
+                {
+                    var mlv = (int)ua.AbilityLevel("Ｍ投");
 
-            //                    {
-            //                        var withBlock1 = t;
-            //                        // ゾンビ？
-            //                        if (withBlock1.IsConditionSatisfied("ゾンビ"))
-            //                        {
-            //                            goto NextUnit1;
-            //                        }
+                    // 投下位置を変えながら試してみる
+                    for (var xx = x1; xx <= x2; xx++)
+                    {
+                        for (var yy = y1; yy <= y2; yy++)
+                        {
+                            if ((Math.Abs((u.x - xx)) + Math.Abs((u.y - yy))) > max_range || (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy))) < min_range)
+                            {
+                                continue;
+                            }
 
-            //                        if (100 * withBlock1.HP / withBlock1.MaxHP < 90)
-            //                        {
-            //                            num = (num + 1);
-            //                        }
+                            Map.AreaInRange(xx, yy, 1, mlv, u.Party);
+                            Map.AreaInRange(xx, yy, mlv, 1, u.Party);
 
-            //                        score = score + 100 * GeneralLib.MinLng(withBlock1.MaxHP - withBlock1.HP, apower) / withBlock1.MaxHP;
-            //                    }
+                            // 支援専用アビリティの場合は自分には効果がない
+                            if (ua.IsAbilityClassifiedAs("援"))
+                            {
+                                Map.MaskData[u.x, u.y] = true;
+                            }
 
-            //                NextUnit1:
-            //                    ;
-            //                }
-            //            }
+                            // 効果範囲内にいるターゲットをカウント
+                            var tmp_num = 0;
+                            var tmp_score = 0;
+                            var loopTo5 = GeneralLib.MinLng(xx + mlv, Map.MapWidth);
+                            for (var i = GeneralLib.MaxLng(xx - mlv, 1); i <= loopTo5; i++)
+                            {
+                                var loopTo6 = GeneralLib.MinLng(yy + mlv, Map.MapHeight);
+                                for (var j = GeneralLib.MaxLng(yy - mlv, 1); j <= loopTo6; j++)
+                                {
+                                    if (Map.MaskData[i, j])
+                                    {
+                                        continue;
+                                    }
 
-            //            // 不要？
-            //            tx = withBlock.x;
-            //            ty = withBlock.y;
-            //        }
-            //        else if (withBlock.IsAbilityClassifiedAs(a, "Ｍ投"))
-            //        {
-            //            mlv = withBlock.AbilityLevel(a, "Ｍ投");
+                                    var t = Map.MapDataForUnit[i, j];
+                                    if (t is null)
+                                    {
+                                        continue;
+                                    }
 
-            //            // 投下位置を変えながら試してみる
-            //            var loopTo3 = x2;
-            //            for (xx = x1; xx <= loopTo3; xx++)
-            //            {
-            //                var loopTo4 = y2;
-            //                for (yy = y1; yy <= loopTo4; yy++)
-            //                {
-            //                    if ((Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) > max_range || (Math.Abs((withBlock.x - xx)) + Math.Abs((withBlock.y - yy))) < min_range)
-            //                    {
-            //                        goto NextPoint;
-            //                    }
+                                    // アビリティが適用可能？
+                                    if (!ua.IsAbilityApplicable(t))
+                                    {
+                                        continue;
+                                    }
+                                    // ゾンビ？
+                                    // XXX Unit.CanFix
+                                    if (t.IsConditionSatisfied("ゾンビ"))
+                                    {
+                                        continue;
+                                    }
 
-            //                    // MOD START マージ
-            //                    Map.AreaInRange(xx, yy, 1, mlv, withBlock.Party);
-            //                    withBlock.Party = arguparty1;
-            //                    Map.AreaInRange(xx, yy, mlv, 1, withBlock.Party);
-            //                    withBlock.Party = arguparty2;
-            //                    // MOD END マージ
+                                    if (100 * t.HP / t.MaxHP < 90)
+                                    {
+                                        tmp_num = (tmp_num + 1);
+                                    }
 
-            //                    // 支援専用アビリティの場合は自分には効果がない
-            //                    if (withBlock.IsAbilityClassifiedAs(a, "援"))
-            //                    {
-            //                        Map.MaskData[withBlock.x, withBlock.y] = true;
-            //                    }
+                                    tmp_score = (tmp_score + 100 * GeneralLib.MinLng(t.MaxHP - t.HP, apower) / t.MaxHP);
+                                }
+                            }
 
-            //                    // 効果範囲内にいるターゲットをカウント
-            //                    tmp_num = 0;
-            //                    tmp_score = 0;
-            //                    var loopTo5 = GeneralLib.MinLng(xx + mlv, Map.MapWidth);
-            //                    for (i = GeneralLib.MaxLng(xx - mlv, 1); i <= loopTo5; i++)
-            //                    {
-            //                        var loopTo6 = GeneralLib.MinLng(yy + mlv, Map.MapHeight);
-            //                        for (j = GeneralLib.MaxLng(yy - mlv, 1); j <= loopTo6; j++)
-            //                        {
-            //                            if (Map.MaskData[i, j])
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+                            if (tmp_num > 2 && tmp_score > score)
+                            {
+                                num = tmp_num;
+                                score = tmp_score;
+                                tx = xx;
+                                ty = yy;
+                            }
+                        }
+                    }
+                }
 
-            //                            t = Map.MapDataForUnit[i, j];
-            //                            if (t is null)
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+                if (num > 1 && score > max_score)
+                {
+                    selUa = ua;
+                    max_score = score;
+                }
+            }
 
-            //                            // アビリティが適用可能？
-            //                            if (!withBlock.IsAbilityApplicable(a, t))
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
-            //                            // ゾンビ？
-            //                            if (t.IsConditionSatisfied("ゾンビ"))
-            //                            {
-            //                                goto NextUnit2;
-            //                            }
+            // 有効なマップアビリティがなかった
+            if (selUa == null)
+            {
+                return false;
+            }
 
-            //                            if (100 * t.HP / t.MaxHP < 90)
-            //                            {
-            //                                tmp_num = (tmp_num + 1);
-            //                            }
+            Commands.SelectedAbility = selUa.AbilityNo();
+            Commands.SelectedAbilityName = selUa.Data.Name;
 
-            //                            tmp_score = (tmp_score + 100 * GeneralLib.MinLng(t.MaxHP - t.HP, apower) / t.MaxHP);
-            //                        NextUnit2:
-            //                            ;
-            //                        }
-            //                    }
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (selUa.IsAbilityClassifiedAs("合"))
+            {
+                partners = selUa.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //                    if (tmp_num > 2 && tmp_score > score)
-            //                    {
-            //                        num = tmp_num;
-            //                        score = tmp_score;
-            //                        tx = xx;
-            //                        ty = yy;
-            //                    }
+            // アビリティを使用
+            u.ExecuteMapAbility(selUa, tx, ty);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                Commands.SelectedPartners.Clear();
+                // XXX false でいいのか？
+                return false;
+            }
 
-            //                NextPoint:
-            //                    ;
-            //                }
-            //            }
-            //        }
-
-            //        if (num > 1 && score > max_score)
-            //        {
-            //            Commands.SelectedAbility = a;
-            //            max_score = score;
-            //        }
-
-            //    NextAbility:
-            //        ;
-            //        a = (a - 1);
-            //    }
-
-            //    if (Commands.SelectedAbility == 0)
-            //    {
-            //        // 有効なマップアビリティがなかった
-            //        return TryMapHealingRet;
-            //    }
-
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
-
-            //    Commands.SelectedAbilityName = withBlock.Ability(Commands.SelectedAbility).Name;
-
-            //    // アビリティを使用
-            //    withBlock.ExecuteMapAbility(Commands.SelectedAbility, tx, ty);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TryMapHealingRet;
-            //    }
-
-            //    // 合体技のパートナーの行動数を減らす
-            //    if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //    {
-            //        var loopTo7 = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo7; i++)
-            //            partners[i].CurrentForm().UseAction();
-            //    }
-
-            //    Commands.SelectedPartners.Clear();
-            //}
-
-            //TryMapHealingRet = true;
-            return TryMapHealingRet;
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
+            Commands.SelectedPartners.Clear();
+            return true;
         }
 
         // 可能であれば回復アビリティを使う
         public bool TryHealing(bool moved, [Optional, DefaultParameterValue(null)] Unit t)
         {
-            // TODO Impl TryHealing
-            bool TryHealingRet = default;
-            //int i, a, j;
-            //string aname;
-            //int apower;
-            //int max_power;
-            //int max_range;
-            //int dmg, max_dmg;
-            //int new_x, new_y;
-            //int distance;
-            //bool is_able_to_move, dont_move, sa_is_able_to_move = default;
-            //var partners = default(Unit[]);
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 狂戦士状態の際は回復アビリティを使わない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return TryHealingRet;
-            //    }
+            var u = Commands.SelectedUnit;
+            // 狂戦士状態の際は回復アビリティを使わない
+            if (u.IsConditionSatisfied("狂戦士"))
+            {
+                return false;
+            }
 
-            //    // 初期化
-            //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Commands.SelectedTarget = null;
-            //    max_dmg = 80;
-            //    Commands.SelectedAbility = 0;
-            //    max_power = 0;
+            // 初期化
+            Commands.SelectedTarget = null;
+            var max_dmg = 80;
+            Commands.SelectedAbility = 0;
+            var max_power = 0;
 
-            //    // 移動可能？
-            //    dont_move = moved || withBlock.Mode == "固定";
+            // 移動可能？
+            var dont_move = moved || u.Mode == "固定";
 
-            //    // 移動可能である場合は移動範囲を設定しておく
-            //    if (!dont_move)
-            //    {
-            //        Map.AreaInSpeed(Commands.SelectedUnit);
-            //    }
+            // 移動可能である場合は移動範囲を設定しておく
+            if (!dont_move)
+            {
+                Map.AreaInSpeed(Commands.SelectedUnit);
+            }
 
-            //    var loopTo = withBlock.CountAbility();
-            //    for (a = 1; a <= loopTo; a++)
-            //    {
-            //        // アビリティが使用可能？
-            //        if (moved)
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動後"))
-            //            {
-            //                goto NextHealingSkill;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (!withBlock.IsAbilityAvailable(a, "移動前"))
-            //            {
-            //                goto NextHealingSkill;
-            //            }
-            //        }
+            var p = u.MainPilot();
+            UnitAbility selUa = null;
+            var sa_is_able_to_move = false;
+            foreach (var ua in u.Abilities)
+            {
+                // マップアビリティは別関数で調べる
+                if (ua.IsAbilityClassifiedAs("Ｍ"))
+                {
+                    continue;
+                }
 
-            //        // マップアビリティは別関数で調べる
-            //        if (withBlock.IsAbilityClassifiedAs(a, "Ｍ"))
-            //        {
-            //            goto NextHealingSkill;
-            //        }
+                // アビリティの使用可否を判定
+                if (moved)
+                {
+                    if (!ua.IsAbilityAvailable("移動後"))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (!ua.IsAbilityAvailable("移動前"))
+                    {
+                        continue;
+                    }
+                }
 
-            //        // これは回復アビリティ？
-            //        var loopTo1 = withBlock.Ability(a).CountEffect();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            if (withBlock.Ability(a).EffectType(i) == "回復")
-            //            {
-            //                break;
-            //            }
-            //        }
+                // 回復アビリティかどうか
+                var healEffect = ua.Data.Effects.FirstOrDefault(x => x.EffectType == "回復");
+                if (healEffect == null)
+                {
+                    // 回復アビリティではなかった
+                    continue;
+                }
 
-            //        if (i > withBlock.Ability(a).CountEffect())
-            //        {
-            //            goto NextHealingSkill;
-            //        }
+                // 回復量を算出しておく
+                int apower;
+                if (ua.IsSpellAbility())
+                {
+                    apower = (int)(5d * healEffect.Level * p.Shooting);
+                }
+                else
+                {
+                    apower = (int)(500d * healEffect.Level);
+                }
 
-            //        // 回復量を算出
-            //        if (withBlock.IsSpellAbility(a))
-            //        {
-            //            double localEffectLevel() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                // 役立たず？
+                if (apower <= 0)
+                {
+                    continue;
+                }
 
-            //            double localEffectLevel1() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                // 現在の回復アビリティを使って回復させられるターゲットがいるか検索
+                foreach (Unit tu in SRC.UList.Items)
+                {
+                    if (tu.Status != "出撃")
+                    {
+                        continue;
+                    }
 
-            //            apower = (5d * localEffectLevel1() * withBlock.MainPilot().Shooting);
-            //        }
-            //        else
-            //        {
-            //            double localEffectLevel2() { object argIndex1 = i; var ret = withBlock.Ability(a).EffectLevel(argIndex1); return ret; }
+                    // 味方かどうかを判定
+                    if (!u.IsAlly(tu))
+                    {
+                        continue;
+                    }
 
-            //            apower = (500d * localEffectLevel2());
-            //        }
+                    // デフォルトのターゲットが指定されている場合はそのユニット以外を
+                    // ターゲットにはしない
+                    if (t is object)
+                    {
+                        if (!ReferenceEquals(tu, t))
+                        {
+                            continue;
+                        }
+                    }
 
-            //        // 役立たず？
-            //        if (apower <= 0)
-            //        {
-            //            goto NextHealingSkill;
-            //        }
+                    // 損傷度は？
+                    var dmg = 100 * tu.HP / tu.MaxHP;
 
-            //        // 現在の回復アビリティを使って回復させられるターゲットがいるか検索
-            //        foreach (Unit u in SRC.UList)
-            //        {
-            //            if (u.Status != "出撃")
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+                    // 重要なユニットを優先
+                    if (!ReferenceEquals(tu, Commands.SelectedUnit))
+                    {
+                        if (tu.BossRank >= 0)
+                        {
+                            dmg = 100 - 2 * (100 - dmg);
+                        }
+                    }
 
-            //            // 味方かどうかを判定
-            //            if (!withBlock.IsAlly(u))
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+                    // 現在のターゲットより損傷度がひどくないなら無視
+                    if (dmg > max_dmg)
+                    {
+                        continue;
+                    }
 
-            //            // デフォルトのターゲットが指定されている場合はそのユニット以外を
-            //            // ターゲットにはしない
-            //            if (t is object)
-            //            {
-            //                if (!ReferenceEquals(u, t))
-            //                {
-            //                    goto NextHealingTarget;
-            //                }
-            //            }
+                    // 移動可能か？
+                    var is_able_to_move = ua.CanUseAfterMove();
+                    if (dont_move)
+                    {
+                        is_able_to_move = false;
+                    }
 
-            //            // 損傷度は？
-            //            dmg = 100 * u.HP / u.MaxHP;
+                    switch (tu.Area ?? "")
+                    {
+                        case "空中":
+                        case "宇宙":
+                            {
+                                if (tu.EN - ua.AbilityENConsumption() < 5)
+                                {
+                                    is_able_to_move = false;
+                                }
 
-            //            // 重要なユニットを優先
-            //            if (!ReferenceEquals(u, Commands.SelectedUnit))
-            //            {
-            //                if (u.BossRank >= 0)
-            //                {
-            //                    dmg = 100 - 2 * (100 - dmg);
-            //                }
-            //            }
+                                break;
+                            }
+                    }
 
-            //            // 現在のターゲットより損傷度がひどくないなら無視
-            //            if (dmg > max_dmg)
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+                    // 射程内にいるか？
+                    if (is_able_to_move)
+                    {
+                        if (!ua.IsTargetReachableForAbility(tu))
+                        {
+                            continue;
+                        }
+                    }
+                    else if (!ua.IsTargetWithinAbilityRange(tu))
+                    {
+                        continue;
+                    }
 
-            //            // 移動可能か？
-            //            if (withBlock.AbilityMaxRange(a) == 1 || withBlock.IsAbilityClassifiedAs(a, "Ｐ"))
-            //            {
-            //                is_able_to_move = true;
-            //            }
-            //            else
-            //            {
-            //                is_able_to_move = false;
-            //            }
+                    // アビリティが適用可能？
+                    if (!ua.IsAbilityApplicable(tu))
+                    {
+                        continue;
+                    }
 
-            //            if (withBlock.IsAbilityClassifiedAs(a, "Ｑ"))
-            //            {
-            //                is_able_to_move = false;
-            //            }
+                    // ゾンビ？
+                    if (tu.IsConditionSatisfied("ゾンビ"))
+                    {
+                        continue;
+                    }
 
-            //            if (dont_move)
-            //            {
-            //                is_able_to_move = false;
-            //            }
+                    // 新規ターゲット？
+                    if (!ReferenceEquals(tu, Commands.SelectedTarget))
+                    {
+                        // ターゲット設定
+                        Commands.SelectedTarget = tu;
+                        max_dmg = dmg;
 
-            //            switch (withBlock.Area ?? "")
-            //            {
-            //                case "空中":
-            //                case "宇宙":
-            //                    {
-            //                        if (withBlock.EN - withBlock.AbilityENConsumption(a) < 5)
-            //                        {
-            //                            is_able_to_move = false;
-            //                        }
+                        // 新規ターゲットを優先するため、現在選択されているアビリティは破棄
+                        selUa = null;
+                        max_power = 0;
+                    }
 
-            //                        break;
-            //                    }
-            //            }
+                    // 現在選択されている回復アビリティとチェック中のアビリティのどちらが
+                    // 優れているかを判定
+                    if (max_power < tu.MaxHP - tu.HP)
+                    {
+                        // 現在選択している回復アビリティでは全ダメージを回復しきれない場合
+                        if (apower < max_power)
+                        {
+                            // 回復量が多いほうを優先
+                            continue;
+                        }
+                        else if (apower == max_power)
+                        {
+                            // 回復量が同じならコストが低い方を優先
+                            if (ua.Data.ENConsumption > selUa.Data.ENConsumption)
+                            {
+                                continue;
+                            }
+                            if (ua.Stock() < selUa.Stock())
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    else if (selUa != null)
+                    {
+                        // 現在選択している回復アビリティで全快する場合
+                        // 全快することが必要条件
+                        if (apower >= tu.MaxHP - tu.HP)
+                        {
+                            continue;
+                        }
+                        // コストが低い方を優先
+                        if (ua.Data.ENConsumption > tu.Ability(Commands.SelectedAbility).Data.ENConsumption)
+                        {
+                            continue;
+                        }
+                        if (ua.Stock() < tu.Ability(Commands.SelectedAbility).Stock())
+                        {
+                            continue;
+                        }
+                    }
 
-            //            // 射程内にいるか？
-            //            if (is_able_to_move)
-            //            {
-            //                if (!withBlock.IsTargetReachableForAbility(a, u))
-            //                {
-            //                    goto NextHealingTarget;
-            //                }
-            //            }
-            //            else if (!withBlock.IsTargetWithinAbilityRange(a, u))
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+                    selUa = ua;
+                    max_power = apower;
+                    sa_is_able_to_move = is_able_to_move;
+                }
 
-            //            // アビリティが適用可能？
-            //            if (!withBlock.IsAbilityApplicable(a, u))
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+            NextHealingSkill:
+                ;
+            }
 
-            //            // ゾンビ？
-            //            if (u.IsConditionSatisfied("ゾンビ"))
-            //            {
-            //                goto NextHealingTarget;
-            //            }
+            // 有用なアビリティ＆ターゲットが見つかった？
+            if (selUa == null)
+            {
+                return false;
+            }
 
-            //            // 新規ターゲット？
-            //            if (!ReferenceEquals(u, Commands.SelectedTarget))
-            //            {
-            //                // ターゲット設定
-            //                Commands.SelectedTarget = u;
-            //                max_dmg = dmg;
+            if (Commands.SelectedTarget is null)
+            {
+                return false;
+            }
 
-            //                // 新規ターゲットを優先するため、現在選択されているアビリティは破棄
-            //                Commands.SelectedAbility = 0;
-            //                max_power = 0;
-            //            }
+            // 回復アビリティを使用することが確定
 
-            //            // 現在選択されている回復アビリティとチェック中のアビリティのどちらが
-            //            // 優れているかを判定
-            //            if (max_power < u.MaxHP - u.HP)
-            //            {
-            //                // 現在選択している回復アビリティでは全ダメージを回復しきれない場合
-            //                if (apower < max_power)
-            //                {
-            //                    // 回復量が多いほうを優先
-            //                    goto NextHealingTarget;
-            //                }
-            //                else if (apower == max_power)
-            //                {
-            //                    // 回復量が同じならコストが低い方を優先
-            //                    if (withBlock.Ability(a).ENConsumption > withBlock.Ability(Commands.SelectedAbility).ENConsumption)
-            //                    {
-            //                        goto NextHealingTarget;
-            //                    }
+            // 適切な位置に移動
+            if (!ReferenceEquals(Commands.SelectedTarget, Commands.SelectedUnit) && sa_is_able_to_move)
+            {
+                var new_x = u.x;
+                var new_y = u.y;
+                var max_range = selUa.AbilityMaxRange();
+                {
+                    var tu = Commands.SelectedTarget;
+                    // 現在位置から回復が可能であれば現在位置を優先
+                    int distance;
+                    if ((Math.Abs((tu.x - new_x)) + Math.Abs((tu.y - new_y))) <= max_range)
+                    {
+                        distance = (int)(Math.Pow(Math.Abs((tu.x - new_x)), 2d) + Math.Pow(Math.Abs((tu.y - new_y)), 2d));
+                    }
+                    else
+                    {
+                        distance = 10000;
+                    }
 
-            //                    if (withBlock.Ability(a).Stock < withBlock.Ability(Commands.SelectedAbility).Stock)
-            //                    {
-            //                        goto NextHealingTarget;
-            //                    }
-            //                }
-            //            }
-            //            else if (Commands.SelectedAbility > 0)
-            //            {
-            //                // 現在選択している回復アビリティで全快する場合
-            //                // 全快することが必要条件
-            //                if (apower >= u.MaxHP - u.HP)
-            //                {
-            //                    goto NextHealingTarget;
-            //                }
-            //                // コストが低い方を優先
-            //                if (withBlock.Ability(a).ENConsumption > withBlock.Ability(Commands.SelectedAbility).ENConsumption)
-            //                {
-            //                    goto NextHealingTarget;
-            //                }
+                    // 適切な位置を探す
+                    var loopTo2 = GeneralLib.MinLng(tu.x + max_range, Map.MapWidth);
+                    for (var i = GeneralLib.MaxLng(tu.x - max_range, 1); i <= loopTo2; i++)
+                    {
+                        var loopTo3 = GeneralLib.MinLng(tu.y + max_range, Map.MapHeight);
+                        for (var j = GeneralLib.MaxLng(tu.y - max_range, 1); j <= loopTo3; j++)
+                        {
+                            if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && (Math.Abs((tu.x - i)) + Math.Abs((tu.y - j))) <= max_range)
+                            {
+                                {
+                                    var withBlock2 = Commands.SelectedUnit;
+                                    if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < distance)
+                                    {
+                                        new_x = i;
+                                        new_y = j;
+                                        distance = (int)(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //                if (withBlock.Ability(a).Stock < withBlock.Ability(Commands.SelectedAbility).Stock)
-            //                {
-            //                    goto NextHealingTarget;
-            //                }
-            //            }
+                if (new_x != u.x || new_y != u.y)
+                {
+                    // 適切な場所が見つかったので移動
+                    u.Move(new_x, new_y);
+                    moved = true;
+                }
+            }
 
-            //            Commands.SelectedAbility = a;
-            //            max_power = apower;
-            //            sa_is_able_to_move = is_able_to_move;
-            //        NextHealingTarget:
-            //            ;
-            //        }
+            Commands.SelectedAbility = selUa.AbilityNo();
+            var aname = selUa.Data.Name;
+            Commands.SelectedAbilityName = aname;
 
-            //    NextHealingSkill:
-            //        ;
-            //    }
+            // 合体技パートナーの設定
+            IList<Unit> partners;
+            if (selUa.IsAbilityClassifiedAs("合"))
+            {
+                partners = selUa.CombinationPartner();
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                partners = new List<Unit>();
+            }
 
-            //    // 有用なアビリティ＆ターゲットが見つかった？
-            //    if (Commands.SelectedAbility == 0)
-            //    {
-            //        return TryHealingRet;
-            //    }
+            // 使用イベント
+            Event.HandleEvent("使用", u.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                Commands.SelectedPartners.Clear();
+                return true;
+            }
 
-            //    if (Commands.SelectedTarget is null)
-            //    {
-            //        return TryHealingRet;
-            //    }
+            if (ReferenceEquals(Commands.SelectedTarget, Commands.SelectedUnit))
+            {
+                GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
+            }
+            else
+            {
+                GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
+            }
 
-            //    // 回復アビリティを使用することが確定
-            //    TryHealingRet = true;
+            // 回復アビリティを実行
+            u.ExecuteAbility(selUa, Commands.SelectedTarget);
+            Commands.SelectedUnit = u.CurrentForm();
 
-            //    // 適切な位置に移動
-            //    if (!ReferenceEquals(Commands.SelectedTarget, Commands.SelectedUnit) && sa_is_able_to_move)
-            //    {
-            //        new_x = withBlock.x;
-            //        new_y = withBlock.y;
-            //        max_range = withBlock.AbilityMaxRange(Commands.SelectedAbility);
-            //        {
-            //            var withBlock1 = Commands.SelectedTarget;
-            //            // 現在位置から回復が可能であれば現在位置を優先
-            //            if ((Math.Abs((withBlock1.x - new_x)) + Math.Abs((withBlock1.y - new_y))) <= max_range)
-            //            {
-            //                distance = (Math.Pow(Math.Abs((withBlock1.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock1.y - new_y)), 2d));
-            //            }
-            //            else
-            //            {
-            //                distance = 10000;
-            //            }
+            GUI.CloseMessageForm();
 
-            //            // 適切な位置を探す
-            //            var loopTo2 = GeneralLib.MinLng(withBlock1.x + max_range, Map.MapWidth);
-            //            for (i = GeneralLib.MaxLng(withBlock1.x - max_range, 1); i <= loopTo2; i++)
-            //            {
-            //                var loopTo3 = GeneralLib.MinLng(withBlock1.y + max_range, Map.MapHeight);
-            //                for (j = GeneralLib.MaxLng(withBlock1.y - max_range, 1); j <= loopTo3; j++)
-            //                {
-            //                    if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && (Math.Abs((withBlock1.x - i)) + Math.Abs((withBlock1.y - j))) <= max_range)
-            //                    {
-            //                        {
-            //                            var withBlock2 = Commands.SelectedUnit;
-            //                            if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < distance)
-            //                            {
-            //                                new_x = i;
-            //                                new_y = j;
-            //                                distance = (Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
+            // 自爆した場合の破壊イベント
+            if (Commands.SelectedUnit.Status == "破壊")
+            {
+                if (Commands.SelectedUnit.CountPilot() > 0)
+                {
+                    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
+                }
 
-            //        if (new_x != withBlock.x || new_y != withBlock.y)
-            //        {
-            //            // 適切な場所が見つかったので移動
-            //            withBlock.Move(new_x, new_y);
-            //            moved = true;
-            //        }
-            //    }
+                Commands.SelectedPartners.Clear();
+                return true;
+            }
 
-            //    aname = withBlock.Ability(Commands.SelectedAbility).Name;
-            //    Commands.SelectedAbilityName = aname;
+            // 使用後イベント
+            if (Commands.SelectedUnit.CountPilot() > 0)
+            {
+                Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                {
+                    Commands.SelectedPartners.Clear();
+                    return true;
+                }
+            }
 
-            //    // 合体技パートナーの設定
-            //    if (withBlock.IsAbilityClassifiedAs(Commands.SelectedAbility, "合"))
-            //    {
-            //        withBlock.CombinationPartner("アビリティ", Commands.SelectedAbility, partners);
-            //    }
-            //    else
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        partners = new Unit[1];
-            //    }
+            // 自爆アビリティの破壊イベント
+            if (Commands.SelectedUnit.Status == "破壊")
+            {
+                Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
+                if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                {
+                    Commands.SelectedPartners.Clear();
+                    return true;
+                }
+            }
 
-            //    // 使用イベント
-            //    Event.HandleEvent("使用", withBlock.MainPilot().ID, aname);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TryHealingRet;
-            //    }
-
-            //    if (ReferenceEquals(Commands.SelectedTarget, Commands.SelectedUnit))
-            //    {
-            //        GUI.OpenMessageForm(Commands.SelectedUnit, u2: null);
-            //    }
-            //    else
-            //    {
-            //        GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    }
-
-            //    // 回復アビリティを実行
-            //    withBlock.ExecuteAbility(Commands.SelectedAbility, Commands.SelectedTarget);
-            //    Commands.SelectedUnit = withBlock.CurrentForm();
-            //}
-
-            //GUI.CloseMessageForm();
-
-            //// 自爆した場合の破壊イベント
-            //if (Commands.SelectedUnit.Status == "破壊")
-            //{
-            //    if (Commands.SelectedUnit.CountPilot() > 0)
-            //    {
-            //        Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
-            //    }
-
-            //    Commands.SelectedPartners.Clear();
-            //    return TryHealingRet;
-            //}
-
-            //// 使用後イベント
-            //if (Commands.SelectedUnit.CountPilot() > 0)
-            //{
-            //    Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, aname);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TryHealingRet;
-            //    }
-            //}
-
-            //// 自爆アビリティの破壊イベント
-            //if (Commands.SelectedUnit.Status == "破壊")
-            //{
-            //    Event.HandleEvent("破壊", Commands.SelectedUnit.MainPilot().ID);
-            //    if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //    {
-            //        Commands.SelectedPartners.Clear();
-            //        return TryHealingRet;
-            //    }
-            //}
-
-            //// 合体技のパートナーの行動数を減らす
-            //if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
-            //{
-            //    var loopTo4 = Information.UBound(partners);
-            //    for (i = 1; i <= loopTo4; i++)
-            //        partners[i].CurrentForm().UseAction();
-            //}
-
-            //Commands.SelectedPartners.Clear();
-            return TryHealingRet;
+            // 合体技のパートナーの行動数を減らす
+            if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
+            {
+                foreach (var pu in partners)
+                {
+                    pu.CurrentForm().UseAction();
+                }
+            }
+            Commands.SelectedPartners.Clear();
+            return true;
         }
 
         // 修理が可能であれば修理装置を使う
         public bool TryFix(bool moved, [Optional, DefaultParameterValue(null)] Unit t)
         {
-            // TODO Impl TryFix
-            bool TryFixRet = default;
-            //var TmpMaskData = default(bool[]);
-            //int j, i, k;
-            //int new_x, new_y;
-            //int max_dmg;
-            //int tmp;
-            //Unit u;
-            //string fname;
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 修理装置を使用可能？
-            //    if (!withBlock.IsFeatureAvailable("修理装置") || withBlock.Area == "地中")
-            //    {
-            //        return TryFixRet;
-            //    }
+            var u = Commands.SelectedUnit;
+            // 修理装置を使用可能？
+            if (!u.IsFeatureAvailable("修理装置") || u.Area == "地中")
+            {
+                return false;
+            }
 
-            //    // 狂戦士状態の際は修理装置を使わない
-            //    if (withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return TryFixRet;
-            //    }
+            // 狂戦士状態の際は修理装置を使わない
+            if (u.IsConditionSatisfied("狂戦士"))
+            {
+                return false;
+            }
+            bool[,] TmpMaskData = null;
+            // 修理装置を使用可能な領域を設定
+            if (moved || u.Mode == "固定")
+            {
+                // 移動でない場合
+                var loopTo = Map.MapWidth;
+                for (var i = 1; i <= loopTo; i++)
+                {
+                    var loopTo1 = Map.MapHeight;
+                    for (var j = 1; j <= loopTo1; j++)
+                        Map.MaskData[i, j] = true;
+                }
 
-            //    // 修理装置を使用可能な領域を設定
-            //    if (moved || withBlock.Mode == "固定")
-            //    {
-            //        // 移動でない場合
-            //        var loopTo = Map.MapWidth;
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            var loopTo1 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo1; j++)
-            //                Map.MaskData[i, j] = true;
-            //        }
+                if (u.x > 1)
+                {
+                    Map.MaskData[u.x - 1, u.y] = false;
+                }
 
-            //        if (withBlock.x > 1)
-            //        {
-            //            Map.MaskData[withBlock.x - 1, withBlock.y] = false;
-            //        }
+                if (u.x < Map.MapWidth)
+                {
+                    Map.MaskData[u.x + 1, u.y] = false;
+                }
 
-            //        if (withBlock.x < Map.MapWidth)
-            //        {
-            //            Map.MaskData[withBlock.x + 1, withBlock.y] = false;
-            //        }
+                if (u.y > 1)
+                {
+                    Map.MaskData[u.x, u.y - 1] = false;
+                }
 
-            //        if (withBlock.y > 1)
-            //        {
-            //            Map.MaskData[withBlock.x, withBlock.y - 1] = false;
-            //        }
+                if (u.y < Map.MapHeight)
+                {
+                    Map.MaskData[u.x, u.y + 1] = false;
+                }
+            }
+            else
+            {
+                // 移動可能な場合
+                TmpMaskData = new bool[Map.MapWidth + 1 + 1, Map.MapHeight + 1 + 1];
+                Map.AreaInSpeed(Commands.SelectedUnit);
+                var loopTo2 = Map.MapWidth;
+                for (var i = 1; i <= loopTo2; i++)
+                {
+                    var loopTo3 = Map.MapHeight;
+                    for (var j = 1; j <= loopTo3; j++)
+                        TmpMaskData[i, j] = Map.MaskData[i, j];
+                }
 
-            //        if (withBlock.y < Map.MapHeight)
-            //        {
-            //            Map.MaskData[withBlock.x, withBlock.y + 1] = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // 移動可能な場合
-            //        TmpMaskData = new bool[Map.MapWidth + 1 + 1, Map.MapHeight + 1 + 1];
-            //        Map.AreaInSpeed(Commands.SelectedUnit);
-            //        var loopTo2 = Map.MapWidth;
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            var loopTo3 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo3; j++)
-            //                TmpMaskData[i, j] = Map.MaskData[i, j];
-            //        }
+                var loopTo4 = Map.MapWidth;
+                for (var i = 0; i <= loopTo4; i++)
+                {
+                    TmpMaskData[i, 0] = true;
+                    TmpMaskData[i, Map.MapHeight + 1] = true;
+                }
 
-            //        var loopTo4 = Map.MapWidth;
-            //        for (i = 0; i <= loopTo4; i++)
-            //        {
-            //            TmpMaskData[i, 0] = true;
-            //            TmpMaskData[i, Map.MapHeight + 1] = true;
-            //        }
+                var loopTo5 = Map.MapHeight;
+                for (var i = 0; i <= loopTo5; i++)
+                {
+                    TmpMaskData[0, i] = true;
+                    TmpMaskData[Map.MapWidth + 1, i] = true;
+                }
 
-            //        var loopTo5 = Map.MapHeight;
-            //        for (i = 0; i <= loopTo5; i++)
-            //        {
-            //            TmpMaskData[0, i] = true;
-            //            TmpMaskData[Map.MapWidth + 1, i] = true;
-            //        }
+                var loopTo6 = GeneralLib.MinLng(u.x + (u.Speed + 1), Map.MapWidth);
+                for (var i = GeneralLib.MaxLng(u.x - (u.Speed + 1), 1); i <= loopTo6; i++)
+                {
+                    var loopTo7 = GeneralLib.MinLng(u.y + (u.Speed + 1), Map.MapHeight);
+                    for (var j = GeneralLib.MaxLng(u.y - (u.Speed + 1), 1); j <= loopTo7; j++)
+                        Map.MaskData[i, j] = TmpMaskData[i, j] && TmpMaskData[i - 1, j] && TmpMaskData[i + 1, j] && TmpMaskData[i, j - 1] && TmpMaskData[i, j + 1];
+                }
 
-            //        var loopTo6 = GeneralLib.MinLng(withBlock.x + (withBlock.Speed + 1), Map.MapWidth);
-            //        for (i = GeneralLib.MaxLng(withBlock.x - (withBlock.Speed + 1), 1); i <= loopTo6; i++)
-            //        {
-            //            var loopTo7 = GeneralLib.MinLng(withBlock.y + (withBlock.Speed + 1), Map.MapHeight);
-            //            for (j = GeneralLib.MaxLng(withBlock.y - (withBlock.Speed + 1), 1); j <= loopTo7; j++)
-            //                Map.MaskData[i, j] = TmpMaskData[i, j] && TmpMaskData[i - 1, j] && TmpMaskData[i + 1, j] && TmpMaskData[i, j - 1] && TmpMaskData[i, j + 1];
-            //        }
+                Map.MaskData[u.x, u.y] = true;
+            }
 
-            //        Map.MaskData[withBlock.x, withBlock.y] = true;
-            //    }
+            // ターゲットを探す
+            Commands.SelectedTarget = null;
+            var max_dmg = 90;
+            var loopTo8 = GeneralLib.MinLng(u.x + (u.Speed + 1), Map.MapWidth);
+            for (var i = GeneralLib.MaxLng(u.x - (u.Speed + 1), 1); i <= loopTo8; i++)
+            {
+                var loopTo9 = GeneralLib.MinLng(u.y + (u.Speed + 1), Map.MapHeight);
+                for (var j = GeneralLib.MaxLng(u.y - (u.Speed + 1), 1); j <= loopTo9; j++)
+                {
+                    if (Map.MaskData[i, j])
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //    // ターゲットを探す
-            //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Commands.SelectedTarget = null;
-            //    max_dmg = 90;
-            //    var loopTo8 = GeneralLib.MinLng(withBlock.x + (withBlock.Speed + 1), Map.MapWidth);
-            //    for (i = GeneralLib.MaxLng(withBlock.x - (withBlock.Speed + 1), 1); i <= loopTo8; i++)
-            //    {
-            //        var loopTo9 = GeneralLib.MinLng(withBlock.y + (withBlock.Speed + 1), Map.MapHeight);
-            //        for (j = GeneralLib.MaxLng(withBlock.y - (withBlock.Speed + 1), 1); j <= loopTo9; j++)
-            //        {
-            //            if (Map.MaskData[i, j])
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    var tu = Map.MapDataForUnit[i, j];
+                    if (tu is null)
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            u = Map.MapDataForUnit[i, j];
-            //            if (u is null)
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // デフォルトのターゲットが指定されている場合はそのユニット以外を
+                    // ターゲットにはしない
+                    if (t is object)
+                    {
+                        if (!ReferenceEquals(tu, t))
+                        {
+                            goto NextFixTarget;
+                        }
+                    }
 
-            //            // デフォルトのターゲットが指定されている場合はそのユニット以外を
-            //            // ターゲットにはしない
-            //            if (t is object)
-            //            {
-            //                if (!ReferenceEquals(u, t))
-            //                {
-            //                    goto NextFixTarget;
-            //                }
-            //            }
+                    // 現在の選択しているターゲットよりダメージが少なければ選択しない
+                    if (100 * tu.HP / tu.MaxHP > max_dmg)
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // 現在の選択しているターゲットよりダメージが少なければ選択しない
-            //            if (100 * u.HP / u.MaxHP > max_dmg)
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // 味方かどうか判定
+                    if (!u.IsAlly(tu))
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // 味方かどうか判定
-            //            if (!withBlock.IsAlly(u))
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // ゾンビ？
+                    if (tu.IsConditionSatisfied("ゾンビ"))
+                    {
+                        goto NextFixTarget;
+                    }
 
-            //            // ゾンビ？
-            //            if (u.IsConditionSatisfied("ゾンビ"))
-            //            {
-            //                goto NextFixTarget;
-            //            }
+                    // 修理不可？
+                    if (tu.IsFeatureAvailable("修理不可"))
+                    {
+                        var fd = tu.Feature("修理不可");
+                        foreach (var fname0 in fd.DataL.Skip(1))
+                        {
+                            var fname = fname0;
+                            if (Strings.Left(fname, 1) == "!")
+                            {
+                                fname = Strings.Mid(fname, 2);
+                                if ((fname ?? "") != (u.FeatureName0("修理装置") ?? ""))
+                                {
+                                    goto NextFixTarget;
+                                }
+                            }
+                            else
+                            {
+                                if ((fname ?? "") == (u.FeatureName0("修理装置") ?? ""))
+                                {
+                                    goto NextFixTarget;
+                                }
+                            }
+                        }
+                    }
 
-            //            // 修理不可？
-            //            if (u.IsFeatureAvailable("修理不可"))
-            //            {
-            //                var loopTo10 = Conversions.ToIntegereger(u.FeatureData("修理不可"));
-            //                for (k = 2; k <= loopTo10; k++)
-            //                {
-            //                    fname = GeneralLib.LIndex(u.FeatureData("修理不可"), k);
-            //                    if (Strings.Left(fname, 1) == "!")
-            //                    {
-            //                        fname = Strings.Mid(fname, 2);
-            //                        if ((fname ?? "") != (withBlock.FeatureName0("修理装置") ?? ""))
-            //                        {
-            //                            goto NextFixTarget;
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        if ((fname ?? "") == (withBlock.FeatureName0("修理装置") ?? ""))
-            //                        {
-            //                            goto NextFixTarget;
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    Commands.SelectedTarget = tu;
+                    max_dmg = 100 * tu.HP / tu.MaxHP;
+                NextFixTarget:
+                    ;
+                }
+            }
 
-            //            Commands.SelectedTarget = u;
-            //            max_dmg = 100 * u.HP / u.MaxHP;
-            //        NextFixTarget:
-            //            ;
-            //        }
-            //    }
+            // ターゲットが見つからない
+            if (Commands.SelectedTarget is null)
+            {
+                return false;
+            }
 
-            //    // ターゲットが見つからない
-            //    if (Commands.SelectedTarget is null)
-            //    {
-            //        return TryFixRet;
-            //    }
+            // ターゲットに隣接するように移動
+            if (!moved && u.Mode != "固定")
+            {
+                var new_x = u.x;
+                var new_y = u.y;
+                {
+                    var withBlock1 = Commands.SelectedTarget;
+                    // 現在位置から修理が可能であれば現在位置を優先
+                    int tmp;
+                    if (Math.Abs((withBlock1.x - new_x)) + Math.Abs((withBlock1.y - new_y)) == 1)
+                    {
+                        tmp = 1;
+                    }
+                    else
+                    {
+                        tmp = 10000;
+                    }
 
-            //    // ターゲットに隣接するように移動
-            //    if (!moved && withBlock.Mode != "固定")
-            //    {
-            //        new_x = withBlock.x;
-            //        new_y = withBlock.y;
-            //        {
-            //            var withBlock1 = Commands.SelectedTarget;
-            //            // 現在位置から修理が可能であれば現在位置を優先
-            //            if (Math.Abs((withBlock1.x - new_x)) + Math.Abs((withBlock1.y - new_y)) == 1)
-            //            {
-            //                tmp = 1;
-            //            }
-            //            else
-            //            {
-            //                tmp = 10000;
-            //            }
+                    var loopTo11 = Map.MapWidth;
+                    for (var i = 1; i <= loopTo11; i++)
+                    {
+                        var loopTo12 = Map.MapHeight;
+                        for (var j = 1; j <= loopTo12; j++)
+                            Map.MaskData[i, j] = TmpMaskData[i, j];
+                    }
 
-            //            var loopTo11 = Map.MapWidth;
-            //            for (i = 1; i <= loopTo11; i++)
-            //            {
-            //                var loopTo12 = Map.MapHeight;
-            //                for (j = 1; j <= loopTo12; j++)
-            //                    Map.MaskData[i, j] = TmpMaskData[i, j];
-            //            }
+                    // 適切な場所を探す
+                    var loopTo13 = GeneralLib.MinLng(withBlock1.x + 1, Map.MapWidth);
+                    for (var i = GeneralLib.MaxLng(withBlock1.x - 1, 1); i <= loopTo13; i++)
+                    {
+                        var loopTo14 = GeneralLib.MinLng(withBlock1.y + 1, Map.MapHeight);
+                        for (var j = GeneralLib.MaxLng(withBlock1.y - 1, 1); j <= loopTo14; j++)
+                        {
+                            if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && Math.Abs((withBlock1.x - i)) + Math.Abs((withBlock1.y - j)) == 1)
+                            {
+                                {
+                                    var withBlock2 = Commands.SelectedUnit;
+                                    if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < tmp)
+                                    {
+                                        new_x = i;
+                                        new_y = j;
+                                        tmp = (int)(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //            // 適切な場所を探す
-            //            var loopTo13 = GeneralLib.MinLng(withBlock1.x + 1, Map.MapWidth);
-            //            for (i = GeneralLib.MaxLng(withBlock1.x - 1, 1); i <= loopTo13; i++)
-            //            {
-            //                var loopTo14 = GeneralLib.MinLng(withBlock1.y + 1, Map.MapHeight);
-            //                for (j = GeneralLib.MaxLng(withBlock1.y - 1, 1); j <= loopTo14; j++)
-            //                {
-            //                    if (!Map.MaskData[i, j] && Map.MapDataForUnit[i, j] is null && Math.Abs((withBlock1.x - i)) + Math.Abs((withBlock1.y - j)) == 1)
-            //                    {
-            //                        {
-            //                            var withBlock2 = Commands.SelectedUnit;
-            //                            if (Math.Pow(Math.Abs((withBlock2.x - i)), 2d) + Math.Pow(Math.Abs((withBlock2.y - j)), 2d) < tmp)
-            //                            {
-            //                                new_x = i;
-            //                                new_y = j;
-            //                                tmp = (Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
+                if (new_x != u.x || new_y != u.y)
+                {
+                    // 適切な場所が見つかったので移動
+                    u.Move(new_x, new_y);
+                    moved = true;
+                }
+            }
 
-            //        if (new_x != withBlock.x || new_y != withBlock.y)
-            //        {
-            //            // 適切な場所が見つかったので移動
-            //            withBlock.Move(new_x, new_y);
-            //            moved = true;
-            //        }
-            //    }
+            // 選択内容を変更
+            Event.SelectedUnitForEvent = Commands.SelectedUnit;
+            Event.SelectedTargetForEvent = Commands.SelectedTarget;
 
-            //    // 選択内容を変更
-            //    Event.SelectedUnitForEvent = Commands.SelectedUnit;
-            //    Event.SelectedTargetForEvent = Commands.SelectedTarget;
+            // メッセージ表示
+            GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
+            if (u.IsMessageDefined("修理"))
+            {
+                u.PilotMessage("修理", msg_mode: "");
+            }
 
-            //    // メッセージ表示
-            //    GUI.OpenMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    if (withBlock.IsMessageDefined("修理"))
-            //    {
-            //        withBlock.PilotMessage("修理", msg_mode: "");
-            //    }
+            // アニメ表示
+            if (u.IsAnimationDefined("修理", u.FeatureName("修理")))
+            {
+                u.PlayAnimation("修理", u.FeatureName("修理"));
+            }
+            else
+            {
+                u.SpecialEffect("修理", u.FeatureName("修理"));
+            }
 
-            //    // アニメ表示
-            //    if (withBlock.IsAnimationDefined("修理", withBlock.FeatureName("修理")))
-            //    {
-            //        withBlock.PlayAnimation("修理", withBlock.FeatureName("修理"));
-            //    }
-            //    else
-            //    {
-            //        withBlock.SpecialEffect("修理", withBlock.FeatureName("修理"));
-            //    }
+            GUI.DisplaySysMessage(u.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + u.FeatureName0("修理装置") + "]を使った。");
 
-            //    GUI.DisplaySysMessage(withBlock.Nickname + "は[" + Commands.SelectedTarget.Nickname + "]に[" + withBlock.FeatureName0("修理装置") + "]を使った。");
+            // 修理実行
+            {
+                var tmp = Commands.SelectedTarget.HP;
+                switch (u.FeatureLevel("修理装置"))
+                {
+                    case 1d:
+                    case -1:
+                        {
+                            Commands.SelectedTarget.RecoverHP(30d + 3d * u.MainPilot().SkillLevel("修理技能", ref_mode: ""));
+                            break;
+                        }
 
-            //    // 修理実行
-            //    tmp = Commands.SelectedTarget.HP;
-            //    switch (withBlock.FeatureLevel("修理装置"))
-            //    {
-            //        case 1d:
-            //        case -1:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(30d + 3d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
-            //                break;
-            //            }
+                    case 2d:
+                        {
+                            Commands.SelectedTarget.RecoverHP(50d + 5d * u.MainPilot().SkillLevel("修理技能", ref_mode: ""));
+                            break;
+                        }
 
-            //        case 2d:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(50d + 5d * withBlock.MainPilot().SkillLevel("修理技能", ref_mode: ""));
-            //                break;
-            //            }
+                    case 3d:
+                        {
+                            Commands.SelectedTarget.RecoverHP(100d);
+                            break;
+                        }
+                }
 
-            //        case 3d:
-            //            {
-            //                Commands.SelectedTarget.RecoverHP(100d);
-            //                break;
-            //            }
-            //    }
+                GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp));
+                GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
+                GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
+            }
+            // 経験値獲得
+            Commands.SelectedUnit.GetExp(Commands.SelectedTarget, "修理", exp_mode: "");
+            if (GUI.MessageWait < 10000)
+            {
+                GUI.Sleep(GUI.MessageWait);
+            }
 
-            //    GUI.DrawSysString(Commands.SelectedTarget.x, Commands.SelectedTarget.y, "+" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp));
-            //    GUI.UpdateMessageForm(Commands.SelectedTarget, Commands.SelectedUnit);
-            //    GUI.DisplaySysMessage(Commands.SelectedTarget.Nickname + "のＨＰが[" + SrcFormatter.Format(Commands.SelectedTarget.HP - tmp) + "]回復した。");
-            //}
+            GUI.CloseMessageForm();
 
-            //// 経験値獲得
-            //Commands.SelectedUnit.GetExp(Commands.SelectedTarget, "修理", exp_mode: "");
-            //if (GUI.MessageWait < 10000)
-            //{
-            //    GUI.Sleep(GUI.MessageWait);
-            //}
-
-            //GUI.CloseMessageForm();
-
-            //// 形態変化のチェック
-            //Commands.SelectedTarget.Update();
-            //Commands.SelectedTarget.CurrentForm().CheckAutoHyperMode();
-            //Commands.SelectedTarget.CurrentForm().CheckAutoNormalMode();
-            //TryFixRet = true;
-            return TryFixRet;
+            // 形態変化のチェック
+            Commands.SelectedTarget.Update();
+            Commands.SelectedTarget.CurrentForm().CheckAutoHyperMode();
+            Commands.SelectedTarget.CurrentForm().CheckAutoNormalMode();
+            return true;
         }
 
         // マップ攻撃使用に関する処理
@@ -4834,305 +4737,290 @@ namespace SRCCore
         // スペシャルパワーを使用する
         public void TrySpecialPower(Pilot p)
         {
-            // TODO Impl TrySpecialPower
-            //string slist;
-            //SpecialPowerData sd;
-            //int i, tnum;
-            //Commands.SelectedPilot = p;
+            // ザコパイロットはスペシャルパワーを使わない
+            if (Strings.InStr(p.Name, "(ザコ)") > 0)
+            {
+                return;
+            }
 
-            //// ザコパイロットはスペシャルパワーを使わない
-            //if (Strings.InStr(p.Name, "(ザコ)") > 0)
-            //{
-            //    return;
-            //}
+            // 技量が高いほどスペシャルパワーの発動確率が高い
+            if (GeneralLib.Dice(100) > p.TacticalTechnique0() - 100)
+            {
+                return;
+            }
 
-            //// 技量が高いほどスペシャルパワーの発動確率が高い
-            //if (GeneralLib.Dice(100) > p.TacticalTechnique0() - 100)
-            //{
-            //    return;
-            //}
+            {
+                var withBlock = Commands.SelectedUnit;
+                // 正常な判断力がある？
+                if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
+                {
+                    return;
+                }
 
-            //{
-            //    var withBlock = Commands.SelectedUnit;
-            //    // 正常な判断力がある？
-            //    if (withBlock.IsConditionSatisfied("混乱") || withBlock.IsConditionSatisfied("魅了") || withBlock.IsConditionSatisfied("憑依") || withBlock.IsConditionSatisfied("恐怖") || withBlock.IsConditionSatisfied("狂戦士"))
-            //    {
-            //        return;
-            //    }
+                // スペシャルパワー使用不能
+                if (withBlock.IsConditionSatisfied("スペシャルパワー使用不能"))
+                {
+                    return;
+                }
+            }
 
-            //    // スペシャルパワー使用不能
-            //    if (withBlock.IsConditionSatisfied("スペシャルパワー使用不能"))
-            //    {
-            //        return;
-            //    }
-            //}
+            // 使用する可能性のあるスペシャルパワーの一覧を作成
+            var slist = new List<SpecialPowerData>();
+            var loopTo = p.CountSpecialPower;
+            for (var i = 1; i <= loopTo; i++)
+            {
+                Commands.SelectedSpecialPower = p.get_SpecialPower(i);
+                var sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
 
-            //// 使用する可能性のあるスペシャルパワーの一覧を作成
-            //slist = "";
-            //var loopTo = p.CountSpecialPower;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    Commands.SelectedSpecialPower = p.get_SpecialPower(i);
-            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
+                // ＳＰが足りている？
+                if (p.SP < p.SpecialPowerCost(Commands.SelectedSpecialPower))
+                {
+                    continue;
+                }
 
-            //    // ＳＰが足りている？
-            //    if (p.SP < p.SpecialPowerCost(Commands.SelectedSpecialPower))
-            //    {
-            //        goto NextSpecialPower;
-            //    }
+                // 既に実行済み？
+                if (Commands.SelectedUnit.IsSpecialPowerInEffect(Commands.SelectedSpecialPower))
+                {
+                    continue;
+                }
 
-            //    // 既に実行済み？
-            //    if (Commands.SelectedUnit.IsSpecialPowerInEffect(Commands.SelectedSpecialPower))
-            //    {
-            //        goto NextSpecialPower;
-            //    }
+                // ターゲットを選択する必要のあるスペシャルパワーは判断が難しいので
+                // 使用しない
+                switch (sd.TargetType ?? "")
+                {
+                    case "味方":
+                    case "敵":
+                    case "任意":
+                        continue;
+                }
 
-            //    sd = SRC.SPDList.Item(Commands.SelectedSpecialPower);
-            //    {
-            //        var withBlock1 = sd;
-            //        // ターゲットを選択する必要のあるスペシャルパワーは判断が難しいので
-            //        // 使用しない
-            //        switch (withBlock1.TargetType ?? "")
-            //        {
-            //            case "味方":
-            //            case "敵":
-            //            case "任意":
-            //                {
-            //                    goto NextSpecialPower;
-            //                    break;
-            //                }
-            //        }
+                // ターゲットがいなければ使用しない
+                var tnum = sd.CountTarget(p);
+                if (tnum == 0)
+                {
+                    continue;
+                }
 
-            //        // ターゲットがいなければ使用しない
-            //        tnum = withBlock1.CountTarget(p);
-            //        if (tnum == 0)
-            //        {
-            //            goto NextSpecialPower;
-            //        }
+                // 複数のユニットをターゲットにするスペシャルパワーはターゲットが
+                // 少ない場合は使用しない
+                switch (sd.TargetType ?? "")
+                {
+                    case "全味方":
+                    case "全敵":
+                        if (tnum < 3)
+                        {
+                            continue;
+                        }
+                        break;
 
-            //        // 複数のユニットをターゲットにするスペシャルパワーはターゲットが
-            //        // 少ない場合は使用しない
-            //        switch (withBlock1.TargetType ?? "")
-            //        {
-            //            case "全味方":
-            //            case "全敵":
-            //                {
-            //                    if (tnum < 3)
-            //                    {
-            //                        goto NextSpecialPower;
-            //                    }
+                }
 
-            //                    break;
-            //                }
-            //        }
+                // 使用に適した状況下にある？
+                if (sd.IsEffectAvailable("ＨＰ回復"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (Commands.SelectedUnit.HP < 0.7d * Commands.SelectedUnit.MaxHP)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        if (SRC.Turn >= 3)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
+                if (sd.IsEffectAvailable("ＥＮ回復"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (Commands.SelectedUnit.EN < 0.3d * Commands.SelectedUnit.MaxEN)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        if (SRC.Turn >= 4)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        // 使用に適した状況下にある？
+                if (sd.IsEffectAvailable("気力増加"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (p.Morale < p.MaxMorale)
+                        {
+                            if (p.CountSpecialPower == 1 || p.SP > p.MaxSP / 2)
+                            {
+                                goto AddSpecialPower;
+                            }
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＨＰ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＨＰ回復")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (Commands.SelectedUnit.HP < 0.7d * Commands.SelectedUnit.MaxHP)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                if (SRC.Turn >= 3)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("行動数増加"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ＥＮ回復) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("ＥＮ回復")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (Commands.SelectedUnit.EN < 0.3d * Commands.SelectedUnit.MaxEN)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                if (SRC.Turn >= 4)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("復活"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(気力増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("気力増加")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (p.Morale < p.MaxMorale)
-            //                {
-            //                    if (p.CountSpecialPower == 1 || p.SP > p.MaxSP / 2)
-            //                    {
-            //                        goto AddSpecialPower;
-            //                    }
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "絶対命中") || IsSPEffectUseful(sd, "ダメージ増加") || IsSPEffectUseful(sd, "クリティカル率増加") || IsSPEffectUseful(sd, "命中強化") || IsSPEffectUseful(sd, "貫通攻撃") || IsSPEffectUseful(sd, "再攻撃") || IsSPEffectUseful(sd, "隠れ身"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || sd.Duration == "攻撃")
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(行動数増加) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("行動数増加")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "絶対回避") || IsSPEffectUseful(sd, "被ダメージ低下") || IsSPEffectUseful(sd, "装甲強化") || IsSPEffectUseful(sd, "回避強化"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || sd.Duration == "防御")
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        // UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(復活) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(withBlock1.IsEffectAvailable("復活")))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "移動力強化"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "絶対命中") || IsSPEffectUseful(sd, "ダメージ増加") || IsSPEffectUseful(sd, "クリティカル率増加") || IsSPEffectUseful(sd, "命中強化") || IsSPEffectUseful(sd, "貫通攻撃") || IsSPEffectUseful(sd, "再攻撃") || IsSPEffectUseful(sd, "隠れ身"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || withBlock1.Duration == "攻撃")
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (IsSPEffectUseful(sd, "射程延長"))
+                {
+                    if (sd.TargetType == "自分")
+                    {
+                        switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
+                        {
+                            case 5:
+                            case 6:
+                                {
+                                    goto AddSpecialPower;
+                                    break;
+                                }
+                        }
+                    }
+                    else if (sd.TargetType == "全味方")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "絶対回避") || IsSPEffectUseful(sd, "被ダメージ低下") || IsSPEffectUseful(sd, "装甲強化") || IsSPEffectUseful(sd, "回避強化"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) <= 5 || withBlock1.Duration == "防御")
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("気力低下")
+                    || sd.IsEffectAvailable("ランダムダメージ")
+                    || sd.IsEffectAvailable("ＨＰ減少")
+                    || sd.IsEffectAvailable("ＥＮ減少")
+                    || sd.IsEffectAvailable("挑発"))
+                {
+                    if (sd.TargetType == "全敵")
+                    {
+                        goto AddSpecialPower;
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "移動力強化"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                if (DistanceFromNearestEnemy(Commands.SelectedUnit) > 5)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                if (sd.IsEffectAvailable("ダメージ低下")
+                    || sd.IsEffectAvailable("被ダメージ増加")
+                    || sd.IsEffectAvailable("命中低下")
+                    || sd.IsEffectAvailable("回避低下")
+                    || sd.IsEffectAvailable("命中率低下")
+                    || sd.IsEffectAvailable("移動力低下")
+                    || sd.IsEffectAvailable("サポートガード不能"))
+                {
+                    if (sd.TargetType == "全敵")
+                    {
+                        if (SRC.Turn >= 3)
+                        {
+                            goto AddSpecialPower;
+                        }
+                    }
+                }
 
-            //        if (IsSPEffectUseful(sd, "射程延長"))
-            //        {
-            //            if (withBlock1.TargetType == "自分")
-            //            {
-            //                switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
-            //                {
-            //                    case 5:
-            //                    case 6:
-            //                        {
-            //                            goto AddSpecialPower;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //            else if (withBlock1.TargetType == "全味方")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                // 有用な効果が見つからなかった
+                continue;
+            AddSpecialPower:
+                ;
 
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("気力低下"), withBlock1.IsEffectAvailable("ランダムダメージ")), withBlock1.IsEffectAvailable("ＨＰ減少")), withBlock1.IsEffectAvailable("ＥＮ減少")), withBlock1.IsEffectAvailable("挑発"))))
-            //        {
-            //            if (withBlock1.TargetType == "全敵")
-            //            {
-            //                goto AddSpecialPower;
-            //            }
-            //        }
+                // スペシャルパワーを候補リストに追加
+                slist.Add(sd);
+            }
 
-            //        if (Conversions.ToBoolean(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(Operators.OrObject(withBlock1.IsEffectAvailable("ダメージ低下"), withBlock1.IsEffectAvailable("被ダメージ増加")), withBlock1.IsEffectAvailable("命中低下")), withBlock1.IsEffectAvailable("回避低下")), withBlock1.IsEffectAvailable("命中率低下")), withBlock1.IsEffectAvailable("移動力低下")), withBlock1.IsEffectAvailable("サポートガード不能"))))
-            //        {
-            //            if (withBlock1.TargetType == "全敵")
-            //            {
-            //                if (SRC.Turn >= 3)
-            //                {
-            //                    goto AddSpecialPower;
-            //                }
-            //            }
-            //        }
-            //    }
+            // 使用可能なスペシャルパワーを所有していない
+            if (!slist.Any())
+            {
+                Commands.SelectedSpecialPower = "";
+                return;
+            }
 
-            //    // 有用な効果が見つからなかった
-            //    goto NextSpecialPower;
-            //AddSpecialPower:
-            //    ;
+            // 使用するスペシャルパワーをランダムに選択
+            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1].Name;
 
+            // 使用イベント
+            Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                return;
+            }
 
-            //    // スペシャルパワーを候補リストに追加
-            //    slist = slist + " " + Commands.SelectedSpecialPower;
-            //NextSpecialPower:
-            //    ;
-            //}
+            // 選択したスペシャルパワーを実行する
+            p.UseSpecialPower(Commands.SelectedSpecialPower);
+            Commands.SelectedUnit = Commands.SelectedUnit.CurrentForm();
 
-            //// 使用可能なスペシャルパワーを所有していない
-            //if (string.IsNullOrEmpty(slist))
-            //{
-            //    Commands.SelectedSpecialPower = "";
-            //    return;
-            //}
+            // ステータスウィンドウ更新
+            if (!GUI.IsRButtonPressed())
+            {
+                SRC.GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
+            }
 
-            //// 使用するスペシャルパワーをランダムに選択
-            //Commands.SelectedSpecialPower = GeneralLib.LIndex(slist, GeneralLib.Dice(GeneralLib.LLength(slist)));
-
-            //// 使用イベント
-            //Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
-            //if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            //{
-            //    return;
-            //}
-
-            //// 選択したスペシャルパワーを実行する
-            //p.UseSpecialPower(Commands.SelectedSpecialPower);
-            //Commands.SelectedUnit = Commands.SelectedUnit.CurrentForm();
-
-            //// ステータスウィンドウ更新
-            //if (!GUI.IsRButtonPressed())
-            //{
-            //    Status.DisplayUnitStatus(Commands.SelectedUnit);
-            //}
-
-            //// 使用後イベント
-            //Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
-            //Commands.SelectedSpecialPower = "";
+            // 使用後イベント
+            Event.HandleEvent("使用後", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
+            Commands.SelectedSpecialPower = "";
         }
 
         private bool IsSPEffectUseful(SpecialPowerData sd, string ename)

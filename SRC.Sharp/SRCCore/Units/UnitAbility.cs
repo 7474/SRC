@@ -803,7 +803,14 @@ namespace SRCCore.Units
                 IsAbilityAvailableRet = true;
                 return IsAbilityAvailableRet;
             }
+            IsAbilityAvailableRet = CanUseAfterMove();
 
+            return IsAbilityAvailableRet;
+        }
+
+        public bool CanUseAfterMove()
+        {
+            bool IsAbilityAvailableRet;
             if (AbilityMaxRange() > 1 || AbilityMaxRange() == 0)
             {
                 if (IsAbilityClassifiedAs("Ｐ"))
@@ -1523,9 +1530,9 @@ namespace SRCCore.Units
             // 修理不可
             if (t.IsFeatureAvailable("修理不可"))
             {
-                if(Data.Effects.Any(x => x.Name == "回復"))
+                if (Data.Effects.Any(x => x.Name == "回復"))
                 {
-                    foreach(var _fname in t.Feature("修理不可").DataL.Skip(1))
+                    foreach (var _fname in t.Feature("修理不可").DataL.Skip(1))
                     {
                         var fname = _fname;
                         if (Strings.Left(fname, 1) == "!")
