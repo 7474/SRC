@@ -5025,27 +5025,24 @@ namespace SRCCore
 
         private bool IsSPEffectUseful(SpecialPowerData sd, string ename)
         {
-            // TODO Impl IsSPEffectUseful
-            bool IsSPEffectUsefulRet = default;
-            //// UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(sd.IsEffectAvailable(ename)))
-            //{
-            //    if (sd.TargetType == "自分")
-            //    {
-            //        // 自分自身がターゲットである場合、既に同じ効果を持つスペシャル
-            //        // パワーを使用している場合は使用しない。
-            //        if (!Commands.SelectedUnit.IsSpecialPowerInEffect(ename))
-            //        {
-            //            IsSPEffectUsefulRet = true;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        IsSPEffectUsefulRet = true;
-            //    }
-            //}
+            if (sd.IsEffectAvailable(ename))
+            {
+                if (sd.TargetType == "自分")
+                {
+                    // 自分自身がターゲットである場合、既に同じ効果を持つスペシャル
+                    // パワーを使用している場合は使用しない。
+                    if (!Commands.SelectedUnit.IsSpecialPowerInEffect(ename))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
 
-            return IsSPEffectUsefulRet;
+            return false;
         }
 
         // ユニット u がターゲット t を攻撃するための武器を選択
