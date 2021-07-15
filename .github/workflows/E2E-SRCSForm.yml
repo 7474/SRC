@@ -1,6 +1,5 @@
 name: E2E-SRCSForm
 
-# Controls when the action will run
 on:
   push
 
@@ -16,8 +15,8 @@ jobs:
 
     - run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
     - run: >-
-      powershell Start-Process
-      -FilePath SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/SRCSharpForm.exe
-      -ArgumentList --console SRC.Sharp/SRCSharpFormTestWinAppDriver/Scenario/empty.eve
-      -Wait
+        powershell Start-Process
+        -FilePath SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/SRCSharpForm.exe
+        -ArgumentList --console SRC.Sharp/SRCSharpFormTestWinAppDriver/Scenario/empty.eve
+        -Wait
       
