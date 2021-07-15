@@ -7,6 +7,7 @@ using SRCSharpForm.Resoruces;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -25,6 +26,11 @@ namespace SRCSharpForm
         private bool IsTraceLogEnabled()
         {
             return _args.Any(x => x == "-vv");
+        }
+
+        private bool IsConsoleLogEnabled()
+        {
+            return _args.Any(x => x == "--console");
         }
 
         public RootForm(string[] args)
@@ -66,6 +72,14 @@ namespace SRCSharpForm
             else
             {
                 logConf = logConf.MinimumLevel.Information();
+            }
+            if (IsConsoleLogEnabled())
+            {
+                Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(new LoggerConfiguration()
+                    .WriteTo.Console()
+                    .MinimumLevel.Information()
+                    .CreateLogger()
+                ));
             }
             Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(logConf.CreateLogger()));
             Program.UpdateLogger();
