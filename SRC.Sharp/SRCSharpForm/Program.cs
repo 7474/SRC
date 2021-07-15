@@ -3,6 +3,7 @@ using Serilog;
 using Serilog.Extensions.Logging;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -47,7 +48,20 @@ namespace SRCSharpForm
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RootForm(args));
+            if (args.Any(x => x == "--console"))
+            {
+                var form = new RootForm(args);
+                form.FormClosed += (s, e) =>
+                {
+                    Environment.Exit(0);
+                };
+                form.Show();
+                Application.Run();
+            }
+            else
+            {
+                Application.Run(new RootForm(args));
+            }
         }
 
         private static void Application_ApplicationExit(object sender, EventArgs e)
