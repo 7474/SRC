@@ -1,4 +1,4 @@
-name: E2E-SRCSForm
+name: E2E SRCSForm
 
 on:
   push
@@ -17,6 +17,5 @@ jobs:
     - run: >-
         powershell Start-Process
         -FilePath SRC.Sharp/SRCSharpForm/bin/Release/net5.0-windows/win-x64/publish/SRCSharpForm.exe
-        -ArgumentList --console SRC.Sharp/SRCSharpFormTestWinAppDriver/Scenario/empty.eve
+        -ArgumentList "--console","SRC.Sharp/SRCSharpFormTestWinAppDriver/Scenario/empty.eve"
         -Wait
-      
