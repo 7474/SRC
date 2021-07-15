@@ -5025,27 +5025,24 @@ namespace SRCCore
 
         private bool IsSPEffectUseful(SpecialPowerData sd, string ename)
         {
-            // TODO Impl IsSPEffectUseful
-            bool IsSPEffectUsefulRet = default;
-            //// UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(ename) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //if (Conversions.ToBoolean(sd.IsEffectAvailable(ename)))
-            //{
-            //    if (sd.TargetType == "自分")
-            //    {
-            //        // 自分自身がターゲットである場合、既に同じ効果を持つスペシャル
-            //        // パワーを使用している場合は使用しない。
-            //        if (!Commands.SelectedUnit.IsSpecialPowerInEffect(ename))
-            //        {
-            //            IsSPEffectUsefulRet = true;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        IsSPEffectUsefulRet = true;
-            //    }
-            //}
+            if (sd.IsEffectAvailable(ename))
+            {
+                if (sd.TargetType == "自分")
+                {
+                    // 自分自身がターゲットである場合、既に同じ効果を持つスペシャル
+                    // パワーを使用している場合は使用しない。
+                    if (!Commands.SelectedUnit.IsSpecialPowerInEffect(ename))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
 
-            return IsSPEffectUsefulRet;
+            return false;
         }
 
         // ユニット u がターゲット t を攻撃するための武器を選択
@@ -5110,42 +5107,42 @@ namespace SRCCore
                 smode = "移動前";
             }
 
-            // TODO Impl サポートアタックをしてくれるユニットがいるかどうか
-            //// サポートアタックをしてくれるユニットがいるかどうか
-            //if (Strings.InStr(amode, "反撃") == 0 && Strings.InStr(amode, "サポート") == 0)
-            //{
-            //    su = u.LookForSupportAttack(t);
-            //    if (su is object)
-            //    {
-            //        w = SelectWeapon(su, t, "サポートアタック", support_prob, support_exp_dmg);
-            //        if (w > 0)
-            //        {
-            //            support_prob = GeneralLib.MinLng(su.HitProbability(w, t, use_true_value), 100);
-            //            dmg_mod = 1d;
+            // サポートアタックをしてくれるユニットがいるかどうか
+            if (Strings.InStr(amode, "反撃") == 0 && Strings.InStr(amode, "サポート") == 0)
+            {
+                su = u.LookForSupportAttack(t);
+                if (su is object)
+                {
+                    w = SelectWeapon(su, t, "サポートアタック", out support_prob, out support_exp_dmg);
+                    if (w > 0)
+                    {
+                        var suw = su.Weapon(w);
+                        support_prob = GeneralLib.MinLng(suw.HitProbability(t, use_true_value), 100);
+                        dmg_mod = 1d;
 
-            //            // サポートアタックダメージ低下
-            //            if (Expression.IsOptionDefined("サポートアタックダメージ低下"))
-            //            {
-            //                dmg_mod = 0.7d;
-            //            }
+                        // サポートアタックダメージ低下
+                        if (Expression.IsOptionDefined("サポートアタックダメージ低下"))
+                        {
+                            dmg_mod = 0.7d;
+                        }
 
-            //            // 同時援護攻撃？
-            //            if (su.MainPilot().IsSkillAvailable("統率") && su.IsNormalWeapon(w))
-            //            {
-            //                if (Expression.IsOptionDefined("ダメージ倍率低下"))
-            //                {
-            //                    dmg_mod = 1.2d * dmg_mod;
-            //                }
-            //                else
-            //                {
-            //                    dmg_mod = 1.5d * dmg_mod;
-            //                }
-            //            }
+                        // 同時援護攻撃？
+                        if (su.MainPilot().IsSkillAvailable("統率") && suw.IsNormalWeapon())
+                        {
+                            if (Expression.IsOptionDefined("ダメージ倍率低下"))
+                            {
+                                dmg_mod = 1.2d * dmg_mod;
+                            }
+                            else
+                            {
+                                dmg_mod = 1.5d * dmg_mod;
+                            }
+                        }
 
-            //            support_dmg = su.ExpDamage(w, t, use_true_value, dmg_mod);
-            //        }
-            //    }
-            //}
+                        support_dmg = suw.ExpDamage(t, use_true_value, dmg_mod);
+                    }
+                }
+            }
 
             SelectWeaponRet = 0;
             max_destroy_prob = 0;
