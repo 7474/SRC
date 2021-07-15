@@ -28,6 +28,11 @@ namespace SRCSharpForm
             return _args.Any(x => x == "-vv");
         }
 
+        // http://nanoappli.com/blog/archives/2363
+        [DllImport("kernel32.dll")]
+        public static extern bool AttachConsole(uint dwProcessId);
+        [DllImport("kernel32.dll")]
+        public static extern bool FreeConsole();
         private bool IsConsoleLogEnabled()
         {
             return _args.Any(x => x == "--console");
@@ -75,8 +80,9 @@ namespace SRCSharpForm
             }
             if (IsConsoleLogEnabled())
             {
+                AttachConsole(UInt32.MaxValue);
                 Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(new LoggerConfiguration()
-                    .WriteTo.Console()
+                    .WriteTo.TextWriter(new StreamWriter(System.Console.OpenStandardOutput()))
                     .MinimumLevel.Information()
                     .CreateLogger()
                 ));
