@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
+using SRCCore.Exceptions;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace SRCCore.Pilots
         public void Restore(SRC src)
         {
             SRC = src;
-            foreach(var p in Items)
+            foreach (var p in Items)
             {
                 p.Restore(src);
             }
@@ -44,7 +45,10 @@ namespace SRCCore.Pilots
             string key;
             int i;
 
-            // TODO PDList になければTerminate
+            if (!SRC.PDList.IsDefined(pname))
+            {
+                throw new TerminateException($"パイロットデータ「{pname}」が見つかりません。");
+            }
             var new_pilot = new Pilot(SRC, SRC.PDList.Item(pname));
             new_pilot.Level = plevel;
             new_pilot.Party = pparty;

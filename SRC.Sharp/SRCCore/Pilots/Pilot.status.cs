@@ -14,14 +14,6 @@ namespace SRCCore.Pilots
         // 能力値を更新
         public void Update()
         {
-            // TODO Impl Update
-            //    short skill_num;
-            //    var skill_name = new string[65];
-            //    var skill_data = new SkillData[65];
-            //    short i, j;
-            //    double lv;
-            //    SkillData sd;
-
             #region // 現在のレベルで使用可能な特殊能力の一覧を作成
 
             // 以前の一覧を削除
@@ -293,6 +285,7 @@ namespace SRCCore.Pilots
             #endregion
 
             #region これから下はユニットによる修正値の計算
+            // TODO Impl ユニットに乗っていない？
             //    // ユニットに乗っていない？
             //    if (Unit is null)
             //    {
