@@ -5373,91 +5373,85 @@ namespace SRCCore
                 prob = selectedWeapon.HitProbability(t, use_true_value);
 
                 // 特殊能力による回避を認識する？
-                // TODO Impl 特殊能力による回避を認識する？
                 if ((u.MainPilot().TacticalTechnique() >= 150 || u.Party == "味方") && !u.IsUnderSpecialPowerEffect("絶対命中"))
                 {
-                    //// 切り払い可能な場合は命中率を低下
-                    //if (selectedWeapon.IsWeaponClassifiedAs("武") || selectedWeapon.IsWeaponClassifiedAs("突") || selectedWeapon.IsWeaponClassifiedAs("実"))
-                    //{
+                    // 切り払い可能な場合は命中率を低下
+                    if (selectedWeapon.IsWeaponClassifiedAs("武") || selectedWeapon.IsWeaponClassifiedAs("突") || selectedWeapon.IsWeaponClassifiedAs("実"))
+                    {
 
-                    //    // 切り払い可能？
-                    //    flag = false;
-                    //    if (t.IsFeatureAvailable("格闘武器"))
-                    //    {
-                    //        flag = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        var loopTo1 = t.CountWeapon();
-                    //        for (i = 1; i <= loopTo1; i++)
-                    //        {
-                    //            if (t.IsWeaponClassifiedAs(i, "武") && t.IsWeaponMastered(i) && t.MainPilot().Morale >= t.Weapon(i).NecessaryMorale && !t.IsDisabled(t.Weapon(i).Name))
-                    //            {
-                    //                flag = true;
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
+                        // 切り払い可能？
+                        flag = false;
+                        if (t.IsFeatureAvailable("格闘武器"))
+                        {
+                            flag = true;
+                        }
+                        else
+                        {
+                            flag = t.Weapons
+                                .Where(x => x.IsWeaponClassifiedAs("武")
+                                    && x.IsWeaponMastered()
+                                    && t.MainPilot().Morale >= x.WeaponData.NecessaryMorale
+                                    && !t.IsDisabled(x.Name)
+                                )
+                                .Any();
+                        }
 
-                    //    if (!t.MainPilot().IsSkillAvailable("切り払い"))
-                    //    {
-                    //        flag = false;
-                    //    }
+                        if (!t.MainPilot().IsSkillAvailable("切り払い"))
+                        {
+                            flag = false;
+                        }
 
-                    //    // 切り払い出来る場合は命中率を低下
-                    //    if (flag)
-                    //    {
-                    //        parry_prob = (2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
-                    //        if (selectedWeapon.IsWeaponClassifiedAs("実"))
-                    //        {
-                    //            if (selectedWeapon.IsWeaponClassifiedAs("サ"))
-                    //            {
-                    //                parry_prob = (parry_prob - u.MainPilot().SkillLevel("超感覚", ref_mode: "") - u.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
-                    //                {
-                    //                    var withBlock = t.MainPilot();
-                    //                    parry_prob = (parry_prob + withBlock.SkillLevel("超感覚", ref_mode: "") + withBlock.SkillLevel("知覚強化", ref_mode: ""));
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            parry_prob = (parry_prob - u.MainPilot().SkillLevel("切り払い", ref_mode: ""));
-                    //        }
+                        // 切り払い出来る場合は命中率を低下
+                        if (flag)
+                        {
+                            parry_prob = (int)(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                            if (selectedWeapon.IsWeaponClassifiedAs("実"))
+                            {
+                                if (selectedWeapon.IsWeaponClassifiedAs("サ"))
+                                {
+                                    parry_prob = (int)(parry_prob - u.MainPilot().SkillLevel("超感覚", ref_mode: "") - u.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
+                                    {
+                                        var withBlock = t.MainPilot();
+                                        parry_prob = (int)(parry_prob + withBlock.SkillLevel("超感覚", ref_mode: "") + withBlock.SkillLevel("知覚強化", ref_mode: ""));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                parry_prob = (int)(parry_prob - u.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                            }
 
-                    //        if (parry_prob > 0)
-                    //        {
-                    //            prob = prob * (32 - parry_prob) / 32;
-                    //        }
-                    //    }
-                    //}
+                            if (parry_prob > 0)
+                            {
+                                prob = prob * (32 - parry_prob) / 32;
+                            }
+                        }
+                    }
 
-                    //// 分身可能な場合は命中率を低下
-                    //if (t.IsFeatureAvailable("分身"))
-                    //{
-                    //    if (t.MainPilot().Morale >= 130)
-                    //    {
-                    //        prob = prob / 2;
-                    //    }
-                    //}
+                    // 分身可能な場合は命中率を低下
+                    if (t.IsFeatureAvailable("分身"))
+                    {
+                        if (t.MainPilot().Morale >= 130)
+                        {
+                            prob = prob / 2;
+                        }
+                    }
 
-                    //if (t.MainPilot().SkillLevel("分身", ref_mode: "") > 0d)
-                    //{
-                    //    prob = ((prob * t.MainPilot().SkillLevel("分身", ref_mode: "")) / 16L);
-                    //}
+                    if (t.MainPilot().SkillLevel("分身", ref_mode: "") > 0d)
+                    {
+                        prob = (int)((prob * t.MainPilot().SkillLevel("分身", ref_mode: "")) / 16L);
+                    }
 
-                    //// 超回避可能な場合は命中率を低下
-                    //if (t.IsFeatureAvailable("超回避"))
-                    //{
-                    //    fdata = t.FeatureData("超回避");
-                    //    int localStrToLng() { string argexpr = GeneralLib.LIndex(fdata, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                    //    int localStrToLng1() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-                    //    if (localStrToLng() > t.EN && localStrToLng1() > t.MainPilot().Morale)
-                    //    {
-                    //        prob = ((prob * t.FeatureLevel("超回避")) / 10L);
-                    //    }
-                    //}
+                    // 超回避可能な場合は命中率を低下
+                    if (t.IsFeatureAvailable("超回避"))
+                    {
+                        fdata = t.FeatureData("超回避");
+                        if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 2)) > t.EN 
+                            && GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > t.MainPilot().Morale)
+                        {
+                            prob = (int)((prob * t.FeatureLevel("超回避")) / 10L);
+                        }
+                    }
                 }
 
                 // ＣＴ率算出
