@@ -4937,14 +4937,12 @@ namespace SRCCore
                 {
                     if (sd.TargetType == "自分")
                     {
+                        // XXX 自分の射程見なくていいのか？
                         switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
                         {
                             case 5:
                             case 6:
-                                {
-                                    goto AddSpecialPower;
-                                    break;
-                                }
+                                goto AddSpecialPower;
                         }
                     }
                     else if (sd.TargetType == "全味方")
@@ -5446,7 +5444,7 @@ namespace SRCCore
                     if (t.IsFeatureAvailable("超回避"))
                     {
                         fdata = t.FeatureData("超回避");
-                        if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 2)) > t.EN 
+                        if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 2)) > t.EN
                             && GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > t.MainPilot().Morale)
                         {
                             prob = (int)((prob * t.FeatureLevel("超回避")) / 10L);
