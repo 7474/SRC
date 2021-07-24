@@ -421,6 +421,457 @@ namespace SRCSharpForm
             MainForm.MoveUnitBitmap2(u, wait_time0, division);
         }
 
+        public void DieAnimation(Unit u)
+        {
+            GUI.EraseUnitBitmap(u.x, u.y);
+
+            // 人間ユニットでない場合は爆発を表示
+            if (!u.IsHero())
+            {
+                ExplodeAnimation(u.Size, u.x, u.y);
+                return;
+            }
+
+            // TODO Impl DieAnimation
+            //GUI.GetCursorPos(PT);
+
+            //// メッセージウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
+            //{
+            //    {
+            //        var withBlock = My.MyProject.Forms.frmMessage;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
+            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
+            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
+            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
+            //&& 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// メインウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
+            //{
+            //    {
+            //        var withBlock1 = GUI.MainForm;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
+            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
+            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
+            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
+            //&& 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 倒れる音
+            //switch (u.Area ?? "")
+            //{
+            //    case "地上":
+            //        {
+            //            Sound.PlayWave("FallDown.wav");
+            //            break;
+            //        }
+
+            //    case "空中":
+            //        {
+            //            if (GUI.MessageWait > 0)
+            //            {
+            //                Sound.PlayWave("Bomb.wav");
+            //                GUI.Sleep(500);
+            //            }
+
+            //            if (Map.TerrainClass(u.x, u.y) == "水"
+            //|| Map.TerrainClass(u.x, u.y) == "深海")
+            //            {
+            //                Sound.PlayWave("Splash.wav");
+            //            }
+            //            else
+            //            {
+            //                Sound.PlayWave("FallDown.wav");
+            //            }
+
+            //            break;
+            //        }
+            //}
+
+            //// ユニット消滅のアニメーション
+
+            //// メッセージがウエイト無しならアニメーションもスキップ
+            //if (GUI.MessageWait == 0)
+            //{
+            //    return;
+            //}
+
+            //switch (u.Party0 ?? "")
+            //{
+            //    case "味方":
+            //    case "ＮＰＣ":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Ally)";
+            //            break;
+            //        }
+
+            //    case "敵":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Enemy)";
+            //            break;
+            //        }
+
+            //    case "中立":
+            //        {
+            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Neutral)";
+            //            break;
+            //        }
+            //}
+
+            //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname + ".bmp"))
+            //{
+            //    fname = SRC.ScenarioPath + fname;
+            //}
+            //else
+            //{
+            //    fname = SRC.AppPath + fname;
+            //}
+
+            //bool localFileExists() { string argfname = fname + "01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+
+            //if (!localFileExists())
+            //{
+            //    return;
+            //}
+
+            //switch (Map.MapDrawMode ?? "")
+            //{
+            //    case "夜":
+            //        {
+            //            draw_mode = "暗";
+            //            break;
+            //        }
+
+            //    default:
+            //        {
+            //            draw_mode = Map.MapDrawMode;
+            //            break;
+            //        }
+            //}
+
+            //for (i = 1; i <= 6; i++)
+            //{
+            //    GUI.DrawPicture(fname + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, draw_mode);
+            //    GUI.DrawPicture(@"Unit\" + u.get_Bitmap(false), GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+            //    GUI.DrawPicture(fname + "0" + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+            //    GUI.UpdateScreen();
+            //    GUI.Sleep(50);
+            //}
+
+            GUI.ClearPicture();
+            GUI.UpdateScreen();
+        }
+
+        public void ExplodeAnimation(string tsize, int tx, int ty)
+        {
+
+            // TODO Impl ExplodeAnimation
+            //int i;
+            //int explode_image_num;
+            //var PT = default(GUI.POINTAPI);
+
+            //// 初めて実行する際に、爆発用画像があるフォルダをチェック
+            //if (!init_explode_animation)
+            //{
+            //    // 爆発用画像のパス
+            //    bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+
+            //    bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+
+            //    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
+            //    {
+            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
+            //    }
+            //    else if (localFileExists())
+            //    {
+            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Event\Explode";
+            //    }
+            //    else if (localFileExists1())
+            //    {
+            //        explode_image_path = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
+            //    }
+            //    else
+            //    {
+            //        explode_image_path = SRC.AppPath + @"Bitmap\Event\Explode";
+            //    }
+
+            //    // 爆発用画像の個数
+            //    i = 2;
+            //    while (SRC.FileSystem.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
+            //        i = (i + 1);
+            //    explode_image_num = (i - 1);
+            //}
+
+            //GUI.GetCursorPos(PT);
+
+            //// メッセージウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
+            //{
+            //    {
+            //        var withBlock = My.MyProject.Forms.frmMessage;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
+            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
+            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
+            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
+            //&& 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// メインウインドウ上でマウスボタンを押した場合
+            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
+            //{
+            //    {
+            //        var withBlock1 = GUI.MainForm;
+            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
+            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
+            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
+            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
+            //        {
+            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
+            //&& 0x8000) != 0)
+            //            {
+            //                // 右ボタンで爆発スキップ
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// 爆発音
+            //switch (tsize ?? "")
+            //{
+            //    case "XL":
+            //    case "LL":
+            //        {
+            //            Sound.PlayWave("Explode(Far).wav");
+            //            break;
+            //        }
+
+            //    case "L":
+            //    case "M":
+            //    case "S":
+            //    case "SS":
+            //        {
+            //            Sound.PlayWave("Explode.wav");
+            //            break;
+            //        }
+            //}
+
+            //// メッセージがウエイト無しなら爆発もスキップ
+            //if (GUI.MessageWait == 0)
+            //{
+            //    return;
+            //}
+
+            //// 爆発の表示
+            //if (Strings.InStr(explode_image_path, @"\Anime\") > 0)
+            //{
+            //    // 戦闘アニメ版の画像を使用
+            //    switch (tsize ?? "")
+            //    {
+            //        case "XL":
+            //            {
+            //                var loopTo = explode_image_num;
+            //                for (i = 1; i <= loopTo; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(130);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "LL":
+            //            {
+            //                var loopTo1 = explode_image_num;
+            //                for (i = 1; i <= loopTo1; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(100);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "L":
+            //            {
+            //                var loopTo2 = explode_image_num;
+            //                for (i = 1; i <= loopTo2; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(70);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "M":
+            //            {
+            //                var loopTo3 = explode_image_num;
+            //                for (i = 1; i <= loopTo3; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(50);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "S":
+            //            {
+            //                var loopTo4 = explode_image_num;
+            //                for (i = 1; i <= loopTo4; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "SS":
+            //            {
+            //                var loopTo5 = explode_image_num;
+            //                for (i = 1; i <= loopTo5; i++)
+            //                {
+            //                    GUI.ClearPicture();
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
+
+            //                break;
+            //            }
+            //    }
+
+            //    GUI.ClearPicture();
+            //    GUI.UpdateScreen();
+            //}
+            //else
+            //{
+            //    // 汎用イベント画像版の画像を使用
+            //    switch (tsize ?? "")
+            //    {
+            //        case "XL":
+            //            {
+            //                var loopTo6 = explode_image_num;
+            //                for (i = 1; i <= loopTo6; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(130);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "LL":
+            //            {
+            //                var loopTo7 = explode_image_num;
+            //                for (i = 1; i <= loopTo7; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(100);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "L":
+            //            {
+            //                var loopTo8 = explode_image_num;
+            //                for (i = 1; i <= loopTo8; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(70);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "M":
+            //            {
+            //                var loopTo9 = explode_image_num;
+            //                for (i = 1; i <= loopTo9; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(50);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "S":
+            //            {
+            //                var loopTo10 = explode_image_num;
+            //                for (i = 1; i <= loopTo10; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "SS":
+            //            {
+            //                var loopTo11 = explode_image_num;
+            //                for (i = 1; i <= loopTo11; i++)
+            //                {
+            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "透過");
+            //                    GUI.UpdateScreen();
+            //                    GUI.Sleep(40);
+            //                }
+
+            //                break;
+            //            }
+            //    }
+
+            //    GUI.ClearPicture();
+            //    GUI.UpdateScreen();
+            //}
+        }
+
+
         public int ListBox(ListBoxArgs args)
         {
             frmListBox.ShowItems(MainForm, args);
