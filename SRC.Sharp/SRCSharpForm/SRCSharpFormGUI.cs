@@ -590,44 +590,13 @@ namespace SRCSharpForm
 
         public void ExplodeAnimation(string tsize, int tx, int ty)
         {
+            // 右クリック中はスキップ
+            if (IsRButtonPressed())
+            {
+                return;
+            }
 
-            // TODO Impl ExplodeAnimation
-            //int i;
-            //int explode_image_num;
-            //var PT = default(GUI.POINTAPI);
-
-            //// 初めて実行する際に、爆発用画像があるフォルダをチェック
-            //if (!init_explode_animation)
-            //{
-            //    // 爆発用画像のパス
-            //    bool localFileExists() { string argfname = SRC.ScenarioPath + @"Bitmap\Event\Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-
-            //    bool localFileExists1() { string argfname = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-
-            //    if (SRC.FileSystem.FileExists(SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode01.bmp"))
-            //    {
-            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
-            //    }
-            //    else if (localFileExists())
-            //    {
-            //        explode_image_path = SRC.ScenarioPath + @"Bitmap\Event\Explode";
-            //    }
-            //    else if (localFileExists1())
-            //    {
-            //        explode_image_path = SRC.AppPath + @"Bitmap\Anime\Explode\EFFECT_Explode";
-            //    }
-            //    else
-            //    {
-            //        explode_image_path = SRC.AppPath + @"Bitmap\Event\Explode";
-            //    }
-
-            //    // 爆発用画像の個数
-            //    i = 2;
-            //    while (SRC.FileSystem.FileExists(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp"))
-            //        i = (i + 1);
-            //    explode_image_num = (i - 1);
-            //}
-
+            #region XXX 右ボタン参照
             //GUI.GetCursorPos(PT);
 
             //// メッセージウインドウ上でマウスボタンを押した場合
@@ -669,214 +638,221 @@ namespace SRCSharpForm
             //        }
             //    }
             //}
+            #endregion
 
-            //// 爆発音
-            //switch (tsize ?? "")
-            //{
-            //    case "XL":
-            //    case "LL":
-            //        {
-            //            Sound.PlayWave("Explode(Far).wav");
-            //            break;
-            //        }
 
-            //    case "L":
-            //    case "M":
-            //    case "S":
-            //    case "SS":
-            //        {
-            //            Sound.PlayWave("Explode.wav");
-            //            break;
-            //        }
-            //}
+            // 爆発音
+            switch (tsize ?? "")
+            {
+                case "XL":
+                case "LL":
+                    {
+                        Sound.PlayWave("Explode(Far).wav");
+                        break;
+                    }
 
-            //// メッセージがウエイト無しなら爆発もスキップ
-            //if (GUI.MessageWait == 0)
-            //{
-            //    return;
-            //}
+                case "L":
+                case "M":
+                case "S":
+                case "SS":
+                    {
+                        Sound.PlayWave("Explode.wav");
+                        break;
+                    }
+            }
 
-            //// 爆発の表示
-            //if (Strings.InStr(explode_image_path, @"\Anime\") > 0)
-            //{
-            //    // 戦闘アニメ版の画像を使用
-            //    switch (tsize ?? "")
-            //    {
-            //        case "XL":
-            //            {
-            //                var loopTo = explode_image_num;
-            //                for (i = 1; i <= loopTo; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(130);
-            //                }
+            // メッセージがウエイト無しなら爆発もスキップ
+            if (MessageWait == 0)
+            {
+                return;
+            }
 
-            //                break;
-            //            }
+            // 爆発用画像のパス
+            var explode_image_pathes = new string[]
+            {
+                SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Bitmap\Anime\Explode\EFFECT_Explode"),
+                SRC.FileSystem.PathCombine(SRC.ScenarioPath , @"Bitmap\Event\Explode"),
+                SRC.FileSystem.PathCombine(SRC.AppPath , @"Bitmap\Anime\Explode\EFFECT_Explode"),
+                SRC.FileSystem.PathCombine(SRC.AppPath , @"Bitmap\Event\Explode"),
+            };
+            string explode_image_path = explode_image_pathes.FirstOrDefault(x => SRC.FileSystem.FileExists(x + "01.bmp"));
 
-            //        case "LL":
-            //            {
-            //                var loopTo1 = explode_image_num;
-            //                for (i = 1; i <= loopTo1; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 56, GUI.MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(100);
-            //                }
+            if (string.IsNullOrEmpty(explode_image_path)) { return; }
+            int explode_image_num = 0;
+            while (imageBuffer.Get(explode_image_path + (explode_image_num + 1).ToString("00") + ".bmp") != null)
+            {
+                explode_image_num++;
+            }
 
-            //                break;
-            //            }
+            // 爆発の表示
+            if (Strings.InStr(explode_image_path, @"\Anime\") > 0)
+            {
+                // 戦闘アニメ版の画像を使用
+                switch (tsize ?? "")
+                {
+                    case "XL":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(130);
+                            }
 
-            //        case "L":
-            //            {
-            //                var loopTo2 = explode_image_num;
-            //                for (i = 1; i <= loopTo2; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(70);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "LL":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 56, MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(100);
+                            }
 
-            //        case "M":
-            //            {
-            //                var loopTo3 = explode_image_num;
-            //                for (i = 1; i <= loopTo3; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 40, GUI.MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(50);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "L":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(70);
+                            }
 
-            //        case "S":
-            //            {
-            //                var loopTo4 = explode_image_num;
-            //                for (i = 1; i <= loopTo4; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 24, GUI.MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(40);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "M":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 40, MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(50);
+                            }
 
-            //        case "SS":
-            //            {
-            //                var loopTo5 = explode_image_num;
-            //                for (i = 1; i <= loopTo5; i++)
-            //                {
-            //                    GUI.ClearPicture();
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(40);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
-            //    }
+                    case "S":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 24, MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(40);
+                            }
 
-            //    GUI.ClearPicture();
-            //    GUI.UpdateScreen();
-            //}
-            //else
-            //{
-            //    // 汎用イベント画像版の画像を使用
-            //    switch (tsize ?? "")
-            //    {
-            //        case "XL":
-            //            {
-            //                var loopTo6 = explode_image_num;
-            //                for (i = 1; i <= loopTo6; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 64, GUI.MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(130);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "SS":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                ClearPicture();
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(40);
+                            }
 
-            //        case "LL":
-            //            {
-            //                var loopTo7 = explode_image_num;
-            //                for (i = 1; i <= loopTo7; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 48, GUI.MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(100);
-            //                }
+                            break;
+                        }
+                }
 
-            //                break;
-            //            }
+                ClearPicture();
+                UpdateScreen();
+            }
+            else
+            {
+                // 汎用イベント画像版の画像を使用
+                switch (tsize ?? "")
+                {
+                    case "XL":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(130);
+                            }
 
-            //        case "L":
-            //            {
-            //                var loopTo8 = explode_image_num;
-            //                for (i = 1; i <= loopTo8; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 32, GUI.MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(70);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "LL":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(100);
+                            }
 
-            //        case "M":
-            //            {
-            //                var loopTo9 = explode_image_num;
-            //                for (i = 1; i <= loopTo9; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 16, GUI.MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(50);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "L":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 32, MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(70);
+                            }
 
-            //        case "S":
-            //            {
-            //                var loopTo10 = explode_image_num;
-            //                for (i = 1; i <= loopTo10; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx) - 8, GUI.MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(40);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
+                    case "M":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 16, MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(50);
+                            }
 
-            //        case "SS":
-            //            {
-            //                var loopTo11 = explode_image_num;
-            //                for (i = 1; i <= loopTo11; i++)
-            //                {
-            //                    GUI.DrawPicture(explode_image_path + SrcFormatter.Format(i, "00") + ".bmp", GUI.MapToPixelX(tx), GUI.MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "透過");
-            //                    GUI.UpdateScreen();
-            //                    GUI.Sleep(40);
-            //                }
+                            break;
+                        }
 
-            //                break;
-            //            }
-            //    }
+                    case "S":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(40);
+                            }
 
-            //    GUI.ClearPicture();
-            //    GUI.UpdateScreen();
-            //}
+                            break;
+                        }
+
+                    case "SS":
+                        {
+                            for (var i = 1; i <= explode_image_num; i++)
+                            {
+                                DrawPicture(explode_image_path + i.ToString("00") + ".bmp", MapToPixelX(tx), MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "透過");
+                                UpdateScreen();
+                                Sleep(40);
+                            }
+
+                            break;
+                        }
+                }
+
+                ClearPicture();
+                UpdateScreen();
+            }
         }
 
 
