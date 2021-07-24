@@ -16,10 +16,9 @@ namespace SRCCore.Expressions.Functions
             // サブルーチンローカル変数を検索
             if (SRC.Event.CallDepth > 0)
             {
-                var loopTo5 = SRC.Event.VarIndex;
-                for (var i = (SRC.Event.VarIndexStack[SRC.Event.CallDepth - 1] + 1); i <= loopTo5; i++)
+                foreach (VarData v in SRC.Event.SubLocalVars())
                 {
-                    if (Strings.InStr(SRC.Event.VarStack[i].Name, buf) == 1)
+                    if (Strings.InStr(v.Name, buf) == 1)
                     {
                         num = (num + 1);
                     }

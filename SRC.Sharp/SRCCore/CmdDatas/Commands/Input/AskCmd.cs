@@ -134,33 +134,29 @@ namespace SRCCore.CmdDatas.Commands
                             vname = vname + "[";
                         }
 
-                        var loopTo1 = Event.VarIndex;
-                        for (argIndex = Event.VarIndexStack[Event.CallDepth - 1] + 1; argIndex <= loopTo1; argIndex++)
+                        foreach (VarData v in Event.SubLocalVars())
                         {
+                            if (Strings.InStr(v.Name, vname) == 1)
                             {
-                                var v = Event.VarStack[argIndex];
-                                if (Strings.InStr(v.Name, vname) == 1)
+                                string buf;
+                                if (v.VariableType == Expressions.ValueType.StringType)
                                 {
-                                    string buf;
-                                    if (v.VariableType == Expressions.ValueType.StringType)
-                                    {
-                                        buf = v.StringValue;
-                                    }
-                                    else
-                                    {
-                                        buf = SrcFormatter.Format(v.NumericValue);
-                                    }
+                                    buf = v.StringValue;
+                                }
+                                else
+                                {
+                                    buf = SrcFormatter.Format(v.NumericValue);
+                                }
 
-                                    if (Strings.Len(buf) > 0)
+                                if (Strings.Len(buf) > 0)
+                                {
+                                    Expression.FormatMessage(ref buf);
+                                    answerList.Add(new ListBoxItem
                                     {
-                                        Expression.FormatMessage(ref buf);
-                                        answerList.Add(new ListBoxItem
-                                        {
-                                            Text = buf,
-                                            ListItemID = "" + Strings.Mid(v.Name, Strings.Len(vname) + 1, Strings.Len(v.Name) - Strings.Len(vname) - 1),
-                                            ListItemFlag = false,
-                                        });
-                                    }
+                                        Text = buf,
+                                        ListItemID = "" + Strings.Mid(v.Name, Strings.Len(vname) + 1, Strings.Len(v.Name) - Strings.Len(vname) - 1),
+                                        ListItemFlag = false,
+                                    });
                                 }
                             }
                         }
