@@ -144,6 +144,11 @@ namespace SRCCore.TestLib
             Console.Error.WriteLine(msg);
         }
 
+        public void DieAnimation(Unit u)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DisplayBattleMessage(string pname, string msg, string msg_mode = "")
         {
             throw new NotImplementedException();
@@ -212,6 +217,11 @@ namespace SRCCore.TestLib
         public void ErrorMessage(string msg)
         {
             Console.Error.WriteLine(msg);
+        }
+
+        public void ExplodeAnimation(string tsize, int tx, int ty)
+        {
+            throw new NotImplementedException();
         }
 
         public bool GetKeyState(int key)

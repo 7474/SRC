@@ -189,6 +189,11 @@ namespace SRCCore
         // 画像の経路を実際の移動経路にあわせる
         void MoveUnitBitmap2(Unit u, int wait_time0, int division = 2);
 
+        // 破壊アニメーションを表示する
+        void DieAnimation(Unit u);
+        // 爆発アニメーションを表示する
+        void ExplodeAnimation(string tsize, int tx, int ty);
+
         // === 各種リストボックスに関する処理 ===
 
         // リストボックスを表示
