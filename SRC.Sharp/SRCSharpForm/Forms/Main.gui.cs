@@ -45,12 +45,16 @@ namespace SRCSharpForm
 
         private void EraseMapPoint(int X, int Y)
         {
+            var xx = GUI.MapToPixelX(X);
+            var yy = GUI.MapToPixelY(Y);
+            var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
+            var destRect = new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
             using (var g = Graphics.FromImage(MainBuffer))
             {
-                var xx = GUI.MapToPixelX(X);
-                var yy = GUI.MapToPixelY(Y);
-                var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
-                var destRect = new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
+                g.DrawImage(BackgroundBuffer, sourceRect, destRect, GraphicsUnit.Pixel);
+            }
+            using (var g = Graphics.FromImage(MainBufferBack))
+            {
                 g.DrawImage(BackgroundBuffer, sourceRect, destRect, GraphicsUnit.Pixel);
             }
         }

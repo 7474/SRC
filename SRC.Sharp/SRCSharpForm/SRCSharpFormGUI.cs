@@ -423,7 +423,7 @@ namespace SRCSharpForm
 
         public void DieAnimation(Unit u)
         {
-            GUI.EraseUnitBitmap(u.x, u.y);
+            EraseUnitBitmap(u.x, u.y, false);
 
             // 人間ユニットでない場合は爆発を表示
             if (!u.IsHero())
@@ -432,7 +432,13 @@ namespace SRCSharpForm
                 return;
             }
 
-            // TODO Impl DieAnimation
+            // 右クリック中はスキップ
+            if (IsRButtonPressed())
+            {
+                return;
+            }
+
+            #region XXX 右ボタン参照
             //GUI.GetCursorPos(PT);
 
             //// メッセージウインドウ上でマウスボタンを押した場合
@@ -474,110 +480,112 @@ namespace SRCSharpForm
             //        }
             //    }
             //}
+            #endregion
 
-            //// 倒れる音
-            //switch (u.Area ?? "")
-            //{
-            //    case "地上":
-            //        {
-            //            Sound.PlayWave("FallDown.wav");
-            //            break;
-            //        }
+            // 倒れる音
+            switch (u.Area ?? "")
+            {
+                case "地上":
+                    {
+                        Sound.PlayWave("FallDown.wav");
+                        break;
+                    }
 
-            //    case "空中":
-            //        {
-            //            if (GUI.MessageWait > 0)
-            //            {
-            //                Sound.PlayWave("Bomb.wav");
-            //                GUI.Sleep(500);
-            //            }
+                case "空中":
+                    {
+                        if (MessageWait > 0)
+                        {
+                            Sound.PlayWave("Bomb.wav");
+                            Sleep(500);
+                        }
 
-            //            if (Map.TerrainClass(u.x, u.y) == "水"
-            //|| Map.TerrainClass(u.x, u.y) == "深海")
-            //            {
-            //                Sound.PlayWave("Splash.wav");
-            //            }
-            //            else
-            //            {
-            //                Sound.PlayWave("FallDown.wav");
-            //            }
+                        if (Map.Terrain(u.x, u.y).Class == "水"
+                            || Map.Terrain(u.x, u.y).Class == "深海")
+                        {
+                            Sound.PlayWave("Splash.wav");
+                        }
+                        else
+                        {
+                            Sound.PlayWave("FallDown.wav");
+                        }
 
-            //            break;
-            //        }
-            //}
+                        break;
+                    }
+            }
 
-            //// ユニット消滅のアニメーション
+            // ユニット消滅のアニメーション
 
-            //// メッセージがウエイト無しならアニメーションもスキップ
-            //if (GUI.MessageWait == 0)
-            //{
-            //    return;
-            //}
+            // メッセージがウエイト無しならアニメーションもスキップ
+            if (MessageWait == 0)
+            {
+                return;
+            }
 
-            //switch (u.Party0 ?? "")
-            //{
-            //    case "味方":
-            //    case "ＮＰＣ":
-            //        {
-            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Ally)";
-            //            break;
-            //        }
+            string fname;
+            switch (u.Party0 ?? "")
+            {
+                case "味方":
+                case "ＮＰＣ":
+                    {
+                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Ally)";
+                        break;
+                    }
 
-            //    case "敵":
-            //        {
-            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Enemy)";
-            //            break;
-            //        }
+                case "敵":
+                    {
+                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Enemy)";
+                        break;
+                    }
 
-            //    case "中立":
-            //        {
-            //            fname = @"Bitmap\Anime\Common\EFFECT_Tile(Neutral)";
-            //            break;
-            //        }
-            //}
+                case "中立":
+                    {
+                        fname = @"Bitmap\Anime\Common\EFFECT_Tile(Neutral)";
+                        break;
+                    }
+                default: throw new NotSupportedException(u.Party0);
+            }
 
-            //if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname + ".bmp"))
-            //{
-            //    fname = SRC.ScenarioPath + fname;
-            //}
-            //else
-            //{
-            //    fname = SRC.AppPath + fname;
-            //}
+            if (SRC.FileSystem.FileExists(SRC.ScenarioPath + fname + ".bmp"))
+            {
+                fname = SRC.ScenarioPath + fname;
+            }
+            else
+            {
+                fname = SRC.AppPath + fname;
+            }
 
-            //bool localFileExists() { string argfname = fname + "01.bmp"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+            if (!SRC.FileSystem.FileExists(fname + "01.bmp"))
+            {
+                return;
+            }
 
-            //if (!localFileExists())
-            //{
-            //    return;
-            //}
+            string draw_mode;
+            switch (Map.MapDrawMode ?? "")
+            {
+                case "夜":
+                    {
+                        draw_mode = "暗";
+                        break;
+                    }
 
-            //switch (Map.MapDrawMode ?? "")
-            //{
-            //    case "夜":
-            //        {
-            //            draw_mode = "暗";
-            //            break;
-            //        }
+                default:
+                    {
+                        draw_mode = Map.MapDrawMode;
+                        break;
+                    }
+            }
 
-            //    default:
-            //        {
-            //            draw_mode = Map.MapDrawMode;
-            //            break;
-            //        }
-            //}
+            for (var i = 1; i <= 6; i++)
+            {
+                DrawPicture(fname + ".bmp", MapToPixelX(u.x), MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, draw_mode);
+                DrawPicture(@"Unit\" + u.get_Bitmap(false), MapToPixelX(u.x), MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+                DrawPicture(fname + "0" + SrcFormatter.Format(i) + ".bmp", MapToPixelX(u.x), MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
+                UpdateScreen();
+                Sleep(50);
+            }
 
-            //for (i = 1; i <= 6; i++)
-            //{
-            //    GUI.DrawPicture(fname + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, draw_mode);
-            //    GUI.DrawPicture(@"Unit\" + u.get_Bitmap(false), GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
-            //    GUI.DrawPicture(fname + "0" + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(u.x), GUI.MapToPixelY(u.y), 32, 32, 0, 0, 0, 0, "透過 " + draw_mode);
-            //    GUI.UpdateScreen();
-            //    GUI.Sleep(50);
-            //}
-
-            GUI.ClearPicture();
-            GUI.UpdateScreen();
+            ClearPicture();
+            UpdateScreen();
         }
 
         public void ExplodeAnimation(string tsize, int tx, int ty)
