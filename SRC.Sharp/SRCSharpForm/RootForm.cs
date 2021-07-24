@@ -112,6 +112,8 @@ namespace SRCSharpForm
 
             SRC.GUI = new SRCSharpFormGUI(SRC);
             SRC.GUI.MessageWait = 700;
+
+            Environment.Exit(1);
         }
 
         private void LoadGameFile()
