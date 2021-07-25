@@ -30,6 +30,7 @@ namespace SRCSharpForm
             MinimizeBox = false;
             ShowIcon = false;
             ShowInTaskbar = false;
+            TopMost = true;
 
             _lblMessage = new Label();
             _lblMessage.Dock = DockStyle.Fill;
