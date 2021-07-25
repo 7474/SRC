@@ -31,7 +31,7 @@ namespace SRCCore.Expressions.Functions
                 }
 
                 var searchOption = EntryOption.All;
-                if (pcount > 2)
+                if (pcount >= 2)
                 {
                     switch (SRC.Expression.GetValueAsString(@params[2], is_term[2]) ?? "")
                     {
