@@ -108,12 +108,12 @@ title: Ifコマンド
 ターン 5 敵:
 #レイを出撃
 Create レキシントン弐型 0 レイ 30 3 3
-If 敵数 &gt; 10 Then
+If 敵数 > 10 Then
 #敵数が10機より多い場合
 Talk レイ
 流石だな…… よく持ちこたえている
 End
-ElseIf 敵数 &lt; 5 Then
+ElseIf 敵数 < 5 Then
 #敵数が5機未満の場合
 If ネリィ Then
 #ネリィが生き残っている場合

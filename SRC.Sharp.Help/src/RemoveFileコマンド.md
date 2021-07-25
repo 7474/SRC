@@ -27,7 +27,7 @@ Talk システム
 消去するデータファイルを選んでください
 End
 fname = LoadFileDialog("データファイル", "dat")
-If fname &lt;&gt; "" Then
+If fname <> "" Then
 RemoveFile fname
 EndIf
 ```

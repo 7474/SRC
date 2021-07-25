@@ -47,7 +47,7 @@ Local wname
 #引数からWAVファイル名を検索
 wname = GetWavFromArgs()
 #WAVファイル名が指定されていればそれを再生
-If wname &lt;&gt; "" Then
+If wname <> "" Then
 PlaySound wname
 EndIf
 #サブルーチンＢを呼び出す
