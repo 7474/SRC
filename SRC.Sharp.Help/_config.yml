@@ -11,6 +11,7 @@ github_username: 7474
 # Build settings
 source: src
 theme: just-the-docs
+ga_tracking: UA-203068628-1
 search_enabled: true
 gh_edit_link: true
 gh_edit_link_text: Edit this page on GitHub.
