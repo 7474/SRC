@@ -71,22 +71,16 @@ namespace SRCCore.Filesystem
 
         public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
         {
-            // TODO ILocalFileSystemEntrySet 対応、アーカイブを検索
-            try
+            foreach (var entrySet in entrySets)
             {
-                return Directory.GetFileSystemEntries(path, searchPattern)
-                                .Where(x => enumerationOptions == EntryOption.All
-                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                    || enumerationOptions == EntryOption.File && Directory.Exists(x));
+                var entries = entrySet.GetFileSystemEntries(path, searchPattern, enumerationOptions);
+                if (entries.Any())
+                {
+                    return entries;
+                }
             }
-            catch (DirectoryNotFoundException)
-            {
-                return new string[] { };
-            }
-            catch (Exception)
-            {
-                return new string[] { };
-            }
+
+            return new string[] { };
         }
 
         public void AddSafePath(string basePath)
@@ -185,6 +179,8 @@ namespace SRCCore.Filesystem
     {
         bool MatchRoot(string entryName);
         bool Exists(string entryName);
+        IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions);
+
         Stream OpenRead(string entryName);
         Stream OpenWrite(string entryName);
         Stream OpenAppend(string entryName);
@@ -212,6 +208,29 @@ namespace SRCCore.Filesystem
         public bool Exists(string entryName)
         {
             return GetFileInfo(entryName)?.Exists ?? false;
+        }
+
+        public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
+        {
+            if (!MatchRoot(path))
+            {
+                return new string[] { };
+            }
+            try
+            {
+                return Directory.GetFileSystemEntries(path, searchPattern)
+                                .Where(x => enumerationOptions == EntryOption.All
+                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
+                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return new string[] { };
+            }
+            catch (Exception)
+            {
+                return new string[] { };
+            }
         }
 
         public Stream OpenRead(string entryName)
@@ -262,6 +281,29 @@ namespace SRCCore.Filesystem
         public bool MatchRoot(string entryName)
         {
             return entryName.Replace("\\", "/").StartsWith(BasePath);
+        }
+
+        public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
+        {
+            if (!MatchRoot(path))
+            {
+                return new string[] { };
+            }
+            try
+            {
+                return Directory.GetFileSystemEntries(path, searchPattern)
+                                .Where(x => enumerationOptions == EntryOption.All
+                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
+                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return new string[] { };
+            }
+            catch (Exception)
+            {
+                return new string[] { };
+            }
         }
 
         private FileInfo GetFileInfo(string entryName)
@@ -386,6 +428,47 @@ namespace SRCCore.Filesystem
         public bool Exists(string entryName)
         {
             return GetEntry(entryName) != null;
+        }
+
+        public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
+        {
+            if (!MatchRoot(path))
+            {
+                return new string[] { };
+            }
+            while (!_entryMapResolveTask.IsCompleted)
+            {
+                Task.Delay(100).Wait();
+            }
+            var archivePath = path.Replace("\\", "/");
+            var isAbsolute = Path.IsPathRooted(path);
+            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            {
+                return null;
+            }
+            var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
+            var regBase = Regex.Escape(Path.Combine(entryPath, searchPattern).Replace("\\", "/"))
+                    .Replace(@"\*", "[^/]*").Replace(@"\?", ".");
+            var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/") ? "" : "/") + "$", RegexOptions.IgnoreCase);
+            var fileRegex = new Regex("^" + regBase + "$", RegexOptions.IgnoreCase);
+
+            var dirs = new List<string>();
+            var files = new List<string>();
+            if (enumerationOptions.HasFlag(EntryOption.File))
+            {
+                dirs = _archive.Entries
+                    .Where(x => dirRegex.IsMatch(x.FullName))
+                    .Select(x => Path.Combine(BasePath, x.FullName))
+                    .ToList();
+            }
+            if (enumerationOptions.HasFlag(EntryOption.File))
+            {
+                files = _archive.Entries
+                    .Where(x => fileRegex.IsMatch(x.FullName))
+                    .Select(x => Path.Combine(BasePath, x.FullName))
+                    .ToList();
+            }
+            return dirs.Concat(files).OrderBy(x => x);
         }
 
         public Stream OpenRead(string entryName)

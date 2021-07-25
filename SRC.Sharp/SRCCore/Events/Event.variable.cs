@@ -27,5 +27,11 @@ namespace SRCCore.Events
         {
             return SubLocalVars().FirstOrDefault(x => x.Name.ToLower() == vname.ToLower());
         }
+
+        public VarData NewSubLocalVar()
+        {
+            VarIndex += 1;
+            return VarStack[VarIndex];
+        }
     }
 }

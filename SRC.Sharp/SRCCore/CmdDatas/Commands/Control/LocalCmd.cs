@@ -51,24 +51,21 @@ namespace SRCCore.CmdDatas.Commands
                             case ValueType.UndefinedType:
                                 {
                                     etype = Expression.EvalTerm(arg.strArg, ValueType.UndefinedType, out str_result, out num_result);
-                                    Event.VarIndex = (Event.VarIndex + 1);
-                                    Event.VarStack[Event.VarIndex].SetValue(vname, etype, str_result, num_result);
+                                    Event.NewSubLocalVar().SetValue(vname, etype, str_result, num_result);
 
                                     break;
                                 }
 
                             case ValueType.StringType:
                                 {
-                                    Event.VarIndex = (Event.VarIndex + 1);
-                                    Event.VarStack[Event.VarIndex].SetValue(vname, ValueType.StringType, arg.strArg, num_result);
+                                    Event.NewSubLocalVar().SetValue(vname, ValueType.StringType, arg.strArg, num_result);
 
                                     break;
                                 }
 
                             case ValueType.NumericType:
                                 {
-                                    Event.VarIndex = (Event.VarIndex + 1);
-                                    Event.VarStack[Event.VarIndex].SetValue(vname, ValueType.NumericType, str_result, arg.dblArg);
+                                    Event.NewSubLocalVar().SetValue(vname, ValueType.NumericType, str_result, arg.dblArg);
 
                                     break;
                                 }
@@ -78,23 +75,20 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         var arg = "(" + string.Join(" ", Enumerable.Range(4, ArgNum - 3).Select(x => GetArg(x))) + ")";
                         etype = Expression.EvalTerm(arg, ValueType.UndefinedType, out str_result, out num_result);
-                        Event.VarIndex = (Event.VarIndex + 1);
-                        Event.VarStack[Event.VarIndex].SetValue(vname, etype, str_result, num_result);
+                        Event.NewSubLocalVar().SetValue(vname, etype, str_result, num_result);
                     }
 
                     return EventData.NextID;
                 }
             }
-            Event.VarIndex = (Event.VarIndex + ArgNum - 1);
-            if (Event.VarIndex > Event.MaxVarIndex)
-            {
-                Event.VarIndex = Event.MaxVarIndex;
-                throw new EventErrorException(this, Event.MaxVarIndex + "個を超えるサブルーチンローカル変数は作成できません");
-            }
 
             for (var i = 2; i <= ArgNum; i++)
             {
-                var v = Event.VarStack[Event.VarIndex - i + 2];
+                if (Event.VarIndex >= Event.MaxVarIndex)
+                {
+                    Event.VarIndex = Event.MaxVarIndex;
+                    throw new EventErrorException(this, Event.MaxVarIndex + "個を超えるサブルーチンローカル変数は作成できません");
+                }
                 vname = GetArg(i);
                 if (Strings.InStr(vname, "\"") > 0)
                 {
@@ -105,7 +99,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     vname = Strings.Mid(vname, 2);
                 }
-                v.SetValue(vname, ValueType.StringType, "", 0d);
+                Event.NewSubLocalVar().SetValue(vname, ValueType.StringType, "", 0d);
             }
             return EventData.NextID;
         }
