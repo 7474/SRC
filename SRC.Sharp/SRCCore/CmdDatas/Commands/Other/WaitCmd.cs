@@ -13,6 +13,9 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
+            // 明に画面更新する
+            GUI.UpdateScreen();
+
             int wait_time, start_time, cur_time;
             switch (ArgNum)
             {

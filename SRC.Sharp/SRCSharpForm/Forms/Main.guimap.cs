@@ -3,6 +3,7 @@ using SRCCore.Maps;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
@@ -74,7 +75,9 @@ namespace SRCSharpForm
             {
                 g.DrawImage(MainDoubleBuffer, 0, 0);
             }
+            // 画面を更新させる
             picMain.Invalidate();
+            Application.DoEvents();
         }
 
         public void InitBackgroundBufferIfInvalid()
