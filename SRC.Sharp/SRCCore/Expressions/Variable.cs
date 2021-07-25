@@ -488,7 +488,6 @@ namespace SRCCore.Expressions
             if (is_subroutine_local_array)
             {
                 // サブルーチンローカル変数の配列の要素として定義
-                Event.VarIndex = Event.VarIndex + 1;
                 if (Event.VarIndex >= Events.Event.MaxVarIndex)
                 {
                     Event.VarIndex = Events.Event.MaxVarIndex;
@@ -496,8 +495,7 @@ namespace SRCCore.Expressions
                     return;
                 }
 
-                var v = Event.VarStack[Event.VarIndex];
-                v.SetValue(vname, etype, str_value, num_value);
+                Event.NewSubLocalVar().SetValue(vname, etype, str_value, num_value);
                 return;
             }
 

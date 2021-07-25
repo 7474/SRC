@@ -64,22 +64,22 @@ namespace SRCCore.Events
 
         // 呼び出し履歴
         public int CallDepth;
-        public IList<int> CallStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<int> CallStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
         // 引数スタック
         public int ArgIndex;
-        public IList<int> ArgIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
-        public IList<string> ArgStack = new List<string>(Enumerable.Range(0, MaxArgIndex).Select(x => ""));
+        public IList<int> ArgIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
+        public IList<string> ArgStack = new List<string>(Enumerable.Range(0, MaxArgIndex + 1).Select(x => ""));
         // UpVarコマンドによって引数が何段階シフトしているか
         public int UpVarLevel;
-        public IList<int> UpVarLevelStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<int> UpVarLevelStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
         // サブルーチンローカル変数スタック
         public int VarIndex;
-        public IList<int> VarIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
-        public IList<VarData> VarStack = new List<VarData>(Enumerable.Range(0, MaxVarIndex).Select(x => new VarData()));
+        public IList<int> VarIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
+        public IList<VarData> VarStack = new List<VarData>(Enumerable.Range(0, MaxVarIndex + 1).Select(x => new VarData()));
         // Forインデックス用スタック
         public int ForIndex;
-        public IList<int> ForIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
-        public IList<int> ForLimitStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<int> ForIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
+        public IList<int> ForLimitStack = new List<int>(Enumerable.Range(0, MaxCallDepth + 1).Select(x => 0));
 
         // ForEachコマンド用変数
         public int ForEachIndex;
