@@ -19,7 +19,10 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy Job    
+    environment:
+      name: SRC#DataViewer
+      url: ${{ (github.event_name == 'push' && 'https://srcv.7474.jp/') || steps.builddeploy.outputs.static_web_app_url }}
     outputs:
       static_web_app_url: ${{ steps.builddeploy.outputs.static_web_app_url }}
     steps:
