@@ -5456,914 +5456,852 @@ namespace SRCCore
                 ct_prob = selectedWeapon.CriticalProbability(t);
 
                 // 特殊効果を与える確率を計算
-                // TODO Impl 特殊効果を与える確率を計算
                 sp_prob = 0d;
                 wclass = selectedWeapon.WeaponClass();
                 {
-                    //    var withBlock1 = t;
-                    //    var loopTo2 = Strings.Len(wclass);
-                    //    for (i = 1; i <= loopTo2; i++)
-                    //    {
-                    //        wattr = GeneralLib.GetClassBundle(wclass, i);
-
-                    //        // 特殊効果無効化によって無効化される？
-                    //        if (withBlock1.SpecialEffectImmune(wattr))
-                    //        {
-                    //            goto NextAttribute;
-                    //        }
-
-                    //        switch (wattr ?? "")
-                    //        {
-                    //            case "縛":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("行動不能"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.5d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "Ｓ":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("行動不能"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "眠":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("睡眠"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "痺":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("麻痺"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.7d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "不":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("攻撃不能") && withBlock1.CountWeapon() > 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "止":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("移動不能") && withBlock1.Speed > 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "石":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("石化") && withBlock1.BossRank < 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "凍":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("凍結"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.5d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "乱":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("混乱"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.5d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "撹":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("撹乱") && withBlock1.CountWeapon() > 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "恐":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("恐怖"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.4d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "魅":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("魅了"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.6d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "憑":
-                    //                {
-                    //                    if (withBlock1.BossRank < 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "黙":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("沈黙"))
-                    //                    {
-                    //                        var loopTo3 = withBlock1.CountWeapon();
-                    //                        for (j = 1; j <= loopTo3; j++)
-                    //                        {
-                    //                            if (withBlock1.IsSpellWeapon(j) || withBlock1.IsWeaponClassifiedAs(j, "音"))
-                    //                            {
-                    //                                sp_prob = sp_prob + 0.3d;
-                    //                                break;
-                    //                            }
-                    //                        }
-
-                    //                        if (j > withBlock1.CountWeapon())
-                    //                        {
-                    //                            var loopTo4 = withBlock1.CountAbility();
-                    //                            for (j = 1; j <= loopTo4; j++)
-                    //                            {
-                    //                                if (withBlock1.IsSpellAbility(j) || withBlock1.IsAbilityClassifiedAs(j, "音"))
-                    //                                {
-                    //                                    sp_prob = sp_prob + 0.3d;
-                    //                                    break;
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "盲":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("盲目"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "毒":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("毒"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "踊":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("踊り"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "狂":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("狂戦士"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "ゾ":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("ゾンビ"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "害":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("回復不能"))
-                    //                    {
-                    //                        if (withBlock1.IsFeatureAvailable("ＨＰ回復") || withBlock1.IsFeatureAvailable("ＥＮ回復"))
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.4d;
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "劣":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("装甲劣化"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.3d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "中":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("バリア無効化"))
-                    //                    {
-                    //                        if (withBlock1.IsFeatureAvailable("バリア") && Strings.InStr(t.FeatureData("バリア"), "バリア無効化無効") == 0)
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable("広域バリア"))
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable("バリアシールド") && Strings.InStr(t.FeatureData("バリアシールド"), "バリア無効化無効") == 0)
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable("フィールド") && Strings.InStr(t.FeatureData("フィールド"), "バリア無効化無効") == 0)
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable("広域フィールド"))
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                        else if (withBlock1.IsFeatureAvailable("アクティブフィールド") && Strings.InStr(t.FeatureData("アクティブフィールド"), "バリア無効化無効") == 0)
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "除":
-                    //                {
-                    //                    var loopTo5 = withBlock1.CountCondition();
-                    //                    for (j = 1; j <= loopTo5; j++)
-                    //                    {
-                    //                        string localCondition() { object argIndex1 = j; var ret = withBlock1.Condition(argIndex1); return ret; }
-
-                    //                        string localCondition1() { object argIndex1 = j; var ret = withBlock1.Condition(argIndex1); return ret; }
-
-                    //                        string localCondition2() { object argIndex1 = j; var ret = withBlock1.Condition(argIndex1); return ret; }
-
-                    //                        int localConditionLifetime() { object argIndex1 = j; var ret = withBlock1.ConditionLifetime(argIndex1); return ret; }
-
-                    //                        if ((Strings.InStr(localCondition(), "付加") > 0 || Strings.InStr(localCondition1(), "強化") > 0 || Strings.InStr(localCondition2(), "ＵＰ") > 0) && localConditionLifetime() > 0)
-                    //                        {
-                    //                            sp_prob = sp_prob + 0.3d;
-                    //                            break;
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "即":
-                    //                {
-                    //                    if (withBlock1.BossRank < 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "告":
-                    //                {
-                    //                    if (withBlock1.BossRank < 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.4d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "脱":
-                    //                {
-                    //                    if (withBlock1.MainPilot().Personality != "機械")
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "Ｄ":
-                    //                {
-                    //                    if (withBlock1.MainPilot().Personality != "機械")
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.25d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "低攻":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("攻撃力ＤＯＷＮ") && withBlock1.CountWeapon() > 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "低防":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("防御力ＤＯＷＮ"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.2d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "低運":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("運動性ＤＯＷＮ"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "低移":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("移動力ＤＯＷＮ") && withBlock1.Speed > 0)
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "盗":
-                    //                {
-                    //                    if (!withBlock1.IsConditionSatisfied("すかんぴん"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 0.5d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "写":
-                    //                {
-                    //                    if (withBlock1.BossRank >= 0 || u.IsFeatureAvailable("ノーマルモード"))
-                    //                    {
-                    //                        goto NextAttribute;
-                    //                    }
-
-                    //                    switch (u.Size ?? "")
-                    //                    {
-                    //                        case "SS":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "M":
-                    //                                    case "L":
-                    //                                    case "LL":
-                    //                                    case "XL":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-
-                    //                        case "S":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "L":
-                    //                                    case "LL":
-                    //                                    case "XL":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-
-                    //                        case "M":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "SS":
-                    //                                    case "LL":
-                    //                                    case "XL":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-
-                    //                        case "L":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "SS":
-                    //                                    case "S":
-                    //                                    case "XL":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-
-                    //                        case "LL":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "SS":
-                    //                                    case "S":
-                    //                                    case "M":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-
-                    //                        case "XL":
-                    //                            {
-                    //                                switch (withBlock1.Size ?? "")
-                    //                                {
-                    //                                    case "SS":
-                    //                                    case "S":
-                    //                                    case "M":
-                    //                                    case "L":
-                    //                                        {
-                    //                                            goto NextAttribute;
-                    //                                            break;
-                    //                                        }
-                    //                                }
-
-                    //                                break;
-                    //                            }
-                    //                    }
-
-                    //                    sp_prob = sp_prob + 1d;
-                    //                    break;
-                    //                }
-
-                    //            case "化":
-                    //                {
-                    //                    if (withBlock1.BossRank < 0 && !u.IsFeatureAvailable("ノーマルモード"))
-                    //                    {
-                    //                        sp_prob = sp_prob + 1d;
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "衰":
-                    //                {
-                    //                    if (withBlock1.BossRank >= 0)
-                    //                    {
-                    //                        switch (selectedWeapon.WeaponLevel("衰"))
-                    //                        {
-                    //                            case 1:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 8d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 2:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 4d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 3:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 2d;
-                    //                                    break;
-                    //                                }
-                    //                        }
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        switch (selectedWeapon.WeaponLevel("衰"))
-                    //                        {
-                    //                            case 1:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 4d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 2:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 2d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 3:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 3d / 4d;
-                    //                                    break;
-                    //                                }
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            case "滅":
-                    //                {
-                    //                    if (withBlock1.BossRank >= 0)
-                    //                    {
-                    //                        switch (selectedWeapon.WeaponLevel("滅"))
-                    //                        {
-                    //                            case 1:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 16d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 2:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 8d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 3:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 4d;
-                    //                                    break;
-                    //                                }
-                    //                        }
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        switch (selectedWeapon.WeaponLevel("滅"))
-                    //                        {
-                    //                            case 1:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 8d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 2:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 4d;
-                    //                                    break;
-                    //                                }
-
-                    //                            case 3:
-                    //                                {
-                    //                                    sp_prob = sp_prob + 1d / 2d;
-                    //                                    break;
-                    //                                }
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-
-                    //            default:
-                    //                {
-                    //                    // 弱属性
-                    //                    if (Strings.Left(wattr, 1) == "弱")
-                    //                    {
-                    //                        // 味方全員を検索して、現在対象に攻撃可能なユニットが
-                    //                        // 付加した弱点に対する属性攻撃を持つ場合。
-                    //                        // 特殊効果発動率はとりあえず低防(0.2)とそろえてみた
-                    //                        checkwc = Strings.Mid(wattr, 2);
-                    //                        if (!withBlock1.Weakness(checkwc))
-                    //                        {
-                    //                            foreach (Unit currentChecku in SRC.UList)
-                    //                            {
-                    //                                checku = currentChecku;
-                    //                                if ((checku.Party ?? "") == (checku.Party ?? "") && checku.Status == "出撃")
-                    //                                {
-                    //                                    var loopTo6 = checku.CountWeapon();
-                    //                                    for (j = 1; j <= loopTo6; j++)
-                    //                                    {
-                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) && checku.IsWeaponAvailable(j, "移動前"))
-                    //                                        {
-                    //                                            // 射程範囲内？
-                    //                                            if (checku.IsWeaponClassifiedAs(j, "移動後攻撃可") && checku.Mode != "固定")
-                    //                                            {
-                    //                                                // 合体技は移動後攻撃可能でも移動を前提にしない
-                    //                                                // (移動後の位置では使えない危険性があるため)
-                    //                                                if (checku.IsWeaponClassifiedAs(j, "合") && checku.IsWeaponClassifiedAs(j, "Ｐ"))
-                    //                                                {
-                    //                                                    // 移動して攻撃は出来ない
-                    //                                                    if (checku.IsTargetWithinRange(j, t))
-                    //                                                    {
-                    //                                                        sp_prob = sp_prob + 0.2d;
-                    //                                                        goto NextAttribute;
-                    //                                                    }
-                    //                                                }
-                    //                                                // 移動して攻撃可能
-                    //                                                else if (checku.IsTargetReachable(j, t))
-                    //                                                {
-                    //                                                    sp_prob = sp_prob + 0.2d;
-                    //                                                    goto NextAttribute;
-                    //                                                }
-                    //                                            }
-                    //                                            // 移動して攻撃は出来ない
-                    //                                            else if (checku.IsTargetWithinRange(j, t))
-                    //                                            {
-                    //                                                sp_prob = sp_prob + 0.2d;
-                    //                                                goto NextAttribute;
-                    //                                            }
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                    // 効属性
-                    //                    else if (Strings.Left(wattr, 1) == "効")
-                    //                    {
-                    //                        // 味方全員を検索して、現在対象に攻撃可能なユニットが
-                    //                        // 付加した有効に対する封印、限定攻撃を持つ場合。
-                    //                        // 特殊効果発動率は0.1としてみた
-                    //                        checkwc = Strings.Mid(wattr, 2);
-                    //                        if (!withBlock1.Weakness(checkwc) && !withBlock1.Effective(checkwc))
-                    //                        {
-                    //                            foreach (Unit currentChecku1 in SRC.UList)
-                    //                            {
-                    //                                checku = currentChecku1;
-                    //                                if ((checku.Party ?? "") == (withBlock1.Party ?? "") && checku.Status == "出撃")
-                    //                                {
-                    //                                    var loopTo7 = checku.CountWeapon();
-                    //                                    for (j = 1; j <= loopTo7; j++)
-                    //                                    {
-                    //                                        if (checku.IsWeaponClassifiedAs(j, checkwc) && checku.IsWeaponAvailable(j, "移動前"))
-                    //                                        {
-                    //                                            // 付加する有効に対応する封印、限定武器がある
-                    //                                            int localInStrNotNest1() { string argstring1 = checku.WeaponClass(j); string argstring2 = "封"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); return ret; }
-
-                    //                                            int localInStrNotNest2() { string argstring1 = checku.WeaponClass(j); string argstring2 = "限"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); return ret; }
-
-                    //                                            if (localInStrNotNest1() > 0 || localInStrNotNest2() > 0)
-                    //                                            {
-                    //                                                int localInStrNotNest() { string argstring1 = checku.WeaponClass(j); string argstring2 = "限"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); return ret; }
-
-                    //                                                if (GeneralLib.InStrNotNest(checku.WeaponClass(j), checkwc) > localInStrNotNest())
-                    //                                                {
-                    //                                                    // 射程範囲内？
-                    //                                                    if (checku.IsWeaponClassifiedAs(j, "移動後攻撃可") && checku.Mode != "固定")
-                    //                                                    {
-                    //                                                        // 合体技は移動後攻撃可能でも移動を前提にしない
-                    //                                                        // (移動後の位置では使えない危険性があるため)
-                    //                                                        if (checku.IsWeaponClassifiedAs(j, "合") && checku.IsWeaponClassifiedAs(j, "Ｐ"))
-                    //                                                        {
-                    //                                                            // 移動して攻撃は出来ない
-                    //                                                            if (checku.IsTargetWithinRange(j, t))
-                    //                                                            {
-                    //                                                                sp_prob = sp_prob + 0.1d;
-                    //                                                                goto NextAttribute;
-                    //                                                            }
-                    //                                                        }
-                    //                                                        // 移動して攻撃可能
-                    //                                                        else if (checku.IsTargetReachable(j, t))
-                    //                                                        {
-                    //                                                            sp_prob = sp_prob + 0.1d;
-                    //                                                            goto NextAttribute;
-                    //                                                        }
-                    //                                                    }
-                    //                                                    // 移動して攻撃は出来ない
-                    //                                                    else if (checku.IsTargetWithinRange(j, t))
-                    //                                                    {
-                    //                                                        sp_prob = sp_prob + 0.1d;
-                    //                                                        goto NextAttribute;
-                    //                                                    }
-                    //                                                }
-                    //                                            }
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                    // 剋属性
-                    //                    else if (Strings.Left(wattr, 1) == "剋")
-                    //                    {
-                    //                        // 特殊効果発動率は黙属性揃えで0.3
-                    //                        checkwc = Strings.Mid(wattr, 2);
-                    //                        switch (checkwc ?? "")
-                    //                        {
-                    //                            case "オ":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("オーラ使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("オーラ"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "超":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("超能力使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("超能力"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "シ":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("同調率使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("同調率"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "サ":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("超感覚使用不能") && !withBlock1.IsConditionSatisfied("知覚強化使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("超感覚") || withBlock1.IsSkillAvailable("知覚強化"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "霊":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("霊力使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("霊力"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "術":
-                    //                                {
-                    //                                    // 術は射撃を魔力と表示するためだけに付いている場合があるため
-                    //                                    // 1レベル以下の場合は武器、アビリティを確認
-                    //                                    if (!withBlock1.IsConditionSatisfied("術使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.SkillLevel("術") > 1d)
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-
-                    //                            case "技":
-                    //                                {
-                    //                                    if (!withBlock1.IsConditionSatisfied("技使用不能"))
-                    //                                    {
-                    //                                        if (withBlock1.IsSkillAvailable("技"))
-                    //                                        {
-                    //                                            sp_prob = sp_prob + 0.3d;
-                    //                                        }
-                    //                                    }
-                    //                                    else
-                    //                                    {
-                    //                                        goto NextAttribute;
-                    //                                    }
-
-                    //                                    break;
-                    //                                }
-                    //                        }
-
-                    //                        bool localIsConditionSatisfied() { object argIndex1 = checkwc + "属性使用不能"; var ret = withBlock1.IsConditionSatisfied(argIndex1); return ret; }
-
-                    //                        if (!localIsConditionSatisfied())
-                    //                        {
-                    //                            var loopTo8 = withBlock1.CountWeapon();
-                    //                            for (j = 1; j <= loopTo8; j++)
-                    //                            {
-                    //                                if (withBlock1.IsWeaponClassifiedAs(j, checkwc))
-                    //                                {
-                    //                                    sp_prob = sp_prob + 0.3d;
-                    //                                    break;
-                    //                                }
-                    //                            }
-
-                    //                            if (j > withBlock1.CountWeapon())
-                    //                            {
-                    //                                var loopTo9 = withBlock1.CountAbility();
-                    //                                for (j = 1; j <= loopTo9; j++)
-                    //                                {
-                    //                                    if (withBlock1.IsAbilityClassifiedAs(j, checkwc))
-                    //                                    {
-                    //                                        sp_prob = sp_prob + 0.3d;
-                    //                                        break;
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-
-                    //                    break;
-                    //                }
-                    //        }
-
-                    //    NextAttribute:
-                    //        ;
-                    //    }
+                    var loopTo2 = Strings.Len(wclass);
+                    for (i = 1; i <= loopTo2; i++)
+                    {
+                        wattr = GeneralLib.GetClassBundle(wclass, ref i);
+
+                        // 特殊効果無効化によって無効化される？
+                        if (t.SpecialEffectImmune(wattr))
+                        {
+                            goto NextAttribute;
+                        }
+
+                        switch (wattr ?? "")
+                        {
+                            case "縛":
+                                {
+                                    if (!t.IsConditionSatisfied("行動不能"))
+                                    {
+                                        sp_prob = sp_prob + 0.5d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "Ｓ":
+                                {
+                                    if (!t.IsConditionSatisfied("行動不能"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "眠":
+                                {
+                                    if (!t.IsConditionSatisfied("睡眠"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "痺":
+                                {
+                                    if (!t.IsConditionSatisfied("麻痺"))
+                                    {
+                                        sp_prob = sp_prob + 0.7d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "不":
+                                {
+                                    if (!t.IsConditionSatisfied("攻撃不能") && t.CountWeapon() > 0)
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "止":
+                                {
+                                    if (!t.IsConditionSatisfied("移動不能") && t.Speed > 0)
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "石":
+                                {
+                                    if (!t.IsConditionSatisfied("石化") && t.BossRank < 0)
+                                    {
+                                        sp_prob = sp_prob + 1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "凍":
+                                {
+                                    if (!t.IsConditionSatisfied("凍結"))
+                                    {
+                                        sp_prob = sp_prob + 0.5d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "乱":
+                                {
+                                    if (!t.IsConditionSatisfied("混乱"))
+                                    {
+                                        sp_prob = sp_prob + 0.5d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "撹":
+                                {
+                                    if (!t.IsConditionSatisfied("撹乱") && t.CountWeapon() > 0)
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "恐":
+                                {
+                                    if (!t.IsConditionSatisfied("恐怖"))
+                                    {
+                                        sp_prob = sp_prob + 0.4d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "魅":
+                                {
+                                    if (!t.IsConditionSatisfied("魅了"))
+                                    {
+                                        sp_prob = sp_prob + 0.6d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "憑":
+                                {
+                                    if (t.BossRank < 0)
+                                    {
+                                        sp_prob = sp_prob + 1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "黙":
+                                {
+                                    if (!t.IsConditionSatisfied("沈黙"))
+                                    {
+                                        if (t.Weapons.Any(x => x.IsSpellWeapon() || x.IsWeaponClassifiedAs("音"))
+                                            || t.Abilities.Any(x => x.IsSpellAbility() || x.IsAbilityClassifiedAs("音")))
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case "盲":
+                                {
+                                    if (!t.IsConditionSatisfied("盲目"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "毒":
+                                {
+                                    if (!t.IsConditionSatisfied("毒"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "踊":
+                                {
+                                    if (!t.IsConditionSatisfied("踊り"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "狂":
+                                {
+                                    if (!t.IsConditionSatisfied("狂戦士"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "ゾ":
+                                {
+                                    if (!t.IsConditionSatisfied("ゾンビ"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "害":
+                                {
+                                    if (!t.IsConditionSatisfied("回復不能"))
+                                    {
+                                        if (t.IsFeatureAvailable("ＨＰ回復") || t.IsFeatureAvailable("ＥＮ回復"))
+                                        {
+                                            sp_prob = sp_prob + 0.4d;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case "劣":
+                                {
+                                    if (!t.IsConditionSatisfied("装甲劣化"))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "中":
+                                {
+                                    if (!t.IsConditionSatisfied("バリア無効化"))
+                                    {
+                                        if (t.IsFeatureAvailable("バリア") && Strings.InStr(t.FeatureData("バリア"), "バリア無効化無効") == 0)
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                        else if (t.IsFeatureAvailable("広域バリア"))
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                        else if (t.IsFeatureAvailable("バリアシールド") && Strings.InStr(t.FeatureData("バリアシールド"), "バリア無効化無効") == 0)
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                        else if (t.IsFeatureAvailable("フィールド") && Strings.InStr(t.FeatureData("フィールド"), "バリア無効化無効") == 0)
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                        else if (t.IsFeatureAvailable("広域フィールド"))
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                        else if (t.IsFeatureAvailable("アクティブフィールド") && Strings.InStr(t.FeatureData("アクティブフィールド"), "バリア無効化無効") == 0)
+                                        {
+                                            sp_prob = sp_prob + 0.3d;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case "除":
+                                {
+                                    if (t.Conditions.Any(x => x.Lifetime > 0 &&
+                                        (Strings.InStr(x.Name, "付加") > 0
+                                            || Strings.InStr(x.Name, "強化") > 0
+                                            || Strings.InStr(x.Name, "ＵＰ") > 0)))
+                                    {
+                                        sp_prob = sp_prob + 0.3d;
+                                    }
+                                    break;
+                                }
+
+                            case "即":
+                                {
+                                    if (t.BossRank < 0)
+                                    {
+                                        sp_prob = sp_prob + 1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "告":
+                                {
+                                    if (t.BossRank < 0)
+                                    {
+                                        sp_prob = sp_prob + 0.4d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "脱":
+                                {
+                                    if (t.MainPilot().Personality != "機械")
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "Ｄ":
+                                {
+                                    if (t.MainPilot().Personality != "機械")
+                                    {
+                                        sp_prob = sp_prob + 0.25d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "低攻":
+                                {
+                                    if (!t.IsConditionSatisfied("攻撃力ＤＯＷＮ") && t.CountWeapon() > 0)
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "低防":
+                                {
+                                    if (!t.IsConditionSatisfied("防御力ＤＯＷＮ"))
+                                    {
+                                        sp_prob = sp_prob + 0.2d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "低運":
+                                {
+                                    if (!t.IsConditionSatisfied("運動性ＤＯＷＮ"))
+                                    {
+                                        sp_prob = sp_prob + 0.1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "低移":
+                                {
+                                    if (!t.IsConditionSatisfied("移動力ＤＯＷＮ") && t.Speed > 0)
+                                    {
+                                        sp_prob = sp_prob + 0.1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "盗":
+                                {
+                                    if (!t.IsConditionSatisfied("すかんぴん"))
+                                    {
+                                        sp_prob = sp_prob + 0.5d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "写":
+                                {
+                                    if (t.BossRank >= 0 || u.IsFeatureAvailable("ノーマルモード"))
+                                    {
+                                        goto NextAttribute;
+                                    }
+
+                                    switch (u.Size ?? "")
+                                    {
+                                        case "SS":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "M":
+                                                    case "L":
+                                                    case "LL":
+                                                    case "XL":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "S":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "L":
+                                                    case "LL":
+                                                    case "XL":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "M":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "SS":
+                                                    case "LL":
+                                                    case "XL":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "L":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "SS":
+                                                    case "S":
+                                                    case "XL":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "LL":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "SS":
+                                                    case "S":
+                                                    case "M":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+
+                                        case "XL":
+                                            {
+                                                switch (t.Size ?? "")
+                                                {
+                                                    case "SS":
+                                                    case "S":
+                                                    case "M":
+                                                    case "L":
+                                                        {
+                                                            goto NextAttribute;
+                                                        }
+                                                }
+
+                                                break;
+                                            }
+                                    }
+
+                                    sp_prob = sp_prob + 1d;
+                                    break;
+                                }
+
+                            case "化":
+                                {
+                                    if (t.BossRank < 0 && !u.IsFeatureAvailable("ノーマルモード"))
+                                    {
+                                        sp_prob = sp_prob + 1d;
+                                    }
+
+                                    break;
+                                }
+
+                            case "衰":
+                                {
+                                    if (t.BossRank >= 0)
+                                    {
+                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        {
+                                            case 1:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 8d;
+                                                    break;
+                                                }
+
+                                            case 2:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 4d;
+                                                    break;
+                                                }
+
+                                            case 3:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 2d;
+                                                    break;
+                                                }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        {
+                                            case 1:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 4d;
+                                                    break;
+                                                }
+
+                                            case 2:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 2d;
+                                                    break;
+                                                }
+
+                                            case 3:
+                                                {
+                                                    sp_prob = sp_prob + 3d / 4d;
+                                                    break;
+                                                }
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case "滅":
+                                {
+                                    if (t.BossRank >= 0)
+                                    {
+                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        {
+                                            case 1:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 16d;
+                                                    break;
+                                                }
+
+                                            case 2:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 8d;
+                                                    break;
+                                                }
+
+                                            case 3:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 4d;
+                                                    break;
+                                                }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        {
+                                            case 1:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 8d;
+                                                    break;
+                                                }
+
+                                            case 2:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 4d;
+                                                    break;
+                                                }
+
+                                            case 3:
+                                                {
+                                                    sp_prob = sp_prob + 1d / 2d;
+                                                    break;
+                                                }
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            default:
+                                {
+                                    // 弱属性
+                                    if (Strings.Left(wattr, 1) == "弱")
+                                    {
+                                        // 味方全員を検索して、現在対象に攻撃可能なユニットが
+                                        // 付加した弱点に対する属性攻撃を持つ場合。
+                                        // 特殊効果発動率はとりあえず低防(0.2)とそろえてみた
+                                        checkwc = Strings.Mid(wattr, 2);
+                                        if (!t.Weakness(checkwc))
+                                        {
+                                            foreach (Unit currentChecku in SRC.UList.Items)
+                                            {
+                                                checku = currentChecku;
+                                                if ((checku.Party ?? "") == (checku.Party ?? "") && checku.Status == "出撃")
+                                                {
+                                                    foreach (var cuw in checku.Weapons)
+                                                    {
+                                                        if (cuw.IsWeaponClassifiedAs(checkwc) && cuw.IsWeaponAvailable("移動前"))
+                                                        {
+                                                            // 射程範囲内？
+                                                            if (cuw.IsWeaponClassifiedAs("移動後攻撃可") && checku.Mode != "固定")
+                                                            {
+                                                                // 合体技は移動後攻撃可能でも移動を前提にしない
+                                                                // (移動後の位置では使えない危険性があるため)
+                                                                if (cuw.IsWeaponClassifiedAs("合") && cuw.IsWeaponClassifiedAs("Ｐ"))
+                                                                {
+                                                                    // 移動して攻撃は出来ない
+                                                                    if (cuw.IsTargetWithinRange(t))
+                                                                    {
+                                                                        sp_prob = sp_prob + 0.2d;
+                                                                        goto NextAttribute;
+                                                                    }
+                                                                }
+                                                                // 移動して攻撃可能
+                                                                else if (cuw.IsTargetReachable(t))
+                                                                {
+                                                                    sp_prob = sp_prob + 0.2d;
+                                                                    goto NextAttribute;
+                                                                }
+                                                            }
+                                                            // 移動して攻撃は出来ない
+                                                            else if (cuw.IsTargetWithinRange(t))
+                                                            {
+                                                                sp_prob = sp_prob + 0.2d;
+                                                                goto NextAttribute;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // 効属性
+                                    else if (Strings.Left(wattr, 1) == "効")
+                                    {
+                                        // 味方全員を検索して、現在対象に攻撃可能なユニットが
+                                        // 付加した有効に対する封印、限定攻撃を持つ場合。
+                                        // 特殊効果発動率は0.1としてみた
+                                        checkwc = Strings.Mid(wattr, 2);
+                                        if (!t.Weakness(checkwc) && !t.Effective(checkwc))
+                                        {
+                                            foreach (Unit currentChecku1 in SRC.UList.Items)
+                                            {
+                                                checku = currentChecku1;
+                                                if ((checku.Party ?? "") == (t.Party ?? "") && checku.Status == "出撃")
+                                                {
+                                                    foreach (var cuw in checku.Weapons)
+                                                    {
+                                                        if (cuw.IsWeaponClassifiedAs(checkwc) && cuw.IsWeaponAvailable("移動前"))
+                                                        {
+                                                            // 付加する有効に対応する封印、限定武器がある
+                                                            if (GeneralLib.InStrNotNest(cuw.WeaponClass(), "封") > 0
+                                                                || GeneralLib.InStrNotNest(cuw.WeaponClass(), "限") > 0)
+                                                            {
+                                                                if (GeneralLib.InStrNotNest(cuw.WeaponClass(), checkwc) > GeneralLib.InStrNotNest(cuw.WeaponClass(), "限"))
+                                                                {
+                                                                    // 射程範囲内？
+                                                                    if (cuw.IsWeaponClassifiedAs("移動後攻撃可") && checku.Mode != "固定")
+                                                                    {
+                                                                        // 合体技は移動後攻撃可能でも移動を前提にしない
+                                                                        // (移動後の位置では使えない危険性があるため)
+                                                                        if (cuw.IsWeaponClassifiedAs("合") && cuw.IsWeaponClassifiedAs("Ｐ"))
+                                                                        {
+                                                                            // 移動して攻撃は出来ない
+                                                                            if (cuw.IsTargetWithinRange(t))
+                                                                            {
+                                                                                sp_prob = sp_prob + 0.1d;
+                                                                                goto NextAttribute;
+                                                                            }
+                                                                        }
+                                                                        // 移動して攻撃可能
+                                                                        else if (cuw.IsTargetReachable(t))
+                                                                        {
+                                                                            sp_prob = sp_prob + 0.1d;
+                                                                            goto NextAttribute;
+                                                                        }
+                                                                    }
+                                                                    // 移動して攻撃は出来ない
+                                                                    else if (cuw.IsTargetWithinRange(t))
+                                                                    {
+                                                                        sp_prob = sp_prob + 0.1d;
+                                                                        goto NextAttribute;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // 剋属性
+                                    else if (Strings.Left(wattr, 1) == "剋")
+                                    {
+                                        // 特殊効果発動率は黙属性揃えで0.3
+                                        checkwc = Strings.Mid(wattr, 2);
+                                        switch (checkwc ?? "")
+                                        {
+                                            case "オ":
+                                                {
+                                                    if (!t.IsConditionSatisfied("オーラ使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("オーラ"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "超":
+                                                {
+                                                    if (!t.IsConditionSatisfied("超能力使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("超能力"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "シ":
+                                                {
+                                                    if (!t.IsConditionSatisfied("同調率使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("同調率"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "サ":
+                                                {
+                                                    if (!t.IsConditionSatisfied("超感覚使用不能") && !t.IsConditionSatisfied("知覚強化使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("超感覚") || t.IsSkillAvailable("知覚強化"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "霊":
+                                                {
+                                                    if (!t.IsConditionSatisfied("霊力使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("霊力"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "術":
+                                                {
+                                                    // 術は射撃を魔力と表示するためだけに付いている場合があるため
+                                                    // 1レベル以下の場合は武器、アビリティを確認
+                                                    if (!t.IsConditionSatisfied("術使用不能"))
+                                                    {
+                                                        if (t.SkillLevel("術") > 1d)
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+
+                                            case "技":
+                                                {
+                                                    if (!t.IsConditionSatisfied("技使用不能"))
+                                                    {
+                                                        if (t.IsSkillAvailable("技"))
+                                                        {
+                                                            sp_prob = sp_prob + 0.3d;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        goto NextAttribute;
+                                                    }
+
+                                                    break;
+                                                }
+                                        }
+
+                                        if (!t.IsConditionSatisfied(checkwc + "属性使用不能"))
+                                        {
+                                            if (t.Weapons.Any(x => x.IsWeaponClassifiedAs(checkwc))
+                                                || t.Abilities.Any(x => x.IsAbilityClassifiedAs(checkwc)))
+                                            {
+                                                sp_prob = sp_prob + 0.3d;
+                                            }
+                                        }
+                                    }
+
+                                    break;
+                                }
+                        }
+
+                    NextAttribute:
+                        ;
+                    }
                 }
 
                 if (sp_prob > 1d)
