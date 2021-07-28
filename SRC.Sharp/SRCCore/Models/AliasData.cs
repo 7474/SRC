@@ -158,5 +158,10 @@ namespace SRCCore.Models
 
             return aname;
         }
+
+        public bool HasType(string aname)
+        {
+            return Elements.Any(x => x.strAliasType == aname);
+        }
     }
 }
