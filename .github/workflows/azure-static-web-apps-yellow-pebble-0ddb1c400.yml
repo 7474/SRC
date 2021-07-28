@@ -42,6 +42,9 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
+    environment:
+      name: 'SRC#Help dev'
+      url: ''
     steps:
       - name: Close Pull Request
         id: closepullrequest
