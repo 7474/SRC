@@ -5,7 +5,6 @@
 
 using SRCCore.Lib;
 using SRCCore.VB;
-using System;
 using System.Linq;
 
 namespace SRCCore.Commands
@@ -146,176 +145,84 @@ namespace SRCCore.Commands
 
             // 味方スペシャルパワー実行の効果により他のパイロットが持っているスペシャルパワーを
             // 使う場合は記録しておき、後で消費ＳＰを倍にする必要がある
-            // TODO Impl 夢
-            //if (SRC.SPDList.Item(SelectedSpecialPower).EffectType(1) == "味方スペシャルパワー実行")
-            if (false)
+            if (SRC.SPDList.Item(SelectedSpecialPower).Effects.Any(x => x.strEffectType == "味方スペシャルパワー実行"))
             {
-                //// スペシャルパワー一覧
-                //list = new string[1];
-                //var loopTo6 = SRC.SPDList.Count();
-                //for (i = 1; i <= loopTo6; i++)
-                //{
-                //    {
-                //        var withBlock5 = SRC.SPDList.Item(i);
-                //        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" && withBlock5.intName != "非表示")
-                //        {
-                //            Array.Resize(list, Information.UBound(list) + 1 + 1);
-                //            Array.Resize(strkey_list, Information.UBound(list) + 1);
-                //            list[Information.UBound(list)] = withBlock5.Name;
-                //            strkey_list[Information.UBound(list)] = withBlock5.KanaName;
-                //        }
-                //    }
-                //}
+                // スペシャルパワー一覧
+                var list = SRC.SPDList.Items.Where(x =>
+                        !x.Effects.Any(x => x.strEffectType == "味方スペシャルパワー実行")
+                        && x.ShortName != "非表示")
+                    .OrderBy(x => x.KanaName)
+                    .Select(spd =>
+                    {
+                        var learned = false;
+                        // スペシャルパワーを使用可能なパイロットがいるかどうかを判定
+                        foreach (var p in SRC.PList.Items)
+                        {
+                            if (p.Party == "味方")
+                            {
+                                if (p.Unit != null)
+                                {
+                                    if (p.Unit.Status == "出撃" && !p.Unit.IsConditionSatisfied("憑依"))
+                                    {
+                                        // 本当に乗っている？
+                                        if (p.Unit.AllPilots.Any(x => x == p))
+                                        {
+                                            if (p.IsSpecialPowerAvailable(spd.Name))
+                                            {
+                                                learned = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // 各スペシャルパワーが使用可能か判定
+                        var colP = SelectedPilot;
+                        var canUse = learned
+                            && colP.SP >= 2 * colP.SpecialPowerCost(spd.Name)
+                            && colP.IsSpecialPowerUseful(spd.Name);
+                        return new
+                        {
+                            spd,
+                            learned,
+                            canUse,
+                        };
+                    })
+                    .Select(x => new ListBoxItem(x.spd.Name)
+                    {
+                        // スペシャルパワーの解説を設定
+                        ListItemComment = x.spd.Comment,
+                        ListItemFlag = !x.canUse,
+                    })
+                    .ToList();
 
-                //GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
+                // 検索するスペシャルパワーを選択
+                GUI.TopItem = 1;
+                var ret = GUI.MultiColumnListBox(new ListBoxArgs
+                {
+                    Items = list,
+                    HasFlag = true,
+                    lb_caption = Expression.Term("スペシャルパワー") + "検索",
+                }, true);
+                if (ret == 0)
+                {
+                    SelectedSpecialPower = "";
+                    CancelCommand();
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-                //// ソート
-                //var loopTo7 = (Information.UBound(strkey_list) - 1);
-                //for (i = 1; i <= loopTo7; i++)
-                //{
-                //    max_item = i;
-                //    max_str = strkey_list[i];
-                //    var loopTo8 = Information.UBound(strkey_list);
-                //    for (j = (i + 1); j <= loopTo8; j++)
-                //    {
-                //        if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
-                //        {
-                //            max_item = j;
-                //            max_str = strkey_list[j];
-                //        }
-                //    }
+                // スペシャルパワー使用メッセージ
+                if (SelectedUnit.IsMessageDefined(SelectedSpecialPower))
+                {
+                    GUI.OpenMessageForm(u1: null, u2: null);
+                    SelectedUnit.PilotMessage(SelectedSpecialPower, msg_mode: "");
+                    GUI.CloseMessageForm();
+                }
 
-                //    if (max_item != i)
-                //    {
-                //        buf = list[i];
-                //        list[i] = list[max_item];
-                //        list[max_item] = buf;
-                //        buf = strkey_list[i];
-                //        strkey_list[i] = max_str;
-                //        strkey_list[max_item] = buf;
-                //    }
-                //}
-
-                //// スペシャルパワーを使用可能なパイロットがいるかどうかを判定
-                //var loopTo9 = Information.UBound(list);
-                //for (i = 1; i <= loopTo9; i++)
-                //{
-                //    GUI.ListItemFlag[i] = true;
-                //    foreach (Pilot currentP in SRC.PList)
-                //    {
-                //        p = currentP;
-                //        if (p.Party == "味方")
-                //        {
-                //            if (p.Unit is object)
-                //            {
-                //                if (p.Unit.Status == "出撃" && !p.Unit.IsConditionSatisfied("憑依"))
-                //                {
-                //                    // 本当に乗っている？
-                //                    found = false;
-                //                    {
-                //                        var withBlock6 = p.Unit;
-                //                        if (ReferenceEquals(p, withBlock6.MainPilot()))
-                //                        {
-                //                            found = true;
-                //                        }
-                //                        else
-                //                        {
-                //                            var loopTo10 = withBlock6.CountPilot();
-                //                            for (j = 2; j <= loopTo10; j++)
-                //                            {
-                //                                Pilot localPilot1() { object argIndex1 = j; var ret = withBlock6.Pilot(argIndex1); return ret; }
-
-                //                                if (ReferenceEquals(p, localPilot1()))
-                //                                {
-                //                                    found = true;
-                //                                    break;
-                //                                }
-                //                            }
-
-                //                            var loopTo11 = withBlock6.CountSupport();
-                //                            for (j = 1; j <= loopTo11; j++)
-                //                            {
-                //                                Pilot localSupport() { object argIndex1 = j; var ret = withBlock6.Support(argIndex1); return ret; }
-
-                //                                if (ReferenceEquals(p, localSupport()))
-                //                                {
-                //                                    found = true;
-                //                                    break;
-                //                                }
-                //                            }
-
-                //                            if (ReferenceEquals(p, withBlock6.AdditionalSupport()))
-                //                            {
-                //                                found = true;
-                //                            }
-                //                        }
-                //                    }
-
-                //                    if (found)
-                //                    {
-                //                        if (p.IsSpecialPowerAvailable(list[i]))
-                //                        {
-                //                            GUI.ListItemFlag[i] = false;
-                //                            break;
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-
-                //// 各スペシャルパワーが使用可能か判定
-                //{
-                //    var withBlock7 = SelectedPilot;
-                //    var loopTo12 = Information.UBound(list);
-                //    for (i = 1; i <= loopTo12; i++)
-                //    {
-                //        if (!GUI.ListItemFlag[i] && withBlock7.SP >= 2 * withBlock7.SpecialPowerCost(list[i]))
-                //        {
-                //            if (!withBlock7.IsSpecialPowerUseful(list[i]))
-                //            {
-                //                GUI.ListItemFlag[i] = true;
-                //            }
-                //        }
-                //        else
-                //        {
-                //            GUI.ListItemFlag[i] = true;
-                //        }
-                //    }
-                //}
-
-                //// スペシャルパワーの解説を設定
-                //GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                //var loopTo13 = Information.UBound(list);
-                //for (i = 1; i <= loopTo13; i++)
-                //{
-                //    SpecialPowerData localItem4() { var tmp = list; object argIndex1 = tmp[i]; var ret = SRC.SPDList.Item(argIndex1); return ret; }
-
-                //    GUI.ListItemComment[i] = localItem4().Comment;
-                //}
-
-                //// 検索するスペシャルパワーを選択
-                //GUI.TopItem = 1;
-                //ret = GUI.MultiColumnListBox(Expression.Term(argtname7, u: argu) + "検索", list, true);
-                //if (ret == 0)
-                //{
-                //    SelectedSpecialPower = "";
-                //    CancelCommand();
-                //    GUI.UnlockGUI();
-                //    return;
-                //}
-
-                //// スペシャルパワー使用メッセージ
-                //if (SelectedUnit.IsMessageDefined(SelectedSpecialPower))
-                //{
-                //    GUI.OpenMessageForm(u1: null1, u2: null2);
-                //    SelectedUnit.PilotMessage(SelectedSpecialPower, msg_mode: "");
-                //    GUI.CloseMessageForm();
-                //}
-
-                //SelectedSpecialPower = list[ret];
-                //WithDoubleSPConsumption = true;
+                SelectedSpecialPower = list[ret - 1].ListItemID;
+                WithDoubleSPConsumption = true;
             }
             else
             {
@@ -385,7 +292,7 @@ namespace SRCCore.Commands
                                 }
 
                                 Map.MaskData[i, j] = false;
-                                NextLoop:
+                            NextLoop:
                                 ;
                             }
                         }
