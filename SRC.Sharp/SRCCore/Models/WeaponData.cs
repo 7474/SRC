@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCCore.Models
 {
@@ -37,17 +38,23 @@ namespace SRCCore.Models
         // 必要条件
         public string NecessaryCondition;
 
+        private SRC SRC;
+        private Expressions.Expression Expression => SRC.Expression;
+
+        public WeaponData(SRC src)
+        {
+            SRC = src;
+        }
+
         // 武器愛称
         public string Nickname()
         {
-            string NicknameRet = default;
-            NicknameRet = Name;
-            // TODO Impl KanaName
-            //Expression.ReplaceSubExpression(ref NicknameRet);
-            //if (Strings.InStr(NicknameRet, "(") > 0)
-            //{
-            //    NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
-            //}
+            string NicknameRet = Name;
+            Expression.ReplaceSubExpression(ref NicknameRet);
+            if (Strings.InStr(NicknameRet, "(") > 0)
+            {
+                NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
+            }
 
             return NicknameRet;
         }

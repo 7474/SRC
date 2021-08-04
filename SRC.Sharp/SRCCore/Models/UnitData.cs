@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,12 @@ namespace SRCCore.Models
         public string Raw = "";
         public string DataComment = "";
 
-        public UnitData()
+        private SRC SRC { get; }
+        private Expressions.Expression Expression => SRC.Expression;
+
+        public UnitData(SRC src)
         {
+            SRC = src;
             colFeature = new SrcCollection<FeatureData>();
             colWeaponData = new SrcCollection<WeaponData>();
             colAbilityData = new SrcCollection<AbilityData>();
@@ -80,12 +85,11 @@ namespace SRCCore.Models
             get
             {
                 string NicknameRet = proNickname;
-                // TODO Impl Nickname
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
-                //{
-                //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
-                //}
-                //Expression.ReplaceSubExpression(ref NicknameRet);
+                if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                {
+                    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
+                }
+                Expression.ReplaceSubExpression(ref NicknameRet);
                 return NicknameRet;
             }
 
@@ -102,21 +106,18 @@ namespace SRCCore.Models
             get
             {
                 string KanaNameRet = proKanaName;
-                // TODO Impl KanaName
-                //if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
-                //{
-                //    if (Expression.IsVariableDefined(ref KanaNameRet + "読み仮名"))
-                //    {
-                //        KanaNameRet = Expression.GetValueAsString(ref KanaNameRet + "読み仮名");
-                //    }
-                //    else
-                //    {
-                //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(ref argexpr); return ret; }
-
-                //        KanaNameRet = GeneralLib.StrToHiragana(ref localGetValueAsString());
-                //    }
-                //}
-                //Expression.ReplaceSubExpression(ref KanaNameRet);
+                if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
+                {
+                    if (Expression.IsVariableDefined(KanaNameRet + "読み仮名"))
+                    {
+                        KanaNameRet = Expression.GetValueAsString(KanaNameRet + "読み仮名");
+                    }
+                    else
+                    {
+                        KanaNameRet = GeneralLib.StrToHiragana(Expression.GetValueAsString(KanaNameRet + "愛称"));
+                    }
+                }
+                Expression.ReplaceSubExpression(ref KanaNameRet);
                 return KanaNameRet;
             }
 
@@ -448,7 +449,7 @@ namespace SRCCore.Models
         // 武器を追加
         public WeaponData AddWeapon(string wname)
         {
-            var new_wdata = new WeaponData();
+            var new_wdata = new WeaponData(SRC);
 
             new_wdata.Name = wname;
             colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
@@ -470,7 +471,7 @@ namespace SRCCore.Models
         // アビリティを追加
         public AbilityData AddAbility(string aname)
         {
-            var new_sadata = new AbilityData();
+            var new_sadata = new AbilityData(SRC);
 
             new_sadata.Name = aname;
             colAbilityData.Add(new_sadata, aname + SrcFormatter.Format(CountAbility()));

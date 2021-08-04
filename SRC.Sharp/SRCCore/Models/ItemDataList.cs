@@ -39,7 +39,7 @@ namespace SRCCore.Models
         // アイテムデータリストにデータを追加
         public ItemData Add(string new_name)
         {
-            var new_Item_data = new ItemData();
+            var new_Item_data = new ItemData(SRC);
             new_Item_data.Name = new_name;
             colItemDataList.Add(new_Item_data, new_name);
             return new_Item_data;

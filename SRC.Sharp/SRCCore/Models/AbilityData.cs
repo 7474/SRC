@@ -35,17 +35,23 @@ namespace SRCCore.Models
         private SrcCollection<AbilityEffect> colEffects = new SrcCollection<AbilityEffect>();
         public IList<AbilityEffect> Effects => colEffects.List;
 
+        private SRC SRC { get; }
+        private Expressions.Expression Expression => SRC.Expression;
+
+        public AbilityData(SRC src)
+        {
+            SRC = src;
+        }
+
         // アビリティ愛称
         public string Nickname()
         {
-            string NicknameRet = default;
-            NicknameRet = Name;
-            // TODO Impl Nickname
-            //Expression.ReplaceSubExpression(NicknameRet);
-            //if (Strings.InStr(NicknameRet, "(") > 0)
-            //{
-            //    NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
-            //}
+            string NicknameRet = Name;
+            Expression.ReplaceSubExpression(ref NicknameRet);
+            if (Strings.InStr(NicknameRet, "(") > 0)
+            {
+                NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
+            }
 
             return NicknameRet;
         }
