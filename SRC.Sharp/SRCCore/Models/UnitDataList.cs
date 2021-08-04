@@ -38,7 +38,7 @@ namespace SRCCore.Models
 
         private void AddDummyData()
         {
-            var ud = new UnitData();
+            var ud = new UnitData(SRC);
             ud.Name = "ステータス表示用ダミーユニット";
             ud.Nickname = "ユニット無し";
             ud.PilotNum = 1;
@@ -60,7 +60,7 @@ namespace SRCCore.Models
         public UnitData Add(string uname)
         {
             UnitData AddRet = default;
-            var ud = new UnitData();
+            var ud = new UnitData(SRC);
             ud.Name = uname;
             colUnitDataList.Add(ud, uname);
             IDNum = IDNum + 1;

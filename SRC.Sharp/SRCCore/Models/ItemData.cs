@@ -49,8 +49,12 @@ namespace SRCCore.Models
         public string Raw = "";
         public string DataComment = "";
 
-        public ItemData() : base()
+        private SRC SRC { get; }
+        private Expressions.Expression Expression => SRC.Expression;
+
+        public ItemData(SRC src) : base()
         {
+            SRC = src;
             colFeature = new SrcCollection<FeatureData>();
             colWeaponData = new SrcCollection<WeaponData>();
             colAbilityData = new SrcCollection<AbilityData>();
@@ -61,15 +65,13 @@ namespace SRCCore.Models
         {
             get
             {
-                string NicknameRet = default;
-                NicknameRet = proNickname;
-                // TODO Impl Nickname
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
-                //{
-                //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
-                //}
+                string NicknameRet = proNickname;
+                if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                {
+                    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
+                }
 
-                //Expression.ReplaceSubExpression(ref NicknameRet);
+                Expression.ReplaceSubExpression(ref NicknameRet);
                 return NicknameRet;
             }
 
@@ -446,7 +448,7 @@ namespace SRCCore.Models
         // アビリティを追加
         public AbilityData AddAbility(string aname)
         {
-            var new_adata = new AbilityData();
+            var new_adata = new AbilityData(SRC);
             new_adata.Name = aname;
             colAbilityData.Add(new_adata, aname + SrcFormatter.Format(CountAbility()));
             return new_adata;

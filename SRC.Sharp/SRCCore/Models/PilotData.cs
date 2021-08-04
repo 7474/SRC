@@ -900,7 +900,7 @@ namespace SRCCore.Models
         // アビリティを追加
         public AbilityData AddAbility(string aname)
         {
-            var new_adata = new AbilityData();
+            var new_adata = new AbilityData(SRC);
             new_adata.Name = aname;
             colAbilityData.Add(new_adata, aname + SrcFormatter.Format(CountAbility()));
             return new_adata;
