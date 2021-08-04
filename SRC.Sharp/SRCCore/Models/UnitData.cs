@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -105,21 +106,18 @@ namespace SRCCore.Models
             get
             {
                 string KanaNameRet = proKanaName;
-                // TODO Impl KanaName
-                //if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
-                //{
-                //    if (Expression.IsVariableDefined(ref KanaNameRet + "読み仮名"))
-                //    {
-                //        KanaNameRet = Expression.GetValueAsString(ref KanaNameRet + "読み仮名");
-                //    }
-                //    else
-                //    {
-                //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(ref argexpr); return ret; }
-
-                //        KanaNameRet = GeneralLib.StrToHiragana(ref localGetValueAsString());
-                //    }
-                //}
-                //Expression.ReplaceSubExpression(ref KanaNameRet);
+                if (Strings.InStr(KanaNameRet, "主人公") == 1 || Strings.InStr(KanaNameRet, "ヒロイン") == 1 || Strings.InStr(KanaNameRet, "ひろいん") == 1)
+                {
+                    if (Expression.IsVariableDefined(KanaNameRet + "読み仮名"))
+                    {
+                        KanaNameRet = Expression.GetValueAsString(KanaNameRet + "読み仮名");
+                    }
+                    else
+                    {
+                        KanaNameRet = GeneralLib.StrToHiragana(Expression.GetValueAsString(KanaNameRet + "愛称"));
+                    }
+                }
+                Expression.ReplaceSubExpression(ref KanaNameRet);
                 return KanaNameRet;
             }
 
