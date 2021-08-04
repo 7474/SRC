@@ -875,7 +875,7 @@ namespace SRCCore.Models
         // 武器を追加
         public WeaponData AddWeapon(string wname)
         {
-            var new_wdata = new WeaponData();
+            var new_wdata = new WeaponData(SRC);
             new_wdata.Name = wname;
             colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
             return new_wdata;
