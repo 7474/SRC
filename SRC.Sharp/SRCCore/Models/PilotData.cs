@@ -74,6 +74,8 @@ namespace SRCCore.Models
         public string DataComment = "";
 
         private SRC SRC;
+        private Expressions.Expression Expression => SRC.Expression;
+
         public PilotData(SRC src)
         {
             SRC = src;
@@ -90,15 +92,13 @@ namespace SRCCore.Models
         {
             get
             {
-                string NicknameRet = default;
-                NicknameRet = proNickname;
-                // TODO Impl Nickname
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
-                //{
-                //    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
-                //}
+                string NicknameRet = proNickname;
+                if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                {
+                    NicknameRet = Expression.GetValueAsString(NicknameRet + "愛称");
+                }
 
-                //Expression.ReplaceSubExpression(NicknameRet);
+                Expression.ReplaceSubExpression(ref NicknameRet);
                 return NicknameRet;
             }
 
