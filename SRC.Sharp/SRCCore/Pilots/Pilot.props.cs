@@ -113,103 +113,96 @@ namespace SRCCore.Pilots
         }
 
         // 読み仮名
-        // TODO Impl KanaName
         public string KanaName
         {
-            get { return Nickname0; }
+            get
+            {
+                string KanaNameRet = Data.KanaName;
+
+                // 愛称変更
+                if (Unit is null)
+                {
+                    Expression.ReplaceSubExpression(ref KanaNameRet);
+                    return KanaNameRet;
+                }
+
+                var withBlock = Unit;
+                if (withBlock.CountPilot() > 0)
+                {
+                    if (!ReferenceEquals(withBlock.MainPilot(), this))
+                    {
+                        Expression.ReplaceSubExpression(ref KanaNameRet);
+                        return KanaNameRet;
+                    }
+                }
+
+                var u = Unit;
+
+                // パイロットステータスコマンド中の場合はユニットを検索する必要がある
+                if (withBlock.Name == "ステータス表示用ダミーユニット")
+                {
+                    // メインパイロットかどうかチェック
+                    var vname = "搭乗順番[" + ID + "]";
+                    if (Expression.IsLocalVariableDefined(vname))
+                    {
+                        if (Event.LocalVariableList[vname].NumericValue != 1)
+                        {
+                            return KanaNameRet;
+                        }
+                    }
+                    else
+                    {
+                        return KanaNameRet;
+                    }
+
+                    string uname = null;
+                    vname = "搭乗ユニット[" + ID + "]";
+                    if (Expression.IsLocalVariableDefined(vname))
+                    {
+                        // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+                        uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
+                    }
+
+                    if (string.IsNullOrEmpty(uname))
+                    {
+                        return default;
+                    }
+
+                    u = SRC.UList.Item(uname);
+                }
+
+                {
+                    var withBlock1 = u;
+                    if (withBlock1.IsFeatureAvailable("パイロット読み仮名"))
+                    {
+                        KanaNameRet = withBlock1.FeatureData("パイロット読み仮名");
+                        var idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
+                        if (idx > 0)
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
+                        }
+                    }
+                    else if (withBlock1.IsFeatureAvailable("パイロット愛称"))
+                    {
+                        KanaNameRet = withBlock1.FeatureData("パイロット愛称");
+                        var idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
+                        if (idx > 0)
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.Nickname + Strings.Mid(KanaNameRet, idx + 5);
+                        }
+
+                        KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
+                    }
+                }
+
+                // 読み仮名内の式置換のため、デフォルトユニットを一時的に変更する
+                u = Event.SelectedUnitForEvent;
+                Event.SelectedUnitForEvent = Unit;
+                Expression.ReplaceSubExpression(ref KanaNameRet);
+                Event.SelectedUnitForEvent = u;
+                return KanaNameRet;
+            }
         }
-        //string KanaNameRet = default;
-        //        int idx;
-        //        Unit u;
-        //        string uname = default, vname;
-        //        KanaNameRet = Data.KanaName;
-
-        //        // 愛称変更
-        //        if (Unit is null)
-        //        {
-        //            Expression.ReplaceSubExpression(KanaNameRet);
-        //            return default;
-        //        }
-
-        //        {
-        //            var withBlock = Unit;
-        //            if (withBlock.CountPilot() > 0)
-        //            {
-        //                if (!ReferenceEquals(withBlock.MainPilot(), this))
-        //                {
-        //                    Expression.ReplaceSubExpression(KanaNameRet);
-        //                    return default;
-        //                }
-        //            }
-
-        //            u = Unit;
-
-        //            // パイロットステータスコマンド中の場合はユニットを検索する必要がある
-        //            if (withBlock.Name == "ステータス表示用ダミーユニット")
-        //            {
-        //                // メインパイロットかどうかチェック
-        //                vname = "搭乗順番[" + ID + "]";
-        //                if (Expression.IsLocalVariableDefined(vname))
-        //                {
-        //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
-        //                    {
-        //                        return default;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    return default;
-        //                }
-
-        //                vname = "搭乗ユニット[" + ID + "]";
-        //                if (Expression.IsLocalVariableDefined(vname))
-        //                {
-        //                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                    uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
-        //                }
-
-        //                if (string.IsNullOrEmpty(uname))
-        //                {
-        //                    return default;
-        //                }
-
-        //                u = SRC.UList.Item(uname);
-        //            }
-
-        //            {
-        //                var withBlock1 = u;
-        //                if (withBlock1.IsFeatureAvailable("パイロット読み仮名"))
-        //                {
-        //                    KanaNameRet = withBlock1.FeatureData("パイロット読み仮名");
-        //                    idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
-        //                    if (idx > 0)
-        //                    {
-        //                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
-        //                    }
-        //                }
-        //                else if (withBlock1.IsFeatureAvailable("パイロット愛称"))
-        //                {
-        //                    KanaNameRet = withBlock1.FeatureData("パイロット愛称");
-        //                    idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
-        //                    if (idx > 0)
-        //                    {
-        //                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.Nickname + Strings.Mid(KanaNameRet, idx + 5);
-        //                    }
-
-        //                    KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
-        //                }
-        //            }
-        //        }
-
-        //        // 読み仮名内の式置換のため、デフォルトユニットを一時的に変更する
-        //        u = Event.SelectedUnitForEvent;
-        //        Event.SelectedUnitForEvent = Unit;
-        //        Expression.ReplaceSubExpression(KanaNameRet);
-        //        Event.SelectedUnitForEvent = u;
-        //        return KanaNameRet;
-        //    }
-        //}
 
         // 性別
         public string Sex
