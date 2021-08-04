@@ -6,6 +6,7 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.Pilots
 {
@@ -32,97 +33,84 @@ namespace SRCCore.Pilots
 
         public string get_Nickname(bool dont_call_unit_nickname)
         {
-            return Nickname0;
+            string NicknameRet = Nickname0;
+
+            // 愛称変更
+            if (Unit is null)
+            {
+                Expression.ReplaceSubExpression(ref NicknameRet);
+                return NicknameRet;
+            }
+
+            var withBlock = Unit;
+            if (withBlock.CountPilot() > 0)
+            {
+                if (!ReferenceEquals(withBlock.MainPilot(), this))
+                {
+                    Expression.ReplaceSubExpression(ref NicknameRet);
+                    return NicknameRet;
+                }
+            }
+
+            var u = Unit;
+
+            // パイロットステータスコマンド中の場合はユニットを検索する必要がある
+            if (withBlock.Name == "ステータス表示用ダミーユニット")
+            {
+                // メインパイロットかどうかチェック
+                var vname = "搭乗順番[" + ID + "]";
+                if (Expression.IsLocalVariableDefined(vname))
+                {
+                    if (Event.LocalVariableList[vname].NumericValue != 1)
+                    {
+                        return NicknameRet;
+                    }
+                }
+                else
+                {
+                    return NicknameRet;
+                }
+
+                vname = "搭乗ユニット[" + ID + "]";
+                string uname = null;
+                if (Expression.IsLocalVariableDefined(vname))
+                {
+                    uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
+                }
+
+                if (string.IsNullOrEmpty(uname))
+                {
+                    return NicknameRet;
+                }
+
+                u = SRC.UList.Item(uname);
+
+                var withBlock1 = u;
+                if (withBlock1.IsFeatureAvailable("パイロット愛称"))
+                {
+                    NicknameRet = withBlock1.FeatureData("パイロット愛称");
+                    var idx = (int)Strings.InStr(NicknameRet, "$(愛称)");
+                    if (idx > 0)
+                    {
+                        NicknameRet = Strings.Left(NicknameRet, idx - 1) + Data.Nickname + Strings.Mid(NicknameRet, idx + 5);
+                    }
+                }
+            }
+
+            // PilotのNickname()とUnitのNickname()の呼び出しが無限に続かないように
+            // Nickname()への呼び出しは無効化
+            if (dont_call_unit_nickname)
+            {
+                NicknameRet = new Regex(@"nickname\(\)", RegexOptions.IgnoreCase).Replace(NicknameRet, "");
+            }
+
+            // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
+            u = Event.SelectedUnitForEvent;
+            Event.SelectedUnitForEvent = Unit;
+            Expression.ReplaceSubExpression(ref NicknameRet);
+            Event.SelectedUnitForEvent = u;
+            return NicknameRet;
         }
-        // TODO Impl get_Nickname
-        //    string NicknameRet = default;
-        //    int idx;
-        //    Unit u;
-        //    string uname = default, vname;
-        //    NicknameRet = Nickname0;
-
-        //    // 愛称変更
-        //    if (Unit is null)
-        //    {
-        //        Expression.ReplaceSubExpression(NicknameRet);
-        //        return default;
-        //    }
-
-        //    {
-        //        var withBlock = Unit;
-        //        if (withBlock.CountPilot() > 0)
-        //        {
-        //            if (!ReferenceEquals(withBlock.MainPilot(), this))
-        //            {
-        //                Expression.ReplaceSubExpression(NicknameRet);
-        //                return default;
-        //            }
-        //        }
-
-        //        u = Unit;
-
-        //        // パイロットステータスコマンド中の場合はユニットを検索する必要がある
-        //        if (withBlock.Name == "ステータス表示用ダミーユニット")
-        //        {
-        //            // メインパイロットかどうかチェック
-        //            vname = "搭乗順番[" + ID + "]";
-        //            if (Expression.IsLocalVariableDefined(vname))
-        //            {
-        //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item(vname).NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(Event.LocalVariableList[vname].NumericValue, 1, false)))
-        //                {
-        //                    return default;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return default;
-        //            }
-
-        //            vname = "搭乗ユニット[" + ID + "]";
-        //            if (Expression.IsLocalVariableDefined(vname))
-        //            {
-        //                // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                uname = Conversions.ToString(Event.LocalVariableList[vname].StringValue);
-        //            }
-
-        //            if (string.IsNullOrEmpty(uname))
-        //            {
-        //                return default;
-        //            }
-
-        //            u = SRC.UList.Item(uname);
-        //        }
-
-        //        {
-        //            var withBlock1 = u;
-        //            if (withBlock1.IsFeatureAvailable("パイロット愛称"))
-        //            {
-        //                NicknameRet = withBlock1.FeatureData("パイロット愛称");
-        //                idx = (int)Strings.InStr(NicknameRet, "$(愛称)");
-        //                if (idx > 0)
-        //                {
-        //                    NicknameRet = Strings.Left(NicknameRet, idx - 1) + Data.Nickname + Strings.Mid(NicknameRet, idx + 5);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    // PilotのNickname()とUnitのNickname()の呼び出しが無限に続かないように
-        //    // Nickname()への呼び出しは無効化
-        //    if (dont_call_unit_nickname)
-        //    {
-        //        GeneralLib.ReplaceString(NicknameRet, "Nickname()", "");
-        //        GeneralLib.ReplaceString(NicknameRet, "nickname()", "");
-        //    }
-
-        //    // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
-        //    u = Event.SelectedUnitForEvent;
-        //    Event.SelectedUnitForEvent = Unit;
-        //    Expression.ReplaceSubExpression(NicknameRet);
-        //    Event.SelectedUnitForEvent = u;
-        //    return NicknameRet;
-        //}
 
         // 読み仮名
         // TODO Impl KanaName
