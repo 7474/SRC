@@ -16,6 +16,11 @@
     private string StatusText = "";
     private string DataTitle { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        SRC.InitSPDList();
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         await UpdateData();

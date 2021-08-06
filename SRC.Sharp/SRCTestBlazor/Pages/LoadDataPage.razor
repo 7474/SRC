@@ -27,6 +27,11 @@
     private SRC SRC = new SRC();
     private string StatusText = "";
 
+    protected override async Task OnInitializedAsync()
+    {
+        SRC.InitSPDList();
+    }
+
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         var sw = new Stopwatch();
