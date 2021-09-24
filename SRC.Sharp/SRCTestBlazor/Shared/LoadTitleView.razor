@@ -1,6 +1,7 @@
 ﻿@using System.Diagnostics;
 @using System.IO
 
+<pre>Loadtime: @LoadTimeText</pre>
 <TitleView SRC="@SRC" DataTitle="@DataTitle" />
 <div id="status" class="message">@StatusText</div>
 
@@ -14,6 +15,7 @@
 
     private SRC SRC = new SRC();
     private string StatusText = "";
+    private string LoadTimeText = "...";
     private string DataTitle { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -80,6 +82,7 @@
         sw.Stop();
         Console.WriteLine(sw.ElapsedMilliseconds);
         //StatusText = $"{sw.ElapsedMilliseconds}ms";
+        LoadTimeText = $"{sw.ElapsedMilliseconds}ms";
         StatusText = "";
         StateHasChanged();
     }
