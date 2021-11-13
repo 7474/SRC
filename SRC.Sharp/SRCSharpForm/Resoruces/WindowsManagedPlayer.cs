@@ -38,7 +38,7 @@ namespace SRCSharpForm.Resoruces
 
         private float volume = 0.10f;
 
-        private const int CH_BGM = IPlaySound.CH_BGM;
+        private const int CH_BGM = PlaySoundConstants.CH_BGM;
 
         public BGMStatus BGMStatus
         {

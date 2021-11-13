@@ -12,8 +12,6 @@ namespace SRCCore
     // 音声再生のインタフェース
     public interface IPlaySound : IDisposable
     {
-        public const int CH_BGM = 1;
-
         BGMStatus BGMStatus { get; }
         /// <summary>
         /// min: 0.0
@@ -26,6 +24,11 @@ namespace SRCCore
         void Stop(int channel);
 
         SoundType ResolveSoundType(string path);
+    }
+
+    public static class PlaySoundConstants
+    {
+        public const int CH_BGM = 1;
     }
 
     public enum SoundType

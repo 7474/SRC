@@ -43,7 +43,7 @@ namespace SRCCore
 
         private bool disposedValue;
 
-        private const int CH_BGM = IPlaySound.CH_BGM;
+        private const int CH_BGM = PlaySoundConstants.CH_BGM;
         private const int CH_EFFECT = 2;
 
         // ＢＧＭの再生を開始する
