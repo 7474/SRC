@@ -38,32 +38,32 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - .NET Standard 2.1
     - [SRCDataLinter](SRC.Sharp/SRCDataLinter)
         - SRCデータのバリデータ
-        - .NET 5
+        - .NET 6
         - GitHub Action: https://github.com/7474/SRC-DataLinter
         - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
             - ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/koudenpa/srcdatalinter)
     - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
         - Windows Forms実装のSRC#Form
         - SRC#Formの仮実行を行える
-        - .NET 5
+        - .NET 6
         - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている
             - SRCCore と比べてメジャーバージョンが +3
         - HelpURL: https://srch.7474.jp/
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - データの閲覧を行える
-        - .NET 5
+        - .NET 6
     - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
         - 動作確認用Blazor WebAssemblyアプリケーション
         - データの閲覧を行える
-        - .NET 5
+        - .NET 6
         - 動作URL:
             - https://7474.github.io/SRC/
             - https://srcv.7474.jp/
 
 ### SRC#Form 簡易実行手順
 
-1. Windows 10 64bit版に[.NET 5 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows?tabs=net50)する
+1. Windows 10 64bit版に[.NET 6 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows)する
 1. [Release](./releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
 1. 構築済のSRCフォルダ内に実行ファイルをコピーする
 1. SRCSharpForm.exe を実行する
