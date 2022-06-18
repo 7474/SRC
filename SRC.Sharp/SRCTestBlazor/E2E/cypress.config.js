@@ -5,5 +5,6 @@ module.exports = defineConfig({
     projectId: 'a4eukb',
     baseUrl: 'https://srcv.7474.jp',
     defaultCommandTimeout: 20000,
+    supportFile: 'cypress/support/index.js'
   }
 })
