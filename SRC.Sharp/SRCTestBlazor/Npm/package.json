@@ -12,12 +12,12 @@
     "start": "npm-run-all --parallel css-watch"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "5.*",
-    "autoprefixer": "*",
-    "bulma": "*",
-    "node-sass": "*",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "autoprefixer": "^10.4.7",
+    "bulma": "^0.9.4",
+    "node-sass": "^7.0.1",
     "npm-run-all": "*",
-    "postcss": "*",
-    "postcss-cli": "*"
+    "postcss": "^8.4.14",
+    "postcss-cli": "^9.1.0"
   }
 }
