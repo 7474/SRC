@@ -64,7 +64,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 ### SRC#Form 簡易実行手順
 
 1. Windows 10 64bit版に[.NET 6 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows)する
-1. [Release](./releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
+1. [Release](https://github.com/7474/SRC/releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
 1. 構築済のSRCフォルダ内に実行ファイルをコピーする
 1. SRCSharpForm.exe を実行する
 
