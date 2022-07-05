@@ -1,4 +1,5 @@
 using SRCCore.VB;
+using System;
 
 namespace SRCCore.Units
 {
@@ -36,65 +37,39 @@ namespace SRCCore.Units
             //    return MaxActionRet;
             //}
 
-            //// ２回行動可能？
-            //if (Expression.IsOptionDefined("２回行動能力使用"))
-            //{
-            //    if (MainPilot().IsSkillAvailable("２回行動"))
-            //    {
-            //        MaxActionRet = 2;
-            //    }
-            //    else
-            //    {
-            //        MaxActionRet = 1;
-            //    }
-            //}
-            //else
-            if (MainPilot().Intuition >= 200)
-            {
-                MaxActionRet = 2;
-            }
-            else
-            {
-                MaxActionRet = 1;
-            }
-
-            return MaxActionRet;
+            return MaxActionNum();
         }
 
         // 行動数を消費
         public void UseAction()
         {
-            UsedAction = UsedAction + 1;
-            // TODO これ厳密にみる必要あるの？　貫通していると再動何かに影響がある？
-            //int max_action;
+            // 最大行動数まで行動消費量をカウント
+            UsedAction = Math.Min(UsedAction + 1, MaxActionNum());
+        }
 
-            //// ２回行動可能？
-            //if (CountPilot() == 0)
-            //{
-            //    max_action = 1;
-            //}
-            //else if (Expression.IsOptionDefined("２回行動能力使用"))
-            //{
-            //    if (MainPilot().IsSkillAvailable("２回行動"))
-            //    {
-            //        max_action = 2;
-            //    }
-            //    else
-            //    {
-            //        max_action = 1;
-            //    }
-            //}
-            //else if (this.MainPilot().Intuition >= 200)
-            //{
-            //    max_action = 2;
-            //}
-            //else
-            //{
-            //    max_action = 1;
-            //}
+        private int MaxActionNum()
+        {
+            // ２回行動可能？
+            return CanDoubleAction() ? 2 : 1;
+        }
 
-            //// 最大行動数まで行動消費量をカウント
-            //UsedAction = (int)GeneralLib.MinLng(UsedAction + 1, max_action);
+        private bool CanDoubleAction()
+        {
+            if (CountPilot() > 0)
+            {
+                if (Expression.IsOptionDefined("２回行動能力使用"))
+                {
+                    if (MainPilot().IsSkillAvailable("２回行動"))
+                    {
+                        return true;
+                    }
+                }
+                else if (MainPilot().Intuition >= 200)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // 陣営
