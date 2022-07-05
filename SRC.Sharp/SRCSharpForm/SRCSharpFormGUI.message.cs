@@ -1228,16 +1228,14 @@ namespace SRCSharpForm
                     DisplayMode = "";
                 }
 
-                // TODO out left_margin
-                left_margin = "  ";
-                //if (Expression.IsOptionDefined("会話パイロット名改行"))
-                //{
-                //    left_margin = " ";
-                //}
-                //else
-                //{
-                //    left_margin = "  ";
-                //}
+                if (Expression.IsOptionDefined("会話パイロット名改行"))
+                {
+                    left_margin = " ";
+                }
+                else
+                {
+                    left_margin = "  ";
+                }
             }
         }
 
