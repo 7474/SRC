@@ -15,7 +15,7 @@
 	<ItemGroup>
 		<PackageReference Include="Melanchall.DryWetMidi" Version="5.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="NAudio" Version="2.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
