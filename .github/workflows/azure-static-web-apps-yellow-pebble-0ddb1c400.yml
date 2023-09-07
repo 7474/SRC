@@ -24,7 +24,7 @@ jobs:
       name: ${{ (github.event_name == 'push' && 'SRC#Help') || 'SRC#Help dev' }}
       url: ${{ (github.event_name == 'push' && 'https://srch.7474.jp/') || steps.builddeploy.outputs.static_web_app_url }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Build And Deploy
