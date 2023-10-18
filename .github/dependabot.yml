@@ -11,6 +11,12 @@ updates:
       update-types:
       - "minor"
       - "patch"
+    selenium:
+      patterns:
+      - "Selenium*"
+      update-types:
+      - "minor"
+      - "patch"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
