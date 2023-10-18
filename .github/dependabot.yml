@@ -4,6 +4,13 @@ updates:
   directory: "/SRC.Sharp/"
   schedule:
     interval: daily
+  groups:
+    aspnetcore:
+      patterns:
+      - "Microsoft.AspNetCore*"
+      update-types:
+      - "minor"
+      - "patch"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
