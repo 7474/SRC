@@ -34,7 +34,7 @@ jobs:
     - run: powershell Compress-Archive -Path SRC.Sharp/SRCSharpForm/bin/Release/net6.0-windows/win-x64/publish/ -DestinationPath SRCSharpForm.zip
     
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           SRCSharpForm.zip
