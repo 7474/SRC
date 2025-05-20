@@ -647,21 +647,391 @@ namespace SRCCore.Pilots
         // 周りのユニットによる支援効果を更新
         public void UpdateSupportMod()
         {
-        }
-        // TODO Impl UpdateSupportMod
-        //    Unit u, my_unit;
-        //    string my_party;
-        //    short my_cmd_rank;
-        //    short cmd_rank, cmd_rank2;
-        //    var cmd_level = default(double);
-        //    double cs_level;
-        //    short range, max_range;
-        //    bool mod_stack;
-        //    var rel_lv = default;
-        //    string team, uteam;
-        //    short j, i, k;
+            Unit u, my_unit;
+            string my_party;
+            int my_cmd_rank;
+            int cmd_rank, cmd_rank2;
+            double cmd_level = 0;
+            double cs_level;
+            int range, max_range;
+            bool mod_stack;
+            int rel_lv = 0;
+            string team, uteam;
+            int j, i;
+            
+            // 支援効果による修正値を初期化
+            Infight = (InfightBase + InfightMod);
+            Shooting = (ShootingBase + ShootingMod);
+            Hit = (HitBase + HitMod);
+            Dodge = (DodgeBase + DodgeMod);
+            Technique = (TechniqueBase + TechniqueMod);
+            Intuition = (IntuitionBase + IntuitionMod);
+            InfightMod2 = 0;
+            ShootingMod2 = 0;
+            HitMod2 = 0;
+            DodgeMod2 = 0;
+            TechniqueMod2 = 0;
+            IntuitionMod2 = 0;
+            MoraleMod = 0;
+            
+            // ステータス表示時には支援効果を無視
+            if (string.IsNullOrEmpty(SRC.Map.MapFileName))
+            {
+                return;
+            }
 
-        //    // 支援効果による修正値を初期化
+            // ユニットに乗っていなければここで終了
+            if (Unit is null)
+            {
+                return;
+            }
+
+            // 一旦乗っているユニットを記録しておく
+            my_unit = Unit;
+            
+            // ユニットが出撃していなければここで終了
+            if (my_unit.Status != "出撃")
+            {
+                return;
+            }
+
+            if (!ReferenceEquals(Unit, SRC.Map.MapDataForUnit[my_unit.x, my_unit.y]))
+            {
+                return;
+            }
+
+            // メインパイロットでなければここで終了
+            if (my_unit.CountPilot() == 0)
+            {
+                return;
+            }
+
+            if (!ReferenceEquals(this, my_unit.MainPilot()))
+            {
+                return;
+            }
+
+            // 正常な判断が出来ないユニットは支援を受けられない
+            if (my_unit.IsConditionSatisfied("暴走"))
+            {
+                return;
+            }
+
+            if (my_unit.IsConditionSatisfied("混乱"))
+            {
+                return;
+            }
+            
+            // 支援を受けられるかどうかの判定用に陣営を参照しておく
+            my_party = my_unit.Party;
+
+            // 指揮効果判定用に自分の階級レベルを算出
+            if (IsSkillAvailable("階級"))
+            {
+                my_cmd_rank = (int)SkillLevel("階級", "");
+                cmd_rank = my_cmd_rank;
+            }
+            else
+            {
+                if (VB.Strings.InStr(Name, "(ザコ)") == 0 && VB.Strings.InStr(Name, "(汎用)") == 0)
+                {
+                    my_cmd_rank = Constants.DEFAULT_LEVEL;
+                }
+                else
+                {
+                    my_cmd_rank = 0;
+                }
+
+                cmd_rank = 0;
+            }
+
+            // 自分が所属しているチーム名
+            team = SkillData("チーム");
+
+            // 周りのユニットを調べる
+            cs_level = Constants.DEFAULT_LEVEL;
+            max_range = 5;
+            
+            for (i = Lib.GeneralLib.MaxLng(my_unit.x - max_range, 1); i <= Lib.GeneralLib.MinLng(my_unit.x + max_range, SRC.Map.MapWidth); i++)
+            {
+                for (j = Lib.GeneralLib.MaxLng(my_unit.y - max_range, 1); j <= Lib.GeneralLib.MinLng(my_unit.y + max_range, SRC.Map.MapHeight); j++)
+                {
+                    // ユニット間の距離が範囲内？
+                    range = (Math.Abs((my_unit.x - i)) + Math.Abs((my_unit.y - j)));
+                    if (range > max_range)
+                    {
+                        continue;
+                    }
+
+                    u = SRC.Map.MapDataForUnit[i, j];
+                    if (u is null)
+                    {
+                        continue;
+                    }
+
+                    if (ReferenceEquals(u, Unit))
+                    {
+                        continue;
+                    }
+
+                    // ユニットにパイロットが乗っていなければ無視
+                    if (u.CountPilot() == 0)
+                    {
+                        continue;
+                    }
+
+                    // 陣営が一致していないと支援は受けられない
+                    switch (my_party)
+                    {
+                        case "味方":
+                        case "ＮＰＣ":
+                            switch (u.Party)
+                            {
+                                case "敵":
+                                case "中立":
+                                    continue;
+                            }
+                            break;
+                        default:
+                            if (my_party != u.Party)
+                            {
+                                continue;
+                            }
+                            break;
+                    }
+
+                    // 相手が正常な判断能力を持っていない場合も支援は受けられない
+                    if (u.IsConditionSatisfied("暴走"))
+                    {
+                        continue;
+                    }
+
+                    if (u.IsConditionSatisfied("混乱"))
+                    {
+                        continue;
+                    }
+
+                    // 同じチームに所属している？
+                    var otherMainPilot = u.MainPilot(true);
+                    uteam = otherMainPilot.SkillData("チーム");
+                    if (team != uteam && !string.IsNullOrEmpty(uteam))
+                    {
+                        continue;
+                    }
+
+                    // 広域サポート
+                    if (range <= 2)
+                    {
+                        cs_level = Lib.GeneralLib.MaxDbl(cs_level, otherMainPilot.SkillLevel("広域サポート", ""));
+                    }
+
+                    // 指揮効果
+                    if (my_cmd_rank >= 0)
+                    {
+                        if (range > otherMainPilot.CommandRange())
+                        {
+                            continue;
+                        }
+
+                        cmd_rank2 = (int)otherMainPilot.SkillLevel("階級", "");
+                        if (cmd_rank2 > cmd_rank)
+                        {
+                            cmd_rank = cmd_rank2;
+                            cmd_level = otherMainPilot.SkillLevel("指揮", "");
+                        }
+                        else if (cmd_rank2 == cmd_rank)
+                        {
+                            cmd_level = Lib.GeneralLib.MaxDbl(cmd_level, otherMainPilot.SkillLevel("指揮", ""));
+                        }
+                    }
+                }
+            }
+
+            // 追加パイロットの場合は乗っているユニットが変化してしまうことがあるので
+            // 変化してしまった場合は元に戻しておく
+            if (!ReferenceEquals(my_unit, Unit))
+            {
+                my_unit.MainPilot();
+            }
+
+            // 広域サポートによる修正
+            if (cs_level != Constants.DEFAULT_LEVEL)
+            {
+                HitMod2 = (HitMod2 + (int)(5 * cs_level));
+                DodgeMod2 = (DodgeMod2 + (int)(5 * cs_level));
+            }
+
+            // 指揮能力による修正
+            switch (my_cmd_rank)
+            {
+                case Constants.DEFAULT_LEVEL:
+                    // 修正なし
+                    break;
+                case 0:
+                    HitMod2 = (HitMod2 + (int)(5 * cmd_level));
+                    DodgeMod2 = (DodgeMod2 + (int)(5 * cmd_level));
+                    break;
+                default:
+                    // 自分が階級レベルを持っている場合はより高い階級レベルを
+                    // 持つパイロットの指揮効果のみを受ける
+                    if (cmd_rank > my_cmd_rank)
+                    {
+                        HitMod2 = (HitMod2 + (int)(5 * cmd_level));
+                        DodgeMod2 = (DodgeMod2 + (int)(5 * cmd_level));
+                    }
+                    break;
+            }
+
+            // 支援効果による修正を能力値に加算
+            Infight = (Infight + InfightMod2);
+            Shooting = (Shooting + ShootingMod2);
+            Hit = (Hit + HitMod2);
+            Dodge = (Dodge + DodgeMod2);
+            Technique = (Technique + TechniqueMod2);
+            Intuition = (Intuition + IntuitionMod2);
+            
+            // 信頼補正
+            if (!SRC.Expression.IsOptionDefined("信頼補正"))
+            {
+                return;
+            }
+
+            if (VB.Strings.InStr(Name, "(ザコ)") > 0)
+            {
+                return;
+            }
+
+            // 信頼補正が重複する？
+            mod_stack = SRC.Expression.IsOptionDefined("信頼補正重複");
+
+            // 同じユニットに乗っているサポートパイロットからの補正
+            if (mod_stack)
+            {
+                for (i = 1; i <= my_unit.CountSupport(); i++)
+                {
+                    rel_lv = rel_lv + Relation(my_unit.Supports[i - 1]);
+                }
+
+                if (my_unit.IsFeatureAvailable("追加サポート"))
+                {
+                    rel_lv = rel_lv + Relation(my_unit.AdditionalSupport());
+                }
+            }
+            else
+            {
+                for (i = 1; i <= my_unit.CountSupport(); i++)
+                {
+                    rel_lv = Lib.GeneralLib.MaxLng(Relation(my_unit.Supports[i - 1]), rel_lv);
+                }
+
+                if (my_unit.IsFeatureAvailable("追加サポート"))
+                {
+                    rel_lv = Lib.GeneralLib.MaxLng(Relation(my_unit.AdditionalSupport()), rel_lv);
+                }
+            }
+
+            // 周囲のユニットからの補正
+            if (SRC.Expression.IsOptionDefined("信頼補正範囲拡大"))
+            {
+                max_range = 2;
+            }
+            else
+            {
+                max_range = 1;
+            }
+
+            for (i = Lib.GeneralLib.MaxLng(my_unit.x - max_range, 1); i <= Lib.GeneralLib.MinLng(my_unit.x + max_range, SRC.Map.MapWidth); i++)
+            {
+                for (j = Lib.GeneralLib.MaxLng(my_unit.y - max_range, 1); j <= Lib.GeneralLib.MinLng(my_unit.y + max_range, SRC.Map.MapHeight); j++)
+                {
+                    // ユニット間の距離が範囲内？
+                    range = (Math.Abs((my_unit.x - i)) + Math.Abs((my_unit.y - j)));
+                    if (range > max_range)
+                    {
+                        continue;
+                    }
+
+                    u = SRC.Map.MapDataForUnit[i, j];
+                    if (u is null)
+                    {
+                        continue;
+                    }
+
+                    if (ReferenceEquals(u, my_unit))
+                    {
+                        continue;
+                    }
+
+                    // ユニットにパイロットが乗っていなければ無視
+                    if (u.CountPilot() == 0)
+                    {
+                        continue;
+                    }
+
+                    // 陣営が一致していないと支援は受けられない
+                    switch (my_party)
+                    {
+                        case "味方":
+                        case "ＮＰＣ":
+                            switch (u.Party)
+                            {
+                                case "敵":
+                                case "中立":
+                                    continue;
+                            }
+                            break;
+                        default:
+                            if (my_party != u.Party)
+                            {
+                                continue;
+                            }
+                            break;
+                    }
+
+                    // 相手が正常な判断能力を持っていない場合も支援は受けられない
+                    if (u.IsConditionSatisfied("暴走"))
+                    {
+                        continue;
+                    }
+
+                    if (u.IsConditionSatisfied("混乱"))
+                    {
+                        continue;
+                    }
+
+                    // 同じチームに所属している？
+                    var otherMainPilot = u.MainPilot(true);
+                    uteam = otherMainPilot.SkillData("チーム");
+                    if (team != uteam && !string.IsNullOrEmpty(uteam))
+                    {
+                        continue;
+                    }
+
+                    // 信頼関係を調べる
+                    if (mod_stack)
+                    {
+                        rel_lv = rel_lv + Relation(otherMainPilot);
+                    }
+                    else
+                    {
+                        rel_lv = Lib.GeneralLib.MaxLng(Relation(otherMainPilot), rel_lv);
+                    }
+                }
+            }
+
+            // 信頼補正による能力修正
+            if (rel_lv > 0)
+            {
+                if (rel_lv > 10)
+                {
+                    rel_lv = 10;
+                }
+
+                HitMod2 = HitMod2 + rel_lv;
+                DodgeMod2 = DodgeMod2 + rel_lv;
+                Hit = Hit + rel_lv;
+                Dodge = Dodge + rel_lv;
+            }
 
         //    Infight = (InfightBase + InfightMod);
         //    Shooting = (ShootingBase + ShootingMod);
