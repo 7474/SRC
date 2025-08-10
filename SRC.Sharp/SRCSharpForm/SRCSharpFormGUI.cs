@@ -2204,7 +2204,7 @@ namespace SRCSharpForm
             }
 
             // キーの状態を参照
-            return Windows.GetKeyState((int)key) < 0;
+            return SRCSharpForm.Lib.Windows.GetKeyState((int)key) < 0;
         }
     }
 }
