@@ -3,7 +3,7 @@ name: SRC# 移行タスク
 about: SRC#移行のタスクをCopilot agentに依頼する
 title: '[移行] タスク名'
 labels: ['migration']
-assignees: []
+assignees: ['copilot']
 ---
 
 ## 実装するタスク
