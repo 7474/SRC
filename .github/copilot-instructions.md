@@ -4,6 +4,17 @@ SRC# is a C# port of the original SRC (Simulation RPG Construction) game creatio
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+## 重要な作業指針
+
+### 応答言語
+- **すべての応答は日本語で行ってください**
+- コードコメントやコミットメッセージも日本語で記述してください
+
+### 移植作業時の必須要件
+- **移植作業を行う際は、必ず `/migration-roadmap/` ディレクトリのロードマップを参照してください**
+- 実装完了時は対応するEpicの進捗状況を更新してください
+- 新たな課題や実装変更が発生した場合は、ロードマップドキュメントを適切に更新してください
+
 ## Working Effectively
 
 ### Bootstrap and Build Process
