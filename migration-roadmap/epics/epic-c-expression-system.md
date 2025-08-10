@@ -1,222 +1,222 @@
-# Epic C: Expression System
+# Epic C: 式システム
 
-**Priority**: High  
-**Sprint**: 2  
-**Estimated Effort**: 4-6 days  
-**Risk Level**: Medium (Core Dependency)
+**優先度**: 高  
+**スプリント**: 2  
+**予想工数**: 4-6日  
+**リスクレベル**: 中（コア依存関係）
 
-## Overview
+## 概要
 
-The expression system requires completion of string byte functions, file dialog integration, and help system functionality that are essential for core game scripting and user interaction.
+式システムには、コアゲームスクリプトとユーザーインタラクションに不可欠な文字列バイト関数、ファイルダイアログ統合、ヘルプシステム機能の完成が必要です。
 
-## Issues & Tasks
+## Issue・タスク
 
-### C.1: String Byte Functions Implementation
-**Priority**: High  
-**Effort**: 2 days  
-**Sprint**: 2
+### C.1: 文字列バイト関数実装
+**優先度**: 高  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-String byte manipulation functions are incomplete, preventing proper text encoding handling and string processing in game scripts.
+#### 問題ステートメント
+文字列バイト操作関数が不完全で、ゲームスクリプトでの適切なテキストエンコーディング処理と文字列処理を妨げています。
 
-#### Technical Requirements
-- Implement string-to-byte conversion functions
-- Add byte-to-string conversion with encoding support
-- Support multiple character encodings (UTF-8, Shift-JIS, etc.)
-- Add string length calculation in bytes
+#### 技術要件
+- 文字列→バイト変換関数の実装
+- エンコーディングサポート付きバイト→文字列変換の追加
+- 複数文字エンコーディング対応（UTF-8、Shift-JIS等）
+- バイト単位文字列長計算の追加
 
-#### Files Affected
-- `SRCCore/Expressions/StringFunctions.cs` (Primary)
-- `SRCore/Text/EncodingHandler.cs` (New)
+#### 影響ファイル
+- `SRCCore/Expressions/StringFunctions.cs`（プライマリ）
+- `SRCore/Text/EncodingHandler.cs`（新規）
 - `SRCCore/Expressions/ExpressionParser.cs`
 
-#### Acceptance Criteria
-- [ ] String byte functions fully implemented
-- [ ] Multiple encoding support working
-- [ ] Byte length calculations accurate
-- [ ] Integration with expression parser complete
-- [ ] Backwards compatibility maintained
+#### 受け入れ基準
+- [ ] 文字列バイト関数完全実装済み
+- [ ] 複数エンコーディングサポートが動作
+- [ ] バイト長計算が正確
+- [ ] 式パーサーとの統合が完了
+- [ ] 後方互換性が維持
 
-#### Testing Requirements
-- Encoding compatibility testing
-- String manipulation validation
-- Performance impact assessment
-- Cross-platform encoding verification
+#### テスト要件
+- エンコーディング互換性テスト
+- 文字列操作検証
+- パフォーマンス影響評価
+- クロスプラットフォームエンコーディング検証
 
 ---
 
-### C.2: File Dialog Integration
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 2
+### C.2: ファイルダイアログ統合
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-File dialog functionality is incomplete, preventing users from properly selecting files for import/export operations.
+#### 問題ステートメント
+ファイルダイアログ機能が不完全で、ユーザーがインポート/エクスポート操作でファイルを適切に選択できません。
 
-#### Technical Requirements
-- Complete file dialog implementations
-- Add cross-platform dialog support
-- Implement file type filtering
-- Add directory selection dialogs
+#### 技術要件
+- ファイルダイアログ実装の完成
+- クロスプラットフォームダイアログサポートの追加
+- ファイルタイプフィルタリングの実装
+- ディレクトリ選択ダイアログの追加
 
-#### Files Affected
-- `SRCCore/UI/FileDialogs.cs` (Primary)
-- `SRCCore/Platform/DialogProvider.cs` (New)
+#### 影響ファイル
+- `SRCCore/UI/FileDialogs.cs`（プライマリ）
+- `SRCCore/Platform/DialogProvider.cs`（新規）
 - `SRCCore/Expressions/FileExpressions.cs`
 
-#### Acceptance Criteria
-- [ ] File dialogs working on all platforms
-- [ ] File type filtering functional
-- [ ] Directory selection implemented
-- [ ] Integration with expressions complete
-- [ ] User experience consistent
+#### 受け入れ基準
+- [ ] ファイルダイアログが全プラットフォームで動作
+- [ ] ファイルタイプフィルタリングが機能的
+- [ ] ディレクトリ選択が実装済み
+- [ ] 式との統合が完了
+- [ ] ユーザーエクスペリエンスが一貫
 
-#### Testing Requirements
-- Cross-platform dialog testing
-- File type filter validation
-- User workflow verification
-- Accessibility compliance
+#### テスト要件
+- クロスプラットフォームダイアログテスト
+- ファイルタイプフィルタ検証
+- ユーザーワークフロー検証
+- アクセシビリティ準拠
 
 ---
 
-### C.3: Help System Integration
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 2
+### C.3: ヘルプシステム統合
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-Help system integration is incomplete, preventing context-sensitive help and documentation access within the application.
+#### 問題ステートメント
+ヘルプシステム統合が不完全で、アプリケーション内でのコンテキスト感応ヘルプとドキュメントアクセスを妨げています。
 
-#### Technical Requirements
-- Complete help system implementation
-- Add context-sensitive help integration
-- Implement help content management
-- Add search functionality
+#### 技術要件
+- ヘルプシステム実装の完成
+- コンテキスト感応ヘルプ統合の追加
+- ヘルプコンテンツ管理の実装
+- 検索機能の追加
 
-#### Files Affected
-- `SRCCore/Help/HelpSystem.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/Help/HelpSystem.cs`（プライマリ）
 - `SRCCore/Help/HelpProvider.cs`
 - `SRCCore/UI/HelpUI.cs`
 
-#### Acceptance Criteria
-- [ ] Help system fully functional
-- [ ] Context-sensitive help working
-- [ ] Help content accessible
-- [ ] Search functionality implemented
-- [ ] Documentation integrated
+#### 受け入れ基準
+- [ ] ヘルプシステムが完全に機能的
+- [ ] コンテキスト感応ヘルプが動作
+- [ ] ヘルプコンテンツがアクセス可能
+- [ ] 検索機能が実装済み
+- [ ] ドキュメントが統合済み
 
-#### Testing Requirements
-- Help content accessibility testing
-- Context integration validation
-- Search functionality verification
-- User experience testing
+#### テスト要件
+- ヘルプコンテンツアクセシビリティテスト
+- コンテキスト統合検証
+- 検索機能検証
+- ユーザーエクスペリエンステスト
 
 ---
 
-### C.4: Expression Parser Optimization
-**Priority**: Low  
-**Effort**: 1 day  
-**Sprint**: 3
+### C.4: 式パーサー最適化
+**優先度**: 低  
+**工数**: 1日  
+**スプリント**: 3
 
-#### Problem Statement
-Expression parser performance could be improved to handle complex expressions more efficiently.
+#### 問題ステートメント
+式パーサーのパフォーマンスは、複雑な式をより効率的に処理するため改善が可能です。
 
-#### Technical Requirements
-- Optimize expression parsing algorithms
-- Add expression caching
-- Improve error handling
-- Add performance monitoring
+#### 技術要件
+- 式解析アルゴリズムの最適化
+- 式キャッシュの追加
+- エラーハンドリングの改善
+- パフォーマンス監視の追加
 
-#### Files Affected
-- `SRCCore/Expressions/ExpressionParser.cs` (Primary)
-- `SRCCore/Expressions/ExpressionCache.cs` (New)
-- `SRCCore/Expressions/ParserOptimizer.cs` (New)
+#### 影響ファイル
+- `SRCCore/Expressions/ExpressionParser.cs`（プライマリ）
+- `SRCCore/Expressions/ExpressionCache.cs`（新規）
+- `SRCCore/Expressions/ParserOptimizer.cs`（新規）
 
-#### Acceptance Criteria
-- [ ] Expression parsing optimized
-- [ ] Caching system implemented
-- [ ] Error handling improved
-- [ ] Performance monitoring active
-- [ ] Memory usage optimized
+#### 受け入れ基準
+- [ ] 式解析が最適化済み
+- [ ] キャッシュシステムが実装済み
+- [ ] エラーハンドリングが改善済み
+- [ ] パフォーマンス監視がアクティブ
+- [ ] メモリ使用量が最適化済み
 
-#### Testing Requirements
-- Performance benchmarking
-- Memory usage analysis
-- Cache effectiveness validation
-- Error handling verification
+#### テスト要件
+- パフォーマンスベンチマーク
+- メモリ使用量分析
+- キャッシュ効果検証
+- エラーハンドリング検証
 
-## Implementation Strategy
+## 実装戦略
 
-### Phase 1: Core Functions (Sprint 2)
-1. Implement string byte functions
-2. Complete file dialog integration
-3. Integrate help system functionality
+### フェーズ1: コア機能（スプリント2）
+1. 文字列バイト関数の実装
+2. ファイルダイアログ統合の完成
+3. ヘルプシステム機能の統合
 
-### Phase 2: Optimization (Sprint 3)
-1. Optimize expression parser performance
-2. Add caching mechanisms
-3. Improve error handling
+### フェーズ2: 最適化（スプリント3）
+1. 式パーサーパフォーマンスの最適化
+2. キャッシュメカニズムの追加
+3. エラーハンドリングの改善
 
-### Phase 3: Enhancement
-1. Advanced string manipulation features
-2. Enhanced help system features
-3. Performance fine-tuning
+### フェーズ3: 拡張
+1. 高度な文字列操作機能
+2. 強化されたヘルプシステム機能
+3. パフォーマンスの微調整
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
-- Cross-platform dialog libraries
-- Help documentation content
-- Text encoding libraries
-- Performance profiling tools
+### 外部依存関係
+- クロスプラットフォームダイアログライブラリ
+- ヘルプドキュメントコンテンツ
+- テキストエンコーディングライブラリ
+- パフォーマンスプロファイリングツール
 
-### Internal Dependencies
-- UI framework (Epic H)
-- Configuration system (Epic D)
-- File operations (Epic A)
+### 内部依存関係
+- UIフレームワーク（Epic H）
+- 設定システム（Epic D）
+- ファイル操作（Epic A）
 
-## Risk Assessment
+## リスク評価
 
-### Medium Risks
-- **Encoding Compatibility**: Different platforms handle encodings differently
-- **Dialog Platform Differences**: File dialogs vary across platforms
-- **Performance Impact**: String operations could affect script execution speed
+### 中リスク
+- **エンコーディング互換性**: 異なるプラットフォームでエンコーディング処理が異なる
+- **ダイアログプラットフォーム差異**: ファイルダイアログがプラットフォーム間で異なる
+- **パフォーマンス影響**: 文字列操作がスクリプト実行速度に影響する可能性
 
-### Mitigation Strategies
-- Comprehensive encoding testing across platforms
-- Platform-specific dialog testing
-- Performance benchmarking throughout development
-- Fallback implementations for unsupported features
+### 軽減戦略
+- プラットフォーム間での包括的エンコーディングテスト
+- プラットフォーム固有ダイアログテスト
+- 開発全体を通じたパフォーマンスベンチマーク
+- サポートされていない機能のフォールバック実装
 
-## Testing Strategy
+## テスト戦略
 
-### String Function Testing
+### 文字列関数テスト
 ```
-1. Unit Tests: Individual string function validation
-2. Encoding Tests: Multi-platform encoding compatibility
-3. Performance Tests: String manipulation speed
-4. Integration Tests: Expression parser integration
-```
-
-### File Dialog Testing
-```
-1. Platform Tests: Dialog functionality on each OS
-2. Filter Tests: File type filtering validation
-3. UX Tests: User workflow verification
-4. Accessibility Tests: Screen reader compatibility
+1. 単体テスト: 個別文字列関数検証
+2. エンコーディングテスト: マルチプラットフォームエンコーディング互換性
+3. パフォーマンステスト: 文字列操作速度
+4. 統合テスト: 式パーサー統合
 ```
 
-### Help System Testing
+### ファイルダイアログテスト
 ```
-1. Content Tests: Help content accessibility
-2. Context Tests: Context-sensitive help accuracy
-3. Search Tests: Help search functionality
-4. Integration Tests: UI integration validation
+1. プラットフォームテスト: 各OSでのダイアログ機能
+2. フィルタテスト: ファイルタイプフィルタリング検証
+3. UXテスト: ユーザーワークフロー検証
+4. アクセシビリティテスト: スクリーンリーダー互換性
 ```
 
-## Technical Implementation Details
+### ヘルプシステムテスト
+```
+1. コンテンツテスト: ヘルプコンテンツアクセシビリティ
+2. コンテキストテスト: コンテキスト感応ヘルプ正確性
+3. 検索テスト: ヘルプ検索機能
+4. 統合テスト: UI統合検証
+```
 
-### String Byte Functions Architecture
+## 技術実装詳細
+
+### 文字列バイト関数アーキテクチャ
 ```csharp
 public interface IStringByteConverter
 {
@@ -226,7 +226,7 @@ public interface IStringByteConverter
 }
 ```
 
-### File Dialog Provider Interface
+### ファイルダイアログプロバイダーインターフェース
 ```csharp
 public interface IFileDialogProvider
 {
@@ -236,7 +236,7 @@ public interface IFileDialogProvider
 }
 ```
 
-### Help System Interface
+### ヘルプシステムインターフェース
 ```csharp
 public interface IHelpSystem
 {
@@ -246,27 +246,27 @@ public interface IHelpSystem
 }
 ```
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
-- [ ] String byte functions implemented
-- [ ] File dialogs working cross-platform
-- [ ] Help system integrated
-- [ ] Expression parser optimized
-- [ ] Performance requirements met
-- [ ] Cross-platform compatibility verified
-- [ ] Documentation updated
-- [ ] User experience validated
+### Epic完了基準
+- [ ] 文字列バイト関数実装済み
+- [ ] ファイルダイアログがクロスプラットフォームで動作
+- [ ] ヘルプシステム統合済み
+- [ ] 式パーサー最適化済み
+- [ ] パフォーマンス要件達成
+- [ ] クロスプラットフォーム互換性検証済み
+- [ ] ドキュメント更新済み
+- [ ] ユーザーエクスペリエンス検証済み
 
-### Quality Gates
-- String manipulation testing passed
-- Cross-platform dialog functionality verified
-- Help system accessibility confirmed
-- Performance benchmarks maintained
+### 品質ゲート
+- 文字列操作テスト合格
+- クロスプラットフォームダイアログ機能検証済み
+- ヘルプシステムアクセシビリティ確認済み
+- パフォーマンスベンチマーク維持
 
 ---
 
-**Epic Owner**: Development Team  
-**UX Reviewer**: Required for dialogs and help system  
-**Related Epics**: [A (Save/Load)](./epic-a-save-load.md), [D (Configuration)](./epic-d-configuration.md), [H (UI Platform)](./epic-h-ui-platform.md)  
-**GitHub Labels**: `epic:expressions`, `priority:high`, `ui`, `cross-platform`
+**Epic所有者**: 開発チーム  
+**UXレビュアー**: ダイアログとヘルプシステムに必要  
+**関連Epic**: [A（セーブ/ロード）](./epic-a-save-load.md), [D（設定）](./epic-d-configuration.md), [H（UIプラットフォーム）](./epic-h-ui-platform.md)  
+**GitHubラベル**: `epic:expressions`, `priority:high`, `ui`, `cross-platform`

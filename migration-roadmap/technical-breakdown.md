@@ -1,149 +1,149 @@
-# Technical Breakdown
+# 技術詳細分析
 
-## Codebase Analysis Summary
+## コードベース分析サマリー
 
-### Current State Metrics
-- **Total TODO Comments**: 310
-- **NotImplementedException Count**: 141  
-- **Legacy VB.NET Artifacts**: Thousands of commented lines
-- **Core Projects Status**: Mostly functional, requiring refinement
+### 現状メトリクス
+- **TODOコメント総数**: 310個
+- **NotImplementedException数**: 141個  
+- **レガシーVB.NETアーティファクト**: 数千行のコメントアウト行
+- **コアプロジェクトステータス**: ほぼ機能的、改良が必要
 
-### File-Level Implementation Status
+### ファイルレベル実装ステータス
 
-#### High Priority Files
+#### 高優先度ファイル
 
-##### SRCCore/SRC.cs (Save/Load System)
+##### SRCCore/SRC.cs（セーブ/ロードシステム）
 ```
-Location: SRCCore/SRC.cs
-TODOs: 15+ path handling, security validation
-Priority: Critical (Security risk)
-Estimated Effort: 3-5 days
-Dependencies: System.IO security review
-```
-
-##### SRCCore/Commands/ (Game Commands)
-```
-Location: SRCCore/Commands/AttackCommand.cs, AIWeaponSelection.cs
-TODOs: 8+ AI logic, re-movement calculations
-Priority: Critical (Gameplay impact)
-Estimated Effort: 4-6 days
-Dependencies: Combat system validation
+場所: SRCCore/SRC.cs
+TODO: 15個以上のパス処理、セキュリティ検証
+優先度: 重要（セキュリティリスク）
+予想工数: 3-5日
+依存関係: System.IOセキュリティレビュー
 ```
 
-##### SRCCore/Expressions/ (Expression System)
+##### SRCCore/Commands/（ゲームコマンド）
 ```
-Location: SRCCore/Expressions/StringFunctions.cs
-TODOs: 12+ byte functions, encoding handling
-Priority: High (Core dependency)
-Estimated Effort: 2-3 days
-Dependencies: Encoding compatibility testing
-```
-
-#### Medium Priority Files
-
-##### SRCCore/Configuration/ (Configuration System)
-```
-Location: SRCCore/Configuration/
-TODOs: 25+ config management, platform separation
-Priority: Medium (Infrastructure)
-Estimated Effort: 5-7 days
-Dependencies: Platform abstraction layer
+場所: SRCCore/Commands/AttackCommand.cs, AIWeaponSelection.cs
+TODO: 8個以上のAIロジック、再移動計算
+優先度: 重要（ゲームプレイ影響）
+予想工数: 4-6日
+依存関係: 戦闘システム検証
 ```
 
-##### SRCCore/System/ (System Libraries)
+##### SRCCore/Expressions/（式システム）
 ```
-Location: SRCCore/System/RandomSystem.cs, Utilities/
-TODOs: 20+ random number generation, utility functions
-Priority: Medium (Supporting systems)
-Estimated Effort: 3-4 days
-Dependencies: Cross-platform compatibility
-```
-
-#### Low Priority Files
-
-##### Test Infrastructure
-```
-Location: SRCCoreTests/, MockGUI implementations
-NotImplementedExceptions: 141 instances
-Priority: Medium (Quality assurance)
-Estimated Effort: 8-10 days
-Dependencies: Test framework updates
+場所: SRCCore/Expressions/StringFunctions.cs
+TODO: 12個以上のバイト関数、エンコーディング処理
+優先度: 高（コア依存関係）
+予想工数: 2-3日
+依存関係: エンコーディング互換性テスト
 ```
 
-##### Legacy Cleanup
+#### 中優先度ファイル
+
+##### SRCCore/Configuration/（設定システム）
 ```
-Location: Multiple files with VB.NET comments
-Commented Lines: 2000+ legacy conversion artifacts
-Priority: Low (Maintenance)
-Estimated Effort: 2-3 days
-Dependencies: Verification of active code paths
+場所: SRCCore/Configuration/
+TODO: 25個以上の設定管理、プラットフォーム分離
+優先度: 中（インフラ）
+予想工数: 5-7日
+依存関係: プラットフォーム抽象化レイヤー
 ```
 
-## Implementation Dependencies
+##### SRCCore/System/（システムライブラリ）
+```
+場所: SRCCore/System/RandomSystem.cs, Utilities/
+TODO: 20個以上のランダム数生成、ユーティリティ関数
+優先度: 中（サポートシステム）
+予想工数: 3-4日
+依存関係: クロスプラットフォーム互換性
+```
 
-### Technical Dependencies
-1. **.NET 8 SDK**: All projects upgraded
-2. **Security Libraries**: For file path validation
-3. **Cross-Platform Testing**: For UI compatibility
-4. **Performance Profiling**: For optimization validation
+#### 低優先度ファイル
 
-### Code Dependencies
+##### テストインフラ
+```
+場所: SRCCoreTests/, MockGUI実装
+NotImplementedException: 141インスタンス
+優先度: 中（品質保証）
+予想工数: 8-10日
+依存関係: テストフレームワーク更新
+```
+
+##### レガシークリーンアップ
+```
+場所: VB.NETコメントを含む複数ファイル
+コメントアウト行: 2000行以上のレガシー変換アーティファクト
+優先度: 低（メンテナンス）
+予想工数: 2-3日
+依存関係: アクティブコードパスの検証
+```
+
+## 実装依存関係
+
+### 技術的依存関係
+1. **.NET 8 SDK**: 全プロジェクトアップグレード済み
+2. **セキュリティライブラリ**: ファイルパス検証用
+3. **クロスプラットフォームテスト**: UI互換性用
+4. **パフォーマンスプロファイリング**: 最適化検証用
+
+### コード依存関係
 ```mermaid
 graph TD
-    A[Save/Load Security] --> B[File System Access]
-    C[AI Weapon Selection] --> D[Combat System]
-    E[String Functions] --> F[Expression Parser]
-    G[Configuration] --> H[Platform Abstraction]
-    I[Test Infrastructure] --> J[All Core Systems]
+    A[セーブ/ロードセキュリティ] --> B[ファイルシステムアクセス]
+    C[AI武器選択] --> D[戦闘システム]
+    E[文字列関数] --> F[式パーサー]
+    G[設定] --> H[プラットフォーム抽象化]
+    I[テストインフラ] --> J[全コアシステム]
 ```
 
-## Risk Assessment by File
+## ファイル別リスク評価
 
-### Critical Risk Files
-1. **SRCCore/SRC.cs**: Path traversal vulnerabilities
-2. **SRCCore/Commands/AIWeaponSelection.cs**: Game balance impact
-3. **SRCCore/Expressions/StringFunctions.cs**: Core system dependency
+### 重要リスクファイル
+1. **SRCCore/SRC.cs**: パストラバーサル脆弱性
+2. **SRCCore/Commands/AIWeaponSelection.cs**: ゲームバランス影響
+3. **SRCCore/Expressions/StringFunctions.cs**: コアシステム依存関係
 
-### Medium Risk Files
-1. **SRCCore/Configuration/**: Platform compatibility
-2. **SRCCore/System/RandomSystem.cs**: Deterministic behavior
-3. **UI Platform Files**: Cross-platform consistency
+### 中リスクファイル
+1. **SRCCore/Configuration/**: プラットフォーム互換性
+2. **SRCCore/System/RandomSystem.cs**: 決定論的動作
+3. **UIプラットフォームファイル**: クロスプラットフォーム一貫性
 
-### Low Risk Files
-1. **Legacy commented code**: Cleanup only
-2. **Documentation files**: No functional impact
-3. **Build configuration**: Well-tested patterns
+### 低リスクファイル
+1. **レガシーコメントアウトコード**: クリーンアップのみ
+2. **ドキュメントファイル**: 機能影響なし
+3. **ビルド設定**: 十分テスト済みパターン
 
-## Performance Impact Analysis
+## パフォーマンス影響分析
 
-### Expected Improvements
-- **Memory Usage**: 15-20% reduction through modern collections
-- **Startup Time**: 10-15% improvement via optimized initialization
-- **File I/O**: 25-30% improvement through async patterns
+### 期待される改善
+- **メモリ使用量**: モダンコレクションにより15-20%削減
+- **起動時間**: 最適化された初期化により10-15%改善
+- **ファイルI/O**: 非同期パターンにより25-30%改善
 
-### Potential Regressions
-- **Initial Migration**: Temporary 5-10% performance impact during transition
-- **Cross-Platform**: Minor UI rendering differences
-- **Legacy Compatibility**: Additional validation overhead
+### 潜在的リグレッション
+- **初期移行**: 移行期間中の一時的な5-10%パフォーマンス影響
+- **クロスプラットフォーム**: 軽微なUIレンダリング差異
+- **レガシー互換性**: 追加検証オーバーヘッド
 
-## Testing Strategy
+## テスト戦略
 
-### Unit Testing Approach
+### 単体テストアプローチ
 ```
-Phase 1: Core functionality tests (Epics A-C)
-Phase 2: Integration testing (Epic D-E)
-Phase 3: Platform testing (Epic H)
-Phase 4: Performance regression testing
+フェーズ1: コア機能テスト（Epic A-C）
+フェーズ2: 統合テスト（Epic D-E）
+フェーズ3: プラットフォームテスト（Epic H）
+フェーズ4: パフォーマンスリグレッションテスト
 ```
 
-### Validation Requirements
-- **Backwards Compatibility**: All existing save files must load
-- **Security Testing**: Automated vulnerability scanning
-- **Performance Benchmarking**: Maintain or improve current metrics
-- **Cross-Platform**: Windows, Linux, macOS compatibility
+### 検証要件
+- **後方互換性**: すべての既存セーブファイルが読み込み可能
+- **セキュリティテスト**: 自動脆弱性スキャン
+- **パフォーマンスベンチマーク**: 現在のメトリクスの維持または改善
+- **クロスプラットフォーム**: Windows、Linux、macOS互換性
 
 ---
 
-**Analysis Date**: Current Migration Planning  
-**Next Review**: After Sprint 1 completion  
-**Related Documents**: [Roadmap](./roadmap.md) | [Sprint Plan](./sprint-plan.md)
+**分析日**: 現在の移行計画  
+**次回レビュー**: スプリント1完了後  
+**関連ドキュメント**: [ロードマップ](./roadmap.md) | [スプリント計画](./sprint-plan.md)

@@ -1,231 +1,231 @@
-# Epic B: Game Commands
+# Epic B: ゲームコマンド
 
-**Priority**: High  
-**Sprint**: 1-2  
-**Estimated Effort**: 6-8 days  
-**Risk Level**: High (Gameplay Impact)
+**優先度**: 高  
+**スプリント**: 1-2  
+**予想工数**: 6-8日  
+**リスクレベル**: 高（ゲームプレイ影響）
 
-## Overview
+## 概要
 
-Game command system requires critical bug fixes and logic improvements that directly impact core gameplay mechanics and AI behavior.
+ゲームコマンドシステムには、コアゲームプレイメカニクスとAI動作に直接影響する重要なバグ修正とロジック改善が必要です。
 
-## Issues & Tasks
+## Issue・タスク
 
-### B.1: AI Weapon Selection Bug Fix
-**Priority**: Critical  
-**Effort**: 2 days  
-**Sprint**: 1
+### B.1: AI武器選択バグ修正
+**優先度**: 重要  
+**工数**: 2日  
+**スプリント**: 1
 
-#### Problem Statement
-AI weapon selection logic contains critical bugs that affect game balance and AI effectiveness, potentially making AI opponents too weak or too strong.
+#### 問題ステートメント
+AI武器選択ロジックには、ゲームバランスとAI効果に影響する重要なバグが含まれており、AI対戦相手が弱すぎたり強すぎたりする可能性があります。
 
-#### Technical Requirements
-- Fix weapon selection algorithm logic
-- Improve AI weapon effectiveness calculations
-- Add proper range and damage consideration
-- Implement weapon type preference logic
+#### 技術要件
+- 武器選択アルゴリズムロジックの修正
+- AI武器効果計算の改善
+- 適切な射程とダメージ考慮の追加
+- 武器タイプ優先度ロジックの実装
 
-#### Files Affected
-- `SRCCore/Commands/AIWeaponSelection.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/Commands/AIWeaponSelection.cs`（プライマリ）
 - `SRCCore/AI/WeaponEffectiveness.cs`
 - `SRCCore/Combat/WeaponStats.cs`
 
-#### Acceptance Criteria
-- [ ] AI selects appropriate weapons for combat situations
-- [ ] Weapon effectiveness calculations accurate
-- [ ] Range considerations properly implemented
-- [ ] AI difficulty balanced across weapon types
-- [ ] Game balance maintained
+#### 受け入れ基準
+- [ ] AIが戦闘状況に適した武器を選択
+- [ ] 武器効果計算が正確
+- [ ] 射程考慮が適切に実装
+- [ ] AI難易度が武器タイプ全体でバランス
+- [ ] ゲームバランスが維持
 
-#### Testing Requirements
-- AI combat scenario testing
-- Weapon effectiveness validation
-- Game balance verification
-- Performance impact assessment
+#### テスト要件
+- AI戦闘シナリオテスト
+- 武器効果検証
+- ゲームバランス検証
+- パフォーマンス影響評価
 
 ---
 
-### B.2: Attack Re-movement Logic Implementation
-**Priority**: High  
-**Effort**: 3 days  
-**Sprint**: 1
+### B.2: 攻撃後再移動ロジック実装
+**優先度**: 高  
+**工数**: 3日  
+**スプリント**: 1
 
-#### Problem Statement
-Attack re-movement logic is incomplete, preventing proper tactical movement after attacks which is essential for gameplay flow.
+#### 問題ステートメント
+攻撃後再移動ロジックが不完全で、攻撃後の適切な戦術的移動を妨げており、これはゲームプレイフローに不可欠です。
 
-#### Technical Requirements
-- Implement post-attack movement calculations
-- Add movement range validation
-- Implement tactical positioning logic
-- Add animation and UI feedback
+#### 技術要件
+- 攻撃後移動計算の実装
+- 移動範囲検証の追加
+- 戦術的配置ロジックの実装
+- アニメーションとUIフィードバックの追加
 
-#### Files Affected
-- `SRCCore/Commands/AttackCommand.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/Commands/AttackCommand.cs`（プライマリ）
 - `SRCCore/Movement/MovementCalculator.cs`
 - `SRCCore/Combat/CombatSequence.cs`
 
-#### Acceptance Criteria
-- [ ] Units can move after attacking when appropriate
-- [ ] Movement range properly calculated
-- [ ] Tactical positioning working
-- [ ] Animation sequences smooth
-- [ ] UI feedback clear and responsive
+#### 受け入れ基準
+- [ ] 適切な場合にユニットが攻撃後移動可能
+- [ ] 移動範囲が正しく計算される
+- [ ] 戦術的配置が動作
+- [ ] アニメーションシーケンスがスムーズ
+- [ ] UIフィードバックが明確で応答的
 
-#### Testing Requirements
-- Combat movement scenario testing
-- Range calculation validation
-- Animation smoothness verification
-- User experience testing
+#### テスト要件
+- 戦闘移動シナリオテスト
+- 射程計算検証
+- アニメーションスムーズネス検証
+- ユーザーエクスペリエンステスト
 
 ---
 
-### B.3: Command Queue System Optimization
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 2
+### B.3: コマンドキューシステム最適化
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-Command queue system needs optimization to handle complex command sequences and prevent command conflicts.
+#### 問題ステートメント
+コマンドキューシステムは複雑なコマンドシーケンスを処理し、コマンド競合を防ぐための最適化が必要です。
 
-#### Technical Requirements
-- Optimize command queue processing
-- Add command conflict detection
-- Implement command prioritization
-- Add queue state validation
+#### 技術要件
+- コマンドキュー処理の最適化
+- コマンド競合検出の追加
+- コマンド優先順位付けの実装
+- キュー状態検証の追加
 
-#### Files Affected
-- `SRCCore/Commands/CommandQueue.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/Commands/CommandQueue.cs`（プライマリ）
 - `SRCCore/Commands/CommandProcessor.cs`
 - `SRCCore/Commands/CommandValidator.cs`
 
-#### Acceptance Criteria
-- [ ] Command queue processes efficiently
-- [ ] Command conflicts detected and resolved
-- [ ] Command prioritization working
-- [ ] Queue state always valid
-- [ ] Performance improved
+#### 受け入れ基準
+- [ ] コマンドキューが効率的に処理される
+- [ ] コマンド競合が検出・解決される
+- [ ] コマンド優先順位付けが動作
+- [ ] キュー状態が常に有効
+- [ ] パフォーマンスが改善
 
-#### Testing Requirements
-- Command queue stress testing
-- Conflict resolution validation
-- Performance benchmarking
-- Edge case handling verification
+#### テスト要件
+- コマンドキューストレステスト
+- 競合解決検証
+- パフォーマンスベンチマーク
+- エッジケース処理検証
 
 ---
 
-### B.4: Special Ability Commands
-**Priority**: Medium  
-**Effort**: 3 days  
-**Sprint**: 2
+### B.4: 特殊能力コマンド
+**優先度**: 中  
+**工数**: 3日  
+**スプリント**: 2
 
-#### Problem Statement
-Special ability command implementations are incomplete with multiple TODO comments indicating missing functionality.
+#### 問題ステートメント
+特殊能力コマンド実装が不完全で、複数のTODOコメントが未実装機能を示しています。
 
-#### Technical Requirements
-- Complete special ability implementations
-- Add ability resource management
-- Implement cooldown systems
-- Add targeting validation
+#### 技術要件
+- 特殊能力実装の完成
+- 能力リソース管理の追加
+- クールダウンシステムの実装
+- ターゲティング検証の追加
 
-#### Files Affected
-- `SRCCore/Commands/SpecialAbilities/` (Multiple files)
+#### 影響ファイル
+- `SRCCore/Commands/SpecialAbilities/`（複数ファイル）
 - `SRCCore/Resources/AbilityResources.cs`
 - `SRCCore/Targeting/AbilityTargeting.cs`
 
-#### Acceptance Criteria
-- [ ] All special abilities functional
-- [ ] Resource management working
-- [ ] Cooldown systems implemented
-- [ ] Targeting validation complete
-- [ ] Balance testing passed
+#### 受け入れ基準
+- [ ] すべての特殊能力が機能的
+- [ ] リソース管理が動作
+- [ ] クールダウンシステムが実装
+- [ ] ターゲティング検証が完了
+- [ ] バランステストが通過
 
-#### Testing Requirements
-- Special ability functionality testing
-- Resource management validation
-- Cooldown timing verification
-- Balance and gameplay testing
+#### テスト要件
+- 特殊能力機能テスト
+- リソース管理検証
+- クールダウンタイミング検証
+- バランス・ゲームプレイテスト
 
-## Implementation Strategy
+## 実装戦略
 
-### Phase 1: Critical Fixes (Sprint 1)
-1. Fix AI weapon selection algorithm
-2. Implement attack re-movement logic
-3. Validate core combat functionality
+### フェーズ1: 重要修正（スプリント1）
+1. AI武器選択アルゴリズムの修正
+2. 攻撃後再移動ロジックの実装
+3. コア戦闘機能の検証
 
-### Phase 2: System Improvements (Sprint 2)
-1. Optimize command queue system
-2. Complete special ability implementations
-3. Performance optimization and testing
+### フェーズ2: システム改善（スプリント2）
+1. コマンドキューシステムの最適化
+2. 特殊能力実装の完成
+3. パフォーマンス最適化とテスト
 
-### Phase 3: Polish & Balance
-1. Fine-tune AI behavior
-2. Balance special abilities
-3. Optimize performance
+### フェーズ3: 磨き・バランス
+1. AI動作の微調整
+2. 特殊能力のバランス
+3. パフォーマンス最適化
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
-- Combat system testing framework
-- AI behavior validation tools
-- Performance profiling tools
+### 外部依存関係
+- 戦闘システムテストフレームワーク
+- AI動作検証ツール
+- パフォーマンスプロファイリングツール
 
-### Internal Dependencies
-- Combat statistics system
-- Animation framework
-- UI feedback system
-- Save/Load system (Epic A)
+### 内部依存関係
+- 戦闘統計システム
+- アニメーションフレームワーク
+- UIフィードバックシステム
+- セーブ/ロードシステム（Epic A）
 
-## Risk Assessment
+## リスク評価
 
-### High Risks
-- **Game Balance Impact**: Changes could affect competitive balance
-- **AI Behavior Regression**: Fixes might introduce new AI issues
-- **Performance Degradation**: Complex logic could slow combat
+### 高リスク
+- **ゲームバランス影響**: 変更が競技バランスに影響する可能性
+- **AI動作リグレッション**: 修正が新たなAI問題を導入する可能性
+- **パフォーマンス低下**: 複雑なロジックが戦闘を遅くする可能性
 
-### Mitigation Strategies
-- Extensive gameplay testing
-- AI behavior validation suite
-- Performance benchmarking
-- Community beta testing
+### 軽減戦略
+- 広範囲のゲームプレイテスト
+- AI動作検証スイート
+- パフォーマンスベンチマーク
+- コミュニティベータテスト
 
-## Testing Strategy
+## テスト戦略
 
-### Combat Testing Framework
+### 戦闘テストフレームワーク
 ```
-1. Unit Tests: Individual command logic
-2. Integration Tests: Command sequence validation
-3. AI Tests: Weapon selection scenarios
-4. Performance Tests: Command processing speed
-5. Balance Tests: Gameplay impact assessment
+1. 単体テスト: 個別コマンドロジック
+2. 統合テスト: コマンドシーケンス検証
+3. AIテスト: 武器選択シナリオ
+4. パフォーマンステスト: コマンド処理速度
+5. バランステスト: ゲームプレイ影響評価
 ```
 
-### Test Scenarios
-- AI vs AI combat validation
-- Player vs AI balance verification
-- Special ability effectiveness testing
-- Command queue stress testing
+### テストシナリオ
+- AI対AI戦闘検証
+- プレイヤー対AIバランス検証
+- 特殊能力効果テスト
+- コマンドキューストレステスト
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
-- [ ] AI weapon selection bug fixed
-- [ ] Attack re-movement logic implemented
-- [ ] Command queue optimized
-- [ ] Special abilities complete
-- [ ] Game balance maintained
-- [ ] Performance requirements met
-- [ ] All combat scenarios tested
-- [ ] AI behavior validated
+### Epic完了基準
+- [ ] AI武器選択バグ修正済み
+- [ ] 攻撃後再移動ロジック実装済み
+- [ ] コマンドキュー最適化済み
+- [ ] 特殊能力完成
+- [ ] ゲームバランス維持
+- [ ] パフォーマンス要件達成
+- [ ] すべての戦闘シナリオテスト済み
+- [ ] AI動作検証済み
 
-### Quality Gates
-- Combat functionality verified
-- AI behavior testing passed
-- Performance benchmarks maintained
-- Game balance assessment completed
+### 品質ゲート
+- 戦闘機能検証済み
+- AI動作テスト合格
+- パフォーマンスベンチマーク維持
+- ゲームバランス評価完了
 
 ---
 
-**Epic Owner**: Development Team  
-**Gameplay Reviewer**: Required  
-**Related Epics**: [A (Save/Load)](./epic-a-save-load.md), [C (Expression System)](./epic-c-expression-system.md)  
-**GitHub Labels**: `epic:commands`, `priority:high`, `gameplay`, `ai`
+**Epic所有者**: 開発チーム  
+**ゲームプレイレビュアー**: 必要  
+**関連Epic**: [A（セーブ/ロード）](./epic-a-save-load.md), [C（式システム）](./epic-c-expression-system.md)  
+**GitHubラベル**: `epic:commands`, `priority:high`, `gameplay`, `ai`

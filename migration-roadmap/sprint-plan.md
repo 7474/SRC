@@ -1,178 +1,178 @@
-# Sprint Plan
+# スプリント計画
 
-## 4-Sprint Delivery Strategy
+## 4スプリント配信戦略
 
-### Sprint 1: Critical Functionality (2-3 weeks)
-**Goal**: Address critical security and gameplay issues
+### スプリント1：重要機能（2-3週間）
+**目標**: 重要なセキュリティとゲームプレイ問題の対応
 
-#### Sprint 1 Backlog
-- [ ] **Epic A.1**: Save/Load Path Normalization and Security
-  - File: `SRCCore/SRC.cs`
-  - Effort: 3 days
-  - Risk: High (Security)
+#### スプリント1バックログ
+- [ ] **Epic A.1**: セーブ/ロードパス正規化とセキュリティ
+  - ファイル: `SRCCore/SRC.cs`
+  - 工数: 3日
+  - リスク: 高（セキュリティ）
   
-- [ ] **Epic B.1**: AI Weapon Selection Bug Fix
-  - File: `SRCCore/Commands/AIWeaponSelection.cs`
-  - Effort: 2 days
-  - Risk: High (Gameplay)
+- [ ] **Epic B.1**: AI武器選択バグ修正
+  - ファイル: `SRCCore/Commands/AIWeaponSelection.cs`
+  - 工数: 2日
+  - リスク: 高（ゲームプレイ）
   
-- [ ] **Epic B.2**: Attack Re-movement Logic
-  - File: `SRCCore/Commands/AttackCommand.cs`
-  - Effort: 3 days
-  - Risk: Medium (Gameplay)
+- [ ] **Epic B.2**: 攻撃後再移動ロジック
+  - ファイル: `SRCCore/Commands/AttackCommand.cs`
+  - 工数: 3日
+  - リスク: 中（ゲームプレイ）
 
-**Sprint 1 Definition of Done**:
-- [ ] All critical security vulnerabilities patched
-- [ ] AI weapon selection functioning correctly
-- [ ] Attack re-movement logic implemented
-- [ ] Security testing completed
-- [ ] Backwards compatibility verified
+**スプリント1完了定義**:
+- [ ] すべての重要なセキュリティ脆弱性パッチ済み
+- [ ] AI武器選択が正しく機能
+- [ ] 攻撃後再移動ロジック実装済み
+- [ ] セキュリティテスト完了
+- [ ] 後方互換性検証済み
 
-### Sprint 2: Core System Completion (2-3 weeks)
-**Goal**: Complete high-priority core functionality
+### スプリント2：コアシステム完成（2-3週間）
+**目標**: 高優先度コア機能の完成
 
-#### Sprint 2 Backlog
-- [ ] **Epic C.1**: String Byte Functions Implementation
-  - File: `SRCCore/Expressions/StringFunctions.cs`
-  - Effort: 2 days
-  - Risk: Medium (Core dependency)
+#### スプリント2バックログ
+- [ ] **Epic C.1**: 文字列バイト関数実装
+  - ファイル: `SRCCore/Expressions/StringFunctions.cs`
+  - 工数: 2日
+  - リスク: 中（コア依存関係）
   
-- [ ] **Epic C.2**: File Dialog Integration
-  - File: `SRCCore/UI/FileDialogs.cs`
-  - Effort: 2 days
-  - Risk: Low (UI)
+- [ ] **Epic C.2**: ファイルダイアログ統合
+  - ファイル: `SRCCore/UI/FileDialogs.cs`
+  - 工数: 2日
+  - リスク: 低（UI）
   
-- [ ] **Epic A.2**: Quick Save Feature Completion
-  - File: `SRCCore/SRC.cs`
-  - Effort: 2 days
-  - Risk: Low (Feature)
+- [ ] **Epic A.2**: クイックセーブ機能完成
+  - ファイル: `SRCCore/SRC.cs`
+  - 工数: 2日
+  - リスク: 低（機能）
   
-- [ ] **Epic C.3**: Help System Integration
-  - File: `SRCCore/Help/HelpSystem.cs`
-  - Effort: 3 days
-  - Risk: Low (Documentation)
+- [ ] **Epic C.3**: ヘルプシステム統合
+  - ファイル: `SRCCore/Help/HelpSystem.cs`
+  - 工数: 3日
+  - リスク: 低（ドキュメント）
 
-**Sprint 2 Definition of Done**:
-- [ ] String functions fully implemented
-- [ ] File dialogs working on all platforms
-- [ ] Quick save feature complete
-- [ ] Help system integrated
-- [ ] Performance benchmarks maintained
+**スプリント2完了定義**:
+- [ ] 文字列関数完全実装済み
+- [ ] ファイルダイアログが全プラットフォームで動作
+- [ ] クイックセーブ機能完成
+- [ ] ヘルプシステム統合済み
+- [ ] パフォーマンスベンチマーク維持
 
-### Sprint 3: Infrastructure & Quality (3-4 weeks)
-**Goal**: Modernize infrastructure and improve code quality
+### スプリント3：インフラ・品質（3-4週間）
+**目標**: インフラの近代化とコード品質向上
 
-#### Sprint 3 Backlog
-- [ ] **Epic D.1**: Configuration System Redesign
-  - File: `SRCCore/Configuration/`
-  - Effort: 5 days
-  - Risk: Medium (Infrastructure)
+#### スプリント3バックログ
+- [ ] **Epic D.1**: 設定システム再設計
+  - ファイル: `SRCCore/Configuration/`
+  - 工数: 5日
+  - リスク: 中（インフラ）
   
-- [ ] **Epic E.1**: Random Number System Modernization
-  - File: `SRCCore/System/RandomSystem.cs`
-  - Effort: 2 days
-  - Risk: Low (Deterministic)
+- [ ] **Epic E.1**: ランダム数システム近代化
+  - ファイル: `SRCCore/System/RandomSystem.cs`
+  - 工数: 2日
+  - リスク: 低（決定論的）
   
-- [ ] **Epic E.2**: Utility Functions Implementation
-  - File: `SRCCore/Utilities/`
-  - Effort: 3 days
-  - Risk: Low (Support)
+- [ ] **Epic E.2**: ユーティリティ関数実装
+  - ファイル: `SRCCore/Utilities/`
+  - 工数: 3日
+  - リスク: 低（サポート）
   
-- [ ] **Epic F.1**: MockGUI Test Infrastructure
-  - File: `SRCCoreTests/MockGUI/`
-  - Effort: 6 days
-  - Risk: Medium (Testing)
+- [ ] **Epic F.1**: MockGUIテストインフラ
+  - ファイル: `SRCCoreTests/MockGUI/`
+  - 工数: 6日
+  - リスク: 中（テスト）
 
-**Sprint 3 Definition of Done**:
-- [ ] Configuration system platform-separated
-- [ ] Random number generation modernized
-- [ ] Utility functions implemented
-- [ ] Test infrastructure 80% complete
-- [ ] All platform compatibility verified
+**スプリント3完了定義**:
+- [ ] 設定システムのプラットフォーム分離完了
+- [ ] ランダム数生成近代化済み
+- [ ] ユーティリティ関数実装済み
+- [ ] テストインフラ80%完成
+- [ ] 全プラットフォーム互換性検証済み
 
-### Sprint 4+: Quality & Maintenance (Ongoing)
-**Goal**: Code cleanup and platform optimization
+### スプリント4+：品質・メンテナンス（継続）
+**目標**: コードクリーンアップとプラットフォーム最適化
 
-#### Sprint 4+ Backlog
-- [ ] **Epic G.1**: Legacy VB.NET Comment Removal
-  - Files: Multiple across codebase
-  - Effort: 3 days
-  - Risk: Very Low (Cleanup)
+#### スプリント4+バックログ
+- [ ] **Epic G.1**: レガシーVB.NETコメント削除
+  - ファイル: コードベース全体の複数ファイル
+  - 工数: 3日
+  - リスク: 極低（クリーンアップ）
   
-- [ ] **Epic G.2**: Code Quality Improvements
-  - Files: Various refactoring targets
-  - Effort: Ongoing
-  - Risk: Low (Quality)
+- [ ] **Epic G.2**: コード品質改善
+  - ファイル: 様々なリファクタリング対象
+  - 工数: 継続
+  - リスク: 低（品質）
   
-- [ ] **Epic H.1**: Cross-Platform UI Features
-  - Files: UI platform-specific code
-  - Effort: 4 days
-  - Risk: Medium (Platform)
+- [ ] **Epic H.1**: クロスプラットフォームUI機能
+  - ファイル: UIプラットフォーム固有コード
+  - 工数: 4日
+  - リスク: 中（プラットフォーム）
   
-- [ ] **Epic H.2**: UI Optimization
-  - Files: Performance-critical UI code
-  - Effort: 3 days
-  - Risk: Low (Optimization)
+- [ ] **Epic H.2**: UI最適化
+  - ファイル: パフォーマンス重要UIコード
+  - 工数: 3日
+  - リスク: 低（最適化）
 
-**Sprint 4+ Definition of Done**:
-- [ ] Legacy artifacts removed
-- [ ] Code quality metrics improved
-- [ ] Cross-platform features complete
-- [ ] UI optimization implemented
-- [ ] Documentation updated
+**スプリント4+完了定義**:
+- [ ] レガシーアーティファクト削除済み
+- [ ] コード品質メトリクス改善
+- [ ] クロスプラットフォーム機能完成
+- [ ] UI最適化実装済み
+- [ ] ドキュメント更新済み
 
-## Sprint Dependencies
+## スプリント依存関係
 
-### External Dependencies
-- **Security Review Tools**: Required for Sprint 1
-- **Cross-Platform Testing**: Required for Sprint 2-3
-- **Performance Profiling**: Required for Sprint 3-4
-- **Community Feedback**: Ongoing throughout
+### 外部依存関係
+- **セキュリティレビューツール**: スプリント1に必要
+- **クロスプラットフォームテスト**: スプリント2-3に必要
+- **パフォーマンスプロファイリング**: スプリント3-4に必要
+- **コミュニティフィードバック**: 全期間を通じて継続
 
-### Internal Dependencies
+### 内部依存関係
 ```
-Sprint 1 → Sprint 2: Security foundation required for feature work
-Sprint 2 → Sprint 3: Core features required for infrastructure updates
-Sprint 3 → Sprint 4: Infrastructure required for optimization work
+スプリント1 → スプリント2: 機能作業にセキュリティ基盤が必要
+スプリント2 → スプリント3: インフラ更新にコア機能が必要
+スプリント3 → スプリント4: 最適化作業にインフラが必要
 ```
 
-## Risk Mitigation Plan
+## リスク軽減計画
 
-### Sprint 1 Risks
-- **Security Implementation Complexity**: Buffer additional time for security review
-- **AI Logic Changes**: Extensive testing with existing scenarios
+### スプリント1リスク
+- **セキュリティ実装複雑性**: セキュリティレビュー用の追加時間確保
+- **AIロジック変更**: 既存シナリオでの広範囲テスト
 
-### Sprint 2 Risks  
-- **Cross-Platform Compatibility**: Early testing on all target platforms
-- **Performance Regression**: Continuous benchmarking
+### スプリント2リスク  
+- **クロスプラットフォーム互換性**: 全対象プラットフォームでの早期テスト
+- **パフォーマンスリグレッション**: 継続的ベンチマーク
 
-### Sprint 3 Risks
-- **Configuration Migration**: Backwards compatibility preservation
-- **Test Infrastructure Complexity**: Incremental implementation approach
+### スプリント3リスク
+- **設定移行**: 後方互換性保持
+- **テストインフラ複雑性**: 段階的実装アプローチ
 
-### Sprint 4+ Risks
-- **Legacy Code Dependencies**: Careful analysis before removal
-- **Platform-Specific Issues**: Platform owner validation
+### スプリント4+リスク
+- **レガシーコード依存関係**: 削除前の慎重な分析
+- **プラットフォーム固有問題**: プラットフォーム所有者検証
 
-## Success Metrics
+## 成功メトリクス
 
-### Sprint Completion Criteria
-- **Sprint 1**: Zero critical vulnerabilities, core gameplay functional
-- **Sprint 2**: All high-priority features implemented, performance maintained
-- **Sprint 3**: Infrastructure modernized, test coverage >80%
-- **Sprint 4+**: Code quality improved, platform optimization complete
+### スプリント完了基準
+- **スプリント1**: 重要脆弱性ゼロ、コアゲームプレイ機能
+- **スプリント2**: 全高優先度機能実装済み、パフォーマンス維持
+- **スプリント3**: インフラ近代化済み、テストカバレッジ80%以上
+- **スプリント4+**: コード品質改善、プラットフォーム最適化完了
 
-### Overall Project Success
-- [ ] All 310 TODO comments resolved
-- [ ] All 141 NotImplementedExceptions addressed
-- [ ] Zero security vulnerabilities
-- [ ] 100% backwards compatibility maintained
-- [ ] Performance improved or maintained
-- [ ] Cross-platform compatibility achieved
+### 全体プロジェクト成功
+- [ ] 310個のTODOコメント全解決
+- [ ] 141個のNotImplementedException全対応
+- [ ] セキュリティ脆弱性ゼロ
+- [ ] 100%後方互換性維持
+- [ ] パフォーマンス改善または維持
+- [ ] クロスプラットフォーム互換性達成
 
 ---
 
-**Plan Version**: 1.0  
-**Sprint Duration**: 2-4 weeks each  
-**Total Estimated Duration**: 10-14 weeks  
-**Last Updated**: Migration Planning Phase
+**計画バージョン**: 1.0  
+**スプリント期間**: 各2-4週間  
+**総予想期間**: 10-14週間  
+**最終更新**: 移行計画フェーズ

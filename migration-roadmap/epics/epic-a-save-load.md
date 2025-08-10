@@ -1,178 +1,178 @@
-# Epic A: Save/Load System
+# Epic A: セーブ/ロードシステム
 
-**Priority**: High  
-**Sprint**: 1-2  
-**Estimated Effort**: 5-7 days  
-**Risk Level**: Critical (Security)
+**優先度**: 高  
+**スプリント**: 1-2  
+**予想工数**: 5-7日  
+**リスクレベル**: 重要（セキュリティ）
 
-## Overview
+## 概要
 
-The Save/Load system requires critical security improvements and feature completion to ensure safe file operations and reliable data persistence.
+セーブ/ロードシステムには、安全なファイル操作と信頼できるデータ永続化を確保するため、重要なセキュリティ改善と機能完成が必要です。
 
-## Issues & Tasks
+## Issue・タスク
 
-### A.1: Path Normalization and Security Validation
-**Priority**: Critical  
-**Effort**: 3 days  
-**Sprint**: 1
+### A.1: パス正規化とセキュリティ検証
+**優先度**: 重要  
+**工数**: 3日  
+**スプリント**: 1
 
-#### Problem Statement
-Current save/load operations lack proper path validation, creating potential security vulnerabilities through path traversal attacks.
+#### 問題ステートメント
+現在のセーブ/ロード操作は適切なパス検証を欠いており、パストラバーサル攻撃による潜在的なセキュリティ脆弱性を生じています。
 
-#### Technical Requirements
-- Implement path normalization for all file operations
-- Add security validation to prevent directory traversal
-- Validate file extensions and content types
-- Add proper error handling for invalid paths
+#### 技術要件
+- すべてのファイル操作にパス正規化を実装
+- ディレクトリトラバーサルを防ぐセキュリティ検証を追加
+- ファイル拡張子とコンテンツタイプの検証
+- 無効なパスに対する適切なエラーハンドリングを追加
 
-#### Files Affected
-- `SRCCore/SRC.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/SRC.cs`（プライマリ）
 - `SRCCore/IO/FileOperations.cs`
-- `SRCCore/Security/PathValidator.cs` (New)
+- `SRCCore/Security/PathValidator.cs`（新規）
 
-#### Acceptance Criteria
-- [ ] All file paths properly normalized before use
-- [ ] Path traversal attempts blocked and logged
-- [ ] File extension validation implemented
-- [ ] Security tests passing
-- [ ] Backwards compatibility maintained
+#### 受け入れ基準
+- [ ] すべてのファイルパスが使用前に適切に正規化される
+- [ ] パストラバーサル試行がブロックされログ記録される
+- [ ] ファイル拡張子検証が実装される
+- [ ] セキュリティテストが通る
+- [ ] 後方互換性が維持される
 
-#### Testing Requirements
-- Security penetration testing
-- Path traversal attack simulation
-- Cross-platform path handling validation
-- Performance impact assessment
+#### テスト要件
+- セキュリティ侵入テスト
+- パストラバーサル攻撃シミュレーション
+- クロスプラットフォームパス処理検証
+- パフォーマンス影響評価
 
 ---
 
-### A.2: Quick Save Feature Completion
-**Priority**: High  
-**Effort**: 2 days  
-**Sprint**: 2
+### A.2: クイックセーブ機能完成
+**優先度**: 高  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-Quick save functionality is partially implemented with TODO comments indicating incomplete features.
+#### 問題ステートメント
+クイックセーブ機能は部分的に実装されており、TODOコメントが未完成機能を示しています。
 
-#### Technical Requirements
-- Complete quick save implementation
-- Add quick load functionality
-- Implement auto-save configuration
-- Add save slot management
+#### 技術要件
+- クイックセーブ実装の完成
+- クイックロード機能の追加
+- オートセーブ設定の実装
+- セーブスロット管理の追加
 
-#### Files Affected
+#### 影響ファイル
 - `SRCCore/SRC.cs`
 - `SRCCore/Configuration/SaveConfig.cs`
 - `SRCCore/UI/SaveLoadUI.cs`
 
-#### Acceptance Criteria
-- [ ] Quick save creates valid save files
-- [ ] Quick load restores game state correctly
-- [ ] Auto-save configurable and functional
-- [ ] Save slot management working
-- [ ] UI integration complete
+#### 受け入れ基準
+- [ ] クイックセーブが有効なセーブファイルを作成
+- [ ] クイックロードがゲーム状態を正しく復元
+- [ ] オートセーブが設定可能で機能的
+- [ ] セーブスロット管理が動作
+- [ ] UI統合が完了
 
-#### Testing Requirements
-- Quick save/load cycle testing
-- Auto-save timing validation
-- Save file integrity verification
-- UI workflow testing
+#### テスト要件
+- クイックセーブ/ロードサイクルテスト
+- オートセーブタイミング検証
+- セーブファイル整合性検証
+- UIワークフローテスト
 
 ---
 
-### A.3: Save File Format Validation
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 2
+### A.3: セーブファイル形式検証
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 2
 
-#### Problem Statement
-Save file format validation needs improvement to handle corrupted or incompatible files gracefully.
+#### 問題ステートメント
+セーブファイル形式検証の改善が必要で、破損したまたは互換性のないファイルを適切に処理する必要があります。
 
-#### Technical Requirements
-- Enhanced save file format validation
-- Version compatibility checking
-- Corrupted file recovery options
-- Migration tools for old formats
+#### 技術要件
+- 強化されたセーブファイル形式検証
+- バージョン互換性チェック
+- 破損ファイル復旧オプション
+- 古い形式用移行ツール
 
-#### Files Affected
-- `SRCCore/IO/SaveFileValidator.cs` (New)
-- `SRCCore/Migration/SaveMigrator.cs` (New)
+#### 影響ファイル
+- `SRCCore/IO/SaveFileValidator.cs`（新規）
+- `SRCCore/Migration/SaveMigrator.cs`（新規）
 - `SRCCore/SRC.cs`
 
-#### Acceptance Criteria
-- [ ] Save file format validation implemented
-- [ ] Version compatibility checking working
-- [ ] Corrupted file handling graceful
-- [ ] Migration tools functional
-- [ ] Error reporting comprehensive
+#### 受け入れ基準
+- [ ] セーブファイル形式検証が実装される
+- [ ] バージョン互換性チェックが動作
+- [ ] 破損ファイル処理が適切
+- [ ] 移行ツールが機能的
+- [ ] エラー報告が包括的
 
-#### Testing Requirements
-- Corrupted file handling tests
-- Version migration testing
-- Performance impact measurement
-- User experience validation
+#### テスト要件
+- 破損ファイル処理テスト
+- バージョン移行テスト
+- パフォーマンス影響測定
+- ユーザーエクスペリエンス検証
 
-## Implementation Strategy
+## 実装戦略
 
-### Phase 1: Security Foundation (Sprint 1)
-1. Implement path validation and normalization
-2. Add security testing framework
-3. Validate against known attack vectors
+### フェーズ1: セキュリティ基盤（スプリント1）
+1. パス検証と正規化の実装
+2. セキュリティテストフレームワークの追加
+3. 既知の攻撃ベクトルに対する検証
 
-### Phase 2: Feature Completion (Sprint 2)  
-1. Complete quick save/load functionality
-2. Implement save file validation
-3. Add migration tools
+### フェーズ2: 機能完成（スプリント2）  
+1. クイックセーブ/ロード機能の完成
+2. セーブファイル検証の実装
+3. 移行ツールの追加
 
-### Phase 3: Polish & Optimization
-1. Performance optimization
-2. Error handling improvement
-3. User experience enhancement
+### フェーズ3: 磨き・最適化
+1. パフォーマンス最適化
+2. エラーハンドリング改善
+3. ユーザーエクスペリエンス向上
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
-- Security review tools
-- Cross-platform file system testing
-- Performance profiling tools
+### 外部依存関係
+- セキュリティレビューツール
+- クロスプラットフォームファイルシステムテスト
+- パフォーマンスプロファイリングツール
 
-### Internal Dependencies
-- Configuration system (Epic D)
-- Error handling utilities (Epic E)
-- UI framework updates (Epic H)
+### 内部依存関係
+- 設定システム（Epic D）
+- エラーハンドリングユーティリティ（Epic E）
+- UIフレームワーク更新（Epic H）
 
-## Risk Assessment
+## リスク評価
 
-### High Risks
-- **Security Vulnerabilities**: Improper validation could expose system
-- **Data Loss**: Save corruption during migration
-- **Performance Impact**: Security checks affecting save speed
+### 高リスク
+- **セキュリティ脆弱性**: 不適切な検証によりシステムが露出する可能性
+- **データ損失**: 移行中のセーブ破損
+- **パフォーマンス影響**: セキュリティチェックがセーブ速度に影響
 
-### Mitigation Strategies
-- Comprehensive security testing
-- Backup creation during migration
-- Performance benchmarking throughout development
+### 軽減戦略
+- 包括的セキュリティテスト
+- 移行中のバックアップ作成
+- 開発全体を通じたパフォーマンスベンチマーク
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
-- [ ] All security vulnerabilities addressed
-- [ ] Quick save/load fully functional
-- [ ] Save file validation implemented
-- [ ] Migration tools working
-- [ ] Performance requirements met
-- [ ] Cross-platform compatibility verified
-- [ ] Security review completed
-- [ ] Documentation updated
+### Epic完了基準
+- [ ] すべてのセキュリティ脆弱性対応済み
+- [ ] クイックセーブ/ロードが完全に機能的
+- [ ] セーブファイル検証が実装済み
+- [ ] 移行ツールが動作
+- [ ] パフォーマンス要件達成
+- [ ] クロスプラットフォーム互換性検証済み
+- [ ] セキュリティレビュー完了
+- [ ] ドキュメント更新済み
 
-### Quality Gates
-- Security penetration testing passed
-- Performance benchmarks maintained
-- Backwards compatibility verified
-- Cross-platform functionality confirmed
+### 品質ゲート
+- セキュリティ侵入テスト合格
+- パフォーマンスベンチマーク維持
+- 後方互換性検証済み
+- クロスプラットフォーム機能確認済み
 
 ---
 
-**Epic Owner**: Development Team  
-**Security Reviewer**: Required  
-**Related Epics**: [D (Configuration)](./epic-d-configuration.md), [E (System Libraries)](./epic-e-system-libraries.md)  
-**GitHub Labels**: `epic:save-load`, `priority:high`, `security`
+**Epic所有者**: 開発チーム  
+**セキュリティレビュアー**: 必要  
+**関連Epic**: [D（設定）](./epic-d-configuration.md), [E（システムライブラリ）](./epic-e-system-libraries.md)  
+**GitHubラベル**: `epic:save-load`, `priority:high`, `security`

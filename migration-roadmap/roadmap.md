@@ -1,96 +1,96 @@
-# SRC# Migration Roadmap
+# SRC# 移行ロードマップ
 
-## Executive Summary
+## エグゼクティブサマリー
 
-The SRC# (Simulation RPG Construction Sharp) C# .NET migration is a comprehensive modernization effort to convert the legacy VB.NET codebase to C# while maintaining full compatibility and improving performance, security, and maintainability.
+SRC#（Simulation RPG Construction Sharp）C# .NET移行は、レガシーVB.NETコードベースをC#に変換し、完全な互換性を維持しながらパフォーマンス、セキュリティ、保守性を向上させる包括的な近代化プロジェクトです。
 
-### Current State Analysis
+### 現状分析
 
-- **310 TODO comments** requiring implementation across core functionality
-- **141 NotImplementedException instances** (primarily in test infrastructure)
-- **Extensive legacy VB.NET conversion artifacts** with thousands of commented lines
-- **Core functionality mostly complete** but requiring refinement and bug fixes
+- **310個のTODOコメント**がコア機能全体で実装を必要としている
+- **141個のNotImplementedExceptionインスタンス**（主にテストインフラに存在）
+- **大量のレガシーVB.NET変換アーティファクト**（数千行のコメントアウト行）
+- **コア機能はほぼ完成**しているが、改良とバグ修正が必要
 
-### Migration Strategy
+### 移行戦略
 
-The migration follows a **8-Epic, 26-Issue structure** organized by functional areas and prioritized by impact on core gameplay functionality.
+移行は**8Epic、26Issue構造**に従い、機能領域で整理され、コアゲームプレイ機能への影響で優先度付けされています。
 
-## Implementation Approach
+## 実装アプローチ
 
-### Phase 1: Critical Functionality (Sprints 1-2)
-**Epics A-C**: Core game systems that directly impact gameplay
-- Save/Load system security and reliability
-- Game command logic and AI behavior
-- Expression system and string handling
+### フェーズ1：重要機能（スプリント1-2）
+**Epic A-C**: ゲームプレイに直接影響するコアゲームシステム
+- セーブ/ロードシステムのセキュリティと信頼性
+- ゲームコマンドロジックとAI動作
+- 式システムと文字列処理
 
-### Phase 2: Infrastructure (Sprint 3)
-**Epics D-F**: Supporting systems and quality infrastructure
-- Configuration management modernization
-- System libraries and utilities
-- Test infrastructure completion
+### フェーズ2：インフラ（スプリント3）
+**Epic D-F**: サポートシステムと品質インフラ
+- 設定管理の近代化
+- システムライブラリとユーティリティ
+- テストインフラの完成
 
-### Phase 3: Quality & Maintenance (Sprint 4+)
-**Epics G-H**: Code quality and platform optimization
-- Legacy code cleanup
-- Cross-platform UI features
+### フェーズ3：品質・メンテナンス（スプリント4+）
+**Epic G-H**: コード品質とプラットフォーム最適化
+- レガシーコードのクリーンアップ
+- クロスプラットフォームUI機能
 
-## Risk Mitigation
+## リスク軽減
 
-### High-Risk Areas
-1. **Save/Load Security**: Path traversal vulnerabilities
-2. **AI Weapon Selection**: Critical gameplay bug affecting balance
-3. **String Functions**: Core expression system dependencies
+### 高リスク領域
+1. **セーブ/ロードセキュリティ**: パストラバーサル脆弱性
+2. **AI武器選択**: バランスに影響する重要なゲームプレイバグ
+3. **文字列関数**: コア式システムの依存関係
 
-### Mitigation Strategies
-- Comprehensive testing before each release
-- Backwards compatibility validation
-- Security review for file system operations
-- Performance benchmarking for core systems
+### 軽減戦略
+- 各リリース前の包括的テスト
+- 後方互換性の検証
+- ファイルシステム操作のセキュリティレビュー
+- コアシステムのパフォーマンスベンチマーク
 
-## Success Criteria
+## 成功基準
 
-### Technical Objectives
-- [ ] Zero critical security vulnerabilities
-- [ ] 100% backwards compatibility with existing save files
-- [ ] All core gameplay features functional
-- [ ] Comprehensive test coverage (>80%)
+### 技術目標
+- [ ] 重要なセキュリティ脆弱性ゼロ
+- [ ] 既存セーブファイルとの100%後方互換性
+- [ ] すべてのコアゲームプレイ機能の動作
+- [ ] 包括的テストカバレッジ（80%以上）
 
-### Quality Objectives  
-- [ ] All TODO comments resolved
-- [ ] All NotImplementedException instances addressed
-- [ ] Legacy VB.NET artifacts removed
-- [ ] Cross-platform compatibility verified
+### 品質目標  
+- [ ] すべてのTODOコメントの解決
+- [ ] すべてのNotImplementedExceptionインスタンスの対応
+- [ ] レガシーVB.NETアーティファクトの削除
+- [ ] クロスプラットフォーム互換性の検証
 
-## Timeline & Resources
+## タイムライン・リソース
 
-### Estimated Effort
-- **Sprint 1**: 2-3 weeks (Critical fixes)
-- **Sprint 2**: 2-3 weeks (Core completion)
-- **Sprint 3**: 3-4 weeks (Infrastructure)
-- **Sprint 4+**: Ongoing (Quality improvements)
+### 予想工数
+- **スプリント1**: 2-3週間（重要な修正）
+- **スプリント2**: 2-3週間（コア完成）
+- **スプリント3**: 3-4週間（インフラ）
+- **スプリント4+**: 継続的（品質改善）
 
-### Dependencies
-- .NET 8 SDK availability
-- Security review tooling
-- Cross-platform testing infrastructure
-- Community feedback integration
+### 依存関係
+- .NET 8 SDKの利用可能性
+- セキュリティレビューツール
+- クロスプラットフォームテストインフラ
+- コミュニティフィードバックの統合
 
-## Communication Plan
+## コミュニケーション計画
 
-### Progress Tracking
-- Weekly epic status updates
-- Sprint retrospectives
-- Community milestone announcements
-- GitHub issue and PR management
+### 進捗追跡
+- 週次Epicステータス更新
+- スプリント振り返り
+- コミュニティマイルストーン発表
+- GitHub IssueとPR管理
 
-### Stakeholder Engagement
-- Developer documentation updates
-- Community testing coordination
-- Performance impact communication
-- Migration assistance for existing projects
+### ステークホルダーエンゲージメント
+- 開発者ドキュメントの更新
+- コミュニティテストの調整
+- パフォーマンス影響のコミュニケーション
+- 既存プロジェクトの移行支援
 
 ---
 
-**Document Version**: 1.0  
-**Related Issue**: #663  
-**Epic References**: [A](./epics/epic-a-save-load.md) | [B](./epics/epic-b-game-commands.md) | [C](./epics/epic-c-expression-system.md) | [D](./epics/epic-d-configuration.md) | [E](./epics/epic-e-system-libraries.md) | [F](./epics/epic-f-test-infrastructure.md) | [G](./epics/epic-g-legacy-cleanup.md) | [H](./epics/epic-h-ui-platform.md)
+**ドキュメントバージョン**: 1.0  
+**関連Issue**: #663  
+**Epic参照**: [A](./epics/epic-a-save-load.md) | [B](./epics/epic-b-game-commands.md) | [C](./epics/epic-c-expression-system.md) | [D](./epics/epic-d-configuration.md) | [E](./epics/epic-e-system-libraries.md) | [F](./epics/epic-f-test-infrastructure.md) | [G](./epics/epic-g-legacy-cleanup.md) | [H](./epics/epic-h-ui-platform.md)
