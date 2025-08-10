@@ -89,6 +89,19 @@ SRC#（Simulation RPG Construction Sharp）C# .NET移行は、レガシーVB.NET
 - パフォーマンス影響のコミュニケーション
 - 既存プロジェクトの移行支援
 
+## Copilot Agent 作業進行
+
+### ワークフロードキュメント
+- **[Copilot Agent ワークフロー手順書](./copilot-agent-workflow.md)** - 人間がGitHubを操作してCopilot agentを効率的に活用するための詳細手順
+- **[クイックスタートガイド](./templates/quickstart-guide.md)** - 最も簡単な開始方法（5分セットアップ）
+- **[チェックリスト集](./templates/checklists.md)** - 各段階での確認事項とテンプレート
+
+### Copilot Agent 活用の利点
+- **自動化された実装**: TODOコメントとNotImplementedExceptionの系統的解決
+- **一貫した品質**: セキュリティ・パフォーマンス要件の自動遵守
+- **効率的な進行**: 人間は進捗管理とレビューに集中可能
+- **継続的改善**: フィードバックループによる作業品質向上
+
 ---
 
 **ドキュメントバージョン**: 1.0  

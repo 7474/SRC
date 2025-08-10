@@ -7,8 +7,16 @@
 - [`roadmap.md`](./roadmap.md) - エグゼクティブサマリーと戦略を含むメイン移行ロードマップ
 - [`technical-breakdown.md`](./technical-breakdown.md) - 詳細な技術分析と実装計画
 - [`sprint-plan.md`](./sprint-plan.md) - 優先度と依存関係を含む4スプリント配信計画
+- [`copilot-agent-workflow.md`](./copilot-agent-workflow.md) - **Copilot agentワークフロー手順書** 🤖
 - [`epics/`](./epics/) - 個別Epic文書（A-H）
-- [`templates/`](./templates/) - タスク作成用GitHub Issueテンプレート
+- [`templates/`](./templates/) - タスク作成用GitHub Issueテンプレートとガイド
+
+## 🚀 すぐに始める
+
+**Copilot agentでロードマップを進めたい場合:**
+1. **[クイックスタートガイド](./templates/quickstart-guide.md)** で5分セットアップ
+2. **[Epic A: セーブ/ロードシステム](./epics/epic-a-save-load.md)** から開始
+3. **[チェックリスト](./templates/checklists.md)** で進捗管理
 
 ## 進捗概要
 
