@@ -1,43 +1,43 @@
-# Epic F: Test Infrastructure
+# Epic F: テストインフラ
 
-**Priority**: Medium  
-**Sprint**: 3  
-**Estimated Effort**: 8-10 days  
-**Risk Level**: Medium (Testing Quality)
+**優先度**: 中  
+**スプリント**: 3  
+**予想工数**: 8-10日  
+**リスクレベル**: 中（テスト品質）
 
-## Overview
+## 概要
 
-Test infrastructure requires completion of MockGUI implementation and addressing 141 NotImplementedException instances to enable comprehensive testing of UI components and system integration.
+テストインフラには、UIコンポーネントとシステム統合の包括的テストを可能にするため、MockGUI実装の完成と141個のNotImplementedExceptionインスタンスの対応が必要です。
 
-## Issues & Tasks
+## Issue・タスク
 
 ### F.1: MockGUI Implementation Completion
 **Priority**: Medium  
 **Effort**: 6 days  
 **Sprint**: 3
 
-#### Problem Statement
+#### 問題ステートメント
 MockGUI test infrastructure contains 141 NotImplementedException instances, preventing comprehensive UI testing and integration testing of GUI components.
 
-#### Technical Requirements
+#### 技術要件
 - Implement all missing MockGUI methods
 - Create comprehensive UI component mocks
 - Add event simulation capabilities
 - Support automated UI testing scenarios
 
-#### Files Affected
+#### 影響ファイル
 - `SRCCoreTests/MockGUI/` (Multiple files)
 - `SRCCoreTests/Mocks/MockUIComponents.cs`
 - `SRCCoreTests/Framework/UITestFramework.cs` (New)
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] All 141 NotImplementedException instances resolved
 - [ ] MockGUI fully functional
 - [ ] UI component mocks complete
 - [ ] Event simulation working
 - [ ] Automated UI testing enabled
 
-#### Testing Requirements
+#### テスト要件
 - Mock implementation validation
 - UI component testing
 - Event simulation verification
@@ -50,28 +50,28 @@ MockGUI test infrastructure contains 141 NotImplementedException instances, prev
 **Effort**: 2 days  
 **Sprint**: 3
 
-#### Problem Statement
+#### 問題ステートメント
 Integration testing framework needs enhancement to support complex scenarios and cross-component testing.
 
-#### Technical Requirements
+#### 技術要件
 - Enhance integration testing framework
 - Add cross-component test scenarios
 - Implement test data management
 - Add performance testing capabilities
 
-#### Files Affected
+#### 影響ファイル
 - `SRCCoreTests/Integration/` (Multiple files)
 - `SRCCoreTests/Framework/IntegrationTestBase.cs`
 - `SRCCoreTests/Data/TestDataManager.cs` (New)
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] Integration framework enhanced
 - [ ] Cross-component scenarios working
 - [ ] Test data management functional
 - [ ] Performance testing implemented
 - [ ] Test reliability improved
 
-#### Testing Requirements
+#### テスト要件
 - Integration scenario validation
 - Test data consistency verification
 - Performance test accuracy
@@ -84,34 +84,34 @@ Integration testing framework needs enhancement to support complex scenarios and
 **Effort**: 2 days  
 **Sprint**: 4
 
-#### Problem Statement
+#### 問題ステートメント
 Test coverage needs analysis and improvement to ensure comprehensive testing of critical components.
 
-#### Technical Requirements
+#### 技術要件
 - Analyze current test coverage
 - Identify coverage gaps
 - Add tests for uncovered code paths
 - Implement coverage reporting
 
-#### Files Affected
+#### 影響ファイル
 - All test files requiring coverage improvement
 - `SRCCoreTests/Coverage/CoverageAnalyzer.cs` (New)
 - Build configuration for coverage reporting
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] Test coverage analyzed
 - [ ] Coverage gaps identified and addressed
 - [ ] Target coverage (80%+) achieved
 - [ ] Coverage reporting implemented
 - [ ] Continuous coverage monitoring
 
-#### Testing Requirements
+#### テスト要件
 - Coverage analysis validation
 - New test effectiveness verification
 - Coverage reporting accuracy
 - Continuous integration integration
 
-## Implementation Strategy
+## 実装戦略
 
 ### Phase 1: MockGUI Completion (Sprint 3)
 1. Audit all NotImplementedException instances
@@ -128,28 +128,28 @@ Test coverage needs analysis and improvement to ensure comprehensive testing of 
 2. Add tests for critical uncovered areas
 3. Implement coverage monitoring
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
+### 外部依存関係
 - UI testing frameworks
 - Code coverage tools
 - Test data management systems
 - Performance testing tools
 
-### Internal Dependencies
+### 内部依存関係
 - All core components (for testing)
 - UI components (Epic H)
 - Configuration system (Epic D)
 - System libraries (Epic E)
 
-## Risk Assessment
+## リスク評価
 
 ### Medium Risks
 - **Mock Complexity**: UI mocks might not accurately represent real behavior
 - **Test Maintenance**: Large number of tests to maintain
 - **Performance Impact**: Comprehensive testing could slow development
 
-### Mitigation Strategies
+### 軽減戦略
 - Regular validation of mocks against real components
 - Automated test maintenance tools
 - Parallel test execution for performance
@@ -227,9 +227,9 @@ public abstract class IntegrationTestBase
 4. Continuous Monitoring: Ongoing coverage tracking
 ```
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
+### Epic完了基準
 - [ ] All 141 NotImplementedException instances resolved
 - [ ] MockGUI fully functional
 - [ ] Integration testing framework enhanced
@@ -239,7 +239,7 @@ public abstract class IntegrationTestBase
 - [ ] Documentation updated
 - [ ] Test maintenance automated
 
-### Quality Gates
+### 品質ゲート
 - Mock behavior validation passed
 - Integration testing framework verified
 - Coverage targets met

@@ -1,161 +1,161 @@
-# Epic D: Configuration System
+# Epic D: 設定システム
 
-**Priority**: Medium  
-**Sprint**: 3  
-**Estimated Effort**: 5-7 days  
-**Risk Level**: Medium (Infrastructure)
+**優先度**: 中  
+**スプリント**: 3  
+**予想工数**: 5-7日  
+**リスクレベル**: 中（インフラ）
 
-## Overview
+## 概要
 
-The configuration system requires redesign and platform separation to support cross-platform deployment while maintaining backwards compatibility and improving maintainability.
+設定システムには、後方互換性を維持し保守性を向上させながら、クロスプラットフォーム展開をサポートするための再設計とプラットフォーム分離が必要です。
 
-## Issues & Tasks
+## Issue・タスク
 
-### D.1: Configuration System Redesign
-**Priority**: Medium  
-**Effort**: 3 days  
-**Sprint**: 3
+### D.1: 設定システム再設計
+**優先度**: 中  
+**工数**: 3日  
+**スプリント**: 3
 
-#### Problem Statement
-Current configuration system lacks platform abstraction and proper separation of concerns, making cross-platform deployment and maintenance difficult.
+#### 問題ステートメント
+現在の設定システムはプラットフォーム抽象化と適切な関心の分離を欠いており、クロスプラットフォーム展開と保守を困難にしています。
 
-#### Technical Requirements
-- Redesign configuration architecture
-- Implement platform-specific configuration providers
-- Add configuration validation and migration
-- Support multiple configuration sources
+#### 技術要件
+- 設定アーキテクチャの再設計
+- プラットフォーム固有設定プロバイダーの実装
+- 設定検証と移行の追加
+- 複数設定ソースのサポート
 
-#### Files Affected
-- `SRCCore/Configuration/` (Multiple files)
-- `SRCCore/Platform/ConfigurationProvider.cs` (New)
-- `SRCCore/Configuration/ConfigurationManager.cs` (Refactor)
+#### 影響ファイル
+- `SRCCore/Configuration/`（複数ファイル）
+- `SRCCore/Platform/ConfigurationProvider.cs`（新規）
+- `SRCCore/Configuration/ConfigurationManager.cs`（リファクタ）
 
-#### Acceptance Criteria
-- [ ] Platform-agnostic configuration interface
-- [ ] Platform-specific providers implemented
-- [ ] Configuration validation working
-- [ ] Migration system functional
-- [ ] Backwards compatibility maintained
+#### 受け入れ基準
+- [ ] プラットフォーム非依存設定インターフェース
+- [ ] プラットフォーム固有プロバイダー実装済み
+- [ ] 設定検証が動作
+- [ ] 移行システムが機能的
+- [ ] 後方互換性が維持
 
-#### Testing Requirements
-- Cross-platform configuration testing
-- Migration validation
-- Performance impact assessment
-- Configuration validation testing
+#### テスト要件
+- クロスプラットフォーム設定テスト
+- 移行検証
+- パフォーマンス影響評価
+- 設定検証テスト
 
 ---
 
-### D.2: Settings Management Improvement
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 3
+### D.2: 設定管理改善
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 3
 
-#### Problem Statement
-Settings management lacks proper user preferences handling and settings persistence across sessions.
+#### 問題ステートメント
+設定管理は適切なユーザー設定処理とセッション間の設定永続化を欠いています。
 
-#### Technical Requirements
-- Improve user settings management
-- Add settings persistence layer
-- Implement settings import/export
-- Add settings validation
+#### 技術要件
+- ユーザー設定管理の改善
+- 設定永続化レイヤーの追加
+- 設定インポート/エクスポートの実装
+- 設定検証の追加
 
-#### Files Affected
-- `SRCCore/Configuration/SettingsManager.cs` (Primary)
+#### 影響ファイル
+- `SRCCore/Configuration/SettingsManager.cs`（プライマリ）
 - `SRCCore/Configuration/UserPreferences.cs`
-- `SRCCore/IO/SettingsPersistence.cs` (New)
+- `SRCCore/IO/SettingsPersistence.cs`（新規）
 
-#### Acceptance Criteria
-- [ ] User settings properly managed
-- [ ] Settings persist across sessions
-- [ ] Import/export functionality working
-- [ ] Settings validation implemented
-- [ ] Default settings handling improved
+#### 受け入れ基準
+- [ ] ユーザー設定が適切に管理される
+- [ ] 設定がセッション間で永続化される
+- [ ] インポート/エクスポート機能が動作
+- [ ] 設定検証が実装される
+- [ ] デフォルト設定処理が改善される
 
-#### Testing Requirements
-- Settings persistence testing
-- Import/export validation
-- User preference workflow testing
-- Default settings verification
+#### テスト要件
+- 設定永続化テスト
+- インポート/エクスポート検証
+- ユーザー設定ワークフローテスト
+- デフォルト設定検証
 
 ---
 
-### D.3: Platform Configuration Separation
-**Priority**: Medium  
-**Effort**: 2 days  
-**Sprint**: 3
+### D.3: プラットフォーム設定分離
+**優先度**: 中  
+**工数**: 2日  
+**スプリント**: 3
 
-#### Problem Statement
-Platform-specific configurations are mixed with general settings, making cross-platform maintenance difficult.
+#### 問題ステートメント
+プラットフォーム固有設定が一般設定と混在しており、クロスプラットフォーム保守を困難にしています。
 
-#### Technical Requirements
-- Separate platform-specific configurations
-- Create platform abstraction layer
-- Implement platform detection system
-- Add platform-specific overrides
+#### 技術要件
+- プラットフォーム固有設定の分離
+- プラットフォーム抽象化レイヤーの作成
+- プラットフォーム検出システムの実装
+- プラットフォーム固有オーバーライドの追加
 
-#### Files Affected
-- `SRCCore/Platform/PlatformDetector.cs` (New)
-- `SRCCore/Configuration/PlatformConfig.cs` (New)
+#### 影響ファイル
+- `SRCCore/Platform/PlatformDetector.cs`（新規）
+- `SRCCore/Configuration/PlatformConfig.cs`（新規）
 - `SRCCore/Configuration/ConfigurationManager.cs`
 
-#### Acceptance Criteria
-- [ ] Platform configurations separated
-- [ ] Platform abstraction working
-- [ ] Platform detection accurate
-- [ ] Platform overrides functional
-- [ ] Cross-platform consistency maintained
+#### 受け入れ基準
+- [ ] プラットフォーム設定が分離される
+- [ ] プラットフォーム抽象化が動作
+- [ ] プラットフォーム検出が正確
+- [ ] プラットフォームオーバーライドが機能的
+- [ ] クロスプラットフォーム一貫性が維持される
 
-#### Testing Requirements
-- Platform detection testing
-- Configuration separation validation
-- Cross-platform consistency verification
-- Override functionality testing
+#### テスト要件
+- プラットフォーム検出テスト
+- 設定分離検証
+- クロスプラットフォーム一貫性検証
+- オーバーライド機能テスト
 
-## Implementation Strategy
+## 実装戦略
 
-### Phase 1: Architecture Redesign (Sprint 3)
-1. Design new configuration architecture
-2. Implement platform abstraction layer
-3. Create migration tools
+### フェーズ1: アーキテクチャ再設計（スプリント3）
+1. 新しい設定アーキテクチャの設計
+2. プラットフォーム抽象化レイヤーの実装
+3. 移行ツールの作成
 
-### Phase 2: Settings Enhancement
-1. Improve settings management
-2. Add persistence layer
-3. Implement import/export
+### フェーズ2: 設定拡張
+1. 設定管理の改善
+2. 永続化レイヤーの追加
+3. インポート/エクスポートの実装
 
-### Phase 3: Platform Separation
-1. Separate platform configurations
-2. Add platform detection
-3. Implement overrides system
+### フェーズ3: プラットフォーム分離
+1. プラットフォーム設定の分離
+2. プラットフォーム検出の追加
+3. オーバーライドシステムの実装
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
-- Platform-specific APIs
-- Configuration storage systems
-- Migration testing tools
+### 外部依存関係
+- プラットフォーム固有API
+- 設定ストレージシステム
+- 移行テストツール
 
-### Internal Dependencies
-- File operations (Epic A)
-- Platform abstraction (Epic H)
-- Utility functions (Epic E)
+### 内部依存関係
+- ファイル操作（Epic A）
+- プラットフォーム抽象化（Epic H）
+- ユーティリティ関数（Epic E）
 
-## Risk Assessment
+## リスク評価
 
-### Medium Risks
-- **Configuration Migration**: Breaking existing configurations
-- **Platform Compatibility**: Different configuration storage approaches
-- **Performance Impact**: Configuration loading overhead
+### 中リスク
+- **設定移行**: 既存設定の破損
+- **プラットフォーム互換性**: 異なる設定ストレージアプローチ
+- **パフォーマンス影響**: 設定読み込みオーバーヘッド
 
-### Mitigation Strategies
-- Comprehensive migration testing
-- Platform-specific testing suites
-- Performance benchmarking
-- Backup/restore functionality
+### 軽減戦略
+- 包括的移行テスト
+- プラットフォーム固有テストスイート
+- パフォーマンスベンチマーク
+- バックアップ/復元機能
 
-## Technical Architecture
+## 技術アーキテクチャ
 
-### Configuration Provider Interface
+### 設定プロバイダーインターフェース
 ```csharp
 public interface IConfigurationProvider
 {
@@ -167,33 +167,33 @@ public interface IConfigurationProvider
 }
 ```
 
-### Platform-Specific Providers
-- **Windows**: Registry and AppData
-- **Linux**: XDG config directories
-- **macOS**: Application Support directories
-- **Web**: Local storage and session storage
+### プラットフォーム固有プロバイダー
+- **Windows**: レジストリとAppData
+- **Linux**: XDG設定ディレクトリ
+- **macOS**: Application Supportディレクトリ
+- **Web**: ローカルストレージとセッションストレージ
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
-- [ ] Configuration system redesigned
-- [ ] Platform separation implemented
-- [ ] Settings management improved
-- [ ] Migration tools working
-- [ ] Cross-platform compatibility verified
-- [ ] Performance requirements met
-- [ ] Documentation updated
-- [ ] Backwards compatibility maintained
+### Epic完了基準
+- [ ] 設定システム再設計済み
+- [ ] プラットフォーム分離実装済み
+- [ ] 設定管理改善済み
+- [ ] 移行ツールが動作
+- [ ] クロスプラットフォーム互換性検証済み
+- [ ] パフォーマンス要件達成
+- [ ] ドキュメント更新済み
+- [ ] 後方互換性維持
 
-### Quality Gates
-- Cross-platform configuration testing passed
-- Migration validation completed
-- Performance benchmarks maintained
-- Platform-specific functionality verified
+### 品質ゲート
+- クロスプラットフォーム設定テスト合格
+- 移行検証完了
+- パフォーマンスベンチマーク維持
+- プラットフォーム固有機能検証済み
 
 ---
 
-**Epic Owner**: Development Team  
-**Platform Reviewer**: Required  
-**Related Epics**: [A (Save/Load)](./epic-a-save-load.md), [E (System Libraries)](./epic-e-system-libraries.md), [H (UI Platform)](./epic-h-ui-platform.md)  
-**GitHub Labels**: `epic:configuration`, `priority:medium`, `infrastructure`, `cross-platform`
+**Epic所有者**: 開発チーム  
+**プラットフォームレビュアー**: 必要  
+**関連Epic**: [A（セーブ/ロード）](./epic-a-save-load.md), [E（システムライブラリ）](./epic-e-system-libraries.md), [H（UIプラットフォーム）](./epic-h-ui-platform.md)  
+**GitHubラベル**: `epic:configuration`, `priority:medium`, `infrastructure`, `cross-platform`

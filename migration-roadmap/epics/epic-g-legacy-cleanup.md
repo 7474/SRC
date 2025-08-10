@@ -1,43 +1,43 @@
-# Epic G: Legacy Code Cleanup
+# Epic G: レガシーコードクリーンアップ
 
-**Priority**: Low  
-**Sprint**: 4+  
-**Estimated Effort**: 2-3 days  
-**Risk Level**: Very Low (Maintenance)
+**優先度**: 低  
+**スプリント**: 4+  
+**予想工数**: 2-3日  
+**リスクレベル**: 極低（メンテナンス）
 
-## Overview
+## 概要
 
-Legacy code cleanup involves removing thousands of commented VB.NET conversion artifacts and improving overall code quality without affecting functionality.
+レガシーコードクリーンアップは、機能に影響を与えることなく、数千のコメントアウトされたVB.NET変換アーティファクトの削除と全体的なコード品質の向上を含みます。
 
-## Issues & Tasks
+## Issue・タスク
 
 ### G.1: VB.NET Comment Removal
 **Priority**: Low  
 **Effort**: 1.5 days  
 **Sprint**: 4
 
-#### Problem Statement
+#### 問題ステートメント
 Thousands of commented VB.NET conversion artifacts remain in the codebase, reducing readability and increasing maintenance overhead.
 
-#### Technical Requirements
+#### 技術要件
 - Identify and catalog all VB.NET comment artifacts
 - Verify commented code is truly obsolete
 - Remove confirmed obsolete comments
 - Preserve any comments with historical or reference value
 
-#### Files Affected
+#### 影響ファイル
 - Multiple files across entire codebase
 - Primarily in SRCCore/\* directories
 - Some legacy artifacts in test files
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] VB.NET comment artifacts cataloged
 - [ ] Obsolete comments verified and removed
 - [ ] Code readability improved
 - [ ] No functional code accidentally removed
 - [ ] Historical comments preserved where appropriate
 
-#### Testing Requirements
+#### テスト要件
 - Functionality regression testing
 - Code review for accidental removals
 - Documentation impact assessment
@@ -50,28 +50,28 @@ Thousands of commented VB.NET conversion artifacts remain in the codebase, reduc
 **Effort**: 1 day  
 **Sprint**: 4
 
-#### Problem Statement
+#### 問題ステートメント
 Overall code quality can be improved through refactoring, standardization, and modern C# pattern adoption.
 
-#### Technical Requirements
+#### 技術要件
 - Apply modern C# patterns and conventions
 - Standardize coding style across files
 - Remove code duplication
 - Improve variable and method naming
 
-#### Files Affected
+#### 影響ファイル
 - Files identified during VB.NET cleanup
 - Components with high TODO comment density
 - Legacy conversion patterns
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] Modern C# patterns applied
 - [ ] Coding style standardized
 - [ ] Code duplication reduced
 - [ ] Naming conventions improved
 - [ ] Code quality metrics improved
 
-#### Testing Requirements
+#### テスト要件
 - Functionality regression testing
 - Code style validation
 - Performance impact assessment
@@ -84,35 +84,35 @@ Overall code quality can be improved through refactoring, standardization, and m
 **Effort**: 0.5 days  
 **Sprint**: 4
 
-#### Problem Statement
+#### 問題ステートメント
 Documentation may contain outdated references to VB.NET and conversion process that should be updated or removed.
 
-#### Technical Requirements
+#### 技術要件
 - Review documentation for VB.NET references
 - Update outdated conversion information
 - Improve code documentation quality
 - Standardize documentation format
 
-#### Files Affected
+#### 影響ファイル
 - README files
 - Code comments and XML documentation
 - Developer documentation
 - API documentation
 
-#### Acceptance Criteria
+#### 受け入れ基準
 - [ ] VB.NET references updated or removed
 - [ ] Documentation accuracy improved
 - [ ] Code documentation enhanced
 - [ ] Documentation format standardized
 - [ ] Outdated conversion info removed
 
-#### Testing Requirements
+#### テスト要件
 - Documentation accuracy verification
 - Link validation
 - Format consistency checking
 - Content review process
 
-## Implementation Strategy
+## 実装戦略
 
 ### Phase 1: Analysis and Planning
 1. Catalog all VB.NET comment artifacts
@@ -129,26 +129,26 @@ Documentation may contain outdated references to VB.NET and conversion process t
 2. Code review
 3. Documentation verification
 
-## Dependencies
+## 依存関係
 
-### External Dependencies
+### 外部依存関係
 - Code analysis tools
 - Documentation generators
 - Style checking tools
 
-### Internal Dependencies
+### 内部依存関係
 - All other epics (cleanup should not interfere)
 - Testing infrastructure (Epic F)
 - Build and CI systems
 
-## Risk Assessment
+## リスク評価
 
 ### Very Low Risks
 - **Accidental Removal**: Removing functional code by mistake
 - **Historical Loss**: Losing important conversion history
 - **Style Conflicts**: Introducing inconsistent styles
 
-### Mitigation Strategies
+### 軽減戦略
 - Careful code review process
 - Preserve important historical comments
 - Use automated style checking tools
@@ -220,9 +220,9 @@ grep -r "Legacy.*VB" --include="*.cs" SRCCore/
 4. Diff Analysis: Verify only comments/style changed
 ```
 
-## Definition of Done
+## 完了定義
 
-### Epic Completion Criteria
+### Epic完了基準
 - [ ] VB.NET comment artifacts removed
 - [ ] Code quality improvements applied
 - [ ] Documentation updated and cleaned
@@ -232,7 +232,7 @@ grep -r "Legacy.*VB" --include="*.cs" SRCCore/
 - [ ] Code review completed
 - [ ] Historical preservation verified
 
-### Quality Gates
+### 品質ゲート
 - Full regression testing passed
 - Code review approval
 - Build verification successful
