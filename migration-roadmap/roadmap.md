@@ -89,6 +89,15 @@ SRC#（Simulation RPG Construction Sharp）C# .NET移行は、レガシーVB.NET
 - パフォーマンス影響のコミュニケーション
 - 既存プロジェクトの移行支援
 
+## Copilot Agent 作業進行
+
+Copilot agentに作業を依頼するには：
+1. [Epic一覧](./epics/)から任意のタスクを選択
+2. [GitHub Issue](../.github/ISSUE_TEMPLATE/epic-task.md)で新しいIssueを作成
+3. @copilot をメンションして依頼
+
+**推奨開始点**: [Epic A: セーブ/ロードシステム](./epics/epic-a-save-load.md)
+
 ---
 
 **ドキュメントバージョン**: 1.0  
