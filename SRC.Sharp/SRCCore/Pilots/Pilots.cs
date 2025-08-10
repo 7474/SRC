@@ -4,8 +4,10 @@
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
 using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -575,129 +577,109 @@ namespace SRCCore.Pilots
         // パイロットの支援修正を更新
         public void UpdateSupportMod(Unit u = null)
         {
-            // TODO Impl UpdateSupportMod
-            //int xx, i, yy;
-            //int max_range, range;
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    return;
-            //}
+            int xx, i, yy;
+            int max_range, range;
+            
+            if (string.IsNullOrEmpty(SRC.Map.MapFileName))
+            {
+                return;
+            }
 
-            //// ユニット指定がなければ全パイロットを更新
-            //if (u is null)
-            //{
-            //    foreach (Pilot p in colPilots)
-            //        p.UpdateSupportMod();
-            //    return;
-            //}
-            //// ユニットにパイロットが乗っていなければそのまま終了
-            //if (u.CountPilot() == 0)
-            //{
-            //    return;
-            //}
+            // ユニット指定がなければ全パイロットを更新
+            if (u is null)
+            {
+                foreach (Pilot p in colPilots)
+                    p.UpdateSupportMod();
+                return;
+            }
+            
+            // ユニットにパイロットが乗っていなければそのまま終了
+            if (u.CountPilot() == 0)
+            {
+                return;
+            }
 
-            //{
-            //    var withBlock = u.MainPilot();
-            //    // メインパイロットを更新
-            //    withBlock.UpdateSupportMod();
+            var withBlock = u.MainPilot();
+            // メインパイロットを更新
+            withBlock.UpdateSupportMod();
 
-            //    // 支援範囲を算出
-            //    max_range = withBlock.CommandRange();
-            //    if (withBlock.IsSkillAvailable("広域サポート"))
-            //    {
-            //        max_range = GeneralLib.MaxLng(max_range, 2);
-            //    }
+            // 支援範囲を算出
+            max_range = withBlock.CommandRange();
+            if (withBlock.IsSkillAvailable("広域サポート"))
+            {
+                max_range = GeneralLib.MaxLng(max_range, 2);
+            }
 
-            //    if (Expression.IsOptionDefined("信頼補正") && Strings.InStr(withBlock.Name, "(ザコ)") == 0)
-            //    {
-            //        if (Expression.IsOptionDefined("信頼補正範囲拡大"))
-            //        {
-            //            max_range = GeneralLib.MaxLng(max_range, 2);
-            //        }
-            //        else
-            //        {
-            //            max_range = GeneralLib.MaxLng(max_range, 1);
-            //        }
-            //    }
-            //}
+            if (SRC.Expression.IsOptionDefined("信頼補正") && Strings.InStr(withBlock.Name, "(ザコ)") == 0)
+            {
+                if (SRC.Expression.IsOptionDefined("信頼補正範囲拡大"))
+                {
+                    max_range = GeneralLib.MaxLng(max_range, 2);
+                }
+                else
+                {
+                    max_range = GeneralLib.MaxLng(max_range, 1);
+                }
+            }
 
-            //// 他のパイロットを更新
-            //var loopTo = u.CountPilot();
-            //for (i = 2; i <= loopTo; i++)
-            //{
-            //    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
+            // 他のパイロットを更新
+            foreach (var subPilot in u.SubPilots)
+            {
+                subPilot.UpdateSupportMod();
+            }
 
-            //    localPilot().UpdateSupportMod();
-            //}
+            foreach (var supportPilot in u.Supports)
+            {
+                supportPilot.UpdateSupportMod();
+            }
 
-            //var loopTo1 = u.CountSupport();
-            //for (i = 1; i <= loopTo1; i++)
-            //{
-            //    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
+            // 支援範囲が無いなら他のユニットに乗っているパイロットには影響無し
+            if (max_range == 0)
+            {
+                return;
+            }
 
-            //    localSupport().UpdateSupportMod();
-            //}
+            // 周りのユニットに乗っているパイロットの支援修正を更新
+            for (xx = GeneralLib.MaxLng(u.x - max_range, 1); xx <= GeneralLib.MinLng(u.x + max_range, SRC.Map.MapWidth); xx++)
+            {
+                for (yy = GeneralLib.MaxLng(u.y - max_range, 1); yy <= GeneralLib.MinLng(u.y + max_range, SRC.Map.MapHeight); yy++)
+                {
+                    if (SRC.Map.MapDataForUnit[xx, yy] is null)
+                    {
+                        continue;
+                    }
 
-            //// 支援範囲が無いなら他のユニットに乗っているパイロットには影響無し
-            //if (max_range == 0)
-            //{
-            //    return;
-            //}
+                    // 支援範囲内にいるかチェック
+                    range = (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy)));
+                    if (range > max_range)
+                    {
+                        continue;
+                    }
 
-            //// 周りのユニットに乗っているパイロットの支援修正を更新
-            //var loopTo2 = GeneralLib.MinLng(u.x + max_range, Map.MapWidth);
-            //for (xx = GeneralLib.MaxLng(u.x - max_range, 1); xx <= loopTo2; xx++)
-            //{
-            //    var loopTo3 = GeneralLib.MinLng(u.y + max_range, Map.MapHeight);
-            //    for (yy = GeneralLib.MaxLng(u.y - max_range, 1); yy <= loopTo3; yy++)
-            //    {
-            //        if (Map.MapDataForUnit[xx, yy] is null)
-            //        {
-            //            goto NextPoint;
-            //        }
+                    if (range == 0)
+                    {
+                        continue;
+                    }
 
-            //        // 支援範囲内にいるかチェック
-            //        range = (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy)));
-            //        if (range > max_range)
-            //        {
-            //            goto NextPoint;
-            //        }
+                    // 乗っているパイロット全員の支援修正を更新
+                    var withBlock1 = SRC.Map.MapDataForUnit[xx, yy];
+                    if (withBlock1.CountPilot() == 0)
+                    {
+                        continue;
+                    }
 
-            //        if (range == 0)
-            //        {
-            //            goto NextPoint;
-            //        }
+                    withBlock1.MainPilot().UpdateSupportMod();
+                    foreach (var subPilot in withBlock1.SubPilots)
+                    {
+                        subPilot.UpdateSupportMod();
+                    }
 
-            //        // 乗っているパイロット全員の支援修正を更新
-            //        {
-            //            var withBlock1 = Map.MapDataForUnit[xx, yy];
-            //            if (withBlock1.CountPilot() == 0)
-            //            {
-            //                goto NextPoint;
-            //            }
-
-            //            withBlock1.MainPilot().UpdateSupportMod();
-            //            var loopTo4 = withBlock1.CountPilot();
-            //            for (i = 2; i <= loopTo4; i++)
-            //            {
-            //                Pilot localPilot1() { object argIndex1 = i; var ret = withBlock1.Pilot(argIndex1); return ret; }
-
-            //                localPilot1().UpdateSupportMod();
-            //            }
-
-            //            var loopTo5 = withBlock1.CountSupport();
-            //            for (i = 1; i <= loopTo5; i++)
-            //            {
-            //                Pilot localSupport1() { object argIndex1 = i; var ret = withBlock1.Support(argIndex1); return ret; }
-
-            //                localSupport1().UpdateSupportMod();
-            //            }
-            //        }
-
-            //    NextPoint:
-            //        ;
-            //    }
-            //}
+                    foreach (var supportPilot in withBlock1.Supports)
+                    {
+                        supportPilot.UpdateSupportMod();
+                    }
+                }
+            }
         }
 
         // 破棄されたパイロットを削除する
