@@ -91,16 +91,12 @@ SRC#（Simulation RPG Construction Sharp）C# .NET移行は、レガシーVB.NET
 
 ## Copilot Agent 作業進行
 
-### ワークフロードキュメント
-- **[Copilot Agent ワークフロー手順書](./copilot-agent-workflow.md)** - 人間がGitHubを操作してCopilot agentを効率的に活用するための詳細手順
-- **[クイックスタートガイド](./templates/quickstart-guide.md)** - 最も簡単な開始方法（5分セットアップ）
-- **[チェックリスト集](./templates/checklists.md)** - 各段階での確認事項とテンプレート
+Copilot agentに作業を依頼するには：
+1. [Epic一覧](./epics/)から任意のタスクを選択
+2. [GitHub Issue](../.github/ISSUE_TEMPLATE/epic-task.md)で新しいIssueを作成
+3. @copilot をメンションして依頼
 
-### Copilot Agent 活用の利点
-- **自動化された実装**: TODOコメントとNotImplementedExceptionの系統的解決
-- **一貫した品質**: セキュリティ・パフォーマンス要件の自動遵守
-- **効率的な進行**: 人間は進捗管理とレビューに集中可能
-- **継続的改善**: フィードバックループによる作業品質向上
+**推奨開始点**: [Epic A: セーブ/ロードシステム](./epics/epic-a-save-load.md)
 
 ---
 
