@@ -1,6 +1,6 @@
 # SRC# (Simulation RPG Construction Sharp)
 
-SRC# is a C# port of the original SRC (Simulation RPG Construction) game creation system. It's a .NET 8/6 multi-project solution that includes a core library, Windows Forms application, Blazor web application, CLI data validation tool, and various utilities.
+SRC# is a C# port of the original SRC (Simulation RPG Construction) game creation system. It's a .NET 8 multi-project solution that includes a core library, Windows Forms application, Blazor web application, CLI data validation tool, and various utilities.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -25,14 +25,13 @@ Always reference these instructions first and fallback to search or bash command
 
 **Cross-platform projects that work everywhere:**
 - `SRCCore` (.NET Standard 2.1) - Core library
-- `SRCDataLinter` (.NET 6) - CLI data validation tool
-- `SRCTestBlazor` (.NET 6) - Blazor WebAssembly application
+- `SRCDataLinter` (.NET 8) - CLI data validation tool
+- `SRCTestBlazor` (.NET 8) - Blazor WebAssembly application
 - Tool projects in `/tools/` directory
 
 ### Running Tests
-- **CRITICAL**: Tests target .NET 6, but .NET 6 runtime may not be available on all systems
-- If .NET 6 runtime is available: `dotnet test SRCCoreTests/SRCCoreTests.csproj` -- takes 5-10 seconds
-- If only .NET 8 is available: Tests can be run by temporarily changing `<TargetFramework>net6.0</TargetFramework>` to `<TargetFramework>net8.0</TargetFramework>` in `SRCCoreTests/SRCCoreTests.csproj`, then restore and test
+- **CRITICAL**: Tests target .NET 8, should work on systems with .NET 8 SDK
+- Run tests: `dotnet test SRCCoreTests/SRCCoreTests.csproj` -- takes 5-10 seconds
 
 ### Running Applications
 
@@ -45,14 +44,13 @@ Always reference these instructions first and fallback to search or bash command
 - **MANUAL VALIDATION**: Navigate between Unit/Pilot/Item tabs, verify data displays correctly
 
 #### CLI Data Linter (SRCDataLinter)  
-- **Note**: May fail to run on systems without .NET 6 runtime, but builds successfully
 - Test help: `dotnet run --project SRCDataLinter/SRCDataLinter.csproj -- --help`
 - Docker alternative: `docker run --rm -v /path/to/data:/app/data -t koudenpa/srcdatalinter data`
 
 #### Windows Forms Applications (Windows only)
 - `SRCSharpForm` - Main Windows Forms application
 - `SRCTestForm` - Data viewing test form
-- Both require Windows and .NET 6 runtime
+- Both require Windows and .NET 8 runtime
 
 ## Validation Scenarios
 
@@ -104,16 +102,16 @@ npm run build
 ```
 SRC.Sharp/                    # Main C# projects
 ├── SRCCore/                  # Core library (.NET Standard 2.1)
-├── SRCSharpForm/            # Windows Forms app (.NET 6, Windows only)  
-├── SRCTestForm/             # Test Forms app (.NET 6, Windows only)
-├── SRCTestBlazor/           # Blazor WebAssembly app (.NET 6)
+├── SRCSharpForm/            # Windows Forms app (.NET 8, Windows only)  
+├── SRCTestForm/             # Test Forms app (.NET 8, Windows only)
+├── SRCTestBlazor/           # Blazor WebAssembly app (.NET 8)
 │   ├── Npm/                 # CSS build tools (Node.js/npm)
 │   └── E2E/                 # Cypress end-to-end tests
-├── SRCDataLinter/           # CLI data validation (.NET 6)
-├── SRCCoreTests/            # Unit tests (.NET 6)
+├── SRCDataLinter/           # CLI data validation (.NET 8)
+├── SRCCoreTests/            # Unit tests (.NET 8)
 └── SRC.Sharp.sln            # Main solution (has Windows dependencies)
 
-tools/                       # Utility projects (.NET 6)
+tools/                       # Utility projects (.NET 8)
 ├── Template/                # Code generation template
 ├── ReplaceArgx/            # Argument replacement tool
 └── ToMackerel/             # Mackerel integration tool
@@ -131,9 +129,9 @@ SRC.NET/                    # Legacy .NET port
 
 ## Known Issues and Workarounds
 
-### .NET 6 Runtime Availability
-- **Issue**: Some systems only have .NET 8, causing runtime failures for .NET 6 projects
-- **Workaround**: Temporarily update target framework to .NET 8 for testing, or use Docker containers
+### .NET 8 Runtime Availability
+- **Updated**: All projects now target .NET 8, which provides better compatibility and performance
+- All applications and tools now run consistently on .NET 8
 
 ### Windows Desktop Dependencies  
 - **Issue**: `Microsoft.NET.Sdk.WindowsDesktop` projects fail on Linux/macOS
