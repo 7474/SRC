@@ -24,9 +24,6 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Install Windows Desktop workload
-      run: dotnet workload install microsoft-windowsdesktop-app
-
     - name: Restore dependencies
       run: dotnet restore SRC.Sharp/SRC.Sharp.sln
 

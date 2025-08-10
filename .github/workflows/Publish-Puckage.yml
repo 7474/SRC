@@ -29,9 +29,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Install Windows Desktop workload
-      run: dotnet workload install microsoft-windowsdesktop-app
-
     - run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
     - run: rm SRC.Sharp/SRCSharpForm/bin/Release/net8.0-windows/win-x64/publish/*.pdb
     - run: powershell Compress-Archive -Path SRC.Sharp/SRCSharpForm/bin/Release/net8.0-windows/win-x64/publish/ -DestinationPath SRCSharpForm.zip
