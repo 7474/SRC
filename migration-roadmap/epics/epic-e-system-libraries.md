@@ -2,12 +2,12 @@
 
 **優先度**: 中  
 **スプリント**: 3  
-**予想工数**: 3-4日  
+**予想工数**: 中期間  
 **リスクレベル**: 低（サポートシステム）
 
 ## 概要
 
-システムライブラリには、クロスプラットフォーム機能をサポートし、適切なランダム数生成とユーティリティ関数でコード信頼性を向上させるための近代化と完成が必要です。
+システムライブラリには、クロスプラットフォーム機能をサポートし、適切なランダム数生成とユーティリティ関数でコード信頼性を向上させるための近代化と完成が必要です。また、サウンドシステム、マップシステム、イベントシステムの実装も含まれます。
 
 ## Issue・タスク
 
@@ -112,6 +112,104 @@ Logging system needs minor enhancements for better debugging and production moni
 - Performance impact measurement
 - Production scenario testing
 
+---
+
+### E.4: Sound System Implementation
+**Priority**: Medium  
+**Effort**: 短期間  
+**Sprint**: 3
+
+#### 問題ステートメント
+Sound system requires BGM management improvements, path resolution fixes, and file system integration to provide reliable audio functionality.
+
+#### 技術要件
+- Implement BGM name resolution
+- Fix path resolution for sound files
+- Integrate with file system abstraction
+- Optimize sound file caching
+- Add proper directory existence checks
+
+#### 影響ファイル
+- `SRCCore/Sound.cs` (Primary)
+- Sound resource management
+
+#### 受け入れ基準
+- [ ] BGM name resolution implemented
+- [ ] Path resolution fixed
+- [ ] File system integration completed
+- [ ] Sound caching optimized
+- [ ] Directory checks added
+
+#### テスト要件
+- Sound file loading testing
+- Path resolution validation
+- File system integration testing
+- Performance testing
+
+---
+
+### E.5: Map System Enhancement  
+**Priority**: Medium  
+**Effort**: 短期間  
+**Sprint**: 3
+
+#### 問題ステートメント
+Map system needs layer support implementation and data loading improvements for complete map rendering functionality.
+
+#### 技術要件
+- Implement layer data loading
+- Add multi-layer support
+- Improve map data structure
+- Optimize rendering pipeline
+
+#### 影響ファイル
+- `SRCCore/Maps/Map.cs` (Primary)
+- Map layer management
+
+#### 受け入れ基準
+- [ ] Layer data loading implemented
+- [ ] Multi-layer support added
+- [ ] Map data structure improved
+- [ ] Rendering pipeline optimized
+
+#### テスト要件
+- Layer loading validation
+- Multi-layer rendering testing
+- Performance benchmarking
+- Data integrity verification
+
+---
+
+### E.6: Event System Completion
+**Priority**: Medium  
+**Effort**: 短期間  
+**Sprint**: 3
+
+#### 問題ステートメント
+Event system requires improvements in event file loading, offset processing, and error handling for robust event management.
+
+#### 技術要件
+- Fix event file loading restrictions
+- Implement proper offset handling
+- Improve error handling and recovery
+- Optimize event parsing
+
+#### 影響ファイル
+- `SRCCore/Events/Event.data.cs` (Primary)
+- Event processing pipeline
+
+#### 受け入れ基準
+- [ ] Event file loading restrictions fixed
+- [ ] Offset handling implemented
+- [ ] Error handling improved
+- [ ] Event parsing optimized
+
+#### テスト要件
+- Event loading validation
+- Offset processing testing
+- Error scenario handling
+- Performance optimization testing
+
 ## 実装戦略
 
 ### Phase 1: Random System (Sprint 3)
@@ -119,12 +217,17 @@ Logging system needs minor enhancements for better debugging and production moni
 2. Add thread safety and deterministic behavior
 3. Performance optimization and testing
 
-### Phase 2: Utilities (Sprint 3)
+### Phase 2: Core Systems (Sprint 3)
+1. Sound system BGM management and path resolution
+2. Map system layer support implementation
+3. Event system loading and processing improvements
+
+### Phase 3: Utilities (Sprint 3)
 1. Complete utility functions
 2. Consolidate duplicate code
 3. Add cross-platform support
 
-### Phase 3: Logging Enhancement
+### Phase 4: Logging Enhancement
 1. Enhance logging configuration
 2. Add structured logging
 3. Implement performance monitoring

@@ -2,25 +2,25 @@
 
 **優先度**: 中  
 **スプリント**: 3  
-**予想工数**: 8-10日  
-**リスクレベル**: 中（テスト品質）
+**予想工数**: 短期間  
+**リスクレベル**: 低-中（テスト品質）
 
 ## 概要
 
-テストインフラには、UIコンポーネントとシステム統合の包括的テストを可能にするため、MockGUI実装の完成と141個のNotImplementedExceptionインスタンスの対応が必要です。
+テストインフラには、UIコンポーネントとシステム統合の包括的テストを可能にするため、MockGUI実装の完成と少数のNotImplementedExceptionインスタンス（複数ファイルに分散）の対応が必要です。
 
 ## Issue・タスク
 
 ### F.1: MockGUI Implementation Completion
 **Priority**: Medium  
-**Effort**: 6 days  
+**Effort**: 短期間  
 **Sprint**: 3
 
 #### 問題ステートメント
-MockGUI test infrastructure contains 141 NotImplementedException instances, preventing comprehensive UI testing and integration testing of GUI components.
+MockGUI test infrastructure contains several NotImplementedException instances across multiple files, limiting comprehensive UI testing and integration testing of GUI components.
 
 #### 技術要件
-- Implement all missing MockGUI methods
+- Implement missing MockGUI methods
 - Create comprehensive UI component mocks
 - Add event simulation capabilities
 - Support automated UI testing scenarios

@@ -3,10 +3,10 @@
 ## コードベース分析サマリー
 
 ### 現状メトリクス
-- **TODOコメント総数**: 310個
-- **NotImplementedException数**: 141個  
-- **レガシーVB.NETアーティファクト**: 数千行のコメントアウト行
-- **コアプロジェクトステータス**: ほぼ機能的、改良が必要
+- **TODOコメント総数**: 少数が残存
+- **NotImplementedException数**: 少数が残存  
+- **レガシーVB.NETアーティファクト**: 最小限
+- **コアプロジェクトステータス**: 大幅に完成、残存課題は限定的
 
 ### ファイルレベル実装ステータス
 
@@ -14,28 +14,28 @@
 
 ##### SRCCore/SRC.cs（セーブ/ロードシステム）
 ```
-場所: SRCCore/SRC.cs
-TODO: 15個以上のパス処理、セキュリティ検証
+場所: SRCCore/SRC.save.cs
+TODO: パス処理、セキュリティ検証
 優先度: 重要（セキュリティリスク）
-予想工数: 3-5日
+予想工数: 短期間
 依存関係: System.IOセキュリティレビュー
 ```
 
 ##### SRCCore/Commands/（ゲームコマンド）
 ```
-場所: SRCCore/Commands/AttackCommand.cs, AIWeaponSelection.cs
-TODO: 8個以上のAIロジック、再移動計算
+場所: SRCCore/Units/Unit.attack*.cs, CmdDatas/Commands/
+TODO: AIロジック、戦闘システム機能
 優先度: 重要（ゲームプレイ影響）
-予想工数: 4-6日
+予想工数: 中期間
 依存関係: 戦闘システム検証
 ```
 
 ##### SRCCore/Expressions/（式システム）
 ```
-場所: SRCCore/Expressions/StringFunctions.cs
-TODO: 12個以上のバイト関数、エンコーディング処理
-優先度: 高（コア依存関係）
-予想工数: 2-3日
+場所: SRCCore/Expressions/Functions/String.cs, Expression.*.cs
+TODO: バイト文字列関数、式処理最適化
+優先度: 中（コア依存関係）
+予想工数: 短期間
 依存関係: エンコーディング互換性テスト
 ```
 
@@ -43,39 +43,75 @@ TODO: 12個以上のバイト関数、エンコーディング処理
 
 ##### SRCCore/Configuration/（設定システム）
 ```
-場所: SRCCore/Configuration/
-TODO: 25個以上の設定管理、プラットフォーム分離
+場所: SRCCore/Config/, SRC.config.cs
+TODO: 設定管理、プラットフォーム分離
 優先度: 中（インフラ）
-予想工数: 5-7日
+予想工数: 短期間
 依存関係: プラットフォーム抽象化レイヤー
 ```
 
 ##### SRCCore/System/（システムライブラリ）
 ```
-場所: SRCCore/System/RandomSystem.cs, Utilities/
-TODO: 20個以上のランダム数生成、ユーティリティ関数
-優先度: 中（サポートシステム）
-予想工数: 3-4日
+場所: SRCCore/Lib/GeneralLib.cs, CmdDatas/Commands/
+TODO: ランダム数生成、システム機能
+優先度: 低（サポートシステム）
+予想工数: 短期間
 依存関係: クロスプラットフォーム互換性
+```
+
+##### SRCCore/Sound/（サウンドシステム）
+```
+場所: SRCCore/Sound.cs
+TODO: BGM管理、パス解決、ファイルシステム統合
+優先度: 中（ゲーム体験）
+予想工数: 短期間
+依存関係: ファイルシステム抽象化
+```
+
+##### SRCCore/Maps/（マップシステム）
+```
+場所: SRCCore/Maps/Map.cs
+TODO: レイヤー対応、データ読み込み
+優先度: 中（コア機能）
+予想工数: 短期間
+依存関係: データフォーマット仕様
+```
+
+##### SRCCore/Events/（イベントシステム）
+```
+場所: SRCCore/Events/Event.data.cs
+TODO: イベントロード処理、オフセット処理
+優先度: 中（ゲーム機能）
+予想工数: 短期間
+依存関係: データ整合性検証
 ```
 
 #### 低優先度ファイル
 
+##### UIシステム（Windows Forms）
+```
+場所: SRCSharpForm/Forms/Main.*.cs, SRCSharpFormGUI*.cs
+TODO: インターフェース改善、GUI機能実装、設定反映
+優先度: 低（プラットフォーム固有）
+予想工数: 中期間
+依存関係: Windows Forms依存関係
+```
+
 ##### テストインフラ
 ```
 場所: SRCCoreTests/, MockGUI実装
-NotImplementedException: 141インスタンス
+NotImplementedException: 少数のインスタンス（複数ファイルに分散）
 優先度: 中（品質保証）
-予想工数: 8-10日
+予想工数: 短期間
 依存関係: テストフレームワーク更新
 ```
 
 ##### レガシークリーンアップ
 ```
-場所: VB.NETコメントを含む複数ファイル
-コメントアウト行: 2000行以上のレガシー変換アーティファクト
+場所: VB.NETコメントを含む数ファイル
+コメントアウト行: 最小限のレガシー変換アーティファクト
 優先度: 低（メンテナンス）
-予想工数: 2-3日
+予想工数: 短期間
 依存関係: アクティブコードパスの検証
 ```
 
