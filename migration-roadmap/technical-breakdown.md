@@ -32,10 +32,10 @@ TODO: 約20個のAIロジック、戦闘システム機能
 
 ##### SRCCore/Expressions/（式システム）
 ```
-場所: SRCCore/Expressions/StringFunctions.cs
-TODO: 12個以上のバイト関数、エンコーディング処理
-優先度: 高（コア依存関係）
-予想工数: 2-3日
+場所: SRCCore/Expressions/Functions/String.cs, Expression.*.cs
+TODO: 約8個のバイト文字列関数、式処理最適化
+優先度: 中（コア依存関係）
+予想工数: 1-2日
 依存関係: エンコーディング互換性テスト
 ```
 
@@ -43,19 +43,19 @@ TODO: 12個以上のバイト関数、エンコーディング処理
 
 ##### SRCCore/Configuration/（設定システム）
 ```
-場所: SRCCore/Configuration/
-TODO: 25個以上の設定管理、プラットフォーム分離
+場所: SRCCore/Config/, SRC.config.cs
+TODO: 4個の設定管理、プラットフォーム分離
 優先度: 中（インフラ）
-予想工数: 5-7日
+予想工数: 1-2日
 依存関係: プラットフォーム抽象化レイヤー
 ```
 
 ##### SRCCore/System/（システムライブラリ）
 ```
-場所: SRCCore/System/RandomSystem.cs, Utilities/
-TODO: 20個以上のランダム数生成、ユーティリティ関数
-優先度: 中（サポートシステム）
-予想工数: 3-4日
+場所: SRCCore/Lib/GeneralLib.cs, CmdDatas/Commands/
+TODO: 2個のランダム数生成、システム機能
+優先度: 低（サポートシステム）
+予想工数: 0.5-1日
 依存関係: クロスプラットフォーム互換性
 ```
 
