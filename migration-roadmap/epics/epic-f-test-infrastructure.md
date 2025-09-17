@@ -2,22 +2,22 @@
 
 **優先度**: 中  
 **スプリント**: 3  
-**予想工数**: 2-3日  
+**予想工数**: 短期間  
 **リスクレベル**: 低-中（テスト品質）
 
 ## 概要
 
-テストインフラには、UIコンポーネントとシステム統合の包括的テストを可能にするため、MockGUI実装の完成と6個のNotImplementedExceptionインスタンス（7ファイルに分散）の対応が必要です。
+テストインフラには、UIコンポーネントとシステム統合の包括的テストを可能にするため、MockGUI実装の完成と少数のNotImplementedExceptionインスタンス（複数ファイルに分散）の対応が必要です。
 
 ## Issue・タスク
 
 ### F.1: MockGUI Implementation Completion
 **Priority**: Medium  
-**Effort**: 2 days  
+**Effort**: 短期間  
 **Sprint**: 3
 
 #### 問題ステートメント
-MockGUI test infrastructure contains 6 NotImplementedException instances across 7 files, limiting comprehensive UI testing and integration testing of GUI components.
+MockGUI test infrastructure contains several NotImplementedException instances across multiple files, limiting comprehensive UI testing and integration testing of GUI components.
 
 #### 技術要件
 - Implement missing MockGUI methods

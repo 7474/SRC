@@ -2,22 +2,22 @@
 
 **優先度**: 低  
 **スプリント**: 4+  
-**予想工数**: 0.5-1日  
+**予想工数**: 短期間  
 **リスクレベル**: 極低（メンテナンス）
 
 ## 概要
 
-レガシーコードクリーンアップは、機能に影響を与えることなく、少数の残存VB.NET変換アーティファクトの削除と全体的なコード品質の向上を含みます。実際の残存アーティファクトは数行程度と非常に限定的です。
+レガシーコードクリーンアップは、機能に影響を与えることなく、少数の残存VB.NET変換アーティファクトの削除と全体的なコード品質の向上を含みます。実際の残存アーティファクトは非常に限定的です。
 
 ## Issue・タスク
 
 ### G.1: VB.NET Comment Removal
 **Priority**: Low  
-**Effort**: 0.5 days  
+**Effort**: 短期間  
 **Sprint**: 4
 
 #### 問題ステートメント
-Minimal commented VB.NET conversion artifacts remain in the codebase (approximately few lines), with very limited impact on readability and maintenance.
+Minimal commented VB.NET conversion artifacts remain in the codebase, with very limited impact on readability and maintenance.
 
 #### 技術要件
 - Identify and catalog remaining VB.NET comment artifacts
