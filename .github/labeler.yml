@@ -1,8 +1,12 @@
-'SRCCore':
-  - SRC.Sharp/SRCCore/**/*
-'SRC#Form':
-  - SRC.Sharp/SRCSharpForm/**/*
-'SRCTestBlazor':
-  - SRC.Sharp/SRCTestBlazor/**/*
-'SRCDataLinter': 
-  - SRC.Sharp/SRCDataLinter/**/*
+SRCCore:
+  - changed-files:
+    - any-glob-to-any-file: 'SRC.Sharp/SRCCore/**/*'
+SRC#Form:
+  - changed-files:
+    - any-glob-to-any-file: 'SRC.Sharp/SRCSharpForm/**/*'
+SRCTestBlazor:
+  - changed-files:
+    - any-glob-to-any-file: 'SRC.Sharp/SRCTestBlazor/**/*'
+SRCDataLinter:
+  - changed-files:
+    - any-glob-to-any-file: 'SRC.Sharp/SRCDataLinter/**/*'
