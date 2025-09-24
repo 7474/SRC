@@ -11,8 +11,3 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: actions/labeler@v6
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: .github/labeler.yml
-        sync-labels: false
-        dot: true
