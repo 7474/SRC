@@ -7289,7 +7289,7 @@ namespace SRCCore.Units
         // 引き寄せチェック
         public bool CheckDrawAttack(UnitWeapon w, Unit t, ref string msg, string def_mode, ref string critical_type)
         {
-            int tx = 0, ty = 0;
+            int tx = t.x, ty = t.y;
             int sx, sy;
             int nx, ny;
             int prob;
