@@ -6132,61 +6132,41 @@ namespace SRCCore.Units
                 }
             }
 
-            // TODO Impl 特殊効果除去攻撃
-            //// 特殊効果除去攻撃
-            //if (prob >= GeneralLib.Dice(100))
-            //{
-            //    if (w.IsWeaponClassifiedAs("除") && !t.SpecialEffectImmune("除"))
-            //    {
-            //        var loopTo = t.CountCondition();
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            string localCondition() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
+            // 特殊効果除去攻撃
+            if (prob >= GeneralLib.Dice(100))
+            {
+                if (w.IsWeaponClassifiedAs("除") && !t.SpecialEffectImmune("除"))
+                {
+                    // 付加・強化・ＵＰ系の特殊状態が存在するか確認
+                    bool hasRemovableCondition = false;
+                    foreach (var cond in t.Conditions)
+                    {
+                        if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
+                            && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
+                        {
+                            hasRemovableCondition = true;
+                            break;
+                        }
+                    }
 
-            //            string localCondition1() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //            string localCondition2() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //            string localCondition3() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //            int localConditionLifetime() { object argIndex1 = i; var ret = t.ConditionLifetime(argIndex1); return ret; }
-
-            //            if ((Strings.InStr(localCondition(), "付加") > 0 || Strings.InStr(localCondition1(), "強化") > 0 || Strings.InStr(localCondition2(), "ＵＰ") > 0) && localCondition3() != "ノーマルモード付加" && localConditionLifetime() > 0)
-            //            {
-            //                break;
-            //            }
-            //        }
-
-            //        if (i <= t.CountCondition())
-            //        {
-            //            msg = msg + "[" + t.Nickname + "]にかけられた特殊効果を打ち消した。;";
-            //            do
-            //            {
-            //                string localCondition4() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //                string localCondition5() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //                string localCondition6() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //                string localCondition7() { object argIndex1 = i; var ret = t.Condition(argIndex1); return ret; }
-
-            //                int localConditionLifetime1() { object argIndex1 = i; var ret = t.ConditionLifetime(argIndex1); return ret; }
-
-            //                if ((Strings.InStr(localCondition4(), "付加") > 0 || Strings.InStr(localCondition5(), "強化") > 0 || Strings.InStr(localCondition6(), "ＵＰ") > 0) && localCondition7() != "ノーマルモード付加" && localConditionLifetime1() > 0)
-            //                {
-            //                    t.DeleteCondition(i);
-            //                }
-            //                else
-            //                {
-            //                    i = (i + 1);
-            //                }
-            //            }
-            //            while (i <= t.CountCondition());
-            //            critical_type = critical_type + " 解除";
-            //            CauseEffectRet = true;
-            //        }
-            //    }
-            //}
+                    if (hasRemovableCondition)
+                    {
+                        msg = msg + "[" + t.Nickname + "]にかけられた特殊効果を打ち消した。;";
+                        // 対象条件を削除（後ろから走査して安全に削除）
+                        for (var ci = t.Conditions.Count - 1; ci >= 0; ci--)
+                        {
+                            var cond = t.Conditions[ci];
+                            if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
+                                && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
+                            {
+                                t.DeleteCondition(cond.Name);
+                            }
+                        }
+                        critical_type = critical_type + " 解除";
+                        CauseEffectRet = true;
+                    }
+                }
+            }
 
             // 即死攻撃
             if (prob >= GeneralLib.Dice(100))
@@ -6513,65 +6493,63 @@ namespace SRCCore.Units
                 }
             }
 
-        // TODO Impl 弱点付加属性 有効付加属性
-        //// 弱点付加属性（弱が存在するだけループ）
-        //i = GeneralLib.InStrNotNest(strWeaponClass[w], "弱");
-        //while (i > 0)
-        //{
-        //    ch = Strings.Mid(GeneralLib.GetClassBundle(strWeaponClass[w], i), 2);
-        //    if (prob >= GeneralLib.Dice(100))
-        //    {
-        //        if (!t.SpecialEffectImmune(ch))
-        //        {
-        //            msg = msg + "[" + t.Nickname + "]は[" + ch + "]属性に弱くなった。;";
-        //            if (w.IsWeaponLevelSpecified("弱" + ch))
-        //            {
-        //                double localWeaponLevel() { string argattr = "弱" + ch; var ret = (int)w.WeaponLevel(argattr); return ret; }
+        // 弱点付加属性（弱が存在するだけループ）
+        {
+            var wclass = w.WeaponClass();
+            var i_weak = GeneralLib.InStrNotNest(wclass, "弱");
+            while (i_weak > 0)
+            {
+                var ch = Strings.Mid(GeneralLib.GetClassBundle(wclass, ref i_weak), 2);
+                if (prob >= GeneralLib.Dice(100))
+                {
+                    if (!t.SpecialEffectImmune(ch))
+                    {
+                        msg = msg + "[" + t.Nickname + "]は[" + ch + "]属性に弱くなった。;";
+                        if (w.IsWeaponLevelSpecified("弱" + ch))
+                        {
+                            t.AddCondition(ch + "属性弱点付加", (int)w.WeaponLevel("弱" + ch), cdata: "");
+                        }
+                        else
+                        {
+                            t.AddCondition(ch + "属性弱点付加", 3, cdata: "");
+                        }
 
-        //                t.AddCondition(ch + "属性弱点付加", localWeaponLevel(), cdata: "");
-        //            }
-        //            else
-        //            {
-        //                t.AddCondition(ch + "属性弱点付加", 3, cdata: "");
-        //            }
+                        critical_type = critical_type + " " + ch + "属性弱点付加";
+                        CauseEffectRet = true;
+                    }
+                }
 
-        //            critical_type = critical_type + " " + ch + "属性弱点付加";
-        //            CauseEffectRet = true;
-        //        }
-        //    }
+                i_weak = GeneralLib.InStrNotNest(wclass, "弱", (i_weak + 1));
+            }
 
-        //    i = GeneralLib.InStrNotNest(strWeaponClass[w], "弱", (i + 1));
-        //}
+            // 有効付加属性
+            var i_eff = GeneralLib.InStrNotNest(wclass, "効");
+            while (i_eff > 0)
+            {
+                var ch = Strings.Mid(GeneralLib.GetClassBundle(wclass, ref i_eff), 2);
+                if (prob >= GeneralLib.Dice(100))
+                {
+                    // 既に相手が指定属性を弱点として持っている場合無効
+                    if (!t.Weakness(ch) && !t.SpecialEffectImmune(ch))
+                    {
+                        msg = msg + "[" + t.Nickname + "]に[" + ch + "]属性が有効になった。;";
+                        if (w.IsWeaponLevelSpecified("効" + ch))
+                        {
+                            t.AddCondition(ch + "属性有効付加", (int)w.WeaponLevel("効" + ch), cdata: "");
+                        }
+                        else
+                        {
+                            t.AddCondition(ch + "属性有効付加", 3, cdata: "");
+                        }
 
-        //// 有効付加属性
-        //i = GeneralLib.InStrNotNest(strWeaponClass[w], "効");
-        //while (i > 0)
-        //{
-        //    ch = Strings.Mid(GeneralLib.GetClassBundle(strWeaponClass[w], i), 2);
-        //    if (prob >= GeneralLib.Dice(100))
-        //    {
-        //        // 既に相手が指定属性を弱点として持っている場合無効
-        //        if (!t.Weakness(ch) && !t.SpecialEffectImmune(ch))
-        //        {
-        //            msg = msg + "[" + t.Nickname + "]に[" + ch + "]属性が有効になった。;";
-        //            if (w.IsWeaponLevelSpecified("効" + ch))
-        //            {
-        //                double localWeaponLevel1() { string argattr = "効" + ch; var ret = (int)w.WeaponLevel(argattr); return ret; }
+                        critical_type = critical_type + " " + ch + "属性有効付加";
+                        CauseEffectRet = true;
+                    }
+                }
 
-        //                t.AddCondition(ch + "属性有効付加", localWeaponLevel1(), cdata: "");
-        //            }
-        //            else
-        //            {
-        //                t.AddCondition(ch + "属性有効付加", 3, cdata: "");
-        //            }
-
-        //            critical_type = critical_type + " " + ch + "属性有効付加";
-        //            CauseEffectRet = true;
-        //        }
-        //    }
-
-        //    i = GeneralLib.InStrNotNest(strWeaponClass[w], "効", (i + 1));
-        //}
+                i_eff = GeneralLib.InStrNotNest(wclass, "効", (i_eff + 1));
+            }
+        }
 
         //// 属性使用禁止攻撃
         //i = GeneralLib.InStrNotNest(strWeaponClass[w], "剋");
