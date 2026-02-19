@@ -2025,7 +2025,7 @@ namespace SRCCore
         }
 
         // 換装コマンド
-        private void ExchangeFormCommand()
+        public void ExchangeFormCommand()
         {
             var top_item = 1;
         Beginning:

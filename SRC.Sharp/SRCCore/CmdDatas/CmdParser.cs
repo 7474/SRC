@@ -63,7 +63,7 @@ namespace SRCCore.CmdDatas
                         return new ReturnCmd(src, data);
 
                     case "callintermissioncommand":
-                        return new NotImplementedCmd(src, data);
+                        return new CallIntermissionCommandCmd(src, data);
 
                     case "cancel":
                         return new CancelCmd(src, data);
@@ -75,7 +75,7 @@ namespace SRCCore.CmdDatas
                         return new ChangeAreaCmd(src, data);
 
                     case "changelayer":
-                        return new NotImplementedCmd(src, data);
+                        return new ChangeLayerCmd(src, data);
 
                     case "changemap":
                         return new ChangeMapCmd(src, data);
@@ -105,7 +105,7 @@ namespace SRCCore.CmdDatas
                         return new NotSupportedCmd(src, data);
 
                     case "clearlayer":
-                        return new NotImplementedCmd(src, data);
+                        return new ClearLayerCmd(src, data);
 
                     case "clearobj":
                         return new ClearObjCmd(src, data);
@@ -193,7 +193,7 @@ namespace SRCCore.CmdDatas
                         return new ExchangeItemCmd(src, data);
 
                     case "exec":
-                        return new NotImplementedCmd(src, data);
+                        return new ExecCmd(src, data);
 
                     case "exit":
                         return new ExitCmd(src, data);
@@ -366,7 +366,7 @@ namespace SRCCore.CmdDatas
                         return new PaintStringCmd(src, data);
 
                     case "paintsysstring":
-                        return new NotImplementedCmd(src, data);
+                        return new PaintSysStringCmd(src, data);
 
                     case "pilot":
                         return new PilotCmd(src, data);
@@ -462,7 +462,7 @@ namespace SRCCore.CmdDatas
                         return new SelectCmd(src, data);
 
                     case "savedata":
-                        return new NotImplementedCmd(src, data);
+                        return new SaveDataCmd(src, data);
 
                     case "selecttarget":
                         return new SelectTargetCmd(src, data);
@@ -491,16 +491,16 @@ namespace SRCCore.CmdDatas
                         return new SetStatusCmd(src, data);
 
                     case "setstatusstringcolor":
-                        return new NotImplementedCmd(src, data);
+                        return new SetStatusStringColorCmd(src, data);
 
                     case "setstock":
                         return new SetStockCmd(src, data);
 
                     case "setwindowcolor":
-                        return new NotImplementedCmd(src, data);
+                        return new SetWindowColorCmd(src, data);
 
                     case "setwindowframewidth":
-                        return new NotImplementedCmd(src, data);
+                        return new SetWindowFrameWidthCmd(src, data);
 
                     case "show":
                         return new ShowCmd(src, data);
