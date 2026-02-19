@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "css-deploy": "npm run css-build && npm run css-postcss",
-    "css-build": "node-sass _sass/main.scss ../wwwroot/css/app.css",
+    "css-build": "sass _sass/main.scss ../wwwroot/css/app.css",
     "css-postcss": "postcss --use autoprefixer --no-map --output ../wwwroot/css/app.css  ../wwwroot/css/app.css",
     "css-watch": "npm run css-deploy -- --watch",
     "crean": "npm run css-deploy",
@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "autoprefixer": "^10.4.7",
     "bulma": "^0.9.4",
-    "node-sass": "^9.0.0",
+    "sass": "^1.83.2",
     "npm-run-all": "*",
     "postcss": "^8.4.31",
     "postcss-cli": "^9.1.0"

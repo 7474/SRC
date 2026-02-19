@@ -3,3 +3,6 @@
 ################################################################################
 
 /SRC.Sharp/SRCSharpForm/assets.zip
+
+# Ignore CSS source maps
+*.css.map
