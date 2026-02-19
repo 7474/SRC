@@ -1,4 +1,5 @@
 using SRCCore.Events;
+using SRCCore.Lib;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -25,10 +26,9 @@ namespace SRCCore.CmdDatas.Commands
                 SRC.TerminateSRC();
             }
 
-            // TODO 詰まないように乱数系列をリセット
-            //// 詰まないように乱数系列をリセット
-            //GeneralLib.RndSeed = GeneralLib.RndSeed + 1;
-            //GeneralLib.RndReset();
+            // 詰まないように乱数系列をリセット
+            GeneralLib.RndSeed = GeneralLib.RndSeed + 1;
+            GeneralLib.RndReset();
 
             // 再開イベントによるマップ画像の書き換え処理を行う
             Event.HandleEvent("再開");

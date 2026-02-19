@@ -254,5 +254,51 @@ namespace SRCCore.VB.Tests
             var message = "半径" + wideNumber + "マス以内";
             Assert.AreEqual("半径３マス以内", message);
         }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_BasicKatakana()
+        {
+            // Full-width katakana -> hiragana conversion
+            Assert.AreEqual("あ", Strings.StrConv("ア", VbStrConv.Hiragana));
+            Assert.AreEqual("い", Strings.StrConv("イ", VbStrConv.Hiragana));
+            Assert.AreEqual("う", Strings.StrConv("ウ", VbStrConv.Hiragana));
+            Assert.AreEqual("ん", Strings.StrConv("ン", VbStrConv.Hiragana));
+        }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_SmallKatakana()
+        {
+            // Small katakana -> small hiragana
+            Assert.AreEqual("ぁ", Strings.StrConv("ァ", VbStrConv.Hiragana));
+            Assert.AreEqual("ぃ", Strings.StrConv("ィ", VbStrConv.Hiragana));
+        }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_Word()
+        {
+            // Convert katakana word to hiragana
+            Assert.AreEqual("ろぼっと", Strings.StrConv("ロボット", VbStrConv.Hiragana));
+        }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_MixedString()
+        {
+            // Non-katakana characters should remain unchanged
+            Assert.AreEqual("あいうABC123", Strings.StrConv("アイウABC123", VbStrConv.Hiragana));
+        }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_AlreadyHiragana()
+        {
+            // Hiragana characters should remain unchanged
+            Assert.AreEqual("あいう", Strings.StrConv("あいう", VbStrConv.Hiragana));
+        }
+
+        [TestMethod()]
+        public void StrConvHiraganaTest_EmptyString()
+        {
+            Assert.AreEqual("", Strings.StrConv("", VbStrConv.Hiragana));
+            Assert.AreEqual("", Strings.StrConv(null, VbStrConv.Hiragana));
+        }
     }
 }

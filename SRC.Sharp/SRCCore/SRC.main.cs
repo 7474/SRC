@@ -67,8 +67,8 @@ namespace SRCCore
             Map.InitMap();
 
             //// 乱数系列を初期化
-            //GeneralLib.RndSeed = Conversion.Int(1000000f * VBMath.Rnd());
-            //GeneralLib.RndReset();
+            GeneralLib.RndSeed = new Random().Next(1000000);
+            GeneralLib.RndReset();
 
             ExecuteFile(fname);
         }
