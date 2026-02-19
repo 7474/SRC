@@ -4,9 +4,28 @@
 
 ## 📚 ドキュメント一覧 / Document List
 
+### 🤖 Copilot自律運用 / Copilot Autonomous Operation
+
+**最優先 / Top Priority**: **[Copilot完全自律エージェント](../.github/copilot/autonomous-agent.md)** 🚀
+
+単一コマンドで移植を進行:
+```
+@copilot 移植を進行してください
+```
+
+With single command:
+- ✅ Copilotが次のタスクを自動選択
+- ✅ Copilotが自動実装・テスト・PR作成
+- ✅ 人間が考えることは最小限
+- ✅ セットアップ不要
+
+**詳細**: [Copilot Agent Instructions](../.github/copilot/README.md)
+
+---
+
 ### メインドキュメント / Main Documents
 
-1. **[クイックスタートガイド](./quick-start.md)** ⭐ まずはここから！
+1. **[クイックスタートガイド](./quick-start.md)**
    - プロジェクトを始めるための簡易ガイド
    - Quick guide to get started with the project
 
@@ -19,16 +38,8 @@
    - Detailed list of ~70 specific issues
 
 4. **[GitHub Projects設定ガイド](./github-projects-setup.md)**
-   - プロジェクト管理の設定方法
-   - How to set up GitHub Projects for management
-
-### Copilot Agent Instructions / Copilotエージェント指示書
-
-5. **[Copilot Agent Instructions](../.github/copilot/README.md)** 🤖
-   - GitHub Copilot Agentの運用手順書
-   - Operational instructions for GitHub Copilot Agents
-   - 4つの専門エージェント役割（Issue作成、実装、レビュー、進捗管理）
-   - 4 specialized agent roles (Issue Creation, Implementation, Review, Progress Tracking)
+   - プロジェクト管理の設定方法（オプション）
+   - How to set up GitHub Projects for management (Optional)
 
 ### 自動化スクリプト / Automation Scripts
 

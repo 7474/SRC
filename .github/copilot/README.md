@@ -4,71 +4,148 @@
 
 This directory contains instructions for GitHub Copilot Agents to operate the SRC# migration completion project.
 
+## 🤖 Autonomous Operation / 自律運用モード
+
+**最も簡単な使用方法 / Easiest Way to Use**:
+
+```
+@copilot 移植を進行してください
+```
+
+この一文だけで、Copilotが自律的に次のタスクを選択し、実装します。
+
+With this single command, Copilot autonomously selects and implements the next task.
+
+**詳細**: [autonomous-agent.md](./autonomous-agent.md) を参照してください。
+
+**Details**: See [autonomous-agent.md](./autonomous-agent.md)
+
+---
+
 ## 📚 Files / ファイル
 
-### 1. [copilot-instructions-examples.md](./copilot-instructions-examples.md) ⭐ **Start Here!**
+### 1. [autonomous-agent.md](./autonomous-agent.md) ⭐ **最優先 / Top Priority**
+**完全自律型エージェント / Fully Autonomous Agent**
+
+単一コマンドで移植を進行：
+- 「移植を進行してください」だけで動作
+- 自動的にタスク選択
+- 自動的に実装・テスト・PR作成
+- 進捗レポート自動生成
+- GitHub Projects等のセットアップ不要
+
+Single command migration:
+- Works with just "proceed with migration"
+- Auto-selects next task
+- Auto-implements, tests, creates PR
+- Auto-generates progress reports
+- No GitHub Projects or setup required
+
+**🚀 Use this for**: Minimal human intervention, maximum automation
+
+### 2. [copilot-instructions-examples.md](./copilot-instructions-examples.md)
 **Copilotへの指示例 / Example Copilot Instructions**
 
 15個の具体的な指示例を提供：
-- Issue作成、機能実装、レビュー、進捗管理など
-- GitHub ProjectsやWebUIのセットアップ不要
-- コピー&ペーストで即座に使用可能
+- より細かい制御が必要な場合に使用
+- 特定のタスクを指定したい場合
+- 手動でタスクを選択したい場合
 
 Provides 15 concrete instruction examples:
-- Issue creation, feature implementation, review, progress tracking, etc.
-- No GitHub Projects or Web UI setup required
-- Ready to copy & paste
+- For more granular control
+- For specifying particular tasks
+- For manual task selection
 
-**🚀 Use this for**: Getting started immediately with Copilot instructions
+**Use this for**: Fine-grained control over specific tasks
 
-### 2. [agent-instructions.md](./agent-instructions.md)
+### 3. [agent-instructions.md](./agent-instructions.md)
 **完全な運用手順書 / Complete Operations Manual**
 
-Comprehensive instructions covering:
-- Self-contained operation (no external setup required)
-- 4 specialized agent roles (Issue Creation, Implementation, Review, Progress Tracking)
+詳細な運用手順：
+- 4つの専門エージェント役割
+- ワークフローとベストプラクティス
+- ラベルシステムとマイルストーン
+
+Comprehensive instructions:
+- 4 specialized agent roles
 - Detailed workflows and best practices
 - Label system and milestone definitions
-- Common tasks and troubleshooting
-- Code locations by Epic
 
-**Use this for**: Detailed reference and complete operational guidelines
+**Use this for**: Understanding the full system and advanced configuration
 
-### 3. [quick-reference.md](./quick-reference.md)
+### 4. [quick-reference.md](./quick-reference.md)
 **クイックリファレンスカード / Quick Reference Card**
 
-Condensed reference including:
-- Checklists for issue creation, implementation, and review
-- Quick command reference
-- Epic summary table
-- Common issues and solutions
-- Label quick guide
+簡潔なリファレンス：
+- チェックリスト
+- クイックコマンド
+- Epic一覧
 
-**Use this for**: Day-to-day quick lookups and checklists
+Condensed reference:
+- Checklists
+- Quick commands
+- Epic summary
+
+**Use this for**: Day-to-day quick lookups
 
 ## 🎯 Purpose / 目的
 
-**⚡ Self-Contained Operation**: GitHub ProjectsやWebUIのセットアップなしに、Copilotへの指示のみで作業が進行できます。
+**⚡ Fully Autonomous Operation**: 「移植を進行してください」の一文だけで、Copilotが自律的に移植作業を進行します。
 
-**⚡ Self-Contained Operation**: Work progresses with Copilot instructions alone, without requiring GitHub Projects or Web UI setup.
+**⚡ Fully Autonomous Operation**: With just "proceed with migration", Copilot autonomously progresses the migration work.
 
-These instructions enable GitHub Copilot Agents to:
+### 人間が考えることは最小限 / Minimal Human Thinking Required
 
-これらの指示により、GitHub Copilot Agentは以下を実行できます：
+- ✅ 単一コマンド: `@copilot 移植を進行してください`
+- ✅ Copilotが自動判断: 次のタスク、実装方法、テスト戦略
+- ✅ Copilotが自動実行: Issue作成、コード実装、テスト追加、PR作成
+- ✅ Copilotが自動報告: 完了内容、次のタスク提案
+- ❌ セットアップ不要: GitHub Projects, ラベル, マイルストーン
+- ❌ 詳細指示不要: Copilotがドキュメントとコードベースから自動判断
 
-1. **Create Issues** from the migration plan (`docs/issue-breakdown.md`) - No manual setup needed
-2. **Implement Features** according to TODO comments with proper testing
-3. **Review PRs** for quality and adherence to migration guidelines
-4. **Track Progress** and generate reports on completion status
+With autonomous agent:
+- ✅ Single command: `@copilot Proceed with migration`
+- ✅ Copilot auto-decides: Next task, implementation approach, test strategy
+- ✅ Copilot auto-executes: Issue creation, code implementation, test addition, PR creation
+- ✅ Copilot auto-reports: Completion status, next task suggestion
+- ❌ No setup: GitHub Projects, labels, milestones
+- ❌ No detailed instructions: Copilot auto-decides from docs and codebase
 
-### 必要なのは指示のみ / Instructions Only
+### 動作原理 / How It Works
 
-- ✅ Copy instruction from `copilot-instructions-examples.md`
-- ✅ Paste to Copilot chat
-- ✅ Copilot executes the task
-- ❌ No GitHub Projects setup
-- ❌ No manual label/milestone creation
-- ❌ No Web UI interaction required
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Human Input (Once)                                         │
+│  @copilot 移植を進行してください                              │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Copilot Auto-Assessment                                    │
+│  ✓ Check current state (issues, PRs, TODOs)                │
+│  ✓ Analyze docs/issue-breakdown.md                         │
+│  ✓ Scan codebase for TODOs                                 │
+│  ✓ Select next highest-priority task                       │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Copilot Auto-Execution                                     │
+│  ✓ Create issue (if needed)                                │
+│  ✓ Implement feature                                       │
+│  ✓ Add tests                                               │
+│  ✓ Run tests                                               │
+│  ✓ Create PR                                               │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Copilot Auto-Report                                        │
+│  ✓ Report completion                                       │
+│  ✓ Suggest next task                                       │
+│  ✓ Ask: Continue? (Y/N)                                    │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## 🚀 Quick Start for Agents / エージェント向けクイックスタート
 
