@@ -244,8 +244,11 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public Func<ListBoxArgs, int, int> LIPSHandler { get; set; }
+
         public int LIPS(ListBoxArgs args, int time_limit)
         {
+            if (LIPSHandler != null) return LIPSHandler(args, time_limit);
             throw new NotImplementedException();
         }
 
