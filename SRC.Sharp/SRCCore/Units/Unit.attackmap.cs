@@ -506,16 +506,6 @@ namespace SRCCore.Units
                     // 攻撃を行う
                     Attack(w, t, "マップ攻撃", "", is_event);
 
-                    // TODO Impl SupportGuardUnit
-                    //// かばうによりターゲットが変化している？
-                    //if (Commands.SupportGuardUnit is object)
-                    //{
-                    //    targets[i] = Commands.SupportGuardUnit.CurrentForm();
-                    //    targets_hp_ratio[i] = Commands.SupportGuardUnitHPRatio;
-                    //    targets_x[i] = targets[i].x;
-                    //    targets_y[i] = targets[i].y;
-                    //}
-
                     // これ以上攻撃を続けられない場合
                     if (Status != "出撃" || CountPilot() == 0 || IsMapAttackCanceled)
                     {
@@ -834,199 +824,45 @@ namespace SRCCore.Units
                 }
             }
 
-            // TODO Impl 合体技のパートナーの弾数＆ＥＮを消費
-            //// 合体技のパートナーの弾数＆ＥＮを消費
-            //var loopTo25 = Information.UBound(partners);
-            //for (i = 1; i <= loopTo25; i++)
-            //{
-            //    {
-            //        var withBlock10 = partners[i].CurrentForm();
-            //        var loopTo26 = withBlock10.CountWeapon();
-            //        for (j = 1; j <= loopTo26; j++)
-            //        {
-            //            if ((withBlock10.Weapon(j).Name ?? "") == (wname ?? ""))
-            //            {
-            //                withBlock10.UseWeapon(j);
-            //                if (withBlock10.IsWeaponClassifiedAs(j, "自"))
-            //                {
-            //                    if (withBlock10.IsFeatureAvailable("パーツ分離"))
-            //                    {
-            //                        uname = GeneralLib.LIndex(withBlock10.FeatureData("パーツ分離"), 2);
-            //                        Unit localOtherForm() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
+            // 合体技のパートナーの弾数＆ＥＮを消費
+            foreach (var partner in partners)
+            {
+                var pu = partner.CurrentForm();
+                bool weaponFound = false;
+                for (var pj = 1; pj <= pu.CountWeapon(); pj++)
+                {
+                    if (pu.Weapon(pj).Name == wname)
+                    {
+                        pu.Weapon(pj).UseWeapon();
+                        weaponFound = true;
+                        break;
+                    }
+                }
 
-            //                        if (localOtherForm().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                        {
-            //                            withBlock10.Transform(uname);
-            //                            {
-            //                                var withBlock11 = withBlock10.CurrentForm();
-            //                                withBlock11.HP = withBlock11.MaxHP;
-            //                                withBlock11.UsedAction = withBlock11.MaxAction();
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            withBlock10.Die();
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        withBlock10.Die();
-            //                    }
-            //                }
-            //                else if (withBlock10.IsWeaponClassifiedAs(j, "失") && withBlock10.HP == 0)
-            //                {
-            //                    withBlock10.Die();
-            //                }
-            //                else if (withBlock10.IsWeaponClassifiedAs(j, "変"))
-            //                {
-            //                    if (withBlock10.IsFeatureAvailable("変形技"))
-            //                    {
-            //                        var loopTo27 = withBlock10.CountFeature();
-            //                        for (k = 1; k <= loopTo27; k++)
-            //                        {
-            //                            string localFeature() { object argIndex1 = k; var ret = withBlock10.Feature(argIndex1); return ret; }
+                // 同名の武器がなかった場合は自分のデータを使って処理
+                if (!weaponFound)
+                {
+                    if (w.WeaponENConsumption() > 0)
+                    {
+                        pu.EN = pu.EN - w.WeaponENConsumption();
+                    }
 
-            //                            string localFeatureData1() { object argIndex1 = k; var ret = withBlock10.FeatureData(argIndex1); return ret; }
+                    if (w.IsWeaponClassifiedAs("消"))
+                    {
+                        pu.AddCondition("消耗", 1, cdata: "");
+                    }
 
-            //                            string localLIndex() { string arglist = hs681d62aaff664a9daf19517e6120dc9d(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                    if (w.IsWeaponClassifiedAs("Ｃ") && pu.IsConditionSatisfied("チャージ完了"))
+                    {
+                        pu.DeleteCondition("チャージ完了");
+                    }
 
-            //                            if (localFeature() == "変形技" && (localLIndex() ?? "") == (wname ?? ""))
-            //                            {
-            //                                string localFeatureData() { object argIndex1 = k; var ret = withBlock10.FeatureData(argIndex1); return ret; }
-
-            //                                uname = GeneralLib.LIndex(localFeatureData(), 2);
-            //                                Unit localOtherForm1() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
-
-            //                                if (localOtherForm1().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                                {
-            //                                    withBlock10.Transform(uname);
-            //                                }
-
-            //                                break;
-            //                            }
-            //                        }
-
-            //                        if ((uname ?? "") != (withBlock10.CurrentForm().Name ?? ""))
-            //                        {
-            //                            if (withBlock10.IsFeatureAvailable("ノーマルモード"))
-            //                            {
-            //                                uname = GeneralLib.LIndex(withBlock10.FeatureData("ノーマルモード"), 1);
-            //                                Unit localOtherForm2() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
-
-            //                                if (localOtherForm2().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                                {
-            //                                    withBlock10.Transform(uname);
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                    else if (withBlock10.IsFeatureAvailable("ノーマルモード"))
-            //                    {
-            //                        uname = GeneralLib.LIndex(withBlock10.FeatureData(argIndex16), 1);
-            //                        Unit localOtherForm3() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
-
-            //                        if (localOtherForm3().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                        {
-            //                            withBlock10.Transform(uname);
-            //                        }
-            //                    }
-            //                }
-
-            //                break;
-            //            }
-            //        }
-
-            //        // 同名の武器がなかった場合は自分のデータを使って処理
-            //        if (j > withBlock10.CountWeapon())
-            //        {
-            //            if (this.Weapon(w).ENConsumption > 0)
-            //            {
-            //                withBlock10.EN = withBlock10.EN - WeaponENConsumption(w);
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("消"))
-            //            {
-            //                withBlock10.AddCondition("消耗", 1, cdata: "");
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("Ｃ") && withBlock10.IsConditionSatisfied("チャージ完了"))
-            //            {
-            //                withBlock10.DeleteCondition("チャージ完了");
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("気"))
-            //            {
-            //                withBlock10.IncreaseMorale((-5 * (int)w.WeaponLevel("気")));
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("霊"))
-            //            {
-            //                hp_ratio = 100 * withBlock10.HP / (double)withBlock10.MaxHP;
-            //                en_ratio = 100 * withBlock10.EN / (double)withBlock10.MaxEN;
-            //                withBlock10.MainPilot().Plana = (withBlock10.MainPilot().Plana - 5d * (int)w.WeaponLevel("霊"));
-            //                withBlock10.HP = (withBlock10.MaxHP * hp_ratio / 100d);
-            //                withBlock10.EN = (withBlock10.MaxEN * en_ratio / 100d);
-            //            }
-            //            else if (w.IsWeaponClassifiedAs("プ"))
-            //            {
-            //                hp_ratio = 100 * withBlock10.HP / (double)withBlock10.MaxHP;
-            //                en_ratio = 100 * withBlock10.EN / (double)withBlock10.MaxEN;
-            //                withBlock10.MainPilot().Plana = (withBlock10.MainPilot().Plana - 5d * (int)w.WeaponLevel("プ"));
-            //                withBlock10.HP = (withBlock10.MaxHP * hp_ratio / 100d);
-            //                withBlock10.EN = (withBlock10.MaxEN * en_ratio / 100d);
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("失"))
-            //            {
-            //                withBlock10.HP = GeneralLib.MaxLng((withBlock10.HP - (long)(withBlock10.MaxHP * (int)w.WeaponLevel("失")) / 10L), 0);
-            //            }
-
-            //            if (w.IsWeaponClassifiedAs("自"))
-            //            {
-            //                if (withBlock10.IsFeatureAvailable("パーツ分離"))
-            //                {
-            //                    uname = GeneralLib.LIndex(withBlock10.FeatureData("パーツ分離"), 2);
-            //                    Unit localOtherForm4() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
-
-            //                    if (localOtherForm4().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                    {
-            //                        withBlock10.Transform(uname);
-            //                        {
-            //                            var withBlock12 = withBlock10.CurrentForm();
-            //                            withBlock12.HP = withBlock12.MaxHP;
-            //                            withBlock12.UsedAction = withBlock12.MaxAction();
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        withBlock10.Die();
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    withBlock10.Die();
-            //                }
-            //            }
-            //            else if (w.IsWeaponClassifiedAs("失") && withBlock10.HP == 0)
-            //            {
-            //                withBlock10.Die();
-            //            }
-            //            else if (w.IsWeaponClassifiedAs("変"))
-            //            {
-            //                if (withBlock10.IsFeatureAvailable("ノーマルモード"))
-            //                {
-            //                    uname = GeneralLib.LIndex(withBlock10.FeatureData(argIndex20), 1);
-            //                    Unit localOtherForm5() { object argIndex1 = uname; var ret = withBlock10.OtherForm(argIndex1); return ret; }
-
-            //                    if (localOtherForm5().IsAbleToEnter(withBlock10.x, withBlock10.y))
-            //                    {
-            //                        withBlock10.Transform(uname);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                    if (w.IsWeaponClassifiedAs("気"))
+                    {
+                        pu.IncreaseMorale(-5 * (int)w.WeaponLevel("気"));
+                    }
+                }
+            }
 
             // TODO IMpl 以下の特殊効果は武器データが変化する可能性があるため、同時には適用されない
             //// 以下の特殊効果は武器データが変化する可能性があるため、同時には適用されない

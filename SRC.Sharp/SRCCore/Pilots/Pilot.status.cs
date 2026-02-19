@@ -288,212 +288,134 @@ namespace SRCCore.Pilots
             #endregion
 
             #region これから下はユニットによる修正値の計算
-            // TODO Impl ユニットに乗っていない？
-            //    // ユニットに乗っていない？
-            //    if (Unit is null)
-            //    {
-            //        goto SkipUnitMod;
-            //    }
+            // ユニットに乗っていない？
+            if (Unit is null)
+            {
+                goto SkipUnitMod;
+            }
 
-            //    var padaption = new short[5];
-            //    {
-            //        var withBlock4 = Unit;
-            //        // クイックセーブ処理などで実際には乗っていない場合
-            //        if (withBlock4.CountPilot() == 0)
-            //        {
-            //            return;
-            //        }
+            {
+                var u = Unit;
+                // クイックセーブ処理などで実際には乗っていない場合
+                if (u.CountPilot() == 0)
+                {
+                    return;
+                }
 
-            //        // サブパイロット＆サポートパイロットによるサポート
-            //        if (ReferenceEquals(this, withBlock4.MainPilot()) && withBlock4.Status == "出撃")
-            //        {
-            //            var loopTo9 = withBlock4.CountPilot();
-            //            for (i = 2; i <= loopTo9; i++)
-            //            {
-            //                {
-            //                    var withBlock5 = withBlock4.Pilot(i);
-            //                    InfightMod = (InfightMod + 2d * withBlock5.SkillLevel("格闘サポート", ref_mode: ""));
-            //                    if (HasMana())
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel("魔力サポート", ref_mode: ""));
-            //                    }
-            //                    else
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock5.SkillLevel("射撃サポート", ref_mode: ""));
-            //                    }
+                // サブパイロット＆サポートパイロットによるサポート
+                if (ReferenceEquals(this, u.MainPilot()) && u.Status == "出撃")
+                {
+                    foreach (var sp in u.SubPilots)
+                    {
+                        InfightMod = (int)(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
+                        if (HasMana())
+                        {
+                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
+                        }
+                        else
+                        {
+                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
+                        }
 
-            //                    HitMod = (HitMod + 3d * withBlock5.SkillLevel("サポート", ref_mode: ""));
-            //                    HitMod = (HitMod + 2d * withBlock5.SkillLevel("命中サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 3d * withBlock5.SkillLevel("サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 2d * withBlock5.SkillLevel("回避サポート", ref_mode: ""));
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock5.SkillLevel("技量サポート", ref_mode: ""));
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock5.SkillLevel("反応サポート", ref_mode: ""));
-            //                }
-            //            }
+                        HitMod = (int)(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        HitMod = (int)(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
+                        DodgeMod = (int)(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        DodgeMod = (int)(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
+                        TechniqueMod = (int)(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
+                        IntuitionMod = (int)(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
+                    }
 
-            //            var loopTo10 = withBlock4.CountSupport();
-            //            for (i = 1; i <= loopTo10; i++)
-            //            {
-            //                {
-            //                    var withBlock6 = withBlock4.Support(i);
-            //                    InfightMod = (InfightMod + 2d * withBlock6.SkillLevel("格闘サポート", ref_mode: ""));
-            //                    if (HasMana())
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel("魔力サポート", ref_mode: ""));
-            //                    }
-            //                    else
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock6.SkillLevel("射撃サポート", ref_mode: ""));
-            //                    }
+                    foreach (var sp in u.Supports)
+                    {
+                        InfightMod = (int)(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
+                        if (HasMana())
+                        {
+                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
+                        }
+                        else
+                        {
+                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
+                        }
 
-            //                    HitMod = (HitMod + 3d * withBlock6.SkillLevel("サポート", ref_mode: ""));
-            //                    HitMod = (HitMod + 2d * withBlock6.SkillLevel("命中サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 3d * withBlock6.SkillLevel("サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 2d * withBlock6.SkillLevel("回避サポート", ref_mode: ""));
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock6.SkillLevel("技量サポート", ref_mode: ""));
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock6.SkillLevel("反応サポート", ref_mode: ""));
-            //                }
-            //            }
+                        HitMod = (int)(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        HitMod = (int)(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
+                        DodgeMod = (int)(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        DodgeMod = (int)(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
+                        TechniqueMod = (int)(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
+                        IntuitionMod = (int)(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
+                    }
 
-            //            if (withBlock4.IsFeatureAvailable("追加サポート"))
-            //            {
-            //                {
-            //                    var withBlock7 = withBlock4.AdditionalSupport();
-            //                    InfightMod = (InfightMod + 2d * withBlock7.SkillLevel("格闘サポート", ref_mode: ""));
-            //                    if (HasMana())
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel("魔力サポート", ref_mode: ""));
-            //                    }
-            //                    else
-            //                    {
-            //                        ShootingMod = (ShootingMod + 2d * withBlock7.SkillLevel("射撃サポート", ref_mode: ""));
-            //                    }
+                    if (u.IsFeatureAvailable("追加サポート"))
+                    {
+                        var asp = u.AdditionalSupport();
+                        if (asp != null)
+                        {
+                            InfightMod = (int)(InfightMod + 2d * asp.SkillLevel("格闘サポート", ref_mode: ""));
+                            if (HasMana())
+                            {
+                                ShootingMod = (int)(ShootingMod + 2d * asp.SkillLevel("魔力サポート", ref_mode: ""));
+                            }
+                            else
+                            {
+                                ShootingMod = (int)(ShootingMod + 2d * asp.SkillLevel("射撃サポート", ref_mode: ""));
+                            }
 
-            //                    HitMod = (HitMod + 3d * withBlock7.SkillLevel("サポート", ref_mode: ""));
-            //                    HitMod = (HitMod + 2d * withBlock7.SkillLevel("命中サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 3d * withBlock7.SkillLevel("サポート", ref_mode: ""));
-            //                    DodgeMod = (DodgeMod + 2d * withBlock7.SkillLevel("回避サポート", ref_mode: ""));
-            //                    TechniqueMod = (TechniqueMod + 2d * withBlock7.SkillLevel("技量サポート", ref_mode: ""));
-            //                    IntuitionMod = (IntuitionMod + 2d * withBlock7.SkillLevel("反応サポート", ref_mode: ""));
-            //                }
-            //            }
-            //        }
+                            HitMod = (int)(HitMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
+                            HitMod = (int)(HitMod + 2d * asp.SkillLevel("命中サポート", ref_mode: ""));
+                            DodgeMod = (int)(DodgeMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
+                            DodgeMod = (int)(DodgeMod + 2d * asp.SkillLevel("回避サポート", ref_mode: ""));
+                            TechniqueMod = (int)(TechniqueMod + 2d * asp.SkillLevel("技量サポート", ref_mode: ""));
+                            IntuitionMod = (int)(IntuitionMod + 2d * asp.SkillLevel("反応サポート", ref_mode: ""));
+                        }
+                    }
+                }
 
-            //        // ユニット＆アイテムによる強化
-            //        var loopTo11 = withBlock4.CountFeature();
-            //        for (i = 1; i <= loopTo11; i++)
-            //        {
-            //            switch (withBlock4.Feature(i) ?? "")
-            //            {
-            //                case "格闘強化":
-            //                    {
-            //                        string localFeatureData() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex() { string arglist = hs2cde20588fb24d85bea5cf26fad46fbc(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng() { string argexpr = hsc0c629727e364218a343e72f775d5378(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng())
-            //                        {
-            //                            double localFeatureLevel() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            InfightMod = (InfightMod + 5d * localFeatureLevel());
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "射撃強化":
-            //                    {
-            //                        string localFeatureData1() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex1() { string arglist = hs8f37be02bf88436e950e311a12d5b37e(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng1() { string argexpr = hs75f1e2fd554a46828757d5c3791b5757(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng1())
-            //                        {
-            //                            double localFeatureLevel1() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            ShootingMod = (ShootingMod + 5d * localFeatureLevel1());
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "命中強化":
-            //                    {
-            //                        string localFeatureData2() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex2() { string arglist = hs11e93ac1f3284a4f93380ee6473c818c(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng2() { string argexpr = hsa2ad2f0f65c84d6f8292a2b9a1fd3fd3(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng2())
-            //                        {
-            //                            double localFeatureLevel2() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            HitMod = (HitMod + 5d * localFeatureLevel2());
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "回避強化":
-            //                    {
-            //                        string localFeatureData3() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex3() { string arglist = hsacf802b5acb245cfbca1d3ca09fa7324(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng3() { string argexpr = hs9f2075d9bdc24b7f9cf3f7845c40a78a(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng3())
-            //                        {
-            //                            double localFeatureLevel3() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            DodgeMod = (DodgeMod + 5d * localFeatureLevel3());
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "技量強化":
-            //                    {
-            //                        string localFeatureData4() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex4() { string arglist = hs3db15ab6c56047db9b6236f45e649ebd(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng4() { string argexpr = hsd8d478d12f3941fca4b635b001945700(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng4())
-            //                        {
-            //                            double localFeatureLevel4() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            TechniqueMod = (TechniqueMod + 5d * localFeatureLevel4());
-            //                        }
-
-            //                        break;
-            //                    }
-
-            //                case "反応強化":
-            //                    {
-            //                        string localFeatureData5() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex5() { string arglist = hs0419ff33196e4e48af748fdce12580b1(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                        int localStrToLng5() { string argexpr = hsabf5cf29dc0446c781dea0167fb94b44(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                        if (Morale >= localStrToLng5())
-            //                        {
-            //                            double localFeatureLevel5() { object argIndex1 = i; var ret = withBlock4.FeatureLevel(argIndex1); return ret; }
-
-            //                            IntuitionMod = (IntuitionMod + 5d * localFeatureLevel5());
-            //                        }
-
-            //                        break;
-            //                    }
-            //            }
-            //        }
+                // ユニット＆アイテムによる強化
+                foreach (var f in u.Features)
+                {
+                    switch (f.Name)
+                    {
+                        case "格闘強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                InfightMod = (int)(InfightMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                        case "射撃強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                ShootingMod = (int)(ShootingMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                        case "命中強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                HitMod = (int)(HitMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                        case "回避強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                DodgeMod = (int)(DodgeMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                        case "技量強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                TechniqueMod = (int)(TechniqueMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                        case "反応強化":
+                            if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
+                            {
+                                IntuitionMod = (int)(IntuitionMod + 5d * f.FeatureLevel);
+                            }
+                            break;
+                    }
+                }
+            }
+        SkipUnitMod:
+            ;
 
             //        // 地形適応変更
             //        if (withBlock4.IsFeatureAvailable("パイロット地形適応変更"))
