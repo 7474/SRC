@@ -109,18 +109,11 @@ namespace SRCCore.Units
         //    ;
         //}
 
-        //// 特殊能力のデータ
-        //public string ConditionData(string Index)
-        //{
-        //    string ConditionDataRet = default;
-        //    ;
-        //    // UPGRADE_WARNING: オブジェクト colCondition.Item().StrData の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    ConditionDataRet = Conversions.ToString(colCondition[Index].StrData);
-        //    return ConditionDataRet;
-        //ErrorHandler:
-        //    ;
-        //    ConditionDataRet = "";
-        //}
+        // 特殊状態のデータ
+        public string ConditionData(string Index)
+        {
+            return colCondition[Index]?.StrData ?? "";
+        }
 
         // 特殊能力の残りターン数を更新
         public void UpdateCondition(bool decrement_lifetime = false)
