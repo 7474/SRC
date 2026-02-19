@@ -17,6 +17,26 @@ namespace SRCCore.VB
     // - Binaryベースの処理はしていなさそうなので割愛
     public static class Strings
     {
+        // Shift-JIS encoding instance, cached for performance
+        private static readonly Lazy<System.Text.Encoding> _shiftJISEncoding = new Lazy<System.Text.Encoding>(() =>
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            return System.Text.Encoding.GetEncoding("Shift_JIS");
+        });
+
+        // Shift-JIS encoding with fallback for incomplete multi-byte characters, cached for performance
+        private static readonly Lazy<System.Text.Encoding> _shiftJISEncodingWithFallback = new Lazy<System.Text.Encoding>(() =>
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            return System.Text.Encoding.GetEncoding(
+                "Shift_JIS",
+                new System.Text.EncoderReplacementFallback(""),
+                new System.Text.DecoderReplacementFallback("")
+            );
+        });
+
+        private static System.Text.Encoding ShiftJISEncoding => _shiftJISEncoding.Value;
+        private static System.Text.Encoding ShiftJISEncodingWithFallback => _shiftJISEncodingWithFallback.Value;
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.asc?view=net-5.0
         public static int Asc(char _String)
@@ -239,6 +259,10 @@ namespace SRCCore.VB
 
         /// <summary>
         /// Converts half-width katakana to full-width katakana
+        /// NOTE: This is a simplified implementation using arithmetic offsets.
+        /// A complete implementation would require a full mapping table for all katakana characters,
+        /// especially for dakuten (゛) and handakuten (゜) marks which don't map correctly with simple arithmetic.
+        /// For now, this handles the most common cases used in the codebase.
         /// </summary>
         private static char ConvertHalfKatakanaToFull(char c)
         {
@@ -256,6 +280,8 @@ namespace SRCCore.VB
 
         /// <summary>
         /// Converts full-width katakana to half-width katakana
+        /// NOTE: This is a simplified implementation using arithmetic offsets.
+        /// See ConvertHalfKatakanaToFull for limitations.
         /// </summary>
         private static char ConvertFullKatakanaToHalf(char c)
         {
@@ -278,15 +304,6 @@ namespace SRCCore.VB
         // ---- xxxB
         // Byte-based string functions using Shift-JIS encoding for backward compatibility
         // See: https://github.com/7474/SRC/issues/175
-        
-        private static System.Text.Encoding ShiftJISEncoding
-        {
-            get
-            {
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                return System.Text.Encoding.GetEncoding("Shift_JIS");
-            }
-        }
 
         /// <summary>
         /// Returns the byte length of a string in Shift-JIS encoding
@@ -317,13 +334,8 @@ namespace SRCCore.VB
             }
 
             // Decode only the requested number of bytes
-            // Use DecoderFallback to handle incomplete multi-byte characters
-            var encoding = System.Text.Encoding.GetEncoding(
-                "Shift_JIS",
-                new System.Text.EncoderReplacementFallback(""),
-                new System.Text.DecoderReplacementFallback("")
-            );
-            return encoding.GetString(bytes, 0, byteCount);
+            // Use cached encoding with fallback to handle incomplete multi-byte characters
+            return ShiftJISEncodingWithFallback.GetString(bytes, 0, byteCount);
         }
 
         /// <summary>
@@ -342,12 +354,7 @@ namespace SRCCore.VB
                 return str;
             }
 
-            var encoding = System.Text.Encoding.GetEncoding(
-                "Shift_JIS",
-                new System.Text.EncoderReplacementFallback(""),
-                new System.Text.DecoderReplacementFallback("")
-            );
-            return encoding.GetString(bytes, bytes.Length - byteCount, byteCount);
+            return ShiftJISEncodingWithFallback.GetString(bytes, bytes.Length - byteCount, byteCount);
         }
 
         /// <summary>
@@ -380,12 +387,7 @@ namespace SRCCore.VB
 
             var actualByteCount = System.Math.Min(byteCount, bytes.Length - startIndex);
             
-            var encoding = System.Text.Encoding.GetEncoding(
-                "Shift_JIS",
-                new System.Text.EncoderReplacementFallback(""),
-                new System.Text.DecoderReplacementFallback("")
-            );
-            return encoding.GetString(bytes, startIndex, actualByteCount);
+            return ShiftJISEncodingWithFallback.GetString(bytes, startIndex, actualByteCount);
         }
 
         /// <summary>
