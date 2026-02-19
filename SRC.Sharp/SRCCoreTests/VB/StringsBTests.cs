@@ -171,5 +171,88 @@ namespace SRCCore.VB.Tests
             // Different spacing needed based on byte count
             Assert.IsTrue(spacing1 < spacing2);
         }
+
+        [TestMethod()]
+        public void StrConvWideTest_AsciiNumbers()
+        {
+            // Converting ASCII numbers to full-width
+            Assert.AreEqual("１２３", Strings.StrConv("123", VbStrConv.Wide));
+            Assert.AreEqual("０", Strings.StrConv("0", VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvWideTest_AsciiLetters()
+        {
+            // Converting ASCII letters to full-width
+            Assert.AreEqual("ＡＢＣ", Strings.StrConv("ABC", VbStrConv.Wide));
+            Assert.AreEqual("ａｂｃ", Strings.StrConv("abc", VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvWideTest_MixedString()
+        {
+            // Converting mixed string
+            Assert.AreEqual("Ｔｅｓｔ１２３", Strings.StrConv("Test123", VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvWideTest_AlreadyWide()
+        {
+            // Already wide characters should remain unchanged
+            var wide = "全角文字";
+            Assert.AreEqual(wide, Strings.StrConv(wide, VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvNarrowTest_FullWidthNumbers()
+        {
+            // Converting full-width numbers to ASCII
+            Assert.AreEqual("123", Strings.StrConv("１２３", VbStrConv.Narrow));
+            Assert.AreEqual("0", Strings.StrConv("０", VbStrConv.Narrow));
+        }
+
+        [TestMethod()]
+        public void StrConvNarrowTest_FullWidthLetters()
+        {
+            // Converting full-width letters to ASCII
+            Assert.AreEqual("ABC", Strings.StrConv("ＡＢＣ", VbStrConv.Narrow));
+            Assert.AreEqual("abc", Strings.StrConv("ａｂｃ", VbStrConv.Narrow));
+        }
+
+        [TestMethod()]
+        public void StrConvNarrowTest_MixedString()
+        {
+            // Converting mixed string
+            Assert.AreEqual("Test123", Strings.StrConv("Ｔｅｓｔ１２３", VbStrConv.Narrow));
+        }
+
+        [TestMethod()]
+        public void StrConvTest_RoundTrip()
+        {
+            // Test round-trip conversion
+            var original = "Test123";
+            var wide = Strings.StrConv(original, VbStrConv.Wide);
+            var narrow = Strings.StrConv(wide, VbStrConv.Narrow);
+            Assert.AreEqual(original, narrow);
+        }
+
+        [TestMethod()]
+        public void StrConvTest_EmptyString()
+        {
+            Assert.AreEqual("", Strings.StrConv("", VbStrConv.Wide));
+            Assert.AreEqual("", Strings.StrConv(null, VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvTest_RealWorldUsage()
+        {
+            // Real-world usage from Help.cs
+            var number = "3";
+            var wideNumber = Strings.StrConv(number, VbStrConv.Wide);
+            Assert.AreEqual("３", wideNumber);
+            
+            var message = "半径" + wideNumber + "マス以内";
+            Assert.AreEqual("半径３マス以内", message);
+        }
     }
 }

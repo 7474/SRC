@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 
 namespace SRCCore.VB
 {
@@ -148,13 +149,124 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strconv?view=net-5.0
         public static string StrConv(string str, VbStrConv Conversion)
         {
-            // TODO 要る分だけ実装ないし完全に置き換える
-            // TODO Impl Wide
+            if (string.IsNullOrEmpty(str))
+            {
+                return str ?? "";
+            }
+
             switch (Conversion)
             {
+                case VbStrConv.Wide:
+                    return ConvertToWide(str);
+                case VbStrConv.Narrow:
+                    return ConvertToNarrow(str);
+                case VbStrConv.Hiragana:
+                    // TODO: Implement Hiragana conversion if needed
+                    return str;
                 default:
                     return str;
             }
+        }
+
+        /// <summary>
+        /// Converts half-width (hankaku) characters to full-width (zenkaku) characters
+        /// </summary>
+        private static string ConvertToWide(string str)
+        {
+            var result = new StringBuilder();
+            foreach (char c in str)
+            {
+                // ASCII alphanumeric and common symbols (0x20-0x7E) -> Full-width (0xFF01-0xFF5E)
+                if (c >= 0x20 && c <= 0x7E)
+                {
+                    // Convert to full-width equivalent
+                    // Space (0x20) -> Full-width space (0x3000)
+                    if (c == 0x20)
+                    {
+                        result.Append((char)0x3000);
+                    }
+                    else
+                    {
+                        // Other ASCII characters: add 0xFEE0 to get full-width equivalent
+                        result.Append((char)(c + 0xFEE0));
+                    }
+                }
+                // Half-width katakana (0xFF61-0xFF9F) -> Full-width katakana (0x30A1-0x30FA)
+                else if (c >= 0xFF61 && c <= 0xFF9F)
+                {
+                    result.Append(ConvertHalfKatakanaToFull(c));
+                }
+                else
+                {
+                    // Already full-width or not convertible
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Converts full-width (zenkaku) characters to half-width (hankaku) characters
+        /// </summary>
+        private static string ConvertToNarrow(string str)
+        {
+            var result = new StringBuilder();
+            foreach (char c in str)
+            {
+                // Full-width ASCII (0xFF01-0xFF5E) -> ASCII (0x21-0x7E)
+                if (c >= 0xFF01 && c <= 0xFF5E)
+                {
+                    result.Append((char)(c - 0xFEE0));
+                }
+                // Full-width space (0x3000) -> ASCII space (0x20)
+                else if (c == 0x3000)
+                {
+                    result.Append((char)0x20);
+                }
+                // Full-width katakana (0x30A1-0x30FA) -> Half-width katakana (0xFF61-0xFF9F)
+                else if (c >= 0x30A1 && c <= 0x30FA)
+                {
+                    result.Append(ConvertFullKatakanaToHalf(c));
+                }
+                else
+                {
+                    // Already half-width or not convertible
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Converts half-width katakana to full-width katakana
+        /// </summary>
+        private static char ConvertHalfKatakanaToFull(char c)
+        {
+            // Simplified mapping for common half-width katakana to full-width
+            // This is a basic implementation - a complete one would need a full mapping table
+            if (c >= 0xFF66 && c <= 0xFF9D)
+            {
+                // Basic katakana: add offset to get full-width
+                return (char)(c - 0xFF66 + 0x30A1);
+            }
+            // For dakuten/handakuten marks and other special cases, return as-is
+            // A full implementation would handle these properly
+            return c;
+        }
+
+        /// <summary>
+        /// Converts full-width katakana to half-width katakana
+        /// </summary>
+        private static char ConvertFullKatakanaToHalf(char c)
+        {
+            // Simplified mapping for common full-width katakana to half-width
+            if (c >= 0x30A1 && c <= 0x30F6)
+            {
+                // Basic katakana: subtract offset to get half-width
+                return (char)(c - 0x30A1 + 0xFF66);
+            }
+            // For special cases, return as-is
+            return c;
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
