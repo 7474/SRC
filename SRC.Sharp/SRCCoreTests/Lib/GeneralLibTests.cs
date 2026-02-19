@@ -62,5 +62,97 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual(1, GeneralLib.StrToLng("1.9"));
             //Assert.AreEqual(1, GeneralLib.StrToLng("0x1"));
         }
+
+        [TestMethod()]
+        public void DiceTest_ReturnsValueInRange()
+        {
+            GeneralLib.RndSeed = 42;
+            GeneralLib.RndReset();
+
+            for (int i = 0; i < 100; i++)
+            {
+                int result = GeneralLib.Dice(6);
+                Assert.IsTrue(result >= 1 && result <= 6, $"Dice(6) returned {result} which is out of range [1, 6]");
+            }
+        }
+
+        [TestMethod()]
+        public void DiceTest_MaxOne_ReturnsOne()
+        {
+            Assert.AreEqual(1, GeneralLib.Dice(1));
+            // Dice(0) returns 0 (same behavior as original VB: max <= 1 returns max)
+            Assert.AreEqual(0, GeneralLib.Dice(0));
+        }
+
+        [TestMethod()]
+        public void RndReset_SameSeed_ProducesSameSequence()
+        {
+            // Same seed should produce reproducible dice results
+            GeneralLib.RndSeed = 12345;
+            GeneralLib.RndReset();
+            var seq1 = Enumerable.Range(0, 20).Select(_ => GeneralLib.Dice(100)).ToArray();
+
+            GeneralLib.RndSeed = 12345;
+            GeneralLib.RndReset();
+            var seq2 = Enumerable.Range(0, 20).Select(_ => GeneralLib.Dice(100)).ToArray();
+
+            CollectionAssert.AreEqual(seq1, seq2, "Same seed should produce same dice sequence");
+        }
+
+        [TestMethod()]
+        public void RndReset_DifferentSeed_ProducesDifferentSequence()
+        {
+            GeneralLib.RndSeed = 1;
+            GeneralLib.RndReset();
+            var seq1 = Enumerable.Range(0, 20).Select(_ => GeneralLib.Dice(100)).ToArray();
+
+            GeneralLib.RndSeed = 2;
+            GeneralLib.RndReset();
+            var seq2 = Enumerable.Range(0, 20).Select(_ => GeneralLib.Dice(100)).ToArray();
+
+            Assert.IsFalse(seq1.SequenceEqual(seq2), "Different seeds should produce different dice sequences");
+        }
+
+        [TestMethod()]
+        public void RndIndex_SaveRestore_ResumesSequence()
+        {
+            // Simulate saving and restoring the random state mid-sequence
+            GeneralLib.RndSeed = 999;
+            GeneralLib.RndReset();
+
+            // Advance some steps
+            for (int i = 0; i < 50; i++) GeneralLib.Dice(100);
+
+            // Save state
+            int savedSeed = GeneralLib.RndSeed;
+            int savedIndex = GeneralLib.RndIndex;
+
+            // Generate next 10 values
+            var expected = Enumerable.Range(0, 10).Select(_ => GeneralLib.Dice(100)).ToArray();
+
+            // Restore state
+            GeneralLib.RndSeed = savedSeed;
+            GeneralLib.RndReset();
+            GeneralLib.RndIndex = savedIndex;
+
+            // Should produce same values
+            var actual = Enumerable.Range(0, 10).Select(_ => GeneralLib.Dice(100)).ToArray();
+            CollectionAssert.AreEqual(expected, actual, "Restored random state should resume the same sequence");
+        }
+
+        [TestMethod()]
+        public void RndIndex_WrapsAround()
+        {
+            GeneralLib.RndSeed = 1;
+            GeneralLib.RndReset();
+            // Set index to near the end to test wrap-around
+            GeneralLib.RndIndex = 4095;
+            // Should advance to 4096
+            GeneralLib.Dice(100);
+            Assert.AreEqual(4096, GeneralLib.RndIndex);
+            // Should wrap back to 1
+            GeneralLib.Dice(100);
+            Assert.AreEqual(1, GeneralLib.RndIndex);
+        }
     }
 }

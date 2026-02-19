@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using SRCCore.Events;
 using SRCCore.Expressions;
+using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Collections.Generic;
@@ -51,8 +52,9 @@ namespace SRCCore
         public bool KeepBGM { get; set; }
         public bool BossBGM { get; set; }
 
-        //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndSeed);
-        //    FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndIndex);
+        // 乱数系列の状態
+        public int RndSeed { get; set; }
+        public int RndIndex { get; set; }
     }
 
     public partial class SRC
@@ -257,6 +259,9 @@ namespace SRCCore
                     RepeatMode = Sound.RepeatMode,
                     KeepBGM = Sound.KeepBGM,
                     BossBGM = Sound.BossBGM,
+                    // 乱数系列の状態を保存
+                    RndSeed = GeneralLib.RndSeed,
+                    RndIndex = GeneralLib.RndIndex,
                 };
 
                 stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
@@ -445,13 +450,13 @@ namespace SRCCore
                 Sound.KeepBGM = data.KeepBGM;
                 Sound.BossBGM = data.BossBGM;
 
-                //    // 乱数系列を復元
-                //    if (!Expression.IsOptionDefined("デバッグ") && !Expression.IsOptionDefined("乱数系列非保存") && !FileSystem.EOF(SaveDataFileNumber))
-                //    {
-                //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndSeed);
-                //        GeneralLib.RndReset();
-                //        FileSystem.Input(SaveDataFileNumber, GeneralLib.RndIndex);
-                //    }
+                // 乱数系列を復元
+                if (!Expression.IsOptionDefined("デバッグ") && !Expression.IsOptionDefined("乱数系列非保存"))
+                {
+                    GeneralLib.RndSeed = data.RndSeed;
+                    GeneralLib.RndReset();
+                    GeneralLib.RndIndex = data.RndIndex;
+                }
 
                 if (!quick_load)
                 {

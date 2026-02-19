@@ -69,53 +69,45 @@ namespace SRCCore.Lib
         //        private const int VER_PLATFORM_WIN32_NT = 2;
 
 
-        //        // 乱数発生用シード値
-        //        public static int RndSeed;
+        // 乱数発生用シード値
+        public static int RndSeed;
 
-        //        // 乱数系列
-        //        private static float[] RndHistory = new float[4097];
+        // 乱数系列のサイズ（VB6の元実装に合わせて4096個）
+        private const int RndHistorySize = 4096;
 
-        //        // 乱数系列の中で現在使用している値のインデックス
-        //        public static int RndIndex;
+        // 乱数系列のセーブ＆ロードが出来るよう乱数系列をあらかじめ配列に保存して確定させる
+        private static double[] RndHistory = new double[RndHistorySize + 1];
 
-        //        // 乱数系列のリセット
-        //        public static void RndReset()
-        //        {
-        //            int i;
-        //            VBMath.Randomize(RndSeed);
+        // 乱数系列の中で現在使用している値のインデックス
+        public static int RndIndex;
 
-        //            // 乱数系列のセーブ＆ロードが出来るよう乱数系列をあらかじめ
-        //            // 配列に保存して確定させる
-        //            var loopTo = Information.UBound(RndHistory);
-        //            for (i = 1; i <= loopTo; i++)
-        //                RndHistory[i] = VBMath.Rnd();
-        //            RndIndex = 0;
-        //        }
+        // 乱数系列のリセット
+        public static void RndReset()
+        {
+            var rng = new Random(RndSeed);
+            // インデックスは1始まりで使用する
+            for (int i = 1; i <= RndHistorySize; i++)
+            {
+                RndHistory[i] = rng.NextDouble();
+            }
+            RndIndex = 0;
+        }
 
         // 1～max の乱数を返す
-        private static Random random = new Random();
         public static int Dice(int max)
         {
             if (max <= 1)
             {
                 return max;
             }
-            return random.Next(max) + 1;
-            // TODO Impl 乱数系列
-            //if (Expression.IsOptionDefined("乱数系列非保存"))
-            //{
-            //    DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);
-            //    return DiceRet;
-            //}
 
-            //RndIndex = (RndIndex + 1);
-            //if (RndIndex > Information.UBound(RndHistory))
-            //{
-            //    RndIndex = 1;
-            //}
+            RndIndex = (RndIndex + 1);
+            if (RndIndex > RndHistorySize)
+            {
+                RndIndex = 1;
+            }
 
-            //DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
-            //return DiceRet;
+            return (int)(max * RndHistory[RndIndex]) + 1;
         }
 
         public static IList<string> ToL(string list)

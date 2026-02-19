@@ -181,8 +181,7 @@ namespace SRCCore.VB
                 case VbStrConv.Narrow:
                     return ConvertToNarrow(str);
                 case VbStrConv.Hiragana:
-                    // TODO: Implement Hiragana conversion if needed
-                    return str;
+                    return ConvertKatakanaToHiragana(str);
                 default:
                     return str;
             }
@@ -293,6 +292,30 @@ namespace SRCCore.VB
             }
             // For special cases, return as-is
             return c;
+        }
+
+        /// <summary>
+        /// Converts full-width katakana characters to full-width hiragana characters.
+        /// In VB6, StrConv with vbHiragana converts katakana to hiragana.
+        /// Full-width katakana (ァ-ン, 0x30A1-0x30F3) maps to hiragana (ぁ-ん, 0x3041-0x3093)
+        /// by subtracting 0x60.
+        /// </summary>
+        private static string ConvertKatakanaToHiragana(string str)
+        {
+            var result = new StringBuilder(str.Length);
+            foreach (char c in str)
+            {
+                // Full-width katakana ァ(0x30A1) to ン(0x30F3) -> hiragana ぁ(0x3041) to ん(0x3093)
+                if (c >= 0x30A1 && c <= 0x30F3)
+                {
+                    result.Append((char)(c - 0x60));
+                }
+                else
+                {
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
