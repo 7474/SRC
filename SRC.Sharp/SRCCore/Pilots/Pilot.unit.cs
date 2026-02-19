@@ -74,7 +74,7 @@ namespace SRCCore.Pilots
                     // パイロットが既に規定数の場合は全パイロットを降ろす
                     if (u.CountPilot() == Math.Abs(u.Data.PilotNum))
                     {
-                        u.Pilot(u.Pilots.First().ID).GetOff();
+                        u.Pilots.First().GetOff();
                     }
 
                     Unit = u;
