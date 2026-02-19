@@ -69,3 +69,38 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 1. SRCSharpForm.exe を実行する
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
+
+## 📋 移植完了計画 / Migration Completion Plan
+
+SRC#のC#移植を完了するための計画を策定しました。TODOコメントとコメントアウトコードを分析し、約70個のIssueに分類しています。
+
+### ドキュメント / Documentation
+
+- **[📖 クイックスタートガイド](./docs/quick-start.md)** - まずはここから！
+- **[📋 移植完了計画](./docs/migration-plan.md)** - プロジェクト全体の概要
+- **[📝 個別Issue詳細](./docs/issue-breakdown.md)** - 約70個の具体的なIssueリスト
+- **[⚙️ GitHub Projects設定ガイド](./docs/github-projects-setup.md)** - プロジェクト管理の設定方法
+- **[📚 docs/README.md](./docs/README.md)** - ドキュメント全体の目次
+
+### 統計 / Statistics
+
+- **TODOコメント**: 155+
+- **Epic数**: 8個（戦闘システム、ユニット・パイロット、GUI・UI、イベント・コマンド、データ管理、VB6レガシー、パフォーマンス、バグ修正）
+- **推定Issue数**: 約70個
+- **推定作業量**: 18,000-25,000行の変更
+- **推定期間**: 12-18ヶ月
+
+### クイックスタート / Quick Start
+
+```bash
+# 1. ラベル作成
+bash docs/scripts/create-labels.sh
+
+# 2. マイルストーン作成
+bash docs/scripts/create-milestones.sh
+
+# 3. 進捗確認
+bash docs/scripts/progress-report.sh
+```
+
+詳細は[クイックスタートガイド](./docs/quick-start.md)を参照してください。
