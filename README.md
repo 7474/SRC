@@ -70,11 +70,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
 
-## 📋 移植完了計画 / Migration Completion Plan
-
-SRC#のC#移植を完了するための計画を策定しました。TODOコメントとコメントアウトコードを分析し、約70個のIssueに分類しています。
-
-### 🤖 Copilot自律運用モード / Autonomous Operation Mode
+## 🤖 Copilot自律運用モード / Autonomous Operation Mode
 
 移植作業はCopilotに以下の一文を指示するだけで自律的に進行します。
 
