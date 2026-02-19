@@ -26,6 +26,12 @@ namespace SRCCore.Models
     {
         public string Situation { get; set; }
         private IList<DialogItem> dialogs = new List<DialogItem>();
+        private SRC SRC;
+
+        public Dialog(SRC src)
+        {
+            SRC = src;
+        }
 
         public IList<DialogItem> Items => dialogs;
 
@@ -41,169 +47,145 @@ namespace SRCCore.Models
         // ダイアログに使われているパイロットが全て利用可能か判定
         public bool IsAvailable(Unit u, bool ignore_condition)
         {
-            // TODO Impl IsAvailable
+            if (u == null)
+            {
+                return true;
+            }
+
+            string mpname = u.MainPilot().Name;
+            string mpnickname = u.MainPilot().get_Nickname(false);
+            string mtype = u.MainPilot().MessageType;
+
+            foreach (var item in dialogs)
+            {
+                string pname = item.strName;
+                string pname2 = null;
+
+                // 合体技のパートナーが指定されている場合
+                if (pname.Length > 0 && pname[0] == '@')
+                {
+                    pname = pname.Substring(1);
+                    bool partnerFound = false;
+                    foreach (var partner in SRC.Commands.SelectedPartners)
+                    {
+                        if (partner.CountPilot() > 0)
+                        {
+                            var mp = partner.MainPilot();
+                            if ((pname ?? "") != (mp.Name ?? "")
+                                && !pname.StartsWith(mp.Name + "(")
+                                && (pname ?? "") != (mp.get_Nickname(false) ?? "")
+                                && !pname.StartsWith(mp.get_Nickname(false) + "("))
+                            {
+                                continue;
+                            }
+
+                            // 喋れるかどうかチェック
+                            if (!ignore_condition)
+                            {
+                                if (partner.IsConditionSatisfied("睡眠") || partner.IsConditionSatisfied("麻痺")
+                                    || partner.IsConditionSatisfied("石化") || partner.IsConditionSatisfied("恐怖")
+                                    || partner.IsConditionSatisfied("沈黙") || partner.IsConditionSatisfied("混乱"))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            partnerFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!partnerFound)
+                    {
+                        return false;
+                    }
+
+                    continue;
+                }
+
+                // 表情パターンが指定されている？
+                if (pname.IndexOf('(') >= 0)
+                {
+                    if (!SRC.PDList.IsDefined2(pname) && SRC.NPDList.IsDefined2(pname))
+                    {
+                        // 括弧部分を削除して基本名を取得
+                        for (int j = 2; j <= pname.Length; j++)
+                        {
+                            if (pname[pname.Length - j] == '(')
+                            {
+                                pname2 = pname.Substring(0, pname.Length - j - 1);
+                                break;
+                            }
+                        }
+
+                        // 表情パターンかどうか判定
+                        if (pname2 != null && (SRC.PDList.IsDefined2(pname2) || SRC.NPDList.IsDefined2(pname2)))
+                        {
+                            // 表情パターンとみなす
+                            pname = pname2;
+                        }
+                    }
+                }
+
+                // メインパイロットは常に存在
+                if ((pname ?? "") == (mpname ?? ""))
+                {
+                    continue;
+                }
+
+                if ((pname ?? "") == (mpnickname ?? ""))
+                {
+                    continue;
+                }
+
+                if ((pname ?? "") == (mtype ?? ""))
+                {
+                    continue;
+                }
+
+                // ノンパイロットはLeaveしていない限り常に存在
+                if (SRC.NPDList.IsDefined(pname))
+                {
+                    if (SRC.Expression.IsGlobalVariableDefined("IsAway(" + pname + ")"))
+                    {
+                        return false;
+                    }
+
+                    continue;
+                }
+
+                if (SRC.PDList.IsDefined(pname))
+                {
+                    // パイロットの場合
+
+                    // パイロットが作成されていない？
+                    if (!SRC.PList.IsDefined(pname))
+                    {
+                        return false;
+                    }
+
+                    var pilot = SRC.PList.Item(pname);
+                    // Leave中？
+                    if (pilot.Away)
+                    {
+                        return false;
+                    }
+
+                    // 喋れるかどうかチェック
+                    if (!ignore_condition && pilot.Unit is object)
+                    {
+                        var pu = pilot.Unit;
+                        if (pu.IsConditionSatisfied("睡眠") || pu.IsConditionSatisfied("麻痺")
+                            || pu.IsConditionSatisfied("石化") || pu.IsConditionSatisfied("恐怖")
+                            || pu.IsConditionSatisfied("沈黙") || pu.IsConditionSatisfied("混乱"))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             return true;
-            //bool IsAvailableRet = default;
-            //string pname, pname2 = default;
-            //int i, j;
-            //string mpnickname, mpname, mtype;
-            //{
-            //    var withBlock = u.MainPilot();
-            //    mpname = withBlock.Name;
-            //    mpnickname = withBlock.get_Nickname(false);
-            //    mtype = withBlock.MessageType;
-            //}
-
-            //var loopTo = Count;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    pname = strName[i];
-
-            //    // 合体技のパートナーが指定されている場合
-            //    if (Strings.Left(pname, 1) == "@")
-            //    {
-            //        pname = Strings.Mid(pname, 2);
-            //        var loopTo1 = (int)Information.UBound(Commands.SelectedPartners);
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            {
-            //                var withBlock1 = Commands.SelectedPartners[j];
-            //                if (withBlock1.CountPilot() > 0)
-            //                {
-            //                    // パートナーの名前と一致する？
-            //                    {
-            //                        var withBlock2 = withBlock1.MainPilot();
-            //                        if ((pname ?? "") != (withBlock2.Name ?? "") && Strings.InStr(pname, withBlock2.Name + "(") != 1 && (pname ?? "") != (withBlock2.get_Nickname(false) ?? "") && Strings.InStr(pname, withBlock2.get_Nickname(false) + "(") != 1)
-            //                        {
-            //                            goto NextPartner;
-            //                        }
-            //                    }
-
-            //                    // 喋れるかどうかチェック
-            //                    if (!ignore_condition)
-            //                    {
-            //                        if (withBlock1.IsConditionSatisfied("睡眠") || withBlock1.IsConditionSatisfied("麻痺") || withBlock1.IsConditionSatisfied("石化") || withBlock1.IsConditionSatisfied("恐怖") || withBlock1.IsConditionSatisfied("沈黙") || withBlock1.IsConditionSatisfied("混乱"))
-            //                        {
-            //                            IsAvailableRet = false;
-            //                            return default;
-            //                        }
-            //                    }
-
-            //                    // メッセージは使用可能
-            //                    goto NextMessage;
-            //                }
-            //            }
-
-            //        NextPartner:
-            //            ;
-            //        }
-
-            //        IsAvailableRet = false;
-            //        return default;
-            //    }
-
-            //    // 表情パターンが指定されている？
-            //    if (Strings.InStr(pname, "(") > 0)
-            //    {
-            //        bool localIsDefined21() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined2(argIndex1); return ret; }
-
-            //        bool localIsDefined22() { object argIndex1 = pname; var ret = SRC.NPDList.IsDefined2(argIndex1); return ret; }
-
-            //        if (!localIsDefined21() && localIsDefined22())
-            //        {
-            //            // 括弧部分を削除
-            //            var loopTo2 = (int)Strings.Len(pname);
-            //            for (j = 2; j <= loopTo2; j++)
-            //            {
-            //                if (Strings.Mid(pname, Strings.Len(pname) - j, 1) == "(")
-            //                {
-            //                    pname2 = Strings.Left(pname, Strings.Len(pname) - j - 1);
-            //                    break;
-            //                }
-            //            }
-
-            //            // 表情パターンかどうか判定
-            //            bool localIsDefined2() { object argIndex1 = pname2; var ret = SRC.NPDList.IsDefined2(argIndex1); return ret; }
-
-            //            if (SRC.PDList.IsDefined2(pname2) || localIsDefined2())
-            //            {
-            //                // 表情パターンとみなす
-            //                pname = pname2;
-            //            }
-            //        }
-            //    }
-
-            //    // メインパイロットは常に存在
-            //    if ((pname ?? "") == (mpname ?? ""))
-            //    {
-            //        goto NextMessage;
-            //    }
-
-            //    if ((pname ?? "") == (mpnickname ?? ""))
-            //    {
-            //        goto NextMessage;
-            //    }
-
-            //    if ((pname ?? "") == (mtype ?? ""))
-            //    {
-            //        goto NextMessage;
-            //    }
-
-            //    // ノンパイロットはLeaveしていない限り常に存在
-            //    if (SRC.NPDList.IsDefined(pname))
-            //    {
-            //        if (Expression.IsGlobalVariableDefined("IsAway(" + pname + ")"))
-            //        {
-            //            IsAvailableRet = false;
-            //            return default;
-            //        }
-
-            //        goto NextMessage;
-            //    }
-
-            //    if (SRC.PDList.IsDefined(pname))
-            //    {
-            //        // パイロットの場合
-
-            //        // パイロットが作成されていない？
-            //        bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-            //        if (!localIsDefined())
-            //        {
-            //            IsAvailableRet = false;
-            //            return default;
-            //        }
-
-            //        {
-            //            var withBlock3 = SRC.PList.Item(pname);
-            //            // Leave中？
-            //            if (withBlock3.Away)
-            //            {
-            //                IsAvailableRet = false;
-            //                return default;
-            //            }
-
-            //            // 喋れるかどうかチェック
-            //            if (!ignore_condition && withBlock3.Unit is object)
-            //            {
-            //                {
-            //                    var withBlock4 = withBlock3.Unit;
-            //                    if (withBlock4.IsConditionSatisfied("睡眠") || withBlock4.IsConditionSatisfied("麻痺") || withBlock4.IsConditionSatisfied("石化") || withBlock4.IsConditionSatisfied("恐怖") || withBlock4.IsConditionSatisfied("沈黙") || withBlock4.IsConditionSatisfied("混乱"))
-            //                    {
-            //                        IsAvailableRet = false;
-            //                        return default;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //NextMessage:
-            //    ;
-            //}
-
-            //IsAvailableRet = true;
-            //return IsAvailableRet;
         }
 
         //// idx番目のメッセージの話者
