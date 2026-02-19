@@ -1,5 +1,8 @@
 using SRCCore.Events;
-using System;
+using SRCCore.Exceptions;
+using SRCCore.VB;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,90 +14,62 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            throw new NotImplementedException();
-            //            int ExecQuestionCmdRet = default;
-            //            string[] list;
-            //            int i;
-            //            string buf;
-            //            list = new string[1];
-            //            GUI.ListItemID = new string[1];
-            //            GUI.ListItemFlag = new bool[1];
-            //            GUI.ListItemID[0] = "0";
-            //            var loopTo = Information.UBound(Event.EventData);
-            //            for (i = LineNum + 1; i <= loopTo; i++)
-            //            {
-            //                buf = Event.EventData[i];
-            //                Expression.FormatMessage(ref buf);
-            //                if (Strings.Len(buf) > 0)
-            //                {
-            //                    if (Strings.LCase(buf) == "end")
-            //                    {
-            //                        break;
-            //                    }
+            if (ArgNum < 2)
+            {
+                throw new EventErrorException(this, "Questionコマンドの引数の数が違います");
+            }
 
-            //                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-            //                    Array.Resize(ref GUI.ListItemID, Information.UBound(list) + 1);
-            //                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-            //                    list[Information.UBound(list)] = buf;
-            //                    GUI.ListItemID[Information.UBound(list)] = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i - LineNum);
-            //                    GUI.ListItemFlag[Information.UBound(list)] = false;
-            //                }
-            //            }
+            var timeLimit = GetArgAsLong(2);
+            var msg = ArgNum >= 3 ? GetArgAsString(3) : "さあ、どうする？";
 
-            //            if (i == Information.UBound(Event.EventData))
-            //            {
-            //                Event.EventErrorMessage = "QuestionとEndが対応していません";
-            //                ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399008
+            // 選択肢の読みこみ
+            var answerList = new List<ListBoxItem>();
+            CmdData hitEndCmd = null;
+            foreach (var eventId in AfterEventIdRange())
+            {
+                var buf = Event.EventData[eventId].Data;
+                Expression.FormatMessage(ref buf);
+                if (Strings.Len(buf) > 0)
+                {
+                    if (Event.EventCmd[eventId].Name == CmdType.EndCmd)
+                    {
+                        hitEndCmd = Event.EventCmd[eventId];
+                        break;
+                    }
 
+                    answerList.Add(new ListBoxItem
+                    {
+                        Text = buf,
+                        ListItemID = (eventId - EventData.ID).ToString(),
+                        ListItemFlag = false,
+                    });
+                }
+            }
 
-            //                Input:
-            //                            Error(0)
+            if (hitEndCmd == null)
+            {
+                throw new EventErrorException(this, "QuestionとEndが対応していません");
+            }
 
-            //                 */
-            //            }
+            if (answerList.Any())
+            {
+                Commands.SelectedItem = GUI.LIPS(new ListBoxArgs
+                {
+                    lb_caption = "選択",
+                    Items = answerList,
+                    lb_info = msg,
+                }, timeLimit);
+                Event.SelectedAlternative = Commands.SelectedItem > 0
+                    ? answerList[Commands.SelectedItem - 1].ListItemID
+                    : "0";
+            }
+            else
+            {
+                Commands.SelectedItem = 0;
+                Event.SelectedAlternative = "0";
+            }
 
-            //            if (Information.UBound(list) > 0)
-            //            {
-            //                switch (ArgNum)
-            //                {
-            //                    case 3:
-            //                        {
-            //                            Commands.SelectedItem = GUI.LIPS(ref "選択", ref list, ref GetArgAsString((short)3), (short)GetArgAsLong((short)2));
-            //                            break;
-            //                        }
-
-            //                    case 2:
-            //                        {
-            //                            Commands.SelectedItem = GUI.LIPS(ref "選択", ref list, ref "さあ、どうする？", (short)GetArgAsLong((short)2));
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            Event.EventErrorMessage = "Questionコマンドの引数の数が違います";
-            //                            ;
-            //#error Cannot convert ErrorStatementSyntax - see comment for details
-            //                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 399492
-
-
-            //                            Input:
-            //                                                Error(0)
-
-            //                             */
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                Commands.SelectedItem = (short)0;
-            //            }
-
-            //            Event.SelectedAlternative = GUI.ListItemID[Commands.SelectedItem];
-            //            GUI.ListItemID = new string[1];
-            //            ExecQuestionCmdRet = i + 1;
+            return hitEndCmd.EventData.NextID;
         }
     }
 }
