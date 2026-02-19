@@ -194,8 +194,15 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public Action<int, int, string, bool> DrawSysStringHandler { get; set; }
+
         public void DrawSysString(int X, int Y, string msg, bool without_refresh = false)
         {
+            if (DrawSysStringHandler != null)
+            {
+                DrawSysStringHandler(X, Y, msg, without_refresh);
+                return;
+            }
             throw new NotImplementedException();
         }
 
