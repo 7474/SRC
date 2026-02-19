@@ -55,99 +55,77 @@ namespace SRCCore.Pilots
                 }
             }
 
-            // TODO Impl SetSkillコマンドで付加された特殊能力を検索
-            //    // SetSkillコマンドで付加された特殊能力を検索
-            //    string sname, alist, sdata;
-            //    string buf;
-            //    if (Expression.IsGlobalVariableDefined("Ability(" + ID + ")"))
-            //    {
+            // SetSkillコマンドで付加された特殊能力を検索
+            if (Expression.IsGlobalVariableDefined("Ability(" + ID + ")"))
+            {
+                var alist = Event.GlobalVariableList["Ability(" + ID + ")"]?.StringValue ?? "";
+                for (var si = 1; si <= GeneralLib.LLength(alist); si++)
+                {
+                    var sname = GeneralLib.LIndex(alist, si);
+                    var varKey = "Ability(" + ID + "," + sname + ")";
+                    var buf = Event.GlobalVariableList[varKey]?.StringValue ?? "";
+                    var sdata = GeneralLib.ListTail(buf, 2);
 
-            //        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        alist = Conversions.ToString(Event.GlobalVariableList["Ability(" + ID + ")"].StringValue);
-            //        var loopTo3 = GeneralLib.LLength(alist);
-            //        for (i = 1; i <= loopTo3; i++)
-            //        {
-            //            sname = GeneralLib.LIndex(alist, i);
-            //            // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            buf = Conversions.ToString(Event.GlobalVariableList["Ability(" + ID + "," + sname + ")"].StringValue);
-            //            sdata = GeneralLib.ListTail(buf, 2);
+                    // 既に登録済み？
+                    SkillData registerd = null;
+                    if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
+                    {
+                        // これらの特殊能力は同種の能力を複数持つことが出来る
+                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname && x.StrData == sdata);
+                    }
+                    else
+                    {
+                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname);
+                    }
 
-            //            // 既に登録済み？
-            //            if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
-            //            {
-            //                // これらの特殊能力は同種の能力を複数持つことが出来る
-            //                var loopTo4 = skill_num;
-            //                for (j = 1; j <= loopTo4; j++)
-            //                {
-            //                    if ((sname ?? "") == (skill_name[j] ?? ""))
-            //                    {
-            //                        if ((sdata ?? "") == (skill_data[j].StrData ?? ""))
-            //                        {
-            //                            // ただしデータ指定まで同一であれば同じ能力と見なす
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                var loopTo5 = skill_num;
-            //                for (j = 1; j <= loopTo5; j++)
-            //                {
-            //                    if ((sname ?? "") == (skill_name[j] ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-            //            }
+                    var slevel = GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1));
+                    if (slevel == 0d)
+                    {
+                        // レベル0の場合は能力を封印
+                        if (registerd != null)
+                        {
+                            effectiveSkills.Remove(registerd);
+                        }
+                    }
+                    else
+                    {
+                        // アビリティデータを新規に作成
+                        var newSd = new SkillData();
+                        newSd.Name = sname;
+                        newSd.Level = slevel;
+                        if (newSd.Level == -1)
+                        {
+                            newSd.Level = Constants.DEFAULT_LEVEL;
+                        }
+                        newSd.StrData = GeneralLib.ListTail(buf, 2);
 
-            //            if (j > skill_num)
-            //            {
-            //                // 未登録
-            //                skill_num = j;
-            //                skill_name[j] = sname;
-            //            }
+                        if (registerd != null)
+                        {
+                            var idx = effectiveSkills.IndexOf(registerd);
+                            effectiveSkills[idx] = newSd;
+                        }
+                        else
+                        {
+                            effectiveSkills.Add(newSd);
+                        }
+                    }
+                }
+            }
 
-            //            if (GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1)) == 0d)
-            //            {
-            //                // レベル0の場合は能力を封印
-            //                // UPGRADE_NOTE: オブジェクト skill_data() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                skill_data[j] = null;
-            //            }
-            //            else
-            //            {
-            //                // PDListのデータを書き換えるわけにはいかないので
-            //                // アビリティデータを新規に作成
-            //                sd = new SkillData();
-            //                sd.Name = sname;
-            //                sd.Level = GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1));
-            //                if (sd.Level == -1)
-            //                {
-            //                    sd.Level = Constants.DEFAULT_LEVEL;
-            //                }
-
-            //                sd.StrData = GeneralLib.ListTail(buf, 2);
-            //                skill_data[j] = sd;
-            //            }
-            //        }
-            //    }
-
-            //    // 属性使用不能状態の際、対応する技能を封印する。
-            //    if (Unit is object)
-            //    {
-            //        var loopTo6 = skill_num;
-            //        for (j = 1; j <= loopTo6; j++)
-            //        {
-            //            if (skill_data[j] is object)
-            //            {
-            //                if (Unit.ConditionLifetime(skill_data[j].Name + "使用不能") > 0)
-            //                {
-            //                    // UPGRADE_NOTE: オブジェクト skill_data() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //                    skill_data[j] = null;
-            //                }
-            //            }
-            //        }
-            //    }
+            // 属性使用不能状態の際、対応する技能を封印する。
+            if (Unit != null)
+            {
+                for (var si = effectiveSkills.Count - 1; si >= 0; si--)
+                {
+                    if (effectiveSkills[si] != null)
+                    {
+                        if (Unit.ConditionLifetime(effectiveSkills[si].Name + "使用不能") > 0)
+                        {
+                            effectiveSkills.RemoveAt(si);
+                        }
+                    }
+                }
+            }
 
             // 使用可能な特殊能力を登録
             {
