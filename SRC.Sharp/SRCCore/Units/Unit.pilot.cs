@@ -1,6 +1,7 @@
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Pilots;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -397,109 +398,84 @@ namespace SRCCore.Units
         // 追加サポート
         public Pilot AdditionalSupport()
         {
-            return null;
-            // TODO Impl AdditionalSupport
-            //    Pilot AdditionalSupportRet = default;
-            //    string pname;
-            //    Pilot p;
-            //    int i;
+            // 追加サポートパイロットの名称
+            string pname = FeatureData("追加サポート");
 
-            //    // 追加サポートパイロットの名称
-            //    pname = FeatureData("追加サポート");
+            // 追加サポートが存在しない？
+            if (string.IsNullOrEmpty(pname))
+            {
+                return null;
+            }
 
-            //    // 追加サポートが存在しない？
-            //    if (string.IsNullOrEmpty(pname))
-            //    {
-            //        return AdditionalSupportRet;
-            //    }
+            // 他にパイロットが乗っていない場合は無効
+            if (CountPilot() == 0)
+            {
+                return null;
+            }
 
-            //    // 他にパイロットが乗っていない場合は無効
-            //    if (CountPilot() == 0)
-            //    {
-            //        return AdditionalSupportRet;
-            //    }
+            // 既に登録済みであるかチェック
+            if (pltAdditionalSupport is object)
+            {
+                if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
+                {
+                    pltAdditionalSupport.Unit = this;
+                    return pltAdditionalSupport;
+                }
+            }
 
-            //    // 既に登録済みであるかチェック
-            //    if (pltAdditionalSupport is object)
-            //    {
-            //        if ((pltAdditionalSupport.Name ?? "") == (pname ?? ""))
-            //        {
-            //            AdditionalSupportRet = pltAdditionalSupport;
-            //            pltAdditionalSupport.Unit = this;
-            //            return AdditionalSupportRet;
-            //        }
-            //    }
+            foreach (var of in OtherForms)
+            {
+                if (of.pltAdditionalSupport is object)
+                {
+                    if ((of.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
+                    {
+                        of.pltAdditionalSupport.Unit = this;
+                        pltAdditionalSupport = of.pltAdditionalSupport;
+                        return pltAdditionalSupport;
+                    }
+                }
+            }
 
-            //    var loopTo = CountOtherForm();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            if (withBlock.pltAdditionalSupport is object)
-            //            {
-            //                if ((withBlock.pltAdditionalSupport.Name ?? "") == (pname ?? ""))
-            //                {
-            //                    withBlock.pltAdditionalSupport.Unit = this;
-            //                    AdditionalSupportRet = withBlock.pltAdditionalSupport;
-            //                    return AdditionalSupportRet;
-            //                }
-            //            }
-            //        }
-            //    }
+            // 既に作成されていればそれを使う
+            // (ただし他のユニットの追加サポートとして登録済みの場合は除く)
+            if (SRC.PList.IsDefined(pname))
+            {
+                var p = SRC.PList.Item(pname);
+                if (!p.IsAdditionalSupport || (Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0))
+                {
+                    pltAdditionalSupport = p;
+                    pltAdditionalSupport.IsAdditionalSupport = true;
+                    pltAdditionalSupport.Party = Party0;
+                    pltAdditionalSupport.Unit = this;
+                    pltAdditionalSupport.Level = Pilots[0].Level;
+                    pltAdditionalSupport.Exp = Pilots[0].Exp;
+                    if (pltAdditionalSupport.Personality != "機械")
+                    {
+                        pltAdditionalSupport.Morale = Pilots[0].Morale;
+                    }
 
-            //    // 既に作成されていればそれを使う
-            //    // (ただし他のユニットの追加サポートとして登録済みの場合は除く)
-            //    if (SRC.PList.IsDefined(pname))
-            //    {
-            //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalSupport || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
-            //        {
-            //            pltAdditionalSupport = p;
-            //            {
-            //                var withBlock1 = pltAdditionalSupport;
-            //                withBlock1.IsAdditionalSupport = true;
-            //                withBlock1.Party = Party0;
-            //                withBlock1.Unit = this;
-            //                withBlock1.Level = Pilot(1).Level;
-            //                withBlock1.Exp = Pilot(1).Exp;
-            //                if (withBlock1.Personality != "機械")
-            //                {
-            //                    withBlock1.Morale = Pilot(1).Morale;
-            //                }
-            //            }
+                    return pltAdditionalSupport;
+                }
+            }
 
-            //            AdditionalSupportRet = pltAdditionalSupport;
-            //            return AdditionalSupportRet;
-            //        }
-            //    }
+            // まだ作成されていないので作成する
+            if (!SRC.PDList.IsDefined(pname))
+            {
+                GUI.ErrorMessage("追加サポート「" + pname + "」のデータが定義されていません");
+                return null;
+            }
 
-            //    // まだ作成されていないので作成する
-            //    bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
+            pltAdditionalSupport = SRC.PList.Add(pname, Pilots[0].Level, Party0, gid: "");
+            pltAdditionalSupport.IsAdditionalSupport = true;
+            pltAdditionalSupport.Unit = this;
+            pltAdditionalSupport.Exp = Pilots[0].Exp;
+            if (pltAdditionalSupport.Personality != "機械")
+            {
+                pltAdditionalSupport.Morale = Pilots[0].Morale;
+            }
 
-            //    if (!localIsDefined())
-            //    {
-            //        GUI.ErrorMessage("追加サポート「" + pname + "」のデータが定義されていません");
-            //        return AdditionalSupportRet;
-            //    }
-
-            //    pltAdditionalSupport = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
-            //    this.Party0 = argpparty;
-            //    {
-            //        var withBlock2 = pltAdditionalSupport;
-            //        withBlock2.IsAdditionalSupport = true;
-            //        withBlock2.Unit = this;
-            //        withBlock2.Exp = Pilot(1).Exp;
-            //        if (withBlock2.Personality != "機械")
-            //        {
-            //            withBlock2.Morale = Pilot(1).Morale;
-            //        }
-            //    }
-
-            //    AdditionalSupportRet = pltAdditionalSupport;
-            //    return AdditionalSupportRet;
+            return pltAdditionalSupport;
         }
-
-        // いずれかのパイロットが特殊能力 sname を持っているか判定
         public bool IsSkillAvailable(string sname)
         {
             bool IsSkillAvailableRet = default;

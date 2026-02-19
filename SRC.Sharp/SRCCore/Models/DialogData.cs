@@ -28,7 +28,7 @@ namespace SRCCore.Models
         // ダイアログを追加
         public Dialog AddDialog(string msg_situation)
         {
-            var new_dialog = new Dialog
+            var new_dialog = new Dialog(SRC)
             {
                 Situation = msg_situation,
             };

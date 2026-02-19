@@ -643,203 +643,151 @@ namespace SRCCore.Units
             }
         }
 
+        // メッセージ中の変数を置換する
+        private string SubstituteMessageVariables(string msg, string wname)
+        {
+            // ユニット名 / 機体
+            if (msg.IndexOf("$(ユニット)") >= 0 || msg.IndexOf("$(機体)") >= 0)
+            {
+                var buf = Nickname;
+                if (buf.IndexOf('(') >= 0)
+                {
+                    buf = buf.Substring(0, buf.IndexOf('('));
+                }
+                if (buf.IndexOf("専用") >= 0)
+                {
+                    buf = buf.Substring(buf.IndexOf("専用") + 2);
+                }
+                msg = msg.Replace("$(ユニット)", buf).Replace("$(機体)", buf);
+            }
+
+            // パイロット名
+            if (msg.IndexOf("$(パイロット)") >= 0)
+            {
+                var buf = MainPilot().get_Nickname(false);
+                if (buf.IndexOf('(') >= 0)
+                {
+                    buf = buf.Substring(0, buf.IndexOf('('));
+                }
+                msg = msg.Replace("$(パイロット)", buf);
+            }
+
+            // 武器名
+            if (msg.IndexOf("$(武器)") >= 0)
+            {
+                var buf = wname;
+                Expression.ReplaceSubExpression(ref buf);
+                if (buf.IndexOf('(') >= 0)
+                {
+                    buf = buf.Substring(0, buf.IndexOf('('));
+                }
+                if (buf.IndexOf('<') >= 0)
+                {
+                    buf = buf.Substring(0, buf.IndexOf('<'));
+                }
+                if (buf.IndexOf('＜') >= 0)
+                {
+                    buf = buf.Substring(0, buf.IndexOf('＜'));
+                }
+                msg = msg.Replace("$(武器)", buf);
+            }
+
+            // 損傷率
+            if (msg.IndexOf("$(損傷率)") >= 0)
+            {
+                msg = msg.Replace("$(損傷率)", SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP));
+            }
+
+            // 相手ユニットを設定
+            Unit t;
+            int tw;
+            if (ReferenceEquals(Commands.SelectedUnit, this))
+            {
+                t = Commands.SelectedTarget;
+                tw = Commands.SelectedTWeapon;
+            }
+            else
+            {
+                t = Commands.SelectedUnit;
+                tw = Commands.SelectedWeapon;
+            }
+
+            if (t is object)
+            {
+                // 相手ユニット名 / 相手機体
+                if (msg.IndexOf("$(相手ユニット)") >= 0 || msg.IndexOf("$(相手機体)") >= 0)
+                {
+                    var buf = t.Nickname;
+                    if (buf.IndexOf('(') >= 0)
+                    {
+                        buf = buf.Substring(0, buf.IndexOf('('));
+                    }
+                    if (buf.IndexOf("専用") >= 0)
+                    {
+                        buf = buf.Substring(buf.IndexOf("専用") + 2);
+                    }
+                    msg = msg.Replace("$(相手ユニット)", buf).Replace("$(相手機体)", buf);
+                }
+
+                // 相手パイロット名
+                if (msg.IndexOf("$(相手パイロット)") >= 0)
+                {
+                    var buf = t.MainPilot().get_Nickname(false);
+                    if (buf.IndexOf('(') >= 0)
+                    {
+                        buf = buf.Substring(0, buf.IndexOf('('));
+                    }
+                    msg = msg.Replace("$(相手パイロット)", buf);
+                }
+
+                // 相手武器名
+                if (msg.IndexOf("$(相手武器)") >= 0)
+                {
+                    string buf;
+                    if (1 <= tw && tw <= t.CountWeapon())
+                    {
+                        buf = t.Weapons[tw - 1].WeaponNickname();
+                    }
+                    else
+                    {
+                        buf = "";
+                    }
+                    if (buf.IndexOf('<') >= 0)
+                    {
+                        buf = buf.Substring(0, buf.IndexOf('<'));
+                    }
+                    if (buf.IndexOf('＜') >= 0)
+                    {
+                        buf = buf.Substring(0, buf.IndexOf('＜'));
+                    }
+                    msg = msg.Replace("$(相手武器)", buf);
+                }
+
+                // 相手損傷率
+                if (msg.IndexOf("$(相手損傷率)") >= 0)
+                {
+                    msg = msg.Replace("$(相手損傷率)", SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP));
+                }
+            }
+
+            return msg;
+        }
+
         // ダイアログの再生
         public void PlayDialog(Dialog dd, string wname)
         {
-            // TODO Impl PlayDialog
-            //string msg, buf;
-            //int i, idx;
-            //Unit t;
-            //int tw;
-
             // 画像描画が行われたかどうかの判定のためにフラグを初期化
             GUI.IsPictureDrawn = false;
             // ダイアログの個々のメッセージを表示
             foreach (var di in dd.Items)
             {
-                var msg = di.strMessage;
+                var msg = SubstituteMessageVariables(di.strMessage, wname);
 
                 // メッセージ表示のキャンセル
                 if (msg == "-")
                 {
                     return;
                 }
-
-                //// ユニット名
-                //while (Strings.InStr(msg, "$(ユニット)") > 0)
-                //{
-                //    idx = Strings.InStr(msg, "$(ユニット)");
-                //    buf = Nickname;
-                //    if (Strings.InStr(buf, "(") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //    }
-
-                //    if (Strings.InStr(buf, "専用") > 0)
-                //    {
-                //        buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-                //    }
-
-                //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-                //}
-
-                //while (Strings.InStr(msg, "$(機体)") > 0)
-                //{
-                //    idx = Strings.InStr(msg, "$(機体)");
-                //    buf = Nickname;
-                //    if (Strings.InStr(buf, "(") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //    }
-
-                //    if (Strings.InStr(buf, "専用") > 0)
-                //    {
-                //        buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-                //    }
-
-                //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 5);
-                //}
-
-                //// パイロット名
-                //while (Strings.InStr(msg, "$(パイロット)") > 0)
-                //{
-                //    buf = MainPilot().get_Nickname(false);
-                //    if (Strings.InStr(buf, "(") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //    }
-
-                //    idx = Strings.InStr(msg, "$(パイロット)");
-                //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 8);
-                //}
-
-                //// 武器名
-                //while (Strings.InStr(msg, "$(武器)") > 0)
-                //{
-                //    idx = Strings.InStr(msg, "$(武器)");
-                //    buf = wname;
-                //    Expression.ReplaceSubExpression(buf);
-                //    if (Strings.InStr(buf, "(") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //    }
-
-                //    if (Strings.InStr(buf, "<") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "<") - 1);
-                //    }
-
-                //    if (Strings.InStr(buf, "＜") > 0)
-                //    {
-                //        buf = Strings.Left(buf, Strings.InStr(buf, "＜") - 1);
-                //    }
-
-                //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 5);
-                //}
-
-                //// 損傷率
-                //while (Strings.InStr(msg, "$(損傷率)") > 0)
-                //{
-                //    idx = Strings.InStr(msg, "$(損傷率)");
-                //    msg = Strings.Left(msg, idx - 1) + SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP) + Strings.Mid(msg, idx + 6);
-                //}
-
-                //// 相手ユニットを設定
-                //if (ReferenceEquals(Commands.SelectedUnit, this))
-                //{
-                //    t = Commands.SelectedTarget;
-                //    tw = Commands.SelectedTWeapon;
-                //}
-                //else
-                //{
-                //    t = Commands.SelectedUnit;
-                //    tw = Commands.SelectedWeapon;
-                //}
-
-                //if (t is object)
-                //{
-                //    // 相手ユニット名
-                //    while (Strings.InStr(msg, "$(相手ユニット)") > 0)
-                //    {
-                //        buf = t.Nickname;
-                //        if (Strings.InStr(buf, "(") > 0)
-                //        {
-                //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //        }
-
-                //        if (Strings.InStr(buf, "専用") > 0)
-                //        {
-                //            buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-                //        }
-
-                //        idx = Strings.InStr(msg, "$(相手ユニット)");
-                //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 9);
-                //    }
-
-                //    while (Strings.InStr(msg, "$(相手機体)") > 0)
-                //    {
-                //        buf = t.Nickname;
-                //        if (Strings.InStr(buf, "(") > 0)
-                //        {
-                //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //        }
-
-                //        if (Strings.InStr(buf, "専用") > 0)
-                //        {
-                //            buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-                //        }
-
-                //        idx = Strings.InStr(msg, "$(相手機体)");
-                //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-                //    }
-
-                //    // 相手パイロット名
-                //    while (Strings.InStr(msg, "$(相手パイロット)") > 0)
-                //    {
-                //        buf = t.MainPilot().get_Nickname(false);
-                //        if (Strings.InStr(buf, "(") > 0)
-                //        {
-                //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-                //        }
-
-                //        idx = Strings.InStr(msg, "$(相手パイロット)");
-                //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 10);
-                //    }
-
-                //    // 相手武器名
-                //    while (Strings.InStr(msg, "$(相手武器)") > 0)
-                //    {
-                //        if (1 <= tw && tw <= t.CountWeapon())
-                //        {
-                //            buf = t.WeaponNickname(tw);
-                //        }
-                //        else
-                //        {
-                //            buf = "";
-                //        }
-
-                //        if (Strings.InStr(buf, "<") > 0)
-                //        {
-                //            buf = Strings.Left(buf, Strings.InStr(buf, "<") - 1);
-                //        }
-
-                //        if (Strings.InStr(buf, "＜") > 0)
-                //        {
-                //            buf = Strings.Left(buf, Strings.InStr(buf, "＜") - 1);
-                //        }
-
-                //        idx = Strings.InStr(msg, "$(相手武器)");
-                //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-                //    }
-
-                //    // 相手損傷率
-                //    while (Strings.InStr(msg, "$(相手損傷率)") > 0)
-                //    {
-                //        buf = SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP);
-                //        idx = Strings.InStr(msg, "$(相手損傷率)");
-                //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 8);
-                //    }
-                //}
 
                 // メッセージを表示
                 if (di.strName == MainPilot().Name)
@@ -879,183 +827,7 @@ namespace SRCCore.Units
             // 画像描画が行われたかどうかの判定のためにフラグを初期化
             GUI.IsPictureDrawn = false;
 
-            // TODO Impl 画像描画が行われたかどうかの判定
-            //// ユニット名
-            //while (Strings.InStr(msg, "$(ユニット)") > 0)
-            //{
-            //    idx = Strings.InStr(msg, "$(ユニット)");
-            //    buf = Nickname;
-            //    if (Strings.InStr(buf, "(") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //    }
-
-            //    if (Strings.InStr(buf, "専用") > 0)
-            //    {
-            //        buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-            //    }
-
-            //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-            //}
-
-            //while (Strings.InStr(msg, "$(機体)") > 0)
-            //{
-            //    idx = Strings.InStr(msg, "$(機体)");
-            //    buf = Nickname;
-            //    if (Strings.InStr(buf, "(") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //    }
-
-            //    if (Strings.InStr(buf, "専用") > 0)
-            //    {
-            //        buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-            //    }
-
-            //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 5);
-            //}
-
-            //// パイロット名
-            //while (Strings.InStr(msg, "$(パイロット)") > 0)
-            //{
-            //    buf = MainPilot().get_Nickname(false);
-            //    if (Strings.InStr(buf, "(") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //    }
-
-            //    idx = Strings.InStr(msg, "$(パイロット)");
-            //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 8);
-            //}
-
-            //// 武器名
-            //while (Strings.InStr(msg, "$(武器)") > 0)
-            //{
-            //    idx = Strings.InStr(msg, "$(武器)");
-            //    buf = wname;
-            //    Expression.ReplaceSubExpression(ref buf);
-            //    if (Strings.InStr(buf, "(") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //    }
-
-            //    if (Strings.InStr(buf, "<") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "<") - 1);
-            //    }
-
-            //    if (Strings.InStr(buf, "＜") > 0)
-            //    {
-            //        buf = Strings.Left(buf, Strings.InStr(buf, "＜") - 1);
-            //    }
-
-            //    msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 5);
-            //}
-
-            //// 損傷率
-            //while (Strings.InStr(msg, "$(損傷率)") > 0)
-            //{
-            //    idx = Strings.InStr(msg, "$(損傷率)");
-            //    msg = Strings.Left(msg, idx - 1) + SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP) + Strings.Mid(msg, idx + 6);
-            //}
-
-            //// 相手ユニットを設定
-            //if (ReferenceEquals(Commands.SelectedUnit, this))
-            //{
-            //    t = Commands.SelectedTarget;
-            //    tw = Commands.SelectedTWeapon;
-            //}
-            //else
-            //{
-            //    t = Commands.SelectedUnit;
-            //    tw = Commands.SelectedWeapon;
-            //}
-
-            //if (t is object)
-            //{
-            //    // 相手ユニット名
-            //    while (Strings.InStr(msg, "$(相手ユニット)") > 0)
-            //    {
-            //        buf = t.Nickname;
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手ユニット)");
-            //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 9);
-            //    }
-
-            //    while (Strings.InStr(msg, "$(相手機体)") > 0)
-            //    {
-            //        buf = t.Nickname;
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Mid(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手機体)");
-            //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-            //    }
-
-            //    // 相手パイロット名
-            //    while (Strings.InStr(msg, "$(相手パイロット)") > 0)
-            //    {
-            //        buf = t.MainPilot().get_Nickname(false);
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手パイロット)");
-            //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 10);
-            //    }
-
-            //    // 相手武器名
-            //    while (Strings.InStr(msg, "$(相手武器)") > 0)
-            //    {
-            //        if (1 <= tw && tw <= t.CountWeapon())
-            //        {
-            //            buf = t.WeaponNickname(tw);
-            //        }
-            //        else
-            //        {
-            //            buf = "";
-            //        }
-
-            //        if (Strings.InStr(buf, "<") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "<") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "＜") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "＜") - 1);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手武器)");
-            //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 7);
-            //    }
-
-            //    // 相手損傷率
-            //    while (Strings.InStr(msg, "$(相手損傷率)") > 0)
-            //    {
-            //        buf = SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP);
-            //        idx = Strings.InStr(msg, "$(相手損傷率)");
-            //        msg = Strings.Left(msg, idx - 1) + buf + Strings.Mid(msg, idx + 8);
-            //    }
-            //}
-
+            msg = SubstituteMessageVariables(msg, wname);
             // メッセージを表示
             GUI.DisplayBattleMessage(p.ID, msg, msg_mode: "");
 
@@ -1185,991 +957,157 @@ namespace SRCCore.Units
         // 解説メッセージを表示
         public void SysMessage(string main_situation, string sub_situation = "", string add_msg = "")
         {
-            // TODO Impl SysMessage
-            //    string uname, msg, uclass;
-            //    string[] situations;
-            //    string idx, buf;
-            //    int i, ret;
-            //    string wname;
-            //    if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
-            //    {
-            //        situations = new string[2];
-            //        situations.Add(main_situation + "(解説)");
-            //    }
-            //    else
-            //    {
-            //        situations = new string[3];
-            //        situations.Add(main_situation + "(" + sub_situation + ")(解説)");
-            //        situations.Add(main_situation + "(解説)");
-            //    }
-
-            //    // ADD START MARGE
-            //    // 拡張戦闘アニメデータで検索
-            //    if (SRC.ExtendedAnimation)
-            //    {
-            //        {
-            //            var withBlock = SRC.EADList;
-            //            var loopTo = Information.UBound(situations);
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                // 戦闘アニメ能力で指定された名称で検索
-            //                if (IsFeatureAvailable("戦闘アニメ"))
-            //                {
-            //                    uname = FeatureData("戦闘アニメ");
-            //                    if (withBlock.IsDefined(uname))
-            //                    {
-            //                        MessageData localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                        msg = localItem().SelectMessage(situations[i], this);
-            //                        if (Strings.Len(msg) > 0)
-            //                        {
-            //                            goto FoundMessage;
-            //                        }
-            //                    }
-            //                }
-
-            //                // ユニット名称で検索
-            //                bool localIsDefined() { object argIndex1 = Name; var ret = withBlock.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //                if (localIsDefined())
-            //                {
-            //                    MessageData localItem1() { object argIndex1 = Name; var ret = withBlock.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //                    msg = localItem1().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-
-            //                // ユニット愛称を修正したもので検索
-            //                uname = Nickname0;
-            //                ret = Strings.InStr(uname, "(");
-            //                if (ret > 1)
-            //                {
-            //                    uname = Strings.Left(uname, ret - 1);
-            //                }
-
-            //                ret = Strings.InStr(uname, "用");
-            //                if (ret > 0)
-            //                {
-            //                    if (ret < Strings.Len(uname))
-            //                    {
-            //                        uname = Strings.Mid(uname, ret + 1);
-            //                    }
-            //                }
-
-            //                ret = Strings.InStr(uname, "型");
-            //                if (ret > 0)
-            //                {
-            //                    if (ret < Strings.Len(uname))
-            //                    {
-            //                        uname = Strings.Mid(uname, ret + 1);
-            //                    }
-            //                }
-
-            //                if (Strings.Right(uname, 4) == "カスタム")
-            //                {
-            //                    uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //                }
-
-            //                if (Strings.Right(uname, 1) == "改")
-            //                {
-            //                    uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //                }
-
-            //                if (withBlock.IsDefined(uname))
-            //                {
-            //                    MessageData localItem2() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                    msg = localItem2().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-
-            //                // ユニットクラスで検索
-            //                uclass = Class0;
-            //                if (withBlock.IsDefined(uclass))
-            //                {
-            //                    MessageData localItem3() { object argIndex1 = uclass; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                    msg = localItem3().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-
-            //                // 汎用
-            //                if (withBlock.IsDefined("汎用"))
-            //                {
-            //                    msg = withBlock.Item("汎用").SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    // ADD END MARGE
-
-            //    // 戦闘アニメデータで検索
-            //    {
-            //        var withBlock1 = SRC.ADList;
-            //        var loopTo1 = Information.UBound(situations);
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            // 戦闘アニメ能力で指定された名称で検索
-            //            if (IsFeatureAvailable("戦闘アニメ"))
-            //            {
-            //                uname = FeatureData("戦闘アニメ");
-            //                if (withBlock1.IsDefined(uname))
-            //                {
-            //                    MessageData localItem4() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //                    msg = localItem4().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-            //            }
-
-            //            // ユニット名称で検索
-            //            bool localIsDefined1() { object argIndex1 = Name; var ret = withBlock1.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //            if (localIsDefined1())
-            //            {
-            //                MessageData localItem5() { object argIndex1 = Name; var ret = withBlock1.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //                msg = localItem5().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // ユニット愛称を修正したもので検索
-            //            uname = Nickname0;
-            //            ret = Strings.InStr(uname, "(");
-            //            if (ret > 1)
-            //            {
-            //                uname = Strings.Left(uname, ret - 1);
-            //            }
-
-            //            ret = Strings.InStr(uname, "用");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            ret = Strings.InStr(uname, "型");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            if (Strings.Right(uname, 4) == "カスタム")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //            }
-
-            //            if (Strings.Right(uname, 1) == "改")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //            }
-
-            //            if (withBlock1.IsDefined(uname))
-            //            {
-            //                MessageData localItem6() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //                msg = localItem6().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // ユニットクラスで検索
-            //            uclass = Class0;
-            //            if (withBlock1.IsDefined(uclass))
-            //            {
-            //                MessageData localItem7() { object argIndex1 = uclass; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //                msg = localItem7().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // 汎用
-            //            if (withBlock1.IsDefined("汎用"))
-            //            {
-            //                msg = withBlock1.Item("汎用").SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 特殊効果データで検索
-            //    {
-            //        var withBlock2 = SRC.EDList;
-            //        var loopTo2 = Information.UBound(situations);
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            // 特殊効果能力で指定された名称で検索
-            //            if (IsFeatureAvailable("特殊効果"))
-            //            {
-            //                uname = FeatureData("特殊効果");
-            //                if (withBlock2.IsDefined(uname))
-            //                {
-            //                    MessageData localItem8() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                    msg = localItem8().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        goto FoundMessage;
-            //                    }
-            //                }
-            //            }
-
-            //            // ユニット名称で検索
-            //            bool localIsDefined2() { object argIndex1 = Name; var ret = withBlock2.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //            if (localIsDefined2())
-            //            {
-            //                MessageData localItem9() { object argIndex1 = Name; var ret = withBlock2.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //                msg = localItem9().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // ユニット愛称を修正したもので検索
-            //            uname = Nickname0;
-            //            ret = Strings.InStr(uname, "(");
-            //            if (ret > 1)
-            //            {
-            //                uname = Strings.Left(uname, ret - 1);
-            //            }
-
-            //            ret = Strings.InStr(uname, "用");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            ret = Strings.InStr(uname, "型");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            if (Strings.Right(uname, 4) == "カスタム")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //            }
-
-            //            if (Strings.Right(uname, 1) == "改")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //            }
-
-            //            if (withBlock2.IsDefined(uname))
-            //            {
-            //                MessageData localItem10() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                msg = localItem10().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // ユニットクラスで検索
-            //            uclass = Class0;
-            //            if (withBlock2.IsDefined(uclass))
-            //            {
-            //                MessageData localItem11() { object argIndex1 = uclass; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                msg = localItem11().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-
-            //            // 汎用
-            //            if (withBlock2.IsDefined("汎用"))
-            //            {
-            //                msg = withBlock2.Item("汎用").SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    goto FoundMessage;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 対応するメッセージが見つからなかった
-            //    return;
-            //FoundMessage:
-            //    ;
-
-
-            //    // メッセージ表示のキャンセル
-            //    if (msg == "-")
-            //    {
-            //        return;
-            //    }
-
-            //    // ユニット名
-            //    while (Strings.InStr(msg, "$(ユニット)") > 0)
-            //    {
-            //        idx = Strings.InStr(msg, "$(ユニット)").ToString();
-            //        buf = Nickname;
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 7d));
-            //    }
-
-            //    while (Strings.InStr(msg, "$(機体)") > 0)
-            //    {
-            //        idx = Strings.InStr(msg, "$(機体)").ToString();
-            //        buf = Nickname;
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 5d));
-            //    }
-
-            //    // パイロット名
-            //    while (Strings.InStr(msg, "$(パイロット)") > 0)
-            //    {
-            //        idx = Strings.InStr(msg, "$(パイロット)").ToString();
-            //        buf = MainPilot().get_Nickname(false);
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 8d));
-            //    }
-
-            //    // 武器名
-            //    if (Strings.InStr(msg, "$(武器)") > 0)
-            //    {
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            wname = Weapon(Commands.SelectedWeapon).Name;
-            //        }
-            //        else
-            //        {
-            //            wname = Weapon(Commands.SelectedTWeapon).Name;
-            //        }
-
-            //        if (Strings.InStr(wname, "(") > 0)
-            //        {
-            //            wname = Strings.Left(wname, Strings.InStr(wname, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(wname, "<") > 0)
-            //        {
-            //            wname = Strings.Left(wname, Strings.InStr(wname, "<") - 1);
-            //        }
-
-            //        while (Strings.InStr(msg, "$(武器)") > 0)
-            //        {
-            //            idx = Strings.InStr(msg, "$(武器)").ToString();
-            //            msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + wname + Strings.Mid(msg, (Conversions.ToDouble(idx) + 5d));
-            //        }
-            //    }
-
-            //    // 損傷率
-            //    while (Strings.InStr(msg, "$(損傷率)") > 0)
-            //    {
-            //        idx = Strings.InStr(msg, "$(損傷率)").ToString();
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP) + Strings.Mid(msg, (Conversions.ToDouble(idx) + 6d));
-            //    }
-
-            //    // 相手ユニット名
-            //    while (Strings.InStr(msg, "$(相手ユニット)") > 0)
-            //    {
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            if (Commands.SelectedTarget is object)
-            //            {
-            //                buf = Commands.SelectedTarget.Nickname;
-            //            }
-            //            else
-            //            {
-            //                buf = "";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            buf = Commands.SelectedUnit.Nickname;
-            //        }
-
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手ユニット)").ToString();
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 9d));
-            //    }
-
-            //    while (Strings.InStr(msg, "$(相手機体)") > 0)
-            //    {
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            if (Commands.SelectedTarget is object)
-            //            {
-            //                buf = Commands.SelectedTarget.Nickname;
-            //            }
-            //            else
-            //            {
-            //                buf = "";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            buf = Commands.SelectedUnit.Nickname;
-            //        }
-
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "専用") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "専用") + 2);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手機体)").ToString();
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 7d));
-            //    }
-
-            //    // 相手パイロット名
-            //    while (Strings.InStr(msg, "$(相手パイロット)") > 0)
-            //    {
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            if (Commands.SelectedTarget is object)
-            //            {
-            //                buf = Commands.SelectedTarget.MainPilot().get_Nickname(false);
-            //            }
-            //            else
-            //            {
-            //                buf = "";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            buf = Commands.SelectedUnit.MainPilot().get_Nickname(false);
-            //        }
-
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手パイロット)").ToString();
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 10d));
-            //    }
-
-            //    // 相手武器名
-            //    while (Strings.InStr(msg, "$(相手武器)") > 0)
-            //    {
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            if (Commands.SelectedTarget is object)
-            //            {
-            //                buf = Commands.SelectedTarget.Weapon(Commands.SelectedTWeapon).Name;
-            //            }
-            //            else
-            //            {
-            //                buf = "";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            buf = Commands.SelectedUnit.Weapon(Commands.SelectedWeapon).Name;
-            //        }
-
-            //        if (Strings.InStr(buf, "(") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "(") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "<") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "<") - 1);
-            //        }
-
-            //        if (Strings.InStr(buf, "＜") > 0)
-            //        {
-            //            buf = Strings.Left(buf, Strings.InStr(buf, "＜") - 1);
-            //        }
-
-            //        idx = Strings.InStr(msg, "$(相手武器)").ToString();
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 7d));
-            //    }
-
-            //    // 相手損傷率
-            //    while (Strings.InStr(msg, "$(相手損傷率)") > 0)
-            //    {
-            //        idx = Strings.InStr(msg, "$(相手損傷率)").ToString();
-            //        if (ReferenceEquals(Commands.SelectedUnit, this))
-            //        {
-            //            if (Commands.SelectedTarget is object)
-            //            {
-            //                {
-            //                    var withBlock3 = Commands.SelectedTarget;
-            //                    buf = SrcFormatter.Format(100 * (withBlock3.MaxHP - withBlock3.HP) / withBlock3.MaxHP);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                buf = "";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            {
-            //                var withBlock4 = Commands.SelectedUnit;
-            //                buf = SrcFormatter.Format(100 * (withBlock4.MaxHP - withBlock4.HP) / withBlock4.MaxHP);
-            //            }
-            //        }
-
-            //        msg = Strings.Left(msg, (Conversions.ToDouble(idx) - 1d)) + buf + Strings.Mid(msg, (Conversions.ToDouble(idx) + 8d));
-            //    }
-
-            //    if (!My.MyProject.Forms.frmMessage.Visible)
-            //    {
-            //        GUI.OpenMessageForm(u1: null, u2: null);
-            //    }
-
-            //    if (!string.IsNullOrEmpty(add_msg))
-            //    {
-            //        GUI.DisplayBattleMessage("-", msg + "." + add_msg, msg_mode: "");
-            //    }
-            //    else
-            //    {
-            //        GUI.DisplayBattleMessage("-", msg, msg_mode: "");
-            //    }
+            string msg = FindSysMessage(main_situation, sub_situation);
+            if (string.IsNullOrEmpty(msg))
+            {
+                return;
+            }
+
+            // メッセージ表示のキャンセル
+            if (msg == "-")
+            {
+                return;
+            }
+
+            // 変数を置換
+            string wname = "";
+            if (ReferenceEquals(Commands.SelectedUnit, this))
+            {
+                if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= CountWeapon())
+                {
+                    wname = Weapon(Commands.SelectedWeapon).Name;
+                }
+            }
+            else if (ReferenceEquals(Commands.SelectedTarget, this))
+            {
+                if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= CountWeapon())
+                {
+                    wname = Weapon(Commands.SelectedTWeapon).Name;
+                }
+            }
+            msg = SubstituteMessageVariables(msg, wname);
+
+            if (!string.IsNullOrEmpty(add_msg))
+            {
+                msg = msg + add_msg;
+            }
+
+            GUI.DisplayBattleMessage("-", msg, msg_mode: "");
         }
 
         // 解説メッセージが定義されているか？
         public bool IsSysMessageDefined(string main_situation, string sub_situation = "")
         {
-            return false;
-            // TODO Impl IsSysMessageDefined
-            //bool IsSysMessageDefinedRet = default;
-            //string uclass, uname, msg;
-            //string[] situations;
-            //int i, ret;
-            //if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
-            //{
-            //    situations = new string[2];
-            //    situations.Add(main_situation + "(解説)");
-            //}
-            //else
-            //{
-            //    situations = new string[3];
-            //    situations.Add(main_situation + "(" + sub_situation + ")(解説)");
-            //    situations.Add(main_situation + "(解説)");
-            //}
-
-            //// ADD START MARGE
-            //// 拡張戦闘アニメデータで検索
-            //if (SRC.ExtendedAnimation)
-            //{
-            //    {
-            //        var withBlock = SRC.EADList;
-            //        var loopTo = Information.UBound(situations);
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            // 戦闘アニメ能力で指定された名称で検索
-            //            if (IsFeatureAvailable("戦闘アニメ"))
-            //            {
-            //                uname = FeatureData("戦闘アニメ");
-            //                if (withBlock.IsDefined(uname))
-            //                {
-            //                    MessageData localItem() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                    msg = localItem().SelectMessage(situations[i], this);
-            //                    if (Strings.Len(msg) > 0)
-            //                    {
-            //                        IsSysMessageDefinedRet = true;
-            //                        return IsSysMessageDefinedRet;
-            //                    }
-            //                }
-            //            }
-
-            //            // ユニット名称で検索
-            //            bool localIsDefined() { object argIndex1 = Name; var ret = withBlock.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //            if (localIsDefined())
-            //            {
-            //                MessageData localItem1() { object argIndex1 = Name; var ret = withBlock.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //                msg = localItem1().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-
-            //            // ユニット愛称を修正したもので検索
-            //            uname = Nickname0;
-            //            ret = Strings.InStr(uname, "(");
-            //            if (ret > 1)
-            //            {
-            //                uname = Strings.Left(uname, ret - 1);
-            //            }
-
-            //            ret = Strings.InStr(uname, "用");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            ret = Strings.InStr(uname, "型");
-            //            if (ret > 0)
-            //            {
-            //                if (ret < Strings.Len(uname))
-            //                {
-            //                    uname = Strings.Mid(uname, ret + 1);
-            //                }
-            //            }
-
-            //            if (Strings.Right(uname, 4) == "カスタム")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //            }
-
-            //            if (Strings.Right(uname, 1) == "改")
-            //            {
-            //                uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //            }
-
-            //            if (withBlock.IsDefined(uname))
-            //            {
-            //                MessageData localItem2() { object argIndex1 = uname; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                msg = localItem2().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-
-            //            // ユニットクラスで検索
-            //            uclass = Class0;
-            //            if (withBlock.IsDefined(uclass))
-            //            {
-            //                MessageData localItem3() { object argIndex1 = uclass; var ret = withBlock.Item(argIndex1); return ret; }
-
-            //                msg = localItem3().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-
-            //            // 汎用
-            //            if (withBlock.IsDefined("汎用"))
-            //            {
-            //                msg = withBlock.Item("汎用").SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //// ADD END MARGE
-
-            //// 戦闘アニメデータで検索
-            //{
-            //    var withBlock1 = SRC.ADList;
-            //    var loopTo1 = Information.UBound(situations);
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        // 戦闘アニメ能力で指定された名称で検索
-            //        if (IsFeatureAvailable("戦闘アニメ"))
-            //        {
-            //            uname = FeatureData("戦闘アニメ");
-            //            if (withBlock1.IsDefined(uname))
-            //            {
-            //                MessageData localItem4() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //                msg = localItem4().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-            //        }
-
-            //        // ユニット名称で検索
-            //        bool localIsDefined1() { object argIndex1 = Name; var ret = withBlock1.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //        if (localIsDefined1())
-            //        {
-            //            MessageData localItem5() { object argIndex1 = Name; var ret = withBlock1.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //            msg = localItem5().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // ユニット愛称を修正したもので検索
-            //        uname = Nickname0;
-            //        ret = Strings.InStr(uname, "(");
-            //        if (ret > 1)
-            //        {
-            //            uname = Strings.Left(uname, ret - 1);
-            //        }
-
-            //        ret = Strings.InStr(uname, "用");
-            //        if (ret > 0)
-            //        {
-            //            if (ret < Strings.Len(uname))
-            //            {
-            //                uname = Strings.Mid(uname, ret + 1);
-            //            }
-            //        }
-
-            //        ret = Strings.InStr(uname, "型");
-            //        if (ret > 0)
-            //        {
-            //            if (ret < Strings.Len(uname))
-            //            {
-            //                uname = Strings.Mid(uname, ret + 1);
-            //            }
-            //        }
-
-            //        if (Strings.Right(uname, 4) == "カスタム")
-            //        {
-            //            uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //        }
-
-            //        if (Strings.Right(uname, 1) == "改")
-            //        {
-            //            uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //        }
-
-            //        if (withBlock1.IsDefined(uname))
-            //        {
-            //            MessageData localItem6() { object argIndex1 = uname; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //            msg = localItem6().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // ユニットクラスで検索
-            //        uclass = Class0;
-            //        if (withBlock1.IsDefined(uclass))
-            //        {
-            //            MessageData localItem7() { object argIndex1 = uclass; var ret = withBlock1.Item(argIndex1); return ret; }
-
-            //            msg = localItem7().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // 汎用
-            //        if (withBlock1.IsDefined("汎用"))
-            //        {
-            //            msg = withBlock1.Item("汎用").SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// 特殊効果データで検索
-            //{
-            //    var withBlock2 = SRC.EDList;
-            //    var loopTo2 = Information.UBound(situations);
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        // 特殊効果能力で指定された名称で検索
-            //        if (IsFeatureAvailable("特殊効果"))
-            //        {
-            //            uname = FeatureData("特殊効果");
-            //            if (withBlock2.IsDefined(uname))
-            //            {
-            //                MessageData localItem8() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //                msg = localItem8().SelectMessage(situations[i], this);
-            //                if (Strings.Len(msg) > 0)
-            //                {
-            //                    IsSysMessageDefinedRet = true;
-            //                    return IsSysMessageDefinedRet;
-            //                }
-            //            }
-            //        }
-
-            //        // ユニット名称で検索
-            //        bool localIsDefined2() { object argIndex1 = Name; var ret = withBlock2.IsDefined(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //        if (localIsDefined2())
-            //        {
-            //            MessageData localItem9() { object argIndex1 = Name; var ret = withBlock2.Item(argIndex1); Name = Conversions.ToString(argIndex1); return ret; }
-
-            //            msg = localItem9().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // ユニット愛称を修正したもので検索
-            //        uname = Nickname0;
-            //        ret = Strings.InStr(uname, "(");
-            //        if (ret > 1)
-            //        {
-            //            uname = Strings.Left(uname, ret - 1);
-            //        }
-
-            //        ret = Strings.InStr(uname, "用");
-            //        if (ret > 0)
-            //        {
-            //            if (ret < Strings.Len(uname))
-            //            {
-            //                uname = Strings.Mid(uname, ret + 1);
-            //            }
-            //        }
-
-            //        ret = Strings.InStr(uname, "型");
-            //        if (ret > 0)
-            //        {
-            //            if (ret < Strings.Len(uname))
-            //            {
-            //                uname = Strings.Mid(uname, ret + 1);
-            //            }
-            //        }
-
-            //        if (Strings.Right(uname, 4) == "カスタム")
-            //        {
-            //            uname = Strings.Left(uname, Strings.Len(uname) - 4);
-            //        }
-
-            //        if (Strings.Right(uname, 1) == "改")
-            //        {
-            //            uname = Strings.Left(uname, Strings.Len(uname) - 1);
-            //        }
-
-            //        if (withBlock2.IsDefined(uname))
-            //        {
-            //            MessageData localItem10() { object argIndex1 = uname; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //            msg = localItem10().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // ユニットクラスで検索
-            //        uclass = Class0;
-            //        if (withBlock2.IsDefined(uclass))
-            //        {
-            //            MessageData localItem11() { object argIndex1 = uclass; var ret = withBlock2.Item(argIndex1); return ret; }
-
-            //            msg = localItem11().SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-
-            //        // 汎用
-            //        if (withBlock2.IsDefined("汎用"))
-            //        {
-            //            msg = withBlock2.Item("汎用").SelectMessage(situations[i], this);
-            //            if (Strings.Len(msg) > 0)
-            //            {
-            //                IsSysMessageDefinedRet = true;
-            //                return IsSysMessageDefinedRet;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //IsSysMessageDefinedRet = false;
-            //return IsSysMessageDefinedRet;
+            return !string.IsNullOrEmpty(FindSysMessage(main_situation, sub_situation));
         }
+
+        // 解説メッセージを検索する
+        private string FindSysMessage(string main_situation, string sub_situation = "")
+        {
+            var situations = new System.Collections.Generic.List<string>();
+            if (string.IsNullOrEmpty(sub_situation) || (main_situation ?? "") == (sub_situation ?? ""))
+            {
+                situations.Add(main_situation + "(解説)");
+            }
+            else
+            {
+                situations.Add(main_situation + "(" + sub_situation + ")(解説)");
+                situations.Add(main_situation + "(解説)");
+            }
+
+            // ユニット愛称の正規化
+            var uname = Nickname0;
+            var ret = uname.IndexOf('(');
+            if (ret > 0)
+            {
+                uname = uname.Substring(0, ret);
+            }
+            ret = uname.IndexOf("用");
+            if (ret >= 0 && ret < uname.Length - 1)
+            {
+                uname = uname.Substring(ret + 1);
+            }
+            ret = uname.IndexOf("型");
+            if (ret >= 0 && ret < uname.Length - 1)
+            {
+                uname = uname.Substring(ret + 1);
+            }
+            if (uname.EndsWith("カスタム"))
+            {
+                uname = uname.Substring(0, uname.Length - 4);
+            }
+            if (uname.EndsWith("改"))
+            {
+                uname = uname.Substring(0, uname.Length - 1);
+            }
+
+            string found;
+
+            // 拡張戦闘アニメデータで検索
+            if (SRC.ExtendedAnimation)
+            {
+                found = SearchMessageInList(SRC.EADList, situations, "戦闘アニメ", uname);
+                if (found != null) return found;
+            }
+
+            // パイロットメッセージデータで検索
+            found = SearchMessageInList(SRC.MDList, situations, "解説メッセージ", uname);
+            if (found != null) return found;
+
+            // 特殊効果データで検索
+            found = SearchMessageInList(SRC.EDList, situations, "特殊効果", uname);
+            if (found != null) return found;
+
+            return null;
+        }
+
+        private string SearchMessageInList(Models.MessageDataList list, System.Collections.Generic.List<string> situations, string featureName, string normalizedName)
+        {
+            foreach (var situation in situations)
+            {
+                string msg;
+
+                // 指定された特殊能力名で検索
+                if (IsFeatureAvailable(featureName))
+                {
+                    var fname = FeatureData(featureName);
+                    if (list.IsDefined(fname))
+                    {
+                        msg = list.Item(fname).SelectMessage(situation, this);
+                        if (!string.IsNullOrEmpty(msg)) return msg;
+                    }
+                }
+
+                // ユニット名称で検索
+                if (list.IsDefined(Name))
+                {
+                    msg = list.Item(Name).SelectMessage(situation, this);
+                    if (!string.IsNullOrEmpty(msg)) return msg;
+                }
+
+                // 正規化されたユニット愛称で検索
+                if (list.IsDefined(normalizedName))
+                {
+                    msg = list.Item(normalizedName).SelectMessage(situation, this);
+                    if (!string.IsNullOrEmpty(msg)) return msg;
+                }
+
+                // ユニットクラスで検索
+                if (list.IsDefined(Class0))
+                {
+                    msg = list.Item(Class0).SelectMessage(situation, this);
+                    if (!string.IsNullOrEmpty(msg)) return msg;
+                }
+
+                // 汎用
+                if (list.IsDefined("汎用"))
+                {
+                    msg = list.Item("汎用").SelectMessage(situation, this);
+                    if (!string.IsNullOrEmpty(msg)) return msg;
+                }
+            }
+            return null;
+        }
+
     }
 }

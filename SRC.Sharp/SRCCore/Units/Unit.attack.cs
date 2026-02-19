@@ -1045,19 +1045,19 @@ namespace SRCCore.Units
                 // 吹き飛ばし
                 if (w.IsWeaponClassifiedAs("吹") || w.IsWeaponClassifiedAs("Ｋ"))
                 {
-                    CheckBlowAttack(w, t, dmg, msg, attack_mode, def_mode, critical_type);
+                    CheckBlowAttack(w, t, ref dmg, ref msg, attack_mode, def_mode, ref critical_type);
                 }
 
                 // 引き寄せ
                 if (w.IsWeaponClassifiedAs("引"))
                 {
-                    CheckDrawAttack(w, t, msg, def_mode, critical_type);
+                    CheckDrawAttack(w, t, ref msg, def_mode, ref critical_type);
                 }
 
                 // 強制転移
                 if (w.IsWeaponClassifiedAs("転"))
                 {
-                    CheckTeleportAwayAttack(w, t, msg, def_mode, critical_type);
+                    CheckTeleportAwayAttack(w, t, ref msg, def_mode, ref critical_type);
                 }
             }
 

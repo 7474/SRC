@@ -325,30 +325,23 @@ namespace SRCCore
         // ＢＧＭに割り当てられたMIDIファイル名を返す
         public string BGMName(string bgm_name)
         {
-            return bgm_name + ".mid";
-            // TODO Impl BGMName
-            //string BGMNameRet = default;
-            //string vname;
+            // RenameBGMコマンドでMIDIファイルが設定されていればそちらを使用
+            var vname = "BGM(" + bgm_name + ")";
+            if (SRC.Expression.IsGlobalVariableDefined(vname))
+            {
+                return SRC.Event.GlobalVariableList[vname].StringValue;
+            }
 
-            //// RenameBGMコマンドでMIDIファイルが設定されていればそちらを使用
-            //vname = "BGM(" + bgm_name + ")";
-            //if (Expression.IsGlobalVariableDefined(vname))
-            //{
-            //    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //    BGMNameRet = Conversions.ToString(Event.GlobalVariableList[vname].StringValue);
-            //    return BGMNameRet;
-            //}
+            // そうでなければSrc.iniで設定されているファイルを使用
+            var configName = SRC.SystemConfig.GetItem("BGM", bgm_name);
 
-            //// そうでなければSrc.iniで設定されているファイルを使用
-            //BGMNameRet = GeneralLib.ReadIni("BGM", bgm_name);
+            // Src.iniでも設定されていなければ標準のファイルを使用
+            if (string.IsNullOrEmpty(configName))
+            {
+                return bgm_name + ".mid";
+            }
 
-            //// Src.iniでも設定されていなければ標準のファイルを使用
-            //if (string.IsNullOrEmpty(BGMNameRet))
-            //{
-            //    BGMNameRet = bgm_name + ".mid";
-            //}
-
-            //return BGMNameRet;
+            return configName;
         }
 
         // Waveファイルを再生する

@@ -249,101 +249,80 @@ namespace SRCCore.Units
             // マップに登録
             Map.MapDataForUnit[x, y] = this;
 
-            // TODO Impl 登場時アニメを表示他
-            //// 登場時アニメを表示
-            //// MOD START MARGE
-            //// If (smode = "出撃" Or smode = "部隊配置") _
-            //// '        And MainForm.Visible _
-            //// '        And Not IsPictureVisible _
-            //// '        And Not IsRButtonPressed() _
-            //// '        And BitmapID > 0 _
-            //// '    Then
-            //var fname = default(string);
-            //int start_time, current_time;
-            //if ((Strings.InStr(smode, "出撃") > 0 || Strings.InStr(smode, "部隊配置") > 0) 
-            //    && GUI.MainFormVisible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && BitmapID > 0)
-            //{
-            //    // MOD END MARGE
+            // 登場時アニメを表示
+            string fname;
+            int start_time, current_time;
+            if ((Strings.InStr(smode, "出撃") > 0 || Strings.InStr(smode, "部隊配置") > 0)
+                && GUI.MainFormVisible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && !string.IsNullOrEmpty(get_Bitmap(false)))
+            {
+                // ユニット出現音
+                Sound.PlayWave("UnitOn.wav");
 
-            //    // ユニット出現音
-            //    Sound.PlayWave("UnitOn.wav");
+                // 表示させる画像
+                switch (Party0 ?? "")
+                {
+                    case "味方":
+                    case "ＮＰＣ":
+                        fname = @"Bitmap\Event\AUnitOn0";
+                        break;
 
-            //    // 表示させる画像
-            //    switch (Party0 ?? "")
-            //    {
-            //        case "味方":
-            //        case "ＮＰＣ":
-            //            {
-            //                fname = @"Bitmap\Event\AUnitOn0";
-            //                break;
-            //            }
+                    case "敵":
+                        fname = @"Bitmap\Event\EUnitOn0";
+                        break;
 
-            //        case "敵":
-            //            {
-            //                fname = @"Bitmap\Event\EUnitOn0";
-            //                break;
-            //            }
+                    default:
+                        fname = @"Bitmap\Event\NUnitOn0";
+                        break;
+                }
 
-            //        case "中立":
-            //            {
-            //                fname = @"Bitmap\Event\NUnitOn0";
-            //                break;
-            //            }
-            //    }
+                if (SRC.FileSystem.FileExists(SRC.FileSystem.PathCombine(SRC.AppPath, fname + "1.bmp")))
+                {
+                    // アニメ表示開始時刻を記録
+                    start_time = GeneralLib.timeGetTime();
+                    for (int i = 1; i <= 4; i++)
+                    {
+                        // 画像を透過表示
+                        if (!GUI.DrawPicture(fname + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, "透過"))
+                        {
+                            break;
+                        }
 
-            //    if (SRC.FileSystem.FileExists(SRC.AppPath + fname + "1.bmp"))
-            //    {
-            //        // アニメ表示開始時刻を記録
-            //        start_time = GeneralLib.timeGetTime();
-            //        for (i = 1; i <= 4; i++)
-            //        {
-            //            // 画像を透過表示
-            //            if (GUI.DrawPicture(fname + SrcFormatter.Format(i) + ".bmp", GUI.MapToPixelX(x), GUI.MapToPixelY(y), 32, 32, 0, 0, 0, 0, "透過") == false)
-            //            {
-            //                break;
-            //            }
-            //            GUI.MainForm.picMain(0).Refresh();
+                        // ウェイト
+                        do
+                        {
+                            GUI.DoEvents();
+                            current_time = GeneralLib.timeGetTime();
+                        }
+                        while (current_time < start_time + 15);
+                        start_time = current_time;
 
-            //            // ウェイト
-            //            do
-            //            {
-            //                Application.DoEvents();
-            //                current_time = GeneralLib.timeGetTime();
-            //            }
-            //            while (current_time < start_time + 15);
-            //            start_time = current_time;
+                        // 画像を消去
+                        GUI.ClearPicture();
+                    }
 
-            //            // 画像を消去
-            //            GUI.ClearPicture();
-            //        }
+                    // アニメ画像は上書きして消してしまうので……
+                    GUI.IsPictureVisible = false;
+                }
+            }
 
-            //        // アニメ画像は上書きして消してしまうので……
-            //        GUI.IsPictureVisible = false;
-            //    }
-            //}
+            // ユニット画像をマップに描画
+            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+            {
+                if (Strings.InStr(smode, "非同期") > 0)
+                {
+                    GUI.PaintUnitBitmap(this, "リフレッシュ無し");
+                }
+                else
+                {
+                    GUI.PaintUnitBitmap(this);
+                }
+            }
 
-            //// ユニット画像をマップに描画
-            //if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // MOD START MARGE
-            //    // If smode = "非同期" Then
-            //    if (Strings.InStr(smode, "非同期") > 0)
-            //    {
-            //        // MOD END MARGE
-            //        GUI.PaintUnitBitmap(this, "リフレッシュ無し");
-            //    }
-            //    else
-            //    {
-            //        GUI.PaintUnitBitmap(this);
-            //    }
-            //}
-
-            //// 制御不能？
-            //if (IsFeatureAvailable("制御不可"))
-            //{
-            //    AddCondition("暴走", -1, cdata: "");
-            //}
-
+            // 制御不能？
+            if (IsFeatureAvailable("制御不可"))
+            {
+                AddCondition("暴走", -1, cdata: "");
+            }
             Update();
             SRC.PList.UpdateSupportMod(this);
         }

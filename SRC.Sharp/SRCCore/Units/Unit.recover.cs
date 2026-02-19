@@ -1,3 +1,4 @@
+using SRCCore.Lib;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -2349,154 +2350,145 @@ namespace SRCCore.Units
         // 弾数・使用回数共有の処理
         public void SyncBullet()
         {
-            // TODO Impl SyncBullet
-            //int j, a, w, i, k;
-            //int lv, idx;
+            // 共属性武器の処理
+            foreach (var ww in Weapons)
+            {
+                if (!ww.IsWeaponClassifiedAs("共"))
+                {
+                    continue;
+                }
 
-            //// 共属性武器の処理
-            //var loopTo = CountWeapon();
-            //for (w = 1; w <= loopTo; w++)
-            //{
-            //    if (IsWeaponClassifiedAs(w, "共"))
-            //    {
-            //        lv = WeaponLevel(w, "共");
-            //        // 弾数を合わせる
-            //        var loopTo1 = CountWeapon();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            if (w != i && IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxBullet(w) > 0)
-            //            {
-            //                if (MaxBullet(i) > MaxBullet(w))
-            //                {
-            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Bullet(w)) / MaxBullet(w)));
-            //                }
-            //                else
-            //                {
-            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Bullet(w) / (double)MaxBullet(w) + 0.49999d)));
-            //                }
-            //            }
-            //        }
-            //        // アビリティの使用回数を合わせる
-            //        var loopTo2 = CountAbility();
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            if (IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxBullet(w) > 0)
-            //            {
-            //                if (MaxStock(i) > MaxBullet(w))
-            //                {
-            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Bullet(w)) / MaxBullet(w)));
-            //                }
-            //                else
-            //                {
-            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Bullet(w) / (double)MaxBullet(w) + 0.49999d)));
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                var lv = (int)ww.WeaponLevel("共");
+                // 弾数を合わせる
+                foreach (var wi in Weapons)
+                {
+                    if (!ReferenceEquals(ww, wi) && wi.IsWeaponClassifiedAs("共") && lv == (int)wi.WeaponLevel("共") && ww.MaxBullet() > 0)
+                    {
+                        if (wi.MaxBullet() > ww.MaxBullet())
+                        {
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (wi.MaxBullet() * ww.Bullet()) / ww.MaxBullet()));
+                        }
+                        else
+                        {
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (int)(wi.MaxBullet() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
+                        }
+                    }
+                }
 
-            //// 共属性アビリティの処理
-            //var loopTo3 = CountAbility();
-            //for (a = 1; a <= loopTo3; a++)
-            //{
-            //    if (IsAbilityClassifiedAs(a, "共"))
-            //    {
-            //        lv = AbilityLevel(a, "共");
-            //        // 使用回数を合わせる
-            //        var loopTo4 = CountAbility();
-            //        for (i = 1; i <= loopTo4; i++)
-            //        {
-            //            if (a != i && IsAbilityClassifiedAs(i, "共") && lv == AbilityLevel(i, "共") && MaxStock(a) > 0)
-            //            {
-            //                if (MaxStock(i) > MaxStock(a))
-            //                {
-            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Stock(a)) / MaxStock(a)));
-            //                }
-            //                else
-            //                {
-            //                    SetStock(i, GeneralLib.MinLng(Stock(i), (MaxStock(i) * Stock(a) / (double)MaxStock(a) + 0.49999d)));
-            //                }
-            //            }
-            //        }
-            //        // 弾数を合わせる
-            //        var loopTo5 = CountWeapon();
-            //        for (i = 1; i <= loopTo5; i++)
-            //        {
-            //            if (IsWeaponClassifiedAs(i, "共") && lv == WeaponLevel(i, "共") && MaxStock(a) > 0)
-            //            {
-            //                if (MaxBullet(i) > MaxStock(a))
-            //                {
-            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Stock(a)) / MaxStock(a)));
-            //                }
-            //                else
-            //                {
-            //                    SetBullet(i, GeneralLib.MinLng(Bullet(i), (MaxBullet(i) * Stock(a) / (double)MaxStock(a) + 0.49999d)));
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                // アビリティの使用回数を合わせる
+                foreach (var ai in Abilities)
+                {
+                    if (ai.IsAbilityClassifiedAs("共") && lv == (int)ai.AbilityLevel("共") && ww.MaxBullet() > 0)
+                    {
+                        if (ai.MaxStock() > ww.MaxBullet())
+                        {
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (ai.MaxStock() * ww.Bullet()) / ww.MaxBullet()));
+                        }
+                        else
+                        {
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (int)(ai.MaxStock() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
+                        }
+                    }
+                }
+            }
 
-            //// 斉属性武器の処理
-            //var loopTo6 = CountWeapon();
-            //for (w = 1; w <= loopTo6; w++)
-            //{
-            //    if (IsWeaponClassifiedAs(w, "斉"))
-            //    {
-            //        // 弾数を合わせる
-            //        var loopTo7 = CountWeapon();
-            //        for (i = 1; i <= loopTo7; i++)
-            //        {
-            //            if (w != i && MaxBullet(i) > 0)
-            //            {
-            //                SetBullet(w, GeneralLib.MinLng(Bullet(w), (MaxBullet(w) * Bullet(i) / (double)MaxBullet(i) + 0.49999d)));
-            //            }
-            //        }
-            //    }
-            //}
+            // 共属性アビリティの処理
+            foreach (var aa in Abilities)
+            {
+                if (!aa.IsAbilityClassifiedAs("共"))
+                {
+                    continue;
+                }
 
-            //// 他の形態の弾数も変更
-            //int counter;
-            //var loopTo8 = CountOtherForm();
-            //for (i = 1; i <= loopTo8; i++)
-            //{
-            //    {
-            //        var withBlock = OtherForm(i);
-            //        idx = 1;
-            //        var loopTo9 = CountWeapon();
-            //        for (j = 1; j <= loopTo9; j++)
-            //        {
-            //            counter = idx;
-            //            var loopTo10 = withBlock.CountWeapon();
-            //            for (k = counter; k <= loopTo10; k++)
-            //            {
-            //                if ((Weapon(j).Name ?? "") == (withBlock.Weapon(k).Name ?? "") && MaxBullet(j) > 0 && withBlock.MaxBullet(k) > 0)
-            //                {
-            //                    withBlock.SetBullet(k, ((withBlock.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
-            //                    idx = (k + 1);
-            //                    break;
-            //                }
-            //            }
-            //        }
+                var lv = (int)aa.AbilityLevel("共");
+                // 使用回数を合わせる
+                foreach (var ai in Abilities)
+                {
+                    if (!ReferenceEquals(aa, ai) && ai.IsAbilityClassifiedAs("共") && lv == (int)ai.AbilityLevel("共") && aa.MaxStock() > 0)
+                    {
+                        if (ai.MaxStock() > aa.MaxStock())
+                        {
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (ai.MaxStock() * aa.Stock()) / aa.MaxStock()));
+                        }
+                        else
+                        {
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (int)(ai.MaxStock() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
+                        }
+                    }
+                }
 
-            //        idx = 1;
-            //        var loopTo11 = CountAbility();
-            //        for (j = 1; j <= loopTo11; j++)
-            //        {
-            //            counter = idx;
-            //            var loopTo12 = withBlock.CountAbility();
-            //            for (k = counter; k <= loopTo12; k++)
-            //            {
-            //                if ((Ability(j).Name ?? "") == (withBlock.Ability(k).Name ?? "") && MaxStock(j) > 0 && withBlock.MaxStock(k) > 0)
-            //                {
-            //                    withBlock.SetStock(k, ((withBlock.MaxStock(k) * Stock(j)) / MaxStock(j)));
-            //                    idx = (k + 1);
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                // 弾数を合わせる
+                foreach (var wi in Weapons)
+                {
+                    if (wi.IsWeaponClassifiedAs("共") && lv == (int)wi.WeaponLevel("共") && aa.MaxStock() > 0)
+                    {
+                        if (wi.MaxBullet() > aa.MaxStock())
+                        {
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (wi.MaxBullet() * aa.Stock()) / aa.MaxStock()));
+                        }
+                        else
+                        {
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (int)(wi.MaxBullet() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
+                        }
+                    }
+                }
+            }
+
+            // 斉属性武器の処理
+            foreach (var ww in Weapons)
+            {
+                if (!ww.IsWeaponClassifiedAs("斉"))
+                {
+                    continue;
+                }
+
+                // 弾数を合わせる
+                foreach (var wi in Weapons)
+                {
+                    if (!ReferenceEquals(ww, wi) && wi.MaxBullet() > 0)
+                    {
+                        ww.SetBullet(GeneralLib.MinLng(ww.Bullet(), (int)(ww.MaxBullet() * wi.Bullet() / (double)wi.MaxBullet() + 0.49999d)));
+                    }
+                }
+            }
+
+            // 他の形態の弾数も変更
+            foreach (var of in OtherForms)
+            {
+                foreach (var wj in Weapons)
+                {
+                    if (wj.MaxBullet() <= 0)
+                    {
+                        continue;
+                    }
+
+                    foreach (var wk in of.Weapons)
+                    {
+                        if ((wj.Name ?? "") == (wk.Name ?? "") && wk.MaxBullet() > 0)
+                        {
+                            wk.SetBullet((wk.MaxBullet() * wj.Bullet()) / wj.MaxBullet());
+                            break;
+                        }
+                    }
+                }
+
+                foreach (var aj in Abilities)
+                {
+                    if (aj.MaxStock() <= 0)
+                    {
+                        continue;
+                    }
+
+                    foreach (var ak in of.Abilities)
+                    {
+                        if ((aj.Data.Name ?? "") == (ak.Data.Name ?? "") && ak.MaxStock() > 0)
+                        {
+                            ak.SetStock((ak.MaxStock() * aj.Stock()) / aj.MaxStock());
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
