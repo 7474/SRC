@@ -101,7 +101,7 @@ namespace SRCCore.Units
             //                        // 有効範囲
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
             //                        {
-            //                            frange = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+            //                            frange = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
             //                        }
             //                        else
             //                        {
@@ -111,7 +111,7 @@ namespace SRCCore.Units
             //                        // 使用条件
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //                        {
-            //                            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //                        }
             //                        else
             //                        {
@@ -120,7 +120,7 @@ namespace SRCCore.Units
 
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
             //                        {
-            //                            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
+            //                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
             //                        }
             //                        else
             //                        {
@@ -173,12 +173,12 @@ namespace SRCCore.Units
             //        buf = GeneralLib.LIndex(fdata, 4);
             //        if (Information.IsNumeric(buf))
             //        {
-            //            prob = Conversions.Toint(buf);
+            //            prob = Conversions.ToInteger(buf);
             //        }
             //        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
             //        {
             //            i = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //            prob = (100d * (u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.Toint(Strings.Mid(buf, i))) / 16d);
+            //            prob = (100d * (u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) / 16d);
             //        }
             //        else
             //        {
@@ -206,7 +206,7 @@ namespace SRCCore.Units
             //        // ＥＮ消費量
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //        }
             //        else
             //        {
@@ -332,7 +332,7 @@ namespace SRCCore.Units
             //        // 必要条件
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
             //        }
             //        else
             //        {
@@ -341,7 +341,7 @@ namespace SRCCore.Units
 
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //        {
-            //            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //        }
             //        else
             //        {
@@ -437,7 +437,7 @@ namespace SRCCore.Units
             //        // 必要条件
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //        }
             //        else
             //        {
@@ -446,7 +446,7 @@ namespace SRCCore.Units
 
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //        {
-            //            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //        }
             //        else
             //        {
@@ -793,12 +793,12 @@ namespace SRCCore.Units
             //            buf = GeneralLib.LIndex(fdata, 3);
             //            if (Information.IsNumeric(buf))
             //            {
-            //                prob = Conversions.Toint(buf);
+            //                prob = Conversions.ToInteger(buf);
             //            }
             //            else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
             //            {
             //                j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
+            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
             //            }
             //            else
             //            {
@@ -828,7 +828,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -837,7 +837,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //            }
             //            else
             //            {
@@ -1131,12 +1131,12 @@ namespace SRCCore.Units
             //            buf = GeneralLib.LIndex(fdata, 4);
             //            if (Information.IsNumeric(buf))
             //            {
-            //                prob = Conversions.Toint(buf);
+            //                prob = Conversions.ToInteger(buf);
             //            }
             //            else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
             //            {
             //                j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
+            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
             //            }
             //            else
             //            {
@@ -1172,7 +1172,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //            }
             //            else
             //            {
@@ -1181,7 +1181,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
             //            }
             //            else
             //            {
@@ -1770,12 +1770,12 @@ namespace SRCCore.Units
             //            buf = GeneralLib.LIndex(fdata, 3);
             //            if (Information.IsNumeric(buf))
             //            {
-            //                prob = Conversions.Toint(buf);
+            //                prob = Conversions.ToInteger(buf);
             //            }
             //            else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
             //            {
             //                j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
+            //                prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
             //            }
             //            else
             //            {
@@ -1817,7 +1817,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -1826,7 +1826,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //            }
             //            else
             //            {
@@ -2123,303 +2123,299 @@ namespace SRCCore.Units
         // ダミー能力のチェック
         private bool CheckDummyFeature(UnitWeapon w, Unit t, bool be_quiet)
         {
-            // TODO Impl CheckDummyFeature
-            return false;
-            //bool CheckDummyFeatureRet = default;
-            //string wname;
-            //string fname;
-            //wname = WeaponNickname(w);
-            //if (t.IsConditionSatisfied("ダミー付加"))
-            //{
-            //    // 命中時の特殊効果
-            //    Sound.IsWavePlayed = false;
-            //    if (!be_quiet)
-            //    {
-            //        PilotMessage(wname + "(命中)", msg_mode: "");
-            //    }
+            bool CheckDummyFeatureRet = default;
+            string wname;
+            string fname;
+            wname = w.WeaponNickname();
+            if (t.IsConditionSatisfied("ダミー付加"))
+            {
+                // 命中時の特殊効果
+                Sound.IsWavePlayed = false;
+                if (!be_quiet)
+                {
+                    PilotMessage(wname + "(命中)", msg_mode: "");
+                }
 
-            //    bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                bool localIsSpecialEffectDefined() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
-            //    {
-            //        PlayAnimation(wname + "(命中)", sub_situation: "");
-            //    }
-            //    else if (localIsSpecialEffectDefined())
-            //    {
-            //        SpecialEffect(wname + "(命中)", sub_situation: "");
-            //    }
-            //    else if (!Sound.IsWavePlayed)
-            //    {
-            //        Effect.HitEffect(this, w, t);
-            //    }
+                if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
+                {
+                    PlayAnimation(wname + "(命中)", sub_situation: "");
+                }
+                else if (localIsSpecialEffectDefined())
+                {
+                    SpecialEffect(wname + "(命中)", sub_situation: "");
+                }
+                else if (!Sound.IsWavePlayed)
+                {
+                    Effect.HitEffect(this, w, t);
+                }
 
-            //    fname = t.FeatureName("ダミー");
-            //    if (Strings.Len(fname) > 0)
-            //    {
-            //        if (Strings.InStr(fname, "Lv") > 0)
-            //        {
-            //            fname = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        fname = "ダミー";
-            //    }
+                fname = t.FeatureName("ダミー");
+                if (Strings.Len(fname) > 0)
+                {
+                    if (Strings.InStr(fname, "Lv") > 0)
+                    {
+                        fname = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
+                    }
+                }
+                else
+                {
+                    fname = "ダミー";
+                }
 
-            //    if (!be_quiet)
-            //    {
-            //        if (t.IsMessageDefined("ダミー(" + fname + ")"))
-            //        {
-            //            t.PilotMessage("ダミー(" + fname + ")", msg_mode: "");
-            //        }
-            //        else
-            //        {
-            //            t.PilotMessage("ダミー", msg_mode: "");
-            //        }
-            //    }
+                if (!be_quiet)
+                {
+                    if (t.IsMessageDefined("ダミー(" + fname + ")"))
+                    {
+                        t.PilotMessage("ダミー(" + fname + ")", msg_mode: "");
+                    }
+                    else
+                    {
+                        t.PilotMessage("ダミー", msg_mode: "");
+                    }
+                }
 
-            //    if (t.IsAnimationDefined("ダミー", fname))
-            //    {
-            //        t.PlayAnimation("ダミー", fname);
-            //    }
-            //    else
-            //    {
-            //        t.SpecialEffect("ダミー", fname);
-            //    }
+                if (t.IsAnimationDefined("ダミー", fname))
+                {
+                    t.PlayAnimation("ダミー", fname);
+                }
+                else
+                {
+                    t.SpecialEffect("ダミー", fname);
+                }
 
-            //    if (t.IsSysMessageDefined("ダミー", fname))
-            //    {
-            //        t.SysMessage("ダミー", fname, add_msg: "");
-            //    }
-            //    else
-            //    {
-            //        GUI.DisplaySysMessage(t.Nickname + "は[" + fname + "]を身代わりにして攻撃をかわした。");
-            //    }
+                if (t.IsSysMessageDefined("ダミー", fname))
+                {
+                    t.SysMessage("ダミー", fname, add_msg: "");
+                }
+                else
+                {
+                    GUI.DisplaySysMessage(t.Nickname + "は[" + fname + "]を身代わりにして攻撃をかわした。");
+                }
 
-            //    t.SetConditionLevel("ダミー付加", t.ConditionLevel("ダミー付加") - 1d);
-            //    if (t.ConditionLevel("ダミー付加") == 0d)
-            //    {
-            //        t.DeleteCondition("ダミー付加");
-            //    }
+                t.Condition("ダミー付加").Level = t.ConditionLevel("ダミー付加") - 1d;
+                if (t.ConditionLevel("ダミー付加") == 0d)
+                {
+                    t.DeleteCondition("ダミー付加");
+                }
 
-            //    CheckDummyFeatureRet = true;
-            //}
-            //else if (t.IsFeatureAvailable("ダミー"))
-            //{
-            //    if (t.ConditionLevel("ダミー破壊") < t.FeatureLevel("ダミー"))
-            //    {
-            //        // 命中時の特殊効果
-            //        Sound.IsWavePlayed = false;
-            //        if (!be_quiet)
-            //        {
-            //            PilotMessage(wname + "(命中)", msg_mode: "");
-            //        }
+                CheckDummyFeatureRet = true;
+            }
+            else if (t.IsFeatureAvailable("ダミー"))
+            {
+                if (t.ConditionLevel("ダミー破壊") < t.FeatureLevel("ダミー"))
+                {
+                    // 命中時の特殊効果
+                    Sound.IsWavePlayed = false;
+                    if (!be_quiet)
+                    {
+                        PilotMessage(wname + "(命中)", msg_mode: "");
+                    }
 
-            //        bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
+                    bool localIsSpecialEffectDefined1() { string argmain_situation = wname + "(命中)"; string argsub_situation = ""; var ret = IsSpecialEffectDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
 
-            //        if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
-            //        {
-            //            PlayAnimation(wname + "(命中)", sub_situation: "");
-            //        }
-            //        else if (localIsSpecialEffectDefined1())
-            //        {
-            //            SpecialEffect(wname + "(命中)", sub_situation: "");
-            //        }
-            //        else if (!Sound.IsWavePlayed)
-            //        {
-            //            Effect.HitEffect(this, w, t);
-            //        }
+                    if (IsAnimationDefined(wname + "(命中)", sub_situation: "") || IsAnimationDefined(wname, sub_situation: ""))
+                    {
+                        PlayAnimation(wname + "(命中)", sub_situation: "");
+                    }
+                    else if (localIsSpecialEffectDefined1())
+                    {
+                        SpecialEffect(wname + "(命中)", sub_situation: "");
+                    }
+                    else if (!Sound.IsWavePlayed)
+                    {
+                        Effect.HitEffect(this, w, t);
+                    }
 
-            //        fname = t.FeatureName("ダミー");
-            //        if (Strings.Len(fname) > 0)
-            //        {
-            //            if (Strings.InStr(fname, "Lv") > 0)
-            //            {
-            //                fname = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            fname = "ダミー";
-            //        }
+                    fname = t.FeatureName("ダミー");
+                    if (Strings.Len(fname) > 0)
+                    {
+                        if (Strings.InStr(fname, "Lv") > 0)
+                        {
+                            fname = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
+                        }
+                    }
+                    else
+                    {
+                        fname = "ダミー";
+                    }
 
-            //        if (!be_quiet)
-            //        {
-            //            if (t.IsMessageDefined("ダミー(" + fname + ")"))
-            //            {
-            //                t.PilotMessage("ダミー(" + fname + ")", msg_mode: "");
-            //            }
-            //            else
-            //            {
-            //                t.PilotMessage("ダミー", msg_mode: "");
-            //            }
-            //        }
+                    if (!be_quiet)
+                    {
+                        if (t.IsMessageDefined("ダミー(" + fname + ")"))
+                        {
+                            t.PilotMessage("ダミー(" + fname + ")", msg_mode: "");
+                        }
+                        else
+                        {
+                            t.PilotMessage("ダミー", msg_mode: "");
+                        }
+                    }
 
-            //        if (t.IsAnimationDefined("ダミー", fname))
-            //        {
-            //            t.PlayAnimation("ダミー", fname);
-            //        }
-            //        else
-            //        {
-            //            t.SpecialEffect("ダミー", fname);
-            //        }
+                    if (t.IsAnimationDefined("ダミー", fname))
+                    {
+                        t.PlayAnimation("ダミー", fname);
+                    }
+                    else
+                    {
+                        t.SpecialEffect("ダミー", fname);
+                    }
 
-            //        if (IsSysMessageDefined("ダミー", fname))
-            //        {
-            //            SysMessage("ダミー", fname, add_msg: "");
-            //        }
-            //        else
-            //        {
-            //            GUI.DisplaySysMessage(t.Nickname + "は[" + fname + "]を身代わりにして攻撃をかわした。");
-            //        }
+                    if (IsSysMessageDefined("ダミー", fname))
+                    {
+                        SysMessage("ダミー", fname, add_msg: "");
+                    }
+                    else
+                    {
+                        GUI.DisplaySysMessage(t.Nickname + "は[" + fname + "]を身代わりにして攻撃をかわした。");
+                    }
 
-            //        if (t.IsConditionSatisfied("ダミー破壊"))
-            //        {
-            //            t.SetConditionLevel("ダミー破壊", t.ConditionLevel("ダミー破壊") + 1d);
-            //        }
-            //        else
-            //        {
-            //            t.AddCondition("ダミー破壊", -1, 1d, cdata: "");
-            //        }
+                    if (t.IsConditionSatisfied("ダミー破壊"))
+                    {
+                        t.Condition("ダミー破壊").Level = t.ConditionLevel("ダミー破壊") + 1d;
+                    }
+                    else
+                    {
+                        t.AddCondition("ダミー破壊", -1, 1d, cdata: "");
+                    }
 
-            //        CheckDummyFeatureRet = true;
-            //    }
-            //}
+                    CheckDummyFeatureRet = true;
+                }
+            }
 
-            //return CheckDummyFeatureRet;
+            return CheckDummyFeatureRet;
         }
 
         // シールド防御能力のチェック
         private bool CheckShieldFeature(UnitWeapon w, Unit t, int dmg, bool be_quiet, bool use_shield, bool use_shield_msg)
         {
-            // TODO Impl CheckShieldFeature
-            return false;
-            //int prob;
-            //string fname;
+            int prob;
+            string fname;
 
-            //// ダメージが0以下ならシールド防御しても意味がない
-            //if (dmg <= 0)
-            //{
-            //    return default;
-            //}
+            // ダメージが0以下ならシールド防御しても意味がない
+            if (dmg <= 0)
+            {
+                return default;
+            }
 
-            //// Ｓ防御技能を持っている？
-            //if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") <= 0d)
-            //{
-            //    return default;
-            //}
+            // Ｓ防御技能を持っている？
+            if (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") <= 0d)
+            {
+                return default;
+            }
 
-            //// 行動可能？
-            //if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能") || t.IsUnderSpecialPowerEffect("行動不能"1))
-            //{
-            //    return default;
-            //}
+            // 行動可能？
+            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能") || t.IsUnderSpecialPowerEffect("行動不能1"))
+            {
+                return default;
+            }
 
-            //// シールド防御出来ない武器？
-            //if (w.IsWeaponClassifiedAs("精") || w.IsWeaponClassifiedAs("殺") || w.IsWeaponClassifiedAs("浸"))
-            //{
-            //    return default;
-            //}
+            // シールド防御出来ない武器？
+            if (w.IsWeaponClassifiedAs("精") || w.IsWeaponClassifiedAs("殺") || w.IsWeaponClassifiedAs("浸"))
+            {
+                return default;
+            }
 
-            //// スペシャルパワーで無効化される？
-            //if (IsUnderSpecialPowerEffect("シールド防御無効化"))
-            //{
-            //    return default;
-            //}
+            // スペシャルパワーで無効化される？
+            if (IsUnderSpecialPowerEffect("シールド防御無効化"))
+            {
+                return default;
+            }
 
-            //// シールド系防御能力を検索
-            //if (t.IsFeatureAvailable("シールド"))
-            //{
-            //    prob = t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
-            //    fname = t.FeatureName("シールド");
-            //}
-            //else if (t.IsFeatureAvailable("小型シールド"))
-            //{
-            //    prob = t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
-            //    fname = t.FeatureName("小型シールド");
-            //}
-            //else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !w.IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
-            //{
-            //    prob = t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
-            //    fname = t.FeatureName("エネルギーシールド");
-            //}
-            //else if (t.IsFeatureAvailable("大型シールド"))
-            //{
-            //    prob = (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 1d);
-            //    fname = t.FeatureName("大型シールド");
-            //}
-            //else if (t.IsFeatureAvailable("アクティブシールド"))
-            //{
-            //    prob = (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 2d);
-            //    fname = t.FeatureName("アクティブシールド");
-            //}
-            //else
-            //{
-            //    // 使用可能なシールド系防御能力が無かった
-            //    return default;
-            //}
+            // シールド系防御能力を検索
+            if (t.IsFeatureAvailable("シールド"))
+            {
+                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                fname = t.FeatureName("シールド");
+            }
+            else if (t.IsFeatureAvailable("小型シールド"))
+            {
+                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                fname = t.FeatureName("小型シールド");
+            }
+            else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !w.IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
+            {
+                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                fname = t.FeatureName("エネルギーシールド");
+            }
+            else if (t.IsFeatureAvailable("大型シールド"))
+            {
+                prob = (int)(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 1d);
+                fname = t.FeatureName("大型シールド");
+            }
+            else if (t.IsFeatureAvailable("アクティブシールド"))
+            {
+                prob = (int)(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 2d);
+                fname = t.FeatureName("アクティブシールド");
+            }
+            else
+            {
+                // 使用可能なシールド系防御能力が無かった
+                return default;
+            }
 
-            //// シールド発動確率を満たしている？
-            //if (prob >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
-            //{
-            //    use_shield = true;
-            //    if (w.IsWeaponClassifiedAs("破"))
-            //    {
-            //        if (t.IsFeatureAvailable("小型シールド"))
-            //        {
-            //            dmg = 5 * dmg / 6;
-            //        }
-            //        else
-            //        {
-            //            dmg = 3 * dmg / 4;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (t.IsFeatureAvailable("小型シールド"))
-            //        {
-            //            dmg = 2 * dmg / 3;
-            //        }
-            //        else
-            //        {
-            //            dmg = dmg / 2;
-            //        }
-            //    }
+            // シールド発動確率を満たしている？
+            if (prob >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動"))
+            {
+                use_shield = true;
+                if (w.IsWeaponClassifiedAs("破"))
+                {
+                    if (t.IsFeatureAvailable("小型シールド"))
+                    {
+                        dmg = 5 * dmg / 6;
+                    }
+                    else
+                    {
+                        dmg = 3 * dmg / 4;
+                    }
+                }
+                else
+                {
+                    if (t.IsFeatureAvailable("小型シールド"))
+                    {
+                        dmg = 2 * dmg / 3;
+                    }
+                    else
+                    {
+                        dmg = dmg / 2;
+                    }
+                }
 
-            //    if (dmg > 0 && dmg < 10)
-            //    {
-            //        dmg = 10;
-            //    }
+                if (dmg > 0 && dmg < 10)
+                {
+                    dmg = 10;
+                }
 
-            //    if (dmg < t.HP && !be_quiet)
-            //    {
-            //        if (t.IsMessageDefined("シールド防御(" + fname + ")"))
-            //        {
-            //            t.PilotMessage("シールド防御(" + fname + ")", msg_mode: "");
-            //            use_shield_msg = true;
-            //        }
-            //        else if (t.IsMessageDefined("シールド防御"))
-            //        {
-            //            t.PilotMessage("シールド防御", msg_mode: "");
-            //            use_shield_msg = true;
-            //        }
-            //    }
+                if (dmg < t.HP && !be_quiet)
+                {
+                    if (t.IsMessageDefined("シールド防御(" + fname + ")"))
+                    {
+                        t.PilotMessage("シールド防御(" + fname + ")", msg_mode: "");
+                        use_shield_msg = true;
+                    }
+                    else if (t.IsMessageDefined("シールド防御"))
+                    {
+                        t.PilotMessage("シールド防御", msg_mode: "");
+                        use_shield_msg = true;
+                    }
+                }
 
-            //    if (t.IsAnimationDefined("シールド防御", fname))
-            //    {
-            //        t.PlayAnimation("シールド防御", fname);
-            //    }
-            //    else if (t.IsSpecialEffectDefined("シールド防御", fname))
-            //    {
-            //        t.SpecialEffect("シールド防御", fname);
-            //    }
-            //    else
-            //    {
-            //        Effect.ShieldEffect(t);
-            //    }
-            //}
+                if (t.IsAnimationDefined("シールド防御", fname))
+                {
+                    t.PlayAnimation("シールド防御", fname);
+                }
+                else if (t.IsSpecialEffectDefined("シールド防御", fname))
+                {
+                    t.SpecialEffect("シールド防御", fname);
+                }
+                else
+                {
+                    Effect.ShieldEffect(t);
+                }
+            }
 
-            //return default;
+            return default;
         }
 
         // バリアなどの防御能力のチェック
@@ -2558,7 +2554,7 @@ namespace SRCCore.Units
             //                        // 効果範囲
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
             //                        {
-            //                            frange = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+            //                            frange = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
             //                        }
             //                        else
             //                        {
@@ -2568,7 +2564,7 @@ namespace SRCCore.Units
             //                        // 使用条件
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //                        {
-            //                            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //                        }
             //                        else
             //                        {
@@ -2583,7 +2579,7 @@ namespace SRCCore.Units
 
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //                        {
-            //                            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //                        }
             //                        else
             //                        {
@@ -2639,7 +2635,7 @@ namespace SRCCore.Units
 
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //        }
             //        else
             //        {
@@ -2759,7 +2755,7 @@ namespace SRCCore.Units
             //                        // 効果範囲
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
             //                        {
-            //                            frange = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+            //                            frange = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
             //                        }
             //                        else
             //                        {
@@ -2769,7 +2765,7 @@ namespace SRCCore.Units
             //                        // 使用条件
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //                        {
-            //                            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //                        }
             //                        else
             //                        {
@@ -2784,7 +2780,7 @@ namespace SRCCore.Units
 
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //                        {
-            //                            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //                        }
             //                        else
             //                        {
@@ -2840,7 +2836,7 @@ namespace SRCCore.Units
 
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //        }
             //        else
             //        {
@@ -2961,7 +2957,7 @@ namespace SRCCore.Units
             //                        // 効果範囲
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
             //                        {
-            //                            frange = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
+            //                            frange = Conversions.ToInteger(GeneralLib.LIndex(fdata, 2));
             //                        }
             //                        else
             //                        {
@@ -2971,7 +2967,7 @@ namespace SRCCore.Units
             //                        // 使用条件
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //                        {
-            //                            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //                        }
             //                        else
             //                        {
@@ -2986,7 +2982,7 @@ namespace SRCCore.Units
 
             //                        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
             //                        {
-            //                            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
+            //                            nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
             //                        }
             //                        else
             //                        {
@@ -3042,7 +3038,7 @@ namespace SRCCore.Units
 
             //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //            ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //        }
             //        else
             //        {
@@ -3129,7 +3125,7 @@ namespace SRCCore.Units
             //            // 必要条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -3138,7 +3134,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -3399,7 +3395,7 @@ namespace SRCCore.Units
             //            // 必要条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -3408,7 +3404,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -3659,7 +3655,7 @@ namespace SRCCore.Units
             //            // 必要条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -3668,7 +3664,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -3927,7 +3923,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -3936,7 +3932,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -4200,7 +4196,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -4209,7 +4205,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -4465,7 +4461,7 @@ namespace SRCCore.Units
             //            // 使用条件
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -4474,7 +4470,7 @@ namespace SRCCore.Units
 
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 4));
             //            }
             //            else
             //            {
@@ -4723,7 +4719,7 @@ namespace SRCCore.Units
             //            // 必要気力
             //            if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
             //            {
-            //                nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
+            //                nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 3));
             //            }
             //            else
             //            {
@@ -4965,624 +4961,620 @@ namespace SRCCore.Units
         // 自動反撃のチェック
         public void CheckAutoAttack(UnitWeapon w, Unit t, string attack_mode, string def_mode, int dmg, bool be_quiet)
         {
-            // TODO Impl CheckAutoAttack
-            return;
-            //string wname2;
-            //int w2;
-            //int ecost, nmorale;
-            //string fname, fdata;
-            //double flevel;
-            //double slevel, lv_mod;
-            //string opt;
-            //int j, i, idx;
-            //int prob;
-            //string buf;
+            string wname2;
+            int w2;
+            int ecost, nmorale;
+            string fname, fdata;
+            double flevel;
+            double slevel, lv_mod;
+            string opt;
+            int j, i, idx;
+            int prob;
+            string buf;
 
-            //// 反撃系の攻撃に対しては自動反撃を行わない
-            //if (attack_mode == "自動反撃" || attack_mode == "反射" || attack_mode == "当て身技")
-            //{
-            //    return;
-            //}
+            // 反撃系の攻撃に対しては自動反撃を行わない
+            if (attack_mode == "自動反撃" || attack_mode == "反射" || attack_mode == "当て身技")
+            {
+                return;
+            }
 
-            //// マップ攻撃、間接攻撃、無属性武器には自動反撃出来ない
-            //if (w.IsWeaponClassifiedAs("Ｍ") || w.IsWeaponClassifiedAs("間") || w.IsWeaponClassifiedAs("無") || IsUnderSpecialPowerEffect("防御能力無効化"))
-            //{
-            //    return;
-            //}
+            // マップ攻撃、間接攻撃、無属性武器には自動反撃出来ない
+            if (w.IsWeaponClassifiedAs("Ｍ") || w.IsWeaponClassifiedAs("間") || w.IsWeaponClassifiedAs("無") || IsUnderSpecialPowerEffect("防御能力無効化"))
+            {
+                return;
+            }
 
-            //// 自動反撃の結果形態が変化して特殊能力数が変わることがあるのでFor文は使わない
-            //i = 1;
-            //while (i <= t.CountFeature())
-            //{
-            //    if (t.Feature(i) == "自動反撃")
-            //    {
-            //        fname = t.FeatureName0(i);
-            //        if (string.IsNullOrEmpty(fname))
-            //        {
-            //            fname = "自動反撃";
-            //        }
+            // 自動反撃の結果形態が変化して特殊能力数が変わることがあるのでFor文は使わない
+            i = 1;
+            while (i <= t.CountFeature())
+            {
+                if (t.Feature(i).Name == "自動反撃")
+                {
+                    fname = t.Feature(i).FeatureName0(t);
+                    if (string.IsNullOrEmpty(fname))
+                    {
+                        fname = "自動反撃";
+                    }
 
-            //        fdata = t.FeatureData(i);
-            //        flevel = t.FeatureLevel(i);
-            //        if (flevel == 1d)
-            //        {
-            //            flevel = 10000d;
-            //        }
+                    fdata = t.FeatureData(i);
+                    flevel = t.FeatureLevel(i);
+                    if (flevel == 1d)
+                    {
+                        flevel = 10000d;
+                    }
 
-            //        // 自動反撃確率の設定
-            //        buf = GeneralLib.LIndex(fdata, 4);
-            //        if (Information.IsNumeric(buf))
-            //        {
-            //            prob = Conversions.Toint(buf);
-            //        }
-            //        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
-            //        {
-            //            j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //            prob = (100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
-            //        }
-            //        else
-            //        {
-            //            prob = (100d * t.SkillLevel(buf) / 16d);
-            //        }
+                    // 自動反撃確率の設定
+                    buf = GeneralLib.LIndex(fdata, 4);
+                    if (Information.IsNumeric(buf))
+                    {
+                        prob = Conversions.ToInteger(buf);
+                    }
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
+                    {
+                        j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
+                        prob = (int)(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                    }
+                    else
+                    {
+                        prob = (int)(100d * t.SkillLevel(buf) / 16d);
+                    }
 
-            //        // 見切り
-            //        if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
-            //        {
-            //            prob = 100;
-            //        }
+                    // 見切り
+                    if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
+                    {
+                        prob = 100;
+                    }
 
-            //        // 対象属性の判定
-            //        bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = w.WeaponClass(); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
+                    // 対象属性の判定
+                    bool localIsAttributeClassified() { string argaclass1 = GeneralLib.LIndex(fdata, 3); string argaclass2 = w.WeaponClass(); var ret = t.IsAttributeClassified(argaclass1, argaclass2); return ret; }
 
-            //        if (!localIsAttributeClassified())
-            //        {
-            //            prob = 0;
-            //        }
+                    if (!localIsAttributeClassified())
+                    {
+                        prob = 0;
+                    }
 
-            //        // 使用条件
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-            //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
-            //        }
-            //        else
-            //        {
-            //            ecost = 0;
-            //        }
+                    // 使用条件
+                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                    {
+                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                    }
+                    else
+                    {
+                        ecost = 0;
+                    }
 
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
-            //        {
-            //            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
-            //        }
-            //        else
-            //        {
-            //            nmorale = 0;
-            //        }
+                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
+                    {
+                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
+                    }
+                    else
+                    {
+                        nmorale = 0;
+                    }
 
-            //        if (t.EN < ecost || t.MainPilot().Morale < nmorale)
-            //        {
-            //            prob = 0;
-            //        }
+                    if (t.EN < ecost || t.MainPilot().Morale < nmorale)
+                    {
+                        prob = 0;
+                    }
 
-            //        // 能動防御は行動できなければ発動しない
-            //        if (t.MaxAction() == 0)
-            //        {
-            //            if (Strings.InStr(fdata, "完全自動") == 0)
-            //            {
-            //                prob = 0;
-            //            }
-            //        }
+                    // 能動防御は行動できなければ発動しない
+                    if (t.MaxAction() == 0)
+                    {
+                        if (Strings.InStr(fdata, "完全自動") == 0)
+                        {
+                            prob = 0;
+                        }
+                    }
 
-            //        // オプション
-            //        slevel = 0d;
-            //        var loopTo = GeneralLib.LLength(fdata);
-            //        for (j = 7; j <= loopTo; j++)
-            //        {
-            //            if (prob == 0)
-            //            {
-            //                break;
-            //            }
+                    // オプション
+                    slevel = 0d;
+                    var loopTo = GeneralLib.LLength(fdata);
+                    for (j = 7; j <= loopTo; j++)
+                    {
+                        if (prob == 0)
+                        {
+                            break;
+                        }
 
-            //            opt = GeneralLib.LIndex(fdata, j);
-            //            idx = Strings.InStr(opt, "*");
-            //            if (idx > 0)
-            //            {
-            //                lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
-            //                opt = Strings.Left(opt, idx - 1);
-            //            }
-            //            else
-            //            {
-            //                lv_mod = -1;
-            //            }
+                        opt = GeneralLib.LIndex(fdata, j);
+                        idx = Strings.InStr(opt, "*");
+                        if (idx > 0)
+                        {
+                            lv_mod = GeneralLib.StrToDbl(Strings.Mid(opt, idx + 1));
+                            opt = Strings.Left(opt, idx - 1);
+                        }
+                        else
+                        {
+                            lv_mod = -1;
+                        }
 
-            //            switch (t.MainPilot().SkillType(opt) ?? "")
-            //            {
-            //                case "相殺":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            prob = 0;
-            //                        }
+                        switch (t.MainPilot().SkillType(opt) ?? "")
+                        {
+                            case "相殺":
+                                {
+                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    {
+                                        prob = 0;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "中和":
-            //                    {
-            //                        if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
-            //                        {
-            //                            flevel = flevel - FeatureLevel("自動反撃");
-            //                            if (flevel <= 0d)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
+                            case "中和":
+                                {
+                                    if (IsSameCategory(fdata, FeatureData("自動反撃")) && Math.Abs((x - t.x)) + Math.Abs((y - t.y)) == 1)
+                                    {
+                                        flevel = flevel - FeatureLevel("自動反撃");
+                                        if (flevel <= 0d)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "近接無効":
-            //                    {
-            //                        if (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接"))
-            //                        {
-            //                            prob = 0;
-            //                        }
+                            case "近接無効":
+                                {
+                                    if (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接"))
+                                    {
+                                        prob = 0;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "手動":
-            //                    {
-            //                        if (def_mode != "防御")
-            //                        {
-            //                            prob = 0;
-            //                        }
+                            case "手動":
+                                {
+                                    if (def_mode != "防御")
+                                    {
+                                        prob = 0;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "能力必要":
-            //                    {
-            //                        break;
-            //                    }
-            //                // スキップ
-            //                case "同調率":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 20d;
-            //                        }
+                            case "能力必要":
+                                {
+                                    break;
+                                }
+                            // スキップ
+                            case "同調率":
+                                {
+                                    if (lv_mod == -1)
+                                    {
+                                        lv_mod = 20d;
+                                    }
 
-            //                        slevel = lv_mod * (t.SyncLevel() - 30d);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == -30 * lv_mod)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
-            //                        else if (slevel == -30 * lv_mod)
-            //                        {
-            //                            slevel = 0d;
-            //                        }
+                                    slevel = lv_mod * (t.SyncLevel() - 30d);
+                                    if (Strings.InStr(fdata, "能力必要") > 0)
+                                    {
+                                        if (slevel == -30 * lv_mod)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
+                                    else if (slevel == -30 * lv_mod)
+                                    {
+                                        slevel = 0d;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "霊力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 10d;
-            //                        }
+                            case "霊力":
+                                {
+                                    if (lv_mod == -1)
+                                    {
+                                        lv_mod = 10d;
+                                    }
 
-            //                        slevel = lv_mod * t.PlanaLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
+                                    slevel = lv_mod * t.PlanaLevel();
+                                    if (Strings.InStr(fdata, "能力必要") > 0)
+                                    {
+                                        if (slevel == 0d)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "オーラ":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
+                            case "オーラ":
+                                {
+                                    if (lv_mod == -1)
+                                    {
+                                        lv_mod = 200d;
+                                    }
 
-            //                        slevel = lv_mod * t.AuraLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
+                                    slevel = lv_mod * t.AuraLevel();
+                                    if (Strings.InStr(fdata, "能力必要") > 0)
+                                    {
+                                        if (slevel == 0d)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                case "超能力":
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
+                            case "超能力":
+                                {
+                                    if (lv_mod == -1)
+                                    {
+                                        lv_mod = 200d;
+                                    }
 
-            //                        slevel = lv_mod * t.PsychicLevel();
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
+                                    slevel = lv_mod * t.PsychicLevel();
+                                    if (Strings.InStr(fdata, "能力必要") > 0)
+                                    {
+                                        if (slevel == 0d)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                default:
-            //                    {
-            //                        if (lv_mod == -1)
-            //                        {
-            //                            lv_mod = 200d;
-            //                        }
+                            default:
+                                {
+                                    if (lv_mod == -1)
+                                    {
+                                        lv_mod = 200d;
+                                    }
 
-            //                        slevel = lv_mod * t.SkillLevel(opt);
-            //                        if (Strings.InStr(fdata, "能力必要") > 0)
-            //                        {
-            //                            if (slevel == 0d)
-            //                            {
-            //                                prob = 0;
-            //                            }
-            //                        }
+                                    slevel = lv_mod * t.SkillLevel(opt);
+                                    if (Strings.InStr(fdata, "能力必要") > 0)
+                                    {
+                                        if (slevel == 0d)
+                                        {
+                                            prob = 0;
+                                        }
+                                    }
 
-            //                        break;
-            //                    }
-            //            }
-            //        }
+                                    break;
+                                }
+                        }
+                    }
 
-            //        // ダメージが許容範囲外であれば自動反撃を使えない
-            //        if (dmg > 500d * flevel + slevel)
-            //        {
-            //            prob = 0;
-            //        }
+                    // ダメージが許容範囲外であれば自動反撃を使えない
+                    if (dmg > 500d * flevel + slevel)
+                    {
+                        prob = 0;
+                    }
 
-            //        // 使用する武器を検索
-            //        wname2 = GeneralLib.LIndex(fdata, 2);
-            //        w2 = 0;
-            //        var loopTo1 = t.CountWeapon();
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if ((t.Weapon(j).Name ?? "") == (wname2 ?? ""))
-            //            {
-            //                if (t.IsWeaponAvailable(j, "必要技能無視"))
-            //                {
-            //                    if (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接"))
-            //                    {
-            //                        w2 = j;
-            //                    }
-            //                    else
-            //                    {
-            //                        if (t.IsTargetWithinRange(j, this))
-            //                        {
-            //                            w2 = j;
-            //                        }
-            //                    }
-            //                }
+                    // 使用する武器を検索
+                    wname2 = GeneralLib.LIndex(fdata, 2);
+                    w2 = 0;
+                    var loopTo1 = t.CountWeapon();
+                    for (j = 1; j <= loopTo1; j++)
+                    {
+                        if ((t.Weapon(j).Name ?? "") == (wname2 ?? ""))
+                        {
+                            if (t.Weapon(j).IsWeaponAvailable("必要技能無視"))
+                            {
+                                if (w.IsWeaponClassifiedAs("武") || w.IsWeaponClassifiedAs("突") || w.IsWeaponClassifiedAs("接"))
+                                {
+                                    w2 = j;
+                                }
+                                else
+                                {
+                                    if (t.Weapon(j).IsTargetWithinRange(this))
+                                    {
+                                        w2 = j;
+                                    }
+                                }
+                            }
 
-            //                break;
-            //            }
-            //        }
+                            break;
+                        }
+                    }
 
-            //        // 自動反撃発動
-            //        if (prob >= GeneralLib.Dice(100) && w2 > 0)
-            //        {
-            //            if (ecost != 0)
-            //            {
-            //                t.EN = t.EN - ecost;
-            //                GUI.UpdateMessageForm(this, t);
-            //            }
+                    // 自動反撃発動
+                    if (prob >= GeneralLib.Dice(100) && w2 > 0)
+                    {
+                        if (ecost != 0)
+                        {
+                            t.EN = t.EN - ecost;
+                            GUI.UpdateMessageForm(this, t);
+                        }
 
-            //            // メッセージ
-            //            if (!be_quiet)
-            //            {
-            //                if (t.IsMessageDefined("自動反撃(" + fname + ")"))
-            //                {
-            //                    t.PilotMessage("自動反撃(" + fname + ")", msg_mode: "");
-            //                }
-            //                else
-            //                {
-            //                    t.PilotMessage("自動反撃", msg_mode: "");
-            //                }
-            //            }
-            //            else
-            //            {
-            //                Sound.IsWavePlayed = false;
-            //            }
+                        // メッセージ
+                        if (!be_quiet)
+                        {
+                            if (t.IsMessageDefined("自動反撃(" + fname + ")"))
+                            {
+                                t.PilotMessage("自動反撃(" + fname + ")", msg_mode: "");
+                            }
+                            else
+                            {
+                                t.PilotMessage("自動反撃", msg_mode: "");
+                            }
+                        }
+                        else
+                        {
+                            Sound.IsWavePlayed = false;
+                        }
 
-            //            // 効果音
-            //            if (!Sound.IsWavePlayed)
-            //            {
-            //                if (t.IsAnimationDefined("自動反撃", fname))
-            //                {
-            //                    t.PlayAnimation("自動反撃", fname);
-            //                }
-            //                else if (t.IsSpecialEffectDefined("自動反撃", fname))
-            //                {
-            //                    t.SpecialEffect("自動反撃", fname);
-            //                }
-            //            }
+                        // 効果音
+                        if (!Sound.IsWavePlayed)
+                        {
+                            if (t.IsAnimationDefined("自動反撃", fname))
+                            {
+                                t.PlayAnimation("自動反撃", fname);
+                            }
+                            else if (t.IsSpecialEffectDefined("自動反撃", fname))
+                            {
+                                t.SpecialEffect("自動反撃", fname);
+                            }
+                        }
 
-            //            if (t.IsSysMessageDefined("自動反撃", fname))
-            //            {
-            //                t.SysMessage("自動反撃", fname, add_msg: "");
-            //            }
-            //            else
-            //            {
-            //                GUI.DisplaySysMessage(t.Nickname + "は" + t.WeaponNickname(w2) + "で反撃した。");
-            //            }
+                        if (t.IsSysMessageDefined("自動反撃", fname))
+                        {
+                            t.SysMessage("自動反撃", fname, add_msg: "");
+                        }
+                        else
+                        {
+                            GUI.DisplaySysMessage(t.Nickname + "は" + t.Weapon(w2).WeaponNickname() + "で反撃した。");
+                        }
 
-            //            // 自動反撃で攻撃をかける
-            //            t.Attack(w2, this, "自動反撃", "");
-            //            t = t.CurrentForm();
-            //            if (Status != "出撃" || t.Status != "出撃")
-            //            {
-            //                return;
-            //            }
-            //        }
-            //    }
+                        // 自動反撃で攻撃をかける
+                        t.Attack(t.Weapon(w2), this, "自動反撃", "");
+                        t = t.CurrentForm();
+                        if (Status != "出撃" || t.Status != "出撃")
+                        {
+                            return;
+                        }
+                    }
+                }
 
-            //    i = (i + 1);
-            //}
+                i = (i + 1);
+            }
         }
 
         // 追加攻撃のチェック
         public void CheckAdditionalAttack(UnitWeapon w, Unit t, bool be_quiet, string attack_mode, string def_mode, int dmg)
         {
-            // TODO Impl CheckAdditionalAttack
-            return;
-            //string wnskill, wname, wnickname, wclass;
-            //string wtype, sname;
-            //string wname2;
-            //int w2;
-            //int ecost, nmorale;
-            //string fname, fdata;
-            //double flevel;
-            //int i, j;
-            //int prob;
-            //string buf;
-            //bool found;
-            //var attack_count = default;
-            //wname = Weapon(w).Name;
-            //wnickname = WeaponNickname(w);
-            //wclass = w.WeaponClass();
-            //wnskill = Weapon(w).NecessarySkill;
+            string wnskill, wname, wnickname, wclass;
+            string wtype, sname;
+            string wname2;
+            int w2;
+            int ecost, nmorale;
+            string fname, fdata;
+            double flevel;
+            int i, j;
+            int prob;
+            string buf;
+            bool found;
+            var attack_count = 0;
+            wname = w.Name;
+            wnickname = w.WeaponNickname();
+            wclass = w.WeaponClass();
+            wnskill = w.WeaponData.NecessarySkill;
 
-            //// 追加攻撃の結果形態が変化して特殊能力数が変わることがあるのでFor文は使わない
-            //i = 1;
-            //while (i <= CountFeature())
-            //{
-            //    if (Feature(i) == "追加攻撃")
-            //    {
-            //        fname = FeatureName0(i);
-            //        if (string.IsNullOrEmpty(fname))
-            //        {
-            //            fname = "追加攻撃";
-            //        }
+            // 追加攻撃の結果形態が変化して特殊能力数が変わることがあるのでFor文は使わない
+            i = 1;
+            while (i <= CountFeature())
+            {
+                if (Feature(i).Name == "追加攻撃")
+                {
+                    fname = Feature(i).FeatureName0(this);
+                    if (string.IsNullOrEmpty(fname))
+                    {
+                        fname = "追加攻撃";
+                    }
 
-            //        fdata = FeatureData(i);
-            //        flevel = FeatureLevel(i);
-            //        if (flevel == 1d)
-            //        {
-            //            flevel = 10000d;
-            //        }
+                    fdata = FeatureData(i);
+                    flevel = FeatureLevel(i);
+                    if (flevel == 1d)
+                    {
+                        flevel = 10000d;
+                    }
 
-            //        // 追加攻撃確率の設定
-            //        buf = GeneralLib.LIndex(fdata, 4);
-            //        if (Information.IsNumeric(buf))
-            //        {
-            //            prob = Conversions.Toint(buf);
-            //        }
-            //        else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
-            //        {
-            //            j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-            //            prob = (100d * (SkillLevel(Strings.Left(buf, j - 1)) + Conversions.Toint(Strings.Mid(buf, j))) / 16d);
-            //        }
-            //        else
-            //        {
-            //            prob = (SkillLevel(buf) * 100d / 16d);
-            //        }
+                    // 追加攻撃確率の設定
+                    buf = GeneralLib.LIndex(fdata, 4);
+                    if (Information.IsNumeric(buf))
+                    {
+                        prob = Conversions.ToInteger(buf);
+                    }
+                    else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
+                    {
+                        j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
+                        prob = (int)(100d * (SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                    }
+                    else
+                    {
+                        prob = (int)(SkillLevel(buf) * 100d / 16d);
+                    }
 
-            //        // 対象武器の判定
-            //        wtype = GeneralLib.LIndex(fdata, 3);
-            //        found = false;
-            //        if (Strings.Left(wtype, 1) == "@")
-            //        {
-            //            // 武器名または必要技能による指定
-            //            wtype = Strings.Mid(wtype, 2);
-            //            if ((wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
-            //            {
-            //                found = true;
-            //            }
-            //            else
-            //            {
-            //                var loopTo = GeneralLib.LLength(wnskill);
-            //                for (j = 1; j <= loopTo; j++)
-            //                {
-            //                    sname = GeneralLib.LIndex(wnskill, j);
-            //                    if (Strings.InStr(sname, "Lv") > 0)
-            //                    {
-            //                        sname = Strings.Left(sname, Strings.InStr(sname, "Lv") - 1);
-            //                    }
+                    // 対象武器の判定
+                    wtype = GeneralLib.LIndex(fdata, 3);
+                    found = false;
+                    if (Strings.Left(wtype, 1) == "@")
+                    {
+                        // 武器名または必要技能による指定
+                        wtype = Strings.Mid(wtype, 2);
+                        if ((wname ?? "") == (wtype ?? "") || (wnickname ?? "") == (wtype ?? ""))
+                        {
+                            found = true;
+                        }
+                        else
+                        {
+                            var loopTo = GeneralLib.LLength(wnskill);
+                            for (j = 1; j <= loopTo; j++)
+                            {
+                                sname = GeneralLib.LIndex(wnskill, j);
+                                if (Strings.InStr(sname, "Lv") > 0)
+                                {
+                                    sname = Strings.Left(sname, Strings.InStr(sname, "Lv") - 1);
+                                }
 
-            //                    if ((sname ?? "") == (wtype ?? ""))
-            //                    {
-            //                        found = true;
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // 属性による指定
-            //            switch (wtype ?? "")
-            //            {
-            //                case "全":
-            //                    {
-            //                        found = true;
-            //                        break;
-            //                    }
+                                if ((sname ?? "") == (wtype ?? ""))
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 属性による指定
+                        switch (wtype ?? "")
+                        {
+                            case "全":
+                                {
+                                    found = true;
+                                    break;
+                                }
 
-            //                case "物":
-            //                    {
-            //                        if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
-            //                        {
-            //                            found = true;
-            //                        }
+                            case "物":
+                                {
+                                    if (GeneralLib.InStrNotNest(wclass, "魔") == 0 || GeneralLib.InStrNotNest(wclass, "魔武") > 0 || GeneralLib.InStrNotNest(wclass, "魔突") > 0 || GeneralLib.InStrNotNest(wclass, "魔接") > 0 || GeneralLib.InStrNotNest(wclass, "魔銃") > 0 || GeneralLib.InStrNotNest(wclass, "魔実") > 0)
+                                    {
+                                        found = true;
+                                    }
 
-            //                        break;
-            //                    }
+                                    break;
+                                }
 
-            //                default:
-            //                    {
-            //                        if (IsAttributeClassified(wtype, wclass))
-            //                        {
-            //                            found = true;
-            //                        }
+                            default:
+                                {
+                                    if (IsAttributeClassified(wtype, wclass))
+                                    {
+                                        found = true;
+                                    }
 
-            //                        break;
-            //                    }
-            //            }
-            //        }
+                                    break;
+                                }
+                        }
+                    }
 
-            //        if (!found)
-            //        {
-            //            prob = 0;
-            //        }
+                    if (!found)
+                    {
+                        prob = 0;
+                    }
 
-            //        // 使用条件
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
-            //        {
-            //            ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
-            //        }
-            //        else
-            //        {
-            //            ecost = 0;
-            //        }
+                    // 使用条件
+                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
+                    {
+                        ecost = Conversions.ToInteger(GeneralLib.LIndex(fdata, 5));
+                    }
+                    else
+                    {
+                        ecost = 0;
+                    }
 
-            //        if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
-            //        {
-            //            nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
-            //        }
-            //        else
-            //        {
-            //            nmorale = 0;
-            //        }
+                    if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
+                    {
+                        nmorale = Conversions.ToInteger(GeneralLib.LIndex(fdata, 6));
+                    }
+                    else
+                    {
+                        nmorale = 0;
+                    }
 
-            //        if (EN < ecost || this.MainPilot().Morale < nmorale)
-            //        {
-            //            prob = 0;
-            //        }
+                    if (EN < ecost || this.MainPilot().Morale < nmorale)
+                    {
+                        prob = 0;
+                    }
 
-            //        // 連鎖不可
-            //        if (Strings.InStr(fdata, "連鎖不可") > 0)
-            //        {
-            //            if (attack_count > 0 || attack_mode == "追加攻撃")
-            //            {
-            //                prob = 0;
-            //            }
-            //        }
+                    // 連鎖不可
+                    if (Strings.InStr(fdata, "連鎖不可") > 0)
+                    {
+                        if (attack_count > 0 || attack_mode == "追加攻撃")
+                        {
+                            prob = 0;
+                        }
+                    }
 
-            //        // 命中時限定
-            //        if (Strings.InStr(fdata, "命中時限定") > 0)
-            //        {
-            //            if (dmg <= 0)
-            //            {
-            //                prob = 0;
-            //            }
-            //        }
+                    // 命中時限定
+                    if (Strings.InStr(fdata, "命中時限定") > 0)
+                    {
+                        if (dmg <= 0)
+                        {
+                            prob = 0;
+                        }
+                    }
 
-            //        // 使用する武器を検索
-            //        wname2 = GeneralLib.LIndex(fdata, 2);
-            //        w2 = 0;
-            //        var loopTo1 = CountWeapon();
-            //        for (j = 1; j <= loopTo1; j++)
-            //        {
-            //            if ((Weapon(j).Name ?? "") == (wname2 ?? ""))
-            //            {
-            //                if (IsWeaponAvailable(j, "必要技能無視"))
-            //                {
-            //                    if (IsTargetWithinRange(j, t))
-            //                    {
-            //                        w2 = j;
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
+                    // 使用する武器を検索
+                    wname2 = GeneralLib.LIndex(fdata, 2);
+                    w2 = 0;
+                    var loopTo1 = CountWeapon();
+                    for (j = 1; j <= loopTo1; j++)
+                    {
+                        if ((Weapon(j).Name ?? "") == (wname2 ?? ""))
+                        {
+                            if (Weapon(j).IsWeaponAvailable("必要技能無視"))
+                            {
+                                if (Weapon(j).IsTargetWithinRange(t))
+                                {
+                                    w2 = j;
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-            //        // 追加攻撃反撃発動
-            //        if (prob >= GeneralLib.Dice(100) && w2 > 0)
-            //        {
-            //            if (ecost != 0)
-            //            {
-            //                EN = EN - ecost;
-            //                GUI.UpdateMessageForm(this, t);
-            //            }
+                    // 追加攻撃反撃発動
+                    if (prob >= GeneralLib.Dice(100) && w2 > 0)
+                    {
+                        if (ecost != 0)
+                        {
+                            EN = EN - ecost;
+                            GUI.UpdateMessageForm(this, t);
+                        }
 
-            //            // メッセージ
-            //            if (!be_quiet)
-            //            {
-            //                if (IsMessageDefined("追加攻撃(" + fname + ")"))
-            //                {
-            //                    PilotMessage("追加攻撃(" + fname + ")", msg_mode: "");
-            //                }
-            //                else
-            //                {
-            //                    PilotMessage("追加攻撃", msg_mode: "");
-            //                }
-            //            }
+                        // メッセージ
+                        if (!be_quiet)
+                        {
+                            if (IsMessageDefined("追加攻撃(" + fname + ")"))
+                            {
+                                PilotMessage("追加攻撃(" + fname + ")", msg_mode: "");
+                            }
+                            else
+                            {
+                                PilotMessage("追加攻撃", msg_mode: "");
+                            }
+                        }
 
-            //            // 効果音
-            //            if (IsAnimationDefined("追加攻撃", fname))
-            //            {
-            //                PlayAnimation("追加攻撃", fname);
-            //            }
-            //            else if (IsSpecialEffectDefined("追加攻撃", fname))
-            //            {
-            //                SpecialEffect("追加攻撃", fname);
-            //            }
+                        // 効果音
+                        if (IsAnimationDefined("追加攻撃", fname))
+                        {
+                            PlayAnimation("追加攻撃", fname);
+                        }
+                        else if (IsSpecialEffectDefined("追加攻撃", fname))
+                        {
+                            SpecialEffect("追加攻撃", fname);
+                        }
 
-            //            if (IsSysMessageDefined("追加攻撃", fname))
-            //            {
-            //                SysMessage("追加攻撃", fname, add_msg: "");
-            //            }
-            //            else
-            //            {
-            //                GUI.DisplaySysMessage(Nickname + "はさらに[" + WeaponNickname(w2) + "]で攻撃を加えた。");
-            //            }
+                        if (IsSysMessageDefined("追加攻撃", fname))
+                        {
+                            SysMessage("追加攻撃", fname, add_msg: "");
+                        }
+                        else
+                        {
+                            GUI.DisplaySysMessage(Nickname + "はさらに[" + Weapon(w2).WeaponNickname() + "]で攻撃を加えた。");
+                        }
 
-            //            // 追加攻撃をかける
-            //            Attack(w2, t, "追加攻撃", def_mode);
-            //            t = t.CurrentForm();
-            //            if (Status != "出撃" || t.Status != "出撃")
-            //            {
-            //                return;
-            //            }
+                        // 追加攻撃をかける
+                        Attack(Weapon(w2), t, "追加攻撃", def_mode);
+                        t = t.CurrentForm();
+                        if (Status != "出撃" || t.Status != "出撃")
+                        {
+                            return;
+                        }
 
-            //            // 追加攻撃を実施したことを記録
-            //            attack_count = (attack_count + 1);
-            //        }
-            //    }
+                        // 追加攻撃を実施したことを記録
+                        attack_count = (attack_count + 1);
+                    }
+                }
 
-            //    i = (i + 1);
-            //}
+                i = (i + 1);
+            }
         }
 
         // クリティカルによる特殊効果
