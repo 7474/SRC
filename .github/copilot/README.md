@@ -6,10 +6,26 @@ This directory contains instructions for GitHub Copilot Agents to operate the SR
 
 ## 📚 Files / ファイル
 
-### 1. [agent-instructions.md](./agent-instructions.md)
+### 1. [copilot-instructions-examples.md](./copilot-instructions-examples.md) ⭐ **Start Here!**
+**Copilotへの指示例 / Example Copilot Instructions**
+
+15個の具体的な指示例を提供：
+- Issue作成、機能実装、レビュー、進捗管理など
+- GitHub ProjectsやWebUIのセットアップ不要
+- コピー&ペーストで即座に使用可能
+
+Provides 15 concrete instruction examples:
+- Issue creation, feature implementation, review, progress tracking, etc.
+- No GitHub Projects or Web UI setup required
+- Ready to copy & paste
+
+**🚀 Use this for**: Getting started immediately with Copilot instructions
+
+### 2. [agent-instructions.md](./agent-instructions.md)
 **完全な運用手順書 / Complete Operations Manual**
 
 Comprehensive instructions covering:
+- Self-contained operation (no external setup required)
 - 4 specialized agent roles (Issue Creation, Implementation, Review, Progress Tracking)
 - Detailed workflows and best practices
 - Label system and milestone definitions
@@ -18,7 +34,7 @@ Comprehensive instructions covering:
 
 **Use this for**: Detailed reference and complete operational guidelines
 
-### 2. [quick-reference.md](./quick-reference.md)
+### 3. [quick-reference.md](./quick-reference.md)
 **クイックリファレンスカード / Quick Reference Card**
 
 Condensed reference including:
@@ -32,21 +48,76 @@ Condensed reference including:
 
 ## 🎯 Purpose / 目的
 
+**⚡ Self-Contained Operation**: GitHub ProjectsやWebUIのセットアップなしに、Copilotへの指示のみで作業が進行できます。
+
+**⚡ Self-Contained Operation**: Work progresses with Copilot instructions alone, without requiring GitHub Projects or Web UI setup.
+
 These instructions enable GitHub Copilot Agents to:
 
 これらの指示により、GitHub Copilot Agentは以下を実行できます：
 
-1. **Create Issues** from the migration plan (`docs/issue-breakdown.md`)
+1. **Create Issues** from the migration plan (`docs/issue-breakdown.md`) - No manual setup needed
 2. **Implement Features** according to TODO comments with proper testing
 3. **Review PRs** for quality and adherence to migration guidelines
 4. **Track Progress** and generate reports on completion status
 
+### 必要なのは指示のみ / Instructions Only
+
+- ✅ Copy instruction from `copilot-instructions-examples.md`
+- ✅ Paste to Copilot chat
+- ✅ Copilot executes the task
+- ❌ No GitHub Projects setup
+- ❌ No manual label/milestone creation
+- ❌ No Web UI interaction required
+
 ## 🚀 Quick Start for Agents / エージェント向けクイックスタート
 
-### First Time Setup
+### 最速スタート / Fastest Start (Recommended)
+
 ```bash
+# 1. 指示例を確認 / Check instruction examples
+cat .github/copilot/copilot-instructions-examples.md
+
+# 2. 好きな指示をコピー / Copy any instruction you like
+
+# 3. Copilotチャットに貼り付け / Paste to Copilot chat
+@copilot [指示内容をここに貼り付け / Paste instruction here]
+
+# 完了！GitHub Projectsなどのセットアップは不要です
+# Done! No GitHub Projects or other setup required
+```
+
+### Example: 最初のEpic Issue作成
+
+```
+@copilot Epic 1: 戦闘システム完成 のIssueを作成してください。
+
+以下の情報を使用：
+- タイトル: "Epic 1: 戦闘システム完成 (Combat System Completion)"
+- 内容: docs/issue-breakdown.md の Epic 1 セクションを参照
+- ラベル: type:epic, epic:combat, priority:high
+- マイルストーン: Phase 1: コア機能完成 (v3.1.0)
+```
+
+### 従来の方法（スクリプト使用）/ Traditional Way (Using Scripts)
+
+```bash
+# ラベルとマイルストーンを事前作成する場合のみ
+# Only if you want to pre-create labels and milestones
+
 # 1. Read the overview
 cat .github/copilot/quick-reference.md
+
+# 2. Setup labels and milestones
+bash docs/scripts/create-labels.sh
+bash docs/scripts/create-milestones.sh
+
+# 3. Read your role-specific section
+# - For issue creation: Section "1. Issue Creation Agent" in agent-instructions.md
+# - For implementation: Section "2. Implementation Agent" in agent-instructions.md
+# - For review: Section "3. Review Agent" in agent-instructions.md
+# - For tracking: Section "4. Progress Tracking Agent" in agent-instructions.md
+```
 
 # 2. Setup labels and milestones
 bash docs/scripts/create-labels.sh

@@ -2,6 +2,35 @@
 
 このファイルは、GitHub Copilot Agentが SRC# 移植完了プロジェクトを運用するための指示書です。
 
+## 🚀 Self-Contained Operation / 自己完結型運用
+
+**重要**: このプロジェクトは、GitHub ProjectsやWebUIのセットアップなしに、Copilotへの指示のみで作業を進められるよう設計されています。
+
+**Important**: This project is designed to work with Copilot instructions alone, without requiring GitHub Projects or Web UI setup.
+
+### 必要な情報源 / Required Information Sources
+
+Copilotは以下の情報のみで自律的に動作します：
+
+Copilot operates autonomously using only:
+
+1. **`docs/migration-plan.md`** - 8 Epics and overall migration strategy
+2. **`docs/issue-breakdown.md`** - Detailed definitions of ~70 issues
+3. **`.github/ISSUE_TEMPLATE/`** - Issue templates (Epic, Feature, Bugfix)
+4. **Codebase TODO comments** - Specific implementation requirements
+5. **`.github/copilot/copilot-instructions-examples.md`** - Concrete instruction examples
+
+### セットアップ不要 / No Setup Required
+
+- ❌ GitHub Projects board creation - Not needed
+- ❌ Manual label creation - Copilot creates as needed
+- ❌ Manual milestone creation - Copilot creates as needed
+- ✅ Direct instructions to Copilot - All you need
+
+**指示例**: 詳細な使用例は [copilot-instructions-examples.md](./copilot-instructions-examples.md) を参照してください。
+
+**Example Instructions**: See [copilot-instructions-examples.md](./copilot-instructions-examples.md) for detailed usage examples.
+
 ## Overview / 概要
 
 SRC# (Simulation RPG Construction Sharp) is a C# port of the VB6-based SRC game engine. This repository has a comprehensive migration completion plan documented in `docs/` that breaks down 155+ TODO comments into ~70 manageable issues across 8 epic categories.
