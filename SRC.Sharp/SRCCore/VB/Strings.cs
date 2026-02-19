@@ -164,10 +164,219 @@ namespace SRCCore.VB
         }
 
         // ---- xxxB
+        // Byte-based string functions using Shift-JIS encoding for backward compatibility
+        // See: https://github.com/7474/SRC/issues/175
+        
+        private static System.Text.Encoding ShiftJISEncoding
+        {
+            get
+            {
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                return System.Text.Encoding.GetEncoding("Shift_JIS");
+            }
+        }
+
+        /// <summary>
+        /// Returns the byte length of a string in Shift-JIS encoding
+        /// </summary>
         public static int LenB(string str)
         {
-            // TODO LenB
-            return Len(str);
+            if (string.IsNullOrEmpty(str))
+            {
+                return 0;
+            }
+            return ShiftJISEncoding.GetByteCount(str);
+        }
+
+        /// <summary>
+        /// Returns the leftmost bytes of a string based on Shift-JIS encoding
+        /// </summary>
+        public static string LeftB(string str, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            if (byteCount >= bytes.Length)
+            {
+                return str;
+            }
+
+            // Decode only the requested number of bytes
+            // Use DecoderFallback to handle incomplete multi-byte characters
+            var encoding = System.Text.Encoding.GetEncoding(
+                "Shift_JIS",
+                new System.Text.EncoderReplacementFallback(""),
+                new System.Text.DecoderReplacementFallback("")
+            );
+            return encoding.GetString(bytes, 0, byteCount);
+        }
+
+        /// <summary>
+        /// Returns the rightmost bytes of a string based on Shift-JIS encoding
+        /// </summary>
+        public static string RightB(string str, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            if (byteCount >= bytes.Length)
+            {
+                return str;
+            }
+
+            var encoding = System.Text.Encoding.GetEncoding(
+                "Shift_JIS",
+                new System.Text.EncoderReplacementFallback(""),
+                new System.Text.DecoderReplacementFallback("")
+            );
+            return encoding.GetString(bytes, bytes.Length - byteCount, byteCount);
+        }
+
+        /// <summary>
+        /// Returns a substring based on byte positions in Shift-JIS encoding
+        /// </summary>
+        public static string MidB(string str, int startByte)
+        {
+            return MidB(str, startByte, LenB(str));
+        }
+
+        /// <summary>
+        /// Returns a substring based on byte positions in Shift-JIS encoding
+        /// </summary>
+        public static string MidB(string str, int startByte, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            
+            // Adjust for 1-based indexing (VB6 style)
+            var startIndex = startByte - 1;
+            
+            if (startIndex >= bytes.Length || startIndex < 0)
+            {
+                return "";
+            }
+
+            var actualByteCount = System.Math.Min(byteCount, bytes.Length - startIndex);
+            
+            var encoding = System.Text.Encoding.GetEncoding(
+                "Shift_JIS",
+                new System.Text.EncoderReplacementFallback(""),
+                new System.Text.DecoderReplacementFallback("")
+            );
+            return encoding.GetString(bytes, startIndex, actualByteCount);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the first occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrB(string string1, string string2)
+        {
+            return InStrB(1, string1, string2);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the first occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrB(int start, string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+
+            var bytes1 = ShiftJISEncoding.GetBytes(string1);
+            var bytes2 = ShiftJISEncoding.GetBytes(string2);
+            
+            // Adjust for 1-based indexing
+            var startIndex = start - 1;
+            
+            if (startIndex < 0 || startIndex >= bytes1.Length)
+            {
+                return 0;
+            }
+
+            // Search for byte pattern
+            for (int i = startIndex; i <= bytes1.Length - bytes2.Length; i++)
+            {
+                bool found = true;
+                for (int j = 0; j < bytes2.Length; j++)
+                {
+                    if (bytes1[i + j] != bytes2[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return i + 1; // Return 1-based position
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns the byte position of the last occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrRevB(string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+            return InStrRevB(LenB(string1), string1, string2);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the last occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrRevB(int start, string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+
+            var bytes1 = ShiftJISEncoding.GetBytes(string1);
+            var bytes2 = ShiftJISEncoding.GetBytes(string2);
+            
+            var startIndex = System.Math.Min(start - 1, bytes1.Length - bytes2.Length);
+            
+            if (startIndex < 0)
+            {
+                return 0;
+            }
+
+            // Search backwards for byte pattern
+            for (int i = startIndex; i >= 0; i--)
+            {
+                bool found = true;
+                for (int j = 0; j < bytes2.Length; j++)
+                {
+                    if (i + j >= bytes1.Length || bytes1[i + j] != bytes2[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return i + 1; // Return 1-based position
+                }
+            }
+
+            return 0;
         }
     }
 }
