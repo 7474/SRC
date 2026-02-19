@@ -339,34 +339,174 @@ namespace SRCCore.Expressions.Functions
 
     // https://github.com/7474/SRC/issues/175
 
-    public class InStrB : InStr
+    public class InStrB : AFunction
     {
-        // TODO Impl Instrb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            if (pcount == 2)
+            {
+                num_result = Strings.InStrB(
+                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            }
+            else
+            {
+                num_result = Strings.InStrB(
+                    SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
+                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            }
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
     }
 
-    public class InStrRevB : InStrRev
+    public class InStrRevB : AFunction
     {
-        // TODO Impl Instrrevb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var buf2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+            int i;
+            
+            if (pcount == 2)
+            {
+                i = Strings.InStrRevB(buf, buf2);
+            }
+            else
+            {
+                i = Strings.InStrRevB(
+                    SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
+                    buf,
+                    buf2);
+            }
+
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum((double)i);
+                return ValueType.StringType;
+            }
+            else
+            {
+                num_result = (double)i;
+                return ValueType.NumericType;
+            }
+        }
     }
 
-    public class LeftB : Left
+    public class LeftB : AFunction
     {
-        // TODO Impl Leftb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            str_result = Strings.LeftB(
+                SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            
+            if (etype == ValueType.NumericType)
+            {
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
+            }
+            else
+            {
+                return ValueType.StringType;
+            }
+        }
     }
 
-    public class LenB : Len
+    public class LenB : AFunction
     {
-        // TODO Impl Lenb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = (double)Strings.LenB(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
+            
+            if (etype == ValueType.StringType)
+            {
+                str_result = GeneralLib.FormatNum(num_result);
+                return ValueType.StringType;
+            }
+            else
+            {
+                return ValueType.NumericType;
+            }
+        }
     }
 
-    public class MidB : Mid
+    public class MidB : AFunction
     {
-        // TODO Impl Midb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            switch (pcount)
+            {
+                case 3:
+                    {
+                        var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                        var j = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                        str_result = Strings.MidB(buf, i, j);
+                        break;
+                    }
+
+                case 2:
+                    {
+                        var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                        str_result = Strings.MidB(buf, i);
+                        break;
+                    }
+            }
+
+            if (etype == ValueType.NumericType)
+            {
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
+            }
+            else
+            {
+                return ValueType.StringType;
+            }
+        }
     }
 
-    public class RightB : Right
+    public class RightB : AFunction
     {
-        // TODO Impl Rightb
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        {
+            num_result = 0d;
+            str_result = Strings.RightB(
+                SRC.Expression.GetValueAsString(@params[1], is_term[1]),
+                SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            
+            if (etype == ValueType.NumericType)
+            {
+                num_result = GeneralLib.StrToDbl(str_result);
+                return ValueType.NumericType;
+            }
+            else
+            {
+                return ValueType.StringType;
+            }
+        }
     }
 
     public class Replace : AFunction

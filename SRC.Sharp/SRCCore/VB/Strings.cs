@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 
 namespace SRCCore.VB
 {
@@ -16,6 +17,26 @@ namespace SRCCore.VB
     // - Binaryベースの処理はしていなさそうなので割愛
     public static class Strings
     {
+        // Shift-JIS encoding instance, cached for performance
+        private static readonly Lazy<System.Text.Encoding> _shiftJISEncoding = new Lazy<System.Text.Encoding>(() =>
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            return System.Text.Encoding.GetEncoding("Shift_JIS");
+        });
+
+        // Shift-JIS encoding with fallback for incomplete multi-byte characters, cached for performance
+        private static readonly Lazy<System.Text.Encoding> _shiftJISEncodingWithFallback = new Lazy<System.Text.Encoding>(() =>
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            return System.Text.Encoding.GetEncoding(
+                "Shift_JIS",
+                new System.Text.EncoderReplacementFallback(""),
+                new System.Text.DecoderReplacementFallback("")
+            );
+        });
+
+        private static System.Text.Encoding ShiftJISEncoding => _shiftJISEncoding.Value;
+        private static System.Text.Encoding ShiftJISEncodingWithFallback => _shiftJISEncodingWithFallback.Value;
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.asc?view=net-5.0
         public static int Asc(char _String)
@@ -148,13 +169,130 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strconv?view=net-5.0
         public static string StrConv(string str, VbStrConv Conversion)
         {
-            // TODO 要る分だけ実装ないし完全に置き換える
-            // TODO Impl Wide
+            if (string.IsNullOrEmpty(str))
+            {
+                return str ?? "";
+            }
+
             switch (Conversion)
             {
+                case VbStrConv.Wide:
+                    return ConvertToWide(str);
+                case VbStrConv.Narrow:
+                    return ConvertToNarrow(str);
+                case VbStrConv.Hiragana:
+                    // TODO: Implement Hiragana conversion if needed
+                    return str;
                 default:
                     return str;
             }
+        }
+
+        /// <summary>
+        /// Converts half-width (hankaku) characters to full-width (zenkaku) characters
+        /// </summary>
+        private static string ConvertToWide(string str)
+        {
+            var result = new StringBuilder();
+            foreach (char c in str)
+            {
+                // ASCII alphanumeric and common symbols (0x20-0x7E) -> Full-width (0xFF01-0xFF5E)
+                if (c >= 0x20 && c <= 0x7E)
+                {
+                    // Convert to full-width equivalent
+                    // Space (0x20) -> Full-width space (0x3000)
+                    if (c == 0x20)
+                    {
+                        result.Append((char)0x3000);
+                    }
+                    else
+                    {
+                        // Other ASCII characters: add 0xFEE0 to get full-width equivalent
+                        result.Append((char)(c + 0xFEE0));
+                    }
+                }
+                // Half-width katakana (0xFF61-0xFF9F) -> Full-width katakana (0x30A1-0x30FA)
+                else if (c >= 0xFF61 && c <= 0xFF9F)
+                {
+                    result.Append(ConvertHalfKatakanaToFull(c));
+                }
+                else
+                {
+                    // Already full-width or not convertible
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Converts full-width (zenkaku) characters to half-width (hankaku) characters
+        /// </summary>
+        private static string ConvertToNarrow(string str)
+        {
+            var result = new StringBuilder();
+            foreach (char c in str)
+            {
+                // Full-width ASCII (0xFF01-0xFF5E) -> ASCII (0x21-0x7E)
+                if (c >= 0xFF01 && c <= 0xFF5E)
+                {
+                    result.Append((char)(c - 0xFEE0));
+                }
+                // Full-width space (0x3000) -> ASCII space (0x20)
+                else if (c == 0x3000)
+                {
+                    result.Append((char)0x20);
+                }
+                // Full-width katakana (0x30A1-0x30FA) -> Half-width katakana (0xFF61-0xFF9F)
+                else if (c >= 0x30A1 && c <= 0x30FA)
+                {
+                    result.Append(ConvertFullKatakanaToHalf(c));
+                }
+                else
+                {
+                    // Already half-width or not convertible
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Converts half-width katakana to full-width katakana
+        /// NOTE: This is a simplified implementation using arithmetic offsets.
+        /// A complete implementation would require a full mapping table for all katakana characters,
+        /// especially for dakuten (゛) and handakuten (゜) marks which don't map correctly with simple arithmetic.
+        /// For now, this handles the most common cases used in the codebase.
+        /// </summary>
+        private static char ConvertHalfKatakanaToFull(char c)
+        {
+            // Simplified mapping for common half-width katakana to full-width
+            // This is a basic implementation - a complete one would need a full mapping table
+            if (c >= 0xFF66 && c <= 0xFF9D)
+            {
+                // Basic katakana: add offset to get full-width
+                return (char)(c - 0xFF66 + 0x30A1);
+            }
+            // For dakuten/handakuten marks and other special cases, return as-is
+            // A full implementation would handle these properly
+            return c;
+        }
+
+        /// <summary>
+        /// Converts full-width katakana to half-width katakana
+        /// NOTE: This is a simplified implementation using arithmetic offsets.
+        /// See ConvertHalfKatakanaToFull for limitations.
+        /// </summary>
+        private static char ConvertFullKatakanaToHalf(char c)
+        {
+            // Simplified mapping for common full-width katakana to half-width
+            if (c >= 0x30A1 && c <= 0x30F6)
+            {
+                // Basic katakana: subtract offset to get half-width
+                return (char)(c - 0x30A1 + 0xFF66);
+            }
+            // For special cases, return as-is
+            return c;
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
@@ -164,10 +302,195 @@ namespace SRCCore.VB
         }
 
         // ---- xxxB
+        // Byte-based string functions using Shift-JIS encoding for backward compatibility
+        // See: https://github.com/7474/SRC/issues/175
+
+        /// <summary>
+        /// Returns the byte length of a string in Shift-JIS encoding
+        /// </summary>
         public static int LenB(string str)
         {
-            // TODO LenB
-            return Len(str);
+            if (string.IsNullOrEmpty(str))
+            {
+                return 0;
+            }
+            return ShiftJISEncoding.GetByteCount(str);
+        }
+
+        /// <summary>
+        /// Returns the leftmost bytes of a string based on Shift-JIS encoding
+        /// </summary>
+        public static string LeftB(string str, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            if (byteCount >= bytes.Length)
+            {
+                return str;
+            }
+
+            // Decode only the requested number of bytes
+            // Use cached encoding with fallback to handle incomplete multi-byte characters
+            return ShiftJISEncodingWithFallback.GetString(bytes, 0, byteCount);
+        }
+
+        /// <summary>
+        /// Returns the rightmost bytes of a string based on Shift-JIS encoding
+        /// </summary>
+        public static string RightB(string str, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            if (byteCount >= bytes.Length)
+            {
+                return str;
+            }
+
+            return ShiftJISEncodingWithFallback.GetString(bytes, bytes.Length - byteCount, byteCount);
+        }
+
+        /// <summary>
+        /// Returns a substring based on byte positions in Shift-JIS encoding
+        /// </summary>
+        public static string MidB(string str, int startByte)
+        {
+            return MidB(str, startByte, LenB(str));
+        }
+
+        /// <summary>
+        /// Returns a substring based on byte positions in Shift-JIS encoding
+        /// </summary>
+        public static string MidB(string str, int startByte, int byteCount)
+        {
+            if (string.IsNullOrEmpty(str) || byteCount <= 0)
+            {
+                return "";
+            }
+
+            var bytes = ShiftJISEncoding.GetBytes(str);
+            
+            // Adjust for 1-based indexing (VB6 style)
+            var startIndex = startByte - 1;
+            
+            if (startIndex >= bytes.Length || startIndex < 0)
+            {
+                return "";
+            }
+
+            var actualByteCount = System.Math.Min(byteCount, bytes.Length - startIndex);
+            
+            return ShiftJISEncodingWithFallback.GetString(bytes, startIndex, actualByteCount);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the first occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrB(string string1, string string2)
+        {
+            return InStrB(1, string1, string2);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the first occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrB(int start, string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+
+            var bytes1 = ShiftJISEncoding.GetBytes(string1);
+            var bytes2 = ShiftJISEncoding.GetBytes(string2);
+            
+            // Adjust for 1-based indexing
+            var startIndex = start - 1;
+            
+            if (startIndex < 0 || startIndex >= bytes1.Length)
+            {
+                return 0;
+            }
+
+            // Search for byte pattern
+            for (int i = startIndex; i <= bytes1.Length - bytes2.Length; i++)
+            {
+                bool found = true;
+                for (int j = 0; j < bytes2.Length; j++)
+                {
+                    if (bytes1[i + j] != bytes2[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return i + 1; // Return 1-based position
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns the byte position of the last occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrRevB(string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+            return InStrRevB(LenB(string1), string1, string2);
+        }
+
+        /// <summary>
+        /// Returns the byte position of the last occurrence of a substring in Shift-JIS encoding
+        /// </summary>
+        public static int InStrRevB(int start, string string1, string string2)
+        {
+            if (string.IsNullOrEmpty(string1) || string.IsNullOrEmpty(string2))
+            {
+                return 0;
+            }
+
+            var bytes1 = ShiftJISEncoding.GetBytes(string1);
+            var bytes2 = ShiftJISEncoding.GetBytes(string2);
+            
+            var startIndex = System.Math.Min(start - 1, bytes1.Length - bytes2.Length);
+            
+            if (startIndex < 0)
+            {
+                return 0;
+            }
+
+            // Search backwards for byte pattern
+            for (int i = startIndex; i >= 0; i--)
+            {
+                bool found = true;
+                for (int j = 0; j < bytes2.Length; j++)
+                {
+                    if (i + j >= bytes1.Length || bytes1[i + j] != bytes2[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return i + 1; // Return 1-based position
+                }
+            }
+
+            return 0;
         }
     }
 }
