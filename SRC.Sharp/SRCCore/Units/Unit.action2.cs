@@ -19,409 +19,288 @@ namespace SRCCore.Units
         // exp_mode:マップ攻撃による入手？
         public int GetExp(Unit t, string exp_situation, string exp_mode = null)
         {
-            // TODO Impl GetExp
-            return 0;
-            //int GetExpRet = default;
-            //var xp = default(int);
-            //int j, i, n;
-            //int prev_level;
-            //string[] prev_stype;
-            //string[] prev_sname;
-            //double[] prev_slevel;
-            //string[] prev_special_power;
-            //string stype, sname;
-            //Pilot p;
-            //string msg;
+            int GetExpRet = 0;
+            int xp = 0;
+            int j, i, n;
+            int prev_level;
+            string[] prev_stype;
+            string[] prev_sname;
+            double[] prev_slevel;
+            string[] prev_special_power;
+            string stype, sname;
+            string msg;
 
-            //// 経験値を入手するのは味方ユニット及びＮＰＣの召喚ユニットのみ
-            //if ((Party != "味方" || Party0 != "味方") && (Party != "ＮＰＣ" || Party0 != "ＮＰＣ" || !IsFeatureAvailable("召喚ユニット")))
-            //{
-            //    return GetExpRet;
-            //}
+            // 経験値を入手するのは味方ユニット及びＮＰＣの召喚ユニットのみ
+            if ((Party != "味方" || Party0 != "味方") && (Party != "ＮＰＣ" || Party0 != "ＮＰＣ" || !IsFeatureAvailable("召喚ユニット")))
+            {
+                return GetExpRet;
+            }
 
-            //// メインパイロットの現在の能力を記録
-            //{
-            //    var withBlock = MainPilot();
-            //    prev_level = withBlock.Level;
-            //    prev_special_power = new string[(withBlock.CountSpecialPower + 1)];
-            //    var loopTo = withBlock.CountSpecialPower;
-            //    for (i = 1; i <= loopTo; i++)
-            //        prev_special_power[i] = withBlock.get_SpecialPower(i);
-            //    prev_stype = new string[(withBlock.CountSkill() + 1)];
-            //    prev_sname = new string[(withBlock.CountSkill() + 1)];
-            //    prev_slevel = new double[(withBlock.CountSkill() + 1)];
-            //    var loopTo1 = withBlock.CountSkill();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        prev_stype[i] = withBlock.Skill(i);
-            //        prev_sname[i] = withBlock.SkillName(i);
-            //        prev_slevel[i] = withBlock.SkillLevel(i, "基本値");
-            //    }
-            //}
+            // メインパイロットの現在の能力を記録
+            {
+                var mainP = MainPilot();
+                prev_level = mainP.Level;
+                prev_special_power = new string[mainP.CountSpecialPower + 1];
+                for (i = 1; i <= mainP.CountSpecialPower; i++)
+                    prev_special_power[i] = mainP.get_SpecialPower(i);
+                prev_stype = new string[mainP.CountSkill() + 1];
+                prev_sname = new string[mainP.CountSkill() + 1];
+                prev_slevel = new double[mainP.CountSkill() + 1];
+                for (i = 1; i <= mainP.CountSkill(); i++)
+                {
+                    prev_stype[i] = mainP.Skill(i);
+                    prev_sname[i] = mainP.SkillName(i);
+                    prev_slevel[i] = mainP.SkillLevel(i, "基本値");
+                }
+            }
 
-            //// ターゲットが指定されていない場合は自分がターゲット
-            //if (t is null)
-            //{
-            //    t = this;
-            //}
+            // ターゲットが指定されていない場合は自分がターゲット
+            if (t is null)
+            {
+                t = this;
+            }
 
-            //// ターゲットにパイロットが乗っていない場合は経験値なし
-            //if (t.CountPilot() == 0)
-            //{
-            //    return GetExpRet;
-            //}
+            // ターゲットにパイロットが乗っていない場合は経験値なし
+            if (t.CountPilot() == 0)
+            {
+                return GetExpRet;
+            }
 
-            //// ユニットに乗っているパイロット総数を計算
-            //n = (int)(CountPilot() + CountSupport());
-            //if (IsFeatureAvailable("追加サポート"))
-            //{
-            //    n = (int)(n + 1);
-            //}
+            // ユニットに乗っているパイロット総数を計算
+            n = CountPilot() + CountSupport();
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                n++;
+            }
 
-            //// 各パイロットが経験値を入手
-            //var loopTo2 = n;
-            //for (i = 1; i <= loopTo2; i++)
-            //{
-            //    if (i <= CountPilot())
-            //    {
-            //        p = Pilot(i);
-            //    }
-            //    else if (i <= (int)(CountPilot() + CountSupport()))
-            //    {
-            //        p = Support(i - CountPilot());
-            //    }
-            //    else
-            //    {
-            //        p = AdditionalSupport();
-            //    }
+            // 各パイロットが経験値を入手
+            int pilotIdx = 0;
+            foreach (var p in AllPilots.Take(n))
+            {
+                pilotIdx++;
 
-            //    switch (exp_situation ?? "")
-            //    {
-            //        case "破壊":
-            //            {
-            //                xp = t.ExpValue + t.MainPilot().ExpValue;
-            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
-            //                {
-            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
-            //                }
+                switch (exp_situation ?? "")
+                {
+                    case "破壊":
+                        xp = t.ExpValue + t.MainPilot().ExpValue;
+                        if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
+                        {
+                            xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "攻撃":
+                        xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
+                        if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
+                        {
+                            xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
+                        }
+                        break;
 
-            //        case "攻撃":
-            //            {
-            //                xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
-            //                if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
-            //                {
-            //                    xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
-            //                }
+                    case "アビリティ":
+                        xp = ReferenceEquals(t, this) ? 50 : 100;
+                        break;
 
-            //                break;
-            //            }
+                    case "修理":
+                        xp = 100;
+                        break;
 
-            //        case "アビリティ":
-            //            {
-            //                if (ReferenceEquals(t, this))
-            //                {
-            //                    xp = 50;
-            //                }
-            //                else
-            //                {
-            //                    xp = 100;
-            //                }
+                    case "補給":
+                        xp = 150;
+                        break;
+                }
 
-            //                break;
-            //            }
+                if (!IsUnderSpecialPowerEffect("獲得経験値増加") || Expression.IsOptionDefined("収得効果重複"))
+                {
+                    if (p.IsSkillAvailable("素質"))
+                    {
+                        if (p.IsSkillLevelSpecified("素質"))
+                        {
+                            xp = (int)((long)(xp * (10d + p.SkillLevel("素質", ref_mode: ""))) / 10L);
+                        }
+                        else
+                        {
+                            xp = (int)(1.5d * xp);
+                        }
+                    }
+                }
 
-            //        case "修理":
-            //            {
-            //                xp = 100;
-            //                break;
-            //            }
+                if (p.IsSkillAvailable("遅成長"))
+                {
+                    xp /= 2;
+                }
 
-            //        case "補給":
-            //            {
-            //                xp = 150;
-            //                break;
-            //            }
-            //    }
+                // 対象のパイロットのレベル差による修正
+                int levelDiff = t.MainPilot().Level - p.Level;
+                if (levelDiff > 7)
+                {
+                    xp = 5 * xp;
+                }
+                else
+                {
+                    switch (levelDiff)
+                    {
+                        case 7: xp = (int)(4.5d * xp); break;
+                        case 6: xp = 4 * xp; break;
+                        case 5: xp = (int)(3.5d * xp); break;
+                        case 4: xp = 3 * xp; break;
+                        case 3: xp = (int)(2.5d * xp); break;
+                        case 2: xp = 2 * xp; break;
+                        case 1: xp = (int)(1.5d * xp); break;
+                        case 0: break;
+                        case -1: xp /= 2; break;
+                        case -2: xp /= 4; break;
+                        case -3: xp /= 6; break;
+                        case -4: xp /= 8; break;
+                        case -5: xp /= 10; break;
+                        default:
+                            if (levelDiff < -5) { xp /= 12; }
+                            break;
+                    }
+                }
 
-            //    if (!IsUnderSpecialPowerEffect("獲得経験値増加") || Expression.IsOptionDefined("収得効果重複"))
-            //    {
-            //        if (p.IsSkillAvailable("素質"))
-            //        {
-            //            if (p.IsSkillLevelSpecified("素質"))
-            //            {
-            //                xp = (int)((long)(xp * (10d + p.SkillLevel("素質", ref_mode: ""))) / 10L);
-            //            }
-            //            else
-            //            {
-            //                xp = (int)(1.5d * xp);
-            //            }
-            //        }
-            //    }
+                p.Exp += xp;
 
-            //    if (p.IsSkillAvailable("遅成長"))
-            //    {
-            //        xp = xp / 2;
-            //    }
+                // 一番目のパイロットが獲得した経験値を返す
+                if (pilotIdx == 1)
+                {
+                    GetExpRet = xp;
+                }
+            }
 
-            //    // 対象のパイロットのレベル差による修正
-            //    switch ((int)(t.MainPilot().Level - p.Level))
-            //    {
-            //        case var @case when @case > 7:
-            //            {
-            //                xp = 5 * xp;
-            //                break;
-            //            }
+            // 追加パイロットの場合、一番目のパイロットにレベル、経験値を合わせる
+            var firstPilot = Pilots.FirstOrDefault();
+            if (firstPilot != null && !ReferenceEquals(MainPilot(), firstPilot))
+            {
+                MainPilot().Level = firstPilot.Level;
+                MainPilot().Exp = firstPilot.Exp;
+            }
 
-            //        case 7:
-            //            {
-            //                xp = (int)(4.5d * xp);
-            //                break;
-            //            }
+            // 召喚主も経験値を入手
+            if (Summoner is object)
+            {
+                Summoner.CurrentForm().GetExp(t, exp_situation, "パートナー");
+            }
 
-            //        case 6:
-            //            {
-            //                xp = 4 * xp;
-            //                break;
-            //            }
+            // マップ攻撃による経験値収得の場合はメッセージ表示を省略
+            if (exp_mode == "マップ")
+            {
+                return GetExpRet;
+            }
 
-            //        case 5:
-            //            {
-            //                xp = (int)(3.5d * xp);
-            //                break;
-            //            }
+            // 経験値入手時のメッセージ
+            {
+                var mainP = MainPilot();
+                if (mainP.Level > prev_level)
+                {
+                    // レベルアップ
+                    if (IsAnimationDefined("レベルアップ", sub_situation: ""))
+                    {
+                        PlayAnimation("レベルアップ", sub_situation: "");
+                    }
+                    else if (IsSpecialEffectDefined("レベルアップ", sub_situation: ""))
+                    {
+                        SpecialEffect("レベルアップ", sub_situation: "");
+                    }
 
-            //        case 4:
-            //            {
-            //                xp = 3 * xp;
-            //                break;
-            //            }
+                    if (IsMessageDefined("レベルアップ"))
+                    {
+                        PilotMessage("レベルアップ", msg_mode: "");
+                    }
 
-            //        case 3:
-            //            {
-            //                xp = (int)(2.5d * xp);
-            //                break;
-            //            }
+                    msg = mainP.get_Nickname(false) + "は経験値[" + SrcFormatter.Format(GetExpRet) + "]を獲得、" + "レベル[" + SrcFormatter.Format(mainP.Level) + "]にレベルアップ。";
 
-            //        case 2:
-            //            {
-            //                xp = 2 * xp;
-            //                break;
-            //            }
+                    // 特殊能力の習得
+                    for (i = 1; i <= mainP.CountSkill(); i++)
+                    {
+                        stype = mainP.Skill(i);
+                        sname = mainP.SkillName(i);
+                        if (Strings.InStr(sname, "非表示") == 0)
+                        {
+                            switch (stype ?? "")
+                            {
+                                case "同調率":
+                                case "霊力":
+                                case "追加レベル":
+                                case "魔力所有":
+                                    break;
 
-            //        case 1:
-            //            {
-            //                xp = (int)(1.5d * xp);
-            //                break;
-            //            }
+                                case "ＳＰ消費減少":
+                                case "スペシャルパワー自動発動":
+                                case "ハンター":
+                                    for (j = 1; j < prev_stype.Length; j++)
+                                    {
+                                        if ((stype ?? "") == (prev_stype[j] ?? "") && (sname ?? "") == (prev_sname[j] ?? ""))
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    if (j >= prev_stype.Length)
+                                    {
+                                        msg += ";" + sname + "を習得した。";
+                                    }
+                                    break;
 
-            //        case 0:
-            //            {
-            //                break;
-            //            }
+                                default:
+                                    for (j = 1; j < prev_stype.Length; j++)
+                                    {
+                                        if ((stype ?? "") == (prev_stype[j] ?? ""))
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    double curLevel = mainP.SkillLevel(i, "基本値");
+                                    if (j >= prev_stype.Length)
+                                    {
+                                        msg += ";" + sname + "を習得した。";
+                                    }
+                                    else if (curLevel > prev_slevel[j])
+                                    {
+                                        msg += ";" + prev_sname[j] + " => " + sname + "。";
+                                    }
+                                    break;
+                            }
+                        }
+                    }
 
-            //        case -1:
-            //            {
-            //                xp = xp / 2;
-            //                break;
-            //            }
+                    // スペシャルパワーの習得
+                    if (mainP.CountSpecialPower >= prev_special_power.Length)
+                    {
+                        msg += ";" + Expression.Term("スペシャルパワー", this);
+                        for (i = 1; i <= mainP.CountSpecialPower; i++)
+                        {
+                            sname = mainP.get_SpecialPower(i);
+                            for (j = 1; j < prev_special_power.Length; j++)
+                            {
+                                if ((sname ?? "") == (prev_special_power[j] ?? ""))
+                                {
+                                    break;
+                                }
+                            }
+                            if (j >= prev_special_power.Length)
+                            {
+                                msg += "「" + sname + "」";
+                            }
+                        }
+                        msg += "を習得した。";
+                    }
 
-            //        case -2:
-            //            {
-            //                xp = xp / 4;
-            //                break;
-            //            }
+                    GUI.DisplaySysMessage(msg);
+                    if (GUI.MessageWait < 10000)
+                    {
+                        GUI.Sleep(GUI.MessageWait);
+                    }
 
-            //        case -3:
-            //            {
-            //                xp = xp / 6;
-            //                break;
-            //            }
+                    Event.HandleEvent("レベルアップ", mainP.ID);
+                    SRC.PList.UpdateSupportMod(this);
+                }
+                else if (GetExpRet > 0)
+                {
+                    GUI.DisplaySysMessage(mainP.get_Nickname(false) + "は" + SrcFormatter.Format(GetExpRet) + "の経験値を得た。");
+                }
+            }
 
-            //        case -4:
-            //            {
-            //                xp = xp / 8;
-            //                break;
-            //            }
-
-            //        case -5:
-            //            {
-            //                xp = xp / 10;
-            //                break;
-            //            }
-
-            //        case var case1 when case1 < -5:
-            //            {
-            //                xp = xp / 12;
-            //                break;
-            //            }
-            //    }
-
-            //    p.Exp = p.Exp + xp;
-
-            //    // 一番目のパイロットが獲得した経験値を返す
-            //    if (i == 1)
-            //    {
-            //        GetExpRet = xp;
-            //    }
-            //}
-
-            //// 追加パイロットの場合、一番目のパイロットにレベル、経験値を合わせる
-            //if (!ReferenceEquals(MainPilot(), Pilot(1)))
-            //{
-            //    MainPilot().Level = Pilot(1).Level;
-            //    MainPilot().Exp = Pilot(1).Exp;
-            //}
-
-            //// 召喚主も経験値を入手
-            //if (Summoner is object)
-            //{
-            //    Summoner.CurrentForm().GetExp(t, exp_situation, "パートナー");
-            //}
-
-            //// マップ攻撃による経験値収得の場合はメッセージ表示を省略
-            //if (exp_mode == "マップ")
-            //{
-            //    return GetExpRet;
-            //}
-
-            //// 経験値入手時のメッセージ
-            //{
-            //    var withBlock1 = MainPilot();
-            //    if (withBlock1.Level > prev_level)
-            //    {
-            //        // レベルアップ
-
-            //        if (IsAnimationDefined("レベルアップ", sub_situation: ""))
-            //        {
-            //            PlayAnimation("レベルアップ", sub_situation: "");
-            //        }
-            //        else if (IsSpecialEffectDefined("レベルアップ", sub_situation: ""))
-            //        {
-            //            SpecialEffect("レベルアップ", sub_situation: "");
-            //        }
-
-            //        if (IsMessageDefined("レベルアップ"))
-            //        {
-            //            PilotMessage("レベルアップ", msg_mode: "");
-            //        }
-
-            //        msg = withBlock1.get_Nickname(false) + "は経験値[" + SrcFormatter.Format(GetExpRet) + "]を獲得、" + "レベル[" + SrcFormatter.Format(withBlock1.Level) + "]にレベルアップ。";
-
-            //        // 特殊能力の習得
-            //        var loopTo3 = withBlock1.CountSkill();
-            //        for (i = 1; i <= loopTo3; i++)
-            //        {
-            //            stype = withBlock1.Skill(i);
-            //            sname = withBlock1.SkillName(i);
-            //            if (Strings.InStr(sname, "非表示") == 0)
-            //            {
-            //                switch (stype ?? "")
-            //                {
-            //                    case "同調率":
-            //                    case "霊力":
-            //                    case "追加レベル":
-            //                    case "魔力所有":
-            //                        {
-            //                            break;
-            //                        }
-
-            //                    case "ＳＰ消費減少":
-            //                    case "スペシャルパワー自動発動":
-            //                    case "ハンター":
-            //                        {
-            //                            var loopTo4 = (int)Information.UBound(prev_stype);
-            //                            for (j = 1; j <= loopTo4; j++)
-            //                            {
-            //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
-            //                                {
-            //                                    if ((sname ?? "") == (prev_sname[j] ?? ""))
-            //                                    {
-            //                                        break;
-            //                                    }
-            //                                }
-            //                            }
-
-            //                            if (j > Information.UBound(prev_stype))
-            //                            {
-            //                                msg = msg + ";" + sname + "を習得した。";
-            //                            }
-
-            //                            break;
-            //                        }
-
-            //                    default:
-            //                        {
-            //                            var loopTo5 = (int)Information.UBound(prev_stype);
-            //                            for (j = 1; j <= loopTo5; j++)
-            //                            {
-            //                                if ((stype ?? "") == (prev_stype[j] ?? ""))
-            //                                {
-            //                                    break;
-            //                                }
-            //                            }
-
-            //                            double localSkillLevel() { object argIndex1 = i; string argref_mode = "基本値"; var ret = withBlock1.SkillLevel(argIndex1, argref_mode); return ret; }
-
-            //                            if (j > Information.UBound(prev_stype))
-            //                            {
-            //                                msg = msg + ";" + sname + "を習得した。";
-            //                            }
-            //                            else if (localSkillLevel() > prev_slevel[j])
-            //                            {
-            //                                msg = msg + ";" + prev_sname[j] + " => " + sname + "。";
-            //                            }
-
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-
-            //        // スペシャルパワーの習得
-            //        if (withBlock1.CountSpecialPower > Information.UBound(prev_special_power))
-            //        {
-            //            msg = msg + ";" + Expression.Term("スペシャルパワー", this);
-            //            var loopTo6 = withBlock1.CountSpecialPower;
-            //            for (i = 1; i <= loopTo6; i++)
-            //            {
-            //                sname = withBlock1.get_SpecialPower(i);
-            //                var loopTo7 = (int)Information.UBound(prev_special_power);
-            //                for (j = 1; j <= loopTo7; j++)
-            //                {
-            //                    if ((sname ?? "") == (prev_special_power[j] ?? ""))
-            //                    {
-            //                        break;
-            //                    }
-            //                }
-
-            //                if (j > Information.UBound(prev_special_power))
-            //                {
-            //                    msg = msg + "「" + sname + "」";
-            //                }
-            //            }
-
-            //            msg = msg + "を習得した。";
-            //        }
-
-            //        GUI.DisplaySysMessage(msg);
-            //        if (GUI.MessageWait < 10000)
-            //        {
-            //            GUI.Sleep(GUI.MessageWait);
-            //        }
-
-            //        Event.HandleEvent("レベルアップ", withBlock1.ID);
-            //        SRC.PList.UpdateSupportMod(this);
-            //    }
-            //    else if (GetExpRet > 0)
-            //    {
-            //        GUI.DisplaySysMessage(withBlock1.get_Nickname(false) + "は" + SrcFormatter.Format(GetExpRet) + "の経験値を得た。");
-            //    }
-            //}
-
-            //return GetExpRet;
+            return GetExpRet;
         }
 
         // ユニットの陣営を変更
