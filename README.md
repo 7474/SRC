@@ -74,33 +74,29 @@ SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTest
 
 SRC#のC#移植を完了するための計画を策定しました。TODOコメントとコメントアウトコードを分析し、約70個のIssueに分類しています。
 
+### 🤖 Copilot自律運用モード / Autonomous Operation Mode
+
+移植作業はCopilotに以下の一文を指示するだけで自律的に進行します。
+
+You can proceed with the migration by giving Copilot this single instruction:
+
+```
+@copilot 移植を進行してください
+```
+
+Copilotが自動的にタスクを選択し、実装・テスト・PR作成まで行います。セットアップ不要です。
+
+Copilot automatically selects the next task, implements it, adds tests, and creates a PR. No setup required.
+
+詳細は [.github/copilot/README.md](./.github/copilot/README.md) を参照してください。
+
+See [.github/copilot/README.md](./.github/copilot/README.md) for details.
+
 ### ドキュメント / Documentation
 
+- **[🤖 Copilotエージェント指示書](./.github/copilot/README.md)** - 自律運用モードの詳細
 - **[📖 クイックスタートガイド](./docs/quick-start.md)** - まずはここから！
 - **[📋 移植完了計画](./docs/migration-plan.md)** - プロジェクト全体の概要
 - **[📝 個別Issue詳細](./docs/issue-breakdown.md)** - 約70個の具体的なIssueリスト
-- **[⚙️ GitHub Projects設定ガイド](./docs/github-projects-setup.md)** - プロジェクト管理の設定方法
 - **[📚 docs/README.md](./docs/README.md)** - ドキュメント全体の目次
 
-### 統計 / Statistics
-
-- **TODOコメント**: 155+
-- **Epic数**: 8個（戦闘システム、ユニット・パイロット、GUI・UI、イベント・コマンド、データ管理、VB6レガシー、パフォーマンス、バグ修正）
-- **推定Issue数**: 約70個
-- **推定作業量**: 18,000-25,000行の変更
-- **推定期間**: 12-18ヶ月
-
-### クイックスタート / Quick Start
-
-```bash
-# 1. ラベル作成
-bash docs/scripts/create-labels.sh
-
-# 2. マイルストーン作成
-bash docs/scripts/create-milestones.sh
-
-# 3. 進捗確認
-bash docs/scripts/progress-report.sh
-```
-
-詳細は[クイックスタートガイド](./docs/quick-start.md)を参照してください。
