@@ -690,85 +690,55 @@ namespace SRCCore.Units
 
                         var msg = withBlock8.get_Nickname(false) + "は" + SrcFormatter.Format(earned_exp) + "の経験値を獲得し、" + "レベル[" + SrcFormatter.Format(withBlock8.Level) + "]にレベルアップ。";
 
-                        // TODO Impl 特殊能力の習得
-                        //// 特殊能力の習得
-                        //var loopTo18 = withBlock8.CountSkill();
-                        //for (var i = 1; i <= loopTo18; i++)
-                        //{
-                        //    var sname = withBlock8.Skill(i);
-                        //    string localSkillName2() { object argIndex1 = i; var ret = withBlock8.SkillName(argIndex1); return ret; }
+                        // 特殊能力の習得
+                        for (var si = 1; si <= withBlock8.CountSkill(); si++)
+                        {
+                            var sname = withBlock8.Skill(si);
+                            var sDisplayName = withBlock8.SkillName(si);
+                            if (Strings.InStr(sDisplayName, "非表示") == 0)
+                            {
+                                switch (sname)
+                                {
+                                    case "同調率":
+                                    case "霊力":
+                                    case "追加レベル":
+                                    case "魔力所有":
+                                        break;
+                                    default:
+                                        {
+                                            var foundPrev = prev_skills.FirstOrDefault(ps => ps.prev_stype == sname);
+                                            if (foundPrev == null)
+                                            {
+                                                // 新規習得
+                                                msg = msg + ";" + sDisplayName + "を習得。";
+                                            }
+                                            else if (withBlock8.SkillLevel(si, "基本値") > foundPrev.prev_slevel)
+                                            {
+                                                // レベルアップ
+                                                msg = msg + ";" + foundPrev.prev_sname + " => " + sDisplayName + "。";
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                        }
 
-                        //    if (Strings.InStr(localSkillName2(), "非表示") == 0)
-                        //    {
-                        //        switch (sname ?? "")
-                        //        {
-                        //            case "同調率":
-                        //            case "霊力":
-                        //            case "追加レベル":
-                        //            case "魔力所有":
-                        //                {
-                        //                    break;
-                        //                }
+                        // スペシャルパワーの習得
+                        var currentSPNames = withBlock8.SpecialPowerNames;
+                        if (currentSPNames.Count > prev_special_power.Count)
+                        {
+                            msg = msg + ";スペシャルパワー";
+                            foreach (var spName in currentSPNames)
+                            {
+                                if (!prev_special_power.Contains(spName))
+                                {
+                                    msg = msg + "「" + spName + "」";
+                                }
+                            }
+                            msg = msg + "を習得。";
+                        }
 
-                        //            default:
-                        //                {
-                        //                    var loopTo19 = Information.UBound(prev_stype);
-                        //                    for (j = 1; j <= loopTo19; j++)
-                        //                    {
-                        //                        if ((sname ?? "") == (prev_stype[j] ?? ""))
-                        //                        {
-                        //                            break;
-                        //                        }
-                        //                    }
-
-                        //                    double localSkillLevel() { object argIndex1 = sname; string argref_mode = "基本値"; var ret = withBlock8.SkillLevel(argIndex1, argref_mode); return ret; }
-
-                        //                    if (j > Information.UBound(prev_stype))
-                        //                    {
-                        //                        string localSkillName() { object argIndex1 = i; var ret = withBlock8.SkillName(argIndex1); return ret; }
-
-                        //                        msg = msg + ";" + localSkillName() + "を習得。";
-                        //                    }
-                        //                    else if (localSkillLevel() > prev_slevel[j])
-                        //                    {
-                        //                        string localSkillName1() { object argIndex1 = i; var ret = withBlock8.SkillName(argIndex1); return ret; }
-
-                        //                        msg = msg + ";" + prev_sname[j] + " => " + localSkillName1() + "。";
-                        //                    }
-
-                        //                    break;
-                        //                }
-                        //        }
-                        //    }
-                        //}
-
-                        //// スペシャルパワーの習得
-                        //if (withBlock8.CountSpecialPower > Information.UBound(prev_special_power))
-                        //{
-                        //    msg = msg + ";スペシャルパワー";
-                        //    var loopTo20 = withBlock8.CountSpecialPower;
-                        //    for (i = 1; i <= loopTo20; i++)
-                        //    {
-                        //        sname = withBlock8.get_SpecialPower(i);
-                        //        var loopTo21 = Information.UBound(prev_special_power);
-                        //        for (j = 1; j <= loopTo21; j++)
-                        //        {
-                        //            if ((sname ?? "") == (prev_special_power[j] ?? ""))
-                        //            {
-                        //                break;
-                        //            }
-                        //        }
-
-                        //        if (j > Information.UBound(prev_special_power))
-                        //        {
-                        //            msg = msg + "「" + sname + "」";
-                        //        }
-                        //    }
-
-                        //    msg = msg + "を習得。";
-                        //}
-
-                        //GUI.DisplaySysMessage(msg);
+                        GUI.DisplaySysMessage(msg);
                         Event.HandleEvent("レベルアップ", withBlock8.ID);
                         SRC.PList.UpdateSupportMod(this);
                     }
