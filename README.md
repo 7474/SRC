@@ -100,10 +100,3 @@ See [.github/copilot/README.md](./.github/copilot/README.md) for details.
 - **[📝 個別Issue詳細](./docs/issue-breakdown.md)** - 約70個の具体的なIssueリスト
 - **[📚 docs/README.md](./docs/README.md)** - ドキュメント全体の目次
 
-### 統計 / Statistics
-
-- **TODOコメント**: 155+
-- **Epic数**: 8個（戦闘システム、ユニット・パイロット、GUI・UI、イベント・コマンド、データ管理、VB6レガシー、パフォーマンス、バグ修正）
-- **推定Issue数**: 約70個
-- **推定作業量**: 18,000-25,000行の変更
-- **推定期間**: 12-18ヶ月
