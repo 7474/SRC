@@ -5,6 +5,7 @@
 
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 
 namespace SRCCore.Units
 {
@@ -7320,567 +7321,528 @@ namespace SRCCore.Units
         }
 
         // 引き寄せチェック
-        public bool CheckDrawAttack(UnitWeapon w, Unit t, string msg, string def_mode, string critical_type)
+        public bool CheckDrawAttack(UnitWeapon w, Unit t, ref string msg, string def_mode, ref string critical_type)
         {
-            // TODO Impl CheckDrawAttack
-            return false;
-            //bool CheckDrawAttackRet = default;
-            //int tx = default, ty = default;
-            //int sx, sy;
-            //int nx, ny;
-            //int prob;
+            int tx = 0, ty = 0;
+            int sx, sy;
+            int nx, ny;
+            int prob;
 
-            //// 特殊効果無効？
-            //if (t.SpecialEffectImmune("引"))
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 特殊効果無効？
+            if (t.SpecialEffectImmune("引"))
+            {
+                return false;
+            }
 
-            //// 既に隣接している？
-            //if (Math.Abs((x - tx)) + Math.Abs((y - ty)) == 1)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 既に隣接している？
+            if (Math.Abs(x - tx) + Math.Abs(y - ty) == 1)
+            {
+                return false;
+            }
 
-            //// サイズによる制限
-            //if (t.Size == "XL")
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // サイズによる制限
+            if (t.Size == "XL")
+            {
+                return false;
+            }
 
-            //// 固定物は動かせない
-            //if (t.IsFeatureAvailable("地形ユニット"))
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 固定物は動かせない
+            if (t.IsFeatureAvailable("地形ユニット"))
+            {
+                return false;
+            }
 
-            //if (t.Data.Speed == 0 && t.Speed == 0)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            if (t.Data.Speed == 0 && t.Speed == 0)
+            {
+                return false;
+            }
 
-            //// 自分自身は引き寄せない
-            //if (ReferenceEquals(t, this))
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 自分自身は引き寄せない
+            if (ReferenceEquals(t, this))
+            {
+                return false;
+            }
 
-            //// 特殊効果発生確率
-            //if (IsUnderSpecialPowerEffect("特殊効果発動"))
-            //{
-            //    prob = 100;
-            //}
-            //else
-            //{
-            //    prob = CriticalProbability(w, t, def_mode);
-            //}
+            // 特殊効果発生確率
+            if (IsUnderSpecialPowerEffect("特殊効果発動"))
+            {
+                prob = 100;
+            }
+            else
+            {
+                prob = w.CriticalProbability(t, def_mode);
+            }
 
-            //// 引き寄せ発生？
-            //if (GeneralLib.Dice(100) > prob)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 引き寄せ発生？
+            if (GeneralLib.Dice(100) > prob)
+            {
+                return false;
+            }
 
-            //// 引き寄せの中心座標を設定
-            //if (w.WeaponLevel("Ｍ投") > 0d)
-            //{
-            //    sx = Commands.SelectedX;
-            //    sy = Commands.SelectedY;
-            //}
-            //else
-            //{
-            //    sx = x;
-            //    sy = y;
-            //}
+            // 引き寄せの中心座標を設定
+            if (w.WeaponLevel("Ｍ投") > 0d)
+            {
+                sx = Commands.SelectedX;
+                sy = Commands.SelectedY;
+            }
+            else
+            {
+                sx = x;
+                sy = y;
+            }
 
-            //// ターゲットの座標
-            //tx = t.x;
-            //ty = t.y;
+            // ターゲットの座標
+            tx = t.x;
+            ty = t.y;
 
-            //// 既に引き寄せの中心位置にいる？
-            //if (sx == tx && sy == ty)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 既に引き寄せの中心位置にいる？
+            if (sx == tx && sy == ty)
+            {
+                return false;
+            }
 
-            //// 引き寄せられる場所を設定
-            //if (Map.MapDataForUnit[sx, sy] is null)
-            //{
-            //    nx = sx;
-            //    ny = sy;
-            //}
-            //else if (Math.Abs((sx - tx)) > Math.Abs((sy - ty)))
-            //{
-            //    if (sx > tx)
-            //    {
-            //        nx = (sx - 1);
-            //    }
-            //    else
-            //    {
-            //        nx = (sx + 1);
-            //    }
+            // 引き寄せられる場所を設定
+            if (Map.MapDataForUnit[sx, sy] is null)
+            {
+                nx = sx;
+                ny = sy;
+            }
+            else if (Math.Abs(sx - tx) > Math.Abs(sy - ty))
+            {
+                if (sx > tx)
+                {
+                    nx = sx - 1;
+                }
+                else
+                {
+                    nx = sx + 1;
+                }
 
-            //    ny = y;
-            //    if (Map.MapDataForUnit[nx, ny] is object)
-            //    {
-            //        if (sy != ty)
-            //        {
-            //            if (sy > ty)
-            //            {
-            //                if (Map.MapDataForUnit[sx, sy - 1] is null)
-            //                {
-            //                    nx = sx;
-            //                    ny = (sy - 1);
-            //                }
-            //                else if (Map.MapDataForUnit[nx, sy - 1] is null)
-            //                {
-            //                    ny = (sy - 1);
-            //                }
-            //            }
-            //            else if (Map.MapDataForUnit[sx, sy + 1] is null)
-            //            {
-            //                nx = sx;
-            //                ny = (sy + 1);
-            //            }
-            //            else if (Map.MapDataForUnit[nx, sy + 1] is null)
-            //            {
-            //                ny = (sy + 1);
-            //            }
-            //        }
-            //    }
-            //}
-            //else if (Math.Abs((sx - tx)) < Math.Abs((sy - ty)))
-            //{
-            //    nx = sx;
-            //    if (sy > ty)
-            //    {
-            //        ny = (sy - 1);
-            //    }
-            //    else
-            //    {
-            //        ny = (sy + 1);
-            //    }
+                ny = y;
+                if (Map.MapDataForUnit[nx, ny] is object)
+                {
+                    if (sy != ty)
+                    {
+                        if (sy > ty)
+                        {
+                            if (Map.MapDataForUnit[sx, sy - 1] is null)
+                            {
+                                nx = sx;
+                                ny = sy - 1;
+                            }
+                            else if (Map.MapDataForUnit[nx, sy - 1] is null)
+                            {
+                                ny = sy - 1;
+                            }
+                        }
+                        else
+                        {
+                            if (Map.MapDataForUnit[sx, sy + 1] is null)
+                            {
+                                nx = sx;
+                                ny = sy + 1;
+                            }
+                            else if (Map.MapDataForUnit[nx, sy + 1] is null)
+                            {
+                                ny = sy + 1;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (Math.Abs(sx - tx) < Math.Abs(sy - ty))
+            {
+                nx = sx;
+                if (sy > ty)
+                {
+                    ny = sy - 1;
+                }
+                else
+                {
+                    ny = sy + 1;
+                }
 
-            //    if (Map.MapDataForUnit[nx, ny] is object)
-            //    {
-            //        if (sx != tx)
-            //        {
-            //            if (sx > tx)
-            //            {
-            //                if (Map.MapDataForUnit[sx - 1, sy] is null)
-            //                {
-            //                    nx = (sx - 1);
-            //                    ny = sy;
-            //                }
-            //                else if (Map.MapDataForUnit[sx - 1, ny] is null)
-            //                {
-            //                    nx = (sx - 1);
-            //                }
-            //            }
-            //            else if (Map.MapDataForUnit[sx + 1, sy] is null)
-            //            {
-            //                nx = (sx + 1);
-            //                ny = sy;
-            //            }
-            //            else if (Map.MapDataForUnit[sx + 1, ny] is null)
-            //            {
-            //                nx = (sx + 1);
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        if (sx > tx)
-            //        {
-            //            nx = (sx - 1);
-            //        }
-            //        else
-            //        {
-            //            nx = (sx + 1);
-            //        }
+                if (Map.MapDataForUnit[nx, ny] is object)
+                {
+                    if (sx != tx)
+                    {
+                        if (sx > tx)
+                        {
+                            if (Map.MapDataForUnit[sx - 1, sy] is null)
+                            {
+                                nx = sx - 1;
+                                ny = sy;
+                            }
+                            else if (Map.MapDataForUnit[sx - 1, ny] is null)
+                            {
+                                nx = sx - 1;
+                            }
+                        }
+                        else
+                        {
+                            if (Map.MapDataForUnit[sx + 1, sy] is null)
+                            {
+                                nx = sx + 1;
+                                ny = sy;
+                            }
+                            else if (Map.MapDataForUnit[sx + 1, ny] is null)
+                            {
+                                nx = sx + 1;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (GeneralLib.Dice(2) == 1)
+                {
+                    if (sx > tx)
+                    {
+                        nx = sx - 1;
+                    }
+                    else
+                    {
+                        nx = sx + 1;
+                    }
 
-            //        ny = sy;
-            //        if (Map.MapDataForUnit[nx, ny] is object)
-            //        {
-            //            nx = sx;
-            //            if (sy > ty)
-            //            {
-            //                ny = (sy - 1);
-            //            }
-            //            else
-            //            {
-            //                ny = (sy + 1);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        nx = sx;
-            //        if (sy > ty)
-            //        {
-            //            ny = (sy - 1);
-            //        }
-            //        else
-            //        {
-            //            ny = (sy + 1);
-            //        }
+                    ny = sy;
+                    if (Map.MapDataForUnit[nx, ny] is object)
+                    {
+                        nx = sx;
+                        if (sy > ty)
+                        {
+                            ny = sy - 1;
+                        }
+                        else
+                        {
+                            ny = sy + 1;
+                        }
+                    }
+                }
+                else
+                {
+                    nx = sx;
+                    if (sy > ty)
+                    {
+                        ny = sy - 1;
+                    }
+                    else
+                    {
+                        ny = sy + 1;
+                    }
 
-            //        if (Map.MapDataForUnit[nx, ny] is object)
-            //        {
-            //            if (sx > tx)
-            //            {
-            //                nx = (sx - 1);
-            //            }
-            //            else
-            //            {
-            //                nx = (sx + 1);
-            //            }
+                    if (Map.MapDataForUnit[nx, ny] is object)
+                    {
+                        if (sx > tx)
+                        {
+                            nx = sx - 1;
+                        }
+                        else
+                        {
+                            nx = sx + 1;
+                        }
 
-            //            ny = sy;
-            //        }
-            //    }
+                        ny = sy;
+                    }
+                }
 
-            //    if (Map.MapDataForUnit[nx, ny] is object)
-            //    {
-            //        if (sx > tx)
-            //        {
-            //            nx = (sx - 1);
-            //        }
-            //        else
-            //        {
-            //            nx = (sx + 1);
-            //        }
+                if (Map.MapDataForUnit[nx, ny] is object)
+                {
+                    if (sx > tx)
+                    {
+                        nx = sx - 1;
+                    }
+                    else
+                    {
+                        nx = sx + 1;
+                    }
 
-            //        if (sy > ty)
-            //        {
-            //            ny = (sy - 1);
-            //        }
-            //        else
-            //        {
-            //            ny = (sy + 1);
-            //        }
-            //    }
-            //}
+                    if (sy > ty)
+                    {
+                        ny = sy - 1;
+                    }
+                    else
+                    {
+                        ny = sy + 1;
+                    }
+                }
+            }
 
-            //// 結局動いてない？
-            //if (nx == tx && ny == ty)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 結局動いてない？
+            if (nx == tx && ny == ty)
+            {
+                return false;
+            }
 
-            //// ユニットを強制移動
-            //t.Jump(nx, ny);
+            // ユニットを強制移動
+            t.Jump(nx, ny);
 
-            //// 本当に動いた？
-            //if (t.x == tx && t.y == ty)
-            //{
-            //    return CheckDrawAttackRet;
-            //}
+            // 本当に動いた？
+            if (t.x == tx && t.y == ty)
+            {
+                return false;
+            }
 
-            //msg = t.Nickname + "を引き寄せた。;" + msg;
+            msg = t.Nickname + "を引き寄せた。;" + msg;
 
-            //// 引き寄せが発生したことを伝える
-            //critical_type = critical_type + " 引き寄せ";
-            //CheckDrawAttackRet = true;
-            //return CheckDrawAttackRet;
+            // 引き寄せが発生したことを伝える
+            critical_type = critical_type + " 引き寄せ";
+            return true;
         }
 
         // 強制転移チェック
-        public bool CheckTeleportAwayAttack(UnitWeapon w, Unit t, string msg, string def_mode, string critical_type)
+        public bool CheckTeleportAwayAttack(UnitWeapon w, Unit t, ref string msg, string def_mode, ref string critical_type)
         {
-            // TODO Impl CheckTeleportAwayAttack
-            return false;
-            //bool CheckTeleportAwayAttackRet = default;
-            //int tx, ty;
-            //int nx = default, ny = default;
-            //int d, prob, i;
+            int tx, ty;
+            int nx = 0, ny = 0;
+            int d, prob, i;
 
-            //// 特殊効果無効？
-            //if (t.SpecialEffectImmune("転"))
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 特殊効果無効？
+            if (t.SpecialEffectImmune("転"))
+            {
+                return false;
+            }
 
-            //// サイズによる制限
-            //if (t.Size == "XL")
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // サイズによる制限
+            if (t.Size == "XL")
+            {
+                return false;
+            }
 
-            //// 固定物は動かせない
-            //if (t.IsFeatureAvailable("地形ユニット"))
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 固定物は動かせない
+            if (t.IsFeatureAvailable("地形ユニット"))
+            {
+                return false;
+            }
 
-            //if (t.Data.Speed == 0 && t.Speed == 0)
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            if (t.Data.Speed == 0 && t.Speed == 0)
+            {
+                return false;
+            }
 
-            //// 自分自身は強制転移出来ない
-            //if (ReferenceEquals(t, this))
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 自分自身は強制転移出来ない
+            if (ReferenceEquals(t, this))
+            {
+                return false;
+            }
 
-            //// 特殊効果発生確率
-            //if (IsUnderSpecialPowerEffect("特殊効果発動"))
-            //{
-            //    prob = 100;
-            //}
-            //else
-            //{
-            //    prob = CriticalProbability(w, t, def_mode);
-            //}
+            // 特殊効果発生確率
+            if (IsUnderSpecialPowerEffect("特殊効果発動"))
+            {
+                prob = 100;
+            }
+            else
+            {
+                prob = w.CriticalProbability(t, def_mode);
+            }
 
-            //// 強制転移発生？
-            //if (GeneralLib.Dice(100) > prob)
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 強制転移発生？
+            if (GeneralLib.Dice(100) > prob)
+            {
+                return false;
+            }
 
-            //// 強制転移先を設定
-            //tx = t.x;
-            //ty = t.y;
-            //for (i = 1; i <= 10; i++)
-            //{
-            //    d = GeneralLib.Dice(w.WeaponLevel("転"));
-            //    if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        nx = (tx + d);
-            //    }
-            //    else
-            //    {
-            //        nx = (tx - d);
-            //    }
+            // 強制転移先を設定
+            tx = t.x;
+            ty = t.y;
+            for (i = 1; i <= 10; i++)
+            {
+                d = GeneralLib.Dice((int)w.WeaponLevel("転"));
+                if (GeneralLib.Dice(2) == 1)
+                {
+                    nx = tx + d;
+                }
+                else
+                {
+                    nx = tx - d;
+                }
 
-            //    d = (w.WeaponLevel("転") - d);
-            //    if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        ny = (ty + d);
-            //    }
-            //    else
-            //    {
-            //        ny = (ty - d);
-            //    }
+                d = (int)w.WeaponLevel("転") - d;
+                if (GeneralLib.Dice(2) == 1)
+                {
+                    ny = ty + d;
+                }
+                else
+                {
+                    ny = ty - d;
+                }
 
-            //    if (1 <= nx && nx <= Map.MapWidth && 1 <= ny && ny <= Map.MapHeight)
-            //    {
-            //        break;
-            //    }
-            //}
+                if (1 <= nx && nx <= Map.MapWidth && 1 <= ny && ny <= Map.MapHeight)
+                {
+                    break;
+                }
+            }
 
-            //// 転院先がない？
-            //if (i > 10)
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 転移先がない？
+            if (i > 10)
+            {
+                return false;
+            }
 
-            //// ユニットを強制移動
-            //t.Jump(nx, ny);
+            // ユニットを強制移動
+            t.Jump(nx, ny);
 
-            //// 本当に動いた？
-            //if (t.x == tx && t.y == ty)
-            //{
-            //    return CheckTeleportAwayAttackRet;
-            //}
+            // 本当に動いた？
+            if (t.x == tx && t.y == ty)
+            {
+                return false;
+            }
 
-            //msg = t.Nickname + "をテレポートさせた。;" + msg;
+            msg = t.Nickname + "をテレポートさせた。;" + msg;
 
-            //// 強制転移が発生したことを伝える
-            //critical_type = critical_type + " 強制転移";
-            //CheckTeleportAwayAttackRet = true;
-            //return CheckTeleportAwayAttackRet;
+            // 強制転移が発生したことを伝える
+            critical_type = critical_type + " 強制転移";
+            return true;
         }
 
         // 能力コピーチェック
         public bool CheckMetamorphAttack(UnitWeapon w, Unit t, string def_mode)
         {
-            // TODO Impl CheckMetamorphAttack
-            return false;
-            //bool CheckMetamorphAttackRet = default;
-            //int prob, wlv;
-            //string uname;
+            int prob, wlv;
+            string uname;
 
-            //// 既にコピー済み？
-            //if (IsFeatureAvailable("ノーマルモード"))
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
+            // 既にコピー済み？
+            if (IsFeatureAvailable("ノーマルモード"))
+            {
+                return false;
+            }
 
-            //// 特殊効果無効？
-            //if (t.SpecialEffectImmune("写"))
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
+            // 特殊効果無効？
+            if (t.SpecialEffectImmune("写"))
+            {
+                return false;
+            }
 
-            //// ボスユニットはコピー出来ない
-            //if (t.BossRank >= 0)
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
+            // ボスユニットはコピー出来ない
+            if (t.BossRank >= 0)
+            {
+                return false;
+            }
 
-            //// 自分自身はコピー出来ない
-            //if (ReferenceEquals(t, this))
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
+            // 自分自身はコピー出来ない
+            if (ReferenceEquals(t, this))
+            {
+                return false;
+            }
 
-            //// サイズ制限
-            //if (w.IsWeaponClassifiedAs("写"))
-            //{
-            //    switch (Size ?? "")
-            //    {
-            //        case "SS":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "M":
-            //                    case "L":
-            //                    case "LL":
-            //                    case "XL":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+            // サイズ制限
+            if (w.IsWeaponClassifiedAs("写"))
+            {
+                switch (Size ?? "")
+                {
+                    case "SS":
+                        switch (t.Size ?? "")
+                        {
+                            case "M":
+                            case "L":
+                            case "LL":
+                            case "XL":
+                                return false;
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "S":
+                        switch (t.Size ?? "")
+                        {
+                            case "L":
+                            case "LL":
+                            case "XL":
+                                return false;
+                        }
+                        break;
 
-            //        case "S":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "L":
-            //                    case "LL":
-            //                    case "XL":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+                    case "M":
+                        switch (t.Size ?? "")
+                        {
+                            case "SS":
+                            case "LL":
+                            case "XL":
+                                return false;
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "L":
+                        switch (t.Size ?? "")
+                        {
+                            case "SS":
+                            case "S":
+                            case "XL":
+                                return false;
+                        }
+                        break;
 
-            //        case "M":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "SS":
-            //                    case "LL":
-            //                    case "XL":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+                    case "LL":
+                        switch (t.Size ?? "")
+                        {
+                            case "SS":
+                            case "S":
+                            case "M":
+                                return false;
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "XL":
+                        switch (t.Size ?? "")
+                        {
+                            case "SS":
+                            case "S":
+                            case "M":
+                            case "L":
+                                return false;
+                        }
+                        break;
+                }
+            }
 
-            //        case "L":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "SS":
-            //                    case "S":
-            //                    case "XL":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+            // 特殊効果発生確率
+            if (IsUnderSpecialPowerEffect("特殊効果発動"))
+            {
+                prob = 100;
+            }
+            else
+            {
+                prob = w.CriticalProbability(t, def_mode);
+            }
 
-            //                break;
-            //            }
+            // コピー成功？
+            if (GeneralLib.Dice(100) > prob)
+            {
+                return false;
+            }
 
-            //        case "LL":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "SS":
-            //                    case "S":
-            //                    case "M":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+            // コピーしてしまうとその場にいれなくなってしまう？
+            if (!OtherForm(t.Name).IsAbleToEnter(x, y))
+            {
+                return false;
+            }
 
-            //                break;
-            //            }
+            // 変身前に情報を記録しておく
+            uname = Nickname;
+            wlv = GeneralLib.MaxLng((int)w.WeaponLevel("写"), (int)w.WeaponLevel("化"));
 
-            //        case "XL":
-            //            {
-            //                switch (t.Size ?? "")
-            //                {
-            //                    case "SS":
-            //                    case "S":
-            //                    case "M":
-            //                    case "L":
-            //                        {
-            //                            return CheckMetamorphAttackRet;
-            //                        }
-            //                }
+            // 変身
+            Transform(t.Name);
+            {
+                var withBlock = CurrentForm();
+                // 元に戻れるように設定
+                if (wlv > 0)
+                {
+                    withBlock.AddCondition("残り時間", wlv, cdata: "");
+                }
 
-            //                break;
-            //            }
-            //    }
-            //}
+                withBlock.AddCondition("ノーマルモード付加", -1, 1d, Name + " 手動解除可");
+                withBlock.AddCondition("能力コピー", -1, cdata: "");
 
-            //// 特殊効果発生確率
-            //if (IsUnderSpecialPowerEffect("特殊効果発動"))
-            //{
-            //    prob = 100;
-            //}
-            //else
-            //{
-            //    prob = CriticalProbability(w, t, def_mode);
-            //}
+                // コピー元のパイロット画像とメッセージを使うように設定
+                withBlock.AddCondition("パイロット画像", -1, 0d, "非表示 " + t.MainPilot().get_Bitmap(false));
+                withBlock.AddCondition("メッセージ", -1, 0d, "非表示 " + t.MainPilot().MessageType);
+            }
 
-            //// コピー成功？
-            //if (GeneralLib.Dice(100) > prob)
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
+            GUI.DisplaySysMessage(uname + "は" + t.Nickname + "に変身した。");
 
-            //// コピーしてしまうとその場にいれなくなってしまう？
-            //Unit localOtherForm() { object argIndex1 = t.Name; var ret = OtherForm(argIndex1); t.Name = Conversions.ToString(argIndex1); return ret; }
-
-            //if (!localOtherForm().IsAbleToEnter(x, y))
-            //{
-            //    return CheckMetamorphAttackRet;
-            //}
-
-            //// 変身前に情報を記録しておく
-            //uname = Nickname;
-            //wlv = GeneralLib.MaxLng(w.WeaponLevel("写"), (int)w.WeaponLevel("化"));
-
-            //// 変身
-            //Transform(t.Name);
-            //t.Name = argnew_form;
-            //{
-            //    var withBlock = CurrentForm();
-            //    // 元に戻れるように設定
-            //    if (wlv > 0)
-            //    {
-            //        withBlock.AddCondition("残り時間", wlv, cdata: "");
-            //    }
-
-            //    withBlock.AddCondition("ノーマルモード付加", -1, 1d, Name + " 手動解除可");
-            //    withBlock.AddCondition("能力コピー", -1, cdata: "");
-
-            //    // コピー元のパイロット画像とメッセージを使うように設定
-            //    withBlock.AddCondition("パイロット画像", -1, 0d, "非表示 " + t.MainPilot().get_Bitmap(false));
-            //    withBlock.AddCondition("メッセージ", -1, 0d, "非表示 " + t.MainPilot().MessageType);
-            //}
-
-            //GUI.DisplaySysMessage(uname + "は" + t.Nickname + "に変身した。");
-
-            //// 能力コピーが発生したことを伝える
-            //CheckMetamorphAttackRet = true;
-            //return CheckMetamorphAttackRet;
+            // 能力コピーが発生したことを伝える
+            return true;
         }
 
         // 特殊能力 fdata1 と fdata2 が同じ名称か判定

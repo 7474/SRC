@@ -93,71 +93,68 @@ namespace SRCCore.Units
         }
 
         // 読み仮名
-        // TODO Impl KanaName
         public string KanaName
         {
-            get { return Nickname0; }
+            get
+            {
+                string KanaNameRet = Data.KanaName;
+                int idx;
+
+                // 読み仮名変更能力による変更
+                if (IsFeatureAvailable("読み仮名変更"))
+                {
+                    KanaNameRet = FeatureData("読み仮名変更");
+                    idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
+                    if (idx > 0)
+                    {
+                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
+                    }
+
+                    idx = (int)Strings.InStr(KanaNameRet, "$(パイロット読み仮名)");
+                    if (idx > 0)
+                    {
+                        if (CountPilot() > 0)
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + MainPilot().KanaName + Strings.Mid(KanaNameRet, idx + 10);
+                        }
+                        else
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + "○○" + Strings.Mid(KanaNameRet, idx + 10);
+                        }
+                    }
+                }
+                else if (IsFeatureAvailable("愛称変更"))
+                {
+                    KanaNameRet = FeatureData("愛称変更");
+                    idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
+                    if (idx > 0)
+                    {
+                        KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.Nickname + Strings.Mid(KanaNameRet, idx + 5);
+                    }
+
+                    idx = (int)Strings.InStr(KanaNameRet, "$(パイロット愛称)");
+                    if (idx > 0)
+                    {
+                        if (CountPilot() > 0)
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + MainPilot().get_Nickname(false) + Strings.Mid(KanaNameRet, idx + 10);
+                        }
+                        else
+                        {
+                            KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + "○○" + Strings.Mid(KanaNameRet, idx + 10);
+                        }
+                    }
+
+                    KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
+                }
+
+                var u = Event.SelectedUnitForEvent;
+                Event.SelectedUnitForEvent = this;
+                Expression.ReplaceSubExpression(ref KanaNameRet);
+                Event.SelectedUnitForEvent = u;
+                return KanaNameRet;
+            }
         }
-        //        string KanaNameRet = default;
-        //        int idx;
-        //        Unit u;
-        //        KanaNameRet = Data.KanaName;
-
-        //        // 読み仮名変更能力による変更
-        //        if (IsFeatureAvailable("読み仮名変更"))
-        //        {
-        //            KanaNameRet = FeatureData("読み仮名変更");
-        //            idx = (int)Strings.InStr(KanaNameRet, "$(読み仮名)");
-        //            if (idx > 0)
-        //            {
-        //                KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.KanaName + Strings.Mid(KanaNameRet, idx + 5);
-        //            }
-
-        //            idx = (int)Strings.InStr(KanaNameRet, "$(パイロット読み仮名)");
-        //            if (idx > 0)
-        //            {
-        //                if (CountPilot() > 0)
-        //                {
-        //                    KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + MainPilot().KanaName + Strings.Mid(KanaNameRet, idx + 10);
-        //                }
-        //                else
-        //                {
-        //                    KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + "○○" + Strings.Mid(KanaNameRet, idx + 10);
-        //                }
-        //            }
-        //        }
-        //        else if (IsFeatureAvailable("愛称変更"))
-        //        {
-        //            KanaNameRet = FeatureData("愛称変更");
-        //            idx = (int)Strings.InStr(KanaNameRet, "$(愛称)");
-        //            if (idx > 0)
-        //            {
-        //                KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + Data.Nickname + Strings.Mid(KanaNameRet, idx + 5);
-        //            }
-
-        //            idx = (int)Strings.InStr(KanaNameRet, "$(パイロット愛称)");
-        //            if (idx > 0)
-        //            {
-        //                if (CountPilot() > 0)
-        //                {
-        //                    KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + MainPilot().get_Nickname(false) + Strings.Mid(KanaNameRet, idx + 10);
-        //                }
-        //                else
-        //                {
-        //                    KanaNameRet = Strings.Left(KanaNameRet, idx - 1) + "○○" + Strings.Mid(KanaNameRet, idx + 10);
-        //                }
-        //            }
-
-        //            KanaNameRet = GeneralLib.StrToHiragana(KanaNameRet);
-        //        }
-
-        //        u = Event.SelectedUnitForEvent;
-        //        Event.SelectedUnitForEvent = this;
-        //        Expression.ReplaceSubExpression(KanaNameRet);
-        //        Event.SelectedUnitForEvent = u;
-        //        return KanaNameRet;
-        //    }
-        //}
 
         // ユニットランク
 
