@@ -22,6 +22,14 @@
    - プロジェクト管理の設定方法
    - How to set up GitHub Projects for management
 
+### Copilot Agent Instructions / Copilotエージェント指示書
+
+5. **[Copilot Agent Instructions](../.github/copilot/README.md)** 🤖
+   - GitHub Copilot Agentの運用手順書
+   - Operational instructions for GitHub Copilot Agents
+   - 4つの専門エージェント役割（Issue作成、実装、レビュー、進捗管理）
+   - 4 specialized agent roles (Issue Creation, Implementation, Review, Progress Tracking)
+
 ### 自動化スクリプト / Automation Scripts
 
 `scripts/` ディレクトリには、プロジェクト管理を自動化するスクリプトが含まれています：
