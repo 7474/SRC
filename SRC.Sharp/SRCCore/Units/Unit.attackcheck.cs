@@ -6904,420 +6904,386 @@ namespace SRCCore.Units
         }
 
         // 吹き飛ばしチェック
-        public bool CheckBlowAttack(UnitWeapon w, Unit t, int dmg, string msg, string attack_mode, string def_mode, string critical_type)
+        public bool CheckBlowAttack(UnitWeapon w, Unit t, ref int dmg, ref string msg, string attack_mode, string def_mode, ref string critical_type)
         {
-            // TODO Impl CheckBlowAttack
-            return false;
-            //bool CheckBlowAttackRet = default;
-            //int tx, ty;
-            //int sx, sy;
-            //int nx, ny;
-            //int dx = default, dy = default;
-            //var is_crashed = default(bool);
-            //var t2 = default(Unit);
-            //int dmg2, orig_dmg;
-            //int wlevel;
-            //int i, prob;
-            //var is_critical = default(bool);
-            //TerrainData td;
+            int tx, ty;
+            int sx, sy;
+            int nx, ny;
+            int dx = 0, dy = 0;
+            bool is_crashed = false;
+            Unit t2 = null;
+            int dmg2, orig_dmg;
+            int wlevel;
+            int i, prob;
+            bool is_critical = false;
 
-            //// 特殊効果無効？
-            //if (w.IsWeaponClassifiedAs("吹") && t.SpecialEffectImmune("吹"))
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            // 特殊効果無効？
+            if (w.IsWeaponClassifiedAs("吹") && t.SpecialEffectImmune("吹"))
+            {
+                return false;
+            }
 
-            //if (w.IsWeaponClassifiedAs("Ｋ") && t.SpecialEffectImmune("Ｋ"))
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            if (w.IsWeaponClassifiedAs("Ｋ") && t.SpecialEffectImmune("Ｋ"))
+            {
+                return false;
+            }
 
-            //wlevel = GeneralLib.MaxLng(w.WeaponLevel("吹"), (int)w.WeaponLevel("Ｋ"));
+            wlevel = GeneralLib.MaxLng((int)w.WeaponLevel("吹"), (int)w.WeaponLevel("Ｋ"));
 
-            //// 特殊効果発生確率
-            //if (IsUnderSpecialPowerEffect("特殊効果発動"))
-            //{
-            //    prob = 100;
-            //}
-            //else
-            //{
-            //    prob = CriticalProbability(w, t, def_mode);
-            //}
+            // 特殊効果発生確率
+            if (IsUnderSpecialPowerEffect("特殊効果発動"))
+            {
+                prob = 100;
+            }
+            else
+            {
+                prob = w.CriticalProbability(t, def_mode);
+            }
 
-            //// 吹き飛ばし距離の算出
-            //if (prob >= GeneralLib.Dice(100))
-            //{
-            //    wlevel = (wlevel + 1);
-            //    is_critical = true;
-            //}
+            // 吹き飛ばし距離の算出
+            if (prob >= GeneralLib.Dice(100))
+            {
+                wlevel = wlevel + 1;
+                is_critical = true;
+            }
 
-            //// 吹き飛ばし距離が０であればここで終わり
-            //if (wlevel == 0)
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            // 吹き飛ばし距離が０であればここで終わり
+            if (wlevel == 0)
+            {
+                return false;
+            }
 
-            //// サイズによる制限
-            //if (t.Size == "XL")
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            // サイズによる制限
+            if (t.Size == "XL")
+            {
+                return false;
+            }
 
-            //if (w.IsWeaponClassifiedAs("Ｋ"))
-            //{
-            //    switch (Size ?? "")
-            //    {
-            //        case "SS":
-            //            {
-            //                if (t.Size != "SS" && t.Size != "S")
-            //                {
-            //                    return CheckBlowAttackRet;
-            //                }
+            if (w.IsWeaponClassifiedAs("Ｋ"))
+            {
+                switch (Size ?? "")
+                {
+                    case "SS":
+                        if (t.Size != "SS" && t.Size != "S")
+                        {
+                            return false;
+                        }
+                        break;
 
-            //                break;
-            //            }
+                    case "S":
+                        if (t.Size == "L" || t.Size == "LL")
+                        {
+                            return false;
+                        }
+                        break;
 
-            //        case "S":
-            //            {
-            //                if (t.Size == "L" || t.Size == "LL")
-            //                {
-            //                    return CheckBlowAttackRet;
-            //                }
+                    case "M":
+                        if (t.Size == "LL")
+                        {
+                            return false;
+                        }
+                        break;
+                }
+            }
 
-            //                break;
-            //            }
+            // 固定物は動かせない
+            if (t.IsFeatureAvailable("地形ユニット"))
+            {
+                return false;
+            }
 
-            //        case "M":
-            //            {
-            //                if (t.Size == "LL")
-            //                {
-            //                    return CheckBlowAttackRet;
-            //                }
+            if (t.Data.Speed == 0 && t.Speed == 0)
+            {
+                return false;
+            }
 
-            //                break;
-            //            }
-            //    }
-            //}
+            // 自分自身は吹き飛ばせない
+            if (ReferenceEquals(t, this))
+            {
+                return false;
+            }
 
-            //// 固定物は動かせない
-            //if (t.IsFeatureAvailable("地形ユニット"))
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            // 吹き飛ばしの中心座標を設定
+            if (w.WeaponLevel("Ｍ投") > 0d)
+            {
+                sx = Commands.SelectedX;
+                sy = Commands.SelectedY;
+            }
+            else
+            {
+                sx = x;
+                sy = y;
+            }
 
-            //if (t.Data.Speed == 0 && t.Speed == 0)
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+            // 吹き飛ばされる場所を設定
+            tx = t.x;
+            ty = t.y;
+            if (!w.IsWeaponClassifiedAs("Ｍ移"))
+            {
+                if (Math.Abs(sx - tx) > Math.Abs(sy - ty))
+                {
+                    if (sx > tx)
+                    {
+                        dx = -1;
+                    }
+                    else
+                    {
+                        dx = 1;
+                    }
+                }
+                else if (Math.Abs(sx - tx) < Math.Abs(sy - ty))
+                {
+                    if (sy > ty)
+                    {
+                        dy = -1;
+                    }
+                    else
+                    {
+                        dy = 1;
+                    }
+                }
+                else if (GeneralLib.Dice(2) == 1)
+                {
+                    if (sx > tx)
+                    {
+                        dx = -1;
+                    }
+                    else
+                    {
+                        dx = 1;
+                    }
+                }
+                else if (sy > ty)
+                {
+                    dy = -1;
+                }
+                else
+                {
+                    dy = 1;
+                }
+            }
+            // Ｍ移の場合は横に弾き飛ばす形になる
+            else if (Math.Abs(sx - tx) > Math.Abs(sy - ty))
+            {
+                if (GeneralLib.Dice(2) == 1)
+                {
+                    dy = 1;
+                }
+                else
+                {
+                    dy = -1;
+                }
+            }
+            else if (Math.Abs(sx - tx) < Math.Abs(sy - ty))
+            {
+                if (GeneralLib.Dice(2) == 1)
+                {
+                    dx = 1;
+                }
+                else
+                {
+                    dx = -1;
+                }
+            }
+            else if (sx == tx && sx == ty)
+            {
+                switch (GeneralLib.Dice(4))
+                {
+                    case 1:
+                        dx = -1;
+                        break;
 
-            //// 自分自身は吹き飛ばせない
-            //if (ReferenceEquals(t, this))
-            //{
-            //    return CheckBlowAttackRet;
-            //}
+                    case 2:
+                        dx = 1;
+                        break;
 
-            //// 吹き飛ばしの中心座標を設定
-            //if (w.WeaponLevel("Ｍ投") > 0d)
-            //{
-            //    sx = Commands.SelectedX;
-            //    sy = Commands.SelectedY;
-            //}
-            //else
-            //{
-            //    sx = x;
-            //    sy = y;
-            //}
+                    case 3:
+                        dy = -1;
+                        break;
 
-            //// 吹き飛ばされる場所を設定
-            //tx = t.x;
-            //ty = t.y;
-            //if (!w.IsWeaponClassifiedAs("Ｍ移"))
-            //{
-            //    if (Math.Abs((sx - tx)) > Math.Abs((sy - ty)))
-            //    {
-            //        if (sx > tx)
-            //        {
-            //            dx = -1;
-            //        }
-            //        else
-            //        {
-            //            dx = 1;
-            //        }
-            //    }
-            //    else if (Math.Abs((sx - tx)) < Math.Abs((sy - ty)))
-            //    {
-            //        if (sy > ty)
-            //        {
-            //            dy = -1;
-            //        }
-            //        else
-            //        {
-            //            dy = 1;
-            //        }
-            //    }
-            //    else if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        if (sx > tx)
-            //        {
-            //            dx = -1;
-            //        }
-            //        else
-            //        {
-            //            dx = 1;
-            //        }
-            //    }
-            //    else if (sy > ty)
-            //    {
-            //        dy = -1;
-            //    }
-            //    else
-            //    {
-            //        dy = 1;
-            //    }
-            //}
-            //// Ｍ移の場合は横に弾き飛ばす形になる
-            //else if (Math.Abs((sx - tx)) > Math.Abs((sy - ty)))
-            //{
-            //    if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        dy = 1;
-            //    }
-            //    else
-            //    {
-            //        dy = -1;
-            //    }
-            //}
-            //else if (Math.Abs((sx - tx)) < Math.Abs((sy - ty)))
-            //{
-            //    if (GeneralLib.Dice(2) == 1)
-            //    {
-            //        dx = 1;
-            //    }
-            //    else
-            //    {
-            //        dx = -1;
-            //    }
-            //}
-            //else if (sx == tx && sx == ty)
-            //{
-            //    switch (GeneralLib.Dice(4))
-            //    {
-            //        case 1:
-            //            {
-            //                dx = -1;
-            //                break;
-            //            }
+                    case 4:
+                        dy = 1;
+                        break;
+                }
+            }
+            else if (GeneralLib.Dice(2) == 1)
+            {
+                if (sx > tx)
+                {
+                    dx = 1;
+                }
+                else
+                {
+                    dx = -1;
+                }
+            }
+            else if (sy > ty)
+            {
+                dy = 1;
+            }
+            else
+            {
+                dy = -1;
+            }
 
-            //        case 2:
-            //            {
-            //                dx = 1;
-            //                break;
-            //            }
+            // 吹き飛ばし後の位置の計算と、衝突の判定
+            nx = tx;
+            ny = ty;
+            i = 1;
+            while (i <= wlevel)
+            {
+                nx = nx + dx;
+                ny = ny + dy;
 
-            //        case 3:
-            //            {
-            //                dy = -1;
-            //                break;
-            //            }
+                // 吹き飛ばしコストに地形効果【摩擦】の補正を加える
+                var td = Map.Terrain(x, y);
+                if (td != null)
+                {
+                    if ((t.Area == "地上" && (td.Class == "陸" || td.Class == "屋内" || td.Class == "月面"))
+                        || (t.Area == "水中" && (td.Class == "水" || td.Class == "深水"))
+                        || (t.Area ?? "") == (td.Class ?? ""))
+                    {
+                        if (td.IsFeatureAvailable("摩擦"))
+                        {
+                            i = (int)(i + td.FeatureLevel("摩擦"));
+                        }
+                    }
+                }
 
-            //        case 4:
-            //            {
-            //                dy = 1;
-            //                break;
-            //            }
-            //    }
-            //}
-            //else if (GeneralLib.Dice(2) == 1)
-            //{
-            //    if (sx > tx)
-            //    {
-            //        dx = 1;
-            //    }
-            //    else
-            //    {
-            //        dx = -1;
-            //    }
-            //}
-            //else if (sy > ty)
-            //{
-            //    dy = 1;
-            //}
-            //else
-            //{
-            //    dy = -1;
-            //}
+                // マップ端
+                if (nx < 1 || Map.MapWidth < nx || ny < 1 || Map.MapHeight < ny)
+                {
+                    nx = nx - dx;
+                    ny = ny - dy;
+                    break;
+                }
 
-            //// 吹き飛ばし後の位置の計算と、衝突の判定
-            //nx = tx;
-            //ny = ty;
-            //i = 1;
-            //while (i <= wlevel)
-            //{
-            //    nx = (nx + dx);
-            //    ny = (ny + dy);
+                // 進入不能？
+                if (!t.IsAbleToEnter(nx, ny) || Map.MapDataForUnit[nx, ny] is object)
+                {
+                    is_crashed = true;
+                    if (Map.MapDataForUnit[nx, ny] is object)
+                    {
+                        t2 = Map.MapDataForUnit[nx, ny];
+                    }
 
-            //    // 吹き飛ばしコストに地形効果【摩擦】の補正を加える
-            //    // MOD START 240a
-            //    // Set td = TDList.Item(MapData(X, Y, 0))
-            //    switch (Map.MapData[x, y, Map.MapDataIndex.BoxType])
-            //    {
-            //        case Map.BoxTypes.Under:
-            //        case Map.BoxTypes.UpperBmpOnly:
-            //            {
-            //                td = SRC.TDList.Item(Map.MapData[x, y, Map.MapDataIndex.TerrainType]);
-            //                break;
-            //            }
+                    nx = nx - dx;
+                    ny = ny - dy;
+                    break;
+                }
 
-            //        default:
-            //            {
-            //                td = SRC.TDList.Item(Map.MapData[x, y, Map.MapDataIndex.LayerType]);
-            //                break;
-            //            }
-            //    }
-            //    // MOD START 240a
-            //    if (t.Area == "地上" && (td.Class == "陸" || td.Class == "屋内" || td.Class == "月面") || t.Area == "水中" && (td.Class == "水" || td.Class == "深水") || (t.Area ?? "") == (Class ?? ""))
-            //    {
-            //        if (td.IsFeatureAvailable("摩擦"))
-            //        {
-            //            i = (i + td.FeatureLevel("摩擦"));
-            //        }
-            //    }
+                // 障害物あり？
+                if (t.Area != "空中")
+                {
+                    if (Map.Terrain(nx, ny)?.IsFeatureAvailable("衝突") == true)
+                    {
+                        is_crashed = true;
+                    }
+                }
 
-            //    // マップ端
-            //    if (nx < 1 || Map.MapWidth < nx || ny < 1 || Map.MapHeight < ny)
-            //    {
-            //        nx = (nx - dx);
-            //        ny = (ny - dy);
-            //        break;
-            //    }
+                i = i + 1;
+            }
 
-            //    // 進入不能？
-            //    if (!t.IsAbleToEnter(nx, ny) || Map.MapDataForUnit[nx, ny] is object)
-            //    {
-            //        is_crashed = true;
-            //        if (Map.MapDataForUnit[nx, ny] is object)
-            //        {
-            //            t2 = Map.MapDataForUnit[nx, ny];
-            //        }
+            // ユニットを強制移動
+            if (tx != nx || ty != ny)
+            {
+                GUI.EraseUnitBitmap(tx, ty);
+                if (IsAnimationDefined("吹き飛ばし", sub_situation: ""))
+                {
+                    PlayAnimation("吹き飛ばし", sub_situation: "");
+                }
+                else
+                {
+                    GUI.MoveUnitBitmap(t, tx, ty, nx, ny, 20);
+                }
 
-            //        nx = (nx - dx);
-            //        ny = (ny - dy);
-            //        break;
-            //    }
+                t.Jump(nx, ny, false);
+            }
 
-            //    // 障害物あり？
-            //    if (t.Area != "空中")
-            //    {
-            //        if (Map.TerrainHasObstacle(nx, ny))
-            //        {
-            //            is_crashed = true;
-            //        }
-            //    }
+            // 激突
+            orig_dmg = dmg;
+            if (is_crashed)
+            {
+                dmg = orig_dmg + GeneralLib.MaxLng((orig_dmg - t.get_Armor("") * t.MainPilot().Morale / 100) / 2, 0);
 
-            //    i = (i + 1);
-            //}
+                // 最低ダメージ
+                if (def_mode == "防御")
+                {
+                    dmg = GeneralLib.MaxLng(dmg, 5);
+                }
+                else
+                {
+                    dmg = GeneralLib.MaxLng(dmg, 10);
+                }
 
-            //// ユニットを強制移動
-            //if (tx != nx || ty != ny)
-            //{
-            //    GUI.EraseUnitBitmap(tx, ty);
-            //    if (IsAnimationDefined("吹き飛ばし", sub_situation: ""))
-            //    {
-            //        PlayAnimation("吹き飛ばし", sub_situation: "");
-            //    }
-            //    else
-            //    {
-            //        GUI.MoveUnitBitmap(t, tx, ty, nx, ny, 20);
-            //    }
+                Sound.PlayWave("Crash.wav");
+            }
 
-            //    t.Jump(nx, ny, false);
-            //}
+            // 巻き添え
+            if (t2 is object && !ReferenceEquals(t2, t))
+            {
+                dmg2 = (orig_dmg - t2.get_Armor("") * t2.MainPilot().Morale / 100) / 2;
 
-            //// 激突
-            //orig_dmg = dmg;
-            //if (is_crashed)
-            //{
-            //    dmg = orig_dmg + GeneralLib.MaxLng((orig_dmg - t.get_Armor("") * t.MainPilot().Morale / 100) / 2, 0);
+                // 最低ダメージ
+                if (dmg2 < 10)
+                {
+                    dmg2 = 10;
+                }
 
-            //    // 最低ダメージ
-            //    if (def_mode == "防御")
-            //    {
-            //        dmg = GeneralLib.MaxLng(dmg, 5);
-            //    }
-            //    else
-            //    {
-            //        dmg = GeneralLib.MaxLng(dmg, 10);
-            //    }
+                // 無敵の場合はダメージを受けない
+                if (t2.IsConditionSatisfied("無敵"))
+                {
+                    dmg2 = 0;
+                }
 
-            //    Sound.PlayWave("Crash.wav");
-            //}
+                // 各種処理がややこしくなるので巻き添えではユニットを破壊しない
+                if (t2.HP - dmg2 < 10)
+                {
+                    dmg2 = t2.HP - 10;
+                }
 
-            //// 巻き添え
-            //if (t2 is object && !ReferenceEquals(t2, t))
-            //{
-            //    dmg2 = (orig_dmg - t2.get_Armor("") * t2.MainPilot().Morale / 100) / 2;
+                // ダメージ適用
+                if (dmg2 > 0)
+                {
+                    t2.HP = t2.HP - dmg2;
+                }
+                else
+                {
+                    dmg2 = 0;
+                }
 
-            //    // 最低ダメージ
-            //    if (dmg2 < 10)
-            //    {
-            //        dmg2 = 10;
-            //    }
+                // ダメージ量表示
+                if (!Expression.IsOptionDefined("ダメージ表示無効") || attack_mode == "マップ攻撃")
+                {
+                    GUI.DrawSysString(t2.x, t2.y, SrcFormatter.Format(dmg2), true);
+                }
 
-            //    // 無敵の場合はダメージを受けない
-            //    if (t2.IsConditionSatisfied("無敵"))
-            //    {
-            //        dmg2 = 0;
-            //    }
+                // 特殊能力「不安定」による暴走チェック
+                if (t2.IsFeatureAvailable("不安定"))
+                {
+                    if (t2.HP <= t2.MaxHP / 4 && !t2.IsConditionSatisfied("暴走"))
+                    {
+                        t2.AddCondition("暴走", -1, cdata: "");
+                        t2.Update();
+                    }
+                }
 
-            //    // 各種処理がややこしくなるので巻き添えではユニットを破壊しない
-            //    if (t2.HP - dmg2 < 10)
-            //    {
-            //        dmg2 = t2.HP - 10;
-            //    }
+                // ダメージを受ければ眠りからさめる
+                if (t2.IsConditionSatisfied("睡眠") && !w.IsWeaponClassifiedAs("眠"))
+                {
+                    t2.DeleteCondition("睡眠");
+                }
+            }
 
-            //    // ダメージ適用
-            //    if (dmg2 > 0)
-            //    {
-            //        t2.HP = t2.HP - dmg2;
-            //    }
-            //    else
-            //    {
-            //        dmg2 = 0;
-            //    }
+            msg = t.Nickname + "を吹き飛ばした。;" + msg;
+            if (is_critical)
+            {
+                msg = "クリティカル！ " + msg;
+            }
 
-            //    // ダメージ量表示
-            //    if (!Expression.IsOptionDefined("ダメージ表示無効") || attack_mode == "マップ攻撃")
-            //    {
-            //        GUI.DrawSysString(t2.x, t2.y, SrcFormatter.Format(dmg2), true);
-            //    }
-
-            //    // 特殊能力「不安定」による暴走チェック
-            //    if (t2.IsFeatureAvailable("不安定"))
-            //    {
-            //        if (t2.HP <= t2.MaxHP / 4 && !t2.IsConditionSatisfied("暴走"))
-            //        {
-            //            t2.AddCondition("暴走", -1, cdata: "");
-            //            t2.Update();
-            //        }
-            //    }
-
-            //    // ダメージを受ければ眠りからさめる
-            //    if (t2.IsConditionSatisfied("睡眠") && !w.IsWeaponClassifiedAs("眠"))
-            //    {
-            //        t2.DeleteCondition("睡眠");
-            //    }
-            //}
-
-            //msg = t.Nickname + "を吹き飛ばした。;" + msg;
-            //if (is_critical)
-            //{
-            //    msg = "クリティカル！ " + msg;
-            //}
-
-            //// 吹き飛ばしが発生したことを伝える
-            //critical_type = critical_type + " 吹き飛ばし";
-            //CheckBlowAttackRet = true;
-            //return CheckBlowAttackRet;
+            // 吹き飛ばしが発生したことを伝える
+            critical_type = critical_type + " 吹き飛ばし";
+            return true;
         }
 
         // 引き寄せチェック
