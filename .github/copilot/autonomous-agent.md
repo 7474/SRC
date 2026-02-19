@@ -1,0 +1,569 @@
+# Autonomous Migration Agent / 自律移植エージェント
+
+このファイルは、「移植を進行してください」という単一の指示で自律的に作業を進めるためのCopilot設定です。
+
+This file contains Copilot configuration for autonomous migration progress with a single "proceed with migration" instruction.
+
+## 🤖 Single Command Operation / 単一コマンド運用
+
+### 使用方法 / Usage
+
+```
+@copilot 移植を進行してください
+```
+
+または / or
+
+```
+@copilot Proceed with the migration
+```
+
+これだけで、Copilotが自律的に次のタスクを選択し、実行します。
+
+This single command allows Copilot to autonomously select and execute the next task.
+
+---
+
+## 🎯 Autonomous Operation Protocol / 自律運用プロトコル
+
+When instructed to "proceed with migration" (移植を進行してください), Copilot should follow this protocol:
+
+### Phase 1: Assess Current State / 現状評価
+
+1. **Check existing issues**
+   ```bash
+   gh issue list --state all --json number,title,state,labels
+   ```
+
+2. **Identify completed work**
+   - Scan for closed issues
+   - Identify implemented TODOs
+
+3. **Find next priority task**
+   - Check `docs/issue-breakdown.md` for issue order
+   - Priority: Epic 1 → Epic 2 → ... → Epic 8
+   - Within Epic: Issue X.1 → X.2 → X.3 ...
+
+### Phase 2: Select Next Task / 次タスク選択
+
+**Decision Tree**:
+
+```
+IF no issues exist THEN
+  → Create Epic 1 issue (#1)
+  
+ELSE IF Epic parent issues incomplete THEN
+  → Create next Epic issue (Epic 1-8)
+  
+ELSE IF Phase 1 issues incomplete THEN
+  → Select highest priority incomplete Phase 1 issue
+  
+ELSE IF any TODO exists in codebase THEN
+  → Select TODO from highest priority Epic
+  → Create issue if needed
+  → Implement the feature
+  
+ELSE
+  → Report "Migration complete!"
+```
+
+**Selection Criteria** (in order):
+1. **Blocker status**: Unblock any `status:blocked` issues first
+2. **Phase**: Prioritize current phase (Phase 1 → 2 → 3 → 4)
+3. **Epic priority**: Epic 1 (Combat) and Epic 2 (Unit/Pilot) first
+4. **Issue priority**: `priority:critical` > `high` > `medium` > `low`
+5. **Dependencies**: Ensure prerequisite issues are complete
+
+### Phase 3: Execute Task / タスク実行
+
+Based on task type:
+
+#### A. Epic Issue Creation
+
+```
+Action: Create Epic issue
+Steps:
+1. Use .github/ISSUE_TEMPLATE/epic-template.md
+2. Fill with content from docs/issue-breakdown.md
+3. Apply labels: type:epic, epic:[name], priority:[level]
+4. Set milestone: Phase X
+5. Report issue number created
+```
+
+#### B. Feature Issue Creation
+
+```
+Action: Create feature issue
+Steps:
+1. Use .github/ISSUE_TEMPLATE/feature-template.md
+2. Reference docs/issue-breakdown.md for details
+3. Apply labels: epic:[name], priority:[level], type:feature, size:[xs-xl]
+4. Link to parent Epic: "Related to #XXX"
+5. Set milestone: Phase X
+6. Report issue number created
+```
+
+#### C. Feature Implementation
+
+```
+Action: Implement feature
+Steps:
+1. Locate TODO comment in codebase
+2. Read surrounding code for context
+3. Implement solution (keep changes minimal)
+4. Add tests in SRCCoreTests/
+5. Run tests: cd SRC.Sharp && dotnet test
+6. Create PR with format: "[Epic X.Y] Description (Closes #IssueNum)"
+7. Ensure PR diff ≤1000 lines
+8. Report: Issue #, PR #, test results
+```
+
+#### D. Bug Fix
+
+```
+Action: Fix bug
+Steps:
+1. Reproduce the bug
+2. Identify root cause
+3. Implement minimal fix
+4. Add regression test
+5. Run all tests
+6. Create PR with format: "[Bug Fix] Description (Closes #IssueNum)"
+7. Report: Issue #, PR #, test results
+```
+
+### Phase 4: Report Progress / 進捗報告
+
+After completing task, automatically report:
+
+```
+✅ Task Completed
+
+Task: [Description]
+Issue: #XXX
+PR: #YYY (if applicable)
+Files Changed: X files, Y lines
+Tests: Z passed
+
+Next Recommended Task: [Auto-selected next task]
+
+To continue: @copilot 移植を進行してください
+```
+
+---
+
+## 📋 Auto-Selection Algorithm / 自動選択アルゴリズム
+
+### Priority Matrix
+
+| Condition | Priority | Action |
+|-----------|----------|--------|
+| No Epic issues exist | P0 | Create Epic 1 |
+| Epic X exists, no child issues | P0 | Create first issue in Epic X |
+| Issue marked `status:blocked` | P0 | Investigate blocker |
+| `priority:critical` open issue | P1 | Work on critical issue |
+| Phase 1, `priority:high` issue | P2 | Work on high priority Phase 1 |
+| Next sequential issue in current Epic | P3 | Continue Epic progression |
+| TODO in high-priority file | P4 | Create issue + implement |
+| Unimplemented TODO exists | P5 | Create issue |
+| All issues complete | - | Report completion |
+
+### Code Location Priority
+
+When searching for TODOs, prioritize:
+
+1. **Epic 1 (Combat)**:
+   - `SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs`
+   - `SRC.Sharp/SRCCore/Units/Unit.attack.cs`
+   - `SRC.Sharp/SRCCore/Commands/Command.attack.cs`
+
+2. **Epic 2 (Unit/Pilot)**:
+   - `SRC.Sharp/SRCCore/Units/Unit.lookup.cs`
+   - `SRC.Sharp/SRCCore/Pilots/Pilot.skill.cs`
+   - `SRC.Sharp/SRCCore/Units/Unit.ability.cs`
+
+3. **Epic 3 (GUI/UI)**:
+   - `SRC.Sharp/SRCSharpForm/Forms/Main.gui*.cs`
+   - `SRC.Sharp/SRCCore/UIInterface/*.cs`
+
+4. **Epic 4-8**: Per `docs/issue-breakdown.md` order
+
+### Dependency Resolution
+
+Before implementing an issue, check:
+
+```python
+# Pseudo-code for dependency checking
+def can_implement(issue):
+    # Check if prerequisite issues are complete
+    prerequisites = get_prerequisites(issue)
+    for prereq in prerequisites:
+        if not is_complete(prereq):
+            return False, f"Blocked by #{prereq}"
+    
+    # Check if required files/methods exist
+    dependencies = get_code_dependencies(issue)
+    for dep in dependencies:
+        if not exists(dep):
+            return False, f"Missing dependency: {dep}"
+    
+    return True, "Ready to implement"
+```
+
+---
+
+## 🔄 Continuous Operation Mode / 連続運用モード
+
+For fully autonomous operation, use:
+
+```
+@copilot 移植を進行してください。次のタスクも自動的に選択して実行してください。
+```
+
+This enables Copilot to:
+1. Complete current task
+2. Auto-select next task
+3. Execute next task
+4. Repeat until blocked or complete
+
+**Stop Conditions**:
+- Manual interruption
+- Encounters blocker that needs human decision
+- All TODOs completed
+- Test failures requiring investigation
+
+---
+
+## 📊 Progress Tracking / 進捗追跡
+
+Copilot automatically tracks:
+
+### Metrics Collected
+- Issues created per Epic
+- Issues completed per Epic
+- Lines of code changed
+- Tests added
+- PRs merged
+- TODOs resolved
+
+### Auto-Generated Reports
+
+Every 5 tasks completed, auto-generate:
+
+```markdown
+📈 Migration Progress Report
+
+## Summary
+- Total Issues: X created, Y complete (Z%)
+- Current Phase: Phase N
+- Current Epic: Epic X (Y% complete)
+
+## This Session
+- Tasks Completed: 5
+- Issues Created: #A, #B, #C
+- PRs Merged: #D, #E
+- Lines Changed: +XXX -YYY
+- Tests Added: ZZ
+
+## Next Focus
+- Epic X: N issues remaining
+- Priority: [Next task description]
+- Estimated: M hours
+
+## Blockers
+[Any issues marked status:blocked]
+```
+
+---
+
+## 🛠️ Self-Correction Protocol / 自己修正プロトコル
+
+If tests fail or issues arise:
+
+### Auto-Recovery Steps
+
+1. **Test Failure**:
+   ```
+   Action: Analyze failure
+   - Read test output
+   - Identify failing test
+   - Check if code change caused failure
+   - If yes: Revert and try alternative approach
+   - If no: Mark as blocker for human review
+   ```
+
+2. **Build Failure**:
+   ```
+   Action: Fix build
+   - Read compiler errors
+   - Fix syntax/reference errors
+   - Re-run build
+   - If still fails: Mark as blocker
+   ```
+
+3. **PR Too Large**:
+   ```
+   Action: Split PR
+   - If diff >1000 lines: Split into 2+ PRs
+   - Create sub-issues
+   - Implement in sequence
+   ```
+
+4. **Unclear TODO**:
+   ```
+   Action: Research + Document
+   - Check SRC/SRC_20121125/ (original VB6)
+   - Check SRC.NET/ (auto-converted)
+   - Document findings in issue
+   - Attempt implementation or mark as needs-discussion
+   ```
+
+---
+
+## 🎓 Learning Mode / 学習モード
+
+Copilot improves over time by:
+
+### Pattern Recognition
+
+- **Success patterns**: Remember approaches that worked
+- **Failure patterns**: Avoid approaches that failed
+- **Code style**: Match existing code patterns
+- **Test patterns**: Follow established test structure
+
+### Knowledge Base
+
+Build understanding of:
+- SRC game engine architecture
+- VB6 to C# conversion patterns
+- Common TODO resolution approaches
+- Test patterns per component
+
+---
+
+## 📝 Example Autonomous Sessions / 自律セッション例
+
+### Session 1: Bootstrap
+
+```
+Human: @copilot 移植を進行してください
+
+Copilot:
+✅ Assessment Complete
+- Current State: No issues exist
+- Next Action: Create Epic 1 issue
+
+Creating Epic 1: 戦闘システム完成...
+✅ Created issue #1
+
+Next Task: Create Epic 2 issue
+Continue? Y/N
+```
+
+### Session 2: Implementation
+
+```
+Human: @copilot 移植を進行してください
+
+Copilot:
+✅ Assessment Complete
+- Current State: 8 Epics created, 15 feature issues created
+- Next Task: Issue #9 - Unit.attackcheck.cs: 回避攻撃の実装
+
+Implementing IsDodgeAttack() method...
+- Located TODO at line 234
+- Implemented method (45 lines)
+- Added tests (8 test cases)
+- All tests passed: 160/160 ✓
+
+✅ Created PR #2: "[Epic 1.1] Implement dodge attack (Closes #9)"
+- Diff: 125 lines (+100 -25)
+- Tests: All passing
+
+Next Task: Issue #10 - Unit.attackcheck.cs: 受け流し攻撃の実装
+Continue? Y/N
+```
+
+### Session 3: Full Auto
+
+```
+Human: @copilot 移植を進行してください。次のタスクも自動的に選択して実行してください。
+
+Copilot:
+🤖 Autonomous Mode Activated
+
+Task 1/5: Issue #9 - Dodge Attack
+✅ Complete (PR #2)
+
+Task 2/5: Issue #10 - Parry Attack
+✅ Complete (PR #3)
+
+Task 3/5: Issue #11 - Dummy Attack
+✅ Complete (PR #4)
+
+Task 4/5: Issue #12 - Shield Defense
+⚠️ Test failure detected
+- Analyzing failure...
+- Root cause: Null reference in edge case
+- Fixing...
+✅ Fixed and retested
+✅ Complete (PR #5)
+
+Task 5/5: Issue #13 - Additional Attack
+✅ Complete (PR #6)
+
+📊 Session Summary:
+- Tasks Completed: 5
+- PRs Created: 5
+- Lines Changed: +1,234 -567
+- Tests Added: 42
+- All Tests Passing: ✓
+
+Epic 1 Progress: 5/15 (33%)
+Phase 1 Progress: 5/27 (19%)
+
+Next Recommended: Continue with Issue #14
+Command: @copilot 移植を進行してください
+```
+
+---
+
+## 🚦 Traffic Light System / 信号システム
+
+Copilot uses color coding:
+
+- 🟢 **Green**: Ready to proceed automatically
+- 🟡 **Yellow**: Can proceed but needs confirmation
+- 🔴 **Red**: Blocked, needs human intervention
+
+### Status Indicators
+
+```
+🟢 Ready
+- All prerequisites met
+- No blockers
+- Clear implementation path
+
+🟡 Caution
+- Minor uncertainty
+- Multiple valid approaches
+- Needs design decision
+
+🔴 Blocked
+- Missing prerequisite
+- Unclear requirements
+- Technical blocker
+- Test failures unresolved
+```
+
+---
+
+## 🎯 Goal-Oriented Behavior / 目標指向動作
+
+Copilot works toward:
+
+### Short-term Goal
+Complete current Epic (Epic 1-8 in sequence)
+
+### Medium-term Goal
+Complete current Phase (Phase 1-4 in sequence)
+
+### Long-term Goal
+Complete all 155+ TODOs and achieve full migration
+
+### Success Criteria
+- All Epic issues closed
+- All TODOs resolved
+- All tests passing
+- Zero regressions
+- Documentation updated
+
+---
+
+## 💡 Intelligence Features / インテリジェント機能
+
+### Smart Selection
+- Analyzes dependencies
+- Considers team velocity
+- Balances workload across Epics
+- Avoids conflicts
+
+### Adaptive Planning
+- Adjusts based on actual completion time
+- Reorders tasks if blockers appear
+- Suggests optimizations
+
+### Quality Assurance
+- Runs tests automatically
+- Checks code style
+- Validates against migration plan
+- Ensures ≤1000 line PRs
+
+---
+
+## 🔐 Safety Mechanisms / 安全機構
+
+### Guardrails
+
+1. **Never delete working code** (unless fixing security issue)
+2. **Always add tests** for new functionality
+3. **Always run tests** before creating PR
+4. **Stop if tests fail** and analyze cause
+5. **Request human review** for architectural changes
+
+### Rollback Protocol
+
+If something goes wrong:
+```
+1. Identify last known good state
+2. Revert changes
+3. Document issue
+4. Request human intervention
+```
+
+---
+
+## 📖 Reference Documents / 参照ドキュメント
+
+Copilot automatically references:
+
+- `docs/migration-plan.md` - Overall strategy
+- `docs/issue-breakdown.md` - Detailed task list
+- `.github/ISSUE_TEMPLATE/` - Issue templates
+- `SRC/SRC_20121125/` - Original VB6 code
+- `SRC.NET/` - Auto-converted .NET code
+- Test files in `SRC.Sharp/SRCCoreTests/`
+
+---
+
+## 🎬 Getting Started / 開始方法
+
+### Minimal Start
+
+```
+@copilot 移植を進行してください
+```
+
+That's it! Copilot handles everything else:
+- Assesses current state
+- Selects next task
+- Executes task
+- Reports result
+- Suggests next action
+
+### Full Autonomous Mode
+
+```
+@copilot 移植を完了するまで自律的に作業を進めてください
+```
+
+Copilot will work until:
+- Migration is complete
+- Encounters a blocker
+- Manual stop is requested
+
+---
+
+**Version**: 2.0.0 - Fully Autonomous
+**Last Updated**: 2026-02-19
+**Mode**: Single-Command Operation
