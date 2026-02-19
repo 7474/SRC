@@ -1058,10 +1058,16 @@ namespace SRCCore.Pilots
             return "";
         }
 
-        //        // 特殊能力名称（必要技能判定用）
-        //        // 名称からレベル指定を削除し、名称が非表示にされている場合は元の特殊能力名
-        //        // もしくはエリアス名を使用する。
-        //        public string SkillNameForNS(string stype)
+        // 特殊能力名称（必要技能判定用）
+        // 名称からレベル指定を削除し、名称が非表示にされている場合は元の特殊能力名
+        // もしくはエリアス名を使用する。
+        // TODO Impl SkillNameForNS 仕様が重い
+        public string SkillNameForNS(string stype)
+        {
+            return stype;
+        }
+
+        //        public string SkillNameForNS_Impl(string stype)
         //        {
         //            string SkillNameForNSRet = default;
         //            SkillData sd;
