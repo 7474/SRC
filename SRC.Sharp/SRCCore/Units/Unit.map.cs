@@ -1403,41 +1403,28 @@ namespace SRCCore.Units
                         }
                     }
 
-                    // TODO Impl 出撃
-                    //bool localIsMessageDefined1() { string argmain_situation = "合体(" + u.Name + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
+                    // 合体ＢＧＭの再生
+                    if (IsMessageDefined("合体(" + u.Name + ")") || IsMessageDefined("合体(" + FeatureName("合体") + ")") || IsMessageDefined("合体"))
+                    {
+                        if (IsFeatureAvailable("合体ＢＧＭ"))
+                        {
+                            for (var bgmIdx = 1; bgmIdx <= CountFeature(); bgmIdx++)
+                            {
+                                if (Feature(bgmIdx).Name == "合体ＢＧＭ" && (GeneralLib.LIndex(FeatureData(bgmIdx), 1) ?? "") == (u.Name ?? ""))
+                                {
+                                    var fdata = FeatureData(bgmIdx);
+                                    BGM = Sound.SearchMidiFile(Strings.Mid(fdata, Strings.InStr(fdata, " ") + 1));
+                                    if (Strings.Len(BGM) > 0)
+                                    {
+                                        Sound.ChangeBGM(BGM);
+                                        GUI.Sleep(500);
+                                    }
 
-                    //bool localIsMessageDefined2() { object argIndex1 = "合体"; string argmain_situation = "合体(" + FeatureName(argIndex1) + ")"; var ret = IsMessageDefined(argmain_situation); return ret; }
-
-                    //if (localIsMessageDefined1() || localIsMessageDefined2() || IsMessageDefined("合体"))
-                    //{
-                    //    if (IsFeatureAvailable("合体ＢＧＭ"))
-                    //    {
-                    //        var loopTo5 = CountFeature();
-                    //        for (i = 1; i <= loopTo5; i++)
-                    //        {
-                    //            string localFeature2() { object argIndex1 = i; var ret = Feature(argIndex1); return ret; }
-
-                    //            string localFeatureData13() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                    //            string localLIndex8() { string arglist = hs8b8df815445f4c329f8d70f276cd46e5(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
-
-                    //            if (localFeature2() == "合体ＢＧＭ" && (localLIndex8() ?? "") == (u.Name ?? ""))
-                    //            {
-                    //                string localFeatureData11() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                    //                string localFeatureData12() { object argIndex1 = i; var ret = FeatureData(argIndex1); return ret; }
-
-                    //                BGM = Sound.SearchMidiFile(Strings.Mid(localFeatureData11(), Strings.InStr(localFeatureData12(), " ") + 1));
-                    //                if (Strings.Len(BGM) > 0)
-                    //                {
-                    //                    Sound.ChangeBGM(BGM);
-                    //                    GUI.Sleep(500);
-                    //                }
-
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
                     GUI.OpenMessageForm(u1: null, u2: null);
                     if (IsMessageDefined("合体(" + u.Name + ")"))

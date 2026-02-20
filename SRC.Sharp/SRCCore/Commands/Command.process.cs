@@ -673,27 +673,26 @@ namespace SRCCore.Commands
                 }
 
                 // 行動終了している場合
-                // TODO 行動終了している場合でも行動できたほうが便利なので
-                //if (currentUnit.Action == 0)
-                //{
-                //    // 発進コマンドは使用可能
-                //    if (currentUnit.IsFeatureAvailable("母艦"))
-                //    {
-                //        if (currentUnit.Area != "地中")
-                //        {
-                //            if (currentUnit.CountUnitOnBoard() > 0)
-                //            {
-                //                unitCommands.Add(new UiCommand(LaunchCmdID, "発進"));
-                //            }
-                //        }
-                //    }
+                if (currentUnit.Action == 0)
+                {
+                    // 発進コマンドは使用可能
+                    if (currentUnit.IsFeatureAvailable("母艦"))
+                    {
+                        if (currentUnit.Area != "地中")
+                        {
+                            if (currentUnit.CountUnitOnBoard() > 0)
+                            {
+                                unitCommands.Add(new UiCommand(LaunchCmdID, "発進"));
+                            }
+                        }
+                    }
 
-                //    // ユニットコマンド
-                //    AddUserUnitCommand(unitCommands);
-                //    GUI.IsGUILocked = false;
-                //    GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
-                //    return;
-                //}
+                    // ユニットコマンド
+                    AddUserUnitCommand(unitCommands);
+                    GUI.IsGUILocked = false;
+                    GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
+                    return;
+                }
             }
             {
                 // 移動コマンド

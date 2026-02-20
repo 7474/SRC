@@ -318,44 +318,40 @@ namespace SRCCore.Maps
                         }
                     }
 
-                    // TODO Impl レイヤーデータ読み込み
-                    //// ADD START 240a
-                    //// レイヤーデータ読み込み
-                    //if (!FileSystem.EOF(FileNumber))
-                    //{
-                    //    FileSystem.Input(FileNumber, buf);
-                    //    if (buf == "Layer")
-                    //    {
-                    //        var loopTo4 = MapWidth;
-                    //        for (i = 1; i <= loopTo4; i++)
-                    //        {
-                    //            var loopTo5 = MapHeight;
-                    //            for (j = 1; j <= loopTo5; j++)
-                    //            {
-                    //                Input(FileNumber, MapData[i, j, MapDataIndex.LayerType]);
-                    //                Input(FileNumber, MapData[i, j, MapDataIndex.LayerBitmapNo]);
-                    //                if (MapData[i, j, MapDataIndex.LayerType] != NO_LAYER_NUM)
-                    //                {
-                    //                    // 定義されていたらデータの妥当性チェック
-                    //                    if (!SRC.TDList.IsDefined(MapData[i, j, MapDataIndex.LayerType]))
-                    //                    {
-                    //                        Interaction.MsgBox("定義されていない" + SrcFormatter.Format(MapData[i, j, MapDataIndex.LayerType]) + "番の地形データが使われています");
-                    //                        FileSystem.FileClose(FileNumber);
-                    //                        Environment.Exit(0);
-                    //                    }
-                    //                    // マスのタイプを上層に
-                    //                    MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Upper;
-                    //                }
-                    //                else
-                    //                {
-                    //                    // マスのタイプを下層に（初期化時下層だが、再度明示的に設定する）
-                    //                    MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //// ADD  END  240a
+                    // レイヤーデータ読み込み
+                    if (reader.HasMore)
+                    {
+                        buf = reader.GetLine();
+                        if (buf == "Layer")
+                        {
+                            for (var x = 1; x <= MapWidth; x++)
+                            {
+                                for (var y = 1; y <= MapHeight; y++)
+                                {
+                                    buf = reader.GetLine();
+                                    var layerData = buf.Split(',');
+                                    var layerType = int.Parse(layerData[0]);
+                                    var layerBitmapNo = int.Parse(layerData[1]);
+                                    var cell = MapData[x, y];
+                                    cell.LayerType = layerType;
+                                    cell.LayerBitmapNo = layerBitmapNo;
+                                    if (layerType != MapCell.NO_LAYER_NUM)
+                                    {
+                                        if (!SRC.TDList.IsDefined(layerType))
+                                        {
+                                            throw reader.InvalidDataException("定義されていない" + layerType + "番の地形データが使われています", fname);
+                                        }
+                                        cell.UpperTerrain = SRC.TDList.Item(layerType);
+                                        cell.BoxType = BoxTypes.Upper;
+                                    }
+                                    else
+                                    {
+                                        cell.BoxType = BoxTypes.Under;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
