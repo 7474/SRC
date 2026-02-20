@@ -1493,7 +1493,11 @@ namespace SRCSharpForm
         {
             IWin32Window owner = null;
 
-            if (MainForm.Visible)
+            if (frmListBox?.Visible == true)
+            {
+                owner = frmListBox;
+            }
+            else if (MainForm.Visible)
             {
                 owner = MainForm;
             }
