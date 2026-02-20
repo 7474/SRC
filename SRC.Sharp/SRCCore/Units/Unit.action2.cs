@@ -451,6 +451,7 @@ namespace SRCCore.Units
 
             if (Summoner is object)
             {
+                PreviousSummonerId = Summoner.ID;
                 Summoner.CurrentForm().DeleteServant(ID);
                 Summoner = null;
             }
