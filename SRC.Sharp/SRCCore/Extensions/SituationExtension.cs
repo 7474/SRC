@@ -84,6 +84,7 @@ namespace SRCCore.Extensions
             }
 
             // 最初に相手限定のシチュエーションのみで検索
+            // 宣言位置は goto SkipMessagesWithTarget より前でなければならない
             List<T> targetList = null;
             if (u is null)
             {
