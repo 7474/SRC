@@ -154,5 +154,283 @@ namespace SRCCore.Lib.Tests
             GeneralLib.Dice(100);
             Assert.AreEqual(1, GeneralLib.RndIndex);
         }
+
+        // ──────────────────────────────────────────────
+        // LNormalize / LIndex / LLength / LSplit / IsSpace
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void LNormalizeTest()
+        {
+            Assert.AreEqual("a b c", GeneralLib.LNormalize("a  b  c"));
+            Assert.AreEqual("a b c", GeneralLib.LNormalize("  a b c  "));
+            Assert.AreEqual("", GeneralLib.LNormalize(""));
+            Assert.AreEqual("", GeneralLib.LNormalize(null));
+        }
+
+        [TestMethod()]
+        public void LIndexTest()
+        {
+            Assert.AreEqual("いちご", GeneralLib.LIndex("いちご みかん ぶどう", 1));
+            Assert.AreEqual("みかん", GeneralLib.LIndex("いちご みかん ぶどう", 2));
+            Assert.AreEqual("ぶどう", GeneralLib.LIndex("いちご みかん ぶどう", 3));
+            Assert.AreEqual("", GeneralLib.LIndex("いちご みかん ぶどう", 4));
+            Assert.AreEqual("", GeneralLib.LIndex("いちご みかん ぶどう", 0));
+            Assert.AreEqual("", GeneralLib.LIndex("", 1));
+        }
+
+        [TestMethod()]
+        public void LLengthTest()
+        {
+            Assert.AreEqual(3, GeneralLib.LLength("a b c"));
+            Assert.AreEqual(1, GeneralLib.LLength("a"));
+            Assert.AreEqual(0, GeneralLib.LLength(""));
+            Assert.AreEqual(0, GeneralLib.LLength(null));
+        }
+
+        [TestMethod()]
+        public void LSplitTest()
+        {
+            var count = GeneralLib.LSplit("a b c", out var arr);
+            Assert.AreEqual(3, count);
+            Assert.AreEqual("a", arr[0]);
+            Assert.AreEqual("b", arr[1]);
+            Assert.AreEqual("c", arr[2]);
+
+            var count2 = GeneralLib.LSplit("", out var arr2);
+            Assert.AreEqual(0, count2);
+            Assert.AreEqual(0, arr2.Length);
+        }
+
+        [TestMethod()]
+        public void IsSpaceTest()
+        {
+            Assert.IsTrue(GeneralLib.IsSpace(" "));
+            Assert.IsTrue(GeneralLib.IsSpace("\t"));
+            Assert.IsTrue(GeneralLib.IsSpace(""));
+            Assert.IsTrue(GeneralLib.IsSpace(null));
+            Assert.IsFalse(GeneralLib.IsSpace("a"));
+            Assert.IsFalse(GeneralLib.IsSpace("1"));
+        }
+
+        // ──────────────────────────────────────────────
+        // ListIndex / ListLength / ListSplit / ListTail
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void ListIndexTest()
+        {
+            Assert.AreEqual("a", GeneralLib.ListIndex("a b c", 1));
+            Assert.AreEqual("b", GeneralLib.ListIndex("a b c", 2));
+            Assert.AreEqual("c", GeneralLib.ListIndex("a b c", 3));
+            Assert.AreEqual("", GeneralLib.ListIndex("a b c", 4));
+            Assert.AreEqual("", GeneralLib.ListIndex("a b c", 0));
+        }
+
+        [TestMethod()]
+        public void ListLengthTest()
+        {
+            Assert.AreEqual(3, GeneralLib.ListLength("a b c"));
+            Assert.AreEqual(1, GeneralLib.ListLength("a"));
+            Assert.AreEqual(0, GeneralLib.ListLength(""));
+        }
+
+        [TestMethod()]
+        public void ListSplitTest()
+        {
+            var count = GeneralLib.ListSplit("a b c", out var arr);
+            Assert.AreEqual(3, count);
+            Assert.AreEqual("a", arr[0]);
+            Assert.AreEqual("b", arr[1]);
+            Assert.AreEqual("c", arr[2]);
+
+            var count2 = GeneralLib.ListSplit("", out var arr2);
+            Assert.AreEqual(0, count2);
+            Assert.AreEqual(0, arr2.Length);
+        }
+
+        [TestMethod()]
+        public void ListTailTest()
+        {
+            Assert.AreEqual("b c", GeneralLib.ListTail("a b c", 2));
+            Assert.AreEqual("c", GeneralLib.ListTail("a b c", 3));
+            Assert.AreEqual("", GeneralLib.ListTail("a b c", 4));
+            // idx <= 1 の場合は空文字列を返す（VB6の仕様に基づく）
+            Assert.AreEqual("", GeneralLib.ListTail("a b c", 1));
+        }
+
+        // ──────────────────────────────────────────────
+        // InStr2
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void InStr2Test()
+        {
+            // InStr2 は末尾から検索して最後の一致位置を返す
+            Assert.AreEqual(4, GeneralLib.InStr2("abcabc", "abc"));
+            Assert.AreEqual(1, GeneralLib.InStr2("abcdef", "abc"));
+            Assert.AreEqual(0, GeneralLib.InStr2("abcdef", "xyz"));
+            Assert.AreEqual(4, GeneralLib.InStr2("abcbc", "bc"));
+        }
+
+        // ──────────────────────────────────────────────
+        // StrToDbl
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void StrToDblTest()
+        {
+            Assert.AreEqual(3.14, GeneralLib.StrToDbl("3.14"));
+            Assert.AreEqual(0d, GeneralLib.StrToDbl("abc"));
+            Assert.AreEqual(0d, GeneralLib.StrToDbl(""));
+            Assert.AreEqual(42d, GeneralLib.StrToDbl("42"));
+        }
+
+        // ──────────────────────────────────────────────
+        // StrToHiragana
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void StrToHiraganaTest()
+        {
+            Assert.AreEqual("あいう", GeneralLib.StrToHiragana("アイウ"));
+            Assert.AreEqual("あいう", GeneralLib.StrToHiragana("あいう"));
+            Assert.AreEqual("abc", GeneralLib.StrToHiragana("abc"));
+        }
+
+        // ──────────────────────────────────────────────
+        // MaxLng / MinLng / MaxDbl / MinDbl
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void MaxLngTest()
+        {
+            Assert.AreEqual(5, GeneralLib.MaxLng(3, 5));
+            Assert.AreEqual(5, GeneralLib.MaxLng(5, 3));
+            Assert.AreEqual(5, GeneralLib.MaxLng(5, 5));
+            Assert.AreEqual(0, GeneralLib.MaxLng(-1, 0));
+        }
+
+        [TestMethod()]
+        public void MinLngTest()
+        {
+            Assert.AreEqual(3, GeneralLib.MinLng(3, 5));
+            Assert.AreEqual(3, GeneralLib.MinLng(5, 3));
+            Assert.AreEqual(3, GeneralLib.MinLng(3, 3));
+            Assert.AreEqual(-1, GeneralLib.MinLng(-1, 0));
+        }
+
+        [TestMethod()]
+        public void MaxDblTest()
+        {
+            Assert.AreEqual(5.5, GeneralLib.MaxDbl(3.3, 5.5));
+            Assert.AreEqual(5.5, GeneralLib.MaxDbl(5.5, 3.3));
+        }
+
+        [TestMethod()]
+        public void MinDblTest()
+        {
+            Assert.AreEqual(3.3, GeneralLib.MinDbl(3.3, 5.5));
+            Assert.AreEqual(3.3, GeneralLib.MinDbl(5.5, 3.3));
+        }
+
+        // ──────────────────────────────────────────────
+        // LeftPaddedString / RightPaddedString
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void LeftPaddedStringTest()
+        {
+            Assert.AreEqual("  abc", GeneralLib.LeftPaddedString("abc", 5));
+            Assert.AreEqual("abc", GeneralLib.LeftPaddedString("abc", 3));
+            Assert.AreEqual("abc", GeneralLib.LeftPaddedString("abc", 2));
+            Assert.AreEqual(" abc", GeneralLib.LeftPaddedString("abc", 4));
+        }
+
+        [TestMethod()]
+        public void RightPaddedStringTest()
+        {
+            Assert.AreEqual("abc  ", GeneralLib.RightPaddedString("abc", 5));
+            Assert.AreEqual("abc", GeneralLib.RightPaddedString("abc", 3));
+            Assert.AreEqual("abc", GeneralLib.RightPaddedString("abc", 2));
+            Assert.AreEqual("abc ", GeneralLib.RightPaddedString("abc", 4));
+        }
+
+        // ──────────────────────────────────────────────
+        // IsNumber
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void IsNumberTest()
+        {
+            Assert.IsTrue(GeneralLib.IsNumber("42"));
+            Assert.IsTrue(GeneralLib.IsNumber("3.14"));
+            Assert.IsTrue(GeneralLib.IsNumber("-10"));
+            Assert.IsFalse(GeneralLib.IsNumber("abc"));
+            Assert.IsFalse(GeneralLib.IsNumber(""));
+            Assert.IsFalse(GeneralLib.IsNumber("(1)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // GetClassBundle
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void GetClassBundleTest_SimpleChar()
+        {
+            int idx = 1;
+            var result = GeneralLib.GetClassBundle("炎水", ref idx);
+            Assert.AreEqual("炎", result);
+            Assert.AreEqual(1, idx);
+        }
+
+        [TestMethod()]
+        public void GetClassBundleTest_WeakPrefix()
+        {
+            int idx = 1;
+            var result = GeneralLib.GetClassBundle("弱炎", ref idx);
+            Assert.AreEqual("弱炎", result);
+            Assert.AreEqual(2, idx);
+        }
+
+        [TestMethod()]
+        public void GetClassBundleTest_LowPrefix()
+        {
+            int idx = 1;
+            var result = GeneralLib.GetClassBundle("低攻", ref idx);
+            Assert.AreEqual("低攻", result);
+            Assert.AreEqual(2, idx);
+        }
+
+        // ──────────────────────────────────────────────
+        // InStrNotNest
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void InStrNotNestTest_Found()
+        {
+            Assert.AreEqual(1, GeneralLib.InStrNotNest("炎水", "炎"));
+            Assert.AreEqual(2, GeneralLib.InStrNotNest("水炎", "炎"));
+        }
+
+        [TestMethod()]
+        public void InStrNotNestTest_NotFound()
+        {
+            Assert.AreEqual(0, GeneralLib.InStrNotNest("水風", "炎"));
+        }
+
+        [TestMethod()]
+        public void InStrNotNestTest_IgnoresNested()
+        {
+            // 「弱」は属性の接頭辞として働き「弱炎」は複合属性を構成する。
+            // そのため「弱炎」内の「炎」は独立した属性ではなく「弱炎」の一部として扱われ0を返す。
+            Assert.AreEqual(0, GeneralLib.InStrNotNest("弱炎", "炎"));
+        }
+
+        [TestMethod()]
+        public void InStrNotNestTest_WithStartPosition()
+        {
+            Assert.AreEqual(3, GeneralLib.InStrNotNest("水炎炎", "炎", 3));
+        }
     }
 }

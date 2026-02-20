@@ -44,5 +44,50 @@ namespace SRCCore.Extensions.Tests
             Assert.AreNotEqual(clone1, clone2);
             Assert.AreNotEqual(clone2, clone3);
         }
+
+        [TestMethod()]
+        public void AppendRangeTest()
+        {
+            IEnumerable<int> list = new List<int> { 1, 2, 3 };
+            var appended = list.AppendRange(new List<int> { 4, 5 });
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5 }, appended.ToList());
+        }
+
+        [TestMethod()]
+        public void AppendRangeTest_EmptyAppend()
+        {
+            IEnumerable<int> list = new List<int> { 1, 2 };
+            var result = list.AppendRange(new List<int>());
+            CollectionAssert.AreEqual(new[] { 1, 2 }, result.ToList());
+        }
+
+        [TestMethod()]
+        public void RemoveItemTest()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 5 };
+            list.RemoveItem(x => x % 2 == 0);
+            CollectionAssert.AreEqual(new[] { 1, 3, 5 }, list);
+        }
+
+        [TestMethod()]
+        public void RemoveItemTest_NoMatch()
+        {
+            var list = new List<string> { "a", "b", "c" };
+            list.RemoveItem(x => x == "z");
+            CollectionAssert.AreEqual(new[] { "a", "b", "c" }, list);
+        }
+
+        [TestMethod()]
+        public void DiceTest_ReturnsElementFromList()
+        {
+            var list = new List<string> { "a", "b", "c" };
+            SRCCore.Lib.GeneralLib.RndSeed = 1;
+            SRCCore.Lib.GeneralLib.RndReset();
+            for (int i = 0; i < 30; i++)
+            {
+                var picked = list.Dice();
+                Assert.IsTrue(list.Contains(picked), $"Dice returned '{picked}' which is not in the list");
+            }
+        }
     }
 }
