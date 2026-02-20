@@ -42,15 +42,23 @@ With single commands:
    - 約70個の具体的なIssueリスト
    - Detailed list of ~70 specific issues
 
+4. **[移植状況 総合評価レポート](./porting-assessment.md)** 🆕
+   - 定量的な移植進捗分析・リスク分析・GUI固有の評価
+   - Comprehensive quantitative porting assessment with risk analysis
+
+5. **[移植精度 評価・向上計画](./porting-quality-plan.md)** 🆕
+   - 移植精度の評価方法論・品質向上ロードマップ
+   - Quality evaluation methodology and improvement roadmap
+
 ## 🎯 プロジェクト概要 / Project Overview
 
-### 統計 / Statistics
+### 統計 / Statistics (2026-02-20 更新)
 
-- **Total TODO Comments**: 155+
-- **Total Issues to Create**: 約70個
+- **残存 TODO Comments**: 18件（SRCCore: 10, SRCSharpForm: 8）— 初期155+件から88%解消
+- **移植フェーズ**: コード移植ほぼ完了 → 品質検証・精度向上フェーズへ移行
+- **ユニットテスト**: 253テストメソッド（31ファイル）
 - **Epic Categories**: 8個
-- **Estimated Total Changes**: 18,000-25,000行
-- **Estimated Duration**: 12-18ヶ月
+- **詳細分析**: [移植状況 総合評価レポート](./porting-assessment.md) を参照
 
 ### Epic一覧 / Epic List
 
@@ -208,6 +216,11 @@ Copilotが現在のissue状態を確認し、ドキュメントと進行状況�
 - [SRC# デモ](https://7474.github.io/SRC/)
 
 ## 📝 更新履歴 / Changelog
+
+- **2026-02-20**: 移植状況の総合評価と品質向上計画を追加
+  - [移植状況 総合評価レポート](./porting-assessment.md) を新規作成
+  - [移植精度 評価・向上計画](./porting-quality-plan.md) を新規作成
+  - 統計情報の更新（残存TODO 18件、テスト253メソッド）
 
 - **2026-02-20**: 運用の見直しと進捗更新コマンドの追加
   - `@copilot 進捗を更新してください` コマンドの追加

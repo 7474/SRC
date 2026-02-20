@@ -66,6 +66,11 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 > **2026-02-20 時点**
 
+プロジェクトはコード移植フェーズをほぼ完了し、**品質検証・精度向上フェーズ**に移行している。
+
+- **総合評価レポート**: [移植状況 総合評価レポート](./porting-assessment.md) — 定量分析・リスク分析・GUI評価
+- **品質向上計画**: [移植精度 評価・向上計画](./porting-quality-plan.md) — テスト戦略・GUI検証・ロードマップ
+
 本計画の策定以前から、リポジトリには移植作業に関連する既存Issueがあります。これらは本計画と連携させて管理します。
 
 ### 関連する既存Issue / Pre-existing Related Issues
@@ -473,6 +478,7 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ## 更新履歴 / Change History
 
+- 2026-02-20 (5回目): 移植状況の総合評価と品質向上計画 — [総合評価レポート](./porting-assessment.md)と[精度評価・向上計画](./porting-quality-plan.md)を新規作成、プロジェクトの品質検証フェーズ移行を明記
 - 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/migration-plan.md に追加 (#744)
 - 2026-02-20 (3回目): 移植作業進捗 — CreateIniFile実装、イベント検証コード整理、発進ユニット表示説明追加 (#744)
 - 2026-02-20 (2回目): 進捗更新 — 残存TODO SRCCore 20件・SRCSharpForm 9件に更新、Epic1戦闘システム完了、最近のPR一覧を追加 (#728-#740)
