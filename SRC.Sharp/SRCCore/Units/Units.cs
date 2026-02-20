@@ -691,41 +691,30 @@ namespace SRCCore.Units
             //    }
             //}
 
-            //// 暴走時パイロットを削除
-            //foreach (Unit currentU8 in colUnits)
-            //{
-            //    u = currentU8;
-            //    if (u.IsFeatureAvailable("暴走時パイロット"))
-            //    {
-            //        if (SRC.PList.IsDefined(u.FeatureData(argIndex16)))
-            //        {
-            //            SRC.PList.Delete(u.FeatureData(argIndex14));
-            //        }
-            //    }
-            //}
+            // 暴走時パイロットを削除
+            foreach (Unit u in colUnits)
+            {
+                if (u.IsFeatureAvailable("暴走時パイロット"))
+                {
+                    var berserkPilotName = u.FeatureData("暴走時パイロット");
+                    if (SRC.PList.IsDefined(berserkPilotName))
+                    {
+                        SRC.PList.Delete(berserkPilotName);
+                    }
+                }
+            }
 
-            //// ダミーパイロットを削除
-            //foreach (Unit currentU9 in colUnits)
-            //{
-            //    u = currentU9;
-            //    if (u.CountPilot() > 0)
-            //    {
-            //        if (u.Pilot(1).Nickname0 == "パイロット不在")
-            //        {
-            //            u.DeletePilot(1);
-            //        }
-            //    }
-            //}
-
-            //// 変身先の形態等、一時的な形態を削除
-            //foreach (Unit currentU10 in colUnits)
-            //{
-            //    u = currentU10;
-            //    if (u.Status == "待機")
-            //    {
-            //        u.DeleteTemporaryOtherForm();
-            //    }
-            //}
+            // ダミーパイロットを削除
+            foreach (Unit u in colUnits)
+            {
+                if (u.CountPilot() > 0)
+                {
+                    if (u.Pilots.First().Nickname0 == "パイロット不在")
+                    {
+                        u.DeletePilot(u.Pilots.First());
+                    }
+                }
+            }
 
             // 破棄されたユニットを削除
             foreach (Unit u in colUnits.List.CloneList())
