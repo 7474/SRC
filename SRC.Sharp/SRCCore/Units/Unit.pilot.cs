@@ -102,13 +102,13 @@ namespace SRCCore.Units
                     else
                     {
                         GUI.ErrorMessage("暴走時パイロット「" + pname + "」のデータが定義されていません");
+                        return colPilot[1];
                     }
 
                     if (SRC.PList.IsDefined(pname))
                     {
                         // 既に暴走時パイロットが作成済み
                         var berserkPilot = SRC.PList.Item(pname);
-                        berserkPilot.Unit = this;
                         berserkPilot.Morale = Pilots.First().Morale;
                         berserkPilot.Level = Pilots.First().Level;
                         berserkPilot.Exp = Pilots.First().Exp;
@@ -128,6 +128,10 @@ namespace SRCCore.Units
                     {
                         // 暴走時パイロットが作成されていないので作成する
                         var berserkPilot = SRC.PList.Add(pname, Pilots.First().Level, Party0, gid: "");
+                        if (berserkPilot == null)
+                        {
+                            return colPilot[1];
+                        }
                         berserkPilot.Morale = Pilots.First().Morale;
                         berserkPilot.Exp = Pilots.First().Exp;
                         berserkPilot.Unit = this;
@@ -156,20 +160,32 @@ namespace SRCCore.Units
                 {
                     if ((pltAdditionalPilot.Name ?? "") == (pname ?? ""))
                     {
-                        if (pltAdditionalPilot.IsAdditionalPilot && !ReferenceEquals(pltAdditionalPilot.Unit, this))
+                        if (pltAdditionalPilot.IsAdditionalPilot)
                         {
-                            pltAdditionalPilot.Unit = this;
                             pltAdditionalPilot.Party = Party0;
-                            pltAdditionalPilot.Exp = Pilots.First().Exp;
-                            if (pltAdditionalPilot.Personality != "機械")
+                            if (CountPilot() > 0)
                             {
-                                pltAdditionalPilot.Morale = Pilots.First().Morale;
+                                pltAdditionalPilot.Exp = Pilots.First().Exp;
+                                if (pltAdditionalPilot.Personality != "機械")
+                                {
+                                    pltAdditionalPilot.Morale = Pilots.First().Morale;
+                                }
+
+                                if (pltAdditionalPilot.Level != Pilots.First().Level)
+                                {
+                                    pltAdditionalPilot.Level = Pilots.First().Level;
+                                    pltAdditionalPilot.Update();
+                                }
                             }
 
-                            if (pltAdditionalPilot.Level != Pilots.First().Level)
+                            if (!ReferenceEquals(pltAdditionalPilot.Unit, this))
                             {
-                                pltAdditionalPilot.Level = Pilots.First().Level;
-                                pltAdditionalPilot.Update();
+                                pltAdditionalPilot.Unit = this;
+                                if (!without_update)
+                                {
+                                    pltAdditionalPilot.Update();
+                                    pltAdditionalPilot.UpdateSupportMod();
+                                }
                             }
                         }
 
@@ -187,18 +203,24 @@ namespace SRCCore.Units
                         {
                             pltAdditionalPilot = additionalPilot;
                             additionalPilot.Party = Party0;
-                            additionalPilot.Unit = this;
-                            if (additionalPilot.IsAdditionalPilot && !ReferenceEquals(additionalPilot.Unit, this))
+                            if (additionalPilot.IsAdditionalPilot)
                             {
-                                additionalPilot.Level = Pilots.First().Level;
-                                additionalPilot.Exp = Pilots.First().Exp;
-                                if (additionalPilot.Personality != "機械")
+                                if (CountPilot() > 0)
                                 {
-                                    additionalPilot.Morale = Pilots.First().Morale;
+                                    additionalPilot.Level = Pilots.First().Level;
+                                    additionalPilot.Exp = Pilots.First().Exp;
+                                    if (additionalPilot.Personality != "機械")
+                                    {
+                                        additionalPilot.Morale = Pilots.First().Morale;
+                                    }
                                 }
 
-                                additionalPilot.Update();
-                                additionalPilot.UpdateSupportMod();
+                                if (!ReferenceEquals(additionalPilot.Unit, this))
+                                {
+                                    additionalPilot.Unit = this;
+                                    additionalPilot.Update();
+                                    additionalPilot.UpdateSupportMod();
+                                }
                             }
 
                             return pltAdditionalPilot;

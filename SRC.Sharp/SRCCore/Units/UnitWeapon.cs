@@ -2387,11 +2387,11 @@ namespace SRCCore.Units
                 // ＥＣＭ
                 var ecm_lv = 0d;
                 var eccm_lv = 0d;
-                var loopTo = GeneralLib.MinLng((int)(t.x + 2), Map.MapWidth);
-                for (var i = GeneralLib.MaxLng((int)(t.x - 2), 1); i <= loopTo; i++)
+                var loopTo = GeneralLib.MinLng((int)(t.x + 3), Map.MapWidth);
+                for (var i = GeneralLib.MaxLng((int)(t.x - 3), 1); i <= loopTo; i++)
                 {
-                    var loopTo1 = GeneralLib.MinLng((int)(t.y + 2), Map.MapHeight);
-                    for (var j = GeneralLib.MaxLng((int)(t.y - 2), 1); j <= loopTo1; j++)
+                    var loopTo1 = GeneralLib.MinLng((int)(t.y + 3), Map.MapHeight);
+                    for (var j = GeneralLib.MaxLng((int)(t.y - 3), 1); j <= loopTo1; j++)
                     {
                         if (Math.Abs((t.x - i)) + Math.Abs((t.y - j)) <= 3)
                         {
