@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCCore;
 using SRCCore.CmdDatas;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
@@ -205,6 +206,144 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var cmd = CreateCmd(src, "SetWindowFrameWidth");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // ClearImageCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ClearImageCmd_CallsClearPicture()
+        {
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            var called = false;
+            gui.ClearPictureHandler = () => called = true;
+
+            var cmd = CreateCmd(src, "ClearImage");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsTrue(called);
+        }
+
+        // ──────────────────────────────────────────────
+        // ShowImageCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ShowImageCmd_CallsDrawPictureWithDefaultSize()
+        {
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            string capturedFname = null;
+            int capturedDw = 0, capturedDh = 0;
+            gui.DrawPictureHandler = (fname, dx, dy, dw, dh, sx, sy, sw, sh, opt) =>
+            {
+                capturedFname = fname;
+                capturedDw = dw;
+                capturedDh = dh;
+                return true;
+            };
+
+            var cmd = CreateCmd(src, "ShowImage test.bmp");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("test.bmp", capturedFname);
+            Assert.AreEqual(Constants.DEFAULT_LEVEL, capturedDw);
+            Assert.AreEqual(Constants.DEFAULT_LEVEL, capturedDh);
+        }
+
+        [TestMethod]
+        public void ShowImageCmd_CallsDrawPictureWithExplicitSize()
+        {
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            int capturedDw = 0, capturedDh = 0;
+            gui.DrawPictureHandler = (fname, dx, dy, dw, dh, sx, sy, sw, sh, opt) =>
+            {
+                capturedDw = dw;
+                capturedDh = dh;
+                return true;
+            };
+
+            var cmd = CreateCmd(src, "ShowImage test.png 320 240");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual(320, capturedDw);
+            Assert.AreEqual(240, capturedDh);
+        }
+
+        [TestMethod]
+        public void ShowImageCmd_InvalidExtension_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ShowImage test.txt");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // ReadCmd / WriteCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void WriteCmd_WritesValuesToFile()
+        {
+            var src = CreateSrc();
+            using var ms = new System.IO.MemoryStream();
+            var handle = src.FileHandleManager.Add(
+                SRCCore.Filesystem.SafeOpenMode.Write,
+                SRCCompatibilityMode.None,
+                ms);
+
+            var cmd = CreateCmd(src, $"Write {handle.Handle} \"Hello\" \"World\"");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            handle.Writer.Flush();
+            var written = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            Assert.IsTrue(written.Contains("Hello"));
+            Assert.IsTrue(written.Contains("World"));
+        }
+
+        [TestMethod]
+        public void ReadCmd_ReadsValuesFromFile()
+        {
+            var src = CreateSrc();
+            var content = System.Text.Encoding.UTF8.GetBytes("Hello\r\nWorld\r\n");
+            using var ms = new System.IO.MemoryStream(content);
+            var handle = src.FileHandleManager.Add(
+                SRCCore.Filesystem.SafeOpenMode.Read,
+                SRCCompatibilityMode.None,
+                ms);
+
+            var cmd = CreateCmd(src, $"Read {handle.Handle} A B");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("Hello", src.Expression.GetValueAsString("A"));
+            Assert.AreEqual("World", src.Expression.GetValueAsString("B"));
+        }
+
+        [TestMethod]
+        public void ReadCmd_TooFewArgs_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Read 1");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void WriteCmd_TooFewArgs_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Write 1");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }

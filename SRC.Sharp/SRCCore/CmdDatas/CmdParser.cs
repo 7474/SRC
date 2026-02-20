@@ -102,7 +102,7 @@ namespace SRCCore.CmdDatas
                         return new ClearEventCmd(src, data);
 
                     case "clearimage":
-                        return new NotSupportedCmd(src, data);
+                        return new ClearImageCmd(src, data);
 
                     case "clearlayer":
                         return new ClearLayerCmd(src, data);
@@ -399,7 +399,7 @@ namespace SRCCore.CmdDatas
                         return new RankUpCmd(src, data);
 
                     case "read":
-                        return new NotSupportedCmd(src, data);
+                        return new ReadCmd(src, data);
 
                     case "recoveren":
                         return new RecoverENCmd(src, data);
@@ -506,7 +506,7 @@ namespace SRCCore.CmdDatas
                         return new ShowCmd(src, data);
 
                     case "showimage":
-                        return new NotSupportedCmd(src, data);
+                        return new ShowImageCmd(src, data);
 
                     case "showunitstatus":
                         return new ShowUnitStatusCmd(src, data);
@@ -608,7 +608,7 @@ namespace SRCCore.CmdDatas
                         return new WhiteOutCmd(src, data);
 
                     case "write":
-                        return new NotSupportedCmd(src, data);
+                        return new WriteCmd(src, data);
 
                     default:
                         {
