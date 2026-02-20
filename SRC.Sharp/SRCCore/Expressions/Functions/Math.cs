@@ -102,7 +102,7 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             num_result = Enumerable.Range(1, pcount)
-                .Select(x => SRC.Expression.GetValueAsDouble(@params[1], is_term[1]))
+                .Select(x => SRC.Expression.GetValueAsDouble(@params[x], is_term[x]))
                 .Max();
             if (etype == ValueType.StringType)
             {
@@ -123,7 +123,7 @@ namespace SRCCore.Expressions.Functions
             num_result = 0d;
 
             num_result = Enumerable.Range(1, pcount)
-                .Select(x => SRC.Expression.GetValueAsDouble(@params[1], is_term[1]))
+                .Select(x => SRC.Expression.GetValueAsDouble(@params[x], is_term[x]))
                 .Min();
             if (etype == ValueType.StringType)
             {
