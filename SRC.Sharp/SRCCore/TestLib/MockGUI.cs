@@ -10,6 +10,7 @@ namespace SRCCore.TestLib
     public class MockGUI : IGUI
     {
         public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsInDeploymentSelection => false;
         public int TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

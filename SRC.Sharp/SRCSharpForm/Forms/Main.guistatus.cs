@@ -274,16 +274,12 @@ namespace SRCSharpForm
                     {
                         // パイロット画像を表示
                         var fname = SRC.FileSystem.PathCombine("Pilot", p.get_Bitmap(false));
-                        // TODO Impl ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
-                        //if (My.MyProject.Forms.frmMultiSelectListBox.Visible)
-                        //{
-                        //    // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の
-                        //    // 代わりにユニット画像を表示
-                        //    if (Strings.InStr(p.Name, "(ザコ)") > 0 || Strings.InStr(p.Name, "(汎用)") > 0)
-                        //    {
-                        //        fname = @"\Bitmap\Unit\" + u.get_Bitmap(false);
-                        //    }
-                        //}
+                        // ザコ＆汎用パイロットが乗るユニットの出撃選択時はパイロット画像の代わりにユニット画像を表示
+                        if (GUI.IsInDeploymentSelection
+                            && (p.Name.Contains("(ザコ)") || p.Name.Contains("(汎用)")))
+                        {
+                            fname = u.CurrentForm().CurrentBitmap();
+                        }
                         // 画像ファイルを読み込んで表示
                         var image = ImageBuffer.Get(fname);
                         picFace.Image = image;
@@ -1643,9 +1639,9 @@ namespace SRCSharpForm
                             }
                             if (displayText != null)
                             {
-                                upic.Print(displayText);
                                 if (0 < cnd.Lifetime && cnd.Lifetime < lifetimeThreshold)
-                                    upic.Print(" 残り" + SrcFormatter.Format(cnd.Lifetime) + "ターン");
+                                    displayText += " 残り" + SrcFormatter.Format(cnd.Lifetime) + "ターン";
+                                upic.Print(displayText);
                                 upic.Print();
                             }
                         }

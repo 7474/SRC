@@ -89,6 +89,9 @@ namespace SRCCore
         // GUIから入力可能かどうか
         bool IsGUILocked { get; set; }
 
+        // 出撃選択中かどうか（ザコ＆汎用パイロットの画像切り替えに使用）
+        bool IsInDeploymentSelection { get; }
+
         // リストボックス内で表示位置
         int TopItem { get; set; }
 

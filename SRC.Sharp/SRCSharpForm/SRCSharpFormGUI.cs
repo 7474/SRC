@@ -1496,6 +1496,8 @@ namespace SRCSharpForm
 
         }
 
+        public bool IsInDeploymentSelection { get; private set; }
+
         public int MultiSelectListBox(ListBoxArgs args, int max_num)
         {
             // ステータスウィンドウに攻撃の命中率などを表示させないようにする
@@ -1507,7 +1509,15 @@ namespace SRCSharpForm
                 box.Init(SRC, args, max_num);
                 box.Left = MainForm.Left;
                 box.Top = MainForm.Top + (MainForm.Height - box.Height) / 2;
-                box.ShowDialog();
+                IsInDeploymentSelection = true;
+                try
+                {
+                    box.ShowDialog();
+                }
+                finally
+                {
+                    IsInDeploymentSelection = false;
+                }
 
                 // 選択された項目数を返す
                 return box.SelectedItemNum;
@@ -2119,7 +2129,9 @@ namespace SRCSharpForm
             using (var ofd = new OpenFileDialog())
             {
                 ofd.Title = title;
-                ofd.InitialDirectory = Directory.Exists(initialDirectory) ? initialDirectory : SRC.ScenarioPath;
+                var effectiveDir = new[] { initialDirectory, SRC.ScenarioPath }
+                    .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
+                if (effectiveDir != null) ofd.InitialDirectory = effectiveDir;
                 if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
                 {
                     ofd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";
@@ -2137,7 +2149,9 @@ namespace SRCSharpForm
             using (var sfd = new SaveFileDialog())
             {
                 sfd.Title = title;
-                sfd.InitialDirectory = Directory.Exists(initialDirectory) ? initialDirectory : SRC.ScenarioPath;
+                var effectiveDir = new[] { initialDirectory, SRC.ScenarioPath }
+                    .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
+                if (effectiveDir != null) sfd.InitialDirectory = effectiveDir;
                 sfd.FileName = initialFile ?? "";
                 if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
                 {
