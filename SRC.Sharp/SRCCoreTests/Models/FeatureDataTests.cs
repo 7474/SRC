@@ -120,5 +120,53 @@ namespace SRCCore.Models.Tests
             Assert.AreEqual("スキル", fd.NecessarySkill);
             Assert.AreEqual("条件", fd.NecessaryCondition);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void HasLevel_ReturnsTrue_WhenLevelIsPositiveFraction()
+        {
+            var fd = new FeatureData { Level = 0.5 };
+            Assert.IsTrue(fd.HasLevel);
+        }
+
+        [TestMethod]
+        public void FeatureLevel_ReturnsLevel_WhenLevelIsZero()
+        {
+            var fd = new FeatureData { Level = 0 };
+            Assert.AreEqual(0d, fd.FeatureLevel);
+        }
+
+        [TestMethod]
+        public void DataL_SingleElement_ReturnsListWithOneItem()
+        {
+            var fd = new FeatureData { StrData = "only" };
+            var list = fd.DataL;
+            Assert.AreEqual(1, list.Count);
+            Assert.AreEqual("only", list[0]);
+        }
+
+        [TestMethod]
+        public void FeatureNameWithLv_DefaultLevel_ReturnsNameWithoutLv()
+        {
+            var fd = new FeatureData { Name = "HP回復", Level = Constants.DEFAULT_LEVEL, StrData = "" };
+            Assert.AreEqual("HP回復", fd.FeatureNameWithLv());
+        }
+
+        [TestMethod]
+        public void NecessarySkill_DefaultIsNull()
+        {
+            var fd = new FeatureData();
+            Assert.IsNull(fd.NecessarySkill);
+        }
+
+        [TestMethod]
+        public void NecessaryCondition_DefaultIsNull()
+        {
+            var fd = new FeatureData();
+            Assert.IsNull(fd.NecessaryCondition);
+        }
     }
 }

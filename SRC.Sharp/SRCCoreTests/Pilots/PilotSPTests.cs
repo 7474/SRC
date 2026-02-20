@@ -118,5 +118,36 @@ namespace SRCCore.Pilots.Tests
 
             Assert.AreEqual(pilot.MaxSP, pilot.SP);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MaxSP_Level40_CorrectValue()
+        {
+            var src = CreateSrc();
+            // level 40: 2*40=80; +SP(5) = 85
+            var pilot = CreatePilot(src, "lv40パイロット", sp: 5, level: 40);
+            Assert.AreEqual(85, pilot.MaxSP);
+        }
+
+        [TestMethod]
+        public void MaxSP_Level41_CorrectValue()
+        {
+            var src = CreateSrc();
+            // level 41: 41+40=81; +SP(5) = 86
+            var pilot = CreatePilot(src, "lv41パイロット", sp: 5, level: 41);
+            Assert.AreEqual(86, pilot.MaxSP);
+        }
+
+        [TestMethod]
+        public void SP_CanBeSetToZero()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src, "ゼロセットパイロット", sp: 10, level: 1);
+            pilot.SP = 0;
+            Assert.AreEqual(0, pilot.SP);
+        }
     }
 }

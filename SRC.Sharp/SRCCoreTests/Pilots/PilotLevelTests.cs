@@ -145,5 +145,55 @@ namespace SRCCore.Pilots.Tests
             var pilot = CreatePilot(src);
             Assert.AreEqual(50, pilot.MinMorale);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void TotalExp_AtLevel1_WithZeroExp_Is500()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src, level: 1);
+            // TotalExp = 1 * 500 + 0 = 500
+            Assert.AreEqual(500, pilot.TotalExp);
+        }
+
+        [TestMethod]
+        public void TotalExp_AtLevel1_WithPartialExp_IsCorrect()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src, level: 1);
+            pilot.Exp += 100;
+            // TotalExp = 1 * 500 + 100 = 600
+            Assert.AreEqual(600, pilot.TotalExp);
+        }
+
+        [TestMethod]
+        public void Morale_SetToExactMin_StaysAtMin()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src);
+            pilot.Morale = 50;
+            Assert.AreEqual(50, pilot.Morale);
+        }
+
+        [TestMethod]
+        public void Morale_SetToExactMax_StaysAtMax()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src);
+            pilot.Morale = 150;
+            Assert.AreEqual(150, pilot.Morale);
+        }
+
+        [TestMethod]
+        public void Level_IncreasedByExp_UpdatesCorrectly()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src, level: 5);
+            pilot.Exp += 500;
+            Assert.AreEqual(6, pilot.Level);
+        }
     }
 }

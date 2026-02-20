@@ -121,5 +121,59 @@ namespace SRCCore.Expressions.Tests
             exp.FormatMessage(ref msg);
             Assert.AreEqual("アムロ、出撃！", msg);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SetAndGetVariable_StringValue_RoundTrips()
+        {
+            var exp = Create();
+            exp.SetVariableAsString("テスト変数", "テスト値");
+            Assert.AreEqual("テスト値", exp.GetValueAsString("テスト変数"));
+        }
+
+        [TestMethod]
+        public void SetAndGetVariable_DoubleValue_RoundTrips()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("数値変数", 99d);
+            Assert.AreEqual(99d, exp.GetValueAsDouble("数値変数"));
+        }
+
+        [TestMethod]
+        public void IsVariableDefined_UndefinedVariable_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.IsFalse(exp.IsVariableDefined("未定義変数"));
+        }
+
+        [TestMethod]
+        public void IsVariableDefined_DefinedVariable_ReturnsTrue()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("定義済み", 1d);
+            Assert.IsTrue(exp.IsVariableDefined("定義済み"));
+        }
+
+        [TestMethod]
+        public void ReplaceSubExpression_TwoVariables_BothReplaced()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("x", 10d);
+            exp.SetVariableAsDouble("y", 20d);
+
+            var str = "$(x)と$(y)";
+            exp.ReplaceSubExpression(ref str);
+            Assert.AreEqual("10と20", str);
+        }
+
+        [TestMethod]
+        public void IsOptionDefined_UndefinedOption_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.IsFalse(exp.IsOptionDefined("存在しないオプション"));
+        }
     }
 }

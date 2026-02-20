@@ -99,5 +99,100 @@ namespace SRCCore.Units.Tests
 
             Assert.AreEqual(2, unit.CountCondition());
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void DeleteCondition0_RemovesCondition()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("麻痺", 3);
+            unit.DeleteCondition0("麻痺");
+
+            Assert.AreEqual(0, unit.CountCondition());
+        }
+
+        [TestMethod]
+        public void ClearCondition_RemovesAllConditions()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("麻痺", 3);
+            unit.AddCondition("睡眠", 2);
+            unit.ClearCondition();
+
+            Assert.AreEqual(0, unit.CountCondition());
+        }
+
+        [TestMethod]
+        public void ConditionLifetime_ReturnsCorrectLifetime()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("麻痺", 5);
+
+            Assert.AreEqual(5, unit.ConditionLifetime("麻痺"));
+        }
+
+        [TestMethod]
+        public void ConditionLifetime_ReturnsMinusOne_WhenNotPresent()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            Assert.AreEqual(-1, unit.ConditionLifetime("存在しない状態"));
+        }
+
+        [TestMethod]
+        public void ConditionLevel_ReturnsLevel_WhenConditionHasLevel()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("強化", 3, clevel: 2.0);
+
+            Assert.AreEqual(2.0, unit.ConditionLevel("強化"));
+        }
+
+        [TestMethod]
+        public void ConditionLevel_ReturnsZero_WhenConditionNotPresent()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            Assert.AreEqual(0d, unit.ConditionLevel("存在しない状態"));
+        }
+
+        [TestMethod]
+        public void AddCondition_SameConditionTwice_UpdatesLifetimeToMax()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("麻痺", 2);
+            unit.AddCondition("麻痺", 5);
+
+            // 残りターンは Max(2,5) = 5
+            Assert.AreEqual(5, unit.ConditionLifetime("麻痺"));
+            // カウント変わらず
+            Assert.AreEqual(1, unit.CountCondition());
+        }
+
+        [TestMethod]
+        public void AddCondition_PermanentCondition_ReturnsMinusOneLifetime()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+
+            unit.AddCondition("永続状態", -1);
+
+            Assert.AreEqual(-1, unit.ConditionLifetime("永続状態"));
+        }
     }
 }

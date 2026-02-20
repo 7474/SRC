@@ -111,5 +111,59 @@ namespace SRCCore.Pilots.Tests
             pilot.FullRecover();
             Assert.AreEqual(maxSP, pilot.SP);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void HasSupportSkill_NoSkills_ReturnsFalse()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src);
+            Assert.IsFalse(pilot.HasSupportSkill());
+        }
+
+        [TestMethod]
+        public void CountSkill_AfterAddingSkill_ReturnsOne()
+        {
+            var src = CreateSrc();
+            var name = "スキルテストパイロット";
+            var pd = src.PDList.Add(name);
+            pd.SP = 10;
+            pd.AddSkill("闘争心", 1d, "", 1);
+            var pilot = src.PList.Add(name, 1, "味方");
+            Assert.AreEqual(1, pilot.CountSkill());
+        }
+
+        [TestMethod]
+        public void IsSkillAvailable_ExistingSkill_ReturnsTrue()
+        {
+            var src = CreateSrc();
+            var name = "スキルテストパイロット2";
+            var pd = src.PDList.Add(name);
+            pd.SP = 10;
+            pd.AddSkill("気力アップ", 1d, "", 1);
+            var pilot = src.PList.Add(name, 1, "味方");
+            Assert.IsTrue(pilot.IsSkillAvailable("気力アップ"));
+        }
+
+        [TestMethod]
+        public void Alive_CanBeSetToFalse()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src);
+            pilot.Alive = false;
+            Assert.IsFalse(pilot.Alive);
+        }
+
+        [TestMethod]
+        public void Away_CanBeSetToTrue()
+        {
+            var src = CreateSrc();
+            var pilot = CreatePilot(src);
+            pilot.Away = true;
+            Assert.IsTrue(pilot.Away);
+        }
     }
 }
