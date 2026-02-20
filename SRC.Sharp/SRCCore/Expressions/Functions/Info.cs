@@ -1352,7 +1352,6 @@ namespace SRCCore.Expressions.Functions
 
                 case "特殊能力解説":
                     {
-                        // TODO Impl Help
                         var aname = @params[idx + 1];
 
                         // エリアスが定義されている？
@@ -1361,37 +1360,37 @@ namespace SRCCore.Expressions.Functions
                             aname = SRC.ALDList.Item(aname).ReplaceTypeName(aname);
                         }
 
-                        //if (u != null)
-                        //{
-                        //    if (GeneralLib.IsNumber(aname))
-                        //    {
-                        //        str_result = Help.FeatureHelpMessage(u, Conversions.ToInteger(aname), false);
-                        //    }
-                        //    else
-                        //    {
-                        //        str_result = Help.FeatureHelpMessage(u, aname, false);
-                        //    }
+                        if (u != null)
+                        {
+                            if (GeneralLib.IsNumber(aname))
+                            {
+                                str_result = SRC.Help.FeatureHelpMessage(u, Conversions.ToInteger(aname), false);
+                            }
+                            else
+                            {
+                                str_result = SRC.Help.FeatureHelpMessage(u, aname, false);
+                            }
 
-                        //    if (string.IsNullOrEmpty(str_result) && p != null)
-                        //    {
-                        //        str_result = Help.SkillHelpMessage(p, aname);
-                        //    }
-                        //}
-                        //else if (p != null)
-                        //{
-                        //    str_result = Help.SkillHelpMessage(p, aname);
-                        //    if (string.IsNullOrEmpty(str_result) && u != null)
-                        //    {
-                        //        if (GeneralLib.IsNumber(aname))
-                        //        {
-                        //            str_result = Help.FeatureHelpMessage(u, Conversions.ToInteger(aname), false);
-                        //        }
-                        //        else
-                        //        {
-                        //            str_result = Help.FeatureHelpMessage(u, aname, false);
-                        //        }
-                        //    }
-                        //}
+                            if (string.IsNullOrEmpty(str_result) && p != null)
+                            {
+                                str_result = SRC.Help.SkillHelpMessage(p, aname);
+                            }
+                        }
+                        else if (p != null)
+                        {
+                            str_result = SRC.Help.SkillHelpMessage(p, aname);
+                            if (string.IsNullOrEmpty(str_result) && u != null)
+                            {
+                                if (GeneralLib.IsNumber(aname))
+                                {
+                                    str_result = SRC.Help.FeatureHelpMessage(u, Conversions.ToInteger(aname), false);
+                                }
+                                else
+                                {
+                                    str_result = SRC.Help.FeatureHelpMessage(u, aname, false);
+                                }
+                            }
+                        }
 
                         break;
                     }
@@ -1785,18 +1784,17 @@ namespace SRCCore.Expressions.Functions
                                         break;
                                     }
 
-                                // TODO Impl Help
-                                //case "属性名称":
-                                //    {
-                                //        str_result = Help.AttributeName(u, @params[idx + 1], false);
-                                //        break;
-                                //    }
+                                case "属性名称":
+                                    {
+                                        str_result = SRC.Help.AttributeName(u, @params[idx + 1], false);
+                                        break;
+                                    }
 
-                                //case "属性解説":
-                                //    {
-                                //        str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, false);
-                                //        break;
-                                //    }
+                                case "属性解説":
+                                    {
+                                        str_result = SRC.Help.AttributeHelpMessage(u, @params[idx + 1], uw.WeaponNo(), false);
+                                        break;
+                                    }
 
                                 case "必要技能":
                                     {
@@ -2020,18 +2018,17 @@ namespace SRCCore.Expressions.Functions
                                         break;
                                     }
 
-                                // TODO Impl Help
-                                //case "属性名称":
-                                //    {
-                                //        str_result = Help.AttributeName(u, @params[idx + 1], true);
-                                //        break;
-                                //    }
+                                case "属性名称":
+                                    {
+                                        str_result = SRC.Help.AttributeName(u, @params[idx + 1], true);
+                                        break;
+                                    }
 
-                                //case "属性解説":
-                                //    {
-                                //        str_result = Help.AttributeHelpMessage(u, @params[idx + 1], i, true);
-                                //        break;
-                                //    }
+                                case "属性解説":
+                                    {
+                                        str_result = SRC.Help.AttributeHelpMessage(u, @params[idx + 1], ua.AbilityNo(), true);
+                                        break;
+                                    }
 
                                 case "必要技能":
                                     {
