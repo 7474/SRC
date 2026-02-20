@@ -149,5 +149,121 @@ namespace SRCCore.Expressions.Tests
             exp.SetVariableAsDouble("Score", 500d);
             Assert.AreEqual(500d, exp.GetValueAsDouble("Score"));
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト: 比較・論理・文字列
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Compare_LessThanOrEqual_WhenLess_ReturnsTrue()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("3 <= 4"));
+        }
+
+        [TestMethod]
+        public void Compare_GreaterThanOrEqual_WhenEqual_ReturnsTrue()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("5 >= 5"));
+        }
+
+        [TestMethod]
+        public void Compare_GreaterThanOrEqual_WhenLess_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("3 >= 4"));
+        }
+
+        [TestMethod]
+        public void Compare_LessThanOrEqual_WhenGreater_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("5 <= 4"));
+        }
+
+        [TestMethod]
+        public void Compare_Equal_Strings_ReturnsTrue()
+        {
+            var exp = Create();
+            exp.SetVariableAsString("s", "hello");
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"hello\" = \"hello\""));
+        }
+
+        [TestMethod]
+        public void Compare_NotEqual_Strings_ReturnsTrue()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"abc\" <> \"def\""));
+        }
+
+        [TestMethod]
+        public void Logic_And_BothFalse_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("0 And 0"));
+        }
+
+        [TestMethod]
+        public void Logic_Or_BothFalse_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("0 Or 0"));
+        }
+
+        [TestMethod]
+        public void Logic_Or_BothTrue_ReturnsTrue()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("1 Or 1"));
+        }
+
+        [TestMethod]
+        public void Logic_Not_NonZero_ReturnsFalse()
+        {
+            var exp = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("Not 5"));
+        }
+
+        [TestMethod]
+        public void Concatenate_EmptyStrings_ReturnsEmpty()
+        {
+            var exp = Create();
+            Assert.AreEqual("", exp.GetValueAsString("\"\" & \"\""));
+        }
+
+        [TestMethod]
+        public void Concatenate_NumberAndString_Works()
+        {
+            var exp = Create();
+            Assert.AreEqual("100点", exp.GetValueAsString("100 & \"点\""));
+        }
+
+        [TestMethod]
+        public void ArrayVariable_StringValue_SetAndGet()
+        {
+            var exp = Create();
+            exp.SetVariableAsString("names[1]", "Alice");
+            exp.SetVariableAsString("names[2]", "Bob");
+            Assert.AreEqual("Alice", exp.GetValueAsString("names[1]"));
+            Assert.AreEqual("Bob", exp.GetValueAsString("names[2]"));
+        }
+
+        [TestMethod]
+        public void SetVariableAsLong_ReturnsCorrectLongValue()
+        {
+            var exp = Create();
+            exp.SetVariableAsLong("cnt", 42);
+            Assert.AreEqual(42, exp.GetValueAsLong("cnt"));
+        }
+
+        [TestMethod]
+        public void IsVariableDefined_AfterUndefine_ReturnsFalse()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("tmp", 1d);
+            exp.UndefineVariable("tmp");
+            Assert.IsFalse(exp.IsVariableDefined("tmp"));
+        }
     }
 }

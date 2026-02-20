@@ -147,5 +147,80 @@ namespace SRCCore.CmdDatas.Tests
             // Variable should be unchanged after the error
             Assert.AreEqual(1d, src.Expression.GetValueAsDouble("arr[1]"));
         }
+
+        [TestMethod]
+        public void SortDescendingStringValueTest()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsString("arr[1]", "Alice");
+            src.Expression.SetVariableAsString("arr[2]", "Bob");
+            src.Expression.SetVariableAsString("arr[3]", "Charlie");
+
+            var cmd = CreateSortCmd(src, "Sort arr 降順 文字");
+            cmd.Exec();
+
+            // 数値インデックスの降順ソート: キーを先に降順(3,2,1)に並べ、
+            // 値を降順(Charlie,Bob,Alice)に並べて zip するため
+            // arr[3]=Charlie, arr[2]=Bob, arr[1]=Alice となる
+            Assert.AreEqual("Alice", src.Expression.GetValueAsString("arr[1]"));
+            Assert.AreEqual("Bob", src.Expression.GetValueAsString("arr[2]"));
+            Assert.AreEqual("Charlie", src.Expression.GetValueAsString("arr[3]"));
+        }
+
+        [TestMethod]
+        public void SortTwoElements_AscendingTest()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("v[1]", 9);
+            src.Expression.SetVariableAsDouble("v[2]", 1);
+
+            var cmd = CreateSortCmd(src, "Sort v 昇順");
+            cmd.Exec();
+
+            Assert.AreEqual(1d, src.Expression.GetValueAsDouble("v[1]"));
+            Assert.AreEqual(9d, src.Expression.GetValueAsDouble("v[2]"));
+        }
+
+        [TestMethod]
+        public void SortNoArguments_ReturnsError()
+        {
+            var src = CreateSrc();
+
+            var cmd = CreateSortCmd(src, "Sort");
+            var next = cmd.Exec();
+
+            Assert.AreEqual(-1, next);
+        }
+
+        [TestMethod]
+        public void SortKeyOnly_DescendingTest()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("d[1]", 10);
+            src.Expression.SetVariableAsDouble("d[2]", 20);
+            src.Expression.SetVariableAsDouble("d[3]", 30);
+
+            var cmd = CreateSortCmd(src, "Sort d 降順 インデックスのみ");
+            cmd.Exec();
+
+            // キー降順でも変数値はキーと共に並び変わる
+            // 降順キーソート: key[3]=30, key[2]=20, key[1]=10
+            Assert.AreEqual(30d, src.Expression.GetValueAsDouble("d[3]"));
+            Assert.AreEqual(20d, src.Expression.GetValueAsDouble("d[2]"));
+            Assert.AreEqual(10d, src.Expression.GetValueAsDouble("d[1]"));
+        }
+
+        [TestMethod]
+        public void SortSingleElement_AscendingTest()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("s[1]", 42);
+
+            var cmd = CreateSortCmd(src, "Sort s 昇順");
+            var next = cmd.Exec();
+
+            Assert.AreEqual(1, next);
+            Assert.AreEqual(42d, src.Expression.GetValueAsDouble("s[1]"));
+        }
     }
 }
