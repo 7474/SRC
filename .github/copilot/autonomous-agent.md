@@ -212,7 +212,7 @@ When the implementation differs from help documentation:
   [actual behavior description]
 
 テストの扱い:
-  実装の動作に合わせたテストを作成し、コメントに齟齬を記載
+  ヘルプを正として実装を修正し、修正後にヘルプの記載に沿ったテストを作成する
 ```
 
 ### Phase 4: Report Progress / 進捗報告
@@ -344,9 +344,11 @@ For each command, write tests verifying:
 - At least 1 error test (invalid arguments or missing required structure)
 - Additional tests for each distinct behavior described in help
 
-### Step 4: Report Discrepancies / 齟齬の報告
+### Step 4: Fix Implementation or Report Discrepancies / 実装の修正または齟齬の報告
 
-If the implementation differs from help documentation, report:
+If the implementation differs from help documentation:
+
+**原則**: ヘルプを正として実装を修正してください。
 
 ```
 ⚠️ 齟齬発見 / Discrepancy Found: [CommandName]コマンド
@@ -357,15 +359,14 @@ If the implementation differs from help documentation, report:
 実装の動作 / Actual Behavior:
   [description of what the code actually does]
 
-テストの方針 / Test Approach:
-  実装の動作に合わせたテストを作成。ヘルプとの差異はコメントで明記。
-  Tests written to match actual implementation. Differences from help documented in comments.
-
-要対応 / Action Required:
-  [ ] ヘルプに合わせて実装を修正する / Fix implementation to match help
-  [ ] ヘルプを実装に合わせて更新する / Update help to match implementation
-  [ ] 現状維持（意図的な差異）/ Keep as-is (intentional difference)
+対応方針 / Action:
+  ヘルプを正として実装を修正する。修正後にヘルプの記載に沿ったテストを作成する。
+  Fix implementation to match help, then write tests based on the corrected behavior.
 ```
+
+修正が困難な場合（意図的な差異、後方互換性の問題など）は、その理由を明記した上で次のいずれかを選択:
+- ヘルプを実装に合わせて更新する / Update help to match implementation (if intentional)
+- 現状維持で別Issueとして記録する / Keep as-is and create a separate issue
 
 ### Step 5: Validate / 検証
 
