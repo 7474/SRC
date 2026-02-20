@@ -10,10 +10,42 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 統計 / Statistics
 
-- **Total TODO Comments**: 155+
-- **Major Commented-Out Code Blocks**: 5+ (200+ lines total)
-- **Affected Files**: 70+ files
+> **2026-02-20 更新** / Updated 2026-02-20
+
+- **残存 TODO コメント (SRCCore)**: 54（自動生成を除く） / Remaining TODO comments (SRCCore): 54 (excluding auto-generated)
+- **残存 TODO コメント (SRCSharpForm)**: 44 / Remaining TODO comments (SRCSharpForm): 44
+- **計画策定時 TODO 数**: 155+ / Initial TODO count at plan creation: 155+
+- **解消済み TODO 推定数**: 101+ (約65%完了) / Estimated TODOs resolved: 101+ (~65% complete)
 - **Main Project**: SRC.Sharp/SRCCore
+
+### 最近のマージ済みPR / Recently Merged PRs (2026-02-19 〜 2026-02-20)
+
+| # | タイトル / Title | 日付 |
+|---|---|---|
+| #715 | Fix CD-pages workflow: MSB1003 due to missing project path | 2026-02-20 |
+| #714 | docs: 移植ドキュメントへの運用見直しと進捗更新コマンドの追加 | 2026-02-20 |
+| #713 | Implement DeleteTemporaryOtherForm and IsAbilityEffective | 2026-02-20 |
+| #712 | Preserve empty-string semantics in Loadfiledialog/Savefiledialog | 2026-02-20 |
+| #711 | Port commented-out VB6 logic to working C# across combat, pilot, and unit systems | 2026-02-20 |
+| #710 | Port random number series and Hiragana StrConv from VB6 | 2026-02-19 |
+| #709 | SRC# 移植: 戦闘システム主要TODO実装 | 2026-02-19 |
+| #708 | SRC# 移植: 主要TODOの実装 | 2026-02-19 |
+| #707 | 移植: LookForAttackHelp / LookForGuardHelp / LookForSupportGuard / LookForSupport / GetExp | 2026-02-19 |
+| #706 | 移植: IsAbleToEnter, IsAvailable, IsNecessarySkillSatisfied, IsNecessarySkillSatisfied2 | 2026-02-19 |
+
+### Epic別 残存TODO数 / Remaining TODOs by Epic
+
+| Epic | 残存 TODO | 主な残タスク |
+|------|-----------|-------------|
+| Epic 1: 戦闘システム | 7 | 合体技, エイリアス参照, 変身 |
+| Epic 2: ユニット・パイロット | 10 | SkillName, SpecialEffect, 走査拡張 |
+| Epic 3: GUI・UI | 4 | レイヤーデータ, 発進表示 |
+| Epic 4: イベント・コマンド | 10 | イベントファイル禁則, PaintString最適化 |
+| Epic 5: データ管理 | 7 | セーブ/設定管理 |
+| Epic 6: VB6レガシー | 3 | Loadfiledialog, Savefiledialog |
+| Epic 7: パフォーマンス | 5 | Sound キャッシュ, .NET 更新 |
+| Epic 8: バグ・エッジケース | 8 | COM 武器選択, Help実装 |
+| **合計** | **54** | |
 
 ## 現在の状況 / Current Status
 
@@ -43,156 +75,168 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ### 1. 戦闘システム実装 / Combat System Implementation
 **優先度**: 高 / Priority: High
-**推定作業量**: 大 / Effort: Large
+**推定作業量**: 大 → 小（大幅進捗）/ Effort: Large → Small (significant progress)
+**残存TODO**: 7
 
 戦闘に関連する機能の実装が必要です。
 
-#### 含まれる機能 / Features:
-- 攻撃タイプの実装（回避、受け流し、ダミー、シールド防御、反撃など）
+#### 完了した主な機能 / Completed Features:
+- ✅ 攻撃タイプの実装（回避、受け流し、ダミー、シールド防御、反撃など）
+- ✅ 援護攻撃・援護防御システム（LookForAttackHelp / LookForGuardHelp）
+- ✅ 経験値取得（GetExp）
+
+#### 残存する主な機能 / Remaining Features:
 - 合体・融合技の実装
-- 特殊効果と効果解除攻撃
-- 変身・形態変更メカニズム
-- 援護攻撃・援護防御システム
+- エイリアス参照の整理
+- 変身した場合の能力処理
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs` (13 TODOs)
-- `SRC.Sharp/SRCCore/Units/Unit.attack.cs`
-- `SRC.Sharp/SRCCore/Units/Unit.attackmap.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/Commands/Command.attack.cs`
+- `SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs` (大幅解消済み)
+- `SRC.Sharp/SRCCore/Units/Unit.attack.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Units/Unit.ability.cs` (4 TODOs)
+- `SRC.Sharp/SRCCore/Commands/Command.attack.cs` (1 TODO)
 
 ---
 
 ### 2. ユニット・パイロットシステム / Unit & Pilot System
 **優先度**: 高 / Priority: High
-**推定作業量**: 中 / Effort: Medium
+**推定作業量**: 中 → 小（進捗あり）/ Effort: Medium → Small (in progress)
+**残存TODO**: 10
 
 ユニットとパイロットに関する機能の完成が必要です。
 
-#### 含まれる機能 / Features:
-- スキル有効性チェック
-- 能力可用性検証
-- 変身・形態切替
-- パイロット搭乗メカニズム
-- ユニット配置可能判定
+#### 完了した主な機能 / Completed Features:
+- ✅ IsAbleToEnter（配置可能判定）
+- ✅ IsAvailable（ユニット有効性）
+- ✅ IsNecessarySkillSatisfied（スキル条件）
+- ✅ IsAbilityEffective（アビリティ有効性）
+- ✅ DeleteTemporaryOtherForm（一時形態削除）
+
+#### 残存する主な機能 / Remaining Features:
+- SkillName / SkillNameForNS（仕様が複雑）
+- SpecialEffect実装
+- Unitフォルダ以外のリソース走査
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Units/Unit.lookup.cs` (9 TODOs)
-- `SRC.Sharp/SRCCore/Units/Unit.ability.cs`
-- `SRC.Sharp/SRCCore/Pilots/Pilot.skill.cs` (4 TODOs + commented code)
-- `SRC.Sharp/SRCCore/Units/Unit.otherform.cs`
+- `SRC.Sharp/SRCCore/Units/Unit.lookup.cs` (1 TODO, 大幅解消済み)
+- `SRC.Sharp/SRCCore/Units/Unit.ability.cs` (4 TODOs)
+- `SRC.Sharp/SRCCore/Pilots/Pilot.skill.cs` (2 TODOs)
+- `SRC.Sharp/SRCCore/Units/Unit.se.cs` (1 TODO)
 
 ---
 
 ### 3. GUI・UIシステム / GUI & UI System
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 中 / Effort: Medium
+**残存TODO**: 4
 
 ユーザーインターフェース関連の実装と改善が必要です。
 
-#### 含まれる機能 / Features:
-- 武器リストボックス
-- アビリティリストボックス
-- メッセージフォーム状態管理
-- 背景設定とフィルター
-- ダイアログシステムの再生
+#### 残存する主な機能 / Remaining Features:
+- レイヤーデータ読み込み
+- 発進時のユニット表示
 
 #### 主要な対象ファイル / Key Files:
+- `SRC.Sharp/SRCCore/Maps/Map.cs` (2 TODOs)
 - `SRC.Sharp/SRCSharpForm/Forms/Main.gui.cs`
-- `SRC.Sharp/SRCSharpForm/Forms/Main.guistatus.cs`
-- `SRC.Sharp/SRCCore/UIInterface/*.cs`
-- `SRC.Sharp/SRCCore/Statuses/Status.cs` (200+ lines commented)
+- `SRC.Sharp/SRCCore/Commands/Command.launch.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Commands/Command.process.cs` (1 TODO)
 
 ---
 
 ### 4. イベント・コマンドシステム / Event & Command System
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 中 / Effort: Medium
+**残存TODO**: 10
 
 イベントコマンドの実装と改善が必要です。
 
-#### 含まれる機能 / Features:
-- Question コマンドの実装
-- イベントデータの読込制約対応
-- コマンドパース最適化
-- 各種未実装コマンドの実装
+#### 残存する主な機能 / Remaining Features:
+- イベントファイルのロード時の禁則処理
+- PaintString最適化（あらかじめ構文解析）
+- Wait コマンドの実行権譲渡
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Input/QuestionCmd.cs` (85 lines commented)
 - `SRC.Sharp/SRCCore/Events/Event.data.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs`
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/NotImplementedCmd.cs`
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Other/WaitCmd.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/CmdParser.cs` (1 TODO)
 
 ---
 
 ### 5. データ管理・永続化 / Data Management & Persistence
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 小 / Effort: Small
+**残存TODO**: 7
 
 セーブ・ロード機能の改善とデータ管理が必要です。
 
-#### 含まれる機能 / Features:
+#### 残存する主な機能 / Remaining Features:
 - セーブ・ロード機能の改善
-- パス正規化
-- エラーハンドリング強化
-- 設定管理システム
+- 設定管理システムの独立化
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/SRC.save.cs`
-- `SRC.Sharp/SRCCore/SRC.config.cs`
-- `SRC.Sharp/SRCCore/Config/LocalFileConfig.cs`
+- `SRC.Sharp/SRCCore/SRC.save.cs` (3 TODOs)
+- `SRC.Sharp/SRCCore/SRC.config.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Config/LocalFileConfig.cs` (1 TODO)
 
 ---
 
 ### 6. VB6レガシー関数置換 / VB6 Legacy Function Replacement
 **優先度**: 低 / Priority: Low
 **推定作業量**: 小 / Effort: Small
+**残存TODO**: 3
 
 VB6から移行されていない文字列処理関数などの実装が必要です。
 
-#### 含まれる機能 / Features:
-- バイト単位文字列関数（Instrb, Instrrevb, Leftb, Lenb, Midb, Rightb）
-- ファイルダイアログ（LoadFileDialog, SaveFileDialog）
-- ワイド文字列サポート
+#### 完了した主な機能 / Completed Features:
+- ✅ ランダムシーケンス実装 (PR #710)
+- ✅ Hiragana StrConv (PR #710)
+- ✅ UpdateSupportMod (PR #656, 旧対応)
+
+#### 残存する主な機能 / Remaining Features:
+- ファイルダイアログ（Loadfiledialog, Savefiledialog）の本実装
+- バイト系文字列関数の整理
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/VB/Strings.cs`
-- `SRC.Sharp/SRCCore/Lib/FileSystem.cs`
+- `SRC.Sharp/SRCCore/Expressions/Functions/File.cs` (2 TODOs)
+- `SRC.Sharp/SRCCore/Lib/GeneralLib.cs` (1 TODO)
 
 ---
 
 ### 7. パフォーマンス最適化 / Performance Optimization
 **優先度**: 低 / Priority: Low
 **推定作業量**: 小 / Effort: Small
+**残存TODO**: 5
 
 コードの最適化とリファクタリングが必要です。
 
-#### 含まれる機能 / Features:
-- ランダムシーケンス実装
-- キャッシング最適化（Sound システムの重複検索）
-- エイリアス参照実装の改善
-- 配列操作ユーティリティ
+#### 残存する主な機能 / Remaining Features:
+- Sound システムのキャッシュ最適化
+- .NET バージョン更新対応
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Sound.cs`
-- `SRC.Sharp/SRCCore/Models/AliasData.cs`
-- `SRC.Sharp/SRCCore/VB/SrcArray.cs`
+- `SRC.Sharp/SRCCore/Sound.cs` (4 TODOs)
+- `SRC.Sharp/SRCCore/Extensions/SituationExtension.cs` (1 TODO)
 
 ---
 
 ### 8. バグ修正・エッジケース対応 / Bug Fixes & Edge Cases
 **優先度**: 中〜低 / Priority: Medium-Low
 **推定作業量**: 小 / Effort: Small
+**残存TODO**: 8
 
 既知のバグやエッジケースへの対応が必要です。
 
-#### 含まれる機能 / Features:
-- 武器選択失敗の対応
-- レベルベース除算の処理
-- 1オフセット処理の改善
-- イベントファイル読込制約
+#### 残存する主な機能 / Remaining Features:
+- COM: 武器選択失敗ケースの対応
+- Info: Help関数の実装
+- SRC.main: 実行環境依存処理
 
 #### 主要な対象ファイル / Key Files:
-- Various files with TODO markers for edge cases
+- `SRC.Sharp/SRCCore/COM.cs` (3 TODOs)
+- `SRC.Sharp/SRCCore/Expressions/Functions/Info.cs` (3 TODOs)
+- `SRC.Sharp/SRCCore/SRC.main.cs` (2 TODOs)
 
 ---
 
@@ -388,5 +432,6 @@ VB6から移行されていない文字列処理関数などの実装が必要�
 
 ## 更新履歴 / Change History
 
+- 2026-02-20: 進捗更新 — 残存TODO 54件に更新、Epic別進捗状況を反映、最近のPR一覧を追加
 - 2026-02-20: 現在の状況セクションを追加（既存Issue連携・運用方針の明確化）
 - 2026-02-19: 初版作成 (Initial version created)
