@@ -78,5 +78,57 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual(0d, Conversions.ToDouble("abc"));
             Assert.AreEqual(0d, Conversions.ToDouble(""));
         }
+
+        // ──────────────────────────────────────────────
+        // TryToDateTime
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void TryToDateTimeTest_ValidDate_ReturnsTrue()
+        {
+            var result = Conversions.TryToDateTime("2024/03/15", out var dt);
+            Assert.IsTrue(result);
+            Assert.AreEqual(2024, dt.Year);
+            Assert.AreEqual(3, dt.Month);
+            Assert.AreEqual(15, dt.Day);
+        }
+
+        [TestMethod()]
+        public void TryToDateTimeTest_ValidDateTime_ReturnsTrue()
+        {
+            var result = Conversions.TryToDateTime("2024/03/15 14:30:45", out var dt);
+            Assert.IsTrue(result);
+            Assert.AreEqual(14, dt.Hour);
+            Assert.AreEqual(30, dt.Minute);
+            Assert.AreEqual(45, dt.Second);
+        }
+
+        [TestMethod()]
+        public void TryToDateTimeTest_InvalidString_ReturnsFalse()
+        {
+            var result = Conversions.TryToDateTime("notadate", out var dt);
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod()]
+        public void TryToDateTimeTest_EmptyString_ReturnsFalse()
+        {
+            var result = Conversions.TryToDateTime("", out var dt);
+            Assert.IsFalse(result);
+        }
+
+        // ──────────────────────────────────────────────
+        // GetNow
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void GetNow_ReturnsDateTimeCloseToNow()
+        {
+            var before = System.DateTime.Now;
+            var now = Conversions.GetNow();
+            var after = System.DateTime.Now;
+            // 1秒以内の誤差を許容する
+            Assert.IsTrue(now >= before.AddSeconds(-1) && now <= after.AddSeconds(1));
+        }
     }
 }
