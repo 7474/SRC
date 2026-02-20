@@ -4411,7 +4411,6 @@ namespace SRCCore.Expressions
 
         private ValueType CallUserFunction(string fname, ValueType etype, int labelId, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            // TODO CallCmdと合わせる
             str_result = "";
             num_result = 0d;
 
@@ -4421,7 +4420,7 @@ namespace SRCCore.Expressions
                 var ret = labelId + 1;
 
                 // 呼び出し階層をチェック
-                if (Event.CallDepth > Event.MaxCallDepth)
+                if (Event.CallDepth >= Event.MaxCallDepth)
                 {
                     Event.CallDepth = Event.MaxCallDepth;
                     Event.DisplayEventErrorMessage(Event.CurrentLineNum, GeneralLib.FormatNum(Event.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません");
@@ -4446,7 +4445,16 @@ namespace SRCCore.Expressions
                 Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
                 Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
                 Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
-                Event.UpVarLevelStack[Event.CallDepth] = Event.UpVarLevel;
+
+                // UpVarが実行された場合、UpVar実行数は累計する (CallCmdと合わせる)
+                if (Event.UpVarLevel > 0)
+                {
+                    Event.UpVarLevelStack[Event.CallDepth] = (Event.UpVarLevel + Event.UpVarLevelStack[Event.CallDepth - 1]);
+                }
+                else
+                {
+                    Event.UpVarLevelStack[Event.CallDepth] = 0;
+                }
 
                 // UpVarの階層数を初期化
                 Event.UpVarLevel = 0;

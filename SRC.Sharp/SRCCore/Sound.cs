@@ -92,10 +92,9 @@ namespace SRCCore
             // 演奏をストップ
             StopBGM();
 
-            // TODO 同じＢＧＭにバリエーションがあればランダムで選択 のパス解決
             // 同じＢＧＭにバリエーションがあればランダムで選択
             i = 1;
-            if (!string.IsNullOrEmpty(SRC.ScenarioPath) && Strings.InStr(fname, SRC.ScenarioPath) > 0)
+            if (IsFileInScenarioPath(fname))
             {
                 // シナリオ側にファイルが見つかった場合はバリエーションもシナリオ側からのみ選択
                 do
@@ -103,7 +102,7 @@ namespace SRCCore
                     i = (i + 1);
                     fname2 = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");
                 }
-                while (Strings.InStr(fname2, SRC.ScenarioPath) > 0);
+                while (IsFileInScenarioPath(fname2));
             }
             else
             {
@@ -245,6 +244,22 @@ namespace SRCCore
 
             // 演奏開始
             StartBGM(bgm_name);
+        }
+
+        // 指定されたファイルがシナリオパス内に存在するかを確認する
+        private bool IsFileInScenarioPath(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(SRC.ScenarioPath))
+            {
+                return false;
+            }
+            // 絶対パスの場合はシナリオパスが含まれるかで判定
+            if (FileSystem.IsAbsolutePath(filePath))
+            {
+                return Strings.InStr(filePath, SRC.ScenarioPath) > 0;
+            }
+            // 相対パスの場合はシナリオパス配下にファイルが存在するかで判定
+            return FileSystem.FileExists(FileSystem.PathCombine(SRC.ScenarioPath, filePath));
         }
 
         // 各Midiフォルダから指定されたMIDIファイルを検索する
