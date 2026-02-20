@@ -1,9 +1,11 @@
 using SRCCore.Exceptions;
+using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace SRCCore
@@ -76,22 +78,22 @@ namespace SRCCore
         private void ValidateEnvironment()
         {
             // Bitmap関係のチェック
-            if (!Directory.Exists(Path.Combine(AppPath, "Bitmap")))
+            if (!FileSystem.GetFileSystemEntries(AppPath, "Bitmap", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Bitmapフォルダがありません。" + Environment.NewLine + "SRC.exeと同じフォルダに汎用グラフィック集をインストールしてください。");
                 TerminateSRC();
                 return;
             }
 
-            if (Directory.Exists(Path.Combine(AppPath, "Bitmap", "Bitmap")))
+            if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Bitmap", EntryOption.Directory).Any())
             {
-                GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Environment.NewLine + Path.Combine(AppPath, "Bitmap", "Bitmap") + Environment.NewLine + "フォルダ構造を直してください。");
+                GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Bitmap", "Bitmap") + Environment.NewLine + "フォルダ構造を直してください。");
                 TerminateSRC();
                 return;
             }
 
             // イベントグラフィック
-            if (!Directory.Exists(Path.Combine(AppPath, "Bitmap", "Event")))
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Event", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Bitmap\\Eventフォルダが見つかりません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
                 TerminateSRC();
@@ -99,25 +101,25 @@ namespace SRCCore
             }
 
             // マップグラフィック
-            if (!Directory.Exists(Path.Combine(AppPath, "Bitmap", "Map")))
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Map", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Bitmap\\Mapフォルダがありません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
                 TerminateSRC();
                 return;
             }
 
-            if (!File.Exists(Path.Combine(AppPath, "Bitmap", "Map", "plain", "plain0000.bmp"))
-                && !File.Exists(Path.Combine(AppPath, "Bitmap", "Map", "plain0000.bmp"))
-                && !File.Exists(Path.Combine(AppPath, "Bitmap", "Map", "plain0.bmp")))
+            if (!FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain", "plain0000.bmp")
+                && !FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain0000.bmp")
+                && !FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain0.bmp"))
             {
-                if (Directory.Exists(Path.Combine(AppPath, "Bitmap", "Map", "Map")))
+                if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap", "Map"), "Map", EntryOption.Directory).Any())
                 {
-                    GUI.ErrorMessage("Bitmap\\Mapフォルダ内にさらにMapフォルダが存在します。" + Environment.NewLine + Path.Combine(AppPath, "Bitmap", "Map", "Map") + Environment.NewLine + "フォルダ構造を直してください。");
+                    GUI.ErrorMessage("Bitmap\\Mapフォルダ内にさらにMapフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Bitmap", "Map", "Map") + Environment.NewLine + "フォルダ構造を直してください。");
                     TerminateSRC();
                     return;
                 }
 
-                if (Directory.GetFiles(Path.Combine(AppPath, "Bitmap", "Map")).Length == 0)
+                if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap", "Map"), "*", EntryOption.File).Any())
                 {
                     GUI.ErrorMessage("Bitmap\\Mapフォルダ内にファイルがありません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
                     TerminateSRC();
@@ -130,21 +132,21 @@ namespace SRCCore
             }
 
             // 効果音
-            if (!Directory.Exists(Path.Combine(AppPath, "Sound")))
+            if (!FileSystem.GetFileSystemEntries(AppPath, "Sound", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Soundフォルダがありません。" + Environment.NewLine + "SRC.exeと同じフォルダに効果音集をインストールしてください。");
                 TerminateSRC();
                 return;
             }
 
-            if (Directory.Exists(Path.Combine(AppPath, "Sound", "Sound")))
+            if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Sound"), "Sound", EntryOption.Directory).Any())
             {
-                GUI.ErrorMessage("Soundフォルダ内にさらにSoundフォルダが存在します。" + Environment.NewLine + Path.Combine(AppPath, "Sound", "Sound") + Environment.NewLine + "フォルダ構造を直してください。");
+                GUI.ErrorMessage("Soundフォルダ内にさらにSoundフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Sound", "Sound") + Environment.NewLine + "フォルダ構造を直してください。");
                 TerminateSRC();
                 return;
             }
 
-            if (Directory.GetFiles(Path.Combine(AppPath, "Sound")).Length == 0)
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Sound"), "*", EntryOption.File).Any())
             {
                 GUI.ErrorMessage("Soundフォルダ内にファイルがありません。" + Environment.NewLine + "Soundフォルダ内に効果音集をインストールしてください。");
                 TerminateSRC();
