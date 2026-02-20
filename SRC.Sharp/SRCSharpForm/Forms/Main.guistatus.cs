@@ -258,7 +258,7 @@ namespace SRCSharpForm
                     {
                         // キャラ画面をクリア
                         picFace.Image = null;
-                        DrawPilotLabel(u, pilotG, unitG, headingMargin);
+                        DrawPilotLabel(u, pilotG, upic, headingMargin);
                         goto UnitStatus;
                     }
 
@@ -293,7 +293,7 @@ namespace SRCSharpForm
                     // ダミーパイロット？
                     if (p.Nickname0 == "パイロット不在")
                     {
-                        DrawPilotLabel(u, pilotG, unitG, headingMargin);
+                        DrawPilotLabel(u, pilotG, upic, headingMargin);
                         goto UnitStatus;
                     }
                     // レベル、経験値、行動回数
@@ -3354,17 +3354,20 @@ namespace SRCSharpForm
             }
         }
 
-        private void DrawPilotLabel(Unit u, Graphics pilotG, Graphics unitG, float headingMargin)
+        private void DrawPilotLabel(Unit u, Graphics pilotG, Lib.Printer upic, float headingMargin)
         {
             // XXX ニックネームのフォントサイズ分マージンを入れる
             pilotG.DrawString(
 @$"{Expression.Term("レベル", u)}
 {Expression.Term("気力", u)}", StatusFont, StatusAbilityNameBrush, 0, headingMargin);
 
-            unitG.DrawString(
-@$"{Expression.Term("格闘", u, 4) + "               " + Expression.Term("射撃", u)}
-{Expression.Term("命中", u, 4) + "               " + Expression.Term("回避", u)}
-{Expression.Term("技量", u, 4) + "               " + Expression.Term("反応", u)}", StatusFont, StatusAbilityNameBrush, 0, 0);
+            upic.SetColor(StatusFontColorAbilityName);
+            upic.Print(Expression.Term("格闘", u, 4) + "               " + Expression.Term("射撃", u));
+            upic.Print();
+            upic.Print(Expression.Term("命中", u, 4) + "               " + Expression.Term("回避", u));
+            upic.Print();
+            upic.Print(Expression.Term("技量", u, 4) + "               " + Expression.Term("反応", u));
+            upic.Print();
         }
 
         public void DisplayPilotStatus(Pilot p)
