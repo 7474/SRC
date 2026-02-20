@@ -8,13 +8,19 @@ This directory contains instructions for GitHub Copilot Agents to operate the SR
 
 **最も簡単な使用方法 / Easiest Way to Use**:
 
+移植を進める:
 ```
 @copilot 移植を進行してください
 ```
 
-この一文だけで、Copilotが自律的に次のタスクを選択し、実装します。
+進捗を更新する:
+```
+@copilot 進捗を更新してください
+```
 
-With this single command, Copilot autonomously selects and implements the next task.
+これらの一文だけで、Copilotが自律的に作業を進めたり、現在の進行状況をドキュメントに反映したりします。
+
+With these single commands, Copilot autonomously advances migration work or reflects the current progress status in documents.
 
 **詳細**: [autonomous-agent.md](./autonomous-agent.md) を参照してください。
 
@@ -27,17 +33,17 @@ With this single command, Copilot autonomously selects and implements the next t
 ### 1. [autonomous-agent.md](./autonomous-agent.md) ⭐ **最優先 / Top Priority**
 **完全自律型エージェント / Fully Autonomous Agent**
 
-単一コマンドで移植を進行：
-- 「移植を進行してください」だけで動作
-- 自動的にタスク選択
-- 自動的に実装・テスト・PR作成
+2つの単一コマンドで移植を運用：
+- 「移植を進行してください」で作業を進める
+- 「進捗を更新してください」で進行状況をドキュメントに反映
+- 自動的にタスク選択・実装・テスト・PR作成
 - 進捗レポート自動生成
 - GitHub Projects等のセットアップ不要
 
-Single command migration:
-- Works with just "proceed with migration"
-- Auto-selects next task
-- Auto-implements, tests, creates PR
+Two-command migration operation:
+- "Proceed with migration" to advance work
+- "Update progress" to reflect current state in documents
+- Auto-selects, implements, tests, creates PRs
 - Auto-generates progress reports
 - No GitHub Projects or setup required
 
@@ -90,24 +96,26 @@ Condensed reference:
 
 ## 🎯 Purpose / 目的
 
-**⚡ Fully Autonomous Operation**: 「移植を進行してください」の一文だけで、Copilotが自律的に移植作業を進行します。
+**⚡ Fully Autonomous Operation**: 2つのコマンドだけで、移植作業の進行と進捗更新を自律的に管理します。
 
-**⚡ Fully Autonomous Operation**: With just "proceed with migration", Copilot autonomously progresses the migration work.
+**⚡ Fully Autonomous Operation**: With just two commands, Copilot autonomously manages both migration work and progress updates.
 
 ### 人間が考えることは最小限 / Minimal Human Thinking Required
 
-- ✅ 単一コマンド: `@copilot 移植を進行してください`
+- ✅ 移植作業: `@copilot 移植を進行してください`
+- ✅ 進捗更新: `@copilot 進捗を更新してください`
 - ✅ Copilotが自動判断: 次のタスク、実装方法、テスト戦略
 - ✅ Copilotが自動実行: Issue作成、コード実装、テスト追加、PR作成
-- ✅ Copilotが自動報告: 完了内容、次のタスク提案
+- ✅ Copilotが自動報告: 完了内容、次のタスク提案、進捗状況
 - ❌ セットアップ不要: GitHub Projects, ラベル, マイルストーン
 - ❌ 詳細指示不要: Copilotがドキュメントとコードベースから自動判断
 
 With autonomous agent:
-- ✅ Single command: `@copilot Proceed with migration`
+- ✅ Migration: `@copilot Proceed with migration`
+- ✅ Progress update: `@copilot Update the progress`
 - ✅ Copilot auto-decides: Next task, implementation approach, test strategy
 - ✅ Copilot auto-executes: Issue creation, code implementation, test addition, PR creation
-- ✅ Copilot auto-reports: Completion status, next task suggestion
+- ✅ Copilot auto-reports: Completion status, next task suggestion, progress status
 - ❌ No setup: GitHub Projects, labels, milestones
 - ❌ No detailed instructions: Copilot auto-decides from docs and codebase
 
@@ -176,47 +184,13 @@ cat .github/copilot/copilot-instructions-examples.md
 - マイルストーン: Phase 1: コア機能完成 (v3.1.0)
 ```
 
-### 従来の方法（スクリプト使用）/ Traditional Way (Using Scripts)
-
-```bash
-# ラベルとマイルストーンを事前作成する場合のみ
-# Only if you want to pre-create labels and milestones
-
-# 1. Read the overview
-cat .github/copilot/quick-reference.md
-
-# 2. Setup labels and milestones
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# 3. Read your role-specific section
-# - For issue creation: Section "1. Issue Creation Agent" in agent-instructions.md
-# - For implementation: Section "2. Implementation Agent" in agent-instructions.md
-# - For review: Section "3. Review Agent" in agent-instructions.md
-# - For tracking: Section "4. Progress Tracking Agent" in agent-instructions.md
-```
-
-# 2. Setup labels and milestones
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# 3. Read your role-specific section
-# - For issue creation: Section "1. Issue Creation Agent" in agent-instructions.md
-# - For implementation: Section "2. Implementation Agent" in agent-instructions.md
-# - For review: Section "3. Review Agent" in agent-instructions.md
-# - For tracking: Section "4. Progress Tracking Agent" in agent-instructions.md
-```
-
 ### Daily Workflow
 ```bash
-# Generate progress report
-bash docs/scripts/progress-report.sh
-
 # Check your assigned role tasks
 # - Issue Creator: Check docs/issue-breakdown.md for next issue to create
 # - Implementer: Check assigned issues with status:in-progress
 # - Reviewer: Check PRs awaiting review
-# - Tracker: Generate weekly progress report
+# - Tracker: @copilot 進捗を更新してください
 ```
 
 ## 📖 Documentation Structure / ドキュメント構造
@@ -231,12 +205,7 @@ docs/                     # Migration plan documentation
 ├── README.md            # Documentation index
 ├── quick-start.md       # Project overview
 ├── migration-plan.md    # 8 Epics and overall strategy
-├── issue-breakdown.md   # ~70 specific issues
-├── github-projects-setup.md  # Project management setup
-└── scripts/             # Automation scripts
-    ├── create-labels.sh
-    ├── create-milestones.sh
-    └── progress-report.sh
+└── issue-breakdown.md   # ~70 specific issues
 
 .github/ISSUE_TEMPLATE/   # Issue templates
 ├── epic-template.md     # For Epic issues
@@ -276,9 +245,9 @@ docs/                     # Migration plan documentation
 - **Approves**: Only after all criteria met
 
 ### 4. Progress Tracking Agent / 進捗管理エージェント
-- **Runs**: `bash docs/scripts/progress-report.sh` weekly
+- **Runs**: `@copilot 進捗を更新してください`
 - **Monitors**: Epic completion, milestone progress, blockers
-- **Updates**: Project board (Backlog → Ready → In Progress → Review → Done)
+- **Updates**: Issue statuses and migration plan documents
 - **Reports**: Statistics and trends
 
 ## 📊 Project Scope / プロジェクト規模
@@ -293,12 +262,9 @@ docs/                     # Migration plan documentation
 ## ⚡ Quick Commands / クイックコマンド
 
 ```bash
-# Setup project management
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# Generate progress report
-bash docs/scripts/progress-report.sh
+# Autonomous operation (Copilot chat):
+# @copilot 移植を進行してください       → Advance migration work
+# @copilot 進捗を更新してください       → Update progress status
 
 # List issues by category
 gh issue list --label "epic:combat" --state all
@@ -337,6 +303,6 @@ For questions or issues with these instructions:
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: 2026-02-19  
+**Version**: 1.1.0  
+**Last Updated**: 2026-02-20  
 **Maintainer**: GitHub Copilot Agent System

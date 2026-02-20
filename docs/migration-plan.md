@@ -15,6 +15,30 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 - **Affected Files**: 70+ files
 - **Main Project**: SRC.Sharp/SRCCore
 
+## 現在の状況 / Current Status
+
+> **2026-02-20 時点**
+
+本計画の策定以前から、リポジトリには移植作業に関連する既存Issueがあります。これらは本計画と連携させて管理します。
+
+### 関連する既存Issue / Pre-existing Related Issues
+
+- **#162** [TODO/未実装の処理](https://github.com/7474/SRC/issues/162) - TODOコメントと`NotImplementedException`の網羅的な追跡
+- **#172** [バグや目についた未実装メモ](https://github.com/7474/SRC/issues/172) - 発見した未実装・バグのメモ
+
+これらの既存Issueは本計画の各Epicと重複する内容を含んでいます。今後のIssue作成時はこれらへのリンクも考慮してください。
+
+### 運用方針 / Operation Policy
+
+本計画は、Copilot自律エージェントによる単一コマンド運用を基本とします：
+
+- **移植を進める**: `@copilot 移植を進行してください`
+- **進捗を更新する**: `@copilot 進捗を更新してください`
+
+GitHub ProjectsやWebUIの手動セットアップは必須ではありません。
+
+---
+
 ## カテゴリ別分類 / Category Classification
 
 ### 1. 戦闘システム実装 / Combat System Implementation
@@ -364,4 +388,5 @@ VB6から移行されていない文字列処理関数などの実装が必要�
 
 ## 更新履歴 / Change History
 
+- 2026-02-20: 現在の状況セクションを追加（既存Issue連携・運用方針の明確化）
 - 2026-02-19: 初版作成 (Initial version created)

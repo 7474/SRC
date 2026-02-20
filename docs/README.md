@@ -13,9 +13,14 @@
 @copilot 移植を進行してください
 ```
 
-With single command:
-- ✅ Copilotが次のタスクを自動選択
-- ✅ Copilotが自動実装・テスト・PR作成
+単一コマンドで進捗を更新:
+```
+@copilot 進捗を更新してください
+```
+
+With single commands:
+- ✅ Copilotが次のタスクを自動選択・実装・PR作成
+- ✅ Copilotが進行状況をドキュメントに反映
 - ✅ 人間が考えることは最小限
 - ✅ セットアップ不要
 
@@ -36,26 +41,6 @@ With single command:
 3. **[個別Issue詳細](./issue-breakdown.md)**
    - 約70個の具体的なIssueリスト
    - Detailed list of ~70 specific issues
-
-4. **[GitHub Projects設定ガイド](./github-projects-setup.md)**
-   - プロジェクト管理の設定方法（オプション）
-   - How to set up GitHub Projects for management (Optional)
-
-### 自動化スクリプト / Automation Scripts
-
-`scripts/` ディレクトリには、プロジェクト管理を自動化するスクリプトが含まれています：
-
-- **[create-labels.sh](./scripts/create-labels.sh)** - ラベルの一括作成
-- **[create-milestones.sh](./scripts/create-milestones.sh)** - マイルストーンの一括作成
-- **[progress-report.sh](./scripts/progress-report.sh)** - 進捗レポートの生成
-
-使用方法：
-```bash
-cd /path/to/SRC
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-bash docs/scripts/progress-report.sh
-```
 
 ## 🎯 プロジェクト概要 / Project Overview
 
@@ -86,47 +71,33 @@ bash docs/scripts/progress-report.sh
 2. [移植完了計画](./migration-plan.md)で全体像を把握
 3. [個別Issue詳細](./issue-breakdown.md)で具体的な作業内容を確認
 
-### ステップ2: プロジェクト環境を整える
+### ステップ2: Copilotに作業を依頼する（推奨）
 
-1. ラベルを作成:
-   ```bash
-   bash docs/scripts/create-labels.sh
-   ```
+セットアップ不要。そのままCopilotに指示するだけです：
 
-2. マイルストーンを作成:
-   ```bash
-   bash docs/scripts/create-milestones.sh
-   ```
+```
+@copilot 移植を進行してください
+```
 
-3. GitHub Projectsを設定:
-   - [GitHub Projects設定ガイド](./github-projects-setup.md)を参照
+Copilotが現在の状態を評価し、次のタスクを自動的に選択・実行します。
 
-### ステップ3: Issueを作成
+### ステップ3: 進捗を確認・更新する
 
-1. Epic Issueを8個作成（テンプレート: [epic-template.md](../.github/ISSUE_TEMPLATE/epic-template.md)）
-2. 最初の機能Issueを作成（テンプレート: [feature-template.md](../.github/ISSUE_TEMPLATE/feature-template.md)）
-3. GitHub Projectsに登録
+```
+@copilot 進捗を更新してください
+```
 
-### ステップ4: 作業開始
-
-1. Phase 1の最優先Issueから着手
-2. PR作成時は差分1000行以下を目安に
-3. テストを追加して既存テストも通過することを確認
+Copilotがissueの状態を確認し、ドキュメントと進行状況を最新の実態に合わせて更新します。
 
 ## 📊 進捗管理 / Progress Tracking
 
-### 進捗確認
+### 進捗確認・更新
 
-```bash
-# 進捗レポート生成
-bash docs/scripts/progress-report.sh
-
-# Epic別の進捗
-gh issue list --label "epic:combat" --state all
-
-# マイルストーンの進捗
-gh api repos/7474/SRC/milestones
 ```
+@copilot 進捗を更新してください
+```
+
+Copilotが現在のissue状態を確認し、ドキュメントと進行状況を更新します。
 
 ### 推奨作業フロー
 
@@ -237,6 +208,11 @@ gh api repos/7474/SRC/milestones
 - [SRC# デモ](https://7474.github.io/SRC/)
 
 ## 📝 更新履歴 / Changelog
+
+- **2026-02-20**: 運用の見直しと進捗更新コマンドの追加
+  - `@copilot 進捗を更新してください` コマンドの追加
+  - 自律運用を優先した手順への見直し（セットアップ不要を明確化）
+  - 進行状況の変化を反映
 
 - **2026-02-19**: 初版作成
   - 移植完了計画の策定
