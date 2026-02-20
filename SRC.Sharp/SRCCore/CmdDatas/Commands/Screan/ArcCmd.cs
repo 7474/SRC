@@ -26,8 +26,10 @@ namespace SRCCore.CmdDatas.Commands
             var start_angle = GetArgAsDouble(5) % 360;
             var end_angle = GetArgAsDouble(6) % 360;
 
-            // TODO 振る舞い確認していない
-            // 塗りつぶしの際は角度を負の値にする必要がある
+            // 塗りつぶしの際は角度を負の値にする必要がある（VB6の Circle/Arc 関数との互換仕様）。
+            // VB6 Circle コマンドでは、start > end のとき中心への線分が描画されるため、
+            // 塗りつぶし(扇形)を描くには負の角度値を渡す必要があった。
+            // DrawArc (GDI+) では sweep_angle の符号で描画方向が決まるため同等の変換を適用している。
             if (Event.ObjFillStyle != FillStyle.VbFSTransparent)
             {
                 start_angle = -start_angle;

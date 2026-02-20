@@ -308,8 +308,7 @@ namespace SRCCore
                 }
                 else
                 {
-                    // TODO 一度検索したものを再検索している感じ
-                    // なので Midi ディレクトリ無し指定もしてるがイマイチ、絶対パスで返すAPI作る？
+                    // TODO 一度検索したものを再検索している感じ — 絶対パスを返す API を作れば最適化できる
                     fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
                     fnames.Add(FileSystem.PathCombine("Midi", fname));
                     fnames.Add(fnameMp3);

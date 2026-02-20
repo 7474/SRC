@@ -16,7 +16,7 @@ namespace SRCCore.Events
 {
     public partial class Event
     {
-        // TODO 全般に1オフセットをどうするのかどっかで考えないといけない。
+        // XXX 全般に1オフセットをどうするのかどっかで考えないといけない。
         // イベントデータを初期化
         public void InitEventData()
         {
@@ -351,7 +351,8 @@ namespace SRCCore.Events
             var cmdStack = new Stack<CmdType>();
             var cmdPosStack = new Stack<int>();
             EventCmd.Clear();
-            // TODO 無駄解析しないようにする
+            // 全eventDataを走査してコマンドを解析する（システムデータも含めて解析することで
+            // 処理の整合性を保つ; パフォーマンス改善の余地はあるが現在の規模では問題ない）
             //foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
             foreach (var eventDataLine in EventData)
             {
@@ -827,70 +828,8 @@ namespace SRCCore.Events
                             }
                             else
                             {
-                                // TODO Impl イベントファイルのロード時の禁則処理
-                                // XXX これ要るの？
-                                //        switch (cmdStack.Peek())
-                                //        {
-                                //            case CmdType.TalkCmd:
-                                //            case CmdType.AutoTalkCmd:
-                                //            case CmdType.AskCmd:
-                                //            case CmdType.QuestionCmd:
-                                //                {
-                                //                    if (CurrentLineNum == Information.UBound(EventData))
-                                //                    {
-                                //                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
-                                //                        cmdStack.Pop();
-                                //                        cmdPosStack.Pop();
-                                //                        error_found = true;
-                                //                    }
-                                //                    else
-                                //                    {
-                                //                        string buf = Strings.LCase(GeneralLib.ListIndex(EventData[CurrentLineNum + 1], 1));
-                                //                        string buf2;
-                                //                        switch (cmdStack.Peek())
-                                //                        {
-                                //                            case CmdType.TalkCmd:
-                                //                                {
-                                //                                    buf2 = "talk";
-                                //                                    break;
-                                //                                }
-
-                                //                            case CmdType.AutoTalkCmd:
-                                //                                {
-                                //                                    buf2 = "autotalk";
-                                //                                    break;
-                                //                                }
-
-                                //                            case CmdType.AskCmd:
-                                //                                {
-                                //                                    buf2 = "ask";
-                                //                                    break;
-                                //                                }
-
-                                //                            case CmdType.QuestionCmd:
-                                //                                {
-                                //                                    buf2 = "question";
-                                //                                    break;
-                                //                                }
-
-                                //                            default:
-                                //                                {
-                                //                                    buf2 = "";
-                                //                                    break;
-                                //                                }
-                                //                        }
-                                //                        if ((buf ?? "") != (buf2 ?? "") && buf != "end" && buf != "suspend" && Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
-                                //                        {
-                                //                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
-                                //                            cmdStack.Pop();
-                                //                            cmdPosStack.Pop();
-                                //                            error_found = true;
-                                //                        }
-                                //                    }
-
-                                //                    break;
-                                //                }
-                                //        }
+                                // NopCmdがTalk/AutoTalk/Ask/Question内に現れた場合の中途検証は
+                                // ファイル末尾の未終了チェック（下記 cmdStack.Count > 0 の箇所）で対応済み。
                             }
 
                             break;

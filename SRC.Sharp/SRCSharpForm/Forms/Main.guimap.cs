@@ -7,7 +7,8 @@ using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
-    // TODO インタフェースの切り方見直す
+// TODO インタフェースの切り方見直す (Issue #367)
+// インタフェースの切り方: IGUIMap/IGUIScrean/IGUIStatus は将来的に分割・整理の余地がある
     internal partial class frmMain : IGUIMap
     {
         public const int MapCellPx = 32;
@@ -532,9 +533,11 @@ namespace SRCSharpForm
                 g.DrawImage(unitImage, destRect);
             }
 
-            // TODO Impl フィルタ
-            // フィルタ
-            //            if (u.IsFeatureAvailable(ref "地形ユニット"))
+            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB6の BitBlt→新システムは DrawImage + アルファブレンドで代替）
+            // 地形ユニットフィルタ:
+            // 旧VB6では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
+            // 新システムでは DrawImage + アルファブレンドで代替する。地形ユニットの特別処理は未実装。
+            //            if (u.IsFeatureAvailable("地形ユニット"))
             //            {
             //                // 地形ユニットの場合は画像をそのまま使う
             //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SRCCore.Config
 {
-    // TODO 項目の説明を設定ファイルに書けるようする
+    // TODO 項目の説明を設定ファイルに書けるようにする
     // XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。
     public class LocalFileConfig : ISystemConfig
     {

@@ -46,8 +46,8 @@ namespace SRCSharpForm
             var fileSystem = new LocalFileSystem();
             var soundPlayer = new WindowsManagedPlayer();
 
-            // TODO 設定の反映処理を設ける
-            // XXX 単位変更をこんな感じでやるのは下策だなー
+            // TODO 設定の反映処理を設ける（現在は SoundVolume のみ反映; 他の Config 項目の伝搬が残タスク）
+            // XXX 単位変換をここで行うのは将来的には改善したい（IPlayer が 0.0-1.0 スケールを要求するため）
             soundPlayer.SoundVolume = config.SoundVolume / 100f;
 
             var logConf = new LoggerConfiguration()

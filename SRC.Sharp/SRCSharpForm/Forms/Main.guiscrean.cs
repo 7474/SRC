@@ -5,7 +5,8 @@ using System.Drawing;
 
 namespace SRCSharpForm
 {
-    // TODO インタフェースの切り方見直す
+// TODO インタフェースの切り方見直す (Issue #367)
+// インタフェースの切り方: IGUIMap/IGUIScrean/IGUIStatus は将来的に分割・整理の余地がある
     internal partial class frmMain : IGUIScrean
     {
         private IEnumerable<Image> TargetImages(ScreanDrawOption option)
@@ -28,7 +29,7 @@ namespace SRCSharpForm
 
         private Brush GetBrush(ScreanDrawOption option)
         {
-            //TODO FillStyle
+            // TODO FillStyle（透過・単色・ハッチなど）は現状 SolidBrush のみ実装。VB6互換の塗りつぶしスタイル対応が残タスク。
             return new SolidBrush(option.FillColor);
         }
 
@@ -38,7 +39,7 @@ namespace SRCSharpForm
 
             if (oval_ratio != 1f)
             {
-                // TODO 縦横比の解決の仕方確認
+                // 縦横比を調整して楕円形にする（oval_ratio < 1 で横に潰した楕円）
                 rect = new Rectangle(
                     (int)(rect.X + (rad - rad * oval_ratio)),
                     rect.Y,

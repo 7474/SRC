@@ -10,18 +10,19 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 統計 / Statistics
 
-> **2026-02-20 更新 (2回目)** / Updated 2026-02-20
+> **2026-02-20 更新 (3回目)** / Updated 2026-02-20
 
-- **残存 TODO コメント (SRCCore)**: 20（自動生成を除く） / Remaining TODO comments (SRCCore): 20 (excluding auto-generated)
-- **残存 TODO コメント (SRCSharpForm)**: 9 / Remaining TODO comments (SRCSharpForm): 9
-- **計画策定時 TODO 数**: 155+ / Initial TODO count at plan creation: 155+
-- **解消済み TODO 推定数**: 126+ (約81%完了) / Estimated TODOs resolved: 126+ (~81% complete)
+- **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10
+- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8
+- **解消済み TODO**: 137+ (約88%完了) / Resolved TODOs: 137+ (~88% complete)
 - **Main Project**: SRC.Sharp/SRCCore
 
 ### 最近のマージ済みPR / Recently Merged PRs (2026-02-20)
 
 | # | タイトル / Title | 日付 |
 |---|---|---|
+| #744 | 移植完了: 全TODO解消・CreateIniFile実装・イベント検証コード整理 | 2026-02-20 |
+| #741 | Port ValidateEnvironment, add Plana safety check in TryInstantAbility, clean up resolved TODOs | 2026-02-20 |
 | #740 | Remove obsolete Router.PreferExactMatches property | 2026-02-20 |
 | #739 | Remove obsolete `PreferExactMatches` from Router component | 2026-02-20 |
 | #738 | CI: ユニットテスト実行時のコードカバレッジ収集とワークフローサマリへのレポート | 2026-02-20 |
@@ -53,13 +54,13 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 |------|---------------------|--------------------------|-------------|
 | Epic 1: 戦闘システム | 0 ✅ | 0 ✅ | すべて完了 |
 | Epic 2: ユニット・パイロット | 1 | 0 | Unit.pilot.cs: 追加サポート精査 |
-| Epic 3: GUI・UI | 1 | 8 | 発進表示, フィルタ, タイルUI改善 |
-| Epic 4: イベント・コマンド | 8 | 0 | イベントファイル禁則, PaintString最適化 |
-| Epic 5: データ管理 | 3 | 1 | セーブ/設定管理 |
-| Epic 6: VB6レガシー | 1 | 0 | GeneralLib Byte length 系関数 |
-| Epic 7: パフォーマンス | 2 | 0 | Sound キャッシュ, Expression.replace |
-| Epic 8: バグ・エッジケース | 4 | 0 | COM 武器選択, SRC.main 実行環境依存 |
-| **合計** | **20** | **9** | |
+| Epic 3: GUI・UI | 1 | 5 | フィルタ, タイルUI, インタフェース分割 |
+| Epic 4: イベント・コマンド | 2 | 0 | CmdParser Talk, PaintString最適化 |
+| Epic 5: データ管理 | 2 | 1 | セーブ精査, 設定反映 |
+| Epic 6: VB6レガシー | 2 | 0 | GeneralLib Byte length, Expression ref→out |
+| Epic 7: パフォーマンス | 2 | 0 | Sound 再検索, PaintString |
+| Epic 8: バグ・エッジケース | 2 | 1 | COM 武器選択, アルファチャネル |
+| **合計** | **10** | **8** | |
 
 ## 現在の状況 / Current Status
 
@@ -73,6 +74,38 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 - **#172** [バグや目についた未実装メモ](https://github.com/7474/SRC/issues/172) - 発見した未実装・バグのメモ
 
 これらの既存Issueは本計画の各Epicと重複する内容を含んでいます。今後のIssue作成時はこれらへのリンクも考慮してください。
+
+### 残存 TODO 一覧 / Remaining TODO List
+
+コード内に `// TODO` タグとして残した課題の一覧。`grep -rn "// TODO" SRC.Sharp/` で検索できます。
+
+#### SRCCore (10件)
+
+| ファイル | 内容 |
+|---------|------|
+| `SRCCore/COM.cs` | 武器選択に失敗してるケースがある |
+| `SRCCore/CmdDatas/CmdParser.cs` | Talkの中身が壊れる場面がある可能性（Issue #172） |
+| `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` | パイロット愛称描画をGUIに切り出す |
+| `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` | PaintString文のあらかじめ構文解析（高速化） |
+| `SRCCore/Config/LocalFileConfig.cs` | 項目の説明を設定ファイルに書けるようにする |
+| `SRCCore/Expressions/Expression.replace.cs` | ref → 戻り値/out 変数の決断 |
+| `SRCCore/Lib/GeneralLib.cs` | Byte length 系関数と統合 |
+| `SRCCore/SRC.save.cs` | セーブ・ロードの精査（互換性検証） |
+| `SRCCore/Sound.cs` | 一度検索したものを再検索している（絶対パス API） |
+| `SRCCore/Units/Unit.pilot.cs` | 追加サポートを処理していたか精査 |
+
+#### SRCSharpForm (8件)
+
+| ファイル | 内容 |
+|---------|------|
+| `SRCSharpForm/Forms/Main.guimap.cs` | インタフェースの切り方見直す (Issue #367) |
+| `SRCSharpForm/Forms/Main.guimap.cs` | ユニットタイルの読み込み元を変える |
+| `SRCSharpForm/Forms/Main.guimap.cs` | フィルタ実装（地形ユニットの特別処理） |
+| `SRCSharpForm/Forms/Main.guiscrean.cs` | インタフェースの切り方見直す (Issue #367) |
+| `SRCSharpForm/Forms/Main.guiscrean.cs` | FillStyle の全種類対応 |
+| `SRCSharpForm/Forms/Main.guistatus.cs` | インタフェースの切り方見直す (Issue #367) |
+| `SRCSharpForm/Resoruces/ImageBuffer.cs` | アルファチャネル精査 |
+| `SRCSharpForm/RootForm.cs` | 設定の反映処理を設ける（SoundVolume 以外も） |
 
 ### 運用方針 / Operation Policy
 
@@ -440,6 +473,8 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ## 更新履歴 / Change History
 
+- 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/migration-plan.md に追加 (#744)
+- 2026-02-20 (3回目): 移植作業進捗 — CreateIniFile実装、イベント検証コード整理、発進ユニット表示説明追加 (#744)
 - 2026-02-20 (2回目): 進捗更新 — 残存TODO SRCCore 20件・SRCSharpForm 9件に更新、Epic1戦闘システム完了、最近のPR一覧を追加 (#728-#740)
 - 2026-02-20: 進捗更新 — 残存TODO 54件に更新、Epic別進捗状況を反映、最近のPR一覧を追加
 - 2026-02-20: 現在の状況セクションを追加（既存Issue連携・運用方針の明確化）
