@@ -321,6 +321,7 @@ gh api repos/7474/SRC/milestones | jq '.[] | {title, open_issues, closed_issues}
 - Add comprehensive tests
 - Run existing tests to prevent regression
 - Update documentation for public APIs
+- ユニットテストの補完・作成において、テストで判明した実装の挙動とヘルプ（`SRC.Sharp.Help/src/` 配下のドキュメント）の記載に齟齬がある場合は、ヘルプを正として実装を修正してください。
 
 ### For Review
 - Check alignment with migration plan
