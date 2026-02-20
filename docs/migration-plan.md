@@ -10,20 +10,31 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 統計 / Statistics
 
-> **2026-02-20 更新** / Updated 2026-02-20
+> **2026-02-20 更新 (2回目)** / Updated 2026-02-20
 
-- **残存 TODO コメント (SRCCore)**: 45（自動生成を除く） / Remaining TODO comments (SRCCore): 45 (excluding auto-generated)
-- **残存 TODO コメント (SRCSharpForm)**: 44 / Remaining TODO comments (SRCSharpForm): 44
+- **残存 TODO コメント (SRCCore)**: 20（自動生成を除く） / Remaining TODO comments (SRCCore): 20 (excluding auto-generated)
+- **残存 TODO コメント (SRCSharpForm)**: 9 / Remaining TODO comments (SRCSharpForm): 9
 - **計画策定時 TODO 数**: 155+ / Initial TODO count at plan creation: 155+
-- **解消済み TODO 推定数**: 110+ (約71%完了) / Estimated TODOs resolved: 110+ (~71% complete)
+- **解消済み TODO 推定数**: 126+ (約81%完了) / Estimated TODOs resolved: 126+ (~81% complete)
 - **Main Project**: SRC.Sharp/SRCCore
 
-### 最近のマージ済みPR / Recently Merged PRs (2026-02-19 〜 2026-02-20)
+### 最近のマージ済みPR / Recently Merged PRs (2026-02-20)
 
 | # | タイトル / Title | 日付 |
 |---|---|---|
-| #731 (current) | Fix Unit SaveData: restore Summoner/Master/UnitOnBoard/Servant on load; fix #627 summoned unit revival | 2026-02-20 |
+| #740 | Remove obsolete Router.PreferExactMatches property | 2026-02-20 |
+| #739 | Remove obsolete `PreferExactMatches` from Router component | 2026-02-20 |
+| #738 | CI: ユニットテスト実行時のコードカバレッジ収集とワークフローサマリへのレポート | 2026-02-20 |
+| #737 | Copilot agentにユニットテスト補完操作モードを追加 | 2026-02-20 |
+| #736 | VB6互換: UpVarLevel累積修正・BGMパス解決・対相手メッセージ50%確率修正 | 2026-02-20 |
+| #735 | Port LIPS (timed Question command) from VB6 to C# | 2026-02-20 |
+| #734 | ユニットテスト補完: Variable/Controlコマンドのテスト追加とReturnCmd/GotoCmdのバグ修正 | 2026-02-20 |
+| #733 | Fix several porting bugs: ECM range, message probability, berserk | 2026-02-20 |
+| #732 | Add Copilot instructions to respond in Japanese | 2026-02-20 |
+| #731 | Fix Unit SaveData: restore Summoner/Master/UnitOnBoard/Servant on load; fix #627 summoned unit revival | 2026-02-20 |
 | #730 | Port Help info functions, fix UseAction cap and additional pilot exp bug | 2026-02-20 |
+| #729 | Port remaining TODO items: file dialogs, status display, map | 2026-02-20 |
+| #728 | Port MainPilot() additional-pilot and berserk-pilot resolution | 2026-02-20 |
 | #716 | Port remaining features: Help info functions, UseAction cap, additional pilot exp fix | 2026-02-20 |
 | #715 | Fix CD-pages workflow: MSB1003 due to missing project path | 2026-02-20 |
 | #714 | docs: 移植ドキュメントへの運用見直しと進捗更新コマンドの追加 | 2026-02-20 |
@@ -38,17 +49,17 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ### Epic別 残存TODO数 / Remaining TODOs by Epic
 
-| Epic | 残存 TODO | 主な残タスク |
-|------|-----------|-------------|
-| Epic 1: 戦闘システム | 6 | 合体技, エイリアス参照, 変身 |
-| Epic 2: ユニット・パイロット | 7 | SkillName, SpecialEffect, 走査拡張 |
-| Epic 3: GUI・UI | 4 | レイヤーデータ, 発進表示 |
-| Epic 4: イベント・コマンド | 9 | イベントファイル禁則, PaintString最適化 |
-| Epic 5: データ管理 | 4 | セーブ/設定管理 |
-| Epic 6: VB6レガシー | 3 | Loadfiledialog, Savefiledialog |
-| Epic 7: パフォーマンス | 5 | Sound キャッシュ, .NET 更新 |
-| Epic 8: バグ・エッジケース | 7 | COM 武器選択, 召喚ユニット復活(#627 解消済み) |
-| **合計** | **45** | |
+| Epic | 残存 TODO (SRCCore) | 残存 TODO (SRCSharpForm) | 主な残タスク |
+|------|---------------------|--------------------------|-------------|
+| Epic 1: 戦闘システム | 0 ✅ | 0 ✅ | すべて完了 |
+| Epic 2: ユニット・パイロット | 1 | 0 | Unit.pilot.cs: 追加サポート精査 |
+| Epic 3: GUI・UI | 1 | 8 | 発進表示, フィルタ, タイルUI改善 |
+| Epic 4: イベント・コマンド | 8 | 0 | イベントファイル禁則, PaintString最適化 |
+| Epic 5: データ管理 | 3 | 1 | セーブ/設定管理 |
+| Epic 6: VB6レガシー | 1 | 0 | GeneralLib Byte length 系関数 |
+| Epic 7: パフォーマンス | 2 | 0 | Sound キャッシュ, Expression.replace |
+| Epic 8: バグ・エッジケース | 4 | 0 | COM 武器選択, SRC.main 実行環境依存 |
+| **合計** | **20** | **9** | |
 
 ## 現在の状況 / Current Status
 
@@ -78,35 +89,27 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ### 1. 戦闘システム実装 / Combat System Implementation
 **優先度**: 高 / Priority: High
-**推定作業量**: 大 → 小（大幅進捗）/ Effort: Large → Small (significant progress)
-**残存TODO**: 7
-
-戦闘に関連する機能の実装が必要です。
+**推定作業量**: 完了 ✅ / Effort: Complete ✅
+**残存TODO**: 0 ✅
 
 #### 完了した主な機能 / Completed Features:
 - ✅ 攻撃タイプの実装（回避、受け流し、ダミー、シールド防御、反撃など）
 - ✅ 援護攻撃・援護防御システム（LookForAttackHelp / LookForGuardHelp）
 - ✅ 経験値取得（GetExp）
-
-#### 残存する主な機能 / Remaining Features:
-- 合体・融合技の実装
-- エイリアス参照の整理
-- 変身した場合の能力処理
+- ✅ 合体・融合技、エイリアス参照、変身した場合の能力処理
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs` (大幅解消済み)
-- `SRC.Sharp/SRCCore/Units/Unit.attack.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/Units/Unit.ability.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/Commands/Command.attack.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs` (完了)
+- `SRC.Sharp/SRCCore/Units/Unit.attack.cs` (完了)
+- `SRC.Sharp/SRCCore/Units/Unit.ability.cs` (完了)
+- `SRC.Sharp/SRCCore/Commands/Command.attack.cs` (完了)
 
 ---
 
 ### 2. ユニット・パイロットシステム / Unit & Pilot System
 **優先度**: 高 / Priority: High
-**推定作業量**: 中 → 小（進捗あり）/ Effort: Medium → Small (in progress)
-**残存TODO**: 10
-
-ユニットとパイロットに関する機能の完成が必要です。
+**推定作業量**: 中 → 極小（ほぼ完了）/ Effort: Medium → Minimal (nearly complete)
+**残存TODO**: 1
 
 #### 完了した主な機能 / Completed Features:
 - ✅ IsAbleToEnter（配置可能判定）
@@ -114,95 +117,97 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 - ✅ IsNecessarySkillSatisfied（スキル条件）
 - ✅ IsAbilityEffective（アビリティ有効性）
 - ✅ DeleteTemporaryOtherForm（一時形態削除）
+- ✅ MainPilot() の追加パイロット・バーサーク解決
+- ✅ SkillName / SpecialEffect
 
 #### 残存する主な機能 / Remaining Features:
-- SkillName / SkillNameForNS（仕様が複雑）
-- SpecialEffect実装
-- Unitフォルダ以外のリソース走査
+- `Unit.pilot.cs`: 追加サポートの処理箇所精査
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Units/Unit.lookup.cs` (1 TODO, 大幅解消済み)
-- `SRC.Sharp/SRCCore/Units/Unit.ability.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/Pilots/Pilot.skill.cs` (2 TODOs)
-- `SRC.Sharp/SRCCore/Units/Unit.se.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Units/Unit.pilot.cs` (1 TODO)
 
 ---
 
 ### 3. GUI・UIシステム / GUI & UI System
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 中 / Effort: Medium
-**残存TODO**: 4
-
-ユーザーインターフェース関連の実装と改善が必要です。
+**残存TODO**: 9 (SRCCore: 1, SRCSharpForm: 8)
 
 #### 残存する主な機能 / Remaining Features:
-- レイヤーデータ読み込み
-- 発進時のユニット表示
+- 発進時のユニット表示（母艦の代わり）
+- ユニットタイル読み込み元変更、フィルタ実装
+- GUI インタフェース分割見直し（guimap, guiscrean, guistatus）
+- 縦横比の解決、アルファチャネル精査
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Maps/Map.cs` (2 TODOs)
-- `SRC.Sharp/SRCSharpForm/Forms/Main.gui.cs`
 - `SRC.Sharp/SRCCore/Commands/Command.launch.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/Commands/Command.process.cs` (1 TODO)
+- `SRC.Sharp/SRCSharpForm/Forms/Main.gui.cs` (1 TODO)
+- `SRC.Sharp/SRCSharpForm/Forms/Main.guimap.cs` (3 TODOs)
+- `SRC.Sharp/SRCSharpForm/Forms/Main.guiscrean.cs` (2 TODOs)
+- `SRC.Sharp/SRCSharpForm/Forms/Main.guistatus.cs` (1 TODO)
+- `SRC.Sharp/SRCSharpForm/Resoruces/ImageBuffer.cs` (1 TODO)
 
 ---
 
 ### 4. イベント・コマンドシステム / Event & Command System
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 中 / Effort: Medium
-**残存TODO**: 10
+**残存TODO**: 8
 
-イベントコマンドの実装と改善が必要です。
+#### 完了した主な機能 / Completed Features:
+- ✅ LIPS（タイムド Question コマンド）移植 (PR #735)
+- ✅ ReturnCmd / GotoCmd のバグ修正 (PR #734)
 
 #### 残存する主な機能 / Remaining Features:
 - イベントファイルのロード時の禁則処理
 - PaintString最適化（あらかじめ構文解析）
 - Wait コマンドの実行権譲渡
+- 1オフセット処理の整理
+- CmdParser: Talk の中身が壊れるケース
 
 #### 主要な対象ファイル / Key Files:
 - `SRC.Sharp/SRCCore/Events/Event.data.cs` (4 TODOs)
 - `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Other/WaitCmd.cs` (1 TODO)
 - `SRC.Sharp/SRCCore/CmdDatas/CmdParser.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/ArcCmd.cs` (1 TODO)
 
 ---
 
 ### 5. データ管理・永続化 / Data Management & Persistence
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 小 / Effort: Small
-**残存TODO**: 7
-
-セーブ・ロード機能の改善とデータ管理が必要です。
+**残存TODO**: 4 (SRCCore: 3, SRCSharpForm: 1)
 
 #### 残存する主な機能 / Remaining Features:
 - セーブ・ロード機能の改善
 - 設定管理システムの独立化
+- LocalFileConfig: 設定ファイルへの説明書き出し
+- RootForm: 設定の反映処理
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/SRC.save.cs` (3 TODOs)
+- `SRC.Sharp/SRCCore/SRC.save.cs` (1 TODO)
 - `SRC.Sharp/SRCCore/SRC.config.cs` (1 TODO)
 - `SRC.Sharp/SRCCore/Config/LocalFileConfig.cs` (1 TODO)
+- `SRC.Sharp/SRCSharpForm/RootForm.cs` (1 TODO)
 
 ---
 
 ### 6. VB6レガシー関数置換 / VB6 Legacy Function Replacement
 **優先度**: 低 / Priority: Low
-**推定作業量**: 小 / Effort: Small
-**残存TODO**: 3
-
-VB6から移行されていない文字列処理関数などの実装が必要です。
+**推定作業量**: 極小 / Effort: Minimal
+**残存TODO**: 1
 
 #### 完了した主な機能 / Completed Features:
 - ✅ ランダムシーケンス実装 (PR #710)
 - ✅ Hiragana StrConv (PR #710)
 - ✅ UpdateSupportMod (PR #656, 旧対応)
+- ✅ Loadfiledialog, Savefiledialog (PR #712, #729)
 
 #### 残存する主な機能 / Remaining Features:
-- ファイルダイアログ（Loadfiledialog, Savefiledialog）の本実装
-- バイト系文字列関数の整理
+- バイト系文字列関数の整理（GeneralLib.cs）
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Expressions/Functions/File.cs` (2 TODOs)
 - `SRC.Sharp/SRCCore/Lib/GeneralLib.cs` (1 TODO)
 
 ---
@@ -210,35 +215,35 @@ VB6から移行されていない文字列処理関数などの実装が必要�
 ### 7. パフォーマンス最適化 / Performance Optimization
 **優先度**: 低 / Priority: Low
 **推定作業量**: 小 / Effort: Small
-**残存TODO**: 5
-
-コードの最適化とリファクタリングが必要です。
+**残存TODO**: 2
 
 #### 残存する主な機能 / Remaining Features:
 - Sound システムのキャッシュ最適化
-- .NET バージョン更新対応
+- Expression.replace.cs: ref/out 引数への変換判断
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Sound.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/Extensions/SituationExtension.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Sound.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Expressions/Expression.replace.cs` (1 TODO)
 
 ---
 
 ### 8. バグ修正・エッジケース対応 / Bug Fixes & Edge Cases
 **優先度**: 中〜低 / Priority: Medium-Low
 **推定作業量**: 小 / Effort: Small
-**残存TODO**: 8
+**残存TODO**: 4
 
-既知のバグやエッジケースへの対応が必要です。
+#### 完了した主な機能 / Completed Features:
+- ✅ 召喚ユニット復活バグ修正 (#627 解消済み、PR #731)
+- ✅ ECM射程・メッセージ確率・バーサーク修正 (PR #733)
+- ✅ UpVarLevel累積・BGMパス・対相手メッセージ確率修正 (PR #736)
 
 #### 残存する主な機能 / Remaining Features:
 - COM: 武器選択失敗ケースの対応
-- Info: Help関数の実装
+- COM: EN以外の使用条件確認
 - SRC.main: 実行環境依存処理
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/COM.cs` (3 TODOs)
-- `SRC.Sharp/SRCCore/Expressions/Functions/Info.cs` (3 TODOs)
+- `SRC.Sharp/SRCCore/COM.cs` (2 TODOs)
 - `SRC.Sharp/SRCCore/SRC.main.cs` (2 TODOs)
 
 ---
@@ -435,6 +440,7 @@ VB6から移行されていない文字列処理関数などの実装が必要�
 
 ## 更新履歴 / Change History
 
+- 2026-02-20 (2回目): 進捗更新 — 残存TODO SRCCore 20件・SRCSharpForm 9件に更新、Epic1戦闘システム完了、最近のPR一覧を追加 (#728-#740)
 - 2026-02-20: 進捗更新 — 残存TODO 54件に更新、Epic別進捗状況を反映、最近のPR一覧を追加
 - 2026-02-20: 現在の状況セクションを追加（既存Issue連携・運用方針の明確化）
 - 2026-02-19: 初版作成 (Initial version created)
