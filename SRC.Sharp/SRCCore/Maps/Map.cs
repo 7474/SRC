@@ -196,7 +196,6 @@ namespace SRCCore.Maps
             return null;
         }
 
-        // TODO レイヤ対応
         public string SearchLayerImageFile(MapCell cell)
         {
             if (cell?.UpperTerrain == null) { return null; }

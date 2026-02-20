@@ -109,7 +109,8 @@ namespace SRCCore.Expressions.Functions
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
                     var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
-                    // ファイルがシナリオフォルダ外の場合は空文字列を返す
+                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
                     if (!SRC.FileSystem.IsAbsolutePath(relPath))
                     {
                         str_result = relPath;
@@ -150,7 +151,8 @@ namespace SRCCore.Expressions.Functions
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
                     var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
-                    // ファイルがシナリオフォルダ外の場合は空文字列を返す
+                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
                     if (!SRC.FileSystem.IsAbsolutePath(relPath))
                     {
                         str_result = relPath;
