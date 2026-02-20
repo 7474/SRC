@@ -75,10 +75,11 @@ namespace SRCCore.Units
 
             // 各パイロットが経験値を入手
             int pilotIdx = 0;
+            var additionalSupport = IsFeatureAvailable("追加サポート") ? AdditionalSupport() : null;
             var pilotSequence = Enumerable.Empty<Pilot>()
                 .Concat(Pilots)
                 .Concat(SupportPilots)
-                .Concat(IsFeatureAvailable("追加サポート") ? new[] { AdditionalSupport() } : Enumerable.Empty<Pilot>())
+                .Concat(additionalSupport != null ? Enumerable.Repeat(additionalSupport, 1) : Enumerable.Empty<Pilot>())
                 .Where(p => p != null)
                 .Take(n);
             foreach (var p in pilotSequence)

@@ -249,7 +249,7 @@ namespace SRCCore
                     ScenarioFileName = ScenarioFileName,
                     Turn = Turn,
                     LocalVariableList = Event.LocalVariableList,
-                    DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).ToList(),
+                    DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).Distinct().ToList(),
                     AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
                     MapX = GUI.MapX,

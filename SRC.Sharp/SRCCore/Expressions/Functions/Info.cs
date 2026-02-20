@@ -1379,17 +1379,6 @@ namespace SRCCore.Expressions.Functions
                         else if (p != null)
                         {
                             str_result = SRC.Help.SkillHelpMessage(p, aname);
-                            if (string.IsNullOrEmpty(str_result) && u != null)
-                            {
-                                if (GeneralLib.IsNumber(aname))
-                                {
-                                    str_result = SRC.Help.FeatureHelpMessage(u, Conversions.ToInteger(aname), false);
-                                }
-                                else
-                                {
-                                    str_result = SRC.Help.FeatureHelpMessage(u, aname, false);
-                                }
-                            }
                         }
 
                         break;
