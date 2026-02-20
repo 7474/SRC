@@ -40,6 +40,24 @@ This single command allows Copilot to autonomously select and execute the next t
 
 This single command allows Copilot to assess the current state and update documents and issue statuses to reflect reality.
 
+#### ユニットテストを補完する / Complete unit tests
+
+```
+@copilot ユニットテストを補完してください
+```
+
+または / or
+
+```
+@copilot Complete the unit tests
+```
+
+これだけで、Copilotが移植済みコマンドのうちテストが不足しているものを特定し、
+ヘルプの記載（`SRC.Sharp.Help/src/`）を期待値としたユニットテストを追加します。
+
+This command allows Copilot to identify implemented commands lacking test coverage,
+then add unit tests using the help documentation (`SRC.Sharp.Help/src/`) as the expected behavior.
+
 ---
 
 ## 🎯 Autonomous Operation Protocol / 自律運用プロトコル
@@ -150,6 +168,53 @@ Steps:
 7. Report: Issue #, PR #, test results
 ```
 
+#### E. Unit Test Completion / ユニットテスト補完
+
+```
+Action: Complete unit tests for implemented commands
+Steps:
+1. List all command classes under SRC.Sharp/SRCCore/CmdDatas/Commands/
+2. Check existing test files under SRC.Sharp/SRCCoreTests/CmdDatas/
+3. Identify commands that have no test coverage
+4. For each untested command:
+   a. Read help doc: SRC.Sharp.Help/src/[コマンド名]コマンド.md
+   b. Note expected behavior described in "解説" section
+   c. Note the examples in "例" section
+   d. Write tests that verify the behavior described in help
+   e. If implementation differs from help, report the discrepancy
+5. Add tests to appropriate file in SRCCoreTests/CmdDatas/
+   - Use existing file if related commands already have tests there
+   - Create new [CommandGroup]CmdTests.cs file if needed
+6. Run tests: cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj
+7. Report: commands tested, discrepancies found, test results
+```
+
+**Test Writing Guidelines / テスト作成ガイドライン**:
+- Test file: `SRC.Sharp/SRCCoreTests/CmdDatas/`
+- Pattern: Follow existing tests in `VariableCmdTests.cs`, `ControlCmdTests.cs`, `SwitchDoLoopCmdTests.cs`
+- Helper infrastructure:
+  - `CreateSrc()` - creates SRC with MockGUI
+  - `BuildEvent(src, lines...)` - creates event command array from text lines
+  - `RunEvent(src, cmds)` - simulates event execution
+- Expected behavior source: `SRC.Sharp.Help/src/[コマンド名]コマンド.md`
+- Test naming: `[CmdName]Cmd_[Condition]_[ExpectedResult]()`
+- Each test must have a comment citing the relevant help section
+
+**Discrepancy Reporting / 齟齬の報告**:
+When the implementation differs from help documentation:
+```
+⚠️ 齟齬発見: [CommandName]
+
+ヘルプの記載:
+  [help documentation text]
+
+実装の動作:
+  [actual behavior description]
+
+テストの扱い:
+  実装の動作に合わせたテストを作成し、コメントに齟齬を記載
+```
+
 ### Phase 4: Report Progress / 進捗報告
 
 After completing task, automatically report:
@@ -228,6 +293,111 @@ When instructed to "update progress" (進捗を更新してください), Copilo
 
 To continue migration: @copilot 移植を進行してください
 To update again: @copilot 進捗を更新してください
+```
+
+---
+
+## 🧪 Unit Test Completion Protocol / ユニットテスト補完プロトコル
+
+When instructed to "complete unit tests" (ユニットテストを補完してください), Copilot should follow this protocol:
+
+### Step 1: Identify Untested Commands / 未テストコマンドの特定
+
+1. **List all command implementations**
+   ```bash
+   find SRC.Sharp/SRCCore/CmdDatas/Commands -name "*.cs" | sort
+   ```
+
+2. **List existing test coverage**
+   ```bash
+   ls SRC.Sharp/SRCCoreTests/CmdDatas/
+   ```
+
+3. **Build coverage matrix**
+   - For each command class, determine if it has corresponding tests
+   - Priority: commands used most frequently in SRC scenarios
+   - Skip: NotImplementedCmd, NotSupportedCmd, NopCmd (no logic to test)
+
+### Step 2: Read Help Documentation / ヘルプドキュメントの参照
+
+For each untested command:
+
+1. **Find help file**: `SRC.Sharp.Help/src/[コマンド名]コマンド.md`
+2. **Extract expected behavior** from the following sections:
+   - 書式 (Format/Syntax)
+   - 解説 (Description/Explanation)
+   - 例 (Examples)
+3. **Note special cases** mentioned in the help text
+4. **Check for discrepancies** between help and implementation
+
+### Step 3: Write Tests / テストの作成
+
+For each command, write tests verifying:
+
+1. **Normal behavior** - the main use case from "解説"
+2. **Boundary conditions** - edge cases mentioned in help
+3. **Error handling** - invalid argument counts, missing required partners (e.g., missing EndSw)
+4. **Special modes** - optional parameters and their effects
+
+**Required test cases per command**:
+- At least 1 positive test (normal operation)
+- At least 1 error test (invalid arguments or missing required structure)
+- Additional tests for each distinct behavior described in help
+
+### Step 4: Report Discrepancies / 齟齬の報告
+
+If the implementation differs from help documentation, report:
+
+```
+⚠️ 齟齬発見 / Discrepancy Found: [CommandName]コマンド
+
+ヘルプの記載 / Help Description:
+  [relevant text from help]
+
+実装の動作 / Actual Behavior:
+  [description of what the code actually does]
+
+テストの方針 / Test Approach:
+  実装の動作に合わせたテストを作成。ヘルプとの差異はコメントで明記。
+  Tests written to match actual implementation. Differences from help documented in comments.
+
+要対応 / Action Required:
+  [ ] ヘルプに合わせて実装を修正する / Fix implementation to match help
+  [ ] ヘルプを実装に合わせて更新する / Update help to match implementation
+  [ ] 現状維持（意図的な差異）/ Keep as-is (intentional difference)
+```
+
+### Step 5: Validate / 検証
+
+```bash
+cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj
+```
+
+### Step 6: Report Results / 結果報告
+
+```
+🧪 Unit Test Completion Report (YYYY-MM-DD)
+
+## Tests Added
+- [CommandName]Cmd: N test cases added (SwitchDoLoopCmdTests.cs)
+- [CommandName]Cmd: N test cases added ([File].cs)
+
+## Coverage Summary
+- Previously tested: X commands
+- Newly tested: Y commands
+- Still untested: Z commands (list)
+- Total tests: N passed
+
+## Discrepancies Found
+- [CommandName]: [brief description of discrepancy]
+  → Reported to: [issue number or PR comment]
+
+## Still Untested Commands
+(Commands requiring UI interaction or complex setup - deferred)
+- [CommandName]: Reason
+
+To continue adding tests: @copilot ユニットテストを補完してください
+To proceed with migration: @copilot 移植を進行してください
 ```
 
 ---

@@ -447,6 +447,72 @@ docs/migration-plan.md と現在のGitHub Issue状態を分析してください
 
 ---
 
+## 指示例 16: ユニットテストの補完（全体）/ Example 16: Complete Unit Tests (All)
+
+### 指示 / Instruction
+
+```
+@copilot ユニットテストを補完してください。
+
+手順：
+1. SRC.Sharp/SRCCore/CmdDatas/Commands/ の全コマンドクラスを列挙
+2. SRC.Sharp/SRCCoreTests/CmdDatas/ の既存テストと比較してカバレッジを確認
+3. 未テストのコマンドを特定
+4. 各コマンドについて SRC.Sharp.Help/src/[コマンド名]コマンド.md を参照
+5. ヘルプの「解説」と「例」を期待値としてユニットテストを作成
+6. 実装とヘルプに齟齬がある場合はその旨を報告
+7. テストを実行して全件パスを確認（dotnet test SRCCoreTests/SRCCoreTests.csproj）
+
+完了後、追加したテスト数・齟齬一覧・テスト結果を報告してください。
+```
+
+### 期待される応答 / Expected Response
+
+```
+🧪 ユニットテスト補完 レポート
+
+## 未テストコマンドの特定
+対象: 15コマンドが未テスト
+- DoCmd / LoopCmd → SwitchDoLoopCmdTests.cs に追加済み
+- SwitchCmd / CaseCmd / EndSwCmd → SwitchDoLoopCmdTests.cs に追加済み
+- ForEachCmd → ForEachCmdTests.cs に新規作成
+- ...
+
+## 追加したテスト
+SwitchDoLoopCmdTests.cs: 14件
+ForEachCmdTests.cs: 8件
+合計: 22件追加
+
+## 齟齬の報告
+なし / No discrepancies found.
+
+## テスト結果
+Passed: 245, Skipped: 19, Failed: 0
+
+次のステップ: @copilot ユニットテストを補完してください（残り X コマンド）
+```
+
+---
+
+## 指示例 17: 特定コマンドのユニットテスト追加 / Example 17: Add Tests for Specific Command
+
+### 指示 / Instruction
+
+```
+@copilot ForEachコマンドのユニットテストを追加してください。
+
+手順：
+1. SRC.Sharp.Help/src/ForEachコマンド.md を確認
+2. 書式1（ユニット対象）・書式2（配列対象）の期待値をヘルプから読み取る
+3. SRCCoreTests/CmdDatas/ForEachCmdTests.cs を作成
+4. ヘルプの期待値に基づいてテストケースを実装
+5. 実装とヘルプに齟齬があれば報告
+
+テスト実行結果を報告してください。
+```
+
+---
+
 ## まとめ / Summary
 
 これらの指示例により、Copilotは以下を自律的に実行できます：
@@ -457,6 +523,7 @@ docs/migration-plan.md と現在のGitHub Issue状態を分析してください
 4. **進捗管理**: レポート生成、依存関係分析、予測
 5. **バグ修正**: 問題の特定・修正・テスト
 6. **最適化**: パフォーマンス改善の実装と測定
+7. **ユニットテスト補完**: ヘルプドキュメントを期待値としたテストの追加・齟齬の報告
 
 全ての作業は `docs/` のドキュメントとコードベースの情報のみで完結します。
 
@@ -468,6 +535,7 @@ With these instruction examples, Copilot can autonomously:
 4. **Progress Tracking**: Generate reports, analyze dependencies, predict completion
 5. **Bug Fixing**: Identify, fix, and test problems
 6. **Optimization**: Implement and measure performance improvements
+7. **Unit Test Completion**: Add tests based on help documentation; report discrepancies
 
 All work is self-contained using only `docs/` documentation and codebase information.
 
