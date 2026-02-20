@@ -84,6 +84,8 @@ namespace SRCCore.Extensions
             }
 
             // 最初に相手限定のシチュエーションのみで検索
+            // 宣言位置は goto SkipMessagesWithTarget より前でなければならない
+            List<T> targetList = null;
             if (u is null)
             {
                 goto SkipMessagesWithTarget;
@@ -331,17 +333,18 @@ namespace SRCCore.Extensions
                 // 状況に合った相手限定メッセージが一つでもあれば、その中からメッセージを選択
                 if (list.Any())
                 {
-                    var res = list.Dice();
-                    if (GeneralLib.Dice(2) == 1
-                        || Strings.InStr(msg_situation, "(とどめ)") > 0
+                    // 特定の状況では相手限定メッセージを必ず優先
+                    if (Strings.InStr(msg_situation, "(とどめ)") > 0
                         || msg_situation == "挑発"
                         || msg_situation == "脱力"
                         || msg_situation == "魅惑"
                         || msg_situation == "威圧"
                         || (u.Party ?? "") == (t.Party ?? ""))
                     {
-                        return res;
+                        return list.Dice();
                     }
+                    // 通常の状況では相手限定メッセージを候補として保持し、汎用メッセージと等確率で選択
+                    targetList = list;
                 }
             }
 
@@ -387,6 +390,12 @@ namespace SRCCore.Extensions
                     .Where(m => situations.Any(s => m.Situation == s))
                     .Concat(list0.Where(m => situations.Zip(sub_situations, (s, subs) => s + subs).Any(s => m.Situation == s)))
                     .ToList();
+                // 相手限定メッセージが見つかっていた場合は汎用メッセージと合わせて等確率で選択
+                if (targetList != null)
+                {
+                    var combined = targetList.Concat(list).ToList();
+                    return combined.Dice();
+                }
                 // シチュエーションに合ったメッセージが見つかれば、その中からメッセージを選択
                 if (list.Any())
                 {

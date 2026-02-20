@@ -225,5 +225,67 @@ namespace SRCCore.Units.Tests
             // 破棄時は追加パイロットを使用しない → pilot1 が返る
             Assert.AreSame(pilot, result);
         }
+
+        // ===== MainPilot() — 暴走時パイロット: pilot data not found =====
+
+        [TestMethod]
+        public void MainPilot_ReturnsPilot1_WhenBerserkPilotDataNotFound()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            var pilot = CreateAndBoardPilot(src, unit, "基本パイロット", level: 5);
+            // 暴走時パイロット feature with undefined pilot name
+            AddFeatureToUnit(unit, "暴走時パイロット", "存在しないパイロット");
+            unit.AddCondition("暴走", -1);
+
+            // Should fall back to main pilot without crashing
+            var result = unit.MainPilot();
+
+            Assert.AreSame(pilot, result);
+        }
+
+        // ===== MainPilot() — 追加パイロット: level sync on repeated calls =====
+
+        [TestMethod]
+        public void MainPilot_SyncsLevelOnRepeatedCalls()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            var basePilot = CreateAndBoardPilot(src, unit, "基本パイロット", level: 1);
+            src.PDList.Add("追加パイロット");
+            AddFeatureToUnit(unit, "追加パイロット", "追加パイロット");
+
+            // First call creates the additional pilot
+            var result1 = unit.MainPilot();
+            Assert.AreEqual(1, result1.Level);
+
+            // Advance the base pilot's level (simulating ExpUpCmd)
+            basePilot.Level = 10;
+
+            // Second call should sync level from base pilot
+            var result2 = unit.MainPilot();
+            Assert.AreEqual(10, result2.Level);
+        }
+
+        [TestMethod]
+        public void MainPilot_SyncsExpOnRepeatedCalls()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            var basePilot = CreateAndBoardPilot(src, unit, "基本パイロット", level: 1);
+            src.PDList.Add("追加パイロット");
+            AddFeatureToUnit(unit, "追加パイロット", "追加パイロット");
+
+            // First call creates the additional pilot
+            var result1 = unit.MainPilot();
+            Assert.AreEqual(0, result1.Exp);
+
+            // Give the base pilot experience
+            basePilot.Exp = basePilot.Exp + 200;
+
+            // Second call should sync exp from base pilot
+            var result2 = unit.MainPilot();
+            Assert.AreEqual(200, result2.Exp);
+        }
     }
 }
