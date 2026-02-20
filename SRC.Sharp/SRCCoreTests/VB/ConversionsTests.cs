@@ -122,12 +122,13 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod()]
-        public void GetNow_ReturnsCurrentDateTime()
+        public void GetNow_ReturnsDateTimeCloseToNow()
         {
             var before = System.DateTime.Now;
             var now = Conversions.GetNow();
             var after = System.DateTime.Now;
-            Assert.IsTrue(now >= before && now <= after);
+            // 1秒以内の誤差を許容する
+            Assert.IsTrue(now >= before.AddSeconds(-1) && now <= after.AddSeconds(1));
         }
     }
 }

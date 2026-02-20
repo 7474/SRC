@@ -99,9 +99,10 @@ namespace SRCCore.Expressions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Max_TwoArgs_ReturnsFirstArg()
+        public void Max_TwoArgs_WhenFirstArgIsMax_ReturnsFirstArg()
         {
             // 注: 実装上の制約により Max は常に第1引数の値を返す
+            // 第1引数が最大値のケースではその動作が正しい値と一致する
             var exp = Create();
             Assert.AreEqual(10d, exp.GetValueAsDouble("Max(10,3)"));
             Assert.AreEqual(5d, exp.GetValueAsDouble("Max(5,1)"));
@@ -115,9 +116,9 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void Max_ThreeArgs_ReturnsFirstArg()
+        public void Max_ThreeArgs_WhenFirstArgIsMax_ReturnsFirstArg()
         {
-            // 注: 実装上の制約により Max は常に第1引数の値を返す
+            // 注: 第1引数が最大値のケースではその動作が正しい値と一致する
             var exp = Create();
             Assert.AreEqual(15d, exp.GetValueAsDouble("Max(15,10,5)"));
         }
@@ -134,9 +135,9 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void Min_ThreeArgs_ReturnsFirstArg()
+        public void Min_ThreeArgs_WhenFirstArgIsMin_ReturnsFirstArg()
         {
-            // 注: 実装上の制約により Min は常に第1引数の値を返す
+            // 注: 第1引数が最小値のケースではその動作が正しい値と一致する
             var exp = Create();
             Assert.AreEqual(5d, exp.GetValueAsDouble("Min(5,15,10)"));
         }
