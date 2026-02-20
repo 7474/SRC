@@ -5,6 +5,7 @@ using System.Drawing;
 
 namespace SRCSharpForm
 {
+// TODO インタフェースの切り方見直す (Issue #367)
 // インタフェースの切り方: IGUIMap/IGUIScrean/IGUIStatus は将来的に分割・整理の余地がある
     internal partial class frmMain : IGUIScrean
     {
@@ -28,8 +29,7 @@ namespace SRCSharpForm
 
         private Brush GetBrush(ScreanDrawOption option)
         {
-            // FillStyle（透過・単色・ハッチなど）は現状 SolidBrush のみ実装。
-            // VB6互換の塗りつぶしスタイル対応は将来の拡張余地。
+            // TODO FillStyle（透過・単色・ハッチなど）は現状 SolidBrush のみ実装。VB6互換の塗りつぶしスタイル対応が残タスク。
             return new SolidBrush(option.FillColor);
         }
 

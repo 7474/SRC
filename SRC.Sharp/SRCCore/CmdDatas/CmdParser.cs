@@ -633,7 +633,7 @@ namespace SRCCore.CmdDatas
                             }
 
                             // サブルーチンコール？
-                            // XXX Talkの中身が壊れる場面がある可能性あり（Issue #172 参照）
+                            // TODO Talkの中身が壊れる場面がある可能性あり（Issue #172 参照）
                             return new CallCmd(src, new EventDataLine(
                                 data.ID, data.Source, data.File, data.LineNum, "Call " + data.Data
                             ));

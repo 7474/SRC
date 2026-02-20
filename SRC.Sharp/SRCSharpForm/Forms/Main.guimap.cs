@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace SRCSharpForm
 {
+// TODO インタフェースの切り方見直す (Issue #367)
 // インタフェースの切り方: IGUIMap/IGUIScrean/IGUIStatus は将来的に分割・整理の余地がある
     internal partial class frmMain : IGUIMap
     {
@@ -48,7 +49,7 @@ namespace SRCSharpForm
         /// <summary>
         /// 画像リソースの総合的なバッファ。
         /// ユニットタイル（picNeautral など）以外の画像はこのバッファで取り扱う。
-        /// ユニットタイルの読み込み元変更は将来の改善余地。
+        /// TODO ユニットタイルの読み込み元を変える
         /// </summary>
         private ImageBuffer imageBuffer;
         public ImageBuffer ImageBuffer => imageBuffer;
@@ -532,6 +533,7 @@ namespace SRCSharpForm
                 g.DrawImage(unitImage, destRect);
             }
 
+            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB6の BitBlt→新システムは DrawImage + アルファブレンドで代替）
             // 地形ユニットフィルタ:
             // 旧VB6では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
             // 新システムでは DrawImage + アルファブレンドで代替する。地形ユニットの特別処理は未実装。

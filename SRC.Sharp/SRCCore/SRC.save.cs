@@ -59,7 +59,7 @@ namespace SRCCore
 
     public partial class SRC
     {
-        // セーブ・ロード（基本的な保存・読み込みは実装済み; 将来の課題: 完全な互換性検証）
+        // TODO セーブ・ロードの精査（基本的な保存・読み込みは実装済み; 完全な互換性検証が残タスク）
         // データをセーブ
         public void SaveData(Stream stream)
         {

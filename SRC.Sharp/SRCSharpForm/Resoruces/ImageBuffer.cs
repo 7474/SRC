@@ -63,9 +63,9 @@ namespace SRCSharpForm.Resoruces
             if (image.PixelFormat.HasFlag(PixelFormat.Alpha))
             {
                 // 画像がアルファチャネルを持っているなら透過画像として登録
+                // TODO アルファチャネル精査
                 // PixelFormat.Alpha フラグはフォーマット上のアルファチャネル有無を示すが、
                 // 実際に全ピクセルが透過されているかどうかはまた別の話。
-                // 現状の実装は保守的だが機能上問題ない（透過情報を保持したまま登録する）。
                 Transparent(ToTransparentKey(name), image);
                 // アルファチャネルを消して返す
                 image = image.RemoveAlpha(Color.White);

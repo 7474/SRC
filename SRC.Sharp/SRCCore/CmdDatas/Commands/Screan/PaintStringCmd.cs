@@ -12,7 +12,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             without_cr = false;
 
-            // PaintString文の処理の高速化のため、あらかじめ構文解析しておく
+            // TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく
             // 「;」を含む場合は改めて項に分解
             // (正しくリストの処理が行えないため)
             var orgEdata = eventData.Data;

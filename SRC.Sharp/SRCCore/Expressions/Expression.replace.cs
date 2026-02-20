@@ -10,8 +10,8 @@ namespace SRCCore.Expressions
 {
     public partial class Expression
     {
-        // ReplaceSubExpression は ref string を引数として受け取る。
-        // 戻り値または out 変数への変換は将来の改善余地として残す。
+        // TODO ref 取って戻り値か out 変数を受けるようにする決断をする。
+        // (現在は ref string を受け取る形だが、戻り値または out 変数への変換が望ましい)
 
         // str に対して式置換を行う
         public void ReplaceSubExpression(ref string str)

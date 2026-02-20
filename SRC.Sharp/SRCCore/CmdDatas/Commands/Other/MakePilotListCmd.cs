@@ -149,7 +149,7 @@ namespace SRCCore.CmdDatas.Commands
                 // プレイヤーが操作できないように
                 u.AddCondition("非操作", -1, cdata: "");
 
-                // パイロットの愛称を表示（セルサイズの 32px はマップセルサイズと同じ; GUI側への抽象化は将来の改善余地）
+                // TODO パイロットの愛称描画をGUIに切り出す（セルサイズ 32px がコア側にハードコードされている）
                 GUI.DrawString(p.get_Nickname(false), 32 * xx + 2, 32 * yy - 31);
                 switch (key_type ?? "")
                 {

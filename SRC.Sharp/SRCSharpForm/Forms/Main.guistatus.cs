@@ -15,6 +15,7 @@ using System.Text;
 
 namespace SRCSharpForm
 {
+// TODO インタフェースの切り方見直す (Issue #367)
 // インタフェースの切り方: IGUIMap/IGUIScrean/IGUIStatus は将来的に分割・整理の余地がある
     // ステータスをいつ出すかはGUIの側で制御できたほうがよさそう
     // そのうえで表示内容が変化する契機を通知するのがよいだろうか

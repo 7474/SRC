@@ -320,6 +320,7 @@ namespace SRCCore.Units
         /// <summary>
         /// 全てのパイロット
         /// MainPilotを解決、追加サポート含む
+        /// TODO 使用している個所でもともと追加サポートを処理していたか精査
         /// </summary>
         public IEnumerable<Pilot> AllPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())

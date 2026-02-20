@@ -308,8 +308,7 @@ namespace SRCCore
                 }
                 else
                 {
-                    // 相対パスの場合は Midi フォルダ内と直下の両方を検索する。
-                    // 絶対パス解決APIを利用すればより効率的になるが、現状は許容範囲。
+                    // TODO 一度検索したものを再検索している感じ — 絶対パスを返す API を作れば最適化できる
                     fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
                     fnames.Add(FileSystem.PathCombine("Midi", fname));
                     fnames.Add(fnameMp3);
