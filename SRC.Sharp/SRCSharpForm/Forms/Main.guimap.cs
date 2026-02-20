@@ -229,7 +229,6 @@ namespace SRCSharpForm
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
 
-            // TODO Impl SetupBackground
             using (var g = Graphics.FromImage(BackgroundBuffer))
             {
                 switch (draw_option ?? "")
@@ -262,6 +261,17 @@ namespace SRCSharpForm
                         else
                         {
                             g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
+                        }
+
+                        // レイヤー画像を描き込み
+                        var layerBitmapPath = Map.SearchLayerImageFile(cell);
+                        if (!string.IsNullOrEmpty(layerBitmapPath))
+                        {
+                            var layerImage = ImageBuffer.GetTransparent(layerBitmapPath);
+                            if (layerImage != null)
+                            {
+                                g.DrawImage(layerImage, xpx, ypx);
+                            }
                         }
                         //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
                     }

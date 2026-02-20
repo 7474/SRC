@@ -721,12 +721,31 @@ namespace SRCSharpForm
 
         public void SaveMessageFormStatus()
         {
-            // TODO Impl SaveMessageFormStatus
+            _savedMessageFormVisible = frmMessage.Visible;
+            _savedLeftUnit = LeftUnit;
+            _savedRightUnit = RightUnit;
         }
 
         public void KeepMessageFormStatus()
         {
-            // TODO Impl KeepMessageFormStatus
+            if (!_savedMessageFormVisible)
+            {
+                // 記録した時点でメッセージウィンドウが表示されていなければ強制的に閉じる
+                if (frmMessage.Visible)
+                {
+                    CloseMessageForm();
+                }
+            }
+            else if (!frmMessage.Visible)
+            {
+                // 記録した時点ではメッセージウィンドウが表示されていたので再表示する
+                OpenMessageForm(_savedLeftUnit, _savedRightUnit);
+            }
+            else if (LeftUnit == null && RightUnit == null && (_savedLeftUnit != null || _savedRightUnit != null))
+            {
+                // メッセージウィンドウからユニット表示が消えてしまった場合は再表示
+                OpenMessageForm(_savedLeftUnit, _savedRightUnit);
+            }
         }
 
         public void DisplayMessage(string pname, string msg_org, string msg_mode)
@@ -1228,16 +1247,15 @@ namespace SRCSharpForm
                     DisplayMode = "";
                 }
 
-                // TODO out left_margin
-                left_margin = "  ";
-                //if (Expression.IsOptionDefined("会話パイロット名改行"))
-                //{
-                //    left_margin = " ";
-                //}
-                //else
-                //{
-                //    left_margin = "  ";
-                //}
+                // left_marginは「会話パイロット名改行」オプションによって変わる
+                if (SRC.Expression.IsOptionDefined("会話パイロット名改行"))
+                {
+                    left_margin = " ";
+                }
+                else
+                {
+                    left_margin = "  ";
+                }
             }
         }
 

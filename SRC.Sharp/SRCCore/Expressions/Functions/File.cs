@@ -94,56 +94,29 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Loadfiledialog
-            //                        switch (pcount)
-            //                        {
-            //                            case 2:
-            //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: GetValueAsString(@params[1], is_term[1])2, fsuffix2: GetValueAsString(@params[2], is_term[2])2, ftype3: GetValueAsString(@params[1], is_term[1])3, fsuffix3: GetValueAsString(@params[2], is_term[2])3);
-            //                                    break;
-            //                                }
+            if (pcount >= 2)
+            {
+                var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                var initialFile = pcount >= 3 ? SRC.Expression.GetValueAsString(@params[3], is_term[3]) : "";
+                var subdir = pcount >= 4 ? SRC.Expression.GetValueAsString(@params[4], is_term[4]) : "";
 
-            //                            case 3:
-            //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: ""1, fsuffix2: ""1, ftype3: ""1, fsuffix3: ""1);
-            //                                    break;
-            //                                }
+                var initialDir = string.IsNullOrEmpty(subdir)
+                    ? SRC.ScenarioPath
+                    : SRC.FileSystem.ToAbsolutePath(SRC.ScenarioPath, subdir);
 
-            //                            case 4:
-            //                                {
-            //                                    str_result = FileDialog.LoadFileDialog("ファイルを開く", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        CallFunctionRet = ValueType.StringType;
-
-            //                        // 本当はこれだけでいいはずだけど……
-            //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
-            //                        {
-            //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // フルパス指定ならここで終了
-            //                        if (Strings.Right(Strings.Left(str_result, 3), 2) == @":\")
-            //                        {
-            //                            str_result = "";
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                        while (string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + str_result, FileAttribute.Normal)))
-            //                        {
-            //                            if (Strings.InStr(str_result, @"\") == 0)
-            //                            {
-            //                                // シナリオフォルダ外のファイルだった
-            //                                str_result = "";
-            //                                return CallFunctionRet;
-            //                            }
-
-            //                            str_result = Strings.Mid(str_result, Strings.InStr(str_result, @"\") + 1);
-            //                        }
+                var selectedPath = SRC.GUI.SelectLoadFile("ファイルを開く", initialDir, ftype, fsuffix);
+                if (!string.IsNullOrEmpty(selectedPath))
+                {
+                    var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
+                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
+                    if (!SRC.FileSystem.IsAbsolutePath(relPath))
+                    {
+                        str_result = relPath;
+                    }
+                }
+            }
 
             if (etype == ValueType.StringType)
             {
@@ -163,69 +136,29 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // TODO Impl Savefiledialog
-            //                        switch (pcount)
-            //                        {
-            //                            case 2:
-            //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath, "", 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-            //                                    break;
-            //                                }
+            if (pcount >= 2)
+            {
+                var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                var initialFile = pcount >= 3 ? SRC.Expression.GetValueAsString(@params[3], is_term[3]) : "";
+                var subdir = pcount >= 4 ? SRC.Expression.GetValueAsString(@params[4], is_term[4]) : "";
 
-            //                            case 3:
-            //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath, GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-            //                                    break;
-            //                                }
+                var initialDir = string.IsNullOrEmpty(subdir)
+                    ? SRC.ScenarioPath
+                    : SRC.FileSystem.ToAbsolutePath(SRC.ScenarioPath, subdir);
 
-            //                            case 4:
-            //                                {
-            //                                    str_result = FileDialog.SaveFileDialog("ファイルを保存", SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]), GetValueAsString(@params[3], is_term[3]), 2, GetValueAsString(@params[1], is_term[1]), GetValueAsString(@params[2], is_term[2]), ftype2: "", fsuffix2: "", ftype3: "", fsuffix3: "");
-            //                                    break;
-            //                                }
-            //                        }
-
-            //                        CallFunctionRet = ValueType.StringType;
-
-            //                        // 本当はこれだけでいいはずだけど……
-            //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
-            //                        {
-            //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        if (Strings.InStr(str_result, @"\") == 0)
-            //                        {
-            //                            return CallFunctionRet;
-            //                        }
-
-            //                        var loopTo13 = Strings.Len(str_result);
-            //                        for (i = 1; i <= loopTo13; i++)
-            //                        {
-            //                            if (Strings.Mid(str_result, Strings.Len(str_result) - i + 1, 1) == @"\")
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-
-            //                        buf = Strings.Left(str_result, Strings.Len(str_result) - i);
-            //                        str_result = Strings.Mid(str_result, Strings.Len(str_result) - i + 2);
-            //                        while (Strings.InStr(buf, @"\") > 0)
-            //                        {
-            //                            buf = Strings.Mid(buf, Strings.InStr(buf, @"\") + 1);
-            //                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                            if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
-            //                            {
-            //                                str_result = buf + @"\" + str_result;
-            //                                return CallFunctionRet;
-            //                            }
-            //                        }
-
-            //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                        if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
-            //                        {
-            //                            str_result = buf + @"\" + str_result;
-            //                        }
+                var selectedPath = SRC.GUI.SelectSaveFile("ファイルを保存", initialDir, initialFile, ftype, fsuffix);
+                if (!string.IsNullOrEmpty(selectedPath))
+                {
+                    var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
+                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
+                    if (!SRC.FileSystem.IsAbsolutePath(relPath))
+                    {
+                        str_result = relPath;
+                    }
+                }
+            }
 
             if (etype == ValueType.StringType)
             {

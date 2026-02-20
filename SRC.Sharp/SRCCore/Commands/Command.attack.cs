@@ -651,15 +651,17 @@ namespace SRCCore.Commands
                 if (currentUnit.Status == "出撃" && currentUnit.MaxAction(true) > 0 && !currentUnit.IsConditionSatisfied("攻撃不能") && SelectedTarget.Status == "出撃")
                 {
                     // まだ武器は使用可能か？
-                    // XXX これインデックスずれてたらどうすんの？
-                    // TODO 名前で解決？
                     if (SelectedWeapon > currentUnit.CountWeapon())
                     {
                         SelectedWeapon = -1;
                     }
                     else if ((wname ?? "") != (currentWeapon.Name ?? ""))
                     {
-                        SelectedWeapon = -1;
+                        // インデックスがずれた場合は名前で検索
+                        var foundIdx = currentUnit.Weapons
+                            .Select((w, idx) => (w, idx))
+                            .FirstOrDefault(t => (t.w.Name ?? "") == (wname ?? ""));
+                        SelectedWeapon = foundIdx.w != null ? foundIdx.idx + 1 : -1;
                     }
                     else if (CommandState == "移動後ターゲット選択")
                     {

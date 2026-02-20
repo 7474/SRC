@@ -366,7 +366,6 @@ namespace SRCCore
             // 各フォルダをチェック
             string fname;
 
-            // TODO FileSystemに逃がす
             var baseDirs = new string[]
             {
                 SRC.ScenarioPath,
@@ -374,10 +373,9 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }
-                // TODO Directory.Exists
-                //.Where(x => Directory.Exists(x))
+                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(x))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-                //    .Where(x => Directory.Exists(x))
+                .Where(x => Directory.Exists(x))
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？

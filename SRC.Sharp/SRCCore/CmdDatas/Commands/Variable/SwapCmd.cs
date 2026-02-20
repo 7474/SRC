@@ -12,7 +12,6 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            // TODO 動作確認
             var new_var1 = new VarData();
             var new_var2 = new VarData();
             VarData old_var1;
