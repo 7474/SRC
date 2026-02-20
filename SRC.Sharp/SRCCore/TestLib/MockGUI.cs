@@ -445,6 +445,16 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        {
+            return "";
+        }
+
+        public string SelectSaveFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
+        {
+            return "";
+        }
+
         public void SetDrawFont(DrawFontOption option)
         {
             throw new NotImplementedException();

@@ -1053,8 +1053,7 @@ namespace SRCCore.Units
             {
                 return "-.bmp";
             }
-            // TODO Unitフォルダ以外の走査
-            return SRC.FileSystem.PathCombine("Unit", CurrentForm().get_Bitmap(false));
+            return CurrentForm().get_Bitmap(false);
         }
 
         // ビットマップ

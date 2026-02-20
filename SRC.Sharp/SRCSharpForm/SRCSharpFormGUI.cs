@@ -236,6 +236,9 @@ namespace SRCSharpForm
         private double LeftUnitHPRatio;
         private double RightUnitENRatio;
         private double LeftUnitENRatio;
+        private bool _savedMessageFormVisible;
+        private Unit _savedLeftUnit;
+        private Unit _savedRightUnit;
 
         public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
         {
@@ -2109,6 +2112,43 @@ namespace SRCSharpForm
             {
                 return new FileInfo(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq")).Open(FileMode.Create);
             }
+        }
+
+        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Title = title;
+                ofd.InitialDirectory = Directory.Exists(initialDirectory) ? initialDirectory : SRC.ScenarioPath;
+                if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
+                {
+                    ofd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";
+                }
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    return ofd.FileName;
+                }
+            }
+            return "";
+        }
+
+        public string SelectSaveFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
+        {
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Title = title;
+                sfd.InitialDirectory = Directory.Exists(initialDirectory) ? initialDirectory : SRC.ScenarioPath;
+                sfd.FileName = initialFile ?? "";
+                if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
+                {
+                    sfd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";
+                }
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    return sfd.FileName;
+                }
+            }
+            return "";
         }
 
         public void DisplayGlobalMap()
