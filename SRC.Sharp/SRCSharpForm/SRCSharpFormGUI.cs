@@ -1536,6 +1536,12 @@ namespace SRCSharpForm
 
         public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
         {
+            //// 一旦「常に手前に表示」を解除
+            //if (My.MyProject.Forms.frmListBox.Visible)
+            //{
+            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
+            //}
+            
             var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
             string fname;
             using (var fsd = new SaveFileDialog())
