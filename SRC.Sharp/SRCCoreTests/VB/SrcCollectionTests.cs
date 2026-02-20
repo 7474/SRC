@@ -53,136 +53,223 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod()]
-        [Ignore]
         public void AddTest()
         {
-            Assert.Fail();
+            // Add(V item) は NotSupportedException をスローする
+            var sc = new SrcCollection<string>();
+            Assert.ThrowsException<NotSupportedException>(() => sc.Add("value"));
         }
 
         [TestMethod()]
-        [Ignore]
         public void AddTest1()
         {
-            Assert.Fail();
+            // Add(string key, string value) [Obsolete] は NotSupportedException をスローする
+            var sc = new SrcCollection<string>();
+#pragma warning disable CS0618
+            Assert.ThrowsException<NotSupportedException>(() => sc.Add("key", "value"));
+#pragma warning restore CS0618
         }
 
         [TestMethod()]
-        [Ignore]
         public void AddTest2()
         {
-            Assert.Fail();
+            // Add(V value, string key) は正常に追加できる（V=int の場合）
+            var sc = new SrcCollection<int>();
+            sc.Add(42, "key");
+            Assert.AreEqual(42, sc["key"]);
         }
 
         [TestMethod()]
-        [Ignore]
         public void AddTest3()
         {
-            Assert.Fail();
+            // Add(string key, V value) は正常に追加できる
+            var sc = new SrcCollection<int>();
+            sc.Add("key", 42);
+            Assert.AreEqual(42, sc["key"]);
         }
 
         [TestMethod()]
-        [Ignore]
         public void AddTest4()
         {
-            Assert.Fail();
+            // Add(KeyValuePair<string, V>) は正常に追加できる
+            var sc = new SrcCollection<string>();
+            sc.Add(new System.Collections.Generic.KeyValuePair<string, string>("key", "value"));
+            Assert.AreEqual("value", sc["key"]);
         }
 
         [TestMethod()]
-        [Ignore]
         public void ClearTest()
         {
-            Assert.Fail();
+            var sc = new SrcCollection<string>
+            {
+                ["a"] = "1",
+                ["b"] = "2",
+            };
+            Assert.AreEqual(2, sc.Count);
+            sc.Clear();
+            Assert.AreEqual(0, sc.Count);
         }
 
         [TestMethod()]
-        [Ignore]
         public void ContainsTest()
         {
-            Assert.Fail();
+            // Contains(V item) は値の存在確認
+            var sc = new SrcCollection<string>
+            {
+                ["key"] = "hello",
+            };
+            Assert.IsTrue(sc.Contains("hello"));
+            Assert.IsFalse(sc.Contains("world"));
         }
 
         [TestMethod()]
-        [Ignore]
         public void ContainsTest1()
         {
-            Assert.Fail();
+            // Contains(KeyValuePair<string, V>) はキーと値の両方を確認
+            var sc = new SrcCollection<string>
+            {
+                ["key"] = "hello",
+            };
+            Assert.IsTrue(sc.Contains(new System.Collections.Generic.KeyValuePair<string, string>("key", "hello")));
+            Assert.IsFalse(sc.Contains(new System.Collections.Generic.KeyValuePair<string, string>("key", "world")));
+            Assert.IsFalse(sc.Contains(new System.Collections.Generic.KeyValuePair<string, string>("other", "hello")));
         }
 
         [TestMethod()]
-        [Ignore]
         public void ContainsKeyTest()
         {
-            Assert.Fail();
+            var sc = new SrcCollection<string>
+            {
+                ["MyKey"] = "value",
+            };
+            Assert.IsTrue(sc.ContainsKey("MyKey"));
+            Assert.IsTrue(sc.ContainsKey("mykey")); // 大文字小文字を区別しない
+            Assert.IsFalse(sc.ContainsKey("other"));
+            Assert.IsFalse(sc.ContainsKey(null));
         }
 
         [TestMethod()]
-        [Ignore]
         public void CopyToTest()
         {
-            Assert.Fail();
+            // CopyTo(V[], int) は NotSupportedException をスローする
+            var sc = new SrcCollection<string> { ["key"] = "val" };
+            Assert.ThrowsException<NotSupportedException>(() => sc.CopyTo(new string[1], 0));
         }
 
         [TestMethod()]
-        [Ignore]
         public void CopyToTest1()
         {
-            Assert.Fail();
+            // CopyTo(KeyValuePair[], int) は NotSupportedException をスローする
+            var sc = new SrcCollection<string> { ["key"] = "val" };
+            Assert.ThrowsException<NotSupportedException>(() =>
+                sc.CopyTo(new System.Collections.Generic.KeyValuePair<string, string>[1], 0));
         }
 
         [TestMethod()]
-        [Ignore]
         public void GetEnumeratorTest()
         {
-            Assert.Fail();
+            var sc = new SrcCollection<int>
+            {
+                ["a"] = 1,
+                ["b"] = 2,
+                ["c"] = 3,
+            };
+            var list = new System.Collections.Generic.List<int>();
+            foreach (var item in sc)
+            {
+                list.Add(item);
+            }
+            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, list);
         }
 
         [TestMethod()]
-        [Ignore]
         public void IndexOfTest()
         {
-            Assert.Fail();
+            var sc = new SrcCollection<string>
+            {
+                ["first"] = "a",
+                ["second"] = "b",
+                ["third"] = "c",
+            };
+            Assert.AreEqual(0, sc.IndexOf("a")); // 0ベース
+            Assert.AreEqual(1, sc.IndexOf("b"));
+            Assert.AreEqual(2, sc.IndexOf("c"));
+            Assert.AreEqual(-1, sc.IndexOf("z"));
         }
 
         [TestMethod()]
-        [Ignore]
         public void InsertTest()
         {
-            Assert.Fail();
+            // Insert は NotSupportedException をスローする
+            var sc = new SrcCollection<string>();
+            Assert.ThrowsException<NotSupportedException>(() => sc.Insert(1, "value"));
         }
 
         [TestMethod()]
-        [Ignore]
         public void RemoveTest()
         {
-            Assert.Fail();
+            // Remove(V item) は値で削除する（V=int を使うことで Remove(string key) との曖昧さを回避）
+            var sc = new SrcCollection<int>
+            {
+                ["key"] = 42,
+            };
+            Assert.IsTrue(sc.Remove(42));
+            Assert.AreEqual(0, sc.Count);
+            Assert.IsFalse(sc.Remove(99));
         }
 
         [TestMethod()]
-        [Ignore]
         public void RemoveTest1()
         {
-            Assert.Fail();
+            // Remove(string key) はキーで削除する
+            var sc = new SrcCollection<string>
+            {
+                ["key"] = "hello",
+            };
+            Assert.IsTrue(sc.Remove("key"));
+            Assert.AreEqual(0, sc.Count);
+            Assert.IsFalse(sc.Remove("nonexistent"));
         }
 
         [TestMethod()]
-        [Ignore]
         public void RemoveTest2()
         {
-            Assert.Fail();
+            // Remove(KeyValuePair<string, V>) はキーで削除する
+            var sc = new SrcCollection<string>
+            {
+                ["key"] = "hello",
+            };
+            Assert.IsTrue(sc.Remove(new System.Collections.Generic.KeyValuePair<string, string>("key", "hello")));
+            Assert.AreEqual(0, sc.Count);
         }
 
         [TestMethod()]
-        [Ignore]
         public void RemoveAtTest()
         {
-            Assert.Fail();
+            // RemoveAt(int) は1ベースのインデックスで削除する
+            var sc = new SrcCollection<string>
+            {
+                ["first"] = "a",
+                ["second"] = "b",
+                ["third"] = "c",
+            };
+            sc.RemoveAt(2); // 1ベースなので2番目="b"を削除
+            Assert.AreEqual(2, sc.Count);
+            Assert.AreEqual("a", sc[1]);
+            Assert.AreEqual("c", sc[2]);
         }
 
         [TestMethod()]
-        [Ignore]
         public void TryGetValueTest()
         {
-            Assert.Fail();
+            var sc = new SrcCollection<string>
+            {
+                ["key"] = "hello",
+            };
+            Assert.IsTrue(sc.TryGetValue("key", out var value));
+            Assert.AreEqual("hello", value);
+            Assert.IsFalse(sc.TryGetValue("nonexistent", out var missing));
+            Assert.IsNull(missing);
         }
     }
 }
