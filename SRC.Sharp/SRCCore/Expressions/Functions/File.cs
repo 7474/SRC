@@ -147,7 +147,6 @@ namespace SRCCore.Expressions.Functions
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
@@ -230,7 +229,6 @@ namespace SRCCore.Expressions.Functions
 
             if (etype == ValueType.StringType)
             {
-                str_result = GeneralLib.FormatNum(num_result);
                 return ValueType.StringType;
             }
             else
