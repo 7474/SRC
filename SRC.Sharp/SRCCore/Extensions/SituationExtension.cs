@@ -390,11 +390,15 @@ namespace SRCCore.Extensions
                     .Where(m => situations.Any(s => m.Situation == s))
                     .Concat(list0.Where(m => situations.Zip(sub_situations, (s, subs) => s + subs).Any(s => m.Situation == s)))
                     .ToList();
-                // 相手限定メッセージが見つかっていた場合は汎用メッセージと合わせて等確率で選択
+                // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB6互換)
                 if (targetList != null)
                 {
-                    var combined = targetList.Concat(list).ToList();
-                    return combined.Dice();
+                    var targetMsg = targetList.Dice();
+                    // 汎用メッセージがない場合、または50%の確率で相手限定メッセージを使用
+                    if (!list.Any() || GeneralLib.Dice(2) == 1)
+                    {
+                        return targetMsg;
+                    }
                 }
                 // シチュエーションに合ったメッセージが見つかれば、その中からメッセージを選択
                 if (list.Any())
