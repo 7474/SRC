@@ -170,7 +170,6 @@ namespace SRCCore.Units
             {
                 var need_refresh = false;
                 var wait_time = 0;
-                var buf = "";
                 foreach (var a in animes)
                 {
                     var animepart = a;
@@ -265,7 +264,7 @@ namespace SRCCore.Units
                         case "center":
                             {
                                 // 指定したユニットを中央表示
-                                buf = Expression.GetValueAsString(GeneralLib.ListIndex(animepart, 2));
+                                var buf = Expression.GetValueAsString(GeneralLib.ListIndex(animepart, 2));
                                 if (SRC.UList.IsDefined(buf))
                                 {
                                     var withBlock = SRC.UList.Item(buf);

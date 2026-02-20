@@ -1949,8 +1949,7 @@ namespace SRCCore.Units
             {
                 var cf = CurrentForm();
                 // 使い捨てアイテムによる変身の処理
-                bool foundAndDeleted = false;
-                for (var i = 1; i <= cf.CountAbility() && !foundAndDeleted; i++)
+                for (var i = 1; i <= cf.CountAbility(); i++)
                 {
                     if ((cf.Ability(i).Data.Name ?? "") == (aname ?? ""))
                     {
@@ -1962,8 +1961,8 @@ namespace SRCCore.Units
                                 itm.Exist = false;
                                 cf.DeleteItem(itm);
                                 cf.Update();
-                                foundAndDeleted = true;
                             }
+                            break;
                         }
                     }
                 }
