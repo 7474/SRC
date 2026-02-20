@@ -361,7 +361,7 @@ namespace SRCCore.Expressions.Functions
                     }
                 }
 
-                num_result = d2.Second - d1.Second;
+                num_result = (d2 - d1).TotalSeconds;
             }
 
             if (etype == ValueType.StringType)

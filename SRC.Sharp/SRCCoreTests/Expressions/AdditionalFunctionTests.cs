@@ -66,20 +66,36 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void DiffTime_SecondsDifference_ReturnsSecondsDelta()
+        public void DiffTime_OneHourDifference_Returns3600()
         {
             var (exp, src) = Create();
-            // DiffTime は d2.Second - d1.Second の差を返す実装
+            // ヘルプ: 「時間１から時間２までの経過時間を秒で返します」
+            var result = exp.GetValueAsDouble("DiffTime(\"2024/01/01 10:00:00\",\"2024/01/01 11:00:00\")");
+            Assert.AreEqual(3600d, result);
+        }
+
+        [TestMethod]
+        public void DiffTime_OneMinuteDifference_Returns60()
+        {
+            var (exp, src) = Create();
+            var result = exp.GetValueAsDouble("DiffTime(\"2024/01/01 10:00:00\",\"2024/01/01 10:01:00\")");
+            Assert.AreEqual(60d, result);
+        }
+
+        [TestMethod]
+        public void DiffTime_SecondsDifference_ReturnsElapsedSeconds()
+        {
+            var (exp, src) = Create();
             var result = exp.GetValueAsDouble("DiffTime(\"2024/01/01 10:00:05\",\"2024/01/01 10:00:15\")");
             Assert.AreEqual(10d, result);
         }
 
         [TestMethod]
-        public void DiffTime_NegativeSecondsDifference_ReturnsNegative()
+        public void DiffTime_NegativeDifference_ReturnsNegative()
         {
             var (exp, src) = Create();
-            var result = exp.GetValueAsDouble("DiffTime(\"2024/01/01 10:00:15\",\"2024/01/01 10:00:05\")");
-            Assert.AreEqual(-10d, result);
+            var result = exp.GetValueAsDouble("DiffTime(\"2024/01/01 11:00:00\",\"2024/01/01 10:00:00\")");
+            Assert.AreEqual(-3600d, result);
         }
 
         // ──────────────────────────────────────────────
@@ -129,7 +145,7 @@ namespace SRCCore.Expressions.Tests
         }
 
         // ──────────────────────────────────────────────
-        // Like演算子
+        // Like演算子（ヘルプ仕様: *, ?, #, [文字列], [!文字列] をサポート）
         // ──────────────────────────────────────────────
 
         [TestMethod]
@@ -152,6 +168,60 @@ namespace SRCCore.Expressions.Tests
             var (exp, src) = Create();
             // Like は大文字小文字を区別する
             Assert.AreEqual(0d, exp.GetValueAsDouble("\"Hello\" Like \"hello\""));
+        }
+
+        [TestMethod]
+        public void Like_AsteriskWildcard_MatchesAnySequence()
+        {
+            var (exp, src) = Create();
+            // ヘルプ例: "abcda" Like "a*a" → 1
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"abcda\" Like \"a*a\""));
+        }
+
+        [TestMethod]
+        public void Like_AsteriskWildcard_NoMatch()
+        {
+            var (exp, src) = Create();
+            // ヘルプ例: "abcde" Like "a*a" → 0
+            Assert.AreEqual(0d, exp.GetValueAsDouble("\"abcde\" Like \"a*a\""));
+        }
+
+        [TestMethod]
+        public void Like_QuestionMarkWildcard_MatchesSingleChar()
+        {
+            var (exp, src) = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"abc\" Like \"a?c\""));
+        }
+
+        [TestMethod]
+        public void Like_HashWildcard_MatchesSingleDigit()
+        {
+            var (exp, src) = Create();
+            // ヘルプ例: "a2b" Like "a#b" → 1
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"a2b\" Like \"a#b\""));
+        }
+
+        [TestMethod]
+        public void Like_HashWildcard_NonDigit_ReturnsFalse()
+        {
+            var (exp, src) = Create();
+            Assert.AreEqual(0d, exp.GetValueAsDouble("\"axb\" Like \"a#b\""));
+        }
+
+        [TestMethod]
+        public void Like_CharClassRange_MatchesInRange()
+        {
+            var (exp, src) = Create();
+            // ヘルプ例: "D" Like "[A-Z]" → 1
+            Assert.AreEqual(1d, exp.GetValueAsDouble("\"D\" Like \"[A-Z]\""));
+        }
+
+        [TestMethod]
+        public void Like_CharClassNegation_MatchesOutsideRange()
+        {
+            var (exp, src) = Create();
+            // ヘルプ例: "D" Like "[!A-Z]" → 0
+            Assert.AreEqual(0d, exp.GetValueAsDouble("\"D\" Like \"[!A-Z]\""));
         }
     }
 }

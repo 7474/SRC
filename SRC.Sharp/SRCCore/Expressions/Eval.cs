@@ -1123,9 +1123,7 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            // XXX カルチャ次第で落ちるかも？
-                            //if (LikeOperator.LikeString(lstr, rstr, CompareMethod.Binary))
-                            if (lstr == rstr)
+                            if (LikeMatch(lstr, rstr))
                             {
                                 str_result = "1";
                             }
@@ -1137,8 +1135,7 @@ namespace SRCCore.Expressions
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            // XXX カルチャ次第で落ちるかも？
-                            if (lstr == rstr)
+                            if (LikeMatch(lstr, rstr))
                             {
                                 num_result = 1d;
                             }
@@ -1320,6 +1317,95 @@ namespace SRCCore.Expressions
             }
 
             return EvalExprRet;
+        }
+
+        // VB Like 演算子のパターンマッチ（ヘルプ仕様: *, ?, #, [文字列], [!文字列]）
+        private static bool LikeMatch(string str, string pattern)
+        {
+            return LikeMatchAt(str, 0, pattern, 0);
+        }
+
+        private static bool LikeMatchAt(string str, int si, string pattern, int pi)
+        {
+            while (pi < pattern.Length)
+            {
+                char p = pattern[pi];
+                if (p == '*')
+                {
+                    // 連続する '*' をスキップ
+                    while (pi < pattern.Length && pattern[pi] == '*')
+                        pi++;
+                    if (pi == pattern.Length) return true; // パターンが '*' で終わる
+                    // str の各位置から残りのパターンにマッチするか試みる
+                    for (int i = si; i < str.Length; i++)
+                    {
+                        if (LikeMatchAt(str, i, pattern, pi))
+                            return true;
+                    }
+                    return false;
+                }
+                else if (p == '?')
+                {
+                    if (si >= str.Length) return false;
+                    si++;
+                    pi++;
+                }
+                else if (p == '#')
+                {
+                    if (si >= str.Length || !char.IsDigit(str[si])) return false;
+                    si++;
+                    pi++;
+                }
+                else if (p == '[')
+                {
+                    int closeIdx = pattern.IndexOf(']', pi + 1);
+                    if (closeIdx < 0)
+                    {
+                        // 閉じ括弧がない場合は '[' をリテラル文字として扱い、
+                        // 文字列と両パターンポインタをそれぞれ1文字進める
+                        if (si >= str.Length || str[si] != '[') return false;
+                        si++;
+                        pi++;
+                        continue;
+                    }
+                    string charClass = pattern.Substring(pi + 1, closeIdx - pi - 1);
+                    bool negate = charClass.Length > 0 && charClass[0] == '!';
+                    if (negate) charClass = charClass.Substring(1);
+                    if (si >= str.Length) return false;
+                    bool matched = LikeCharClassMatch(str[si], charClass);
+                    if (negate ? matched : !matched) return false;
+                    si++;
+                    pi = closeIdx + 1;
+                }
+                else
+                {
+                    if (si >= str.Length || str[si] != p) return false;
+                    si++;
+                    pi++;
+                }
+            }
+            return si == str.Length;
+        }
+
+        // 文字クラス（例: "A-Z", "aeiou", "0-9"）に文字が含まれるか判定
+        private static bool LikeCharClassMatch(char c, string charClass)
+        {
+            int i = 0;
+            while (i < charClass.Length)
+            {
+                if (i + 2 < charClass.Length && charClass[i + 1] == '-')
+                {
+                    if (c >= charClass[i] && c <= charClass[i + 2])
+                        return true;
+                    i += 3;
+                }
+                else
+                {
+                    if (c == charClass[i]) return true;
+                    i++;
+                }
+            }
+            return false;
         }
 
         // 項を評価
