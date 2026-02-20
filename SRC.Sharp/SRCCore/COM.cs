@@ -1372,15 +1372,17 @@ namespace SRCCore
                     && Commands.SelectedTarget.Status == "出撃")
                 {
                     // まだ武器は使用可能か？
-                    // XXX これインデックスずれてたらどうすんの？
-                    // TODO 名前で解決？
                     if (w > selectedUnit.CountWeapon())
                     {
                         w = -1;
                     }
                     else if ((wname ?? "") != (selectedUnit.Weapon(w).Name ?? ""))
                     {
-                        w = -1;
+                        // インデックスがずれた場合は名前で検索
+                        var foundIdx = selectedUnit.Weapons
+                            .Select((weapon, idx) => (weapon, idx))
+                            .FirstOrDefault(t => (t.weapon.Name ?? "") == (wname ?? ""));
+                        w = foundIdx.weapon != null ? foundIdx.idx + 1 : -1;
                     }
                     else if (moved)
                     {

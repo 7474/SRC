@@ -254,8 +254,10 @@ namespace SRCCore
                     Map = Map,
                     MapX = GUI.MapX,
                     MapY = GUI.MapY,
-                    // TODO ファイルパスの正規化
-                    BGMFileName = Sound.BGMFileName,
+                    // BGMファイルパスをシナリオパスからの相対パスで保存
+                    BGMFileName = !string.IsNullOrEmpty(Sound.BGMFileName)
+                        ? FileSystem.ToRelativePath(ScenarioPath, Sound.BGMFileName)
+                        : "",
                     RepeatMode = Sound.RepeatMode,
                     KeepBGM = Sound.KeepBGM,
                     BossBGM = Sound.BossBGM,
@@ -433,8 +435,11 @@ namespace SRCCore
                 PList.Items.ToList().ForEach(x => x.Update());
 
                 // ＢＧＭ関連の設定を復元
-                // TODO パスの正規化
-                var bgmFile = Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")");
+                // BGMファイルを相対パスまたはファイル名で検索
+                var bgmFile = !string.IsNullOrEmpty(data.BGMFileName)
+                    ? Sound.SearchMidiFile("(" + data.BGMFileName + ")")
+                        ?? Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")")
+                    : null;
                 if (!string.IsNullOrEmpty(bgmFile))
                 {
                     // BGMが必ず切り替わる状態で変更してから関連設定を復元する
