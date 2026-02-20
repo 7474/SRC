@@ -21,14 +21,14 @@ namespace SRCCore.CmdDatas.Commands
             ExecGotoCmdRet = Event.FindLabel(GetArg(2));
 
             // ラベルが見つかった？
-            if (ExecGotoCmdRet > 0)
+            if (ExecGotoCmdRet >= 0)
             {
                 return ExecGotoCmdRet + 1;
             }
 
             // ラベルは式？
             ExecGotoCmdRet = Event.FindLabel(GetArgAsString(2));
-            if (ExecGotoCmdRet == 0)
+            if (ExecGotoCmdRet < 0)
             {
                 throw new EventErrorException(this, "ラベル「" + GetArg(2) + "」がみつかりません");
             }
