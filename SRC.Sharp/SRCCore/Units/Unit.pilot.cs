@@ -64,6 +64,9 @@ namespace SRCCore.Units
         // 各判定にはこのパイロットの能力を用いる
         public Pilot MainPilot(bool without_update = false)
         {
+            string pname;
+            Pilot p;
+
             // パイロットが乗っていない？
             if (CountPilot() == 0)
             {
@@ -79,243 +82,208 @@ namespace SRCCore.Units
                 return colPilot[1];
             }
 
-            //// 能力コピー中は同じパイロットが複数のユニットのメインパイロットに使用されるのを防ぐため
-            //// 追加パイロットと暴走時パイロットを使用しない
-            //if (IsConditionSatisfied("能力コピー"))
-            //{
-            //    MainPilotRet = colPilot[1];
-            //    return MainPilotRet;
-            //}
+            // 能力コピー中は同じパイロットが複数のユニットのメインパイロットに使用されるのを防ぐため
+            // 追加パイロットと暴走時パイロットを使用しない
+            if (IsConditionSatisfied("能力コピー"))
+            {
+                return colPilot[1];
+            }
 
-            //// 暴走時の特殊パイロット
-            //if (IsConditionSatisfied("暴走"))
-            //{
-            //    if (IsFeatureAvailable("暴走時パイロット"))
-            //    {
-            //        pname = FeatureData("暴走時パイロット");
-            //        if (SRC.PDList.IsDefined(pname))
-            //        {
-            //            PilotData localItem() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
+            // 暴走時の特殊パイロット
+            if (IsConditionSatisfied("暴走"))
+            {
+                if (IsFeatureAvailable("暴走時パイロット"))
+                {
+                    pname = FeatureData("暴走時パイロット");
+                    if (SRC.PDList.IsDefined(pname))
+                    {
+                        pname = SRC.PDList.Item(pname).Name;
+                    }
+                    else
+                    {
+                        GUI.ErrorMessage("暴走時パイロット「" + pname + "」のデータが定義されていません");
+                    }
 
-            //            pname = localItem().Name;
-            //        }
-            //        else
-            //        {
-            //            GUI.ErrorMessage("暴走時パイロット「" + pname + "」のデータが定義されていません");
-            //        }
+                    if (SRC.PList.IsDefined(pname))
+                    {
+                        // 既に暴走時パイロットが作成済み
+                        var berserkPilot = SRC.PList.Item(pname);
+                        berserkPilot.Unit = this;
+                        berserkPilot.Morale = Pilots.First().Morale;
+                        berserkPilot.Level = Pilots.First().Level;
+                        berserkPilot.Exp = Pilots.First().Exp;
+                        if (!without_update)
+                        {
+                            if (!ReferenceEquals(berserkPilot.Unit, this))
+                            {
+                                berserkPilot.Unit = this;
+                                berserkPilot.Update();
+                                berserkPilot.UpdateSupportMod();
+                            }
+                        }
 
-            //        if (SRC.PList.IsDefined(pname))
-            //        {
-            //            // 既に暴走時パイロットが作成済み
-            //            MainPilotRet = SRC.PList.Item(pname);
-            //            MainPilotRet.Unit = this;
-            //            MainPilotRet.Morale = Pilot(1).Morale;
-            //            MainPilotRet.Level = Pilot(1).Level;
-            //            MainPilotRet.Exp = Pilot(1).Exp;
-            //            if (!without_update)
-            //            {
-            //                if (!erenceEquals(MainPilotRet.Unit, this))
-            //                {
-            //                    MainPilotRet.Unit = this;
-            //                    MainPilotRet.Update();
-            //                    MainPilotRet.UpdateSupportMod();
-            //                }
-            //            }
+                        return berserkPilot;
+                    }
+                    else
+                    {
+                        // 暴走時パイロットが作成されていないので作成する
+                        var berserkPilot = SRC.PList.Add(pname, Pilots.First().Level, Party0, gid: "");
+                        berserkPilot.Morale = Pilots.First().Morale;
+                        berserkPilot.Exp = Pilots.First().Exp;
+                        berserkPilot.Unit = this;
+                        berserkPilot.Update();
+                        berserkPilot.UpdateSupportMod();
+                        return berserkPilot;
+                    }
+                }
+            }
 
-            //            return MainPilotRet;
-            //        }
-            //        else
-            //        {
-            //            // 暴走時パイロットが作成されていないので作成する
-            //            MainPilotRet = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
-            //            this.Party0 = argpparty;
-            //            MainPilotRet.Morale = Pilot(1).Morale;
-            //            MainPilotRet.Exp = Pilot(1).Exp;
-            //            MainPilotRet.Unit = this;
-            //            MainPilotRet.Update();
-            //            MainPilotRet.UpdateSupportMod();
-            //            return MainPilotRet;
-            //        }
-            //    }
-            //}
+            // 追加パイロットがいれば、それを使用
+            if (IsFeatureAvailable("追加パイロット"))
+            {
+                pname = FeatureData("追加パイロット");
+                if (SRC.PDList.IsDefined(pname))
+                {
+                    pname = SRC.PDList.Item(pname).Name;
+                }
+                else
+                {
+                    GUI.ErrorMessage("追加パイロット「" + pname + "」のデータが定義されていません");
+                }
 
-            //// 追加パイロットがいれば、それを使用
-            //if (IsFeatureAvailable("追加パイロット"))
-            //{
-            //    pname = FeatureData("追加パイロット");
-            //    if (SRC.PDList.IsDefined(pname))
-            //    {
-            //        PilotData localItem1() { object argIndex1 = pname; var ret = SRC.PDList.Item(argIndex1); return ret; }
+                // 登録済みのパイロットをまずチェック
+                if (pltAdditionalPilot is object)
+                {
+                    if ((pltAdditionalPilot.Name ?? "") == (pname ?? ""))
+                    {
+                        if (pltAdditionalPilot.IsAdditionalPilot && !ReferenceEquals(pltAdditionalPilot.Unit, this))
+                        {
+                            pltAdditionalPilot.Unit = this;
+                            pltAdditionalPilot.Party = Party0;
+                            pltAdditionalPilot.Exp = Pilots.First().Exp;
+                            if (pltAdditionalPilot.Personality != "機械")
+                            {
+                                pltAdditionalPilot.Morale = Pilots.First().Morale;
+                            }
 
-            //        pname = localItem1().Name;
-            //    }
-            //    else
-            //    {
-            //        GUI.ErrorMessage("追加パイロット「" + pname + "」のデータが定義されていません");
-            //    }
+                            if (pltAdditionalPilot.Level != Pilots.First().Level)
+                            {
+                                pltAdditionalPilot.Level = Pilots.First().Level;
+                                pltAdditionalPilot.Update();
+                            }
+                        }
 
-            //    // 登録済みのパイロットをまずチェック
-            //    if (pltAdditionalPilot is object)
-            //    {
-            //        if ((pltAdditionalPilot.Name ?? "") == (pname ?? ""))
-            //        {
-            //            MainPilotRet = pltAdditionalPilot;
-            //            {
-            //                var withBlock = pltAdditionalPilot;
-            //                if (withBlock.IsAdditionalPilot && !erenceEquals(withBlock.Unit, this))
-            //                {
-            //                    withBlock.Unit = this;
-            //                    withBlock.Party = Party0;
-            //                    withBlock.Exp = Pilot(1).Exp;
-            //                    if (withBlock.Personality != "機械")
-            //                    {
-            //                        withBlock.Morale = Pilot(1).Morale;
-            //                    }
+                        return pltAdditionalPilot;
+                    }
+                }
 
-            //                    if (withBlock.Level != this.Pilot(1).Level)
-            //                    {
-            //                        withBlock.Level = Pilot(1).Level;
-            //                        withBlock.Update();
-            //                    }
-            //                }
-            //            }
+                // 他形態に登録されているパイロットをチェック
+                foreach (var otherForm in OtherForms)
+                {
+                    if (otherForm.pltAdditionalPilot is object)
+                    {
+                        var additionalPilot = otherForm.pltAdditionalPilot;
+                        if ((additionalPilot.Name ?? "") == (pname ?? ""))
+                        {
+                            pltAdditionalPilot = additionalPilot;
+                            additionalPilot.Party = Party0;
+                            additionalPilot.Unit = this;
+                            if (additionalPilot.IsAdditionalPilot && !ReferenceEquals(additionalPilot.Unit, this))
+                            {
+                                additionalPilot.Level = Pilots.First().Level;
+                                additionalPilot.Exp = Pilots.First().Exp;
+                                if (additionalPilot.Personality != "機械")
+                                {
+                                    additionalPilot.Morale = Pilots.First().Morale;
+                                }
 
-            //            return MainPilotRet;
-            //        }
-            //    }
+                                additionalPilot.Update();
+                                additionalPilot.UpdateSupportMod();
+                            }
 
-            //    var loopTo = CountOtherForm();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        Unit localOtherForm2() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
+                            return pltAdditionalPilot;
+                        }
+                    }
+                }
 
-            //        Unit localOtherForm3() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
+                // 次に搭乗しているパイロットから検索
+                if (CountPilot() > 0)
+                {
+                    // 単なるメインパイロットの交代として扱うため、IsAdditionalPilotのフラグは立てない
+                    foreach (var pilot in Pilots)
+                    {
+                        if ((pilot.Name ?? "") == (pname ?? ""))
+                        {
+                            pltAdditionalPilot = pilot;
+                            return pltAdditionalPilot;
+                        }
+                    }
+                }
 
-            //        if (localOtherForm3().pltAdditionalPilot is object)
-            //        {
-            //            Unit localOtherForm1() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
+                // 既に作成されていればそれを使う
+                // (ただし複数作成可能なパイロットで、他のユニットの追加パイロットとして登録済みの場合は除く)
+                if (SRC.PList.IsDefined(pname))
+                {
+                    p = SRC.PList.Item(pname);
+                    if (!p.IsAdditionalPilot || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
+                    {
+                        pltAdditionalPilot = p;
+                        pltAdditionalPilot.IsAdditionalPilot = true;
+                        pltAdditionalPilot.Party = Party0;
+                        if (CountPilot() > 0)
+                        {
+                            pltAdditionalPilot.Level = Pilots.First().Level;
+                            pltAdditionalPilot.Exp = Pilots.First().Exp;
+                            if (pltAdditionalPilot.Personality != "機械")
+                            {
+                                pltAdditionalPilot.Morale = Pilots.First().Morale;
+                            }
+                        }
 
-            //            {
-            //                var withBlock1 = localOtherForm1().pltAdditionalPilot;
-            //                if ((withBlock1.Name ?? "") == (pname ?? ""))
-            //                {
-            //                    Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
+                        if (!without_update)
+                        {
+                            if (!ReferenceEquals(pltAdditionalPilot.Unit, this))
+                            {
+                                pltAdditionalPilot.Unit = this;
+                                pltAdditionalPilot.Update();
+                                pltAdditionalPilot.UpdateSupportMod();
+                            }
+                        }
+                        else
+                        {
+                            pltAdditionalPilot.Unit = this;
+                        }
 
-            //                    pltAdditionalPilot = localOtherForm().pltAdditionalPilot;
-            //                    withBlock1.Party = Party0;
-            //                    withBlock1.Unit = this;
-            //                    if (withBlock1.IsAdditionalPilot && !erenceEquals(withBlock1.Unit, this))
-            //                    {
-            //                        withBlock1.Level = Pilot(1).Level;
-            //                        withBlock1.Exp = Pilot(1).Exp;
-            //                        if (withBlock1.Personality != "機械")
-            //                        {
-            //                            withBlock1.Morale = Pilot(1).Morale;
-            //                        }
+                        return pltAdditionalPilot;
+                    }
+                }
 
-            //                        withBlock1.Update();
-            //                        withBlock1.UpdateSupportMod();
-            //                    }
+                // まだ作成されていないので作成する
+                if (CountPilot() > 0)
+                {
+                    pltAdditionalPilot = SRC.PList.Add(pname, Pilots.First().Level, Party0, gid: "");
+                    pltAdditionalPilot.IsAdditionalPilot = true;
+                    pltAdditionalPilot.Exp = Pilots.First().Exp;
+                    if (pltAdditionalPilot.Personality != "機械")
+                    {
+                        pltAdditionalPilot.Morale = Pilots.First().Morale;
+                    }
+                }
+                else
+                {
+                    pltAdditionalPilot = SRC.PList.Add(pname, 1, Party0, gid: "");
+                    pltAdditionalPilot.IsAdditionalPilot = true;
+                }
 
-            //                    MainPilotRet = pltAdditionalPilot;
-            //                    return MainPilotRet;
-            //                }
-            //            }
-            //        }
-            //    }
+                pltAdditionalPilot.Unit = this;
+                if (!without_update)
+                {
+                    pltAdditionalPilot.Update();
+                    pltAdditionalPilot.UpdateSupportMod();
+                }
 
-            //    // 次に搭乗しているパイロットから検索
-            //    if (CountPilot() > 0)
-            //    {
-            //        // 単なるメインパイロットの交代として扱うため、IsAdditionalPilotのフラグは立てない
-            //        var loopTo1 = CountPilot();
-            //        for (i = 1; i <= loopTo1; i++)
-            //        {
-            //            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //            if ((localPilot().Name ?? "") == (pname ?? ""))
-            //            {
-            //                pltAdditionalPilot = Pilot(i);
-            //                MainPilotRet = pltAdditionalPilot;
-            //                return MainPilotRet;
-            //            }
-            //        }
-            //    }
-
-            //    // 既に作成されていればそれを使う
-            //    // (ただし複数作成可能なパイロットで、他のユニットの追加パイロットとして登録済みの場合は除く)
-            //    if (SRC.PList.IsDefined(pname))
-            //    {
-            //        p = SRC.PList.Item(pname);
-            //        if (!p.IsAdditionalPilot || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
-            //        {
-            //            pltAdditionalPilot = p;
-            //            {
-            //                var withBlock2 = pltAdditionalPilot;
-            //                withBlock2.IsAdditionalPilot = true;
-            //                withBlock2.Party = Party0;
-            //                withBlock2.Level = Pilot(1).Level;
-            //                withBlock2.Exp = Pilot(1).Exp;
-            //                if (withBlock2.Personality != "機械")
-            //                {
-            //                    withBlock2.Morale = Pilot(1).Morale;
-            //                }
-
-            //                if (!without_update)
-            //                {
-            //                    if (!erenceEquals(withBlock2.Unit, this))
-            //                    {
-            //                        withBlock2.Unit = this;
-            //                        withBlock2.Update();
-            //                        withBlock2.UpdateSupportMod();
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    withBlock2.Unit = this;
-            //                }
-            //            }
-
-            //            MainPilotRet = pltAdditionalPilot;
-            //            return MainPilotRet;
-            //        }
-            //    }
-
-            //    // まだ作成されていないので作成する
-            //    if (CountPilot() > 0)
-            //    {
-            //        pltAdditionalPilot = SRC.PList.Add(pname, Pilot(1).Level, Party0, gid: "");
-            //        this.Party0 = argpparty1;
-            //        {
-            //            var withBlock3 = pltAdditionalPilot;
-            //            withBlock3.IsAdditionalPilot = true;
-            //            withBlock3.Exp = Pilot(1).Exp;
-            //            if (withBlock3.Personality != "機械")
-            //            {
-            //                withBlock3.Morale = Pilot(1).Morale;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        pltAdditionalPilot = SRC.PList.Add(pname, 1, Party0, gid: "");
-            //        this.Party0 = argpparty2;
-            //        pltAdditionalPilot.IsAdditionalPilot = true;
-            //    }
-
-            //    {
-            //        var withBlock4 = pltAdditionalPilot;
-            //        withBlock4.Unit = this;
-            //        if (!without_update)
-            //        {
-            //            withBlock4.Update();
-            //            withBlock4.UpdateSupportMod();
-            //        }
-            //    }
-
-            //    MainPilotRet = pltAdditionalPilot;
-            //    return MainPilotRet;
-            //}
+                return pltAdditionalPilot;
+            }
 
             // そうでなければ第１パイロットを使用
             return colPilot[1];
