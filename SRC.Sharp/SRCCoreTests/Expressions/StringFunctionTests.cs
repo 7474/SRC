@@ -336,5 +336,99 @@ namespace SRCCore.Expressions.Tests
             // "あいあ" で最後の "あ" は5バイト目から
             Assert.AreEqual(5d, exp.GetValueAsDouble("InStrRevB(\"あいあ\",\"あ\")"));
         }
+
+        // ──────────────────────────────────────────────
+        // LCase / Trim extra cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LCase_MixedCaseWithNumbers()
+        {
+            var exp = Create();
+            Assert.AreEqual("abc123", exp.GetValueAsString("LCase(\"ABC123\")"));
+        }
+
+        [TestMethod]
+        public void Trim_OnlySpaces_ReturnsEmpty()
+        {
+            var exp = Create();
+            Assert.AreEqual("", exp.GetValueAsString("Trim(\"   \")"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Asc / Chr edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Asc_LowercaseLetter_ReturnsCode()
+        {
+            var exp = Create();
+            Assert.AreEqual(97d, exp.GetValueAsDouble("Asc(\"a\")"));
+        }
+
+        [TestMethod]
+        public void Chr_SpaceCharCode_ReturnsSpace()
+        {
+            var exp = Create();
+            Assert.AreEqual(" ", exp.GetValueAsString("Chr(32)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // InStr edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void InStr_AtStart_ReturnsOne()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("InStr(\"hello\",\"h\")"));
+        }
+
+        [TestMethod]
+        public void InStr_AtEnd_ReturnsLastPosition()
+        {
+            var exp = Create();
+            Assert.AreEqual(5d, exp.GetValueAsDouble("InStr(\"hello\",\"o\")"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Mid with 2 args (no length)
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Mid_TwoArgs_AtStart_ReturnsFullString()
+        {
+            var exp = Create();
+            Assert.AreEqual("hello", exp.GetValueAsString("Mid(\"hello\",1)"));
+        }
+
+        [TestMethod]
+        public void Mid_TwoArgs_AtMiddle_ReturnsTail()
+        {
+            var exp = Create();
+            Assert.AreEqual("lo", exp.GetValueAsString("Mid(\"hello\",4)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // StrComp extra
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void StrComp_GreaterThan_ReturnsPositive()
+        {
+            var exp = Create();
+            Assert.IsTrue(exp.GetValueAsDouble("StrComp(\"abd\",\"abc\")") > 0);
+        }
+
+        // ──────────────────────────────────────────────
+        // Replace
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Replace_AllOccurrences_Replaced()
+        {
+            var exp = Create();
+            Assert.AreEqual("xbxbx", exp.GetValueAsString("Replace(\"ababa\",\"a\",\"x\")"));
+        }
     }
 }

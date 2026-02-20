@@ -130,5 +130,45 @@ namespace SRCCore.VB.Tests
             // 1秒以内の誤差を許容する
             Assert.IsTrue(now >= before.AddSeconds(-1) && now <= after.AddSeconds(1));
         }
+
+        // ──────────────────────────────────────────────
+        // Additional ToInteger / ToDouble edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void ToIntegerTest_NearlyTwo_Truncates()
+        {
+            // 1.999 は切り捨てで 1 になる
+            Assert.AreEqual(1, Conversions.ToInteger("1.999"));
+        }
+
+        [TestMethod()]
+        public void ToIntegerTest_NegativeFloat_Truncates()
+        {
+            Assert.AreEqual(-3, Conversions.ToInteger("-3.9"));
+        }
+
+        [TestMethod()]
+        public void ToDoubleTest_ScientificNotation()
+        {
+            Assert.AreEqual(100000d, Conversions.ToDouble("1e5"), 1e-9);
+        }
+
+        [TestMethod()]
+        public void ToDoubleTest_NegativeScientific()
+        {
+            Assert.AreEqual(0.001d, Conversions.ToDouble("1e-3"), 1e-10);
+        }
+
+        // ──────────────────────────────────────────────
+        // TryToDateTime additional cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void TryToDateTimeTest_NullString_ReturnsFalse()
+        {
+            var result = Conversions.TryToDateTime(null, out var dt);
+            Assert.IsFalse(result);
+        }
     }
 }

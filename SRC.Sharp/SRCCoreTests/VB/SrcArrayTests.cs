@@ -44,5 +44,52 @@ namespace SRCCore.VB.Tests
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => { var _ = arr[0]; });
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => { var _ = arr[2]; });
         }
+
+        [TestMethod()]
+        public void SrcArrayString_BasicUsage()
+        {
+            var arr = new SrcArray<string>();
+            arr.Add("alpha");
+            arr.Add("beta");
+            arr.Add("gamma");
+
+            Assert.AreEqual("alpha", arr[1]);
+            Assert.AreEqual("beta", arr[2]);
+            Assert.AreEqual("gamma", arr[3]);
+        }
+
+        [TestMethod()]
+        public void CountProperty_ReflectsAddedItems()
+        {
+            var arr = new SrcArray<int>();
+            Assert.AreEqual(0, arr.Count);
+            arr.Add(10);
+            Assert.AreEqual(1, arr.Count);
+            arr.Add(20);
+            Assert.AreEqual(2, arr.Count);
+        }
+
+        [TestMethod()]
+        public void AddRange_InheritsListBehavior()
+        {
+            var arr = new SrcArray<int>();
+            arr.AddRange(new[] { 1, 2, 3 });
+            Assert.AreEqual(3, arr.Count);
+            Assert.AreEqual(1, arr[1]);
+            Assert.AreEqual(2, arr[2]);
+            Assert.AreEqual(3, arr[3]);
+        }
+
+        [TestMethod()]
+        public void Contains_InheritsListBehavior()
+        {
+            var arr = new SrcArray<string>();
+            arr.Add("hello");
+            arr.Add("world");
+
+            Assert.IsTrue(arr.Contains("hello"));
+            Assert.IsTrue(arr.Contains("world"));
+            Assert.IsFalse(arr.Contains("foo"));
+        }
     }
 }

@@ -432,5 +432,141 @@ namespace SRCCore.Lib.Tests
         {
             Assert.AreEqual(3, GeneralLib.InStrNotNest("水炎炎", "炎", 3));
         }
+
+        // ──────────────────────────────────────────────
+        // ToL
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void ToLTest_BasicSplit()
+        {
+            var result = GeneralLib.ToL("a b c");
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("a", result[0]);
+            Assert.AreEqual("b", result[1]);
+            Assert.AreEqual("c", result[2]);
+        }
+
+        [TestMethod()]
+        public void ToLTest_MultipleSpaces_Collapsed()
+        {
+            var result = GeneralLib.ToL("a  b   c");
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("a", result[0]);
+            Assert.AreEqual("b", result[1]);
+            Assert.AreEqual("c", result[2]);
+        }
+
+        [TestMethod()]
+        public void ToLTest_EmptyString_ReturnsEmpty()
+        {
+            var result = GeneralLib.ToL("");
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod()]
+        public void ToLTest_Null_ReturnsEmpty()
+        {
+            var result = GeneralLib.ToL(null);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod()]
+        public void ToLTest_SingleElement()
+        {
+            var result = GeneralLib.ToL("hello");
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("hello", result[0]);
+        }
+
+        // ──────────────────────────────────────────────
+        // ToList (parentheses / quotes handling)
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void ToListTest_ParenthesesGroupsTokens()
+        {
+            var result = GeneralLib.ToList("a (b c) d");
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("a", result[0]);
+            Assert.AreEqual("(b c)", result[1]);
+            Assert.AreEqual("d", result[2]);
+        }
+
+        [TestMethod()]
+        public void ToListTest_NestedParentheses()
+        {
+            var result = GeneralLib.ToList("a (b (c d)) e");
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("a", result[0]);
+            Assert.AreEqual("(b (c d))", result[1]);
+            Assert.AreEqual("e", result[2]);
+        }
+
+        [TestMethod()]
+        public void ToListTest_SingleQuoteBacktick_PreservesContent()
+        {
+            // backtick acts as single-quote delimiter
+            var result = GeneralLib.ToList("`a b`");
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("`a b`", result[0]);
+        }
+
+        [TestMethod()]
+        public void ToListTest_DoubleQuote_PreservesContent()
+        {
+            var result = GeneralLib.ToList("\"hello world\"");
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("\"hello world\"", result[0]);
+        }
+
+        [TestMethod()]
+        public void ToListTest_NullInput_ReturnsEmpty()
+        {
+            var result = GeneralLib.ToList(null);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        // ──────────────────────────────────────────────
+        // ListSplit with parentheses
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void ListSplitTest_ParenthesesGroupsTokens()
+        {
+            var count = GeneralLib.ListSplit("a (b c) d", out var arr);
+            Assert.AreEqual(3, count);
+            Assert.AreEqual("a", arr[0]);
+            Assert.AreEqual("(b c)", arr[1]);
+            Assert.AreEqual("d", arr[2]);
+        }
+
+        [TestMethod()]
+        public void ListSplitTest_UnbalancedParens_ReturnsNegativeOne()
+        {
+            // 閉じ括弧が余分にあるとhasError=trueになり-1を返す
+            var count = GeneralLib.ListSplit("a ) b", out var arr);
+            Assert.AreEqual(-1, count);
+        }
+
+        // ──────────────────────────────────────────────
+        // timeGetTime
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void TimeGetTimeTest_ReturnsNonNegative()
+        {
+            var t = GeneralLib.timeGetTime();
+            Assert.IsTrue(t >= 0, $"timeGetTime() returned {t}");
+        }
+
+        [TestMethod()]
+        public void TimeGetTimeTest_Monotonic()
+        {
+            var t1 = GeneralLib.timeGetTime();
+            System.Threading.Thread.Sleep(10);
+            var t2 = GeneralLib.timeGetTime();
+            Assert.IsTrue(t2 >= t1, $"timeGetTime should be monotonically non-decreasing: {t1} -> {t2}");
+        }
     }
 }

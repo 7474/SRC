@@ -298,5 +298,157 @@ namespace SRCCore.VB.Tests
             var result = Strings.StrConv("abc", (VbStrConv)999);
             Assert.AreEqual("abc", result);
         }
+
+        // ──────────────────────────────────────────────
+        // Asc edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void AscTest_JapaneseChar_ReturnsCodePoint()
+        {
+            // 日本語文字のコードポイントは128より大きい
+            int code = Strings.Asc('あ');
+            Assert.IsTrue(code > 128, $"Asc('あ') should be > 128, got {code}");
+        }
+
+        [TestMethod()]
+        public void AscTest_SpaceChar_Returns32()
+        {
+            Assert.AreEqual(32, Strings.Asc(' '));
+        }
+
+        // ──────────────────────────────────────────────
+        // LCase edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void LCaseTest_MixedCaseWithNumbers()
+        {
+            Assert.AreEqual("abc123def", Strings.LCase("ABC123DEF"));
+        }
+
+        [TestMethod()]
+        public void LCaseTest_AlreadyLower_Unchanged()
+        {
+            Assert.AreEqual("hello", Strings.LCase("hello"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Trim edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void TrimTest_OnlyWhitespace_ReturnsEmpty()
+        {
+            Assert.AreEqual("", Strings.Trim("   "));
+            Assert.AreEqual("", Strings.Trim("\t\t"));
+        }
+
+        [TestMethod()]
+        public void TrimTest_NoWhitespace_Unchanged()
+        {
+            Assert.AreEqual("hello", Strings.Trim("hello"));
+        }
+
+        // ──────────────────────────────────────────────
+        // InStr edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void InStrTest_EmptyNeedle_ReturnsOne()
+        {
+            // VB互換: 空文字検索は1を返す
+            Assert.AreEqual(1, Strings.InStr("hello", ""));
+        }
+
+        [TestMethod()]
+        public void InStrTest_NeedleLongerThanHaystack_ReturnsZero()
+        {
+            Assert.AreEqual(0, Strings.InStr("hi", "hello"));
+        }
+
+        [TestMethod()]
+        public void InStrTest_WithStart_FindsFromPosition()
+        {
+            // start=3 で "hello" の 'l' を探す -> 3
+            Assert.AreEqual(3, Strings.InStr(3, "hello", "l"));
+        }
+
+        [TestMethod()]
+        public void InStrTest_Found_ReturnsPosition()
+        {
+            Assert.AreEqual(3, Strings.InStr("abcabc", "c"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Space
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void SpaceTest_ReturnsSpaces()
+        {
+            Assert.AreEqual("   ", Strings.Space(3));
+            Assert.AreEqual("", Strings.Space(0));
+        }
+
+        // ──────────────────────────────────────────────
+        // StrDup
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void StrDupTest_RepeatsString()
+        {
+            Assert.AreEqual("abcabc", Strings.StrDup("abc", 2));
+            Assert.AreEqual("", Strings.StrDup("abc", 0));
+            Assert.AreEqual("abc", Strings.StrDup("abc", 1));
+        }
+
+        // ──────────────────────────────────────────────
+        // Len edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void LenTest_JapaneseSingleChar()
+        {
+            Assert.AreEqual(1, Strings.Len("あ"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Mid edge cases
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void MidTest_StartBeyondLength_ReturnsEmpty()
+        {
+            Assert.AreEqual("", Strings.Mid("hello", 10));
+        }
+
+        [TestMethod()]
+        public void MidTest_WithLength_Clamps()
+        {
+            Assert.AreEqual("lo", Strings.Mid("hello", 4, 100));
+        }
+
+        // ──────────────────────────────────────────────
+        // StrComp
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void StrCompTest_EqualStrings_ReturnsZero()
+        {
+            Assert.AreEqual(0, Strings.StrComp("abc", "abc"));
+        }
+
+        [TestMethod()]
+        public void StrCompTest_LessThan_ReturnsNegative()
+        {
+            Assert.IsTrue(Strings.StrComp("abc", "abd") < 0);
+        }
+
+        [TestMethod()]
+        public void StrCompTest_GreaterThan_ReturnsPositive()
+        {
+            Assert.IsTrue(Strings.StrComp("abd", "abc") > 0);
+        }
     }
 }
