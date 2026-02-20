@@ -252,5 +252,51 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual("", Strings.Trim(""));
             Assert.AreEqual("", Strings.Trim(null));
         }
+
+        // ──────────────────────────────────────────────
+        // StrConv
+        // ──────────────────────────────────────────────
+
+        [TestMethod()]
+        public void StrConvTest_EmptyOrNull()
+        {
+            Assert.AreEqual("", Strings.StrConv("", VbStrConv.Wide));
+            Assert.AreEqual("", Strings.StrConv(null, VbStrConv.Wide));
+        }
+
+        [TestMethod()]
+        public void StrConvTest_Wide_AsciiToFullWidth()
+        {
+            var result = Strings.StrConv("ABC", VbStrConv.Wide);
+            Assert.AreEqual("ＡＢＣ", result);
+        }
+
+        [TestMethod()]
+        public void StrConvTest_Narrow_FullWidthToAscii()
+        {
+            var result = Strings.StrConv("ＡＢＣ", VbStrConv.Narrow);
+            Assert.AreEqual("ABC", result);
+        }
+
+        [TestMethod()]
+        public void StrConvTest_Hiragana_KatakanaToHiragana()
+        {
+            var result = Strings.StrConv("アイウエオ", VbStrConv.Hiragana);
+            Assert.AreEqual("あいうえお", result);
+        }
+
+        [TestMethod()]
+        public void StrConvTest_Hiragana_HiraganaUnchanged()
+        {
+            var result = Strings.StrConv("あいうえお", VbStrConv.Hiragana);
+            Assert.AreEqual("あいうえお", result);
+        }
+
+        [TestMethod()]
+        public void StrConvTest_Unknown_ReturnsOriginal()
+        {
+            var result = Strings.StrConv("abc", (VbStrConv)999);
+            Assert.AreEqual("abc", result);
+        }
     }
 }
