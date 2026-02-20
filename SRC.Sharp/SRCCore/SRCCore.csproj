@@ -5,6 +5,7 @@
     <RootNamespace>SRCCore</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Version>0.3.0</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,7 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="Units\Unit.ref.cs" />
   </ItemGroup>
 

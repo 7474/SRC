@@ -5,7 +5,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<Version>0.3.0</Version>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="ShiftJISExtension" Version="1.1.0" />
