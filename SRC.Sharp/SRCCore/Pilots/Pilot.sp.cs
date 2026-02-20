@@ -22,31 +22,16 @@ namespace SRCCore.Pilots
                 int MaxSPRet = default;
                 int lv;
 
-                // Impl
-                //// ＳＰなしの場合はレベルに関わらず0
-                //if (Data.SP <= 0)
-                //{
-                //    MaxSPRet = 0;
-                //    // ただし追加パイロットの場合は第１パイロットの最大ＳＰを使用
-                //    if (Unit is object)
-                //    {
-                //        {
-                //            var withBlock = Unit;
-                //            if (withBlock.CountPilot() > 0)
-                //            {
-                //                if (!ReferenceEquals(withBlock.Pilot(1), this))
-                //                {
-                //                    if (ReferenceEquals(withBlock.MainPilot(), this))
-                //                    {
-                //                        MaxSPRet = withBlock.Pilot(1).MaxSP;
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //    return default;
-                //}
+                // ＳＰなしの場合はレベルに関わらず0
+                if (Data.SP <= 0)
+                {
+                    // ただし追加パイロットの場合は第１パイロットの最大ＳＰを使用
+                    if (IsActiveAdditionalPilot())
+                    {
+                        return Unit.Pilots.First().MaxSP;
+                    }
+                    return 0;
+                }
 
                 // レベルによる上昇値
                 lv = Level;
@@ -107,50 +92,26 @@ namespace SRCCore.Pilots
                 int SPRet = default;
                 SPRet = proSP;
 
-                // Impl
-                //// 追加パイロットかどうか判定
-
-                //if (Unit is null)
-                //{
-                //    return default;
-                //}
-
-                //{
-                //    var withBlock = Unit;
-                //    if (withBlock.CountPilot() == 0)
-                //    {
-                //        return default;
-                //    }
-
-                //    if (ReferenceEquals(withBlock.Pilot(1), this))
-                //    {
-                //        return default;
-                //    }
-
-                //    if (!ReferenceEquals(withBlock.MainPilot(), this))
-                //    {
-                //        return default;
-                //    }
-
-                //    // 追加パイロットだったので第１パイロットのＳＰ値を代わりに使う
-                //    if (Data.SP > 0)
-                //    {
-                //        // ＳＰを持つ場合は消費量を一致させる
-                //        {
-                //            var withBlock1 = withBlock.Pilot(1);
-                //            if (withBlock1.MaxSP > 0)
-                //            {
-                //                proSP = (MaxSP * withBlock1.SP0 / withBlock1.MaxSP);
-                //                SPRet = proSP;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        // ＳＰを持たない場合はそのまま使う
-                //        SPRet = withBlock.Pilot(1).SP0;
-                //    }
-                //}
+                // 追加パイロットかどうか判定
+                if (IsActiveAdditionalPilot())
+                {
+                    var pilot1 = Unit.Pilots.First();
+                    // 追加パイロットだったので第１パイロットのＳＰ値を代わりに使う
+                    if (Data.SP > 0)
+                    {
+                        // ＳＰを持つ場合は消費量を一致させる
+                        if (pilot1.MaxSP > 0)
+                        {
+                            proSP = MaxSP * pilot1.SP0 / pilot1.MaxSP;
+                            SPRet = proSP;
+                        }
+                    }
+                    else
+                    {
+                        // ＳＰを持たない場合はそのまま使う
+                        SPRet = pilot1.SP0;
+                    }
+                }
 
                 return SPRet;
             }
@@ -172,58 +133,31 @@ namespace SRCCore.Pilots
                     proSP = value;
                 }
 
-                // Impl
-                //// 追加パイロットかどうか判定
-
-                //if (Unit is null)
-                //{
-                //    return;
-                //}
-
-                //{
-                //    var withBlock = Unit;
-                //    if (withBlock.CountPilot() == 0)
-                //    {
-                //        return;
-                //    }
-
-                //    if (ReferenceEquals(withBlock.Pilot(1), this))
-                //    {
-                //        return;
-                //    }
-
-                //    if (!ReferenceEquals(withBlock.MainPilot(), this))
-                //    {
-                //        return;
-                //    }
-
-                //    // 追加パイロットだったので第１パイロットのＳＰ値を代わりに使う
-                //    {
-                //        var withBlock1 = withBlock.Pilot(1);
-                //        if (Data.SP > 0)
-                //        {
-                //            // 追加パイロットがＳＰを持つ場合は第１パイロットと消費率を一致させる
-                //            if (withBlock1.MaxSP > 0)
-                //            {
-                //                withBlock1.SP0 = withBlock1.MaxSP * proSP / MaxSP;
-                //                proSP = (MaxSP * withBlock1.SP0 / withBlock1.MaxSP);
-                //            }
-                //        }
-                //        // 追加パイロットがＳＰを持たない場合は第１パイロットのＳＰ値をそのまま使う
-                //        else if (value > withBlock1.MaxSP)
-                //        {
-                //            withBlock1.SP0 = withBlock1.MaxSP;
-                //        }
-                //        else if (value < 0)
-                //        {
-                //            withBlock1.SP0 = 0;
-                //        }
-                //        else
-                //        {
-                //            withBlock1.SP0 = value;
-                //        }
-                //    }
-                //}
+                // 追加パイロットかどうか判定
+                if (IsActiveAdditionalPilot())
+                {
+                    var pilot1 = Unit.Pilots.First();
+                    // 追加パイロットだったので第１パイロットのＳＰ値を代わりに使う
+                    if (Data.SP > 0)
+                    {
+                        // 追加パイロットがＳＰを持つ場合は第１パイロットと消費率を一致させる
+                        if (pilot1.MaxSP > 0)
+                        {
+                            pilot1.SP0 = pilot1.MaxSP * proSP / MaxSP;
+                            proSP = MaxSP * pilot1.SP0 / pilot1.MaxSP;
+                        }
+                    }
+                    else
+                    {
+                        // 追加パイロットがＳＰを持たない場合は第１パイロットのＳＰ値をそのまま使う
+                        if (value > pilot1.MaxSP)
+                            pilot1.SP0 = pilot1.MaxSP;
+                        else if (value < 0)
+                            pilot1.SP0 = 0;
+                        else
+                            pilot1.SP0 = value;
+                    }
+                }
             }
         }
 
