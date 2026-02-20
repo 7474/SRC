@@ -31,9 +31,15 @@ jobs:
       run: dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore
 
     - name: Test
+      if: github.event_name == 'pull_request'
+      run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal
+
+    - name: Test (with coverage)
+      if: github.event_name == 'push'
       run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
     - name: Generate Coverage Report
+      if: github.event_name == 'push'
       uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
       with:
         reports: TestResults/**/coverage.cobertura.xml
@@ -41,6 +47,7 @@ jobs:
         reporttypes: MarkdownSummaryGithub
 
     - name: Upload Coverage Report to Summary
+      if: github.event_name == 'push'
       run: cat CoverageReport/SummaryGithub.md >> $env:GITHUB_STEP_SUMMARY
       shell: pwsh
 
