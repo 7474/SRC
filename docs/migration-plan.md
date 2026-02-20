@@ -10,19 +10,20 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 統計 / Statistics
 
-> **2026-02-20 更新** / Updated 2026-02-20
+> **2026-02-20 更新 (PR #741)** / Updated 2026-02-20 (PR #741)
 
-- **残存 TODO コメント (SRCCore)**: 45（自動生成を除く） / Remaining TODO comments (SRCCore): 45 (excluding auto-generated)
+- **残存 TODO コメント (SRCCore)**: 42（自動生成を除く） / Remaining TODO comments (SRCCore): 42 (excluding auto-generated)
 - **残存 TODO コメント (SRCSharpForm)**: 44 / Remaining TODO comments (SRCSharpForm): 44
 - **計画策定時 TODO 数**: 155+ / Initial TODO count at plan creation: 155+
-- **解消済み TODO 推定数**: 110+ (約71%完了) / Estimated TODOs resolved: 110+ (~71% complete)
+- **解消済み TODO 推定数**: 113+ (約73%完了) / Estimated TODOs resolved: 113+ (~73% complete)
 - **Main Project**: SRC.Sharp/SRCCore
 
 ### 最近のマージ済みPR / Recently Merged PRs (2026-02-19 〜 2026-02-20)
 
 | # | タイトル / Title | 日付 |
 |---|---|---|
-| #731 (current) | Fix Unit SaveData: restore Summoner/Master/UnitOnBoard/Servant on load; fix #627 summoned unit revival | 2026-02-20 |
+| #741 (current) | Port ValidateEnvironment, add Plana check in TryInstantAbility, fix Event.data.cs error TODO | 2026-02-20 |
+| #731 | Fix Unit SaveData: restore Summoner/Master/UnitOnBoard/Servant on load; fix #627 summoned unit revival | 2026-02-20 |
 | #730 | Port Help info functions, fix UseAction cap and additional pilot exp bug | 2026-02-20 |
 | #716 | Port remaining features: Help info functions, UseAction cap, additional pilot exp fix | 2026-02-20 |
 | #715 | Fix CD-pages workflow: MSB1003 due to missing project path | 2026-02-20 |
@@ -43,12 +44,12 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 | Epic 1: 戦闘システム | 6 | 合体技, エイリアス参照, 変身 |
 | Epic 2: ユニット・パイロット | 7 | SkillName, SpecialEffect, 走査拡張 |
 | Epic 3: GUI・UI | 4 | レイヤーデータ, 発進表示 |
-| Epic 4: イベント・コマンド | 9 | イベントファイル禁則, PaintString最適化 |
+| Epic 4: イベント・コマンド | 8 | PaintString最適化 (イベントファイル禁則TODO解消済み) |
 | Epic 5: データ管理 | 4 | セーブ/設定管理 |
 | Epic 6: VB6レガシー | 3 | Loadfiledialog, Savefiledialog |
 | Epic 7: パフォーマンス | 5 | Sound キャッシュ, .NET 更新 |
-| Epic 8: バグ・エッジケース | 7 | COM 武器選択, 召喚ユニット復活(#627 解消済み) |
-| **合計** | **45** | |
+| Epic 8: バグ・エッジケース | 5 | COM 武器選択 (ValidateEnvironment実装済み, EN以外の条件チェック追加済み) |
+| **合計** | **42** | |
 
 ## 現在の状況 / Current Status
 

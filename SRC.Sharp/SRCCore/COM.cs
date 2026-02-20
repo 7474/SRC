@@ -3095,7 +3095,6 @@ namespace SRCCore
             var u = Commands.SelectedUnit;
             UnitAbility selUa = null;
             // 実行時間を必要としないアビリティを探す
-            // TODO EN以外の使用条件見ておく
             foreach (var ua in u.Abilities)
             {
                 // 使用可能＆効果あり？
@@ -3110,6 +3109,21 @@ namespace SRCCore
                     if (ua.AbilityENConsumption() >= u.EN / 2)
                     {
                         continue;
+                    }
+                }
+
+                // 霊力消費が多すぎない？
+                if (u.CountPilot() > 0)
+                {
+                    var p = u.MainPilot();
+                    if (ua.IsAbilityClassifiedAs("霊") || ua.IsAbilityClassifiedAs("プ"))
+                    {
+                        var planaAttr = ua.IsAbilityClassifiedAs("霊") ? "霊" : "プ";
+                        var planaConsumption = (int)(ua.AbilityLevel(planaAttr) * 5);
+                        if (planaConsumption > 0 && p.MaxPlana() > 0 && planaConsumption >= p.Plana / 2)
+                        {
+                            continue;
+                        }
                     }
                 }
 

@@ -961,7 +961,6 @@ namespace SRCCore.Events
                 error_found = true;
             }
 
-            // TODO まだエラー出ないようになってない -> 終了するようにして様子を見る
             // 書式エラーが見つかった場合はSRCを終了
             if (error_found)
             {
