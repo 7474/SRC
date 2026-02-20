@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
       - name: Build project
-        run: dotnet publish -c Release
+        run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release
 
       - name: Deploy to GitHub Pages
         run: |
