@@ -184,47 +184,13 @@ cat .github/copilot/copilot-instructions-examples.md
 - マイルストーン: Phase 1: コア機能完成 (v3.1.0)
 ```
 
-### 従来の方法（スクリプト使用）/ Traditional Way (Using Scripts)
-
-```bash
-# ラベルとマイルストーンを事前作成する場合のみ
-# Only if you want to pre-create labels and milestones
-
-# 1. Read the overview
-cat .github/copilot/quick-reference.md
-
-# 2. Setup labels and milestones
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# 3. Read your role-specific section
-# - For issue creation: Section "1. Issue Creation Agent" in agent-instructions.md
-# - For implementation: Section "2. Implementation Agent" in agent-instructions.md
-# - For review: Section "3. Review Agent" in agent-instructions.md
-# - For tracking: Section "4. Progress Tracking Agent" in agent-instructions.md
-```
-
-# 2. Setup labels and milestones
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# 3. Read your role-specific section
-# - For issue creation: Section "1. Issue Creation Agent" in agent-instructions.md
-# - For implementation: Section "2. Implementation Agent" in agent-instructions.md
-# - For review: Section "3. Review Agent" in agent-instructions.md
-# - For tracking: Section "4. Progress Tracking Agent" in agent-instructions.md
-```
-
 ### Daily Workflow
 ```bash
-# Generate progress report
-bash docs/scripts/progress-report.sh
-
 # Check your assigned role tasks
 # - Issue Creator: Check docs/issue-breakdown.md for next issue to create
 # - Implementer: Check assigned issues with status:in-progress
 # - Reviewer: Check PRs awaiting review
-# - Tracker: Generate weekly progress report
+# - Tracker: @copilot 進捗を更新してください
 ```
 
 ## 📖 Documentation Structure / ドキュメント構造
@@ -239,12 +205,7 @@ docs/                     # Migration plan documentation
 ├── README.md            # Documentation index
 ├── quick-start.md       # Project overview
 ├── migration-plan.md    # 8 Epics and overall strategy
-├── issue-breakdown.md   # ~70 specific issues
-├── github-projects-setup.md  # Project management setup
-└── scripts/             # Automation scripts
-    ├── create-labels.sh
-    ├── create-milestones.sh
-    └── progress-report.sh
+└── issue-breakdown.md   # ~70 specific issues
 
 .github/ISSUE_TEMPLATE/   # Issue templates
 ├── epic-template.md     # For Epic issues
@@ -284,9 +245,9 @@ docs/                     # Migration plan documentation
 - **Approves**: Only after all criteria met
 
 ### 4. Progress Tracking Agent / 進捗管理エージェント
-- **Runs**: `bash docs/scripts/progress-report.sh` weekly
+- **Runs**: `@copilot 進捗を更新してください`
 - **Monitors**: Epic completion, milestone progress, blockers
-- **Updates**: Project board (Backlog → Ready → In Progress → Review → Done)
+- **Updates**: Issue statuses and migration plan documents
 - **Reports**: Statistics and trends
 
 ## 📊 Project Scope / プロジェクト規模
@@ -301,17 +262,9 @@ docs/                     # Migration plan documentation
 ## ⚡ Quick Commands / クイックコマンド
 
 ```bash
-# Setup (optional)
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# Autonomous operation (recommended)
-# In Copilot chat:
+# Autonomous operation (Copilot chat):
 # @copilot 移植を進行してください       → Advance migration work
 # @copilot 進捗を更新してください       → Update progress status
-
-# Manual progress check
-bash docs/scripts/progress-report.sh
 
 # List issues by category
 gh issue list --label "epic:combat" --state all

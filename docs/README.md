@@ -42,26 +42,6 @@ With single commands:
    - 約70個の具体的なIssueリスト
    - Detailed list of ~70 specific issues
 
-4. **[GitHub Projects設定ガイド](./github-projects-setup.md)**
-   - プロジェクト管理の設定方法（オプション）
-   - How to set up GitHub Projects for management (Optional)
-
-### 自動化スクリプト / Automation Scripts
-
-`scripts/` ディレクトリには、プロジェクト管理を自動化するスクリプトが含まれています：
-
-- **[create-labels.sh](./scripts/create-labels.sh)** - ラベルの一括作成
-- **[create-milestones.sh](./scripts/create-milestones.sh)** - マイルストーンの一括作成
-- **[progress-report.sh](./scripts/progress-report.sh)** - 進捗レポートの生成
-
-使用方法：
-```bash
-cd /path/to/SRC
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-bash docs/scripts/progress-report.sh
-```
-
 ## 🎯 プロジェクト概要 / Project Overview
 
 ### 統計 / Statistics
@@ -109,45 +89,15 @@ Copilotが現在の状態を評価し、次のタスクを自動的に選択・�
 
 Copilotがissueの状態を確認し、ドキュメントと進行状況を最新の実態に合わせて更新します。
 
-### （オプション）手動でプロジェクト環境を整える
-
-ラベルやマイルストーンを手動で管理したい場合のみ：
-
-1. ラベルを作成:
-   ```bash
-   bash docs/scripts/create-labels.sh
-   ```
-
-2. マイルストーンを作成:
-   ```bash
-   bash docs/scripts/create-milestones.sh
-   ```
-
-3. GitHub Projectsを設定:
-   - [GitHub Projects設定ガイド](./github-projects-setup.md)を参照
-
 ## 📊 進捗管理 / Progress Tracking
 
-### 進捗確認・更新（推奨）
+### 進捗確認・更新
 
 ```
 @copilot 進捗を更新してください
 ```
 
 Copilotが現在のissue状態を確認し、ドキュメントと進行状況を更新します。
-
-### 手動での進捗確認
-
-```bash
-# 進捗レポート生成
-bash docs/scripts/progress-report.sh
-
-# Epic別の進捗
-gh issue list --label "epic:combat" --state all
-
-# マイルストーンの進捗
-gh api repos/7474/SRC/milestones
-```
 
 ### 推奨作業フロー
 
