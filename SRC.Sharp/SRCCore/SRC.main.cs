@@ -1,9 +1,11 @@
 using SRCCore.Exceptions;
+using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace SRCCore
@@ -75,89 +77,81 @@ namespace SRCCore
 
         private void ValidateEnvironment()
         {
-            // TODO Impl この辺は実行環境に依存しそう
+            // Bitmap関係のチェック
+            if (!FileSystem.GetFileSystemEntries(AppPath, "Bitmap", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Bitmapフォルダがありません。" + Environment.NewLine + "SRC.exeと同じフォルダに汎用グラフィック集をインストールしてください。");
+                TerminateSRC();
+                return;
+            }
 
-            //            // Bitmap関係のチェック
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + "Bitmap", FileAttribute.Directory)) == 0)
-            //            {
-            //                GUI.ErrorMessage("Bitmapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに汎用グラフィック集をインストールしてください。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + "Ｂｉｔｍａｐ", FileAttribute.Directory)) > 0)
-            //            {
-            //                GUI.ErrorMessage("Bitmapフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Bitmap", FileAttribute.Directory)) > 0)
-            //            {
-            //                GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Bitmap" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
-            //                Environment.Exit(0);
-            //            }
+            if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Bitmap", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Bitmap", "Bitmap") + Environment.NewLine + "フォルダ構造を直してください。");
+                TerminateSRC();
+                return;
+            }
 
-            //            // イベントグラフィック
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Event", FileAttribute.Directory)) == 0)
-            //            {
-            //                GUI.ErrorMessage(@"Bitmap\Eventフォルダが見つかりません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
-            //                Environment.Exit(0);
-            //            }
+            // イベントグラフィック
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Event", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Bitmap\\Eventフォルダが見つかりません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
+                TerminateSRC();
+                return;
+            }
 
-            //            // マップグラフィック
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map", FileAttribute.Directory)) == 0)
-            //            {
-            //                GUI.ErrorMessage(@"Bitmap\Mapフォルダがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain\plain0000.bmp")) == 0 && Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0000.bmp")) == 0 && Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\plain0.bmp")) == 0)
-            //            {
-            //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\Map", FileAttribute.Directory)) > 0)
-            //                {
-            //                    GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にさらにMapフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Bitmap\Map\Map" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
-            //                    Environment.Exit(0);
-            //                }
+            // マップグラフィック
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Map", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Bitmap\\Mapフォルダがありません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
+                TerminateSRC();
+                return;
+            }
 
-            //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                if (Strings.Len(FileSystem.Dir(AppPath + @"Bitmap\Map\*", FileAttribute.Normal)) == 0)
-            //                {
-            //                    GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "汎用グラフィック集が正しくインストールされていないと思われます。");
-            //                    Environment.Exit(0);
-            //                }
+            if (!FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain", "plain0000.bmp")
+                && !FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain0000.bmp")
+                && !FileSystem.FileExists(AppPath, "Bitmap", "Map", "plain0.bmp"))
+            {
+                if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap", "Map"), "Map", EntryOption.Directory).Any())
+                {
+                    GUI.ErrorMessage("Bitmap\\Mapフォルダ内にさらにMapフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Bitmap", "Map", "Map") + Environment.NewLine + "フォルダ構造を直してください。");
+                    TerminateSRC();
+                    return;
+                }
 
-            //                GUI.ErrorMessage(@"Bitmap\Mapフォルダ内にplain0000.bmpがありません。" + Constants.vbCr + Constants.vbLf + "一部のマップ画像ファイルしかインストールされていない恐れがあります。" + Constants.vbCr + Constants.vbLf + "新規インストールのファイルを使って汎用グラフィック集をインストールしてください。");
-            //                Environment.Exit(0);
-            //            }
+                if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap", "Map"), "*", EntryOption.File).Any())
+                {
+                    GUI.ErrorMessage("Bitmap\\Mapフォルダ内にファイルがありません。" + Environment.NewLine + "汎用グラフィック集が正しくインストールされていないと思われます。");
+                    TerminateSRC();
+                    return;
+                }
 
-            //            // 効果音
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + "Sound", FileAttribute.Directory)) == 0)
-            //            {
-            //                GUI.ErrorMessage("Soundフォルダがありません。" + Constants.vbCr + Constants.vbLf + "SRC.exeと同じフォルダに効果音集をインストールしてください。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + "Ｓｏｕｎｄ", FileAttribute.Directory)) > 0)
-            //            {
-            //                GUI.ErrorMessage("Soundフォルダのフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + AppPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Sound\Sound", FileAttribute.Directory)) > 0)
-            //            {
-            //                GUI.ErrorMessage("Soundフォルダ内にさらにSoundフォルダが存在します。" + Constants.vbCr + Constants.vbLf + AppPath + @"Sound\Sound" + Constants.vbCr + Constants.vbLf + "フォルダ構造を直してください。");
-            //                Environment.Exit(0);
-            //            }
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(AppPath + @"Sound\*", FileAttribute.Normal)) == 0)
-            //            {
-            //                GUI.ErrorMessage("Soundフォルダ内にファイルがありません。" + Constants.vbCr + Constants.vbLf + "Soundフォルダ内に効果音集をインストールしてください。");
-            //                Environment.Exit(0);
-            //            }
+                GUI.ErrorMessage("Bitmap\\Mapフォルダ内にplain0000.bmpがありません。" + Environment.NewLine + "一部のマップ画像ファイルしかインストールされていない恐れがあります。" + Environment.NewLine + "新規インストールのファイルを使って汎用グラフィック集をインストールしてください。");
+                TerminateSRC();
+                return;
+            }
+
+            // 効果音
+            if (!FileSystem.GetFileSystemEntries(AppPath, "Sound", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Soundフォルダがありません。" + Environment.NewLine + "SRC.exeと同じフォルダに効果音集をインストールしてください。");
+                TerminateSRC();
+                return;
+            }
+
+            if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Sound"), "Sound", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Soundフォルダ内にさらにSoundフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Sound", "Sound") + Environment.NewLine + "フォルダ構造を直してください。");
+                TerminateSRC();
+                return;
+            }
+
+            if (!FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Sound"), "*", EntryOption.File).Any())
+            {
+                GUI.ErrorMessage("Soundフォルダ内にファイルがありません。" + Environment.NewLine + "Soundフォルダ内に効果音集をインストールしてください。");
+                TerminateSRC();
+                return;
+            }
         }
 
         private void ConfigureSound()
