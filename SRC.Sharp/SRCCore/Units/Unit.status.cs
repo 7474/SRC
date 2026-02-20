@@ -127,430 +127,245 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // パイロットデータで定義されている特殊能力
-            //    if (CountPilot() > 0)
-            //    {
-            //        if (IsFeatureAvailable("追加パイロット"))
-            //        {
-            //            // 特殊能力を付加する前に必要技能が満たされているかどうか判定
-            //            UpdateFeatures("追加パイロット");
-            //        }
+            // パイロットデータで定義されている特殊能力
+            if (CountPilot() > 0)
+            {
+                if (IsFeatureAvailable("追加パイロット"))
+                {
+                    // 特殊能力を付加する前に必要技能が満たされているかどうか判定
+                    UpdateFeatures("追加パイロット");
+                }
 
-            //        AddFeatures(MainPilot().Data.colFeature);
-            //        var loopTo1 = CountPilot();
-            //        for (i = 2; i <= loopTo1; i++)
-            //        {
-            //            Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+                AddFeatures(MainPilot().Data.Features);
+                foreach (var p in SubPilots)
+                {
+                    AddFeatures(p.Data.Features);
+                }
 
-            //            AddFeatures(localPilot().Data.colFeature);
-            //        }
+                foreach (var p in Supports)
+                {
+                    AddFeatures(p.Data.Features);
+                }
 
-            //        var loopTo2 = CountSupport();
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
+                if (IsFeatureAvailable("追加サポート"))
+                {
+                    // 特殊能力を付加する前に必要技能が満たされているかどうか判定
+                    UpdateFeatures("追加サポート");
+                    if (IsFeatureAvailable("追加サポート"))
+                    {
+                        var addSupport = AdditionalSupport();
+                        if (addSupport != null)
+                        {
+                            AddFeatures(addSupport.Data.Features);
+                        }
+                    }
+                }
+            }
 
-            //            AddFeatures(localSupport().Data.colFeature);
-            //        }
+            // パイロット能力付加＆強化の効果をクリア
+            {
+                var conditionsToDelete = Conditions
+                    .Where(c => Strings.Right(c.Name, 3) == "付加２" || Strings.Right(c.Name, 3) == "強化２")
+                    .Select(c => c.Name)
+                    .ToList();
+                foreach (var cname in conditionsToDelete)
+                {
+                    DeleteCondition(cname);
+                }
+            }
 
-            //        if (IsFeatureAvailable("追加サポート"))
-            //        {
-            //            // 特殊能力を付加する前に必要技能が満たされているかどうか判定
-            //            UpdateFeatures("追加サポート");
-            //            if (IsFeatureAvailable("追加サポート"))
-            //            {
-            //                AddFeatures(AdditionalSupport().Data.colFeature);
-            //            }
-            //        }
-            //    }
+            // パイロット能力付加＆強化の処理
+            {
+                bool found = false, flag = false;
+                var featureSnapshot = colFeature.List.ToList();
+                var processedFlags = new bool[featureSnapshot.Count + 1];
 
-            //    // パイロット能力付加＆強化の効果をクリア
-            //    i = 1;
-            //    while (i <= CountCondition())
-            //    {
-            //        string localCondition() { object argIndex1 = i; var ret = Condition(argIndex1); return ret; }
+            ProcessPilotSkills:
+                for (int fi = 0; fi < featureSnapshot.Count; fi++)
+                {
+                    if (processedFlags[fi]) continue;
+                    var fd = featureSnapshot[fi];
 
-            //        switch (Strings.Right(localCondition(), 3) ?? "")
-            //        {
-            //            case "付加２":
-            //            case "強化２":
-            //                {
-            //                    DeleteCondition(i);
-            //                    break;
-            //                }
+                    switch (fd.Name ?? "")
+                    {
+                        case "パイロット能力付加":
+                        {
+                            // 必要技能を満たしている？
+                            if (!IsNecessarySkillSatisfied(fd.NecessarySkill, p: null)) { found = true; continue; }
+                            // 必要条件を満たしている？
+                            if (!IsNecessarySkillSatisfied(fd.NecessaryCondition, p: null)) { found = true; continue; }
 
-            //            default:
-            //                {
-            //                    i = (i + 1);
-            //                    break;
-            //                }
-            //        }
-            //    }
+                            processedFlags[fi] = true;
 
-            //    // パイロット能力付加
-            //    found = false;
-            //    flag = false;
-            //    flags = new bool[colFeature.Count + 1];
-            //AddSkills:
-            //    ;
-            //    i = 1;
-            //    foreach (FeatureData currentFd1 in colFeature)
-            //    {
-            //        fd = currentFd1;
-            //        if (flags[i])
-            //        {
-            //            goto NextFeature;
-            //        }
+                            // 能力指定が「"」で囲まれている場合は「"」を削除
+                            var buf = (Strings.Asc(fd.StrData) == 34)
+                                ? Strings.Mid(fd.StrData, 2, Strings.Len(fd.StrData) - 2)
+                                : fd.StrData;
 
-            //        switch (fd.Name ?? "")
-            //        {
-            //            case "パイロット能力付加":
-            //                {
-            //                    // 必要技能を満たしている？
-            //                    if (!IsNecessarySkillSatisfied(fd.NecessarySkill, p: null))
-            //                    {
-            //                        found = true;
-            //                        goto NextFeature;
-            //                    }
-            //                    // 必要条件を満たしている？
-            //                    if (!IsNecessarySkillSatisfied(fd.NecessaryCondition, p: null))
-            //                    {
-            //                        found = true;
-            //                        goto NextFeature;
-            //                    }
+                            ParseAbilitySpec(buf, out var stype, out var slevel, out var sdata, useDefaultLevel: true);
 
-            //                    flags[i] = true;
+                            // エリアスが定義されている？
+                            if (SRC.ALDList.IsDefined(stype))
+                            {
+                                var adata = SRC.ALDList.Item(stype);
+                                foreach (var elm in adata.Elements)
+                                {
+                                    var stype2 = elm.strAliasType;
+                                    double slevel2;
+                                    string sdata2;
 
-            //                    // 能力指定が「"」で囲まれている場合は「"」を削除
-            //                    if (Strings.Asc(fd.StrData) == 34) // "
-            //                    {
-            //                        buf = Strings.Mid(fd.StrData, 2, Strings.Len(fd.StrData) - 2);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = fd.StrData;
-            //                    }
+                                    if (GeneralLib.LIndex(elm.strAliasData, 1) == "解説")
+                                    {
+                                        if (!string.IsNullOrEmpty(sdata)) stype2 = GeneralLib.LIndex(sdata, 1);
+                                        slevel2 = Constants.DEFAULT_LEVEL;
+                                        sdata2 = elm.strAliasData;
+                                    }
+                                    else
+                                    {
+                                        if (elm.blnAliasLevelIsPlusMod)
+                                        {
+                                            if (slevel == Constants.DEFAULT_LEVEL) slevel = 1d;
+                                            slevel2 = slevel + elm.dblAliasLevel;
+                                        }
+                                        else if (elm.blnAliasLevelIsMultMod)
+                                        {
+                                            if (slevel == Constants.DEFAULT_LEVEL) slevel = 1d;
+                                            slevel2 = slevel * elm.dblAliasLevel;
+                                        }
+                                        else if (slevel != Constants.DEFAULT_LEVEL)
+                                        {
+                                            slevel2 = slevel;
+                                        }
+                                        else
+                                        {
+                                            slevel2 = elm.dblAliasLevel;
+                                        }
 
-            //                    // 付加する特殊能力の種類、レベル、データを解析
-            //                    if (Strings.InStr(buf, "=") > 0)
-            //                    {
-            //                        sdata = Strings.Mid(buf, Strings.InStr(buf, "=") + 1);
-            //                        buf = Strings.Left(buf, Strings.InStr(buf, "=") - 1);
-            //                        if (Strings.InStr(buf, "Lv") > 0)
-            //                        {
-            //                            stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
-            //                            if (Information.IsNumeric(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2)))
-            //                            {
-            //                                slevel = Conversions.ToDouble(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2));
-            //                            }
-            //                            else
-            //                            {
-            //                                slevel = 1d;
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            stype = buf;
-            //                            slevel = Constants.DEFAULT_LEVEL;
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        sdata = "";
-            //                        if (Strings.InStr(buf, "Lv") > 0)
-            //                        {
-            //                            stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
-            //                            if (Information.IsNumeric(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2)))
-            //                            {
-            //                                slevel = Conversions.ToDouble(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2));
-            //                            }
-            //                            else
-            //                            {
-            //                                slevel = 1d;
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            stype = buf;
-            //                            slevel = Constants.DEFAULT_LEVEL;
-            //                        }
-            //                    }
+                                        sdata2 = elm.strAliasData;
+                                        if (!string.IsNullOrEmpty(sdata) && Strings.InStr(sdata2, "非表示") != 1)
+                                        {
+                                            sdata2 = sdata + " " + GeneralLib.ListTail(sdata2, GeneralLib.LLength(sdata) + 1);
+                                        }
 
-            //                    // エリアスが定義されている？
-            //                    if (SRC.ALDList.IsDefined(stype))
-            //                    {
-            //                        {
-            //                            var withBlock4 = SRC.ALDList.Item(stype);
-            //                            var loopTo3 = withBlock4.Count;
-            //                            for (j = 1; j <= loopTo3; j++)
-            //                            {
-            //                                // エリアスの定義に従って特殊能力定義を置き換える
-            //                                stype2 = withBlock4.get_AliasType(j);
-            //                                string localLIndex() { string arglist = withBlock4.get_AliasData(j); var ret = GeneralLib.LIndex(arglist, 1); withBlock4.get_AliasData(j) = arglist; return ret; }
+                                        if (elm.blnAliasLevelIsPlusMod || elm.blnAliasLevelIsMultMod)
+                                        {
+                                            sdata2 = Strings.Trim(GeneralLib.LIndex(sdata2, 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(sdata2, 2));
+                                        }
+                                    }
 
-            //                                if (localLIndex() == "解説")
-            //                                {
-            //                                    // 特殊能力の解説
-            //                                    if (!string.IsNullOrEmpty(sdata))
-            //                                    {
-            //                                        stype2 = GeneralLib.LIndex(sdata, 1);
-            //                                    }
+                                    // 属性使用不能攻撃により使用不能になった技能を封印する
+                                    if (ConditionLifetime(stype2 + "使用不能") > 0) { break; }
 
-            //                                    slevel2 = Constants.DEFAULT_LEVEL;
-            //                                    sdata2 = withBlock4.get_AliasData(j);
-            //                                }
-            //                                else
-            //                                {
-            //                                    // 通常の能力
-            //                                    if (withBlock4.get_AliasLevelIsPlusMod(j))
-            //                                    {
-            //                                        if (slevel == Constants.DEFAULT_LEVEL)
-            //                                        {
-            //                                            slevel = 1d;
-            //                                        }
+                                    AddCondition(stype2 + "付加２", -1, slevel2, sdata2);
+                                }
+                            }
+                            else
+                            {
+                                // 属性使用不能攻撃により使用不能になった技能を封印する
+                                if (ConditionLifetime(stype + "使用不能") > 0) continue;
+                                AddCondition(stype + "付加２", -1, slevel, sdata);
+                            }
 
-            //                                        slevel2 = slevel + withBlock4.get_AliasLevel(j);
-            //                                    }
-            //                                    else if (withBlock4.get_AliasLevelIsMultMod(j))
-            //                                    {
-            //                                        if (slevel == Constants.DEFAULT_LEVEL)
-            //                                        {
-            //                                            slevel = 1d;
-            //                                        }
+                            break;
+                        }
 
-            //                                        slevel2 = slevel * withBlock4.get_AliasLevel(j);
-            //                                    }
-            //                                    else if (slevel != Constants.DEFAULT_LEVEL)
-            //                                    {
-            //                                        slevel2 = slevel;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        slevel2 = withBlock4.get_AliasLevel(j);
-            //                                    }
+                        case "パイロット能力強化":
+                        {
+                            // 必要技能を満たしている？
+                            if (!IsNecessarySkillSatisfied(fd.NecessarySkill, p: null)) { found = true; continue; }
+                            // 必要条件を満たしている？
+                            if (!IsNecessarySkillSatisfied(fd.NecessaryCondition, p: null)) { found = true; continue; }
 
-            //                                    sdata2 = withBlock4.get_AliasData(j);
-            //                                    if (!string.IsNullOrEmpty(sdata))
-            //                                    {
-            //                                        if (Strings.InStr(sdata2, "非表示") != 1)
-            //                                        {
-            //                                            sdata2 = sdata + " " + GeneralLib.ListTail(sdata2, (GeneralLib.LLength(sdata) + 1));
-            //                                        }
-            //                                    }
+                            processedFlags[fi] = true;
 
-            //                                    if (withBlock4.get_AliasLevelIsPlusMod(j) || withBlock4.get_AliasLevelIsMultMod(j))
-            //                                    {
-            //                                        sdata2 = GeneralLib.LIndex(sdata2, 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(sdata2, 2);
-            //                                        sdata2 = Strings.Trim(sdata2);
-            //                                    }
-            //                                }
+                            // 能力指定が「"」で囲まれている場合は「"」を削除
+                            var buf = (Strings.Asc(fd.StrData) == 34)
+                                ? Strings.Mid(fd.StrData, 2, Strings.Len(fd.StrData) - 2)
+                                : fd.StrData;
 
-            //                                // 属性使用不能攻撃により使用不能になった技能を封印する。
-            //                                if (ConditionLifetime(stype2 + "使用不能") > 0)
-            //                                {
-            //                                    goto NextFeature;
-            //                                }
+                            ParseAbilitySpec(buf, out var stype, out var slevel, out var sdata, useDefaultLevel: false);
 
-            //                                AddCondition(stype2 + "付加２", -1, slevel2, sdata2);
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        // 属性使用不能攻撃により使用不能になった技能を封印する。
-            //                        if (ConditionLifetime(stype + "使用不能") > 0)
-            //                        {
-            //                            goto NextFeature;
-            //                        }
+                            // エリアスが定義されている？
+                            if (SRC.ALDList.IsDefined(stype))
+                            {
+                                var adata = SRC.ALDList.Item(stype);
+                                foreach (var elm in adata.Elements)
+                                {
+                                    var stype2 = elm.strAliasType;
 
-            //                        AddCondition(stype + "付加２", -1, slevel, sdata);
-            //                    }
+                                    // 属性使用不能攻撃により使用不能になった技能を封印する
+                                    if (ConditionLifetime(stype2 + "使用不能") > 0) break;
 
-            //                    break;
-            //                }
+                                    double slevel2;
+                                    string sdata2;
 
-            //            case "パイロット能力強化":
-            //                {
-            //                    // 必要技能を満たしている？
-            //                    if (!IsNecessarySkillSatisfied(fd.NecessarySkill, p: null))
-            //                    {
-            //                        found = true;
-            //                        goto NextFeature;
-            //                    }
-            //                    // 必要条件を満たしている？
-            //                    if (!IsNecessarySkillSatisfied(fd.NecessaryCondition, p: null))
-            //                    {
-            //                        found = true;
-            //                        goto NextFeature;
-            //                    }
+                                    if (GeneralLib.LIndex(elm.strAliasData, 1) == "解説")
+                                    {
+                                        if (!string.IsNullOrEmpty(sdata)) stype2 = GeneralLib.LIndex(sdata, 1);
+                                        slevel2 = Constants.DEFAULT_LEVEL;
+                                        sdata2 = elm.strAliasData;
 
-            //                    flags[i] = true;
+                                        if (ConditionLifetime(stype2 + "使用不能") > 0) break;
+                                        AddCondition(stype2 + "付加２", -1, slevel2, sdata2);
+                                    }
+                                    else
+                                    {
+                                        if (elm.blnAliasLevelIsMultMod)
+                                        {
+                                            if (slevel == Constants.DEFAULT_LEVEL) slevel = 1d;
+                                            slevel2 = slevel * elm.dblAliasLevel;
+                                        }
+                                        else if (slevel != Constants.DEFAULT_LEVEL)
+                                        {
+                                            slevel2 = slevel;
+                                        }
+                                        else
+                                        {
+                                            slevel2 = elm.dblAliasLevel;
+                                        }
 
-            //                    // 能力指定が「"」で囲まれている場合は「"」を削除
-            //                    if (Strings.Asc(fd.StrData) == 34) // "
-            //                    {
-            //                        buf = Strings.Mid(fd.StrData, 2, Strings.Len(fd.StrData) - 2);
-            //                    }
-            //                    else
-            //                    {
-            //                        buf = fd.StrData;
-            //                    }
+                                        sdata2 = elm.strAliasData;
+                                        if (!string.IsNullOrEmpty(sdata) && Strings.InStr(sdata2, "非表示") != 1)
+                                        {
+                                            sdata2 = sdata + " " + GeneralLib.ListTail(sdata2, GeneralLib.LLength(sdata) + 1);
+                                        }
 
-            //                    // 強化する特殊能力の種類、レベル、データを解析
-            //                    if (Strings.InStr(buf, "=") > 0)
-            //                    {
-            //                        sdata = Strings.Mid(buf, Strings.InStr(buf, "=") + 1);
-            //                        buf = Strings.Left(buf, Strings.InStr(buf, "=") - 1);
-            //                        if (Strings.InStr(buf, "Lv") > 0)
-            //                        {
-            //                            stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
-            //                            if (Information.IsNumeric(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2)))
-            //                            {
-            //                                slevel = Conversions.ToDouble(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2));
-            //                            }
-            //                            else
-            //                            {
-            //                                slevel = 1d;
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            stype = buf;
-            //                            slevel = 1d;
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        sdata = "";
-            //                        if (Strings.InStr(buf, "Lv") > 0)
-            //                        {
-            //                            stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
-            //                            if (Information.IsNumeric(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2)))
-            //                            {
-            //                                slevel = Conversions.ToDouble(Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2));
-            //                            }
-            //                            else
-            //                            {
-            //                                slevel = 1d;
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            stype = buf;
-            //                            slevel = 1d;
-            //                        }
-            //                    }
+                                        // 強化するレベルは累積する
+                                        if (IsConditionSatisfied(stype2 + "強化２"))
+                                        {
+                                            slevel2 = slevel2 + ConditionLevel(stype2 + "強化２");
+                                            DeleteCondition(stype2 + "強化２");
+                                        }
 
-            //                    // エリアスが定義されている？
-            //                    if (SRC.ALDList.IsDefined(stype))
-            //                    {
-            //                        {
-            //                            var withBlock5 = SRC.ALDList.Item(stype);
-            //                            var loopTo4 = withBlock5.Count;
-            //                            for (j = 1; j <= loopTo4; j++)
-            //                            {
-            //                                // エリアスの定義に従って特殊能力定義を置き換える
-            //                                stype2 = withBlock5.get_AliasType(j);
+                                        AddCondition(stype2 + "強化２", -1, slevel2, sdata2);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 強化するレベルは累積する
+                                if (IsConditionSatisfied(stype + "強化２"))
+                                {
+                                    slevel = slevel + ConditionLevel(stype + "強化２");
+                                    DeleteCondition(stype + "強化２");
+                                }
 
-            //                                // 属性使用不能攻撃により使用不能になった技能を封印する。
-            //                                if (ConditionLifetime(stype2 + "使用不能") > 0)
-            //                                {
-            //                                    goto NextFeature;
-            //                                }
+                                AddCondition(stype + "強化２", -1, slevel, sdata);
+                            }
 
-            //                                string localLIndex1() { string arglist = withBlock5.get_AliasData(j); var ret = GeneralLib.LIndex(arglist, 1); withBlock5.get_AliasData(j) = arglist; return ret; }
+                            break;
+                        }
+                    }
+                }
 
-            //                                if (localLIndex1() == "解説")
-            //                                {
-            //                                    // 特殊能力の解説
-            //                                    if (!string.IsNullOrEmpty(sdata))
-            //                                    {
-            //                                        stype2 = GeneralLib.LIndex(sdata, 1);
-            //                                    }
-
-            //                                    slevel2 = Constants.DEFAULT_LEVEL;
-            //                                    sdata2 = withBlock5.get_AliasData(j);
-            //                                    // 属性使用不能攻撃により使用不能になった技能を封印する。
-            //                                    if (ConditionLifetime(stype2 + "使用不能") > 0)
-            //                                    {
-            //                                        goto NextFeature;
-            //                                    }
-
-            //                                    AddCondition(stype2 + "付加２", -1, slevel2, sdata2);
-            //                                }
-            //                                else
-            //                                {
-            //                                    // 通常の能力
-            //                                    if (withBlock5.get_AliasLevelIsMultMod(j))
-            //                                    {
-            //                                        if (slevel == Constants.DEFAULT_LEVEL)
-            //                                        {
-            //                                            slevel = 1d;
-            //                                        }
-
-            //                                        slevel2 = slevel * withBlock5.get_AliasLevel(j);
-            //                                    }
-            //                                    else if (slevel != Constants.DEFAULT_LEVEL)
-            //                                    {
-            //                                        slevel2 = slevel;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        slevel2 = withBlock5.get_AliasLevel(j);
-            //                                    }
-
-            //                                    sdata2 = withBlock5.get_AliasData(j);
-            //                                    if (!string.IsNullOrEmpty(sdata))
-            //                                    {
-            //                                        if (Strings.InStr(sdata2, "非表示") != 1)
-            //                                        {
-            //                                            sdata2 = sdata + " " + GeneralLib.ListTail(sdata2, (GeneralLib.LLength(sdata) + 1));
-            //                                        }
-            //                                    }
-
-            //                                    // 強化するレベルは累積する
-            //                                    if (IsConditionSatisfied(stype2 + "強化２"))
-            //                                    {
-            //                                        double localConditionLevel() { object argIndex1 = stype2 + "強化２"; var ret = ConditionLevel(argIndex1); return ret; }
-
-            //                                        slevel2 = slevel2 + localConditionLevel();
-            //                                        DeleteCondition(stype2 + "強化２");
-            //                                    }
-
-            //                                    AddCondition(stype2 + "強化２", -1, slevel2, sdata2);
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        // 強化するレベルは累積する
-            //                        if (IsConditionSatisfied(stype + "強化２"))
-            //                        {
-            //                            double localConditionLevel1() { object argIndex1 = stype + "強化２"; var ret = ConditionLevel(argIndex1); return ret; }
-
-            //                            slevel = slevel + localConditionLevel1();
-            //                            DeleteCondition(stype + "強化２");
-            //                        }
-
-            //                        AddCondition(stype + "強化２", -1, slevel, sdata);
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //    NextFeature:
-            //        ;
-            //        i = (i + 1);
-            //    }
-            //    // 必要技能＆必要条件付きのパイロット能力付加＆強化がある場合は付加や強化の結果、
-            //    // 必要技能＆必要条件が満たされることがあるので一度だけやり直す
-            //    if (!flag && found)
-            //    {
-            //        flag = true;
-            //        goto AddSkills;
-            //    }
+                // 必要技能＆必要条件付きのパイロット能力付加＆強化がある場合は
+                // 付加や強化の結果、必要技能＆必要条件が満たされることがあるので一度だけやり直す
+                if (!flag && found)
+                {
+                    flag = true;
+                    goto ProcessPilotSkills;
+                }
+            }
 
             // パイロット用特殊能力の付加＆強化が完了したので必要技能の判定が可能になった。
             UpdateFeatures();
@@ -616,6 +431,27 @@ namespace SRCCore.Units
             //            MainPilot().Update();
             //        }
             //    }
+
+            // パイロット能力をアップデート
+            if (CountPilot() > 0)
+            {
+                foreach (var p in SubPilots)
+                {
+                    p.Update();
+                }
+
+                foreach (var p in Supports)
+                {
+                    p.Update();
+                }
+
+                // メインパイロットは他のパイロットのサポートを受ける関係上最後にアップデートする
+                Pilots.First().Update();
+                if (!ReferenceEquals(MainPilot(), Pilots.First()))
+                {
+                    MainPilot().Update();
+                }
+            }
 
             //    // ユニット画像用ファイル名に変化がある場合はユニット画像を更新
             //    if (BitmapID != 0)
@@ -2135,6 +1971,45 @@ namespace SRCCore.Units
             //            DeleteCondition("暴走");
             //        }
             //    }
+        }
+
+        // 特殊能力仕様文字列（"タイプLv1=データ" 形式）を解析する
+        // useDefaultLevel: trueの場合、Lv未指定時はDEFAULT_LEVEL、falseの場合は1.0を使用
+        private static void ParseAbilitySpec(string buf, out string stype, out double slevel, out string sdata, bool useDefaultLevel)
+        {
+            var defaultLevel = useDefaultLevel ? Constants.DEFAULT_LEVEL : 1d;
+
+            if (Strings.InStr(buf, "=") > 0)
+            {
+                sdata = Strings.Mid(buf, Strings.InStr(buf, "=") + 1);
+                buf = Strings.Left(buf, Strings.InStr(buf, "=") - 1);
+                if (Strings.InStr(buf, "Lv") > 0)
+                {
+                    stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
+                    var lvStr = Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2);
+                    slevel = Information.IsNumeric(lvStr) ? Conversions.ToDouble(lvStr) : 1d;
+                }
+                else
+                {
+                    stype = buf;
+                    slevel = defaultLevel;
+                }
+            }
+            else
+            {
+                sdata = "";
+                if (Strings.InStr(buf, "Lv") > 0)
+                {
+                    stype = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
+                    var lvStr = Strings.Mid(buf, Strings.InStr(buf, "Lv") + 2);
+                    slevel = Information.IsNumeric(lvStr) ? Conversions.ToDouble(lvStr) : 1d;
+                }
+                else
+                {
+                    stype = buf;
+                    slevel = defaultLevel;
+                }
+            }
         }
     }
 }

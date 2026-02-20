@@ -2016,224 +2016,161 @@ namespace SRCCore.Units
                         }
                     }
 
-                    // TODO Impl 合体技条件
-                    //// パートナーが武器を使うための条件を満たしているかを判定
-                    //if (!check_formation)
-                    //{
-                    //    if (ctype == "武装")
-                    //    {
-                    //        // 合体技と同名の武器を検索
-                    //        var loopTo5 = u.CountWeapon();
-                    //        for (k = 1; k <= loopTo5; k++)
-                    //        {
-                    //            if ((u.Weapon(k).Name ?? "") == (cname ?? ""))
-                    //            {
-                    //                break;
-                    //            }
-                    //        }
+                    // パートナーが武器を使うための条件を満たしているかを判定
+                    if (!check_formation)
+                    {
+                        // 合体技と同名の武器を検索
+                        var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
+                        if (uw != null)
+                        {
+                            // 武器が使える？
+                            if (!uw.IsWeaponMastered())
+                            {
+                                goto NextNeighbor;
+                            }
 
-                    //        if (k <= u.CountWeapon())
-                    //        {
-                    //            // 武器が使える？
-                    //            if (!u.IsWeaponMastered(k))
-                    //            {
-                    //                goto NextNeighbor;
-                    //            }
+                            if (uw.WeaponData.NecessaryMorale > 0)
+                            {
+                                if (u.MainPilot().Morale < uw.WeaponData.NecessaryMorale)
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
 
-                    //            if (u.Weapon(k).NecessaryMorale > 0)
-                    //            {
-                    //                if (u.MainPilot().Morale < u.Weapon(k).NecessaryMorale)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                            if (uw.WeaponENConsumption() > 0)
+                            {
+                                if (u.EN < uw.WeaponENConsumption())
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
 
-                    //            if (u.WeaponENConsumption(k) > 0)
-                    //            {
-                    //                if (u.EN < u.WeaponENConsumption(k))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                            if (uw.MaxBullet() > 0)
+                            {
+                                if (uw.Bullet() == 0)
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
 
-                    //            if (u.Weapon(k).Bullet > 0)
-                    //            {
-                    //                if (u.Bullet(k) == 0)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                            if (uw.WeaponLevel("霊") > 0d)
+                            {
+                                if (u.MainPilot().Plana < 5d * uw.WeaponLevel("霊"))
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
+                            else if (uw.WeaponLevel("プ") > 0d)
+                            {
+                                if (u.MainPilot().Plana < 5d * uw.WeaponLevel("プ"))
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 合体技と同名のアビリティを検索
+                            var ua = u.Abilities.FirstOrDefault(a => (a.Data.Name ?? "") == (cname ?? ""));
+                            if (ua != null)
+                            {
+                                // アビリティが使える？
+                                if (!ua.IsAbilityMastered())
+                                {
+                                    goto NextNeighbor;
+                                }
 
-                    //            if (u.WeaponLevel(k, "霊") > 0d)
-                    //            {
-                    //                if (u.MainPilot().Plana < 5d * u.WeaponLevel(k, "霊"))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //            else if (u.WeaponLevel(k, "プ") > 0d)
-                    //            {
-                    //                if (u.MainPilot().Plana < 5d * u.WeaponLevel(k, "プ"))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            // 同名の武器を持っていなかった場合はチェック項目を限定
-                    //            if (cmorale > 0)
-                    //            {
-                    //                if (u.MainPilot().Morale < cmorale)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                                if (ua.Data.NecessaryMorale > 0)
+                                {
+                                    if (u.MainPilot().Morale < ua.Data.NecessaryMorale)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
 
-                    //            if (cen > 0)
-                    //            {
-                    //                if (u.EN < cen)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                                if (ua.AbilityENConsumption() > 0)
+                                {
+                                    if (u.EN < ua.AbilityENConsumption())
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
 
-                    //            if (cplana > 0)
-                    //            {
-                    //                if (u.MainPilot().Plana < cplana)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        // 合体技と同名のアビリティを検索
-                    //        var loopTo6 = u.CountAbility();
-                    //        for (k = 1; k <= loopTo6; k++)
-                    //        {
-                    //            if ((u.Ability(k).Name ?? "") == (cname ?? ""))
-                    //            {
-                    //                break;
-                    //            }
-                    //        }
+                                if (ua.MaxStock() > 0)
+                                {
+                                    if (ua.Stock() == 0)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
 
-                    //        if (k <= u.CountAbility())
-                    //        {
-                    //            // アビリティが使える？
-                    //            if (!u.IsAbilityMastered(k))
-                    //            {
-                    //                goto NextNeighbor;
-                    //            }
+                                if (ua.AbilityLevel("霊") > 0d)
+                                {
+                                    if (u.MainPilot().Plana < 5d * ua.AbilityLevel("霊"))
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+                                else if (ua.AbilityLevel("プ") > 0d)
+                                {
+                                    if (u.MainPilot().Plana < 5d * ua.AbilityLevel("プ"))
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 同名の武器・アビリティを持っていなかった場合はチェック項目を限定
+                                if (cmorale > 0)
+                                {
+                                    if (u.MainPilot().Morale < cmorale)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
 
-                    //            if (u.Ability(k).NecessaryMorale > 0)
-                    //            {
-                    //                if (u.MainPilot().Morale < u.Ability(k).NecessaryMorale)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
+                                if (cen > 0)
+                                {
+                                    if (u.EN < cen)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
 
-                    //            if (u.AbilityENConsumption(k) > 0)
-                    //            {
-                    //                if (u.EN < u.AbilityENConsumption(k))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-
-                    //            if (u.Ability(k).Stock > 0)
-                    //            {
-                    //                if (u.Stock(k) == 0)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-
-                    //            if (u.AbilityLevel(k, "霊") > 0d)
-                    //            {
-                    //                if (u.MainPilot().Plana < 5d * u.AbilityLevel(k, "霊"))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //            else if (u.AbilityLevel(k, "プ") > 0d)
-                    //            {
-                    //                if (u.MainPilot().Plana < 5d * u.AbilityLevel(k, "プ"))
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            // 同名のアビリティを持っていなかった場合はチェック項目を限定
-                    //            if (cmorale > 0)
-                    //            {
-                    //                if (u.MainPilot().Morale < cmorale)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-
-                    //            if (cen > 0)
-                    //            {
-                    //                if (u.EN < cen)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-
-                    //            if (cplana > 0)
-                    //            {
-                    //                if (u.MainPilot().Plana < cplana)
-                    //                {
-                    //                    goto NextNeighbor;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //// フォーメーションのチェックだけの時も必要技能は調べておく
-                    //else if (ctype == "武装")
-                    //{
-                    //    var loopTo7 = u.CountWeapon();
-                    //    for (k = 1; k <= loopTo7; k++)
-                    //    {
-                    //        if ((u.Weapon(k).Name ?? "") == (cname ?? ""))
-                    //        {
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    if (k <= u.CountWeapon())
-                    //    {
-                    //        if (!u.IsWeaponMastered(k))
-                    //        {
-                    //            goto NextNeighbor;
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    var loopTo8 = u.CountAbility();
-                    //    for (k = 1; k <= loopTo8; k++)
-                    //    {
-                    //        if ((u.Ability(k).Name ?? "") == (cname ?? ""))
-                    //        {
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    if (k <= u.CountAbility())
-                    //    {
-                    //        if (!u.IsAbilityMastered(k))
-                    //        {
-                    //            goto NextNeighbor;
-                    //        }
-                    //    }
-                    //}
+                                if (cplana > 0)
+                                {
+                                    if (u.MainPilot().Plana < cplana)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // フォーメーションのチェックだけの時も必要技能は調べておく
+                        var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
+                        if (uw != null)
+                        {
+                            if (!uw.IsWeaponMastered())
+                            {
+                                goto NextNeighbor;
+                            }
+                        }
+                        else
+                        {
+                            var ua = u.Abilities.FirstOrDefault(a => (a.Data.Name ?? "") == (cname ?? ""));
+                            if (ua != null)
+                            {
+                                if (!ua.IsAbilityMastered())
+                                {
+                                    goto NextNeighbor;
+                                }
+                            }
+                        }
+                    }
 
                     // 見つかったパートナーを記録
                     partners.Add(u);

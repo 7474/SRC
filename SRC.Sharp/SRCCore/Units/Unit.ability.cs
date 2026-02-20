@@ -1165,70 +1165,67 @@ namespace SRCCore.Units
                                 // エリアスが定義されている？
                                 if (SRC.ALDList.IsDefined(ftype))
                                 {
-                                    // TODO Impl Alias エイリアス参照の実装が散っていて厳しい
-                                    //{
-                                    //    var adata = SRC.ALDList.Item(ftype);
-                                    //    foreach (var elm in adata.Elements)
-                                    //    {
-                                    //        // エリアスの定義に従って特殊能力定義を置き換える
-                                    //        var ftype2 = elm.strAliasType;
-                                    //        double flevel2;
-                                    //        string fdata2;
+                                    var adata = SRC.ALDList.Item(ftype);
+                                    foreach (var elm in adata.Elements)
+                                    {
+                                        // エリアスの定義に従って特殊能力定義を置き換える
+                                        var ftype2 = elm.strAliasType;
+                                        double flevel2;
+                                        string fdata2;
 
-                                    //        if (GeneralLib.LIndex(elm.strAliasData, 1) == "解説")
-                                    //        {
-                                    //            // 特殊能力の解説
-                                    //            if (!string.IsNullOrEmpty(fdata))
-                                    //            {
-                                    //                ftype2 = GeneralLib.LIndex(fdata, 1);
-                                    //            }
+                                        if (GeneralLib.LIndex(elm.strAliasData, 1) == "解説")
+                                        {
+                                            // 特殊能力の解説
+                                            if (!string.IsNullOrEmpty(fdata))
+                                            {
+                                                ftype2 = GeneralLib.LIndex(fdata, 1);
+                                            }
 
-                                    //            flevel2 = Constants.DEFAULT_LEVEL;
-                                    //            fdata2 = elm.strAliasData;
-                                    //        }
-                                    //        else
-                                    //        {
-                                    //            // 通常の特殊能力
-                                    //            if (elm.get_AliasLevelIsPlusMod(j))
-                                    //            {
-                                    //                if (flevel == Constants.DEFAULT_LEVEL)
-                                    //                {
-                                    //                    flevel = 1d;
-                                    //                }
+                                            flevel2 = Constants.DEFAULT_LEVEL;
+                                            fdata2 = elm.strAliasData;
+                                        }
+                                        else
+                                        {
+                                            // 通常の特殊能力
+                                            if (elm.blnAliasLevelIsPlusMod)
+                                            {
+                                                if (flevel == Constants.DEFAULT_LEVEL)
+                                                {
+                                                    flevel = 1d;
+                                                }
 
-                                    //                flevel2 = flevel + adata.get_AliasLevel(j);
-                                    //            }
-                                    //            else if (adata.get_AliasLevelIsMultMod(j))
-                                    //            {
-                                    //                if (flevel == Constants.DEFAULT_LEVEL)
-                                    //                {
-                                    //                    flevel = 1d;
-                                    //                }
+                                                flevel2 = flevel + elm.dblAliasLevel;
+                                            }
+                                            else if (elm.blnAliasLevelIsMultMod)
+                                            {
+                                                if (flevel == Constants.DEFAULT_LEVEL)
+                                                {
+                                                    flevel = 1d;
+                                                }
 
-                                    //                flevel2 = flevel * adata.get_AliasLevel(j);
-                                    //            }
-                                    //            else if (flevel != Constants.DEFAULT_LEVEL)
-                                    //            {
-                                    //                flevel2 = flevel;
-                                    //            }
-                                    //            else
-                                    //            {
-                                    //                flevel2 = adata.get_AliasLevel(j);
-                                    //            }
+                                                flevel2 = flevel * elm.dblAliasLevel;
+                                            }
+                                            else if (flevel != Constants.DEFAULT_LEVEL)
+                                            {
+                                                flevel2 = flevel;
+                                            }
+                                            else
+                                            {
+                                                flevel2 = elm.dblAliasLevel;
+                                            }
 
-                                    //            fdata2 = adata.get_AliasData(j);
-                                    //            if (!string.IsNullOrEmpty(fdata))
-                                    //            {
-                                    //                if (Strings.InStr(fdata2, "非表示") != 1)
-                                    //                {
-                                    //                    fdata2 = fdata + " " + GeneralLib.ListTail(fdata2, (GeneralLib.LLength(fdata) + 1));
-                                    //                }
-                                    //            }
-                                    //        }
+                                            fdata2 = elm.strAliasData;
+                                            if (!string.IsNullOrEmpty(fdata))
+                                            {
+                                                if (Strings.InStr(fdata2, "非表示") != 1)
+                                                {
+                                                    fdata2 = fdata + " " + GeneralLib.ListTail(fdata2, GeneralLib.LLength(fdata) + 1);
+                                                }
+                                            }
+                                        }
 
-                                    //        t.AddCondition(ftype2 + "付加", elevel2, flevel2, fdata2);
-                                    //    }
-                                    //}
+                                        t.AddCondition(ftype2 + "付加", (int)elevel2, flevel2, fdata2);
+                                    }
                                 }
                                 else
                                 {
@@ -1373,62 +1370,59 @@ namespace SRCCore.Units
                                 // エリアスが定義されている？
                                 if (SRC.ALDList.IsDefined(ftype))
                                 {
-                                    // TODO Impl Alias エイリアス参照の実装が散っていて厳しい
-                                    //{
-                                    //    var withBlock31 = SRC.ALDList.Item(ftype);
-                                    //    var loopTo23 = withBlock31.Count;
-                                    //    for (j = 1; j <= loopTo23; j++)
-                                    //    {
-                                    //        // エリアスの定義に従って特殊能力定義を置き換える
-                                    //        ftype2 = withBlock31.get_AliasType(i);
-                                    //        string localLIndex1() { string arglist = withBlock31.get_AliasData(j); var ret = GeneralLib.LIndex(arglist, 1); withBlock31.get_AliasData(j) = arglist; return ret; }
+                                    var adata = SRC.ALDList.Item(ftype);
+                                    foreach (var elm in adata.Elements)
+                                    {
+                                        // エリアスの定義に従って特殊能力定義を置き換える
+                                        var ftype2 = elm.strAliasType;
+                                        double flevel2;
+                                        string fdata2;
 
-                                    //        if (localLIndex1() == "解説")
-                                    //        {
-                                    //            // 特殊能力の解説
-                                    //            if (!string.IsNullOrEmpty(fdata))
-                                    //            {
-                                    //                ftype2 = GeneralLib.LIndex(fdata, 1);
-                                    //            }
+                                        if (GeneralLib.LIndex(elm.strAliasData, 1) == "解説")
+                                        {
+                                            // 特殊能力の解説
+                                            if (!string.IsNullOrEmpty(fdata))
+                                            {
+                                                ftype2 = GeneralLib.LIndex(fdata, 1);
+                                            }
 
-                                    //            flevel2 = Constants.DEFAULT_LEVEL;
-                                    //            fdata2 = withBlock31.get_AliasData(j);
-                                    //            t.AddCondition(ftype2 + "付加", elevel2, flevel2, fdata2);
-                                    //        }
-                                    //        else
-                                    //        {
-                                    //            // 通常の特殊能力
-                                    //            if (withBlock31.get_AliasLevelIsMultMod(j))
-                                    //            {
-                                    //                if (flevel == Constants.DEFAULT_LEVEL)
-                                    //                {
-                                    //                    flevel = 1d;
-                                    //                }
+                                            flevel2 = Constants.DEFAULT_LEVEL;
+                                            fdata2 = elm.strAliasData;
+                                            t.AddCondition(ftype2 + "付加", (int)elevel2, flevel2, fdata2);
+                                        }
+                                        else
+                                        {
+                                            // 通常の特殊能力
+                                            if (elm.blnAliasLevelIsMultMod)
+                                            {
+                                                if (flevel == Constants.DEFAULT_LEVEL)
+                                                {
+                                                    flevel = 1d;
+                                                }
 
-                                    //                flevel2 = flevel * withBlock31.get_AliasLevel(j);
-                                    //            }
-                                    //            else if (flevel != Constants.DEFAULT_LEVEL)
-                                    //            {
-                                    //                flevel2 = flevel;
-                                    //            }
-                                    //            else
-                                    //            {
-                                    //                flevel2 = withBlock31.get_AliasLevel(j);
-                                    //            }
+                                                flevel2 = flevel * elm.dblAliasLevel;
+                                            }
+                                            else if (flevel != Constants.DEFAULT_LEVEL)
+                                            {
+                                                flevel2 = flevel;
+                                            }
+                                            else
+                                            {
+                                                flevel2 = elm.dblAliasLevel;
+                                            }
 
-                                    //            fdata2 = withBlock31.get_AliasData(j);
-                                    //            if (!string.IsNullOrEmpty(fdata))
-                                    //            {
-                                    //                if (Strings.InStr(fdata2, "非表示") != 1)
-                                    //                {
-                                    //                    fdata2 = fdata + " " + GeneralLib.ListTail(fdata2, (GeneralLib.LLength(fdata) + 1));
-                                    //                }
-                                    //            }
+                                            fdata2 = elm.strAliasData;
+                                            if (!string.IsNullOrEmpty(fdata))
+                                            {
+                                                if (Strings.InStr(fdata2, "非表示") != 1)
+                                                {
+                                                    fdata2 = fdata + " " + GeneralLib.ListTail(fdata2, GeneralLib.LLength(fdata) + 1);
+                                                }
+                                            }
 
-                                    //            t.AddCondition(ftype2 + "強化", elevel2, flevel2, fdata2);
-                                    //        }
-                                    //    }
-                                    //}
+                                            t.AddCondition(ftype2 + "強化", (int)elevel2, flevel2, fdata2);
+                                        }
+                                    }
                                 }
                                 else
                                 {
