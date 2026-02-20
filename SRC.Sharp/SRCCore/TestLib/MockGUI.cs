@@ -89,9 +89,14 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public Action ClearPictureHandler { get; set; }
+
         public void ClearPicture()
         {
-            throw new NotImplementedException();
+            if (ClearPictureHandler != null)
+            {
+                ClearPictureHandler();
+            }
         }
 
         public void ClearPicture2(int x1, int y1, int x2, int y2)
@@ -184,9 +189,15 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public Func<string, int, int, int, int, int, int, int, int, string, bool> DrawPictureHandler { get; set; }
+
         public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
         {
-            throw new NotImplementedException();
+            if (DrawPictureHandler != null)
+            {
+                return DrawPictureHandler(fname, dx, dy, dw, dh, sx, sy, sw, sh, draw_option);
+            }
+            return true;
         }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
