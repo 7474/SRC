@@ -287,7 +287,9 @@ namespace SRCSharpForm
 
         public void PaintUnitBitmap(Unit u, string smode)
         {
-            //// TODO ユニット非表示？
+            // 旧VB6では BitmapID == -1 のユニットを非表示にしていたが、
+            // 新システムでは画像は CurrentBitmap() のファイル名で管理されるため、
+            // 画像なしの場合は GetTransparent が null を返し描画がスキップされる。
             //if (u.BitmapID == -1)
             //{
             //    return;

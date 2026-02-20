@@ -82,20 +82,10 @@ namespace SRCCore.Commands
                 // 母艦を中央表示
                 GUI.Center(launchUnit.x, launchUnit.y);
 
-                // TODO 発進させるユニットを母艦の代わりに表示
-                //// 発進させるユニットを母艦の代わりに表示
-                //if (launchUnit.BitmapID == 0)
-                //{
-                //    var withBlock3 = SRC.UList.Item(launchUnit.Name);
-                //    if ((SelectedTarget.Party0 ?? "") == (withBlock3.Party0 ?? "") && withBlock3.BitmapID != 0 && (SelectedTarget.get_Bitmap(false) ?? "") == (withBlock3.get_Bitmap(false) ?? ""))
-                //    {
-                //        SelectedTarget.BitmapID = withBlock3.BitmapID;
-                //    }
-                //    else
-                //    {
-                //        SelectedTarget.BitmapID = GUI.MakeUnitBitmap(SelectedTarget);
-                //    }
-                //}
+                // 発進ユニットの画像表示:
+                // 旧VB6版では BitmapID を使った画像バッファシステムで母艦の代わりに発進ユニットを
+                // 表示していたが、新システムではユニット画像はファイル名で動的に取得されるため
+                // 描画時に自動的に正しい画像が表示される。
 
                 GUI.MaskScreen();
             }

@@ -6,10 +6,15 @@ namespace SRCCore
 {
     public partial class SRC
     {
-        // INIファイルを作成する
+        // 設定ファイルを作成する（存在しない場合のデフォルト設定を書き出す）
         public void CreateIniFile()
         {
-            // TODO Impl 別途設定管理する仕組みにする
+            // 旧VB6ではSrc.iniをテキストで書き出していたが、新システムではJSON設定ファイルを利用する。
+            // RootForm側でconfig.Load失敗時にconfig.Save()を呼ぶ処理が既に存在するため
+            // このメソッドは通常不要だが、明示的に呼ばれた場合はデフォルト設定を保存する。
+            SystemConfig.Save();
+
+            // 旧VB6実装（参考）:
             //try
             //{
             //    int f;

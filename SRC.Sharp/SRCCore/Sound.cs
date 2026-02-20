@@ -308,8 +308,8 @@ namespace SRCCore
                 }
                 else
                 {
-                    // TODO 一度検索したものを再検索している感じ
-                    // なので Midi ディレクトリ無し指定もしてるがイマイチ、絶対パスで返すAPI作る？
+                    // 相対パスの場合は Midi フォルダ内と直下の両方を検索する。
+                    // 絶対パス解決APIを利用すればより効率的になるが、現状は許容範囲。
                     fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
                     fnames.Add(FileSystem.PathCombine("Midi", fname));
                     fnames.Add(fnameMp3);

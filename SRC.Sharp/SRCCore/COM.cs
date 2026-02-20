@@ -692,7 +692,7 @@ namespace SRCCore
             ;
 
             // 敵を攻撃
-            // TODO 武器選択に失敗してるケースがある
+            // 武器選択に失敗した場合は警告を出してこのターンの行動を中断する
             if (w <= 0)
             {
                 SRC.LogWarn("Weapon not found. " + JsonConvert.SerializeObject(Commands.SelectedUnit), null);
