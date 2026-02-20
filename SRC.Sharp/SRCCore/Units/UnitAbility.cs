@@ -907,528 +907,316 @@ namespace SRCCore.Units
         // アビリティがターゲットtに対して有効(役に立つ)かどうか
         public bool IsAbilityEffective(Unit t)
         {
-            return true;
-            // TODO Impl IsAbilityEffective
-            //bool IsAbilityEffectiveRet = default;
-            //int i, j;
-            //string edata;
-            //double elevel;
-            //bool flag;
-            //{
-            //    var withBlock = t;
-            //    // 敵には使用できない。
-            //    // IsEnemyでは魅了等がかかった味方ユニットを敵と認識してしまうので
-            //    // ここでは独自の判定基準を使う
-            //    switch (Party ?? "")
-            //    {
-            //        case "味方":
-            //        case "ＮＰＣ":
-            //            {
-            //                if (withBlock.Party != "味方" && withBlock.Party0 != "味方" && withBlock.Party != "ＮＰＣ" && withBlock.Party0 != "ＮＰＣ")
-            //                {
-            //                    return IsAbilityEffectiveRet;
-            //                }
-
-            //                break;
-            //            }
-
-            //        default:
-            //            {
-            //                if ((withBlock.Party ?? "") != (Party ?? "") && (withBlock.Party0 ?? "") != (Party ?? ""))
-            //                {
-            //                    return IsAbilityEffectiveRet;
-            //                }
-
-            //                break;
-            //            }
-            //    }
-
-            //    // アビリティがそのユニットに対して適用可能か？
-            //    if (!IsAbilityApplicable(t))
-            //    {
-            //        return IsAbilityEffectiveRet;
-            //    }
-
-            //    IsAbilityEffectiveRet = true;
-            //    var loopTo = Data.CountEffect();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        edata = Data.EffectData(i);
-            //        elevel = Data.EffectLevel(i);
-            //        switch (Data.EffectType(i) ?? "")
-            //        {
-            //            case "回復":
-            //                {
-            //                    if (elevel > 0d)
-            //                    {
-            //                        if (withBlock.HP < withBlock.MaxHP)
-            //                        {
-            //                            if (!withBlock.IsConditionSatisfied("ゾンビ"))
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        IsAbilityEffectiveRet = false;
-            //                    }
-            //                    else
-            //                    {
-            //                        // ＨＰを減少させるためのアビリティというのは有り得るので
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "治癒":
-            //                {
-            //                    if (string.IsNullOrEmpty(edata))
-            //                    {
-            //                        if (withBlock.ConditionLifetime("攻撃不能") > 0 || withBlock.ConditionLifetime("移動不能") > 0 || withBlock.ConditionLifetime("装甲劣化") > 0 || withBlock.ConditionLifetime("混乱") > 0 || withBlock.ConditionLifetime("恐怖") > 0 || withBlock.ConditionLifetime("踊り") > 0 || withBlock.ConditionLifetime("狂戦士") > 0 || withBlock.ConditionLifetime("ゾンビ") > 0 || withBlock.ConditionLifetime("回復不能") > 0 || withBlock.ConditionLifetime("石化") > 0 || withBlock.ConditionLifetime("凍結") > 0 || withBlock.ConditionLifetime("麻痺") > 0 || withBlock.ConditionLifetime("睡眠") > 0 || withBlock.ConditionLifetime("毒") > 0 || withBlock.ConditionLifetime("盲目") > 0 || withBlock.ConditionLifetime("沈黙") > 0 || withBlock.ConditionLifetime("魅了") > 0 || withBlock.ConditionLifetime("憑依") > 0 || withBlock.ConditionLifetime("オーラ使用不能") > 0 || withBlock.ConditionLifetime("超能力使用不能") > 0 || withBlock.ConditionLifetime("同調率使用不能") > 0 || withBlock.ConditionLifetime("超感覚使用不能") > 0 || withBlock.ConditionLifetime("知覚強化使用不能") > 0 || withBlock.ConditionLifetime("霊力使用不能") > 0 || withBlock.ConditionLifetime("術使用不能") > 0 || withBlock.ConditionLifetime("技使用不能") > 0)
-            //                        {
-            //                            IsAbilityEffectiveRet = true;
-            //                            return IsAbilityEffectiveRet;
-            //                        }
-
-            //                        var loopTo1 = withBlock.CountCondition();
-            //                        for (j = 1; j <= loopTo1; j++)
-            //                        {
-            //                            string localCondition2() { object argIndex1 = j; var ret = withBlock.Condition(argIndex1); return ret; }
-
-            //                            if (Strings.Len(localCondition2()) > 6)
-            //                            {
-            //                                // 前回書き忘れたのですが、
-            //                                // 弱点はともかく有効は一概にデメリットのみでもないので
-            //                                // 状態回復から除外してみました。
-            //                                string localCondition1() { object argIndex1 = j; var ret = withBlock.Condition(argIndex1); return ret; }
-
-            //                                if (Strings.Right(localCondition1(), 6) == "属性使用不能")
-            //                                {
-            //                                    string localCondition() { object argIndex1 = j; var ret = withBlock.Condition(argIndex1); return ret; }
-
-            //                                    if (withBlock.ConditionLifetime(localCondition()) > 0)
-            //                                    {
-            //                                        IsAbilityEffectiveRet = true;
-            //                                        return IsAbilityEffectiveRet;
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        var loopTo2 = GeneralLib.LLength(edata);
-            //                        for (j = 1; j <= loopTo2; j++)
-            //                        {
-            //                            if (withBlock.ConditionLifetime(GeneralLib.LIndex(edata, j)) > 0)
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "補給":
-            //                {
-            //                    if (elevel > 0d)
-            //                    {
-            //                        if (withBlock.EN < withBlock.MaxEN)
-            //                        {
-            //                            if (!withBlock.IsConditionSatisfied("ゾンビ"))
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        IsAbilityEffectiveRet = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "霊力回復":
-            //            case "プラーナ回復":
-            //                {
-            //                    if (elevel > 0d)
-            //                    {
-            //                        if (withBlock.MainPilot().Plana < withBlock.MainPilot().MaxPlana())
-            //                        {
-            //                            IsAbilityEffectiveRet = true;
-            //                            return IsAbilityEffectiveRet;
-            //                        }
-
-            //                        IsAbilityEffectiveRet = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "ＳＰ回復":
-            //                {
-            //                    if (elevel > 0d)
-            //                    {
-            //                        if (withBlock.MainPilot().SP < withBlock.MainPilot().MaxSP)
-            //                        {
-            //                            IsAbilityEffectiveRet = true;
-            //                            return IsAbilityEffectiveRet;
-            //                        }
-
-            //                        var loopTo3 = withBlock.CountPilot();
-            //                        for (j = 2; j <= loopTo3; j++)
-            //                        {
-            //                            Pilot localPilot() { object argIndex1 = j; var ret = withBlock.Pilot(argIndex1); return ret; }
-
-            //                            Pilot localPilot1() { object argIndex1 = j; var ret = withBlock.Pilot(argIndex1); return ret; }
-
-            //                            if (localPilot().SP < localPilot1().MaxSP)
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        var loopTo4 = withBlock.CountSupport();
-            //                        for (j = 1; j <= loopTo4; j++)
-            //                        {
-            //                            Pilot localSupport() { object argIndex1 = j; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //                            Pilot localSupport1() { object argIndex1 = j; var ret = withBlock.Support(argIndex1); return ret; }
-
-            //                            if (localSupport().SP < localSupport1().MaxSP)
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        if (withBlock.IsFeatureAvailable("追加サポート"))
-            //                        {
-            //                            if (withBlock.AdditionalSupport().SP < withBlock.AdditionalSupport().MaxSP)
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        IsAbilityEffectiveRet = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "気力増加":
-            //                {
-            //                    if (elevel > 0d)
-            //                    {
-            //                        {
-            //                            var withBlock1 = withBlock.MainPilot();
-            //                            if (withBlock1.Morale < withBlock1.MaxMorale && withBlock1.Personality != "機械")
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-
-            //                        var loopTo5 = withBlock.CountPilot();
-            //                        for (j = 2; j <= loopTo5; j++)
-            //                        {
-            //                            {
-            //                                var withBlock2 = withBlock.Pilot(j);
-            //                                if (withBlock2.Morale < withBlock2.MaxMorale && withBlock2.Personality != "機械")
-            //                                {
-            //                                    IsAbilityEffectiveRet = true;
-            //                                    return IsAbilityEffectiveRet;
-            //                                }
-            //                            }
-            //                        }
-
-            //                        var loopTo6 = withBlock.CountSupport();
-            //                        for (j = 1; j <= loopTo6; j++)
-            //                        {
-            //                            {
-            //                                var withBlock3 = withBlock.Support(j);
-            //                                if (withBlock3.Morale < withBlock3.MaxMorale && withBlock3.Personality != "機械")
-            //                                {
-            //                                    IsAbilityEffectiveRet = true;
-            //                                    return IsAbilityEffectiveRet;
-            //                                }
-            //                            }
-            //                        }
-
-            //                        if (withBlock.IsFeatureAvailable("追加サポート"))
-            //                        {
-            //                            {
-            //                                var withBlock4 = withBlock.AdditionalSupport();
-            //                                if (withBlock4.Morale < withBlock4.MaxMorale && withBlock4.Personality != "機械")
-            //                                {
-            //                                    IsAbilityEffectiveRet = true;
-            //                                    return IsAbilityEffectiveRet;
-            //                                }
-            //                            }
-            //                        }
-
-            //                        IsAbilityEffectiveRet = false;
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "装填":
-            //                {
-            //                    if (string.IsNullOrEmpty(edata))
-            //                    {
-            //                        var loopTo7 = withBlock.CountWeapon();
-            //                        for (j = 1; j <= loopTo7; j++)
-            //                        {
-            //                            if (withBlock.Bullet(j) < withBlock.MaxBullet(j))
-            //                            {
-            //                                IsAbilityEffectiveRet = true;
-            //                                return IsAbilityEffectiveRet;
-            //                            }
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        var loopTo8 = withBlock.CountWeapon();
-            //                        for (j = 1; j <= loopTo8; j++)
-            //                        {
-            //                            if (withBlock.Bullet(j) < withBlock.MaxBullet(j))
-            //                            {
-            //                                if ((withBlock.WeaponNickname(j) ?? "") == (edata ?? "") || GeneralLib.InStrNotNest(withBlock.Weapon(j).Class, edata) > 0)
-            //                                {
-            //                                    IsAbilityEffectiveRet = true;
-            //                                    return IsAbilityEffectiveRet;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "付加":
-            //                {
-            //                    bool localIsConditionSatisfied() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "付加"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
-
-            //                    if (!localIsConditionSatisfied() || IsAbilityClassifiedAs("除"))
-            //                    {
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "強化":
-            //                {
-            //                    bool localIsConditionSatisfied1() { object argIndex1 = GeneralLib.LIndex(edata, 1) + "強化"; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
-
-            //                    if (!localIsConditionSatisfied1() || IsAbilityClassifiedAs("除"))
-            //                    {
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "状態":
-            //                {
-            //                    bool localIsConditionSatisfied2() { object argIndex1 = edata; var ret = withBlock.IsConditionSatisfied(argIndex1); return ret; }
-
-            //                    if (!localIsConditionSatisfied2())
-            //                    {
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "再行動":
-            //                {
-            //                    if (this.Data.MaxRange == 0)
-            //                    {
-            //                        goto NextEffect;
-            //                    }
-
-            //                    if (withBlock.Action == 0 && withBlock.MaxAction() > 0)
-            //                    {
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "変身":
-            //                {
-            //                    if (!withBlock.IsFeatureAvailable("ノーマルモード"))
-            //                    {
-            //                        IsAbilityEffectiveRet = true;
-            //                        return IsAbilityEffectiveRet;
-            //                    }
-
-            //                    IsAbilityEffectiveRet = false;
-            //                    break;
-            //                }
-
-            //            case "能力コピー":
-            //                {
-            //                    if (ReferenceEquals(t, this) || IsFeatureAvailable("ノーマルモード") || Conversions.ToInteger(withBlock.IsConditionSatisfied("混乱")) > 0 || withBlock.IsEnemy(this) || IsEnemy(t))
-            //                    {
-            //                        IsAbilityEffectiveRet = false;
-            //                        goto NextEffect;
-            //                    }
-
-            //                    if (Strings.InStr(edata, "サイズ制限強") > 0)
-            //                    {
-            //                        if ((Size ?? "") != (withBlock.Size ?? ""))
-            //                        {
-            //                            IsAbilityEffectiveRet = false;
-            //                            goto NextEffect;
-            //                        }
-            //                    }
-            //                    else if (Strings.InStr(edata, "サイズ制限無し") == 0)
-            //                    {
-            //                        switch (Size ?? "")
-            //                        {
-            //                            case "SS":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "M":
-            //                                        case "L":
-            //                                        case "LL":
-            //                                        case "XL":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "S":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "L":
-            //                                        case "LL":
-            //                                        case "XL":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "M":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "SS":
-            //                                        case "LL":
-            //                                        case "XL":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "L":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "SS":
-            //                                        case "S":
-            //                                        case "XL":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "LL":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "SS":
-            //                                        case "S":
-            //                                        case "M":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-
-            //                            case "XL":
-            //                                {
-            //                                    switch (withBlock.Size ?? "")
-            //                                    {
-            //                                        case "SS":
-            //                                        case "S":
-            //                                        case "M":
-            //                                        case "L":
-            //                                            {
-            //                                                IsAbilityEffectiveRet = false;
-            //                                                goto NextEffect;
-            //                                                break;
-            //                                            }
-            //                                    }
-
-            //                                    break;
-            //                                }
-            //                        }
-            //                    }
-
-            //                    IsAbilityEffectiveRet = true;
-            //                    return IsAbilityEffectiveRet;
-            //                }
-            //        }
-
-            //    NextEffect:
-            //        ;
-            //    }
-
-            //    // そもそも効果がないものは常に使用可能とみなす
-            //    // (include等で特殊効果を定義していると仮定)
-            //    if (IsAbilityEffectiveRet)
-            //    {
-            //        return IsAbilityEffectiveRet;
-            //    }
-            //}
-
-            //return IsAbilityEffectiveRet;
+            // 敵には使用できない。
+            // IsEnemyでは魅了等がかかった味方ユニットを敵と認識してしまうので
+            // ここでは独自の判定基準を使う
+            switch (Unit.Party ?? "")
+            {
+                case "味方":
+                case "ＮＰＣ":
+                    if (t.Party != "味方" && t.Party0 != "味方" && t.Party != "ＮＰＣ" && t.Party0 != "ＮＰＣ")
+                    {
+                        return false;
+                    }
+                    break;
+                default:
+                    if ((t.Party ?? "") != (Unit.Party ?? "") && (t.Party0 ?? "") != (Unit.Party ?? ""))
+                    {
+                        return false;
+                    }
+                    break;
+            }
+
+            // アビリティがそのユニットに対して適用可能か？
+            if (!IsAbilityApplicable(t))
+            {
+                return false;
+            }
+
+            bool result = true;
+            foreach (var effect in Data.Effects)
+            {
+                string edata = effect.Data;
+                double elevel = effect.Level;
+                switch (effect.EffectType ?? "")
+                {
+                    case "回復":
+                        if (elevel > 0d)
+                        {
+                            if (t.HP < t.MaxHP)
+                            {
+                                if (!t.IsConditionSatisfied("ゾンビ"))
+                                {
+                                    return true;
+                                }
+                            }
+                            result = false;
+                        }
+                        else
+                        {
+                            // ＨＰを減少させるためのアビリティというのは有り得るので
+                            return true;
+                        }
+                        break;
+
+                    case "治癒":
+                        if (string.IsNullOrEmpty(edata))
+                        {
+                            if (t.ConditionLifetime("攻撃不能") > 0 || t.ConditionLifetime("移動不能") > 0 || t.ConditionLifetime("装甲劣化") > 0 || t.ConditionLifetime("混乱") > 0 || t.ConditionLifetime("恐怖") > 0 || t.ConditionLifetime("踊り") > 0 || t.ConditionLifetime("狂戦士") > 0 || t.ConditionLifetime("ゾンビ") > 0 || t.ConditionLifetime("回復不能") > 0 || t.ConditionLifetime("石化") > 0 || t.ConditionLifetime("凍結") > 0 || t.ConditionLifetime("麻痺") > 0 || t.ConditionLifetime("睡眠") > 0 || t.ConditionLifetime("毒") > 0 || t.ConditionLifetime("盲目") > 0 || t.ConditionLifetime("沈黙") > 0 || t.ConditionLifetime("魅了") > 0 || t.ConditionLifetime("憑依") > 0 || t.ConditionLifetime("オーラ使用不能") > 0 || t.ConditionLifetime("超能力使用不能") > 0 || t.ConditionLifetime("同調率使用不能") > 0 || t.ConditionLifetime("超感覚使用不能") > 0 || t.ConditionLifetime("知覚強化使用不能") > 0 || t.ConditionLifetime("霊力使用不能") > 0 || t.ConditionLifetime("術使用不能") > 0 || t.ConditionLifetime("技使用不能") > 0)
+                            {
+                                return true;
+                            }
+
+                            foreach (var cnd in t.Conditions)
+                            {
+                                if (cnd.Name.Length > 6 && Strings.Right(cnd.Name, 6) == "属性使用不能")
+                                {
+                                    if (t.ConditionLifetime(cnd.Name) > 0)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 1; j <= GeneralLib.LLength(edata); j++)
+                            {
+                                if (t.ConditionLifetime(GeneralLib.LIndex(edata, j)) > 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        result = false;
+                        break;
+
+                    case "補給":
+                        if (elevel > 0d)
+                        {
+                            if (t.EN < t.MaxEN)
+                            {
+                                if (!t.IsConditionSatisfied("ゾンビ"))
+                                {
+                                    return true;
+                                }
+                            }
+                            result = false;
+                        }
+                        break;
+
+                    case "霊力回復":
+                    case "プラーナ回復":
+                        if (elevel > 0d)
+                        {
+                            if (t.MainPilot().Plana < t.MainPilot().MaxPlana())
+                            {
+                                return true;
+                            }
+                            result = false;
+                        }
+                        break;
+
+                    case "ＳＰ回復":
+                        if (elevel > 0d)
+                        {
+                            if (t.MainPilot().SP < t.MainPilot().MaxSP)
+                            {
+                                return true;
+                            }
+
+                            foreach (var p in t.SubPilots)
+                            {
+                                if (p.SP < p.MaxSP)
+                                {
+                                    return true;
+                                }
+                            }
+
+                            foreach (var p in t.Supports)
+                            {
+                                if (p.SP < p.MaxSP)
+                                {
+                                    return true;
+                                }
+                            }
+
+                            if (t.IsFeatureAvailable("追加サポート"))
+                            {
+                                if (t.AdditionalSupport().SP < t.AdditionalSupport().MaxSP)
+                                {
+                                    return true;
+                                }
+                            }
+
+                            result = false;
+                        }
+                        break;
+
+                    case "気力増加":
+                        if (elevel > 0d)
+                        {
+                            var mainPilot = t.MainPilot();
+                            if (mainPilot.Morale < mainPilot.MaxMorale && mainPilot.Personality != "機械")
+                            {
+                                return true;
+                            }
+
+                            foreach (var p in t.SubPilots)
+                            {
+                                if (p.Morale < p.MaxMorale && p.Personality != "機械")
+                                {
+                                    return true;
+                                }
+                            }
+
+                            foreach (var p in t.Supports)
+                            {
+                                if (p.Morale < p.MaxMorale && p.Personality != "機械")
+                                {
+                                    return true;
+                                }
+                            }
+
+                            if (t.IsFeatureAvailable("追加サポート"))
+                            {
+                                var ap = t.AdditionalSupport();
+                                if (ap.Morale < ap.MaxMorale && ap.Personality != "機械")
+                                {
+                                    return true;
+                                }
+                            }
+
+                            result = false;
+                        }
+                        break;
+
+                    case "装填":
+                        if (string.IsNullOrEmpty(edata))
+                        {
+                            for (int j = 1; j <= t.CountWeapon(); j++)
+                            {
+                                var w = t.Weapon(j);
+                                if (w.Bullet() < w.MaxBullet())
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 1; j <= t.CountWeapon(); j++)
+                            {
+                                var w = t.Weapon(j);
+                                if (w.Bullet() < w.MaxBullet())
+                                {
+                                    if ((w.WeaponNickname() ?? "") == (edata ?? "") || GeneralLib.InStrNotNest(w.WeaponData.Class, edata) > 0)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        result = false;
+                        break;
+
+                    case "付加":
+                        if (!t.IsConditionSatisfied(GeneralLib.LIndex(edata, 1) + "付加") || IsAbilityClassifiedAs("除"))
+                        {
+                            return true;
+                        }
+                        result = false;
+                        break;
+
+                    case "強化":
+                        if (!t.IsConditionSatisfied(GeneralLib.LIndex(edata, 1) + "強化") || IsAbilityClassifiedAs("除"))
+                        {
+                            return true;
+                        }
+                        result = false;
+                        break;
+
+                    case "状態":
+                        if (!t.IsConditionSatisfied(edata))
+                        {
+                            return true;
+                        }
+                        result = false;
+                        break;
+
+                    case "再行動":
+                        if (Data.MaxRange == 0)
+                        {
+                            continue;
+                        }
+                        if (t.Action == 0 && t.MaxAction() > 0)
+                        {
+                            return true;
+                        }
+                        result = false;
+                        break;
+
+                    case "変身":
+                        if (!t.IsFeatureAvailable("ノーマルモード"))
+                        {
+                            return true;
+                        }
+                        result = false;
+                        break;
+
+                    case "能力コピー":
+                        if (ReferenceEquals(t, Unit) || Unit.IsFeatureAvailable("ノーマルモード") || t.IsConditionSatisfied("混乱") || t.IsEnemy(Unit) || Unit.IsEnemy(t))
+                        {
+                            result = false;
+                            continue;
+                        }
+
+                        if (Strings.InStr(edata, "サイズ制限強") > 0)
+                        {
+                            if ((Unit.Size ?? "") != (t.Size ?? ""))
+                            {
+                                result = false;
+                                continue;
+                            }
+                        }
+                        else if (Strings.InStr(edata, "サイズ制限無し") == 0)
+                        {
+                            bool sizeIncompat = false;
+                            switch (Unit.Size ?? "")
+                            {
+                                case "SS":
+                                    sizeIncompat = t.Size == "M" || t.Size == "L" || t.Size == "LL" || t.Size == "XL";
+                                    break;
+                                case "S":
+                                    sizeIncompat = t.Size == "L" || t.Size == "LL" || t.Size == "XL";
+                                    break;
+                                case "M":
+                                    sizeIncompat = t.Size == "SS" || t.Size == "LL" || t.Size == "XL";
+                                    break;
+                                case "L":
+                                    sizeIncompat = t.Size == "SS" || t.Size == "S" || t.Size == "XL";
+                                    break;
+                                case "LL":
+                                    sizeIncompat = t.Size == "SS" || t.Size == "S" || t.Size == "M";
+                                    break;
+                                case "XL":
+                                    sizeIncompat = t.Size == "SS" || t.Size == "S" || t.Size == "M" || t.Size == "L";
+                                    break;
+                            }
+                            if (sizeIncompat)
+                            {
+                                result = false;
+                                continue;
+                            }
+                        }
+
+                        return true;
+                }
+            }
+
+            // そもそも効果がないものは常に使用可能とみなす
+            // (include等で特殊効果を定義していると仮定)
+            return result;
         }
 
         // アビリティがターゲットtに対して適用可能かどうか
@@ -1492,6 +1280,7 @@ namespace SRCCore.Units
                 }
             }
 
+            if (t.CountPilot() > 0 || t.IsFeatureAvailable("追加パイロット"))
             {
                 var p = t.MainPilot();
                 if (IsAbilityClassifiedAs("対"))

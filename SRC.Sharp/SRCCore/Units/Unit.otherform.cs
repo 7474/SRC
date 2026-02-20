@@ -1,3 +1,5 @@
+using SRCCore.Lib;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -122,131 +124,59 @@ namespace SRCCore.Units
         // 不要な形態を削除
         public void DeleteTemporaryOtherForm()
         {
-            // TODO Impl DeleteTemporaryOtherForm
-            //    string[] uarray;
-            //    string fname, fdata;
-            //    int k, i, j, n;
+            // 必要な形態の一覧を作成
+            var neededForms = new HashSet<string> { Name };
+            for (int i = 1; i <= CountFeature(); i++)
+            {
+                string fname = Feature(i).Name;
+                string fdata = FeatureData(i);
+                switch (fname)
+                {
+                    case "変形":
+                        for (int j = 2; j <= GeneralLib.LLength(fdata); j++)
+                            neededForms.Add(GeneralLib.LIndex(fdata, j));
+                        break;
+                    case "換装":
+                    case "他形態":
+                        for (int j = 1; j <= GeneralLib.LLength(fdata); j++)
+                            neededForms.Add(GeneralLib.LIndex(fdata, j));
+                        break;
+                    case "ハイパーモード":
+                    case "パーツ分離":
+                    case "変形技":
+                        neededForms.Add(GeneralLib.LIndex(fdata, 2));
+                        break;
+                    case "ノーマルモード":
+                    case "パーツ合体":
+                        neededForms.Add(GeneralLib.LIndex(fdata, 1));
+                        break;
+                }
+            }
 
-            //    // 必要な形態の一覧を作成
-            //    n = 1;
-            //    uarray = new string[2];
-            //    uarray[1] = Name;
-            //    var loopTo = CountFeature();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        fname = Feature(i);
-            //        switch (fname ?? "")
-            //        {
-            //            case "変形":
-            //                {
-            //                    fdata = FeatureData(fname);
-            //                    n = (n + GeneralLib.LLength(fdata) - 1);
-            //                    Array.Resize(uarray, n + 1);
-            //                    var loopTo1 = (GeneralLib.LLength(fdata) - 1);
-            //                    for (j = 1; j <= loopTo1; j++)
-            //                        uarray[n - j + 1] = GeneralLib.LIndex(fdata, (j + 1));
-            //                    break;
-            //                }
+            // 他形態から必要ない形態へのリンクを削除
+            foreach (var of in OtherForms.ToList())
+            {
+                if (of.Status == "他形態")
+                {
+                    foreach (var innerOf in of.OtherForms.ToList())
+                    {
+                        if (!neededForms.Contains(innerOf.Name))
+                        {
+                            of.DeleteOtherForm(innerOf.ID);
+                        }
+                    }
+                }
+            }
 
-            //            case "換装":
-            //            case "他形態":
-            //                {
-            //                    fdata = FeatureData(fname);
-            //                    n = (n + GeneralLib.LLength(fdata));
-            //                    Array.Resize(uarray, n + 1);
-            //                    var loopTo2 = GeneralLib.LLength(fdata);
-            //                    for (j = 1; j <= loopTo2; j++)
-            //                        uarray[n - j + 1] = GeneralLib.LIndex(fdata, j);
-            //                    break;
-            //                }
-
-            //            case "ハイパーモード":
-            //            case "パーツ分離":
-            //            case "変形技":
-            //                {
-            //                    fdata = FeatureData(fname);
-            //                    n = (n + 1);
-            //                    Array.Resize(uarray, n + 1);
-            //                    uarray[n] = GeneralLib.LIndex(fdata, 2);
-            //                    break;
-            //                }
-
-            //            case "ノーマルモード":
-            //            case "パーツ合体":
-            //                {
-            //                    fdata = FeatureData(fname);
-            //                    n = (n + 1);
-            //                    Array.Resize(uarray, n + 1);
-            //                    uarray[n] = GeneralLib.LIndex(fdata, 1);
-            //                    break;
-            //                }
-            //        }
-            //    }
-
-            //    // 他形態から必要ない形態へのリンクを削除
-            //    var loopTo3 = CountOtherForm();
-            //    for (i = 1; i <= loopTo3; i++)
-            //    {
-            //        {
-            //            var withBlock = OtherForm(i);
-            //            if (withBlock.Status == "他形態")
-            //            {
-            //                j = 1;
-            //                while (j <= withBlock.CountOtherForm())
-            //                {
-            //                    {
-            //                        var withBlock1 = withBlock.OtherForm(j);
-            //                        var loopTo4 = n;
-            //                        for (k = 1; k <= loopTo4; k++)
-            //                        {
-            //                            if ((withBlock1.Name ?? "") == (uarray[k] ?? ""))
-            //                            {
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-
-            //                    if (k > n)
-            //                    {
-            //                        withBlock.DeleteOtherForm(j);
-            //                    }
-            //                    else
-            //                    {
-            //                        j = (j + 1);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 必要ない形態を破棄し、リンクを削除
-            //    i = 1;
-            //    while (i <= CountOtherForm())
-            //    {
-            //        {
-            //            var withBlock2 = OtherForm(i);
-            //            var loopTo5 = n;
-            //            for (j = 1; j <= loopTo5; j++)
-            //            {
-            //                if ((withBlock2.Name ?? "") == (uarray[j] ?? ""))
-            //                {
-            //                    break;
-            //                }
-            //            }
-            //        }
-
-            //        if (j > n)
-            //        {
-            //            Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
-
-            //            localOtherForm().Status = "破棄";
-            //            DeleteOtherForm(i);
-            //        }
-            //        else
-            //        {
-            //            i = (i + 1);
-            //        }
-            //    }
+            // 必要ない形態を破棄し、リンクを削除
+            foreach (var of in OtherForms.ToList())
+            {
+                if (!neededForms.Contains(of.Name))
+                {
+                    of.Status = "破棄";
+                    DeleteOtherForm(of.ID);
+                }
+            }
         }
     }
 }
