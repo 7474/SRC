@@ -334,8 +334,6 @@ namespace SRCCore.Units
         // ユニットリストをアップデート
         public void Update()
         {
-            // TODO Impl Update
-
             // 母艦に格納されたユニットを降ろす
             foreach (Unit u in colUnits.List)
             {
@@ -345,98 +343,86 @@ namespace SRCCore.Units
                 }
             }
 
-            //// 破壊された味方ユニットがあるか検索
-            //foreach (Unit currentU1 in colUnits)
-            //{
-            //    u = currentU1;
-            //    if (u.Party0 == "味方")
-            //    {
-            //        if (u.Status == "破壊")
-            //        {
-            //            flag = true;
-            //            break;
-            //        }
-            //    }
-            //    else if (u.Party0 == "ＮＰＣ")
-            //    {
-            //        if (u.Status == "破壊")
-            //        {
-            //            if (u.Summoner is object)
-            //            {
-            //                if (u.Summoner.Party0 == "味方")
-            //                {
-            //                    flag = true;
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // 破壊された味方ユニットがあるか検索
+            var flag = false;
+            foreach (Unit u in colUnits)
+            {
+                if (u.Party0 == "味方")
+                {
+                    if (u.Status == "破壊")
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                else if (u.Party0 == "ＮＰＣ")
+                {
+                    if (u.Status == "破壊")
+                    {
+                        if (u.Summoner is object)
+                        {
+                            if (u.Summoner.Party0 == "味方")
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
-            //// 破壊された味方ユニットがあれば修理
-            //if (flag)
-            //{
-            //    GUI.OpenMessageForm(u1: null, u2: null);
-            //    prev_money = SRC.Money;
-            //    foreach (Unit currentU2 in colUnits)
-            //    {
-            //        u = currentU2;
-            //        if (u.Status != "破壊")
-            //        {
-            //            goto NextDestroyedUnit;
-            //        }
+            // 破壊された味方ユニットがあれば修理
+            if (flag)
+            {
+                GUI.OpenMessageForm(u1: null, u2: null);
+                var prev_money = SRC.Money;
+                foreach (Unit u in colUnits)
+                {
+                    if (u.Status != "破壊")
+                    {
+                        continue;
+                    }
 
-            //        if (u.IsFeatureAvailable("召喚ユニット"))
-            //        {
-            //            goto NextDestroyedUnit;
-            //        }
+                    if (u.IsFeatureAvailable("召喚ユニット"))
+                    {
+                        continue;
+                    }
 
-            //        switch (u.Party0 ?? "")
-            //        {
-            //            case "味方":
-            //                {
-            //                    break;
-            //                }
+                    switch (u.Party0 ?? "")
+                    {
+                        case "味方":
+                            break;
 
-            //            case "ＮＰＣ":
-            //                {
-            //                    if (u.Summoner is null)
-            //                    {
-            //                        goto NextDestroyedUnit;
-            //                    }
-            //                    else if (u.Summoner.Party0 != "味方")
-            //                    {
-            //                        goto NextDestroyedUnit;
-            //                    }
+                        case "ＮＰＣ":
+                            if (u.Summoner is null)
+                            {
+                                continue;
+                            }
+                            else if (u.Summoner.Party0 != "味方")
+                            {
+                                continue;
+                            }
+                            break;
 
-            //                    break;
-            //                }
+                        default:
+                            continue;
+                    }
 
-            //            default:
-            //                {
-            //                    goto NextDestroyedUnit;
-            //                    break;
-            //                }
-            //        }
+                    SRC.IncrMoney(-u.Value);
+                    u.Status = "待機";
+                    if (!u.IsHero())
+                    {
+                        GUI.DisplayMessage("システム", u.Nickname + "を修理した;修理費 = " + SrcFormatter.Format(u.Value));
+                    }
+                    else
+                    {
+                        GUI.DisplayMessage("システム", u.Nickname + "を治療した;治療費 = " + SrcFormatter.Format(u.Value));
+                    }
+                }
 
-            //        SRC.IncrMoney(-u.Value);
-            //        u.Status = "待機";
-            //        if (!u.IsHero())
-            //        {
-            //            GUI.DisplayMessage("システム", u.Nickname + "を修理した;修理費 = " + SrcFormatter.Format(u.Value));
-            //        }
-            //        else
-            //        {
-            //            GUI.DisplayMessage("システム", u.Nickname + "を治療した;治療費 = " + SrcFormatter.Format(u.Value));
-            //        }
-
-            //    NextDestroyedUnit:
-            //        ;
-            //    }
-
-            //    GUI.DisplayMessage("システム", "合計 = " + SrcFormatter.Format(prev_money - SRC.Money));
-            //    GUI.CloseMessageForm();
-            //}
+                GUI.DisplayMessage("システム", "合計 = " + SrcFormatter.Format(prev_money - SRC.Money));
+                GUI.CloseMessageForm();
+            }
 
             // 全ユニットを待機状態に変更
             foreach (Unit u in colUnits)

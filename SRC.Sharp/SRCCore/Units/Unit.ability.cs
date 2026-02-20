@@ -1945,62 +1945,37 @@ namespace SRCCore.Units
             }
 
             // 変身した場合
-            // TODO Impl 変身した場合
+            if (Status == "他形態")
             {
-                //if (Status == "他形態")
-                //{
-                //    {
-                //        var withBlock37 = CurrentForm();
-                //        // 使い捨てアイテムによる変身の処理
-                //        var loopTo30 = withBlock37.CountAbility();
-                //        for (i = 1; i <= loopTo30; i++)
-                //        {
-                //            if ((withBlock37.Ability(i).Name ?? "") == (aname ?? ""))
-                //            {
-                //                // アイテムを消費
-                //                if (withBlock37.Ability(i).IsItem() && withBlock37.Stock(i) == 0 && withBlock37.MaxStock(i) > 0)
-                //                {
-                //                    var loopTo31 = withBlock37.CountItem();
-                //                    for (j = 1; j <= loopTo31; j++)
-                //                    {
-                //                        Item localItem5() { object argIndex1 = j; var ret = withBlock37.Item(argIndex1); return ret; }
+                var cf = CurrentForm();
+                // 使い捨てアイテムによる変身の処理
+                for (var i = 1; i <= cf.CountAbility(); i++)
+                {
+                    if ((cf.Ability(i).Data.Name ?? "") == (aname ?? ""))
+                    {
+                        if (cf.Ability(i).Data.IsItem() && cf.Ability(i).Stock() == 0 && cf.Ability(i).MaxStock() > 0)
+                        {
+                            var itm = cf.ItemList.FirstOrDefault(item => item.Abilities.Any(x => x.Name == aname));
+                            if (itm != null)
+                            {
+                                itm.Exist = false;
+                                cf.DeleteItem(itm);
+                                cf.Update();
+                            }
+                            break;
+                        }
+                    }
+                }
 
-                //                        var loopTo32 = localItem5().CountAbility();
-                //                        for (k = 1; k <= loopTo32; k++)
-                //                        {
-                //                            Item localItem4() { object argIndex1 = j; var ret = withBlock37.Item(argIndex1); return ret; }
+                // 自殺？
+                if (cf.HP == 0)
+                {
+                    cf.Die();
+                }
 
-                //                            AbilityData localAbility() { object argIndex1 = k; var ret = hs8bdb16b7368640769bb5144024b221c0().Ability(argIndex1); return ret; }
-
-                //                            if ((localAbility().Name ?? "") == (aname ?? ""))
-                //                            {
-                //                                Item localItem3() { object argIndex1 = j; var ret = withBlock37.Item(argIndex1); return ret; }
-
-                //                                localItem3().Exist = false;
-                //                                withBlock37.DeleteItem(j);
-                //                                withBlock37.Update();
-                //                                goto ExitLoop;
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }
-
-                //    ExitLoop:
-                //        ;
-
-                //        // 自殺？
-                //        if (withBlock37.HP == 0)
-                //        {
-                //            withBlock37.Die();
-                //        }
-                //    }
-
-                //    // WaitCommandによる画面クリアが行われないので
-                //    GUI.RedrawScreen();
-                //    return ExecuteAbilityRet;
-                //}
+                // WaitCommandによる画面クリアが行われないので
+                GUI.RedrawScreen();
+                return ExecuteAbilityRet;
             }
 
             // 経験値の獲得
@@ -2326,53 +2301,44 @@ namespace SRCCore.Units
             // 起点からの距離に応じて並べ替え
             targets = targets.OrderBy(t => Math.Abs(t.x - rx) + Math.Abs(t.y - ry)).ToList();
 
-            // TODO Impl 合体技
             // 合体技
             var partners = a.CombinationPartner();
-            //    bool[] TmpMaskData;
-            //    if (a.IsAbilityClassifiedAs("合"))
-            //    {
-            //        // 合体技のパートナーのハイライト表示
-            //        // MaskDataを保存して使用している
-            //        TmpMaskData = new bool[(Map.MapWidth + 1), (Map.MapHeight + 1)];
-            //        var loopTo6 = Map.MapWidth;
-            //        for (i = 1; i <= loopTo6; i++)
-            //        {
-            //            var loopTo7 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo7; j++)
-            //                TmpMaskData[i, j] = Map.MaskData[i, j];
-            //        }
+            if (a.IsAbilityClassifiedAs("合"))
+            {
+                // 合体技のパートナーのハイライト表示
+                // MaskDataを保存して使用している
+                var tmpMaskData = new bool[Map.MapWidth + 1, Map.MapHeight + 1];
+                for (var i = 1; i <= Map.MapWidth; i++)
+                {
+                    for (var j = 1; j <= Map.MapHeight; j++)
+                    {
+                        tmpMaskData[i, j] = Map.MaskData[i, j];
+                    }
+                }
 
-            //        CombinationPartner("アビリティ", a, partners);
+                // パートナーユニットはマスクを解除
+                foreach (var pu in partners)
+                {
+                    Map.MaskData[pu.x, pu.y] = false;
+                    tmpMaskData[pu.x, pu.y] = true;
+                }
 
-            //        // パートナーユニットはマスクを解除
-            //        var loopTo8 = Information.UBound(partners);
-            //        for (i = 1; i <= loopTo8; i++)
-            //        {
-            //            {
-            //                var withBlock2 = partners[i];
-            //                Map.MaskData[withBlock2.x, withBlock2.y] = false;
-            //                TmpMaskData[withBlock2.x, withBlock2.y] = true;
-            //            }
-            //        }
+                GUI.MaskScreen();
 
-            //        GUI.MaskScreen();
-
-            //        // マスクを復元
-            //        var loopTo9 = Map.MapWidth;
-            //        for (i = 1; i <= loopTo9; i++)
-            //        {
-            //            var loopTo10 = Map.MapHeight;
-            //            for (j = 1; j <= loopTo10; j++)
-            //                Map.MaskData[i, j] = TmpMaskData[i, j];
-            //        }
-            //    }
-            //    else
-            //    {
-            //        partners = new Unit[1];
-            //        Commands.SelectedPartners.Clear();
-            //        GUI.MaskScreen();
-            //    }
+                // マスクを復元
+                for (var i = 1; i <= Map.MapWidth; i++)
+                {
+                    for (var j = 1; j <= Map.MapHeight; j++)
+                    {
+                        Map.MaskData[i, j] = tmpMaskData[i, j];
+                    }
+                }
+            }
+            else
+            {
+                Commands.SelectedPartners.Clear();
+                GUI.MaskScreen();
+            }
 
             GUI.OpenMessageForm(this, u2: null);
 

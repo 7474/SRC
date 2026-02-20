@@ -300,8 +300,7 @@ namespace SRCCore.Extensions
                 for (var i = 1; i <= loopTo9; i++)
                 {
                     var ch = GeneralLib.GetClassBundle(wclass, ref i).FirstOrDefault();
-                    // TODO .NET 6
-                    //if(!ch.IsAscii)
+                    if (ch > 127)
                     {
                         sub_situations.Add("(対" + ch + "属性)");
                     }
