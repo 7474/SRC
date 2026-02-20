@@ -31,7 +31,18 @@ jobs:
       run: dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore
 
     - name: Test
-      run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal
+      run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+    - name: Generate Coverage Report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
+      with:
+        reports: TestResults/**/coverage.cobertura.xml
+        targetdir: CoverageReport
+        reporttypes: MarkdownSummaryGithub
+
+    - name: Upload Coverage Report to Summary
+      run: cat CoverageReport/SummaryGithub.md >> $env:GITHUB_STEP_SUMMARY
+      shell: pwsh
 
     # Check NU1605 https://github.com/7474/SRC/pull/262
     - name: Try Publish
