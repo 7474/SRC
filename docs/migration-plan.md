@@ -12,16 +12,17 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 > **2026-02-20 更新** / Updated 2026-02-20
 
-- **残存 TODO コメント (SRCCore)**: 54（自動生成を除く） / Remaining TODO comments (SRCCore): 54 (excluding auto-generated)
+- **残存 TODO コメント (SRCCore)**: 48（自動生成を除く） / Remaining TODO comments (SRCCore): 48 (excluding auto-generated)
 - **残存 TODO コメント (SRCSharpForm)**: 44 / Remaining TODO comments (SRCSharpForm): 44
 - **計画策定時 TODO 数**: 155+ / Initial TODO count at plan creation: 155+
-- **解消済み TODO 推定数**: 101+ (約65%完了) / Estimated TODOs resolved: 101+ (~65% complete)
+- **解消済み TODO 推定数**: 107+ (約69%完了) / Estimated TODOs resolved: 107+ (~69% complete)
 - **Main Project**: SRC.Sharp/SRCCore
 
 ### 最近のマージ済みPR / Recently Merged PRs (2026-02-19 〜 2026-02-20)
 
 | # | タイトル / Title | 日付 |
 |---|---|---|
+| #716 | Port remaining features: Help info functions, UseAction cap, additional pilot exp fix | 2026-02-20 |
 | #715 | Fix CD-pages workflow: MSB1003 due to missing project path | 2026-02-20 |
 | #714 | docs: 移植ドキュメントへの運用見直しと進捗更新コマンドの追加 | 2026-02-20 |
 | #713 | Implement DeleteTemporaryOtherForm and IsAbilityEffective | 2026-02-20 |
@@ -37,15 +38,15 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 | Epic | 残存 TODO | 主な残タスク |
 |------|-----------|-------------|
-| Epic 1: 戦闘システム | 7 | 合体技, エイリアス参照, 変身 |
+| Epic 1: 戦闘システム | 6 | 合体技, エイリアス参照, 変身 |
 | Epic 2: ユニット・パイロット | 10 | SkillName, SpecialEffect, 走査拡張 |
 | Epic 3: GUI・UI | 4 | レイヤーデータ, 発進表示 |
-| Epic 4: イベント・コマンド | 10 | イベントファイル禁則, PaintString最適化 |
-| Epic 5: データ管理 | 7 | セーブ/設定管理 |
+| Epic 4: イベント・コマンド | 9 | イベントファイル禁則, PaintString最適化 |
+| Epic 5: データ管理 | 6 | セーブ/設定管理 |
 | Epic 6: VB6レガシー | 3 | Loadfiledialog, Savefiledialog |
 | Epic 7: パフォーマンス | 5 | Sound キャッシュ, .NET 更新 |
-| Epic 8: バグ・エッジケース | 8 | COM 武器選択, Help実装 |
-| **合計** | **54** | |
+| Epic 8: バグ・エッジケース | 5 | COM 武器選択 |
+| **合計** | **48** | |
 
 ## 現在の状況 / Current Status
 
