@@ -208,7 +208,6 @@ namespace SRCCore.Units
                             if (SRC.ALDList.IsDefined(stype))
                             {
                                 var adata = SRC.ALDList.Item(stype);
-                                bool aliasDisabled = false;
                                 foreach (var elm in adata.Elements)
                                 {
                                     var stype2 = elm.strAliasType;
@@ -255,7 +254,7 @@ namespace SRCCore.Units
                                     }
 
                                     // 属性使用不能攻撃により使用不能になった技能を封印する
-                                    if (ConditionLifetime(stype2 + "使用不能") > 0) { aliasDisabled = true; break; }
+                                    if (ConditionLifetime(stype2 + "使用不能") > 0) { break; }
 
                                     AddCondition(stype2 + "付加２", -1, slevel2, sdata2);
                                 }

@@ -452,7 +452,9 @@ namespace SRCCore.Pilots
                 var u = Unit;
                 if (u.CountCondition() > 0 && u.CountPilot() > 0)
                 {
-                    if (ReferenceEquals(u.MainPilot(), this) || ReferenceEquals(u.Pilots.First(), this))
+                    var mainPilot = u.MainPilot();
+                    var firstPilot = u.Pilots.First();
+                    if (ReferenceEquals(mainPilot, this) || ReferenceEquals(firstPilot, this))
                     {
                         // ユニット用特殊能力による付加
                         if (u.IsConditionSatisfied(sname + "付加２"))
@@ -774,7 +776,9 @@ namespace SRCCore.Pilots
                     var u = Unit;
                     if (u.CountCondition() > 0 && u.CountPilot() > 0)
                     {
-                        if (ReferenceEquals(u.MainPilot(), this) || ReferenceEquals(u.Pilots.First(), this))
+                        var mainPilot = u.MainPilot();
+                        var firstPilot = u.Pilots.First();
+                        if (ReferenceEquals(mainPilot, this) || ReferenceEquals(firstPilot, this))
                         {
                             // ユニット用特殊能力による付加
                             if (u.IsConditionSatisfied(sname + "付加２"))
@@ -1012,7 +1016,9 @@ namespace SRCCore.Pilots
                 var u = Unit;
                 if (u.CountCondition() > 0 && u.CountPilot() > 0)
                 {
-                    if (ReferenceEquals(this, u.MainPilot()) || ReferenceEquals(this, u.Pilots.First()))
+                    var mainPilot = u.MainPilot();
+                    var firstPilot = u.Pilots.First();
+                    if (ReferenceEquals(this, mainPilot) || ReferenceEquals(this, firstPilot))
                     {
                         // ユニット用特殊能力による付加
                         if (u.IsConditionSatisfied(stype + "付加２"))
