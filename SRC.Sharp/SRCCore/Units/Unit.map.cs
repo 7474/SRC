@@ -841,77 +841,67 @@ namespace SRCCore.Units
             // 気力減少
             if (!by_cancel)
             {
-                // TODO Impl 気力減少
-                //{
-                //    var withBlock1 = MainPilot();
-                //    if (withBlock1.Personality != "機械")
-                //    {
-                //        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
-                //        {
-                //            withBlock1.Morale = GeneralLib.MinLng(withBlock1.Morale, GeneralLib.MaxLng(withBlock1.Morale - 5, 100));
-                //        }
-                //        else
-                //        {
-                //            withBlock1.Morale = (withBlock1.Morale - 5);
-                //        }
-                //    }
-                //}
+                // 気力減少
+                {
+                    var mp = MainPilot();
+                    if (mp.Personality != "機械")
+                    {
+                        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
+                        {
+                            mp.Morale = GeneralLib.MinLng(mp.Morale, GeneralLib.MaxLng(mp.Morale - 5, 100));
+                        }
+                        else
+                        {
+                            mp.Morale = (mp.Morale - 5);
+                        }
+                    }
+                }
 
-                //var loopTo = CountPilot();
-                //for (i = 1; i <= loopTo; i++)
-                //{
-                //    {
-                //        var withBlock2 = Pilot(i);
-                //        if ((MainPilot().ID ?? "") != (withBlock2.ID ?? "") && withBlock2.Personality != "機械")
-                //        {
-                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
-                //            {
-                //                withBlock2.Morale = GeneralLib.MinLng(withBlock2.Morale, GeneralLib.MaxLng(withBlock2.Morale - 5, 100));
-                //            }
-                //            else
-                //            {
-                //                withBlock2.Morale = (withBlock2.Morale - 5);
-                //            }
-                //        }
-                //    }
-                //}
+                foreach (var p in SubPilots)
+                {
+                    if (p.ID != MainPilot().ID && p.Personality != "機械")
+                    {
+                        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
+                        {
+                            p.Morale = GeneralLib.MinLng(p.Morale, GeneralLib.MaxLng(p.Morale - 5, 100));
+                        }
+                        else
+                        {
+                            p.Morale = (p.Morale - 5);
+                        }
+                    }
+                }
 
-                //var loopTo1 = CountSupport();
-                //for (i = 1; i <= loopTo1; i++)
-                //{
-                //    {
-                //        var withBlock3 = Support(i);
-                //        if (withBlock3.Personality != "機械")
-                //        {
-                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
-                //            {
-                //                withBlock3.Morale = GeneralLib.MinLng(withBlock3.Morale, GeneralLib.MaxLng(withBlock3.Morale - 5, 100));
-                //            }
-                //            else
-                //            {
-                //                withBlock3.Morale = (withBlock3.Morale - 5);
-                //            }
-                //        }
-                //    }
-                //}
+                foreach (var sp in Supports)
+                {
+                    if (sp.Personality != "機械")
+                    {
+                        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
+                        {
+                            sp.Morale = GeneralLib.MinLng(sp.Morale, GeneralLib.MaxLng(sp.Morale - 5, 100));
+                        }
+                        else
+                        {
+                            sp.Morale = (sp.Morale - 5);
+                        }
+                    }
+                }
 
-                //if (IsFeatureAvailable("追加サポート"))
-                //{
-                //    {
-                //        var withBlock4 = AdditionalSupport();
-                //        if (withBlock4.Personality != "機械")
-                //        {
-                //            if (Expression.IsOptionDefined("母艦収納時気力低下小"))
-                //            {
-                //                withBlock4.Morale = GeneralLib.MinLng(withBlock4.Morale, GeneralLib.MaxLng(withBlock4.Morale - 5, 100));
-                //            }
-                //            else
-                //            {
-                //                withBlock4.Morale = (withBlock4.Morale - 5);
-                //            }
-                //        }
-                //    }
-                //}
+                if (IsFeatureAvailable("追加サポート"))
+                {
+                    var asp = AdditionalSupport();
+                    if (asp != null && asp.Personality != "機械")
+                    {
+                        if (Expression.IsOptionDefined("母艦収納時気力低下小"))
+                        {
+                            asp.Morale = GeneralLib.MinLng(asp.Morale, GeneralLib.MaxLng(asp.Morale - 5, 100));
+                        }
+                        else
+                        {
+                            asp.Morale = (asp.Morale - 5);
+                        }
+                    }
+                }
             }
         }
 
@@ -1033,14 +1023,10 @@ namespace SRCCore.Units
                 Summoner = null;
 
                 // アイテム受け継ぎ
-                // TODO Impl アイテム受け継ぎ
-                //var loopTo2 = CountItem();
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    Item localItem() { object new_form = i; var ret = Item(new_form); return ret; }
-
-                //    u.AddItem0(localItem());
-                //}
+                for (var ii = 1; ii <= CountItem(); ii++)
+                {
+                    u.AddItem0(Item(ii));
+                }
 
                 // スペシャルパワー効果のコピー
                 CopySpecialPowerInEffect(u);
@@ -1180,74 +1166,69 @@ namespace SRCCore.Units
 
                 u.Update();
 
-                // TODO Impl 弾数データを記録
-                //// 弾数データを記録
-                //wname = new string[(CountWeapon() + 1)];
-                //wbullet = new int[(CountWeapon() + 1)];
-                //wmaxbullet = new int[(CountWeapon() + 1)];
-                //var loopTo23 = CountWeapon();
-                //for (i = 1; i <= loopTo23; i++)
-                //{
-                //    wname[i] = Weapon(i).Name;
-                //    wbullet[i] = Bullet(i);
-                //    wmaxbullet[i] = MaxBullet(i);
-                //}
+                // 弾数データを記録
+                var wnames = new string[CountWeapon() + 1];
+                var wbullets = new int[CountWeapon() + 1];
+                var wmaxbullets = new int[CountWeapon() + 1];
+                for (var wi = 1; wi <= CountWeapon(); wi++)
+                {
+                    wnames[wi] = Weapon(wi).Name;
+                    wbullets[wi] = Weapon(wi).Bullet();
+                    wmaxbullets[wi] = Weapon(wi).MaxBullet();
+                }
 
-                //aname = new string[(CountAbility() + 1)];
-                //astock = new int[(CountAbility() + 1)];
-                //amaxstock = new int[(CountAbility() + 1)];
-                //var loopTo24 = CountAbility();
-                //for (i = 1; i <= loopTo24; i++)
-                //{
-                //    aname[i] = Ability(i).Name;
-                //    astock[i] = Stock(i);
-                //    amaxstock[i] = MaxStock(i);
-                //}
+                var anames = new string[CountAbility() + 1];
+                var astocks = new int[CountAbility() + 1];
+                var amaxstocks = new int[CountAbility() + 1];
+                for (var ai = 1; ai <= CountAbility(); ai++)
+                {
+                    anames[ai] = Ability(ai).Data.Name;
+                    astocks[ai] = Ability(ai).Stock();
+                    amaxstocks[ai] = Ability(ai).MaxStock();
+                }
 
-                //// 弾数の受け継ぎ
-                //idx = 1;
-                //var loopTo25 = u.CountWeapon();
-                //for (i = 1; i <= loopTo25; i++)
-                //{
-                //    counter = idx;
-                //    var loopTo26 = Information.UBound(wname);
-                //    for (j = counter; j <= loopTo26; j++)
-                //    {
-                //        if ((u.Weapon(i).Name ?? "") == (wname[j] ?? "") && u.MaxBullet(i) > 0 && wmaxbullet[j] > 0)
-                //        {
-                //            u.SetBullet(i, ((wbullet[j] * u.MaxBullet(i)) / wmaxbullet[j]));
-                //            idx = (j + 1);
-                //            break;
-                //        }
-                //    }
-                //}
+                // 弾数の受け継ぎ
+                {
+                    var idx = 1;
+                    for (var wi = 1; wi <= u.CountWeapon(); wi++)
+                    {
+                        for (var j = idx; j < wnames.Length; j++)
+                        {
+                            if (u.Weapon(wi).Name == wnames[j] && u.Weapon(wi).MaxBullet() > 0 && wmaxbullets[j] > 0)
+                            {
+                                u.Weapon(wi).SetBullet(wbullets[j] * u.Weapon(wi).MaxBullet() / wmaxbullets[j]);
+                                idx = j + 1;
+                                break;
+                            }
+                        }
+                    }
+                }
 
-                //idx = 1;
-                //var loopTo27 = u.CountAbility();
-                //for (i = 1; i <= loopTo27; i++)
-                //{
-                //    counter = idx;
-                //    var loopTo28 = Information.UBound(aname);
-                //    for (j = counter; j <= loopTo28; j++)
-                //    {
-                //        if ((u.Ability(i).Name ?? "") == (aname[j] ?? "") && u.MaxStock(i) > 0 && amaxstock[j] > 0)
-                //        {
-                //            u.SetStock(i, ((astock[j] * u.MaxStock(i)) / amaxstock[j]));
-                //            idx = (j + 1);
-                //            break;
-                //        }
-                //    }
-                //}
+                {
+                    var idx = 1;
+                    for (var ai = 1; ai <= u.CountAbility(); ai++)
+                    {
+                        for (var j = idx; j < anames.Length; j++)
+                        {
+                            if (u.Ability(ai).Data.Name == anames[j] && u.Ability(ai).MaxStock() > 0 && amaxstocks[j] > 0)
+                            {
+                                u.Ability(ai).SetStock(astocks[j] * u.Ability(ai).MaxStock() / amaxstocks[j]);
+                                idx = j + 1;
+                                break;
+                            }
+                        }
+                    }
+                }
 
-                //// 弾数・使用回数共有の実現
-                //u.SyncBullet();
+                // 弾数・使用回数共有の実現
+                u.SyncBullet();
 
-                //// アイテムを削除
-                //var loopTo29 = CountItem();
-                //for (i = 1; i <= loopTo29; i++)
-                //{
-                //    DeleteItem(1);
-                //}
+                // アイテムを削除
+                var itemCount = CountItem();
+                for (var ii = 1; ii <= itemCount; ii++)
+                {
+                    DeleteItem(Item(1));
+                }
 
                 u.Update();
 
@@ -1903,20 +1884,17 @@ namespace SRCCore.Units
             CopySpecialPowerInEffect(firstUnit);
             RemoveAllSpecialPowerInEffect();
             {
-                // TODO Impl 変形と共有できる？
-                //var loopTo2 = CountItem();
-                //for (j = 1; j <= loopTo2; j++)
-                //{
-                //    Item localItem() { object argIndex1 = j; var ret = Item(argIndex1); return ret; }
+                // アイテム受け継ぎ
+                for (var j = 1; j <= CountItem(); j++)
+                {
+                    firstUnit.AddItem0(Item(j));
+                }
 
-                //    firstUnit.AddItem(localItem());
-                //}
-
-                //var loopTo3 = CountItem();
-                //for (j = 1; j <= loopTo3; j++)
-                //{
-                //    DeleteItem(1);
-                //}
+                var splitItemCount = CountItem();
+                for (var j = 1; j <= splitItemCount; j++)
+                {
+                    DeleteItem(Item(1));
+                }
 
                 firstUnit.Master = Master;
                 Master = null;

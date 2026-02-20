@@ -5,6 +5,7 @@
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
 using System.Linq;
 
 namespace SRCCore.Pilots
@@ -31,59 +32,54 @@ namespace SRCCore.Pilots
                 return;
             }
 
-            // TODO Impl Ride
+            // HP/EN比率を記録
+            hp_ratio = u.MaxHP > 0 ? 100d * u.HP / u.MaxHP : 100d;
+            en_ratio = u.MaxEN > 0 ? 100d * u.EN / u.MaxEN : 100d;
+
+            // 現在の霊力値を記録
+            if (MaxPlana() > 0)
             {
-                //var u = u;
-                //hp_ratio = 100 * u.HP / (double)u.MaxHP;
-                //en_ratio = 100 * u.EN / (double)u.MaxEN;
+                plana_ratio = 100d * Plana / MaxPlana();
+            }
+            else
+            {
+                plana_ratio = -1;
+            }
 
-                //// 現在の霊力値を記録
-                //if (MaxPlana() > 0)
-                //{
-                //    plana_ratio = 100 * Plana / (double)MaxPlana();
-                //}
-                //else
-                //{
-                //    plana_ratio = -1;
-                //}
+            {
+                // パイロットの搭乗処理
+                if (GeneralLib.InStrNotNest(Class, "サポート)") > 0 && GeneralLib.LLength(Class) == 1 && !u.IsFeatureAvailable("ダミーユニット"))
+                {
+                    // サポートにしかなれないパイロットの場合
+                    Unit = u;
+                    u.AddSupport(this);
+                }
+                else if (IsSupport(u))
+                {
+                    // 同じユニットクラスに対して通常パイロットとサポートの両方のパターン
+                    // がいける場合は通常パイロットを優先
+                    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) && GeneralLib.InStrNotNest(Class, u.Class0 + " ") > 0 && !is_support)
+                    {
+                        Unit = u;
+                        u.AddPilot(this);
+                    }
+                    else
+                    {
+                        Unit = u;
+                        u.AddSupport(this);
+                    }
+                }
+                else
+                {
+                    // パイロットが既に規定数の場合は全パイロットを降ろす
+                    if (u.CountPilot() == Math.Abs(u.Data.PilotNum))
+                    {
+                        u.Pilots.First().GetOff();
+                    }
 
-                // XXX 仮
-                Unit = u;
-                u.AddPilot(this);
-                //short localInStrNotNest1() { string argstring1 = Class; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
-
-                //short localLLength() { string arglist = Class; var ret = GeneralLib.LLength(arglist); this.Class = arglist; return ret; }
-
-                //if (localInStrNotNest1() > 0 && localLLength() == 1 && !u.IsFeatureAvailable("ダミーユニット"))
-                //{
-                //    // サポートにしかなれないパイロットの場合
-                //    u.AddSupport(this);
-                //}
-                //else if (IsSupport(u))
-                //{
-                //    // 同じユニットクラスに対して通常パイロットとサポートの両方のパターン
-                //    // がいける場合は通常パイロットを優先
-                //    short localInStrNotNest() { string argstring1 = Class; string argstring2 = u.Class0 + " "; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class = argstring1; return ret; }
-
-                //    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) && localInStrNotNest() > 0 && !is_support)
-                //    {
-                //        u.AddPilot(this);
-                //    }
-                //    else
-                //    {
-                //        u.AddSupport(this);
-                //    }
-                //}
-                //else
-                //{
-                //    // パイロットが既に規定数の場合は全パイロットを降ろす
-                //    if (u.CountPilot() == Math.Abs(u.Data.PilotNum))
-                //    {
-                //        u.Pilot(1).GetOff();
-                //    }
-
-                //    u.AddPilot(this);
-                //}
+                    Unit = u;
+                    u.AddPilot(this);
+                }
 
                 // Pilotコマンドで作成されたパイロットは全て味方なので搭乗時に変更が必要
                 Party = u.Party0;
@@ -91,19 +87,19 @@ namespace SRCCore.Pilots
                 // ユニットのステータスをアップデート
                 u.Update();
 
-                //// 霊力値のアップデート
-                //if (plana_ratio >= 0d)
-                //{
-                //    Plana = (int)((long)(MaxPlana() * plana_ratio) / 100L);
-                //}
-                //else
-                //{
-                //    Plana = MaxPlana();
-                //}
+                // 霊力値のアップデート
+                if (plana_ratio >= 0d)
+                {
+                    Plana = (int)(MaxPlana() * plana_ratio / 100d);
+                }
+                else
+                {
+                    Plana = MaxPlana();
+                }
 
-                //// パイロットが乗り込むことによるＨＰ＆ＥＮの増減に対応
-                //u.HP = (int)((long)(u.MaxHP * hp_ratio) / 100L);
-                //u.EN = (int)((long)(u.MaxEN * en_ratio) / 100L);
+                // パイロットが乗り込むことによるＨＰ＆ＥＮの増減に対応
+                u.HP = (int)(u.MaxHP * hp_ratio / 100d);
+                u.EN = (int)(u.MaxEN * en_ratio / 100d);
             }
         }
 

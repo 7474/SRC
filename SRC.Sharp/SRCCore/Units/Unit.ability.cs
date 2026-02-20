@@ -1910,197 +1910,44 @@ namespace SRCCore.Units
             }
 
             // 合体技のパートナーの弾数＆ＥＮの消費
-            // TODO Impl 合体技のパートナーの弾数＆ＥＮの消費
+            foreach (var pu in partners)
             {
-                //foreach (var pu in partners)
-                //{
-                //    var cf = pu.CurrentForm();
-                //    var loopTo28 = cf.CountAbility();
-                //    for (j = 1; j <= loopTo28; j++)
-                //    {
-                //        // パートナーが同名のアビリティを持っていればそのアビリティのデータを使う
-                //        if ((cf.Ability(j).Name ?? "") == (aname ?? ""))
-                //        {
-                //            cf.UseAbility(j);
-                //            if (cf.IsAbilityClassifiedAs(j, "自"))
-                //            {
-                //                if (cf.IsFeatureAvailable("パーツ分離"))
-                //                {
-                //                    uname = GeneralLib.LIndex(cf.FeatureData(argIndex96), 2);
-                //                    Unit localOtherForm() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
+                var cf = pu.CurrentForm();
+                bool abilityFound = false;
+                for (var aj = 1; aj <= cf.CountAbility(); aj++)
+                {
+                    // パートナーが同名のアビリティを持っていればそのアビリティのデータを使う
+                    if (cf.Ability(aj).Data.Name == aname)
+                    {
+                        cf.Ability(aj).UseAbility();
+                        abilityFound = true;
+                        break;
+                    }
+                }
 
-                //                    if (localOtherForm().IsAbleToEnter(cf.x, cf.y))
-                //                    {
-                //                        cf.Transform(uname);
-                //                        {
-                //                            var withBlock35 = cf.CurrentForm();
-                //                            withBlock35.HP = withBlock35.MaxHP;
-                //                            withBlock35.UsedAction = withBlock35.MaxAction();
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        cf.Die();
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    cf.Die();
-                //                }
-                //            }
-                //            else if (cf.IsAbilityClassifiedAs(j, "失") && cf.HP == 0)
-                //            {
-                //                cf.Die();
-                //            }
-                //            else if (cf.IsAbilityClassifiedAs(j, "変"))
-                //            {
-                //                if (cf.IsFeatureAvailable("変形技"))
-                //                {
-                //                    var loopTo29 = cf.CountFeature();
-                //                    for (k = 1; k <= loopTo29; k++)
-                //                    {
-                //                        string localFeature() { object argIndex1 = k; var ret = cf.Feature(argIndex1); return ret; }
+                // 同名のアビリティがなかった場合は自分のデータを使って処理
+                if (!abilityFound)
+                {
+                    if (a.AbilityENConsumption() > 0)
+                    {
+                        cf.EN = cf.EN - a.AbilityENConsumption();
+                    }
 
-                //                        string localFeatureData1() { object argIndex1 = k; var ret = cf.FeatureData(argIndex1); return ret; }
+                    if (a.IsAbilityClassifiedAs("消"))
+                    {
+                        cf.AddCondition("消耗", 1, cdata: "");
+                    }
 
-                //                        string localLIndex2() { string arglist = hsd94f2b67de0b4586a4a3a3d57d84bb20(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                    if (a.IsAbilityClassifiedAs("Ｃ") && cf.IsConditionSatisfied("チャージ完了"))
+                    {
+                        cf.DeleteCondition("チャージ完了");
+                    }
 
-                //                        if (localFeature() == "変形技" && (localLIndex2() ?? "") == (aname ?? ""))
-                //                        {
-                //                            string localFeatureData() { object argIndex1 = k; var ret = cf.FeatureData(argIndex1); return ret; }
-
-                //                            uname = GeneralLib.LIndex(localFeatureData(), 2);
-                //                            Unit localOtherForm1() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
-
-                //                            if (localOtherForm1().IsAbleToEnter(cf.x, cf.y))
-                //                            {
-                //                                cf.Transform(uname);
-                //                            }
-
-                //                            break;
-                //                        }
-                //                    }
-
-                //                    if ((uname ?? "") != (cf.CurrentForm().Name ?? ""))
-                //                    {
-                //                        if (cf.IsFeatureAvailable("ノーマルモード"))
-                //                        {
-                //                            uname = GeneralLib.LIndex(cf.FeatureData(argIndex97), 1);
-                //                            Unit localOtherForm2() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
-
-                //                            if (localOtherForm2().IsAbleToEnter(cf.x, cf.y))
-                //                            {
-                //                                cf.Transform(uname);
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //                else if (cf.IsFeatureAvailable("ノーマルモード"))
-                //                {
-                //                    uname = GeneralLib.LIndex(cf.FeatureData(argIndex98), 1);
-                //                    Unit localOtherForm3() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
-
-                //                    if (localOtherForm3().IsAbleToEnter(cf.x, cf.y))
-                //                    {
-                //                        cf.Transform(uname);
-                //                    }
-                //                }
-                //            }
-
-                //            break;
-                //        }
-                //    }
-
-                //    // 同名のアビリティがなかった場合は自分のデータを使って処理
-                //    if (j > cf.CountAbility())
-                //    {
-                //        if (this.a.Ability().ENConsumption > 0)
-                //        {
-                //            cf.EN = cf.EN - a.AbilityENConsumption();
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("消"))
-                //        {
-                //            cf.AddCondition("消耗", 1, cdata: "");
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("Ｃ") && cf.IsConditionSatisfied("チャージ完了"))
-                //        {
-                //            cf.DeleteCondition("チャージ完了");
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("気"))
-                //        {
-                //            cf.IncreaseMorale((-5 * a.AbilityLevel("気")));
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("霊"))
-                //        {
-                //            hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
-                //            en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                //            cf.MainPilot().Plana = (cf.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
-                //            cf.HP = (cf.MaxHP * hp_ratio / 100d);
-                //            cf.EN = (cf.MaxEN * en_ratio / 100d);
-                //        }
-                //        else if (a.IsAbilityClassifiedAs("プ"))
-                //        {
-                //            hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
-                //            en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                //            cf.MainPilot().Plana = (cf.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
-                //            cf.HP = (cf.MaxHP * hp_ratio / 100d);
-                //            cf.EN = (cf.MaxEN * en_ratio / 100d);
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("失"))
-                //        {
-                //            cf.HP = GeneralLib.MaxLng((cf.HP - (long)(cf.MaxHP * a.AbilityLevel("失")) / 10L), 0);
-                //        }
-
-                //        if (a.IsAbilityClassifiedAs("自"))
-                //        {
-                //            if (cf.IsFeatureAvailable("パーツ分離"))
-                //            {
-                //                uname = GeneralLib.LIndex(cf.FeatureData(argIndex101), 2);
-                //                Unit localOtherForm4() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
-
-                //                if (localOtherForm4().IsAbleToEnter(cf.x, cf.y))
-                //                {
-                //                    cf.Transform(uname);
-                //                    {
-                //                        var withBlock36 = cf.CurrentForm();
-                //                        withBlock36.HP = withBlock36.MaxHP;
-                //                        withBlock36.UsedAction = withBlock36.MaxAction();
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    cf.Die();
-                //                }
-                //            }
-                //            else
-                //            {
-                //                cf.Die();
-                //            }
-                //        }
-                //        else if (a.IsAbilityClassifiedAs("失") && cf.HP == 0)
-                //        {
-                //            cf.Die();
-                //        }
-                //        else if (a.IsAbilityClassifiedAs("変"))
-                //        {
-                //            if (cf.IsFeatureAvailable("ノーマルモード"))
-                //            {
-                //                uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
-                //                Unit localOtherForm5() { object argIndex1 = uname; var ret = cf.OtherForm(argIndex1); return ret; }
-
-                //                if (localOtherForm5().IsAbleToEnter(cf.x, cf.y))
-                //                {
-                //                    cf.Transform(uname);
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                    if (a.IsAbilityClassifiedAs("気"))
+                    {
+                        cf.IncreaseMorale((int)(-5 * a.AbilityLevel("気")));
+                    }
+                }
             }
 
             // 変身した場合

@@ -1311,54 +1311,44 @@ namespace SRCCore.Commands
             SRC.UList.CheckAutoHyperMode();
             SRC.UList.CheckAutoNormalMode();
 
-            //// ADD START MARGE
-            //// 再移動
-            //if (is_p_weapon && SelectedUnit.Status == "出撃")
-            //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
-            //    {
-            //        // 進入イベント
-            //        if (SelectedUnitMoveCost > 0)
-            //        {
-            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
-            //            if (SRC.IsScenarioFinished)
-            //            {
-            //                SRC.IsScenarioFinished = false;
-            //                return;
-            //            }
-            //        }
+            // 再移動
+            if (is_p_weapon && SelectedUnit.Status == "出撃")
+            {
+                if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+                {
+                    // 進入イベント
+                    if (SelectedUnitMoveCost > 0)
+                    {
+                        Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            SRC.IsScenarioFinished = false;
+                            return;
+                        }
+                    }
 
-            //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status != "出撃")
-            //        {
-            //            GUI.RedrawScreen();
-            //            Status.ClearUnitStatus();
-            //            return;
-            //        }
+                    // ユニットが既に出撃していない？
+                    if (SelectedUnit.Status != "出撃")
+                    {
+                        GUI.RedrawScreen();
+                        Status.ClearUnitStatus();
+                        return;
+                    }
 
-            //        SelectedCommand = "再移動";
-            //        Map.AreaInSpeed(SelectedUnit);
-            //        if (!Expression.IsOptionDefined("大型マップ"))
-            //        {
-            //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
-            //        }
+                    SelectedCommand = "再移動";
+                    Map.AreaInSpeed(SelectedUnit);
+                    if (!Expression.IsOptionDefined("大型マップ"))
+                    {
+                        GUI.Center(SelectedUnit.x, SelectedUnit.y);
+                    }
 
-            //        GUI.MaskScreen();
-            //        if (GUI.NewGUIMode)
-            //        {
-            //            Application.DoEvents();
-            //            Status.ClearUnitStatus();
-            //        }
-            //        else
-            //        {
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //        }
+                    GUI.MaskScreen();
+                    Status.DisplayUnitStatus(SelectedUnit);
 
-            //        CommandState = "ターゲット選択";
-            //        return;
-            //    }
-            //}
-            //// ADD END MARGE
+                    CommandState = "ターゲット選択";
+                    return;
+                }
+            }
 
             // 行動数を減らす
             WaitCommand();
@@ -1508,53 +1498,44 @@ namespace SRCCore.Commands
 
             SelectedPartners.Clear();
 
-            // TODO Impl 再移動
-            //// 再移動
-            //if (is_p_weapon && SelectedUnit.Status == "出撃")
-            //{
-            //    if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
-            //    {
-            //        // 進入イベント
-            //        if (SelectedUnitMoveCost > 0)
-            //        {
-            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
-            //            if (SRC.IsScenarioFinished)
-            //            {
-            //                SRC.IsScenarioFinished = false;
-            //                return;
-            //            }
-            //        }
+            // 再移動
+            if (is_p_weapon && SelectedUnit.Status == "出撃")
+            {
+                if (SelectedUnit.MainPilot().IsSkillAvailable("遊撃") && SelectedUnit.Speed * 2 > SelectedUnitMoveCost)
+                {
+                    // 進入イベント
+                    if (SelectedUnitMoveCost > 0)
+                    {
+                        Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, "" + SelectedUnit.x, "" + SelectedUnit.y);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            SRC.IsScenarioFinished = false;
+                            return;
+                        }
+                    }
 
-            //        // ユニットが既に出撃していない？
-            //        if (SelectedUnit.Status != "出撃")
-            //        {
-            //            GUI.RedrawScreen();
-            //            Status.ClearUnitStatus();
-            //            return;
-            //        }
+                    // ユニットが既に出撃していない？
+                    if (SelectedUnit.Status != "出撃")
+                    {
+                        GUI.RedrawScreen();
+                        Status.ClearUnitStatus();
+                        return;
+                    }
 
-            //        SelectedCommand = "再移動";
-            //        Map.AreaInSpeed(SelectedUnit);
-            //        if (!Expression.IsOptionDefined("大型マップ"))
-            //        {
-            //            GUI.Center(SelectedUnit.x, SelectedUnit.y);
-            //        }
+                    SelectedCommand = "再移動";
+                    Map.AreaInSpeed(SelectedUnit);
+                    if (!Expression.IsOptionDefined("大型マップ"))
+                    {
+                        GUI.Center(SelectedUnit.x, SelectedUnit.y);
+                    }
 
-            //        GUI.MaskScreen();
-            //        if (GUI.NewGUIMode)
-            //        {
-            //            Application.DoEvents();
-            //            Status.ClearUnitStatus();
-            //        }
-            //        else
-            //        {
-            //            Status.DisplayUnitStatus(SelectedUnit);
-            //        }
+                    GUI.MaskScreen();
+                    Status.DisplayUnitStatus(SelectedUnit);
 
-            //        CommandState = "ターゲット選択";
-            //        return;
-            //    }
-            //}
+                    CommandState = "ターゲット選択";
+                    return;
+                }
+            }
 
             // 行動終了
             WaitCommand();
