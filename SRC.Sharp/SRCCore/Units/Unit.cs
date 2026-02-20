@@ -45,6 +45,12 @@ namespace SRCCore.Units
             linkData.PilotIds.ForEach(x => colPilot.Add(SRC.PList.Item(x), x));
             linkData.SupportIds.ForEach(x => colSupport.Add(SRC.PList.Item(x), x));
             linkData.ItemIds.ForEach(x => colItem.Add(SRC.IList.Item(x), x));
+            if (!string.IsNullOrEmpty(linkData.MasterId))
+                Master = SRC.UList.Item(linkData.MasterId);
+            if (!string.IsNullOrEmpty(linkData.SummonerId))
+                Summoner = SRC.UList.Item(linkData.SummonerId);
+            linkData.UnitOnBoardIds?.ForEach(x => { var u = SRC.UList.Item(x); if (u != null) colUnitOnBoard.Add(u, x); });
+            linkData.ServantIds?.ForEach(x => { var u = SRC.UList.Item(x); if (u != null) colServant.Add(u, x); });
         }
         private SaveData linkData;
         [JsonProperty]
@@ -56,6 +62,10 @@ namespace SRCCore.Units
                 PilotIds = Pilots.Select(x => x.ID).ToList(),
                 SupportIds = Supports.Select(x => x.ID).ToList(),
                 ItemIds = ItemList.Select(x => x.ID).ToList(),
+                MasterId = Master?.ID,
+                SummonerId = Summoner?.ID,
+                UnitOnBoardIds = UnitOnBoards.Select(x => x.ID).ToList(),
+                ServantIds = Servants.Select(x => x.ID).ToList(),
             };
             set => linkData = value;
         }
@@ -224,6 +234,9 @@ namespace SRCCore.Units
 
         // 召喚主
         public Unit Summoner;
+        // 破壊前の召喚主ID（SP祈りによる復活時にSummoner関係を再構築するため）
+        [JsonProperty]
+        public string PreviousSummonerId;
 
         // ご主人様
         public Unit Master;
@@ -241,8 +254,10 @@ namespace SRCCore.Units
             public List<string> PilotIds { get; set; }
             public List<string> SupportIds { get; set; }
             public List<string> ItemIds { get; set; }
-
-            // TODO クイックセーブ分
+            public string MasterId { get; set; }
+            public string SummonerId { get; set; }
+            public List<string> UnitOnBoardIds { get; set; }
+            public List<string> ServantIds { get; set; }
         }
     }
 }

@@ -2121,6 +2121,18 @@ namespace SRCCore.Models
                                 t.StandBy(my_unit.x, my_unit.y);
                                 t.Rest();
 
+                                // 召喚ユニットだった場合、召喚者のコントロール下に戻す（#627）
+                                if (!string.IsNullOrEmpty(t.PreviousSummonerId))
+                                {
+                                    var summoner = SRC.UList.Item(t.PreviousSummonerId);
+                                    if (summoner != null && summoner.Status != "破壊" && summoner.Status != "撤退")
+                                    {
+                                        t.Summoner = summoner.CurrentForm();
+                                        summoner.CurrentForm().AddServant(t);
+                                    }
+                                    t.PreviousSummonerId = null;
+                                }
+
                                 // 残り時間を元に戻す
                                 if (n > 0)
                                 {
