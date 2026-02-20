@@ -972,7 +972,15 @@ namespace SRCSharpForm
 
         public int LIPS(ListBoxArgs args, int time_limit)
         {
-            throw new NotImplementedException();
+            frmListBox.CurrentTime = 0;
+            frmListBox.TimeLimit = time_limit;
+            frmListBox.picBar.Visible = true;
+            frmListBox.Timer1.Enabled = true;
+            frmListBox.ShowItems(MainForm, args);
+            var ret = Commands.SelectedItem;
+            frmListBox.Timer1.Enabled = false;
+            frmListBox.picBar.Visible = false;
+            return ret;
         }
 
         public int MultiColumnListBox(ListBoxArgs args, bool is_center)

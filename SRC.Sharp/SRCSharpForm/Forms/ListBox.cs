@@ -863,19 +863,32 @@ namespace SRCSharpForm
         // Questionコマンド対応
         private void Timer1_Tick(object eventSender, EventArgs eventArgs)
         {
-            throw new NotImplementedException();
-            //CurrentTime = (CurrentTime + 1);
-            //picBar.Cls();
-            //picBar.Line(0, 0); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-            //picBar.Refresh();
-            //if (CurrentTime >= TimeLimit)
-            //{
-            //    Commands.SelectedItem = 0;
-            //    LastSelectedItem = Commands.SelectedItem;
-            //    GUI.TopItem = lstItems.TopIndex;
-            //    Hide();
-            //    Timer1.Enabled = false;
-            //}
+            CurrentTime++;
+
+            // プログレスバーを描画
+            using (var g = picBar.CreateGraphics())
+            {
+                g.Clear(picBar.BackColor);
+                if (TimeLimit > 0)
+                {
+                    int barWidth = (int)((float)picBar.Width * CurrentTime / TimeLimit);
+                    if (barWidth > 0)
+                    {
+                        g.FillRectangle(BarForeBrush, 0, 0, barWidth, picBar.Height);
+                    }
+                }
+            }
+
+            // 制限時間を超えたら自動的に閉じる
+            if (CurrentTime >= TimeLimit)
+            {
+                Commands.SelectedItem = 0;
+                LastSelectedItem = Commands.SelectedItem;
+                GUI.TopItem = lstItems.TopIndex + 1;
+                GUI.IsFormClicked = true;
+                Timer1.Enabled = false;
+                Hide();
+            }
         }
 
         // 選択されているアイテムに対応するユニットのステータス表示
