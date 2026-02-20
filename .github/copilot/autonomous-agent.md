@@ -8,6 +8,8 @@ This file contains Copilot configuration for autonomous migration progress with 
 
 ### 使用方法 / Usage
 
+#### 移植作業を進める / Proceed with migration work
+
 ```
 @copilot 移植を進行してください
 ```
@@ -21,6 +23,22 @@ This file contains Copilot configuration for autonomous migration progress with 
 これだけで、Copilotが自律的に次のタスクを選択し、実行します。
 
 This single command allows Copilot to autonomously select and execute the next task.
+
+#### 進行状況を更新する / Update progress status
+
+```
+@copilot 進捗を更新してください
+```
+
+または / or
+
+```
+@copilot Update the progress
+```
+
+これだけで、Copilotが現在の進行状況を評価し、ドキュメントとIssueの状態を最新の実態に合わせて更新します。
+
+This single command allows Copilot to assess the current state and update documents and issue statuses to reflect reality.
 
 ---
 
@@ -148,6 +166,68 @@ Tests: Z passed
 Next Recommended Task: [Auto-selected next task]
 
 To continue: @copilot 移植を進行してください
+```
+
+---
+
+## 🔄 Progress Update Protocol / 進捗更新プロトコル
+
+When instructed to "update progress" (進捗を更新してください), Copilot should follow this protocol:
+
+### Step 1: Assess Current State / 現状評価
+
+1. **Collect issue statistics**
+   ```bash
+   gh issue list --state all --json number,title,state,labels,milestone
+   ```
+
+2. **Check recently closed issues**
+   - Issues closed since last update
+   - PRs merged since last update
+
+3. **Identify state changes**
+   - Issues newly opened or closed
+   - Labels or milestone assignments changed
+   - New TODOs resolved in codebase
+
+### Step 2: Update Documents / ドキュメント更新
+
+1. **Update `docs/migration-plan.md`** if progress status has changed:
+   - Mark completed items
+   - Add notes on newly discovered issues or blockers
+   - Adjust timeline estimates if needed
+
+2. **Update issue statuses**
+   - Add/remove `status:in-progress`, `status:blocked`, etc. as appropriate
+   - Link related issues discovered during work
+
+3. **Sync pre-existing issues**
+   - Check if older issues (e.g., #162, #172) have been addressed
+   - Note any overlap with Epic tasks
+
+### Step 3: Generate Progress Report / 進捗レポート生成
+
+```
+📊 Progress Update (YYYY-MM-DD)
+
+## Changes Since Last Update
+- Issues closed: #XXX, #YYY
+- PRs merged: #ZZZ
+- New TODOs resolved: N
+
+## Current State by Epic
+- Epic 1 (Combat): X/15 complete (Y%)
+- Epic 2 (Unit/Pilot): X/12 complete (Y%)
+- ...
+
+## Milestone Status
+- Phase 1 (v3.1.0): X/27 complete (Y%)
+
+## Updated Items
+- [List of documents or issues updated]
+
+To continue migration: @copilot 移植を進行してください
+To update again: @copilot 進捗を更新してください
 ```
 
 ---
@@ -551,6 +631,18 @@ That's it! Copilot handles everything else:
 - Reports result
 - Suggests next action
 
+### Update Progress
+
+```
+@copilot 進捗を更新してください
+```
+
+Copilot will:
+- Check all issue statuses
+- Update documents to reflect current progress
+- Generate a progress report
+- Suggest next migration step
+
 ### Full Autonomous Mode
 
 ```
@@ -564,6 +656,6 @@ Copilot will work until:
 
 ---
 
-**Version**: 2.0.0 - Fully Autonomous
-**Last Updated**: 2026-02-19
+**Version**: 2.1.0 - Fully Autonomous + Progress Update
+**Last Updated**: 2026-02-20
 **Mode**: Single-Command Operation

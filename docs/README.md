@@ -13,9 +13,14 @@
 @copilot 移植を進行してください
 ```
 
-With single command:
-- ✅ Copilotが次のタスクを自動選択
-- ✅ Copilotが自動実装・テスト・PR作成
+単一コマンドで進捗を更新:
+```
+@copilot 進捗を更新してください
+```
+
+With single commands:
+- ✅ Copilotが次のタスクを自動選択・実装・PR作成
+- ✅ Copilotが進行状況をドキュメントに反映
 - ✅ 人間が考えることは最小限
 - ✅ セットアップ不要
 
@@ -86,7 +91,27 @@ bash docs/scripts/progress-report.sh
 2. [移植完了計画](./migration-plan.md)で全体像を把握
 3. [個別Issue詳細](./issue-breakdown.md)で具体的な作業内容を確認
 
-### ステップ2: プロジェクト環境を整える
+### ステップ2: Copilotに作業を依頼する（推奨）
+
+セットアップ不要。そのままCopilotに指示するだけです：
+
+```
+@copilot 移植を進行してください
+```
+
+Copilotが現在の状態を評価し、次のタスクを自動的に選択・実行します。
+
+### ステップ3: 進捗を確認・更新する
+
+```
+@copilot 進捗を更新してください
+```
+
+Copilotがissueの状態を確認し、ドキュメントと進行状況を最新の実態に合わせて更新します。
+
+### （オプション）手動でプロジェクト環境を整える
+
+ラベルやマイルストーンを手動で管理したい場合のみ：
 
 1. ラベルを作成:
    ```bash
@@ -101,21 +126,17 @@ bash docs/scripts/progress-report.sh
 3. GitHub Projectsを設定:
    - [GitHub Projects設定ガイド](./github-projects-setup.md)を参照
 
-### ステップ3: Issueを作成
-
-1. Epic Issueを8個作成（テンプレート: [epic-template.md](../.github/ISSUE_TEMPLATE/epic-template.md)）
-2. 最初の機能Issueを作成（テンプレート: [feature-template.md](../.github/ISSUE_TEMPLATE/feature-template.md)）
-3. GitHub Projectsに登録
-
-### ステップ4: 作業開始
-
-1. Phase 1の最優先Issueから着手
-2. PR作成時は差分1000行以下を目安に
-3. テストを追加して既存テストも通過することを確認
-
 ## 📊 進捗管理 / Progress Tracking
 
-### 進捗確認
+### 進捗確認・更新（推奨）
+
+```
+@copilot 進捗を更新してください
+```
+
+Copilotが現在のissue状態を確認し、ドキュメントと進行状況を更新します。
+
+### 手動での進捗確認
 
 ```bash
 # 進捗レポート生成
@@ -237,6 +258,11 @@ gh api repos/7474/SRC/milestones
 - [SRC# デモ](https://7474.github.io/SRC/)
 
 ## 📝 更新履歴 / Changelog
+
+- **2026-02-20**: 運用の見直しと進捗更新コマンドの追加
+  - `@copilot 進捗を更新してください` コマンドの追加
+  - 自律運用を優先した手順への見直し（セットアップ不要を明確化）
+  - 進行状況の変化を反映
 
 - **2026-02-19**: 初版作成
   - 移植完了計画の策定
