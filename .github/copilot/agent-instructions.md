@@ -14,8 +14,8 @@ Copilotは以下の情報のみで自律的に動作します：
 
 Copilot operates autonomously using only:
 
-1. **`docs/migration-plan.md`** - 8 Epics and overall migration strategy
-2. **`docs/issue-breakdown.md`** - Detailed definitions of ~70 issues
+1. **`docs/porting/migration-plan.md`** - 8 Epics and overall migration strategy
+2. **`docs/porting/issue-breakdown.md`** - Detailed definitions of ~70 issues
 3. **`.github/ISSUE_TEMPLATE/`** - Issue templates (Epic, Feature, Bugfix)
 4. **Codebase TODO comments** - Specific implementation requirements
 5. **`.github/copilot/copilot-instructions-examples.md`** - Concrete instruction examples
@@ -46,12 +46,12 @@ When working on this project, Copilot agents should follow these specialized rol
 **Purpose**: Create GitHub issues from the migration plan.
 
 **Instructions**:
-- Reference `docs/issue-breakdown.md` for the complete list of ~70 issues
+- Reference `docs/porting/issue-breakdown.md` for the complete list of ~70 issues
 - Use appropriate templates from `.github/ISSUE_TEMPLATE/`:
   - `epic-template.md` for Epic (parent) issues (8 total)
   - `feature-template.md` for feature implementation issues
   - `bugfix-template.md` for bug fix issues
-- Apply labels according to `docs/github-projects-setup.md`:
+- Apply labels according to `docs/porting/github-projects-setup.md`:
   - One `epic:*` label (combat, unit-pilot, ui, events, data, vb6-legacy, performance, bugfix)
   - One `priority:*` label (critical, high, medium, low)
   - One `type:*` label (epic, feature, enhancement, bugfix, refactor, docs)
@@ -76,7 +76,7 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
   - The specific issue description
   - Related TODO comments in the codebase
   - Surrounding code context
-  - `docs/migration-plan.md` for the overall context
+  - `docs/porting/migration-plan.md` for the overall context
 - Follow these constraints:
   - PR diff should be ≤1000 lines (except for cross-cutting concerns)
   - One issue = One PR
@@ -112,14 +112,14 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
   - Test coverage
   - No introduction of new TODOs (unless justified)
   - Backward compatibility maintained
-- Reference `docs/migration-plan.md` to ensure changes align with overall strategy
+- Reference `docs/porting/migration-plan.md` to ensure changes align with overall strategy
 
 ### 4. Progress Tracking Agent / 進捗管理エージェント
 
 **Purpose**: Track and report project progress.
 
 **Instructions**:
-- Run `bash docs/scripts/progress-report.sh` weekly to generate progress reports
+- Run `bash docs/porting/scripts/progress-report.sh` weekly to generate progress reports
 - Monitor:
   - Issues completed per Epic
   - Milestone progress (Phase 1-4)
@@ -135,10 +135,10 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
 ## Key Files Reference / 主要ファイル参照
 
 ### Documentation / ドキュメント
-- `docs/quick-start.md` - Start here for overview
-- `docs/migration-plan.md` - Overall strategy and Epic definitions
-- `docs/issue-breakdown.md` - Complete list of ~70 issues with details
-- `docs/github-projects-setup.md` - Project management setup guide
+- `docs/porting/quick-start.md` - Start here for overview
+- `docs/porting/migration-plan.md` - Overall strategy and Epic definitions
+- `docs/porting/issue-breakdown.md` - Complete list of ~70 issues with details
+- `docs/porting/github-projects-setup.md` - Project management setup guide
 - `docs/README.md` - Documentation index
 
 ### Templates / テンプレート
@@ -147,9 +147,9 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
 - `.github/ISSUE_TEMPLATE/bugfix-template.md` - For bug fixes
 
 ### Scripts / スクリプト
-- `docs/scripts/create-labels.sh` - Create all labels
-- `docs/scripts/create-milestones.sh` - Create milestones
-- `docs/scripts/progress-report.sh` - Generate progress report
+- `docs/porting/scripts/create-labels.sh` - Create all labels
+- `docs/porting/scripts/create-milestones.sh` - Create milestones
+- `docs/porting/scripts/progress-report.sh` - Generate progress report
 
 ## Label System / ラベルシステム
 
@@ -217,7 +217,7 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
 # 2. Select "Epic Issue Template"
 # 3. Fill in:
 #    - Title: "Epic X: [Category Name]"
-#    - Description from docs/issue-breakdown.md
+#    - Description from docs/porting/issue-breakdown.md
 #    - Labels: type:epic, epic:[category], priority:[level]
 #    - Milestone: Appropriate phase
 # 4. Create issue
@@ -226,7 +226,7 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
 
 ### Creating a Feature Issue
 ```bash
-# 1. Reference docs/issue-breakdown.md for details
+# 1. Reference docs/porting/issue-breakdown.md for details
 # 2. Go to Issues → New Issue
 # 3. Select "Feature Implementation Issue Template"
 # 4. Fill in:
@@ -261,7 +261,7 @@ Body: [Use feature-template.md and fill with content from issue-breakdown.md Iss
 ```bash
 # Generate progress report
 cd /path/to/SRC
-bash docs/scripts/progress-report.sh
+bash docs/porting/scripts/progress-report.sh
 
 # View Epic-specific progress
 gh issue list --label "epic:combat" --state all
@@ -275,7 +275,7 @@ gh api repos/7474/SRC/milestones | jq '.[] | {title, open_issues, closed_issues}
 ### Scenario: Implementing Issue 1.1 (Dodge Attack)
 
 1. **Issue Creation Agent**:
-   - Creates issue from `docs/issue-breakdown.md` Issue 1.1
+   - Creates issue from `docs/porting/issue-breakdown.md` Issue 1.1
    - Title: "Unit.attackcheck.cs: 回避攻撃の実装"
    - Labels: `epic:combat`, `priority:high`, `type:feature`, `size:s`
    - Milestone: Phase 1
@@ -310,7 +310,7 @@ gh api repos/7474/SRC/milestones | jq '.[] | {title, open_issues, closed_issues}
 - Test thoroughly before marking complete
 
 ### For Issue Creation
-- Use exact wording from `docs/issue-breakdown.md`
+- Use exact wording from `docs/porting/issue-breakdown.md`
 - Apply all required labels
 - Link child issues to parent Epics
 - Ensure milestone is set
@@ -356,11 +356,11 @@ gh api repos/7474/SRC/milestones | jq '.[] | {title, open_issues, closed_issues}
 
 ```bash
 # Setup project management
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
+bash docs/porting/scripts/create-labels.sh
+bash docs/porting/scripts/create-milestones.sh
 
 # Generate progress report
-bash docs/scripts/progress-report.sh
+bash docs/porting/scripts/progress-report.sh
 
 # List issues by Epic
 gh issue list --label "epic:combat" --state all
@@ -397,7 +397,7 @@ dotnet build
 - **C# Implementation**: `SRC.Sharp/`
 - **Tests**: `SRC.Sharp/SRCCoreTests/`
 - **Issue Templates**: `.github/ISSUE_TEMPLATE/`
-- **Scripts**: `docs/scripts/`
+- **Scripts**: `docs/porting/scripts/`
 
 ## Contact / 連絡先
 

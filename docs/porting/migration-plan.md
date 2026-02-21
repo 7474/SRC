@@ -2,19 +2,20 @@
 
 ## 概要 / Overview
 
-本ドキュメントは、SRC（Simulation RPG Construction）のC# .NET移植版であるSRC#の移植完了に向けた計画を記載しています。
-C#コード内のTODOコメントとコメントアウトコードを分析し、移植完了までのタスクを整理しました。
+本ドキュメントは、SRC（Simulation RPG Construction）のC# .NET移植版であるSRC#の移植作業の記録と、品質検証・精度向上フェーズの計画を記載しています。
+C#コード内のTODOコメントとコメントアウトコードを分析したTODO消化フェーズは完了し、現在は品質検証・精度向上フェーズにあります。
 
-This document outlines the plan to complete the SRC# (C# .NET port of SRC - Simulation RPG Construction).
-Tasks are organized based on analysis of TODO comments and commented-out code in the C# codebase.
+This document records the SRC# (C# .NET port of SRC - Simulation RPG Construction) migration history and the quality verification/improvement phase plan.
+The TODO消化 (TODO resolution) phase is complete. The project has moved to the quality verification and accuracy improvement phase.
 
 ## 統計 / Statistics
 
-> **2026-02-20 更新 (3回目)** / Updated 2026-02-20
+> **2026-02-21 更新** / Updated 2026-02-21 — TODO消化フェーズ完了 / TODO resolution phase complete
 
-- **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10
-- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8
+- **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10（精査・最適化・リファクタリング課題）
+- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8（精査・最適化・リファクタリング課題）
 - **解消済み TODO**: 137+ (約88%完了) / Resolved TODOs: 137+ (~88% complete)
+- **フェーズ**: **品質検証・精度向上フェーズ** / Phase: **Quality Verification & Improvement**
 - **Main Project**: SRC.Sharp/SRCCore
 
 ### 最近のマージ済みPR / Recently Merged PRs (2026-02-20)
@@ -64,9 +65,15 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 現在の状況 / Current Status
 
-> **2026-02-20 時点**
+> **2026-02-21 時点**
 
-プロジェクトはコード移植フェーズをほぼ完了し、**品質検証・精度向上フェーズ**に移行している。
+**TODO消化フェーズは完了した。** プロジェクトは現在、**品質検証・精度向上フェーズ**にある。
+
+コード移植（TODO消化）の観点では、残存する18件のTODOは「未移植」ではなく、精査・最適化・リファクタリングの性質が強い課題である。基本機能の移植は完了しており、次の焦点は移植されたコードの正確性保証と品質向上にある。
+
+**The TODO resolution phase is complete.** The project is now in the **quality verification and accuracy improvement phase**.
+
+The remaining 18 TODO items are not "unimplemented" features but rather quality, optimization, and refactoring tasks. Core functionality porting is complete; the focus is now on verifying accuracy and improving quality.
 
 - **総合評価レポート**: [移植状況 総合評価レポート](./porting-assessment.md) — 定量分析・リスク分析・GUI評価
 - **品質向上計画**: [移植精度 評価・向上計画](./porting-quality-plan.md) — テスト戦略・GUI検証・ロードマップ
@@ -116,7 +123,8 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 本計画は、Copilot自律エージェントによる単一コマンド運用を基本とします：
 
-- **移植を進める**: `@copilot 移植を進行してください`
+- **品質検証を進める**: `@copilot ユニットテストを補完してください`
+- **移植精度を検証する**: `@copilot 移植精度を検証してください`
 - **進捗を更新する**: `@copilot 進捗を更新してください`
 
 GitHub ProjectsやWebUIの手動セットアップは必須ではありません。
@@ -478,8 +486,9 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ## 更新履歴 / Change History
 
+- 2026-02-21: ドキュメント構造見直し — `docs/porting/` サブディレクトリへ移動、TODO消化フェーズ完了を明記、品質検証フェーズへの移行を反映、運用コマンドを品質検証向けに更新
 - 2026-02-20 (5回目): 移植状況の総合評価と品質向上計画 — [総合評価レポート](./porting-assessment.md)と[精度評価・向上計画](./porting-quality-plan.md)を新規作成、プロジェクトの品質検証フェーズ移行を明記
-- 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/migration-plan.md に追加 (#744)
+- 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/porting/migration-plan.md に追加 (#744)
 - 2026-02-20 (3回目): 移植作業進捗 — CreateIniFile実装、イベント検証コード整理、発進ユニット表示説明追加 (#744)
 - 2026-02-20 (2回目): 進捗更新 — 残存TODO SRCCore 20件・SRCSharpForm 9件に更新、Epic1戦闘システム完了、最近のPR一覧を追加 (#728-#740)
 - 2026-02-20: 進捗更新 — 残存TODO 54件に更新、Epic別進捗状況を反映、最近のPR一覧を追加

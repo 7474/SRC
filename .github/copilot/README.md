@@ -152,7 +152,7 @@ With autonomous agent:
 ┌─────────────────────────────────────────────────────────────┐
 │  Copilot Auto-Assessment                                    │
 │  ✓ Check current state (issues, PRs, TODOs)                │
-│  ✓ Analyze docs/issue-breakdown.md                         │
+│  ✓ Analyze docs/porting/issue-breakdown.md                         │
 │  ✓ Scan codebase for TODOs                                 │
 │  ✓ Select next highest-priority task                       │
 └──────────────────────┬──────────────────────────────────────┘
@@ -200,7 +200,7 @@ cat .github/copilot/copilot-instructions-examples.md
 
 以下の情報を使用：
 - タイトル: "Epic 1: 戦闘システム完成 (Combat System Completion)"
-- 内容: docs/issue-breakdown.md の Epic 1 セクションを参照
+- 内容: docs/porting/issue-breakdown.md の Epic 1 セクションを参照
 - ラベル: type:epic, epic:combat, priority:high
 - マイルストーン: Phase 1: コア機能完成 (v3.1.0)
 ```
@@ -208,7 +208,7 @@ cat .github/copilot/copilot-instructions-examples.md
 ### Daily Workflow
 ```bash
 # Check your assigned role tasks
-# - Issue Creator: Check docs/issue-breakdown.md for next issue to create
+# - Issue Creator: Check docs/porting/issue-breakdown.md for next issue to create
 # - Implementer: Check assigned issues with status:in-progress
 # - Reviewer: Check PRs awaiting review
 # - Tracker: @copilot 進捗を更新してください
@@ -222,11 +222,13 @@ cat .github/copilot/copilot-instructions-examples.md
 ├── quick-reference.md    # Quick reference card
 └── README.md            # This file
 
-docs/                     # Migration plan documentation
+docs/                     # Documentation root
 ├── README.md            # Documentation index
-├── quick-start.md       # Project overview
-├── migration-plan.md    # 8 Epics and overall strategy
-└── issue-breakdown.md   # ~70 specific issues
+└── porting/             # Porting-related documentation
+    ├── README.md        # Porting docs index
+    ├── quick-start.md   # Project overview
+    ├── migration-plan.md    # 8 Epics and overall strategy
+    └── issue-breakdown.md   # ~70 specific issues
 
 .github/ISSUE_TEMPLATE/   # Issue templates
 ├── epic-template.md     # For Epic issues
@@ -248,7 +250,7 @@ docs/                     # Migration plan documentation
 ## 🎯 4 Agent Roles Summary / 4つのエージェント役割サマリー
 
 ### 1. Issue Creation Agent / Issue作成エージェント
-- **Reads**: `docs/issue-breakdown.md`
+- **Reads**: `docs/porting/issue-breakdown.md`
 - **Creates**: GitHub Issues using templates
 - **Applies**: Proper labels and milestones
 - **Links**: Child issues to parent Epics
@@ -300,10 +302,10 @@ dotnet build
 
 ## 🔗 Related Resources / 関連リソース
 
-- **Migration Plan**: [docs/migration-plan.md](../../docs/migration-plan.md)
-- **Issue Breakdown**: [docs/issue-breakdown.md](../../docs/issue-breakdown.md)
-- **Quick Start**: [docs/quick-start.md](../../docs/quick-start.md)
-- **GitHub Projects Setup**: [docs/github-projects-setup.md](../../docs/github-projects-setup.md)
+- **Migration Plan**: [docs/porting/migration-plan.md](../../docs/porting/migration-plan.md)
+- **Issue Breakdown**: [docs/porting/issue-breakdown.md](../../docs/porting/issue-breakdown.md)
+- **Quick Start**: [docs/porting/quick-start.md](../../docs/porting/quick-start.md)
+- **GitHub Projects Setup**: [docs/porting/github-projects-setup.md](../../docs/porting/github-projects-setup.md)
 
 ## 💡 Tips for Agents / エージェント向けTips
 

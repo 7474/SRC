@@ -15,8 +15,8 @@ SRC# 移植完了プロジェクトを始めるための簡易ガイドです。
 ```bash
 # リポジトリのルートディレクトリで実行
 cd /path/to/SRC
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
+bash docs/porting/scripts/create-labels.sh
+bash docs/porting/scripts/create-milestones.sh
 ```
 
 ### ステップ2: Epic Issueの作成
@@ -179,9 +179,9 @@ gh issue list --label "epic:combat" --state closed | wc -l
 - [SRC# デモ](https://7474.github.io/SRC/)
 
 ### Issue テンプレート
-- [Epic テンプレート](../.github/ISSUE_TEMPLATE/epic-template.md)
-- [Feature テンプレート](../.github/ISSUE_TEMPLATE/feature-template.md)
-- [Bugfix テンプレート](../.github/ISSUE_TEMPLATE/bugfix-template.md)
+- [Epic テンプレート](../../.github/ISSUE_TEMPLATE/epic-template.md)
+- [Feature テンプレート](../../.github/ISSUE_TEMPLATE/feature-template.md)
+- [Bugfix テンプレート](../../.github/ISSUE_TEMPLATE/bugfix-template.md)
 
 ## 💡 Tips
 
