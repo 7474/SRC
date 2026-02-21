@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+      workflows: write
 
     steps:
       - uses: actions/checkout@v6
@@ -27,7 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit compiled lock files
+      - name: Create PR with compiled lock files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -35,8 +37,15 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: compile agentic workflow complete-unit-tests [skip ci]"
-            git push
+            BRANCH="compile/agentic-workflow-${{ github.run_id }}"
+            git checkout -b "$BRANCH"
+            git commit -m "chore: compile agentic workflow complete-unit-tests"
+            git push origin "$BRANCH"
+            gh pr create \
+              --title "chore: compile agentic workflow complete-unit-tests" \
+              --body "Automated PR: compiled lock file for complete-unit-tests agentic workflow." \
+              --base master \
+              --head "$BRANCH"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
