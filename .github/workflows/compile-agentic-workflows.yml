@@ -13,13 +13,13 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      workflows: write
 
     steps:
 
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Setup gh-aw CLI
         uses: github/gh-aw/actions/setup-cli@v0.47.6
