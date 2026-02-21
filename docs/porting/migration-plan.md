@@ -18,10 +18,14 @@ The TODO消化 (TODO resolution) phase is complete. The project has moved to the
 - **フェーズ**: **品質検証・精度向上フェーズ** / Phase: **Quality Verification & Improvement**
 - **Main Project**: SRC.Sharp/SRCCore
 
-### 最近のマージ済みPR / Recently Merged PRs (2026-02-20)
+### 最近のマージ済みPR / Recently Merged PRs (2026-02-21)
 
 | # | タイトル / Title | 日付 |
 |---|---|---|
+| #774 | 品質検証フェーズ向けCopilotインストラクション更新・自律運用プロトコル整備 | 2026-02-21 |
+| #773 | docs: 移植ドキュメントをdocs/porting/へ移動しTODO消化フェーズ完了を反映 | 2026-02-21 |
+| #772 | 広域ユニットテスト追加によるカバレッジ向上 | 2026-02-21 |
+| #770 | ユニットテストを広域追加しカバレッジを大幅向上 | 2026-02-21 |
 | #744 | 移植完了: 全TODO解消・CreateIniFile実装・イベント検証コード整理 | 2026-02-20 |
 | #741 | Port ValidateEnvironment, add Plana safety check in TryInstantAbility, clean up resolved TODOs | 2026-02-20 |
 | #740 | Remove obsolete Router.PreferExactMatches property | 2026-02-20 |
