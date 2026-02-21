@@ -42,6 +42,12 @@ This single command allows Copilot to assess the current state and update docume
 
 #### ユニットテストを補完する / Complete unit tests
 
+> **🤖 自動化済み / Automated**: このタスクは **GitHub Agentic Workflow** によって毎週月曜日に自動実行されます。  
+> **🤖 Automated**: This task runs automatically every Monday via **GitHub Agentic Workflow**.  
+> ワークフロー: `.github/workflows/complete-unit-tests.md` / Workflow: `.github/workflows/complete-unit-tests.md`
+
+手動で実行する場合 / To run manually:
+
 ```
 @copilot ユニットテストを補完してください
 ```
@@ -50,6 +56,13 @@ This single command allows Copilot to assess the current state and update docume
 
 ```
 @copilot Complete the unit tests
+```
+
+または、GitHub ActionsのUI から手動トリガーも可能です：  
+Or trigger manually from GitHub Actions UI:
+
+```
+gh workflow run complete-unit-tests.lock.yml
 ```
 
 これだけで、Copilotが移植済みコマンドのうちテストが不足しているものを特定し、
@@ -827,6 +840,6 @@ Copilot will work until:
 
 ---
 
-**Version**: 2.1.0 - Fully Autonomous + Progress Update
-**Last Updated**: 2026-02-20
-**Mode**: Single-Command Operation
+**Version**: 2.2.0 - Fully Autonomous + Progress Update + GitHub Agentic Workflow
+**Last Updated**: 2026-02-21
+**Mode**: Single-Command Operation + Automated Weekly Schedule
