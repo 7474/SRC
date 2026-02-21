@@ -108,6 +108,189 @@ The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 
 - `docs/porting/porting-quality-plan.md` を参照して変更が品質向上方針に沿っているか確認
 - 後方互換性が維持されているか（特にセーブデータ、シナリオファイル）
 
+## 🤖 Autonomous Operation Protocol / 自律運用プロトコル
+
+単一コマンドを受けた際の自律実行手順。各コマンドは「現状評価 → 実行 → 報告 → 継続確認」のサイクルで動作します。
+
+### `@copilot ユニットテストを補完してください`
+
+#### Step 1: 現状評価 / Assess Current State
+
+```bash
+# 実装済みコマンド数を確認
+find SRC.Sharp/SRCCore/CmdDatas/Commands -name "*.cs" | sort
+
+# 既存テストファイルを確認
+ls SRC.Sharp/SRCCoreTests/CmdDatas/
+
+# 現在のテスト数
+cd SRC.Sharp && dotnet test --list-tests 2>/dev/null | wc -l
+```
+
+#### Step 2: 次のタスク選択 / Select Next Task
+
+未テストコマンドを優先度順で選択：
+1. 最も頻繁に使われるコマンド（ヘルプドキュメントが充実しているもの）
+2. 既存テストファイルに追加できるもの（新規ファイル不要）
+3. 依存関係が少なくテスト書きやすいもの
+
+スキップ対象（テストの意味が薄いもの）：
+- `NotImplementedCmd`、`NotSupportedCmd`、`NopCmd`
+
+#### Step 3: 実行 / Execute
+
+1. `SRC.Sharp.Help/src/[コマンド名]コマンド.md` を読んで期待動作を把握
+2. 「書式」「解説」「例」セクションからテストケースを設計
+3. テスト実装（パターン: 既存の `SwitchDoLoopCmdTests.cs` などを参照）
+4. 齟齬があれば実装を修正してからテストを作成
+5. `cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj` で確認
+6. PRを作成
+
+#### Step 4: 報告 / Report
+
+```
+🧪 ユニットテスト補完 結果 (YYYY-MM-DD)
+
+## 追加したテスト
+- [CommandName]Cmd: N件追加 ([FileName].cs)
+- ...
+
+## テスト結果
+Passed: X, Skipped: Y, Failed: 0
+
+## 齟齬の報告（あれば）
+- [CommandName]: [内容] → 実装修正済み / Issue #XXX として記録
+
+## 残り未テストコマンド（抜粋）
+- [次の候補コマンド名]
+- ...（全体: Z件）
+
+続けますか？ Y/N
+```
+
+---
+
+### `@copilot 移植精度を検証してください`
+
+#### Step 1: 現状評価 / Assess Current State
+
+```bash
+# テスト件数と直近の変化
+cd SRC.Sharp && dotnet test --list-tests 2>/dev/null | wc -l
+
+# MockGUI の未実装数
+grep -rn "throw new NotImplementedException" SRC.Sharp/SRCCoreTests/ | wc -l
+
+# 残存TODO数
+grep -rn "// TODO" SRC.Sharp/SRCCore/ SRC.Sharp/SRCSharpForm/ | wc -l
+```
+
+#### Step 2: 検証対象の選択 / Select Verification Target
+
+`docs/porting/porting-quality-plan.md` の優先度順で対象を選択：
+1. 🔴 高優先：Units/ のテスト補強、Events/ のテスト作成
+2. 🟡 中優先：CmdDatas/ の統合テスト、セーブデータラウンドトリップ
+3. 🟢 低優先：MockGUI NotImplementedException の削減
+
+#### Step 3: 実行 / Execute
+
+- VB6元コード（`SRC/SRC_20121125/`）と比較してテスト期待値を決定
+- テスト追加 or MockGUI stub 追加 or 実装修正
+- テスト実行で確認
+
+#### Step 4: 報告 / Report
+
+```
+🔍 移植精度検証 結果 (YYYY-MM-DD)
+
+## 検証内容
+- 対象: [ファイル/領域]
+- VB6元コードとの差異: [なし / N件発見]
+
+## 修正した差異
+- [ファイル]: [内容] → 修正済み（PR #XXX）
+
+## テスト追加
+- 追加: N件（合計: M件）
+
+## MockGUI NotImplementedException
+- 削減: X → Y件
+
+続けますか？ Y/N
+```
+
+---
+
+### `@copilot 進捗を更新してください`
+
+#### Step 1: 現状収集 / Collect Current State
+
+```bash
+# クローズされたIssueを確認
+gh issue list --state closed --limit 10 --json number,title,closedAt
+
+# 最近マージされたPR
+gh pr list --state merged --limit 10 --json number,title,mergedAt
+
+# 残存TODO数
+grep -rn "// TODO" SRC.Sharp/SRCCore/ | wc -l
+grep -rn "// TODO" SRC.Sharp/SRCSharpForm/ | wc -l
+
+# テスト件数
+cd SRC.Sharp && dotnet test --list-tests 2>/dev/null | wc -l
+```
+
+#### Step 2: ドキュメント更新 / Update Documents
+
+変化があった場合、`docs/porting/migration-plan.md` の以下を更新：
+- 残存TODO数（Epic別）
+- 統計セクション（テスト数など）
+- 最近マージされたPR一覧
+
+#### Step 3: 報告 / Report
+
+```
+📊 進捗レポート (YYYY-MM-DD)
+
+## 前回更新からの変化
+- クローズされたIssue: #XXX, #YYY
+- マージされたPR: #ZZZ
+- 追加されたテスト: +N件
+
+## 現在の状態
+- 残存TODO (SRCCore): X件
+- 残存TODO (SRCSharpForm): Y件
+- テストメソッド数: Z件
+
+## 更新したドキュメント
+- [更新内容があれば記載]
+
+次のアクション候補:
+- @copilot ユニットテストを補完してください
+- @copilot 移植精度を検証してください
+```
+
+---
+
+### 自己修正プロトコル / Self-Correction Protocol
+
+#### テスト失敗時
+```
+1. 失敗テストのスタックトレースを読む
+2. 追加した変更が原因か確認
+3. 原因が自分の変更 → 修正して再テスト
+4. 原因が既存コードの問題 → Issue として記録し、作業を分離
+5. 解決できない場合 → 「🔴 ブロッカー」として人間の判断を求める
+```
+
+#### ビルド失敗時
+```
+1. コンパイルエラーを読む
+2. 構文エラー・参照エラーを修正
+3. 再ビルド
+4. 解決できない場合 → 変更を revert して別アプローチを検討
+```
+
 ## Common Tasks / 共通タスク
 
 ### ユニットテストを補完する
@@ -208,6 +391,6 @@ ls SRC.Sharp/SRCCoreTests/CmdDatas/ | wc -l
 
 ---
 
-**Version**: 2.0.0  
+**Version**: 2.1.0  
 **Last Updated**: 2026-02-21  
 **Phase**: Quality Verification & Accuracy Improvement
