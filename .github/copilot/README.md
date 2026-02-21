@@ -28,6 +28,27 @@ With these single commands, Copilot autonomously advances migration work or refl
 
 ---
 
+## 🔄 GitHub Agentic Workflows / 自動化ワークフロー
+
+**ユニットテスト補完は自動化されています / Unit test completion is automated:**
+
+`.github/workflows/complete-unit-tests.md` により、毎週月曜日に自動実行されます。
+
+The workflow at `.github/workflows/complete-unit-tests.md` runs automatically every Monday.
+
+手動実行も可能です / Can also run manually:
+```bash
+gh workflow run complete-unit-tests.lock.yml
+```
+
+> **セットアップ注意 / Setup Note**: ワークフローを有効化するには `gh aw compile` の実行が必要です。  
+> `compile-agentic-workflows.yml` が自動でコンパイルします (`.md` ファイルのpush時)。
+>
+> To activate the workflow, run `gh aw compile`. The `compile-agentic-workflows.yml`  
+> workflow automatically compiles it when the `.md` file is pushed to master.
+
+---
+
 ## 📚 Files / ファイル
 
 ### 1. [autonomous-agent.md](./autonomous-agent.md) ⭐ **最優先 / Top Priority**
