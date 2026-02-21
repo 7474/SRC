@@ -11,8 +11,7 @@ description: |
   documentation as the expected behavior specification.
 
 on:
-  schedule:
-    - cron: "0 2 * * 1"  # 毎週月曜日 02:00 UTC / Every Monday at 02:00 UTC
+  schedule: weekly on monday
   workflow_dispatch:
 
 permissions: read-all
