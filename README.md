@@ -69,30 +69,3 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 1. SRCSharpForm.exe を実行する
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
-
-## 🤖 Copilot自律運用モード / Autonomous Operation Mode
-
-移植作業はCopilotに以下の一文を指示するだけで自律的に進行します。
-
-You can proceed with the migration by giving Copilot this single instruction:
-
-```
-@copilot 移植を進行してください
-```
-
-Copilotが自動的にタスクを選択し、実装・テスト・PR作成まで行います。セットアップ不要です。
-
-Copilot automatically selects the next task, implements it, adds tests, and creates a PR. No setup required.
-
-詳細は [.github/copilot/README.md](./.github/copilot/README.md) を参照してください。
-
-See [.github/copilot/README.md](./.github/copilot/README.md) for details.
-
-### ドキュメント / Documentation
-
-- **[🤖 Copilotエージェント指示書](./.github/copilot/README.md)** - 自律運用モードの詳細
-- **[📖 クイックスタートガイド](./docs/quick-start.md)** - まずはここから！
-- **[📋 移植完了計画](./docs/migration-plan.md)** - プロジェクト全体の概要
-- **[📝 個別Issue詳細](./docs/issue-breakdown.md)** - 約70個の具体的なIssueリスト
-- **[📚 docs/README.md](./docs/README.md)** - ドキュメント全体の目次
-
