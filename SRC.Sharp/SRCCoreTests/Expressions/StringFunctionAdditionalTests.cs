@@ -78,17 +78,17 @@ namespace SRCCore.Expressions.Tests
         public void Replace_WithStartAndCount_ReplacesOnlyInWindow()
         {
             var exp = Create();
-            // Replace("abcabc","a","X",1,3) → 1文字目から3文字"abc"内の"a"を置換
-            // Left("abcabc",0)="" + "Xbc" + Right("abcabc",3)="abc" → "Xbcabc"
-            Assert.AreEqual("Xbcabc", exp.GetValueAsString("Replace(\"abcabc\",\"a\",\"X\",1,3)"));
+            // Replace("abcabc","a","X",1,3) → 1文字目から3文字"abc"内の"a"を置換（VB6互換: 末尾連結は-1分短い）
+            // Left("abcabc",0)="" + "Xbc" + Right("abcabc",2)="bc" → "Xbcbc"
+            Assert.AreEqual("Xbcbc", exp.GetValueAsString("Replace(\"abcabc\",\"a\",\"X\",1,3)"));
         }
 
         [TestMethod]
-        public void Replace_WithCountZero_ReturnsOriginal()
+        public void Replace_WithCountZero_WindowIsEmpty()
         {
             var exp = Create();
-            // Replace("abc","a","X",1,0) → 0文字ウィンドウ → 置換なし → "abc"
-            Assert.AreEqual("abc", exp.GetValueAsString("Replace(\"abc\",\"a\",\"X\",1,0)"));
+            // VB6互換の計算式: Left(0文字) + "" + Right(Len-0-1=2) → "bc"
+            Assert.AreEqual("bc", exp.GetValueAsString("Replace(\"abc\",\"a\",\"X\",1,0)"));
         }
 
         // ──────────────────────────────────────────────

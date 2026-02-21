@@ -535,7 +535,7 @@ namespace SRCCore.Expressions.Functions
                         var num2 = SRC.Expression.GetValueAsLong(@params[5], is_term[5]);
                         var buf2 = Strings.Mid(buf, num, num2);
                         buf2 = buf2.Replace(SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
-                        str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1));
+                        str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1) - 1);
                         break;
                     }
 
