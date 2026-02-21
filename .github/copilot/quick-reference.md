@@ -1,112 +1,118 @@
 # Copilot Quick Reference / クイックリファレンス
 
-このファイルは、GitHub Copilot Agentが SRC# 移植プロジェクトを運用するための簡易リファレンスです。
+SRC# **品質検証・精度向上フェーズ**の簡易リファレンス。
 
-## 📋 Migration Plan Documentation
+## 📋 基本ドキュメント / Key Documents
 
-### Start Here / ここから始める
-1. **[docs/porting/migration-plan.md](../../docs/porting/migration-plan.md)** - 全体戦略と残存課題
-2. **[docs/porting/porting-quality-plan.md](../../docs/porting/porting-quality-plan.md)** - 品質検証フェーズのロードマップ
-3. **[docs/porting/issue-breakdown.md](../../docs/porting/issue-breakdown.md)** - 過去に定義した約70個のIssue（参考）
-4. **[agent-instructions.md](./agent-instructions.md)** - 詳細な運用手順
+1. **[docs/porting/porting-quality-plan.md](../../docs/porting/porting-quality-plan.md)** — 品質向上ロードマップ（Phase Q1〜Q4）
+2. **[docs/porting/porting-assessment.md](../../docs/porting/porting-assessment.md)** — 移植状況総合評価
+3. **[docs/porting/migration-plan.md](../../docs/porting/migration-plan.md)** — 残存TODO一覧と現在の状況
+4. **[agent-instructions.md](./agent-instructions.md)** — 詳細な運用手順
 
-## 🎯 4 Agent Roles
+## 🤖 基本コマンド / Basic Commands
 
-### 2. Implementation Agent
-- **Input**: GitHub Issue with TODO reference
-- **Output**: PR ≤1000 lines with tests
-- **Test**: `cd SRC.Sharp && dotnet test`
+```
+@copilot ユニットテストを補完してください
+@copilot 移植精度を検証してください
+@copilot 進捗を更新してください
+```
 
-### 3. Review Agent
-- **Check**: Size, tests, docs, no side effects
-- **Reference**: `docs/migration-plan.md` for alignment
+## 🎯 3つのエージェント役割 / 3 Agent Roles
 
-## 📂 Code Locations by Epic
+### 1. Test Completion Agent / テスト補完エージェント
+- **入力**: 未テストコマンド + ヘルプドキュメント
+- **出力**: ユニットテスト（PR ≤1000行）
+- **基準**: `SRC.Sharp.Help/src/[コマンド名]コマンド.md`
+- **実行**: `cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj`
 
-| Epic | Location |
-|------|----------|
-| 1. Combat | `Units/Unit.attackcheck.cs`, `Unit.attack.cs`, `Command.attack.cs` |
-| 2. Unit/Pilot | `Units/Unit.lookup.cs`, `Pilots/Pilot.skill.cs`, `Unit.ability.cs` |
-| 3. GUI/UI | `SRCSharpForm/Forms/Main.gui*.cs`, `UIInterface/*.cs` |
-| 4. Events | `CmdDatas/Commands/**/*.cs`, `Events/Event.*.cs` |
-| 5. Data | `SRC.save.cs`, `SRC.config.cs`, `Config/*.cs` |
-| 6. VB6 Legacy | `VB/*.cs`, `Lib/FileSystem.cs` |
-| 7. Performance | `Sound.cs`, various |
-| 8. Bugfix | Various per issue |
+### 2. Implementation Agent / 実装エージェント
+- **入力**: 残存TODOコメント + VB6元コード
+- **出力**: 修正 + テスト（PR ≤1000行）
+- **参照**: `SRC/SRC_20121125/`（VB6元コード）
+- **実行**: `cd SRC.Sharp && dotnet test`
 
-All paths relative to `SRC.Sharp/SRCCore/`
+### 3. Review Agent / レビューエージェント
+- **確認**: PR規模、テスト、後方互換性、品質計画との整合
+- **参照**: `docs/porting/porting-quality-plan.md`
 
-## ⚡ Quick Commands
+## 📂 テスト対象の優先順位 / Test Priority
+
+| 領域 | コード行数 | 現テスト数 | 目標 | 優先度 |
+|------|-----------|-----------|------|--------|
+| Units/ | 86,480行 | 53件 | 150件+ | 🔴 高 |
+| Events/ | 8,789行 | 0件 | 30件+ | 🔴 高 |
+| CmdDatas/ | 21,172行 | 99件 | 150件+ | 🟡 中 |
+| Pilots/ | 4,530行 | 9件 | 30件+ | 🟡 中 |
+
+## ⚡ クイックコマンド / Quick Commands
 
 ```bash
-# Development
-cd SRC.Sharp
-dotnet test
-dotnet build
+# テスト実行
+cd SRC.Sharp && dotnet test
 
-# Issue Management
-gh issue create    # Create new issue
-gh pr create       # Create PR
+# 残存TODOを確認
+grep -rn "// TODO" SRC.Sharp/SRCCore/
+grep -rn "// TODO" SRC.Sharp/SRCSharpForm/
+
+# 未テストコマンドを調査
+find SRC.Sharp/SRCCore/CmdDatas/Commands -name "*.cs" | wc -l
+ls SRC.Sharp/SRCCoreTests/CmdDatas/
+
+# MockGUI NotImplementedException数を確認
+grep -rn "throw new NotImplementedException" SRC.Sharp/SRCCoreTests/ | wc -l
+
+# PR作成
+gh pr create
 ```
 
-## ✅ Implementation Checklist
+## ✅ テスト作成チェックリスト / Test Checklist
 
-- [ ] Read issue + TODO comment + surrounding code
-- [ ] Keep PR ≤1000 lines
-- [ ] Add tests in `SRCCoreTests/`
-- [ ] Run tests: `dotnet test`
-- [ ] Update docs if API changed
-- [ ] PR description: `Closes #XXX`
+- [ ] ヘルプドキュメント（`SRC.Sharp.Help/src/[コマンド名]コマンド.md`）を確認
+- [ ] 正常動作テストを1件以上追加
+- [ ] エラーテストを1件以上追加
+- [ ] 実装とヘルプの齟齬を確認（あれば実装を修正）
+- [ ] `dotnet test` でパスを確認
+- [ ] PR差分が1000行以下
 
-## ✅ Review Checklist
+## ✅ TODO修正チェックリスト / TODO Fix Checklist
 
-- [ ] PR size ≤1000 lines (or justified)
-- [ ] Tests added/updated
-- [ ] Documentation updated (if needed)
-- [ ] No unrelated changes
-- [ ] TODO comment addressed
-- [ ] No regression (existing tests pass)
-- [ ] Code quality + consistency
+- [ ] VB6元コード（`SRC/SRC_20121125/`）で期待動作を確認
+- [ ] 最小限の変更で修正
+- [ ] 回帰テストを追加
+- [ ] `dotnet test` でパスを確認
+- [ ] PR説明に `Closes #XXX`
 
-## 🚨 Common Issues
+## ✅ レビューチェックリスト / Review Checklist
 
-| Issue | Solution |
-|-------|----------|
-| PR > 1000 lines | Split into smaller issues (unless cross-cutting) |
-| Test failures | Check for side effects, update tests |
-| Unclear TODO | Check `SRC/SRC_20121125/` or `SRC.NET/`, ask in issue |
-| Dependency blocked | Add `status:blocked`, work on other issues |
-| Scope creep | Stick to TODO, create new issues for discoveries |
+- [ ] PR差分が1000行以下（超過なら理由を確認）
+- [ ] テストが追加・更新されている
+- [ ] 後方互換性が維持されている（セーブデータ、シナリオファイル）
+- [ ] 不必要な変更が含まれていない
+- [ ] 既存テストが全て通過
 
-## 📊 Epic Summary
+## 🚨 よくある問題 / Common Issues
 
-| # | Epic | Issues | Priority | Phase |
-|---|------|--------|----------|-------|
-| 1 | Combat System | 15-20 | High | 1-2 |
-| 2 | Unit/Pilot | 12-15 | High | 1 |
-| 3 | GUI/UI | 8-10 | Medium | 2 |
-| 4 | Events/Commands | 10-12 | Medium | 2 |
-| 5 | Data Management | 5-7 | Medium | 3 |
-| 6 | VB6 Legacy | 5-8 | Low | 4 |
-| 7 | Performance | 5-7 | Low | 4 |
-| 8 | Bug Fixes | 8-10 | Medium | 3 |
+| 問題 | 解決策 |
+|------|--------|
+| テスト失敗 | 副作用を確認、既存動作仮定を壊していないか確認 |
+| VB6との動作差異 | `SRC/SRC_20121125/` で確認、差異をIssueに記録 |
+| MockGUI NotImplementedException | テストをコアロジックに限定、または必要なstubを追加 |
+| PR > 1000行 | 小さいIssueに分割（横断的変更を除く） |
 
-**Total**: ~70 issues, 18-25k line changes, 12-18 months
+## 📊 品質フェーズ KPI / Quality Phase KPIs
 
-## 📝 Commit Message Format
+| 指標 | 現状（2026-02-21） | Phase Q1目標 |
+|------|-------------------|-------------|
+| テストメソッド数 | ~253 | 400+ |
+| コードカバレッジ（SRCCore） | 推定15% | 25% |
+| MockGUI NotImplementedException | 132件 | 100件以下 |
+| 残存TODO数 | 18 | 縮小 |
 
-```
-[Epic X.Y] Brief description (Closes #IssueNumber)
+## 🔗 主要リンク / Key Links
 
-Example:
-[Epic 1.1] Implement dodge attack in Unit.attackcheck.cs (Closes #123)
-```
-
-## 🔗 Key Links
-
-- **Docs Index**: [docs/README.md](../../docs/README.md)
-- **Porting Docs**: [docs/porting/README.md](../../docs/porting/README.md)
-- **Full Instructions**: [agent-instructions.md](./agent-instructions.md)
+- **品質計画**: [porting-quality-plan.md](../../docs/porting/porting-quality-plan.md)
+- **評価レポート**: [porting-assessment.md](../../docs/porting/porting-assessment.md)
+- **詳細手順**: [agent-instructions.md](./agent-instructions.md)
 
 ---
 
