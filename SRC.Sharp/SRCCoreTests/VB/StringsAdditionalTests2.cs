@@ -14,10 +14,9 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void InStr_StartPosBeyondString_ThrowsException()
+        public void InStr_StartPosBeyondString_ReturnsZero()
         {
-            _ = Strings.InStr(100, "hello", "l");
+            Assert.AreEqual(0, Strings.InStr(100, "hello", "l"));
         }
 
         [TestMethod]
@@ -43,10 +42,9 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void Left_NegativeLength_ThrowsException()
+        public void Left_NegativeLength_ReturnsEmpty()
         {
-            _ = Strings.Left("hello", -1);
+            Assert.AreEqual("", Strings.Left("hello", -1));
         }
 
         [TestMethod]
@@ -60,10 +58,9 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void Right_NegativeLength_ThrowsException()
+        public void Right_NegativeLength_ReturnsEmpty()
         {
-            _ = Strings.Right("hello", -1);
+            Assert.AreEqual("", Strings.Right("hello", -1));
         }
 
         [TestMethod]
@@ -83,17 +80,15 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void Mid_StartPosZero_ThrowsException()
+        public void Mid_StartPosZero_ReturnsEmpty()
         {
-            _ = Strings.Mid("hello", 0, 2);
+            Assert.AreEqual("", Strings.Mid("hello", 0, 2));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void Mid_StartPosNegative_ThrowsException()
+        public void Mid_StartPosNegative_ReturnsEmpty()
         {
-            _ = Strings.Mid("hello", -1, 2);
+            Assert.AreEqual("", Strings.Mid("hello", -1, 2));
         }
 
         [TestMethod]
@@ -185,10 +180,9 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
-        public void Space_NegativeSpaces_ThrowsException()
+        public void Space_NegativeSpaces_ReturnsEmpty()
         {
-            _ = Strings.Space(-1);
+            Assert.AreEqual("", Strings.Space(-1));
         }
 
         // ──────────────────────────────────────────────
