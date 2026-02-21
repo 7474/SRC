@@ -121,5 +121,45 @@ namespace SRCCore.Models.Tests
             var md = new MessageData(src) { Name = "アムロ" };
             Assert.AreEqual("アムロ", md.Name);
         }
+
+        [TestMethod]
+        public void MessageData_SelectMessage_射撃は攻撃にもマッチ()
+        {
+            var src = CreateSRC();
+            var md = new MessageData(src);
+            md.AddMessage("攻撃", "攻撃メッセージ");
+
+            // 「射撃」は「攻撃」にもマッチする
+            var result = md.SelectMessage("射撃");
+            Assert.AreEqual("攻撃メッセージ", result);
+        }
+
+        [TestMethod]
+        public void MessageData_AddMessage_ItemSituationCorrect()
+        {
+            var src = CreateSRC();
+            var md = new MessageData(src);
+            md.AddMessage("撃墜", "やられた！");
+            Assert.AreEqual("撃墜", md.Items[0].Situation);
+        }
+
+        [TestMethod]
+        public void MessageData_AddMessage_ItemMessageCorrect()
+        {
+            var src = CreateSRC();
+            var md = new MessageData(src);
+            md.AddMessage("回避", "かわした！");
+            Assert.AreEqual("かわした！", md.Items[0].Message);
+        }
+
+        [TestMethod]
+        public void DialogItem_Constructor_DifferentValues_AreIndependent()
+        {
+            var item1 = new DialogItem("A", "msgA");
+            var item2 = new DialogItem("B", "msgB");
+            Assert.AreEqual("A", item1.strName);
+            Assert.AreEqual("B", item2.strName);
+            Assert.AreNotEqual(item1.strName, item2.strName);
+        }
     }
 }

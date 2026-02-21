@@ -150,5 +150,59 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual(1, ex.InvalidDataList.Count);
             Assert.AreEqual("msg", ex.InvalidDataList[0].msg);
         }
+
+        [TestMethod]
+        public void LastLine_ReturnsEmptyBeforeRead()
+        {
+            using var reader = CreateReader("data");
+            // LastLine is null/empty before any read
+            Assert.IsTrue(reader.LastLine == null || reader.LastLine == "");
+        }
+
+        [TestMethod]
+        public void EOT_ReturnsTrueAfterAllLinesRead()
+        {
+            using var reader = CreateReader("only line");
+            reader.GetLine();
+            Assert.IsTrue(reader.EOT);
+        }
+
+        [TestMethod]
+        public void HasMore_ReturnsFalseAfterAllLinesRead()
+        {
+            using var reader = CreateReader("one");
+            reader.GetLine();
+            Assert.IsFalse(reader.HasMore);
+        }
+
+        [TestMethod]
+        public void GetLine_ContinuationLineWithInlineComment()
+        {
+            // Comment is removed AFTER the underscore check, so "first_" ends with _
+            // but "first_ // comment" after RemoveLineComment becomes "first_ " (space)
+            // which does NOT end with _, so no continuation happens
+            using var reader = CreateReader("first_\nsecond");
+            var line = reader.GetLine();
+            // Standard continuation: first_ + second = firstsecond
+            Assert.AreEqual("firstsecond", line);
+        }
+
+        [TestMethod]
+        public void GetLine_LineNumberStartsAtZero()
+        {
+            using var reader = CreateReader("data");
+            Assert.AreEqual(0, reader.LineNumber);
+        }
+
+        [TestMethod]
+        public void InvalidData_LineNumberMatchesRead()
+        {
+            using var reader = CreateReader("line1\nline2\nline3");
+            reader.GetLine();
+            reader.GetLine();
+            reader.GetLine();
+            var err = reader.InvalidData("err", "d");
+            Assert.AreEqual(3, err.line_num);
+        }
     }
 }

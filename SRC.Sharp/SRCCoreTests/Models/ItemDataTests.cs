@@ -176,5 +176,68 @@ namespace SRCCore.Models.Tests
             // 大型アイテム (レベル1) = サイズ2
             Assert.AreEqual(2, item.Size());
         }
+
+        [TestMethod]
+        public void ItemData_Nickname_CanBeSetAndRead()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src) { Name = "ガンダムソード" };
+            item.Nickname = "伝説の剣";
+            // Nickname property does expression evaluation; just verify it doesn't throw
+            var nick = item.Nickname;
+            Assert.IsNotNull(nick);
+        }
+
+        [TestMethod]
+        public void ItemData_KanaName_CanBeSetAndRead()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            item.KanaName = "がんだむそーど";
+            Assert.AreEqual("がんだむそーど", item.KanaName);
+        }
+
+        [TestMethod]
+        public void FeatureData_ExistingFeature_ReturnsData()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            item.AddFeature("特殊=カスタムデータ");
+            Assert.AreEqual("カスタムデータ", item.FeatureData("特殊"));
+        }
+
+        [TestMethod]
+        public void FeatureLevel_DefaultLevel_ReturnsOne()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            item.AddFeature("修理");
+            Assert.AreEqual(1d, item.FeatureLevel("修理"));
+        }
+
+        [TestMethod]
+        public void AddWeapon_ReturnsWeaponData()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            var weapon = item.AddWeapon("ビームカノン");
+            Assert.IsNotNull(weapon);
+        }
+
+        [TestMethod]
+        public void ItemData_HP_DefaultIsZero()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            Assert.AreEqual(0, item.HP);
+        }
+
+        [TestMethod]
+        public void ItemData_EN_DefaultIsZero()
+        {
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            Assert.AreEqual(0, item.EN);
+        }
     }
 }

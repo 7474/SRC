@@ -82,5 +82,58 @@ namespace SRCCore.Lib.Tests
             var result = FileSystem.Dir(filePath, FileAttribute.Directory);
             Assert.AreNotEqual("", result);
         }
+
+        [TestMethod]
+        public void Dir_WithNormalAttribute_FileExists_ReturnsNonEmpty()
+        {
+            var filePath = Path.Combine(_tempDir, "normal.txt");
+            File.WriteAllText(filePath, "data");
+
+            var result = FileSystem.Dir(filePath, FileAttribute.Normal);
+            Assert.AreNotEqual("", result);
+        }
+
+        [TestMethod]
+        public void Dir_WithNormalAttribute_FileMissing_ReturnsEmpty()
+        {
+            var result = FileSystem.Dir(Path.Combine(_tempDir, "missing.txt"), FileAttribute.Normal);
+            Assert.AreEqual("", result);
+        }
+
+        [TestMethod]
+        public void Dir_WithArchiveAttribute_FileExists_ReturnsNonEmpty()
+        {
+            var filePath = Path.Combine(_tempDir, "archive.txt");
+            File.WriteAllText(filePath, "content");
+
+            // Archive attribute should not throw and file lookup should still work
+            var result = FileSystem.Dir(filePath, FileAttribute.Archive);
+            Assert.AreNotEqual("", result);
+        }
+
+        [TestMethod]
+        public void Dir_ThrowsNotSupported_WhenVolumeAndDirectoryFlag()
+        {
+            Assert.ThrowsException<NotSupportedException>(() =>
+                FileSystem.Dir(_tempDir, FileAttribute.Volume | FileAttribute.Directory));
+        }
+
+        [TestMethod]
+        public void FileAttribute_Directory_HasExpectedValue()
+        {
+            Assert.AreEqual(16, (int)FileAttribute.Directory);
+        }
+
+        [TestMethod]
+        public void FileAttribute_Normal_HasExpectedValue()
+        {
+            Assert.AreEqual(0, (int)FileAttribute.Normal);
+        }
+
+        [TestMethod]
+        public void FileAttribute_Volume_HasExpectedValue()
+        {
+            Assert.AreEqual(8, (int)FileAttribute.Volume);
+        }
     }
 }
