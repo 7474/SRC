@@ -79,17 +79,16 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             // Replace("abcabc","a","X",1,3) → 1文字目から3文字"abc"内の"a"を置換
-            // Left("abcabc",0)="" + Mid("abcabc",1,3).Replace("a","X")="Xbc" + Right("abcabc",2)="bc" → "Xbcbc"
-            Assert.AreEqual("Xbcbc", exp.GetValueAsString("Replace(\"abcabc\",\"a\",\"X\",1,3)"));
+            // Left("abcabc",0)="" + "Xbc" + Right("abcabc",3)="abc" → "Xbcabc"
+            Assert.AreEqual("Xbcabc", exp.GetValueAsString("Replace(\"abcabc\",\"a\",\"X\",1,3)"));
         }
 
         [TestMethod]
-        public void Replace_WithCountZero_WindowIsEmpty()
+        public void Replace_WithCountZero_ReturnsOriginal()
         {
             var exp = Create();
-            // Replace("abc","a","X",1,0) → 0文字ウィンドウ → ""置換
-            // Left("abc",0)="" + ""(空window) + Right("abc",2)="bc" → "bc"
-            Assert.AreEqual("bc", exp.GetValueAsString("Replace(\"abc\",\"a\",\"X\",1,0)"));
+            // Replace("abc","a","X",1,0) → 0文字ウィンドウ → 置換なし → "abc"
+            Assert.AreEqual("abc", exp.GetValueAsString("Replace(\"abc\",\"a\",\"X\",1,0)"));
         }
 
         // ──────────────────────────────────────────────
@@ -156,11 +155,11 @@ namespace SRCCore.Expressions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void LSet_StringShorterThanWidth_PadsLeft()
+        public void LSet_StringShorterThanWidth_PadsRight()
         {
             var exp = Create();
-            // "hello" (5文字=5バイト) → 幅8 → 3スペース + "hello"
-            Assert.AreEqual("   hello", exp.GetValueAsString("LSet(\"hello\",8)"));
+            // LSet は左詰め（right padding）: "hello" (5バイト) → 幅8 → "hello" + 3スペース
+            Assert.AreEqual("hello   ", exp.GetValueAsString("LSet(\"hello\",8)"));
         }
 
         [TestMethod]
@@ -178,10 +177,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void RSet_StringShorterThanWidth_PadsRight()
+        public void RSet_StringShorterThanWidth_PadsLeft()
         {
             var exp = Create();
-            Assert.AreEqual("hello   ", exp.GetValueAsString("RSet(\"hello\",8)"));
+            // RSet は右詰め（left padding）: "hello" (5バイト) → 幅8 → 3スペース + "hello"
+            Assert.AreEqual("   hello", exp.GetValueAsString("RSet(\"hello\",8)"));
         }
 
         [TestMethod]
