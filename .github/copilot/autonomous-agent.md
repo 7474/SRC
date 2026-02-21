@@ -89,7 +89,7 @@ When instructed to "proceed with migration" (移植を進行してください),
    - Identify implemented TODOs
 
 3. **Find next priority task**
-   - Check `docs/issue-breakdown.md` for issue order
+   - Check `docs/porting/issue-breakdown.md` for issue order
    - Priority: Epic 1 → Epic 2 → ... → Epic 8
    - Within Epic: Issue X.1 → X.2 → X.3 ...
 
@@ -133,7 +133,7 @@ Based on task type:
 Action: Create Epic issue
 Steps:
 1. Use .github/ISSUE_TEMPLATE/epic-template.md
-2. Fill with content from docs/issue-breakdown.md
+2. Fill with content from docs/porting/issue-breakdown.md
 3. Apply labels: type:epic, epic:[name], priority:[level]
 4. Set milestone: Phase X
 5. Report issue number created
@@ -145,7 +145,7 @@ Steps:
 Action: Create feature issue
 Steps:
 1. Use .github/ISSUE_TEMPLATE/feature-template.md
-2. Reference docs/issue-breakdown.md for details
+2. Reference docs/porting/issue-breakdown.md for details
 3. Apply labels: epic:[name], priority:[level], type:feature, size:[xs-xl]
 4. Link to parent Epic: "Related to #XXX"
 5. Set milestone: Phase X
@@ -270,7 +270,7 @@ When instructed to "update progress" (進捗を更新してください), Copilo
 
 ### Step 2: Update Documents / ドキュメント更新
 
-1. **Update `docs/migration-plan.md`** if progress status has changed:
+1. **Update `docs/porting/migration-plan.md`** if progress status has changed:
    - Mark completed items
    - Add notes on newly discovered issues or blockers
    - Adjust timeline estimates if needed
@@ -450,7 +450,7 @@ When searching for TODOs, prioritize:
    - `SRC.Sharp/SRCSharpForm/Forms/Main.gui*.cs`
    - `SRC.Sharp/SRCCore/UIInterface/*.cs`
 
-4. **Epic 4-8**: Per `docs/issue-breakdown.md` order
+4. **Epic 4-8**: Per `docs/porting/issue-breakdown.md` order
 
 ### Dependency Resolution
 
@@ -791,8 +791,8 @@ If something goes wrong:
 
 Copilot automatically references:
 
-- `docs/migration-plan.md` - Overall strategy
-- `docs/issue-breakdown.md` - Detailed task list
+- `docs/porting/migration-plan.md` - Overall strategy
+- `docs/porting/issue-breakdown.md` - Detailed task list
 - `.github/ISSUE_TEMPLATE/` - Issue templates
 - `SRC/SRC_20121125/` - Original VB6 code
 - `SRC.NET/` - Auto-converted .NET code

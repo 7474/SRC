@@ -7,14 +7,14 @@ This file contains specific instruction examples for working with Copilot withou
 ## 基本方針 / Basic Approach
 
 Copilotは以下の情報を元に自律的に作業します：
-- `docs/migration-plan.md` - 8つのEpicと全体戦略
-- `docs/issue-breakdown.md` - 約70個の具体的Issue定義
+- `docs/porting/migration-plan.md` - 8つのEpicと全体戦略
+- `docs/porting/issue-breakdown.md` - 約70個の具体的Issue定義
 - `.github/ISSUE_TEMPLATE/` - Issueテンプレート
 - コードベース内のTODOコメント
 
 Copilot works autonomously based on:
-- `docs/migration-plan.md` - 8 Epics and overall strategy
-- `docs/issue-breakdown.md` - ~70 specific issue definitions
+- `docs/porting/migration-plan.md` - 8 Epics and overall strategy
+- `docs/porting/issue-breakdown.md` - ~70 specific issue definitions
 - `.github/ISSUE_TEMPLATE/` - Issue templates
 - TODO comments in the codebase
 
@@ -29,7 +29,7 @@ Copilot works autonomously based on:
 
 以下の情報を使用：
 - タイトル: "Epic 1: 戦闘システム完成 (Combat System Completion)"
-- 内容: docs/issue-breakdown.md の Epic 1 セクションを参照
+- 内容: docs/porting/issue-breakdown.md の Epic 1 セクションを参照
 - ラベル: type:epic, epic:combat, priority:high
 - マイルストーン: Phase 1: コア機能完成 (v3.1.0)
 
@@ -50,7 +50,7 @@ Copilotが8つのEpic Issueを作成し、それぞれのIssue番号を報告し
 @copilot Issue 1.1: 回避攻撃の実装を開始してください。
 
 実装手順：
-1. docs/issue-breakdown.md の Issue 1.1 の内容でGitHub Issueを作成
+1. docs/porting/issue-breakdown.md の Issue 1.1 の内容でGitHub Issueを作成
 2. SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs のTODOコメントを確認
 3. IsDodgeAttack() メソッドを実装
 4. SRCCoreTests にテストを追加
@@ -82,7 +82,7 @@ PR #456 を作成しました: "Epic 1.1: Implement dodge attack"
 ### 指示 / Instruction
 
 ```
-@copilot docs/issue-breakdown.md の Epic 1（戦闘システム）の Issue 1.1 から 1.6 までのGitHub Issueを作成してください。
+@copilot docs/porting/issue-breakdown.md の Epic 1（戦闘システム）の Issue 1.1 から 1.6 までのGitHub Issueを作成してください。
 
 各Issueには以下を設定：
 - .github/ISSUE_TEMPLATE/feature-template.md を使用
@@ -124,7 +124,7 @@ Epic 1 の Issue を6個作成しました：
 4. ブロックされているIssue
 5. 今週完了したIssue
 
-docs/migration-plan.md の情報と現在のGitHub Issueの状態を参照してください。
+docs/porting/migration-plan.md の情報と現在のGitHub Issueの状態を参照してください。
 ```
 
 ### 期待される応答 / Expected Response
@@ -167,7 +167,7 @@ Phase 1 (v3.1.0): 4/27 完了 (15%)
 @copilot SRC.Sharp/SRCCore/Pilots/Pilot.skill.cs の "TODO Impl IsSkillAvailable" を解決してください。
 
 手順：
-1. docs/issue-breakdown.md の Issue 2.1 を確認
+1. docs/porting/issue-breakdown.md の Issue 2.1 を確認
 2. GitHubにIssueがなければ作成
 3. コードを確認し、コメントアウトされたコードを参考に実装
 4. テストを追加
@@ -189,7 +189,7 @@ Phase 1 (v3.1.0): 4/27 完了 (15%)
 1. PR差分が1000行以下か
 2. テストが追加されているか
 3. TODOコメントが適切に解決されているか
-4. docs/migration-plan.md の方針に沿っているか
+4. docs/porting/migration-plan.md の方針に沿っているか
 5. 既存機能への影響がないか
 
 レビュー結果とコメントを報告してください。
@@ -226,7 +226,7 @@ Phase 1 (v3.1.0): 4/27 完了 (15%)
 ### 指示 / Instruction
 
 ```
-@copilot docs/issue-breakdown.md の Issue 8.1: 武器選択失敗の修正を実施してください。
+@copilot docs/porting/issue-breakdown.md の Issue 8.1: 武器選択失敗の修正を実施してください。
 
 手順：
 1. GitHubにIssueを作成（bugfixテンプレート使用）
@@ -269,7 +269,7 @@ Phase 1 (v3.1.0): 4/27 完了 (15%)
 ## 分析
 - オリジナルVB6コードからの自動変換の失敗痕跡
 - イベントシステムの重要機能
-- docs/issue-breakdown.md の Issue 4.1 に該当
+- docs/porting/issue-breakdown.md の Issue 4.1 に該当
 
 ## 推奨アクション
 ✅ 実装が必要（高優先度）
@@ -293,7 +293,7 @@ Phase 1 (v3.1.0): 4/27 完了 (15%)
 ### 指示 / Instruction
 
 ```
-@copilot docs/issue-breakdown.md の全Issue（約70個）のGitHub Issueを作成してください。
+@copilot docs/porting/issue-breakdown.md の全Issue（約70個）のGitHub Issueを作成してください。
 
 作成条件：
 - Epic 1-8 の親Issueを先に作成
@@ -350,7 +350,7 @@ Epic 8: 8 issues (#170-#177)
 4. 現在のベロシティ（週あたり完了Issue数）
 5. Phase 1 完了予測日
 
-docs/migration-plan.md と現在のGitHub Issue状態を分析してください。
+docs/porting/migration-plan.md と現在のGitHub Issue状態を分析してください。
 ```
 
 ---
@@ -399,7 +399,7 @@ docs/migration-plan.md と現在のGitHub Issue状態を分析してください
 @copilot Epic 7（パフォーマンス最適化）の Issue 7.1: Sound システムのキャッシングを実装してください。
 
 実装内容：
-1. docs/issue-breakdown.md の Issue 7.1 を確認
+1. docs/porting/issue-breakdown.md の Issue 7.1 を確認
 2. SRC.Sharp/SRCCore/Sound.cs の重複検索を特定
 3. キャッシング機構を実装
 4. パフォーマンステストを追加
@@ -415,7 +415,7 @@ docs/migration-plan.md と現在のGitHub Issue状態を分析してください
 ### 指示 / Instruction
 
 ```
-@copilot Epic 1 の Issue 1.1-1.6 が完了したら、docs/migration-plan.md を更新してください。
+@copilot Epic 1 の Issue 1.1-1.6 が完了したら、docs/porting/migration-plan.md を更新してください。
 
 更新内容：
 1. Epic 1 の進捗状況を反映

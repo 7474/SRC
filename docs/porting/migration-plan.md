@@ -2,19 +2,20 @@
 
 ## 概要 / Overview
 
-本ドキュメントは、SRC（Simulation RPG Construction）のC# .NET移植版であるSRC#の移植完了に向けた計画を記載しています。
-C#コード内のTODOコメントとコメントアウトコードを分析し、移植完了までのタスクを整理しました。
+本ドキュメントは、SRC（Simulation RPG Construction）のC# .NET移植版であるSRC#の移植作業の記録と、品質検証・精度向上フェーズの計画を記載しています。
+C#コード内のTODOコメントとコメントアウトコードを分析したTODO消化フェーズは完了し、現在は品質検証・精度向上フェーズにあります。
 
-This document outlines the plan to complete the SRC# (C# .NET port of SRC - Simulation RPG Construction).
-Tasks are organized based on analysis of TODO comments and commented-out code in the C# codebase.
+This document records the SRC# (C# .NET port of SRC - Simulation RPG Construction) migration history and the quality verification/improvement phase plan.
+The TODO消化 (TODO resolution) phase is complete. The project has moved to the quality verification and accuracy improvement phase.
 
 ## 統計 / Statistics
 
-> **2026-02-20 更新 (3回目)** / Updated 2026-02-20
+> **2026-02-21 更新** / Updated 2026-02-21 — TODO消化フェーズ完了 / TODO resolution phase complete
 
-- **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10
-- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8
+- **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10（精査・最適化・リファクタリング課題）
+- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8（精査・最適化・リファクタリング課題）
 - **解消済み TODO**: 137+ (約88%完了) / Resolved TODOs: 137+ (~88% complete)
+- **フェーズ**: **品質検証・精度向上フェーズ** / Phase: **Quality Verification & Improvement**
 - **Main Project**: SRC.Sharp/SRCCore
 
 ### 最近のマージ済みPR / Recently Merged PRs (2026-02-20)
@@ -64,9 +65,15 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 ## 現在の状況 / Current Status
 
-> **2026-02-20 時点**
+> **2026-02-21 時点**
 
-プロジェクトはコード移植フェーズをほぼ完了し、**品質検証・精度向上フェーズ**に移行している。
+**TODO消化フェーズは完了した。** プロジェクトは現在、**品質検証・精度向上フェーズ**にある。
+
+コード移植（TODO消化）の観点では、残存する18件のTODOは「未移植」ではなく、精査・最適化・リファクタリングの性質が強い課題である。基本機能の移植は完了しており、次の焦点は移植されたコードの正確性保証と品質向上にある。
+
+**The TODO resolution phase is complete.** The project is now in the **quality verification and accuracy improvement phase**.
+
+The remaining 18 TODO items are not "unimplemented" features but rather quality, optimization, and refactoring tasks. Core functionality porting is complete; the focus is now on verifying accuracy and improving quality.
 
 - **総合評価レポート**: [移植状況 総合評価レポート](./porting-assessment.md) — 定量分析・リスク分析・GUI評価
 - **品質向上計画**: [移植精度 評価・向上計画](./porting-quality-plan.md) — テスト戦略・GUI検証・ロードマップ
@@ -116,7 +123,8 @@ Tasks are organized based on analysis of TODO comments and commented-out code in
 
 本計画は、Copilot自律エージェントによる単一コマンド運用を基本とします：
 
-- **移植を進める**: `@copilot 移植を進行してください`
+- **品質検証を進める**: `@copilot ユニットテストを補完してください`
+- **移植精度を検証する**: `@copilot 移植精度を検証してください`
 - **進捗を更新する**: `@copilot 進捗を更新してください`
 
 GitHub ProjectsやWebUIの手動セットアップは必須ではありません。
@@ -286,44 +294,6 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ---
 
-## 親Issue構成案 / Parent Issue Structure
-
-以下の親Issueを立て、個別のIssueを関連付けることを推奨します：
-
-### Epic 1: 戦闘システム完成 (Combat System Completion)
-- Epic Label: `epic:combat`
-- 推定Issue数: 15-20個
-
-### Epic 2: ユニット・パイロットシステム完成 (Unit & Pilot System Completion)
-- Epic Label: `epic:unit-pilot`
-- 推定Issue数: 12-15個
-
-### Epic 3: GUI・UIシステム改善 (GUI & UI System Enhancement)
-- Epic Label: `epic:ui`
-- 推定Issue数: 8-10個
-
-### Epic 4: イベント・コマンドシステム完成 (Event & Command System Completion)
-- Epic Label: `epic:events`
-- 推定Issue数: 10-12個
-
-### Epic 5: データ管理・永続化 (Data Management & Persistence)
-- Epic Label: `epic:data`
-- 推定Issue数: 5-7個
-
-### Epic 6: VB6レガシー関数置換 (VB6 Legacy Function Replacement)
-- Epic Label: `epic:vb6-legacy`
-- 推定Issue数: 5-8個
-
-### Epic 7: パフォーマンス最適化 (Performance Optimization)
-- Epic Label: `epic:performance`
-- 推定Issue数: 5-7個
-
-### Epic 8: バグ修正・エッジケース対応 (Bug Fixes & Edge Cases)
-- Epic Label: `epic:bugfix`
-- 推定Issue数: 8-10個
-
----
-
 ## 作業の粒度とPR規模 / Task Granularity and PR Size
 
 各Issueは以下の基準で作成することを推奨します：
@@ -351,102 +321,18 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ---
 
-## 推奨管理手法 / Recommended Management Approach
-
-### GitHub Projects の活用 / Using GitHub Projects
-
-以下のような Project Board を作成することを推奨します：
-
-#### ボード構成 / Board Structure:
-```
-┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
-│   Backlog   │   Ready     │   In Prog   │   Review    │    Done     │
-├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-│ Epic 1      │ Issue #1    │ Issue #2    │ Issue #3    │ Issue #4    │
-│ Epic 2      │ Issue #5    │             │             │ Issue #6    │
-│ Epic 3      │             │             │             │             │
-└─────────────┴─────────────┴─────────────┴─────────────┴─────────────┘
-```
-
-### ラベル体系 / Label System:
-
-#### Epic ラベル / Epic Labels:
-- `epic:combat` - 戦闘システム
-- `epic:unit-pilot` - ユニット・パイロット
-- `epic:ui` - GUI・UI
-- `epic:events` - イベント・コマンド
-- `epic:data` - データ管理
-- `epic:vb6-legacy` - VB6レガシー
-- `epic:performance` - パフォーマンス
-- `epic:bugfix` - バグ修正
-
-#### 優先度ラベル / Priority Labels:
-- `priority:high` - 高優先度
-- `priority:medium` - 中優先度
-- `priority:low` - 低優先度
-
-#### 作業タイプラベル / Work Type Labels:
-- `type:feature` - 新機能実装
-- `type:enhancement` - 改善
-- `type:bugfix` - バグ修正
-- `type:refactor` - リファクタリング
-- `type:docs` - ドキュメント
-
-#### サイズラベル / Size Labels:
-- `size:xs` - ~100行
-- `size:s` - ~200-400行
-- `size:m` - ~400-700行
-- `size:l` - ~700-1000行
-- `size:xl` - 1000行以上（横断的な関心事のみ）
-
-### マイルストーン / Milestones:
-
-#### Phase 1: コア機能完成 (v3.1.0)
-- Epic 1: 戦闘システム
-- Epic 2: ユニット・パイロット
-- 目標: 2026年Q2
-
-#### Phase 2: UI/UX改善 (v3.2.0)
-- Epic 3: GUI・UI
-- Epic 4: イベント・コマンド
-- 目標: 2026年Q3
-
-#### Phase 3: 品質向上 (v3.3.0)
-- Epic 5: データ管理
-- Epic 8: バグ修正
-- 目標: 2026年Q4
-
-#### Phase 4: 最適化・完成 (v3.4.0)
-- Epic 6: VB6レガシー
-- Epic 7: パフォーマンス
-- 目標: 2027年Q1
-
----
-
 ## 作業開始手順 / Getting Started
 
-### 1. Epic Issue の作成
-各Epic（親Issue）を作成し、以下を記載：
-- Epic の目的と範囲
-- 含まれる機能一覧
-- 推定作業量
-- 関連ファイル
-
-### 2. 個別 Issue の作成
-各Epicに対して、具体的な作業Issueを作成：
+### 1. Issue の作成
+作業Issueを作成し、以下を記載：
 - 明確なタイトル（ファイル名: 実装内容）
 - TODOコメントの引用
 - 実装方針
 - テスト方針
 - 推定PR規模
 
-### 3. Project Board への登録
-- 全Issueを Project Board に登録
-- 適切なラベルを付与
-- マイルストーンを設定
-
-### 4. 優先順位付け
-- Epic 1 (戦闘システム) から開始
+### 2. 優先順位付け
+- 品質検証フェーズのロードマップ（[porting-quality-plan.md](./porting-quality-plan.md)）を参照
 - 依存関係を考慮して順序を決定
 
 ---
@@ -462,10 +348,6 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 - 実装したTODOについて、APIドキュメントを整備
 - ユーザー向けドキュメントの更新
 
-### コミュニティへの情報発信
-- 進捗状況の定期的な共有
-- リリースノートの作成
-
 ---
 
 ## 参考情報 / References
@@ -478,8 +360,10 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ## 更新履歴 / Change History
 
+- 2026-02-21: issue・label・projects運用ガイドとスクリプトを削除（運用しないため）
+- 2026-02-21: ドキュメント構造見直し — `docs/porting/` サブディレクトリへ移動、TODO消化フェーズ完了を明記、品質検証フェーズへの移行を反映、運用コマンドを品質検証向けに更新
 - 2026-02-20 (5回目): 移植状況の総合評価と品質向上計画 — [総合評価レポート](./porting-assessment.md)と[精度評価・向上計画](./porting-quality-plan.md)を新規作成、プロジェクトの品質検証フェーズ移行を明記
-- 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/migration-plan.md に追加 (#744)
+- 2026-02-20 (4回目): 残存TODO再整理 — 課題が残る TODO タグを復元して検索性を維持 (SRCCore: 10件, SRCSharpForm: 8件)、残存TODO一覧セクションを docs/porting/migration-plan.md に追加 (#744)
 - 2026-02-20 (3回目): 移植作業進捗 — CreateIniFile実装、イベント検証コード整理、発進ユニット表示説明追加 (#744)
 - 2026-02-20 (2回目): 進捗更新 — 残存TODO SRCCore 20件・SRCSharpForm 9件に更新、Epic1戦闘システム完了、最近のPR一覧を追加 (#728-#740)
 - 2026-02-20: 進捗更新 — 残存TODO 54件に更新、Epic別進捗状況を反映、最近のPR一覧を追加
