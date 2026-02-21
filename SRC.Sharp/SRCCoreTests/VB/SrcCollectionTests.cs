@@ -65,9 +65,9 @@ namespace SRCCore.VB.Tests
         {
             // Add(string key, string value) [Obsolete] は NotSupportedException をスローする
             var sc = new SrcCollection<string>();
-#pragma warning disable CS0618
+#pragma warning disable CS0612
             Assert.ThrowsException<NotSupportedException>(() => sc.Add("key", "value"));
-#pragma warning restore CS0618
+#pragma warning restore CS0612
         }
 
         [TestMethod()]
