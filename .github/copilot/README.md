@@ -201,7 +201,6 @@ cat .github/copilot/copilot-instructions-examples.md
 以下の情報を使用：
 - タイトル: "Epic 1: 戦闘システム完成 (Combat System Completion)"
 - 内容: docs/porting/issue-breakdown.md の Epic 1 セクションを参照
-- ラベル: type:epic, epic:combat, priority:high
 - マイルストーン: Phase 1: コア機能完成 (v3.1.0)
 ```
 
@@ -226,9 +225,9 @@ docs/                     # Documentation root
 ├── README.md            # Documentation index
 └── porting/             # Porting-related documentation
     ├── README.md        # Porting docs index
-    ├── quick-start.md   # Project overview
-    ├── migration-plan.md    # 8 Epics and overall strategy
-    └── issue-breakdown.md   # ~70 specific issues
+    ├── migration-plan.md    # Overall strategy and remaining tasks
+    ├── porting-quality-plan.md  # Quality verification phase plan
+    └── issue-breakdown.md   # Historical issue definitions
 
 .github/ISSUE_TEMPLATE/   # Issue templates
 ├── epic-template.md     # For Epic issues
@@ -236,24 +235,7 @@ docs/                     # Documentation root
 └── bugfix-template.md   # For bug fixes
 ```
 
-## 🏷️ Label System Overview / ラベルシステム概要
-
-**必須ラベル / Required Labels (4 per issue)**:
-1. Epic: `epic:combat`, `epic:unit-pilot`, `epic:ui`, `epic:events`, `epic:data`, `epic:vb6-legacy`, `epic:performance`, `epic:bugfix`
-2. Priority: `priority:critical`, `priority:high`, `priority:medium`, `priority:low`
-3. Type: `type:epic`, `type:feature`, `type:enhancement`, `type:bugfix`, `type:refactor`, `type:docs`
-4. Size: `size:xs`, `size:s`, `size:m`, `size:l`, `size:xl`
-
-**オプションラベル / Optional Labels**:
-- Status: `status:blocked`, `status:in-progress`, `status:review`, `status:on-hold`
-
 ## 🎯 4 Agent Roles Summary / 4つのエージェント役割サマリー
-
-### 1. Issue Creation Agent / Issue作成エージェント
-- **Reads**: `docs/porting/issue-breakdown.md`
-- **Creates**: GitHub Issues using templates
-- **Applies**: Proper labels and milestones
-- **Links**: Child issues to parent Epics
 
 ### 2. Implementation Agent / 実装エージェント
 - **Reads**: Issue description, TODO comments, surrounding code
@@ -266,63 +248,6 @@ docs/                     # Documentation root
 - **Verifies**: Alignment with migration plan
 - **Checks**: No regression or unintended side effects
 - **Approves**: Only after all criteria met
-
-### 4. Progress Tracking Agent / 進捗管理エージェント
-- **Runs**: `@copilot 進捗を更新してください`
-- **Monitors**: Epic completion, milestone progress, blockers
-- **Updates**: Issue statuses and migration plan documents
-- **Reports**: Statistics and trends
-
-## 📊 Project Scope / プロジェクト規模
-
-- **Total Issues**: ~70
-- **Total TODOs**: 155+
-- **Epics**: 8 categories
-- **Milestones**: 4 phases (Q2'26 - Q1'27)
-- **Estimated Changes**: 18,000-25,000 lines
-- **Estimated Duration**: 12-18 months
-
-## ⚡ Quick Commands / クイックコマンド
-
-```bash
-# Autonomous operation (Copilot chat):
-# @copilot 移植を進行してください       → Advance migration work
-# @copilot 進捗を更新してください       → Update progress status
-
-# List issues by category
-gh issue list --label "epic:combat" --state all
-gh issue list --label "priority:high" --state open
-gh issue list --label "status:in-progress"
-
-# Development
-cd SRC.Sharp
-dotnet test
-dotnet build
-```
-
-## 🔗 Related Resources / 関連リソース
-
-- **Migration Plan**: [docs/porting/migration-plan.md](../../docs/porting/migration-plan.md)
-- **Issue Breakdown**: [docs/porting/issue-breakdown.md](../../docs/porting/issue-breakdown.md)
-- **Quick Start**: [docs/porting/quick-start.md](../../docs/porting/quick-start.md)
-- **GitHub Projects Setup**: [docs/porting/github-projects-setup.md](../../docs/porting/github-projects-setup.md)
-
-## 💡 Tips for Agents / エージェント向けTips
-
-1. **Always reference documentation first** - Check `docs/` before starting any work
-2. **Follow the established patterns** - Use templates, labels, and workflows consistently
-3. **Keep PRs small and focused** - ≤1000 lines unless justified
-4. **Add tests for everything** - No feature without tests
-5. **Update documentation** - Keep docs in sync with code changes
-6. **Communicate blockers early** - Use `status:blocked` label and comment
-7. **Run progress reports weekly** - Stay informed on project status
-
-## 📞 Support / サポート
-
-For questions or issues with these instructions:
-- **Create an issue**: Tag with `type:docs` label
-- **Mention**: @7474 (repository owner)
-- **Refer to**: [docs/README.md](../../docs/README.md) for full documentation
 
 ---
 

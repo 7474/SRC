@@ -48,14 +48,6 @@ With single commands:
    - TODO消化フェーズで定義した約70個のIssueリスト（歴史的参考）
    - ~70 specific issues defined during TODO resolution phase (historical reference)
 
-5. **[GitHub Projects設定ガイド](./github-projects-setup.md)**
-   - プロジェクト管理の設定方法
-   - Project management setup guide
-
-6. **[クイックスタートガイド](./quick-start.md)**
-   - プロジェクトを始めるための簡易ガイド
-   - Quick guide to get started with the project
-
 ## 🎯 プロジェクト概要 / Project Overview
 
 ### 統計 / Statistics (2026-02-21 更新)
@@ -115,89 +107,10 @@ Copilotが現在のissue状態を確認し、ドキュメントと進行状況�
 
 ### 推奨作業フロー
 
-1. **Issue作成** → Epic配下に機能Issueを作成
-2. **作業開始** → Issueをアサイン、`status:in-progress`ラベル付与
+1. **Issue作成** → 機能Issueを作成
+2. **作業開始** → Issueをアサイン
 3. **PR作成** → `Closes #XXX`でIssueをリンク
-4. **レビュー** → `status:review`ラベル付与
-5. **マージ** → 自動的に`Done`カラムに移動
-
-## 🏷️ ラベル体系 / Label System
-
-### Epic ラベル（色: 青 #0052CC）
-- `epic:combat`, `epic:unit-pilot`, `epic:ui`, `epic:events`
-- `epic:data`, `epic:vb6-legacy`, `epic:performance`, `epic:bugfix`
-
-### 優先度ラベル（色: 赤系）
-- `priority:critical` (赤), `priority:high` (薄赤)
-- `priority:medium` (黄), `priority:low` (緑)
-
-### タイプラベル（色: 黄 #FBCA04）
-- `type:epic`, `type:feature`, `type:enhancement`
-- `type:bugfix`, `type:refactor`, `type:docs`
-
-### サイズラベル（色: 青緑 #006B75）
-- `size:xs` (~100行), `size:s` (200-400行)
-- `size:m` (400-700行), `size:l` (700-1000行)
-- `size:xl` (1000行以上)
-
-### ステータスラベル（色: 紫 #5319E7）
-- `status:blocked`, `status:in-progress`
-- `status:review`, `status:on-hold`
-
-## 🎯 フェーズとマイルストーン / Phases and Milestones
-
-### Phase 1: コア機能完成 (v3.1.0) - 2026年Q2
-- Epic 1: 戦闘システム (基本機能)
-- Epic 2: ユニット・パイロット (基本機能)
-
-### Phase 2: UI/UX改善 (v3.2.0) - 2026年Q3
-- Epic 1: 戦闘システム (高度な機能)
-- Epic 3: GUI・UI
-- Epic 4: イベント・コマンド
-
-### Phase 3: 品質向上 (v3.3.0) - 2026年Q4
-- Epic 5: データ管理
-- Epic 8: バグ修正
-
-### Phase 4: 最適化・完成 (v3.4.0) - 2027年Q1
-- Epic 6: VB6レガシー
-- Epic 7: パフォーマンス
-
-## 📋 Issue テンプレート / Issue Templates
-
-プロジェクトには3つのIssueテンプレートが用意されています：
-
-1. **[Epic Template](../../.github/ISSUE_TEMPLATE/epic-template.md)**
-   - 親Issueの作成用
-   - 関連する機能群をグルーピング
-
-2. **[Feature Template](../../.github/ISSUE_TEMPLATE/feature-template.md)**
-   - 新機能実装用
-   - 最も一般的なテンプレート
-
-3. **[Bugfix Template](../../.github/ISSUE_TEMPLATE/bugfix-template.md)**
-   - バグ修正用
-   - 再現手順と期待される動作を記載
-
-## 💡 ベストプラクティス / Best Practices
-
-### Issue作成時
-- ✅ 明確で検索可能なタイトル
-- ✅ 適切なラベル（最低3つ: epic, priority, type）
-- ✅ マイルストーンの設定
-- ✅ 推定工数の記載
-
-### PR作成時
-- ✅ 1 Issue = 1 PR が原則
-- ✅ 差分1000行以下を目安
-- ✅ テストの追加
-- ✅ 既存テストの実行確認
-
-### レビュー時
-- ✅ コードの品質と可読性
-- ✅ テストの網羅性
-- ✅ ドキュメントの更新
-- ✅ 既存機能への影響確認
+4. **レビュー** → レビュー後マージ
 
 ## 🤝 貢献方法 / How to Contribute
 
@@ -223,6 +136,7 @@ Copilotが現在のissue状態を確認し、ドキュメントと進行状況�
 
 ## 📝 更新履歴 / Changelog
 
+- **2026-02-21**: issue・label・projects運用ガイドとスクリプトを削除（運用しないため）
 - **2026-02-21**: ドキュメント構造見直しとフェーズ更新
   - `docs/porting/` サブディレクトリへ移動（docs直下から整理）
   - TODO消化フェーズ完了を明記し、品質検証・精度向上フェーズへの移行を反映

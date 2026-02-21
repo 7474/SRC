@@ -5,17 +5,12 @@
 ## 📋 Migration Plan Documentation
 
 ### Start Here / ここから始める
-1. **[docs/quick-start.md](../../docs/quick-start.md)** - プロジェクト概要とクイックスタート
-2. **[docs/migration-plan.md](../../docs/migration-plan.md)** - 8つのEpicと全体戦略
-3. **[docs/issue-breakdown.md](../../docs/issue-breakdown.md)** - 約70個の具体的Issue
+1. **[docs/porting/migration-plan.md](../../docs/porting/migration-plan.md)** - 全体戦略と残存課題
+2. **[docs/porting/porting-quality-plan.md](../../docs/porting/porting-quality-plan.md)** - 品質検証フェーズのロードマップ
+3. **[docs/porting/issue-breakdown.md](../../docs/porting/issue-breakdown.md)** - 過去に定義した約70個のIssue（参考）
 4. **[agent-instructions.md](./agent-instructions.md)** - 詳細な運用手順
 
 ## 🎯 4 Agent Roles
-
-### 1. Issue Creation Agent
-- **Input**: `docs/issue-breakdown.md`
-- **Output**: GitHub Issues with proper labels/milestones
-- **Templates**: `.github/ISSUE_TEMPLATE/*.md`
 
 ### 2. Implementation Agent
 - **Input**: GitHub Issue with TODO reference
@@ -25,25 +20,6 @@
 ### 3. Review Agent
 - **Check**: Size, tests, docs, no side effects
 - **Reference**: `docs/migration-plan.md` for alignment
-
-### 4. Progress Tracking Agent
-- **Run**: `bash docs/scripts/progress-report.sh`
-- **Report**: Epic completion, milestone progress, blockers
-
-## 🏷️ Label Quick Guide
-
-**Epic** (8): `combat`, `unit-pilot`, `ui`, `events`, `data`, `vb6-legacy`, `performance`, `bugfix`
-**Priority** (4): `critical`, `high`, `medium`, `low`
-**Type** (6): `epic`, `feature`, `enhancement`, `bugfix`, `refactor`, `docs`
-**Size** (5): `xs` (~100), `s` (200-400), `m` (400-700), `l` (700-1000), `xl` (1000+)
-**Status** (4): `blocked`, `in-progress`, `review`, `on-hold`
-
-## 🎯 Milestones
-
-- **Phase 1** (v3.1.0, Q2'26): Combat + Unit/Pilot basics
-- **Phase 2** (v3.2.0, Q3'26): Advanced combat + UI + Events
-- **Phase 3** (v3.3.0, Q4'26): Data + Bugfix
-- **Phase 4** (v3.4.0, Q1'27): VB6 Legacy + Performance
 
 ## 📂 Code Locations by Epic
 
@@ -63,32 +39,15 @@ All paths relative to `SRC.Sharp/SRCCore/`
 ## ⚡ Quick Commands
 
 ```bash
-# Setup
-bash docs/scripts/create-labels.sh
-bash docs/scripts/create-milestones.sh
-
-# Progress
-bash docs/scripts/progress-report.sh
-gh issue list --label "epic:combat" --state all
-
 # Development
 cd SRC.Sharp
 dotnet test
 dotnet build
 
 # Issue Management
-gh issue create                          # Create new issue
-gh issue list --label "status:blocked"  # List blocked
-gh pr create                             # Create PR
+gh issue create    # Create new issue
+gh pr create       # Create PR
 ```
-
-## ✅ Issue Creation Checklist
-
-- [ ] Reference `docs/issue-breakdown.md` for content
-- [ ] Use appropriate template (epic/feature/bugfix)
-- [ ] Apply 4 labels: epic, priority, type, size
-- [ ] Set milestone (Phase 1-4)
-- [ ] Link to parent Epic: "Related to #XXX"
 
 ## ✅ Implementation Checklist
 
@@ -97,7 +56,6 @@ gh pr create                             # Create PR
 - [ ] Add tests in `SRCCoreTests/`
 - [ ] Run tests: `dotnet test`
 - [ ] Update docs if API changed
-- [ ] Commit: `[Epic X.Y] Description (Closes #XXX)`
 - [ ] PR description: `Closes #XXX`
 
 ## ✅ Review Checklist
@@ -147,9 +105,8 @@ Example:
 ## 🔗 Key Links
 
 - **Docs Index**: [docs/README.md](../../docs/README.md)
-- **Quick Start**: [docs/quick-start.md](../../docs/quick-start.md)
+- **Porting Docs**: [docs/porting/README.md](../../docs/porting/README.md)
 - **Full Instructions**: [agent-instructions.md](./agent-instructions.md)
-- **Issue Breakdown**: [docs/issue-breakdown.md](../../docs/issue-breakdown.md)
 
 ---
 
