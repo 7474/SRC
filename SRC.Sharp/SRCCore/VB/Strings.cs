@@ -67,7 +67,10 @@ namespace SRCCore.VB
         public static int InStr(int Start, string String1, string String2)
         {
             // .NET Core と .NET 6 で同環境でも比較設定の規定値が異なっていそう。
-            return (String1 ?? "").IndexOf(String2 ?? "", Start - 1, StringComparison.Ordinal) + 1;
+            var s1 = String1 ?? "";
+            var startIndex = Start - 1;
+            if (startIndex < 0 || startIndex > s1.Length) { return 0; }
+            return s1.IndexOf(String2 ?? "", startIndex, StringComparison.Ordinal) + 1;
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
@@ -109,11 +112,11 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.mid?view=net-5.0
         public static string Mid(string str, int Start, int Length)
         {
-            if (Length == 0 || string.IsNullOrEmpty(str))
+            if (Length <= 0 || string.IsNullOrEmpty(str))
             {
                 return "";
             }
-            if (Start > str.Length)
+            if (Start <= 0 || Start > str.Length)
             {
                 return "";
             }
@@ -127,7 +130,7 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.right?view=net-5.0
         public static string Right(string str, int Length)
         {
-            if (Length == 0 || string.IsNullOrEmpty(str))
+            if (Length <= 0 || string.IsNullOrEmpty(str))
             {
                 return "";
             }
@@ -141,6 +144,7 @@ namespace SRCCore.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.space?view=net-5.0
         public static string Space(int Number)
         {
+            if (Number <= 0) { return ""; }
             return new string(' ', Number);
         }
 

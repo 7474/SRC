@@ -222,9 +222,9 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Space_NegativeNumber_ThrowsException()
+        public void Space_NegativeNumber_ReturnsEmpty()
         {
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => Strings.Space(-1));
+            Assert.AreEqual("", Strings.Space(-1));
         }
 
         [TestMethod]
