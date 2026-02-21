@@ -269,16 +269,16 @@ namespace SRCCore.Expressions.Tests
         public void LSet_PadsStringToWidth()
         {
             var exp = Create();
-            // 半角3文字を幅5に左側パディング → "  abc"（右揃え）
-            Assert.AreEqual("  abc", exp.GetValueAsString("LSet(\"abc\",5)"));
+            // 半角3文字を幅5に右側パディング → "abc  "（左揃え）
+            Assert.AreEqual("abc  ", exp.GetValueAsString("LSet(\"abc\",5)"));
         }
 
         [TestMethod]
         public void RSet_PadsStringToWidth()
         {
             var exp = Create();
-            // 半角3文字を幅5に右側パディング → "abc  "（左揃え）
-            Assert.AreEqual("abc  ", exp.GetValueAsString("RSet(\"abc\",5)"));
+            // 半角3文字を幅5に左側パディング → "  abc"（右揃え）
+            Assert.AreEqual("  abc", exp.GetValueAsString("RSet(\"abc\",5)"));
         }
 
         // ──────────────────────────────────────────────

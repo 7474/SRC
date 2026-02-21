@@ -212,7 +212,7 @@ namespace SRCCore.Expressions.Functions
 
             var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
             var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            str_result = GeneralLib.LeftPaddedString(buf, i);
+            str_result = GeneralLib.RightPaddedString(buf, i);
             return ValueType.StringType;
         }
     }
@@ -281,7 +281,7 @@ namespace SRCCore.Expressions.Functions
 
             var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
             var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            str_result = GeneralLib.RightPaddedString(buf, i);
+            str_result = GeneralLib.LeftPaddedString(buf, i);
             return ValueType.StringType;
         }
     }
