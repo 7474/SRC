@@ -35,13 +35,13 @@
 # projects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids
 # the need for EnableWindowsTargeting workarounds and allows full solution build and test.
 #
-# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"aa19314e9289a49c5444875465475ac18d6ce7ab12e8e6877be9cd0d82de11a0","compiler_version":"v0.48.1"}
+# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"c25a58273abea59598db3b9f3495b3feadb56e97227b110e6bb13c772f20fc4d","compiler_version":"v0.48.1"}
 
 name: "ユニットテスト補完エージェント / Unit Test Completion Agent"
 "on":
   schedule:
-  - cron: "11 13 * * 1"
-    # Friendly format: weekly on monday (scattered)
+  - cron: "11 13 * * *"
+    # Friendly format: daily (scattered)
   workflow_dispatch:
 
 permissions: {}

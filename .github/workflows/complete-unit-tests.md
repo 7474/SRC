@@ -15,7 +15,7 @@ description: |
   the need for EnableWindowsTargeting workarounds and allows full solution build and test.
 
 on:
-  schedule: weekly on monday
+  schedule: daily
   workflow_dispatch:
 
 # windowsターゲットのプロジェクトも対象とする際にはランナーをWindowsにする必要がある
@@ -86,6 +86,26 @@ engine: copilot
 You are an automated test engineer for the SRC# migration project (`${{ github.repository }}`).
 Your task is to identify implemented commands that lack unit tests and add tests using
 the help documentation as the expected behavior specification.
+
+## Step 0: 既存PRの確認 / Check for Existing Open PRs
+
+まず、このワークフロー (Agentic Workflow) が作成した PR が既にオープンしているか確認してください。
+First, check whether a PR created by this Agentic Workflow is already open:
+
+```bash
+gh pr list --repo "${{ github.repository }}" --state open --json title,author \
+  --jq '[.[] | select(.title | startswith("[unit-tests]"))]'
+```
+
+タイトルが `[unit-tests]` で始まるオープン PR が **1件でも存在する場合**、
+既にワークフローによる作業が進行中です。`noop` safe output を使用して処理をスキップしてください：
+If **any** open PR whose title starts with `[unit-tests]` exists,
+an Agentic Workflow run is already in progress. Use `noop` safe output to skip:
+
+> noop: "Skipping: An open Agentic Workflow PR already exists."
+
+オープン PR がない場合のみ、以下の Step 1 以降を続けてください。
+Only proceed to Step 1 and beyond if no such open PR exists.
 
 ## Step 1: コマンド実装の列挙 / List Command Implementations
 
