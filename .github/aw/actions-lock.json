@@ -1,0 +1,24 @@
+{
+  "entries": {
+    "actions/checkout@v6": {
+      "repo": "actions/checkout",
+      "version": "v6",
+      "sha": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+    },
+    "actions/github-script@v8": {
+      "repo": "actions/github-script",
+      "version": "v8",
+      "sha": "ed597411d8f924073f98dfc5c65a23a2325f34cd"
+    },
+    "actions/setup-dotnet@v5": {
+      "repo": "actions/setup-dotnet",
+      "version": "v5",
+      "sha": "baa11fbfe1d6520db94683bd5c7a3818018e4309"
+    },
+    "github/gh-aw/actions/setup@v0.48.1": {
+      "repo": "github/gh-aw/actions/setup",
+      "version": "v0.48.1",
+      "sha": "26b6572ae210580303087bc3142fe58d140bf65c"
+    }
+  }
+}

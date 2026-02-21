@@ -31,12 +31,13 @@
 # that lack test coverage and adds unit tests using SRC.Sharp.Help/src/ help
 # documentation as the expected behavior specification.
 #
-# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"6887099ac9d432f1ff0a6f1d406490313849555e72cdd47ce16ca4699fe58601","compiler_version":"v0.48.1"}
+# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"bbaebea70e7936b731d98b851fe63efe88b47a72d2cca80d5461969469b2f328","compiler_version":"v0.48.1"}
 
 name: "ユニットテスト補完エージェント / Unit Test Completion Agent"
 "on":
   schedule:
-  - cron: "0 2 * * 1"
+  - cron: "11 13 * * 1"
+    # Friendly format: weekly on monday (scattered)
   workflow_dispatch:
 
 permissions: {}
@@ -56,7 +57,7 @@ jobs:
       comment_repo: ""
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.48.1
+        uses: github/gh-aw/actions/setup@26b6572ae210580303087bc3142fe58d140bf65c # v0.48.1
         with:
           destination: /opt/gh-aw/actions
       - name: Validate context variables
@@ -286,7 +287,7 @@ jobs:
       secret_verification_result: ${{ steps.validate-secret.outputs.verification_result }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.48.1
+        uses: github/gh-aw/actions/setup@26b6572ae210580303087bc3142fe58d140bf65c # v0.48.1
         with:
           destination: /opt/gh-aw/actions
       - name: Create gh-aw temp directory
@@ -297,7 +298,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup .NET
-        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v5
+        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5
         with:
           dotnet-version: 8.0.x
       - name: Restore and Build
@@ -971,7 +972,7 @@ jobs:
       total_count: ${{ steps.missing_tool.outputs.total_count }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.48.1
+        uses: github/gh-aw/actions/setup@26b6572ae210580303087bc3142fe58d140bf65c # v0.48.1
         with:
           destination: /opt/gh-aw/actions
       - name: Download agent output artifact
@@ -1075,7 +1076,7 @@ jobs:
       success: ${{ steps.parse_results.outputs.success }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.48.1
+        uses: github/gh-aw/actions/setup@26b6572ae210580303087bc3142fe58d140bf65c # v0.48.1
         with:
           destination: /opt/gh-aw/actions
       - name: Download agent artifacts
@@ -1187,7 +1188,7 @@ jobs:
       process_safe_outputs_temporary_id_map: ${{ steps.process_safe_outputs.outputs.temporary_id_map }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.48.1
+        uses: github/gh-aw/actions/setup@26b6572ae210580303087bc3142fe58d140bf65c # v0.48.1
         with:
           destination: /opt/gh-aw/actions
       - name: Download agent output artifact
