@@ -263,5 +263,47 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // ForgetCmd
+        // ヘルプ: 指定した作品のデータをプレイ再開時にロードしないようにします
+        // 書式: Forget title
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ForgetCmd_RemovesTitleFromList()
+        {
+            // ヘルプ: Forget コマンドを使用した時点ではデータの削除は行われない
+            // Titles リストから削除される
+            var src = CreateSrc();
+            src.Titles = new System.Collections.Generic.List<string> { "シン・サーガ", "他の作品" };
+            var cmd = CreateCmd(src, "Forget シン・サーガ");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(src.Titles.Contains("シン・サーガ"));
+            Assert.IsTrue(src.Titles.Contains("他の作品"));
+        }
+
+        [TestMethod]
+        public void ForgetCmd_NonExistentTitle_NoError()
+        {
+            // 存在しないタイトルを Forget しても問題なし（削除しないだけ）
+            var src = CreateSrc();
+            src.Titles = new System.Collections.Generic.List<string> { "既存の作品" };
+            var cmd = CreateCmd(src, "Forget 存在しない作品");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void ForgetCmd_WrongArgCount_ReturnsError()
+        {
+            // 書式: Forget title (引数1個必須)
+            var src = CreateSrc();
+            src.Titles = new System.Collections.Generic.List<string>();
+            var cmd = CreateCmd(src, "Forget");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }
