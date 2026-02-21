@@ -150,5 +150,41 @@ namespace SRCCore.Expressions.Tests
             var (exp, src) = Create();
             Assert.AreEqual("3.14", exp.GetValueAsString("Format(3.14,\"0.##\")"));
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IIf_NonZeroNumericCondition_ReturnsTrueValue()
+        {
+            var (exp, src) = Create();
+            Assert.AreEqual(100d, exp.GetValueAsDouble("IIf(5,100,0)"));
+        }
+
+        [TestMethod]
+        public void Count_AfterSettingMoreElements_ReturnsNewCount()
+        {
+            var (exp, src) = Create();
+            exp.SetVariableAsDouble("items[1]", 1d);
+            exp.SetVariableAsDouble("items[2]", 2d);
+            Assert.AreEqual(2d, exp.GetValueAsDouble("Count(items)"));
+        }
+
+        [TestMethod]
+        public void Eval_VariableDouble_ReturnsValue()
+        {
+            var (exp, src) = Create();
+            exp.SetVariableAsDouble("myNum", 55d);
+            Assert.AreEqual(55d, exp.GetValueAsDouble("Eval(\"myNum\")"));
+        }
+
+        [TestMethod]
+        public void RegExp_MatchGroupCapture_ReturnsFirstMatch()
+        {
+            var (exp, src) = Create();
+            var result = exp.GetValueAsString("RegExp(\"abc123\",\"[0-9]+\")");
+            Assert.AreEqual("123", result);
+        }
     }
 }

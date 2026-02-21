@@ -221,5 +221,79 @@ namespace SRCCore.Lib.Tests
             var line = reader.GetLine();
             Assert.AreEqual("data", line);
         }
+
+        [TestMethod]
+        public void EOT_ReturnsTrueAfterAllLinesConsumed()
+        {
+            using var reader = CreateReader("single");
+            reader.GetLine();
+            Assert.IsTrue(reader.EOT);
+        }
+
+        [TestMethod]
+        public void HasMore_ReturnsFalseAfterAllConsumed()
+        {
+            using var reader = CreateReader("only");
+            reader.GetLine();
+            Assert.IsFalse(reader.HasMore);
+        }
+
+        [TestMethod]
+        public void GetLine_TabSeparatedData_ReturnsFullLine()
+        {
+            using var reader = CreateReader("col1\tcol2\tcol3");
+            var line = reader.GetLine();
+            Assert.AreEqual("col1\tcol2\tcol3", line);
+        }
+
+        [TestMethod]
+        public void GetLine_ReplaceFullWidthSpace_NotInDefaultMode()
+        {
+            // 全角スペースはそのままである
+            using var reader = CreateReader("data　data");
+            var line = reader.GetLine();
+            Assert.IsTrue(line.Contains("　"));
+        }
+
+        [TestMethod]
+        public void LineNumber_AfterContinuationLines_CountsAllLines()
+        {
+            using var reader = CreateReader("a_\nb_\nc");
+            reader.GetLine();
+            Assert.AreEqual(3, reader.LineNumber);
+        }
+
+        [TestMethod]
+        public void Raw_EmptyBeforeRead()
+        {
+            using var reader = CreateReader("data");
+            Assert.AreEqual("", reader.Raw);
+        }
+
+        [TestMethod]
+        public void ClearRawComment_AfterMultipleComments()
+        {
+            using var reader = CreateReader("# c1\n# c2\ndata");
+            reader.GetLine();
+            reader.ClearRawComment();
+            Assert.AreEqual("", reader.RawComment);
+        }
+
+        [TestMethod]
+        public void InvalidData_StoresLineBuf()
+        {
+            using var reader = CreateReader("line content");
+            reader.GetLine();
+            var err = reader.InvalidData("msg", "dname");
+            Assert.AreEqual("line content", err.line_buf);
+        }
+
+        [TestMethod]
+        public void GetLine_MultipleFullWidthCommas()
+        {
+            using var reader = CreateReader("x，y，z，w");
+            var line = reader.GetLine();
+            Assert.AreEqual("x, y, z, w", line);
+        }
     }
 }

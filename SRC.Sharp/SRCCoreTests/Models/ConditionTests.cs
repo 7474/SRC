@@ -55,5 +55,34 @@ namespace SRCCore.Models.Tests
             Assert.AreEqual(3.5, condition.Level);
             Assert.AreEqual("援護攻撃", condition.StrData);
         }
+
+        [TestMethod]
+        public void IsEnable_LargePositiveLifetime_ReturnsTrue()
+        {
+            var condition = new Condition { Lifetime = int.MaxValue };
+            Assert.IsTrue(condition.IsEnable);
+        }
+
+        [TestMethod]
+        public void IsEnable_LargeNegativeLifetime_ReturnsTrue()
+        {
+            var condition = new Condition { Lifetime = int.MinValue };
+            Assert.IsTrue(condition.IsEnable);
+        }
+
+        [TestMethod]
+        public void Level_ZeroLevel_StillEnableWhenLifetimeNonZero()
+        {
+            var condition = new Condition { Lifetime = 1, Level = 0.0 };
+            Assert.IsTrue(condition.IsEnable);
+            Assert.AreEqual(0.0, condition.Level);
+        }
+
+        [TestMethod]
+        public void StrData_EmptyString_AllowedAndReadBack()
+        {
+            var condition = new Condition { Name = "test", Lifetime = 1, StrData = "" };
+            Assert.AreEqual("", condition.StrData);
+        }
     }
 }

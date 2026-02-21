@@ -264,5 +264,100 @@ namespace SRCCore.Models.Tests
             td.AddFeature("ＨＰ回復Lv3");
             Assert.AreEqual(3d, td.FeatureLevel("ＨＰ回復"));
         }
+
+        [TestMethod]
+        public void TerrainData_Name_CanBeSetAndRead()
+        {
+            var td = new TerrainData { Name = "砂漠" };
+            Assert.AreEqual("砂漠", td.Name);
+        }
+
+        [TestMethod]
+        public void TerrainData_Class_CanBeSetAndRead()
+        {
+            var td = new TerrainData { Class = "陸" };
+            Assert.AreEqual("陸", td.Class);
+        }
+
+        [TestMethod]
+        public void TerrainData_MoveCost_CanBeSetAndRead()
+        {
+            var td = new TerrainData { MoveCost = 3 };
+            Assert.AreEqual(3, td.MoveCost);
+        }
+
+        [TestMethod]
+        public void TerrainData_HitMod_CanBeSetAndRead()
+        {
+            var td = new TerrainData { HitMod = -10 };
+            Assert.AreEqual(-10, td.HitMod);
+        }
+
+        [TestMethod]
+        public void TerrainData_DamageMod_CanBeSetAndRead()
+        {
+            var td = new TerrainData { DamageMod = 5 };
+            Assert.AreEqual(5, td.DamageMod);
+        }
+
+        [TestMethod]
+        public void TerrainData_EmptyTerrain_DefaultMoveCost()
+        {
+            Assert.AreEqual(0, TerrainData.EmptyTerrain.MoveCost);
+        }
+
+        [TestMethod]
+        public void TerrainData_CountFeature_InitiallyZero()
+        {
+            var td = new TerrainData();
+            Assert.AreEqual(0, td.CountFeature());
+        }
+    }
+
+    [TestClass]
+    public class SkillDataAdditionalTests
+    {
+        [TestMethod]
+        public void SkillData_DefaultLevel_IsDefaultLevel()
+        {
+            var sd = new SkillData();
+            // Level defaults to 0 (double default), not Constants.DEFAULT_LEVEL
+            Assert.AreEqual(0d, sd.Level);
+        }
+
+        [TestMethod]
+        public void SkillData_Name_DefaultIsNull()
+        {
+            var sd = new SkillData();
+            Assert.IsNull(sd.Name);
+        }
+
+        [TestMethod]
+        public void LevelOrDefault_LevelZero_ReturnsZero()
+        {
+            var sd = new SkillData { Level = 0 };
+            Assert.AreEqual(0d, sd.LevelOrDefault(99d));
+        }
+
+        [TestMethod]
+        public void HasLevel_LevelOne_ReturnsTrue()
+        {
+            var sd = new SkillData { Level = 1 };
+            Assert.IsTrue(sd.HasLevel);
+        }
+
+        [TestMethod]
+        public void NecessaryLevel_CanBeSetAndRead()
+        {
+            var sd = new SkillData { NecessaryLevel = 5 };
+            Assert.AreEqual(5, sd.NecessaryLevel);
+        }
+
+        [TestMethod]
+        public void StrData_CanBeSetAndRead()
+        {
+            var sd = new SkillData { StrData = "追加データ" };
+            Assert.AreEqual("追加データ", sd.StrData);
+        }
     }
 }

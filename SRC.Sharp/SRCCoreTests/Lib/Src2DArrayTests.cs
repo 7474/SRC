@@ -126,5 +126,53 @@ namespace SRCCore.Lib.Tests
             arr[1, 1] = "only";
             Assert.AreEqual("only", arr[1, 1]);
         }
+
+        // ──────────────────────────────────────────────
+        // bool value type
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void BoolType_DefaultIsFalse()
+        {
+            var arr = new Src2DArray<bool>(3, 3);
+            Assert.IsFalse(arr[1, 1]);
+            Assert.IsFalse(arr[3, 3]);
+        }
+
+        [TestMethod]
+        public void BoolType_SetAndRead()
+        {
+            var arr = new Src2DArray<bool>(3, 3);
+            arr[2, 2] = true;
+            Assert.IsTrue(arr[2, 2]);
+            Assert.IsFalse(arr[1, 1]);
+        }
+
+        // ──────────────────────────────────────────────
+        // Large dimensions (10x10)
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LargeDimensions_TenByTen_AllAccessible()
+        {
+            var arr = new Src2DArray<int>(10, 10);
+            // Set corners and center
+            arr[1, 1] = 1;
+            arr[10, 10] = 100;
+            arr[5, 5] = 55;
+
+            Assert.AreEqual(1, arr[1, 1]);
+            Assert.AreEqual(100, arr[10, 10]);
+            Assert.AreEqual(55, arr[5, 5]);
+        }
+
+        [TestMethod]
+        public void LargeDimensions_TenByTen_CorrectCount()
+        {
+            var arr = new Src2DArray<int>(10, 10);
+            Assert.AreEqual(10, arr.X);
+            Assert.AreEqual(10, arr.Y);
+            Assert.AreEqual(100, arr.All.Count());
+        }
     }
 }

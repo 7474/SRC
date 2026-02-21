@@ -97,5 +97,106 @@ namespace SRCCore.Config.Tests
             config.AutoDefense = false;
             Assert.IsFalse(config.AutoDefense);
         }
+
+        // ──────────────────────────────────────────────
+        // SRCCompatibilityMode
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SRCCompatibilityMode_DefaultIsReadWrite()
+        {
+            var config = new LocalFileConfig();
+            Assert.AreEqual(SRCCompatibilityMode.ReadWrite, config.SRCCompatibilityMode);
+        }
+
+        [TestMethod]
+        public void SRCCompatibilityMode_CanBeChanged()
+        {
+            var config = new LocalFileConfig();
+            config.SRCCompatibilityMode = SRCCompatibilityMode.Read;
+            Assert.AreEqual(SRCCompatibilityMode.Read, config.SRCCompatibilityMode);
+        }
+
+        // ──────────────────────────────────────────────
+        // SoundVolume
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SoundVolume_DefaultIs50()
+        {
+            var config = new LocalFileConfig();
+            Assert.AreEqual(50, config.SoundVolume);
+        }
+
+        [TestMethod]
+        public void SoundVolume_CanBeChanged()
+        {
+            var config = new LocalFileConfig();
+            config.SoundVolume = 75;
+            Assert.AreEqual(75, config.SoundVolume);
+        }
+
+        // ──────────────────────────────────────────────
+        // ExtDataPath
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ExtDataPath_DefaultIsEmpty()
+        {
+            var config = new LocalFileConfig();
+            Assert.AreEqual("", config.ExtDataPath);
+        }
+
+        [TestMethod]
+        public void ExtDataPath_CanBeChanged()
+        {
+            var config = new LocalFileConfig();
+            config.ExtDataPath = "/path/to/data";
+            Assert.AreEqual("/path/to/data", config.ExtDataPath);
+        }
+
+        [TestMethod]
+        public void ExtDataPath2_DefaultIsEmpty()
+        {
+            var config = new LocalFileConfig();
+            Assert.AreEqual("", config.ExtDataPath2);
+        }
+
+        // ──────────────────────────────────────────────
+        // Boolean properties
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void BattleAnimation_DefaultIsFalse()
+        {
+            var config = new LocalFileConfig();
+            Assert.IsFalse(config.BattleAnimation);
+        }
+
+        [TestMethod]
+        public void BattleAnimation_CanBeSetTrue()
+        {
+            var config = new LocalFileConfig();
+            config.BattleAnimation = true;
+            Assert.IsTrue(config.BattleAnimation);
+        }
+
+        [TestMethod]
+        public void ShowSquareLine_DefaultIsFalse()
+        {
+            var config = new LocalFileConfig();
+            // Default (not loaded) is false
+            Assert.IsFalse(config.ShowSquareLine);
+        }
+
+        [TestMethod]
+        public void SetItem_MultipleSections_IndependentStorage()
+        {
+            var config = new LocalFileConfig();
+            config.SetItem("SectionA", "Key", "ValueA");
+            config.SetItem("SectionB", "Key", "ValueB");
+            Assert.AreEqual("ValueA", config.GetItem("SectionA", "Key"));
+            Assert.AreEqual("ValueB", config.GetItem("SectionB", "Key"));
+        }
     }
 }

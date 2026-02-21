@@ -132,5 +132,57 @@ namespace SRCCore.Models.Tests
             dialog.AddMessage("話者C", "メッセージC");
             Assert.AreEqual(3, dialog.Items.Count);
         }
+
+        [TestMethod]
+        public void DialogData_Items_InitiallyEmpty()
+        {
+            var src = CreateSRC();
+            var dd = new DialogData(src);
+            Assert.AreEqual(0, dd.Items.Count);
+        }
+
+        [TestMethod]
+        public void DialogData_Items_AfterAddDialog_CountIncreases()
+        {
+            var src = CreateSRC();
+            var dd = new DialogData(src);
+            dd.AddDialog("攻撃");
+            dd.AddDialog("防御");
+            Assert.AreEqual(2, dd.Items.Count);
+        }
+
+        [TestMethod]
+        public void BattleConfigData_Name_CanBeChanged()
+        {
+            var src = CreateSRC();
+            var cd = new BattleConfigData(src) { Name = "初期名" };
+            cd.Name = "変更後";
+            Assert.AreEqual("変更後", cd.Name);
+        }
+
+        [TestMethod]
+        public void BattleConfigData_Calculate_MultiplyExpression()
+        {
+            var src = CreateSRC();
+            var cd = new BattleConfigData(src) { ConfigCalc = "3 * 4" };
+            Assert.AreEqual(12d, cd.Calculate());
+        }
+
+        [TestMethod]
+        public void BattleConfigData_Calculate_SubtractExpression()
+        {
+            var src = CreateSRC();
+            var cd = new BattleConfigData(src) { ConfigCalc = "20 - 7" };
+            Assert.AreEqual(13d, cd.Calculate());
+        }
+
+        [TestMethod]
+        public void DialogData_AddDialog_ReturnsSameAsItems()
+        {
+            var src = CreateSRC();
+            var dd = new DialogData(src);
+            var d1 = dd.AddDialog("撃墜");
+            Assert.AreSame(d1, dd.Items[0]);
+        }
     }
 }

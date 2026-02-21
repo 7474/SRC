@@ -134,5 +134,57 @@ namespace SRCCore.Models.Tests
             };
             Assert.IsFalse(wd.IsItem());
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Power_Zero_CanBeSetAndRead()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "空拳", Power = 0 };
+            Assert.AreEqual(0, wd.Power);
+        }
+
+        [TestMethod]
+        public void MinRange_EqualsMaxRange_SingleHexWeapon()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "格闘", MinRange = 1, MaxRange = 1 };
+            Assert.AreEqual(wd.MinRange, wd.MaxRange);
+        }
+
+        [TestMethod]
+        public void NecessaryCondition_SetAndGet_ReturnsValue()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "特殊武器", NecessaryCondition = "変形後" };
+            Assert.AreEqual("変形後", wd.NecessaryCondition);
+        }
+
+        [TestMethod]
+        public void Nickname_NameWithNoParentheses_ReturnsFullName()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "ロケット砲" };
+            Assert.AreEqual("ロケット砲", wd.Nickname());
+        }
+
+        [TestMethod]
+        public void IsItem_NullSkill_ReturnsFalse()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "武器", NecessarySkill = null };
+            Assert.IsFalse(wd.IsItem());
+        }
+
+        [TestMethod]
+        public void ENConsumption_Zero_CanBeSetAndRead()
+        {
+            var src = CreateSRC();
+            var wd = new WeaponData(src) { Name = "格闘", ENConsumption = 0 };
+            Assert.AreEqual(0, wd.ENConsumption);
+        }
     }
 }

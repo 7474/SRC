@@ -162,5 +162,61 @@ namespace SRCCore.Models.Tests
             Assert.IsNotNull(item);
             Assert.AreEqual("回避率計算式", item.Name);
         }
+
+        [TestMethod]
+        public void BattleConfigDataList_Delete_RemovesData()
+        {
+            var src = CreateSRC();
+            var list = src.BCList;
+            list.Add("テスト計算式");
+            Assert.IsTrue(list.IsDefined("テスト計算式"));
+            list.Delete("テスト計算式");
+            Assert.IsFalse(list.IsDefined("テスト計算式"));
+        }
+
+        [TestMethod]
+        public void AliasDataList_MultipleAdd_CountIncreases()
+        {
+            var src = CreateSRC();
+            var list = src.ALDList;
+            var initial = list.Count();
+            list.Add("エリアスA");
+            list.Add("エリアスB");
+            list.Add("エリアスC");
+            Assert.AreEqual(initial + 3, list.Count());
+        }
+
+        [TestMethod]
+        public void MessageDataList_Delete2_RemovesData()
+        {
+            var src = CreateSRC();
+            var list = src.MDList;
+            list.Add("削除メッセージ2");
+            Assert.IsTrue(list.IsDefined("削除メッセージ2"));
+            list.Delete("削除メッセージ2");
+            Assert.IsFalse(list.IsDefined("削除メッセージ2"));
+        }
+
+        [TestMethod]
+        public void MessageDataList_MultipleAdd_CountIncreases()
+        {
+            var src = CreateSRC();
+            var list = src.MDList;
+            var initial = list.Count();
+            list.Add("キャラA");
+            list.Add("キャラB");
+            Assert.AreEqual(initial + 2, list.Count());
+        }
+
+        [TestMethod]
+        public void BattleConfigDataList_MultipleAdd_AllDefined()
+        {
+            var src = CreateSRC();
+            var list = src.BCList;
+            list.Add("計算式X");
+            list.Add("計算式Y");
+            Assert.IsTrue(list.IsDefined("計算式X"));
+            Assert.IsTrue(list.IsDefined("計算式Y"));
+        }
     }
 }

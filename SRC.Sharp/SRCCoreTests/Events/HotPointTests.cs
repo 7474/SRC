@@ -85,5 +85,55 @@ namespace SRCCore.Events.Tests
 
             Assert.AreEqual("zero(0,0,0,0): ", result);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Fields_CanBeModifiedIndividually()
+        {
+            var hp = new HotPoint
+            {
+                Name = "btn",
+                Left = 1,
+                Top = 2,
+                Width = 3,
+                Height = 4,
+                Caption = "A"
+            };
+            hp.Left = 10;
+            hp.Caption = "B";
+
+            Assert.AreEqual(10, hp.Left);
+            Assert.AreEqual("B", hp.Caption);
+            // 他のフィールドは変わらない
+            Assert.AreEqual(2, hp.Top);
+            Assert.AreEqual(3, hp.Width);
+            Assert.AreEqual(4, hp.Height);
+        }
+
+        [TestMethod]
+        public void Name_CanBeSetToEmptyString()
+        {
+            var hp = new HotPoint { Name = "" };
+            Assert.AreEqual("", hp.Name);
+        }
+
+        [TestMethod]
+        public void ToString_WithNegativeCoordinates_ReturnsFormattedString()
+        {
+            var hp = new HotPoint
+            {
+                Name = "neg",
+                Left = -5,
+                Top = -10,
+                Width = 100,
+                Height = 50,
+                Caption = "test"
+            };
+            var result = hp.ToString();
+            Assert.AreEqual("neg(-5,-10,100,50): test", result);
+        }
     }
 }

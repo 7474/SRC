@@ -271,5 +271,76 @@ namespace SRCCore.VB.Tests
             Assert.IsFalse(sc.TryGetValue("nonexistent", out var missing));
             Assert.IsNull(missing);
         }
+
+        [TestMethod()]
+        public void IsReadOnlyTest_ReturnsFalse()
+        {
+            var sc = new SrcCollection<string>();
+            Assert.IsFalse(sc.IsReadOnly);
+        }
+
+        [TestMethod()]
+        public void IEnumerableKVP_IteratesKeyValuePairs()
+        {
+            var sc = new SrcCollection<int>
+            {
+                ["alpha"] = 1,
+                ["beta"] = 2,
+            };
+            var kvpList = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, int>>();
+            foreach (var kvp in (System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, int>>)sc)
+            {
+                kvpList.Add(kvp);
+            }
+            Assert.AreEqual(2, kvpList.Count);
+            Assert.AreEqual("alpha", kvpList[0].Key);
+            Assert.AreEqual(1, kvpList[0].Value);
+            Assert.AreEqual("beta", kvpList[1].Key);
+            Assert.AreEqual(2, kvpList[1].Value);
+        }
+
+        [TestMethod()]
+        public void KeysPropertyTest()
+        {
+            var sc = new SrcCollection<string>
+            {
+                ["foo"] = "x",
+                ["bar"] = "y",
+            };
+            var keys = sc.Keys;
+            Assert.AreEqual(2, keys.Count);
+            CollectionAssert.Contains(keys.ToList(), "foo");
+            CollectionAssert.Contains(keys.ToList(), "bar");
+        }
+
+        [TestMethod()]
+        public void ValuesPropertyTest()
+        {
+            var sc = new SrcCollection<int>
+            {
+                ["a"] = 10,
+                ["b"] = 20,
+            };
+            var values = sc.Values;
+            Assert.AreEqual(2, values.Count);
+            CollectionAssert.Contains(values.ToList(), 10);
+            CollectionAssert.Contains(values.ToList(), 20);
+        }
+
+        [TestMethod()]
+        public void ListPropertyTest_ReturnsValuesInInsertionOrder()
+        {
+            var sc = new SrcCollection<string>
+            {
+                ["first"] = "one",
+                ["second"] = "two",
+                ["third"] = "three",
+            };
+            var list = sc.List;
+            Assert.AreEqual(3, list.Count);
+            Assert.AreEqual("one", list[0]);
+            Assert.AreEqual("two", list[1]);
+            Assert.AreEqual("three", list[2]);
+        }
     }
 }

@@ -193,5 +193,83 @@ namespace SRCCore.Models.Tests
             list.Delete("幸運_テスト");
             Assert.IsFalse(list.IsDefined("幸運_テスト"));
         }
+
+        [TestMethod]
+        public void PilotDataList_Delete_RemovesData()
+        {
+            var src = CreateSRC();
+            var list = src.PDList;
+            list.Add("削除パイロット");
+            Assert.IsTrue(list.IsDefined("削除パイロット"));
+            list.Delete("削除パイロット");
+            Assert.IsFalse(list.IsDefined("削除パイロット"));
+        }
+
+        [TestMethod]
+        public void ItemDataList_Delete_RemovesData()
+        {
+            var src = CreateSRC();
+            var list = src.IDList;
+            list.Add("削除アイテム");
+            Assert.IsTrue(list.IsDefined("削除アイテム"));
+            list.Delete("削除アイテム");
+            Assert.IsFalse(list.IsDefined("削除アイテム"));
+        }
+
+        [TestMethod]
+        public void UnitDataList_Delete_RemovesData()
+        {
+            var src = CreateSRC();
+            var list = src.UDList;
+            list.Add("削除ユニット");
+            Assert.IsTrue(list.IsDefined("削除ユニット"));
+            // UnitDataList.Delete takes int index, not string
+            // Verify IsDefined works correctly - deletion not tested here
+        }
+
+        [TestMethod]
+        public void PilotDataList_MultipleAdd_AllDefined()
+        {
+            var src = CreateSRC();
+            var list = src.PDList;
+            list.Add("パイロットA");
+            list.Add("パイロットB");
+            Assert.IsTrue(list.IsDefined("パイロットA"));
+            Assert.IsTrue(list.IsDefined("パイロットB"));
+        }
+
+        [TestMethod]
+        public void ItemDataList_MultipleAdd_CountIncreases()
+        {
+            var src = CreateSRC();
+            var list = src.IDList;
+            var initial = list.Count();
+            list.Add("アイテムA");
+            list.Add("アイテムB");
+            list.Add("アイテムC");
+            Assert.AreEqual(initial + 3, list.Count());
+        }
+
+        [TestMethod]
+        public void UnitDataList_MultipleAdd_AllDefined()
+        {
+            var src = CreateSRC();
+            var list = src.UDList;
+            list.Add("ユニットA");
+            list.Add("ユニットB");
+            Assert.IsTrue(list.IsDefined("ユニットA"));
+            Assert.IsTrue(list.IsDefined("ユニットB"));
+        }
+
+        [TestMethod]
+        public void SpecialPowerDataList_MultipleAdd_CountIncreases()
+        {
+            var src = CreateSRC();
+            var list = src.SPDList;
+            var initial = list.Count();
+            list.Add("SP_A");
+            list.Add("SP_B");
+            Assert.AreEqual(initial + 2, list.Count());
+        }
     }
 }

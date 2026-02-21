@@ -128,5 +128,75 @@ namespace SRCCore.Maps.Tests
             Assert.AreEqual(5, cell.X);
             Assert.AreEqual(10, cell.Y);
         }
+
+        // ──────────────────────────────────────────────
+        // LayerBitmapNo 初期値
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Constructor_LayerBitmapNo_IsNoLayerNum()
+        {
+            var cell = new MapCell();
+            Assert.AreEqual(MapCell.NO_LAYER_NUM, cell.LayerBitmapNo);
+        }
+
+        // ──────────────────────────────────────────────
+        // 全プロパティの設定と読み取り
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void AllProperties_CanBeSetAndRead()
+        {
+            var under = new TerrainData { Name = "草原" };
+            var upper = new TerrainData { Name = "森" };
+            var cell = new MapCell
+            {
+                X = 3,
+                Y = 7,
+                TerrainType = 5,
+                BitmapNo = 12,
+                LayerType = 2,
+                LayerBitmapNo = 9,
+                BoxType = BoxTypes.Upper,
+                UnderTerrain = under,
+                UpperTerrain = upper,
+            };
+
+            Assert.AreEqual(3, cell.X);
+            Assert.AreEqual(7, cell.Y);
+            Assert.AreEqual(5, cell.TerrainType);
+            Assert.AreEqual(12, cell.BitmapNo);
+            Assert.AreEqual(2, cell.LayerType);
+            Assert.AreEqual(9, cell.LayerBitmapNo);
+            Assert.AreEqual(BoxTypes.Upper, cell.BoxType);
+            Assert.AreEqual(under, cell.UnderTerrain);
+            Assert.AreEqual(upper, cell.UpperTerrain);
+        }
+
+        // ──────────────────────────────────────────────
+        // BoxType.UpperBmpOnly - both terrains set
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Terrain_UpperBmpOnly_BothTerrainsSet_ReturnsUnder()
+        {
+            var under = new TerrainData { Name = "砂漠" };
+            var upper = new TerrainData { Name = "岩山" };
+            var cell = new MapCell
+            {
+                BoxType = BoxTypes.UpperBmpOnly,
+                UnderTerrain = under,
+                UpperTerrain = upper,
+            };
+            // UpperBmpOnly は下層データを返す
+            Assert.AreEqual(under, cell.Terrain);
+        }
+
+        [TestMethod]
+        public void LayerType_DefaultIsNoLayerNum()
+        {
+            var cell = new MapCell();
+            Assert.AreEqual(MapCell.NO_LAYER_NUM, cell.LayerType);
+        }
     }
 }

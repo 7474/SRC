@@ -127,5 +127,141 @@ namespace SRCCore.CmdDatas.Tests
             cmd.Exec();
             Assert.IsTrue(src.Expression.IsGlobalVariableDefined("score"));
         }
+
+        // ──────────────────────────────────────────────
+        // RenameTermCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RenameTermCmd_RenameTerm_StoresInGlobalVariable()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm HP ヒットポイント");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("ヒットポイント", src.Expression.GetValueAsString("ShortTerm(HP)"));
+        }
+
+        [TestMethod]
+        public void RenameTermCmd_RenameEN_StoresInGlobalVariable()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm EN エナジー");
+            cmd.Exec();
+            Assert.AreEqual("エナジー", src.Expression.GetValueAsString("ShortTerm(EN)"));
+        }
+
+        [TestMethod]
+        public void RenameTermCmd_RenameCustomTerm_StoresInTermVariable()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm ユニット 機体");
+            cmd.Exec();
+            Assert.AreEqual("機体", src.Expression.GetValueAsString("Term(ユニット)"));
+        }
+
+        [TestMethod]
+        public void RenameTermCmd_WrongArgCount_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm HP");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void RenameTermCmd_SP_StoresInShortTerm()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm SP スピリット");
+            cmd.Exec();
+            Assert.AreEqual("スピリット", src.Expression.GetValueAsString("ShortTerm(SP)"));
+        }
+
+        [TestMethod]
+        public void RenameTermCmd_CT_StoresInShortTerm()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RenameTerm CT クリティカル");
+            cmd.Exec();
+            Assert.AreEqual("クリティカル", src.Expression.GetValueAsString("ShortTerm(CT)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // FreeMemoryCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void FreeMemoryCmd_ExecutesWithoutError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "FreeMemory", 0);
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void FreeMemoryCmd_ReturnsNextId()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "FreeMemory", 5);
+            var result = cmd.Exec();
+            Assert.AreEqual(6, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // WaitCmd - 引数エラーのテスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void WaitCmd_WrongArgCount_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Wait");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void WaitCmd_StartSubcommand_SetsWaitStartTime()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Wait Start");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void WaitCmd_ResetSubcommand_ResetsWaitState()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Wait Reset");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.AreEqual(-1, src.Event.WaitStartTime);
+        }
+
+        // ──────────────────────────────────────────────
+        // MoneyCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MoneyCmd_ZeroAmount_NoChange()
+        {
+            var src = CreateSrc();
+            src.Money = 500;
+            var cmd = CreateCmd(src, "Money 0");
+            cmd.Exec();
+            Assert.AreEqual(500, src.Money);
+        }
+
+        [TestMethod]
+        public void MoneyCmd_WrongArgCount_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Money");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }

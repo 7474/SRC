@@ -164,5 +164,135 @@ namespace SRCCore.Models.Tests
             ud.AddWeapon("バルカン砲");
             Assert.AreEqual(3, ud.CountWeapon());
         }
+
+        // ──────────────────────────────────────────────
+        // KanaName
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void KanaName_SetAndGet_ReturnsValue()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.KanaName = "てすと";
+            Assert.AreEqual("てすと", ud.KanaName);
+        }
+
+        // ──────────────────────────────────────────────
+        // AddAbility / CountAbility
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void CountAbility_InitiallyZero()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            Assert.AreEqual(0, ud.CountAbility());
+        }
+
+        [TestMethod]
+        public void AddAbility_IncreasesCount()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddAbility("マップ兵器");
+            Assert.AreEqual(1, ud.CountAbility());
+        }
+
+        // ──────────────────────────────────────────────
+        // FeatureLevel / FeatureData / FeatureName / Feature
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void FeatureLevel_WithLv_ReturnsLevel()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddFeature("格闘強化Lv3");
+            Assert.AreEqual(3d, ud.FeatureLevel("格闘強化"));
+        }
+
+        [TestMethod]
+        public void FeatureData_WithData_ReturnsData()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddFeature("吸収=ビーム");
+            Assert.AreEqual("ビーム", ud.FeatureData("吸収"));
+        }
+
+        [TestMethod]
+        public void FeatureName_WithLv_ReturnsNameWithLv()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddFeature("射撃強化Lv2");
+            Assert.AreEqual("射撃強化Lv2", ud.FeatureName("射撃強化"));
+        }
+
+        [TestMethod]
+        public void Feature_ByIndex_ReturnsFeatureData()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddFeature("ビーム無効");
+            var fd = ud.Feature(1);
+            Assert.IsNotNull(fd);
+            Assert.AreEqual("ビーム無効", fd.Name);
+        }
+
+        // ──────────────────────────────────────────────
+        // AddWeapon / Weapon
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void AddWeapon_ReturnsWeaponWithCorrectName()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            var wd = ud.AddWeapon("ビームライフル");
+            Assert.AreEqual("ビームライフル", wd.Name);
+        }
+
+        [TestMethod]
+        public void Weapon_ByIndex_ReturnsWeapon()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddWeapon("格闘武器");
+            var wd = ud.Weapon(1);
+            Assert.IsNotNull(wd);
+            Assert.AreEqual("格闘武器", wd.Name);
+        }
+
+        // ──────────────────────────────────────────────
+        // Clear
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Clear_ResetsAllCollections()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト" };
+            ud.AddFeature("ビーム無効");
+            ud.AddWeapon("ビームライフル");
+            ud.AddAbility("マップ兵器");
+            ud.Clear();
+            Assert.AreEqual(0, ud.CountFeature());
+            Assert.AreEqual(0, ud.CountWeapon());
+            Assert.AreEqual(0, ud.CountAbility());
+        }
+
+        // ──────────────────────────────────────────────
+        // ID フィールド
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ID_CanBeSetAndRead()
+        {
+            var src = CreateSRC();
+            var ud = new UnitData(src) { Name = "テスト", ID = 42 };
+            Assert.AreEqual(42, ud.ID);
+        }
     }
 }

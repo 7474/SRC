@@ -169,5 +169,65 @@ namespace SRCCore.Expressions.Tests
             var exp = Create();
             Assert.AreEqual("3", exp.GetValueAsString("Round(2.5,0)"));
         }
+
+        // ──────────────────────────────────────────────
+        // Min
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Min_TwoArgs_ReturnsSmaller()
+        {
+            var exp = Create();
+            Assert.AreEqual(3d, exp.GetValueAsDouble("Min(3,5)"));
+            Assert.AreEqual(3d, exp.GetValueAsDouble("Min(5,3)"));
+        }
+
+        [TestMethod]
+        public void Min_NegativeValues_ReturnsMostNegative()
+        {
+            var exp = Create();
+            Assert.AreEqual(-10d, exp.GetValueAsDouble("Min(-10,0)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Max
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Max_TwoArgs_ReturnsLarger()
+        {
+            var exp = Create();
+            Assert.AreEqual(5d, exp.GetValueAsDouble("Max(3,5)"));
+            Assert.AreEqual(5d, exp.GetValueAsDouble("Max(5,3)"));
+        }
+
+        [TestMethod]
+        public void Max_NegativeValues_ReturnsLessNegative()
+        {
+            var exp = Create();
+            Assert.AreEqual(-1d, exp.GetValueAsDouble("Max(-10,-1)"));
+        }
+
+        // ──────────────────────────────────────────────
+        // Abs with decimal
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Abs_Decimal_ReturnsPositive()
+        {
+            var exp = Create();
+            Assert.AreEqual(3.14d, exp.GetValueAsDouble("Abs(-3.14)"), 1e-10);
+        }
+
+        // ──────────────────────────────────────────────
+        // Int with negative
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Int_NegativeHalf_FloorsBelowNegative()
+        {
+            var exp = Create();
+            Assert.AreEqual(-3d, exp.GetValueAsDouble("Int(-2.5)"));
+        }
     }
 }

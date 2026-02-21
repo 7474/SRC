@@ -168,5 +168,45 @@ namespace SRCCore.Models.Tests
             ad.AddAlias("射撃");
             Assert.AreEqual(2, ad.Count);
         }
+
+        [TestMethod]
+        public void AddAlias_Elements_NotNull()
+        {
+            var ad = new AliasDataType { Name = "テスト" };
+            Assert.IsNotNull(ad.Elements);
+        }
+
+        [TestMethod]
+        public void AddAlias_NoModifier_BothFlagsAreFalse()
+        {
+            var ad = new AliasDataType { Name = "テスト" };
+            ad.AddAlias("攻撃Lv3");
+            Assert.IsFalse(ad.Elements[0].blnAliasLevelIsPlusMod);
+            Assert.IsFalse(ad.Elements[0].blnAliasLevelIsMultMod);
+        }
+
+        [TestMethod]
+        public void AddAlias_DefaultLevel_IsDefaultLevel()
+        {
+            var ad = new AliasDataType { Name = "テスト" };
+            ad.AddAlias("攻撃");
+            // Level without explicit Lv should be DEFAULT_LEVEL
+            Assert.AreEqual(Constants.DEFAULT_LEVEL, ad.Elements[0].dblAliasLevel);
+        }
+
+        [TestMethod]
+        public void AddAlias_NecessaryConditionEmptyByDefault()
+        {
+            var ad = new AliasDataType { Name = "テスト" };
+            ad.AddAlias("格闘");
+            Assert.AreEqual("", ad.Elements[0].strAliasNecessaryCondition ?? "");
+        }
+
+        [TestMethod]
+        public void Name_CanBeSetAndRead()
+        {
+            var ad = new AliasDataType { Name = "エリアス名" };
+            Assert.AreEqual("エリアス名", ad.Name);
+        }
     }
 }

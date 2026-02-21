@@ -135,5 +135,97 @@ namespace SRCCore.Expressions.Tests
             var dump = exp.DumpVariables();
             Assert.IsNotNull(dump);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト: エッジケース
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SetVariableAsDouble_OverwriteExisting_UpdatesValue()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("v", 10d);
+            exp.SetVariableAsDouble("v", 20d);
+            Assert.AreEqual(20d, exp.GetValueAsDouble("v"));
+        }
+
+        [TestMethod]
+        public void SetVariableAsString_OverwriteExisting_UpdatesValue()
+        {
+            var exp = Create();
+            exp.SetVariableAsString("s", "old");
+            exp.SetVariableAsString("s", "new");
+            Assert.AreEqual("new", exp.GetValueAsString("s"));
+        }
+
+        [TestMethod]
+        public void SetVariableAsDouble_Zero_IsDefinedAndZero()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("z", 0d);
+            Assert.IsTrue(exp.IsVariableDefined("z"));
+            Assert.AreEqual(0d, exp.GetValueAsDouble("z"));
+        }
+
+        [TestMethod]
+        public void SetVariableAsDouble_NegativeValue_Stored()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("neg", -99d);
+            Assert.AreEqual(-99d, exp.GetValueAsDouble("neg"));
+        }
+
+        [TestMethod]
+        public void GlobalVariable_SetValue_PersistsAfterSet()
+        {
+            var exp = Create();
+            exp.DefineGlobalVariable("g");
+            exp.SetVariableAsDouble("g", 123d);
+            Assert.AreEqual(123d, exp.GetValueAsDouble("g"));
+            Assert.IsTrue(exp.IsGlobalVariableDefined("g"));
+        }
+
+        [TestMethod]
+        public void LocalVariable_DefineThenSet_Works()
+        {
+            var exp = Create();
+            exp.DefineLocalVariable("lv");
+            Assert.IsTrue(exp.IsLocalVariableDefined("lv"));
+            exp.SetVariableAsDouble("lv", 55d);
+            Assert.AreEqual(55d, exp.GetValueAsDouble("lv"));
+        }
+
+        [TestMethod]
+        public void ArrayVariable_MultipleElements_AllRetained()
+        {
+            var exp = Create();
+            for (var i = 1; i <= 5; i++)
+            {
+                exp.SetVariableAsDouble("arr[" + i + "]", i * 10d);
+            }
+            for (var i = 1; i <= 5; i++)
+            {
+                Assert.AreEqual(i * 10d, exp.GetValueAsDouble("arr[" + i + "]"));
+            }
+        }
+
+        [TestMethod]
+        public void SetVariableAsLong_LargeValue_Stored()
+        {
+            var exp = Create();
+            exp.SetVariableAsLong("big", 100000);
+            Assert.AreEqual(100000, exp.GetValueAsLong("big"));
+        }
+
+        [TestMethod]
+        public void DumpVariables_MultipleVariables_ContainsAll()
+        {
+            var exp = Create();
+            exp.SetVariableAsDouble("a", 1d);
+            exp.SetVariableAsString("b", "hello");
+            var dump = exp.DumpVariables();
+            Assert.IsTrue(dump.Contains("a"));
+            Assert.IsTrue(dump.Contains("b"));
+        }
     }
 }

@@ -89,5 +89,37 @@ namespace SRCCore.Extensions.Tests
                 Assert.IsTrue(list.Contains(picked), $"Dice returned '{picked}' which is not in the list");
             }
         }
+
+        [TestMethod()]
+        public void RemoveItemTest_EmptyList_DoesNotThrow()
+        {
+            var list = new List<int>();
+            list.RemoveItem(x => x > 0);
+            Assert.AreEqual(0, list.Count);
+        }
+
+        [TestMethod()]
+        public void AppendRange_OnEmptyOriginalList()
+        {
+            IEnumerable<int> empty = new List<int>();
+            var result = empty.AppendRange(new List<int> { 1, 2, 3 });
+            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, result.ToList());
+        }
+
+        [TestMethod()]
+        public void SafeRefOneOffset_EmptyList_ReturnsDefault()
+        {
+            var list = new List<int>();
+            Assert.AreEqual(0, list.SafeRefOneOffset(1));
+            Assert.AreEqual(0, list.SafeRefOneOffset(0));
+        }
+
+        [TestMethod()]
+        public void SafeRefZeroOffset_EmptyList_ReturnsDefault()
+        {
+            var list = new List<string>();
+            Assert.IsNull(list.SafeRefZeroOffset(0));
+            Assert.IsNull(list.SafeRefZeroOffset(1));
+        }
     }
 }

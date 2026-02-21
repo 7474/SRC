@@ -360,5 +360,172 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(0d, src.Expression.GetValueAsDouble("arr[1]", true));
             Assert.AreEqual(200d, src.Expression.GetValueAsDouble("arr[2]"));
         }
+
+        [TestMethod]
+        public void UnSetCmd_WrongArgCount_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "UnSet");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // SetCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SetCmd_ExpressionWithParens_EvaluatesExpression()
+        {
+            var src = CreateSrc();
+            // Set var (expr) の形式で式を評価
+            var cmd = CreateCmd(src, "Set result (3 + 4)");
+            cmd.Exec();
+            Assert.AreEqual(7d, src.Expression.GetValueAsDouble("result"));
+        }
+
+        [TestMethod]
+        public void SetCmd_ZeroValue_StoresZero()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Set counter 0");
+            cmd.Exec();
+            Assert.AreEqual(0d, src.Expression.GetValueAsDouble("counter"));
+        }
+
+        [TestMethod]
+        public void SetCmd_NegativeValue_StoresNegative()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Set n -10");
+            cmd.Exec();
+            Assert.AreEqual(-10d, src.Expression.GetValueAsDouble("n"));
+        }
+
+        [TestMethod]
+        public void SetCmd_OverwritesExistingValue()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("x", 5d);
+            var cmd = CreateCmd(src, "Set x 99");
+            cmd.Exec();
+            Assert.AreEqual(99d, src.Expression.GetValueAsDouble("x"));
+        }
+
+        // ──────────────────────────────────────────────
+        // IncrCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IncrCmd_LargeIncrement_Works()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("x", 0d);
+            var cmd = CreateCmd(src, "Incr x 1000");
+            cmd.Exec();
+            Assert.AreEqual(1000d, src.Expression.GetValueAsDouble("x"));
+        }
+
+        [TestMethod]
+        public void IncrCmd_MultipleTimesAccumulates()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("x", 0d);
+            var cmd1 = CreateCmd(src, "Incr x 5", 0);
+            var cmd2 = CreateCmd(src, "Incr x 3", 1);
+            cmd1.Exec();
+            cmd2.Exec();
+            Assert.AreEqual(8d, src.Expression.GetValueAsDouble("x"));
+        }
+
+        // ──────────────────────────────────────────────
+        // SwapCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SwapCmd_SameVariable_RemainsUnchanged()
+        {
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("x", 42d);
+            var cmd = CreateCmd(src, "Swap x x");
+            cmd.Exec();
+            Assert.AreEqual(42d, src.Expression.GetValueAsDouble("x"));
+        }
+
+        [TestMethod]
+        public void SwapCmd_TooManyArgs_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Swap x y z");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // GlobalCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void GlobalCmd_MultipleVarsAtOnce_AllDefined()
+        {
+            // GlobalCmd はループで複数変数を処理する
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Global g1 g2 g3");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("g1"));
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("g2"));
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("g3"));
+        }
+
+        [TestMethod]
+        public void GlobalCmd_MultipleVariables_AllDefined()
+        {
+            var src = CreateSrc();
+            var cmd1 = CreateCmd(src, "Global varA", 0);
+            var cmd2 = CreateCmd(src, "Global varB", 1);
+            cmd1.Exec();
+            cmd2.Exec();
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("varA"));
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("varB"));
+        }
+
+        // ──────────────────────────────────────────────
+        // ArrayCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ArrayCmd_SpaceSeparator_SplitsCorrectly()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Array v \"a b c\" \" \"");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("a", src.Expression.GetValueAsString("v[1]"));
+            Assert.AreEqual("b", src.Expression.GetValueAsString("v[2]"));
+            Assert.AreEqual("c", src.Expression.GetValueAsString("v[3]"));
+        }
+
+        [TestMethod]
+        public void ArrayCmd_SingleElement_CreatesOneElement()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Array v \"only\" \",\"");
+            cmd.Exec();
+            Assert.AreEqual("only", src.Expression.GetValueAsString("v[1]"));
+        }
+
+        // ──────────────────────────────────────────────
+        // CopyArrayCmd - 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void CopyArrayCmd_TooManyArgs_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "CopyArray a b c");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }

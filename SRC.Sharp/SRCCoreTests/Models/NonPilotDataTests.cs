@@ -123,5 +123,45 @@ namespace SRCCore.Models.Tests
 
             Assert.AreEqual("char01.bmp", npd.Bitmap);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Nickname_OverwriteValue_ReturnsNewValue()
+        {
+            var npd = new NonPilotData();
+            npd.Nickname = "最初の名前";
+            npd.Nickname = "新しい名前";
+            Assert.AreEqual("新しい名前", npd.Nickname);
+        }
+
+        [TestMethod]
+        public void Bitmap_OverwriteValue_ReturnsNewValue()
+        {
+            var npd = new NonPilotData();
+            npd.Bitmap = "old.bmp";
+            npd.Bitmap = "new.bmp";
+            Assert.AreEqual("new.bmp", npd.Bitmap);
+        }
+
+        [TestMethod]
+        public void IsBitmapMissing_CanBeSetToTrueAndFalse()
+        {
+            var npd = new NonPilotData();
+            npd.Bitmap = "test.bmp";
+            npd.IsBitmapMissing = true;
+            Assert.AreEqual("-.bmp", npd.Bitmap);
+            npd.IsBitmapMissing = false;
+            Assert.AreEqual("test.bmp", npd.Bitmap);
+        }
+
+        [TestMethod]
+        public void Nickname0_ReturnsNullWhenNicknameNeverSet()
+        {
+            var npd = new NonPilotData();
+            Assert.IsNull(npd.Nickname0);
+        }
     }
 }

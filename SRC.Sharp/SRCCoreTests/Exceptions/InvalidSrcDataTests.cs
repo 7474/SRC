@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace SRCCore.Exceptions.Tests
@@ -99,6 +100,78 @@ namespace SRCCore.Exceptions.Tests
 
             // The exception should still have the original data
             Assert.AreEqual(1, ex.InvalidDataList.Count);
+        }
+
+        [TestMethod]
+        public void Constructor_SingleItem_MessageEqualsItemMsg()
+        {
+            var list = new List<InvalidSrcData>
+            {
+                new InvalidSrcData("only error", "f.txt", 5, "l", "d"),
+            };
+            var ex = new InvalidSrcDataException(list);
+            Assert.AreEqual("only error", ex.Message);
+        }
+
+        [TestMethod]
+        public void Constructor_MultipleItems_PreservesAll()
+        {
+            var list = new List<InvalidSrcData>
+            {
+                new InvalidSrcData("e1", "f1.txt", 1, "l1", "d1"),
+                new InvalidSrcData("e2", "f2.txt", 2, "l2", "d2"),
+                new InvalidSrcData("e3", "f3.txt", 3, "l3", "d3"),
+            };
+            var ex = new InvalidSrcDataException(list);
+            Assert.AreEqual(3, ex.InvalidDataList.Count);
+            Assert.AreEqual("e2", ex.InvalidDataList[1].msg);
+            Assert.AreEqual("e3", ex.InvalidDataList[2].msg);
+        }
+    }
+
+    [TestClass]
+    public class EventErrorExceptionTests
+    {
+        [TestMethod]
+        public void Constructor_WithNullCmd_SetsMessageAndNullEventData()
+        {
+            var ex = new SRCCore.Exceptions.EventErrorException(null, "test error");
+            Assert.AreEqual("test error", ex.Message);
+            Assert.IsNull(ex.EventData);
+        }
+
+        [TestMethod]
+        public void Constructor_IsException()
+        {
+            var ex = new SRCCore.Exceptions.EventErrorException(null, "msg");
+            Assert.IsInstanceOfType(ex, typeof(Exception));
+        }
+    }
+
+    [TestClass]
+    public class TerminateExceptionTests
+    {
+        [TestMethod]
+        public void Constructor_WithMessage_SetsMessage()
+        {
+            var ex = new SRCCore.Exceptions.TerminateException("terminate now");
+            Assert.AreEqual("terminate now", ex.Message);
+        }
+
+        [TestMethod]
+        public void Constructor_WithMessageAndInner_BothSet()
+        {
+            var inner = new InvalidOperationException("inner");
+            var ex = new SRCCore.Exceptions.TerminateException("outer", inner);
+            Assert.AreEqual("outer", ex.Message);
+            Assert.AreSame(inner, ex.InnerException);
+        }
+
+        [TestMethod]
+        public void TerminateException_IsException()
+        {
+            var ex = new SRCCore.Exceptions.TerminateException("msg");
+            Assert.IsInstanceOfType(ex, typeof(Exception));
         }
     }
 }

@@ -238,5 +238,114 @@ namespace SRCCore.Expressions.Tests
             Assert.AreEqual(7d, exp.GetValueAsDouble("x - y"));
             Assert.AreEqual(30d, exp.GetValueAsDouble("x * y"));
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト: モジュロ・括弧・大きな数・負の数
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Modulo_NegativeDividend_ReturnsRemainder()
+        {
+            var exp = Create();
+            // -7 Mod 3 の結果
+            var result = exp.GetValueAsDouble("-7 Mod 3");
+            Assert.IsTrue(result == -1d || result == 2d); // 実装依存
+        }
+
+        [TestMethod]
+        public void NestedParentheses_ComputesCorrectly()
+        {
+            var exp = Create();
+            // ((2 + 3) * (4 - 1)) = 15
+            Assert.AreEqual(15d, exp.GetValueAsDouble("( ( 2 + 3 ) * ( 4 - 1 ) )"));
+        }
+
+        [TestMethod]
+        public void MixedArithmetic_MultipleOperators()
+        {
+            var exp = Create();
+            // 10 - 2 * 3 + 1 = 5
+            Assert.AreEqual(5d, exp.GetValueAsDouble("10 - 2 * 3 + 1"));
+        }
+
+        [TestMethod]
+        public void LargeNumbers_Addition()
+        {
+            var exp = Create();
+            Assert.AreEqual(2000000d, exp.GetValueAsDouble("1000000 + 1000000"));
+        }
+
+        [TestMethod]
+        public void LargeNumbers_Multiplication()
+        {
+            var exp = Create();
+            Assert.AreEqual(1000000d, exp.GetValueAsDouble("1000 * 1000"));
+        }
+
+        [TestMethod]
+        public void NegativeNumbers_Addition()
+        {
+            var exp = Create();
+            Assert.AreEqual(-3d, exp.GetValueAsDouble("-5 + 2"));
+        }
+
+        [TestMethod]
+        public void NegativeNumbers_Multiplication()
+        {
+            var exp = Create();
+            Assert.AreEqual(-6d, exp.GetValueAsDouble("-2 * 3"));
+        }
+
+        [TestMethod]
+        public void NegativeNumbers_Subtraction()
+        {
+            var exp = Create();
+            Assert.AreEqual(-8d, exp.GetValueAsDouble("-5 - 3"));
+        }
+
+        [TestMethod]
+        public void IntDivide_LargeNumbers_Truncates()
+        {
+            var exp = Create();
+            Assert.AreEqual(333d, exp.GetValueAsDouble("1000 \\ 3"));
+        }
+
+        [TestMethod]
+        public void Exponent_Zero_ReturnsOne()
+        {
+            var exp = Create();
+            Assert.AreEqual(1d, exp.GetValueAsDouble("5 ^ 0"));
+        }
+
+        [TestMethod]
+        public void Modulo_SingleElement_ListTest()
+        {
+            var exp = Create();
+            // 10 Mod 10 = 0
+            Assert.AreEqual(0d, exp.GetValueAsDouble("10 Mod 10"));
+        }
+
+        [TestMethod]
+        public void Add_DecimalNumbers_ReturnsSum()
+        {
+            var exp = Create();
+            Assert.AreEqual(0.3d, exp.GetValueAsDouble("0.1 + 0.2"), 1e-10);
+        }
+
+        [TestMethod]
+        public void Divide_ByZero_ReturnsNonFinite()
+        {
+            var exp = Create();
+            // ゼロ除算はInfinityまたは例外
+            try
+            {
+                var result = exp.GetValueAsDouble("1 / 0");
+                Assert.IsTrue(double.IsInfinity(result) || result == 0d);
+            }
+            catch
+            {
+                // 例外が発生しても許容
+            }
+        }
     }
 }

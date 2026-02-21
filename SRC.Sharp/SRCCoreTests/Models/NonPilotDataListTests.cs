@@ -98,5 +98,54 @@ namespace SRCCore.Models.Tests
             npd.Nickname = "呼び名";
             Assert.IsTrue(list.IsDefined("呼び名"));
         }
+
+        [TestMethod]
+        public void Add_MultipleItems_AllDefined()
+        {
+            var src = CreateSRC();
+            var list = src.NPDList;
+            list.Add("キャラA");
+            list.Add("キャラB");
+            list.Add("キャラC");
+            Assert.IsTrue(list.IsDefined2("キャラA"));
+            Assert.IsTrue(list.IsDefined2("キャラB"));
+            Assert.IsTrue(list.IsDefined2("キャラC"));
+        }
+
+        [TestMethod]
+        public void Add_ReturnsNonPilotData()
+        {
+            var src = CreateSRC();
+            var list = src.NPDList;
+            var npd = list.Add("テストNPC");
+            Assert.IsNotNull(npd);
+        }
+
+        [TestMethod]
+        public void Add_ReturnedData_HasCorrectName()
+        {
+            var src = CreateSRC();
+            var list = src.NPDList;
+            var npd = list.Add("指定名前");
+            Assert.AreEqual("指定名前", npd.Name);
+        }
+
+        [TestMethod]
+        public void NonPilotData_IsBitmapMissing_DefaultIsFalse()
+        {
+            var src = CreateSRC();
+            var list = src.NPDList;
+            var npd = list.Add("テストキャラ");
+            Assert.IsFalse(npd.IsBitmapMissing);
+        }
+
+        [TestMethod]
+        public void Narrator_Item_ReturnsData()
+        {
+            var src = CreateSRC();
+            var list = src.NPDList;
+            var item = list.Item("ナレーター");
+            Assert.IsNotNull(item);
+        }
     }
 }

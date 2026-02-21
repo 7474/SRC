@@ -51,5 +51,51 @@ namespace SRCCore.Extensions.Tests
             Assert.AreEqual("'// hoge'", "'// hoge'// fuga".RemoveLineComment());
             Assert.AreEqual("\"// hoge", "\"// hoge".RemoveLineComment());
         }
+
+        [TestMethod()]
+        public void RemoveLineComment_OnlySlashes_ReturnsEmpty()
+        {
+            Assert.AreEqual("", "//".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_EmptyString_ReturnsEmpty()
+        {
+            Assert.AreEqual("", "".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_NoComment_ReturnsOriginal()
+        {
+            Assert.AreEqual("hello world", "hello world".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_MultipleSlashes_CutsAtFirst()
+        {
+            // "a//b//c" -> first // outside quotes cuts at position 1
+            Assert.AreEqual("a", "a//b//c".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_SlashInSingleQuotes_NotCut()
+        {
+            // single-quoted region protects //
+            Assert.AreEqual("'a//b'", "'a//b'".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_SlashAfterClosedQuote_IsCut()
+        {
+            // after closing single-quote, // should be treated as comment
+            Assert.AreEqual("'a'", "'a'//comment".RemoveLineComment());
+        }
+
+        [TestMethod()]
+        public void RemoveLineComment_DoubleQuoteUnclosed_PreservesRest()
+        {
+            // unclosed double-quote means // inside is not a comment
+            Assert.AreEqual("\"abc//def", "\"abc//def".RemoveLineComment());
+        }
     }
 }
