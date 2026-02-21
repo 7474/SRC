@@ -10,9 +10,16 @@ description: |
   that lack test coverage and adds unit tests using SRC.Sharp.Help/src/ help
   documentation as the expected behavior specification.
 
+  NOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting
+  projects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids
+  the need for EnableWindowsTargeting workarounds and allows full solution build and test.
+
 on:
   schedule: weekly on monday
   workflow_dispatch:
+
+# windowsターゲットのプロジェクトも対象とする際にはランナーをWindowsにする必要がある
+# runs-on: windows-latest
 
 permissions: read-all
 
@@ -35,10 +42,15 @@ steps:
     with:
       dotnet-version: 8.0.x
 
+  # -p:EnableWindowsTargeting=true は Linux ランナーで SRCSharpForm / SRCTestForm など
+  # net8.0-windows ターゲットのプロジェクトをビルドするために必要。
+  # windows-latest ランナーでは不要だが、ランナー変更時の互換性のために明示的に指定する。
+  # This flag is required when building net8.0-windows targeting projects on Linux runners.
+  # It is redundant on windows-latest but kept explicitly for cross-platform compatibility.
   - name: Restore and Build
     run: |
-      dotnet restore SRC.Sharp/SRC.Sharp.sln
-      dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore
+      dotnet restore SRC.Sharp/SRC.Sharp.sln -p:EnableWindowsTargeting=true
+      dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore -p:EnableWindowsTargeting=true
 
   - name: Run existing tests (baseline)
     run: |
@@ -214,7 +226,7 @@ Title: [unit-test] [CommandName]: Discrepancy from help documentation
 ## Step 7: テストの実行と検証 / Run and Validate Tests
 
 ```bash
-cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj --verbosity normal 2>&1 | tee /tmp/gh-aw/test-results.txt
+cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj --verbosity normal -p:EnableWindowsTargeting=true 2>&1 | tee /tmp/gh-aw/test-results.txt
 ```
 
 全テストがパスするまで修正を繰り返してください。

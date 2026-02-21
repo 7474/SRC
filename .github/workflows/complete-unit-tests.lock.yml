@@ -30,8 +30,12 @@
 # It identifies implemented commands under SRC.Sharp/SRCCore/CmdDatas/Commands/
 # that lack test coverage and adds unit tests using SRC.Sharp.Help/src/ help
 # documentation as the expected behavior specification.
+# 
+# NOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting
+# projects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids
+# the need for EnableWindowsTargeting workarounds and allows full solution build and test.
 #
-# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"bbaebea70e7936b731d98b851fe63efe88b47a72d2cca80d5461969469b2f328","compiler_version":"v0.48.1"}
+# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"aa19314e9289a49c5444875465475ac18d6ce7ab12e8e6877be9cd0d82de11a0","compiler_version":"v0.48.1"}
 
 name: "ユニットテスト補完エージェント / Unit Test Completion Agent"
 "on":
@@ -303,8 +307,8 @@ jobs:
           dotnet-version: 8.0.x
       - name: Restore and Build
         run: |
-          dotnet restore SRC.Sharp/SRC.Sharp.sln
-          dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore
+          dotnet restore SRC.Sharp/SRC.Sharp.sln -p:EnableWindowsTargeting=true
+          dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore -p:EnableWindowsTargeting=true
       - name: Run existing tests (baseline)
         run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build --verbosity normal 2>&1 | tee /tmp/gh-aw/test-baseline.txt || true
 
@@ -1100,7 +1104,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           WORKFLOW_NAME: "ユニットテスト補完エージェント / Unit Test Completion Agent"
-          WORKFLOW_DESCRIPTION: "SRC# 移植プロジェクトのユニットテスト補完を自動実行するワークフロー。\nSRC.Sharp/SRCCore/CmdDatas/Commands/ の実装済みコマンドのうち、\nテストが不足しているものを特定し、SRC.Sharp.Help/src/ のヘルプドキュメントを\n期待値として自動的にユニットテストを追加する。\n\nThis workflow automatically completes unit tests for the SRC# migration project.\nIt identifies implemented commands under SRC.Sharp/SRCCore/CmdDatas/Commands/\nthat lack test coverage and adds unit tests using SRC.Sharp.Help/src/ help\ndocumentation as the expected behavior specification."
+          WORKFLOW_DESCRIPTION: "SRC# 移植プロジェクトのユニットテスト補完を自動実行するワークフロー。\nSRC.Sharp/SRCCore/CmdDatas/Commands/ の実装済みコマンドのうち、\nテストが不足しているものを特定し、SRC.Sharp.Help/src/ のヘルプドキュメントを\n期待値として自動的にユニットテストを追加する。\n\nThis workflow automatically completes unit tests for the SRC# migration project.\nIt identifies implemented commands under SRC.Sharp/SRCCore/CmdDatas/Commands/\nthat lack test coverage and adds unit tests using SRC.Sharp.Help/src/ help\ndocumentation as the expected behavior specification.\n\nNOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting\nprojects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids\nthe need for EnableWindowsTargeting workarounds and allows full solution build and test."
           HAS_PATCH: ${{ needs.agent.outputs.has_patch }}
         with:
           script: |
