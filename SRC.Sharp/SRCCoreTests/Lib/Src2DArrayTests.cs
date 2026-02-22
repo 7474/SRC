@@ -11,6 +11,25 @@ namespace SRCCore.Lib.Tests
     public class Src2DArrayTests
     {
         // ──────────────────────────────────────────────
+        // コンストラクタ
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Constructor_SetsXAndY()
+        {
+            var arr = new Src2DArray<int>(5, 3);
+            Assert.AreEqual(5, arr.X);
+            Assert.AreEqual(3, arr.Y);
+        }
+
+        [TestMethod]
+        public void Constructor_CreatesCorrectSizedArray()
+        {
+            var arr = new Src2DArray<int>(4, 6);
+            Assert.AreEqual(24, arr.All.Count());
+        }
+
+        // ──────────────────────────────────────────────
         // 基本的なアクセス
         // ──────────────────────────────────────────────
 
@@ -105,6 +124,53 @@ namespace SRCCore.Lib.Tests
             var arr = new Src2DArray<int>(2, 3);
             Assert.AreEqual(6, arr.All.Count());
             Assert.IsTrue(arr.All.All(v => v == 0));
+        }
+
+        // ──────────────────────────────────────────────
+        // int型のデフォルト値
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IntType_DefaultValueIsZero()
+        {
+            var arr = new Src2DArray<int>(3, 3);
+            Assert.AreEqual(0, arr[1, 1]);
+            Assert.AreEqual(0, arr[2, 2]);
+            Assert.AreEqual(0, arr[3, 3]);
+        }
+
+        // ──────────────────────────────────────────────
+        // string型の複数値テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void StringType_SetMultipleValuesAndReadBack()
+        {
+            var arr = new Src2DArray<string>(2, 3);
+            arr[1, 1] = "a";
+            arr[1, 2] = "b";
+            arr[1, 3] = "c";
+            arr[2, 1] = "d";
+            arr[2, 2] = "e";
+            arr[2, 3] = "f";
+
+            Assert.AreEqual("a", arr[1, 1]);
+            Assert.AreEqual("b", arr[1, 2]);
+            Assert.AreEqual("c", arr[1, 3]);
+            Assert.AreEqual("d", arr[2, 1]);
+            Assert.AreEqual("e", arr[2, 2]);
+            Assert.AreEqual("f", arr[2, 3]);
+        }
+
+        [TestMethod]
+        public void StringType_UnsetElementsAreNull()
+        {
+            var arr = new Src2DArray<string>(2, 2);
+            arr[1, 1] = "set";
+            Assert.AreEqual("set", arr[1, 1]);
+            Assert.IsNull(arr[1, 2]);
+            Assert.IsNull(arr[2, 1]);
+            Assert.IsNull(arr[2, 2]);
         }
 
         // ──────────────────────────────────────────────
