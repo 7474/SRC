@@ -40,15 +40,25 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void GameClearCmd_NoArgs_Executes()
+        public void GameClearCmd_NoArgs_CallsTerminate()
         {
-            // MockGUI.Terminate() が NotImplementedException を投げるため、
-            // catch(NotImplementedException) → EventData.NextID を返す
+            var src = CreateSrc();
+            var mockGui = (MockGUI)src.GUI;
+            var cmd = CreateCmd(src, "GameClear");
+            cmd.Exec();
+            // GameClear → TerminateSRC() → GUI.Terminate() が呼ばれることを検証
+            Assert.IsTrue(mockGui.TerminateCalled);
+        }
+
+        [TestMethod]
+        public void GameClearCmd_NoArgs_ReturnsMinusOne()
+        {
             var src = CreateSrc();
             var cmd = CreateCmd(src, "GameClear");
             var result = cmd.Exec();
-            // MockGUI環境では NotImplementedException → NextID(1) が返る
-            Assert.AreEqual(1, result);
+            // Terminate() が false を返すため Environment.Exit は呼ばれず、
+            // GameClearCmd は -1 を返す（イベント終了）
+            Assert.AreEqual(-1, result);
         }
 
         [TestMethod]
@@ -65,14 +75,23 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void QuitCmd_Executes()
+        public void QuitCmd_CallsTerminate()
         {
-            // MockGUI.Terminate() が NotImplementedException を投げるため、
-            // catch(NotImplementedException) → EventData.NextID を返す
+            var src = CreateSrc();
+            var mockGui = (MockGUI)src.GUI;
+            var cmd = CreateCmd(src, "Quit");
+            cmd.Exec();
+            // Quit → TerminateSRC() → GUI.Terminate() が呼ばれることを検証
+            Assert.IsTrue(mockGui.TerminateCalled);
+        }
+
+        [TestMethod]
+        public void QuitCmd_ReturnsMinusOne()
+        {
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Quit");
             var result = cmd.Exec();
-            Assert.AreEqual(1, result);
+            Assert.AreEqual(-1, result);
         }
 
         // ──────────────────────────────────────────────
