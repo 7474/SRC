@@ -38,9 +38,14 @@ namespace SRCDataLinter
                     var systemDir = Path.Combine(x, "data", "system");
                     if (Directory.Exists(systemDir))
                     {
-                        Console.WriteLine($"Using data/system directory: [{systemDir}]");
+                        // data/system が存在する場合はシステムデータを先頭に列挙し、
+                        // その後に全体を再帰探索することでゲームと同様の読み込み順を実現する。
+                        // Distinct により data/system 配下の重複は除去される。
+                        Console.WriteLine($"Using data/system directory first: [{systemDir}]");
                         return Directory.EnumerateFiles(systemDir, "*.txt", SearchOption.AllDirectories)
-                            .Concat(Directory.EnumerateFiles(systemDir, "*.eve", SearchOption.AllDirectories));
+                            .Concat(Directory.EnumerateFiles(systemDir, "*.eve", SearchOption.AllDirectories))
+                            .Concat(Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories))
+                            .Concat(Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories));
                     }
                     Console.WriteLine($"Searching all files in: [{x}]");
                     return Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories)
