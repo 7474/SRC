@@ -85,7 +85,7 @@ jobs:
           @{ name = 'srcs.coverage.branch_rate_percent'; time = $epoch; value = $branchRate }
         )
         Invoke-RestMethod -Method Post `
-          -Uri 'https://api.mackerelio.com/api/v0/services/SRCS/metrics' `
+          -Uri 'https://api.mackerelio.com/api/v0/services/SRCS/tsdb' `
           -Headers @{ 'X-Api-Key' = $env:MACKEREL_API_KEY } `
           -ContentType 'application/json' `
           -Body $body
