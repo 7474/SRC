@@ -139,6 +139,31 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(-1, result);
         }
 
+        [TestMethod]
+        public void RestoreEventCmd_WithLabel_ReturnsNextId()
+        {
+            // ヘルプ: RestoreEvent label — 無効化されているラベルを再び有効化する
+            // 存在しないラベルでも正常に処理が完了する
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RestoreEvent SomeLabel", 3);
+            var result = cmd.Exec();
+            Assert.AreEqual(4, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // ExitCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ExitCmd_NoArgs_ReturnsMinusOne()
+        {
+            // ヘルプ: イベントを終了します — Exitコマンドが実行されるまではイベントの実行は終わりません
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Exit");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
         // ──────────────────────────────────────────────
         // SetMessageCmd (arg count error cases)
         // ──────────────────────────────────────────────
