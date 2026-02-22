@@ -29,6 +29,8 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData("myVar", ValueType.NumericType, "42", 42d);
             Assert.AreEqual("myVar", v.Name);
             Assert.AreEqual(ValueType.NumericType, v.VariableType);
+            Assert.AreEqual("42", v.StringValue);
+            Assert.AreEqual(42d, v.NumericValue);
         }
 
         // ──────────────────────────────────────────────
@@ -43,8 +45,8 @@ namespace SRCCore.Expressions.Tests
             Assert.AreEqual("x", v.Name);
             Assert.AreEqual(ValueType.NumericType, v.VariableType);
             Assert.AreEqual(3.14, v.NumericValue);
-            // NumericType の場合は StringValue も数値から生成される
-            Assert.IsFalse(string.IsNullOrEmpty(v.StringValue));
+            // NumericType の場合は StringValue も数値から自動変換される
+            Assert.AreEqual("3.14", v.StringValue);
         }
 
         [TestMethod]
@@ -87,6 +89,7 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData("x", ValueType.NumericType, "1", 1d);
             v.Clear();
             Assert.AreEqual("", v.Name);
+            Assert.AreEqual(ValueType.StringType, v.VariableType);
             Assert.AreEqual("", v.StringValue);
             Assert.AreEqual(0d, v.NumericValue);
         }
@@ -97,6 +100,7 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData("x", ValueType.NumericType, "5", 5d);
             v.Init("newName");
             Assert.AreEqual("newName", v.Name);
+            Assert.AreEqual(ValueType.StringType, v.VariableType);
             Assert.AreEqual("", v.StringValue);
             Assert.AreEqual(0d, v.NumericValue);
         }
@@ -164,7 +168,7 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData("n", ValueType.NumericType, "", 3.5);
             var type = v.ReferenceValue(ValueType.StringType, out var str, out var num);
             Assert.AreEqual(ValueType.StringType, type);
-            Assert.IsFalse(string.IsNullOrEmpty(str));
+            Assert.AreEqual("3.5", str);
         }
 
         [TestMethod]
@@ -184,9 +188,7 @@ namespace SRCCore.Expressions.Tests
         public void ToString_ReturnsFormattedString()
         {
             var v = new VarData("myVar", ValueType.StringType, "hello", 0d);
-            var s = v.ToString();
-            Assert.IsTrue(s.Contains("myVar"));
-            Assert.IsTrue(s.Contains("hello"));
+            Assert.AreEqual("myVar:hello(0)", v.ToString());
         }
     }
 }
