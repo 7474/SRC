@@ -501,9 +501,13 @@ namespace SRCCore.TestLib
             throw new NotImplementedException();
         }
 
+        public bool TerminateCalled { get; private set; }
+
         public bool Terminate()
         {
-            throw new NotImplementedException();
+            TerminateCalled = true;
+            // false を返すことで TerminateSRC() が Environment.Exit(0) を呼ばないようにする
+            return false;
         }
 
         public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
