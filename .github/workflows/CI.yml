@@ -51,6 +51,37 @@ jobs:
       run: cat CoverageReport/SummaryGithub.md >> $env:GITHUB_STEP_SUMMARY
       shell: pwsh
 
+    - name: Send Coverage Summary to Mackerel (service metrics)
+      if: github.event_name == 'push'
+      shell: pwsh
+      env:
+        MACKEREL_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
+      run: |
+        $ErrorActionPreference = 'Stop'
+        $files = Get-ChildItem -Path TestResults -Recurse -Filter coverage.cobertura.xml -ErrorAction SilentlyContinue
+        if (-not $files) {
+          Write-Error "No coverage.cobertura.xml file found under TestResults."
+          exit 1
+        }
+        $latest = $files | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        [xml]$xml = Get-Content $latest.FullName
+        $lineRateAttr   = $xml.coverage.'line-rate'
+        $branchRateAttr = $xml.coverage.'branch-rate'
+        if ($null -eq $lineRateAttr)   { Write-Error "Missing 'line-rate' attribute in coverage XML.";   exit 1 }
+        if ($null -eq $branchRateAttr) { Write-Error "Missing 'branch-rate' attribute in coverage XML."; exit 1 }
+        $lineRate   = [math]::Round([double]$lineRateAttr   * 100, 2)
+        $branchRate = [math]::Round([double]$branchRateAttr * 100, 2)
+        $epoch = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+        $body = ConvertTo-Json @(
+          @{ name = 'srcs.coverage.line_rate_percent';   time = $epoch; value = $lineRate },
+          @{ name = 'srcs.coverage.branch_rate_percent'; time = $epoch; value = $branchRate }
+        )
+        Invoke-RestMethod -Method Post `
+          -Uri 'https://api.mackerelio.com/api/v0/services/SRCS/metrics' `
+          -Headers @{ 'X-Api-Key' = $env:MACKEREL_API_KEY } `
+          -ContentType 'application/json' `
+          -Body $body
+
     # Check NU1605 https://github.com/7474/SRC/pull/262
     - name: Try Publish
       run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
