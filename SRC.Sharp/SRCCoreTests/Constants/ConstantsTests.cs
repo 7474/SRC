@@ -113,6 +113,13 @@ namespace SRCCoreTests.Constants
             Assert.IsNotNull(SRCCore.Constants.DIRECTIONS);
         }
 
+        [TestMethod]
+        public void DIRECTIONS_ElementsAreInCorrectOrder()
+        {
+            var expected = new string[] { "N", "S", "W", "E" };
+            CollectionAssert.AreEqual(expected, SRCCore.Constants.DIRECTIONS);
+        }
+
         // ──────────────────────────────────────────────
         // vbCr と vbLf は異なる
         // ──────────────────────────────────────────────
