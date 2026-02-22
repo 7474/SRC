@@ -133,5 +133,123 @@ namespace SRCCore.Items.Tests
             var item = src.IList.Add("装備4");
             Assert.IsTrue(src.IList.IsDefined(item.ID));
         }
+
+        [TestMethod]
+        public void IsDefined2_AfterAdd_ReturnsTrue()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備5");
+            var item = src.IList.Add("装備5");
+            Assert.IsTrue(src.IList.IsDefined2(item.ID));
+        }
+
+        // ──────────────────────────────────────────────
+        // Item (IDで検索 / 名前で検索)
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Item_ByID_ReturnsItem()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備A");
+            var item = src.IList.Add("装備A");
+            var found = src.IList.Item(item.ID);
+            Assert.IsNotNull(found);
+            Assert.AreEqual(item.ID, found.ID);
+        }
+
+        [TestMethod]
+        public void Item_ByName_ReturnsItem()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備B");
+            var item = src.IList.Add("装備B");
+            var found = src.IList.Item("装備B");
+            Assert.IsNotNull(found);
+            Assert.AreEqual("装備B", found.Name);
+        }
+
+        // ──────────────────────────────────────────────
+        // Count (複数追加)
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Count_AfterMultipleAdds_ReturnsCorrectCount()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備X");
+            src.IDList.Add("装備Y");
+            src.IList.Add("装備X");
+            src.IList.Add("装備Y");
+            Assert.AreEqual(2, src.IList.Count());
+        }
+
+        // ──────────────────────────────────────────────
+        // Clear
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Clear_RemovesAllItems()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備C");
+            src.IList.Add("装備C");
+            src.IList.Clear();
+            Assert.AreEqual(0, src.IList.Count());
+        }
+
+        [TestMethod]
+        public void Clear_ListBecomesEmpty()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備D");
+            src.IList.Add("装備D");
+            src.IList.Clear();
+            Assert.AreEqual(0, src.IList.List.Count);
+        }
+
+        // ──────────────────────────────────────────────
+        // Delete
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Delete_RemovesItemByID()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備E");
+            var item = src.IList.Add("装備E");
+            src.IList.Delete(item.ID);
+            Assert.AreEqual(0, src.IList.Count());
+        }
+
+        [TestMethod]
+        public void Delete_RemovedItemIsNotDefined()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備F");
+            var item = src.IList.Add("装備F");
+            var id = item.ID;
+            src.IList.Delete(id);
+            Assert.IsFalse(src.IList.IsDefined2(id));
+        }
+
+        // ──────────────────────────────────────────────
+        // Restore
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Restore_SetsSRCReference()
+        {
+            var src = CreateSRC();
+            src.IDList.Add("装備G");
+            var item = src.IList.Add("装備G");
+
+            var src2 = CreateSRC();
+            src2.IDList.Add("装備G");
+            src.IList.Restore(src2);
+
+            // Restore後もアイテムにアクセスできること
+            Assert.IsNotNull(src.IList.Item(item.ID));
+        }
     }
 }
