@@ -121,9 +121,12 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: timesを省略した場合は10段階でフェードイン
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            gui.SaveScreenHandler = () => { };
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeIn", 5);
             var result = cmd.Exec();
-            // GUI.IsRButtonPressed() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(6, result);
         }
 
@@ -132,9 +135,25 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: timesを指定すると指定した段階数でフェードイン
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            gui.SaveScreenHandler = () => { };
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeIn 20", 3);
             var result = cmd.Exec();
             Assert.AreEqual(4, result);
+        }
+
+        [TestMethod]
+        public void FadeInCmd_TooManyArgs_ReturnsError()
+        {
+            // ヘルプ: FadeIn [times] — 引数が3個以上はエラー
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            var cmd = CreateCmd(src, "FadeIn 10 20");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
         }
 
         // ──────────────────────────────────────────────
@@ -147,6 +166,8 @@ namespace SRCCore.CmdDatas.Tests
         public void FadeOutCmd_NoArgs_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeOut", 2);
             var result = cmd.Exec();
             Assert.AreEqual(3, result);
@@ -156,6 +177,8 @@ namespace SRCCore.CmdDatas.Tests
         public void FadeOutCmd_WithTimes_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeOut 5", 0);
             var result = cmd.Exec();
             Assert.AreEqual(1, result);
@@ -180,6 +203,10 @@ namespace SRCCore.CmdDatas.Tests
         public void WhiteInCmd_NoArgs_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            gui.SaveScreenHandler = () => { };
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteIn", 0);
             var result = cmd.Exec();
             Assert.AreEqual(1, result);
@@ -189,9 +216,25 @@ namespace SRCCore.CmdDatas.Tests
         public void WhiteInCmd_WithTimes_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            gui.SaveScreenHandler = () => { };
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteIn 15", 0);
             var result = cmd.Exec();
             Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void WhiteInCmd_TooManyArgs_ReturnsError()
+        {
+            // ヘルプ: WhiteIn [times] — 引数が3個以上はエラー
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => false;
+            var cmd = CreateCmd(src, "WhiteIn 10 20");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
         }
 
         // ──────────────────────────────────────────────
@@ -204,6 +247,8 @@ namespace SRCCore.CmdDatas.Tests
         public void WhiteOutCmd_NoArgs_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteOut", 0);
             var result = cmd.Exec();
             Assert.AreEqual(1, result);
@@ -213,6 +258,8 @@ namespace SRCCore.CmdDatas.Tests
         public void WhiteOutCmd_WithTimes_ReturnsNextId()
         {
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteOut 5", 0);
             var result = cmd.Exec();
             Assert.AreEqual(1, result);
@@ -248,9 +295,11 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Arc x y r start end — 円弧を描画
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "Arc 100 100 50 0 90", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -274,9 +323,11 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Circle x y r — マップウィンドウの(x,y)を中心とする半径rの円を描く
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "Circle 200 200 50", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -300,9 +351,11 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Oval x y r ratio — 楕円を描く
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "Oval 100 100 50 0.5", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -335,9 +388,11 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Line x1 y1 x2 y2 — 2点間に直線を描く
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "Line 0 0 100 100", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -371,9 +426,11 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Polygon x1 y1 x2 y2 x3 y3 — 三角形を描く
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "Polygon 0 0 100 0 50 100", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -397,9 +454,23 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: PSet x y — 指定座標に点を描画
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.MapPWidth = 640;
+            gui.MapPHeight = 480;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "PSet 100 100", 0);
             var result = cmd.Exec();
-            // MockGUI.MapPWidth はデフォルト 0 を返すため、座標 (100, 100) が範囲外と判定され NextID が返る
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void PSetCmd_OutOfBounds_ReturnsNextId()
+        {
+            // 座標がMapPWidth/MapPHeight 0の場合は範囲外と判定され早期リターン
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "PSet 100 100", 0);
+            var result = cmd.Exec();
             Assert.AreEqual(1, result);
         }
 
@@ -422,9 +493,10 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Explode size — 現在のカーソル位置で爆発アニメーション
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.ExplodeAnimationHandler = (s, x, y) => { };
             var cmd = CreateCmd(src, "Explode 中", 0);
             var result = cmd.Exec();
-            // MockGUI.MapX/MapY はデフォルト 0 を返し、GUI.ExplodeAnimation に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -433,9 +505,10 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: Explode size x y — 指定座標で爆発アニメーション
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.ExplodeAnimationHandler = (s, x, y) => { };
             var cmd = CreateCmd(src, "Explode 大 5 5", 0);
             var result = cmd.Exec();
-            // GUI.ExplodeAnimation に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
