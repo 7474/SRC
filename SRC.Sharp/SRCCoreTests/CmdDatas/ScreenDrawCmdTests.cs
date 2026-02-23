@@ -123,7 +123,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "FadeIn", 5);
             var result = cmd.Exec();
-            // GUI.IsRButtonPressed() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.IsRButtonPressed() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(6, result);
         }
 
@@ -250,7 +250,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Arc 100 100 50 0 90", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -276,7 +276,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Circle 200 200 50", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -302,7 +302,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Oval 100 100 50 0.5", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -337,7 +337,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Line 0 0 100 100", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -373,7 +373,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Polygon 0 0 100 0 50 100", 0);
             var result = cmd.Exec();
-            // GUI.SaveScreen() が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.SaveScreen() に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -399,7 +399,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "PSet 100 100", 0);
             var result = cmd.Exec();
-            // GUI.MapPWidth がNotImplementedExceptionをスローするためNextIDが返る
+            // MockGUI.MapPWidth はデフォルト 0 を返すため、座標 (100, 100) が範囲外と判定され NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -424,7 +424,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Explode 中", 0);
             var result = cmd.Exec();
-            // GUI.MapX が NotImplementedExceptionをスローするためNextIDが返る
+            // MockGUI.MapX/MapY はデフォルト 0 を返し、GUI.ExplodeAnimation に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 
@@ -435,7 +435,7 @@ namespace SRCCore.CmdDatas.Tests
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Explode 大 5 5", 0);
             var result = cmd.Exec();
-            // GUI.ExplodeAnimation が NotImplementedExceptionをスローするためNextIDが返る
+            // GUI.ExplodeAnimation に対するハンドラが未注入のため GUINotImplementedException がスローされ NextID が返る
             Assert.AreEqual(1, result);
         }
 

@@ -69,9 +69,9 @@ namespace SRCCore.CmdDatas
                 Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
                 return -1;
             }
-            catch (NotImplementedException ex)
+            catch (GUINotImplementedException)
             {
-                SRC.Log.LogWarning("NotImplemented: " + EventData.Data);
+                SRC.Log.LogWarning("GUINotImplemented: " + EventData.Data);
                 return EventData.NextID;
             }
             catch (Exception ex)
