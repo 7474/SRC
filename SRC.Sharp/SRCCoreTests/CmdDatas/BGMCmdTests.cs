@@ -104,5 +104,98 @@ namespace SRCCore.CmdDatas.Tests
             cmd.Exec();
             Assert.AreEqual("", src.Sound.BGMFileName);
         }
+
+        // ──────────────────────────────────────────────
+        // StartBGMCmd
+        // ヘルプ: MIDIファイルを繰り返し再生します
+        // 書式: StartBGM filename
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void StartBGMCmd_WithFilename_ReturnsNextId()
+        {
+            // ヘルプ: StartBGM filename — filenameのMIDIファイルをBGMとして繰り返し再生
+            // ファイルが存在しない/短い名前の場合は Sound.SearchMidiFile が null を返し何もしない
+            var src = CreateSrc();
+            // "x" は len < 5 のため SearchMidiFile が null を返し StartBGM が早期リターンする
+            var cmd = CreateCmd(src, "StartBGM x", 0);
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void StartBGMCmd_SetsKeepBGMFalse()
+        {
+            // ヘルプ: StartBGM は KeepBGM フラグをリセットする
+            var src = CreateSrc();
+            src.Sound.KeepBGM = true;
+            var cmd = CreateCmd(src, "StartBGM x", 0);
+            cmd.Exec();
+            Assert.IsFalse(src.Sound.KeepBGM);
+        }
+
+        [TestMethod]
+        public void StartBGMCmd_SetsBossBGMFalse()
+        {
+            // ヘルプ: StartBGM は BossBGM フラグをリセットする
+            var src = CreateSrc();
+            src.Sound.BossBGM = true;
+            var cmd = CreateCmd(src, "StartBGM x", 0);
+            cmd.Exec();
+            Assert.IsFalse(src.Sound.BossBGM);
+        }
+
+        // ──────────────────────────────────────────────
+        // PlayMIDICmd
+        // ヘルプ: MIDIファイルを一度だけ再生します
+        // 書式: PlayMIDI filename
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void PlayMIDICmd_WithFilename_ReturnsNextId()
+        {
+            // ヘルプ: PlayMIDI filename — filenameのMIDIファイルを一度だけ再生
+            // ファイルが存在しない/短い名前の場合は Sound.SearchMidiFile が null を返し何もしない
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "PlayMIDI x", 0);
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void PlayMIDICmd_SetsKeepBGMFalse()
+        {
+            var src = CreateSrc();
+            src.Sound.KeepBGM = true;
+            var cmd = CreateCmd(src, "PlayMIDI x", 0);
+            cmd.Exec();
+            Assert.IsFalse(src.Sound.KeepBGM);
+        }
+
+        // ──────────────────────────────────────────────
+        // PlaySoundCmd
+        // ヘルプ: WAVEファイルを再生します
+        // 書式: PlaySound filename
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void PlaySoundCmd_CancelFilename_ReturnsNextId()
+        {
+            // ヘルプ: PlaySound -.wav — 再生をキャンセル (早期リターンするため常にNextID)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "PlaySound -.wav", 0);
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void PlaySoundCmd_CancelMp3Filename_ReturnsNextId()
+        {
+            // ヘルプ: PlaySound -.mp3 — MP3再生をキャンセル
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "PlaySound -.mp3", 0);
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
     }
 }
