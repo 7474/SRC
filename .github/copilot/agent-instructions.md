@@ -36,6 +36,7 @@ The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 
   4. 各コマンドについて `SRC.Sharp.Help/src/[コマンド名]コマンド.md` を参照
   5. ヘルプの「解説」と「例」を期待値としてユニットテストを作成
   6. 実装とヘルプに齟齬がある場合は報告し、実装を修正する
+  7. 将来に向けての注意点がある場合は `XXX` タグをつけてコメントを残す
 - テストファイル：`SRC.Sharp/SRCCoreTests/CmdDatas/`
 - テストパターン：既存の `VariableCmdTests.cs`、`ControlCmdTests.cs`、`SwitchDoLoopCmdTests.cs` に倣う
 - テスト名：`[CmdName]Cmd_[Condition]_[ExpectedResult]()`
