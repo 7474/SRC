@@ -1,4 +1,4 @@
-name: Publish Puckage
+name: Publish Package
 
 on:
   push:
