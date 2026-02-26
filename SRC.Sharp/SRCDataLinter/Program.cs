@@ -33,11 +33,27 @@ namespace SRCDataLinter
             var hasError = false;
             var files = args
                 .Where(x => Directory.Exists(x))
-                .SelectMany(x => Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories))
-                .Concat(args
-                    .Where(x => Directory.Exists(x))
-                    .SelectMany(x => Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories)))
-                .Concat(args.Where(x => File.Exists(x)));
+                .SelectMany(x =>
+                {
+                    var systemDir = Path.Combine(x, "data", "system");
+                    if (Directory.Exists(systemDir))
+                    {
+                        // data/system が存在する場合はシステムデータを先頭に列挙し、
+                        // その後に全体を再帰探索することでゲームと同様の読み込み順を実現する。
+                        // Distinct により data/system 配下の重複は除去される。
+                        Console.WriteLine($"Using data/system directory first: [{systemDir}]");
+                        return Directory.EnumerateFiles(systemDir, "*.txt", SearchOption.AllDirectories)
+                            .Concat(Directory.EnumerateFiles(systemDir, "*.eve", SearchOption.AllDirectories))
+                            .Concat(Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories))
+                            .Concat(Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories));
+                    }
+                    Console.WriteLine($"Searching all files in: [{x}]");
+                    return Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories)
+                        .Concat(Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories));
+                })
+                .Concat(args.Where(x => File.Exists(x)))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
             var procedFiles = new HashSet<string>();
             foreach (var lintProc in LintProcs)
