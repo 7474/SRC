@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup gh-aw CLI
-        uses: github/gh-aw/actions/setup-cli@v0.50.4
+        uses: github/gh-aw/actions/setup-cli@v0.50.6
 
       - name: Compile agentic workflows
         run: |
