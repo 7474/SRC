@@ -10,6 +10,7 @@ using SRCCore.Maps;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +19,38 @@ namespace SRCSharpForm
     // メインウィンドウのフォーム
     internal partial class frmMain : Form
     {
+        /// <summary>
+        /// ContextMenuStrip のテキストを SingleBitPerPixelGridFit でシャープに描画するレンダラー。
+        /// ToolStripSystemRenderer が使う TextRenderer.DrawText (GDI) は
+        /// Graphics.TextRenderingHint の影響を受けないため、DrawString に置き換えて制御する。
+        /// </summary>
+        private sealed class SharpMenuRenderer : ToolStripSystemRenderer
+        {
+            protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+            {
+                var oldHint = e.Graphics.TextRenderingHint;
+                e.Graphics.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                using var brush = new SolidBrush(e.TextColor);
+                using var sf = new StringFormat(StringFormat.GenericDefault)
+                {
+                    Alignment = StringAlignment.Near,
+                    LineAlignment = StringAlignment.Center,
+                    FormatFlags = StringFormatFlags.NoWrap,
+                    HotkeyPrefix = HotkeyPrefix.None,
+                };
+                e.Graphics.DrawString(e.Text, e.TextFont, brush, e.TextRectangle, sf);
+                e.Graphics.TextRenderingHint = oldHint;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            // ポップアップメニューにシャープレンダラーを適用
+            var sharpRenderer = new SharpMenuRenderer();
+            mnuUnitCommand.Renderer = sharpRenderer;
+            mnuMapCommand.Renderer = sharpRenderer;
+        }
         public SRCCore.SRC SRC { get; set; }
         public IGUI GUI => SRC.GUI;
         public Map Map => SRC.Map;
