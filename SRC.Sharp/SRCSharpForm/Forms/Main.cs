@@ -30,17 +30,23 @@ namespace SRCSharpForm
             protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
             {
                 var oldHint = e.Graphics.TextRenderingHint;
-                e.Graphics.TextRenderingHint = RenderingConfig.TextHint;
-                using var brush = new SolidBrush(e.TextColor);
-                using var sf = new StringFormat(StringFormat.GenericDefault)
+                try
                 {
-                    Alignment = StringAlignment.Near,
-                    LineAlignment = StringAlignment.Center,
-                    FormatFlags = StringFormatFlags.NoWrap,
-                    HotkeyPrefix = HotkeyPrefix.None,
-                };
-                e.Graphics.DrawString(e.Text, e.TextFont, brush, e.TextRectangle, sf);
-                e.Graphics.TextRenderingHint = oldHint;
+                    e.Graphics.TextRenderingHint = RenderingConfig.TextHint;
+                    using var brush = new SolidBrush(e.TextColor);
+                    using var sf = new StringFormat(StringFormat.GenericDefault)
+                    {
+                        Alignment = StringAlignment.Near,
+                        LineAlignment = StringAlignment.Center,
+                        FormatFlags = StringFormatFlags.NoWrap,
+                        HotkeyPrefix = HotkeyPrefix.None,
+                    };
+                    e.Graphics.DrawString(e.Text, e.TextFont, brush, e.TextRectangle, sf);
+                }
+                finally
+                {
+                    e.Graphics.TextRenderingHint = oldHint;
+                }
             }
         }
 
