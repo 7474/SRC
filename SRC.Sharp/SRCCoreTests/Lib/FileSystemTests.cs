@@ -60,7 +60,7 @@ namespace SRCCore.Lib.Tests
         [TestMethod]
         public void Dir_ThrowsNotSupported_WhenVolumeAttribute()
         {
-            Assert.ThrowsException<NotSupportedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
                 FileSystem.Dir(_tempDir, FileAttribute.Volume));
         }
 
@@ -114,7 +114,7 @@ namespace SRCCore.Lib.Tests
         [TestMethod]
         public void Dir_ThrowsNotSupported_WhenVolumeAndDirectoryFlag()
         {
-            Assert.ThrowsException<NotSupportedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
                 FileSystem.Dir(_tempDir, FileAttribute.Volume | FileAttribute.Directory));
         }
 

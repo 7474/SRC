@@ -44,11 +44,10 @@ namespace SRCCore.Pilots.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(TerminateException))]
         public void Add_UndefinedPilotData_ThrowsTerminateException()
         {
             var src = CreateSRC();
-            src.PList.Add("未定義パイロット", 1, "味方");
+            Assert.Throws<TerminateException>(() => src.PList.Add("未定義パイロット", 1, "味方"));
         }
 
         [TestMethod]

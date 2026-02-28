@@ -172,7 +172,7 @@ namespace SRCCore.VB.Tests
         {
             var col = new SrcCollection<string> { ["k"] = "initial" };
             // 既存キーへの再追加は例外
-            Assert.ThrowsException<System.ArgumentException>(() => { col["k"] = "updated"; });
+            Assert.Throws<System.ArgumentException>(() => { col["k"] = "updated"; });
         }
 
         // ──────────────────────────────────────────────

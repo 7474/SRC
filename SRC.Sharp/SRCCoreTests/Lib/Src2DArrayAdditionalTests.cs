@@ -202,14 +202,14 @@ namespace SRCCore.Lib.Tests
         public void Boundary_OutOfRange_ThrowsIndexOutOfRangeException()
         {
             var arr = new Src2DArray<int>(3, 3);
-            Assert.ThrowsException<System.IndexOutOfRangeException>(() => { var _ = arr[4, 1]; });
+            Assert.Throws<System.IndexOutOfRangeException>(() => { var _ = arr[4, 1]; });
         }
 
         [TestMethod]
         public void Boundary_ZeroIndex_ThrowsIndexOutOfRangeException()
         {
             var arr = new Src2DArray<int>(3, 3);
-            Assert.ThrowsException<System.IndexOutOfRangeException>(() => { var _ = arr[0, 1]; });
+            Assert.Throws<System.IndexOutOfRangeException>(() => { var _ = arr[0, 1]; });
         }
 
         // ──────────────────────────────────────────────

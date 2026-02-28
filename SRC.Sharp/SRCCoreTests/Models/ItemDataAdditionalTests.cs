@@ -220,11 +220,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.IndexOutOfRangeException))]
         public void FeatureName_ByIntIndex_NonExisting_ThrowsException()
         {
             var item = new ItemData(CreateSrc());
-            item.FeatureName(999);
+            Assert.Throws<System.IndexOutOfRangeException>(() => item.FeatureName(999));
         }
 
         // ──────────────────────────────────────────────

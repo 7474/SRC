@@ -40,22 +40,20 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void GetArgRaw_IndexZero_ThrowsArgumentOutOfRange()
         {
             var src = CreateSrc();
             var cmd = CreateSetCmd(src, "Set x 1");
             // idx=0 は args[-1] にアクセスし例外発生
-            cmd.GetArgRaw(0);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => cmd.GetArgRaw(0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void GetArgRaw_NegativeIndex_ThrowsArgumentOutOfRange()
         {
             var src = CreateSrc();
             var cmd = CreateSetCmd(src, "Set x 1");
-            cmd.GetArgRaw(-1);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => cmd.GetArgRaw(-1));
         }
 
         [TestMethod]
@@ -91,21 +89,19 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void GetArg_IndexZero_ThrowsArgumentOutOfRange()
         {
             var src = CreateSrc();
             var cmd = CreateSetCmd(src, "Set x 1");
-            cmd.GetArg(0);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => cmd.GetArg(0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void GetArg_NegativeIndex_ThrowsArgumentOutOfRange()
         {
             var src = CreateSrc();
             var cmd = CreateSetCmd(src, "Set x 1");
-            cmd.GetArg(-5);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => cmd.GetArg(-5));
         }
 
         // ──────────────────────────────────────────────

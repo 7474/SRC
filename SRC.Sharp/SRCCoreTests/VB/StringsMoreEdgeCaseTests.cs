@@ -166,7 +166,7 @@ namespace SRCCore.VB.Tests
         public void LCase_NullString_ThrowsNullReferenceException()
         {
             // VB の LCase は null に対して NullReferenceException をスローする
-            Assert.ThrowsException<System.NullReferenceException>(() => Strings.LCase(null));
+            Assert.Throws<System.NullReferenceException>(() => Strings.LCase(null));
         }
 
         [TestMethod]

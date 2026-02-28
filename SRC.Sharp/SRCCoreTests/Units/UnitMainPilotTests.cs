@@ -62,7 +62,7 @@ namespace SRCCore.Units.Tests
             var src = CreateSrc();
             var unit = new Unit(src);
 
-            Assert.ThrowsException<Exceptions.TerminateException>(() => unit.MainPilot());
+            Assert.Throws<Exceptions.TerminateException>(() => unit.MainPilot());
         }
 
         // ===== MainPilot() — 能力コピー condition =====

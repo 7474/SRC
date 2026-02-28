@@ -122,54 +122,49 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.InvalidSrcDataException))]
         public void Load_EntryWithCommaInName_ThrowsException()
         {
             var src = CreateSrc();
             var mdl = new MessageDataList(src);
             var content = "アムロ,コズキ\n攻撃,行くぞ！\n";
-            mdl.Load("test.msg", false, ToStream(content));
+            Assert.Throws<Exceptions.InvalidSrcDataException>(() => mdl.Load("test.msg", false, ToStream(content)));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.InvalidSrcDataException))]
         public void Load_EntryWithSpaceInName_ThrowsException()
         {
             var src = CreateSrc();
             var mdl = new MessageDataList(src);
             var content = "アムロ レイ\n攻撃,行くぞ！\n";
-            mdl.Load("test.msg", false, ToStream(content));
+            Assert.Throws<Exceptions.InvalidSrcDataException>(() => mdl.Load("test.msg", false, ToStream(content)));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.InvalidSrcDataException))]
         public void Load_EntryWithFullWidthParenInName_ThrowsException()
         {
             var src = CreateSrc();
             var mdl = new MessageDataList(src);
             var content = "アムロ（レイ）\n攻撃,行くぞ！\n";
-            mdl.Load("test.msg", false, ToStream(content));
+            Assert.Throws<Exceptions.InvalidSrcDataException>(() => mdl.Load("test.msg", false, ToStream(content)));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.InvalidSrcDataException))]
         public void Load_MessageWithoutComma_ThrowsException()
         {
             var src = CreateSrc();
             var mdl = new MessageDataList(src);
             // コンマが見つからない行
             var content = "アムロ\n攻撃だ\n";
-            mdl.Load("test.msg", false, ToStream(content));
+            Assert.Throws<Exceptions.InvalidSrcDataException>(() => mdl.Load("test.msg", false, ToStream(content)));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exceptions.InvalidSrcDataException))]
         public void Load_MessageWithQuoteInName_ThrowsException()
         {
             var src = CreateSrc();
             var mdl = new MessageDataList(src);
             var content = "アムロ\"レイ\n攻撃,行くぞ！\n";
-            mdl.Load("test.msg", false, ToStream(content));
+            Assert.Throws<Exceptions.InvalidSrcDataException>(() => mdl.Load("test.msg", false, ToStream(content)));
         }
 
         // ──────────────────────────────────────────────
