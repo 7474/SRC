@@ -44,7 +44,7 @@ namespace SRCSharpForm
         public Color StatusFontColorWarning = Color.FromArgb(190, 0, 0);
 
         // XXX
-        private TextRenderingHint StatusTextRenderingHint = TextRenderingHint.SystemDefault;
+        private TextRenderingHint StatusTextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
         //private Font StatusFont = new Font("Yu Gothic UI", 10f);
         //private Font StatusFont = new Font("Meiryo UI", 10f);
         private Font StatusFont = new Font("ＭＳ 明朝", 10f);

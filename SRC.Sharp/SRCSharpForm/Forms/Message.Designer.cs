@@ -309,8 +309,8 @@ namespace SRCSharpForm
             // 
             // frmMessage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(508, 118);
             this.Controls.Add(this.picFace);
