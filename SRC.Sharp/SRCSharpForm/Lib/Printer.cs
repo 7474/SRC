@@ -1,6 +1,5 @@
 using SRCSharpForm.Extensions;
 using System.Drawing;
-using System.Drawing.Text;
 
 namespace SRCSharpForm.Lib
 {
@@ -29,7 +28,7 @@ namespace SRCSharpForm.Lib
         public Printer(Graphics g, Font font, Color color, float gridCellWidth)
         {
             this.g = g;
-            this.g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+            this.g.TextRenderingHint = RenderingConfig.TextHint;
             currentPoint.X = 0;
             currentPoint.Y = 0;
             Configure(font, color);

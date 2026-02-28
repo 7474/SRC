@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Maps;
+using SRCSharpForm.Lib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,7 +30,7 @@ namespace SRCSharpForm
             protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
             {
                 var oldHint = e.Graphics.TextRenderingHint;
-                e.Graphics.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                e.Graphics.TextRenderingHint = RenderingConfig.TextHint;
                 using var brush = new SolidBrush(e.TextColor);
                 using var sf = new StringFormat(StringFormat.GenericDefault)
                 {
