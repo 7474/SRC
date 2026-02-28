@@ -24,6 +24,7 @@ namespace SRCSharpForm
         /// ContextMenuStrip のテキストを SingleBitPerPixelGridFit でシャープに描画するレンダラー。
         /// ToolStripSystemRenderer が使う TextRenderer.DrawText (GDI) は
         /// Graphics.TextRenderingHint の影響を受けないため、DrawString に置き換えて制御する。
+        /// TODO レンダリングの課題を見直す https://github.com/7474/SRC/pull/816#discussion_r2867096631
         /// </summary>
         private sealed class SharpMenuRenderer : ToolStripSystemRenderer
         {
