@@ -151,7 +151,7 @@ namespace SRCCore.VB.Tests
         {
             var col = new SrcCollection<int>();
             col.Add("k1", 1);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = col[5]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = col[5]; });
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace SRCCore.VB.Tests
         {
             var col = new SrcCollection<int>();
             col.Add("k1", 1);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = col[0]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = col[0]; });
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace SRCCore.VB.Tests
         {
             var col = new SrcCollection<int>();
             col.Add("k1", 1);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = col[-1]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = col[-1]; });
         }
     }
 }

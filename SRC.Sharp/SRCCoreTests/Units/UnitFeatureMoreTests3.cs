@@ -139,7 +139,7 @@ namespace SRCCore.Units.Tests
         {
             var src = CreateSrc();
             var unit = new Unit(src);
-            Assert.ThrowsException<System.IndexOutOfRangeException>(() => unit.FeatureLevel(99));
+            Assert.Throws<System.IndexOutOfRangeException>(() => unit.FeatureLevel(99));
         }
 
         // ──────────────────────────────────────────────

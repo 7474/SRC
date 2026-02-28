@@ -21,7 +21,7 @@ namespace SRCCore.VB.Tests
         {
             var sc = new SrcCollection<string>();
             sc["k"] = "v";
-            Assert.ThrowsException<NotSupportedException>(() => { sc[1] = "new"; });
+            Assert.Throws<NotSupportedException>(() => { sc[1] = "new"; });
         }
 
         // ──────────────────────────────────────────────
@@ -34,7 +34,7 @@ namespace SRCCore.VB.Tests
             var sc = new SrcCollection<string>();
             sc["key"] = "first";
             // OrderedDictionary は重複キーで ArgumentException
-            Assert.ThrowsException<ArgumentException>(() => { sc["key"] = "second"; });
+            Assert.Throws<ArgumentException>(() => { sc["key"] = "second"; });
         }
 
         // ──────────────────────────────────────────────
@@ -46,7 +46,7 @@ namespace SRCCore.VB.Tests
         {
             var sc = new SrcCollection<int>();
             sc.Add("k", 1);
-            Assert.ThrowsException<ArgumentException>(() => sc.Add("k", 2));
+            Assert.Throws<ArgumentException>(() => sc.Add("k", 2));
         }
 
         // ──────────────────────────────────────────────
@@ -179,7 +179,7 @@ namespace SRCCore.VB.Tests
                 ["k"] = "v",
             };
             // 1ベースなので 0 は範囲外
-            Assert.ThrowsException<IndexOutOfRangeException>(() => sc.RemoveAt(0));
+            Assert.Throws<IndexOutOfRangeException>(() => sc.RemoveAt(0));
         }
 
         [TestMethod]
@@ -189,7 +189,7 @@ namespace SRCCore.VB.Tests
             {
                 ["k"] = "v",
             };
-            Assert.ThrowsException<IndexOutOfRangeException>(() => sc.RemoveAt(2));
+            Assert.Throws<IndexOutOfRangeException>(() => sc.RemoveAt(2));
         }
 
         // ──────────────────────────────────────────────

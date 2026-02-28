@@ -77,7 +77,7 @@ namespace SRCCore.Lib.Tests
         [TestMethod]
         public void Dir_VolumeAttribute_ThrowsNotSupportedException()
         {
-            Assert.ThrowsException<NotSupportedException>(
+            Assert.Throws<NotSupportedException>(
                 () => FileSystem.Dir(_tempDir, FileAttribute.Volume));
         }
 

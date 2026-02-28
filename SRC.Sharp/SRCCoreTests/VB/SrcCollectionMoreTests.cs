@@ -109,8 +109,8 @@ namespace SRCCore.VB.Tests
         {
             var col = new SrcCollection<string>();
             col["k1"] = "first";
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = col[0]; });
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = col[2]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = col[0]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = col[2]; });
         }
 
         // ──────────────────────────────────────────────

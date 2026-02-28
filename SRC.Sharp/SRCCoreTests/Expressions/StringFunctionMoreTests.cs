@@ -237,7 +237,7 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             // C# の String.Replace は空文字列を oldValue に渡すと ArgumentException をスローする
-            Assert.ThrowsException<System.ArgumentException>(() =>
+            Assert.Throws<System.ArgumentException>(() =>
                 exp.GetValueAsString("Replace(\"hello\",\"\",\"X\")"));
         }
 

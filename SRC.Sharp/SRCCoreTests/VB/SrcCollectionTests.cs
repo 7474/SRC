@@ -31,8 +31,8 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual(1, sc[1]);
             Assert.AreEqual(2, sc[2]);
             Assert.AreEqual(3, sc[3]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => sc[0]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => sc[4]);
+            Assert.Throws<IndexOutOfRangeException>(() => sc[0]);
+            Assert.Throws<IndexOutOfRangeException>(() => sc[4]);
         }
 
         [TestMethod()]
@@ -57,7 +57,7 @@ namespace SRCCore.VB.Tests
         {
             // Add(V item) は NotSupportedException をスローする
             var sc = new SrcCollection<string>();
-            Assert.ThrowsException<NotSupportedException>(() => sc.Add("value"));
+            Assert.Throws<NotSupportedException>(() => sc.Add("value"));
         }
 
         [TestMethod()]
@@ -66,7 +66,7 @@ namespace SRCCore.VB.Tests
             // Add(string key, string value) [Obsolete] は NotSupportedException をスローする
             var sc = new SrcCollection<string>();
 #pragma warning disable CS0612
-            Assert.ThrowsException<NotSupportedException>(() => sc.Add("key", "value"));
+            Assert.Throws<NotSupportedException>(() => sc.Add("key", "value"));
 #pragma warning restore CS0612
         }
 
@@ -153,7 +153,7 @@ namespace SRCCore.VB.Tests
         {
             // CopyTo(V[], int) は NotSupportedException をスローする
             var sc = new SrcCollection<string> { ["key"] = "val" };
-            Assert.ThrowsException<NotSupportedException>(() => sc.CopyTo(new string[1], 0));
+            Assert.Throws<NotSupportedException>(() => sc.CopyTo(new string[1], 0));
         }
 
         [TestMethod()]
@@ -161,7 +161,7 @@ namespace SRCCore.VB.Tests
         {
             // CopyTo(KeyValuePair[], int) は NotSupportedException をスローする
             var sc = new SrcCollection<string> { ["key"] = "val" };
-            Assert.ThrowsException<NotSupportedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
                 sc.CopyTo(new System.Collections.Generic.KeyValuePair<string, string>[1], 0));
         }
 
@@ -202,7 +202,7 @@ namespace SRCCore.VB.Tests
         {
             // Insert は NotSupportedException をスローする
             var sc = new SrcCollection<string>();
-            Assert.ThrowsException<NotSupportedException>(() => sc.Insert(1, "value"));
+            Assert.Throws<NotSupportedException>(() => sc.Insert(1, "value"));
         }
 
         [TestMethod()]
