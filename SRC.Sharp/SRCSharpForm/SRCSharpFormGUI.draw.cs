@@ -5,6 +5,7 @@ using SRCCore.VB;
 using SRCSharpForm.Extensions;
 using System;
 using System.Drawing;
+using System.Drawing.Text;
 
 namespace SRCSharpForm
 {
@@ -744,6 +745,7 @@ namespace SRCSharpForm
 
             try
             {
+                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                 // 現在のX位置を記録しておく
                 var prev_cx = currentDrawStringPoint.X;
                 float tx = currentDrawStringPoint.X;
@@ -782,6 +784,7 @@ namespace SRCSharpForm
                     // picMain(1)にも描画
                     using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
                     {
+                        gBack.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                         gBack.DrawString(msg, currentDrawFont, currentDrawFontColor, tx, ty);
                     }
                 }
@@ -821,6 +824,7 @@ namespace SRCSharpForm
             SaveScreen();
             using (var g = Graphics.FromImage(MainForm.MainBuffer))
             {
+                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                 // フォント設定をシステム用に切り替え
                 var font = SRC.BattleAnimation ? battleAnimeFont : sysFont;
 
@@ -849,6 +853,7 @@ namespace SRCSharpForm
         public SizeF MeasureString(string msg)
         {
             using var g = Graphics.FromImage(MainForm.BackgroundBuffer);
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             return g.MeasureStringWithoutRightMargin(msg, currentDrawFont);
         }
     }

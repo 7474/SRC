@@ -7,6 +7,7 @@ using SRCSharpForm.Extensions;
 using SRCSharpForm.Lib;
 using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -1625,11 +1626,13 @@ namespace SRCSharpForm
         private void PrintString(string msg)
         {
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             PrintString(msg, g);
         }
 
         private void PrintString(string msg, Graphics g)
         {
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             g.DrawString(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
             currentMessagePoint = currentMessagePoint.AddX(MessageLen(msg, g, currentMessageFont).Width);
         }
@@ -1638,6 +1641,7 @@ namespace SRCSharpForm
         {
             // XXX Graphics の取り回し
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             return MessageLen(msg, g, currentMessageFont);
         }
 
