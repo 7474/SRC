@@ -9,7 +9,6 @@ using SRCSharpForm.Lib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 
@@ -43,9 +42,7 @@ namespace SRCSharpForm
         public Color StatusFontColorNormalString = Color.FromArgb(0, 0, 0);
         public Color StatusFontColorWarning = Color.FromArgb(190, 0, 0);
 
-        // XXX
-        private TextRenderingHint StatusTextRenderingHint = TextRenderingHint.SystemDefault;
-        //private Font StatusFont = new Font("Yu Gothic UI", 10f);
+        //private Font StatusFont
         //private Font StatusFont = new Font("Meiryo UI", 10f);
         private Font StatusFont = new Font("ＭＳ 明朝", 10f);
         // XXX 10.5より大きい感じする
@@ -82,7 +79,7 @@ namespace SRCSharpForm
                 picUnitStatus.NewImageIfNull();
                 using (var g = Graphics.FromImage(picUnitStatus.Image))
                 {
-                    g.TextRenderingHint = StatusTextRenderingHint;
+                    g.TextRenderingHint = RenderingConfig.TextHint;
                     g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
                 }
                 return;
@@ -201,7 +198,7 @@ namespace SRCSharpForm
             picUnitStatus.NewImageIfNull();
             using (var g = Graphics.FromImage(picUnitStatus.Image))
             {
-                g.TextRenderingHint = StatusTextRenderingHint;
+                g.TextRenderingHint = RenderingConfig.TextHint;
                 g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
 
                 // マップ画像表示
@@ -244,8 +241,8 @@ namespace SRCSharpForm
                 using (var pilotG = Graphics.FromImage(picPilotStatus.NewImageIfNull().Image))
                 using (var unitG = Graphics.FromImage(picUnitStatus.NewImageIfNull().Image))
                 {
-                    pilotG.TextRenderingHint = StatusTextRenderingHint;
-                    unitG.TextRenderingHint = StatusTextRenderingHint;
+                    pilotG.TextRenderingHint = RenderingConfig.TextHint;
+                    unitG.TextRenderingHint = RenderingConfig.TextHint;
                     var headingMargin = HeadingFont.Height;
                     var textMargin = StatusFont.Height;
                     var smallMargin = StatusSmallFont.Height;

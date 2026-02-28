@@ -7,9 +7,11 @@ using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Maps;
+using SRCSharpForm.Lib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +20,45 @@ namespace SRCSharpForm
     // メインウィンドウのフォーム
     internal partial class frmMain : Form
     {
+        /// <summary>
+        /// ContextMenuStrip のテキストを SingleBitPerPixelGridFit でシャープに描画するレンダラー。
+        /// ToolStripSystemRenderer が使う TextRenderer.DrawText (GDI) は
+        /// Graphics.TextRenderingHint の影響を受けないため、DrawString に置き換えて制御する。
+        /// TODO レンダリングの課題を見直す https://github.com/7474/SRC/pull/816#discussion_r2867096631
+        /// </summary>
+        private sealed class SharpMenuRenderer : ToolStripSystemRenderer
+        {
+            protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+            {
+                var oldHint = e.Graphics.TextRenderingHint;
+                try
+                {
+                    e.Graphics.TextRenderingHint = RenderingConfig.TextHint;
+                    using var brush = new SolidBrush(e.TextColor);
+                    using var sf = new StringFormat(StringFormat.GenericDefault)
+                    {
+                        Alignment = StringAlignment.Near,
+                        LineAlignment = StringAlignment.Center,
+                        FormatFlags = StringFormatFlags.NoWrap,
+                        HotkeyPrefix = HotkeyPrefix.None,
+                    };
+                    e.Graphics.DrawString(e.Text, e.TextFont, brush, e.TextRectangle, sf);
+                }
+                finally
+                {
+                    e.Graphics.TextRenderingHint = oldHint;
+                }
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            // ポップアップメニューにシャープレンダラーを適用
+            var sharpRenderer = new SharpMenuRenderer();
+            mnuUnitCommand.Renderer = sharpRenderer;
+            mnuMapCommand.Renderer = sharpRenderer;
+        }
         public SRCCore.SRC SRC { get; set; }
         public IGUI GUI => SRC.GUI;
         public Map Map => SRC.Map;

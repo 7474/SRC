@@ -50,7 +50,8 @@ namespace SRCSharpForm
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ControlBox = true;
             Enabled = true;
             KeyPreview = false;
