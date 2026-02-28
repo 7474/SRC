@@ -151,14 +151,14 @@ namespace SRCCore.Lib.Tests
         [TestMethod]
         public void Dir_VolumeWithReadOnly_ThrowsNotSupported()
         {
-            Assert.ThrowsException<NotSupportedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
                 FileSystem.Dir(_tempDir, FileAttribute.Volume | FileAttribute.ReadOnly));
         }
 
         [TestMethod]
         public void Dir_VolumeWithHidden_ThrowsNotSupported()
         {
-            Assert.ThrowsException<NotSupportedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
                 FileSystem.Dir(_tempDir, FileAttribute.Volume | FileAttribute.Hidden));
         }
 

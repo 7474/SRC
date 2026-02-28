@@ -89,7 +89,7 @@ namespace SRCCore.Events.Tests
         [TestMethod]
         public void Parse_InvalidString_Throws()
         {
-            Assert.ThrowsException<ArgumentException>(() => Enum.Parse<CmdType>("InvalidCmdXyz"));
+            Assert.Throws<ArgumentException>(() => Enum.Parse<CmdType>("InvalidCmdXyz"));
         }
 
         // ──────────────────────────────────────────────

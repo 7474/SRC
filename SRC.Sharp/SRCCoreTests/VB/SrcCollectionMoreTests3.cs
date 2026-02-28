@@ -74,7 +74,7 @@ namespace SRCCore.VB.Tests
         {
             var sc = new SrcCollection<int>();
             sc["key"] = 1;
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = sc[0]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = sc[0]; });
         }
 
         [TestMethod]
@@ -82,7 +82,7 @@ namespace SRCCore.VB.Tests
         {
             var sc = new SrcCollection<int>();
             sc["key"] = 1;
-            Assert.ThrowsException<IndexOutOfRangeException>(() => { var _ = sc[2]; });
+            Assert.Throws<IndexOutOfRangeException>(() => { var _ = sc[2]; });
         }
 
         [TestMethod]

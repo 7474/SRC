@@ -131,21 +131,19 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void OneBasedIndexer_IndexZero_ThrowsException()
         {
             var col = new SrcCollection<string>();
             col["k1"] = "only";
-            _ = col[0]; // 0は範囲外
+            Assert.Throws<IndexOutOfRangeException>(() => { _ = col[0]; }); // 0は範囲外
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void OneBasedIndexer_BeyondCount_ThrowsException()
         {
             var col = new SrcCollection<string>();
             col["k1"] = "only";
-            _ = col[2]; // 2は範囲外
+            Assert.Throws<IndexOutOfRangeException>(() => { _ = col[2]; }); // 2は範囲外
         }
 
         // ──────────────────────────────────────────────

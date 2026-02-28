@@ -23,14 +23,14 @@ namespace SRCCore.VB.Tests
         [TestMethod]
         public void Asc_EmptyString_ThrowsIndexOutOfRange()
         {
-            Assert.ThrowsException<System.IndexOutOfRangeException>(() => Strings.Asc(""));
+            Assert.Throws<System.IndexOutOfRangeException>(() => Strings.Asc(""));
         }
 
         [TestMethod]
         public void Asc_NullString_ThrowsNullReference()
         {
             // null 文字列へのアクセスは NullReferenceException or IndexOutOfRangeException
-            Assert.ThrowsException<System.NullReferenceException>(() => Strings.Asc((string)null));
+            Assert.Throws<System.NullReferenceException>(() => Strings.Asc((string)null));
         }
 
         [TestMethod]

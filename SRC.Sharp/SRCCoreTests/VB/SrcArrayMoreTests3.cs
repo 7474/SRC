@@ -77,7 +77,7 @@ namespace SRCCore.VB.Tests
         {
             var arr = new SrcArray<int>();
             arr.Add(1);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => { var _ = arr[0]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = arr[0]; });
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace SRCCore.VB.Tests
         {
             var arr = new SrcArray<int>();
             arr.Add(1);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => { var _ = arr[2]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = arr[2]; });
         }
 
         [TestMethod]

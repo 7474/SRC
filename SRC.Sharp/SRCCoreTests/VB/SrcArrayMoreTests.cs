@@ -211,7 +211,7 @@ namespace SRCCore.VB.Tests
         public void EmptyArray_IndexAccess_ThrowsArgumentOutOfRange()
         {
             var arr = new SrcArray<int>();
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => { var _ = arr[1]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = arr[1]; });
         }
 
         // ──────────────────────────────────────────────

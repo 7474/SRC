@@ -41,8 +41,8 @@ namespace SRCCore.VB.Tests
             arr.Add(1);
 
             // 0ベースでは範囲外
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => { var _ = arr[0]; });
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => { var _ = arr[2]; });
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => { var _ = arr[0]; });
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => { var _ = arr[2]; });
         }
 
         [TestMethod()]
