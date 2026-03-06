@@ -347,5 +347,104 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // PaintStringCmd
+        // ヘルプ: マップウィンドウに文字列を表示する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void PaintStringCmd_NoCoords_CallsDrawStringWithDefaultPosition()
+        {
+            // ヘルプ: 表示位置を省略した場合は直前にPaintStringコマンドで書き込んだ文字列の下に表示される
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            string capturedMsg = null;
+            int capturedX = -99, capturedY = -99;
+            bool capturedWithoutCr = true;
+            gui.DrawStringHandler = (msg, x, y, wcr) =>
+            {
+                capturedMsg = msg;
+                capturedX = x;
+                capturedY = y;
+                capturedWithoutCr = wcr;
+            };
+
+            var cmd = CreateCmd(src, "PaintString \"こんにちは\"");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("こんにちは", capturedMsg);
+            Assert.AreEqual(Constants.DEFAULT_LEVEL, capturedX);
+            Assert.AreEqual(Constants.DEFAULT_LEVEL, capturedY);
+            Assert.IsFalse(capturedWithoutCr);
+        }
+
+        [TestMethod]
+        public void PaintStringCmd_WithCoords_CallsDrawStringAtPosition()
+        {
+            // ヘルプ: 表示位置はx yに座標を指定して行う
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            string capturedMsg = null;
+            int capturedX = -99, capturedY = -99;
+            gui.DrawStringHandler = (msg, x, y, wcr) =>
+            {
+                capturedMsg = msg;
+                capturedX = x;
+                capturedY = y;
+            };
+
+            var cmd = CreateCmd(src, "PaintString 10 20 \"テスト\"");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual("テスト", capturedMsg);
+            Assert.AreEqual(10, capturedX);
+            Assert.AreEqual(20, capturedY);
+        }
+
+        [TestMethod]
+        public void PaintStringCmd_SemicolonSuffix_CallsDrawStringWithoutCr()
+        {
+            // ヘルプ: messageの後に「;」を付け加えると改行を行わない
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            bool capturedWithoutCr = false;
+            gui.DrawStringHandler = (msg, x, y, wcr) => capturedWithoutCr = wcr;
+
+            var cmd = CreateCmd(src, "PaintString \"続く\";");
+            cmd.Exec();
+
+            Assert.IsTrue(capturedWithoutCr);
+        }
+
+        [TestMethod]
+        public void PaintStringCmd_DashX_SetsHCentering()
+        {
+            // ヘルプ: 座標に「-」を指定するとそれぞれの座標の中心に表示される
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.DrawStringHandler = (msg, x, y, wcr) => { };
+
+            var cmd = CreateCmd(src, "PaintString - 20 \"中央\"");
+            cmd.Exec();
+
+            Assert.IsTrue(gui.HCentering);
+        }
+
+        [TestMethod]
+        public void PaintStringCmd_DashY_SetsVCentering()
+        {
+            // ヘルプ: 座標に「-」を指定するとそれぞれの座標の中心に表示される
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.DrawStringHandler = (msg, x, y, wcr) => { };
+
+            var cmd = CreateCmd(src, "PaintString 10 - \"中央\"");
+            cmd.Exec();
+
+            Assert.IsTrue(gui.VCentering);
+        }
     }
 }

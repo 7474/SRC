@@ -431,5 +431,113 @@ namespace SRCCore.CmdDatas.Tests
 
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // AutoTalkCmd
+        // ヘルプ: メッセージが自動表示されるTalkコマンド
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void AutoTalkCmd_SimpleMessage_CallsDisplayBattleMessage()
+        {
+            // ヘルプ: AutoTalkコマンドでのメッセージは戦闘メッセージと同一の処理で表示される
+            var (src, gui) = CreateSrc();
+            string capturedMsg = null;
+            gui.OpenMessageFormHandler = (u1, u2) => { };
+            gui.DisplayBattleMessageHandler = (pname, msg, mode) => { capturedMsg = msg; };
+            gui.CloseMessageFormHandler = () => { };
+
+            var cmds = BuildEvent(src,
+                "AutoTalk",            // ID=0
+                "自動表示メッセージ",   // ID=1
+                "End"                  // ID=2
+            );
+
+            cmds[0].Exec();
+
+            Assert.AreEqual("自動表示メッセージ", capturedMsg);
+        }
+
+        [TestMethod]
+        public void AutoTalkCmd_SetsMessageWaitTo700DuringExecution()
+        {
+            // ヘルプ: AutoTalkコマンドによるメッセージ表示速度は標準の表示速度が使われる
+            var (src, gui) = CreateSrc();
+            gui.MessageWait = 0;
+            int capturedMessageWait = -1;
+            gui.OpenMessageFormHandler = (u1, u2) => { };
+            gui.DisplayBattleMessageHandler = (pname, msg, mode) => { capturedMessageWait = gui.MessageWait; };
+            gui.CloseMessageFormHandler = () => { };
+
+            var cmds = BuildEvent(src,
+                "AutoTalk",   // ID=0
+                "テスト",      // ID=1
+                "End"          // ID=2
+            );
+
+            cmds[0].Exec();
+
+            Assert.AreEqual(700, capturedMessageWait);
+        }
+
+        [TestMethod]
+        public void AutoTalkCmd_RestoresMessageWaitAfterExecution()
+        {
+            // メッセージ表示速度は実行後に元の値に戻される
+            var (src, gui) = CreateSrc();
+            gui.MessageWait = 1234;
+            gui.OpenMessageFormHandler = (u1, u2) => { };
+            gui.DisplayBattleMessageHandler = (pname, msg, mode) => { };
+            gui.CloseMessageFormHandler = () => { };
+
+            var cmds = BuildEvent(src,
+                "AutoTalk",   // ID=0
+                "テスト",      // ID=1
+                "End"          // ID=2
+            );
+
+            cmds[0].Exec();
+
+            Assert.AreEqual(1234, gui.MessageWait);
+        }
+
+        [TestMethod]
+        public void AutoTalkCmd_ReturnsIdAfterEnd()
+        {
+            // ヘルプ: TalkコマンドとAutoTalkコマンドの使用法は同じ（Endで終了）
+            var (src, gui) = CreateSrc();
+            gui.OpenMessageFormHandler = (u1, u2) => { };
+            gui.DisplayBattleMessageHandler = (pname, msg, mode) => { };
+            gui.CloseMessageFormHandler = () => { };
+
+            var cmds = BuildEvent(src,
+                "AutoTalk",   // ID=0
+                "テスト",      // ID=1
+                "End"          // ID=2 → returns 3
+            );
+
+            var result = cmds[0].Exec();
+
+            Assert.AreEqual(3, result);
+        }
+
+        [TestMethod]
+        public void AutoTalkCmd_MissingEnd_ReturnsError()
+        {
+            // ヘルプ: EndまたはSuspendが必要
+            var (src, gui) = CreateSrc();
+            gui.OpenMessageFormHandler = (u1, u2) => { };
+            gui.DisplayBattleMessageHandler = (pname, msg, mode) => { };
+            gui.CloseMessageFormHandler = () => { };
+
+            var cmds = BuildEvent(src,
+                "AutoTalk",   // ID=0
+                "テスト"       // ID=1: EndなしでTalk終了
+            );
+
+            var result = cmds[0].Exec();
+
+            Assert.AreEqual(-1, result);
+        }
     }
 }

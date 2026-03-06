@@ -427,5 +427,149 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // ExpUpCmd
+        // ヘルプ: 指定したパイロットの経験値をexp分だけ上げる
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ExpUpCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: ExpUp [pilot] exp
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ExpUp");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // LevelUpCmd
+        // ヘルプ: 指定したパイロットのレベルをlevel分だけ上げる（最大99）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LevelUpCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: LevelUp [pilot] level
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "LevelUp");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RecoverHPCmd
+        // ヘルプ: unitのHPをrate%だけ回復する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RecoverHPCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RecoverHP [unit] rate
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RecoverHP");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RecoverENCmd
+        // ヘルプ: unitのENをrate%だけ回復する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RecoverENCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RecoverEN [unit] rate
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RecoverEN");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RecoverSPCmd
+        // ヘルプ: pilotのSPをrate%だけ回復する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RecoverSPCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RecoverSP [pilot] rate
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RecoverSP");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RecoverPlanaCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RecoverPlanaCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RecoverPlana [pilot] rate
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RecoverPlana");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // IncreaseMoraleCmd
+        // ヘルプ: ユニットに乗っているパイロットの気力をvalue増加させる（上限150）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IncreaseMoraleCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: IncreaseMorale [unit] value
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IncreaseMorale");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // SetSkillCmd
+        // ヘルプ: pilotにパイロット用特殊能力skillを追加する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SetSkillCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: SetSkill pilot skill level [name] → 引数は3〜4個
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SetSkill パイロット名 スキル名"); // ArgNum=3, need 4 or 5
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SetSkillCmd_NonExistentPilot_ReturnsError()
+        {
+            // ヘルプ: pilotが見つからない場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SetSkill 存在しないパイロット テスト 1");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // ClearSkillCmd
+        // ヘルプ: SetSkillで追加した特殊能力を削除する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ClearSkillCmd_NonExistentPilot_ReturnsError()
+        {
+            // ヘルプ: pilotが見つからない場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ClearSkill 存在しないパイロット テスト");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }
