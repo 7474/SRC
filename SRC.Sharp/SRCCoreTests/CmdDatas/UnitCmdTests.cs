@@ -571,5 +571,70 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // SelectCmd
+        // ヘルプ: 指定したユニットを後続コマンドの対象として選択する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SelectCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式は Select unit のみ。引数が異なる場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Select");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SelectCmd_TooManyArgs_ReturnsError()
+        {
+            // Select に引数が多すぎる場合もエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Select unit1 unit2");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // SelectTargetCmd
+        // ヘルプ: 指定したユニットを攻撃対象として選択する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SelectTargetCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式は SelectTarget unit のみ。引数が異なる場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SelectTarget");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SelectTargetCmd_TooManyArgs_ReturnsError()
+        {
+            // SelectTarget に引数が多すぎる場合もエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SelectTarget unit1 unit2");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // EscapeCmd
+        // ヘルプ: 指定したユニットをマップから撤退させる
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void EscapeCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 引数が多すぎる場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Escape unit1 unit2 extra");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }

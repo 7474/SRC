@@ -136,9 +136,62 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(-1, result);
         }
 
-        // ClearObjCmd は GUI.UpdateHotPoint() を呼び出すが、
-        // MockGUI では未実装のため、エラー戻り値 (-1) になる。
-        // このテストはコマンドが解析されることを確認する。
+        // ──────────────────────────────────────────────
+        // ClearObjCmd
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ClearObjCmd_NoArgs_ClearsAllHotPoints()
+        {
+            // ヘルプ: 引数なしの場合、登録されたホットポイントをすべて削除する
+            var src = CreateSrc();
+            src.Event.HotPointList = new List<HotPoint>
+            {
+                new HotPoint { Name = "btn1" },
+                new HotPoint { Name = "btn2" },
+            };
+            var cmd = CreateCmd(src, "ClearObj");
+            cmd.Exec();
+            Assert.AreEqual(0, src.Event.HotPointList.Count);
+        }
+
+        [TestMethod]
+        public void ClearObjCmd_NoArgs_ReturnsNextId()
+        {
+            // 実行後は次のコマンドへ進む
+            var src = CreateSrc();
+            src.Event.HotPointList = new List<HotPoint>();
+            var cmd = CreateCmd(src, "ClearObj");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void ClearObjCmd_NamedArg_RemovesOnlyNamedHotPoint()
+        {
+            // ヘルプ: 引数でホットポイント名を指定した場合、そのホットポイントのみ削除
+            var src = CreateSrc();
+            src.Event.HotPointList = new List<HotPoint>
+            {
+                new HotPoint { Name = "keep" },
+                new HotPoint { Name = "remove" },
+            };
+            var cmd = CreateCmd(src, "ClearObj remove");
+            cmd.Exec();
+            Assert.AreEqual(1, src.Event.HotPointList.Count);
+            Assert.AreEqual("keep", src.Event.HotPointList[0].Name);
+        }
+
+        [TestMethod]
+        public void ClearObjCmd_WrongArgCount_ReturnsError()
+        {
+            // 引数が多すぎる場合はエラー
+            var src = CreateSrc();
+            src.Event.HotPointList = new List<HotPoint>();
+            var cmd = CreateCmd(src, "ClearObj btn1 btn2 extra");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
 
         // ──────────────────────────────────────────────
         // ClearLayerCmd
