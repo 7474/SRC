@@ -305,5 +305,63 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // IntermissionCommandCmd
+        // ヘルプ: インタミッションコマンドの登録・削除を行う
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IntermissionCommandCmd_Register_SetsGlobalVar()
+        {
+            // ヘルプ: IntermissionCommand name command で登録するとグローバル変数に保存される
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand パーツ改造 改造コマンド");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("IntermissionCommand(パーツ改造)"));
+            Assert.AreEqual("改造コマンド", src.Expression.GetValueAsString("IntermissionCommand(パーツ改造)"));
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_Delete_RemovesGlobalVar()
+        {
+            // ヘルプ: IntermissionCommand name 削除 で登録済みコマンドを削除する
+            var src = CreateSrc();
+            // 先に登録
+            CreateCmd(src, "IntermissionCommand テスト 何らかのコマンド").Exec();
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("IntermissionCommand(テスト)"));
+
+            // 削除
+            var src2 = CreateSrc();
+            src2.Expression.DefineGlobalVariable("IntermissionCommand(テスト)");
+            src2.Expression.SetVariableAsString("IntermissionCommand(テスト)", "何らかのコマンド");
+            var delCmd = CreateCmd(src2, "IntermissionCommand テスト 削除");
+            var result = delCmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(src2.Expression.IsGlobalVariableDefined("IntermissionCommand(テスト)"));
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: IntermissionCommand name command (引数は必ず3個)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand テスト");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_TooManyArgs_ReturnsError()
+        {
+            // 引数4個以上もエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand a b c d");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }

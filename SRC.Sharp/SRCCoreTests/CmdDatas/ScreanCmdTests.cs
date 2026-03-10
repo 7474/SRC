@@ -137,8 +137,45 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         // ClearObjCmd は GUI.UpdateHotPoint() を呼び出すが、
-        // MockGUI では未実装のため、エラー戻り値 (-1) になる。
-        // このテストはコマンドが解析されることを確認する。
+        // MockGUI では GUINotImplementedException が発生し、
+        // CmdData.Exec() がこれをキャッチして NextID を返す。
+
+        // ──────────────────────────────────────────────
+        // ClearObjCmd
+        // ヘルプ: ホットスポットオブジェクトをクリアする
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ClearObjCmd_NoArgs_ReturnsNextId()
+        {
+            // ヘルプ: ClearObj - すべてのホットスポットをクリアする
+            var src = CreateSrc();
+            src.Event.HotPointList = new System.Collections.Generic.List<HotPoint>();
+            var cmd = CreateCmd(src, "ClearObj");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void ClearObjCmd_WithArg_ReturnsNextId()
+        {
+            // ヘルプ: ClearObj name - 名前付きホットスポットを削除する
+            var src = CreateSrc();
+            src.Event.HotPointList = new System.Collections.Generic.List<HotPoint>();
+            var cmd = CreateCmd(src, "ClearObj MyHotspot");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void ClearObjCmd_WrongArgCount_ReturnsError()
+        {
+            // 引数が3個以上はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ClearObj a b c");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
 
         // ──────────────────────────────────────────────
         // ClearLayerCmd

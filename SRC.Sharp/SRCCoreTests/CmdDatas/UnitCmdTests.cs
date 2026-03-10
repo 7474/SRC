@@ -571,5 +571,160 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // SpecialPowerCmd
+        // ヘルプ: unitのスペシャルパワーsnameを発動させる
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SpecialPowerCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: SpecialPower [unit] sname [target] (引数1個はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SpecialPower");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SpecialPowerCmd_TooManyArgs_ReturnsError()
+        {
+            // 引数が5個以上はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SpecialPower a b c d e");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // ClearSpecialPowerCmd
+        // ヘルプ: unitに効果中のスペシャルパワーsnameを解除する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void ClearSpecialPowerCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: ClearSpecialPower [unit] sname (引数1個はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ClearSpecialPower");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void ClearSpecialPowerCmd_TooManyArgs_ReturnsError()
+        {
+            // 引数が4個以上はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "ClearSpecialPower a b c d");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // FixCmd
+        // ヘルプ: パイロットまたはアイテムを固定する（スカウト不可にする）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void FixCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: Fix [pilot/item] (引数3個以上はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Fix a b c");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void FixCmd_NonExistentPilotOrItem_ReturnsError()
+        {
+            // ヘルプ: パイロット名またはアイテム名が間違っている場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Fix 存在しないパイロット");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RemovePilotCmd
+        // ヘルプ: パイロットを除去し、ユニットを破棄する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RemovePilotCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RemovePilot [pilot] (引数3個以上はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RemovePilot a b c");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void RemovePilotCmd_NonExistentPilot_ReturnsError()
+        {
+            // ヘルプ: 指定されたパイロットが見つからない場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RemovePilot 存在しないパイロット");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RemoveUnitCmd
+        // ヘルプ: ユニットをゲームから除去する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RemoveUnitCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RemoveUnit [unit] (引数3個以上はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RemoveUnit a b c");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // RemoveItemCmd
+        // ヘルプ: ユニットからアイテムを取り除く
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RemoveItemCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: RemoveItem [unit/pilot] [item] (引数4個以上はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RemoveItem a b c d");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // SetStatusCmd
+        // ヘルプ: unitにコンディションcnameを付与する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SetStatusCmd_WrongArgCount_ReturnsError()
+        {
+            // ヘルプ: 書式: SetStatus [unit] cname value (引数1〜2個はエラー)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SetStatus");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SetStatusCmd_TooManyArgs_ReturnsError()
+        {
+            // 引数が5個以上はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "SetStatus a b c d e");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
     }
 }
