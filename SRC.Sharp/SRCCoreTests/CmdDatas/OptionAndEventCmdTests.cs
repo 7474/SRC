@@ -211,5 +211,84 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // IntermissionCommandCmd
+        // ヘルプ: インターミッションのメニューに新規コマンドを追加する
+        // 書式: IntermissionCommand command file
+        //       IntermissionCommand command 削除
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void IntermissionCommandCmd_RegistersCommand_SetsGlobalVariable()
+        {
+            // ヘルプ: プレイヤーがコマンドcommandを選択するとイベントファイルfileが実行される
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand あらすじ あらすじ.eve");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("IntermissionCommand(あらすじ)"));
+            Assert.AreEqual("あらすじ.eve", src.Expression.GetValueAsString("IntermissionCommand(あらすじ)"));
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_DeleteCommand_UndefinresVariable()
+        {
+            // ヘルプ: 「削除」と指定することで追加したインターミッションコマンドを削除できる
+            var src = CreateSrc();
+            src.Expression.DefineGlobalVariable("IntermissionCommand(あらすじ)");
+            src.Expression.SetVariableAsString("IntermissionCommand(あらすじ)", "あらすじ.eve");
+
+            var cmd = CreateCmd(src, "IntermissionCommand あらすじ 削除");
+            var result = cmd.Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(src.Expression.IsGlobalVariableDefined("IntermissionCommand(あらすじ)"));
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_OverwriteExistingCommand_UpdatesFile()
+        {
+            // ヘルプ: 同じcommandに対してIntermissionCommandコマンドを再度実行すればファイル名を変更できる
+            var src = CreateSrc();
+            src.Expression.DefineGlobalVariable("IntermissionCommand(あらすじ)");
+            src.Expression.SetVariableAsString("IntermissionCommand(あらすじ)", "旧ファイル.eve");
+
+            var cmd = CreateCmd(src, "IntermissionCommand あらすじ 新ファイル.eve");
+            cmd.Exec();
+
+            Assert.AreEqual("新ファイル.eve", src.Expression.GetValueAsString("IntermissionCommand(あらすじ)"));
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_WrongArgCount_ReturnsError()
+        {
+            // ArgNum != 3 の場合はエラー (引数が2つ以下 or 4つ以上)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand あらすじ");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_NoArgs_ReturnsError()
+        {
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void IntermissionCommandCmd_DeleteNonExistent_NoError()
+        {
+            // 未定義のコマンドを削除しようとしても例外が出ない
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "IntermissionCommand 存在しない 削除");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(src.Expression.IsGlobalVariableDefined("IntermissionCommand(存在しない)"));
+        }
     }
 }
