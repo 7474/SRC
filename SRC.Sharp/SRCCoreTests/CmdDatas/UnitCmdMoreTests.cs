@@ -538,5 +538,40 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // MoveCmd
+        // ヘルプ: Move [unit] x y [option] — ユニットを指定座標に移動
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MoveCmd_InvalidUnitName_ReturnsError()
+        {
+            // ヘルプ: unit に存在しないパイロット名を指定するとエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Move 存在しないパイロット 5 3");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void MoveCmd_NoSelectedUnit_NumericArgs_ReturnsError()
+        {
+            // ヘルプ: unit 省略時は選択ユニットを使用; 選択ユニットなしはエラー
+            var src = CreateSrc();
+            // SelectedUnitForEvent は null (デフォルト)
+            var cmd = CreateCmd(src, "Move 5 3");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void MoveCmd_IsInstanceOfMoveCmd()
+        {
+            // Move コマンドが正しくパースされることを確認
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Move ユニット 5 3");
+            Assert.IsInstanceOfType(cmd, typeof(MoveCmd));
+        }
     }
 }
