@@ -11,6 +11,15 @@ namespace SRCCore.CmdDatas.Tests
     /// Load / Move / CallIntermissionCommand / MakeUnitList / MakePilotList / QuickLoad
     /// コマンドのユニットテスト
     /// ヘルプの記載に基づく期待値を検証する
+    ///
+    /// 備考:
+    /// - ABGMCmd / AIfCmd / ATalkCmd は抽象基底クラスであり、具象サブクラス
+    ///   (PlayMIDICmd / IfCmd / TalkCmd 等) を通じて既にテスト済みのため除外。
+    ///   (BGMCmdTests.cs / ElseIfLoopNextCmdTests.cs / TalkAndAskCmdTests.cs 等で網羅)
+    /// - MakeUnitListCmd / MakePilotListCmd / QuickLoadCmd は GUI 依存が深く
+    ///   (MockGUI の多数のハンドラ設定が必要)、型確認テストに留めた。
+    /// - FontCmd は System.Drawing.Font が Linux 環境でランタイムエラーが発生するためテスト除外。
+    ///   詳細は FontClsTelopCmdTests.cs を参照。
     /// </summary>
     [TestClass]
     public class LoadMoveCmdTests
@@ -145,6 +154,7 @@ namespace SRCCore.CmdDatas.Tests
         // MakeUnitListCmd
         // ヘルプ: ユニット一覧画面を作成し、表示します。
         //         mode にはユニットのソートに使う能力値を指定します。
+        // 備考: GUI 依存が深いため (MockGUI の多数のハンドラ設定が必要)、型確認テストに留める。
         // ──────────────────────────────────────────────
 
         [TestMethod]
@@ -159,6 +169,7 @@ namespace SRCCore.CmdDatas.Tests
         // MakePilotListCmd
         // ヘルプ: パイロット一覧画面を作成し、表示します。
         //         mode にはパイロットのソートに使う能力値を指定します。
+        // 備考: GUI 依存が深いため (MockGUI の多数のハンドラ設定が必要)、型確認テストに留める。
         // ──────────────────────────────────────────────
 
         [TestMethod]
@@ -172,6 +183,7 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
         // QuickLoadCmd
         // ヘルプ: 最後にクイックセーブした時点からプレイを再開します。
+        // 備考: GUI 依存が深いため (MockGUI の多数のハンドラ設定が必要)、型確認テストに留める。
         // ──────────────────────────────────────────────
 
         [TestMethod]
