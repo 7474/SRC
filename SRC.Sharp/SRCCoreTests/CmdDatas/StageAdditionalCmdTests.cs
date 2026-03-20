@@ -133,5 +133,71 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // CallIntermissionCommandCmd
+        // ヘルプ: CallIntermissionCommand command
+        // 本体に実装されたインターミッションコマンドの機能を呼び出す
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void CallIntermissionCommandCmd_WrongArgCount_ReturnsError()
+        {
+            // 書式: CallIntermissionCommand command (引数1つ必須)
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "CallIntermissionCommand");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void CallIntermissionCommandCmd_TooManyArgs_ReturnsError()
+        {
+            // 引数が多すぎる場合もエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "CallIntermissionCommand データセーブ 余分な引数");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void CallIntermissionCommandCmd_DataSave_CancelDialog_ReturnsNextId()
+        {
+            // ヘルプ: command = "データセーブ" → SelectSaveStream が null を返すとセーブをスキップして NextID
+            var src = CreateSrc();
+            var mockGui = (MockGUI)src.GUI;
+            mockGui.SelectSaveStreamHandler = (_, __) => null;
+            var cmd = CreateCmd(src, "CallIntermissionCommand データセーブ");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        // ──────────────────────────────────────────────
+        // LoadCmd
+        // ヘルプ: Load title — 指定タイトルのデータをロード
+        // 既にロード済みの場合はロードをスキップ
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LoadCmd_AlreadyLoaded_ReturnsNextId()
+        {
+            // ヘルプ: 指定した title のデータが既にロード済みの場合はロードは行われない
+            var src = CreateSrc();
+            src.Titles = new System.Collections.Generic.List<string> { "既存タイトル" };
+            var cmd = CreateCmd(src, "Load 既存タイトル");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void LoadCmd_NoTitleArg_ReturnsNextId()
+        {
+            // Load のみ (タイトル省略) → ロード対象なしで NextID を返す
+            var src = CreateSrc();
+            src.Titles = new System.Collections.Generic.List<string>();
+            var cmd = CreateCmd(src, "Load");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
     }
 }
