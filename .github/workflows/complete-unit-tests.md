@@ -69,6 +69,7 @@ safe-outputs:
     labels: [automation, testing]
     draft: false
     if-no-changes: warn
+    github-token-for-extra-empty-commit: ${{ secrets.CI_GITHUB_TOKEN }}
   create-issue:
     max: 3
     labels: [automation, testing, bug]
