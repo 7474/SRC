@@ -289,16 +289,103 @@ namespace SRCCore.CmdDatas.Tests
 
         // ──────────────────────────────────────────────
         // SkipCmd
+        // ヘルプ: Do/For/ForEachによる繰り返し実行の一部をスキップする。
+        //         Skipが実行されると実行の流れはLoop行またはNext行へ移る。
+        //         ループ外で使われた場合はエラー。
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SkipCmd_ReturnsNegativeOne()
+        public void SkipCmd_OutsideLoop_ReturnsError()
         {
-            // ヘルプ: イベントを終了します
+            // ヘルプ: ループの外で使われるとエラー
             var src = CreateSrc();
             var cmds = BuildEvent(src, "Skip");
             var result = cmds[0].Exec();
             Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void SkipCmd_InForLoop_SkipsRestOfIteration()
+        {
+            // ヘルプ: Skipコマンドが実行されると実行の流れはNext行へと移り、
+            //         Skipコマンド以降のコマンドはキャンセルされる
+            // For i = 1 To 5:
+            //   If (i = 3) Then Skip EndIf
+            //   Incr count  ← i=3 のときスキップされる
+            // Next
+            // Expected: count = 4 (i=1,2,4,5 の4回インクリメント)
+            var src = CreateSrc();
+
+            var cmds = BuildEvent(src,
+                "For i = 1 To 5",   // ID=0
+                "If (i = 3) Then",  // ID=1
+                "Skip",             // ID=2 → jumps to Next (ID=5)
+                "EndIf",            // ID=3
+                "Incr count",       // ID=4
+                "Next"              // ID=5
+            );
+
+            RunEvent(src, cmds);
+
+            Assert.AreEqual(4d, src.Expression.GetValueAsDouble("count"));
+        }
+
+        [TestMethod]
+        public void SkipCmd_InDoLoop_SkipsRestOfIteration()
+        {
+            // ヘルプ: Do/LoopループでSkipが実行されると実行の流れはLoop行へ移る
+            // Set i 0
+            // Do
+            //   Incr i
+            //   If (i = 2) Then Skip EndIf
+            //   Incr count  ← i=2 のときスキップされる
+            // Loop Until (i >= 4)
+            // Expected: count = 3 (i=1,3,4 の3回インクリメント)
+            var src = CreateSrc();
+
+            var cmds = BuildEvent(src,
+                "Set i 0",              // ID=0
+                "Do",                   // ID=1
+                "Incr i",               // ID=2
+                "If (i = 2) Then",      // ID=3
+                "Skip",                 // ID=4 → jumps to Loop (ID=7)
+                "EndIf",                // ID=5
+                "Incr count",           // ID=6
+                "Loop Until (i >= 4)"   // ID=7
+            );
+
+            RunEvent(src, cmds);
+
+            Assert.AreEqual(3d, src.Expression.GetValueAsDouble("count"));
+        }
+
+        [TestMethod]
+        public void SkipCmd_InNestedLoops_SkipsInnermostIteration()
+        {
+            // ヘルプ: SkipはLoop/Nextを検索するとき入れ子の深さを追跡する
+            // For i = 1 To 2:
+            //   For j = 1 To 3:
+            //     If (j = 2) Then Skip EndIf
+            //     Incr count  ← j=2 のときスキップされる
+            //   Next  ← 内側のNext
+            // Next  ← 外側のNext
+            // Expected: count = 4 (i=1,2 × j=1,3 の4回)
+            var src = CreateSrc();
+
+            var cmds = BuildEvent(src,
+                "For i = 1 To 2",   // ID=0
+                "For j = 1 To 3",   // ID=1
+                "If (j = 2) Then",  // ID=2
+                "Skip",             // ID=3 → jumps to inner Next (ID=6)
+                "EndIf",            // ID=4
+                "Incr count",       // ID=5
+                "Next",             // ID=6 (inner)
+                "Next"              // ID=7 (outer)
+            );
+
+            RunEvent(src, cmds);
+
+            Assert.AreEqual(4d, src.Expression.GetValueAsDouble("count"));
         }
     }
 }
