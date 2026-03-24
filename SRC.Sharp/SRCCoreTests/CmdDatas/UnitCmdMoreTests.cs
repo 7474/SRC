@@ -573,5 +573,106 @@ namespace SRCCore.CmdDatas.Tests
             var cmd = CreateCmd(src, "Move ユニット 5 3");
             Assert.IsInstanceOfType(cmd, typeof(MoveCmd));
         }
+
+        // ──────────────────────────────────────────────
+        // UnitCmd
+        // ヘルプ: Unit name rank — ユニットを作成し味方に所属させる
+        // 書式: Unit ユニット名 ランク
+        // 解説: ユニットを指定のランクで作成する。作成されたユニットは味方に所属し、
+        //       Rideコマンドやインターミッションでパイロットを乗せることができる。
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void UnitCmd_TooFewArgs_ReturnsError()
+        {
+            // ヘルプ書式: Unit ユニット名 ランク — ランク省略はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Unit ユニット名");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void UnitCmd_TooManyArgs_ReturnsError()
+        {
+            // ヘルプ書式: Unit ユニット名 ランク — 余分な引数はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Unit ユニット名 0 余分な引数");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void UnitCmd_NonExistentUnit_ReturnsError()
+        {
+            // ヘルプ解説: 作成するユニットデータはあらかじめロードしておく必要がある
+            // データが定義されていない場合はエラー
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "Unit 存在しないユニット 0");
+            var result = cmd.Exec();
+            Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void UnitCmd_ValidUnit_CreatesUnitAsFriend()
+        {
+            // ヘルプ解説: 作成されたユニットは味方に所属する
+            var src = CreateSrc();
+            // UDListにテスト用ユニットデータを登録
+            var ud = src.UDList.Add("テストユニット");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var cmd = CreateCmd(src, "Unit テストユニット 0");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void UnitCmd_ValidUnit_SetsSelectedUnitForEvent()
+        {
+            // ヘルプ解説: 作成されたユニットはイベントの選択ユニットに設定される
+            var src = CreateSrc();
+            var ud = src.UDList.Add("テストユニット2");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var cmd = CreateCmd(src, "Unit テストユニット2 1");
+            cmd.Exec();
+            Assert.IsNotNull(src.Event.SelectedUnitForEvent);
+            Assert.AreEqual("テストユニット2", src.Event.SelectedUnitForEvent.Name);
+        }
+
+        [TestMethod]
+        public void UnitCmd_ValidUnit_UnitPartyIsFriend()
+        {
+            // ヘルプ解説: 作成されたユニットは味方に所属するとみなされる
+            var src = CreateSrc();
+            var ud = src.UDList.Add("テストユニット3");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var cmd = CreateCmd(src, "Unit テストユニット3 0");
+            cmd.Exec();
+            Assert.AreEqual("味方", src.Event.SelectedUnitForEvent.Party);
+        }
+
+        [TestMethod]
+        public void UnitCmd_ValidUnit_WithNonZeroRank_SetsRank()
+        {
+            // ヘルプ: rank — ユニットランク (0〜999)
+            var src = CreateSrc();
+            var ud = src.UDList.Add("テストユニット4");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var cmd = CreateCmd(src, "Unit テストユニット4 5");
+            cmd.Exec();
+            Assert.AreEqual(5, src.Event.SelectedUnitForEvent.Rank);
+        }
     }
 }
