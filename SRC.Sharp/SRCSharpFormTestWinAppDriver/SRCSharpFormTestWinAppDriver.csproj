@@ -49,8 +49,8 @@
       <HintPath>..\packages\Appium.WebDriver.8.1.0\lib\netstandard2.0\Appium.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Azure.Core, Version=1.51.1.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
-      <HintPath>..\packages\Azure.Core.1.51.1\lib\net472\Azure.Core.dll</HintPath>
+    <Reference Include="Azure.Core, Version=1.52.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
+      <HintPath>..\packages\Azure.Core.1.52.0\lib\net472\Azure.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Azure.Monitor.OpenTelemetry.Exporter, Version=1.6.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
