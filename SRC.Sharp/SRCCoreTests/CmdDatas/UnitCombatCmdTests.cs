@@ -254,5 +254,142 @@ namespace SRCCore.CmdDatas.Tests
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
         }
+
+        // ──────────────────────────────────────────────
+        // RecoverHPCmd
+        // ヘルプ: RecoverHP [unit] rate — ユニットの HP を rate ％回復
+        // 解説: マイナス値でHP減少も可能。HP は最大HPを超えず、0以下にならない。
+        // ──────────────────────────────────────────────
+
+        /// <summary>
+        /// RecoverHP rate (unit 省略) — SelectedUnitForEvent が null の場合、エラーなく NextID を返す
+        /// </summary>
+        [TestMethod]
+        public void RecoverHPCmd_NullSelectedUnit_ReturnsNextId()
+        {
+            // ヘルプ: unit 省略時はデフォルトユニット。null でも例外を出さず NextID を返す
+            var src = CreateSrc();
+            // SelectedUnitForEvent は null のまま
+            var cmd = CreateCmd(src, "RecoverHP 100");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        /// <summary>
+        /// RecoverHP 50 — 半HPユニットの HP が回復する
+        /// </summary>
+        [TestMethod]
+        public void RecoverHPCmd_WithUnit_RecoveryIncreasesHP()
+        {
+            // ヘルプ: unit の HP を rate % だけ回復する
+            var src = CreateSrc();
+            var ud = src.UDList.Add("HPテスト");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 10;
+            // Unit コマンドでユニット作成
+            var unitCmd = CreateCmd(src, "Unit HPテスト 0", 0);
+            unitCmd.Exec();
+            var u = src.Event.SelectedUnitForEvent;
+            Assert.IsNotNull(u);
+            // HP を半分に減らす
+            u.HP = 50;
+            Assert.AreEqual(50, u.HP);
+            // RecoverHP 50 → 50 + (100 * 50 / 100) = 100
+            var recoverCmd = CreateCmd(src, "RecoverHP 50", 1);
+            recoverCmd.Exec();
+            Assert.AreEqual(100, u.HP);
+        }
+
+        /// <summary>
+        /// RecoverHP -200 — HP を大幅に減らしても HP は 1 以下にならない
+        /// </summary>
+        [TestMethod]
+        public void RecoverHPCmd_NegativeRate_HpDoesNotGoToZero()
+        {
+            // ヘルプ: RecoverHP によってユニットが破壊されることはない（HP は最小 1）
+            var src = CreateSrc();
+            var ud = src.UDList.Add("HPテスト2");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 10;
+            var unitCmd = CreateCmd(src, "Unit HPテスト2 0", 0);
+            unitCmd.Exec();
+            var u = src.Event.SelectedUnitForEvent;
+            Assert.IsNotNull(u);
+            // RecoverHP -200 → HP = max(1, 100 - 200) = 1
+            var recoverCmd = CreateCmd(src, "RecoverHP -200", 1);
+            recoverCmd.Exec();
+            Assert.AreEqual(1, u.HP);
+        }
+
+        // ──────────────────────────────────────────────
+        // RecoverENCmd
+        // ヘルプ: RecoverEN [unit] rate — ユニットの EN を rate ％回復
+        // 解説: マイナス値でEN減少も可能。EN は最大ENを超えず、0未満にならない。
+        // ──────────────────────────────────────────────
+
+        /// <summary>
+        /// RecoverEN rate (unit 省略) — SelectedUnitForEvent が null の場合、エラーなく NextID を返す
+        /// </summary>
+        [TestMethod]
+        public void RecoverENCmd_NullSelectedUnit_ReturnsNextId()
+        {
+            // ヘルプ: unit 省略時はデフォルトユニット。null でも例外なく NextID を返す
+            var src = CreateSrc();
+            var cmd = CreateCmd(src, "RecoverEN 100");
+            var result = cmd.Exec();
+            Assert.AreEqual(1, result);
+        }
+
+        /// <summary>
+        /// RecoverEN 100 — 消費後の EN が最大まで回復する
+        /// </summary>
+        [TestMethod]
+        public void RecoverENCmd_WithUnit_RecoveryIncreasesEN()
+        {
+            // ヘルプ: unit の EN を rate % だけ回復する
+            var src = CreateSrc();
+            var ud = src.UDList.Add("ENテスト");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var unitCmd = CreateCmd(src, "Unit ENテスト 0", 0);
+            unitCmd.Exec();
+            var u = src.Event.SelectedUnitForEvent;
+            Assert.IsNotNull(u);
+            // EN を 0 に
+            u.EN = 0;
+            // RecoverEN 100 → 0 + (50 * 100 / 100) = 50
+            var recoverCmd = CreateCmd(src, "RecoverEN 100", 1);
+            recoverCmd.Exec();
+            Assert.AreEqual(50, u.EN);
+        }
+
+        /// <summary>
+        /// RecoverEN -200 — EN はゼロより下には下がらない
+        /// </summary>
+        [TestMethod]
+        public void RecoverENCmd_NegativeRate_ENDoesNotGoBelowZero()
+        {
+            // ヘルプ: RecoverEN によって EN が 0 未満になることはない
+            var src = CreateSrc();
+            var ud = src.UDList.Add("ENテスト2");
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.HP = 100;
+            ud.EN = 50;
+            var unitCmd = CreateCmd(src, "Unit ENテスト2 0", 0);
+            unitCmd.Exec();
+            var u = src.Event.SelectedUnitForEvent;
+            Assert.IsNotNull(u);
+            // RecoverEN -200 → EN = max(0, 50 - 100) = 0
+            var recoverCmd = CreateCmd(src, "RecoverEN -200", 1);
+            recoverCmd.Exec();
+            Assert.AreEqual(0, u.EN);
+        }
     }
 }
