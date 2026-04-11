@@ -45,8 +45,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Appium.Net, Version=8.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Appium.WebDriver.8.1.0\lib\netstandard2.0\Appium.Net.dll</HintPath>
+    <Reference Include="Appium.Net, Version=8.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Appium.WebDriver.8.2.0\lib\netstandard2.0\Appium.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Azure.Core, Version=1.52.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
