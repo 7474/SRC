@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.props')" />
-  <Import Project="..\packages\Microsoft.Testing.Extensions.Telemetry.2.1.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('..\packages\Microsoft.Testing.Extensions.Telemetry.2.1.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" />
-  <Import Project="..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.props')" />
-  <Import Project="..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.props" Condition="Exists('..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.props')" />
+  <Import Project="..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.props')" />
+  <Import Project="..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.props')" />
+  <Import Project="..\packages\Microsoft.Testing.Extensions.Telemetry.2.2.1\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('..\packages\Microsoft.Testing.Extensions.Telemetry.2.2.1\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" />
+  <Import Project="..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.props" Condition="Exists('..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.props')" />
+  <Import Project="..\packages\Selenium.WebDriver.4.43.0\build\Selenium.WebDriver.props" Condition="Exists('..\packages\Selenium.WebDriver.4.43.0\build\Selenium.WebDriver.props')" />
   <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" />
   <Import Project="..\packages\MSTest.TestAdapter.2.2.8\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.8\build\net45\MSTest.TestAdapter.props')" />
   <Import Project="..\packages\MSTest.TestAdapter.2.2.5\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.5\build\net45\MSTest.TestAdapter.props')" />
@@ -45,24 +46,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Appium.Net, Version=8.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Appium.WebDriver.8.1.0\lib\netstandard2.0\Appium.Net.dll</HintPath>
+    <Reference Include="Appium.Net, Version=8.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Appium.WebDriver.8.2.0\lib\netstandard2.0\Appium.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Azure.Core, Version=1.52.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
-      <HintPath>..\packages\Azure.Core.1.52.0\lib\net472\Azure.Core.dll</HintPath>
+    <Reference Include="Azure.Core, Version=1.53.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
+      <HintPath>..\packages\Azure.Core.1.53.0\lib\net472\Azure.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Azure.Monitor.OpenTelemetry.Exporter, Version=1.6.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
-      <HintPath>..\packages\Azure.Monitor.OpenTelemetry.Exporter.1.6.0\lib\netstandard2.0\Azure.Monitor.OpenTelemetry.Exporter.dll</HintPath>
+    <Reference Include="Azure.Monitor.OpenTelemetry.Exporter, Version=1.7.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8">
+      <HintPath>..\packages\Azure.Monitor.OpenTelemetry.Exporter.1.7.0\lib\netstandard2.0\Azure.Monitor.OpenTelemetry.Exporter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <HintPath>..\packages\Castle.Core.5.2.1\lib\net462\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=3.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.3.0.0\lib\net462\Microsoft.ApplicationInsights.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights, Version=3.1.0.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.3.1.0\lib\net462\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
@@ -125,44 +126,56 @@
       <HintPath>..\packages\Microsoft.Extensions.Primitives.10.0.5\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.MSBuild, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\lib\netstandard2.0\Microsoft.Testing.Extensions.MSBuild.dll</HintPath>
+    <Reference Include="Microsoft.Identity.Client, Version=4.83.3.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae">
+      <HintPath>..\packages\Microsoft.Identity.Client.4.83.3\lib\net472\Microsoft.Identity.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.Telemetry, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.Testing.Extensions.Telemetry.2.1.0\lib\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.dll</HintPath>
+    <Reference Include="Microsoft.Identity.Client.Extensions.Msal, Version=4.83.3.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae">
+      <HintPath>..\packages\Microsoft.Identity.Client.Extensions.Msal.4.83.3\lib\netstandard2.0\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.TrxReport.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.Testing.Extensions.TrxReport.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=8.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.8.17.0\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.VSTestBridge, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.Testing.Extensions.VSTestBridge.2.1.0\lib\netstandard2.0\Microsoft.Testing.Extensions.VSTestBridge.dll</HintPath>
+    <Reference Include="Microsoft.Testing.Extensions.MSBuild, Version=2.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\lib\netstandard2.0\Microsoft.Testing.Extensions.MSBuild.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Testing.Platform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.Testing.Platform.2.1.0\lib\netstandard2.0\Microsoft.Testing.Platform.dll</HintPath>
+    <Reference Include="Microsoft.Testing.Extensions.Telemetry, Version=2.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.Telemetry.2.2.1\lib\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Extensions.TrxReport.Abstractions, Version=2.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.TrxReport.Abstractions.2.2.1\lib\netstandard2.0\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Extensions.VSTestBridge, Version=2.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.VSTestBridge.2.2.1\lib\netstandard2.0\Microsoft.Testing.Extensions.VSTestBridge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Platform, Version=2.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Platform.2.2.1\lib\netstandard2.0\Microsoft.Testing.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.TestPlatform.CoreUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.3.0\lib\net462\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.4.0\lib\net462\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.TestPlatform.PlatformAbstractions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.3.0\lib\net462\Microsoft.TestPlatform.PlatformAbstractions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.4.0\lib\net462\Microsoft.TestPlatform.PlatformAbstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.3.0\lib\net462\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.18.4.0\lib\net462\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MSTest.TestFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\MSTest.TestFramework.4.1.0\lib\net462\MSTest.TestFramework.dll</HintPath>
+    <Reference Include="MSTest.TestFramework, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\MSTest.TestFramework.4.2.1\lib\net462\MSTest.TestFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MSTest.TestFramework.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\MSTest.TestFramework.4.1.0\lib\net462\MSTest.TestFramework.Extensions.dll</HintPath>
+    <Reference Include="MSTest.TestFramework.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\MSTest.TestFramework.4.2.1\lib\net462\MSTest.TestFramework.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -170,19 +183,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
-      <HintPath>..\packages\OpenTelemetry.1.15.0\lib\net462\OpenTelemetry.dll</HintPath>
+      <HintPath>..\packages\OpenTelemetry.1.15.2\lib\net462\OpenTelemetry.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
-      <HintPath>..\packages\OpenTelemetry.Api.1.15.0\lib\net462\OpenTelemetry.Api.dll</HintPath>
+      <HintPath>..\packages\OpenTelemetry.Api.1.15.2\lib\net462\OpenTelemetry.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry.Api.ProviderBuilderExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
-      <HintPath>..\packages\OpenTelemetry.Api.ProviderBuilderExtensions.1.15.0\lib\net462\OpenTelemetry.Api.ProviderBuilderExtensions.dll</HintPath>
+      <HintPath>..\packages\OpenTelemetry.Api.ProviderBuilderExtensions.1.15.2\lib\net462\OpenTelemetry.Api.ProviderBuilderExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry.Extensions.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
-      <HintPath>..\packages\OpenTelemetry.Extensions.Hosting.1.15.0\lib\net462\OpenTelemetry.Extensions.Hosting.dll</HintPath>
+      <HintPath>..\packages\OpenTelemetry.Extensions.Hosting.1.15.2\lib\net462\OpenTelemetry.Extensions.Hosting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry.PersistentStorage.Abstractions, Version=1.0.2.792, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
@@ -220,6 +233,14 @@
       <HintPath>..\packages\System.Drawing.Common.10.0.5\lib\net462\System.Drawing.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Formats.Asn1, Version=10.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Formats.Asn1.10.0.5\lib\net462\System.Formats.Asn1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.IO.FileSystem.AccessControl.5.0.0\lib\net461\System.IO.FileSystem.AccessControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IO.Pipelines, Version=10.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.IO.Pipelines.10.0.5\lib\net462\System.IO.Pipelines.dll</HintPath>
       <Private>True</Private>
@@ -244,6 +265,18 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=10.0.0.5, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.10.0.5\lib\net462\System.Security.Cryptography.ProtectedData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=10.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Text.Encodings.Web.10.0.5\lib\net462\System.Text.Encodings.Web.dll</HintPath>
       <Private>True</Private>
@@ -261,11 +294,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WebDriver, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Selenium.WebDriver.4.41.0\lib\net462\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.4.43.0\lib\net462\WebDriver.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebDriver.Support, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Selenium.Support.4.41.0\lib\netstandard2.0\WebDriver.Support.dll</HintPath>
+      <HintPath>..\packages\Selenium.Support.4.43.0\lib\netstandard2.0\WebDriver.Support.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -292,24 +325,23 @@
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets'))" />
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.4.8.0\build\Selenium.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.4.8.0\build\Selenium.WebDriver.targets'))" />
     <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
-    <Error Condition="!Exists('..\packages\Selenium.WebDriver.4.41.0\build\Selenium.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.4.41.0\build\Selenium.WebDriver.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.targets'))" />
-    <Error Condition="!Exists('..\packages\MSTest.TestFramework.4.1.0\build\net462\MSTest.TestFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestFramework.4.1.0\build\net462\MSTest.TestFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Testing.Extensions.Telemetry.2.1.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Extensions.Telemetry.2.1.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.props'))" />
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.4.43.0\build\Selenium.WebDriver.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.4.43.0\build\Selenium.WebDriver.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Testing.Extensions.Telemetry.2.2.1\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Extensions.Telemetry.2.2.1\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestFramework.4.2.1\build\net462\MSTest.TestFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestFramework.4.2.1\build\net462\MSTest.TestFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.targets'))" />
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.2.2.5\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.5\build\net45\MSTest.TestAdapter.targets')" />
   <Import Project="..\packages\MSTest.TestAdapter.2.2.8\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.8\build\net45\MSTest.TestAdapter.targets')" />
   <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" />
   <Import Project="..\packages\Selenium.WebDriver.4.8.0\build\Selenium.WebDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.4.8.0\build\Selenium.WebDriver.targets')" />
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
-  <Import Project="..\packages\Selenium.WebDriver.4.41.0\build\Selenium.WebDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.4.41.0\build\Selenium.WebDriver.targets')" />
-  <Import Project="..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.targets" Condition="Exists('..\packages\Microsoft.Testing.Platform.2.1.0\build\netstandard2.0\Microsoft.Testing.Platform.targets')" />
-  <Import Project="..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.1.0\build\Microsoft.Testing.Platform.MSBuild.targets')" />
-  <Import Project="..\packages\MSTest.TestFramework.4.1.0\build\net462\MSTest.TestFramework.targets" Condition="Exists('..\packages\MSTest.TestFramework.4.1.0\build\net462\MSTest.TestFramework.targets')" />
-  <Import Project="..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.4.1.0\build\net462\MSTest.TestAdapter.targets')" />
+  <Import Project="..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.targets" Condition="Exists('..\packages\Microsoft.Testing.Platform.2.2.1\build\netstandard2.0\Microsoft.Testing.Platform.targets')" />
+  <Import Project="..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\packages\Microsoft.Testing.Platform.MSBuild.2.2.1\build\Microsoft.Testing.Platform.MSBuild.targets')" />
+  <Import Project="..\packages\MSTest.TestFramework.4.2.1\build\net462\MSTest.TestFramework.targets" Condition="Exists('..\packages\MSTest.TestFramework.4.2.1\build\net462\MSTest.TestFramework.targets')" />
+  <Import Project="..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.4.2.1\build\net462\MSTest.TestAdapter.targets')" />
 </Project>
