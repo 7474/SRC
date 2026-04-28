@@ -69,7 +69,8 @@ namespace SRCCore.CmdDatas.Commands
             }
             IfCmdType = ifCmdType;
 
-            // 条件式が式であることが確定していれば条件式の項数を0に
+            // 条件式の項数を初期化し、式であることが確定した場合に0にリセットする
+            ExprTermCount = terms.Count;
             switch (terms.Count)
             {
                 case 0:
