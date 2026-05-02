@@ -1,0 +1,53 @@
+ï»¿@using System.Linq
+
+<div class="field is-grouped" style="padding: 0.5rem 0.75rem;">
+    <div class="control">
+        <label class="label is-small" style="line-height: 2em;">ソート:</label>
+    </div>
+    <div class="control">
+        <div class="select is-small">
+            <select value="@selectedLabel" @onchange="OnSelectChanged">
+                @foreach (var label in Labels)
+                {
+                    <option value="@label">@label</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="control">
+        <button class="button is-small" @onclick="ToggleSortOrder">
+            @(ascending ? "▲ 昇順" : "▼ 降順")
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<string> Labels { get; set; } = Enumerable.Empty<string>();
+    [Parameter]
+    public EventCallback<(string Label, bool Ascending)> OnChanged { get; set; }
+
+    private string selectedLabel = "";
+    private bool ascending = true;
+
+    protected override void OnParametersSet()
+    {
+        var firstLabel = Labels.FirstOrDefault();
+        if (firstLabel != null && !Labels.Contains(selectedLabel))
+        {
+            selectedLabel = firstLabel;
+        }
+    }
+
+    private async Task OnSelectChanged(ChangeEventArgs e)
+    {
+        selectedLabel = e.Value?.ToString() ?? "";
+        await OnChanged.InvokeAsync((selectedLabel, ascending));
+    }
+
+    private async Task ToggleSortOrder()
+    {
+        ascending = !ascending;
+        await OnChanged.InvokeAsync((selectedLabel, ascending));
+    }
+}

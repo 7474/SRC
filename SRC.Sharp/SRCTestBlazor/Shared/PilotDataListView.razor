@@ -13,26 +13,7 @@
             }
         </div>
     </nav>
-    <div class="field is-grouped" style="padding: 0.5rem 0.75rem;">
-        <div class="control">
-            <label class="label is-small" style="line-height: 2em;">ソート:</label>
-        </div>
-        <div class="control">
-            <div class="select is-small">
-                <select @bind="SelectedSortLabel">
-                    @foreach (var option in SortOptions)
-                    {
-                        <option value="@option.Label">@option.Label</option>
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="control">
-            <button class="button is-small" @onclick="ToggleSortOrder">
-                @(sortAscending ? "▲ 昇順" : "▼ 降順")
-            </button>
-        </div>
-    </div>
+    <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     @if (!string.IsNullOrEmpty(SRC.PDList.DataComment))
     {
         <div class="content">
@@ -67,20 +48,6 @@
     };
 
     private string _selectedSortLabel = SortOptions[0].Label;
-    private string SelectedSortLabel
-    {
-        get => _selectedSortLabel;
-        set
-        {
-            if (_selectedSortLabel != value)
-            {
-                _selectedSortLabel = value;
-                RebuildSortedItems();
-                shouldRender = true;
-            }
-        }
-    }
-
     private bool sortAscending = true;
     private IList<SRCCore.Models.PilotData> sortedItems = new List<SRCCore.Models.PilotData>();
 
@@ -90,6 +57,14 @@
         sortedItems = sortAscending
             ? SRC.PDList.Items.OrderBy(option.KeySelector).ToList()
             : SRC.PDList.Items.OrderByDescending(option.KeySelector).ToList();
+    }
+
+    private void OnSortChanged((string Label, bool Ascending) args)
+    {
+        _selectedSortLabel = args.Label;
+        sortAscending = args.Ascending;
+        RebuildSortedItems();
+        shouldRender = true;
     }
 
     protected override bool ShouldRender() => shouldRender;
@@ -105,13 +80,6 @@
     protected override void OnAfterRender(bool firstRender)
     {
         shouldRender = false;
-    }
-
-    private void ToggleSortOrder()
-    {
-        sortAscending = !sortAscending;
-        RebuildSortedItems();
-        shouldRender = true;
     }
 
     private async Task OnClickAnchor(string targetId)
