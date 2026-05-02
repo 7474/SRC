@@ -100,19 +100,53 @@ Identify under-tested areas in the priority order below and add as many tests as
 First, check whether a PR created by this Agentic Workflow is already open:
 
 ```bash
-gh pr list --repo "${{ github.repository }}" --state open --json title,author \
-  --jq '[.[] | select(.title | startswith("[unit-tests]"))]'
+OPEN_PRS=$(gh pr list --repo "${{ github.repository }}" --state open \
+  --json number,title,headRefName \
+  --jq '[.[] | select(.title | startswith("[unit-tests]"))]')
+echo "$OPEN_PRS"
 ```
 
-タイトルが `[unit-tests]` で始まるオープン PR が **1件でも存在する場合**、
-既にワークフローによる作業が進行中です。`noop` safe output を使用して処理をスキップしてください：
-If **any** open PR whose title starts with `[unit-tests]` exists,
-an Agentic Workflow run is already in progress. Use `noop` safe output to skip:
+出力が空配列 `[]` でない場合（1件でも結果がある場合）は、既にワークフローによる作業が進行中です。
+If the output is **not** an empty array `[]` (i.e., any results are returned), a workflow run is already in progress.
 
-> noop: "Skipping: An open Agentic Workflow PR already exists."
+その場合、PR番号・タイトルを取り出し、そのPRの変更ファイル一覧を確認して、どのテストが既に提案されているかを把握してください:
+In that case, extract the PR number and title, then check which test files are already proposed in that PR:
 
-オープン PR がない場合のみ、以下の Step 1 以降を続けてください。
-Only proceed to Step 1 and beyond if no such open PR exists.
+```bash
+# PR番号とタイトルを取得
+PR_NUMBER=$(echo "$OPEN_PRS" | jq -r '.[0].number')
+PR_TITLE=$(echo "$OPEN_PRS" | jq -r '.[0].title')
+
+# そのPRの変更ファイル一覧を取得
+gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files \
+  --jq '[.files[].path]'
+```
+
+オープンな [unit-tests] PR が存在する場合は、`noop` safe output を使用して処理をスキップしてください
+(PR番号・タイトル・変更ファイルの実際の値をメッセージに含めてください):
+If any open [unit-tests] PR exists, use `noop` safe output to skip
+(fill in the actual PR number, title, and changed files in the message):
+
+> noop: "Skipping: An open Agentic Workflow PR already exists (PR #<PR_NUMBER>: <PR_TITLE>). It already proposes tests in: <list of changed test files>."
+
+**追加確認: 最近マージされた [unit-tests] PR / Additional check: recently merged [unit-tests] PRs**
+
+最近マージされた [unit-tests] PR があれば、それらと重複してテストを追加しないようにしてください:
+Also check for recently merged [unit-tests] PRs to avoid duplicating their work:
+
+```bash
+gh pr list --repo "${{ github.repository }}" --state merged \
+  --json number,title,mergedAt \
+  --jq '[.[] | select(.title | startswith("[unit-tests]"))] | sort_by(.mergedAt) | reverse | .[0:5]'
+```
+
+最近マージされた PR が存在する場合は、それらで追加されたテストファイルを把握しておき、
+以降の Step でそれらと重複しないようにしてください。
+If recently merged PRs exist, note which test files they touched and avoid duplicating that work in subsequent steps.
+
+出力が空配列 `[]` の場合のみ（オープンな [unit-tests] PR が存在しない場合のみ）、
+以下の Step 1 以降を続けてください。
+Only proceed to Step 1 and beyond if the open PR check returns an empty array `[]`.
 
 ## Step 1: 現在のフェーズを判定する / Determine the Current Phase
 
