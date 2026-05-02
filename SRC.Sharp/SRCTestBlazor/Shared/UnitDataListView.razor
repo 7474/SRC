@@ -1,8 +1,11 @@
-﻿<section>
+ï»¿@using SRCTestBlazor.Models
+@using System.Linq
+
+<section>
     <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
         @* XXX 常に横幅が入っているとは限らない模様 *@
         <div class="navbar-brand">
-            @foreach (var ud in SRC.UDList.Items)
+            @foreach (var ud in sortedItems)
             {
                 var name = ud.Name;
                 <a href="#unit-@name" class="navbar-item"
@@ -11,13 +14,33 @@
             }
         </div>
     </nav>
+    <div class="field is-grouped" style="padding: 0.5rem 0.75rem;">
+        <div class="control">
+            <label class="label is-small" style="line-height: 2em;">ソート:</label>
+        </div>
+        <div class="control">
+            <div class="select is-small">
+                <select @bind="SelectedSortLabel">
+                    @foreach (var option in SortOptions)
+                    {
+                        <option value="@option.Label">@option.Label</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-small" @onclick="ToggleSortOrder">
+                @(sortAscending ? "▲ 昇順" : "▼ 降順")
+            </button>
+        </div>
+    </div>
     @if (!string.IsNullOrEmpty(SRC.UDList.DataComment))
     {
         <div class="content">
             <div class="src-comment">@SRC.UDList.DataComment</div>
         </div>
     }
-    @foreach (var ud in SRC.UDList.Items)
+    @foreach (var ud in sortedItems)
     {
         <UnitDataView Data="@ud" />
     }
@@ -32,15 +55,64 @@
     private string lastRaw = "";
     private bool shouldRender;
 
+    private static readonly List<DataViewerSortOption<SRCCore.Models.UnitData>> SortOptions = new()
+    {
+        new("名前", u => u.Name),
+        new("ＨＰ", u => u.HP),
+        new("ＥＮ", u => u.EN),
+        new("装甲", u => u.Armor),
+        new("運動性", u => u.Mobility),
+        new("移動力", u => u.Speed),
+        new("最大攻撃力", u => u.Weapons.Any() ? u.Weapons.Max(w => w.Power) : 0),
+        new("最大射程", u => u.Weapons.Any() ? u.Weapons.Max(w => w.MaxRange) : 0),
+    };
+
+    private string _selectedSortLabel = SortOptions[0].Label;
+    private string SelectedSortLabel
+    {
+        get => _selectedSortLabel;
+        set
+        {
+            if (_selectedSortLabel != value)
+            {
+                _selectedSortLabel = value;
+                RebuildSortedItems();
+                shouldRender = true;
+            }
+        }
+    }
+
+    private bool sortAscending = true;
+    private IList<SRCCore.Models.UnitData> sortedItems = new List<SRCCore.Models.UnitData>();
+
+    private void RebuildSortedItems()
+    {
+        var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
+        sortedItems = sortAscending
+            ? SRC.UDList.Items.OrderBy(option.KeySelector).ToList()
+            : SRC.UDList.Items.OrderByDescending(option.KeySelector).ToList();
+    }
+
     protected override bool ShouldRender() => shouldRender;
     protected override void OnParametersSet()
     {
         shouldRender = lastRaw != SRC.UDList.Raw;
-        lastRaw = SRC.UDList.Raw;
+        if (shouldRender)
+        {
+            lastRaw = SRC.UDList.Raw;
+            RebuildSortedItems();
+        }
     }
     protected override void OnAfterRender(bool firstRender)
     {
         shouldRender = false;
+    }
+
+    private void ToggleSortOrder()
+    {
+        sortAscending = !sortAscending;
+        RebuildSortedItems();
+        shouldRender = true;
     }
 
     private async Task OnClickAnchor(string targetId)
