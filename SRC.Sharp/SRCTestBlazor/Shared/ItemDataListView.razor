@@ -1,4 +1,4 @@
-ï»¿@using SRCTestBlazor.Models
+﻿@using SRCTestBlazor.Models
 @using System.Linq
 
 <section>
@@ -43,8 +43,8 @@
         new("装甲", i => i.Armor),
         new("運動性", i => i.Mobility),
         new("移動力", i => i.Speed),
-        new("最大攻撃力", i => i.Weapons.Any() ? i.Weapons.Max(w => w.Power) : 0),
-        new("最大射程", i => i.Weapons.Any() ? i.Weapons.Max(w => w.MaxRange) : 0),
+        new("最大攻撃力", i => i.Weapons.Select(w => w.Power).DefaultIfEmpty(0).Max()),
+        new("最大射程", i => i.Weapons.Select(w => w.MaxRange).DefaultIfEmpty(0).Max()),
     };
 
     private string _selectedSortLabel = SortOptions[0].Label;

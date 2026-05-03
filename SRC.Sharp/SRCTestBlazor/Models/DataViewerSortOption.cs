@@ -4,7 +4,7 @@ namespace SRCTestBlazor.Models
 {
     /// <summary>
     /// DataViewerのソート条件を管理するクラス。
-    /// 条件名とキーセレクタ（コンパレータ）のペアで管理することで、
+    /// 条件名とソートキー抽出関数のペアで管理することで、
     /// 最大攻撃力のような算出値でのソートにも対応する。
     /// </summary>
     public class DataViewerSortOption<T>
