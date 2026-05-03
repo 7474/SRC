@@ -36,25 +36,26 @@
     {
         var sw = new Stopwatch();
         sw.Start();
+        const int maxFileSize = 10 * 1024 * 1024; // 10MB
         foreach (var file in e.GetMultipleFiles(20))
         {
             switch (file.Name.ToLower())
             {
                 case "unit.txt":
                 case "robot.txt":
-                    SRC.UDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
+                    SRC.UDList.Load(file.Name, await file.OpenReadStream(maxFileSize).ToUTF8Async());
                     break;
                 case "pilot.txt":
-                    SRC.PDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
+                    SRC.PDList.Load(file.Name, await file.OpenReadStream(maxFileSize).ToUTF8Async());
                     break;
                 case "pilot_message.txt":
-                    SRC.MDList.Load(file.Name, false, await file.OpenReadStream().ToUTF8Async());
+                    SRC.MDList.Load(file.Name, false, await file.OpenReadStream(maxFileSize).ToUTF8Async());
                     break;
                 case "pilot_dialog.txt":
-                    SRC.DDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
+                    SRC.DDList.Load(file.Name, await file.OpenReadStream(maxFileSize).ToUTF8Async());
                     break;
                 case "item.txt":
-                    SRC.IDList.Load(file.Name, await file.OpenReadStream().ToUTF8Async());
+                    SRC.IDList.Load(file.Name, await file.OpenReadStream(maxFileSize).ToUTF8Async());
                     break;
                 default:
                     Console.WriteLine($"Not supported file [{file.Name}]");
