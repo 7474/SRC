@@ -16,6 +16,10 @@
             @(ascending ? "▲" : "▼")
         </button>
     </div>
+    <div class="control">
+        <input class="input is-small" type="text" placeholder="フィルタ"
+               value="@filterText" @oninput="OnFilterInput" />
+    </div>
 </div>
 
 @code {
@@ -23,9 +27,12 @@
     public IEnumerable<string> Labels { get; set; } = Enumerable.Empty<string>();
     [Parameter]
     public EventCallback<(string Label, bool Ascending)> OnChanged { get; set; }
+    [Parameter]
+    public EventCallback<string> OnFilterChanged { get; set; }
 
     private string selectedLabel = "";
     private bool ascending = false;
+    private string filterText = "";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -47,5 +54,11 @@
     {
         ascending = !ascending;
         await OnChanged.InvokeAsync((selectedLabel, ascending));
+    }
+
+    private async Task OnFilterInput(ChangeEventArgs e)
+    {
+        filterText = e.Value?.ToString() ?? "";
+        await OnFilterChanged.InvokeAsync(filterText);
     }
 }
