@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Newtonsoft.Json.Linq;
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
@@ -28,6 +29,11 @@ namespace SRCCore.Models
             npd.Nickname = "ナレーター";
             npd.Bitmap = ".bmp";
             colNonPilotDataList.Add(npd, npd.Name);
+        }
+
+        public void Clear()
+        {
+            colNonPilotDataList.Clear();
         }
 
         // ノンパイロットデータリストにデータを追加

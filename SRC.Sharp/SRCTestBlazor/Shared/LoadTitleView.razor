@@ -45,6 +45,7 @@
 
         SRC.UDList.Clear();
         SRC.PDList.Clear();
+		SRC.NPDList.Clear();
         //SRC.MDList.Clear();
         //SRC.DDList.Clear();
         SRC.IDList.Clear();
@@ -65,6 +66,10 @@
                         break;
                     case "pilot.txt":
                         SRC.PDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    case "non_pilot.txt":
+                        SRC.NPDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     case "pilot_message.txt":
