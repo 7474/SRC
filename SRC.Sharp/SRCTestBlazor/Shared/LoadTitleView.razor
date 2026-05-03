@@ -1,5 +1,6 @@
 ﻿@using System.Diagnostics;
-@using System.IO
+@using System.IO;
+@using System.Threading.Tasks
 
 <TitleView SRC="@SRC" DataTitle="@DataTitle" />
 <div id="status" class="message">@StatusText</div>
@@ -26,6 +27,15 @@
         await UpdateData();
     }
 
+    private async Task<MemoryStream> FetchAsMemoryStreamAsync(string url)
+    {
+        using var httpStream = await Http.GetStreamAsync(url);
+        var memoryStream = new MemoryStream();
+        await httpStream.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+        return memoryStream;
+    }
+
     private async Task UpdateData()
     {
         StatusText = "Now Loading...";
@@ -50,23 +60,23 @@
                 {
                     case "unit.txt":
                     case "robot.txt":
-                        SRC.UDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        SRC.UDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     case "pilot.txt":
-                        SRC.PDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        SRC.PDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     case "pilot_message.txt":
-                        SRC.MDList.Load(file, false, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        SRC.MDList.Load(file, false, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     case "pilot_dialog.txt":
-                        SRC.DDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        SRC.DDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     case "item.txt":
-                        SRC.IDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        SRC.IDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     default:
@@ -74,7 +84,10 @@
                         break;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error loading file [{file}]: {ex.Message}");
+            }
         }
 
         sw.Stop();
