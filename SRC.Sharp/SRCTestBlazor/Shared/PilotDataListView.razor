@@ -1,14 +1,18 @@
-﻿<section>
+﻿@using SRCTestBlazor.Models
+@using System.Linq
+
+<section>
     <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
         <div class="navbar-brand">
-            @foreach (var pd in SRC.PDList.Items)
+            @foreach (var pd in sortedItems)
             {
                 var name = pd.Name;
                 <a href="#pilot-@name" class="navbar-item"
                    @onclick:preventDefault
                    @onclick="@(e => OnClickAnchor("pilot-" + name))">@name</a>
             }
-        </div>
+		</div>
+		<SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     </nav>
     @if (!string.IsNullOrEmpty(SRC.PDList.DataComment))
     {
@@ -16,7 +20,7 @@
             <div class="src-comment">@SRC.PDList.DataComment</div>
         </div>
     }
-    @foreach (var pd in SRC.PDList.Items)
+    @foreach (var pd in sortedItems)
     {
         <PilotDataView Data="@pd" SRC="@SRC" />
     }
@@ -31,11 +35,55 @@
     private string lastRaw = "";
     private bool shouldRender;
 
+    private static readonly List<DataViewerSortOption<SRCCore.Models.PilotData>> SortOptions = new()
+    {
+        new("定義順"),
+        new("名前", p => p.Name),
+        new("格闘", p => p.Infight),
+        new("射撃", p => p.Shooting),
+        new("命中", p => p.Hit),
+        new("回避", p => p.Dodge),
+        new("技量", p => p.Technique),
+        new("反応", p => p.Intuition),
+        new("ＳＰ", p => p.SP),
+    };
+
+    private string _selectedSortLabel = SortOptions[0].Label;
+    private bool sortAscending = true;
+    private IList<SRCCore.Models.PilotData> sortedItems = new List<SRCCore.Models.PilotData>();
+
+    private void RebuildSortedItems()
+    {
+        var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
+        if (option.KeySelector == null)
+        {
+            sortedItems = SRC.PDList.Items.ToList();
+        }
+        else
+        {
+            sortedItems = sortAscending
+                ? SRC.PDList.Items.OrderBy(option.KeySelector).ToList()
+                : SRC.PDList.Items.OrderByDescending(option.KeySelector).ToList();
+        }
+    }
+
+    private void OnSortChanged((string Label, bool Ascending) args)
+    {
+        _selectedSortLabel = args.Label;
+        sortAscending = args.Ascending;
+        RebuildSortedItems();
+        shouldRender = true;
+    }
+
     protected override bool ShouldRender() => shouldRender;
     protected override void OnParametersSet()
     {
-        shouldRender = lastRaw != SRC.PDList.Raw;
-        lastRaw = SRC.PDList.Raw;
+        shouldRender = lastRaw != SRC.PDList.Raw || sortedItems.Count == 0;
+        if (shouldRender)
+        {
+            lastRaw = SRC.PDList.Raw;
+            RebuildSortedItems();
+        }
     }
     protected override void OnAfterRender(bool firstRender)
     {

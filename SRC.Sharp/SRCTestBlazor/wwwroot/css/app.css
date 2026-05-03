@@ -10335,6 +10335,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   position: sticky;
   top: 93px;
   display: block;
+  margin-bottom: 0.25rem;
 }
 .src-sub-nuvbar.navbar .navbar-brand {
   overflow-x: scroll;

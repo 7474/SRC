@@ -1,7 +1,10 @@
-﻿<section>
+﻿@using SRCTestBlazor.Models
+@using System.Linq
+
+<section>
     <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
         <div class="navbar-brand">
-            @foreach (var id in SRC.IDList.Items)
+            @foreach (var id in sortedItems)
             {
                 var name = id.Name;
                 <a href="#item-@name" class="navbar-item"
@@ -9,6 +12,7 @@
                    @onclick="@(e => OnClickAnchor("item-" + name))">@name</a>
             }
         </div>
+        <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     </nav>
     @if (!string.IsNullOrEmpty(SRC.IDList.DataComment))
     {
@@ -16,7 +20,7 @@
             <div class="src-comment">@SRC.IDList.DataComment</div>
         </div>
     }
-    @foreach (var id in SRC.IDList.Items)
+    @foreach (var id in sortedItems)
     {
         <ItemDataView Data="@id" SRC="@SRC" />
     }
@@ -31,11 +35,55 @@
     private string lastRaw = "";
     private bool shouldRender;
 
+    private static readonly List<DataViewerSortOption<SRCCore.Models.ItemData>> SortOptions = new()
+    {
+        new("定義順"),
+        new("名前", i => i.Name),
+        new("ＨＰ", i => i.HP),
+        new("ＥＮ", i => i.EN),
+        new("装甲", i => i.Armor),
+        new("運動性", i => i.Mobility),
+        new("移動力", i => i.Speed),
+        new("最大攻撃力", i => i.Weapons.Select(w => w.Power).DefaultIfEmpty(0).Max()),
+        new("最大射程", i => i.Weapons.Select(w => w.MaxRange).DefaultIfEmpty(0).Max()),
+    };
+
+    private string _selectedSortLabel = SortOptions[0].Label;
+    private bool sortAscending = true;
+    private IList<SRCCore.Models.ItemData> sortedItems = new List<SRCCore.Models.ItemData>();
+
+    private void RebuildSortedItems()
+    {
+        var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
+        if (option.KeySelector == null)
+        {
+            sortedItems = SRC.IDList.Items.ToList();
+        }
+        else
+        {
+            sortedItems = sortAscending
+                ? SRC.IDList.Items.OrderBy(option.KeySelector).ToList()
+                : SRC.IDList.Items.OrderByDescending(option.KeySelector).ToList();
+        }
+    }
+
+    private void OnSortChanged((string Label, bool Ascending) args)
+    {
+        _selectedSortLabel = args.Label;
+        sortAscending = args.Ascending;
+        RebuildSortedItems();
+        shouldRender = true;
+    }
+
     protected override bool ShouldRender() => shouldRender;
     protected override void OnParametersSet()
     {
-        shouldRender = lastRaw != SRC.IDList.Raw;
-        lastRaw = SRC.IDList.Raw;
+        shouldRender = lastRaw != SRC.IDList.Raw || sortedItems.Count == 0;
+        if (shouldRender)
+        {
+            lastRaw = SRC.IDList.Raw;
+            RebuildSortedItems();
+        }
     }
     protected override void OnAfterRender(bool firstRender)
     {
