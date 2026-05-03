@@ -57,9 +57,7 @@
         var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
         if (option.KeySelector == null)
         {
-            sortedItems = sortAscending
-                ? SRC.PDList.Items.ToList()
-                : SRC.PDList.Items.Reverse<SRCCore.Models.PilotData>().ToList();
+            sortedItems = SRC.PDList.Items.ToList();
         }
         else
         {

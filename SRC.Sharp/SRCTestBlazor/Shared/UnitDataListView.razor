@@ -58,9 +58,7 @@
         var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
         if (option.KeySelector == null)
         {
-            sortedItems = sortAscending
-                ? SRC.UDList.Items.ToList()
-                : SRC.UDList.Items.Reverse<SRCCore.Models.UnitData>().ToList();
+            sortedItems = SRC.UDList.Items.ToList();
         }
         else
         {
