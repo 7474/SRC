@@ -13,7 +13,7 @@
                    @onclick="@(e => OnClickAnchor("unit-" + name))">@name</a>
             }
         </div>
-        <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
+        <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" OnFilterChanged="OnFilterChanged" />
     </nav>
     @if (!string.IsNullOrEmpty(SRC.UDList.DataComment))
     {
@@ -51,20 +51,24 @@
 
     private string _selectedSortLabel = SortOptions[0].Label;
     private bool sortAscending = true;
+    private string _filterText = "";
     private IList<SRCCore.Models.UnitData> sortedItems = new List<SRCCore.Models.UnitData>();
 
     private void RebuildSortedItems()
     {
+        var source = string.IsNullOrEmpty(_filterText)
+            ? SRC.UDList.Items
+            : SRC.UDList.Items.Where(u => u.Raw.Contains(_filterText, StringComparison.OrdinalIgnoreCase));
         var option = SortOptions.FirstOrDefault(o => o.Label == _selectedSortLabel) ?? SortOptions[0];
         if (option.KeySelector == null)
         {
-            sortedItems = SRC.UDList.Items.ToList();
+            sortedItems = source.ToList();
         }
         else
         {
             sortedItems = sortAscending
-                ? SRC.UDList.Items.OrderBy(option.KeySelector).ToList()
-                : SRC.UDList.Items.OrderByDescending(option.KeySelector).ToList();
+                ? source.OrderBy(option.KeySelector).ToList()
+                : source.OrderByDescending(option.KeySelector).ToList();
         }
     }
 
@@ -72,6 +76,13 @@
     {
         _selectedSortLabel = args.Label;
         sortAscending = args.Ascending;
+        RebuildSortedItems();
+        shouldRender = true;
+    }
+
+    private void OnFilterChanged(string filterText)
+    {
+        _filterText = filterText;
         RebuildSortedItems();
         shouldRender = true;
     }
