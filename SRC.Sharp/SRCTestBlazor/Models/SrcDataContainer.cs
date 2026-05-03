@@ -35,7 +35,8 @@ namespace SRCTestBlazor.Models
 
         public async Task LoadBitmapIndex(HttpClient http, string uri, string baseUri)
         {
-            var newIndex = await http.GetFromJsonAsync<SrcBitmapIndex>(uri);
+            var newIndex = await http.GetFromJsonAsync(uri, SrcJsonSerializerContext.Default.SrcBitmapIndex)
+                ?? throw new InvalidOperationException($"Failed to load bitmap index from {uri}");
             newIndex.BuildIndex(baseUri);
             BitmapIndex = newIndex;
 
@@ -44,7 +45,8 @@ namespace SRCTestBlazor.Models
 
         public async Task LoadDataIndex(HttpClient http, string uri)
         {
-            var newIndex = await http.GetFromJsonAsync<SrcDataIndex>(uri);
+            var newIndex = await http.GetFromJsonAsync(uri, SrcJsonSerializerContext.Default.SrcDataIndex)
+                ?? throw new InvalidOperationException($"Failed to load data index from {uri}");
             DataIndex = newIndex;
 
             NotifyStateChanged();
