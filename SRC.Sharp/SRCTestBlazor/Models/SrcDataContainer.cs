@@ -35,7 +35,7 @@ namespace SRCTestBlazor.Models
 
         public async Task LoadBitmapIndex(HttpClient http, string uri, string baseUri)
         {
-            var newIndex = await http.GetFromJsonAsync<SrcBitmapIndex>(uri);
+            var newIndex = await http.GetFromJsonAsync(uri, SrcJsonContext.Default.SrcBitmapIndex);
             newIndex.BuildIndex(baseUri);
             BitmapIndex = newIndex;
 
@@ -44,7 +44,7 @@ namespace SRCTestBlazor.Models
 
         public async Task LoadDataIndex(HttpClient http, string uri)
         {
-            var newIndex = await http.GetFromJsonAsync<SrcDataIndex>(uri);
+            var newIndex = await http.GetFromJsonAsync(uri, SrcJsonContext.Default.SrcDataIndex);
             DataIndex = newIndex;
 
             NotifyStateChanged();
