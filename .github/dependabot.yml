@@ -17,6 +17,14 @@ updates:
       update-types:
       - "minor"
       - "patch"
+- package-ecosystem: nuget
+  directory: "/SRC.Sharp.Help/HelpConverter/"
+  schedule:
+    interval: daily
+- package-ecosystem: bundler
+  directory: "/SRC.Sharp.Help/"
+  schedule:
+    interval: daily
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
