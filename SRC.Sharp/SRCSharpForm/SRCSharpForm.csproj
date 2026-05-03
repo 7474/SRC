@@ -7,6 +7,7 @@
 		<ApplicationIcon>SRCSharpForm.ico</ApplicationIcon>
 		<ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
 		<Version>3.5.0</Version>
+		<NoWarn>$(NoWarn);WFO1000</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
