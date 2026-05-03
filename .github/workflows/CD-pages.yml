@@ -34,7 +34,7 @@ jobs:
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Replace index.html with GitHub Pages version
         env:
@@ -45,7 +45,7 @@ jobs:
           sed -i "s|<base href=\"/\" />|<base href=\"${BASE_PATH}/\" />|" ${{ env.PUBLISH_DIR }}/index.html
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ env.PUBLISH_DIR }}
 
@@ -58,5 +58,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
