@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="control">
-        <button class="button is-small" @onclick="ToggleSortOrder">
+        <button class="button is-small" type="button" @onclick="ToggleSortOrder">
             @(ascending ? "▲ 昇順" : "▼ 降順")
         </button>
     </div>
@@ -30,12 +30,13 @@
     private string selectedLabel = "";
     private bool ascending = true;
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         var firstLabel = Labels.FirstOrDefault();
         if (firstLabel != null && !Labels.Contains(selectedLabel))
         {
             selectedLabel = firstLabel;
+            await OnChanged.InvokeAsync((selectedLabel, ascending));
         }
     }
 
