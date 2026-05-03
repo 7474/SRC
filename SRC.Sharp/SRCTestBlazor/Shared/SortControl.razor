@@ -2,9 +2,6 @@
 
 <div class="field is-grouped" style="padding: 0.5rem 0.75rem;">
     <div class="control">
-        <label class="label is-small" style="line-height: 2em;">ソート:</label>
-    </div>
-    <div class="control">
         <div class="select is-small">
             <select value="@selectedLabel" @onchange="OnSelectChanged">
                 @foreach (var label in Labels)
@@ -16,7 +13,7 @@
     </div>
     <div class="control">
         <button class="button is-small" type="button" @onclick="ToggleSortOrder">
-            @(ascending ? "▲ 昇順" : "▼ 降順")
+            @(ascending ? "▲" : "▼")
         </button>
     </div>
 </div>
@@ -28,7 +25,7 @@
     public EventCallback<(string Label, bool Ascending)> OnChanged { get; set; }
 
     private string selectedLabel = "";
-    private bool ascending = true;
+    private bool ascending = false;
 
     protected override async Task OnParametersSetAsync()
     {

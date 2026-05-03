@@ -13,8 +13,8 @@
                    @onclick="@(e => OnClickAnchor("unit-" + name))">@name</a>
             }
         </div>
+        <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     </nav>
-    <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     @if (!string.IsNullOrEmpty(SRC.UDList.DataComment))
     {
         <div class="content">

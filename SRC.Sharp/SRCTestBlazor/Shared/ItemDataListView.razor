@@ -12,8 +12,8 @@
                    @onclick="@(e => OnClickAnchor("item-" + name))">@name</a>
             }
         </div>
+        <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     </nav>
-    <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" />
     @if (!string.IsNullOrEmpty(SRC.IDList.DataComment))
     {
         <div class="content">
