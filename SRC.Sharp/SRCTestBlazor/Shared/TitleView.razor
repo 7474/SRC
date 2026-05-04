@@ -34,7 +34,6 @@
     protected override void OnInitialized()
     {
         SettingsService.OnChange += OnSettingsChanged;
-        UpdateDefaultKind();
     }
 
     public void Dispose()
@@ -45,13 +44,6 @@
     private void OnSettingsChanged()
     {
         InvokeAsync(StateHasChanged);
-    }
-
-    private void UpdateDefaultKind()
-    {
-        currentKind = SettingsService.Settings.DataDisplayOrder == DataDisplayOrder.PilotFirst
-            ? SrcDataKind.Pilot
-            : SrcDataKind.Unit;
     }
 
     private void OnChangeSrcDataKind(SrcDataKind kind)

@@ -10388,310 +10388,126 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 
 /* =============================================================================
    Dark mode theming
+   Dark mode is activated by adding "src-dark-active" class to <html>,
+   managed by settings.js. Rules are written once, no duplication.
    ============================================================================= */
 
-/* Light mode defaults */
-:root {
-  --src-bg: hsl(0, 0%, 100%);
-  --src-surface: hsl(0, 0%, 100%);
-  --src-surface-alt: hsl(0, 0%, 96%);
-  --src-text: hsl(0, 0%, 21%);
-  --src-text-muted: hsl(0, 0%, 48%);
-  --src-border: hsl(0, 0%, 86%);
-  --src-navbar-bg: hsl(0, 0%, 96%);
-  --src-navbar-item: hsl(0, 0%, 21%);
-  --src-card-bg: hsl(0, 0%, 100%);
-  --src-card-border: hsl(0, 0%, 86%);
-  --src-comment-bg: hsl(0, 0%, 96%);
-  --src-comment-text: hsl(0, 0%, 29%);
-  --src-tabs-border: hsl(0, 0%, 86%);
+html.src-dark-active body,
+html.src-dark-active .has-background-light {
+  background-color: hsl(0, 0%, 14%) !important;
+  color: hsl(0, 0%, 96%);
 }
 
-/* Dark mode: system preference (unless forced light) */
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) {
-    --src-bg: hsl(0, 0%, 14%);
-    --src-surface: hsl(0, 0%, 18%);
-    --src-surface-alt: hsl(0, 0%, 21%);
-    --src-text: hsl(0, 0%, 96%);
-    --src-text-muted: hsl(0, 0%, 70%);
-    --src-border: hsl(0, 0%, 30%);
-    --src-navbar-bg: hsl(0, 0%, 18%);
-    --src-navbar-item: hsl(0, 0%, 96%);
-    --src-card-bg: hsl(0, 0%, 18%);
-    --src-card-border: hsl(0, 0%, 30%);
-    --src-comment-bg: hsl(0, 0%, 21%);
-    --src-comment-text: hsl(0, 0%, 80%);
-    --src-tabs-border: hsl(0, 0%, 30%);
-  }
+html.src-dark-active .navbar.is-light,
+html.src-dark-active .navbar.is-fixed-top {
+  background-color: hsl(0, 0%, 18%) !important;
 }
 
-/* Dark mode: forced */
-html[data-theme="dark"] {
-  --src-bg: hsl(0, 0%, 14%);
-  --src-surface: hsl(0, 0%, 18%);
-  --src-surface-alt: hsl(0, 0%, 21%);
-  --src-text: hsl(0, 0%, 96%);
-  --src-text-muted: hsl(0, 0%, 70%);
-  --src-border: hsl(0, 0%, 30%);
-  --src-navbar-bg: hsl(0, 0%, 18%);
-  --src-navbar-item: hsl(0, 0%, 96%);
-  --src-card-bg: hsl(0, 0%, 18%);
-  --src-card-border: hsl(0, 0%, 30%);
-  --src-comment-bg: hsl(0, 0%, 21%);
-  --src-comment-text: hsl(0, 0%, 80%);
-  --src-tabs-border: hsl(0, 0%, 30%);
+html.src-dark-active .navbar.is-light .navbar-brand > .navbar-item,
+html.src-dark-active .navbar.is-light .navbar-brand .navbar-link,
+html.src-dark-active .navbar-item,
+html.src-dark-active .navbar-link {
+  color: hsl(0, 0%, 96%) !important;
 }
 
-/* Apply dark mode variables */
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) body,
-  html:not([data-theme="light"]) .has-background-light {
-    background-color: var(--src-bg) !important;
-    color: var(--src-text);
-  }
-
-  html:not([data-theme="light"]) .navbar.is-light,
-  html:not([data-theme="light"]) .navbar.is-fixed-top {
-    background-color: var(--src-navbar-bg) !important;
-  }
-
-  html:not([data-theme="light"]) .navbar.is-light .navbar-brand > .navbar-item,
-  html:not([data-theme="light"]) .navbar.is-light .navbar-brand .navbar-link,
-  html:not([data-theme="light"]) .navbar-item,
-  html:not([data-theme="light"]) .navbar-link {
-    color: var(--src-navbar-item) !important;
-  }
-
-  html:not([data-theme="light"]) .navbar.is-light .navbar-dropdown {
-    background-color: var(--src-surface) !important;
-    border-top-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .card {
-    background-color: var(--src-card-bg) !important;
-    color: var(--src-text) !important;
-    border-color: var(--src-card-border);
-  }
-
-  html:not([data-theme="light"]) .card-header {
-    box-shadow: 0 2px 0 var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .card-header-title,
-  html:not([data-theme="light"]) .card-content,
-  html:not([data-theme="light"]) .title,
-  html:not([data-theme="light"]) .subtitle,
-  html:not([data-theme="light"]) .heading {
-    color: var(--src-text) !important;
-  }
-
-  html:not([data-theme="light"]) .tabs ul {
-    border-bottom-color: var(--src-tabs-border) !important;
-  }
-
-  html:not([data-theme="light"]) .tabs a {
-    color: var(--src-text-muted) !important;
-    border-bottom-color: var(--src-tabs-border) !important;
-  }
-
-  html:not([data-theme="light"]) .tabs li.is-active a {
-    color: hsl(229, 53%, 60%) !important;
-    border-bottom-color: hsl(229, 53%, 60%) !important;
-  }
-
-  html:not([data-theme="light"]) .table {
-    background-color: var(--src-surface) !important;
-    color: var(--src-text) !important;
-  }
-
-  html:not([data-theme="light"]) .table th,
-  html:not([data-theme="light"]) .table td {
-    border-color: var(--src-border) !important;
-    color: var(--src-text) !important;
-  }
-
-  html:not([data-theme="light"]) .src-comment {
-    background-color: var(--src-comment-bg) !important;
-    color: var(--src-comment-text) !important;
-  }
-
-  html:not([data-theme="light"]) .src-raw {
-    background-color: var(--src-comment-bg) !important;
-    color: var(--src-comment-text) !important;
-  }
-
-  html:not([data-theme="light"]) .button.is-light {
-    background-color: var(--src-surface-alt) !important;
-    color: var(--src-text) !important;
-    border-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .button.is-small {
-    background-color: var(--src-surface-alt) !important;
-    color: var(--src-text) !important;
-    border-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .modal-card {
-    background-color: var(--src-surface) !important;
-  }
-
-  html:not([data-theme="light"]) .modal-card-head {
-    background-color: var(--src-surface-alt) !important;
-    border-bottom-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .modal-card-title {
-    color: var(--src-text) !important;
-  }
-
-  html:not([data-theme="light"]) .modal-card-body {
-    background-color: var(--src-surface) !important;
-    color: var(--src-text) !important;
-  }
-
-  html:not([data-theme="light"]) .modal-card-foot {
-    background-color: var(--src-surface-alt) !important;
-    border-top-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .select select {
-    background-color: var(--src-surface-alt) !important;
-    color: var(--src-text) !important;
-    border-color: var(--src-border) !important;
-  }
-
-  html:not([data-theme="light"]) .select:not(.is-multiple):not(.is-loading)::after {
-    border-color: var(--src-text-muted) !important;
-  }
-
-  html:not([data-theme="light"]) .label {
-    color: var(--src-text) !important;
-  }
+html.src-dark-active .navbar.is-light .navbar-dropdown {
+  background-color: hsl(0, 0%, 18%) !important;
+  border-top-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] body,
-html[data-theme="dark"] .has-background-light {
-  background-color: var(--src-bg) !important;
-  color: var(--src-text);
+html.src-dark-active .card {
+  background-color: hsl(0, 0%, 18%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 30%);
 }
 
-html[data-theme="dark"] .navbar.is-light,
-html[data-theme="dark"] .navbar.is-fixed-top {
-  background-color: var(--src-navbar-bg) !important;
+html.src-dark-active .card-header {
+  box-shadow: 0 2px 0 hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .navbar.is-light .navbar-brand > .navbar-item,
-html[data-theme="dark"] .navbar.is-light .navbar-brand .navbar-link,
-html[data-theme="dark"] .navbar-item,
-html[data-theme="dark"] .navbar-link {
-  color: var(--src-navbar-item) !important;
+html.src-dark-active .card-header-title,
+html.src-dark-active .card-content,
+html.src-dark-active .title,
+html.src-dark-active .subtitle,
+html.src-dark-active .heading {
+  color: hsl(0, 0%, 96%) !important;
 }
 
-html[data-theme="dark"] .navbar.is-light .navbar-dropdown {
-  background-color: var(--src-surface) !important;
-  border-top-color: var(--src-border) !important;
+html.src-dark-active .tabs ul {
+  border-bottom-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .card {
-  background-color: var(--src-card-bg) !important;
-  color: var(--src-text) !important;
-  border-color: var(--src-card-border);
+html.src-dark-active .tabs a {
+  color: hsl(0, 0%, 70%) !important;
+  border-bottom-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .card-header {
-  box-shadow: 0 2px 0 var(--src-border) !important;
-}
-
-html[data-theme="dark"] .card-header-title,
-html[data-theme="dark"] .card-content,
-html[data-theme="dark"] .title,
-html[data-theme="dark"] .subtitle,
-html[data-theme="dark"] .heading {
-  color: var(--src-text) !important;
-}
-
-html[data-theme="dark"] .tabs ul {
-  border-bottom-color: var(--src-tabs-border) !important;
-}
-
-html[data-theme="dark"] .tabs a {
-  color: var(--src-text-muted) !important;
-  border-bottom-color: var(--src-tabs-border) !important;
-}
-
-html[data-theme="dark"] .tabs li.is-active a {
+html.src-dark-active .tabs li.is-active a {
   color: hsl(229, 53%, 60%) !important;
   border-bottom-color: hsl(229, 53%, 60%) !important;
 }
 
-html[data-theme="dark"] .table {
-  background-color: var(--src-surface) !important;
-  color: var(--src-text) !important;
+html.src-dark-active .table {
+  background-color: hsl(0, 0%, 18%) !important;
+  color: hsl(0, 0%, 96%) !important;
 }
 
-html[data-theme="dark"] .table th,
-html[data-theme="dark"] .table td {
-  border-color: var(--src-border) !important;
-  color: var(--src-text) !important;
+html.src-dark-active .table th,
+html.src-dark-active .table td {
+  border-color: hsl(0, 0%, 30%) !important;
+  color: hsl(0, 0%, 96%) !important;
 }
 
-html[data-theme="dark"] .src-comment {
-  background-color: var(--src-comment-bg) !important;
-  color: var(--src-comment-text) !important;
+html.src-dark-active .src-comment {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 80%) !important;
 }
 
-html[data-theme="dark"] .src-raw {
-  background-color: var(--src-comment-bg) !important;
-  color: var(--src-comment-text) !important;
+html.src-dark-active .src-raw {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 80%) !important;
 }
 
-html[data-theme="dark"] .button.is-light {
-  background-color: var(--src-surface-alt) !important;
-  color: var(--src-text) !important;
-  border-color: var(--src-border) !important;
+html.src-dark-active .button.is-light,
+html.src-dark-active .button.is-small {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .button.is-small {
-  background-color: var(--src-surface-alt) !important;
-  color: var(--src-text) !important;
-  border-color: var(--src-border) !important;
+html.src-dark-active .modal-card {
+  background-color: hsl(0, 0%, 18%) !important;
 }
 
-html[data-theme="dark"] .modal-card {
-  background-color: var(--src-surface) !important;
+html.src-dark-active .modal-card-head {
+  background-color: hsl(0, 0%, 21%) !important;
+  border-bottom-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .modal-card-head {
-  background-color: var(--src-surface-alt) !important;
-  border-bottom-color: var(--src-border) !important;
+html.src-dark-active .modal-card-title {
+  color: hsl(0, 0%, 96%) !important;
 }
 
-html[data-theme="dark"] .modal-card-title {
-  color: var(--src-text) !important;
+html.src-dark-active .modal-card-body {
+  background-color: hsl(0, 0%, 18%) !important;
+  color: hsl(0, 0%, 96%) !important;
 }
 
-html[data-theme="dark"] .modal-card-body {
-  background-color: var(--src-surface) !important;
-  color: var(--src-text) !important;
+html.src-dark-active .modal-card-foot {
+  background-color: hsl(0, 0%, 21%) !important;
+  border-top-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .modal-card-foot {
-  background-color: var(--src-surface-alt) !important;
-  border-top-color: var(--src-border) !important;
+html.src-dark-active .select select {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 30%) !important;
 }
 
-html[data-theme="dark"] .select select {
-  background-color: var(--src-surface-alt) !important;
-  color: var(--src-text) !important;
-  border-color: var(--src-border) !important;
+html.src-dark-active .select:not(.is-multiple):not(.is-loading)::after {
+  border-color: hsl(0, 0%, 70%) !important;
 }
 
-html[data-theme="dark"] .select:not(.is-multiple):not(.is-loading)::after {
-  border-color: var(--src-text-muted) !important;
-}
-
-html[data-theme="dark"] .label {
-  color: var(--src-text) !important;
+html.src-dark-active .label {
+  color: hsl(0, 0%, 96%) !important;
 }
