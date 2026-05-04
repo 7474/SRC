@@ -13,7 +13,7 @@ description: |
   Each phase iterates on schedule (daily) or on demand, maximizing the amount of tests added per run.
 
   NOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting
-  projects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids
+  projects (SRCSharpForm, SRCTestForm targeting net10.0-windows). Running on Windows avoids
   the need for EnableWindowsTargeting workarounds and allows full solution build and test.
 
 on:
@@ -42,12 +42,12 @@ steps:
   - name: Setup .NET
     uses: actions/setup-dotnet@v5
     with:
-      dotnet-version: 8.0.x
+      dotnet-version: 10.0.x
 
   # -p:EnableWindowsTargeting=true は Linux ランナーで SRCSharpForm / SRCTestForm など
-  # net8.0-windows ターゲットのプロジェクトをビルドするために必要。
+  # net10.0-windows ターゲットのプロジェクトをビルドするために必要。
   # windows-latest ランナーでは不要だが、ランナー変更時の互換性のために明示的に指定する。
-  # This flag is required when building net8.0-windows targeting projects on Linux runners.
+  # This flag is required when building net10.0-windows targeting projects on Linux runners.
   # It is redundant on windows-latest but kept explicitly for cross-platform compatibility.
   - name: Restore and Build
     run: |
