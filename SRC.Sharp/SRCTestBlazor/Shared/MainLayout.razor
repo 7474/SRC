@@ -3,13 +3,6 @@
 <nav class="navbar is-fixed-top is-light" style="z-index: 1000;" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <NavLink class="navbar-item" href="#">SRC#DataViewer</NavLink>
-        <div class="navbar-item">
-            <button class="button is-light is-small" @onclick="OnClickSettings" title="表示設定">
-                <span class="icon">
-                    <i class="fas fa-cog"></i>
-                </span>
-            </button>
-        </div>
         <div class="navbar-item has-dropdown @(IsTitlesActive ? "is-active" : "") is-hoverable">
             <a class="navbar-link" @onclick="OnClickTitles" @onclick:stopPropagation>
                 <span class="icon">
@@ -27,6 +20,13 @@
             <div class="navbar-dropdown">
                 <TitleNavMenu />
             </div>
+        </div>
+        <div class="navbar-item">
+            <button class="button is-light is-small" @onclick="OnClickSettings" title="表示設定">
+                <span class="icon">
+                    <i class="fas fa-cog"></i>
+                </span>
+            </button>
         </div>
     </div>
 </nav>
