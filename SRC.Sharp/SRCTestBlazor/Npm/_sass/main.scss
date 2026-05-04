@@ -11,6 +11,15 @@
     --bulma-family-code: "IPA Gothic", monospace;
 }
 
+// data-theme 属性によるテーマ切り替え時にスクロールバーなどのネイティブUI要素をテーマに合わせる
+[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+[data-theme="light"] {
+    color-scheme: light;
+}
+
 // ユニット・パイロットのデータ
 .card.src-data {
     .card-content {
