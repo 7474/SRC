@@ -4,18 +4,16 @@
     {
         <h1 class="title">@DataTitle</h1>
     }
-    @* XXX Bulma の sticky サポートはないっぽい *@
-    @* z-index: card より前に *@
-    <div class="has-background-light" style="position: sticky; top: 52px; z-index: 999;">
+    <div class="src-data-nav-sticky">
         <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" DataDisplayOrder="@SettingsService.Settings.DataDisplayOrder" />
     </div>
-    <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
+    <div class="@(currentKind != SrcDataKind.Unit ? "is-hidden" : "")">
         <UnitDataListView SRC="@SRC" />
     </div>
-    <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
+    <div class="@(currentKind != SrcDataKind.Pilot ? "is-hidden" : "")">
         <PilotDataListView SRC="@SRC" />
     </div>
-    <div style="@(currentKind != SrcDataKind.Item ? "display: none; ": "")">
+    <div class="@(currentKind != SrcDataKind.Item ? "is-hidden" : "")">
         <ItemDataListView SRC="@SRC" />
     </div>
 </section>

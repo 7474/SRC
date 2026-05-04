@@ -88,7 +88,7 @@
             @if (SettingsService.Settings.ShowRawButton)
             {
                 <button class="button is-small" @onclick="OnClickRaw">Raw</button>
-                <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
+                <div class="src-raw @(ExpandRaw ? "" : "is-hidden")">@Data.Raw</div>
             }
         </div>
     </div>

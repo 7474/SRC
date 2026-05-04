@@ -21685,6 +21685,21 @@ has-background-danger.is-hoverable:active {
   -webkit-overflow-scrolling: touch;
 }
 
+.src-navbar-top {
+  z-index: 1000;
+}
+
+.src-sort-control {
+  padding: 0.5rem 0.75rem;
+}
+
+.src-data-nav-sticky {
+  position: sticky;
+  top: 52px;
+  z-index: 999;
+  background-color: var(--bulma-scheme-main-bis);
+}
+
 #blazor-error-ui {
   background: lightyellow;
   bottom: 0;

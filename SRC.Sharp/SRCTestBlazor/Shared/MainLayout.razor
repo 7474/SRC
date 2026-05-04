@@ -1,6 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@* XXX HACK https://github.com/jgthms/bulma/issues/1655 *@
-<nav class="navbar is-fixed-top is-light" style="z-index: 1000;" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top src-navbar-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <NavLink class="navbar-item" href="#">SRC#DataViewer</NavLink>
         <a role="button"
@@ -12,7 +11,7 @@
             <span aria-hidden="true"></span>
         </a>
         <div class="navbar-item">
-            <button class="button is-light is-small" @onclick="OnClickSettings" title="表示設定">
+            <button class="button is-small" @onclick="OnClickSettings" title="表示設定">
                 <span class="icon">
                     <i class="fas fa-cog"></i>
                 </span>
