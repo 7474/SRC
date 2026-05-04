@@ -10511,3 +10511,75 @@ html.src-dark-active .select:not(.is-multiple):not(.is-loading)::after {
 html.src-dark-active .label {
   color: hsl(0, 0%, 96%) !important;
 }
+
+/* navbar-brand内のドロップダウン（モバイル対応） */
+.navbar-brand .navbar-item.has-dropdown.is-active .navbar-dropdown {
+  display: block;
+}
+
+/* ダークモード追加対象：メッセージ、入力フィールド、サブナビバー等 */
+html.src-dark-active .message {
+  background-color: hsl(0, 0%, 18%) !important;
+}
+
+html.src-dark-active .message-header {
+  background-color: hsl(0, 0%, 25%) !important;
+  color: hsl(0, 0%, 96%) !important;
+}
+
+html.src-dark-active .message-body {
+  background-color: hsl(0, 0%, 18%) !important;
+  border-color: hsl(0, 0%, 30%) !important;
+  color: hsl(0, 0%, 96%) !important;
+}
+
+html.src-dark-active .input {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 30%) !important;
+}
+
+html.src-dark-active .input::placeholder {
+  color: hsl(0, 0%, 60%) !important;
+}
+
+html.src-dark-active .src-sub-nuvbar.navbar {
+  background-color: hsl(0, 0%, 18%) !important;
+}
+
+html.src-dark-active section {
+  background-color: hsl(0, 0%, 14%);
+}
+
+html.src-dark-active a:not(.navbar-item):not(.button):not(.navbar-link) {
+  color: hsl(229, 53%, 70%);
+}
+
+html.src-dark-active code {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 86%) !important;
+}
+
+/* navbar-brand内のドロップダウンはモバイルではデフォルト非表示（is-activeで表示） */
+@media screen and (max-width: 1023px) {
+  .navbar-brand .navbar-item.has-dropdown .navbar-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1001;
+    min-width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 8px 8px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  }
+  .navbar-brand .navbar-item.has-dropdown.is-active .navbar-dropdown {
+    display: block;
+  }
+}
+
+html.src-dark-active .navbar-brand .navbar-item.has-dropdown .navbar-dropdown {
+  background-color: hsl(0, 0%, 18%);
+  border-color: hsl(0, 0%, 30%);
+}
