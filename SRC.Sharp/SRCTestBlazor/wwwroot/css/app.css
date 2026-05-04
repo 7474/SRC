@@ -21686,7 +21686,7 @@ has-background-danger.is-hoverable:active {
 }
 
 .src-navbar-top {
-  z-index: 1000;
+  z-index: calc(var(--bulma-navbar-fixed-z) + 1) !important;
 }
 
 .src-sort-control {
@@ -21694,9 +21694,9 @@ has-background-danger.is-hoverable:active {
 }
 
 .src-data-nav-sticky {
+  z-index: 30;
   position: sticky;
   top: 52px;
-  z-index: 999;
   background-color: var(--bulma-scheme-main-bis);
 }
 
@@ -21709,7 +21709,7 @@ has-background-danger.is-hoverable:active {
   padding: 0.6rem 1.25rem 0.7rem 1.25rem;
   position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: calc(var(--bulma-modal-z) + 1);
 }
 
 #blazor-error-ui .dismiss {

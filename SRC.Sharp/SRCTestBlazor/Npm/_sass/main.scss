@@ -108,7 +108,7 @@
 
 // メインナビゲーションバー（Bulma の is-fixed-top より前面に出す）
 .src-navbar-top {
-    z-index: 1000;
+    z-index: calc(var(--bulma-navbar-fixed-z) + 1) !important;
 }
 
 // SortControl のパディング
@@ -116,15 +116,17 @@
     padding: 0.5rem 0.75rem;
 }
 
-// TitleView のタブナビ（navbar の下に sticky）
+// TitleView のタブナビ（ページコンテンツより上に sticky）
 .src-data-nav-sticky {
+    // XXX 変数がスコープ外なのでハードコード
+    //z-index: var(--bulma-navbar-fixed-z);
+    z-index: 30;
     position: sticky;
     top: 52px;
-    z-index: 999;
     background-color: var(--bulma-scheme-main-bis);
 }
 
-// For Blazor
+// For Blazor（modal より前面に出す）
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -134,7 +136,7 @@
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
     position: fixed;
     width: 100%;
-    z-index: 1000;
+    z-index: calc(var(--bulma-modal-z) + 1);
 }
 
 #blazor-error-ui .dismiss {
