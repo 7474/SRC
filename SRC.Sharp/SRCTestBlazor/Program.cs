@@ -25,6 +25,7 @@ namespace SRCTestBlazor
                     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
                 })
                 .AddSingleton<SrcDataContainer>()
+                .AddSingleton<DataViewerSettingsService>()
                 .AddSingleton<Random>(sp =>
                 {
                     var random = new Random();

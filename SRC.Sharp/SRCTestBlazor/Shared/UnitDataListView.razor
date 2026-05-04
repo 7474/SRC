@@ -2,7 +2,7 @@
 @using System.Linq
 
 <section>
-    <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
+    <nav class="src-sub-nuvbar navbar is-fixed-top">
         @* XXX 常に横幅が入っているとは限らない模様 *@
         <div class="navbar-brand">
             @foreach (var ud in sortedItems)
@@ -15,7 +15,7 @@
         </div>
         <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" OnFilterChanged="OnFilterChanged" />
     </nav>
-    @if (!string.IsNullOrEmpty(SRC.UDList.DataComment))
+    @if (SettingsService.Settings.ShowComment && !string.IsNullOrEmpty(SRC.UDList.DataComment))
     {
         <div class="content">
             <div class="src-comment">@SRC.UDList.DataComment</div>
@@ -30,6 +30,8 @@
 @code {
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
     [Parameter]
     public SRC SRC { get; set; }
 

@@ -1,14 +1,15 @@
 ﻿@charset "utf-8";
 
+@use "../node_modules/bulma/bulma";
+
 @font-face {
     font-family: "IPA Gothic";
     src: url('../fonts/ipag.ttf');
 }
 
-@import "../node_modules/bulma/sass/utilities/initial-variables";
-$code-family: "IPA Gothic", monospace;
-
-@import "../node_modules/bulma/bulma";
+:root {
+    --bulma-family-code: "IPA Gothic", monospace;
+}
 
 // ユニット・パイロットのデータ
 .card.src-data {
@@ -17,15 +18,10 @@ $code-family: "IPA Gothic", monospace;
         // $desktop だとまだ余裕がある。ブレークポイントは特にBulmaとは関係ない感覚値。
         @media screen and (max-width: 640px) {
             // 左右余白をカットする
-            padding: $card-content-padding 0;
-            //.media {
-            //    padding: 0 $card-content-padding;
-            //}
+            padding: var(--bulma-card-content-padding) 0;
         }
 
-        @media screen and (max-width: $desktop) {
-            // $table-cell-padding: 0.5em 0.75em !default
-            // padding: $table-cell-padding
+        @media screen and (max-width: 1024px) {
             table.table {
                 th, td {
                     padding: 0.5em 0.25em;
@@ -85,10 +81,10 @@ $code-family: "IPA Gothic", monospace;
 }
 
 .src-comment {
-    font-family: $code-family;
-    background-color: $pre-background;
-    color: $pre;
-    font-size: $pre-font-size;
+    font-family: var(--bulma-family-code);
+    background-color: var(--bulma-pre-background);
+    color: var(--bulma-pre);
+    font-size: var(--bulma-pre-font-size);
     margin: 0;
     padding: 0.75rem 0.5rem;
     white-space: pre-wrap;
@@ -97,10 +93,10 @@ $code-family: "IPA Gothic", monospace;
 }
 
 .src-raw {
-    font-family: $code-family;
-    background-color: $pre-background;
-    color: $pre;
-    font-size: $pre-font-size;
+    font-family: var(--bulma-family-code);
+    background-color: var(--bulma-pre-background);
+    color: var(--bulma-pre);
+    font-size: var(--bulma-pre-font-size);
     margin: 0;
     padding: 0.75rem 0.5rem;
     white-space: pre;
@@ -110,7 +106,27 @@ $code-family: "IPA Gothic", monospace;
     -webkit-overflow-scrolling: touch;
 }
 
-// For Blazor
+// メインナビゲーションバー（Bulma の is-fixed-top より前面に出す）
+.src-navbar-top {
+    z-index: calc(var(--bulma-navbar-fixed-z) + 1) !important;
+}
+
+// SortControl のパディング
+.src-sort-control {
+    padding: 0.5rem 0.75rem;
+}
+
+// TitleView のタブナビ（ページコンテンツより上に sticky）
+.src-data-nav-sticky {
+    // XXX 変数がスコープ外なのでハードコード
+    //z-index: var(--bulma-navbar-fixed-z);
+    z-index: 30;
+    position: sticky;
+    top: 52px;
+    background-color: var(--bulma-scheme-main-bis);
+}
+
+// For Blazor（modal より前面に出す）
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

@@ -2,7 +2,7 @@
 @using System.Linq
 
 <section>
-    <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
+    <nav class="src-sub-nuvbar navbar is-fixed-top">
         <div class="navbar-brand">
             @foreach (var pd in sortedItems)
             {
@@ -14,7 +14,7 @@
 		</div>
 		<SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" OnFilterChanged="OnFilterChanged" />
     </nav>
-    @if (!string.IsNullOrEmpty(SRC.PDList.DataComment))
+    @if (SettingsService.Settings.ShowComment && !string.IsNullOrEmpty(SRC.PDList.DataComment))
     {
         <div class="content">
             <div class="src-comment">@SRC.PDList.DataComment</div>
@@ -29,6 +29,8 @@
 @code {
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
     [Parameter]
     public SRC SRC { get; set; }
 
