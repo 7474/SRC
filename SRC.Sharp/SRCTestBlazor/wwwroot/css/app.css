@@ -21608,6 +21608,14 @@ has-background-danger.is-hoverable:active {
   --bulma-family-code: "IPA Gothic", monospace;
 }
 
+[data-theme=dark] {
+  color-scheme: dark;
+}
+
+[data-theme=light] {
+  color-scheme: light;
+}
+
 @media screen and (max-width: 640px) {
   .card.src-data .card-content {
     padding: var(--bulma-card-content-padding) 0;
