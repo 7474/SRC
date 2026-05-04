@@ -14,7 +14,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "autoprefixer": "^10.4.7",
-    "bulma": "^0.9.4",
+    "bulma": "^1.0.4",
     "sass": "^1.83.2",
     "npm-run-all": "*",
     "postcss": "^8.5.13",

@@ -1,22 +1,4 @@
 (function () {
-    function applyDarkModeClass(html) {
-        var theme = html.getAttribute('data-theme');
-        var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var isDark = theme === 'dark' || (theme !== 'light' && systemDark);
-        if (isDark) {
-            html.classList.add('src-dark-active');
-        } else {
-            html.classList.remove('src-dark-active');
-        }
-    }
-
-    // Listen for system preference changes
-    if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-            applyDarkModeClass(document.documentElement);
-        });
-    }
-
     window.dataViewerSettings = {
         applyTheme: function (theme) {
             var html = document.documentElement;
@@ -27,7 +9,6 @@
             } else {
                 html.removeAttribute('data-theme');
             }
-            applyDarkModeClass(html);
         }
     };
 
@@ -43,11 +24,8 @@
             } else if (themeMode === 1) { // Light
                 html.setAttribute('data-theme', 'light');
             }
-            applyDarkModeClass(html);
-        } else {
-            applyDarkModeClass(document.documentElement);
         }
     } catch (e) {
-        applyDarkModeClass(document.documentElement);
+        // ignore
     }
 }());
