@@ -4370,7 +4370,7 @@ button.dropdown-item.is-active {
   justify-content: center;
   overflow: hidden;
   position: fixed;
-  z-index: 40;
+  z-index: 1000;
 }
 .modal.is-active {
   display: flex;
