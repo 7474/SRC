@@ -1,5 +1,6 @@
 ﻿@using SRCTestBlazor.Models
 @using System.Linq
+@implements IDisposable
 
 <section>
     <nav class="src-sub-nuvbar navbar is-fixed-top">
@@ -90,6 +91,10 @@
     }
 
     protected override bool ShouldRender() => shouldRender;
+    protected override void OnInitialized()
+    {
+        SettingsService.OnChange += OnSettingsChanged;
+    }
     protected override void OnParametersSet()
     {
         shouldRender = lastRaw != SRC.UDList.Raw || sortedItems.Count == 0;
@@ -102,6 +107,17 @@
     protected override void OnAfterRender(bool firstRender)
     {
         shouldRender = false;
+    }
+
+    public void Dispose()
+    {
+        SettingsService.OnChange -= OnSettingsChanged;
+    }
+
+    private void OnSettingsChanged()
+    {
+        shouldRender = true;
+        InvokeAsync(StateHasChanged);
     }
 
     private async Task OnClickAnchor(string targetId)
