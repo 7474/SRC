@@ -10579,7 +10579,114 @@ html.src-dark-active code {
   }
 }
 
+/* モバイルのドロップダウン背景をダークテーマで上書き */
+@media screen and (max-width: 1023px) {
+  html.src-dark-active .navbar-brand .navbar-item.has-dropdown .navbar-dropdown {
+    background-color: hsl(0, 0%, 18%) !important;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.4), 0 0 0 1px hsl(0, 0%, 30%);
+  }
+}
+
 html.src-dark-active .navbar-brand .navbar-item.has-dropdown .navbar-dropdown {
   background-color: hsl(0, 0%, 18%);
   border-color: hsl(0, 0%, 30%);
+}
+
+/* ビューポート外背景（オーバースクロール領域など） */
+html.src-dark-active {
+  background-color: hsl(0, 0%, 14%);
+}
+
+/* navbar-item / navbar-link ホバー・フォーカス */
+html.src-dark-active .navbar-item:hover,
+html.src-dark-active .navbar-item:focus,
+html.src-dark-active .navbar-link:hover,
+html.src-dark-active .navbar-link:focus {
+  background-color: hsl(0, 0%, 22%) !important;
+  color: hsl(0, 0%, 100%) !important;
+}
+
+/* デスクトップのホバードロップダウン */
+html.src-dark-active .navbar-item.has-dropdown:hover .navbar-dropdown,
+html.src-dark-active .navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown {
+  background-color: hsl(0, 0%, 18%) !important;
+  border-top-color: hsl(0, 0%, 30%) !important;
+}
+
+/* .navbar-dropdown 内 navbar-item ホバー */
+html.src-dark-active .navbar-dropdown .navbar-item:hover {
+  background-color: hsl(0, 0%, 25%) !important;
+  color: hsl(0, 0%, 100%) !important;
+}
+
+/* card-footer */
+html.src-dark-active .card-footer {
+  border-top-color: hsl(0, 0%, 30%) !important;
+  background-color: hsl(0, 0%, 18%) !important;
+}
+
+html.src-dark-active .card-footer-item {
+  color: hsl(0, 0%, 96%) !important;
+  border-right-color: hsl(0, 0%, 30%) !important;
+}
+
+/* テーブル行ホバー */
+html.src-dark-active .table tbody tr:hover {
+  background-color: hsl(0, 0%, 23%) !important;
+}
+
+html.src-dark-active .table tbody tr:hover td,
+html.src-dark-active .table tbody tr:hover th {
+  color: hsl(0, 0%, 96%) !important;
+}
+
+/* ボタン（is-light / is-small 以外） */
+html.src-dark-active .button:not(.is-light):not(.is-small):not(.is-success):not(.is-primary):not(.is-danger):not(.is-warning):not(.is-info) {
+  background-color: hsl(0, 0%, 25%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 35%) !important;
+}
+
+html.src-dark-active .button:hover,
+html.src-dark-active .button:focus {
+  border-color: hsl(0, 0%, 50%) !important;
+}
+
+/* TitleNavMenu の検索 input（.input クラスなし） */
+html.src-dark-active input[type="search"],
+html.src-dark-active input[type="text"]:not(.input) {
+  background-color: hsl(0, 0%, 21%) !important;
+  color: hsl(0, 0%, 96%) !important;
+  border-color: hsl(0, 0%, 30%) !important;
+}
+
+html.src-dark-active input[type="search"]::placeholder {
+  color: hsl(0, 0%, 60%) !important;
+}
+
+/* tag is-white（TitleNavMenu で使用） */
+html.src-dark-active .tag.is-white {
+  background-color: hsl(0, 0%, 25%) !important;
+  color: hsl(0, 0%, 80%) !important;
+}
+
+/* checkbox ラベルの文字色 */
+html.src-dark-active label.checkbox,
+html.src-dark-active label.radio {
+  color: hsl(0, 0%, 96%) !important;
+}
+
+/* navbar-divider */
+html.src-dark-active .navbar-divider {
+  background-color: hsl(0, 0%, 30%) !important;
+}
+
+/* src-titles-container のスクロールバー背景 */
+html.src-dark-active .src-titles-container {
+  background-color: hsl(0, 0%, 18%);
+}
+
+/* modal-background オーバーレイ */
+html.src-dark-active .modal-background {
+  background-color: rgba(0, 0, 0, 0.75) !important;
 }
