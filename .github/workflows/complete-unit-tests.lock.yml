@@ -33,7 +33,7 @@
 # Each phase iterates on schedule (daily) or on demand, maximizing the amount of tests added per run.
 # 
 # NOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting
-# projects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids
+# projects (SRCSharpForm, SRCTestForm targeting net10.0-windows). Running on Windows avoids
 # the need for EnableWindowsTargeting workarounds and allows full solution build and test.
 #
 # gh-aw-metadata: {"schema_version":"v3","frontmatter_hash":"76754ddc94a337029e921cd69c3c09d6ce1041b1feefa21f6261ebecc00f0bf5","compiler_version":"v0.64.2","strict":true,"agent_id":"copilot"}
@@ -300,7 +300,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Restore and Build
         run: |
           dotnet restore SRC.Sharp/SRC.Sharp.sln -p:EnableWindowsTargeting=true
@@ -991,7 +991,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           WORKFLOW_NAME: "カバレッジ補強エージェント / Coverage Reinforcement Agent"
-          WORKFLOW_DESCRIPTION: "SRC# 移植プロジェクトのカバレッジ補強を自動実行するワークフロー。\nフェーズ1: SRC.Sharp/SRCCore/CmdDatas/Commands/ の残コマンド (ABGMCmd, AIfCmd, ATalkCmd, FontCmd) を完了する。\nフェーズ2: SRC.Sharp/SRCCore/Commands/ (戦闘・ゲーム操作ロジック) のテストを拡充する。\nフェーズ3: SRC.Sharp/SRCCore/Intermissions/ のテストをゼロから追加する。\n各フェーズをスケジュール実行（日次）や手動実行で反復し、1回の実行でできるだけ多くのテストを追加してカバレッジを向上させる。\n\nThis workflow incrementally raises test coverage for the SRC# migration project.\nPhase 1: Finish remaining CmdDatas commands (ABGMCmd, AIfCmd, ATalkCmd, FontCmd).\nPhase 2: Expand coverage for Commands/ (battle/game-action logic; ~8700 lines, ~11% covered).\nPhase 3: Add tests for Intermissions/ (2200 lines, currently 0% covered).\nEach phase iterates on schedule (daily) or on demand, maximizing the amount of tests added per run.\n\nNOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting\nprojects (SRCSharpForm, SRCTestForm targeting net8.0-windows). Running on Windows avoids\nthe need for EnableWindowsTargeting workarounds and allows full solution build and test."
+          WORKFLOW_DESCRIPTION: "SRC# 移植プロジェクトのカバレッジ補強を自動実行するワークフロー。\nフェーズ1: SRC.Sharp/SRCCore/CmdDatas/Commands/ の残コマンド (ABGMCmd, AIfCmd, ATalkCmd, FontCmd) を完了する。\nフェーズ2: SRC.Sharp/SRCCore/Commands/ (戦闘・ゲーム操作ロジック) のテストを拡充する。\nフェーズ3: SRC.Sharp/SRCCore/Intermissions/ のテストをゼロから追加する。\n各フェーズをスケジュール実行（日次）や手動実行で反復し、1回の実行でできるだけ多くのテストを追加してカバレッジを向上させる。\n\nThis workflow incrementally raises test coverage for the SRC# migration project.\nPhase 1: Finish remaining CmdDatas commands (ABGMCmd, AIfCmd, ATalkCmd, FontCmd).\nPhase 2: Expand coverage for Commands/ (battle/game-action logic; ~8700 lines, ~11% covered).\nPhase 3: Add tests for Intermissions/ (2200 lines, currently 0% covered).\nEach phase iterates on schedule (daily) or on demand, maximizing the amount of tests added per run.\n\nNOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting\nprojects (SRCSharpForm, SRCTestForm targeting net10.0-windows). Running on Windows avoids\nthe need for EnableWindowsTargeting workarounds and allows full solution build and test."
           HAS_PATCH: ${{ needs.agent.outputs.has_patch }}
         with:
           script: |
