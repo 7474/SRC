@@ -23,6 +23,17 @@
                     </div>
                 </div>
                 <div class="field">
+                    <label class="label">データの表示順</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.DataDisplayOrder" @onchange="OnDataDisplayOrderChanged">
+                                <option value="@DataDisplayOrder.UnitFirst">ユニットが先頭</option>
+                                <option value="@DataDisplayOrder.PilotFirst">パイロットが先頭</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
                     <label class="checkbox">
                         <input type="checkbox" checked="@editSettings.ShowComment"
                                @onchange="@(e => editSettings.ShowComment = (bool)e.Value)" />
@@ -42,17 +53,6 @@
                                @onchange="@(e => editSettings.ShowPilotMessage = (bool)e.Value)" />
                         パイロットのメッセージを表示する
                     </label>
-                </div>
-                <div class="field">
-                    <label class="label">データの表示順</label>
-                    <div class="control">
-                        <div class="select">
-                            <select value="@editSettings.DataDisplayOrder" @onchange="OnDataDisplayOrderChanged">
-                                <option value="@DataDisplayOrder.UnitFirst">ユニットが先頭</option>
-                                <option value="@DataDisplayOrder.PilotFirst">パイロットが先頭</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </section>
             <footer class="modal-card-foot">
