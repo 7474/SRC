@@ -3,24 +3,14 @@
 <nav class="navbar is-fixed-top is-light" style="z-index: 1000;" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <NavLink class="navbar-item" href="#">SRC#DataViewer</NavLink>
-        <div class="navbar-item has-dropdown @(IsTitlesActive ? "is-active" : "") is-hoverable">
-            <a class="navbar-link" @onclick="OnClickTitles" @onclick:stopPropagation>
-                <span class="icon">
-                    @if (TitlesBusy)
-                    {
-                        <i class="fas fa-spinner"></i>
-                    }
-                    else
-                    {
-                        <i class="far fa-folder"></i>
-                    }
-                </span>
-                <span>Titles</span>
-            </a>
-            <div class="navbar-dropdown">
-                <TitleNavMenu />
-            </div>
-        </div>
+        <a role="button"
+           aria-label="menu" aria-expanded="false"
+           class="navbar-burger @(IsBurgerActive ? " is-active" : "" )"
+           @onclick="OnClickBurger">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
         <div class="navbar-item">
             <button class="button is-light is-small" @onclick="OnClickSettings" title="表示設定">
                 <span class="icon">
@@ -28,6 +18,28 @@
                 </span>
             </button>
         </div>
+    </div>
+    <div class="navbar-menu  @(IsBurgerActive ? " is-active" : "" )">
+        <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    <span class="icon">
+                        @if (TitlesBusy)
+                        {
+                            <i class="fas fa-spinner"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-folder"></i>
+                        }
+                    </span>
+                    <span>Titles</span>
+                </a>
+                <div class="navbar-dropdown">
+                    <TitleNavMenu />
+                </div>
+            </div>
+        </nav>
     </div>
 </nav>
 
@@ -47,14 +59,14 @@
     private SrcDataContainer DataContainer { get; set; }
     [Inject]
     private DataViewerSettingsService SettingsService { get; set; }
-
-    private bool IsTitlesActive = false;
+        
+    private bool IsBurgerActive = false;
     private bool IsSettingsModalVisible = false;
     private bool TitlesBusy => DataContainer.IndexBusy;
 
-    private void OnClickTitles()
+    private void OnClickBurger()
     {
-        IsTitlesActive = !IsTitlesActive;
+        IsBurgerActive = !IsBurgerActive;
     }
 
     private void OnClickSettings()
@@ -82,8 +94,8 @@
 
     private async void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
-        // ナビゲーションがあったらドロップダウンを閉じる
-        IsTitlesActive = false;
+        // ナビゲーションがあったらハンバーガーを閉じる
+        IsBurgerActive = false;
         // ドロップダウンを閉じるためにフォーカスを外す
         await JsInterop.InvokeVoidAsync("bulma.blur", null);
 
