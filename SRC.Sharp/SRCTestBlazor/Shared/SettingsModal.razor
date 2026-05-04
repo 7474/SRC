@@ -1,0 +1,126 @@
+﻿@using SRCTestBlazor.Models
+
+@if (IsVisible)
+{
+    <div class="modal is-active">
+        <div class="modal-background" @onclick="OnClickClose"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">表示設定</p>
+                <button class="delete" aria-label="close" @onclick="OnClickClose"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">テーマ</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.ThemeMode" @onchange="OnThemeModeChanged">
+                                <option value="@ThemeMode.System">システム設定</option>
+                                <option value="@ThemeMode.Light">ライトモード</option>
+                                <option value="@ThemeMode.Dark">ダークモード</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowComment"
+                               @onchange="@(e => editSettings.ShowComment = (bool)e.Value)" />
+                        コメントを表示する
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowRawButton"
+                               @onchange="@(e => editSettings.ShowRawButton = (bool)e.Value)" />
+                        Rawボタンを表示する
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowPilotMessage"
+                               @onchange="@(e => editSettings.ShowPilotMessage = (bool)e.Value)" />
+                        パイロットのメッセージを表示する
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="label">データの表示順</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.DataDisplayOrder" @onchange="OnDataDisplayOrderChanged">
+                                <option value="@DataDisplayOrder.UnitFirst">ユニットが先頭</option>
+                                <option value="@DataDisplayOrder.PilotFirst">パイロットが先頭</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" @onclick="OnClickSave">保存</button>
+                <button class="button" @onclick="OnClickClose">キャンセル</button>
+            </footer>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private DataViewerSettings editSettings = new();
+
+    protected override void OnParametersSet()
+    {
+        if (IsVisible)
+        {
+            // モーダルを開くときに現在の設定をコピー
+            var current = SettingsService.Settings;
+            editSettings = new DataViewerSettings
+            {
+                ThemeMode = current.ThemeMode,
+                ShowComment = current.ShowComment,
+                ShowRawButton = current.ShowRawButton,
+                ShowPilotMessage = current.ShowPilotMessage,
+                DataDisplayOrder = current.DataDisplayOrder,
+            };
+        }
+    }
+
+    private void OnThemeModeChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<ThemeMode>(e.Value?.ToString(), out var mode))
+        {
+            editSettings.ThemeMode = mode;
+        }
+    }
+
+    private void OnDataDisplayOrderChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<DataDisplayOrder>(e.Value?.ToString(), out var order))
+        {
+            editSettings.DataDisplayOrder = order;
+        }
+    }
+
+    private async Task OnClickSave()
+    {
+        SettingsService.Settings.ThemeMode = editSettings.ThemeMode;
+        SettingsService.Settings.ShowComment = editSettings.ShowComment;
+        SettingsService.Settings.ShowRawButton = editSettings.ShowRawButton;
+        SettingsService.Settings.ShowPilotMessage = editSettings.ShowPilotMessage;
+        SettingsService.Settings.DataDisplayOrder = editSettings.DataDisplayOrder;
+        await SettingsService.SaveAsync();
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task OnClickClose()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

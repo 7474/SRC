@@ -14,7 +14,7 @@
         </div>
         <SortControl Labels="@SortOptions.Select(o => o.Label)" OnChanged="OnSortChanged" OnFilterChanged="OnFilterChanged" />
     </nav>
-    @if (!string.IsNullOrEmpty(SRC.IDList.DataComment))
+    @if (SettingsService.Settings.ShowComment && !string.IsNullOrEmpty(SRC.IDList.DataComment))
     {
         <div class="content">
             <div class="src-comment">@SRC.IDList.DataComment</div>
@@ -29,6 +29,8 @@
 @code {
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
     [Parameter]
     public SRC SRC { get; set; }
 

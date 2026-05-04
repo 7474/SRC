@@ -33,12 +33,24 @@
                 </div>
             </div>
         </nav>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <button class="button is-light" @onclick="OnClickSettings" title="表示設定">
+                    <span class="icon">
+                        <i class="fas fa-cog"></i>
+                    </span>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
     </div>
 </nav>
 
 <main class="container is-max-desktop">
     @Body
 </main>
+
+<SettingsModal IsVisible="@IsSettingsModalVisible" OnClose="OnSettingsModalClose" />
 
 @implements IDisposable
 @code {
@@ -48,8 +60,11 @@
     protected IJSRuntime JsInterop { get; set; }
     [Inject]
     private SrcDataContainer DataContainer { get; set; }
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
 
     private bool IsBurgerActive = false;
+    private bool IsSettingsModalVisible = false;
     private bool TitlesBusy => DataContainer.IndexBusy;
 
     private void OnClickBurger()
@@ -57,10 +72,21 @@
         IsBurgerActive = !IsBurgerActive;
     }
 
-    protected override void OnInitialized()
+    private void OnClickSettings()
+    {
+        IsSettingsModalVisible = true;
+    }
+
+    private void OnSettingsModalClose()
+    {
+        IsSettingsModalVisible = false;
+    }
+
+    protected override async Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
         DataContainer.OnChange += StateHasChanged;
+        await SettingsService.InitializeAsync();
     }
 
     public void Dispose()

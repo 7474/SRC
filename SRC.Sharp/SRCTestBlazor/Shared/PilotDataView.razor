@@ -106,7 +106,7 @@
         {
             <AbilitiyDataListView Abilities="@Data.Abilities"></AbilitiyDataListView>
         }
-        @if (PickupMessage != null)
+        @if (SettingsService.Settings.ShowPilotMessage && PickupMessage != null)
         {
             <div class="media">
                 <div class="media-left">
@@ -123,12 +123,15 @@
             </div>
         }
         <div class="content">
-            @if (!string.IsNullOrEmpty(Data.DataComment))
+            @if (SettingsService.Settings.ShowComment && !string.IsNullOrEmpty(Data.DataComment))
             {
                 <div class="src-comment">@Data.DataComment</div>
             }
-            <button class="button is-small" @onclick="OnClickRaw">Raw</button>
-            <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
+            @if (SettingsService.Settings.ShowRawButton)
+            {
+                <button class="button is-small" @onclick="OnClickRaw">Raw</button>
+                <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
+            }
         </div>
     </div>
     <footer class="card-footer">
@@ -138,6 +141,8 @@
 @code {
     [Inject]
     SrcDataContainer DataContainer { get; set; }
+    [Inject]
+    DataViewerSettingsService SettingsService { get; set; }
     [Parameter]
     public PilotData Data { get; set; }
     [Parameter]

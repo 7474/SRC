@@ -1,4 +1,5 @@
-﻿<section>
+﻿@implements IDisposable
+<section>
     @if (!string.IsNullOrEmpty(DataTitle))
     {
         <h1 class="title">@DataTitle</h1>
@@ -6,7 +7,7 @@
     @* XXX Bulma の sticky サポートはないっぽい *@
     @* z-index: card より前に *@
     <div class="has-background-light" style="position: sticky; top: 52px; z-index: 999;">
-        <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+        <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" DataDisplayOrder="@SettingsService.Settings.DataDisplayOrder" />
     </div>
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
         <UnitDataListView SRC="@SRC" />
@@ -25,7 +26,33 @@
     [Parameter]
     public SRC SRC { get; set; }
 
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
+
     private SrcDataKind currentKind = SrcDataKind.Unit;
+
+    protected override void OnInitialized()
+    {
+        SettingsService.OnChange += OnSettingsChanged;
+        UpdateDefaultKind();
+    }
+
+    public void Dispose()
+    {
+        SettingsService.OnChange -= OnSettingsChanged;
+    }
+
+    private void OnSettingsChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateDefaultKind()
+    {
+        currentKind = SettingsService.Settings.DataDisplayOrder == DataDisplayOrder.PilotFirst
+            ? SrcDataKind.Pilot
+            : SrcDataKind.Unit;
+    }
 
     private void OnChangeSrcDataKind(SrcDataKind kind)
     {
