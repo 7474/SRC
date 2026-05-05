@@ -80,6 +80,14 @@ namespace SRCSharpForm
             try
             {
                 fileSystem.AddAchive(SRC.AppPath, fileSystem.PathCombine(SRC.AppPath, "assets.zip"));
+            }
+            catch (Exception ex)
+            {
+                // ignore
+                SRC.LogError(ex);
+            }
+            try
+            {
                 fileSystem.AddPath(SRC.AppPath);
                 fileSystem.AddPath(SRC.ExtDataPath2);
                 fileSystem.AddPath(SRC.ExtDataPath);
