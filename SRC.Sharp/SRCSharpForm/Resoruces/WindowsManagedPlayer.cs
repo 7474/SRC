@@ -76,13 +76,16 @@ namespace SRCSharpForm.Resoruces
                         Program.Log.LogWarning(ex, ex.Message);
                     }
                 }
-                try
+                if (midiOutput != null)
                 {
-                    midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
-                }
-                catch (Exception ex)
-                {
-                    Program.Log.LogWarning(ex, ex.Message);
+                    try
+                    {
+                        midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
+                    }
+                    catch (Exception ex)
+                    {
+                        Program.Log.LogWarning(ex, ex.Message);
+                    }
                 }
             }
         }
