@@ -278,6 +278,7 @@ namespace SRCCore
             {
                 // スペースを含むファイル名への対応
                 var buf = "";
+                var found = false;
                 for (var j = i; j < midiNames.Count; j++)
                 {
                     var buf2 = midiNames[j];
@@ -289,30 +290,39 @@ namespace SRCCore
                     }
 
                     buf = buf + " " + buf2;
-                    if (buf.ToLower().EndsWith(".mid"))
+                    var bufLower = buf.ToLower();
+                    if (bufLower.EndsWith(".mid") || bufLower.EndsWith(".mp3"))
                     {
                         i = j + 1;
+                        found = true;
                         break;
                     }
+                }
+                // .mid で終わる要素が見つからなかった場合はループを終了
+                if (!found)
+                {
+                    break;
                 }
 
                 buf = Strings.Trim(buf);
                 // 同名のMP3ファイルがある場合はMIDIファイルの代わりにMP3ファイルを使う
                 var fname = buf;
-                var fnameMp3 = Strings.Left(buf, Strings.Len(buf) - 4) + ".mp3";
+                var baseName = Strings.Left(buf, Strings.Len(buf) - 4);
+                var fnameMp3 = baseName + ".mp3";
+                var fnameMid = baseName + ".mid";
                 var fnames = new List<string>();
                 if (FileSystem.IsAbsolutePath(fname))
                 {
                     fnames.Add(fnameMp3);
-                    fnames.Add(fname);
+                    fnames.Add(fnameMid);
                 }
                 else
                 {
                     // TODO 一度検索したものを再検索している感じ — 絶対パスを返す API を作れば最適化できる
                     fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
-                    fnames.Add(FileSystem.PathCombine("Midi", fname));
+                    fnames.Add(FileSystem.PathCombine("Midi", fnameMid));
                     fnames.Add(fnameMp3);
-                    fnames.Add(fname);
+                    fnames.Add(fnameMid);
                 }
                 //// XXX これ何に作用してるの？
                 //// サブフォルダ指定あり？
