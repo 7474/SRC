@@ -1,31 +1,33 @@
-version: 2
 updates:
-- package-ecosystem: nuget
-  directory: "/SRC.Sharp/"
-  schedule:
-    interval: daily
+- directory: /SRC.Sharp/
   groups:
     aspnetcore:
       patterns:
-      - "Microsoft.AspNetCore*"
+      - Microsoft.AspNetCore*
       update-types:
-      - "minor"
-      - "patch"
+      - minor
+      - patch
     selenium:
       patterns:
-      - "Selenium*"
+      - Selenium*
       update-types:
-      - "minor"
-      - "patch"
-- package-ecosystem: nuget
-  directory: "/SRC.Sharp.Help/HelpConverter/"
+      - minor
+      - patch
+  package-ecosystem: nuget
   schedule:
     interval: daily
-- package-ecosystem: bundler
-  directory: "/SRC.Sharp.Help/"
+- directory: /SRC.Sharp.Help/HelpConverter/
+  package-ecosystem: nuget
   schedule:
     interval: daily
-- package-ecosystem: "github-actions"
-  directory: "/"
+- directory: /SRC.Sharp.Help/
+  package-ecosystem: bundler
   schedule:
-    interval: "daily"
+    interval: daily
+- directory: /
+  ignore:
+  - dependency-name: "github/gh-aw-actions" # Managed by gh aw compile. Version-locked to the gh-aw compiler; do not bump.
+  package-ecosystem: github-actions
+  schedule:
+    interval: daily
+version: 2
