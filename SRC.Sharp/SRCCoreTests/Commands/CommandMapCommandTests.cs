@@ -120,5 +120,63 @@ namespace SRCCore.Commands.Tests
             }
             Assert.AreEqual("ユニット選択", src.Commands.CommandState);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MapCommand_AlwaysSetsCommandStateToUnitSelect_FromMapCommand()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "マップコマンド";
+            src.Commands.ViewMode = true;
+            src.Commands.MapCommand(new UiCommand(Command.EndTurnCmdID, "ターン終了"));
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        public void MapCommand_EndTurnWithViewModeTrue_DoesNotCallEndTurnCommand()
+        {
+            // ViewMode=true の早期 return では EndTurnCommand (GUI依存) は呼ばれない
+            // → GUINotImplementedException は発生しない
+            var src = CreateSrc();
+            src.Commands.ViewMode = true;
+            bool threw = false;
+            try
+            {
+                src.Commands.MapCommand(new UiCommand(Command.EndTurnCmdID, "ターン終了"));
+            }
+            catch (SRCCore.Exceptions.GUINotImplementedException)
+            {
+                threw = true;
+            }
+            Assert.IsFalse(threw, "ViewMode=true の場合 EndTurnCommand は呼ばれない");
+        }
+
+        [TestMethod]
+        public void MapCommand_AutoDefenseCmdID_TogglesFromFalseToTrue()
+        {
+            var src = CreateSrc();
+            src.SystemConfig.AutoDefense = false;
+            try { src.Commands.MapCommand(new UiCommand(Command.AutoDefenseCmdID, "自動反撃")); } catch { }
+            Assert.IsTrue(src.SystemConfig.AutoDefense);
+        }
+
+        [TestMethod]
+        public void MapCommand_AutoDefenseCmdID_TogglesFromTrueToFalse()
+        {
+            var src = CreateSrc();
+            src.SystemConfig.AutoDefense = true;
+            try { src.Commands.MapCommand(new UiCommand(Command.AutoDefenseCmdID, "自動反撃")); } catch { }
+            Assert.IsFalse(src.SystemConfig.AutoDefense);
+        }
+
+        [TestMethod]
+        public void MapCommand_ViewMode_InitiallyFalse()
+        {
+            var src = CreateSrc();
+            Assert.IsFalse(src.Commands.ViewMode);
+        }
     }
 }
