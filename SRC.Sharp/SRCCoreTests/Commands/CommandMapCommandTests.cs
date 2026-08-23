@@ -120,5 +120,83 @@ namespace SRCCore.Commands.Tests
             }
             Assert.AreEqual("ユニット選択", src.Commands.CommandState);
         }
+
+        // ──────────────────────────────────────────────
+        // ConfigurationCmdID (17): GUI.Configure() を呼ぶ
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MapCommand_ConfigurationCmdID_CallsGuiConfigure()
+        {
+            // ConfigurationCmdID は GUI.Configure() に委譲する
+            var src = CreateSrc();
+            bool configureCalled = false;
+            ((MockGUI)src.GUI).ConfigureHandler = () => { configureCalled = true; };
+            src.Commands.MapCommand(new UiCommand(Command.ConfigurationCmdID, "設定変更"));
+            Assert.IsTrue(configureCalled, "GUI.Configure() が呼ばれるはずです");
+        }
+
+        [TestMethod]
+        public void MapCommand_ConfigurationCmdID_SetsCommandStateToUnitSelect()
+        {
+            // 設定変更後も CommandState は "ユニット選択" に戻る
+            var src = CreateSrc();
+            ((MockGUI)src.GUI).ConfigureHandler = () => { };
+            src.Commands.CommandState = "コマンド選択";
+            src.Commands.MapCommand(new UiCommand(Command.ConfigurationCmdID, "設定変更"));
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        // ──────────────────────────────────────────────
+        // OperationObjectCmdID (5): GUI.LockGUI → Event → GUI.RedrawScreen → GUI.UnlockGUI
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MapCommand_OperationObjectCmdID_CallsGuiLockGUI()
+        {
+            // OperationObjectCmdID は GUI.LockGUI() を呼ぶ
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            bool lockCalled = false;
+            mock.LockGUIHandler = () => { lockCalled = true; };
+            mock.RedrawScreenHandler = _ => { };
+            mock.UnlockGUIHandler = () => { };
+            try
+            {
+                src.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
+            }
+            catch { }
+            Assert.IsTrue(lockCalled, "GUI.LockGUI() が呼ばれるはずです");
+        }
+
+        [TestMethod]
+        public void MapCommand_OperationObjectCmdID_SetsCommandStateToUnitSelect()
+        {
+            // OperationObjectCmdID でも CommandState は "ユニット選択" に設定される
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            mock.LockGUIHandler = () => { };
+            mock.RedrawScreenHandler = _ => { };
+            mock.UnlockGUIHandler = () => { };
+            src.Commands.CommandState = "コマンド選択";
+            try
+            {
+                src.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
+            }
+            catch { }
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        // ──────────────────────────────────────────────
+        // 未知の CmdID: NotSupportedException が発生する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MapCommand_UnknownCmdID_ThrowsNotSupportedException()
+        {
+            var src = CreateSrc();
+            Assert.Throws<System.NotSupportedException>(() =>
+                src.Commands.MapCommand(new UiCommand(9999, "不明コマンド")));
+        }
     }
 }
