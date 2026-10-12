@@ -546,7 +546,8 @@ namespace SRCRender
             }
             using (var canvas = new SKCanvas(mainBuffer))
             {
-                var rect = SKRect.Create(x1, y1, x2 - x1, y2 - y1);
+                // 元の SRC（GUI.bas ClearPicture2）と同じく x2, y2 を含む
+                var rect = SKRect.Create(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
                 canvas.DrawBitmap(mainBufferBack, rect, rect);
             }
         }
