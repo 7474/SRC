@@ -23,6 +23,8 @@ namespace SRCRender.Tests
     ///   list 文字列|#番号      リストの項目を選ぶ（番号は 1 始まり）
     ///   dialog ボタン名        ダイアログのボタンを押す
     ///   key Enter|Escape|...   キーを押す
+    ///   print 式              SRC の式の値を記録する（進行状況の確認用。例: print ダンジョン階数）
+    ///   policy advance|hold    phase の方針。advance は攻撃できなければ敵へ近づく（既定）、hold は移動せず届く敵だけ攻撃する
     ///   stall 秒               auto・turns で、待ちの状態でないまま進まないときにボタンを押すまでの時間（既定 5 秒）
     ///   choose 見出し 項目     auto・turns で、見出し（または説明）にその文字列を含むリストが出たら、その文字列を含む項目を選ぶ
     ///                          （例: choose コマンド 次のステージへ … インターミッションで次のステージへ進む）
@@ -69,6 +71,9 @@ namespace SRCRender.Tests
             TraceLog.Add(line);
             Trace?.Invoke(line);
         }
+
+        /// <summary>phase で移動せず、届く敵だけ攻撃する</summary>
+        public bool HoldPosition { get; set; }
 
         /// <summary>1 つの待ちの既定の上限</summary>
         public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(60);
@@ -150,6 +155,16 @@ namespace SRCRender.Tests
                     break;
                 case "list":
                     SelectList(Rest(args, 1));
+                    break;
+                case "print":
+                    {
+                        var expr = Rest(args, 1);
+                        var value = OnGame(() => Src.Expression.GetValueAsString(expr));
+                        Record($"{DateTime.Now:HH:mm:ss} PRINT {expr} = {value}");
+                    }
+                    break;
+                case "policy":
+                    HoldPosition = args[1] == "hold";
                     break;
                 case "stall":
                     auto.StallClickMillis = (int)(double.Parse(args[1]) * 1000);
@@ -578,7 +593,7 @@ namespace SRCRender.Tests
                 script.ClickCell(unit.X, unit.Y);
                 script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
             }
-            if (script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動") && TryMoveTowardEnemy(unit))
+            if (!script.HoldPosition && script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動") && TryMoveTowardEnemy(unit))
             {
                 // 移動後のメニュー
                 if (script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))

@@ -52,6 +52,29 @@ jobs:
         dotnet workload install wasm-tools
         dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    # 発行した SRC#Web を静的ファイルとして配信し、Chromium でプレイする
+    - name: Test SRC#Web (Playwright)
+      working-directory: SRC.Sharp/SRCSharpWeb.E2E
+      run: |
+        npm ci
+        npx playwright install --with-deps chromium
+        npx playwright test
+
+    - name: Upload SRC#Web test report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: srcweb-playwright
+        path: |
+          SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
+          SRC.Sharp/SRCSharpWeb.E2E/test-results/
+        if-no-files-found: ignore
+
     - name: Upload screenshots
       if: always()
       uses: actions/upload-artifact@v7
