@@ -30,32 +30,11 @@ namespace SRCRender
         }
 
         /// <summary>
-        /// SRC のフォント指定を SKFont にする。明朝系は Noto Serif CJK JP、それ以外は Noto Sans CJK JP を優先する。
+        /// SRC のフォント指定を SKFont にする（解決規則は SkiaFonts）。
         /// </summary>
         internal SKFont CreateFont(PaintFont paintFont)
         {
-            var name = paintFont.Name ?? "";
-            var style = new SKFontStyle(
-                paintFont.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
-                SKFontStyleWidth.Normal,
-                paintFont.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
-            SKTypeface typeface = null;
-            foreach (var family in new[] { name, name.Contains("明朝") ? "Noto Serif CJK JP" : "Noto Sans CJK JP" })
-            {
-                var candidate = SKTypeface.FromFamilyName(family, style);
-                if (candidate != null && candidate.FamilyName == family && candidate.ContainsGlyph('あ'))
-                {
-                    typeface = candidate;
-                    break;
-                }
-            }
-            typeface = typeface ?? SKTypeface.FromFamilyName(renderer.Typeface.FamilyName, style) ?? renderer.Typeface;
-            return new SKFont(typeface, paintFont.Size * PointToPixel)
-            {
-                Embolden = paintFont.Bold && !typeface.IsBold,
-                SkewX = paintFont.Italic && !typeface.IsItalic ? -0.2f : 0,
-                Edging = SKFontEdging.Antialias,
-            };
+            return Compat.SkiaFonts.Create(paintFont.Name, paintFont.Size * PointToPixel, paintFont.Bold, paintFont.Italic);
         }
 
         #region 画像
@@ -422,13 +401,12 @@ namespace SRCRender
         /// </summary>
         private static void DrawTextTop(SKCanvas canvas, string text, float x, float y, SKFont font, SKPaint paint)
         {
-            var metrics = font.Metrics;
-            canvas.DrawText(text ?? "", x, y - metrics.Ascent, SKTextAlign.Left, font, paint);
+            canvas.DrawText(text ?? "", x, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
         }
 
         private static SKSize MeasureText(string text, SKFont font)
         {
-            return new SKSize(font.MeasureText(text ?? ""), font.Spacing);
+            return new SKSize(font.MeasureText(text ?? ""), Compat.SkiaFonts.LineHeight(font));
         }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)
@@ -486,7 +464,7 @@ namespace SRCRender
                 }
                 currentDrawStringPoint = new SKPoint(
                     X != Constants.DEFAULT_LEVEL ? X : prevX,
-                    without_cr ? ty : ty + font.Spacing);
+                    without_cr ? ty : ty + Compat.SkiaFonts.LineHeight(font));
                 if (!PermanentStringMode)
                 {
                     IsPictureVisible = true;

@@ -66,7 +66,7 @@ namespace SRCRender.Compat
         {
             using (var font = ToSKFont())
             {
-                return font.Spacing;
+                return SkiaFonts.LineHeight(font);
             }
         }
 
@@ -171,8 +171,8 @@ namespace SRCRender.Compat
             {
                 foreach (var line in SplitLines(s))
                 {
-                    canvas.DrawText(line, x, y - skFont.Metrics.Ascent, SKTextAlign.Left, skFont, paint);
-                    y += skFont.Spacing;
+                    canvas.DrawText(line, x, y + SkiaFonts.Ascent(skFont), SKTextAlign.Left, skFont, paint);
+                    y += SkiaFonts.LineHeight(skFont);
                 }
             }
         }
@@ -187,7 +187,7 @@ namespace SRCRender.Compat
                 {
                     width = Math.Max(width, skFont.MeasureText(line));
                 }
-                return new SizeF(width, skFont.Spacing * Math.Max(1, lines.Length));
+                return new SizeF(width, SkiaFonts.LineHeight(skFont) * Math.Max(1, lines.Length));
             }
         }
 
@@ -252,34 +252,91 @@ namespace SRCRender.Compat
     }
 
     /// <summary>
-    /// 日本語フォントの解決。明朝系は Noto Serif CJK JP、それ以外は Noto Sans CJK JP を優先する。
+    /// 日本語フォントの解決と、Windows 版 SRC（ＭＳ 明朝等）に合わせた文字の寸法。
     /// </summary>
     public static class SkiaFonts
     {
-        public static SKFont Create(string name, float sizeInPixels, bool bold, bool italic)
+        /// <summary>等幅指定（ＭＳ 明朝・ＭＳ ゴシック）の代替フォント</summary>
+        public const string FixedPitchFamily = "Noto Sans Mono CJK JP";
+        public const string SansFamily = "Noto Sans CJK JP";
+        public const string SerifFamily = "Noto Serif CJK JP";
+
+        /// <summary>
+        /// 等幅フォントの指定か。ＭＳ 明朝・ＭＳ ゴシックは等幅、ＭＳ Ｐ明朝・ＭＳ Ｐゴシック・ＭＳ UI ゴシックはプロポーショナル。
+        /// </summary>
+        public static bool IsFixedPitchName(string name)
         {
             name = name ?? "";
+            var normalized = name.Replace("ＭＳ", "MS").Replace("Ｐ", "P").Replace("　", " ");
+            if (normalized.StartsWith("MS ", StringComparison.OrdinalIgnoreCase))
+            {
+                var rest = normalized.Substring(3).TrimStart();
+                return !rest.StartsWith("P", StringComparison.OrdinalIgnoreCase)
+                    && !rest.StartsWith("UI", StringComparison.OrdinalIgnoreCase);
+            }
+            return name.Contains("等幅") || normalized.IndexOf("Mono", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        /// <summary>
+        /// フォント名から書体を選ぶ。指定のフォントがあればそれを使い、無ければ
+        /// 等幅指定は Noto Sans Mono CJK JP、明朝系は Noto Serif CJK JP、それ以外は Noto Sans CJK JP にする。
+        /// </summary>
+        public static SKTypeface ResolveTypeface(string name, SKFontStyle style)
+        {
+            name = name ?? "";
+            var fallbacks = IsFixedPitchName(name)
+                ? new[] { name, FixedPitchFamily, SansFamily }
+                : new[] { name, name.Contains("明朝") || name.Contains("Mincho") ? SerifFamily : SansFamily };
+            foreach (var family in fallbacks)
+            {
+                if (string.IsNullOrEmpty(family))
+                {
+                    continue;
+                }
+                var candidate = SKTypeface.FromFamilyName(family, style);
+                if (candidate != null && candidate.FamilyName == family && candidate.ContainsGlyph('あ'))
+                {
+                    return candidate;
+                }
+            }
+            return SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? SKTypeface.Default;
+        }
+
+        public static SKFont Create(string name, float sizeInPixels, bool bold, bool italic)
+        {
             var style = new SKFontStyle(
                 bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
                 SKFontStyleWidth.Normal,
                 italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
-            SKTypeface typeface = null;
-            foreach (var family in new[] { name, name.Contains("明朝") ? "Noto Serif CJK JP" : "Noto Sans CJK JP" })
-            {
-                var candidate = SKTypeface.FromFamilyName(family, style);
-                if (candidate != null && candidate.FamilyName == family && candidate.ContainsGlyph('あ'))
-                {
-                    typeface = candidate;
-                    break;
-                }
-            }
-            typeface = typeface ?? SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? SKTypeface.Default;
+            var typeface = ResolveTypeface(name, style);
             return new SKFont(typeface, sizeInPixels)
             {
                 Embolden = bold && !typeface.IsBold,
                 SkewX = italic && !typeface.IsItalic ? -0.2f : 0,
                 Edging = SKFontEdging.Antialias,
             };
+        }
+
+        /// <summary>
+        /// Noto CJK は行の高さ（hhea）が 1.448em あり、ＭＳ 明朝等（1em）より大きいため行がずれて下が見切れる。
+        /// Noto CJK では文字枠（OS/2 typo: 上 0.88em・下 0.12em）を行の高さとして扱う。
+        /// </summary>
+        private static bool UsesEmBoxMetrics(SKFont font)
+        {
+            var family = font.Typeface?.FamilyName ?? "";
+            return family.StartsWith("Noto ") && family.Contains(" CJK ");
+        }
+
+        /// <summary>行の上端からベースラインまでの距離（ピクセル）</summary>
+        public static float Ascent(SKFont font)
+        {
+            return UsesEmBoxMetrics(font) ? font.Size * 0.88f : -font.Metrics.Ascent;
+        }
+
+        /// <summary>行の高さ（ピクセル）</summary>
+        public static float LineHeight(SKFont font)
+        {
+            return UsesEmBoxMetrics(font) ? font.Size : font.Spacing;
         }
     }
 }

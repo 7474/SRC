@@ -36,8 +36,11 @@ namespace SRCRender
         private readonly SKFont boldFont;
         private readonly SKFont largeFont;
 
-        /// <summary>既定で使うフォント。環境によらず同じ描画結果になるよう、あれば優先する</summary>
-        public const string PreferredFontFamily = "Noto Sans CJK JP";
+        /// <summary>
+        /// 既定で使うフォント。SRC のリストは等幅（ＭＳ 明朝）で桁を空白で揃えるため等幅フォントにする。
+        /// 環境によらず同じ描画結果になるよう、あれば優先する。
+        /// </summary>
+        public const string PreferredFontFamily = Compat.SkiaFonts.FixedPitchFamily;
 
         public ScreenRenderer(SKTypeface typeface = null)
         {
@@ -52,13 +55,7 @@ namespace SRCRender
 
         private static SKTypeface ResolveTypeface()
         {
-            var preferred = SKTypeface.FromFamilyName(PreferredFontFamily);
-            if (preferred != null && preferred.FamilyName == PreferredFontFamily)
-            {
-                return preferred;
-            }
-            // 日本語を表示できるフォントを選ぶ
-            return SKFontManager.Default.MatchCharacter('あ') ?? SKTypeface.Default;
+            return Compat.SkiaFonts.ResolveTypeface("ＭＳ 明朝", SKFontStyle.Normal);
         }
 
         public void Dispose()
@@ -328,7 +325,7 @@ namespace SRCRender
                     {
                         paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
                         paint.IsAntialias = true;
-                        canvas.DrawText(label.Text, label.Left, label.Top - font.Metrics.Ascent, SKTextAlign.Left, font, paint);
+                        canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                         paint.IsAntialias = false;
                     }
                 }
