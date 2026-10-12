@@ -86,7 +86,7 @@ namespace SRCSharpAvalonia
             Focus();
             var point = e.GetCurrentPoint(this);
             GUI?.PointerPressed((float)point.Position.X, (float)point.Position.Y,
-                point.Properties.IsRightButtonPressed ? GuiButton.Right : GuiButton.Left);
+                point.Properties.IsRightButtonPressed ? GuiButton.Right : GuiButton.Left, e.ClickCount);
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)

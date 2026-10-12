@@ -120,6 +120,10 @@ namespace SRCRender
             {
                 DrawDialog(canvas, state.Dialog);
             }
+            if (state.Tooltip != null)
+            {
+                DrawTooltip(canvas, state.Tooltip);
+            }
         }
 
         /// <summary>
@@ -408,6 +412,37 @@ namespace SRCRender
                 DrawListBox(canvas, w.lstItems, paint);
             }
             canvas.Restore();
+        }
+
+        private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+
+        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
+        {
+            using (var font = TooltipFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                var width = lines.Max(x => font.MeasureText(x)) + 8;
+                var height = lineHeight * lines.Length + 6;
+                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
+                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
+                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                paint.Color = new SKColor(255, 255, 225);
+                canvas.DrawRect(rect, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
+                paint.Style = SKPaintStyle.Fill;
+                paint.IsAntialias = true;
+                var y = rect.Top + 3;
+                foreach (var line in lines)
+                {
+                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
+                }
+            }
         }
 
         private static void DrawButton(SKCanvas canvas, Compat.Button button, SKPaint paint)

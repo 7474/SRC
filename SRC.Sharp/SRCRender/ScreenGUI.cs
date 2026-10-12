@@ -216,7 +216,7 @@ namespace SRCRender
         /// <summary>
         /// 画面上でポインタが押された。座標は画面（ScreenLayout）のピクセル座標。
         /// </summary>
-        public void PointerPressed(float x, float y, GuiButton button)
+        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1)
         {
             if (button == GuiButton.Right)
             {
@@ -310,9 +310,37 @@ namespace SRCRender
             {
                 var mx = PixelToMapX((int)x);
                 var my = PixelToMapY((int)y);
+                if (button == GuiButton.Left)
+                {
+                    // ドラッグによるマップのスクロールの開始
+                    PrevMapX = MapX;
+                    PrevMapY = MapY;
+                    PrevMouseX = x;
+                    PrevMouseY = y;
+                    isDragging = true;
+                    lastDragPoint = (x, y);
+                }
                 game.Post(() =>
                 {
                     Commands.ProceedInput(button, Map.CellAtPoint(mx, my), Map.UnitAtPoint(mx, my));
+                    // 右ダブルクリックはキャンセルを連続実行
+                    if (button == GuiButton.Right && clickCount >= 2 && !IsGUILocked)
+                    {
+                        switch (Commands.CommandState ?? "")
+                        {
+                            case "マップコマンド":
+                                Commands.CommandState = "ユニット選択";
+                                break;
+
+                            case "ユニット選択":
+                                Commands.ProceedCommand(true);
+                                break;
+
+                            default:
+                                Commands.CancelCommand();
+                                break;
+                        }
+                    }
                     Present();
                 });
             }
@@ -328,6 +356,51 @@ namespace SRCRender
             {
                 isRightButtonDown = false;
             }
+            else
+            {
+                // マップ画面のドラッグを解除
+                isDragging = false;
+            }
+        }
+
+        // マップウィンドウがドラッグされているか？
+        private volatile bool isDragging;
+        private (float x, float y) lastDragPoint;
+        private const float DragMoveThresholdRate = 0.5f;
+
+        /// <summary>
+        /// マップのドラッグ（WinForms 版 picMain_MouseMove と同じ移動量）。
+        /// </summary>
+        private void DragMap(float x, float y)
+        {
+            if (!isDragging || IsGUILocked || Map == null || Map.MapWidth < 15 || Map.MapHeight < 15)
+            {
+                return;
+            }
+            // 移動量が少なければ無視する
+            if (Math.Abs(lastDragPoint.x - x) + Math.Abs(lastDragPoint.y - y) <= ScreenLayout.CellPx * DragMoveThresholdRate)
+            {
+                return;
+            }
+            lastDragPoint = (x, y);
+            var newX = Math.Max(1, Math.Min(Map.MapWidth, (int)(PrevMapX - (x - PrevMouseX) / ScreenLayout.CellPx)));
+            var newY = Math.Max(1, Math.Min(Map.MapHeight, (int)(PrevMapY - (y - PrevMouseY) / ScreenLayout.CellPx)));
+            if (Map.IsStatusView)
+            {
+                // ステータス画面の場合は移動量を限定
+                newX = 8;
+                newY = Math.Max(8, Math.Min(Map.MapHeight - 7, newY));
+            }
+            if (newX == MapX && newY == MapY)
+            {
+                return;
+            }
+            game.Post(() =>
+            {
+                MapX = newX;
+                MapY = newY;
+                RefreshScreen();
+            });
         }
 
         private (int x, int y) lastHoverCell;
@@ -336,7 +409,9 @@ namespace SRCRender
         {
             MouseX = x;
             MouseY = y;
+            UpdateTooltip();
             HoverMap((int)x, (int)y);
+            DragMap(x, y);
             var list = State.List;
             if (list != null)
             {
@@ -645,6 +720,57 @@ namespace SRCRender
 
         public void UpdateHotPoint()
         {
+            UpdateTooltip();
+        }
+
+        private string lastHotSpot = "";
+
+        /// <summary>
+        /// クリック待ちの間、ホットポイント上にカーソルがあればツールチップを表示する。
+        /// </summary>
+        private void UpdateTooltip()
+        {
+            if (!IsGUILocked && State.Tooltip == null && string.IsNullOrEmpty(lastHotSpot))
+            {
+                return;
+            }
+            var mouseX = MouseX;
+            var mouseY = MouseY;
+            game.Post(() =>
+            {
+                string caption = null;
+                if (IsGUILocked && Commands.WaitClickMode)
+                {
+                    // ホットポイントが定義されている場合はツールチップを変更
+                    foreach (var hpoint in SRC.Event.HotPointList ?? new List<SRCCore.Events.HotPoint>())
+                    {
+                        if (hpoint.Left <= mouseX && mouseX < hpoint.Left + hpoint.Width && hpoint.Top <= mouseY && mouseY < hpoint.Top + hpoint.Height)
+                        {
+                            if (hpoint.Caption == "非表示" || string.IsNullOrEmpty(hpoint.Caption))
+                            {
+                                break;
+                            }
+                            if (hpoint.Name != lastHotSpot && !string.IsNullOrEmpty(lastHotSpot))
+                            {
+                                break;
+                            }
+                            caption = hpoint.Caption;
+                            lastHotSpot = hpoint.Name;
+                            break;
+                        }
+                    }
+                }
+                if (caption == null)
+                {
+                    lastHotSpot = "";
+                }
+                var tooltip = caption == null ? null : new TooltipState { Text = caption, X = (int)mouseX, Y = (int)mouseY };
+                if (tooltip?.Text != State.Tooltip?.Text || (tooltip != null && (tooltip.X != State.Tooltip.X || tooltip.Y != State.Tooltip.Y)))
+                {
+                    State.Tooltip = tooltip;
+                    Present();
+                }
+            });
         }
 
         #endregion

@@ -22,6 +22,9 @@ namespace SRCRender
         /// <summary>テロップ（null で非表示）</summary>
         public string Telop { get; set; }
 
+        /// <summary>ホットポイントのツールチップ</summary>
+        public TooltipState Tooltip { get; set; }
+
         public MessageState Message { get; } = new MessageState();
 
         /// <summary>選択肢（null で非表示）</summary>
@@ -85,6 +88,13 @@ namespace SRCRender
                 Window.lstItems.EnsureVisible(value);
             }
         }
+    }
+
+    public class TooltipState
+    {
+        public string Text { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 
     public class MenuState

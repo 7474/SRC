@@ -99,9 +99,12 @@ namespace SRCRender
         public void Dispose()
         {
             Game.Dispose();
-            // ゲームスレッドの終了を待ってから破棄する（待ちきれない場合も描画とは排他になる）
-            Game.Join(TimeSpan.FromSeconds(2));
-            GUI.Dispose();
+            // ゲームスレッドの終了を待ってから破棄する。
+            // 終わらない（待ちを伴わない処理を続けている）場合、使用中のバッファを解放すると落ちるため破棄しない。
+            if (Game.Join(TimeSpan.FromSeconds(2)))
+            {
+                GUI.Dispose();
+            }
         }
     }
 }
