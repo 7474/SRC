@@ -53,20 +53,39 @@ flowchart LR
 - 乱数を使うシナリオは乱数系列を固定して実行する（`GeneralLib.RndSeed`）
 - **網羅率の検査**: 実行したコマンドの種類（`CmdType`）を記録し、コーパス全体で未実行のコマンドがあればテストを失敗させる。これでコマンドの追加・移植漏れを検出できる
 
-### 入力スクリプト
+### 入力スクリプト（PlayScript）
 
-画面の状態を待ってから入力する手順を、シナリオごとに記述する。現在は C# で書いている（`ScreenScenarioRunner`）。コーパスが増えた段階で、次のようなテキスト形式に移す。
+コーパスは `SRC.Sharp/E2E/ケース名/` に置く。ケースのフォルダをシナリオのフォルダとして使い、`test.eve` から始めて `play.txt` の手順でプレイする（`SRCRenderTests` の `E2ECorpusTests`）。素材はテスト用の最小構成を使い、データ（ユニット・パイロット等）は自作の最小のものをケースに含める。フォルダを追加するだけでテストが増える。
+
+| コマンド | 内容 |
+|---|---|
+| `auto [秒]` | メッセージ・ダイアログ・リストを自動で進め、マップで操作を受け付ける状態になるまで待つ |
+| `wait ready\|message\|list\|menu\|dialog\|click [文字列]` | 各状態になるまで待つ |
+| `click X Y [right]` / `cell X Y [right]` | 画面座標・マップのマスをクリックする |
+| `menu 項目` / `list 文字列\|#番号` / `dialog ボタン` / `key キー` | メニュー・リスト・ダイアログ・キーの操作 |
+| `phase` / `turns 回数` | 味方フェイズを簡単な方針で自動で行う（攻撃できれば攻撃、できなければ敵へ近づいて待機、最後にターン終了）。`turns` は「auto → phase」を繰り返す |
+| `snapshot 名前` | 画面を保存する（`TestResults/e2e/ケース名/`、CI の成果物 `screenshots`） |
+| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる |
+| `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`） |
 
 ```text
-wait message "ヘッドレステスト開始"
-snapshot scenario-01-message
-click message
-wait list "選択"
-choose 1
-wait message "はいが選ばれた"
-click message
-expect terminated
+# battle-basic/play.txt
+auto 60
+expect message 戦闘開始
+turns 3
+expect log 攻撃: 標的機
+expect eval ターン数 >= 3
+expect eval Damage(標的パイロット) > 0
 ```
+
+`phase` は実際のシナリオ（ロボッとダンジョンＢ！ など）の自動プレイにも使える。シナリオ独自のメニュー（マウスの位置で選ぶもの）は `click` で操作する。
+
+現在のケース:
+
+| ケース | 内容 |
+|---|---|
+| `battle-basic` | 出撃・移動・待機・ターン終了・敵フェイズ（攻撃と反撃）を 3 ターン |
+| `battle-victory` | 敵を倒し「全滅 敵」イベントで勝利してシナリオが終わるまで |
 
 ## VRT
 
@@ -103,7 +122,7 @@ expect terminated
 
 ## 次の作業
 
-1. `SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る
+1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
 2. コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する
-3. ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す
+3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
 4. セーブ／ロード、インターミッション、次ステージへの遷移を通す

@@ -1,0 +1,18 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テスト機 0 テストパイロット 20 6 6
+Create 敵 標的機 0 標的パイロット 1 12 6
+Talk システム
+戦闘開始
+End
+Exit
+
+全滅 敵:
+Talk システム
+勝利
+End
+Quit

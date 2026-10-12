@@ -53,6 +53,7 @@ jobs:
         name: screenshots
         path: |
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/vrt/
+          SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
           SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
         if-no-files-found: ignore
 

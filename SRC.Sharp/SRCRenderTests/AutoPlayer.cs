@@ -73,7 +73,12 @@ namespace SRCRender.Tests
             Thread.Sleep(50);
         }
 
-        public void Run(int maxSteps, int idleMillis = 10000)
+        public void Run(int maxSteps, int idleMillis = 10000) => Run(maxSteps, idleMillis, null);
+
+        /// <summary>
+        /// stopWhen が真になったら（例: マップで操作を受け付ける状態）その場で戻る。真で戻った場合は true。
+        /// </summary>
+        public bool Run(int maxSteps, int idleMillis, Func<bool> stopWhen)
         {
             var gui = runner.GUI;
             var idleSince = DateTime.UtcNow;
@@ -81,6 +86,10 @@ namespace SRCRender.Tests
             var lastActed = DateTime.UtcNow;
             while (Steps < maxSteps && !runner.IsFinished)
             {
+                if (stopWhen != null && stopWhen())
+                {
+                    return true;
+                }
                 var state = runner.State;
                 var acted = false;
                 if (state.Dialog != null)
@@ -184,11 +193,12 @@ namespace SRCRender.Tests
                     if ((DateTime.UtcNow - idleSince).TotalMilliseconds > idleMillis)
                     {
                         Snapshot("idle");
-                        return;
+                        return false;
                     }
                     Thread.Sleep(20);
                 }
             }
+            return false;
         }
 
         private static bool WaitChange(Func<bool> changed)
@@ -207,7 +217,7 @@ namespace SRCRender.Tests
 
         private int snapshotNo;
 
-        private void Snapshot(string kind)
+        public void Snapshot(string kind)
         {
             if (SnapshotDirectory == null)
             {

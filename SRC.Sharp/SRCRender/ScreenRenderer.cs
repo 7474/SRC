@@ -858,6 +858,13 @@ namespace SRCRender
             return SKRect.Create(left, top, width, height);
         }
 
+        /// <summary>メニューの項目の中心（画面座標）</summary>
+        public SKPoint MenuItemCenter(MenuState menu, int index)
+        {
+            var rect = MenuItemRect(LayoutMenu(menu), index);
+            return new SKPoint(rect.MidX, rect.MidY);
+        }
+
         /// <summary>メニューのヒットテスト。項目のインデックス（0 始まり）、外れは -1</summary>
         public int HitTestMenu(MenuState menu, float x, float y)
         {

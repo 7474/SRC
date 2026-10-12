@@ -1,0 +1,9 @@
+# 出撃・移動・待機・ターン終了・敵フェイズ（攻撃と反撃）を 3 ターン行う
+auto 60
+expect message 戦闘開始
+snapshot stage
+turns 3
+expect log 攻撃: 標的機
+expect eval ターン数 >= 3
+expect eval Damage(標的パイロット) > 0
+expect error none
