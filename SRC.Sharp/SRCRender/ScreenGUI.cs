@@ -222,6 +222,7 @@ namespace SRCRender
             {
                 isRightButtonDown = true;
             }
+            KeyStateChanged(button == GuiButton.Right ? VirtualKeyRightButton : VirtualKeyLeftButton, true);
             MouseButton = button;
             MouseX = x;
             MouseY = y;
@@ -359,6 +360,7 @@ namespace SRCRender
 
         public void PointerReleased(float x, float y, GuiButton button)
         {
+            KeyStateChanged(button == GuiButton.Right ? VirtualKeyRightButton : VirtualKeyLeftButton, false);
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = false;
@@ -615,9 +617,50 @@ namespace SRCRender
         public bool PermanentStringMode { get; set; }
         public bool KeepStringMode { get; set; }
 
+        // 押されているキー・マウスボタン（Windows の仮想キーコード）
+        private readonly HashSet<int> pressedKeys = new HashSet<int>();
+
+        /// <summary>Windows の仮想キーコード（VK_LBUTTON = 1、VK_RBUTTON = 2）。</summary>
+        public const int VirtualKeyLeftButton = 0x01;
+        public const int VirtualKeyRightButton = 0x02;
+
+        /// <summary>
+        /// キーが押された・離された（KeyState 関数用）。key は Windows の仮想キーコード。
+        /// </summary>
+        public void KeyStateChanged(int key, bool pressed)
+        {
+            lock (pressedKeys)
+            {
+                if (pressed)
+                {
+                    pressedKeys.Add(key);
+                }
+                else
+                {
+                    pressedKeys.Remove(key);
+                }
+            }
+        }
+
+        /// <summary>
+        /// ウィンドウが非アクティブになった。押されている状態をすべて解除する。
+        /// </summary>
+        public void ReleaseAllKeys()
+        {
+            lock (pressedKeys)
+            {
+                pressedKeys.Clear();
+            }
+            isRightButtonDown = false;
+            isDragging = false;
+        }
+
         public bool GetKeyState(int key)
         {
-            return false;
+            lock (pressedKeys)
+            {
+                return pressedKeys.Contains(key);
+            }
         }
 
         public bool IsRButtonPressed(bool ignore_message_wait = false)

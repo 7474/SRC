@@ -94,5 +94,30 @@ namespace SRCRender.Tests
                 runner.WaitForTermination();
             }
         }
+
+        [TestMethod]
+        public void KeyState_ReflectsPressedKeys()
+        {
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Wait Click",
+                "Talk システム",
+                "Z=$(KeyState(90)) X=$(KeyState(88))",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitFor(s => runner.GUI.IsWaitingClick, "wait click");
+                // Z キー（仮想キーコード 0x5A）を押したままクリックする
+                runner.GUI.KeyStateChanged(0x5A, true);
+                runner.GUI.KeyPressed(ScreenKey.Enter);
+                Assert.AreEqual("Z=1 X=0", runner.WaitForMessage());
+                runner.GUI.KeyStateChanged(0x5A, false);
+                Assert.IsFalse(runner.GUI.GetKeyState(0x5A));
+            }
+        }
     }
 }

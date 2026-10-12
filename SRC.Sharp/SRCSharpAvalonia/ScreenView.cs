@@ -115,9 +115,30 @@ namespace SRCSharpAvalonia
             }
         }
 
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            var vk = VirtualKeys.FromKey(e.Key);
+            if (vk != 0)
+            {
+                GUI?.KeyStateChanged(vk, false);
+            }
+        }
+
+        protected override void OnLostFocus(FocusChangedEventArgs e)
+        {
+            base.OnLostFocus(e);
+            GUI?.ReleaseAllKeys();
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            var vk = VirtualKeys.FromKey(e.Key);
+            if (vk != 0)
+            {
+                GUI?.KeyStateChanged(vk, true);
+            }
             ScreenKey? key = e.Key switch
             {
                 Key.Enter => ScreenKey.Enter,

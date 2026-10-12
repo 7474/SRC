@@ -220,5 +220,18 @@ namespace SRCSharpAvalonia.Tests
                 }, CancellationToken.None).GetAwaiter().GetResult();
             }
         }
+
+        [TestMethod]
+        public void VirtualKeys_MapsToWindowsCodes()
+        {
+            Assert.AreEqual(0x41, VirtualKeys.FromKey(Key.A));
+            Assert.AreEqual(0x5A, VirtualKeys.FromKey(Key.Z));
+            Assert.AreEqual(0x30, VirtualKeys.FromKey(Key.D0));
+            Assert.AreEqual(0x0D, VirtualKeys.FromKey(Key.Enter));
+            Assert.AreEqual(0x11, VirtualKeys.FromKey(Key.LeftCtrl));
+            Assert.AreEqual(0x25, VirtualKeys.FromKey(Key.Left));
+            Assert.AreEqual(0x70, VirtualKeys.FromKey(Key.F1));
+            Assert.AreEqual(0, VirtualKeys.FromKey(Key.None));
+        }
     }
 }
