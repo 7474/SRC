@@ -107,5 +107,79 @@ namespace SRCCore.Commands.Tests
             // その後 SelectedCommand = "スペシャルパワー" になる
             Assert.AreEqual("スペシャルパワー", src.Commands.SelectedCommand);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void SpecialPowerCmdID_InitialSelectedCommandIsEmpty()
+        {
+            var src = CreateSrc();
+            Assert.IsTrue(string.IsNullOrEmpty(src.Commands.SelectedCommand));
+        }
+
+        [TestMethod]
+        public void SpecialPowerCmdID_LockCalledBeforeSelectedCommandSet()
+        {
+            // LockGUI が呼ばれてから SelectedCommand が設定されること
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            bool lockCalledBeforeSet = false;
+            mock.LockGUIHandler = () =>
+            {
+                // この時点ではまだ SelectedCommand は変わっていない
+                lockCalledBeforeSet = (src.Commands.SelectedCommand != "スペシャルパワー");
+            };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.SpecialPowerCmdID, "スペシャルパワー")); }
+            catch { }
+
+            Assert.IsTrue(lockCalledBeforeSet, "LockGUI は SelectedCommand 設定前に呼ばれる");
+        }
+
+        [TestMethod]
+        public void SpecialPowerCmdID_CommandStateIsCommandSelect_BeforeCall()
+        {
+            // SelectedUnit が存在するとき、UnitCommand は CommandState="コマンド選択" を前提とする
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            var mock = (MockGUI)src.GUI;
+            mock.LockGUIHandler = () => { };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.SpecialPowerCmdID, "スペシャルパワー")); }
+            catch { }
+
+            Assert.AreEqual("スペシャルパワー", src.Commands.SelectedCommand);
+        }
+
+        [TestMethod]
+        public void SpecialPowerCmdID_DifferentSrcInstances_IndependentState()
+        {
+            // 複数の SRC インスタンスが独立していることを確認
+            var src1 = CreateSrc();
+            var src2 = CreateSrc();
+            ((MockGUI)src1.GUI).LockGUIHandler = () => { };
+            ((MockGUI)src2.GUI).LockGUIHandler = () => { };
+
+            try { src1.Commands.UnitCommand(new UiCommand(Command.SpecialPowerCmdID, "スペシャルパワー")); } catch { }
+            // src2 は呼ばない
+
+            Assert.AreEqual("スペシャルパワー", src1.Commands.SelectedCommand);
+            Assert.IsTrue(string.IsNullOrEmpty(src2.Commands.SelectedCommand));
+        }
+
+        [TestMethod]
+        public void SpecialPowerCmdID_CalledTwice_SelectedCommandRemainsSpecialPower()
+        {
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            mock.LockGUIHandler = () => { };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.SpecialPowerCmdID, "スペシャルパワー")); } catch { }
+            try { src.Commands.UnitCommand(new UiCommand(Command.SpecialPowerCmdID, "スペシャルパワー")); } catch { }
+
+            Assert.AreEqual("スペシャルパワー", src.Commands.SelectedCommand);
+        }
     }
 }

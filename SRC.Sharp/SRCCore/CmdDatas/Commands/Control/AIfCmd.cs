@@ -69,7 +69,9 @@ namespace SRCCore.CmdDatas.Commands
             }
             IfCmdType = ifCmdType;
 
-            // 条件式が式であることが確定していれば条件式の項数を0に
+            // 条件式の項数を記録。式であることが確定した場合は0に上書きする。
+            // パイロット名指定 (terms.Count==1 or 2) の場合はそのまま維持する。
+            ExprTermCount = terms.Count;
             switch (terms.Count)
             {
                 case 0:

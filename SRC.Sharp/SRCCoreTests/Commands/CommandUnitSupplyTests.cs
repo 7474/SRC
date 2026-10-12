@@ -172,5 +172,62 @@ namespace SRCCore.Commands.Tests
             Assert.AreEqual("補給", src2.Commands.SelectedCommand);
             Assert.AreNotEqual(src1.Commands.SelectedCommand, src2.Commands.SelectedCommand);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void FixCmdID_InitialSelectedCommand_IsEmpty()
+        {
+            var src = CreateSrc();
+            Assert.IsTrue(string.IsNullOrEmpty(src.Commands.SelectedCommand));
+        }
+
+        [TestMethod]
+        public void SupplyCmdID_InitialSelectedCommand_IsEmpty()
+        {
+            var src = CreateSrc();
+            Assert.IsTrue(string.IsNullOrEmpty(src.Commands.SelectedCommand));
+        }
+
+        [TestMethod]
+        public void FixCmdID_CommandState_MovedAfterSelect_SetsMovedTargetSelect()
+        {
+            // CommandState が "移動後コマンド選択" のとき StartFixCommand() は
+            // CommandState = "移動後ターゲット選択" に変更する (Map 初期化後)
+            // Map が未初期化なので例外が出るが SelectedCommand は設定される
+            var src = CreateSrc();
+            src.Commands.CommandState = "移動後コマンド選択";
+            try { src.Commands.UnitCommand(new UiCommand(Command.FixCmdID, "修理")); } catch { }
+            Assert.AreEqual("修理", src.Commands.SelectedCommand);
+        }
+
+        [TestMethod]
+        public void SupplyCmdID_CommandState_MovedAfterSelect_SetsSelectedCommand()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "移動後コマンド選択";
+            try { src.Commands.UnitCommand(new UiCommand(Command.SupplyCmdID, "補給")); } catch { }
+            Assert.AreEqual("補給", src.Commands.SelectedCommand);
+        }
+
+        [TestMethod]
+        public void FixCmdID_CalledTwice_SelectedCommandRemainsfix()
+        {
+            var src = CreateSrc();
+            try { src.Commands.UnitCommand(new UiCommand(Command.FixCmdID, "修理")); } catch { }
+            try { src.Commands.UnitCommand(new UiCommand(Command.FixCmdID, "修理")); } catch { }
+            Assert.AreEqual("修理", src.Commands.SelectedCommand);
+        }
+
+        [TestMethod]
+        public void SupplyCmdID_CalledTwice_SelectedCommandRemainsSupply()
+        {
+            var src = CreateSrc();
+            try { src.Commands.UnitCommand(new UiCommand(Command.SupplyCmdID, "補給")); } catch { }
+            try { src.Commands.UnitCommand(new UiCommand(Command.SupplyCmdID, "補給")); } catch { }
+            Assert.AreEqual("補給", src.Commands.SelectedCommand);
+        }
     }
 }

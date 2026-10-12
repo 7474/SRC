@@ -142,5 +142,62 @@ namespace SRCCore.Commands.Tests
 
             Assert.AreEqual("", src.Commands.SelectedCommand);
         }
+
+        // ──────────────────────────────────────────────
+        // 追加テスト
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LaunchCmdID_CancelFromListBox_CommandStateIsUnitSelect()
+        {
+            // CancelCommand() 後は CommandState = "ユニット選択"
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            ((MockGUI)src.GUI).ListBoxHandler = _ => 0;
+            ((MockGUI)src.GUI).RedrawScreenHandler = _ => { };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.LaunchCmdID, "発進")); }
+            catch (GUINotImplementedException) { }
+
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        public void LaunchCmdID_ListBoxCaption_IsUnitSelect()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            string captionUsed = null;
+            ((MockGUI)src.GUI).ListBoxHandler = args => { captionUsed = args.lb_caption; return 0; };
+            ((MockGUI)src.GUI).RedrawScreenHandler = _ => { };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.LaunchCmdID, "発進")); }
+            catch (GUINotImplementedException) { }
+
+            Assert.AreEqual("ユニット選択", captionUsed);
+        }
+
+        [TestMethod]
+        public void LaunchCmdID_ListBoxHasFlag_IsTrue()
+        {
+            // StartLaunchCommand は HasFlag=true でリストを表示する
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            bool? hasFlagValue = null;
+            ((MockGUI)src.GUI).ListBoxHandler = args => { hasFlagValue = args.HasFlag; return 0; };
+            ((MockGUI)src.GUI).RedrawScreenHandler = _ => { };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.LaunchCmdID, "発進")); }
+            catch (GUINotImplementedException) { }
+
+            Assert.AreEqual(true, hasFlagValue, "StartLaunchCommand は HasFlag=true を渡す");
+        }
+
+        [TestMethod]
+        public void LaunchCmdID_InitialSelectedCommand_IsEmpty()
+        {
+            var src = CreateSrc();
+            Assert.IsTrue(string.IsNullOrEmpty(src.Commands.SelectedCommand));
+        }
     }
 }
