@@ -77,6 +77,12 @@ namespace SRCCore
 
         private void ValidateEnvironment()
         {
+            if (AllowMissingAssets)
+            {
+                WarnMissingAssets();
+                return;
+            }
+
             // Bitmap関係のチェック
             if (!FileSystem.GetFileSystemEntries(AppPath, "Bitmap", EntryOption.Directory).Any())
             {
@@ -151,6 +157,26 @@ namespace SRCCore
                 GUI.ErrorMessage("Soundフォルダ内にファイルがありません。" + Environment.NewLine + "Soundフォルダ内に効果音集をインストールしてください。");
                 TerminateSRC();
                 return;
+            }
+        }
+
+        // 素材の不足をログに残す（AllowMissingAssets の場合）
+        private void WarnMissingAssets()
+        {
+            var checks = new[]
+            {
+                (Path: FileSystem.PathCombine(AppPath, "Bitmap", "Map"), Name: "汎用グラフィック集（Bitmap\\Map）"),
+                (Path: FileSystem.PathCombine(AppPath, "Bitmap", "Anime"), Name: "汎用戦闘アニメ画像（Bitmap\\Anime）"),
+                (Path: FileSystem.PathCombine(AppPath, "Sound"), Name: "効果音集（Sound）"),
+            };
+            foreach (var check in checks)
+            {
+                var parent = System.IO.Path.GetDirectoryName(check.Path);
+                var name = System.IO.Path.GetFileName(check.Path);
+                if (!FileSystem.GetFileSystemEntries(parent, name, EntryOption.Directory).Any())
+                {
+                    LogInfo(check.Name + "が見つかりません。素材なしで実行します");
+                }
             }
         }
 
@@ -702,6 +728,10 @@ namespace SRCCore
             if (FileSystem.FileExists(appTerrainPath))
             {
                 TDList.Load(appTerrainPath);
+            }
+            else if (AllowMissingAssets)
+            {
+                LogInfo(@"地形データファイル「Data\System\terrain.txt」が見つかりません。マップの地形は仮の地形として読み込みます");
             }
             else
             {

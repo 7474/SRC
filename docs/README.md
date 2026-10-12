@@ -15,6 +15,10 @@
 - **[GUI 実装移行の検討](./gui/gui-migration-study.md)** — WinForms から新規 GUI 実装へ移行する場合の候補比較と移行手順
 - **[E2E テスト方針](./gui/e2e-testing.md)** — テスト用コーパスをヘッドレスでプレイする E2E テストと VRT の方針
 
+### 📦 素材 / Assets
+
+- **[素材データの再配布の検討](./assets/redistribution-study.md)** — 汎用グラフィック集・戦闘アニメ・効果音などの再配布可否と、素材なしで動かす対応
+
 ## 🔗 関連リンク / Related Links
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — 貢献ガイドライン

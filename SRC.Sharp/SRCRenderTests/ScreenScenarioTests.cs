@@ -98,6 +98,11 @@ namespace SRCRender.Tests
             {
                 Assert.Inconclusive("VRT の基準環境ではありません");
             }
+            if (VisualAssert.IsUpdateMode)
+            {
+                // 基準画像を上書きしてしまうため、更新モードでは実行しない
+                Assert.Inconclusive("基準画像の更新中です");
+            }
             using (var runner = new ScreenScenarioRunner(workspace.AppPath))
             {
                 runner.Start(Path.Combine(workspace.AppPath, "test.eve"));

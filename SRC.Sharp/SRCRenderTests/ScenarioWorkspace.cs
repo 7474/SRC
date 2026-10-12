@@ -11,9 +11,15 @@ namespace SRCRender.Tests
     {
         private static readonly Encoding Utf8 = new UTF8Encoding(false);
 
-        public ScenarioWorkspace()
+        /// <param name="withAssets">false の場合は素材（Bitmap / Sound / 地形データ）を置かない</param>
+        public ScenarioWorkspace(bool withAssets = true)
         {
             AppPath = Path.Combine(Path.GetTempPath(), "srcs-render-" + Guid.NewGuid());
+            Directory.CreateDirectory(AppPath);
+            if (!withAssets)
+            {
+                return;
+            }
             Directory.CreateDirectory(Path.Combine(AppPath, "Bitmap", "Event"));
             Directory.CreateDirectory(Path.Combine(AppPath, "Bitmap", "Map"));
             File.WriteAllBytes(Path.Combine(AppPath, "Bitmap", "Map", "plain0000.bmp"), new byte[0]);

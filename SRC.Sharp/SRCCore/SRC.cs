@@ -20,6 +20,12 @@ namespace SRCCore
         public ILogger Log { get; private set; }
 
         public IGUI GUI { get; set; }
+
+        /// <summary>
+        /// 汎用グラフィック集・効果音集・地形データなどの素材が無くても実行を続けるか。
+        /// true の場合、素材の不足は警告ログに留め、地形データが無いマップは仮の地形で読み込む。
+        /// </summary>
+        public bool AllowMissingAssets { get; set; }
         public IGUIMap GUIMap { get; set; }
         public IGUIStatus GUIStatus { get; set; }
         public IGUIScrean GUIScrean { get; set; }

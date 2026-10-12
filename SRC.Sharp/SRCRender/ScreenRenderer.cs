@@ -132,8 +132,14 @@ namespace SRCRender
                         }
                         else
                         {
-                            paint.Color = TerrainColor(cell);
+                            // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                            paint.Style = SKPaintStyle.Fill;
+                            paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
                             canvas.DrawRect(rect, paint);
+                            paint.Style = SKPaintStyle.Stroke;
+                            paint.Color = new SKColor(0, 0, 0, 0x40);
+                            canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
+                            paint.Style = SKPaintStyle.Fill;
                         }
                         var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell)));
                         if (layer != null)
@@ -169,6 +175,12 @@ namespace SRCRender
             {
                 return null;
             }
+        }
+
+        private static SKColor Shade(SKColor color, float amount)
+        {
+            byte Adjust(byte c) => (byte)Math.Max(0, Math.Min(255, c + c * amount));
+            return new SKColor(Adjust(color.Red), Adjust(color.Green), Adjust(color.Blue), color.Alpha);
         }
 
         private static SKColor TerrainColor(MapCell cell)

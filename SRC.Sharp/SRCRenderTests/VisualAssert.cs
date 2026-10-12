@@ -35,6 +35,9 @@ namespace SRCRender.Tests
             }
         }
 
+        /// <summary>基準画像を更新するモードか（環境変数 SRC_VRT_UPDATE=1）</summary>
+        public static bool IsUpdateMode => Environment.GetEnvironmentVariable("SRC_VRT_UPDATE") == "1";
+
         public static void MatchesBaseline(byte[] actualPng, string name, [CallerFilePath] string callerPath = "")
         {
             var baselineDir = Path.Combine(Path.GetDirectoryName(callerPath), "Baselines");
@@ -47,7 +50,7 @@ namespace SRCRender.Tests
             {
                 Assert.Inconclusive($"{ScreenRenderer.PreferredFontFamily} が無い環境のため VRT の比較を行いません（{name}）");
             }
-            if (Environment.GetEnvironmentVariable("SRC_VRT_UPDATE") == "1")
+            if (IsUpdateMode)
             {
                 Directory.CreateDirectory(baselineDir);
                 File.WriteAllBytes(baselinePath, actualPng);
