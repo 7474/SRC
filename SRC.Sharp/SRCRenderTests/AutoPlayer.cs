@@ -24,6 +24,19 @@ namespace SRCRender.Tests
         public IList<string> Messages { get; } = new List<string>();
         public int Steps { get; private set; }
 
+        /// <summary>待ちの状態でないまま、この時間操作が無ければボタンを押す（ミリ秒）</summary>
+        public int StallClickMillis { get; set; } = 5000;
+
+        /// <summary>そのときに押す位置（既定はステータス欄。マップの操作にならない場所）</summary>
+        public float StallClickX { get; set; } = 600;
+        public float StallClickY { get; set; } = 300;
+
+        /// <summary>ボタンを押した回数</summary>
+        public int Stalls { get; private set; }
+
+        /// <summary>進行状況の通知（監視用）</summary>
+        public Action<string> Trace { get; set; }
+
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
         public string SnapshotDirectory { get; set; }
 
@@ -57,6 +70,7 @@ namespace SRCRender.Tests
             var gui = runner.GUI;
             var idleSince = DateTime.UtcNow;
             var lastFrame = runner.FrameCount;
+            var lastActed = DateTime.UtcNow;
             while (Steps < maxSteps && !runner.IsFinished)
             {
                 var state = runner.State;
@@ -120,6 +134,18 @@ namespace SRCRender.Tests
                     acted = true;
                     Thread.Sleep(30);
                 }
+                else if ((DateTime.UtcNow - lastActed).TotalMilliseconds > StallClickMillis)
+                {
+                    // 待ちの状態でないまま進まない（KeyState でボタンが押されるのを待つループなど）。
+                    // 人の操作と同じく、ボタンを押してしばらく保ってから離す
+                    Trace?.Invoke("stall: hold left button");
+                    Snapshot("stall");
+                    gui.PointerPressed(StallClickX, StallClickY, GuiButton.Left);
+                    Thread.Sleep(300);
+                    gui.PointerReleased(StallClickX, StallClickY, GuiButton.Left);
+                    Stalls++;
+                    acted = true;
+                }
 
                 if (runner.FrameCount != lastFrame)
                 {
@@ -131,6 +157,8 @@ namespace SRCRender.Tests
                 {
                     Steps++;
                     idleSince = DateTime.UtcNow;
+                    lastActed = DateTime.UtcNow;
+                    Trace?.Invoke($"step {Steps}");
                 }
                 else
                 {
