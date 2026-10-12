@@ -159,7 +159,7 @@ namespace SRCRender
             }
             else if (onStatusWindow)
             {
-                target = statusBuffer;
+                target = picUnitStatus.NewImageIfNull().Image;
             }
             else if (permanent)
             {

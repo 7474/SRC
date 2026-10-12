@@ -58,6 +58,9 @@ namespace SRCRender.Compat
         /// <summary>ピクセル単位のサイズ</summary>
         public float SizeInPixels => Unit == GraphicsUnit.Pixel ? Size : Size * 96f / 72f;
 
+        /// <summary>行の高さ（ピクセル、切り上げ）</summary>
+        public int Height => (int)Math.Ceiling(GetHeight());
+
         /// <summary>行の高さ（ピクセル）</summary>
         public float GetHeight(Graphics g = null)
         {
@@ -160,12 +163,17 @@ namespace SRCRender.Compat
             DrawString(s, font, brush, point.X, point.Y);
         }
 
+        /// <summary>改行を含む場合は複数行で描く（GDI+ と同じ）。</summary>
         public void DrawString(string s, Font font, Brush brush, float x, float y)
         {
             using (var skFont = font.ToSKFont())
             using (var paint = new SKPaint { Color = ToSKColor(brush.Color), IsAntialias = true })
             {
-                canvas.DrawText(s ?? "", x, y - skFont.Metrics.Ascent, SKTextAlign.Left, skFont, paint);
+                foreach (var line in SplitLines(s))
+                {
+                    canvas.DrawText(line, x, y - skFont.Metrics.Ascent, SKTextAlign.Left, skFont, paint);
+                    y += skFont.Spacing;
+                }
             }
         }
 
@@ -173,8 +181,44 @@ namespace SRCRender.Compat
         {
             using (var skFont = font.ToSKFont())
             {
-                return new SizeF(skFont.MeasureText(s ?? ""), skFont.Spacing);
+                var lines = SplitLines(s);
+                var width = 0f;
+                foreach (var line in lines)
+                {
+                    width = Math.Max(width, skFont.MeasureText(line));
+                }
+                return new SizeF(width, skFont.Spacing * Math.Max(1, lines.Length));
             }
+        }
+
+        private static string[] SplitLines(string s)
+        {
+            return (s ?? "").Replace("\r\n", "\n").Replace('\r', '\n').TrimEnd('\n').Split('\n');
+        }
+
+        public void DrawImage(SKBitmap image, float x, float y)
+        {
+            canvas.DrawBitmap(image, x, y);
+        }
+
+        public void DrawImage(SKBitmap image, Rectangle destRect)
+        {
+            canvas.DrawBitmap(image, SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height));
+        }
+
+        /// <summary>image の srcRect の部分を (x, y) に等倍で描く。</summary>
+        public void DrawImage(SKBitmap image, float x, float y, Rectangle srcRect, GraphicsUnit unit)
+        {
+            canvas.DrawBitmap(image,
+                SKRect.Create(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height),
+                SKRect.Create(x, y, srcRect.Width, srcRect.Height));
+        }
+
+        public void DrawImage(SKBitmap image, Rectangle destRect, Rectangle srcRect, GraphicsUnit unit)
+        {
+            canvas.DrawBitmap(image,
+                SKRect.Create(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height),
+                SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height));
         }
 
         public void Dispose()
@@ -197,6 +241,13 @@ namespace SRCRender.Compat
         {
             g.FillRectangle(back, rect);
             g.FillRectangle(fore, rect.Left, rect.Top, rect.Width * ratio, rect.Height);
+        }
+
+        public static void DrawBarWithShadow(this Graphics g, RectangleF rect, float ratio, Brush back, Brush fore, Brush light, Brush dark)
+        {
+            g.FillRectangle(light, rect);
+            g.FillRectangle(dark, new RectangleF(rect.Left, rect.Top, rect.Width - 1, rect.Height - 1));
+            g.DrawBar(new RectangleF(rect.Left + 1, rect.Top + 1, rect.Width - 2, rect.Height - 2), ratio, back, fore);
         }
     }
 

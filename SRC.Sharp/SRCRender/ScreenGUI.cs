@@ -55,6 +55,12 @@ namespace SRCRender
         private Unit _savedLeftUnit;
         private Unit _savedRightUnit;
 
+        // ステータスウィンドウ（WinForms 版の frmMain の picFace / picPilotStatus / picUnitStatus に相当）。
+        // 位置は ScreenLayout.StatusArea からの相対座標
+        private readonly Compat.PictureBox picFace = new Compat.PictureBox { Left = 4, Top = 4, Width = 68, Height = 68, StretchImage = true };
+        private readonly Compat.PictureBox picPilotStatus = new Compat.PictureBox { Left = 76, Top = 4, Width = 155, Height = 72 };
+        private readonly Compat.PictureBox picUnitStatus = new Compat.PictureBox { Left = 4, Top = 76, Width = 230, Height = ScreenLayout.StatusHeightPx - 76 };
+
         /// <summary>メッセージウィンドウ</summary>
         public Compat.MessageWindow MessageWindow => frmMessage;
 
@@ -64,6 +70,9 @@ namespace SRCRender
             this.game = game;
             this.host = host;
             frmMessage.SetRefreshHandler(Present);
+            picFace.Refreshed = Present;
+            picPilotStatus.Refreshed = Present;
+            picUnitStatus.Refreshed = Present;
             MainWidth = ScreenLayout.MapColumns;
             MainHeight = ScreenLayout.MapRows;
             MessageWait = 700;
@@ -78,6 +87,9 @@ namespace SRCRender
         private Map Map => src.Map;
         // WinForms 版から移植したコードとの互換のため
         private SRC SRC => src;
+        private IGUI GUI => this;
+        private const int MapCellPx = ScreenLayout.CellPx;
+        private SKBitmap BackgroundBuffer => backgroundBuffer;
         private SRCCore.Expressions.Expression Expression => src.Expression;
         private Sound Sound => src.Sound;
         private SRCCore.Events.Event Event => src.Event;
@@ -100,7 +112,6 @@ namespace SRCRender
             renderer.Dispose();
             frame.Dispose();
             DisposeMapBuffers();
-            statusBuffer.Dispose();
         }
 
         #region 描画
@@ -116,7 +127,7 @@ namespace SRCRender
                 State.MapY = MapY;
                 using (var canvas = new SKCanvas(frame))
                 {
-                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, statusBuffer, frmMessage));
+                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, new[] { picFace, picPilotStatus, picUnitStatus }, frmMessage));
                 }
                 host.Present(frame);
             }
@@ -306,10 +317,13 @@ namespace SRCRender
             }
         }
 
+        private (int x, int y) lastHoverCell;
+
         public void PointerMoved(float x, float y)
         {
             MouseX = x;
             MouseY = y;
+            HoverMap((int)x, (int)y);
             var list = State.List;
             if (list != null)
             {
@@ -331,6 +345,45 @@ namespace SRCRender
                     game.Post(Present);
                 }
             }
+        }
+
+        /// <summary>
+        /// マップ上にカーソルがあるとき、そのマスのユニットまたは地形のステータスを表示する（WinForms 版の MouseMove と同じ）。
+        /// </summary>
+        private void HoverMap(int x, int y)
+        {
+            if (IsGUILocked || State.List != null || State.Menu != null || State.Dialog != null || !ScreenLayout.IsInMap(x, y))
+            {
+                return;
+            }
+            if (Map == null || Map.MapWidth < 15 || Map.MapHeight < 15)
+            {
+                return;
+            }
+            var cell = (x: PixelToMapX(x), y: PixelToMapY(y));
+            if (cell == lastHoverCell)
+            {
+                return;
+            }
+            lastHoverCell = cell;
+            game.Post(() =>
+            {
+                if (IsGUILocked || !Map.IsInside(cell.x, cell.y))
+                {
+                    return;
+                }
+                if (Map.UnitAtPoint(cell.x, cell.y) == null)
+                {
+                    if (!Map.IsStatusView)
+                    {
+                        DisplayGlobalStatus();
+                    }
+                }
+                else
+                {
+                    InstantUnitStatusDisplay(cell.x, cell.y);
+                }
+            });
         }
 
         /// <summary>

@@ -81,7 +81,7 @@ namespace SRCRender
         /// </summary>
         public struct ScreenLayers
         {
-            public ScreenLayers(SKBitmap map, SKBitmap status, Compat.MessageWindow message)
+            public ScreenLayers(SKBitmap map, Compat.PictureBox[] status, Compat.MessageWindow message)
             {
                 Map = map;
                 Status = status;
@@ -90,8 +90,8 @@ namespace SRCRender
 
             /// <summary>マップ表示領域（ScreenLayout.MapArea の大きさ）</summary>
             public SKBitmap Map { get; }
-            /// <summary>ステータス表示領域（ScreenLayout.StatusArea の大きさ）</summary>
-            public SKBitmap Status { get; }
+            /// <summary>ステータスウィンドウの部品（ScreenLayout.StatusArea からの相対座標）</summary>
+            public Compat.PictureBox[] Status { get; }
             /// <summary>メッセージウィンドウ</summary>
             public Compat.MessageWindow Message { get; }
         }
@@ -237,23 +237,58 @@ namespace SRCRender
             }
         }
 
-        private void DrawStatus(SKCanvas canvas, SKBitmap status)
+        private static readonly SKColor FormGray = new SKColor(192, 192, 192);
+
+        private void DrawStatus(SKCanvas canvas, Compat.PictureBox[] pictures)
         {
-            using (var paint = new SKPaint { Color = new SKColor(0x20, 0x20, 0x28) })
+            using (var paint = new SKPaint { Color = FormGray })
             {
                 canvas.DrawRect(ScreenLayout.StatusArea, paint);
+                if (pictures == null)
+                {
+                    return;
+                }
+                canvas.Save();
+                canvas.Translate(ScreenLayout.StatusArea.Left, ScreenLayout.StatusArea.Top);
+                foreach (var picture in pictures)
+                {
+                    DrawPictureBox(canvas, picture, paint);
+                }
+                canvas.Restore();
             }
-            if (status != null)
+        }
+
+        private static void DrawPictureBox(SKCanvas canvas, Compat.PictureBox picture, SKPaint paint)
+        {
+            if (!picture.Visible)
             {
-                canvas.DrawBitmap(status, ScreenLayout.StatusArea.Left, ScreenLayout.StatusArea.Top);
+                return;
+            }
+            paint.Color = Compat.Graphics.ToSKColor(picture.BackColor);
+            canvas.DrawRect(picture.Left, picture.Top, picture.Width, picture.Height, paint);
+            if (picture.Image == null)
+            {
+                return;
+            }
+            if (picture.StretchImage)
+            {
+                canvas.DrawBitmap(picture.Image, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
+            }
+            else
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
+                canvas.DrawBitmap(picture.Image, picture.Left, picture.Top);
+                canvas.Restore();
             }
         }
 
         /// <summary>メッセージウィンドウの左上（画面座標）</summary>
         public SKPointI MessageWindowOrigin(Compat.MessageWindow window)
         {
+            // 元の SRC と同じくマップの下に左寄せで表示する
             var area = ScreenLayout.MessageArea;
-            return new SKPointI(area.Left + (area.Width - window.Width) / 2, area.Top + (area.Height - window.Height) / 2);
+            return new SKPointI(area.Left, area.Top + 2);
         }
 
         private void DrawMessageArea(SKCanvas canvas, Compat.MessageWindow window)
@@ -281,16 +316,7 @@ namespace SRCRender
 
                 foreach (var picture in new[] { window.picFace, window.picMessage, window.picUnit1, window.picUnit2, window.picHP1, window.picEN1, window.picHP2, window.picEN2 })
                 {
-                    if (!picture.Visible)
-                    {
-                        continue;
-                    }
-                    paint.Color = Compat.Graphics.ToSKColor(picture.BackColor);
-                    canvas.DrawRect(picture.Left, picture.Top, picture.Width, picture.Height, paint);
-                    if (picture.Image != null)
-                    {
-                        canvas.DrawBitmap(picture.Image, picture.Left, picture.Top);
-                    }
+                    DrawPictureBox(canvas, picture, paint);
                 }
                 foreach (var label in new[] { window.labHP1, window.labEN1, window.labHP2, window.labEN2, window.txtHP1, window.txtEN1, window.txtHP2, window.txtEN2 })
                 {

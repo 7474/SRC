@@ -34,6 +34,9 @@ namespace SRCRender.Compat
     {
         public SKBitmap Image { get; set; }
 
+        /// <summary>画像を枠の大きさに拡大縮小して表示するか（PictureBoxSizeMode.StretchImage）</summary>
+        public bool StretchImage { get; set; }
+
         public PictureBox NewImageIfNull()
         {
             if (Image == null || Image.Width != Width || Image.Height != Height)
