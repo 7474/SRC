@@ -4,7 +4,7 @@ title: SRC#Help（SRCシャープ）
 ---
 # SRC#Help（SRCシャープ）
 
-SRC#Form（SRCシャープ）のヘルプです。
+SRC#Form（SRCシャープForm）のヘルプです。
 
 ** 2021-07-03現在ほぼSRC2.2.33の内容を変換したものに2.3系の内容を一部取り込んだだけのものです **
 
