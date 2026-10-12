@@ -1,5 +1,6 @@
 using SRCCore;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -34,6 +35,9 @@ namespace SRCRender.Tests
         {
             (240, 240), (130, 130), (350, 230), (240, 380), (240, 472), (600, 300),
         };
+
+        private string lastListSignature;
+        private int listRepeats;
 
         /// <summary>ボタンを押した回数</summary>
         public int Stalls { get; private set; }
@@ -99,7 +103,16 @@ namespace SRCRender.Tests
                     }
                     else
                     {
+                        // 同じリストが続けて出る場合（選んだ結果で元に戻るなど）は、次の有効な項目を選ぶ
+                        var signature = list.Caption + "\n" + list.Info + "\n" + string.Join("\n", list.Items.Select(x => x.Text));
+                        listRepeats = signature == lastListSignature ? listRepeats + 1 : 0;
+                        lastListSignature = signature;
                         var index = ChooseList(list);
+                        if (index >= 0 && listRepeats > 0)
+                        {
+                            var enabled = Enumerable.Range(0, list.Items.Count).Where(i => !list.Items[i].Disabled).ToList();
+                            index = enabled[(enabled.IndexOf(index) + listRepeats) % enabled.Count];
+                        }
                         if (index < 0)
                         {
                             gui.KeyPressed(ScreenKey.Escape);
