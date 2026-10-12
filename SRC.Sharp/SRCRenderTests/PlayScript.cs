@@ -325,7 +325,8 @@ namespace SRCRender.Tests
                         return true;
                     }
                 }
-                auto.Run(int.MaxValue, 3000, () => IsReady);
+                // 停滞時にボタンを押す（StallClickMillis）より長く待つ
+                auto.Run(int.MaxValue, 60000, () => IsReady);
             }
             return IsReady;
         }
