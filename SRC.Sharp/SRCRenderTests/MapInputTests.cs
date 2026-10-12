@@ -170,5 +170,55 @@ namespace SRCRender.Tests
                 Assert.AreEqual(SRCCore.GuiDialogResult.Ok, result);
             }
         }
+
+        [TestMethod]
+        public void MoveCursorPos_MovesToMessageWindowAndRestores()
+        {
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Talk システム",
+                "カーソルのテスト",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.CursorEnabled = true;
+                runner.CursorX = 100;
+                runner.CursorY = 100;
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        runner.GUI.SaveCursorPos();
+                        runner.GUI.MoveCursorPos("メッセージウィンドウ");
+                        done.Set();
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                // 少しずつ動かしてメッセージウィンドウの文字の部分で止まる
+                Assert.IsTrue(runner.CursorMoves.Count > 1, runner.CursorMoves.Count.ToString());
+                var origin = runner.GUI.Renderer.MessageWindowOrigin(runner.GUI.MessageWindow);
+                Assert.IsTrue(runner.CursorY >= origin.Y + runner.GUI.MessageWindow.picMessage.Top, runner.CursorY.ToString());
+                Assert.IsTrue(runner.CursorX >= origin.X, runner.CursorX.ToString());
+
+                // 元の位置に戻す
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        runner.GUI.RestoreCursorPos();
+                        done.Set();
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                Assert.AreEqual(100f, runner.CursorX, 0.5f);
+                Assert.AreEqual(100f, runner.CursorY, 0.5f);
+            }
+        }
     }
 }

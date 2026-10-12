@@ -26,9 +26,9 @@ jobs:
         dotnet-version: 10.0.x
 
     # VRT の基準画像は Noto Sans CJK JP で作成している
-    # MIDI の合成テストには SoundFont（TimGM6mb）を使う
+    # MIDI の合成テストには SoundFont（TimGM6mb）、カーソル移動のテストには Xvfb を使う
     - name: Install fonts and SoundFont
-      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
 
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
@@ -36,8 +36,9 @@ jobs:
     - name: Test SRCRender (E2E / VRT)
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
 
+    # マウスカーソルの移動（X11）を確かめるため Xvfb 上で実行する
     - name: Test SRC#Avalonia (headless)
-      run: dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
+      run: xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
 
     # 音声出力の無いランナーでは OpenAL Soft の null 出力を使う
     - name: Test SRCSound

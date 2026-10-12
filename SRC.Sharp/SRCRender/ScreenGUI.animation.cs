@@ -150,18 +150,141 @@ namespace SRCRender
 
         #region カーソル
 
-        // マウスカーソルを動かす処理は OS に依存するため行わない
+        // WinForms 版（SRCSharpFormGUI.cs）の移植。カーソルの操作はホスト（IScreenCursorHost）に任せ、座標は画面のピクセル座標で扱う。
+        private float PrevCursorX;
+        private float PrevCursorY;
+        private float NewCursorX;
+        private float NewCursorY;
+
+        private bool TryGetCursor(out float x, out float y)
+        {
+            if (host is IScreenCursorHost cursor && cursor.TryGetCursorPosition(out x, out y))
+            {
+                return true;
+            }
+            x = 0;
+            y = 0;
+            return false;
+        }
 
         public void SaveCursorPos()
         {
+            if (!TryGetCursor(out var x, out var y))
+            {
+                return;
+            }
+            PrevCursorX = x;
+            PrevCursorY = y;
+            NewCursorX = 0;
+            NewCursorY = 0;
+        }
+
+        /// <summary>カーソルを (tx, ty) まで step ピクセルごとに動かす。</summary>
+        private void AnimateCursor(float fromX, float fromY, float tx, float ty, int step)
+        {
+            var cursor = (IScreenCursorHost)host;
+            var num = (int)(Math.Sqrt(Math.Pow(tx - fromX, 2) + Math.Pow(ty - fromY, 2)) / step) + 1;
+            for (var i = 1; i <= num; i++)
+            {
+                if (!cursor.SetCursorPosition((tx * i + fromX * (num - i)) / num, (ty * i + fromY * (num - i)) / num))
+                {
+                    return;
+                }
+                Sleep(10, true);
+            }
         }
 
         public void MoveCursorPos(string cursor_mode, Unit t = null)
         {
+            // マウスカーソルの位置を収得
+            if (!TryGetCursor(out var posX, out var posY))
+            {
+                return;
+            }
+
+            // 現在のカーソル位置を記録
+            if (PrevCursorX == 0 && cursor_mode != "メッセージウィンドウ")
+            {
+                SaveCursorPos();
+            }
+
+            float tx, ty;
+            if (t is null)
+            {
+                if (cursor_mode == "メッセージウィンドウ")
+                {
+                    // メッセージウィンドウの文字の部分まで移動
+                    var origin = renderer.MessageWindowOrigin(frmMessage);
+                    var left = origin.X;
+                    var top = origin.Y;
+                    tx = Math.Min(Math.Max(posX, left + 0.05f * frmMessage.Width), left + 0.95f * frmMessage.Width);
+                    ty = Math.Min(Math.Max(posY, top + frmMessage.picMessage.Top), top + 0.9f * frmMessage.Height);
+                }
+                else
+                {
+                    // リストボックスの項目まで移動
+                    var w = frmListBox;
+                    tx = Math.Min(Math.Max(posX, w.ScreenLeft + 0.1f * w.Width), w.ScreenLeft + 0.9f * w.Width);
+                    int i;
+                    if (cursor_mode == "武器選択")
+                    {
+                        // 最後の使用可能な武器
+                        var item = listBoxItems?.LastOrDefault(x => !x.ListItemFlag && !(x.Text ?? "").Contains("援護攻撃："));
+                        i = item != null ? listBoxItems.IndexOf(item) + 1 : 1;
+                    }
+                    else
+                    {
+                        i = TopItem;
+                    }
+                    ty = w.ScreenTop + Compat.Form.TitleBarHeight + w.lstItems.Top + 2
+                        + w.lstItems.ItemHeight * (i - 1 - w.lstItems.TopIndex) + w.lstItems.ItemHeight / 2f;
+                }
+            }
+            else
+            {
+                // ユニット上まで移動
+                tx = MapToPixelX(t.x) + 24;
+                ty = MapToPixelY(t.y) + 20;
+            }
+
+            var prev_lock = IsGUILocked;
+            IsGUILocked = true;
+            AnimateCursor(posX, posY, tx, ty, 25);
+            IsGUILocked = prev_lock;
+
+            // 新しいカーソル位置を記録
+            if (NewCursorX == 0)
+            {
+                NewCursorX = tx;
+                NewCursorY = ty;
+            }
         }
 
         public void RestoreCursorPos()
         {
+            // ユニットが選択されていればその場所まで戻す
+            if (Commands.SelectedUnit?.Status == "出撃")
+            {
+                MoveCursorPos("ユニット選択", Commands.SelectedUnit);
+                return;
+            }
+
+            // 戻るべき位置が設定されていない？
+            if (PrevCursorX == 0 && PrevCursorY == 0)
+            {
+                return;
+            }
+            if (!TryGetCursor(out var posX, out var posY))
+            {
+                return;
+            }
+
+            // 以前の位置までカーソル自動移動
+            AnimateCursor(posX, posY, PrevCursorX, PrevCursorY, 50);
+
+            // 戻り位置を初期化
+            PrevCursorX = 0;
+            PrevCursorY = 0;
         }
 
         #endregion

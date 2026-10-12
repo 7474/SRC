@@ -10,7 +10,7 @@ namespace SRCRender.Tests
     /// <summary>
     /// ScreenGUI でシナリオを実行し、画面の状態を見ながら入力を与える。
     /// </summary>
-    public sealed class ScreenScenarioRunner : IScreenHost, IScreenDialogHost, IDisposable
+    public sealed class ScreenScenarioRunner : IScreenHost, IScreenDialogHost, IScreenCursorHost, IDisposable
     {
         public static readonly TimeSpan Timeout = TimeSpan.FromSeconds(20);
 
@@ -204,6 +204,32 @@ namespace SRCRender.Tests
         public System.Threading.Tasks.Task<string> SaveFileAsync(FileDialogRequest request)
         {
             return System.Threading.Tasks.Task.Run(() => SaveFileHandler(request));
+        }
+
+        /// <summary>カーソルを動かせるホストとして振る舞うか（既定は動かせない）</summary>
+        public bool CursorEnabled { get; set; }
+        public float CursorX { get; set; }
+        public float CursorY { get; set; }
+        /// <summary>SetCursorPosition で動かした位置の履歴</summary>
+        public System.Collections.Concurrent.ConcurrentQueue<(float x, float y)> CursorMoves { get; } = new System.Collections.Concurrent.ConcurrentQueue<(float x, float y)>();
+
+        public bool TryGetCursorPosition(out float x, out float y)
+        {
+            x = CursorX;
+            y = CursorY;
+            return CursorEnabled;
+        }
+
+        public bool SetCursorPosition(float x, float y)
+        {
+            if (!CursorEnabled)
+            {
+                return false;
+            }
+            CursorX = x;
+            CursorY = y;
+            CursorMoves.Enqueue((x, y));
+            return true;
         }
 
         public void Dispose()

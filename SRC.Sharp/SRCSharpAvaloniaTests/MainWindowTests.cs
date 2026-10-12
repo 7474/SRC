@@ -233,5 +233,19 @@ namespace SRCSharpAvalonia.Tests
             Assert.AreEqual(0x70, VirtualKeys.FromKey(Key.F1));
             Assert.AreEqual(0, VirtualKeys.FromKey(Key.None));
         }
+
+        [TestMethod]
+        public void NativeCursor_MovesOsCursor()
+        {
+            // 実際の画面（Linux では X11 / Xvfb）がある環境でのみ確かめる
+            if (!NativeCursor.TryGetPosition(out _, out _))
+            {
+                Assert.Inconclusive("カーソルを扱える画面がありません（Linux では DISPLAY が必要）");
+            }
+            Assert.IsTrue(NativeCursor.SetPosition(123, 45));
+            Assert.IsTrue(NativeCursor.TryGetPosition(out var x, out var y));
+            Assert.AreEqual(123, x);
+            Assert.AreEqual(45, y);
+        }
     }
 }

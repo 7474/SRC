@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SRCSharpAvalonia
 {
-    public class MainWindow : Window, IScreenHost, IScreenDialogHost
+    public class MainWindow : Window, IScreenHost, IScreenDialogHost, IScreenCursorHost
     {
         public const string AppTitle = "SRC#Avalonia";
 
@@ -44,6 +45,43 @@ namespace SRCSharpAvalonia
         public bool Terminate()
         {
             return TerminateHandler?.Invoke() ?? true;
+        }
+
+        public bool TryGetCursorPosition(out float x, out float y)
+        {
+            var result = Dispatcher.UIThread.Invoke(() =>
+            {
+                if (!NativeCursor.TryGetPosition(out var sx, out var sy))
+                {
+                    return ((float, float)?)null;
+                }
+                var p = View.PointToClient(ToPixelPoint(sx, sy));
+                return ((float)p.X, (float)p.Y);
+            });
+            x = result?.Item1 ?? 0;
+            y = result?.Item2 ?? 0;
+            return result.HasValue;
+        }
+
+        public bool SetCursorPosition(float x, float y)
+        {
+            return Dispatcher.UIThread.Invoke(() =>
+            {
+                var p = View.PointToScreen(new Avalonia.Point(x, y));
+                if (OperatingSystem.IsMacOS())
+                {
+                    // macOS の CoreGraphics はポイント単位
+                    return NativeCursor.SetPosition((int)Math.Round(p.X / RenderScaling), (int)Math.Round(p.Y / RenderScaling));
+                }
+                return NativeCursor.SetPosition(p.X, p.Y);
+            });
+        }
+
+        private Avalonia.PixelPoint ToPixelPoint(int x, int y)
+        {
+            return OperatingSystem.IsMacOS()
+                ? new Avalonia.PixelPoint((int)Math.Round(x * RenderScaling), (int)Math.Round(y * RenderScaling))
+                : new Avalonia.PixelPoint(x, y);
         }
 
         public Task<string> InputTextAsync(string title, string message, string defaultValue)
