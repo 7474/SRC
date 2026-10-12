@@ -127,6 +127,18 @@ namespace SRCCore.Commands.Tests
         }
 
         [TestMethod]
+        public void ProceedInput_RightClick_CommandSelectState_ClearsSelectedCommand()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            src.Commands.SelectedCommand = "移動";
+
+            src.Commands.ProceedInput(GuiButton.Right, null, null);
+
+            Assert.AreEqual("", src.Commands.SelectedCommand);
+        }
+
+        [TestMethod]
         public void ProceedInput_RightClick_NullCommandState_StateRemainsNull()
         {
             // null 状態 (= デフォルト) で右クリック → CancelCommand (no-op) → null のまま
@@ -193,6 +205,57 @@ namespace SRCCore.Commands.Tests
             src.Commands.ProceedCommand(by_cancel: true);
 
             Assert.IsFalse(mock.IsGUILocked);
+        }
+
+        [TestMethod]
+        public void ProceedCommand_UnknownCommandState_UnlocksGUIAndResetsFlags()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "不明な状態";
+            src.IsScenarioFinished = true;
+            src.IsCanceled = true;
+
+            src.Commands.ProceedCommand();
+
+            Assert.IsFalse(src.GUI.IsGUILocked);
+            Assert.IsFalse(src.IsScenarioFinished);
+            Assert.IsFalse(src.IsCanceled);
+        }
+
+        [TestMethod]
+        public void ProceedInput_RightClick_UnitSelect_ViewModeTrue_ExitsViewMode()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "ユニット選択";
+            src.Commands.ViewMode = true;
+
+            src.Commands.ProceedInput(GuiButton.Right, null, null);
+
+            Assert.IsFalse(src.Commands.ViewMode);
+        }
+
+        [TestMethod]
+        public void ProceedInput_LeftClick_UnknownState_ViewModeTrue_LeavesStateUnchanged()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "不明な状態";
+            src.Commands.ViewMode = true;
+
+            src.Commands.ProceedInput(GuiButton.Left, null, null);
+
+            Assert.AreEqual("不明な状態", src.Commands.CommandState);
+            Assert.IsTrue(src.Commands.ViewMode);
+        }
+
+        [TestMethod]
+        public void ProceedInput_NoneButton_LeavesStateUnchanged()
+        {
+            var src = CreateSrc();
+            src.Commands.CommandState = "ユニット選択";
+
+            src.Commands.ProceedInput(GuiButton.None, null, null);
+
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
         }
     }
 }

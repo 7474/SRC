@@ -31,46 +31,6 @@ namespace SRCCore.Intermissions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void ExchangeFormCommand_EmptyUnitList_ShowsListBoxOnce()
-        {
-            var (src, gui) = CreateSrc();
-            int callCount = 0;
-            gui.ListBoxHandler = _ => { callCount++; return 0; };
-
-            var im = new InterMission(src);
-            im.ExchangeFormCommand();
-
-            Assert.AreEqual(1, callCount, "換装可能ユニットがなくても ListBox は一度呼ばれるべき");
-        }
-
-        [TestMethod]
-        public void ExchangeFormCommand_EmptyUnitList_Cancel_CompletesWithoutError()
-        {
-            var (src, gui) = CreateSrc();
-            gui.ListBoxHandler = _ => 0;
-
-            var im = new InterMission(src);
-            // 例外が発生しないことを確認
-            im.ExchangeFormCommand();
-        }
-
-        // ──────────────────────────────────────────────
-        // ユニット選択でキャンセル (ret=0)
-        // ──────────────────────────────────────────────
-
-        [TestMethod]
-        public void ExchangeFormCommand_UnitSelectCancel_ReturnImmediately()
-        {
-            var (src, gui) = CreateSrc();
-            // ret=0 → 即 return
-            gui.ListBoxHandler = _ => 0;
-
-            var im = new InterMission(src);
-            im.ExchangeFormCommand();
-            // ここまで到達すれば正常終了
-        }
-
-        [TestMethod]
         public void ExchangeFormCommand_UnitSelectCancel_ListBoxCalledExactlyOnce()
         {
             var (src, gui) = CreateSrc();
@@ -81,6 +41,34 @@ namespace SRCCore.Intermissions.Tests
             im.ExchangeFormCommand();
 
             Assert.AreEqual(1, count);
+        }
+
+        [TestMethod]
+        public void ExchangeFormCommand_UnitSelectCancel_DoesNotModifyUnitList()
+        {
+            var (src, gui) = CreateSrc();
+            gui.ListBoxHandler = _ => 0;
+            var unitCountBefore = src.UList.Items.Count;
+
+            new InterMission(src).ExchangeFormCommand();
+
+            Assert.AreEqual(unitCountBefore, src.UList.Items.Count);
+        }
+
+        [TestMethod]
+        public void ExchangeFormCommand_EmptyUnitList_ListBoxItemsAreEmpty()
+        {
+            var (src, gui) = CreateSrc();
+            int itemCount = -1;
+            gui.ListBoxHandler = args =>
+            {
+                itemCount = args.Items.Count;
+                return 0;
+            };
+
+            new InterMission(src).ExchangeFormCommand();
+
+            Assert.AreEqual(0, itemCount);
         }
 
         // ──────────────────────────────────────────────
