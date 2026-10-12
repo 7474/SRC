@@ -55,7 +55,20 @@ flowchart LR
 
 - **フォント**: ＭＳ 明朝・ＭＳ ゴシックが無い環境では、等幅の指定（ＭＳ 明朝・ＭＳ ゴシック）を Noto Sans Mono CJK JP、明朝系のプロポーショナル指定を Noto Serif CJK JP、それ以外を Noto Sans CJK JP で描く。空白で桁を揃えている表示（ステータス・武器一覧など）がずれないよう、等幅の指定は必ず等幅フォントにする。行の高さは ＭＳ 明朝と同じ 1em として扱う（Noto CJK の行の高さ 1.448em のままだと行がずれて下が見切れる）
 - **ウィンドウ**: リスト・設定変更・メッセージボックスは別ウィンドウではなく、画面内にタイトルバー付きの枠として描く
-- **マウスカーソルの自動移動**（設定の「マウスカーソルを自動的に移動する」）は、OS のカーソルを動かす手段が Avalonia に無いため行わない
+
+## マウスカーソルの自動移動
+
+設定「マウスカーソルを自動的に移動する」（メッセージ・リスト・ユニットへカーソルを動かす）は、Avalonia にカーソルを動かす API が無いため、OS の API を直接呼ぶ（`SRCSharpAvalonia/NativeCursor.cs`）。`ScreenGUI` は WinForms 版の `MoveCursorPos` / `RestoreCursorPos` を移植し、カーソルの操作は `IScreenCursorHost` でホストに任せる。
+
+| OS | API |
+|---|---|
+| Windows | user32 の [SetCursorPos](https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-setcursorpos) / GetCursorPos |
+| macOS | CoreGraphics の [CGWarpMouseCursorPosition](https://developer.apple.com/documentation/coregraphics/1456387-cgwarpmousecursorposition) / CGEventGetLocation |
+| Linux（X11 / XWayland） | libX11 の [XWarpPointer](https://www.x.org/releases/current/doc/man/man3/XWarpPointer.3.xhtml) / XQueryPointer |
+
+- Wayland のネイティブ環境はアプリからカーソルを動かせないため、何もしない
+- macOS はアクセシビリティの許可が無いとカーソルを動かせない場合がある
+- Linux（Xvfb）でカーソルが動くことを `SRCSharpAvaloniaTests` で確認している。Windows・macOS の実機では未確認
 
 ## 音声（SRCSound）
 
