@@ -10,6 +10,10 @@
 
 - **[移植ドキュメント](./porting/README.md)** — 移植計画・評価・品質向上計画など
 
+### 🖥️ GUI / GUI
+
+- **[GUI 実装移行の検討](./gui/gui-migration-study.md)** — WinForms から新規 GUI 実装へ移行する場合の候補比較と移行手順
+
 ## 🔗 関連リンク / Related Links
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — 貢献ガイドライン
