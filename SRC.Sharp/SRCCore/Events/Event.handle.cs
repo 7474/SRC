@@ -3,7 +3,6 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 
 namespace SRCCore.Events

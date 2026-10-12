@@ -57,7 +57,7 @@ namespace SRCCore.TestLib
         // ── 読み取り専用プロパティ (バッキングフィールド) ────────────────────────
         public bool MessageFormVisible { get; set; }
         public bool MainFormVisible { get; set; }
-        public Font CurrentPaintFont { get; set; }
+        public PaintFont CurrentPaintFont { get; set; } = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 16, Bold = true };
         public Color CurrentPaintColor { get; set; }
 
         // ── メソッドハンドラ ────────────────────────────────────────────────────
