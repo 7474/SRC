@@ -104,6 +104,17 @@ namespace SRCSharpAvalonia
             GUI?.PointerMoved((float)point.X, (float)point.Y);
         }
 
+        protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+        {
+            base.OnPointerWheelChanged(e);
+            var point = e.GetPosition(this);
+            var delta = Math.Sign(e.Delta.Y);
+            if (delta != 0)
+            {
+                GUI?.PointerWheel((float)point.X, (float)point.Y, delta);
+            }
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -112,6 +123,8 @@ namespace SRCSharpAvalonia
                 Key.Enter => ScreenKey.Enter,
                 Key.Space => ScreenKey.Enter,
                 Key.Escape => ScreenKey.Escape,
+                Key.Back => ScreenKey.Escape,
+                Key.Delete => ScreenKey.Escape,
                 Key.Left => ScreenKey.Left,
                 Key.Right => ScreenKey.Right,
                 Key.Up => ScreenKey.Up,

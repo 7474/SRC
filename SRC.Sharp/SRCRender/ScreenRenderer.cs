@@ -14,9 +14,6 @@ namespace SRCRender
     /// </summary>
     public class ScreenRenderer : IDisposable
     {
-        private const int ListItemHeight = 22;
-        private const int ListCaptionHeight = 26;
-        private const int ListMaxVisibleItems = 16;
         private const int MenuItemHeight = 22;
         private const int MenuWidth = 168;
         private const int DialogWidth = 420;
@@ -352,34 +349,161 @@ namespace SRCRender
             }
         }
 
+        private static readonly SKColor WindowsHighlight = new SKColor(0, 0, 128);
+        private static readonly SKColor WindowsShadow = new SKColor(128, 128, 128);
+        private static readonly SKColor WindowsDarkShadow = new SKColor(64, 64, 64);
+        private static readonly Compat.Font ListTitleFont = new Compat.Font("ＭＳ Ｐゴシック", 9F, Compat.FontStyle.Bold);
+
+        /// <summary>
+        /// リストボックス（WinForms 版 frmListBox と同じ部品配置）を描く。
+        /// </summary>
         private void DrawList(SKCanvas canvas, ListState list)
         {
-            var layout = LayoutList(list);
-            using (var paint = new SKPaint())
+            var w = list.Window;
+            canvas.Save();
+            canvas.Translate(w.ScreenLeft, w.ScreenTop);
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                DrawPanel(canvas, layout.Box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(list.Caption ?? "", layout.Box.Left + 12, layout.Box.Top + 19, SKTextAlign.Left, boldFont, paint);
-                if (!string.IsNullOrEmpty(list.Info))
+                // 枠とタイトルバー
+                paint.Color = Compat.Graphics.ToSKColor(w.BackColor);
+                canvas.DrawRect(0, 0, w.Width, w.OuterHeight, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(1, 1, w.Width - 2, Compat.ListWindow.TitleBarHeight - 2, paint);
+                DrawBevel(canvas, SKRect.Create(0, 0, w.Width, w.OuterHeight), raised: true, paint);
+                using (var titleFont = ListTitleFont.ToSKFont())
                 {
-                    paint.Color = DisabledTextColor;
-                    canvas.DrawText(list.Info, layout.Box.Left + 12, layout.Box.Top + ListCaptionHeight + 16, SKTextAlign.Left, font, paint);
+                    paint.Color = SKColors.White;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(w.Text ?? "", 6, (Compat.ListWindow.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    paint.IsAntialias = false;
                 }
-                for (var i = 0; i < layout.VisibleCount; i++)
+
+                canvas.Translate(0, Compat.ListWindow.TitleBarHeight);
+                foreach (var picture in w.Pictures)
                 {
-                    var index = layout.Top + i;
-                    var item = list.Items[index];
-                    var rect = layout.ItemRect(i);
-                    if (index == list.Highlight)
-                    {
-                        paint.Color = HighlightColor;
-                        canvas.DrawRect(rect, paint);
-                    }
-                    paint.Color = item.Disabled ? DisabledTextColor : TextColor;
-                    canvas.DrawText(item.Text ?? "", rect.Left + 8, rect.Top + 16, SKTextAlign.Left, font, paint);
+                    DrawPictureBox(canvas, picture, paint);
                 }
+                foreach (var label in w.TextLabels)
+                {
+                    DrawLabel(canvas, label, paint);
+                }
+                DrawTextBox(canvas, w.labCaption, paint);
+                DrawTextBox(canvas, w.txtComment, paint);
+                DrawListBox(canvas, w.lstItems, paint);
             }
+            canvas.Restore();
+        }
+
+        private static void DrawLabel(SKCanvas canvas, Compat.Label label, SKPaint paint)
+        {
+            if (!label.Visible || string.IsNullOrEmpty(label.Text))
+            {
+                return;
+            }
+            using (var font = label.Font.ToSKFont())
+            {
+                paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                paint.IsAntialias = true;
+                canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                paint.IsAntialias = false;
+            }
+        }
+
+        /// <summary>白地でへこんだ枠の文字欄（Label / TextBox）。文字は縦中央に置く。</summary>
+        private static void DrawTextBox(SKCanvas canvas, Compat.Label label, SKPaint paint)
+        {
+            if (!label.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(label.Left, label.Top, label.Width, label.Height);
+            paint.Color = Compat.Graphics.ToSKColor(label.BackColor);
+            canvas.DrawRect(rect, paint);
+            DrawBevel(canvas, rect, raised: false, paint);
+            if (string.IsNullOrEmpty(label.Text))
+            {
+                return;
+            }
+            using (var font = label.Font.ToSKFont())
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, rect.Width - 4, rect.Height - 4));
+                paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                paint.IsAntialias = true;
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                var lines = label.Text.Replace("\r\n", "\n").Split('\n');
+                var y = lines.Length == 1 ? rect.Top + (rect.Height - lineHeight) / 2 : rect.Top + 3;
+                foreach (var line in lines)
+                {
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
+                }
+                paint.IsAntialias = false;
+                canvas.Restore();
+            }
+        }
+
+        private static void DrawListBox(SKCanvas canvas, Compat.ListBoxControl box, SKPaint paint)
+        {
+            if (!box.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(box.Left, box.Top, box.Width, box.Height);
+            paint.Color = Compat.Graphics.ToSKColor(box.BackColor);
+            canvas.DrawRect(rect, paint);
+            var itemsWidth = box.Width - (box.HasScrollBar ? Compat.ListBoxControl.ScrollBarWidth : 0);
+            using (var font = box.Font.ToSKFont())
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, itemsWidth - 4, rect.Height - 4));
+                for (var i = 0; i < box.VisibleRows + 1 && box.TopIndex + i < box.Items.Count; i++)
+                {
+                    var index = box.TopIndex + i;
+                    var top = rect.Top + 2 + i * box.ItemHeight;
+                    var selected = index == box.SelectedIndex;
+                    if (selected)
+                    {
+                        paint.Color = WindowsHighlight;
+                        canvas.DrawRect(rect.Left + 2, top, itemsWidth - 4, box.ItemHeight, paint);
+                    }
+                    paint.Color = selected ? SKColors.White : Compat.Graphics.ToSKColor(box.ForeColor);
+                    paint.IsAntialias = true;
+                    canvas.DrawText(box.Items[index] ?? "", rect.Left + 3, top + (box.ItemHeight - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
+                canvas.Restore();
+            }
+            if (box.HasScrollBar)
+            {
+                var bar = SKRect.Create(rect.Left + itemsWidth - 2, rect.Top + 2, Compat.ListBoxControl.ScrollBarWidth, rect.Height - 4);
+                paint.Color = new SKColor(224, 224, 224);
+                canvas.DrawRect(bar, paint);
+                var rows = box.VisibleRows;
+                var thumbHeight = Math.Max(8, bar.Height * rows / box.Items.Count);
+                var thumbTop = bar.Top + (bar.Height - thumbHeight) * box.TopIndex / Math.Max(1, box.Items.Count - rows);
+                var thumb = SKRect.Create(bar.Left, thumbTop, bar.Width, thumbHeight);
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(thumb, paint);
+                DrawBevel(canvas, thumb, raised: true, paint);
+            }
+            DrawBevel(canvas, rect, raised: false, paint);
+        }
+
+        /// <summary>Windows クラシックの立体枠。</summary>
+        private static void DrawBevel(SKCanvas canvas, SKRect rect, bool raised, SKPaint paint)
+        {
+            var light = raised ? SKColors.White : WindowsShadow;
+            var dark = raised ? WindowsDarkShadow : SKColors.White;
+            paint.Style = SKPaintStyle.Stroke;
+            paint.StrokeWidth = 1;
+            paint.Color = light;
+            canvas.DrawLine(rect.Left + 0.5f, rect.Bottom - 1, rect.Left + 0.5f, rect.Top + 0.5f, paint);
+            canvas.DrawLine(rect.Left + 0.5f, rect.Top + 0.5f, rect.Right - 1, rect.Top + 0.5f, paint);
+            paint.Color = dark;
+            canvas.DrawLine(rect.Right - 0.5f, rect.Top, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
+            canvas.DrawLine(rect.Left, rect.Bottom - 0.5f, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
+            paint.Style = SKPaintStyle.Fill;
         }
 
         private void DrawMenu(SKCanvas canvas, MenuState menu)
@@ -482,38 +606,33 @@ namespace SRCRender
         {
             public SKRect Box { get; set; }
             public float ItemsTop { get; set; }
+            public float ItemsLeft { get; set; }
+            public float ItemsWidth { get; set; }
+            public float ItemHeight { get; set; }
             public int Top { get; set; }
             public int VisibleCount { get; set; }
 
             public SKRect ItemRect(int visibleIndex)
             {
-                return SKRect.Create(Box.Left + 4, ItemsTop + visibleIndex * ListItemHeight, Box.Width - 8, ListItemHeight);
+                return SKRect.Create(ItemsLeft, ItemsTop + visibleIndex * ItemHeight, ItemsWidth, ItemHeight);
             }
         }
 
+        /// <summary>リストボックスの画面上の配置（項目の位置は画面座標）。</summary>
         public ListLayout LayoutList(ListState list)
         {
-            var visible = Math.Min(list.Items.Count, ListMaxVisibleItems);
-            var top = 0;
-            if (list.Highlight >= visible)
-            {
-                top = Math.Min(list.Highlight - visible + 1, list.Items.Count - visible);
-            }
-            var textWidth = new[] { boldFont.MeasureText(list.Caption ?? ""), font.MeasureText(list.Info ?? "") }
-                .Concat(list.Items.Select(x => font.MeasureText(x.Text ?? "")))
-                .DefaultIfEmpty(0)
-                .Max();
-            var width = Math.Min(ScreenLayout.Width - 32, Math.Max(200, textWidth + 32));
-            var infoHeight = string.IsNullOrEmpty(list.Info) ? 0 : ListItemHeight;
-            var height = ListCaptionHeight + infoHeight + visible * ListItemHeight + 8;
-            var left = Math.Max(16, (ScreenLayout.MapWidthPx - width) / 2);
-            var boxTop = Math.Max(16, (ScreenLayout.MapHeightPx - height) / 2);
+            var w = list.Window;
+            var box = w.lstItems;
+            var top = w.ScreenTop + Compat.ListWindow.TitleBarHeight;
             return new ListLayout
             {
-                Box = SKRect.Create(left, boxTop, width, height),
-                ItemsTop = boxTop + ListCaptionHeight + infoHeight,
-                Top = top,
-                VisibleCount = visible,
+                Box = SKRect.Create(w.ScreenLeft, w.ScreenTop, w.Width, w.OuterHeight),
+                ItemsLeft = w.ScreenLeft + box.Left + 2,
+                ItemsTop = top + box.Top + 2,
+                ItemsWidth = box.Width - 4 - (box.HasScrollBar ? Compat.ListBoxControl.ScrollBarWidth : 0),
+                ItemHeight = box.ItemHeight,
+                Top = box.TopIndex,
+                VisibleCount = Math.Min(box.VisibleRows, box.Items.Count - box.TopIndex),
             };
         }
 

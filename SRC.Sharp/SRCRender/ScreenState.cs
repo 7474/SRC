@@ -1,4 +1,6 @@
+using SRCCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCRender
 {
@@ -58,13 +60,31 @@ namespace SRCRender
         public bool Disabled { get; }
     }
 
+    /// <summary>
+    /// 表示中のリストボックス。描画と位置はリストボックスの部品（ListWindow）による。
+    /// </summary>
     public class ListState
     {
-        public string Caption { get; set; }
-        public string Info { get; set; }
-        public IList<ListItemState> Items { get; set; } = new List<ListItemState>();
+        public ListState(Compat.ListWindow window, IEnumerable<ListBoxItem> items, bool hasFlag)
+        {
+            Window = window;
+            Items = items.Select(x => new ListItemState(x.Text, hasFlag && x.ListItemFlag)).ToList();
+        }
+
+        public Compat.ListWindow Window { get; }
+        public string Caption => Window.Text;
+        public string Info => Window.labCaption.Text;
+        public IList<ListItemState> Items { get; }
         /// <summary>カーソル位置（0 始まり、-1 でなし）</summary>
-        public int Highlight { get; set; } = -1;
+        public int Highlight
+        {
+            get => Window.lstItems.SelectedIndex;
+            set
+            {
+                Window.lstItems.SelectedIndex = value;
+                Window.lstItems.EnsureVisible(value);
+            }
+        }
     }
 
     public class MenuState

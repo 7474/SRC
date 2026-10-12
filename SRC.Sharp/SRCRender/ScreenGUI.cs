@@ -36,7 +36,6 @@ namespace SRCRender
         // UI スレッドから更新される入力状態
         private volatile bool isFormClicked;
         private volatile bool isRightButtonDown;
-        private volatile int listResult = -1;
         private volatile int dialogResult = -1;
 
         // メッセージウィンドウ（WinForms 版の frmMessage に相当）
@@ -73,6 +72,7 @@ namespace SRCRender
             picFace.Refreshed = Present;
             picPilotStatus.Refreshed = Present;
             picUnitStatus.Refreshed = Present;
+            frmListBox.Refreshed = Present;
             MainWidth = ScreenLayout.MapColumns;
             MainHeight = ScreenLayout.MapRows;
             MessageWait = 700;
@@ -238,20 +238,12 @@ namespace SRCRender
                 }
             }
 
-            var list = State.List;
-            if (list != null && listResult < 0 && waitingList)
+            // リストボックスの選択待ち（右クリックはどこでもキャンセル）
+            if (State.List != null && waitingList)
             {
-                if (button == GuiButton.Right)
+                if (button == GuiButton.Right || frmListBox.Contains(x, y))
                 {
-                    listResult = 0;
-                }
-                else
-                {
-                    var index = renderer.HitTestList(list, x, y);
-                    if (index >= 0 && !list.Items[index].Disabled)
-                    {
-                        listResult = index + 1;
-                    }
+                    game.Post(() => ListBoxPointerPressed(x, y, button));
                 }
                 return;
             }
@@ -324,14 +316,11 @@ namespace SRCRender
             MouseX = x;
             MouseY = y;
             HoverMap((int)x, (int)y);
-            var list = State.List;
-            if (list != null)
+            if (State.List != null)
             {
-                var index = renderer.HitTestList(list, x, y);
-                if (index != list.Highlight)
+                if (frmListBox.Contains(x, y))
                 {
-                    list.Highlight = index;
-                    game.Post(Present);
+                    game.Post(() => ListBoxPointerMoved(x, y));
                 }
                 return;
             }
@@ -398,9 +387,9 @@ namespace SRCRender
                     {
                         dialogResult = 0;
                     }
-                    else if (State.List != null && waitingList && State.List.Highlight >= 0)
+                    else if (State.List != null && waitingList)
                     {
-                        listResult = State.List.Highlight + 1;
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else
                     {
@@ -411,7 +400,7 @@ namespace SRCRender
                 case ScreenKey.Escape:
                     if (State.List != null && waitingList)
                     {
-                        listResult = 0;
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else
                     {
@@ -425,10 +414,7 @@ namespace SRCRender
                 case ScreenKey.Down:
                     if (State.List != null && (key == ScreenKey.Up || key == ScreenKey.Down))
                     {
-                        var list = State.List;
-                        var next = list.Highlight + (key == ScreenKey.Down ? 1 : -1);
-                        list.Highlight = Math.Max(0, Math.Min(list.Items.Count - 1, next));
-                        game.Post(Present);
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else if (!IsGUILocked)
                     {
@@ -441,6 +427,17 @@ namespace SRCRender
                         });
                     }
                     break;
+            }
+        }
+
+        /// <summary>
+        /// マウスホイール。delta は上方向が正（1 ノッチで 1）。
+        /// </summary>
+        public void PointerWheel(float x, float y, int delta)
+        {
+            if (State.List != null && frmListBox.Contains(x, y))
+            {
+                game.Post(() => ListBoxWheel(delta));
             }
         }
 
