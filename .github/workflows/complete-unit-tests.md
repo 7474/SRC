@@ -34,13 +34,13 @@ network:
 
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v6
+    uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     with:
       fetch-depth: 0
       persist-credentials: false
 
   - name: Setup .NET
-    uses: actions/setup-dotnet@v5
+    uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
     with:
       dotnet-version: 10.0.x
 
