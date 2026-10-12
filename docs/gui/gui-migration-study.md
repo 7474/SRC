@@ -68,8 +68,10 @@ flowchart LR
 3. **スレッドモデル分離**（実装済み・Windows での確認待ち）: まず WinForms 上でゲームスレッド方式に切り替え、挙動不変を確認する。最大のリスク要因のため、新 UI 作成前に既存 UI で検証する
     - `SRCCore.Threading`（`GameThread` / `CoreThreadProxy` / `CoreThreading`）を追加し、SRC#Form は起動引数 `--game-thread` を付けた場合のみゲームスレッドで動く（既定は従来どおり）
     - Linux ではヘッドレス E2E テストでスレッド分離あり／なしの GUI 呼び出しが一致することを確認済み。詳細は [E2E テスト方針](./e2e-testing.md)
-4. **描画層の切り出し**: `SRCSharpFormGUI.draw.cs`、`Forms/Main.guimap.cs`、`Forms/Main.guiscrean.cs` を SkiaSharp ベースへ移す
-5. **Avalonia 版の作成**: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作る。メイン画面 → メッセージ → リストボックス類 → ステータス → 設定の順。UI テストは `Avalonia.Headless` で書き、WinAppDriver テストを置き換える
+4. **描画層の切り出し**（着手）: SkiaSharp で画面全体を描く `SRCRender` を新設した。WinForms 版の描画（`SRCSharpFormGUI.draw.cs`、`Forms/Main.guimap.cs`、`Forms/Main.guiscrean.cs`）はそのまま残し、新しいフロントエンドから使う
+    - 同等の操作感・表示感が得られればよいので、フォーム部品は使わず、マップ・メッセージ枠・選択肢・メニュー・ダイアログをすべて1枚の画面に描画する
+    - GUI 実装 `ScreenGUI`（`IGUI` / `IGUIMap` / `IGUIStatus` / `IGUIScrean`）も UI フレームワークに依存しない形で `SRCRender` に置く。待ちはゲームスレッドで行い、入力は `PointerPressed` などで受け取る
+5. **Avalonia 版の作成**（着手）: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作る。`SRCRender` の画面を表示し、入力を渡すだけの薄い層にする。UI テストは `Avalonia.Headless` で書く（[E2E テスト方針](./e2e-testing.md)）
 6. **音声の差し替え**: NAudio の出力部をクロスプラットフォームなライブラリ（OpenAL 系、SDL 系等）で `IPlaySound` の別実装として用意する
 7. **（任意）Web 版**: 3 で分離したゲームスレッドを、WASM 向けには `IGUI` の非同期版で置き換えるかをこの時点で判断する
 
