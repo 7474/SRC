@@ -148,6 +148,7 @@ namespace SRCRender.Tests
                 runner.GUI.PointerMoved(box.MidX, box.Top + 3 + 20 * 1 + 10);
                 runner.WaitFor(s => s.Menu.Highlight == 1, "highlight");
                 Assert.AreEqual(1, runner.GUI.Renderer.HitTestMenu(runner.State.Menu, box.MidX, box.Top + 3 + 20 * 1 + 10));
+                runner.Sync();
                 VisualAssert.MatchesBaseline(runner.SnapshotPng(), "map-03-menu");
                 runner.Session.Game.Post(() => runner.State.Menu = null);
                 runner.WaitFor(s => s.Menu == null, "menu closed");
@@ -161,6 +162,7 @@ namespace SRCRender.Tests
                     closed.Set();
                 });
                 runner.WaitFor(s => s.Dialog != null, "dialog");
+                runner.Sync();
                 VisualAssert.MatchesBaseline(runner.SnapshotPng(), "map-04-dialog");
                 var ok = runner.GUI.Renderer.LayoutDialog(runner.State.Dialog).ButtonRect(0);
                 runner.GUI.PointerPressed(ok.MidX, ok.MidY, GuiButton.Left);

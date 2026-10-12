@@ -104,8 +104,32 @@ namespace SRCRender.Tests
             WaitFor(s => s.List == null, "list closed");
         }
 
+        /// <summary>
+        /// それまでに UI からゲームスレッドへ渡した処理（描画を含む）が終わるまで待つ。
+        /// </summary>
+        public void Sync()
+        {
+            using (var done = new ManualResetEventSlim())
+            {
+                Session.Game.Post(done.Set);
+                if (!done.Wait(Timeout))
+                {
+                    throw new TimeoutException("timeout waiting for game thread");
+                }
+            }
+        }
+
         public byte[] SnapshotPng()
         {
+            // UI から渡した処理の描画を反映してから撮る（シナリオが終わっていれば待たない）
+            if (!IsFinished && !Session.Game.IsStopping)
+            {
+                using (var done = new ManualResetEventSlim())
+                {
+                    Session.Game.Post(done.Set);
+                    done.Wait(TimeSpan.FromSeconds(2));
+                }
+            }
             using (var stream = new MemoryStream())
             {
                 GUI.SnapshotPng(stream);
