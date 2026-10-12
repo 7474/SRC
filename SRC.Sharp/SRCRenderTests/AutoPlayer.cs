@@ -43,6 +43,15 @@ namespace SRCRender.Tests
         /// <summary>
         /// 入力待ちが idleMillis 続いたら終了する。終了・最大ステップ数でも終了する。
         /// </summary>
+        private void Click(Compat.Form form, Compat.Control control)
+        {
+            var x = form.ScreenLeft + control.Left + control.Width / 2f;
+            var y = form.ScreenTop + Compat.Form.TitleBarHeight + control.Top + control.Height / 2f;
+            runner.GUI.PointerPressed(x, y, GuiButton.Left);
+            runner.GUI.PointerReleased(x, y, GuiButton.Left);
+            Thread.Sleep(50);
+        }
+
         public void Run(int maxSteps, int idleMillis = 10000)
         {
             var gui = runner.GUI;
@@ -64,16 +73,24 @@ namespace SRCRender.Tests
                 {
                     var list = state.List;
                     Snapshot("list");
-                    var index = ChooseList(list);
-                    if (index < 0)
+                    if (list.Window is Compat.MultiSelectListWindow multiSelect)
                     {
-                        gui.KeyPressed(ScreenKey.Escape);
+                        // 出撃選択は「先頭から選択」して「終了」する
+                        Click(multiSelect, multiSelect.cmdSelectAll);
+                        Click(multiSelect, multiSelect.cmdFinish);
                     }
                     else
                     {
-                        var layout = gui.Renderer.LayoutList(list);
-                        list.Highlight = index;
-                        gui.KeyPressed(ScreenKey.Enter);
+                        var index = ChooseList(list);
+                        if (index < 0)
+                        {
+                            gui.KeyPressed(ScreenKey.Escape);
+                        }
+                        else
+                        {
+                            list.Highlight = index;
+                            gui.KeyPressed(ScreenKey.Enter);
+                        }
                     }
                     acted = WaitChange(() => runner.State.List != list || !gui.IsWaitingList);
                 }

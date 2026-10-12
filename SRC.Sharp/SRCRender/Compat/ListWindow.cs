@@ -16,36 +16,79 @@ namespace SRCRender.Compat
 
         public Font Font { get; set; }
         public int ItemHeight { get; set; } = 16;
+
+        /// <summary>複数列で表示するか（項目は列ごとに上から下へ並ぶ）</summary>
+        public bool MultiColumn { get; set; }
+        public int ColumnWidth { get; set; }
         public List<string> Items { get; } = new List<string>();
         public int SelectedIndex { get; set; } = -1;
 
         private int topIndex;
 
-        /// <summary>先頭に表示している項目（0 始まり）</summary>
+        /// <summary>先頭に表示している項目（0 始まり）。複数列では列の先頭の項目。</summary>
         public int TopIndex
         {
             get => topIndex;
-            set => topIndex = Math.Max(0, Math.Min(value, Math.Max(0, Items.Count - VisibleRows)));
+            set
+            {
+                var max = Math.Max(0, Items.Count - VisibleRows);
+                if (MultiColumn)
+                {
+                    var rows = Rows;
+                    var columns = (Items.Count + rows - 1) / rows;
+                    max = Math.Max(0, columns - VisibleColumns) * rows;
+                    value = value / rows * rows;
+                }
+                topIndex = Math.Max(0, Math.Min(value, max));
+            }
         }
 
-        /// <summary>一度に表示できる行数</summary>
-        public int VisibleRows => Math.Max(1, (Height - 4) / ItemHeight);
-
-        /// <summary>スクロールバーを表示するか</summary>
-        public bool HasScrollBar => Items.Count > VisibleRows;
-
         public const int ScrollBarWidth = 16;
+
+        /// <summary>1 列の行数</summary>
+        public int Rows => Math.Max(1, (Height - 4 - (MultiColumn && HasScrollBar ? ScrollBarWidth : 0)) / ItemHeight);
+
+        /// <summary>表示できる列数</summary>
+        public int VisibleColumns => MultiColumn ? Math.Max(1, (Width - 4) / ColumnWidth) : 1;
+
+        /// <summary>一度に表示できる項目数</summary>
+        public int VisibleRows => MultiColumn ? Rows * VisibleColumns : Math.Max(1, (Height - 4) / ItemHeight);
+
+        /// <summary>スクロールバーを表示するか（複数列では横、それ以外は縦）</summary>
+        public bool HasScrollBar => MultiColumn
+            ? Items.Count > Math.Max(1, (Height - 4) / ItemHeight) * VisibleColumns
+            : Items.Count > VisibleRows;
+
+        /// <summary>項目を表示する領域の幅</summary>
+        public int ItemsWidth => Width - 4 - (!MultiColumn && HasScrollBar ? ScrollBarWidth : 0);
+
+        /// <summary>項目の位置（ListBox 内の座標）。表示範囲外なら null。</summary>
+        public RectangleF? ItemBounds(int index)
+        {
+            var offset = index - TopIndex;
+            if (offset < 0 || offset >= VisibleRows || index >= Items.Count)
+            {
+                return null;
+            }
+            if (MultiColumn)
+            {
+                return new RectangleF(2 + offset / Rows * ColumnWidth, 2 + offset % Rows * ItemHeight, ColumnWidth, ItemHeight);
+            }
+            return new RectangleF(2, 2 + offset * ItemHeight, ItemsWidth, ItemHeight);
+        }
 
         /// <summary>ListBox 内の座標にある項目。無ければ -1。</summary>
         public int IndexFromPoint(float x, float y)
         {
-            if (x < 0 || y < 0 || x >= Width - (HasScrollBar ? ScrollBarWidth : 0) || y >= Height)
+            for (var index = TopIndex; index < Math.Min(Items.Count, TopIndex + VisibleRows); index++)
             {
-                return -1;
+                var rect = ItemBounds(index);
+                if (rect.HasValue && rect.Value.Contains(x, y))
+                {
+                    return index;
+                }
             }
-            // 枠（2px）の内側に項目を並べる
-            var index = TopIndex + (int)(Math.Max(0, y - 2) / ItemHeight);
-            return index < Items.Count ? index : -1;
+            return -1;
         }
 
         /// <summary>選択行が見えるように先頭行を調整する。</summary>
@@ -61,16 +104,157 @@ namespace SRCRender.Compat
             }
             else if (index >= TopIndex + VisibleRows)
             {
-                TopIndex = index - VisibleRows + 1;
+                TopIndex = MultiColumn ? index - VisibleRows + Rows : index - VisibleRows + 1;
             }
         }
+
+        /// <summary>1 ページ（複数列では 1 列）単位のスクロール。</summary>
+        public void Scroll(int pages)
+        {
+            TopIndex += pages * (MultiColumn ? Rows : VisibleRows);
+        }
+    }
+
+    /// <summary>
+    /// ボタン相当。
+    /// </summary>
+    public class Button : Control
+    {
+        public string Text { get; set; } = "";
+        public Font Font { get; set; }
+        public bool Enabled { get; set; } = true;
+    }
+
+    /// <summary>
+    /// 画面上のウィンドウ（タイトルバー付き）。
+    /// </summary>
+    public abstract class Form : Control
+    {
+        /// <summary>タイトルバーの高さ</summary>
+        public const int TitleBarHeight = 20;
+
+        protected Form()
+        {
+            Visible = false;
+            BackColor = Color.FromArgb(192, 192, 192);
+        }
+
+        /// <summary>タイトルバーの文字列</summary>
+        public string Text { get; set; }
+
+        /// <summary>画面上の左上（タイトルバーを含む）</summary>
+        public int ScreenLeft { get; set; }
+        public int ScreenTop { get; set; }
+
+        /// <summary>タイトルバーを含む高さ</summary>
+        public int OuterHeight => Height + TitleBarHeight;
+
+        /// <summary>項目のリスト</summary>
+        public abstract ListBoxControl lstItems { get; }
+
+        /// <summary>画面座標をウィンドウのクライアント座標にする。</summary>
+        public PointF ToClient(float x, float y)
+        {
+            return new PointF(x - ScreenLeft, y - ScreenTop - TitleBarHeight);
+        }
+
+        /// <summary>画面座標がウィンドウ（タイトルバーを含む）の中か。</summary>
+        public bool Contains(float x, float y)
+        {
+            return x >= ScreenLeft && y >= ScreenTop && x < ScreenLeft + Width && y < ScreenTop + OuterHeight;
+        }
+
+        public static bool HitTest(Control control, PointF client)
+        {
+            return control.Visible
+                && client.X >= control.Left && client.Y >= control.Top
+                && client.X < control.Left + control.Width && client.Y < control.Top + control.Height;
+        }
+
+        /// <summary>画面の左端・縦位置を決める（下寄せまたは中央）。</summary>
+        public void PlaceOnScreen(int screenWidth, int screenHeight, bool left, bool bottom)
+        {
+            ScreenLeft = left ? 0 : Math.Max(0, (screenWidth - Width) / 2);
+            ScreenTop = bottom ? screenHeight - OuterHeight : Math.Max(0, (screenHeight - OuterHeight) / 2);
+        }
+
+        public void Show()
+        {
+            Visible = true;
+            Refresh();
+        }
+
+        public void Hide()
+        {
+            Visible = false;
+            Refresh();
+        }
+    }
+
+    /// <summary>
+    /// WinForms 版の多段リストボックス（Forms/MultiColumListBox.Designer.cs）と同じ部品・配置を持つ。
+    /// </summary>
+    public class MultiColumnListWindow : Form
+    {
+        private static readonly Font ListFont = new Font("ＭＳ 明朝", 12F, FontStyle.Regular, GraphicsUnit.Point);
+        private readonly ListBoxControl items;
+
+        public MultiColumnListWindow()
+        {
+            Width = 670;
+            Height = 446;
+            Text = "MultiColumListBox";
+            items = new ListBoxControl { Left = 8, Top = 8, Width = 654, Height = 404, Font = ListFont, MultiColumn = true, ColumnWidth = 164 };
+            labCaption = new Label { Left = 8, Top = 416, Width = 654, Height = 23, BackColor = Color.White, Font = ListFont };
+        }
+
+        public override ListBoxControl lstItems => items;
+        public Label labCaption { get; }
+    }
+
+    /// <summary>
+    /// WinForms 版の出撃ユニット選択用リストボックス（Forms/MultiSelectListBox.Designer.cs）と同じ部品・配置を持つ。
+    /// </summary>
+    public class MultiSelectListWindow : Form
+    {
+        private static readonly Font ListFont = new Font("ＭＳ 明朝", 12F, FontStyle.Regular, GraphicsUnit.Point);
+        private static readonly Font NumberFont = new Font("ＭＳ 明朝", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+        private static readonly Font ButtonFont = new Font("ＭＳ Ｐゴシック", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+        private static readonly Font BoldButtonFont = new Font("ＭＳ Ｐゴシック", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+        private readonly ListBoxControl items;
+
+        public MultiSelectListWindow()
+        {
+            Width = 479;
+            Height = 331;
+            Text = "MultiSelectListBox";
+            lblCaption = new Label { Left = 0, Top = 7, Width = 479, Height = 22, BackColor = Color.White, Font = ListFont };
+            items = new ListBoxControl { Left = 0, Top = 32, Width = 479, Height = 228, Font = ListFont };
+            cmdSelectAll = new Button { Left = 3, Top = 264, Width = 153, Height = 29, Text = "先頭から選択", Font = ButtonFont };
+            cmdSelectAll2 = new Button { Left = 163, Top = 264, Width = 161, Height = 29, Text = "最後から選択", Font = ButtonFont };
+            cmdSort = new Button { Left = 331, Top = 264, Width = 145, Height = 29, Text = "名称順に並べ替え", Font = ButtonFont };
+            cmdResume = new Button { Left = 91, Top = 296, Width = 137, Height = 29, Text = "マップを見る", Font = ButtonFont };
+            cmdFinish = new Button { Left = 259, Top = 296, Width = 137, Height = 29, Text = "終了", Font = BoldButtonFont };
+            lblNumber = new Label { Left = 417, Top = 297, Width = 57, Height = 25, Font = NumberFont };
+        }
+
+        public override ListBoxControl lstItems => items;
+        public Label lblCaption { get; }
+        public Button cmdSelectAll { get; }
+        public Button cmdSelectAll2 { get; }
+        public Button cmdSort { get; }
+        public Button cmdResume { get; }
+        public Button cmdFinish { get; }
+        public Label lblNumber { get; }
+
+        public IEnumerable<Button> Buttons => new[] { cmdSelectAll, cmdSelectAll2, cmdSort, cmdResume, cmdFinish };
     }
 
     /// <summary>
     /// WinForms 版のリストボックス（Forms/ListBox.Designer.cs）と同じ部品・配置を持つ。
     /// ScreenRenderer がこの内容を描画する。
     /// </summary>
-    public class ListWindow : Control
+    public class ListWindow : Form
     {
         private static readonly Color Gray = Color.FromArgb(192, 192, 192);
         private static readonly Color Red = Color.FromArgb(192, 0, 0);
@@ -81,12 +265,10 @@ namespace SRCRender.Compat
         private static readonly Font SmallLabelFont = new Font("ＭＳ Ｐ明朝", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
         private static readonly Font ValueFont = new Font("ＭＳ 明朝", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
 
-        /// <summary>タイトルバーの高さ</summary>
-        public const int TitleBarHeight = 20;
+        private readonly ListBoxControl items;
 
         public ListWindow()
         {
-            Visible = false;
             Width = 654;
             Height = 137;
             BackColor = Gray;
@@ -95,7 +277,7 @@ namespace SRCRender.Compat
             VerticalSize = "M";
 
             labCaption = new Label { Left = 6, Top = 5, Width = 643, Height = 23, BackColor = Color.White, Font = ListFont };
-            lstItems = new ListBoxControl { Left = 6, Top = 32, Width = 643, Height = 100, Font = ListFont };
+            items = new ListBoxControl { Left = 6, Top = 32, Width = 643, Height = 100, Font = ListFont };
             txtComment = new Label { Left = 6, Top = 141, Width = 637, Height = 38, BackColor = Color.White, Font = CommentFont, Visible = false };
             picBar = new PictureBox { Left = 6, Top = 123, Width = 643, Height = 13, BackColor = Color.White, Visible = false };
 
@@ -126,9 +308,6 @@ namespace SRCRender.Compat
             picEN2 = new PictureBox { Left = 565, Top = 27, Width = 78, Height = 8, BackColor = Red, ForeColor = Green, Visible = false };
         }
 
-        /// <summary>タイトルバーの文字列</summary>
-        public string Text { get; set; }
-
         /// <summary>リストボックスのサイズ (通常:M 大型:L)。幅は S / M。</summary>
         public string HorizontalSize { get; set; }
         public string VerticalSize { get; set; }
@@ -136,15 +315,8 @@ namespace SRCRender.Compat
         /// <summary>コメント欄を使っているか（WinForms 版の txtComment.Enabled）</summary>
         public bool CommentEnabled { get; set; }
 
-        /// <summary>画面上の左上（タイトルバーを含む）</summary>
-        public int ScreenLeft { get; set; }
-        public int ScreenTop { get; set; }
-
-        /// <summary>タイトルバーを含む高さ</summary>
-        public int OuterHeight => Height + TitleBarHeight;
-
         public Label labCaption { get; }
-        public ListBoxControl lstItems { get; }
+        public override ListBoxControl lstItems => items;
         public Label txtComment { get; }
         public PictureBox picBar { get; }
 
@@ -192,36 +364,5 @@ namespace SRCRender.Compat
             labLevel1, txtLevel1, labMorale1, txtMorale1, labHP1, txtHP1, labEN1, txtEN1,
             labLevel2, txtLevel2, labMorale2, txtMorale2, labHP2, txtHP2, labEN2, txtEN2,
         };
-
-        /// <summary>画面座標をウィンドウのクライアント座標にする。</summary>
-        public PointF ToClient(float x, float y)
-        {
-            return new PointF(x - ScreenLeft, y - ScreenTop - TitleBarHeight);
-        }
-
-        /// <summary>画面座標がウィンドウ（タイトルバーを含む）の中か。</summary>
-        public bool Contains(float x, float y)
-        {
-            return x >= ScreenLeft && y >= ScreenTop && x < ScreenLeft + Width && y < ScreenTop + OuterHeight;
-        }
-
-        public static bool HitTest(Control control, PointF client)
-        {
-            return control.Visible
-                && client.X >= control.Left && client.Y >= control.Top
-                && client.X < control.Left + control.Width && client.Y < control.Top + control.Height;
-        }
-
-        public void Show()
-        {
-            Visible = true;
-            Refresh();
-        }
-
-        public void Hide()
-        {
-            Visible = false;
-            Refresh();
-        }
     }
 }

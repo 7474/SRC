@@ -99,6 +99,8 @@ namespace SRCRender
         public void Dispose()
         {
             Game.Dispose();
+            // ゲームスレッドの終了を待ってから破棄する（待ちきれない場合も描画とは排他になる）
+            Game.Join(TimeSpan.FromSeconds(2));
             GUI.Dispose();
         }
     }

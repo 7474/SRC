@@ -372,6 +372,19 @@ namespace SRCRender
 
         private void ListBoxPointerPressed(float x, float y, GuiButton button)
         {
+            switch (State.List?.Window)
+            {
+                case MultiColumnListWindow mw:
+                    MultiColumnPointerPressed(mw, x, y, button);
+                    return;
+                case MultiSelectListWindow sw:
+                    MultiSelectPointerPressed(sw, x, y, button);
+                    return;
+                case ListWindow _:
+                    break;
+                default:
+                    return;
+            }
             var w = frmListBox;
             var client = w.ToClient(x, y);
             if (button == GuiButton.Right)
@@ -412,7 +425,11 @@ namespace SRCRender
 
         private void ListBoxPointerMoved(float x, float y)
         {
-            var w = frmListBox;
+            var w = State.List?.Window;
+            if (w == null)
+            {
+                return;
+            }
             var client = w.ToClient(x, y);
             var index = w.lstItems.IndexFromPoint(client.X - w.lstItems.Left, client.Y - w.lstItems.Top);
             if (index < 0 || index == w.lstItems.SelectedIndex)
@@ -425,14 +442,30 @@ namespace SRCRender
 
         private void ListBoxWheel(int delta)
         {
-            var lstItems = frmListBox.lstItems;
-            lstItems.TopIndex -= Math.Sign(delta) * 3;
+            var lstItems = State.List?.Window.lstItems;
+            if (lstItems == null)
+            {
+                return;
+            }
+            if (lstItems.MultiColumn)
+            {
+                lstItems.Scroll(-Math.Sign(delta));
+            }
+            else
+            {
+                lstItems.TopIndex -= Math.Sign(delta) * 3;
+            }
             Present();
         }
 
         private void ListBoxKeyPressed(ScreenKey key)
         {
-            var lstItems = frmListBox.lstItems;
+            var form = State.List?.Window;
+            if (form == null)
+            {
+                return;
+            }
+            var lstItems = form.lstItems;
             switch (key)
             {
                 case ScreenKey.Up:
@@ -447,26 +480,79 @@ namespace SRCRender
                     OnListSelectionChanged();
                     break;
 
+                case ScreenKey.Left:
+                case ScreenKey.Right:
+                    if (lstItems.MultiColumn && lstItems.Items.Count > 0)
+                    {
+                        lstItems.SelectedIndex = Math.Max(0, Math.Min(lstItems.Items.Count - 1,
+                            lstItems.SelectedIndex + (key == ScreenKey.Right ? lstItems.Rows : -lstItems.Rows)));
+                        lstItems.EnsureVisible(lstItems.SelectedIndex);
+                        OnListSelectionChanged();
+                    }
+                    break;
+
                 case ScreenKey.Escape:
-                    CancelListBox();
+                    switch (form)
+                    {
+                        case MultiColumnListWindow _:
+                            CancelMultiColumn(lstItems);
+                            break;
+                        case MultiSelectListWindow sw:
+                            MultiSelectResume(sw);
+                            break;
+                        default:
+                            CancelListBox();
+                            break;
+                    }
                     break;
 
                 case ScreenKey.Enter:
-                    SelectListItem();
+                    switch (form)
+                    {
+                        case MultiColumnListWindow _:
+                            SelectMultiColumn(lstItems);
+                            break;
+                        case MultiSelectListWindow sw:
+                            MultiSelectToggle(sw);
+                            break;
+                        default:
+                            SelectListItem();
+                            break;
+                    }
                     break;
             }
         }
 
         private void OnListSelectionChanged()
         {
-            var w = frmListBox;
-            // コメント欄を更新
-            if (w.CommentEnabled)
+            var form = State.List?.Window;
+            var selected = form?.lstItems.SelectedIndex >= 0 && listBoxItems != null && form.lstItems.SelectedIndex < listBoxItems.Count
+                ? listBoxItems[form.lstItems.SelectedIndex]
+                : null;
+            switch (form)
             {
-                w.txtComment.Text = SelectedListItem?.ListItemComment;
+                case ListWindow w:
+                    // コメント欄を更新
+                    if (w.CommentEnabled)
+                    {
+                        w.txtComment.Text = selected?.ListItemComment;
+                    }
+                    break;
+                case MultiColumnListWindow mw:
+                    // 解説の表示
+                    mw.labCaption.Text = selected?.ListItemComment;
+                    break;
+                case MultiSelectListWindow _:
+                    // ユニット選択中だけ
+                    if (Commands.CommandState == "ユニット選択" && selected != null && SRC.UList.IsDefined2(selected.ListItemID))
+                    {
+                        DisplayUnitStatus(SRC.UList.Item(selected.ListItemID));
+                    }
+                    Present();
+                    return;
             }
             // 選択されているアイテムに対応するユニットのステータス表示
-            var id = SelectedListItem?.ListItemID;
+            var id = selected?.ListItemID;
             if (!string.IsNullOrEmpty(id) && MainFormVisible && SRC.UList.IsDefined2(id))
             {
                 var u = SRC.UList.Item2(id);
@@ -551,22 +637,303 @@ namespace SRCRender
             }
         }
 
+        #region 多段のリストボックス（WinForms 版 Forms/MultiColumListBox.cs）
+
+        private readonly MultiColumnListWindow frmMultiColumnListBox = new MultiColumnListWindow();
+
         public int MultiColumnListBox(ListBoxArgs args, bool is_center)
         {
-            return ListBox(args);
+            var box = frmMultiColumnListBox;
+            box.Refreshed = Present;
+            box.Text = args.lb_caption;
+            listBoxItems = args.Items;
+            listHasFlag = true;
+            box.lstItems.Items.Clear();
+            box.lstItems.Items.AddRange(args.Items.Select(x => x.TextWithFlag));
+            box.lstItems.SelectedIndex = -1;
+            box.lstItems.TopIndex = 0;
+
+            // 先頭に表示するアイテムを設定
+            if (TopItem > 0)
+            {
+                box.lstItems.TopIndex = GeneralLib.MinLng(TopItem, box.lstItems.Items.Count) - 1;
+            }
+
+            // 表示位置を設定
+            box.PlaceOnScreen(ScreenLayout.Width, ScreenLayout.Height, true, MainFormVisible && !is_center);
+            Commands.SelectedItem = 0;
+            box.labCaption.Text = "";
+            IsFormClicked = false;
+
+            // リストボックスを表示
+            IsMordal = false;
+            waitingList = true;
+            State.List = new ListState(box, args.Items, true);
+            box.Show();
+            while (!IsFormClicked)
+            {
+                Sleep(WaitIntervalMillis);
+            }
+            waitingList = false;
+            State.List = null;
+            box.Hide();
+
+            return Commands.SelectedItem;
         }
+
+        private void MultiColumnPointerPressed(MultiColumnListWindow box, float x, float y, GuiButton button)
+        {
+            var client = box.ToClient(x, y);
+            if (button != GuiButton.Left)
+            {
+                CancelMultiColumn(box.lstItems);
+                return;
+            }
+            if (!Form.HitTest(box.lstItems, client))
+            {
+                return;
+            }
+            var lx = client.X - box.lstItems.Left;
+            var ly = client.Y - box.lstItems.Top;
+            if (box.lstItems.HasScrollBar && ly >= box.lstItems.Height - ListBoxControl.ScrollBarWidth)
+            {
+                // スクロールバー（左半分で左へ、右半分で右へ 1 列）
+                box.lstItems.Scroll(lx < box.lstItems.Width / 2 ? -1 : 1);
+                Present();
+                return;
+            }
+            var index = box.lstItems.IndexFromPoint(lx, ly);
+            if (index >= 0)
+            {
+                box.lstItems.SelectedIndex = index;
+                SelectMultiColumn(box.lstItems);
+            }
+        }
+
+        private void SelectMultiColumn(ListBoxControl lstItems)
+        {
+            // 選択
+            if (lstItems.SelectedIndex < 0 || lstItems.SelectedIndex >= listBoxItems.Count || listBoxItems[lstItems.SelectedIndex].ListItemFlag)
+            {
+                return;
+            }
+            Commands.SelectedItem = lstItems.SelectedIndex + 1;
+            TopItem = lstItems.TopIndex + 1;
+            IsFormClicked = true;
+        }
+
+        private void CancelMultiColumn(ListBoxControl lstItems)
+        {
+            // キャンセル
+            Commands.SelectedItem = 0;
+            TopItem = lstItems.TopIndex + 1;
+            IsFormClicked = true;
+        }
+
+        #endregion
+
+        #region 出撃ユニット選択用リストボックス（WinForms 版 Forms/MultiSelectListBox.cs）
+
+        private readonly MultiSelectListWindow frmMultiSelectListBox = new MultiSelectListWindow();
+        private List<ListBoxItem> multiSelectItems;
+        private int multiSelectMax;
+        private int multiSelectedNum;
+        private bool multiSelectClosed;
+
+        public bool IsInDeploymentSelection { get; private set; }
 
         public int MultiSelectListBox(ListBoxArgs args, int max_num)
         {
-            // TODO 複数選択。現状は1件のみ選択できる
-            var ret = ListBox(args);
-            if (ret > 0)
+            // ステータスウィンドウに攻撃の命中率などを表示させないようにする
+            Commands.CommandState = "ユニット選択";
+
+            var box = frmMultiSelectListBox;
+            box.Refreshed = Present;
+            box.Text = args.lb_caption;
+            box.lblCaption.Text = "　" + args.lb_info;
+            box.cmdSort.Text = "名称順に並べ替え";
+            multiSelectItems = args.Items.ToList();
+            listBoxItems = multiSelectItems;
+            listHasFlag = false;
+            multiSelectMax = max_num;
+            multiSelectClosed = false;
+            box.lstItems.SelectedIndex = -1;
+            box.lstItems.TopIndex = 0;
+
+            box.PlaceOnScreen(ScreenLayout.Width, ScreenLayout.Height, true, false);
+            IsInDeploymentSelection = true;
+            try
             {
-                args.Items[ret - 1].ListItemFlag = true;
-                return 1;
+                // フォームを表示
+                if (multiSelectItems.Any() && SRC.UList.IsDefined2(multiSelectItems.First().ListItemID))
+                {
+                    DisplayUnitStatus(SRC.UList.Item(multiSelectItems.First().ListItemID));
+                }
+                UpdateMultiSelectList(box);
+                waitingList = true;
+                State.List = new ListState(box, multiSelectItems, false);
+                box.Show();
+                while (!multiSelectClosed)
+                {
+                    Sleep(WaitIntervalMillis);
+                }
             }
-            return 0;
+            finally
+            {
+                waitingList = false;
+                State.List = null;
+                box.Hide();
+                IsInDeploymentSelection = false;
+            }
+
+            // 選択された項目数を返す
+            return multiSelectedNum;
         }
+
+        private void MultiSelectPointerPressed(MultiSelectListWindow box, float x, float y, GuiButton button)
+        {
+            // 左クリック以外は無視
+            if (button != GuiButton.Left)
+            {
+                return;
+            }
+            var client = box.ToClient(x, y);
+            if (Form.HitTest(box.lstItems, client))
+            {
+                var lx = client.X - box.lstItems.Left;
+                var ly = client.Y - box.lstItems.Top;
+                if (box.lstItems.HasScrollBar && lx >= box.lstItems.Width - ListBoxControl.ScrollBarWidth)
+                {
+                    box.lstItems.Scroll(ly < box.lstItems.Height / 2 ? -1 : 1);
+                    Present();
+                    return;
+                }
+                var index = box.lstItems.IndexFromPoint(lx, ly);
+                if (index >= 0)
+                {
+                    box.lstItems.SelectedIndex = index;
+                    MultiSelectToggle(box);
+                }
+                return;
+            }
+            var clicked = box.Buttons.FirstOrDefault(x => Form.HitTest(x, client));
+            if (clicked == null || !clicked.Enabled)
+            {
+                return;
+            }
+            if (clicked == box.cmdFinish)
+            {
+                // 選択終了
+                ClearUnitStatus();
+                multiSelectClosed = true;
+            }
+            else if (clicked == box.cmdResume)
+            {
+                MultiSelectResume(box);
+            }
+            else if (clicked == box.cmdSelectAll)
+            {
+                // 先頭から選択
+                foreach (var item in multiSelectItems)
+                {
+                    item.ListItemFlag = false;
+                }
+                foreach (var item in multiSelectItems.Take(multiSelectMax))
+                {
+                    item.ListItemFlag = true;
+                }
+                UpdateMultiSelectList(box);
+                box.lstItems.TopIndex = 0;
+            }
+            else if (clicked == box.cmdSelectAll2)
+            {
+                // 最後から選択
+                foreach (var item in multiSelectItems)
+                {
+                    item.ListItemFlag = false;
+                }
+                foreach (var item in Enumerable.Reverse(multiSelectItems).Take(multiSelectMax))
+                {
+                    item.ListItemFlag = true;
+                }
+                UpdateMultiSelectList(box);
+                box.lstItems.TopIndex = GeneralLib.MaxLng(box.lstItems.Items.Count - 14, 0);
+            }
+            else if (clicked == box.cmdSort)
+            {
+                if (box.cmdSort.Text == "レベル順に並べ替え")
+                {
+                    // メインパイロットのレベル順に並べ替え
+                    StableSort(multiSelectItems, (a, b) => SRC.UList.Item(a.ListItemID).MainPilot().Level
+                        .CompareTo(SRC.UList.Item(b.ListItemID).MainPilot().Level));
+                    box.cmdSort.Text = "名称順に並べ替え";
+                }
+                else
+                {
+                    // ユニットの名称順に並べ替え
+                    StableSort(multiSelectItems, (a, b) => -SRC.UList.Item(a.ListItemID).KanaName
+                        .CompareTo(SRC.UList.Item(b.ListItemID).KanaName));
+                    box.cmdSort.Text = "レベル順に並べ替え";
+                }
+                UpdateMultiSelectList(box);
+            }
+            Present();
+        }
+
+        private static void StableSort(List<ListBoxItem> items, Comparison<ListBoxItem> comparison)
+        {
+            var sorted = items.Select((x, i) => (x, i))
+                .OrderBy(x => x, Comparer<(ListBoxItem x, int i)>.Create((a, b) =>
+                {
+                    var c = comparison(a.x, b.x);
+                    return c != 0 ? c : a.i.CompareTo(b.i);
+                }))
+                .Select(x => x.x)
+                .ToList();
+            items.Clear();
+            items.AddRange(sorted);
+        }
+
+        private void MultiSelectToggle(MultiSelectListWindow box)
+        {
+            var index = box.lstItems.SelectedIndex;
+            if (index < 0 || index >= multiSelectItems.Count)
+            {
+                return;
+            }
+            var preIndex = box.lstItems.TopIndex;
+            multiSelectItems[index].ListItemFlag = !multiSelectItems[index].ListItemFlag;
+            UpdateMultiSelectList(box);
+            box.lstItems.TopIndex = preIndex;
+            Present();
+        }
+
+        // マップを見る（選択を取り消して閉じる）
+        private void MultiSelectResume(MultiSelectListWindow box)
+        {
+            foreach (var item in multiSelectItems)
+            {
+                item.ListItemFlag = false;
+            }
+            UpdateMultiSelectList(box);
+            ClearUnitStatus();
+            multiSelectClosed = true;
+        }
+
+        private void UpdateMultiSelectList(MultiSelectListWindow box)
+        {
+            multiSelectedNum = multiSelectItems.Count(x => x.ListItemFlag);
+            box.lblNumber.Text = $"{multiSelectedNum}/{multiSelectMax}";
+            var selected = box.lstItems.SelectedIndex;
+            var top = box.lstItems.TopIndex;
+            box.lstItems.Items.Clear();
+            box.lstItems.Items.AddRange(multiSelectItems.Select(x => (x.ListItemFlag ? "○" : "　") + x.Text));
+            box.lstItems.SelectedIndex = selected;
+            box.lstItems.TopIndex = top;
+            box.cmdFinish.Enabled = multiSelectedNum > 0 && multiSelectedNum <= multiSelectMax;
+        }
+
+        #endregion
 
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {

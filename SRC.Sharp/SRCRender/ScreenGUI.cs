@@ -107,11 +107,18 @@ namespace SRCRender
             src.GUIScrean = this;
         }
 
+        private bool disposed;
+
         public void Dispose()
         {
-            renderer.Dispose();
-            frame.Dispose();
-            DisposeMapBuffers();
+            // ゲームスレッドが描画中の可能性があるため、描画と排他にして破棄する
+            lock (renderLock)
+            {
+                disposed = true;
+                renderer.Dispose();
+                frame.Dispose();
+                DisposeMapBuffers();
+            }
         }
 
         #region 描画
@@ -123,6 +130,10 @@ namespace SRCRender
         {
             lock (renderLock)
             {
+                if (disposed)
+                {
+                    return;
+                }
                 State.MapX = MapX;
                 State.MapY = MapY;
                 using (var canvas = new SKCanvas(frame))
@@ -140,6 +151,10 @@ namespace SRCRender
         {
             lock (renderLock)
             {
+                if (disposed)
+                {
+                    return;
+                }
                 using (var image = SKImage.FromBitmap(frame))
                 using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
                 {
@@ -156,6 +171,11 @@ namespace SRCRender
         {
             if (game.IsCurrentThread)
             {
+                // 終了処理中は待ちを抜けてゲームスレッドを終わらせる
+                if (game.IsStopping)
+                {
+                    throw new OperationCanceledException("The game thread is stopping.");
+                }
                 game.ProcessPending();
             }
         }
@@ -220,6 +240,17 @@ namespace SRCRender
                 return;
             }
 
+            // リストボックスの選択待ち（右クリックはどこでもキャンセル）
+            var list = State.List;
+            if (list != null && waitingList)
+            {
+                if (button == GuiButton.Right || list.Window.Contains(x, y))
+                {
+                    game.Post(() => ListBoxPointerPressed(x, y, button));
+                }
+                return;
+            }
+
             // メッセージウィンドウのクリック（顔グラフィックのクリックで自動送りの切り替え）
             if (frmMessage.Visible && button == GuiButton.Left)
             {
@@ -236,16 +267,6 @@ namespace SRCRender
                     isFormClicked = true;
                     return;
                 }
-            }
-
-            // リストボックスの選択待ち（右クリックはどこでもキャンセル）
-            if (State.List != null && waitingList)
-            {
-                if (button == GuiButton.Right || frmListBox.Contains(x, y))
-                {
-                    game.Post(() => ListBoxPointerPressed(x, y, button));
-                }
-                return;
             }
 
             var menu = State.Menu;
@@ -316,9 +337,10 @@ namespace SRCRender
             MouseX = x;
             MouseY = y;
             HoverMap((int)x, (int)y);
-            if (State.List != null)
+            var list = State.List;
+            if (list != null)
             {
-                if (frmListBox.Contains(x, y))
+                if (list.Window.Contains(x, y))
                 {
                     game.Post(() => ListBoxPointerMoved(x, y));
                 }
@@ -435,7 +457,8 @@ namespace SRCRender
         /// </summary>
         public void PointerWheel(float x, float y, int delta)
         {
-            if (State.List != null && frmListBox.Contains(x, y))
+            var list = State.List;
+            if (list != null && list.Window.Contains(x, y))
             {
                 game.Post(() => ListBoxWheel(delta));
             }
@@ -494,7 +517,6 @@ namespace SRCRender
         public bool IsCursorVisible { get; set; }
         public Color BGColor { get; set; }
         public bool IsGUILocked { get; set; }
-        public bool IsInDeploymentSelection => false;
         public int TopItem { get; set; }
         public bool MessageWindowIsOut { get; set; }
         public bool IsFormClicked { get => isFormClicked; set => isFormClicked = value; }

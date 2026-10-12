@@ -65,15 +65,15 @@ namespace SRCRender
     /// </summary>
     public class ListState
     {
-        public ListState(Compat.ListWindow window, IEnumerable<ListBoxItem> items, bool hasFlag)
+        public ListState(Compat.Form window, IEnumerable<ListBoxItem> items, bool hasFlag)
         {
             Window = window;
             Items = items.Select(x => new ListItemState(x.Text, hasFlag && x.ListItemFlag)).ToList();
         }
 
-        public Compat.ListWindow Window { get; }
+        public Compat.Form Window { get; }
         public string Caption => Window.Text;
-        public string Info => Window.labCaption.Text;
+        public string Info => (Window as Compat.ListWindow)?.labCaption.Text;
         public IList<ListItemState> Items { get; }
         /// <summary>カーソル位置（0 始まり、-1 でなし）</summary>
         public int Highlight
