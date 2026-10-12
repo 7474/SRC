@@ -119,5 +119,54 @@ namespace SRCRender.Tests
                 Assert.IsFalse(runner.GUI.GetKeyState(0x5A));
             }
         }
+
+        [TestMethod]
+        public void PopupMenuAndDialog_LookLikeWindows()
+        {
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Wait Click",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitFor(s => runner.GUI.IsWaitingClick, "wait click");
+
+                // ポップアップメニュー（カーソル位置に表示し、カーソル下の項目を強調する）
+                runner.GUI.PointerMoved(100, 100);
+                runner.Session.Game.Post(() => runner.GUI.ShowMapCommandMenu(new[]
+                {
+                    new SRCCore.Commands.UiCommand(1, "部隊表"),
+                    new SRCCore.Commands.UiCommand(2, "スペシャルパワー"),
+                    new SRCCore.Commands.UiCommand(3, "自動反撃モード", true),
+                    new SRCCore.Commands.UiCommand(4, "ターン終了"),
+                }));
+                runner.WaitFor(s => s.Menu != null, "menu");
+                var box = runner.GUI.Renderer.LayoutMenu(runner.State.Menu);
+                runner.GUI.PointerMoved(box.MidX, box.Top + 3 + 20 * 1 + 10);
+                runner.WaitFor(s => s.Menu.Highlight == 1, "highlight");
+                Assert.AreEqual(1, runner.GUI.Renderer.HitTestMenu(runner.State.Menu, box.MidX, box.Top + 3 + 20 * 1 + 10));
+                VisualAssert.MatchesBaseline(runner.SnapshotPng(), "map-03-menu");
+                runner.Session.Game.Post(() => runner.State.Menu = null);
+                runner.WaitFor(s => s.Menu == null, "menu closed");
+
+                // メッセージボックス
+                var result = SRCCore.GuiDialogResult.Cancel;
+                var closed = new ManualResetEventSlim();
+                runner.Session.Game.Post(() =>
+                {
+                    result = runner.GUI.Confirm("データを保存しますか？", "確認", SRCCore.GuiConfirmOption.OkCancel);
+                    closed.Set();
+                });
+                runner.WaitFor(s => s.Dialog != null, "dialog");
+                VisualAssert.MatchesBaseline(runner.SnapshotPng(), "map-04-dialog");
+                var ok = runner.GUI.Renderer.LayoutDialog(runner.State.Dialog).ButtonRect(0);
+                runner.GUI.PointerPressed(ok.MidX, ok.MidY, GuiButton.Left);
+                Assert.IsTrue(closed.Wait(ScreenScenarioRunner.Timeout), "dialog closed");
+                Assert.AreEqual(SRCCore.GuiDialogResult.Ok, result);
+            }
+        }
     }
 }

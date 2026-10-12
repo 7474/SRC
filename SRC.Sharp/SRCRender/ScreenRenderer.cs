@@ -14,11 +14,12 @@ namespace SRCRender
     /// </summary>
     public class ScreenRenderer : IDisposable
     {
-        private const int MenuItemHeight = 22;
-        private const int MenuWidth = 168;
+        private const int MenuItemHeight = 20;
+        private const int MenuMinWidth = 120;
         private const int DialogWidth = 420;
-        private const int DialogButtonWidth = 96;
-        private const int DialogButtonHeight = 28;
+        private const int DialogMinWidth = 200;
+        private const int DialogButtonWidth = 80;
+        private const int DialogButtonHeight = 24;
 
         private static readonly SKColor BackColor = new SKColor(0x00, 0x00, 0x00);
         private static readonly SKColor PanelColor = new SKColor(0x10, 0x18, 0x30, 0xF0);
@@ -663,52 +664,83 @@ namespace SRCRender
             paint.Style = SKPaintStyle.Fill;
         }
 
+        private static readonly Compat.Font MenuFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+        private static readonly Compat.Font DialogFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+        private static readonly Compat.Font DialogTitleFont = new Compat.Font("ＭＳ Ｐゴシック", 9F, Compat.FontStyle.Bold);
+
+        /// <summary>
+        /// ポップアップメニュー（WinForms 版の ContextMenuStrip と同じく Windows 標準の見た目）。
+        /// </summary>
         private void DrawMenu(SKCanvas canvas, MenuState menu)
         {
             var box = LayoutMenu(menu);
-            using (var paint = new SKPaint())
+            using (var font = MenuFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                DrawPanel(canvas, box, paint);
-                paint.Style = SKPaintStyle.Fill;
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(box, paint);
+                DrawBevel(canvas, box, raised: true, paint);
                 for (var i = 0; i < menu.Items.Count; i++)
                 {
-                    var rect = SKRect.Create(box.Left + 2, box.Top + 4 + i * MenuItemHeight, box.Width - 4, MenuItemHeight);
-                    if (i == menu.Highlight)
+                    var rect = MenuItemRect(box, i);
+                    var highlighted = i == menu.Highlight;
+                    if (highlighted)
                     {
-                        paint.Color = HighlightColor;
+                        paint.Color = WindowsHighlight;
                         canvas.DrawRect(rect, paint);
                     }
-                    paint.Color = TextColor;
-                    var check = i < menu.Checked.Count && menu.Checked[i] ? "✓ " : "";
-                    canvas.DrawText(check + menu.Items[i], rect.Left + 10, rect.Top + 16, SKTextAlign.Left, font, paint);
+                    paint.Color = highlighted ? SKColors.White : SKColors.Black;
+                    paint.IsAntialias = true;
+                    var baseline = rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font);
+                    if (i < menu.Checked.Count && menu.Checked[i])
+                    {
+                        canvas.DrawText("✓", rect.Left + 4, baseline, SKTextAlign.Left, font, paint);
+                    }
+                    canvas.DrawText(menu.Items[i] ?? "", rect.Left + MenuTextLeft, baseline, SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
                 }
             }
         }
 
+        /// <summary>
+        /// メッセージボックス（WinForms 版の MessageBox と同じく Windows 標準の見た目）。
+        /// </summary>
         private void DrawDialog(SKCanvas canvas, DialogState dialog)
         {
             var layout = LayoutDialog(dialog);
-            using (var paint = new SKPaint())
+            var box = layout.Box;
+            using (var font = DialogFont.ToSKFont())
+            using (var titleFont = DialogTitleFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                paint.Color = new SKColor(0, 0, 0, 0x80);
-                canvas.DrawRect(SKRect.Create(0, 0, ScreenLayout.Width, ScreenLayout.Height), paint);
-                DrawPanel(canvas, layout.Box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(dialog.Title ?? "", layout.Box.Left + 16, layout.Box.Top + 26, SKTextAlign.Left, boldFont, paint);
-                var y = layout.Box.Top + 56;
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(box, paint);
+                DrawBevel(canvas, box, raised: true, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(box.Left + 2, box.Top + 2, box.Width - 4, Compat.Form.TitleBarHeight - 2, paint);
+                paint.Color = SKColors.White;
+                paint.IsAntialias = true;
+                canvas.DrawText(dialog.Title ?? "", box.Left + 6, box.Top + 2 + (Compat.Form.TitleBarHeight - 2 - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                paint.Color = SKColors.Black;
+                var y = box.Top + Compat.Form.TitleBarHeight + DialogPadding;
+                var lineHeight = Compat.SkiaFonts.LineHeight(font) + 2;
                 foreach (var line in layout.Lines)
                 {
-                    canvas.DrawText(line, layout.Box.Left + 16, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
+                    canvas.DrawText(line, box.Left + DialogPadding, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
                 }
+                paint.IsAntialias = false;
                 for (var i = 0; i < dialog.Buttons.Count; i++)
                 {
-                    var rect = layout.ButtonRect(i);
-                    paint.Color = HighlightColor;
-                    canvas.DrawRoundRect(rect, 4, 4, paint);
-                    paint.Color = TextColor;
-                    canvas.DrawText(dialog.Buttons[i], rect.MidX, rect.MidY + 6, SKTextAlign.Center, font, paint);
+                    DrawButton(canvas, new Compat.Button
+                    {
+                        Left = (int)layout.ButtonRect(i).Left,
+                        Top = (int)layout.ButtonRect(i).Top,
+                        Width = DialogButtonWidth,
+                        Height = DialogButtonHeight,
+                        Text = dialog.Buttons[i],
+                        Font = DialogFont,
+                    }, paint);
                 }
             }
         }
@@ -805,25 +837,42 @@ namespace SRCRender
             return -1;
         }
 
+        private const int MenuTextLeft = 20;
+
+        private static SKRect MenuItemRect(SKRect box, int index)
+        {
+            return SKRect.Create(box.Left + 3, box.Top + 3 + index * MenuItemHeight, box.Width - 6, MenuItemHeight);
+        }
+
         public SKRect LayoutMenu(MenuState menu)
         {
-            var height = menu.Items.Count * MenuItemHeight + 8;
-            var left = Math.Min(Math.Max(0, menu.X), ScreenLayout.Width - MenuWidth);
+            float textWidth;
+            using (var font = MenuFont.ToSKFont())
+            {
+                textWidth = menu.Items.Select(x => font.MeasureText(x ?? "")).DefaultIfEmpty(0).Max();
+            }
+            var width = Math.Max(MenuMinWidth, (int)Math.Ceiling(textWidth) + MenuTextLeft + 24);
+            var height = menu.Items.Count * MenuItemHeight + 6;
+            var left = Math.Min(Math.Max(0, menu.X), ScreenLayout.Width - width);
             var top = Math.Min(Math.Max(0, menu.Y), ScreenLayout.Height - height);
-            return SKRect.Create(left, top, MenuWidth, height);
+            return SKRect.Create(left, top, width, height);
         }
 
         /// <summary>メニューのヒットテスト。項目のインデックス（0 始まり）、外れは -1</summary>
         public int HitTestMenu(MenuState menu, float x, float y)
         {
             var box = LayoutMenu(menu);
-            if (!box.Contains(x, y))
+            for (var i = 0; i < menu.Items.Count; i++)
             {
-                return -1;
+                if (MenuItemRect(box, i).Contains(x, y))
+                {
+                    return i;
+                }
             }
-            var index = (int)((y - box.Top - 4) / MenuItemHeight);
-            return index >= 0 && index < menu.Items.Count ? index : -1;
+            return -1;
         }
+
+        private const int DialogPadding = 16;
 
         public class DialogLayout
         {
@@ -833,22 +882,28 @@ namespace SRCRender
 
             public SKRect ButtonRect(int index)
             {
-                var totalWidth = ButtonCount * DialogButtonWidth + (ButtonCount - 1) * 12;
-                var left = Box.MidX - totalWidth / 2f + index * (DialogButtonWidth + 12);
-                return SKRect.Create(left, Box.Bottom - DialogButtonHeight - 14, DialogButtonWidth, DialogButtonHeight);
+                var totalWidth = ButtonCount * DialogButtonWidth + (ButtonCount - 1) * 8;
+                var left = (float)Math.Floor(Box.MidX - totalWidth / 2f) + index * (DialogButtonWidth + 8);
+                return SKRect.Create(left, Box.Bottom - DialogButtonHeight - 12, DialogButtonWidth, DialogButtonHeight);
             }
         }
 
         public DialogLayout LayoutDialog(DialogState dialog)
         {
-            var lines = WrapText(dialog.Text ?? "", DialogWidth - 32);
-            var height = 56 + lines.Count * (font.Spacing + 2) + DialogButtonHeight + 28;
-            return new DialogLayout
+            using (var font = DialogFont.ToSKFont())
             {
-                Box = SKRect.Create((ScreenLayout.Width - DialogWidth) / 2f, Math.Max(16, (ScreenLayout.Height - height) / 2f), DialogWidth, height),
-                Lines = lines,
-                ButtonCount = dialog.Buttons.Count,
-            };
+                var lines = WrapText(dialog.Text ?? "", DialogWidth - DialogPadding * 2, font);
+                var textWidth = lines.Select(x => font.MeasureText(x)).DefaultIfEmpty(0).Max();
+                var buttonsWidth = dialog.Buttons.Count * (DialogButtonWidth + 8);
+                var width = (float)Math.Ceiling(Math.Max(DialogMinWidth, Math.Max(textWidth, buttonsWidth) + DialogPadding * 2));
+                var height = Compat.Form.TitleBarHeight + DialogPadding + lines.Count * (Compat.SkiaFonts.LineHeight(font) + 2) + DialogPadding + DialogButtonHeight + 12;
+                return new DialogLayout
+                {
+                    Box = SKRect.Create((float)Math.Floor((ScreenLayout.Width - width) / 2f), (float)Math.Floor(Math.Max(16, (ScreenLayout.Height - height) / 2f)), width, height),
+                    Lines = lines,
+                    ButtonCount = dialog.Buttons.Count,
+                };
+            }
         }
 
         /// <summary>ダイアログのボタンのヒットテスト。ボタンのインデックス、外れは -1</summary>
@@ -867,6 +922,11 @@ namespace SRCRender
 
         /// <summary>指定幅に収まるように折り返す</summary>
         public IList<string> WrapText(string text, float width)
+        {
+            return WrapText(text, width, font);
+        }
+
+        private static IList<string> WrapText(string text, float width, SKFont font)
         {
             var result = new List<string>();
             foreach (var paragraph in text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n'))
