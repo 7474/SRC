@@ -72,11 +72,11 @@ namespace SRCCore.Expressions.Functions
                 SRC.Event.CallDepth = (SRC.Event.CallDepth + 1);
                 var cur_depth = SRC.Event.CallDepth;
 
-                // 引数をスタックに積む
-                SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount);
-                for (var i = 1; i <= pcount; i++)
+                // 引数をスタックに積む（1 番目のサブルーチン名は積まない）
+                SRC.Event.ArgIndex = (SRC.Event.ArgIndex + pcount - 1);
+                for (var i = 2; i <= pcount; i++)
                 {
-                    SRC.Event.ArgStack[SRC.Event.ArgIndex - i + 1] = @params[i];
+                    SRC.Event.ArgStack[SRC.Event.ArgIndex - i + 2] = @params[i];
                 }
 
                 // サブルーチン本体を実行
