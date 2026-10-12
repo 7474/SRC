@@ -64,7 +64,7 @@ flowchart LR
 ## 段階的移行手順
 
 1. **Core の Drawing 非依存化**（対応済み）: `IGUI.CurrentPaintFont` を自前型 `PaintFont` に置換、`ColorTranslator.FromHtml` 相当を `ColorExtension.FromHexString` に自前実装し、SRCCore から `System.Drawing.Common` を外した。`Color` / `Point` 等の System.Drawing.Primitives の型は引き続き使用する
-2. **Linux 上でのテスト実行**: 1 の後、`SRCCoreTests` を `ubuntu-latest` で実行できるようにする
+2. **Linux 上でのテスト実行**（対応済み）: CI に `SRCCoreTests` を `ubuntu-latest` で実行するジョブ `test-srccore-linux` を追加した
 3. **スレッドモデル分離**: まず WinForms 上でゲームスレッド方式に切り替え、挙動不変を確認する。最大のリスク要因のため、新 UI 作成前に既存 UI で検証する
 4. **描画層の切り出し**: `SRCSharpFormGUI.draw.cs`、`Forms/Main.guimap.cs`、`Forms/Main.guiscrean.cs` を SkiaSharp ベースへ移す
 5. **Avalonia 版の作成**: メイン画面 → メッセージ → リストボックス類 → ステータス → 設定の順。UI テストは `Avalonia.Headless` で書き、WinAppDriver テストを置き換える
