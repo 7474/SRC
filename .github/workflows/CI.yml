@@ -81,6 +81,15 @@ jobs:
       if: github.event_name == 'push'
       run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
+    # Windows の実フォントで測った縦の寸法（SRCRender の WindowsFontMetrics の検証用）
+    - name: Upload font metrics
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: windows-font-metrics
+        path: SRC.Sharp/SRCRenderTests/bin/**/TestResults/fontmetrics.txt
+        if-no-files-found: ignore
+
     - name: Generate Coverage Report
       if: github.event_name == 'push'
       uses: danielpalme/ReportGenerator-GitHub-Action@5.5.10

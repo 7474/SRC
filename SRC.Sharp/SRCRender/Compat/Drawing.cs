@@ -311,6 +311,10 @@ namespace SRCRender.Compat
             return SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? SKTypeface.Default;
         }
 
+        // フォントを作ったときに指定されたフォント名の寸法（Windows の寸法表にある場合）
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SKFont, object> requestedMetrics
+            = new System.Runtime.CompilerServices.ConditionalWeakTable<SKFont, object>();
+
         public static SKFont Create(string name, float sizeInPixels, bool bold, bool italic)
         {
             var style = new SKFontStyle(
@@ -318,12 +322,17 @@ namespace SRCRender.Compat
                 SKFontStyleWidth.Normal,
                 italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
             var typeface = ResolveTypeface(name, style);
-            return new SKFont(typeface, sizeInPixels)
+            var font = new SKFont(typeface, sizeInPixels)
             {
                 Embolden = bold && !typeface.IsBold,
                 SkewX = italic && !typeface.IsItalic ? -0.2f : 0,
                 Edging = SKFontEdging.Antialias,
             };
+            if (WindowsFontMetrics.TryGet(name, out var metrics))
+            {
+                requestedMetrics.Add(font, metrics);
+            }
+            return font;
         }
 
         /// <summary>
@@ -336,15 +345,26 @@ namespace SRCRender.Compat
             return family.StartsWith("Noto ") && family.Contains(" CJK ");
         }
 
-        /// <summary>行の上端からベースラインまでの距離（ピクセル）</summary>
+        /// <summary>
+        /// 行の上端からベースラインまでの距離（ピクセル）。
+        /// 指定されたフォント名が Windows の寸法表にあれば、その寸法（元の SRC と同じ位置）にする。
+        /// </summary>
         public static float Ascent(SKFont font)
         {
+            if (requestedMetrics.TryGetValue(font, out var m))
+            {
+                return font.Size * ((WindowsFontMetrics.Metrics)m).Ascent;
+            }
             return UsesEmBoxMetrics(font) ? font.Size * 0.88f : -font.Metrics.Ascent;
         }
 
-        /// <summary>行の高さ（ピクセル）</summary>
+        /// <summary>行の高さ（ピクセル）。TextHeight 関数の値にもなる。</summary>
         public static float LineHeight(SKFont font)
         {
+            if (requestedMetrics.TryGetValue(font, out var m))
+            {
+                return font.Size * ((WindowsFontMetrics.Metrics)m).LineHeight;
+            }
             return UsesEmBoxMetrics(font) ? font.Size : font.Spacing;
         }
     }
