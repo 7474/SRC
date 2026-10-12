@@ -1,6 +1,6 @@
 # SRC（Simulation RPG Construction）
 
-SRC（Simulation RPG Construction）の C# .NET への移植版 SRC#（Simulation RPG Construction Sharp）。
+SRC（Simulation RPG Construction）の C# .NET への移植版 SRC#（SRCシャープ、Simulation RPG Construction Sharp）。
 
 ## SRC派生ソフトウェア
 
