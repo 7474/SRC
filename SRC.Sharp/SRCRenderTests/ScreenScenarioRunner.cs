@@ -18,9 +18,9 @@ namespace SRCRender.Tests
         private volatile bool terminated;
         private int frameCount;
 
-        public ScreenScenarioRunner(string appPath, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory = null)
+        public ScreenScenarioRunner(string appPath, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory = null, SRCCore.IPlaySound soundPlayer = null)
         {
-            Session = new ScreenSession(this, appPath, loggerFactory: loggerFactory);
+            Session = new ScreenSession(this, appPath, soundPlayer, loggerFactory);
             Session.Game.UnhandledException += (s, e) =>
             {
                 Error = e.Exception;

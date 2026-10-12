@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.Themes.Fluent;
 using SRCRender;
+using SRCSound;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,11 @@ namespace SRCSharpAvalonia
             {
                 var window = new MainWindow();
                 desktop.MainWindow = window;
-                desktop.Exit += (s, e) => session?.Dispose();
+                desktop.Exit += (s, e) =>
+                {
+                    session?.Dispose();
+                    session?.SRC.Sound.Player.Dispose();
+                };
                 window.Opened += async (s, e) => await StartAsync(window, desktop.Args ?? new string[0]);
             }
             base.OnFrameworkInitializationCompleted();
@@ -52,7 +57,11 @@ namespace SRCSharpAvalonia
                 return;
             }
 
-            session = new ScreenSession(window);
+            // 音声は OpenAL で再生する。MIDI の SoundFont は設定（Option/SoundFont）・環境変数・SRC のフォルダなどから探す
+            var player = new OpenALSoundPlayer(() => SoundFontLocator.Load(
+                session?.SRC.AppPath,
+                session?.SRC.SystemConfig.GetItem("Option", "SoundFont")));
+            session = new ScreenSession(window, soundPlayer: player);
             window.View.GUI = session.GUI;
             window.View.Focus();
             session.Start(file);

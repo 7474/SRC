@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
     <ProjectReference Include="..\SRCRender\SRCRender.csproj" />
+    <ProjectReference Include="..\SRCSound\SRCSound.csproj" />
   </ItemGroup>
 
 </Project>

@@ -40,6 +40,8 @@ namespace SRCRender
             SRC.SystemConfig = config;
             SRC.FileSystem = fileSystem;
             SRC.Sound.Player = soundPlayer ?? new NullSoundPlayer();
+            // 設定の音量を反映する
+            SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
             // 汎用グラフィック集などの素材が無くても動かす
             SRC.AllowMissingAssets = true;
             try
