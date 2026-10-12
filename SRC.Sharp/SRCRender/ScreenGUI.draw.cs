@@ -154,7 +154,7 @@ namespace SRCRender
             SKBitmap target;
             if (onMsgWindow)
             {
-                target = faceBuffer;
+                target = frmMessage.picFace.NewImageIfNull().Image;
                 permanent = false;
             }
             else if (onStatusWindow)

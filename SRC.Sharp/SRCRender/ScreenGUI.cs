@@ -39,11 +39,31 @@ namespace SRCRender
         private volatile int listResult = -1;
         private volatile int dialogResult = -1;
 
+        // メッセージウィンドウ（WinForms 版の frmMessage に相当）
+        private readonly Compat.MessageWindow frmMessage = new Compat.MessageWindow();
+
+        // メッセージウィンドウに表示中のユニットなど（WinForms 版と同じ）
+        private string messageDisplayedPilot;
+        private string DisplayMode;
+        private Unit RightUnit;
+        private Unit LeftUnit;
+        private double RightUnitHPRatio;
+        private double LeftUnitHPRatio;
+        private double RightUnitENRatio;
+        private double LeftUnitENRatio;
+        private bool _savedMessageFormVisible;
+        private Unit _savedLeftUnit;
+        private Unit _savedRightUnit;
+
+        /// <summary>メッセージウィンドウ</summary>
+        public Compat.MessageWindow MessageWindow => frmMessage;
+
         public ScreenGUI(SRC src, GameThread game, IScreenHost host)
         {
             this.src = src;
             this.game = game;
             this.host = host;
+            frmMessage.SetRefreshHandler(Present);
             MainWidth = ScreenLayout.MapColumns;
             MainHeight = ScreenLayout.MapRows;
             MessageWait = 700;
@@ -56,6 +76,12 @@ namespace SRCRender
 
         private ImageCache Images => images ?? (images = new ImageCache(src));
         private Map Map => src.Map;
+        // WinForms 版から移植したコードとの互換のため
+        private SRC SRC => src;
+        private SRCCore.Expressions.Expression Expression => src.Expression;
+        private Sound Sound => src.Sound;
+        private SRCCore.Events.Event Event => src.Event;
+        private Effect Effect => src.Effect;
         private Command Commands => src.Commands;
 
         /// <summary>
@@ -75,7 +101,6 @@ namespace SRCRender
             frame.Dispose();
             DisposeMapBuffers();
             statusBuffer.Dispose();
-            faceBuffer.Dispose();
         }
 
         #region 描画
@@ -91,7 +116,7 @@ namespace SRCRender
                 State.MapY = MapY;
                 using (var canvas = new SKCanvas(frame))
                 {
-                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, statusBuffer, faceBuffer));
+                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, statusBuffer, frmMessage));
                 }
                 host.Present(frame);
             }
@@ -182,6 +207,24 @@ namespace SRCRender
                     }
                 }
                 return;
+            }
+
+            // メッセージウィンドウのクリック（顔グラフィックのクリックで自動送りの切り替え）
+            if (frmMessage.Visible && button == GuiButton.Left)
+            {
+                var origin = renderer.MessageWindowOrigin(frmMessage);
+                var mx = x - origin.X;
+                var my = y - origin.Y;
+                if (mx >= 0 && my >= 0 && mx < frmMessage.Width && my < frmMessage.Height)
+                {
+                    var face = frmMessage.picFace;
+                    if (mx >= face.Left && my >= face.Top && mx < face.Left + face.Width && my < face.Top + face.Height && MessageWait < 10000)
+                    {
+                        AutoMessageMode = !AutoMessageMode;
+                    }
+                    isFormClicked = true;
+                    return;
+                }
             }
 
             var list = State.List;

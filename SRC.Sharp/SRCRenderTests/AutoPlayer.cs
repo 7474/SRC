@@ -88,7 +88,7 @@ namespace SRCRender.Tests
                 }
                 else if (state.Message.Visible && state.Message.Waiting)
                 {
-                    var text = (state.Message.Speaker ?? "") + "「" + string.Join("/", state.Message.Lines) + "」";
+                    var text = string.Join("/", state.Message.Lines);
                     if (Messages.Count == 0 || Messages[Messages.Count - 1] != text)
                     {
                         Messages.Add(text);

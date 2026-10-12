@@ -10,7 +10,6 @@ namespace SRCRender
     public partial class ScreenGUI
     {
         private readonly SKBitmap statusBuffer = NewTransparentBuffer(ScreenLayout.StatusArea.Width, ScreenLayout.StatusArea.Height);
-        private readonly SKBitmap faceBuffer = NewTransparentBuffer(ScreenLayout.FaceSize, ScreenLayout.FaceSize);
 
         private static SKBitmap NewTransparentBuffer(int width, int height)
         {

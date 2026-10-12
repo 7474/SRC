@@ -81,19 +81,19 @@ namespace SRCRender
         /// </summary>
         public struct ScreenLayers
         {
-            public ScreenLayers(SKBitmap map, SKBitmap status, SKBitmap face)
+            public ScreenLayers(SKBitmap map, SKBitmap status, Compat.MessageWindow message)
             {
                 Map = map;
                 Status = status;
-                Face = face;
+                Message = message;
             }
 
             /// <summary>マップ表示領域（ScreenLayout.MapArea の大きさ）</summary>
             public SKBitmap Map { get; }
             /// <summary>ステータス表示領域（ScreenLayout.StatusArea の大きさ）</summary>
             public SKBitmap Status { get; }
-            /// <summary>メッセージの顔グラフィック</summary>
-            public SKBitmap Face { get; }
+            /// <summary>メッセージウィンドウ</summary>
+            public Compat.MessageWindow Message { get; }
         }
 
         public void Render(SKCanvas canvas, ScreenState state, ScreenLayers layers)
@@ -109,7 +109,7 @@ namespace SRCRender
                 DrawCenteredText(canvas, ScreenLayout.MapArea, state.Splash, largeFont);
             }
             DrawStatus(canvas, layers.Status);
-            DrawMessage(canvas, state.Message, layers.Face);
+            DrawMessageArea(canvas, layers.Message);
             if (!string.IsNullOrEmpty(state.Telop))
             {
                 DrawTelop(canvas, state.Telop);
@@ -249,49 +249,71 @@ namespace SRCRender
             }
         }
 
-        private void DrawMessage(SKCanvas canvas, MessageState message, SKBitmap face)
+        /// <summary>メッセージウィンドウの左上（画面座標）</summary>
+        public SKPointI MessageWindowOrigin(Compat.MessageWindow window)
         {
             var area = ScreenLayout.MessageArea;
-            using (var paint = new SKPaint())
-            {
-                paint.Color = new SKColor(0x08, 0x08, 0x10);
-                canvas.DrawRect(area, paint);
-                if (!message.Visible)
-                {
-                    return;
-                }
-                var box = SKRect.Create(area.Left + 8, area.Top + 8, area.Width - 16, area.Height - 16);
-                DrawPanel(canvas, box, paint);
+            return new SKPointI(area.Left + (area.Width - window.Width) / 2, area.Top + (area.Height - window.Height) / 2);
+        }
 
+        private void DrawMessageArea(SKCanvas canvas, Compat.MessageWindow window)
+        {
+            using (var paint = new SKPaint { Color = new SKColor(0x08, 0x08, 0x10) })
+            {
+                canvas.DrawRect(ScreenLayout.MessageArea, paint);
+            }
+            if (window == null || !window.Visible)
+            {
+                return;
+            }
+            var origin = MessageWindowOrigin(window);
+            canvas.Save();
+            canvas.Translate(origin.X, origin.Y);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                paint.Color = Compat.Graphics.ToSKColor(window.BackColor);
+                canvas.DrawRect(0, 0, window.Width, window.Height, paint);
+                // 縁取り
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = new SKColor(0x80, 0x80, 0x80);
+                canvas.DrawRect(0.5f, 0.5f, window.Width - 1, window.Height - 1, paint);
                 paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                var x = box.Left + 16;
-                var y = box.Top + 26;
-                if (message.ShowFace && face != null)
+
+                foreach (var picture in new[] { window.picFace, window.picMessage, window.picUnit1, window.picUnit2, window.picHP1, window.picEN1, window.picHP2, window.picEN2 })
                 {
-                    canvas.DrawBitmap(face, box.Left + 12, box.Top + (box.Height - face.Height) / 2);
-                    x += face.Width + 12;
+                    if (!picture.Visible)
+                    {
+                        continue;
+                    }
+                    paint.Color = Compat.Graphics.ToSKColor(picture.BackColor);
+                    canvas.DrawRect(picture.Left, picture.Top, picture.Width, picture.Height, paint);
+                    if (picture.Image != null)
+                    {
+                        canvas.DrawBitmap(picture.Image, picture.Left, picture.Top);
+                    }
                 }
-                if (!string.IsNullOrEmpty(message.Speaker))
+                foreach (var label in new[] { window.labHP1, window.labEN1, window.labHP2, window.labEN2, window.txtHP1, window.txtEN1, window.txtHP2, window.txtEN2 })
                 {
-                    canvas.DrawText(message.Speaker, x, y, SKTextAlign.Left, boldFont, paint);
-                    y += font.Spacing + 4;
+                    if (!label.Visible || string.IsNullOrEmpty(label.Text))
+                    {
+                        continue;
+                    }
+                    using (var font = label.Font.ToSKFont())
+                    {
+                        paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                        paint.IsAntialias = true;
+                        canvas.DrawText(label.Text, label.Left, label.Top - font.Metrics.Ascent, SKTextAlign.Left, font, paint);
+                        paint.IsAntialias = false;
+                    }
                 }
-                foreach (var line in message.Lines.Skip(Math.Max(0, message.Lines.Count - 4)))
+                if (window.IsAutoMode)
                 {
-                    canvas.DrawText(line, x, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
-                }
-                if (message.Waiting)
-                {
-                    canvas.DrawText("▼", box.Right - 16, box.Bottom - 10, SKTextAlign.Right, font, paint);
-                }
-                if (message.AutoMode)
-                {
-                    paint.Color = DisabledTextColor;
-                    canvas.DrawText("自動送り", box.Right - 16, box.Top + 22, SKTextAlign.Right, font, paint);
+                    paint.Color = new SKColor(0x40, 0x40, 0x40);
+                    paint.IsAntialias = true;
+                    canvas.DrawText("自動送り", window.Width - 6, window.Height - 4, SKTextAlign.Right, font, paint);
                 }
             }
+            canvas.Restore();
         }
 
         private void DrawTelop(SKCanvas canvas, string telop)

@@ -32,6 +32,9 @@ namespace SRCRender
         public DialogState Dialog { get; set; }
     }
 
+    /// <summary>
+    /// メッセージの状態（表示はメッセージウィンドウが行う。テスト・自動プレイで参照する）。
+    /// </summary>
     public class MessageState
     {
         public bool Visible { get; set; }
@@ -39,8 +42,7 @@ namespace SRCRender
         public IList<string> Lines { get; } = new List<string>();
         /// <summary>クリック待ちの表示</summary>
         public bool Waiting { get; set; }
-        /// <summary>顔グラフィックを表示するか</summary>
-        public bool ShowFace { get; set; }
+
         public bool AutoMode { get; set; }
     }
 
