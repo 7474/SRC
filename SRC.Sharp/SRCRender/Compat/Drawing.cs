@@ -281,9 +281,18 @@ namespace SRCRender.Compat
         /// フォント名から書体を選ぶ。指定のフォントがあればそれを使い、無ければ
         /// 等幅指定は Noto Sans Mono CJK JP、明朝系は Noto Serif CJK JP、それ以外は Noto Sans CJK JP にする。
         /// </summary>
+        // 書体の検索は OS のフォント一覧を引くため重い。名前とスタイルごとに結果を覚えておく
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(string, int, int, int), SKTypeface> typefaceCache
+            = new System.Collections.Concurrent.ConcurrentDictionary<(string, int, int, int), SKTypeface>();
+
         public static SKTypeface ResolveTypeface(string name, SKFontStyle style)
         {
             name = name ?? "";
+            return typefaceCache.GetOrAdd((name, style.Weight, style.Width, (int)style.Slant), _ => FindTypeface(name, style));
+        }
+
+        private static SKTypeface FindTypeface(string name, SKFontStyle style)
+        {
             var fallbacks = IsFixedPitchName(name)
                 ? new[] { name, FixedPitchFamily, SansFamily }
                 : new[] { name, name.Contains("明朝") || name.Contains("Mincho") ? SerifFamily : SansFamily };
