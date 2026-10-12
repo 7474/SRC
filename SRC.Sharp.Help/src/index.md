@@ -1,8 +1,8 @@
 ---
 layout: default
-title: SRC#Help（SRCシャープ）
+title: SRC#Help（SRCシャープHelp）
 ---
-# SRC#Help（SRCシャープ）
+# SRC#Help（SRCシャープHelp）
 
 SRC#Form（SRCシャープForm）のヘルプです。
 
