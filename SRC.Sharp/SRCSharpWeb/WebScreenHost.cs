@@ -24,8 +24,15 @@ namespace SRCSharpWeb
         /// <summary>シナリオが終了した</summary>
         public bool Terminated { get; private set; }
 
+        /// <summary>受け取った画面の数・canvas へ書き込んだ数（動作確認用）</summary>
+        public int PresentCount => presentCount;
+        public int FlushCount => flushCount;
+        private int presentCount;
+        private int flushCount;
+
         public void Present(SKBitmap frame)
         {
+            Interlocked.Increment(ref presentCount);
             var buffer = Interlocked.Exchange(ref spare, null) ?? new byte[FrameInfo.BytesSize];
             var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             try
@@ -73,6 +80,7 @@ namespace SRCSharpWeb
             }
             WebInterop.DrawFrame(new ArraySegment<byte>(frame), FrameInfo.Width, FrameInfo.Height);
             Interlocked.CompareExchange(ref spare, frame, null);
+            flushCount++;
         }
     }
 }

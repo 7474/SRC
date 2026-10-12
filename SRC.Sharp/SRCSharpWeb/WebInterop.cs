@@ -21,6 +21,7 @@ namespace SRCSharpWeb
 
         private static WebScreenHost host;
         private static ScreenGUI gui;
+        private static SRCCore.SRC src;
         private static readonly BlockingCollection<Action<ScreenGUI>> inputs = new BlockingCollection<Action<ScreenGUI>>();
 
         [JSImport("drawFrame", ModuleName)]
@@ -33,10 +34,11 @@ namespace SRCSharpWeb
         internal static partial void BindCanvas(string id);
 
         /// <summary>画面と入力の受け渡しを始める。UI スレッドで呼ぶ。</summary>
-        public static void Attach(string canvasId, WebScreenHost screenHost, ScreenGUI screenGui)
+        public static void Attach(string canvasId, WebScreenHost screenHost, ScreenSession session)
         {
             host = screenHost;
-            gui = screenGui;
+            gui = session.GUI;
+            src = session.SRC;
             var pump = new Thread(() =>
             {
                 foreach (var input in inputs.GetConsumingEnumerable())
@@ -67,6 +69,20 @@ namespace SRCSharpWeb
         {
             host?.Flush();
             return Task.CompletedTask;
+        }
+
+        /// <summary>実行中のイベントの行（動作確認用）</summary>
+        [JSExport]
+        public static Task<string> DebugState()
+        {
+            var e = src?.Event;
+            if (e == null)
+            {
+                return Task.FromResult("not started");
+            }
+            var n = e.CurrentLineNum;
+            var line = e.EventData != null && n >= 0 && n < e.EventData.Count ? $"{e.EventData[n].File}:{e.EventData[n].LineNum} {e.EventData[n].Data}" : "";
+            return Task.FromResult($"present={host?.PresentCount} flush={host?.FlushCount} line={n} {line}");
         }
 
         /// <summary>kind: 0 押した、1 離した、2 移動</summary>

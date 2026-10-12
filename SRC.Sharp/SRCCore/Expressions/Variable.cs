@@ -1254,10 +1254,10 @@ namespace SRCCore.Expressions
 
                             case "appversion":
                                 {
-                                    // revision は捨てた
-                                    // Ref. System.Version
-                                    var v = SRC.Version;
-                                    num_result = v.Major * 100000 + v.Minor * 100 + v.Build;
+                                    // 元の SRC と同じく 10000 * Major + 100 * Minor + Revision（例: Ver.2.2.33 → 20233）
+                                    // System.Version では 3 番目の数が Build
+                                    var v = SRC.CompatibleVersion;
+                                    num_result = 10000 * v.Major + 100 * v.Minor + Math.Max(0, v.Build);
                                     etype = ValueType.NumericType;
                                     break;
                                 }

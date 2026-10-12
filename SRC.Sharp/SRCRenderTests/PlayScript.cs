@@ -23,6 +23,9 @@ namespace SRCRender.Tests
     ///   list 文字列|#番号      リストの項目を選ぶ（番号は 1 始まり）
     ///   dialog ボタン名        ダイアログのボタンを押す
     ///   key Enter|Escape|...   キーを押す
+    ///   stall 秒               auto・turns で、待ちの状態でないまま進まないときにボタンを押すまでの時間（既定 5 秒）
+    ///   choose 見出し 項目     auto・turns で、見出し（または説明）にその文字列を含むリストが出たら、その文字列を含む項目を選ぶ
+    ///                          （例: choose コマンド 次のステージへ … インターミッションで次のステージへ進む）
     ///   snapshot 名前          画面を保存する
     ///   phase                  味方フェイズを簡単な方針で自動で行い、ターンを終える（ScriptedPhase）
     ///   turns 回数             「auto → phase」を繰り返す
@@ -42,6 +45,7 @@ namespace SRCRender.Tests
         {
             this.runner = runner;
             auto = new AutoPlayer(runner);
+            auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
         }
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
@@ -146,6 +150,16 @@ namespace SRCRender.Tests
                     break;
                 case "list":
                     SelectList(Rest(args, 1));
+                    break;
+                case "stall":
+                    auto.StallClickMillis = (int)(double.Parse(args[1]) * 1000);
+                    break;
+                case "choose":
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("choose 見出し 項目");
+                    }
+                    auto.ListRules.Add((args[1], Rest(args, 2)));
                     break;
                 case "dialog":
                     PressDialog(Rest(args, 1));

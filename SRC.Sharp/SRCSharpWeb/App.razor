@@ -205,7 +205,7 @@ else
         var host = new WebScreenHost();
         session = new ScreenSession(host, ScenarioArchive.AppPath, loggerFactory: LoggerFactory);
         session.Game.UnhandledException += (s, e) => Console.Error.WriteLine(e.Exception);
-        WebInterop.Attach("screen", host, session.GUI);
+        WebInterop.Attach("screen", host, session);
         session.Start(evePath);
         watch = new System.Threading.Timer(_ =>
         {

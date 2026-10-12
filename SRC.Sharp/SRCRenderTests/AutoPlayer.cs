@@ -36,8 +36,8 @@ namespace SRCRender.Tests
             (240, 240), (130, 130), (350, 230), (240, 380), (240, 472), (600, 300),
         };
 
-        private string lastListSignature;
-        private int listRepeats;
+        // リスト以外の操作をするまでに各リストを選んだ回数（リストが交互に出る循環も検出するため）
+        private readonly Dictionary<string, int> listVisits = new Dictionary<string, int>();
 
         /// <summary>ボタンを押した回数</summary>
         public int Stalls { get; private set; }
@@ -47,6 +47,34 @@ namespace SRCRender.Tests
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
         public string SnapshotDirectory { get; set; }
+
+        /// <summary>
+        /// 選択肢の規則。見出し（またはリスト上部の説明）に Caption を含むリストでは、Item を含む有効な項目を選ぶ。
+        /// インターミッションで「次のステージへ」を選ぶ、シナリオ独自の選択肢で特定の答えを選ぶ、などに使う。先に追加したものを優先する
+        /// </summary>
+        public IList<(string Caption, string Item)> ListRules { get; } = new List<(string Caption, string Item)>();
+
+        /// <summary>リストで項目を選んだときの通知（見出し, 選んだ項目）</summary>
+        public Action<string, string> ListChosen { get; set; }
+
+        private int ChooseByRule(ListState list)
+        {
+            foreach (var (caption, item) in ListRules)
+            {
+                if (!(list.Caption ?? "").Contains(caption) && !(list.Info ?? "").Contains(caption))
+                {
+                    continue;
+                }
+                for (var i = 0; i < list.Items.Count; i++)
+                {
+                    if (!list.Items[i].Disabled && (list.Items[i].Text ?? "").Contains(item))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
 
         /// <summary>選択肢の選び方。既定は先頭の有効な項目</summary>
         public Func<ListState, int> ChooseList { get; set; } = list =>
@@ -112,15 +140,20 @@ namespace SRCRender.Tests
                     }
                     else
                     {
-                        // 同じリストが続けて出る場合（選んだ結果で元に戻るなど）は、次の有効な項目を選ぶ
+                        // 同じリストが繰り返し出る場合（選んだ結果で元に戻る、並べ替えのリストと交互に出るなど）は、次の有効な項目を選ぶ。
+                        // 有効な項目をすべて選んでも抜けられなければキャンセルする
                         var signature = list.Caption + "\n" + list.Info + "\n" + string.Join("\n", list.Items.Select(x => x.Text));
-                        listRepeats = signature == lastListSignature ? listRepeats + 1 : 0;
-                        lastListSignature = signature;
-                        var index = ChooseList(list);
-                        if (index >= 0 && listRepeats > 0)
+                        listVisits.TryGetValue(signature, out var visits);
+                        listVisits[signature] = visits + 1;
+                        var index = ChooseByRule(list);
+                        if (index >= 0)
+                        {
+                            // 規則で選ぶ場合は繰り返しても同じ項目を選ぶ
+                        }
+                        else if ((index = ChooseList(list)) >= 0 && visits > 0)
                         {
                             var enabled = Enumerable.Range(0, list.Items.Count).Where(i => !list.Items[i].Disabled).ToList();
-                            index = enabled[(enabled.IndexOf(index) + listRepeats) % enabled.Count];
+                            index = visits >= enabled.Count + 1 ? -1 : enabled[(enabled.IndexOf(index) + visits) % enabled.Count];
                         }
                         if (index < 0)
                         {
@@ -128,6 +161,7 @@ namespace SRCRender.Tests
                         }
                         else
                         {
+                            ListChosen?.Invoke(list.Info ?? list.Caption, list.Items[index].Text);
                             list.Highlight = index;
                             gui.KeyPressed(ScreenKey.Enter);
                         }
@@ -180,6 +214,10 @@ namespace SRCRender.Tests
                     // 画面が更新されている間は待ちとみなさない
                     lastFrame = runner.FrameCount;
                     idleSince = DateTime.UtcNow;
+                }
+                if (acted && !(state.List != null && state.Dialog == null))
+                {
+                    listVisits.Clear();
                 }
                 if (acted)
                 {
