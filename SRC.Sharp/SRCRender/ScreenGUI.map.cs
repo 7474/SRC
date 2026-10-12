@@ -596,6 +596,35 @@ namespace SRCRender
                 }
             }
             Present();
+
+            // 味方ユニット数、敵ユニット数のカウント
+            var num = 0;
+            var num2 = 0;
+            foreach (Unit u in SRC.UList.Items)
+            {
+                if (u.Status == "出撃" || u.Status == "格納")
+                {
+                    if (u.Party0 == "味方" || u.Party0 == "ＮＰＣ")
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        num2++;
+                    }
+                }
+            }
+
+            // 各ユニット数の表示
+            var prev_mode = AutoMessageMode;
+            AutoMessageMode = false;
+            OpenMessageForm(u1: null, u2: null);
+            DisplayMessage("システム", "味方ユニット： " + num + ";" + "敵ユニット  ： " + num2, "");
+            CloseMessageForm();
+            AutoMessageMode = prev_mode;
+
+            // 画面を元に戻す
+            RefreshScreen();
         }
     }
 }

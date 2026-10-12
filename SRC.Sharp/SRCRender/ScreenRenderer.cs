@@ -110,7 +110,11 @@ namespace SRCRender
             }
             if (state.List != null)
             {
-                DrawList(canvas, state.List);
+                DrawForm(canvas, state.List.Window);
+            }
+            if (state.Config != null)
+            {
+                DrawForm(canvas, state.Config);
             }
             if (state.Menu != null)
             {
@@ -361,9 +365,11 @@ namespace SRCRender
         /// <summary>
         /// リストボックス（WinForms 版 frmListBox と同じ部品配置）を描く。
         /// </summary>
-        private void DrawList(SKCanvas canvas, ListState list)
+        /// <summary>
+        /// 画面上のウィンドウ（リストボックス・設定変更など、WinForms 版のフォームと同じ部品配置）を描く。
+        /// </summary>
+        private void DrawForm(SKCanvas canvas, Compat.Form w)
         {
-            var w = list.Window;
             canvas.Save();
             canvas.Translate(w.ScreenLeft, w.ScreenTop);
             using (var paint = new SKPaint { IsAntialias = false })
@@ -399,6 +405,19 @@ namespace SRCRender
                         break;
                     case Compat.MultiColumnListWindow mw:
                         DrawTextBox(canvas, mw.labCaption, paint);
+                        break;
+                    case Compat.ConfigWindow cw:
+                        foreach (var check in cw.CheckBoxes)
+                        {
+                            DrawCheckBox(canvas, check, paint);
+                        }
+                        DrawLabel(canvas, cw.labMP3Volume, paint);
+                        DrawTextBox(canvas, cw.txtMP3Volume, paint);
+                        DrawScrollBar(canvas, cw.hscMP3Volume, paint);
+                        foreach (var button in cw.Buttons)
+                        {
+                            DrawButton(canvas, button, paint);
+                        }
                         break;
                     case Compat.MultiSelectListWindow sw:
                         DrawTextBox(canvas, sw.lblCaption, paint);
@@ -443,6 +462,59 @@ namespace SRCRender
                     y += lineHeight;
                 }
             }
+        }
+
+        private static void DrawCheckBox(SKCanvas canvas, Compat.CheckBox check, SKPaint paint)
+        {
+            if (!check.Visible)
+            {
+                return;
+            }
+            const int box = 13;
+            var top = check.Top + (check.Height - box) / 2f;
+            var rect = SKRect.Create(check.Left, top, box, box);
+            paint.Color = check.Enabled ? SKColors.White : new SKColor(192, 192, 192);
+            canvas.DrawRect(rect, paint);
+            DrawBevel(canvas, rect, raised: false, paint);
+            if (check.Checked)
+            {
+                paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
+                paint.Style = SKPaintStyle.Stroke;
+                paint.StrokeWidth = 2;
+                paint.IsAntialias = true;
+                using (var path = new SKPath())
+                {
+                    path.MoveTo(rect.Left + 3, rect.MidY);
+                    path.LineTo(rect.Left + 5.5f, rect.Bottom - 3.5f);
+                    path.LineTo(rect.Right - 3, rect.Top + 3);
+                    canvas.DrawPath(path, paint);
+                }
+                paint.IsAntialias = false;
+                paint.StrokeWidth = 1;
+                paint.Style = SKPaintStyle.Fill;
+            }
+            using (var font = check.Font.ToSKFont())
+            {
+                paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
+                paint.IsAntialias = true;
+                canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                paint.IsAntialias = false;
+            }
+        }
+
+        private static void DrawScrollBar(SKCanvas canvas, Compat.HScrollBar bar, SKPaint paint)
+        {
+            if (!bar.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(bar.Left, bar.Top, bar.Width, bar.Height);
+            paint.Color = new SKColor(224, 224, 224);
+            canvas.DrawRect(rect, paint);
+            var thumb = SKRect.Create(rect.Left + bar.ThumbLeft, rect.Top, Compat.HScrollBar.ThumbWidth, rect.Height);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(thumb, paint);
+            DrawBevel(canvas, thumb, raised: true, paint);
         }
 
         private static void DrawButton(SKCanvas canvas, Compat.Button button, SKPaint paint)

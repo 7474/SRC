@@ -10,7 +10,7 @@ namespace SRCRender.Tests
     /// <summary>
     /// ScreenGUI でシナリオを実行し、画面の状態を見ながら入力を与える。
     /// </summary>
-    public sealed class ScreenScenarioRunner : IScreenHost, IDisposable
+    public sealed class ScreenScenarioRunner : IScreenHost, IScreenDialogHost, IDisposable
     {
         public static readonly TimeSpan Timeout = TimeSpan.FromSeconds(20);
 
@@ -159,6 +159,28 @@ namespace SRCRender.Tests
         }
 
         #endregion
+
+        /// <summary>文字入力への応答（title, message, defaultValue → 入力値、null でキャンセル）。既定は既定値で確定。</summary>
+        public Func<string, string, string, string> InputHandler { get; set; } = (title, message, defaultValue) => defaultValue;
+
+        /// <summary>ファイル選択への応答。既定はキャンセル。</summary>
+        public Func<FileDialogRequest, string> OpenFileHandler { get; set; } = request => null;
+        public Func<FileDialogRequest, string> SaveFileHandler { get; set; } = request => null;
+
+        public System.Threading.Tasks.Task<string> InputTextAsync(string title, string message, string defaultValue)
+        {
+            return System.Threading.Tasks.Task.Run(() => InputHandler(title, message, defaultValue));
+        }
+
+        public System.Threading.Tasks.Task<string> OpenFileAsync(FileDialogRequest request)
+        {
+            return System.Threading.Tasks.Task.Run(() => OpenFileHandler(request));
+        }
+
+        public System.Threading.Tasks.Task<string> SaveFileAsync(FileDialogRequest request)
+        {
+            return System.Threading.Tasks.Task.Run(() => SaveFileHandler(request));
+        }
 
         public void Dispose()
         {

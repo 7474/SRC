@@ -240,6 +240,13 @@ namespace SRCRender
                 return;
             }
 
+            // 設定変更ダイアログ（モーダル）
+            if (State.Config != null)
+            {
+                game.Post(() => ConfigPointerPressed(x, y, button));
+                return;
+            }
+
             // リストボックスの選択待ち（右クリックはどこでもキャンセル）
             var list = State.List;
             if (list != null && waitingList)
@@ -477,6 +484,11 @@ namespace SRCRender
         /// </summary>
         public void KeyPressed(ScreenKey key)
         {
+            if (State.Config != null)
+            {
+                game.Post(() => ConfigKeyPressed(key));
+                return;
+            }
             switch (key)
             {
                 case ScreenKey.Enter:
@@ -713,11 +725,6 @@ namespace SRCRender
         {
         }
 
-        public void Configure()
-        {
-            // TODO 設定画面
-        }
-
         public void UpdateHotPoint()
         {
             UpdateTooltip();
@@ -822,11 +829,26 @@ namespace SRCRender
 
         public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
         {
-            // TODO 文字入力。現状は既定値で確定する
+            if (host is IScreenDialogHost dialogs)
+            {
+                var input = WaitTask(dialogs.InputTextAsync(title, message, defaultValue));
+                value = input ?? defaultValue;
+                return input == null ? GuiDialogResult.Cancel : GuiDialogResult.Ok;
+            }
+            // 文字入力の手段が無い場合は既定値で確定する
             value = defaultValue;
             return ShowDialog(title, message + Environment.NewLine + "（入力値: " + defaultValue + "）", "OK", "キャンセル") == 0
                 ? GuiDialogResult.Ok
                 : GuiDialogResult.Cancel;
+        }
+
+        /// <summary>
+        /// UI 側の処理（ダイアログ）の完了を、UI からの処理を続けながらゲームスレッドで待つ。
+        /// </summary>
+        private T WaitTask<T>(System.Threading.Tasks.Task<T> task)
+        {
+            WaitUntil(() => task.IsCompleted);
+            return task.GetAwaiter().GetResult();
         }
 
         public void DisplayTelop(string msg)
@@ -849,7 +871,22 @@ namespace SRCRender
 
         public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName = null)
         {
-            // TODO 保存先の選択。現状はシナリオフォルダへ保存する
+            var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
+            if (host is IScreenDialogHost dialogs)
+            {
+                var path = WaitTask(dialogs.SaveFileAsync(new FileDialogRequest
+                {
+                    Title = "セーブ",
+                    InitialDirectory = src.ScenarioPath,
+                    InitialFile = string.IsNullOrEmpty(defaultName)
+                        ? Expression.GetValueAsString("セーブデータファイル名")
+                        : defaultName,
+                    FileType = "save files",
+                    FileExtension = ext,
+                }));
+                return string.IsNullOrEmpty(path) ? null : new FileStream(path, FileMode.Create);
+            }
+            // 保存先を選ぶ手段が無い場合はシナリオフォルダへ保存する
             var name = defaultName ?? (saveKind == SRCSaveKind.Suspend ? "_suspend.srcq" : "_save.srcs");
             return new FileStream(SavePath(name), FileMode.Create);
         }
@@ -862,16 +899,41 @@ namespace SRCRender
                 : new FileStream(path, FileMode.Create, fileAccess);
         }
 
+        private string EffectiveDirectory(string initialDirectory)
+        {
+            return new[] { initialDirectory, src.ScenarioPath }
+                .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
+        }
+
         public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
         {
-            // TODO ファイル選択
-            return "";
+            if (!(host is IScreenDialogHost dialogs))
+            {
+                return "";
+            }
+            return WaitTask(dialogs.OpenFileAsync(new FileDialogRequest
+            {
+                Title = title,
+                InitialDirectory = EffectiveDirectory(initialDirectory),
+                FileType = fileType,
+                FileExtension = fileExtension,
+            })) ?? "";
         }
 
         public string SelectSaveFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
-            // TODO ファイル選択
-            return "";
+            if (!(host is IScreenDialogHost dialogs))
+            {
+                return "";
+            }
+            return WaitTask(dialogs.SaveFileAsync(new FileDialogRequest
+            {
+                Title = title,
+                InitialDirectory = EffectiveDirectory(initialDirectory),
+                InitialFile = initialFile ?? "",
+                FileType = fileType,
+                FileExtension = fileExtension,
+            })) ?? "";
         }
 
         #endregion

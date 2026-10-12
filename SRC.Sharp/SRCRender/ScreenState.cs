@@ -22,6 +22,9 @@ namespace SRCRender
         /// <summary>テロップ（null で非表示）</summary>
         public string Telop { get; set; }
 
+        /// <summary>設定変更ダイアログ</summary>
+        public Compat.ConfigWindow Config { get; set; }
+
         /// <summary>ホットポイントのツールチップ</summary>
         public TooltipState Tooltip { get; set; }
 
