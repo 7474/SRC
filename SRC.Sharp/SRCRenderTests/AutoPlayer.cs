@@ -27,9 +27,13 @@ namespace SRCRender.Tests
         /// <summary>待ちの状態でないまま、この時間操作が無ければボタンを押す（ミリ秒）</summary>
         public int StallClickMillis { get; set; } = 5000;
 
-        /// <summary>そのときに押す位置（既定はステータス欄。マップの操作にならない場所）</summary>
-        public float StallClickX { get; set; } = 600;
-        public float StallClickY { get; set; } = 300;
+        /// <summary>
+        /// そのときに押す位置。順に使う。スクリプトが描いたメニュー（マウスの位置で選ぶもの）を進めるため、マップ上の複数の場所を含める
+        /// </summary>
+        public IList<(float x, float y)> StallClickPositions { get; set; } = new List<(float x, float y)>
+        {
+            (240, 240), (240, 100), (240, 380), (600, 300),
+        };
 
         /// <summary>ボタンを押した回数</summary>
         public int Stalls { get; private set; }
@@ -138,11 +142,13 @@ namespace SRCRender.Tests
                 {
                     // 待ちの状態でないまま進まない（KeyState でボタンが押されるのを待つループなど）。
                     // 人の操作と同じく、ボタンを押してしばらく保ってから離す
-                    Trace?.Invoke("stall: hold left button");
+                    var (cx, cy) = StallClickPositions[Stalls % StallClickPositions.Count];
+                    Trace?.Invoke($"stall: hold left button at ({cx}, {cy})");
                     Snapshot("stall");
-                    gui.PointerPressed(StallClickX, StallClickY, GuiButton.Left);
+                    gui.PointerMoved(cx, cy);
+                    gui.PointerPressed(cx, cy, GuiButton.Left);
                     Thread.Sleep(300);
-                    gui.PointerReleased(StallClickX, StallClickY, GuiButton.Left);
+                    gui.PointerReleased(cx, cy, GuiButton.Left);
                     Stalls++;
                     acted = true;
                 }
