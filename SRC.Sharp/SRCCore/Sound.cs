@@ -387,9 +387,9 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }
-                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(x))
+                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(PathResolver.Resolve(x)))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-                .Where(x => Directory.Exists(x))
+                .Where(x => Directory.Exists(PathResolver.Resolve(x)))
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？

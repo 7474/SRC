@@ -24,6 +24,9 @@ namespace SRCRender
         public static readonly SKRectI StatusArea = new SKRectI(MapWidthPx, 0, Width, MapHeightPx);
         public static readonly SKRectI MessageArea = new SKRectI(0, MapHeightPx, Width, Height);
 
+        /// <summary>顔グラフィックの大きさ</summary>
+        public const int FaceSize = 64;
+
         public static bool IsInMap(int x, int y) => MapArea.Contains(x, y);
     }
 }

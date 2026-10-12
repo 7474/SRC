@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace SRCRender
 {
     /// <summary>
-    /// 画面に表示する内容。GUI 実装が更新し、ScreenRenderer が描画する。
+    /// 画面に表示する内容（マップ以外）。GUI 実装が更新し、ScreenRenderer が描画する。
     /// </summary>
     public class ScreenState
     {
@@ -14,9 +14,6 @@ namespace SRCRender
         public int MapX { get; set; } = 1;
         public int MapY { get; set; } = 1;
 
-        /// <summary>マスク表示（ScreenIsMasked）</summary>
-        public bool Masked { get; set; }
-
         /// <summary>タイトルやロード中の表示（null で非表示）</summary>
         public string Splash { get; set; }
 
@@ -24,8 +21,6 @@ namespace SRCRender
         public string Telop { get; set; }
 
         public MessageState Message { get; } = new MessageState();
-
-        public IList<string> StatusLines { get; set; } = new List<string>();
 
         /// <summary>選択肢（null で非表示）</summary>
         public ListState List { get; set; }
@@ -44,6 +39,8 @@ namespace SRCRender
         public IList<string> Lines { get; } = new List<string>();
         /// <summary>クリック待ちの表示</summary>
         public bool Waiting { get; set; }
+        /// <summary>顔グラフィックを表示するか</summary>
+        public bool ShowFace { get; set; }
         public bool AutoMode { get; set; }
     }
 

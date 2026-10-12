@@ -18,9 +18,9 @@ namespace SRCRender.Tests
         private volatile bool terminated;
         private int frameCount;
 
-        public ScreenScenarioRunner(string appPath)
+        public ScreenScenarioRunner(string appPath, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory = null)
         {
-            Session = new ScreenSession(this, appPath);
+            Session = new ScreenSession(this, appPath, loggerFactory: loggerFactory);
             Session.Game.UnhandledException += (s, e) =>
             {
                 Error = e.Exception;
@@ -33,6 +33,7 @@ namespace SRCRender.Tests
         public ScreenState State => Session.GUI.State;
         public Exception Error { get; private set; }
         public bool IsTerminated => terminated;
+        public bool IsFinished => finished.IsSet;
         public int FrameCount => frameCount;
 
         public void Start(string eve)
@@ -114,6 +115,19 @@ namespace SRCRender.Tests
 
         #region IScreenHost
 
+        /// <summary>
+        /// 表示されたフレームを保存する（検証用）。every フレームごとに directory へ PNG で書き出す。
+        /// </summary>
+        public void RecordFrames(string directory, int every)
+        {
+            Directory.CreateDirectory(directory);
+            recordDirectory = directory;
+            recordEvery = Math.Max(1, every);
+        }
+
+        private string recordDirectory;
+        private int recordEvery;
+
         void IScreenHost.Present(SKBitmap frame)
         {
             if (terminated)
@@ -121,7 +135,16 @@ namespace SRCRender.Tests
                 // Terminate 後はシナリオの実行を打ち切る
                 throw new HeadlessTerminatedException();
             }
-            Interlocked.Increment(ref frameCount);
+            var count = Interlocked.Increment(ref frameCount);
+            if (recordDirectory != null && count % recordEvery == 0)
+            {
+                using (var image = SKImage.FromBitmap(frame))
+                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (var stream = File.Create(Path.Combine(recordDirectory, $"frame-{count:00000}.png")))
+                {
+                    data.SaveTo(stream);
+                }
+            }
         }
 
         void IScreenHost.SetTitle(string title)

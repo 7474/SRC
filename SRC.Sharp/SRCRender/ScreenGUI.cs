@@ -32,7 +32,6 @@ namespace SRCRender
         private readonly object renderLock = new object();
         private readonly SKBitmap frame = new SKBitmap(ScreenLayout.Width, ScreenLayout.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
         private ImageCache images;
-        private SKBitmap background;
 
         // UI スレッドから更新される入力状態
         private volatile bool isFormClicked;
@@ -74,7 +73,9 @@ namespace SRCRender
         {
             renderer.Dispose();
             frame.Dispose();
-            background?.Dispose();
+            DisposeMapBuffers();
+            statusBuffer.Dispose();
+            faceBuffer.Dispose();
         }
 
         #region 描画
@@ -88,10 +89,9 @@ namespace SRCRender
             {
                 State.MapX = MapX;
                 State.MapY = MapY;
-                State.Masked = ScreenIsMasked;
                 using (var canvas = new SKCanvas(frame))
                 {
-                    renderer.Render(canvas, src, State, background, Images);
+                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, statusBuffer, faceBuffer));
                 }
                 host.Present(frame);
             }
@@ -348,6 +348,12 @@ namespace SRCRender
             }
         }
 
+        /// <summary>選択肢の選択待ちか</summary>
+        public bool IsWaitingList => waitingList;
+
+        /// <summary>メッセージ以外のクリック待ち（Wait Click など）か</summary>
+        public bool IsWaitingClick => Commands.WaitClickMode;
+
         private void SimpleClick()
         {
             if (MessageFormVisible || Commands.WaitClickMode || IsGUILocked)
@@ -522,18 +528,8 @@ namespace SRCRender
             // TODO 設定画面
         }
 
-        public void UpdateScreen()
-        {
-            Present();
-        }
-
         public void UpdateHotPoint()
         {
-        }
-
-        public void DisplayGlobalMap()
-        {
-            // TODO 全体マップ表示
         }
 
         #endregion

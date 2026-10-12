@@ -27,7 +27,8 @@ namespace SRCRender
             }
             catch
             {
-                // 設定ファイルが無い場合は既定値で動かす
+                // 設定ファイルが無い場合は、元の SRC が設定ファイルを作る際の既定値で動かす
+                ApplyDefaultConfig(config);
             }
             if (!string.IsNullOrEmpty(appPath))
             {
@@ -61,6 +62,22 @@ namespace SRCRender
             Game = new GameThread();
             GUI = new ScreenGUI(SRC, Game, host);
             GUI.Install();
+        }
+
+        /// <summary>
+        /// 元の SRC（SRC.bas の CreateIniFile）が設定ファイルを作る際の既定値を設定する。
+        /// </summary>
+        public static void ApplyDefaultConfig(LocalFileConfig config)
+        {
+            config.ShowSquareLine = false;
+            config.KeepEnemyBGM = false;
+            config.AutoDefense = false;
+            config.AutoMoveCursor = true;
+            config.SpecialPowerAnimation = true;
+            config.BattleAnimation = true;
+            config.ExtendedAnimation = true;
+            config.WeaponAnimation = true;
+            config.MoveAnimation = true;
         }
 
         public SRC SRC { get; }

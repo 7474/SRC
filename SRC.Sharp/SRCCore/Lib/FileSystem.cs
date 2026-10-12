@@ -15,6 +15,7 @@ namespace SRCCore.Lib
                 throw new NotSupportedException("FileAttribute.Volume");
             }
 
+            PathName = Filesystem.PathResolver.Resolve(PathName);
             if (Attributes.HasFlag(FileAttribute.Directory))
             {
                 if (Directory.Exists(PathName)) { return new DirectoryInfo(PathName).ToString(); }

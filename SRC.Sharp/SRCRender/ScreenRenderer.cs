@@ -76,20 +76,40 @@ namespace SRCRender
 
         #region 描画
 
-        public void Render(SKCanvas canvas, SRC src, ScreenState state, SKBitmap background, ImageCache images)
+        /// <summary>
+        /// 画面を構成する画像。
+        /// </summary>
+        public struct ScreenLayers
+        {
+            public ScreenLayers(SKBitmap map, SKBitmap status, SKBitmap face)
+            {
+                Map = map;
+                Status = status;
+                Face = face;
+            }
+
+            /// <summary>マップ表示領域（ScreenLayout.MapArea の大きさ）</summary>
+            public SKBitmap Map { get; }
+            /// <summary>ステータス表示領域（ScreenLayout.StatusArea の大きさ）</summary>
+            public SKBitmap Status { get; }
+            /// <summary>メッセージの顔グラフィック</summary>
+            public SKBitmap Face { get; }
+        }
+
+        public void Render(SKCanvas canvas, ScreenState state, ScreenLayers layers)
         {
             canvas.Clear(BackColor);
 
-            if (state.ShowMap && src?.Map?.MapData != null)
+            if (layers.Map != null)
             {
-                DrawMap(canvas, src, state, background, images);
+                canvas.DrawBitmap(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
             }
             if (!string.IsNullOrEmpty(state.Splash))
             {
                 DrawCenteredText(canvas, ScreenLayout.MapArea, state.Splash, largeFont);
             }
-            DrawStatus(canvas, state);
-            DrawMessage(canvas, state.Message);
+            DrawStatus(canvas, layers.Status);
+            DrawMessage(canvas, state.Message, layers.Face);
             if (!string.IsNullOrEmpty(state.Telop))
             {
                 DrawTelop(canvas, state.Telop);
@@ -205,109 +225,31 @@ namespace SRCRender
             }
         }
 
-        private void DrawMap(SKCanvas canvas, SRC src, ScreenState state, SKBitmap background, ImageCache images)
+        /// <summary>
+        /// ユニット画像が無い場合に、名前の頭文字を表示する。
+        /// </summary>
+        public void DrawUnitInitial(SKCanvas canvas, string name, SKRect dest)
         {
-            var map = src.Map;
-            canvas.Save();
-            canvas.ClipRect(ScreenLayout.MapArea);
-            using (var paint = new SKPaint())
+            name = string.IsNullOrEmpty(name) ? "?" : name;
+            using (var paint = new SKPaint { Color = TextColor, IsAntialias = true })
             {
-                for (var col = 0; col < ScreenLayout.MapColumns; col++)
-                {
-                    for (var row = 0; row < ScreenLayout.MapRows; row++)
-                    {
-                        var x = ViewToMapX(state, col * ScreenLayout.CellPx);
-                        var y = ViewToMapY(state, row * ScreenLayout.CellPx);
-                        if (x < 1 || x > map.MapWidth || y < 1 || y > map.MapHeight)
-                        {
-                            continue;
-                        }
-                        var dest = SKRect.Create(col * ScreenLayout.CellPx, row * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        if (background != null)
-                        {
-                            var source = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                            canvas.DrawBitmap(background, source, dest);
-                        }
-                        var unit = map.MapDataForUnit?[x, y];
-                        if (unit != null)
-                        {
-                            DrawUnit(canvas, unit, dest, images, paint);
-                        }
-                        if (state.Masked && map.MaskData != null && map.MaskData[x, y])
-                        {
-                            paint.Color = MaskColor;
-                            paint.Style = SKPaintStyle.Fill;
-                            canvas.DrawRect(dest, paint);
-                        }
-                    }
-                }
-            }
-            canvas.Restore();
-        }
-
-        private void DrawUnit(SKCanvas canvas, Unit unit, SKRect dest, ImageCache images, SKPaint paint)
-        {
-            paint.Style = SKPaintStyle.Fill;
-            paint.Color = PartyColor(unit.Party0);
-            canvas.DrawRect(dest, paint);
-
-            SKBitmap image = null;
-            try
-            {
-                image = images.GetTransparent(unit.CurrentForm().CurrentBitmap());
-            }
-            catch
-            {
-                // 画像の解決に失敗した場合は文字で表示する
-            }
-            if (image != null)
-            {
-                canvas.DrawBitmap(image, dest);
-            }
-            else
-            {
-                var name = unit.Nickname0 ?? unit.Name ?? "?";
-                paint.Color = TextColor;
-                canvas.DrawText(name.Substring(0, Math.Min(1, name.Length)), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
-            }
-
-            paint.Style = SKPaintStyle.Stroke;
-            paint.Color = new SKColor(0, 0, 0, 0xA0);
-            canvas.DrawRect(dest, paint);
-        }
-
-        private static SKColor PartyColor(string party)
-        {
-            switch (party ?? "")
-            {
-                case "味方":
-                case "ＮＰＣ":
-                    return new SKColor(0x30, 0x50, 0xD0, 0xC0);
-                case "敵":
-                    return new SKColor(0xD0, 0x30, 0x30, 0xC0);
-                case "中立":
-                    return new SKColor(0xD0, 0xC0, 0x30, 0xC0);
-                default:
-                    return new SKColor(0x80, 0x80, 0x80, 0xC0);
+                canvas.DrawText(name.Substring(0, 1), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
             }
         }
 
-        private void DrawStatus(SKCanvas canvas, ScreenState state)
+        private void DrawStatus(SKCanvas canvas, SKBitmap status)
         {
             using (var paint = new SKPaint { Color = new SKColor(0x20, 0x20, 0x28) })
             {
                 canvas.DrawRect(ScreenLayout.StatusArea, paint);
-                paint.Color = TextColor;
-                var y = ScreenLayout.StatusArea.Top + 24f;
-                foreach (var line in state.StatusLines ?? Array.Empty<string>())
-                {
-                    canvas.DrawText(line ?? "", ScreenLayout.StatusArea.Left + 12, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
-                }
+            }
+            if (status != null)
+            {
+                canvas.DrawBitmap(status, ScreenLayout.StatusArea.Left, ScreenLayout.StatusArea.Top);
             }
         }
 
-        private void DrawMessage(SKCanvas canvas, MessageState message)
+        private void DrawMessage(SKCanvas canvas, MessageState message, SKBitmap face)
         {
             var area = ScreenLayout.MessageArea;
             using (var paint = new SKPaint())
@@ -325,6 +267,11 @@ namespace SRCRender
                 paint.Color = TextColor;
                 var x = box.Left + 16;
                 var y = box.Top + 26;
+                if (message.ShowFace && face != null)
+                {
+                    canvas.DrawBitmap(face, box.Left + 12, box.Top + (box.Height - face.Height) / 2);
+                    x += face.Width + 12;
+                }
                 if (!string.IsNullOrEmpty(message.Speaker))
                 {
                     canvas.DrawText(message.Speaker, x, y, SKTextAlign.Left, boldFont, paint);
