@@ -32,7 +32,7 @@ namespace SRCRender.Tests
         /// </summary>
         public IList<(float x, float y)> StallClickPositions { get; set; } = new List<(float x, float y)>
         {
-            (240, 240), (240, 100), (240, 380), (600, 300),
+            (240, 240), (240, 100), (240, 380), (240, 472), (600, 300),
         };
 
         /// <summary>ボタンを押した回数</summary>
