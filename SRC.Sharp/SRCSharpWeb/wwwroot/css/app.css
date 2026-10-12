@@ -1,0 +1,91 @@
+html, body {
+    margin: 0;
+    background: #202020;
+    color: #e8e8e8;
+    font-family: system-ui, sans-serif;
+}
+
+main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+h1 {
+    font-size: 1.6rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #555;
+}
+
+.status {
+    color: #ffd27f;
+}
+
+.note {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.items {
+    list-style: none;
+    padding: 0;
+}
+
+.items li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.items .size {
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+button {
+    font: inherit;
+}
+
+.screen-wrap {
+    position: relative;
+    width: 720px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#screen {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 720 / 620;
+    outline: none;
+    cursor: default;
+}
+
+.ended {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.toolbar {
+    text-align: center;
+}
+
+#blazor-error-ui {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    background: #6b1c1c;
+}

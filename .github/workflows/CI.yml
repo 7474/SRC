@@ -46,6 +46,12 @@ jobs:
       env:
         ALSOFT_DRIVERS: "null"
 
+    # SRC#Web（マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要）
+    - name: Build SRC#Web
+      run: |
+        dotnet workload install wasm-tools
+        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
+
     - name: Upload screenshots
       if: always()
       uses: actions/upload-artifact@v7

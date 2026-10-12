@@ -6,3 +6,7 @@
 
 # Ignore CSS source maps
 *.css.map
+
+# SRC#Web のビルドで取得・生成する静的ファイル
+SRC.Sharp/SRCSharpWeb/wwwroot/fonts/
+SRC.Sharp/SRCSharpWeb/wwwroot/scenarios/

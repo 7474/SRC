@@ -1,0 +1,240 @@
+@using SRCRender
+@using System.IO
+@implements IDisposable
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject Microsoft.Extensions.Logging.ILoggerFactory LoggerFactory
+
+@if (mode == Mode.Playing || mode == Mode.Ended)
+{
+    <div class="screen-wrap">
+        <canvas id="screen" width="@ScreenLayout.Width" height="@ScreenLayout.Height" tabindex="0"></canvas>
+        @if (mode == Mode.Ended)
+        {
+            <div class="ended">
+                <p>シナリオが終了しました。</p>
+                <button @onclick="BackToMenu">シナリオ選択へ戻る</button>
+            </div>
+        }
+    </div>
+    <p class="toolbar"><button @onclick="BackToMenu">シナリオ選択へ戻る</button></p>
+}
+else
+{
+    <main>
+        <h1>SRC#Web</h1>
+        @if (!string.IsNullOrEmpty(status))
+        {
+            <p id="status" class="status">@status</p>
+        }
+        @if (mode == Mode.Menu)
+        {
+            <section>
+                <h2>登録済シナリオ</h2>
+                @if (catalog.Count == 0)
+                {
+                    <p>ありません。</p>
+                }
+                <ul class="items" id="catalog">
+                    @foreach (var entry in catalog)
+                    {
+                        <li>
+                            <button @onclick="() => PlayCatalogAsync(entry)">@entry.Title</button>
+                        </li>
+                    }
+                </ul>
+            </section>
+            <section>
+                <h2>追加したアーカイブ</h2>
+                <p class="note">シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</p>
+                <InputFile id="add-archive" OnChange="AddArchivesAsync" accept=".zip" multiple />
+                <ul class="items" id="archives">
+                    @foreach (var archive in archives)
+                    {
+                        <li>
+                            <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
+                            <span class="size">@FormatSize(archive.Size)</span>
+                            <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">削除</button>
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+        else if (mode == Mode.ChooseEvent)
+        {
+            <section>
+                <h2>@choosingTitle</h2>
+                <p>開始するシナリオ（.eve）を選んでください。</p>
+                <ul class="items" id="events">
+                    @foreach (var eve in eventFiles)
+                    {
+                        <li><button @onclick="() => StartAsync(Path.Combine(scenarioDir, eve))">@eve</button></li>
+                    }
+                </ul>
+                <button @onclick="BackToMenu">戻る</button>
+            </section>
+        }
+    </main>
+}
+
+@code {
+    private enum Mode { Loading, Menu, ChooseEvent, Playing, Ended }
+
+    public class CatalogEntry
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Archive { get; set; }
+        public string Eve { get; set; }
+    }
+
+    public class StoredArchive
+    {
+        public string Name { get; set; }
+        public long Size { get; set; }
+    }
+
+    private Mode mode = Mode.Loading;
+    private string status = "読み込み中…";
+    private List<CatalogEntry> catalog = new List<CatalogEntry>();
+    private List<StoredArchive> archives = new List<StoredArchive>();
+    private string choosingTitle;
+    private string scenarioDir;
+    private IList<string> eventFiles = new List<string>();
+    private ScreenSession session;
+    private System.Threading.Timer watch;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await WebFonts.LoadAsync(Http);
+            catalog = await Http.GetFromJsonAsync<List<CatalogEntry>>("scenarios/catalog.json") ?? new List<CatalogEntry>();
+            await RefreshArchivesAsync();
+            status = null;
+            mode = Mode.Menu;
+        }
+        catch (Exception ex)
+        {
+            status = "初期化に失敗しました: " + ex.Message;
+            Console.Error.WriteLine(ex);
+        }
+    }
+
+    private async Task RefreshArchivesAsync()
+    {
+        archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
+    }
+
+    private async Task AddArchivesAsync(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles(32))
+        {
+            status = $"{file.Name} を追加しています…";
+            StateHasChanged();
+            using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
+            using var buffer = new MemoryStream();
+            await stream.CopyToAsync(buffer);
+            await JS.InvokeVoidAsync("srcwebStore.put", file.Name, buffer.ToArray());
+        }
+        status = null;
+        await RefreshArchivesAsync();
+    }
+
+    private async Task DeleteArchiveAsync(StoredArchive archive)
+    {
+        await JS.InvokeVoidAsync("srcwebStore.remove", archive.Name);
+        await RefreshArchivesAsync();
+    }
+
+    private async Task PlayCatalogAsync(CatalogEntry entry)
+    {
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => Http.GetByteArrayAsync(entry.Archive), entry.Eve);
+    }
+
+    private async Task PlayArchiveAsync(StoredArchive archive)
+    {
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), null);
+    }
+
+    private async Task LoadAsync(string id, string title, Func<Task<byte[]>> fetch, string eve)
+    {
+        try
+        {
+            status = $"{title} を読み込んでいます…";
+            StateHasChanged();
+            var zip = await fetch();
+            status = $"{title} を展開しています…";
+            StateHasChanged();
+            scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip));
+            eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
+            if (!string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)))
+            {
+                await StartAsync(Path.Combine(scenarioDir, eve));
+            }
+            else if (eventFiles.Count == 1)
+            {
+                await StartAsync(Path.Combine(scenarioDir, eventFiles[0]));
+            }
+            else if (eventFiles.Count == 0)
+            {
+                status = $"{title} にシナリオ（.eve）がありません。";
+            }
+            else
+            {
+                status = null;
+                choosingTitle = title;
+                mode = Mode.ChooseEvent;
+            }
+        }
+        catch (Exception ex)
+        {
+            status = $"{title} を読み込めませんでした: " + ex.Message;
+            Console.Error.WriteLine(ex);
+        }
+    }
+
+    private async Task StartAsync(string evePath)
+    {
+        status = null;
+        mode = Mode.Playing;
+        StateHasChanged();
+        // canvas を表示してから始める
+        await Task.Delay(1);
+        Directory.CreateDirectory(ScenarioArchive.AppPath);
+        var host = new WebScreenHost();
+        session = new ScreenSession(host, ScenarioArchive.AppPath, loggerFactory: LoggerFactory);
+        session.Game.UnhandledException += (s, e) => Console.Error.WriteLine(e.Exception);
+        WebInterop.Attach("screen", host, session.GUI);
+        session.Start(evePath);
+        watch = new System.Threading.Timer(_ =>
+        {
+            if (WebInterop.Terminated && mode == Mode.Playing)
+            {
+                mode = Mode.Ended;
+                InvokeAsync(StateHasChanged);
+            }
+        }, null, 500, 500);
+    }
+
+    private async Task BackToMenu()
+    {
+        if (mode == Mode.ChooseEvent)
+        {
+            mode = Mode.Menu;
+            return;
+        }
+        // ゲームスレッドは止められないため、ページを読み込み直す
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
+    private static string FormatSize(long size)
+    {
+        return size >= 1024 * 1024 ? $"{size / 1024.0 / 1024.0:0.0} MB" : $"{size / 1024.0:0} KB";
+    }
+
+    public void Dispose()
+    {
+        watch?.Dispose();
+    }
+}
