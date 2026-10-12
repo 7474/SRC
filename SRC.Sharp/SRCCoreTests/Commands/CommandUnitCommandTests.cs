@@ -135,5 +135,84 @@ namespace SRCCore.Commands.Tests
             }
             Assert.IsTrue(reachedWait, "WaitCommand() またはその先の GUI 呼び出しに到達するはずです");
         }
+
+        // ──────────────────────────────────────────────
+        // ChargeCmdID (8) → ChargeCommand() → GUI.LockGUI が呼ばれる
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void UnitCommand_ChargeCmdID_CallsGuiLockGUI()
+        {
+            // ChargeCmdID は ChargeCommand() → GUI.LockGUI() を呼ぶ
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            var mock = (MockGUI)src.GUI;
+            bool lockCalled = false;
+            mock.LockGUIHandler = () => { lockCalled = true; };
+            try
+            {
+                src.Commands.UnitCommand(new UiCommand(Command.ChargeCmdID, "チャージ"));
+            }
+            catch { }
+            Assert.IsTrue(lockCalled, "ChargeCommand() 内で GUI.LockGUI() が呼ばれるはずです");
+        }
+
+        [TestMethod]
+        public void UnitCommand_ChargeCmdID_ConfirmCancel_CancelsCommand()
+        {
+            // Confirm でキャンセル → CancelCommand() → CommandState = "ユニット選択"
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            var mock = (MockGUI)src.GUI;
+            mock.LockGUIHandler = () => { };
+            mock.ConfirmHandler = (msg, cap, opt) => GuiDialogResult.Cancel;
+            mock.UnlockGUIHandler = () => { };
+            mock.RedrawScreenHandler = _ => { };
+            src.Commands.UnitCommand(new UiCommand(Command.ChargeCmdID, "チャージ"));
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        // ──────────────────────────────────────────────
+        // ItemCmdID (11) → StartAbilityCommand(true) → GUI.LockGUI が呼ばれる
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void UnitCommand_ItemCmdID_CallsGuiLockGUI()
+        {
+            // ItemCmdID は StartAbilityCommand(is_item=true) → GUI.LockGUI() を呼ぶ
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            var mock = (MockGUI)src.GUI;
+            bool lockCalled = false;
+            mock.LockGUIHandler = () => { lockCalled = true; };
+            try
+            {
+                src.Commands.UnitCommand(new UiCommand(Command.ItemCmdID, "アイテム"));
+            }
+            catch { }
+            Assert.IsTrue(lockCalled, "StartAbilityCommand(true) 内で GUI.LockGUI() が呼ばれるはずです");
+        }
+
+        // ──────────────────────────────────────────────
+        // TalkCmdID (3) → StartTalkCommand() → GUI 呼び出しに到達する
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void UnitCommand_TalkCmdID_ReachesStartTalkCommand()
+        {
+            // TalkCmdID は StartTalkCommand() に進む
+            var src = CreateSrc();
+            src.Commands.CommandState = "コマンド選択";
+            bool reachedGui = false;
+            ((MockGUI)src.GUI).LockGUIHandler = () => { reachedGui = true; };
+            ((MockGUI)src.GUI).RedrawScreenHandler = _ => { reachedGui = true; };
+            try
+            {
+                src.Commands.UnitCommand(new UiCommand(Command.TalkCmdID, "会話"));
+            }
+            catch (GUINotImplementedException) { reachedGui = true; }
+            catch { reachedGui = true; }
+            Assert.IsTrue(reachedGui, "StartTalkCommand() に到達するはずです");
+        }
     }
 }

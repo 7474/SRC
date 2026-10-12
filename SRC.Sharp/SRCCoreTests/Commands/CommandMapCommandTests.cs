@@ -178,5 +178,67 @@ namespace SRCCore.Commands.Tests
             var src = CreateSrc();
             Assert.IsFalse(src.Commands.ViewMode);
         }
+
+        [TestMethod]
+        public void MapCommand_ConfigurationCmdID_CallsGuiConfigure()
+        {
+            var src = CreateSrc();
+            bool configureCalled = false;
+            ((MockGUI)src.GUI).ConfigureHandler = () => { configureCalled = true; };
+            src.Commands.MapCommand(new UiCommand(Command.ConfigurationCmdID, "設定変更"));
+            Assert.IsTrue(configureCalled);
+        }
+
+        [TestMethod]
+        public void MapCommand_ConfigurationCmdID_SetsCommandStateToUnitSelect()
+        {
+            var src = CreateSrc();
+            ((MockGUI)src.GUI).ConfigureHandler = () => { };
+            src.Commands.CommandState = "コマンド選択";
+            src.Commands.MapCommand(new UiCommand(Command.ConfigurationCmdID, "設定変更"));
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        public void MapCommand_OperationObjectCmdID_CallsGuiLockGUI()
+        {
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            bool lockCalled = false;
+            mock.LockGUIHandler = () => { lockCalled = true; };
+            mock.RedrawScreenHandler = _ => { };
+            mock.UnlockGUIHandler = () => { };
+            try
+            {
+                src.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
+            }
+            catch { }
+            Assert.IsTrue(lockCalled);
+        }
+
+        [TestMethod]
+        public void MapCommand_OperationObjectCmdID_SetsCommandStateToUnitSelect()
+        {
+            var src = CreateSrc();
+            var mock = (MockGUI)src.GUI;
+            mock.LockGUIHandler = () => { };
+            mock.RedrawScreenHandler = _ => { };
+            mock.UnlockGUIHandler = () => { };
+            src.Commands.CommandState = "コマンド選択";
+            try
+            {
+                src.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
+            }
+            catch { }
+            Assert.AreEqual("ユニット選択", src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        public void MapCommand_UnknownCmdID_ThrowsNotSupportedException()
+        {
+            var src = CreateSrc();
+            Assert.Throws<System.NotSupportedException>(() =>
+                src.Commands.MapCommand(new UiCommand(9999, "不明コマンド")));
+        }
     }
 }
