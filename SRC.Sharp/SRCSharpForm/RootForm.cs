@@ -3,10 +3,12 @@ using Serilog;
 using Serilog.Extensions.Logging;
 using SRCCore.Config;
 using SRCCore.Filesystem;
+using SRCCore.Threading;
 using SRCSharpForm.Resoruces;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SRCSharpForm
@@ -14,6 +16,7 @@ namespace SRCSharpForm
     public partial class RootForm : Form
     {
         private SRCCore.SRC SRC;
+        private SRCSharpFormGUI formGUI;
         private string[] _args;
         private bool _firstShown;
 
@@ -25,6 +28,12 @@ namespace SRCSharpForm
         private bool IsTraceLogEnabled()
         {
             return _args.Any(x => x == "-vv");
+        }
+
+        // SRCCore を UI スレッドとは別のゲームスレッドで実行する（試験的機能）
+        private bool IsGameThreadEnabled()
+        {
+            return _args.Any(x => x == "--game-thread");
         }
 
         public RootForm(string[] args)
@@ -90,8 +99,18 @@ namespace SRCSharpForm
                 SRC.LogError(ex);
             }
 
-            SRC.GUI = new SRCSharpFormGUI(SRC);
+            formGUI = new SRCSharpFormGUI(SRC);
+            SRC.GUI = formGUI;
             SRC.GUI.MessageWait = 700;
+
+            if (IsGameThreadEnabled())
+            {
+                Program.Log.LogInformation("ゲームスレッドで実行");
+                // InitializeComponent 後なので WindowsFormsSynchronizationContext が設定されている
+                formGUI.Threading = new CoreThreading(SynchronizationContext.Current);
+                formGUI.Threading.Install(SRC);
+                formGUI.Threading.Start();
+            }
         }
 
         private void LoadGameFile()
@@ -115,7 +134,7 @@ namespace SRCSharpForm
             Hide();
             SRC.FileSystem.AddPath(Path.GetDirectoryName(filePath));
             SRC.FileSystem.AddSafePath(Path.GetDirectoryName(filePath));
-            SRC.Execute(filePath);
+            formGUI.RunOnCore(() => SRC.Execute(filePath));
         }
 
         private void SRCSharpForm_Shown(object sender, EventArgs e)
