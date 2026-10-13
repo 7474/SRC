@@ -15,9 +15,9 @@ namespace SRCCore.Extensions.Tests
         [TestMethod()]
         public void ToHexStringTest()
         {
-            Assert.AreEqual("#ff0000", Color.Red.ToHexString());
-            Assert.AreEqual("#00ff00", Color.FromArgb(0, 255, 0).ToHexString());
-            Assert.AreEqual("#0000ff", Color.FromArgb(0, 0, 255).ToHexString());
+            Assert.AreEqual("#FF0000", Color.Red.ToHexString());
+            Assert.AreEqual("#00FF00", Color.FromArgb(0, 255, 0).ToHexString());
+            Assert.AreEqual("#0000FF", Color.FromArgb(0, 0, 255).ToHexString());
         }
 
         [TestMethod()]

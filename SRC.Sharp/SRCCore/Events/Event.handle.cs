@@ -39,27 +39,27 @@ namespace SRCCore.Events
             SelectedTargetForEvent = Commands.SelectedTarget;
 
             // イベントキューを作成
-            // XXX キューをいつ処理しきるのか？
-            //event_que_idx = Information.UBound(EventQue);
+            // このイベントの分はキューの末尾に追加し、それより前（呼び出し元で処理中のイベント）には触れない
+            var event_que_idx = EventQue.Count;
             switch (Args[0])
             {
                 case "プロローグ":
                     {
-                        EventQue.Enqueue("プロローグ");
+                        EventQue.Add("プロローグ");
                         SRC.Stage = "プロローグ";
                         break;
                     }
 
                 case "エピローグ":
                     {
-                        EventQue.Enqueue("エピローグ");
+                        EventQue.Add("エピローグ");
                         SRC.Stage = "エピローグ";
                         break;
                     }
 
                 case "破壊":
                     {
-                        EventQue.Enqueue("破壊 " + Args[1]);
+                        EventQue.Add("破壊 " + Args[1]);
                         var p = SRC.PList.Item(Args[1]);
                         var uparty = p.Party;
                         if (p.Unit != null)
@@ -72,7 +72,7 @@ namespace SRCCore.Events
                                 onBoardUnit.UnloadUnit(onBoardUnit.ID);
                                 onBoardUnit.Status = "破壊";
                                 onBoardUnit.HP = 0;
-                                EventQue.Enqueue("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
+                                EventQue.Add("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
                             }
                             uparty = u.Party0;
                         }
@@ -91,14 +91,14 @@ namespace SRCCore.Events
                         }
                         if (!flag)
                         {
-                            EventQue.Enqueue("全滅 " + uparty);
+                            EventQue.Add("全滅 " + uparty);
                         }
                         break;
                     }
 
                 case "マップ攻撃破壊":
                     {
-                        EventQue.Enqueue("マップ攻撃破壊 " + Args[1]);
+                        EventQue.Add("マップ攻撃破壊 " + Args[1]);
                         var p = SRC.PList.Item(Args[1]);
                         var uparty = p.Party;
                         if (p.Unit != null)
@@ -111,7 +111,7 @@ namespace SRCCore.Events
                                 onBoardUnit.UnloadUnit(onBoardUnit.ID);
                                 onBoardUnit.Status = "破壊";
                                 onBoardUnit.HP = 0;
-                                EventQue.Enqueue("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
+                                EventQue.Add("マップ攻撃破壊 " + onBoardUnit.MainPilot().ID);
                             }
                             uparty = u.Party0;
                         }
@@ -122,82 +122,82 @@ namespace SRCCore.Events
                     }
 
                 case "ターン":
-                    EventQue.Enqueue(string.Join(" ", "ターン ", "全", Args[2]));
-                    EventQue.Enqueue(string.Join(" ", "ターン ", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "ターン ", "全", Args[2]));
+                    EventQue.Add(string.Join(" ", "ターン ", Args[1], Args[2]));
                     break;
 
                 case "損傷率":
-                    EventQue.Enqueue(string.Join(" ", "損傷率", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "損傷率", Args[1], Args[2]));
                     break;
 
                 case "攻撃":
-                    EventQue.Enqueue(string.Join(" ", "攻撃", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "攻撃", Args[1], Args[2]));
                     break;
 
                 case "攻撃後":
-                    EventQue.Enqueue(string.Join(" ", "攻撃後", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "攻撃後", Args[1], Args[2]));
                     break;
 
                 case "会話":
-                    EventQue.Enqueue(string.Join(" ", "会話", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "会話", Args[1], Args[2]));
                     break;
 
                 case "接触":
-                    EventQue.Enqueue(string.Join(" ", "接触", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "接触", Args[1], Args[2]));
                     break;
 
                 case "進入":
-                    EventQue.Enqueue(string.Join(" ", "進入", Args[1], Args[2], Args[3]));
-                    EventQue.Enqueue(string.Join(" ", "進入", Args[1], Map.Terrain(Conversions.ToInteger(Args[2]), Conversions.ToInteger(Args[3])).Name));
+                    EventQue.Add(string.Join(" ", "進入", Args[1], Args[2], Args[3]));
+                    EventQue.Add(string.Join(" ", "進入", Args[1], Map.Terrain(Conversions.ToInteger(Args[2]), Conversions.ToInteger(Args[3])).Name));
                     if (Conversions.ToInteger(Args[2]) == 1)
                     {
-                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "W"));
+                        EventQue.Add(string.Join(" ", "脱出", Args[1], "W"));
                     }
                     else if (Conversions.ToInteger(Args[2]) == Map.MapWidth)
                     {
-                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "E"));
+                        EventQue.Add(string.Join(" ", "脱出", Args[1], "E"));
                     }
                     else if (Conversions.ToInteger(Args[3]) == 1)
                     {
-                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "N"));
+                        EventQue.Add(string.Join(" ", "脱出", Args[1], "N"));
                     }
                     else if (Conversions.ToInteger(Args[3]) == Map.MapHeight)
                     {
-                        EventQue.Enqueue(string.Join(" ", "脱出", Args[1], "S"));
+                        EventQue.Add(string.Join(" ", "脱出", Args[1], "S"));
                     }
                     break;
 
                 case "収納":
-                    EventQue.Enqueue(string.Join(" ", "収納", Args[1]));
+                    EventQue.Add(string.Join(" ", "収納", Args[1]));
                     break;
 
                 case "使用":
-                    EventQue.Enqueue(string.Join(" ", "使用", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "使用", Args[1], Args[2]));
                     break;
 
                 case "使用後":
-                    EventQue.Enqueue(string.Join(" ", "使用後", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "使用後", Args[1], Args[2]));
                     break;
 
                 case "行動終了":
-                    EventQue.Enqueue(string.Join(" ", "行動終了", Args[1]));
+                    EventQue.Add(string.Join(" ", "行動終了", Args[1]));
                     break;
 
                 case "ユニットコマンド":
                     var cmd1 = string.Join(" ", "ユニットコマンド", Args[1], Args[2]);
                     if (IsEventDefined(cmd1))
                     {
-                        EventQue.Enqueue(cmd1);
+                        EventQue.Add(cmd1);
                     }
                     else
                     {
                         var cmd2 = string.Join(" ", "ユニットコマンド", Args[1], SRC.PList.Item(Args[2]).Unit.Name);
-                        EventQue.Enqueue(cmd2);
+                        EventQue.Add(cmd2);
                     }
                     break;
 
                 default:
-                    EventQue.Enqueue(string.Join(" ", Args));
+                    EventQue.Add(string.Join(" ", Args));
                     break;
             }
 
@@ -219,13 +219,12 @@ namespace SRCCore.Events
             CallDepth = (CallDepth + 1);
 
             // 各イベントを発生させる
-            // XXX キューのスキップすんの？
-            //i = event_que_idx;
+            // 実行中に追加されたイベント（RegisterEvent など）も順に処理する
             SRC.IsCanceled = false;
-            while (EventQue.Count > 0)
+            for (var i = event_que_idx; i < EventQue.Count; i++)
             {
-                var eventItem = EventQue.Dequeue();
-                SRC.LogDebug("EventQue.Dequeue", eventItem);
+                var eventItem = EventQue[i];
+                SRC.LogDebug("EventQue", eventItem);
 
                 // 前のイベントで他のユニットが出現している可能性があるので
                 // 本当に全滅したのか判定
@@ -379,8 +378,12 @@ namespace SRCCore.Events
                 ForIndex = 0;
             }
 
-            //// イベントキューを元に戻す
-            //Array.Resize(EventQue, GeneralLib.MinLng(event_que_idx - 1, Information.UBound(EventQue)) + 1);
+            // イベントキューを元に戻す
+            // （ステージ終了やキャンセルで処理しなかったイベントも破棄する）
+            if (EventQue.Count > event_que_idx)
+            {
+                EventQue.RemoveRange(event_que_idx, EventQue.Count - event_que_idx);
+            }
 
             // フォント設定をデフォルトに戻す
             // XXX 位置はリセットしない？
@@ -410,7 +413,7 @@ namespace SRCCore.Events
         public void RegisterEvent(params string[] Args)
         {
             var item = string.Join(" ", Args);
-            EventQue.Enqueue(item);
+            EventQue.Add(item);
         }
     }
 }

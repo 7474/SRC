@@ -3,19 +3,46 @@ using System.Linq;
 
 namespace SRCCore.Expressions.Functions
 {
-    public class Action : AUnitFunction
+    public class Action : AFunction
     {
-        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
             num_result = 0d;
-            if (unit != null)
+            switch (pcount)
             {
-                if (unit.Status == "出撃" || unit.Status == "格納")
-                {
-                    num_result = unit.Action;
-                }
+                case 1:
+                    {
+                        var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        if (SRC.UList.IsDefined2(pname))
+                        {
+                            num_result = SRC.UList.Item2(pname).Action;
+                        }
+                        else if (SRC.PList.IsDefined(pname))
+                        {
+                            // パイロット名で指定した場合のみ出撃中かどうかを判定する
+                            var u = SRC.PList.Item(pname).Unit;
+                            if (u != null)
+                            {
+                                if (u.Status == "出撃" || u.Status == "格納")
+                                {
+                                    num_result = u.Action;
+                                }
+                            }
+                        }
+                        break;
+                    }
+
+                case 0:
+                    {
+                        if (SRC.Event.SelectedUnitForEvent != null)
+                        {
+                            num_result = SRC.Event.SelectedUnitForEvent.Action;
+                        }
+                        break;
+                    }
             }
+
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -341,31 +368,9 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            Units.Unit unit = null;
-            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-            if (SRC.UList.IsDefined(pname))
-            {
-                unit = SRC.UList.Item(pname);
-            }
-
-            var index = pcount == 1
-                ? 0
-                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            if (unit != null && unit.CountPilot() > 0)
-            {
-                if (index > 0)
-                {
-                    var pilots = unit.AllRawPilots.ToList();
-                    str_result = pilots.Count > index - 1 ? pilots[index - 1].Name : "";
-                }
-                else
-                {
-                    str_result = unit.MainPilot().Name;
-                }
-            }
+            var p = PilotFunctionHelper.FindPilot(SRC, @params, pcount, is_term);
+            str_result = p?.Name ?? "";
             return ValueType.StringType;
         }
     }
@@ -374,32 +379,80 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            Units.Unit unit = null;
-            var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-            if (SRC.UList.IsDefined(pname))
-            {
-                unit = SRC.UList.Item(pname);
-            }
-
-            var index = pcount == 1
-                ? 0
-                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            if (unit != null && unit.CountPilot() > 0)
-            {
-                if (index > 0)
-                {
-                    var pilots = unit.AllRawPilots.ToList();
-                    str_result = pilots.Count > index - 1 ? pilots[index - 1].ID : "";
-                }
-                else
-                {
-                    str_result = unit.MainPilot().ID;
-                }
-            }
+            var p = PilotFunctionHelper.FindPilot(SRC, @params, pcount, is_term);
+            str_result = p?.ID ?? "";
             return ValueType.StringType;
+        }
+    }
+
+    internal static class PilotFunctionHelper
+    {
+        // Pilot関数、PilotID関数の対象となるパイロットを返す
+        public static Pilots.Pilot FindPilot(SRC SRC, string[] @params, int pcount, bool[] is_term)
+        {
+            switch (pcount)
+            {
+                case 2:
+                    {
+                        var uname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        if (SRC.UList.IsDefined(uname))
+                        {
+                            var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                            return NthPilot(SRC.UList.Item(uname), i);
+                        }
+                        return null;
+                    }
+
+                case 1:
+                    {
+                        var uname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        if (GeneralLib.IsNumber(uname))
+                        {
+                            // 選択中のユニットのi番目のパイロット
+                            if (SRC.Event.SelectedUnitForEvent != null)
+                            {
+                                var i = (int)System.Math.Round(VB.Conversions.ToDouble(uname), System.MidpointRounding.ToEven);
+                                return NthPilot(SRC.Event.SelectedUnitForEvent, i);
+                            }
+                        }
+                        else if (SRC.UList.IsDefined(uname))
+                        {
+                            var u = SRC.UList.Item(uname);
+                            if (u.CountPilot() > 0)
+                            {
+                                return u.MainPilot();
+                            }
+                        }
+                        return null;
+                    }
+
+                case 0:
+                    {
+                        // 選択中のユニットのメインパイロット
+                        var u = SRC.Event.SelectedUnitForEvent;
+                        if (u != null && u.CountPilot() > 0)
+                        {
+                            return u.MainPilot();
+                        }
+                        return null;
+                    }
+            }
+            return null;
+        }
+
+        // パイロット、サポートパイロットの順で数えたi番目のパイロット
+        private static Pilots.Pilot NthPilot(Units.Unit u, int i)
+        {
+            if (0 < i && i <= u.CountPilot())
+            {
+                return u.Pilots[i - 1];
+            }
+            else if (u.CountPilot() < i && i <= u.CountPilot() + u.CountSupport())
+            {
+                return u.SupportPilots[i - u.CountPilot() - 1];
+            }
+            return null;
         }
     }
 

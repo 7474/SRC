@@ -13,8 +13,15 @@ namespace SRCCore.CmdDatas.Commands
         protected override int ExecInternal()
         {
             // サブルーチンを探す
-            string subName = GetArgAsString(2);
+            // VB版では構文解析時にラベルが存在すればサブルーチン指定を式として扱わない
+            string subName = GetArg(2);
             var ret = Event.FindNormalLabel(subName);
+            if (ret < 0)
+            {
+                // サブルーチン指定は式？
+                subName = GetArgAsString(2);
+                ret = Event.FindNormalLabel(subName);
+            }
 
             // 見つかった？
             if (ret < 0)

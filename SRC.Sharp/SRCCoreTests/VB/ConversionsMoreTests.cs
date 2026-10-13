@@ -41,9 +41,10 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void ToInteger_DecimalString_TruncatesToInt()
+        public void ToInteger_DecimalString_RoundsToInt()
         {
-            Assert.AreEqual(3, Conversions.ToInteger("3.7"));
+            // VB の CInt/CLng と同様に丸める
+            Assert.AreEqual(4, Conversions.ToInteger("3.7"));
         }
 
         [TestMethod]

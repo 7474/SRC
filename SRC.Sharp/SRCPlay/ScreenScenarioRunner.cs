@@ -60,7 +60,27 @@ namespace SRCPlay
             {
                 Thread.Sleep(20);
             }
-            return DateTime.UtcNow - start;
+            var elapsed = DateTime.UtcNow - start;
+            lock (suspendedTimeLock)
+            {
+                suspendedTime += elapsed;
+            }
+            return elapsed;
+        }
+
+        private readonly object suspendedTimeLock = new object();
+        private TimeSpan suspendedTime;
+
+        /// <summary>WaitWhileSuspended で止められていた時間の合計</summary>
+        public TimeSpan SuspendedTime
+        {
+            get
+            {
+                lock (suspendedTimeLock)
+                {
+                    return suspendedTime;
+                }
+            }
         }
 
         public void Start(string eve)

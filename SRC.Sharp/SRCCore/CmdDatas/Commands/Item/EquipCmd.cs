@@ -107,7 +107,7 @@ namespace SRCCore.CmdDatas.Commands
                     // ユニット画像が変化した？
                     if (u.Status == "出撃")
                     {
-                        if (!GUI.IsPictureVisible && Map.IsStatusView)
+                        if (!GUI.IsPictureVisible && !Map.IsStatusView)
                         {
                             GUI.PaintUnitBitmap(u);
                         }

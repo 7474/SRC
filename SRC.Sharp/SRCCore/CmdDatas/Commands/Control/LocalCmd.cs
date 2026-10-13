@@ -73,7 +73,9 @@ namespace SRCCore.CmdDatas.Commands
                     }
                     else
                     {
-                        var arg = "(" + string.Join(" ", Enumerable.Range(4, ArgNum - 3).Select(x => GetArg(x))) + ")";
+                        // Localコマンドが複数項から成る代入式を伴う場合
+                        // VB版は引用符を除く前の "(" & ListTail(edata, 4) & ")" を評価する
+                        var arg = "(" + string.Join(" ", Enumerable.Range(4, ArgNum - 3).Select(x => GetArgRaw(x).RawArg ?? GetArg(x))) + ")";
                         etype = Expression.EvalTerm(arg, ValueType.UndefinedType, out str_result, out num_result);
                         Event.NewSubLocalVar().SetValue(vname, etype, str_result, num_result);
                     }

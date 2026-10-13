@@ -18,6 +18,7 @@
 - **[バージョンの管理](./versioning.md)** — SRC# のバージョンの付け方とリリースの手順
 - **[SRC#Web（ブラウザ版）](./gui/web.md)** — 静的サイトで動くブラウザ版の設計（マルチスレッド WebAssembly・ブラウザ内保存）
 - **[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)** — サイトの設定・カタログ・素材の同梱・URL での起動
+- **[Static Web Apps のワークフロー](./swa-workflows.md)** — SRC#DataViewer・SRC#Help のデプロイと、残ったプレビュー環境の定期削除
 
 ### 🛠️ 作成支援ツール / Authoring Tools
 

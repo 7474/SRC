@@ -45,7 +45,7 @@ namespace SRCCore.Events
         public Unit SelectedTargetForEvent { get => SRC.Commands.SelectedState.SelectedTargetForEvent; set { SRC.Commands.SelectedState.SelectedTargetForEvent = value; } }
 
         // イベント呼び出しのキュー
-        public Queue<string> EventQue;
+        public List<string> EventQue;
         // 現在実行中のイベントラベル
         public int CurrentLabel;
 

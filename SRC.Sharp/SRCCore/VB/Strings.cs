@@ -39,6 +39,9 @@ namespace SRCCore.VB
         private static System.Text.Encoding ShiftJISEncodingWithFallback => _shiftJISEncodingWithFallback.Value;
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.asc?view=net-5.0
+        // VB6 と同様に Shift_JIS の文字コードを返す。
+        // 2バイト文字は符号付き16ビット値（例: "あ" → &H82A0 → -32096）となる。
+        // Shift_JIS で表せない文字は Unicode のコードポイントを返す。
         public static int Asc(char _String)
         {
             int int32 = Convert.ToInt32(_String);
@@ -47,14 +50,51 @@ namespace SRCCore.VB
                 return int32;
             }
 
-            //throw new ArgumentException();
-            return int32;
+            var bytes = ShiftJISEncodingWithFallback.GetBytes(new[] { _String });
+            switch (bytes.Length)
+            {
+                case 1:
+                    return bytes[0];
+                case 2:
+                    return (short)((bytes[0] << 8) | bytes[1]);
+                default:
+                    return int32;
+            }
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.asc?view=net-5.0
         public static int Asc(string _String)
         {
             return Asc(_String[0]);
+        }
+
+        // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.chr?view=net-5.0
+        // VB6 と同様に Shift_JIS の文字コードから文字を返す。
+        // 2バイト文字のコードは符号付き16ビット値、符号なし16ビット値のどちらでも指定できる。
+        public static string Chr(int CharCode)
+        {
+            var code = CharCode & 0xFFFF;
+            if (code < 128)
+            {
+                return ((char)code).ToString();
+            }
+
+            byte[] bytes;
+            if (code <= 0xFF)
+            {
+                bytes = new[] { (byte)code };
+            }
+            else
+            {
+                bytes = new[] { (byte)(code >> 8), (byte)(code & 0xFF) };
+            }
+            var str = ShiftJISEncodingWithFallback.GetString(bytes);
+            if (str.Length == 1)
+            {
+                return str;
+            }
+            // Shift_JIS として解釈できないコード
+            return ((char)code).ToString();
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.instr?view=net-5.0
@@ -165,9 +205,10 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strcomp?view=net-5.0
+        // VB6 の既定（Option Compare Binary）と同様にバイナリ比較を行い -1, 0, 1 を返す
         public static int StrComp(string String1, string String2)
         {
-            return String1.CompareTo(String2);
+            return Math.Sign(string.CompareOrdinal(String1 ?? "", String2 ?? ""));
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strconv?view=net-5.0
@@ -323,9 +364,10 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
+        // VB6 の Trim$ と同様に前後の半角スペースのみを取り除く
         public static string Trim(string str)
         {
-            return string.IsNullOrEmpty(str) ? "" : str.Trim();
+            return string.IsNullOrEmpty(str) ? "" : str.Trim(' ');
         }
 
         // ---- xxxB
