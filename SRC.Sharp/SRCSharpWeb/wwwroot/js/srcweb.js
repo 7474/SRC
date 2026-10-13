@@ -89,3 +89,77 @@ async function start() {
     requestAnimationFrame(loop);
     canvas.focus();
 }
+
+// 文字入力・ファイル選択のモーダル（SRCSharpWeb/WebScreenHost.cs の IScreenDialogHost）
+function modal(title, build) {
+    return new Promise(resolve => {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal';
+        const box = document.createElement('div');
+        box.className = 'modal-box';
+        const heading = document.createElement('div');
+        heading.className = 'modal-title';
+        heading.textContent = title;
+        box.appendChild(heading);
+        overlay.appendChild(box);
+        const close = value => {
+            overlay.remove();
+            if (canvas) {
+                canvas.focus();
+            }
+            resolve(value);
+        };
+        build(box, close);
+        document.body.appendChild(overlay);
+    });
+}
+
+function buttons(box, items) {
+    const row = document.createElement('div');
+    row.className = 'modal-buttons';
+    for (const [label, action] of items) {
+        const b = document.createElement('button');
+        b.textContent = label;
+        b.addEventListener('click', action);
+        row.appendChild(b);
+    }
+    box.appendChild(row);
+}
+
+export function showInput(title, message, value) {
+    return modal(title || '入力', (box, close) => {
+        const p = document.createElement('p');
+        p.textContent = message;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = value ?? '';
+        input.id = 'modal-input';
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.isComposing) {
+                close(input.value);
+            } else if (e.key === 'Escape') {
+                close(null);
+            }
+        });
+        box.append(p, input);
+        buttons(box, [['OK', () => close(input.value)], ['キャンセル', () => close(null)]]);
+        setTimeout(() => input.focus(), 0);
+    });
+}
+
+export function showChoice(title, items) {
+    return modal(title || '選択', (box, close) => {
+        const list = document.createElement('ul');
+        list.className = 'modal-list';
+        for (const item of items) {
+            const li = document.createElement('li');
+            const b = document.createElement('button');
+            b.textContent = item;
+            b.addEventListener('click', () => close(item));
+            li.appendChild(b);
+            list.appendChild(li);
+        }
+        box.appendChild(list);
+        buttons(box, [['キャンセル', () => close(null)]]);
+    });
+}

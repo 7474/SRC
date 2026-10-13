@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices.JavaScript;
 using System.Threading;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace SRCSharpWeb
@@ -29,6 +30,12 @@ namespace SRCSharpWeb
 
         [JSImport("setTitle", ModuleName)]
         internal static partial void SetDocumentTitle(string title);
+
+        [JSImport("showInput", ModuleName)]
+        internal static partial Task<string> ShowInput(string title, string message, string value);
+
+        [JSImport("showChoice", ModuleName)]
+        internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items);
 
         [JSImport("bindCanvas", ModuleName)]
         internal static partial void BindCanvas(string id);
@@ -71,18 +78,73 @@ namespace SRCSharpWeb
             return Task.CompletedTask;
         }
 
-        /// <summary>実行中のイベントの行（動作確認用）</summary>
+        /// <summary>
+        /// 画面とイベントの状態（動作確認・E2E テスト用）。JSON で返す。
+        /// line: 実行中のイベントの行、list: 表示中のリスト、dialog: 表示中のダイアログ、message: クリック待ちのメッセージ
+        /// </summary>
+        private static readonly System.Text.Json.JsonSerializerOptions JsonOptions = new System.Text.Json.JsonSerializerOptions
+        {
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        };
+
         [JSExport]
         public static Task<string> DebugState()
         {
-            var e = src?.Event;
-            if (e == null)
+            var json = new JsonObject
             {
-                return Task.FromResult("not started");
+                ["present"] = host?.PresentCount ?? 0,
+                ["flush"] = host?.FlushCount ?? 0,
+                ["terminated"] = Terminated,
+            };
+            var e = src?.Event;
+            if (e != null)
+            {
+                var n = e.CurrentLineNum;
+                if (e.EventData != null && n >= 0 && n < e.EventData.Count)
+                {
+                    var data = e.EventData[n];
+                    json["line"] = $"{data.File}:{data.LineNum} {data.Data}";
+                }
             }
-            var n = e.CurrentLineNum;
-            var line = e.EventData != null && n >= 0 && n < e.EventData.Count ? $"{e.EventData[n].File}:{e.EventData[n].LineNum} {e.EventData[n].Data}" : "";
-            return Task.FromResult($"present={host?.PresentCount} flush={host?.FlushCount} line={n} {line}");
+            try
+            {
+                AddScreenState(json);
+            }
+            catch (Exception ex)
+            {
+                // ゲームスレッドが更新している最中に読んだ場合
+                json["error"] = ex.Message;
+            }
+            return Task.FromResult(json.ToJsonString(JsonOptions));
+        }
+
+        private static void AddScreenState(JsonObject json)
+        {
+            var state = gui?.State;
+            var list = state?.List;
+            if (list != null)
+            {
+                var items = new JsonArray();
+                foreach (var item in list.Items)
+                {
+                    items.Add(item.Text);
+                }
+                json["list"] = new JsonObject
+                {
+                    ["caption"] = list.Caption,
+                    ["info"] = list.Info,
+                    ["highlight"] = list.Highlight,
+                    ["items"] = items,
+                };
+            }
+            if (state?.Dialog != null)
+            {
+                json["dialog"] = state.Dialog.Title + ": " + state.Dialog.Text;
+            }
+            if (state != null && state.Message.Visible && state.Message.Waiting)
+            {
+                json["message"] = string.Join("\n", state.Message.Lines);
+            }
         }
 
         /// <summary>kind: 0 押した、1 離した、2 移動</summary>

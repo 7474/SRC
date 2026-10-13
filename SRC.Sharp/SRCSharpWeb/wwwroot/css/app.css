@@ -89,3 +89,52 @@ button {
     padding: 8px 16px;
     background: #6b1c1c;
 }
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.modal-box {
+    min-width: 320px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
+    overflow: auto;
+    padding: 0 16px 16px;
+    background: #2c2c2c;
+    border: 1px solid #666;
+}
+
+.modal-title {
+    margin: 0 -16px 8px;
+    padding: 4px 8px;
+    background: #000080;
+    font-weight: bold;
+}
+
+.modal-box input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.modal-list {
+    list-style: none;
+    padding: 0;
+}
+
+.modal-list li {
+    margin: 4px 0;
+}

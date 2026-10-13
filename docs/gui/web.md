@@ -1,6 +1,6 @@
 # SRC#Web（ブラウザ版）
 
-> 更新日: 2026-10-12
+> 更新日: 2026-10-13
 
 ブラウザで動く SRC#。データビューアの `SRCTestBlazor` とは別のプロジェクト `SRCSharpWeb` として作る。
 
@@ -72,10 +72,36 @@ SRCCore はゲームスレッドで処理を止めて待つ（メッセージ送
 
 初版は無音。次の段階で Web Audio API で鳴らす（WAV・MP3 はブラウザで復号、MIDI は MeltySynth で合成）。
 
+### 文字入力・ファイル選択
+
+`IScreenDialogHost` をページ上のモーダルで実装する（`WebScreenHost`）。JS を呼べるのは UI 側のスレッドだけのため、ゲームスレッドからの依頼は画面の書き込みと同じ機会（requestAnimationFrame）に始め、結果をゲームスレッドへ返す。ファイル選択はシナリオのフォルダの中に限る。
+
+### セーブデータ
+
+ゲームはシナリオのフォルダ（.NET のメモリ上のファイルシステム）にセーブデータ（.srcs・.srcq）を書く。プレイ中は 1 秒ごとに変化を調べ、書き込まれたものを IndexedDB に保存する（`SaveSync`）。シナリオを開くときに保存しておいたものをフォルダに戻し、「セーブデータから再開」に並べる。書き出し（ダウンロード）・読み込み・削除もここで行う。
+
 ## 段階
 
-1. 登録済シナリオを選んでプレイできる（メッセージ・選択肢・マップ・戦闘）
-2. zip のアーカイブを追加してプレイできる（ブラウザに保存し、次回も選べる）
-3. セーブ・ロード（ブラウザ内保存、ファイルの書き出し・読み込み）
-4. 音声
-5. GitHub Pages への配置（CI）
+| 段階 | 内容 | 状況 |
+|---|---|---|
+| 1 | 登録済シナリオを選んでプレイできる（メッセージ・選択肢・マップ・戦闘） | 済 |
+| 2 | zip のアーカイブを追加してプレイできる（ブラウザに保存し、次回も選べる。Shift_JIS のファイル名） | 済 |
+| 3 | セーブ・ロード（ブラウザ内保存、ファイルの書き出し・読み込み）、文字入力 | 済 |
+| 4 | 音声 | 未 |
+| 5 | GitHub Pages への配置（CI） | 未 |
+
+## テスト
+
+`SRC.Sharp/SRCSharpWeb.E2E`（Playwright）。発行した静的ファイルをヘッダなしで配信し（coi-serviceworker でクロスオリジン分離）、Chromium で次を確かめる。CI の Linux ジョブで実行する。
+
+- 登録済シナリオを選んでプレイする
+- アーカイブ（日本語のファイル名）を追加し、再読み込み後も残っていてプレイできる。削除できる
+- インターミッションでデータセーブし、再読み込み後にセーブデータから再開して次のステージへ進む
+
+画面の状態は `WebInterop.DebugState`（実行中のイベントの行・リスト・ダイアログ・メッセージの JSON）で調べる。
+
+```sh
+dotnet workload install wasm-tools
+dotnet publish SRC.Sharp/SRCSharpWeb -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
+cd SRC.Sharp/SRCSharpWeb.E2E && npm ci && npx playwright install chromium && npx playwright test
+```
