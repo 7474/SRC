@@ -123,6 +123,19 @@ test('表示言語を英語にし、選択欄で日本語に戻す', async ({ pa
   expect(await page.evaluate(() => localStorage.getItem('srcweb.language'))).toBe('ja');
 });
 
+test.describe('韓国語のブラウザ', () => {
+  test.use({ locale: 'ko-KR' });
+
+  test('ブラウザの言語に従う（auto）と、地域付きの言語も対応する訳で表示する', async ({ page }) => {
+    // ko-KR のブラウザで auto にすると韓国語（訳は埋め込んだリソースから引く）
+    await page.addInitScript(() => localStorage.setItem('srcweb.language', 'auto'));
+    await open(page);
+    await expect(page.getByRole('heading', { name: '등록된 시나리오' })).toBeVisible();
+    await expect(page.locator('#language')).toHaveValue('auto');
+    expect(await page.evaluate(() => document.documentElement.lang)).toBe('ko');
+  });
+});
+
 test('アーカイブを追加し、再読み込み後もプレイできる', async ({ page }, testInfo) => {
   const name = 'テスト追加.zip';
   await open(page);
