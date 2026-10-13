@@ -52,6 +52,14 @@ namespace SRCRender.Tests
             this.runner = runner;
             auto = new AutoPlayer(runner);
             auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
+            // 止まって押した位置（スクリプトが描いたクリック領域があればその ID）を記録する
+            auto.Trace = m =>
+            {
+                if (m.StartsWith("stall"))
+                {
+                    Record($"{DateTime.Now:HH:mm:ss} {m}");
+                }
+            };
         }
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
@@ -210,6 +218,26 @@ namespace SRCRender.Tests
                     }
                     auto.ListRules.Add((args[1], Rest(args, 2)));
                     break;
+                case "choose1":
+                    // 一度だけ使う規則（順に使う）。見出しに「クリック」を指定すると、スクリプトが描いたクリック領域を ID で選ぶ
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("choose1 見出し 項目");
+                    }
+                    auto.OnceRules.Add((args[1], Rest(args, 2)));
+                    break;
+                case "chooseseq":
+                    // 見出しの合うリスト（クリック領域）が出るたびに、| で区切った項目を順に選ぶ
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("chooseseq 見出し 項目1|項目2|...");
+                    }
+                    auto.SequenceRules.Add(new AutoPlayer.SequenceRule { Caption = args[1], Items = Rest(args, 2).Split('|').Select(x => x.Trim()).ToList() });
+                    break;
+                case "points":
+                    // スクリプトが描いたクリック領域の一覧を記録する（規則を書くための調査用）
+                    Record($"{DateTime.Now:HH:mm:ss} POINTS " + string.Join(" ", auto.MousePoints().Select(p => $"{p.ID}({p.X1},{p.Y1})-({p.X2},{p.Y2})")));
+                    break;
                 case "dialog":
                     PressDialog(Rest(args, 1));
                     break;
@@ -322,6 +350,8 @@ namespace SRCRender.Tests
                     && state.Menu == null && state.List == null && state.Dialog == null && state.Config == null
                     && !(state.Message.Visible && state.Message.Waiting)
                     && !GUI.IsWaitingClick
+                    // イベントの途中（インターミッションのスクリプトが描いた画面で KeyState を待つループなど）は操作を受け付ける状態ではない
+                    && !runner.Session.Game.IsBusy
                     && Src.Commands.CommandState == "ユニット選択";
             }
         }

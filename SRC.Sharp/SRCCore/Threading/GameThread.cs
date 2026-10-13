@@ -97,11 +97,27 @@ namespace SRCCore.Threading
             Stop();
         }
 
+        private volatile bool busy;
+
+        /// <summary>
+        /// 処理を実行中か。キューの処理が終わって次の処理を待っている間は false。
+        /// イベントが KeyState などで入力を待つループの間は、処理の途中なので true のまま。
+        /// </summary>
+        public bool IsBusy => busy;
+
         private void Run()
         {
             foreach (var action in queue.GetConsumingEnumerable())
             {
-                Execute(action);
+                busy = true;
+                try
+                {
+                    Execute(action);
+                }
+                finally
+                {
+                    busy = queue.Count > 0;
+                }
             }
         }
 

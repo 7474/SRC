@@ -61,11 +61,81 @@ namespace SRCRender.Tests
         /// </summary>
         public IList<(string Caption, string Item)> ListRules { get; } = new List<(string Caption, string Item)>();
 
+        /// <summary>
+        /// 一度だけ使う選択肢の規則。ListRules より優先し、使ったら取り除く。
+        /// インターミッションのように、同じリストで順に別の項目を選ぶ（「ショップ」に入ってから「次のステージへ」）場合に使う
+        /// </summary>
+        public IList<(string Caption, string Item)> OnceRules { get; } = new List<(string Caption, string Item)>();
+
+        /// <summary>
+        /// 順に選ぶ規則。見出しの合うリスト（またはクリック領域）が出るたびに、Items を先頭から順に選び、最後まで選んだら先頭に戻る。
+        /// 今の位置の項目が無ければ、次にある項目を選ぶ。インターミッションのように同じメニューへ何度も戻る場面で、毎回同じ手順を踏むのに使う
+        /// </summary>
+        public sealed class SequenceRule
+        {
+            public string Caption;
+            public IList<string> Items;
+            public int Index;
+
+            /// <summary>exists(項目) が真になる項目を今の位置から探し、見つかれば位置を進めてその項目を返す</summary>
+            public string Next(Func<string, bool> exists)
+            {
+                for (var k = 0; k < Items.Count; k++)
+                {
+                    var i = (Index + k) % Items.Count;
+                    if (exists(Items[i]))
+                    {
+                        Index = (i + 1) % Items.Count;
+                        return Items[i];
+                    }
+                }
+                return null;
+            }
+        }
+
+        public IList<SequenceRule> SequenceRules { get; } = new List<SequenceRule>();
+
         /// <summary>リストで項目を選んだときの通知（見出し, 選んだ項目）</summary>
         public Action<string, string> ListChosen { get; set; }
 
+        private static bool CaptionMatches(ListState list, string caption)
+            => (list.Caption ?? "").Contains(caption) || (list.Info ?? "").Contains(caption);
+
+        private static int FindItem(ListState list, string item)
+        {
+            for (var i = 0; i < list.Items.Count; i++)
+            {
+                if (!list.Items[i].Disabled && (list.Items[i].Text ?? "").Contains(item))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         private int ChooseByRule(ListState list)
         {
+            for (var r = 0; r < OnceRules.Count; r++)
+            {
+                var (caption, item) = OnceRules[r];
+                if (CaptionMatches(list, caption))
+                {
+                    var found = FindItem(list, item);
+                    if (found >= 0)
+                    {
+                        OnceRules.RemoveAt(r);
+                        return found;
+                    }
+                }
+            }
+            foreach (var rule in SequenceRules.Where(x => CaptionMatches(list, x.Caption)))
+            {
+                var item = rule.Next(x => FindItem(list, x) >= 0);
+                if (item != null)
+                {
+                    return FindItem(list, item);
+                }
+            }
             foreach (var (caption, item) in ListRules)
             {
                 if (!(list.Caption ?? "").Contains(caption) && !(list.Info ?? "").Contains(caption))
@@ -216,12 +286,38 @@ namespace SRCRender.Tests
                     acted = true;
                     Thread.Sleep(30);
                 }
+                else if ((DateTime.UtcNow - lastActed).TotalMilliseconds > StallClickMillis && ChooseMousePoint() is MousePoint point)
+                {
+                    // スクリプトが描いたクリック領域（MousePoint.eve の MP_ClickPoint）のうち、規則に合うものを押す
+                    var (mx, my) = ((point.X1 + point.X2) / 2f, (point.Y1 + point.Y2) / 2f);
+                    ListChosen?.Invoke(MousePointCaption, point.ID);
+                    Snapshot("mousepoint");
+                    gui.PointerMoved(mx, my);
+                    gui.PointerPressed(mx, my, GuiButton.Left);
+                    Thread.Sleep(300);
+                    gui.PointerReleased(mx, my, GuiButton.Left);
+                    acted = true;
+                }
                 else if ((DateTime.UtcNow - lastActed).TotalMilliseconds > StallClickMillis)
                 {
                     // 待ちの状態でないまま進まない（KeyState でボタンが押されるのを待つループなど）。
                     // 人の操作と同じく、ボタンを押してしばらく保ってから離す
                     var (cx, cy) = StallClickPositions[Stalls % StallClickPositions.Count];
-                    Trace?.Invoke($"stall: hold left button at ({cx}, {cy})");
+                    var pointIds = string.Join(" ", MousePoints().Select(x => x.ID));
+                    if (Environment.GetEnvironmentVariable("MP_DEBUG") == "1")
+                    {
+                        try
+                        {
+                            var ev = runner.Session.SRC.Event;
+                            pointIds += " G:" + string.Join(",", ev.GlobalVariableList.Keys.Where(k => k.StartsWith("MP_")).Take(8))
+                                + " L:" + string.Join(",", ev.LocalVariableList.Keys.Where(k => k.StartsWith("MP_")).Take(8));
+                        }
+                        catch (Exception ex)
+                        {
+                            pointIds += " " + ex.GetType().Name;
+                        }
+                    }
+                    Trace?.Invoke($"stall: hold left button at ({cx}, {cy})" + (pointIds.Length > 0 ? " points: " + pointIds : ""));
                     Snapshot("stall");
                     gui.PointerMoved(cx, cy);
                     gui.PointerPressed(cx, cy, GuiButton.Left);
@@ -295,6 +391,87 @@ namespace SRCRender.Tests
             hotPointVisits = signature == lastHotPointSignature ? hotPointVisits + 1 : 0;
             lastHotPointSignature = signature;
             return points[hotPointVisits % points.Count];
+        }
+
+        /// <summary>規則の見出しにこれを指定すると、スクリプトが描いたクリック領域（MousePoint.eve）を ID で選ぶ</summary>
+        public const string MousePointCaption = "クリック";
+
+        public sealed class MousePoint
+        {
+            public string ID;
+            public int X1;
+            public int Y1;
+            public int X2;
+            public int Y2;
+        }
+
+        /// <summary>
+        /// MousePoint.eve（ロボダンなど）が登録したクリック領域。変数 MP_ClickPoint[n]（呼び出し元で Local にしていればローカル変数）に
+        /// 「(ID) キー x1 y1 x2 y2 (イベント)」のリストで入っている。ゲームスレッドで更新中なら空。
+        /// </summary>
+        public IList<MousePoint> MousePoints()
+        {
+            var result = new List<MousePoint>();
+            try
+            {
+                var ev = runner.Session.SRC.Event;
+                var vars = ev.LocalVariableList.ContainsKey("MP_ClickPoint[1]") ? ev.LocalVariableList : ev.GlobalVariableList;
+                for (var i = 1; vars.ContainsKey($"MP_ClickPoint[{i}]"); i++)
+                {
+                    var data = vars[$"MP_ClickPoint[{i}]"].StringValue ?? "";
+                    var id = SRCCore.Lib.GeneralLib.ListIndex(data, 1).Trim('(', ')');
+                    if (int.TryParse(SRCCore.Lib.GeneralLib.ListIndex(data, 3), out var x1)
+                        && int.TryParse(SRCCore.Lib.GeneralLib.ListIndex(data, 4), out var y1)
+                        && int.TryParse(SRCCore.Lib.GeneralLib.ListIndex(data, 5), out var x2)
+                        && int.TryParse(SRCCore.Lib.GeneralLib.ListIndex(data, 6), out var y2))
+                    {
+                        result.Add(new MousePoint { ID = id, X1 = x1, Y1 = y1, X2 = x2, Y2 = y2 });
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is NullReferenceException)
+            {
+                // ゲームスレッドが更新している最中
+                return new List<MousePoint>();
+            }
+            return result;
+        }
+
+        /// <summary>見出しが MousePointCaption の規則（一度だけのものを優先）に ID が合うクリック領域。無ければ null</summary>
+        private MousePoint ChooseMousePoint()
+        {
+            var points = MousePoints();
+            if (points.Count == 0)
+            {
+                return null;
+            }
+            for (var r = 0; r < OnceRules.Count; r++)
+            {
+                var (caption, item) = OnceRules[r];
+                var found = caption == MousePointCaption ? points.FirstOrDefault(x => x.ID == item) : null;
+                if (found != null)
+                {
+                    OnceRules.RemoveAt(r);
+                    return found;
+                }
+            }
+            foreach (var rule in SequenceRules.Where(x => x.Caption == MousePointCaption))
+            {
+                var item = rule.Next(x => points.Any(p => p.ID == x));
+                if (item != null)
+                {
+                    return points.First(p => p.ID == item);
+                }
+            }
+            foreach (var (caption, item) in ListRules)
+            {
+                var found = caption == MousePointCaption ? points.FirstOrDefault(x => x.ID == item) : null;
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
         }
 
         private static bool WaitChange(Func<bool> changed)
