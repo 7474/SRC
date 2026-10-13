@@ -329,7 +329,8 @@ namespace SRCCore.Extensions
 
             // 定義されている相手限定メッセージのうち、状況に合ったメッセージを抜き出す
             {
-                var list = tlist.Where(m => situations.Zip(sub_situations, (s, subs) => s + subs).Any(s => m.Situation == s)).ToList();
+                // 元の SRC と同じく、シチュエーションとサブシチュエーションの全組み合わせで照合する（#555）
+                var list = tlist.Where(m => situations.Any(s => sub_situations.Any(subs => m.Situation == s + subs))).ToList();
                 // 状況に合った相手限定メッセージが一つでもあれば、その中からメッセージを選択
                 if (list.Any())
                 {
@@ -343,7 +344,7 @@ namespace SRCCore.Extensions
                     {
                         return list.Dice();
                     }
-                    // 通常の状況では相手限定メッセージを候補として保持し、汎用メッセージと等確率で選択
+                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB6 互換）
                     targetList = list;
                 }
             }
@@ -386,9 +387,9 @@ namespace SRCCore.Extensions
 
             // 上で見つかったメッセージリストの中からシチュエーションに合ったメッセージを抜き出す
             {
+                // 元の SRC と同じく、サブシチュエーションなしと、全サブシチュエーションとの組み合わせで照合する（#555）
                 var list = list0
-                    .Where(m => situations.Any(s => m.Situation == s))
-                    .Concat(list0.Where(m => situations.Zip(sub_situations, (s, subs) => s + subs).Any(s => m.Situation == s)))
+                    .Where(m => situations.Any(s => m.Situation == s || sub_situations.Any(subs => m.Situation == s + subs)))
                     .ToList();
                 // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB6互換)
                 if (targetList != null)
