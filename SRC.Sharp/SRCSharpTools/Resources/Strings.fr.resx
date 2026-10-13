@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: outils de création de données et de scénarios pour SRC#
+
+Utilisation :
+  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier]
+      Vérifie les données (*.txt) et les événements (*.eve). Code de sortie 1 en cas de problème
+  srcsharp play &lt;fichier d'événements&gt; [--script fichier.play] [--out dossier] [--app-path dossier SRC] [--steps nombre]
+      Exécute un scénario sans affichage. Sans --script, fait défiler les messages et choisit la première option
+  srcsharp balance &lt;dossier ou fichier&gt;... [--format md|csv] [--output fichier]
+      Liste les statistiques des unités et les valeurs aberrantes
+  srcsharp lsp
+      Language Server (entrée/sortie standard)
+  srcsharp dap
+      Débogueur (Debug Adapter Protocol, entrée/sortie standard)
+
+Options communes :
+  --lang <ja|en|zh-Hans|...|auto>
+      Langue d'affichage. Peut aussi être définie via la variable d'environnement SRCSHARP_LANG (l'option est prioritaire). Par défaut : ja ; auto suit le réglage du système
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Commande inconnue : {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Langue inconnue : {0} (l’une de : {1}). Affichage en japonais</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>{0} fichiers vérifiés, {1} problèmes</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Indiquez un seul fichier d'événements</value>
+  </data>
+</root>

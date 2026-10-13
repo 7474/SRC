@@ -29,35 +29,51 @@
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
     <script>
         // .NET が動く前の文言。表示言語は WebLocalization.cs と同じく localStorage の srcweb.language で選ぶ
-        // （未設定・ja は日本語、en は英語、auto はブラウザの言語）
+        // （未設定は日本語、auto はブラウザの言語。言語の判定は SRCCore/UiLanguages.cs の Match と同じ）
         const bootText = (() => {
+            // [読み込み中, 非対応, 準備中, エラー, 再読み込み]
+            const texts = {
+                ja: ['読み込み中…', 'このブラウザでは動作しません（Service Worker と SharedArrayBuffer が必要です）。', '準備しています…（初回は自動で再読み込みします）', 'エラーが発生しました。', '再読み込み'],
+                en: ['Loading…', 'This browser is not supported (Service Worker and SharedArrayBuffer are required).', 'Preparing… (the page reloads automatically the first time)', 'An error has occurred.', 'Reload'],
+                'zh-Hans': ['加载中…', '此浏览器不受支持（需要 Service Worker 和 SharedArrayBuffer）。', '准备中…（首次会自动重新加载）', '发生错误。', '重新加载'],
+                'zh-Hant': ['載入中…', '不支援此瀏覽器（需要 Service Worker 與 SharedArrayBuffer）。', '準備中…（首次會自動重新載入）', '發生錯誤。', '重新載入'],
+                ko: ['불러오는 중…', '이 브라우저는 지원되지 않습니다(Service Worker와 SharedArrayBuffer가 필요합니다).', '준비 중…(처음에는 자동으로 새로 고칩니다)', '오류가 발생했습니다.', '새로 고침'],
+                fr: ['Chargement…', 'Ce navigateur n\u2019est pas pris en charge (Service Worker et SharedArrayBuffer sont requis).', 'Préparation… (la page se recharge automatiquement la première fois)', 'Une erreur s\u2019est produite.', 'Recharger'],
+                de: ['Wird geladen…', 'Dieser Browser wird nicht unterstützt (Service Worker und SharedArrayBuffer sind erforderlich).', 'Wird vorbereitet… (die Seite wird beim ersten Mal automatisch neu geladen)', 'Ein Fehler ist aufgetreten.', 'Neu laden'],
+                es: ['Cargando…', 'Este navegador no es compatible (se requieren Service Worker y SharedArrayBuffer).', 'Preparando… (la página se recarga automáticamente la primera vez)', 'Se ha producido un error.', 'Recargar'],
+                'pt-BR': ['Carregando…', 'Este navegador não é compatível (é necessário Service Worker e SharedArrayBuffer).', 'Preparando… (a página é recarregada automaticamente na primeira vez)', 'Ocorreu um erro.', 'Recarregar'],
+                it: ['Caricamento…', 'Questo browser non è supportato (sono necessari Service Worker e SharedArrayBuffer).', 'Preparazione… (la prima volta la pagina si ricarica automaticamente)', 'Si è verificato un errore.', 'Ricarica'],
+                ru: ['Загрузка…', 'Этот браузер не поддерживается (требуются Service Worker и SharedArrayBuffer).', 'Подготовка… (при первом запуске страница перезагрузится автоматически)', 'Произошла ошибка.', 'Перезагрузить'],
+                pl: ['Wczytywanie…', 'Ta przeglądarka nie jest obsługiwana (wymagane są Service Worker i SharedArrayBuffer).', 'Przygotowywanie… (za pierwszym razem strona przeładuje się automatycznie)', 'Wystąpił błąd.', 'Odśwież'],
+                tr: ['Yükleniyor…', 'Bu tarayıcı desteklenmiyor (Service Worker ve SharedArrayBuffer gereklidir).', 'Hazırlanıyor… (ilk seferde sayfa otomatik olarak yeniden yüklenir)', 'Bir hata oluştu.', 'Yeniden yükle'],
+                th: ['กำลังโหลด…', 'ไม่รองรับเบราว์เซอร์นี้ (ต้องใช้ Service Worker และ SharedArrayBuffer)', 'กำลังเตรียม… (ครั้งแรกหน้าจะโหลดใหม่โดยอัตโนมัติ)', 'เกิดข้อผิดพลาด', 'โหลดใหม่'],
+                uk: ['Завантаження…', 'Цей браузер не підтримується (потрібні Service Worker і SharedArrayBuffer).', 'Підготовка… (під час першого запуску сторінка перезавантажиться автоматично)', 'Сталася помилка.', 'Перезавантажити'],
+            };
+            const match = name => {
+                const parts = (name ?? '').trim().replace(/_/g, '-').split('-');
+                const language = parts[0].toLowerCase();
+                if (language === 'zh') {
+                    return parts.slice(1).some(x => ['hant', 'tw', 'hk', 'mo'].includes(x.toLowerCase())) ? 'zh-Hant' : 'zh-Hans';
+                }
+                return Object.keys(texts).find(x => x.toLowerCase() === parts.join('-').toLowerCase())
+                    ?? Object.keys(texts).find(x => x.split('-')[0] === language);
+            };
             let setting = '';
             try {
-                setting = (localStorage.getItem('srcweb.language') ?? '').trim().toLowerCase();
+                setting = (localStorage.getItem('srcweb.language') ?? '').trim();
             } catch {
                 // localStorage を使えない
             }
-            const en = setting === 'en' || (setting === 'auto' && !(navigator.language ?? '').toLowerCase().startsWith('ja'));
-            const text = en ? {
-                loading: 'Loading…',
-                unsupported: 'This browser is not supported (Service Worker and SharedArrayBuffer are required).',
-                preparing: 'Preparing… (the page reloads automatically the first time)',
-                error: 'An error has occurred.',
-                reload: 'Reload',
-            } : {
-                loading: '読み込み中…',
-                unsupported: 'このブラウザでは動作しません（Service Worker と SharedArrayBuffer が必要です）。',
-                preparing: '準備しています…（初回は自動で再読み込みします）',
-                error: 'エラーが発生しました。',
-                reload: '再読み込み',
-            };
-            if (en) {
-                document.documentElement.lang = 'en';
-                document.getElementById('boot').textContent = text.loading;
-                document.getElementById('error-text').textContent = text.error;
-                document.querySelector('#blazor-error-ui .reload').textContent = text.reload;
+            const language = setting === '' ? 'ja'
+                : (setting.toLowerCase() === 'auto' ? match(navigator.language) : match(setting)) ?? 'ja';
+            const [loading, unsupported, preparing, error, reload] = texts[language];
+            if (language !== 'ja') {
+                document.documentElement.lang = language;
+                document.getElementById('boot').textContent = loading;
+                document.getElementById('error-text').textContent = error;
+                document.querySelector('#blazor-error-ui .reload').textContent = reload;
             }
-            return text;
+            return { loading, unsupported, preparing, error, reload };
         })();
         // マルチスレッドの .NET はクロスオリジン分離が必要。coi-serviceworker が有効になる（再読み込みされる）まで起動しない
         if (self.crossOriginIsolated) {

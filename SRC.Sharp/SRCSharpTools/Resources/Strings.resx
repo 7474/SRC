@@ -29,7 +29,7 @@
       デバッガ（Debug Adapter Protocol、標準入出力）
 
 共通のオプション:
-  --lang ja|en|auto
+  --lang <ja|en|zh-Hans|...|auto>
       表示の言語。環境変数 SRCSHARP_LANG でも指定できる（オプションが優先）。既定は ja、auto は OS の設定に従う
 </value>
   </data>
@@ -38,8 +38,8 @@
     <comment>{0}: コマンド名</comment>
   </data>
   <data name="UnknownLanguage" xml:space="preserve">
-    <value>不明な言語の指定: {0}（ja・en・auto のいずれか）。日本語で表示します</value>
-    <comment>{0}: --lang か SRCSHARP_LANG の値</comment>
+    <value>不明な言語の指定: {0}（{1} のいずれか）。日本語で表示します</value>
+    <comment>{0}: --lang か SRCSHARP_LANG の値、{1}: 指定できる値の一覧</comment>
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>{0} ファイルを検査、問題 {1} 件</value>

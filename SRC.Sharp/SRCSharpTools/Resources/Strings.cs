@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Globalization;
 using System.Resources;
 
@@ -27,7 +28,8 @@ namespace SRCSharpTools.Resources
 
         public static string UnknownCommand(string command) => Format(nameof(UnknownCommand), command);
 
-        public static string UnknownLanguage(string language) => Format(nameof(UnknownLanguage), language);
+        public static string UnknownLanguage(string language) => Format(nameof(UnknownLanguage), language,
+            string.Join(", ", SRCCore.UiLanguages.Supported.Select(x => x.Code).Append(SRCCore.UiLanguages.Auto)));
 
         public static string LintSummary(int files, int problems) => Format(nameof(LintSummary), files, problems);
     }

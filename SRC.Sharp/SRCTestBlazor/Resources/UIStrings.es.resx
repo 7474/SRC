@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotFound" xml:space="preserve">
+    <value>Lo sentimos, no hay nada en esta dirección.</value>
+  </data>
+  <data name="LoadDataIntro" xml:space="preserve">
+    <value>Un visor de datos para SRC.</value>
+  </data>
+  <data name="LoadDataInstructionsBefore" xml:space="preserve">
+    <value>Elige en el menú Titles datos publicados en </value>
+  </data>
+  <data name="LoadDataInstructionsAfter" xml:space="preserve">
+    <value> o carga tus propios archivos con el formulario de abajo.</value>
+  </data>
+  <data name="SupportedFilesBefore" xml:space="preserve">
+    <value>Archivos de datos compatibles (parcialmente): </value>
+  </data>
+  <data name="SupportedFilesAfter" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="MultipleFilesHint" xml:space="preserve">
+    <value>Puedes cargar varios archivos a la vez, por ejemplo, seleccionando todos los archivos de una carpeta de datos. Los archivos no compatibles se ignoran.</value>
+  </data>
+  <data name="DisplaySettings" xml:space="preserve">
+    <value>Ajustes de visualización</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Oscuro</value>
+  </data>
+  <data name="DataDisplayOrder" xml:space="preserve">
+    <value>Orden de los datos</value>
+  </data>
+  <data name="UnitFirst" xml:space="preserve">
+    <value>Unidades primero</value>
+  </data>
+  <data name="PilotFirst" xml:space="preserve">
+    <value>Pilotos primero</value>
+  </data>
+  <data name="ShowComment" xml:space="preserve">
+    <value>Mostrar comentarios</value>
+  </data>
+  <data name="ShowRawButton" xml:space="preserve">
+    <value>Mostrar el botón Raw</value>
+  </data>
+  <data name="ShowPilotMessage" xml:space="preserve">
+    <value>Mostrar mensajes de pilotos</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma (Language)</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automático (ajuste del navegador)</value>
+  </data>
+  <data name="LanguageReloadNote" xml:space="preserve">
+    <value>Al cambiar el idioma, la página se recarga al guardar.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtro</value>
+  </data>
+  <data name="SortDefinitionOrder" xml:space="preserve">
+    <value>Orden de definición</value>
+  </data>
+  <data name="SortName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="SortMaxPower" xml:space="preserve">
+    <value>Ataque máximo</value>
+  </data>
+  <data name="SortMaxRange" xml:space="preserve">
+    <value>Alcance máximo</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+</root>

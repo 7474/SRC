@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: narzędzia do tworzenia danych i scenariuszy SRC#
+
+Użycie:
+  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik]
+      Sprawdza dane (*.txt) i zdarzenia (*.eve). Kod wyjścia 1, jeśli są problemy
+  srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--steps liczba]
+      Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję
+  srcsharp balance &lt;katalog lub plik&gt;... [--format md|csv] [--output plik]
+      Zestawienie statystyk jednostek i wartości odstające
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Debuger (Debug Adapter Protocol, stdio)
+
+Opcje wspólne:
+  --lang <ja|en|zh-Hans|...|auto>
+      Język wyświetlania. Można go też ustawić zmienną środowiskową SRCSHARP_LANG (opcja ma pierwszeństwo). Domyślnie ja; auto używa ustawień systemu
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Nieznane polecenie: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Nieznany język: {0} (dozwolone: {1}). Używam japońskiego</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>Sprawdzone pliki: {0}, problemy: {1}</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Podaj dokładnie jeden plik zdarzeń</value>
+  </data>
+</root>

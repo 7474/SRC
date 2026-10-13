@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotFound" xml:space="preserve">
+    <value>此網址沒有任何內容。</value>
+  </data>
+  <data name="LoadDataIntro" xml:space="preserve">
+    <value>SRC 資料檢視器。</value>
+  </data>
+  <data name="LoadDataInstructionsBefore" xml:space="preserve">
+    <value>請從 Titles 選單中選擇發布到</value>
+  </data>
+  <data name="LoadDataInstructionsAfter" xml:space="preserve">
+    <value>的資料，或透過下方表單載入任意檔案。</value>
+  </data>
+  <data name="SupportedFilesBefore" xml:space="preserve">
+    <value>目前支援的資料檔案為</value>
+  </data>
+  <data name="SupportedFilesAfter" xml:space="preserve">
+    <value>中的一部分。</value>
+  </data>
+  <data name="MultipleFilesHint" xml:space="preserve">
+    <value>可一次載入多個檔案，例如全選資料夾內的檔案。不支援的檔案將被忽略。</value>
+  </data>
+  <data name="DisplaySettings" xml:space="preserve">
+    <value>顯示設定</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主題</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>依循系統</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>淺色模式</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>深色模式</value>
+  </data>
+  <data name="DataDisplayOrder" xml:space="preserve">
+    <value>資料顯示順序</value>
+  </data>
+  <data name="UnitFirst" xml:space="preserve">
+    <value>單位優先</value>
+  </data>
+  <data name="PilotFirst" xml:space="preserve">
+    <value>駕駛員優先</value>
+  </data>
+  <data name="ShowComment" xml:space="preserve">
+    <value>顯示註解</value>
+  </data>
+  <data name="ShowRawButton" xml:space="preserve">
+    <value>顯示 Raw 按鈕</value>
+  </data>
+  <data name="ShowPilotMessage" xml:space="preserve">
+    <value>顯示駕駛員台詞</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>語言（Language）</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>自動（瀏覽器設定）</value>
+  </data>
+  <data name="LanguageReloadNote" xml:space="preserve">
+    <value>變更語言後，儲存時將重新載入頁面。</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>儲存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>篩選</value>
+  </data>
+  <data name="SortDefinitionOrder" xml:space="preserve">
+    <value>定義順序</value>
+  </data>
+  <data name="SortName" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="SortMaxPower" xml:space="preserve">
+    <value>最大攻擊力</value>
+  </data>
+  <data name="SortMaxRange" xml:space="preserve">
+    <value>最大射程</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+</root>

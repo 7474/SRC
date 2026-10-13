@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Yükleniyor…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Başlatma başarısız: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Senaryo sona erdi.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Senaryo seçimine dön</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Hazır senaryolar</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Yok.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Eklenen arşivler</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Eklediğiniz senaryo zip dosyaları bu tarayıcıda saklanır ve bir dahaki sefere de seçilebilir.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Kayıttan devam et</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Dışa aktar</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Dışa aktarılmış kayıtları (.srcs, .srcq) içe aktarabilirsiniz.</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Yeni başla</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>{0} ekleniyor…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>{0} yükleniyor…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>{0} ayıklanıyor…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} içinde senaryo (.eve) yok.</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>{0} yüklenemedi: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Otomatik</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Dosya aç</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Kaydedilecek dosya adı</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Bitti</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Sistem menüsü</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Senaryo seçimine dön…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Tam ekranı aç/kapat</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Sanal tuşları göster/gizle</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Onay</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Oyundan çıkıp senaryo seçimine dönülsün mü?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>Kaydedilmemiş ilerleme kaybolacak.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Bu senaryoyu doğrudan açan bağlantı</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Bağlantı</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Bu kataloğu kaldır</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Katalog ekle</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Senaryo dağıtan bir sitenin kataloğunun (catalog.json) URL'sini ekleyebilirsiniz. Site CORS'a izin vermelidir.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Ekle</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Eklediğiniz kaynak zip dosyaları (genel grafik koleksiyonları gibi) tüm senaryolara uygulanır.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Kaynak</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>"{0}" senaryosu katalogda yok.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>{0} kataloğu okunamadı: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>{0} kaynağı ayıklanıyor…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>"{0}" kaynağı katalogda yok.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>{0} kaynağı yükleniyor…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>{0} kaynağı yüklenemedi: {1}</value>
+  </data>
+</root>

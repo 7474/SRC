@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Chargement…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Échec de l'initialisation : {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Le scénario est terminé.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Retour à la sélection de scénario</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Scénarios inclus</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Aucun.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Archives ajoutées</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Les fichiers zip de scénario que vous ajoutez sont enregistrés dans ce navigateur et restent disponibles la prochaine fois.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Reprendre une sauvegarde</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Vous pouvez importer des sauvegardes exportées (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Nouvelle partie</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Ajout de {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Chargement de {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Extraction de {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} ne contient aucun scénario (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>Impossible de charger {0} : {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Ouvrir un fichier</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Nom du fichier à enregistrer</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Saisie</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Menu système</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Retour à la sélection de scénario…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Basculer en plein écran</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Afficher/masquer les touches virtuelles</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Quitter la partie et revenir à la sélection de scénario ?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>La progression non sauvegardée sera perdue.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Lien pour ouvrir directement ce scénario</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Lien</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Retirer ce catalogue</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Ajouter un catalogue</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Vous pouvez ajouter l'URL du catalogue (catalog.json) d'un site qui distribue des scénarios. Le site doit autoriser CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Les zips de ressources (packs graphiques génériques, etc.) que vous ajoutez se superposent à tous les scénarios.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Ressources</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>Le scénario « {0} » ne figure pas dans le catalogue.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Impossible de lire le catalogue {0} : {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Extraction des ressources {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>Les ressources « {0} » ne figurent pas dans le catalogue.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Chargement des ressources {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Impossible de charger les ressources {0} : {1}</value>
+  </data>
+</root>

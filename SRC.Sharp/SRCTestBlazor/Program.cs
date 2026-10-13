@@ -41,13 +41,10 @@ namespace SRCTestBlazor
             // 表示の言語は保存した設定から起動前に決める（変えたらページを再読み込みする）
             // https://learn.microsoft.com/aspnet/core/blazor/globalization-localization
             var settings = await DataViewerSettingsService.LoadAsync(host.Services.GetRequiredService<IJSRuntime>());
-            var cultureName = UiLanguage.ToCultureName(settings.Language);
-            if (cultureName != null)
-            {
-                var culture = CultureInfo.GetCultureInfo(cultureName);
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-            }
+            // 数値の書式（CurrentCulture）は変えない
+            var culture = CultureInfo.GetCultureInfo(UiLanguage.ToCultureName(settings.Language, CultureInfo.CurrentUICulture.Name));
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            CultureInfo.CurrentUICulture = culture;
 
             await host.RunAsync();
         }

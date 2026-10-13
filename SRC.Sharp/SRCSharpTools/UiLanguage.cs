@@ -1,3 +1,4 @@
+using SRCCore;
 using SRCSharpTools.Resources;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Globalization;
 namespace SRCSharpTools
 {
     /// <summary>
-    /// 表示の言語の選択。--lang（どこに書いてもよい）か環境変数 SRCSHARP_LANG で ja・en・auto を指定する（--lang が優先）。
+    /// 表示の言語の選択。--lang（どこに書いてもよい）か環境変数 SRCSHARP_LANG で ja・en・auto などを指定する（--lang が優先）。
     /// 既定は ja（OS の設定には従わない。CI などで英語の OS でも出力が変わらないように）。auto は OS の UI の言語
     /// </summary>
     public static class UiLanguage
@@ -40,11 +41,8 @@ namespace SRCSharpTools
             }
 
             var culture = Resolve(value, out var known);
-            if (culture != null)
-            {
-                CultureInfo.CurrentUICulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-            }
+            CultureInfo.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
             if (!known)
             {
                 Console.Error.WriteLine(Strings.UnknownLanguage(value));
@@ -52,23 +50,10 @@ namespace SRCSharpTools
             return rest.ToArray();
         }
 
-        /// <summary>言語の指定から UI のカルチャを返す。auto は null（OS の設定のまま）</summary>
+        /// <summary>言語の指定から UI のカルチャを返す（SRCCore.UiLanguages）。auto は OS の UI の言語（訳が無ければ日本語）</summary>
         public static CultureInfo Resolve(string value, out bool known)
         {
-            known = true;
-            switch ((value ?? "").Trim().ToLowerInvariant())
-            {
-                case "":
-                case "ja":
-                    return CultureInfo.GetCultureInfo("ja-JP");
-                case "en":
-                    return CultureInfo.GetCultureInfo("en-US");
-                case "auto":
-                    return null;
-                default:
-                    known = false;
-                    return CultureInfo.GetCultureInfo("ja-JP");
-            }
+            return CultureInfo.GetCultureInfo(UiLanguages.Resolve(value, CultureInfo.CurrentUICulture.Name, out known));
         }
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: SRC# verileri ve senaryoları için geliştirme araçları
+
+Kullanım:
+  srcsharp lint &lt;dizin veya dosya&gt;... [--format text|sarif] [--output dosya]
+      Verileri (*.txt) ve olayları (*.eve) denetler. Sorun varsa çıkış kodu 1
+  srcsharp play &lt;olay dosyası&gt; [--script dosya.play] [--out dizin] [--app-path SRC klasörü] [--steps sayı]
+      Senaryoyu ekransız çalıştırır. --script yoksa mesajları geçer ve ilk seçeneği seçer
+  srcsharp balance &lt;dizin veya dosya&gt;... [--format md|csv] [--output dosya]
+      Birim verilerinin istatistik listesi ve aykırı değerler
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Hata ayıklayıcı (Debug Adapter Protocol, stdio)
+
+Ortak seçenekler:
+  --lang <ja|en|zh-Hans|...|auto>
+      Görüntüleme dili. SRCSHARP_LANG ortam değişkeniyle de ayarlanabilir (seçenek önceliklidir). Varsayılan ja; auto işletim sistemi ayarını kullanır
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Bilinmeyen komut: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Bilinmeyen dil: {0} ({1} değerlerinden biri olmalı). Japonca kullanılıyor</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>{0} dosya denetlendi, {1} sorun</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Tam olarak bir olay dosyası belirtin</value>
+  </data>
+</root>

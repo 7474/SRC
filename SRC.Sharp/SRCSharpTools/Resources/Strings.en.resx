@@ -29,7 +29,7 @@ Usage:
       Debugger (Debug Adapter Protocol, stdio)
 
 Common options:
-  --lang ja|en|auto
+  --lang <ja|en|zh-Hans|...|auto>
       Display language. Can also be set with the SRCSHARP_LANG environment variable (the option wins). Default is ja; auto follows the OS setting
 </value>
   </data>
@@ -37,7 +37,7 @@ Common options:
     <value>Unknown command: {0}</value>
   </data>
   <data name="UnknownLanguage" xml:space="preserve">
-    <value>Unknown language: {0} (one of ja, en, auto). Falling back to Japanese</value>
+    <value>Unknown language: {0} (one of {1}). Falling back to Japanese</value>
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>Checked {0} files, {1} problems</value>

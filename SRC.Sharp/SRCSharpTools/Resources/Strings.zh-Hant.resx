@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: SRC# 資料與劇本製作輔助工具
+
+用法:
+  srcsharp lint &lt;目錄或檔案&gt;... [--format text|sarif] [--output 檔案]
+      檢查資料（*.txt）與事件（*.eve）。發現問題時結束代碼為 1
+  srcsharp play &lt;事件檔案&gt; [--script 檔案.play] [--out 目錄] [--app-path SRC資料夾] [--steps 步數]
+      在無畫面狀態下執行劇本。未指定 --script 時，自動推進訊息，選項選擇第一項
+  srcsharp balance &lt;目錄或檔案&gt;... [--format md|csv] [--output 檔案]
+      列出單位資料的能力值與異常值
+  srcsharp lsp
+      Language Server（標準輸入輸出）
+  srcsharp dap
+      偵錯器（Debug Adapter Protocol，標準輸入輸出）
+
+共通選項:
+  --lang <ja|en|zh-Hans|...|auto>
+      顯示語言。也可透過環境變數 SRCSHARP_LANG 指定（選項優先）。預設為 ja，auto 依循作業系統設定
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>未知的指令：{0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>未知的語言指定：{0}（應為 {1} 之一）。將以日文顯示</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>已檢查 {0} 個檔案，發現 {1} 個問題</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>請指定一個事件檔案</value>
+  </data>
+</root>

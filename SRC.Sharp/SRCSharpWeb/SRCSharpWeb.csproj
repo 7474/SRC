@@ -14,10 +14,10 @@
     <!-- Shift_JIS の zip のファイル名を読むため -->
     <InvariantGlobalization>false</InvariantGlobalization>
     <!-- 表示言語を起動時に localStorage から選ぶ（WebLocalization.cs）。カルチャを変えるには ICU のデータをすべて読み込む -->
-    <BlazorWebAssemblyLoadAllGlobalizationData>false</BlazorWebAssemblyLoadAllGlobalizationData>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     <!-- 既定（ニュートラル）の文言は日本語。英語は *.en.resx -->
     <NeutralLanguage>ja</NeutralLanguage>
-    <SatelliteResourceLanguages>ja;en</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>ja;en;zh-Hans;zh-Hant;ko;fr;de;es;pt-BR;it;ru;pl;tr;th;uk</SatelliteResourceLanguages>
     <!-- スレッドを使うが、プラットフォーム互換性アナライザーはマルチスレッドの WebAssembly を考慮しない -->
     <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>

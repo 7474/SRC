@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: інструменти для створення даних і сценаріїв SRC#
+
+Використання:
+  srcsharp lint &lt;каталог або файл&gt;... [--format text|sarif] [--output файл]
+      Перевірити дані (*.txt) і події (*.eve). Якщо є проблеми, код виходу 1
+  srcsharp play &lt;файл події&gt; [--script файл.play] [--out каталог] [--app-path тека SRC] [--steps кількість]
+      Запустити сценарій без екрана. Без --script повідомлення гортаються, обирається перший варіант
+  srcsharp balance &lt;каталог або файл&gt;... [--format md|csv] [--output файл]
+      Таблиця характеристик юнітів і викиди
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Налагоджувач (Debug Adapter Protocol, stdio)
+
+Спільні параметри:
+  --lang <ja|en|zh-Hans|...|auto>
+      Мова інтерфейсу. Також задається змінною середовища SRCSHARP_LANG (параметр має пріоритет). Типово ja; auto — за налаштуваннями ОС
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Невідома команда: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Невідома мова: {0} (допустимо {1}). Буде використано японську</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>Перевірено файлів: {0}, проблем: {1}</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Вкажіть рівно один файл події</value>
+  </data>
+</root>

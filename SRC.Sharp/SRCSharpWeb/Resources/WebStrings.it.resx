@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Caricamento…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Inizializzazione non riuscita: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Lo scenario è terminato.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Torna alla selezione scenario</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Scenari inclusi</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Nessuno.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Archivi aggiunti</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Gli zip di scenari che aggiungi vengono salvati in questo browser e potrai sceglierli di nuovo la prossima volta.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Riprendi da un salvataggio</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Esporta</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Puoi importare salvataggi esportati (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Nuova partita</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Aggiunta di {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Caricamento di {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Estrazione di {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} non contiene scenari (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>Impossibile caricare {0}: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automatica</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Apri file</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Nome del file</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Terminato</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Menu di sistema</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Torna alla selezione scenario…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Attiva/disattiva schermo intero</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Mostra/nascondi tasti virtuali</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Uscire dal gioco e tornare alla selezione scenario?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>I progressi non salvati andranno persi.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Link che apre direttamente questo scenario</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Rimuovi questo catalogo</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Aggiungi un catalogo</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Puoi aggiungere l'URL del catalogo (catalog.json) di un sito che distribuisce scenari. Il sito deve consentire CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Gli zip di risorse (come raccolte di grafica generica) che aggiungi vengono applicati sopra ogni scenario.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Risorsa</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>Lo scenario "{0}" non è nel catalogo.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Impossibile leggere il catalogo {0}: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Estrazione della risorsa {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>La risorsa "{0}" non è nel catalogo.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Caricamento della risorsa {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Impossibile caricare la risorsa {0}: {1}</value>
+  </data>
+</root>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: инструменты для создания данных и сценариев SRC#
+
+Использование:
+  srcsharp lint &lt;каталог или файл&gt;... [--format text|sarif] [--output файл]
+      Проверить данные (*.txt) и события (*.eve). При ошибках код возврата 1
+  srcsharp play &lt;файл события&gt; [--script файл.play] [--out каталог] [--app-path папка SRC] [--steps число]
+      Запустить сценарий без экрана. Без --script сообщения пролистываются, выбирается первый вариант
+  srcsharp balance &lt;каталог или файл&gt;... [--format md|csv] [--output файл]
+      Таблица характеристик юнитов и выбросы
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Отладчик (Debug Adapter Protocol, stdio)
+
+Общие параметры:
+  --lang <ja|en|zh-Hans|...|auto>
+      Язык интерфейса. Также задаётся переменной среды SRCSHARP_LANG (параметр важнее). По умолчанию ja; auto — по настройкам ОС
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Неизвестная команда: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Неизвестный язык: {0} (допустимо {1}). Будет использован японский</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>Проверено файлов: {0}, проблем: {1}</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Укажите ровно один файл события</value>
+  </data>
+</root>

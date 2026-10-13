@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: SRC# 데이터·시나리오 제작 지원 도구
+
+사용법:
+  srcsharp lint &lt;디렉터리 또는 파일&gt;... [--format text|sarif] [--output 파일]
+      데이터(*.txt)와 이벤트(*.eve)를 검사합니다. 문제가 있으면 종료 코드 1
+  srcsharp play &lt;이벤트 파일&gt; [--script 파일.play] [--out 디렉터리] [--app-path SRC 폴더] [--steps 횟수]
+      화면 없이 시나리오를 실행합니다. --script가 없으면 메시지를 넘기고 선택지는 첫 번째를 골라 진행합니다
+  srcsharp balance &lt;디렉터리 또는 파일&gt;... [--format md|csv] [--output 파일]
+      유닛 데이터 능력치 목록과 이상치
+  srcsharp lsp
+      Language Server(표준 입출력)
+  srcsharp dap
+      디버거(Debug Adapter Protocol, 표준 입출력)
+
+공통 옵션:
+  --lang <ja|en|zh-Hans|...|auto>
+      표시 언어. 환경 변수 SRCSHARP_LANG으로도 지정할 수 있습니다(옵션 우선). 기본값은 ja, auto는 OS 설정을 따릅니다
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>알 수 없는 명령: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>알 수 없는 언어 지정: {0} ({1} 중 하나). 일본어로 표시합니다</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>파일 {0}개 검사, 문제 {1}건</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>이벤트 파일을 하나 지정해 주세요</value>
+  </data>
+</root>

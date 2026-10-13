@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotFound" xml:space="preserve">
+    <value>此地址没有任何内容。</value>
+  </data>
+  <data name="LoadDataIntro" xml:space="preserve">
+    <value>SRC 数据查看器。</value>
+  </data>
+  <data name="LoadDataInstructionsBefore" xml:space="preserve">
+    <value>请从 Titles 菜单中选择发布到</value>
+  </data>
+  <data name="LoadDataInstructionsAfter" xml:space="preserve">
+    <value>的数据，或通过下方表单加载任意文件。</value>
+  </data>
+  <data name="SupportedFilesBefore" xml:space="preserve">
+    <value>目前支持的数据文件为</value>
+  </data>
+  <data name="SupportedFilesAfter" xml:space="preserve">
+    <value>中的一部分。</value>
+  </data>
+  <data name="MultipleFilesHint" xml:space="preserve">
+    <value>可一次加载多个文件，例如全选数据文件夹内的文件。不支持的文件将被忽略。</value>
+  </data>
+  <data name="DisplaySettings" xml:space="preserve">
+    <value>显示设置</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>浅色模式</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>深色模式</value>
+  </data>
+  <data name="DataDisplayOrder" xml:space="preserve">
+    <value>数据显示顺序</value>
+  </data>
+  <data name="UnitFirst" xml:space="preserve">
+    <value>单位在前</value>
+  </data>
+  <data name="PilotFirst" xml:space="preserve">
+    <value>驾驶员在前</value>
+  </data>
+  <data name="ShowComment" xml:space="preserve">
+    <value>显示注释</value>
+  </data>
+  <data name="ShowRawButton" xml:space="preserve">
+    <value>显示 Raw 按钮</value>
+  </data>
+  <data name="ShowPilotMessage" xml:space="preserve">
+    <value>显示驾驶员台词</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>语言（Language）</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>自动（浏览器设置）</value>
+  </data>
+  <data name="LanguageReloadNote" xml:space="preserve">
+    <value>更改语言后，保存时将重新加载页面。</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="SortDefinitionOrder" xml:space="preserve">
+    <value>定义顺序</value>
+  </data>
+  <data name="SortName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="SortMaxPower" xml:space="preserve">
+    <value>最大攻击力</value>
+  </data>
+  <data name="SortMaxRange" xml:space="preserve">
+    <value>最大射程</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+</root>

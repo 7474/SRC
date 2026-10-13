@@ -154,8 +154,10 @@ else
             <section class="language">
                 <label for="language">@L["Language"]</label>
                 <select id="language" value="@WebLocalization.SelectorValue" @onchange="ChangeLanguageAsync">
-                    <option value="ja">日本語</option>
-                    <option value="en">English</option>
+                    @foreach (var language in SRCCore.UiLanguages.Supported)
+                    {
+                        <option value="@language.Code">@language.NativeName</option>
+                    }
                     <option value="auto">@L["LanguageAuto"]</option>
                 </select>
             </section>

@@ -15,35 +15,19 @@ namespace SRCRender
         public const string ConfigKey = "Language";
 
         /// <summary>既定の言語（日本語）</summary>
-        public const string Default = "ja";
+        public const string Default = UiLanguages.Default;
 
         // 起動時（最初に参照した時点）の UI カルチャ。"auto" で使う
         private static readonly CultureInfo OsUICulture = CultureInfo.CurrentUICulture;
 
         /// <summary>
-        /// 言語の指定から UI カルチャを決める。
-        /// 空・未指定・"ja" は日本語（OS の言語によらない）、"auto" は OS の UI カルチャ、それ以外はそのカルチャ名。
-        /// 解釈できない指定は日本語とする。
+        /// 言語の指定から UI カルチャを決める（SRCCore.UiLanguages）。
+        /// 空・未指定・"ja" は日本語（OS の言語によらない）、"auto" は OS の UI の言語、それ以外は対応言語のカルチャ名（地域違いは同じ言語）。
+        /// 訳の無い言語・解釈できない指定は日本語とする。
         /// </summary>
         public static CultureInfo Resolve(string language)
         {
-            var name = (language ?? "").Trim();
-            if (name == "")
-            {
-                name = Default;
-            }
-            if (string.Equals(name, "auto", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return OsUICulture;
-            }
-            try
-            {
-                return CultureInfo.GetCultureInfo(name);
-            }
-            catch (CultureNotFoundException)
-            {
-                return CultureInfo.GetCultureInfo(Default);
-            }
+            return CultureInfo.GetCultureInfo(UiLanguages.Resolve(language, OsUICulture.Name));
         }
 
         /// <summary>

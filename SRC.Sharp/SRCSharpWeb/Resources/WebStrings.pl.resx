@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Wczytywanie…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Inicjalizacja nie powiodła się: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Scenariusz dobiegł końca.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Powrót do wyboru scenariusza</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Wbudowane scenariusze</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Brak.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Dodane archiwa</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Dodane pliki zip ze scenariuszami są zapisywane w tej przeglądarce i można je wybrać następnym razem.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Wznów z zapisu</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Eksportuj</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Możesz zaimportować wyeksportowane zapisy (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Nowa gra</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Dodawanie {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Wczytywanie {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Rozpakowywanie {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} nie zawiera scenariusza (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>Nie udało się wczytać {0}: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Język</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automatycznie</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Otwórz plik</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Nazwa pliku do zapisu</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Wprowadź</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Zakończono</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Menu systemowe</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Powrót do wyboru scenariusza…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Przełącz pełny ekran</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Pokaż/ukryj wirtualne klawisze</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potwierdzenie</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Zakończyć grę i wrócić do wyboru scenariusza?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>Niezapisany postęp zostanie utracony.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Tak</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Bezpośredni link do tego scenariusza</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Usuń ten katalog</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Dodaj katalog</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Możesz dodać URL katalogu (catalog.json) strony udostępniającej scenariusze. Strona musi zezwalać na CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Dodane pliki zip z zasobami (np. zestawy ogólnej grafiki) są nakładane na każdy scenariusz.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Zasób</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>Scenariusza „{0}” nie ma w katalogu.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Nie udało się odczytać katalogu {0}: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Rozpakowywanie zasobu {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>Zasobu „{0}” nie ma w katalogu.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Wczytywanie zasobu {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Nie udało się wczytać zasobu {0}: {1}</value>
+  </data>
+</root>
