@@ -951,7 +951,7 @@ namespace SRCCore.Units
             }
 
             // 受けの処理
-            if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
+            if (CheckParryFeature(w, ref t, tx, ty, attack_mode, def_mode, dmg, ref msg, be_quiet || use_protect_msg))
             {
                 dmg = 0;
                 goto EndAttack;
@@ -977,11 +977,10 @@ namespace SRCCore.Units
             is_hit = true;
 
             // シールド防御判定
-            // XXX dmg 書き換えてそう
-            CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
+            CheckShieldFeature(w, t, dmg, be_quiet, ref use_shield, ref use_shield_msg);
 
             // 防御能力の処理
-            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
+            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, ref dmg, ref msg, be_quiet || use_protect_msg, ref is_penetrated))
             {
                 if (!be_quiet)
                 {
@@ -1167,7 +1166,7 @@ namespace SRCCore.Units
             }
 
             // 特殊効果
-            CauseEffect(w, t, out msg, out critical_type, def_mode, dmg >= t.HP);
+            CauseEffect(w, t, ref msg, ref critical_type, def_mode, dmg >= t.HP);
             if (Strings.InStr(critical_type, "即死") > 0 && !use_support_guard && !use_protect_msg)
             {
                 if (t.IsHero())
@@ -1298,7 +1297,7 @@ namespace SRCCore.Units
                 // 自動反撃発動
                 if (t.HP > 0)
                 {
-                    CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
+                    CheckAutoAttack(w, ref t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
                     if (Status != "出撃")
                     {
                         goto EndAttack;
@@ -2232,11 +2231,11 @@ namespace SRCCore.Units
                     // 追加攻撃
                     if (ReferenceEquals(su, t))
                     {
-                        CheckAdditionalAttack(w, t, be_quiet, attack_mode, "援護防御", dmg);
+                        CheckAdditionalAttack(w, ref t, be_quiet, attack_mode, "援護防御", dmg);
                     }
                     else
                     {
-                        CheckAdditionalAttack(w, t, be_quiet, attack_mode, "", dmg);
+                        CheckAdditionalAttack(w, ref t, be_quiet, attack_mode, "", dmg);
                     }
                 }
 
