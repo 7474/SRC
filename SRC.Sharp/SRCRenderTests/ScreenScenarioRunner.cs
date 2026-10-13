@@ -91,7 +91,8 @@ namespace SRCRender.Tests
 
         public ListState WaitForList()
         {
-            WaitFor(s => s.List != null, "list");
+            // リストが表示されても、ゲームスレッドがクリックを待ち始める前の操作は失われるため、待ちに入るまで待つ
+            WaitFor(s => s.List != null && GUI.IsWaitingList, "list");
             return State.List;
         }
 
