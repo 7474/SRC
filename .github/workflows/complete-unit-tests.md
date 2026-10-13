@@ -552,5 +552,4 @@ Use `noop` safe output with message:
   - ソース: `SRC.Sharp/SRCCore/Intermissions/Intermission.cs`
   - テストファイル: `SRC.Sharp/SRCCoreTests/Intermissions/`
 - テストインフラ: `SRC.Sharp/SRCCore/TestLib/`
-- 品質向上計画: `docs/porting/porting-quality-plan.md`
-- エージェント向けの手順: `.github/copilot/agent-instructions.md`
+- 移植プロトコル: `.github/copilot/autonomous-agent.md`
