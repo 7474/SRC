@@ -36,8 +36,15 @@ namespace SRCRender.Tests
             (240, 240), (130, 130), (350, 230), (240, 380), (240, 472), (600, 300),
         };
 
-        // リスト以外の操作をするまでに各リストを選んだ回数（リストが交互に出る循環も検出するため）
+        // 各リストを選んだ回数。リストが交互に出る循環や、リスト → 説明のメッセージ → リストの循環も検出する。
+        // マップで操作を受け付ける状態になったら数え直す（ResetLoopDetection）
         private readonly Dictionary<string, int> listVisits = new Dictionary<string, int>();
+
+        /// <summary>循環の検出を数え直す（マップで操作を受け付ける状態になったときなど）</summary>
+        public void ResetLoopDetection()
+        {
+            listVisits.Clear();
+        }
 
         /// <summary>ボタンを押した回数</summary>
         public int Stalls { get; private set; }
@@ -229,10 +236,6 @@ namespace SRCRender.Tests
                     // 画面が更新されている間は待ちとみなさない
                     lastFrame = runner.FrameCount;
                     idleSince = DateTime.UtcNow;
-                }
-                if (acted && !(state.List != null && state.Dialog == null))
-                {
-                    listVisits.Clear();
                 }
                 if (acted)
                 {

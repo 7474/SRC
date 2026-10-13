@@ -385,6 +385,7 @@ namespace SRCRender.Tests
                     Thread.Sleep(150);
                     if (IsReady)
                     {
+                        auto.ResetLoopDetection();
                         return true;
                     }
                 }
