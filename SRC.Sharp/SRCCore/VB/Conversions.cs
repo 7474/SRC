@@ -16,7 +16,27 @@ namespace SRCCore.VB
             {
                 return ret;
             }
-            return (int)ToDouble(Value);
+            return ToInteger(ToDouble(Value));
+        }
+
+        // VB の CLng や Long への代入と同様に偶数丸め（銀行型丸め）で整数に変換する。
+        // 範囲外の値は Integer の範囲に収める（VBではオーバーフローエラー）。
+        public static int ToInteger(double Value)
+        {
+            if (double.IsNaN(Value))
+            {
+                return 0;
+            }
+            var rounded = Math.Round(Value, MidpointRounding.ToEven);
+            if (rounded >= int.MaxValue)
+            {
+                return int.MaxValue;
+            }
+            if (rounded <= int.MinValue)
+            {
+                return int.MinValue;
+            }
+            return (int)rounded;
         }
 
         public static double ToDouble(string Value)

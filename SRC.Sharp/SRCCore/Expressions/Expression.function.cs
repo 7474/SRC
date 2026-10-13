@@ -70,6 +70,8 @@ namespace SRCCore.Expressions
             // File
             new Dir(),
             new EOF(),
+            new Loadfiledialog(),
+            new Savefiledialog(),
             // String
             new Format(),
             new InStr(),
@@ -129,6 +131,8 @@ namespace SRCCore.Expressions
             new KeyState(),
             new Nickname(),
             new Term(),
+            new WindowWidth(),
+            new WindowHeight(),
         }.ToDictionary(x => x.Name.ToLower());
 
         // 式を関数呼び出しとして構文解析し、実行

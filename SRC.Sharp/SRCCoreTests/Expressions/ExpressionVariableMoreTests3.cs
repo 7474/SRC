@@ -119,7 +119,8 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             exp.SetVariableAsDouble("fracVar", 3.9d);
-            Assert.AreEqual(3, exp.GetValueAsLong("fracVar"));
+            // VB の Long への代入と同様に丸める
+            Assert.AreEqual(4, exp.GetValueAsLong("fracVar"));
         }
 
         // ──────────────────────────────────────────────

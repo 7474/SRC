@@ -205,7 +205,14 @@ namespace SRCCore.Lib
 
         private static IList<string> ToListInternal(string list, out bool hasError, bool removeKakko = false)
         {
+            return ToListInternal(list, out hasError, out _, removeKakko);
+        }
+
+        // isUnclosed: 末尾でクォートや括弧が閉じていない場合に true
+        private static IList<string> ToListInternal(string list, out bool hasError, out bool isUnclosed, bool removeKakko = false)
+        {
             hasError = false;
+            isUnclosed = false;
             bool in_single_quote = false;
             bool in_double_quote = false;
             int i = -1;
@@ -286,6 +293,7 @@ namespace SRCCore.Lib
             {
                 result.Add(current.ToString());
             }
+            isUnclosed = in_single_quote || in_double_quote || paren != 0;
             return result;
         }
 
@@ -316,6 +324,15 @@ namespace SRCCore.Lib
             bool hasError;
             larray = ToListInternal(list, out hasError).ToArray();
             return hasError ? -1 : larray.Length;
+        }
+
+        // ListSplit と同様だが、VB版と同様に末尾でクォートや括弧が閉じていない場合も -1 を返す
+        public static int ListSplitStrict(string list, out string[] larray)
+        {
+            bool hasError;
+            bool isUnclosed;
+            larray = ToListInternal(list, out hasError, out isUnclosed).ToArray();
+            return hasError || isUnclosed ? -1 : larray.Length;
         }
 
         // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
@@ -411,7 +428,18 @@ namespace SRCCore.Lib
         // memo: VBのLongは32bit
         public static int StrToLng(string expr)
         {
-            return Conversions.ToInteger(expr ?? "");
+            // VB版は IsNumeric なら CLng で変換し、エラー（オーバーフロー）時は0を返す
+            expr = expr ?? "";
+            if (int.TryParse(expr, out var ret))
+            {
+                return ret;
+            }
+            var num = Conversions.ToDouble(expr);
+            if (double.IsNaN(num) || num >= (double)int.MaxValue + 0.5d || num < (double)int.MinValue - 0.5d)
+            {
+                return 0;
+            }
+            return Conversions.ToInteger(num);
         }
 
         // 文字列をひらがなに変換

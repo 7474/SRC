@@ -151,11 +151,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void GetValueAsLong_DecimalResult_TruncatesToInt()
+        public void GetValueAsLong_DecimalResult_RoundsToEven()
         {
             var exp = Create();
-            // 7 / 2 = 3.5 → GetValueAsLong → 3
-            Assert.AreEqual(3, exp.GetValueAsLong("7 / 2"));
+            // 7 / 2 = 3.5 → GetValueAsLong → 4（VB の Long への代入と同様に偶数丸め）
+            Assert.AreEqual(4, exp.GetValueAsLong("7 / 2"));
         }
     }
 }

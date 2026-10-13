@@ -167,9 +167,10 @@ namespace SRCCore.Lib.Tests
         }
 
         [TestMethod]
-        public void StrToLng_Float_TruncatesToInt()
+        public void StrToLng_Float_RoundsToInt()
         {
-            Assert.AreEqual(3, GeneralLib.StrToLng("3.7"));
+            // VB の CLng と同様に丸める
+            Assert.AreEqual(4, GeneralLib.StrToLng("3.7"));
         }
 
         [TestMethod]

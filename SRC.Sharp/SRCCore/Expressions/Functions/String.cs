@@ -108,7 +108,8 @@ namespace SRCCore.Expressions.Functions
                 }
 
                 i = (num - Strings.Len(buf2) + 1);
-                do
+                // 開始位置が1未満の場合は見つからない（VB版では実行時エラーとなる）
+                while (i > 0)
                 {
                     var j = Strings.InStr(i, buf, buf2);
                     if (i == j)
@@ -118,7 +119,10 @@ namespace SRCCore.Expressions.Functions
 
                     i = (i - 1);
                 }
-                while (i != 0);
+                if (i < 0)
+                {
+                    i = 0;
+                }
             }
             else
             {
@@ -583,8 +587,8 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             num_result = 0d;
-            // XXX 文字コード
-            str_result = Conversions.ToString((char)SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
+            // Shift_JIS の文字コードとして扱う
+            str_result = Strings.Chr(SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
             return ValueType.StringType;
         }
     }

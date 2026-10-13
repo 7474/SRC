@@ -113,20 +113,14 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "#000000";
             num_result = 0d;
-            try
-            {
-                str_result = Color.FromArgb(
-                    SRC.Expression.GetValueAsLong(@params[1], is_term[1]),
-                    SRC.Expression.GetValueAsLong(@params[2], is_term[2]),
-                    SRC.Expression.GetValueAsLong(@params[3], is_term[3])
-                    ).ToHexString();
-            }
-            catch
-            {
-                // ignore
-            }
+            // VB の RGB 関数と同様に255を超える値は255として扱う（負の値は0とする）
+            int ToByte(int v) => System.Math.Max(0, System.Math.Min(255, v));
+            str_result = Color.FromArgb(
+                ToByte(SRC.Expression.GetValueAsLong(@params[1], is_term[1])),
+                ToByte(SRC.Expression.GetValueAsLong(@params[2], is_term[2])),
+                ToByte(SRC.Expression.GetValueAsLong(@params[3], is_term[3]))
+                ).ToHexString();
             return ValueType.StringType;
         }
     }

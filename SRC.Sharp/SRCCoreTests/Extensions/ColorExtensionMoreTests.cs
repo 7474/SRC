@@ -23,13 +23,13 @@ namespace SRCCore.Extensions.Tests
         [TestMethod]
         public void ToHexString_White_ReturnsFFFFFF()
         {
-            Assert.AreEqual("#ffffff", Color.White.ToHexString());
+            Assert.AreEqual("#FFFFFF", Color.White.ToHexString());
         }
 
         [TestMethod]
         public void ToHexString_Green_Returns00FF00()
         {
-            Assert.AreEqual("#00ff00", Color.Lime.ToHexString());
+            Assert.AreEqual("#00FF00", Color.Lime.ToHexString());
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace SRCCore.Extensions.Tests
         {
             // Alpha channel is ignored (only R, G, B used)
             var color = Color.FromArgb(255, 255, 0, 0);
-            Assert.AreEqual("#ff0000", color.ToHexString());
+            Assert.AreEqual("#FF0000", color.ToHexString());
         }
 
         // ──────────────────────────────────────────────

@@ -36,7 +36,8 @@ namespace SRCCore.Expressions.Functions
                                     }
                                     else if (SRC.PList.IsDefined(pname))
                                     {
-                                        num_result = (double)SRC.PList.Item(pname).Unit.x;
+                                        // ユニットに乗っていない場合は0
+                                        num_result = (double)(SRC.PList.Item(pname).Unit?.x ?? 0);
                                     }
 
                                     break;
@@ -103,7 +104,8 @@ namespace SRCCore.Expressions.Functions
                                     }
                                     else if (SRC.PList.IsDefined(pname))
                                     {
-                                        num_result = (double)SRC.PList.Item(pname).Unit.y;
+                                        // ユニットに乗っていない場合は0
+                                        num_result = (double)(SRC.PList.Item(pname).Unit?.y ?? 0);
                                     }
 
                                     break;

@@ -80,11 +80,11 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void ToInteger_NegativeFloat_TruncatesTowardZero()
+        public void ToInteger_NegativeFloat_RoundsToNearest()
         {
-            // -3.7 → (int)-3.7 = -3
+            // VB の CInt/CLng と同様に丸める: -3.7 → -4
             var result = Conversions.ToInteger("-3.7");
-            Assert.AreEqual(-3, result);
+            Assert.AreEqual(-4, result);
         }
 
         // ──────────────────────────────────────────────
