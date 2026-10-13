@@ -846,8 +846,12 @@ namespace SRCRender
             return result;
         }
 
+        /// <summary>エラーのダイアログを出すとき（イベントエラーなど）。ホストがエラーを記録するため</summary>
+        public event Action<string> ErrorShown;
+
         public void ErrorMessage(string msg)
         {
+            ErrorShown?.Invoke(msg);
             ShowDialog(Resources.Strings.ErrorTitle, msg, "OK");
         }
 

@@ -8,6 +8,11 @@ export function setTitle(title) {
     document.title = title;
 }
 
+// .NET 側のエラー（ゲームの例外・イベントエラー）を送る（errorreport.js）
+export function reportError(type, message, stack) {
+    globalThis.srcwebErrorReporting?.report(type, message, stack);
+}
+
 export function drawFrame(view, width, height) {
     if (!ctx) {
         return;
@@ -34,6 +39,8 @@ async function start() {
     const runtime = await globalThis.getDotnetRuntime(0);
     const exports = await runtime.getAssemblyExports('SRCSharpWeb.dll');
     const gui = exports.SRCSharpWeb.WebInterop;
+    // エラーを送るときに、実行中のシナリオの行を添える（errorreport.js）
+    globalThis.srcwebErrorReporting?.setDebugState(() => gui.DebugState());
 
     const position = e => {
         const rect = canvas.getBoundingClientRect();
