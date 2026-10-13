@@ -9,7 +9,7 @@ SRC# のバージョンの付け方と、リリースの手順。
 | 系統 | 対象 | 形式 | 例 |
 |---|---|---|---|
 | アプリ（プレイできる SRC としての版） | SRC#Form（`SRCSharpForm`）・SRC#Avalonia・SRC#Web・データビューア（`SRCTestBlazor`） | `3.<マイナー>.<パッチ>` | 3.5.0 |
-| ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・srcsharp（`SRCSharpTools`）・VS Code 拡張（`SRCSharpVSCode`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
+| ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・SRCDebugAdapter・srcsharp（`SRCSharpTools`）・VS Code 拡張（`SRCSharpVSCode`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
 
 - **メジャー**: 2 までを元の SRC（VB 版）とみなし、3 を SRC# のメジャーバージョンとする。ライブラリは API が固まるまで 0
 - **マイナー**: 元の SRC にならい、奇数を開発版とする。5 が実質の初版（4 はそれを参照しているシナリオなどがあるため使わない）

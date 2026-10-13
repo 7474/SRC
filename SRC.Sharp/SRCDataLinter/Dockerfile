@@ -9,6 +9,7 @@ WORKDIR /src
 COPY ["Directory.Build.props", "./"]
 COPY ["SRCDataLinter/SRCDataLinter.csproj", "SRCDataLinter/"]
 COPY ["SRCCore/SRCCore.csproj", "SRCCore/"]
+COPY ["SRCAuthoring/SRCAuthoring.csproj", "SRCAuthoring/"]
 RUN dotnet restore "SRCDataLinter/SRCDataLinter.csproj"
 COPY . .
 WORKDIR "/src/SRCDataLinter"

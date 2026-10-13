@@ -18,19 +18,23 @@ flowchart LR
     LSP["lsp<br/>Language Server"]
     DAP["dap<br/>Debug Adapter"]
   end
-  subgraph Lib["SRCAuthoring"]
+  subgraph Lib["SRCAuthoring（SRCCore だけに依存）"]
     Linter["DataLinter・SarifWriter"]
     Analyzer["ScenarioAnalyzer"]
     Balance["BalanceReport"]
-    Debugger["EventDebugger"]
   end
+  Debugger["SRCDebugAdapter<br/>（DapServer・EventDebugger）"]
   Play["SRCPlay<br/>（PlayScript・AutoPlayer・<br/>ScreenScenarioRunner）"]
-  Core["SRCCore・SRCRender"]
+  Core["SRCCore"]
+  Render["SRCRender（SkiaSharp）"]
+  OldLinter["SRCDataLinter<br/>（Docker イメージ）"]
   CLI --> Linter & Balance & Play
   LSP --> Analyzer
-  DAP --> Debugger & Play
+  DAP --> Debugger
+  Debugger --> Lib & Play
+  OldLinter --> Linter
   Lib --> Core
-  Play --> Core
+  Play --> Render --> Core
   VSCode["VS Code 拡張<br/>（SRCSharpVSCode）"] -- "LSP（標準入出力）" --> LSP
   VSCode -- "DAP（標準入出力）" --> DAP
   CI["GitHub Actions"] --> CLI
@@ -41,9 +45,11 @@ flowchart LR
 | プロジェクト | 内容 |
 |---|---|
 | `SRC.Sharp/SRCPlay` | シナリオを画面なしで動かし、`.play` スクリプトで自動プレイする部品（テストから切り出した） |
-| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析・バランス集計・LSP・DAP・イベントのデバッガ |
+| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析・バランス集計・LSP。SRCCore だけに依存する（描画の部品は使わない） |
+| `SRC.Sharp/SRCDebugAdapter` | DAP・イベントのデバッガ。シナリオを画面なしで動かすため SRCPlay（SRCRender）に依存する |
 | `SRC.Sharp/SRCSharpTools` | CLI `srcsharp`（.NET tool） |
-| `SRC.Sharp/SRCAuthoringTests` | 上の 2 つのテスト（LSP・DAP はパイプでつないで確かめる） |
+| `SRC.Sharp/SRCAuthoringTests` | SRCAuthoring・SRCDebugAdapter のテスト（LSP・DAP はパイプでつないで確かめる） |
+| `SRC.Sharp/SRCDataLinter` | 従来の lint の CLI と Docker イメージ。検査は SRCAuthoring の `DataLinter`（`srcsharp lint` と共通）で、出力の書式は従来どおり |
 | `SRC.Sharp/SRCSharpVSCode` | VS Code 拡張 |
 
 SRCCore には、デバッガ用のフック `IEventDebugger`（`Event.Debugger`）を加えた。`CmdData.Exec` の先頭と、イベントのエラーを表示する時に呼ばれる。設定しなければ null の判定だけで、通常の実行には影響しない。
@@ -62,7 +68,7 @@ srcsharp dap
 
 | コマンド | 内容 |
 |---|---|
-| `lint` | SRCDataLinter と同じ検査（データは種類ごとの読み込み処理、イベントは読み込みと構文の検査）。`--format sarif` で GitHub のコードスキャンに渡せる（[SARIF support for code scanning](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning)）。問題があれば終了コード 1 |
+| `lint` | SRCDataLinter と同じ処理で検査する（データは種類ごとの読み込み処理、イベントは読み込みと構文の検査）。`--format sarif` で GitHub のコードスキャンに渡せる（[SARIF support for code scanning](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning)）。問題があれば終了コード 1 |
 | `play` | シナリオを画面なしで動かす。`--script` の書式は [E2E テスト方針](../gui/e2e-testing.md) の PlayScript。無ければメッセージを送り、選択肢は先頭を選んで進める。`--out` にスナップショットを保存する |
 | `balance` | unit.txt・robot.txt の能力値の一覧と、同じクラスのユニットの中での外れ値（\|z\| ≥ 2、5 体以上のクラス）。Markdown か CSV |
 
@@ -135,6 +141,5 @@ srcsharp dap
 | エディタ：データの名前 | ユニット・パイロット・アイテムの名前の補完・ホバー・定義へ移動（データの読み込みを伴う） |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | デバッガ：画面 | 止まった時の画面を Webview に出す（`ScreenGUI.SnapshotPng`） |
-| SRCDataLinter の統合 | `srcsharp lint` と同じ処理（`DataLinter`）を使う。描画の部品に依存しないように、lint を別のライブラリに分けてから行う |
 | 拡張の公開 | Marketplace（または Open VSX）への公開と CI での .vsix の作成 |
 | SRC#Web | Monaco と同じ LSP でブラウザ上の編集支援（[SRC#Web](../gui/web.md) の外部コンテンツ管理と合わせて） |

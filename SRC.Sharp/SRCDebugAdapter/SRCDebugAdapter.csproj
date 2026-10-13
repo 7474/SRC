@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <Version>$(SrcSharpLibraryVersion)</Version>
+    <Description>SRC# のイベントのデバッガ（Debug Adapter Protocol）。シナリオを画面なしで動かす</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRCAuthoring\SRCAuthoring.csproj" />
+    <ProjectReference Include="..\SRCPlay\SRCPlay.csproj" />
+  </ItemGroup>
+
+</Project>

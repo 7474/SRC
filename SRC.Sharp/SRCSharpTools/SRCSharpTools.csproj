@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SRCAuthoring\SRCAuthoring.csproj" />
+    <ProjectReference Include="..\SRCDebugAdapter\SRCDebugAdapter.csproj" />
+    <ProjectReference Include="..\SRCPlay\SRCPlay.csproj" />
   </ItemGroup>
 
 </Project>

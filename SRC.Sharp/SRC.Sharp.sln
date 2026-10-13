@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCSharpTools", "SRCSharpTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCAuthoringTests", "SRCAuthoringTests\SRCAuthoringTests.csproj", "{B3FA4BF3-C798-44AA-B3D9-2AC917CE3E58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCDebugAdapter", "SRCDebugAdapter\SRCDebugAdapter.csproj", "{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -254,6 +256,18 @@ Global
 		{B3FA4BF3-C798-44AA-B3D9-2AC917CE3E58}.Release|x64.Build.0 = Release|Any CPU
 		{B3FA4BF3-C798-44AA-B3D9-2AC917CE3E58}.Release|x86.ActiveCfg = Release|Any CPU
 		{B3FA4BF3-C798-44AA-B3D9-2AC917CE3E58}.Release|x86.Build.0 = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|x64.Build.0 = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|x64.ActiveCfg = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|x64.Build.0 = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{588A4F52-B3FA-4B37-B26B-7CFC3F15B8E9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

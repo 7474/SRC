@@ -8,7 +8,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SRCAuthoring.Dap
+namespace SRCDebugAdapter
 {
     /// <summary>
     /// イベントのデバッガ（Debug Adapter Protocol）。シナリオを画面なしで動かし、
@@ -203,7 +203,7 @@ namespace SRCAuthoring.Dap
         {
             var program = Path.GetFullPath(launchArgs["program"].GetValue<string>());
             var script = launchArgs["script"]?.GetValue<string>();
-            var appPath = launchArgs["appPath"]?.GetValue<string>() ?? Analysis.ScenarioAnalyzer.FindScenarioRoot(program);
+            var appPath = launchArgs["appPath"]?.GetValue<string>() ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(program);
             var stopOnEntry = launchArgs["stopOnEntry"]?.GetValue<bool>() ?? false;
             var maxSteps = launchArgs["maxSteps"]?.GetValue<int>() ?? 100000;
 

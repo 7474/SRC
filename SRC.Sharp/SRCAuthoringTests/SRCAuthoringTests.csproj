@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SRCAuthoring\SRCAuthoring.csproj" />
+    <ProjectReference Include="..\SRCDebugAdapter\SRCDebugAdapter.csproj" />
   </ItemGroup>
 
 </Project>

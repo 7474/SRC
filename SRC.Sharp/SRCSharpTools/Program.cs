@@ -1,5 +1,5 @@
 using SRCAuthoring.Balance;
-using SRCAuthoring.Dap;
+using SRCDebugAdapter;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
 using SRCPlay;

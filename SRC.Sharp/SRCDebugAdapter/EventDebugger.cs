@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace SRCAuthoring.Dap
+namespace SRCDebugAdapter
 {
     /// <summary>止まった理由（DAP の stopped イベントの reason）</summary>
     public sealed class StopInfo

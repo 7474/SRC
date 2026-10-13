@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>disable</Nullable>
     <Version>$(SrcSharpLibraryVersion)</Version>
-    <Description>SRC# のデータ・シナリオの作成支援（lint・解析・バランス集計・LSP・DAP）</Description>
+    <Description>SRC# のデータ・シナリオの作成支援（lint・解析・バランス集計・LSP）。SRCCore だけに依存する</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
-    <ProjectReference Include="..\SRCPlay\SRCPlay.csproj" />
   </ItemGroup>
 
 </Project>

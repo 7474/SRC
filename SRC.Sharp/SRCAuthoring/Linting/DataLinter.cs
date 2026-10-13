@@ -17,6 +17,8 @@ namespace SRCAuthoring.Linting
     {
         public List<SrcDiagnostic> Diagnostics { get; } = new List<SrcDiagnostic>();
         public List<string> CheckedFiles { get; } = new List<string>();
+        /// <summary>種類の分からないファイル（検査しない）</summary>
+        public List<string> NotSupportedFiles { get; } = new List<string>();
         /// <summary>問題があったか（警告を含む。SRCDataLinter の終了コードと同じ判定）</summary>
         public bool HasError { get; set; }
     }
@@ -84,7 +86,7 @@ namespace SRCAuthoring.Linting
             }
         }
 
-        private delegate Task LintProc(SRCCore.SRC src, FileInfo file);
+        private delegate Task LintProc(SRCCore.SRC src, FileInfo file, LintResult result);
 
         private sealed class LintProcDef
         {
@@ -106,7 +108,7 @@ namespace SRCAuthoring.Linting
                 }
                 try
                 {
-                    await lintProc(src, file);
+                    await lintProc(src, file, result);
                 }
                 catch (InvalidSrcDataException ex)
                 {
@@ -135,19 +137,26 @@ namespace SRCAuthoring.Linting
 
         private static readonly LintProcDef[] LintProcs = new LintProcDef[]
         {
-            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file) => src.SPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^alias.txt$", async (src, file) => src.ALDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file) => src.UDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot.txt$", async (src, file) => src.PDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^non_pilot.txt$", async (src, file) => src.NPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_message.txt$", async (src, file) => src.MDList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_dialog.txt$", async (src, file) => src.DDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^effect.txt$", async (src, file) => src.EDList.Load(file.Name, true, await OpenUtf8Async(src, file))),
-            new LintProcDef("^animation.txt$", async (src, file) => src.ADList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^item.txt$", async (src, file) => src.IDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("\\.eve$", (src, file) =>
+            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file, _) => src.SPDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^alias.txt$", async (src, file, _) => src.ALDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file, _) => src.UDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot.txt$", async (src, file, _) => src.PDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^non_pilot.txt$", async (src, file, _) => src.NPDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_message.txt$", async (src, file, _) => src.MDList.Load(file.Name, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_dialog.txt$", async (src, file, _) => src.DDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^effect.txt$", async (src, file, _) => src.EDList.Load(file.Name, true, await OpenUtf8Async(src, file))),
+            new LintProcDef("^animation.txt$", async (src, file, _) => src.ADList.Load(file.Name, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^item.txt$", async (src, file, _) => src.IDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef(".*", (src, file, result) =>
             {
-                src.Event.LoadEventData(file.FullName, "");
+                if (file.Name.ToLowerInvariant().EndsWith(".eve"))
+                {
+                    src.Event.LoadEventData(file.FullName, "");
+                }
+                else
+                {
+                    result.NotSupportedFiles.Add(file.FullName);
+                }
                 return Task.CompletedTask;
             }),
         };

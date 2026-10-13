@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SRCAuthoring.Dap;
+using SRCDebugAdapter;
 using System;
 using System.Linq;
 using System.Text.Json.Nodes;
