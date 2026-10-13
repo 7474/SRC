@@ -63,29 +63,22 @@ namespace SRCCore
                 //        TerminateSRC();
                 //    }
 
-                //    // 読み込むイベントファイル名に合わせて各種システム変数を設定
-                //    if (!Expression.IsGlobalVariableDefined("次ステージ"))
-                //    {
-                //        Expression.DefineGlobalVariable("次ステージ");
-                //    }
+                // 読み込むイベントファイル名に合わせて各種システム変数を設定
+                if (!Expression.IsGlobalVariableDefined("次ステージ"))
+                {
+                    Expression.DefineGlobalVariable("次ステージ");
+                }
 
-                //    Expression.SetVariableAsString("次ステージ", "");
-                //    var loopTo = Strings.Len(fname);
-                //    for (i = 1; i <= loopTo; i++)
-                //    {
-                //        if (Strings.Mid(fname, Strings.Len(fname) - i + 1, 1) == @"\")
-                //        {
-                //            break;
-                //        }
-                //    }
+                Expression.SetVariableAsString("次ステージ", "");
+                // パス区切りより後ろをファイル名とする
+                var stageFileName = fname.Substring(fname.LastIndexOfAny(new char[] { '\\', '/' }) + 1);
+                Expression.SetVariableAsString("ステージ", stageFileName);
+                if (!Expression.IsGlobalVariableDefined("セーブデータファイル名"))
+                {
+                    Expression.DefineGlobalVariable("セーブデータファイル名");
+                }
 
-                //    Expression.SetVariableAsString("ステージ", Strings.Mid(fname, Strings.Len(fname) - i + 2));
-                //    if (!Expression.IsGlobalVariableDefined("セーブデータファイル名"))
-                //    {
-                //        Expression.DefineGlobalVariable("セーブデータファイル名");
-                //    }
-
-                //    Expression.SetVariableAsString("セーブデータファイル名", Strings.Mid(fname, Strings.Len(fname) - i + 2, i - 5) + "までクリア.src");
+                Expression.SetVariableAsString("セーブデータファイル名", Strings.Left(stageFileName, Math.Max(0, Strings.Len(stageFileName) - 4)) + "までクリア.src");
 
                 // ウィンドウのタイトルにシナリオファイル名を表示
                 GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(ScenarioFileName);
