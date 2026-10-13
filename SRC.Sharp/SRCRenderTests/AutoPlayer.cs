@@ -185,8 +185,9 @@ namespace SRCRender.Tests
                         Messages.Add(text);
                     }
                     Snapshot("message");
+                    var waitCount = state.Message.WaitCount;
                     gui.KeyPressed(ScreenKey.Enter);
-                    acted = WaitChange(() => !runner.State.Message.Waiting);
+                    acted = WaitChange(() => !runner.State.Message.Waiting || runner.State.Message.WaitCount != waitCount);
                 }
                 else if (gui.IsWaitingClick)
                 {
