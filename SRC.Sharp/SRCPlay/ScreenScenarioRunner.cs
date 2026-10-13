@@ -1,11 +1,12 @@
 using SkiaSharp;
 using SRCCore;
+using SRCRender;
 using SRCCore.TestLib;
 using System;
 using System.IO;
 using System.Threading;
 
-namespace SRCRender.Tests
+namespace SRCPlay
 {
     /// <summary>
     /// ScreenGUI でシナリオを実行し、画面の状態を見ながら入力を与える。

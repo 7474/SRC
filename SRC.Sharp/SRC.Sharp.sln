@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCSound", "SRCSound\SRCSou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCSoundTests", "SRCSoundTests\SRCSoundTests.csproj", "{E788B967-96DA-49CF-94AB-8D3BAA742EAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCPlay", "SRCPlay\SRCPlay.csproj", "{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -198,6 +200,18 @@ Global
 		{E788B967-96DA-49CF-94AB-8D3BAA742EAA}.Release|x64.Build.0 = Release|Any CPU
 		{E788B967-96DA-49CF-94AB-8D3BAA742EAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{E788B967-96DA-49CF-94AB-8D3BAA742EAA}.Release|x86.Build.0 = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|x64.Build.0 = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{806E0B7A-0D74-46A3-8ACB-F2B4EDB3DEEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 using SRCCore;
+using SRCRender;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace SRCRender.Tests
+namespace SRCPlay
 {
     /// <summary>
     /// テキスト形式の操作スクリプトでシナリオをプレイする（docs/gui/e2e-testing.md の入力スクリプト）。

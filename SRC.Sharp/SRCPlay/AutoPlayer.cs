@@ -1,11 +1,12 @@
 using SRCCore;
+using SRCRender;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace SRCRender.Tests
+namespace SRCPlay
 {
     /// <summary>
     /// 画面の状態に応じて機械的に入力を与え、シナリオを進める。
@@ -169,10 +170,10 @@ namespace SRCRender.Tests
         /// <summary>
         /// 入力待ちが idleMillis 続いたら終了する。終了・最大ステップ数でも終了する。
         /// </summary>
-        private void Click(Compat.Form form, Compat.Control control)
+        private void Click(SRCRender.Compat.Form form, SRCRender.Compat.Control control)
         {
             var x = form.ScreenLeft + control.Left + control.Width / 2f;
-            var y = form.ScreenTop + Compat.Form.TitleBarHeight + control.Top + control.Height / 2f;
+            var y = form.ScreenTop + SRCRender.Compat.Form.TitleBarHeight + control.Top + control.Height / 2f;
             runner.GUI.PointerPressed(x, y, GuiButton.Left);
             runner.GUI.PointerReleased(x, y, GuiButton.Left);
             Thread.Sleep(50);
@@ -209,7 +210,7 @@ namespace SRCRender.Tests
                 {
                     var list = state.List;
                     Snapshot("list");
-                    if (list.Window is Compat.MultiSelectListWindow multiSelect)
+                    if (list.Window is SRCRender.Compat.MultiSelectListWindow multiSelect)
                     {
                         // 出撃選択は「先頭から選択」して「終了」する
                         Click(multiSelect, multiSelect.cmdSelectAll);
@@ -304,19 +305,6 @@ namespace SRCRender.Tests
                     // 人の操作と同じく、ボタンを押してしばらく保ってから離す
                     var (cx, cy) = StallClickPositions[Stalls % StallClickPositions.Count];
                     var pointIds = string.Join(" | ", MousePoints().Select(x => x.ID));
-                    if (Environment.GetEnvironmentVariable("MP_DEBUG") == "1")
-                    {
-                        try
-                        {
-                            var ev = runner.Session.SRC.Event;
-                            pointIds += " G:" + string.Join(",", ev.GlobalVariableList.Keys.Where(k => k.StartsWith("MP_")).Take(8))
-                                + " L:" + string.Join(",", ev.LocalVariableList.Keys.Where(k => k.StartsWith("MP_")).Take(8));
-                        }
-                        catch (Exception ex)
-                        {
-                            pointIds += " " + ex.GetType().Name;
-                        }
-                    }
                     Trace?.Invoke($"stall: hold left button at ({cx}, {cy})" + (pointIds.Length > 0 ? " points: " + pointIds : ""));
                     Snapshot("stall");
                     gui.PointerMoved(cx, cy);
