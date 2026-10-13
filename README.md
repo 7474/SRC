@@ -1,104 +1,82 @@
-# SRC（Simulation RPG Construction）
+# SRC#（Simulation RPG Construction Sharp）
 
-SRC（Simulation RPG Construction）の C# .NET への移植版 SRC#（SRCシャープ、Simulation RPG Construction Sharp）。
+[SRC（Simulation RPG Construction）](http://www.src-srpg.jpn.org/) の C# .NET への移植版です。SRC#（SRCシャープ）と呼びます。
 
-## SRC派生ソフトウェア
+元の SRC（VB6）のシナリオとデータをそのまま動かすことを目指しています。Windows に加えて macOS・Linux・ブラウザでも動きます。
 
-本リポジトリで開発・配布しているソフトウェアの使用にあたってはSRC派生版ソフトウェアの利用における基本的規則を遵守してください。
+## 使う
 
-SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/development_hasei.shtml)内のSRC派生版ソフトウェアの利用における基本的規則
-- [規約(形式１)](http://www.src-srpg.jpn.org/hasei_kiyaku1.html)
-- [規約(形式２)](http://www.src-srpg.jpn.org/hasei_kiyaku2.html)
+| 用途 | ソフトウェア | 入手・実行 |
+|---|---|---|
+| ブラウザで遊ぶ | SRC#Web | https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
+| Windows・macOS・Linux で遊ぶ | SRC#Avalonia | [簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
+| Windows で遊ぶ | SRC#Form | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
+| データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
+| データ・シナリオを作る | `srcsharp`（lint・自動プレイ・バランス集計） | [作成支援ツール](./docs/tools/authoring.md) |
+| シナリオを VS Code で書く | VS Code 拡張 | Marketplace の [SRC](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）・[使い方](./SRC.Sharp/SRCSharpVSCode/README.md) |
+| CI でデータを検査する | SRCDataLinter | [GitHub Action](https://github.com/7474/SRC-DataLinter)・[Docker イメージ](https://hub.docker.com/r/koudenpa/srcdatalinter) |
 
-本リポジトリへの転記
-- [規約(形式１)](src_hasei_kiyaku1.md)
-- [規約(形式２)](src_hasei_kiyaku2.md)
+ヘルプは https://srch.7474.jp/ にあります。
 
-## Original
+表示言語は、日本語を既定に 15 の言語から選べます（[多言語対応](./docs/i18n.md)）。
+
+### SRC#Avalonia
+
+1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れる。
+1. `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <構築済みの SRC フォルダ内のシナリオ（.eve）>` を実行する。
+    - MIDI を鳴らすには SoundFont（.sf2）が要る（[SoundFont](./docs/gui/avalonia.md#soundfont)）。
+
+### SRC#Form
+
+1. 64 ビット版の Windows に [.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) を入れる。
+1. [Releases](https://github.com/7474/SRC/releases) から `SRCSharpForm.zip` を取る。または `SRC.Sharp/SRCSharpForm` をビルドし、実行ファイル（`SRCSharpForm.exe`）と付随する DLL を得る。
+1. 構築済みの SRC フォルダに、実行ファイルをコピーする。
+1. `SRCSharpForm.exe` を実行する。
+
+## SRC 派生ソフトウェアとしての規約
+
+本リポジトリで開発・配布しているソフトウェアを使うときは、SRC 派生版ソフトウェアの利用における基本的規則を守ってください。
+
+- SRC 公式サイトの[派生版解説ページ](http://www.src-srpg.jpn.org/development_hasei.shtml)
+  - [規約（形式１）](http://www.src-srpg.jpn.org/hasei_kiyaku1.html)（[本リポジトリへの転記](src_hasei_kiyaku1.md)）
+  - [規約（形式２）](http://www.src-srpg.jpn.org/hasei_kiyaku2.html)（[本リポジトリへの転記](src_hasei_kiyaku2.md)）
+
+## リポジトリの構成
+
+| パス | 内容 |
+|---|---|
+| [SRC.Sharp](./SRC.Sharp) | SRC#（C# の実装。ソリューションは `SRC.Sharp.sln`） |
+| [SRC.Sharp.Help](./SRC.Sharp.Help) | SRC# のヘルプのサイト（https://srch.7474.jp/ ） |
+| [docs](./docs) | 設計・方針などのドキュメント（[一覧](./docs/README.md)） |
+| [SRC/SRC_20121125](./SRC/SRC_20121125) | 移植の元にした SRC（VB6）のソース。参照用に文字コードを UTF-8 にしてある |
+| [SRC/Help](./SRC/Help)・[SRC/HelpChm](./SRC/HelpChm) | SRC Ver2.2.33 のヘルプのプロジェクトと、その CHM |
+| [SRC.NET](./SRC.NET) | SRC_20121125 をツールで .NET に変換したもの（移植の参考） |
+
+### SRC.Sharp のプロジェクト
+
+| プロジェクト | 内容 | 対象 |
+|---|---|---|
+| [SRCCore](./SRC.Sharp/SRCCore) | SRC のコア（データ・イベント・式・戦闘など） | .NET Standard 2.1 |
+| [SRCRender](./SRC.Sharp/SRCRender) | SkiaSharp による画面の描画と、UI フレームワークに依存しない GUI の実装 | .NET Standard 2.1 |
+| [SRCSound](./SRC.Sharp/SRCSound) | OpenAL による音声の再生（WAV・MP3・MIDI） | .NET Standard 2.1 |
+| [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia) | SRC#Avalonia（Windows・macOS・Linux） | .NET 10 |
+| [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb) | SRC#Web（Blazor WebAssembly、[ドキュメント](./docs/gui/web.md)） | .NET 10 |
+| [SRCSharpForm](./SRC.Sharp/SRCSharpForm) | SRC#Form（Windows Forms、Windows） | .NET 10 |
+| [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor) | データビューア（Blazor WebAssembly） | .NET 10 |
+| [SRCTestForm](./SRC.Sharp/SRCTestForm) | 動作確認用のフォーム（データの閲覧、Windows） | .NET 10 |
+| [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 10 |
+| [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 10 |
+| [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 10 |
+| [SRCSharpVSCode](./SRC.Sharp/SRCSharpVSCode) | VS Code 拡張 | VS Code |
+
+バージョンは、アプリが `3.x.x`、ライブラリ・ツールが `0.x.x` です。元の SRC と区別するため、アプリはメジャーを 3 にしています（[バージョンの管理](./docs/versioning.md)）。
+
+## 開発
+
+- 貢献の方法は [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+- SRC に付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作を確かめながら作っています。
+
+## 元の SRC
 
 - http://www.src-srpg.jpn.org/
 - http://www.src-srpg.jpn.org/development_beta.shtml
-
-## Solution/Project
-
-- [SRC](./SRC)
-    - [SRC_20121125](./SRC/SRC_20121125)
-        - 元にしたSRCのコピー
-        - 参照用にUTF-8に文字コードを変更してある
-    - [Help](./SRC/Help)
-        - SRC Ver2.2.33のヘルププロジェクトのコピー
-    - [HelpChm](./SRC/HelpChm)
-        - HelpをCHM形式に変換したもの
-- [SRC.NET](./SRC.NET)
-    - SRC_20121125をツールで.NETにコンバートしたもの
-- [SRC.Sharp](./SRC.Sharp)
-    - SRCのC#実装の一部、SRC#
-    - [SRCCore](./SRC.Sharp/SRCCore)
-        - SRCのコア部分
-        - .NET Standard 2.1
-    - [SRCDataLinter](SRC.Sharp/SRCDataLinter)
-        - SRCデータのバリデータ
-        - .NET 10
-        - GitHub Action: https://github.com/7474/SRC-DataLinter
-        - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
-            - イメージは GitHub Actions でビルドして Docker Hub に置く（`srcsharp` も入っている）
-    - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
-        - Windows Forms実装のSRC#Form
-        - SRC#Formの仮実行を行える
-        - .NET 10
-        - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている（[バージョンの管理](./docs/versioning.md)）
-            - SRCCore と比べてメジャーバージョンが +3
-        - HelpURL: https://srch.7474.jp/
-    - [SRCRender](./SRC.Sharp/SRCRender)
-        - SkiaSharp で SRC の画面を描画するライブラリと、UI フレームワークに依存しない GUI 実装
-        - .NET Standard 2.1
-    - [SRCSound](./SRC.Sharp/SRCSound)
-        - OpenAL による音声再生（WAV・MP3・MIDI）
-        - .NET Standard 2.1
-    - [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia)
-        - Avalonia UI 実装の SRC#Avalonia
-        - Windows / macOS / Linux で動作する
-        - .NET 10
-        - [ドキュメント](./docs/gui/avalonia.md)
-    - [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb)
-        - ブラウザで動く SRC#Web（Blazor WebAssembly）
-        - .NET 10
-        - [ドキュメント](./docs/gui/web.md)・[外部のサイトに置く](./docs/gui/web-hosting.md)
-        - 動作URL（開発版）: https://7474.github.io/SRC/web/
-    - [SRCSharpTools](./SRC.Sharp/SRCSharpTools)
-        - データ・シナリオの作成支援ツール `srcsharp`（lint・自動プレイ・バランス集計・Language Server・デバッガ）
-        - .NET 10（.NET tool）
-        - [ドキュメント](./docs/tools/authoring.md)
-    - [SRCSharpVSCode](./SRC.Sharp/SRCSharpVSCode)
-        - シナリオ（`*.eve`）の編集支援とイベントのデバッガの VS Code 拡張
-        - [使い方](./SRC.Sharp/SRCSharpVSCode/README.md)
-    - [SRCTestForm](./SRC.Sharp/SRCTestForm)
-        - 動作の確認用フォーム
-        - データの閲覧を行える
-        - .NET 10
-    - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
-        - 動作確認用Blazor WebAssemblyアプリケーション
-        - データの閲覧を行える
-        - .NET 10
-        - 動作URL:
-            - https://7474.github.io/SRC/
-            - https://srcv.7474.jp/
-
-### SRC#Form 簡易実行手順
-
-1. Windows 10 64bit版に[.NET 10 ランタイムをインストール](https://docs.microsoft.com/ja-jp/dotnet/core/install/windows)する
-1. [Release](https://github.com/7474/SRC/releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
-1. 構築済のSRCフォルダ内に実行ファイルをコピーする
-1. SRCSharpForm.exe を実行する
-
-### SRC#Avalonia 簡易実行手順
-
-1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) をインストールする
-1. `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <構築済のSRCフォルダ内のシナリオ(.eve)>` を実行する
-    - MIDI を鳴らすには SoundFont（.sf2）が必要。[SRC#Avalonia のドキュメント](./docs/gui/avalonia.md#soundfont)を参照
-
-表示言語は日本語を既定に 15 の言語に切り替えられる（[多言語対応](./docs/i18n.md)）。
-
-ドキュメントの一覧は [docs/README.md](./docs/README.md) を参照。
-
-SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
