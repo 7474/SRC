@@ -1,91 +1,84 @@
 name: SWA preview cleanup
 
-# Static Web Apps のプレビュー環境（PR ごとの環境）のうち、PR がクローズ済みなのに残っているものを削除する。
+# Static Web Apps のプレビュー環境（PR ごとの環境）のうち、PR がクローズ済みなのに残っているものを閉じる。
 # プレビュー環境の数には上限があり、残っていると新しい PR のデプロイが
 # 「maximum number of staging environments」で失敗するため。
 #
-# Azure へは OpenID Connect でサインインする。必要な設定（docs/swa-workflows.md）:
-#   secrets: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
-# 未設定の場合は何もせずに終わる。
+# PR を閉じたときの Close Pull Request Job と同じく、デプロイ用のトークンで StaticSitesClient の close を実行する。
+# Azure/static-web-apps-deploy は実行中のイベントの PR を閉じるため、ここでは同じイメージを直接動かし、
+# 閉じる PR のイベントを渡す（Azure への追加の認証情報は不要）。
+# Docker を使うため ubuntu-slim（非特権のコンテナ）ではなく ubuntu-latest で動かす。
 
 on:
   schedule:
     - cron: '17 18 * * *' # 毎日 03:17 JST
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: '削除せずに対象を表示するだけ'
-        type: boolean
-        default: false
+      pull_requests:
+        description: '閉じる PR の番号（空白区切り）。空なら直近に閉じた PR'
+        type: string
+        default: ''
+      days:
+        description: '何日前までに閉じた PR を対象にするか'
+        type: number
+        default: 30
+  # このワークフローを変えた PR でも動かして確かめる（閉じるのはクローズ済みの PR の環境だけ）
+  pull_request:
+    branches:
+      - master
+    paths:
+      - .github/workflows/CD-swa-cleanup-previews.yml
 
 permissions:
-  id-token: write
   contents: read
   pull-requests: read
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        app:
-          # 既定のホスト名の一部で Static Web App を探す（リソース名やリソースグループに依存しない）
-          - name: SRC#DataViewer
-            host: icy-coast-005428600
-          - name: SRC#Help
-            host: yellow-pebble-0ddb1c400
-    name: Cleanup ${{ matrix.app.name }}
     steps:
-      - name: Check Azure credentials
-        id: check
-        env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-        run: |
-          if [ -z "$AZURE_CLIENT_ID" ]; then
-            echo "::notice::AZURE_CLIENT_ID などが設定されていないため、プレビュー環境の削除を行いません（docs/swa-workflows.md）"
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Azure login
-        if: steps.check.outputs.configured == 'true'
-        uses: azure/login@v3
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Delete preview environments of closed pull requests
-        if: steps.check.outputs.configured == 'true'
+      - name: Close preview environments of closed pull requests
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOST: ${{ matrix.app.host }}
-          DRY_RUN: ${{ inputs.dry_run || false }}
+          PULL_REQUESTS: ${{ inputs.pull_requests }}
+          DAYS: ${{ inputs.days || 30 }}
+          # アプリごとのデプロイ用トークン（CD-swa-dataviewer.yml・CD-swa-help.yml と同じもの）
+          TOKEN_DATAVIEWER: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_COAST_005428600 }}
+          TOKEN_HELP: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_PEBBLE_0DDB1C400 }}
         run: |
-          set -euo pipefail
-          read -r APP RG < <(az staticwebapp list \
-            --query "[?contains(defaultHostname, '$HOST')] | [0].[name, resourceGroup]" -o tsv)
-          if [ -z "${APP:-}" ]; then
-            echo "::warning::$HOST の Static Web App が見つかりません"
-            exit 0
-          fi
-          echo "Static Web App: $APP ($RG)"
+          set -uo pipefail
+          image=mcr.microsoft.com/appsvc/staticappsclient:stable
+          docker pull -q "$image"
 
-          # PR のプレビュー環境は PR 番号の名前を持つ（本番は default）
-          az staticwebapp environment list -n "$APP" -g "$RG" --query "[].name" -o tsv | while read -r env; do
-            if ! [[ "$env" =~ ^[0-9]+$ ]]; then
-              continue
-            fi
-            state=$(gh pr view "$env" --repo "$GITHUB_REPOSITORY" --json state -q .state 2>/dev/null || echo UNKNOWN)
-            echo "environment $env: PR $state"
-            if [ "$state" = "CLOSED" ] || [ "$state" = "MERGED" ]; then
-              if [ "$DRY_RUN" = "true" ]; then
-                echo "  would delete"
-              else
-                az staticwebapp environment delete -n "$APP" -g "$RG" --environment-name "$env" --yes
-                echo "  deleted"
-              fi
-            fi
+          if [ -z "$PULL_REQUESTS" ]; then
+            since=$(date -u -d "$DAYS days ago" +%Y-%m-%dT%H:%M:%SZ)
+            PULL_REQUESTS=$(gh pr list --repo "$GITHUB_REPOSITORY" --state closed --base master --limit 200 \
+              --json number,closedAt -q ".[] | select(.closedAt >= \"$since\") | .number" | tr '\n' ' ')
+          fi
+          echo "対象の PR: $PULL_REQUESTS"
+
+          failed=0
+          for pr in $PULL_REQUESTS; do
+            # PR を閉じたときのイベントと同じ形のペイロード
+            gh pr view "$pr" --repo "$GITHUB_REPOSITORY" --json number,title,headRefName,baseRefName,headRefOid \
+              -q '{action: "closed", number: .number, pull_request: {number: .number, title: .title, state: "closed", head: {ref: .headRefName, sha: .headRefOid}, base: {ref: .baseRefName}}}' \
+              > "$RUNNER_TEMP/event.json"
+            head_ref=$(jq -r .pull_request.head.ref "$RUNNER_TEMP/event.json")
+            for app in DATAVIEWER HELP; do
+              token_var="TOKEN_$app"
+              echo "::group::PR #$pr $app"
+              docker run --rm \
+                -v "$RUNNER_TEMP/event.json:/github/workflow/event.json:ro" \
+                -e INPUT_ACTION=close \
+                -e INPUT_AZURE_STATIC_WEB_APPS_API_TOKEN="${!token_var}" \
+                -e GITHUB_ACTIONS=true \
+                -e GITHUB_EVENT_NAME=pull_request \
+                -e GITHUB_EVENT_PATH=/github/workflow/event.json \
+                -e GITHUB_REPOSITORY -e GITHUB_SERVER_URL -e GITHUB_RUN_ID \
+                -e GITHUB_REF="refs/pull/$pr/merge" -e GITHUB_HEAD_REF="$head_ref" -e GITHUB_BASE_REF=master \
+                "$image" sh -c 'cd /bin/staticsites && ./StaticSitesClient close' \
+                || { echo "::warning::PR #$pr の $app のプレビュー環境を閉じられませんでした（既に無い場合も含む）"; failed=$((failed + 1)); }
+              echo "::endgroup::"
+            done
           done
+          echo "閉じられなかったもの: $failed"

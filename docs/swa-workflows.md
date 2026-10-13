@@ -6,7 +6,7 @@ Azure Static Web Apps（SWA）へのデプロイと、その後始末に使う�
 | --- | --- |
 | `.github/workflows/CD-swa-dataviewer.yml` | SRC#DataViewer（`SRC.Sharp/SRCTestBlazor`）を SWA にデプロイする。PR ではプレビュー環境を作り、E2E を流す。PR が閉じたらプレビュー環境を閉じる |
 | `.github/workflows/CD-swa-help.yml` | SRC#Help（`SRC.Sharp.Help`）を SWA にデプロイする。PR のプレビュー環境の扱いは上と同じ |
-| `.github/workflows/CD-swa-cleanup-previews.yml` | PR がクローズ済みなのに残っているプレビュー環境を毎日削除する |
+| `.github/workflows/CD-swa-cleanup-previews.yml` | PR がクローズ済みなのに残っているプレビュー環境を毎日閉じる |
 
 ## プレビュー環境の定期削除
 
@@ -16,26 +16,13 @@ SWA のプレビュー環境の数には上限があります（[Preview environ
 This Static Web App already has the maximum number of staging environments
 ```
 
-`CD-swa-cleanup-previews.yml` は毎日、次の処理を行います。手動でも実行できます（`dry_run` で対象を確認するだけにもできます）。
+`CD-swa-cleanup-previews.yml` は毎日、次の処理を行います。手動でも実行でき、閉じる PR の番号を指定することもできます。
 
-1. 既定のホスト名から Static Web App を探す。
-2. プレビュー環境を一覧する（[`az staticwebapp environment list`](https://learn.microsoft.com/cli/azure/staticwebapp/environment)）。
-3. 環境名（PR 番号）の PR がクローズ済み・マージ済みなら削除する（`az staticwebapp environment delete`）。
+1. 直近（既定は 30 日）にクローズ・マージされた PR を一覧する。
+2. それぞれの PR について、2 つの Static Web App のプレビュー環境を閉じる。
 
-デプロイ用のトークンでは環境の一覧と削除ができないため、Azure へは OpenID Connect でサインインします。
+閉じ方は、PR を閉じたときの Close Pull Request Job と同じです。デプロイ用のトークン（`AZURE_STATIC_WEB_APPS_API_TOKEN_…`）で StaticSitesClient の `close` を実行するため、Azure への追加の認証情報は要りません。
 
-### 設定
-
-1. Microsoft Entra ID にアプリ登録（またはユーザー割り当てマネージド ID）を作り、このリポジトリのフェデレーション資格情報を追加する。
-   - エンティティの種類は「ブランチ」、ブランチは `master`（スケジュール実行と手動実行は既定のブランチで動くため）
-   - 手順: [Use the Azure Login action with OpenID Connect](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect)
-2. 2 つの Static Web App があるリソースグループ（またはそれぞれ）に、そのアプリへ「Website Contributor」などの環境を削除できるロールを割り当てる。
-3. リポジトリの Secrets に次を登録する。
-
-| Secret | 値 |
-| --- | --- |
-| `AZURE_CLIENT_ID` | アプリ（クライアント）ID |
-| `AZURE_TENANT_ID` | テナント ID |
-| `AZURE_SUBSCRIPTION_ID` | サブスクリプション ID |
-
-未設定の間は、ワークフローは通知を出して何もせずに終わります。
+- `Azure/static-web-apps-deploy` は、実行中のイベント（PR）のプレビュー環境を閉じる作りです。そのため、同じイメージ（`mcr.microsoft.com/appsvc/staticappsclient:stable`）を `docker run` で直接動かし、閉じる PR のイベントのペイロードを渡しています。
+- Docker を使うため、ジョブは `ubuntu-slim`（非特権のコンテナで、Docker を使えない）ではなく `ubuntu-latest` で動かします（[GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)）。
+- 既に無い環境を閉じようとした場合は警告を出して続けます。
