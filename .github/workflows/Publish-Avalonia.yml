@@ -1,0 +1,57 @@
+name: Publish SRC#Avalonia
+
+# SRC#Avalonia（Windows・macOS・Linux）を OS ごとの zip にして GitHub Release に添付する。
+# - タグ（v*）の push: そのタグのリリースに添付する（Publish-Package.yml と同じタグ）
+# - 手動実行: 既存のリリース（tag）に添付する。過去のリリースに後から加えるとき用
+# .NET を入れなくても動くよう、自己完結の単一ファイルにする。
+# https://learn.microsoft.com/dotnet/core/deploying/single-file/overview
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '添付するリリースのタグ（例: v3.5.1）'
+        type: string
+        required: true
+
+jobs:
+  publish:
+    name: Publish ${{ matrix.rid }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        rid: [win-x64, linux-x64, osx-arm64, osx-x64]
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        run: |
+          dotnet publish SRC.Sharp/SRCSharpAvalonia/SRCSharpAvalonia.csproj -c Release -r ${{ matrix.rid }} \
+            --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:DebugType=none -o out/${{ matrix.rid }}
+          # ネイティブライブラリの pdb（SkiaSharp など）は要らない
+          rm -f out/${{ matrix.rid }}/*.pdb
+          cp LICENSE out/${{ matrix.rid }}/
+          # zip は実行権限を保つ（macOS・Linux 向け）
+          (cd out/${{ matrix.rid }} && zip -qr ../../SRCSharpAvalonia-${{ matrix.rid }}.zip .)
+
+      - name: Attach to GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.TAG }}
+          files: SRCSharpAvalonia-${{ matrix.rid }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
