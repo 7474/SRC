@@ -86,7 +86,7 @@ namespace SRCSharpAvalonia
             Focus();
             var point = e.GetCurrentPoint(this);
             GUI?.PointerPressed((float)point.Position.X, (float)point.Position.Y,
-                point.Properties.IsRightButtonPressed ? GuiButton.Right : GuiButton.Left);
+                point.Properties.IsRightButtonPressed ? GuiButton.Right : GuiButton.Left, e.ClickCount);
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -104,14 +104,48 @@ namespace SRCSharpAvalonia
             GUI?.PointerMoved((float)point.X, (float)point.Y);
         }
 
+        protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+        {
+            base.OnPointerWheelChanged(e);
+            var point = e.GetPosition(this);
+            var delta = Math.Sign(e.Delta.Y);
+            if (delta != 0)
+            {
+                GUI?.PointerWheel((float)point.X, (float)point.Y, delta);
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            var vk = VirtualKeys.FromKey(e.Key);
+            if (vk != 0)
+            {
+                GUI?.KeyStateChanged(vk, false);
+            }
+        }
+
+        protected override void OnLostFocus(FocusChangedEventArgs e)
+        {
+            base.OnLostFocus(e);
+            GUI?.ReleaseAllKeys();
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            var vk = VirtualKeys.FromKey(e.Key);
+            if (vk != 0)
+            {
+                GUI?.KeyStateChanged(vk, true);
+            }
             ScreenKey? key = e.Key switch
             {
                 Key.Enter => ScreenKey.Enter,
                 Key.Space => ScreenKey.Enter,
                 Key.Escape => ScreenKey.Escape,
+                Key.Back => ScreenKey.Escape,
+                Key.Delete => ScreenKey.Escape,
                 Key.Left => ScreenKey.Left,
                 Key.Right => ScreenKey.Right,
                 Key.Up => ScreenKey.Up,

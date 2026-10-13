@@ -60,6 +60,32 @@ namespace SRCRender.Tests
             return path;
         }
 
+        /// <summary>
+        /// 描画コマンドのテスト用の画像（64x64。白地に左半分が赤、右半分が青の円）を書く。
+        /// </summary>
+        public string WriteTestImage(string relativePath)
+        {
+            var path = Path.Combine(AppPath, relativePath);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            using (var bitmap = new SkiaSharp.SKBitmap(64, 64))
+            using (var canvas = new SkiaSharp.SKCanvas(bitmap))
+            using (var paint = new SkiaSharp.SKPaint { IsAntialias = false })
+            {
+                canvas.Clear(SkiaSharp.SKColors.White);
+                paint.Color = SkiaSharp.SKColors.Red;
+                canvas.DrawRect(8, 8, 24, 48, paint);
+                paint.Color = SkiaSharp.SKColors.Blue;
+                canvas.DrawRect(32, 8, 24, 48, paint);
+                using (var image = SkiaSharp.SKImage.FromBitmap(bitmap))
+                using (var data = image.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100))
+                using (var stream = File.Create(path))
+                {
+                    data.SaveTo(stream);
+                }
+            }
+            return path;
+        }
+
         public void Dispose()
         {
             try

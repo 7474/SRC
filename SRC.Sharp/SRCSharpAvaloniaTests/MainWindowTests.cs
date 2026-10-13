@@ -184,5 +184,68 @@ namespace SRCSharpAvalonia.Tests
                 }, CancellationToken.None).GetAwaiter().GetResult();
             }
         }
+
+        [TestMethod]
+        public void InputText_ReturnsTypedTextOrNullOnCancel()
+        {
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var window = new MainWindow();
+                    window.Show();
+
+                    // 入力して OK
+                    var task = window.InputTextAsync("SRC", "名前を入力してください", "名無し");
+                    PumpUntil(() => window.OwnedWindows.Count > 0, "input window");
+                    var input = (InputWindow)window.OwnedWindows[0];
+                    Assert.AreEqual("名無し", input.TextBox.Text);
+                    input.TextBox.Text = "";
+                    input.TextBox.Focus();
+                    input.KeyTextInput("ジェイド");
+                    input.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+                    PumpUntil(() => task.IsCompleted, "input result");
+                    Assert.AreEqual("ジェイド", task.Result);
+
+                    // Escape でキャンセル
+                    task = window.InputTextAsync("SRC", "名前を入力してください", "名無し");
+                    PumpUntil(() => window.OwnedWindows.Count > 0, "input window");
+                    input = (InputWindow)window.OwnedWindows[0];
+                    input.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+                    PumpUntil(() => task.IsCompleted, "cancel result");
+                    Assert.IsNull(task.Result);
+
+                    window.Close();
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
+        }
+
+        [TestMethod]
+        public void VirtualKeys_MapsToWindowsCodes()
+        {
+            Assert.AreEqual(0x41, VirtualKeys.FromKey(Key.A));
+            Assert.AreEqual(0x5A, VirtualKeys.FromKey(Key.Z));
+            Assert.AreEqual(0x30, VirtualKeys.FromKey(Key.D0));
+            Assert.AreEqual(0x0D, VirtualKeys.FromKey(Key.Enter));
+            Assert.AreEqual(0x11, VirtualKeys.FromKey(Key.LeftCtrl));
+            Assert.AreEqual(0x25, VirtualKeys.FromKey(Key.Left));
+            Assert.AreEqual(0x70, VirtualKeys.FromKey(Key.F1));
+            Assert.AreEqual(0, VirtualKeys.FromKey(Key.None));
+        }
+
+        [TestMethod]
+        public void NativeCursor_MovesOsCursor()
+        {
+            // 実際の画面（Linux では X11 / Xvfb）がある環境でのみ確かめる
+            if (!NativeCursor.TryGetPosition(out _, out _))
+            {
+                Assert.Inconclusive("カーソルを扱える画面がありません（Linux では DISPLAY が必要）");
+            }
+            Assert.IsTrue(NativeCursor.SetPosition(123, 45));
+            Assert.IsTrue(NativeCursor.TryGetPosition(out var x, out var y));
+            Assert.AreEqual(123, x);
+            Assert.AreEqual(45, y);
+        }
     }
 }

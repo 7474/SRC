@@ -1,6 +1,6 @@
 # E2E テスト方針 / E2E Testing
 
-> 調査日: 2026-10-12
+> 調査日: 2026-10-12（更新: 2026-10-12）
 
 SRC# の E2E テスト（シナリオを実際にプレイして挙動を確認するテスト）と VRT（ビジュアルリグレッションテスト）の方針。
 
@@ -53,20 +53,39 @@ flowchart LR
 - 乱数を使うシナリオは乱数系列を固定して実行する（`GeneralLib.RndSeed`）
 - **網羅率の検査**: 実行したコマンドの種類（`CmdType`）を記録し、コーパス全体で未実行のコマンドがあればテストを失敗させる。これでコマンドの追加・移植漏れを検出できる
 
-### 入力スクリプト
+### 入力スクリプト（PlayScript）
 
-画面の状態を待ってから入力する手順を、シナリオごとに記述する。現在は C# で書いている（`ScreenScenarioRunner`）。コーパスが増えた段階で、次のようなテキスト形式に移す。
+コーパスは `SRC.Sharp/E2E/ケース名/` に置く。ケースのフォルダをシナリオのフォルダとして使い、`test.eve` から始めて `play.txt` の手順でプレイする（`SRCRenderTests` の `E2ECorpusTests`）。素材はテスト用の最小構成を使い、データ（ユニット・パイロット等）は自作の最小のものをケースに含める。フォルダを追加するだけでテストが増える。
+
+| コマンド | 内容 |
+|---|---|
+| `auto [秒]` | メッセージ・ダイアログ・リストを自動で進め、マップで操作を受け付ける状態になるまで待つ |
+| `wait ready\|message\|list\|menu\|dialog\|click [文字列]` | 各状態になるまで待つ |
+| `click X Y [right]` / `cell X Y [right]` | 画面座標・マップのマスをクリックする |
+| `menu 項目` / `list 文字列\|#番号` / `dialog ボタン` / `key キー` | メニュー・リスト・ダイアログ・キーの操作 |
+| `phase` / `turns 回数` | 味方フェイズを簡単な方針で自動で行う（攻撃できれば攻撃、できなければ敵へ近づいて待機、最後にターン終了）。`turns` は「auto → phase」を繰り返す |
+| `snapshot 名前` | 画面を保存する（`TestResults/e2e/ケース名/`、CI の成果物 `screenshots`） |
+| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる |
+| `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`） |
 
 ```text
-wait message "ヘッドレステスト開始"
-snapshot scenario-01-message
-click message
-wait list "選択"
-choose 1
-wait message "はいが選ばれた"
-click message
-expect terminated
+# battle-basic/play.txt
+auto 60
+expect message 戦闘開始
+turns 3
+expect log 攻撃: 標的機
+expect eval ターン数 >= 3
+expect eval Damage(標的パイロット) > 0
 ```
+
+`phase` は実際のシナリオ（ロボッとダンジョンＢ！ など）の自動プレイにも使える。シナリオ独自のメニュー（マウスの位置で選ぶもの）は `click` で操作する。
+
+現在のケース:
+
+| ケース | 内容 |
+|---|---|
+| `battle-basic` | 出撃・移動・待機・ターン終了・敵フェイズ（攻撃と反撃）を 3 ターン |
+| `battle-victory` | 敵を倒し「全滅 敵」イベントで勝利してシナリオが終わるまで |
 
 ## VRT
 
@@ -75,16 +94,19 @@ expect terminated
   - チャンネルごとに ±24、不一致ピクセル 0.2% までを許容（アンチエイリアスの揺れの吸収）
   - 差分があると `TestResults/vrt/` に `*.actual.png` と `*.diff.png`（差分をマゼンタで表示）を書き出す。CI では成果物 `screenshots` として保存する
   - 基準画像の更新は `SRC_VRT_UPDATE=1 dotnet test SRC.Sharp/SRCRenderTests` で行い、差分をレビューしてコミットする
-- **フォントを固定する**: 基準画像は Ubuntu 24.04 + `fonts-noto-cjk`（Noto Sans CJK JP）で作成している。CI の Linux ジョブも同じフォントを入れる。Noto Sans CJK JP が無い環境（Windows など）では比較せず Inconclusive とする
-- 今後の対象: ユニットの表示・移動アニメーション、戦闘画面、`Paint` 系コマンドの描画（`SRCRender` で実装した後）
+- **フォントを固定する**: 基準画像は Ubuntu 24.04 + `fonts-noto-cjk`（Noto Sans CJK JP / Noto Sans Mono CJK JP）で作成している。CI の Linux ジョブも同じフォントを入れる。Noto CJK が無い環境（Windows など）では比較せず Inconclusive とする
+- **撮影前に描画を待つ**: UI からの入力はゲームスレッドで処理して描画するため、`ScreenScenarioRunner.SnapshotPng` はそれまでに渡した処理が終わるのを待ってから撮る
+- 対象: メッセージ・選択肢・`Paint` 系コマンド・素材なしの表示・リスト（多段・出撃選択）・設定変更・メニュー・メッセージボックス・ホットポイント・ドラッグ後のマップ
+- 今後の対象: 戦闘画面・移動アニメーション（ユニット・パイロットのテスト用データを用意した後）
 
 ## 現在のテスト
 
 | プロジェクト | 内容 | 実行環境 |
 |---|---|---|
 | `SRCCoreTests` | ユニットテスト。`E2E/HeadlessScenarioTests` は GUI 呼び出しの記録を、ゲームスレッドあり／なしで比較 | Windows / Linux |
-| `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証 | Windows / Linux（VRT は Linux のみ） |
-| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。描画結果を `TestResults/avalonia/` に保存 | Windows / Linux |
+| `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Windows / Linux（VRT は Linux のみ） |
+| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存 | Windows / Linux |
+| `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Windows / Linux（出力を開けない環境では再生のテストは Inconclusive） |
 | `SRCSharpFormTestWinAppDriver` | SRC#Form の起動確認 | Windows のみ |
 | `SRCTestBlazor/E2E` | Cypress。データ閲覧画面 | ブラウザ |
 
@@ -94,13 +116,13 @@ expect terminated
 
 | 対象 | 方針 | 根拠 |
 |---|---|---|
-| SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画を確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
+| SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画・文字入力ダイアログを確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
 | SRC#Form | WinAppDriver の継続は避け、必要なら FlaUI（UIA3）に置き換える。対象は起動・終了程度 | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)）。WinForms 版は移行後に縮退させる前提 |
 | SRCTestBlazor | 既存の Cypress を継続 | — |
 
 ## 次の作業
 
-1. `SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る
+1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
 2. コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する
-3. ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す
+3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
 4. セーブ／ロード、インターミッション、次ステージへの遷移を通す

@@ -1,0 +1,6 @@
+# 敵を倒して「全滅 敵」イベントで勝利し、シナリオを終える
+auto 60
+turns 5
+expect message 勝利
+expect finished
+expect error none

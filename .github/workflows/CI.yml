@@ -13,7 +13,7 @@ on:
 #       - SRC.Sharp/**
 
 jobs:
-  # SRCCore / SRCRender / SRC#Avalonia がプラットフォーム非依存であることを確認する
+  # SRCCore / SRCRender / SRCSound / SRC#Avalonia がプラットフォーム非依存であることを確認する
   test-srccore-linux:
     runs-on: ubuntu-24.04
 
@@ -26,8 +26,9 @@ jobs:
         dotnet-version: 10.0.x
 
     # VRT の基準画像は Noto Sans CJK JP で作成している
-    - name: Install fonts
-      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+    # MIDI の合成テストには SoundFont（TimGM6mb）、カーソル移動のテストには Xvfb を使う
+    - name: Install fonts and SoundFont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
 
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
@@ -35,8 +36,15 @@ jobs:
     - name: Test SRCRender (E2E / VRT)
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
 
+    # マウスカーソルの移動（X11）を確かめるため Xvfb 上で実行する
     - name: Test SRC#Avalonia (headless)
-      run: dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
+      run: xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
+
+    # 音声出力の無いランナーでは OpenAL Soft の null 出力を使う
+    - name: Test SRCSound
+      run: dotnet test SRC.Sharp/SRCSoundTests/SRCSoundTests.csproj --verbosity normal
+      env:
+        ALSOFT_DRIVERS: "null"
 
     - name: Upload screenshots
       if: always()
@@ -45,6 +53,7 @@ jobs:
         name: screenshots
         path: |
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/vrt/
+          SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
           SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
         if-no-files-found: ignore
 
@@ -72,6 +81,15 @@ jobs:
     - name: Test (with coverage)
       if: github.event_name == 'push'
       run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+    # Windows の実フォントで測った縦の寸法（SRCRender の WindowsFontMetrics の検証用）
+    - name: Upload font metrics
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: windows-font-metrics
+        path: SRC.Sharp/SRCRenderTests/bin/**/TestResults/fontmetrics.txt
+        if-no-files-found: ignore
 
     - name: Generate Coverage Report
       if: github.event_name == 'push'

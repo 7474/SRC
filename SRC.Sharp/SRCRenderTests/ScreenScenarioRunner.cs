@@ -10,7 +10,7 @@ namespace SRCRender.Tests
     /// <summary>
     /// ScreenGUI でシナリオを実行し、画面の状態を見ながら入力を与える。
     /// </summary>
-    public sealed class ScreenScenarioRunner : IScreenHost, IDisposable
+    public sealed class ScreenScenarioRunner : IScreenHost, IScreenDialogHost, IScreenCursorHost, IDisposable
     {
         public static readonly TimeSpan Timeout = TimeSpan.FromSeconds(20);
 
@@ -18,9 +18,9 @@ namespace SRCRender.Tests
         private volatile bool terminated;
         private int frameCount;
 
-        public ScreenScenarioRunner(string appPath)
+        public ScreenScenarioRunner(string appPath, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory = null, SRCCore.IPlaySound soundPlayer = null)
         {
-            Session = new ScreenSession(this, appPath);
+            Session = new ScreenSession(this, appPath, soundPlayer, loggerFactory);
             Session.Game.UnhandledException += (s, e) =>
             {
                 Error = e.Exception;
@@ -33,6 +33,7 @@ namespace SRCRender.Tests
         public ScreenState State => Session.GUI.State;
         public Exception Error { get; private set; }
         public bool IsTerminated => terminated;
+        public bool IsFinished => finished.IsSet;
         public int FrameCount => frameCount;
 
         public void Start(string eve)
@@ -103,8 +104,32 @@ namespace SRCRender.Tests
             WaitFor(s => s.List == null, "list closed");
         }
 
+        /// <summary>
+        /// それまでに UI からゲームスレッドへ渡した処理（描画を含む）が終わるまで待つ。
+        /// </summary>
+        public void Sync()
+        {
+            using (var done = new ManualResetEventSlim())
+            {
+                Session.Game.Post(done.Set);
+                if (!done.Wait(Timeout))
+                {
+                    throw new TimeoutException("timeout waiting for game thread");
+                }
+            }
+        }
+
         public byte[] SnapshotPng()
         {
+            // UI から渡した処理の描画を反映してから撮る（シナリオが終わっていれば待たない）
+            if (!IsFinished && !Session.Game.IsStopping)
+            {
+                using (var done = new ManualResetEventSlim())
+                {
+                    Session.Game.Post(done.Set);
+                    done.Wait(TimeSpan.FromSeconds(2));
+                }
+            }
             using (var stream = new MemoryStream())
             {
                 GUI.SnapshotPng(stream);
@@ -114,6 +139,19 @@ namespace SRCRender.Tests
 
         #region IScreenHost
 
+        /// <summary>
+        /// 表示されたフレームを保存する（検証用）。every フレームごとに directory へ PNG で書き出す。
+        /// </summary>
+        public void RecordFrames(string directory, int every)
+        {
+            Directory.CreateDirectory(directory);
+            recordDirectory = directory;
+            recordEvery = Math.Max(1, every);
+        }
+
+        private string recordDirectory;
+        private int recordEvery;
+
         void IScreenHost.Present(SKBitmap frame)
         {
             if (terminated)
@@ -121,7 +159,16 @@ namespace SRCRender.Tests
                 // Terminate 後はシナリオの実行を打ち切る
                 throw new HeadlessTerminatedException();
             }
-            Interlocked.Increment(ref frameCount);
+            var count = Interlocked.Increment(ref frameCount);
+            if (recordDirectory != null && count % recordEvery == 0)
+            {
+                using (var image = SKImage.FromBitmap(frame))
+                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (var stream = File.Create(Path.Combine(recordDirectory, $"frame-{count:00000}.png")))
+                {
+                    data.SaveTo(stream);
+                }
+            }
         }
 
         void IScreenHost.SetTitle(string title)
@@ -136,6 +183,54 @@ namespace SRCRender.Tests
         }
 
         #endregion
+
+        /// <summary>文字入力への応答（title, message, defaultValue → 入力値、null でキャンセル）。既定は既定値で確定。</summary>
+        public Func<string, string, string, string> InputHandler { get; set; } = (title, message, defaultValue) => defaultValue;
+
+        /// <summary>ファイル選択への応答。既定はキャンセル。</summary>
+        public Func<FileDialogRequest, string> OpenFileHandler { get; set; } = request => null;
+        public Func<FileDialogRequest, string> SaveFileHandler { get; set; } = request => null;
+
+        public System.Threading.Tasks.Task<string> InputTextAsync(string title, string message, string defaultValue)
+        {
+            return System.Threading.Tasks.Task.Run(() => InputHandler(title, message, defaultValue));
+        }
+
+        public System.Threading.Tasks.Task<string> OpenFileAsync(FileDialogRequest request)
+        {
+            return System.Threading.Tasks.Task.Run(() => OpenFileHandler(request));
+        }
+
+        public System.Threading.Tasks.Task<string> SaveFileAsync(FileDialogRequest request)
+        {
+            return System.Threading.Tasks.Task.Run(() => SaveFileHandler(request));
+        }
+
+        /// <summary>カーソルを動かせるホストとして振る舞うか（既定は動かせない）</summary>
+        public bool CursorEnabled { get; set; }
+        public float CursorX { get; set; }
+        public float CursorY { get; set; }
+        /// <summary>SetCursorPosition で動かした位置の履歴</summary>
+        public System.Collections.Concurrent.ConcurrentQueue<(float x, float y)> CursorMoves { get; } = new System.Collections.Concurrent.ConcurrentQueue<(float x, float y)>();
+
+        public bool TryGetCursorPosition(out float x, out float y)
+        {
+            x = CursorX;
+            y = CursorY;
+            return CursorEnabled;
+        }
+
+        public bool SetCursorPosition(float x, float y)
+        {
+            if (!CursorEnabled)
+            {
+                return false;
+            }
+            CursorX = x;
+            CursorY = y;
+            CursorMoves.Enqueue((x, y));
+            return true;
+        }
 
         public void Dispose()
         {

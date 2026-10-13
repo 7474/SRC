@@ -52,10 +52,14 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
     - [SRCRender](./SRC.Sharp/SRCRender)
         - SkiaSharp で SRC の画面を描画するライブラリと、UI フレームワークに依存しない GUI 実装
         - .NET Standard 2.1
+    - [SRCSound](./SRC.Sharp/SRCSound)
+        - OpenAL による音声再生（WAV・MP3・MIDI）
+        - .NET Standard 2.1
     - [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia)
-        - Avalonia UI 実装の SRC#Avalonia（試作）
+        - Avalonia UI 実装の SRC#Avalonia
         - Windows / macOS / Linux で動作する
         - .NET 10
+        - [ドキュメント](./docs/gui/avalonia.md)
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - データの閲覧を行える
@@ -74,5 +78,11 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 1. [Release](https://github.com/7474/SRC/releases) から SRCSharpForm.zip をダウンロード、ないし SRCSharpForm をビルドして実行ファイル（ SRCSharpForm.exe （ビルドした場合は加えて付随するDLL））を得る
 1. 構築済のSRCフォルダ内に実行ファイルをコピーする
 1. SRCSharpForm.exe を実行する
+
+### SRC#Avalonia 簡易実行手順
+
+1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) をインストールする
+1. `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <構築済のSRCフォルダ内のシナリオ(.eve)>` を実行する
+    - MIDI を鳴らすには SoundFont（.sf2）が必要。[SRC#Avalonia のドキュメント](./docs/gui/avalonia.md#soundfont)を参照
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。

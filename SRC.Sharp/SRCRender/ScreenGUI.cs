@@ -32,19 +32,47 @@ namespace SRCRender
         private readonly object renderLock = new object();
         private readonly SKBitmap frame = new SKBitmap(ScreenLayout.Width, ScreenLayout.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
         private ImageCache images;
-        private SKBitmap background;
 
         // UI スレッドから更新される入力状態
         private volatile bool isFormClicked;
         private volatile bool isRightButtonDown;
-        private volatile int listResult = -1;
         private volatile int dialogResult = -1;
+
+        // メッセージウィンドウ（WinForms 版の frmMessage に相当）
+        private readonly Compat.MessageWindow frmMessage = new Compat.MessageWindow();
+
+        // メッセージウィンドウに表示中のユニットなど（WinForms 版と同じ）
+        private string messageDisplayedPilot;
+        private string DisplayMode;
+        private Unit RightUnit;
+        private Unit LeftUnit;
+        private double RightUnitHPRatio;
+        private double LeftUnitHPRatio;
+        private double RightUnitENRatio;
+        private double LeftUnitENRatio;
+        private bool _savedMessageFormVisible;
+        private Unit _savedLeftUnit;
+        private Unit _savedRightUnit;
+
+        // ステータスウィンドウ（WinForms 版の frmMain の picFace / picPilotStatus / picUnitStatus に相当）。
+        // 位置は ScreenLayout.StatusArea からの相対座標
+        private readonly Compat.PictureBox picFace = new Compat.PictureBox { Left = 4, Top = 4, Width = 68, Height = 68, StretchImage = true };
+        private readonly Compat.PictureBox picPilotStatus = new Compat.PictureBox { Left = 76, Top = 4, Width = 155, Height = 72 };
+        private readonly Compat.PictureBox picUnitStatus = new Compat.PictureBox { Left = 4, Top = 76, Width = 230, Height = ScreenLayout.StatusHeightPx - 76 };
+
+        /// <summary>メッセージウィンドウ</summary>
+        public Compat.MessageWindow MessageWindow => frmMessage;
 
         public ScreenGUI(SRC src, GameThread game, IScreenHost host)
         {
             this.src = src;
             this.game = game;
             this.host = host;
+            frmMessage.SetRefreshHandler(Present);
+            picFace.Refreshed = Present;
+            picPilotStatus.Refreshed = Present;
+            picUnitStatus.Refreshed = Present;
+            frmListBox.Refreshed = Present;
             MainWidth = ScreenLayout.MapColumns;
             MainHeight = ScreenLayout.MapRows;
             MessageWait = 700;
@@ -57,6 +85,15 @@ namespace SRCRender
 
         private ImageCache Images => images ?? (images = new ImageCache(src));
         private Map Map => src.Map;
+        // WinForms 版から移植したコードとの互換のため
+        private SRC SRC => src;
+        private IGUI GUI => this;
+        private const int MapCellPx = ScreenLayout.CellPx;
+        private SKBitmap BackgroundBuffer => backgroundBuffer;
+        private SRCCore.Expressions.Expression Expression => src.Expression;
+        private Sound Sound => src.Sound;
+        private SRCCore.Events.Event Event => src.Event;
+        private Effect Effect => src.Effect;
         private Command Commands => src.Commands;
 
         /// <summary>
@@ -70,11 +107,18 @@ namespace SRCRender
             src.GUIScrean = this;
         }
 
+        private bool disposed;
+
         public void Dispose()
         {
-            renderer.Dispose();
-            frame.Dispose();
-            background?.Dispose();
+            // ゲームスレッドが描画中の可能性があるため、描画と排他にして破棄する
+            lock (renderLock)
+            {
+                disposed = true;
+                renderer.Dispose();
+                frame.Dispose();
+                DisposeMapBuffers();
+            }
         }
 
         #region 描画
@@ -86,12 +130,15 @@ namespace SRCRender
         {
             lock (renderLock)
             {
+                if (disposed)
+                {
+                    return;
+                }
                 State.MapX = MapX;
                 State.MapY = MapY;
-                State.Masked = ScreenIsMasked;
                 using (var canvas = new SKCanvas(frame))
                 {
-                    renderer.Render(canvas, src, State, background, Images);
+                    renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, new[] { picFace, picPilotStatus, picUnitStatus }, frmMessage));
                 }
                 host.Present(frame);
             }
@@ -104,6 +151,10 @@ namespace SRCRender
         {
             lock (renderLock)
             {
+                if (disposed)
+                {
+                    return;
+                }
                 using (var image = SKImage.FromBitmap(frame))
                 using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
                 {
@@ -120,6 +171,11 @@ namespace SRCRender
         {
             if (game.IsCurrentThread)
             {
+                // 終了処理中は待ちを抜けてゲームスレッドを終わらせる
+                if (game.IsStopping)
+                {
+                    throw new OperationCanceledException("The game thread is stopping.");
+                }
                 game.ProcessPending();
             }
         }
@@ -160,12 +216,13 @@ namespace SRCRender
         /// <summary>
         /// 画面上でポインタが押された。座標は画面（ScreenLayout）のピクセル座標。
         /// </summary>
-        public void PointerPressed(float x, float y, GuiButton button)
+        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1)
         {
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = true;
             }
+            KeyStateChanged(button == GuiButton.Right ? VirtualKeyRightButton : VirtualKeyLeftButton, true);
             MouseButton = button;
             MouseX = x;
             MouseY = y;
@@ -184,22 +241,40 @@ namespace SRCRender
                 return;
             }
 
-            var list = State.List;
-            if (list != null && listResult < 0 && waitingList)
+            // 設定変更ダイアログ（モーダル）
+            if (State.Config != null)
             {
-                if (button == GuiButton.Right)
+                game.Post(() => ConfigPointerPressed(x, y, button));
+                return;
+            }
+
+            // リストボックスの選択待ち（右クリックはどこでもキャンセル）
+            var list = State.List;
+            if (list != null && waitingList)
+            {
+                if (button == GuiButton.Right || list.Window.Contains(x, y))
                 {
-                    listResult = 0;
-                }
-                else
-                {
-                    var index = renderer.HitTestList(list, x, y);
-                    if (index >= 0 && !list.Items[index].Disabled)
-                    {
-                        listResult = index + 1;
-                    }
+                    game.Post(() => ListBoxPointerPressed(x, y, button));
                 }
                 return;
+            }
+
+            // メッセージウィンドウのクリック（顔グラフィックのクリックで自動送りの切り替え）
+            if (frmMessage.Visible && button == GuiButton.Left)
+            {
+                var origin = renderer.MessageWindowOrigin(frmMessage);
+                var mx = x - origin.X;
+                var my = y - origin.Y;
+                if (mx >= 0 && my >= 0 && mx < frmMessage.Width && my < frmMessage.Height)
+                {
+                    var face = frmMessage.picFace;
+                    if (mx >= face.Left && my >= face.Top && mx < face.Left + face.Width && my < face.Top + face.Height && MessageWait < 10000)
+                    {
+                        AutoMessageMode = !AutoMessageMode;
+                    }
+                    isFormClicked = true;
+                    return;
+                }
             }
 
             var menu = State.Menu;
@@ -243,9 +318,37 @@ namespace SRCRender
             {
                 var mx = PixelToMapX((int)x);
                 var my = PixelToMapY((int)y);
+                if (button == GuiButton.Left)
+                {
+                    // ドラッグによるマップのスクロールの開始
+                    PrevMapX = MapX;
+                    PrevMapY = MapY;
+                    PrevMouseX = x;
+                    PrevMouseY = y;
+                    isDragging = true;
+                    lastDragPoint = (x, y);
+                }
                 game.Post(() =>
                 {
                     Commands.ProceedInput(button, Map.CellAtPoint(mx, my), Map.UnitAtPoint(mx, my));
+                    // 右ダブルクリックはキャンセルを連続実行
+                    if (button == GuiButton.Right && clickCount >= 2 && !IsGUILocked)
+                    {
+                        switch (Commands.CommandState ?? "")
+                        {
+                            case "マップコマンド":
+                                Commands.CommandState = "ユニット選択";
+                                break;
+
+                            case "ユニット選択":
+                                Commands.ProceedCommand(true);
+                                break;
+
+                            default:
+                                Commands.CancelCommand();
+                                break;
+                        }
+                    }
                     Present();
                 });
             }
@@ -257,24 +360,73 @@ namespace SRCRender
 
         public void PointerReleased(float x, float y, GuiButton button)
         {
+            KeyStateChanged(button == GuiButton.Right ? VirtualKeyRightButton : VirtualKeyLeftButton, false);
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = false;
             }
+            else
+            {
+                // マップ画面のドラッグを解除
+                isDragging = false;
+            }
         }
+
+        // マップウィンドウがドラッグされているか？
+        private volatile bool isDragging;
+        private (float x, float y) lastDragPoint;
+        private const float DragMoveThresholdRate = 0.5f;
+
+        /// <summary>
+        /// マップのドラッグ（WinForms 版 picMain_MouseMove と同じ移動量）。
+        /// </summary>
+        private void DragMap(float x, float y)
+        {
+            if (!isDragging || IsGUILocked || Map == null || Map.MapWidth < 15 || Map.MapHeight < 15)
+            {
+                return;
+            }
+            // 移動量が少なければ無視する
+            if (Math.Abs(lastDragPoint.x - x) + Math.Abs(lastDragPoint.y - y) <= ScreenLayout.CellPx * DragMoveThresholdRate)
+            {
+                return;
+            }
+            lastDragPoint = (x, y);
+            var newX = Math.Max(1, Math.Min(Map.MapWidth, (int)(PrevMapX - (x - PrevMouseX) / ScreenLayout.CellPx)));
+            var newY = Math.Max(1, Math.Min(Map.MapHeight, (int)(PrevMapY - (y - PrevMouseY) / ScreenLayout.CellPx)));
+            if (Map.IsStatusView)
+            {
+                // ステータス画面の場合は移動量を限定
+                newX = 8;
+                newY = Math.Max(8, Math.Min(Map.MapHeight - 7, newY));
+            }
+            if (newX == MapX && newY == MapY)
+            {
+                return;
+            }
+            game.Post(() =>
+            {
+                MapX = newX;
+                MapY = newY;
+                RefreshScreen();
+            });
+        }
+
+        private (int x, int y) lastHoverCell;
 
         public void PointerMoved(float x, float y)
         {
             MouseX = x;
             MouseY = y;
+            UpdateTooltip();
+            HoverMap((int)x, (int)y);
+            DragMap(x, y);
             var list = State.List;
             if (list != null)
             {
-                var index = renderer.HitTestList(list, x, y);
-                if (index != list.Highlight)
+                if (list.Window.Contains(x, y))
                 {
-                    list.Highlight = index;
-                    game.Post(Present);
+                    game.Post(() => ListBoxPointerMoved(x, y));
                 }
                 return;
             }
@@ -291,10 +443,54 @@ namespace SRCRender
         }
 
         /// <summary>
+        /// マップ上にカーソルがあるとき、そのマスのユニットまたは地形のステータスを表示する（WinForms 版の MouseMove と同じ）。
+        /// </summary>
+        private void HoverMap(int x, int y)
+        {
+            if (IsGUILocked || State.List != null || State.Menu != null || State.Dialog != null || !ScreenLayout.IsInMap(x, y))
+            {
+                return;
+            }
+            if (Map == null || Map.MapWidth < 15 || Map.MapHeight < 15)
+            {
+                return;
+            }
+            var cell = (x: PixelToMapX(x), y: PixelToMapY(y));
+            if (cell == lastHoverCell)
+            {
+                return;
+            }
+            lastHoverCell = cell;
+            game.Post(() =>
+            {
+                if (IsGUILocked || !Map.IsInside(cell.x, cell.y))
+                {
+                    return;
+                }
+                if (Map.UnitAtPoint(cell.x, cell.y) == null)
+                {
+                    if (!Map.IsStatusView)
+                    {
+                        DisplayGlobalStatus();
+                    }
+                }
+                else
+                {
+                    InstantUnitStatusDisplay(cell.x, cell.y);
+                }
+            });
+        }
+
+        /// <summary>
         /// キー入力。Enter / Space は左クリック、Escape は右クリックとして扱う。
         /// </summary>
         public void KeyPressed(ScreenKey key)
         {
+            if (State.Config != null)
+            {
+                game.Post(() => ConfigKeyPressed(key));
+                return;
+            }
             switch (key)
             {
                 case ScreenKey.Enter:
@@ -302,9 +498,9 @@ namespace SRCRender
                     {
                         dialogResult = 0;
                     }
-                    else if (State.List != null && waitingList && State.List.Highlight >= 0)
+                    else if (State.List != null && waitingList)
                     {
-                        listResult = State.List.Highlight + 1;
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else
                     {
@@ -315,7 +511,7 @@ namespace SRCRender
                 case ScreenKey.Escape:
                     if (State.List != null && waitingList)
                     {
-                        listResult = 0;
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else
                     {
@@ -329,10 +525,7 @@ namespace SRCRender
                 case ScreenKey.Down:
                     if (State.List != null && (key == ScreenKey.Up || key == ScreenKey.Down))
                     {
-                        var list = State.List;
-                        var next = list.Highlight + (key == ScreenKey.Down ? 1 : -1);
-                        list.Highlight = Math.Max(0, Math.Min(list.Items.Count - 1, next));
-                        game.Post(Present);
+                        game.Post(() => ListBoxKeyPressed(key));
                     }
                     else if (!IsGUILocked)
                     {
@@ -347,6 +540,24 @@ namespace SRCRender
                     break;
             }
         }
+
+        /// <summary>
+        /// マウスホイール。delta は上方向が正（1 ノッチで 1）。
+        /// </summary>
+        public void PointerWheel(float x, float y, int delta)
+        {
+            var list = State.List;
+            if (list != null && list.Window.Contains(x, y))
+            {
+                game.Post(() => ListBoxWheel(delta));
+            }
+        }
+
+        /// <summary>選択肢の選択待ちか</summary>
+        public bool IsWaitingList => waitingList;
+
+        /// <summary>メッセージ以外のクリック待ち（Wait Click など）か</summary>
+        public bool IsWaitingClick => Commands.WaitClickMode;
 
         private void SimpleClick()
         {
@@ -395,7 +606,6 @@ namespace SRCRender
         public bool IsCursorVisible { get; set; }
         public Color BGColor { get; set; }
         public bool IsGUILocked { get; set; }
-        public bool IsInDeploymentSelection => false;
         public int TopItem { get; set; }
         public bool MessageWindowIsOut { get; set; }
         public bool IsFormClicked { get => isFormClicked; set => isFormClicked = value; }
@@ -407,9 +617,50 @@ namespace SRCRender
         public bool PermanentStringMode { get; set; }
         public bool KeepStringMode { get; set; }
 
+        // 押されているキー・マウスボタン（Windows の仮想キーコード）
+        private readonly HashSet<int> pressedKeys = new HashSet<int>();
+
+        /// <summary>Windows の仮想キーコード（VK_LBUTTON = 1、VK_RBUTTON = 2）。</summary>
+        public const int VirtualKeyLeftButton = 0x01;
+        public const int VirtualKeyRightButton = 0x02;
+
+        /// <summary>
+        /// キーが押された・離された（KeyState 関数用）。key は Windows の仮想キーコード。
+        /// </summary>
+        public void KeyStateChanged(int key, bool pressed)
+        {
+            lock (pressedKeys)
+            {
+                if (pressed)
+                {
+                    pressedKeys.Add(key);
+                }
+                else
+                {
+                    pressedKeys.Remove(key);
+                }
+            }
+        }
+
+        /// <summary>
+        /// ウィンドウが非アクティブになった。押されている状態をすべて解除する。
+        /// </summary>
+        public void ReleaseAllKeys()
+        {
+            lock (pressedKeys)
+            {
+                pressedKeys.Clear();
+            }
+            isRightButtonDown = false;
+            isDragging = false;
+        }
+
         public bool GetKeyState(int key)
         {
-            return false;
+            lock (pressedKeys)
+            {
+                return pressedKeys.Contains(key);
+            }
         }
 
         public bool IsRButtonPressed(bool ignore_message_wait = false)
@@ -517,23 +768,59 @@ namespace SRCRender
         {
         }
 
-        public void Configure()
-        {
-            // TODO 設定画面
-        }
-
-        public void UpdateScreen()
-        {
-            Present();
-        }
-
         public void UpdateHotPoint()
         {
+            UpdateTooltip();
         }
 
-        public void DisplayGlobalMap()
+        private string lastHotSpot = "";
+
+        /// <summary>
+        /// クリック待ちの間、ホットポイント上にカーソルがあればツールチップを表示する。
+        /// </summary>
+        private void UpdateTooltip()
         {
-            // TODO 全体マップ表示
+            if (!IsGUILocked && State.Tooltip == null && string.IsNullOrEmpty(lastHotSpot))
+            {
+                return;
+            }
+            var mouseX = MouseX;
+            var mouseY = MouseY;
+            game.Post(() =>
+            {
+                string caption = null;
+                if (IsGUILocked && Commands.WaitClickMode)
+                {
+                    // ホットポイントが定義されている場合はツールチップを変更
+                    foreach (var hpoint in SRC.Event.HotPointList ?? new List<SRCCore.Events.HotPoint>())
+                    {
+                        if (hpoint.Left <= mouseX && mouseX < hpoint.Left + hpoint.Width && hpoint.Top <= mouseY && mouseY < hpoint.Top + hpoint.Height)
+                        {
+                            if (hpoint.Caption == "非表示" || string.IsNullOrEmpty(hpoint.Caption))
+                            {
+                                break;
+                            }
+                            if (hpoint.Name != lastHotSpot && !string.IsNullOrEmpty(lastHotSpot))
+                            {
+                                break;
+                            }
+                            caption = hpoint.Caption;
+                            lastHotSpot = hpoint.Name;
+                            break;
+                        }
+                    }
+                }
+                if (caption == null)
+                {
+                    lastHotSpot = "";
+                }
+                var tooltip = caption == null ? null : new TooltipState { Text = caption, X = (int)mouseX, Y = (int)mouseY };
+                if (tooltip?.Text != State.Tooltip?.Text || (tooltip != null && (tooltip.X != State.Tooltip.X || tooltip.Y != State.Tooltip.Y)))
+                {
+                    State.Tooltip = tooltip;
+                    Present();
+                }
+            });
         }
 
         #endregion
@@ -585,11 +872,26 @@ namespace SRCRender
 
         public GuiDialogResult Input(string message, string title, string defaultValue, out string value)
         {
-            // TODO 文字入力。現状は既定値で確定する
+            if (host is IScreenDialogHost dialogs)
+            {
+                var input = WaitTask(dialogs.InputTextAsync(title, message, defaultValue));
+                value = input ?? defaultValue;
+                return input == null ? GuiDialogResult.Cancel : GuiDialogResult.Ok;
+            }
+            // 文字入力の手段が無い場合は既定値で確定する
             value = defaultValue;
             return ShowDialog(title, message + Environment.NewLine + "（入力値: " + defaultValue + "）", "OK", "キャンセル") == 0
                 ? GuiDialogResult.Ok
                 : GuiDialogResult.Cancel;
+        }
+
+        /// <summary>
+        /// UI 側の処理（ダイアログ）の完了を、UI からの処理を続けながらゲームスレッドで待つ。
+        /// </summary>
+        private T WaitTask<T>(System.Threading.Tasks.Task<T> task)
+        {
+            WaitUntil(() => task.IsCompleted);
+            return task.GetAwaiter().GetResult();
         }
 
         public void DisplayTelop(string msg)
@@ -612,7 +914,22 @@ namespace SRCRender
 
         public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName = null)
         {
-            // TODO 保存先の選択。現状はシナリオフォルダへ保存する
+            var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
+            if (host is IScreenDialogHost dialogs)
+            {
+                var path = WaitTask(dialogs.SaveFileAsync(new FileDialogRequest
+                {
+                    Title = "セーブ",
+                    InitialDirectory = src.ScenarioPath,
+                    InitialFile = string.IsNullOrEmpty(defaultName)
+                        ? Expression.GetValueAsString("セーブデータファイル名")
+                        : defaultName,
+                    FileType = "save files",
+                    FileExtension = ext,
+                }));
+                return string.IsNullOrEmpty(path) ? null : new FileStream(path, FileMode.Create);
+            }
+            // 保存先を選ぶ手段が無い場合はシナリオフォルダへ保存する
             var name = defaultName ?? (saveKind == SRCSaveKind.Suspend ? "_suspend.srcq" : "_save.srcs");
             return new FileStream(SavePath(name), FileMode.Create);
         }
@@ -625,16 +942,41 @@ namespace SRCRender
                 : new FileStream(path, FileMode.Create, fileAccess);
         }
 
+        private string EffectiveDirectory(string initialDirectory)
+        {
+            return new[] { initialDirectory, src.ScenarioPath }
+                .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
+        }
+
         public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
         {
-            // TODO ファイル選択
-            return "";
+            if (!(host is IScreenDialogHost dialogs))
+            {
+                return "";
+            }
+            return WaitTask(dialogs.OpenFileAsync(new FileDialogRequest
+            {
+                Title = title,
+                InitialDirectory = EffectiveDirectory(initialDirectory),
+                FileType = fileType,
+                FileExtension = fileExtension,
+            })) ?? "";
         }
 
         public string SelectSaveFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
-            // TODO ファイル選択
-            return "";
+            if (!(host is IScreenDialogHost dialogs))
+            {
+                return "";
+            }
+            return WaitTask(dialogs.SaveFileAsync(new FileDialogRequest
+            {
+                Title = title,
+                InitialDirectory = EffectiveDirectory(initialDirectory),
+                InitialFile = initialFile ?? "",
+                FileType = fileType,
+                FileExtension = fileExtension,
+            })) ?? "";
         }
 
         #endregion

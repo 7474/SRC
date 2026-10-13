@@ -23,7 +23,7 @@ namespace SRCCore.Expressions.Functions
 
             if (pcount > 0)
             {
-                var fname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                var fname = PathResolver.ToNative(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
                 // フルパス指定でなければシナリオフォルダを起点に検索
                 if (!SRC.FileSystem.IsAbsolutePath(fname))
                 {

@@ -72,6 +72,11 @@ namespace SRCCore.Threading
         }
 
         /// <summary>
+        /// Stop が呼ばれたか。待ちのループはこれを見て抜ける。
+        /// </summary>
+        public bool IsStopping => queue.IsAddingCompleted;
+
+        /// <summary>
         /// 新たな処理の受け付けを止める。キューに残った処理を実行し終えるとスレッドは終了する。
         /// </summary>
         public void Stop()

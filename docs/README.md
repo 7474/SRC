@@ -13,6 +13,7 @@
 ### 🖥️ GUI / GUI
 
 - **[GUI 実装移行の検討](./gui/gui-migration-study.md)** — WinForms から新規 GUI 実装へ移行する場合の候補比較と移行手順
+- **[SRC#Avalonia](./gui/avalonia.md)** — Windows / macOS / Linux で動くフロントエンドの構成・WinForms 版との対応・音声・実行方法
 - **[E2E テスト方針](./gui/e2e-testing.md)** — テスト用コーパスをヘッドレスでプレイする E2E テストと VRT の方針
 
 ### 📦 素材 / Assets

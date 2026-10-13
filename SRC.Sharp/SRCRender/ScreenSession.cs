@@ -27,7 +27,8 @@ namespace SRCRender
             }
             catch
             {
-                // 設定ファイルが無い場合は既定値で動かす
+                // 設定ファイルが無い場合は、元の SRC が設定ファイルを作る際の既定値で動かす
+                ApplyDefaultConfig(config);
             }
             if (!string.IsNullOrEmpty(appPath))
             {
@@ -39,6 +40,8 @@ namespace SRCRender
             SRC.SystemConfig = config;
             SRC.FileSystem = fileSystem;
             SRC.Sound.Player = soundPlayer ?? new NullSoundPlayer();
+            // 設定の音量を反映する
+            SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
             // 汎用グラフィック集などの素材が無くても動かす
             SRC.AllowMissingAssets = true;
             try
@@ -63,6 +66,22 @@ namespace SRCRender
             GUI.Install();
         }
 
+        /// <summary>
+        /// 元の SRC（SRC.bas の CreateIniFile）が設定ファイルを作る際の既定値を設定する。
+        /// </summary>
+        public static void ApplyDefaultConfig(LocalFileConfig config)
+        {
+            config.ShowSquareLine = false;
+            config.KeepEnemyBGM = false;
+            config.AutoDefense = false;
+            config.AutoMoveCursor = true;
+            config.SpecialPowerAnimation = true;
+            config.BattleAnimation = true;
+            config.ExtendedAnimation = true;
+            config.WeaponAnimation = true;
+            config.MoveAnimation = true;
+        }
+
         public SRC SRC { get; }
         public GameThread Game { get; }
         public ScreenGUI GUI { get; }
@@ -82,7 +101,12 @@ namespace SRCRender
         public void Dispose()
         {
             Game.Dispose();
-            GUI.Dispose();
+            // ゲームスレッドの終了を待ってから破棄する。
+            // 終わらない（待ちを伴わない処理を続けている）場合、使用中のバッファを解放すると落ちるため破棄しない。
+            if (Game.Join(TimeSpan.FromSeconds(2)))
+            {
+                GUI.Dispose();
+            }
         }
     }
 }

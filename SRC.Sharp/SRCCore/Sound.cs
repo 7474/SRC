@@ -278,7 +278,8 @@ namespace SRCCore
             {
                 // スペースを含むファイル名への対応
                 var buf = "";
-                for (var j = i; j < midiNames.Count; j++)
+                int j;
+                for (j = i; j < midiNames.Count; j++)
                 {
                     var buf2 = midiNames[j];
 
@@ -291,10 +292,11 @@ namespace SRCCore
                     buf = buf + " " + buf2;
                     if (buf.ToLower().EndsWith(".mid"))
                     {
-                        i = j + 1;
                         break;
                     }
                 }
+                // 次の候補へ（.mid で終わらない指定（.mp3 など）は残り全体を1つの名前として扱い、検索を終える）
+                i = j + 1;
 
                 buf = Strings.Trim(buf);
                 // 同名のMP3ファイルがある場合はMIDIファイルの代わりにMP3ファイルを使う
@@ -387,9 +389,9 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }
-                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(x))
+                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(PathResolver.Resolve(x)))
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-                .Where(x => Directory.Exists(x))
+                .Where(x => Directory.Exists(PathResolver.Resolve(x)))
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？

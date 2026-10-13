@@ -14,14 +14,12 @@ namespace SRCRender
     /// </summary>
     public class ScreenRenderer : IDisposable
     {
-        private const int ListItemHeight = 22;
-        private const int ListCaptionHeight = 26;
-        private const int ListMaxVisibleItems = 16;
-        private const int MenuItemHeight = 22;
-        private const int MenuWidth = 168;
+        private const int MenuItemHeight = 20;
+        private const int MenuMinWidth = 120;
         private const int DialogWidth = 420;
-        private const int DialogButtonWidth = 96;
-        private const int DialogButtonHeight = 28;
+        private const int DialogMinWidth = 200;
+        private const int DialogButtonWidth = 80;
+        private const int DialogButtonHeight = 24;
 
         private static readonly SKColor BackColor = new SKColor(0x00, 0x00, 0x00);
         private static readonly SKColor PanelColor = new SKColor(0x10, 0x18, 0x30, 0xF0);
@@ -36,8 +34,11 @@ namespace SRCRender
         private readonly SKFont boldFont;
         private readonly SKFont largeFont;
 
-        /// <summary>既定で使うフォント。環境によらず同じ描画結果になるよう、あれば優先する</summary>
-        public const string PreferredFontFamily = "Noto Sans CJK JP";
+        /// <summary>
+        /// 既定で使うフォント。SRC のリストは等幅（ＭＳ 明朝）で桁を空白で揃えるため等幅フォントにする。
+        /// 環境によらず同じ描画結果になるよう、あれば優先する。
+        /// </summary>
+        public const string PreferredFontFamily = Compat.SkiaFonts.FixedPitchFamily;
 
         public ScreenRenderer(SKTypeface typeface = null)
         {
@@ -52,13 +53,7 @@ namespace SRCRender
 
         private static SKTypeface ResolveTypeface()
         {
-            var preferred = SKTypeface.FromFamilyName(PreferredFontFamily);
-            if (preferred != null && preferred.FamilyName == PreferredFontFamily)
-            {
-                return preferred;
-            }
-            // 日本語を表示できるフォントを選ぶ
-            return SKFontManager.Default.MatchCharacter('あ') ?? SKTypeface.Default;
+            return Compat.SkiaFonts.ResolveTypeface("ＭＳ 明朝", SKFontStyle.Normal);
         }
 
         public void Dispose()
@@ -76,27 +71,51 @@ namespace SRCRender
 
         #region 描画
 
-        public void Render(SKCanvas canvas, SRC src, ScreenState state, SKBitmap background, ImageCache images)
+        /// <summary>
+        /// 画面を構成する画像。
+        /// </summary>
+        public struct ScreenLayers
+        {
+            public ScreenLayers(SKBitmap map, Compat.PictureBox[] status, Compat.MessageWindow message)
+            {
+                Map = map;
+                Status = status;
+                Message = message;
+            }
+
+            /// <summary>マップ表示領域（ScreenLayout.MapArea の大きさ）</summary>
+            public SKBitmap Map { get; }
+            /// <summary>ステータスウィンドウの部品（ScreenLayout.StatusArea からの相対座標）</summary>
+            public Compat.PictureBox[] Status { get; }
+            /// <summary>メッセージウィンドウ</summary>
+            public Compat.MessageWindow Message { get; }
+        }
+
+        public void Render(SKCanvas canvas, ScreenState state, ScreenLayers layers)
         {
             canvas.Clear(BackColor);
 
-            if (state.ShowMap && src?.Map?.MapData != null)
+            if (layers.Map != null)
             {
-                DrawMap(canvas, src, state, background, images);
+                canvas.DrawBitmap(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
             }
             if (!string.IsNullOrEmpty(state.Splash))
             {
                 DrawCenteredText(canvas, ScreenLayout.MapArea, state.Splash, largeFont);
             }
-            DrawStatus(canvas, state);
-            DrawMessage(canvas, state.Message);
+            DrawStatus(canvas, layers.Status);
+            DrawMessageArea(canvas, layers.Message);
             if (!string.IsNullOrEmpty(state.Telop))
             {
                 DrawTelop(canvas, state.Telop);
             }
             if (state.List != null)
             {
-                DrawList(canvas, state.List);
+                DrawForm(canvas, state.List.Window);
+            }
+            if (state.Config != null)
+            {
+                DrawForm(canvas, state.Config);
             }
             if (state.Menu != null)
             {
@@ -105,6 +124,10 @@ namespace SRCRender
             if (state.Dialog != null)
             {
                 DrawDialog(canvas, state.Dialog);
+            }
+            if (state.Tooltip != null)
+            {
+                DrawTooltip(canvas, state.Tooltip);
             }
         }
 
@@ -205,146 +228,121 @@ namespace SRCRender
             }
         }
 
-        private void DrawMap(SKCanvas canvas, SRC src, ScreenState state, SKBitmap background, ImageCache images)
+        /// <summary>
+        /// ユニット画像が無い場合に、名前の頭文字を表示する。
+        /// </summary>
+        public void DrawUnitInitial(SKCanvas canvas, string name, SKRect dest)
         {
-            var map = src.Map;
-            canvas.Save();
-            canvas.ClipRect(ScreenLayout.MapArea);
-            using (var paint = new SKPaint())
+            name = string.IsNullOrEmpty(name) ? "?" : name;
+            using (var paint = new SKPaint { Color = TextColor, IsAntialias = true })
             {
-                for (var col = 0; col < ScreenLayout.MapColumns; col++)
-                {
-                    for (var row = 0; row < ScreenLayout.MapRows; row++)
-                    {
-                        var x = ViewToMapX(state, col * ScreenLayout.CellPx);
-                        var y = ViewToMapY(state, row * ScreenLayout.CellPx);
-                        if (x < 1 || x > map.MapWidth || y < 1 || y > map.MapHeight)
-                        {
-                            continue;
-                        }
-                        var dest = SKRect.Create(col * ScreenLayout.CellPx, row * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        if (background != null)
-                        {
-                            var source = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                            canvas.DrawBitmap(background, source, dest);
-                        }
-                        var unit = map.MapDataForUnit?[x, y];
-                        if (unit != null)
-                        {
-                            DrawUnit(canvas, unit, dest, images, paint);
-                        }
-                        if (state.Masked && map.MaskData != null && map.MaskData[x, y])
-                        {
-                            paint.Color = MaskColor;
-                            paint.Style = SKPaintStyle.Fill;
-                            canvas.DrawRect(dest, paint);
-                        }
-                    }
-                }
-            }
-            canvas.Restore();
-        }
-
-        private void DrawUnit(SKCanvas canvas, Unit unit, SKRect dest, ImageCache images, SKPaint paint)
-        {
-            paint.Style = SKPaintStyle.Fill;
-            paint.Color = PartyColor(unit.Party0);
-            canvas.DrawRect(dest, paint);
-
-            SKBitmap image = null;
-            try
-            {
-                image = images.GetTransparent(unit.CurrentForm().CurrentBitmap());
-            }
-            catch
-            {
-                // 画像の解決に失敗した場合は文字で表示する
-            }
-            if (image != null)
-            {
-                canvas.DrawBitmap(image, dest);
-            }
-            else
-            {
-                var name = unit.Nickname0 ?? unit.Name ?? "?";
-                paint.Color = TextColor;
-                canvas.DrawText(name.Substring(0, Math.Min(1, name.Length)), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
-            }
-
-            paint.Style = SKPaintStyle.Stroke;
-            paint.Color = new SKColor(0, 0, 0, 0xA0);
-            canvas.DrawRect(dest, paint);
-        }
-
-        private static SKColor PartyColor(string party)
-        {
-            switch (party ?? "")
-            {
-                case "味方":
-                case "ＮＰＣ":
-                    return new SKColor(0x30, 0x50, 0xD0, 0xC0);
-                case "敵":
-                    return new SKColor(0xD0, 0x30, 0x30, 0xC0);
-                case "中立":
-                    return new SKColor(0xD0, 0xC0, 0x30, 0xC0);
-                default:
-                    return new SKColor(0x80, 0x80, 0x80, 0xC0);
+                canvas.DrawText(name.Substring(0, 1), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
             }
         }
 
-        private void DrawStatus(SKCanvas canvas, ScreenState state)
+        private static readonly SKColor FormGray = new SKColor(192, 192, 192);
+
+        private void DrawStatus(SKCanvas canvas, Compat.PictureBox[] pictures)
         {
-            using (var paint = new SKPaint { Color = new SKColor(0x20, 0x20, 0x28) })
+            using (var paint = new SKPaint { Color = FormGray })
             {
                 canvas.DrawRect(ScreenLayout.StatusArea, paint);
-                paint.Color = TextColor;
-                var y = ScreenLayout.StatusArea.Top + 24f;
-                foreach (var line in state.StatusLines ?? Array.Empty<string>())
-                {
-                    canvas.DrawText(line ?? "", ScreenLayout.StatusArea.Left + 12, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
-                }
-            }
-        }
-
-        private void DrawMessage(SKCanvas canvas, MessageState message)
-        {
-            var area = ScreenLayout.MessageArea;
-            using (var paint = new SKPaint())
-            {
-                paint.Color = new SKColor(0x08, 0x08, 0x10);
-                canvas.DrawRect(area, paint);
-                if (!message.Visible)
+                if (pictures == null)
                 {
                     return;
                 }
-                var box = SKRect.Create(area.Left + 8, area.Top + 8, area.Width - 16, area.Height - 16);
-                DrawPanel(canvas, box, paint);
+                canvas.Save();
+                canvas.Translate(ScreenLayout.StatusArea.Left, ScreenLayout.StatusArea.Top);
+                foreach (var picture in pictures)
+                {
+                    DrawPictureBox(canvas, picture, paint);
+                }
+                canvas.Restore();
+            }
+        }
 
+        private static void DrawPictureBox(SKCanvas canvas, Compat.PictureBox picture, SKPaint paint)
+        {
+            if (!picture.Visible)
+            {
+                return;
+            }
+            paint.Color = Compat.Graphics.ToSKColor(picture.BackColor);
+            canvas.DrawRect(picture.Left, picture.Top, picture.Width, picture.Height, paint);
+            if (picture.Image == null)
+            {
+                return;
+            }
+            if (picture.StretchImage)
+            {
+                canvas.DrawBitmap(picture.Image, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
+            }
+            else
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
+                canvas.DrawBitmap(picture.Image, picture.Left, picture.Top);
+                canvas.Restore();
+            }
+        }
+
+        /// <summary>メッセージウィンドウの左上（画面座標）</summary>
+        public SKPointI MessageWindowOrigin(Compat.MessageWindow window)
+        {
+            // 元の SRC と同じくマップの下に左寄せで表示する
+            var area = ScreenLayout.MessageArea;
+            return new SKPointI(area.Left, area.Top + 2);
+        }
+
+        private void DrawMessageArea(SKCanvas canvas, Compat.MessageWindow window)
+        {
+            using (var paint = new SKPaint { Color = new SKColor(0x08, 0x08, 0x10) })
+            {
+                canvas.DrawRect(ScreenLayout.MessageArea, paint);
+            }
+            if (window == null || !window.Visible)
+            {
+                return;
+            }
+            var origin = MessageWindowOrigin(window);
+            canvas.Save();
+            canvas.Translate(origin.X, origin.Y);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                paint.Color = Compat.Graphics.ToSKColor(window.BackColor);
+                canvas.DrawRect(0, 0, window.Width, window.Height, paint);
+                // 縁取り
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = new SKColor(0x80, 0x80, 0x80);
+                canvas.DrawRect(0.5f, 0.5f, window.Width - 1, window.Height - 1, paint);
                 paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                var x = box.Left + 16;
-                var y = box.Top + 26;
-                if (!string.IsNullOrEmpty(message.Speaker))
+
+                foreach (var picture in new[] { window.picFace, window.picMessage, window.picUnit1, window.picUnit2, window.picHP1, window.picEN1, window.picHP2, window.picEN2 })
                 {
-                    canvas.DrawText(message.Speaker, x, y, SKTextAlign.Left, boldFont, paint);
-                    y += font.Spacing + 4;
+                    DrawPictureBox(canvas, picture, paint);
                 }
-                foreach (var line in message.Lines.Skip(Math.Max(0, message.Lines.Count - 4)))
+                foreach (var label in new[] { window.labHP1, window.labEN1, window.labHP2, window.labEN2, window.txtHP1, window.txtEN1, window.txtHP2, window.txtEN2 })
                 {
-                    canvas.DrawText(line, x, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
+                    if (!label.Visible || string.IsNullOrEmpty(label.Text))
+                    {
+                        continue;
+                    }
+                    using (var font = label.Font.ToSKFont())
+                    {
+                        paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                        paint.IsAntialias = true;
+                        canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                        paint.IsAntialias = false;
+                    }
                 }
-                if (message.Waiting)
+                if (window.IsAutoMode)
                 {
-                    canvas.DrawText("▼", box.Right - 16, box.Bottom - 10, SKTextAlign.Right, font, paint);
-                }
-                if (message.AutoMode)
-                {
-                    paint.Color = DisabledTextColor;
-                    canvas.DrawText("自動送り", box.Right - 16, box.Top + 22, SKTextAlign.Right, font, paint);
+                    paint.Color = new SKColor(0x40, 0x40, 0x40);
+                    paint.IsAntialias = true;
+                    canvas.DrawText("自動送り", window.Width - 6, window.Height - 4, SKTextAlign.Right, font, paint);
                 }
             }
+            canvas.Restore();
         }
 
         private void DrawTelop(SKCanvas canvas, string telop)
@@ -360,82 +358,389 @@ namespace SRCRender
             }
         }
 
-        private void DrawList(SKCanvas canvas, ListState list)
+        private static readonly SKColor WindowsHighlight = new SKColor(0, 0, 128);
+        private static readonly SKColor WindowsShadow = new SKColor(128, 128, 128);
+        private static readonly SKColor WindowsDarkShadow = new SKColor(64, 64, 64);
+        private static readonly Compat.Font ListTitleFont = new Compat.Font("ＭＳ Ｐゴシック", 9F, Compat.FontStyle.Bold);
+
+        /// <summary>
+        /// リストボックス（WinForms 版 frmListBox と同じ部品配置）を描く。
+        /// </summary>
+        /// <summary>
+        /// 画面上のウィンドウ（リストボックス・設定変更など、WinForms 版のフォームと同じ部品配置）を描く。
+        /// </summary>
+        private void DrawForm(SKCanvas canvas, Compat.Form w)
         {
-            var layout = LayoutList(list);
-            using (var paint = new SKPaint())
+            canvas.Save();
+            canvas.Translate(w.ScreenLeft, w.ScreenTop);
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                DrawPanel(canvas, layout.Box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(list.Caption ?? "", layout.Box.Left + 12, layout.Box.Top + 19, SKTextAlign.Left, boldFont, paint);
-                if (!string.IsNullOrEmpty(list.Info))
+                // 枠とタイトルバー
+                paint.Color = Compat.Graphics.ToSKColor(w.BackColor);
+                canvas.DrawRect(0, 0, w.Width, w.OuterHeight, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(1, 1, w.Width - 2, Compat.Form.TitleBarHeight - 2, paint);
+                DrawBevel(canvas, SKRect.Create(0, 0, w.Width, w.OuterHeight), raised: true, paint);
+                using (var titleFont = ListTitleFont.ToSKFont())
                 {
-                    paint.Color = DisabledTextColor;
-                    canvas.DrawText(list.Info, layout.Box.Left + 12, layout.Box.Top + ListCaptionHeight + 16, SKTextAlign.Left, font, paint);
+                    paint.Color = SKColors.White;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(w.Text ?? "", 6, (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    paint.IsAntialias = false;
                 }
-                for (var i = 0; i < layout.VisibleCount; i++)
+
+                canvas.Translate(0, Compat.Form.TitleBarHeight);
+                switch (w)
                 {
-                    var index = layout.Top + i;
-                    var item = list.Items[index];
-                    var rect = layout.ItemRect(i);
-                    if (index == list.Highlight)
-                    {
-                        paint.Color = HighlightColor;
-                        canvas.DrawRect(rect, paint);
-                    }
-                    paint.Color = item.Disabled ? DisabledTextColor : TextColor;
-                    canvas.DrawText(item.Text ?? "", rect.Left + 8, rect.Top + 16, SKTextAlign.Left, font, paint);
+                    case Compat.ListWindow lw:
+                        foreach (var picture in lw.Pictures)
+                        {
+                            DrawPictureBox(canvas, picture, paint);
+                        }
+                        foreach (var label in lw.TextLabels)
+                        {
+                            DrawLabel(canvas, label, paint);
+                        }
+                        DrawTextBox(canvas, lw.labCaption, paint);
+                        DrawTextBox(canvas, lw.txtComment, paint);
+                        break;
+                    case Compat.MultiColumnListWindow mw:
+                        DrawTextBox(canvas, mw.labCaption, paint);
+                        break;
+                    case Compat.ConfigWindow cw:
+                        foreach (var check in cw.CheckBoxes)
+                        {
+                            DrawCheckBox(canvas, check, paint);
+                        }
+                        DrawLabel(canvas, cw.labMP3Volume, paint);
+                        DrawTextBox(canvas, cw.txtMP3Volume, paint);
+                        DrawScrollBar(canvas, cw.hscMP3Volume, paint);
+                        foreach (var button in cw.Buttons)
+                        {
+                            DrawButton(canvas, button, paint);
+                        }
+                        break;
+                    case Compat.MultiSelectListWindow sw:
+                        DrawTextBox(canvas, sw.lblCaption, paint);
+                        DrawLabel(canvas, sw.lblNumber, paint);
+                        foreach (var button in sw.Buttons)
+                        {
+                            DrawButton(canvas, button, paint);
+                        }
+                        break;
+                }
+                DrawListBox(canvas, w.lstItems, paint);
+            }
+            canvas.Restore();
+        }
+
+        private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+
+        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
+        {
+            using (var font = TooltipFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                var width = lines.Max(x => font.MeasureText(x)) + 8;
+                var height = lineHeight * lines.Length + 6;
+                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
+                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
+                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                paint.Color = new SKColor(255, 255, 225);
+                canvas.DrawRect(rect, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
+                paint.Style = SKPaintStyle.Fill;
+                paint.IsAntialias = true;
+                var y = rect.Top + 3;
+                foreach (var line in lines)
+                {
+                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
                 }
             }
         }
 
+        private static void DrawCheckBox(SKCanvas canvas, Compat.CheckBox check, SKPaint paint)
+        {
+            if (!check.Visible)
+            {
+                return;
+            }
+            const int box = 13;
+            var top = check.Top + (check.Height - box) / 2f;
+            var rect = SKRect.Create(check.Left, top, box, box);
+            paint.Color = check.Enabled ? SKColors.White : new SKColor(192, 192, 192);
+            canvas.DrawRect(rect, paint);
+            DrawBevel(canvas, rect, raised: false, paint);
+            if (check.Checked)
+            {
+                paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
+                paint.Style = SKPaintStyle.Stroke;
+                paint.StrokeWidth = 2;
+                paint.IsAntialias = true;
+                using (var path = new SKPath())
+                {
+                    path.MoveTo(rect.Left + 3, rect.MidY);
+                    path.LineTo(rect.Left + 5.5f, rect.Bottom - 3.5f);
+                    path.LineTo(rect.Right - 3, rect.Top + 3);
+                    canvas.DrawPath(path, paint);
+                }
+                paint.IsAntialias = false;
+                paint.StrokeWidth = 1;
+                paint.Style = SKPaintStyle.Fill;
+            }
+            using (var font = check.Font.ToSKFont())
+            {
+                paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
+                paint.IsAntialias = true;
+                canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                paint.IsAntialias = false;
+            }
+        }
+
+        private static void DrawScrollBar(SKCanvas canvas, Compat.HScrollBar bar, SKPaint paint)
+        {
+            if (!bar.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(bar.Left, bar.Top, bar.Width, bar.Height);
+            paint.Color = new SKColor(224, 224, 224);
+            canvas.DrawRect(rect, paint);
+            var thumb = SKRect.Create(rect.Left + bar.ThumbLeft, rect.Top, Compat.HScrollBar.ThumbWidth, rect.Height);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(thumb, paint);
+            DrawBevel(canvas, thumb, raised: true, paint);
+        }
+
+        private static void DrawButton(SKCanvas canvas, Compat.Button button, SKPaint paint)
+        {
+            if (!button.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(button.Left, button.Top, button.Width, button.Height);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(rect, paint);
+            DrawBevel(canvas, rect, raised: true, paint);
+            using (var font = button.Font.ToSKFont())
+            {
+                paint.Color = button.Enabled ? SKColors.Black : WindowsShadow;
+                paint.IsAntialias = true;
+                canvas.DrawText(button.Text ?? "", rect.MidX, rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Center, font, paint);
+                paint.IsAntialias = false;
+            }
+        }
+
+        private static void DrawLabel(SKCanvas canvas, Compat.Label label, SKPaint paint)
+        {
+            if (!label.Visible || string.IsNullOrEmpty(label.Text))
+            {
+                return;
+            }
+            using (var font = label.Font.ToSKFont())
+            {
+                paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                paint.IsAntialias = true;
+                canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                paint.IsAntialias = false;
+            }
+        }
+
+        /// <summary>白地でへこんだ枠の文字欄（Label / TextBox）。文字は縦中央に置く。</summary>
+        private static void DrawTextBox(SKCanvas canvas, Compat.Label label, SKPaint paint)
+        {
+            if (!label.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(label.Left, label.Top, label.Width, label.Height);
+            paint.Color = Compat.Graphics.ToSKColor(label.BackColor);
+            canvas.DrawRect(rect, paint);
+            DrawBevel(canvas, rect, raised: false, paint);
+            if (string.IsNullOrEmpty(label.Text))
+            {
+                return;
+            }
+            using (var font = label.Font.ToSKFont())
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, rect.Width - 4, rect.Height - 4));
+                paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
+                paint.IsAntialias = true;
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                var lines = label.Text.Replace("\r\n", "\n").Split('\n');
+                var y = lines.Length == 1 ? rect.Top + (rect.Height - lineHeight) / 2 : rect.Top + 3;
+                foreach (var line in lines)
+                {
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
+                }
+                paint.IsAntialias = false;
+                canvas.Restore();
+            }
+        }
+
+        private static void DrawListBox(SKCanvas canvas, Compat.ListBoxControl box, SKPaint paint)
+        {
+            if (!box.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(box.Left, box.Top, box.Width, box.Height);
+            paint.Color = Compat.Graphics.ToSKColor(box.BackColor);
+            canvas.DrawRect(rect, paint);
+            using (var font = box.Font.ToSKFont())
+            {
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, box.ItemsWidth, rect.Height - 4));
+                for (var index = box.TopIndex; index < Math.Min(box.Items.Count, box.TopIndex + box.VisibleRows); index++)
+                {
+                    var bounds = box.ItemBounds(index).Value;
+                    var item = SKRect.Create(rect.Left + bounds.X, rect.Top + bounds.Y, bounds.Width, bounds.Height);
+                    var selected = index == box.SelectedIndex;
+                    if (selected)
+                    {
+                        paint.Color = WindowsHighlight;
+                        canvas.DrawRect(item, paint);
+                    }
+                    paint.Color = selected ? SKColors.White : Compat.Graphics.ToSKColor(box.ForeColor);
+                    paint.IsAntialias = true;
+                    canvas.Save();
+                    canvas.ClipRect(item);
+                    canvas.DrawText(box.Items[index] ?? "", item.Left + 1, item.Top + (item.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    canvas.Restore();
+                    paint.IsAntialias = false;
+                }
+                canvas.Restore();
+            }
+            if (box.HasScrollBar)
+            {
+                SKRect bar, thumb;
+                if (box.MultiColumn)
+                {
+                    // 横スクロールバー（列単位）
+                    bar = SKRect.Create(rect.Left + 2, rect.Bottom - 2 - Compat.ListBoxControl.ScrollBarWidth, rect.Width - 4, Compat.ListBoxControl.ScrollBarWidth);
+                    var columns = (box.Items.Count + box.Rows - 1) / box.Rows;
+                    var thumbWidth = Math.Max(8, bar.Width * box.VisibleColumns / columns);
+                    var thumbLeft = bar.Left + (bar.Width - thumbWidth) * (box.TopIndex / box.Rows) / Math.Max(1, columns - box.VisibleColumns);
+                    thumb = SKRect.Create(thumbLeft, bar.Top, thumbWidth, bar.Height);
+                }
+                else
+                {
+                    bar = SKRect.Create(rect.Left + 2 + box.ItemsWidth, rect.Top + 2, Compat.ListBoxControl.ScrollBarWidth, rect.Height - 4);
+                    var rows = box.VisibleRows;
+                    var thumbHeight = Math.Max(8, bar.Height * rows / box.Items.Count);
+                    var thumbTop = bar.Top + (bar.Height - thumbHeight) * box.TopIndex / Math.Max(1, box.Items.Count - rows);
+                    thumb = SKRect.Create(bar.Left, thumbTop, bar.Width, thumbHeight);
+                }
+                paint.Color = new SKColor(224, 224, 224);
+                canvas.DrawRect(bar, paint);
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(thumb, paint);
+                DrawBevel(canvas, thumb, raised: true, paint);
+            }
+            DrawBevel(canvas, rect, raised: false, paint);
+        }
+
+        /// <summary>Windows クラシックの立体枠。</summary>
+        private static void DrawBevel(SKCanvas canvas, SKRect rect, bool raised, SKPaint paint)
+        {
+            var light = raised ? SKColors.White : WindowsShadow;
+            var dark = raised ? WindowsDarkShadow : SKColors.White;
+            paint.Style = SKPaintStyle.Stroke;
+            paint.StrokeWidth = 1;
+            paint.Color = light;
+            canvas.DrawLine(rect.Left + 0.5f, rect.Bottom - 1, rect.Left + 0.5f, rect.Top + 0.5f, paint);
+            canvas.DrawLine(rect.Left + 0.5f, rect.Top + 0.5f, rect.Right - 1, rect.Top + 0.5f, paint);
+            paint.Color = dark;
+            canvas.DrawLine(rect.Right - 0.5f, rect.Top, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
+            canvas.DrawLine(rect.Left, rect.Bottom - 0.5f, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
+            paint.Style = SKPaintStyle.Fill;
+        }
+
+        private static readonly Compat.Font MenuFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+        private static readonly Compat.Font DialogFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
+        private static readonly Compat.Font DialogTitleFont = new Compat.Font("ＭＳ Ｐゴシック", 9F, Compat.FontStyle.Bold);
+
+        /// <summary>
+        /// ポップアップメニュー（WinForms 版の ContextMenuStrip と同じく Windows 標準の見た目）。
+        /// </summary>
         private void DrawMenu(SKCanvas canvas, MenuState menu)
         {
             var box = LayoutMenu(menu);
-            using (var paint = new SKPaint())
+            using (var font = MenuFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                DrawPanel(canvas, box, paint);
-                paint.Style = SKPaintStyle.Fill;
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(box, paint);
+                DrawBevel(canvas, box, raised: true, paint);
                 for (var i = 0; i < menu.Items.Count; i++)
                 {
-                    var rect = SKRect.Create(box.Left + 2, box.Top + 4 + i * MenuItemHeight, box.Width - 4, MenuItemHeight);
-                    if (i == menu.Highlight)
+                    var rect = MenuItemRect(box, i);
+                    var highlighted = i == menu.Highlight;
+                    if (highlighted)
                     {
-                        paint.Color = HighlightColor;
+                        paint.Color = WindowsHighlight;
                         canvas.DrawRect(rect, paint);
                     }
-                    paint.Color = TextColor;
-                    var check = i < menu.Checked.Count && menu.Checked[i] ? "✓ " : "";
-                    canvas.DrawText(check + menu.Items[i], rect.Left + 10, rect.Top + 16, SKTextAlign.Left, font, paint);
+                    paint.Color = highlighted ? SKColors.White : SKColors.Black;
+                    paint.IsAntialias = true;
+                    var baseline = rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font);
+                    if (i < menu.Checked.Count && menu.Checked[i])
+                    {
+                        canvas.DrawText("✓", rect.Left + 4, baseline, SKTextAlign.Left, font, paint);
+                    }
+                    canvas.DrawText(menu.Items[i] ?? "", rect.Left + MenuTextLeft, baseline, SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
                 }
             }
         }
 
+        /// <summary>
+        /// メッセージボックス（WinForms 版の MessageBox と同じく Windows 標準の見た目）。
+        /// </summary>
         private void DrawDialog(SKCanvas canvas, DialogState dialog)
         {
             var layout = LayoutDialog(dialog);
-            using (var paint = new SKPaint())
+            var box = layout.Box;
+            using (var font = DialogFont.ToSKFont())
+            using (var titleFont = DialogTitleFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
             {
-                paint.Color = new SKColor(0, 0, 0, 0x80);
-                canvas.DrawRect(SKRect.Create(0, 0, ScreenLayout.Width, ScreenLayout.Height), paint);
-                DrawPanel(canvas, layout.Box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(dialog.Title ?? "", layout.Box.Left + 16, layout.Box.Top + 26, SKTextAlign.Left, boldFont, paint);
-                var y = layout.Box.Top + 56;
+                paint.Color = new SKColor(192, 192, 192);
+                canvas.DrawRect(box, paint);
+                DrawBevel(canvas, box, raised: true, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(box.Left + 2, box.Top + 2, box.Width - 4, Compat.Form.TitleBarHeight - 2, paint);
+                paint.Color = SKColors.White;
+                paint.IsAntialias = true;
+                canvas.DrawText(dialog.Title ?? "", box.Left + 6, box.Top + 2 + (Compat.Form.TitleBarHeight - 2 - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                paint.Color = SKColors.Black;
+                var y = box.Top + Compat.Form.TitleBarHeight + DialogPadding;
+                var lineHeight = Compat.SkiaFonts.LineHeight(font) + 2;
                 foreach (var line in layout.Lines)
                 {
-                    canvas.DrawText(line, layout.Box.Left + 16, y, SKTextAlign.Left, font, paint);
-                    y += font.Spacing + 2;
+                    canvas.DrawText(line, box.Left + DialogPadding, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    y += lineHeight;
                 }
+                paint.IsAntialias = false;
                 for (var i = 0; i < dialog.Buttons.Count; i++)
                 {
-                    var rect = layout.ButtonRect(i);
-                    paint.Color = HighlightColor;
-                    canvas.DrawRoundRect(rect, 4, 4, paint);
-                    paint.Color = TextColor;
-                    canvas.DrawText(dialog.Buttons[i], rect.MidX, rect.MidY + 6, SKTextAlign.Center, font, paint);
+                    DrawButton(canvas, new Compat.Button
+                    {
+                        Left = (int)layout.ButtonRect(i).Left,
+                        Top = (int)layout.ButtonRect(i).Top,
+                        Width = DialogButtonWidth,
+                        Height = DialogButtonHeight,
+                        Text = dialog.Buttons[i],
+                        Font = DialogFont,
+                    }, paint);
                 }
             }
         }
@@ -489,39 +794,32 @@ namespace SRCRender
         public class ListLayout
         {
             public SKRect Box { get; set; }
-            public float ItemsTop { get; set; }
+            /// <summary>ListBox の左上（画面座標）</summary>
+            public SKPoint Origin { get; set; }
+            public Compat.ListBoxControl ListBox { get; set; }
             public int Top { get; set; }
             public int VisibleCount { get; set; }
 
+            /// <summary>表示中の項目の位置（画面座標）</summary>
             public SKRect ItemRect(int visibleIndex)
             {
-                return SKRect.Create(Box.Left + 4, ItemsTop + visibleIndex * ListItemHeight, Box.Width - 8, ListItemHeight);
+                var bounds = ListBox.ItemBounds(Top + visibleIndex) ?? default;
+                return SKRect.Create(Origin.X + bounds.X, Origin.Y + bounds.Y, bounds.Width, bounds.Height);
             }
         }
 
+        /// <summary>リストボックスの画面上の配置（項目の位置は画面座標）。</summary>
         public ListLayout LayoutList(ListState list)
         {
-            var visible = Math.Min(list.Items.Count, ListMaxVisibleItems);
-            var top = 0;
-            if (list.Highlight >= visible)
-            {
-                top = Math.Min(list.Highlight - visible + 1, list.Items.Count - visible);
-            }
-            var textWidth = new[] { boldFont.MeasureText(list.Caption ?? ""), font.MeasureText(list.Info ?? "") }
-                .Concat(list.Items.Select(x => font.MeasureText(x.Text ?? "")))
-                .DefaultIfEmpty(0)
-                .Max();
-            var width = Math.Min(ScreenLayout.Width - 32, Math.Max(200, textWidth + 32));
-            var infoHeight = string.IsNullOrEmpty(list.Info) ? 0 : ListItemHeight;
-            var height = ListCaptionHeight + infoHeight + visible * ListItemHeight + 8;
-            var left = Math.Max(16, (ScreenLayout.MapWidthPx - width) / 2);
-            var boxTop = Math.Max(16, (ScreenLayout.MapHeightPx - height) / 2);
+            var w = list.Window;
+            var box = w.lstItems;
             return new ListLayout
             {
-                Box = SKRect.Create(left, boxTop, width, height),
-                ItemsTop = boxTop + ListCaptionHeight + infoHeight,
-                Top = top,
-                VisibleCount = visible,
+                Box = SKRect.Create(w.ScreenLeft, w.ScreenTop, w.Width, w.OuterHeight),
+                Origin = new SKPoint(w.ScreenLeft + box.Left, w.ScreenTop + Compat.Form.TitleBarHeight + box.Top),
+                ListBox = box,
+                Top = box.TopIndex,
+                VisibleCount = Math.Max(0, Math.Min(box.VisibleRows, box.Items.Count - box.TopIndex)),
             };
         }
 
@@ -539,25 +837,49 @@ namespace SRCRender
             return -1;
         }
 
+        private const int MenuTextLeft = 20;
+
+        private static SKRect MenuItemRect(SKRect box, int index)
+        {
+            return SKRect.Create(box.Left + 3, box.Top + 3 + index * MenuItemHeight, box.Width - 6, MenuItemHeight);
+        }
+
         public SKRect LayoutMenu(MenuState menu)
         {
-            var height = menu.Items.Count * MenuItemHeight + 8;
-            var left = Math.Min(Math.Max(0, menu.X), ScreenLayout.Width - MenuWidth);
+            float textWidth;
+            using (var font = MenuFont.ToSKFont())
+            {
+                textWidth = menu.Items.Select(x => font.MeasureText(x ?? "")).DefaultIfEmpty(0).Max();
+            }
+            var width = Math.Max(MenuMinWidth, (int)Math.Ceiling(textWidth) + MenuTextLeft + 24);
+            var height = menu.Items.Count * MenuItemHeight + 6;
+            var left = Math.Min(Math.Max(0, menu.X), ScreenLayout.Width - width);
             var top = Math.Min(Math.Max(0, menu.Y), ScreenLayout.Height - height);
-            return SKRect.Create(left, top, MenuWidth, height);
+            return SKRect.Create(left, top, width, height);
+        }
+
+        /// <summary>メニューの項目の中心（画面座標）</summary>
+        public SKPoint MenuItemCenter(MenuState menu, int index)
+        {
+            var rect = MenuItemRect(LayoutMenu(menu), index);
+            return new SKPoint(rect.MidX, rect.MidY);
         }
 
         /// <summary>メニューのヒットテスト。項目のインデックス（0 始まり）、外れは -1</summary>
         public int HitTestMenu(MenuState menu, float x, float y)
         {
             var box = LayoutMenu(menu);
-            if (!box.Contains(x, y))
+            for (var i = 0; i < menu.Items.Count; i++)
             {
-                return -1;
+                if (MenuItemRect(box, i).Contains(x, y))
+                {
+                    return i;
+                }
             }
-            var index = (int)((y - box.Top - 4) / MenuItemHeight);
-            return index >= 0 && index < menu.Items.Count ? index : -1;
+            return -1;
         }
+
+        private const int DialogPadding = 16;
 
         public class DialogLayout
         {
@@ -567,22 +889,28 @@ namespace SRCRender
 
             public SKRect ButtonRect(int index)
             {
-                var totalWidth = ButtonCount * DialogButtonWidth + (ButtonCount - 1) * 12;
-                var left = Box.MidX - totalWidth / 2f + index * (DialogButtonWidth + 12);
-                return SKRect.Create(left, Box.Bottom - DialogButtonHeight - 14, DialogButtonWidth, DialogButtonHeight);
+                var totalWidth = ButtonCount * DialogButtonWidth + (ButtonCount - 1) * 8;
+                var left = (float)Math.Floor(Box.MidX - totalWidth / 2f) + index * (DialogButtonWidth + 8);
+                return SKRect.Create(left, Box.Bottom - DialogButtonHeight - 12, DialogButtonWidth, DialogButtonHeight);
             }
         }
 
         public DialogLayout LayoutDialog(DialogState dialog)
         {
-            var lines = WrapText(dialog.Text ?? "", DialogWidth - 32);
-            var height = 56 + lines.Count * (font.Spacing + 2) + DialogButtonHeight + 28;
-            return new DialogLayout
+            using (var font = DialogFont.ToSKFont())
             {
-                Box = SKRect.Create((ScreenLayout.Width - DialogWidth) / 2f, Math.Max(16, (ScreenLayout.Height - height) / 2f), DialogWidth, height),
-                Lines = lines,
-                ButtonCount = dialog.Buttons.Count,
-            };
+                var lines = WrapText(dialog.Text ?? "", DialogWidth - DialogPadding * 2, font);
+                var textWidth = lines.Select(x => font.MeasureText(x)).DefaultIfEmpty(0).Max();
+                var buttonsWidth = dialog.Buttons.Count * (DialogButtonWidth + 8);
+                var width = (float)Math.Ceiling(Math.Max(DialogMinWidth, Math.Max(textWidth, buttonsWidth) + DialogPadding * 2));
+                var height = Compat.Form.TitleBarHeight + DialogPadding + lines.Count * (Compat.SkiaFonts.LineHeight(font) + 2) + DialogPadding + DialogButtonHeight + 12;
+                return new DialogLayout
+                {
+                    Box = SKRect.Create((float)Math.Floor((ScreenLayout.Width - width) / 2f), (float)Math.Floor(Math.Max(16, (ScreenLayout.Height - height) / 2f)), width, height),
+                    Lines = lines,
+                    ButtonCount = dialog.Buttons.Count,
+                };
+            }
         }
 
         /// <summary>ダイアログのボタンのヒットテスト。ボタンのインデックス、外れは -1</summary>
@@ -601,6 +929,11 @@ namespace SRCRender
 
         /// <summary>指定幅に収まるように折り返す</summary>
         public IList<string> WrapText(string text, float width)
+        {
+            return WrapText(text, width, font);
+        }
+
+        private static IList<string> WrapText(string text, float width, SKFont font)
         {
             var result = new List<string>();
             foreach (var paragraph in text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n'))

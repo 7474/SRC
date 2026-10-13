@@ -24,7 +24,7 @@ namespace SRCCore.Filesystem
         public string PathCombine(params string[] paths)
         {
             // 先頭の `\` は絶対パスのルートとして扱われないことを期待されている。
-            return Path.Combine(paths.Select(x => Regex.Replace(x ?? "", @"^\\", "")).ToArray());
+            return Path.Combine(paths.Select(x => PathResolver.ToNative(Regex.Replace(x ?? "", @"^\\", ""))).ToArray());
         }
 
         public bool PathEquals(string a, string b)
@@ -154,7 +154,7 @@ namespace SRCCore.Filesystem
 
         public bool IsAbsolutePath(string path)
         {
-            return Path.IsPathRooted(path);
+            return Path.IsPathRooted(PathResolver.ToNative(path));
         }
 
         public string ToAbsolutePath(string scenarioPath, string path)
@@ -197,12 +197,12 @@ namespace SRCCore.Filesystem
 
         public bool MatchRoot(string entryName)
         {
-            return Path.IsPathRooted(entryName);
+            return Path.IsPathRooted(PathResolver.ToNative(entryName));
         }
 
         private FileInfo GetFileInfo(string entryName)
         {
-            return Path.IsPathRooted(entryName) ? new FileInfo(entryName) : null;
+            return MatchRoot(entryName) ? new FileInfo(PathResolver.Resolve(entryName)) : null;
         }
 
         public bool Exists(string entryName)
@@ -218,7 +218,7 @@ namespace SRCCore.Filesystem
             }
             try
             {
-                return Directory.GetFileSystemEntries(path, searchPattern)
+                return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
                                     || enumerationOptions == EntryOption.File && !Directory.Exists(x)
                                     || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
@@ -291,7 +291,7 @@ namespace SRCCore.Filesystem
             }
             try
             {
-                return Directory.GetFileSystemEntries(path, searchPattern)
+                return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
                                     || enumerationOptions == EntryOption.File && !Directory.Exists(x)
                                     || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
@@ -316,7 +316,7 @@ namespace SRCCore.Filesystem
             }
             var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
 
-            return new FileInfo(Path.Combine(BasePath, entryPath));
+            return new FileInfo(PathResolver.Resolve(Path.Combine(BasePath, entryPath)));
         }
 
         public bool Exists(string entryName)

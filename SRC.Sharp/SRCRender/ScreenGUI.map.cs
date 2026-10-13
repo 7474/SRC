@@ -1,13 +1,53 @@
+using SkiaSharp;
 using SRCCore;
-using SRCCore.Pilots;
+using SRCCore.Lib;
+using SRCCore.Maps;
 using SRCCore.Units;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace SRCRender
 {
+    // マップ表示。WinForms 版（Forms/Main.guimap.cs、Forms/Main.gui.cs）と同じく、
+    // 表示用（mainBuffer）・退避用（mainBufferBack）・マップ全体の背景（backgroundBuffer）の3枚で管理し、
+    // 画面へは displayBuffer を表示する。
     public partial class ScreenGUI
     {
+        private static readonly SKColor MapMaskColor = new SKColor(100, 100, 100, 127);
+        private static readonly SKColor UnitMaskColor = new SKColor(100, 100, 100, 127);
+        private static readonly SKColor MapLineColor = new SKColor(100, 100, 100);
+
+        private SKBitmap mainBuffer = NewBuffer(ScreenLayout.MapWidthPx, ScreenLayout.MapHeightPx);
+        private SKBitmap mainBufferBack = NewBuffer(ScreenLayout.MapWidthPx, ScreenLayout.MapHeightPx);
+        private SKBitmap displayBuffer = NewBuffer(ScreenLayout.MapWidthPx, ScreenLayout.MapHeightPx);
+        private SKBitmap backgroundBuffer;
+
+        private static SKBitmap NewBuffer(int width, int height)
+        {
+            var bitmap = new SKBitmap(Math.Max(1, width), Math.Max(1, height), SKColorType.Bgra8888, SKAlphaType.Premul);
+            bitmap.Erase(SKColors.Black);
+            return bitmap;
+        }
+
+        private static void CopyBitmap(SKBitmap from, SKBitmap to)
+        {
+            using (var canvas = new SKCanvas(to))
+            {
+                canvas.Clear(SKColors.Black);
+                canvas.DrawBitmap(from, 0, 0);
+            }
+        }
+
+        private void DisposeMapBuffers()
+        {
+            mainBuffer.Dispose();
+            mainBufferBack.Dispose();
+            displayBuffer.Dispose();
+            backgroundBuffer?.Dispose();
+        }
+
         #region IGUIMap
 
         public void InitMapSize(int w, int h)
@@ -16,16 +56,42 @@ namespace SRCRender
 
         public void SetMapSize(int w, int h)
         {
-            background?.Dispose();
-            background = null;
+            InitBackgroundBuffer();
         }
 
         #endregion
 
+        private void InitBackgroundBuffer()
+        {
+            backgroundBuffer?.Dispose();
+            backgroundBuffer = NewBuffer(MapPWidth, MapPHeight);
+        }
+
+        private void InitBackgroundBufferIfInvalid()
+        {
+            if (backgroundBuffer == null)
+            {
+                InitBackgroundBuffer();
+            }
+        }
+
+        /// <summary>
+        /// 表示用バッファを画面へ反映する。
+        /// </summary>
+        public void UpdateScreen()
+        {
+            lock (renderLock)
+            {
+                CopyBitmap(mainBuffer, displayBuffer);
+            }
+            Present();
+        }
+
         public void ClearScrean()
         {
             State.ShowMap = false;
-            Present();
+            mainBuffer.Erase(SKColors.Black);
+            UpdateScreen();
             ScreenIsSaved = true;
         }
 
@@ -38,13 +104,36 @@ namespace SRCRender
             IsPictureVisible = false;
             IsCursorVisible = false;
 
-            background?.Dispose();
-            background = renderer.BuildBackground(src, Images);
-            if (draw_option != "ステータス")
+            InitBackgroundBufferIfInvalid();
+            if (draw_option == "ステータス")
             {
-                MapX = (MainWidth / 2 + 1);
-                MapY = (MainHeight / 2 + 1);
+                backgroundBuffer.Erase(SKColors.Black);
+                return;
             }
+            MapX = (MainWidth / 2 + 1);
+            MapY = (MainHeight / 2 + 1);
+
+            var built = renderer.BuildBackground(src, Images);
+            built = ImageFilters.ApplyDrawMode(built, draw_mode, filter_color, filter_trans_par);
+            if (src.ShowSquareLine)
+            {
+                using (var canvas = new SKCanvas(built))
+                using (var paint = new SKPaint { Color = MapLineColor, Style = SKPaintStyle.Stroke })
+                {
+                    canvas.DrawRect(0, 0, MapPWidth, MapPHeight, paint);
+                    for (var x = 1; x <= Map.MapWidth - 1; x++)
+                    {
+                        canvas.DrawLine(x * ScreenLayout.CellPx, 0, x * ScreenLayout.CellPx, MapPHeight, paint);
+                    }
+                    for (var y = 1; y <= Map.MapHeight - 1; y++)
+                    {
+                        canvas.DrawLine(0, y * ScreenLayout.CellPx, MapPWidth, y * ScreenLayout.CellPx, paint);
+                    }
+                }
+            }
+            backgroundBuffer?.Dispose();
+            backgroundBuffer = built;
+
             if (!Map.IsStatusView && string.IsNullOrEmpty(draw_option))
             {
                 RefreshScreen();
@@ -65,24 +154,98 @@ namespace SRCRender
 
         public void RefreshScreen(bool without_refresh = false, bool delay_refresh = false)
         {
-            if (background == null && Map?.MapData != null && Map.MapWidth > 0)
+            if (Map.MapWidth == 1)
             {
-                background = renderer.BuildBackground(src, Images);
+                return;
             }
-            State.ShowMap = true;
+            MapX = Math.Max(1, Math.Min(Map.MapWidth, MapX));
+            MapY = Math.Max(1, Math.Min(Map.MapHeight, MapY));
             if (!without_refresh)
             {
                 IsPictureVisible = false;
                 IsCursorVisible = false;
             }
-            Present();
+            if (backgroundBuffer == null && Map.MapData != null && Map.MapWidth > 0)
+            {
+                backgroundBuffer = renderer.BuildBackground(src, Images);
+            }
+
+            State.ShowMap = true;
+            using (var canvas = new SKCanvas(mainBuffer))
+            using (var paint = new SKPaint())
+            {
+                canvas.Clear(SKColors.Black);
+                var mx = MapX - (MainWidth + 1) / 2 + 1;
+                var my = MapY - (MainHeight + 1) / 2 + 1;
+                for (var i = 0; i < MainWidth; i++)
+                {
+                    for (var j = 0; j < MainHeight; j++)
+                    {
+                        var x = mx + i;
+                        var y = my + j;
+                        if (x < 1 || x > Map.MapWidth || y < 1 || y > Map.MapHeight)
+                        {
+                            continue;
+                        }
+                        var dest = SKRect.Create(ScreenLayout.CellPx * i, ScreenLayout.CellPx * j, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                        if (backgroundBuffer != null)
+                        {
+                            var source = SKRect.Create(ScreenLayout.CellPx * (x - 1), ScreenLayout.CellPx * (y - 1), ScreenLayout.CellPx, ScreenLayout.CellPx);
+                            canvas.DrawBitmap(backgroundBuffer, source, dest);
+                        }
+                        var cell = Map.MapData[x, y];
+                        var u = Map.MapDataForUnit[x, y];
+                        if (u != null)
+                        {
+                            DrawUnit(canvas, cell, u, dest);
+                        }
+                        if (ScreenIsMasked && Map.MaskData != null && Map.MaskData[x, y])
+                        {
+                            paint.Color = MapMaskColor;
+                            canvas.DrawRect(dest, paint);
+                        }
+                    }
+                }
+            }
             ScreenIsSaved = false;
+            if (!without_refresh && !delay_refresh)
+            {
+                UpdateScreen();
+            }
         }
 
         public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
         {
-            // TODO トランジション効果
-            Sleep(frame * frameMillis);
+            var start = Environment.TickCount;
+            using (var copy = ImageFilters.Copy(mainBuffer))
+            {
+                for (var i = 0; i <= frame; i++)
+                {
+                    if (IsRButtonPressed())
+                    {
+                        i = frame + 1;
+                    }
+                    var opacity = frame <= 0 ? 0xff
+                        : pattern == TransionPattern.FadeIn ? 0xff * (frame - i) / frame : 0xff * i / frame;
+                    opacity = Math.Max(0, Math.Min(0xff, opacity));
+                    using (var canvas = new SKCanvas(mainBuffer))
+                    using (var paint = new SKPaint { Color = new SKColor(fillColor.R, fillColor.G, fillColor.B, (byte)opacity) })
+                    {
+                        canvas.Clear(SKColors.Black);
+                        canvas.DrawBitmap(copy, 0, 0);
+                        canvas.DrawRect(0, 0, mainBuffer.Width, mainBuffer.Height, paint);
+                    }
+                    UpdateScreen();
+                    if (frame != i)
+                    {
+                        while (Environment.TickCount < start + frameMillis * (i + 1))
+                        {
+                            Sleep(1);
+                        }
+                    }
+                }
+                CopyBitmap(copy, mainBuffer);
+            }
         }
 
         public void Center(int new_x, int new_y)
@@ -91,8 +254,8 @@ namespace SRCRender
             {
                 return;
             }
-            MapX = System.Math.Max(1, System.Math.Min(Map.MapWidth, new_x));
-            MapY = System.Math.Max(1, System.Math.Min(Map.MapHeight, new_y));
+            MapX = Math.Max(1, Math.Min(Map.MapWidth, new_x));
+            MapY = Math.Max(1, Math.Min(Map.MapHeight, new_y));
         }
 
         public int MapToPixelX(int X)
@@ -107,232 +270,361 @@ namespace SRCRender
 
         public int PixelToMapX(int X)
         {
-            X = System.Math.Max(0, System.Math.Min(MainPWidth - 1, X));
+            X = Math.Max(0, Math.Min(MainPWidth - 1, X));
             return X / ScreenLayout.CellPx + 1 + MapX - (MainWidth + 1) / 2;
         }
 
         public int PixelToMapY(int Y)
         {
-            Y = System.Math.Max(0, System.Math.Min(MainPHeight - 1, Y));
+            Y = Math.Max(0, Math.Min(MainPHeight - 1, Y));
             return Y / ScreenLayout.CellPx + 1 + MapY - (MainHeight + 1) / 2;
+        }
+
+        private bool IsInsideWindow(int x, int y)
+        {
+            // WinForms 版と同じ判定（実質的に常に true）
+            return x >= MapX - (MainWidth + 1) / 2
+                || MapX + (MainWidth + 1) / 2 >= x
+                || y >= MapY - (MainHeight + 1) / 2
+                || MapY + (MainHeight + 1) / 2 >= y;
+        }
+
+        #region ユニット
+
+        /// <summary>
+        /// ユニットを1マス分描画する（陣営枠、ユニット画像、描画モード、行動済み、地形の線）。
+        /// </summary>
+        private void DrawUnit(SKCanvas target, MapCell cell, Unit u, SKRect dest, bool useOrigColor = false)
+        {
+            using (var image = CreateUnitImage(cell, u, useOrigColor))
+            {
+                target.DrawBitmap(image, dest);
+            }
+        }
+
+        private SKBitmap CreateUnitImage(MapCell cell, Unit u, bool useOrigColor = false)
+        {
+            var px = ScreenLayout.CellPx;
+            var image = new SKBitmap(px, px, SKColorType.Bgra8888, SKAlphaType.Premul);
+            var rect = SKRect.Create(0, 0, px, px);
+            var emitLight = Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !useOrigColor && SafeFeature(u, "発光");
+
+            SKBitmap unitImage = null;
+            try
+            {
+                unitImage = Images.GetTransparent(u.CurrentForm().CurrentBitmap());
+            }
+            catch
+            {
+                // 画像の解決に失敗した場合は画像なしとして扱う
+            }
+
+            using (var canvas = new SKCanvas(image))
+            {
+                canvas.Clear(SKColors.Transparent);
+                var frame = UnitFrames.ForParty(u.Party0);
+                if (frame != null)
+                {
+                    canvas.DrawBitmap(frame, rect);
+                }
+                if (unitImage != null && !emitLight)
+                {
+                    canvas.DrawBitmap(unitImage, rect);
+                }
+                else if (unitImage == null)
+                {
+                    renderer.DrawUnitInitial(canvas, u.Nickname0 ?? u.Name, rect);
+                }
+            }
+
+            if (!useOrigColor && !Map.MapDrawIsMapOnly)
+            {
+                image = ImageFilters.ApplyDrawMode(image, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+                if (emitLight && unitImage != null)
+                {
+                    using (var canvas = new SKCanvas(image))
+                    {
+                        canvas.DrawBitmap(unitImage, rect);
+                    }
+                }
+            }
+
+            using (var canvas = new SKCanvas(image))
+            using (var paint = new SKPaint { Color = UnitMaskColor })
+            {
+                if (u.Action <= 0 && !SafeFeature(u, "地形ユニット"))
+                {
+                    canvas.DrawRect(rect, paint);
+                }
+                paint.Color = SKColors.Black;
+                paint.Style = SKPaintStyle.Stroke;
+                switch (u.Area ?? "")
+                {
+                    case "空中":
+                        canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
+                        break;
+                    case "水中":
+                        canvas.DrawLine(0, 3.5f, 31, 3.5f, paint);
+                        break;
+                    case "地中":
+                        canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
+                        canvas.DrawLine(0, 3.5f, 31, 3.5f, paint);
+                        break;
+                    case "宇宙":
+                        if (cell?.Terrain?.Class == "月面")
+                        {
+                            canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
+                        }
+                        break;
+                }
+            }
+            return image;
+        }
+
+        private static bool SafeFeature(Unit u, string feature)
+        {
+            try
+            {
+                return u.IsFeatureAvailable(feature);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void PaintUnitBitmap(Unit u, string smode = "")
         {
-            Present();
+            if (!IsInsideWindow(u.x, u.y))
+            {
+                return;
+            }
+            var buffer = smode == "リフレッシュ無し" && ScreenIsSaved ? mainBufferBack : mainBuffer;
+            using (var canvas = new SKCanvas(buffer))
+            {
+                var dest = SKRect.Create(MapToPixelX(u.x), MapToPixelY(u.y), ScreenLayout.CellPx, ScreenLayout.CellPx);
+                DrawUnit(canvas, Map.MapData[u.x, u.y], u, dest);
+            }
+            if (smode != "リフレッシュ無し")
+            {
+                UpdateScreen();
+            }
         }
 
         public void EraseUnitBitmap(int X, int Y, bool do_refresh = true)
         {
+            if (!IsInsideWindow(X, Y))
+            {
+                return;
+            }
+            if (IsPictureVisible)
+            {
+                return;
+            }
+            SaveScreen();
+            EraseMapPoint(X, Y);
             if (do_refresh)
             {
-                Present();
+                UpdateScreen();
             }
+        }
+
+        private void EraseMapPoint(int X, int Y)
+        {
+            if (backgroundBuffer == null)
+            {
+                return;
+            }
+            var dest = SKRect.Create(MapToPixelX(X), MapToPixelY(Y), ScreenLayout.CellPx, ScreenLayout.CellPx);
+            var source = SKRect.Create((X - 1) * ScreenLayout.CellPx, (Y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
+            foreach (var buffer in new[] { mainBuffer, mainBufferBack })
+            {
+                using (var canvas = new SKCanvas(buffer))
+                {
+                    canvas.DrawBitmap(backgroundBuffer, source, dest);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移動アニメーションの1コマ。表示用バッファの上にユニット画像を重ねて表示する。
+        /// </summary>
+        private void PresentMovingUnit(SKBitmap unitImage, int xx, int yy)
+        {
+            lock (renderLock)
+            {
+                using (var canvas = new SKCanvas(displayBuffer))
+                {
+                    canvas.Clear(SKColors.Black);
+                    canvas.DrawBitmap(mainBuffer, 0, 0);
+                    canvas.DrawBitmap(unitImage, xx, yy);
+                }
+            }
+            Present();
+        }
+
+        private void WaitFrame(ref int startTime, int waitTime)
+        {
+            if (waitTime <= 0)
+            {
+                return;
+            }
+            int now;
+            do
+            {
+                Sleep(1);
+                now = Environment.TickCount;
+            }
+            while (startTime + waitTime > now);
+            startTime = now;
         }
 
         public void MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division = 2)
         {
-            // TODO 移動アニメーション
-            Present();
+            var waitTime = wait_time0 / division;
+            var startTime = Environment.TickCount;
+            SaveScreen();
+            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
+            {
+                var xx = MapToPixelX(x1);
+                var yy = MapToPixelY(y1);
+                if (ReferenceEquals(u, Map.MapDataForUnit[x1, y1]))
+                {
+                    EraseUnitBitmap(x1, y1, false);
+                }
+
+                // 長い方の軸を先に移動し、次に短い方の軸を移動する
+                var horizontalFirst = Math.Abs(x2 - x1) > Math.Abs(y2 - y1);
+                var steps = new[]
+                {
+                    (horizontal: horizontalFirst, count: division * Math.Max(Math.Abs(x2 - x1), Math.Abs(y2 - y1))),
+                    (horizontal: !horizontalFirst, count: division * Math.Min(Math.Abs(x2 - x1), Math.Abs(y2 - y1))),
+                };
+                foreach (var (horizontal, count) in steps)
+                {
+                    var vx = horizontal ? (x2 > x1 ? 1 : -1) : 0;
+                    var vy = horizontal ? 0 : (y2 > y1 ? 1 : -1);
+                    for (var i = 1; i <= count; i++)
+                    {
+                        xx += ScreenLayout.CellPx * vx / division;
+                        yy += ScreenLayout.CellPx * vy / division;
+                        PresentMovingUnit(unitImage, xx, yy);
+                        WaitFrame(ref startTime, waitTime);
+                    }
+                }
+            }
+            ScreenIsSaved = false;
         }
 
         public void MoveUnitBitmap2(Unit u, int wait_time0, int division = 2)
         {
-            Present();
-        }
-
-        public void DieAnimation(Unit u)
-        {
-            Present();
-        }
-
-        public void ExplodeAnimation(string tsize, int tx, int ty)
-        {
-            Present();
-        }
-
-        public void SaveCursorPos()
-        {
-        }
-
-        public void MoveCursorPos(string cursor_mode, Unit t = null)
-        {
-        }
-
-        public void RestoreCursorPos()
-        {
-        }
-
-        #region 画像・文字列描画（Paint 系コマンド）
-
-        // TODO 画像・文字列・図形の描画コマンド。現状は描画しない
-
-        public PaintFont CurrentPaintFont { get; private set; } = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 16, Bold = true };
-        public Color CurrentPaintColor { get; private set; } = Color.White;
-
-        public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
-        {
-            return true;
-        }
-
-        public void DrawString(string msg, int X, int Y, bool without_cr = false)
-        {
-        }
-
-        public void DrawSysString(int X, int Y, string msg, bool without_refresh = false)
-        {
-        }
-
-        public SizeF MeasureString(string msg)
-        {
-            var size = renderer.MeasureText(msg);
-            return new SizeF(size.Width, size.Height);
-        }
-
-        public void ResetDrawString()
-        {
-            CurrentPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 16, Bold = true };
-            CurrentPaintColor = Color.White;
-        }
-
-        public void SetDrawString(DrawStringMode mode)
-        {
-        }
-
-        public void SetDrawFont(DrawFontOption option)
-        {
-            CurrentPaintFont = new PaintFont
+            var waitTime = wait_time0 / division;
+            var startTime = Environment.TickCount;
+            SaveScreen();
+            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
             {
-                Name = option.FontFamily,
-                Size = option.Size,
-                Bold = option.Bold,
-                Italic = option.Italic,
-            };
-            CurrentPaintColor = option.Color;
-        }
-
-        public void UpdateBaseX(int newX)
-        {
-        }
-
-        public void UpdateBaseY(int newY)
-        {
-        }
-
-        public void SaveScreen()
-        {
-            ScreenIsSaved = true;
-        }
-
-        public void ClearPicture()
-        {
-        }
-
-        public void ClearPicture2(int x1, int y1, int x2, int y2)
-        {
-        }
-
-        public void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle)
-        {
-        }
-
-        public void CircleCmd(ScreanDrawOption option, int x1, int y1, int rad)
-        {
-        }
-
-        public void OvalCmd(ScreanDrawOption option, int x1, int y1, int rad, float oval_ratio)
-        {
-        }
-
-        public void LineCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2)
-        {
-        }
-
-        public void BoxCmd(ScreanDrawOption option, int x1, int y1, int x2, int y2)
-        {
-        }
-
-        public void PSetCmd(ScreanDrawOption option, int x1, int y1)
-        {
-        }
-
-        public void PolygonCmd(ScreanDrawOption option, Point[] points)
-        {
-        }
-
-        #endregion
-
-        #region IGUIStatus
-
-        public Unit DisplayedUnit { get; set; }
-        public Pilot DisplayedPilot { get; set; }
-
-        public void DisplayGlobalStatus()
-        {
-            State.StatusLines = new List<string>
-            {
-                "ターン " + src.Turn,
-                "資金 " + src.Money,
-            };
-            Present();
-        }
-
-        public void DisplayUnitStatus(Unit u, Pilot p = null)
-        {
-            DisplayedUnit = u;
-            DisplayedPilot = p;
-            var lines = new List<string>();
-            try
-            {
-                lines.Add(u.Nickname0);
-                lines.Add("HP " + u.HP + "/" + u.MaxHP);
-                lines.Add("EN " + u.EN + "/" + u.MaxEN);
-                var pilot = p ?? u.MainPilot();
-                if (pilot != null)
+                Map.SearchMoveRoute(u.x, u.y, out IList<int> routeX, out IList<int> routeY);
+                if (routeX.Count == 0)
                 {
-                    lines.Add("");
-                    lines.Add(pilot.get_Nickname(false));
-                    lines.Add("レベル " + pilot.Level);
-                    lines.Add("気力 " + pilot.Morale);
+                    return;
+                }
+                var xx = MapToPixelX(routeX.Last());
+                var yy = MapToPixelY(routeY.Last());
+                for (var i = routeX.Count - 2; i >= 0; i--)
+                {
+                    var vx = MapToPixelX(routeX[i]) - xx;
+                    var vy = MapToPixelY(routeY[i]) - yy;
+                    for (var j = 0; j < division; j++)
+                    {
+                        xx += vx / division;
+                        yy += vy / division;
+                        PresentMovingUnit(unitImage, xx, yy);
+                        WaitFrame(ref startTime, waitTime);
+                    }
                 }
             }
-            catch
-            {
-                // データ不備時は取得できた分だけ表示する
-            }
-            State.StatusLines = lines;
-            Present();
-        }
-
-        public void DisplayPilotStatus(Pilot p)
-        {
-            DisplayedPilot = p;
-            State.StatusLines = new List<string>
-            {
-                p.get_Nickname(false),
-                "レベル " + p.Level,
-                "気力 " + p.Morale,
-            };
-            Present();
-        }
-
-        public void InstantUnitStatusDisplay(int X, int Y)
-        {
-            var u = Map.UnitAtPoint(X, Y);
-            if (u != null)
-            {
-                DisplayUnitStatus(u);
-            }
-        }
-
-        public void ClearUnitStatus()
-        {
-            DisplayedUnit = null;
-            DisplayedPilot = null;
-            State.StatusLines = new List<string>();
-            Present();
+            ScreenIsSaved = false;
         }
 
         #endregion
+
+        public void DisplayGlobalMap()
+        {
+            int mwidth, mheight;
+            if (Map.MapWidth > Map.MapHeight)
+            {
+                mwidth = 300;
+                mheight = 300 * Map.MapHeight / Map.MapWidth;
+            }
+            else
+            {
+                mheight = 300;
+                mwidth = 300 * Map.MapWidth / Map.MapHeight;
+            }
+            using (var whole = NewBuffer(MapPWidth, MapPHeight))
+            {
+                using (var canvas = new SKCanvas(whole))
+                {
+                    if (backgroundBuffer != null)
+                    {
+                        canvas.DrawBitmap(backgroundBuffer, 0, 0);
+                    }
+                    for (var x = 1; x <= Map.MapWidth; x++)
+                    {
+                        for (var y = 1; y <= Map.MapHeight; y++)
+                        {
+                            var u = Map.MapDataForUnit[x, y];
+                            if (u != null)
+                            {
+                                DrawUnit(canvas, Map.MapData[x, y], u,
+                                    SKRect.Create(ScreenLayout.CellPx * (x - 1), ScreenLayout.CellPx * (y - 1), ScreenLayout.CellPx, ScreenLayout.CellPx));
+                            }
+                        }
+                    }
+                }
+                lock (renderLock)
+                {
+                    using (var canvas = new SKCanvas(displayBuffer))
+                    using (var image = SKImage.FromBitmap(whole))
+                    {
+                        canvas.Clear(SKColors.Black);
+                        canvas.DrawImage(image,
+                            SKRect.Create(0, 0, whole.Width, whole.Height),
+                            SKRect.Create((MainPWidth - mwidth) / 2, (MainPHeight - mheight) / 2, mwidth, mheight),
+                            new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear));
+                    }
+                }
+            }
+            Present();
+
+            // 味方ユニット数、敵ユニット数のカウント
+            var num = 0;
+            var num2 = 0;
+            foreach (Unit u in SRC.UList.Items)
+            {
+                if (u.Status == "出撃" || u.Status == "格納")
+                {
+                    if (u.Party0 == "味方" || u.Party0 == "ＮＰＣ")
+                    {
+                        num++;
+                    }
+                    else
+                    {
+                        num2++;
+                    }
+                }
+            }
+
+            // 各ユニット数の表示
+            var prev_mode = AutoMessageMode;
+            AutoMessageMode = false;
+            OpenMessageForm(u1: null, u2: null);
+            DisplayMessage("システム", "味方ユニット： " + num + ";" + "敵ユニット  ： " + num2, "");
+            CloseMessageForm();
+            AutoMessageMode = prev_mode;
+
+            // 画面を元に戻す
+            RefreshScreen();
+        }
     }
 }
