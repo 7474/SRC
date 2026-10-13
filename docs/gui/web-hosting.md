@@ -48,6 +48,36 @@ SRC#Web（ブラウザ版）は静的ファイルだけで動くため、どこ�
 | `allowUserCatalogs` | `true` | 利用者がカタログの URL を追加できるか。URL の `catalog`・`archive` パラメータも、これが `true` のときだけ使える |
 | `start` | なし | 開いたらすぐに始めるシナリオ（カタログの `id`）。シナリオ 1 本だけを配信するサイト向け |
 | `language` | なし（日本語） | 表示言語の既定。対応言語のカルチャ名（`ja`・`en`・`zh-Hans` など 15 の言語）か `auto`。利用者が画面で選んだ言語が優先する（[多言語対応](../i18n.md#srcweb)） |
+| `errorReporting` | なし（送らない） | エラーの収集。下の「エラーの収集」を参照 |
+
+### エラーの収集
+
+`errorReporting.mackerel` を書くと、エラーが起きたときだけ、その内容を [Mackerel のトレース](https://mackerel.io/ja/docs/entry/tracing/guide/client-token)（クライアントトークン）へ OpenTelemetry のトレース（OTLP/HTTP JSON）として送ります。書かなければ何も送りません。
+
+```json
+{
+  "errorReporting": {
+    "mackerel": {
+      "clientToken": "（Mackerel のクライアントトークン）",
+      "serviceName": "srcsharp-web"
+    }
+  }
+}
+```
+
+| 項目 | 既定値 | 内容 |
+|---|---|---|
+| `clientToken` | なし | Mackerel のクライアントトークン（`X-Mackerel-Client-Token` ヘッダで送る）。無ければ送らない |
+| `serviceName` | `srcsharp-web` | トレースのサービス名（`service.name`） |
+| `endpoint` | `https://otlp-vaxila.mackerelio.com/v1/traces` | 送り先 |
+
+- 送るエラー: 未処理の例外・Promise の reject・`console.error`（.NET の例外や `[MONO]` の出力を含む）、ゲームの例外、シナリオのエラーメッセージ（`ErrorMessage`）
+- 1 つのエラーを 1 つのスパン（状態はエラー）にし、次を付けます
+  - 直前のコンソールのログ（最大 30 件）をスパンのイベント `log` に、エラーの内容をイベント `exception` に
+  - 実行中のシナリオの行（`srcweb.scenario.line`、`ファイル名:行番号 行の内容`）と画面の状態（`srcweb.screen`）
+  - ページの URL（`url.full`）とブラウザ（`user_agent.original`）。`deployment.environment.name` はサイトのホスト名
+- 同じエラーは 1 度だけ、1 回の読み込みで最大 10 件まで送ります
+- クライアントトークンはページから読めます。Mackerel 側でトレースの投稿にしか使えない権限ですが、公開するサイトに置く前に [クライアントトークンの説明](https://mackerel.io/ja/docs/entry/tracing/guide/client-token) を確認してください
 
 ## カタログ（catalog.json）
 

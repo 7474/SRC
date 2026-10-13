@@ -658,7 +658,13 @@ else
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
-        session.Game.UnhandledException += (s, e) => Console.Error.WriteLine(e.Exception);
+        session.Game.UnhandledException += (s, e) =>
+        {
+            Console.Error.WriteLine(e.Exception);
+            host.ReportError(e.Exception.GetType().FullName, e.Exception.Message, e.Exception.ToString());
+        };
+        // イベントエラーなど、ゲームが出すエラーのダイアログも送る（シナリオの行は errorreport.js が添える）
+        session.GUI.ErrorShown += message => host.ReportError("SRC.ErrorMessage", message, "");
         WebInterop.Attach("screen", host, session);
         session.Start(evePath);
         watch = new System.Threading.Timer(_ =>

@@ -9,6 +9,8 @@
     <link rel="preload" id="webassembly" />
     <script type="importmap"></script>
     <link rel="stylesheet" href="css/app.css" />
+    <!-- エラーの収集（srcweb.json の errorReporting）。起動前のエラーも拾うため最初に読み込む -->
+    <script src="js/errorreport.js"></script>
     <!-- GitHub Pages などヘッダを設定できない静的ホスティングで、クロスオリジン分離（SharedArrayBuffer）を有効にする -->
     <script src="coi-serviceworker.js"></script>
     <script src="js/store.js"></script>
@@ -86,17 +88,19 @@
             }
             (async () => {
                 let text = bootText;
-                if (text.setting === '') {
-                    // 利用者が選んでいなければ、サイトの設定（srcweb.json の language）を既定にする
-                    try {
-                        const response = await fetch('srcweb.json', { cache: 'no-cache' });
-                        const language = response.ok ? ((await response.json()).language ?? '').trim() : '';
-                        if (language !== '') {
-                            text = bootText.apply(language);
-                        }
-                    } catch {
-                        // サイトの設定が無い・読めない
-                    }
+                let site = {};
+                try {
+                    const response = await fetch('srcweb.json', { cache: 'no-cache' });
+                    site = response.ok ? await response.json() : {};
+                } catch {
+                    // サイトの設定が無い・読めない
+                }
+                // エラーの収集（設定が無ければ送らない）
+                globalThis.srcwebErrorReporting?.configure(site.errorReporting?.mackerel);
+                // 利用者が選んでいなければ、サイトの設定（srcweb.json の language）を既定にする
+                const language = (site.language ?? '').trim();
+                if (text.setting === '' && language !== '') {
+                    text = bootText.apply(language);
                 }
                 // 表示言語は環境変数で .NET に渡す（WebLocalization.cs）。マルチスレッドの .NET は起動前に JS とやりとりできないため
                 Blazor.start({

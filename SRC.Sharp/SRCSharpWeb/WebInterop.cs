@@ -31,6 +31,9 @@ namespace SRCSharpWeb
         [JSImport("setTitle", ModuleName)]
         internal static partial void SetDocumentTitle(string title);
 
+        [JSImport("reportError", ModuleName)]
+        internal static partial void ReportError(string type, string message, string stack);
+
         [JSImport("showInput", ModuleName)]
         internal static partial Task<string> ShowInput(string title, string message, string value, string ok, string cancel);
 

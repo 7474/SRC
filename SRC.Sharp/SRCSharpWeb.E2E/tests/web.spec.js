@@ -320,6 +320,42 @@ test('URL の archive で任意の zip を直接始める', async ({ page }) => 
   await expect.poll(() => debugState(page)).toContain('url-');
   await expectAdvancesWithEnter(page);
 });
+
+test('エラーは直前のログとシナリオの行を付けて OTLP で送る', async ({ page }) => {
+  const reports = [];
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', async route => {
+    const site = await (await route.fetch()).json().catch(() => ({}));
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ ...site, errorReporting: { mackerel: { clientToken: 'test-token', endpoint: 'otlp-test/v1/traces' } } }),
+    });
+  });
+  await page.route('**/otlp-test/v1/traces', route => {
+    reports.push({ headers: route.request().headers(), body: route.request().postDataJSON() });
+    return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+  });
+
+  await page.goto('./?play=battle-basic');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+  await page.evaluate(() => {
+    console.log('エラーの前のログ');
+    console.error('E2E のエラー');
+  });
+  await expect.poll(() => reports.length).toBeGreaterThan(0);
+
+  const report = reports.find(r => JSON.stringify(r.body).includes('E2E のエラー'));
+  expect(report).toBeTruthy();
+  expect(report.headers['x-mackerel-client-token']).toBe('test-token');
+  const span = report.body.resourceSpans[0].scopeSpans[0].spans[0];
+  const attribute = key => span.attributes.find(a => a.key === key)?.value.stringValue;
+  expect(attribute('srcweb.scenario.line')).toContain('catalog-battle-basic');
+  expect(span.status.code).toBe(2);
+  expect(span.events.map(e => e.name)).toContain('exception');
+  expect(JSON.stringify(span.events)).toContain('エラーの前のログ');
+});
 });
 
 test('システムメニューから戻るときは確認し、「いいえ」ならプレイを続ける', async ({ page }, testInfo) => {

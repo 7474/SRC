@@ -39,6 +39,12 @@ namespace SRCSharpWeb
             uiActions.Enqueue(action);
         }
 
+        /// <summary>エラーを収集先に送る（srcweb.json の errorReporting）。任意のスレッドから呼べる</summary>
+        public void ReportError(string type, string message, string stack)
+        {
+            Post(() => WebInterop.ReportError(type ?? "", message ?? "", stack ?? ""));
+        }
+
         /// <summary>描画の機会ごとに UI 側のスレッドで呼ばれる（音声の送り出しなど）</summary>
         public event Action Flushed;
         private static readonly SKImageInfo FrameInfo
