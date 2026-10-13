@@ -29,7 +29,7 @@ Uso:
       Depurador (Debug Adapter Protocol, stdio)
 
 Opções comuns:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Idioma de exibição. Também pode ser definido pela variável de ambiente SRCSHARP_LANG (a opção tem prioridade). O padrão é ja; auto segue a configuração do SO
 </value>
   </data>

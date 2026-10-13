@@ -29,7 +29,7 @@
       디버거(Debug Adapter Protocol, 표준 입출력)
 
 공통 옵션:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       표시 언어. 환경 변수 SRCSHARP_LANG으로도 지정할 수 있습니다(옵션 우선). 기본값은 ja, auto는 OS 설정을 따릅니다
 </value>
   </data>

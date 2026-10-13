@@ -29,7 +29,7 @@ Kullanım:
       Hata ayıklayıcı (Debug Adapter Protocol, stdio)
 
 Ortak seçenekler:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Görüntüleme dili. SRCSHARP_LANG ortam değişkeniyle de ayarlanabilir (seçenek önceliklidir). Varsayılan ja; auto işletim sistemi ayarını kullanır
 </value>
   </data>

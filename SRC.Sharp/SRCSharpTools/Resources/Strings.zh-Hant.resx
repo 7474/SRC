@@ -29,7 +29,7 @@
       偵錯器（Debug Adapter Protocol，標準輸入輸出）
 
 共通選項:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       顯示語言。也可透過環境變數 SRCSHARP_LANG 指定（選項優先）。預設為 ja，auto 依循作業系統設定
 </value>
   </data>

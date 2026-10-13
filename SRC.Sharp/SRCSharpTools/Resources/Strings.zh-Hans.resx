@@ -29,7 +29,7 @@
       调试器（Debug Adapter Protocol，标准输入输出）
 
 通用选项:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       显示语言。也可通过环境变量 SRCSHARP_LANG 指定（选项优先）。默认为 ja，auto 跟随系统设置
 </value>
   </data>

@@ -112,6 +112,8 @@ test('表示言語を英語にし、選択欄で日本語に戻す', async ({ pa
   await expect(page.getByRole('heading', { name: 'Bundled scenarios' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Added archives' })).toBeVisible();
   await expect(page.locator('#language')).toHaveValue('en');
+  // 対応言語（SRCCore/UiLanguages.cs）と「自動」
+  await expect(page.locator('#language option')).toHaveCount(16);
   expect(await page.evaluate(() => document.documentElement.lang)).toBe('en');
 
   await page.locator('#language').selectOption('ja');

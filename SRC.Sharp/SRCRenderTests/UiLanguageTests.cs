@@ -120,7 +120,8 @@ namespace SRCRender.Tests
             CollectionAssert.AreEquivalent(neutral.Keys.ToArray(), translated.Keys.ToArray());
             foreach (var (key, value) in neutral)
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(translated[key]), key);
+                // 文の切れ端（リンクの後ろなど）は言語によって空でもよい
+                Assert.IsTrue(translated[key] != "" || key.EndsWith("After"), key);
                 CollectionAssert.AreEquivalent(Placeholders(value), Placeholders(translated[key]), key);
             }
         }

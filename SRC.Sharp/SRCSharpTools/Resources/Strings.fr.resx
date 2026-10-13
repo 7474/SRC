@@ -29,7 +29,7 @@ Utilisation :
       Débogueur (Debug Adapter Protocol, entrée/sortie standard)
 
 Options communes :
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Langue d'affichage. Peut aussi être définie via la variable d'environnement SRCSHARP_LANG (l'option est prioritaire). Par défaut : ja ; auto suit le réglage du système
 </value>
   </data>

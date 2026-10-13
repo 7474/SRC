@@ -29,7 +29,7 @@
       デバッガ（Debug Adapter Protocol、標準入出力）
 
 共通のオプション:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       表示の言語。環境変数 SRCSHARP_LANG でも指定できる（オプションが優先）。既定は ja、auto は OS の設定に従う
 </value>
   </data>

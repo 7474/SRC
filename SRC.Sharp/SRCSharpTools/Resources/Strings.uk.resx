@@ -29,7 +29,7 @@
       Налагоджувач (Debug Adapter Protocol, stdio)
 
 Спільні параметри:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Мова інтерфейсу. Також задається змінною середовища SRCSHARP_LANG (параметр має пріоритет). Типово ja; auto — за налаштуваннями ОС
 </value>
   </data>

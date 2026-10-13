@@ -29,7 +29,7 @@ Uso:
       Debugger (Debug Adapter Protocol, stdio)
 
 Opzioni comuni:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Lingua di visualizzazione. Si può impostare anche con la variabile d'ambiente SRCSHARP_LANG (l'opzione ha la precedenza). Il predefinito è ja; auto segue l'impostazione del sistema operativo
 </value>
   </data>

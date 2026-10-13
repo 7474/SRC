@@ -29,7 +29,7 @@
       Отладчик (Debug Adapter Protocol, stdio)
 
 Общие параметры:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Язык интерфейса. Также задаётся переменной среды SRCSHARP_LANG (параметр важнее). По умолчанию ja; auto — по настройкам ОС
 </value>
   </data>

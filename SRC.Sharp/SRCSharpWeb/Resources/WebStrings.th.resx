@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>กำลังโหลด…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>การเริ่มต้นล้มเหลว: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>ซีนาริโอจบแล้ว</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>กลับไปหน้าเลือกซีนาริโอ</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>ซีนาริโอที่ลงทะเบียนไว้</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>ไม่มี</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>อาร์ไคฟ์ที่เพิ่มไว้</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>ไฟล์ zip ของซีนาริโอที่เพิ่มจะถูกบันทึกไว้ในเบราว์เซอร์นี้ และเลือกได้อีกในครั้งถัดไป</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>เล่นต่อจากเซฟ</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>ส่งออก</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>นำเข้าเซฟที่ส่งออกไว้ (.srcs, .srcq) ได้</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>เริ่มใหม่</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>กลับ</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>กำลังเพิ่ม {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>กำลังโหลด {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>กำลังแตกไฟล์ {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>ไม่พบซีนาริโอ (.eve) ใน {0}</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>ไม่สามารถโหลด {0} ได้: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>ภาษา</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>อัตโนมัติ</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>เปิดไฟล์</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>ชื่อไฟล์ที่จะบันทึก</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>ป้อนข้อมูล</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>จบแล้ว</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>เมนูระบบ</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>กลับไปหน้าเลือกซีนาริโอ…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>สลับโหมดเต็มหน้าจอ</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>แสดง/ซ่อนปุ่มเสมือน</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>ยืนยัน</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>ออกจากเกมและกลับไปหน้าเลือกซีนาริโอหรือไม่?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>ความคืบหน้าที่ยังไม่ได้เซฟจะหายไป</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>ใช่</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>ไม่</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>ลิงก์สำหรับเปิดซีนาริโอนี้โดยตรง</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>ลิงก์</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>นำแคตตาล็อกนี้ออก</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>เพิ่มแคตตาล็อก</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>เพิ่ม URL ของแคตตาล็อก (catalog.json) จากเว็บไซต์ที่เผยแพร่ซีนาริโอได้ เว็บไซต์ต้นทางต้องอนุญาต CORS</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>เพิ่ม</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>ไฟล์ zip ของแอสเซ็ต (เช่น ชุดกราฟิกทั่วไป) ที่เพิ่มจะถูกนำไปใช้ซ้อนกับทุกซีนาริโอ</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>แอสเซ็ต</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>ไม่พบซีนาริโอ "{0}" ในแคตตาล็อก</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>ไม่สามารถอ่านแคตตาล็อก {0} ได้: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>กำลังแตกไฟล์แอสเซ็ต {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>ไม่พบแอสเซ็ต "{0}" ในแคตตาล็อก</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>กำลังโหลดแอสเซ็ต {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>ไม่สามารถโหลดแอสเซ็ต {0} ได้: {1}</value>
+  </data>
+</root>

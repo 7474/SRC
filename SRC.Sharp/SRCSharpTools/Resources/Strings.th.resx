@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: เครื่องมือช่วยสร้างข้อมูลและซีนาริโอของ SRC#
+
+วิธีใช้:
+  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์]
+      ตรวจสอบข้อมูล (*.txt) และอีเวนต์ (*.eve) หากพบปัญหาจะจบด้วยโค้ด 1
+  srcsharp play &lt;ไฟล์อีเวนต์&gt; [--script ไฟล์.play] [--out ไดเรกทอรี] [--app-path โฟลเดอร์ SRC] [--steps จำนวน]
+      รันซีนาริโอโดยไม่แสดงหน้าจอ หากไม่ระบุ --script จะเลื่อนข้อความและเลือกตัวเลือกแรกไปเรื่อย ๆ
+  srcsharp balance &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format md|csv] [--output ไฟล์]
+      แสดงรายการค่าสถานะในข้อมูลยูนิตและค่าที่ผิดปกติ
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      ดีบักเกอร์ (Debug Adapter Protocol, stdio)
+
+ตัวเลือกทั่วไป:
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
+      ภาษาที่แสดง ตั้งค่าผ่านตัวแปรสภาพแวดล้อม SRCSHARP_LANG ได้เช่นกัน (ตัวเลือกมีลำดับความสำคัญสูงกว่า) ค่าเริ่มต้นคือ ja ส่วน auto จะใช้ตามการตั้งค่าของ OS
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>ไม่รู้จักคำสั่ง: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>ไม่รู้จักภาษา: {0} (ต้องเป็นหนึ่งใน {1}) จะแสดงเป็นภาษาญี่ปุ่นแทน</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>ตรวจสอบ {0} ไฟล์ พบปัญหา {1} รายการ</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>โปรดระบุไฟล์อีเวนต์ 1 ไฟล์</value>
+  </data>
+</root>

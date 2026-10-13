@@ -29,7 +29,7 @@ Uso:
       Depurador (Debug Adapter Protocol, stdio)
 
 Opciones comunes:
-  --lang <ja|en|zh-Hans|...|auto>
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Idioma de la interfaz. También se puede definir con la variable de entorno SRCSHARP_LANG (la opción tiene prioridad). Por defecto es ja; auto sigue la configuración del SO
 </value>
   </data>
