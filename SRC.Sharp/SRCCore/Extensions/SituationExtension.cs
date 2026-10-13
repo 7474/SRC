@@ -9,6 +9,12 @@ namespace SRCCore.Extensions
 {
     public static class SituationExtension
     {
+        /// <summary>
+        /// 相手限定メッセージ（(対ザコ) など）を汎用メッセージと等確率で選ぶ Option。
+        /// 指定しなければ元の SRC と同じく、相手限定メッセージを 50% の確率で使う。
+        /// </summary>
+        public const string TargetMessageEvenOption = "相手限定メッセージ等確率";
+
         // ユニット u のシチュエーション msg_situation におけるメッセージを選択
         public static T SelectMessage<T>(this IList<T> Items, SRC SRC, string msg_situation, Unit u = null, bool ignore_condition = false)
             where T : ISituationItem
@@ -344,7 +350,7 @@ namespace SRCCore.Extensions
                     {
                         return list.Dice();
                     }
-                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB6 互換）
+                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB6 互換。Option「相手限定メッセージ等確率」では等確率）
                     targetList = list;
                 }
             }
@@ -391,6 +397,11 @@ namespace SRCCore.Extensions
                 var list = list0
                     .Where(m => situations.Any(s => m.Situation == s || sub_situations.Any(subs => m.Situation == s + subs)))
                     .ToList();
+                // Option「相手限定メッセージ等確率」: 相手限定メッセージを汎用メッセージと同じ候補として、1 件ずつ等確率で選ぶ（#555）
+                if (targetList != null && SRC.Expression.IsOptionDefined(TargetMessageEvenOption))
+                {
+                    return list.Concat(targetList).ToList().Dice();
+                }
                 // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB6互換)
                 if (targetList != null)
                 {
