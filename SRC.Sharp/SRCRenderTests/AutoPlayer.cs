@@ -274,7 +274,7 @@ namespace SRCRender.Tests
                     {
                         var hp = hotPoint.Value;
                         var (hx, hy) = (hp.Left + hp.Width / 2f, hp.Top + hp.Height / 2f);
-                        ListChosen?.Invoke("ホットポイント", hp.Name);
+                        ListChosen?.Invoke(HotPointCaption, hp.Name);
                         gui.PointerMoved(hx, hy);
                         gui.PointerPressed(hx, hy, GuiButton.Left);
                         gui.PointerReleased(hx, hy, GuiButton.Left);
@@ -378,6 +378,27 @@ namespace SRCRender.Tests
             {
                 return null;
             }
+            // 見出し「ホットポイント」の一度だけの規則・順に選ぶ規則は、名前で選ぶ（末尾が * なら前方一致）
+            bool NameMatches(SRCCore.Events.HotPoint x, string item)
+                => item.EndsWith("*") ? (x.Name ?? "").StartsWith(item.Substring(0, item.Length - 1)) : x.Name == item;
+            for (var r = 0; r < OnceRules.Count; r++)
+            {
+                var (caption, item) = OnceRules[r];
+                var once = caption == HotPointCaption ? points.FindIndex(x => NameMatches(x, item)) : -1;
+                if (once >= 0)
+                {
+                    OnceRules.RemoveAt(r);
+                    return points[once];
+                }
+            }
+            foreach (var rule in SequenceRules.Where(x => x.Caption == HotPointCaption))
+            {
+                var item = rule.Next(x => points.Any(p => NameMatches(p, x)));
+                if (item != null)
+                {
+                    return points.First(p => NameMatches(p, item));
+                }
+            }
             foreach (var (_, item) in ListRules)
             {
                 var matched = points.FindIndex(x => (x.Name ?? "").Contains(item) || (x.Caption ?? "").Contains(item));
@@ -392,6 +413,9 @@ namespace SRCRender.Tests
             lastHotPointSignature = signature;
             return points[hotPointVisits % points.Count];
         }
+
+        /// <summary>一度だけの規則・順に選ぶ規則の見出しにこれを指定すると、ホットポイントを名前で選ぶ</summary>
+        public const string HotPointCaption = "ホットポイント";
 
         /// <summary>規則の見出しにこれを指定すると、スクリプトが描いたクリック領域（MousePoint.eve）を ID で選ぶ</summary>
         public const string MousePointCaption = "クリック";
