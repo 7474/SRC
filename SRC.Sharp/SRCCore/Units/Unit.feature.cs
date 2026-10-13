@@ -378,15 +378,17 @@ namespace SRCCore.Units
             {
                 var cloneList = colFeature.List.CloneList();
                 colFeature.Clear();
-                foreach (FeatureData fd in cloneList)
+                // 元の SRC と同じく、同じ名前の 2 つ目以降は一覧での位置（1 始まり）を付けて登録する
+                for (var i = 1; i <= cloneList.Count; i++)
                 {
+                    var fd = cloneList[i - 1];
                     if (!colFeature.ContainsKey(fd.Name))
                     {
                         colFeature.Add(fd, fd.Name);
                     }
                     else
                     {
-                        colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(colAllFeature.Count + 1));
+                        colFeature.Add(fd, fd.Name + ":" + SrcFormatter.Format(i));
                     }
                 }
             }
