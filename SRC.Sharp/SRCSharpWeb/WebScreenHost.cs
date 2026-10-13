@@ -173,6 +173,9 @@ namespace SRCSharpWeb
                 .ContinueWith(t => t.Result == null ? null : Path.Combine(dir, t.Result), TaskScheduler.Default);
         }
 
+        /// <summary>保存のダイアログでフォルダが選ばれた（セーブデータの同期の対象にする）</summary>
+        public Action<string> SaveDirectoryChosen { get; set; }
+
         public Task<string> SaveFileAsync(FileDialogRequest request)
         {
             var dir = Directory(request);
@@ -190,6 +193,7 @@ namespace SRCSharpWeb
                     {
                         file += ext;
                     }
+                    SaveDirectoryChosen?.Invoke(dir);
                     return Path.Combine(dir, file);
                 }, TaskScheduler.Default);
         }
