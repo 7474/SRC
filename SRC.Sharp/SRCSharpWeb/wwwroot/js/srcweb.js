@@ -295,20 +295,6 @@ function buildVirtualKeys(gui) {
     };
 }
 
-// 表示言語の設定（SRCSharpWeb/WebLocalization.cs）。index.html の起動前の文言も同じキーを読む
-// .NET の UI 側のスレッドから同期で呼ばないよう Promise を返す
-export async function getLanguageSetting() {
-    try {
-        return localStorage.getItem('srcweb.language') ?? '';
-    } catch {
-        return '';
-    }
-}
-
-export async function getBrowserLanguage() {
-    return navigator.language ?? '';
-}
-
 // 文字入力・ファイル選択のモーダル（SRCSharpWeb/WebScreenHost.cs の IScreenDialogHost）
 // 見出し・ボタンの文言は .NET 側（Resources/WebStrings.resx）から渡す
 function modal(title, build) {

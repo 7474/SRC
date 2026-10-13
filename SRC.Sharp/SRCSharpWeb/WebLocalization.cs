@@ -1,46 +1,35 @@
 using SRCCore;
 using System;
 using System.Globalization;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// 表示言語。localStorage の srcweb.language で選ぶ（wwwroot/index.html の起動前の文言も同じ設定を読む）。
-    /// 値は SRCCore.UiLanguages のとおり。未設定・"" は日本語、"auto" はブラウザの言語（navigator.language）に従う。
+    /// 表示言語。wwwroot/index.html が localStorage の srcweb.language（無ければ srcweb.json の language）から決め、
+    /// 環境変数で渡す（マルチスレッドの .NET は起動前に JS とやりとりできないため）。値は SRCCore.UiLanguages のとおり。
     /// </summary>
-    public static partial class WebLocalization
+    public static class WebLocalization
     {
         public const string StorageKey = "srcweb.language";
 
-        /// <summary>起動時に読んだ設定（"" / "auto" / カルチャ名）</summary>
-        public static string Setting { get; private set; } = "";
+        /// <summary>使う言語のカルチャ名（index.html が決めたもの）</summary>
+        public const string LanguageVariable = "SRCWEB_LANGUAGE";
 
-        /// <summary>サイトの既定を含めて実際に使う設定</summary>
-        private static string Effective { get; set; } = "";
+        /// <summary>言語の設定（"" / "auto" / カルチャ名。サイトの既定を含む）</summary>
+        public const string SettingVariable = "SRCWEB_LANGUAGE_SETTING";
 
         /// <summary>言語の選択欄（select）に出す値</summary>
-        public static string SelectorValue => UiLanguages.SelectorValue(Effective);
-
-        // UI のスレッド以外から同期で JS を呼べないため、Promise で受け取る
-        [JSImport("getLanguageSetting", WebInterop.ModuleName)]
-        private static partial Task<string> GetLanguageSetting();
-
-        [JSImport("getBrowserLanguage", WebInterop.ModuleName)]
-        private static partial Task<string> GetBrowserLanguage();
+        public static string SelectorValue { get; private set; } = UiLanguages.Default;
 
         /// <summary>
-        /// 表示言語を決めて UI カルチャを設定する。RunAsync より前に呼ぶ。
+        /// 表示言語の UI カルチャを設定する。RunAsync より前に呼ぶ。
         /// DefaultThreadCurrentUICulture にするので、ゲームのスレッド（Web Worker）にも及ぶ。
         /// CurrentCulture（数値・日付の書式）は変えない。
-        /// 利用者が選んでいなければ、サイトの既定（srcweb.json の language）に従う。
         /// </summary>
-        public static async Task ApplyAsync(string siteDefault)
+        public static void Apply()
         {
-            Setting = await GetLanguageSetting() ?? "";
-            Effective = (string.IsNullOrWhiteSpace(Setting) ? siteDefault : Setting) ?? "";
-            var culture = CultureInfo.GetCultureInfo(UiLanguages.Resolve(Effective, await GetBrowserLanguage()));
+            SelectorValue = UiLanguages.SelectorValue(Environment.GetEnvironmentVariable(SettingVariable));
+            var culture = CultureInfo.GetCultureInfo(UiLanguages.Resolve(Environment.GetEnvironmentVariable(LanguageVariable), null));
             CultureInfo.DefaultThreadCurrentUICulture = culture;
             CultureInfo.CurrentUICulture = culture;
         }

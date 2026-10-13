@@ -131,7 +131,8 @@ namespace SRCRender.Tests
         {
             // csproj の SatelliteResourceLanguages に対応言語がすべてある
             var expected = SRCCore.UiLanguages.Supported.Select(x => x.Code).ToArray();
-            foreach (var project in new[] { "SRCRender", "SRCSharpAvalonia", "SRCSharpTools", "SRCSharpWeb", "SRCTestBlazor" })
+            // SRC#Web はサテライトアセンブリを使わず、訳をアセンブリに埋め込む（SRCSharpWeb.csproj）
+            foreach (var project in new[] { "SRCRender", "SRCSharpAvalonia", "SRCSharpTools", "SRCTestBlazor" })
             {
                 var csproj = XDocument.Load(Path.Combine(SolutionDirectory(), project, project + ".csproj"));
                 var value = csproj.Descendants("SatelliteResourceLanguages").Single().Value;

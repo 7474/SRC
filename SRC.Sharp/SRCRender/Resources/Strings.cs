@@ -8,7 +8,8 @@ namespace SRCRender.Resources
     /// </summary>
     internal static class Strings
     {
-        private static readonly ResourceManager Rm = new ResourceManager("SRCRender.Resources.Strings", typeof(Strings).Assembly);
+        // SRC#Web では訳をアプリのアセンブリに埋め込む（SRCCore.EmbeddedCultureResourceManager）
+        private static readonly ResourceManager Rm = new SRCCore.EmbeddedCultureResourceManager("SRCRender.Resources.Strings", typeof(Strings).Assembly);
 
         public static string ErrorTitle => Rm.GetString(nameof(ErrorTitle));
         public static string DataErrorLine => Rm.GetString(nameof(DataErrorLine));

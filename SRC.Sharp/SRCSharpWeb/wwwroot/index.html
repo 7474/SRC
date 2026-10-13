@@ -64,20 +64,43 @@
             } catch {
                 // localStorage を使えない
             }
-            const language = setting === '' ? 'ja'
-                : (setting.toLowerCase() === 'auto' ? match(navigator.language) : match(setting)) ?? 'ja';
-            const [loading, unsupported, preparing, error, reload] = texts[language];
-            if (language !== 'ja') {
+            const resolve = value => value === '' ? 'ja'
+                : (value.toLowerCase() === 'auto' ? match(navigator.language) : match(value)) ?? 'ja';
+            const apply = value => {
+                const language = resolve(value);
+                const [loading, unsupported, preparing, error, reload] = texts[language];
                 document.documentElement.lang = language;
                 document.getElementById('boot').textContent = loading;
                 document.getElementById('error-text').textContent = error;
                 document.querySelector('#blazor-error-ui .reload').textContent = reload;
-            }
-            return { loading, unsupported, preparing, error, reload };
+                return { setting: value, language, loading, unsupported, preparing, error, reload };
+            };
+            return { setting, resolve, apply, ...apply(setting) };
         })();
         // マルチスレッドの .NET はクロスオリジン分離が必要。coi-serviceworker が有効になる（再読み込みされる）まで起動しない
         if (self.crossOriginIsolated) {
-            Blazor.start();
+            (async () => {
+                let text = bootText;
+                if (text.setting === '') {
+                    // 利用者が選んでいなければ、サイトの設定（srcweb.json の language）を既定にする
+                    try {
+                        const response = await fetch('srcweb.json', { cache: 'no-cache' });
+                        const language = response.ok ? ((await response.json()).language ?? '').trim() : '';
+                        if (language !== '') {
+                            text = bootText.apply(language);
+                        }
+                    } catch {
+                        // サイトの設定が無い・読めない
+                    }
+                }
+                // 表示言語は環境変数で .NET に渡す（WebLocalization.cs）。マルチスレッドの .NET は起動前に JS とやりとりできないため
+                Blazor.start({
+                    configureRuntime: dotnet => {
+                        dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE', text.language);
+                        dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE_SETTING', text.setting);
+                    },
+                });
+            })();
         } else if (!window.isSecureContext || !('serviceWorker' in navigator)) {
             document.getElementById('boot').textContent = bootText.unsupported;
         } else {

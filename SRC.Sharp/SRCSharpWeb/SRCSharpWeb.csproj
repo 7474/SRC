@@ -13,11 +13,13 @@
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     <!-- Shift_JIS の zip のファイル名を読むため -->
     <InvariantGlobalization>false</InvariantGlobalization>
-    <!-- 表示言語を起動時に localStorage から選ぶ（WebLocalization.cs）。カルチャを変えるには ICU のデータをすべて読み込む -->
+    <!-- 表示言語を起動時に選ぶ（WebLocalization.cs）。カルチャを変えるには ICU のデータをすべて読み込む -->
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-    <!-- 既定（ニュートラル）の文言は日本語。英語は *.en.resx -->
+    <!-- 既定（ニュートラル）の文言は日本語。訳（*.<カルチャ名>.resx）はサテライトアセンブリにせず、このアセンブリに埋め込む。
+         マルチスレッドの WebAssembly では、Blazor がサテライトアセンブリを読み込むと「Cannot call synchronous C# methods」で起動に失敗するため。
+         SRCCore.EmbeddedCultureResourceManager が埋め込んだ訳を引く -->
     <NeutralLanguage>ja</NeutralLanguage>
-    <SatelliteResourceLanguages>ja;en;zh-Hans;zh-Hant;ko;fr;de;es;pt-BR;it;ru;pl;tr;th;uk</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>ja</SatelliteResourceLanguages>
     <!-- スレッドを使うが、プラットフォーム互換性アナライザーはマルチスレッドの WebAssembly を考慮しない -->
     <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
@@ -30,6 +32,11 @@
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.4" />
     <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
     <PackageReference Include="MeltySynth" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\WebStrings.*.resx" WithCulture="false" LogicalName="SRCSharpWeb.Resources.%(Filename).resources" />
+    <EmbeddedResource Include="..\SRCRender\Resources\Strings.*.resx" Link="Resources\SRCRender\%(Filename)%(Extension)" WithCulture="false" LogicalName="SRCRender.Resources.%(Filename).resources" />
   </ItemGroup>
 
   <ItemGroup>
@@ -80,4 +87,11 @@
     </ItemGroup>
   </Target>
 
+  <!-- 参照するプロジェクト（SRCRender）のサテライトアセンブリも配らない（SatelliteResourceLanguages はパッケージのものにしか効かない）。訳は上の EmbeddedResource で埋め込む -->
+  <Target Name="RemoveReferenceSatelliteAssemblies" AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <ReferenceSatellitePaths Remove="@(ReferenceSatellitePaths)" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(Filename)').EndsWith('.resources'))" />
+    </ItemGroup>
+  </Target>
 </Project>
