@@ -15,6 +15,9 @@ namespace SRCCore.CmdDatas
         public double dblArg { get; set; }
         public string strArg { get; set; }
 
+        // 構文解析で分けたままの引数（引用符などを除く前）。null なら strArg と同じ
+        public string RawArg { get; set; }
+
         // 引数の型
         public Expressions.ValueType argType { get; set; }
 

@@ -52,6 +52,14 @@ namespace SRCRender.Tests
             this.runner = runner;
             auto = new AutoPlayer(runner);
             auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
+            // 止まって押した位置（スクリプトが描いたクリック領域があればその ID）を記録する
+            auto.Trace = m =>
+            {
+                if (m.StartsWith("stall"))
+                {
+                    Record($"{DateTime.Now:HH:mm:ss} {m}");
+                }
+            };
         }
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
@@ -210,6 +218,26 @@ namespace SRCRender.Tests
                     }
                     auto.ListRules.Add((args[1], Rest(args, 2)));
                     break;
+                case "choose1":
+                    // 一度だけ使う規則（順に使う）。見出しに「クリック」を指定すると、スクリプトが描いたクリック領域を ID で選ぶ
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("choose1 見出し 項目");
+                    }
+                    auto.OnceRules.Add((args[1], Rest(args, 2)));
+                    break;
+                case "chooseseq":
+                    // 見出しの合うリスト（クリック領域）が出るたびに、| で区切った項目を順に選ぶ
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("chooseseq 見出し 項目1|項目2|...");
+                    }
+                    auto.SequenceRules.Add(new AutoPlayer.SequenceRule { Caption = args[1], Items = Rest(args, 2).Split('|').Select(x => x.Trim()).ToList() });
+                    break;
+                case "points":
+                    // スクリプトが描いたクリック領域の一覧を記録する（規則を書くための調査用）
+                    Record($"{DateTime.Now:HH:mm:ss} POINTS " + string.Join(" ", auto.MousePoints().Select(p => $"{p.ID}({p.X1},{p.Y1})-({p.X2},{p.Y2})")));
+                    break;
                 case "dialog":
                     PressDialog(Rest(args, 1));
                     break;
@@ -322,6 +350,8 @@ namespace SRCRender.Tests
                     && state.Menu == null && state.List == null && state.Dialog == null && state.Config == null
                     && !(state.Message.Visible && state.Message.Waiting)
                     && !GUI.IsWaitingClick
+                    // イベントの途中（インターミッションのスクリプトが描いた画面で KeyState を待つループなど）は操作を受け付ける状態ではない
+                    && !runner.Session.Game.IsBusy
                     && Src.Commands.CommandState == "ユニット選択";
             }
         }
@@ -385,6 +415,7 @@ namespace SRCRender.Tests
                     Thread.Sleep(150);
                     if (IsReady)
                     {
+                        auto.ResetLoopDetection();
                         return true;
                     }
                 }
@@ -687,7 +718,8 @@ namespace SRCRender.Tests
             }
             if (t.BossRank >= 0)
             {
-                score += 0.5 * p;
+                // ボスは撃破か一定の損傷でステージが終わることが多いので、削るだけでも重く見る
+                score = score * 2 + 0.5 * p;
             }
             return score;
         }
@@ -750,6 +782,8 @@ namespace SRCRender.Tests
                 // HP が少ないほど危険を重く見る
                 var dangerWeight = 0.2 + (1 - hpRatio);
                 var weapons = u.Weapons.Where(w => w.IsWeaponAvailable("移動後")).ToList();
+                var bosses = enemies.Where(e => e.BossRank >= 0).ToList();
+                var goals = bosses.Any() ? bosses : enemies;
                 (int, int, AttackPlan)? best = null;
                 var bestScore = double.MinValue;
                 for (var x = 1; x <= map.MapWidth; x++)
@@ -762,6 +796,8 @@ namespace SRCRender.Tests
                         }
                         var danger = Danger(enemies, x, y);
                         var nearest = enemies.Min(e => Distance(e.x, e.y, x, y));
+                        // 攻撃できないときはボスへ向かう（ボスがいなければ最も近い敵）
+                        var goal = goals.Min(e => Distance(e.x, e.y, x, y));
                         double score;
                         AttackPlan attack = null;
                         if (retreat)
@@ -788,7 +824,7 @@ namespace SRCRender.Tests
                             }
                             score = attack != null
                                 ? 10 + attack.Score * 10 - danger * dangerWeight
-                                : -nearest - danger * dangerWeight;
+                                : -goal - danger * dangerWeight;
                         }
                         if (score > bestScore)
                         {
@@ -846,21 +882,114 @@ namespace SRCRender.Tests
             }
         }
 
+        /// <summary>
+        /// 自分に使うスペシャルパワー（精神コマンド）から、いま使うものを選ぶ。
+        /// HP が減っていれば回復、敵の攻撃が届く位置で HP が減り始めていれば回避・防御を使う。回復の分の SP は残す。
+        /// </summary>
+        private string PlanSpecialPower(string unitId)
+        {
+            return script.OnGame(() =>
+            {
+                var src = script.Src;
+                var u = src.UList.Item(unitId);
+                var p = u.MainPilot();
+                if (p == null || u.IsConditionSatisfied("スペシャルパワー使用不能"))
+                {
+                    return null;
+                }
+                var candidates = p.SpecialPowerNames
+                    .Select(name => (Name: name, Data: src.SPDList.Item(name), Cost: p.SpecialPowerCost(name)))
+                    .Where(x => x.Data != null && x.Data.TargetType == "自分" && x.Cost <= p.SP)
+                    .ToList();
+                var heals = candidates.Where(x => x.Data.IsEffectAvailable("ＨＰ回復")).ToList();
+                var hpRatio = u.HP / (double)u.MaxHP;
+                if (hpRatio < 0.5)
+                {
+                    var heal = heals.Where(x => p.IsSpecialPowerUseful(x.Name)).OrderBy(x => x.Cost).FirstOrDefault();
+                    if (heal.Name != null)
+                    {
+                        return heal.Name;
+                    }
+                }
+                var enemies = src.UList.Items.Where(x => x.Status == "出撃" && IsEnemyOf(x)).ToList();
+                if (hpRatio < 0.8 && Danger(enemies, u.x, u.y) > 0)
+                {
+                    var reserve = heals.Select(x => x.Cost).DefaultIfEmpty(0).Min();
+                    var guard = candidates
+                        .Where(x => x.Data.IsEffectAvailable("絶対回避") || x.Data.IsEffectAvailable("回避強化")
+                            || x.Data.IsEffectAvailable("装甲強化") || x.Data.IsEffectAvailable("ダメージ低下")
+                            || x.Data.IsEffectAvailable("被ダメージ低下"))
+                        .Where(x => p.SP - x.Cost >= reserve && p.IsSpecialPowerUseful(x.Name))
+                        .OrderBy(x => x.Cost)
+                        .FirstOrDefault();
+                    if (guard.Name != null)
+                    {
+                        return guard.Name;
+                    }
+                }
+                return null;
+            });
+        }
+
+        /// <summary>メニューの「精神」（スペシャルパワー）から name を使う。使えたら true。</summary>
+        private bool UseSpecialPower(UnitInfo unit, string name)
+        {
+            var label = script.OnGame(() => script.Src.Expression.Term("スペシャルパワー", script.Src.UList.Item(unit.ID)));
+            if (!script.SelectMenu(label))
+            {
+                return false;
+            }
+            if (!script.WaitUntil(() => script.Runner.State.List != null && script.Runner.GUI.IsWaitingList, TimeSpan.FromSeconds(10)))
+            {
+                return false;
+            }
+            var list = script.Runner.State.List;
+            var index = Enumerable.Range(0, list.Items.Count)
+                .FirstOrDefault(i => !list.Items[i].Disabled && (list.Items[i].Text ?? "").StartsWith(name), -1);
+            if (index < 0)
+            {
+                Log($"{label}がありません: {name}");
+                script.Runner.GUI.KeyPressed(ScreenKey.Escape);
+                script.AutoUntilReady(TimeSpan.FromSeconds(30));
+                return false;
+            }
+            Log($"{label}: {name}");
+            script.ChooseListIndex(list, index);
+            script.AutoUntilReady(TimeSpan.FromMinutes(1));
+            return true;
+        }
+
         private void ActUnitSmart(UnitInfo unit)
         {
-            var hpRatio = script.OnGame(() =>
+            // 行動の前にスペシャルパワーを使う（使うとメニューが閉じるので、開き直す）
+            for (var i = 0; i < 2; i++)
+            {
+                var sp = PlanSpecialPower(unit.ID);
+                if (sp == null || !OpenUnitMenu(unit) || !UseSpecialPower(unit, sp))
+                {
+                    if (script.Runner.State.Menu != null)
+                    {
+                        script.Cancel();
+                    }
+                    break;
+                }
+            }
+            var (hpRatio, allies, spInfo) = script.OnGame(() =>
             {
                 var u = script.Src.UList.Item(unit.ID);
-                return u.HP / (double)u.MaxHP;
+                var p = u.MainPilot();
+                var spText = p == null ? "" : $" SP {p.SP}/{p.MaxSP} {string.Join(" ", p.SpecialPowerNames)}";
+                return (u.HP / (double)u.MaxHP, script.Src.UList.Items.Count(x => x.Status == "出撃" && x.Party0 == "味方"), spText);
             });
-            Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}");
+            Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}{spInfo}");
             if (!OpenUnitMenu(unit))
             {
                 Log("ユニットのメニューが出ません");
                 script.Cancel();
                 return;
             }
-            var retreat = hpRatio < RetreatRatio;
+            // 修理の手段が無いので、下がるのは他に戦える味方がいるときだけ（一人で下がっても敵が近づくのを待つだけになる）
+            var retreat = hpRatio < RetreatRatio && allies > 1;
 
             // その場から攻撃する。HP が少なくても、倒しきれる見込みが高ければ攻撃する
             var inPlace = script.Runner.State.Menu.Items.Contains("攻撃") ? PlanAttackInPlace(unit.ID) : null;

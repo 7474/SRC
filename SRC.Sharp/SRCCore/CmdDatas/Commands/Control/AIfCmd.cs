@@ -35,12 +35,15 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Ifコマンドの書式に合っていません");
             }
 
+            // 条件式は引用符を除く前の引数から組み立てる（元の SRC と同じ。")" のような文字列が括弧と解釈されないように）
+            string RawArg(int idx) => GetArgRaw(idx).RawArg ?? GetArg(idx);
+
             var ifCmdType = IfCmdType.Undefined;
             var terms = new List<string>();
-            terms.Add(GetArg(2));
+            terms.Add(RawArg(2));
             for (var i = 3; i <= ArgNum; i++)
             {
-                var buf = GetArg(i);
+                var buf = RawArg(i);
                 switch (Strings.LCase(buf) ?? "")
                 {
                     case "then":

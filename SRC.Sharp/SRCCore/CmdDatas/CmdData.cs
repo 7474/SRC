@@ -226,6 +226,7 @@ namespace SRCCore.CmdDatas
                 var arg = new CmdArgument()
                 {
                     strArg = buf,
+                    RawArg = buf,
                     argType = Expressions.ValueType.UndefinedType,
                 };
                 args.Add(arg);

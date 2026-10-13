@@ -328,9 +328,10 @@ namespace SRCCore.Units
             }
 
             // 他形態の陣営を変更
+            // 元の SRC と同じく陣営だけを変える（他形態の ChangeParty を呼ぶと、他形態から元の形態へと互いに呼び合って止まらない）
             foreach (var of in OtherForms)
             {
-                of.ChangeParty(new_party);
+                of.Party = new_party;
             }
 
             // 出撃中？
