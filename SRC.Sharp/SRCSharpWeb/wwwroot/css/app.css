@@ -264,6 +264,31 @@ input[type=file]::file-selector-button {
     aspect-ratio: 720 / 620;
     outline: none;
     cursor: default;
+    /* タッチでのスクロール・拡大・長押しのメニューを止め、タップ・長押しをゲームの操作にする（srcweb.js） */
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 長押しで右クリックになるまでの輪 */
+.touch-ring {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px;
+    border-radius: 50%;
+    border: 2px solid rgba(220, 220, 214, 0.55);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.4);
+    z-index: 40;
+}
+
+.touch-ring.active {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform var(--hold, 500ms) linear, opacity 120ms;
 }
 
 /* 画面の右下の控えめなメニュー。背景との明るさの差を小さくし、押してもゲームはすぐには終わらない */
@@ -452,6 +477,32 @@ input[type=file]::file-selector-button {
     color: var(--text);
     background: #5a2626;
     border-top: 2px solid #6e3434;
+}
+
+/* タッチ操作の端末では押しやすい大きさにする */
+@media (pointer: coarse) {
+    .screen-bar {
+        height: 40px;
+    }
+
+    .system-button {
+        width: 44px;
+        height: 34px;
+        font-size: 18px;
+    }
+
+    .popup-menu {
+        bottom: 38px;
+    }
+
+    .popup-menu button {
+        padding: 10px 20px;
+    }
+
+    .dialog-buttons button,
+    .modal-buttons button {
+        min-height: 36px;
+    }
 }
 
 @media (max-width: 760px) {

@@ -308,3 +308,37 @@ test('システムメニューから戻るときは確認し、「いいえ」�
   await page.mouse.click(10, 10);
   await expect(page.getByRole('menu')).toHaveCount(0);
 });
+
+test.describe('タッチ操作', () => {
+  test.use({ hasTouch: true });
+
+  test('タップで左クリック、長押しで右クリックになる', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect.poll(() => frames(page)).toBeGreaterThan(0);
+    const box = await page.locator('#screen').boundingBox();
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height * 0.9;
+    const touchClicks = () => page.evaluate(() => globalThis.srcwebTouchClicks ?? []);
+
+    // タップでメッセージが進む（左クリック）
+    const before = await debugState(page);
+    await expect.poll(async () => {
+      await page.touchscreen.tap(x, y);
+      return debugState(page);
+    }, { intervals: [500, 1000, 2000] }).not.toBe(before);
+    expect((await touchClicks()).some(c => c.button === 0)).toBe(true);
+    expect((await touchClicks()).some(c => c.button === 2)).toBe(false);
+
+    // 長押しは右クリック
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(800);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await expect.poll(async () => (await touchClicks()).filter(c => c.button === 2).length).toBe(1);
+
+    // ページはスクロールしない
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  });
+});
