@@ -3,7 +3,8 @@ name: Publish VS Code Extension
 # VS Code 拡張（SRC.Sharp/SRCSharpVSCode、koudenpa.src-vscode）を Visual Studio Marketplace と Open VSX に出す。
 # - タグ（v*）の push: .vsix を作って GitHub Release に添付し、Marketplace・Open VSX に出す。
 #   拡張の版（package.json）は SRC# 本体と別に管理し、公開済みの版なら飛ばす（--skip-duplicate）。
-# - 手動実行: publish（公開。pre_release でプレリリース）か profile-id（Marketplace の publisher に加える ID を出す）。
+# - 手動実行: publish（公開）か profile-id（Marketplace の publisher に加える ID を出す）。
+# - 版（package.json）のマイナーが奇数ならプレリリース、偶数なら正式版として出す。
 # Marketplace へは Microsoft Entra ID のマネージド ID（GitHub Actions の OIDC）で認証する。
 # https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 
@@ -20,10 +21,6 @@ on:
           - publish
           - profile-id
         default: publish
-      pre_release:
-        description: 'プレリリースとして出す（版は奇数マイナーにする）'
-        type: boolean
-        default: false
 
 # ユーザー割り当てマネージド ID（mi-src-vscode-publish）。秘密の値ではない。
 # フェデレーション資格情報の subject は repo:7474/SRC:environment:vscode-marketplace
@@ -81,12 +78,14 @@ jobs:
           npm ci
           version=$(jq -r .version package.json)
           vsix="src-vscode-${version}.vsix"
+          # マイナーが奇数ならプレリリース
+          minor=$(echo "$version" | cut -d. -f2)
+          if [ $((minor % 2)) -eq 1 ]; then PRE_RELEASE=1; else PRE_RELEASE=; fi
           # package.json の package（README の相対リンクを SRC.Sharp/SRCSharpVSCode 基準で書き換える）
           npm run package -- ${PRE_RELEASE:+--pre-release} -o "$vsix"
           echo "vsix=$vsix" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-        env:
-          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+          echo "pre_release=$PRE_RELEASE" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v7
         with:
@@ -102,14 +101,14 @@ jobs:
       - name: Publish to Visual Studio Marketplace
         run: npx vsce publish --azure-credential --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}"
         env:
-          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+          PRE_RELEASE: ${{ steps.package.outputs.pre_release }}
 
       # Open VSX は、名前空間とトークン（Secrets の OVSX_PAT）を用意してから出す（7474/SRC#1175 の A3）
       - name: Publish to Open VSX
         if: env.OVSX_PAT != ''
         run: npx --yes ovsx@1.2.0 publish --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}" -p "$OVSX_PAT"
         env:
-          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+          PRE_RELEASE: ${{ steps.package.outputs.pre_release }}
 
       - name: Attach to GitHub Release
         if: github.event_name == 'push'
