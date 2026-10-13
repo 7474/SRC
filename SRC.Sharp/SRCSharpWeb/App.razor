@@ -29,6 +29,8 @@
     </div>
     @* プレイ中の操作は画面の右下の控えめなメニューにまとめる（誤って押してもすぐには終わらない） *@
     <div class="screen-bar">
+        @* 仮想キー（タッチの端末向け）。中身は srcweb.js が作る *@
+        <div id="virtual-keys" class="virtual-keys" hidden></div>
         <div class="system-menu">
             <button id="system-menu-button" class="system-button" title="システムメニュー" aria-label="システムメニュー"
                     aria-haspopup="menu" aria-expanded="@(systemMenuOpen ? "true" : "false")" @onclick="ToggleSystemMenu">≡</button>
@@ -38,6 +40,7 @@
                 <div class="popup-menu" role="menu">
                     <button role="menuitem" @onclick="AskBackToMenu">シナリオ選択へ戻る…</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">全画面表示の切り替え</button>
+                    <button role="menuitem" @onclick="ToggleVirtualKeysAsync">仮想キーの表示の切り替え</button>
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">閉じる</button>
                 </div>
@@ -245,6 +248,13 @@ else
     {
         systemMenuOpen = false;
         await JS.InvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
+        await FocusScreenAsync();
+    }
+
+    private async Task ToggleVirtualKeysAsync()
+    {
+        systemMenuOpen = false;
+        await JS.InvokeVoidAsync("srcwebToggleVirtualKeys");
         await FocusScreenAsync();
     }
 

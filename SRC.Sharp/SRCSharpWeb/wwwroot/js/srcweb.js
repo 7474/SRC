@@ -201,6 +201,8 @@ async function start() {
     canvas.addEventListener('keyup', e => gui.Key(1, e.keyCode));
     canvas.addEventListener('blur', () => gui.Key(2, 0));
 
+    buildVirtualKeys(gui);
+
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
     const loop = async () => {
         try {
@@ -211,6 +213,86 @@ async function start() {
     };
     requestAnimationFrame(loop);
     canvas.focus();
+}
+
+// 仮想キー（タッチの端末向け）。物理キーと同じく WebInterop.Key に送るため、
+// シナリオの KeyState とメッセージ送り・カーソル移動のどちらにも効く。キーコードは Windows の仮想キーコード
+const VIRTUAL_KEYS = [
+    { label: '↑', code: 38, area: 'up', repeat: true },
+    { label: '←', code: 37, area: 'left', repeat: true },
+    { label: '↓', code: 40, area: 'down', repeat: true },
+    { label: '→', code: 39, area: 'right', repeat: true },
+    { label: 'Esc', code: 27, area: 'esc' },
+    { label: 'Space', code: 32, area: 'space' },
+    { label: 'Ctrl', code: 17, area: 'ctrl' },
+    { label: 'Shift', code: 16, area: 'shift' },
+    { label: 'Z', code: 90, area: 'z' },
+    { label: 'X', code: 88, area: 'x' },
+    { label: 'Enter', code: 13, area: 'enter' },
+];
+const VIRTUAL_KEYS_SETTING = 'srcweb.virtualKeys';
+
+function buildVirtualKeys(gui) {
+    const container = document.getElementById('virtual-keys');
+    if (!container) {
+        return;
+    }
+    for (const def of VIRTUAL_KEYS) {
+        const key = document.createElement('button');
+        key.type = 'button';
+        key.className = `vkey vkey-${def.area}`;
+        key.textContent = def.label;
+        key.dataset.code = def.code;
+        key.tabIndex = -1;
+        let repeat = null;
+        let down = false;
+        const release = () => {
+            if (!down) {
+                return;
+            }
+            down = false;
+            clearTimeout(repeat);
+            clearInterval(repeat);
+            key.classList.remove('down');
+            gui.Key(1, def.code);
+        };
+        key.addEventListener('pointerdown', e => {
+            // フォーカスをゲームの画面から移さない（移すと押しているキーが解除される）
+            e.preventDefault();
+            key.setPointerCapture?.(e.pointerId);
+            resumeAudio();
+            down = true;
+            key.classList.add('down');
+            gui.Key(0, def.code);
+            if (def.repeat) {
+                // 押し続けたら物理キーと同じく繰り返す
+                repeat = setTimeout(() => {
+                    repeat = setInterval(() => gui.Key(0, def.code), 80);
+                }, 400);
+            }
+        });
+        key.addEventListener('pointerup', release);
+        key.addEventListener('pointercancel', release);
+        key.addEventListener('lostpointercapture', release);
+        key.addEventListener('contextmenu', e => e.preventDefault());
+        container.appendChild(key);
+    }
+    let visible;
+    try {
+        const saved = localStorage.getItem(VIRTUAL_KEYS_SETTING);
+        visible = saved === null ? matchMedia('(pointer: coarse)').matches : saved === 'on';
+    } catch {
+        visible = matchMedia('(pointer: coarse)').matches;
+    }
+    container.hidden = !visible;
+    globalThis.srcwebToggleVirtualKeys = () => {
+        container.hidden = !container.hidden;
+        try {
+            localStorage.setItem(VIRTUAL_KEYS_SETTING, container.hidden ? 'off' : 'on');
+        } catch {
+            // 保存できなくても表示は切り替える
+        }
+    };
 }
 
 // 文字入力・ファイル選択のモーダル（SRCSharpWeb/WebScreenHost.cs の IScreenDialogHost）

@@ -398,3 +398,66 @@ test.describe('タッチ操作', () => {
     await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   });
 });
+
+test('仮想キーをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
+  const eve = [
+    'プロローグ:',
+    'ChangeMap test.map',
+    'Global ゼット',
+    'Global 上',
+    'Set ゼット 0',
+    'Set 上 0',
+    'Do While (ゼット = 0 Or 上 = 0)',
+    'If KeyState(90) = 1 Then',
+    'Set ゼット 1',
+    'Endif',
+    'If KeyState(38) = 1 Then',
+    'Set 上 1',
+    'Endif',
+    'Wait 1',
+    'Loop',
+    'Ask "Z=$(ゼット) U=$(上)"',
+    'OK',
+    'End',
+    'Quit',
+    '',
+  ].join('\r\n');
+  const name = '仮想キーのテスト.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: makeZip([
+      { name: 'vkeys/test.eve', data: Buffer.from(eve, 'utf8') },
+      { name: 'vkeys/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+    ]),
+  });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+
+  // マウスの端末では既定で出さない。システムメニューで出す
+  await expect(page.locator('#virtual-keys')).toBeHidden();
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: '仮想キーの表示の切り替え' }).click();
+  await expect(page.locator('#virtual-keys')).toBeVisible();
+  await expect(page.locator('#virtual-keys .vkey')).toHaveCount(11);
+
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toMatch(/test\.eve:(7|8|9|1[0-5]) /);
+  for (const selector of ['.vkey-z', '.vkey-up']) {
+    const box = await page.locator(selector).boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(400);
+    await page.mouse.up();
+  }
+  await expect.poll(() => debugState(page)).toContain('Z=1 U=1');
+
+  // 表示の設定は次回も残る
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#virtual-keys')).toBeVisible();
+  await backToMenu(page);
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+});

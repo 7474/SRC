@@ -250,6 +250,12 @@ input[type=file]::file-selector-button {
     width: min(100vw, calc((100vh - 28px) * 720 / 620));
 }
 
+/* 全画面で仮想キーを出すときは、その分だけ画面を小さくする */
+.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-wrap,
+.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-bar {
+    width: min(100vw, calc((100vh - 140px) * 720 / 620));
+}
+
 .screen-wrap {
     position: relative;
     width: 720px;
@@ -294,12 +300,64 @@ input[type=file]::file-selector-button {
 /* 画面の右下の控えめなメニュー。背景との明るさの差を小さくし、押してもゲームはすぐには終わらない */
 .screen-bar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     width: 720px;
     max-width: 100%;
-    height: 28px;
+    min-height: 28px;
     margin: 0 auto;
 }
+
+/* 仮想キー（タッチの端末向け）。システムメニューの下の行に、十字キーと操作キーを並べる */
+.virtual-keys {
+    --k: min(46px, 11.5vw);
+    order: 2;
+    flex-basis: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, var(--k)) 1fr repeat(3, var(--k)) calc(var(--k) * 1.4);
+    grid-template-rows: var(--k) var(--k);
+    grid-template-areas:
+        ".    up   .     . esc  space ctrl  enter"
+        "left down right . z    x     shift enter";
+    gap: 4px;
+    padding: 4px 4px 8px;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.virtual-keys[hidden] {
+    display: none;
+}
+
+.vkey {
+    min-height: 0;
+    padding: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    background: #2f3236;
+    border-color: #464a50 #1d1f22 #1d1f22 #464a50;
+    -webkit-touch-callout: none;
+}
+
+.vkey.down {
+    color: var(--text);
+    background: #26292d;
+    border-color: #1d1f22 #464a50 #464a50 #1d1f22;
+}
+
+.vkey-up { grid-area: up; }
+.vkey-left { grid-area: left; }
+.vkey-down { grid-area: down; }
+.vkey-right { grid-area: right; }
+.vkey-esc { grid-area: esc; }
+.vkey-space { grid-area: space; font-size: 11px; }
+.vkey-ctrl { grid-area: ctrl; font-size: 11px; }
+.vkey-shift { grid-area: shift; font-size: 11px; }
+.vkey-z { grid-area: z; }
+.vkey-x { grid-area: x; }
+.vkey-enter { grid-area: enter; }
 
 .system-menu {
     position: relative;
@@ -482,7 +540,7 @@ input[type=file]::file-selector-button {
 /* タッチ操作の端末では押しやすい大きさにする */
 @media (pointer: coarse) {
     .screen-bar {
-        height: 40px;
+        min-height: 40px;
     }
 
     .system-button {
