@@ -7,9 +7,10 @@ namespace SRCCore.Extensions
 {
     public static class ColorExtension
     {
+        // VB の Hex 関数と同様に英大文字の16進表記にする
         public static string ToHexString(this Color color)
         {
-            return string.Format("#{0:x2}{1:x2}{2:x2}", color.R, color.G, color.B);
+            return string.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
         }
 
         /// <summary>

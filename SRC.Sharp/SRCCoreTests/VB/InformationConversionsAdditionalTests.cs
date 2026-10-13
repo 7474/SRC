@@ -119,16 +119,17 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void ToInteger_NegativeDecimal_TruncatesTowardZero()
+        public void ToInteger_NegativeDecimal_Rounds()
         {
-            // -1.9 -> (int)(-1.9) = -1
-            Assert.AreEqual(-1, Conversions.ToInteger("-1.9"));
+            // VB の CInt/CLng と同様に丸める: -1.9 -> -2
+            Assert.AreEqual(-2, Conversions.ToInteger("-1.9"));
         }
 
         [TestMethod]
-        public void ToInteger_PositiveDecimalLessThanOne_ReturnsZero()
+        public void ToInteger_PositiveDecimalLessThanOne_RoundsToOne()
         {
-            Assert.AreEqual(0, Conversions.ToInteger("0.9"));
+            Assert.AreEqual(1, Conversions.ToInteger("0.9"));
+            Assert.AreEqual(0, Conversions.ToInteger("0.4"));
         }
 
         [TestMethod]

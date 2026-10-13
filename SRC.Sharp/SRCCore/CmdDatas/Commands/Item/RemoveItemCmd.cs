@@ -58,7 +58,9 @@ namespace SRCCore.CmdDatas.Commands
                                 {
                                     if (itm.Unit != null)
                                     {
-                                        if (itm.Unit.Status == "出撃")
+                                        var iu = itm.Unit;
+                                        iu.DeleteItem(itm);
+                                        if (iu.Status == "出撃")
                                         {
                                             if (!GUI.IsPictureVisible && !Map.IsStatusView)
                                             {
@@ -83,14 +85,25 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 // まずは装備されていないアイテムを探す
                                 var itm = SRC.IList.List.FirstOrDefault(x => x.Name == iname && x.Exist && x.Unit == null);
-                                // 見つからなかったら装備されたアイテムから
-                                if (itm is null)
+                                if (itm != null)
                                 {
-                                    itm = SRC.IList.List.FirstOrDefault(x => x.Name == iname && x.Exist);
+                                    itm.Exist = false;
+                                    return EventData.NextID;
                                 }
-                                if (itm.Unit != null)
+
+                                // 見つからなかったら装備されたアイテムから
+                                itm = SRC.IList.List.FirstOrDefault(x => x.Name == iname && x.Exist);
+                                if (itm == null)
                                 {
-                                    if (itm.Unit.Status == "出撃")
+                                    // 見つからなければ何もしない
+                                    return EventData.NextID;
+                                }
+
+                                var iu = itm.Unit;
+                                if (iu != null)
+                                {
+                                    iu.DeleteItem(itm);
+                                    if (iu.Status == "出撃")
                                     {
                                         if (!GUI.IsPictureVisible && !Map.IsStatusView)
                                         {
@@ -146,7 +159,7 @@ namespace SRCCore.CmdDatas.Commands
                             iname = SRC.IDList.Item(iname).Name;
                         }
 
-                        var itm = u.ItemList.FirstOrDefault(x => x.Name == iname || x.ID == iname);
+                        var itm = u.ItemList.FirstOrDefault(x => (x.Name == iname || x.ID == iname) && x.Exist);
                         if (itm != null)
                         {
                             u.DeleteItem(itm);

@@ -27,8 +27,8 @@ namespace SRCCore.Expressions
 
             // 式をあらかじめ要素に分解
             string[] terms;
-            GeneralLib.ListSplit(expr, out terms);
-            switch (terms.Length)
+            var tcount = GeneralLib.ListSplitStrict(expr, out terms);
+            switch (tcount)
             {
                 // 空白
                 case 0:

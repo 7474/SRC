@@ -32,7 +32,7 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             var result = exp.GetValueAsString("RGB(255,255,255)");
-            Assert.AreEqual("#ffffff", result);
+            Assert.AreEqual("#FFFFFF", result);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             var result = exp.GetValueAsString("RGB(255,0,0)");
-            Assert.AreEqual("#ff0000", result);
+            Assert.AreEqual("#FF0000", result);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             var result = exp.GetValueAsString("RGB(0,255,0)");
-            Assert.AreEqual("#00ff00", result);
+            Assert.AreEqual("#00FF00", result);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             var result = exp.GetValueAsString("RGB(0,0,255)");
-            Assert.AreEqual("#0000ff", result);
+            Assert.AreEqual("#0000FF", result);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace SRCCore.Expressions.Tests
             exp.SetVariableAsDouble("g", 0d);
             exp.SetVariableAsDouble("b", 128d);
             var result = exp.GetValueAsString("RGB(r,g,b)");
-            Assert.AreEqual("#ff0080", result);
+            Assert.AreEqual("#FF0080", result);
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace SRCCore.Expressions.Tests
             var exp = Create();
             // R = 200+55 = 255, G = 0, B = 0
             var result = exp.GetValueAsString("RGB(200 + 55, 0, 0)");
-            Assert.AreEqual("#ff0000", result);
+            Assert.AreEqual("#FF0000", result);
         }
     }
 }

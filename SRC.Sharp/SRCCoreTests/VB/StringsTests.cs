@@ -304,11 +304,12 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod()]
-        public void AscTest_JapaneseChar_ReturnsCodePoint()
+        public void AscTest_JapaneseChar_ReturnsShiftJisCode()
         {
-            // 日本語文字のコードポイントは128より大きい
-            int code = Strings.Asc('あ');
-            Assert.IsTrue(code > 128, $"Asc('あ') should be > 128, got {code}");
+            // VB6 と同様に Shift_JIS の文字コード（符号付き16ビット）を返す: &H82A0
+            Assert.AreEqual(-32096, Strings.Asc('あ'));
+            // 半角カナは1バイト
+            Assert.AreEqual(177, Strings.Asc('ｱ'));
         }
 
         [TestMethod()]
@@ -341,7 +342,8 @@ namespace SRCCore.VB.Tests
         public void TrimTest_OnlyWhitespace_ReturnsEmpty()
         {
             Assert.AreEqual("", Strings.Trim("   "));
-            Assert.AreEqual("", Strings.Trim("\t\t"));
+            // VB の Trim$ はタブを取り除かない
+            Assert.AreEqual("\t\t", Strings.Trim("\t\t"));
         }
 
         [TestMethod()]

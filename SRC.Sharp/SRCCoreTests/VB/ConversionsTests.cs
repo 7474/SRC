@@ -47,9 +47,10 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod()]
-        public void ToIntegerTest_Double_Truncates()
+        public void ToIntegerTest_Double_Rounds()
         {
-            Assert.AreEqual(3, Conversions.ToInteger("3.7"));
+            // VB の CInt/CLng と同様に丸める
+            Assert.AreEqual(4, Conversions.ToInteger("3.7"));
             Assert.AreEqual(3, Conversions.ToInteger("3.14"));
         }
 
@@ -136,16 +137,16 @@ namespace SRCCore.VB.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod()]
-        public void ToIntegerTest_NearlyTwo_Truncates()
+        public void ToIntegerTest_NearlyTwo_Rounds()
         {
-            // 1.999 は切り捨てで 1 になる
-            Assert.AreEqual(1, Conversions.ToInteger("1.999"));
+            // 1.999 は丸めて 2 になる
+            Assert.AreEqual(2, Conversions.ToInteger("1.999"));
         }
 
         [TestMethod()]
-        public void ToIntegerTest_NegativeFloat_Truncates()
+        public void ToIntegerTest_NegativeFloat_Rounds()
         {
-            Assert.AreEqual(-3, Conversions.ToInteger("-3.9"));
+            Assert.AreEqual(-4, Conversions.ToInteger("-3.9"));
         }
 
         [TestMethod()]

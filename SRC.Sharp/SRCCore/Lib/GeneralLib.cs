@@ -205,7 +205,14 @@ namespace SRCCore.Lib
 
         private static IList<string> ToListInternal(string list, out bool hasError, bool removeKakko = false)
         {
+            return ToListInternal(list, out hasError, out _, removeKakko);
+        }
+
+        // isUnclosed: 末尾でクォートや括弧が閉じていない場合に true
+        private static IList<string> ToListInternal(string list, out bool hasError, out bool isUnclosed, bool removeKakko = false)
+        {
             hasError = false;
+            isUnclosed = false;
             bool in_single_quote = false;
             bool in_double_quote = false;
             int i = -1;
@@ -286,6 +293,7 @@ namespace SRCCore.Lib
             {
                 result.Add(current.ToString());
             }
+            isUnclosed = in_single_quote || in_double_quote || paren != 0;
             return result;
         }
 
@@ -316,6 +324,15 @@ namespace SRCCore.Lib
             bool hasError;
             larray = ToListInternal(list, out hasError).ToArray();
             return hasError ? -1 : larray.Length;
+        }
+
+        // ListSplit と同様だが、VB版と同様に末尾でクォートや括弧が閉じていない場合も -1 を返す
+        public static int ListSplitStrict(string list, out string[] larray)
+        {
+            bool hasError;
+            bool isUnclosed;
+            larray = ToListInternal(list, out hasError, out isUnclosed).ToArray();
+            return hasError || isUnclosed ? -1 : larray.Length;
         }
 
         // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
@@ -411,7 +428,18 @@ namespace SRCCore.Lib
         // memo: VBのLongは32bit
         public static int StrToLng(string expr)
         {
-            return Conversions.ToInteger(expr ?? "");
+            // VB版は IsNumeric なら CLng で変換し、エラー（オーバーフロー）時は0を返す
+            expr = expr ?? "";
+            if (int.TryParse(expr, out var ret))
+            {
+                return ret;
+            }
+            var num = Conversions.ToDouble(expr);
+            if (double.IsNaN(num) || num >= (double)int.MaxValue + 0.5d || num < (double)int.MinValue - 0.5d)
+            {
+                return 0;
+            }
+            return Conversions.ToInteger(num);
         }
 
         // 文字列をひらがなに変換
@@ -540,6 +568,41 @@ namespace SRCCore.Lib
         //            }
         //        }
 
+
+        // 文字列 s1 中の s2 を s3 に置換した文字列を返す
+        // VB版と同様に、s2 と s3 の長さが等しい場合は置換後の文字列の先頭から再検索する
+        public static string ReplaceString(string s1, string s2, string s3)
+        {
+            s1 = s1 ?? "";
+            s3 = s3 ?? "";
+            // VB版では無限ループとなるケースは置換しない
+            if (string.IsNullOrEmpty(s2) || s2 == s3)
+            {
+                return s1;
+            }
+
+            var idx = s1.IndexOf(s2, StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return s1;
+            }
+
+            if (s2.Length == s3.Length)
+            {
+                var buf = new StringBuilder(s1);
+                // 念のため置換回数に上限を設ける
+                var limit = Math.Max(1000, s1.Length * s1.Length);
+                do
+                {
+                    buf.Remove(idx, s2.Length).Insert(idx, s3);
+                    idx = buf.ToString().IndexOf(s2, StringComparison.Ordinal);
+                }
+                while (idx >= 0 && --limit > 0);
+                return buf.ToString();
+            }
+
+            return s1.Replace(s2, s3, StringComparison.Ordinal);
+        }
 
         //        // 文字列 s1 中の s2 を s3 に置換
         //        // 置換を行ったときにはTrueを返す

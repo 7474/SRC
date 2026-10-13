@@ -33,9 +33,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // XXX 元は String -> String フォーマット
-            // XXX 書式は多分合っていないのでヘルプ更新したほうが良いかも
-            str_result = SrcFormatter.Format(SRC.Expression.GetValueAsDouble(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            // VB版は Format$(文字列, 書式)
+            str_result = FormatString(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
@@ -45,6 +44,105 @@ namespace SRCCore.Expressions.Functions
             {
                 return ValueType.StringType;
             }
+        }
+
+        // VB の Format$ と同様に文字列を書式化する
+        // - 書式に文字列用の記号（@, &）が含まれる場合は文字列として書式化する
+        // - 数値として解釈できる場合は数値として書式化する
+        // - それ以外の場合は文字列をそのまま返す（<, > による大文字・小文字変換のみ行う）
+        public static string FormatString(string value, string format)
+        {
+            value = value ?? "";
+            format = format ?? "";
+            if (format.IndexOf('@') >= 0 || format.IndexOf('&') >= 0)
+            {
+                return FormatStringWithPlaceholder(value, format);
+            }
+            if (Information.IsNumeric(value))
+            {
+                return SrcFormatter.Format(Conversions.ToDouble(value), format);
+            }
+            return ConvertCase(value, format);
+        }
+
+        private static string ConvertCase(string value, string format)
+        {
+            if (format.IndexOf('<') >= 0)
+            {
+                return value.ToLower();
+            }
+            if (format.IndexOf('>') >= 0)
+            {
+                return value.ToUpper();
+            }
+            return value;
+        }
+
+        private static string FormatStringWithPlaceholder(string value, string format)
+        {
+            value = ConvertCase(value, format);
+            var leftToRight = format.IndexOf('!') >= 0;
+            var pattern = format.Replace("!", "").Replace("<", "").Replace(">", "");
+            var placeholders = pattern.Count(c => c == '@' || c == '&');
+            var result = new System.Text.StringBuilder();
+            if (leftToRight)
+            {
+                // 左から順に文字を割り当てる
+                var idx = 0;
+                foreach (var c in pattern)
+                {
+                    if (c == '@' || c == '&')
+                    {
+                        if (idx < value.Length)
+                        {
+                            result.Append(value[idx++]);
+                        }
+                        else if (c == '@')
+                        {
+                            result.Append(' ');
+                        }
+                    }
+                    else
+                    {
+                        result.Append(c);
+                    }
+                }
+                // 割り当てられなかった文字は末尾に付ける
+                if (idx < value.Length)
+                {
+                    result.Append(value.Substring(idx));
+                }
+            }
+            else
+            {
+                // 右から順に文字を割り当てる
+                var idx = value.Length - 1;
+                for (var k = pattern.Length - 1; k >= 0; k--)
+                {
+                    var c = pattern[k];
+                    if (c == '@' || c == '&')
+                    {
+                        if (idx >= 0)
+                        {
+                            result.Insert(0, value[idx--]);
+                        }
+                        else if (c == '@')
+                        {
+                            result.Insert(0, ' ');
+                        }
+                    }
+                    else
+                    {
+                        result.Insert(0, c);
+                    }
+                }
+                // 割り当てられなかった文字は先頭に付ける
+                if (idx >= 0)
+                {
+                    result.Insert(0, value.Substring(0, idx + 1));
+                }
+            }
+            return result.ToString();
         }
     }
 
@@ -108,7 +206,8 @@ namespace SRCCore.Expressions.Functions
                 }
 
                 i = (num - Strings.Len(buf2) + 1);
-                do
+                // 開始位置が1未満の場合は見つからない（VB版では実行時エラーとなる）
+                while (i > 0)
                 {
                     var j = Strings.InStr(i, buf, buf2);
                     if (i == j)
@@ -118,7 +217,10 @@ namespace SRCCore.Expressions.Functions
 
                     i = (i - 1);
                 }
-                while (i != 0);
+                if (i < 0)
+                {
+                    i = 0;
+                }
             }
             else
             {
@@ -523,7 +625,7 @@ namespace SRCCore.Expressions.Functions
                         var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                         var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
                         var buf2 = Strings.Right(buf, Strings.Len(buf) - num + 1);
-                        buf2 = buf2.Replace(SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        buf2 = GeneralLib.ReplaceString(buf2, SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
                         str_result = Strings.Left(buf, num - 1) + buf2;
                         break;
                     }
@@ -534,14 +636,15 @@ namespace SRCCore.Expressions.Functions
                         var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
                         var num2 = SRC.Expression.GetValueAsLong(@params[5], is_term[5]);
                         var buf2 = Strings.Mid(buf, num, num2);
-                        buf2 = buf2.Replace(SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        buf2 = GeneralLib.ReplaceString(buf2, SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
                         str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1) - 1);
                         break;
                     }
 
                 default:
                     {
-                        str_result = SRC.Expression.GetValueAsString(@params[1], is_term[1]).Replace(
+                        str_result = GeneralLib.ReplaceString(
+                             SRC.Expression.GetValueAsString(@params[1], is_term[1]),
                              SRC.Expression.GetValueAsString(@params[2], is_term[2]),
                              SRC.Expression.GetValueAsString(@params[3], is_term[3]));
                         break;
@@ -583,8 +686,8 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             num_result = 0d;
-            // XXX 文字コード
-            str_result = Conversions.ToString((char)SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
+            // Shift_JIS の文字コードとして扱う
+            str_result = Strings.Chr(SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
             return ValueType.StringType;
         }
     }

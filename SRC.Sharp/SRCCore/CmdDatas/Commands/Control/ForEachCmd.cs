@@ -237,6 +237,7 @@ namespace SRCCore.CmdDatas.Commands
                         }
                         else
                         {
+                            var isVariable = true;
                             if (Expression.IsSubLocalVariableDefined(aname))
                             {
                                 // サブルーチンローカルな配列に対するForEach
@@ -252,9 +253,19 @@ namespace SRCCore.CmdDatas.Commands
                                 // グローバルな配列に対するForEach
                                 Event.GlobalVariableList.Values.ArrayIndexesByName(aname).ToList().ForEach(x => Event.ForEachSet.Add(x));
                             }
+                            else
+                            {
+                                isVariable = false;
+                            }
 
                             // リストに対するForEach
-                            if (Event.ForEachSet.Count == 0)
+                            // 未定義の名前の場合はリストの形をしている場合のみ評価する（VB版と同様）
+                            if (Event.ForEachSet.Count == 0
+                                && (isVariable
+                                    || (Strings.Left(aname, 1) == "(" && Strings.Right(aname, 1) == ")")
+                                    || (Strings.Left(aname, 1) == "\"" && Strings.Right(aname, 1) == "\"")
+                                    || (Strings.Left(aname, 1) == "`" && Strings.Right(aname, 1) == "`")
+                                    || (Strings.InStr(Strings.LCase(aname), "list(") == 1 && Strings.Right(aname, 1) == ")")))
                             {
                                 var buf = Expression.GetValueAsString(aname);
                                 Event.ForEachSet = GeneralLib.ToList(buf);
