@@ -167,11 +167,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         i = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) / 16d);
+                        prob = VBMath.CLng(100d * (u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(u.SkillLevel(buf) * 100d / 16d);
+                        prob = VBMath.CLng(u.SkillLevel(buf) * 100d / 16d);
                     }
 
                     // 見切り
@@ -309,7 +309,7 @@ namespace SRCCore.Units
                 flevel = t.FeatureLevel("超回避");
 
                 // 発動率
-                prob = (int)flevel;
+                prob = VBMath.CLng(flevel);
                 if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
                 {
                     prob = 10;
@@ -414,7 +414,7 @@ namespace SRCCore.Units
                 flevel = t.FeatureLevel("緊急テレポート");
 
                 // 発動率
-                prob = (int)flevel;
+                prob = VBMath.CLng(flevel);
                 if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
                 {
                     prob = 10;
@@ -528,7 +528,7 @@ namespace SRCCore.Units
             // 分身(パイロット用特殊能力)
             if (t.MainPilot().IsSkillAvailable("分身"))
             {
-                prob = (int)(2d * t.MainPilot().SkillLevel("分身", ref_mode: "") - MainPilot().SkillLevel("分身", ref_mode: ""));
+                prob = VBMath.CLng(2d * t.MainPilot().SkillLevel("分身", ref_mode: "") - MainPilot().SkillLevel("分身", ref_mode: ""));
                 if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
                 {
                     prob = 32;
@@ -778,11 +778,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                        prob = VBMath.CLng(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(100d * t.SkillLevel(buf) / 16d);
+                        prob = VBMath.CLng(100d * t.SkillLevel(buf) / 16d);
                     }
 
                     // 見切り
@@ -1111,11 +1111,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                        prob = VBMath.CLng(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(100d * t.SkillLevel(buf) / 16d);
+                        prob = VBMath.CLng(100d * t.SkillLevel(buf) / 16d);
                     }
 
                     // 見切り
@@ -1475,8 +1475,8 @@ namespace SRCCore.Units
                     // 思念誘導はＮＴレベルに応じて切り払いにくくなる
                     if (w.IsWeaponClassifiedAs("サ"))
                     {
-                        prob = (int)(t.MainPilot().SkillLevel("超感覚", ref_mode: "") + t.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
-                        prob = (int)(prob - MainPilot().SkillLevel("超感覚", ref_mode: "") - MainPilot().SkillLevel("知覚強化", ref_mode: ""));
+                        prob = VBMath.CLng(t.MainPilot().SkillLevel("超感覚", ref_mode: "") + t.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
+                        prob = VBMath.CLng(prob - MainPilot().SkillLevel("超感覚", ref_mode: "") - MainPilot().SkillLevel("知覚強化", ref_mode: ""));
                         if (prob > 0)
                         {
                             prob = 0;
@@ -1487,7 +1487,7 @@ namespace SRCCore.Units
                         prob = 0;
                     }
 
-                    prob = (int)(prob + 2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                    prob = VBMath.CLng(prob + 2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
 
                     // 見切りがあれば必ず発動
                     if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
@@ -1561,7 +1561,7 @@ namespace SRCCore.Units
                 else if (w.IsWeaponClassifiedAs("突"))
                 {
                     // 相手も切り払い出来れば切り払い確率は下がる
-                    prob = (int)(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: "") - MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                    prob = VBMath.CLng(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: "") - MainPilot().SkillLevel("切り払い", ref_mode: ""));
 
                     // 見切りがあれば必ず発動
                     if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
@@ -1634,7 +1634,7 @@ namespace SRCCore.Units
                 else if (w.IsWeaponClassifiedAs("武"))
                 {
                     // 相手も切り払い出来れば切り払い確率は下がる
-                    prob = (int)(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: "") - MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                    prob = VBMath.CLng(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: "") - MainPilot().SkillLevel("切り払い", ref_mode: ""));
 
                     // 見切りがあれば必ず発動
                     if (t.IsUnderSpecialPowerEffect("特殊防御発動"))
@@ -1747,11 +1747,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                        prob = VBMath.CLng(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(100d * t.SkillLevel(buf) / 16d);
+                        prob = VBMath.CLng(100d * t.SkillLevel(buf) / 16d);
                     }
 
                     // 反射された攻撃を反射する場合は確率を下げる
@@ -2296,27 +2296,27 @@ namespace SRCCore.Units
             // シールド系防御能力を検索
             if (t.IsFeatureAvailable("シールド"))
             {
-                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                prob = VBMath.CLng(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: ""));
                 fname = t.FeatureName("シールド");
             }
             else if (t.IsFeatureAvailable("小型シールド"))
             {
-                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                prob = VBMath.CLng(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: ""));
                 fname = t.FeatureName("小型シールド");
             }
             else if (t.IsFeatureAvailable("エネルギーシールド") && t.EN > 5 && !w.IsWeaponClassifiedAs("無") && !IsUnderSpecialPowerEffect("防御能力無効化"))
             {
-                prob = (int)t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "");
+                prob = VBMath.CLng(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: ""));
                 fname = t.FeatureName("エネルギーシールド");
             }
             else if (t.IsFeatureAvailable("大型シールド"))
             {
-                prob = (int)(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 1d);
+                prob = VBMath.CLng(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 1d);
                 fname = t.FeatureName("大型シールド");
             }
             else if (t.IsFeatureAvailable("アクティブシールド"))
             {
-                prob = (int)(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 2d);
+                prob = VBMath.CLng(t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 2d);
                 fname = t.FeatureName("アクティブシールド");
             }
             else
@@ -2858,7 +2858,7 @@ namespace SRCCore.Units
                 }
                 else if (flevel > 0d)
                 {
-                    dmg = (int)(dmg - 500d * flevel);
+                    dmg = VBMath.CLng(dmg - 500d * flevel);
                     msg = msg + wname + "が[" + fname + "]を貫いた。;";
                 }
             }
@@ -3586,7 +3586,7 @@ namespace SRCCore.Units
                         }
                         else if (flevel > 0d || slevel > 0d)
                         {
-                            dmg = (int)(dmg - 500d * flevel - slevel);
+                            dmg = VBMath.CLng(dmg - 500d * flevel - slevel);
                             if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
                             {
                                 msg = msg + wname + "が[" + fname + "]を貫いた。;";
@@ -4389,7 +4389,7 @@ namespace SRCCore.Units
                             }
                             else if (flevel > 0d || slevel > 0d)
                             {
-                                dmg = (int)(dmg - 500d * flevel - slevel);
+                                dmg = VBMath.CLng(dmg - 500d * flevel - slevel);
                                 if (Strings.InStr(msg, "[" + fname + "]を貫いた") == 0)
                                 {
                                     msg = msg + wname + "が[" + fname + "]を貫いた。;";
@@ -4694,7 +4694,7 @@ namespace SRCCore.Units
 
                     if (t.MainPilot().Morale >= nmorale && localIsAttributeClassified9())
                     {
-                        t.EN = (int)(t.EN + 0.01d * flevel * dmg);
+                        t.EN = VBMath.CLng(t.EN + 0.01d * flevel * dmg);
                     }
                 }
             }
@@ -4746,11 +4746,11 @@ namespace SRCCore.Units
 
                 if (w.IsWeaponClassifiedAs("破"))
                 {
-                    dmg = GeneralLib.MaxLng((int)(dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d)), 0);
+                    dmg = GeneralLib.MaxLng(VBMath.CLng(dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d)), 0);
                 }
                 else
                 {
-                    dmg = GeneralLib.MaxLng((int)(dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d)), 0);
+                    dmg = GeneralLib.MaxLng(VBMath.CLng(dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d)), 0);
                 }
 
                 if (t.IsSysMessageDefined("シールド防御", fname))
@@ -4974,11 +4974,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                        prob = VBMath.CLng(100d * (t.SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(100d * t.SkillLevel(buf) / 16d);
+                        prob = VBMath.CLng(100d * t.SkillLevel(buf) / 16d);
                     }
 
                     // 見切り
@@ -5343,11 +5343,11 @@ namespace SRCCore.Units
                     else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                     {
                         j = GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
-                        prob = (int)(100d * (SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
+                        prob = VBMath.CLng(100d * (SkillLevel(Strings.Left(buf, j - 1)) + Conversions.ToInteger(Strings.Mid(buf, j))) / 16d);
                     }
                     else
                     {
-                        prob = (int)(SkillLevel(buf) * 100d / 16d);
+                        prob = VBMath.CLng(SkillLevel(buf) * 100d / 16d);
                     }
 
                     // 対象武器の判定
@@ -7049,7 +7049,7 @@ namespace SRCCore.Units
                     {
                         if (td.IsFeatureAvailable("摩擦"))
                         {
-                            i = (int)(i + td.FeatureLevel("摩擦"));
+                            i = VBMath.CLng(i + td.FeatureLevel("摩擦"));
                         }
                     }
                 }
