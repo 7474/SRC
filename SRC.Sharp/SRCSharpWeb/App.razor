@@ -4,6 +4,7 @@
 @implements IDisposable
 @inject HttpClient Http
 @inject IJSRuntime JS
+@inject IStringLocalizer<WebStrings> L
 @inject Microsoft.Extensions.Logging.ILoggerFactory LoggerFactory
 
 @if (mode == Mode.Playing || mode == Mode.Ended)
@@ -13,12 +14,12 @@
         @if (mode == Mode.Ended)
         {
             <div class="ended">
-                <p>シナリオが終了しました。</p>
-                <button @onclick="BackToMenu">シナリオ選択へ戻る</button>
+                <p>@L["ScenarioEnded"]</p>
+                <button @onclick="BackToMenu">@L["BackToMenu"]</button>
             </div>
         }
     </div>
-    <p class="toolbar"><button @onclick="BackToMenu">シナリオ選択へ戻る</button></p>
+    <p class="toolbar"><button @onclick="BackToMenu">@L["BackToMenu"]</button></p>
 }
 else
 {
@@ -31,10 +32,10 @@ else
         @if (mode == Mode.Menu)
         {
             <section>
-                <h2>登録済シナリオ</h2>
+                <h2>@L["RegisteredScenarios"]</h2>
                 @if (catalog.Count == 0)
                 {
-                    <p>ありません。</p>
+                    <p>@L["NoItems"]</p>
                 }
                 <ul class="items" id="catalog">
                     @foreach (var entry in catalog)
@@ -46,8 +47,8 @@ else
                 </ul>
             </section>
             <section>
-                <h2>追加したアーカイブ</h2>
-                <p class="note">シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</p>
+                <h2>@L["AddedArchives"]</h2>
+                <p class="note">@L["AddArchiveNote"]</p>
                 <InputFile id="add-archive" OnChange="AddArchivesAsync" accept=".zip" multiple />
                 <ul class="items" id="archives">
                     @foreach (var archive in archives)
@@ -55,10 +56,18 @@ else
                         <li>
                             <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
                             <span class="size">@FormatSize(archive.Size)</span>
-                            <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">削除</button>
+                            <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">@L["Delete"]</button>
                         </li>
                     }
                 </ul>
+            </section>
+            <section class="language">
+                <label for="language">@L["Language"]</label>
+                <select id="language" value="@WebLocalization.SelectorValue" @onchange="ChangeLanguageAsync">
+                    <option value="ja">日本語</option>
+                    <option value="en">English</option>
+                    <option value="auto">@L["LanguageAuto"]</option>
+                </select>
             </section>
         }
         else if (mode == Mode.ChooseEvent)
@@ -67,29 +76,29 @@ else
                 <h2>@choosingTitle</h2>
                 @if (saves.Count > 0)
                 {
-                    <h3>セーブデータから再開</h3>
+                    <h3>@L["ResumeFromSave"]</h3>
                     <ul class="items" id="saves">
                         @foreach (var save in saves)
                         {
                             <li>
                                 <button @onclick="() => StartAsync(Path.Combine(scenarioDir, save.Name))">@save.Name</button>
                                 <span class="size">@FormatTime(save.Updated)</span>
-                                <button class="export" @onclick="() => ExportSaveAsync(save)">書き出し</button>
-                                <button class="delete" @onclick="() => DeleteSaveAsync(save)">削除</button>
+                                <button class="export" @onclick="() => ExportSaveAsync(save)">@L["Export"]</button>
+                                <button class="delete" @onclick="() => DeleteSaveAsync(save)">@L["Delete"]</button>
                             </li>
                         }
                     </ul>
                 }
-                <p class="note">書き出したセーブデータ（.srcs・.srcq）を読み込めます。</p>
+                <p class="note">@L["ImportSaveNote"]</p>
                 <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq" multiple />
-                <h3>新しく始める</h3>
+                <h3>@L["StartNew"]</h3>
                 <ul class="items" id="events">
                     @foreach (var eve in eventFiles)
                     {
                         <li><button @onclick="() => StartAsync(Path.Combine(scenarioDir, eve))">@eve</button></li>
                     }
                 </ul>
-                <button @onclick="BackToMenu">戻る</button>
+                <button @onclick="BackToMenu">@L["Back"]</button>
             </section>
         }
     </main>
@@ -120,7 +129,7 @@ else
     }
 
     private Mode mode = Mode.Loading;
-    private string status = "読み込み中…";
+    private string status;
     private List<CatalogEntry> catalog = new List<CatalogEntry>();
     private List<StoredArchive> archives = new List<StoredArchive>();
     private string choosingTitle;
@@ -136,6 +145,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        status = L["Loading"];
+        WebLocalization.ApplyModalLabels(L);
         try
         {
             await WebFonts.LoadAsync(Http);
@@ -146,7 +157,7 @@ else
         }
         catch (Exception ex)
         {
-            status = "初期化に失敗しました: " + ex.Message;
+            status = L["InitFailed", ex.Message];
             Console.Error.WriteLine(ex);
         }
     }
@@ -160,7 +171,7 @@ else
     {
         foreach (var file in e.GetMultipleFiles(32))
         {
-            status = $"{file.Name} を追加しています…";
+            status = L["AddingArchive", file.Name];
             StateHasChanged();
             using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
             using var buffer = new MemoryStream();
@@ -191,10 +202,10 @@ else
     {
         try
         {
-            status = $"{title} を読み込んでいます…";
+            status = L["LoadingArchive", title];
             StateHasChanged();
             var zip = await fetch();
-            status = $"{title} を展開しています…";
+            status = L["ExtractingArchive", title];
             StateHasChanged();
             scenarioId = id;
             scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip));
@@ -203,7 +214,7 @@ else
             await RestoreSavesAsync();
             if (eventFiles.Count == 0)
             {
-                status = $"{title} にシナリオ（.eve）がありません。";
+                status = L["NoEventFiles", title];
             }
             else if (saves.Count == 0 && (!string.IsNullOrEmpty(eve) && defaultEve == eve || eventFiles.Count == 1))
             {
@@ -218,7 +229,7 @@ else
         }
         catch (Exception ex)
         {
-            status = $"{title} を読み込めませんでした: " + ex.Message;
+            status = L["LoadFailed", title, ex.Message];
             Console.Error.WriteLine(ex);
         }
     }
@@ -318,7 +329,7 @@ else
         // canvas を表示してから始める
         await Task.Delay(1);
         Directory.CreateDirectory(ScenarioArchive.AppPath);
-        var host = new WebScreenHost(scenarioDir);
+        var host = new WebScreenHost(scenarioDir, L);
         // MIDI の SoundFont は同梱しない。アーカイブに含まれる .sf2 を使う
         var root = scenarioDir;
         var player = new WebSoundPlayer(host, () =>
@@ -350,6 +361,13 @@ else
         }
         // ゲームスレッドは止められないため、ページを読み込み直す
         await SyncSavesAsync();
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
+    /// <summary>表示言語を保存し、読み込み直して反映する（カルチャは起動時にしか変えられない）</summary>
+    private async Task ChangeLanguageAsync(ChangeEventArgs e)
+    {
+        await JS.InvokeVoidAsync("localStorage.setItem", WebLocalization.StorageKey, e.Value?.ToString() ?? "");
         await JS.InvokeVoidAsync("location.reload");
     }
 

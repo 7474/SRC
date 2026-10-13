@@ -92,7 +92,27 @@ async function start() {
     canvas.focus();
 }
 
+// 表示言語の設定（SRCSharpWeb/WebLocalization.cs）。index.html の起動前の文言も同じキーを読む
+export function getLanguageSetting() {
+    try {
+        return localStorage.getItem('srcweb.language') ?? '';
+    } catch {
+        return '';
+    }
+}
+
+export function getBrowserLanguage() {
+    return navigator.language ?? '';
+}
+
 // 文字入力・ファイル選択のモーダル（SRCSharpWeb/WebScreenHost.cs の IScreenDialogHost）
+// 既定の文言は .NET 側（Resources/WebStrings.resx）から setModalLabels で渡される
+const labels = { input: '入力', ok: 'OK', cancel: 'キャンセル', choice: '選択' };
+
+export function setModalLabels(input, ok, cancel, choice) {
+    Object.assign(labels, { input, ok, cancel, choice });
+}
+
 function modal(title, build) {
     return new Promise(resolve => {
         const overlay = document.createElement('div');
@@ -129,7 +149,7 @@ function buttons(box, items) {
 }
 
 export function showInput(title, message, value) {
-    return modal(title || '入力', (box, close) => {
+    return modal(title || labels.input, (box, close) => {
         const p = document.createElement('p');
         p.textContent = message;
         const input = document.createElement('input');
@@ -144,13 +164,13 @@ export function showInput(title, message, value) {
             }
         });
         box.append(p, input);
-        buttons(box, [['OK', () => close(input.value)], ['キャンセル', () => close(null)]]);
+        buttons(box, [[labels.ok, () => close(input.value)], [labels.cancel, () => close(null)]]);
         setTimeout(() => input.focus(), 0);
     });
 }
 
 export function showChoice(title, items) {
-    return modal(title || '選択', (box, close) => {
+    return modal(title || labels.choice, (box, close) => {
         const list = document.createElement('ul');
         list.className = 'modal-list';
         for (const item of items) {
@@ -162,7 +182,7 @@ export function showChoice(title, items) {
             list.appendChild(li);
         }
         box.appendChild(list);
-        buttons(box, [['キャンセル', () => close(null)]]);
+        buttons(box, [[labels.cancel, () => close(null)]]);
     });
 }
 

@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Localization;
 using SkiaSharp;
 using SRCRender;
+using SRCSharpWeb.Resources;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -18,10 +20,13 @@ namespace SRCSharpWeb
     /// </summary>
     public sealed class WebScreenHost : IScreenHost, IScreenDialogHost
     {
-        public WebScreenHost(string scenarioRoot)
+        public WebScreenHost(string scenarioRoot, IStringLocalizer<WebStrings> localizer)
         {
             ScenarioRoot = scenarioRoot;
+            L = localizer;
         }
+
+        private readonly IStringLocalizer<WebStrings> L;
 
         /// <summary>シナリオを展開したフォルダ。ファイル選択はこの中に限る</summary>
         public string ScenarioRoot { get; }
@@ -169,7 +174,7 @@ namespace SRCSharpWeb
             {
                 return Task.FromResult<string>(null);
             }
-            return OnUi(() => WebInterop.ShowChoice(request.Title ?? "ファイルを開く", names))
+            return OnUi(() => WebInterop.ShowChoice(request.Title ?? L["OpenFile"], names))
                 .ContinueWith(t => t.Result == null ? null : Path.Combine(dir, t.Result), TaskScheduler.Default);
         }
 
@@ -178,7 +183,7 @@ namespace SRCSharpWeb
             var dir = Directory(request);
             var ext = string.IsNullOrEmpty(request.FileExtension) ? "" : "." + request.FileExtension;
             var name = string.IsNullOrEmpty(request.InitialFile) ? "_save" + ext : Path.GetFileName(request.InitialFile);
-            return OnUi(() => WebInterop.ShowInput(request.Title ?? "保存", "保存するファイル名", name))
+            return OnUi(() => WebInterop.ShowInput(request.Title ?? L["Save"], L["SaveFileName"], name))
                 .ContinueWith(t =>
                 {
                     var file = Path.GetFileName(t.Result ?? "");
