@@ -20,7 +20,7 @@ namespace SRCRender.Tests
             "Yu Mincho", "BIZ UDGothic", "BIZ UDPGothic", "BIZ UDMincho", "Meiryo UI",
         };
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ＭＳ ゴシック", "MS Gothic")]
         [DataRow("ＭＳ　Ｐ明朝", "MS PMincho")]
         [DataRow("ＭＳ UI Gothic", "MS UI Gothic")]
@@ -57,9 +57,11 @@ namespace SRCRender.Tests
         [TestMethod]
         public void MatchesInstalledWindowsFonts()
         {
-            if (!OperatingSystem.IsWindows())
+            // System.Drawing の FontFamily は Windows 6.1（Windows 7）以降のみ。プラットフォーム解析（CA1416）がガードと分かるよう版まで確かめる
+            if (!OperatingSystem.IsWindowsVersionAtLeast(6, 1))
             {
                 Assert.Inconclusive("Windows でのみ実フォントと照合する");
+                return;
             }
 
             var report = new StringBuilder();

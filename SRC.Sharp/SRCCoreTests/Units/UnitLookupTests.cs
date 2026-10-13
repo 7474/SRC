@@ -206,8 +206,7 @@ namespace SRCCore.Units.Tests
 
             // 行動不能 alone (without 他形態) shouldn't make unit IsAvailable == false
             // (depends on implementation) - just test it doesn't throw
-            var result = unit.IsAvailable();
-            Assert.IsNotNull(result);
+            _ = unit.IsAvailable();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SRCSound.Tests
             return result.ToArray();
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(1, 16)]
         [DataRow(2, 16)]
         [DataRow(1, 8)]

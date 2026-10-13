@@ -7,7 +7,7 @@ name: SWA preview cleanup
 # PR を閉じたときの Close Pull Request Job と同じく、デプロイ用のトークンで StaticSitesClient の close を実行する。
 # Azure/static-web-apps-deploy は実行中のイベントの PR を閉じるため、ここでは同じイメージを直接動かし、
 # 閉じる PR のイベントを渡す（Azure への追加の認証情報は不要）。
-# Docker を使うため ubuntu-slim（非特権のコンテナ）ではなく ubuntu-latest で動かす。
+# Docker を使うため ubuntu-slim（非特権のコンテナ）ではなく ubuntu-24.04 で動かす。
 
 on:
   schedule:
@@ -35,7 +35,7 @@ permissions:
 
 jobs:
   cleanup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Close preview environments of closed pull requests
         env:

@@ -9,7 +9,7 @@ jobs:
   # タグ（v3.<マイナー>.<パッチ>）と SRC.Sharp/Directory.Build.props のバージョンが一致することを確かめる（docs/versioning.md）
   check-version:
     name: Check version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-dotnet@v6
@@ -29,7 +29,7 @@ jobs:
   push-nuget-package:
     name: Push Nuget Package to NuGet.org
     needs: check-version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-dotnet@v6
@@ -55,7 +55,7 @@ jobs:
   release-github-artifacts:
     name: Release artifacts to GitHub
     needs: check-version
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-dotnet@v6
@@ -79,7 +79,7 @@ jobs:
   release-web:
     name: Release SRC#Web package to GitHub
     needs: check-version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-dotnet@v6
@@ -103,7 +103,7 @@ jobs:
   push-to-dockerhub:
     name: Push Docker image to Docker Hub
     needs: check-version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 

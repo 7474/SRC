@@ -10,7 +10,7 @@ namespace SRCCore.Extensions.Tests
     [TestClass]
     public class ColorExtensionHtmlCompatTests
     {
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("")]
         [DataRow("#000000")]
         [DataRow("#AbCdEf")]
@@ -37,7 +37,7 @@ namespace SRCCore.Extensions.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("#xyz123")]
         [DataRow("notacolor")]
         [DataRow("1,2")]

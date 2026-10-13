@@ -16,7 +16,7 @@ namespace SRCRender.Tests
 
         private static string SampleData => Environment.GetEnvironmentVariable("SRC_SAMPLE_DATA");
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Welcome.eve", 200)]
         public void AutoPlay_SampleScenario(string eve, int maxSteps)
         {
