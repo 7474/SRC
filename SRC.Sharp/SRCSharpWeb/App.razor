@@ -1,4 +1,5 @@
 @using SRCRender
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using System.IO
 @using System.Threading
 @implements IDisposable
@@ -460,7 +461,56 @@ else
         {
             return;
         }
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => Http.GetByteArrayAsync(entry.Archive), entry.Eve, entry.Root);
+        await LoadAsync("catalog-" + entry.Id, entry.Title, async () => ScenarioArchive.OpenDownload(await DownloadAsync(entry.Archive)), entry.Eve, entry.Root);
+    }
+
+    /// <summary>
+    /// zip をダウンロードしてブラウザ内のファイルシステムに置き、そのパスを返す（展開したら消す）。
+    /// 応答を byte[] に読むと、大きいシナリオ（数百 MB）では WebAssembly のメモリがその分（読み込み中はそれ以上）増え、
+    /// 増えたメモリは返せないため、スマートフォンではタブが落ちる原因になる。
+    /// ストリームのまま書き込めば、WebAssembly のメモリは一度に読む分しか使わない（ファイルの中身は JS 側のメモリに置かれる）。
+    /// </summary>
+    private async Task<string> DownloadAsync(string url)
+    {
+        var path = ScenarioArchive.NewDownloadPath();
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.SetBrowserResponseStreamingEnabled(true);
+            using var response = await Http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            using var source = await response.Content.ReadAsStreamAsync();
+            using var file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024 * 1024);
+            var length = response.Content.Headers.ContentLength;
+            if (length > 0)
+            {
+                // 先に大きさを決めておくと、書き込むたびにファイルの領域を広げ直さない
+                file.SetLength(length.Value);
+            }
+            await source.CopyToAsync(file, 1024 * 1024);
+            file.SetLength(file.Position);
+            return path;
+        }
+        catch
+        {
+            DeleteDownload(path);
+            throw;
+        }
+    }
+
+    private static void DeleteDownload(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+        }
     }
 
     /// <summary>
@@ -490,10 +540,21 @@ else
             {
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
-                var data = await Http.GetByteArrayAsync(asset.Archive);
-                status = L["ExtractingAsset", asset.Title];
-                StateHasChanged();
-                await Task.Run(() => ScenarioArchive.ExtractAsset(data, asset.Root));
+                var path = await DownloadAsync(asset.Archive);
+                try
+                {
+                    status = L["ExtractingAsset", asset.Title];
+                    StateHasChanged();
+                    await Task.Run(() =>
+                    {
+                        using var zip = ScenarioArchive.OpenDownload(path);
+                        ScenarioArchive.ExtractAsset(zip, asset.Root);
+                    });
+                }
+                finally
+                {
+                    DeleteDownload(path);
+                }
             }
             catch (Exception ex)
             {
@@ -511,20 +572,32 @@ else
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), null, null);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), false), null, null);
     }
 
-    private async Task LoadAsync(string id, string title, Func<Task<byte[]>> fetch, string eve, string root)
+    /// <param name="fetch">zip を開く。ダウンロードしたファイル（FileStream）は展開したら消す</param>
+    private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root)
     {
         try
         {
             status = L["LoadingArchive", title];
             StateHasChanged();
             var zip = await fetch();
-            status = L["ExtractingArchive", title];
-            StateHasChanged();
-            scenarioId = id;
-            scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
+            try
+            {
+                status = L["ExtractingArchive", title];
+                StateHasChanged();
+                scenarioId = id;
+                scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
+            }
+            finally
+            {
+                zip.Dispose();
+                if (zip is FileStream file)
+                {
+                    DeleteDownload(file.Name);
+                }
+            }
             eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
             defaultEve = !string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)) ? eve : eventFiles.FirstOrDefault();
             await RestoreSavesAsync();

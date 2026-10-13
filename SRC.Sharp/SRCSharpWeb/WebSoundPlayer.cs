@@ -85,7 +85,7 @@ namespace SRCSharpWeb
             {
                 case SoundType.Wave:
                 case SoundType.Mp3:
-                    host.Post(() => WebInterop.SoundPlayEncoded(channel, new ArraySegment<byte>(bytes), loop));
+                    host.Post(() => WebInterop.SoundPlayEncoded(channel, bytes, loop));
                     SetBgm(channel, true);
                     break;
                 case SoundType.Midi:
@@ -166,7 +166,7 @@ namespace SRCSharpWeb
             {
                 while (WebInterop.SoundAhead(channel) < AheadSeconds && voice.Chunks.TryDequeue(out var chunk))
                 {
-                    WebInterop.SoundQueuePcm(channel, new ArraySegment<byte>(MemoryMarshal.AsBytes(chunk.AsSpan()).ToArray()), 2, MidiSource.Rate);
+                    WebInterop.SoundQueuePcm(channel, MemoryMarshal.AsBytes(chunk.AsSpan()), 2, MidiSource.Rate);
                 }
                 if (voice.Finished && voice.Chunks.IsEmpty)
                 {
