@@ -26,7 +26,7 @@ namespace SRCCore.Intermissions.Tests
             {
                 new EventDataLine(0, EventDataSource.System, "system", 0, ""),
             };
-            src.Event.EventQue = new Queue<string>();
+            src.Event.EventQue = new List<string>();
             gui.RedrawScreenHandler = _ => { };
             gui.EnlargeListBoxHeightHandler = () => { };
             gui.CloseListBoxHandler = () => { };

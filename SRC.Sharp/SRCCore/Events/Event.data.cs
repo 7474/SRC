@@ -23,7 +23,7 @@ namespace SRCCore.Events
             EventData = new List<EventDataLine>();
             EventFileNames = new List<string>();
             EventCmd = new List<CmdData>();
-            EventQue = new Queue<string>();
+            EventQue = new List<string>();
 
             // 本体側のシナリオデータをチェックする
             LoadEventData("", "システム");

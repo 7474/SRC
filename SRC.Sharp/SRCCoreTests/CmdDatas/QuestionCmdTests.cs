@@ -19,7 +19,7 @@ namespace SRCCore.CmdDatas.Tests
             };
             src.Event.EventFileNames = new List<string>();
             src.Event.AdditionalEventFileNames = new List<string>();
-            src.Event.EventQue = new System.Collections.Generic.Queue<string>();
+            src.Event.EventQue = new System.Collections.Generic.List<string>();
             return (src, gui);
         }
 
