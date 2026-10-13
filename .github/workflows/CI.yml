@@ -61,12 +61,18 @@ jobs:
       with:
         node-version: 22
 
-    # VS Code 拡張（Language Server とデバッガのクライアント）
+    # VS Code 拡張（Language Server とデバッガのクライアント）。esbuild でまとめ、.vsix を作る
     - name: Build VS Code extension
       working-directory: SRC.Sharp/SRCSharpVSCode
       run: |
         npm ci
-        npm run compile
+        npm run package
+
+    - name: Upload VS Code extension
+      uses: actions/upload-artifact@v7
+      with:
+        name: srcsharp-vsix
+        path: SRC.Sharp/SRCSharpVSCode/*.vsix
 
     # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする
     - name: Test SRC#Web (Playwright)
