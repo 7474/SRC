@@ -149,8 +149,7 @@ namespace SRCCore.Units
             // 格納されていた場合はあらかじめ降ろしておく
             if (Status == "格納")
             {
-                var boardUnit = SRC.UList.Items.First(x => x.UnitOnBoard(ID) != null);
-                boardUnit?.UnitOnBoard(ID);
+                SRC.UList.Unload(this);
             }
 
             // Statusを更新
@@ -908,18 +907,6 @@ namespace SRCCore.Units
         // new_form へ変形（換装、ハイパーモード、パーツ分離＆合体を含む）
         public void Transform(string new_form)
         {
-            //    string list;
-            //    int i, idx, idx2, j;
-            //    Unit u;
-            //    string[] wname;
-            //    int[] wbullet;
-            //    int[] wmaxbullet;
-            //    string[] aname;
-            //    int[] astock;
-            //    int[] amaxstock;
-            //    double hp_ratio, en_ratio;
-            //    int prev_x, prev_y;
-            //    string buf;
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
             var u = OtherForm(new_form);
@@ -1035,7 +1022,7 @@ namespace SRCCore.Units
                 // 特殊ステータスのコピー
                 u.ClearCondition();
                 foreach (var condition in Conditions
-                    .Where(x => x.Lifetime > 0)
+                    .Where(x => x.Lifetime != 0)
                     .Where(x => Strings.InStr(x.StrData, "パイロット能力付加") == 0)
                     .Where(x => Strings.InStr(x.StrData, "パイロット能力強化") == 0))
                 {
@@ -1044,33 +1031,66 @@ namespace SRCCore.Units
                 ClearCondition();
 
                 // パイロットの乗せ換え
-                var forms = GeneralLib.ToL(FeatureData("変形")).Skip(1).ToList();
-                forms.Insert(0, Name);
-                if (Data.PilotNum == -(forms.Count)
-                    && CountPilot() == forms.Count)
+                var list = FeatureData("変形");
+                var llen = GeneralLib.LLength(list);
+                var pilots = Pilots.ToList();
+                var reordered = false;
+                if (llen > 0
+                    && Data.PilotNum == -llen
+                    && pilots.Count == llen)
                 {
-                    // XXX 動作確認しとらん、複数人乗りユニットまだ作れない
                     // 変形によりパイロットの順番が変化する場合
-                    var tuForms = GeneralLib.ToL(u.FeatureData("変形")).Skip(1).ToList();
-                    tuForms.Insert(0, u.Name);
-                    if (forms.OrderBy(x => x).SequenceEqual(tuForms.OrderBy(x => x)))
+                    int idx;
+                    for (idx = 2; idx <= llen; idx++)
                     {
-                        tuForms.ForEach(tuForm =>
+                        if (u.Name == GeneralLib.LIndex(list, idx))
                         {
-                            u.AddPilot(Pilots[forms.IndexOf(tuForm)]);
-                        });
-                    }
-                    else
-                    {
-                        foreach (var p in Pilots)
-                        {
-                            u.AddPilot(p);
+                            break;
                         }
                     }
+
+                    if (idx <= llen)
+                    {
+                        var tlist = u.FeatureData("変形");
+                        var tllen = GeneralLib.LLength(tlist);
+                        int idx2;
+                        for (idx2 = 2; idx2 <= tllen; idx2++)
+                        {
+                            if (Name == GeneralLib.LIndex(tlist, idx2))
+                            {
+                                break;
+                            }
+                        }
+
+                        var j = 2;
+                        for (var i = 1; i <= pilots.Count; i++)
+                        {
+                            if (i == 1)
+                            {
+                                u.AddPilot(pilots[idx - 1]);
+                            }
+                            else if (i == idx2)
+                            {
+                                u.AddPilot(pilots[0]);
+                            }
+                            else
+                            {
+                                if (idx == j)
+                                {
+                                    j = j + 1;
+                                }
+
+                                u.AddPilot(pilots[j - 1]);
+                                j = j + 1;
+                            }
+                        }
+                        reordered = true;
+                    }
                 }
-                else
+
+                if (!reordered)
                 {
-                    foreach (var p in Pilots)
+                    foreach (var p in pilots)
                     {
                         u.AddPilot(p);
                     }
@@ -1087,71 +1107,38 @@ namespace SRCCore.Units
                     u.LoadUnit(cu);
                 }
 
-                //var loopTo13 = CountServant();
-                //for (i = 1; i <= loopTo13; i++)
-                //{
-                //    Unit localServant() { object argIndex1 = i; var ret = Servant(argIndex1); return ret; }
+                foreach (var su in Servants)
+                {
+                    u.AddServant(su);
+                }
 
-                //    u.AddServant(localServant());
-                //}
-
-                //var loopTo14 = CountSlave();
-                //for (i = 1; i <= loopTo14; i++)
-                //{
-                //    Unit localSlave() { object argIndex1 = i; var ret = Slave(argIndex1); return ret; }
-
-                //    u.AddSlave(localSlave());
-                //}
+                foreach (var su in colSlave.List)
+                {
+                    u.AddSlave(su);
+                }
 
                 colPilot.Clear();
                 colSupport.Clear();
                 colUnitOnBoard.Clear();
-                //var loopTo15 = CountPilot();
-                //for (i = 1; i <= loopTo15; i++)
-                //{
-                //    DeletePilot(1);
-                //}
-
-                //var loopTo16 = CountSupport();
-                //for (i = 1; i <= loopTo16; i++)
-                //{
-                //    DeleteSupport(1);
-                //}
-
-                //var loopTo17 = CountUnitOnBoard();
-                //for (i = 1; i <= loopTo17; i++)
-                //{
-                //    UnloadUnit(1);
-                //}
-
-                //var loopTo18 = CountServant();
-                //for (i = 1; i <= loopTo18; i++)
-                //{
-                //    DeleteServant(1);
-                //}
-
-                //var loopTo19 = CountSlave();
-                //for (i = 1; i <= loopTo19; i++)
-                //{
-                //    DeleteSlave(1);
-                //}
+                colServant.Clear();
+                colSlave.Clear();
 
                 foreach (var p in u.Pilots)
                 {
                     p.Unit = u;
                 }
 
-                // 合体ロボットの変形時に分離先のパイロットのインデックスを合わせる
                 foreach (var p in u.Supports)
                 {
+                    p.Unit = u;
+                    // 合体ロボットの変形時に分離先のパイロットのインデックスを合わせる
                     if (p.SupportIndex > 0)
                     {
                         if (IsFeatureAvailable("分離") && u.IsFeatureAvailable("分離"))
                         {
-                            var cuForms = GeneralLib.ToL(FeatureData("分離")).Skip(1).ToList();
+                            var cuForm = GeneralLib.LIndex(FeatureData("分離"), p.SupportIndex + 1);
                             var tuForms = GeneralLib.ToL(u.FeatureData("分離")).Skip(1).ToList();
-                            var cuForm = cuForms[p.SupportIndex - 1];
-                            for (var tuIndex = 0; tuForms.Count < tuIndex; tuIndex++)
+                            for (var tuIndex = 0; tuIndex < tuForms.Count; tuIndex++)
                             {
                                 var tuForm = tuForms[tuIndex];
                                 if (tuForm == cuForm)
@@ -1239,10 +1226,10 @@ namespace SRCCore.Units
                 }
                 else
                 {
-                    u.HP = (int)(u.MaxHP * hp_ratio / 100d);
+                    u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d);
                 }
 
-                u.EN = (int)(u.MaxEN * en_ratio / 100d);
+                u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d);
 
                 // ノーマルモードや制限時間つきの形態の場合は残り時間を付加
                 if (!u.IsConditionSatisfied("残り時間"))
@@ -1299,13 +1286,17 @@ namespace SRCCore.Units
             }
 
             // ハイパーモードが解ける場合
-            foreach (var opt in GeneralLib.ToL(FeatureData("ノーマルモード")).Skip(1))
+            var buf = FeatureData("ノーマルモード");
+            if ((GeneralLib.LIndex(buf, 1) ?? "") == (new_form ?? ""))
             {
-                switch (opt ?? "")
+                foreach (var opt in GeneralLib.ToL(buf).Skip(1))
                 {
-                    case "回数制限":
-                        AddCondition("行動不能", -1, cdata: "");
-                        break;
+                    switch (opt ?? "")
+                    {
+                        case "回数制限":
+                            AddCondition("行動不能", -1, cdata: "");
+                            break;
+                    }
                 }
             }
         }
@@ -1443,62 +1434,39 @@ namespace SRCCore.Units
                 }
             }
 
-            //// 分離ユニットと合体ユニットが同名の武器を持つ場合は弾数を累積するため
-            //// このような武器の弾数を0にする
-            //var loopTo6 = u.CountWeapon();
-            //for (i = 1; i <= loopTo6; i++)
-            //{
-            //    var loopTo7 = Information.UBound(rarray);
-            //    for (j = 1; j <= loopTo7; j++)
-            //    {
-            //        {
-            //            var withBlock = rarray[j].CurrentForm();
-            //            var loopTo8 = withBlock.CountWeapon();
-            //            for (k = 1; k <= loopTo8; k++)
-            //            {
-            //                if ((u.Weapon(i).Name ?? "") == (withBlock.Weapon(k).Name ?? ""))
-            //                {
-            //                    u.SetBullet(i, 0);
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //// 使用回数を合わせる
-            //var loopTo9 = u.CountAbility();
-            //for (i = 1; i <= loopTo9; i++)
-            //{
-            //    var loopTo10 = Information.UBound(rarray);
-            //    for (j = 1; j <= loopTo10; j++)
-            //    {
-            //        {
-            //            var withBlock1 = rarray[j].CurrentForm();
-            //            var loopTo11 = withBlock1.CountAbility();
-            //            for (k = 1; k <= loopTo11; k++)
-            //            {
-            //                if ((u.Ability(i).Name ?? "") == (withBlock1.Ability(k).Name ?? ""))
-            //                {
-            //                    u.SetStock(i, 0);
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // 分離ユニットと合体ユニットが同名の武器を持つ場合は弾数を累積するため
+            // このような武器の弾数を0にする
+            foreach (var uw in u.Weapons)
+            {
+                foreach (var ru in runits)
+                {
+                    if (ru.CurrentForm().Weapons.Any(rw => rw.Name == uw.Name))
+                    {
+                        uw.SetBullet(0);
+                    }
+                }
+            }
+            // 使用回数を合わせる
+            foreach (var ua in u.Abilities)
+            {
+                foreach (var ru in runits)
+                {
+                    if (ru.CurrentForm().Abilities.Any(ra => ra.Data.Name == ua.Data.Name))
+                    {
+                        ua.SetStock(0);
+                    }
+                }
+            }
 
             // １番目のユニットのステータスを合体後のユニットに継承
             {
                 var ru = runits.First().CurrentForm();
                 ru.CopySpecialPowerInEffect(u);
                 ru.RemoveAllSpecialPowerInEffect();
-                //var loopTo12 = ru.CountItem();
-                //for (i = 1; i <= loopTo12; i++)
-                //{
-                //    Item localItem3() { object argIndex1 = i; var ret = ru.Item(argIndex1); return ret; }
-
-                //    u.AddItem(localItem3());
-                //}
+                for (var ii = 1; ii <= ru.CountItem(); ii++)
+                {
+                    u.AddItem(ru.Item(ii));
+                }
 
                 u.Master = ru.Master;
                 ru.Master = null;
@@ -1508,33 +1476,16 @@ namespace SRCCore.Units
                 u.UsedSupportGuard = ru.UsedSupportGuard;
                 u.UsedSyncAttack = ru.UsedSyncAttack;
                 u.UsedCounterAttack = ru.UsedCounterAttack;
-                //var loopTo13 = withBlock2.CountServant();
-                //for (i = 1; i <= loopTo13; i++)
-                //{
-                //    Unit localServant() { object argIndex1 = i; var ret = withBlock2.Servant(argIndex1); return ret; }
-
-                //    u.AddServant(localServant());
-                //}
-
-                //var loopTo14 = withBlock2.CountServant();
-                //for (i = 1; i <= loopTo14; i++)
-                //{
-                //    withBlock2.DeleteServant(1);
-                //}
-
-                //var loopTo15 = withBlock2.CountSlave();
-                //for (i = 1; i <= loopTo15; i++)
-                //{
-                //    Unit localSlave() { object argIndex1 = i; var ret = withBlock2.Slave(argIndex1); return ret; }
-
-                //    u.AddSlave(localSlave());
-                //}
-
-                //var loopTo16 = withBlock2.CountSlave();
-                //for (i = 1; i <= loopTo16; i++)
-                //{
-                //    withBlock2.DeleteSlave(1);
-                //}
+                foreach (var su in ru.Servants)
+                {
+                    u.AddServant(su);
+                }
+                ru.colServant.Clear();
+                foreach (var su in ru.colSlave.List)
+                {
+                    u.AddSlave(su);
+                }
+                ru.colSlave.Clear();
             }
 
             // 合体する各ユニットに対しての処理を行う
@@ -1556,7 +1507,7 @@ namespace SRCCore.Units
 
                     case "格納":
                         currentForm.Status = "待機";
-                        SRC.UList.Unload(ru);
+                        SRC.UList.Unload(currentForm);
                         break;
                 }
 
@@ -1616,168 +1567,72 @@ namespace SRCCore.Units
                 }
 
                 // 搭載ユニットの乗せ換え
-                foreach (var lu in UnitOnBoards.AsEnumerable().ToList())
+                foreach (var lu in ru.UnitOnBoards.ToList())
                 {
                     u.LoadUnit(lu);
-                    UnloadUnit(lu.ID);
+                }
+                ru.colUnitOnBoard.Clear();
+
+                // 分離ユニットと共通する武装の弾数は一旦0にクリア
+                foreach (var uw in u.Weapons)
+                {
+                    if (ru.Weapons.Any(rw => rw.Name == uw.Name)
+                        || ru.OtherForms.Any(of => of.Weapons.Any(ow => ow.Name == uw.Name)))
+                    {
+                        uw.SetBullet(0);
+                    }
                 }
 
-                //// 分離ユニットと共通する武装の弾数は一旦0にクリア
-                //var loopTo25 = u.CountWeapon();
-                //for (j = 1; j <= loopTo25; j++)
-                //{
-                //    var loopTo26 = ru.CountWeapon();
-                //    for (k = 1; k <= loopTo26; k++)
-                //    {
-                //        if ((u.Weapon(j).Name ?? "") == (ru.Weapon(k).Name ?? ""))
-                //        {
-                //            u.SetBullet(j, 0);
-                //            break;
-                //        }
-                //    }
-
-                //    var loopTo27 = ru.CountOtherForm();
-                //    for (k = 1; k <= loopTo27; k++)
-                //    {
-                //        {
-                //            var withBlock5 = ru.OtherForm(k);
-                //            var loopTo28 = withBlock5.CountWeapon();
-                //            for (l = 1; l <= loopTo28; l++)
-                //            {
-                //                if ((u.Weapon(j).Name ?? "") == (withBlock5.Weapon(l).Name ?? ""))
-                //                {
-                //                    u.SetBullet(j, 0);
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-
-                //// アビリティの使用回数も同様の処理を行う
-                //var loopTo29 = u.CountAbility();
-                //for (j = 1; j <= loopTo29; j++)
-                //{
-                //    var loopTo30 = ru.CountAbility();
-                //    for (k = 1; k <= loopTo30; k++)
-                //    {
-                //        if ((u.Ability(j).Name ?? "") == (ru.Ability(k).Name ?? ""))
-                //        {
-                //            u.SetStock(j, 0);
-                //            break;
-                //        }
-                //    }
-
-                //    var loopTo31 = ru.CountOtherForm();
-                //    for (k = 1; k <= loopTo31; k++)
-                //    {
-                //        {
-                //            var withBlock6 = ru.OtherForm(k);
-                //            var loopTo32 = withBlock6.CountAbility();
-                //            for (l = 1; l <= loopTo32; l++)
-                //            {
-                //                if ((u.Ability(j).Name ?? "") == (withBlock6.Ability(l).Name ?? ""))
-                //                {
-                //                    u.SetStock(j, 0);
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                // アビリティの使用回数も同様の処理を行う
+                foreach (var ua in u.Abilities)
+                {
+                    if (ru.Abilities.Any(ra => ra.Data.Name == ua.Data.Name)
+                        || ru.OtherForms.Any(of => of.Abilities.Any(oa => oa.Data.Name == ua.Data.Name)))
+                    {
+                        ua.SetStock(0);
+                    }
+                }
 
                 // スペシャルパワーの効果を消去
                 ru.RemoveAllSpecialPowerInEffect();
             }
 
-            //// 合体後のユニットの武装の弾数及びアビリティの使用回数は分離ユニットの
-            //// 弾数及び使用回数の合計に設定する
-            //var loopTo33 = Information.UBound(rarray);
-            //for (i = 1; i <= loopTo33; i++)
-            //{
-            //    {
-            //        var withBlock7 = rarray[i];
-            //        // 武装の弾数の処理
-            //        var loopTo34 = u.CountWeapon();
-            //        for (j = 1; j <= loopTo34; j++)
-            //        {
-            //            var loopTo35 = withBlock7.CountWeapon();
-            //            for (k = 1; k <= loopTo35; k++)
-            //            {
-            //                if ((u.Weapon(j).Name ?? "") == (withBlock7.Weapon(k).Name ?? ""))
-            //                {
-            //                    u.SetBullet(j, (u.Bullet(j) + withBlock7.Bullet(k)));
-            //                    goto NextWeapon;
-            //                }
-            //            }
+            // 合体後のユニットの武装の弾数及びアビリティの使用回数は分離ユニットの
+            // 弾数及び使用回数の合計に設定する
+            foreach (var ru in runits)
+            {
+                // 武装の弾数の処理
+                foreach (var uw in u.Weapons)
+                {
+                    var rw = ru.Weapons.FirstOrDefault(x => x.Name == uw.Name)
+                        ?? ru.OtherForms.SelectMany(of => of.Weapons).FirstOrDefault(x => x.Name == uw.Name);
+                    if (rw != null)
+                    {
+                        uw.SetBullet(uw.Bullet() + rw.Bullet());
+                    }
+                }
 
-            //            var loopTo36 = withBlock7.CountOtherForm();
-            //            for (k = 1; k <= loopTo36; k++)
-            //            {
-            //                {
-            //                    var withBlock8 = withBlock7.OtherForm(k);
-            //                    var loopTo37 = withBlock8.CountWeapon();
-            //                    for (l = 1; l <= loopTo37; l++)
-            //                    {
-            //                        if ((u.Weapon(j).Name ?? "") == (withBlock8.Weapon(l).Name ?? ""))
-            //                        {
-            //                            u.SetBullet(j, (u.Bullet(j) + withBlock8.Bullet(l)));
-            //                            goto NextWeapon;
-            //                        }
-            //                    }
-            //                }
-            //            }
+                // アビリティの使用回数の処理
+                foreach (var ua in u.Abilities)
+                {
+                    var ra = ru.Abilities.FirstOrDefault(x => x.Data.Name == ua.Data.Name)
+                        ?? ru.OtherForms.SelectMany(of => of.Abilities).FirstOrDefault(x => x.Data.Name == ua.Data.Name);
+                    if (ra != null)
+                    {
+                        ua.SetStock(ua.Stock() + ra.Stock());
+                    }
+                }
+            }
 
-            //        NextWeapon:
-            //            ;
-            //        }
-
-            //        // アビリティの使用回数の処理
-            //        var loopTo38 = u.CountAbility();
-            //        for (j = 1; j <= loopTo38; j++)
-            //        {
-            //            var loopTo39 = withBlock7.CountAbility();
-            //            for (k = 1; k <= loopTo39; k++)
-            //            {
-            //                if ((u.Ability(j).Name ?? "") == (withBlock7.Ability(k).Name ?? ""))
-            //                {
-            //                    u.SetStock(j, (u.Stock(j) + withBlock7.Stock(k)));
-            //                    goto NextAbility;
-            //                }
-            //            }
-
-            //            var loopTo40 = withBlock7.CountOtherForm();
-            //            for (k = 1; k <= loopTo40; k++)
-            //            {
-            //                {
-            //                    var withBlock9 = withBlock7.OtherForm(k);
-            //                    var loopTo41 = withBlock9.CountAbility();
-            //                    for (l = 1; l <= loopTo41; l++)
-            //                    {
-            //                        if ((u.Ability(j).Name ?? "") == (withBlock9.Ability(l).Name ?? ""))
-            //                        {
-            //                            u.SetStock(j, (u.Stock(j) + withBlock9.Stock(l)));
-            //                            goto NextAbility;
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //        NextAbility:
-            //            ;
-            //        }
-            //    }
-            //}
-
-            //// １番目のユニットのアイテムを外す
-            //{
-            //    var withBlock10 = rarray[1];
-            //    var loopTo42 = withBlock10.CountItem();
-            //    for (i = 1; i <= loopTo42; i++)
-            //    {
-            //        withBlock10.DeleteItem(1);
-            //    }
-            //}
+            // １番目のユニットのアイテムを外す
+            {
+                var ru = runits.First();
+                var itemCount = ru.CountItem();
+                for (var ii = 1; ii <= itemCount; ii++)
+                {
+                    ru.DeleteItem(ru.Item(1));
+                }
+            }
 
             // 合体後のユニットに関する処理
             u.Update();
@@ -1795,11 +1650,12 @@ namespace SRCCore.Units
                 p.Party = Party0;
             }
 
-            //u.HP = (int)(u.MaxHP * hp_ratio / 100d / Information.UBound(rarray));
-            //u.EN = (int)(1 * u.MaxEN * en_ratio / 100d / Information.UBound(rarray));
+            u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d / runits.Count);
+            u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d / runits.Count);
 
-            //// 弾数・使用回数共有の実現
-            //u.SyncBullet();
+            // 弾数・使用回数共有の実現
+            u.SyncBullet();
+
             if (prev_status == "出撃")
             {
                 u.StandBy(x, y);
@@ -1834,6 +1690,45 @@ namespace SRCCore.Units
                 var cf = pu.CurrentForm();
                 cf.x = u.x;
                 cf.y = u.y;
+            }
+        }
+
+        // 分離後のユニット tu の武装の弾数を分離前の弾数の割合に合わせる
+        private void SyncSplitBullet(Unit tu)
+        {
+            var idx = 0;
+            foreach (var w in Weapons)
+            {
+                for (var k = idx; k < tu.Weapons.Count; k++)
+                {
+                    var tw = tu.Weapons[k];
+                    if (w.Name == tw.Name && w.WeaponData.Bullet > 0 && tw.WeaponData.Bullet > 0)
+                    {
+                        tw.SetBullet(tw.MaxBullet() * w.Bullet() / w.MaxBullet());
+                        idx = k + 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 分離後のユニット tu のアビリティの使用回数を分離前の使用回数の割合に合わせる
+        private void SyncSplitStock(Unit tu)
+        {
+            var idx = 0;
+            foreach (var a in Abilities)
+            {
+                for (var k = idx; k < tu.Abilities.Count; k++)
+                {
+                    var ta = tu.Abilities[k];
+                    if (a.Data.Name == ta.Data.Name && a.Data.Stock > 0 && ta.Data.Stock > 0)
+                    {
+                        // SRC本体と同様に使用回数の基本値を基準にする
+                        ta.SetStock(ta.Data.Stock * a.Stock() / a.MaxStock());
+                        idx = k + 1;
+                        break;
+                    }
+                }
             }
         }
 
@@ -1891,33 +1786,16 @@ namespace SRCCore.Units
                 firstUnit.UsedSupportGuard = UsedSupportGuard;
                 firstUnit.UsedSyncAttack = UsedSyncAttack;
                 firstUnit.UsedCounterAttack = UsedCounterAttack;
-                //var loopTo4 = CountServant();
-                //for (j = 1; j <= loopTo4; j++)
-                //{
-                //    Unit localServant() { object argIndex1 = j; var ret = Servant(argIndex1); return ret; }
-
-                //    firstUnit.AddServant(localServant());
-                //}
-
-                //var loopTo5 = CountServant();
-                //for (j = 1; j <= loopTo5; j++)
-                //{
-                //    DeleteServant(1);
-                //}
-
-                //var loopTo6 = CountSlave();
-                //for (j = 1; j <= loopTo6; j++)
-                //{
-                //    Unit localSlave() { object argIndex1 = j; var ret = Slave(argIndex1); return ret; }
-
-                //    firstUnit.AddSlave(localSlave());
-                //}
-
-                //var loopTo7 = CountSlave();
-                //for (j = 1; j <= loopTo7; j++)
-                //{
-                //    DeleteSlave(1);
-                //}
+                foreach (var su in Servants)
+                {
+                    firstUnit.AddServant(su);
+                }
+                colServant.Clear();
+                foreach (var su in colSlave.List)
+                {
+                    firstUnit.AddSlave(su);
+                }
+                colSlave.Clear();
             }
 
             // 各分離ユニットに対する処理
@@ -2003,95 +1881,25 @@ namespace SRCCore.Units
                 }
 
                 // ＨＰ＆ＥＮの同期
-                u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-                u.EN = (int)(1 * u.MaxEN * en_ratio / 100d);
+                u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d);
+                u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d);
 
-                //// 弾数を合わせる
-                //idx = 1;
-                //var loopTo12 = CountWeapon();
-                //for (j = 1; j <= loopTo12; j++)
-                //{
-                //    counter = idx;
-                //    var loopTo13 = u.CountWeapon();
-                //    for (k = counter; k <= loopTo13; k++)
-                //    {
-                //        if ((Weapon(j).Name ?? "") == (u.Weapon(k).Name ?? "") && this.Weapon(j).Bullet > 0 && u.Weapon(k).Bullet > 0)
-                //        {
-                //            u.SetBullet(k, ((u.MaxBullet(k) * Bullet(j)) / MaxBullet(j)));
-                //            idx = (k + 1);
-                //            break;
-                //        }
-                //    }
-                //}
+                // 弾数を合わせる
+                SyncSplitBullet(u);
+                foreach (var of in u.OtherForms)
+                {
+                    SyncSplitBullet(of);
+                }
 
-                //var loopTo14 = u.CountOtherForm();
-                //for (j = 1; j <= loopTo14; j++)
-                //{
-                //    {
-                //        var withBlock2 = u.OtherForm(j);
-                //        idx = 1;
-                //        var loopTo15 = CountWeapon();
-                //        for (k = 1; k <= loopTo15; k++)
-                //        {
-                //            counter = idx;
-                //            var loopTo16 = withBlock2.CountWeapon();
-                //            for (l = counter; l <= loopTo16; l++)
-                //            {
-                //                if ((Weapon(k).Name ?? "") == (withBlock2.Weapon(l).Name ?? "") && this.Weapon(k).Bullet > 0 && withBlock2.Weapon(l).Bullet > 0)
-                //                {
-                //                    withBlock2.SetBullet(l, ((withBlock2.MaxBullet(l) * Bullet(k)) / MaxBullet(k)));
-                //                    idx = (l + 1);
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                // 使用回数を合わせる
+                SyncSplitStock(u);
+                foreach (var of in u.OtherForms)
+                {
+                    SyncSplitStock(of);
+                }
 
-                //// 使用回数を合わせる
-                //idx = 1;
-                //var loopTo17 = CountAbility();
-                //for (j = 1; j <= loopTo17; j++)
-                //{
-                //    counter = idx;
-                //    var loopTo18 = u.CountAbility();
-                //    for (k = counter; k <= loopTo18; k++)
-                //    {
-                //        if ((Ability(j).Name ?? "") == (u.Ability(k).Name ?? "") && this.Ability(j).Stock > 0 && u.Ability(k).Stock > 0)
-                //        {
-                //            u.SetStock(k, ((u.Ability(k).Stock * Stock(j)) / MaxStock(j)));
-                //            idx = (k + 1);
-                //            break;
-                //        }
-                //    }
-                //}
-
-                //var loopTo19 = u.CountOtherForm();
-                //for (j = 1; j <= loopTo19; j++)
-                //{
-                //    {
-                //        var withBlock3 = u.OtherForm(j);
-                //        idx = 1;
-                //        var loopTo20 = CountAbility();
-                //        for (k = 1; k <= loopTo20; k++)
-                //        {
-                //            counter = idx;
-                //            var loopTo21 = withBlock3.CountAbility();
-                //            for (l = counter; l <= loopTo21; l++)
-                //            {
-                //                if ((Ability(k).Name ?? "") == (withBlock3.Ability(l).Name ?? "") && this.Ability(k).Stock > 0 && withBlock3.Ability(l).Stock > 0)
-                //                {
-                //                    withBlock3.SetStock(l, ((withBlock3.Ability(l).Stock * Stock(k)) / MaxStock(k)));
-                //                    idx = (l + 1);
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-
-                //// 弾数・使用回数共有の実現
-                //u.SyncBullet();
+                // 弾数・使用回数共有の実現
+                u.SyncBullet();
 
                 // 出撃 or 格納？
                 u.Status = Status;
