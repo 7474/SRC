@@ -2293,57 +2293,32 @@ namespace SRCCore.Units
         // データをリセット
         public void Reset()
         {
-            //    short i;
-            //    string pname;
-            //    var loopTo = CountCondition();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        DeleteCondition0(1);
-            //    }
-
-            //    RemoveAllSpecialPowerInEffect();
+            ClearCondition();
+            RemoveAllSpecialPowerInEffect();
             Update();
-            //    var loopTo1 = CountPilot();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        Pilot localPilot() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
+            foreach (var p in Pilots.ToList())
+            {
+                p.FullRecover();
+            }
+            foreach (var p in Supports.ToList())
+            {
+                p.FullRecover();
+            }
+            foreach (var feature in new[] { "追加パイロット", "追加サポート" })
+            {
+                if (IsFeatureAvailable(feature))
+                {
+                    var pname = FeatureData(feature);
+                    if (SRC.PList.IsDefined(pname))
+                    {
+                        SRC.PList.Item(pname).FullRecover();
+                    }
+                }
+            }
 
-            //        localPilot().FullRecover();
-            //    }
-
-            //    var loopTo2 = CountSupport();
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        Pilot localSupport() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //        localSupport().FullRecover();
-            //    }
-
-            //    if (IsFeatureAvailable("追加パイロット"))
-            //    {
-            //        pname = FeatureData("追加パイロット");
-            //        if (SRC.PList.IsDefined(pname))
-            //        {
-            //            Pilot localItem() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //            localItem().FullRecover();
-            //        }
-            //    }
-
-            //    if (IsFeatureAvailable("追加サポート"))
-            //    {
-            //        pname = FeatureData("追加サポート");
-            //        if (SRC.PList.IsDefined(pname))
-            //        {
-            //            Pilot localItem1() { object argIndex1 = pname; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-            //            localItem1().FullRecover();
-            //        }
-            //    }
-
-            //    HP = MaxHP;
-            //    FullSupply();
-            //    Mode = "通常";
+            HP = MaxHP;
+            FullSupply();
+            Mode = "通常";
         }
 
 
