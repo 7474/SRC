@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- データビューアの画面の文言（既定の日本語）。英語は UIStrings.en.resx -->
+  <!-- ＨＰ・装甲・格闘・射程など SRC のデータの用語はデータの定義に合わせて訳さない -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotFound" xml:space="preserve">
+    <value>このアドレスには何もありません。</value>
+  </data>
+  <data name="LoadDataIntro" xml:space="preserve">
+    <value>SRC向けのデータのビューワです。</value>
+  </data>
+  <data name="LoadDataInstructionsBefore" xml:space="preserve">
+    <value>Titlesメニューから</value>
+    <comment>GSC へのリンクの前</comment>
+  </data>
+  <data name="LoadDataInstructionsAfter" xml:space="preserve">
+    <value>に投稿されたデータを選択するか、以下のフォームで任意のファイルを読み込んでください。</value>
+    <comment>GSC へのリンクの後</comment>
+  </data>
+  <data name="SupportedFilesBefore" xml:space="preserve">
+    <value>現在対応しているデータファイルは</value>
+    <comment>ファイル名の一覧の前</comment>
+  </data>
+  <data name="SupportedFilesAfter" xml:space="preserve">
+    <value>の一部分です。</value>
+    <comment>ファイル名の一覧の後</comment>
+  </data>
+  <data name="MultipleFilesHint" xml:space="preserve">
+    <value>データフォルダ内のファイルを全選択するなど、複数のファイルを一括読み込みできます。対応していないファイルは無視されます。</value>
+  </data>
+  <data name="DisplaySettings" xml:space="preserve">
+    <value>表示設定</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>システム設定</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>ライトモード</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>ダークモード</value>
+  </data>
+  <data name="DataDisplayOrder" xml:space="preserve">
+    <value>データの表示順</value>
+  </data>
+  <data name="UnitFirst" xml:space="preserve">
+    <value>ユニットが先頭</value>
+  </data>
+  <data name="PilotFirst" xml:space="preserve">
+    <value>パイロットが先頭</value>
+  </data>
+  <data name="ShowComment" xml:space="preserve">
+    <value>コメントを表示する</value>
+  </data>
+  <data name="ShowRawButton" xml:space="preserve">
+    <value>Rawボタンを表示する</value>
+  </data>
+  <data name="ShowPilotMessage" xml:space="preserve">
+    <value>パイロットのメッセージを表示する</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>言語（Language）</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>自動（ブラウザの設定）</value>
+  </data>
+  <data name="LanguageReloadNote" xml:space="preserve">
+    <value>言語を変えると、保存した時にページを再読み込みします。</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>フィルタ</value>
+  </data>
+  <data name="SortDefinitionOrder" xml:space="preserve">
+    <value>定義順</value>
+  </data>
+  <data name="SortName" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="SortMaxPower" xml:space="preserve">
+    <value>最大攻撃力</value>
+  </data>
+  <data name="SortMaxRange" xml:space="preserve">
+    <value>最大射程</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>名称</value>
+    <comment>武器・アビリティの表の名前の列</comment>
+  </data>
+</root>

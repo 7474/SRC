@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（既定の日本語）。英語は Strings.en.resx -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: SRC# のデータ・シナリオの作成支援ツール
+
+使い方:
+  srcsharp lint &lt;ディレクトリかファイル&gt;... [--format text|sarif] [--output ファイル]
+      データ（*.txt）とイベント（*.eve）を検査する。問題があれば終了コード 1
+  srcsharp play &lt;イベントファイル&gt; [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--steps 数]
+      シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める
+  srcsharp balance &lt;ディレクトリかファイル&gt;... [--format md|csv] [--output ファイル]
+      ユニットデータの能力値の一覧と外れ値
+  srcsharp lsp
+      Language Server（標準入出力）
+  srcsharp dap
+      デバッガ（Debug Adapter Protocol、標準入出力）
+
+共通のオプション:
+  --lang ja|en|auto
+      表示の言語。環境変数 SRCSHARP_LANG でも指定できる（オプションが優先）。既定は ja、auto は OS の設定に従う
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>不明なコマンド: {0}</value>
+    <comment>{0}: コマンド名</comment>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>不明な言語の指定: {0}（ja・en・auto のいずれか）。日本語で表示します</value>
+    <comment>{0}: --lang か SRCSHARP_LANG の値</comment>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>{0} ファイルを検査、問題 {1} 件</value>
+    <comment>{0}: 検査したファイルの数、{1}: 問題の数</comment>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>イベントファイルを 1 つ指定してください</value>
+  </data>
+</root>

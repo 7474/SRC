@@ -7,7 +7,7 @@ namespace SRCTestBlazor.Models
 {
     public class DataViewerSettingsService
     {
-        private const string LocalStorageKey = "dataViewerSettings";
+        public const string LocalStorageKey = "dataViewerSettings";
         private readonly IJSRuntime _jsRuntime;
         private DataViewerSettings _settings = new();
 
@@ -22,20 +22,27 @@ namespace SRCTestBlazor.Models
 
         public async Task InitializeAsync()
         {
-            var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
+            _settings = await LoadAsync(_jsRuntime);
+            await ApplyThemeAsync();
+            NotifyStateChanged();
+        }
+
+        /// <summary>localStorage から設定を読む。無いか壊れていれば既定の設定</summary>
+        public static async Task<DataViewerSettings> LoadAsync(IJSRuntime jsRuntime)
+        {
+            var json = await jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
             if (!string.IsNullOrEmpty(json))
             {
                 try
                 {
-                    _settings = JsonSerializer.Deserialize<DataViewerSettings>(json) ?? new DataViewerSettings();
+                    return JsonSerializer.Deserialize<DataViewerSettings>(json) ?? new DataViewerSettings();
                 }
                 catch
                 {
-                    _settings = new DataViewerSettings();
+                    return new DataViewerSettings();
                 }
             }
-            await ApplyThemeAsync();
-            NotifyStateChanged();
+            return new DataViewerSettings();
         }
 
         public async Task SaveAsync()
