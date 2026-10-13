@@ -43,7 +43,7 @@ SRC# のバージョンの付け方と、リリースの手順。
 | 公開先 | 内容 | バージョン |
 |---|---|---|
 | NuGet | SRCCore・SRCDataLinter・SRCSharpTools（.NET tool の `srcsharp`） | ライブラリ（0.x） |
-| GitHub Releases | SRC#Form（Windows 向け `SRCSharpForm.zip`）・SRC#Web（外部のサイトに置くための `SRCSharpWeb.zip`、[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)） | アプリ（3.x） |
+| GitHub Releases | SRC#Form（Windows 向け `SRCSharpForm.zip`）・SRC#Avalonia（OS ごとの `SRCSharpAvalonia-<RID>.zip`、`Publish-Avalonia.yml`）・SRC#Web（外部のサイトに置くための `SRCSharpWeb.zip`、[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)） | アプリ（3.x） |
 | Docker Hub | `koudenpa/srcdatalinter`（SRCDataLinter と srcsharp） | イメージのタグはリリースのタグ名（`v3.x.x`）と `latest` |
 
 ジョブは `check-version` の後に、`push-nuget-package`（NuGet）・`release-github-artifacts`（SRC#Form）・`release-web`（SRC#Web）・`push-to-dockerhub`（Docker Hub）が並んで動く。

@@ -9,7 +9,7 @@
 | 用途 | ソフトウェア | 入手・実行 |
 |---|---|---|
 | ブラウザで遊ぶ | SRC#Web | https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
-| Windows・macOS・Linux で遊ぶ | SRC#Avalonia | [簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
+| Windows・macOS・Linux で遊ぶ | SRC#Avalonia | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
 | Windows（x64）で遊ぶ | SRC#Form | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
 | データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
 | データ・シナリオを作る | `srcsharp`（lint・自動プレイ・バランス集計） | [作成支援ツール](./docs/tools/authoring.md) |
@@ -22,8 +22,12 @@
 
 ### SRC#Avalonia
 
-1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れる。
-1. `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <構築済みの SRC フォルダ内のシナリオ（.eve）>` を実行する。
+1. [Releases](https://github.com/7474/SRC/releases) から、OS に合った zip を取って展開する。.NET を入れる必要はない（自己完結の単一ファイル）。
+    - Windows: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
+    - Linux: `SRCSharpAvalonia-linux-x64.zip`
+    - macOS: `SRCSharpAvalonia-osx-arm64.zip`（Apple シリコン）・`SRCSharpAvalonia-osx-x64.zip`（Intel）。署名していないため、初回は Finder で右クリック→「開く」で起動する。
+1. `SRCSharpAvalonia <構築済みの SRC フォルダ内のシナリオ（.eve）>` を実行する。
+    - ソースから動かすときは、[.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れて `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオ（.eve）>` を実行する。
     - MIDI を鳴らすには SoundFont（.sf2）が要る（[SoundFont](./docs/gui/avalonia.md#soundfont)）。
 
 ### SRC#Form
