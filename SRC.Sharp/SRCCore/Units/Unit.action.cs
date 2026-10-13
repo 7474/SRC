@@ -13,53 +13,45 @@ namespace SRCCore.Units
         // １ターンに可能な行動数
         public int MaxAction(bool ignore_en = false)
         {
-            int MaxActionRet;
-            //// ステータス異常？
-            //if (IsConditionSatisfied("行動不能") || IsConditionSatisfied("麻痺") || IsConditionSatisfied("石化") || IsConditionSatisfied("凍結") || IsConditionSatisfied("睡眠") || IsConditionSatisfied("チャージ") || IsConditionSatisfied("消耗") || IsUnderSpecialPowerEffect("行動不能"))
-            //{
-            //    return MaxActionRet;
-            //}
-
-            //// ＥＮ切れ？
-            //if (!ignore_en)
-            //{
-            //    if (EN == 0)
-            //    {
-            //        if (!Expression.IsOptionDefined("ＥＮ０時行動可"))
-            //        {
-            //            return MaxActionRet;
-            //        }
-            //    }
-            //}
-
-            //if (CountPilot() == 0)
-            //{
-            //    return MaxActionRet;
-            //}
-
-            //// ２回行動可能？
-            //if (Expression.IsOptionDefined("２回行動能力使用"))
-            //{
-            //    if (MainPilot().IsSkillAvailable("２回行動"))
-            //    {
-            //        MaxActionRet = 2;
-            //    }
-            //    else
-            //    {
-            //        MaxActionRet = 1;
-            //    }
-            //}
-            //else
-            if (MainPilot().Intuition >= 200)
+            // ステータス異常？
+            if (IsConditionSatisfied("行動不能")
+                || IsConditionSatisfied("麻痺")
+                || IsConditionSatisfied("石化")
+                || IsConditionSatisfied("凍結")
+                || IsConditionSatisfied("睡眠")
+                || IsConditionSatisfied("チャージ")
+                || IsConditionSatisfied("消耗")
+                || IsUnderSpecialPowerEffect("行動不能"))
             {
-                MaxActionRet = 2;
+                return 0;
+            }
+
+            // ＥＮ切れ？
+            if (!ignore_en)
+            {
+                if (EN == 0)
+                {
+                    if (!Expression.IsOptionDefined("ＥＮ０時行動可"))
+                    {
+                        return 0;
+                    }
+                }
+            }
+
+            if (CountPilot() == 0)
+            {
+                return 0;
+            }
+
+            // ２回行動可能？
+            if (Expression.IsOptionDefined("２回行動能力使用"))
+            {
+                return MainPilot().IsSkillAvailable("２回行動") ? 2 : 1;
             }
             else
             {
-                MaxActionRet = 1;
+                return MainPilot().Intuition >= 200 ? 2 : 1;
             }
-
-            return MaxActionRet;
         }
 
         // 行動数を消費

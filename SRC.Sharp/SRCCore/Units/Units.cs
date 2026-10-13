@@ -4,6 +4,8 @@
 // 再頒布または改変することができます。
 using Newtonsoft.Json;
 using SRCCore.Extensions;
+using SRCCore.Lib;
+using SRCCore.Models;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
@@ -438,258 +440,96 @@ namespace SRCCore.Units
                 }
             }
 
-            //// ３段階までの変形・合体に対応
-            //for (i = 1; i <= 3; i++)
-            //{
-            //    // ノーマルモード・パーツ合体を行う
-            //    foreach (Unit currentU4 in colUnits)
-            //    {
-            //        u = currentU4;
-            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
-            //        {
-            //            if (u.IsFeatureAvailable("ノーマルモード"))
-            //            {
-            //                string localLIndex() { object argIndex1 = "ノーマルモード"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+            // ３段階までの変形・合体に対応
+            for (var i = 1; i <= 3; i++)
+            {
+                // ノーマルモード・パーツ合体を行う
+                foreach (Unit u in colUnits.List.CloneList())
+                {
+                    if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
+                    {
+                        if (u.IsFeatureAvailable("ノーマルモード"))
+                        {
+                            u.Transform(GeneralLib.LIndex(u.FeatureData("ノーマルモード"), 1));
+                        }
+                        else if (u.IsFeatureAvailable("パーツ合体"))
+                        {
+                            if (GeneralLib.LLength(u.FeatureData("パーツ合体")) == 2)
+                            {
+                                u.Transform(GeneralLib.LIndex(u.FeatureData("パーツ合体"), 2));
+                            }
+                            else
+                            {
+                                u.Transform(GeneralLib.LIndex(u.FeatureData("パーツ合体"), 1));
+                            }
+                        }
+                    }
+                }
 
-            //                u.Transform(localLIndex());
-            //            }
-            //            else if (u.IsFeatureAvailable("パーツ合体"))
-            //            {
-            //                if (GeneralLib.LLength(u.FeatureData(argIndex2)) == 2)
-            //                {
-            //                    string localLIndex1() { object argIndex1 = "パーツ合体"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
+                // 分離を行う
+                foreach (Unit u in colUnits.List.CloneList())
+                {
+                    if (CanSplitOnUpdate(u))
+                    {
+                        // 分離を実施
+                        u.Split();
+                    }
+                }
 
-            //                    u.Transform(localLIndex1());
-            //                }
-            //                else
-            //                {
-            //                    string localLIndex2() { object argIndex1 = "パーツ合体"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                // 合体を行う
+                foreach (Unit u in colUnits.List.CloneList())
+                {
+                    if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
+                    {
+                        if (u.IsFeatureAvailable("合体"))
+                        {
+                            foreach (var fd in u.Features.Where(x => x.Name == "合体").ToList())
+                            {
+                                if (CanCombineOnUpdate(u, fd))
+                                {
+                                    // 合体を実施
+                                    u.Combine(GeneralLib.LIndex(fd.Data, 2));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //                    u.Transform(localLIndex2());
-            //                }
-            //            }
-            //        }
-            //    }
+                // 標準形態に変形
+                foreach (Unit u in colUnits.List.CloneList())
+                {
+                    if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
+                    {
+                        if (u.IsFeatureAvailable("変形"))
+                        {
+                            var uname = u.Name;
+                            var buf = u.FeatureData("変形");
+                            var loopTo = GeneralLib.LLength(buf);
+                            for (var j = 2; j <= loopTo; j++)
+                            {
+                                var uname2 = GeneralLib.LIndex(buf, j);
+                                if (SRC.UDList.IsDefined(uname2))
+                                {
+                                    if (SRC.UDList.Item(uname2).ID < SRC.UDList.Item(uname).ID)
+                                    {
+                                        uname = uname2;
+                                    }
+                                }
+                                else
+                                {
+                                    GUI.ErrorMessage(uname + "の変形先ユニット「" + uname2 + "」のデータが定義されていません。");
+                                }
+                            }
 
-            //    // 分離を行う
-            //    foreach (Unit currentU5 in colUnits)
-            //    {
-            //        u = currentU5;
-            //        if (!u.IsFeatureAvailable("分離"))
-            //        {
-            //            goto NextLoop1;
-            //        }
-
-            //        if (u.Party0 != "味方" || u.Status == "他形態" || u.Status == "旧主形態" || u.Status == "旧形態")
-            //        {
-            //            goto NextLoop1;
-            //        }
-
-            //        if (u.Status == "破棄")
-            //        {
-            //            if (u.CountPilot() == 0)
-            //            {
-            //                goto NextLoop1;
-            //            }
-            //        }
-
-            //        // 合体形態が主形態なら分離を行わない
-
-            //        int localLLength() { object argIndex1 = "分離"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
-
-            //        if (localLLength() > 3 && !u.IsFeatureAvailable("制限時間"))
-            //        {
-            //            goto NextLoop1;
-            //        }
-
-            //        if (u.IsFeatureAvailable("主形態"))
-            //        {
-            //            goto NextLoop1;
-            //        }
-
-            //        // パイロットが足らない場合は分離を行わない
-            //        n = 0;
-            //        var loopTo1 = GeneralLib.LLength(u.FeatureData(argIndex6));
-            //        for (j = 2; j <= loopTo1; j++)
-            //        {
-            //            uname = GeneralLib.LIndex(u.FeatureData(argIndex3), j);
-            //            if (SRC.UDList.IsDefined(uname))
-            //            {
-            //                {
-            //                    var withBlock = SRC.UDList.Item(uname);
-            //                    if (!withBlock.IsFeatureAvailable("召喚ユニット"))
-            //                    {
-            //                        n = (n + withBlock.PilotNum);
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        if (u.CountPilot() < n)
-            //        {
-            //            goto NextLoop1;
-            //        }
-
-            //        // 分離先の形態が利用可能？
-            //        var loopTo2 = GeneralLib.LLength(u.FeatureData(argIndex8));
-            //        for (j = 2; j <= loopTo2; j++)
-            //        {
-            //            uname = GeneralLib.LIndex(u.FeatureData(argIndex7), j);
-            //            bool localIsDefined() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //            if (!localIsDefined())
-            //            {
-            //                goto NextLoop1;
-            //            }
-
-            //            Unit localItem() { object argIndex1 = uname; var ret = SRC.UList.Item(argIndex1); return ret; }
-
-            //            if (localItem().CurrentForm().Status == "待機")
-            //            {
-            //                goto NextLoop1;
-            //            }
-            //        }
-
-            //        // 分離を実施
-            //        u.Split();
-            //    NextLoop1:
-            //        ;
-            //    }
-
-            //    // 合体を行う
-            //    foreach (Unit currentU6 in colUnits)
-            //    {
-            //        u = currentU6;
-            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
-            //        {
-            //            if (u.IsFeatureAvailable("合体"))
-            //            {
-            //                var loopTo3 = u.CountFeature();
-            //                for (j = 1; j <= loopTo3; j++)
-            //                {
-            //                    if (u.Feature(j) != "合体")
-            //                    {
-            //                        goto NextLoop2;
-            //                    }
-
-            //                    // 合体後の形態が利用可能？
-            //                    string localFeatureData() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //                    uname = GeneralLib.LIndex(localFeatureData(), 2);
-            //                    bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                    if (!localIsDefined1())
-            //                    {
-            //                        goto NextLoop2;
-            //                    }
-
-            //                    {
-            //                        var withBlock1 = SRC.UList.Item(uname);
-            //                        if (u.Status == "待機" && withBlock1.CurrentForm().Status == "離脱")
-            //                        {
-            //                            goto NextLoop2;
-            //                        }
-
-            //                        if (withBlock1.IsFeatureAvailable("制限時間"))
-            //                        {
-            //                            goto NextLoop2;
-            //                        }
-
-            //                        string localFeatureData1() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //                        int localLLength1() { string arglist = hs7335ed59602e416aa1b2600f4949cf4c(); var ret = GeneralLib.LLength(arglist); return ret; }
-
-            //                        if (!withBlock1.IsFeatureAvailable("主形態") && localLLength1() == 3)
-            //                        {
-            //                            goto NextLoop2;
-            //                        }
-            //                    }
-
-            //                    // 合体のパートナーが利用可能？
-            //                    string localFeatureData3() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //                    var loopTo4 = GeneralLib.LLength(localFeatureData3());
-            //                    for (k = 3; k <= loopTo4; k++)
-            //                    {
-            //                        string localFeatureData2() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //                        uname = GeneralLib.LIndex(localFeatureData2(), k);
-            //                        bool localIsDefined2() { object argIndex1 = uname; var ret = SRC.UList.IsDefined(argIndex1); return ret; }
-
-            //                        if (!localIsDefined2())
-            //                        {
-            //                            goto NextLoop2;
-            //                        }
-
-            //                        {
-            //                            var withBlock2 = SRC.UList.Item(uname);
-            //                            if (u.Status == "待機")
-            //                            {
-            //                                if (withBlock2.CurrentForm().Status != "待機")
-            //                                {
-            //                                    goto NextLoop2;
-            //                                }
-            //                            }
-            //                            else if (withBlock2.CurrentForm().Status != "離脱")
-            //                            {
-            //                                goto NextLoop2;
-            //                            }
-            //                        }
-            //                    }
-
-            //                    // 合体を実施
-            //                    string localFeatureData4() { object argIndex1 = j; var ret = u.FeatureData(argIndex1); return ret; }
-
-            //                    string localLIndex3() { string arglist = hs1e082bda318043228d140b6ae8f6a2c1(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
-
-            //                    u.Combine(localLIndex3());
-            //                    break;
-            //                NextLoop2:
-            //                    ;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 標準形態に変形
-            //    foreach (Unit currentU7 in colUnits)
-            //    {
-            //        u = currentU7;
-            //        if (u.Party0 == "味方" && u.Status != "他形態" && u.Status != "旧主形態" && u.Status != "旧形態")
-            //        {
-            //            if (u.IsFeatureAvailable("変形"))
-            //            {
-            //                uname = u.Name;
-            //                buf = u.FeatureData("変形");
-            //                var loopTo5 = GeneralLib.LLength(buf);
-            //                for (j = 2; j <= loopTo5; j++)
-            //                {
-            //                    uname2 = GeneralLib.LIndex(buf, j);
-            //                    if (SRC.UDList.IsDefined(uname2))
-            //                    {
-            //                        UnitData localItem1() { object argIndex1 = uname2; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                        UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-            //                        if (localItem1().ID < localItem2().ID)
-            //                        {
-            //                            uname = uname2;
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        GUI.ErrorMessage(uname + "の変形先ユニット「" + uname2 + "」のデータが定義されていません。");
-            //                    }
-            //                }
-
-            //                if ((uname ?? "") != (u.Name ?? ""))
-            //                {
-            //                    u.Transform(uname);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                            if ((uname ?? "") != (u.Name ?? ""))
+                            {
+                                u.Transform(uname);
+                            }
+                        }
+                    }
+                }
+            }
 
             // 暴走時パイロットを削除
             foreach (Unit u in colUnits)
@@ -713,6 +553,15 @@ namespace SRCCore.Units
                     {
                         u.DeletePilot(u.Pilots.First());
                     }
+                }
+            }
+
+            // 変身先の形態等、一時的な形態を削除
+            foreach (Unit u in colUnits.List.CloneList())
+            {
+                if (u.Status == "待機")
+                {
+                    u.DeleteTemporaryOtherForm();
                 }
             }
 
@@ -756,6 +605,131 @@ namespace SRCCore.Units
             }
         }
 
+
+        // Update 時に分離を行うか判定する
+        private bool CanSplitOnUpdate(Unit u)
+        {
+            if (!u.IsFeatureAvailable("分離"))
+            {
+                return false;
+            }
+
+            if (u.Party0 != "味方" || u.Status == "他形態" || u.Status == "旧主形態" || u.Status == "旧形態")
+            {
+                return false;
+            }
+
+            if (u.Status == "破棄")
+            {
+                if (u.CountPilot() == 0)
+                {
+                    return false;
+                }
+            }
+
+            // 合体形態が主形態なら分離を行わない
+            var splitData = u.FeatureData("分離");
+            if (GeneralLib.LLength(splitData) > 3 && !u.IsFeatureAvailable("制限時間"))
+            {
+                return false;
+            }
+
+            if (u.IsFeatureAvailable("主形態"))
+            {
+                return false;
+            }
+
+            // パイロットが足らない場合は分離を行わない
+            var n = 0;
+            var loopTo = GeneralLib.LLength(splitData);
+            for (var j = 2; j <= loopTo; j++)
+            {
+                var uname = GeneralLib.LIndex(splitData, j);
+                if (SRC.UDList.IsDefined(uname))
+                {
+                    var ud = SRC.UDList.Item(uname);
+                    if (!ud.IsFeatureAvailable("召喚ユニット"))
+                    {
+                        n = n + ud.PilotNum;
+                    }
+                }
+            }
+
+            if (u.CountPilot() < n)
+            {
+                return false;
+            }
+
+            // 分離先の形態が利用可能？
+            for (var j = 2; j <= loopTo; j++)
+            {
+                var uname = GeneralLib.LIndex(splitData, j);
+                if (!SRC.UList.IsDefined(uname))
+                {
+                    return false;
+                }
+
+                if (SRC.UList.Item(uname).CurrentForm().Status == "待機")
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Update 時に合体能力 fd による合体を行うか判定する
+        private bool CanCombineOnUpdate(Unit u, FeatureData fd)
+        {
+            // 合体後の形態が利用可能？
+            var uname = GeneralLib.LIndex(fd.Data, 2);
+            if (!SRC.UList.IsDefined(uname))
+            {
+                return false;
+            }
+
+            var cu = SRC.UList.Item(uname);
+            if (u.Status == "待機" && cu.CurrentForm().Status == "離脱")
+            {
+                return false;
+            }
+
+            if (cu.IsFeatureAvailable("制限時間"))
+            {
+                return false;
+            }
+
+            if (!cu.IsFeatureAvailable("主形態") && GeneralLib.LLength(fd.Data) == 3)
+            {
+                return false;
+            }
+
+            // 合体のパートナーが利用可能？
+            var loopTo = GeneralLib.LLength(fd.Data);
+            for (var k = 3; k <= loopTo; k++)
+            {
+                uname = GeneralLib.LIndex(fd.Data, k);
+                if (!SRC.UList.IsDefined(uname))
+                {
+                    return false;
+                }
+
+                var pu = SRC.UList.Item(uname);
+                if (u.Status == "待機")
+                {
+                    if (pu.CurrentForm().Status != "待機")
+                    {
+                        return false;
+                    }
+                }
+                else if (pu.CurrentForm().Status != "離脱")
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         //        // ユニットリストに登録されたユニットの情報をセーブ
         //        public void Save()
