@@ -122,15 +122,15 @@ Passed: 245, Skipped: 19, Failed: 0
 ### 指示 / Instruction
 
 ```
-@copilot SRC.Sharp/SRCCoreTests/TestLib/MockGUI.cs の NotImplementedException を減らしてください。
+@copilot SRC.Sharp/SRCCore/TestLib/MockGUI.cs の GUINotImplementedException を減らしてください。
 
 手順：
-1. 現在の NotImplementedException 数を確認
+1. 現在の GUINotImplementedException 数を確認
 2. テストコードで頻繁に呼ばれるが未実装のプロパティ/メソッドを特定
 3. 最小限のstub実装を追加（実際のUIは不要、状態を保持するだけでよい）
 4. 既存テストが通ることを確認
 
-対応後のNotImplementedException数とテスト結果を報告してください。
+対応後のGUINotImplementedException数とテスト結果を報告してください。
 ```
 
 ---
@@ -145,7 +145,7 @@ Passed: 245, Skipped: 19, Failed: 0
 対象: SRC.Sharp/SRCCore/Units/Unit.attackcheck.cs の戦闘計算ロジック
 
 手順：
-1. VB6元コード（SRC/SRC_20121125/Unit.bas）の該当ロジックを確認
+1. VB6元コード（SRC/SRC_20121125/Unit.cls）の該当ロジックを確認
 2. C#実装との差異を調査
 3. 差異があれば差異の内容を記録し、修正すべきかを判断
 4. テストケースを追加（VB6版と同等の動作を検証）
@@ -235,7 +235,7 @@ Passed: 245, Skipped: 19, Failed: 0
 
 1. **テスト補完**: ヘルプドキュメントを期待値としたユニットテストの追加
 2. **精度検証**: VB6版との動作差異の特定と修正
-3. **TODO解決**: 残存18件のTODO（精査・最適化・リファクタリング）
+3. **TODO解決**: 残存するTODO（精査・最適化・リファクタリング）
 4. **進捗管理**: 品質メトリクスの追跡とドキュメント更新
 5. **コードレビュー**: 品質基準への適合確認
 

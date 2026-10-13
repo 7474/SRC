@@ -6,9 +6,9 @@ This file contains instructions for GitHub Copilot Agents to operate the SRC# **
 
 ## 概要 / Overview
 
-SRC# の移植作業（TODO消化フェーズ）は2026-02-21に完了しました。残存する18件のTODOは新規移植ではなく、精査・最適化・リファクタリングの性質が強い課題です。現在は**品質検証・精度向上フェーズ**にあります。
+SRC# の移植作業（TODO消化フェーズ）は2026-02-21に完了しました。残存するTODO（2026-10 時点で19件）は新規移植ではなく、精査・最適化・リファクタリングの性質が強い課題です。現在は**品質検証・精度向上フェーズ**にあります。
 
-The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 18 TODOs are quality/optimization tasks, not unimplemented features. The project is now in the **quality verification and accuracy improvement phase**.
+The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining TODOs (19 as of 2026-10) are quality/optimization tasks, not unimplemented features. The project is now in the **quality verification and accuracy improvement phase**.
 
 ### 必要な情報源 / Required Information Sources
 
@@ -25,10 +25,10 @@ The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 
 **目的 / Purpose**: ユニットテストを補完し、コードカバレッジを向上させる。
 
 **指示 / Instructions**:
-- 優先領域（`docs/porting/porting-quality-plan.md` の層1参照）：
-  - `SRC.Sharp/SRCCore/Units/` — 86,480行に対しテスト53件（要150件+）
-  - `SRC.Sharp/SRCCore/Events/` — 8,789行に対しテスト0件（要30件+）
-  - `SRC.Sharp/SRCCore/CmdDatas/Commands/` — 188コマンドに対しテスト99件
+- 優先領域（`docs/porting/porting-quality-plan.md` の層1参照。テスト数は 2026-10 時点）：
+  - `SRC.Sharp/SRCCore/Units/` — 約85,000行に対しテスト529件
+  - `SRC.Sharp/SRCCore/Events/` — 約8,700行に対しテスト362件
+  - `SRC.Sharp/SRCCore/CmdDatas/` — 188コマンドに対しテスト964件
 - 手順：
   1. `SRC.Sharp/SRCCore/CmdDatas/Commands/` の全コマンドクラスを列挙
   2. `SRC.Sharp/SRCCoreTests/CmdDatas/` の既存テストと比較してカバレッジを確認
@@ -58,7 +58,7 @@ The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 
 
 ### 2. Implementation Agent / 実装エージェント
 
-**目的 / Purpose**: 残存する18件のTODO（精査・最適化・リファクタリング課題）を解決する。
+**目的 / Purpose**: 残存するTODO（精査・最適化・リファクタリング課題）を解決する。
 
 **指示 / Instructions**:
 - 着手前に読むもの：
@@ -92,6 +92,7 @@ The SRC# porting (TODO resolution) phase completed on 2026-02-21. The remaining 
 | `SRCSharpForm/Forms/Main.guiscrean.cs` | インタフェースの切り方見直す (Issue #367) |
 | `SRCSharpForm/Forms/Main.guiscrean.cs` | FillStyle の全種類対応 |
 | `SRCSharpForm/Forms/Main.guistatus.cs` | インタフェースの切り方見直す (Issue #367) |
+| `SRCSharpForm/Forms/Main.cs` | レンダリングの課題を見直す（PR #816 のレビュー） |
 | `SRCSharpForm/Resoruces/ImageBuffer.cs` | アルファチャネル精査 |
 | `SRCSharpForm/RootForm.cs` | 設定の反映処理を設ける（SoundVolume 以外も） |
 
@@ -180,7 +181,7 @@ Passed: X, Skipped: Y, Failed: 0
 cd SRC.Sharp && dotnet test --list-tests 2>/dev/null | wc -l
 
 # MockGUI の未実装数
-grep -rn "throw new NotImplementedException" SRC.Sharp/SRCCoreTests/ | wc -l
+grep -c "GUINotImplementedException" SRC.Sharp/SRCCore/TestLib/MockGUI.cs
 
 # 残存TODO数
 grep -rn "// TODO" SRC.Sharp/SRCCore/ SRC.Sharp/SRCSharpForm/ | wc -l
@@ -327,8 +328,8 @@ gh pr create
 # 1. 現在のテスト状況を確認
 cd SRC.Sharp && dotnet test --collect:"XPlat Code Coverage"
 
-# 2. MockGUIのNotImplementedException数を確認
-grep -rn "throw new NotImplementedException" SRC.Sharp/SRCCoreTests/
+# 2. MockGUIの未実装数を確認
+grep -c "GUINotImplementedException" SRC.Sharp/SRCCore/TestLib/MockGUI.cs
 
 # 3. VB6版との比較対象を確認
 ls SRC/SRC_20121125/

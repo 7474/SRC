@@ -3,6 +3,12 @@
 > **作成日**: 2026-02-20  
 > **対象**: SRC# (Simulation RPG Construction Sharp) — VB6 → C# .NET 移植プロジェクト
 
+> **注記**: 本レポートの数値は 2026-02-20〜21 時点のもの。その後の主な変化（2026-10）は次のとおり。
+> - ユニットテストは SRCCoreTests で 7,736 メソッド（459 ファイル）に増えた
+> - 残存 TODO は 19 件（SRCSharpForm に `Main.cs` の 1 件が加わった）。最新の一覧は [移植計画・進捗](./migration-plan.md)
+> - MockGUI の未実装（`GUINotImplementedException`）は 88 件に減った
+> - GUI は SRCSharpForm に加え、SkiaSharp で画面を描く SRCRender と、それを使う SRC#Avalonia・SRC#Web ができた。SRCRenderTests（VRT を含む）・SRCSharpAvaloniaTests・SRC#Web の Playwright のテストがある（[E2E テスト方針](../gui/e2e-testing.md)）
+
 ---
 
 ## 1. エグゼクティブサマリー / Executive Summary

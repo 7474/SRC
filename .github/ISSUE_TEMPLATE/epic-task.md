@@ -7,11 +7,11 @@ assignees: ['copilot']
 ---
 
 ## 実装するタスク
-**Epic**: (例: Epic A: セーブ/ロードシステム)
-**タスク**: (例: A.1 基本的なセーブ機能の実装)
+**Epic**: (例: Epic 5: データ管理・永続化)
+**タスク**: (例: セーブ・ロードの互換性の精査)
 
 ## 参照ドキュメント
-**必読**: `/migration-roadmap/epics/epic-a-save-load.md` (該当するEpicファイルに変更)
+**必読**: `docs/porting/migration-plan.md`（該当する Epic の節）、`docs/porting/porting-quality-plan.md`
 
 ## @copilot への指示
 上記参照ドキュメントのタスクを実装してください。

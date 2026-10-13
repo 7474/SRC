@@ -26,6 +26,8 @@ With single commands:
 - ✅ 人間が考えることは最小限
 - ✅ セットアップ不要
 
+ユニットテストの補完は、Agentic Workflow（[complete-unit-tests.md](../../.github/workflows/complete-unit-tests.md)、[GitHub Agentic Workflows](https://github.github.com/gh-aw/)）でも日次で行う。
+
 **詳細**: [Copilot Agent Instructions](../../.github/copilot/README.md)
 
 ---
@@ -50,11 +52,11 @@ With single commands:
 
 ## 🎯 プロジェクト概要 / Project Overview
 
-### 統計 / Statistics (2026-02-21 更新)
+### 統計 / Statistics (2026-10 更新)
 
-- **残存 TODO Comments**: 18件（SRCCore: 10, SRCSharpForm: 8）— 初期155+件から88%解消（残存は精査・最適化課題）
+- **残存 TODO Comments**: 19件（SRCCore: 10, SRCSharpForm: 9）— 初期155+件から約88%解消（残存は精査・最適化課題）
 - **移植フェーズ**: **品質検証・精度向上フェーズ**（TODO消化フェーズ完了）
-- **ユニットテスト**: 3,841テストメソッド（209ファイル）
+- **ユニットテスト**: SRCCoreTests に 7,736 テストメソッド（459ファイル）。ほかに SRCRenderTests・SRCSharpAvaloniaTests・SRCSoundTests・SRCAuthoringTests と、SRC#Web の Playwright のテストがある
 - **Epic Categories**: 8個
 - **詳細分析**: [移植状況 総合評価レポート](./porting-assessment.md) を参照
 
@@ -136,6 +138,7 @@ Copilotが現在のissue状態を確認し、ドキュメントと進行状況�
 
 ## 📝 更新履歴 / Changelog
 
+- **2026-10-13**: 統計（残存TODO 19件、テスト 7,736 メソッド）を更新。ユニットテストを補完する Agentic Workflow を追記
 - **2026-02-21**: 進捗更新: ユニットテスト大幅増加を反映（253 → 3,841テストメソッド、31 → 209ファイル）
 - **2026-02-21**: issue・label・projects運用ガイドとスクリプトを削除（運用しないため）
 - **2026-02-21**: ドキュメント構造見直しとフェーズ更新

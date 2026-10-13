@@ -1,6 +1,6 @@
 # E2E テスト方針 / E2E Testing
 
-> 調査日: 2026-10-12（更新: 2026-10-12）
+> 調査日: 2026-10-12（更新: 2026-10-13）
 
 SRC# の E2E テスト（シナリオを実際にプレイして挙動を確認するテスト）と VRT（ビジュアルリグレッションテスト）の方針。
 
@@ -49,7 +49,7 @@ flowchart LR
 | データ | 上記を動かすための最小データ | ユニット・パイロット・武器・アビリティ・地形・マップ・アイテム |
 | 互換性 | 元の SRC との挙動差の回帰確認 | [SRC-SharpTestScenario](https://github.com/7474/SRC-SharpTestScenario) のシナリオ |
 
-- 置き場所は `SRC.Sharp/E2E/`（データ・シナリオ・入力スクリプト・基準画像）とする想定
+- 置き場所は `SRC.Sharp/E2E/`（データ・シナリオ・入力スクリプト）。基準画像は `SRCRenderTests/Baselines/` に置く
 - 乱数を使うシナリオは乱数系列を固定して実行する（`GeneralLib.RndSeed`）
 - **網羅率の検査**: 実行したコマンドの種類（`CmdType`）を記録し、コーパス全体で未実行のコマンドがあればテストを失敗させる。これでコマンドの追加・移植漏れを検出できる
 
@@ -121,6 +121,8 @@ expect eval Damage(標的パイロット) > 0
 | `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Windows / Linux（VRT は Linux のみ） |
 | `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存 | Windows / Linux |
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Windows / Linux（出力を開けない環境では再生のテストは Inconclusive） |
+| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Windows / Linux |
+| `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
 | `SRCSharpFormTestWinAppDriver` | SRC#Form の起動確認 | Windows のみ |
 | `SRCTestBlazor/E2E` | Cypress。データ閲覧画面 | ブラウザ |
 
@@ -139,4 +141,4 @@ expect eval Damage(標的パイロット) > 0
 1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
 2. コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する
 3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
-4. セーブ／ロード、インターミッション、次ステージへの遷移を通す
+4. ~~セーブ／ロード、インターミッション、次ステージへの遷移を通す~~（`intermission-save`。ロードは SRC#Web の E2E で確かめる）

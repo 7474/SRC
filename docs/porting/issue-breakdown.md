@@ -2,6 +2,8 @@
 
 本ドキュメントは、[移植完了計画](./migration-plan.md)で定義されたEpicごとの具体的なIssueリストです。
 
+> **注記**: TODO消化フェーズ（2026-02-19〜21）に作った計画で、記録として残している。ここに挙げた TODO の大半は解消済み。現在の残件は [移植計画・進捗](./migration-plan.md) の残存 TODO 一覧を参照。
+
 ## Epic 1: 戦闘システム完成 / Combat System Completion
 
 ### Issue 1.1: 回避攻撃の実装

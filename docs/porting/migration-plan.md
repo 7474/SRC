@@ -10,10 +10,10 @@ The TODO消化 (TODO resolution) phase is complete. The project has moved to the
 
 ## 統計 / Statistics
 
-> **2026-02-21 更新** / Updated 2026-02-21 — TODO消化フェーズ完了 / TODO resolution phase complete
+> **2026-10 更新** / Updated 2026-10 — TODO消化フェーズは 2026-02-21 に完了 / TODO resolution phase completed on 2026-02-21
 
 - **残存 TODO コメント (SRCCore)**: 10 / Remaining TODO comments (SRCCore): 10（精査・最適化・リファクタリング課題）
-- **残存 TODO コメント (SRCSharpForm)**: 8 / Remaining TODO comments (SRCSharpForm): 8（精査・最適化・リファクタリング課題）
+- **残存 TODO コメント (SRCSharpForm)**: 9 / Remaining TODO comments (SRCSharpForm): 9（精査・最適化・リファクタリング課題）
 - **解消済み TODO**: 137+ (約88%完了) / Resolved TODOs: 137+ (~88% complete)
 - **フェーズ**: **品質検証・精度向上フェーズ** / Phase: **Quality Verification & Improvement**
 - **Main Project**: SRC.Sharp/SRCCore
@@ -59,13 +59,13 @@ The TODO消化 (TODO resolution) phase is complete. The project has moved to the
 |------|---------------------|--------------------------|-------------|
 | Epic 1: 戦闘システム | 0 ✅ | 0 ✅ | すべて完了 |
 | Epic 2: ユニット・パイロット | 1 | 0 | Unit.pilot.cs: 追加サポート精査 |
-| Epic 3: GUI・UI | 1 | 5 | フィルタ, タイルUI, インタフェース分割 |
-| Epic 4: イベント・コマンド | 2 | 0 | CmdParser Talk, PaintString最適化 |
+| Epic 3: GUI・UI | 1 | 8 | フィルタ, タイルUI, インタフェース分割, FillStyle, アルファチャネル, レンダリング, 愛称描画 |
+| Epic 4: イベント・コマンド | 1 | 0 | CmdParser Talk |
 | Epic 5: データ管理 | 2 | 1 | セーブ精査, 設定反映 |
 | Epic 6: VB6レガシー | 2 | 0 | GeneralLib Byte length, Expression ref→out |
 | Epic 7: パフォーマンス | 2 | 0 | Sound 再検索, PaintString |
-| Epic 8: バグ・エッジケース | 2 | 1 | COM 武器選択, アルファチャネル |
-| **合計** | **10** | **8** | |
+| Epic 8: バグ・エッジケース | 1 | 0 | COM 武器選択 |
+| **合計** | **10** | **9** | |
 
 ## 現在の状況 / Current Status
 
@@ -73,11 +73,11 @@ The TODO消化 (TODO resolution) phase is complete. The project has moved to the
 
 **TODO消化フェーズは完了した。** プロジェクトは現在、**品質検証・精度向上フェーズ**にある。
 
-コード移植（TODO消化）の観点では、残存する18件のTODOは「未移植」ではなく、精査・最適化・リファクタリングの性質が強い課題である。基本機能の移植は完了しており、次の焦点は移植されたコードの正確性保証と品質向上にある。
+コード移植（TODO消化）の観点では、残存するTODO（2026-10 時点で19件）は「未移植」ではなく、精査・最適化・リファクタリングの性質が強い課題である。基本機能の移植は完了しており、次の焦点は移植されたコードの正確性保証と品質向上にある。
 
 **The TODO resolution phase is complete.** The project is now in the **quality verification and accuracy improvement phase**.
 
-The remaining 18 TODO items are not "unimplemented" features but rather quality, optimization, and refactoring tasks. Core functionality porting is complete; the focus is now on verifying accuracy and improving quality.
+The remaining TODO items (19 as of 2026-10) are not "unimplemented" features but rather quality, optimization, and refactoring tasks. Core functionality porting is complete; the focus is now on verifying accuracy and improving quality.
 
 - **総合評価レポート**: [移植状況 総合評価レポート](./porting-assessment.md) — 定量分析・リスク分析・GUI評価
 - **品質向上計画**: [移植精度 評価・向上計画](./porting-quality-plan.md) — テスト戦略・GUI検証・ロードマップ
@@ -110,7 +110,7 @@ The remaining 18 TODO items are not "unimplemented" features but rather quality,
 | `SRCCore/Sound.cs` | 一度検索したものを再検索している（絶対パス API） |
 | `SRCCore/Units/Unit.pilot.cs` | 追加サポートを処理していたか精査 |
 
-#### SRCSharpForm (8件)
+#### SRCSharpForm (9件)
 
 | ファイル | 内容 |
 |---------|------|
@@ -120,6 +120,7 @@ The remaining 18 TODO items are not "unimplemented" features but rather quality,
 | `SRCSharpForm/Forms/Main.guiscrean.cs` | インタフェースの切り方見直す (Issue #367) |
 | `SRCSharpForm/Forms/Main.guiscrean.cs` | FillStyle の全種類対応 |
 | `SRCSharpForm/Forms/Main.guistatus.cs` | インタフェースの切り方見直す (Issue #367) |
+| `SRCSharpForm/Forms/Main.cs` | レンダリングの課題を見直す（PR #816 のレビュー） |
 | `SRCSharpForm/Resoruces/ImageBuffer.cs` | アルファチャネル精査 |
 | `SRCSharpForm/RootForm.cs` | 設定の反映処理を設ける（SoundVolume 以外も） |
 
@@ -184,14 +185,16 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 **残存TODO**: 9 (SRCCore: 1, SRCSharpForm: 8)
 
 #### 残存する主な機能 / Remaining Features:
-- 発進時のユニット表示（母艦の代わり）
+- パイロット愛称描画の GUI への切り出し
 - ユニットタイル読み込み元変更、フィルタ実装
 - GUI インタフェース分割見直し（guimap, guiscrean, guistatus）
-- 縦横比の解決、アルファチャネル精査
+- FillStyle の全種類対応、アルファチャネル精査、レンダリングの課題の見直し
+
+発進時のユニット表示（`Command.launch.cs`）と縦横比（`Main.gui.cs`）の TODO は解消済み。
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Commands/Command.launch.cs` (1 TODO)
-- `SRC.Sharp/SRCSharpForm/Forms/Main.gui.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` (1 TODO)
+- `SRC.Sharp/SRCSharpForm/Forms/Main.cs` (1 TODO)
 - `SRC.Sharp/SRCSharpForm/Forms/Main.guimap.cs` (3 TODOs)
 - `SRC.Sharp/SRCSharpForm/Forms/Main.guiscrean.cs` (2 TODOs)
 - `SRC.Sharp/SRCSharpForm/Forms/Main.guistatus.cs` (1 TODO)
@@ -202,42 +205,36 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 ### 4. イベント・コマンドシステム / Event & Command System
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 中 / Effort: Medium
-**残存TODO**: 8
+**残存TODO**: 1
 
 #### 完了した主な機能 / Completed Features:
 - ✅ LIPS（タイムド Question コマンド）移植 (PR #735)
 - ✅ ReturnCmd / GotoCmd のバグ修正 (PR #734)
 
 #### 残存する主な機能 / Remaining Features:
-- イベントファイルのロード時の禁則処理
-- PaintString最適化（あらかじめ構文解析）
-- Wait コマンドの実行権譲渡
-- 1オフセット処理の整理
 - CmdParser: Talk の中身が壊れるケース
 
+`Event.data.cs`（禁則処理・Wait の実行権譲渡・1オフセット）と `ArcCmd.cs` の TODO は解消済み。PaintString の最適化は Epic 7、MakePilotList は Epic 3 で扱う。
+
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/Events/Event.data.cs` (4 TODOs)
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` (1 TODO)
 - `SRC.Sharp/SRCCore/CmdDatas/CmdParser.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/ArcCmd.cs` (1 TODO)
 
 ---
 
 ### 5. データ管理・永続化 / Data Management & Persistence
 **優先度**: 中 / Priority: Medium
 **推定作業量**: 小 / Effort: Small
-**残存TODO**: 4 (SRCCore: 3, SRCSharpForm: 1)
+**残存TODO**: 3 (SRCCore: 2, SRCSharpForm: 1)
 
 #### 残存する主な機能 / Remaining Features:
 - セーブ・ロード機能の改善
-- 設定管理システムの独立化
 - LocalFileConfig: 設定ファイルへの説明書き出し
 - RootForm: 設定の反映処理
 
+設定管理システムの独立化（`SRC.config.cs`）の TODO は解消済み。
+
 #### 主要な対象ファイル / Key Files:
 - `SRC.Sharp/SRCCore/SRC.save.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/SRC.config.cs` (1 TODO)
 - `SRC.Sharp/SRCCore/Config/LocalFileConfig.cs` (1 TODO)
 - `SRC.Sharp/SRCSharpForm/RootForm.cs` (1 TODO)
 
@@ -246,7 +243,7 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 ### 6. VB6レガシー関数置換 / VB6 Legacy Function Replacement
 **優先度**: 低 / Priority: Low
 **推定作業量**: 極小 / Effort: Minimal
-**残存TODO**: 1
+**残存TODO**: 2
 
 #### 完了した主な機能 / Completed Features:
 - ✅ ランダムシーケンス実装 (PR #710)
@@ -256,9 +253,11 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 #### 残存する主な機能 / Remaining Features:
 - バイト系文字列関数の整理（GeneralLib.cs）
+- Expression.replace.cs: ref/out 引数への変換判断
 
 #### 主要な対象ファイル / Key Files:
 - `SRC.Sharp/SRCCore/Lib/GeneralLib.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/Expressions/Expression.replace.cs` (1 TODO)
 
 ---
 
@@ -269,18 +268,18 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 #### 残存する主な機能 / Remaining Features:
 - Sound システムのキャッシュ最適化
-- Expression.replace.cs: ref/out 引数への変換判断
+- PaintString最適化（あらかじめ構文解析）
 
 #### 主要な対象ファイル / Key Files:
 - `SRC.Sharp/SRCCore/Sound.cs` (1 TODO)
-- `SRC.Sharp/SRCCore/Expressions/Expression.replace.cs` (1 TODO)
+- `SRC.Sharp/SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` (1 TODO)
 
 ---
 
 ### 8. バグ修正・エッジケース対応 / Bug Fixes & Edge Cases
 **優先度**: 中〜低 / Priority: Medium-Low
 **推定作業量**: 小 / Effort: Small
-**残存TODO**: 4
+**残存TODO**: 1
 
 #### 完了した主な機能 / Completed Features:
 - ✅ 召喚ユニット復活バグ修正 (#627 解消済み、PR #731)
@@ -289,12 +288,11 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 #### 残存する主な機能 / Remaining Features:
 - COM: 武器選択失敗ケースの対応
-- COM: EN以外の使用条件確認
-- SRC.main: 実行環境依存処理
+
+COM の EN 以外の使用条件確認と、`SRC.main.cs`（実行環境依存処理）の TODO は解消済み。
 
 #### 主要な対象ファイル / Key Files:
-- `SRC.Sharp/SRCCore/COM.cs` (2 TODOs)
-- `SRC.Sharp/SRCCore/SRC.main.cs` (2 TODOs)
+- `SRC.Sharp/SRCCore/COM.cs` (1 TODO)
 
 ---
 
@@ -364,6 +362,7 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ## 更新履歴 / Change History
 
+- 2026-10-13: 統計と残存TODO一覧を現状に合わせて更新（SRCSharpForm に `Main.cs` の TODO が加わり 9件）。Epic別の残存TODO数・対象ファイルを TODO 一覧と一致させた
 - 2026-02-21: issue・label・projects運用ガイドとスクリプトを削除（運用しないため）
 - 2026-02-21: ドキュメント構造見直し — `docs/porting/` サブディレクトリへ移動、TODO消化フェーズ完了を明記、品質検証フェーズへの移行を反映、運用コマンドを品質検証向けに更新
 - 2026-02-20 (5回目): 移植状況の総合評価と品質向上計画 — [総合評価レポート](./porting-assessment.md)と[精度評価・向上計画](./porting-quality-plan.md)を新規作成、プロジェクトの品質検証フェーズ移行を明記

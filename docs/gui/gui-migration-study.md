@@ -74,7 +74,8 @@ flowchart LR
     - GUI 実装 `ScreenGUI`（`IGUI` / `IGUIMap` / `IGUIStatus` / `IGUIScrean`）も UI フレームワークに依存しない形で `SRCRender` に置く。待ちはゲームスレッドで行い、入力は `PointerPressed` などで受け取る
 5. **Avalonia 版の作成**（対応済み）: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作った。`SRCRender` の画面を表示し、入力を渡すだけの薄い層にする。文字入力（IME）とファイル選択だけは Avalonia の部品を使う。UI テストは `Avalonia.Headless` で書く。詳細は [SRC#Avalonia](./avalonia.md)
 6. **音声の差し替え**（対応済み）: OpenAL（OpenAL Soft）で WAV・MP3・MIDI を鳴らす `IPlaySound` の別実装 `SRCSound` を作った。MIDI は SoundFont から合成する（SoundFont は同梱しない）。詳細は [SRC#Avalonia](./avalonia.md#音声srcsound)
-7. **（任意）Web 版**: 3 で分離したゲームスレッドを、WASM 向けには `IGUI` の非同期版で置き換えるかをこの時点で判断する
+7. **（任意）Web 版**（対応済み）: 3 で分離したゲームスレッドを、WASM 向けには `IGUI` の非同期版で置き換えるかをこの時点で判断する
+    - `IGUI` は非同期化せず、.NET の WebAssembly マルチスレッドでゲームスレッドを Web Worker で動かす SRC#Web（`SRCSharpWeb`）として作った。`SRCTestBlazor` とは別のプロジェクト。詳細は [SRC#Web（ブラウザ版）](./web.md)
 
 ## 判断の分岐
 
