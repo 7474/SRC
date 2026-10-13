@@ -1,0 +1,124 @@
+{
+  "name": "srcsharp",
+  "displayName": "SRC# Authoring",
+  "description": "SRC のシナリオ（*.eve）の編集支援（診断・アウトライン・定義へ移動・補完）とイベントのデバッガ",
+  "version": "0.5.0",
+  "publisher": "koudenpa",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/7474/SRC.git",
+    "directory": "SRC.Sharp/SRCSharpVSCode"
+  },
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": ["Programming Languages", "Debuggers", "Linters"],
+  "activationEvents": [
+    "onDebugResolve:srcsharp"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "src-eve",
+        "aliases": ["SRC Event", "src-eve"],
+        "extensions": [".eve"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "src-eve",
+        "scopeName": "source.src-eve",
+        "path": "./syntaxes/src-eve.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[src-eve]": {
+        "files.encoding": "shiftjis",
+        "files.autoGuessEncoding": true
+      }
+    },
+    "configuration": {
+      "title": "SRC#",
+      "properties": {
+        "srcsharp.serverPath": {
+          "type": "string",
+          "default": "srcsharp",
+          "description": "srcsharp コマンド（dotnet tool install -g SRCSharpTools）。dotnet で dll を動かす場合は dotnet を指定し、serverArgs に dll のパスを入れる"
+        },
+        "srcsharp.serverArgs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "srcsharp の前に付ける引数（例: [\"path/to/srcsharp.dll\"]）"
+        },
+        "srcsharp.appPath": {
+          "type": "string",
+          "default": "",
+          "description": "SRC 本体のフォルダ（Lib や共通の Data を探す）"
+        }
+      }
+    },
+    "breakpoints": [
+      { "language": "src-eve" }
+    ],
+    "debuggers": [
+      {
+        "type": "srcsharp",
+        "label": "SRC# イベント",
+        "languages": ["src-eve"],
+        "configurationAttributes": {
+          "launch": {
+            "required": ["program"],
+            "properties": {
+              "program": { "type": "string", "description": "実行するイベントファイル", "default": "${file}" },
+              "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければメッセージを送り、選択肢は先頭を選ぶ）" },
+              "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
+              "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
+              "maxSteps": { "type": "number", "description": "自動で進める操作の上限", "default": 100000 }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "srcsharp",
+            "request": "launch",
+            "name": "SRC# イベントを実行",
+            "program": "${file}",
+            "stopOnEntry": true
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "SRC#: イベントを実行",
+            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# イベントを実行", "program": "^\"\\${file}\"", "stopOnEntry": true }
+          },
+          {
+            "label": "SRC#: .play スクリプトで実行",
+            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# スクリプトで実行", "program": "^\"\\${workspaceFolder}/test.eve\"", "script": "^\"\\${workspaceFolder}/test.play\"" }
+          }
+        ]
+      }
+    ],
+    "commands": [
+      { "command": "srcsharp.lint", "title": "SRC#: ワークスペースを lint する" },
+      { "command": "srcsharp.balance", "title": "SRC#: バランスレポートを作る" },
+      { "command": "srcsharp.play", "title": "SRC#: このイベントを自動プレイする" }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "~1.91.0",
+    "typescript": "~5.9.3"
+  }
+}

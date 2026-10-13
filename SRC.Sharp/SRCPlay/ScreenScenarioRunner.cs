@@ -1,11 +1,12 @@
 using SkiaSharp;
 using SRCCore;
+using SRCRender;
 using SRCCore.TestLib;
 using System;
 using System.IO;
 using System.Threading;
 
-namespace SRCRender.Tests
+namespace SRCPlay
 {
     /// <summary>
     /// ScreenGUI でシナリオを実行し、画面の状態を見ながら入力を与える。
@@ -36,6 +37,32 @@ namespace SRCRender.Tests
         public bool IsFinished => finished.IsSet;
         public int FrameCount => frameCount;
 
+        private volatile bool suspended;
+
+        /// <summary>
+        /// デバッガなどがゲームを止めている間 true にする。自動プレイはその間は操作せずに待ち、待った時間は待ち時間に数えない
+        /// </summary>
+        public bool IsSuspended
+        {
+            get => suspended;
+            set => suspended = value;
+        }
+
+        /// <summary>止められている間待ち、待った時間を返す</summary>
+        public TimeSpan WaitWhileSuspended()
+        {
+            if (!suspended)
+            {
+                return TimeSpan.Zero;
+            }
+            var start = DateTime.UtcNow;
+            while (suspended && !finished.IsSet)
+            {
+                Thread.Sleep(20);
+            }
+            return DateTime.UtcNow - start;
+        }
+
         public void Start(string eve)
         {
             Session.Start(eve);
@@ -59,6 +86,7 @@ namespace SRCRender.Tests
             var deadline = DateTime.UtcNow + Timeout;
             while (!condition(State))
             {
+                deadline += WaitWhileSuspended();
                 if (finished.IsSet)
                 {
                     throw new InvalidOperationException("scenario finished while waiting for " + description, Error);

@@ -154,6 +154,9 @@ namespace SRCCore.Events
         /// Lint目的などで指定する。
         /// </summary>
         public bool SkipExternalSourceLoad { get; set; }
+
+        /// <summary>イベントのデバッガ。設定しなければ何もしない</summary>
+        public IEventDebugger Debugger { get; set; }
     }
 
     public class ObjectDrawSetting

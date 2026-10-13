@@ -59,6 +59,7 @@ namespace SRCCore.CmdDatas
         // コマンドを実行し、実行後のEventDataLine#IDを返す
         public int Exec()
         {
+            Event.Debugger?.BeforeExecute(this);
             SRC.LogDebug(Name.ToString(), args.Select(x => x.strArg).ToArray());
             try
             {

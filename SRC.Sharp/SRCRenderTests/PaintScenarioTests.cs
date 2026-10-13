@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
 using System.IO;
+using SRCPlay;
 
 namespace SRCRender.Tests
 {

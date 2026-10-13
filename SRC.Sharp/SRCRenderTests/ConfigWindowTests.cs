@@ -3,6 +3,7 @@ using SRCCore;
 using SRCRender.Compat;
 using System.IO;
 using System.Threading;
+using SRCPlay;
 
 namespace SRCRender.Tests
 {

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <Version>$(SrcSharpLibraryVersion)</Version>
+    <Description>SRC# のシナリオを画面なしで動かし、スクリプト（.play）で自動プレイする部品</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRCRender\SRCRender.csproj" />
+  </ItemGroup>
+
+</Project>

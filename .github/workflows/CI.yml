@@ -40,6 +40,10 @@ jobs:
     - name: Test SRC#Avalonia (headless)
       run: xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
 
+    # 作成支援ツール（lint・解析・バランス集計・Language Server・デバッガ）
+    - name: Test SRCAuthoring
+      run: dotnet test SRC.Sharp/SRCAuthoringTests/SRCAuthoringTests.csproj --verbosity normal
+
     # 音声出力の無いランナーでは OpenAL Soft の null 出力を使う
     - name: Test SRCSound
       run: dotnet test SRC.Sharp/SRCSoundTests/SRCSoundTests.csproj --verbosity normal
@@ -56,6 +60,13 @@ jobs:
       uses: actions/setup-node@v7
       with:
         node-version: 22
+
+    # VS Code 拡張（Language Server とデバッガのクライアント）
+    - name: Build VS Code extension
+      working-directory: SRC.Sharp/SRCSharpVSCode
+      run: |
+        npm ci
+        npm run compile
 
     # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする
     - name: Test SRC#Web (Playwright)
@@ -91,6 +102,29 @@ jobs:
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
           SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
         if-no-files-found: ignore
+
+  # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
+  docker-srcdatalinter:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Build image
+      run: docker build -f SRC.Sharp/SRCDataLinter/Dockerfile -t srcdatalinter:test SRC.Sharp
+
+    - name: Lint (従来の使い方)
+      run: docker run --rm -v "$PWD/SRC.Sharp/E2E/sound:/app/data" srcdatalinter:test data
+
+    - name: srcsharp lint / play / balance
+      run: |
+        cp -r SRC.Sharp/E2E/battle-basic /tmp/scenario
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test lint /scenario/Data --format sarif --output /scenario/lint.sarif || true
+        test -s /tmp/scenario/lint.sarif
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test play /scenario/test.eve --script /scenario/play.txt --out /scenario/snapshots
+        ls /tmp/scenario/snapshots
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test balance /scenario/Data | tee /tmp/balance.md
+        grep -q "テスト機" /tmp/balance.md
 
   build-and-test-srcs:
     runs-on: windows-latest    

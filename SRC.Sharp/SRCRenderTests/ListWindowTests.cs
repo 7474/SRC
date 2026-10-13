@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using SRCPlay;
 
 namespace SRCRender.Tests
 {

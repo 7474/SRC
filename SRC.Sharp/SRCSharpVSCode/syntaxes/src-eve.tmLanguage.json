@@ -1,0 +1,124 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SRC Event",
+  "scopeName": "source.src-eve",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#include"
+    },
+    {
+      "include": "#label"
+    },
+    {
+      "include": "#command"
+    },
+    {
+      "include": "#expression"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.src-eve",
+          "match": "^\\s*#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.src-eve",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "include": {
+      "name": "meta.preprocessor.include.src-eve",
+      "match": "^\\s*(<)([^<>]+)(>)\\s*$",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.include.src-eve"
+        },
+        "2": {
+          "name": "string.unquoted.include.src-eve"
+        },
+        "3": {
+          "name": "punctuation.definition.include.src-eve"
+        }
+      }
+    },
+    "label": {
+      "name": "entity.name.function.label.src-eve",
+      "match": "^\\s*\\*?[^\\s#/][^:：]*:\\s*$"
+    },
+    "command": {
+      "match": "(?i)^\\s*(arc|array|ask|attack|autotalk|bossrank|break|call|callintermissioncommand|cancel|case|center|changearea|changelayer|changemap|changemode|changeparty|changeterrain|changeunitbitmap|charge|circle|clearability|clearevent|clearflash|clearimage|clearlayer|clearmind|clearobj|clearpicture|clearskill|clearspecialpower|clearstatus|close|cls|color|colorfilter|combine|confirm|continue|copyarray|copyfile|create|createfolder|debug|destroy|disable|do|drawoption|drawwidth|else|elseif|enable|end|endif|endsw|equip|escape|exchangeitem|exec|exit|explode|expup|fadein|fadeout|fillcolor|fillstyle|finish|fix|font|for|foreach|forget|freememory|gameclear|gameover|getoff|global|goto|hide|hotpoint|if|incr|increasemorale|input|intermissioncommand|item|join|keepbgm|land|launch|leave|levelup|line|lineread|load|local|loop|makepilotlist|makeunitlist|mapability|mapattack|mapweapon|mind|money|monotone|move|next|night|noon|open|option|organize|oval|paintpicture|paintstring|paintsysstring|pilot|playflash|playmidi|playsound|polygon|print|pset|question|quickload|quit|rankup|read|recoveren|recoverhp|recoverplana|recoversp|redraw|refresh|release|removefile|removefolder|removeitem|removepilot|removeunit|renamebgm|renamefile|renameterm|replacepilot|require|restoreevent|return|ride|savedata|select|selecttarget|sepia|set|setability|setbullet|setmessage|setrelation|setskill|setstatus|setstatusstringcolor|setstock|setwindowcolor|setwindowframewidth|show|showimage|showunitstatus|skip|sort|specialpower|split|startbgm|stopbgm|stopsummoning|sunset|supply|suspend|swap|switch|talk|telop|transform|unit|unset|upgrade|upvar|useability|wait|water|whitein|whiteout|write)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.src-eve"
+        }
+      }
+    },
+    "expression": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.src-eve",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "include": "#interpolation"
+        },
+        {
+          "name": "constant.numeric.src-eve",
+          "match": "(?<![\\w])-?\\d+(\\.\\d+)?(?![\\w])"
+        },
+        {
+          "name": "keyword.operator.src-eve",
+          "match": "(?i)(<=|>=|<>|=|<|>|\\+|-|\\*|/|\\\\|\\^|&|\\b(and|or|not|mod|like)\\b)"
+        },
+        {
+          "name": "keyword.control.flow.src-eve",
+          "match": "(?i)\\b(then|exit|goto|to|step|in)\\b"
+        }
+      ]
+    },
+    "interpolation": {
+      "name": "meta.interpolation.src-eve",
+      "begin": "\\$\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.begin.src-eve"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.end.src-eve"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#paren"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "paren": {
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    }
+  }
+}

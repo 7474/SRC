@@ -18,6 +18,10 @@
 - **[バージョンの管理](./versioning.md)** — SRC# のバージョンの付け方とリリースの手順
 - **[SRC#Web（ブラウザ版）](./gui/web.md)** — 静的サイトで動くブラウザ版の設計（マルチスレッド WebAssembly・ブラウザ内保存）
 
+### 🛠️ 作成支援ツール / Authoring Tools
+
+- **[作成支援ツール](./tools/authoring.md)** — データの lint・バランス集計、シナリオの自動プレイ・イベントのデバッガ（CLI `srcsharp` と VS Code 拡張）
+
 ### 📦 素材 / Assets
 
 - **[素材データの再配布の検討](./assets/redistribution-study.md)** — 汎用グラフィック集・戦闘アニメ・効果音などの再配布可否と、素材なしで動かす対応

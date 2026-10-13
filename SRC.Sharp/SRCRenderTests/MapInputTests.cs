@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore;
 using System.IO;
 using System.Threading;
+using SRCPlay;
 
 namespace SRCRender.Tests
 {

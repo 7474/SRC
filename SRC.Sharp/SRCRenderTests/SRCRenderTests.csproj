@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SRCRender\SRCRender.csproj" />
+    <ProjectReference Include="..\SRCPlay\SRCPlay.csproj" />
   </ItemGroup>
 
 </Project>
