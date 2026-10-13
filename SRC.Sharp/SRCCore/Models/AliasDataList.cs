@@ -63,6 +63,23 @@ namespace SRCCore.Models
             return Item(Index) != null;
         }
 
+        // 特殊能力 ftype にエリアスが定義されていれば展開した特殊能力定義を返す
+        // エリアスが定義されていない、または特殊能力解説の定義の場合は null を返す
+        public IList<FeatureData> ExpandFeatureAlias(string ftype, string fdata, double flevel, string nskill, string ncondition)
+        {
+            if (!IsDefined(ftype))
+            {
+                return null;
+            }
+
+            if (GeneralLib.LIndex(fdata, 1) == "解説")
+            {
+                return null;
+            }
+
+            return Item(ftype).ExpandFeature(ftype, fdata, flevel, nskill, ncondition);
+        }
+
         // データファイル fname からデータをロード
         public void Load(string fname)
         {

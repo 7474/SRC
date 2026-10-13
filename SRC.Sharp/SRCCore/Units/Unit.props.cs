@@ -189,6 +189,8 @@ namespace SRCCore.Units
             foreach (var of in OtherForms)
             {
                 of.Rank = Rank;
+                of.HP = (int)(of.MaxHP * hp_ratio);
+                of.EN = (int)(of.MaxEN * en_ratio);
             }
             // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
             // ランクも上げる
@@ -212,13 +214,7 @@ namespace SRCCore.Units
                         var buf = mu.FeatureData("分離");
                         foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
                         {
-                            pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
-                            foreach (var of in pu.OtherForms)
-                            {
-                                of.Rank = pu.Rank;
-                                pu.HP = (int)(pu.MaxHP * hp_ratio);
-                                pu.EN = (int)(pu.MaxEN * en_ratio);
-                            }
+                            RankUpPart(pu, hp_ratio, en_ratio);
                         }
                     }
                 }
@@ -230,14 +226,22 @@ namespace SRCCore.Units
                 var buf = FeatureData("分離");
                 foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
                 {
-                    pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
-                    foreach (var of in pu.OtherForms)
-                    {
-                        of.Rank = pu.Rank;
-                        pu.HP = (int)(pu.MaxHP * hp_ratio);
-                        pu.EN = (int)(pu.MaxEN * en_ratio);
-                    }
+                    RankUpPart(pu, hp_ratio, en_ratio);
                 }
+            }
+        }
+
+        // 分離形態のユニット pu のランクを自身のランクに合わせて上げる
+        private void RankUpPart(Unit pu, double hp_ratio, double en_ratio)
+        {
+            pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
+            pu.HP = (int)(pu.MaxHP * hp_ratio);
+            pu.EN = (int)(pu.MaxEN * en_ratio);
+            foreach (var of in pu.OtherForms)
+            {
+                of.Rank = pu.Rank;
+                of.HP = (int)(of.MaxHP * hp_ratio);
+                of.EN = (int)(of.MaxEN * en_ratio);
             }
         }
 
