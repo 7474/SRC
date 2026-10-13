@@ -42,9 +42,15 @@ SRC# のバージョンの付け方と、リリースの手順。
 | 公開先 | 内容 | バージョン |
 |---|---|---|
 | NuGet | SRCCore・SRCDataLinter・SRCSharpTools（.NET tool の `srcsharp`） | ライブラリ（0.x） |
-| GitHub Releases | SRC#Form（Windows 向け zip） | アプリ（3.x） |
+| GitHub Releases | SRC#Form（Windows 向け `SRCSharpForm.zip`）・SRC#Web（外部のサイトに置くための `SRCSharpWeb.zip`、[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)） | アプリ（3.x） |
 | Docker Hub | `koudenpa/srcdatalinter`（SRCDataLinter と srcsharp） | イメージのタグはリリースのタグ名（`v3.x.x`）と `latest` |
 
+ジョブは `check-version` の後に、`push-nuget-package`（NuGet）・`release-github-artifacts`（SRC#Form）・`release-web`（SRC#Web）・`push-to-dockerhub`（Docker Hub）が並んで動く。
+
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
+
+SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたため、次のリリースから公開される。それまでは手元で作る（[作成支援ツール](./tools/authoring.md#cli)・[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)）。
+
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode`（旧版 0.0.5 は 7474/SRC-VSCode から公開）の更新として 0.6.0 から出す予定（7474/SRC#1175）。`.vsix` は CI の成果物 `src-vscode-vsix` から取るか、手元で作る（[拡張の README](../SRC.Sharp/SRCSharpVSCode/README.md)）。
 
 `v0.5.0` まではライブラリのバージョンでタグを打っていた。以降はアプリのバージョン（`v3.x.x`）で打つ。

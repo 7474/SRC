@@ -41,7 +41,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - .NET 10
         - GitHub Action: https://github.com/7474/SRC-DataLinter
         - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
-            - ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/koudenpa/srcdatalinter)
+            - イメージは GitHub Actions でビルドして Docker Hub に置く（`srcsharp` も入っている）
     - [SRCSharpForm](./SRC.Sharp/SRCSharpForm)
         - Windows Forms実装のSRC#Form
         - SRC#Formの仮実行を行える
@@ -60,6 +60,18 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - Windows / macOS / Linux で動作する
         - .NET 10
         - [ドキュメント](./docs/gui/avalonia.md)
+    - [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb)
+        - ブラウザで動く SRC#Web（Blazor WebAssembly）
+        - .NET 10
+        - [ドキュメント](./docs/gui/web.md)・[外部のサイトに置く](./docs/gui/web-hosting.md)
+        - 動作URL（開発版）: https://7474.github.io/SRC/web/
+    - [SRCSharpTools](./SRC.Sharp/SRCSharpTools)
+        - データ・シナリオの作成支援ツール `srcsharp`（lint・自動プレイ・バランス集計・Language Server・デバッガ）
+        - .NET 10（.NET tool）
+        - [ドキュメント](./docs/tools/authoring.md)
+    - [SRCSharpVSCode](./SRC.Sharp/SRCSharpVSCode)
+        - シナリオ（`*.eve`）の編集支援とイベントのデバッガの VS Code 拡張
+        - [使い方](./SRC.Sharp/SRCSharpVSCode/README.md)
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - データの閲覧を行える
@@ -84,5 +96,9 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
 1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) をインストールする
 1. `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <構築済のSRCフォルダ内のシナリオ(.eve)>` を実行する
     - MIDI を鳴らすには SoundFont（.sf2）が必要。[SRC#Avalonia のドキュメント](./docs/gui/avalonia.md#soundfont)を参照
+
+表示言語は日本語を既定に 15 の言語に切り替えられる（[多言語対応](./docs/i18n.md)）。
+
+ドキュメントの一覧は [docs/README.md](./docs/README.md) を参照。
 
 SRCに付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作確認しながら作っています。
