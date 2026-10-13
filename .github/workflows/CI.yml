@@ -71,7 +71,7 @@ jobs:
     - name: Upload VS Code extension
       uses: actions/upload-artifact@v7
       with:
-        name: srcsharp-vsix
+        name: src-vscode-vsix
         path: SRC.Sharp/SRCSharpVSCode/*.vsix
 
     # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする

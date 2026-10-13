@@ -1,8 +1,8 @@
 {
-  "name": "srcsharp",
+  "name": "src-vscode",
   "displayName": "SRC# Authoring",
   "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion and an event debugger. Requires the srcsharp .NET tool.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "publisher": "koudenpa",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode/README.md",
@@ -34,6 +34,12 @@
         "aliases": ["SRC Event", "src-eve"],
         "extensions": [".eve"],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "src-data",
+        "aliases": ["SRC Data", "src-data"],
+        "filenames": ["alias.txt", "animation.txt", "battle.txt", "effect.txt", "ext_animation.txt", "item.txt", "mind.txt", "non_pilot.txt", "pilot.txt", "pilot_dialog.txt", "pilot_message.txt", "robot.txt", "sp.txt", "terrain.txt", "unit.txt"],
+        "configuration": "./src-data-language-configuration.json"
       }
     ],
     "grammars": [
@@ -41,10 +47,19 @@
         "language": "src-eve",
         "scopeName": "source.src-eve",
         "path": "./syntaxes/src-eve.tmLanguage.json"
+      },
+      {
+        "language": "src-data",
+        "scopeName": "source.src-data",
+        "path": "./syntaxes/src-data.tmLanguage.json"
       }
     ],
     "configurationDefaults": {
       "[src-eve]": {
+        "files.encoding": "shiftjis",
+        "files.autoGuessEncoding": true
+      },
+      "[src-data]": {
         "files.encoding": "shiftjis",
         "files.autoGuessEncoding": true
       }
