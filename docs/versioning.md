@@ -50,7 +50,7 @@ SRC# のバージョンの付け方と、リリースの手順。
 
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
 
-SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたため、次のリリースから公開される。それまでは手元で作る（[作成支援ツール](./tools/authoring.md#cli)・[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)）。
+SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたため、`v3.5.1` から公開される。それまでは手元で作る（[作成支援ツール](./tools/authoring.md#cli)・[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)）。
 
 ### VS Code 拡張
 
