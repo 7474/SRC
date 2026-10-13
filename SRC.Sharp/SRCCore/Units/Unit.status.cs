@@ -44,6 +44,9 @@ namespace SRCCore.Units
             // ＨＰとＥＮの値を記録
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
+            // 最大値をまだ計算していない（セーブデータから復元した直後など）場合は、比率で戻さず今の値を保つ
+            var hasMaxHP = lngMaxHP > 0;
+            var hasMaxEN = intMaxEN > 0;
 
             //    // ユニット用画像ファイル名を記録しておく
             //    ubitmap = get_Bitmap(false);
@@ -758,119 +761,108 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // アイテムによる修正
-            //    foreach (Item currentItm2 in colItem)
-            //    {
-            //        itm = currentItm2;
-            //        if (itm.Activated)
-            //        {
-            //            lngMaxHP = lngMaxHP + itm.HP();
-            //            intMaxEN = (intMaxEN + itm.EN());
-            //            lngArmor = lngArmor + itm.Armor();
-            //            intMobility = (intMobility + itm.Mobility());
-            //            intSpeed = (intSpeed + itm.Speed());
-            //        }
-            //    }
+            // アイテムによる修正
+            foreach (var itm in colItem.List)
+            {
+                if (itm.Activated)
+                {
+                    lngMaxHP = lngMaxHP + itm.HP();
+                    intMaxEN = intMaxEN + itm.EN();
+                    lngArmor = lngArmor + itm.Armor();
+                    intMobility = intMobility + itm.Mobility();
+                    intSpeed = intSpeed + itm.Speed();
+                }
+            }
 
-            //    // 装備している「Ｖ－ＵＰ=ユニット」アイテムによる修正
-            //    num = 0;
-            //    if (IsConditionSatisfied("Ｖ－ＵＰ"))
-            //    {
-            //        switch (FeatureData("Ｖ－ＵＰ") ?? "")
-            //        {
-            //            case "全":
-            //            case "ユニット":
-            //                {
-            //                    num = (num + 1);
-            //                    break;
-            //                }
-            //        }
-            //    }
+            // 装備している「Ｖ－ＵＰ=ユニット」アイテムによる修正
+            {
+                var num = 0;
+                if (IsConditionSatisfied("Ｖ－ＵＰ"))
+                {
+                    switch (FeatureData("Ｖ－ＵＰ") ?? "")
+                    {
+                        case "全":
+                        case "ユニット":
+                            num = num + 1;
+                            break;
+                    }
+                }
 
-            //    foreach (Item currentItm3 in colItem)
-            //    {
-            //        itm = currentItm3;
-            //        if (itm.IsFeatureAvailable("Ｖ－ＵＰ"))
-            //        {
-            //            switch (itm.FeatureData("Ｖ－ＵＰ") ?? "")
-            //            {
-            //                case "全":
-            //                case "ユニット":
-            //                    {
-            //                        num = (num + 1);
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+                foreach (var itm in colItem.List)
+                {
+                    if (itm.IsFeatureAvailable("Ｖ－ＵＰ"))
+                    {
+                        switch (itm.FeatureData("Ｖ－ＵＰ") ?? "")
+                        {
+                            case "全":
+                            case "ユニット":
+                                num = num + 1;
+                                break;
+                        }
+                    }
+                }
 
-            //    if (CountPilot() > 0)
-            //    {
-            //        {
-            //            var withBlock8 = MainPilot().Data;
-            //            if (withBlock8.IsFeatureAvailable("Ｖ－ＵＰ"))
-            //            {
-            //                switch (withBlock8.FeatureData("Ｖ－ＵＰ") ?? "")
-            //                {
-            //                    case "全":
-            //                    case "ユニット":
-            //                        {
-            //                            num = (num + 1);
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
+                if (CountPilot() > 0)
+                {
+                    var mainPilotData = MainPilot().Data;
+                    if (mainPilotData.IsFeatureAvailable("Ｖ－ＵＰ"))
+                    {
+                        switch (mainPilotData.FeatureData("Ｖ－ＵＰ") ?? "")
+                        {
+                            case "全":
+                            case "ユニット":
+                                num = num + 1;
+                                break;
+                        }
+                    }
+                }
 
-            //    if (num > 0)
-            //    {
-            //        {
-            //            var withBlock9 = Data;
-            //            lngMaxHP = lngMaxHP + 100 * num * (withBlock9.ItemNum + 1);
-            //            intMaxEN = (intMaxEN + 20 * num * withBlock9.ItemNum);
-            //            lngArmor = lngArmor + 50 * num * withBlock9.ItemNum;
-            //            intMobility = (intMobility + 5 * num * withBlock9.ItemNum);
-            //        }
-            //    }
+                if (num > 0)
+                {
+                    lngMaxHP = lngMaxHP + 100 * num * (Data.ItemNum + 1);
+                    intMaxEN = intMaxEN + 20 * num * Data.ItemNum;
+                    lngArmor = lngArmor + 50 * num * Data.ItemNum;
+                    intMobility = intMobility + 5 * num * Data.ItemNum;
+                }
+            }
 
-            //    // 追加移動力
-            //    if (IsFeatureAvailable("追加移動力"))
-            //    {
-            //        foreach (FeatureData currentFd3 in colFeature)
-            //        {
-            //            fd = currentFd3;
-            //            if (fd.Name == "追加移動力")
-            //            {
-            //                if ((Area ?? "") == (GeneralLib.LIndex(fd.StrData, 2) ?? ""))
-            //                {
-            //                    intSpeed = (intSpeed + fd.Level);
-            //                }
-            //            }
-            //        }
+            // 追加移動力
+            if (IsFeatureAvailable("追加移動力"))
+            {
+                foreach (var fd in colFeature.List)
+                {
+                    if (fd.Name == "追加移動力")
+                    {
+                        if ((Area ?? "") == (GeneralLib.LIndex(fd.StrData, 2) ?? ""))
+                        {
+                            intSpeed = (int)(intSpeed + fd.Level);
+                        }
+                    }
+                }
 
-            //        intSpeed = GeneralLib.MaxLng(intSpeed, 0);
-            //    }
+                intSpeed = GeneralLib.MaxLng(intSpeed, 0);
+            }
 
-            //    // 上限値を超えないように
-            //    lngMaxHP = GeneralLib.MinLng(lngMaxHP, 9999999);
-            //    intMaxEN = GeneralLib.MinLng(intMaxEN, 9999);
-            //    lngArmor = GeneralLib.MinLng(lngArmor, 99999);
-            //    intMobility = GeneralLib.MinLng(intMobility, 9999);
-            //    intSpeed = GeneralLib.MinLng(intSpeed, 99);
+            // 上限値を超えないように
+            lngMaxHP = GeneralLib.MinLng(lngMaxHP, 9999999);
+            intMaxEN = GeneralLib.MinLng(intMaxEN, 9999);
+            lngArmor = GeneralLib.MinLng(lngArmor, 99999);
+            intMobility = GeneralLib.MinLng(intMobility, 9999);
+            intSpeed = GeneralLib.MinLng(intSpeed, 99);
 
-            //    // ＨＰ、ＥＮの最大値の変動に対応
-            //    HP = (int)(MaxHP * hp_ratio / 100d);
-            //    EN = (int)(MaxEN * en_ratio / 100d);
+            // ＨＰ、ＥＮの最大値の変動に対応
+            // 元の SRC は Double を Long に代入して丸める（偶数丸め）。切り捨てると最大値が変わらなくても誤差で 1 減ることがある
+            HP = hasMaxHP ? (int)System.Math.Round(MaxHP * hp_ratio / 100d) : HP;
+            EN = hasMaxEN ? (int)System.Math.Round(MaxEN * en_ratio / 100d) : EN;
 
-            //    // 切り下げの結果ＨＰが0になることを防ぐ
-            //    if (hp_ratio > 0d)
-            //    {
-            //        if (HP == 0)
-            //        {
-            //            HP = 1;
-            //        }
-            //    }
+            // 切り下げの結果ＨＰが0になることを防ぐ
+            if (hasMaxHP && hp_ratio > 0d)
+            {
+                if (HP == 0)
+                {
+                    HP = 1;
+                }
+            }
 
             // 地形適応
             var uadaption = new int[5];
