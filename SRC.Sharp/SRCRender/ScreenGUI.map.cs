@@ -84,6 +84,7 @@ namespace SRCRender
             {
                 CopyBitmap(mainBuffer, displayBuffer);
             }
+            isMainInvalidated = false;
             Present();
         }
 

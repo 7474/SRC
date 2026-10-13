@@ -177,6 +177,30 @@ namespace SRCRender
                     throw new OperationCanceledException("The game thread is stopping.");
                 }
                 game.ProcessPending();
+                FlushInvalidatedScreen();
+            }
+        }
+
+        // 元の SRC の picMain(0) は AutoRedraw の PictureBox で、VB のグラフィックメソッド（Print・Line・Circle・PSet）で
+        // 描くと再描画が要求され、Refresh しなくても次の DoEvents（Wait コマンドやメッセージ表示の待ちなど）で画面に出る。
+        // API（BitBlt）で描く PaintPicture や ClearPicture は再描画を要求しないため、Refresh までは出ない。
+        // （ヘルプ「Waitコマンド」「PaintStringコマンド」）
+        private bool isMainInvalidated;
+
+        /// <summary>
+        /// マップウィンドウへの描画が次の DoEvents で画面へ反映されるようにする（VB のグラフィックメソッドでの描画）。
+        /// </summary>
+        private void InvalidateMain()
+        {
+            isMainInvalidated = true;
+        }
+
+        private void FlushInvalidatedScreen()
+        {
+            // 非表示のウィンドウは描かれない。表示したとき（MainFormShow）に反映する
+            if (isMainInvalidated && MainFormVisible)
+            {
+                UpdateScreen();
             }
         }
 
@@ -723,8 +747,9 @@ namespace SRCRender
 
         public void MainFormShow()
         {
+            // 元の SRC ではウィンドウを表示すると picMain(0) 全体が再描画され、描画済みの内容がすべて出る
             MainFormVisible = true;
-            Present();
+            UpdateScreen();
         }
 
         public void MainFormHide()

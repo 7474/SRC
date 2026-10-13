@@ -467,6 +467,8 @@ namespace SRCRender
                     without_cr ? ty : ty + Compat.SkiaFonts.LineHeight(font));
                 if (!PermanentStringMode)
                 {
+                    // 元の SRC は Print で描くため、次の DoEvents で画面に出る
+                    InvalidateMain();
                     IsPictureVisible = true;
                     PaintedAreaX1 = 0;
                     PaintedAreaY1 = 0;
@@ -574,6 +576,8 @@ namespace SRCRender
         {
             if (option.DrawOption != ScreanDrawMode.Background)
             {
+                // 元の SRC は Line・Circle・PSet などのメソッドで描くため、次の DoEvents で画面に出る
+                InvalidateMain();
                 IsPictureVisible = true;
             }
             using (var pen = new SKPaint { Color = ToSKColor(option.ForeColor), Style = SKPaintStyle.Stroke, StrokeWidth = Math.Max(1, option.DrawWidth), IsAntialias = false })

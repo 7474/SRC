@@ -77,5 +77,76 @@ namespace SRCRender.Tests
                 runner.WaitForTermination();
             }
         }
+
+        /// <summary>
+        /// Wait コマンドの待ち（DoEvents）で画面が更新されるか。
+        /// 元の SRC では picMain(0) は AutoRedraw で、PaintString・Line・Circle・PSet など VB のグラフィックメソッドは
+        /// 描画とともに再描画を要求するため、Refresh しなくても次の DoEvents（Wait など）で画面に出る。
+        /// API（BitBlt）で描く PaintPicture は再描画を要求しないため、PaintPicture だけでは Refresh まで出ない
+        /// （ヘルプ「Waitコマンド」「PaintPictureコマンド」）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_WaitShowsPaintedScreen()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.WriteTestImage(Path.Combine("Bitmap", "Event", "test.png"));
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    // メインウィンドウを表示しておく（非表示なら Wait Click が表示とともに画面を更新する）
+                    "Show",
+                    // PaintPicture だけ: Wait では表示されない
+                    "PaintPicture test.png 100 100",
+                    "Wait Click",
+                    // PaintString を続けると Wait で（その前の PaintPicture も含めて）表示される
+                    "Font 20pt",
+                    "PaintString 40 300 描画テスト",
+                    "Wait Click",
+                    // Line でも同じ
+                    "ClearPicture",
+                    "PaintPicture test.png 200 100",
+                    "Line 0 400 50 400 #00FF00",
+                    "Wait 1",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    Assert.AreNotEqual(SKColors.Red, bitmap.GetPixel(100 + 16, 100 + 32));
+                }
+                using (var bitmap = WaitClick(runner))
+                {
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(100 + 16, 100 + 32));
+                    Assert.AreEqual(SKColors.Blue, bitmap.GetPixel(100 + 48, 100 + 32));
+                }
+                using (var bitmap = WaitClick(runner))
+                {
+                    // ClearPicture で消した画像は消え、新しい画像と線が出る
+                    Assert.AreNotEqual(SKColors.Red, bitmap.GetPixel(100 + 16, 100 + 32));
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(200 + 16, 100 + 32));
+                    Assert.AreEqual(new SKColor(0, 255, 0), bitmap.GetPixel(25, 400));
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        /// <summary>Wait Click の待ちになるまで待ち、その時点の画面を返してクリックする。</summary>
+        private static SKBitmap WaitClick(ScreenScenarioRunner runner)
+        {
+            var src = runner.Session.SRC;
+            runner.WaitFor(_ => src.Commands.WaitClickMode && !runner.GUI.IsFormClicked, "Wait Click");
+            var line = src.Event.CurrentLineNum;
+            var bitmap = SKBitmap.Decode(runner.SnapshotPng());
+            runner.GUI.IsFormClicked = true;
+            runner.WaitFor(_ => runner.IsTerminated || src.Event.CurrentLineNum != line, "end of Wait Click");
+            return bitmap;
+        }
     }
 }
