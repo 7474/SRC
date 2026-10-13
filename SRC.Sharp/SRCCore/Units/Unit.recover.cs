@@ -1,4 +1,6 @@
+using SRCCore.Extensions;
 using SRCCore.Lib;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -71,33 +73,23 @@ namespace SRCCore.Units
                 // ＥＮ、弾数を回復
                 cf.FullSupply();
 
-                //// ステータス異常のみを消去
-                //i = 1;
-                //while (i <= cf.CountCondition())
-                //{
-                //    string localCondition() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
+                // ステータス異常のみを消去
+                foreach (var cnd in cf.Conditions.CloneList())
+                {
+                    var cname = cnd.Name ?? "";
+                    if (cname == "残り時間"
+                        || cname == "非操作"
+                        || Strings.Right(cname, 2) == "付加"
+                        || Strings.Right(cname, 2) == "強化"
+                        || Strings.Right(cname, 3) == "付加２"
+                        || Strings.Right(cname, 3) == "強化２"
+                        || Strings.Right(cname, 2) == "ＵＰ")
+                    {
+                        continue;
+                    }
 
-                //    string localCondition1() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    string localCondition2() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    string localCondition3() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    string localCondition4() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    string localCondition5() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    string localCondition6() { object argIndex1 = i; var ret = cf.Condition(argIndex1); return ret; }
-
-                //    if (localCondition() == "残り時間" || localCondition1() == "非操作" || Strings.Right(localCondition2(), 2) == "付加" || Strings.Right(localCondition3(), 2) == "強化" || Strings.Right(localCondition4(), 3) == "付加２" || Strings.Right(localCondition5(), 3) == "強化２" || Strings.Right(localCondition6(), 2) == "ＵＰ")
-                //    {
-                //        i = (short)(i + 1);
-                //    }
-                //    else
-                //    {
-                //        cf.DeleteCondition(i);
-                //    }
-                //}
+                    cf.DeleteCondition(cname);
+                }
 
                 // サポートアタック＆ガード、同時援護攻撃、カウンター攻撃回数回復
                 cf.UsedSupportAttack = 0;
@@ -111,12 +103,14 @@ namespace SRCCore.Units
                 {
                     of.HP = of.MaxHP;
                     of.EN = of.MaxEN;
-                    //var loopTo3 = of.CountWeapon();
-                    //for (j = 1; j <= loopTo3; j++)
-                    //    of.SetBullet(j, of.MaxBullet(j));
-                    //var loopTo4 = of.CountAbility();
-                    //for (j = 1; j <= loopTo4; j++)
-                    //    of.SetStock(j, of.MaxStock(j));
+                    foreach (var uw in of.Weapons)
+                    {
+                        uw.SetBulletFull();
+                    }
+                    foreach (var ua in of.Abilities)
+                    {
+                        ua.SetStockFull();
+                    }
                 }
             }
         }
