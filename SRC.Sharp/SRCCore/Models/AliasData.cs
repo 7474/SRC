@@ -163,5 +163,109 @@ namespace SRCCore.Models
         {
             return Elements.Any(x => x.strAliasType == aname);
         }
+
+        // 特殊能力 ftype をエリアスの定義に従って展開した特殊能力定義を返す
+        // (ユニット、パイロット、アイテムの特殊能力で共通)
+        public IList<FeatureData> ExpandFeature(string ftype, string fdata, double flevel, string nskill, string ncondition)
+        {
+            fdata = fdata ?? "";
+            var results = new List<FeatureData>();
+            foreach (var elm in Elements)
+            {
+                var fd = new FeatureData();
+
+                // エリアスの定義に従って特殊能力定義を置き換える
+                fd.Name = elm.strAliasType;
+                var adata = elm.strAliasData ?? "";
+                if ((elm.strAliasType ?? "") != (ftype ?? ""))
+                {
+                    if (elm.blnAliasLevelIsPlusMod)
+                    {
+                        if (flevel == Constants.DEFAULT_LEVEL)
+                        {
+                            flevel = 1d;
+                        }
+
+                        if (elm.dblAliasLevel == Constants.DEFAULT_LEVEL)
+                        {
+                            fd.Level = flevel + 1d;
+                        }
+                        else
+                        {
+                            fd.Level = flevel + elm.dblAliasLevel;
+                        }
+                    }
+                    else if (elm.blnAliasLevelIsMultMod)
+                    {
+                        if (flevel == Constants.DEFAULT_LEVEL)
+                        {
+                            flevel = 1d;
+                        }
+
+                        if (elm.dblAliasLevel == Constants.DEFAULT_LEVEL)
+                        {
+                            fd.Level = flevel;
+                        }
+                        else
+                        {
+                            fd.Level = flevel * elm.dblAliasLevel;
+                        }
+                    }
+                    else if (flevel != Constants.DEFAULT_LEVEL)
+                    {
+                        fd.Level = flevel;
+                    }
+                    else
+                    {
+                        fd.Level = elm.dblAliasLevel;
+                    }
+
+                    if (!string.IsNullOrEmpty(fdata) && Strings.InStr(adata, "非表示") != 1)
+                    {
+                        fd.StrData = fdata + " " + GeneralLib.ListTail(adata, GeneralLib.LLength(fdata) + 1);
+                    }
+                    else
+                    {
+                        fd.StrData = adata;
+                    }
+
+                    if (elm.blnAliasLevelIsMultMod)
+                    {
+                        fd.StrData = fd.StrData.Replace("Lv1", "Lv" + SrcFormatter.Format(flevel));
+                    }
+                }
+                else
+                {
+                    // 特殊能力解説の定義
+                    if (!string.IsNullOrEmpty(fdata) && GeneralLib.LIndex(fdata, 1) != "非表示")
+                    {
+                        fd.Name = GeneralLib.LIndex(fdata, 1);
+                    }
+
+                    fd.StrData = adata;
+                }
+
+                if (!string.IsNullOrEmpty(nskill))
+                {
+                    fd.NecessarySkill = nskill;
+                }
+                else
+                {
+                    fd.NecessarySkill = elm.strAliasNecessarySkill;
+                }
+
+                if (!string.IsNullOrEmpty(ncondition))
+                {
+                    fd.NecessaryCondition = ncondition;
+                }
+                else
+                {
+                    fd.NecessaryCondition = elm.strAliasNecessaryCondition;
+                }
+
+                results.Add(fd);
+            }
+            return results;
+        }
     }
 }
