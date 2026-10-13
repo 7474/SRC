@@ -137,7 +137,7 @@
     "compile": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap",
     "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap --watch",
     "vscode:prepublish": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --minify",
-    "package": "vsce package --no-dependencies"
+    "package": "vsce package --no-dependencies --baseContentUrl https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode --baseImagesUrl https://github.com/7474/SRC/raw/master/SRC.Sharp/SRCSharpVSCode"
   },
   "dependencies": {
     "vscode-languageclient": "^10.1.2"

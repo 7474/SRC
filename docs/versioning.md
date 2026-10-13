@@ -9,7 +9,8 @@ SRC# のバージョンの付け方と、リリースの手順。
 | 系統 | 対象 | 形式 | 例 |
 |---|---|---|---|
 | アプリ（プレイできる SRC としての版） | SRC#Form（`SRCSharpForm`）・SRC#Avalonia・SRC#Web・データビューア（`SRCTestBlazor`） | `3.<マイナー>.<パッチ>` | 3.5.0 |
-| ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・SRCDebugAdapter・srcsharp（`SRCSharpTools`）・VS Code 拡張（`SRCSharpVSCode`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
+| ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・SRCDebugAdapter・srcsharp（`SRCSharpTools`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
+| VS Code 拡張 | `SRCSharpVSCode`（Marketplace の `koudenpa.src-vscode`） | `0.<マイナー>.<パッチ>`（`package.json` の `version`。ほかとは別に上げる） | 0.6.0 |
 
 - **メジャー**: 2 までを元の SRC（VB 版）とみなし、3 を SRC# のメジャーバージョンとする。ライブラリは API が固まるまで 0
 - **マイナー**: 元の SRC にならい、奇数を開発版とする。5 が実質の初版（4 はそれを参照しているシナリオなどがあるため使わない）
@@ -51,6 +52,24 @@ GitHub Pages（データビューア・SRC#Web）は master に入るたびに�
 
 SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたため、次のリリースから公開される。それまでは手元で作る（[作成支援ツール](./tools/authoring.md#cli)・[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)）。
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode`（旧版 0.0.5 は 7474/SRC-VSCode から公開）の更新として 0.6.0 から出す予定（7474/SRC#1175）。`.vsix` は CI の成果物 `src-vscode-vsix` から取るか、手元で作る（[拡張の README](../SRC.Sharp/SRCSharpVSCode/README.md)）。
+### VS Code 拡張
+
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として 0.6.0 から出す。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
+
+`.github/workflows/Publish-VSCode.yml` が次のことをする。
+
+- タグ（`v*`）の push で動く。
+  - .vsix を作り、GitHub Release に添付する。
+  - [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) と Open VSX に出す。
+  - 拡張の版（`package.json` の `version`）が公開済みなら、出さずに飛ばす（`--skip-duplicate`）。拡張を出すときは、`version` と `CHANGELOG.md` を上げてからタグを打つ。
+- 手動実行もできる。
+  - `publish` は、タグを打たずに出す。`pre_release` を付けるとプレリリースになる。プレリリースはマイナーを奇数にする（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。
+  - `profile-id` は、Marketplace の publisher に加える ID を出す。初回に 1 度だけ使う。
+- Marketplace への認証には、Azure のユーザー割り当てマネージド ID（`mi-src-vscode-publish`）を使う。GitHub Actions の OIDC でログインし、`vsce publish --azure-credential` で出す。
+  - フェデレーション資格情報は、environment `vscode-marketplace` のジョブだけを信頼する。
+  - PAT は使わない（Azure DevOps のグローバル PAT は 2026-12-01 に廃止）。
+- Open VSX には、Secrets に `OVSX_PAT` があるときだけ出す。
+
+`.vsix` の README の相対リンクは、`npm run package` の `--baseContentUrl` で `SRC.Sharp/SRCSharpVSCode` 基準の GitHub の URL に書き換わる。vsce は `repository.directory` を見ないため。
 
 `v0.5.0` まではライブラリのバージョンでタグを打っていた。以降はアプリのバージョン（`v3.x.x`）で打つ。

@@ -1,0 +1,120 @@
+name: Publish VS Code Extension
+
+# VS Code 拡張（SRC.Sharp/SRCSharpVSCode、koudenpa.src-vscode）を Visual Studio Marketplace と Open VSX に出す。
+# - タグ（v*）の push: .vsix を作って GitHub Release に添付し、Marketplace・Open VSX に出す。
+#   拡張の版（package.json）は SRC# 本体と別に管理し、公開済みの版なら飛ばす（--skip-duplicate）。
+# - 手動実行: publish（公開。pre_release でプレリリース）か profile-id（Marketplace の publisher に加える ID を出す）。
+# Marketplace へは Microsoft Entra ID のマネージド ID（GitHub Actions の OIDC）で認証する。
+# https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: '実行すること'
+        type: choice
+        options:
+          - publish
+          - profile-id
+        default: publish
+      pre_release:
+        description: 'プレリリースとして出す（版は奇数マイナーにする）'
+        type: boolean
+        default: false
+
+# ユーザー割り当てマネージド ID（mi-src-vscode-publish）。秘密の値ではない。
+# フェデレーション資格情報の subject は repo:7474/SRC:environment:vscode-marketplace
+env:
+  AZURE_CLIENT_ID: db22148b-fd74-4348-8e47-48627cddfbc6
+  AZURE_TENANT_ID: 0e23acf7-147e-4e91-aa26-1f66b0b84ce3
+  AZURE_SUBSCRIPTION_ID: 902c2f70-8e50-4d9b-a2b2-4c285c48aad7
+
+jobs:
+  # Marketplace の publisher のメンバーに加える ID（Visual Studio のプロファイルの id）を出す。最初に 1 度だけ使う
+  profile-id:
+    name: Show Marketplace profile ID
+    if: github.event_name == 'workflow_dispatch' && inputs.action == 'profile-id'
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: azure/login@v3
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+      - name: Get profile
+        run: |
+          # 499b84ac-1321-427f-aa17-267ca6975798 は Azure DevOps（Visual Studio）のリソース
+          az rest -u https://app.vssps.visualstudio.com/_apis/profile/profiles/me --resource 499b84ac-1321-427f-aa17-267ca6975798 | tee profile.json
+          echo "Marketplace の publisher に Contributor として加える ID: $(jq -r .id profile.json)" >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    name: Publish extension
+    if: github.event_name == 'push' || inputs.action == 'publish'
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    permissions:
+      id-token: write
+      contents: write
+    env:
+      # 未設定なら Open VSX には出さない
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    defaults:
+      run:
+        working-directory: SRC.Sharp/SRCSharpVSCode
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Package
+        id: package
+        run: |
+          npm ci
+          version=$(jq -r .version package.json)
+          vsix="src-vscode-${version}.vsix"
+          # package.json の package（README の相対リンクを SRC.Sharp/SRCSharpVSCode 基準で書き換える）
+          npm run package -- ${PRE_RELEASE:+--pre-release} -o "$vsix"
+          echo "vsix=$vsix" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+        env:
+          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: src-vscode-vsix
+          path: SRC.Sharp/SRCSharpVSCode/${{ steps.package.outputs.vsix }}
+
+      - uses: azure/login@v3
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Publish to Visual Studio Marketplace
+        run: npx vsce publish --azure-credential --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}"
+        env:
+          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+
+      # Open VSX は、名前空間とトークン（Secrets の OVSX_PAT）を用意してから出す（7474/SRC#1175 の A3）
+      - name: Publish to Open VSX
+        if: env.OVSX_PAT != ''
+        run: npx --yes ovsx@1.2.0 publish --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}" -p "$OVSX_PAT"
+        env:
+          PRE_RELEASE: ${{ inputs.pre_release && '1' || '' }}
+
+      - name: Attach to GitHub Release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v3
+        with:
+          files: SRC.Sharp/SRCSharpVSCode/${{ steps.package.outputs.vsix }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
