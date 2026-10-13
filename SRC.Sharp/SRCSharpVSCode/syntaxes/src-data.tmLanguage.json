@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SRC Data",
+  "scopeName": "source.src-data",
+  "patterns": [
+    { "include": "#comment" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        { "name": "comment.line.number-sign.src-data", "match": "^\\s*#.*$" }
+      ]
+    }
+  }
+}

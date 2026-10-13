@@ -8,7 +8,7 @@
 
 ### 🤖 Copilot自律運用 / Copilot Autonomous Operation
 
-**[Copilot完全自律エージェント](../../.github/copilot/autonomous-agent.md)** 🚀
+**[Copilot完全自律エージェント](../../.github/copilot/agent-instructions.md)** 🚀
 
 単一コマンドで品質検証を進行:
 ```

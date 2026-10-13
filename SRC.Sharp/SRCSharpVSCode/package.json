@@ -1,10 +1,14 @@
 {
-  "name": "srcsharp",
+  "name": "src-vscode",
   "displayName": "SRC# Authoring",
-  "description": "SRC のシナリオ（*.eve）の編集支援（診断・アウトライン・定義へ移動・補完）とイベントのデバッガ",
-  "version": "0.5.0",
+  "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion and an event debugger. Requires the srcsharp .NET tool.",
+  "version": "0.6.0",
   "publisher": "koudenpa",
   "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode/README.md",
+  "bugs": {
+    "url": "https://github.com/7474/SRC/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/7474/SRC.git",
@@ -14,6 +18,11 @@
     "vscode": "^1.91.0"
   },
   "categories": ["Programming Languages", "Debuggers", "Linters"],
+  "keywords": ["SRC", "Simulation RPG Construction", "SRPG", "eve", "srcsharp"],
+  "galleryBanner": {
+    "color": "#2b2b2b",
+    "theme": "dark"
+  },
   "activationEvents": [
     "onDebugResolve:srcsharp"
   ],
@@ -25,6 +34,12 @@
         "aliases": ["SRC Event", "src-eve"],
         "extensions": [".eve"],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "src-data",
+        "aliases": ["SRC Data", "src-data"],
+        "filenames": ["alias.txt", "animation.txt", "battle.txt", "effect.txt", "ext_animation.txt", "item.txt", "mind.txt", "non_pilot.txt", "pilot.txt", "pilot_dialog.txt", "pilot_message.txt", "robot.txt", "sp.txt", "terrain.txt", "unit.txt"],
+        "configuration": "./src-data-language-configuration.json"
       }
     ],
     "grammars": [
@@ -32,10 +47,19 @@
         "language": "src-eve",
         "scopeName": "source.src-eve",
         "path": "./syntaxes/src-eve.tmLanguage.json"
+      },
+      {
+        "language": "src-data",
+        "scopeName": "source.src-data",
+        "path": "./syntaxes/src-data.tmLanguage.json"
       }
     ],
     "configurationDefaults": {
       "[src-eve]": {
+        "files.encoding": "shiftjis",
+        "files.autoGuessEncoding": true
+      },
+      "[src-data]": {
         "files.encoding": "shiftjis",
         "files.autoGuessEncoding": true
       }
@@ -109,8 +133,10 @@
     ]
   },
   "scripts": {
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "check-types": "tsc -p ./ --noEmit",
+    "compile": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap",
+    "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap --watch",
+    "vscode:prepublish": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --minify",
     "package": "vsce package --no-dependencies"
   },
   "dependencies": {
@@ -119,6 +145,8 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/vscode": "~1.91.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.25.12",
     "typescript": "~5.9.3"
   }
 }
