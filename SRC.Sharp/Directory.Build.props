@@ -1,0 +1,15 @@
+<Project>
+  <!--
+    SRC# のバージョン（docs/versioning.md）
+    - アプリ（SRC#Form・SRC#Avalonia・SRC#Web・データビューア）: 3.<マイナー>.<パッチ>。2 までが VB 版、3 が SRC#
+    - ライブラリ（SRCCore・SRCDataLinter・SRCRender・SRCSound）: 0.<マイナー>.<パッチ>
+    マイナーとパッチは共通。マイナーは VB 版にならい奇数を開発版とする（5 が初版。4 はシナリオが参照しているため使わない）
+    リリースはタグ（v3.<マイナー>.<パッチ>）を打った場合のみ。公開ワークフローでタグとこの値の一致を確かめる
+  -->
+  <PropertyGroup>
+    <SrcSharpVersionMinor>5</SrcSharpVersionMinor>
+    <SrcSharpVersionPatch>0</SrcSharpVersionPatch>
+    <SrcSharpAppVersion>3.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpAppVersion>
+    <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
+  </PropertyGroup>
+</Project>

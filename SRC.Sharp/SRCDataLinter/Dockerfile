@@ -5,6 +5,8 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0-bookworm-slim AS build
 WORKDIR /src
+# バージョンは Directory.Build.props で決める
+COPY ["Directory.Build.props", "./"]
 COPY ["SRCDataLinter/SRCDataLinter.csproj", "SRCDataLinter/"]
 COPY ["SRCCore/SRCCore.csproj", "SRCCore/"]
 RUN dotnet restore "SRCDataLinter/SRCDataLinter.csproj"

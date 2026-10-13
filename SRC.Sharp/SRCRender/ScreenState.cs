@@ -19,6 +19,9 @@ namespace SRCRender
         /// <summary>タイトルやロード中の表示（null で非表示）</summary>
         public string Splash { get; set; }
 
+        /// <summary>起動時のタイトル（元の SRC の frmTitle）。表示していなければ null</summary>
+        public TitleState Title { get; set; }
+
         /// <summary>テロップ（null で非表示）</summary>
         public string Telop { get; set; }
 
@@ -110,6 +113,12 @@ namespace SRCRender
         public int X { get; set; }
         public int Y { get; set; }
         public int Highlight { get; set; } = -1;
+    }
+
+    public class TitleState
+    {
+        /// <summary>表示するバージョン（例: 3.5.0）</summary>
+        public string Version { get; set; }
     }
 
     public class DialogState

@@ -103,6 +103,10 @@ namespace SRCRender
             {
                 DrawCenteredText(canvas, ScreenLayout.MapArea, state.Splash, largeFont);
             }
+            if (state.Title != null)
+            {
+                DrawTitle(canvas, state.Title);
+            }
             DrawStatus(canvas, layers.Status);
             DrawMessageArea(canvas, layers.Message);
             if (!string.IsNullOrEmpty(state.Telop))
@@ -742,6 +746,49 @@ namespace SRCRender
                         Font = DialogFont,
                     }, paint);
                 }
+            }
+        }
+
+        /// <summary>タイトルの枠の大きさ（元の SRC・SRC#Form の frmTitle と同じ）</summary>
+        public static readonly SKSize TitleSize = new SKSize(386, 233);
+
+        /// <summary>
+        /// 起動時のタイトル。元の SRC の frmTitle（SRC#Form の Forms/Title.Designer.cs）の配置に合わせる。
+        /// </summary>
+        private void DrawTitle(SKCanvas canvas, TitleState title)
+        {
+            var area = ScreenLayout.MapArea;
+            var box = SKRect.Create(area.Left + (area.Width - TitleSize.Width) / 2, area.Top + (area.Height - TitleSize.Height) / 2, TitleSize.Width, TitleSize.Height);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                paint.Color = FormGray;
+                canvas.DrawRect(box, paint);
+                DrawBevel(canvas, box, raised: true, paint);
+                // 枠（Frame1）
+                var frame = SKRect.Create(box.Left + 24, box.Top + 8, 337, 201);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = WindowsShadow;
+                canvas.DrawRect(frame, paint);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(SKRect.Create(frame.Left + 1, frame.Top + 1, frame.Width, frame.Height), paint);
+                paint.Style = SKPaintStyle.Fill;
+                paint.Color = SKColors.Black;
+                paint.IsAntialias = true;
+
+                void Text(string text, float x, float y, float points, SKTextAlign align = SKTextAlign.Left)
+                {
+                    using (var font = new Compat.Font("Times New Roman", points).ToSKFont())
+                    {
+                        canvas.DrawText(text, x, y + Compat.SkiaFonts.Ascent(font), align, font, paint);
+                    }
+                }
+
+                Text("SRC#", frame.Left + 118, frame.Top + 56, 20f);
+                Text("- Simulation RPG Construction -", frame.Left + 118, frame.Top + 87, 9.75f);
+                Text("Ver " + title.Version, frame.Left + 144 + 177, frame.Top + 127, 15.75f, SKTextAlign.Right);
+                Text("koudenpa", frame.Left + 257, frame.Top + 156, 11.25f);
+                Text("SRC by Kei Sakamoto / Inui Tetsuyuki", frame.Left + 16, frame.Top + 173, 11.25f);
+                Text("This program is distributed under the terms of GPL", box.Left + 8, box.Top + 216, 9f);
             }
         }
 

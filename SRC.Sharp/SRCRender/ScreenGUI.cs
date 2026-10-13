@@ -734,13 +734,15 @@ namespace SRCRender
 
         public void OpenTitleForm()
         {
-            State.Splash = "SRC#";
+            // 元の SRC と同じく、起動時のタイトルにだけバージョンを出す（docs/versioning.md）
+            var v = src.Version;
+            State.Title = new TitleState { Version = v == null ? "" : $"{v.Major}.{v.Minor}.{Math.Max(0, v.Build)}" };
             Present();
         }
 
         public void CloseTitleForm()
         {
-            State.Splash = null;
+            State.Title = null;
             Present();
         }
 

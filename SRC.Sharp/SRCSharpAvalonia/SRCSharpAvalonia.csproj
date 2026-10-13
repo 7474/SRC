@@ -7,7 +7,7 @@
     <RootNamespace>SRCSharpAvalonia</RootNamespace>
     <AssemblyName>SRCSharpAvalonia</AssemblyName>
     <Product>SRC#Avalonia</Product>
-    <Version>0.1.0</Version>
+    <Version>$(SrcSharpAppVersion)</Version>
   </PropertyGroup>
 
   <ItemGroup>
