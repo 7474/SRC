@@ -45,7 +45,7 @@ namespace SRCCore.Units.Tests
             src.Event.EventCmd = new List<CmdData>();
             src.Event.EventFileNames = new List<string>();
             src.Event.AdditionalEventFileNames = new List<string>();
-            src.Event.EventQue = new Queue<string>();
+            src.Event.EventQue = new List<string>();
             src.Titles = new List<string>();
             return src;
         }
