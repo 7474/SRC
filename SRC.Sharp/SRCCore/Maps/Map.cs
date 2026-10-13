@@ -310,6 +310,10 @@ namespace SRCCore.Maps
                             {
                                 cell.UnderTerrain = SRC.TDList.Item(cell.TerrainType);
                             }
+                            else if (SRC.AllowMissingAssets && cell.TerrainType >= 0 && cell.TerrainType < MAX_TERRAIN_DATA_NUM)
+                            {
+                                cell.UnderTerrain = SRC.TDList.DefinePlaceholder(cell.TerrainType);
+                            }
                             else
                             {
                                 throw reader.InvalidDataException("定義されていない" + cell.TerrainType + "番の地形データが使われています", fname);
@@ -336,6 +340,10 @@ namespace SRCCore.Maps
                                     cell.LayerBitmapNo = layerBitmapNo;
                                     if (layerType != MapCell.NO_LAYER_NUM)
                                     {
+                                        if (!SRC.TDList.IsDefined(layerType) && SRC.AllowMissingAssets && layerType >= 0 && layerType < MAX_TERRAIN_DATA_NUM)
+                                        {
+                                            SRC.TDList.DefinePlaceholder(layerType);
+                                        }
                                         if (!SRC.TDList.IsDefined(layerType))
                                         {
                                             throw reader.InvalidDataException("定義されていない" + layerType + "番の地形データが使われています", fname);

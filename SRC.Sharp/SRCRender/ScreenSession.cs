@@ -39,6 +39,8 @@ namespace SRCRender
             SRC.SystemConfig = config;
             SRC.FileSystem = fileSystem;
             SRC.Sound.Player = soundPlayer ?? new NullSoundPlayer();
+            // 汎用グラフィック集などの素材が無くても動かす
+            SRC.AllowMissingAssets = true;
             try
             {
                 fileSystem.AddPath(SRC.AppPath);

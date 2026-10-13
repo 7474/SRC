@@ -38,6 +38,30 @@ namespace SRCCore.Models
                 : TerrainData.EmptyTerrain;
         }
 
+        /// <summary>
+        /// 地形データが定義されていない番号に、仮の地形（陸・移動コスト1・修正なし）を登録する。
+        /// 素材なしで実行する場合（SRC.AllowMissingAssets）に使う。
+        /// </summary>
+        public TerrainData DefinePlaceholder(int ID)
+        {
+            if (IsDefined(ID))
+            {
+                return Item(ID);
+            }
+            var td = new TerrainData
+            {
+                ID = ID,
+                Name = "地形" + ID,
+                Bitmap = "",
+                Class = "陸",
+                MoveCost = 1,
+                HitMod = 0,
+                DamageMod = 0,
+            };
+            TerrainList[ID] = td;
+            return td;
+        }
+
         // 名前を指定してデータを取り出す
         public TerrainData ItemByName(string name)
         {
