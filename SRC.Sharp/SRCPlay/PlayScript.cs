@@ -431,10 +431,34 @@ namespace SRCPlay
                         return true;
                     }
                 }
-                // 停滞時にボタンを押す（StallClickMillis）より長く待つ
-                auto.Run(int.MaxValue, 60000, () => IsReady);
+                // 停滞時にボタンを押す（StallClickMillis）より長く待つ。
+                // 停滞時のクリックで画面が更新され続けると戻らないので、期限もここで判定する
+                var suspendedBefore = runner.SuspendedTime;
+                auto.Run(int.MaxValue, 60000, () => IsReady || DateTime.UtcNow >= deadline + (runner.SuspendedTime - suspendedBefore));
+                deadline += runner.SuspendedTime - suspendedBefore;
+            }
+            if (!IsReady && !runner.IsFinished)
+            {
+                Record($"{DateTime.Now:HH:mm:ss} NOT READY {NotReadyReason()}");
             }
             return IsReady;
+        }
+
+        /// <summary>マップで操作を受け付ける状態でない理由（調査用）</summary>
+        public string NotReadyReason()
+        {
+            var state = runner.State;
+            var reasons = new List<string>();
+            if (GUI.IsGUILocked) reasons.Add("GUI locked");
+            if (state.Menu != null) reasons.Add("menu");
+            if (state.List != null) reasons.Add("list " + state.List.Caption);
+            if (state.Dialog != null) reasons.Add("dialog " + state.Dialog.Title);
+            if (state.Config != null) reasons.Add("config");
+            if (state.Message.Visible && state.Message.Waiting) reasons.Add("message");
+            if (GUI.IsWaitingClick) reasons.Add("waiting click");
+            if (runner.Session.Game.IsBusy) reasons.Add("event busy");
+            reasons.Add("command state " + Src.Commands.CommandState);
+            return string.Join(", ", reasons);
         }
 
         private void Wait(string[] args)
@@ -872,6 +896,14 @@ namespace SRCPlay
             script.ChooseListIndex(list, index);
             if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
             {
+                return false;
+            }
+            // 移動後などで計画した相手を選べない（マスクされている）ならクリックしない
+            if (script.OnGame(() => script.Src.Map.MaskData[plan.Target.X, plan.Target.Y]))
+            {
+                Log($"攻撃できない: {plan.Target.Name} ({plan.Target.X},{plan.Target.Y}) {plan.Weapon}");
+                script.Cancel();
+                script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10));
                 return false;
             }
             Log($"攻撃: {plan.Target.Name} ({plan.Target.X},{plan.Target.Y}) {plan.Weapon}");
