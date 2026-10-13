@@ -13,7 +13,7 @@ SRC のシナリオ（`*.eve`）の編集支援と、イベントのデバッガ
 
 ## 導入
 
-この版（0.6.0）は Marketplace にまだ出していません（7474/SRC#1175）。Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（0.0.5）は色分けだけの旧版で、0.6.0 はその更新として出します。それまでは `srcsharp` と `.vsix` を入れます。
+Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) の更新として出します。0.0.5 は色分けだけの旧版です。0.5.0 はプレリリースで出すため、拡張機能ビューでこの拡張の「Switch to Pre-Release Version」を選ぶと入ります（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。正式版は、`srcsharp` が NuGet に出てから偶数マイナー（0.6.0 など）で出します（7474/SRC#1175）。`.vsix` から入れることもできます。
 
 ### 1. srcsharp
 
@@ -40,7 +40,7 @@ dotnet tool install -g SRCSharpTools --add-source out/srcsharp
 cd SRC.Sharp/SRCSharpVSCode
 npm ci
 npm run package   # esbuild でまとめ、src-vscode-<バージョン>.vsix を作る
-code --install-extension src-vscode-0.6.0.vsix
+code --install-extension src-vscode-0.5.0.vsix
 ```
 
 VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも入れられます（[Install from a VSIX](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace#_install-from-a-vsix)）。
