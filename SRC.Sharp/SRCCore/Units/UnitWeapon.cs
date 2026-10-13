@@ -129,7 +129,7 @@ namespace SRCCore.Units
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
             if (IsWeaponClassifiedAs("体"))
             {
-                WeaponPowerRet = (int)(WeaponPowerRet + Unit.HP / (double)Unit.MaxHP * 100d * WeaponLevel("体"));
+                WeaponPowerRet = VBMath.CLng(WeaponPowerRet + Unit.HP / (double)Unit.MaxHP * 100d * WeaponLevel("体"));
             }
 
             // 「尽」属性を持つ武器は残りＥＮに応じて攻撃力が増える
@@ -137,7 +137,7 @@ namespace SRCCore.Units
             {
                 if (Unit.EN >= WeaponENConsumption())
                 {
-                    WeaponPowerRet = (int)(WeaponPowerRet + (Unit.EN - WeaponENConsumption()) * WeaponLevel("尽"));
+                    WeaponPowerRet = VBMath.CLng(WeaponPowerRet + (Unit.EN - WeaponENConsumption()) * WeaponLevel("尽"));
                 }
             }
 
@@ -189,7 +189,7 @@ namespace SRCCore.Units
 
                 if (wad > 0d)
                 {
-                    WeaponPowerRet = (int)(WeaponPowerRet * wad);
+                    WeaponPowerRet = VBMath.CLng(WeaponPowerRet * wad);
                 }
                 else
                 {
@@ -238,7 +238,7 @@ namespace SRCCore.Units
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackExp = pat;
                     BCVariable.WeaponPower = WeaponPowerRet;
-                    WeaponPowerRet = (int)SRC.BCList.Item("攻撃補正").Calculate();
+                    WeaponPowerRet = VBMath.CLng(SRC.BCList.Item("攻撃補正").Calculate());
                 }
                 else
                 {
@@ -274,11 +274,11 @@ namespace SRCCore.Units
                     {
                         if (Expression.IsOptionDefined("ダメージ倍率低下"))
                         {
-                            WeaponPowerRet = (int)(1.1d * WeaponPowerRet);
+                            WeaponPowerRet = VBMath.CLng(1.1d * WeaponPowerRet);
                         }
                         else
                         {
-                            WeaponPowerRet = (int)(1.2d * WeaponPowerRet);
+                            WeaponPowerRet = VBMath.CLng(1.2d * WeaponPowerRet);
                         }
                     }
                 }
@@ -310,11 +310,11 @@ namespace SRCCore.Units
                 BCVariable.WeaponNumber = WeaponNo();
                 BCVariable.AttackExp = WeaponPowerRet;
                 BCVariable.TerrainAdaption = WeaponAdaption(tarea);
-                WeaponPowerRet = (int)SRC.BCList.Item("攻撃地形補正").Calculate();
+                WeaponPowerRet = VBMath.CLng(SRC.BCList.Item("攻撃地形補正").Calculate());
             }
             else
             {
-                WeaponPowerRet = (int)(WeaponPowerRet * WeaponAdaption(tarea));
+                WeaponPowerRet = VBMath.CLng(WeaponPowerRet * WeaponAdaption(tarea));
             }
 
             return WeaponPowerRet;
@@ -2021,7 +2021,7 @@ namespace SRCCore.Units
                 BCVariable.DefUnit = t;
                 BCVariable.WeaponNumber = WeaponNo();
                 BCVariable.AttackExp = WeaponPrecision();
-                ed_hit = (int)SRC.BCList.Item("命中補正").Calculate();
+                ed_hit = VBMath.CLng(SRC.BCList.Item("命中補正").Calculate());
             }
             else
             {
@@ -2040,7 +2040,7 @@ namespace SRCCore.Units
                 BCVariable.AtkUnit = Unit;
                 BCVariable.DefUnit = t;
                 BCVariable.WeaponNumber = WeaponNo();
-                ed_avd = (int)SRC.BCList.Item("回避補正").Calculate();
+                ed_avd = VBMath.CLng(SRC.BCList.Item("回避補正").Calculate());
             }
             else
             {
@@ -2091,7 +2091,7 @@ namespace SRCCore.Units
                                     || GeneralLib.InStrNotNest(WeaponClass(), "突") > 0
                                     || GeneralLib.InStrNotNest(WeaponClass(), "接") > 0)
                                 {
-                                    uadaption = Unit.get_AdaptionMod(1, (int)WeaponLevel("Ｊ"));
+                                    uadaption = Unit.get_AdaptionMod(1, VBMath.CLng(WeaponLevel("Ｊ")));
                                 }
                             }
 
@@ -2197,11 +2197,11 @@ namespace SRCCore.Units
                 BCVariable.DffenceVariable = ed_avd;
                 BCVariable.TerrainAdaption = ed_aradap;
                 BCVariable.SizeMod = ed_size;
-                prob = (int)SRC.BCList.Item("命中率").Calculate();
+                prob = VBMath.CLng(SRC.BCList.Item("命中率").Calculate());
             }
             else
             {
-                prob = (int)((ed_hit - ed_avd) * ed_aradap * ed_size);
+                prob = VBMath.CLng((ed_hit - ed_avd) * ed_aradap * ed_size);
             }
 
             // 不意打ち
@@ -2276,27 +2276,27 @@ namespace SRCCore.Units
                                 case 5:
                                 case 6:
                                     {
-                                        prob = (int)(0.9d * prob);
+                                        prob = VBMath.CLng(0.9d * prob);
                                         break;
                                     }
 
                                 case 7:
                                 case 8:
                                     {
-                                        prob = (int)(0.8d * prob);
+                                        prob = VBMath.CLng(0.8d * prob);
                                         break;
                                     }
 
                                 case 9:
                                 case 10:
                                     {
-                                        prob = (int)(0.7d * prob);
+                                        prob = VBMath.CLng(0.7d * prob);
                                         break;
                                     }
 
                                 default:
                                     {
-                                        prob = (int)(0.6d * prob);
+                                        prob = VBMath.CLng(0.6d * prob);
                                         break;
                                     }
                             }
@@ -2312,37 +2312,37 @@ namespace SRCCore.Units
                                 // 修正なし
                                 case 2:
                                     {
-                                        prob = (int)(0.9d * prob);
+                                        prob = VBMath.CLng(0.9d * prob);
                                         break;
                                     }
 
                                 case 3:
                                     {
-                                        prob = (int)(0.8d * prob);
+                                        prob = VBMath.CLng(0.8d * prob);
                                         break;
                                     }
 
                                 case 4:
                                     {
-                                        prob = (int)(0.75d * prob);
+                                        prob = VBMath.CLng(0.75d * prob);
                                         break;
                                     }
 
                                 case 5:
                                     {
-                                        prob = (int)(0.7d * prob);
+                                        prob = VBMath.CLng(0.7d * prob);
                                         break;
                                     }
 
                                 case 6:
                                     {
-                                        prob = (int)(0.65d * prob);
+                                        prob = VBMath.CLng(0.65d * prob);
                                         break;
                                     }
 
                                 default:
                                     {
-                                        prob = (int)(0.6d * prob);
+                                        prob = VBMath.CLng(0.6d * prob);
                                         break;
                                     }
                             }
@@ -2358,25 +2358,25 @@ namespace SRCCore.Units
                                 // 修正なし
                                 case 4:
                                     {
-                                        prob = (int)(0.9d * prob);
+                                        prob = VBMath.CLng(0.9d * prob);
                                         break;
                                     }
 
                                 case 5:
                                     {
-                                        prob = (int)(0.8d * prob);
+                                        prob = VBMath.CLng(0.8d * prob);
                                         break;
                                     }
 
                                 case 6:
                                     {
-                                        prob = (int)(0.7d * prob);
+                                        prob = VBMath.CLng(0.7d * prob);
                                         break;
                                     }
 
                                 default:
                                     {
-                                        prob = (int)(0.6d * prob);
+                                        prob = VBMath.CLng(0.6d * prob);
                                         break;
                                     }
                             }
@@ -2428,12 +2428,12 @@ namespace SRCCore.Units
                 {
                     if (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) > t.FeatureLevel("ステルス"))
                     {
-                        prob = (int)(prob * 0.8d);
+                        prob = VBMath.CLng(prob * 0.8d);
                     }
                 }
                 else if (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)) > 3)
                 {
-                    prob = (int)(prob * 0.8d);
+                    prob = VBMath.CLng(prob * 0.8d);
                 }
             }
 
@@ -2452,7 +2452,7 @@ namespace SRCCore.Units
                             uad = Unit.get_Adaption(1);
                             if (GeneralLib.InStrNotNest(WeaponClass(), "Ｊ") > 0)
                             {
-                                uad = GeneralLib.MinLng((int)(uad + WeaponLevel("Ｊ")), 4);
+                                uad = GeneralLib.MinLng(VBMath.CLng(uad + WeaponLevel("Ｊ")), 4);
                             }
 
                             uad = GeneralLib.MinLng(uad, 4);
@@ -2467,7 +2467,7 @@ namespace SRCCore.Units
                     {
                         if (GeneralLib.InStrNotNest(WeaponClass(), "空") == 0)
                         {
-                            prob = (int)(0.7d * prob);
+                            prob = VBMath.CLng(0.7d * prob);
                         }
                     }
                 }
@@ -2568,27 +2568,27 @@ namespace SRCCore.Units
             // ターゲットのステータス異常による修正
             if (t.IsConditionSatisfied("盲目"))
             {
-                prob = (int)(1.5d * prob);
+                prob = VBMath.CLng(1.5d * prob);
             }
 
             if (t.IsConditionSatisfied("チャージ"))
             {
-                prob = (int)(1.5d * prob);
+                prob = VBMath.CLng(1.5d * prob);
             }
 
             if (t.IsConditionSatisfied("消耗"))
             {
-                prob = (int)(1.5d * prob);
+                prob = VBMath.CLng(1.5d * prob);
             }
 
             if (t.IsConditionSatisfied("狂戦士"))
             {
-                prob = (int)(1.5d * prob);
+                prob = VBMath.CLng(1.5d * prob);
             }
 
             if (t.IsConditionSatisfied("移動不能"))
             {
-                prob = (int)(1.5d * prob);
+                prob = VBMath.CLng(1.5d * prob);
             }
 
             // 底力
@@ -2627,7 +2627,7 @@ namespace SRCCore.Units
             {
                 if (Unit.IsUnderSpecialPowerEffect("命中強化"))
                 {
-                    prob = (int)(prob + 10d * Unit.SpecialPowerEffectLevel("命中強化"));
+                    prob = VBMath.CLng(prob + 10d * Unit.SpecialPowerEffectLevel("命中強化"));
                 }
                 else if (Unit.IsConditionSatisfied("運動性ＵＰ"))
                 {
@@ -2636,7 +2636,7 @@ namespace SRCCore.Units
 
                 if (t.IsUnderSpecialPowerEffect("回避強化"))
                 {
-                    prob = (int)(prob - 10d * t.SpecialPowerEffectLevel("回避強化"));
+                    prob = VBMath.CLng(prob - 10d * t.SpecialPowerEffectLevel("回避強化"));
                 }
                 else if (t.IsConditionSatisfied("運動性ＵＰ"))
                 {
@@ -2655,12 +2655,12 @@ namespace SRCCore.Units
 
                 if (Unit.IsUnderSpecialPowerEffect("命中低下"))
                 {
-                    prob = (int)(prob - 10d * Unit.SpecialPowerEffectLevel("命中低下"));
+                    prob = VBMath.CLng(prob - 10d * Unit.SpecialPowerEffectLevel("命中低下"));
                 }
 
                 if (t.IsUnderSpecialPowerEffect("回避低下"))
                 {
-                    prob = (int)(prob + 10d * t.SpecialPowerEffectLevel("回避低下"));
+                    prob = VBMath.CLng(prob + 10d * t.SpecialPowerEffectLevel("回避低下"));
                 }
 
                 if (Unit.IsUnderSpecialPowerEffect("命中率低下"))
@@ -2679,7 +2679,7 @@ namespace SRCCore.Units
                 BCVariable.DefUnit = t;
                 BCVariable.WeaponNumber = WeaponNo();
                 BCVariable.LastVariable = prob;
-                prob = (int)SRC.BCList.Item("最終命中率").Calculate();
+                prob = VBMath.CLng(SRC.BCList.Item("最終命中率").Calculate());
             }
 
             return Math.Max(0, prob);
@@ -2755,7 +2755,7 @@ namespace SRCCore.Units
                     && !neautralize)
                 {
                     // アーマー発動
-                    arm_mod = (int)(arm_mod + 100d * flevel + slevel);
+                    arm_mod = VBMath.CLng(arm_mod + 100d * flevel + slevel);
                 }
             }
 
@@ -2842,28 +2842,28 @@ namespace SRCCore.Units
                 {
                     if (t.HP <= t.MaxHP / 8)
                     {
-                        arm = (int)(1.15d * arm);
+                        arm = VBMath.CLng(1.15d * arm);
                     }
                     else if (t.HP <= t.MaxHP / 4)
                     {
-                        arm = (int)(1.1d * arm);
+                        arm = VBMath.CLng(1.1d * arm);
                     }
                     else if (t.HP <= t.MaxHP / 2)
                     {
-                        arm = (int)(1.05d * arm);
+                        arm = VBMath.CLng(1.05d * arm);
                     }
                 }
                 else if (t.HP <= t.MaxHP / 8)
                 {
-                    arm = (int)(1.3d * arm);
+                    arm = VBMath.CLng(1.3d * arm);
                 }
                 else if (t.HP <= t.MaxHP / 4)
                 {
-                    arm = (int)(1.2d * arm);
+                    arm = VBMath.CLng(1.2d * arm);
                 }
                 else if (t.HP <= t.MaxHP / 2)
                 {
-                    arm = (int)(1.1d * arm);
+                    arm = VBMath.CLng(1.1d * arm);
                 }
             }
 
@@ -2879,27 +2879,27 @@ namespace SRCCore.Units
                 // 装甲強化
                 if (t.IsUnderSpecialPowerEffect("装甲強化"))
                 {
-                    arm = (int)(arm * (1d + 0.1d * t.SpecialPowerEffectLevel("装甲強化")));
+                    arm = VBMath.CLng(arm * (1d + 0.1d * t.SpecialPowerEffectLevel("装甲強化")));
                 }
                 else if (t.IsConditionSatisfied("防御力ＵＰ"))
                 {
                     if (Expression.IsOptionDefined("防御力倍率低下"))
                     {
-                        arm = (int)(1.25d * arm);
+                        arm = VBMath.CLng(1.25d * arm);
                     }
                     else
                     {
-                        arm = (int)(1.5d * arm);
+                        arm = VBMath.CLng(1.5d * arm);
                     }
                 }
 
                 if (t.IsUnderSpecialPowerEffect("装甲低下"))
                 {
-                    arm = (int)(arm * (1d + 0.1d * t.SpecialPowerEffectLevel("装甲低下")));
+                    arm = VBMath.CLng(arm * (1d + 0.1d * t.SpecialPowerEffectLevel("装甲低下")));
                 }
                 else if (t.IsConditionSatisfied("防御力ＤＯＷＮ"))
                 {
-                    arm = (int)(0.75d * arm);
+                    arm = VBMath.CLng(0.75d * arm);
                 }
             }
 
@@ -2944,7 +2944,7 @@ namespace SRCCore.Units
                 BCVariable.WeaponNumber = WeaponNo();
                 BCVariable.Armor = arm;
                 BCVariable.TerrainAdaption = uadaption;
-                arm = (int)SRC.BCList.Item("防御補正").Calculate();
+                arm = VBMath.CLng(SRC.BCList.Item("防御補正").Calculate());
             }
             else
             {
@@ -2965,7 +2965,7 @@ namespace SRCCore.Units
                 }
 
                 // 地形適応による装甲修正
-                arm = (int)(arm * uadaption);
+                arm = VBMath.CLng(arm * uadaption);
             }
 
             // ダメージ固定武器の場合は装甲と地形＆距離修正を無視
@@ -3005,7 +3005,7 @@ namespace SRCCore.Units
                     BCVariable.TerrainAdaption = 1d;
                 }
 
-                DamageRet = (int)SRC.BCList.Item("ダメージ").Calculate();
+                DamageRet = VBMath.CLng(SRC.BCList.Item("ダメージ").Calculate());
             }
             else
             {
@@ -3017,12 +3017,12 @@ namespace SRCCore.Units
                 {
                     if (t.Area == "地上")
                     {
-                        DamageRet = (int)(DamageRet * ((100 - Map.Terrain(t.x, t.y).DamageMod) / 100d));
+                        DamageRet = VBMath.CLng(DamageRet * ((100 - Map.Terrain(t.x, t.y).DamageMod) / 100d));
                     }
                 }
                 else if (t.Area != "空中")
                 {
-                    DamageRet = (int)(DamageRet * ((100 - Map.Terrain(t.x, t.y).DamageMod) / 100d));
+                    DamageRet = VBMath.CLng(DamageRet * ((100 - Map.Terrain(t.x, t.y).DamageMod) / 100d));
                 }
             }
 
@@ -3038,25 +3038,25 @@ namespace SRCCore.Units
                     // 修正なし
                     case 2:
                         {
-                            DamageRet = (int)(0.95d * DamageRet);
+                            DamageRet = VBMath.CLng(0.95d * DamageRet);
                             break;
                         }
 
                     case 3:
                         {
-                            DamageRet = (int)(0.9d * DamageRet);
+                            DamageRet = VBMath.CLng(0.9d * DamageRet);
                             break;
                         }
 
                     case 4:
                         {
-                            DamageRet = (int)(0.85d * DamageRet);
+                            DamageRet = VBMath.CLng(0.85d * DamageRet);
                             break;
                         }
 
                     default:
                         {
-                            DamageRet = (int)(0.8d * DamageRet);
+                            DamageRet = VBMath.CLng(0.8d * DamageRet);
                             break;
                         }
                 }
@@ -3079,27 +3079,27 @@ namespace SRCCore.Units
                             case 5:
                             case 6:
                                 {
-                                    DamageRet = (int)(0.95d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.95d * DamageRet);
                                     break;
                                 }
 
                             case 7:
                             case 8:
                                 {
-                                    DamageRet = (int)(0.9d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.9d * DamageRet);
                                     break;
                                 }
 
                             case 9:
                             case 10:
                                 {
-                                    DamageRet = (int)(0.85d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.85d * DamageRet);
                                     break;
                                 }
 
                             default:
                                 {
-                                    DamageRet = (int)(0.8d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.8d * DamageRet);
                                     break;
                                 }
                         }
@@ -3115,37 +3115,37 @@ namespace SRCCore.Units
                             // 修正なし
                             case 2:
                                 {
-                                    DamageRet = (int)(0.95d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.95d * DamageRet);
                                     break;
                                 }
 
                             case 3:
                                 {
-                                    DamageRet = (int)(0.9d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.9d * DamageRet);
                                     break;
                                 }
 
                             case 4:
                                 {
-                                    DamageRet = (int)(0.85d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.85d * DamageRet);
                                     break;
                                 }
 
                             case 5:
                                 {
-                                    DamageRet = (int)(0.8d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.8d * DamageRet);
                                     break;
                                 }
 
                             case 6:
                                 {
-                                    DamageRet = (int)(0.75d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.75d * DamageRet);
                                     break;
                                 }
 
                             default:
                                 {
-                                    DamageRet = (int)(0.7d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.7d * DamageRet);
                                     break;
                                 }
                         }
@@ -3161,25 +3161,25 @@ namespace SRCCore.Units
                             // 修正なし
                             case 4:
                                 {
-                                    DamageRet = (int)(0.95d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.95d * DamageRet);
                                     break;
                                 }
 
                             case 5:
                                 {
-                                    DamageRet = (int)(0.9d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.9d * DamageRet);
                                     break;
                                 }
 
                             case 6:
                                 {
-                                    DamageRet = (int)(0.85d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.85d * DamageRet);
                                     break;
                                 }
 
                             default:
                                 {
-                                    DamageRet = (int)(0.8d * DamageRet);
+                                    DamageRet = VBMath.CLng(0.8d * DamageRet);
                                     break;
                                 }
                         }
@@ -3323,7 +3323,7 @@ namespace SRCCore.Units
             // 寝こみを襲うとダメージ1.5倍
             if (t.IsConditionSatisfied("睡眠"))
             {
-                DamageRet = (int)(1.5d * DamageRet);
+                DamageRet = VBMath.CLng(1.5d * DamageRet);
             }
 
             {
@@ -3335,24 +3335,24 @@ namespace SRCCore.Units
                     {
                         if (withBlock1.IsSkillAvailable("潜在力開放"))
                         {
-                            DamageRet = (int)(1.2d * DamageRet);
+                            DamageRet = VBMath.CLng(1.2d * DamageRet);
                         }
 
                         if (Unit.IsFeatureAvailable("ブースト"))
                         {
-                            DamageRet = (int)(1.2d * DamageRet);
+                            DamageRet = VBMath.CLng(1.2d * DamageRet);
                         }
                     }
                     else
                     {
                         if (withBlock1.IsSkillAvailable("潜在力開放"))
                         {
-                            DamageRet = (int)(1.25d * DamageRet);
+                            DamageRet = VBMath.CLng(1.25d * DamageRet);
                         }
 
                         if (Unit.IsFeatureAvailable("ブースト"))
                         {
-                            DamageRet = (int)(1.25d * DamageRet);
+                            DamageRet = VBMath.CLng(1.25d * DamageRet);
                         }
                     }
                 }
@@ -3366,7 +3366,7 @@ namespace SRCCore.Units
                     {
                         if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Mid(sdata, i, 1)) > 0)
                         {
-                            DamageRet = (int)(1.2d * DamageRet);
+                            DamageRet = VBMath.CLng(1.2d * DamageRet);
                             break;
                         }
                     }
@@ -3381,7 +3381,7 @@ namespace SRCCore.Units
                     {
                         if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Mid(sdata, i, 1)) > 0)
                         {
-                            DamageRet = (int)(0.8d * DamageRet);
+                            DamageRet = VBMath.CLng(0.8d * DamageRet);
                             break;
                         }
                     }
@@ -3467,7 +3467,7 @@ namespace SRCCore.Units
                 }
             }
 
-            DamageRet = ((int)(dmg_mod * DamageRet));
+            DamageRet = VBMath.CLng(dmg_mod * DamageRet);
 
             // スペシャルパワー、特殊状態、サポートアタックによるダメージ低下
             if (is_true_value || mpskill >= 160)
@@ -3475,17 +3475,17 @@ namespace SRCCore.Units
                 dmg_mod = 1d;
                 dmg_mod = dmg_mod - 0.1d * Unit.SpecialPowerEffectLevel("ダメージ低下");
                 dmg_mod = dmg_mod - 0.1d * t.SpecialPowerEffectLevel("被ダメージ低下");
-                DamageRet = (int)(dmg_mod * DamageRet);
+                DamageRet = VBMath.CLng(dmg_mod * DamageRet);
             }
 
             if (Unit.IsConditionSatisfied("攻撃力ＤＯＷＮ"))
             {
-                DamageRet = (int)(0.75d * DamageRet);
+                DamageRet = VBMath.CLng(0.75d * DamageRet);
             }
 
             if (Unit.IsConditionSatisfied("恐怖"))
             {
-                DamageRet = (int)(0.8d * DamageRet);
+                DamageRet = VBMath.CLng(0.8d * DamageRet);
             }
 
             if (is_support_attack)
@@ -3493,7 +3493,7 @@ namespace SRCCore.Units
                 // サポートアタックダメージ低下
                 if (Expression.IsOptionDefined("サポートアタックダメージ低下"))
                 {
-                    DamageRet = (int)(0.7d * DamageRet);
+                    DamageRet = VBMath.CLng(0.7d * DamageRet);
                 }
             }
 
@@ -3561,7 +3561,7 @@ namespace SRCCore.Units
                 BCVariable.DefUnit = t;
                 BCVariable.WeaponNumber = WeaponNo();
                 BCVariable.LastVariable = DamageRet;
-                DamageRet = (int)SRC.BCList.Item("最終ダメージ").Calculate();
+                DamageRet = VBMath.CLng(SRC.BCList.Item("最終ダメージ").Calculate());
             }
 
             // 最低ダメージは10
@@ -3784,7 +3784,7 @@ namespace SRCCore.Units
                     BCVariable.DefUnit = t;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackExp = WeaponCritical();
-                    ed_crtatk = (int)SRC.BCList.Item("クリティカル攻撃補正").Calculate();
+                    ed_crtatk = VBMath.CLng(SRC.BCList.Item("クリティカル攻撃補正").Calculate());
                 }
                 else
                 {
@@ -3803,7 +3803,7 @@ namespace SRCCore.Units
                     BCVariable.AtkUnit = Unit;
                     BCVariable.DefUnit = t;
                     BCVariable.WeaponNumber = WeaponNo();
-                    ed_crtdfe = (int)SRC.BCList.Item("クリティカル防御補正").Calculate();
+                    ed_crtdfe = VBMath.CLng(SRC.BCList.Item("クリティカル防御補正").Calculate());
                 }
                 else
                 {
@@ -3822,7 +3822,7 @@ namespace SRCCore.Units
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackVariable = ed_crtatk;
                     BCVariable.DffenceVariable = ed_crtdfe;
-                    prob = (int)SRC.BCList.Item("クリティカル発生率").Calculate();
+                    prob = VBMath.CLng(SRC.BCList.Item("クリティカル発生率").Calculate());
                 }
                 else
                 {
@@ -3830,7 +3830,7 @@ namespace SRCCore.Units
                 }
 
                 // 超反応による修正
-                prob = (int)(prob + 2d * Unit.MainPilot().SkillLevel("超反応", ref_mode: "") - 2d * t.MainPilot().SkillLevel("超反応", ref_mode: ""));
+                prob = VBMath.CLng(prob + 2d * Unit.MainPilot().SkillLevel("超反応", ref_mode: "") - 2d * t.MainPilot().SkillLevel("超反応", ref_mode: ""));
 
                 // 超能力による修正
                 if (Unit.MainPilot().IsSkillAvailable("超能力"))
@@ -3850,7 +3850,7 @@ namespace SRCCore.Units
                 }
 
                 // スペシャルパワーにる修正
-                prob = (int)(prob + 10d * Unit.SpecialPowerEffectLevel("クリティカル率増加"));
+                prob = VBMath.CLng(prob + 10d * Unit.SpecialPowerEffectLevel("クリティカル率増加"));
             }
             else
             {
@@ -3869,7 +3869,7 @@ namespace SRCCore.Units
                     BCVariable.DefUnit = t;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackExp = WeaponCritical();
-                    ed_crtatk = (int)SRC.BCList.Item("特殊効果攻撃補正").Calculate();
+                    ed_crtatk = VBMath.CLng(SRC.BCList.Item("特殊効果攻撃補正").Calculate());
                 }
                 else
                 {
@@ -3894,7 +3894,7 @@ namespace SRCCore.Units
                         BCVariable.CommonEnemy = 30;
                     }
 
-                    ed_crtdfe = (int)SRC.BCList.Item("特殊効果防御補正").Calculate();
+                    ed_crtdfe = VBMath.CLng(SRC.BCList.Item("特殊効果防御補正").Calculate());
                 }
                 else
                 {
@@ -3920,7 +3920,7 @@ namespace SRCCore.Units
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackVariable = ed_crtatk;
                     BCVariable.DffenceVariable = ed_crtdfe;
-                    prob = (int)SRC.BCList.Item("特殊効果発生率").Calculate();
+                    prob = VBMath.CLng(SRC.BCList.Item("特殊効果発生率").Calculate());
                 }
                 else
                 {
@@ -3928,7 +3928,7 @@ namespace SRCCore.Units
                 }
 
                 // 抵抗力による修正
-                prob = (int)(prob - 10d * t.FeatureLevel("抵抗力"));
+                prob = VBMath.CLng(prob - 10d * t.FeatureLevel("抵抗力"));
             }
 
             // 不意打ち
@@ -4135,7 +4135,7 @@ namespace SRCCore.Units
                     BCVariable.DefUnit = t;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.LastVariable = prob;
-                    prob = (int)SRC.BCList.Item("最終クリティカル発生率").Calculate();
+                    prob = VBMath.CLng(SRC.BCList.Item("最終クリティカル発生率").Calculate());
                 }
             }
             else
@@ -4150,7 +4150,7 @@ namespace SRCCore.Units
                     BCVariable.DefUnit = t;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.LastVariable = prob;
-                    prob = (int)SRC.BCList.Item("最終特殊効果発生率").Calculate();
+                    prob = VBMath.CLng(SRC.BCList.Item("最終特殊効果発生率").Calculate());
                 }
             }
 
@@ -4200,7 +4200,7 @@ namespace SRCCore.Units
             {
                 if (GeneralLib.InStrNotNest(WeaponClass(), "殺") == 0)
                 {
-                    dmg = (int)(dmg * dmg_mod);
+                    dmg = VBMath.CLng(dmg * dmg_mod);
                 }
             }
 
@@ -4697,7 +4697,7 @@ namespace SRCCore.Units
                     }
                     else if (flevel > 0d || slevel > 0d)
                     {
-                        dmg = (int)(dmg - 500d * flevel - slevel);
+                        dmg = VBMath.CLng(dmg - 500d * flevel - slevel);
                     }
                 }
             }
@@ -4947,11 +4947,11 @@ namespace SRCCore.Units
             {
                 if (IsWeaponClassifiedAs("破"))
                 {
-                    dmg = (int)(dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
+                    dmg = VBMath.CLng(dmg - 50d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
                 }
                 else
                 {
-                    dmg = (int)(dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
+                    dmg = VBMath.CLng(dmg - 100d * (t.MainPilot().SkillLevel("Ｓ防御", ref_mode: "") + 4d));
                 }
             }
 
@@ -5046,16 +5046,16 @@ namespace SRCCore.Units
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
                 Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * WeaponLevel("霊"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
             else if (IsWeaponClassifiedAs("プ"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
                 Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * WeaponLevel("プ"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
 
             if (Unit.Party == "味方")
