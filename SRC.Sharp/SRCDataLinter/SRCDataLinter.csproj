@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackAsTool>true</PackAsTool>
-	<Version>0.5.0</Version>
+	<Version>$(SrcSharpLibraryVersion)</Version>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

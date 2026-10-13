@@ -46,7 +46,7 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - Windows Forms実装のSRC#Form
         - SRC#Formの仮実行を行える
         - .NET 10
-        - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている
+        - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている（[バージョンの管理](./docs/versioning.md)）
             - SRCCore と比べてメジャーバージョンが +3
         - HelpURL: https://srch.7474.jp/
     - [SRCRender](./SRC.Sharp/SRCRender)

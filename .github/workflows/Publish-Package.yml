@@ -6,8 +6,29 @@ on:
       - 'v*'
 
 jobs:
+  # タグ（v3.<マイナー>.<パッチ>）と SRC.Sharp/Directory.Build.props のバージョンが一致することを確かめる（docs/versioning.md）
+  check-version:
+    name: Check version
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+    - name: Compare tag and version
+      run: |
+        app=$(dotnet msbuild SRC.Sharp/SRCCore/SRCCore.csproj -getProperty:SrcSharpAppVersion)
+        lib=$(dotnet msbuild SRC.Sharp/SRCCore/SRCCore.csproj -getProperty:Version)
+        tag="${GITHUB_REF_NAME#v}"
+        echo "tag=${tag} app=${app} library=${lib}"
+        if [ "${tag}" != "${app}" ]; then
+          echo "::error::タグ ${GITHUB_REF_NAME} が SRC# のバージョン ${app} と一致しません（SRC.Sharp/Directory.Build.props）"
+          exit 1
+        fi
+
   push-nuget-package:
     name: Push Nuget Package to NuGet.org
+    needs: check-version
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
@@ -27,6 +48,7 @@ jobs:
 
   release-github-artifacts:
     name: Release artifacts to GitHub
+    needs: check-version
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v7
@@ -51,6 +73,7 @@ jobs:
 # https://hub.docker.com/repository/docker/koudenpa/srcdatalinter/builds
   push-to-dockerhub:
     name: Push Docker image to Docker Hub
+    needs: check-version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
