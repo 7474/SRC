@@ -1,53 +1,259 @@
+/*
+  SRC#Web の画面。VB5（Windows 9x）の部品の形（立体の枠・グラデーションのタイトルバー・へこんだ一覧）を残しつつ、
+  ゲームの画面の邪魔をしないよう暗い落ち着いた色にして、明るさの差を抑える。
+*/
+:root {
+    --desk: #24272b;          /* ページの背景 */
+    --face: #3a3d42;          /* ウィンドウ・ボタンの面 */
+    --face-hover: #43474d;
+    --light: #575b62;         /* 立体の枠の明るい側 */
+    --lighter: #63686f;
+    --shadow: #1d1f22;        /* 立体の枠の暗い側 */
+    --well: #2c2f33;          /* へこんだ一覧・入力欄 */
+    --text: #dcdcd6;
+    --text-dim: #9a9c9f;
+    --accent: #e0c27a;        /* 状態の表示 */
+    --title-from: #24345a;    /* タイトルバー（VB5 の紺のグラデーションを暗く） */
+    --title-to: #3a5680;
+    --select: #34507a;
+    --focus: #8fb0d8;
+    --ui-font: "MS UI Gothic", "Meiryo UI", "BIZ UDPGothic", system-ui, sans-serif;
+}
+
 html, body {
     margin: 0;
-    background: #202020;
-    color: #e8e8e8;
-    font-family: system-ui, sans-serif;
+    background: var(--desk);
+    color: var(--text);
+    font-family: var(--ui-font);
+    font-size: 14px;
 }
+
+/* ── ウィンドウ（シナリオ選択） ── */
 
 main {
     max-width: 720px;
-    margin: 0 auto;
-    padding: 16px;
+    margin: 16px auto;
+    background: var(--face);
+    border: 2px solid;
+    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
+.titlebar,
 h1 {
-    font-size: 1.6rem;
+    margin: 0;
+    padding: 3px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #e8ecf2;
+    background: linear-gradient(to right, var(--title-from), var(--title-to));
+    letter-spacing: 0.02em;
+    user-select: none;
+}
+
+.window-body {
+    padding: 8px 12px 12px;
+}
+
+/* 起動中（index.html）の表示 */
+main > .status {
+    margin: 12px;
+}
+
+/* グループボックス */
+section {
+    position: relative;
+    margin: 16px 0 8px;
+    padding: 12px 10px 8px;
+    border: 1px solid var(--shadow);
+    box-shadow: inset 1px 1px 0 var(--light), 1px 1px 0 var(--light);
 }
 
 h2 {
-    font-size: 1.2rem;
-    border-bottom: 1px solid #555;
+    position: absolute;
+    top: -0.75em;
+    left: 8px;
+    margin: 0;
+    padding: 0 4px;
+    font-size: 13px;
+    font-weight: normal;
+    background: var(--face);
+}
+
+h3 {
+    margin: 10px 0 4px;
+    font-size: 13px;
+    font-weight: normal;
+    color: var(--text-dim);
 }
 
 .status {
-    color: #ffd27f;
+    margin: 8px 0;
+    padding: 4px 8px;
+    color: var(--accent);
+    background: var(--well);
+    border: 1px solid;
+    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
 }
 
 .note {
-    color: #aaa;
-    font-size: 0.9rem;
+    margin: 4px 0;
+    color: var(--text-dim);
+    font-size: 12px;
 }
 
+/* 一覧（へこんだリストボックス） */
 .items {
     list-style: none;
-    padding: 0;
+    margin: 6px 0;
+    padding: 2px;
+    background: var(--well);
+    border: 2px solid;
+    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+}
+
+.items:empty {
+    display: none;
 }
 
 .items li {
     display: flex;
     gap: 8px;
     align-items: center;
-    margin: 4px 0;
+    padding: 1px 4px;
+}
+
+.items li:hover {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .items .size {
-    color: #aaa;
-    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-size: 12px;
 }
+
+.items .link {
+    margin-left: auto;
+    color: var(--focus);
+    font-size: 12px;
+}
+
+.items .asset {
+    padding: 0 6px;
+    color: var(--text);
+    background: #3d5a3d;
+    font-size: 12px;
+}
+
+/* 一覧の項目（先頭のボタン）は、行の文字として見せる */
+.items li > button:first-child {
+    text-align: left;
+    border-color: transparent;
+    background: transparent;
+    padding: 1px 4px;
+}
+
+.items li > button:first-child:hover,
+.items li > button:first-child:focus-visible {
+    background: var(--select);
+    color: #fff;
+}
+
+/* ── ボタン（立体） ── */
 
 button {
     font: inherit;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--face);
+    border: 2px solid;
+    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
+    padding: 2px 12px;
+    min-height: 24px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--face-hover);
+}
+
+button:active {
+    border-color: var(--shadow) var(--lighter) var(--lighter) var(--shadow);
+}
+
+button:focus-visible {
+    outline: 1px dotted var(--focus);
+    outline-offset: -5px;
+}
+
+button.delete,
+button.export {
+    font-size: 12px;
+    min-height: 20px;
+    padding: 0 8px;
+}
+
+input[type=url],
+input[type=text] {
+    font: inherit;
+    color: var(--text);
+    background: var(--well);
+    border: 2px solid;
+    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+    padding: 2px 4px;
+}
+
+input[type=file] {
+    font: inherit;
+    font-size: 12px;
+    color: var(--text-dim);
+}
+
+input[type=file]::file-selector-button {
+    font: inherit;
+    color: var(--text);
+    background: var(--face);
+    border: 2px solid;
+    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
+    padding: 1px 10px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.add-catalog {
+    display: flex;
+    gap: 8px;
+}
+
+.add-catalog input {
+    flex: 1;
+}
+
+/* ── プレイ中 ── */
+
+.play {
+    width: 720px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: var(--desk);
+}
+
+.play:fullscreen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.play:fullscreen .screen-wrap,
+.play:fullscreen .screen-bar {
+    width: min(100vw, calc((100vh - 28px) * 720 / 620));
+}
+
+/* 全画面で仮想キーを出すときは、その分だけ画面を小さくする */
+.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-wrap,
+.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-bar {
+    width: min(100vw, calc((100vh - 140px) * 720 / 620));
 }
 
 .screen-wrap {
@@ -64,20 +270,259 @@ button {
     aspect-ratio: 720 / 620;
     outline: none;
     cursor: default;
+    /* タッチでのスクロール・拡大・長押しのメニューを止め、タップ・長押しをゲームの操作にする（srcweb.js） */
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 長押しで右クリックになるまでの輪 */
+.touch-ring {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px;
+    border-radius: 50%;
+    border: 2px solid rgba(220, 220, 214, 0.55);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.4);
+    z-index: 40;
+}
+
+.touch-ring.active {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform var(--hold, 500ms) linear, opacity 120ms;
+}
+
+/* 画面の右下の控えめなメニュー。背景との明るさの差を小さくし、押してもゲームはすぐには終わらない */
+.screen-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 720px;
+    max-width: 100%;
+    min-height: 28px;
+    margin: 0 auto;
+}
+
+/* 仮想キー（タッチの端末向け）。システムメニューの下の行に、十字キーと操作キーを並べる */
+.virtual-keys {
+    --k: min(46px, 11.5vw);
+    order: 2;
+    flex-basis: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, var(--k)) 1fr repeat(3, var(--k)) calc(var(--k) * 1.4);
+    grid-template-rows: var(--k) var(--k);
+    grid-template-areas:
+        ".    up   .     . esc  space ctrl  enter"
+        "left down right . z    x     shift enter";
+    gap: 4px;
+    padding: 4px 4px 8px;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.virtual-keys[hidden] {
+    display: none;
+}
+
+.vkey {
+    min-height: 0;
+    padding: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    background: #2f3236;
+    border-color: #464a50 #1d1f22 #1d1f22 #464a50;
+    -webkit-touch-callout: none;
+}
+
+.vkey.down {
+    color: var(--text);
+    background: #26292d;
+    border-color: #1d1f22 #464a50 #464a50 #1d1f22;
+}
+
+.vkey-up { grid-area: up; }
+.vkey-left { grid-area: left; }
+.vkey-down { grid-area: down; }
+.vkey-right { grid-area: right; }
+.vkey-esc { grid-area: esc; }
+.vkey-space { grid-area: space; font-size: 11px; }
+.vkey-ctrl { grid-area: ctrl; font-size: 11px; }
+.vkey-shift { grid-area: shift; font-size: 11px; }
+.vkey-z { grid-area: z; }
+.vkey-x { grid-area: x; }
+.vkey-enter { grid-area: enter; }
+
+.system-menu {
+    position: relative;
+}
+
+.system-button {
+    width: 28px;
+    height: 22px;
+    min-height: 0;
+    margin: 3px 2px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+    color: #5f6369;
+    background: transparent;
+    border: 1px solid #303338;
+}
+
+.system-button:hover,
+.system-button:focus-visible,
+.system-button[aria-expanded=true] {
+    color: var(--text-dim);
+    background: #2c2f33;
+    border-color: #3f4349;
+}
+
+.menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+}
+
+/* VB5 のポップアップメニュー */
+.popup-menu {
+    position: absolute;
+    right: 2px;
+    bottom: 26px;
+    z-index: 20;
+    min-width: 200px;
+    padding: 2px;
+    background: var(--face);
+    border: 2px solid;
+    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.popup-menu button {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 4px 20px;
+    text-align: left;
+    border: 0;
+    background: transparent;
+}
+
+.popup-menu button:hover,
+.popup-menu button:focus-visible {
+    color: #fff;
+    background: var(--select);
+    outline: none;
+}
+
+.popup-menu hr {
+    margin: 3px 2px;
+    border: 0;
+    border-top: 1px solid var(--shadow);
+    border-bottom: 1px solid var(--light);
+}
+
+/* ── ダイアログ（終了・確認・文字入力・ファイル選択） ── */
+
+.ended,
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
 }
 
 .ended {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
 }
 
-.toolbar {
-    text-align: center;
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+}
+
+.dialog,
+.modal-box {
+    min-width: 300px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
+    overflow: auto;
+    background: var(--face);
+    border: 2px solid;
+    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dialog-body {
+    padding: 12px 16px;
+}
+
+.dialog-body p {
+    margin: 4px 0 8px;
+    line-height: 1.6;
+}
+
+.modal-box {
+    padding: 0 12px 12px;
+}
+
+.modal-title {
+    margin: 0 -12px 10px;
+    padding: 3px 8px;
+    font-weight: bold;
+    color: #e8ecf2;
+    background: linear-gradient(to right, var(--title-from), var(--title-to));
+}
+
+.modal-box input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dialog-buttons,
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.dialog-buttons button,
+.modal-buttons button {
+    min-width: 80px;
+}
+
+.modal-list {
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    background: var(--well);
+    border: 2px solid;
+    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+}
+
+.modal-list li {
+    margin: 0;
+}
+
+.modal-list li button {
+    width: 100%;
+    text-align: left;
+    border-color: transparent;
+    background: transparent;
+}
+
+.modal-list li button:hover {
+    color: #fff;
+    background: var(--select);
 }
 
 #blazor-error-ui {
@@ -87,54 +532,41 @@ button {
     left: 0;
     right: 0;
     padding: 8px 16px;
-    background: #6b1c1c;
+    color: var(--text);
+    background: #5a2626;
+    border-top: 2px solid #6e3434;
 }
 
-.modal {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
+/* タッチ操作の端末では押しやすい大きさにする */
+@media (pointer: coarse) {
+    .screen-bar {
+        min-height: 40px;
+    }
+
+    .system-button {
+        width: 44px;
+        height: 34px;
+        font-size: 18px;
+    }
+
+    .popup-menu {
+        bottom: 38px;
+    }
+
+    .popup-menu button {
+        padding: 10px 20px;
+    }
+
+    .dialog-buttons button,
+    .modal-buttons button {
+        min-height: 36px;
+    }
 }
 
-.modal-box {
-    min-width: 320px;
-    max-width: calc(100% - 32px);
-    max-height: calc(100% - 32px);
-    overflow: auto;
-    padding: 0 16px 16px;
-    background: #2c2c2c;
-    border: 1px solid #666;
-}
-
-.modal-title {
-    margin: 0 -16px 8px;
-    padding: 4px 8px;
-    background: #000080;
-    font-weight: bold;
-}
-
-.modal-box input[type=text] {
-    width: 100%;
-    box-sizing: border-box;
-    font: inherit;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 12px;
-}
-
-.modal-list {
-    list-style: none;
-    padding: 0;
-}
-
-.modal-list li {
-    margin: 4px 0;
+@media (max-width: 760px) {
+    main {
+        margin: 0;
+        border-left: 0;
+        border-right: 0;
+    }
 }

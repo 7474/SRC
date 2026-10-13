@@ -83,8 +83,16 @@ async function expectAdvancesWithEnter(page) {
   }, { intervals: [500, 1000, 2000] }).not.toBe(before);
 }
 
+/** プレイ中に画面の右下のシステムメニューからシナリオ選択へ戻る（確認に「はい」と答える） */
+async function backToMenu(page) {
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
+  await page.getByRole('alertdialog').getByRole('button', { name: 'はい' }).click();
+}
+
 test('登録済シナリオを選んでプレイする', async ({ page }, testInfo) => {
   await open(page);
+  await testInfo.attach('menu', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
   await expect.poll(() => debugState(page)).toContain('test.eve');
@@ -115,7 +123,7 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await attachScreen(page, testInfo, 'archive');
 
   // 削除する
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   await expect(page.locator('#archives li')).toHaveCount(0);
@@ -141,7 +149,7 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
   const saveName = (await saveNames()).find(x => x.endsWith('.srcs'));
 
   // 読み込み直して、セーブデータから再開する（インターミッションに戻る）
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.getByRole('button', { name: 'intermission-save' }).click();
   await page.locator('#saves li', { hasText: saveName }).getByRole('button', { name: saveName }).click();
@@ -192,7 +200,264 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
   await expect(page.locator('#screen')).toBeVisible();
   await page.locator('#screen').click({ position: { x: 600, y: 300 } });
   await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+});
+
+// ── 外部ホスティング（docs/gui/web-hosting.md） ──
+
+/**
+ * page.route は Service Worker を通る要求を捕まえられないため、Service Worker（coi-serviceworker）を止め、
+ * クロスオリジン分離のヘッダは応答に付ける。個別の route はこの後に登録する（後のものが優先される）
+ */
+async function isolateWithHeaders(page) {
+  await page.route('**/*', async route => {
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      headers: {
+        ...response.headers(),
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-embedder-policy': 'require-corp',
+      },
+    });
+  });
+}
+
+test('URL の play で登録済シナリオを直接始める', async ({ page }) => {
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?play=battle-basic');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+  await expectAdvancesWithEnter(page);
+});
+
+test.describe('サイトの設定とカタログ', () => {
+test.use({ serviceWorkers: 'block' });
+
+test('サイトの設定とカタログで配信し、シナリオが求める素材を重ねる', async ({ page }) => {
+  // シナリオには効果音を入れず、素材（汎用データ）の zip に入れる
+  const scenario = makeZip(['test.eve', 'test.map', 'Midi/bgm.mid']
+    .map(name => ({ name: 'シナリオ/' + name, data: fs.readFileSync(path.join(corpus, 'sound', name)) })));
+  const asset = makeZip([{ name: '汎用データ/Sound/se.wav', data: fs.readFileSync(path.join(corpus, 'sound', 'Sound/se.wav')) }]);
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({
+    title: 'テストの配信',
+    catalogs: ['dist/catalog.json'],
+    allowUserArchives: false,
+    allowUserCatalogs: false,
+  })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    name: 'テストの配信元',
+    entries: [
+      { id: 'sound-with-asset', title: '素材を使うシナリオ', archive: 'scenario.zip', root: 'シナリオ', eve: 'test.eve', requires: ['common'] },
+      { id: 'common', kind: 'asset', title: '汎用データ', archive: 'assets/common.zip', root: '汎用データ' },
+    ],
+  })));
+  await page.route('**/dist/scenario.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: scenario }));
+  await page.route('**/dist/assets/common.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: asset }));
+
+  await open(page);
+  await expect(page).toHaveTitle('テストの配信');
+  await expect(page.locator('h2').first()).toHaveText('テストの配信元');
+  // 素材は一覧に出さない。利用者の追加は許していない
+  await expect(page.locator('#catalog button')).toHaveText(['素材を使うシナリオ']);
+  await expect(page.locator('#add-archive')).toHaveCount(0);
+  await expect(page.locator('#catalog-url')).toHaveCount(0);
+
+  await page.getByRole('button', { name: '素材を使うシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#screen').click({ position: { x: 600, y: 300 } });
+  // 素材の効果音が鳴る
+  await expect.poll(async () => (await soundCounts(page)).encoded).toBeGreaterThan(0);
+});
+
+test('URL の archive で任意の zip を直接始める', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  await isolateWithHeaders(page);
+  await page.route('**/external/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?archive=' + encodeURIComponent('external/victory.zip') + '&eve=test.eve');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('url-');
+  await expectAdvancesWithEnter(page);
+});
+});
+
+test('システムメニューから戻るときは確認し、「いいえ」ならプレイを続ける', async ({ page }, testInfo) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // プレイ中に目立つ「戻る」ボタンは無い
+  await expect(page.getByRole('button', { name: 'シナリオ選択へ戻る' })).toHaveCount(0);
+  await page.locator('#system-menu-button').click();
+  await testInfo.attach('system-menu', { body: await page.screenshot(), contentType: 'image/png' });
+  await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
+  await expect(page.getByRole('alertdialog')).toBeVisible();
+  await testInfo.attach('confirm', { body: await page.screenshot(), contentType: 'image/png' });
+  await page.getByRole('alertdialog').getByRole('button', { name: 'いいえ' }).click();
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect(page.locator('#screen')).toBeVisible();
+  await expectAdvancesWithEnter(page);
+  // メニューの外を押すと閉じる
+  await page.locator('#system-menu-button').click();
+  await expect(page.getByRole('menu')).toBeVisible();
+  await page.mouse.click(10, 10);
+  await expect(page.getByRole('menu')).toHaveCount(0);
+});
+
+test.describe('タッチ操作', () => {
+  test.use({ hasTouch: true });
+
+  test('タップで左クリック、長押しで右クリックになる', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect.poll(() => frames(page)).toBeGreaterThan(0);
+    const box = await page.locator('#screen').boundingBox();
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height * 0.9;
+    const touchClicks = () => page.evaluate(() => globalThis.srcwebTouchClicks ?? []);
+
+    // タップでメッセージが進む（左クリック）
+    const before = await debugState(page);
+    await expect.poll(async () => {
+      await page.touchscreen.tap(x, y);
+      return debugState(page);
+    }, { intervals: [500, 1000, 2000] }).not.toBe(before);
+    expect((await touchClicks()).some(c => c.button === 0)).toBe(true);
+    expect((await touchClicks()).some(c => c.button === 2)).toBe(false);
+
+    // 長押しは右クリック
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(800);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await expect.poll(async () => (await touchClicks()).filter(c => c.button === 2).length).toBe(1);
+
+    // ページはスクロールしない
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  });
+
+  test('シナリオの KeyState でタップ（左ボタン）と長押し（右ボタン）を検出できる', async ({ page }) => {
+    // KeyState をループで調べるシナリオ（ロボダンのクリック領域などと同じ作り）
+    const eve = [
+      'プロローグ:',
+      'ChangeMap test.map',
+      'Global 左',
+      'Global 右',
+      'Set 左 0',
+      'Set 右 0',
+      'Do While (左 = 0 Or 右 = 0)',
+      'If KeyState(1) = 1 Then',
+      'Set 左 1',
+      'Endif',
+      'If KeyState(2) = 1 Then',
+      'Set 右 1',
+      'Endif',
+      'Wait 1',
+      'Loop',
+      // 結果は選択肢の見出しに出す（ループ中のクリックはメッセージを送ってしまうため）
+      'Ask "L=$(左) R=$(右)"',
+      'OK',
+      'End',
+      'Quit',
+      '',
+    ].join('\r\n');
+    const name = 'KeyState のテスト.zip';
+    await open(page);
+    await page.setInputFiles('#add-archive', {
+      name,
+      mimeType: 'application/zip',
+      buffer: makeZip([
+        { name: 'keystate/test.eve', data: Buffer.from(eve, 'utf8') },
+        { name: 'keystate/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+      ]),
+    });
+    await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect.poll(() => frames(page)).toBeGreaterThan(0);
+    const box = await page.locator('#screen').boundingBox();
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    // KeyState を調べるループに入ってから操作する（ChangeMap の途中で押しても検出されない）
+    await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toMatch(/test\.eve:(7|8|9|1[0-5]) /);
+
+    await page.touchscreen.tap(x, y);
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(900);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await expect.poll(() => debugState(page)).toContain('L=1 R=1');
+
+    await backToMenu(page);
+    await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+    await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+  });
+});
+
+test('仮想キーをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
+  const eve = [
+    'プロローグ:',
+    'ChangeMap test.map',
+    'Global ゼット',
+    'Global 上',
+    'Set ゼット 0',
+    'Set 上 0',
+    'Do While (ゼット = 0 Or 上 = 0)',
+    'If KeyState(90) = 1 Then',
+    'Set ゼット 1',
+    'Endif',
+    'If KeyState(38) = 1 Then',
+    'Set 上 1',
+    'Endif',
+    'Wait 1',
+    'Loop',
+    'Ask "Z=$(ゼット) U=$(上)"',
+    'OK',
+    'End',
+    'Quit',
+    '',
+  ].join('\r\n');
+  const name = '仮想キーのテスト.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: makeZip([
+      { name: 'vkeys/test.eve', data: Buffer.from(eve, 'utf8') },
+      { name: 'vkeys/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+    ]),
+  });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+
+  // マウスの端末では既定で出さない。システムメニューで出す
+  await expect(page.locator('#virtual-keys')).toBeHidden();
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: '仮想キーの表示の切り替え' }).click();
+  await expect(page.locator('#virtual-keys')).toBeVisible();
+  await expect(page.locator('#virtual-keys .vkey')).toHaveCount(11);
+
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toMatch(/test\.eve:(7|8|9|1[0-5]) /);
+  for (const selector of ['.vkey-z', '.vkey-up']) {
+    const box = await page.locator(selector).boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(400);
+    await page.mouse.up();
+  }
+  await expect.poll(() => debugState(page)).toContain('Z=1 U=1');
+
+  // 表示の設定は次回も残る
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#virtual-keys')).toBeVisible();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
