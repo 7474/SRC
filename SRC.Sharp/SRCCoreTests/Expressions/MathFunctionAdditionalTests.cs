@@ -79,11 +79,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void Round_NegativeHalf_RoundsAwayFromZero()
+        public void Round_NegativeHalf_RoundsUp()
         {
             var exp = Create();
-            // -2.5 → -3
-            Assert.AreEqual(-3d, exp.GetValueAsDouble("Round(-2.5,0)"));
+            // VB版は Int(x) に端数が0.5以上なら1を加えるため -2.5 → -2
+            Assert.AreEqual(-2d, exp.GetValueAsDouble("Round(-2.5,0)"));
         }
 
         [TestMethod]

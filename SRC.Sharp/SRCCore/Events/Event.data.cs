@@ -1020,72 +1020,7 @@ namespace SRCCore.Events
             // ローカルデータの読みこみ
             if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\alias.txt"))
-                {
-                    SRC.ALDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\alias.txt"));
-                }
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\sp.txt"))
-                {
-                    SRC.SPDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\sp.txt"));
-                }
-                else if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\mind.txt"))
-                {
-                    SRC.SPDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\mind.txt"));
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\pilot.txt"))
-                {
-                    SRC.PDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\pilot.txt"));
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\non_pilot.txt"))
-                {
-                    SRC.NPDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\non_pilot.txt"));
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\robot.txt"))
-                {
-                    SRC.UDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\robot.txt"));
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\unit.txt"))
-                {
-                    SRC.UDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\unit.txt"));
-                }
-
-                GUI.DisplayLoadingProgress();
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\pilot_message.txt"))
-                {
-                    SRC.MDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\pilot_message.txt"), false);
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\pilot_dialog.txt"))
-                {
-                    SRC.DDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\pilot_dialog.txt"));
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\effect.txt"))
-                {
-                    SRC.EDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\effect.txt"), true);
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\animation.txt"))
-                {
-                    SRC.ADList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\animation.txt"), false);
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\ext_animation.txt"))
-                {
-                    SRC.EADList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\ext_animation.txt"), false);
-                }
-
-                if (SRC.FileSystem.FileExists(SRC.ScenarioPath, @"Data\item.txt"))
-                {
-                    SRC.IDList.Load(SRC.FileSystem.PathCombine(SRC.ScenarioPath, @"Data\item.txt"));
-                }
-
-                GUI.DisplayLoadingProgress();
-                SRC.IsLocalDataLoaded = true;
+                SRC.LoadLocalData();
             }
 
             // デフォルトの戦闘アニメデータを設定

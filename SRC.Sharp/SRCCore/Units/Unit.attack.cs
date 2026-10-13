@@ -226,22 +226,22 @@ namespace SRCCore.Units
                 {
                     if (w.IsWeaponClassifiedAs("痛"))
                     {
-                        dmg = (int)((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                        dmg = VBMath.CLng((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
                     }
                     else
                     {
-                        dmg = (int)(1.2d * dmg);
+                        dmg = VBMath.CLng(1.2d * dmg);
                     }
                 }
                 else
                 {
                     if (w.IsWeaponClassifiedAs("痛"))
                     {
-                        dmg = (int)((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                        dmg = VBMath.CLng((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
                     }
                     else
                     {
-                        dmg = (int)(1.5d * dmg);
+                        dmg = VBMath.CLng(1.5d * dmg);
                     }
                 }
             }
@@ -910,22 +910,22 @@ namespace SRCCore.Units
                         {
                             if (w.IsWeaponClassifiedAs("痛"))
                             {
-                                dmg = (int)((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                                dmg = VBMath.CLng((1d + 0.1d * (w.WeaponLevel("痛") + 2d)) * dmg);
                             }
                             else
                             {
-                                dmg = (int)(1.2d * dmg);
+                                dmg = VBMath.CLng(1.2d * dmg);
                             }
                         }
                         else
                         {
                             if (w.IsWeaponClassifiedAs("痛"))
                             {
-                                dmg = (int)((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
+                                dmg = VBMath.CLng((1d + 0.25d * (w.WeaponLevel("痛") + 2d)) * dmg);
                             }
                             else
                             {
-                                dmg = (int)(1.5d * dmg);
+                                dmg = VBMath.CLng(1.5d * dmg);
                             }
                         }
                     }
@@ -951,7 +951,7 @@ namespace SRCCore.Units
             }
 
             // 受けの処理
-            if (CheckParryFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg))
+            if (CheckParryFeature(w, ref t, tx, ty, attack_mode, def_mode, dmg, ref msg, be_quiet || use_protect_msg))
             {
                 dmg = 0;
                 goto EndAttack;
@@ -977,11 +977,10 @@ namespace SRCCore.Units
             is_hit = true;
 
             // シールド防御判定
-            // XXX dmg 書き換えてそう
-            CheckShieldFeature(w, t, dmg, be_quiet, use_shield, use_shield_msg);
+            CheckShieldFeature(w, t, dmg, be_quiet, ref use_shield, ref use_shield_msg);
 
             // 防御能力の処理
-            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, dmg, msg, be_quiet || use_protect_msg, is_penetrated))
+            if (CheckDefenseFeature(w, t, tx, ty, attack_mode, def_mode, ref dmg, ref msg, be_quiet || use_protect_msg, ref is_penetrated))
             {
                 if (!be_quiet)
                 {
@@ -1099,11 +1098,11 @@ namespace SRCCore.Units
                     t.EN = t.EN - 5;
                     if (w.IsWeaponClassifiedAs("破"))
                     {
-                        spower = (int)(50d * t.FeatureLevel("エネルギーシールド"));
+                        spower = VBMath.CLng(50d * t.FeatureLevel("エネルギーシールド"));
                     }
                     else
                     {
-                        spower = (int)(100d * t.FeatureLevel("エネルギーシールド"));
+                        spower = VBMath.CLng(100d * t.FeatureLevel("エネルギーシールド"));
                     }
 
                     if (dmg <= spower)
@@ -1167,7 +1166,7 @@ namespace SRCCore.Units
             }
 
             // 特殊効果
-            CauseEffect(w, t, out msg, out critical_type, def_mode, dmg >= t.HP);
+            CauseEffect(w, t, ref msg, ref critical_type, def_mode, dmg >= t.HP);
             if (Strings.InStr(critical_type, "即死") > 0 && !use_support_guard && !use_protect_msg)
             {
                 if (t.IsHero())
@@ -1192,13 +1191,13 @@ namespace SRCCore.Units
             if (w.IsWeaponClassifiedAs("減") && !t.SpecialEffectImmune("減"))
             {
                 msg = msg + wnickname + "が[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を低下させた。;";
-                t.EN = GeneralLib.MaxLng((int)(t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
+                t.EN = GeneralLib.MaxLng(VBMath.CLng(t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
             }
             else if (w.IsWeaponClassifiedAs("奪") && !t.SpecialEffectImmune("奪"))
             {
                 msg = msg + Nickname + "は[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を吸収した。;";
                 prev_en = t.EN;
-                t.EN = GeneralLib.MaxLng((int)(t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
+                t.EN = GeneralLib.MaxLng(VBMath.CLng(t.EN - t.MaxEN * (dmg / (double)t.MaxHP)), 0);
                 EN = EN + (prev_en - t.EN) / 2;
             }
 
@@ -1298,7 +1297,7 @@ namespace SRCCore.Units
                 // 自動反撃発動
                 if (t.HP > 0)
                 {
-                    CheckAutoAttack(w, t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
+                    CheckAutoAttack(w, ref t, attack_mode, def_mode, dmg, be_quiet || use_protect_msg);
                     if (Status != "出撃")
                     {
                         goto EndAttack;
@@ -2232,11 +2231,11 @@ namespace SRCCore.Units
                     // 追加攻撃
                     if (ReferenceEquals(su, t))
                     {
-                        CheckAdditionalAttack(w, t, be_quiet, attack_mode, "援護防御", dmg);
+                        CheckAdditionalAttack(w, ref t, be_quiet, attack_mode, "援護防御", dmg);
                     }
                     else
                     {
-                        CheckAdditionalAttack(w, t, be_quiet, attack_mode, "", dmg);
+                        CheckAdditionalAttack(w, ref t, be_quiet, attack_mode, "", dmg);
                     }
                 }
 
@@ -2535,16 +2534,16 @@ namespace SRCCore.Units
                                 hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                                 en_ratio = 100 * cf.EN / (double)cf.MaxEN;
                                 cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * w.WeaponLevel("霊"));
-                                cf.HP = (int)(cf.MaxHP * hp_ratio / 100d);
-                                cf.EN = (int)(cf.MaxEN * en_ratio / 100d);
+                                cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                                cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                             }
                             else if (w.IsWeaponClassifiedAs("プ"))
                             {
                                 hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                                 en_ratio = 100 * cf.EN / (double)cf.MaxEN;
                                 cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * w.WeaponLevel("プ"));
-                                cf.HP = (int)(cf.MaxHP * hp_ratio / 100d);
-                                cf.EN = (int)(cf.MaxEN * en_ratio / 100d);
+                                cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                                cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                             }
 
                             if (w.IsWeaponClassifiedAs("失"))

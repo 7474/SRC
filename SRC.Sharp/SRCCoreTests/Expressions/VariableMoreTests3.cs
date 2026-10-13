@@ -120,7 +120,8 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             exp.SetVariableAsDouble("d", 7.9d);
-            Assert.AreEqual(7, exp.GetValueAsLong("d"));
+            // VB の Long への代入と同様に丸める
+            Assert.AreEqual(8, exp.GetValueAsLong("d"));
         }
 
         [TestMethod]

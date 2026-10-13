@@ -23,7 +23,7 @@ namespace SRCCore.Extensions.Tests
         [TestMethod]
         public void ToHexString_White_ReturnsWhiteHex()
         {
-            Assert.AreEqual("#ffffff", Color.White.ToHexString());
+            Assert.AreEqual("#FFFFFF", Color.White.ToHexString());
         }
 
         [TestMethod]
@@ -35,13 +35,13 @@ namespace SRCCore.Extensions.Tests
         [TestMethod]
         public void ToHexString_Red_ReturnsRedHex()
         {
-            Assert.AreEqual("#ff0000", Color.Red.ToHexString());
+            Assert.AreEqual("#FF0000", Color.Red.ToHexString());
         }
 
         [TestMethod]
         public void ToHexString_Blue_ReturnsBlueHex()
         {
-            Assert.AreEqual("#0000ff", Color.Blue.ToHexString());
+            Assert.AreEqual("#0000FF", Color.Blue.ToHexString());
         }
 
         [TestMethod]

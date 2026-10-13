@@ -45,19 +45,19 @@ namespace SRCCore.Expressions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void GetValueAsLong_PositiveDecimal_TruncatesTowardZero()
+        public void GetValueAsLong_PositiveDecimal_Rounds()
         {
             var exp = Create();
-            // 3.9 → 3 (切り捨て)
-            Assert.AreEqual(3, exp.GetValueAsLong("3.9"));
+            // 3.9 → 4 (VB の Long への代入と同様に丸める)
+            Assert.AreEqual(4, exp.GetValueAsLong("3.9"));
         }
 
         [TestMethod]
-        public void GetValueAsLong_NegativeDecimal_TruncatesTowardZero()
+        public void GetValueAsLong_NegativeDecimal_Rounds()
         {
             var exp = Create();
-            // -3.9 → -3 (ゼロ方向への切り捨て: (int)double)
-            Assert.AreEqual(-3, exp.GetValueAsLong("-3.9"));
+            // -3.9 → -4 (VB の Long への代入と同様に丸める)
+            Assert.AreEqual(-4, exp.GetValueAsLong("-3.9"));
         }
 
         [TestMethod]
@@ -110,7 +110,8 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             exp.SetVariableAsDouble("x", 7.8d);
-            Assert.AreEqual(7, exp.GetValueAsLong("x"));
+            // VB の Long への代入と同様に丸める
+            Assert.AreEqual(8, exp.GetValueAsLong("x"));
         }
 
         // ──────────────────────────────────────────────

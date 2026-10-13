@@ -110,9 +110,9 @@ namespace SRCCore.VB.Tests
         [TestMethod]
         public void ToInteger_FloatString_RoundsToInt()
         {
-            // C# の (int)double はゼロ方向への切り捨て
+            // VB の CInt/CLng と同様に丸める
             var result = Conversions.ToInteger("3.7");
-            Assert.AreEqual(3, result); // C#は切り捨て: (int)3.7 = 3
+            Assert.AreEqual(4, result);
         }
 
         [TestMethod]

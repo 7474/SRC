@@ -63,7 +63,8 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             exp.SetVariableAsDouble("d", 3.9d);
-            Assert.AreEqual(3, exp.GetValueAsLong("d"));
+            // VB の Long への代入と同様に丸める
+            Assert.AreEqual(4, exp.GetValueAsLong("d"));
         }
 
         [TestMethod]
@@ -79,7 +80,8 @@ namespace SRCCore.Expressions.Tests
         {
             var exp = Create();
             exp.SetVariableAsDouble("neg", -5.8d);
-            Assert.AreEqual(-5, exp.GetValueAsLong("neg"));
+            // VB の Long への代入と同様に丸める
+            Assert.AreEqual(-6, exp.GetValueAsLong("neg"));
         }
 
         // ──────────────────────────────────────────────

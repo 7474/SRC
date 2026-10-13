@@ -24,7 +24,8 @@ namespace SRCCore.CmdDatas.Commands
             var f = SRC.FileHandleManager.Get(GetArgAsLong(2));
             for (var i = 3; i <= ArgNum; i++)
             {
-                f.Writer.WriteLine(GetArgAsString(i));
+                // VB の Write # 文と同様に文字列を引用符で囲んで出力する
+                f.Writer.WriteLine("\"" + GetArgAsString(i) + "\"");
             }
 
             return EventData.NextID;

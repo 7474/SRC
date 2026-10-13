@@ -233,12 +233,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void Replace_EmptyTarget_ThrowsArgumentException()
+        public void Replace_EmptyTarget_ReturnsOriginal()
         {
             var exp = Create();
-            // C# の String.Replace は空文字列を oldValue に渡すと ArgumentException をスローする
-            Assert.Throws<System.ArgumentException>(() =>
-                exp.GetValueAsString("Replace(\"hello\",\"\",\"X\")"));
+            // VB版では無限ループとなるため、置換せずにそのまま返す
+            Assert.AreEqual("hello", exp.GetValueAsString("Replace(\"hello\",\"\",\"X\")"));
         }
 
         // ──────────────────────────────────────────────

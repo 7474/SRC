@@ -59,7 +59,11 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual(1, GeneralLib.StrToLng("1"));
             Assert.AreEqual(1, GeneralLib.StrToLng("1.0"));
             Assert.AreEqual(1, GeneralLib.StrToLng("1.1"));
-            Assert.AreEqual(1, GeneralLib.StrToLng("1.9"));
+            // VB の CLng と同様に丸める
+            Assert.AreEqual(2, GeneralLib.StrToLng("1.9"));
+            Assert.AreEqual(2, GeneralLib.StrToLng("2.5"));
+            // オーバーフローする場合は0
+            Assert.AreEqual(0, GeneralLib.StrToLng("1e20"));
             //Assert.AreEqual(1, GeneralLib.StrToLng("0x1"));
         }
 

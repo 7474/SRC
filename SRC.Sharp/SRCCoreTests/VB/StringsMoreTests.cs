@@ -306,9 +306,11 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void Trim_WithTabAndSpace_RemovesBoth()
+        public void Trim_WithTabAndSpace_RemovesOnlySpaces()
         {
-            Assert.AreEqual("hello", Strings.Trim("\t hello \t"));
+            // VB の Trim$ は半角スペースのみを取り除く
+            Assert.AreEqual("\t hello", Strings.Trim(" \t hello "));
+            Assert.AreEqual("　hello　", Strings.Trim("　hello　"));
         }
 
         // ──────────────────────────────────────────────

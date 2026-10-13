@@ -233,18 +233,22 @@ namespace SRCCore.Models
                 }
             }
 
-            var fds = ApplyAliasIfDefined(ftype, fdata, flevel, nskill, ncondition);
+            // エリアスが定義されていればエリアスの定義に従って展開する
+            var fds = SRC.ALDList?.ExpandFeatureAlias(ftype, fdata, flevel, nskill, ncondition);
             // エイリアスがなければ素のままを登録する
-            if (fds.Count == 0)
+            if (fds == null)
             {
-                fds.Add(new FeatureData
+                fds = new List<FeatureData>
                 {
-                    Name = ftype,
-                    Level = flevel,
-                    StrData = fdata,
-                    NecessarySkill = nskill,
-                    NecessaryCondition = ncondition,
-                });
+                    new FeatureData
+                    {
+                        Name = ftype,
+                        Level = flevel,
+                        StrData = fdata,
+                        NecessarySkill = nskill,
+                        NecessaryCondition = ncondition,
+                    }
+                };
             }
 
             // 特殊能力を登録
@@ -259,122 +263,6 @@ namespace SRCCore.Models
                     colFeature.Add(fd, fd.Name);
                 }
             }
-        }
-
-        private IList<FeatureData> ApplyAliasIfDefined(string ftype, string fdata, double flevel, string nskill, string ncondition)
-        {
-            var results = new List<FeatureData>();
-
-            //// エリアスが定義されている？
-            //if (SRC.ALDList.IsDefined(ref ftype))
-            //{
-            //    if (GeneralLib.LIndex(ref fdata, 1) != "解説")
-            //    {
-            //        {
-            //            var withBlock = SRC.ALDList.Item(ref ftype);
-            //            var loopTo = withBlock.Count;
-            //            for (int i = 1; i <= loopTo; i++)
-            //            {
-            //                var fd = new FeatureData();
-
-            //                // エリアスの定義に従って特殊能力定義を置き換える
-            //                fd.Name = withBlock.get_AliasType(i);
-            //                if ((withBlock.get_AliasType(i) ?? "") != (ftype ?? ""))
-            //                {
-            //                    if (withBlock.get_AliasLevelIsPlusMod(i))
-            //                    {
-            //                        if (flevel == Constants.DEFAULT_LEVEL)
-            //                        {
-            //                            flevel = 1d;
-            //                        }
-
-            //                        if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
-            //                        {
-            //                            fd.Level = flevel + 1d;
-            //                        }
-            //                        else
-            //                        {
-            //                            fd.Level = flevel + withBlock.get_AliasLevel(i);
-            //                        }
-            //                    }
-            //                    else if (withBlock.get_AliasLevelIsMultMod(i))
-            //                    {
-            //                        if (flevel == Constants.DEFAULT_LEVEL)
-            //                        {
-            //                            flevel = 1d;
-            //                        }
-
-            //                        if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
-            //                        {
-            //                            fd.Level = flevel;
-            //                        }
-            //                        else
-            //                        {
-            //                            fd.Level = flevel * withBlock.get_AliasLevel(i);
-            //                        }
-            //                    }
-            //                    else if (flevel != Constants.DEFAULT_LEVEL)
-            //                    {
-            //                        fd.Level = flevel;
-            //                    }
-            //                    else
-            //                    {
-            //                        fd.Level = withBlock.get_AliasLevel(i);
-            //                    }
-
-            //                    if (!string.IsNullOrEmpty(fdata) && Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
-            //                    {
-            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
-
-            //                        fd.StrData = fdata + " " + localListTail();
-            //                    }
-            //                    else
-            //                    {
-            //                        fd.StrData = withBlock.get_AliasData(i);
-            //                    }
-
-            //                    if (withBlock.get_AliasLevelIsMultMod(i))
-            //                    {
-            //                        string buf = fd.StrData;
-            //                        GeneralLib.ReplaceString(ref buf, ref "Lv1", ref "Lv" + SrcFormatter.Format(flevel));
-            //                        fd.StrData = buf;
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    // 特殊能力解説の定義
-            //                    if (!string.IsNullOrEmpty(fdata) && GeneralLib.LIndex(ref fdata, 1) != "非表示")
-            //                    {
-            //                        fd.Name = GeneralLib.LIndex(ref fdata, 1);
-            //                    }
-
-            //                    fd.StrData = withBlock.get_AliasData(i);
-            //                }
-
-            //                if (!string.IsNullOrEmpty(nskill))
-            //                {
-            //                    fd.NecessarySkill = nskill;
-            //                }
-            //                else
-            //                {
-            //                    fd.NecessarySkill = withBlock.get_AliasNecessarySkill(i);
-            //                }
-
-            //                if (!string.IsNullOrEmpty(ncondition))
-            //                {
-            //                    fd.NecessaryCondition = ncondition;
-            //                }
-            //                else
-            //                {
-            //                    fd.NecessaryCondition = withBlock.get_AliasNecessaryCondition(i);
-            //                }
-
-            //                results.Add(fd);
-            //            }
-            //        }
-            //    }
-            //}
-            return results;
         }
 
         // 特殊能力の総数

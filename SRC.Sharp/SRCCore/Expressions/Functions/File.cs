@@ -118,14 +118,8 @@ namespace SRCCore.Expressions.Functions
                 }
             }
 
-            if (etype == ValueType.StringType)
-            {
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            // VB版では常に文字列として返す
+            return ValueType.StringType;
         }
     }
 
@@ -160,14 +154,8 @@ namespace SRCCore.Expressions.Functions
                 }
             }
 
-            if (etype == ValueType.StringType)
-            {
-                return ValueType.StringType;
-            }
-            else
-            {
-                return ValueType.NumericType;
-            }
+            // VB版では常に文字列として返す
+            return ValueType.StringType;
         }
     }
 }

@@ -52,7 +52,8 @@ namespace SRCCore.Expressions
                 EvalExpr(expr, ValueType.NumericType, out _, out num);
             }
 
-            return (int)num;
+            // VB の Long への代入と同様に偶数丸めで整数化する
+            return VB.Conversions.ToInteger(num);
         }
     }
 }
