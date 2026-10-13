@@ -103,6 +103,29 @@ jobs:
           SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
         if-no-files-found: ignore
 
+  # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
+  docker-srcdatalinter:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Build image
+      run: docker build -f SRC.Sharp/SRCDataLinter/Dockerfile -t srcdatalinter:test SRC.Sharp
+
+    - name: Lint (従来の使い方)
+      run: docker run --rm -v "$PWD/SRC.Sharp/E2E/sound:/app/data" srcdatalinter:test data
+
+    - name: srcsharp lint / play / balance
+      run: |
+        cp -r SRC.Sharp/E2E/battle-basic /tmp/scenario
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test lint /scenario/Data --format sarif --output /scenario/lint.sarif || true
+        test -s /tmp/scenario/lint.sarif
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test play /scenario/test.eve --script /scenario/play.txt --out /scenario/snapshots
+        ls /tmp/scenario/snapshots
+        docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test balance /scenario/Data | tee /tmp/balance.md
+        grep -q "テスト機" /tmp/balance.md
+
   build-and-test-srcs:
     runs-on: windows-latest    
 

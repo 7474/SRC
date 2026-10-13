@@ -43,7 +43,7 @@ SRC# のバージョンの付け方と、リリースの手順。
 |---|---|---|
 | NuGet | SRCCore・SRCDataLinter・SRCSharpTools（.NET tool の `srcsharp`） | ライブラリ（0.x） |
 | GitHub Releases | SRC#Form（Windows 向け zip） | アプリ（3.x） |
-| Docker Hub | `koudenpa/srcdatalinter` | イメージのタグはリリースのタグ名（`v3.x.x`）と `latest` |
+| Docker Hub | `koudenpa/srcdatalinter`（SRCDataLinter と srcsharp） | イメージのタグはリリースのタグ名（`v3.x.x`）と `latest` |
 
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
 
