@@ -93,7 +93,4 @@
   <data name="ModalCancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="ModalChoice" xml:space="preserve">
-    <value>選択</value>
-  </data>
 </root>

@@ -93,7 +93,4 @@
   <data name="ModalCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ModalChoice" xml:space="preserve">
-    <value>Select</value>
-  </data>
 </root>

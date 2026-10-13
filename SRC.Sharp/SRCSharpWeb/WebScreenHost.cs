@@ -150,7 +150,7 @@ namespace SRCSharpWeb
 
         public Task<string> InputTextAsync(string title, string message, string defaultValue)
         {
-            return OnUi(() => WebInterop.ShowInput(title ?? "", message ?? "", defaultValue ?? ""));
+            return OnUi(() => WebInterop.ShowInput(string.IsNullOrEmpty(title) ? L["ModalInput"] : title, message ?? "", defaultValue ?? "", L["ModalOk"], L["ModalCancel"]));
         }
 
         private string Directory(FileDialogRequest request)
@@ -174,7 +174,7 @@ namespace SRCSharpWeb
             {
                 return Task.FromResult<string>(null);
             }
-            return OnUi(() => WebInterop.ShowChoice(request.Title ?? L["OpenFile"], names))
+            return OnUi(() => WebInterop.ShowChoice(string.IsNullOrEmpty(request.Title) ? L["OpenFile"] : request.Title, names, L["ModalCancel"]))
                 .ContinueWith(t => t.Result == null ? null : Path.Combine(dir, t.Result), TaskScheduler.Default);
         }
 
@@ -183,7 +183,7 @@ namespace SRCSharpWeb
             var dir = Directory(request);
             var ext = string.IsNullOrEmpty(request.FileExtension) ? "" : "." + request.FileExtension;
             var name = string.IsNullOrEmpty(request.InitialFile) ? "_save" + ext : Path.GetFileName(request.InitialFile);
-            return OnUi(() => WebInterop.ShowInput(request.Title ?? L["Save"], L["SaveFileName"], name))
+            return OnUi(() => WebInterop.ShowInput(string.IsNullOrEmpty(request.Title) ? L["Save"] : request.Title, L["SaveFileName"], name, L["ModalOk"], L["ModalCancel"]))
                 .ContinueWith(t =>
                 {
                     var file = Path.GetFileName(t.Result ?? "");
