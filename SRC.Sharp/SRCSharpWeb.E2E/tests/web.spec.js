@@ -196,3 +196,85 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
+
+// ── 外部ホスティング（docs/gui/web-hosting.md） ──
+
+/**
+ * page.route は Service Worker を通る要求を捕まえられないため、Service Worker（coi-serviceworker）を止め、
+ * クロスオリジン分離のヘッダは応答に付ける。個別の route はこの後に登録する（後のものが優先される）
+ */
+async function isolateWithHeaders(page) {
+  await page.route('**/*', async route => {
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      headers: {
+        ...response.headers(),
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-embedder-policy': 'require-corp',
+      },
+    });
+  });
+}
+
+test('URL の play で登録済シナリオを直接始める', async ({ page }) => {
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?play=battle-basic');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+  await expectAdvancesWithEnter(page);
+});
+
+test.describe('サイトの設定とカタログ', () => {
+test.use({ serviceWorkers: 'block' });
+
+test('サイトの設定とカタログで配信し、シナリオが求める素材を重ねる', async ({ page }) => {
+  // シナリオには効果音を入れず、素材（汎用データ）の zip に入れる
+  const scenario = makeZip(['test.eve', 'test.map', 'Midi/bgm.mid']
+    .map(name => ({ name: 'シナリオ/' + name, data: fs.readFileSync(path.join(corpus, 'sound', name)) })));
+  const asset = makeZip([{ name: '汎用データ/Sound/se.wav', data: fs.readFileSync(path.join(corpus, 'sound', 'Sound/se.wav')) }]);
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({
+    title: 'テストの配信',
+    catalogs: ['dist/catalog.json'],
+    allowUserArchives: false,
+    allowUserCatalogs: false,
+  })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    name: 'テストの配信元',
+    entries: [
+      { id: 'sound-with-asset', title: '素材を使うシナリオ', archive: 'scenario.zip', root: 'シナリオ', eve: 'test.eve', requires: ['common'] },
+      { id: 'common', kind: 'asset', title: '汎用データ', archive: 'assets/common.zip', root: '汎用データ' },
+    ],
+  })));
+  await page.route('**/dist/scenario.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: scenario }));
+  await page.route('**/dist/assets/common.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: asset }));
+
+  await open(page);
+  await expect(page).toHaveTitle('テストの配信');
+  await expect(page.locator('h2').first()).toHaveText('テストの配信元');
+  // 素材は一覧に出さない。利用者の追加は許していない
+  await expect(page.locator('#catalog button')).toHaveText(['素材を使うシナリオ']);
+  await expect(page.locator('#add-archive')).toHaveCount(0);
+  await expect(page.locator('#catalog-url')).toHaveCount(0);
+
+  await page.getByRole('button', { name: '素材を使うシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#screen').click({ position: { x: 600, y: 300 } });
+  // 素材の効果音が鳴る
+  await expect.poll(async () => (await soundCounts(page)).encoded).toBeGreaterThan(0);
+});
+
+test('URL の archive で任意の zip を直接始める', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  await isolateWithHeaders(page);
+  await page.route('**/external/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?archive=' + encodeURIComponent('external/victory.zip') + '&eve=test.eve');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('url-');
+  await expectAdvancesWithEnter(page);
+});
+});

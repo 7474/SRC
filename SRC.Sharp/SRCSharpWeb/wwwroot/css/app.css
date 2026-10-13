@@ -138,3 +138,26 @@ button {
 .modal-list li {
     margin: 4px 0;
 }
+
+.items .link {
+    color: #8cc8ff;
+    font-size: 0.85rem;
+}
+
+.items .asset {
+    color: #1a1a1a;
+    background: #b5d99c;
+    border-radius: 4px;
+    padding: 0 6px;
+    font-size: 0.8rem;
+}
+
+.add-catalog {
+    display: flex;
+    gap: 8px;
+}
+
+.add-catalog input {
+    flex: 1;
+    font: inherit;
+}

@@ -4,6 +4,7 @@
 @implements IDisposable
 @inject HttpClient Http
 @inject IJSRuntime JS
+@inject NavigationManager Nav
 @inject Microsoft.Extensions.Logging.ILoggerFactory LoggerFactory
 
 @if (mode == Mode.Playing || mode == Mode.Ended)
@@ -23,43 +24,88 @@
 else
 {
     <main>
-        <h1>SRC#Web</h1>
+        <h1>@site.Title</h1>
         @if (!string.IsNullOrEmpty(status))
         {
             <p id="status" class="status">@status</p>
         }
         @if (mode == Mode.Menu)
         {
-            <section>
-                <h2>登録済シナリオ</h2>
-                @if (catalog.Count == 0)
-                {
-                    <p>ありません。</p>
-                }
-                <ul class="items" id="catalog">
-                    @foreach (var entry in catalog)
+            @foreach (var catalog in catalogs)
+            {
+                <section class="catalog">
+                    <h2>@(catalog.Name ?? "登録済シナリオ")</h2>
+                    @if (!catalog.Scenarios.Any())
                     {
-                        <li>
-                            <button @onclick="() => PlayCatalogAsync(entry)">@entry.Title</button>
-                        </li>
+                        <p>ありません。</p>
                     }
-                </ul>
-            </section>
-            <section>
-                <h2>追加したアーカイブ</h2>
-                <p class="note">シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</p>
-                <InputFile id="add-archive" OnChange="AddArchivesAsync" accept=".zip" multiple />
-                <ul class="items" id="archives">
-                    @foreach (var archive in archives)
+                    @* E2E テストは最初のカタログを #catalog で探す *@
+                    <ul class="items" id="@(catalogs.IndexOf(catalog) == 0 ? "catalog" : null)">
+                        @foreach (var entry in catalog.Scenarios)
+                        {
+                            <li>
+                                <button @onclick="() => PlayCatalogAsync(entry)">@entry.Title</button>
+                                @if (!string.IsNullOrEmpty(entry.Author))
+                                {
+                                    <span class="note">@entry.Author</span>
+                                }
+                                <a class="link" href="@PlayLink(entry)" title="このシナリオを直接開くリンク">リンク</a>
+                                @if (!string.IsNullOrEmpty(entry.License))
+                                {
+                                    <span class="note">@entry.License</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                    @if (userCatalogs.Contains(catalog.Url))
                     {
-                        <li>
-                            <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
-                            <span class="size">@FormatSize(archive.Size)</span>
-                            <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">削除</button>
-                        </li>
+                        <button class="delete" @onclick="() => RemoveCatalogAsync(catalog.Url)">このカタログを外す</button>
                     }
-                </ul>
-            </section>
+                </section>
+            }
+            @foreach (var error in catalogErrors)
+            {
+                <p class="status">@error</p>
+            }
+            @if (site.AllowUserCatalogs)
+            {
+                <section>
+                    <h2>カタログを追加</h2>
+                    <p class="note">シナリオを配信しているサイトのカタログ（catalog.json）の URL を追加できます。配信元は CORS を許可している必要があります。</p>
+                    <form class="add-catalog" @onsubmit="AddCatalogAsync">
+                        <input id="catalog-url" type="url" placeholder="https://example.com/catalog.json" @bind="newCatalogUrl" />
+                        <button type="submit">追加</button>
+                    </form>
+                </section>
+            }
+            @if (site.AllowUserArchives)
+            {
+                <section>
+                    <h2>追加したアーカイブ</h2>
+                    <p class="note">シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</p>
+                    <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
+                    <p class="note">素材（汎用グラフィック集など）の zip を追加すると、どのシナリオにも重ねて使います。</p>
+                    <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
+                    <ul class="items" id="archives">
+                        @foreach (var archive in archives)
+                        {
+                            <li>
+                                @if (archive.Kind == CatalogEntry.KindAsset)
+                                {
+                                    <span class="asset">素材</span>
+                                    <span>@archive.Name</span>
+                                }
+                                else
+                                {
+                                    <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
+                                }
+                                <span class="size">@FormatSize(archive.Size)</span>
+                                <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">削除</button>
+                            </li>
+                        }
+                    </ul>
+                </section>
+            }
         }
         else if (mode == Mode.ChooseEvent)
         {
@@ -98,18 +144,11 @@ else
 @code {
     private enum Mode { Loading, Menu, ChooseEvent, Playing, Ended }
 
-    public class CatalogEntry
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Archive { get; set; }
-        public string Eve { get; set; }
-    }
-
     public class StoredArchive
     {
         public string Name { get; set; }
         public long Size { get; set; }
+        public string Kind { get; set; }
     }
 
     public class StoredSave
@@ -121,7 +160,11 @@ else
 
     private Mode mode = Mode.Loading;
     private string status = "読み込み中…";
-    private List<CatalogEntry> catalog = new List<CatalogEntry>();
+    private SiteConfig site = new SiteConfig();
+    private List<Catalog> catalogs = new List<Catalog>();
+    private List<string> catalogErrors = new List<string>();
+    private List<string> userCatalogs = new List<string>();
+    private string newCatalogUrl;
     private List<StoredArchive> archives = new List<StoredArchive>();
     private string choosingTitle;
     private string scenarioId;
@@ -139,10 +182,60 @@ else
         try
         {
             await WebFonts.LoadAsync(Http);
-            catalog = await Http.GetFromJsonAsync<List<CatalogEntry>>("scenarios/catalog.json") ?? new List<CatalogEntry>();
-            await RefreshArchivesAsync();
+            site = await SiteConfig.LoadAsync(Http);
+            await JS.InvokeVoidAsync("srcwebStore.setTitle", site.Title);
+            var query = ParseQuery(new Uri(Nav.Uri).Query);
+            if (site.AllowUserCatalogs)
+            {
+                userCatalogs = await JS.InvokeAsync<List<string>>("srcwebStore.listCatalogs") ?? new List<string>();
+            }
+            var urls = site.Catalogs.ToList();
+            if (site.AllowUserCatalogs)
+            {
+                urls.AddRange(userCatalogs);
+                if (query.TryGetValue("catalog", out var queryCatalog))
+                {
+                    // URL で指定したカタログはこの表示の間だけ使う（追加はしない）
+                    urls.Add(queryCatalog);
+                }
+            }
+            await LoadCatalogsAsync(urls);
+            if (site.AllowUserArchives)
+            {
+                await RefreshArchivesAsync();
+            }
             status = null;
             mode = Mode.Menu;
+
+            // URL・サイトの設定で指定されたシナリオをすぐに始める
+            if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
+            {
+                query.TryGetValue("eve", out var eve);
+                query.TryGetValue("root", out var root);
+                query.TryGetValue("requires", out var requires);
+                var uri = new Uri(Http.BaseAddress, archiveUrl);
+                await PlayCatalogAsync(new CatalogEntry
+                {
+                    Id = "url-" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(uri.ToString())))[..16],
+                    Title = Path.GetFileName(uri.AbsolutePath),
+                    Archive = uri.ToString(),
+                    Eve = eve,
+                    Root = root,
+                    Requires = (requires ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList(),
+                });
+            }
+            else if ((query.TryGetValue("play", out var id) || !string.IsNullOrEmpty(id = site.Start)))
+            {
+                var entry = FindEntry(id);
+                if (entry == null)
+                {
+                    status = $"シナリオ「{id}」がカタログにありません。";
+                }
+                else
+                {
+                    await PlayCatalogAsync(entry);
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -151,12 +244,97 @@ else
         }
     }
 
+    private static Dictionary<string, string> ParseQuery(string query)
+    {
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var pair in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var index = pair.IndexOf('=');
+            var key = Uri.UnescapeDataString((index < 0 ? pair : pair[..index]).Replace('+', ' '));
+            var value = index < 0 ? "" : Uri.UnescapeDataString(pair[(index + 1)..].Replace('+', ' '));
+            result.TryAdd(key, value);
+        }
+        return result;
+    }
+
+    // ── カタログ ──
+
+    private async Task LoadCatalogsAsync(IEnumerable<string> urls)
+    {
+        catalogs = new List<Catalog>();
+        catalogErrors = new List<string>();
+        foreach (var url in urls.Distinct())
+        {
+            try
+            {
+                catalogs.Add(await Catalog.LoadAsync(Http, url));
+            }
+            catch (Exception ex)
+            {
+                catalogErrors.Add($"カタログ {url} を読めませんでした: {ex.Message}");
+                Console.Error.WriteLine(ex);
+            }
+        }
+    }
+
+    /// <summary>id のエントリ。先に読んだカタログを優先する</summary>
+    private CatalogEntry FindEntry(string id, string kind = CatalogEntry.KindScenario)
+    {
+        return catalogs.SelectMany(x => x.Entries).FirstOrDefault(x => x.Id == id && x.Kind == kind);
+    }
+
+    private string PlayLink(CatalogEntry entry)
+    {
+        // サイトのカタログにあるものは id だけで開ける。追加したカタログのものはカタログの URL も付ける
+        var catalog = catalogs.FirstOrDefault(x => x.Entries.Contains(entry));
+        var link = "?play=" + Uri.EscapeDataString(entry.Id);
+        if (catalog != null && !site.Catalogs.Any(x => new Uri(Http.BaseAddress, x).ToString() == catalog.Url))
+        {
+            link += "&catalog=" + Uri.EscapeDataString(catalog.Url);
+        }
+        return link;
+    }
+
+    private async Task AddCatalogAsync()
+    {
+        var url = newCatalogUrl?.Trim();
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+        try
+        {
+            var catalog = await Catalog.LoadAsync(Http, url);
+            if (!userCatalogs.Contains(catalog.Url))
+            {
+                userCatalogs.Add(catalog.Url);
+                await JS.InvokeVoidAsync("srcwebStore.saveCatalogs", userCatalogs);
+                catalogs.Add(catalog);
+            }
+            newCatalogUrl = null;
+            status = null;
+        }
+        catch (Exception ex)
+        {
+            status = $"カタログ {url} を読めませんでした: {ex.Message}";
+        }
+    }
+
+    private async Task RemoveCatalogAsync(string url)
+    {
+        userCatalogs.Remove(url);
+        await JS.InvokeVoidAsync("srcwebStore.saveCatalogs", userCatalogs);
+        catalogs.RemoveAll(x => x.Url == url);
+    }
+
+    // ── 追加したアーカイブ ──
+
     private async Task RefreshArchivesAsync()
     {
         archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
     }
 
-    private async Task AddArchivesAsync(InputFileChangeEventArgs e)
+    private async Task AddArchivesAsync(InputFileChangeEventArgs e, string kind)
     {
         foreach (var file in e.GetMultipleFiles(32))
         {
@@ -165,7 +343,7 @@ else
             using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
             using var buffer = new MemoryStream();
             await stream.CopyToAsync(buffer);
-            await JS.InvokeVoidAsync("srcwebStore.put", file.Name, buffer.ToArray());
+            await JS.InvokeVoidAsync("srcwebStore.put", file.Name, buffer.ToArray(), kind);
         }
         status = null;
         await RefreshArchivesAsync();
@@ -179,15 +357,65 @@ else
 
     private async Task PlayCatalogAsync(CatalogEntry entry)
     {
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => Http.GetByteArrayAsync(entry.Archive), entry.Eve);
+        if (!await PrepareAssetsAsync(entry.Requires))
+        {
+            return;
+        }
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => Http.GetByteArrayAsync(entry.Archive), entry.Eve, entry.Root);
+    }
+
+    /// <summary>
+    /// 素材を SRC のフォルダに重ねる。利用者が追加した素材を先に、シナリオが求める素材（requires）を後に展開する（後のものが優先）。
+    /// </summary>
+    private async Task<bool> PrepareAssetsAsync(IEnumerable<string> requires)
+    {
+        if (site.AllowUserArchives)
+        {
+            foreach (var archive in archives.Where(x => x.Kind == CatalogEntry.KindAsset))
+            {
+                status = $"素材 {archive.Name} を展開しています…";
+                StateHasChanged();
+                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name);
+                await Task.Run(() => ScenarioArchive.ExtractAsset(data));
+            }
+        }
+        foreach (var id in requires ?? Enumerable.Empty<string>())
+        {
+            var asset = FindEntry(id, CatalogEntry.KindAsset);
+            if (asset == null)
+            {
+                status = $"素材「{id}」がカタログにありません。";
+                return false;
+            }
+            try
+            {
+                status = $"素材 {asset.Title} を読み込んでいます…";
+                StateHasChanged();
+                var data = await Http.GetByteArrayAsync(asset.Archive);
+                status = $"素材 {asset.Title} を展開しています…";
+                StateHasChanged();
+                await Task.Run(() => ScenarioArchive.ExtractAsset(data, asset.Root));
+            }
+            catch (Exception ex)
+            {
+                status = $"素材 {asset.Title} を読み込めませんでした: " + ex.Message;
+                Console.Error.WriteLine(ex);
+                return false;
+            }
+        }
+        return true;
     }
 
     private async Task PlayArchiveAsync(StoredArchive archive)
     {
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), null);
+        if (!await PrepareAssetsAsync(null))
+        {
+            return;
+        }
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), null, null);
     }
 
-    private async Task LoadAsync(string id, string title, Func<Task<byte[]>> fetch, string eve)
+    private async Task LoadAsync(string id, string title, Func<Task<byte[]>> fetch, string eve, string root)
     {
         try
         {
@@ -197,7 +425,7 @@ else
             status = $"{title} を展開しています…";
             StateHasChanged();
             scenarioId = id;
-            scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip));
+            scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
             eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
             defaultEve = !string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)) ? eve : eventFiles.FirstOrDefault();
             await RestoreSavesAsync();
