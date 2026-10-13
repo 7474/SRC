@@ -23,6 +23,7 @@ namespace SRCRender.Tests
     ///   list 文字列|#番号      リストの項目を選ぶ（番号は 1 始まり）
     ///   dialog ボタン名        ダイアログのボタンを押す
     ///   key Enter|Escape|...   キーを押す
+    ///   set 変数 値            SRC の変数に値を設定する（検証の前提を整える。例: set 設定[難易度] ベリーイージー）
     ///   print 式              SRC の式の値を記録する（進行状況の確認用。例: print ダンジョン階数）
     ///   policy advance|hold    phase の方針。advance は攻撃できなければ敵へ近づく（既定）、hold は移動せず届く敵だけ攻撃する
     ///   stall 秒               auto・turns で、待ちの状態でないまま進まないときにボタンを押すまでの時間（既定 5 秒）
@@ -155,6 +156,25 @@ namespace SRCRender.Tests
                     break;
                 case "list":
                     SelectList(Rest(args, 1));
+                    break;
+                case "set":
+                    {
+                        var name = args[1];
+                        var value = Rest(args, 2) ?? "";
+                        OnGame(() =>
+                        {
+                            if (double.TryParse(value, out var number))
+                            {
+                                Src.Expression.SetVariableAsDouble(name, number);
+                            }
+                            else
+                            {
+                                Src.Expression.SetVariableAsString(name, value);
+                            }
+                            return true;
+                        });
+                        Record($"{DateTime.Now:HH:mm:ss} SET {name} = {value}");
+                    }
                     break;
                 case "print":
                     {
