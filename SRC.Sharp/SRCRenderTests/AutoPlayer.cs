@@ -303,7 +303,7 @@ namespace SRCRender.Tests
                     // 待ちの状態でないまま進まない（KeyState でボタンが押されるのを待つループなど）。
                     // 人の操作と同じく、ボタンを押してしばらく保ってから離す
                     var (cx, cy) = StallClickPositions[Stalls % StallClickPositions.Count];
-                    var pointIds = string.Join(" ", MousePoints().Select(x => x.ID));
+                    var pointIds = string.Join(" | ", MousePoints().Select(x => x.ID));
                     if (Environment.GetEnvironmentVariable("MP_DEBUG") == "1")
                     {
                         try
@@ -437,6 +437,10 @@ namespace SRCRender.Tests
             return result;
         }
 
+        /// <summary>クリック領域の ID が規則の項目に合うか。項目の末尾が * なら前方一致</summary>
+        private static bool PointMatches(MousePoint point, string item)
+            => item.EndsWith("*") ? point.ID.StartsWith(item.Substring(0, item.Length - 1)) : point.ID == item;
+
         /// <summary>見出しが MousePointCaption の規則（一度だけのものを優先）に ID が合うクリック領域。無ければ null</summary>
         private MousePoint ChooseMousePoint()
         {
@@ -448,7 +452,7 @@ namespace SRCRender.Tests
             for (var r = 0; r < OnceRules.Count; r++)
             {
                 var (caption, item) = OnceRules[r];
-                var found = caption == MousePointCaption ? points.FirstOrDefault(x => x.ID == item) : null;
+                var found = caption == MousePointCaption ? points.FirstOrDefault(x => PointMatches(x, item)) : null;
                 if (found != null)
                 {
                     OnceRules.RemoveAt(r);
@@ -457,15 +461,15 @@ namespace SRCRender.Tests
             }
             foreach (var rule in SequenceRules.Where(x => x.Caption == MousePointCaption))
             {
-                var item = rule.Next(x => points.Any(p => p.ID == x));
+                var item = rule.Next(x => points.Any(p => PointMatches(p, x)));
                 if (item != null)
                 {
-                    return points.First(p => p.ID == item);
+                    return points.First(p => PointMatches(p, item));
                 }
             }
             foreach (var (caption, item) in ListRules)
             {
-                var found = caption == MousePointCaption ? points.FirstOrDefault(x => x.ID == item) : null;
+                var found = caption == MousePointCaption ? points.FirstOrDefault(x => PointMatches(x, item)) : null;
                 if (found != null)
                 {
                     return found;
