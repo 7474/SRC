@@ -59,9 +59,11 @@ jobs:
 
           failed=0
           for pr in $PULL_REQUESTS; do
-            # PR を閉じたときのイベントと同じ形のペイロード
+            # PR を閉じたときのイベントと同じ形のペイロード。StaticSitesClient は repository.html_url と
+            # pull_request の number・title・head.ref・base.ref を読む（無いとイベントを読めず PR を特定できない）
             gh pr view "$pr" --repo "$GITHUB_REPOSITORY" --json number,title,headRefName,baseRefName,headRefOid \
-              -q '{action: "closed", number: .number, pull_request: {number: .number, title: .title, state: "closed", head: {ref: .headRefName, sha: .headRefOid}, base: {ref: .baseRefName}}}' \
+              | jq --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
+                '{action: "closed", number: .number, repository: {html_url: $url}, pull_request: {number: .number, title: .title, state: "closed", head: {ref: .headRefName, sha: .headRefOid, repo: {fork: false}}, base: {ref: .baseRefName}}}' \
               > "$RUNNER_TEMP/event.json"
             head_ref=$(jq -r .pull_request.head.ref "$RUNNER_TEMP/event.json")
             for app in DATAVIEWER HELP; do
