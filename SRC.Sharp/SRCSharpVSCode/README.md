@@ -157,7 +157,7 @@ Language Server はエディタで開いたファイルの内容を受け取る�
 ```sh
 npm ci
 npm run compile
-npm run package   # .vsix を作る（vsce が必要。無ければ npx @vscode/vsce package）
+npm run package   # .vsix を作る（vsce は devDependencies に入っている）
 ```
 
-CI（`.github/workflows/CI.yml`）はコンパイルだけを確かめ、`.vsix` は作りません。拡張のバージョン（`package.json`）は `SRC.Sharp/Directory.Build.props` のライブラリのバージョンに手で合わせます（[バージョンの管理](../../docs/versioning.md)）。
+CI（`.github/workflows/CI.yml`）は `.vsix` を作り、成果物 `src-vscode-vsix` として残します。拡張のバージョン（`package.json`）は SRC# 本体とは別に上げます。公開は `.github/workflows/Publish-VSCode.yml` が行います（[バージョンの管理](../../docs/versioning.md#vs-code-拡張)）。

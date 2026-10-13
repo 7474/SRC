@@ -152,17 +152,17 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter play /s/test.eve 
 
 | 内容 | |
 |---|---|
-| 言語 | `src-eve`（`*.eve`）。文字コードの既定は Shift_JIS（自動判別あり） |
+| 言語 | `src-eve`（`*.eve`）。文字コードの既定は Shift_JIS（自動判別あり）。`src-data`（`robot.txt`・`pilot.txt` など SRC のデータのファイル名。`#` のコメントの色分けだけ） |
 | 構文の色分け | TextMate 文法（コマンド・ラベル・include・文字列・`$(...)`・コメント） |
 | 設定 | `srcsharp.serverPath`（既定 `srcsharp`）・`srcsharp.serverArgs`・`srcsharp.appPath` |
 | コマンド | ワークスペースの lint・バランスレポート・このイベントの自動プレイ |
 | デバッガ | 型 `srcsharp`、`launch` だけ。属性は `program`（必須）・`script`・`appPath`・`stopOnEntry`・`maxSteps`（`script` が無いときの操作の上限） |
 | 表示言語 | `srcsharp.serverArgs` に `["--lang", "en"]` などを入れる。切り替わるのはコマンドの出力だけで、LSP の診断と DAP のメッセージは日本語のまま |
-| 導入 | Marketplace には未公開（7474/SRC#1175）。CI の成果物 `src-vscode-vsix` か、`npm run package`（esbuild でまとめる）で作った `.vsix` を入れる |
+| 導入 | Marketplace の `koudenpa.src-vscode`（0.5.0 はプレリリース）。CI の成果物 `src-vscode-vsix` か、`npm run package`（esbuild でまとめる）で作った `.vsix` も入れられる |
 
 導入・設定・デバッガの構成・トラブルシューティングは [拡張の README](../../SRC.Sharp/SRCSharpVSCode/README.md) にまとめた。
 
-拡張のバージョン（`package.json`）は、`Directory.Build.props` のライブラリのバージョンに手で合わせる。
+拡張のバージョン（`package.json`）は、SRC# 本体とは別に上げる（[バージョンの管理](../versioning.md#vs-code-拡張)）。
 
 ## 今後
 
@@ -173,5 +173,5 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter play /s/test.eve 
 | エディタ：データの名前 | ユニット・パイロット・アイテムの名前の補完・ホバー・定義へ移動（データの読み込みを伴う） |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | デバッガ：画面 | 止まった時の画面を Webview に出す（`ScreenGUI.SnapshotPng`） |
-| 拡張の公開 | Marketplace・Open VSX への公開（7474/SRC#1175）。CI での .vsix の作成は済み |
+| 拡張の公開 | 正式版の公開（`srcsharp` の NuGet 公開の後）と Open VSX への公開（7474/SRC#1175）。Marketplace へのプレリリースの公開と CI での .vsix の作成は済み |
 | SRC#Web | Monaco と同じ LSP でブラウザ上の編集支援（[SRC#Web](../gui/web.md) の外部コンテンツ管理と合わせて） |

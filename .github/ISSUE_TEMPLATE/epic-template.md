@@ -34,15 +34,15 @@ assignees: ''
 
 ## マイルストーン / Milestone
 
-- [ ] Phase 1: コア機能完成 (v3.1.0)
-- [ ] Phase 2: UI/UX改善 (v3.2.0)
-- [ ] Phase 3: 品質向上 (v3.3.0)
-- [ ] Phase 4: 最適化・完成 (v3.4.0)
+- [ ] Phase 1: コア機能完成
+- [ ] Phase 2: UI/UX改善
+- [ ] Phase 3: 品質向上
+- [ ] Phase 4: 最適化・完成
 
 ## 参考資料 / References
 
-- [移植完了計画](../docs/migration-plan.md)
-- [個別Issue詳細](../docs/issue-breakdown.md)
+- [移植完了計画](https://github.com/7474/SRC/blob/master/docs/porting/migration-plan.md)
+- [個別Issue詳細](https://github.com/7474/SRC/blob/master/docs/porting/issue-breakdown.md)
 
 ## Labels
 

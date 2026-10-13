@@ -37,12 +37,14 @@ SRC# **品質検証・精度向上フェーズ**の簡易リファレンス。
 
 ## 📂 テスト対象の優先順位 / Test Priority
 
-| 領域 | コード行数 | 現テスト数 | 目標 | 優先度 |
-|------|-----------|-----------|------|--------|
-| Units/ | 86,480行 | 53件 | 150件+ | 🔴 高 |
-| Events/ | 8,789行 | 0件 | 30件+ | 🔴 高 |
-| CmdDatas/ | 21,172行 | 99件 | 150件+ | 🟡 中 |
-| Pilots/ | 4,530行 | 9件 | 30件+ | 🟡 中 |
+テスト数は 2026-10 時点。
+
+| 領域 | コード行数 | 現テスト数 | 優先度 |
+|------|-----------|-----------|--------|
+| Units/ | 約85,000行 | 529件 | 🟡 中 |
+| Events/ | 約8,700行 | 362件 | 🟢 低 |
+| CmdDatas/ | 約35,000行 | 964件 | 🟡 中 |
+| Pilots/ | 約4,500行 | 207件 | 🟢 低 |
 
 ## ⚡ クイックコマンド / Quick Commands
 
@@ -58,8 +60,8 @@ grep -rn "// TODO" SRC.Sharp/SRCSharpForm/
 find SRC.Sharp/SRCCore/CmdDatas/Commands -name "*.cs" | wc -l
 ls SRC.Sharp/SRCCoreTests/CmdDatas/
 
-# MockGUI NotImplementedException数を確認
-grep -rn "throw new NotImplementedException" SRC.Sharp/SRCCoreTests/ | wc -l
+# MockGUI の未実装数を確認
+grep -c "GUINotImplementedException" SRC.Sharp/SRCCore/TestLib/MockGUI.cs
 
 # PR作成
 gh pr create
@@ -101,12 +103,12 @@ gh pr create
 
 ## 📊 品質フェーズ KPI / Quality Phase KPIs
 
-| 指標 | 現状（2026-02-21） | Phase Q1目標 |
-|------|-------------------|-------------|
-| テストメソッド数 | ~253 | 400+ |
-| コードカバレッジ（SRCCore） | 推定15% | 25% |
-| MockGUI NotImplementedException | 132件 | 100件以下 |
-| 残存TODO数 | 18 | 縮小 |
+| 指標 | 2026-02-21 | 2026-10 | Phase Q1目標 |
+|------|-----------|---------|-------------|
+| テストメソッド数（SRCCoreTests） | ~253 | 7,736 | 400+ ✅ |
+| コードカバレッジ（SRCCore） | 推定15% | CI で計測（Codecov） | 25% |
+| MockGUI 未実装（`GUINotImplementedException`） | 132件 | 88件 | 100件以下 ✅ |
+| 残存TODO数 | 18 | 19 | 縮小 |
 
 ## 🔗 主要リンク / Key Links
 
