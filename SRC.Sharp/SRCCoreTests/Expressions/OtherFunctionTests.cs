@@ -22,7 +22,7 @@ namespace SRCCore.Expressions.Tests
             src.Event.EventCmd = new List<CmdData>();
             src.Event.EventFileNames = new List<string>();
             src.Event.AdditionalEventFileNames = new List<string>();
-            src.Event.EventQue = new Queue<string>();
+            src.Event.EventQue = new List<string>();
             return (src.Expression, src);
         }
 
