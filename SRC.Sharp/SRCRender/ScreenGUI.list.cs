@@ -739,6 +739,8 @@ namespace SRCRender
         private int multiSelectMax;
         private int multiSelectedNum;
         private bool multiSelectClosed;
+        // 並べ替えボタンが「レベル順に並べ替え」か（ボタンの表示文字列ではなくこのフラグで判定する）
+        private bool multiSelectSortByLevel;
 
         public bool IsInDeploymentSelection { get; private set; }
 
@@ -751,7 +753,8 @@ namespace SRCRender
             box.Refreshed = Present;
             box.Text = args.lb_caption;
             box.lblCaption.Text = "　" + args.lb_info;
-            box.cmdSort.Text = "名称順に並べ替え";
+            box.cmdSort.Text = Resources.Strings.SortByName;
+            multiSelectSortByLevel = false;
             multiSelectItems = args.Items.ToList();
             listBoxItems = multiSelectItems;
             listHasFlag = false;
@@ -861,19 +864,21 @@ namespace SRCRender
             }
             else if (clicked == box.cmdSort)
             {
-                if (box.cmdSort.Text == "レベル順に並べ替え")
+                if (multiSelectSortByLevel)
                 {
                     // メインパイロットのレベル順に並べ替え
                     StableSort(multiSelectItems, (a, b) => SRC.UList.Item(a.ListItemID).MainPilot().Level
                         .CompareTo(SRC.UList.Item(b.ListItemID).MainPilot().Level));
-                    box.cmdSort.Text = "名称順に並べ替え";
+                    box.cmdSort.Text = Resources.Strings.SortByName;
+                    multiSelectSortByLevel = false;
                 }
                 else
                 {
                     // ユニットの名称順に並べ替え
                     StableSort(multiSelectItems, (a, b) => -SRC.UList.Item(a.ListItemID).KanaName
                         .CompareTo(SRC.UList.Item(b.ListItemID).KanaName));
-                    box.cmdSort.Text = "レベル順に並べ替え";
+                    box.cmdSort.Text = Resources.Strings.SortByLevel;
+                    multiSelectSortByLevel = true;
                 }
                 UpdateMultiSelectList(box);
             }

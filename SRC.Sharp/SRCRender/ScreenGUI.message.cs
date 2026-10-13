@@ -20,9 +20,9 @@ namespace SRCRender
             // ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
             if (u1 is object)
             {
-                if (frmMessage.Text == "メッセージ (自動送り)")
+                if (frmMessage.IsAutoMode)
                 {
-                    frmMessage.Text = "メッセージ";
+                    frmMessage.SetMessageModeCaption(false);
                 }
             }
 
@@ -1503,7 +1503,7 @@ namespace SRCRender
                                                                 Color color;
                                                                 if (!ColorExtension.TryFromHexString(cname, out color))
                                                                 {
-                                                                    throw new Exception($"色の指定が不正です。[{cname}]");
+                                                                    throw new Exception(string.Format(Resources.Strings.InvalidColor, cname));
                                                                 }
                                                                 currentMessageFontColor = new SolidBrush(color);
                                                             }

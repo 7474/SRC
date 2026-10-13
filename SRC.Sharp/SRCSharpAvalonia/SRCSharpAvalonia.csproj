@@ -8,6 +8,9 @@
     <AssemblyName>SRCSharpAvalonia</AssemblyName>
     <Product>SRC#Avalonia</Product>
     <Version>$(SrcSharpAppVersion)</Version>
+    <!-- 表示文字列（Resources/Strings.resx）の既定は日本語。英語は Strings.en.resx（docs/i18n.md） -->
+    <NeutralLanguage>ja</NeutralLanguage>
+    <SatelliteResourceLanguages>ja;en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>

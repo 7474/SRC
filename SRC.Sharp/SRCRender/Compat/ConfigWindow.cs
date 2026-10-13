@@ -51,21 +51,21 @@ namespace SRCRender.Compat
         {
             Width = 346;
             Height = 405;
-            Text = "設定変更";
-            chkBattleAnimation = new CheckBox { Left = 32, Top = 40, Width = 249, Height = 25, Text = "戦闘アニメを表示する", Font = ControlFont };
-            chkExtendedAnimation = new CheckBox { Left = 48, Top = 64, Width = 233, Height = 33, Text = "戦闘アニメの拡張機能を使用する", Font = ControlFont };
-            chkWeaponAnimation = new CheckBox { Left = 48, Top = 96, Width = 233, Height = 33, Text = "武器準備アニメを自動選択表示する", Font = ControlFont };
-            chkSpecialPowerAnimation = new CheckBox { Left = 32, Top = 128, Width = 249, Height = 25, Text = "スペシャルパワーアニメを表示する", Font = ControlFont };
-            chkMoveAnimation = new CheckBox { Left = 32, Top = 152, Width = 249, Height = 25, Text = "移動アニメを表示する", Font = ControlFont };
-            chkAutoMoveCursor = new CheckBox { Left = 32, Top = 176, Width = 249, Height = 25, Text = "マウスカーソルを自動的に移動する", Font = ControlFont };
-            chkShowSquareLine = new CheckBox { Left = 32, Top = 200, Width = 265, Height = 25, Text = "マス目を表示する (要再起動)", Font = ControlFont };
-            chkShowTurn = new CheckBox { Left = 32, Top = 224, Width = 249, Height = 25, Text = "味方フェイズ開始時にターン表示を行う", Font = ControlFont };
-            chkKeepEnemyBGM = new CheckBox { Left = 32, Top = 248, Width = 249, Height = 25, Text = "敵フェイズ中にＢＧＭを変更しない", Font = ControlFont };
-            labMP3Volume = new Label { Left = 33, Top = 330, Width = 49, Height = 17, Text = "MP3音量", Font = ControlFont };
+            Text = Resources.Strings.ConfigTitle;
+            chkBattleAnimation = new CheckBox { Left = 32, Top = 40, Width = 249, Height = 25, Text = Resources.Strings.ConfigBattleAnimation, Font = ControlFont };
+            chkExtendedAnimation = new CheckBox { Left = 48, Top = 64, Width = 233, Height = 33, Text = Resources.Strings.ConfigExtendedAnimation, Font = ControlFont };
+            chkWeaponAnimation = new CheckBox { Left = 48, Top = 96, Width = 233, Height = 33, Text = Resources.Strings.ConfigWeaponAnimation, Font = ControlFont };
+            chkSpecialPowerAnimation = new CheckBox { Left = 32, Top = 128, Width = 249, Height = 25, Text = Resources.Strings.ConfigSpecialPowerAnimation, Font = ControlFont };
+            chkMoveAnimation = new CheckBox { Left = 32, Top = 152, Width = 249, Height = 25, Text = Resources.Strings.ConfigMoveAnimation, Font = ControlFont };
+            chkAutoMoveCursor = new CheckBox { Left = 32, Top = 176, Width = 249, Height = 25, Text = Resources.Strings.ConfigAutoMoveCursor, Font = ControlFont };
+            chkShowSquareLine = new CheckBox { Left = 32, Top = 200, Width = 265, Height = 25, Text = Resources.Strings.ConfigShowSquareLine, Font = ControlFont };
+            chkShowTurn = new CheckBox { Left = 32, Top = 224, Width = 249, Height = 25, Text = Resources.Strings.ConfigShowTurn, Font = ControlFont };
+            chkKeepEnemyBGM = new CheckBox { Left = 32, Top = 248, Width = 249, Height = 25, Text = Resources.Strings.ConfigKeepEnemyBGM, Font = ControlFont };
+            labMP3Volume = new Label { Left = 33, Top = 330, Width = 49, Height = 17, Text = Resources.Strings.ConfigMP3Volume, Font = ControlFont };
             txtMP3Volume = new Label { Left = 87, Top = 327, Width = 33, Height = 19, Text = "100", Font = ControlFont, BackColor = Color.White };
             hscMP3Volume = new HScrollBar { Left = 128, Top = 328, Width = 153, Height = 17 };
             cmdOK = new Button { Left = 112, Top = 360, Width = 97, Height = 25, Text = "OK", Font = ControlFont };
-            cmdCancel = new Button { Left = 216, Top = 360, Width = 97, Height = 25, Text = "キャンセル", Font = ControlFont };
+            cmdCancel = new Button { Left = 216, Top = 360, Width = 97, Height = 25, Text = Resources.Strings.Cancel, Font = ControlFont };
         }
 
         public override ListBoxControl lstItems => items;

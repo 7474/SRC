@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}：{1}行目</value>
+    <comment>{0}: ファイル名, {1}: 行番号</comment>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>{0}のデータが不正です。</value>
+    <comment>{0}: データの名称</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>（入力値: {0}）</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>セーブ</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>色の指定が不正です。[{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>自動送り</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>先頭から選択</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>最後から選択</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>名称順に並べ替え</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>レベル順に並べ替え</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>マップを見る</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>設定変更</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>戦闘アニメを表示する</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>戦闘アニメの拡張機能を使用する</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>武器準備アニメを自動選択表示する</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>スペシャルパワーアニメを表示する</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>移動アニメを表示する</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>マウスカーソルを自動的に移動する</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>マス目を表示する (要再起動)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>味方フェイズ開始時にターン表示を行う</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>敵フェイズ中にＢＧＭを変更しない</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>MP3音量</value>
+  </data>
+</root>

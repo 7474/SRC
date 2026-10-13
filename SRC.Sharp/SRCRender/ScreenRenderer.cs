@@ -343,7 +343,7 @@ namespace SRCRender
                 {
                     paint.Color = new SKColor(0x40, 0x40, 0x40);
                     paint.IsAntialias = true;
-                    canvas.DrawText("自動送り", window.Width - 6, window.Height - 4, SKTextAlign.Right, font, paint);
+                    canvas.DrawText(Resources.Strings.AutoAdvance, window.Width - 6, window.Height - 4, SKTextAlign.Right, font, paint);
                 }
             }
             canvas.Restore();

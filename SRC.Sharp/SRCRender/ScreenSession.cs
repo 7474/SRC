@@ -30,6 +30,8 @@ namespace SRCRender
                 // 設定ファイルが無い場合は、元の SRC が設定ファイルを作る際の既定値で動かす
                 ApplyDefaultConfig(config);
             }
+            // 表示言語（Option/Language）。後で作るゲームスレッドにも引き継がれる
+            UiLanguage.Apply(config);
             if (!string.IsNullOrEmpty(appPath))
             {
                 config.AppPath = appPath;

@@ -136,7 +136,7 @@ namespace SRCSharpAvalonia
             return new[]
             {
                 new FilePickerFileType($"{request.FileType} (*.{request.FileExtension})") { Patterns = new[] { "*." + request.FileExtension } },
-                new FilePickerFileType("すべてのファイル (*.*)") { Patterns = new[] { "*" } },
+                new FilePickerFileType(Strings.AllFiles) { Patterns = new[] { "*" } },
             };
         }
     }
