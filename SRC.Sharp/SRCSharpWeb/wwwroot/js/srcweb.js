@@ -49,12 +49,14 @@ async function start() {
     let lastTap = null;
     const LONG_PRESS_MS = 500;
     const MOVE_TOLERANCE = 12; // CSS ピクセル
-    const click = (x, y, button, clicks) => {
+    // シナリオの KeyState(1)・KeyState(2) はボタンが押されている間を調べるため、押した状態を保ってから離す
+    const TAP_HOLD_MS = 200;
+    const press = (x, y, button, clicks) => {
         gui.Pointer(2, x, y, 0, 0);
         gui.Pointer(0, x, y, button, clicks);
-        gui.Pointer(1, x, y, button, 0);
         globalThis.srcwebTouchClicks = [...(globalThis.srcwebTouchClicks || []), { button, clicks }];
     };
+    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0);
     canvas.addEventListener('pointerdown', e => {
         if (e.pointerType === 'mouse') {
             return;
@@ -79,10 +81,11 @@ async function start() {
             held: false,
             timer: setTimeout(() => {
                 if (touch && !touch.moved) {
+                    // 右ボタンを押したままにし、指を離したら離す（押し続けてメッセージを送る操作にもなる）
                     touch.held = true;
                     hideRing();
                     navigator.vibrate?.(20);
-                    click(touch.x, touch.y, 2, 1);
+                    press(touch.x, touch.y, 2, 1);
                 }
             }, LONG_PRESS_MS),
         };
@@ -114,11 +117,15 @@ async function start() {
         lastTouch = performance.now();
         clearTimeout(touch.timer);
         hideRing();
-        if (!cancelled && !touch.moved && !touch.held) {
+        if (touch.held) {
+            release(touch.x, touch.y, 2);
+        } else if (!cancelled && !touch.moved) {
             // 近くを続けてタップしたらダブルクリック
             const now = performance.now();
             const double = lastTap && now - lastTap.time < 400 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 24;
-            click(touch.x, touch.y, 0, double ? 2 : 1);
+            const { x, y } = touch;
+            press(x, y, 0, double ? 2 : 1);
+            setTimeout(() => release(x, y, 0), TAP_HOLD_MS);
             lastTap = double ? null : { time: now, x: e.clientX, y: e.clientY };
         }
         touch = null;

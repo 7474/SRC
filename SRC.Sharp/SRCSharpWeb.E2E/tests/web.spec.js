@@ -341,4 +341,60 @@ test.describe('タッチ操作', () => {
     // ページはスクロールしない
     expect(await page.evaluate(() => window.scrollY)).toBe(0);
   });
+
+  test('シナリオの KeyState でタップ（左ボタン）と長押し（右ボタン）を検出できる', async ({ page }) => {
+    // KeyState をループで調べるシナリオ（ロボダンのクリック領域などと同じ作り）
+    const eve = [
+      'プロローグ:',
+      'ChangeMap test.map',
+      'Global 左',
+      'Global 右',
+      'Set 左 0',
+      'Set 右 0',
+      'Do While (左 = 0 Or 右 = 0)',
+      'If KeyState(1) = 1 Then',
+      'Set 左 1',
+      'Endif',
+      'If KeyState(2) = 1 Then',
+      'Set 右 1',
+      'Endif',
+      'Wait 1',
+      'Loop',
+      // 結果は選択肢の見出しに出す（ループ中のクリックはメッセージを送ってしまうため）
+      'Ask "L=$(左) R=$(右)"',
+      'OK',
+      'End',
+      'Quit',
+      '',
+    ].join('\r\n');
+    const name = 'KeyState のテスト.zip';
+    await open(page);
+    await page.setInputFiles('#add-archive', {
+      name,
+      mimeType: 'application/zip',
+      buffer: makeZip([
+        { name: 'keystate/test.eve', data: Buffer.from(eve, 'utf8') },
+        { name: 'keystate/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+      ]),
+    });
+    await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect.poll(() => frames(page)).toBeGreaterThan(0);
+    const box = await page.locator('#screen').boundingBox();
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    // KeyState を調べるループに入ってから操作する（ChangeMap の途中で押しても検出されない）
+    await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toMatch(/test\.eve:(7|8|9|1[0-5]) /);
+
+    await page.touchscreen.tap(x, y);
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(900);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await expect.poll(() => debugState(page)).toContain('L=1 R=1');
+
+    await backToMenu(page);
+    await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+    await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+  });
 });
