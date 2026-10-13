@@ -141,6 +141,37 @@ namespace SRCCore.Units.Tests
         }
 
         [TestMethod]
+        public void DeleteSlave_RemovesSlaveOnlyByIdOrName()
+        {
+            var src = CreateSrc();
+            AddUnitData(src, "主機");
+            AddUnitData(src, "召喚機");
+            AddUnitData(src, "隷属機");
+            var master = src.UList.Add("主機", 0, "味方");
+            var servant = src.UList.Add("召喚機", 0, "味方");
+            var slave = src.UList.Add("隷属機", 0, "敵");
+            var slave2 = src.UList.Add("隷属機", 0, "敵");
+            master.AddServant(servant);
+            master.AddSlave(slave);
+            master.AddSlave(slave2);
+
+            // 召喚ユニットの ID を指定しても召喚ユニットは消えない（元の SRC の DeleteSlave は隷属ユニットだけを扱う）
+            master.DeleteSlave(servant.ID);
+            Assert.AreEqual(1, master.CountServant());
+            Assert.AreEqual(2, master.CountSlave());
+
+            // ID で消す
+            master.DeleteSlave(slave.ID);
+            Assert.AreEqual(1, master.CountSlave());
+            Assert.AreSame(slave2, master.Slave(slave2.ID));
+
+            // 名前で消す
+            master.DeleteSlave("隷属機");
+            Assert.AreEqual(0, master.CountSlave());
+            Assert.AreEqual(1, master.CountServant());
+        }
+
+        [TestMethod]
         public void Transform_CarriesOverHpRatioWithVbRounding()
         {
             var src = CreateSrc();

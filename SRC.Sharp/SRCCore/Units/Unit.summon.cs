@@ -108,7 +108,7 @@ namespace SRCCore.Units
         // 隷属ユニットを削除
         public void DeleteSlave(string Index)
         {
-            if (colServant.Remove(Index))
+            if (colSlave.Remove(Index))
             {
                 return;
             }
