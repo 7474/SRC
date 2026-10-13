@@ -5,6 +5,8 @@ const path = require('node:path');
 const { makeZip } = require('./zip');
 
 const root = path.resolve(__dirname, '..', process.env.SRCWEB_ROOT ?? '../SRCSharpWeb/bin/web/wwwroot');
+// SRC#Web を置いたフォルダ（サブパスに置く場合はサイトのルートの下）
+const webRoot = path.join(root, process.env.SRCWEB_BASE ?? '/');
 
 /** 初回は coi-serviceworker を有効にするために再読み込みされる。シナリオの一覧が出るまで待つ */
 async function open(page) {
@@ -14,7 +16,8 @@ async function open(page) {
       console.log('console.error:', m.text());
     }
   });
-  await page.goto('/');
+  // baseURL（サブパスを含む）からの相対で開く
+  await page.goto('./');
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   expect(await page.evaluate(() => self.crossOriginIsolated)).toBe(true);
 }
@@ -96,7 +99,7 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await page.setInputFiles('#add-archive', {
     name,
     mimeType: 'application/zip',
-    buffer: fs.readFileSync(path.join(root, 'scenarios', 'battle-victory.zip')),
+    buffer: fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip')),
   });
   await expect(page.locator('#archives li')).toContainText(name);
 

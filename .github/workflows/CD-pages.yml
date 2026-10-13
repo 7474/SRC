@@ -16,6 +16,8 @@ concurrency:
 
 env:
   PUBLISH_DIR: SRC.Sharp/SRCTestBlazor/bin/Release/net10.0/publish/wwwroot
+  # SRC#Web（ブラウザ版）は同じサイトの web/ に置く
+  WEB_PUBLISH_DIR: SRC.Sharp/SRCSharpWeb/bin/pages
 
 jobs:
   build:
@@ -32,6 +34,12 @@ jobs:
       - name: Build project
         run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release
 
+      # マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
+      - name: Build SRC#Web
+        run: |
+          dotnet workload install wasm-tools
+          dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o ${{ env.WEB_PUBLISH_DIR }}
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
@@ -43,6 +51,15 @@ jobs:
           echo "Pages base path: ${BASE_PATH}"
           cp ${{ env.PUBLISH_DIR }}/index.ghp.html ${{ env.PUBLISH_DIR }}/index.html
           sed -i "s|<base href=\"/\" />|<base href=\"${BASE_PATH}/\" />|" ${{ env.PUBLISH_DIR }}/index.html
+
+      - name: Place SRC#Web under web/
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          mkdir -p ${{ env.PUBLISH_DIR }}/web
+          cp -r ${{ env.WEB_PUBLISH_DIR }}/wwwroot/. ${{ env.PUBLISH_DIR }}/web/
+          sed -i "s|<base href=\"/\" />|<base href=\"${BASE_PATH}/web/\" />|" ${{ env.PUBLISH_DIR }}/web/index.html
+          grep -n "<base href" ${{ env.PUBLISH_DIR }}/web/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

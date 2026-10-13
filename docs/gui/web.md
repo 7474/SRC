@@ -89,7 +89,75 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 ゲームはシナリオのフォルダ（.NET のメモリ上のファイルシステム）にセーブデータ（.srcs・.srcq）を書く。プレイ中は 1 秒ごとに変化を調べ、書き込まれたものを IndexedDB に保存する（`SaveSync`）。シナリオを開くときに保存しておいたものをフォルダに戻し、「セーブデータから再開」に並べる。書き出し（ダウンロード）・読み込み・削除もここで行う。
 
-## 段階
+## 外部のコンテンツ源（プラン、未実装）
+
+SRC#Web はゲームプレイヤーに徹し、シナリオ・素材・セーブデータは外部から管理できるようにする。権利の扱いは各コンテンツの配布元が負い、SRC#Web のサイトはコンテンツを配布しない。利用者登録や更新ができるホスティングサイトは別のプロジェクトとし、SRC#Web は決まった形式を読むだけにする。
+
+```mermaid
+flowchart LR
+  subgraph Player[SRC#Web（静的サイト）]
+    Catalogs[カタログの一覧<br/>組み込み・URL で追加・ローカル]
+    Store[IndexedDB<br/>取得したアーカイブ・セーブ]
+  end
+  Host1[配布元 A<br/>catalog.json と zip] -->|CORS| Catalogs
+  Host2[配布元 B（素材集）] -->|CORS| Catalogs
+  Hosting[ホスティングサイト（別プロジェクト）<br/>カタログ・アーカイブ・セーブの API] -->|CORS・OAuth| Catalogs
+  Catalogs --> Store
+```
+
+### カタログの形式（案）
+
+```json
+{
+  "format": 1,
+  "name": "配布元の名前",
+  "entries": [
+    {
+      "id": "robodan",
+      "kind": "scenario",
+      "title": "ロボッとダンジョンＢ！",
+      "author": "作者",
+      "license": "配布条件の説明または URL",
+      "archive": "https://example.com/robodan.zip",
+      "size": 276897247,
+      "sha256": "…",
+      "eve": "ロボッとダンジョンＢ！_-ロボダン-/ニューゲーム.eve",
+      "requires": ["asset:general-graphics"]
+    },
+    {
+      "id": "general-graphics",
+      "kind": "asset",
+      "title": "汎用グラフィック集",
+      "archive": "https://example.com/graphics.zip"
+    }
+  ]
+}
+```
+
+- `kind`: `scenario`（シナリオ）・`asset`（汎用グラフィック集などの素材）・`soundfont`（MIDI の SoundFont）
+- `requires`: 一緒に重ねる素材。`LocalFileSystem` のアーカイブの重ね合わせ（シナリオ → 素材 → なし）に使う
+- `sha256`: 取得したアーカイブの確認と、IndexedDB に保存したものの更新判定に使う
+
+### 方針
+
+| 項目 | 方針 |
+|---|---|
+| カタログの追加 | 組み込みのカタログ（現在の `scenarios/catalog.json`）に加え、利用者が URL を追加できる。追加した URL は localStorage に保存する |
+| 取得 | 配布元は CORS を許可する必要がある（クロスオリジン分離のため）。GitHub Pages は `Access-Control-Allow-Origin: *` を返す。Google Drive のダウンロードリンクは CORS を返さないため直接は使えない |
+| 素材の重ね合わせ | `requires` の素材を取得し、シナリオと重ねて展開する。素材の配布元は別でもよい |
+| セーブデータ | 保存先を差し替えられるようにする。既定は IndexedDB とファイルの書き出し・読み込み。選択肢として、ローカルのフォルダ（[File System API](https://developer.mozilla.org/docs/Web/API/File_System_API)、Chromium のみ）やホスティングサイトの API（静的サイトからも OAuth の PKCE で認証できる）を置ける |
+| 大きいアーカイブ | 今は zip 全体をメモリに読む。将来は HTTP の Range 要求と zip の目録で必要なファイルだけを読む（ゲームスレッドは Worker のため同期の取得もできる） |
+| 安全性 | シナリオは SRC のイベントとして解釈されるだけで、JS は実行されない。zip の展開サイズなどの上限を設ける |
+
+### 段階
+
+1. カタログの形式を決め、組み込みのカタログを同じ形式にする
+2. カタログの URL の追加・削除と、取得したアーカイブの IndexedDB への保存（`sha256` で更新判定）
+3. `requires` による素材の重ね合わせ
+4. セーブデータの保存先の差し替え（ローカルのフォルダ）
+5. ホスティングサイト向けの API（カタログ・アーカイブ・セーブ）の仕様
+
+## 段階（SRC#Web 全体）
 
 | 段階 | 内容 | 状況 |
 |---|---|---|
@@ -97,7 +165,15 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 | 2 | zip のアーカイブを追加してプレイできる（ブラウザに保存し、次回も選べる。Shift_JIS のファイル名） | 済 |
 | 3 | セーブ・ロード（ブラウザ内保存、ファイルの書き出し・読み込み）、文字入力 | 済 |
 | 4 | 音声（WAV・MP3・MIDI） | 済 |
-| 5 | GitHub Pages への配置（CI） | 未 |
+| 5 | GitHub Pages への配置（データビューアと同じサイトの `web/`） | 済 |
+
+## 配置
+
+GitHub Pages に、データビューア（`SRCTestBlazor`）と同じサイトの `web/` として置く（`.github/workflows/CD-pages.yml`）。
+
+- `index.html` の `<base href>` を `<Pages のベースパス>/web/` に書き換える
+- coi-serviceworker のスコープは `web/` になるため、クロスオリジン分離はデータビューアには及ばない
+- データビューアの Service Worker（スコープはサイト全体）は `web/` 配下の要求を扱わないようにした。扱うと、ページ遷移にデータビューアの index.html を返してしまう
 
 ## テスト
 
