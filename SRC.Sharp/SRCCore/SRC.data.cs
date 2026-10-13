@@ -49,6 +49,77 @@ namespace SRCCore
             //    TerminateSRC();
         }
 
+        // シナリオフォルダの Data フォルダ直下にあるローカルデータを読み込み
+        public void LoadLocalData()
+        {
+            if (FileSystem.FileExists(ScenarioPath, @"Data\alias.txt"))
+            {
+                ALDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\alias.txt"));
+            }
+            if (FileSystem.FileExists(ScenarioPath, @"Data\sp.txt"))
+            {
+                SPDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\sp.txt"));
+            }
+            else if (FileSystem.FileExists(ScenarioPath, @"Data\mind.txt"))
+            {
+                SPDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\mind.txt"));
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\pilot.txt"))
+            {
+                PDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\pilot.txt"));
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\non_pilot.txt"))
+            {
+                NPDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\non_pilot.txt"));
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\robot.txt"))
+            {
+                UDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\robot.txt"));
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\unit.txt"))
+            {
+                UDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\unit.txt"));
+            }
+
+            GUI.DisplayLoadingProgress();
+            if (FileSystem.FileExists(ScenarioPath, @"Data\pilot_message.txt"))
+            {
+                MDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\pilot_message.txt"), false);
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\pilot_dialog.txt"))
+            {
+                DDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\pilot_dialog.txt"));
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\effect.txt"))
+            {
+                EDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\effect.txt"), true);
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\animation.txt"))
+            {
+                ADList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\animation.txt"), false);
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\ext_animation.txt"))
+            {
+                EADList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\ext_animation.txt"), false);
+            }
+
+            if (FileSystem.FileExists(ScenarioPath, @"Data\item.txt"))
+            {
+                IDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\item.txt"));
+            }
+
+            GUI.DisplayLoadingProgress();
+            IsLocalDataLoaded = true;
+        }
+
         public void LoadDataDirectory(string fpath)
         {
             var aliasFilePath = FileSystem.PathCombine(fpath, "alias.txt");
