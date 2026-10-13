@@ -22,6 +22,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp" Version="3.119.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.4" />
+    <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
+    <PackageReference Include="MeltySynth" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- SRCSound は OpenAL を使うため参照せず、MIDI の合成部分だけを共有する -->
+    <Compile Include="..\SRCSound\ISampleSource.cs" Link="Sound\ISampleSource.cs" />
+    <Compile Include="..\SRCSound\MidiSource.cs" Link="Sound\MidiSource.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -37,6 +37,21 @@ namespace SRCSharpWeb
         [JSImport("showChoice", ModuleName)]
         internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items);
 
+        [JSImport("soundPlayEncoded", ModuleName)]
+        internal static partial void SoundPlayEncoded(int channel, [JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> data, bool loop);
+
+        [JSImport("soundQueuePcm", ModuleName)]
+        internal static partial void SoundQueuePcm(int channel, [JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> samples, int channels, int sampleRate);
+
+        [JSImport("soundAhead", ModuleName)]
+        internal static partial double SoundAhead(int channel);
+
+        [JSImport("soundStop", ModuleName)]
+        internal static partial void SoundStop(int channel);
+
+        [JSImport("soundVolume", ModuleName)]
+        internal static partial void SoundVolume(double volume);
+
         [JSImport("bindCanvas", ModuleName)]
         internal static partial void BindCanvas(string id);
 

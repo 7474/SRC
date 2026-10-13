@@ -91,6 +91,7 @@ expect eval Damage(標的パイロット) > 0
 |---|---|
 | `battle-basic` | 出撃・移動・待機・ターン終了・敵フェイズ（攻撃と反撃）を 3 ターン |
 | `battle-victory` | 敵を倒し「全滅 敵」イベントで勝利してシナリオが終わるまで |
+| `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 
 ## VRT

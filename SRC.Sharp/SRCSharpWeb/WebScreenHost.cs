@@ -27,6 +27,15 @@ namespace SRCSharpWeb
         public string ScenarioRoot { get; }
 
         private readonly ConcurrentQueue<Action> uiActions = new ConcurrentQueue<Action>();
+
+        /// <summary>UI 側のスレッドで行う処理を頼む（JS を呼ぶ処理）。任意のスレッドから呼べる</summary>
+        public void Post(Action action)
+        {
+            uiActions.Enqueue(action);
+        }
+
+        /// <summary>描画の機会ごとに UI 側のスレッドで呼ばれる（音声の送り出しなど）</summary>
+        public event Action Flushed;
         private static readonly SKImageInfo FrameInfo
             = new SKImageInfo(ScreenLayout.Width, ScreenLayout.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
 
@@ -84,7 +93,22 @@ namespace SRCSharpWeb
         {
             while (uiActions.TryDequeue(out var action))
             {
-                action();
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex);
+                }
+            }
+            try
+            {
+                Flushed?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
             }
             var t = Interlocked.Exchange(ref title, null);
             if (t != null)

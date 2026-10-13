@@ -1,0 +1,11 @@
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+StartBGM bgm.mid
+PlaySound se.wav
+Talk システム
+音のテスト
+End
+Quit

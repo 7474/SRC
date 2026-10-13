@@ -44,6 +44,7 @@ async function start() {
     };
     canvas.addEventListener('mousedown', e => {
         canvas.focus();
+        resumeAudio();
         const [x, y] = position(e);
         gui.Pointer(0, x, y, e.button, e.detail || 1);
         e.preventDefault();
@@ -70,6 +71,7 @@ async function start() {
     // SRC が使うキー（矢印・Enter・Space・Esc・BackSpace・Delete）はブラウザの既定の動作（スクロールなど）を止める
     const handled = new Set([8, 13, 27, 32, 37, 38, 39, 40, 46]);
     canvas.addEventListener('keydown', e => {
+        resumeAudio();
         gui.Key(0, e.keyCode);
         if (handled.has(e.keyCode)) {
             e.preventDefault();
@@ -162,4 +164,108 @@ export function showChoice(title, items) {
         box.appendChild(list);
         buttons(box, [['キャンセル', () => close(null)]]);
     });
+}
+
+// 音声（SRCSharpWeb/WebSoundPlayer.cs）。ブラウザは操作があるまで音を鳴らさないため、最初のクリック・キー入力で開始する
+let audio;
+let master;
+const voices = new Map();
+// 鳴らした数（テスト用）。encoded: WAV・MP3、pcm: 合成した MIDI の断片
+globalThis.srcwebSound = { encoded: 0, pcm: 0 };
+
+function ensureAudio() {
+    if (!audio) {
+        audio = new AudioContext();
+        master = audio.createGain();
+        master.connect(audio.destination);
+    }
+    return audio;
+}
+
+export function resumeAudio() {
+    if (audio && audio.state === 'suspended') {
+        audio.resume();
+    }
+}
+
+export function soundStop(channel) {
+    const voice = voices.get(channel);
+    if (voice) {
+        for (const node of voice.nodes) {
+            try {
+                node.stop();
+            } catch {
+                // 開始前など
+            }
+        }
+        voices.delete(channel);
+    }
+}
+
+function newVoice(channel) {
+    soundStop(channel);
+    const voice = { nodes: new Set(), next: 0 };
+    voices.set(channel, voice);
+    return voice;
+}
+
+function startNode(voice, node, when) {
+    voice.nodes.add(node);
+    node.onended = () => voice.nodes.delete(node);
+    node.connect(master);
+    node.start(when);
+}
+
+export function soundPlayEncoded(channel, view, loop) {
+    ensureAudio();
+    const voice = newVoice(channel);
+    // MemoryView は呼び出しの間だけ有効なので複写する
+    const bytes = view.slice();
+    audio.decodeAudioData(bytes.buffer).then(buffer => {
+        if (voices.get(channel) !== voice) {
+            return;
+        }
+        const node = audio.createBufferSource();
+        node.buffer = buffer;
+        node.loop = loop;
+        startNode(voice, node, 0);
+        globalThis.srcwebSound.encoded++;
+    }).catch(e => console.warn('音声を再生できません', e));
+}
+
+export function soundQueuePcm(channel, view, channels, sampleRate) {
+    ensureAudio();
+    let voice = voices.get(channel);
+    if (!voice) {
+        voice = newVoice(channel);
+    }
+    const samples = new Float32Array(view.slice().buffer);
+    const frames = Math.floor(samples.length / channels);
+    if (frames === 0) {
+        return;
+    }
+    const buffer = audio.createBuffer(channels, frames, sampleRate);
+    for (let c = 0; c < channels; c++) {
+        const data = buffer.getChannelData(c);
+        for (let i = 0; i < frames; i++) {
+            data[i] = samples[i * channels + c];
+        }
+    }
+    const node = audio.createBufferSource();
+    node.buffer = buffer;
+    const when = Math.max(voice.next, audio.currentTime + 0.05);
+    startNode(voice, node, when);
+    voice.next = when + buffer.duration;
+    globalThis.srcwebSound.pcm++;
+}
+
+// 送ってあるがまだ鳴らしていない長さ（秒）
+export function soundAhead(channel) {
+    const voice = voices.get(channel);
+    return voice && audio ? Math.max(0, voice.next - audio.currentTime) : 0;
+}
+
+export function soundVolume(volume) {
+    ensureAudio();
+    master.gain.value = volume;
 }

@@ -2,6 +2,7 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
 const path = require('node:path');
+const { makeZip } = require('./zip');
 
 const root = path.resolve(__dirname, '..', process.env.SRCWEB_ROOT ?? '../SRCSharpWeb/bin/web/wwwroot');
 
@@ -156,4 +157,39 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
     }
     return s.terminated;
   }, { intervals: [500, 1000] }).toBe(true);
+});
+
+const corpus = path.resolve(__dirname, '../../E2E');
+const soundFont = process.env.SRC_SOUNDFONT ?? '/usr/share/sounds/sf2/TimGM6mb.sf2';
+
+function soundCounts(page) {
+  return page.evaluate(() => globalThis.srcwebSound);
+}
+
+test('効果音（WAV）を鳴らす。SoundFont が無ければ MIDI は鳴らさずに進む', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: 'sound', exact: true }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // ブラウザは操作があるまで音を鳴らさない
+  await page.locator('#screen').click({ position: { x: 600, y: 300 } });
+  await expect.poll(async () => (await soundCounts(page)).encoded).toBeGreaterThan(0);
+  await expectAdvancesWithEnter(page);
+  expect((await soundCounts(page)).pcm).toBe(0);
+});
+
+test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ page }) => {
+  test.skip(!fs.existsSync(soundFont), `SoundFont が無い: ${soundFont}`);
+  const files = ['test.eve', 'test.map', 'Sound/se.wav', 'Midi/bgm.mid']
+    .map(name => ({ name: 'サウンド/' + name, data: fs.readFileSync(path.join(corpus, 'sound', name)) }));
+  files.push({ name: 'サウンド/Midi/test.sf2', data: fs.readFileSync(soundFont) });
+  const name = 'MIDI のテスト.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files) });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#screen').click({ position: { x: 600, y: 300 } });
+  await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
