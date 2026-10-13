@@ -295,7 +295,22 @@ function buildVirtualKeys(gui) {
     };
 }
 
+// 表示言語の設定（SRCSharpWeb/WebLocalization.cs）。index.html の起動前の文言も同じキーを読む
+// .NET の UI 側のスレッドから同期で呼ばないよう Promise を返す
+export async function getLanguageSetting() {
+    try {
+        return localStorage.getItem('srcweb.language') ?? '';
+    } catch {
+        return '';
+    }
+}
+
+export async function getBrowserLanguage() {
+    return navigator.language ?? '';
+}
+
 // 文字入力・ファイル選択のモーダル（SRCSharpWeb/WebScreenHost.cs の IScreenDialogHost）
+// 見出し・ボタンの文言は .NET 側（Resources/WebStrings.resx）から渡す
 function modal(title, build) {
     return new Promise(resolve => {
         const overlay = document.createElement('div');
@@ -331,8 +346,8 @@ function buttons(box, items) {
     box.appendChild(row);
 }
 
-export function showInput(title, message, value) {
-    return modal(title || '入力', (box, close) => {
+export function showInput(title, message, value, ok, cancel) {
+    return modal(title, (box, close) => {
         const p = document.createElement('p');
         p.textContent = message;
         const input = document.createElement('input');
@@ -347,13 +362,13 @@ export function showInput(title, message, value) {
             }
         });
         box.append(p, input);
-        buttons(box, [['OK', () => close(input.value)], ['キャンセル', () => close(null)]]);
+        buttons(box, [[ok, () => close(input.value)], [cancel, () => close(null)]]);
         setTimeout(() => input.focus(), 0);
     });
 }
 
-export function showChoice(title, items) {
-    return modal(title || '選択', (box, close) => {
+export function showChoice(title, items, cancel) {
+    return modal(title, (box, close) => {
         const list = document.createElement('ul');
         list.className = 'modal-list';
         for (const item of items) {
@@ -365,7 +380,7 @@ export function showChoice(title, items) {
             list.appendChild(li);
         }
         box.appendChild(list);
-        buttons(box, [['キャンセル', () => close(null)]]);
+        buttons(box, [[cancel, () => close(null)]]);
     });
 }
 

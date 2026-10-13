@@ -194,7 +194,8 @@ button.export {
 }
 
 input[type=url],
-input[type=text] {
+input[type=text],
+select {
     font: inherit;
     color: var(--text);
     background: var(--well);
@@ -223,6 +224,12 @@ input[type=file]::file-selector-button {
 .add-catalog {
     display: flex;
     gap: 8px;
+}
+
+.language {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .add-catalog input {

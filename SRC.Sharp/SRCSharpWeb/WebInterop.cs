@@ -32,10 +32,10 @@ namespace SRCSharpWeb
         internal static partial void SetDocumentTitle(string title);
 
         [JSImport("showInput", ModuleName)]
-        internal static partial Task<string> ShowInput(string title, string message, string value);
+        internal static partial Task<string> ShowInput(string title, string message, string value, string ok, string cancel);
 
         [JSImport("showChoice", ModuleName)]
-        internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items);
+        internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items, string cancel);
 
         [JSImport("soundPlayEncoded", ModuleName)]
         internal static partial void SoundPlayEncoded(int channel, [JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> data, bool loop);

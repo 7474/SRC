@@ -35,7 +35,8 @@ SRC#Web（ブラウザ版）は静的ファイルだけで動くため、どこ�
   "catalogs": ["scenarios/catalog.json", "https://assets.example.com/catalog.json"],
   "allowUserArchives": true,
   "allowUserCatalogs": true,
-  "start": null
+  "start": null,
+  "language": null
 }
 ```
 
@@ -46,6 +47,7 @@ SRC#Web（ブラウザ版）は静的ファイルだけで動くため、どこ�
 | `allowUserArchives` | `true` | 利用者が zip（シナリオ・素材）を追加できるか |
 | `allowUserCatalogs` | `true` | 利用者がカタログの URL を追加できるか。URL の `catalog`・`archive` パラメータも、これが `true` のときだけ使える |
 | `start` | なし | 開いたらすぐに始めるシナリオ（カタログの `id`）。シナリオ 1 本だけを配信するサイト向け |
+| `language` | なし（日本語） | 表示言語の既定（`ja`・`en`・`auto`）。利用者が画面で選んだ言語が優先する（[多言語対応](../i18n.md#srcweb)） |
 
 ## カタログ（catalog.json）
 

@@ -5,6 +5,7 @@
 @inject HttpClient Http
 @inject IJSRuntime JS
 @inject NavigationManager Nav
+@inject IStringLocalizer<WebStrings> L
 @inject Microsoft.Extensions.Logging.ILoggerFactory LoggerFactory
 
 @if (mode == Mode.Playing || mode == Mode.Ended)
@@ -15,12 +16,12 @@
         @if (mode == Mode.Ended)
         {
             <div class="ended">
-                <div class="dialog" role="dialog" aria-label="終了">
+                <div class="dialog" role="dialog" aria-label="@L["Ended"]">
                     <div class="titlebar">SRC#Web</div>
                     <div class="dialog-body">
-                        <p>シナリオが終了しました。</p>
+                        <p>@L["ScenarioEnded"]</p>
                         <div class="dialog-buttons">
-                            <button @onclick="BackToMenu">シナリオ選択へ戻る</button>
+                            <button @onclick="BackToMenu">@L["BackToMenu"]</button>
                         </div>
                     </div>
                 </div>
@@ -32,17 +33,17 @@
         @* 仮想キー（タッチの端末向け）。中身は srcweb.js が作る *@
         <div id="virtual-keys" class="virtual-keys" hidden></div>
         <div class="system-menu">
-            <button id="system-menu-button" class="system-button" title="システムメニュー" aria-label="システムメニュー"
+            <button id="system-menu-button" class="system-button" title="@L["SystemMenu"]" aria-label="@L["SystemMenu"]"
                     aria-haspopup="menu" aria-expanded="@(systemMenuOpen ? "true" : "false")" @onclick="ToggleSystemMenu">≡</button>
             @if (systemMenuOpen)
             {
                 <div class="menu-backdrop" @onclick="CloseSystemMenu"></div>
                 <div class="popup-menu" role="menu">
-                    <button role="menuitem" @onclick="AskBackToMenu">シナリオ選択へ戻る…</button>
-                    <button role="menuitem" @onclick="ToggleFullscreenAsync">全画面表示の切り替え</button>
-                    <button role="menuitem" @onclick="ToggleVirtualKeysAsync">仮想キーの表示の切り替え</button>
+                    <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
+                    <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
+                    <button role="menuitem" @onclick="ToggleVirtualKeysAsync">@L["MenuVirtualKeys"]</button>
                     <hr />
-                    <button role="menuitem" @onclick="CloseSystemMenu">閉じる</button>
+                    <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
             }
         </div>
@@ -50,13 +51,13 @@
     @if (confirmingBack)
     {
         <div class="modal">
-            <div class="dialog" role="alertdialog" aria-label="確認">
+            <div class="dialog" role="alertdialog" aria-label="@L["Confirm"]">
                 <div class="titlebar">SRC#Web</div>
                 <div class="dialog-body">
-                    <p>ゲームを終了してシナリオ選択へ戻りますか？<br />セーブしていない進行状況は失われます。</p>
+                    <p>@L["ConfirmBackToMenu"]<br />@L["UnsavedProgressLost"]</p>
                     <div class="dialog-buttons">
-                        <button @onclick="BackToMenu">はい</button>
-                        <button id="confirm-no" @onclick="CancelBack">いいえ</button>
+                        <button @onclick="BackToMenu">@L["Yes"]</button>
+                        <button id="confirm-no" @onclick="CancelBack">@L["No"]</button>
                     </div>
                 </div>
             </div>
@@ -78,10 +79,10 @@ else
             @foreach (var catalog in catalogs)
             {
                 <section class="catalog">
-                    <h2>@(catalog.Name ?? "登録済シナリオ")</h2>
+                    <h2>@(catalog.Name ?? L["RegisteredScenarios"])</h2>
                     @if (!catalog.Scenarios.Any())
                     {
-                        <p>ありません。</p>
+                        <p>@L["NoItems"]</p>
                     }
                     @* E2E テストは最初のカタログを #catalog で探す *@
                     <ul class="items" id="@(catalogs.IndexOf(catalog) == 0 ? "catalog" : null)">
@@ -93,7 +94,7 @@ else
                                 {
                                     <span class="note">@entry.Author</span>
                                 }
-                                <a class="link" href="@PlayLink(entry)" title="このシナリオを直接開くリンク">リンク</a>
+                                <a class="link" href="@PlayLink(entry)" title="@L["DirectLinkTitle"]">@L["DirectLink"]</a>
                                 @if (!string.IsNullOrEmpty(entry.License))
                                 {
                                     <span class="note">@entry.License</span>
@@ -103,7 +104,7 @@ else
                     </ul>
                     @if (userCatalogs.Contains(catalog.Url))
                     {
-                        <button class="delete" @onclick="() => RemoveCatalogAsync(catalog.Url)">このカタログを外す</button>
+                        <button class="delete" @onclick="() => RemoveCatalogAsync(catalog.Url)">@L["RemoveCatalog"]</button>
                     }
                 </section>
             }
@@ -114,21 +115,21 @@ else
             @if (site.AllowUserCatalogs)
             {
                 <section>
-                    <h2>カタログを追加</h2>
-                    <p class="note">シナリオを配信しているサイトのカタログ（catalog.json）の URL を追加できます。配信元は CORS を許可している必要があります。</p>
+                    <h2>@L["AddCatalog"]</h2>
+                    <p class="note">@L["AddCatalogNote"]</p>
                     <form class="add-catalog" @onsubmit="AddCatalogAsync">
                         <input id="catalog-url" type="url" placeholder="https://example.com/catalog.json" @bind="newCatalogUrl" />
-                        <button type="submit">追加</button>
+                        <button type="submit">@L["Add"]</button>
                     </form>
                 </section>
             }
             @if (site.AllowUserArchives)
             {
                 <section>
-                    <h2>追加したアーカイブ</h2>
-                    <p class="note">シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</p>
+                    <h2>@L["AddedArchives"]</h2>
+                    <p class="note">@L["AddArchiveNote"]</p>
                     <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
-                    <p class="note">素材（汎用グラフィック集など）の zip を追加すると、どのシナリオにも重ねて使います。</p>
+                    <p class="note">@L["AddAssetNote"]</p>
                     <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
                     <ul class="items" id="archives">
                         @foreach (var archive in archives)
@@ -136,7 +137,7 @@ else
                             <li>
                                 @if (archive.Kind == CatalogEntry.KindAsset)
                                 {
-                                    <span class="asset">素材</span>
+                                    <span class="asset">@L["Asset"]</span>
                                     <span>@archive.Name</span>
                                 }
                                 else
@@ -144,12 +145,20 @@ else
                                     <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
                                 }
                                 <span class="size">@FormatSize(archive.Size)</span>
-                                <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">削除</button>
+                                <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">@L["Delete"]</button>
                             </li>
                         }
                     </ul>
                 </section>
             }
+            <section class="language">
+                <label for="language">@L["Language"]</label>
+                <select id="language" value="@WebLocalization.SelectorValue" @onchange="ChangeLanguageAsync">
+                    <option value="ja">日本語</option>
+                    <option value="en">English</option>
+                    <option value="auto">@L["LanguageAuto"]</option>
+                </select>
+            </section>
         }
         else if (mode == Mode.ChooseEvent)
         {
@@ -157,29 +166,29 @@ else
                 <h2>@choosingTitle</h2>
                 @if (saves.Count > 0)
                 {
-                    <h3>セーブデータから再開</h3>
+                    <h3>@L["ResumeFromSave"]</h3>
                     <ul class="items" id="saves">
                         @foreach (var save in saves)
                         {
                             <li>
                                 <button @onclick="() => StartAsync(Path.Combine(scenarioDir, save.Name))">@save.Name</button>
                                 <span class="size">@FormatTime(save.Updated)</span>
-                                <button class="export" @onclick="() => ExportSaveAsync(save)">書き出し</button>
-                                <button class="delete" @onclick="() => DeleteSaveAsync(save)">削除</button>
+                                <button class="export" @onclick="() => ExportSaveAsync(save)">@L["Export"]</button>
+                                <button class="delete" @onclick="() => DeleteSaveAsync(save)">@L["Delete"]</button>
                             </li>
                         }
                     </ul>
                 }
-                <p class="note">書き出したセーブデータ（.srcs・.srcq）を読み込めます。</p>
+                <p class="note">@L["ImportSaveNote"]</p>
                 <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq" multiple />
-                <h3>新しく始める</h3>
+                <h3>@L["StartNew"]</h3>
                 <ul class="items" id="events">
                     @foreach (var eve in eventFiles)
                     {
                         <li><button @onclick="() => StartAsync(Path.Combine(scenarioDir, eve))">@eve</button></li>
                     }
                 </ul>
-                <button @onclick="BackToMenu">戻る</button>
+                <button @onclick="BackToMenu">@L["Back"]</button>
             </section>
         }
         </div>
@@ -204,7 +213,7 @@ else
     }
 
     private Mode mode = Mode.Loading;
-    private string status = "読み込み中…";
+    private string status;
     private SiteConfig site = new SiteConfig();
     private List<Catalog> catalogs = new List<Catalog>();
     private List<string> catalogErrors = new List<string>();
@@ -266,6 +275,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        status = L["Loading"];
         try
         {
             await WebFonts.LoadAsync(Http);
@@ -316,7 +326,7 @@ else
                 var entry = FindEntry(id);
                 if (entry == null)
                 {
-                    status = $"シナリオ「{id}」がカタログにありません。";
+                    status = L["ScenarioNotInCatalog", id];
                 }
                 else
                 {
@@ -326,7 +336,7 @@ else
         }
         catch (Exception ex)
         {
-            status = "初期化に失敗しました: " + ex.Message;
+            status = L["InitFailed", ex.Message];
             Console.Error.WriteLine(ex);
         }
     }
@@ -358,7 +368,7 @@ else
             }
             catch (Exception ex)
             {
-                catalogErrors.Add($"カタログ {url} を読めませんでした: {ex.Message}");
+                catalogErrors.Add(L["CatalogLoadFailed", url, ex.Message]);
                 Console.Error.WriteLine(ex);
             }
         }
@@ -403,7 +413,7 @@ else
         }
         catch (Exception ex)
         {
-            status = $"カタログ {url} を読めませんでした: {ex.Message}";
+            status = L["CatalogLoadFailed", url, ex.Message];
         }
     }
 
@@ -425,7 +435,7 @@ else
     {
         foreach (var file in e.GetMultipleFiles(32))
         {
-            status = $"{file.Name} を追加しています…";
+            status = L["AddingArchive", file.Name];
             StateHasChanged();
             using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
             using var buffer = new MemoryStream();
@@ -460,7 +470,7 @@ else
         {
             foreach (var archive in archives.Where(x => x.Kind == CatalogEntry.KindAsset))
             {
-                status = $"素材 {archive.Name} を展開しています…";
+                status = L["ExtractingAsset", archive.Name];
                 StateHasChanged();
                 var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name);
                 await Task.Run(() => ScenarioArchive.ExtractAsset(data));
@@ -471,21 +481,21 @@ else
             var asset = FindEntry(id, CatalogEntry.KindAsset);
             if (asset == null)
             {
-                status = $"素材「{id}」がカタログにありません。";
+                status = L["AssetNotInCatalog", id];
                 return false;
             }
             try
             {
-                status = $"素材 {asset.Title} を読み込んでいます…";
+                status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
                 var data = await Http.GetByteArrayAsync(asset.Archive);
-                status = $"素材 {asset.Title} を展開しています…";
+                status = L["ExtractingAsset", asset.Title];
                 StateHasChanged();
                 await Task.Run(() => ScenarioArchive.ExtractAsset(data, asset.Root));
             }
             catch (Exception ex)
             {
-                status = $"素材 {asset.Title} を読み込めませんでした: " + ex.Message;
+                status = L["AssetLoadFailed", asset.Title, ex.Message];
                 Console.Error.WriteLine(ex);
                 return false;
             }
@@ -506,10 +516,10 @@ else
     {
         try
         {
-            status = $"{title} を読み込んでいます…";
+            status = L["LoadingArchive", title];
             StateHasChanged();
             var zip = await fetch();
-            status = $"{title} を展開しています…";
+            status = L["ExtractingArchive", title];
             StateHasChanged();
             scenarioId = id;
             scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
@@ -518,7 +528,7 @@ else
             await RestoreSavesAsync();
             if (eventFiles.Count == 0)
             {
-                status = $"{title} にシナリオ（.eve）がありません。";
+                status = L["NoEventFiles", title];
             }
             else if (saves.Count == 0 && (!string.IsNullOrEmpty(eve) && defaultEve == eve || eventFiles.Count == 1))
             {
@@ -533,7 +543,7 @@ else
         }
         catch (Exception ex)
         {
-            status = $"{title} を読み込めませんでした: " + ex.Message;
+            status = L["LoadFailed", title, ex.Message];
             Console.Error.WriteLine(ex);
         }
     }
@@ -633,7 +643,7 @@ else
         // canvas を表示してから始める
         await Task.Delay(1);
         Directory.CreateDirectory(ScenarioArchive.AppPath);
-        var host = new WebScreenHost(scenarioDir);
+        var host = new WebScreenHost(scenarioDir, L);
         // セーブデータはイベントファイルのフォルダと、保存のダイアログで選んだフォルダに書かれる
         saveSync?.Watch(Path.GetDirectoryName(evePath));
         var sync = saveSync;
@@ -669,6 +679,13 @@ else
         }
         // ゲームスレッドは止められないため、ページを読み込み直す
         await SyncSavesAsync();
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
+    /// <summary>表示言語を保存し、読み込み直して反映する（カルチャは起動時にしか変えられない）</summary>
+    private async Task ChangeLanguageAsync(ChangeEventArgs e)
+    {
+        await JS.InvokeVoidAsync("localStorage.setItem", WebLocalization.StorageKey, e.Value?.ToString() ?? "");
         await JS.InvokeVoidAsync("location.reload");
     }
 

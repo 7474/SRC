@@ -31,6 +31,9 @@ namespace SRCSharpWeb
         /// <summary>開いたらすぐに始めるシナリオ（カタログの id）。シナリオ 1 本だけを配信するサイト向け</summary>
         public string Start { get; set; }
 
+        /// <summary>表示言語の既定（"ja" / "en" / "auto"）。利用者が画面で選んだ言語が優先する</summary>
+        public string Language { get; set; }
+
         public static async Task<SiteConfig> LoadAsync(HttpClient http)
         {
             try

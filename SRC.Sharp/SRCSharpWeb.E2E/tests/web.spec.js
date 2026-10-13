@@ -101,6 +101,26 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await attachScreen(page, testInfo, 'battle-basic');
 });
 
+test('表示言語を英語にし、選択欄で日本語に戻す', async ({ page }) => {
+  // 未設定のときだけ英語にする（選択欄で変えた値は再読み込み後も残す）
+  await page.addInitScript(() => {
+    if (localStorage.getItem('srcweb.language') === null) {
+      localStorage.setItem('srcweb.language', 'en');
+    }
+  });
+  await open(page);
+  await expect(page.getByRole('heading', { name: 'Bundled scenarios' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Added archives' })).toBeVisible();
+  await expect(page.locator('#language')).toHaveValue('en');
+  expect(await page.evaluate(() => document.documentElement.lang)).toBe('en');
+
+  await page.locator('#language').selectOption('ja');
+  // ページが読み込み直される
+  await expect(page.getByRole('heading', { name: '登録済シナリオ' })).toBeVisible({ timeout: 180 * 1000 });
+  await expect(page.locator('#language')).toHaveValue('ja');
+  expect(await page.evaluate(() => localStorage.getItem('srcweb.language'))).toBe('ja');
+});
+
 test('アーカイブを追加し、再読み込み後もプレイできる', async ({ page }, testInfo) => {
   const name = 'テスト追加.zip';
   await open(page);
