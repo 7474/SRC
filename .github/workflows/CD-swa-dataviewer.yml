@@ -48,11 +48,10 @@ jobs:
         uses: actions/checkout@v7
       - run: npm ci
         working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
+      # percy/exec-action は公開を終えたため、devDependencies の @percy/cli で直接実行する
       - name: Percy exec Cypress run
-        uses: percy/exec-action@v0.3.1
-        with:
-          working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
-          command: 'cypress run --record'
+        working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
+        run: npx percy exec -- cypress run --record
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
