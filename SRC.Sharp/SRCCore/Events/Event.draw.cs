@@ -18,9 +18,10 @@ namespace SRCCore.Events
         // 描画の基準座標位置を復元
         public void RestoreBasePoint()
         {
-            if (BasePointIndex < 0)
+            // 元の SRC と同じく、先頭（0）以下なら末尾（UBound）に戻る
+            if (BasePointIndex <= 0)
             {
-                BasePointIndex = SavedBaseX.Length;
+                BasePointIndex = SavedBaseX.Length - 1;
             }
 
             BaseX = SavedBaseX[BasePointIndex];

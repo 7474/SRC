@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using SRCCore.Events;
 using SRCCore.Expressions;
@@ -82,8 +83,9 @@ namespace SRCCore
 
                 stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data, Formatting.Indented)));
             }
-            catch
+            catch (Exception ex)
             {
+                LogError(ex);
                 GUI.ErrorMessage("セーブ中にエラーが発生しました");
             }
         }
@@ -210,8 +212,9 @@ namespace SRCCore
                 Event.LoadEventData("", load_mode: "");
                 GUI.DisplayLoadingProgress();
             }
-            catch
+            catch (Exception ex)
             {
+                LogError(ex);
                 GUI.ErrorMessage("ロード中にエラーが発生しました");
                 TerminateSRC();
             }
@@ -276,8 +279,9 @@ namespace SRCCore
                     IsQuickSaveDataAvailable = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                LogError(ex);
                 GUI.ErrorMessage("セーブ中にエラーが発生しました");
             }
 
@@ -557,8 +561,9 @@ namespace SRCCore
                     IsQuickSaveDataAvailable = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                LogError(ex);
                 GUI.ErrorMessage("ロード中にエラーが発生しました");
                 TerminateSRC();
             }
