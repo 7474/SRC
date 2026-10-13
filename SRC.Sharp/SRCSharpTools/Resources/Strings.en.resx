@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: authoring tools for SRC# data and scenarios
+
+Usage:
+  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file]
+      Check data (*.txt) and events (*.eve). Exit code 1 if problems are found
+  srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--steps count]
+      Run a scenario without a screen. Without --script, advance messages and pick the first choice
+  srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
+      List unit data stats and outliers
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Debugger (Debug Adapter Protocol, stdio)
+
+Common options:
+  --lang ja|en|auto
+      Display language. Can also be set with the SRCSHARP_LANG environment variable (the option wins). Default is ja; auto follows the OS setting
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Unknown command: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Unknown language: {0} (one of ja, en, auto). Falling back to Japanese</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>Checked {0} files, {1} problems</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Specify exactly one event file</value>
+  </data>
+</root>

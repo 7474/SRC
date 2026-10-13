@@ -20,5 +20,31 @@ namespace SRCTestBlazor.Models
         public bool ShowRawButton { get; set; } = true;
         public bool ShowPilotMessage { get; set; } = true;
         public DataDisplayOrder DataDisplayOrder { get; set; } = DataDisplayOrder.UnitFirst;
+        /// <summary>表示の言語（ja・en・auto）。auto はブラウザの設定に従う。変えたらページを再読み込みする</summary>
+        public string Language { get; set; } = UiLanguage.Japanese;
+    }
+
+    public static class UiLanguage
+    {
+        public const string Japanese = "ja";
+        public const string English = "en";
+        public const string Auto = "auto";
+
+        /// <summary>
+        /// 言語の設定から、起動時に設定するカルチャ名を返す。auto は null（ブラウザの設定のまま）。
+        /// 未設定や不明な値は日本語
+        /// </summary>
+        public static string ToCultureName(string language)
+        {
+            switch (language)
+            {
+                case English:
+                    return "en-US";
+                case Auto:
+                    return null;
+                default:
+                    return "ja-JP";
+            }
+        }
     }
 }

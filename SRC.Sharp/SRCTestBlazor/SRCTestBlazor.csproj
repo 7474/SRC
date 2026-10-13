@@ -5,6 +5,11 @@
 		<Version>$(SrcSharpAppVersion)</Version>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 
+		<!-- 表示の言語。既定（ニュートラル）は日本語で、英語は Resources/UIStrings.en.resx -->
+		<NeutralLanguage>ja</NeutralLanguage>
+		<SatelliteResourceLanguages>ja;en</SatelliteResourceLanguages>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+
 		<NpmRoot>Npm\</NpmRoot>
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(NpmRoot)node_modules\**</DefaultItemExcludes>
 	</PropertyGroup>
@@ -17,6 +22,7 @@
 		<PackageReference Include="Markdig" Version="1.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.9" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="ShiftJISExtension" Version="1.1.0" />
 	</ItemGroup>

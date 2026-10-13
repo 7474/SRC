@@ -11,6 +11,9 @@
     <AssemblyName>srcsharp</AssemblyName>
     <Description>SRC# のデータ・シナリオの作成支援ツール（lint・自動プレイ・バランス集計・Language Server・デバッガ）</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- 表示の言語。既定（ニュートラル）は日本語で、英語は Resources/Strings.en.resx -->
+    <NeutralLanguage>ja</NeutralLanguage>
+    <SatelliteResourceLanguages>ja;en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,14 +9,14 @@
             <p>SRC#DataViewer</p>
         </div>
         <div class="message-body">
-            <p>SRC向けのデータのビューワです。</p>
-            <p>Titlesメニューから<a href="http://www.gsc.ne.jp/" target="_blank">GSC</a>に投稿されたデータを選択するか、以下のフォームで任意のファイルを読み込んでください。</p>
+            <p>@L["LoadDataIntro"]</p>
+            <p>@L["LoadDataInstructionsBefore"]<a href="http://www.gsc.ne.jp/" target="_blank">GSC</a>@L["LoadDataInstructionsAfter"]</p>
         </div>
     </div>
     <div class="content">
         <InputFile OnChange="OnInputFileChange" multiple />
-        <p>現在対応しているデータファイルは<code>robot.txt, unit.txt, pilot.txt, pilot_message.txt, pilot_dialog.txt, item.txt</code>の一部分です。</p>
-        <p>データフォルダ内のファイルを全選択するなど、複数のファイルを一括読み込みできます。対応していないファイルは無視されます。</p>
+        <p>@L["SupportedFilesBefore"]<code>robot.txt, unit.txt, pilot.txt, pilot_message.txt, pilot_dialog.txt, item.txt</code>@L["SupportedFilesAfter"]</p>
+        <p>@L["MultipleFilesHint"]</p>
     </div>
 </section>
 
