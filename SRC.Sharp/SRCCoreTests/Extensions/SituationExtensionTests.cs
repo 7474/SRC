@@ -120,5 +120,46 @@ namespace SRCCore.Extensions.Tests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Message.StartsWith("攻撃メッセージ"));
         }
+
+        // ──────────────────────────────────────────────
+        // ユニット限定のサブシチュエーション（#555）
+        // ──────────────────────────────────────────────
+
+        private static Units.Unit CreateUnit(SRC src, string name, string unitClass)
+        {
+            var ud = src.UDList.Add(name);
+            ud.HP = 1000;
+            ud.EN = 100;
+            ud.Class = unitClass;
+            var u = src.UList.Add(name, 0, "味方");
+            u.Update();
+            return u;
+        }
+
+        [TestMethod]
+        public void SelectMessage_UnitClassSubSituation_Matches()
+        {
+            // 元の SRC は全シチュエーション×全サブシチュエーションで照合する。
+            // ユニット名以外（ここではユニットクラス）のサブシチュエーションでも一致する
+            var src = CreateSRC();
+            var u = CreateUnit(src, "テスト機", "テストクラス");
+            var items = CreateItems(("回避(テストクラス)", "クラス限定の回避メッセージ"));
+
+            var result = items.SelectMessage(src, "回避", u);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("クラス限定の回避メッセージ", result.Message);
+        }
+
+        [TestMethod]
+        public void SelectMessage_UnitNameSubSituation_Matches()
+        {
+            var src = CreateSRC();
+            var u = CreateUnit(src, "テスト機", "テストクラス");
+            var items = CreateItems(("回避(テスト機)", "機体限定の回避メッセージ"));
+
+            var result = items.SelectMessage(src, "回避", u);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("機体限定の回避メッセージ", result.Message);
+        }
     }
 }

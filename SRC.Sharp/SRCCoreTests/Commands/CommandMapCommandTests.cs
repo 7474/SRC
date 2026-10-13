@@ -17,7 +17,27 @@ namespace SRCCore.Commands.Tests
     [TestClass]
     public class CommandMapCommandTests
     {
-        private SRC CreateSrc() => new SRC { GUI = new MockGUI() };
+        // AutoDefense のトグルは SystemConfig.Save() で srcs.json を書く。
+        // 既定の AppPath（ビルド出力）の srcs.json を上書きしないよう、テストごとの一時フォルダに書く（#1141）
+        private string appPath;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            appPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "SRCCoreTests-" + System.Guid.NewGuid().ToString("N"));
+            System.IO.Directory.CreateDirectory(appPath);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            if (System.IO.Directory.Exists(appPath))
+            {
+                System.IO.Directory.Delete(appPath, true);
+            }
+        }
+
+        private SRC CreateSrc() => new SRC { GUI = new MockGUI(), SystemConfig = new Config.LocalFileConfig { AppPath = appPath } };
 
         // ──────────────────────────────────────────────
         // 共通: MapCommand は常に CommandState を "ユニット選択" に設定する
@@ -88,7 +108,7 @@ namespace SRCCore.Commands.Tests
         [TestMethod]
         public void MapCommand_AutoDefenseCmdID_TogglesAutoDefense()
         {
-            // AutoDefense のトグル動作を確認 (LocalFileConfig.Save() は AppPath = "" に書き込む)
+            // AutoDefense のトグル動作を確認（LocalFileConfig.Save() はテストごとの一時フォルダに書き込む）
             var src = CreateSrc();
             var initial = src.SystemConfig.AutoDefense;
             try

@@ -54,6 +54,31 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void FontCmd_Regular_ClearsBoldAndItalic()
+        {
+            // 元の SRC（CmdData.cls の ExecFontCmd）は Regular で太字・斜体を解除する（#905）
+            var (src, gui) = CreateSrc();
+            gui.CurrentPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 16, Bold = true, Italic = true };
+            DrawFontOption captured = null;
+            gui.SetDrawFontHandler = o => captured = o;
+            CreateCmd(src, "Font Regular").Exec();
+            Assert.IsNotNull(captured);
+            Assert.IsFalse(captured.Bold);
+            Assert.IsFalse(captured.Italic);
+        }
+
+        [TestMethod]
+        public void FontCmd_BoldAfterRegular_SetsBoldOnly()
+        {
+            var (src, gui) = CreateSrc();
+            DrawFontOption captured = null;
+            gui.SetDrawFontHandler = o => captured = o;
+            CreateCmd(src, "Font Regular Bold").Exec();
+            Assert.IsTrue(captured.Bold);
+            Assert.IsFalse(captured.Italic);
+        }
+
+        [TestMethod]
         public void FontCmd_SizeAndFamily_StartsFromCurrentPaintFont()
         {
             var (src, gui) = CreateSrc();
