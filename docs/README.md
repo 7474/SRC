@@ -13,6 +13,7 @@
 ### 🖥️ GUI / GUI
 
 - **[GUI 実装移行の検討](./gui/gui-migration-study.md)** — WinForms から新規 GUI 実装へ移行する場合の候補比較と移行手順
+- **[E2E テスト方針](./gui/e2e-testing.md)** — HeadlessGUI によるシナリオ実行テストと、フロントエンドごとの UI テストの方針
 
 ## 🔗 関連リンク / Related Links
 

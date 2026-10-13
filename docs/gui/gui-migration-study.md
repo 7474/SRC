@@ -47,7 +47,7 @@ flowchart LR
     Skia[SkiaSharp で画面バッファ描画<br/>マップ・ユニット・Paint 系コマンド]
   end
   subgraph Front[フロントエンド]
-    Ava[SRCSharpAvalonia]
+    Ava[SRC#Avalonia<br/>SRCSharpAvalonia]
     WF[SRCSharpForm 既存・並行稼働]
     Web[SRCTestBlazor 将来]
   end
@@ -65,9 +65,11 @@ flowchart LR
 
 1. **Core の Drawing 非依存化**（対応済み）: `IGUI.CurrentPaintFont` を自前型 `PaintFont` に置換、`ColorTranslator.FromHtml` 相当を `ColorExtension.FromHexString` に自前実装し、SRCCore から `System.Drawing.Common` を外した。`Color` / `Point` 等の System.Drawing.Primitives の型は引き続き使用する
 2. **Linux 上でのテスト実行**（対応済み）: CI に `SRCCoreTests` を `ubuntu-latest` で実行するジョブ `test-srccore-linux` を追加した
-3. **スレッドモデル分離**: まず WinForms 上でゲームスレッド方式に切り替え、挙動不変を確認する。最大のリスク要因のため、新 UI 作成前に既存 UI で検証する
+3. **スレッドモデル分離**（実装済み・Windows での確認待ち）: まず WinForms 上でゲームスレッド方式に切り替え、挙動不変を確認する。最大のリスク要因のため、新 UI 作成前に既存 UI で検証する
+    - `SRCCore.Threading`（`GameThread` / `CoreThreadProxy` / `CoreThreading`）を追加し、SRC#Form は起動引数 `--game-thread` を付けた場合のみゲームスレッドで動く（既定は従来どおり）
+    - Linux ではヘッドレス E2E テストでスレッド分離あり／なしの GUI 呼び出しが一致することを確認済み。詳細は [E2E テスト方針](./e2e-testing.md)
 4. **描画層の切り出し**: `SRCSharpFormGUI.draw.cs`、`Forms/Main.guimap.cs`、`Forms/Main.guiscrean.cs` を SkiaSharp ベースへ移す
-5. **Avalonia 版の作成**: メイン画面 → メッセージ → リストボックス類 → ステータス → 設定の順。UI テストは `Avalonia.Headless` で書き、WinAppDriver テストを置き換える
+5. **Avalonia 版の作成**: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作る。メイン画面 → メッセージ → リストボックス類 → ステータス → 設定の順。UI テストは `Avalonia.Headless` で書き、WinAppDriver テストを置き換える
 6. **音声の差し替え**: NAudio の出力部をクロスプラットフォームなライブラリ（OpenAL 系、SDL 系等）で `IPlaySound` の別実装として用意する
 7. **（任意）Web 版**: 3 で分離したゲームスレッドを、WASM 向けには `IGUI` の非同期版で置き換えるかをこの時点で判断する
 

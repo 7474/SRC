@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
+using SRCCore.Threading;
 using SRCCore.Units;
 using SRCCore.VB;
 using SRCSharpForm.Forms;
@@ -132,6 +133,32 @@ namespace SRCSharpForm
             SRC = src;
         }
 
+        /// <summary>
+        /// 設定されている場合、SRCCore をゲームスレッドで実行する。
+        /// </summary>
+        public CoreThreading Threading { get; set; }
+
+        /// <summary>
+        /// UI のイベントから SRCCore の処理を実行する。
+        /// ゲームスレッドを使う場合はゲームスレッドのキューに追加し、使わない場合はその場で実行する。
+        /// </summary>
+        public void RunOnCore(Action action)
+        {
+            if (Threading == null)
+            {
+                action();
+            }
+            else
+            {
+                Threading.Post(action);
+            }
+        }
+
+        private T ForCore<T>(T target) where T : class
+        {
+            return Threading?.Wrap(target) ?? target;
+        }
+
         public void LoadMainFormAndRegisterFlash()
         {
             imageBuffer = new ImageBuffer(SRC);
@@ -139,10 +166,11 @@ namespace SRCSharpForm
             MainForm = new frmMain()
             {
                 SRC = SRC,
+                FormGUI = this,
             };
-            SRC.GUIMap = MainForm;
-            SRC.GUIStatus = MainForm;
-            SRC.GUIScrean = MainForm;
+            SRC.GUIMap = ForCore<IGUIMap>(MainForm);
+            SRC.GUIStatus = ForCore<IGUIStatus>(MainForm);
+            SRC.GUIScrean = ForCore<IGUIScrean>(MainForm);
             MainForm.Init(imageBuffer);
 
             frmListBox = new frmListBox()

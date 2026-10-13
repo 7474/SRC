@@ -60,6 +60,7 @@ namespace SRCSharpForm
             mnuMapCommand.Renderer = sharpRenderer;
         }
         public SRCCore.SRC SRC { get; set; }
+        public SRCSharpFormGUI FormGUI { get; set; }
         public IGUI GUI => SRC.GUI;
         public Map Map => SRC.Map;
         public SRCCore.Commands.Command Commands => SRC.Commands;
@@ -127,7 +128,7 @@ namespace SRCSharpForm
                         if (GUI.MapX > 1)
                         {
                             GUI.MapX = (GUI.MapX - 1);
-                            GUI.RefreshScreen();
+                            FormGUI.RunOnCore(() => GUI.RefreshScreen());
                         }
                         break;
 
@@ -135,7 +136,7 @@ namespace SRCSharpForm
                         if (GUI.MapY > 1)
                         {
                             GUI.MapY = (GUI.MapY - 1);
-                            GUI.RefreshScreen();
+                            FormGUI.RunOnCore(() => GUI.RefreshScreen());
                         }
                         break;
 
@@ -143,7 +144,7 @@ namespace SRCSharpForm
                         if (GUI.MapX < HScrollBar.Maximum - HScrollBar.LargeChange + 1)
                         {
                             GUI.MapX = (GUI.MapX + 1);
-                            GUI.RefreshScreen();
+                            FormGUI.RunOnCore(() => GUI.RefreshScreen());
                         }
                         break;
 
@@ -151,7 +152,7 @@ namespace SRCSharpForm
                         if (GUI.MapY < VScrollBar.Maximum - VScrollBar.LargeChange + 1)
                         {
                             GUI.MapY = (GUI.MapY + 1);
-                            GUI.RefreshScreen();
+                            FormGUI.RunOnCore(() => GUI.RefreshScreen());
                         }
                         break;
 
@@ -202,13 +203,13 @@ namespace SRCSharpForm
                 if (IsRightClick)
                 {
                     // 右ボタンでキャンセル
-                    Commands.CancelCommand();
+                    FormGUI.RunOnCore(() => Commands.CancelCommand());
                     IsRightClick = false;
                     return;
                 }
 
                 //// マップコマンドを実行
-                Commands.MapCommand(uiCommand);
+                FormGUI.RunOnCore(() => Commands.MapCommand(uiCommand));
             }
         }
 
@@ -225,13 +226,13 @@ namespace SRCSharpForm
                 if (IsRightClick)
                 {
                     // 右ボタンでキャンセル
-                    Commands.CancelCommand();
+                    FormGUI.RunOnCore(() => Commands.CancelCommand());
                     IsRightClick = false;
                     return;
                 }
 
                 // ユニットコマンドを実行
-                Commands.UnitCommand(uiCommand);
+                FormGUI.RunOnCore(() => Commands.UnitCommand(uiCommand));
             }
         }
 
@@ -350,11 +351,14 @@ namespace SRCSharpForm
 
             var xx = GUI.PixelToMapX(X);
             var yy = GUI.PixelToMapY(Y);
-            var mapCell = Map.CellAtPoint(xx, yy);
-            var cellUnit = Map.UnitAtPoint(xx, yy);
-            Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
+            FormGUI.RunOnCore(() =>
+            {
+                var mapCell = Map.CellAtPoint(xx, yy);
+                var cellUnit = Map.UnitAtPoint(xx, yy);
+                Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
 
-            Commands.ProceedInput(button, mapCell, cellUnit);
+                Commands.ProceedInput(button, mapCell, cellUnit);
+            });
         }
 
         // マップ画面上でダブルクリック
@@ -375,20 +379,23 @@ namespace SRCSharpForm
                 if (GUI.MouseButton == GuiButton.Right)
                 {
                     // 右クリック
-                    switch (Commands.CommandState ?? "")
+                    FormGUI.RunOnCore(() =>
                     {
-                        case "マップコマンド":
-                            Commands.CommandState = "ユニット選択";
-                            break;
+                        switch (Commands.CommandState ?? "")
+                        {
+                            case "マップコマンド":
+                                Commands.CommandState = "ユニット選択";
+                                break;
 
-                        case "ユニット選択":
-                            Commands.ProceedCommand(true);
-                            break;
+                            case "ユニット選択":
+                                Commands.ProceedCommand(true);
+                                break;
 
-                        default:
-                            Commands.CancelCommand();
-                            break;
-                    }
+                            default:
+                                Commands.CancelCommand();
+                                break;
+                        }
+                    });
                 }
             }
         }
@@ -460,28 +467,31 @@ namespace SRCSharpForm
             // カーソル上にユニットがいればステータスウィンドウにそのユニットを表示
             var xx = GUI.PixelToMapX(X);
             var yy = GUI.PixelToMapY(Y);
-            var cellUnit = Map.UnitAtPoint(xx, yy);
-
-            //// MOD START 240a
-            //// If MainWidth = 15 Then
-            //if (!GUI.NewGUIMode)
-            //{
-            //    // MOD  END
-            if (Map.IsInside(xx, yy))
+            FormGUI.RunOnCore(() =>
             {
-                if (cellUnit == null)
+                var cellUnit = Map.UnitAtPoint(xx, yy);
+
+                //// MOD START 240a
+                //// If MainWidth = 15 Then
+                //if (!GUI.NewGUIMode)
+                //{
+                //    // MOD  END
+                if (Map.IsInside(xx, yy))
                 {
-                    if (!Map.IsStatusView)
+                    if (cellUnit == null)
                     {
-                        // ユニットがいない、かつステータス表示でなければ地形情報を表示
-                        Status.DisplayGlobalStatus();
+                        if (!Map.IsStatusView)
+                        {
+                            // ユニットがいない、かつステータス表示でなければ地形情報を表示
+                            Status.DisplayGlobalStatus();
+                        }
+                    }
+                    else
+                    {
+                        Status.InstantUnitStatusDisplay(xx, yy);
                     }
                 }
-                else
-                {
-                    Status.InstantUnitStatusDisplay(xx, yy);
-                }
-            }
+            });
             //    // MOD  END
             //    // ADD START 240a
             //    else
@@ -567,7 +577,7 @@ namespace SRCSharpForm
                     // マップ画面を新しい座標で更新
                     if (!(GUI.MapX == LastMapX) || !(GUI.MapY == LastMapY))
                     {
-                        GUI.RefreshScreen();
+                        FormGUI.RunOnCore(() => GUI.RefreshScreen());
                     }
                 }
             }
@@ -638,7 +648,7 @@ namespace SRCSharpForm
             // 画面書き換え
             if (Visible)
             {
-                GUI.RefreshScreen();
+                FormGUI.RunOnCore(() => GUI.RefreshScreen());
             }
         }
 
@@ -662,7 +672,7 @@ namespace SRCSharpForm
             // マップ画面を更新
             if (Visible)
             {
-                GUI.RefreshScreen();
+                FormGUI.RunOnCore(() => GUI.RefreshScreen());
             }
         }
 
