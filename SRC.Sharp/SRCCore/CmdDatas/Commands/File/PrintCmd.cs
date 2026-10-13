@@ -70,7 +70,8 @@ namespace SRCCore.CmdDatas.Commands
                     msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                 }
 
-                f.Writer.WriteLine(msg);
+                // 末尾が「;」の場合は改行しない
+                f.Writer.Write(msg);
             }
 
             return EventData.NextID;

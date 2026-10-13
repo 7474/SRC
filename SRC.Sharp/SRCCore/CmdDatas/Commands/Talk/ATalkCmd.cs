@@ -178,7 +178,7 @@ namespace SRCCore.CmdDatas.Commands
                                         // ものに確定させる
                                         if (!string.IsNullOrEmpty(current_pname))
                                         {
-                                            DisplayMessage(current_pname, options);
+                                            DisplayMessage(current_pname, "", options);
                                         }
 
                                         current_pname = "";
