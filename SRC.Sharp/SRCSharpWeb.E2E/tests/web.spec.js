@@ -83,8 +83,16 @@ async function expectAdvancesWithEnter(page) {
   }, { intervals: [500, 1000, 2000] }).not.toBe(before);
 }
 
+/** プレイ中に画面の右下のシステムメニューからシナリオ選択へ戻る（確認に「はい」と答える） */
+async function backToMenu(page) {
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
+  await page.getByRole('alertdialog').getByRole('button', { name: 'はい' }).click();
+}
+
 test('登録済シナリオを選んでプレイする', async ({ page }, testInfo) => {
   await open(page);
+  await testInfo.attach('menu', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
   await expect.poll(() => debugState(page)).toContain('test.eve');
@@ -115,7 +123,7 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await attachScreen(page, testInfo, 'archive');
 
   // 削除する
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   await expect(page.locator('#archives li')).toHaveCount(0);
@@ -141,7 +149,7 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
   const saveName = (await saveNames()).find(x => x.endsWith('.srcs'));
 
   // 読み込み直して、セーブデータから再開する（インターミッションに戻る）
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.getByRole('button', { name: 'intermission-save' }).click();
   await page.locator('#saves li', { hasText: saveName }).getByRole('button', { name: saveName }).click();
@@ -192,7 +200,7 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
   await expect(page.locator('#screen')).toBeVisible();
   await page.locator('#screen').click({ position: { x: 600, y: 300 } });
   await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
-  await page.getByRole('button', { name: 'シナリオ選択へ戻る' }).first().click();
+  await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
@@ -277,4 +285,26 @@ test('URL の archive で任意の zip を直接始める', async ({ page }) => 
   await expect.poll(() => debugState(page)).toContain('url-');
   await expectAdvancesWithEnter(page);
 });
+});
+
+test('システムメニューから戻るときは確認し、「いいえ」ならプレイを続ける', async ({ page }, testInfo) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // プレイ中に目立つ「戻る」ボタンは無い
+  await expect(page.getByRole('button', { name: 'シナリオ選択へ戻る' })).toHaveCount(0);
+  await page.locator('#system-menu-button').click();
+  await testInfo.attach('system-menu', { body: await page.screenshot(), contentType: 'image/png' });
+  await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
+  await expect(page.getByRole('alertdialog')).toBeVisible();
+  await testInfo.attach('confirm', { body: await page.screenshot(), contentType: 'image/png' });
+  await page.getByRole('alertdialog').getByRole('button', { name: 'いいえ' }).click();
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect(page.locator('#screen')).toBeVisible();
+  await expectAdvancesWithEnter(page);
+  // メニューの外を押すと閉じる
+  await page.locator('#system-menu-button').click();
+  await expect(page.getByRole('menu')).toBeVisible();
+  await page.mouse.click(10, 10);
+  await expect(page.getByRole('menu')).toHaveCount(0);
 });

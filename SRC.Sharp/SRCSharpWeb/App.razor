@@ -9,22 +9,63 @@
 
 @if (mode == Mode.Playing || mode == Mode.Ended)
 {
+    <div class="play">
     <div class="screen-wrap">
         <canvas id="screen" width="@ScreenLayout.Width" height="@ScreenLayout.Height" tabindex="0"></canvas>
         @if (mode == Mode.Ended)
         {
             <div class="ended">
-                <p>シナリオが終了しました。</p>
-                <button @onclick="BackToMenu">シナリオ選択へ戻る</button>
+                <div class="dialog" role="dialog" aria-label="終了">
+                    <div class="titlebar">SRC#Web</div>
+                    <div class="dialog-body">
+                        <p>シナリオが終了しました。</p>
+                        <div class="dialog-buttons">
+                            <button @onclick="BackToMenu">シナリオ選択へ戻る</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     </div>
-    <p class="toolbar"><button @onclick="BackToMenu">シナリオ選択へ戻る</button></p>
+    @* プレイ中の操作は画面の右下の控えめなメニューにまとめる（誤って押してもすぐには終わらない） *@
+    <div class="screen-bar">
+        <div class="system-menu">
+            <button id="system-menu-button" class="system-button" title="システムメニュー" aria-label="システムメニュー"
+                    aria-haspopup="menu" aria-expanded="@(systemMenuOpen ? "true" : "false")" @onclick="ToggleSystemMenu">≡</button>
+            @if (systemMenuOpen)
+            {
+                <div class="menu-backdrop" @onclick="CloseSystemMenu"></div>
+                <div class="popup-menu" role="menu">
+                    <button role="menuitem" @onclick="AskBackToMenu">シナリオ選択へ戻る…</button>
+                    <button role="menuitem" @onclick="ToggleFullscreenAsync">全画面表示の切り替え</button>
+                    <hr />
+                    <button role="menuitem" @onclick="CloseSystemMenu">閉じる</button>
+                </div>
+            }
+        </div>
+    </div>
+    @if (confirmingBack)
+    {
+        <div class="modal">
+            <div class="dialog" role="alertdialog" aria-label="確認">
+                <div class="titlebar">SRC#Web</div>
+                <div class="dialog-body">
+                    <p>ゲームを終了してシナリオ選択へ戻りますか？<br />セーブしていない進行状況は失われます。</p>
+                    <div class="dialog-buttons">
+                        <button @onclick="BackToMenu">はい</button>
+                        <button id="confirm-no" @onclick="CancelBack">いいえ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
 }
 else
 {
-    <main>
-        <h1>@site.Title</h1>
+    <main class="window">
+        <h1 class="titlebar">@site.Title</h1>
+        <div class="window-body">
         @if (!string.IsNullOrEmpty(status))
         {
             <p id="status" class="status">@status</p>
@@ -138,6 +179,7 @@ else
                 <button @onclick="BackToMenu">戻る</button>
             </section>
         }
+        </div>
     </main>
 }
 
@@ -176,6 +218,41 @@ else
     private IList<string> eventFiles = new List<string>();
     private ScreenSession session;
     private System.Threading.Timer watch;
+    private bool systemMenuOpen;
+    private bool confirmingBack;
+
+    private void ToggleSystemMenu() => systemMenuOpen = !systemMenuOpen;
+
+    private async Task CloseSystemMenu()
+    {
+        systemMenuOpen = false;
+        await FocusScreenAsync();
+    }
+
+    private void AskBackToMenu()
+    {
+        systemMenuOpen = false;
+        confirmingBack = true;
+    }
+
+    private async Task CancelBack()
+    {
+        confirmingBack = false;
+        await FocusScreenAsync();
+    }
+
+    private async Task ToggleFullscreenAsync()
+    {
+        systemMenuOpen = false;
+        await JS.InvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
+        await FocusScreenAsync();
+    }
+
+    // メニューを閉じたらキー入力をゲームの画面へ戻す
+    private async Task FocusScreenAsync()
+    {
+        await JS.InvokeVoidAsync("srcwebStore.focus", "screen");
+    }
 
     protected override async Task OnInitializedAsync()
     {

@@ -84,6 +84,19 @@
         setTitle(title) {
             document.title = title;
         },
+        // ゲームの画面にキー入力を戻す
+        focus(id) {
+            document.getElementById(id)?.focus();
+        },
+        // ゲームの画面（とその下のメニュー）を全画面表示にする・戻す
+        async toggleFullscreen(id) {
+            if (document.fullscreenElement) {
+                await document.exitFullscreen();
+                return;
+            }
+            const target = document.getElementById(id)?.closest('.play') ?? document.documentElement;
+            await target.requestFullscreen?.();
+        },
         // ファイルとして書き出す（ダウンロード）
         download(name, bytes) {
             const url = URL.createObjectURL(new Blob([bytes], { type: 'application/octet-stream' }));
