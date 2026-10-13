@@ -3,6 +3,7 @@ using SRCDebugAdapter;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
 using SRCPlay;
+using SRCSharpTools.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,27 +15,13 @@ namespace SRCSharpTools
 {
     public static class Program
     {
-        private const string Usage = @"srcsharp: SRC# のデータ・シナリオの作成支援ツール
-
-使い方:
-  srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル]
-      データ（*.txt）とイベント（*.eve）を検査する。問題があれば終了コード 1
-  srcsharp play <イベントファイル> [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--steps 数]
-      シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める
-  srcsharp balance <ディレクトリかファイル>... [--format md|csv] [--output ファイル]
-      ユニットデータの能力値の一覧と外れ値
-  srcsharp lsp
-      Language Server（標準入出力）
-  srcsharp dap
-      デバッガ（Debug Adapter Protocol、標準入出力）
-";
-
         public static async Task<int> Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false);
+            args = UiLanguage.Apply(args);
             if (args.Length == 0 || args[0] == "-h" || args[0] == "--help")
             {
-                Console.Write(Usage);
+                Console.Write(Strings.Usage);
                 return args.Length == 0 ? 2 : 0;
             }
             var (positional, options) = Parse(args.Skip(1));
@@ -51,8 +38,8 @@ namespace SRCSharpTools
                 case "dap":
                     return await new DapServer(Console.OpenStandardInput(), Console.OpenStandardOutput()).RunAsync();
                 default:
-                    Console.Error.WriteLine($"不明なコマンド: {args[0]}");
-                    Console.Error.Write(Usage);
+                    Console.Error.WriteLine(Strings.UnknownCommand(args[0]));
+                    Console.Error.Write(Strings.Usage);
                     return 2;
             }
         }
@@ -106,7 +93,7 @@ namespace SRCSharpTools
                 {
                     Console.Error.WriteLine(d);
                 }
-                Console.WriteLine($"{result.CheckedFiles.Count} ファイルを検査、問題 {result.Diagnostics.Count} 件");
+                Console.WriteLine(Strings.LintSummary(result.CheckedFiles.Count, result.Diagnostics.Count));
             }
             return result.HasError ? 1 : 0;
         }
@@ -115,7 +102,7 @@ namespace SRCSharpTools
         {
             if (paths.Count != 1)
             {
-                Console.Error.WriteLine("イベントファイルを 1 つ指定してください");
+                Console.Error.WriteLine(Strings.PlayRequiresOneEventFile);
                 return 2;
             }
             var eve = Path.GetFullPath(paths[0]);

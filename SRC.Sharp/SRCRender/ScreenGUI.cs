@@ -848,15 +848,15 @@ namespace SRCRender
 
         public void ErrorMessage(string msg)
         {
-            ShowDialog("エラー", msg, "OK");
+            ShowDialog(Resources.Strings.ErrorTitle, msg, "OK");
         }
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
-            var text = fname + "：" + line_num + "行目" + Environment.NewLine;
+            var text = string.Format(Resources.Strings.DataErrorLine, fname, line_num) + Environment.NewLine;
             if (!string.IsNullOrEmpty(dname))
             {
-                text += dname + "のデータが不正です。" + Environment.NewLine;
+                text += string.Format(Resources.Strings.DataErrorInvalidData, dname) + Environment.NewLine;
             }
             text += line_buf + Environment.NewLine + msg;
             ErrorMessage(text);
@@ -866,7 +866,7 @@ namespace SRCRender
         {
             if (option.HasFlag(GuiConfirmOption.OkCancel))
             {
-                return ShowDialog(title, message, "OK", "キャンセル") == 0 ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+                return ShowDialog(title, message, "OK", Resources.Strings.Cancel) == 0 ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
             }
             ShowDialog(title, message, "OK");
             return GuiDialogResult.Ok;
@@ -882,7 +882,7 @@ namespace SRCRender
             }
             // 文字入力の手段が無い場合は既定値で確定する
             value = defaultValue;
-            return ShowDialog(title, message + Environment.NewLine + "（入力値: " + defaultValue + "）", "OK", "キャンセル") == 0
+            return ShowDialog(title, message + Environment.NewLine + string.Format(Resources.Strings.InputDefaultValue, defaultValue), "OK", Resources.Strings.Cancel) == 0
                 ? GuiDialogResult.Ok
                 : GuiDialogResult.Cancel;
         }
@@ -921,7 +921,7 @@ namespace SRCRender
             {
                 var path = WaitTask(dialogs.SaveFileAsync(new FileDialogRequest
                 {
-                    Title = "セーブ",
+                    Title = Resources.Strings.SaveDialogTitle,
                     InitialDirectory = src.ScenarioPath,
                     InitialFile = string.IsNullOrEmpty(defaultName)
                         ? Expression.GetValueAsString("セーブデータファイル名")

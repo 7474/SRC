@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Cargando…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Error al inicializar: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>El escenario ha terminado.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Volver a la selección de escenario</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Escenarios incluidos</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Ninguno.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Archivos comprimidos añadidos</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Los zip de escenarios que añadas se guardan en este navegador y podrás elegirlos la próxima vez.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Continuar desde partida guardada</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Puedes importar partidas guardadas exportadas (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Nueva partida</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Añadiendo {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Cargando {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Extrayendo {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} no contiene ningún escenario (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>No se pudo cargar {0}: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Abrir archivo</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Nombre del archivo</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Entrada</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Terminado</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Menú del sistema</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Volver a la selección de escenario…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Alternar pantalla completa</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Mostrar/ocultar teclas virtuales</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>¿Salir de la partida y volver a la selección de escenario?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>Se perderá el progreso no guardado.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Enlace que abre este escenario directamente</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Enlace</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Quitar este catálogo</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Añadir un catálogo</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Puedes añadir la URL del catálogo (catalog.json) de un sitio que distribuya escenarios. El sitio debe permitir CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Añadir</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Los zip de recursos (como colecciones de gráficos genéricos) que añadas se aplican sobre todos los escenarios.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Recurso</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>El escenario «{0}» no está en el catálogo.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>No se pudo leer el catálogo {0}: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Extrayendo el recurso {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>El recurso «{0}» no está en el catálogo.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Cargando el recurso {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>No se pudo cargar el recurso {0}: {1}</value>
+  </data>
+</root>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}: рядок {1}</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>Некоректні дані: {0}.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>(Значення: {0})</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>Збереження</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>Некоректно задано колір. [{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>Вибір згори</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>Вибір знизу</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>Сортувати за назвою</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>Сортувати за рівнем</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>Переглянути мапу</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>Показувати анімацію бою</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>Розширена анімація бою</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>Автовибір анімації підготовки зброї</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>Показувати анімацію особливих сил</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>Показувати анімацію переміщення</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>Автоматично переміщувати курсор миші</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>Показувати сітку (потрібен перезапуск)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>Показувати номер ходу на початку фази гравця</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>Не змінювати BGM у фазі супротивника</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>Гучність MP3</value>
+  </data>
+</root>

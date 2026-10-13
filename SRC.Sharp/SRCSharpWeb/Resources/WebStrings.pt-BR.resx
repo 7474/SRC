@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Carregando…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Falha na inicialização: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>O cenário terminou.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Voltar à seleção de cenário</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Cenários incluídos</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Nenhum.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Arquivos compactados adicionados</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Os zips de cenários que você adicionar ficam salvos neste navegador e podem ser escolhidos novamente depois.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Continuar de um save</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Você pode importar saves exportados (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Novo jogo</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Adicionando {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Carregando {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Extraindo {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} não contém nenhum cenário (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>Não foi possível carregar {0}: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Abrir arquivo</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Nome do arquivo</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Entrada</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Encerrado</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Menu do sistema</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Voltar à seleção de cenário…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Alternar tela cheia</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Mostrar/ocultar teclas virtuais</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Sair do jogo e voltar à seleção de cenário?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>O progresso não salvo será perdido.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Link que abre este cenário diretamente</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Remover este catálogo</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Adicionar catálogo</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Você pode adicionar a URL do catálogo (catalog.json) de um site que distribui cenários. O site precisa permitir CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Os zips de recursos (como coleções de gráficos genéricos) que você adicionar são aplicados sobre todos os cenários.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Recurso</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>O cenário "{0}" não está no catálogo.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Não foi possível ler o catálogo {0}: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Extraindo o recurso {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>O recurso "{0}" não está no catálogo.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Carregando o recurso {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Não foi possível carregar o recurso {0}: {1}</value>
+  </data>
+</root>

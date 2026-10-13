@@ -75,6 +75,29 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # SRC#Web（ブラウザ版）を外部のサイトに置くためのパッケージ（docs/gui/web-hosting.md）
+  release-web:
+    name: Release SRC#Web package to GitHub
+    needs: check-version
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+
+    # マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
+    - run: dotnet workload install wasm-tools
+    - run: dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o out/web
+    - run: cd out/web/wwwroot && zip -qr ../../../SRCSharpWeb.zip .
+
+    - name: Release
+      uses: softprops/action-gh-release@v3
+      with:
+        files: SRCSharpWeb.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 # Docker Hub 向けは Docker Hub でビルドする、、、ことができなくなったのでビルドする
 # https://hub.docker.com/repository/docker/koudenpa/srcdatalinter/builds
   push-to-dockerhub:

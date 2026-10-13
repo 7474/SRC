@@ -21,7 +21,7 @@ namespace SRCSharpAvalonia
 
             TextBox = new TextBox { Text = defaultValue ?? "", Width = 360 };
             var ok = new Button { Content = "OK", IsDefault = true, Width = 90 };
-            var cancel = new Button { Content = "キャンセル", IsCancel = true, Width = 90 };
+            var cancel = new Button { Content = Strings.Cancel, IsCancel = true, Width = 90 };
             ok.Click += (s, e) => Close(TextBox.Text ?? "");
             cancel.Click += (s, e) => Close(null);
 

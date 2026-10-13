@@ -17,6 +17,8 @@
 - **[E2E テスト方針](./gui/e2e-testing.md)** — テスト用コーパスをヘッドレスでプレイする E2E テストと VRT の方針
 - **[バージョンの管理](./versioning.md)** — SRC# のバージョンの付け方とリリースの手順
 - **[SRC#Web（ブラウザ版）](./gui/web.md)** — 静的サイトで動くブラウザ版の設計（マルチスレッド WebAssembly・ブラウザ内保存）
+- **[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)** — サイトの設定・カタログ・素材の同梱・URL での起動
+- **[多言語対応](./i18n.md)** — 画面の文字列のリソース化と表示言語（日本語・英語）の切り替え
 - **[Static Web Apps のワークフロー](./swa-workflows.md)** — SRC#DataViewer・SRC#Help のデプロイと、残ったプレビュー環境の定期削除
 
 ### 🛠️ 作成支援ツール / Authoring Tools

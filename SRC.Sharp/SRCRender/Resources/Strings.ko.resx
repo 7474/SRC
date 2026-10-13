@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}: {1}번째 줄</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>{0} 데이터가 올바르지 않습니다.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>(입력값: {0})</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>세이브</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>색상 지정이 올바르지 않습니다. [{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>자동 진행</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>처음부터 선택</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>마지막부터 선택</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>이름순 정렬</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>레벨순 정렬</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>맵 보기</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>전투 애니메이션 표시</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>전투 애니메이션 확장 기능 사용</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>무기 준비 애니메이션 자동 선택 표시</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>스페셜 파워 애니메이션 표시</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>이동 애니메이션 표시</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>마우스 커서 자동 이동</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>격자 표시 (재시작 필요)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>아군 페이즈 시작 시 턴 표시</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>적 페이즈 중 BGM 변경 안 함</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>MP3 음량</value>
+  </data>
+</root>

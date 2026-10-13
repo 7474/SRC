@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}：第{1}行</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>{0}的資料無效。</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>（輸入值：{0}）</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>存檔</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>顏色指定無效。[{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>從開頭選擇</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>從末尾選擇</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>依名稱排序</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>依等級排序</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>查看地圖</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>顯示戰鬥動畫</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>使用戰鬥動畫擴充功能</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>自動選擇並顯示武器準備動畫</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>顯示特殊能力動畫</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>顯示移動動畫</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>自動移動滑鼠游標</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>顯示格線（需重新啟動）</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>我方階段開始時顯示回合數</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>敵方階段中不切換BGM</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>MP3音量</value>
+  </data>
+</root>

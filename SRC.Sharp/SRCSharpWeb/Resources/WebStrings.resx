@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>読み込み中…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>初期化に失敗しました: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>シナリオが終了しました。</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>シナリオ選択へ戻る</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>登録済シナリオ</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>ありません。</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>追加したアーカイブ</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>シナリオの zip を追加すると、このブラウザに保存され、次回も選べます。</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>セーブデータから再開</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>書き出し</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>書き出したセーブデータ（.srcs・.srcq）を読み込めます。</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>新しく始める</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>{0} を追加しています…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>{0} を読み込んでいます…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>{0} を展開しています…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} にシナリオ（.eve）がありません。</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>{0} を読み込めませんでした: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>ファイルを開く</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>保存するファイル名</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>入力</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>システムメニュー</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>シナリオ選択へ戻る…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>全画面表示の切り替え</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>仮想キーの表示の切り替え</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>ゲームを終了してシナリオ選択へ戻りますか？</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>セーブしていない進行状況は失われます。</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>このシナリオを直接開くリンク</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>リンク</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>このカタログを外す</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>カタログを追加</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>シナリオを配信しているサイトのカタログ（catalog.json）の URL を追加できます。配信元は CORS を許可している必要があります。</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>素材（汎用グラフィック集など）の zip を追加すると、どのシナリオにも重ねて使います。</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>素材</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>シナリオ「{0}」がカタログにありません。</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>カタログ {0} を読めませんでした: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>素材 {0} を展開しています…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>素材「{0}」がカタログにありません。</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>素材 {0} を読み込んでいます…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>素材 {0} を読み込めませんでした: {1}</value>
+  </data>
+</root>

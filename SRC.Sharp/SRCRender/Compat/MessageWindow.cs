@@ -73,7 +73,8 @@ namespace SRCRender.Compat
         public Label txtHP2 { get; }
         public Label txtEN2 { get; }
 
-        public bool IsAutoMode => Text == "メッセージ (自動送り)";
+        /// <summary>自動送りモードか（キャプションの文字列ではなくこのフラグで判定する）</summary>
+        public bool IsAutoMode { get; private set; }
 
         public void ClearForm()
         {
@@ -83,6 +84,7 @@ namespace SRCRender.Compat
 
         public void SetMessageModeCaption(bool isAuto)
         {
+            IsAutoMode = isAuto;
             Text = isAuto ? "メッセージ (自動送り)" : "メッセージ";
         }
 

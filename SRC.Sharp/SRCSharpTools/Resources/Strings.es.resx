@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: herramientas para crear datos y escenarios de SRC#
+
+Uso:
+  srcsharp lint &lt;directorio o archivo&gt;... [--format text|sarif] [--output archivo]
+      Revisa los datos (*.txt) y los eventos (*.eve). Código de salida 1 si hay problemas
+  srcsharp play &lt;archivo de evento&gt; [--script archivo.play] [--out directorio] [--app-path carpeta de SRC] [--steps número]
+      Ejecuta un escenario sin pantalla. Sin --script, avanza los mensajes y elige la primera opción
+  srcsharp balance &lt;directorio o archivo&gt;... [--format md|csv] [--output archivo]
+      Lista los atributos de los datos de unidades y los valores atípicos
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Depurador (Debug Adapter Protocol, stdio)
+
+Opciones comunes:
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
+      Idioma de la interfaz. También se puede definir con la variable de entorno SRCSHARP_LANG (la opción tiene prioridad). Por defecto es ja; auto sigue la configuración del SO
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Comando desconocido: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Idioma desconocido: {0} (una de: {1}). Se usará japonés</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>{0} archivos revisados, {1} problemas</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Indica exactamente un archivo de evento</value>
+  </data>
+</root>

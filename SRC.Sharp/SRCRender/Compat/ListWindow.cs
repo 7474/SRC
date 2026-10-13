@@ -230,11 +230,11 @@ namespace SRCRender.Compat
             Text = "MultiSelectListBox";
             lblCaption = new Label { Left = 0, Top = 7, Width = 479, Height = 22, BackColor = Color.White, Font = ListFont };
             items = new ListBoxControl { Left = 0, Top = 32, Width = 479, Height = 228, Font = ListFont };
-            cmdSelectAll = new Button { Left = 3, Top = 264, Width = 153, Height = 29, Text = "先頭から選択", Font = ButtonFont };
-            cmdSelectAll2 = new Button { Left = 163, Top = 264, Width = 161, Height = 29, Text = "最後から選択", Font = ButtonFont };
-            cmdSort = new Button { Left = 331, Top = 264, Width = 145, Height = 29, Text = "名称順に並べ替え", Font = ButtonFont };
-            cmdResume = new Button { Left = 91, Top = 296, Width = 137, Height = 29, Text = "マップを見る", Font = ButtonFont };
-            cmdFinish = new Button { Left = 259, Top = 296, Width = 137, Height = 29, Text = "終了", Font = BoldButtonFont };
+            cmdSelectAll = new Button { Left = 3, Top = 264, Width = 153, Height = 29, Text = Resources.Strings.SelectFromTop, Font = ButtonFont };
+            cmdSelectAll2 = new Button { Left = 163, Top = 264, Width = 161, Height = 29, Text = Resources.Strings.SelectFromBottom, Font = ButtonFont };
+            cmdSort = new Button { Left = 331, Top = 264, Width = 145, Height = 29, Text = Resources.Strings.SortByName, Font = ButtonFont };
+            cmdResume = new Button { Left = 91, Top = 296, Width = 137, Height = 29, Text = Resources.Strings.ViewMap, Font = ButtonFont };
+            cmdFinish = new Button { Left = 259, Top = 296, Width = 137, Height = 29, Text = Resources.Strings.Finish, Font = BoldButtonFont };
             lblNumber = new Label { Left = 417, Top = 297, Width = 57, Height = 25, Font = NumberFont };
         }
 

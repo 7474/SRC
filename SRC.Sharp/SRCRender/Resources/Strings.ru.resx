@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}: строка {1}</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>Некорректные данные: {0}.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>(Значение: {0})</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>Сохранение</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>Некорректно задан цвет. [{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>Выбор сверху</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>Выбор снизу</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>Сортировать по имени</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>Сортировать по уровню</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>Посмотреть карту</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>Показывать анимацию боя</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>Расширенная анимация боя</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>Автовыбор анимации подготовки оружия</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>Показывать анимацию особых сил</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>Показывать анимацию перемещения</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>Автоматически перемещать курсор мыши</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>Показывать сетку (нужен перезапуск)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>Показывать номер хода в начале фазы игрока</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>Не менять BGM в фазе противника</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>Громкость MP3</value>
+  </data>
+</root>

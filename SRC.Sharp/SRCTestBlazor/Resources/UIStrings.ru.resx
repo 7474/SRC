@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NotFound" xml:space="preserve">
+    <value>По этому адресу ничего нет.</value>
+  </data>
+  <data name="LoadDataIntro" xml:space="preserve">
+    <value>Просмотрщик данных для SRC.</value>
+  </data>
+  <data name="LoadDataInstructionsBefore" xml:space="preserve">
+    <value>Выберите в меню Titles данные, опубликованные на </value>
+  </data>
+  <data name="LoadDataInstructionsAfter" xml:space="preserve">
+    <value>, или загрузите свои файлы с помощью формы ниже.</value>
+  </data>
+  <data name="SupportedFilesBefore" xml:space="preserve">
+    <value>Поддерживаемые файлы данных (частично): </value>
+  </data>
+  <data name="SupportedFilesAfter" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="MultipleFilesHint" xml:space="preserve">
+    <value>Можно загрузить сразу несколько файлов, например выделив все файлы в папке данных. Неподдерживаемые файлы пропускаются.</value>
+  </data>
+  <data name="DisplaySettings" xml:space="preserve">
+    <value>Настройки отображения</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Системная</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="DataDisplayOrder" xml:space="preserve">
+    <value>Порядок данных</value>
+  </data>
+  <data name="UnitFirst" xml:space="preserve">
+    <value>Сначала юниты</value>
+  </data>
+  <data name="PilotFirst" xml:space="preserve">
+    <value>Сначала пилоты</value>
+  </data>
+  <data name="ShowComment" xml:space="preserve">
+    <value>Показывать комментарии</value>
+  </data>
+  <data name="ShowRawButton" xml:space="preserve">
+    <value>Показывать кнопку Raw</value>
+  </data>
+  <data name="ShowPilotMessage" xml:space="preserve">
+    <value>Показывать реплики пилотов</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык (Language)</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Авто (настройки браузера)</value>
+  </data>
+  <data name="LanguageReloadNote" xml:space="preserve">
+    <value>После смены языка страница перезагрузится при сохранении.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="SortDefinitionOrder" xml:space="preserve">
+    <value>По порядку определения</value>
+  </data>
+  <data name="SortName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="SortMaxPower" xml:space="preserve">
+    <value>Макс. сила атаки</value>
+  </data>
+  <data name="SortMaxRange" xml:space="preserve">
+    <value>Макс. дальность</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+</root>

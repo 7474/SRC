@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>ข้อผิดพลาด</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}: บรรทัดที่ {1}</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>ข้อมูล {0} ไม่ถูกต้อง</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>(ค่าที่ป้อน: {0})</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>เซฟ</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>การระบุสีไม่ถูกต้อง [{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>อัตโนมัติ</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>เลือกจากด้านบน</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>เลือกจากด้านล่าง</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>เรียงตามชื่อ</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>เรียงตามเลเวล</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>ดูแผนที่</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>เสร็จสิ้น</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>แสดงแอนิเมชันการต่อสู้</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>ใช้แอนิเมชันการต่อสู้แบบขยาย</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>เลือกแอนิเมชันเตรียมอาวุธอัตโนมัติ</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>แสดงแอนิเมชันพลังพิเศษ</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>แสดงแอนิเมชันการเคลื่อนที่</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>เลื่อนเคอร์เซอร์เมาส์อัตโนมัติ</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>แสดงเส้นตาราง (ต้องรีสตาร์ท)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>แสดงเทิร์นเมื่อเริ่มเฟสฝ่ายเรา</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>ไม่เปลี่ยน BGM ระหว่างเฟสศัตรู</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>ระดับเสียง MP3</value>
+  </data>
+</root>

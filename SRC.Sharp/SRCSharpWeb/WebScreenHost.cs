@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Localization;
 using SkiaSharp;
 using SRCRender;
+using SRCSharpWeb.Resources;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -18,10 +20,13 @@ namespace SRCSharpWeb
     /// </summary>
     public sealed class WebScreenHost : IScreenHost, IScreenDialogHost
     {
-        public WebScreenHost(string scenarioRoot)
+        public WebScreenHost(string scenarioRoot, IStringLocalizer<WebStrings> localizer)
         {
             ScenarioRoot = scenarioRoot;
+            L = localizer;
         }
+
+        private readonly IStringLocalizer<WebStrings> L;
 
         /// <summary>シナリオを展開したフォルダ。ファイル選択はこの中に限る</summary>
         public string ScenarioRoot { get; }
@@ -145,7 +150,7 @@ namespace SRCSharpWeb
 
         public Task<string> InputTextAsync(string title, string message, string defaultValue)
         {
-            return OnUi(() => WebInterop.ShowInput(title ?? "", message ?? "", defaultValue ?? ""));
+            return OnUi(() => WebInterop.ShowInput(string.IsNullOrEmpty(title) ? L["ModalInput"] : title, message ?? "", defaultValue ?? "", L["ModalOk"], L["ModalCancel"]));
         }
 
         private string Directory(FileDialogRequest request)
@@ -169,16 +174,19 @@ namespace SRCSharpWeb
             {
                 return Task.FromResult<string>(null);
             }
-            return OnUi(() => WebInterop.ShowChoice(request.Title ?? "ファイルを開く", names))
+            return OnUi(() => WebInterop.ShowChoice(string.IsNullOrEmpty(request.Title) ? L["OpenFile"] : request.Title, names, L["ModalCancel"]))
                 .ContinueWith(t => t.Result == null ? null : Path.Combine(dir, t.Result), TaskScheduler.Default);
         }
+
+        /// <summary>保存のダイアログでフォルダが選ばれた（セーブデータの同期の対象にする）</summary>
+        public Action<string> SaveDirectoryChosen { get; set; }
 
         public Task<string> SaveFileAsync(FileDialogRequest request)
         {
             var dir = Directory(request);
             var ext = string.IsNullOrEmpty(request.FileExtension) ? "" : "." + request.FileExtension;
             var name = string.IsNullOrEmpty(request.InitialFile) ? "_save" + ext : Path.GetFileName(request.InitialFile);
-            return OnUi(() => WebInterop.ShowInput(request.Title ?? "保存", "保存するファイル名", name))
+            return OnUi(() => WebInterop.ShowInput(string.IsNullOrEmpty(request.Title) ? L["Save"] : request.Title, L["SaveFileName"], name, L["ModalOk"], L["ModalCancel"]))
                 .ContinueWith(t =>
                 {
                     var file = Path.GetFileName(t.Result ?? "");
@@ -190,6 +198,7 @@ namespace SRCSharpWeb
                     {
                         file += ext;
                     }
+                    SaveDirectoryChosen?.Invoke(dir);
                     return Path.Combine(dir, file);
                 }, TaskScheduler.Default);
         }

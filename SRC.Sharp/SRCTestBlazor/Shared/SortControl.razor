@@ -6,7 +6,7 @@
             <select value="@selectedLabel" @onchange="OnSelectChanged">
                 @foreach (var label in Labels)
                 {
-                    <option value="@label">@label</option>
+                    <option value="@label">@L[label]</option>
                 }
             </select>
         </div>
@@ -17,12 +17,13 @@
         </button>
     </div>
     <div class="control">
-        <input class="input is-small" type="text" placeholder="フィルタ"
+        <input class="input is-small" type="text" placeholder="@L["Filter"]"
                value="@filterText" @oninput="OnFilterInput" />
     </div>
 </div>
 
 @code {
+    // ラベルはリソースのキー。キーが無ければ（ＨＰなど SRC のデータの用語）そのまま表示する
     [Parameter]
     public IEnumerable<string> Labels { get; set; } = Enumerable.Empty<string>();
     [Parameter]

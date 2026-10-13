@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="DataErrorLine" xml:space="preserve">
+    <value>{0}: riga {1}</value>
+  </data>
+  <data name="DataErrorInvalidData" xml:space="preserve">
+    <value>Dati di {0} non validi.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="InputDefaultValue" xml:space="preserve">
+    <value>(Valore: {0})</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="InvalidColor" xml:space="preserve">
+    <value>Colore non valido. [{0}]</value>
+  </data>
+  <data name="AutoAdvance" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="SelectFromTop" xml:space="preserve">
+    <value>Seleziona dall'alto</value>
+  </data>
+  <data name="SelectFromBottom" xml:space="preserve">
+    <value>Seleziona dal basso</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>Ordina per nome</value>
+  </data>
+  <data name="SortByLevel" xml:space="preserve">
+    <value>Ordina per livello</value>
+  </data>
+  <data name="ViewMap" xml:space="preserve">
+    <value>Vedi mappa</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="ConfigTitle" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="ConfigBattleAnimation" xml:space="preserve">
+    <value>Mostra animazioni di battaglia</value>
+  </data>
+  <data name="ConfigExtendedAnimation" xml:space="preserve">
+    <value>Usa animazioni di battaglia estese</value>
+  </data>
+  <data name="ConfigWeaponAnimation" xml:space="preserve">
+    <value>Scegli automaticamente le animazioni di preparazione arma</value>
+  </data>
+  <data name="ConfigSpecialPowerAnimation" xml:space="preserve">
+    <value>Mostra animazioni dei poteri speciali</value>
+  </data>
+  <data name="ConfigMoveAnimation" xml:space="preserve">
+    <value>Mostra animazioni di movimento</value>
+  </data>
+  <data name="ConfigAutoMoveCursor" xml:space="preserve">
+    <value>Sposta automaticamente il cursore del mouse</value>
+  </data>
+  <data name="ConfigShowSquareLine" xml:space="preserve">
+    <value>Mostra griglia (richiede riavvio)</value>
+  </data>
+  <data name="ConfigShowTurn" xml:space="preserve">
+    <value>Mostra il turno all'inizio della fase del giocatore</value>
+  </data>
+  <data name="ConfigKeepEnemyBGM" xml:space="preserve">
+    <value>Mantieni la BGM durante la fase nemica</value>
+  </data>
+  <data name="ConfigMP3Volume" xml:space="preserve">
+    <value>Volume MP3</value>
+  </data>
+</root>

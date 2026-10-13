@@ -16,6 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\SRCAuthoring\SRCAuthoring.csproj" />
     <ProjectReference Include="..\SRCDebugAdapter\SRCDebugAdapter.csproj" />
+    <!-- 表示の言語の切り替えを、srcsharp を実行して確かめる -->
+    <ProjectReference Include="..\SRCSharpTools\SRCSharpTools.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.Themes.Fluent;
+using SRCCore.Config;
 using SRCRender;
 using SRCSound;
 using System.IO;
@@ -23,6 +24,8 @@ namespace SRCSharpAvalonia
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                // 表示言語（srcs.json の Option/Language）は、ウィンドウを作る前に設定する
+                ApplyLanguage();
                 var window = new MainWindow();
                 desktop.MainWindow = window;
                 desktop.Exit += (s, e) =>
@@ -35,6 +38,20 @@ namespace SRCSharpAvalonia
             base.OnFrameworkInitializationCompleted();
         }
 
+        private static void ApplyLanguage()
+        {
+            var config = new LocalFileConfig();
+            try
+            {
+                config.Load();
+            }
+            catch
+            {
+                // 設定ファイルが無い場合は既定（日本語）
+            }
+            UiLanguage.Apply(config);
+        }
+
         private async Task StartAsync(MainWindow window, string[] args)
         {
             var file = args.FirstOrDefault(File.Exists);
@@ -42,7 +59,7 @@ namespace SRCSharpAvalonia
             {
                 var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
-                    Title = "シナリオを選択",
+                    Title = Strings.SelectScenario,
                     AllowMultiple = false,
                     FileTypeFilter = new[]
                     {

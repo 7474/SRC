@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- srcsharp の表示する文言（英語）。キーは Strings.resx と揃える -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Usage" xml:space="preserve">
+    <value>srcsharp: ferramentas para criar dados e cenários do SRC#
+
+Uso:
+  srcsharp lint &lt;diretório ou arquivo&gt;... [--format text|sarif] [--output arquivo]
+      Verifica dados (*.txt) e eventos (*.eve). Código de saída 1 se houver problemas
+  srcsharp play &lt;arquivo de evento&gt; [--script arquivo.play] [--out diretório] [--app-path pasta do SRC] [--steps número]
+      Executa um cenário sem tela. Sem --script, avança as mensagens e escolhe a primeira opção
+  srcsharp balance &lt;diretório ou arquivo&gt;... [--format md|csv] [--output arquivo]
+      Lista os atributos dos dados de unidades e os valores atípicos
+  srcsharp lsp
+      Language Server (stdio)
+  srcsharp dap
+      Depurador (Debug Adapter Protocol, stdio)
+
+Opções comuns:
+  --lang &lt;ja|en|zh-Hans|...|auto&gt;
+      Idioma de exibição. Também pode ser definido pela variável de ambiente SRCSHARP_LANG (a opção tem prioridade). O padrão é ja; auto segue a configuração do SO
+</value>
+  </data>
+  <data name="UnknownCommand" xml:space="preserve">
+    <value>Comando desconhecido: {0}</value>
+  </data>
+  <data name="UnknownLanguage" xml:space="preserve">
+    <value>Idioma desconhecido: {0} (um de: {1}). Usando japonês</value>
+  </data>
+  <data name="LintSummary" xml:space="preserve">
+    <value>{0} arquivos verificados, {1} problemas</value>
+  </data>
+  <data name="PlayRequiresOneEventFile" xml:space="preserve">
+    <value>Informe exatamente um arquivo de evento</value>
+  </data>
+</root>

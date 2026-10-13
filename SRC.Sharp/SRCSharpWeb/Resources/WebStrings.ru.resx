@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Ошибка инициализации: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Сценарий завершён.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>К выбору сценария</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Встроенные сценарии</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Нет.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Добавленные архивы</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Добавленные zip-архивы сценариев сохраняются в этом браузере и будут доступны в следующий раз.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Продолжить с сохранения</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Можно загрузить экспортированные сохранения (.srcs, .srcq).</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Начать заново</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>Добавление {0}…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>Загрузка {0}…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>Распаковка {0}…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>В {0} нет сценариев (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>Не удалось загрузить {0}: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Открыть файл</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Имя файла для сохранения</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Ввод</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Завершено</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Системное меню</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>К выбору сценария…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Полноэкранный режим</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Показать/скрыть виртуальные клавиши</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Подтверждение</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Выйти из игры и вернуться к выбору сценария?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>Несохранённый прогресс будет потерян.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Прямая ссылка на этот сценарий</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Убрать этот каталог</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Добавить каталог</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Можно добавить URL каталога (catalog.json) сайта, распространяющего сценарии. Сайт должен разрешать CORS.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Добавленные zip-архивы ресурсов (например, наборы общей графики) применяются поверх любого сценария.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Ресурс</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>Сценария «{0}» нет в каталоге.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Не удалось прочитать каталог {0}: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Распаковка ресурса {0}…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>Ресурса «{0}» нет в каталоге.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Загрузка ресурса {0}…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Не удалось загрузить ресурс {0}: {1}</value>
+  </data>
+</root>

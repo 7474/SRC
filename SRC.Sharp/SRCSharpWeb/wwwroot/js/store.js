@@ -35,15 +35,16 @@
         async list() {
             const items = await run('readonly', store => store.getAll());
             return items
-                .map(x => ({ name: x.name, size: x.size, added: x.added }))
+                .map(x => ({ name: x.name, size: x.size, added: x.added, kind: x.kind || 'scenario' }))
                 .sort((a, b) => a.name.localeCompare(b.name));
         },
-        async put(name, bytes) {
+        // kind: scenario（シナリオ）・asset（汎用グラフィック集などの素材。どのシナリオにも重ねる）
+        async put(name, bytes, kind) {
             if (navigator.storage && navigator.storage.persist) {
                 // ブラウザの判断で消されないよう求める（許可されない場合もある）
                 navigator.storage.persist();
             }
-            await run('readwrite', store => store.put({ name, size: bytes.length, added: Date.now(), data: new Blob([bytes]) }));
+            await run('readwrite', store => store.put({ name, kind: kind || 'scenario', size: bytes.length, added: Date.now(), data: new Blob([bytes]) }));
         },
         async get(name) {
             const item = await run('readonly', store => store.get(name));
@@ -68,6 +69,33 @@
         },
         async removeSave(scenario, name) {
             await run('readwrite', store => store.delete([scenario, name]), 'saves');
+        },
+        // 利用者が追加したカタログの URL（localStorage）
+        listCatalogs() {
+            try {
+                return JSON.parse(localStorage.getItem('srcweb.catalogs') || '[]');
+            } catch {
+                return [];
+            }
+        },
+        saveCatalogs(urls) {
+            localStorage.setItem('srcweb.catalogs', JSON.stringify(urls));
+        },
+        setTitle(title) {
+            document.title = title;
+        },
+        // ゲームの画面にキー入力を戻す
+        focus(id) {
+            document.getElementById(id)?.focus();
+        },
+        // ゲームの画面（とその下のメニュー）を全画面表示にする・戻す
+        async toggleFullscreen(id) {
+            if (document.fullscreenElement) {
+                await document.exitFullscreen();
+                return;
+            }
+            const target = document.getElementById(id)?.closest('.play') ?? document.documentElement;
+            await target.requestFullscreen?.();
         },
         // ファイルとして書き出す（ダウンロード）
         download(name, bytes) {

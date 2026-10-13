@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Loading" xml:space="preserve">
+    <value>Wird geladen…</value>
+  </data>
+  <data name="InitFailed" xml:space="preserve">
+    <value>Initialisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="ScenarioEnded" xml:space="preserve">
+    <value>Das Szenario ist beendet.</value>
+  </data>
+  <data name="BackToMenu" xml:space="preserve">
+    <value>Zurück zur Szenarioauswahl</value>
+  </data>
+  <data name="RegisteredScenarios" xml:space="preserve">
+    <value>Mitgelieferte Szenarien</value>
+  </data>
+  <data name="NoItems" xml:space="preserve">
+    <value>Keine.</value>
+  </data>
+  <data name="AddedArchives" xml:space="preserve">
+    <value>Hinzugefügte Archive</value>
+  </data>
+  <data name="AddArchiveNote" xml:space="preserve">
+    <value>Hinzugefügte Szenario-zip-Dateien werden in diesem Browser gespeichert und stehen beim nächsten Mal wieder zur Auswahl.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="ResumeFromSave" xml:space="preserve">
+    <value>Spielstand fortsetzen</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="ImportSaveNote" xml:space="preserve">
+    <value>Du kannst exportierte Spielstände (.srcs, .srcq) importieren.</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Neu beginnen</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="AddingArchive" xml:space="preserve">
+    <value>{0} wird hinzugefügt…</value>
+  </data>
+  <data name="LoadingArchive" xml:space="preserve">
+    <value>{0} wird geladen…</value>
+  </data>
+  <data name="ExtractingArchive" xml:space="preserve">
+    <value>{0} wird entpackt…</value>
+  </data>
+  <data name="NoEventFiles" xml:space="preserve">
+    <value>{0} enthält kein Szenario (.eve).</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>{0} konnte nicht geladen werden: {1}</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Datei öffnen</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="SaveFileName" xml:space="preserve">
+    <value>Dateiname zum Speichern</value>
+  </data>
+  <data name="ModalInput" xml:space="preserve">
+    <value>Eingabe</value>
+  </data>
+  <data name="ModalOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ModalCancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Beendet</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>Systemmenü</value>
+  </data>
+  <data name="MenuBackToMenu" xml:space="preserve">
+    <value>Zurück zur Szenarioauswahl…</value>
+  </data>
+  <data name="MenuFullscreen" xml:space="preserve">
+    <value>Vollbild umschalten</value>
+  </data>
+  <data name="MenuVirtualKeys" xml:space="preserve">
+    <value>Virtuelle Tasten ein/aus</value>
+  </data>
+  <data name="MenuClose" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="ConfirmBackToMenu" xml:space="preserve">
+    <value>Spiel beenden und zur Szenarioauswahl zurückkehren?</value>
+  </data>
+  <data name="UnsavedProgressLost" xml:space="preserve">
+    <value>Nicht gespeicherter Fortschritt geht verloren.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="DirectLinkTitle" xml:space="preserve">
+    <value>Link, der dieses Szenario direkt öffnet</value>
+  </data>
+  <data name="DirectLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="RemoveCatalog" xml:space="preserve">
+    <value>Diesen Katalog entfernen</value>
+  </data>
+  <data name="AddCatalog" xml:space="preserve">
+    <value>Katalog hinzufügen</value>
+  </data>
+  <data name="AddCatalogNote" xml:space="preserve">
+    <value>Du kannst die URL eines Katalogs (catalog.json) einer Website hinzufügen, die Szenarien anbietet. Die Website muss CORS erlauben.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="AddAssetNote" xml:space="preserve">
+    <value>Hinzugefügte Asset-zips (z. B. allgemeine Grafiksammlungen) werden über jedes Szenario gelegt.</value>
+  </data>
+  <data name="Asset" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="ScenarioNotInCatalog" xml:space="preserve">
+    <value>Szenario „{0}“ ist nicht im Katalog.</value>
+  </data>
+  <data name="CatalogLoadFailed" xml:space="preserve">
+    <value>Katalog {0} konnte nicht gelesen werden: {1}</value>
+  </data>
+  <data name="ExtractingAsset" xml:space="preserve">
+    <value>Asset {0} wird entpackt…</value>
+  </data>
+  <data name="AssetNotInCatalog" xml:space="preserve">
+    <value>Asset „{0}“ ist nicht im Katalog.</value>
+  </data>
+  <data name="LoadingAsset" xml:space="preserve">
+    <value>Asset {0} wird geladen…</value>
+  </data>
+  <data name="AssetLoadFailed" xml:space="preserve">
+    <value>Asset {0} konnte nicht geladen werden: {1}</value>
+  </data>
+</root>
