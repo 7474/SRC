@@ -79,6 +79,11 @@
         })();
         // マルチスレッドの .NET はクロスオリジン分離が必要。coi-serviceworker が有効になる（再読み込みされる）まで起動しない
         if (self.crossOriginIsolated) {
+            try {
+                sessionStorage.removeItem('srcweb.coiReload');
+            } catch {
+                // sessionStorage を使えない
+            }
             (async () => {
                 let text = bootText;
                 if (text.setting === '') {
@@ -105,6 +110,21 @@
             document.getElementById('boot').textContent = bootText.unsupported;
         } else {
             document.getElementById('boot').textContent = bootText.preparing;
+            // coi-serviceworker は Service Worker が有効になる前（updatefound）に再読み込みすることがあり、
+            // その後の読み込みでまだ有効になっていないと、再読み込みされずに止まる。有効になるのを待って読み込み直す（数回まで）
+            navigator.serviceWorker.ready.then(() => {
+                let count = 0;
+                try {
+                    count = Number(sessionStorage.getItem('srcweb.coiReload') ?? '0');
+                    sessionStorage.setItem('srcweb.coiReload', String(count + 1));
+                } catch {
+                    // 回数を数えられないときは、読み込み直しが止まらなくならないよう何もしない
+                    return;
+                }
+                if (count < 3) {
+                    location.reload();
+                }
+            });
         }
     </script>
 </body>
