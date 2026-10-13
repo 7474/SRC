@@ -569,6 +569,41 @@ namespace SRCCore.Lib
         //        }
 
 
+        // 文字列 s1 中の s2 を s3 に置換した文字列を返す
+        // VB版と同様に、s2 と s3 の長さが等しい場合は置換後の文字列の先頭から再検索する
+        public static string ReplaceString(string s1, string s2, string s3)
+        {
+            s1 = s1 ?? "";
+            s3 = s3 ?? "";
+            // VB版では無限ループとなるケースは置換しない
+            if (string.IsNullOrEmpty(s2) || s2 == s3)
+            {
+                return s1;
+            }
+
+            var idx = s1.IndexOf(s2, StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return s1;
+            }
+
+            if (s2.Length == s3.Length)
+            {
+                var buf = new StringBuilder(s1);
+                // 念のため置換回数に上限を設ける
+                var limit = Math.Max(1000, s1.Length * s1.Length);
+                do
+                {
+                    buf.Remove(idx, s2.Length).Insert(idx, s3);
+                    idx = buf.ToString().IndexOf(s2, StringComparison.Ordinal);
+                }
+                while (idx >= 0 && --limit > 0);
+                return buf.ToString();
+            }
+
+            return s1.Replace(s2, s3, StringComparison.Ordinal);
+        }
+
         //        // 文字列 s1 中の s2 を s3 に置換
         //        // 置換を行ったときにはTrueを返す
         //        public static bool ReplaceString(string s1, string s2, string s3)

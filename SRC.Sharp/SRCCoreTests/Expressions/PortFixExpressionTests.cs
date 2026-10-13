@@ -254,5 +254,41 @@ namespace SRCCore.Expressions.Tests
             // 従来の ListSplit は末尾の閉じ忘れを検出しない
             Assert.AreEqual(2, GeneralLib.ListSplit("a (b c", out _));
         }
+
+        // ──────────────────────────────────────────────
+        // Format / Replace
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Format_StringPlaceholders()
+        {
+            var (src, _) = CreateSrc();
+            Assert.AreEqual("  abc", src.Expression.GetValueAsString("Format(\"abc\", \"@@@@@\")"));
+            Assert.AreEqual("abc  ", src.Expression.GetValueAsString("Format(\"abc\", \"!@@@@@\")"));
+            Assert.AreEqual("abc", src.Expression.GetValueAsString("Format(\"abc\", \"&&&&&\")"));
+            Assert.AreEqual("12-34", src.Expression.GetValueAsString("Format(\"1234\", \"@@-@@\")"));
+            Assert.AreEqual("ABC", src.Expression.GetValueAsString("Format(\"abc\", \">\")"));
+            Assert.AreEqual("abcdef", src.Expression.GetValueAsString("Format(\"abcdef\", \"@@@\")"));
+            Assert.AreEqual("   12", src.Expression.GetValueAsString("Format(12, \"@@@@@\")"));
+        }
+
+        [TestMethod]
+        public void Format_NonNumericWithNumericFormat_ReturnsAsIs()
+        {
+            var (src, _) = CreateSrc();
+            Assert.AreEqual("abc", src.Expression.GetValueAsString("Format(\"abc\", \"0.00\")"));
+            Assert.AreEqual("3.14", src.Expression.GetValueAsString("Format(3.14159, \"0.00\")"));
+        }
+
+        [TestMethod]
+        public void Replace_SameLength_RescansFromStart()
+        {
+            var (src, _) = CreateSrc();
+            // VB版の ReplaceString は置換後の文字列を先頭から再検索する
+            Assert.AreEqual("baa", src.Expression.GetValueAsString("Replace(\"aab\", \"ab\", \"ba\")"));
+            // 長さが異なる場合は左から順に置換する
+            Assert.AreEqual("xcxc", src.Expression.GetValueAsString("Replace(\"abcabc\", \"ab\", \"x\")"));
+            Assert.AreEqual("aaa", src.Expression.GetValueAsString("Replace(\"aaa\", \"a\", \"a\")"));
+        }
     }
 }
