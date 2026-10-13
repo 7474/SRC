@@ -51,7 +51,7 @@ namespace SRCRender.Tests
             }
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Cases))]
         public void Play(string name)
         {

@@ -106,7 +106,7 @@ namespace SRCSharpAvalonia.Tests
             var dir = Path.Combine(AppContext.BaseDirectory, "TestResults", "avalonia");
             Directory.CreateDirectory(dir);
             var path = Path.Combine(dir, name + ".png");
-            frame.Save(path);
+            frame.Save(path, Avalonia.Media.Imaging.PngBitmapEncoderOptions.Default);
             return path;
         }
 

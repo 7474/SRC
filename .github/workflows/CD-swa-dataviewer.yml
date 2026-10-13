@@ -18,7 +18,7 @@ on:
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Build and Deploy Job    
     environment:
       name: ${{ (github.event_name == 'push' && 'SRC#DataViewer') || 'SRC#DataViewer dev' }}
@@ -41,7 +41,7 @@ jobs:
           output_location: 'wwwroot'
 
   e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build_and_deploy_job
     steps:
       - name: checkout
@@ -60,7 +60,7 @@ jobs:
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Close Pull Request Job
     environment:
       name: 'SRC#DataViewer dev'

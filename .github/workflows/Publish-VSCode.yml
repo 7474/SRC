@@ -34,7 +34,7 @@ jobs:
   profile-id:
     name: Show Marketplace profile ID
     if: github.event_name == 'workflow_dispatch' && inputs.action == 'profile-id'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: vscode-marketplace
     permissions:
       id-token: write
@@ -54,7 +54,7 @@ jobs:
   publish:
     name: Publish extension
     if: github.event_name == 'push' || inputs.action == 'publish'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: vscode-marketplace
     permissions:
       id-token: write

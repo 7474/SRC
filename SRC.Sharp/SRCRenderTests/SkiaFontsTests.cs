@@ -7,7 +7,7 @@ namespace SRCRenderTests
     [TestClass]
     public class SkiaFontsTests
     {
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ＭＳ 明朝", true)]
         [DataRow("ＭＳ ゴシック", true)]
         [DataRow("MS Gothic", true)]

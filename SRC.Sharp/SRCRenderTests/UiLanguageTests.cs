@@ -109,7 +109,7 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
-        [DynamicData(nameof(ResourceFiles), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(ResourceFiles))]
         public void TranslatedResourcesHaveAllKeys(string file, string language)
         {
             // 対応言語ごとに、既定（日本語）の resx と同じキーがあり、{0} などの置き換えも揃っている

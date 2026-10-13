@@ -4,6 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+    <!--
+      MSTEST0032（条件が常に真のアサーション）は抑止する。
+      VB 版から移植した定数・列挙値（セーブデータやシナリオの互換に関わる）を固定するテストが多く、
+      コンパイル時定数の比較になるため警告されるが、値が変わったときに検出するという意図どおりのテストである。
+    -->
+    <NoWarn>$(NoWarn);MSTEST0032</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
