@@ -68,8 +68,9 @@ namespace SRCCore.CmdDatas.Commands
                             break;
 
                         case "Regular":
-                            fontOption.Bold = true;
-                            fontOption.Italic = true;
+                            // 元の SRC と同じく太字・斜体を解除する（#905）
+                            fontOption.Bold = false;
+                            fontOption.Italic = false;
                             break;
 
                         case "通常":
