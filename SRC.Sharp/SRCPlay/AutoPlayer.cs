@@ -192,6 +192,10 @@ namespace SRCPlay
             var lastActed = DateTime.UtcNow;
             while (Steps < maxSteps && !runner.IsFinished)
             {
+                // デバッガが止めている間は操作しない（待った時間は停滞に数えない）
+                var suspended = runner.WaitWhileSuspended();
+                idleSince += suspended;
+                lastActed += suspended;
                 if (stopWhen != null && stopWhen())
                 {
                     return true;

@@ -25,6 +25,7 @@ namespace SRCCore.Events
         public void DisplayEventErrorMessage(EventDataLine line, string msg)
         {
             SRC.DataErrors.Add(new InvalidSrcData(msg, line.File, line.LineNum, line.Data, "eve"));
+            Debugger?.OnError(line, msg);
 
             string buf;
 

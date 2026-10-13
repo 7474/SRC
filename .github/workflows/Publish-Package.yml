@@ -46,6 +46,12 @@ jobs:
       env:
         NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
 
+    # 作成支援ツール（srcsharp、.NET tool）
+    - run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp
+    - run: dotnet nuget push out/srcsharp/SRCSharpTools.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
+      env:
+        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
+
   release-github-artifacts:
     name: Release artifacts to GitHub
     needs: check-version

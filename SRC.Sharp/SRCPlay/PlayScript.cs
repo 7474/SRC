@@ -378,9 +378,18 @@ namespace SRCPlay
                     }
                     done.Set();
                 });
-                if (!done.Wait(DefaultTimeout))
+                // デバッガが止めている間は待ち時間に数えない
+                var deadline = DateTime.UtcNow + DefaultTimeout;
+                while (!done.Wait(50))
                 {
-                    throw new TimeoutException("ゲームスレッドが応答しません");
+                    if (runner.IsSuspended)
+                    {
+                        deadline += runner.WaitWhileSuspended();
+                    }
+                    if (DateTime.UtcNow > deadline)
+                    {
+                        throw new TimeoutException("ゲームスレッドが応答しません");
+                    }
                 }
             }
             if (error != null)
@@ -395,6 +404,7 @@ namespace SRCPlay
             var deadline = DateTime.UtcNow + timeout;
             while (!condition())
             {
+                deadline += runner.WaitWhileSuspended();
                 if (runner.IsFinished || DateTime.UtcNow > deadline)
                 {
                     return condition();
@@ -410,6 +420,7 @@ namespace SRCPlay
             var deadline = DateTime.UtcNow + timeout;
             while (DateTime.UtcNow < deadline && !runner.IsFinished)
             {
+                deadline += runner.WaitWhileSuspended();
                 // 状態が落ち着いてから判定する（入力の処理中の一瞬を拾わない）
                 if (IsReady)
                 {
