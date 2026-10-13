@@ -10,7 +10,7 @@ namespace SRCCore.CmdDatas.Tests
     /// <summary>
     /// ClsCmd / TelopCmd のユニットテスト
     /// ヘルプの記載に基づく期待値を検証する
-    /// XXX FontCmd は System.Drawing.Font が Linux 非対応のためテスト除外
+    /// FontCmd は FontCmdTests.cs を参照
     /// </summary>
     [TestClass]
     public class FontClsTelopCmdTests

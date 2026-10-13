@@ -82,8 +82,7 @@ namespace SRCCore
         bool IsCursorVisible { get; set; }
         // 背景色
         Color BGColor { get; set; }
-        // XXX Font への依存が厳しいようなら依存を切る
-        Font CurrentPaintFont { get; }
+        PaintFont CurrentPaintFont { get; }
         Color CurrentPaintColor { get; }
 
         // GUIから入力可能かどうか
@@ -373,6 +372,18 @@ namespace SRCCore
         public bool Italic { get; set; }
         public float Size { get; set; }
         public Color Color { get; set; }
+    }
+
+    /// <summary>
+    /// 文字列描画に使用中のフォント情報。
+    /// </summary>
+    public class PaintFont
+    {
+        public string Name { get; set; }
+        /// <summary>フォントサイズ（ポイント）。</summary>
+        public float Size { get; set; }
+        public bool Bold { get; set; }
+        public bool Italic { get; set; }
     }
 
     public enum TransionPattern

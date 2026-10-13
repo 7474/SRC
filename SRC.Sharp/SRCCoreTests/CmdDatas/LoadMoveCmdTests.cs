@@ -18,8 +18,7 @@ namespace SRCCore.CmdDatas.Tests
     ///   (BGMCmdTests.cs / ElseIfLoopNextCmdTests.cs / TalkAndAskCmdTests.cs 等で網羅)
     /// - MakeUnitListCmd / MakePilotListCmd / QuickLoadCmd は GUI 依存が深く
     ///   (MockGUI の多数のハンドラ設定が必要)、型確認テストに留めた。
-    /// - FontCmd は System.Drawing.Font が Linux 環境でランタイムエラーが発生するためテスト除外。
-    ///   詳細は FontClsTelopCmdTests.cs を参照。
+    /// - FontCmd は FontCmdTests.cs でテストしている。
     /// </summary>
     [TestClass]
     public class LoadMoveCmdTests

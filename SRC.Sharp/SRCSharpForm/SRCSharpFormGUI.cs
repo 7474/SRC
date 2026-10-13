@@ -97,7 +97,13 @@ namespace SRCSharpForm
         public int PaintedAreaY2 { get; set; }
         public bool IsCursorVisible { get; set; }
         public Color BGColor { get; set; }
-        public Font CurrentPaintFont => currentDrawFont;
+        public PaintFont CurrentPaintFont => new PaintFont
+        {
+            Name = currentDrawFont.Name,
+            Size = currentDrawFont.Size,
+            Bold = currentDrawFont.Bold,
+            Italic = currentDrawFont.Italic,
+        };
         // XXX Fontと画像のForeカラー同じでいいのか？
         public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
