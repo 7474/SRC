@@ -944,12 +944,14 @@ namespace SRCRender.Tests
                     break;
                 }
             }
-            var (hpRatio, allies) = script.OnGame(() =>
+            var (hpRatio, allies, spInfo) = script.OnGame(() =>
             {
                 var u = script.Src.UList.Item(unit.ID);
-                return (u.HP / (double)u.MaxHP, script.Src.UList.Items.Count(x => x.Status == "出撃" && x.Party0 == "味方"));
+                var p = u.MainPilot();
+                var spText = p == null ? "" : $" SP {p.SP}/{p.MaxSP} {string.Join(" ", p.SpecialPowerNames)}";
+                return (u.HP / (double)u.MaxHP, script.Src.UList.Items.Count(x => x.Status == "出撃" && x.Party0 == "味方"), spText);
             });
-            Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}");
+            Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}{spInfo}");
             if (!OpenUnitMenu(unit))
             {
                 Log("ユニットのメニューが出ません");
