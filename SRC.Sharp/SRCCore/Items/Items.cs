@@ -117,8 +117,8 @@ namespace SRCCore.Items
         {
             Item it;
 
-            // 破棄されたアイテムを削除
-            foreach (Item currentIt in colItems)
+            // 破棄されたアイテムを削除（削除しながら列挙できないため、一覧の複製を列挙する）
+            foreach (Item currentIt in colItems.List)
             {
                 it = currentIt;
                 if (!it.Exist)

@@ -4,7 +4,14 @@
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
-self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
+// 同じ GitHub Pages に置く SRC#Web（web/）は別のアプリのため扱わない（SRC#Web は自分の Service Worker を使う）
+const excludedPath = new URL('web/', self.registration.scope).pathname;
+self.addEventListener('fetch', event => {
+    if (new URL(event.request.url).pathname.startsWith(excludedPath)) {
+        return;
+    }
+    event.respondWith(onFetch(event));
+});
 
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;

@@ -3,21 +3,27 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using Newtonsoft.Json;
 using SRCCore.Lib;
 using SRCCore.VB;
 
 namespace SRCCore.Expressions
 {
     // 変数のクラス
+    // セーブデータに含めるため、private set のプロパティも JsonProperty で読み書きする
     public class VarData
     {
         // 名称
+        [JsonProperty]
         public string Name { get; private set; }
         // 型
+        [JsonProperty]
         public ValueType VariableType { get; private set; }
         // 文字列値
+        [JsonProperty]
         public string StringValue { get; private set; }
         // 数値
+        [JsonProperty]
         public double NumericValue { get; private set; }
 
         public override string ToString()

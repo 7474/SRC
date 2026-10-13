@@ -32,7 +32,7 @@ namespace SRCCore.Events
             buf = line.File + "：" + line.LineNum + "行目" + Constants.vbCr + Constants.vbLf + msg + Constants.vbCr + Constants.vbLf;
 
             // エラーが起こった行とその前後の行の内容を表示
-            if (line.ID > 0)
+            if (line.ID > 0 && line.ID - 1 < EventData.Count)
             {
                 var preLine = EventData[line.ID - 1];
                 buf = buf + preLine.LineNum + ": " + preLine.Data + Constants.vbCr + Constants.vbLf;

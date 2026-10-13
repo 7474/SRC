@@ -66,7 +66,7 @@ namespace SRCCore.CmdDatas
             }
             catch (EventErrorException ex)
             {
-                Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
+                Event.DisplayEventErrorMessage(ex?.EventData ?? EventData, ex.Message);
                 return -1;
             }
             catch (GUINotImplementedException)
@@ -76,18 +76,18 @@ namespace SRCCore.CmdDatas
             }
             catch (Exception ex)
             {
-                SRC.Log.LogError(ex.Message, ex);
+                SRC.Log.LogError(ex, ex.Message);
                 if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
                 {
-                    Event.DisplayEventErrorMessage(EventData.ID, "Talkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
+                    Event.DisplayEventErrorMessage(EventData, "Talkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
                 }
                 else if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "autotalk")
                 {
-                    Event.DisplayEventErrorMessage(EventData.ID, "AutoTalkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
+                    Event.DisplayEventErrorMessage(EventData, "AutoTalkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
                 }
                 else
                 {
-                    Event.DisplayEventErrorMessage(EventData.ID, "イベントデータが不正です");
+                    Event.DisplayEventErrorMessage(EventData, "イベントデータが不正です");
                 }
                 return -1;
             }

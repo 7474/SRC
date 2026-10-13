@@ -15,7 +15,8 @@ namespace SRCCore.Events
             // XXX 消し方。。。
             EventData = EventData.Where(x => x.IsSystemData).ToList();
             colNormalLabelList.Clear();
-            var maxEventId = EventData.Max(x => x.ID);
+            // システムのイベント（本体側の Lib など）が無い場合はすべてのラベルを消す（元の SRC の SysEventDataSize = 0）
+            var maxEventId = EventData.Count > 0 ? EventData.Max(x => x.ID) : -1;
             foreach (var label in colEventLabelList.List.Where(x => x.EventDataId > maxEventId).ToList())
             {
                 colEventLabelList.Remove(label);

@@ -65,7 +65,8 @@ namespace SRCCore.Models
         // 名前を指定してデータを取り出す
         public TerrainData ItemByName(string name)
         {
-            return TerrainList.FirstOrDefault(x => x.Name == name);
+            // 定義されていない番号は null のため飛ばす
+            return TerrainList.FirstOrDefault(x => x != null && x.Name == name);
         }
 
         //// 指定したデータの名称

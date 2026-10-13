@@ -227,5 +227,25 @@ namespace SRCCore.Expressions.Tests
             Assert.IsTrue(dump.Contains("a"));
             Assert.IsTrue(dump.Contains("b"));
         }
+
+        // ──────────────────────────────────────────────
+        // AppVersion
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void AppVersion_ReturnsCompatibleSrcVersion()
+        {
+            // 元の SRC と同じ形式（Ver.2.2.33 → 20233）。シナリオは本体が 2.2.33 以降かをこれで確かめる
+            var exp = Create();
+            Assert.AreEqual(20233, exp.GetValueAsLong("AppVersion"));
+        }
+
+        [TestMethod]
+        public void AppVersion_FollowsCompatibleVersion()
+        {
+            var src = new SRC { GUI = new MockGUI() };
+            src.CompatibleVersion = new System.Version(1, 7, 3);
+            Assert.AreEqual(10703, new Expression(src).GetValueAsLong("AppVersion"));
+        }
     }
 }

@@ -82,14 +82,17 @@ namespace SRCRender.Tests
         public void ClickMessage()
         {
             var area = ScreenLayout.MessageArea;
+            var count = State.Message.WaitCount;
             GUI.PointerPressed(area.MidX, area.MidY, GuiButton.Left);
             GUI.PointerReleased(area.MidX, area.MidY, GuiButton.Left);
-            WaitFor(s => !s.Message.Waiting, "message closed");
+            // 次のメッセージの待ちがすぐ始まると、待ちが解除された瞬間を見逃すため、待ちの回数でも判定する
+            WaitFor(s => !s.Message.Waiting || s.Message.WaitCount != count, "message closed");
         }
 
         public ListState WaitForList()
         {
-            WaitFor(s => s.List != null, "list");
+            // リストが表示されても、ゲームスレッドがクリックを待ち始める前の操作は失われるため、待ちに入るまで待つ
+            WaitFor(s => s.List != null && GUI.IsWaitingList, "list");
             return State.List;
         }
 

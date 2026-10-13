@@ -51,6 +51,9 @@ namespace SRCRender
         /// <summary>クリック待ちの表示</summary>
         public bool Waiting { get; set; }
 
+        /// <summary>クリック待ちを始めた回数。待ちが解除されてすぐ次の待ちが始まっても、進んだことが分かる</summary>
+        public int WaitCount { get; set; }
+
         public bool AutoMode { get; set; }
     }
 

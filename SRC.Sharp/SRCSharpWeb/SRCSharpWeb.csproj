@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <RootNamespace>SRCSharpWeb</RootNamespace>
+    <AssemblyName>SRCSharpWeb</AssemblyName>
+    <Product>SRC#Web</Product>
+    <Version>0.1.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- ゲームスレッドを Web Worker で動かす。クロスオリジン分離（COOP/COEP）が必要 -->
+    <WasmEnableThreads>true</WasmEnableThreads>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <!-- Shift_JIS の zip のファイル名を読むため -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!-- スレッドを使うが、プラットフォーム互換性アナライザーはマルチスレッドの WebAssembly を考慮しない -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.4" />
+    <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
+    <PackageReference Include="MeltySynth" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- SRCSound は OpenAL を使うため参照せず、MIDI の合成部分だけを共有する -->
+    <Compile Include="..\SRCSound\ISampleSource.cs" Link="Sound\ISampleSource.cs" />
+    <Compile Include="..\SRCSound\MidiSource.cs" Link="Sound\MidiSource.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
+    <ProjectReference Include="..\SRCRender\SRCRender.csproj" />
+  </ItemGroup>
+
+  <!--
+    ビルド時に用意する静的ファイル（リポジトリには含めない）
+    - fonts/: OFL の日本語フォント（BIZ UD ゴシック・明朝）。google/fonts から取得する
+    - scenarios/: 登録済シナリオ。E2E のコーパス（SRC.Sharp/E2E）を zip にし、一覧（catalog.json）を作る
+  -->
+  <PropertyGroup>
+    <GoogleFontsCommit>66928797f271fed5ee428544e7229685e2d90127</GoogleFontsCommit>
+    <GoogleFontsBase>https://raw.githubusercontent.com/google/fonts/$(GoogleFontsCommit)/ofl</GoogleFontsBase>
+    <E2EDir>$(MSBuildThisFileDirectory)..\E2E\</E2EDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <WebFont Include="bizudgothic/BIZUDGothic-Regular.ttf" />
+    <WebFont Include="bizudpgothic/BIZUDPGothic-Regular.ttf" />
+    <WebFont Include="bizudmincho/BIZUDMincho-Regular.ttf" />
+    <WebFont Include="bizudpmincho/BIZUDPMincho-Regular.ttf" />
+    <WebFont Include="bizudgothic/OFL.txt" />
+  </ItemGroup>
+
+  <Target Name="PrepareWebContent" BeforeTargets="ResolveProjectStaticWebAssets;AssignTargetPaths">
+    <ItemGroup>
+      <_WebFont Include="@(WebFont)" TargetFile="wwwroot/fonts/%(Filename)%(Extension)" />
+      <_E2ECase Include="$([System.IO.Directory]::GetDirectories('$(E2EDir)'))" />
+      <_E2ECase Update="@(_E2ECase)" CaseName="$([System.IO.Path]::GetFileName('%(Identity)'))" />
+    </ItemGroup>
+    <MakeDir Directories="wwwroot/fonts;wwwroot/scenarios" />
+    <DownloadFile SourceUrl="$(GoogleFontsBase)/%(_WebFont.Identity)" DestinationFolder="wwwroot/fonts" Condition="!Exists('%(_WebFont.TargetFile)')" Retries="3" />
+    <ZipDirectory SourceDirectory="%(_E2ECase.Identity)" DestinationFile="wwwroot/scenarios/%(_E2ECase.CaseName).zip" Overwrite="true" />
+    <PropertyGroup>
+      <_Catalog>@(_E2ECase->'{ &quot;id&quot;: &quot;%(CaseName)&quot;, &quot;title&quot;: &quot;%(CaseName)&quot;, &quot;archive&quot;: &quot;scenarios/%(CaseName).zip&quot;, &quot;eve&quot;: &quot;test.eve&quot; }', ', ')</_Catalog>
+    </PropertyGroup>
+    <WriteLinesToFile File="wwwroot/scenarios/catalog.json" Lines="[ $(_Catalog) ]" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="utf-8" />
+    <ItemGroup>
+      <Content Include="wwwroot/fonts/**;wwwroot/scenarios/**" Exclude="@(Content)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

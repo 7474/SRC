@@ -34,5 +34,17 @@ namespace SRCCore.Models.Tests
             var second = src.TDList.DefinePlaceholder(7);
             Assert.AreSame(first, second);
         }
+
+        [TestMethod]
+        public void ItemByName_SkipsUndefinedIds()
+        {
+            // 定義されていない番号（null）を挟んでいても名前で引ける（ChangeTerrain で使う）
+            var src = new SRC { GUI = new MockGUI() };
+            src.TDList.DefinePlaceholder(3);
+            var td = src.TDList.DefinePlaceholder(10);
+
+            Assert.AreSame(td, src.TDList.ItemByName("地形10"));
+            Assert.IsNull(src.TDList.ItemByName("コンテナ"));
+        }
     }
 }

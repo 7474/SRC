@@ -2642,6 +2642,7 @@ namespace SRCRender
         {
             State.Message.Visible = frmMessage.Visible;
             State.Message.Waiting = true;
+            State.Message.WaitCount++;
             State.Message.AutoMode = AutoMessageMode;
             Present();
         }

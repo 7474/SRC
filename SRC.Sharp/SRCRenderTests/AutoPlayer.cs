@@ -36,8 +36,8 @@ namespace SRCRender.Tests
             (240, 240), (130, 130), (350, 230), (240, 380), (240, 472), (600, 300),
         };
 
-        private string lastListSignature;
-        private int listRepeats;
+        // リスト以外の操作をするまでに各リストを選んだ回数（リストが交互に出る循環も検出するため）
+        private readonly Dictionary<string, int> listVisits = new Dictionary<string, int>();
 
         /// <summary>ボタンを押した回数</summary>
         public int Stalls { get; private set; }
@@ -47,6 +47,34 @@ namespace SRCRender.Tests
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
         public string SnapshotDirectory { get; set; }
+
+        /// <summary>
+        /// 選択肢の規則。見出し（またはリスト上部の説明）に Caption を含むリストでは、Item を含む有効な項目を選ぶ。
+        /// インターミッションで「次のステージへ」を選ぶ、シナリオ独自の選択肢で特定の答えを選ぶ、などに使う。先に追加したものを優先する
+        /// </summary>
+        public IList<(string Caption, string Item)> ListRules { get; } = new List<(string Caption, string Item)>();
+
+        /// <summary>リストで項目を選んだときの通知（見出し, 選んだ項目）</summary>
+        public Action<string, string> ListChosen { get; set; }
+
+        private int ChooseByRule(ListState list)
+        {
+            foreach (var (caption, item) in ListRules)
+            {
+                if (!(list.Caption ?? "").Contains(caption) && !(list.Info ?? "").Contains(caption))
+                {
+                    continue;
+                }
+                for (var i = 0; i < list.Items.Count; i++)
+                {
+                    if (!list.Items[i].Disabled && (list.Items[i].Text ?? "").Contains(item))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
 
         /// <summary>選択肢の選び方。既定は先頭の有効な項目</summary>
         public Func<ListState, int> ChooseList { get; set; } = list =>
@@ -112,15 +140,20 @@ namespace SRCRender.Tests
                     }
                     else
                     {
-                        // 同じリストが続けて出る場合（選んだ結果で元に戻るなど）は、次の有効な項目を選ぶ
+                        // 同じリストが繰り返し出る場合（選んだ結果で元に戻る、並べ替えのリストと交互に出るなど）は、次の有効な項目を選ぶ。
+                        // 有効な項目をすべて選んでも抜けられなければキャンセルする
                         var signature = list.Caption + "\n" + list.Info + "\n" + string.Join("\n", list.Items.Select(x => x.Text));
-                        listRepeats = signature == lastListSignature ? listRepeats + 1 : 0;
-                        lastListSignature = signature;
-                        var index = ChooseList(list);
-                        if (index >= 0 && listRepeats > 0)
+                        listVisits.TryGetValue(signature, out var visits);
+                        listVisits[signature] = visits + 1;
+                        var index = ChooseByRule(list);
+                        if (index >= 0)
+                        {
+                            // 規則で選ぶ場合は繰り返しても同じ項目を選ぶ
+                        }
+                        else if ((index = ChooseList(list)) >= 0 && visits > 0)
                         {
                             var enabled = Enumerable.Range(0, list.Items.Count).Where(i => !list.Items[i].Disabled).ToList();
-                            index = enabled[(enabled.IndexOf(index) + listRepeats) % enabled.Count];
+                            index = visits >= enabled.Count + 1 ? -1 : enabled[(enabled.IndexOf(index) + visits) % enabled.Count];
                         }
                         if (index < 0)
                         {
@@ -128,6 +161,7 @@ namespace SRCRender.Tests
                         }
                         else
                         {
+                            ListChosen?.Invoke(list.Info ?? list.Caption, list.Items[index].Text);
                             list.Highlight = index;
                             gui.KeyPressed(ScreenKey.Enter);
                         }
@@ -151,12 +185,27 @@ namespace SRCRender.Tests
                         Messages.Add(text);
                     }
                     Snapshot("message");
+                    var waitCount = state.Message.WaitCount;
                     gui.KeyPressed(ScreenKey.Enter);
-                    acted = WaitChange(() => !runner.State.Message.Waiting);
+                    acted = WaitChange(() => !runner.State.Message.Waiting || runner.State.Message.WaitCount != waitCount);
                 }
                 else if (gui.IsWaitingClick)
                 {
-                    gui.KeyPressed(ScreenKey.Enter);
+                    // ホットポイントがあれば、そのどれかをクリックする（Wait Click で「選択」にホットポイントの名前が入る）
+                    var hotPoint = ChooseHotPoint();
+                    if (hotPoint.HasValue)
+                    {
+                        var hp = hotPoint.Value;
+                        var (hx, hy) = (hp.Left + hp.Width / 2f, hp.Top + hp.Height / 2f);
+                        ListChosen?.Invoke("ホットポイント", hp.Name);
+                        gui.PointerMoved(hx, hy);
+                        gui.PointerPressed(hx, hy, GuiButton.Left);
+                        gui.PointerReleased(hx, hy, GuiButton.Left);
+                    }
+                    else
+                    {
+                        gui.KeyPressed(ScreenKey.Enter);
+                    }
                     acted = true;
                     Thread.Sleep(30);
                 }
@@ -181,6 +230,10 @@ namespace SRCRender.Tests
                     lastFrame = runner.FrameCount;
                     idleSince = DateTime.UtcNow;
                 }
+                if (acted && !(state.List != null && state.Dialog == null))
+                {
+                    listVisits.Clear();
+                }
                 if (acted)
                 {
                     Steps++;
@@ -199,6 +252,46 @@ namespace SRCRender.Tests
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// クリック待ちのホットポイントを選ぶ。選択肢の規則（ListRules）の項目に名前か説明が合うものを優先し、
+        /// 無ければ同じホットポイントの組が続く間は順に別のものを選ぶ。ホットポイントが無ければ null。
+        /// </summary>
+        private string lastHotPointSignature;
+        private int hotPointVisits;
+
+        private SRCCore.Events.HotPoint? ChooseHotPoint()
+        {
+            List<SRCCore.Events.HotPoint> points;
+            try
+            {
+                points = (runner.Session.SRC.Event.HotPointList ?? new List<SRCCore.Events.HotPoint>())
+                    .Where(x => x.Width > 0 && x.Height > 0)
+                    .ToList();
+            }
+            catch (InvalidOperationException)
+            {
+                // ゲームスレッドが更新している最中
+                return null;
+            }
+            if (points.Count == 0)
+            {
+                return null;
+            }
+            foreach (var (_, item) in ListRules)
+            {
+                var matched = points.FindIndex(x => (x.Name ?? "").Contains(item) || (x.Caption ?? "").Contains(item));
+                if (matched >= 0)
+                {
+                    return points[matched];
+                }
+            }
+            // 同じホットポイントの組が続く間は順に別のものを選ぶ
+            var signature = string.Join("\n", points.Select(x => x.Name));
+            hotPointVisits = signature == lastHotPointSignature ? hotPointVisits + 1 : 0;
+            lastHotPointSignature = signature;
+            return points[hotPointVisits % points.Count];
         }
 
         private static bool WaitChange(Func<bool> changed)

@@ -1,5 +1,6 @@
 using SkiaSharp;
 using System;
+using System.Linq;
 using System.Drawing;
 
 // WinForms 版（GDI+）のコードを SkiaSharp で動かすための互換クラス。
@@ -257,9 +258,23 @@ namespace SRCRender.Compat
     public static class SkiaFonts
     {
         /// <summary>等幅指定（ＭＳ 明朝・ＭＳ ゴシック）の代替フォント</summary>
-        public const string FixedPitchFamily = "Noto Sans Mono CJK JP";
-        public const string SansFamily = "Noto Sans CJK JP";
-        public const string SerifFamily = "Noto Serif CJK JP";
+        public static string FixedPitchFamily { get; set; } = "Noto Sans Mono CJK JP";
+        public static string SansFamily { get; set; } = "Noto Sans CJK JP";
+        public static string SerifFamily { get; set; } = "Noto Serif CJK JP";
+
+        // OS のフォント一覧に無い書体（ブラウザ版で読み込んだフォントなど）
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface> registered
+            = new System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface>();
+
+        /// <summary>
+        /// 書体を登録する。登録した書体は OS のフォントより優先して名前で引く。
+        /// 代替フォント（FixedPitchFamily など）を差し替える場合は、登録してから名前を設定する。
+        /// </summary>
+        public static void Register(SKTypeface typeface, string familyName = null)
+        {
+            registered[familyName ?? typeface.FamilyName] = typeface;
+            typefaceCache.Clear();
+        }
 
         /// <summary>
         /// 等幅フォントの指定か。ＭＳ 明朝・ＭＳ ゴシックは等幅、ＭＳ Ｐ明朝・ＭＳ Ｐゴシック・ＭＳ UI ゴシックはプロポーショナル。
@@ -302,13 +317,17 @@ namespace SRCRender.Compat
                 {
                     continue;
                 }
+                if (registered.TryGetValue(family, out var own))
+                {
+                    return own;
+                }
                 var candidate = SKTypeface.FromFamilyName(family, style);
                 if (candidate != null && candidate.FamilyName == family && candidate.ContainsGlyph('あ'))
                 {
                     return candidate;
                 }
             }
-            return SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? SKTypeface.Default;
+            return SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? registered.Values.FirstOrDefault() ?? SKTypeface.Default;
         }
 
         // フォントを作ったときに指定されたフォント名の寸法（Windows の寸法表にある場合）

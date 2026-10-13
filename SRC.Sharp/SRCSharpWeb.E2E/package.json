@@ -1,0 +1,11 @@
+{
+  "name": "srcsharpweb-e2e",
+  "private": true,
+  "description": "SRC#Web のブラウザでの E2E テスト",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

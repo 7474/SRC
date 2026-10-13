@@ -23,6 +23,15 @@ namespace SRCRender.Tests
     ///   list 文字列|#番号      リストの項目を選ぶ（番号は 1 始まり）
     ///   dialog ボタン名        ダイアログのボタンを押す
     ///   key Enter|Escape|...   キーを押す
+    ///   set 変数 値            SRC の変数に値を設定する（検証の前提を整える。例: set 設定[難易度] ベリーイージー）
+    ///   print 式              SRC の式の値を記録する（進行状況の確認用。例: print ダンジョン階数）
+    ///   policy smart|advance|hold  phase の方針。smart（既定）は SRC の CPU と同じ見積もり（COM.SelectWeapon）で目標と武器を選び、
+    ///                          移動先は攻撃の見込みと敵から受ける危険で決め、HP が少なければ下がる。advance は攻撃できなければ最も近い敵へ近づく、
+    ///                          hold は移動せず届く敵だけ攻撃する
+    ///   autodefense on|off     敵の攻撃への反撃・防御・回避を SRC に任せる（設定「自動反撃」。CPU と同じ判断で選ぶ）
+    ///   stall 秒               auto・turns で、待ちの状態でないまま進まないときにボタンを押すまでの時間（既定 5 秒）
+    ///   choose 見出し 項目     auto・turns で、見出し（または説明）にその文字列を含むリストが出たら、その文字列を含む項目を選ぶ
+    ///                          （例: choose コマンド 次のステージへ … インターミッションで次のステージへ進む）
     ///   snapshot 名前          画面を保存する
     ///   phase                  味方フェイズを簡単な方針で自動で行い、ターンを終える（ScriptedPhase）
     ///   turns 回数             「auto → phase」を繰り返す
@@ -42,6 +51,7 @@ namespace SRCRender.Tests
         {
             this.runner = runner;
             auto = new AutoPlayer(runner);
+            auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
         }
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
@@ -65,6 +75,9 @@ namespace SRCRender.Tests
             TraceLog.Add(line);
             Trace?.Invoke(line);
         }
+
+        /// <summary>phase の方針（smart・advance・hold）</summary>
+        public string Policy { get; set; } = "smart";
 
         /// <summary>1 つの待ちの既定の上限</summary>
         public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(60);
@@ -146,6 +159,56 @@ namespace SRCRender.Tests
                     break;
                 case "list":
                     SelectList(Rest(args, 1));
+                    break;
+                case "set":
+                    {
+                        var name = args[1];
+                        var value = Rest(args, 2) ?? "";
+                        OnGame(() =>
+                        {
+                            if (double.TryParse(value, out var number))
+                            {
+                                Src.Expression.SetVariableAsDouble(name, number);
+                            }
+                            else
+                            {
+                                Src.Expression.SetVariableAsString(name, value);
+                            }
+                            return true;
+                        });
+                        Record($"{DateTime.Now:HH:mm:ss} SET {name} = {value}");
+                    }
+                    break;
+                case "print":
+                    {
+                        var expr = Rest(args, 1);
+                        var value = OnGame(() => Src.Expression.GetValueAsString(expr));
+                        Record($"{DateTime.Now:HH:mm:ss} PRINT {expr} = {value}");
+                    }
+                    break;
+                case "policy":
+                    if (!new[] { "smart", "advance", "hold" }.Contains(args[1]))
+                    {
+                        throw new PlayScriptException("policy smart|advance|hold");
+                    }
+                    Policy = args[1];
+                    break;
+                case "autodefense":
+                    {
+                        var on = args.Length > 1 && args[1] == "on";
+                        OnGame(() => Src.SystemConfig.AutoDefense = on);
+                        Record($"{DateTime.Now:HH:mm:ss} AUTODEFENSE {(on ? "on" : "off")}");
+                    }
+                    break;
+                case "stall":
+                    auto.StallClickMillis = (int)(double.Parse(args[1]) * 1000);
+                    break;
+                case "choose":
+                    if (args.Length < 3)
+                    {
+                        throw new PlayScriptException("choose 見出し 項目");
+                    }
+                    auto.ListRules.Add((args[1], Rest(args, 2)));
                     break;
                 case "dialog":
                     PressDialog(Rest(args, 1));
@@ -325,7 +388,8 @@ namespace SRCRender.Tests
                         return true;
                     }
                 }
-                auto.Run(int.MaxValue, 3000, () => IsReady);
+                // 停滞時にボタンを押す（StallClickMillis）より長く待つ
+                auto.Run(int.MaxValue, 60000, () => IsReady);
             }
             return IsReady;
         }
@@ -545,6 +609,11 @@ namespace SRCRender.Tests
 
         private void ActUnit(UnitInfo unit)
         {
+            if (script.Policy == "smart")
+            {
+                ActUnitSmart(unit);
+                return;
+            }
             Log($"{unit.Name} ({unit.X},{unit.Y})");
             script.ClickCell(unit.X, unit.Y);
             if (!script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
@@ -563,7 +632,7 @@ namespace SRCRender.Tests
                 script.ClickCell(unit.X, unit.Y);
                 script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
             }
-            if (script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動") && TryMoveTowardEnemy(unit))
+            if (script.Policy == "advance" && script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動") && TryMoveTowardEnemy(unit))
             {
                 // 移動後のメニュー
                 if (script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
@@ -588,6 +657,287 @@ namespace SRCRender.Tests
             {
                 script.Cancel();
             }
+        }
+
+        // ── smart: SRC の CPU と同じ見積もりで目標と武器を選ぶ ──
+
+        private sealed class AttackPlan
+        {
+            public string Weapon;
+            public UnitInfo Target;
+            public double Score;
+        }
+
+        /// <summary>HP がこの割合を下回ったら、倒しきれる敵がいなければ下がる</summary>
+        private const double RetreatRatio = 0.35;
+
+        private static UnitInfo Info(Unit u) => new UnitInfo { ID = u.ID, Name = u.Name, X = u.x, Y = u.y };
+
+        /// <summary>
+        /// 攻撃の評価。命中の見込みで重みを付けた与ダメージの割合に、撃破とボス（ステージの勝利条件になりやすい）の分を加える。
+        /// </summary>
+        private static double AttackScore(int prob, int dmg, Unit t)
+        {
+            var p = Math.Min(prob, 100) / 100d;
+            var hp = Math.Max(t.HP, 1);
+            var score = p * Math.Min(dmg, hp) / hp;
+            if (dmg >= hp)
+            {
+                score += p;
+            }
+            if (t.BossRank >= 0)
+            {
+                score += 0.5 * p;
+            }
+            return score;
+        }
+
+        private static int Distance(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+
+        /// <summary>敵がこのマスに次のターンで攻撃できるか（移動力と最大射程による概算）</summary>
+        private static int Danger(IEnumerable<Unit> enemies, int x, int y)
+        {
+            return enemies.Count(e =>
+            {
+                var range = e.Weapons.Where(w => w.IsWeaponAvailable("移動前")).Select(w => w.WeaponMaxRange()).DefaultIfEmpty(1).Max();
+                return Distance(e.x, e.y, x, y) <= e.Speed + range;
+            });
+        }
+
+        /// <summary>その場から攻撃する場合の最善（SRC の COM.SelectWeapon で武器を選ぶ）</summary>
+        private AttackPlan PlanAttackInPlace(string unitId)
+        {
+            return script.OnGame(() =>
+            {
+                var src = script.Src;
+                var u = src.UList.Item(unitId);
+                AttackPlan best = null;
+                foreach (var t in src.UList.Items.Where(x => x.Status == "出撃" && IsEnemyOf(x)))
+                {
+                    var w = src.COM.SelectWeapon(u, t, "移動前", out var prob, out var dmg);
+                    if (w <= 0)
+                    {
+                        continue;
+                    }
+                    var score = AttackScore(prob, dmg, t);
+                    if (best == null || score > best.Score)
+                    {
+                        best = new AttackPlan { Weapon = u.Weapon(w).WeaponNickname(), Target = Info(t), Score = score };
+                    }
+                }
+                return best;
+            });
+        }
+
+        /// <summary>
+        /// 移動先を選ぶ（「移動」を選んで移動できる範囲が示された状態で呼ぶ）。
+        /// 移動後に攻撃できるマスは攻撃の評価、できなければ最も近い敵への近さで選び、どちらも敵から受ける危険を差し引く。
+        /// 下がる場合は敵から離れるマスを選ぶ。
+        /// </summary>
+        private (int X, int Y, AttackPlan Attack)? PlanMove(string unitId, bool retreat)
+        {
+            return script.OnGame(() =>
+            {
+                var src = script.Src;
+                var map = src.Map;
+                var u = src.UList.Item(unitId);
+                var enemies = src.UList.Items.Where(x => x.Status == "出撃" && IsEnemyOf(x)).ToList();
+                if (!enemies.Any())
+                {
+                    return ((int, int, AttackPlan)?)null;
+                }
+                var hpRatio = u.HP / (double)u.MaxHP;
+                // HP が少ないほど危険を重く見る
+                var dangerWeight = 0.2 + (1 - hpRatio);
+                var weapons = u.Weapons.Where(w => w.IsWeaponAvailable("移動後")).ToList();
+                (int, int, AttackPlan)? best = null;
+                var bestScore = double.MinValue;
+                for (var x = 1; x <= map.MapWidth; x++)
+                {
+                    for (var y = 1; y <= map.MapHeight; y++)
+                    {
+                        if (map.MaskData[x, y] || (map.MapDataForUnit[x, y] != null && map.MapDataForUnit[x, y] != u))
+                        {
+                            continue;
+                        }
+                        var danger = Danger(enemies, x, y);
+                        var nearest = enemies.Min(e => Distance(e.x, e.y, x, y));
+                        double score;
+                        AttackPlan attack = null;
+                        if (retreat)
+                        {
+                            score = nearest - danger * 2;
+                        }
+                        else
+                        {
+                            foreach (var w in weapons)
+                            {
+                                foreach (var t in enemies)
+                                {
+                                    var d = Distance(x, y, t.x, t.y);
+                                    if (d > w.WeaponMaxRange() || d < w.WeaponData.MinRange)
+                                    {
+                                        continue;
+                                    }
+                                    var s = AttackScore(w.HitProbability(t, false), w.ExpDamage(t, false), t);
+                                    if (attack == null || s > attack.Score)
+                                    {
+                                        attack = new AttackPlan { Weapon = w.WeaponNickname(), Target = Info(t), Score = s };
+                                    }
+                                }
+                            }
+                            score = attack != null
+                                ? 10 + attack.Score * 10 - danger * dangerWeight
+                                : -nearest - danger * dangerWeight;
+                        }
+                        if (score > bestScore)
+                        {
+                            bestScore = score;
+                            best = (x, y, attack);
+                        }
+                    }
+                }
+                return best;
+            });
+        }
+
+        /// <summary>メニューの「攻撃」から、指定の武器で指定の敵を攻撃する</summary>
+        private bool Attack(AttackPlan plan)
+        {
+            if (!script.SelectMenu("攻撃"))
+            {
+                return false;
+            }
+            if (!script.WaitUntil(() => script.Runner.State.List != null && script.Runner.GUI.IsWaitingList, TimeSpan.FromSeconds(10)))
+            {
+                return false;
+            }
+            var list = script.Runner.State.List;
+            var index = Enumerable.Range(0, list.Items.Count)
+                .FirstOrDefault(i => !list.Items[i].Disabled && (list.Items[i].Text ?? "").TrimStart('×', ' ').StartsWith(plan.Weapon), -1);
+            if (index < 0)
+            {
+                Log($"武器がありません: {plan.Weapon}");
+                script.Runner.GUI.KeyPressed(ScreenKey.Escape);
+                return false;
+            }
+            script.ChooseListIndex(list, index);
+            if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+            {
+                return false;
+            }
+            Log($"攻撃: {plan.Target.Name} ({plan.Target.X},{plan.Target.Y}) {plan.Weapon}");
+            script.ClickCell(plan.Target.X, plan.Target.Y);
+            script.AutoUntilReady(TimeSpan.FromMinutes(3));
+            return true;
+        }
+
+        private bool OpenUnitMenu(UnitInfo unit)
+        {
+            script.ClickCell(unit.X, unit.Y);
+            return script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
+        }
+
+        private void Wait()
+        {
+            if (!script.SelectMenu("待機"))
+            {
+                script.Cancel();
+            }
+        }
+
+        private void ActUnitSmart(UnitInfo unit)
+        {
+            var hpRatio = script.OnGame(() =>
+            {
+                var u = script.Src.UList.Item(unit.ID);
+                return u.HP / (double)u.MaxHP;
+            });
+            Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}");
+            if (!OpenUnitMenu(unit))
+            {
+                Log("ユニットのメニューが出ません");
+                script.Cancel();
+                return;
+            }
+            var retreat = hpRatio < RetreatRatio;
+
+            // その場から攻撃する。HP が少なくても、倒しきれる見込みが高ければ攻撃する
+            var inPlace = script.Runner.State.Menu.Items.Contains("攻撃") ? PlanAttackInPlace(unit.ID) : null;
+            if (inPlace != null && (!retreat || inPlace.Score >= 1.5))
+            {
+                // 移動できない場合と、倒しきれる見込みが高い場合はすぐ攻撃する。それ以外は移動して攻撃する候補と比べる
+                if (!script.Runner.State.Menu.Items.Contains("移動") || inPlace.Score >= 1.5)
+                {
+                    if (Attack(inPlace))
+                    {
+                        return;
+                    }
+                    if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動"))
+            {
+                script.SelectMenu("移動");
+                if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+                {
+                    script.Cancel();
+                    return;
+                }
+                var move = PlanMove(unit.ID, retreat);
+                var stay = move == null || (move.Value.X == unit.X && move.Value.Y == unit.Y);
+                var moveScore = move?.Attack?.Score ?? 0;
+                if (stay || (inPlace != null && !retreat && inPlace.Score >= moveScore))
+                {
+                    // 動かないほうが良い。移動を取り消して、その場で攻撃するか待機する
+                    script.Cancel();
+                    script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10));
+                    if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
+                    {
+                        return;
+                    }
+                    if (inPlace != null && Attack(inPlace))
+                    {
+                        return;
+                    }
+                    if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
+                    {
+                        return;
+                    }
+                    Wait();
+                    return;
+                }
+                Log($"{(retreat ? "後退" : "移動")}: ({move.Value.X},{move.Value.Y})");
+                script.ClickCell(move.Value.X, move.Value.Y);
+                if (!script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
+                {
+                    return;
+                }
+                if (move.Value.Attack != null && script.Runner.State.Menu.Items.Contains("攻撃") && Attack(move.Value.Attack))
+                {
+                    return;
+                }
+                if (script.Runner.State.Menu == null)
+                {
+                    script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
+                }
+                Wait();
+                return;
+            }
+
+            if (inPlace != null && Attack(inPlace))
+            {
+                return;
+            }
+            if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
+            {
+                return;
+            }
+            Wait();
         }
 
         /// <summary>メニューの「攻撃」から、届く敵を攻撃する。攻撃できなければキャンセルして false。</summary>

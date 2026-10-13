@@ -1,0 +1,12 @@
+# 「Continue」でインターミッションに入り、データセーブしてから次のステージへ進む
+auto 60
+expect message ステージ1
+wait list コマンド
+list データセーブ
+wait list コマンド
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2
+expect finished
+expect error none

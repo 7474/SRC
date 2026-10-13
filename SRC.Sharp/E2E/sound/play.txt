@@ -1,0 +1,5 @@
+# BGM（MIDI）と効果音（WAV）を鳴らす。SRC#Web では Web Audio で鳴ることを確かめる
+auto 60
+expect message 音のテスト
+expect finished
+expect error none

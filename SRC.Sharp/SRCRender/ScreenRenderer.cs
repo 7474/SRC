@@ -38,7 +38,7 @@ namespace SRCRender
         /// 既定で使うフォント。SRC のリストは等幅（ＭＳ 明朝）で桁を空白で揃えるため等幅フォントにする。
         /// 環境によらず同じ描画結果になるよう、あれば優先する。
         /// </summary>
-        public const string PreferredFontFamily = Compat.SkiaFonts.FixedPitchFamily;
+        public static string PreferredFontFamily => Compat.SkiaFonts.FixedPitchFamily;
 
         public ScreenRenderer(SKTypeface typeface = null)
         {

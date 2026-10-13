@@ -61,5 +61,9 @@ namespace SRCCore
         // 既定値は実行ファイルのバージョン
         // EntryAssemblyが取れない場合はCoreのバージョンを返す
         public Version Version { get; set; } = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version;
+
+        // 互換の対象とする元の SRC のバージョン（移植元の SRC Ver2.2.33）
+        // シナリオは AppVersion で本体のバージョンを確かめるため、SRC# 自身のバージョンではなくこちらを返す
+        public Version CompatibleVersion { get; set; } = new Version(2, 2, 33);
     }
 }

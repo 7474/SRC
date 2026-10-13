@@ -162,7 +162,8 @@ namespace SRCSharpAvalonia.Tests
                         Click(window, new Point(ScreenLayout.MessageArea.MidX, ScreenLayout.MessageArea.MidY));
 
                         // 選択肢
-                        PumpUntil(() => state.List != null, "list");
+                        // リストが表示されても、ゲームスレッドがクリックを待ち始める前のクリックは失われるため、待ちに入るまで待つ
+                        PumpUntil(() => state.List != null && game.GUI.IsWaitingList, "list");
                         PumpUntilIdle(host);
                         SaveFrame(window, "02-list");
                         var layout = game.GUI.Renderer.LayoutList(state.List);

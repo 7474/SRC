@@ -46,6 +46,41 @@ jobs:
       env:
         ALSOFT_DRIVERS: "null"
 
+    # SRC#Web（マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要）
+    - name: Build SRC#Web
+      run: |
+        dotnet workload install wasm-tools
+        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする
+    - name: Test SRC#Web (Playwright)
+      working-directory: SRC.Sharp/SRCSharpWeb.E2E
+      env:
+        SRCWEB_ROOT: ../SRCSharpWeb/bin/pages-test
+        SRCWEB_BASE: /SRC/web/
+      run: |
+        mkdir -p ${SRCWEB_ROOT}${SRCWEB_BASE}
+        cp -r ../SRCSharpWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}${SRCWEB_BASE}
+        sed -i "s|<base href=\"/\" />|<base href=\"${SRCWEB_BASE}\" />|" ${SRCWEB_ROOT}${SRCWEB_BASE}index.html
+        npm ci
+        npx playwright install --with-deps chromium
+        npx playwright test
+
+    - name: Upload SRC#Web test report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: srcweb-playwright
+        path: |
+          SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
+          SRC.Sharp/SRCSharpWeb.E2E/test-results/
+        if-no-files-found: ignore
+
     - name: Upload screenshots
       if: always()
       uses: actions/upload-artifact@v7
