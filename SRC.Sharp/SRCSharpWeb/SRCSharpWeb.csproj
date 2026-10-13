@@ -6,7 +6,7 @@
     <RootNamespace>SRCSharpWeb</RootNamespace>
     <AssemblyName>SRCSharpWeb</AssemblyName>
     <Product>SRC#Web</Product>
-    <Version>0.1.0</Version>
+    <Version>$(SrcSharpAppVersion)</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- ゲームスレッドを Web Worker で動かす。クロスオリジン分離（COOP/COEP）が必要 -->
     <WasmEnableThreads>true</WasmEnableThreads>
