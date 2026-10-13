@@ -5,14 +5,14 @@ on:
     branches:
       - master
     paths: 
-      - .github/workflows/azure-static-web-apps-icy-coast-005428600.yml
+      - .github/workflows/CD-swa-dataviewer.yml
       - SRC.Sharp/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
     paths: 
-      - .github/workflows/azure-static-web-apps-icy-coast-005428600.yml
+      - .github/workflows/CD-swa-dataviewer.yml
       - SRC.Sharp/**
 
 jobs:
