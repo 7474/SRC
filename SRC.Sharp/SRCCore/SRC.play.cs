@@ -301,7 +301,7 @@ namespace SRCCore
                     }
 
                     // CPUが操作するユニットがいるかどうかチェック
-                    if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") > 0)
+                    if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") == 0)
                     {
                         break;
                     }
