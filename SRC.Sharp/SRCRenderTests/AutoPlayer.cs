@@ -191,7 +191,21 @@ namespace SRCRender.Tests
                 }
                 else if (gui.IsWaitingClick)
                 {
-                    gui.KeyPressed(ScreenKey.Enter);
+                    // ホットポイントがあれば、そのどれかをクリックする（Wait Click で「選択」にホットポイントの名前が入る）
+                    var hotPoint = ChooseHotPoint();
+                    if (hotPoint.HasValue)
+                    {
+                        var hp = hotPoint.Value;
+                        var (hx, hy) = (hp.Left + hp.Width / 2f, hp.Top + hp.Height / 2f);
+                        ListChosen?.Invoke("ホットポイント", hp.Name);
+                        gui.PointerMoved(hx, hy);
+                        gui.PointerPressed(hx, hy, GuiButton.Left);
+                        gui.PointerReleased(hx, hy, GuiButton.Left);
+                    }
+                    else
+                    {
+                        gui.KeyPressed(ScreenKey.Enter);
+                    }
                     acted = true;
                     Thread.Sleep(30);
                 }
@@ -238,6 +252,46 @@ namespace SRCRender.Tests
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// クリック待ちのホットポイントを選ぶ。選択肢の規則（ListRules）の項目に名前か説明が合うものを優先し、
+        /// 無ければ同じホットポイントの組が続く間は順に別のものを選ぶ。ホットポイントが無ければ null。
+        /// </summary>
+        private string lastHotPointSignature;
+        private int hotPointVisits;
+
+        private SRCCore.Events.HotPoint? ChooseHotPoint()
+        {
+            List<SRCCore.Events.HotPoint> points;
+            try
+            {
+                points = (runner.Session.SRC.Event.HotPointList ?? new List<SRCCore.Events.HotPoint>())
+                    .Where(x => x.Width > 0 && x.Height > 0)
+                    .ToList();
+            }
+            catch (InvalidOperationException)
+            {
+                // ゲームスレッドが更新している最中
+                return null;
+            }
+            if (points.Count == 0)
+            {
+                return null;
+            }
+            foreach (var (_, item) in ListRules)
+            {
+                var matched = points.FindIndex(x => (x.Name ?? "").Contains(item) || (x.Caption ?? "").Contains(item));
+                if (matched >= 0)
+                {
+                    return points[matched];
+                }
+            }
+            // 同じホットポイントの組が続く間は順に別のものを選ぶ
+            var signature = string.Join("\n", points.Select(x => x.Name));
+            hotPointVisits = signature == lastHotPointSignature ? hotPointVisits + 1 : 0;
+            lastHotPointSignature = signature;
+            return points[hotPointVisits % points.Count];
         }
 
         private static bool WaitChange(Func<bool> changed)
