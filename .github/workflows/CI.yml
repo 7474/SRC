@@ -162,7 +162,7 @@ jobs:
 
     - name: Generate Coverage Report
       if: github.event_name == 'push'
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.5.10
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.5.11
       with:
         reports: TestResults/**/coverage.cobertura.xml
         targetdir: CoverageReport
