@@ -49,6 +49,13 @@ SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/develop
         - 元のSRCとの区別の便宜上、バージョンは `3.x.x` としている
             - SRCCore と比べてメジャーバージョンが +3
         - HelpURL: https://srch.7474.jp/
+    - [SRCRender](./SRC.Sharp/SRCRender)
+        - SkiaSharp で SRC の画面を描画するライブラリと、UI フレームワークに依存しない GUI 実装
+        - .NET Standard 2.1
+    - [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia)
+        - Avalonia UI 実装の SRC#Avalonia（試作）
+        - Windows / macOS / Linux で動作する
+        - .NET 10
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - データの閲覧を行える
