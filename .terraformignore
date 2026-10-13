@@ -1,9 +1,0 @@
-.git
-.terraform
-terraform/.terraform
-memo
-SRC
-SRC.NET
-SRC.Sharp
-SRC.Sharp.Help
-tools
