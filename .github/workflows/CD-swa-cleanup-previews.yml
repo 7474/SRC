@@ -1,0 +1,91 @@
+name: SWA preview cleanup
+
+# Static Web Apps のプレビュー環境（PR ごとの環境）のうち、PR がクローズ済みなのに残っているものを削除する。
+# プレビュー環境の数には上限があり、残っていると新しい PR のデプロイが
+# 「maximum number of staging environments」で失敗するため。
+#
+# Azure へは OpenID Connect でサインインする。必要な設定（docs/swa-workflows.md）:
+#   secrets: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+# 未設定の場合は何もせずに終わる。
+
+on:
+  schedule:
+    - cron: '17 18 * * *' # 毎日 03:17 JST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '削除せずに対象を表示するだけ'
+        type: boolean
+        default: false
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          # 既定のホスト名の一部で Static Web App を探す（リソース名やリソースグループに依存しない）
+          - name: SRC#DataViewer
+            host: icy-coast-005428600
+          - name: SRC#Help
+            host: yellow-pebble-0ddb1c400
+    name: Cleanup ${{ matrix.app.name }}
+    steps:
+      - name: Check Azure credentials
+        id: check
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        run: |
+          if [ -z "$AZURE_CLIENT_ID" ]; then
+            echo "::notice::AZURE_CLIENT_ID などが設定されていないため、プレビュー環境の削除を行いません（docs/swa-workflows.md）"
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Azure login
+        if: steps.check.outputs.configured == 'true'
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Delete preview environments of closed pull requests
+        if: steps.check.outputs.configured == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOST: ${{ matrix.app.host }}
+          DRY_RUN: ${{ inputs.dry_run || false }}
+        run: |
+          set -euo pipefail
+          read -r APP RG < <(az staticwebapp list \
+            --query "[?contains(defaultHostname, '$HOST')] | [0].[name, resourceGroup]" -o tsv)
+          if [ -z "${APP:-}" ]; then
+            echo "::warning::$HOST の Static Web App が見つかりません"
+            exit 0
+          fi
+          echo "Static Web App: $APP ($RG)"
+
+          # PR のプレビュー環境は PR 番号の名前を持つ（本番は default）
+          az staticwebapp environment list -n "$APP" -g "$RG" --query "[].name" -o tsv | while read -r env; do
+            if ! [[ "$env" =~ ^[0-9]+$ ]]; then
+              continue
+            fi
+            state=$(gh pr view "$env" --repo "$GITHUB_REPOSITORY" --json state -q .state 2>/dev/null || echo UNKNOWN)
+            echo "environment $env: PR $state"
+            if [ "$state" = "CLOSED" ] || [ "$state" = "MERGED" ]; then
+              if [ "$DRY_RUN" = "true" ]; then
+                echo "  would delete"
+              else
+                az staticwebapp environment delete -n "$APP" -g "$RG" --environment-name "$env" --yes
+                echo "  deleted"
+              fi
+            fi
+          done
