@@ -67,9 +67,19 @@
 }
 else
 {
-    <main class="window">
-        <h1 class="titlebar">@site.Title</h1>
-        <div class="window-body">
+    @* エクスプローラー（Windows 95・XP）を模した画面。右の一覧を DOM の先に置き、左の作業ウィンドウは CSS で左に出す *@
+    <main class="window explorer">
+        <div class="titlebar">
+            <span class="title-icon" aria-hidden="true"></span>
+            <h1>@site.Title</h1>
+            <span class="caption-buttons" aria-hidden="true"><span class="caption-min"></span><span class="caption-max"></span><span class="caption-close"></span></span>
+        </div>
+        <div class="addressbar">
+            <span class="address-label">@L["Address"]</span>
+            <span class="address"><span class="icon icon-folder" aria-hidden="true"></span>@AddressText</span>
+        </div>
+        <div class="explorer-body">
+        <div class="listpane">
         @if (!string.IsNullOrEmpty(status))
         {
             <p id="status" class="status">@status</p>
@@ -78,27 +88,28 @@ else
         {
             @foreach (var catalog in catalogs)
             {
-                <section class="catalog">
+                <section class="group catalog">
                     <h2>@(catalog.Name ?? L["RegisteredScenarios"])</h2>
                     @if (!catalog.Scenarios.Any())
                     {
-                        <p>@L["NoItems"]</p>
+                        <p class="note">@L["NoItems"]</p>
                     }
                     @* E2E テストは最初のカタログを #catalog で探す *@
                     <ul class="items" id="@(catalogs.IndexOf(catalog) == 0 ? "catalog" : null)">
                         @foreach (var entry in catalog.Scenarios)
                         {
                             <li>
+                                <span class="icon icon-zip" aria-hidden="true"></span>
                                 <button @onclick="() => PlayCatalogAsync(entry)">@entry.Title</button>
                                 @if (!string.IsNullOrEmpty(entry.Author))
                                 {
                                     <span class="note">@entry.Author</span>
                                 }
-                                <a class="link" href="@PlayLink(entry)" title="@L["DirectLinkTitle"]">@L["DirectLink"]</a>
                                 @if (!string.IsNullOrEmpty(entry.License))
                                 {
                                     <span class="note">@entry.License</span>
                                 }
+                                <a class="link" href="@PlayLink(entry)" title="@L["DirectLinkTitle"]">@L["DirectLink"]</a>
                             </li>
                         }
                     </ul>
@@ -112,36 +123,23 @@ else
             {
                 <p class="status">@error</p>
             }
-            @if (site.AllowUserCatalogs)
-            {
-                <section>
-                    <h2>@L["AddCatalog"]</h2>
-                    <p class="note">@L["AddCatalogNote"]</p>
-                    <form class="add-catalog" @onsubmit="AddCatalogAsync">
-                        <input id="catalog-url" type="url" placeholder="https://example.com/catalog.json" @bind="newCatalogUrl" />
-                        <button type="submit">@L["Add"]</button>
-                    </form>
-                </section>
-            }
             @if (site.AllowUserArchives)
             {
-                <section>
+                <section class="group">
                     <h2>@L["AddedArchives"]</h2>
-                    <p class="note">@L["AddArchiveNote"]</p>
-                    <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
-                    <p class="note">@L["AddAssetNote"]</p>
-                    <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
                     <ul class="items" id="archives">
                         @foreach (var archive in archives)
                         {
                             <li>
                                 @if (archive.Kind == CatalogEntry.KindAsset)
                                 {
+                                    <span class="icon icon-asset" aria-hidden="true"></span>
+                                    <span class="name">@archive.Name</span>
                                     <span class="asset">@L["Asset"]</span>
-                                    <span>@archive.Name</span>
                                 }
                                 else
                                 {
+                                    <span class="icon icon-zip" aria-hidden="true"></span>
                                     <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
                                 }
                                 <span class="size">@FormatSize(archive.Size)</span>
@@ -149,22 +147,16 @@ else
                             </li>
                         }
                     </ul>
+                    @if (archives.Count == 0)
+                    {
+                        <p class="note">@L["NoItems"]</p>
+                    }
                 </section>
             }
-            <section class="language">
-                <label for="language">@L["Language"]</label>
-                <select id="language" value="@WebLocalization.SelectorValue" @onchange="ChangeLanguageAsync">
-                    @foreach (var language in SRCCore.UiLanguages.Supported)
-                    {
-                        <option value="@language.Code">@language.NativeName</option>
-                    }
-                    <option value="auto">@L["LanguageAuto"]</option>
-                </select>
-            </section>
         }
         else if (mode == Mode.ChooseEvent)
         {
-            <section>
+            <section class="group">
                 <h2>@choosingTitle</h2>
                 @if (saves.Count > 0)
                 {
@@ -173,6 +165,7 @@ else
                         @foreach (var save in saves)
                         {
                             <li>
+                                <span class="icon icon-save" aria-hidden="true"></span>
                                 <button @onclick="() => StartAsync(Path.Combine(scenarioDir, save.Name))">@save.Name</button>
                                 <span class="size">@FormatTime(save.Updated)</span>
                                 <button class="export" @onclick="() => ExportSaveAsync(save)">@L["Export"]</button>
@@ -181,18 +174,82 @@ else
                         }
                     </ul>
                 }
-                <p class="note">@L["ImportSaveNote"]</p>
-                <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq" multiple />
                 <h3>@L["StartNew"]</h3>
                 <ul class="items" id="events">
                     @foreach (var eve in eventFiles)
                     {
-                        <li><button @onclick="() => StartAsync(Path.Combine(scenarioDir, eve))">@eve</button></li>
+                        <li><span class="icon icon-file" aria-hidden="true"></span><button @onclick="() => StartAsync(Path.Combine(scenarioDir, eve))">@eve</button></li>
                     }
                 </ul>
-                <button @onclick="BackToMenu">@L["Back"]</button>
             </section>
         }
+        </div>
+        @if (mode == Mode.Menu || mode == Mode.ChooseEvent)
+        {
+            <aside class="taskpane">
+            @if (mode == Mode.Menu)
+            {
+                @if (site.AllowUserCatalogs)
+                {
+                    <section class="task">
+                        <h2>@L["AddCatalog"]</h2>
+                        <div class="task-body">
+                            <p class="note">@L["AddCatalogNote"]</p>
+                            <form class="add-catalog" @onsubmit="AddCatalogAsync">
+                                <input id="catalog-url" type="url" placeholder="https://example.com/catalog.json" @bind="newCatalogUrl" />
+                                <button type="submit">@L["Add"]</button>
+                            </form>
+                        </div>
+                    </section>
+                }
+                @if (site.AllowUserArchives)
+                {
+                    <section class="task">
+                        <h2>@L["AddArchives"]</h2>
+                        <div class="task-body">
+                            <p class="note">@L["AddArchiveNote"]</p>
+                            <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
+                            <p class="note">@L["AddAssetNote"]</p>
+                            <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
+                        </div>
+                    </section>
+                }
+            }
+            else
+            {
+                <section class="task">
+                    <h2>@choosingTitle</h2>
+                    <div class="task-body">
+                        <p class="note">@L["ImportSaveNote"]</p>
+                        <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq" multiple />
+                        <p><button @onclick="BackToMenu">@L["Back"]</button></p>
+                    </div>
+                </section>
+            }
+                <section class="task settings">
+                    <h2>@L["Settings"]</h2>
+                    <div class="task-body">
+                        <label for="language">@L["Language"]</label>
+                        <select id="language" value="@WebLocalization.SelectorValue" @onchange="ChangeLanguageAsync">
+                            @foreach (var language in SRCCore.UiLanguages.Supported)
+                            {
+                                <option value="@language.Code">@language.NativeName</option>
+                            }
+                            <option value="auto">@L["LanguageAuto"]</option>
+                        </select>
+                        <label for="theme">@L["Theme"]</label>
+                        <select id="theme" value="@theme" @onchange="ChangeThemeAsync">
+                            <option value="95">Windows 95</option>
+                            <option value="xp">Windows XP</option>
+                        </select>
+                    </div>
+                </section>
+            </aside>
+        }
+        </div>
+        <div class="statusbar">
+            <span class="statusbar-cell">@L["ObjectCount", ObjectCount]</span>
+            <span class="statusbar-cell statusbar-grip"></span>
         </div>
     </main>
 }
@@ -216,6 +273,8 @@ else
 
     private Mode mode = Mode.Loading;
     private string status;
+    /// <summary>画面のテーマ（95・xp）。srcwebStore.setTheme で html の data-theme に反映し、localStorage に保存する</summary>
+    private string theme = "95";
     private SiteConfig site = new SiteConfig();
     private List<Catalog> catalogs = new List<Catalog>();
     private List<string> catalogErrors = new List<string>();
@@ -280,6 +339,7 @@ else
         status = L["Loading"];
         try
         {
+            theme = await JS.InvokeAsync<string>("srcwebStore.getTheme");
             await WebFonts.LoadAsync(Http);
             site = await SiteConfig.LoadAsync(Http);
             await JS.InvokeVoidAsync("srcwebStore.setTitle", site.Title);
@@ -782,6 +842,20 @@ else
     }
 
     /// <summary>表示言語を保存し、読み込み直して反映する（カルチャは起動時にしか変えられない）</summary>
+    /// <summary>アドレスバーに出す場所</summary>
+    private string AddressText => mode == Mode.ChooseEvent ? site.Title + "\\" + choosingTitle : site.Title;
+
+    /// <summary>ステータスバーに出す、一覧の項目の数</summary>
+    private int ObjectCount => mode == Mode.ChooseEvent
+        ? saves.Count + eventFiles.Count
+        : catalogs.Sum(x => x.Scenarios.Count()) + (site.AllowUserArchives ? archives.Count : 0);
+
+    private async Task ChangeThemeAsync(ChangeEventArgs e)
+    {
+        theme = e.Value?.ToString() ?? "95";
+        await JS.InvokeVoidAsync("srcwebStore.setTheme", theme);
+    }
+
     private async Task ChangeLanguageAsync(ChangeEventArgs e)
     {
         await JS.InvokeVoidAsync("localStorage.setItem", WebLocalization.StorageKey, e.Value?.ToString() ?? "");

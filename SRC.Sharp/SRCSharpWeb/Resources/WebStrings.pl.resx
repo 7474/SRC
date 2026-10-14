@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>Nie udało się wczytać zasobu {0}: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Dodaj archiwa</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Motyw</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>Obiekty: {0}</value>
+  </data>
 </root>

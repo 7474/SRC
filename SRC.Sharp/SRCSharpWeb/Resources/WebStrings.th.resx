@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>ไม่สามารถโหลดแอสเซ็ต {0} ได้: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>ที่อยู่</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>เพิ่มอาร์ไคฟ์</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>ธีม</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} รายการ</value>
+  </data>
 </root>

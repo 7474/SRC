@@ -81,6 +81,19 @@
         saveCatalogs(urls) {
             localStorage.setItem('srcweb.catalogs', JSON.stringify(urls));
         },
+        // 画面のテーマ（95・xp）。index.html が描画の前に同じ値を html の data-theme に付ける
+        getTheme() {
+            return document.documentElement.dataset.theme === 'xp' ? 'xp' : '95';
+        },
+        setTheme(theme) {
+            theme = theme === 'xp' ? 'xp' : '95';
+            document.documentElement.dataset.theme = theme;
+            try {
+                localStorage.setItem('srcweb.theme', theme);
+            } catch {
+                // localStorage を使えない（この表示の間だけ変える）
+            }
+        },
         setTitle(title) {
             document.title = title;
         },

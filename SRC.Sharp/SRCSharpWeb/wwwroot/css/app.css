@@ -1,115 +1,343 @@
 /*
-  SRC#Web の画面。VB5（Windows 9x）の部品の形（立体の枠・グラデーションのタイトルバー・へこんだ一覧）を残しつつ、
-  ゲームの画面の邪魔をしないよう暗い落ち着いた色にして、明るさの差を抑える。
+  SRC#Web の画面。往年の Windows のエクスプローラーを模す。
+  テーマは html の data-theme で切り替える（95: Windows 95 のクラシック、xp: Windows XP の Luna）。
+  色・枠は下の変数で決め、形が大きく違うところ（タイトルバー・作業ウィンドウ・ボタン）はテーマごとに書く。
 */
-:root {
-    --desk: #24272b;          /* ページの背景 */
-    --face: #3a3d42;          /* ウィンドウ・ボタンの面 */
-    --face-hover: #43474d;
-    --light: #575b62;         /* 立体の枠の明るい側 */
-    --lighter: #63686f;
-    --shadow: #1d1f22;        /* 立体の枠の暗い側 */
-    --well: #2c2f33;          /* へこんだ一覧・入力欄 */
-    --text: #dcdcd6;
-    --text-dim: #9a9c9f;
-    --accent: #e0c27a;        /* 状態の表示 */
-    --title-from: #24345a;    /* タイトルバー（VB5 の紺のグラデーションを暗く） */
-    --title-to: #3a5680;
-    --select: #34507a;
-    --focus: #8fb0d8;
-    --ui-font: "MS UI Gothic", "Meiryo UI", "BIZ UDPGothic", system-ui, sans-serif;
+
+/* ── テーマ ── */
+
+:root,
+:root[data-theme="95"] {
+    --desk: #008080;            /* デスクトップ */
+    --face: #c0c0c0;            /* ウィンドウ・ボタンの面 */
+    --face-hover: #c0c0c0;
+    --hilight: #ffffff;         /* 立体の枠 */
+    --light: #dfdfdf;
+    --shadow: #808080;
+    --dark: #000000;
+    --well: #ffffff;            /* 一覧・入力欄 */
+    --text: #000000;
+    --text-dim: #404040;
+    --link: #0000ff;
+    --select: #000080;          /* 選択 */
+    --select-text: #ffffff;
+    --title-bg: linear-gradient(to right, #000080, #1084d0);
+    --title-text: #ffffff;
+    --tip: #ffffe1;             /* 状態の表示（ツールチップの色） */
+    --tip-border: #000000;
+    --group-text: #000000;
+    --group-line: var(--shadow);
+    --raised: inset -1px -1px var(--dark), inset 1px 1px var(--hilight), inset -2px -2px var(--shadow), inset 2px 2px var(--light);
+    --sunken: inset -1px -1px var(--hilight), inset 1px 1px var(--shadow), inset -2px -2px var(--light), inset 2px 2px var(--dark);
+    --ui-font: "MS UI Gothic", "MS PGothic", "Meiryo UI", "BIZ UDPGothic", Tahoma, sans-serif;
+    --title-font: var(--ui-font);
+}
+
+:root[data-theme="xp"] {
+    --desk: linear-gradient(#245edb, #3a81f3 55%, #5a9a3c 55%, #3f7f26);
+    --face: #ece9d8;
+    --face-hover: #f3f1e6;
+    --hilight: #ffffff;
+    --light: #f1efe2;
+    --shadow: #aca899;
+    --dark: #716f64;
+    --well: #ffffff;
+    --text: #000000;
+    --text-dim: #555555;
+    --link: #0047cc;
+    --select: #316ac5;
+    --select-text: #ffffff;
+    --title-bg: linear-gradient(#0997ff, #0053ee 8%, #0050ee 40%, #0066ff 88%, #0066ff 93%, #005bff 95%, #003dd7 96%, #003dd7);
+    --title-text: #ffffff;
+    --frame: #0831d9;
+    --tip: #ffffe1;
+    --tip-border: #aca899;
+    --group-text: #0f3a9e;
+    --group-line: linear-gradient(to right, #3d6dcc, rgba(61, 109, 204, 0));
+    --raised: inset 0 0 0 1px #003c74;
+    --sunken: inset 0 0 0 1px #7f9db9;
+    --ui-font: Tahoma, "MS UI Gothic", "Meiryo UI", "BIZ UDPGothic", sans-serif;
+    --title-font: "Trebuchet MS", Tahoma, "MS UI Gothic", "Meiryo UI", sans-serif;
+}
+
+/* ── アイコン（16×16） ── */
+
+.icon,
+.title-icon {
+    flex: none;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: no-repeat center;
+}
+
+.icon-folder {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M1.5 3.5h5l1 1h7v9h-13z' fill='%23f6d55c' stroke='%23866a1e'/%3E%3Cpath d='M2 5h12' stroke='%23fff6c4'/%3E%3C/svg%3E");
+}
+
+.icon-zip {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M1.5 3.5h5l1 1h7v9h-13z' fill='%23f6d55c' stroke='%23866a1e'/%3E%3Cpath d='M7 5h2v8H7z' fill='%23404040'/%3E%3Cpath d='M7 6h1M8 7h1M7 8h1M8 9h1M7 10h1M8 11h1' stroke='%23c0c0c0'/%3E%3C/svg%3E");
+}
+
+.icon-asset {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M1.5 5.5l3-3h10v8l-3 3h-10z' fill='%23c8964a' stroke='%23603c10'/%3E%3Cpath d='M1.5 5.5h10v8M11.5 5.5l3-3' fill='none' stroke='%23603c10'/%3E%3Cpath d='M5 8h3' stroke='%23fff'/%3E%3C/svg%3E");
+}
+
+.icon-save {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M1.5 1.5h12l1 1v12h-13z' fill='%23203c8c' stroke='%23000'/%3E%3Cpath d='M4 2h8v5H4z' fill='%23fff'/%3E%3Cpath d='M4 10h8v4H4z' fill='%23c0c0c0'/%3E%3Cpath d='M9 11h2v2H9z' fill='%23203c8c'/%3E%3C/svg%3E");
+}
+
+.icon-file {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Cpath d='M4 7h7M4 9h7M4 11h7M4 13h5' stroke='%23000080'/%3E%3C/svg%3E");
+}
+
+.title-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M0.5 2.5h15v11h-15z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M1 3h14v2H1z' fill='%23000080'/%3E%3Cpath d='M3 7h3v3H3zM8 9h3v3H8z' fill='%23c00000'/%3E%3Cpath d='M6 7h2v2H6zM11 6h2v2h-2z' fill='%23008000'/%3E%3C/svg%3E");
+}
+
+/* ── 全体 ── */
+
+html {
+    min-height: 100%;
+    background: var(--desk);
+    background-attachment: fixed;
 }
 
 html, body {
     margin: 0;
-    background: var(--desk);
     color: var(--text);
     font-family: var(--ui-font);
-    font-size: 14px;
+    font-size: 12px;
 }
 
-/* ── ウィンドウ（シナリオ選択） ── */
+body {
+    min-height: 100vh;
+}
+
+/* ── ウィンドウ（エクスプローラー） ── */
 
 main {
-    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    max-width: 920px;
     margin: 16px auto;
+    padding: 3px;
     background: var(--face);
-    border: 2px solid;
-    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--raised);
 }
 
-.titlebar,
-h1 {
+.titlebar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     margin: 0;
-    padding: 3px 8px;
-    font-size: 14px;
+    padding: 2px 3px;
+    min-height: 18px;
+    color: var(--title-text);
+    background: var(--title-bg);
+    font-family: var(--title-font);
+    font-size: 12px;
     font-weight: bold;
-    color: #e8ecf2;
-    background: linear-gradient(to right, var(--title-from), var(--title-to));
-    letter-spacing: 0.02em;
     user-select: none;
 }
 
-.window-body {
-    padding: 8px 12px 12px;
-}
-
-/* 起動中（index.html）の表示 */
-main > .status {
-    margin: 12px;
-}
-
-/* グループボックス */
-section {
-    position: relative;
-    margin: 16px 0 8px;
-    padding: 12px 10px 8px;
-    border: 1px solid var(--shadow);
-    box-shadow: inset 1px 1px 0 var(--light), 1px 1px 0 var(--light);
-}
-
-h2 {
-    position: absolute;
-    top: -0.75em;
-    left: 8px;
+.titlebar h1 {
+    flex: 1;
     margin: 0;
-    padding: 0 4px;
-    font-size: 13px;
+    font: inherit;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.caption-buttons {
+    display: flex;
+    gap: 0;
+}
+
+.caption-buttons > span {
+    position: relative;
+    width: 16px;
+    height: 14px;
+    background: var(--face);
+    box-shadow: var(--raised);
+}
+
+.caption-close {
+    margin-left: 2px;
+}
+
+/* 最小化・最大化・閉じるの記号（飾り） */
+.caption-min::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    bottom: 3px;
+    width: 6px;
+    height: 2px;
+    background: #000;
+}
+
+.caption-max::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    width: 7px;
+    height: 6px;
+    border: 1px solid #000;
+    border-top-width: 2px;
+}
+
+.caption-close::before,
+.caption-close::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 2px;
+    height: 8px;
+    background: #000;
+    transform: rotate(45deg);
+}
+
+.caption-close::after {
+    transform: rotate(-45deg);
+}
+
+/* アドレスバー */
+.addressbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0;
+    padding: 3px 4px;
+    border-top: 1px solid var(--shadow);
+    border-bottom: 1px solid var(--hilight);
+    box-shadow: 0 -1px 0 var(--hilight), 0 1px 0 var(--shadow);
+}
+
+.address-label {
+    color: var(--text-dim);
+}
+
+.address {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 3px 4px;
+    background: var(--well);
+    box-shadow: var(--sunken);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 本体: 左に作業ウィンドウ、右に一覧 */
+.explorer-body {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-areas: "task list";
+    min-height: 380px;
+}
+
+.listpane {
+    grid-area: list;
+    padding: 6px 10px 10px;
+    background: var(--well);
+    box-shadow: var(--sunken);
+    overflow: auto;
+}
+
+/* 作業ウィンドウが無い（起動中・読み込み中）ときは一覧だけ */
+.explorer-body:not(:has(.taskpane)) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "list";
+    min-height: 120px;
+}
+
+.taskpane {
+    grid-area: task;
+    padding: 0 6px 0 0;
+}
+
+/* 作業ウィンドウの項目（95 はグループボックス） */
+.task {
+    position: relative;
+    margin: 10px 0 6px;
+    padding: 10px 8px 6px;
+    border: 1px solid var(--shadow);
+    box-shadow: inset 1px 1px 0 var(--hilight), 1px 1px 0 var(--hilight);
+}
+
+.task:first-child {
+    margin-top: 8px;
+}
+
+.task h2 {
+    position: absolute;
+    top: -0.7em;
+    left: 6px;
+    margin: 0;
+    padding: 0 3px;
+    font-size: 12px;
     font-weight: normal;
     background: var(--face);
 }
 
+.task-body > *:first-child {
+    margin-top: 0;
+}
+
+.settings .task-body {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 8px;
+    align-items: center;
+}
+
+/* 一覧のまとまり（XP の「グループで表示」） */
+.group {
+    margin: 4px 0 14px;
+}
+
+.group h2 {
+    margin: 4px 0 4px;
+    padding: 2px 0 3px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--group-text);
+    border-bottom: 1px solid var(--shadow);
+}
+
 h3 {
-    margin: 10px 0 4px;
-    font-size: 13px;
+    margin: 8px 0 2px;
+    font-size: 12px;
     font-weight: normal;
     color: var(--text-dim);
 }
 
 .status {
-    margin: 8px 0;
-    padding: 4px 8px;
-    color: var(--accent);
-    background: var(--well);
-    border: 1px solid;
-    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+    margin: 4px 0 8px;
+    padding: 3px 6px;
+    color: #000;
+    background: var(--tip);
+    border: 1px solid var(--tip-border);
 }
 
 .note {
     margin: 4px 0;
     color: var(--text-dim);
-    font-size: 12px;
+    font-size: 11px;
 }
 
-/* 一覧（へこんだリストボックス） */
+/* 一覧（エクスプローラーの詳細表示の行） */
 .items {
     list-style: none;
-    margin: 6px 0;
-    padding: 2px;
-    background: var(--well);
-    border: 2px solid;
-    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+    margin: 2px 0;
+    padding: 0;
 }
 
 .items:empty {
@@ -118,122 +346,321 @@ h3 {
 
 .items li {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
-    padding: 1px 4px;
+    min-height: 20px;
+    padding: 1px 2px;
 }
 
-.items li:hover {
-    background: rgba(255, 255, 255, 0.04);
+.items .name {
+    padding: 1px 3px;
 }
 
 .items .size {
+    margin-left: auto;
     color: var(--text-dim);
-    font-size: 12px;
 }
 
 .items .link {
     margin-left: auto;
-    color: var(--focus);
-    font-size: 12px;
+    color: var(--link);
+}
+
+.items .note {
+    margin: 0;
 }
 
 .items .asset {
-    padding: 0 6px;
-    color: var(--text);
-    background: #3d5a3d;
-    font-size: 12px;
+    padding: 0 5px;
+    color: var(--text-dim);
+    border: 1px solid var(--shadow);
+    font-size: 11px;
 }
 
-/* 一覧の項目（先頭のボタン）は、行の文字として見せる */
-.items li > button:first-child {
+/* 一覧の項目（アイコンの次のボタン）は、ファイル名の文字として見せる */
+.items li > .icon + button {
+    min-height: 0;
+    padding: 1px 3px;
     text-align: left;
-    border-color: transparent;
+    color: var(--text);
     background: transparent;
-    padding: 1px 4px;
+    border: 1px dotted transparent;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-.items li > button:first-child:hover,
-.items li > button:first-child:focus-visible {
+.items li > .icon + button:hover,
+.items li > .icon + button:focus-visible {
+    color: var(--select-text);
     background: var(--select);
-    color: #fff;
+    outline: none;
 }
 
-/* ── ボタン（立体） ── */
+.items li > .icon + button:focus-visible {
+    border-color: #ffff80;
+}
+
+/* ステータスバー */
+.statusbar {
+    display: flex;
+    gap: 2px;
+    margin-top: 2px;
+    min-height: 20px;
+}
+
+.statusbar-cell {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    box-shadow: inset -1px -1px var(--hilight), inset 1px 1px var(--shadow);
+}
+
+.statusbar-cell:first-child {
+    flex: 1;
+}
+
+.statusbar-grip {
+    width: 14px;
+    box-shadow: none;
+    background:
+        linear-gradient(135deg, transparent 0 55%, var(--shadow) 55% 62%, transparent 62% 70%, var(--shadow) 70% 77%, transparent 77% 85%, var(--shadow) 85% 92%, transparent 92%);
+}
+
+/* ── ボタン・入力欄 ── */
 
 button {
     font: inherit;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text);
     background: var(--face);
-    border: 2px solid;
-    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
-    padding: 2px 12px;
-    min-height: 24px;
+    border: 0;
+    box-shadow: var(--raised);
+    padding: 3px 12px;
+    min-height: 23px;
     cursor: pointer;
 }
 
-button:hover {
-    background: var(--face-hover);
-}
-
 button:active {
-    border-color: var(--shadow) var(--lighter) var(--lighter) var(--shadow);
+    box-shadow: inset -1px -1px var(--hilight), inset 1px 1px var(--dark), inset -2px -2px var(--light), inset 2px 2px var(--shadow);
+    padding: 4px 11px 2px 13px;
 }
 
 button:focus-visible {
-    outline: 1px dotted var(--focus);
-    outline-offset: -5px;
+    outline: 1px dotted #000;
+    outline-offset: -4px;
 }
 
 button.delete,
 button.export {
-    font-size: 12px;
-    min-height: 20px;
-    padding: 0 8px;
+    min-height: 19px;
+    padding: 1px 8px;
 }
 
 input[type=url],
 input[type=text],
 select {
     font: inherit;
+    min-width: 0;
     color: var(--text);
     background: var(--well);
-    border: 2px solid;
-    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
-    padding: 2px 4px;
+    border: 0;
+    box-shadow: var(--sunken);
+    padding: 3px 4px;
 }
 
 input[type=file] {
+    max-width: 100%;
     font: inherit;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-dim);
 }
 
 input[type=file]::file-selector-button {
     font: inherit;
+    font-size: 12px;
     color: var(--text);
     background: var(--face);
-    border: 2px solid;
-    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
-    padding: 1px 10px;
-    margin-right: 8px;
+    border: 0;
+    box-shadow: var(--raised);
+    padding: 3px 10px;
+    margin-right: 6px;
     cursor: pointer;
 }
 
 .add-catalog {
     display: flex;
-    gap: 8px;
-}
-
-.language {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+    gap: 6px;
 }
 
 .add-catalog input {
     flex: 1;
+}
+
+/* ── Windows XP ── */
+
+[data-theme="xp"] main {
+    padding: 0;
+    border: 3px solid var(--frame);
+    border-top: 0;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="xp"] .titlebar {
+    min-height: 28px;
+    margin: 0 -3px;
+    padding: 0 5px 0 7px;
+    font-size: 13px;
+    text-shadow: 1px 1px #0f1089;
+    border-radius: 8px 8px 0 0;
+}
+
+[data-theme="xp"] .caption-buttons {
+    gap: 2px;
+}
+
+[data-theme="xp"] .caption-buttons > span {
+    width: 21px;
+    height: 21px;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    background: radial-gradient(circle at 90% 90%, #0054e9 0%, #2263d5 55%, #4479e4 90%, #fff 100%);
+    box-shadow: none;
+}
+
+[data-theme="xp"] .caption-buttons > .caption-close {
+    margin-left: 0;
+    background: radial-gradient(circle at 90% 90%, #cc4600 0%, #dc6527 55%, #cd7546 90%, #fff 100%);
+}
+
+[data-theme="xp"] .caption-min::after {
+    left: 4px;
+    bottom: 4px;
+    width: 7px;
+    height: 3px;
+    background: #fff;
+}
+
+[data-theme="xp"] .caption-max::after {
+    left: 3px;
+    top: 3px;
+    width: 11px;
+    height: 9px;
+    border-color: #fff;
+    border-top-width: 3px;
+}
+
+[data-theme="xp"] .caption-close::before,
+[data-theme="xp"] .caption-close::after {
+    left: 8px;
+    top: 3px;
+    height: 13px;
+    background: #fff;
+}
+
+[data-theme="xp"] .addressbar {
+    margin: 0;
+    padding: 4px 6px;
+    border-top: 0;
+    border-bottom: 1px solid var(--shadow);
+    box-shadow: none;
+}
+
+[data-theme="xp"] .address {
+    box-shadow: var(--sunken);
+}
+
+[data-theme="xp"] .explorer-body {
+    grid-template-columns: 230px minmax(0, 1fr);
+}
+
+[data-theme="xp"] .explorer-body:not(:has(.taskpane)) {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+[data-theme="xp"] .listpane {
+    box-shadow: none;
+}
+
+/* 作業ウィンドウ（青のグラデーションに角の丸い項目） */
+[data-theme="xp"] .taskpane {
+    padding: 12px;
+    background: linear-gradient(#7ba2e7, #6375d6);
+}
+
+[data-theme="xp"] .task {
+    margin: 0 0 12px;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+}
+
+[data-theme="xp"] .task h2 {
+    position: static;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #215dc6;
+    background: linear-gradient(to right, #fff, #c6d3f7);
+    border-radius: 3px 3px 0 0;
+}
+
+[data-theme="xp"] .task-body {
+    padding: 8px 10px;
+    background: #d6dff7;
+    border: 1px solid #fff;
+    border-top: 0;
+}
+
+[data-theme="xp"] .group h2 {
+    border-bottom: 0;
+    background: var(--group-line) no-repeat left bottom / 100% 1px;
+}
+
+[data-theme="xp"] .statusbar {
+    margin: 0;
+    padding: 1px 2px;
+    border-top: 1px solid var(--shadow);
+    background: var(--face);
+}
+
+[data-theme="xp"] .statusbar-cell {
+    box-shadow: none;
+}
+
+[data-theme="xp"] .statusbar-cell + .statusbar-cell {
+    border-left: 1px solid var(--shadow);
+}
+
+[data-theme="xp"] button,
+[data-theme="xp"] input[type=file]::file-selector-button {
+    border: 1px solid #003c74;
+    border-radius: 3px;
+    box-shadow: none;
+    background: linear-gradient(#fff, #ecebe6 86%, #d6d0c5);
+}
+
+[data-theme="xp"] button:hover,
+[data-theme="xp"] input[type=file]::file-selector-button:hover {
+    box-shadow: inset -1px 1px #fff0cf, inset 1px 2px #fdd889, inset -2px 2px #fbc761, inset 2px -2px #e5a01a;
+}
+
+[data-theme="xp"] button:active {
+    padding: 3px 12px;
+    background: linear-gradient(#cdcac3, #e3e3db 8%, #e5e5de 94%, #f2f2f1);
+    box-shadow: none;
+}
+
+[data-theme="xp"] input[type=url],
+[data-theme="xp"] input[type=text],
+[data-theme="xp"] select {
+    border: 1px solid #7f9db9;
+    box-shadow: none;
+    padding: 2px 4px;
+}
+
+[data-theme="xp"] .items li > .icon + button {
+    border-radius: 0;
 }
 
 /* ── プレイ中 ── */
@@ -242,7 +669,6 @@ input[type=file]::file-selector-button {
     width: 720px;
     max-width: 100%;
     margin: 0 auto;
-    background: var(--desk);
 }
 
 .play:fullscreen {
@@ -250,6 +676,7 @@ input[type=file]::file-selector-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: #000;
 }
 
 .play:fullscreen .screen-wrap,
@@ -291,7 +718,7 @@ input[type=file]::file-selector-button {
     height: 56px;
     margin: -28px 0 0 -28px;
     border-radius: 50%;
-    border: 2px solid rgba(220, 220, 214, 0.55);
+    border: 2px solid rgba(255, 255, 255, 0.7);
     pointer-events: none;
     opacity: 0;
     transform: scale(0.4);
@@ -304,7 +731,7 @@ input[type=file]::file-selector-button {
     transition: transform var(--hold, 500ms) linear, opacity 120ms;
 }
 
-/* 画面の右下の控えめなメニュー。背景との明るさの差を小さくし、押してもゲームはすぐには終わらない */
+/* 画面の下のバー（タスクバー風）。右端にシステムメニュー */
 .screen-bar {
     display: flex;
     flex-wrap: wrap;
@@ -313,6 +740,13 @@ input[type=file]::file-selector-button {
     max-width: 100%;
     min-height: 28px;
     margin: 0 auto;
+    background: var(--face);
+    box-shadow: inset 0 1px var(--light), inset 0 2px var(--hilight);
+}
+
+[data-theme="xp"] .screen-bar {
+    background: linear-gradient(#3168d5, #4993e6 4%, #2157d7 8%, #2663e0 92%, #1941a5);
+    box-shadow: none;
 }
 
 /* 仮想キー（タッチの端末向け）。システムメニューの下の行に、十字キーと操作キーを並べる */
@@ -342,16 +776,16 @@ input[type=file]::file-selector-button {
     min-height: 0;
     padding: 0;
     font-size: 13px;
-    color: var(--text-dim);
-    background: #2f3236;
-    border-color: #464a50 #1d1f22 #1d1f22 #464a50;
     -webkit-touch-callout: none;
 }
 
 .vkey.down {
-    color: var(--text);
-    background: #26292d;
-    border-color: #1d1f22 #464a50 #464a50 #1d1f22;
+    box-shadow: inset -1px -1px var(--hilight), inset 1px 1px var(--dark), inset -2px -2px var(--light), inset 2px 2px var(--shadow);
+}
+
+[data-theme="xp"] .vkey.down {
+    background: linear-gradient(#cdcac3, #e3e3db 8%, #e5e5de 94%, #f2f2f1);
+    box-shadow: none;
 }
 
 .vkey-up { grid-area: up; }
@@ -371,24 +805,19 @@ input[type=file]::file-selector-button {
 }
 
 .system-button {
-    width: 28px;
+    width: 30px;
     height: 22px;
     min-height: 0;
-    margin: 3px 2px;
+    margin: 3px 3px;
     padding: 0;
     font-size: 14px;
     line-height: 1;
-    color: #5f6369;
-    background: transparent;
-    border: 1px solid #303338;
 }
 
-.system-button:hover,
-.system-button:focus-visible,
-.system-button[aria-expanded=true] {
-    color: var(--text-dim);
-    background: #2c2f33;
-    border-color: #3f4349;
+[data-theme="xp"] .system-button {
+    color: #fff;
+    background: linear-gradient(#1c9ef3, #128ee4 50%, #0b7bd7);
+    border-color: #0c3ea8;
 }
 
 .menu-backdrop {
@@ -397,34 +826,41 @@ input[type=file]::file-selector-button {
     z-index: 19;
 }
 
-/* VB5 のポップアップメニュー */
+/* ポップアップメニュー */
 .popup-menu {
     position: absolute;
     right: 2px;
     bottom: 26px;
     z-index: 20;
     min-width: 200px;
-    padding: 2px;
+    padding: 3px;
     background: var(--face);
-    border: 2px solid;
-    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--raised);
+}
+
+[data-theme="xp"] .popup-menu {
+    background: #fff;
+    border: 1px solid var(--shadow);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .popup-menu button {
     display: block;
     width: 100%;
     min-height: 0;
-    padding: 4px 20px;
+    padding: 3px 20px;
     text-align: left;
     border: 0;
+    border-radius: 0;
     background: transparent;
+    box-shadow: none;
 }
 
 .popup-menu button:hover,
 .popup-menu button:focus-visible {
-    color: #fff;
+    color: var(--select-text);
     background: var(--select);
+    box-shadow: none;
     outline: none;
 }
 
@@ -432,7 +868,7 @@ input[type=file]::file-selector-button {
     margin: 3px 2px;
     border: 0;
     border-top: 1px solid var(--shadow);
-    border-bottom: 1px solid var(--light);
+    border-bottom: 1px solid var(--hilight);
 }
 
 /* ── ダイアログ（終了・確認・文字入力・ファイル選択） ── */
@@ -442,7 +878,7 @@ input[type=file]::file-selector-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .ended {
@@ -462,10 +898,28 @@ input[type=file]::file-selector-button {
     max-width: calc(100% - 32px);
     max-height: calc(100% - 32px);
     overflow: auto;
+    padding: 3px;
     background: var(--face);
-    border: 2px solid;
-    border-color: var(--lighter) var(--shadow) var(--shadow) var(--lighter);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--raised);
+}
+
+[data-theme="xp"] .dialog,
+[data-theme="xp"] .modal-box {
+    padding: 0;
+    border: 3px solid var(--frame);
+    border-top: 0;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="xp"] .dialog .titlebar,
+[data-theme="xp"] .modal-title {
+    min-height: 26px;
+    margin: 0 -3px;
+    padding: 0 8px;
+    font-size: 13px;
+    text-shadow: 1px 1px #0f1089;
+    border-radius: 8px 8px 0 0;
 }
 
 .dialog-body {
@@ -478,15 +932,27 @@ input[type=file]::file-selector-button {
 }
 
 .modal-box {
+    padding: 3px 12px 12px;
+}
+
+[data-theme="xp"] .modal-box {
     padding: 0 12px 12px;
 }
 
 .modal-title {
-    margin: 0 -12px 10px;
-    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    margin: 0 -9px 10px;
+    padding: 2px 4px;
+    min-height: 18px;
+    font-family: var(--title-font);
     font-weight: bold;
-    color: #e8ecf2;
-    background: linear-gradient(to right, var(--title-from), var(--title-to));
+    color: var(--title-text);
+    background: var(--title-bg);
+}
+
+[data-theme="xp"] .modal-title {
+    margin: 0 -15px 10px;
 }
 
 .modal-box input[type=text] {
@@ -504,7 +970,7 @@ input[type=file]::file-selector-button {
 
 .dialog-buttons button,
 .modal-buttons button {
-    min-width: 80px;
+    min-width: 75px;
 }
 
 .modal-list {
@@ -512,8 +978,12 @@ input[type=file]::file-selector-button {
     margin: 0;
     padding: 2px;
     background: var(--well);
-    border: 2px solid;
-    border-color: var(--shadow) var(--light) var(--light) var(--shadow);
+    box-shadow: var(--sunken);
+}
+
+[data-theme="xp"] .modal-list {
+    border: 1px solid #7f9db9;
+    box-shadow: none;
 }
 
 .modal-list li {
@@ -523,13 +993,16 @@ input[type=file]::file-selector-button {
 .modal-list li button {
     width: 100%;
     text-align: left;
-    border-color: transparent;
+    border: 0;
+    border-radius: 0;
     background: transparent;
+    box-shadow: none;
 }
 
 .modal-list li button:hover {
-    color: #fff;
+    color: var(--select-text);
     background: var(--select);
+    box-shadow: none;
 }
 
 #blazor-error-ui {
@@ -539,9 +1012,9 @@ input[type=file]::file-selector-button {
     left: 0;
     right: 0;
     padding: 8px 16px;
-    color: var(--text);
-    background: #5a2626;
-    border-top: 2px solid #6e3434;
+    color: #000;
+    background: var(--tip);
+    border-top: 1px solid var(--tip-border);
 }
 
 /* タッチ操作の端末では押しやすい大きさにする */
@@ -564,16 +1037,48 @@ input[type=file]::file-selector-button {
         padding: 10px 20px;
     }
 
+    .items li {
+        min-height: 32px;
+    }
+
     .dialog-buttons button,
     .modal-buttons button {
         min-height: 36px;
     }
 }
 
+/* 狭い画面では、作業ウィンドウを一覧の下に置く */
 @media (max-width: 760px) {
     main {
         margin: 0;
-        border-left: 0;
-        border-right: 0;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    [data-theme="xp"] main {
+        border-radius: 0;
+    }
+
+    [data-theme="xp"] .titlebar {
+        border-radius: 0;
+    }
+
+    .explorer-body,
+    [data-theme="xp"] .explorer-body {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "list" "task";
+        flex: 1;
+    }
+
+    .listpane {
+        min-height: 200px;
+    }
+
+    .taskpane {
+        padding: 0;
+    }
+
+    .items .note {
+        display: none;
     }
 }

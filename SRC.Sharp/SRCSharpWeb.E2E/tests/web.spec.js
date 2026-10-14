@@ -101,6 +101,16 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await attachScreen(page, testInfo, 'battle-basic');
 });
 
+test('テーマを XP に切り替え、開き直しても保つ', async ({ page }) => {
+  await open(page);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', '95');
+  await page.selectOption('#theme', 'xp');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'xp');
+  await open(page);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'xp');
+  await expect(page.locator('#theme')).toHaveValue('xp');
+});
+
 test('表示言語を英語にし、選択欄で日本語に戻す', async ({ page }) => {
   // 未設定のときだけ英語にする（選択欄で変えた値は再読み込み後も残す）
   await page.addInitScript(() => {
