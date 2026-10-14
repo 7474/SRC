@@ -1,0 +1,159 @@
+# 灯の巡航船ランタン号　第四話「月下の追撃」
+# 作戦目的：夜の荒野でクロウの部隊を退ける（敵の全滅）
+
+プロローグ:
+Talk ナレーター
+煤の工場を止めたランタン号。しかし船体の傷は深く、整備のために港へ戻ることになった。
+End
+Talk グスタフ
+すまんな。ランタン号が直るまで、わしは港を離れられん。
+次の戦いは、お前たちだけで頼む。
+Talk ソラ
+任せてください、船長！
+End
+# ランタン号は修理のため一時離脱
+Leave グスタフ
+Talk リオ
+ヴォルフさん、灰狼はいま改造中だから、今回は予備機のカゲロウに乗ってね。
+Talk ヴォルフ
+……軽いな。悪くない。
+End
+Unit 予備機カゲロウ 0
+Ride ヴォルフ 予備機カゲロウ
+Exit
+
+スタート:
+ChangeMap 04_月下の追撃.map
+# ミュウの夢（水中のような青い光景）
+Water
+Talk ミュウ
+……夢を、見るんです。煙の海の底で、沈んだ島の人たちが、灯を待っている夢……
+End
+Noon
+Night
+Call 章題 "第四話.月下の追撃"
+Center 14 15
+Organize 4 14 16 通常ユニット
+
+Create 敵 黒鉄鴉 0 クロウ 8 8 5
+ChangeUnitBitmap 非表示
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 3 5 4
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 3 11 3
+Create 敵 煤機兵 0 煤兵(ザコ) 3 9 9
+Create 敵 煤機兵 0 煤兵(ザコ) 3 12 8
+# 合体後の形態を用意しておく
+Unit 灯翼ヒカリオー 0
+
+Talk クロウ
+ククク……夜は煤の時間だ。どこから狙われているか、わかるまい。
+Talk ソラ
+クロウ！ どこだ！
+End
+Talk システム
+作戦目的：敵の全滅（クロウは撤退させてもよい）
+敗北条件：味方の全滅
+End
+Exit
+
+勝利条件:
+Talk システム
+作戦目的：夜の荒野で待ち伏せるクロウの部隊を退ける
+敗北条件：味方の全滅
+End
+Exit
+
+ターン 1 味方:
+If Status(ソラ) = "出撃" And Status(リオ) = "出撃" Then
+  Talk リオ
+  $(主人公愛称)、ツバメの新しい機能、試してみない？ ホタルとツバメ、二機の灯を一つにするの！
+  Talk ソラ
+  合体……！ やってみよう、リオ！
+  End
+  PlaySound Transform.wav
+  WhiteOut
+  Combine ソラ 灯翼ヒカリオー
+  WhiteIn
+  Center ソラ
+  Talk ソラ
+  灯翼ヒカリオー……！ すごい、力があふれてくる！
+  End
+EndIf
+If Status(ミュウ) = "出撃" Then
+  Talk ミュウ
+  暗くて見えないなら……灯精さん、力を貸して！
+  End
+  UseAbility ミュウ 灯精召喚 ミュウ
+  Finish ミュウ
+EndIf
+Exit
+
+ターン 2 味方:
+ChangeUnitBitmap クロウ 非表示解除
+Center クロウ
+Talk ソラ
+見えた！ 月明かりに黒い翼が……！
+Talk クロウ
+ちっ、灯精の光か。小賢しい。
+End
+If Status(ミュウ) = "出撃" Then
+  Talk ミュウ
+  みなさん、灯の祈りで傷を癒します！
+  End
+  MapAbility ミュウ 灯の祈り X(ミュウ) Y(ミュウ)
+EndIf
+If Status(ヴォルフ) = "出撃" Then
+  SetBullet ヴォルフ カゲロウガン 6
+  Talk ヴォルフ
+  弾倉、交換完了だ。
+  End
+EndIf
+Exit
+
+ターン 3 味方:
+If Status(ミュウ) = "出撃" Then
+  Talk ミュウ
+  灯精さん、ありがとう。もう帰っていいよ。
+  End
+  StopSummoning ミュウ
+  SetStock ミュウ 灯精召喚 1
+EndIf
+Exit
+
+損傷率 クロウ 60:
+Talk クロウ
+ぐっ……この力、灯石の……！ 帝の城で待っているぞ、郵便屋！
+End
+Escape クロウ
+Exit
+
+全滅 敵:
+If Unit(ソラ) = "灯翼ヒカリオー" Then
+  Talk リオ
+  ふう……合体、解くね。ツバメ、お疲れさま。
+  End
+  Split ソラ
+EndIf
+Talk ソラ
+クロウの部隊は退いた……。次は、煤の帝の城だ。
+End
+Call 報酬 4000 夜の荒野の突破
+Continue 05_煤城ノクス.eve
+
+エピローグ:
+StartBGM lantern_briefing.mid
+Talk リオ
+じゃーん！ 灰狼の改造、終わったよ！ その名も「銀狼」！
+Talk ヴォルフ
+……銀、か。煤の色じゃないのは、いいな。
+End
+Upgrade 灰狼 灰狼改
+Local 予備機
+予備機 = UnitID(ヴォルフ)
+GetOff ヴォルフ
+Ride ヴォルフ 灰狼改
+# SRC# ではユニット名称での RemoveUnit が効かないため、ユニットＩＤで消す
+RemoveUnit 予備機
+Talk システム
+ヴォルフの灰狼が「銀狼」に生まれ変わった！
+End
+Exit

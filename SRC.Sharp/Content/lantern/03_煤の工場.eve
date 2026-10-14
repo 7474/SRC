@@ -1,0 +1,183 @@
+# 灯の巡航船ランタン号　第三話「煤の工場」
+# 作戦目的：工場の心臓「煤炉」を破壊する
+
+プロローグ:
+Talk ナレーター
+煤の工場。沈んだ島々から奪った灯石が、昼も夜も燃やされている。
+End
+Talk ミュウ
+……この首飾りが、なにかを見せようとしています。
+Talk ソラ
+ミュウ？
+End
+Exit
+
+スタート:
+ChangeMap 03_煤の工場.map
+# ミュウの見た昔の光景（セピア）
+Sepia
+Talk ミュウ
+……灯台島の、ずっと昔の記憶……。首飾りが、覚えているんです。
+End
+Require Lib\灯台の記録.eve
+Call 灯台の記録 1
+Noon
+
+Call 章題 "第三話.煤の工場"
+Launch グスタフ 10 18
+Center 10 15
+Organize 3 10 16 通常ユニット
+
+Create 敵 煤炉 0 煤兵(ザコ) 5 13 2
+ChangeMode 固定
+Create 敵 煤機兵 0 煤兵(ザコ) 4 12 5
+Create 敵 煤機兵 0 煤兵(ザコ) 4 15 6
+Create 敵 煤機兵 0 煤兵(ザコ) 4 7 7
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 4 4 9
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 4 17 9
+Create 敵 灰狼 0 ヴォルフ 12 10 11
+SetSkill ヴォルフ 煤の呪縛 -1
+
+Talk ヴォルフ
+……来たか、郵便屋。悪いが、ここを通すわけにはいかない。
+Talk ソラ
+灰色の……獣型の灯機？
+Talk ヴォルフ
+俺は雇われだ。煤の帝に、妹の島を人質に取られている……それだけの話だ。
+End
+
+# 煤の毒霧
+Talk グスタフ
+気をつけろ、工場の煙には毒が混じっておる！
+End
+If Status(ソラ) = "出撃" Then
+  SetStatus ソラ 毒 2
+EndIf
+
+Talk システム
+作戦目的：煤炉の破壊
+敗北条件：ランタン号の撃沈、または味方の全滅
+End
+Exit
+
+勝利条件:
+Talk システム
+作戦目的：工場の奥にある煤炉を破壊する
+敗北条件：ランタン号の撃沈、または味方の全滅
+End
+Exit
+
+# ヴォルフは心のどこかで戦いをためらっている
+攻撃 ヴォルフ 味方:
+Talk ヴォルフ
+……くっ、腕が……動かん……！
+Talk ミュウ
+あの人……泣いてる。首飾りが、そう言っています。
+End
+Cancel
+Exit
+
+攻撃 味方 ヴォルフ:
+Talk ミュウ
+待ってください！ あの人とは、戦っちゃだめな気がするんです！
+End
+Cancel
+Exit
+
+ターン 2 味方:
+Create 敵 黒鉄鴉 0 クロウ 8 16 2
+PlayMIDI lantern_boss.mid
+KeepBGM
+Center クロウ
+Talk クロウ
+ヴォルフ、なにを遊んでいる。郵便屋ごときに手間取るとは。
+Talk ヴォルフ
+……クロウ。
+Talk クロウ
+妹の島が惜しくないのか？ 灯を消されたいのか？
+Talk ミュウ
+ヴォルフさん！ 煤の帝は、約束なんて守りません！
+島の灯は、奪われた灯石を取り戻せば、きっと戻ります！
+Talk ヴォルフ
+…………。
+End
+ClearSkill ヴォルフ 煤の呪縛
+ClearEvent "攻撃 ヴォルフ 味方"
+ClearEvent "攻撃 味方 ヴォルフ"
+ChangeParty ヴォルフ 味方
+ChangeMode ヴォルフ 通常
+Center ヴォルフ
+Talk ヴォルフ
+……クロウ。俺はもう、お前たちの犬じゃない。
+Talk クロウ
+ふん、裏切るか。ならば煤と一緒に燃え尽きろ。
+Talk ヴォルフ
+郵便屋、手を貸してやる。咆哮の準備に一手かかる、それまで俺を守れ。
+End
+IncreaseMorale ヴォルフ 15
+Charge ヴォルフ
+Talk ソラ
+ありがとう、ヴォルフ！
+End
+If Status(ソラ) = "出撃" Then
+  ClearStatus ソラ 毒
+  Talk ミュウ
+  $(主人公愛称)さん、毒の煙を灯で払いました！
+  End
+EndIf
+Exit
+
+損傷率 クロウ 50:
+Talk クロウ
+ちっ……今日はここまでだ。だが覚えておけ、帝の城でお前たちは終わる。
+End
+Escape クロウ
+StopBGM
+Exit
+
+破壊 煤炉:
+StopBGM
+Explode XL 13 2
+PlaySound Explode(Nuclear).wav
+Talk ナレーター
+煤炉が砕け、閉じ込められていた灯石の光が空へと帰っていく。
+End
+# 連鎖爆発で工場の機兵が止まる
+ForEach 敵 出撃
+  If Unit() = "黒鉄鴉" Then
+    Skip
+  EndIf
+  If Unit() = "煤機兵" Then
+    Destroy
+  EndIf
+Next
+Sunset
+Talk グスタフ
+工場が止まった……！ 残りの連中は撤退していくぞ。
+End
+Escape 敵
+Talk ソラ
+やった……！ 灯が、空に帰っていく……
+End
+Call 報酬 4000 煤の工場の破壊
+Continue 04_月下の追撃.eve
+
+破壊 グスタフ:
+Call 敗北
+Exit
+
+エピローグ:
+StartBGM lantern_briefing.mid
+Talk ヴォルフ
+……礼を言う。妹の島の灯石も、あの炉で燃やされるところだった。
+Talk リオ
+これからは仲間だね、ヴォルフさん！ 灰狼の整備、任せて！
+Talk ヴォルフ
+……ああ。頼む。
+End
+SetSkill リオ 援護 2
+Talk システム
+リオは仲間を支える決意を新たにした。援護のレベルが上がった！
+End
+SetRelation ヴォルフ ミュウ 10
+Exit

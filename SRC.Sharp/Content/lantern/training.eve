@@ -1,0 +1,86 @@
+# インターミッションコマンド「訓練所」
+# 灯貨（資金）を払ってパイロットを鍛える。模擬戦の見学もできる。
+
+プロローグ:
+Local 名 i 見出し
+Talk ドーラ教官
+訓練所へようこそ。ここではお金と引き換えに、みっちり鍛えてあげるわ。
+End
+Do
+  見出し = "訓練メニュー（手持ち：" & 資金 & Term("資金") & "）"
+  Ask 見出し
+  個人訓練（1000$(Term("資金"))：全員の経験値+200）
+  特訓（4000$(Term("資金"))：一人のレベル+1）
+  模擬戦を見学する
+  訓練所を出る
+  End
+  Switch 選択
+  Case 1
+    If 資金 < 1000 Then
+      Talk ドーラ教官
+      お金が足りないわね。
+      End
+      Skip
+    EndIf
+    Money -1000
+    ForEach 名 In パイロット一覧(レベル)
+      ExpUp 名 200
+    Next
+    Talk ドーラ教官
+    よく頑張ったわ。全員、経験を積んだわね。
+    End
+  Case 2
+    If 資金 < 4000 Then
+      Talk ドーラ教官
+      特訓は高いのよ。出直してらっしゃい。
+      End
+      Skip
+    EndIf
+    UnSet 候補
+    ForEach 名 In パイロット一覧(レベル)
+      候補[名] = Nickname(名) & "（Lv" & Level(名) & "）"
+    Next
+    Ask 候補 誰を特訓する？
+    名 = 選択
+    If 名 = "" Or 名 = "0" Then
+      Skip
+    EndIf
+    Money -4000
+    LevelUp 名 1
+    Talk ドーラ教官
+    $(Nickname(名))、よくついてきたわね。レベルが上がったわ！
+    End
+  Case 3
+    Call 模擬戦
+  Case Else
+    Break
+  EndSw
+Loop
+Talk ドーラ教官
+またいらっしゃい。生きて帰ってくるのよ。
+End
+Continue
+
+模擬戦:
+Local ダミー
+# 一時的なユニットとパイロットを作って、乗り降りを見せる
+Unit 模擬戦用ダミー 0
+Pilot 教官ドーラ 10
+Ride 教官ドーラ 模擬戦用ダミー
+# RemoveUnit はユニットＩＤで指定する（下の注を参照）
+ダミー = UnitID(教官ドーラ)
+Talk ドーラ教官
+これが模擬戦用のダミー機。乗り込み、よし……と。
+いい？ 乗り換えたら、まず計器の確認。それから……
+End
+GetOff 教官ドーラ
+Talk ドーラ教官
+……降りるときも同じよ。焦らない、慌てない。それが生き残るコツ。
+End
+RemovePilot 教官ドーラ
+# SRC# ではユニット名称での RemoveUnit が効かないため、ユニットＩＤで消す
+RemoveUnit ダミー
+Return
+
+スタート:
+Exit

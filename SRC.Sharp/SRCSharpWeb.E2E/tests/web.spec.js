@@ -286,6 +286,20 @@ async function isolateWithHeaders(page) {
   });
 }
 
+test('遊べるシナリオ（ランタン号）を、組み込みの最小の汎用データを重ねて始める', async ({ page }, testInfo) => {
+  await open(page);
+  await expect(page.locator('#catalog button').first()).toHaveText('灯の巡航船ランタン号');
+  // 素材は一覧に出さない
+  await expect(page.locator('#catalog button', { hasText: 'SRC# の最小の汎用データ' })).toHaveCount(0);
+  await page.getByRole('button', { name: '灯の巡航船ランタン号' }).click();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
+  await expect.poll(async () => (await screenState(page)).line ?? '', { timeout: 60 * 1000 }).toContain('01_灯の港.eve');
+  // タイトル画面まで進んでも、データの読み込みのエラーが出ない
+  await page.waitForTimeout(3000);
+  expect((await screenState(page)).dialog).toBeUndefined();
+  await attachScreen(page, testInfo, 'lantern');
+});
+
 test('URL の play で登録済シナリオを直接始める', async ({ page }) => {
   page.on('pageerror', e => console.log('pageerror:', e.message));
   await page.goto('./?play=battle-basic');

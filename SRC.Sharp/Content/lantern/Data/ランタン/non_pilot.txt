@@ -1,0 +1,16 @@
+# 灯の巡航船ランタン号 非戦闘員データ
+
+マルタ
+マルタ町長, Lantern_Marta.bmp
+
+ポポ
+よろず屋ポポ, Lantern_Popo.bmp
+
+ドーラ教官
+ドーラ, -.bmp
+
+灯台の声
+灯台の声, -.bmp
+
+謎の少女
+？？？, Lantern_Myu.bmp
