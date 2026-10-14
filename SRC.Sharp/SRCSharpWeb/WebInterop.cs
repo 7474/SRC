@@ -143,6 +143,13 @@ namespace SRCSharpWeb
 
         private static void AddScreenState(JsonObject json)
         {
+            if (gui != null)
+            {
+                // マップの表示位置（中央のマス）と、マップ操作を受け付けるか（ドラッグのテストなどで使う）
+                json["mapX"] = gui.MapX;
+                json["mapY"] = gui.MapY;
+                json["locked"] = gui.IsGUILocked;
+            }
             var state = gui?.State;
             var list = state?.List;
             if (list != null)
@@ -184,6 +191,13 @@ namespace SRCSharpWeb
                     break;
                 case 1:
                     inputs.Add(g => g.PointerReleased(fx, fy, b));
+                    break;
+                case 3:
+                    // タッチで指を滑らせた: クリックにせずマップのドラッグを始める
+                    inputs.Add(g => g.BeginMapDrag(fx, fy));
+                    break;
+                case 4:
+                    inputs.Add(g => g.EndMapDrag());
                     break;
                 default:
                     inputs.Add(g => g.PointerMoved(fx, fy));

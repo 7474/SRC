@@ -452,6 +452,49 @@ test.describe('タッチ操作', () => {
     expect(await page.evaluate(() => window.scrollY)).toBe(0);
   });
 
+  test('指を滑らせるとマップがスクロールし、クリックにはならない', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect.poll(() => frames(page)).toBeGreaterThan(0);
+    const box = await page.locator('#screen').boundingBox();
+    // 「戦闘開始」のメッセージを送り、味方フェイズ（マップ操作を受け付ける状態）にする
+    let shown = false;
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        shown = true;
+        await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height * 0.9);
+      }
+      return shown && s.locked === false && s.message === undefined;
+    }, { intervals: [500, 1000, 2000], timeout: 60 * 1000 }).toBe(true);
+    const before = await screenState(page);
+    const clicks = (await page.evaluate(() => globalThis.srcwebTouchClicks ?? [])).length;
+
+    // マップ上で左上へ指を滑らせると、表示位置は右下へ動く（マウスの左ボタンのドラッグと同じ）
+    const scale = box.width / (await page.locator('#screen').evaluate(c => c.width));
+    const startX = box.x + 300 * scale;
+    const startY = box.y + 300 * scale;
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y: startY }] });
+    // ドラッグは半マス以上動いたときに反映されるため、1 マスずつ動かす
+    for (const [dx, dy] of [[1, 1], [2, 2], [3, 2]]) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [{ x: startX - 32 * dx * scale, y: startY - 32 * dy * scale }],
+      });
+      await page.waitForTimeout(100);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      return [s.mapX - before.mapX, s.mapY - before.mapY];
+    }).toEqual([3, 2]);
+    // スワイプはクリックにならない
+    expect((await page.evaluate(() => globalThis.srcwebTouchClicks ?? [])).length).toBe(clicks);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  });
+
   test('シナリオの KeyState でタップ（左ボタン）と長押し（右ボタン）を検出できる', async ({ page }) => {
     // KeyState をループで調べるシナリオ（ロボダンのクリック領域などと同じ作り）
     const eve = [

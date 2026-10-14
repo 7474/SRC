@@ -396,6 +396,30 @@ namespace SRCRender
             }
         }
 
+        /// <summary>
+        /// クリックにせず、マップのドラッグによるスクロールだけを始める（タッチ操作で指を滑らせたとき）。
+        /// マウスでは左ボタンを押すとクリックとドラッグの開始の両方になるが、タッチではタップを指を離した時のクリックにするため分ける。
+        /// </summary>
+        public void BeginMapDrag(float x, float y)
+        {
+            if (IsGUILocked || !ScreenLayout.IsInMap((int)x, (int)y))
+            {
+                return;
+            }
+            PrevMapX = MapX;
+            PrevMapY = MapY;
+            PrevMouseX = x;
+            PrevMouseY = y;
+            isDragging = true;
+            lastDragPoint = (x, y);
+        }
+
+        /// <summary>マップのドラッグを終える（<see cref="BeginMapDrag"/> の対）。</summary>
+        public void EndMapDrag()
+        {
+            isDragging = false;
+        }
+
         // マップウィンドウがドラッグされているか？
         private volatile bool isDragging;
         private (float x, float y) lastDragPoint;
