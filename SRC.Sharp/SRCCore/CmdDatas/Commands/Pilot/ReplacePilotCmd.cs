@@ -59,14 +59,14 @@ namespace SRCCore.CmdDatas.Commands
 
                 if (is_support)
                 {
-                    u.ReplaceSupport(p2, p1);
+                    u.ReplaceSupport(p1, p2);
                 }
                 else
                 {
-                    u.ReplacePilot(p2, p1);
+                    u.ReplacePilot(p1, p2);
                 }
 
-                SRC.PList.UpdateSupportMod(p1.Unit);
+                SRC.PList.UpdateSupportMod(u);
             }
 
             p1.Alive = false;

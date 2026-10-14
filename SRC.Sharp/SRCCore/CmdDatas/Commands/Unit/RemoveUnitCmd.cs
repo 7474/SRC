@@ -87,15 +87,15 @@ namespace SRCCore.CmdDatas.Commands
                             uname = SRC.UDList.Item(uname).Name;
                         }
 
-                        // パイロットが乗ってないユニットを優先
-                        u = SRC.UList.Items.Select(u => u.CurrentForm())
-                            .Where(u => u.Status == "破棄")
-                            .FirstOrDefault(u => u.CountPilot() == 0);
+                        // その名前で、まだ破棄されていないユニットのうち、パイロットが乗ってないユニットを優先
+                        var candidates = SRC.UList.Items.Select(x => x.CurrentForm())
+                            .Where(x => x.Name == uname && x.Status != "破棄")
+                            .ToList();
+                        u = candidates.FirstOrDefault(x => x.CountPilot() == 0);
                         // 見つからなければパイロットが乗っているユニットを削除
                         if (u == null)
                         {
-                            u = SRC.UList.Items.Select(u => u.CurrentForm())
-                                .FirstOrDefault(u => u.Status == "破棄");
+                            u = candidates.FirstOrDefault();
                         }
                         if (u != null)
                         {

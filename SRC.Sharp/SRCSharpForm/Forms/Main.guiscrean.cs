@@ -35,18 +35,18 @@ namespace SRCSharpForm
 
         private Rectangle GetCircleRect(int centerX, int centerY, int rad, float oval_ratio = 1f)
         {
-            var rect = new Rectangle(centerX - rad, centerY - rad, rad * 2, rad * 2);
-
-            if (oval_ratio != 1f)
+            // VB の Circle メソッドの aspect（縦÷横）と同じにする。1 未満なら半径は横、1 以上なら縦の半径で、
+            // 1 未満は横長、1 より大きいと縦長の楕円になる
+            float rx = rad, ry = rad;
+            if (oval_ratio > 0f && oval_ratio < 1f)
             {
-                // 縦横比を調整して楕円形にする（oval_ratio < 1 で横に潰した楕円）
-                rect = new Rectangle(
-                    (int)(rect.X + (rad - rad * oval_ratio)),
-                    rect.Y,
-                    (int)(rect.Width - (rad - rad * oval_ratio) * 2),
-                    rect.Height);
+                ry = rad * oval_ratio;
             }
-
+            else if (oval_ratio > 1f)
+            {
+                rx = rad / oval_ratio;
+            }
+            var rect = new Rectangle((int)(centerX - rx), (int)(centerY - ry), (int)(rx * 2), (int)(ry * 2));
             return rect;
         }
 
