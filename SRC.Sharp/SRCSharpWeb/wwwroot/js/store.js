@@ -94,6 +94,13 @@
                 // localStorage を使えない（この表示の間だけ変える）
             }
         },
+        // 操作の種類の設定（auto・touch・mouse）。index.html の srcwebInput が html の data-input に反映する
+        getInputMode() {
+            return globalThis.srcwebInput?.setting ?? 'auto';
+        },
+        setInputMode(mode) {
+            globalThis.srcwebInput?.set(mode);
+        },
         setTitle(title) {
             document.title = title;
         },

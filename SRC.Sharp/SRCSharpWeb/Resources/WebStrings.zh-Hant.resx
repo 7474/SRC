@@ -183,4 +183,16 @@
   <data name="ObjectCount" xml:space="preserve">
     <value>{0} 個物件</value>
   </data>
+  <data name="InputMode" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="InputAuto" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="InputTouch" xml:space="preserve">
+    <value>觸控</value>
+  </data>
+  <data name="InputMouse" xml:space="preserve">
+    <value>滑鼠</value>
+  </data>
 </root>

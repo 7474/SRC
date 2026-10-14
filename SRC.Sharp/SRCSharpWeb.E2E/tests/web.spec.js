@@ -484,6 +484,33 @@ test('システムメニューから戻るときは確認し、「いいえ」�
   await expect(page.getByRole('menu')).toHaveCount(0);
 });
 
+test.describe('タッチ向けの画面', () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
+
+  test('タッチの端末では押しやすい大きさにし、「操作」でマウス向けに切り替えられる', async ({ page }) => {
+    await open(page);
+    await expect(page.locator('html')).toHaveAttribute('data-input', 'touch');
+    const rowHeight = () => page.locator('#catalog li').first().evaluate(x => x.getBoundingClientRect().height);
+    expect(await rowHeight()).toBeGreaterThanOrEqual(44);
+    await expect(page.locator('.addressbar')).toBeHidden();
+
+    await page.selectOption('#input-mode', 'mouse');
+    await expect(page.locator('html')).toHaveAttribute('data-input', 'mouse');
+    expect(await rowHeight()).toBeLessThan(44);
+    await expect(page.locator('.addressbar')).toBeVisible();
+    // 開き直しても保つ
+    await open(page);
+    await expect(page.locator('html')).toHaveAttribute('data-input', 'mouse');
+    await expect(page.locator('#input-mode')).toHaveValue('mouse');
+
+    // タッチ向けに戻すと、プレイ中は仮想キーを出す（表示を切り替えていなければ）
+    await page.selectOption('#input-mode', 'touch');
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    await expect(page.locator('#virtual-keys')).toBeVisible();
+  });
+});
+
 test.describe('タッチ操作', () => {
   test.use({ hasTouch: true });
 

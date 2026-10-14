@@ -1017,34 +1017,161 @@ input[type=file]::file-selector-button {
     border-top: 1px solid var(--tip-border);
 }
 
-/* タッチ操作の端末では押しやすい大きさにする */
-@media (pointer: coarse) {
-    .screen-bar {
-        min-height: 40px;
-    }
+/*
+  タッチ向けの画面（html の data-input="touch"）。index.html が主なポインタで決め、利用者が「設定」の「操作」で切り替えられる。
+  指で押しやすいよう、押せるものは高さ 44px 前後にし、文字を大きくする。入力欄の文字は 16px にする（iOS が入力時に拡大しないように）。
+*/
+[data-input="touch"] body {
+    font-size: 15px;
+    -webkit-text-size-adjust: 100%;
+}
 
-    .system-button {
-        width: 44px;
-        height: 34px;
-        font-size: 18px;
-    }
+[data-input="touch"] button,
+[data-input="touch"] select,
+[data-input="touch"] input,
+[data-input="touch"] a {
+    touch-action: manipulation;
+}
 
-    .popup-menu {
-        bottom: 38px;
-    }
+[data-input="touch"] button {
+    min-height: 40px;
+    padding: 6px 16px;
+    font-size: 15px;
+}
 
-    .popup-menu button {
-        padding: 10px 20px;
-    }
+[data-input="touch"] button:active {
+    padding: 7px 15px 5px 17px;
+}
 
-    .items li {
-        min-height: 32px;
-    }
+[data-input="touch"][data-theme="xp"] button:active {
+    padding: 6px 16px;
+}
 
-    .dialog-buttons button,
-    .modal-buttons button {
-        min-height: 36px;
-    }
+[data-input="touch"] input[type=url],
+[data-input="touch"] input[type=text],
+[data-input="touch"] select {
+    min-height: 40px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+[data-input="touch"] input[type=file] {
+    font-size: 13px;
+}
+
+[data-input="touch"] input[type=file]::file-selector-button {
+    min-height: 40px;
+    padding: 6px 14px;
+    font-size: 15px;
+}
+
+/* 飾りのボタン・アドレスバーは省き、画面を一覧に使う */
+[data-input="touch"] .caption-buttons,
+[data-input="touch"] .addressbar {
+    display: none;
+}
+
+[data-input="touch"] .titlebar {
+    min-height: 32px;
+    font-size: 15px;
+}
+
+/* 一覧の行は、行全体を押せる大きさにする */
+[data-input="touch"] .items li {
+    flex-wrap: wrap;
+    min-height: 48px;
+    padding: 2px 0;
+    border-bottom: 1px solid var(--light);
+}
+
+[data-input="touch"] .items li > .icon + button {
+    flex: 1;
+    min-height: 44px;
+    padding: 4px 6px;
+    font-size: 16px;
+}
+
+[data-input="touch"] .items .link {
+    padding: 10px 6px;
+}
+
+[data-input="touch"] .items .note {
+    display: none;
+}
+
+[data-input="touch"] button.delete,
+[data-input="touch"] button.export {
+    min-height: 36px;
+    padding: 4px 12px;
+}
+
+[data-input="touch"] .group h2,
+[data-input="touch"] .task h2 {
+    font-size: 14px;
+}
+
+[data-input="touch"] .note {
+    font-size: 13px;
+}
+
+[data-input="touch"] .settings .task-body {
+    gap: 8px 10px;
+}
+
+[data-input="touch"] .statusbar {
+    min-height: 26px;
+}
+
+/* プレイ中の下のバー・システムメニュー */
+[data-input="touch"] .screen-bar {
+    min-height: 48px;
+}
+
+[data-input="touch"] .system-button {
+    width: 52px;
+    height: 40px;
+    margin: 4px;
+    padding: 0;
+    font-size: 20px;
+}
+
+[data-input="touch"] .popup-menu {
+    bottom: 48px;
+    min-width: 240px;
+}
+
+[data-input="touch"] .popup-menu button {
+    min-height: 48px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+[data-input="touch"] .vkey {
+    min-height: 0;
+    padding: 0;
+    font-size: 15px;
+}
+
+[data-input="touch"] .vkey-space,
+[data-input="touch"] .vkey-ctrl,
+[data-input="touch"] .vkey-shift {
+    font-size: 12px;
+}
+
+/* ダイアログ（終了・確認・文字入力・ファイル選択） */
+[data-input="touch"] .dialog-body p {
+    font-size: 15px;
+}
+
+[data-input="touch"] .dialog-buttons button,
+[data-input="touch"] .modal-buttons button {
+    min-width: 96px;
+    min-height: 44px;
+}
+
+[data-input="touch"] .modal-list li button {
+    min-height: 44px;
+    font-size: 16px;
 }
 
 /* 狭い画面では、作業ウィンドウを一覧の下に置く */
