@@ -597,13 +597,18 @@ namespace SRCRender
 
         private static SKRect CircleRect(int centerX, int centerY, int rad, float ovalRatio = 1f)
         {
-            var rect = SKRect.Create(centerX - rad, centerY - rad, rad * 2, rad * 2);
-            if (ovalRatio != 1f)
+            // VB の Circle メソッドの aspect（縦÷横）と同じにする。1 未満なら半径は横、1 以上なら縦の半径で、
+            // 1 未満は横長、1 より大きいと縦長の楕円になる
+            float rx = rad, ry = rad;
+            if (ovalRatio > 0f && ovalRatio < 1f)
             {
-                var shrink = (int)(rad - rad * ovalRatio);
-                rect = SKRect.Create(rect.Left + shrink, rect.Top, rect.Width - shrink * 2, rect.Height);
+                ry = rad * ovalRatio;
             }
-            return rect;
+            else if (ovalRatio > 1f)
+            {
+                rx = rad / ovalRatio;
+            }
+            return SKRect.Create(centerX - rx, centerY - ry, rx * 2, ry * 2);
         }
 
         public void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle)

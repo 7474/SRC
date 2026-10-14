@@ -476,7 +476,7 @@ namespace SRCCore.Maps
                 case "ＮＰＣ":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -497,7 +497,7 @@ namespace SRCCore.Maps
                 case "ＮＰＣの敵":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -526,7 +526,7 @@ namespace SRCCore.Maps
                 case "敵":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -546,7 +546,7 @@ namespace SRCCore.Maps
                 case "敵の敵":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -569,7 +569,7 @@ namespace SRCCore.Maps
                 case "中立":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -589,7 +589,7 @@ namespace SRCCore.Maps
                 case "中立の敵":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {
@@ -612,7 +612,7 @@ namespace SRCCore.Maps
                 case "空間":
                     for (var i = 1; i <= MapWidth; i++)
                     {
-                        for (var j = 1; j <= MapWidth; j++)
+                        for (var j = 1; j <= MapHeight; j++)
                         {
                             if (!MaskData[i, j])
                             {

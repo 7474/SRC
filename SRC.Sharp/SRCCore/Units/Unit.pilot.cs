@@ -33,6 +33,7 @@ namespace SRCCore.Units
                 if (p0.ID == orgPilot.ID)
                 {
                     newList.Add(newPilot);
+                    newPilot.Unit = this;
                     orgPilot.Unit = null;
                     orgPilot.Alive = false;
                 }
@@ -358,6 +359,7 @@ namespace SRCCore.Units
                 if (p0.ID == orgPilot.ID)
                 {
                     newList.Add(newPilot);
+                    newPilot.Unit = this;
                     orgPilot.Unit = null;
                     orgPilot.Alive = false;
                 }

@@ -137,6 +137,61 @@ namespace SRCRender.Tests
             }
         }
 
+        /// <summary>
+        /// Oval の縦横比は VB の Circle メソッドの aspect（縦÷横）と同じ。
+        /// 1 未満なら半径は横で横長、1 より大きいなら半径は縦で縦長の楕円になる（ヘルプ「Ovalコマンド」）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_OvalRatioMatchesVbAspect()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    "Oval 150 120 80 0.5 #FF0000",
+                    "Oval 350 300 80 2 #FF0000",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    // 0.5: 横の半径 80、縦の半径 40
+                    Assert.IsTrue(HasColorNear(bitmap, 230, 120, SKColors.Red), "0.5 の右端");
+                    Assert.IsTrue(HasColorNear(bitmap, 150, 80, SKColors.Red), "0.5 の上端");
+                    Assert.IsFalse(HasColorNear(bitmap, 150, 40, SKColors.Red), "0.5 は縦に半径 80 まで伸びない");
+                    // 2: 縦の半径 80、横の半径 40
+                    Assert.IsTrue(HasColorNear(bitmap, 350, 220, SKColors.Red), "2 の上端");
+                    Assert.IsTrue(HasColorNear(bitmap, 390, 300, SKColors.Red), "2 の右端");
+                    Assert.IsFalse(HasColorNear(bitmap, 430, 300, SKColors.Red), "2 は横に半径 80 まで伸びない");
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        private static bool HasColorNear(SKBitmap bitmap, int x, int y, SKColor color)
+        {
+            for (var dx = -2; dx <= 2; dx++)
+            {
+                for (var dy = -2; dy <= 2; dy++)
+                {
+                    if (bitmap.GetPixel(x + dx, y + dy) == color)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         /// <summary>Wait Click の待ちになるまで待ち、その時点の画面を返してクリックする。</summary>
         private static SKBitmap WaitClick(ScreenScenarioRunner runner)
         {
