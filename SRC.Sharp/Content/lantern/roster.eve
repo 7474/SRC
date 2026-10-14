@@ -1,0 +1,37 @@
+# インターミッションコマンド「部隊名簿」
+# パイロットとユニットの一覧を表示する。
+
+プロローグ:
+Local p
+KeepBGM
+Show
+# MakePilotList はパイロットを表示用のユニットに乗せ替えるので、元の乗機を覚えておく
+UnSet 搭乗ユニット
+ForEach 味方 待機
+  For p = 1 To CountPilot()
+    搭乗ユニット[PilotID(p)] = UnitID()
+  Next
+Next
+MakePilotList レベル
+Talk グスタフ
+これがランタン号の乗組員名簿だ。レベルの高い順に並べてある。
+End
+# パイロットを元の乗機に戻す
+ForEach 味方
+  Escape
+  GetOff
+Next
+ForEach p In 搭乗ユニット
+  Ride p 搭乗ユニット[p]
+Next
+UnSet 搭乗ユニット
+
+MakeUnitList ＨＰ
+Talk リオ
+こっちは機体の一覧。ＨＰの多い順だよ。整備はばっちり！
+End
+Hide
+Continue
+
+スタート:
+Exit

@@ -1,0 +1,205 @@
+# 灯の巡航船ランタン号　第五話「煤城ノクス」
+# 作戦目的：煤の帝ノクスを倒す
+
+プロローグ:
+Talk ナレーター
+煙の海の真上に浮かぶ、黒い城。煤の帝ノクスの居城である。
+End
+# ランタン号の復帰と強化
+Join グスタフ
+RankUp ランタン号 1
+Talk グスタフ
+待たせたな！ ランタン号、装甲を張り替えて戻ってきたぞ！
+Talk ソラ
+船長！
+Talk グスタフ
+最後の配達だ。灯石の首飾りを、城の大灯石へ届ける。……全員、生きて帰るぞ！
+Talk ヴォルフ
+ああ。
+Talk リオ
+うん！
+Talk ミュウ
+……はい！
+End
+Exit
+
+スタート:
+ChangeMap 05_煤城ノクス.map
+# ノクスの過去（白黒）
+Monotone
+Require Lib\灯台の記録.eve
+Call 灯台の記録 2
+Noon
+
+Call 章題 "最終話.煤城ノクス"
+Launch グスタフ 11 18
+Center 11 15
+Organize 4 11 16 通常ユニット
+
+Create 敵 煤帝ノクス(第一形態) 0 ノクス 10 10 3
+BossRank 1
+ChangeMode 固定
+Create 敵 煤機兵 0 煤兵(ザコ) 5 8 6
+Create 敵 煤機兵 0 煤兵(ザコ) 5 13 7
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 5 15 10
+Create 敵 黒鉄鴉 0 クロウ 10 11 6
+StopBGM
+PlayMIDI lantern_boss.mid
+KeepBGM
+
+Center ノクス
+ShowUnitStatus ノクス
+Talk ノクス
+よく来た、灯を運ぶ者たちよ。
+すべての灯石をこの城に集めれば、この城だけは永遠に沈まぬ。それの何が悪い？
+Talk ミュウ
+あなたは……灯守だった人。島を救いたかったはずなのに！
+Talk ノクス
+救うとも。選ばれた一つの島だけをな。
+Talk ソラ
+ほかの島を沈めて、一つだけ残すなんて……そんなの、救いじゃない！
+End
+ShowUnitStatus 終了
+Select ソラ
+SelectTarget ノクス
+Talk システム
+作戦目的：煤の帝ノクスを倒す
+敗北条件：ランタン号の撃沈、または味方の全滅
+End
+Exit
+
+勝利条件:
+Talk システム
+作戦目的：城の奥に座す煤の帝ノクスを倒す
+敗北条件：ランタン号の撃沈、または味方の全滅
+End
+Exit
+
+ターン 2 味方:
+Talk グスタフ
+敵が固まっておるな……ランタン号、全砲門開け！ 灯砲斉射！
+End
+IncreaseMorale グスタフ 10
+MapAttack グスタフ 灯砲斉射 X(グスタフ) Y(グスタフ)
+Exit
+
+ターン 3 味方:
+If Status(ミュウ) = "出撃" Then
+  Talk ミュウ
+  首飾りが……熱い……。灯が、わたしの中に流れこんでくる……！
+  End
+  WhiteOut
+  # 乗機から降ろしてから入れ替え、覚醒した姿を乗せ直す
+  覚醒機 = UnitID(ミュウ)
+  GetOff ミュウ
+  ReplacePilot ミュウ ミュウ(覚醒)
+  Ride ミュウ(覚醒) 覚醒機
+  Release 灯石の首飾り
+  RemoveItem ミュウ(覚醒) 灯石の首飾り
+  RecoverPlana ミュウ(覚醒) 100
+  RecoverSP ミュウ(覚醒) 50
+  IncreaseMorale ミュウ(覚醒) 20
+  WhiteIn
+  Talk ミュウ(覚醒)
+  わたしは灯守のミュウ。この灯で、みんなの道を照らします！
+  End
+  # 灯の加護で味方全員が回復する
+  ForEach 味方 出撃
+    RecoverHP 60
+    RecoverEN 50
+  Next
+EndIf
+FreeMemory
+Exit
+
+ターン 5 味方:
+Talk マルタ
+船長！ ルミナの港から、みんなで灯を送ります！ 受け取ってください！
+Talk グスタフ
+港のみんな……！ 恩に着るぞ！
+End
+ForEach 味方 出撃
+  RecoverHP 50
+  IncreaseMorale 10
+Next
+Exit
+
+損傷率 クロウ 50:
+Talk クロウ
+帝よ……申し訳……ありま……せん……
+End
+Escape クロウ
+Exit
+
+破壊 ノクス:
+If Unit() = "煤帝ノクス(第一形態)" Then
+  StopBGM
+  Explode XL X() Y()
+  Talk ソラ
+  やったか！？
+  Talk ノクス
+  まだだ……城の大灯石は、まだ我が手にある……！
+  End
+  WhiteOut 8
+  Upgrade 煤帝ノクス(第二形態)
+  RecoverHP ノクス 100
+  BossRank ノクス 1
+  WhiteIn 8
+  PlayMIDI lantern_boss.mid
+  KeepBGM
+  Talk ヴォルフ
+  城と一体化しやがった……！ 本体のお出ましか。
+  Talk グスタフ
+  怯むな！ あれが最後の煤だ！
+  End
+  Exit
+EndIf
+# 第二形態の撃破で勝利
+Call 帝の最期
+Exit
+
+# 勝利（破壊イベントと、Attack コマンドでのとどめの両方から呼ぶ）
+帝の最期:
+ClearEvent "全滅 敵"
+StopBGM
+Explode XL X(ノクス) Y(ノクス)
+PlaySound Explode(Nuclear).wav
+Talk ノクス
+なぜだ……なぜ、ひとつの灯では足りぬ……
+Talk ミュウ
+灯はね、分け合うから、消えないんです。
+End
+ForEach 敵 出撃
+  Destroy
+Next
+Call 報酬 10000 煤の帝の打倒
+Continue 06_灯のゆくえ.eve
+Return
+
+# 念のため：帝の破壊イベントを経ずに敵がいなくなった場合
+全滅 敵:
+If Status(ノクス) <> "出撃" Then
+  Call 帝の最期
+EndIf
+Exit
+
+損傷率 ノクス 70:
+If Unit(ノクス) = "煤帝ノクス(第二形態)" And Status(ソラ) = "出撃" And Unit(ソラ) <> "灯翼ヒカリオー" Then
+  Talk ソラ
+  届けるんだ……みんなの灯を！ いっけええ！
+  End
+  SpecialPower ソラ 熱血
+  SetMessage ソラ 攻撃 "これが最後の配達だ……灯火ライフル、全開！"
+  Attack ソラ 灯火ライフル ノクス 無抵抗
+  SetMessage ソラ 攻撃 解除
+  ClearEvent
+  # Attack コマンドで倒した場合は破壊イベントが起きないので、ここで勝利にする
+  If Status(ノクス) = "破壊" Then
+    Call 帝の最期
+  EndIf
+EndIf
+Exit
+
+破壊 グスタフ:
+Call 敗北
+Exit

@@ -1,0 +1,20 @@
+# 「灯の巡航船ランタン号」を最初から最後まで自動でプレイする（srcsharp play の PlayScript）
+#   srcsharp play Content/lantern/01_灯の港.eve --script Content/lantern.play --app-path Content/basic-data（または SRC のフルパッケージの汎用データ）
+stall 1
+# タイトル画面：「あそびかた」を読んでから「はじめから」
+chooseseq ホットポイント あそびかた|はじめから
+# インターミッション：よろず屋 → 訓練所 → 部隊名簿 → 次のステージへ
+chooseseq コマンド よろず屋|訓練所|部隊名簿|次のステージへ
+# よろず屋：最初に灯油タンクを買い、装備の付け替えを開いてから店を出る
+choose1 何を買う 灯油タンク
+choose1 何を買う 装備を付け替える
+choose 何を買う 店を出る
+# 訓練所：個人訓練 → 模擬戦の見学 → 特訓 → 出る
+chooseseq 訓練メニュー 個人訓練|模擬戦|特訓|訓練所を出る
+# 負けたときはやり直さずに終える（テストを失敗させる）
+choose 灯は消えてしまった あきらめる
+auto 300
+turns 80
+expect message 灯の巡航船ランタン号」をクリアしました
+expect finished
+expect error none

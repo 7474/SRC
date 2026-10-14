@@ -51,7 +51,7 @@ SRCCore はゲームスレッドで処理を止めて待つ（メッセージ送
 
 | 種類 | 置き場所 | 内容 |
 |---|---|---|
-| 登録済シナリオ | 静的サイト `scenarios/catalog.json` と zip | 再配布できるシナリオ（E2E のコーパスなど）。一覧から選んでプレイする |
+| 登録済シナリオ | 静的サイト `scenarios/catalog.json` と zip | 再配布できるシナリオ。一覧から選んでプレイする。遊べるシナリオ「灯の巡航船ランタン号」（`SRC.Sharp/Content/lantern`）を先頭に置き、自作の最小の汎用データ（`SRC.Sharp/Content/basic-data`、`assets/basic-data.zip`）を素材として重ねる。続けて E2E のコーパス |
 | 追加したアーカイブ | IndexedDB | 利用者が zip を選んで追加する。シナリオの zip と共通素材の zip を追加できる。ブラウザに残り、次回も選べる |
 
 ### 永続化
