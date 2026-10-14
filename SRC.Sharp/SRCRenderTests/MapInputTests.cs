@@ -97,6 +97,44 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void BeginMapDrag_ScrollsMapWithoutClick()
+        {
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Wait Click",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitFor(s => runner.GUI.IsWaitingClick, "wait click");
+                runner.Session.Game.Post(() => runner.GUI.UnlockGUI());
+                runner.WaitFor(s => !runner.GUI.IsGUILocked, "unlocked");
+                var mapX = runner.GUI.MapX;
+                var mapY = runner.GUI.MapY;
+
+                // タッチで指を滑らせた場合: クリックにせずドラッグだけを始める
+                runner.GUI.BeginMapDrag(300, 300);
+                runner.GUI.PointerMoved(300 - 32 * 3, 300 - 32 * 2);
+                runner.WaitFor(s => runner.GUI.MapX == mapX + 3 && runner.GUI.MapY == mapY + 2, "map scrolled");
+                runner.GUI.EndMapDrag();
+                // クリックにはなっていない（Wait Click のまま）
+                Assert.IsTrue(runner.GUI.IsWaitingClick);
+
+                // ドラッグ終了後は動かない
+                runner.GUI.PointerMoved(300, 300);
+                Thread.Sleep(200);
+                Assert.AreEqual(mapX + 3, runner.GUI.MapX);
+
+                runner.Session.Game.Post(() => runner.GUI.LockGUI());
+                runner.WaitFor(s => runner.GUI.IsGUILocked, "locked");
+                runner.GUI.KeyPressed(ScreenKey.Enter);
+                runner.WaitForTermination();
+            }
+        }
+
+        [TestMethod]
         public void KeyState_ReflectsPressedKeys()
         {
             workspace.Write("test.eve",

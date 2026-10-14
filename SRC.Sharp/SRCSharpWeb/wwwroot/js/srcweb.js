@@ -50,7 +50,7 @@ async function start() {
         ];
     };
 
-    // タッチ操作: タップで左クリック、長押しで右クリック、指を動かすとカーソルの移動
+    // タッチ操作: タップで左クリック、長押しで右クリック、指を滑らせるとマップのスクロール（とカーソルの移動）
     let lastTouch = -Infinity;
     let touch = null;
     let lastTap = null;
@@ -82,6 +82,8 @@ async function start() {
             id: e.pointerId,
             startX: e.clientX,
             startY: e.clientY,
+            downX: x,
+            downY: y,
             x,
             y,
             moved: false,
@@ -111,6 +113,8 @@ async function start() {
             touch.moved = true;
             clearTimeout(touch.timer);
             hideRing();
+            // 触れた位置からマップをドラッグする（マウスの左ボタンのドラッグと同じスクロール。クリックにはしない）
+            gui.Pointer(3, touch.downX, touch.downY, 0, 0);
         }
         if (touch.moved) {
             gui.Pointer(2, x, y, 0, 0);
@@ -124,6 +128,9 @@ async function start() {
         lastTouch = performance.now();
         clearTimeout(touch.timer);
         hideRing();
+        if (touch.moved) {
+            gui.Pointer(4, touch.x, touch.y, 0, 0);
+        }
         if (touch.held) {
             release(touch.x, touch.y, 2);
         } else if (!cancelled && !touch.moved) {
