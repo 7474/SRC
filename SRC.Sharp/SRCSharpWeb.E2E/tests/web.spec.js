@@ -248,7 +248,19 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
  */
 async function isolateWithHeaders(page) {
   await page.route('**/*', async route => {
-    const response = await route.fetch();
+    // 前のテストの直後などに、テスト用のサーバーへの接続が切られる（socket hang up）ことがあるため、取り直す
+    let response;
+    for (let attempt = 1; ; attempt++) {
+      try {
+        response = await route.fetch();
+        break;
+      } catch (e) {
+        if (attempt >= 3) {
+          throw e;
+        }
+        await new Promise(resolve => setTimeout(resolve, 200 * attempt));
+      }
+    }
     await route.fulfill({
       response,
       headers: {
@@ -308,6 +320,33 @@ test('サイトの設定とカタログで配信し、シナリオが求める�
   await page.locator('#screen').click({ position: { x: 600, y: 300 } });
   // 素材の効果音が鳴る
   await expect.poll(async () => (await soundCounts(page)).encoded).toBeGreaterThan(0);
+});
+
+test('素材（requires）の SoundFont で MIDI を合成して鳴らす', async ({ page }) => {
+  test.skip(!fs.existsSync(soundFont), `SoundFont が無い: ${soundFont}`);
+  // シナリオには SoundFont を入れず、素材の zip に入れる
+  const scenario = makeZip(['test.eve', 'test.map', 'Sound/se.wav', 'Midi/bgm.mid']
+    .map(name => ({ name: 'シナリオ/' + name, data: fs.readFileSync(path.join(corpus, 'sound', name)) })));
+  const asset = makeZip([{ name: 'SoundFont/TimGM6mb.sf2', data: fs.readFileSync(soundFont) }]);
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    name: 'SoundFont のテスト',
+    entries: [
+      { id: 'midi-with-soundfont', title: 'MIDI のシナリオ', archive: 'scenario.zip', root: 'シナリオ', eve: 'test.eve', requires: ['soundfont'] },
+      { id: 'soundfont', kind: 'asset', title: 'SoundFont', archive: 'assets/soundfont.zip' },
+    ],
+  })));
+  await page.route('**/dist/scenario.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: scenario }));
+  await page.route('**/dist/assets/soundfont.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: asset }));
+
+  await open(page);
+  await page.getByRole('button', { name: 'MIDI のシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#screen').click({ position: { x: 600, y: 300 } });
+  await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
 });
 
 test('URL の archive で任意の zip を直接始める', async ({ page }) => {
