@@ -68,5 +68,21 @@ namespace SRCCore.Filesystem.Tests
             var fs = new LocalFileSystem();
             Assert.AreEqual(1, System.Linq.Enumerable.Count(fs.GetFileSystemEntries(Path.Combine(root, "DATA", "unit"), "ROBOT.*", EntryOption.File)));
         }
+
+        [TestMethod]
+        public void ToAbsolutePath_AbsolutePathInScenarioFolder_StaysAbsolute()
+        {
+            // セーブデータには絶対パスが入る。Linux・ブラウザでは / から始まる
+            var fs = new LocalFileSystem();
+            var eve = Path.Combine(root, "data", "02_霧の渓谷.eve");
+            Assert.AreEqual(eve, fs.ToAbsolutePath(Path.Combine(root, "data"), eve));
+        }
+
+        [TestMethod]
+        public void ToAbsolutePath_RelativePath_CombinesWithScenarioFolder()
+        {
+            var fs = new LocalFileSystem();
+            Assert.AreEqual(Path.Combine(root, "data", "Save"), fs.ToAbsolutePath(Path.Combine(root, "data"), "Save"));
+        }
     }
 }

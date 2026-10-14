@@ -159,9 +159,11 @@ namespace SRCCore.Filesystem
 
         public string ToAbsolutePath(string scenarioPath, string path)
         {
+            // scenarioPath は正規化しない。Linux・ブラウザの絶対パス（/ から始まる）を \ に変えると、
+            // PathCombine が先頭の \ を外して相対パスにしてしまう
             return string.IsNullOrEmpty(scenarioPath)
                 ? NormalizePath(path)
-                : PathCombine(NormalizePath(scenarioPath), ToRelativePath(scenarioPath, path));
+                : PathCombine(scenarioPath, ToRelativePath(scenarioPath, path));
         }
 
         public string ToRelativePath(string scenarioPath, string path)
