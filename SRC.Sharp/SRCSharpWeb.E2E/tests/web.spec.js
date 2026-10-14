@@ -349,6 +349,43 @@ test('素材（requires）の SoundFont で MIDI を合成して鳴らす', asyn
   await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
 });
 
+test('取得したアーカイブはキャッシュし、version が変わるまで取得し直さない', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  let version = 'v1';
+  let downloads = 0;
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    entries: [{ id: 'cached', title: 'キャッシュするシナリオ', archive: 'cached.zip', version, eve: 'test.eve' }],
+  })));
+  await page.route('**/dist/cached.zip', route => {
+    downloads++;
+    return route.fulfill({ status: 200, contentType: 'application/zip', body: zip });
+  });
+  const play = async () => {
+    await page.getByRole('button', { name: 'キャッシュするシナリオ' }).click();
+    await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
+    await expect.poll(() => debugState(page)).toContain('catalog-cached');
+  };
+
+  await open(page);
+  await play();
+  expect(downloads).toBe(1);
+
+  // 開き直しても取得しない
+  await open(page);
+  await play();
+  expect(downloads).toBe(1);
+
+  // version が変われば取得し直す
+  version = 'v2';
+  await open(page);
+  await play();
+  expect(downloads).toBe(2);
+});
+
 test('URL の archive で任意の zip を直接始める', async ({ page }) => {
   const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
   await isolateWithHeaders(page);

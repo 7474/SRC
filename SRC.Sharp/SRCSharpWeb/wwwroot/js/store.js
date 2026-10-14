@@ -1,4 +1,4 @@
-// 追加したアーカイブ（zip）とセーブデータをブラウザの IndexedDB に保存する
+// 追加したアーカイブ（zip）とセーブデータをブラウザの IndexedDB に保存する。カタログのアーカイブは Cache Storage に置く
 (() => {
     const open = () => new Promise((resolve, reject) => {
         const request = indexedDB.open('srcweb', 2);
@@ -108,5 +108,51 @@
             a.remove();
             setTimeout(() => URL.revokeObjectURL(url), 10000);
         },
+        // カタログのアーカイブ（zip）を取得する。一度取得したものは Cache Storage に置き、次からはネットワークを使わない。
+        // version（カタログの version）が置いたときと違えば取得し直す。Blob を返す（大きいものはブラウザがディスクに置く）
+        async fetchArchive(url, version) {
+            let cache = null;
+            try {
+                cache = await caches.open(archiveCacheName);
+            } catch {
+                // 安全でない接続（http）などで Cache Storage が使えない
+            }
+            if (!cache) {
+                return await fetchBlob(url);
+            }
+            version = version || '';
+            const hit = await cache.match(url);
+            if (hit && hit.headers.get(versionHeader) === version) {
+                return await hit.blob();
+            }
+            const response = await fetchOk(url);
+            if (navigator.storage && navigator.storage.persist) {
+                navigator.storage.persist();
+            }
+            try {
+                await cache.put(url, new Response(response.body, { headers: { 'Content-Type': 'application/zip', [versionHeader]: version } }));
+                const stored = await cache.match(url);
+                if (stored) {
+                    return await stored.blob();
+                }
+            } catch (e) {
+                // 容量が足りないなど。置けなければキャッシュせずに取得し直す
+                console.warn('アーカイブをキャッシュできません', url, e);
+                await cache.delete(url).catch(() => { });
+            }
+            return await fetchBlob(url);
+        },
     };
+
+    const fetchOk = async url => {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText} (${url})`);
+        }
+        return response;
+    };
+    const fetchBlob = async url => await (await fetchOk(url)).blob();
+
+    const archiveCacheName = 'srcweb-archives';
+    const versionHeader = 'X-SRCWeb-Version';
 })();

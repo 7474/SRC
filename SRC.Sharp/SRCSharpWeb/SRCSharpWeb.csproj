@@ -78,8 +78,12 @@
     <MakeDir Directories="wwwroot/fonts;wwwroot/scenarios" />
     <DownloadFile SourceUrl="$(GoogleFontsBase)/%(_WebFont.Identity)" DestinationFolder="wwwroot/fonts" Condition="!Exists('%(_WebFont.TargetFile)')" Retries="3" />
     <ZipDirectory SourceDirectory="%(_E2ECase.Identity)" DestinationFile="wwwroot/scenarios/%(_E2ECase.CaseName).zip" Overwrite="true" />
+    <!-- zip の版（ブラウザのキャッシュの更新判定）には zip のハッシュ値を使う -->
+    <GetFileHash Files="@(_E2ECase->'wwwroot/scenarios/%(CaseName).zip')" Algorithm="SHA256" HashEncoding="hex">
+      <Output TaskParameter="Items" ItemName="_E2EZip" />
+    </GetFileHash>
     <PropertyGroup>
-      <_Catalog>@(_E2ECase->'{ &quot;id&quot;: &quot;%(CaseName)&quot;, &quot;title&quot;: &quot;%(CaseName)&quot;, &quot;archive&quot;: &quot;scenarios/%(CaseName).zip&quot;, &quot;eve&quot;: &quot;test.eve&quot; }', ', ')</_Catalog>
+      <_Catalog>@(_E2EZip->'{ &quot;id&quot;: &quot;%(CaseName)&quot;, &quot;title&quot;: &quot;%(CaseName)&quot;, &quot;archive&quot;: &quot;scenarios/%(CaseName).zip&quot;, &quot;version&quot;: &quot;%(FileHash)&quot;, &quot;eve&quot;: &quot;test.eve&quot; }', ', ')</_Catalog>
     </PropertyGroup>
     <WriteLinesToFile File="wwwroot/scenarios/catalog.json" Lines="[ $(_Catalog) ]" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="utf-8" />
     <ItemGroup>
