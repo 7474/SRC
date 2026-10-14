@@ -183,4 +183,16 @@
   <data name="ObjectCount" xml:space="preserve">
     <value>{0} objet(s)</value>
   </data>
+  <data name="InputMode" xml:space="preserve">
+    <value>Commandes</value>
+  </data>
+  <data name="InputAuto" xml:space="preserve">
+    <value>Automatique</value>
+  </data>
+  <data name="InputTouch" xml:space="preserve">
+    <value>Tactile</value>
+  </data>
+  <data name="InputMouse" xml:space="preserve">
+    <value>Souris</value>
+  </data>
 </root>

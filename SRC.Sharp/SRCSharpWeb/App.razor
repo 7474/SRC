@@ -242,6 +242,12 @@ else
                             <option value="95">Windows 95</option>
                             <option value="xp">Windows XP</option>
                         </select>
+                        <label for="input-mode">@L["InputMode"]</label>
+                        <select id="input-mode" value="@inputMode" @onchange="ChangeInputModeAsync">
+                            <option value="auto">@L["InputAuto"]</option>
+                            <option value="touch">@L["InputTouch"]</option>
+                            <option value="mouse">@L["InputMouse"]</option>
+                        </select>
                     </div>
                 </section>
             </aside>
@@ -275,6 +281,8 @@ else
     private string status;
     /// <summary>画面のテーマ（95・xp）。srcwebStore.setTheme で html の data-theme に反映し、localStorage に保存する</summary>
     private string theme = "95";
+    /// <summary>操作の種類の設定（auto・touch・mouse）。srcwebStore.setInputMode で html の data-input に反映し、localStorage に保存する</summary>
+    private string inputMode = "auto";
     private SiteConfig site = new SiteConfig();
     private List<Catalog> catalogs = new List<Catalog>();
     private List<string> catalogErrors = new List<string>();
@@ -340,6 +348,7 @@ else
         try
         {
             theme = await JS.InvokeAsync<string>("srcwebStore.getTheme");
+            inputMode = await JS.InvokeAsync<string>("srcwebStore.getInputMode");
             await WebFonts.LoadAsync(Http);
             site = await SiteConfig.LoadAsync(Http);
             await JS.InvokeVoidAsync("srcwebStore.setTitle", site.Title);
@@ -849,6 +858,12 @@ else
     private int ObjectCount => mode == Mode.ChooseEvent
         ? saves.Count + eventFiles.Count
         : catalogs.Sum(x => x.Scenarios.Count()) + (site.AllowUserArchives ? archives.Count : 0);
+
+    private async Task ChangeInputModeAsync(ChangeEventArgs e)
+    {
+        inputMode = e.Value?.ToString() ?? "auto";
+        await JS.InvokeVoidAsync("srcwebStore.setInputMode", inputMode);
+    }
 
     private async Task ChangeThemeAsync(ChangeEventArgs e)
     {

@@ -8,13 +8,44 @@
     <base href="/" />
     <link rel="preload" id="webassembly" />
     <script type="importmap"></script>
-    <!-- 画面のテーマ（95・xp）。描画の前に決める（srcwebStore.setTheme で変える） -->
+    <!-- 画面のテーマ（95・xp）と操作の種類（touch・mouse）。描画の前に決める（srcwebStore.setTheme・setInputMode で変える） -->
     <script>
         try {
             document.documentElement.dataset.theme = localStorage.getItem('srcweb.theme') === 'xp' ? 'xp' : '95';
         } catch {
             document.documentElement.dataset.theme = '95';
         }
+        // 操作の種類（touch・mouse）。タッチの端末では押しやすい大きさの画面にする（app.css の [data-input="touch"]）。
+        // 利用者の設定（localStorage の srcweb.input: auto・touch・mouse）が auto なら、主なポインタがタッチかで決める
+        globalThis.srcwebInput = (() => {
+            const coarse = matchMedia('(pointer: coarse)');
+            const normalize = value => value === 'touch' || value === 'mouse' ? value : 'auto';
+            let setting = 'auto';
+            try {
+                setting = normalize(localStorage.getItem('srcweb.input'));
+            } catch {
+                // localStorage を使えない
+            }
+            const apply = () => {
+                document.documentElement.dataset.input = setting === 'auto' ? (coarse.matches ? 'touch' : 'mouse') : setting;
+            };
+            coarse.addEventListener?.('change', apply);
+            apply();
+            return {
+                get setting() {
+                    return setting;
+                },
+                set(value) {
+                    setting = normalize(value);
+                    try {
+                        localStorage.setItem('srcweb.input', setting);
+                    } catch {
+                        // 保存できなくても表示は切り替える
+                    }
+                    apply();
+                },
+            };
+        })();
     </script>
     <link rel="stylesheet" href="css/app.css" />
     <!-- エラーの収集（srcweb.json の errorReporting）。起動前のエラーも拾うため最初に読み込む -->

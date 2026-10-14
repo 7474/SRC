@@ -246,6 +246,9 @@ const VIRTUAL_KEYS = [
 ];
 const VIRTUAL_KEYS_SETTING = 'srcweb.virtualKeys';
 
+/** タッチ向けの画面か（index.html が html の data-input に付ける。利用者が切り替えられる） */
+const isTouchMode = () => document.documentElement.dataset.input === 'touch';
+
 function buildVirtualKeys(gui) {
     const container = document.getElementById('virtual-keys');
     if (!container) {
@@ -294,9 +297,9 @@ function buildVirtualKeys(gui) {
     let visible;
     try {
         const saved = localStorage.getItem(VIRTUAL_KEYS_SETTING);
-        visible = saved === null ? matchMedia('(pointer: coarse)').matches : saved === 'on';
+        visible = saved === null ? isTouchMode() : saved === 'on';
     } catch {
-        visible = matchMedia('(pointer: coarse)').matches;
+        visible = isTouchMode();
     }
     container.hidden = !visible;
     globalThis.srcwebToggleVirtualKeys = () => {

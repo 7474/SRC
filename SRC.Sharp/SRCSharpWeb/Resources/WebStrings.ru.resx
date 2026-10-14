@@ -183,4 +183,16 @@
   <data name="ObjectCount" xml:space="preserve">
     <value>Объектов: {0}</value>
   </data>
+  <data name="InputMode" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="InputAuto" xml:space="preserve">
+    <value>Автоматически</value>
+  </data>
+  <data name="InputTouch" xml:space="preserve">
+    <value>Сенсорное</value>
+  </data>
+  <data name="InputMouse" xml:space="preserve">
+    <value>Мышь</value>
+  </data>
 </root>
