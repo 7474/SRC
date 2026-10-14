@@ -711,6 +711,114 @@ input[type=file]::file-selector-button {
     user-select: none;
 }
 
+/*
+  タッチ向けの選択画面（srcweb.js の buildTouchUi）。ゲームのリスト・メニュー・ダイアログを、画面の下側に大きなボタンで出す。
+  タッチ向けの画面（data-input="touch"）のときだけ出る。ゲームの画面の上側（マップ）は見えるようにし、画面の下に寄せる
+*/
+.touch-ui {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(100%, 720px);
+    z-index: 25;
+    max-height: 60vh;
+    max-height: 60dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 3px;
+    box-sizing: border-box;
+    background: var(--face);
+    box-shadow: var(--raised), 0 -2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.touch-ui[hidden] {
+    display: none;
+}
+
+[data-theme="xp"] .touch-ui {
+    padding: 0 0 6px;
+    border: 3px solid var(--frame);
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+}
+
+.touch-ui-title {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+[data-theme="xp"] .touch-ui-title {
+    min-height: 26px;
+    padding: 0 8px;
+    border-radius: 6px 6px 0 0;
+}
+
+.touch-ui-text {
+    margin: 6px 8px;
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.touch-ui-items {
+    display: flex;
+    flex-direction: column;
+    margin: 4px;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.touch-ui-items .touch-ui-item {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 6px 12px;
+    text-align: left;
+    font-size: 16px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--light);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.touch-ui-items .touch-ui-item:active {
+    color: var(--select-text);
+    background: var(--select);
+    padding: 6px 12px;
+    box-shadow: none;
+}
+
+.touch-ui-items .touch-ui-item:disabled {
+    color: var(--shadow);
+}
+
+.touch-ui-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin: 8px;
+}
+
+.touch-ui-buttons .touch-ui-item,
+.touch-ui-cancel {
+    min-width: 96px;
+    min-height: 44px;
+    font-size: 16px;
+}
+
+.touch-ui-cancel {
+    display: block;
+    margin: 6px 4px 4px auto;
+}
+
 /* 長押しで右クリックになるまでの輪 */
 .touch-ring {
     position: fixed;
@@ -802,6 +910,8 @@ input[type=file]::file-selector-button {
 
 .system-menu {
     position: relative;
+    /* タッチ向けの選択画面（.touch-ui）が重なっても、システムメニューを押せるようにする */
+    z-index: 26;
 }
 
 .system-button {

@@ -195,4 +195,7 @@
   <data name="InputMouse" xml:space="preserve">
     <value>Fare</value>
   </data>
+  <data name="TouchCancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
 </root>

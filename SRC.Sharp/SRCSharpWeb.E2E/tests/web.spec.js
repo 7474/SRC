@@ -487,6 +487,69 @@ test('システムメニューから戻るときは確認し、「いいえ」�
 test.describe('タッチ向けの画面', () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
 
+  test('ゲームのリスト・ダイアログを、タッチ向けの選択画面の大きなボタンで選ぶ', async ({ page }, testInfo) => {
+    await open(page);
+    await page.getByRole('button', { name: 'intermission-save' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    const panel = page.locator('#touch-ui');
+    // メッセージは画面をタップして送る。インターミッションのコマンドの一覧が選択画面に出る
+    await expect.poll(async () => {
+      if (await panel.isVisible()) {
+        return true;
+      }
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return false;
+    }, { intervals: [500, 1000] }).toBe(true);
+    await expect(panel.locator('.touch-ui-title')).toContainText('コマンド');
+    const item = panel.getByRole('button', { name: '次のステージへ' });
+    expect((await item.boundingBox()).height).toBeGreaterThanOrEqual(44);
+    await attachScreen(page, testInfo, 'touch-list');
+    await item.click();
+
+    // 確認のダイアログも選択画面に出る
+    await expect(panel).toContainText('次のステージへ進みますか');
+    await attachScreen(page, testInfo, 'touch-dialog');
+    await panel.locator('.touch-ui-buttons button').first().click();
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return s.terminated;
+    }, { intervals: [500, 1000] }).toBe(true);
+  });
+
+  test('ユニットのコマンドのメニューを、タッチ向けの選択画面で選ぶ', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    // 「戦闘開始」のメッセージを送り、味方フェイズにする
+    let shown = false;
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        shown = true;
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return shown && s.message === undefined && s.locked === false;
+    }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+    // 味方ユニット（6,6）をタップする
+    const s = await screenState(page);
+    const box = await page.locator('#screen').boundingBox();
+    const scale = box.width / 720;
+    const cell = n => ((n - s.mapX + 7) * 32 + 16) * scale;
+    await page.locator('#screen').tap({ position: { x: cell(6), y: (6 - s.mapY + 7) * 32 * scale + 16 * scale } });
+    const panel = page.locator('#touch-ui');
+    await expect(panel.getByRole('button', { name: '移動' })).toBeVisible();
+    // キャンセルで閉じる
+    await panel.getByRole('button', { name: 'キャンセル' }).click();
+    await expect(panel).toBeHidden();
+    await expect.poll(async () => (await page.locator('#touch-ui').isVisible())).toBe(false);
+  });
+
   test('タッチの端末では押しやすい大きさにし、「操作」でマウス向けに切り替えられる', async ({ page }) => {
     await open(page);
     await expect(page.locator('html')).toHaveAttribute('data-input', 'touch');

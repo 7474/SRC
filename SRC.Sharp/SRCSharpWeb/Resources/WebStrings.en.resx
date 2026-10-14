@@ -195,4 +195,7 @@
   <data name="InputMouse" xml:space="preserve">
     <value>Mouse</value>
   </data>
+  <data name="TouchCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>
