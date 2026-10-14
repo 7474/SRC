@@ -139,6 +139,12 @@ namespace SRCSharpWeb
         /// <summary>zip の URL（カタログからの相対 URL か絶対 URL）</summary>
         public string Archive { get; set; }
 
+        /// <summary>
+        /// zip の版。取得した zip はブラウザにキャッシュし、同じ URL ならネットワークを使わない。
+        /// zip を同じ URL のまま差し替えたら、これを変えると取得し直す（ハッシュ値や日付など、変わればよい）
+        /// </summary>
+        public string Version { get; set; }
+
         /// <summary>はじめに実行するシナリオ（zip の中のパス）</summary>
         public string Eve { get; set; }
 

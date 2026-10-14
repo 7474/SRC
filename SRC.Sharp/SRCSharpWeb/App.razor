@@ -1,5 +1,4 @@
 @using SRCRender
-@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using System.IO
 @using System.Threading
 @implements IDisposable
@@ -461,7 +460,7 @@ else
         {
             return;
         }
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive), entry.Eve, entry.Root);
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version), entry.Eve, entry.Root);
     }
 
     /// <summary>この大きさを超える zip は、メモリ（byte[]）に読まずにブラウザ内のファイルシステムに書いてから展開する</summary>
@@ -469,33 +468,36 @@ else
 
     /// <summary>
     /// zip をダウンロードして開く。展開したら Dispose し、FileStream ならファイルを消す（CloseDownload）。
+    /// 一度取得した zip はブラウザの Cache Storage に置き、次からはネットワークを使わない（version が変われば取得し直す。srcwebStore.fetchArchive）。
     /// 応答を byte[] に読むと、大きいシナリオ（数百 MB）では WebAssembly のメモリがその分（読み込み中はそれ以上）増え、
     /// 増えたメモリは返せないため、スマートフォンではタブが落ちる原因になる。
     /// 大きいものはストリームのままファイルに書く。WebAssembly のメモリは一度に読む分しか使わない（ファイルの中身は JS 側のメモリに置かれる）。
     /// 小さいものは、展開が速いため従来どおりメモリに読む。
     /// </summary>
-    private async Task<Stream> DownloadAsync(string url)
+    private async Task<Stream> DownloadAsync(string url, string version)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.SetBrowserResponseStreamingEnabled(true);
-        using var response = await Http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        response.EnsureSuccessStatusCode();
-        var length = response.Content.Headers.ContentLength;
-        if (length.HasValue && length.Value <= StreamToFileThreshold)
+        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", url, version ?? "");
+        using var source = await archive.OpenReadStreamAsync(long.MaxValue);
+        return await OpenDownloadAsync(source, archive.Length);
+    }
+
+    /// <summary>zip を、小さいものはメモリに、大きいものはファイルに書いて開く</summary>
+    private static async Task<Stream> OpenDownloadAsync(Stream source, long length)
+    {
+        if (length <= StreamToFileThreshold)
         {
-            return new MemoryStream(await response.Content.ReadAsByteArrayAsync(), false);
+            var buffer = new MemoryStream((int)length);
+            await source.CopyToAsync(buffer, 1024 * 1024);
+            buffer.Position = 0;
+            return buffer;
         }
         var path = ScenarioArchive.NewDownloadPath();
         try
         {
-            using (var source = await response.Content.ReadAsStreamAsync())
             using (var file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024 * 1024))
             {
-                if (length > 0)
-                {
-                    // 先に大きさを決めておくと、書き込むたびにファイルの領域を広げ直さない
-                    file.SetLength(length.Value);
-                }
+                // 先に大きさを決めておくと、書き込むたびにファイルの領域を広げ直さない
+                file.SetLength(length);
                 await source.CopyToAsync(file, 1024 * 1024);
                 file.SetLength(file.Position);
             }
@@ -560,7 +562,7 @@ else
             {
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
-                var zip = await DownloadAsync(asset.Archive);
+                var zip = await DownloadAsync(asset.Archive, asset.Version);
                 try
                 {
                     status = L["ExtractingAsset", asset.Title];
