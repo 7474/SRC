@@ -248,7 +248,19 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
  */
 async function isolateWithHeaders(page) {
   await page.route('**/*', async route => {
-    const response = await route.fetch();
+    // 前のテストの直後などに、テスト用のサーバーへの接続が切られる（socket hang up）ことがあるため、取り直す
+    let response;
+    for (let attempt = 1; ; attempt++) {
+      try {
+        response = await route.fetch();
+        break;
+      } catch (e) {
+        if (attempt >= 3) {
+          throw e;
+        }
+        await new Promise(resolve => setTimeout(resolve, 200 * attempt));
+      }
+    }
     await route.fulfill({
       response,
       headers: {
