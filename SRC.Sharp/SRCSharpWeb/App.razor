@@ -735,11 +735,15 @@ else
         saveSync?.Watch(Path.GetDirectoryName(evePath));
         var sync = saveSync;
         host.SaveDirectoryChosen = dir => sync?.Watch(dir);
-        // MIDI の SoundFont は同梱しない。アーカイブに含まれる .sf2 を使う
-        var root = scenarioDir;
+        // MIDI の SoundFont は同梱しない。アーカイブに含まれる .sf2 を使う。
+        // シナリオのものを優先し、無ければ素材（requires や利用者が追加した素材。SRC のフォルダに展開される）のものを使う
+        var roots = new[] { scenarioDir, ScenarioArchive.AppPath };
         var player = new WebSoundPlayer(host, () =>
         {
-            var sf2 = Directory.GetFiles(root, "*.sf2", SearchOption.AllDirectories).OrderBy(x => x, StringComparer.Ordinal).FirstOrDefault();
+            var sf2 = roots
+                .Where(Directory.Exists)
+                .Select(root => Directory.GetFiles(root, "*.sf2", SearchOption.AllDirectories).OrderBy(x => x, StringComparer.Ordinal).FirstOrDefault())
+                .FirstOrDefault(x => x != null);
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
