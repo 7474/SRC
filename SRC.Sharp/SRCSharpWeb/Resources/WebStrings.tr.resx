@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>{0} kaynağı yüklenemedi: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Arşiv ekle</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} nesne</value>
+  </data>
 </root>

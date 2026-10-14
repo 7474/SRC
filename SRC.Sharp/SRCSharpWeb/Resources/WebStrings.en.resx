@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>Could not load asset {0}: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Add archives</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} object(s)</value>
+  </data>
 </root>

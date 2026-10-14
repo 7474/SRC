@@ -8,6 +8,14 @@
     <base href="/" />
     <link rel="preload" id="webassembly" />
     <script type="importmap"></script>
+    <!-- 画面のテーマ（95・xp）。描画の前に決める（srcwebStore.setTheme で変える） -->
+    <script>
+        try {
+            document.documentElement.dataset.theme = localStorage.getItem('srcweb.theme') === 'xp' ? 'xp' : '95';
+        } catch {
+            document.documentElement.dataset.theme = '95';
+        }
+    </script>
     <link rel="stylesheet" href="css/app.css" />
     <!-- エラーの収集（srcweb.json の errorReporting）。起動前のエラーも拾うため最初に読み込む -->
     <script src="js/errorreport.js"></script>
@@ -18,9 +26,9 @@
 
 <body>
     <div id="app">
-        <main>
-            <h1>SRC#Web</h1>
-            <p class="status" id="boot">読み込み中…</p>
+        <main class="window explorer">
+            <div class="titlebar"><span class="title-icon"></span><h1>SRC#Web</h1></div>
+            <div class="explorer-body"><div class="listpane"><p class="status" id="boot">読み込み中…</p></div></div>
         </main>
     </div>
 

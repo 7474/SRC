@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>No se pudo cargar el recurso {0}: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Añadir archivos comprimidos</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} objeto(s)</value>
+  </data>
 </root>

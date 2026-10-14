@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>Impossible de charger les ressources {0} : {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Ajouter des archives</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} objet(s)</value>
+  </data>
 </root>

@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>Не удалось загрузить ресурс {0}: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>Добавить архивы</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>Объектов: {0}</value>
+  </data>
 </root>

@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>無法載入素材 {0}：{1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>網址</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>新增壓縮檔</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>佈景主題</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} 個物件</value>
+  </data>
 </root>

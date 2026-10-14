@@ -168,4 +168,19 @@
   <data name="AssetLoadFailed" xml:space="preserve">
     <value>素材 {0} を読み込めませんでした: {1}</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>アドレス</value>
+  </data>
+  <data name="AddArchives" xml:space="preserve">
+    <value>アーカイブを追加</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="ObjectCount" xml:space="preserve">
+    <value>{0} 個のオブジェクト</value>
+  </data>
 </root>
