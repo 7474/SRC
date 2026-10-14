@@ -27,12 +27,16 @@ function frames(page) {
   return page.evaluate(() => globalThis.srcwebFrames ?? 0);
 }
 
-/** 画面とイベントの状態（WebInterop.DebugState の JSON 文字列） */
+/**
+ * 画面とイベントの状態（WebInterop.DebugState の JSON 文字列）。
+ * 読み込み直した直後は .NET の公開する関数がまだ揃っていないことがあるため、そのときは空の状態を返す（expect.poll で待つ）
+ */
 function debugState(page) {
   return page.evaluate(async () => {
-    const runtime = await globalThis.getDotnetRuntime(0);
-    const exports = await runtime.getAssemblyExports('SRCSharpWeb.dll');
-    return exports.SRCSharpWeb.WebInterop.DebugState();
+    const runtime = await globalThis.getDotnetRuntime?.(0);
+    const exports = await runtime?.getAssemblyExports('SRCSharpWeb.dll');
+    const state = exports?.SRCSharpWeb?.WebInterop?.DebugState;
+    return typeof state === 'function' ? state() : '{}';
   });
 }
 
