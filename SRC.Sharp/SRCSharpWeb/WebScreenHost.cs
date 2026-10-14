@@ -131,7 +131,7 @@ namespace SRCSharpWeb
             {
                 return;
             }
-            WebInterop.DrawFrame(new ArraySegment<byte>(frame), FrameInfo.Width, FrameInfo.Height);
+            WebInterop.DrawFrame(frame, FrameInfo.Width, FrameInfo.Height);
             Interlocked.CompareExchange(ref spare, frame, null);
             flushCount++;
         }

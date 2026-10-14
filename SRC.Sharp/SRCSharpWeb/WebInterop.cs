@@ -25,8 +25,13 @@ namespace SRCSharpWeb
         private static SRCCore.SRC src;
         private static readonly BlockingCollection<Action<ScreenGUI>> inputs = new BlockingCollection<Action<ScreenGUI>>();
 
+        // バイト列は Span で渡す（JS 側は呼び出しの間に複写する）。
+        // ArraySegment で渡すと配列ごとに GCHandle が JS に渡り、JS の GC（FinalizationRegistry）で解放される。
+        // 同じ配列（画面の受け渡し用に使い回す配列）を何度も渡すと、マルチスレッドではその解放が二重になり、
+        // ReleaseJSOwnedObjectByGCHandle の ArgumentNullException でランタイムが落ちる（dotnet/runtime#107486）。
+        // 解放されるまで配列が固定・保持され続けることもない。
         [JSImport("drawFrame", ModuleName)]
-        internal static partial void DrawFrame([JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> pixels, int width, int height);
+        internal static partial void DrawFrame([JSMarshalAs<JSType.MemoryView>] Span<byte> pixels, int width, int height);
 
         [JSImport("setTitle", ModuleName)]
         internal static partial void SetDocumentTitle(string title);
@@ -41,10 +46,10 @@ namespace SRCSharpWeb
         internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items, string cancel);
 
         [JSImport("soundPlayEncoded", ModuleName)]
-        internal static partial void SoundPlayEncoded(int channel, [JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> data, bool loop);
+        internal static partial void SoundPlayEncoded(int channel, [JSMarshalAs<JSType.MemoryView>] Span<byte> data, bool loop);
 
         [JSImport("soundQueuePcm", ModuleName)]
-        internal static partial void SoundQueuePcm(int channel, [JSMarshalAs<JSType.MemoryView>] ArraySegment<byte> samples, int channels, int sampleRate);
+        internal static partial void SoundQueuePcm(int channel, [JSMarshalAs<JSType.MemoryView>] Span<byte> samples, int channels, int sampleRate);
 
         [JSImport("soundAhead", ModuleName)]
         internal static partial double SoundAhead(int channel);

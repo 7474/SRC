@@ -26,6 +26,15 @@ namespace SRCSharpWeb
         /// </summary>
         public static string Extract(string id, byte[] zip, string root = null)
         {
+            using (var stream = new MemoryStream(zip, false))
+            {
+                return Extract(id, stream, root);
+            }
+        }
+
+        /// <summary>シナリオの zip（読み込み位置を変えられるストリーム。ファイルなど）を展開し、展開先のフォルダを返す。</summary>
+        public static string Extract(string id, Stream zip, string root = null)
+        {
             var dir = Path.Combine(Root, "scenarios", Sanitize(id));
             if (Directory.Exists(dir))
             {
@@ -41,20 +50,45 @@ namespace SRCSharpWeb
         /// </summary>
         public static void ExtractAsset(byte[] zip, string root = null)
         {
+            using (var stream = new MemoryStream(zip, false))
+            {
+                ExtractAsset(stream, root);
+            }
+        }
+
+        /// <inheritdoc cref="ExtractAsset(byte[], string)"/>
+        public static void ExtractAsset(Stream zip, string root = null)
+        {
             ExtractTo(AppPath, zip, root);
+        }
+
+        /// <summary>ダウンロードした zip を一時的に置くファイルのパス（展開したら消す）</summary>
+        public static string NewDownloadPath()
+        {
+            var dir = Path.Combine(Root, "downloads");
+            Directory.CreateDirectory(dir);
+            return Path.Combine(dir, Guid.NewGuid().ToString("N") + ".zip");
+        }
+
+        /// <summary>
+        /// ダウンロードした zip を読むために開く。
+        /// ブラウザ内のファイルシステムの読み書きは 1 回ごとに UI スレッドへの呼び出しになるため、大きいバッファでまとめて読む。
+        /// </summary>
+        public static FileStream OpenDownload(string path)
+        {
+            return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
         }
 
         /// <summary>
         /// zip を dir に展開する。
         /// Windows で作った zip のファイル名は Shift_JIS のことが多いため、UTF-8 の印が無いものは Shift_JIS として読む。
         /// </summary>
-        private static void ExtractTo(string dir, byte[] zip, string root)
+        private static void ExtractTo(string dir, Stream zip, string root)
         {
             Directory.CreateDirectory(dir);
             var fullDir = Path.GetFullPath(dir) + "/";
             var prefix = string.IsNullOrEmpty(root) ? "" : root.Replace('\\', '/').Trim('/') + "/";
-            using (var stream = new MemoryStream(zip))
-            using (var archive = new ZipArchive(stream, ZipArchiveMode.Read, false, Encoding.GetEncoding(932)))
+            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, Encoding.GetEncoding(932)))
             {
                 foreach (var entry in archive.Entries)
                 {
