@@ -276,7 +276,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 部隊ユニットの攻撃力低下を VB の \\ 演算（被除数を丸めてから整数除算）ではなく除算後の切り捨てで計算している")]
         public void WeaponPower_SquadUnit_RoundsBeforeIntegerDivision()
         {
             // VB: WeaponPower * (50 + 50 * HP / MaxHP) \ 100

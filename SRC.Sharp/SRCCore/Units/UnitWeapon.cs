@@ -202,7 +202,8 @@ namespace SRCCore.Units
             // 部隊ユニットはダメージを受けると攻撃力が低下
             if (Unit.IsFeatureAvailable("部隊ユニット"))
             {
-                WeaponPowerRet = (int)((WeaponPowerRet * (50d + 50 * Unit.HP / (double)Unit.MaxHP)) / 100);
+                // VB の \ 演算子は被演算子を先に丸めてから整数除算する
+                WeaponPowerRet = VBMath.CLng(WeaponPowerRet * (50d + 50 * Unit.HP / (double)Unit.MaxHP)) / 100;
             }
 
             // 標的のいる地形が設定されていないときは武器の一覧表示用なので各種補正を省く
@@ -836,55 +837,55 @@ namespace SRCCore.Units
 
                         case 2d:
                             {
-                                WeaponENConsumptionRet = (int)(0.9d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.9d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 3d:
                             {
-                                WeaponENConsumptionRet = (int)(0.8d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.8d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 4d:
                             {
-                                WeaponENConsumptionRet = (int)(0.7d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.7d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 5d:
                             {
-                                WeaponENConsumptionRet = (int)(0.6d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.6d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 6d:
                             {
-                                WeaponENConsumptionRet = (int)(0.5d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.5d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 7d:
                             {
-                                WeaponENConsumptionRet = (int)(0.45d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.45d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 8d:
                             {
-                                WeaponENConsumptionRet = (int)(0.4d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.4d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 9d:
                             {
-                                WeaponENConsumptionRet = (int)(0.35d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.35d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case var @case when @case >= 10d:
                             {
-                                WeaponENConsumptionRet = (int)(0.3d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.3d * WeaponENConsumptionRet);
                                 break;
                             }
                     }
@@ -905,55 +906,55 @@ namespace SRCCore.Units
 
                         case 2d:
                             {
-                                WeaponENConsumptionRet = (int)(0.9d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.9d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 3d:
                             {
-                                WeaponENConsumptionRet = (int)(0.8d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.8d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 4d:
                             {
-                                WeaponENConsumptionRet = (int)(0.7d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.7d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 5d:
                             {
-                                WeaponENConsumptionRet = (int)(0.6d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.6d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 6d:
                             {
-                                WeaponENConsumptionRet = (int)(0.5d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.5d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 7d:
                             {
-                                WeaponENConsumptionRet = (int)(0.45d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.45d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 8d:
                             {
-                                WeaponENConsumptionRet = (int)(0.4d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.4d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case 9d:
                             {
-                                WeaponENConsumptionRet = (int)(0.35d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.35d * WeaponENConsumptionRet);
                                 break;
                             }
 
                         case var case1 when case1 >= 10d:
                             {
-                                WeaponENConsumptionRet = (int)(0.3d * WeaponENConsumptionRet);
+                                WeaponENConsumptionRet = VBMath.CLng(0.3d * WeaponENConsumptionRet);
                                 break;
                             }
                     }
@@ -974,7 +975,7 @@ namespace SRCCore.Units
                 rate = 0.1d;
             }
 
-            WeaponENConsumptionRet = (int)(rate * WeaponENConsumptionRet);
+            WeaponENConsumptionRet = VBMath.CLng(rate * WeaponENConsumptionRet);
 
             return WeaponENConsumptionRet;
         }
@@ -1152,18 +1153,11 @@ namespace SRCCore.Units
                         break;
                     }
 
-                    switch (Strings.Asc(c))
+                    var code = Strings.Asc(c);
+                    // "-", ".", 0-9 以外が現れたらそこで終わり
+                    if (!(45 <= code && code <= 46 || 48 <= code && code <= 57))
                     {
-                        case var @case when 45 <= @case && @case <= 46:
-                        case var case1 when 48 <= case1 && case1 <= 57: // "-", ".", 0-9
-                            {
-                                break;
-                            }
-
-                        default:
-                            {
-                                break;
-                            }
+                        break;
                     }
 
                     i = (i + 1);
@@ -4997,7 +4991,7 @@ namespace SRCCore.Units
                 {
                     foreach (var uw in Unit.Weapons)
                     {
-                        uw.SetBulletRate(dblBulletRate);
+                        uw.SetBullet(GeneralLib.MinLng(VBMath.CLng(uw.MaxBullet() * dblBulletRate), uw.Bullet()));
                     }
                 }
                 else
@@ -5007,7 +5001,7 @@ namespace SRCCore.Units
                         if (uw.IsWeaponClassifiedAs("斉"))
                         {
                             // XXX これどういう式なのかいまいち分からん
-                            uw.SetBullet(GeneralLib.MinLng((int)(uw.MaxBullet() * dblBulletRate + 0.49999d), uw.Bullet()));
+                            uw.SetBullet(GeneralLib.MinLng(VBMath.CLng(uw.MaxBullet() * dblBulletRate + 0.49999d), uw.Bullet()));
                         }
                     }
                 }
@@ -5081,7 +5075,7 @@ namespace SRCCore.Units
         // 弾数
         public int Bullet()
         {
-            return (int)(dblBulletRate * intMaxBullet);
+            return VBMath.CLng(dblBulletRate * intMaxBullet);
         }
 
         // 最大弾数
@@ -5093,7 +5087,7 @@ namespace SRCCore.Units
         // 増加率に合わせて弾数を修正
         public void SetMaxBulletRate(double rate)
         {
-            intMaxBullet = (int)(WeaponData.Bullet * rate);
+            intMaxBullet = VBMath.CLng(WeaponData.Bullet * rate);
             // 最大値は99
             if (intMaxBullet > 99)
             {

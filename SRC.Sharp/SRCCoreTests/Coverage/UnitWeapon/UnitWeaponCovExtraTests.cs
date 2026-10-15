@@ -215,7 +215,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SetMaxBulletRate が VB の Integer 代入（丸め）ではなく (int) 切り捨てで最大弾数を計算している")]
         public void SetMaxBulletRate_RoundsLikeVbIntegerAssignment()
         {
             // VB Update: intMaxBullet(i) = (1 + rate) * intMaxBullet(i)（Integer への代入で丸め）
