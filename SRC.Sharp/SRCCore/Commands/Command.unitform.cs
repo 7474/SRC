@@ -45,7 +45,7 @@ namespace SRCCore.Commands
                     GUI.TopItem = 1;
                     ret = GUI.ListBox(new ListBoxArgs
                     {
-                        lb_caption = SelectedUnit.IsHero() ? "変身先" : "変形先",
+                        lb_caption = "変形",
                         lb_info = "名前",
                         lb_mode = "カーソル移動",
                         Items = forms,
@@ -684,7 +684,7 @@ namespace SRCCore.Commands
                     HasFlag = false,
                     Items = combines.Select(x => new ListBoxItem
                     {
-                        Text = x.CombineName,
+                        Text = x.ConbineUnitName,
                     }).ToList(),
                 });
                 if (i == 0)
@@ -779,6 +779,7 @@ namespace SRCCore.Commands
                     msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.MaxEN), 5);
                     msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Armor("")), 5);
                     msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 5);
+                    msg += " " + u.Data.Adaption;
 
                     var weapons = u.Weapons.Where(uw => uw.IsDisplayFor(WeaponListMode.List)).ToList();
                     // 最大攻撃力
@@ -808,8 +809,8 @@ namespace SRCCore.Commands
                 lb_caption = "変更先選択",
                 lb_info = "ユニット                     "
                     + Expression.Term("ＨＰ", null, 4) + " " + Expression.Term("ＥＮ", null, 4) + " "
-                    + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", u: null) + " 適応 攻撃力 射程",
-                lb_mode = "連続表示,コメント",
+                    + Expression.Term("装甲", null, 4) + " " + Expression.Term("運動", null, 4) + " 適応 攻撃力 射程",
+                lb_mode = "カーソル移動,コメント",
             });
             // キャンセル？
             if (tfRet == 0)

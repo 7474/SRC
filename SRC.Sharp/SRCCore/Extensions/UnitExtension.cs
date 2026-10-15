@@ -60,8 +60,9 @@ namespace SRCCore.Extensions
                 .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name))))
             {
                 // 3体以上からなる合体能力を持っているか？
+                // ユニットステータスコマンドの時は2体合体も対象にする
                 var combineData = new CombineFeature(fd);
-                if (combineData.PartUnitNames.Count >= 2)
+                if (combineData.PartUnitNames.Count >= 2 || SRC.Map.IsStatusView)
                 {
                     var n = 0;
                     // パートナーは隣接しているか？
@@ -83,8 +84,10 @@ namespace SRCCore.Extensions
                             break;
                         }
 
-                        if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) > 2
-                            || Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
+                        // ユニットステータスコマンドの時は距離を判定しない
+                        if (!SRC.Map.IsStatusView
+                            && (Math.Abs((currentUnit.x - partu.CurrentForm().x)) > 2
+                                || Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2))
                         {
                             break;
                         }

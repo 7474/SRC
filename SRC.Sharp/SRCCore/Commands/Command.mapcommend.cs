@@ -226,10 +226,10 @@ namespace SRCCore.Commands
                             var p = u.MainPilot();
                             msg = GeneralLib.RightPaddedString(p.get_Nickname(false), 21)
                                 + GeneralLib.LeftPaddedString(SrcFormatter.Format(p.Level), 3)
-                                + GeneralLib.LeftPaddedString(SrcFormatter.Format(p.SP) + "/" + SrcFormatter.Format(p.MaxSP), 9);
+                                + GeneralLib.LeftPaddedString(SrcFormatter.Format(p.SP) + "/" + SrcFormatter.Format(p.MaxSP), 9) + "  ";
                             // 使用可能なスペシャルパワー一覧
                             msg += string.Join("", p.SpecialPowerNames
-                                    .Where(x => p.SP > p.SpecialPowerCost(x))
+                                    .Where(x => p.SP >= p.SpecialPowerCost(x))
                                     .Select(x => SRC.SPDList.Item(x).ShortName));
                         }
                     }
@@ -260,8 +260,8 @@ namespace SRCCore.Commands
                     var u = SRC.UList.Item(x.ListItemID);
                     switch (sort_mode)
                     {
-                        case "ＨＰ": return u.MaxHP;
-                        case "ＥＮ": return u.MaxEN;
+                        case "ＨＰ": return u.HP;
+                        case "ＥＮ": return u.EN;
                         case "レベル":
                         case "パイロットレベル": return u.MainPilot()?.TotalExp ?? 0;
                         default: return 0;
@@ -349,7 +349,7 @@ namespace SRCCore.Commands
                                 new ListBoxItem("名称で並べ替え", "名称で並べ替え"),
                                 new ListBoxItem("レベルで並べ替え", "レベルで並べ替え"),
                                 new ListBoxItem(Expression.Term("ＨＰ") + "で並べ替え", "ＨＰで並べ替え"),
-                                new ListBoxItem(Expression.Term("スペシャルパワー") + "で並べ替え", "スペシャルパワーで並べ替え"),
+                                new ListBoxItem(Expression.Term("ＥＮ") + "で並べ替え", "ＥＮで並べ替え"),
                             }).ToList();
                         }
                         else
@@ -357,9 +357,9 @@ namespace SRCCore.Commands
                             sortItems = sortItems.AppendRange(new ListBoxItem[]{
                                 new ListBoxItem(Expression.Term("ＨＰ") + "で並べ替え", "ＨＰで並べ替え"),
                                 new ListBoxItem(Expression.Term("ＥＮ") + "で並べ替え", "ＥＮで並べ替え"),
-                                new ListBoxItem(Expression.Term("パイロットレベルで並べ替え"), "パイロットレベルで並べ替え"),
-                                new ListBoxItem(Expression.Term("ユニット名称で並べ替え"), "ユニット名称で並べ替え"),
-                                new ListBoxItem(Expression.Term("ユニット名称で並べ替え"), "ユニット名称で並べ替え"),
+                                new ListBoxItem("パイロットレベルで並べ替え", "パイロットレベルで並べ替え"),
+                                new ListBoxItem("ユニット名称で並べ替え", "ユニット名称で並べ替え"),
+                                new ListBoxItem("パイロット名称で並べ替え", "パイロット名称で並べ替え"),
                             }).ToList();
                         }
                         var sortRes = GUI.ListBox(new ListBoxArgs

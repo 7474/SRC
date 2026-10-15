@@ -285,7 +285,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ユニットステータスコマンドで２体合体が合体候補に含まれない")]
         public void Combine_StatusView_TwoUnitCombine_IsCombined()
         {
             // 元の SRC はマップがない（ユニットステータスコマンド）場合、２体合体も合体候補に含め、
@@ -307,7 +306,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 合体後の形態リストに合体後の形態名ではなく合体の名称が表示される")]
         public void Combine_OnMap_MultiplePatterns_ListShowsCombinedFormNames()
         {
             // 元の SRC は list に LIndex(合体データ, 2)（合体後の形態名）を入れて「合体後の形態」リストに表示する
@@ -461,7 +459,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 換装先リストを「連続表示」で開いたまま閉じないため、換装後もリストボックスが表示されたまま残る")]
         public void ExchangeForm_ListBoxIsClosedAfterSelection()
         {
             // 元の SRC は ListBox(…, "カーソル移動,コメント") で選択時にリストを閉じる。
@@ -480,7 +477,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 換装先リストの各行に地形適応（Data.Adaption）の列が出力されない")]
         public void ExchangeForm_ListItemContainsAdaption()
         {
             // 元の SRC は運動性の後に " " & .Data.Adaption を出力する（見出しの「適応」列）

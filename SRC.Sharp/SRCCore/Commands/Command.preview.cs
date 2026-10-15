@@ -334,6 +334,7 @@ namespace SRCCore.Commands
                 if (selectedWeapon == null)
                 {
                     // キャンセル
+                    SelectedWeapon = 0;
                     if (SRC.AutoMoveCursor)
                     {
                         GUI.RestoreCursorPos();
@@ -420,7 +421,7 @@ namespace SRCCore.Commands
                             {
                                 i = GUI.ListBox(new ListBoxArgs
                                 {
-                                    lb_caption = "アビリティ属性一覧",
+                                    lb_caption = "武器属性一覧",
                                     Items = list.Select(x => new ListBoxItem(x)).ToList(),
                                     lb_info = "属性    効果",
                                     lb_mode = "連続表示",
