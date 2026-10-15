@@ -390,7 +390,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Pilot.SkillType が特殊状態を持つユニットで未修得技能に空文字を返すため「～状態」が判定されない")]
         public void IsNecessarySkillSatisfied2_Condition_WithStateSuffix()
         {
             // 「～状態」は特殊状態の有無

@@ -596,7 +596,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillType の特殊能力付加による修正で判定が反転している")]
         public void SkillType_付加で与えられた別名から能力の種類を返す()
         {
             // VB: If LIndex(.ConditionData(i), 1) = sname0 Then SkillType = Left$(.Condition(i), Len - 2)
@@ -607,7 +606,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillType の特殊能力付加による修正で判定が反転している")]
         public void SkillType_付加に該当しない未修得能力は名称そのまま()
         {
             var (src, p) = CreatePilotWithSkill();

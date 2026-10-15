@@ -49,7 +49,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ハンター等の重複判定が x.StrData == x.StrData と自己比較になっておりデータ違いの同名能力が登録されない")]
         public void Update_ハンターはデータが異なれば複数持てる()
         {
             // VB: If .StrData = skill_data(i).StrData Then Exit For （データまで同一の場合のみ同じ能力と見なす）
@@ -361,7 +360,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Update のパイロット地形適応変更による地形適応の修正が未移植（コメントアウト）")]
         public void Update_パイロット地形適応変更で地形適応が変わる()
         {
             // VB: 修正値がプラスなら A を上限に加算、マイナスなら常に加算

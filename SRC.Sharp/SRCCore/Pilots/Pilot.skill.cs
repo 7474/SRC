@@ -1202,7 +1202,7 @@ namespace SRCCore.Pilots
                             .Where(c => GeneralLib.LIndex(c.StrData, 1) == sname0)
                             .Select(c => Regex.Replace(c.Name, "付加２?$", ""))
                             .FirstOrDefault();
-                        if (string.IsNullOrEmpty(conditionType))
+                        if (!string.IsNullOrEmpty(conditionType))
                         {
                             return conditionType;
                         }

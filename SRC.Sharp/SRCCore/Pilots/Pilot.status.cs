@@ -34,7 +34,7 @@ namespace SRCCore.Pilots
                     {
                         // これらの特殊能力は同種の能力を複数持つことが出来る
                         // ただしデータ指定まで同一であれば同じ能力と見なす
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name && x.StrData == x.StrData);
+                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name && x.StrData == sd.StrData);
                     }
                     else
                     {
@@ -391,151 +391,95 @@ namespace SRCCore.Pilots
                             break;
                     }
                 }
+                // 地形適応変更
+                if (u.IsFeatureAvailable("パイロット地形適応変更"))
+                {
+                    var padaption = new int[5];
+                    for (var i = 1; i <= 4; i++)
+                    {
+                        switch (Strings.Mid(Adaption, i, 1) ?? "")
+                        {
+                            case "S":
+                                padaption[i] = 5;
+                                break;
+                            case "A":
+                                padaption[i] = 4;
+                                break;
+                            case "B":
+                                padaption[i] = 3;
+                                break;
+                            case "C":
+                                padaption[i] = 2;
+                                break;
+                            case "D":
+                                padaption[i] = 1;
+                                break;
+                            case "E":
+                            case "-":
+                                padaption[i] = 0;
+                                break;
+                        }
+                    }
+
+                    // 地形適応変更能力による修正
+                    foreach (var f in u.Features.Where(x => x.Name == "パイロット地形適応変更"))
+                    {
+                        for (var j = 1; j <= 4; j++)
+                        {
+                            var mod = GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, j));
+                            if (mod >= 0)
+                            {
+                                // 修正値がプラスのとき
+                                if (padaption[j] < 4)
+                                {
+                                    padaption[j] = padaption[j] + mod;
+                                    // 地形適応はAより高くはならない
+                                    if (padaption[j] > 4)
+                                    {
+                                        padaption[j] = 4;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 修正値がマイナスのときは本来の地形適応が"A"以上でも処理を行なう
+                                padaption[j] = padaption[j] + mod;
+                            }
+                        }
+                    }
+
+                    Adaption = "";
+                    for (var i = 1; i <= 4; i++)
+                    {
+                        switch (padaption[i])
+                        {
+                            case var a when a >= 5:
+                                Adaption = Adaption + "S";
+                                break;
+                            case 4:
+                                Adaption = Adaption + "A";
+                                break;
+                            case 3:
+                                Adaption = Adaption + "B";
+                                break;
+                            case 2:
+                                Adaption = Adaption + "C";
+                                break;
+                            case 1:
+                                Adaption = Adaption + "D";
+                                break;
+                            case var a when a <= 0:
+                                Adaption = Adaption + "-";
+                                break;
+                        }
+                    }
+                }
+
+                // 気力の値を気力上限・気力下限の範囲にする
+                SetMorale(Morale);
             }
         SkipUnitMod:
             ;
-
-            //        // 地形適応変更
-            //        if (withBlock4.IsFeatureAvailable("パイロット地形適応変更"))
-            //        {
-            //            for (i = 1; i <= 4; i++)
-            //            {
-            //                switch (Strings.Mid(Adaption, i, 1) ?? "")
-            //                {
-            //                    case "S":
-            //                        {
-            //                            padaption[i] = 5;
-            //                            break;
-            //                        }
-
-            //                    case "A":
-            //                        {
-            //                            padaption[i] = 4;
-            //                            break;
-            //                        }
-
-            //                    case "B":
-            //                        {
-            //                            padaption[i] = 3;
-            //                            break;
-            //                        }
-
-            //                    case "C":
-            //                        {
-            //                            padaption[i] = 2;
-            //                            break;
-            //                        }
-
-            //                    case "D":
-            //                        {
-            //                            padaption[i] = 1;
-            //                            break;
-            //                        }
-
-            //                    case "E":
-            //                    case "-":
-            //                        {
-            //                            padaption[i] = 0;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-
-            //            // 地形適応変更能力による修正
-            //            var loopTo12 = withBlock4.CountFeature();
-            //            for (i = 1; i <= loopTo12; i++)
-            //            {
-            //                if (withBlock4.Feature(i) == "パイロット地形適応変更")
-            //                {
-            //                    for (j = 1; j <= 4; j++)
-            //                    {
-            //                        string localFeatureData8() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                        string localLIndex8() { string arglist = hsb8c32b5b97d840f1a1974442798ae710(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-            //                        if (GeneralLib.StrToLng(localLIndex8()) >= 0)
-            //                        {
-            //                            // 修正値がプラスのとき
-            //                            if (padaption[j] < 4)
-            //                            {
-            //                                string localFeatureData6() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                                string localLIndex6() { string arglist = hs8f1b1c4829bf4c8ea402eb72f2930e63(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-            //                                int localStrToLng6() { string argexpr = hsdf089849003448bebc02763c21e401ad(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                                padaption[j] = (padaption[j] + localStrToLng6());
-            //                                // 地形適応はAより高くはならない
-            //                                if (padaption[j] > 4)
-            //                                {
-            //                                    padaption[j] = 4;
-            //                                }
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            // 修正値がマイナスのときは本来の地形適応が"A"以上でも処理を行なう
-            //                            string localFeatureData7() { object argIndex1 = i; var ret = withBlock4.FeatureData(argIndex1); return ret; }
-
-            //                            string localLIndex7() { string arglist = hs8e6f6c053bcd4824a879080031dfde79(); var ret = GeneralLib.LIndex(arglist, j); return ret; }
-
-            //                            int localStrToLng7() { string argexpr = hs210e4a3c7ff64bf2865702c94fd878d3(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-            //                            padaption[j] = (padaption[j] + localStrToLng7());
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            Adaption = "";
-            //            for (i = 1; i <= 4; i++)
-            //            {
-            //                switch (padaption[i])
-            //                {
-            //                    case var @case when @case >= 5:
-            //                        {
-            //                            Adaption = Adaption + "S";
-            //                            break;
-            //                        }
-
-            //                    case 4:
-            //                        {
-            //                            Adaption = Adaption + "A";
-            //                            break;
-            //                        }
-
-            //                    case 3:
-            //                        {
-            //                            Adaption = Adaption + "B";
-            //                            break;
-            //                        }
-
-            //                    case 2:
-            //                        {
-            //                            Adaption = Adaption + "C";
-            //                            break;
-            //                        }
-
-            //                    case 1:
-            //                        {
-            //                            Adaption = Adaption + "D";
-            //                            break;
-            //                        }
-
-            //                    case var case1 when case1 <= 0:
-            //                        {
-            //                            Adaption = Adaption + "-";
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // 気力の値を気力上限・気力下限の範囲にする
-            //    SetMorale(Morale);
-            //SkipUnitMod:
-            //    ;
             #endregion
 
             // 基本値と修正値の合計から実際の能力値を算出
@@ -554,7 +498,7 @@ namespace SRCCore.Pilots
             string my_party;
             int my_cmd_rank;
             int cmd_rank, cmd_rank2;
-            double cmd_level = Constants.DEFAULT_LEVEL;
+            double cmd_level = 0d;
             double cs_level;
             int range, max_range;
             bool mod_stack;

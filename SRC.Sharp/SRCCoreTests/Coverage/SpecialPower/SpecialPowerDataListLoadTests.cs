@@ -194,7 +194,6 @@ namespace SRCCore.Coverage.Tests.SpecialPower
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル指定のない効果の dblEffectLevel が VB の 0 でなく DEFAULT_LEVEL になる")]
         public void SetEffect_EffectWithoutLevel_HasLevelZero()
         {
             // VB の SetEffect は ReDim した配列に Lv 指定時だけレベルを代入するため、

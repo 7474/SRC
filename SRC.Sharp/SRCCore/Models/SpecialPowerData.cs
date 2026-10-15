@@ -63,7 +63,7 @@ namespace SRCCore.Models
                 var j = Strings.InStr(buf, "Lv");
                 var k = Strings.InStr(buf, "=");
                 string strEffectType;
-                double dblEffectLevel = Constants.DEFAULT_LEVEL;
+                double dblEffectLevel = 0d;
                 string strEffectData = null;
                 if (j > 0 && (k == 0 || j < k))
                 {
@@ -2100,7 +2100,7 @@ namespace SRCCore.Models
                                 int n;
                                 if (t.IsFeatureAvailable("ノーマルモード"))
                                 {
-                                    t.Transform(t.FeatureData("ノーマルモード"));
+                                    t.Transform(GeneralLib.LIndex(t.FeatureData("ノーマルモード"), 1));
                                     t = t.CurrentForm();
                                     n = 0;
                                 }

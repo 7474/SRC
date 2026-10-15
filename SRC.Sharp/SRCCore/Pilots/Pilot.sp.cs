@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,7 +57,7 @@ namespace SRCCore.Pilots
                 }
                 else if (IsSkillAvailable("ＳＰ高成長"))
                 {
-                    MaxSPRet = (int)(1.5d * MaxSPRet);
+                    MaxSPRet = VBMath.CLng(1.5d * MaxSPRet);
                 }
 
                 if (Expression.IsOptionDefined("ＳＰ低成長"))
@@ -258,12 +259,12 @@ namespace SRCCore.Pilots
             // 特殊能力による消費ＳＰ値修正
             if (IsSkillAvailable("超能力") || IsSkillAvailable("集中力"))
             {
-                SpecialPowerCostRet = (int)(0.8d * SpecialPowerCostRet);
+                SpecialPowerCostRet = VBMath.CLng(0.8d * SpecialPowerCostRet);
             }
 
             if (IsSkillAvailable("知覚強化"))
             {
-                SpecialPowerCostRet = (int)(1.2d * SpecialPowerCostRet);
+                SpecialPowerCostRet = VBMath.CLng(1.2d * SpecialPowerCostRet);
             }
 
             // ＳＰ消費減少能力
