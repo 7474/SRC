@@ -136,6 +136,7 @@ namespace SRCRender
                 }
                 State.MapX = MapX;
                 State.MapY = MapY;
+                State.MapCursor = KeyCursorRect();
                 using (var canvas = new SKCanvas(frame))
                 {
                     renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, new[] { picFace, picPilotStatus, picUnitStatus }, frmMessage));
@@ -242,6 +243,7 @@ namespace SRCRender
         /// </summary>
         public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1)
         {
+            HideKeyCursorOnPointer();
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = true;
@@ -304,30 +306,7 @@ namespace SRCRender
             var menu = State.Menu;
             if (menu != null)
             {
-                var commands = menuCommands;
-                var isUnitMenu = isUnitCommandMenu;
-                var index = button == GuiButton.Left ? renderer.HitTestMenu(menu, x, y) : -1;
-                State.Menu = null;
-                menuCommands = null;
-                game.Post(() =>
-                {
-                    if (index >= 0 && commands != null)
-                    {
-                        if (isUnitMenu)
-                        {
-                            Commands.UnitCommand(commands[index]);
-                        }
-                        else
-                        {
-                            Commands.MapCommand(commands[index]);
-                        }
-                    }
-                    else
-                    {
-                        Commands.CancelCommand();
-                    }
-                    Present();
-                });
+                ChooseMenu(button == GuiButton.Left ? renderer.HitTestMenu(menu, x, y) : -1);
                 return;
             }
 
@@ -464,6 +443,7 @@ namespace SRCRender
 
         public void PointerMoved(float x, float y)
         {
+            HideKeyCursorOnPointer();
             MouseX = x;
             MouseY = y;
             UpdateTooltip();
@@ -539,16 +519,39 @@ namespace SRCRender
                 game.Post(() => ConfigKeyPressed(key));
                 return;
             }
+            // キー操作（物理キー・仮想キー）だけで遊べるようにする。
+            // Enter: 決定（ダイアログ・リスト・メニューの選択、マップカーソルのマスのクリック、メッセージ送り）
+            // Esc: 取り消し（リスト・メニュー、ダイアログは最後のボタン、マップでは右クリック）
+            // 矢印: ダイアログのボタン（←→）、リスト・メニューの項目（↑↓）、マップカーソルの移動
+            var dialog = State.Dialog;
+            var menu = State.Menu;
+            var listWaiting = State.List != null && waitingList;
             switch (key)
             {
                 case ScreenKey.Enter:
-                    if (State.Dialog != null)
+                    if (dialog != null)
                     {
-                        dialogResult = 0;
+                        dialogResult = Math.Max(0, Math.Min(dialog.Buttons.Count - 1, dialog.Highlight));
                     }
-                    else if (State.List != null && waitingList)
+                    else if (listWaiting)
                     {
                         game.Post(() => ListBoxKeyPressed(key));
+                    }
+                    else if (menu != null)
+                    {
+                        if (menu.Highlight < 0)
+                        {
+                            menu.Highlight = 0;
+                            game.Post(Present);
+                        }
+                        else
+                        {
+                            ChooseMenu(menu.Highlight);
+                        }
+                    }
+                    else if (IsMapOperable && keyCursor != null)
+                    {
+                        ClickKeyCursor(GuiButton.Left);
                     }
                     else
                     {
@@ -557,9 +560,21 @@ namespace SRCRender
                     break;
 
                 case ScreenKey.Escape:
-                    if (State.List != null && waitingList)
+                    if (listWaiting)
                     {
                         game.Post(() => ListBoxKeyPressed(key));
+                    }
+                    else if (dialog != null)
+                    {
+                        dialogResult = dialog.Buttons.Count - 1;
+                    }
+                    else if (menu != null)
+                    {
+                        ChooseMenu(-1);
+                    }
+                    else if (IsMapOperable)
+                    {
+                        ClickKeyCursor(GuiButton.Right);
                     }
                     else
                     {
@@ -571,22 +586,177 @@ namespace SRCRender
                 case ScreenKey.Right:
                 case ScreenKey.Up:
                 case ScreenKey.Down:
-                    if (State.List != null && (key == ScreenKey.Up || key == ScreenKey.Down))
+                    var dx = key == ScreenKey.Left ? -1 : key == ScreenKey.Right ? 1 : 0;
+                    var dy = key == ScreenKey.Up ? -1 : key == ScreenKey.Down ? 1 : 0;
+                    if (dialog != null)
                     {
-                        game.Post(() => ListBoxKeyPressed(key));
+                        if (dx != 0 && dialog.Buttons.Count > 1)
+                        {
+                            dialog.Highlight = Math.Max(0, Math.Min(dialog.Buttons.Count - 1, dialog.Highlight + dx));
+                            game.Post(Present);
+                        }
+                    }
+                    else if (State.List != null)
+                    {
+                        if (dy != 0)
+                        {
+                            game.Post(() => ListBoxKeyPressed(key));
+                        }
+                    }
+                    else if (menu != null)
+                    {
+                        var count = menu.Items.Count;
+                        if (dy != 0 && count > 0)
+                        {
+                            menu.Highlight = menu.Highlight < 0
+                                ? (dy > 0 ? 0 : count - 1)
+                                : (menu.Highlight + dy + count) % count;
+                            game.Post(Present);
+                        }
                     }
                     else if (!IsGUILocked)
                     {
-                        var dx = key == ScreenKey.Left ? -1 : key == ScreenKey.Right ? 1 : 0;
-                        var dy = key == ScreenKey.Up ? -1 : key == ScreenKey.Down ? 1 : 0;
-                        game.Post(() =>
-                        {
-                            Center(MapX + dx, MapY + dy);
-                            Present();
-                        });
+                        MoveKeyCursor(dx, dy);
                     }
                     break;
             }
+        }
+
+        #region キー操作のマップカーソル
+
+        /// <summary>キー操作のマップカーソルのマス（マップの座標）。差し替えて更新する（UI スレッドとゲームスレッドから読む）</summary>
+        private sealed class KeyCursorCell
+        {
+            public KeyCursorCell(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            public int X { get; }
+            public int Y { get; }
+        }
+
+        private volatile KeyCursorCell keyCursor;
+        // キー操作から作ったクリック（マウス・タッチの操作ではないので、マップカーソルを消さない）
+        private bool keyClicking;
+
+        /// <summary>マップでのクリック（ユニットの選択・移動先・攻撃対象など）を受け付けるか</summary>
+        private bool IsMapOperable => !IsGUILocked && State.ShowMap && Map != null && !MessageFormVisible && !Commands.WaitClickMode;
+
+        /// <summary>マップカーソルの画面上の矩形（表示しないときは null）</summary>
+        private SKRectI? KeyCursorRect()
+        {
+            var cursor = keyCursor;
+            if (cursor == null || !State.ShowMap || Map == null || IsGUILocked)
+            {
+                return null;
+            }
+            var px = MapToPixelX(cursor.X);
+            var py = MapToPixelY(cursor.Y);
+            if (!ScreenLayout.IsInMap(px, py))
+            {
+                return null;
+            }
+            return new SKRectI(px, py, px + ScreenLayout.CellPx, py + ScreenLayout.CellPx);
+        }
+
+        /// <summary>マップカーソルを動かす。出ていなければ、最後にポインタを置いたマス（無ければ表示の中心）に出す。画面の外に出たらマップをずらす</summary>
+        private void MoveKeyCursor(int dx, int dy)
+        {
+            if (Map == null || !State.ShowMap)
+            {
+                return;
+            }
+            var current = keyCursor;
+            int x, y;
+            if (current == null)
+            {
+                (x, y) = lastHoverCell.x > 0 && Map.IsInside(lastHoverCell.x, lastHoverCell.y) ? lastHoverCell : (MapX, MapY);
+            }
+            else
+            {
+                x = current.X + dx;
+                y = current.Y + dy;
+            }
+            x = Math.Max(1, Math.Min(Map.MapWidth, x));
+            y = Math.Max(1, Math.Min(Map.MapHeight, y));
+            keyCursor = new KeyCursorCell(x, y);
+            game.Post(() =>
+            {
+                var left = MapX - ((MainWidth + 1) / 2 - 1);
+                var top = MapY - ((MainHeight + 1) / 2 - 1);
+                var newX = MapX + Math.Min(0, x - left) + Math.Max(0, x - (left + MainWidth - 1));
+                var newY = MapY + Math.Min(0, y - top) + Math.Max(0, y - (top + MainHeight - 1));
+                if (newX != MapX || newY != MapY)
+                {
+                    Center(newX, newY);
+                    RefreshScreen();
+                }
+                // カーソルのマスのユニット・地形をステータスに出す（マウスを置いたときと同じ）
+                lastHoverCell = (0, 0);
+                HoverMap(MapToPixelX(x) + ScreenLayout.CellPx / 2, MapToPixelY(y) + ScreenLayout.CellPx / 2);
+                Present();
+            });
+        }
+
+        /// <summary>マップカーソルのマス（出ていなければ表示の中心）をクリックする</summary>
+        private void ClickKeyCursor(GuiButton button)
+        {
+            var cursor = keyCursor;
+            var px = (cursor != null ? MapToPixelX(cursor.X) : ScreenLayout.MapWidthPx / 2 - ScreenLayout.CellPx / 2) + ScreenLayout.CellPx / 2;
+            var py = (cursor != null ? MapToPixelY(cursor.Y) : ScreenLayout.MapHeightPx / 2 - ScreenLayout.CellPx / 2) + ScreenLayout.CellPx / 2;
+            keyClicking = true;
+            try
+            {
+                PointerMoved(px, py);
+                PointerPressed(px, py, button);
+                PointerReleased(px, py, button);
+            }
+            finally
+            {
+                keyClicking = false;
+            }
+        }
+
+        /// <summary>マウス・タッチを使ったら、マップカーソルを消す</summary>
+        private void HideKeyCursorOnPointer()
+        {
+            if (!keyClicking && keyCursor != null)
+            {
+                keyCursor = null;
+                game.Post(Present);
+            }
+        }
+
+        #endregion
+
+        /// <summary>ポップアップメニューの項目を選ぶ（index が負なら取り消し）</summary>
+        private void ChooseMenu(int index)
+        {
+            var commands = menuCommands;
+            var isUnitMenu = isUnitCommandMenu;
+            State.Menu = null;
+            menuCommands = null;
+            game.Post(() =>
+            {
+                if (index >= 0 && commands != null && index < commands.Count)
+                {
+                    if (isUnitMenu)
+                    {
+                        Commands.UnitCommand(commands[index]);
+                    }
+                    else
+                    {
+                        Commands.MapCommand(commands[index]);
+                    }
+                }
+                else
+                {
+                    Commands.CancelCommand();
+                }
+                Present();
+            });
         }
 
         /// <summary>
