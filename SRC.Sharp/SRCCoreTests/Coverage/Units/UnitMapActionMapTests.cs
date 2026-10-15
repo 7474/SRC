@@ -487,6 +487,9 @@ namespace SRCCore.Coverage.Tests.Units
 
             Assert.AreEqual(0, master.CountServant());
             Assert.AreEqual(0, master.CountSlave());
+            // 出撃中の召喚ユニットは撤退して破棄される（Unit.cls DismissServant）
+            Assert.AreEqual("破棄", servant.Status);
+            Assert.IsNull(f.Map.MapDataForUnit[3, 3]);
             // 魅了は解け、支配者の参照も外れる
             Assert.IsFalse(slave.IsConditionSatisfied("魅了"));
             Assert.IsNull(slave.Master);

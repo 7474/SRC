@@ -201,44 +201,48 @@ namespace SRCCore.Coverage.Tests.Units
         [TestMethod]
         public void ChangeParty_Deployed_OnOwnStage_RestsAndRepaints()
         {
-            // 出撃中に陣営が変わると画像を描き直し、新しい陣営のステージ中なら行動可能（Rest）にする
+            // 出撃中に陣営が変わると画像を描き直し、新しい陣営のステージ中なら行動可能（Rest）にする。
+            // 他形態とパイロットの陣営も変わる（Unit.cls ChangeParty）
             var f = new UnitMapActionFixture();
             f.Src.Stage = "敵";
             f.Src.Turn = 2;
-            f.AddUnitData("機体");
+            f.AddUnitData("機体", features: "変形=変形 別形態");
+            f.AddUnitData("別形態", features: "変形=変形 機体");
             var p = f.CreatePilot("パイロット");
             var support = f.CreatePilot("サポート");
             var u = f.Deploy(f.CreateUnit("機体", "味方", p), 3, 3);
             u.AddSupport(support);
             support.Unit = u;
-            u.EN = 50;
+            u.UsedAction = 1;
             u.Mode = "固定";
 
             u.ChangeParty("敵");
 
             Assert.AreEqual("敵", u.Party0);
+            Assert.AreEqual("敵", u.OtherForm("別形態").Party0);
             Assert.AreEqual("敵", p.Party);
             Assert.AreEqual("敵", support.Party);
             Assert.AreEqual("通常", u.Mode);
-            // Rest によるＥＮ自然回復
-            Assert.AreEqual(55, u.EN);
+            // Rest により再び行動可能になる
+            Assert.AreEqual(0, u.UsedAction);
             Assert.AreSame(u, f.Painted.Single().u);
         }
 
         [TestMethod]
         public void ChangeParty_NotOwnStage_DoesNotRest()
         {
-            // 新しい陣営のステージでなければ Rest しない
+            // 新しい陣営のステージでなければ Rest しないので行動済みのまま
             var f = new UnitMapActionFixture();
             f.Src.Stage = "味方";
             f.Src.Turn = 2;
             f.AddUnitData("機体");
             var u = f.Deploy(f.CreateUnit("機体", "味方", f.CreatePilot("パイロット")), 3, 3);
-            u.EN = 50;
+            u.UsedAction = 1;
 
             u.ChangeParty("敵");
 
-            Assert.AreEqual(50, u.EN);
+            Assert.AreEqual("敵", u.Party0);
+            Assert.AreEqual(1, u.UsedAction);
             Assert.AreEqual(1, f.Painted.Count);
         }
 
@@ -333,6 +337,7 @@ namespace SRCCore.Coverage.Tests.Units
             Assert.AreEqual(0, master.CountServant());
             Assert.AreEqual(0, master.CountSlave());
             Assert.IsNull(servant.Summoner);
+            // PreviousSummonerId は元の SRC にない C# 版独自の拡張（スペシャルパワー「復活」で召喚主へ再リンクするため）
             Assert.AreEqual(master.ID, servant.PreviousSummonerId);
             Assert.IsNull(slave.Master);
         }
@@ -399,21 +404,63 @@ namespace SRCCore.Coverage.Tests.Units
             Assert.AreEqual(1000, far.HP);
         }
 
+        // 持続期間「破壊」で効果「復活」を持つスペシャルパワーを定義する
+        private static void DefineRevive(UnitMapActionFixture f)
+        {
+            var sp = f.Src.SPDList.Add("復活SP");
+            sp.Duration = "破壊";
+            sp.SetEffect("復活");
+        }
+
         [TestMethod]
         public void SuicidalExplosion_KillsWeakNeighbor_UnlessRevived()
         {
-            // HP が0になった隣接ユニットは破壊される
+            // HP が0になった隣接ユニットは破壊される。
+            // ただし「復活」の効果を受けていればHP全快で復活する（Unit.cls SuicidalExplosion）
             var f = new UnitMapActionFixture();
+            DefineRevive(f);
             f.AddUnitData("機体");
             var bomber = f.Deploy(f.CreateUnit("機体", "味方", f.CreatePilot("自爆者")), 5, 5);
             var weak = f.Deploy(f.CreateUnit("機体", "敵", f.CreatePilot("敵1", 1, "敵")), 4, 5);
             weak.HP = 300;
+            var revived = f.Deploy(f.CreateUnit("機体", "敵", f.CreatePilot("敵2", 1, "敵")), 6, 5);
+            revived.HP = 300;
+            revived.MakeSpecialPowerInEffect("復活SP");
 
             bomber.SuicidalExplosion(is_event: true);
 
             Assert.AreEqual("破壊", weak.Status);
             Assert.IsNull(f.Map.MapDataForUnit[4, 5]);
             Assert.AreSame(weak, f.DieAnimations.Single());
+
+            Assert.AreEqual("出撃", revived.Status);
+            Assert.AreEqual(revived.MaxHP, revived.HP);
+            Assert.AreSame(revived, f.Map.MapDataForUnit[6, 5]);
+            // 持続期間「破壊」のスペシャルパワーは使い切られる
+            Assert.IsFalse(revived.IsSpecialPowerInEffect("復活SP"));
+            CollectionAssert.Contains(f.SysMessages, "機体は復活した！");
+        }
+
+        [TestMethod]
+        public void SuicidalExplosion_NotEvent_ReportsDestructionAndDamage()
+        {
+            // イベントによらない自爆では、隣接ユニットの破壊と受けたダメージ・損傷率をメッセージで知らせる
+            var f = new UnitMapActionFixture();
+            f.AddUnitData("自爆機");
+            f.AddUnitData("弱い機体");
+            f.AddUnitData("頑丈な機体");
+            var bomber = f.Deploy(f.CreateUnit("自爆機", "味方", f.CreatePilot("自爆者")), 5, 5);
+            bomber.HP = 200;
+            var weak = f.Deploy(f.CreateUnit("弱い機体", "敵", f.CreatePilot("敵1", 1, "敵")), 4, 5);
+            weak.HP = 100;
+            var tough = f.Deploy(f.CreateUnit("頑丈な機体", "敵", f.CreatePilot("敵2", 1, "敵")), 6, 5);
+
+            bomber.SuicidalExplosion(is_event: false);
+
+            Assert.AreEqual("破壊", weak.Status);
+            Assert.AreEqual(800, tough.HP);
+            CollectionAssert.Contains(f.SysMessages, "弱い機体は破壊された");
+            CollectionAssert.Contains(f.SysMessages, "頑丈な機体は200のダメージを受けた。;残りＨＰは800（損傷率 = 20％）");
         }
     }
 }
