@@ -49,6 +49,8 @@ jobs:
           mkdir -p site/web
           cp -r out/web/wwwroot/. site/web/
           sed -i 's|<base href="/" />|<base href="/web/" />|' site/web/index.html
+          # 発行時に作られた圧縮版（.br・.gz）は書き換える前の内容のため消す。Static Web Apps は圧縮版があればそちらを返す
+          rm -f site/web/index.html.br site/web/index.html.gz
           grep -n "<base href" site/web/index.html
           du -sh site site/web
 
