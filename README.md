@@ -48,8 +48,8 @@
 
 ## ライセンス
 
-- 既定は GPL-3.0（[LICENSE](./LICENSE)）。元の SRC から移植・派生した部分（SRC# 本体など）はこれに従う
-- 元の SRC の GPL の範囲外のものは、コンテンツを [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)、ソースコードを MIT で配布する。該当するフォルダには `LICENSE` を置くか、ファイルの先頭に書く
+- 全体を GPL-3.0（[LICENSE](./LICENSE)）とする。SRC# 本体とその周辺（ツール・テスト・ドキュメント・VS Code 拡張など）は、元の SRC の意向を尊重してコピーレフトにする
+- 例外として、元の SRC から派生していない遊べるシナリオと素材（`SRC.Sharp/Content`）は、コンテンツを [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)、プログラムを MIT で配布する。該当するフォルダに `LICENSE` を置くか、ファイルの先頭に書いている
 
 | パス | ライセンス |
 |---|---|
