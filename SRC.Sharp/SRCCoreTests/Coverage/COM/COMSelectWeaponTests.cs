@@ -405,7 +405,6 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: max_dmg を VB の Long 代入(丸め)ではなく int キャスト(切り捨て)で求めている")]
         public void SelectWeapon_MaxDmgIsRoundedLikeVBLongAssignment()
         {
             // VB: max_dmg = 100 * (max_exp_dmg / .HP) は Long への代入で四捨五入(銀行丸め)される

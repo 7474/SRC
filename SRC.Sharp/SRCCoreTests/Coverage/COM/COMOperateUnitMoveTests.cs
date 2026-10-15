@@ -175,7 +175,6 @@ namespace SRCCore.Coverage.Tests.COMTests
 
         [TestMethod]
         [Timeout(10000)]
-        [Ignore("移植の不具合: テレポートの消費ＥＮを FeatureData ではなく文字列 \"テレポート\" から取り出している")]
         public void OperateUnit_Teleport_ConsumesENFromFeatureData()
         {
             // VB: テレポート=名称 消費EN の場合、消費ＥＮは LIndex(FeatureData("テレポート"), 2)
@@ -195,7 +194,6 @@ namespace SRCCore.Coverage.Tests.COMTests
 
         [TestMethod]
         [Timeout(10000)]
-        [Ignore("移植の不具合: ジャンプの消費ＥＮを FeatureData ではなく文字列 \"ジャンプ\" から取り出している")]
         public void OperateUnit_Jump_ConsumesENFromFeatureData()
         {
             // VB: ジャンプ=名称 消費EN の場合、消費ＥＮは LIndex(FeatureData("ジャンプ"), 2)
