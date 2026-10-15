@@ -417,16 +417,26 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        public void SpellHeal_AmountDependsOnShooting()
+        public void SpellHeal_AmountIs5xLevelxShooting_WithRepairBonus()
         {
-            // 術の回復量は 5×レベル×射撃
-            var (user, target, a) = Create("回復Lv1", aclass: "術");
-            target.HP = 1;
-            var shooting = user.MainPilot().Shooting;
+            // 術の回復量は 5×レベル×射撃（Unit.cls ExecuteAbility 回復: epower = 5 * elevel * .Shooting）
+            // 射撃基本値 39 → レベル1 で射撃 40。回復Lv2 なら 5×2×40 = 400
+            var (user, target, a) = Create("回復Lv2", aclass: "術");
+            fx.Src.PDList.Item("使用者").Shooting = 39;
+            user.MainPilot().Update();
+            Assert.AreEqual(40, user.MainPilot().Shooting);
+            target.HP = 100;
 
             user.ExecuteAbility(a, target);
+            Assert.AreEqual(500, target.HP);
 
-            Assert.AreEqual(System.Math.Min(1000, 1 + 5 * shooting), target.HP);
+            // 修理Lv1 があると (10+1)/10 倍: 400×11/10 = 440
+            fx.Src.PDList.Item("使用者").AddSkill("修理", 1d, "", 1);
+            user.MainPilot().Update();
+            target.HP = 100;
+
+            user.ExecuteAbility(a, target);
+            Assert.AreEqual(540, target.HP);
         }
 
         [TestMethod]

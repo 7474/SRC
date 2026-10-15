@@ -348,10 +348,15 @@ namespace SRCCore.Coverage.Tests
             var a = u.Ability(1);
             a.SetStock(-3);
             Assert.AreEqual(0, a.Stock());
-            a.SetStock(3);
-            Assert.AreEqual(3, a.Stock());
-            a.SetStockFull();
+            a.SetStock(2);
+            Assert.AreEqual(2, a.Stock());
+            // 使用回数は最大値に対する割合で保持される（Unit.cls SetStock: dblStock = new / MaxStock）
+            // ボスランク5で最大値が 8 になると残り回数も 4 になる
+            u.BossRank = 5;
+            Assert.AreEqual(8, a.MaxStock());
             Assert.AreEqual(4, a.Stock());
+            a.SetStockFull();
+            Assert.AreEqual(8, a.Stock());
         }
 
         // ===== UseAbility =====
