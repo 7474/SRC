@@ -145,6 +145,42 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void FinishMove_OntoCarrier_CanceledByStoreEvent_DoesNotUseAction()
+        {
+            // 収納イベントで Cancel された場合は行動数を消費せずにユニット選択に戻る
+            // （VB FinishMoveCommand: If IsCanceled Then IsCanceled = False: ClearUnitStatus: RedrawScreen: CommandState = "ユニット選択"）
+            var f = CreateField(out var mover);
+            f.DefineUnit("母艦機", features: "母艦");
+            f.Place("母艦機", "艦長", "味方", 5, 7);
+            var dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "srcs-move-" + System.Guid.NewGuid());
+            System.IO.Directory.CreateDirectory(dir);
+            try
+            {
+                var file = System.IO.Path.Combine(dir, "test.eve");
+                System.IO.File.WriteAllText(file, "収納 操縦者:\r\nSet 収納済 1\r\nCancel\r\nExit\r\n", new System.Text.UTF8Encoding(false));
+                f.Src.ScenarioPath = dir;
+                f.Src.Event.InitEventData();
+                f.Src.Event.LoadEventData(file);
+                f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+                f.Commands.UnitCommand(new UiCommand(Command.MoveCmdID, "移動"));
+                f.Src.Map.MaskData[5, 7] = false;
+
+                ClickTarget(f, 5, 7);
+
+                Assert.AreEqual(1, f.Src.Expression.GetValueAsLong("収納済"));
+                Assert.AreEqual("格納", mover.Status);
+                Assert.AreEqual(0, mover.UsedAction);
+                Assert.IsFalse(f.Src.IsCanceled);
+                Assert.IsTrue(f.Called("ClearUnitStatus"));
+                Assert.AreEqual("ユニット選択", f.Commands.CommandState);
+            }
+            finally
+            {
+                System.IO.Directory.Delete(dir, true);
+            }
+        }
+
+        [TestMethod]
         public void FinishMove_OntoNonCarrierUnit_AsksCombine()
         {
             // 母艦以外のユニットがいるマスへの移動は合体の確認になる

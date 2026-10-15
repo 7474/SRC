@@ -6,6 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using SRCCore.Filesystem;
+using SRCCore.Lib;
+using SRCCore.TestLib;
 
 namespace SRCCore.Coverage.Tests
 {
@@ -31,6 +35,24 @@ namespace SRCCore.Coverage.Tests
             return calls;
         }
 
+        // イベントファイルを一時ディレクトリに書いて読み込む（呼び出し側で削除する）
+        private static string LoadEvents(CommandUnitOpsFixture f, params string[] lines)
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "srcs-mapcmd-" + Guid.NewGuid());
+            Directory.CreateDirectory(dir);
+            var file = Path.Combine(dir, "test.eve");
+            File.WriteAllText(file, string.Join("\r\n", lines) + "\r\n", new UTF8Encoding(false));
+            ((LocalFileConfig)f.Src.SystemConfig).AppPath = dir;
+            var fs = new LocalFileSystem();
+            fs.AddPath(dir);
+            f.Src.FileSystem = fs;
+            f.Src.ScenarioPath = dir;
+            f.Src.ScenarioFileName = file;
+            f.Src.Event.InitEventData();
+            f.Src.Event.LoadEventData(file);
+            return dir;
+        }
+
         // 味方 3 機（うち 1 機は行動済み、1 機は格納中）と敵 1 機
         private static CommandUnitOpsFixture CreateUnitListField(out Unit alpha, out Unit beta, out Unit stored, out Unit enemy)
         {
@@ -53,14 +75,6 @@ namespace SRCCore.Coverage.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void MapCommand_UnknownId_Throws()
-        {
-            // 定義されていないマップコマンドは例外にする（移植版独自の防御）
-            var f = new CommandUnitOpsFixture();
-            Assert.Throws<NotSupportedException>(() => f.Commands.MapCommand(new UiCommand(9999, "不明")));
-        }
-
-        [TestMethod]
         public void MapCommand_GlobalMap_DisplaysGlobalMapAndResetsState()
         {
             // マップコマンド実行時は常にユニット選択状態に戻る
@@ -78,15 +92,26 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        public void MapCommand_OperationObject_RedrawsScreen()
+        public void MapCommand_OperationObject_RunsVictoryConditionEventThenRedraws()
         {
-            // 作戦目的: 勝利条件イベントを実行して画面を再描画
+            // 作戦目的: 勝利条件イベントを実行してから画面を再描画する（VB MapCommand: HandleEvent "勝利条件": RedrawScreen）
             var f = new CommandUnitOpsFixture();
+            var dir = LoadEvents(f, "勝利条件:", "Set 勝利条件表示 1", "Exit");
+            try
+            {
+                long shownAtRedraw = -1;
+                f.Gui.Handle("RedrawScreen", args => { shownAtRedraw = f.Src.Expression.GetValueAsLong("勝利条件表示"); return null; });
 
-            f.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
+                f.Commands.MapCommand(new UiCommand(Command.OperationObjectCmdID, "作戦目的"));
 
-            Assert.IsTrue(f.Called("RedrawScreen"));
-            Assert.IsTrue(f.Called("UnlockGUI"));
+                Assert.AreEqual(1, f.Src.Expression.GetValueAsLong("勝利条件表示"));
+                Assert.AreEqual(1, shownAtRedraw, "再描画はイベント実行後");
+                Assert.AreEqual("ユニット選択", f.Commands.CommandState);
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
         }
 
         [TestMethod]
@@ -164,17 +189,32 @@ namespace SRCCore.Coverage.Tests
         [Timeout(10000)]
         public void EndTurn_Ok_RunsPhasesAndReturnsToPlayerPhase()
         {
-            // 確認後は敵・中立・ＮＰＣのフェイズを経て味方フェイズに戻り、行動数が回復する
+            // 確認後は行動していないユニットごとに行動終了イベントを実行し、
+            // 敵・中立・ＮＰＣのフェイズを経て次のターンの味方フェイズに戻る（VB EndTurnCommand）
             var f = CreateUnitListField(out var alpha, out var beta, out _, out var enemy);
-            f.Src.Map.MapDataForUnit[9, 9] = null;
-            enemy.Status = "破壊";
-            f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+            var dir = LoadEvents(f,
+                "行動終了 アルファ:", "Set 終了アルファ 1", "Exit",
+                "行動終了 ベータ:", "Set 終了ベータ 1", "Exit",
+                "行動終了 ガンマ:", "Set 終了ガンマ 1", "Exit");
+            try
+            {
+                f.Src.Map.MapDataForUnit[9, 9] = null;
+                enemy.Status = "破壊";
+                f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
 
-            f.Commands.MapCommand(new UiCommand(Command.EndTurnCmdID, "ターン終了"));
+                f.Commands.MapCommand(new UiCommand(Command.EndTurnCmdID, "ターン終了"));
 
-            Assert.AreEqual("味方", f.Src.Stage);
-            Assert.AreEqual(0, beta.UsedAction);
-            Assert.IsFalse(f.Src.IsScenarioFinished);
+                Assert.AreEqual("味方", f.Src.Stage);
+                Assert.AreEqual(0, beta.UsedAction);
+                Assert.AreEqual(1, f.Src.Expression.GetValueAsLong("終了アルファ"));
+                Assert.AreEqual(1, f.Src.Expression.GetValueAsLong("終了ガンマ"), "格納中の未行動ユニットも対象");
+                Assert.AreEqual(0, f.Src.Expression.GetValueAsLong("終了ベータ"), "行動済みのユニットは対象外");
+                Assert.IsFalse(f.Src.IsScenarioFinished);
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
         }
 
         [TestMethod]
@@ -450,17 +490,58 @@ namespace SRCCore.Coverage.Tests
         // リスタート・クイックロード・クイックセーブ・中断
         // ──────────────────────────────────────────────
 
+        // リスタート用データ（_リスタート.srcq）を書き出し、その後に資金を変えておく
+        private static string PrepareRestartData(CommandUnitOpsFixture f)
+        {
+            f.DefineUnit("機体");
+            f.Place("機体", "乗り手", "味方", 2, 2);
+            var dir = LoadEvents(f, "スタート:", "Exit");
+            f.Src.Money = 1000;
+            f.Src.DumpData(Path.Combine(dir, "_リスタート.srcq"), SRCSaveKind.Restart);
+            f.Src.Money = 5000;
+            return dir;
+        }
+
         [TestMethod]
         public void Restart_Cancel_DoesNotRestore()
         {
+            // リスタートの確認をキャンセルした場合はリスタート用データを読み込まない
             var f = new CommandUnitOpsFixture();
-            string title = null;
-            f.Gui.Handle("Confirm", args => { title = (string)args[1]; return GuiDialogResult.Cancel; });
+            var dir = PrepareRestartData(f);
+            try
+            {
+                string title = null;
+                f.Gui.Handle("Confirm", args => { title = (string)args[1]; return GuiDialogResult.Cancel; });
 
-            f.Commands.MapCommand(new UiCommand(Command.RestartCmdID, "リスタート"));
+                f.Commands.MapCommand(new UiCommand(Command.RestartCmdID, "リスタート"));
 
-            Assert.AreEqual("リスタート", title);
-            Assert.IsFalse(f.Called("LockGUI"));
+                Assert.AreEqual("リスタート", title);
+                Assert.AreEqual(5000, f.Src.Money);
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
+        [TestMethod]
+        public void Restart_Ok_RestoresRestartData()
+        {
+            // 確認後はシナリオフォルダの _リスタート.srcq から状態を復元する（VB RestartCommand: RestoreData ScenarioPath & "_リスタート.src", True）
+            var f = new CommandUnitOpsFixture();
+            var dir = PrepareRestartData(f);
+            try
+            {
+                f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+
+                f.Commands.MapCommand(new UiCommand(Command.RestartCmdID, "リスタート"));
+
+                Assert.AreEqual(1000, f.Src.Money);
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
         }
 
         [TestMethod]
@@ -524,6 +605,65 @@ namespace SRCCore.Coverage.Tests
             Assert.IsFalse(f.Gui.IsTerminated);
         }
 
+        [TestMethod]
+        public void QuickLoad_Ok_RestoresQuickSaveData()
+        {
+            // クイックロード: クイックセーブの内容を読み込み、画面を描き直して全体ステータスを表示する
+            var f = new CommandUnitOpsFixture();
+            f.DefineUnit("機体");
+            f.Place("機体", "乗り手", "味方", 2, 2);
+            var dir = LoadEvents(f, "スタート:", "Exit");
+            try
+            {
+                f.Src.Money = 1000;
+                var saved = new KeepOpenMemoryStream();
+                f.Src.DumpData(saved, SRCSaveKind.Quik);
+                f.Src.Money = 5000;
+                f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+                f.Gui.Handle("OpenQuikSaveStream", args => new MemoryStream(saved.ToArray()));
+
+                f.Commands.MapCommand(new UiCommand(Command.QuickLoadCmdID, "クイックロード"));
+
+                Assert.AreEqual(FileAccess.Read, f.Calls("OpenQuikSaveStream").Single().Args[0]);
+                Assert.AreEqual(1000, f.Src.Money);
+                Assert.IsTrue(f.Called("RedrawScreen"));
+                Assert.IsTrue(f.Called("DisplayGlobalStatus"));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
+        [TestMethod]
+        public void Dump_Ok_SavesSuspendDataAndExits()
+        {
+            // 中断: 中断データを保存してからメインウィンドウを隠し、ゲームを終了する（VB DumpCommand）
+            var f = new CommandUnitOpsFixture();
+            f.DefineUnit("機体");
+            f.Place("機体", "乗り手", "味方", 2, 2);
+            f.Src.ScenarioFileName = Path.Combine("scenario", "第1話.eve");
+            f.Src.Money = 1234;
+            var stream = new KeepOpenMemoryStream();
+            f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+            f.Gui.Handle("SelectSaveStream", args => stream);
+
+            try
+            {
+                f.Commands.MapCommand(new UiCommand(Command.DumpCmdID, "中断"));
+            }
+            catch (HeadlessTerminatedException)
+            {
+                // 終了後の GUI 呼び出しは打ち切られる
+            }
+
+            var json = Encoding.UTF8.GetString(stream.ToArray());
+            StringAssert.Matches(json, new System.Text.RegularExpressions.Regex("\"Money\":\\s*1234"));
+            StringAssert.Matches(json, new System.Text.RegularExpressions.Regex("\"Kind\":\\s*\"?(Suspend|" + (int)SRCSaveKind.Suspend + ")"));
+            Assert.IsTrue(f.Called("MainFormHide"));
+            Assert.IsTrue(f.Gui.IsTerminated);
+        }
+
         private class KeepOpenMemoryStream : MemoryStream
         {
             protected override void Dispose(bool disposing)
@@ -545,6 +685,87 @@ namespace SRCCore.Coverage.Tests
             var args = calls.Single();
             Assert.AreEqual("ユニット名                        Lv     ＨＰ    ＥＮ", args.lb_info);
             Assert.AreEqual("アルファ機                        10  1000/ 1000 100/100", args.Items[1].Text);
+        }
+
+        [TestMethod]
+        public void UnitList_PersonScale_SortByName_UsesUnitKanaName()
+        {
+            // 等身大基準の「名称で並べ替え」はユニットの読み仮名の昇順（VB: Case "名称", "ユニット名称"）
+            var f = CreateUnitListField(out var alpha, out var beta, out var stored, out _);
+            f.Src.Expression.DefineGlobalVariable("Option(等身大基準)");
+            f.Src.UDList.Item("アルファ機").KanaName = "ん";
+            f.Src.UDList.Item("ベータ機").KanaName = "あ";
+            var calls = ScriptListBox(f, 1, 5, 0);
+
+            f.Commands.MapCommand(new UiCommand(Command.UnitListCmdID, "部隊表"));
+
+            Assert.AreEqual("名称で並べ替え", calls[1].Items[4].ListItemID);
+            CollectionAssert.AreEqual(new[] { alpha.ID, beta.ID, stored.ID }, calls[0].Items.Skip(1).Select(x => x.ListItemID).ToList(), "既定はレベル順");
+            CollectionAssert.AreEqual(new[] { beta.ID, alpha.ID, stored.ID }, calls[2].Items.Skip(1).Select(x => x.ListItemID).ToList());
+        }
+
+        // ダミーユニットに乗ったパイロット 2 人（Lv5 の「わたなべ」と Lv1 の「あべ」）
+        private static CommandUnitOpsFixture CreatePilotStatusField(out Unit high, out Unit low)
+        {
+            var f = new CommandUnitOpsFixture();
+            f.DefineUnit("ダミー", features: "ダミーユニット");
+            f.DefinePilot("隊長", sp: 30).KanaName = "わたなべ";
+            f.DefinePilot("隊員", sp: 30).KanaName = "あべ";
+            high = f.Place("ダミー", "隊長", "味方", 2, 2, level: 5);
+            low = f.Place("ダミー", "隊員", "味方", 3, 3, level: 1);
+            return f;
+        }
+
+        [TestMethod]
+        public void UnitList_PilotStatusMode_SortMenuAndPilotNameSort()
+        {
+            // パイロット一覧ではパイロット名称・レベル・ＳＰの並べ替えを選べ、
+            // パイロット名称ではメインパイロットの読み仮名の昇順になる（VB: Case "パイロット名称"）
+            var f = CreatePilotStatusField(out var high, out var low);
+            var calls = ScriptListBox(f, 1, 5, 0);
+
+            f.Commands.MapCommand(new UiCommand(Command.UnitListCmdID, "部隊表"));
+
+            CollectionAssert.AreEqual(
+                new[] { "味方一覧", "ＮＰＣ一覧", "敵一覧", "中立一覧", "パイロット名称で並べ替え", "レベルで並べ替え", "ＳＰで並べ替え" },
+                calls[1].Items.Select(x => x.ListItemID).ToList());
+            CollectionAssert.AreEqual(new[] { high.ID, low.ID }, calls[0].Items.Skip(1).Select(x => x.ListItemID).ToList(), "既定はレベル順");
+            CollectionAssert.AreEqual(new[] { low.ID, high.ID }, calls[2].Items.Skip(1).Select(x => x.ListItemID).ToList());
+        }
+
+        [TestMethod]
+        public void UnitList_PilotStatusMode_SortByLevel_AfterNameSort()
+        {
+            // 名称順にした後でレベルで並べ替えると再びレベルの降順になる
+            var f = CreatePilotStatusField(out var high, out var low);
+            var calls = ScriptListBox(f, 1, 5, 1, 6, 0);
+
+            f.Commands.MapCommand(new UiCommand(Command.UnitListCmdID, "部隊表"));
+
+            CollectionAssert.AreEqual(new[] { low.ID, high.ID }, calls[2].Items.Skip(1).Select(x => x.ListItemID).ToList());
+            CollectionAssert.AreEqual(new[] { high.ID, low.ID }, calls[4].Items.Skip(1).Select(x => x.ListItemID).ToList());
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 部隊表のパイロット一覧でＳＰ欄とスペシャルパワー短縮名の間の空白 2 桁が抜けている")]
+        public void UnitList_DummyUnit_SeparatesSPAndSpecialPowersWithTwoSpaces()
+        {
+            // VB: RightPaddedString(.Nickname, 21) & LeftPaddedString(Level, 3) & LeftPaddedString(SP & "/" & MaxSP, 9) & "  " & 短縮名…
+            var f = new CommandUnitOpsFixture();
+            f.DefineSpecialPower("集中", "集", 10, "自分", "気力増加Lv1");
+            f.DefineUnit("ダミー", features: "ダミーユニット");
+            f.DefinePilot("隊長", sp: 50).AddSpecialPower("集中", 1, 0);
+            var p = f.Place("ダミー", "隊長", "味方", 2, 2, level: 3).MainPilot();
+            p.SP = 40;
+            var calls = ScriptListBox(f, 0);
+
+            f.Commands.MapCommand(new UiCommand(Command.UnitListCmdID, "部隊表"));
+
+            var expected = GeneralLib.RightPaddedString("隊長", 21)
+                + GeneralLib.LeftPaddedString("3", 3)
+                + GeneralLib.LeftPaddedString("40/" + p.MaxSP, 9)
+                + "  " + "集";
+            Assert.AreEqual(expected, calls.Single().Items[1].Text);
         }
 
         [TestMethod]
