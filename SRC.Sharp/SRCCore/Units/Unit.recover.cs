@@ -1273,11 +1273,12 @@ namespace SRCCore.Units
                     continue;
                 }
 
-                var lv = (int)ww.WeaponLevel("共");
+                // 元の SRC では lv は Integer 型（代入時に丸める）で、比較は丸めていない各レベルと行う
+                var lv = VBMath.CLng(ww.WeaponLevel("共"));
                 // 弾数を合わせる
                 foreach (var wi in Weapons)
                 {
-                    if (!ReferenceEquals(ww, wi) && wi.IsWeaponClassifiedAs("共") && lv == (int)wi.WeaponLevel("共") && ww.MaxBullet() > 0)
+                    if (!ReferenceEquals(ww, wi) && wi.IsWeaponClassifiedAs("共") && lv == wi.WeaponLevel("共") && ww.MaxBullet() > 0)
                     {
                         if (wi.MaxBullet() > ww.MaxBullet())
                         {
@@ -1293,7 +1294,7 @@ namespace SRCCore.Units
                 // アビリティの使用回数を合わせる
                 foreach (var ai in Abilities)
                 {
-                    if (ai.IsAbilityClassifiedAs("共") && lv == (int)ai.AbilityLevel("共") && ww.MaxBullet() > 0)
+                    if (ai.IsAbilityClassifiedAs("共") && lv == ai.AbilityLevel("共") && ww.MaxBullet() > 0)
                     {
                         if (ai.MaxStock() > ww.MaxBullet())
                         {
@@ -1315,11 +1316,11 @@ namespace SRCCore.Units
                     continue;
                 }
 
-                var lv = (int)aa.AbilityLevel("共");
+                var lv = VBMath.CLng(aa.AbilityLevel("共"));
                 // 使用回数を合わせる
                 foreach (var ai in Abilities)
                 {
-                    if (!ReferenceEquals(aa, ai) && ai.IsAbilityClassifiedAs("共") && lv == (int)ai.AbilityLevel("共") && aa.MaxStock() > 0)
+                    if (!ReferenceEquals(aa, ai) && ai.IsAbilityClassifiedAs("共") && lv == ai.AbilityLevel("共") && aa.MaxStock() > 0)
                     {
                         if (ai.MaxStock() > aa.MaxStock())
                         {
@@ -1335,7 +1336,7 @@ namespace SRCCore.Units
                 // 弾数を合わせる
                 foreach (var wi in Weapons)
                 {
-                    if (wi.IsWeaponClassifiedAs("共") && lv == (int)wi.WeaponLevel("共") && aa.MaxStock() > 0)
+                    if (wi.IsWeaponClassifiedAs("共") && lv == wi.WeaponLevel("共") && aa.MaxStock() > 0)
                     {
                         if (wi.MaxBullet() > aa.MaxStock())
                         {
