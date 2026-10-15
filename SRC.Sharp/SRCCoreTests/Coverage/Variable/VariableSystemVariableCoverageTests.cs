@@ -99,6 +99,9 @@ namespace SRCCore.Coverage.Tests
 
             Assert.AreEqual("2.5", GetStr(src, "g", out var type));
             Assert.AreEqual(VT.StringType, type);
+            // 定義済みグローバル変数への代入はグローバル変数を更新し、ローカル変数は作らない
+            Assert.IsFalse(src.Expression.IsLocalVariableDefined("g"));
+            Assert.AreEqual(2.5d, src.Event.GlobalVariableList["g"].NumericValue);
         }
 
         // ──────────────────────────────────────────────
@@ -297,13 +300,15 @@ namespace SRCCore.Coverage.Tests
             CreateUnit(src, "敵1", "敵").Status = "出撃";
             CreateUnit(src, "中立1", "中立").Status = "出撃";
             CreateUnit(src, "中立2", "中立").Status = "格納";
+            CreateUnit(src, "ＮＰＣ1", "ＮＰＣ").Status = "出撃";
+            CreateUnit(src, "ＮＰＣ2", "ＮＰＣ").Status = "待機";
 
             Assert.AreEqual(2d, GetNum(src, "味方数", out _));
             Assert.AreEqual(1d, GetNum(src, "敵数", out _));
             Assert.AreEqual(2d, GetNum(src, "中立数", out _));
-            Assert.AreEqual(0d, GetNum(src, "ＮＰＣ数", out var t));
+            Assert.AreEqual(1d, GetNum(src, "ＮＰＣ数", out var t));
             Assert.AreEqual(VT.NumericType, t);
-            Assert.AreEqual("0", GetStr(src, "ＮＰＣ数", out _));
+            Assert.AreEqual("1", GetStr(src, "ＮＰＣ数", out _));
         }
 
         // ──────────────────────────────────────────────
@@ -382,8 +387,20 @@ namespace SRCCore.Coverage.Tests
 
         private static (Units.Unit u, Pilots.Pilot p) SetupBattleConfig(SRC src)
         {
+            // 各能力値は取り違えを検出できるよう互いに異なる値にする
+            var ud = src.UDList.Add("計算機");
+            ud.HP = 1000;
+            ud.EN = 100;
+            ud.PilotNum = 1;
+            ud.Speed = 5;
+            ud.Armor = 900;
+            ud.Mobility = 80;
             var u = CreateUnit(src, "計算機");
-            var p = CreatePilot(src, "計算乗員");
+            var pd = src.PDList.Add("計算乗員");
+            pd.SP = 50;
+            pd.AddSkill("霊力", 10d, "", 1);
+            pd.AddSkill("耐久", 2d, "", 1);
+            var p = src.PList.Add("計算乗員", 1, "味方");
             p.Ride(u);
             var def = CreateUnit(src, "被弾機", "敵");
             var bc = src.Event.BCVariable;
@@ -443,28 +460,43 @@ namespace SRCCore.Coverage.Tests
         {
             var src = CreateSrc();
             var (_, p) = SetupBattleConfig(src);
+            // レベル変更は能力値を再計算するので先に設定する
+            p.Level = 4;
+            p.Exp = 123;
+            p.SP = 33;
+            p.Plana = 7;
+            p.Infight = 101;
+            p.Shooting = 102;
+            p.Hit = 103;
+            p.Dodge = 104;
+            p.Technique = 105;
+            p.Intuition = 106;
 
-            Assert.AreEqual((double)p.Defense, GetNum(src, "耐久", out _));
-            Assert.AreEqual((double)p.Level, GetNum(src, "ＬＶ", out _));
-            Assert.AreEqual((double)p.Exp, GetNum(src, "経験", out _));
-            Assert.AreEqual((double)p.SP, GetNum(src, "ＳＰ", out _));
-            Assert.AreEqual((double)p.Plana, GetNum(src, "霊力", out _));
-            Assert.AreEqual((double)p.Infight, GetNum(src, "格闘", out _));
-            Assert.AreEqual((double)p.Shooting, GetNum(src, "射撃", out _));
-            Assert.AreEqual((double)p.Hit, GetNum(src, "命中", out _));
-            Assert.AreEqual((double)p.Dodge, GetNum(src, "回避", out _));
-            Assert.AreEqual((double)p.Technique, GetNum(src, "技量", out _));
-            Assert.AreEqual((double)p.Intuition, GetNum(src, "反応", out _));
+            // 耐久 = 100 + 5 * 耐久Lv（防御力成長オプション無し）
+            Assert.AreEqual(110d, GetNum(src, "耐久", out _));
+            Assert.AreEqual(4d, GetNum(src, "ＬＶ", out _));
+            Assert.AreEqual(123d, GetNum(src, "経験", out _));
+            Assert.AreEqual(33d, GetNum(src, "ＳＰ", out _));
+            Assert.AreEqual(7d, GetNum(src, "霊力", out _));
+            Assert.AreEqual(101d, GetNum(src, "格闘", out _));
+            Assert.AreEqual(102d, GetNum(src, "射撃", out _));
+            Assert.AreEqual(103d, GetNum(src, "命中", out _));
+            Assert.AreEqual(104d, GetNum(src, "回避", out _));
+            Assert.AreEqual(105d, GetNum(src, "技量", out _));
+            Assert.AreEqual(106d, GetNum(src, "反応", out _));
+            Assert.AreEqual("102", GetStr(src, "射撃", out var t));
+            Assert.AreEqual(VT.StringType, t);
         }
 
         [TestMethod]
         public void BattleConfig_Morale_AppliesSmallMoraleEffectOption()
         {
-            // 気力は補正込みの値。オプション「気力効果小」では 50 + 気力 \ 2
+            // 気力は補正込みの値 Morale + MoraleMod。オプション「気力効果小」では 50 + (Morale + MoraleMod) \ 2
+            // （VB: Expression.bas GetVariable の 気力）
             var src = CreateSrc();
             var (_, p) = SetupBattleConfig(src);
-            p.Morale = 121;
-            p.MoraleMod = 0;
+            p.Morale = 110;
+            p.MoraleMod = 11;
 
             Assert.AreEqual(121d, GetNum(src, "気力", out _));
 
@@ -481,13 +513,14 @@ namespace SRCCore.Coverage.Tests
             u.HP = 600;
             u.EN = 70;
 
-            Assert.AreEqual((double)u.MaxHP, GetNum(src, "最大ＨＰ", out _));
+            Assert.AreEqual(1000d, GetNum(src, "最大ＨＰ", out _));
             Assert.AreEqual(600d, GetNum(src, "現在ＨＰ", out _));
-            Assert.AreEqual((double)u.MaxEN, GetNum(src, "最大ＥＮ", out _));
+            Assert.AreEqual(100d, GetNum(src, "最大ＥＮ", out _));
             Assert.AreEqual(70d, GetNum(src, "現在ＥＮ", out _));
-            Assert.AreEqual((double)u.Speed, GetNum(src, "移動力", out _));
-            Assert.AreEqual((double)u.get_Armor(""), GetNum(src, "装甲", out _));
-            Assert.AreEqual((double)u.get_Mobility(""), GetNum(src, "運動性", out _));
+            Assert.AreEqual(5d, GetNum(src, "移動力", out _));
+            Assert.AreEqual(900d, GetNum(src, "装甲", out _));
+            Assert.AreEqual(80d, GetNum(src, "運動性", out _));
+            Assert.AreEqual("900", GetStr(src, "装甲", out _));
         }
     }
 }
