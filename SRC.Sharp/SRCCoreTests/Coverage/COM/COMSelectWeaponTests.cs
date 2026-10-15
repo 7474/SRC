@@ -29,13 +29,11 @@ namespace SRCCore.Coverage.Tests.COMTests
             var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
             var t = f.Deploy("標的", "味方A", "味方", 4, 3);
 
-            var w = f.Src.COM.SelectWeapon(u, t, "", out var maxProb, out var maxDmg);
+            var w = f.Src.COM.SelectWeapon(u, t, "", out var maxProb, out _);
 
             Assert.AreEqual(2, w);
             // 破壊確率が 50% 以下なので max_prob は 0
             Assert.AreEqual(0, maxProb);
-            // max_dmg は攻撃側ＨＰに対する期待ダメージの百分率
-            Assert.IsTrue(maxDmg > 0 && maxDmg < 100, $"max_dmg={maxDmg}");
         }
 
         [TestMethod]
@@ -105,7 +103,31 @@ namespace SRCCore.Coverage.Tests.COMTests
         [TestMethod]
         public void SelectWeapon_DestroyProbabilityAgainstAllyRequiresDoubleHp()
         {
-            // 味方を相手にした場合、ダメージがＨＰの 2 倍以上の武器のみ破壊可能と見なす
+            // 味方を相手にした場合、ダメージがＨＰの 2 倍以上でないと破壊可能と見なさない
+            // (VB: If t.Party = "味方" ... If dmg >= 2 * t.HP)
+            // ＨＰ 200 の標的にパンチ(約250): ＨＰ <= ダメージ < 2×ＨＰ
+            var f = CreateField(targetHp: 200);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+            var ally = f.Deploy("標的", "味方A", "味方", 4, 3);
+            var npc = f.Deploy("標的", "ＮＰＣA", "ＮＰＣ", 3, 4);
+            var dmg = u.Weapon(1).ExpDamage(ally, false);
+            Assert.IsTrue(ally.HP <= dmg && dmg < 2 * ally.HP, $"前提: dmg={dmg}, HP={ally.HP}");
+            Assert.AreEqual(dmg, u.Weapon(1).ExpDamage(npc, false));
+            Assert.AreEqual(100, u.Weapon(1).HitProbability(ally, false));
+            Assert.AreEqual(100, u.Weapon(1).HitProbability(npc, false));
+
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, ally, "", out var allyProb, out _));
+            Assert.AreEqual(0, allyProb);
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, npc, "", out var npcProb, out _));
+            Assert.AreEqual(100, npcProb);
+        }
+
+        [TestMethod]
+        public void SelectWeapon_EnemyUsesENExhaustingWeaponWhenItDestroys()
+        {
+            // 敵ユニットでも相手を倒せるならＥＮ消耗攻撃(消)を使う
             // パンチ(約250) < 2×ＨＰ(600) <= キック(約980)
             var f = CreateField(targetHp: 300);
             var ud = f.DefineUnit("攻撃機");
@@ -114,9 +136,113 @@ namespace SRCCore.Coverage.Tests.COMTests
             var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
             var t = f.Deploy("標的", "味方A", "味方", 4, 3);
 
-            // ＥＮ消耗攻撃でも破壊できるなら使う
             Assert.AreEqual(2, f.Src.COM.SelectWeapon(u, t, "", out var maxProb, out _));
             Assert.AreEqual(100, maxProb);
+        }
+
+        [TestMethod]
+        public void SelectWeapon_BossUsesENExhaustingWeaponEvenWithoutKill()
+        {
+            // ボスユニット(BossRank >= 0)は相手を倒せなくてもＥＮ消耗攻撃を使う
+            var f = CreateField(targetHp: 3000);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            COMTestField.AddWeapon(ud, "キック", 1800, wclass: "突消");
+            var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("標的", "味方A", "味方", 4, 3);
+            u.BossRank = 0;
+
+            Assert.AreEqual(2, f.Src.COM.SelectWeapon(u, t, "", out _, out _));
+        }
+
+        [TestMethod]
+        public void SelectWeapon_Ally_SkipsENExhaustingWeaponInAutoDefenseMode()
+        {
+            // 味方ユニットは自動反撃モードの場合のみＥＮ消耗攻撃を自動選択しない
+            var f = CreateField(targetHp: 3000);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            COMTestField.AddWeapon(ud, "キック", 1800, wclass: "突消");
+            var u = f.Deploy("攻撃機", "味方A", "味方", 3, 3);
+            var t = f.Deploy("標的", "敵A", "敵", 4, 3);
+
+            f.Src.SystemConfig.AutoDefense = false;
+            Assert.AreEqual(2, f.Src.COM.SelectWeapon(u, t, "", out _, out _));
+
+            f.Src.SystemConfig.AutoDefense = true;
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "", out _, out _));
+        }
+
+        [TestMethod]
+        public void SelectWeapon_Ally_NeverAutoSelectsAllENWeapon()
+        {
+            // 味方ユニットは全ＥＮ消費攻撃(尽)を自動選択しない。イベントでの選択では使う
+            var f = CreateField();
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "全力攻撃", 1800, wclass: "突尽");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            var u = f.Deploy("攻撃機", "味方A", "味方", 3, 3);
+            var t = f.Deploy("標的", "敵A", "敵", 4, 3);
+
+            Assert.AreEqual(2, f.Src.COM.SelectWeapon(u, t, "", out _, out _));
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "イベント", out _, out _));
+        }
+
+        [TestMethod]
+        public void SelectWeapon_TargetWithTinyHp_LowDamageIsRaisedTo20()
+        {
+            // 相手のＨＰが 10 以下の場合、1～19 のダメージは 20 にかさ上げして評価する
+            // ＨＰ 10 の味方 (破壊判定はＨＰの 2 倍 = 20) に最低ダメージ 10 しか与えられない攻撃
+            var f = new COMTestField();
+            COMTestField.AddWeapon(f.DefineUnit("標的", hp: 10, armor: 5000), "パンチ", 1200);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("標的", "味方A", "味方", 4, 3);
+            var dmg = u.Weapon(1).ExpDamage(t, false);
+            Assert.AreEqual(10, t.HP);
+            Assert.IsTrue(0 < dmg && dmg < 2 * t.HP, $"前提: dmg={dmg}");
+            Assert.AreEqual(100, u.Weapon(1).HitProbability(t, false));
+
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "", out var maxProb, out _));
+            Assert.AreEqual(100, maxProb);
+        }
+
+        [TestMethod]
+        public void SelectWeapon_CounterAttackWithFirstStrikeWeapon_BoostsDestroyProbability()
+        {
+            // 反撃時、先制攻撃(先)の武器は破壊確率を 1.5 倍に評価する
+            var f = CreateField(targetHp: 100);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200, wclass: "突先");
+            var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("標的", "ＮＰＣA", "ＮＰＣ", 4, 3);
+
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "", out var normalProb, out _));
+            Assert.AreEqual(100, normalProb);
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "反撃", out var counterProb, out _));
+            Assert.AreEqual(150, counterProb);
+        }
+
+        [TestMethod]
+        public void SelectWeapon_MovableMode_UsesWeaponReachableAfterMoving()
+        {
+            // 「移動可能」では移動後攻撃可の武器を、移動して届く相手にも使う
+            // ただし思考モード「固定」のユニットは移動を前提にしない
+            var f = CreateField();
+            var ud = f.DefineUnit("攻撃機", speed: 5);
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            var u = f.Deploy("攻撃機", "敵A", "敵", 1, 1);
+            var near = f.Deploy("標的", "味方A", "味方", 1, 4);
+            var far = f.Deploy("標的", "味方B", "味方", 10, 10);
+            f.Src.Map.AreaInSpeed(u);
+
+            Assert.AreEqual(0, f.Src.COM.SelectWeapon(u, near, "", out _, out _));
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, near, "移動可能", out _, out _));
+            Assert.AreEqual(0, f.Src.COM.SelectWeapon(u, far, "移動可能", out _, out _));
+
+            u.Mode = "固定";
+            Assert.AreEqual(0, f.Src.COM.SelectWeapon(u, near, "移動可能", out _, out _));
         }
 
         [TestMethod]

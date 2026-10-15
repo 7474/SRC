@@ -69,6 +69,79 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
+        public void TryFix_Level3_RecoversFully()
+        {
+            // 修理装置Lv3 は最大ＨＰの 100% を回復させる
+            var f = new COMTestField();
+            f.DefineUnit("修理機").AddFeature("修理装置Lv3");
+            f.DefineUnit("機体");
+            var u = f.Deploy("修理機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("機体", "敵B", "敵", 3, 4);
+            t.HP = 100;
+            f.Src.Commands.SelectedUnit = u;
+
+            Assert.IsTrue(f.Src.COM.TryFix(true));
+            Assert.AreEqual(3000, t.HP);
+        }
+
+        [TestMethod]
+        public void TryFix_RepairSkill_AddsThreePercentPerLevel()
+        {
+            // 修理装置(Lv1)の回復量は 30% + 修理技能レベル×3%
+            var f = CreateField();
+            f.DefinePilot("技師").AddSkill("修理技能", 2d, "", 1);
+            var u = f.Deploy("修理機", "技師", "敵", 3, 3);
+            var t = f.Deploy("機体", "敵B", "敵", 4, 3);
+            t.HP = 1000;
+            f.Src.Commands.SelectedUnit = u;
+            Assert.AreEqual(2d, u.MainPilot().SkillLevel("修理技能", ref_mode: ""));
+
+            Assert.IsTrue(f.Src.COM.TryFix(true));
+            // 3000 × 36% = 1080 回復
+            Assert.AreEqual(2080, t.HP);
+        }
+
+        [TestMethod]
+        public void TryFix_ZombieUnit_IsNotRepaired()
+        {
+            // ゾンビ状態のユニットは修理しない
+            var f = CreateField();
+            var u = f.Deploy("修理機", "敵A", "敵", 3, 3);
+            var zombie = f.Deploy("機体", "敵B", "敵", 4, 3);
+            zombie.HP = 100;
+            zombie.AddCondition("ゾンビ", 1);
+            f.Src.Commands.SelectedUnit = u;
+
+            Assert.IsFalse(f.Src.COM.TryFix(true));
+            Assert.AreEqual(100, zombie.HP);
+        }
+
+        [TestMethod]
+        public void TryFix_FixedMode_DoesNotMoveToRepair()
+        {
+            // 思考モード「固定」では移動前でも動かず、隣接するユニットしか修理できない
+            var f = CreateField();
+            var u = f.Deploy("修理機", "敵A", "敵", 1, 1);
+            var t = f.Deploy("機体", "敵B", "敵", 1, 5);
+            t.HP = 1000;
+            u.Mode = "固定";
+            f.Src.Commands.SelectedUnit = u;
+
+            Assert.IsFalse(f.Src.COM.TryFix(false));
+            Assert.AreEqual(1, u.x);
+            Assert.AreEqual(1, u.y);
+            Assert.AreEqual(1000, t.HP);
+
+            // 隣接していれば移動せずに修理する
+            var adjacent = f.Deploy("機体", "敵C", "敵", 2, 1);
+            adjacent.HP = 1000;
+            Assert.IsTrue(f.Src.COM.TryFix(false));
+            Assert.AreEqual(1, u.x);
+            Assert.AreEqual(1, u.y);
+            Assert.AreEqual(1900, adjacent.HP);
+        }
+
+        [TestMethod]
         public void TryFix_SelectsMostDamagedAlly()
         {
             // ＨＰの割合が最も低い味方を修理する

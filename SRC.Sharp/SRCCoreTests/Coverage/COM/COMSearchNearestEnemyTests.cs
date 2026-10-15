@@ -78,6 +78,36 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
+        public void SearchNearestEnemy_HiddenBySpecialPower_IsInvisible()
+        {
+            // 隠れ身 (スペシャルパワー) 使用中のユニットは目視できない
+            var f = CreateField();
+            f.Src.SPDList.Add("隠れ身").SetEffect("隠れ身");
+            var u = f.Deploy("機体", "敵A", "敵", 5, 5);
+            var hidden = f.Deploy("機体", "味方A", "味方", 5, 6);
+            var visible = f.Deploy("機体", "味方B", "味方", 9, 9);
+
+            Assert.AreSame(hidden, f.Src.COM.SearchNearestEnemy(u));
+
+            hidden.MakeSpecialPowerInEffect("隠れ身");
+            Assert.AreSame(visible, f.Src.COM.SearchNearestEnemy(u));
+        }
+
+        [TestMethod]
+        public void SearchNearestEnemy_StealthNullifiedCondition_IsVisibleFromAfar()
+        {
+            // ステルス無効状態のユニットは遠くからでも発見できる
+            var f = CreateField();
+            f.DefineUnit("ステルス機").AddFeature("ステルス");
+            var u = f.Deploy("機体", "敵A", "敵", 1, 1);
+            var stealth = f.Deploy("ステルス機", "味方A", "味方", 1, 8);
+            Assert.IsNull(f.Src.COM.SearchNearestEnemy(u));
+
+            stealth.AddCondition("ステルス無効", 1);
+            Assert.AreSame(stealth, f.Src.COM.SearchNearestEnemy(u));
+        }
+
+        [TestMethod]
         public void SearchNearestEnemy_StealthWithoutLevel_VisibleOnlyWithin3()
         {
             // レベル指定のないステルスは距離 3 以内でなければ発見できない

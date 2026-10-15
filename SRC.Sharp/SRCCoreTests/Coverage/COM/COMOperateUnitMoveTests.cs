@@ -192,5 +192,39 @@ namespace SRCCore.Coverage.Tests.COMTests
 
             Assert.AreEqual(180, u.EN);
         }
+
+        [TestMethod]
+        [Timeout(10000)]
+        [Ignore("移植の不具合: ジャンプの消費ＥＮを FeatureData ではなく文字列 \"ジャンプ\" から取り出している")]
+        public void OperateUnit_Jump_ConsumesENFromFeatureData()
+        {
+            // VB: ジャンプ=名称 消費EN の場合、消費ＥＮは LIndex(FeatureData("ジャンプ"), 2)
+            // ジャンプLv2=跳躍 30 → 地上にいればＥＮを 30 消費してジャンプ移動する
+            var f = CreateField(speed: 3);
+            var ud = f.DefineUnit("ジャンプ機", en: 200, speed: 3);
+            ud.AddFeature("ジャンプLv2=跳躍 30");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            var u = f.Deploy("ジャンプ機", "敵A", "敵", 1, 1);
+            f.Deploy("機体", "味方A", "味方", 10, 10);
+
+            Operate(f, u);
+
+            Assert.AreEqual(170, u.EN);
+        }
+
+        [TestMethod]
+        public void OperateUnit_FixedMode_DoesNotMove()
+        {
+            // 思考モード「固定」では射程内に敵がいなくても動かない
+            var f = CreateField();
+            var u = f.Deploy("機体", "敵A", "敵", 1, 1);
+            f.Deploy("機体", "味方A", "味方", 9, 1);
+            u.Mode = "固定";
+
+            Operate(f, u);
+
+            Assert.AreEqual(1, u.x);
+            Assert.AreEqual(1, u.y);
+        }
     }
 }
