@@ -1415,22 +1415,22 @@ namespace SRCCore.Units
                                 }
                             }
                         }
-                    }
 
-                    GUI.OpenMessageForm(u1: null, u2: null);
-                    if (IsMessageDefined("合体(" + u.Name + ")"))
-                    {
-                        PilotMessage("合体(" + u.Name + ")", msg_mode: "");
+                        GUI.OpenMessageForm(u1: null, u2: null);
+                        if (IsMessageDefined("合体(" + u.Name + ")"))
+                        {
+                            PilotMessage("合体(" + u.Name + ")", msg_mode: "");
+                        }
+                        else if (IsMessageDefined("合体(" + FeatureName("合体") + ")"))
+                        {
+                            PilotMessage("合体(" + FeatureName("合体") + ")", msg_mode: "");
+                        }
+                        else
+                        {
+                            PilotMessage("合体", msg_mode: "");
+                        }
+                        GUI.CloseMessageForm();
                     }
-                    else if (IsMessageDefined("合体(" + FeatureName("合体") + ")"))
-                    {
-                        PilotMessage("合体(" + FeatureName("合体") + ")", msg_mode: "");
-                    }
-                    else
-                    {
-                        PilotMessage("合体", msg_mode: "");
-                    }
-                    GUI.CloseMessageForm();
                 }
             }
 

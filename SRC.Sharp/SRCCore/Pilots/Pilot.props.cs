@@ -84,16 +84,15 @@ namespace SRCCore.Pilots
                 }
 
                 u = SRC.UList.Item(uname);
+            }
 
-                var withBlock1 = u;
-                if (withBlock1.IsFeatureAvailable("パイロット愛称"))
+            if (u.IsFeatureAvailable("パイロット愛称"))
+            {
+                NicknameRet = u.FeatureData("パイロット愛称");
+                var idx = (int)Strings.InStr(NicknameRet, "$(愛称)");
+                if (idx > 0)
                 {
-                    NicknameRet = withBlock1.FeatureData("パイロット愛称");
-                    var idx = (int)Strings.InStr(NicknameRet, "$(愛称)");
-                    if (idx > 0)
-                    {
-                        NicknameRet = Strings.Left(NicknameRet, idx - 1) + Data.Nickname + Strings.Mid(NicknameRet, idx + 5);
-                    }
+                    NicknameRet = Strings.Left(NicknameRet, idx - 1) + Data.Nickname + Strings.Mid(NicknameRet, idx + 5);
                 }
             }
 
@@ -165,7 +164,7 @@ namespace SRCCore.Pilots
 
                     if (string.IsNullOrEmpty(uname))
                     {
-                        return default;
+                        return KanaNameRet;
                     }
 
                     u = SRC.UList.Item(uname);

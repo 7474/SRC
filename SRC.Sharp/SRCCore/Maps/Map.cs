@@ -404,6 +404,7 @@ namespace SRCCore.Maps
         // マップデータをクリア
         public void ClearMap()
         {
+            MapFileName = "";
             // XXX 1というよりは0にしたいが0長配列は作れない
             SetMapSize(1, 1);
             MapDrawMode = "";
@@ -2045,7 +2046,7 @@ namespace SRCCore.Maps
                         }
 
                         // 移動制限
-                        if (unitProps.allowed_terrains.Any())
+                        if (HasMoveRestriction(u, true))
                         {
                             MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
                         }
@@ -2124,6 +2125,18 @@ namespace SRCCore.Maps
                     }
             }
         }
+        // 移動制限による制限を受けるか
+        // VB では移動コストの算出（For k = 2 To n で一致しなければ進入不可）は地形の指定がなくても全地形を制限し、
+        // マスクの判定（UBound(allowed_terrains) > 0）はデータが空でない場合だけ制限する
+        private static bool HasMoveRestriction(Unit u, bool for_mask)
+        {
+            if (!u.IsFeatureAvailable("移動制限") || u.Area == "空中" || u.Area == "地中")
+            {
+                return false;
+            }
+            return !for_mask || GeneralLib.LLength(u.FeatureData("移動制限")) > 0;
+        }
+
         private void FillMoveCost(Unit u, int[,] move_cost, string move_area, int x1, int y1, int x2, int y2, bool ByJump)
         {
             // 移動能力の可否を調べておく
@@ -2611,6 +2624,8 @@ namespace SRCCore.Maps
 
             // 移動制限・進入不可
             // ジャンプ時以外は進入できない地形の移動コストを 1000000 にする
+            // 移動制限は地形が指定されていなければ全ての地形に進入できない
+            var is_move_restricted = HasMoveRestriction(u, false);
             if (!ByJump)
             {
                 for (var i = x1; i <= x2; i++)
@@ -2618,7 +2633,7 @@ namespace SRCCore.Maps
                     for (var j = y1; j <= y2; j++)
                     {
                         // 移動制限
-                        if (unitProps.allowed_terrains.Any()
+                        if (is_move_restricted
                             && !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name))
                         {
                             move_cost[i, j] = 1000000;
@@ -2880,7 +2895,7 @@ namespace SRCCore.Maps
                         }
 
                         // 移動制限
-                        if (unitProps.allowed_terrains.Any())
+                        if (HasMoveRestriction(currentUnit, true))
                         {
                             MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
                         }
@@ -3099,7 +3114,7 @@ namespace SRCCore.Maps
                                 }
 
                                 // 移動制限
-                                if (!unitProps.IsAllowed(td))
+                                if (HasMoveRestriction(u, true) && !unitProps.allowed_terrains.Contains(td.Name))
                                 {
                                     goto NextLoop;
                                 }

@@ -126,7 +126,6 @@ namespace SRCCore.Coverage.Tests.UnitCore
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 換装データの1番目の形態を Skip(1) で読み飛ばすため、未定義の換装先でもエラーにならない")]
         public void Add_ExchangeFirstTargetUndefined_ReturnsNull()
         {
             // VB Units.cls: For i = 1 To LLength で全換装先を検査し、未定義ならエラーで Nothing

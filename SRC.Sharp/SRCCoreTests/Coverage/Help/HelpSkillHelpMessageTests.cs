@@ -142,7 +142,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Pilot.SkillName0(SkillData) が別名指定ありの技能で別名ではなく空文字を返す")]
         public void Explanation_DefinedByAliasSkill_OverridesText()
         {
             // 別名と同名の「解説」技能があれば、その解説文で置き換える

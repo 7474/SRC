@@ -899,11 +899,18 @@ namespace SRCCore.Units
             // １番目のパイロットの場合はメインパイロットを使用
             // ただし２人乗り以上のユニットで、メインパイロットが
             // スペシャルパワーを持たない場合はそのまま１番目のパイロットを使用
-            pilots.Add(u.CountPilot() > 1 && u.MainPilot().Data.SP <= 0 && u.Pilots.First().Data.SP > 0
-                ? u.Pilots.First() : u.MainPilot());
+            var first = u.CountPilot() > 1 && u.MainPilot().Data.SP <= 0 && u.Pilots.First().Data.SP > 0
+                ? u.Pilots.First() : u.MainPilot();
+            // サブパイロットがメインパイロットを勤めている場合も
+            // １番目のパイロットを使用
+            if (u.SubPilots.Any(x => ReferenceEquals(x, first)))
+            {
+                first = u.Pilots.First();
+            }
+            pilots.Add(first);
             pilots.AddRange(u.SubPilots);
             // サポートパイロット
-            pilots.AddRange(u.Supports.Skip(1));
+            pilots.AddRange(u.Supports);
             // 追加サポートパイロット
             if (u.IsFeatureAvailable("追加サポート"))
             {

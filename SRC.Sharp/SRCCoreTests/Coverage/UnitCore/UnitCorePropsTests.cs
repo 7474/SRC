@@ -94,7 +94,6 @@ namespace SRCCore.Coverage.Tests.UnitCore
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 等身大基準でパイロット愛称を代入した後 return default で null を返している")]
         public void Nickname_HeroScale_UsesMainPilotNickname()
         {
             // 等身大基準ではメッセージ中の愛称にメインパイロットの愛称を使う（VB: Nickname = MainPilot.Nickname）

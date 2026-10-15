@@ -143,7 +143,6 @@ AA-A, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 換装データの1番目の形態を Skip(1) で読み飛ばしている（VB は1番目から全て）")]
         public void Add_ExchangeFeature_CreatesAllListedForms()
         {
             // 換装=換装先１ 換装先２ … の全形態を他形態として作成する（VB は i = 1 から）
@@ -158,7 +157,6 @@ AA-A, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 他形態データの1番目の形態を Skip(1) で読み飛ばしている（VB は1番目から全て）")]
         public void Add_OtherFormFeature_CreatesAllListedForms()
         {
             // 他形態=形態１ 形態２ … の全形態を他形態として作成する（VB は i = 1 から）

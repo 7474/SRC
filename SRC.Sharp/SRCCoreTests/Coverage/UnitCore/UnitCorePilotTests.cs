@@ -358,7 +358,6 @@ AAAA, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: PilotsHaveSpecialPower が Supports.Skip(1) で１人目のサポートを除外している（VB は Support(1) から全て）")]
         public void PilotsHaveSpecialPower_IncludesAllSupports()
         {
             // VB Command.bas: サポートパイロットは i - CountPilot = 1 .. CountSupport の全員が対象

@@ -311,7 +311,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 合体メッセージが未定義でも OpenMessageForm を呼んでしまう")]
         public void Combine_NoCombineMessage_DoesNotOpenMessageForm()
         {
             // 元の SRC では合体メッセージが定義されている場合だけメッセージウィンドウを開く
