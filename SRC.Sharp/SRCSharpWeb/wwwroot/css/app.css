@@ -795,6 +795,31 @@ input[type=file]::file-selector-button {
     box-shadow: none;
 }
 
+/* 見出しの行があるリスト（武器の一覧など）: 桁をそろえ、横にスクロールする */
+.touch-ui-items.columns {
+    overflow-x: auto;
+}
+
+.touch-ui-items.columns .touch-ui-header,
+.touch-ui-items.columns .touch-ui-item {
+    width: max-content;
+    min-width: 100%;
+    box-sizing: border-box;
+    font-family: "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace;
+    font-size: 14px;
+    white-space: pre;
+    overflow: visible;
+}
+
+.touch-ui-items.columns .touch-ui-header {
+    position: sticky;
+    top: 0;
+    padding: 4px 12px;
+    color: var(--text-dim);
+    background: var(--face);
+    border-bottom: 1px solid var(--shadow);
+}
+
 .touch-ui-items .touch-ui-item:disabled {
     color: var(--shadow);
 }

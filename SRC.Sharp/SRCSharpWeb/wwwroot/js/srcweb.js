@@ -295,7 +295,7 @@ function buildTouchUi(gui) {
             caption.textContent = title;
             panel.appendChild(caption);
         }
-        if (text) {
+        if (text && kind !== TOUCH_UI_LIST) {
             const p = document.createElement('p');
             p.className = 'touch-ui-text';
             p.textContent = text;
@@ -303,6 +303,16 @@ function buildTouchUi(gui) {
         }
         const list = document.createElement('div');
         list.className = kind === TOUCH_UI_DIALOG ? 'touch-ui-buttons' : 'touch-ui-items';
+        // 見出しの行（武器の一覧の「名称 攻撃 命中…」など）があるリストは、桁をそろえて出し、横にスクロールできるようにする
+        const columns = kind === TOUCH_UI_LIST && !!text;
+        list.classList.toggle('columns', columns);
+        if (columns) {
+            const header = document.createElement('div');
+            header.className = 'touch-ui-header';
+            header.textContent = text;
+            list.appendChild(header);
+            text = null;
+        }
         items.forEach((item, i) => {
             const b = button(item.text, () => choose(kind, i), 'touch-ui-item');
             b.disabled = !!item.disabled;
