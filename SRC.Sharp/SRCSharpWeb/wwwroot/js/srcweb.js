@@ -138,6 +138,8 @@ async function start() {
             const now = performance.now();
             const double = lastTap && now - lastTap.time < 400 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 24;
             const { x, y } = touch;
+            // タッチ向けの選択画面をタップした位置の近くに出すため、画面上の位置を覚えておく
+            lastTapPoint = { x: e.clientX, y: e.clientY, time: now };
             press(x, y, 0, double ? 2 : 1);
             setTimeout(() => release(x, y, 0), TAP_HOLD_MS);
             lastTap = double ? null : { time: now, x: e.clientX, y: e.clientY };
@@ -234,6 +236,10 @@ async function start() {
 // 大きなボタンの一覧で出す。中身は WebInterop.TouchUi で読み、選んだものは WebInterop.TouchChoose でゲームに渡す
 // （自動プレイと同じ操作。ゲームの画面の描画は変えない）
 const TOUCH_UI_INTERVAL = 150;
+// 最後にゲームの画面をタップした位置（画面上の座標）。メニューをその近くに出す
+let lastTapPoint = null;
+// タップからこの時間内に出たメニューは、タップした位置の近くに出す
+const TOUCH_UI_NEAR_TAP_MS = 3000;
 const TOUCH_UI_LIST = 0;
 const TOUCH_UI_MENU = 1;
 const TOUCH_UI_DIALOG = 2;
@@ -325,7 +331,55 @@ function buildTouchUi(gui) {
         }
         panel.hidden = false;
         panel.scrollTop = 0;
+        place(kind);
     };
+
+    // 指の移動を少なくするため、ゲームの画面の近くに出す。
+    // メニュー（ユニットのコマンドなど）: タップした位置のすぐ下（入らなければ上）に小さく出す
+    // リスト・ダイアログ: ゲームの画面のすぐ下に出す（下に十分な高さが無ければ、ゲームの画面の下側に重ねる）
+    let placedKind = null;
+    const place = kind => {
+        placedKind = kind;
+        const viewport = window.visualViewport;
+        const vw = viewport?.width ?? window.innerWidth;
+        const vh = viewport?.height ?? window.innerHeight;
+        const margin = 8;
+        const style = panel.style;
+        const nearTap = kind === TOUCH_UI_MENU && lastTapPoint && performance.now() - lastTapPoint.time < TOUCH_UI_NEAR_TAP_MS;
+        panel.classList.toggle('popover', !!nearTap);
+        if (nearTap) {
+            const width = Math.min(280, vw - margin * 2);
+            style.width = `${width}px`;
+            style.maxHeight = `${Math.round(vh * 0.6)}px`;
+            const height = panel.offsetHeight;
+            const gap = 28;
+            let top = lastTapPoint.y + gap;
+            if (top + height > vh - margin) {
+                top = Math.max(margin, lastTapPoint.y - gap - height);
+            }
+            style.left = `${Math.round(Math.min(Math.max(lastTapPoint.x - width / 2, margin), vw - width - margin))}px`;
+            style.top = `${Math.round(top)}px`;
+            return;
+        }
+        const width = Math.min(vw, 720);
+        style.width = `${width}px`;
+        style.left = `${Math.round((vw - width) / 2)}px`;
+        const screen = canvas?.getBoundingClientRect();
+        // 下に置ける高さが足りなければ（項目 4 行分ほど）、ゲームの画面の下側に重ねる
+        const minHeight = Math.min(panel.scrollHeight, 240);
+        let top = screen ? screen.bottom : vh - minHeight;
+        top = Math.max(margin, Math.min(top, vh - minHeight));
+        style.top = `${Math.round(top)}px`;
+        style.maxHeight = `${Math.round(vh - top)}px`;
+    };
+    const replace = () => {
+        if (!panel.hidden && placedKind !== null) {
+            place(placedKind);
+        }
+    };
+    window.addEventListener('resize', replace);
+    window.addEventListener('scroll', replace, { passive: true });
+    window.visualViewport?.addEventListener('resize', replace);
 
     setInterval(async () => {
         if (busy) {

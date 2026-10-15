@@ -544,6 +544,11 @@ test.describe('タッチ向けの画面', () => {
     await page.locator('#screen').tap({ position: { x: cell(6), y: (6 - s.mapY + 7) * 32 * scale + 16 * scale } });
     const panel = page.locator('#touch-ui');
     await expect(panel.getByRole('button', { name: '移動' })).toBeVisible();
+    // メニューはタップした位置のすぐ下に出す（指の移動を少なくする）
+    const tapY = box.y + (6 - s.mapY + 7) * 32 * scale + 16 * scale;
+    const menu = await panel.boundingBox();
+    expect(menu.y).toBeGreaterThan(tapY);
+    expect(menu.y - tapY).toBeLessThan(80);
     // キャンセルで閉じる
     await panel.getByRole('button', { name: 'キャンセル' }).click();
     await expect(panel).toBeHidden();

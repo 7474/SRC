@@ -712,14 +712,14 @@ input[type=file]::file-selector-button {
 }
 
 /*
-  タッチ向けの選択画面（srcweb.js の buildTouchUi）。ゲームのリスト・メニュー・ダイアログを、画面の下側に大きなボタンで出す。
-  タッチ向けの画面（data-input="touch"）のときだけ出る。ゲームの画面の上側（マップ）は見えるようにし、画面の下に寄せる
+  タッチ向けの選択画面（srcweb.js の buildTouchUi）。ゲームのリスト・メニュー・ダイアログを大きなボタンで出す。
+  タッチ向けの画面（data-input="touch"）のときだけ出る。位置と大きさは srcweb.js（place）が決める:
+  メニューはタップした位置の近く（.popover）、リスト・ダイアログはゲームの画面のすぐ下
 */
 .touch-ui {
     position: fixed;
-    left: 50%;
+    left: 0;
     bottom: 0;
-    transform: translateX(-50%);
     width: min(100%, 720px);
     z-index: 25;
     max-height: 60vh;
@@ -736,6 +736,15 @@ input[type=file]::file-selector-button {
     display: none;
 }
 
+.touch-ui.popover {
+    bottom: auto;
+    box-shadow: var(--raised), 2px 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.touch-ui[style*="top"] {
+    bottom: auto;
+}
+
 [data-theme="xp"] .touch-ui {
     padding: 0 0 6px;
     border: 3px solid var(--frame);
@@ -747,6 +756,8 @@ input[type=file]::file-selector-button {
     position: sticky;
     top: 0;
     z-index: 1;
+    /* ゲームの画面のすぐ下に出すと、右端にシステムメニューのボタンが重なる */
+    padding-right: 64px;
 }
 
 [data-theme="xp"] .touch-ui-title {
