@@ -25,7 +25,8 @@ namespace SRCCore.Events
 
         public VarData SubLocalVar(string vname)
         {
-            return SubLocalVars().FirstOrDefault(x => x.Name.ToLower() == vname.ToLower());
+            // VB と同じく名前は大文字小文字を区別して照合する
+            return SubLocalVars().FirstOrDefault(x => x.Name == vname);
         }
 
         public VarData NewSubLocalVar()

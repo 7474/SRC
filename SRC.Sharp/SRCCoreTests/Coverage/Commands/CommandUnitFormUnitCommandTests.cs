@@ -365,7 +365,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Event.IsEventDefined が検索開始位置 1 から探すため、0 始まりの EventData の先頭行にあるラベルを見つけられない")]
         public void Talk_TalkEventOnFirstLineOfScenario_IsSelectable()
         {
             // 元の SRC の IsEventDefined は 1 始まりの EventData を SearchLabel(lname, 1) から探すので

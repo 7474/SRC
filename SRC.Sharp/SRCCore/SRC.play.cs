@@ -144,9 +144,10 @@ namespace SRCCore
             Sound.StopBGM();
 
             // リスタート用にデータをセーブ
-            // XXX パスセパレータマッチ
-            if (Strings.InStr(fname, @"\Lib\ユニットステータス表示.eve") == 0
-                && Strings.InStr(fname, @"\Lib\パイロットステータス表示.eve") == 0)
+            // パス区切りが / の環境でも判定できるよう \ にそろえて比較する
+            var fnameForCheck = (fname ?? "").Replace('/', '\\');
+            if (Strings.InStr(fnameForCheck, @"\Lib\ユニットステータス表示.eve") == 0
+                && Strings.InStr(fnameForCheck, @"\Lib\パイロットステータス表示.eve") == 0)
             {
                 DumpData(Path.Combine(ScenarioPath, "_リスタート.srcq"), SRCSaveKind.Restart);
             }
@@ -772,7 +773,6 @@ namespace SRCCore
         // ゲームオーバー
         public void GameOver()
         {
-            var fname = default(string);
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
             Sound.StopBGM();
@@ -800,10 +800,10 @@ namespace SRCCore
             // GameOver.eveを読み込み
             Event.ClearEventData();
             Event.LoadEventData(gameOverFile, load_mode: "");
-            ScenarioFileName = fname;
+            ScenarioFileName = gameOverFile;
             if (!Event.IsEventDefined("プロローグ"))
             {
-                GUI.ErrorMessage(fname + "中にプロローグイベントが定義されていません");
+                GUI.ErrorMessage(gameOverFile + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
             }
 

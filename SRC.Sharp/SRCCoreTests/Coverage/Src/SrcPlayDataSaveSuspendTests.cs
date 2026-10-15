@@ -553,7 +553,6 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
-        [Ignore("移植の不具合: シナリオが異なる中断データのロード時、ウィンドウタイトルにセーブデータ側ではなく直前のシナリオ名を表示する")]
         public void RestoreData_DifferentScenario_SetsTitleFromSavedScenario()
         {
             // VB: MainForm.Caption = "SRC - " & Left$(fname2, Len(fname2) - 4)（fname2 はセーブデータ側のシナリオ）
@@ -570,7 +569,6 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
-        [Ignore("移植の不具合: マップ表示位置（MapX, MapY）を Map.Restore の SetMapSize より前に設定するため、中央にリセットされてしまう")]
         public void RestoreData_RestoresMapDisplayPosition()
         {
             // VB の RestoreMapData は SetMapSize の後で MapX, MapY を読み込み、Center MapX, MapY する

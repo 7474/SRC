@@ -128,15 +128,16 @@ namespace SRCCore
                 ALDList.Load(aliasFilePath);
             }
 
-            var mindFilePath = FileSystem.PathCombine(fpath, "mind.txt");
+            // sp.txt を優先し、無ければ mind.txt を読む
             var spFilePath = FileSystem.PathCombine(fpath, "sp.txt");
-            if (FileSystem.FileExists(mindFilePath))
-            {
-                SPDList.Load(mindFilePath);
-            }
-            else if (FileSystem.FileExists(spFilePath))
+            var mindFilePath = FileSystem.PathCombine(fpath, "mind.txt");
+            if (FileSystem.FileExists(spFilePath))
             {
                 SPDList.Load(spFilePath);
+            }
+            else if (FileSystem.FileExists(mindFilePath))
+            {
+                SPDList.Load(mindFilePath);
             }
 
             var pilotFilePath = FileSystem.PathCombine(fpath, "pilot.txt");

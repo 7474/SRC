@@ -254,8 +254,8 @@ namespace SRCCore
                 var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
                 if (scenario_file_is_different)
                 {
-                    // ウィンドウのタイトルを設定
-                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(ScenarioFileName);
+                    // ウィンドウのタイトルを設定（セーブデータ側のシナリオ名）
+                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(data.ScenarioFileName);
                 }
                 Titles = data.Titles;
                 TotalTurn = data.TotalTurn;
@@ -268,8 +268,6 @@ namespace SRCCore
                 ScenarioFileName = FileSystem.ToAbsolutePath(ScenarioPath, data.ScenarioFileName);
                 Turn = data.Turn;
                 Event.LocalVariableList = data.LocalVariableList;
-                GUI.MapX = data.MapX;
-                GUI.MapY = data.MapY;
 
                 // 使用するデータをロード
                 if (!quick_load)
@@ -298,6 +296,9 @@ namespace SRCCore
                 UList.Restore(this);
                 IList.Restore(this);
                 Map.Restore(data);
+                // マップの表示位置は SetMapSize によるリセットの後で復元する（VB: RestoreMapData）
+                GUI.MapX = data.MapX;
+                GUI.MapY = data.MapY;
 
                 // XXX 仮処理
                 UList.Items.ToList().ForEach(x => x.Update());

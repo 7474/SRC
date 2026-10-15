@@ -149,7 +149,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 制御構造スタックが空のとき Talk を積まないため、最上位の Talk の End 抜けを検出しない")]
         public void LoadEventData_TopLevelTalkWithoutEnd_IsError()
         {
             // VB ではスタックの底(NullCmd)と異なるので Talk を積み、End がないままファイル末尾に達するとエラー
@@ -163,7 +162,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 制御構造スタックが空のときの ElseIf/Case/Next/End の対応チェックが省かれている")]
         public void LoadEventData_TopLevelEndIfLikeCommandsWithoutOpener_AreErrors()
         {
             // VB ではスタックが空(NullCmd)でも ElseIf / Next / End は対応する開始コマンドがないとエラー
@@ -220,7 +218,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 全角コロンのラベルを検出しても error_found を立てず SRC を終了しない")]
         public void LoadEventData_LabelEndingWithFullWidthColon_Terminates()
         {
             // VB では error_found = True となり構文チェック後に TerminateSRC される
@@ -485,7 +482,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 入れ替えラベルの存在判定が FindLabel(..) == 0 のままで、未定義(-1)を判定できず入れ替え一致しない")]
         public void SearchLabel_ReversedAttackLabel_MatchesAndSwapsSelectedUnits()
         {
             // VB: 「攻撃 シャア アムロ」のラベルがなければ「攻撃 アムロ シャア」に入れ替えて一致させ、
@@ -528,7 +524,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: IsEventDefined が SearchLabel(lname, i + 1) を i = 0 から始めるため 0 行目のラベルを見落とす")]
         public void IsEventDefined_LabelOnFirstLine_IsFound()
         {
             // VB の行番号は1始まりで start = 1 から検索するが、C# の EventDataId は0始まり

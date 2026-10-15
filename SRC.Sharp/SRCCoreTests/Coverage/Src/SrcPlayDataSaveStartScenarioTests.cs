@@ -177,7 +177,6 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
-        [Ignore("移植の不具合: リスタート用データを作らないステータス表示用ファイルの判定が \\ 区切り固定で、/ 区切りのパスでは判定できない")]
         public void StartScenario_StatusViewLibrary_DoesNotDumpRestartData()
         {
             // Lib\ユニットステータス表示.eve の実行ではリスタート用データをセーブしない
@@ -310,7 +309,6 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
-        [Ignore("移植の不具合: GameOver が ScenarioFileName に GameOver.eve のパスではなく未設定の null を設定する")]
         public void GameOver_SetsScenarioFileNameToGameOverEve()
         {
             // VB: ScenarioFileName = fname（fname は GameOver.eve のパス）
@@ -324,7 +322,6 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
-        [Ignore("移植の不具合: Event.IsEventDefined が検索開始位置を 1 としており、イベントデータ先頭行（ID 0）のプロローグを見落とす")]
         public void GameOver_PrologueOnFirstLine_IsExecuted()
         {
             // システム側のイベントが無い状態で GameOver.eve の1行目がプロローグでも実行できる
