@@ -295,7 +295,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル順の並べ替えキーが VB の 500*Level+Exp ではなく Level+Exp になっている")]
         public void Organize_SortKeyWeighsLevelOverExperience()
         {
             // VB では並べ替えキーは 500 * Level + Exp。Lv5(経験値0) は Lv4(経験値400) より上に来る

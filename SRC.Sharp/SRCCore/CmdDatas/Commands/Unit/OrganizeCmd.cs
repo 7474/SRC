@@ -210,13 +210,13 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // レベルの一覧と最大値・最小値を求める
-            var min_value = units.Min(u => u.MainPilot().Level + u.MainPilot().Exp);
-            var max_value = units.Max(u => u.MainPilot().Level + u.MainPilot().Exp);
+            var min_value = units.Min(u => 500L * u.MainPilot().Level + u.MainPilot().Exp);
+            var max_value = units.Max(u => 500L * u.MainPilot().Level + u.MainPilot().Exp);
 
             // レベルにばらつきがある時にのみレベルでソート
             if (min_value != max_value)
             {
-                units = units.OrderByDescending(u => u.MainPilot().Level + u.MainPilot().Exp).ToList();
+                units = units.OrderByDescending(u => 500L * u.MainPilot().Level + u.MainPilot().Exp).ToList();
             }
             var list = units
                 .Select(u =>

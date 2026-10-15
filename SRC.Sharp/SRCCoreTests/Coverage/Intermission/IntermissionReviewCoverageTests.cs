@@ -29,7 +29,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: インターミッションのコマンド一覧の表題に総ターン数と資金を表示せず「コマンド」を表示している（arglb_caption を使っていない）")]
         public void Menu_CaptionShowsTotalTurnsAndMoney()
         {
             // 元の SRC: ListBox("インターミッション： 総ターン数N 資金M", name_list, "コマンド", "連続表示")
@@ -167,7 +166,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: パイロット数を括弧で指定した1人乗り（PilotNum=-1）のユニットのパイロットも乗り換え対象にしている。元の SRC は PilotNum <> 1 And Abs(PilotNum) <> 2 で除く")]
         public void ExchangeUnit_ExcludesPilotOfParenthesizedSingleSeatUnit()
         {
             // 元の SRC の ExchangeUnitCommand: 通常のパイロットは PilotNum が 1, 2, (2) のユニットだけ乗り降りできる

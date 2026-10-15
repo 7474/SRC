@@ -173,7 +173,8 @@ namespace SRCCore
                 {
                     Items = name_list,
                     HasFlag = false,
-                    lb_caption = "コマンド",
+                    lb_caption = arglb_caption,
+                    lb_info = "コマンド",
                     lb_mode = "連続表示",
                 });
                 if (ret == 0) { continue; }
@@ -1120,7 +1121,7 @@ namespace SRCCore
                         if (!p.IsRidingAdSupport)
                         {
                             // ３人乗り以上は乗り降り不可
-                            if (Math.Abs(p.Unit.Data.PilotNum) >= 3)
+                            if (p.Unit.Data.PilotNum != 1 && Math.Abs(p.Unit.Data.PilotNum) != 2)
                             {
                                 return false;
                             }
@@ -1333,34 +1334,21 @@ namespace SRCCore
                     units = units.OrderByDescending(x =>
                     {
                         var u = SRC.UList.Item(x.ListItemID);
-                        switch (sort_mode)
+                        switch (sort_mode2)
                         {
                             case "ＨＰ": return u.MaxHP;
                             case "ＥＮ": return u.MaxEN;
                             case "装甲": return u.get_Armor("");
                             case "運動性": return u.get_Mobility("");
                             case "ユニットランク": return u.Rank;
-                            case "レベル": return u.MainPilot()?.TotalExp ?? 0;
                             default: return 0;
                         }
                     }).ToList();
                 }
                 else
                 {
-                    // 数値以外を使ったソート
-                    units = units.OrderBy(x =>
-                    {
-                        var u = SRC.UList.Item(x.ListItemID);
-                        switch (sort_mode)
-                        {
-                            case "名称":
-                            case "ユニット名称":
-                                return u.KanaName;
-                            case "パイロット名称":
-                                return u.MainPilot()?.KanaName ?? "";
-                            default: return "";
-                        }
-                    }).ToList();
+                    // 読み仮名によるソート
+                    units = units.OrderBy(x => SRC.UList.Item(x.ListItemID).KanaName).ToList();
                 }
 
                 // 乗り換え先を選択
@@ -1416,7 +1404,6 @@ namespace SRCCore
                                 sortItems = new List<ListBoxItem>
                             {
                                 new ListBoxItem("名称", "名称"),
-                                new ListBoxItem("レベル", "レベル"),
                                 new ListBoxItem(Expression.Term("ＨＰ"), "ＨＰ"),
                                 new ListBoxItem(Expression.Term("ＥＮ"), "ＥＮ"),
                                 new ListBoxItem(Expression.Term("装甲"), "装甲"),
@@ -1433,8 +1420,7 @@ namespace SRCCore
                                 new ListBoxItem(Expression.Term("装甲"), "装甲"),
                                 new ListBoxItem(Expression.Term("運動性"), "運動性"),
                                 new ListBoxItem(Expression.Term("ランク"), "ユニットランク"),
-                                new ListBoxItem(Expression.Term("ユニット名称"), "ユニット名称"),
-                                new ListBoxItem(Expression.Term("パイロット名称"), "パイロット名称"),
+                                new ListBoxItem("ユニット名称", "ユニット名称"),
                             };
                             }
                             var sortRes = GUI.ListBox(new ListBoxArgs
@@ -1809,17 +1795,24 @@ namespace SRCCore
                         });
                         if (removeRet != 0)
                         {
-                            if (removeRet < equipList.Count)
+                            if (removeRet <= equipList.Count)
                             {
                                 // 指定されたアイテムを外す
-                                u.DeleteItem(SRC.IList.Item(equipList[removeRet - 1].ListItemID), false);
+                                var itmId = equipList[removeRet - 1].ListItemID;
+                                if (!string.IsNullOrEmpty(itmId))
+                                {
+                                    u.DeleteItem(SRC.IList.Item(itmId), false);
+                                }
                             }
                             else
                             {
                                 // 全てのアイテムを外す
                                 foreach (var itmId in equipList
                                     .Where(x => !x.ListItemFlag)
-                                    .Select(x => x.ListItemID))
+                                    .Where(x => !string.IsNullOrEmpty(x.ListItemID))
+                                    .Select(x => x.ListItemID)
+                                    .Distinct()
+                                    .ToList())
                                 {
                                     u.DeleteItem(SRC.IList.Item(itmId), false);
                                 }
@@ -1847,10 +1840,11 @@ namespace SRCCore
                             var itemNameList = SRC.IList.List
                                 .Where(x => x.IsMatch(slot.SlotName))
                                 .Where(x => x.Exist)
-                                .Where(x => !x.IsFix)
                                 // 離脱したユニットが装備している
                                 // 敵ユニットが装備している
                                 .Where(x => !(x.Unit != null && (x.Unit.Status == "離脱" || x.Unit.Party != "味方")))
+                                // 呪われているので外せない……
+                                .Where(x => !(x.Unit != null && x.IsFeatureAvailable("呪い")))
                                 .Where(x => u.IsAbleToEquip(x))
                                 // 装備スロットが空いている？
                                 .Where(x => itemSlots.IsAvalable(x.Part(), x.Size()))
@@ -2195,10 +2189,10 @@ namespace SRCCore
         // ステータスコマンド中かどうかを返す
         public bool InStatusCommand()
         {
-            if (!Map.IsStatusView)
+            if (Map.IsStatusView)
             {
                 // XXX 処理系によってはファイル名が取れないかもしれない
-                var fname = Path.GetFileName(SRC.ScenarioFileName).ToLower();
+                var fname = (Path.GetFileName(SRC.ScenarioFileName) ?? "").ToLower();
                 if (fname == "ユニットステータス表示.eve"
                     || fname == "パイロットステータス表示.eve"
                     || SRC.IsSubStage)

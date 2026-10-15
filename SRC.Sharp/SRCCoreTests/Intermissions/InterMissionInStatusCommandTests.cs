@@ -6,9 +6,9 @@ namespace SRCCore.Intermissions.Tests
     /// <summary>
     /// InterMission.InStatusCommand() のユニットテスト (Intermission.cs)
     ///
-    /// InStatusCommand は以下の条件を判定する:
-    /// - Map.IsStatusView が true (MapFileName が null/空) → false を返す
-    /// - Map.IsStatusView が false かつ:
+    /// InStatusCommand は以下の条件を判定する (VB Intermission.bas InStatusCommand):
+    /// - Map.IsStatusView が false (MapFileName が設定済み) → false を返す
+    /// - Map.IsStatusView が true (MapFileName が null/空) かつ:
     ///   - ScenarioFileName の basename が "ユニットステータス表示.eve" → true
     ///   - ScenarioFileName の basename が "パイロットステータス表示.eve" → true
     ///   - SRC.IsSubStage が true → true
@@ -23,33 +23,33 @@ namespace SRCCore.Intermissions.Tests
         }
 
         // ──────────────────────────────────────────────
-        // IsStatusView == true (MapFileName が空) の場合
+        // IsStatusView == false (MapFileName が設定済み) の場合
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void InStatusCommand_MapIsStatusViewTrue_ReturnsFalse()
+        public void InStatusCommand_MapIsLoaded_StatusEve_ReturnsFalse()
         {
-            // Map.IsStatusView は MapFileName が null/空 のとき true
-            // → InStatusCommand は即 false を返す
+            // マップがある（戦闘中）ならステータス表示ではない
+            // (VB: If MapFileName = "" Then ...)
             var src = CreateSrc();
-            src.Map.MapFileName = null; // IsStatusView = true
+            src.Map.MapFileName = "stage01.map"; // IsStatusView = false
             src.ScenarioFileName = "ユニットステータス表示.eve";
             var result = src.InterMission.InStatusCommand();
-            Assert.IsFalse(result, "IsStatusView=true のとき false を返すこと");
+            Assert.IsFalse(result, "IsStatusView=false のとき false を返すこと");
         }
 
         [TestMethod]
-        public void InStatusCommand_MapFileNameIsEmpty_ReturnsFalse()
+        public void InStatusCommand_MapIsLoaded_SubStage_ReturnsFalse()
         {
             var src = CreateSrc();
-            src.Map.MapFileName = ""; // IsStatusView = true
+            src.Map.MapFileName = "stage01.map"; // IsStatusView = false
             src.IsSubStage = true;
             var result = src.InterMission.InStatusCommand();
             Assert.IsFalse(result);
         }
 
         // ──────────────────────────────────────────────
-        // IsStatusView == false (MapFileName が設定済み) の場合
+        // IsStatusView == true (MapFileName が空) の場合
         // ──────────────────────────────────────────────
 
         [TestMethod]
@@ -57,7 +57,17 @@ namespace SRCCore.Intermissions.Tests
         {
             // IsSubStage が true なら InStatusCommand は true を返す
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map"; // IsStatusView = false
+            src.Map.MapFileName = ""; // IsStatusView = true
+            src.IsSubStage = true;
+            var result = src.InterMission.InStatusCommand();
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void InStatusCommand_MapFileNameIsNull_SubStage_ReturnsTrue()
+        {
+            var src = CreateSrc();
+            src.Map.MapFileName = null; // IsStatusView = true
             src.IsSubStage = true;
             var result = src.InterMission.InStatusCommand();
             Assert.IsTrue(result);
@@ -67,7 +77,7 @@ namespace SRCCore.Intermissions.Tests
         public void InStatusCommand_IsSubStageFalse_OtherFile_ReturnsFalse()
         {
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "普通のシナリオ.eve";
             var result = src.InterMission.InStatusCommand();
@@ -79,7 +89,7 @@ namespace SRCCore.Intermissions.Tests
         {
             // ScenarioFileName が "ユニットステータス表示.eve" のとき true
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "ユニットステータス表示.eve";
             var result = src.InterMission.InStatusCommand();
@@ -91,7 +101,7 @@ namespace SRCCore.Intermissions.Tests
         {
             // ScenarioFileName が "パイロットステータス表示.eve" のとき true
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "パイロットステータス表示.eve";
             var result = src.InterMission.InStatusCommand();
@@ -103,7 +113,7 @@ namespace SRCCore.Intermissions.Tests
         {
             // .ToLower() によって大文字小文字を区別しない
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "ユニットステータス表示.EVE"; // 大文字拡張子
             var result = src.InterMission.InStatusCommand();
@@ -116,7 +126,7 @@ namespace SRCCore.Intermissions.Tests
             // Path.GetFileName を使用しているため、パス付きでも basename で判定される
             // Linux では '/' 区切りを使う ('\' は Linux では区切り文字ではない)
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "/home/user/SRC/ユニットステータス表示.eve";
             var result = src.InterMission.InStatusCommand();
@@ -127,7 +137,7 @@ namespace SRCCore.Intermissions.Tests
         public void InStatusCommand_PilotStatusEveFilenameWithPath_ReturnsTrue()
         {
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "/home/user/SRC/パイロットステータス表示.eve";
             var result = src.InterMission.InStatusCommand();
@@ -139,7 +149,7 @@ namespace SRCCore.Intermissions.Tests
         {
             // ScenarioFileName が空文字なら basename も空 → false
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "";
             var result = src.InterMission.InStatusCommand();
@@ -151,7 +161,7 @@ namespace SRCCore.Intermissions.Tests
         {
             // 名前が似ているが一致しない場合は false
             var src = CreateSrc();
-            src.Map.MapFileName = "stage01.map";
+            src.Map.MapFileName = "";
             src.IsSubStage = false;
             src.ScenarioFileName = "ユニットステータス表示2.eve";
             var result = src.InterMission.InStatusCommand();
