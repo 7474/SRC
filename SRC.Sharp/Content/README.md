@@ -4,7 +4,7 @@ SRC# で遊べるシナリオと、それを動かすための最小の汎用デ
 
 | フォルダ・ファイル | 内容 |
 |---|---|
-| `lantern/` | 「灯の巡航船ランタン号」。全五話＋終話の短いオリジナルシナリオ。ヘルプにあるイベントコマンドをすべて使う（Flash を除く）。**生成AIを使って作った**（シナリオ・データは Claude、顔グラフィックとユニットの画像は PixelLab。[lantern/README.md](lantern/README.md)） |
+| `lantern/` | 「灯の巡航船ランタン号」。全五話＋終話の短いオリジナルシナリオ。ヘルプにあるイベントコマンドをすべて使う（Flash を除く）。**生成AIを使って作った**（シナリオ・データ・BGM は Claude、顔グラフィックとユニットの画像は PixelLab。[lantern/README.md](lantern/README.md)） |
 | `lantern.play` | ランタン号を最初から最後まで自動でプレイする手順（`srcsharp play` の PlayScript） |
 | `basic-data/` | 自作の最小の汎用データ。地形データ・スペシャルパワーデータ・地形の画像・ユニットの画像 |
 

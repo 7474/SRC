@@ -202,7 +202,7 @@ Talk システム
 敵を倒して手に入る$(Term("資金"))をうまく使いましょう。
 Talk システム
 本作は生成AIを使って作られています。
-原案・シナリオ・データは Claude（Anthropic）、顔グラフィックとユニットの画像は PixelLab で生成しました。
+原案・シナリオ・データ・BGM は Claude（Anthropic）が作り、顔グラフィックとユニットの画像は PixelLab で生成しました。
 詳しくはシナリオのフォルダの README.md をご覧ください。
 End
 Return
