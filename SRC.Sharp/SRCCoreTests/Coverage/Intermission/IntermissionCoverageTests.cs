@@ -234,6 +234,7 @@ namespace SRCCore.Coverage.Tests
         {
             // データセーブ: 選ばれた保存先にセーブデータ（資金などを含む）を書き出して、メニューに戻る
             var (src, gui) = IntermissionCoverageFixture.CreateSrc();
+            src.Titles = new List<string>();
             src.Money = 12345;
             src.Expression.DefineGlobalVariable("次ステージ");
             src.Expression.SetVariableAsString("次ステージ", "next.eve");
@@ -252,9 +253,14 @@ namespace SRCCore.Coverage.Tests
 
             Assert.AreEqual(SRCSaveKind.Normal, kind);
             Assert.AreEqual(2, calls, "セーブ後はコマンド選択に戻る");
-            var json = Encoding.UTF8.GetString(stream.ToArray());
-            StringAssert.Contains(json, "\"Money\": 12345");
-            StringAssert.Contains(json, "\"NextStage\": \"next.eve\"");
+            // 書き出したセーブデータを別の SRC に読み込むと、資金と次ステージが戻る
+            var (loaded, loadedGui) = IntermissionCoverageFixture.CreateSrc();
+            loaded.FileSystem = new LocalFileSystem();
+            loadedGui.SetLoadImageSizeHandler = _ => { };
+            loadedGui.DisplayLoadingProgressHandler = () => { };
+            loaded.LoadData(new MemoryStream(stream.ToArray()));
+            Assert.AreEqual(12345, loaded.Money);
+            Assert.AreEqual("next.eve", loaded.Expression.GetValueAsString("次ステージ"));
         }
 
         [TestMethod]
@@ -318,39 +324,51 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        public void StatusCommand_EventFileMissing_ContinuesIntermission()
+        public void StatusCommand_EventFileMissing_ReportsErrorAndContinuesIntermission()
         {
             // Lib\ユニットステータス表示.eve・Lib\パイロットステータス表示.eve が無いときは、
-            // リストを閉じずにインターミッションを続ける（閉じると操作できなくなるため）
+            // 見つからないことを知らせ、リストを閉じずにインターミッションを続ける（閉じると操作できなくなるため）
             var dir = Path.Combine(Path.GetTempPath(), "srcs-im-" + Guid.NewGuid());
             Directory.CreateDirectory(dir);
             try
             {
-                var (src, gui) = IntermissionCoverageFixture.CreateSrc();
-                src.SystemConfig = new LocalFileConfig { AppPath = dir };
-                src.ScenarioPath = dir;
+                var src = new SRC
+                {
+                    SystemConfig = new LocalFileConfig { AppPath = dir },
+                    ScenarioPath = dir,
+                };
                 var fs = new LocalFileSystem();
                 fs.AddPath(dir);
                 src.FileSystem = fs;
-                src.Expression.DefineGlobalVariable("次ステージ");
-                src.Expression.SetVariableAsString("次ステージ", "next.eve");
-                var closeCalls = 0;
-                gui.CloseListBoxHandler = () => closeCalls++;
-                var selected = new List<string>();
+                var gui = new HeadlessGUI();
+                gui.Handle(nameof(IGUI.Confirm), _ => GuiDialogResult.Ok);
                 var calls = 0;
-                gui.ListBoxHandler = args =>
+                gui.Handle(nameof(IGUI.ListBox), args =>
                 {
                     calls++;
-                    var names = args.Items.Select(x => x.Text).ToList();
+                    var names = ((ListBoxArgs)args[0]).Items.Select(x => x.Text).ToList();
                     var target = calls == 1 ? "ユニットステータス" : calls == 2 ? "パイロットステータス" : "次のステージへ";
-                    selected.Add(target);
                     return names.IndexOf(target) + 1;
+                });
+                gui.Install(src);
+                src.Event.EventData = new List<EventDataLine>
+                {
+                    new EventDataLine(0, EventDataSource.System, "system", 0, ""),
                 };
+                src.Event.EventQue = new List<string>();
+                src.Expression.DefineGlobalVariable("次ステージ");
+                src.Expression.SetVariableAsString("次ステージ", "next.eve");
 
                 src.InterMission.InterMissionCommand(skip_update: true);
 
                 Assert.AreEqual(3, calls);
-                Assert.AreEqual(1, closeCalls, "閉じるのは次のステージへ進むときだけ");
+                CollectionAssert.AreEqual(new[]
+                    {
+                        @"Lib\ユニットステータス表示.eve が見つかりません",
+                        @"Lib\パイロットステータス表示.eve が見つかりません",
+                    },
+                    gui.CallsOf(nameof(IGUI.ErrorMessage)).Select(x => (string)x.Args[0]).ToList());
+                Assert.AreEqual(1, gui.CallsOf(nameof(IGUI.CloseListBox)).Count(), "閉じるのは次のステージへ進むときだけ");
                 Assert.IsFalse(src.IsSubStage);
             }
             finally
