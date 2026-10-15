@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>Show/hide virtual pad</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>Show/hide large choice panel</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Close</value>
   </data>

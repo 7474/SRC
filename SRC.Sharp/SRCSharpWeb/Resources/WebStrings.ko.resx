@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>가상 패드 표시/숨기기</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>선택 화면 확대 표시/숨기기</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>닫기</value>
   </data>

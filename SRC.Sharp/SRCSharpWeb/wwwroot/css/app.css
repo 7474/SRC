@@ -681,13 +681,13 @@ input[type=file]::file-selector-button {
 
 .play:fullscreen .screen-wrap,
 .play:fullscreen .screen-bar {
-    width: min(100vw, calc((100vh - 28px) * 720 / 620));
+    width: min(100vw, calc((100vh - 28px) * 720 / 496));
 }
 
 /* 全画面で仮想パッドを出すときは、その分だけ画面を小さくする */
 .play:fullscreen:has(.virtual-pad:not([hidden])) .screen-wrap,
 .play:fullscreen:has(.virtual-pad:not([hidden])) .screen-bar {
-    width: min(100vw, calc((100vh - 170px) * 720 / 620));
+    width: min(100vw, calc((100vh - 170px) * 720 / 496));
 }
 
 .screen-wrap {
@@ -701,7 +701,7 @@ input[type=file]::file-selector-button {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 720 / 620;
+    aspect-ratio: 720 / 496;
     outline: none;
     cursor: default;
     /* タッチでのスクロール・拡大・長押しのメニューを止め、タップ・長押しをゲームの操作にする（srcweb.js） */

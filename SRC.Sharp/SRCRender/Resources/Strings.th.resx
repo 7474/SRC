@@ -36,6 +36,9 @@
   <data name="AutoAdvance" xml:space="preserve">
     <value>อัตโนมัติ</value>
   </data>
+  <data name="MessageWindowTitle" xml:space="preserve">
+    <value>ข้อความ</value>
+  </data>
   <data name="SelectFromTop" xml:space="preserve">
     <value>เลือกจากด้านบน</value>
   </data>

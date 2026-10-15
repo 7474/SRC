@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>Sanal oyun kumandasını göster/gizle</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>Büyük seçim panelini göster/gizle</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Kapat</value>
   </data>

@@ -19,6 +19,7 @@ namespace SRCRender.Resources
         public static string SaveDialogTitle => Rm.GetString(nameof(SaveDialogTitle));
         public static string InvalidColor => Rm.GetString(nameof(InvalidColor));
         public static string AutoAdvance => Rm.GetString(nameof(AutoAdvance));
+        public static string MessageWindowTitle => Rm.GetString(nameof(MessageWindowTitle));
         public static string SelectFromTop => Rm.GetString(nameof(SelectFromTop));
         public static string SelectFromBottom => Rm.GetString(nameof(SelectFromBottom));
         public static string SortByName => Rm.GetString(nameof(SortByName));

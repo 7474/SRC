@@ -44,6 +44,7 @@
                     <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
                     <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
+                    <button role="menuitem" @onclick="ToggleTouchUiAsync">@L["MenuTouchUi"]</button>
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
@@ -328,6 +329,13 @@ else
     {
         systemMenuOpen = false;
         await JS.InvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
+        await FocusScreenAsync();
+    }
+
+    private async Task ToggleTouchUiAsync()
+    {
+        systemMenuOpen = false;
+        await JS.InvokeVoidAsync("srcwebToggleTouchUi");
         await FocusScreenAsync();
     }
 

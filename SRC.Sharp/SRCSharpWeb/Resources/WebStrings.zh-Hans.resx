@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>显示/隐藏虚拟手柄</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>显示/隐藏放大的选择面板</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>关闭</value>
   </data>

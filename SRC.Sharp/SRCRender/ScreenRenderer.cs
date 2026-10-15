@@ -294,37 +294,42 @@ namespace SRCRender
             }
         }
 
-        /// <summary>メッセージウィンドウの左上（画面座標）</summary>
+        /// <summary>メッセージウィンドウのクライアント領域の左上（画面座標）</summary>
         public SKPointI MessageWindowOrigin(Compat.MessageWindow window)
         {
-            // 元の SRC と同じくマップの下に左寄せで表示する
-            var area = ScreenLayout.MessageArea;
-            return new SKPointI(area.Left, area.Top + 2);
+            // 元の SRC と同じくメインウィンドウの左下に重ねて表示する
+            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height);
+            return new SKPointI(rect.Left + ScreenLayout.MessageFramePx, rect.Top + ScreenLayout.MessageTitleBarPx);
         }
 
         private void DrawMessageArea(SKCanvas canvas, Compat.MessageWindow window)
         {
-            using (var paint = new SKPaint { Color = new SKColor(0x08, 0x08, 0x10) })
-            {
-                canvas.DrawRect(ScreenLayout.MessageArea, paint);
-            }
             if (window == null || !window.Visible)
             {
                 return;
+            }
+            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                // 枠とタイトルバー（リストボックスなどのウィンドウと同じ見た目）
+                paint.Color = Compat.Graphics.ToSKColor(window.BackColor);
+                canvas.DrawRect(rect, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(rect.Left + 2, rect.Top + 2, rect.Width - 4, ScreenLayout.MessageTitleBarPx - 3, paint);
+                DrawBevel(canvas, rect, raised: true, paint);
+                using (var titleFont = ListTitleFont.ToSKFont())
+                {
+                    paint.Color = SKColors.White;
+                    paint.IsAntialias = true;
+                    var title = window.IsAutoMode ? $"{Resources.Strings.MessageWindowTitle} ({Resources.Strings.AutoAdvance})" : Resources.Strings.MessageWindowTitle;
+                    canvas.DrawText(title, rect.Left + 6, rect.Top + 1 + (ScreenLayout.MessageTitleBarPx - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                }
             }
             var origin = MessageWindowOrigin(window);
             canvas.Save();
             canvas.Translate(origin.X, origin.Y);
             using (var paint = new SKPaint { IsAntialias = false })
             {
-                paint.Color = Compat.Graphics.ToSKColor(window.BackColor);
-                canvas.DrawRect(0, 0, window.Width, window.Height, paint);
-                // 縁取り
-                paint.Style = SKPaintStyle.Stroke;
-                paint.Color = new SKColor(0x80, 0x80, 0x80);
-                canvas.DrawRect(0.5f, 0.5f, window.Width - 1, window.Height - 1, paint);
-                paint.Style = SKPaintStyle.Fill;
-
                 foreach (var picture in new[] { window.picFace, window.picMessage, window.picUnit1, window.picUnit2, window.picHP1, window.picEN1, window.picHP2, window.picEN2 })
                 {
                     DrawPictureBox(canvas, picture, paint);
@@ -342,12 +347,6 @@ namespace SRCRender
                         canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                         paint.IsAntialias = false;
                     }
-                }
-                if (window.IsAutoMode)
-                {
-                    paint.Color = new SKColor(0x40, 0x40, 0x40);
-                    paint.IsAntialias = true;
-                    canvas.DrawText(Resources.Strings.AutoAdvance, window.Width - 6, window.Height - 4, SKTextAlign.Right, font, paint);
                 }
             }
             canvas.Restore();
