@@ -229,6 +229,67 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.IsTrue(gui.TerminateCalled);
         }
 
+        [DataTestMethod]
+        [DataRow("Ask 選んでください|はい|いいえ", "Askに対応するEndがありません", "Ask 選んでください")]
+        [DataRow("Ask 選んでください キャンセル可|はい", "Askに対応するEndがありません", "Ask 選んでください キャンセル可")]
+        [DataRow("Question 25 その声は|アリスだな？", "Questionに対応するEndがありません", "Question 25 その声は")]
+        [DataRow("If a = 1 Then|AutoTalk システム|こんにちは", "AutoTalkに対応するEndがありません", "AutoTalk システム")]
+        public void LoadEventData_BlockDialogWithoutEndAtEndOfFile_IsError(string script, string message, string errorLine)
+        {
+            // 書式１の Ask（オプションを除いた引数が2個以下）や Question、AutoTalk は End までがブロック。
+            // End がないままファイル末尾に達するとブロックの開始行を示してエラー（VB: Event.LoadEventData 末尾のチェック）
+            var (src, gui) = Load(new[] { "スタート:" }.Concat(script.Split('|')).ToArray());
+
+            var error = src.DataErrors.FirstOrDefault(x => x.msg == message);
+            Assert.IsNotNull(error, string.Join(",", ErrorMessages(src)));
+            Assert.AreEqual(errorLine, error.line_buf);
+            Assert.IsTrue(gui.TerminateCalled);
+        }
+
+        [TestMethod]
+        public void LoadEventData_BlockAskInterruptedByExit_IsError()
+        {
+            // Ask ブロックの途中で Exit が現れたら End 抜けとして Ask の行を示す
+            var (src, gui) = Load("スタート:", "Ask 選んでください", "はい", "Exit");
+
+            var error = src.DataErrors.FirstOrDefault(x => x.msg == "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
+            Assert.IsNotNull(error, string.Join(",", ErrorMessages(src)));
+            Assert.AreEqual("Ask 選んでください", error.line_buf);
+            Assert.IsTrue(gui.TerminateCalled);
+        }
+
+        [DataTestMethod]
+        [DataRow("Ask 選択肢 選んでください キャンセル可")]
+        [DataRow("Ask 選択肢 選んでください")]
+        [DataRow("Ask 選んでください 終了")]
+        public void LoadEventData_InlineAsk_DoesNotOpenBlock(string line)
+        {
+            // 書式２（配列名 + メッセージ）や「終了」指定の Ask はブロックを作らないので End は不要
+            var (src, gui) = Load("スタート:", line, "Exit");
+
+            CollectionAssert.AreEqual(new string[0], ErrorMessages(src));
+            Assert.IsFalse(gui.TerminateCalled);
+        }
+
+        [TestMethod]
+        public void LoadEventData_BlockAskClosedByEnd_HasNoError()
+        {
+            // End で Ask / Question ブロックが閉じられていればエラーにならない
+            var (src, gui) = Load(
+                "スタート:",
+                "Ask 選んでください",
+                "はい",
+                "いいえ",
+                "End",
+                "Question 25",
+                "アリスだな？",
+                "End",
+                "Exit");
+
+            CollectionAssert.AreEqual(new string[0], ErrorMessages(src));
+            Assert.IsFalse(gui.TerminateCalled);
+        }
+
         [TestMethod]
         public void LoadEventData_IncludeLine_LoadsOtherFileInPlace()
         {
@@ -404,7 +465,8 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
 
             Assert.AreEqual(always, src.Event.SearchLabel("破壊 ザク"));
             Assert.AreEqual(normal, src.Event.SearchLabel("破壊 ザク", always + 1));
-            Assert.AreEqual(-1, src.Event.SearchLabel("破壊 ザク", normal + 1 + 100));
+            // 通常イベントより後ろには「破壊 敵」「*破壊 グフ」しかなく、ザクは敵のパイロットでもないので一致しない
+            Assert.AreEqual(-1, src.Event.SearchLabel("破壊 ザク", normal + 1));
         }
 
         [TestMethod]

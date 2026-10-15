@@ -336,5 +336,128 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             CollectionAssert.Contains(DrawnStrings(gui), ("格" + strong.Infight, 34, 17));
             CollectionAssert.Contains(DrawnStrings(gui), ("格" + weak.Infight, 130, 17));
         }
+
+        // ──────────────────────────────────────────────
+        // MakeUnitList（表示内容・件数上限）
+        // ──────────────────────────────────────────────
+
+        [DataTestMethod]
+        [DataRow("ＨＰ")]
+        [DataRow("ＥＮ")]
+        [DataRow("名称")]
+        public void MakeUnitList_HPENAndNameModes_DrawHPAndENUnderNickname(string mode)
+        {
+            // ＨＰ・ＥＮ・名称のときは愛称の下に「HP<HP> EN<EN>」を表示する
+            var (src, gui) = CreateSrc();
+            var u = AddUnit(src, "機体A", hp: 1200, en: 80);
+
+            src.Event.MakeUnitList(mode);
+
+            var expected = src.Expression.Term("HP", u) + u.HP + " " + src.Expression.Term("EN", u) + u.EN;
+            CollectionAssert.Contains(DrawnStrings(gui), (expected, 34, 17));
+            StringAssert.Contains(expected, "1200");
+            StringAssert.Contains(expected, "80");
+        }
+
+        [TestMethod]
+        public void MakeUnitList_SortByRank_DrawsRankHPAndEN()
+        {
+            // ランク順のときはランクの高い順に並べ「RK<ランク> HP<HP> EN<EN>」を表示する
+            var (src, gui) = CreateSrc();
+            var low = AddUnit(src, "低ランク");
+            low.Rank = 1;
+            var high = AddUnit(src, "高ランク");
+            high.Rank = 3;
+
+            src.Event.MakeUnitList("ランク");
+
+            Assert.AreEqual(1, high.x);
+            Assert.AreEqual(6, low.x);
+            var expected = "RK3 " + src.Expression.Term("HP", high) + high.HP + " " + src.Expression.Term("EN", high) + high.EN;
+            CollectionAssert.Contains(DrawnStrings(gui), (expected, 34, 17));
+        }
+
+        [TestMethod]
+        public void MakeUnitList_MoreThan40Rows_StopsListing()
+        {
+            // 1行3機で40行まで表示し、それを超えるユニットは一覧に出さない（待機のまま）
+            var (src, gui) = CreateSrc();
+            var units = Enumerable.Range(0, 121)
+                .Select(i => AddUnit(src, "機体" + i, hp: 10000 - i))
+                .ToList();
+
+            src.Event.MakeUnitList("ＨＰ");
+
+            var last = units[119];
+            Assert.AreEqual("出撃", last.Status);
+            Assert.AreEqual((11, 40), (last.x, last.y));
+            var overflow = units[120];
+            Assert.AreEqual("待機", overflow.Status);
+            CollectionAssert.DoesNotContain(DrawnStrings(gui).Select(d => d.msg).ToList(), "機体120");
+        }
+
+        // ──────────────────────────────────────────────
+        // MakePilotList（搭乗ユニットの扱い）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void MakePilotList_PilotOnDummyUnit_KeepsThatUnit_AndStatusUnitIsNotRecorded()
+        {
+            // ダミーユニット能力を持つユニットに乗っているパイロットはそのまま使う。
+            // また名前に「ステータス表示用」を含むユニットの搭乗記録は残さない
+            var (src, gui) = CreateSrc();
+            var ud = src.UDList.Add("自作ステータス表示用ユニット");
+            ud.Nickname = "自作";
+            ud.PilotNum = 1;
+            ud.Transportation = "陸";
+            ud.Adaption = "AAAA";
+            ud.AddFeature("ダミーユニット");
+            var dummy = src.UList.Add("自作ステータス表示用ユニット", 0, "味方");
+            dummy.Status = "待機";
+            var p = AddPilot(src, "常連");
+            p.Ride(dummy);
+            var unitCount = src.UList.Items.Count();
+
+            Exec(src, "MakePilotList レベル");
+
+            Assert.AreSame(dummy, p.Unit);
+            Assert.AreEqual("出撃", dummy.Status);
+            Assert.AreEqual((1, 1), (dummy.x, dummy.y));
+            Assert.AreEqual(unitCount, src.UList.Items.Count(), "新しいダミーユニットは作らない");
+            Assert.IsFalse(src.Expression.IsVariableDefined("搭乗ユニット[" + p.ID + "]"));
+        }
+
+        [TestMethod]
+        public void MakePilotList_RecordsBoardedUnitForSupportPilots()
+        {
+            // サポートパイロットも「搭乗ユニット[パイロットID]」に搭乗ユニットを記録する（VB: CountSupport のループ）
+            var (src, gui) = CreateSrc();
+            var u = AddUnit(src, "愛機");
+            var support = AddPilot(src, "サポート役");
+            support.Unit = u;
+            u.AddSupport(support);
+
+            Exec(src, "MakePilotList レベル");
+
+            Assert.AreEqual(u.ID, src.Expression.GetValueAsString("搭乗ユニット[" + support.ID + "]"));
+            Assert.AreEqual(u.ID, src.Expression.GetValueAsString("搭乗ユニット[" + src.PList.Item("愛機の乗り手").ID + "]"));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: ソート項目が不明なとき VB はソートせず愛称のみ表示するが、C# はエラーにする")]
+        public void MakePilotList_UnknownSortKey_ListsInRegistrationOrderWithoutStatusLine()
+        {
+            // VB の ExecMakePilotListCmd では未知の項目はキーが全て0となり、並べ替えずに愛称だけを表示する
+            var (src, gui) = CreateSrc();
+            var p1 = AddPilot(src, "P1", level: 1);
+            var p2 = AddPilot(src, "P2", level: 9);
+
+            var ret = Exec(src, "MakePilotList 未知");
+
+            Assert.AreEqual(1, ret);
+            Assert.AreEqual(1, p1.Unit.x);
+            Assert.AreEqual(4, p2.Unit.x);
+            Assert.IsFalse(DrawnStrings(gui).Any(d => d.y == 17));
+        }
     }
 }

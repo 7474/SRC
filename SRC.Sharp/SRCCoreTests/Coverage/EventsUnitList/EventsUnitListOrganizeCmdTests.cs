@@ -375,5 +375,95 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.AreEqual(MapSize, u.x);
             Assert.AreEqual(MapSize, u.y);
         }
+
+        private static void SelectAll(HeadlessGUI gui)
+        {
+            gui.Handle(nameof(IGUI.MultiSelectListBox), a =>
+            {
+                foreach (var item in ((ListBoxArgs)a[0]).Items)
+                {
+                    item.ListItemFlag = true;
+                }
+                return 1;
+            });
+        }
+
+        [TestMethod]
+        public void Organize_DefaultFormation_LeavesGapBetweenUnits()
+        {
+            // オプションなしは「部隊配置」で、隣接させず1マス空けて配置する（距離が奇数の位置は使わない）
+            var (src, gui) = CreateSrc();
+            var a = AddUnit(src, "機体A");
+            var b = AddUnit(src, "機体B");
+            SelectAll(gui);
+
+            Exec(src, "Organize 2 5 5");
+
+            Assert.AreEqual((5, 5), (a.x, a.y));
+            Assert.AreEqual(2, System.Math.Abs(b.x - 5) + System.Math.Abs(b.y - 5));
+        }
+
+        [TestMethod]
+        public void Organize_DenseOption_PlacesUnitsAdjacent()
+        {
+            // 「密集」指定時は「部隊配置」を付けずに出撃させるので、隣接したマスに詰めて配置する。
+            // オプションも第5引数以降のユニットクラス指定に含まれるため、クラス「汎用」と併記する
+            var (src, gui) = CreateSrc();
+            var a = AddUnit(src, "機体A");
+            var b = AddUnit(src, "機体B");
+            SelectAll(gui);
+
+            Exec(src, "Organize 2 5 5 汎用 密集");
+
+            Assert.AreEqual("出撃", b.Status);
+            Assert.AreEqual((5, 5), (a.x, a.y));
+            Assert.AreEqual(1, System.Math.Abs(b.x - 5) + System.Math.Abs(b.y - 5));
+        }
+
+        [TestMethod]
+        public void Organize_AsyncOption_CentersMapOnDeployPointBeforeDeploying()
+        {
+            // 「非同期」指定時は出撃前に配置位置を画面中央にして画面を更新する
+            var (src, gui) = CreateSrc();
+            var a = AddUnit(src, "機体A");
+            SelectAll(gui);
+
+            Exec(src, "Organize 1 4 6 汎用 非同期");
+
+            Assert.AreEqual("出撃", a.Status);
+            var calls = gui.Calls.ToList();
+            var center = calls.FindIndex(c => c.Member == nameof(IGUI.Center));
+            Assert.IsTrue(center >= 0);
+            CollectionAssert.AreEqual(new object[] { 4, 6 }, calls[center].Args);
+            Assert.IsTrue(calls.Skip(center + 1).Any(c => c.Member == nameof(IGUI.RefreshScreen)));
+        }
+
+        [TestMethod]
+        public void Organize_WithoutAsyncOption_DoesNotCenterMap()
+        {
+            // 「非同期」指定がなければ Organize 自身は画面の中央移動を行わない
+            var (src, gui) = CreateSrc();
+            AddUnit(src, "機体A");
+            SelectAll(gui);
+
+            Exec(src, "Organize 1 4 6");
+
+            Assert.IsFalse(gui.CallsOf(nameof(IGUI.Center)).Any(c => (int)c.Args[0] == 4 && (int)c.Args[1] == 6));
+        }
+
+        [TestMethod]
+        public void Organize_LifeSizeOption_ListsUnitAndLevelOnly()
+        {
+            // オプション「等身大基準」ではパイロット名を省き、ユニット愛称(52バイト幅) + レベルを表示する
+            var (src, gui) = CreateSrc();
+            src.Expression.DefineGlobalVariable("Option(等身大基準)");
+            var u = AddUnit(src, "ABC", level: 7);
+            u.Data.Nickname = "ABC";
+
+            var args = CaptureOrganizeList(src, gui, "Organize 1 1 1", out _, out _);
+
+            Assert.AreEqual("ABC" + new string(' ', 49) + " 7", args.Items.Single().Text);
+            Assert.AreEqual("ユニット                                            Lv", args.lb_info);
+        }
     }
 }
