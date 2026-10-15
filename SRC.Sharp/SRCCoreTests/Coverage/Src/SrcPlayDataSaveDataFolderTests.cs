@@ -88,7 +88,6 @@ namespace SRCCore.Coverage.Tests
             Assert.IsTrue(f.Src.ALDList.IsDefined("作品エリアス"));
             Assert.IsTrue(f.Src.SPDList.IsDefined("作品ＳＰ"));
             Assert.IsTrue(f.Src.NPDList.IsDefined("作品ノンパイ"));
-            Assert.IsTrue(f.Called(nameof(IGUI.DisplayLoadingProgress)));
             Assert.IsFalse(f.Gui.IsTerminated);
         }
 

@@ -188,7 +188,7 @@ namespace SRCCore.Coverage.Tests
 
             var data = Parse(Dump(f, SRCSaveKind.Suspend));
 
-            // SRC のパス表記（\ 区切り）で保存される
+            // シナリオフォルダからの相対パスで保存される（区切り文字は実行環境に依存する）
             Assert.AreEqual("Midi/Map1.mid", data.BGMFileName.Replace('\\', '/'));
             Assert.IsFalse(data.RepeatMode);
         }
@@ -274,7 +274,6 @@ namespace SRCCore.Coverage.Tests
 
             Assert.AreEqual(5000, f.Src.Money);
             Assert.AreEqual(3, f.Src.Turn);
-            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
             Assert.IsFalse(f.CalledSince(mark, nameof(IGUI.OpenNowLoadingForm)));
             Assert.IsFalse(f.CalledSince(mark, nameof(IGUI.CloseNowLoadingForm)));
             Assert.IsTrue(f.Src.IsQuickSaveDataAvailable);
@@ -434,6 +433,122 @@ namespace SRCCore.Coverage.Tests
                 GeneralLib.RndReset();
                 GeneralLib.RndIndex = index;
             }
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_RandomSequenceNotSavedOption_KeepsCurrentRandomSequence()
+        {
+            // Option(乱数系列非保存) でも乱数系列を復元しない
+            var seed = GeneralLib.RndSeed;
+            var index = GeneralLib.RndIndex;
+            try
+            {
+                using var f = new SrcPlayDataSaveFixture();
+                PrepareScenario(f);
+                f.Src.Expression.DefineGlobalVariable("Option(乱数系列非保存)");
+                f.Src.Expression.SetVariableAsLong("Option(乱数系列非保存)", 1);
+                GeneralLib.RndSeed = 12345;
+                GeneralLib.RndReset();
+                GeneralLib.Dice(100);
+                var stream = Dump(f, SRCSaveKind.Quik);
+
+                GeneralLib.RndSeed = 1;
+                GeneralLib.RndReset();
+                f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
+                Assert.AreEqual(1, GeneralLib.RndSeed);
+                Assert.AreEqual(0, GeneralLib.RndIndex);
+            }
+            finally
+            {
+                GeneralLib.RndSeed = seed;
+                GeneralLib.RndReset();
+                GeneralLib.RndIndex = index;
+            }
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_QuickWithDifferentScenario_ReloadsEventData()
+        {
+            // クイックロードでも現在のシナリオとセーブデータのシナリオが異なればイベントデータを読み込み直す
+            using var f = new SrcPlayDataSaveFixture();
+            var path = PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Quik);
+            var other = f.Write("other.eve", "準備:", "Exit", "", "別シナリオ:", "Exit");
+            f.Src.ScenarioFileName = other;
+            f.Src.Event.LoadEventData(other, "");
+
+            f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
+            Assert.AreEqual(path, f.Src.ScenarioFileName);
+            var labels = f.Src.Event.colEventLabelList.List.Select(x => x.Data).ToList();
+            CollectionAssert.Contains(labels, "ターン 2 味方");
+            CollectionAssert.DoesNotContain(labels, "別シナリオ");
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_FromFile_SetsLastSaveDataFileName()
+        {
+            // ファイルからロードしたら最後のセーブファイルとして記録する
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var fname = Path.Combine(f.ScenarioDir, "クイック.srcq");
+            f.Src.DumpData(fname, SRCSaveKind.Quik);
+            f.Src.LastSaveDataFileName = "";
+            f.Src.Money = 1;
+
+            f.Src.RestoreData(fname, SRCSaveKind.Quik);
+
+            Assert.AreEqual(fname, f.Src.LastSaveDataFileName);
+            Assert.AreEqual(5000, f.Src.Money);
+        }
+
+        [TestMethod]
+        public void LoadData_ResetsUnitState()
+        {
+            // クリアデータのロード時は各ユニットの状態を回復する（VB: LoadData の u.Reset）
+            using var f = new SrcPlayDataSaveFixture();
+            f.Write("Data/robot.txt",
+                "テスト機",
+                "テスト機, てすとき, 汎用, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力なし",
+                "1000, 100, 600, 60",
+                "AAAA, -.bmp",
+                "===");
+            f.Write("Data/pilot.txt",
+                "テストパイロット",
+                "テスト, てすと, 男性, 汎用, AAAA, 100",
+                "特殊能力なし",
+                "180, 180, 180, 180, 180, 180, 普通",
+                "ＳＰ, 50, 必中, 1",
+                "-.bmp, -.mid");
+            f.Src.LoadLocalData();
+            f.Src.Expression.DefineGlobalVariable("次ステージ");
+            var unit = f.Src.UList.Add("テスト機", 0, "味方");
+            var pilot = f.Src.PList.Add("テストパイロット", 1, "味方");
+            unit.AddPilot(pilot);
+            pilot.Unit = unit;
+            unit.Update();
+            unit.FullRecover();
+            unit.HP = 100;
+            unit.EN = 10;
+            unit.Mode = "固定";
+            var stream = new MemoryStream();
+            f.Src.SaveData(stream);
+
+            f.NewSession();
+            f.Src.LoadData(new MemoryStream(stream.ToArray()));
+
+            var loaded = f.Src.UList.Items.Single();
+            Assert.AreEqual(1000, loaded.HP);
+            Assert.AreEqual(100, loaded.EN);
+            Assert.AreEqual("通常", loaded.Mode);
+            Assert.IsFalse(f.Gui.IsTerminated);
         }
 
         [TestMethod]

@@ -48,6 +48,11 @@ namespace SRCCore.Coverage.Tests
             Assert.IsFalse(f.Src.IsQuickSaveDataAvailable);
             Assert.IsFalse(f.Src.IsSubStage);
             Assert.AreEqual("SRC# - test", f.Gui.GUI.MainFormText);
+            // ステージ名はファイル名部分、クリア時のセーブファイル名は「<ステージ名>までクリア.src」、次ステージはクリア
+            // （VB SRC.bas StartScenario）
+            Assert.AreEqual("test.eve", f.Src.Expression.GetValueAsString("ステージ"));
+            Assert.AreEqual("testまでクリア.src", f.Src.Expression.GetValueAsString("セーブデータファイル名"));
+            Assert.AreEqual("", f.Src.Expression.GetValueAsString("次ステージ"));
             // メインウィンドウが非表示ならスタートイベントの前に表示する
             Assert.IsTrue(f.Called(nameof(IGUI.MainFormShow)));
             Assert.IsFalse(f.Called(nameof(IGUI.ErrorMessage)));
@@ -182,6 +187,94 @@ namespace SRCCore.Coverage.Tests
             f.Src.StartScenario(fname);
 
             Assert.IsFalse(File.Exists(Path.Combine(f.ScenarioDir, "_リスタート.srcq")));
+        }
+
+        // 先頭行のラベルは Event.IsEventDefined が見落とすため、プロローグの前に別のラベルを置いたシナリオ
+        private static readonly string[] ScenarioWithLeadingLabel =
+            new[] { "準備:", "Exit", "" }.Concat(NormalScenario).ToArray();
+
+        /// <summary>
+        /// ＢＧＭとして再生しようとしたファイル（IPlaySound.ResolveSoundType の引数）を順に記録する。
+        /// </summary>
+        private static System.Collections.Generic.List<string> RecordPlayedFiles(SrcPlayDataSaveFixture f)
+        {
+            var played = new System.Collections.Generic.List<string>();
+            f.Gui.Handle(nameof(IPlaySound.ResolveSoundType), args =>
+            {
+                played.Add((string)args[0]);
+                return default(SoundType);
+            });
+            return played;
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void StartScenario_PrologueDefined_PlaysBriefingBgm()
+        {
+            // プロローグイベントがあれば Briefing のＢＧＭを演奏してから実行する
+            // （VB: If IsEventDefined("プロローグ", True) Then StopBGM: StartBGM BGMName("Briefing")）
+            using var f = new SrcPlayDataSaveFixture();
+            f.Write("Midi/Briefing.mid", "dummy");
+            f.Write("test.eve", ScenarioWithLeadingLabel);
+            var played = RecordPlayedFiles(f);
+
+            f.Src.StartScenario("test.eve");
+
+            Assert.AreEqual(1, played.Count);
+            Assert.AreEqual("Briefing.mid", Path.GetFileName(played[0]));
+            // スタートイベントの前にＢＧＭは止める
+            Assert.AreEqual("", f.Src.Sound.BGMFileName);
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("スタート実行"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void StartScenario_SubStage_DoesNotPlayBriefingBgm()
+        {
+            // サブステージではプロローグがあってもＢＧＭを変更しない
+            using var f = new SrcPlayDataSaveFixture();
+            f.Write("Midi/Briefing.mid", "dummy");
+            f.Write("sub.eve", ScenarioWithLeadingLabel);
+            var played = RecordPlayedFiles(f);
+            f.Src.IsSubStage = true;
+
+            f.Src.StartScenario("sub.eve");
+
+            Assert.AreEqual(0, played.Count);
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("プロローグ実行"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void StartScenario_PrologueFinishesScenario_ReturnsBeforeStartEvent()
+        {
+            // プロローグ中にシナリオが終了した（GameOver 等で IsScenarioFinished）場合はそこで戻り、
+            // スタートイベントの確認・リスタート用データのセーブ・味方フェイズの開始を行わない
+            using var f = new SrcPlayDataSaveFixture();
+            f.Write("Data/System/GameOver.eve", SystemPrologue);
+            f.Write("test.eve",
+                "準備:",
+                "Exit",
+                "",
+                "プロローグ:",
+                "GameOver",
+                "Exit",
+                "",
+                "スタート:",
+                "Global スタート実行",
+                "Set スタート実行 1",
+                "Exit");
+
+            f.Src.StartScenario("test.eve");
+
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("システム終了イベント"));
+            Assert.IsFalse(f.Src.Expression.IsGlobalVariableDefined("スタート実行"));
+            Assert.IsFalse(f.Called(nameof(IGUI.ErrorMessage)));
+            Assert.IsFalse(f.Gui.IsTerminated);
+            Assert.IsFalse(File.Exists(Path.Combine(f.ScenarioDir, "_リスタート.srcq")));
+            Assert.AreEqual("プロローグ", f.Src.Stage);
+            // 次のシナリオに備えて終了フラグは戻す
+            Assert.IsFalse(f.Src.IsScenarioFinished);
         }
 
         // 先頭行のラベルは Event.IsEventDefined が見落とす（下の Ignore テスト参照）ため、

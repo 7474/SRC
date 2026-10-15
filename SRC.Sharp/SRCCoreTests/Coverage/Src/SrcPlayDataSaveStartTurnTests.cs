@@ -241,6 +241,58 @@ namespace SRCCore.Coverage.Tests
 
         [TestMethod]
         [Timeout(20000)]
+        public void CpuPhase_RestsOwnPartyUnitsAndResetsOthersUsedAction()
+        {
+            // 味方以外のフェイズでもそのフェイズの陣営のユニットは Rest（ＥＮ回復等）し、
+            // 他の陣営のユニットは行動回数だけ戻す
+            using var f = CreateWithMap();
+            var enemy = AddUnit(f.Src, "敵機", "敵", 1);
+            var own = AddUnit(f.Src, "味方機", "味方", 1);
+            enemy.StandBy(1, 1);
+            own.StandBy(3, 3);
+            enemy.Mode = "固定";
+            // 1ターン目は回復しないため2ターン目にする
+            f.Src.Turn = 2;
+            enemy.EN = 50;
+            own.EN = 50;
+            own.UsedAction = 1;
+
+            f.Src.StartTurn("敵");
+
+            Assert.AreEqual(55, enemy.EN);
+            Assert.AreEqual(50, own.EN);
+            Assert.AreEqual(0, own.UsedAction);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void CpuPhase_RemovesEnemyTurnSpecialPowerOnlyOfThatParty()
+        {
+            // 持続期間が「敵ターン」のスペシャルパワーは、かけたパイロットの陣営のフェイズが来たときに解除する
+            // （VB: RemoveSpecialPowerInEffect "敵ターン"）
+            using var f = CreateWithMap();
+            f.Src.SPDList.Add("妨害").Duration = "敵ターン";
+            var own = AddUnit(f.Src, "味方機", "味方", 1);
+            var enemy = AddUnit(f.Src, "敵機", "敵", 1);
+            var npc = AddUnit(f.Src, "中立機", "中立", 1);
+            own.StandBy(3, 3);
+            enemy.StandBy(1, 1);
+            npc.StandBy(1, 3);
+            enemy.Mode = "固定";
+            npc.Mode = "固定";
+            own.MakeSpecialPowerInEffect("妨害", enemy.MainPilot().ID);
+            npc.MakeSpecialPowerInEffect("妨害", npc.MainPilot().ID);
+            f.Src.Turn = 1;
+
+            f.Src.StartTurn("敵");
+
+            // 敵がかけた効果は敵フェイズで解除、中立がかけた効果は残る
+            Assert.IsFalse(own.IsSpecialPowerInEffect("妨害"));
+            Assert.IsTrue(npc.IsSpecialPowerInEffect("妨害"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
         public void PlayerPhase_StatusView_OnlyResetsUsedAction()
         {
             // ステータス表示用（マップ無し）では Rest せず行動回数だけ戻す
