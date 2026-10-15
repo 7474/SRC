@@ -1122,7 +1122,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器を持たない形態を換装先に表示すると Max が空の列で例外になる（元の SRC は 0 を表示）")]
         public void FormWithoutWeapons_ShowsZeroPowerAndRange()
         {
             // 元の SRC: 最大攻撃力・最大射程は 0 から求めるので、武器が無い形態は 0 と表示される

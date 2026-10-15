@@ -782,10 +782,10 @@ namespace SRCCore.Commands
 
                     var weapons = u.Weapons.Where(uw => uw.IsDisplayFor(WeaponListMode.List)).ToList();
                     // 最大攻撃力
-                    var maxPower = weapons.Max(uw => uw.WeaponPower(""));
+                    var maxPower = weapons.Select(uw => uw.WeaponPower("")).Append(0).Max();
                     msg += GeneralLib.LeftPaddedString("" + maxPower, 7);
                     // 最大射程
-                    var maxRange = weapons.Max(uw => uw.WeaponMaxRange());
+                    var maxRange = weapons.Select(uw => uw.WeaponMaxRange()).Append(0).Max();
                     msg += GeneralLib.LeftPaddedString("" + maxRange, 5);
 
                     // 換装先が持つ特殊能力一覧

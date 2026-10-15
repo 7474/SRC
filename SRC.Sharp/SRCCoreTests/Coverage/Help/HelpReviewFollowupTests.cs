@@ -237,7 +237,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [Ignore("移植の不具合: FeatureHelpMessage(u, \"武器・防具クラス\") が AllFeature の null を参照して例外になる")]
         public void FeatureHelpMessage_WeaponArmorClass_ByString()
         {
             // VB では FeatureHelpMessage 自体が「武器・防具クラス」を扱い、Info 関数からも参照できる

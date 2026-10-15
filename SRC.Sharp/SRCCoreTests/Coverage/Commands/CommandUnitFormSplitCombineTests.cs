@@ -497,7 +497,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器を持たない換装先があると最大攻撃力・最大射程の計算で例外になる")]
         public void ExchangeForm_FormsWithoutWeapons_ShowsZeroPowerAndRange()
         {
             // 元の SRC は max_value = 0 から求めるので、武器がなければ 0 と表示して換装できる

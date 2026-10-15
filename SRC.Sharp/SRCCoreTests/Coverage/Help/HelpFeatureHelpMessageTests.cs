@@ -67,7 +67,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル指定なしの能力で FeatureLevel(=1) ではなく DEFAULT_LEVEL(-1000) を使っている")]
         public void Barrier_WithoutLevel_TreatsLevelAsOne()
         {
             // VB の AllFeatureLevel はレベル指定なしなら 1 を返す
@@ -249,7 +248,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル指定なしの能力で FeatureLevel(=1) ではなく DEFAULT_LEVEL(-1000) を使っている")]
         public void Teleport_WithoutLevel_SpeedPlusOne()
         {
             // VB: 移動力 = u.Speed + AllFeatureLevel(=1)
@@ -343,7 +341,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル指定なしの能力で FeatureLevel(=1) ではなく DEFAULT_LEVEL(-1000) を使っている")]
         public void RepairDevice_WithoutLevel_ThirtyPercent()
         {
             Assert.AreEqual("他のユニットのＨＰを最大ＨＰの30%だけ回復。", FeatureMessage("修理装置"));
@@ -386,7 +383,6 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: レベル付きの未知能力で AllFeature(\"謎能力Lv2\") が null になり NullReferenceException")]
         public void UnknownFeature_WithLevelWithoutData_ReturnsEmpty()
         {
             // VB は AllFeatureData が "" を返すので解説なしとして空を返す
