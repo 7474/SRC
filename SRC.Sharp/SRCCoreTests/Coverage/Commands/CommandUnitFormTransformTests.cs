@@ -152,6 +152,25 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
+        public void Transform_OnMap_NoActionLeft_CancelRemovesExhaustion()
+        {
+            // 変形をキャンセルして元の形態に戻したときは「消耗」状態を解除する（TransformCommand）
+            var f = new CommandUnitFormFixture(onMap: true);
+            f.AddUnitData("形態A", "変形=変形 形態B");
+            f.AddUnitData("形態B", "変形=変形 形態A");
+            var u = f.CreateUnit("形態A", "パイロット", x: 3, y: 3);
+            u.UsedAction = 1;
+            u.AddCondition("消耗", 1, cdata: "");
+            f.Src.Commands.SelectedUnit = u;
+            f.ConfirmAnswer = _ => GuiDialogResult.Cancel;
+
+            Run(f, Command.TransformCmdID, "変形");
+
+            Assert.AreEqual("形態A", f.Src.Commands.SelectedUnit.Name);
+            Assert.IsFalse(f.Src.Commands.SelectedUnit.IsConditionSatisfied("消耗"));
+        }
+
+        [TestMethod]
         public void Transform_OnMap_NoActionLeft_OkKeepsNewForm()
         {
             // 確認で OK なら行動できなくても変形後の形態のまま
@@ -216,7 +235,29 @@ namespace SRCCore.Coverage.Tests.Commands
         [TestMethod]
         public void Transform_StatusView_ListBoxCancel_KeepsForm()
         {
-            // ユニットステータスコマンドでも複数候補のときはリストで選び、キャンセルなら変形しない
+            // ユニットステータスコマンドでも複数候補のときはリストで選び、キャンセルなら変形しない。
+            // リストの項目は変形先の愛称、モードは「カーソル移動」（TransformCommand のステータス表示分岐）
+            var f = new CommandUnitFormFixture(onMap: false);
+            f.AddUnitData("一号機", "変形=変形 二号機 三号機");
+            f.AddUnitData("二号機").Nickname = "ニゴウ";
+            f.AddUnitData("三号機").Nickname = "サンゴウ";
+            var u = f.CreateUnit("一号機", "パイロット");
+            f.Src.Commands.SelectedUnit = u;
+
+            Run(f, Command.TransformCmdID, "変形");
+
+            var lb = f.ListBoxes.Single();
+            Assert.AreEqual("ニゴウ|サンゴウ", string.Join("|", lb.Items.Select(x => x.Text)));
+            Assert.AreEqual("二号機|三号機", string.Join("|", lb.Items.Select(x => x.ListItemID)));
+            Assert.AreEqual("カーソル移動", lb.lb_mode);
+            Assert.AreEqual("一号機", u.CurrentForm().Name);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: ユニットステータスコマンドの変形先リストの見出しが「変形」ではなく「変形先」になっている")]
+        public void Transform_StatusView_ListCaptionIsTransform()
+        {
+            // 元の SRC はステータス表示中の変形先選択を ListBox("変形", list, "名前", "カーソル移動") で行う
             var f = new CommandUnitFormFixture(onMap: false);
             f.AddUnitData("一号機", "変形=変形 二号機 三号機");
             f.AddUnitData("二号機");
@@ -226,9 +267,7 @@ namespace SRCCore.Coverage.Tests.Commands
 
             Run(f, Command.TransformCmdID, "変形");
 
-            Assert.AreEqual(1, f.ListBoxes.Count);
-            Assert.AreEqual(2, f.ListBoxes[0].Items.Count);
-            Assert.AreEqual("一号機", u.CurrentForm().Name);
+            Assert.AreEqual("変形", f.ListBoxes.Single().lb_caption);
         }
 
         // ──────────────────────────────────────────────

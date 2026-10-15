@@ -222,6 +222,70 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
+        public void Combine_OnMap_RunsCombineEventThenEndsAction()
+        {
+            // 合体後に「合体」イベントを実行し、その後は行動終了（待機）として「行動終了」イベントも起きる
+            using var f = new CommandUnitFormFixture(onMap: true);
+            f.LoadEvents(
+                "合体 全 合体形態:",
+                "Set 記録 (記録 & \"合体\")",
+                "Exit",
+                "行動終了 パイロットA:",
+                "Set 記録 (記録 & \"終了\")",
+                "Exit");
+            var (a, b, c) = CreateTripleParts(f, (3, 3), (4, 3), (3, 4));
+            f.Src.Commands.SelectedUnit = a;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.CombineCmdID, "合体");
+
+            Assert.AreEqual("合体終了", f.Record);
+            Assert.AreEqual("出撃", f.Src.UList.Item("合体形態").Status);
+        }
+
+        [TestMethod]
+        public void Combine_OnMap_CancelInCombineEvent_SkipsActionEnd()
+        {
+            // 合体イベントで Cancel された場合は合体はそのままで、行動終了の処理（行動終了イベント）は行わない
+            using var f = new CommandUnitFormFixture(onMap: true);
+            f.LoadEvents(
+                "合体 全 合体形態:",
+                "Set 記録 (記録 & \"合体\")",
+                "Cancel",
+                "Exit",
+                "行動終了 パイロットA:",
+                "Set 記録 (記録 & \"終了\")",
+                "Exit");
+            var (a, b, c) = CreateTripleParts(f, (3, 3), (4, 3), (3, 4));
+            f.Src.Commands.SelectedUnit = a;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.CombineCmdID, "合体");
+
+            Assert.AreEqual("合体", f.Record);
+            Assert.AreEqual("出撃", f.Src.UList.Item("合体形態").Status);
+            Assert.IsFalse(f.Src.IsCanceled);
+            Assert.AreEqual("ユニット選択", f.Src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 合体パートナーの距離判定がマンハッタン距離になっている")]
+        public void Combine_OnMap_PartnerDiagonalWithinTwo_IsCombined()
+        {
+            // 元の SRC は Abs(dx) > 2 Or Abs(dy) > 2 のときだけ除外する（縦横それぞれ２マス以内の正方形）。
+            // (3,3) から見て (5,4) は dx=2, dy=1 なので合体できる
+            var f = new CommandUnitFormFixture(onMap: true);
+            var (a, b, c) = CreateTripleParts(f, (3, 3), (5, 4), (3, 4));
+            f.Src.Commands.SelectedUnit = a;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.CombineCmdID, "合体");
+
+            Assert.AreEqual(0, f.ListBoxes.Count);
+            Assert.AreEqual("出撃", f.Src.UList.Item("合体形態").Status);
+        }
+
+        [TestMethod]
         [Ignore("移植の不具合: ユニットステータスコマンドで２体合体が合体候補に含まれない")]
         public void Combine_StatusView_TwoUnitCombine_IsCombined()
         {

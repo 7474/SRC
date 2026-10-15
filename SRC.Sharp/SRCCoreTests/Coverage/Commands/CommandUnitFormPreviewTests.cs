@@ -121,7 +121,13 @@ namespace SRCCore.Coverage.Tests.Commands
             var weaponAnswers = new Queue<UnitWeapon>(new[] { u.Weapons.First(), null });
             f.Gui.Handle("WeaponListBox", args => weaponAnswers.Dequeue());
             var answers = new Queue<int>(new[] { 2, 0 });
-            f.ListBoxAnswer = _ => answers.Dequeue();
+            var weaponWhileListed = new List<int>();
+            f.ListBoxAnswer = _ =>
+            {
+                // 属性一覧の表示中は選んだ武器が SelectedWeapon になっている
+                weaponWhileListed.Add(f.Src.Commands.SelectedWeapon);
+                return answers.Dequeue();
+            };
 
             Run(f, Command.WeaponListCmdID, "武器一覧");
 
@@ -130,9 +136,27 @@ namespace SRCCore.Coverage.Tests.Commands
             StringAssert.StartsWith(lb.Items[0].Text, "Ｂ");
             StringAssert.StartsWith(lb.Items[1].Text, "Ｐ");
             Assert.IsFalse(lb.Items.Any(x => x.Text == "射程範囲"));
-            Assert.AreEqual(1, f.Src.Commands.SelectedWeapon);
+            Assert.AreEqual(1, weaponWhileListed[0]);
             Assert.AreEqual(1, HelpTitles(f).Count);
             Assert.AreEqual("ユニット選択", f.Src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 武器一覧をキャンセルしても SelectedWeapon が 0 に戻らない")]
+        public void WeaponList_Cancel_ResetsSelectedWeapon()
+        {
+            // 元の SRC は w = WeaponListBox(...) の直後に SelectedWeapon = w とするため、
+            // キャンセルすると SelectedWeapon は 0 になる（WeaponListCommand）
+            var f = new CommandUnitFormFixture(onMap: false);
+            var u = CreateArmedUnit(f, "Ｂ", 1, 3, onMap: false);
+            f.MakeStatusViewUnitList();
+            f.Src.Commands.SelectedUnit = u;
+            var weaponAnswers = new Queue<UnitWeapon>(new[] { u.Weapons.First(), null });
+            f.Gui.Handle("WeaponListBox", args => weaponAnswers.Dequeue());
+
+            Run(f, Command.WeaponListCmdID, "武器一覧");
+
+            Assert.AreEqual(0, f.Src.Commands.SelectedWeapon);
         }
 
         [TestMethod]

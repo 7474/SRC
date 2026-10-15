@@ -515,6 +515,45 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
+        public void Order_Free_WithoutMasterOrSummoner_SetsModeToNormal()
+        {
+            // 主人も召喚主もいなければ「帰還」は選択肢に出ない。「自由」を選ぶと行動モードを「通常」に戻す
+            var f = new CommandUnitFormFixture(onMap: true);
+            f.AddUnitData("機体");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            u.Mode = "固定";
+            f.Src.Commands.SelectedUnit = u;
+            f.Src.Commands.CommandState = "コマンド選択";
+            f.ListBoxAnswer = _ => 1;
+
+            Run(f, Command.OrderCmdID, "命令");
+
+            var lb = f.ListBoxes.Single();
+            Assert.AreEqual("命令", lb.lb_caption);
+            Assert.AreEqual(4, lb.Items.Count);
+            Assert.IsFalse(lb.Items.Any(x => x.Text.StartsWith("帰還")));
+            Assert.AreEqual("通常", u.Mode);
+            Assert.AreEqual("ユニット選択", f.Src.Commands.CommandState);
+        }
+
+        [TestMethod]
+        public void Order_Cancel_KeepsMode()
+        {
+            // 命令リストをキャンセルすれば行動モードは変わらない
+            var f = new CommandUnitFormFixture(onMap: true);
+            f.AddUnitData("機体");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            u.Mode = "固定";
+            f.Src.Commands.SelectedUnit = u;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.OrderCmdID, "命令");
+
+            Assert.AreEqual("固定", u.Mode);
+            Assert.AreEqual("ユニット選択", f.Src.Commands.CommandState);
+        }
+
+        [TestMethod]
         public void Order_ReturnToMaster_SetsModeToMasterPilot()
         {
             // 主人がいるユニットの「帰還：主人の所に戻る」は主人のパイロットIDを行動モードにする
