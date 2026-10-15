@@ -45,7 +45,7 @@ Lantern_Myu.bmp, -.mid
 集中力, 1
 135, 185, 175, 185, 170, 165, 普通
 ＳＰ, 90, 祈り, 1, 癒し, 1, 祝福, 1, 夢, 1, 奇跡, 1
-Lantern_Myu.bmp, -.mid
+Lantern_MyuAwakened.bmp, -.mid
 
 # 灰色の傭兵。第三話で仲間になる
 ヴォルフ
@@ -70,4 +70,4 @@ Lantern_Wolf.bmp, -.mid
 特殊能力なし
 130, 130, 140, 140, 140, 140, 普通
 ＳＰ, 30, 根性, 1
--.bmp, -.mid
+Lantern_Dora.bmp, -.mid

@@ -146,7 +146,7 @@ Line 240 244 450 190 RGB(255, 230, 140)
 DrawWidth 1
 Oval 240 244 16 0.6 RGB(255, 240, 160)
 # ランタン号
-PaintPicture Unit\OBJ_SailShip01.bmp 60 300 64 64 透過
+PaintPicture Unit\Lantern_Ship.bmp 60 300 64 64 透過
 DrawOption 通常
 FillStyle 透明
 # 題字
@@ -156,6 +156,9 @@ Font 44pt #fff4c0 Bold
 PaintString - 110 ランタン号
 Font 14pt #c0c8ff Regular
 PaintString - 175 ～ 煙の海の灯守り ～
+# 生成AIの利用の表示（README.md の「生成AIの利用について」）
+Font 9pt #c0c0d0 Regular
+PaintString - 455 本作は生成AIを使って作られています（詳しくは「あそびかた」）
 # メニュー
 Font 18pt #ffffff Bold
 PaintString 320 270 はじめから
@@ -197,6 +200,10 @@ Talk システム
 Talk システム
 インターミッションでは、よろず屋で装備を買ったり、訓練所でパイロットを鍛えたりできます。
 敵を倒して手に入る$(Term("資金"))をうまく使いましょう。
+Talk システム
+本作は生成AIを使って作られています。
+原案・シナリオ・データは Claude（Anthropic）、顔グラフィックとユニットの画像は PixelLab で生成しました。
+詳しくはシナリオのフォルダの README.md をご覧ください。
 End
 Return
 

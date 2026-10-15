@@ -5,7 +5,7 @@
 陸, 4, M, 1400, 60
 特殊能力なし
 2300, 100, 700, 65
-AA-A, OBJ_Tank01.bmp
+AA-A, Lantern_Sukihei.bmp
 煤パンチ,         1100, 1, 1,  +0, -,  -,   -, AAAA,  +0, 突
 煤ガン,           1000, 1, 3,  +0, 6,  -,   -, AAAA,  +0, 実
 
@@ -14,7 +14,7 @@ AA-A, OBJ_Tank01.bmp
 空, 6, S, 1200, 60
 特殊能力なし
 1900, 100, 550, 80
-AA-A, OBJ_Bird01.bmp
+AA-A, Lantern_Susugarasu.bmp
 煤くちばし,       1100, 1, 1,  +5, -,  -,   -, AAAA,  +5, 突
 煤の羽根,          950, 1, 2,  +5, 4,  -,   -, AAAA,  +0, 実
 
@@ -23,14 +23,14 @@ AA-A, OBJ_Bird01.bmp
 陸, 0, L, 4000, 150
 特殊能力なし
 5000, 0, 600, 0
-AAAA, OBJ_Etc04.bmp
+AAAA, Lantern_Susuro.bmp
 
 煤の巨兵
 煤の巨兵, すすのきょへい, 煤機, 1, 0
 陸, 3, L, 4000, 120
 特殊能力なし
 6000, 150, 900, 55
-AA-A, OBJ_Robot02.bmp
+AA-A, Lantern_Kyohei.bmp
 巨兵の鉄拳,       1500, 1, 1,  +0, -,  -,   -, AAAA, +10, 突
 煤煙砲,           1300, 2, 4,  +0, -, 20,   -, AAAA,  +0, Ｂ
 
@@ -39,7 +39,7 @@ AA-A, OBJ_Robot02.bmp
 空陸, 6, M, 6000, 300
 特殊能力なし
 5500, 200, 1000, 95
-AA-A, OBJ_WingHuman01.bmp
+AA-A, Lantern_Kurogane.bmp
 鉄爪,             1300, 1, 1, +10, -,  -,   -, AAAA, +15, 突
 黒羽の散弾,       1200, 1, 4,  +5, 6,  -,   -, AAAA,  +5, 実
 黒天墜,           1800, 1, 2, +10, -, 40, 115, AAAA, +20, 突
@@ -49,7 +49,7 @@ AA-A, OBJ_WingHuman01.bmp
 陸, 2, XL, 10000, 500
 特殊能力なし
 7000, 300, 900, 40
-AA-A, OBJ_Dinosaur01.bmp
+AA-A, Lantern_Nox1.bmp
 煤城砲,           1100, 1, 5,  +0, -,  -,   -, AAAA,  +0, Ｂ
 黒煙の顎,         1300, 1, 1, +10, -,  -,   -, AAAA, +10, 突
 
@@ -58,6 +58,6 @@ AA-A, OBJ_Dinosaur01.bmp
 空陸, 4, LL, 15000, 800
 特殊能力なし
 6000, 300, 1000, 60
-AA-A, OBJ_SpaceShip01.bmp
+AA-A, Lantern_Nox2.bmp
 煤帝の爪,         1300, 1, 1, +10, -,  -,   -, AAAA, +15, 突
 永夜の煙,         1200, 1, 4,  +5, -, 30,   -, AAAA,  +5, Ｂ
