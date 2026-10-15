@@ -149,7 +149,10 @@ namespace SRCCore.Coverage.Tests.Units
             leader.Status = "待機";
             partner.Status = "待機";
 
+            // VB は ReDim partners(cnum) で要素数だけを返す（中身は Nothing）ため、仕様は件数のみ。
+            // C# は実際のパートナーを格納して返すが、これは C# 独自の拡張
             var result = leader.CombinationPartner("ダブルアタック", 0, 0, 0, 1);
+            Assert.AreEqual(1, result.Count);
             CollectionAssert.AreEqual(new[] { partner }, result.ToArray());
 
             // パイロット名で指定されていても良い
@@ -158,7 +161,7 @@ namespace SRCCore.Coverage.Tests.Units
             var partner2 = h2.Create("相棒機", "ベルク");
             leader2.Status = "待機";
             partner2.Status = "待機";
-            CollectionAssert.AreEqual(new[] { partner2 }, leader2.CombinationPartner("ダブルアタック", 0, 0, 0, 1).ToArray());
+            Assert.AreEqual(1, leader2.CombinationPartner("ダブルアタック", 0, 0, 0, 1).Count);
 
             // パートナーが離脱していれば使えない
             partner.Status = "離脱";

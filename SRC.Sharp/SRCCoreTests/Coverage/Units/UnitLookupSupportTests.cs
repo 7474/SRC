@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCCore.Units;
 using System.Linq;
 
 namespace SRCCore.Coverage.Tests.Units
@@ -146,40 +147,109 @@ namespace SRCCore.Coverage.Tests.Units
             Assert.AreSame(ally2, me2.LookForSupportAttack(target2));
         }
 
-        [TestMethod]
-        public void LookForSupportAttack_PrefersStrongestWeapon_AndSkipsMapWeapons()
+        // 援護攻撃の候補判定用に、射程2の武器を持つ援護役2体とターゲットを配置する。
+        // 自機(3,3) の左右 (2,3)/(4,3) に援護役を置く。ターゲット(3,2) からは距離2
+        private static (UnitLookupTestHelper h, Unit me, Unit target, Unit left, Unit right) PlaceTwoSupporters(
+            string leftUnit, string rightUnit, string extraUnits)
         {
-            // 複数の候補がいる場合は最も威力の高い武器で攻撃できるユニットを選ぶ。
-            // マップ兵器(Ｍ)は援護攻撃に使えない
             var h = new UnitLookupTestHelper();
             h.DefinePilot("アレン");
             h.DefinePilot("ベルク", skills: "援護Lv1, 1");
             h.DefinePilot("カイ", skills: "援護Lv1, 1");
             h.DefinePilot("ゾルグ");
             h.DefineUnit("自機", weapons: Punch);
-            h.DefineUnit("弱機", weapons: "ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射");
-            h.DefineUnit("強機", weapons: "ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射\n強キャノン, 2500, 1, 2, +0, -, -, -, AAAA, +0, 実");
-            h.DefineUnit("Ｍ機", weapons: "マップ砲, 4000, 1, 2, +0, -, -, -, AAAA, +0, Ｍ直");
             h.DefineUnit("敵機", weapons: Punch);
+            foreach (var def in extraUnits.Split('|'))
+            {
+                var parts = def.Split('=');
+                h.DefineUnit(parts[0], weapons: parts[1].Replace(";", "\n"));
+            }
             var me = h.Place("自機", "アレン", 3, 3);
             var target = h.Place("敵機", "ゾルグ", 3, 2, party: "敵");
-            // 援護役はターゲットから距離2の位置（射程2の武器なら届く）
-            h.Place("弱機", "ベルク", 2, 3);
-            var strong = h.Place("強機", "カイ", 4, 3);
+            var left = h.Place(leftUnit, "ベルク", 2, 3);
+            var right = h.Place(rightUnit, "カイ", 4, 3);
+            return (h, me, target, left, right);
+        }
 
-            Assert.AreSame(strong, me.LookForSupportAttack(target));
+        private const string ShotDefs =
+            "弱機=ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射"
+            + "|強機=ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射;強キャノン, 2500, 1, 2, +0, -, -, -, AAAA, +0, 実"
+            + "|中機=ミドルショット, 1500, 1, 2, +0, -, -, -, AAAA, +0, 射"
+            + "|Ｍ機=ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射;マップ砲, 4000, 1, 2, +0, -, -, -, AAAA, +0, Ｍ直";
 
-            var h2 = new UnitLookupTestHelper();
-            h2.DefinePilot("アレン");
-            h2.DefinePilot("ベルク", skills: "援護Lv1, 1");
-            h2.DefinePilot("ゾルグ");
-            h2.DefineUnit("自機", weapons: Punch);
-            h2.DefineUnit("Ｍ機", weapons: "マップ砲, 4000, 1, 2, +0, -, -, -, AAAA, +0, Ｍ直");
-            h2.DefineUnit("敵機", weapons: Punch);
-            var me2 = h2.Place("自機", "アレン", 3, 3);
-            var target2 = h2.Place("敵機", "ゾルグ", 3, 2, party: "敵");
-            h2.Place("Ｍ機", "ベルク", 2, 3);
-            Assert.IsNull(me2.LookForSupportAttack(target2));
+        [TestMethod]
+        public void LookForSupportAttack_PrefersStrongestWeapon_RegardlessOfPosition()
+        {
+            // 複数の候補がいる場合は最も威力の高い武器で攻撃できるユニットを選ぶ。
+            // 探索順に依存しないことを確かめるため、左右を入れ替えた両方の配置で判定する
+            var a = PlaceTwoSupporters("弱機", "強機", ShotDefs);
+            Assert.AreSame(a.right, a.me.LookForSupportAttack(a.target));
+            Assert.AreEqual("強機", a.right.Name);
+
+            var b = PlaceTwoSupporters("強機", "弱機", ShotDefs);
+            Assert.AreSame(b.left, b.me.LookForSupportAttack(b.target));
+            Assert.AreEqual("強機", b.left.Name);
+        }
+
+        [TestMethod]
+        public void LookForSupportAttack_MapWeaponPowerIsNotConsidered()
+        {
+            // マップ兵器(Ｍ)は援護攻撃に使えない。Ｍ機のマップ砲(4000)は数えられず、
+            // 通常武器(1000)の威力で比較されるので、1500 の武器を持つ中機が選ばれる
+            var a = PlaceTwoSupporters("Ｍ機", "中機", ShotDefs);
+            Assert.AreSame(a.right, a.me.LookForSupportAttack(a.target));
+
+            var b = PlaceTwoSupporters("中機", "Ｍ機", ShotDefs);
+            Assert.AreSame(b.left, b.me.LookForSupportAttack(b.target));
+
+            // Ｍ機自体は除外されない（通常武器で援護攻撃できる）
+            var c = PlaceTwoSupporters("Ｍ機", "Ｍ機", ShotDefs);
+            c.right.UsedSupportAttack = 1;
+            Assert.AreSame(c.left, c.me.LookForSupportAttack(c.target));
+        }
+
+        [TestMethod]
+        public void LookForSupportAttack_AutoDefense_PlayerAvoidsScarceWeapons()
+        {
+            // 自動反撃時、味方ユニットは残弾数の少ない武器・ＥＮ消費の大きい武器・尽属性の武器を援護攻撃に使わない
+            const string defs = "弾少機=バズーカ, 2500, 1, 2, +0, 1, -, -, AAAA, +0, 実"
+                + "|弾三機=ランチャー, 2500, 1, 2, +0, 3, -, -, AAAA, +0, 実"
+                + "|ＥＮ機=メガ砲, 2500, 1, 2, +0, -, 60, -, AAAA, +0, Ｂ"
+                + "|尽機=全力砲, 2500, 1, 2, +0, -, -, -, AAAA, +0, 尽"
+                + "|弱機=ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射";
+            foreach (var name in new[] { "弾少機", "弾三機", "ＥＮ機", "尽機" })
+            {
+                // 手動反撃なら威力の高い方が選ばれる
+                var a = PlaceTwoSupporters(name, "弱機", defs);
+                a.h.Src.SystemConfig.AutoDefense = false;
+                Assert.AreSame(a.left, a.me.LookForSupportAttack(a.target), name);
+
+                // 自動反撃では使えない武器なので弱機が選ばれる
+                a.h.Src.SystemConfig.AutoDefense = true;
+                Assert.AreSame(a.right, a.me.LookForSupportAttack(a.target), name);
+            }
+        }
+
+        [TestMethod]
+        public void LookForSupportAttack_AutoDefense_NpcStillUsesScarceWeapons()
+        {
+            // 残弾等の制限は味方ユニットのみ。ＮＰＣ は自動反撃時でも使う
+            const string defs = "弾少機=バズーカ, 2500, 1, 2, +0, 1, -, -, AAAA, +0, 実"
+                + "|弱機=ショット, 1000, 1, 2, +0, -, -, -, AAAA, +0, 射";
+            var a = PlaceTwoSupporters("弾少機", "弱機", defs);
+            a.left.Party = "ＮＰＣ";
+            a.h.Src.SystemConfig.AutoDefense = true;
+            Assert.AreSame(a.left, a.me.LookForSupportAttack(a.target));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: LookForSupportAttack の隣接ユニット探索順が VB(左,右,上,下) と異なり Map.AdjacentUnit(右,左,下,上) になっている")]
+        public void LookForSupportAttack_WithoutTarget_PrefersLeftNeighbourLikeVb()
+        {
+            // ターゲット未定の場合は最初に見つかった候補を返す。VB は左→右→上→下の順に調べる
+            // (VB Unit.cls LookForSupportAttack: Case 1 は MapDataForUnit(x - 1, y))
+            var a = PlaceTwoSupporters("弱機", "弱機", ShotDefs);
+            Assert.AreSame(a.left, a.me.LookForSupportAttack(null));
         }
 
         // ===== LookForSupportGuard =====
@@ -296,6 +366,109 @@ namespace SRCCore.Coverage.Tests.Units
             var tw = attacker.Weapons.First(w => w.Name == "ライフル");
 
             Assert.IsNull(me.LookForSupportGuard(attacker, tw));
+
+            // 同じ配置でも、空を飛べる（空陸）ユニットならかばえる
+            var h2 = CreateWorld();
+            h2.DefineUnit("飛行僚機", weapons: Rifle, trans: "空陸", stats: "50000, 200, 1000, 100");
+            var me2 = h2.Place("自機", "アレン", 3, 3, area: "空中");
+            var flyer = h2.Place("飛行僚機", "ベルク", 4, 3);
+            var attacker2 = h2.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw2 = attacker2.Weapons.First(w => w.Name == "ライフル");
+            Assert.AreSame(flyer, me2.LookForSupportGuard(attacker2, tw2));
+        }
+
+        [TestMethod]
+        public void LookForSupportGuard_BossDoesNotGuardLowerRankUnlessDamageIsSmall()
+        {
+            // ボスランクが上のユニットは、被ダメージが大きければザコをかばわない
+            // (VB: If .BossRank > BossRank Then If dmg >= .MaxHP \ 20 Or dmg >= .HP \ 5 ...)
+            var h = CreateWorld();
+            var me = h.Place("自機", "アレン", 3, 3);
+            var boss = h.Place("僚機", "ベルク", 4, 3);
+            var attacker = h.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw = attacker.Weapons.First(w => w.Name == "ライフル");
+            boss.BossRank = 1;
+            // 最大ＨＰ 50000 なら 1/20 は 2500 でライフルのダメージはそれ未満、
+            // ＨＰ の 1/5 を下回るようにしておけば「被るダメージが少ない」のでかばう
+            Assert.AreSame(boss, me.LookForSupportGuard(attacker, tw));
+
+            // ＨＰが減って HP/5 以上のダメージを受けるならかばわない
+            boss.HP = 500;
+            Assert.IsNull(me.LookForSupportGuard(attacker, tw));
+        }
+
+        [TestMethod]
+        public void LookForSupportGuard_LowerRankGuardsBossEvenIfDestroyed()
+        {
+            // 倒されてしまう場合でも、かばう側のボスランクが守る相手より低ければかばう
+            var h = CreateWorld();
+            var me = h.Place("自機", "アレン", 3, 3);
+            var ally = h.Place("僚機", "ベルク", 4, 3);
+            var attacker = h.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw = attacker.Weapons.First(w => w.Name == "ライフル");
+            ally.HP = 1;
+            Assert.IsNull(me.LookForSupportGuard(attacker, tw));
+
+            me.BossRank = 1;
+            Assert.AreSame(ally, me.LookForSupportGuard(attacker, tw));
+        }
+
+        [TestMethod]
+        public void LookForSupportGuard_AutoDefense_SkipsWhenOwnDamageIsSmall()
+        {
+            // 自動反撃時は味方でも、受けるダメージが MaxHP/20 未満かつ HP/5 未満ならかばってもらわない
+            var h = CreateWorld();
+            h.DefineUnit("巨体機", weapons: Punch, stats: "100000, 200, 1000, 100");
+            var me = h.Place("巨体機", "アレン", 3, 3);
+            var ally = h.Place("僚機", "ベルク", 4, 3);
+            var attacker = h.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw = attacker.Weapons.First(w => w.Name == "ライフル");
+
+            // 手動反撃なら常にかばう
+            Assert.AreSame(ally, me.LookForSupportGuard(attacker, tw));
+
+            h.Src.SystemConfig.AutoDefense = true;
+            Assert.IsNull(me.LookForSupportGuard(attacker, tw));
+
+            // ＨＰが減って HP/5 以上のダメージになればかばう
+            me.HP = 100;
+            Assert.AreSame(ally, me.LookForSupportGuard(attacker, tw));
+        }
+
+        [TestMethod]
+        public void LookForSupportGuard_NpcOptionRestrictsPlayerGuardingNpc()
+        {
+            // 味方ユニットは通常ＮＰＣもかばうが、Option(対ＮＰＣサポートガード無効) では同じ陣営のみ
+            var h = CreateWorld();
+            var npc = h.Place("自機", "アレン", 3, 3, party: "ＮＰＣ");
+            var ally = h.Place("僚機", "ベルク", 4, 3);
+            var attacker = h.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw = attacker.Weapons.First(w => w.Name == "ライフル");
+            // ＮＰＣは味方以外なのでダメージが小さいとかばわない。ＨＰを減らしておく
+            npc.HP = 50;
+            Assert.AreSame(ally, npc.LookForSupportGuard(attacker, tw));
+
+            h.Src.Expression.DefineGlobalVariable("Option(対ＮＰＣサポートガード無効)");
+            Assert.IsNull(npc.LookForSupportGuard(attacker, tw));
+        }
+
+        [TestMethod]
+        public void LookForSupportGuard_DifferentTeamDoesNotGuard()
+        {
+            // かばう側にチーム指定があり、守る相手と異なればかばわない
+            var h = CreateWorld(supporterSkills: "援護Lv1, 1\nチーム=赤, 1", selfSkills: "チーム=青, 1");
+            var me = h.Place("自機", "アレン", 3, 3);
+            h.Place("僚機", "ベルク", 4, 3);
+            var attacker = h.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw = attacker.Weapons.First(w => w.Name == "ライフル");
+            Assert.IsNull(me.LookForSupportGuard(attacker, tw));
+
+            var h2 = CreateWorld(supporterSkills: "援護Lv1, 1\nチーム=青, 1", selfSkills: "チーム=青, 1");
+            var me2 = h2.Place("自機", "アレン", 3, 3);
+            var ally2 = h2.Place("僚機", "ベルク", 4, 3);
+            var attacker2 = h2.Place("敵機", "ゾルグ", 2, 3, party: "敵");
+            var tw2 = attacker2.Weapons.First(w => w.Name == "ライフル");
+            Assert.AreSame(ally2, me2.LookForSupportGuard(attacker2, tw2));
         }
 
         // ===== LookForSupport =====
@@ -339,6 +512,27 @@ namespace SRCCore.Coverage.Tests.Units
             enemy.UsedAction = enemy.MaxAction();
 
             Assert.AreEqual(0, me.LookForSupport(3, 3, true));
+        }
+
+        [TestMethod]
+        public void LookForSupport_TeamMismatchOnlyWhenBothTeamsAreSet()
+        {
+            // LookForSupport では双方にチーム指定があって異なる場合のみ除外する
+            // （LookForSupportAttack と違い、片方だけの指定では除外しない）
+            var h = CreateWorld(selfSkills: "チーム=青, 1");
+            var me = h.Create("自機", "アレン");
+            h.Place("僚機", "ベルク", 4, 3);
+            Assert.AreEqual(2, me.LookForSupport(3, 3, true));
+
+            var h2 = CreateWorld(supporterSkills: "援護Lv1, 1\nチーム=赤, 1");
+            var me2 = h2.Create("自機", "アレン");
+            h2.Place("僚機", "ベルク", 4, 3);
+            Assert.AreEqual(2, me2.LookForSupport(3, 3, true));
+
+            var h3 = CreateWorld(supporterSkills: "援護Lv1, 1\nチーム=赤, 1", selfSkills: "チーム=青, 1");
+            var me3 = h3.Create("自機", "アレン");
+            h3.Place("僚機", "ベルク", 4, 3);
+            Assert.AreEqual(0, me3.LookForSupport(3, 3, true));
         }
 
         [TestMethod]

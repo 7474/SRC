@@ -140,22 +140,21 @@ namespace SRCCore.Coverage.Tests.Units
             // 格闘/射撃/命中/回避/技量/反応/レベルはパイロットの能力値と比較する
             var h = CreateBasic(stats: "150, 140, 130, 120, 110, 100, 普通");
             var u = h.Create("試作機", "アレン", level: 1);
-            var p = u.MainPilot();
             void Check(string name, int value)
             {
                 Assert.IsTrue(u.IsNecessarySkillSatisfied2(name + "Lv" + value, null), name);
                 Assert.IsFalse(u.IsNecessarySkillSatisfied2(name + "Lv" + (value + 1), null), name);
             }
 
-            Check("格闘", p.InfightBase);
-            Check("射撃", p.ShootingBase);
-            Check("命中", p.HitBase);
-            Check("回避", p.DodgeBase);
-            Check("技量", p.TechniqueBase);
-            Check("反応", p.IntuitionBase);
-            Check("レベル", p.Level);
-            // 能力値の順序がデータ通りであること
-            Assert.IsTrue(p.InfightBase > p.ShootingBase && p.ShootingBase > p.HitBase && p.HitBase > p.DodgeBase);
+            // データの能力値にレベル(1)分の成長を加えた値と比較する
+            Check("格闘", 151);
+            Check("射撃", 141);
+            // 命中・回避はレベル毎に 2 ずつ成長する
+            Check("命中", 132);
+            Check("回避", 122);
+            Check("技量", 111);
+            Check("反応", 101);
+            Check("レベル", 1);
             // 魔力所有でないので「魔力」は 0 扱い
             Assert.IsFalse(u.IsNecessarySkillSatisfied2("魔力Lv1", null));
         }
@@ -179,6 +178,109 @@ namespace SRCCore.Coverage.Tests.Units
             Assert.IsTrue(u.IsNecessarySkillSatisfied2("反応初期値Lv" + (p.IntuitionBase - p.Level), null));
             Assert.IsTrue(u.IsNecessarySkillSatisfied2("射撃初期値Lv" + (p.ShootingBase - p.Level), null));
             Assert.IsFalse(u.IsNecessarySkillSatisfied2("魔力初期値", null));
+        }
+
+        [TestMethod]
+        public void IsNecessarySkillSatisfied2_InitialValues_LowAttackGrowthOption()
+        {
+            // Option(攻撃力低成長) では格闘・射撃の初期値はレベルの半分だけ差し引く。
+            // 命中などは従来通りレベル分を差し引く
+            var h = CreateBasic(stats: "150, 140, 130, 120, 110, 100, 普通");
+            h.Src.Expression.DefineGlobalVariable("Option(攻撃力低成長)");
+            var u = h.Create("試作機", "アレン", level: 10);
+
+            // 格闘 150 + 10/2 = 155 → 初期値 155 - 10/2 = 150
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("格闘初期値Lv150", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("格闘初期値Lv151", null));
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("射撃初期値Lv140", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("射撃初期値Lv141", null));
+            // 命中は 130 + 10×2 = 150 で、初期値は VB 同様にレベル分だけ差し引いて 150 - 10 = 140
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("命中初期値Lv140", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("命中初期値Lv141", null));
+        }
+
+        [TestMethod]
+        public void IsNecessarySkillSatisfied2_PlusPrefix_OutsideStatusCommand_StripsPlus()
+        {
+            // 「+技能」はステータスコマンド実行時以外では + を除いた条件で判定する
+            var h = CreateBasic("底力, 1");
+            var u = h.Create("試作機", "アレン");
+            h.Src.Map.MapFileName = "test.map";
+            h.PutOnMap(u, 3, 3);
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("+底力", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("+見切り", null));
+
+            // 出撃していなければステータス表示中でも + を除いた条件で判定
+            h.Src.Map.MapFileName = "";
+            h.Src.IsSubStage = true;
+            u.Status = "待機";
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("+見切り", null));
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("+底力", null));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Intermission.InStatusCommand の条件が反転しており、マップ無しのステータス表示中に true を返さない")]
+        public void IsNecessarySkillSatisfied2_PlusPrefix_SatisfiedInStatusCommand()
+        {
+            // ステータス表示中（マップ無し＋サブステージ）で出撃中なら「+技能」は常に満たされる
+            // (VB Intermission.bas InStatusCommand: If MapFileName = "" Then ... Or IsSubStage)
+            var h = CreateBasic();
+            var u = h.Create("試作機", "アレン");
+            h.PutOnMap(u, 3, 3);
+            h.Src.Map.MapFileName = "";
+            h.Src.IsSubStage = true;
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("+見切り", null));
+
+            // マップがある（通常の戦闘中）ならステータス表示ではない
+            h.Src.Map.MapFileName = "test.map";
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("+見切り", null));
+        }
+
+        [TestMethod]
+        public void IsNecessarySkillSatisfied2_CounterOnlySkills_NeverSatisfied()
+        {
+            // 「当て身技」「自動反撃」は技能を持っていても常に満たされない（専用武器を隠すため）
+            var h = CreateBasic("当て身技, 1\n自動反撃, 1");
+            var u = h.Create("試作機", "アレン");
+
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("当て身技", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("自動反撃", null));
+            // 「アイテム」は単独でも常に満たされる
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("アイテム", null));
+        }
+
+        [TestMethod]
+        public void IsNecessarySkillSatisfied2_ItemEquipped_ByNameOrClass()
+        {
+            // 「アイテム名装備」「アイテムクラス装備」は装備中のアイテムで判定する
+            var h = CreateBasic();
+            var u = h.Create("試作機", "アレン");
+            var data = h.Src.IDList.Add("光の剣");
+            data.Class = "剣";
+            data.Part = "アクセサリ";
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("光の剣装備", null));
+
+            u.AddItem(h.Src.IList.Add("光の剣"));
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("光の剣装備", null));
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("剣装備", null));
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("槍装備", null));
+        }
+
+        [TestMethod]
+        public void IsNecessarySkillSatisfied2_CarrierAdjacent_RequiresCarrierFeature()
+        {
+            // 「母艦隣接」は母艦能力を持つ隣接ユニットがいれば満たされる
+            var h = CreateBasic();
+            h.DefinePilot("ベルク");
+            h.DefinePilot("カイ");
+            h.DefineUnit("戦艦", "母艦");
+            h.DefineUnit("僚機");
+            var u = h.Place("試作機", "アレン", 3, 3);
+            h.Place("僚機", "ベルク", 4, 3);
+            Assert.IsFalse(u.IsNecessarySkillSatisfied2("母艦隣接", null));
+
+            h.Place("戦艦", "カイ", 2, 3);
+            Assert.IsTrue(u.IsNecessarySkillSatisfied2("母艦隣接", null));
         }
 
         [TestMethod]
@@ -405,6 +507,23 @@ namespace SRCCore.Coverage.Tests.Units
 
             Assert.IsFalse(withSkill.IsAvailable());
             Assert.IsTrue(withoutSkill.IsAvailable());
+        }
+
+        [TestMethod]
+        public void IsAvailable_OtherFormIsUnusableWhileIncapacitated()
+        {
+            // 状態が「他形態」のユニットは行動不能状態の間（制限時間切れの形態）は使用不能
+            var h = CreateBasic();
+            var u = h.Create("試作機", "アレン");
+            u.Status = "他形態";
+            Assert.IsTrue(u.IsAvailable());
+
+            u.AddCondition("行動不能", 1);
+            Assert.IsFalse(u.IsAvailable());
+
+            // 他形態でなければ行動不能でも形態としては使用可能
+            u.Status = "待機";
+            Assert.IsTrue(u.IsAvailable());
         }
 
         [TestMethod]
