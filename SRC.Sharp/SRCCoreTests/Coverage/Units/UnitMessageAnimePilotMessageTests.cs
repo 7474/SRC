@@ -282,7 +282,11 @@ namespace SRCCore.Coverage.Tests.Units
             f.Src.Stage = "味方";
             u.AddCondition("沈黙", 1);
 
-            u.PilotMessage("かけ声");
+            // Dice(3) = 3 に固定し、かけ声の乱数ではなく沈黙の判定で表示が抑止されることを確かめる
+            using (UnitMessageAnimeFixture.FixDice(0.99))
+            {
+                u.PilotMessage("かけ声");
+            }
             u.PilotMessage("ビームライフル(命中)");
 
             Assert.AreEqual(0, f.Messages.Count);
