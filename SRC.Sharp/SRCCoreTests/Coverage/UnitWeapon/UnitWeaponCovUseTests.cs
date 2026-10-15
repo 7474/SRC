@@ -170,7 +170,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: UseWeapon 側（1-4）は直したが、続く SyncBullet の斉属性の処理が CInt(x + 0.49999) ではなく (int) 切り捨てで弾数を減らす（1-11）")]
         public void UseWeapon_OtherWeapon_RoundsFullBurstAmmoUp()
         {
             // VB: SetBullet i, MinLng(CInt(MaxBullet(i) * dblBullet(w) + 0.49999), Bullet(i))
