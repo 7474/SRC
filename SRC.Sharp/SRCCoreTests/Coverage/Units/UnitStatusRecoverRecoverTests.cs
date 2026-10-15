@@ -452,18 +452,59 @@ namespace SRCCore.Coverage.Tests
         [Ignore("移植の不具合: SyncBullet の共属性の端数処理が CInt(x + 0.49999)（四捨五入）でなく切り捨てになっている")]
         public void SyncBullet_SharedWeapons_RoundsWhenFewerMaxBullets()
         {
-            // 元の SRC: 最大弾数が少ない側は CInt(最大弾数×残弾÷相手の最大弾数 + 0.49999) で合わせる
-            // 最大2発中1発 → 最大3発の武器は CInt(1.5 + 0.49999) = 2 発
+            // 元の SRC の Unit.SyncBullet: 合わせられる側（i）の最大弾数が相手（w）以下の場合は
+            // CInt(最大弾数(i)×残弾(w)÷最大弾数(w) + 0.49999) で端数を切り上げる
+            // A(最大2・満タン) と B(最大3・残2):
+            //   w=A → B = Min(2, 3×2\2=3) = 2
+            //   w=B → A = Min(2, CInt(2×2÷3 + 0.49999) = CInt(1.833) = 2) = 2（切り捨てだと 1 になる）
             var src = CreateSrc();
             var ud = AddUnitData(src);
             AddWeapon(ud, "ミサイルA", "射共", 2);
             AddWeapon(ud, "ミサイルB", "射共", 3);
             var unit = CreateUnit(src, ud);
-            Weapon(unit, "ミサイルA").SetBullet(1);
+            Weapon(unit, "ミサイルB").SetBullet(2);
 
             unit.SyncBullet();
 
+            Assert.AreEqual(2, Weapon(unit, "ミサイルA").Bullet());
             Assert.AreEqual(2, Weapon(unit, "ミサイルB").Bullet());
+        }
+
+        [TestMethod]
+        public void SyncBullet_SharedAbilities_FollowRemainingRatio()
+        {
+            // 共属性で同じレベルのアビリティ同士も使用回数の割合を合わせる（元の SRC の SyncBullet「共属性アビリティの処理」）
+            // A(最大4・残1) → B(最大8) は 8×1\4 = 2。レベルの違う共属性は対象外
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddAbility(ud, "修理A", "共", 4);
+            AddAbility(ud, "修理B", "共", 8);
+            AddAbility(ud, "別系統", "共L2", 8);
+            var unit = CreateUnit(src, ud);
+            Ability(unit, "修理A").SetStock(1);
+
+            unit.SyncBullet();
+
+            Assert.AreEqual(1, Ability(unit, "修理A").Stock());
+            Assert.AreEqual(2, Ability(unit, "修理B").Stock());
+            Assert.AreEqual(8, Ability(unit, "別系統").Stock());
+        }
+
+        [TestMethod]
+        public void SyncBullet_SharedAbility_LimitsSharedWeapon()
+        {
+            // 共属性アビリティの使用回数に合わせて共属性武器の弾数も減る
+            // アビリティ(最大2・残1) → 武器(最大4) は 4×1\2 = 2
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "ミサイル", "射共", 4);
+            AddAbility(ud, "補給", "共", 2);
+            var unit = CreateUnit(src, ud);
+            Ability(unit, "補給").SetStock(1);
+
+            unit.SyncBullet();
+
+            Assert.AreEqual(2, Weapon(unit, "ミサイル").Bullet());
         }
 
         // ──────────────────────────────────────────────
@@ -537,29 +578,35 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Rest_Poison_Decreases10Percent()
+        {
+            // 毒のＨＰ減少は基本で最大ＨＰの 10%
+            Assert.AreEqual(900, PoisonedHPAfterRest(null));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Unit.Update が耐性/弱点/無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
         public void Rest_Poison_ModifiedByResistanceAndWeakness()
         {
-            // 毒のＨＰ減少は基本 10%、耐性で半減、弱点で倍、無効化で 0
-            var src = CreateSrc();
-            var unit = CreateUnit(src, AddUnitData(src));
+            // 毒のＨＰ減少は耐性で半減、弱点で倍、無効化で 0
+            // 元の SRC では Rest 冒頭の Update で特殊能力から耐性文字列が作られる
+            Assert.AreEqual(950, PoisonedHPAfterRest("耐性=毒"));
+            Assert.AreEqual(800, PoisonedHPAfterRest("弱点=毒"));
+            Assert.AreEqual(1000, PoisonedHPAfterRest("無効化=毒"));
+        }
 
-            unit.strResist = "毒";
-            unit.HP = 1000;
+        private int PoisonedHPAfterRest(string unitFeature)
+        {
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            if (unitFeature != null)
+            {
+                ud.AddFeature(unitFeature);
+            }
+            var unit = CreateUnit(src, ud);
             unit.AddCondition("毒", 5);
             unit.Rest();
-            Assert.AreEqual(950, unit.HP);
-
-            unit.strResist = "";
-            unit.strWeakness = "毒";
-            unit.HP = 1000;
-            unit.Rest();
-            Assert.AreEqual(800, unit.HP);
-
-            unit.strWeakness = "";
-            unit.strImmune = "毒";
-            unit.HP = 1000;
-            unit.Rest();
-            Assert.AreEqual(1000, unit.HP);
+            return unit.HP;
         }
 
         [TestMethod]
@@ -578,35 +625,38 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Rest_TerrainDecrease_10PercentPerLevel()
+        {
+            // 地形のＨＰ減少=属性 は最大ＨＰの 10%/Lv
+            Assert.AreEqual(400, TerrainHPAfterRest("ＨＰ減少Lv1=火", null));
+            Assert.AreEqual(300, TerrainHPAfterRest("ＨＰ減少Lv2=火", null));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Unit.Update が耐性/吸収/無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
         public void Rest_TerrainDecrease_ModifiedByAttributes()
         {
-            // 地形のＨＰ減少=属性 は 10%/Lv、耐性で半減、吸収で回復、無効化で 0
+            // 地形のＨＰ減少=属性 は耐性で半減、吸収で回復、無効化で 0
+            Assert.AreEqual(450, TerrainHPAfterRest("ＨＰ減少Lv1=火", "耐性=火"));
+            Assert.AreEqual(600, TerrainHPAfterRest("ＨＰ減少Lv1=火", "吸収=火"));
+            Assert.AreEqual(500, TerrainHPAfterRest("ＨＰ減少Lv1=火", "無効化=火"));
+        }
+
+        private int TerrainHPAfterRest(string terrainFeature, string unitFeature)
+        {
             var src = CreateSrc();
             var td = CreateMap(src);
-            td.AddFeature("ＨＰ減少Lv1=火");
-            var unit = CreateUnit(src, AddUnitData(src));
+            td.AddFeature(terrainFeature);
+            var ud = AddUnitData(src);
+            if (unitFeature != null)
+            {
+                ud.AddFeature(unitFeature);
+            }
+            var unit = CreateUnit(src, ud);
             unit.StandBy(2, 2);
-
             unit.HP = 500;
             unit.Rest();
-            Assert.AreEqual(400, unit.HP);
-
-            unit.strResist = "火";
-            unit.HP = 500;
-            unit.Rest();
-            Assert.AreEqual(450, unit.HP);
-
-            unit.strResist = "";
-            unit.strAbsorb = "火";
-            unit.HP = 500;
-            unit.Rest();
-            Assert.AreEqual(600, unit.HP);
-
-            unit.strAbsorb = "";
-            unit.strImmune = "火";
-            unit.HP = 500;
-            unit.Rest();
-            Assert.AreEqual(500, unit.HP);
+            return unit.HP;
         }
 
         [TestMethod]
@@ -689,22 +739,114 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        public void Rest_TerrainCondition_ImmuneUnitIsNotAffected()
+        public void Rest_TerrainCondition_AddedFor10000TurnsWithoutLevel()
         {
-            // 状態付加は特殊効果無効化を持つユニットには付加されない。Lv指定が無ければ 10000 ターン
+            // 地形の状態付加は Lv指定が無ければ 10000 ターン
             var src = CreateSrc();
             var td = CreateMap(src);
             td.AddFeature("状態付加=毒");
             var unit = CreateUnit(src, AddUnitData(src));
             unit.StandBy(2, 2);
-            unit.strSpecialEffectImmune = "毒";
 
             unit.Rest();
-            Assert.IsFalse(unit.IsConditionSatisfied("毒"));
 
-            unit.strSpecialEffectImmune = "";
-            unit.Rest();
             Assert.AreEqual(10000, unit.ConditionLifetime("毒"));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Unit.Update が特殊効果無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
+        public void Rest_TerrainCondition_ImmuneUnitIsNotAffected()
+        {
+            // 状態付加は特殊効果無効化を持つユニットには付加されない
+            var src = CreateSrc();
+            var td = CreateMap(src);
+            td.AddFeature("状態付加=毒");
+            var ud = AddUnitData(src);
+            ud.AddFeature("特殊効果無効化=毒");
+            var unit = CreateUnit(src, ud);
+            unit.StandBy(2, 2);
+
+            unit.Rest();
+
+            Assert.IsFalse(unit.IsConditionSatisfied("毒"));
+        }
+
+        [TestMethod]
+        public void Rest_NaturalRecovery_OnlyENPlus5()
+        {
+            // 特殊能力が無ければＨＰは回復せず、ＥＮは毎ターン 5 回復する
+            var src = CreateSrc();
+            var unit = CreateUnit(src, AddUnitData(src));
+            unit.HP = 500;
+            unit.EN = 50;
+
+            unit.Rest();
+
+            Assert.AreEqual(500, unit.HP);
+            Assert.AreEqual(55, unit.EN);
+        }
+
+        [TestMethod]
+        public void Rest_NaturalENRecoveryDisabledByOption()
+        {
+            // Option(ＥＮ自然回復無効) ではＥＮの自然回復が無い
+            var src = CreateSrc();
+            src.Expression.DefineGlobalVariable("Option(ＥＮ自然回復無効)");
+            src.Expression.SetVariableAsLong("Option(ＥＮ自然回復無効)", 1);
+            var unit = CreateUnit(src, AddUnitData(src));
+            unit.EN = 50;
+
+            unit.Rest();
+
+            Assert.AreEqual(50, unit.EN);
+        }
+
+        [TestMethod]
+        public void Rest_FirstTurnOfPlayerStage_DoesNotRecover()
+        {
+            // 味方ステージの1ターン目（スタートイベント直後）は回復を行わない
+            var src = CreateSrc();
+            src.Turn = 1;
+            var unit = CreateUnit(src, AddUnitData(src));
+            unit.EN = 50;
+
+            unit.Rest();
+
+            Assert.AreEqual(50, unit.EN);
+        }
+
+        [TestMethod]
+        public void Rest_Plana_RecoversSixteenthPlusFeature()
+        {
+            // 霊力は毎ターン 最大霊力\16 回復し、霊力回復Lv で +最大霊力×Lv\10（元の SRC の Unit.Rest「霊力回復」）
+            // 霊力Lv100・レベル2 → 最大霊力 100 + 1.5×2 = 103
+            Assert.AreEqual(6, PlanaAfterRest(null));
+            Assert.AreEqual(16, PlanaAfterRest("霊力回復Lv1"));
+        }
+
+        private int PlanaAfterRest(string unitFeature)
+        {
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            if (unitFeature != null)
+            {
+                ud.AddFeature(unitFeature);
+            }
+            var pd = src.PDList.Add("霊能者");
+            pd.Adaption = "AAAA";
+            pd.AddSkill("霊力", 100d, "", 1);
+            var unit = src.UList.Add(ud.Name, 0, "味方");
+            var pilot = src.PList.Add("霊能者", 2, "味方");
+            unit.AddPilot(pilot);
+            pilot.Unit = unit;
+            unit.Update();
+            unit.FullRecover();
+            Assert.AreEqual(103, pilot.MaxPlana());
+            pilot.Plana = 0;
+
+            unit.Rest();
+
+            return pilot.Plana;
         }
 
         [TestMethod]

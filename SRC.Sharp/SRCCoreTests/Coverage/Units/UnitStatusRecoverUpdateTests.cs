@@ -149,6 +149,21 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void BossRank_LifeSizeOption_UsesHeroTableForRobot()
+        {
+            // Option(等身大基準) ではロボットユニットも人間ユニットのボスランク表を使う
+            // ボスランク1: ＨＰ+ＨＰ、装甲+200
+            var src = CreateSrc();
+            SetOption(src, "等身大基準");
+            var unit = CreateUnit(src, AddUnitData(src));
+
+            unit.BossRank = 1;
+
+            Assert.AreEqual(2000, unit.MaxHP);
+            Assert.AreEqual(700, unit.get_Armor("基本値"));
+        }
+
+        [TestMethod]
         public void BossRank_ArmorReducedOption_Adds300PerRank()
         {
             // Option(BossRank装甲修正低下) では装甲修正が 300×ボスランク になる
@@ -627,6 +642,154 @@ namespace SRCCore.Coverage.Tests
             var unit = CreateUnit(src, ud);
 
             Assert.AreEqual("格火|毒", Weapon(unit, "パンチ").WeaponClass());
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 攻撃属性の処理で非表示属性が無くても武器属性の末尾に「|」を付けている")]
+        public void AttackAttribute_NoHiddenAttribute_NoTrailingBar()
+        {
+            // 元の SRC は非表示属性がある場合のみ「|」＋非表示属性を付ける（Unit.Update「非表示の属性を追加」）
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "パンチ", 1000, "格", maxRange: 1);
+            ud.AddFeature("攻撃属性=火");
+            var unit = CreateUnit(src, ud);
+
+            Assert.AreEqual("格火", Weapon(unit, "パンチ").WeaponClass());
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 攻撃属性=属性 武器指定 の武器指定を Skip(2) で読むため最初の武器指定が捨てられ全武器に付加される")]
+        public void AttackAttribute_WithTarget_AppliesOnlyToMatchingWeapons()
+        {
+            // 攻撃属性=属性 武器指定 は指定に合う武器にだけ属性を付ける
+            // 元の SRC の Unit.Update は武器指定がある場合 k=2（2番目の要素）から判定する
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "パンチ", 1000, "格", maxRange: 1);
+            AddWeapon(ud, "ライフル", 1000, "射");
+            ud.AddFeature("攻撃属性=火 パンチ");
+            var unit = CreateUnit(src, ud);
+
+            Assert.IsTrue(Weapon(unit, "パンチ").IsWeaponClassifiedAs("火"));
+            Assert.IsFalse(Weapon(unit, "ライフル").IsWeaponClassifiedAs("火"));
+        }
+
+        [TestMethod]
+        public void AttackAttribute_Hidden_AppendsAfterBar()
+        {
+            // 攻撃属性=非表示 属性 は「|」以降の非表示属性として付ける
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "パンチ", 1000, "格", maxRange: 1);
+            ud.AddFeature("攻撃属性=非表示 毒");
+            var unit = CreateUnit(src, ud);
+
+            Assert.AreEqual("格|毒", Weapon(unit, "パンチ").WeaponClass());
+            Assert.IsTrue(Weapon(unit, "パンチ").IsWeaponClassifiedAs("毒"));
+        }
+
+        [TestMethod]
+        public void AttackAttribute_Magic_InsertedBeforePhysicalAttribute()
+        {
+            // 魔属性を付加する場合は 武/突/接/銃/実 の直前に挿入して魔法武器化する
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "剣", 1000, "格武", maxRange: 1);
+            AddWeapon(ud, "ビーム", 1000, "射");
+            ud.AddFeature("攻撃属性=魔");
+            var unit = CreateUnit(src, ud);
+
+            // 末尾の「|」の有無（上の移植の不具合）に依存しないよう表示部分だけを比較する
+            Assert.AreEqual("格魔武", Weapon(unit, "剣").WeaponClass().Split('|')[0]);
+            Assert.AreEqual("射魔", Weapon(unit, "ビーム").WeaponClass().Split('|')[0]);
+        }
+
+        [TestMethod]
+        public void VUpWeaponItem_AddsRankEquivalentPerItemSlot()
+        {
+            // 「Ｖ－ＵＰ=武器」はアイテムスロット数分のランクとして武器攻撃力を修正する
+            // スロット4 → 通常武器 +100×4、Ｒ属性 +50×4
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            ud.ItemNum = 4;
+            AddWeapon(ud, "通常", 1000, "射");
+            AddWeapon(ud, "低成長", 1000, "射Ｒ");
+            var unit = CreateUnit(src, ud);
+            var idata = src.IDList.Add("Ｖ－ＵＰ武器");
+            idata.Class = "固定";
+            idata.Part = "非表示";
+            idata.AddFeature("Ｖ－ＵＰ=武器");
+
+            unit.AddItem(src.IList.Add("Ｖ－ＵＰ武器"));
+
+            Assert.AreEqual(1400, Weapon(unit, "通常").WeaponPower(""));
+            Assert.AreEqual(1200, Weapon(unit, "低成長").WeaponPower(""));
+            // 「Ｖ－ＵＰ=武器」はユニットの能力値は修正しない
+            Assert.AreEqual(1000, unit.MaxHP);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Unit.Update が有効化されていない（Activated でない）アイテムの武器も追加している")]
+        public void ItemWeapons_OnlyFromActivatedItems()
+        {
+            // 元の SRC の Unit.Update は「If .Activated Then」のアイテムの武器のみ追加する
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            ud.ItemNum = 1;
+            var unit = CreateUnit(src, ud);
+            var idata = src.IDList.Add("封印銃");
+            idata.Class = "固定";
+            idata.Part = "非表示";
+            var wd = idata.AddWeapon("封印ビーム");
+            wd.Power = 1000;
+            wd.Class = "射";
+            wd.MinRange = 1;
+            wd.MaxRange = 3;
+            // Disable されたアイテムは使用不可
+            src.Expression.DefineGlobalVariable("Disable(封印銃)");
+
+            unit.AddItem(src.IList.Add("封印銃"));
+
+            Assert.IsFalse(unit.Weapons.Any(w => w.Name == "封印ビーム"));
+        }
+
+        [TestMethod]
+        public void ItemWeapons_ActivatedItemAddsWeapons()
+        {
+            // 装備可能なアイテムの武器はユニットの武器に加わる
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            ud.ItemNum = 1;
+            var unit = CreateUnit(src, ud);
+            var idata = src.IDList.Add("ビーム銃");
+            idata.Class = "固定";
+            idata.Part = "非表示";
+            var wd = idata.AddWeapon("ビーム");
+            wd.Power = 1000;
+            wd.Class = "射";
+            wd.MinRange = 1;
+            wd.MaxRange = 3;
+
+            unit.AddItem(src.IList.Add("ビーム銃"));
+
+            Assert.IsTrue(unit.Weapons.Any(w => w.Name == "ビーム"));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: Unit.Update が特殊効果発動率強化の補正値を計算するが SetCriticalCorrection を呼ばず捨てている")]
+        public void SpecialEffectRateEnhance_Adds5PerLevelToEffectWeapons()
+        {
+            // 特殊効果発動率強化は特殊効果を持つ武器のＣＴ率を +5/Lv（通常武器には効かない）
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            AddWeapon(ud, "毒針", 1000, "射毒");
+            AddWeapon(ud, "ライフル", 1000, "射");
+            ud.AddFeature("特殊効果発動率強化Lv2");
+            var unit = CreateUnit(src, ud);
+
+            Assert.AreEqual(10, Weapon(unit, "毒針").WeaponCritical());
+            Assert.AreEqual(0, Weapon(unit, "ライフル").WeaponCritical());
         }
 
         [TestMethod]
