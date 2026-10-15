@@ -459,7 +459,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Map.AreaWithUnit が全マスをマスクした後に対象ユニットのマスを解除しないため、攻撃命令の対象を選べない")]
         public void Order_Attack_OnlyEnemiesSelectableAndSetsModeToTargetPilot()
         {
             // 「攻撃」命令は敵ユニットのみ選択可能にし、選んだユニットのパイロットIDを行動モードにする
@@ -488,7 +487,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Map.AreaWithUnit が全マスをマスクした後に対象ユニットのマスを解除しないため、護衛命令の対象を選べない")]
         public void Order_Escort_OnlyAlliesSelectableExceptSelf()
         {
             // 「護衛」命令は味方ユニット（自分以外）を選択可能にし、選んだユニットのパイロットIDを行動モードにする

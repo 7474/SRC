@@ -243,7 +243,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: LookForSupportAttack の隣接ユニット探索順が VB(左,右,上,下) と異なり Map.AdjacentUnit(右,左,下,上) になっている")]
         public void LookForSupportAttack_WithoutTarget_PrefersLeftNeighbourLikeVb()
         {
             // ターゲット未定の場合は最初に見つかった候補を返す。VB は左→右→上→下の順に調べる

@@ -83,7 +83,8 @@ namespace SRCCore.Extensions
                             break;
                         }
 
-                        if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) + Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
+                        if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) > 2
+                            || Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
                         {
                             break;
                         }

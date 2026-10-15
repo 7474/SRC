@@ -269,7 +269,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 合体パートナーの距離判定がマンハッタン距離になっている")]
         public void Combine_OnMap_PartnerDiagonalWithinTwo_IsCombined()
         {
             // 元の SRC は Abs(dx) > 2 Or Abs(dy) > 2 のときだけ除外する（縦横それぞれ２マス以内の正方形）。

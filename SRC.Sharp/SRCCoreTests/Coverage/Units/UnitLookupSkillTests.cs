@@ -72,7 +72,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: MaxCounterAttack が SkillData ではなくリテラル「先手必勝」の2番目を必要気力として読むため常に満たされる")]
         public void MaxCounterAttack_SenteHisshou_UsesSpecifiedMorale()
         {
             // 先手必勝=別名 必要気力 の場合、指定された気力以上でのみ無制限になる
