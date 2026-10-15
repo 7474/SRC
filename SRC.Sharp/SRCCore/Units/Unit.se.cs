@@ -137,6 +137,95 @@ namespace SRCCore.Units
                 return;
             }
 
+            // 戦闘アニメ有効時は効果音に合わせて戦闘アニメを自動選択
+            var w = 0;
+            for (var i = 1; i <= CountWeapon(); i++)
+            {
+                if (Weapon(i).Name == main_situation)
+                {
+                    w = i;
+                    break;
+                }
+            }
+            if (SRC.BattleAnimation && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+            {
+                if (w > 0)
+                {
+                    switch (Strings.LCase(anime) ?? "")
+                    {
+                        case "swing.wav":
+                            {
+                                if (Strings.InStr(main_situation, "槍") > 0 || Strings.InStr(main_situation, "スピア") > 0 || Strings.InStr(main_situation, "ランス") > 0 || Strings.InStr(main_situation, "ジャベリン") > 0)
+                                {
+                                    Effect.ShowAnimation("刺突攻撃");
+                                    return;
+                                }
+                                else if (Weapon(w).IsWeaponClassifiedAs("武") || Weapon(w).IsWeaponClassifiedAs("実"))
+                                {
+                                    Effect.ShowAnimation("白兵武器攻撃");
+                                    return;
+                                }
+
+                                break;
+                            }
+                    }
+                }
+                else if (Strings.InStr(main_situation, "(命中)") > 0)
+                {
+                    switch (Strings.LCase(anime) ?? "")
+                    {
+                        case "break.wav":
+                            Effect.ShowAnimation("打撃命中");
+                            return;
+                        case "combo.wav":
+                            Effect.ShowAnimation("乱打命中");
+                            return;
+                        case "crash.wav":
+                            Effect.ShowAnimation("強打命中 Crash.wav");
+                            return;
+                        case "explode.wav":
+                            Effect.ShowAnimation("爆発命中");
+                            return;
+                        case "explode(far).wav":
+                            Effect.ShowAnimation("超爆発命中 Explode(Far).wav");
+                            return;
+                        case "explode(nuclear).wav":
+                            Effect.ShowAnimation("超爆発命中 Explode(Nuclear).wav");
+                            return;
+                        case "fire.wav":
+                            Effect.ShowAnimation("炎命中");
+                            return;
+                        case "glass.wav":
+                            // VB では w = 0 で IsWeaponClassifiedAs(w, "冷") を判定するため常に False となり、何も再生しない
+                            return;
+                        case "punch.wav":
+                            Effect.ShowAnimation("打撃命中");
+                            return;
+                        case "punch(2).wav":
+                        case "punch(3).wav":
+                        case "punch(4).wav":
+                            Effect.ShowAnimation("連打命中");
+                            return;
+                        case "saber.wav":
+                        case "slash.wav":
+                            Effect.ShowAnimation("斬撃命中 " + anime);
+                            return;
+                        case "shock(low).wav":
+                            Effect.ShowAnimation("強打命中 Shock(Low).wav");
+                            return;
+                        case "stab.wav":
+                            Effect.ShowAnimation("刺突命中");
+                            return;
+                        case "thunder.wav":
+                            Effect.ShowAnimation("放電命中 Thunder.wav");
+                            return;
+                        case "whip.wav":
+                            Effect.ShowAnimation("打撃命中 Whip.wav");
+                            return;
+                    }
+                }
+            }
+
             // メッセージウィンドウは表示されている？
             var is_message_form_opened = GUI.MessageFormVisible;
 
@@ -146,7 +235,7 @@ namespace SRCCore.Units
             Event.ResetObjectDrawSetting();
 
             // 検索するシチュエーションが武器名かどうか調べる
-            var is_weapon = Weapons.Any(w => main_situation == w.Name);
+            var is_weapon = Weapons.Any(x => main_situation == x.Name);
 
             // 検索するシチュエーションがアビリティかどうか調べる
             var is_ability = Abilities.Any(a => main_situation == a.Data.Name);
@@ -170,9 +259,10 @@ namespace SRCCore.Units
             {
                 var need_refresh = false;
                 var wait_time = 0;
+                var animepart = "";
                 foreach (var a in animes)
                 {
-                    var animepart = a;
+                    animepart = a;
 
                     // 式評価
                     Expression.FormatMessage(ref animepart);
@@ -279,7 +369,7 @@ namespace SRCCore.Units
                         case "keep":
                             {
                                 // そのまま終了
-                                break;
+                                goto EndAnime;
                             }
                     }
 
@@ -314,6 +404,19 @@ namespace SRCCore.Units
                 NextAnime:
                     ;
                 }
+            EndAnime:
+
+                if (SRC.BattleAnimation && !GUI.IsPictureDrawn && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
+                {
+                    if (w > 0)
+                    {
+                        Effect.ShowAnimation("デフォルト攻撃");
+                    }
+                    else if (Strings.InStr(main_situation, "(命中)") > 0)
+                    {
+                        Effect.ShowAnimation("ダメージ命中 -.wav");
+                    }
+                }
 
                 // 特殊効果再生後にウェイトを入れる？
                 if (need_refresh)
@@ -329,7 +432,7 @@ namespace SRCCore.Units
                 }
 
                 // 画像を消去しておく
-                if (GUI.IsPictureDrawn && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
+                if (GUI.IsPictureDrawn && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(animepart) != "keep")
                 {
                     GUI.ClearPicture();
                     GUI.UpdateScreen();

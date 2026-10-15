@@ -61,7 +61,7 @@ namespace SRCCore.Units
 
             // シチュエーションのリストを構築
             var situations = new List<string>();
-            if (!string.IsNullOrEmpty(sub_situation) && main_situation == sub_situation)
+            if (!string.IsNullOrEmpty(sub_situation) && main_situation != sub_situation)
             {
                 situations.Add(main_situation + "(" + sub_situation + ")");
             }
@@ -325,9 +325,10 @@ namespace SRCCore.Units
                 var wait_time = 0;
                 var sname = "";
                 var buf = "";
+                var animepart = "";
                 foreach (var a in animes)
                 {
-                    var animepart = a;
+                    animepart = a;
                     // 最後に実行されたのがサブルーチン呼び出しかどうかを判定するため
                     // サブルーチン名をあらかじめクリアしておく
                     sname = "";
@@ -439,7 +440,7 @@ namespace SRCCore.Units
                         case "keep":
                             {
                                 // そのまま終了
-                                break;
+                                goto EndAnime;
                             }
                     }
 
@@ -508,7 +509,7 @@ namespace SRCCore.Units
                     }
 
                     // サブルーチンが見つからなかった
-                    if (Event.FindNormalLabel(sname) == 0)
+                    if (Event.FindNormalLabel(sname) < 0)
                     {
                         if (in_bulk)
                         {
@@ -611,6 +612,7 @@ namespace SRCCore.Units
                 NextAnime:
                     ;
                 }
+            EndAnime:
 
                 // 戦闘アニメ再生後にウェイトを入れる？
                 if (need_refresh)
@@ -626,7 +628,7 @@ namespace SRCCore.Units
                 }
 
                 // 画像を消去しておく
-                if (GUI.IsPictureDrawn && string.IsNullOrEmpty(sname) && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(anime) != "keep")
+                if (GUI.IsPictureDrawn && string.IsNullOrEmpty(sname) && Strings.InStr(main_situation, "(準備)") == 0 && Strings.LCase(animepart) != "keep")
                 {
                     GUI.ClearPicture();
                     GUI.UpdateScreen();

@@ -458,7 +458,7 @@ namespace SRCCore.Units
             {
                 var pname = pnames[i];
                 // 追加パイロットにメッセージデータがあればそちらを優先
-                if (i == pnames.Count - 1)
+                if (i == 3)
                 {
                     if (SRC.MDList.IsDefined(MainPilot().MessageType))
                     {
@@ -567,7 +567,7 @@ namespace SRCCore.Units
             }
             else
             {
-                md = SRC.MDList.Item(Pilots.First().MessageType);
+                md = SRC.MDList.Item(p.MessageType);
             }
 
             // メッセージデータが見つからない場合は他のパイロットで探しなおす
@@ -1050,8 +1050,8 @@ namespace SRCCore.Units
                 if (found != null) return found;
             }
 
-            // パイロットメッセージデータで検索
-            found = SearchMessageInList(SRC.MDList, situations, "解説メッセージ", uname);
+            // 戦闘アニメデータで検索
+            found = SearchMessageInList(SRC.ADList, situations, "戦闘アニメ", uname);
             if (found != null) return found;
 
             // 特殊効果データで検索
