@@ -22,6 +22,21 @@ namespace SRCRender
         /// </summary>
         public SkiaSharp.SKRectI? MapCursor { get; set; }
 
+        /// <summary>
+        /// メインウィンドウ（マップ・ステータス）を表示しているか。元の SRC はプロローグ・インターミッションなどで
+        /// メインウィンドウを隠すため、隠している間はマップとステータスを描かずに黒くする
+        /// </summary>
+        public bool MainFormVisible { get; set; }
+
+        /// <summary>
+        /// キー操作のポインタ（クリック待ちの間、画面上の位置を指す。null で非表示）。ScreenGUI.Present が更新する。
+        /// 十字キーでホットポイントへ跳び（無ければ自由に動き）、Enter でその位置をクリックする
+        /// </summary>
+        public SkiaSharp.SKPointI? KeyPointer { get; set; }
+
+        /// <summary>キー操作のポインタが指しているホットポイントの矩形（無ければ null）</summary>
+        public SkiaSharp.SKRectI? KeyPointerTarget { get; set; }
+
         /// <summary>タイトルやロード中の表示（null で非表示）</summary>
         public string Splash { get; set; }
 

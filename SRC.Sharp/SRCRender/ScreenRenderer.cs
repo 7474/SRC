@@ -95,7 +95,8 @@ namespace SRCRender
         {
             canvas.Clear(BackColor);
 
-            if (layers.Map != null)
+            // メインウィンドウを隠している間（プロローグ・インターミッションなど）は、マップとステータスを描かない（黒いまま）
+            if (layers.Map != null && state.MainFormVisible)
             {
                 canvas.DrawBitmap(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
                 if (state.MapCursor is SKRectI cursor)
@@ -105,17 +106,21 @@ namespace SRCRender
             }
             if (!string.IsNullOrEmpty(state.Splash))
             {
-                DrawCenteredText(canvas, ScreenLayout.MapArea, state.Splash, largeFont);
+                // 元の SRC の frmNowLoading は画面の中央。メインウィンドウを表示していればマップの中央に出す
+                DrawCenteredText(canvas, state.MainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height), state.Splash, largeFont);
             }
             if (state.Title != null)
             {
                 DrawTitle(canvas, state.Title);
             }
-            DrawStatus(canvas, layers.Status);
+            if (state.MainFormVisible)
+            {
+                DrawStatus(canvas, layers.Status);
+            }
             DrawMessageArea(canvas, layers.Message);
             if (!string.IsNullOrEmpty(state.Telop))
             {
-                DrawTelop(canvas, state.Telop);
+                DrawTelop(canvas, state.Telop, state.MainFormVisible);
             }
             if (state.List != null)
             {
@@ -133,9 +138,40 @@ namespace SRCRender
             {
                 DrawDialog(canvas, state.Dialog);
             }
+            if (state.KeyPointerTarget is SKRectI target)
+            {
+                DrawMapCursor(canvas, target);
+            }
+            if (state.KeyPointer is SKPointI pointer)
+            {
+                DrawKeyPointer(canvas, pointer);
+            }
             if (state.Tooltip != null)
             {
                 DrawTooltip(canvas, state.Tooltip);
+            }
+        }
+
+        /// <summary>キー操作のポインタ（矢印のマウスカーソルの形）を描く</summary>
+        private static void DrawKeyPointer(SKCanvas canvas, SKPointI p)
+        {
+            using (var path = new SKPath())
+            using (var paint = new SKPaint { IsAntialias = true })
+            {
+                path.MoveTo(p.X, p.Y);
+                path.LineTo(p.X, p.Y + 17);
+                path.LineTo(p.X + 4, p.Y + 13);
+                path.LineTo(p.X + 7, p.Y + 20);
+                path.LineTo(p.X + 10, p.Y + 19);
+                path.LineTo(p.X + 7, p.Y + 12);
+                path.LineTo(p.X + 12, p.Y + 12);
+                path.Close();
+                paint.Color = SKColors.White;
+                canvas.DrawPath(path, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.StrokeWidth = 1;
+                paint.Color = SKColors.Black;
+                canvas.DrawPath(path, paint);
             }
         }
 
@@ -298,7 +334,7 @@ namespace SRCRender
         public SKPointI MessageWindowOrigin(Compat.MessageWindow window)
         {
             // 元の SRC と同じくメインウィンドウの左下に重ねて表示する
-            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height);
+            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height, window.Centered);
             return new SKPointI(rect.Left + ScreenLayout.MessageFramePx, rect.Top + ScreenLayout.MessageTitleBarPx);
         }
 
@@ -308,7 +344,7 @@ namespace SRCRender
             {
                 return;
             }
-            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height);
+            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height, window.Centered);
             using (var paint = new SKPaint { IsAntialias = false })
             {
                 // 枠とタイトルバー（リストボックスなどのウィンドウと同じ見た目）
@@ -352,12 +388,14 @@ namespace SRCRender
             canvas.Restore();
         }
 
-        private void DrawTelop(SKCanvas canvas, string telop)
+        private void DrawTelop(SKCanvas canvas, string telop, bool mainFormVisible)
         {
             using (var paint = new SKPaint())
             {
-                var width = Math.Min(ScreenLayout.MapWidthPx - 32, largeFont.MeasureText(telop) + 48);
-                var box = SKRect.Create((ScreenLayout.MapWidthPx - width) / 2, ScreenLayout.MapHeightPx / 2 - 32, width, 64);
+                // 元の SRC（GUI.bas の DisplayTelop）と同じく、メインウィンドウを表示していればマップの中央、隠していれば画面の中央
+                var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
+                var width = Math.Min(area.Width - 32, largeFont.MeasureText(telop) + 48);
+                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.MidY - 32, width, 64);
                 DrawPanel(canvas, box, paint);
                 paint.Style = SKPaintStyle.Fill;
                 paint.Color = TextColor;

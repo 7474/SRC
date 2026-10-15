@@ -22,6 +22,8 @@ namespace SRCRender.Tests
                 workspace.Write("test.eve",
                     "プロローグ:",
                     "ChangeMap test.map",
+                    // 元の SRC と同じく、プロローグではメインウィンドウを隠しているため、表示してから描く
+                    "Show",
                     "Color #FF0000",
                     "Line 10 10 200 10",
                     "Line 20 30 120 100 BF #00FF00",

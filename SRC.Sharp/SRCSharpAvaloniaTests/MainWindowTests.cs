@@ -120,6 +120,8 @@ namespace SRCSharpAvalonia.Tests
                 var eve = workspace.Write("test.eve",
                     "プロローグ:",
                     "ChangeMap test.map",
+                    // 元の SRC と同じく、プロローグではメインウィンドウを隠しているため、表示する
+                    "Show",
                     "Talk システム",
                     "ヘッドレステスト開始",
                     "End",

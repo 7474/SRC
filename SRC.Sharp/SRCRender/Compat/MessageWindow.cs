@@ -42,6 +42,9 @@ namespace SRCRender.Compat
 
         public string Text { get; set; }
 
+        /// <summary>画面の中央に置くか（メインウィンドウを隠しているときに開いた）。偽ならメインウィンドウの左下</summary>
+        public bool Centered { get; set; }
+
         /// <summary>
         /// 部品の Refresh、表示・非表示の切り替えで呼ぶ処理を設定する。
         /// </summary>

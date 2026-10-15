@@ -33,13 +33,16 @@ namespace SRCRender
 
         /// <summary>
         /// メッセージウィンドウ（枠・タイトルバーを含む）の位置。
-        /// 元の SRC と同じく、メインウィンドウの左下に下端を合わせる。
+        /// 元の SRC（GUI.bas の OpenMessageForm）と同じく、メインウィンドウを表示していれば左下に下端を合わせ、
+        /// 隠していれば画面の中央（centered）に置く。
         /// </summary>
-        public static SKRectI MessageWindowRect(int clientWidth, int clientHeight)
+        public static SKRectI MessageWindowRect(int clientWidth, int clientHeight, bool centered = false)
         {
             var width = clientWidth + MessageFramePx * 2;
             var height = clientHeight + MessageTitleBarPx + MessageFramePx;
-            return new SKRectI(0, Height - height, width, Height);
+            return centered
+                ? SKRectI.Create((Width - width) / 2, (Height - height) / 2, width, height)
+                : new SKRectI(0, Height - height, width, Height);
         }
 
         /// <summary>ユニットを表示するとき（最も大きいとき）のメッセージウィンドウの位置</summary>

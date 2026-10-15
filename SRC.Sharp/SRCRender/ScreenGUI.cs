@@ -137,6 +137,8 @@ namespace SRCRender
                 State.MapX = MapX;
                 State.MapY = MapY;
                 State.MapCursor = KeyCursorRect();
+                State.MainFormVisible = MainFormVisible;
+                UpdateKeyPointerState();
                 using (var canvas = new SKCanvas(frame))
                 {
                     renderer.Render(canvas, State, new ScreenRenderer.ScreenLayers(displayBuffer, new[] { picFace, picPilotStatus, picUnitStatus }, frmMessage));
@@ -554,6 +556,10 @@ namespace SRCRender
                     {
                         ClickKeyCursor(GuiButton.Left);
                     }
+                    else if (IsKeyPointerOperable && keyPointer != null)
+                    {
+                        ClickKeyPointer(GuiButton.Left);
+                    }
                     else
                     {
                         SimpleClick();
@@ -576,6 +582,10 @@ namespace SRCRender
                     else if (IsMapOperable)
                     {
                         ClickKeyCursor(GuiButton.Right);
+                    }
+                    else if (IsKeyPointerOperable && keyPointer != null)
+                    {
+                        ClickKeyPointer(GuiButton.Right);
                     }
                     else
                     {
@@ -615,6 +625,10 @@ namespace SRCRender
                             game.Post(Present);
                         }
                     }
+                    else if (IsKeyPointerOperable)
+                    {
+                        MoveKeyPointer(dx, dy);
+                    }
                     else if (!IsGUILocked)
                     {
                         MoveKeyCursor(dx, dy);
@@ -645,7 +659,7 @@ namespace SRCRender
         private volatile bool keyOperating;
 
         /// <summary>マップでのクリック（ユニットの選択・移動先・攻撃対象など）を受け付けるか</summary>
-        private bool IsMapOperable => !IsGUILocked && State.ShowMap && Map != null && !MessageFormVisible && !Commands.WaitClickMode;
+        private bool IsMapOperable => !IsGUILocked && MainFormVisible && State.ShowMap && Map != null && !MessageFormVisible && !Commands.WaitClickMode;
 
         /// <summary>マップカーソルの画面上の矩形（表示しないときは null）</summary>
         private SKRectI? KeyCursorRect()
@@ -730,10 +744,144 @@ namespace SRCRender
                 return;
             }
             keyOperating = false;
+            if (keyPointer != null)
+            {
+                keyPointer = null;
+                game.Post(Present);
+            }
             if (keyCursor != null)
             {
                 keyCursor = null;
                 game.Post(Present);
+            }
+        }
+
+        #endregion
+
+        #region キー操作のポインタ（クリック待ちの間）
+
+        // クリック待ち（Wait Click）の間、十字キーで画面上の位置を指す。押した方向にホットポイントがあれば最も近いものへ跳び、
+        // 無ければ KeyPointerStepPx ずつ動く。Enter で左クリック、Esc で右クリックをその位置で行う
+        private const int KeyPointerStepPx = 16;
+
+        private sealed class KeyPointerPosition
+        {
+            public KeyPointerPosition(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            public int X { get; }
+            public int Y { get; }
+        }
+
+        private volatile KeyPointerPosition keyPointer;
+
+        /// <summary>キー操作のポインタを使うか（クリック待ちで、メニュー・リスト・ダイアログを出していない）</summary>
+        private bool IsKeyPointerOperable => Commands.WaitClickMode && State.Dialog == null && State.Menu == null && State.List == null;
+
+        /// <summary>ポインタの跳び先（ホットポイントの矩形）</summary>
+        private IList<SKRectI> KeyPointerTargets()
+        {
+            try
+            {
+                return (SRC.Event?.HotPointList ?? new List<SRCCore.Events.HotPoint>())
+                    .ToArray()
+                    .Where(x => x.Width > 0 && x.Height > 0)
+                    .Select(x => SKRectI.Create(x.Left, x.Top, x.Width, x.Height))
+                    .ToList();
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException)
+            {
+                // ゲームスレッドが一覧を書き換えている途中
+                return new List<SKRectI>();
+            }
+        }
+
+        private void UpdateKeyPointerState()
+        {
+            var pointer = keyPointer;
+            if (pointer == null || !Commands.WaitClickMode)
+            {
+                State.KeyPointer = null;
+                State.KeyPointerTarget = null;
+                return;
+            }
+            State.KeyPointer = new SKPointI(pointer.X, pointer.Y);
+            State.KeyPointerTarget = KeyPointerTargets()
+                .Where(x => x.Contains(pointer.X, pointer.Y))
+                .Select(x => (SKRectI?)x)
+                .FirstOrDefault();
+        }
+
+        private void MoveKeyPointer(int dx, int dy)
+        {
+            var targets = KeyPointerTargets();
+            var current = keyPointer;
+            int x, y;
+            if (current == null)
+            {
+                // 最初はホットポイントの先頭（無ければマップの中央）を指す
+                var first = targets.Select(t => (SKRectI?)t).FirstOrDefault();
+                x = first?.MidX ?? ScreenLayout.MapWidthPx / 2;
+                y = first?.MidY ?? ScreenLayout.MapHeightPx / 2;
+            }
+            else
+            {
+                // 押した方向にあるホットポイントのうち、方向からのずれを重く見て最も近いもの
+                var best = targets
+                    .Select(t => new
+                    {
+                        Target = t,
+                        Along = (t.MidX - current.X) * dx + (t.MidY - current.Y) * dy,
+                        Across = Math.Abs((t.MidX - current.X) * dy - (t.MidY - current.Y) * dx),
+                    })
+                    .Where(c => c.Along > 4)
+                    .OrderBy(c => c.Along + c.Across * 2)
+                    .FirstOrDefault();
+                if (best != null)
+                {
+                    x = best.Target.MidX;
+                    y = best.Target.MidY;
+                }
+                else
+                {
+                    x = Math.Max(0, Math.Min(ScreenLayout.Width - 1, current.X + dx * KeyPointerStepPx));
+                    y = Math.Max(0, Math.Min(ScreenLayout.Height - 1, current.Y + dy * KeyPointerStepPx));
+                }
+            }
+            keyPointer = new KeyPointerPosition(x, y);
+            // 元の SRC はホットポイントから隣のホットポイントへ直接移るとツールチップを一度消すが、
+            // ポインタは跳んで移るため、跳んだ先の説明をすぐに出す
+            game.Post(() => lastHotSpot = "");
+            keyClicking = true;
+            try
+            {
+                // マウスを動かしたのと同じにする（ホットポイントのツールチップを出す）
+                PointerMoved(x, y);
+            }
+            finally
+            {
+                keyClicking = false;
+            }
+            game.Post(Present);
+        }
+
+        /// <summary>キー操作のポインタの位置をクリックする</summary>
+        private void ClickKeyPointer(GuiButton button)
+        {
+            var pointer = keyPointer;
+            keyClicking = true;
+            try
+            {
+                PointerMoved(pointer.X, pointer.Y);
+                PointerPressed(pointer.X, pointer.Y, button);
+                PointerReleased(pointer.X, pointer.Y, button);
+            }
+            finally
+            {
+                keyClicking = false;
             }
         }
 
@@ -957,6 +1105,7 @@ namespace SRCRender
         public void MainFormHide()
         {
             MainFormVisible = false;
+            Present();
         }
 
         public void OpenTitleForm()
