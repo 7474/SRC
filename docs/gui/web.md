@@ -248,6 +248,11 @@ flowchart LR
 
 GitHub Pages に、データビューア（`SRCTestBlazor`）と同じサイトの `web/` として置く（`.github/workflows/CD-pages.yml`）。master に入るたびに更新する開発版。
 
+Azure Static Web Apps（データビューアの配信先、`.github/workflows/CD-swa-dataviewer.yml`）にも、同じく `web/` として置く。pull request ごとのプレビュー環境で、マージ前の SRC#Web を試せる（プレビュー環境の URL の `/web/`）。
+- クロスオリジン分離のヘッダ（`Cross-Origin-Opener-Policy`・`Cross-Origin-Embedder-Policy`）は、`staticwebapp.config.json` で `web/` にだけ付ける。ヘッダがあるので coi-serviceworker は登録されない
+- データビューアのナビゲーションのフォールバック（`index.html`）から `web/` を外す
+- 大きさの目安（1 環境）: データビューア約 38MB、SRC#Web 約 58MB。Free プランの上限は 1 環境 250MB・全環境 500MB（[Quotas](https://learn.microsoft.com/azure/static-web-apps/quotas)）
+
 外部のサイトに置くためのパッケージ（`SRCSharpWeb.zip`）は、リリースのタグで GitHub Releases に置く（`Publish-Package.yml` の `release-web`、[バージョンの管理](../versioning.md)）。置き方は [SRC#Web を外部のサイトに置く](./web-hosting.md) を参照。
 
 - `index.html` の `<base href>` を `<Pages のベースパス>/web/` に書き換える
