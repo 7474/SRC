@@ -553,7 +553,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 追加パイロットが無い複数乗りユニットでメインパイロット単独のダイアログデータが無視される")]
         public void PilotMessage_MultiPilotUnit_UsesMainPilotDialogEvenIfMessageDataExists()
         {
             // 元の SRC では「メッセージデータがあれば打ち切る」判定は追加パイロット用の 4 番目の候補だけに行う。
@@ -572,7 +571,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 複数乗りユニットで抽選された 2 人目以降のパイロットのメッセージデータではなく 1 人目のものを参照する")]
         public void PilotMessage_MultiPilotUnit_UsesMessageDataOfChosenPilot()
         {
             // 元の SRC では Dice(CountPilot + CountSupport) で選ばれたパイロット i の

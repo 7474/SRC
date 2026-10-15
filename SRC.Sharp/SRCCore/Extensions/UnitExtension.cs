@@ -52,7 +52,15 @@ namespace SRCCore.Extensions
                 }).ToList();
         }
 
-        public static List<CombineFeature> CombineFeatures(this Unit currentUnit, SRC SRC)
+        /// <summary>
+        /// 3 体以上（ユニットステータスコマンドの時は 2 体も）からなる、今すぐ合体できる合体能力。
+        /// </summary>
+        /// <param name="forMenu">
+        /// ユニットのコマンドメニューに出すかの判定（VB Command.bas の CommandSelect）。
+        /// 元の SRC はメニューではパートナーとの距離を縦横の和（2 以内）で測り、2 体合体もステータス表示の例外も無い。
+        /// 偽なら合体コマンドの実行時の判定（CombineCommand）で、縦・横それぞれ 2 以内、ステータス表示では距離を見ない。
+        /// </param>
+        public static List<CombineFeature> CombineFeatures(this Unit currentUnit, SRC SRC, bool forMenu = false)
         {
             var combines = new List<CombineFeature>();
             foreach (var fd in currentUnit.Features
@@ -60,8 +68,9 @@ namespace SRCCore.Extensions
                 .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name))))
             {
                 // 3体以上からなる合体能力を持っているか？
+                // ユニットステータスコマンドの時は2体合体も対象にする
                 var combineData = new CombineFeature(fd);
-                if (combineData.PartUnitNames.Count >= 2)
+                if (combineData.PartUnitNames.Count >= 2 || (!forMenu && SRC.Map.IsStatusView))
                 {
                     var n = 0;
                     // パートナーは隣接しているか？
@@ -83,8 +92,17 @@ namespace SRCCore.Extensions
                             break;
                         }
 
-                        if (Math.Abs((currentUnit.x - partu.CurrentForm().x)) > 2
-                            || Math.Abs((currentUnit.y - partu.CurrentForm().y)) > 2)
+                        var dx = Math.Abs(currentUnit.x - partu.CurrentForm().x);
+                        var dy = Math.Abs(currentUnit.y - partu.CurrentForm().y);
+                        if (forMenu)
+                        {
+                            if (dx + dy > 2)
+                            {
+                                break;
+                            }
+                        }
+                        // ユニットステータスコマンドの時は距離を判定しない
+                        else if (!SRC.Map.IsStatusView && (dx > 2 || dy > 2))
                         {
                             break;
                         }

@@ -59,7 +59,7 @@ namespace SRCCore
                     expr = "戦闘アニメ_" + GeneralLib.LIndex(aname, 1);
                 }
 
-                if (Event.FindNormalLabel(expr) == 0)
+                if (Event.FindNormalLabel(expr) < 0)
                 {
                     GUI.ErrorMessage("サブルーチン「" + expr + "」が見つかりません");
                     return;
@@ -258,7 +258,7 @@ namespace SRCCore
 
 
             // まずはビーム攻撃かどうか判定
-            if (!IsBeamWeapon(wname, wclass, cname))
+            if (!IsBeamWeapon(wname, wclass, ref cname))
             {
                 goto SkipBeamWeapon;
             }
@@ -1950,7 +1950,7 @@ namespace SRCCore
 
             // 光線系の攻撃かどうかを判定する
 
-            if (IsBeamWeapon(wname, wclass, cname))
+            if (IsBeamWeapon(wname, wclass, ref cname))
             {
                 wtype = "ビーム";
 
@@ -3535,7 +3535,7 @@ namespace SRCCore
                 }
 
                 wtype = "ダメージ";
-                if (IsBeamWeapon(wname, wclass, cname)
+                if (IsBeamWeapon(wname, wclass, ref cname)
                     || Strings.InStr(wname, "ミサイル") > 0
                     || Strings.InStr(wname, "ロケット") > 0)
                 {
@@ -4246,7 +4246,7 @@ namespace SRCCore
 
             // まずは光線系の攻撃かどうかを判定する
 
-            if (IsBeamWeapon(wname, wclass, cname))
+            if (IsBeamWeapon(wname, wclass, ref cname))
             {
                 wtype = "ビーム";
             }
@@ -5541,7 +5541,7 @@ namespace SRCCore
             cname = SpellColor(wname, wclass);
             if (string.IsNullOrEmpty(cname))
             {
-                IsBeamWeapon(wname, wclass, cname);
+                IsBeamWeapon(wname, wclass, ref cname);
             }
 
             // アニメを表示
@@ -5568,7 +5568,7 @@ namespace SRCCore
                         goto NextLoop;
                     }
 
-                    if (Event.FindNormalLabel("戦闘アニメ_" + aname) == 0)
+                    if (Event.FindNormalLabel("戦闘アニメ_" + aname) < 0)
                     {
                         goto NextLoop;
                     }
@@ -5829,7 +5829,7 @@ namespace SRCCore
         }
 
         // 光線系の攻撃かどうかを判定し、表示色を決定
-        private bool IsBeamWeapon(string wname, string wclass, string cname)
+        private bool IsBeamWeapon(string wname, string wclass, ref string cname)
         {
             bool IsBeamWeaponRet = default;
             if (GeneralLib.InStrNotNest(wclass, "実") > 0)

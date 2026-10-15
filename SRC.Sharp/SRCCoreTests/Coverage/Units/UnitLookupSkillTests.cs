@@ -218,7 +218,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Intermission.InStatusCommand の条件が反転しており、マップ無しのステータス表示中に true を返さない")]
         public void IsNecessarySkillSatisfied2_PlusPrefix_SatisfiedInStatusCommand()
         {
             // ステータス表示中（マップ無し＋サブステージ）で出撃中なら「+技能」は常に満たされる

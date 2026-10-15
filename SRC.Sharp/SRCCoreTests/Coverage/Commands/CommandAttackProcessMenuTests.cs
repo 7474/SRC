@@ -517,7 +517,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 分離に必要なパイロット数を分離先のユニット数で数えている（VB は PilotNum の合計）")]
         public void CommandSelect_Split_NotEnoughPilots_HidesSplit()
         {
             // VB: 分離先の PilotNum の合計が搭乗パイロット数を超える場合は分離できない（2 人乗りで 2+1 人必要）
@@ -590,7 +589,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 行動終了後のユニットコマンドは「-*」「**」付きラベルのみ表示すべきだが全ラベルを表示する")]
         public void CommandSelect_ActedAlly_OnlyAfterActionUnitCommandsShown()
         {
             // VB: 行動終了している場合は AsterNum = 1 (-*) または 3 (**) のユニットコマンドのみ表示
@@ -684,7 +682,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ダミーユニットで特殊能力一覧の有無の判定が逆になっている")]
         public void CommandSelect_DummyUnitWithoutFeatureList_ReturnsToUnitSelect()
         {
             // VB: ダミーユニットは特殊能力一覧を表示できなければ「ユニット選択」に戻るだけ
@@ -700,7 +697,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ユニット情報隠蔽時に隠すべき一覧系コマンドだけを残し、他のコマンドを消している")]
         public void CommandSelect_HiddenInfoEnemy_HidesListCommandsAndKeepsUnitCommands()
         {
             // VB: 情報隠蔽中の敵は移動範囲・射程範囲・特殊能力一覧・武装一覧・アビリティ一覧を隠し、
@@ -819,7 +815,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ステータス表示の分離判定でパイロット数の比較が逆（PilotNum 合計 >= CountPilot で表示している）")]
         public void CommandSelect_StatusView_Split_MorePilotsThanParts_ShowsSplit()
         {
             // VB: Command.bas 590-600 は CountPilot < Σ|PilotNum| の時だけ隠す。
@@ -833,7 +828,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ステータス表示の分離判定でパイロット数の比較が逆（PilotNum 合計 >= CountPilot で表示している）")]
         public void CommandSelect_StatusView_Split_NotEnoughPilots_HidesSplit()
         {
             // VB: 2 人乗りで分離先が 2+1 人必要なら分離は表示しない
@@ -891,7 +885,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 移動後のユニットコマンドは「*」付きラベルのみ表示すべきだが全ラベルを表示する")]
         public void AfterMoveCommandSelect_OnlyAfterMoveUnitCommandsShown()
         {
             // VB: 移動後コマンド選択では AsterNum >= 2（*, *-, **）のユニットコマンドのみ

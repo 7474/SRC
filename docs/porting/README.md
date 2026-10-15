@@ -47,7 +47,7 @@ With single commands:
    - Quality evaluation methodology and improvement roadmap (primary doc for current phase)
 
 4. **[カバレッジ強化で見つかった移植の不具合](./coverage-porting-bugs.md)**
-   - 元の VB を仕様としたテストで見つかった、VB と動作が違う箇所（121 件、うち 57 件は修正済み）と優先順位。未修正の項目には [Ignore] のテストがある
+   - 元の VB を仕様としたテストで見つかった、VB と動作が違う箇所（121 件、すべて修正済み）。各項目に VB どおりの期待値のテストがある
    - Porting bugs found by coverage tests written against the VB original, with priorities
 
 5. **[個別Issue詳細](./issue-breakdown.md)**（参考資料）

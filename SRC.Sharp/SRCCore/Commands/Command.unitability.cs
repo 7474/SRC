@@ -673,7 +673,7 @@ namespace SRCCore.Commands
             {
                 SRC.IsCanceled = false;
                 SelectedPartners.Clear();
-                GUI.UnlockGUI();
+                WaitCommand();
                 return;
             }
 

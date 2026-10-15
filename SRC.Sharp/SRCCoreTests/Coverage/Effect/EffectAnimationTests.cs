@@ -126,7 +126,6 @@ namespace SRCCore.Coverage.Tests.Effects
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: FindNormalLabel は未発見時 -1 を返すのに ShowAnimation は == 0 で判定しており、未定義アニメのエラーメッセージが出ない")]
         public void ShowAnimation_UndefinedSubroutine_ShowsErrorMessage()
         {
             // VB: FindNormalLabel(expr) = 0 なら「サブルーチン「…」が見つかりません」を表示して戻る
@@ -310,7 +309,6 @@ namespace SRCCore.Coverage.Tests.Effects
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: IsBeamWeapon の cname が値渡しになり、光線の色（熱線→レッド等）が攻撃・命中アニメに渡らない")]
         public void Attack_BeamColorFromIsBeamWeapon()
         {
             // VB: IsBeamWeapon(wname, wclass, cname) の cname は参照渡しで、熱線はレッド、プラズマはオレンジ
@@ -421,7 +419,6 @@ namespace SRCCore.Coverage.Tests.Effects
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: IsBeamWeapon の cname が値渡しになり、吸収時の粒子集中アニメに光線の色が渡らない")]
         public void AbsorbEffect_ColorFallsBackToBeamColor()
         {
             // VB: SpellColor で色が決まらなければ IsBeamWeapon で決めた色（プラズマ→オレンジ）を使う
@@ -482,7 +479,6 @@ namespace SRCCore.Coverage.Tests.Effects
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: FindNormalLabel は未発見時 -1 を返すのに CriticalEffect は == 0 で判定しており、未定義のクリティカルアニメを呼んでエラーになる")]
         public void CriticalEffect_UndefinedAnimation_IsSkipped()
         {
             // VB: FindNormalLabel("戦闘アニメ_" & aname) = 0 なら表示しない

@@ -76,9 +76,15 @@ namespace SRCCore.Units
         private UnitWeapon() { }
         public static UnitWeapon NewOrRef(SRC src, Unit u, WeaponData wd, IList<UnitWeapon> existWeapons)
         {
-            var existWeapon = existWeapons.FirstOrDefault(x => x.Name == wd.Name);
+            // 元の SRC（Unit.Update）では更新前の武器データとオブジェクトとして同一のものを探し、
+            // 一度引き継いだ武器は再び使わない。
+            // セーブデータから復元した直後は武器データを持たないので名前で照合する。
+            var existWeapon = existWeapons.FirstOrDefault(x => x.WeaponData != null
+                ? ReferenceEquals(x.WeaponData, wd)
+                : x.Name == wd.Name);
             if (existWeapon != null)
             {
+                existWeapons.Remove(existWeapon);
                 existWeapon.SRC = src;
                 existWeapon.Unit = u;
                 existWeapon.WeaponData = wd;
@@ -1459,7 +1465,7 @@ namespace SRCCore.Units
             {
                 if (GeneralLib.InStrNotNest(WeaponClass(), "銭") > 0)
                 {
-                    if (SRC.Money < GeneralLib.MaxLng((int)WeaponLevel("銭"), 1) * Unit.Value / 10)
+                    if (SRC.Money < GeneralLib.MaxLng(VBMath.CLng(WeaponLevel("銭")), 1) * Unit.Value / 10)
                     {
                         return false;
                     }
@@ -5032,14 +5038,14 @@ namespace SRCCore.Units
 
             if (IsWeaponClassifiedAs("気"))
             {
-                Unit.IncreaseMorale((int)(-5 * WeaponLevel("気")));
+                Unit.IncreaseMorale(VBMath.CLng(-5 * WeaponLevel("気")));
             }
 
             if (IsWeaponClassifiedAs("霊"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * WeaponLevel("霊"));
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * WeaponLevel("霊"));
                 Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
                 Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
@@ -5047,7 +5053,7 @@ namespace SRCCore.Units
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * WeaponLevel("プ"));
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * WeaponLevel("プ"));
                 Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
                 Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
@@ -5056,13 +5062,13 @@ namespace SRCCore.Units
             {
                 if (IsWeaponClassifiedAs("銭"))
                 {
-                    SRC.IncrMoney(-GeneralLib.MaxLng((int)WeaponLevel("銭"), 1) * Unit.Value / 10);
+                    SRC.IncrMoney(-GeneralLib.MaxLng(VBMath.CLng(WeaponLevel("銭")), 1) * Unit.Value / 10);
                 }
             }
 
             if (IsWeaponClassifiedAs("失"))
             {
-                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - (long)(Unit.MaxHP * WeaponLevel("失")) / 10L), 0);
+                Unit.HP = GeneralLib.MaxLng(Unit.HP - VBMath.CLng(Unit.MaxHP * WeaponLevel("失")) / 10, 0);
             }
 
             // XXX いつの仕様だろ
@@ -5103,7 +5109,7 @@ namespace SRCCore.Units
         // 弾数を設定
         public void SetBullet(int new_bullet)
         {
-            if (new_bullet <= 0)
+            if (new_bullet < 0)
             {
                 SetBulletRate(0d);
             }
@@ -5242,11 +5248,11 @@ namespace SRCCore.Units
             int cplana = 0;
             if (IsWeaponClassifiedAs("霊"))
             {
-                cplana = (int)(5d * WeaponLevel("霊"));
+                cplana = VBMath.CLng(5d * WeaponLevel("霊"));
             }
             else if (IsWeaponClassifiedAs("プ"))
             {
-                cplana = (int)(5d * WeaponLevel("プ"));
+                cplana = VBMath.CLng(5d * WeaponLevel("プ"));
             }
             var crange = WeaponMaxRange();
             return Unit.CombinationPartner(

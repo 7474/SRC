@@ -177,7 +177,7 @@ namespace SRCCore.Units
                 var fd = ud.Feature("換装");
                 if (fd != null)
                 {
-                    foreach (var uname2 in fd.DataL.Skip(1))
+                    foreach (var uname2 in fd.DataL)
                     {
                         if (!SRC.UDList.IsDefined(uname2))
                         {
@@ -194,7 +194,7 @@ namespace SRCCore.Units
                 var fd = ud.Feature("他形態");
                 if (fd != null)
                 {
-                    foreach (var uname2 in fd.DataL.Skip(1))
+                    foreach (var uname2 in fd.DataL)
                     {
                         if (!SRC.UDList.IsDefined(uname2))
                         {

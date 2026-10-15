@@ -158,10 +158,12 @@ namespace SRCCore.Intermissions.Tests
         public void InterMissionCommand_ListBoxCaptionAndMode_AreCommandContinuous()
         {
             var (src, gui) = CreateSrc();
-            string caption = null, mode = null;
-            gui.ListBoxHandler = args => { caption = args.lb_caption; mode = args.lb_mode; return 1; };
+            string caption = null, info = null, mode = null;
+            gui.ListBoxHandler = args => { caption = args.lb_caption; info = args.lb_info; mode = args.lb_mode; return 1; };
             src.InterMission.InterMissionCommand(skip_update: true);
-            Assert.AreEqual("コマンド", caption);
+            // 元の SRC: ListBox("インターミッション： 総ターン数N 資金M", name_list, "コマンド", "連続表示")
+            StringAssert.StartsWith(caption, "インターミッション： 総ターン数");
+            Assert.AreEqual("コマンド", info);
             Assert.AreEqual("連続表示", mode);
         }
 
@@ -184,7 +186,7 @@ namespace SRCCore.Intermissions.Tests
             gui.ListBoxHandler = args =>
             {
                 calls++;
-                if (args.lb_caption == "コマンド")
+                if (args.lb_info == "コマンド")
                 {
                     return calls == 1 ? args.Items.Select(x => x.Text).ToList().IndexOf("機体改造") + 1 : 1;
                 }

@@ -387,7 +387,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SetVariable がサブルーチンローカル変数を大文字小文字無視で照合し、名前ごと上書きする（VB は完全一致）")]
         public void SetVariable_SubLocalNameWithDifferentCase_DoesNotOverwriteSubLocal()
         {
             // VB の SetVariable/GetVariable はどちらも VarStack(i).Name = vname（完全一致）で照合するため、

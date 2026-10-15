@@ -376,7 +376,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: MapAbilityCommand で使用後イベントが Cancel した場合に行動終了（WaitCommand）しない")]
         public void MapAbility_CanceledByAfterUseEvent_EndsAction()
         {
             // VB MapAbilityCommand: If IsCanceled Then IsCanceled = False: ReDim SelectedPartners(0): WaitCommand: Exit Sub

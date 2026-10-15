@@ -234,7 +234,7 @@ namespace SRCCore.Events
             //}
 
             // ラベルの登録
-            RegisterLabel();
+            var label_error_found = RegisterLabel();
 
             // XXX 多分要らん
             //// コマンドデータ配列を設定
@@ -253,7 +253,7 @@ namespace SRCCore.Events
             // 書式チェックはシナリオ側にのみ実施
             if (load_mode != "システム")
             {
-                ParseCommand();
+                ParseCommand(label_error_found);
                 ValidateCommandArgs();
             }
 
@@ -311,8 +311,9 @@ namespace SRCCore.Events
             }
         }
 
-        private void RegisterLabel()
+        private bool RegisterLabel()
         {
+            var error_found = false;
             foreach (var line in EventData)
             {
                 var lbuf = line.Data;
@@ -335,20 +336,23 @@ namespace SRCCore.Events
                     case "：":
                         {
                             DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
+                            error_found = true;
                             break;
                         }
                 }
             }
+            return error_found;
         }
 
-        private void ParseCommand()
+        private void ParseCommand(bool error_found = false)
         {
             // 構文解析と書式チェックその１
             // 制御構造
             var parser = new CmdParser();
-            var error_found = false;
             var cmdStack = new Stack<CmdType>();
             var cmdPosStack = new Stack<int>();
+            // スタックが空のときは底の NullCmd を返す（VB の CmdStack(0)）
+            CmdType StackTop() => cmdStack.Count > 0 ? cmdStack.Peek() : CmdType.NullCmd;
             EventCmd.Clear();
             // 全eventDataを走査してコマンドを解析する（システムデータも含めて解析することで
             // 処理の整合性を保つ; パフォーマンス改善の余地はあるが現在の規模では問題ない）
@@ -365,7 +369,7 @@ namespace SRCCore.Events
                 // リスト長がマイナスのときは括弧の対応が取れていない
                 if (command.ArgNum <= -1)
                 {
-                    switch (cmdStack.Peek())
+                    switch (StackTop())
                     {
                         // これらのコマンドの入力の場合は無視する
                         case CmdType.AskCmd:
@@ -386,7 +390,7 @@ namespace SRCCore.Events
                 {
                     case CmdType.IfCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -405,7 +409,7 @@ namespace SRCCore.Events
 
                     case CmdType.ElseIfCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -413,7 +417,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() != CmdType.IfCmd)
+                            if (StackTop() != CmdType.IfCmd)
                             {
                                 DisplayEventErrorMessage(command.EventData, "ElseIfに対応するIfがありません");
                                 error_found = true;
@@ -426,7 +430,7 @@ namespace SRCCore.Events
 
                     case CmdType.ElseCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -434,7 +438,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(command.EventData, "Elseに対応するIfがありません");
                                 error_found = true;
@@ -447,7 +451,7 @@ namespace SRCCore.Events
 
                     case CmdType.EndIfCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -455,7 +459,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.IfCmd)
+                            if (StackTop() == CmdType.IfCmd)
                             {
                                 cmdStack.Pop();
                                 cmdPosStack.Pop();
@@ -471,7 +475,7 @@ namespace SRCCore.Events
 
                     case CmdType.DoCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -486,7 +490,7 @@ namespace SRCCore.Events
 
                     case CmdType.LoopCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -494,7 +498,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.DoCmd)
+                            if (StackTop() == CmdType.DoCmd)
                             {
                                 cmdStack.Pop();
                                 cmdPosStack.Pop();
@@ -511,7 +515,7 @@ namespace SRCCore.Events
                     case CmdType.ForCmd:
                     case CmdType.ForEachCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -528,39 +532,35 @@ namespace SRCCore.Events
                         {
                             if (command.ArgNum == 1 || command.ArgNum == 2)
                             {
-                                if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                                if (StackTop() == CmdType.TalkCmd)
                                 {
                                     DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                     cmdStack.Pop();
                                     cmdPosStack.Pop();
                                     error_found = true;
                                 }
-                                // XXX defaultのエラー抜けちゃう
-                                if (cmdStack.Any())
+                                switch (StackTop())
                                 {
-                                    switch (cmdStack.Peek())
-                                    {
-                                        case CmdType.ForCmd:
-                                        case CmdType.ForEachCmd:
-                                            {
-                                                cmdStack.Pop();
-                                                cmdPosStack.Pop();
-                                                break;
-                                            }
+                                    case CmdType.ForCmd:
+                                    case CmdType.ForEachCmd:
+                                        {
+                                            cmdStack.Pop();
+                                            cmdPosStack.Pop();
+                                            break;
+                                        }
 
-                                        default:
-                                            {
-                                                DisplayEventErrorMessage(command.EventData, "Nextに対応するコマンドがありません");
-                                                error_found = true;
-                                                break;
-                                            }
-                                    }
+                                    default:
+                                        {
+                                            DisplayEventErrorMessage(command.EventData, "Nextに対応するコマンドがありません");
+                                            error_found = true;
+                                            break;
+                                        }
                                 }
                             }
                             // XXX 条件こけてる気がする
-                            else if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            else if (StackTop() == CmdType.TalkCmd)
                             {
-                                switch (cmdStack.Peek())
+                                switch (StackTop())
                                 {
                                     case CmdType.ForCmd:
                                     case CmdType.ForEachCmd:
@@ -584,7 +584,7 @@ namespace SRCCore.Events
 
                     case CmdType.SwitchCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 error_found = true;
@@ -598,7 +598,7 @@ namespace SRCCore.Events
                     case CmdType.CaseCmd:
                     case CmdType.CaseElseCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -606,7 +606,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() != CmdType.SwitchCmd)
+                            if (StackTop() != CmdType.SwitchCmd)
                             {
                                 DisplayEventErrorMessage(command.EventData.ID, "Caseに対応するSwitchがありません");
                                 error_found = true;
@@ -619,7 +619,7 @@ namespace SRCCore.Events
 
                     case CmdType.EndSwCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -627,7 +627,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.SwitchCmd)
+                            if (StackTop() == CmdType.SwitchCmd)
                             {
                                 cmdStack.Pop();
                                 cmdPosStack.Pop();
@@ -644,7 +644,7 @@ namespace SRCCore.Events
                     case CmdType.TalkCmd:
                     case CmdType.AutoTalkCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() != command.Name)
+                            if (StackTop() != command.Name)
                             {
                                 cmdStack.Push(command.Name);
                                 cmdPosStack.Push(command.EventData.ID);
@@ -655,7 +655,7 @@ namespace SRCCore.Events
 
                     case CmdType.AskCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -683,7 +683,7 @@ namespace SRCCore.Events
 
                     case CmdType.QuestionCmd:
                         {
-                            if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
+                            if (StackTop() == CmdType.TalkCmd)
                             {
                                 DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                 cmdStack.Pop();
@@ -691,41 +691,20 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
+                            // VB と同じく最後の引数がオプションかどうかを判定し、
+                            // オプション以外ならその時点でループを抜ける（Exit Do）
                             var i = command.ArgNum;
                             while (i > 1)
                             {
-                                switch (command.GetArg(command.ArgNum) ?? "")
+                                var opt = command.GetArg(command.ArgNum) ?? "";
+                                if (opt == "終了")
                                 {
-                                    case "通常":
-                                        {
-                                            break;
-                                        }
-
-                                    case "拡大":
-                                        {
-                                            break;
-                                        }
-
-                                    case "連続表示":
-                                        {
-                                            break;
-                                        }
-
-                                    case "キャンセル可":
-                                        {
-                                            break;
-                                        }
-
-                                    case "終了":
-                                        {
-                                            i = 4;
-                                            break;
-                                        }
-
-                                    default:
-                                        {
-                                            break;
-                                        }
+                                    i = 4;
+                                    break;
+                                }
+                                else if (opt != "通常" && opt != "拡大" && opt != "連続表示" && opt != "キャンセル可")
+                                {
+                                    break;
                                 }
 
                                 i = i - 1;
@@ -742,52 +721,46 @@ namespace SRCCore.Events
 
                     case CmdType.EndCmd:
                         {
-                            if (cmdStack.Any())
+                            switch (StackTop())
                             {
-                                switch (cmdStack.Peek())
-                                {
-                                    case CmdType.TalkCmd:
-                                    case CmdType.AutoTalkCmd:
-                                    case CmdType.AskCmd:
-                                    case CmdType.QuestionCmd:
-                                        {
-                                            cmdStack.Pop();
-                                            cmdPosStack.Pop();
-                                            break;
-                                        }
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                case CmdType.AskCmd:
+                                case CmdType.QuestionCmd:
+                                    {
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        break;
+                                    }
 
-                                    default:
-                                        {
-                                            DisplayEventErrorMessage(command.EventData.ID, "Endに対応するTalkがありません");
-                                            error_found = true;
-                                            break;
-                                        }
-                                }
+                                default:
+                                    {
+                                        DisplayEventErrorMessage(command.EventData.ID, "Endに対応するTalkがありません");
+                                        error_found = true;
+                                        break;
+                                    }
                             }
                             break;
                         }
 
                     case CmdType.SuspendCmd:
                         {
-                            if (cmdStack.Any())
+                            switch (StackTop())
                             {
-                                switch (cmdStack.Peek())
-                                {
-                                    case CmdType.TalkCmd:
-                                    case CmdType.AutoTalkCmd:
-                                        {
-                                            cmdStack.Pop();
-                                            cmdPosStack.Pop();
-                                            break;
-                                        }
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                    {
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        break;
+                                    }
 
-                                    default:
-                                        {
-                                            DisplayEventErrorMessage(command.EventData.ID, "Suspendに対応するTalkがありません");
-                                            error_found = true;
-                                            break;
-                                        }
-                                }
+                                default:
+                                    {
+                                        DisplayEventErrorMessage(command.EventData.ID, "Suspendに対応するTalkがありません");
+                                        error_found = true;
+                                        break;
+                                    }
                             }
                             break;
                         }
@@ -796,22 +769,19 @@ namespace SRCCore.Events
                     case CmdType.PlaySoundCmd:
                     case CmdType.WaitCmd:
                         {
-                            if (cmdStack.Any())
+                            switch (StackTop())
                             {
-                                switch (cmdStack.Peek())
-                                {
-                                    case CmdType.TalkCmd:
-                                    case CmdType.AutoTalkCmd:
-                                    case CmdType.AskCmd:
-                                    case CmdType.QuestionCmd:
-                                        {
-                                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
-                                            cmdStack.Pop();
-                                            cmdPosStack.Pop();
-                                            error_found = true;
-                                            break;
-                                        }
-                                }
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                case CmdType.AskCmd:
+                                case CmdType.QuestionCmd:
+                                    {
+                                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        error_found = true;
+                                        break;
+                                    }
                             }
 
                             break;
@@ -839,7 +809,7 @@ namespace SRCCore.Events
             // ファイルの末尾まで読んでもコマンドの終わりがなかった？
             if (cmdStack.Count > 0)
             {
-                switch (cmdStack.Peek())
+                switch (StackTop())
                 {
                     case CmdType.AskCmd:
                         {
@@ -1115,10 +1085,10 @@ namespace SRCCore.Events
             LoadEventData2(fname, EventDataSource.Scenario);
 
             // ラベルを登録
-            RegisterLabel();
+            var label_error_found = RegisterLabel();
 
             // コマンドデータ配列を設定
-            ParseCommand();
+            ParseCommand(label_error_found);
         }
     }
 }

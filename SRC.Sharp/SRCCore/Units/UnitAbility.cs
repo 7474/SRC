@@ -555,7 +555,7 @@ namespace SRCCore.Units
             {
                 if (IsAbilityClassifiedAs("銭"))
                 {
-                    if (SRC.Money < GeneralLib.MaxLng((int)AbilityLevel("銭"), 1) * Unit.Value / 10)
+                    if (SRC.Money < GeneralLib.MaxLng(VBMath.CLng(AbilityLevel("銭")), 1) * Unit.Value / 10)
                     {
                         return IsAbilityAvailableRet;
                     }
@@ -1482,7 +1482,7 @@ namespace SRCCore.Units
             {
                 if (IsAbilityClassifiedAs("銭"))
                 {
-                    SRC.IncrMoney(-GeneralLib.MaxLng((int)AbilityLevel("銭"), 1) * Unit.Value / 10);
+                    SRC.IncrMoney(-GeneralLib.MaxLng(VBMath.CLng(AbilityLevel("銭")), 1) * Unit.Value / 10);
                 }
             }
 
@@ -1611,11 +1611,11 @@ namespace SRCCore.Units
             int cplana = 0;
             if (IsAbilityClassifiedAs("霊"))
             {
-                cplana = (int)(5d * AbilityLevel("霊"));
+                cplana = VBMath.CLng(5d * AbilityLevel("霊"));
             }
             else if (IsAbilityClassifiedAs("プ"))
             {
-                cplana = (int)(5d * AbilityLevel("プ"));
+                cplana = VBMath.CLng(5d * AbilityLevel("プ"));
             }
             var crange = AbilityMaxRange();
             return Unit.CombinationPartner(

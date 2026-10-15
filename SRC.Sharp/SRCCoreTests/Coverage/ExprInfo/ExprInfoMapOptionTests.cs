@@ -70,7 +70,6 @@ namespace SRCCore.Coverage.Tests.ExprInfo
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: フィルタ時の時間帯に不透明度（\"nn%\"）が付かない")]
         public void Map_TimeOfDay_Filter_IncludesTransparency()
         {
             // VB: buf = "#RRGGBB" & " " & CStr(MapDrawFilterTransPercent * 100) & "%"

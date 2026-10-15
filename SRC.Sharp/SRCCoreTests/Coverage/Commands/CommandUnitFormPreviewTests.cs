@@ -142,7 +142,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器一覧をキャンセルしても SelectedWeapon が 0 に戻らない")]
         public void WeaponList_Cancel_ResetsSelectedWeapon()
         {
             // 元の SRC は w = WeaponListBox(...) の直後に SelectedWeapon = w とするため、
@@ -178,7 +177,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器一覧の属性リストの見出しが「武器属性一覧」ではなく「アビリティ属性一覧」になっている")]
         public void WeaponList_AttributeListCaptionIsWeaponAttributeList()
         {
             // 元の SRC は ListBox("武器属性一覧", …) を表示する

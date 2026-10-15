@@ -47,7 +47,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [Ignore("移植の不具合: get_Nickname がパイロット愛称をステータス表示用ダミーユニットの場合にしか適用しない")]
         public void Nickname_パイロット愛称でメインパイロットの愛称が変わる()
         {
             // VB: With u ... If .IsFeatureAvailable("パイロット愛称") は ダミーユニット判定の If の外にある
@@ -115,7 +114,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: KanaName がダミーユニットで搭乗ユニット名が無い場合に null を返す")]
         public void KanaName_ダミーユニットで搭乗ユニット未設定ならデータの読み仮名()
         {
             // VB: If uname = "" Then Exit Property（KanaName = Data.KanaName のまま）

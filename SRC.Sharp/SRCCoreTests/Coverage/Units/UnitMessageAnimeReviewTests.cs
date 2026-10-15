@@ -74,7 +74,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: keep が switch の break になっており、ループを抜けずに keep 自体と後続の指定を表示してしまう")]
         public void SpecialEffect_Keep_StopsProcessingRemainingParts()
         {
             // 元の SRC の SpecialEffect では keep で Exit For し、以降の指定は処理しない

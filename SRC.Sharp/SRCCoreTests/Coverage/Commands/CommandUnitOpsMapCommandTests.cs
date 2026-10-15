@@ -325,13 +325,13 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 部隊表のＨＰ／ＥＮ順の並べ替えが現在値ではなく最大値で行われる")]
         public void UnitList_SortByHP_UsesCurrentHP()
         {
             // VB: key_list(i) = .Item(id_list(i)).HP（現在のＨＰの降順）
-            var f = CreateUnitListField(out var alpha, out var beta, out _, out _);
+            var f = CreateUnitListField(out var alpha, out var beta, out var stored, out _);
             alpha.HP = 900;
             beta.HP = 100;
+            stored.HP = 50;
             var calls = ScriptListBox(f, 1, 5, 0);
 
             f.Commands.MapCommand(new UiCommand(Command.UnitListCmdID, "部隊表"));
@@ -340,7 +340,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 部隊表の並べ替えメニューに「パイロット名称で並べ替え」がなく「ユニット名称で並べ替え」が重複している")]
         public void UnitList_SortMenu_HasPilotNameSort()
         {
             // VB: mode_list(5..9) = ＨＰ, ＥＮ, パイロットレベル, ユニット名称, パイロット名称
@@ -355,7 +354,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 等身大基準の部隊表の並べ替えメニューで「ＥＮで並べ替え」が「スペシャルパワーで並べ替え」になっている")]
         public void UnitList_PersonScale_SortMenu_HasENSort()
         {
             // VB: 等身大基準では mode_list(8) = Term("ＥＮ") & "で並べ替え"
@@ -391,7 +389,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: パイロット一覧で残りＳＰがちょうど消費ＳＰと等しいスペシャルパワーが使用可能として表示されない")]
         public void UnitList_DummyUnit_ShowsSpecialPowerWhenSPEqualsCost()
         {
             // VB: If .SP >= .SpecialPowerCost(.SpecialPower(i)) Then（等しい場合も表示）
@@ -747,7 +744,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 部隊表のパイロット一覧でＳＰ欄とスペシャルパワー短縮名の間の空白 2 桁が抜けている")]
         public void UnitList_DummyUnit_SeparatesSPAndSpecialPowersWithTwoSpaces()
         {
             // VB: RightPaddedString(.Nickname, 21) & LeftPaddedString(Level, 3) & LeftPaddedString(SP & "/" & MaxSP, 9) & "  " & 短縮名…

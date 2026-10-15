@@ -401,19 +401,29 @@ namespace SRCCore.Pilots
         public string SkillName(int Index)
         {
             SkillData sd = colSkill[Index];
-            return SkillName(sd);
+            if (sd == null)
+            {
+                return "";
+            }
+            return SkillName(sd, sd.Name, true);
         }
         public string SkillName(string Index)
         {
             // パイロットが所有している特殊能力の中から検索
-            SkillData sd = colSkill[Index];
+            return SkillName(colSkill[Index], Index, Information.IsNumeric(Index));
+        }
+
+        private string SkillName(SkillData sd, string sname, bool isNumericIndex)
+        {
+            var SkillNameRet = "";
             if (sd != null)
             {
-                return SkillName(sd);
+                if (OwnedSkillName(sd, out SkillNameRet))
+                {
+                    return SkillNameRet;
+                }
+                sname = sd.Name;
             }
-
-            var SkillNameRet = "";
-            var sname = Index;
 
             if (sname == "耐久")
             {
@@ -444,6 +454,23 @@ namespace SRCCore.Pilots
                         return "非表示";
                     }
                 }
+            }
+
+            // 重複可能な能力は特殊能力付加で名称が置き換えられことはない
+            switch (sname ?? "")
+            {
+                case "ハンター":
+                case "スペシャルパワー自動発動":
+                    if (isNumericIndex)
+                    {
+                        if (Strings.Left(SkillNameRet, 1) == "(")
+                        {
+                            SkillNameRet = Strings.Mid(SkillNameRet, 2);
+                            SkillNameRet = Strings.Left(SkillNameRet, GeneralLib.InStr2(SkillNameRet, ")") - 1);
+                        }
+                        return SkillNameRet;
+                    }
+                    break;
             }
 
             // 特殊能力付加＆強化による修正
@@ -641,45 +668,44 @@ namespace SRCCore.Pilots
             return SkillNameRet;
         }
 
-        private static string SkillName(SkillData sd)
+        // 所有している特殊能力の名称。名称が確定した（後の処理が不要な）場合は true を返す
+        private static bool OwnedSkillName(SkillData sd, out string SkillNameRet)
         {
-            var sname = sd?.Name ?? "";
+            var sname = sd.Name ?? "";
             // 能力強化系は非表示
             if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             {
-                return "非表示";
+                SkillNameRet = "非表示";
+                return true;
             }
 
-            switch (sname ?? "")
+            switch (sname)
             {
                 case "追加レベル":
                 case "メッセージ":
                 case "魔力所有":
                     // 非表示の能力
-                    return "非表示";
+                    SkillNameRet = "非表示";
+                    return true;
 
                 case "得意技":
                 case "不得手":
                     // 別名指定が存在しない能力
-                    return sname;
+                    SkillNameRet = sname;
+                    return true;
             }
 
-            var SkillNameRet = "";
             if (Strings.Len(sd.StrData) > 0)
             {
                 SkillNameRet = GeneralLib.LIndex(sd.StrData, 1);
                 switch (SkillNameRet ?? "")
                 {
                     case "非表示":
-                        {
-                            return SkillNameRet;
-                        }
+                        return true;
 
                     case "解説":
-                        {
-                            SkillNameRet = "非表示";
-                            return SkillNameRet;
-                        }
+                        SkillNameRet = "非表示";
+                        return true;
                 }
             }
             else
@@ -693,29 +719,36 @@ namespace SRCCore.Pilots
                 SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(sd.Level);
             }
 
-            return SkillNameRet;
+            return false;
         }
 
         // 特殊能力名称（レベル表示抜き）
         public string SkillName0(int Index)
         {
             SkillData sd = colSkill[Index];
-            return SkillName0(sd);
+            if (sd == null)
+            {
+                return "";
+            }
+            return SkillName0(sd, sd.Name, true);
         }
         public string SkillName0(string Index)
         {
-            SkillData sd = colSkill[Index];
+            // パイロットが所有している特殊能力の中から検索
+            return SkillName0(colSkill[Index], Index, Information.IsNumeric(Index));
+        }
+
+        private string SkillName0(SkillData sd, string sname, bool isNumericIndex)
+        {
+            var SkillName0Ret = "";
             if (sd != null)
             {
-                var sname0 = SkillName0(sd);
-                if (!string.IsNullOrEmpty(sname0))
+                if (OwnedSkillName0(sd, out SkillName0Ret))
                 {
-                    return sname0;
+                    return SkillName0Ret;
                 }
+                sname = sd.Name;
             }
-
-            var SkillName0Ret = "";
-            var sname = Index;
 
             if (sname == "耐久")
             {
@@ -760,7 +793,7 @@ namespace SRCCore.Pilots
                 case "ＳＰ消費減少":
                 case "スペシャルパワー自動発動":
                     {
-                        if (Information.IsNumeric(Index))
+                        if (isNumericIndex)
                         {
                             return SkillName0Ret;
                         }
@@ -923,48 +956,44 @@ namespace SRCCore.Pilots
             return SkillName0Ret;
         }
 
-        private static string SkillName0(SkillData sd)
+        // 所有している特殊能力の名称（レベル表示抜き）。名称が確定した場合は true を返す
+        private static bool OwnedSkillName0(SkillData sd, out string SkillName0Ret)
         {
-            var sname = sd.Name;
+            var sname = sd.Name ?? "";
 
             // 能力強化系は非表示
             if (Strings.Right(sname, 2) == "ＵＰ" || Strings.Right(sname, 4) == "ＤＯＷＮ")
             {
-                return "非表示";
+                SkillName0Ret = "非表示";
+                return true;
             }
 
-            switch (sname ?? "")
+            switch (sname)
             {
                 case "追加レベル":
                 case "メッセージ":
                 case "魔力所有":
-                    {
-                        // 非表示の能力
-                        return "非表示";
-                    }
+                    // 非表示の能力
+                    SkillName0Ret = "非表示";
+                    return true;
 
                 case "得意技":
                 case "不得手":
-                    {
-                        // 別名指定が存在しない能力
-                        return sname;
-                    }
+                    // 別名指定が存在しない能力
+                    SkillName0Ret = sname;
+                    return true;
             }
 
             if (Strings.Len(sd.StrData) > 0)
             {
-                var aname = GeneralLib.LIndex(sd.StrData, 1);
-                if (aname == "非表示")
-                {
-                    return aname;
-                }
+                SkillName0Ret = GeneralLib.LIndex(sd.StrData, 1);
+                return SkillName0Ret == "非表示";
             }
             else
             {
-                return sname;
+                SkillName0Ret = sname;
+                return false;
             }
-
-            return "";
         }
 
         // 特殊能力名称（必要技能判定用）

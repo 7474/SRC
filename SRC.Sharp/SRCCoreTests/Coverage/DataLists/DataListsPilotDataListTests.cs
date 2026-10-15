@@ -504,7 +504,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: パイロットの「===」特殊能力に UnitDataList.LoadFeature を流用しており、数値の項目でエラーを出さず特殊能力の読み込みを打ち切る")]
         public void Load_ExtendedFeatureSection_NumericItemReportsError()
         {
             // VB PilotDataList.cls: If buf2 = "" Or IsNumeric(buf2) Then DataErrorMessage ... (読み込みは継続)

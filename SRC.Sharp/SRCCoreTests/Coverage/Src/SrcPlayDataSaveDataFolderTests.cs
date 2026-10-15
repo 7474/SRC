@@ -104,7 +104,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: LoadDataDirectory が sp.txt より mind.txt を優先して読み込む（VB の IncludeData は sp.txt 優先）")]
         public void IncludeData_SpTxtTakesPrecedenceOverMindTxt()
         {
             // VB: If FileExists(fpath & "\sp.txt") Then ... ElseIf FileExists(fpath & "\mind.txt")

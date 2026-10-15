@@ -301,7 +301,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ClearMap が MapFileName を空にしていない")]
         public void ClearMap_ResetsMapFileName()
         {
             // VB: ClearMap の先頭で MapFileName = "" とする

@@ -2484,7 +2484,8 @@ namespace SRCCore.Expressions.Functions
                                         string buf;
                                         if (SRC.Map.MapDrawMode == "フィルタ")
                                         {
-                                            buf = SRC.Map.MapDrawFilterColor.ToHexString();
+                                            buf = SRC.Map.MapDrawFilterColor.ToHexString()
+                                                + " " + SrcFormatter.Format(SRC.Map.MapDrawFilterTransPercent * 100) + "%";
                                         }
                                         else
                                         {

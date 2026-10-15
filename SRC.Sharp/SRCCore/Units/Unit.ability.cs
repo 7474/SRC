@@ -862,7 +862,7 @@ namespace SRCCore.Units
                                     {
                                         foreach (var ua in t.Abilities
                                             .Where(x => x.IsAbilityClassifiedAs("共"))
-                                            .Where(x => t.Weapons.Select(w => w.WeaponLevel("共")).Any(lv => x.AbilityLevel("共") == lv)))
+                                            .Where(x => t.Weapons.Where(w => w.IsWeaponClassifiedAs("共")).Select(w => w.WeaponLevel("共")).Any(lv => x.AbilityLevel("共") == lv)))
                                         {
                                             ua.SetStockFull();
                                         }
@@ -874,23 +874,38 @@ namespace SRCCore.Units
                                 else
                                 {
                                     // 特定の武器の弾数のみを回復
-                                    var wlist = new List<UnitWeapon>();
-                                    foreach (var uw in t.OtherForms.Append(t).SelectMany(x => x.Weapons.Where(uw => uw.WeaponNickname() == edata
-                                        || GeneralLib.InStrNotNest(uw.WeaponClass(), edata) > 0)))
+                                    // 弾数が減っている武器のみが対象。回復したかどうか（flag）は対象ユニット自身の武器で判定する
+                                    UnitWeapon rw = null;
+                                    bool isTargetWeapon(UnitWeapon uw) => uw.Bullet() < uw.MaxBullet()
+                                        && (uw.WeaponNickname() == edata || GeneralLib.InStrNotNest(uw.WeaponData.Class, edata) > 0);
+                                    foreach (var uw in t.Weapons.Where(isTargetWeapon))
                                     {
-                                        uw.SetBulletFull();
+                                        uw.SetBullet(uw.MaxBullet());
                                         flag = true;
-                                        wlist.Add(uw);
+                                        rw = uw;
+                                    }
+
+                                    foreach (var uw in t.OtherForms.SelectMany(x => x.Weapons).Where(isTargetWeapon))
+                                    {
+                                        uw.SetBullet(uw.MaxBullet());
                                     }
 
                                     // 弾数の同期を取る
                                     if (flag)
                                     {
-                                        foreach (var ua in t.Abilities
-                                            .Where(x => x.IsAbilityClassifiedAs("共"))
-                                            .Where(x => wlist.Select(w => w.WeaponLevel("共")).Any(lv => x.AbilityLevel("共") == lv)))
+                                        // 最後に回復した武器が共属性なら同じレベルの共属性の武器とアビリティも回復
+                                        if (rw.IsWeaponClassifiedAs("共"))
                                         {
-                                            ua.SetStockFull();
+                                            var lv = rw.WeaponLevel("共");
+                                            foreach (var uw in t.Weapons.Where(x => x.IsWeaponClassifiedAs("共") && x.WeaponLevel("共") == lv))
+                                            {
+                                                uw.SetBullet(uw.MaxBullet());
+                                            }
+
+                                            foreach (var ua in t.Abilities.Where(x => x.IsAbilityClassifiedAs("共") && x.AbilityLevel("共") == lv))
+                                            {
+                                                ua.SetStock(ua.MaxStock());
+                                            }
                                         }
 
                                         // 弾数・使用回数の共有化処理

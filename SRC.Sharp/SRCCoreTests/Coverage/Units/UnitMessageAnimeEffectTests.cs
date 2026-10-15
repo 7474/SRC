@@ -243,7 +243,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AnimationData がサブシチュエーション付きの「状況(サブ)」を検索しない (条件が == になっている)")]
         public void AnimationData_SubSituation_PrefersCombinedSituation()
         {
             // 元の SRC の AnimationData は sub_situation が空でもメインと同じでもなければ
@@ -264,7 +263,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [Ignore("移植の不具合: FindNormalLabel は未発見で -1 を返すが PlayAnimation は == 0 で判定しており、サブルーチンの無い指定を Call してしまう")]
         public void PlayAnimation_TextWithoutSubroutine_DisplaysAsMessage()
         {
             // 戦闘アニメ用サブルーチン (戦闘アニメ_○○発動) が見つからない指定はメッセージとして表示する
@@ -295,7 +293,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: FindNormalLabel は未発見で -1 を返すが PlayAnimation は == 0 で判定しており、一括指定の準備アニメを Call してしまう")]
         public void PlayAnimation_BulkPreparationWithoutSubroutine_IsSkipped()
         {
             // 一括指定 (「武器名」で「武器名(準備)」を代用) でサブルーチンが無い場合、準備アニメは表示しない

@@ -208,7 +208,7 @@ namespace SRCCore.Coverage.Tests
             gui.ListBoxHandler = args =>
             {
                 captions.Add(args.lb_caption);
-                if (args.lb_caption != "コマンド")
+                if (args.lb_info != "コマンド")
                 {
                     // 機体改造のユニット選択はキャンセル
                     return 0;
@@ -710,7 +710,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 乗り換え先ユニットの並べ替えが sort_mode2 でなく sort_mode（パイロット側）を参照している")]
         public void DestinationList_DefaultSortIsUnitKanaName()
         {
             // 乗り換え先の一覧は既定で「名称」（ユニットの読み仮名）順（元の SRC の sort_mode2 = "名称"）
@@ -730,6 +729,37 @@ namespace SRCCore.Coverage.Tests
 
             CollectionAssert.AreEqual(new[] { u2.ID, u3.ID, u1.ID },
                 lists[1].Items.Skip(1).Select(x => x.ListItemID).ToList());
+        }
+
+        [TestMethod]
+        public void DestinationList_SortChoicesAndHpSort()
+        {
+            // 乗り換え先の並べ替えの選択肢は元の SRC と同じ6つ（Intermission.bas:1604-1630）で、
+            // 選んだ項目（sort_mode2）で並べ替える
+            var (src, gui) = IntermissionCoverageFixture.CreateSrc();
+            var u1 = IntermissionCoverageFixture.CreateUnit(src, "甲型", hp: 1000, kana: "あ");
+            var u2 = IntermissionCoverageFixture.CreateUnit(src, "乙型", hp: 3000, kana: "い");
+            var u3 = IntermissionCoverageFixture.CreateUnit(src, "丙型", hp: 2000, kana: "う");
+            IntermissionCoverageFixture.CreatePilot(src, "テスト隊長");
+            var lists = new List<ListBoxArgs>();
+            gui.ListBoxHandler = args =>
+            {
+                lists.Add(args);
+                switch (lists.Count)
+                {
+                    case 1: return 2; // パイロットを選択
+                    case 2: return 1; // ▽並べ替え▽
+                    case 3: return args.Items.Select(x => x.ListItemID).ToList().IndexOf("ＨＰ") + 1;
+                    default: return 0;
+                }
+            };
+
+            src.InterMission.ExchangeUnitCommand();
+
+            CollectionAssert.AreEqual(new[] { "ＨＰ", "ＥＮ", "装甲", "運動性", "ユニットランク", "ユニット名称" },
+                lists[2].Items.Select(x => x.ListItemID).ToList());
+            CollectionAssert.AreEqual(new[] { u2.ID, u3.ID, u1.ID },
+                lists[3].Items.Skip(1).Select(x => x.ListItemID).ToList());
         }
     }
 
@@ -865,7 +895,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 装備可能アイテムの候補から未装備の呪いのアイテムまで除外している（!x.IsFix）。元の SRC は装備中の呪いのアイテムだけを除く")]
         public void CursedItem_ShowsCurseMessageWhenEquipped()
         {
             // 未装備の呪いのアイテムも装備の候補になり、装備すると「呪われていた！」と知らせる
@@ -954,7 +983,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 装備解除で最後のスロットを選ぶと「▽全て外す▽」と同じく全て外れる（ret < UBound(list) の移植誤り）")]
         public void RemoveLastSlotItem_RemovesOnlyThatItem()
         {
             // 元の SRC: ret < UBound(list)（＝最後のスロットまで）は指定したアイテムだけを外す

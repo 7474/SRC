@@ -79,7 +79,6 @@ AAAA, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Units.Add が換装の1番目の形態を Skip(1) で作らないため、換装先一覧から欠落する")]
         public void ExchangeFormCommand_ListsAllExchangeForms()
         {
             // VB Units.cls: 換装=宇宙装備 空戦装備 の全形態を作成するので、換装先一覧には両方が並ぶ
@@ -96,7 +95,6 @@ AAAA, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Units.Add が換装の1番目の形態を Skip(1) で作らないため、換装先が1つのユニットは換装一覧に出ない")]
         public void ExchangeFormCommand_SingleExchangeForm_UnitIsListed()
         {
             // 換装先が1つだけのユニットも換装可能ユニットとして一覧に出る

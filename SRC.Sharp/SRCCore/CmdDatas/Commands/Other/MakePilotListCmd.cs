@@ -1,5 +1,4 @@
 using SRCCore.Events;
-using SRCCore.Exceptions;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -48,38 +47,41 @@ namespace SRCCore.CmdDatas.Commands
             var target_pilot_list = SRC.PList.Items
                 .Where(p => p.Alive && !p.Away)
                 // 追加パイロットは勘定に入れない
-                // 追加サポートは勘定に入れない
-                .Where(p => !p.IsAdditionalPilot && !p.IsAdditionalSupport)
+                .Where(p => !(p.Unit != null && p.IsAdditionalPilot))
                 .ToList();
             IList<Pilot> pilot_list;
 
             var key_type = GetArgAsString(2);
             if (key_type != "名称")
             {
-                pilot_list = target_pilot_list.OrderByDescending(p =>
-                {
-                    switch (key_type)
+                // 追加サポートは勘定に入れない
+                // ソート項目が不明な場合はキーが全て0となり、登録順のままとなる
+                pilot_list = target_pilot_list
+                    .Where(p => !(p.Unit != null && p.IsAdditionalSupport))
+                    .OrderByDescending(p =>
                     {
-                        case "レベル":
-                            return p.Level;
-                        case "ＳＰ":
-                            return p.MaxSP;
-                        case "格闘":
-                            return p.Infight;
-                        case "射撃":
-                            return p.Shooting;
-                        case "命中":
-                            return p.Hit;
-                        case "回避":
-                            return p.Dodge;
-                        case "技量":
-                            return p.Technique;
-                        case "反応":
-                            return p.Intuition;
-                        default:
-                            throw new EventErrorException(this, "MakePilotListコマンドの引数が違います");
-                    }
-                }).ToList();
+                        switch (key_type)
+                        {
+                            case "レベル":
+                                return p.Level;
+                            case "ＳＰ":
+                                return p.MaxSP;
+                            case "格闘":
+                                return p.Infight;
+                            case "射撃":
+                                return p.Shooting;
+                            case "命中":
+                                return p.Hit;
+                            case "回避":
+                                return p.Dodge;
+                            case "技量":
+                                return p.Technique;
+                            case "反応":
+                                return p.Intuition;
+                            default:
+                                return 0;
+                        }
+                    }).ToList();
             }
             else
             {

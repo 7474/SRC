@@ -444,7 +444,6 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ソート項目が不明なとき VB はソートせず愛称のみ表示するが、C# はエラーにする")]
         public void MakePilotList_UnknownSortKey_ListsInRegistrationOrderWithoutStatusLine()
         {
             // VB の ExecMakePilotListCmd では未知の項目はキーが全て0となり、並べ替えずに愛称だけを表示する

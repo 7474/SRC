@@ -2524,14 +2524,14 @@ namespace SRCCore.Units
 
                             if (w.IsWeaponClassifiedAs("気"))
                             {
-                                cf.IncreaseMorale((int)(-5 * w.WeaponLevel("気")));
+                                cf.IncreaseMorale(VBMath.CLng(-5 * w.WeaponLevel("気")));
                             }
 
                             if (w.IsWeaponClassifiedAs("霊"))
                             {
                                 hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                                 en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                                cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * w.WeaponLevel("霊"));
+                                cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * w.WeaponLevel("霊"));
                                 cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
                                 cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                             }
@@ -2539,14 +2539,14 @@ namespace SRCCore.Units
                             {
                                 hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                                 en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                                cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * w.WeaponLevel("プ"));
+                                cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * w.WeaponLevel("プ"));
                                 cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
                                 cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                             }
 
                             if (w.IsWeaponClassifiedAs("失"))
                             {
-                                cf.HP = GeneralLib.MaxLng((int)(cf.HP - (long)(cf.MaxHP * w.WeaponLevel("失")) / 10L), 0);
+                                cf.HP = GeneralLib.MaxLng(cf.HP - VBMath.CLng(cf.MaxHP * w.WeaponLevel("失")) / 10, 0);
                             }
 
                             if (w.IsWeaponClassifiedAs("自"))

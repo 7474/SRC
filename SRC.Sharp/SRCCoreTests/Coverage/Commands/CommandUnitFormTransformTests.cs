@@ -254,7 +254,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ユニットステータスコマンドの変形先リストの見出しが「変形」ではなく「変形先」になっている")]
         public void Transform_StatusView_ListCaptionIsTransform()
         {
             // 元の SRC はステータス表示中の変形先選択を ListBox("変形", list, "名前", "カーソル移動") で行う

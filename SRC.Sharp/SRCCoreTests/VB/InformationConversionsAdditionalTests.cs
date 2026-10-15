@@ -81,17 +81,17 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void IsNumeric_NumberWithInternalSpaces_ReturnsTrue()
+        public void IsNumeric_NumberWithInternalSpaces_ReturnsFalse()
         {
-            // 空白は除去されてから判定される: "1 2 3" -> "123"
-            Assert.IsTrue(Information.IsNumeric("1 2 3"));
+            // VB の IsNumeric は途中の空白を無視しない: "1 2 3" は数値ではない
+            Assert.IsFalse(Information.IsNumeric("1 2 3"));
         }
 
         [TestMethod]
-        public void IsNumeric_NumberWithTabsInMiddle_ReturnsTrue()
+        public void IsNumeric_NumberWithTabsInMiddle_ReturnsFalse()
         {
-            // タブも空白として除去される
-            Assert.IsTrue(Information.IsNumeric("1\t2"));
+            // 途中のタブも無視しない
+            Assert.IsFalse(Information.IsNumeric("1\t2"));
         }
 
         [TestMethod]

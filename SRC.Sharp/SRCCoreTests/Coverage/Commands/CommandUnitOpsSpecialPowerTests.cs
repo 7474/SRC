@@ -90,7 +90,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: スペシャルパワー一覧で消費ＳＰと解説の間の空白が 2 桁ではなく 1 桁になっている")]
         public void Start_SpecialPowerList_SeparatesCommentWithTwoSpaces()
         {
             // VB: RightPaddedString(sname, 13) & LeftPaddedString(Format$(cost), 3) & "  " & Comment
@@ -214,7 +213,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: StartSpecialPowerCommand の自爆確認で OK と Cancel の扱いが逆になっている")]
         public void Start_SelfDestruct_ConfirmCancel_DoesNotUse()
         {
             // VB: If ret = vbCancel Then UnlockGUI: Exit Sub（キャンセル時のみ中止）
@@ -286,7 +284,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: スペシャルパワーを使えるパイロットの一覧から最初のサポートパイロットが漏れる（Unit.PilotsHaveSpecialPower の Supports.Skip(1)）")]
         public void Start_SupportPilot_IsSelectable()
         {
             // VB: For i = 1 To .CountPilot + .CountSupport … Support(i - .CountPilot)（全サポートが対象）
@@ -294,7 +291,10 @@ namespace SRCCore.Coverage.Tests
             f.DefineSpecialPower("気合", "気", 10, "自分", "気力増加Lv1");
             f.DefineUnit("機体");
             f.DefinePilot("メイン", sp: 40).AddSpecialPower("気合", 1, 0);
-            f.DefinePilot("サポート", sp: 40).AddSpecialPower("気合", 1, 0);
+            var spd = f.DefinePilot("サポート", sp: 40);
+            spd.AddSpecialPower("気合", 1, 0);
+            // サポートとしてしか搭乗できないパイロット
+            spd.Class = "(汎用サポート)";
             var unit = f.Place("機体", "メイン", "味方", 5, 5);
             f.Src.PList.Add("サポート", 1, "味方").Ride(unit, true);
             unit.Update();

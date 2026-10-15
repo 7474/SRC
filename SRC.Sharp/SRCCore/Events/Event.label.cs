@@ -222,7 +222,7 @@ namespace SRCCore.Events
                         lname2 = "*" + lname2;
                     }
 
-                    if (FindLabel(lname2) == 0)
+                    if (FindLabel(lname2) < 0)
                     {
                         // 対象と相手を入れ替えて判定し直す
                         reversed = true;
@@ -416,7 +416,8 @@ namespace SRCCore.Events
         public bool IsEventDefined(string lname, bool normal_event_only = false)
         {
             // イベントラベルを探す
-            int i = 0;
+            // EventData は 0 始まりなので最初は 0 行目から探す
+            int i = -1;
             while (true)
             {
                 var ret = SearchLabel(lname, i + 1);

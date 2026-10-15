@@ -174,7 +174,6 @@ AAAA, test.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: サブパイロットがメインパイロットを務める場合に１番目のパイロットへ戻す処理が無く、同じパイロットが２回入る")]
         public void PilotsHaveSpecialPower_SubPilotAsMainPilot_UsesFirstPilot()
         {
             // VB Command.bas: サブパイロットがメインパイロットを勤めている場合も１番目のパイロットを使用

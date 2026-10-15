@@ -600,24 +600,19 @@ namespace SRCCore.Models
                 int k;
                 for (k = 1; k <= loopTo2; k++)
                 {
-                    switch (Strings.Mid(buf, k, 1) ?? "")
+                    string ch = Strings.Mid(buf, k, 1);
+                    if (ch == ",")
                     {
-                        case ",":
-                            {
-                                if (!in_quote)
-                                {
-                                    ret = k;
-                                    break;
-                                }
-
-                                break;
-                            }
-
-                        case "\"":
-                            {
-                                in_quote = !in_quote;
-                                break;
-                            }
+                        if (!in_quote)
+                        {
+                            ret = k;
+                            // VB: Exit For
+                            break;
+                        }
+                    }
+                    else if (ch == "\"")
+                    {
+                        in_quote = !in_quote;
                     }
                 }
 
@@ -659,7 +654,9 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        /// <param name="isPilot">パイロットの「===」特殊能力節の場合 true。
+        /// ユニット・アイテムと異なり数値の項目で節を終えず、エラーとして扱う（PilotDataList.cls）。</param>
+        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isPilot = false)
         {
             string line_buf = reader.GetLine();
             string buf = line_buf;
@@ -677,30 +674,26 @@ namespace SRCCore.Models
                 int j;
                 for (j = 1; j <= loopTo1; j++)
                 {
-                    switch (Strings.Mid(buf, j, 1) ?? "")
+                    string ch = Strings.Mid(buf, j, 1);
+                    if (ch == ",")
                     {
-                        case ",":
-                            {
-                                if (!in_quote)
-                                {
-                                    ret = j;
-                                    break;
-                                }
-                                break;
-                            }
-
-                        case "\"":
-                            {
-                                in_quote = !in_quote;
-                                break;
-                            }
+                        if (!in_quote)
+                        {
+                            ret = j;
+                            // VB: Exit For
+                            break;
+                        }
+                    }
+                    else if (ch == "\"")
+                    {
+                        in_quote = !in_quote;
                     }
                 }
 
                 if (ret > 0)
                 {
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-                    if (j == 1)
+                    if (!isPilot && j == 1)
                     {
                         if (Information.IsNumeric(buf2))
                         {
@@ -716,7 +709,7 @@ namespace SRCCore.Models
                 }
 
                 // ユニットとアイテムは特殊能力に続いて数値のみの行が続く。
-                if (Information.IsNumeric(buf2.Replace("+", "").Replace("-", "")))
+                if (!isPilot && Information.IsNumeric(buf2.Replace("+", "").Replace("-", "")))
                 {
                     break;
                 }
@@ -919,6 +912,7 @@ namespace SRCCore.Models
                     else
                     {
                         SRC.AddDataError(reader.InvalidData(@wname + "の消費ＥＮの設定が間違っています。", data_name));
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
                             wd.ENConsumption = GeneralLib.StrToLng(GeneralLib.LIndex(buf2, 1));

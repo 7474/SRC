@@ -181,7 +181,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 解説メッセージの検索で戦闘アニメデータ(ADList)を参照せず MDList を参照している")]
         public void SysMessage_BattleAnimationDataIsSearched()
         {
             // 元の SRC の SysMessage は拡張戦闘アニメデータ → 戦闘アニメデータ → 特殊効果データの順に検索する。

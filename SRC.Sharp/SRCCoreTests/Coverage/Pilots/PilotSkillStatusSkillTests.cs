@@ -316,7 +316,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillName が所有能力の場合に後段（階級等の Lv 除去・括弧除去・強化表示）を飛ばして返す")]
         public void SkillName_所有する階級はレベル表示を除く()
         {
             // VB の SkillName は With sd ブロックの後 ErrorHandler に落ちて後処理を続け、
@@ -326,7 +325,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillName が所有能力の場合に後段（階級等の Lv 除去・括弧除去・強化表示）を飛ばして返す")]
         public void SkillName_所有能力でも強化分が表示される()
         {
             var (src, p) = CreatePilotWithSkill("底力", 1d);
@@ -336,7 +334,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillName が所有能力の場合に後段（階級等の Lv 除去・括弧除去・強化表示）を飛ばして返す")]
         public void SkillName_所有能力のレベル非表示用括弧は取り除かれる()
         {
             var (_, p) = CreatePilotWithSkill("底力", 2d, "(ガッツ)");
@@ -456,7 +453,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SkillName0 が所有能力の別名（データ1項目目）を返さず元の能力名を返す")]
         public void SkillName0_所有能力の別名を返す()
         {
             // VB: If Len(.StrData) > 0 Then SkillName0 = LIndex(.StrData, 1)
