@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.lookup.cs の地形進入判定（IsAbleToEnter）と合体技のパートナー探索（CombinationPartner）のテスト。

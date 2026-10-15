@@ -4,7 +4,7 @@ using SRCCore.Units;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.preview.cs（特殊能力一覧・武器一覧・アビリティ一覧・移動範囲・射程範囲）のテスト。

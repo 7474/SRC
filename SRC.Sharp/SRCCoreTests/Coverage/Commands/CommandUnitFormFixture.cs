@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// CommandUnitForm 系テスト（Command.unitform / preview / unitcommand / unitxxx）の共通準備。

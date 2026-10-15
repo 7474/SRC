@@ -6,7 +6,7 @@ using SRCCore.Units;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.attack.cs / Command.process.cs のテスト用の共通環境。

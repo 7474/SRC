@@ -4,7 +4,7 @@ using SRCCore.Events;
 using SRCCore.Models;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.unitcommand.cs（UnitCommand の地形移動系・ユーザー定義コマンド・召喚解除・待機）と

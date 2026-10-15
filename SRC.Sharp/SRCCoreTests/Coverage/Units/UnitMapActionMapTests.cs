@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.map.cs（StandBy / Move / Jump / Escape / Land）のテスト。

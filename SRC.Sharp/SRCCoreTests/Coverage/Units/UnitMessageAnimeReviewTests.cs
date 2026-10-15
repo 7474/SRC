@@ -3,7 +3,7 @@ using SRCCore.Models;
 using SRCCore.Units;
 using System.Collections.Generic;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.message.cs / Unit.anime.cs / Unit.se.cs の追加テスト。

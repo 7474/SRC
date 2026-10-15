@@ -26,7 +26,7 @@ With single commands:
 - ✅ 人間が考えることは最小限
 - ✅ セットアップ不要
 
-ユニットテストの補完は、Agentic Workflow（[complete-unit-tests.md](../../.github/workflows/complete-unit-tests.md)、[GitHub Agentic Workflows](https://github.github.com/gh-aw/)）でも日次で行う。
+ユニットテストの補完は、Agentic Workflow（[complete-unit-tests.md](../../.github/workflows/complete-unit-tests.md)、[GitHub Agentic Workflows](https://github.github.com/gh-aw/)）でも日次で行う。SRCCoreTests と SRCRenderTests の行カバレッジを合わせて測り、未カバー行の多いファイルから補う。
 
 **詳細**: [Copilot Agent Instructions](../../.github/copilot/README.md)
 
@@ -46,7 +46,11 @@ With single commands:
    - 移植精度の評価方法論・品質向上ロードマップ（現フェーズの主要文書）
    - Quality evaluation methodology and improvement roadmap (primary doc for current phase)
 
-4. **[個別Issue詳細](./issue-breakdown.md)**（参考資料）
+4. **[カバレッジ強化で見つかった移植の不具合](./coverage-porting-bugs.md)**
+   - 元の VB を仕様としたテストで見つかった、VB と動作が違う箇所（121 件）と優先順位。各項目に [Ignore] のテストがある
+   - Porting bugs found by coverage tests written against the VB original, with priorities
+
+5. **[個別Issue詳細](./issue-breakdown.md)**（参考資料）
    - TODO消化フェーズで定義した約70個のIssueリスト（歴史的参考）
    - ~70 specific issues defined during TODO resolution phase (historical reference)
 

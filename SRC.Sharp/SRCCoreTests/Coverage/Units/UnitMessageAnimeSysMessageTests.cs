@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Units;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.PlayMessage のメッセージ変数置換と、

@@ -2,9 +2,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Commands;
 using SRCCore.Maps;
 using System.Linq;
-using static SRCCore.Coverage.Tests.Commands.CommandAttackProcessFixture;
+using static SRCCore.Coverage.Tests.CommandsCoverage.CommandAttackProcessFixture;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.process.cs のメニュー構築（ProceedCommand の「ユニット選択」「コマンド選択」

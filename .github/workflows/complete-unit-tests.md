@@ -1,20 +1,18 @@
 ---
 description: |
-  SRC# 移植プロジェクトのカバレッジ補強を自動実行するワークフロー。
-  フェーズ1: SRC.Sharp/SRCCore/CmdDatas/Commands/ の残コマンド (ABGMCmd, AIfCmd, ATalkCmd, FontCmd) を完了する。
-  フェーズ2: SRC.Sharp/SRCCore/Commands/ (戦闘・ゲーム操作ロジック) のテストを拡充する。
-  フェーズ3: SRC.Sharp/SRCCore/Intermissions/ のテストをゼロから追加する。
-  各フェーズをスケジュール実行（日次）や手動実行で反復し、1回の実行でできるだけ多くのテストを追加してカバレッジを向上させる。
+  SRC# のテストカバレッジを、実測で網羅率の低いファイルから補強するワークフロー。
+  SRCCoreTests と SRCRenderTests（シナリオをヘッドレスで動かすテスト）の行カバレッジを合わせて測り、
+  未カバーの行が多い SRCCore のファイルを選んで、元の VB（SRC/SRC_20121125）を仕様とする挙動のテストを追加する。
+  移植の不具合が見つかれば、正しい期待値のテストを [Ignore] にして残し、Issue にする。
+  オープンな [unit-tests] PR があっても止まらず、その PR が触れている対象を避けて進める。
 
-  This workflow incrementally raises test coverage for the SRC# migration project.
-  Phase 1: Finish remaining CmdDatas commands (ABGMCmd, AIfCmd, ATalkCmd, FontCmd).
-  Phase 2: Expand coverage for Commands/ (battle/game-action logic; ~8700 lines, ~11% covered).
-  Phase 3: Add tests for Intermissions/ (2200 lines, currently 0% covered).
-  Each phase iterates on schedule (daily) or on demand, maximizing the amount of tests added per run.
+  Raises SRC# test coverage, driven by measured line coverage (SRCCoreTests + SRCRenderTests combined).
+  Picks the SRCCore files with the most uncovered lines, writes behavior-level tests using the original
+  VB source as the specification, and keeps porting bugs as [Ignore]d tests plus issues.
+  Does not stop when an open [unit-tests] PR exists; it avoids the files that PR touches.
 
-  NOTE: This workflow runs on windows-latest because SRC.Sharp contains Windows-targeting
-  projects (SRCSharpForm, SRCTestForm targeting net10.0-windows). Running on Windows avoids
-  the need for EnableWindowsTargeting workarounds and allows full solution build and test.
+  NOTE: SRC.Sharp contains Windows-targeting projects (SRCSharpForm, SRCTestForm); the build uses
+  -p:EnableWindowsTargeting=true so it also works on Linux runners.
 
 on:
   schedule: daily
@@ -54,9 +52,33 @@ steps:
       dotnet restore SRC.Sharp/SRC.Sharp.sln -p:EnableWindowsTargeting=true
       dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore -p:EnableWindowsTargeting=true
 
-  - name: Run existing tests (baseline)
+  - name: Measure coverage (baseline)
     run: |
-      dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build --verbosity normal 2>&1 | tee /tmp/gh-aw/test-baseline.txt || true
+      mkdir -p /tmp/gh-aw/coverage
+      dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build --collect:"XPlat Code Coverage" --results-directory /tmp/gh-aw/coverage/core 2>&1 | tee /tmp/gh-aw/test-baseline.txt || true
+      dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --no-build --collect:"XPlat Code Coverage" --results-directory /tmp/gh-aw/coverage/render 2>&1 | tail -5 | tee -a /tmp/gh-aw/test-baseline.txt || true
+      # SRCCore のファイルごとに、2 つのテストの実行で 1 回でも通った行を合わせて数える（部分クラスの重複は行番号で除く）
+      python3 - <<'EOF' | tee /tmp/gh-aw/coverage-summary.txt
+      import glob, re, collections, xml.etree.ElementTree as ET
+      hits = collections.defaultdict(dict)
+      for path in glob.glob('/tmp/gh-aw/coverage/**/coverage.cobertura.xml', recursive=True):
+          root = ET.parse(path).getroot()
+          source = (root.findtext('.//source') or '').rstrip('/')
+          for c in root.iter('class'):
+              full = (source + '/' + c.get('filename')).replace('\\', '/')
+              m = re.search(r'/SRCCore/(.*)', full)
+              if not m or '/TestLib/' in full:
+                  continue
+              for line in c.iter('line'):
+                  n = int(line.get('number'))
+                  hits[m.group(1)][n] = max(hits[m.group(1)].get(n, 0), int(line.get('hits')))
+      rows = [(f, sum(1 for v in ls.values() if v > 0), len(ls)) for f, ls in hits.items()]
+      total = sum(r[2] for r in rows); covered = sum(r[1] for r in rows)
+      print(f'SRCCore line coverage (SRCCoreTests + SRCRenderTests): {covered}/{total} ({covered / max(total, 1) * 100:.1f}%)')
+      print('Files by uncovered lines (path, covered/total, uncovered):')
+      for f, h, n in sorted(rows, key=lambda r: r[1] - r[2])[:60]:
+          print(f'{f}\t{h}/{n}\t{n - h}')
+      EOF
 
 tools:
   github:
@@ -83,473 +105,96 @@ engine: copilot
 # カバレッジ補強エージェント / Coverage Reinforcement Agent
 
 あなたは SRC# 移植プロジェクト (`${{ github.repository }}`) の自動テストエンジニアです。
-以下のフェーズ順に、テストが不足している領域を特定してテストを追加してください。
-1 回の実行でできるだけ多くのテストを追加してください。
+実測したカバレッジをもとに、テストの足りないファイルへ、挙動を確かめるテストを追加してください。
+1 回の実行で、できるだけ多く・意味のあるテストを追加してください。
 
-You are an automated test engineer for the SRC# migration project (`${{ github.repository }}`).
-Identify under-tested areas in the priority order below and add as many tests as possible per run.
+You are an automated test engineer for `${{ github.repository }}`. Use the measured coverage to pick
+under-tested files and add meaningful, behavior-level tests. Add as much as you can per run.
 
-**フェーズ優先順位 / Phase Priority**
-1. **フェーズ1 (CmdDatas 残件)**: `SRC.Sharp/SRCCore/CmdDatas/Commands/` に残るコマンド (ABGMCmd, AIfCmd, ATalkCmd, FontCmd) を優先的に完了する。
-2. **フェーズ2 (Commands/ 拡充)**: `SRC.Sharp/SRCCore/Commands/` のゲームロジック (`Command.*.cs`) を対象にテストを追加する。ソース ~8700 行に対しテストは ~1000 行しかない。
-3. **フェーズ3 (Intermissions/ 追加)**: `SRC.Sharp/SRCCore/Intermissions/Intermission.cs` はテストがゼロ (2200 行)。追加する。
+## Step 0: 進行中の作業を避ける / Avoid in-flight work
 
-## Step 0: 既存PRの確認 / Check for Existing Open PRs
-
-まず、このワークフロー (Agentic Workflow) が作成した PR が既にオープンしているか確認してください。
-First, check whether a PR created by this Agentic Workflow is already open:
+オープンな [unit-tests] PR があっても**止まらずに続けます**。その PR が変更しているテストの対象（ファイル名・テストクラスのコメントから読み取る）を、今回の対象から外してください。
+Do NOT stop when an open [unit-tests] PR exists. Exclude the targets it covers and continue.
 
 ```bash
-OPEN_PRS=$(gh pr list --repo "${{ github.repository }}" --state open \
-  --json number,title,headRefName \
-  --jq '[.[] | select(.title | startswith("[unit-tests]"))]')
-echo "$OPEN_PRS"
+gh pr list --repo "${{ github.repository }}" --state open --json number,title,files \
+  --jq '[.[] | select(.title | startswith("[unit-tests]")) | {number, title, files: [.files[].path]}]'
 ```
 
-出力が空配列 `[]` でない場合（1件でも結果がある場合）は、既にワークフローによる作業が進行中です。
-If the output is **not** an empty array `[]` (i.e., any results are returned), a workflow run is already in progress.
+オープンな [unit-tests] PR が 3 件以上あるときだけ、`noop` で終えてください（レビュー待ちが溜まりすぎないように）。
+Only if 3 or more [unit-tests] PRs are open, finish with `noop`.
 
-その場合、PR番号・タイトルを取り出し、そのPRの変更ファイル一覧を確認して、どのテストが既に提案されているかを把握してください:
-In that case, extract the PR number and title, then check which test files are already proposed in that PR:
+## Step 1: 対象を選ぶ / Pick targets
+
+ワークフローの前段で測ったカバレッジが `/tmp/gh-aw/coverage-summary.txt` にあります（SRCCoreTests と SRCRenderTests を合わせた、SRCCore のファイルごとの行カバレッジ。未カバー行の多い順）。
+The baseline coverage is in `/tmp/gh-aw/coverage-summary.txt` (sorted by uncovered lines).
 
 ```bash
-# PR番号とタイトルを取得
-PR_NUMBER=$(echo "$OPEN_PRS" | jq -r '.[0].number')
-PR_TITLE=$(echo "$OPEN_PRS" | jq -r '.[0].title')
-
-# そのPRの変更ファイル一覧を取得
-gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files \
-  --jq '[.files[].path]'
+cat /tmp/gh-aw/coverage-summary.txt
 ```
 
-オープンな [unit-tests] PR が存在する場合は、`noop` safe output を使用して処理をスキップしてください
-(PR番号・タイトル・変更ファイルの実際の値をメッセージに含めてください):
-If any open [unit-tests] PR exists, use `noop` safe output to skip
-(fill in the actual PR number, title, and changed files in the message):
+- 未カバー行の多いファイルから、Step 0 で除いたものを飛ばして **3〜5 ファイル**を選ぶ
+- 純粋な描画・GUI だけのコードや、`TestLib/` は対象にしない
+- 既存のテストは `SRC.Sharp/SRCCoreTests/` にある（`Coverage/` 以下は、カバレッジ補強で足したもの）。重複しないように確認する
 
-> noop: "Skipping: An open Agentic Workflow PR already exists (PR #<PR_NUMBER>: <PR_TITLE>). It already proposes tests in: <list of changed test files>."
+## Step 2: 仕様を読む / Read the specification
 
-**追加確認: 最近マージされた [unit-tests] PR / Additional check: recently merged [unit-tests] PRs**
+- **元の VB のソース `SRC/SRC_20121125/*.bas`・`*.cls` が仕様**です。C# は VB から関数単位で移植されているので、同じ名前の関数を探して読み比べてください
+- コマンド・関数・特殊能力の仕様はヘルプ `SRC.Sharp.Help/src/*.md` にもある
+- テストの基盤: `SRC.Sharp/SRCCore/TestLib/`（MockGUI はハンドラを設定して GUI 呼び出しを捕まえられる）
+- データ（ユニット・パイロットなど）は、テキストからデータを読み込んで実物のユニットを組み立てるとよい。`SRC.Sharp/SRCCoreTests/Coverage/` の既存のテストに例がある
 
-最近マージされた [unit-tests] PR があれば、それらと重複してテストを追加しないようにしてください:
-Also check for recently merged [unit-tests] PRs to avoid duplicating their work:
+## Step 3: テストを書く / Write tests
+
+- 新しいファイルを `SRC.Sharp/SRCCoreTests/Coverage/<対象>/` に置き、名前空間は `SRCCore.Coverage.Tests.<対象>Coverage` にする（`SRCCore.Coverage.Tests.Units` のように SRCCore の名前空間と同じ名前の末尾にすると、他のテストの `Units.Unit` の解決を壊すため）
+- **挙動を確かめる**: 計算結果・状態の変化・GUI に渡した引数・読み込んだデータなど、ゲームにとって意味のある結果を検証する
+- **書かないテスト**: 設定した値をそのまま読み返すだけのもの、モックが返す値の確認、「例外が出ない」だけのもの（例外が出ないこと自体が仕様の場合を除く）、プロパティ・列挙値を並べるだけのもの
+- **決定的にする**: 時刻・本物の乱数・テスト順・静的な状態の持ち越しに依存しない（乱数を使う処理は、乱数の影響を受けない入力を選ぶか、既存テストの方法で制御する）
+- コメントは日本語で、確かめている規則と、対応する VB の関数を短く書く
+
+## Step 4: 移植の不具合 / Porting bugs
+
+C# の挙動が VB と異なる場合（移植の不具合）:
+- 不具合の挙動を期待値にしない
+- VB どおりの期待値でテストを書き、`[Ignore("移植の不具合: <1 行の説明>")]` を付ける
+- `create-issue` で Issue を作る（1 回の実行で最大 3 件。既存の Issue と重複しないよう検索する）。本文に C# と VB の箇所（file:line）と、テストの名前を書く
+- 既に見つかっている不具合の一覧: `docs/porting/coverage-porting-bugs.md`（ここにあるものは Issue を作らない）
+
+## Step 5: 実行して確かめる / Run and validate
 
 ```bash
-gh pr list --repo "${{ github.repository }}" --state merged \
-  --json number,title,mergedAt \
-  --jq '[.[] | select(.title | startswith("[unit-tests]"))] | sort_by(.mergedAt) | reverse | .[0:5]'
+cd SRC.Sharp
+dotnet test SRCCoreTests/SRCCoreTests.csproj -p:EnableWindowsTargeting=true 2>&1 | tail -5
+dotnet test SRCCoreTests/SRCCoreTests.csproj --collect:"XPlat Code Coverage" --results-directory /tmp/gh-aw/coverage-after 2>&1 | tail -2
 ```
 
-最近マージされた PR が存在する場合は、それらで追加されたテストファイルを把握しておき、
-以降の Step でそれらと重複しないようにしてください。
-If recently merged PRs exist, note which test files they touched and avoid duplicating that work in subsequent steps.
+- [Ignore] 以外のテストはすべて通すこと。全体のテストも通すこと
+- 対象ファイルのカバレッジを、前段の数字と比べて報告する
 
-出力が空配列 `[]` の場合のみ（オープンな [unit-tests] PR が存在しない場合のみ）、
-以下の Step 1 以降を続けてください。
-Only proceed to Step 1 and beyond if the open PR check returns an empty array `[]`.
+## Step 6: PR を作る / Create the PR
 
-## Step 1: 現在のフェーズを判定する / Determine the Current Phase
-
-### フェーズ1チェック: CmdDatas 残コマンドの確認
-
-```bash
-find SRC.Sharp/SRCCore/CmdDatas/Commands -name "*.cs" | \
-  grep -v -E "NopCmd|NotImplementedCmd|NotSupportedCmd" | \
-  sort
-```
-
-既知の残コマンドは以下の 4 件です（既にテスト済みなら次フェーズへ）：
-- `ABGMCmd` (抽象基底, PlayMIDICmd/StartBGMCmd の親)
-- `AIfCmd` (非同期 If)
-- `ATalkCmd` (非同期 Talk)
-- `FontCmd` (フォント設定)
-
-これら 4 件のいずれかが未テストであれば **フェーズ1** として Step 2-8 を実行してください。
-
-### フェーズ2チェック: Commands/ のカバレッジ確認
-
-フェーズ1 が完了している場合は以下を確認してください：
-
-```bash
-ls SRC.Sharp/SRCCoreTests/Commands/
-wc -l SRC.Sharp/SRCCore/Commands/Command.*.cs
-```
-
-テスト済みファイル (CommandPropsTests.cs, SelectedStateTests.cs, UiCommandTests.cs) のみが存在し、
-`Command.attack.cs` (1546行), `Command.process.cs` (1617行), `Command.unitability.cs` (742行) 等に
-対応するテストがなければ **フェーズ2** として Step 2-8 を実行してください。
-
-### フェーズ3チェック: Intermissions/ のカバレッジ確認
-
-フェーズ2 が完了している場合は以下を確認してください：
-
-```bash
-ls SRC.Sharp/SRCCoreTests/Intermissions/ 2>/dev/null || echo "テストなし"
-wc -l SRC.Sharp/SRCCore/Intermissions/Intermission.cs
-```
-
-`SRCCoreTests/Intermissions/` が存在しない、またはテストが少なければ **フェーズ3** として Step 2-8 を実行してください。
-
-## Step 2: 既存テストの確認 / Check Existing Test Coverage
-
-現在のフェーズに応じて既存テストを確認してください：
-
-### フェーズ1 の場合
-
-```bash
-ls SRC.Sharp/SRCCoreTests/CmdDatas/
-```
-
-既存テストファイルの内容を読んで、どのコマンドがテスト済みかを把握してください。
-テストパターンの参照先：
-- `SRC.Sharp/SRCCoreTests/CmdDatas/SwitchDoLoopCmdTests.cs`
-- `SRC.Sharp/SRCCoreTests/CmdDatas/VariableCmdTests.cs`
-- `SRC.Sharp/SRCCoreTests/CmdDatas/ControlCmdTests.cs`
-
-### フェーズ2 の場合
-
-```bash
-ls SRC.Sharp/SRCCoreTests/Commands/
-```
-
-既存テストは `CommandPropsTests.cs`, `SelectedStateTests.cs`, `UiCommandTests.cs` のみ。
-対象ファイル一覧と対応するソースを確認してください：
-- `Command.launch.cs` / `Command.mapcommend.cs` / `Command.state.cs`
-- `Command.unitcommand.cs` / `Command.unitmove.cs`
-- `Command.unitsp.cs` / `Command.unitsupply.cs` / `Command.unitxxx.cs`
-- `Command.attack.cs` / `Command.process.cs` (複雑なため後回し)
-
-テストパターンの参照先：
-- `SRC.Sharp/SRCCoreTests/Commands/CommandPropsTests.cs`
-
-### フェーズ3 の場合
-
-```bash
-ls SRC.Sharp/SRCCoreTests/Intermissions/ 2>/dev/null || echo "テストなし"
-```
-
-`SRC.Sharp/SRCCore/Intermissions/Intermission.cs` を読んで public メソッドを把握してください。
-
-## Step 3: カバレッジマトリクスの構築 / Build Coverage Matrix
-
-現在のフェーズに応じて未テスト対象リストを作成してください：
-
-### フェーズ1 の場合
-
-Step 1 で確認した CmdDatas コマンドと Step 2 で確認した既存テストを比較し、
-未テストコマンドリストを作成してください。以下はテスト不要のため除外：
-- `NopCmd`, `NotImplementedCmd`, `NotSupportedCmd` (ロジックなし)
-
-### フェーズ2 の場合
-
-`SRC.Sharp/SRCCore/Commands/Command.*.cs` の各ファイルについて、
-対応するテストが存在しないものをリストアップしてください。
-以下の優先順位で、未テストのファイルをすべて一度に対象にしてテストを追加してください：
-1. `Command.state.cs` (51行) — 状態定数のテスト
-2. `Command.launch.cs` (179行) — 発進・帰投ロジック
-3. `Command.unitmove.cs` (467行) — ユニット移動
-4. `Command.unitxxx.cs` (346行) — ユニットその他コマンド
-5. `Command.unitsupply.cs` (279行) — 補給
-6. `Command.unitsp.cs` (485行) — スペシャルパワー
-7. `Command.unitcommand.cs` (498行) — ユニットコマンド
-8. `Command.mapcommend.cs` (637行) — マップコマンド
-9. `Command.unitability.cs` (742行) — アビリティ
-10. `Command.preview.cs` (759行) — プレビュー
-11. `Command.unitform.cs` (840行) — ユニットフォーム
-12. `Command.attack.cs` / `Command.process.cs` (各1500行超, GUI依存が強いため最後)
-
-### フェーズ3 の場合
-
-`SRC.Sharp/SRCCore/Intermissions/Intermission.cs` の public メソッド一覧を作成し、
-テストが存在しないものをすべてリストアップしてください。
-
-## Step 4: 仕様の確認 / Read Specifications
-
-現在のフェーズに応じて、テスト作成の根拠となる情報を収集してください：
-
-### フェーズ1 の場合 (CmdDatas — ヘルプドキュメント参照)
-
-各未テストコマンドについて、対応するヘルプファイルを確認してください：
-
-```bash
-# ヘルプファイルの一覧 / List available help files
-ls SRC.Sharp.Help/src/ | grep "コマンド.md"
-
-# 特定のコマンドのヘルプを読む例 / Example: read specific command help
-cat "SRC.Sharp.Help/src/ABGMコマンド.md"
-cat "SRC.Sharp.Help/src/AIfコマンド.md"
-cat "SRC.Sharp.Help/src/ATalkコマンド.md"
-cat "SRC.Sharp.Help/src/Fontコマンド.md"
-```
-
-各ヘルプファイルから以下を抽出してください：
-- **書式 (Format/Syntax)**: コマンドの構文
-- **解説 (Description)**: コマンドの動作説明
-- **例 (Examples)**: 具体的な使用例
-
-### フェーズ2 の場合 (Commands/ — ソースコード直接参照)
-
-ヘルプドキュメントが存在しないため、ソースコードを仕様の根拠とします：
-
-```bash
-# 対象ファイルを読む
-cat SRC.Sharp/SRCCore/Commands/Command.launch.cs
-# または対象ファイルのメソッドシグネチャを一覧
-grep -n "public\|internal\|private.*void\|private.*bool\|private.*int\|private.*string" \
-  SRC.Sharp/SRCCore/Commands/Command.launch.cs
-```
-
-各メソッドについて以下を理解してください：
-- **メソッドの目的**: コメントや命名から推測
-- **入力条件**: 引数・前提となるゲーム状態 (SelectedUnit, Map, etc.)
-- **期待される副作用**: ユニット状態変化、Map 変化、GUI 呼び出し
-
-MockGUI のハンドラを設定することで GUI 依存の部分もテスト可能です：
-```bash
-cat SRC.Sharp/SRCCore/TestLib/MockGUI.cs
-```
-
-### フェーズ3 の場合 (Intermissions/ — ソースコード直接参照)
-
-```bash
-cat SRC.Sharp/SRCCore/Intermissions/Intermission.cs
-```
-
-public メソッドの仕様をソースコードから読み取り、テスト観点を整理してください。
-
-## Step 5: テストの作成 / Write Tests
-
-現在のフェーズに応じたガイドラインに従いテストを作成してください：
-
-### フェーズ1 テストパターン (CmdDatas コマンド)
-
-既存テストのパターンに従ってください：
-Follow the existing test patterns from `SwitchDoLoopCmdTests.cs`:
-
-```csharp
-// テストクラスのパターン
-[TestClass]
-public class [CommandGroup]CmdTests
-{
-    private SRC CreateSrc()
-    {
-        var src = new SRC { GUI = new MockGUI() };
-        src.Event.EventData = new List<EventDataLine>();
-        src.Event.EventCmd = new List<CmdData>();
-        src.Event.EventFileNames = new List<string>();
-        src.Event.AdditionalEventFileNames = new List<string>();
-        src.Event.EventQue = new Queue<string>();
-        return src;
-    }
-
-    private CmdData[] BuildEvent(SRC src, params string[] lines) { ... }
-    private void RunEvent(SRC src, CmdData[] cmds, int startId = 0, int maxSteps = 1000) { ... }
-
-    // テストメソッド名の形式: [CmdName]Cmd_[条件]_[期待結果]
-    [TestMethod]
-    public void [CmdName]Cmd_[Condition]_[ExpectedResult]()
-    {
-        // ヘルプの当該セクションを引用するコメント
-        // Arrange
-        // Act
-        // Assert
-    }
-}
-```
-
-### フェーズ2 テストパターン (Commands/ ゲームロジック)
-
-Commands/ は SRC の partial class で構成されています。テストには MockGUI を使い、
-GUI のハンドラを必要に応じてセットアップしてください：
-
-```csharp
-[TestClass]
-public class Command[TargetFile]Tests
-{
-    private SRC CreateSrc()
-    {
-        var src = new SRC { GUI = new MockGUI() };
-        // 必要に応じてゲーム状態を初期化
-        return src;
-    }
-
-    // プロパティ・定数のテスト例
-    [TestMethod]
-    public void [ConstName]_HasExpectedValue()
-    {
-        // Command.define.cs の定数値が正しいことを確認
-        Assert.AreEqual(4, Command.AttackCmdID);
-    }
-
-    // 状態変化のテスト例
-    [TestMethod]
-    public void [MethodName]_[Condition]_[ExpectedResult]()
-    {
-        // Arrange: ゲーム状態を初期化
-        var src = CreateSrc();
-        var mock = (MockGUI)src.GUI;
-        // MockGUI のハンドラを必要に応じて設定
-        // mock.SomeHandler = (...) => { ... };
-
-        // Act
-        // src.Commands.SomeMethod(...)
-
-        // Assert
-        // Assert.AreEqual(expected, actual);
-    }
-}
-```
-
-テストファイルの配置 (Commands/ フェーズ):
-- `SRC.Sharp/SRCCoreTests/Commands/Command[TargetFile]Tests.cs`
-- 例: `SRC.Sharp/SRCCoreTests/Commands/CommandLaunchTests.cs`
-
-### フェーズ3 テストパターン (Intermissions/)
-
-```csharp
-[TestClass]
-public class IntermissionTests
-{
-    private SRC CreateSrc()
-    {
-        var src = new SRC { GUI = new MockGUI() };
-        // 必要なゲーム状態を設定
-        return src;
-    }
-
-    [TestMethod]
-    public void [MethodName]_[Condition]_[ExpectedResult]()
-    {
-        // Arrange
-        // Act: src.InterMission.SomeMethod(...)
-        // Assert
-    }
-}
-```
-
-テストファイルの配置 (Intermissions/ フェーズ):
-- `SRC.Sharp/SRCCoreTests/Intermissions/IntermissionTests.cs`
-
-### 必須テストケース / Required Test Cases (全フェーズ共通)
-
-各対象に対して：
-1. **正常動作テスト** (最低1件): 主要ユースケース
-2. **境界条件テスト** (最低1件): エッジケース
-3. **エラーハンドリングテスト**: 無効な引数や状態のケース (可能な場合)
-4. **特殊モードテスト**: オプションパラメータがある場合
-
-## Step 6: 実装との齟齬の確認 / Check for Discrepancies
-
-### フェーズ1 の場合
-
-実装がヘルプドキュメントと異なる場合は、以下の方針に従ってください：
-If the implementation differs from the help documentation, follow this policy:
-
-**原則**: ヘルプを正として実装を修正する。
-**Principle**: Treat the help documentation as correct and fix the implementation.
-
-修正が困難な場合（意図的な差異、後方互換性など）は Issueを作成：
-If fixing is difficult (intentional differences, backward compatibility), create an Issue:
-```
-タイトル: [ユニットテスト補完] [CommandName]: ヘルプとの齟齬
-Title: [unit-test] [CommandName]: Discrepancy from help documentation
-
-内容:
-- ヘルプの記載
-- 実装の実際の動作
-- 推奨対応（修正 or ヘルプ更新 or 現状維持）
-```
-
-### フェーズ2・3 の場合
-
-ソースコードを仕様の根拠とするため、実装と仕様の齟齬は原則として生じません。
-テスト作成中に以下の観点で問題を発見した場合は Issue を作成してください：
-- メソッドの動作が不明確で仕様を決定できない場合
-- 明らかなバグ（コメントと実装が矛盾するなど）
-- テスト不可能な設計（外部依存が強すぎるなど）
+`create-pull-request` で PR を作る。タイトル: `[unit-tests] カバレッジ補強: <対象のファイル>`。本文:
 
 ```
-タイトル: [カバレッジ補強] [ClassName.MethodName]: テスト困難
-Title: [coverage] [ClassName.MethodName]: Hard to test
-```
+## 対象 / Targets
+| ファイル | 前 | 後 |
+|---|---|---|
 
-## Step 7: テストの実行と検証 / Run and Validate Tests
+## 追加したテスト / Tests added
+- <テストクラス>: <確かめている挙動>（N 件）
 
-```bash
-cd SRC.Sharp && dotnet test SRCCoreTests/SRCCoreTests.csproj --verbosity normal -p:EnableWindowsTargeting=true 2>&1 | tee /tmp/gh-aw/test-results.txt
-```
-
-全テストがパスするまで修正を繰り返してください。
-Iterate until all tests pass.
-
-## Step 8: 結果の出力 / Output Results
-
-テストの追加が完了したら：
-After completing test additions:
-
-### 変更がある場合 / If there are changes
-
-`create-pull-request` safe output を使って PR を作成：
-Use `create-pull-request` safe output to create a PR:
-
-**PR タイトル**: "[unit-tests] カバレッジ補強 フェーズN: [追加/対象のサマリー]"
-**PR 本文**:
-```
-🧪 カバレッジ補強レポート (YYYY-MM-DD)
-
-## 現在のフェーズ / Current Phase
-- フェーズN: [CmdDatas 残件完了 / Commands/ 拡充 / Intermissions/ 追加]
-
-## 追加したテスト / Tests Added
-- [ClassName / FileName]: N件追加 (ファイル名)
-- ...
-合計: N件追加
-
-## カバレッジサマリー / Coverage Summary
-- フェーズ1 (CmdDatas/Commands): X/Y コマンド完了 (残り: ABGMCmd, AIfCmd, ATalkCmd, FontCmd のうち残件)
-- フェーズ2 (Commands/): テストファイル Z件 / ソースファイル W件
-- フェーズ3 (Intermissions/): テスト有 or なし
-
-## 齟齬の報告 / Discrepancies Found
-- [対象]: [概要] → Issue #XXX
+## 移植の不具合 / Porting bugs
+- <概要> → Issue #N（テスト: <名前>、[Ignore]）
 - なし / None
 
-## テスト結果 / Test Results
+## テスト結果 / Test results
 Passed: N, Skipped: M, Failed: 0
-
-次のステップ: 次回実行で次のフェーズ/ファイルをカバー
-Next step: Cover the next phase/file on the next run
 ```
 
-### 変更がない場合 / If no changes needed
+追加できるものが無いときは `noop` で理由を書く。
 
-`noop` safe output を使用：
-Use `noop` safe output with message:
-"All target areas already have sufficient test coverage."
+## 重要な注意事項 / Important notes
 
-## 重要な注意事項 / Important Notes
-
-- **既存テストを削除しない** / Never delete existing tests
-- **テストは必ずパスさせる** / All tests must pass before creating PR
-- **フェーズ1**: ヘルプファイルを期待値として使用 / Use help files as the source of truth
-- **フェーズ2・3**: ソースコードを仕様の根拠として使用 / Use source code as the specification
-- **1回の実行でできるだけ多く対象にする** / Cover as many untested targets as possible per run
-- **フェーズ2の複雑ファイル注意**: `Command.attack.cs` と `Command.process.cs` は GUI 依存が強く難易度が高いため、
-  他のファイルを先に完了させてから最後に取り組んでください
-  `Command.attack.cs` and `Command.process.cs` are GUI-heavy; tackle them last
-
-## コンテキスト / Context
-
-- リポジトリ: `${{ github.repository }}`
-- **フェーズ1 ターゲット**
-  - コマンド実装: `SRC.Sharp/SRCCore/CmdDatas/Commands/`
-  - テストファイル: `SRC.Sharp/SRCCoreTests/CmdDatas/`
-  - ヘルプドキュメント: `SRC.Sharp.Help/src/[コマンド名]コマンド.md`
-- **フェーズ2 ターゲット**
-  - コマンド実装: `SRC.Sharp/SRCCore/Commands/Command.*.cs`
-  - テストファイル: `SRC.Sharp/SRCCoreTests/Commands/`
-- **フェーズ3 ターゲット**
-  - ソース: `SRC.Sharp/SRCCore/Intermissions/Intermission.cs`
-  - テストファイル: `SRC.Sharp/SRCCoreTests/Intermissions/`
-- テストインフラ: `SRC.Sharp/SRCCore/TestLib/`
-- 移植プロトコル: `.github/copilot/autonomous-agent.md`
+- 本体（`SRC.Sharp/SRCCore/`）のコードは変更しない。既存のテストも消さない
+- テストはすべて通してから PR を作る（[Ignore] を除く）
+- 数より質: 弱いテストを大量に足すより、主要な分岐を確かめる強いテストを優先する

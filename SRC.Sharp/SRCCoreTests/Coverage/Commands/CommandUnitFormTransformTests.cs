@@ -3,7 +3,7 @@ using SRCCore.Commands;
 using SRCCore.Models;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.unitform.cs の「変形」「ハイパーモード」「変身解除」コマンドのテスト。

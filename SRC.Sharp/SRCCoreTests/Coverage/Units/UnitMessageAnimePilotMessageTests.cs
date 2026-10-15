@@ -3,7 +3,7 @@ using SRCCore.Models;
 using SRCCore.Units;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.PilotMessage / IsMessageDefined / PilotMassageIfDefined のテスト。

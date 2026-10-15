@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Pilots;
 using SRCCore.Units;
-using static SRCCore.Coverage.Tests.Pilots.PilotSkillStatusFixture;
+using static SRCCore.Coverage.Tests.PilotsCoverage.PilotSkillStatusFixture;
 
-namespace SRCCore.Coverage.Tests.Pilots
+namespace SRCCore.Coverage.Tests.PilotsCoverage
 {
     /// <summary>
     /// PilotSkillStatus のレビューで指摘された未検証の振る舞いのテスト。

@@ -3,7 +3,7 @@ using SRCCore.Pilots;
 using SRCCore.Units;
 using System.Linq;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.action2.cs（GetExp / ChangeParty / IncreaseMorale / Die / SuicidalExplosion）のテスト。

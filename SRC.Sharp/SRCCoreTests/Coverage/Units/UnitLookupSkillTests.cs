@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.lookup.cs の必要技能判定（IsNecessarySkillSatisfied / IsNecessarySkillSatisfied2 / IsAvailable）

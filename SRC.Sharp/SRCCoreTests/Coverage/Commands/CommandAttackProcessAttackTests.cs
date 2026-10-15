@@ -3,9 +3,9 @@ using SRCCore.Commands;
 using SRCCore.Maps;
 using SRCCore.Units;
 using System.Linq;
-using static SRCCore.Coverage.Tests.Commands.CommandAttackProcessFixture;
+using static SRCCore.Coverage.Tests.CommandsCoverage.CommandAttackProcessFixture;
 
-namespace SRCCore.Coverage.Tests.Commands
+namespace SRCCore.Coverage.Tests.CommandsCoverage
 {
     /// <summary>
     /// Command.attack.cs（StartAttackCommand / FinishAttackCommand / MapAttackCommand）と

@@ -9,7 +9,7 @@ using SRCCore.TestLib;
 using SRCCore.Units;
 using System.Collections.Generic;
 
-namespace SRCCore.Coverage.Tests.Pilots
+namespace SRCCore.Coverage.Tests.PilotsCoverage
 {
     /// <summary>
     /// PilotSkillStatus 系テストで共通に使う SRC / パイロット / ユニットの組み立て

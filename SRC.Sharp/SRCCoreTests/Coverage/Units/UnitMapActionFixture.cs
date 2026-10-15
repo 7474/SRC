@@ -8,7 +8,7 @@ using SRCCore.TestLib;
 using SRCCore.Units;
 using System.Collections.Generic;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.map.cs / Unit.action2.cs のテスト用の共通準備。

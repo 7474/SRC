@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.message.cs / Unit.anime.cs / Unit.se.cs のテスト用の共通環境。

@@ -2,9 +2,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Expressions;
 using SRCCore.Pilots;
 using SRCCore.Units;
-using static SRCCore.Coverage.Tests.Pilots.PilotSkillStatusFixture;
+using static SRCCore.Coverage.Tests.PilotsCoverage.PilotSkillStatusFixture;
 
-namespace SRCCore.Coverage.Tests.Pilots
+namespace SRCCore.Coverage.Tests.PilotsCoverage
 {
     /// <summary>
     /// Pilot.props.cs（元の SRC の Pilot.cls の各プロパティ）のテスト。

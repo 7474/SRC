@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static SRCCore.Coverage.Tests.Pilots.PilotSkillStatusFixture;
+using static SRCCore.Coverage.Tests.PilotsCoverage.PilotSkillStatusFixture;
 
-namespace SRCCore.Coverage.Tests.Pilots
+namespace SRCCore.Coverage.Tests.PilotsCoverage
 {
     /// <summary>
     /// Pilot.Update（元の SRC の Pilot.Update）のテスト。

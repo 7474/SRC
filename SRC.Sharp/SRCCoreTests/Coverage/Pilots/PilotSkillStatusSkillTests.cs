@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Pilots;
 using SRCCore.Units;
-using static SRCCore.Coverage.Tests.Pilots.PilotSkillStatusFixture;
+using static SRCCore.Coverage.Tests.PilotsCoverage.PilotSkillStatusFixture;
 
-namespace SRCCore.Coverage.Tests.Pilots
+namespace SRCCore.Coverage.Tests.PilotsCoverage
 {
     /// <summary>
     /// Pilot.skill.cs（元の SRC の Pilot.cls「特殊能力関連処理」）のテスト。

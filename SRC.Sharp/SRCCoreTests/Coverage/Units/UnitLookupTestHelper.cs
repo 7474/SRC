@@ -7,7 +7,7 @@ using SRCCore.Units;
 using System.IO;
 using System.Text;
 
-namespace SRCCore.Coverage.Tests.Units
+namespace SRCCore.Coverage.Tests.UnitsCoverage
 {
     /// <summary>
     /// Unit.lookup.cs のテスト用に、テキストのデータ定義からユニットとパイロットを作り、
