@@ -214,13 +214,13 @@ Return
 StopBGM
 Call 章題 "第一話.灯の港"
 Center 8 7
-Create 味方 ランタン号 0 グスタフ 6 3 8
-Create 味方 灯機ホタル 0 ソラ 3 8 6
-Create 味方 灯機ツバメ 0 リオ 3 8 9
-Create 敵 煤機兵 0 煤兵(ザコ) 2 16 5
-Create 敵 煤機兵 0 煤兵(ザコ) 2 17 9
-Create 敵 煤機兵 0 煤兵(ザコ) 2 15 12
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 2 18 7
+Create 味方 ランタン号 0 グスタフ 10 3 8
+Create 味方 灯機ホタル 0 ソラ 7 8 6
+Create 味方 灯機ツバメ 0 リオ 7 8 9
+Create 敵 煤機兵 0 煤兵(ザコ) 6 16 5
+Create 敵 煤機兵 0 煤兵(ザコ) 6 17 9
+Create 敵 煤機兵 0 煤兵(ザコ) 6 15 12
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 6 18 7
 先陣 = UnitID(煤鴉兵(ザコ))
 Wait 5
 
@@ -271,11 +271,11 @@ Exit
 Talk 謎の少女 13 13
 た、助けて……！
 End
-Create 味方 祈り手 0 ミュウ 4 13 13
+Create 味方 祈り手 0 ミュウ 8 13 13
 Item 灯石の首飾り
 Equip ミュウ 灯石の首飾り
 Fix 灯石の首飾り
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 2 18 14
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 6 18 14
 ChangeMode ミュウ
 Center ミュウ
 Talk ミュウ

@@ -928,7 +928,8 @@ namespace SRCPlay
 
         /// <summary>
         /// 自分に使うスペシャルパワー（精神コマンド）から、いま使うものを選ぶ。
-        /// HP が減っていれば回復、敵の攻撃が届く位置で HP が減り始めていれば回避・防御を使う。回復の分の SP は残す。
+        /// HP が減っていれば回復、敵の攻撃が届く位置で HP が減り始めていれば回避・防御を使う。
+        /// ボスやネームドの敵に届く位置で命中率が低ければ、命中を上げるもの（必中・集中など）を使う。回復の分の SP は残す。
         /// </summary>
         private string PlanSpecialPower(string unitId)
         {
@@ -971,9 +972,38 @@ namespace SRCPlay
                         return guard.Name;
                     }
                 }
+                // ボスやネームドの敵に届く位置で、当たる見込みが低ければ命中を上げる（必中・集中など）
+                var targets = enemies
+                    .Where(e => e.BossRank >= 0 || !(e.MainPilot()?.Name ?? "").Contains("(ザコ)"))
+                    .Where(e => Distance(e.x, e.y, u.x, u.y) <= u.Speed + u.Weapons.Select(w => w.WeaponMaxRange()).DefaultIfEmpty(1).Max())
+                    .ToList();
+                if (targets.Any())
+                {
+                    var prob = targets
+                        .SelectMany(t => u.Weapons.Where(w => w.IsWeaponAvailable("移動前")).Select(w => w.HitProbability(t, false)))
+                        .DefaultIfEmpty(100)
+                        .Max();
+                    if (prob < AccuracyThreshold)
+                    {
+                        var reserve = heals.Select(x => x.Cost).DefaultIfEmpty(0).Min();
+                        var aim = candidates
+                            .Where(x => x.Data.IsEffectAvailable("絶対命中") || x.Data.IsEffectAvailable("命中強化"))
+                            .Where(x => p.SP - x.Cost >= reserve && p.IsSpecialPowerUseful(x.Name))
+                            .OrderBy(x => x.Data.IsEffectAvailable("絶対命中") ? 0 : 1)
+                            .ThenBy(x => x.Cost)
+                            .FirstOrDefault();
+                        if (aim.Name != null)
+                        {
+                            return aim.Name;
+                        }
+                    }
+                }
                 return null;
             });
         }
+
+        /// <summary>ボスやネームドの敵への命中率がこれを下回ったら、命中を上げるスペシャルパワーを使う</summary>
+        private const int AccuracyThreshold = 70;
 
         /// <summary>メニューの「精神」（スペシャルパワー）から name を使う。使えたら true。</summary>
         private bool UseSpecialPower(UnitInfo unit, string name)

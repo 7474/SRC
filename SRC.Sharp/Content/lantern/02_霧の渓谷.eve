@@ -38,11 +38,11 @@ Next
 # 霧
 ColorFilter RGB(225, 225, 235) 45%
 
-Create 敵 煤機兵 0 煤兵(ザコ) 3 16 6
-Create 敵 煤機兵 0 煤兵(ザコ) 3 17 9
-Create 敵 煤機兵 0 煤兵(ザコ) 3 15 13
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 3 18 4
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 3 18 15
+Create 敵 煤機兵 0 煤兵(ザコ) 7 16 6
+Create 敵 煤機兵 0 煤兵(ザコ) 7 17 9
+Create 敵 煤機兵 0 煤兵(ザコ) 7 15 13
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 7 18 4
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 7 18 15
 
 Talk グスタフ
 ……来たな。ランタン号、防御姿勢！
@@ -77,7 +77,7 @@ If Status(ソラ) = "出撃" Then
   Transform ソラ 灯機ホタル(飛行形態)
   ChangeArea ソラ 空中
 EndIf
-Create 敵 煤の巨兵 0 煤兵(ザコ) 4 19 10
+Create 敵 煤の巨兵 0 煤兵(ザコ) 8 19 10
 PlayMIDI lantern_boss.mid
 KeepBGM
 Center 19 10
