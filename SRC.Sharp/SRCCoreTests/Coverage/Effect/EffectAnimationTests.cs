@@ -116,8 +116,12 @@ namespace SRCCore.Coverage.Tests.Effects
                 Assert.AreEqual(0, env.Gui.CallsOf("ClearPicture").Count());
 
                 env.Src.Effect.ShowAnimation("爆発命中");
-                Assert.AreEqual(1, env.Gui.CallsOf("ClearPicture").Count());
-                Assert.AreEqual(1, env.Gui.CallsOf("UpdateScreen").Count());
+                // VB: ClearPicture の後に picMain(0).Refresh で画面を更新する
+                var members = env.Gui.Calls.Select(x => x.Member).ToList();
+                var clear = members.IndexOf("ClearPicture");
+                Assert.IsTrue(clear >= 0, "ClearPicture が呼ばれていない");
+                Assert.AreEqual(1, members.Count(x => x == "ClearPicture"));
+                Assert.IsTrue(members.Skip(clear + 1).Contains("UpdateScreen"), "消去後に画面が更新されていない");
             }
         }
 
