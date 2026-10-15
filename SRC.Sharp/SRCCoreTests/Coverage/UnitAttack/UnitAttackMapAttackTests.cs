@@ -148,6 +148,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
             var enemy = f.AddUnit("敵機", "敵", 6, 5, hp: 5000);
             a.MapAttack(a.Weapons.First(), 6, 5);
             Assert.AreEqual(101, enemy.MainPilot().Morale);
+            Assert.AreEqual(100, a.MainPilot().Morale);
         }
 
         // 味方による破壊では資金（修理費の半分）を得てメッセージを表示する
