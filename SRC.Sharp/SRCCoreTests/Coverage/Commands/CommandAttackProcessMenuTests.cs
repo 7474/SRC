@@ -222,8 +222,13 @@ namespace SRCCore.Coverage.Tests.Commands
         {
             // 攻撃不能状態では「攻撃」を表示しない
             var f = CreateWithAlly(out var ally);
-            var eud = f.AddUnitData("敵機");
+            f.AddUnitData("敵機");
             f.Deploy("敵機", "敵兵", "敵", 6, 5);
+            // 同じ配置で攻撃不能でなければ「攻撃」が表示されることを先に確認する
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+            CollectionAssert.Contains(Ids(f.LastUnitCommandMenu()), Command.AttackCmdID);
+
             ally.AddCondition("攻撃不能", 1, cdata: "");
             f.Commands.CommandState = "ユニット選択";
 
@@ -303,16 +308,64 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
-        public void CommandSelect_CannotMoveCondition_HidesMoveTeleportJump()
+        public void CommandSelect_CannotMoveCondition_HidesTeleportAndJump()
         {
-            // 移動不能状態ではテレポート・ジャンプを表示しない
-            var f = CreateWithAlly(out var ally, 4, "テレポート=瞬間移動 30");
+            // 移動不能状態ではテレポート・ジャンプを表示しない（VB: Command.bas 873, 907）
+            var f = CreateWithAlly(out var ally, 4, "テレポート=瞬間移動 30", "ジャンプ=跳躍 10");
             ally.AddCondition("移動不能", 1, cdata: "");
             f.Commands.CommandState = "ユニット選択";
 
             f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
 
+            var ids = Ids(f.LastUnitCommandMenu());
+            CollectionAssert.DoesNotContain(ids, Command.TeleportCmdID);
+            CollectionAssert.DoesNotContain(ids, Command.JumpCmdID);
+            // 移動不能では移動力が 0 になる（VB: Unit.cls Speed）ため「移動」ではなく「待機」を表示する
+            CollectionAssert.DoesNotContain(ids, Command.MoveCmdID);
+            CollectionAssert.Contains(ids, Command.WaitCmdID);
+        }
+
+        [TestMethod]
+        public void CommandSelect_TeleportWithoutCost_RequiresDefaultEN40()
+        {
+            // コスト指定の無いテレポートは EN 40 で使える（VB: Command.bas 866-869）
+            var f = CreateWithAlly(out var ally, 4, "テレポート");
+            ally.EN = 39;
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
             CollectionAssert.DoesNotContain(Ids(f.LastUnitCommandMenu()), Command.TeleportCmdID);
+
+            ally.EN = 40;
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var menu = f.LastUnitCommandMenu();
+            Assert.AreEqual("テレポート", Label(menu, Command.TeleportCmdID));
+            // EN コストがあるので通常移動も残る
+            CollectionAssert.Contains(Ids(menu), Command.MoveCmdID);
+        }
+
+        [TestMethod]
+        public void CommandSelect_CarrierWithUnitOnBoard_ShowsLaunch_HiddenUnderground()
+        {
+            // 格納ユニットのいる母艦は「発進」を表示するが、地中にいる場合は表示しない
+            var f = new CommandAttackProcessFixture();
+            f.AddUnitData("母艦", 4, "母艦");
+            f.AddUnitData("艦載機");
+            var carrier = f.Deploy("母艦", "艦長", "味方", 5, 5);
+            var fighter = f.Deploy("艦載機", "艦載機乗り", "味方", 1, 1);
+            fighter.Escape();
+            carrier.LoadUnit(fighter);
+            fighter.Status = "格納";
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], carrier);
+            Assert.AreEqual("発進", Label(f.LastUnitCommandMenu(), Command.LaunchCmdID));
+
+            carrier.Area = "地中";
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], carrier);
+
+            CollectionAssert.DoesNotContain(Ids(f.LastUnitCommandMenu()), Command.LaunchCmdID);
         }
 
         [TestMethod]
@@ -572,6 +625,65 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
+        public void CommandSelect_CharmedNpcOfAlly_ShowsOrder()
+        {
+            // 味方が魅了した NPC には「命令」コマンドを使える
+            var f = new CommandAttackProcessFixture();
+            f.AddUnitData("術者機");
+            f.AddUnitData("被魅了機");
+            var master = f.Deploy("術者機", "術師", "味方", 3, 3);
+            var charmed = f.Deploy("被魅了機", "操られた者", "ＮＰＣ", 5, 5);
+            charmed.AddCondition("魅了", 3, cdata: "");
+            charmed.Master = master;
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], charmed);
+
+            var menu = f.LastUnitCommandMenu();
+            Assert.AreEqual("命令", Label(menu, Command.OrderCmdID));
+            Assert.AreEqual(1, Ids(menu).Count(x => x == Command.OrderCmdID));
+        }
+
+        [TestMethod]
+        public void CommandSelect_CharmedNpcOfEnemy_NoOrder()
+        {
+            // 魅了した側が味方でなければ「命令」は使えない
+            var f = new CommandAttackProcessFixture();
+            f.AddUnitData("術者機");
+            f.AddUnitData("被魅了機");
+            var master = f.Deploy("術者機", "術師", "敵", 3, 3);
+            var charmed = f.Deploy("被魅了機", "操られた者", "ＮＰＣ", 5, 5);
+            charmed.AddCondition("魅了", 3, cdata: "");
+            charmed.Master = master;
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], charmed);
+
+            CollectionAssert.DoesNotContain(Ids(f.LastUnitCommandMenu()), Command.OrderCmdID);
+        }
+
+        [TestMethod]
+        public void CommandSelect_HiddenInfoOptionButIdentifiedEnemy_ShowsRangeCommands()
+        {
+            // ユニット情報隠蔽中でも識別済みの敵は情報を隠さない
+            var f = new CommandAttackProcessFixture();
+            f.SRC.Expression.DefineGlobalVariable("Option(ユニット情報隠蔽)");
+            var ud = f.AddUnitData("敵機");
+            f.AddWeapon(ud, "敵の武器");
+            var enemy = f.Deploy("敵機", "敵兵", "敵", 5, 5);
+            enemy.AddCondition("識別済み", -1, cdata: "");
+            f.AddEventLabel("ユニットコマンド 調べる 敵:", 1);
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], enemy);
+
+            var menu = f.LastUnitCommandMenu();
+            Assert.AreEqual("移動範囲", Label(menu, Command.MoveCmdID));
+            Assert.AreEqual("射程範囲", Label(menu, Command.AttackCmdID));
+            Assert.AreEqual("調べる", Label(menu, Command.UnitCommandCmdID));
+        }
+
+        [TestMethod]
         [Ignore("移植の不具合: ダミーユニットで特殊能力一覧の有無の判定が逆になっている")]
         public void CommandSelect_DummyUnitWithoutFeatureList_ReturnsToUnitSelect()
         {
@@ -669,6 +781,67 @@ namespace SRCCore.Coverage.Tests.Commands
             Assert.AreEqual("変形", Label(menu, Command.TransformCmdID));
             // マップが無いので移動範囲・射程範囲は表示しない
             CollectionAssert.DoesNotContain(Ids(menu), Command.MoveCmdID);
+        }
+
+        private static CommandAttackProcessFixture CreateStatusViewSplitUnit(out Units.Unit u, int pilots, int partAPilots, int partBPilots)
+        {
+            // ステータス表示用マップ（MapFileName なし）で 分離 能力を持つユニットを表示する
+            var f = new CommandAttackProcessFixture(mapFileName: "");
+            f.AddUnitData("合体機", 4, "分離=分離 分離機Ａ 分離機Ｂ").PilotNum = pilots;
+            f.AddUnitData("分離機Ａ").PilotNum = partAPilots;
+            f.AddUnitData("分離機Ｂ").PilotNum = partBPilots;
+            f.SRC.UList.Add("分離機Ａ", 0, "味方");
+            f.SRC.UList.Add("分離機Ｂ", 0, "味方");
+            u = f.Deploy("合体機", "メイン", "味方", 5, 5);
+            for (var i = 2; i <= pilots; i++)
+            {
+                f.AddPilotData("サブ" + i);
+                f.SRC.PList.Add("サブ" + i, 1, "味方").Ride(u);
+            }
+            u.Status = "待機";
+            u.AddCondition("非操作", -1, cdata: "");
+            f.Commands.ViewMode = false;
+            f.Commands.SelectedUnit = u;
+            f.Commands.CommandState = "コマンド選択";
+            return f;
+        }
+
+        [TestMethod]
+        public void CommandSelect_StatusView_Split_PilotsMatchParts_ShowsSplit()
+        {
+            // ステータス表示: 搭乗パイロット数が分離先の PilotNum の合計と等しければ分離を表示する
+            var f = CreateStatusViewSplitUnit(out var u, 2, 1, 1);
+            Assert.AreEqual(2, u.CountPilot());
+
+            f.Commands.ProceedCommand();
+
+            Assert.AreEqual("分離", Label(f.LastUnitCommandMenu(), Command.SplitCmdID));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: ステータス表示の分離判定でパイロット数の比較が逆（PilotNum 合計 >= CountPilot で表示している）")]
+        public void CommandSelect_StatusView_Split_MorePilotsThanParts_ShowsSplit()
+        {
+            // VB: Command.bas 590-600 は CountPilot < Σ|PilotNum| の時だけ隠す。
+            // 3 人乗りで分離先が 1+1 人なら分離できる
+            var f = CreateStatusViewSplitUnit(out var u, 3, 1, 1);
+            Assert.AreEqual(3, u.CountPilot());
+
+            f.Commands.ProceedCommand();
+
+            Assert.AreEqual("分離", Label(f.LastUnitCommandMenu(), Command.SplitCmdID));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: ステータス表示の分離判定でパイロット数の比較が逆（PilotNum 合計 >= CountPilot で表示している）")]
+        public void CommandSelect_StatusView_Split_NotEnoughPilots_HidesSplit()
+        {
+            // VB: 2 人乗りで分離先が 2+1 人必要なら分離は表示しない
+            var f = CreateStatusViewSplitUnit(out var u, 2, 2, 1);
+
+            f.Commands.ProceedCommand();
+
+            CollectionAssert.DoesNotContain(Ids(f.LastUnitCommandMenu()), Command.SplitCmdID);
         }
 
         // ══════════════════════════════════════════════════════

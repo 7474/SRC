@@ -150,6 +150,74 @@ namespace SRCCore.Coverage.Tests.Commands
         }
 
         [TestMethod]
+        public void StartAttack_WeaponSelectionCancelled_ReturnsToUnitSelect()
+        {
+            // 武器選択をキャンセルすると武器を未選択に戻し、コマンド選択から抜けてユニット選択に戻る
+            var f = CreateBattle(out var ally);
+            f.AddUnitData("敵機");
+            f.Deploy("敵機", "敵兵", "敵", 6, 5);
+            f.Headless.Handle("WeaponListBox", _ => null);
+
+            f.Commands.UnitCommand(new UiCommand(Command.AttackCmdID, "攻撃"));
+
+            Assert.AreEqual(0, f.Commands.SelectedWeapon);
+            Assert.AreEqual("ユニット選択", f.Commands.CommandState);
+            Assert.AreEqual("", f.Commands.SelectedCommand);
+            Assert.AreEqual(1, ally.Action);
+            Assert.AreEqual(0, f.Headless.CallsOf("MaskScreen").Count());
+        }
+
+        [TestMethod]
+        public void StartAttack_CrossMapWeapon_UnmasksCrossOnly()
+        {
+            // Ｍ直: 上下左右の直線上（射程内）のみを効果範囲とする
+            var f = CreateMapAttack(out var ally, "Ｍ直", maxRange: 3);
+
+            Assert.IsFalse(f.SRC.Map.MaskData[5, 8]);
+            Assert.IsFalse(f.SRC.Map.MaskData[2, 5]);
+            Assert.IsTrue(f.SRC.Map.MaskData[6, 6], "斜めは含まない");
+            Assert.IsTrue(f.SRC.Map.MaskData[6, 7]);
+            Assert.IsTrue(f.SRC.Map.MaskData[5, 9], "射程外");
+        }
+
+        [TestMethod]
+        public void StartAttack_WideCrossMapWeapon_UnmasksWideCross()
+        {
+            // Ｍ拡: Ｍ直の直線に加え、その両脇（起点の隣と射程の先端を除く）も効果範囲とする
+            var f = CreateMapAttack(out var ally, "Ｍ拡", maxRange: 3);
+
+            Assert.IsFalse(f.SRC.Map.MaskData[5, 8]);
+            Assert.IsFalse(f.SRC.Map.MaskData[6, 7]);
+            Assert.IsFalse(f.SRC.Map.MaskData[4, 7]);
+            Assert.IsTrue(f.SRC.Map.MaskData[6, 6], "起点の斜め隣は含まない");
+            Assert.IsTrue(f.SRC.Map.MaskData[6, 8], "射程の先端の両脇は含まない");
+        }
+
+        [TestMethod]
+        public void StartAttack_Range1CombinationWeapon_MasksEnemiesWithoutPartner()
+        {
+            // 射程 1 の合体技はパートナーが隣接している敵にしか使えない
+            var f = new CommandAttackProcessFixture();
+            var ud = f.AddUnitData("自機", 4, "合体技=合体攻撃 僚機");
+            f.AddWeapon(ud, "合体攻撃", wclass: "合");
+            var pud = f.AddUnitData("僚機", 4, "合体技=合体攻撃 自機");
+            f.AddWeapon(pud, "合体攻撃", wclass: "合");
+            var ally = f.Deploy("自機", "主人公", "味方", 5, 5);
+            f.Deploy("僚機", "相棒", "味方", 7, 5);
+            f.AddUnitData("敵機");
+            f.Deploy("敵機", "囲まれた敵", "敵", 6, 5);
+            f.Deploy("敵機", "孤立した敵", "敵", 4, 5);
+            f.Commands.SelectedUnit = ally;
+            f.Commands.CommandState = "コマンド選択";
+            SelectWeaponOnList(f, ally, "合体攻撃");
+
+            f.Commands.UnitCommand(new UiCommand(Command.AttackCmdID, "攻撃"));
+
+            Assert.IsFalse(f.SRC.Map.MaskData[6, 5], "僚機が隣接している敵は選べる");
+            Assert.IsTrue(f.SRC.Map.MaskData[4, 5], "パートナーのいない敵は選べない");
+        }
+
+        [TestMethod]
         public void StartAttack_AutoMoveCursor_MovesCursorToWeakestNearestEnemy()
         {
             // カーソル自動移動: マスクされていない敵のうち HP が最も低いもの、同じなら近いものへ移動
@@ -221,15 +289,23 @@ namespace SRCCore.Coverage.Tests.Commands
         [TestMethod]
         public void TargetSelect_MaskedCell_Ignored()
         {
-            // マスクされた地点は選べない
+            // マスクされた地点は、敵がいても選べない
             var f = CreateBattle(out var ally);
-            f.Commands.SelectedCommand = "攻撃";
-            f.Commands.CommandState = "ターゲット選択";
+            f.AddUnitData("敵機");
+            var enemy = f.Deploy("敵機", "敵兵", "敵", 6, 5);
+            SelectWeaponOnList(f, ally, "主武器");
+            f.Commands.UnitCommand(new UiCommand(Command.AttackCmdID, "攻撃"));
+            Assert.IsFalse(f.SRC.Map.MaskData[6, 5], "前提: 射程内の敵は選択可能");
+            // ステルス等で選択不可になった状態を再現する
             f.SRC.Map.MaskData[6, 5] = true;
+            var hp = enemy.HP;
 
-            f.Commands.ProceedCommand(false, GuiButton.Left, f.SRC.Map.MapData[6, 5], null);
+            f.Commands.ProceedCommand(false, GuiButton.Left, f.SRC.Map.MapData[6, 5], enemy);
 
-            Assert.AreEqual(0, f.Commands.SelectedX);
+            Assert.IsNull(f.Commands.SelectedTarget);
+            Assert.AreEqual("ターゲット選択", f.Commands.CommandState);
+            Assert.AreEqual(hp, enemy.HP);
+            Assert.AreEqual(1, ally.Action);
         }
 
         [TestMethod]
@@ -438,6 +514,54 @@ namespace SRCCore.Coverage.Tests.Commands
             Assert.AreEqual("再移動", f.Commands.SelectedCommand);
             Assert.AreEqual("ターゲット選択", f.Commands.CommandState);
             Assert.AreEqual(1, ally.Action, "再移動するまで行動は消費しない");
+        }
+
+        private static CommandAttackProcessFixture CreateRaider(out Unit ally, out Unit enemy, int maxRange, string wclass = "")
+        {
+            // 遊撃技能のパイロットと、隣接する（倒れない）敵
+            var f = new CommandAttackProcessFixture();
+            var pd = f.AddPilotData("遊撃手");
+            pd.AddSkill("遊撃", 1, "", 1);
+            var ud = f.AddUnitData("自機");
+            ud.HP = 100000;
+            var wd = f.AddWeapon(ud, "主武器", power: 1000, minRange: 1, maxRange: maxRange, wclass: wclass);
+            wd.Precision = 999;
+            ally = f.Deploy("自機", "遊撃手", "味方", 5, 5);
+            var eud = f.AddUnitData("敵機");
+            eud.HP = 100000;
+            enemy = f.Deploy("敵機", "敵兵", "敵", 6, 5);
+            f.Commands.SelectedUnit = ally;
+            f.Commands.CommandState = "コマンド選択";
+            SelectWeaponOnList(f, ally, "主武器");
+            f.Commands.UnitCommand(new UiCommand(Command.AttackCmdID, "攻撃"));
+            return f;
+        }
+
+        [TestMethod]
+        public void FinishAttack_RaidSkillWithWeaponNotUsableAfterMove_EndsAction()
+        {
+            // 移動後に使えない武器（射程 2 でＰ属性なし）での攻撃では遊撃でも再移動できず行動終了
+            var f = CreateRaider(out var ally, out var enemy, maxRange: 2);
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[6, 5], enemy);
+
+            Assert.AreNotEqual("再移動", f.Commands.SelectedCommand);
+            Assert.AreEqual("ユニット選択", f.Commands.CommandState);
+            Assert.AreEqual(0, ally.Action);
+        }
+
+        [TestMethod]
+        public void FinishAttack_RaidSkillAfterUsingMostOfSpeed_EndsAction()
+        {
+            // 既に移動力の 2 倍以上の移動コストを消費していれば再移動しない（Speed * 2 > 消費量 が条件）
+            var f = CreateRaider(out var ally, out var enemy, maxRange: 1);
+            f.Commands.SelectedUnitMoveCost = ally.Speed * 2;
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[6, 5], enemy);
+
+            Assert.AreNotEqual("再移動", f.Commands.SelectedCommand);
+            Assert.AreEqual("ユニット選択", f.Commands.CommandState);
+            Assert.AreEqual(0, ally.Action);
         }
 
         // ══════════════════════════════════════════════════════
