@@ -684,10 +684,10 @@ input[type=file]::file-selector-button {
     width: min(100vw, calc((100vh - 28px) * 720 / 620));
 }
 
-/* 全画面で仮想キーを出すときは、その分だけ画面を小さくする */
-.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-wrap,
-.play:fullscreen:has(.virtual-keys:not([hidden])) .screen-bar {
-    width: min(100vw, calc((100vh - 140px) * 720 / 620));
+/* 全画面で仮想パッドを出すときは、その分だけ画面を小さくする */
+.play:fullscreen:has(.virtual-pad:not([hidden])) .screen-wrap,
+.play:fullscreen:has(.virtual-pad:not([hidden])) .screen-bar {
+    width: min(100vw, calc((100vh - 170px) * 720 / 620));
 }
 
 .screen-wrap {
@@ -882,17 +882,18 @@ input[type=file]::file-selector-button {
     box-shadow: none;
 }
 
-/* 仮想キー（タッチの端末向け）。システムメニューの下の行に、十字キーと操作キーを並べる */
-.virtual-keys {
-    --k: min(46px, 11.5vw);
+/* 仮想パッド（タッチの端末向け）。システムメニューの下の行に、左に十字キー、右に A・B、中央にシナリオ向けのキーを並べる */
+.virtual-pad {
+    --k: min(46px, 10vw);
     order: 2;
     flex-basis: 100%;
     display: grid;
-    grid-template-columns: repeat(3, var(--k)) 1fr repeat(3, var(--k)) calc(var(--k) * 1.4);
-    grid-template-rows: var(--k) var(--k);
+    grid-template-columns: repeat(3, var(--k)) 1fr repeat(3, calc(var(--k) * 0.9)) 1fr repeat(2, calc(var(--k) * 1.4));
+    grid-template-rows: repeat(3, var(--k));
     grid-template-areas:
-        ".    up   .     . esc  space ctrl  enter"
-        "left down right . z    x     shift enter";
+        ".    up   .     . .    .     .     . .  a"
+        "left .    right . z    x     space . b  a"
+        ".    down .     . ctrl shift .     . b  .";
     gap: 4px;
     padding: 4px 4px 8px;
     box-sizing: border-box;
@@ -901,7 +902,7 @@ input[type=file]::file-selector-button {
     touch-action: none;
 }
 
-.virtual-keys[hidden] {
+.virtual-pad[hidden] {
     display: none;
 }
 
@@ -925,13 +926,60 @@ input[type=file]::file-selector-button {
 .vkey-left { grid-area: left; }
 .vkey-down { grid-area: down; }
 .vkey-right { grid-area: right; }
-.vkey-esc { grid-area: esc; }
-.vkey-space { grid-area: space; font-size: 11px; }
-.vkey-ctrl { grid-area: ctrl; font-size: 11px; }
-.vkey-shift { grid-area: shift; font-size: 11px; }
+
+/* A・B は丸いボタンにして、ゲームパッドと同じく右上に A、左下に B を置く */
+.vkey-a,
+.vkey-b {
+    width: calc(var(--k) * 1.4);
+    height: calc(var(--k) * 1.4);
+    place-self: center;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* XP のボタンの角丸より優先する */
+[data-theme="xp"] .vkey-a,
+[data-theme="xp"] .vkey-b {
+    border-radius: 50%;
+}
+
+[data-theme="xp"] .vkey-z,
+[data-theme="xp"] .vkey-x,
+[data-theme="xp"] .vkey-space,
+[data-theme="xp"] .vkey-ctrl,
+[data-theme="xp"] .vkey-shift {
+    border-radius: 999px;
+}
+
+.vkey-a { grid-area: a; }
+.vkey-b { grid-area: b; }
+
+/* シナリオ向けのキーは小さく、中央の下にまとめる */
+.vkey-z,
+.vkey-x,
+.vkey-space,
+.vkey-ctrl,
+.vkey-shift {
+    height: calc(var(--k) * 0.7);
+    align-self: center;
+    border-radius: 999px;
+    font-size: 11px;
+}
+
+[data-theme="95"] .vkey-z,
+[data-theme="95"] .vkey-x,
+[data-theme="95"] .vkey-space,
+[data-theme="95"] .vkey-ctrl,
+[data-theme="95"] .vkey-shift {
+    border-radius: 0;
+}
+
 .vkey-z { grid-area: z; }
 .vkey-x { grid-area: x; }
-.vkey-enter { grid-area: enter; }
+.vkey-space { grid-area: space; }
+.vkey-ctrl { grid-area: ctrl; }
+.vkey-shift { grid-area: shift; }
 
 .system-menu {
     position: relative;

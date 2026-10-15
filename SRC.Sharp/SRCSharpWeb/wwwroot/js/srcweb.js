@@ -215,7 +215,7 @@ async function start() {
     canvas.addEventListener('keyup', e => gui.Key(1, e.keyCode));
     canvas.addEventListener('blur', () => gui.Key(2, 0));
 
-    buildVirtualKeys(gui);
+    buildVirtualPad(gui);
     buildTouchUi(gui);
 
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
@@ -353,37 +353,44 @@ function buildTouchUi(gui) {
     }, TOUCH_UI_INTERVAL);
 }
 
-// 仮想キー（タッチの端末向け）。物理キーと同じく WebInterop.Key に送るため、
-// シナリオの KeyState とメッセージ送り・カーソル移動のどちらにも効く。キーコードは Windows の仮想キーコード
-const VIRTUAL_KEYS = [
-    { label: '↑', code: 38, area: 'up', repeat: true },
-    { label: '←', code: 37, area: 'left', repeat: true },
-    { label: '↓', code: 40, area: 'down', repeat: true },
-    { label: '→', code: 39, area: 'right', repeat: true },
-    { label: 'Esc', code: 27, area: 'esc' },
+// 仮想パッド（タッチの端末向け）。左に十字キー、右に A（決定）・B（取消）、中央にシナリオ向けのキーを並べる。
+// 物理キーと同じく WebInterop.Key に送るため、シナリオの KeyState とゲームの操作（カーソル・メニュー・ダイアログ）の
+// どちらにも効く。code は Windows の仮想キーコード
+const VIRTUAL_PAD = [
+    { label: '▲', code: 38, area: 'up', repeat: true, title: '↑' },
+    { label: '◀', code: 37, area: 'left', repeat: true, title: '←' },
+    { label: '▼', code: 40, area: 'down', repeat: true, title: '↓' },
+    { label: '▶', code: 39, area: 'right', repeat: true, title: '→' },
+    { label: 'A', code: 13, area: 'a', title: 'A（Enter）' },
+    { label: 'B', code: 27, area: 'b', title: 'B（Esc）' },
+    { label: 'Z', code: 90, area: 'z' },
+    { label: 'X', code: 88, area: 'x' },
     { label: 'Space', code: 32, area: 'space' },
     { label: 'Ctrl', code: 17, area: 'ctrl' },
     { label: 'Shift', code: 16, area: 'shift' },
-    { label: 'Z', code: 90, area: 'z' },
-    { label: 'X', code: 88, area: 'x' },
-    { label: 'Enter', code: 13, area: 'enter' },
 ];
-const VIRTUAL_KEYS_SETTING = 'srcweb.virtualKeys';
+const VIRTUAL_PAD_SETTING = 'srcweb.virtualPad';
+// 以前の名前（仮想キー）で保存した設定も読む
+const OLD_VIRTUAL_PAD_SETTING = 'srcweb.virtualKeys';
 
 /** タッチ向けの画面か（index.html が html の data-input に付ける。利用者が切り替えられる） */
 const isTouchMode = () => document.documentElement.dataset.input === 'touch';
 
-function buildVirtualKeys(gui) {
-    const container = document.getElementById('virtual-keys');
+function buildVirtualPad(gui) {
+    const container = document.getElementById('virtual-pad');
     if (!container) {
         return;
     }
-    for (const def of VIRTUAL_KEYS) {
+    for (const def of VIRTUAL_PAD) {
         const key = document.createElement('button');
         key.type = 'button';
         key.className = `vkey vkey-${def.area}`;
         key.textContent = def.label;
         key.dataset.code = def.code;
+        if (def.title) {
+            key.title = def.title;
+            key.setAttribute('aria-label', def.title);
+        }
         key.tabIndex = -1;
         let repeat = null;
         let down = false;
@@ -420,16 +427,16 @@ function buildVirtualKeys(gui) {
     }
     let visible;
     try {
-        const saved = localStorage.getItem(VIRTUAL_KEYS_SETTING);
+        const saved = localStorage.getItem(VIRTUAL_PAD_SETTING) ?? localStorage.getItem(OLD_VIRTUAL_PAD_SETTING);
         visible = saved === null ? isTouchMode() : saved === 'on';
     } catch {
         visible = isTouchMode();
     }
     container.hidden = !visible;
-    globalThis.srcwebToggleVirtualKeys = () => {
+    globalThis.srcwebToggleVirtualPad = () => {
         container.hidden = !container.hidden;
         try {
-            localStorage.setItem(VIRTUAL_KEYS_SETTING, container.hidden ? 'off' : 'on');
+            localStorage.setItem(VIRTUAL_PAD_SETTING, container.hidden ? 'off' : 'on');
         } catch {
             // 保存できなくても表示は切り替える
         }

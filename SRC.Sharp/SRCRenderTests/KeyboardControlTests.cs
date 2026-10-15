@@ -8,7 +8,7 @@ using System.Threading;
 namespace SRCRender.Tests
 {
     /// <summary>
-    /// キー操作（物理キー・SRC#Web の仮想キー）だけで遊べること。
+    /// キー操作（物理キー・SRC#Web の仮想パッド）だけで遊べること。
     /// マップカーソル（矢印で選び Enter でクリック、Esc で右クリック）、ポップアップメニュー（↑↓・Enter・Esc）、ダイアログ（←→・Enter）。
     /// </summary>
     [TestClass]

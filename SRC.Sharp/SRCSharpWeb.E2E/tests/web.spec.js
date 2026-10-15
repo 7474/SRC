@@ -566,11 +566,11 @@ test.describe('タッチ向けの画面', () => {
     await expect(page.locator('html')).toHaveAttribute('data-input', 'mouse');
     await expect(page.locator('#input-mode')).toHaveValue('mouse');
 
-    // タッチ向けに戻すと、プレイ中は仮想キーを出す（表示を切り替えていなければ）
+    // タッチ向けに戻すと、プレイ中は仮想パッドを出す（表示を切り替えていなければ）
     await page.selectOption('#input-mode', 'touch');
     await page.getByRole('button', { name: 'battle-basic' }).click();
     await expect(page.locator('#screen')).toBeVisible();
-    await expect(page.locator('#virtual-keys')).toBeVisible();
+    await expect(page.locator('#virtual-pad')).toBeVisible();
   });
 });
 
@@ -707,7 +707,7 @@ test.describe('タッチ操作', () => {
   });
 });
 
-test('仮想キーをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
+test('仮想パッドをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
   const eve = [
     'プロローグ:',
     'ChangeMap test.map',
@@ -730,7 +730,7 @@ test('仮想キーをシステムメニューで表示し、押したキーが�
     'Quit',
     '',
   ].join('\r\n');
-  const name = '仮想キーのテスト.zip';
+  const name = '仮想パッドのテスト.zip';
   await open(page);
   await page.setInputFiles('#add-archive', {
     name,
@@ -744,11 +744,11 @@ test('仮想キーをシステムメニューで表示し、押したキーが�
   await expect(page.locator('#screen')).toBeVisible();
 
   // マウスの端末では既定で出さない。システムメニューで出す
-  await expect(page.locator('#virtual-keys')).toBeHidden();
+  await expect(page.locator('#virtual-pad')).toBeHidden();
   await page.locator('#system-menu-button').click();
-  await page.getByRole('menuitem', { name: '仮想キーの表示の切り替え' }).click();
-  await expect(page.locator('#virtual-keys')).toBeVisible();
-  await expect(page.locator('#virtual-keys .vkey')).toHaveCount(11);
+  await page.getByRole('menuitem', { name: '仮想パッドの表示の切り替え' }).click();
+  await expect(page.locator('#virtual-pad')).toBeVisible();
+  await expect(page.locator('#virtual-pad .vkey')).toHaveCount(11);
 
   await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toMatch(/test\.eve:(7|8|9|1[0-5]) /);
   for (const selector of ['.vkey-z', '.vkey-up']) {
@@ -764,7 +764,7 @@ test('仮想キーをシステムメニューで表示し、押したキーが�
   await page.reload();
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
-  await expect(page.locator('#virtual-keys')).toBeVisible();
+  await expect(page.locator('#virtual-pad')).toBeVisible();
   await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();

@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Przełącz pełny ekran</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Pokaż/ukryj wirtualne klawisze</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Pokaż/ukryj wirtualny pad</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Zamknij</value>

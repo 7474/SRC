@@ -18,7 +18,7 @@ namespace SRCRender
 
         /// <summary>
         /// キー操作のマップカーソル（画面のピクセル座標の矩形。null で非表示）。ScreenGUI.Present が更新する。
-        /// 矢印キー（仮想キー）でマスを選び、Enter でクリック、Esc で右クリック（キャンセル）にする
+        /// 矢印キー（SRC#Web の仮想パッドの十字キー）でマスを選び、Enter でクリック、Esc で右クリック（キャンセル）にする
         /// </summary>
         public SkiaSharp.SKRectI? MapCursor { get; set; }
 

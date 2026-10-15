@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Attiva/disattiva schermo intero</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Mostra/nascondi tasti virtuali</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Mostra/nascondi gamepad virtuale</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Chiudi</value>

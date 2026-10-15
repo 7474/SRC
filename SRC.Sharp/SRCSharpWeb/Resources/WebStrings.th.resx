@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>สลับโหมดเต็มหน้าจอ</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>แสดง/ซ่อนปุ่มเสมือน</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>แสดง/ซ่อนจอยเสมือน</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>ปิด</value>

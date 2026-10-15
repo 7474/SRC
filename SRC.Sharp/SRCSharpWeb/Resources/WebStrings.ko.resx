@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>전체 화면 전환</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>가상 키 표시/숨기기</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>가상 패드 표시/숨기기</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>닫기</value>
