@@ -5,7 +5,8 @@ using System.Linq;
 namespace SRCCore.Coverage.Tests.UnitAttackCheck
 {
     /// <summary>
-    /// Unit.CheckParryFeature（VB: Unit.cls CheckParryFeature）の切り払い・阻止・迎撃のテスト。
+    /// Unit.CheckParryFeature（VB: Unit.cls CheckParryFeature）の切り払い・阻止のテスト。
+    /// 迎撃・反射・当て身技などは UnitAttackCheckParryExtraTests にある。
     /// 発動率が 100% か 0% になる条件だけを使っている。
     /// </summary>
     [TestClass]

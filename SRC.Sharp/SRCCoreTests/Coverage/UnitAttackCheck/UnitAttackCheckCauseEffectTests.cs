@@ -88,7 +88,7 @@ AAAA, -.bmp
         // 状態異常の付与（既定の持続ターンとレベル指定）
         // ──────────────────────────────────────────────
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("縛", "行動不能", 2, "捕縛")]
         [DataRow("縛L3", "行動不能", 3, "捕縛")]
         [DataRow("Ｓ", "行動不能", 1, "ショック")]
@@ -178,7 +178,9 @@ AAAA, -.bmp
         [TestMethod]
         public void SpecialEffectImmune_FieldSet_PreventsEffect()
         {
-            // 特殊効果無効化属性（strSpecialEffectImmune）に含まれる効果は発生しない
+            // 特殊効果無効化属性（strSpecialEffectImmune）に含まれる効果は発生しない。
+            // データ定義からの経路（上の Ignore テスト）は Unit.Update がこのフィールドを埋めないため通らない。
+            // それが直るまでの代わりとして、CauseEffect が SpecialEffectImmune を参照することだけをここで確かめる
             var (_, a, t) = Setup("縛");
             t.strSpecialEffectImmune = "縛";
 
@@ -380,7 +382,7 @@ AAAA, -.bmp
         // ＨＰ・ＥＮ減衰
         // ──────────────────────────────────────────────
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("衰L1", 2250, "25%")]
         [DataRow("衰L2", 1500, "50%")]
         [DataRow("衰L3", 750, "75%")]
@@ -395,7 +397,7 @@ AAAA, -.bmp
             Assert.AreEqual(" 減衰", critical_type);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("衰L1", 2625)]
         [DataRow("衰L2", 2250)]
         [DataRow("衰L3", 1500)]
@@ -410,7 +412,7 @@ AAAA, -.bmp
             Assert.AreEqual(expectedHP, t.HP);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("滅L1", 150)]
         [DataRow("滅L2", 100)]
         [DataRow("滅L3", 50)]

@@ -392,7 +392,7 @@ AAAA, -.bmp
         // IsSameCategory
         // ──────────────────────────────────────────────
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("バリア 全 10", "バリア 全 5", true)]
         [DataRow("バリアLv2 全 10", "バリアLv5", true)]
         [DataRow("バリア", "Ｉフィールド", false)]

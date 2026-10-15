@@ -483,7 +483,7 @@ AAAA, -.bmp
             Assert.IsFalse(Defense(a, WeaponOf(a, "パンチ"), t, ref dmg, ref msg, out _));
             Assert.AreEqual(1000, dmg);
             Assert.AreEqual(1d, t.ConditionLevel("盾ダメージ"));
-            CollectionAssert.Contains(f.SysMessages(), "普通機は[大盾]を使ってダメージを軽減させた。".Replace("普通機", "盾機"));
+            CollectionAssert.Contains(f.SysMessages(), "盾機は[大盾]を使ってダメージを軽減させた。");
         }
 
         [TestMethod]
