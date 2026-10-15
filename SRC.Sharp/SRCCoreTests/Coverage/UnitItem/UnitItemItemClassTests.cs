@@ -41,7 +41,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Class0 の Select 内 break が Do ループを抜けず、専用指定より前の括弧まで削ってしまう")]
         public void Class0_KeepsParenthesesBeforeSpecifier()
         {
             // VB は専用指定の開き括弧を見つけた時点で Exit Do する。

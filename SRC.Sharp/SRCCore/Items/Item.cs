@@ -152,7 +152,7 @@ namespace SRCCore.Items
                                 if (n == 0)
                                 {
                                     Class0Ret = Strings.Left(Class0Ret, i - 1);
-                                    break;
+                                    return Class0Ret;
                                 }
 
                                 break;

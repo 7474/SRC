@@ -2,6 +2,7 @@ using SRCCore.Items;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Units
@@ -206,36 +207,29 @@ namespace SRCCore.Units
                             foreach (Item currentItm23 in colItem)
                             {
                                 itm2 = currentItm23;
-                                switch (itm2.Part() ?? "")
+                                if (itm2.Part() == "両手")
                                 {
-                                    case "両手":
-                                        {
-                                            if (Party0 != "味方")
-                                            {
-                                                itm2.Exist = false;
-                                            }
+                                    if (Party0 != "味方")
+                                    {
+                                        itm2.Exist = false;
+                                    }
 
-                                            DeleteItem(itm2);
-                                            break;
+                                    DeleteItem(itm2);
+                                    break;
+                                }
+                                else if (itm2.Part() == "片手" || itm2.Part() == "盾")
+                                {
+                                    num = (num + 1);
+                                    if (num > 1)
+                                    {
+                                        if (Party0 != "味方")
+                                        {
+                                            itm2.Exist = false;
                                         }
 
-                                    case "片手":
-                                    case "盾":
-                                        {
-                                            num = (num + 1);
-                                            if (num > 1)
-                                            {
-                                                if (Party0 != "味方")
-                                                {
-                                                    itm2.Exist = false;
-                                                }
-
-                                                DeleteItem(itm2);
-                                                break;
-                                            }
-
-                                            break;
-                                        }
+                                        DeleteItem(itm2);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -244,19 +238,15 @@ namespace SRCCore.Units
                             foreach (Item currentItm24 in colItem)
                             {
                                 itm2 = currentItm24;
-                                switch (itm2.Part() ?? "")
+                                if (itm2.Part() == "両手" || itm2.Part() == "片手")
                                 {
-                                    case "両手":
-                                    case "片手":
-                                        {
-                                            if (Party0 != "味方")
-                                            {
-                                                itm2.Exist = false;
-                                            }
+                                    if (Party0 != "味方")
+                                    {
+                                        itm2.Exist = false;
+                                    }
 
-                                            DeleteItem(itm2);
-                                            break;
-                                        }
+                                    DeleteItem(itm2);
+                                    break;
                                 }
                             }
                         }
@@ -269,36 +259,29 @@ namespace SRCCore.Units
                         foreach (Item currentItm25 in colItem)
                         {
                             itm2 = currentItm25;
-                            switch (itm2.Part() ?? "")
+                            if (itm2.Part() == "両手" || itm2.Part() == "盾")
                             {
-                                case "両手":
-                                case "盾":
-                                    {
-                                        if (Party0 != "味方")
-                                        {
-                                            itm2.Exist = false;
-                                        }
+                                if (Party0 != "味方")
+                                {
+                                    itm2.Exist = false;
+                                }
 
-                                        DeleteItem(itm2);
-                                        break;
+                                DeleteItem(itm2);
+                                break;
+                            }
+                            else if (itm2.Part() == "片手")
+                            {
+                                i = (i + 1);
+                                if (i > 1)
+                                {
+                                    if (Party0 != "味方")
+                                    {
+                                        itm2.Exist = false;
                                     }
 
-                                case "片手":
-                                    {
-                                        i = (i + 1);
-                                        if (i > 1)
-                                        {
-                                            if (Party0 != "味方")
-                                            {
-                                                itm2.Exist = false;
-                                            }
-
-                                            DeleteItem(itm2);
-                                            break;
-                                        }
-
-                                        break;
-                                    }
+                                    DeleteItem(itm2);
+                                    break;
+                                }
                             }
                         }
 
@@ -307,7 +290,8 @@ namespace SRCCore.Units
 
                 case "両肩":
                     {
-                        foreach (Item currentItm26 in colItem)
+                        // 外しながら全て走査するので複製したリストを使う
+                        foreach (Item currentItm26 in colItem.List.ToList())
                         {
                             itm2 = currentItm26;
                             if (itm2.Part() == "両肩" || itm2.Part() == "肩")
@@ -330,35 +314,29 @@ namespace SRCCore.Units
                         foreach (Item currentItm27 in colItem)
                         {
                             itm2 = currentItm27;
-                            switch (itm2.Part() ?? "")
+                            if (itm2.Part() == "両肩")
                             {
-                                case "両肩":
-                                    {
-                                        if (Party0 != "味方")
-                                        {
-                                            itm2.Exist = false;
-                                        }
+                                if (Party0 != "味方")
+                                {
+                                    itm2.Exist = false;
+                                }
 
-                                        DeleteItem(itm2);
-                                        break;
+                                DeleteItem(itm2);
+                                break;
+                            }
+                            else if (itm2.Part() == "肩")
+                            {
+                                num = (num + 1);
+                                if (num > 1)
+                                {
+                                    if (Party0 != "味方")
+                                    {
+                                        itm2.Exist = false;
                                     }
 
-                                case "肩":
-                                    {
-                                        num = (num + 1);
-                                        if (num > 1)
-                                        {
-                                            if (Party0 != "味方")
-                                            {
-                                                itm2.Exist = false;
-                                            }
-
-                                            DeleteItem(itm2);
-                                            break;
-                                        }
-
-                                        break;
-                                    }
+                                    DeleteItem(itm2);
+                                    break;
+                                }
                             }
                         }
 
@@ -374,6 +352,8 @@ namespace SRCCore.Units
                 default:
                     {
                         // ハードポイントに装備する場合
+                        // VB の For i = 1 To CountFeature はハードポイントが見つからなければ i > 0 で終わる
+                        i = 1;
                         foreach (var fd in Features)
                         {
                             if (fd.Name == "ハードポイント" && fd.Data == itm.Part())
@@ -391,7 +371,8 @@ namespace SRCCore.Units
                                 // 足らないスロット数分、アイテムを外す
                                 if (empty_slot < itm.Size())
                                 {
-                                    foreach (Item currentItm29 in colItem)
+                                    // 外しながら走査するので複製したリストを使う
+                                    foreach (Item currentItm29 in colItem.List.ToList())
                                     {
                                         itm2 = currentItm29;
                                         if ((itm2.Part() ?? "") == (itm.Part() ?? ""))
@@ -465,45 +446,114 @@ namespace SRCCore.Units
         public void DeleteItem(Item itm, bool without_refresh = false)
         {
             // 存在しないアイテム？
-            if (itm is null)
+            if (itm is null || !colItem.ContainsKey(itm.ID))
             {
                 return;
             }
 
-            // この辺のシーケンスはSRCと比べて簡便化している
+            // XXX 元は削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
+            // 削除するアイテムによって付加された武器・アビリティのデータを削除していた
             DeleteItemInternal(itm);
-            Update();
-            // 元は以下のようなことをしていた
-            // 削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
-            // 削除するアイテムによって付加された武器・アビリティのデータを削除する。
 
             // ハードポイントを持つアイテムをはずした場合は他のアイテムを連続してはずす必要がある
-            // XXX 未疎通
             bool is_changed;
             do
             {
                 is_changed = false;
-                var is_ambidextrous = IsFeatureAvailable("両手利き");
-                // ハードポイントを持たないアイテムから選んで削除されるようにFill順を指定
-                var slots = new ItemSlots(this).FillSlot((x) => x.IsFeatureAvailable("ハードポイント") ? 0 : 1);
-                var deleteItems = ItemList.Except(slots.Slots.Where(x => !x.IsEmpty).Select(x => x.Item))
-                    .Where(x => x.IsVisible)
-                    .ToList();
 
-                foreach (var delItm in deleteItems)
+                // 現在のアイテム装備可能回数を記録
+                var prev_max_item_num = MaxItemNum();
+                var prev_hard_point = HardPointSizes(false);
+                var is_ambidextrous = IsFeatureAvailable("両手利き");
+
+                // アイテムを外したことによるステータスの変化
+                Update(without_refresh);
+
+                // アイテム装備可能数が減少？
+                if (prev_max_item_num > MaxItemNum())
                 {
-                    DeleteItemInternal(delItm);
                     is_changed = true;
+                    var num = MaxItemNum();
+
+                    // ハードポイントを持たないアイテムから選んで削除
+                    var i = 0;
+                    foreach (var delItm in ItemList.ToList())
+                    {
+                        if (delItm.Part() == "強化パーツ" || delItm.Part() == "アイテム")
+                        {
+                            i = (i + 1);
+                            if (i > num && !delItm.IsFeatureAvailable("ハードポイント"))
+                            {
+                                DeleteItemInternal(delItm);
+                            }
+                        }
+                    }
+
+                    i = 0;
+                    foreach (var delItm in ItemList.ToList())
+                    {
+                        if (delItm.Part() == "強化パーツ" || delItm.Part() == "アイテム")
+                        {
+                            i = (i + 1);
+                            if (i > num)
+                            {
+                                DeleteItemInternal(delItm);
+                            }
+                        }
+                    }
+                }
+
+                // ハードポイントが減少？
+                var cur_hard_point = HardPointSizes(true);
+                foreach (var prev in prev_hard_point)
+                {
+                    var num = cur_hard_point.TryGetValue(prev.Key, out var cur_size) ? cur_size : 0;
+                    if (num < prev.Value)
+                    {
+                        is_changed = true;
+                        foreach (var delItm in ItemList.ToList())
+                        {
+                            if (delItm.Part() == prev.Key)
+                            {
+                                num = (num - delItm.Size());
+                                if (num < 0)
+                                {
+                                    DeleteItemInternal(delItm);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // 両手利きで無くなってしまった場合は二個目の片手アイテムを外す
                 if (is_ambidextrous && !IsFeatureAvailable("両手利き"))
                 {
-                    DeleteItemInternal(ItemList.Where(x => x.Part() == "片手").Skip(1).FirstOrDefault());
-                    is_changed = true;
+                    foreach (var delItm in ItemList.Where(x => x.Part() == "片手").Skip(1).ToList())
+                    {
+                        is_changed = true;
+                        DeleteItemInternal(delItm);
+                    }
                 }
             }
             while (is_changed);
+        }
+
+        // 装備個所ごとのハードポイントのサイズ
+        private Dictionary<string, int> HardPointSizes(bool includeItemParts)
+        {
+            var sizes = new Dictionary<string, int>();
+            foreach (var fd in Features.Where(x => x.Name == "ハードポイント"))
+            {
+                if (!includeItemParts && (fd.Data == "強化パーツ" || fd.Data == "アイテム"))
+                {
+                    continue;
+                }
+
+                sizes.TryGetValue(fd.Data, out var size);
+                sizes[fd.Data] = (int)(size + fd.FeatureLevel);
+            }
+
+            return sizes;
         }
 
         private void DeleteItemInternal(Item itm)
