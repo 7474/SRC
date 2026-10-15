@@ -216,6 +216,7 @@ async function start() {
     canvas.addEventListener('blur', () => gui.Key(2, 0));
 
     buildVirtualKeys(gui);
+    buildTouchUi(gui);
 
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
     const loop = async () => {
@@ -227,6 +228,129 @@ async function start() {
     };
     requestAnimationFrame(loop);
     canvas.focus();
+}
+
+// タッチ向けの選択画面。ゲームの画面に描く小さなリスト・メニュー・ダイアログを、タッチ向けの画面（data-input="touch"）では
+// 大きなボタンの一覧で出す。中身は WebInterop.TouchUi で読み、選んだものは WebInterop.TouchChoose でゲームに渡す
+// （自動プレイと同じ操作。ゲームの画面の描画は変えない）
+const TOUCH_UI_INTERVAL = 150;
+const TOUCH_UI_LIST = 0;
+const TOUCH_UI_MENU = 1;
+const TOUCH_UI_DIALOG = 2;
+const TOUCH_UI_CANCEL = 3;
+
+function buildTouchUi(gui) {
+    const panel = document.getElementById('touch-ui');
+    if (!panel) {
+        return;
+    }
+    let last = '{}';
+    let busy = false;
+    // 選んだ直後は、ゲームが次の表示に移るまで同じものを出さない
+    let suppressUntil = 0;
+
+    const choose = (kind, index) => {
+        panel.hidden = true;
+        suppressUntil = performance.now() + 400;
+        resumeAudio();
+        gui.TouchChoose(kind, index);
+        canvas?.focus();
+    };
+
+    const button = (text, onClick, className) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = className;
+        b.textContent = text;
+        b.addEventListener('click', onClick);
+        return b;
+    };
+
+    const render = state => {
+        panel.replaceChildren();
+        let kind;
+        let title;
+        let text;
+        let items;
+        if (state.dialog) {
+            kind = TOUCH_UI_DIALOG;
+            title = state.dialog.title;
+            text = state.dialog.text;
+            items = state.dialog.buttons.map(x => ({ text: x }));
+        } else if (state.menu) {
+            kind = TOUCH_UI_MENU;
+            items = state.menu.items.map(x => ({ text: x }));
+        } else if (state.list) {
+            kind = TOUCH_UI_LIST;
+            title = state.list.caption;
+            text = state.list.info;
+            items = state.list.items;
+        } else {
+            panel.hidden = true;
+            return;
+        }
+        if (title) {
+            const caption = document.createElement('div');
+            caption.className = 'touch-ui-title titlebar';
+            caption.textContent = title;
+            panel.appendChild(caption);
+        }
+        if (text && kind !== TOUCH_UI_LIST) {
+            const p = document.createElement('p');
+            p.className = 'touch-ui-text';
+            p.textContent = text;
+            panel.appendChild(p);
+        }
+        const list = document.createElement('div');
+        list.className = kind === TOUCH_UI_DIALOG ? 'touch-ui-buttons' : 'touch-ui-items';
+        // 見出しの行（武器の一覧の「名称 攻撃 命中…」など）があるリストは、桁をそろえて出し、横にスクロールできるようにする
+        const columns = kind === TOUCH_UI_LIST && !!text;
+        list.classList.toggle('columns', columns);
+        if (columns) {
+            const header = document.createElement('div');
+            header.className = 'touch-ui-header';
+            header.textContent = text;
+            list.appendChild(header);
+            text = null;
+        }
+        items.forEach((item, i) => {
+            const b = button(item.text, () => choose(kind, i), 'touch-ui-item');
+            b.disabled = !!item.disabled;
+            list.appendChild(b);
+        });
+        panel.appendChild(list);
+        if (kind !== TOUCH_UI_DIALOG) {
+            // 右クリックと同じ（キャンセルできないリストでは何も起きない）
+            panel.appendChild(button(panel.dataset.cancel || 'Cancel', () => choose(TOUCH_UI_CANCEL, 0), 'touch-ui-cancel'));
+        }
+        panel.hidden = false;
+        panel.scrollTop = 0;
+    };
+
+    setInterval(async () => {
+        if (busy) {
+            return;
+        }
+        busy = true;
+        try {
+            const json = isTouchMode() ? await gui.TouchUi() : '{}';
+            const state = JSON.parse(json);
+            if (state.error) {
+                return;
+            }
+            if (performance.now() < suppressUntil) {
+                return;
+            }
+            if (json !== last || (panel.hidden && json !== '{}')) {
+                last = json;
+                render(state);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            busy = false;
+        }
+    }, TOUCH_UI_INTERVAL);
 }
 
 // 仮想キー（タッチの端末向け）。物理キーと同じく WebInterop.Key に送るため、

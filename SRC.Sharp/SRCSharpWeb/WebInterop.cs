@@ -177,6 +177,107 @@ namespace SRCSharpWeb
             }
         }
 
+        /// <summary>
+        /// タッチ向けの選択画面（srcweb.js）に出す、表示中のリスト・メニュー・ダイアログ。JSON で返す（無いものは含めない）。
+        /// ゲームの画面に描く小さなリスト・メニュー・ダイアログを、タッチの端末では大きなボタンで選べるようにする
+        /// </summary>
+        [JSExport]
+        public static Task<string> TouchUi()
+        {
+            var json = new JsonObject();
+            try
+            {
+                var state = gui?.State;
+                var list = state?.List;
+                if (list != null && gui.IsWaitingList)
+                {
+                    var items = new JsonArray();
+                    foreach (var item in list.Items)
+                    {
+                        items.Add(new JsonObject { ["text"] = item.Text, ["disabled"] = item.Disabled });
+                    }
+                    json["list"] = new JsonObject { ["caption"] = list.Caption, ["info"] = list.Info, ["items"] = items };
+                }
+                var menu = state?.Menu;
+                if (menu != null)
+                {
+                    var items = new JsonArray();
+                    foreach (var item in menu.Items)
+                    {
+                        items.Add(item);
+                    }
+                    json["menu"] = new JsonObject { ["items"] = items };
+                }
+                var dialog = state?.Dialog;
+                if (dialog != null)
+                {
+                    var buttons = new JsonArray();
+                    foreach (var button in dialog.Buttons)
+                    {
+                        buttons.Add(button);
+                    }
+                    json["dialog"] = new JsonObject { ["title"] = dialog.Title, ["text"] = dialog.Text, ["buttons"] = buttons };
+                }
+            }
+            catch (Exception ex)
+            {
+                // ゲームスレッドが更新している最中に読んだ場合（次の呼び出しで読み直す）
+                json["error"] = ex.Message;
+            }
+            return Task.FromResult(json.ToJsonString(JsonOptions));
+        }
+
+        /// <summary>
+        /// タッチ向けの選択画面で選んだものをゲームに渡す。自動プレイ（SRCPlay の PlayScript）と同じ操作にする。
+        /// kind: 0 リストの項目（カーソルを合わせて Enter）、1 メニューの項目（項目をクリック）、2 ダイアログのボタン（ボタンをクリック）、3 キャンセル（右クリック）
+        /// </summary>
+        [JSExport]
+        public static Task TouchChoose(int kind, int index)
+        {
+            inputs.Add(g =>
+            {
+                var state = g.State;
+                switch (kind)
+                {
+                    case 0:
+                        var list = state.List;
+                        if (list != null && g.IsWaitingList && index >= 0 && index < list.Items.Count)
+                        {
+                            list.Highlight = index;
+                            g.KeyPressed(ScreenKey.Enter);
+                        }
+                        break;
+                    case 1:
+                        var menu = state.Menu;
+                        if (menu != null && index >= 0 && index < menu.Items.Count)
+                        {
+                            var p = g.Renderer.MenuItemCenter(menu, index);
+                            Click(g, p.X, p.Y, GuiButton.Left);
+                        }
+                        break;
+                    case 2:
+                        var dialog = state.Dialog;
+                        if (dialog != null && index >= 0 && index < dialog.Buttons.Count)
+                        {
+                            var rect = g.Renderer.LayoutDialog(dialog).ButtonRect(index);
+                            Click(g, rect.MidX, rect.MidY, GuiButton.Left);
+                        }
+                        break;
+                    case 3:
+                        Click(g, ScreenLayout.MapWidthPx / 2f, ScreenLayout.MapHeightPx / 2f, GuiButton.Right);
+                        break;
+                }
+            });
+            return Task.CompletedTask;
+        }
+
+        private static void Click(ScreenGUI g, float x, float y, GuiButton button)
+        {
+            g.PointerMoved(x, y);
+            g.PointerPressed(x, y, button, 1);
+            g.PointerReleased(x, y, button);
+        }
+
         /// <summary>kind: 0 押した、1 離した、2 移動</summary>
         [JSExport]
         public static Task Pointer(int kind, double x, double y, int button, int clicks)

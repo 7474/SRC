@@ -13,6 +13,8 @@
     <div class="play">
     <div class="screen-wrap">
         <canvas id="screen" width="@ScreenLayout.Width" height="@ScreenLayout.Height" tabindex="0"></canvas>
+        @* タッチ向けの選択画面（タッチの端末で、ゲームのリスト・メニュー・ダイアログを大きなボタンで出す）。中身は srcweb.js が作る *@
+        <div id="touch-ui" class="touch-ui" role="dialog" hidden data-cancel="@L["TouchCancel"]"></div>
         @if (mode == Mode.Ended)
         {
             <div class="ended">
