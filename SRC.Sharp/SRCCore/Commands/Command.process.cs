@@ -491,7 +491,7 @@ namespace SRCCore.Commands
                     if (currentUnit.IsFeatureAvailable("ダミーユニット"))
                     {
                         // 特殊能力一覧
-                        if (!unitCommands.Any(x => x.Id == FeatureListCmdID))
+                        if (unitCommands.Any(x => x.Id == FeatureListCmdID))
                         {
                             UnitCommand(unitCommands.First(x => x.Id == FeatureListCmdID));
                         }
@@ -535,9 +535,9 @@ namespace SRCCore.Commands
                             // 分離形態が利用出来ない場合は分離を行わない
                             var isSplitUnitAvailable = fd.DataL.Skip(1).All(uname => SRC.UList.IsDefined(uname));
                             // パイロットが足らない場合も分離を行わない
-                            var isSplitPilotAvailable = isSplitUnitAvailable && fd.DataL.Skip(1).Select(uname => SRC.UList.Item(uname))
+                            var isSplitPilotAvailable = isSplitUnitAvailable && currentUnit.CountPilot() >= fd.DataL.Skip(1).Select(uname => SRC.UList.Item(uname))
                                 .Where(u => !u.Data.IsFeatureAvailable("召喚ユニット"))
-                                .Sum(u => Math.Abs(u.Data.PilotNum)) >= currentUnit.CountPilot();
+                                .Sum(u => Math.Abs(u.Data.PilotNum));
                             if (isSplitUnitAvailable && isSplitPilotAvailable)
                             {
                                 unitCommands.Add(new UiCommand(SplitCmdID, caption));
@@ -641,7 +641,7 @@ namespace SRCCore.Commands
                     // 未確認ユニットの場合は情報を隠蔽
                     if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
                     {
-                        unitCommands.RemoveItem(uc => !new int[] {
+                        unitCommands.RemoveItem(uc => new int[] {
                             MoveCmdID,
                             AttackCmdID,
                             FeatureListCmdID,
@@ -688,7 +688,8 @@ namespace SRCCore.Commands
                     }
 
                     // ユニットコマンド
-                    AddUserUnitCommand(unitCommands);
+                    // 行動終了後でも使えるもの（-*、**）のみ
+                    AddUserUnitCommand(unitCommands, lab => lab.AsterNum == 1 || lab.AsterNum == 3);
                     GUI.IsGUILocked = false;
                     GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
                     return;
@@ -854,8 +855,8 @@ namespace SRCCore.Commands
                         // パイロットが足らない場合も分離を行わない
                         if (splitForms.All(x => SRC.UList.IsDefined(x))
                             && currentUnit.CountPilot() >= splitForms.Select(x => SRC.UList.Item(x))
-                                .Where(x => !x.IsFeatureAvailable("召喚ユニット"))
-                                .Count())
+                                .Where(x => !x.Data.IsFeatureAvailable("召喚ユニット"))
+                                .Sum(x => Math.Abs(x.Data.PilotNum)))
                         {
                             unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("分離")));
                         }
@@ -1127,10 +1128,11 @@ namespace SRCCore.Commands
             }
         }
 
-        private void AddUserUnitCommand(List<UiCommand> unitCommands)
+        private void AddUserUnitCommand(List<UiCommand> unitCommands, Func<LabelData, bool> labelFilter = null)
         {
             foreach (LabelData lab in Event.colEventLabelList.Values
-                .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable))
+                .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable)
+                .Where(x => labelFilter == null || labelFilter(x)))
             {
                 var label = lab.Para(2);
                 var target = lab.Para(3);
@@ -1247,7 +1249,8 @@ namespace SRCCore.Commands
                     unitCommands.RemoveItem(x => x.Id == ItemCmdID);
                 }
 
-                AddUserUnitCommand(unitCommands);
+                // 移動後でも使えるもの（*、*-、**）のみ
+                AddUserUnitCommand(unitCommands, lab => lab.AsterNum >= 2);
             }
 
             GUI.IsGUILocked = false;

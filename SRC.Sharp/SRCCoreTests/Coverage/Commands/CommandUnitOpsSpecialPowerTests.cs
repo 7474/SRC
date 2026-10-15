@@ -90,7 +90,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: スペシャルパワー一覧で消費ＳＰと解説の間の空白が 2 桁ではなく 1 桁になっている")]
         public void Start_SpecialPowerList_SeparatesCommentWithTwoSpaces()
         {
             // VB: RightPaddedString(sname, 13) & LeftPaddedString(Format$(cost), 3) & "  " & Comment
@@ -214,7 +213,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: StartSpecialPowerCommand の自爆確認で OK と Cancel の扱いが逆になっている")]
         public void Start_SelfDestruct_ConfirmCancel_DoesNotUse()
         {
             // VB: If ret = vbCancel Then UnlockGUI: Exit Sub（キャンセル時のみ中止）

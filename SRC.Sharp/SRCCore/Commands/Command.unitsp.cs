@@ -109,7 +109,7 @@ namespace SRCCore.Commands
 
                     return new ListBoxItem
                     {
-                        Text = GeneralLib.RightPaddedString(sname, 13) + GeneralLib.LeftPaddedString("" + cost, 3) + " " + spd.Comment,
+                        Text = GeneralLib.RightPaddedString(sname, 13) + GeneralLib.LeftPaddedString("" + cost, 3) + "  " + spd.Comment,
                         ListItemFlag = p.SP < cost || !p.IsSpecialPowerUseful(sname),
                     };
                 }).ToList();
@@ -346,7 +346,7 @@ namespace SRCCore.Commands
             if (sd.IsEffectAvailable("自爆"))
             {
                 var ret = GUI.Confirm("自爆させますか？", "自爆", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
-                if (ret == GuiDialogResult.Ok)
+                if (ret == GuiDialogResult.Cancel)
                 {
                     GUI.UnlockGUI();
                     return;
