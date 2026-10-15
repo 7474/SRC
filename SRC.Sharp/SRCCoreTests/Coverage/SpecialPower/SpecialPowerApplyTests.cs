@@ -214,18 +214,29 @@ namespace SRCCore.Coverage.Tests.SpecialPower
         }
 
         [TestMethod]
-        public void RandomDamage_NeverReducesHPBelowTen()
+        public void RandomDamage_DealsTenTimesDiceOfTenTimesLevel_ClampedToTen()
         {
-            // ランダムダメージは ＨＰ を 10 未満にはしない (乱数に依らない下限)
+            // ランダムダメージLvn は 10×Dice(10×n) のダメージ。ただしＨＰは 10 未満にならない
+            // (VB: .HP = MaxLng(.HP - 10 * Dice(10 * EffectLevel(i)), 10))
             var f = new SpecialPowerTestFixture();
             var sd = f.DefineSP("激怒", "全敵", "即効", "ランダムダメージLv10");
             var me = f.AddUnit("自機", "自分", "味方", 1, 1);
-            var enemy = f.AddUnit("敵機", "敵パイロット", "敵", 5, 5);
-            enemy.HP = 10;
+            var enemy = f.AddUnit("敵機", "敵パイロット", "敵", 5, 5, hp: 2000);
 
-            sd.Apply(me.MainPilot(), enemy, is_event: true);
+            using (var rnd = new FixedRandom())
+            {
+                // Dice(100) = (int)(100 × 0.305) + 1 = 31 → 310 ダメージ
+                rnd.Next(0.305);
+                enemy.HP = 1000;
+                sd.Apply(me.MainPilot(), enemy, is_event: true);
+                Assert.AreEqual(690, enemy.HP);
 
-            Assert.AreEqual(10, enemy.HP);
+                // Dice(100) = 100 → 1000 ダメージだがＨＰ 500 から 10 で止まる
+                rnd.Next(0.999);
+                enemy.HP = 500;
+                sd.Apply(me.MainPilot(), enemy, is_event: true);
+                Assert.AreEqual(10, enemy.HP);
+            }
         }
 
         // ──────────────────────────────────────────────

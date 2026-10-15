@@ -181,17 +181,29 @@ namespace SRCCore.Coverage.Tests.SpecialPower
             Assert.AreEqual(4, sd.CountEffect());
             Assert.AreEqual("ＨＰ回復", sd.Effects[0].strEffectType);
             Assert.AreEqual(10d, sd.Effects[0].dblEffectLevel);
-            Assert.IsNull(sd.Effects[0].strEffectData);
+            Assert.IsTrue(string.IsNullOrEmpty(sd.Effects[0].strEffectData));
 
             Assert.AreEqual("絶対命中", sd.Effects[1].strEffectType);
-            Assert.AreEqual(Constants.DEFAULT_LEVEL, sd.Effects[1].dblEffectLevel);
+            Assert.IsTrue(string.IsNullOrEmpty(sd.Effects[1].strEffectData));
 
             Assert.AreEqual("スペシャルパワー", sd.Effects[2].strEffectType);
             Assert.AreEqual("加速", sd.Effects[2].strEffectData);
-            Assert.AreEqual(Constants.DEFAULT_LEVEL, sd.Effects[2].dblEffectLevel);
 
             Assert.AreEqual("ＥＮ回復", sd.Effects[3].strEffectType);
             Assert.AreEqual(-2.5d, sd.Effects[3].dblEffectLevel);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: レベル指定のない効果の dblEffectLevel が VB の 0 でなく DEFAULT_LEVEL になる")]
+        public void SetEffect_EffectWithoutLevel_HasLevelZero()
+        {
+            // VB の SetEffect は ReDim した配列に Lv 指定時だけレベルを代入するため、
+            // レベル指定のない効果のレベルは 0 (Info(スペシャルパワーデータ,名,効果レベル,i) も "0")
+            var sd = new SpecialPowerData(new SRC()) { Name = "奇襲" };
+            sd.SetEffect("絶対命中 スペシャルパワー=加速");
+
+            Assert.AreEqual(0d, sd.Effects[0].dblEffectLevel);
+            Assert.AreEqual(0d, sd.Effects[1].dblEffectLevel);
         }
 
         [TestMethod]
