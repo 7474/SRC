@@ -189,25 +189,66 @@ namespace SRCCore.Coverage.Tests.ExprInfo
         }
 
         [TestMethod]
-        public void Unit_RankAndRemodelCost()
+        public void Unit_RankAndRemodelCost_Default10Steps()
         {
-            // 改造費・最大改造数はインターミッションの RankUpCost / MaxRank に従う
+            // 改造費は通常の１０段改造の表に従う（Intermission.bas RankUpCost）
+            // 最大改造数は既定で 10（Intermission.bas MaxRank）
             var src = CreateSrc();
             var u = CreatePilotedUnit(src);
             Assert.AreEqual("0", Eval(src, U(u, "ランク")));
-            Assert.AreEqual(src.InterMission.RankUpCost(u).ToString(), Eval(src, U(u, "改造費")));
-            Assert.AreEqual(src.InterMission.MaxRank(u).ToString(), Eval(src, U(u, "最大改造数")));
+            Assert.AreEqual("10000", Eval(src, U(u, "改造費")));
+            Assert.AreEqual("10", Eval(src, U(u, "最大改造数")));
+
+            var u5 = src.UList.Add("テスト機", 5, "味方");
+            Assert.AreEqual("5", Eval(src, U(u5, "ランク")));
+            Assert.AreEqual("150000", Eval(src, U(u5, "改造費")));
+
+            // 最大改造数に達していればそれ以上改造できない（999999999）
+            var u10 = src.UList.Add("テスト機", 10, "味方");
+            Assert.AreEqual("999999999", Eval(src, U(u10, "改造費")));
+        }
+
+        [TestMethod]
+        public void Unit_RankAndRemodelCost_Options()
+        {
+            // Option(低改造費) ではランク5→6 の改造費は 50000
+            var src = CreateSrc();
+            var u5 = src.UList.Add("テスト機", 5, "味方");
+            src.Expression.DefineGlobalVariable("Option(低改造費)");
+            Assert.AreEqual("50000", Eval(src, U(u5, "改造費")));
+
+            // Option(５段階改造) では最大改造数 5 で、ランク5 はもう改造できない
+            src.Expression.DefineGlobalVariable("Option(５段階改造)");
+            Assert.AreEqual("5", Eval(src, U(u5, "最大改造数")));
+            Assert.AreEqual("999999999", Eval(src, U(u5, "改造費")));
         }
 
         [TestMethod]
         public void Unit_RemainingSupportCounts_SubtractUsed()
         {
-            // 残りサポートアタック数 = 最大数 - 使用済み数
+            // 援護Lv2（レベル5で修得）ならサポートアタック・サポートガードとも2回
+            // 残り回数 = 最大数 - 使用済み数（Expression.bas 残りサポートアタック数／残りサポートガード数）
             var src = CreateSrc();
-            var u = CreatePilotedUnit(src);
-            var max = u.MaxSupportAttack();
+            var u = CreatePilotedUnit(src, level: 5);
+            Assert.AreEqual("2", Eval(src, U(u, "残りサポートアタック数")));
+            Assert.AreEqual("2", Eval(src, U(u, "残りサポートガード数")));
+
             u.UsedSupportAttack = 1;
-            Assert.AreEqual((max - 1).ToString(), Eval(src, U(u, "残りサポートアタック数")));
+            Assert.AreEqual("1", Eval(src, U(u, "残りサポートアタック数")));
+            Assert.AreEqual("2", Eval(src, U(u, "残りサポートガード数")));
+
+            u.UsedSupportGuard = 2;
+            Assert.AreEqual("0", Eval(src, U(u, "残りサポートガード数")));
+        }
+
+        [TestMethod]
+        public void Unit_RemainingSupportCounts_NoSkill_IsZero()
+        {
+            // 援護を持たないレベル1のパイロットでは 0
+            var src = CreateSrc();
+            var u = CreatePilotedUnit(src, level: 1);
+            Assert.AreEqual("0", Eval(src, U(u, "残りサポートアタック数")));
+            Assert.AreEqual("0", Eval(src, U(u, "残りサポートガード数")));
         }
 
         [TestMethod]

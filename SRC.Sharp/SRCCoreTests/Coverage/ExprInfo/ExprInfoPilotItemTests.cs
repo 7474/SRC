@@ -45,8 +45,10 @@ namespace SRCCore.Coverage.Tests.ExprInfo
             Assert.AreEqual("加速 必中", Eval(src, "Info(パイロット,テストパイロット,精神)"));
             Assert.AreEqual("1", Eval(src, "Info(パイロット,テストパイロット,スペシャルパワー所有,必中)"));
             Assert.AreEqual("0", Eval(src, "Info(パイロット,テストパイロット,精神コマンド所有,熱血)"));
-            Assert.AreEqual(p.SpecialPowerCost("必中").ToString(), Eval(src, "Info(パイロット,テストパイロット,スペシャルパワーコスト,必中)"));
-            Assert.AreEqual(p.MaxSP.ToString(), Eval(src, "Info(パイロット,テストパイロット,最大ＳＰ)"));
+            // 消費ＳＰ減少系の技能が無いのでデータどおり 25
+            Assert.AreEqual("25", Eval(src, "Info(パイロット,テストパイロット,スペシャルパワーコスト,必中)"));
+            // 最大ＳＰ = 2 * レベル + ＳＰ基本値 = 10 + 50（Pilot.cls MaxSP）
+            Assert.AreEqual("60", Eval(src, "Info(パイロット,テストパイロット,最大ＳＰ)"));
 
             // ＳＰ は現在値
             p.SP = 7;
@@ -72,21 +74,35 @@ namespace SRCCore.Coverage.Tests.ExprInfo
         }
 
         [TestMethod]
-        public void Pilot_StatusValues_BaseAndModifier()
+        public void Pilot_StatusValues_BaseIncludesLevelGrowth()
         {
-            // 格闘 = 格闘基本値 + 格闘修正値 + 格闘支援修正値
+            // 基本値 = データの値 + レベルによる上昇分（Pilot.cls Update）
+            // 格闘・射撃・技量・反応は Lv×1、命中・回避は Lv×2
             var src = CreateSrc();
             CreatePilotedUnit(src, level: 1);
-            foreach (var s in new[] { "格闘", "射撃", "命中", "回避", "技量", "反応" })
+            var expected = new (string name, string value)[]
             {
-                var total = src.Expression.GetValueAsDouble($"Info(パイロット,テストパイロット,{s})");
-                var baseValue = src.Expression.GetValueAsDouble($"Info(パイロット,テストパイロット,{s}基本値)");
-                var mod = src.Expression.GetValueAsDouble($"Info(パイロット,テストパイロット,{s}修正値)");
-                var supportMod = src.Expression.GetValueAsDouble($"Info(パイロット,テストパイロット,{s}支援修正値)");
-                Assert.AreEqual(baseValue + mod + supportMod, total, s);
+                ("格闘", "151"), ("射撃", "141"), ("命中", "132"),
+                ("回避", "122"), ("技量", "111"), ("反応", "101"),
+            };
+            foreach (var (name, value) in expected)
+            {
+                Assert.AreEqual(value, Eval(src, $"Info(パイロット,テストパイロット,{name}基本値)"), name);
+                // 能力を修正する技能もユニットの特殊能力も無いので修正値は 0、合計は基本値と等しい
+                Assert.AreEqual("0", Eval(src, $"Info(パイロット,テストパイロット,{name}修正値)"), name);
+                Assert.AreEqual("0", Eval(src, $"Info(パイロット,テストパイロット,{name}支援修正値)"), name);
+                Assert.AreEqual(value, Eval(src, $"Info(パイロット,テストパイロット,{name})"), name);
             }
-            // 能力値の基本値はデータの値以上（レベル1でもレベルによる上昇分がある）
-            Assert.IsTrue(src.Expression.GetValueAsDouble("Info(パイロット,テストパイロット,格闘基本値)") >= 150d);
+        }
+
+        [TestMethod]
+        public void Pilot_StatusValues_FollowLevel()
+        {
+            // レベル10 では格闘 150+10、命中 130+20
+            var src = CreateSrc();
+            CreatePilotedUnit(src, level: 10);
+            Assert.AreEqual("160", Eval(src, "Info(パイロット,テストパイロット,格闘)"));
+            Assert.AreEqual("150", Eval(src, "Info(パイロット,テストパイロット,命中)"));
         }
 
         // ──────────────────────────────────────────────
