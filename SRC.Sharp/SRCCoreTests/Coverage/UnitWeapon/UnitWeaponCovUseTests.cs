@@ -108,7 +108,7 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         [TestMethod]
         public void UseWeapon_MoneyCost_OnlyForPlayer()
         {
-            // 銭: 味方なら ユニット価値 / 10 の資金を消費する
+            // 銭: 味方なら 最大(レベル,1) × ユニット価値 / 10 の資金を消費する（価値 10000 → 1000）
             var src = CreateSrc();
             var u = CreateUnit(src, configure: ud =>
             {
@@ -117,7 +117,16 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
             });
             src.Money = 5000;
             Weapon(u, "武器").UseWeapon();
-            Assert.AreEqual(5000 - u.Value / 10, src.Money);
+            Assert.AreEqual(4000, src.Money);
+
+            // 銭L2 は 2 倍の 2000
+            var u2 = CreateUnit(src, x: 3, configure: ud =>
+            {
+                ud.Value = 10000;
+                AddWeapon(ud, "武器", wclass: "射銭L2", maxRange: 3);
+            });
+            Weapon(u2, "武器").UseWeapon();
+            Assert.AreEqual(2000, src.Money);
 
             var enemy = CreateUnit(src, party: "敵", x: 2, configure: ud =>
             {

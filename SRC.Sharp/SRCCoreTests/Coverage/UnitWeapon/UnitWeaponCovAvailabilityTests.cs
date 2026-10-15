@@ -87,14 +87,19 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         [TestMethod]
         public void IsWeaponAvailable_MoneyWeapon_RequiresMoney()
         {
-            // 銭属性: 味方は 最大(レベル,1) × ユニット価値 / 10 の資金が必要
-            var (src, u, w) = Setup(wclass: "射銭", configure: ud => ud.Value = 10000);
-            var cost = u.Value / 10;
-            Assert.IsTrue(cost > 0);
-            src.Money = cost - 1;
+            // 銭属性: 味方は 最大(レベル,1) × ユニット価値 / 10 の資金が必要（価値 10000 → 1000）
+            var (src, _, w) = Setup(wclass: "射銭", configure: ud => ud.Value = 10000);
+            src.Money = 999;
             Assert.IsFalse(w.IsWeaponAvailable("移動前"));
-            src.Money = cost;
+            src.Money = 1000;
             Assert.IsTrue(w.IsWeaponAvailable("移動前"));
+
+            // 銭L2 なら 2 × 1000 = 2000
+            var (src2, _, w2) = Setup(wclass: "射銭L2", configure: ud => ud.Value = 10000);
+            src2.Money = 1999;
+            Assert.IsFalse(w2.IsWeaponAvailable("移動前"));
+            src2.Money = 2000;
+            Assert.IsTrue(w2.IsWeaponAvailable("移動前"));
         }
 
         [TestMethod]
@@ -218,20 +223,24 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        public void IsWeaponAvailable_NecessaryMorale_IgnoredWhenSkillIgnoreMode()
+        public void IsWeaponAvailable_SkillIgnoreMode_SkipsNecessarySkill()
         {
-            // 必要技能無視モードでは必要技能を見ない（必要気力は見る）
+            // 必要技能無視モードでは必要技能を見ないが、必要気力の判定は行う（VB IsWeaponAvailable）
             var src = CreateSrc();
             src.Stage = "味方";
             var u = CreateUnit(src, configure: ud =>
             {
-                var wd = AddWeapon(ud, "武器", wclass: "射", maxRange: 3);
+                var wd = AddWeapon(ud, "武器", wclass: "射", maxRange: 3, morale: 120);
                 wd.NecessarySkill = "存在しない技能";
             });
             var w = Weapon(u, "武器");
             Assert.IsFalse(w.IsWeaponMastered());
+            u.MainPilot().Morale = 120;
             Assert.IsFalse(w.IsWeaponAvailable("移動前"));
             Assert.IsTrue(w.IsWeaponAvailable("必要技能無視"));
+            // 気力 100 では必要気力 120 を満たさない
+            u.MainPilot().Morale = 100;
+            Assert.IsFalse(w.IsWeaponAvailable("必要技能無視"));
         }
 
         // ══════════════════════════════════════════════
