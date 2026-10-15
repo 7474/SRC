@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Полноэкранный режим</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Показать/скрыть виртуальные клавиши</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Показать/скрыть виртуальный геймпад</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Закрыть</value>

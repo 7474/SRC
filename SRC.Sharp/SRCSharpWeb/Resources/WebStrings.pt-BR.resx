@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Alternar tela cheia</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Mostrar/ocultar teclas virtuais</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Mostrar/ocultar controle virtual</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Fechar</value>

@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Vollbild umschalten</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Virtuelle Tasten ein/aus</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Virtuelles Gamepad ein/aus</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Schließen</value>

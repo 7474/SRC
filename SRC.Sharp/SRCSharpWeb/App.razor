@@ -32,8 +32,8 @@
     </div>
     @* プレイ中の操作は画面の右下の控えめなメニューにまとめる（誤って押してもすぐには終わらない） *@
     <div class="screen-bar">
-        @* 仮想キー（タッチの端末向け）。中身は srcweb.js が作る *@
-        <div id="virtual-keys" class="virtual-keys" hidden></div>
+        @* 仮想パッド（タッチの端末向け）。中身は srcweb.js が作る *@
+        <div id="virtual-pad" class="virtual-pad" hidden></div>
         <div class="system-menu">
             <button id="system-menu-button" class="system-button" title="@L["SystemMenu"]" aria-label="@L["SystemMenu"]"
                     aria-haspopup="menu" aria-expanded="@(systemMenuOpen ? "true" : "false")" @onclick="ToggleSystemMenu">≡</button>
@@ -43,7 +43,7 @@
                 <div class="popup-menu" role="menu">
                     <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
-                    <button role="menuitem" @onclick="ToggleVirtualKeysAsync">@L["MenuVirtualKeys"]</button>
+                    <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
@@ -331,10 +331,10 @@ else
         await FocusScreenAsync();
     }
 
-    private async Task ToggleVirtualKeysAsync()
+    private async Task ToggleVirtualPadAsync()
     {
         systemMenuOpen = false;
-        await JS.InvokeVoidAsync("srcwebToggleVirtualKeys");
+        await JS.InvokeVoidAsync("srcwebToggleVirtualPad");
         await FocusScreenAsync();
     }
 

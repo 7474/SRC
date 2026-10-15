@@ -16,6 +16,12 @@ namespace SRCRender
         public int MapX { get; set; } = 1;
         public int MapY { get; set; } = 1;
 
+        /// <summary>
+        /// キー操作のマップカーソル（画面のピクセル座標の矩形。null で非表示）。ScreenGUI.Present が更新する。
+        /// 矢印キー（SRC#Web の仮想パッドの十字キー）でマスを選び、Enter でクリック、Esc で右クリック（キャンセル）にする
+        /// </summary>
+        public SkiaSharp.SKRectI? MapCursor { get; set; }
+
         /// <summary>タイトルやロード中の表示（null で非表示）</summary>
         public string Splash { get; set; }
 
@@ -126,5 +132,7 @@ namespace SRCRender
         public string Title { get; set; }
         public string Text { get; set; }
         public IList<string> Buttons { get; set; } = new List<string> { "OK" };
+        /// <summary>キー操作で選んでいるボタン（←→ で選び、Enter で押す）</summary>
+        public int Highlight { get; set; }
     }
 }

@@ -98,6 +98,10 @@ namespace SRCRender
             if (layers.Map != null)
             {
                 canvas.DrawBitmap(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
+                if (state.MapCursor is SKRectI cursor)
+                {
+                    DrawMapCursor(canvas, cursor);
+                }
             }
             if (!string.IsNullOrEmpty(state.Splash))
             {
@@ -709,6 +713,20 @@ namespace SRCRender
         /// <summary>
         /// メッセージボックス（WinForms 版の MessageBox と同じく Windows 標準の見た目）。
         /// </summary>
+        /// <summary>キー操作のマップカーソル（黒で縁取った黄色の枠）</summary>
+        private static void DrawMapCursor(SKCanvas canvas, SKRectI cell)
+        {
+            using (var paint = new SKPaint { IsAntialias = false, Style = SKPaintStyle.Stroke })
+            {
+                paint.StrokeWidth = 4;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(cell.Left + 2, cell.Top + 2, cell.Width - 4, cell.Height - 4, paint);
+                paint.StrokeWidth = 2;
+                paint.Color = new SKColor(0xFF, 0xE0, 0x40);
+                canvas.DrawRect(cell.Left + 2, cell.Top + 2, cell.Width - 4, cell.Height - 4, paint);
+            }
+        }
+
         private void DrawDialog(SKCanvas canvas, DialogState dialog)
         {
             var layout = LayoutDialog(dialog);
@@ -745,6 +763,15 @@ namespace SRCRender
                         Text = dialog.Buttons[i],
                         Font = DialogFont,
                     }, paint);
+                    if (i == dialog.Highlight && dialog.Buttons.Count > 1)
+                    {
+                        // キー操作で選んでいるボタン（Windows のフォーカスの点線枠）
+                        var focus = layout.ButtonRect(i);
+                        using (var dash = new SKPaint { IsAntialias = false, Style = SKPaintStyle.Stroke, Color = SKColors.Black, PathEffect = SKPathEffect.CreateDash(new[] { 1f, 1f }, 0) })
+                        {
+                            canvas.DrawRect(focus.Left + 4, focus.Top + 4, focus.Width - 9, focus.Height - 9, dash);
+                        }
+                    }
                 }
             }
         }

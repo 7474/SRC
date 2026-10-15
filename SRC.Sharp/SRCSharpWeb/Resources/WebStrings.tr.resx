@@ -105,8 +105,8 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Tam ekranı aç/kapat</value>
   </data>
-  <data name="MenuVirtualKeys" xml:space="preserve">
-    <value>Sanal tuşları göster/gizle</value>
+  <data name="MenuVirtualPad" xml:space="preserve">
+    <value>Sanal oyun kumandasını göster/gizle</value>
   </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Kapat</value>
