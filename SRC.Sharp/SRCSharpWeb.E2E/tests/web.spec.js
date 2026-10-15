@@ -209,7 +209,7 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
   await page.getByRole('button', { name: 'intermission-save' }).click();
   await page.locator('#saves li', { hasText: saveName }).getByRole('button', { name: saveName }).click();
   await expect(page.locator('#screen')).toBeVisible();
-  await expect.poll(async () => (await screenState(page)).list?.caption ?? '').toContain('コマンド');
+  await expect.poll(async () => (await screenState(page)).list?.info ?? '').toContain('コマンド');
   await attachScreen(page, testInfo, 'resumed');
 
   // 次のステージへ進んで終わる
@@ -263,7 +263,7 @@ test('インターミッションのコマンドを開き、仮想パッドと�
     }, { intervals: [500, 1000] }).toBe(true);
     await attachScreen(page, testInfo, command);
     await chooseMapCommand('インターミッションに戻る');
-    await expect.poll(async () => (await screenState(page)).list?.caption ?? '').toContain('コマンド');
+    await expect.poll(async () => (await screenState(page)).list?.info ?? '').toContain('コマンド');
   }
 
   // ユーザー定義のコマンドも戻ってこられる
@@ -273,7 +273,7 @@ test('インターミッションのコマンドを開き、仮想パッドと�
     if (st.message !== undefined) {
       await page.keyboard.press('Enter');
     }
-    return st.list?.caption ?? '';
+    return st.list?.info ?? '';
   }, { intervals: [500, 1000] }).toContain('コマンド');
   const s = await screenState(page);
   expect(s.error).toBeUndefined();
@@ -566,7 +566,9 @@ test.describe('タッチ向けの画面', () => {
       }
       return false;
     }, { intervals: [500, 1000] }).toBe(true);
-    await expect(panel.locator('.touch-ui-title')).toContainText('コマンド');
+    // 元の SRC と同じく、表題は「インターミッション： 総ターン数…」、「コマンド」は見出しの行
+    await expect(panel.locator('.touch-ui-title')).toContainText('インターミッション');
+    await expect(panel).toContainText('コマンド');
     const item = panel.getByRole('button', { name: '次のステージへ' });
     expect((await item.boundingBox()).height).toBeGreaterThanOrEqual(44);
     await attachScreen(page, testInfo, 'touch-list');
