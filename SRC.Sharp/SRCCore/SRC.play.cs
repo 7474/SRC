@@ -820,7 +820,6 @@ namespace SRCCore
         // ゲームを途中終了
         public void ExitGame()
         {
-            var fname = default(string);
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
             Sound.StopBGM();
@@ -848,10 +847,10 @@ namespace SRCCore
             // Exit.eveを読み込み
             Event.ClearEventData();
             Event.LoadEventData(exitFile, load_mode: "");
-            ScenarioFileName = fname;
+            // 元の SRC（SRC.bas の ExitGame）はシナリオのファイル名を変えない
             if (!Event.IsEventDefined("プロローグ"))
             {
-                GUI.ErrorMessage(fname + "中にプロローグイベントが定義されていません");
+                GUI.ErrorMessage(exitFile + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
             }
 

@@ -64,10 +64,11 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void IsNumeric_NumberInterspersedWithSpaces_ReturnsTrue()
+        public void IsNumeric_NumberInterspersedWithSpaces_ReturnsFalse()
         {
-            // Spaces are stripped, then "42" is numeric
-            Assert.IsTrue(Information.IsNumeric(" 4 2 "));
+            // Leading/trailing spaces are ignored but inner spaces are not (VB: IsNumeric(" 4 2 ") is False)
+            Assert.IsFalse(Information.IsNumeric(" 4 2 "));
+            Assert.IsTrue(Information.IsNumeric(" 42 "));
         }
 
         [TestMethod]

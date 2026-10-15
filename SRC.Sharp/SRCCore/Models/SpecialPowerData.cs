@@ -2397,7 +2397,7 @@ namespace SRCCore.Models
             // アニメ指定がなされていない場合はアニメ表示用サブルーチンが見つらなければそのまま終了
             if ((Animation ?? "") == (Name ?? ""))
             {
-                if (Event.FindNormalLabel("ＳＰアニメ_" + Animation) == 0)
+                if (Event.FindNormalLabel("ＳＰアニメ_" + Animation) < 0)
                 {
                     if (Name != "自爆" && Name != "祈り")
                     {

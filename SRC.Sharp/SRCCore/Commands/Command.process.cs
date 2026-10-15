@@ -873,7 +873,7 @@ namespace SRCCore.Commands
                         && !currentUnit.IsConditionSatisfied("形態固定")
                         && !currentUnit.IsConditionSatisfied("機体固定"))
                     {
-                        var combines = currentUnit.CombineFeatures(SRC);
+                        var combines = currentUnit.CombineFeatures(SRC, forMenu: true);
                         foreach (var fd in combines)
                         {
                             unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
@@ -1232,7 +1232,7 @@ namespace SRCCore.Commands
                     && !currentUnit.IsConditionSatisfied("形態固定")
                     && !currentUnit.IsConditionSatisfied("機体固定"))
                 {
-                    var combines = currentUnit.CombineFeatures(SRC);
+                    var combines = currentUnit.CombineFeatures(SRC, forMenu: true);
                     foreach (var fd in combines)
                     {
                         unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));

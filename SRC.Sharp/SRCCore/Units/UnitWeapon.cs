@@ -1465,7 +1465,7 @@ namespace SRCCore.Units
             {
                 if (GeneralLib.InStrNotNest(WeaponClass(), "銭") > 0)
                 {
-                    if (SRC.Money < GeneralLib.MaxLng((int)WeaponLevel("銭"), 1) * Unit.Value / 10)
+                    if (SRC.Money < GeneralLib.MaxLng(VBMath.CLng(WeaponLevel("銭")), 1) * Unit.Value / 10)
                     {
                         return false;
                     }
@@ -5062,7 +5062,7 @@ namespace SRCCore.Units
             {
                 if (IsWeaponClassifiedAs("銭"))
                 {
-                    SRC.IncrMoney(-GeneralLib.MaxLng((int)WeaponLevel("銭"), 1) * Unit.Value / 10);
+                    SRC.IncrMoney(-GeneralLib.MaxLng(VBMath.CLng(WeaponLevel("銭")), 1) * Unit.Value / 10);
                 }
             }
 
@@ -5248,11 +5248,11 @@ namespace SRCCore.Units
             int cplana = 0;
             if (IsWeaponClassifiedAs("霊"))
             {
-                cplana = (int)(5d * WeaponLevel("霊"));
+                cplana = VBMath.CLng(5d * WeaponLevel("霊"));
             }
             else if (IsWeaponClassifiedAs("プ"))
             {
-                cplana = (int)(5d * WeaponLevel("プ"));
+                cplana = VBMath.CLng(5d * WeaponLevel("プ"));
             }
             var crange = WeaponMaxRange();
             return Unit.CombinationPartner(

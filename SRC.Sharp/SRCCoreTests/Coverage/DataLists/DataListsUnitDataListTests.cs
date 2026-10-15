@@ -412,7 +412,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Information.IsNumeric が空白を除去して判定するため「1400 1」が数値扱いとなり、コンマ抜けの救済処理に入らない")]
         public void Load_WeaponMissingComma_RecoversFromSpaceSeparatedValue()
         {
             // 「1400 1」のようにコンマが抜けていた場合、エラーを出しつつ空白で分割して後続の項目に回す
