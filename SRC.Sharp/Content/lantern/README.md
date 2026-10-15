@@ -2,6 +2,10 @@
 
 全五話＋終話の短いオリジナルシナリオ。SRC#（SRC の C# 版）で遊ぶ。動かし方は [Content の README](../README.md) を参照。
 
+## ライセンス
+
+[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)（`LICENSE`）。SRC# 本体（GPL-3.0）とは別。
+
 ## 生成AIの利用について
 
 **このシナリオは生成AIを使って作られています。** 生成AIを使った作品を遊びたくない方、配布や紹介に条件のある場所へ持ち込む方は、以下を確認してください。

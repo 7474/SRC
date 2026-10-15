@@ -1,6 +1,18 @@
 # Content
 
-SRC# で遊べるシナリオと、それを動かすための最小の汎用データ。SRC#Web（GitHub Pages）の組み込みのカタログで配信する。ライセンスは SRC# と同じ GPL-3.0。
+SRC# で遊べるシナリオと、それを動かすための最小の汎用データ。SRC#Web（GitHub Pages）の組み込みのカタログで配信する。
+
+## ライセンス
+
+元の SRC から派生していないため、SRC# 本体（GPL-3.0）とは分けて、コンテンツを [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)、プログラムを MIT で配布する。
+
+| 対象 | ライセンス |
+|---|---|
+| `lantern/`（シナリオ・データ・マップ・画像・BGM） | CC0 1.0（`lantern/LICENSE`） |
+| `basic-data/` の素材（画像・地形データ・`Lib` のイベント） | CC0 1.0（`basic-data/LICENSE`） |
+| `basic-data/make.py` | MIT（ファイルの先頭に記載） |
+| `basic-data/Data/System/sp.txt` | GPL-3.0。スペシャルパワーの解説文を SRC のヘルプから写しているため |
+| `lantern.play` | CC0 1.0 |
 
 | フォルダ・ファイル | 内容 |
 |---|---|
