@@ -1,0 +1,62 @@
+# インターミッションコマンド「パイロットステータス」（Lib\パイロットステータス表示.eve）
+# SRC# の最小の汎用データ用に、ヘルプ（パイロットステータス.md・MakePilotListコマンド.md）から書いた。
+# 味方のパイロットをレベルの高い順にマップに並べる。パイロットをクリックするとステータスを見られる。
+# マップのコマンド（右クリック）の「並べ替え」で基準を変え、「インターミッションに戻る」で戻る。
+# MakePilotList はパイロットを表示用のユニットに乗せ替えるため、元の乗機を覚えておき、戻るときに乗せ直す。
+
+スタート:
+Local p
+UnSet ステータス表示_搭乗ユニット
+ForEach 味方 待機
+  For p = 1 To CountPilot()
+    ステータス表示_搭乗ユニット[PilotID(p)] = UnitID()
+  Next
+Next
+MakePilotList レベル
+Exit
+
+マップコマンド 並べ替え:
+Ask 並べ替えの基準
+レベル
+ＳＰ
+格闘
+射撃
+命中
+回避
+技量
+反応
+名称
+End
+Switch 選択
+Case 1
+  MakePilotList レベル
+Case 2
+  MakePilotList ＳＰ
+Case 3
+  MakePilotList 格闘
+Case 4
+  MakePilotList 射撃
+Case 5
+  MakePilotList 命中
+Case 6
+  MakePilotList 回避
+Case 7
+  MakePilotList 技量
+Case 8
+  MakePilotList 反応
+Case 9
+  MakePilotList 名称
+EndSw
+Exit
+
+マップコマンド インターミッションに戻る:
+Local p
+ForEach 味方
+  Escape
+  GetOff
+Next
+ForEach p In ステータス表示_搭乗ユニット
+  Ride p ステータス表示_搭乗ユニット[p]
+Next
+UnSet ステータス表示_搭乗ユニット
+Continue

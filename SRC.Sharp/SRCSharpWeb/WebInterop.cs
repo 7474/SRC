@@ -171,6 +171,20 @@ namespace SRCSharpWeb
             {
                 json["dialog"] = state.Dialog.Title + ": " + state.Dialog.Text;
             }
+            var menu = state?.Menu;
+            if (menu != null)
+            {
+                var menuItems = new JsonArray();
+                foreach (var item in menu.Items)
+                {
+                    menuItems.Add(item);
+                }
+                json["menu"] = new JsonObject { ["items"] = menuItems, ["highlight"] = menu.Highlight };
+            }
+            if (state != null)
+            {
+                json["mainFormVisible"] = state.MainFormVisible;
+            }
             if (state != null && state.Message.Visible && state.Message.Waiting)
             {
                 json["message"] = string.Join("\n", state.Message.Lines);

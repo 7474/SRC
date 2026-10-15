@@ -100,6 +100,7 @@ expect eval Damage(標的パイロット) > 0
 | `battle-victory` | 敵を倒し「全滅 敵」イベントで勝利してシナリオが終わるまで |
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
+| `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
 
 ## VRT
 

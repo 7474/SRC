@@ -254,9 +254,9 @@ namespace SRCRender
                 w.txtComment.Text = SelectedListItem?.ListItemComment;
             }
 
-            // 表示位置を設定（メイン画面を基準にする）
-            w.ScreenLeft = w.HorizontalSize == "S" ? 0 : Math.Max(0, (ScreenLayout.Width - w.Width) / 2);
-            w.ScreenTop = w.VerticalSize == "M" && Strings.InStr(lb_mode, "中央表示") == 0
+            // 表示位置を設定（GUI.bas の ListBox）。メインウィンドウを隠していれば画面の中央
+            w.ScreenLeft = MainFormVisible && w.HorizontalSize == "S" ? 0 : Math.Max(0, (ScreenLayout.Width - w.Width) / 2);
+            w.ScreenTop = MainFormVisible && w.VerticalSize == "M" && Strings.InStr(lb_mode, "中央表示") == 0
                 ? ScreenLayout.Height - w.OuterHeight
                 : Math.Max(0, (ScreenLayout.Height - w.OuterHeight) / 2);
 
@@ -661,7 +661,8 @@ namespace SRCRender
             }
 
             // 表示位置を設定
-            box.PlaceOnScreen(ScreenLayout.Width, ScreenLayout.Height, true, MainFormVisible && !is_center);
+            // GUI.bas の MultiColumnListBox: 横は画面の中央、縦はメインウィンドウを表示していれば下端
+            box.PlaceOnScreen(ScreenLayout.Width, ScreenLayout.Height, false, MainFormVisible && !is_center);
             Commands.SelectedItem = 0;
             box.labCaption.Text = "";
             IsFormClicked = false;

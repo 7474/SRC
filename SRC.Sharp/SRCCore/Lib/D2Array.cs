@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,18 @@ namespace SRCCore.Lib
         public T this[int x, int y]
         {
             get { return data[x - 1, y - 1]; }
-            set { data[x - 1, y - 1] = value; }
+            set
+            {
+                if (value == null)
+                {
+                    // SRC#Web（.NET の WebAssembly）では、参照型の 2 次元配列の要素に null を入れると
+                    // ArrayTypeMismatchException になることがある（MakeUnitList の後のインターミッションで起きた）。
+                    // 1 要素だけを Array.Clear で消して避ける（2 次元配列は行優先に並ぶ）
+                    Array.Clear(data, (x - 1) * this.y + (y - 1), 1);
+                    return;
+                }
+                data[x - 1, y - 1] = value;
+            }
         }
 
         public Src2DArray(int x, int y)

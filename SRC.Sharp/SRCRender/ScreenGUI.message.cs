@@ -28,7 +28,19 @@ namespace SRCRender
 
             SetMessageWindowUnit(u1, u2);
 
-            // メッセージウィンドウはマップの下（ScreenLayout.MessageArea）に表示する
+            // メッセージウィンドウの位置（GUI.bas の OpenMessageForm）。メインウィンドウを表示していれば、
+            // 開いたときにメインウィンドウの左下に合わせる（開いたままなら動かさない）。隠していれば画面の中央
+            if (MainFormVisible)
+            {
+                if (!frmMessage.Visible)
+                {
+                    frmMessage.Centered = false;
+                }
+            }
+            else
+            {
+                frmMessage.Centered = true;
+            }
             // ウィンドウをクリアしておく
             ClearMessageForm();
 
