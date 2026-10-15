@@ -163,8 +163,12 @@ namespace SRCCore.Coverage.Tests
         public void Load_ParenthesizedPilotNumWithoutClosing_Throws()
         {
             var src = CreateSrc();
+            // 閉じ括弧が無い場合は読み込みを中断する (VB: Error 0)。
+            // VB は err_msg を設定せずに中断するためメッセージ文言は C# 独自であり検証しない
             var ex = Assert.Throws<InvalidSrcDataException>(() => Load(src, UnitWith(line2: "テスト機,ＭＳ,(2,2")));
-            Assert.AreEqual("パイロット数の設定が間違っています。", ex.InvalidDataList.Single().msg);
+            var err = ex.InvalidDataList.Single();
+            Assert.AreEqual("robot.txt", err.fname);
+            Assert.AreEqual(2, err.line_num);
         }
 
         [TestMethod]
@@ -565,6 +569,95 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual("ユニット無し", ud.Nickname);
             Assert.IsTrue(ud.IsFeatureAvailable("ダミーユニット"));
             Assert.IsNull(src.UDList.Item("未定義"));
+        }
+    
+        [TestMethod]
+        public void Load_KanaOnNameLine_IsOverriddenByNicknameKana()
+        {
+            // 1行目「名称,読み仮名」で指定した読み仮名は、2行目で読み仮名を省略すると愛称のひらがな化で上書きされる
+            // (VB: .KanaName = buf の後、comma_num = 3 なら .KanaName = StrToHiragana(.Nickname))
+            var src = CreateSrc();
+            var ud = Load(src, "テスト機,てすときかい\nザク,ＭＳ,1,2\n陸,4,M,4000,150\n特殊能力なし\n3500,180,1200,75\nBBAA,test.bmp\n").Item("テスト機");
+            Assert.AreEqual("ざく", ud.KanaName);
+        }
+
+        [TestMethod]
+        public void Load_KanaOnBothLines_SecondLineWins()
+        {
+            // 2行目にも読み仮名があれば2行目の指定が優先される
+            var src = CreateSrc();
+            var ud = Load(src, "テスト機,てすときかい\nザク,ざくつー,ＭＳ,1,2\n陸,4,M,4000,150\n特殊能力なし\n3500,180,1200,75\nBBAA,test.bmp\n").Item("テスト機");
+            Assert.AreEqual("ざくつー", ud.KanaName);
+        }
+
+        [TestMethod]
+        public void Load_NewFormatEmptyLeadingFeature_ReportsErrorAndKeepsOthers()
+        {
+            // 新形式で空の特殊能力は「行頭からn番目の特殊能力の設定が間違っています。」とし、残りは登録する
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(feature: "特殊能力\n,シールド")).Item("テスト機");
+
+            CollectionAssert.AreEqual(new[] { "シールド" }, ud.Features.Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "行頭から1番目の特殊能力の設定が間違っています。" }, Errors(src));
+            Assert.AreEqual(3500, ud.HP);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 特殊能力行のコンマ探索で switch 内の break が for を抜けず最後のコンマで区切られる")]
+        public void Load_NewFormatEmptyMiddleFeature_ReportsErrorAndKeepsOthers()
+        {
+            // VB: 「剣装備,,シールド」は 2 番目が空としてエラーになり、剣装備・シールドは登録される
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(feature: "特殊能力\n剣装備,,シールド")).Item("テスト機");
+
+            CollectionAssert.AreEqual(new[] { "剣装備", "シールド" }, ud.Features.Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "行頭から2番目の特殊能力の設定が間違っています。" }, Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponInvalidNumericFields_ReportErrorsWithoutShiftingFollowingFields()
+        {
+            // 命中率・弾数・必要気力・クリティカル率の不正値はエラーを出して読み飛ばし、後続の項目はずれない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "A,100,1,1,X,X,10,X,AAAA,X,B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual(100, w.Power);
+            Assert.AreEqual(10, w.ENConsumption);
+            Assert.AreEqual("AAAA", w.Adaption);
+            Assert.AreEqual("B", w.Class);
+            CollectionAssert.AreEqual(new[]
+            {
+                "Aの命中率の設定が間違っています。",
+                "Aの弾数の設定が間違っています。",
+                "Aの必要気力の設定が間違っています。",
+                "Aのクリティカル率の設定が間違っています。",
+            }, Errors(src));
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: 武器の消費ＥＮ不正時に If LLength(buf2) > 1 の判定が抜けており、後続の項目が1つずれる")]
+        public void Load_WeaponInvalidENConsumption_ReportsErrorWithoutShiftingFollowingFields()
+        {
+            // VB: 消費ＥＮが不正でも空白区切りでなければ後続の項目はずれない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "A,100,1,1,+0,-,X,-,AAAA,+0,B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual("AAAA", w.Adaption);
+            Assert.AreEqual("B", w.Class);
+            CollectionAssert.AreEqual(new[] { "Aの消費ＥＮの設定が間違っています。" }, Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponEmptyClass_ReportsError()
+        {
+            // 属性欄が空なら「武器属性の設定が間違っています。」(読み込みは継続)
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "A,100,1,1,+0,-,-,-,AAAA,+0,\n")).Item("テスト機");
+
+            Assert.AreEqual("", ud.Weapons.Single().Class);
+            CollectionAssert.AreEqual(new[] { "Aの武器属性の設定が間違っています。" }, Errors(src));
         }
     }
 }

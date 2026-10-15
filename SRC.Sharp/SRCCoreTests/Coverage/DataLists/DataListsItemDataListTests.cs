@@ -185,5 +185,37 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual("", list.Raw);
             Assert.AreEqual("", list.DataComment);
         }
+    
+        [TestMethod]
+        public void Load_CommentFollowedByNextItemWithoutBlankLine_Aborts()
+        {
+            // 解説行の直後の行は読み捨てられるため、空行無しで次のアイテムを書くと
+            // 2行目「愛称,…」が名称として読まれて中断する (VB: 解説ループの後に空行スキップで次行を読む)
+            var src = CreateSrc();
+            var ex = Assert.Throws<InvalidSrcDataException>(() => Load(src,
+                "剣\n剣,武器,片手\n特殊能力なし\n0,0,0,0,0\n" +
+                "斬撃,1200,1,1,+0,-,-,-,AAAA,+0,武\n*切れ味鋭い。\n" +
+                "盾\n盾,盾,盾\n特殊能力なし\n0,0,0,0,0\n"));
+
+            var err = ex.InvalidDataList.Single();
+            Assert.AreEqual("名称の設定が抜けています。", err.msg);
+            Assert.AreEqual("盾,盾,盾", err.line_buf);
+            // 中断前のアイテムは登録済み
+            Assert.AreEqual("切れ味鋭い。", src.IDList.Item("剣").Comment);
+        }
+
+        [TestMethod]
+        public void Load_InvalidWeaponInItem_ThrowsWithItemName()
+        {
+            // アイテムの武器データも UnitDataList と同じ書式チェックを受ける
+            var src = CreateSrc();
+            var ex = Assert.Throws<InvalidSrcDataException>(() => Load(src,
+                "剣\n剣,武器,片手\n特殊能力なし\n0,0,0,0,0\n斬撃\n"));
+
+            var err = ex.InvalidDataList.Single();
+            Assert.AreEqual("武器データの終りには空行を置いてください。", err.msg);
+            Assert.AreEqual("剣", err.dname);
+            Assert.AreEqual("item.txt", err.fname);
+        }
     }
 }

@@ -123,7 +123,8 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual("せいら", a.KanaName);
             var b = list.Item("テスト2");
             Assert.AreEqual("てすと", b.KanaName);
-            Assert.IsNull(b.Sex);
+            // VB は .Sex を設定しない (既定値 "")。性別が未設定であることを確認する
+            Assert.IsTrue(string.IsNullOrEmpty(b.Sex));
             Assert.AreEqual(0, src.DataErrors.Count);
         }
 
@@ -475,6 +476,65 @@ namespace SRCCore.Coverage.Tests
             var pd = src.PDList.Item("ステータス表示用ダミーパイロット(ザコ)");
             Assert.IsNotNull(pd);
             Assert.AreEqual("パイロット不在", pd.Nickname);
+        }
+    
+        [TestMethod]
+        public void Load_OldFormatLevelWithoutPrecedingSkill_Throws()
+        {
+            // 旧形式で先頭が「Lvn」だけの場合は能力名が無いので中断する
+            var src = CreateSrc();
+            var ex = Assert.Throws<InvalidSrcDataException>(() => Load(src, PilotWith(feature: "特殊能力,Lv2,1")));
+            Assert.AreEqual("行頭から1番目の特殊能力の名前「Lv2」が不正です", ex.InvalidDataList.Single().msg);
+        }
+
+        [TestMethod]
+        public void Load_ExtendedFeatureSection_EmptyItemReportsError()
+        {
+            // 「===」以降の特殊能力で空の項目は「行頭からn番目の特殊能力の設定が間違っています。」
+            var src = CreateSrc();
+            var pd = Load(src, PilotWith(rest:
+                "===\n" +
+                ",シールド\n" +
+                "===\n" +
+                "必殺拳,1800,1,1,+20,-,20,110,AAAA,+20,武\n")).Item("テスト");
+
+            CollectionAssert.AreEqual(new[] { "シールド" }, pd.Features.Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "行頭から1番目の特殊能力の設定が間違っています。" }, Errors(src));
+            Assert.AreEqual("必殺拳", pd.Weapons.Single().Name);
+        }
+
+        [TestMethod]
+        [Ignore("移植の不具合: パイロットの「===」特殊能力に UnitDataList.LoadFeature を流用しており、数値の項目でエラーを出さず特殊能力の読み込みを打ち切る")]
+        public void Load_ExtendedFeatureSection_NumericItemReportsError()
+        {
+            // VB PilotDataList.cls: If buf2 = "" Or IsNumeric(buf2) Then DataErrorMessage ... (読み込みは継続)
+            var src = CreateSrc();
+            var pd = Load(src, PilotWith(rest:
+                "===\n" +
+                "100,シールド\n" +
+                "===\n" +
+                "必殺拳,1800,1,1,+20,-,20,110,AAAA,+20,武\n")).Item("テスト");
+
+            CollectionAssert.AreEqual(new[] { "シールド" }, pd.Features.Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "行頭から1番目の特殊能力の設定が間違っています。" }, Errors(src));
+            Assert.AreEqual("必殺拳", pd.Weapons.Single().Name);
+        }
+
+        [TestMethod]
+        public void Load_ExtendedWeaponSectionEndingAtEof_HasNoAbilities()
+        {
+            // 武器データの後にアビリティ区切りが無くファイルが終わってもよい
+            var src = CreateSrc();
+            var pd = Load(src, PilotWith(rest:
+                "===\n" +
+                "シールド\n" +
+                "===\n" +
+                "必殺拳,1800,1,1,+20,-,20,110,AAAA,+20,武")).Item("テスト");
+
+            Assert.AreEqual("必殺拳", pd.Weapons.Single().Name);
+            Assert.AreEqual("武", pd.Weapons.Single().Class);
+            Assert.AreEqual(0, pd.Abilities.Count);
+            Assert.AreEqual(0, src.DataErrors.Count);
         }
     }
 }
