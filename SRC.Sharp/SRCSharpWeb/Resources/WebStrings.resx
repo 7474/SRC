@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>画面の配置</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>標準</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>スマートフォン向け（試作）</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>画面の配置の切り替え</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
 </root>

@@ -550,6 +550,37 @@ test.describe('タッチ向けの画面', () => {
     await expect.poll(async () => (await page.locator('#touch-ui').isVisible())).toBe(false);
   });
 
+  test('スマートフォン向けの配置（試作）: マップを切り出して大きく出し、メッセージは文字で出す', async ({ page }) => {
+    await open(page);
+    await page.selectOption('#layout', 'phone');
+    await expect(page.locator('html')).toHaveAttribute('data-layout', 'phone');
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    const view = page.locator('#phone-view');
+    await expect(view).toBeVisible({ timeout: 60 * 1000 });
+    // マップは幅いっぱい（ゲームの画面のままより大きい）
+    const map = await page.locator('#view-map').boundingBox();
+    expect(map.width).toBeGreaterThan(390 * 480 / 720 + 1);
+    // メッセージは文字で出し、押すと送る
+    const message = page.locator('#view-message');
+    await expect(message).toContainText('戦闘開始');
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined && await message.isVisible()) {
+        await message.click();
+      }
+      return s.message === undefined && s.locked === false;
+    }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+    // 切り出したマップのユニットをタップすると、コマンドのメニューが出る
+    const s = await screenState(page);
+    const scale = map.width / 480;
+    await page.locator('#view-map').tap({ position: { x: ((6 - s.mapX + 7) * 32 + 16) * scale, y: ((6 - s.mapY + 7) * 32 + 16) * scale } });
+    await expect(page.locator('#touch-ui').getByRole('button', { name: '移動' })).toBeVisible();
+    await page.locator('#touch-ui').getByRole('button', { name: 'キャンセル' }).click();
+    // ステータスは開閉できる
+    await page.locator('#status-tab').click();
+    await expect(page.locator('#view-status')).toBeVisible();
+  });
+
   test('タッチの端末では押しやすい大きさにし、「操作」でマウス向けに切り替えられる', async ({ page }) => {
     await open(page);
     await expect(page.locator('html')).toHaveAttribute('data-input', 'touch');

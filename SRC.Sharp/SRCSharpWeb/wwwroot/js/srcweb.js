@@ -25,6 +25,7 @@ export function drawFrame(view, width, height) {
     // .NET のメモリは SharedArrayBuffer のため、ImageData へ複写してから描く
     view.copyTo(imageBytes);
     ctx.putImageData(imageData, 0, 0);
+    copyPhoneViews();
     // 描いた回数（テスト用）
     globalThis.srcwebFrames = (globalThis.srcwebFrames || 0) + 1;
 }
@@ -42,166 +43,176 @@ async function start() {
     // エラーを送るときに、実行中のシナリオの行を添える（errorreport.js）
     globalThis.srcwebErrorReporting?.setDebugState(() => gui.DebugState());
 
-    const position = e => {
-        const rect = canvas.getBoundingClientRect();
+    // 画面上の位置をゲームの画面の座標にする（el の表示を、ゲームの画面の left・top から width×height の範囲として扱う）
+    const positionOn = (el, left, top, width, height) => e => {
+        const rect = el.getBoundingClientRect();
         return [
-            (e.clientX - rect.left) * canvas.width / rect.width,
-            (e.clientY - rect.top) * canvas.height / rect.height,
+            left + (e.clientX - rect.left) * width / rect.width,
+            top + (e.clientY - rect.top) * height / rect.height,
         ];
     };
+    const position = positionOn(canvas, 0, 0, canvas.width, canvas.height);
 
-    // タッチ操作: タップで左クリック、長押しで右クリック、指を滑らせるとマップのスクロール（とカーソルの移動）
-    let lastTouch = -Infinity;
-    let touch = null;
-    let lastTap = null;
-    const LONG_PRESS_MS = 500;
-    const MOVE_TOLERANCE = 12; // CSS ピクセル
-    // シナリオの KeyState(1)・KeyState(2) はボタンが押されている間を調べるため、押した状態を保ってから離す
-    const TAP_HOLD_MS = 200;
-    const press = (x, y, button, clicks) => {
-        gui.Pointer(2, x, y, 0, 0);
-        gui.Pointer(0, x, y, button, clicks);
-        globalThis.srcwebTouchClicks = [...(globalThis.srcwebTouchClicks || []), { button, clicks }];
-    };
-    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0);
-    canvas.addEventListener('pointerdown', e => {
-        if (e.pointerType === 'mouse') {
-            return;
-        }
-        lastTouch = performance.now();
-        if (touch) {
-            // 2 本目の指は使わない
-            return;
-        }
-        canvas.focus();
-        resumeAudio();
-        canvas.setPointerCapture?.(e.pointerId);
-        const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
-        touch = {
-            id: e.pointerId,
-            startX: e.clientX,
-            startY: e.clientY,
-            downX: x,
-            downY: y,
-            x,
-            y,
-            moved: false,
-            held: false,
-            timer: setTimeout(() => {
-                if (touch && !touch.moved) {
-                    // 右ボタンを押したままにし、指を離したら離す（押し続けてメッセージを送る操作にもなる）
-                    touch.held = true;
-                    hideRing();
-                    navigator.vibrate?.(20);
-                    press(touch.x, touch.y, 2, 1);
-                }
-            }, LONG_PRESS_MS),
+    // マウス・タッチの操作を受け取る。el はゲームの画面（canvas）か、スマートフォン向けの配置で切り出したマップ（view-map）
+    const bindPointer = (el, position) => {
+        // タッチ操作: タップで左クリック、長押しで右クリック、指を滑らせるとマップのスクロール（とカーソルの移動）
+        let lastTouch = -Infinity;
+        let touch = null;
+        let lastTap = null;
+        const LONG_PRESS_MS = 500;
+        const MOVE_TOLERANCE = 12; // CSS ピクセル
+        // シナリオの KeyState(1)・KeyState(2) はボタンが押されている間を調べるため、押した状態を保ってから離す
+        const TAP_HOLD_MS = 200;
+        const press = (x, y, button, clicks) => {
+            gui.Pointer(2, x, y, 0, 0);
+            gui.Pointer(0, x, y, button, clicks);
+            globalThis.srcwebTouchClicks = [...(globalThis.srcwebTouchClicks || []), { button, clicks }];
         };
-        showRing(e.clientX, e.clientY);
-        e.preventDefault();
-    });
-    canvas.addEventListener('pointermove', e => {
-        if (!touch || e.pointerId !== touch.id) {
-            return;
-        }
-        lastTouch = performance.now();
-        const [x, y] = position(e);
-        touch.x = x;
-        touch.y = y;
-        if (!touch.moved && Math.hypot(e.clientX - touch.startX, e.clientY - touch.startY) > MOVE_TOLERANCE) {
-            touch.moved = true;
+        const release = (x, y, button) => gui.Pointer(1, x, y, button, 0);
+        el.addEventListener('pointerdown', e => {
+            if (e.pointerType === 'mouse') {
+                return;
+            }
+            lastTouch = performance.now();
+            if (touch) {
+                // 2 本目の指は使わない
+                return;
+            }
+            canvas.focus({ preventScroll: true });
+            resumeAudio();
+            el.setPointerCapture?.(e.pointerId);
+            const [x, y] = position(e);
+            gui.Pointer(2, x, y, 0, 0);
+            touch = {
+                id: e.pointerId,
+                startX: e.clientX,
+                startY: e.clientY,
+                downX: x,
+                downY: y,
+                x,
+                y,
+                moved: false,
+                held: false,
+                timer: setTimeout(() => {
+                    if (touch && !touch.moved) {
+                        // 右ボタンを押したままにし、指を離したら離す（押し続けてメッセージを送る操作にもなる）
+                        touch.held = true;
+                        hideRing();
+                        navigator.vibrate?.(20);
+                        press(touch.x, touch.y, 2, 1);
+                    }
+                }, LONG_PRESS_MS),
+            };
+            showRing(e.clientX, e.clientY);
+            e.preventDefault();
+        });
+        el.addEventListener('pointermove', e => {
+            if (!touch || e.pointerId !== touch.id) {
+                return;
+            }
+            lastTouch = performance.now();
+            const [x, y] = position(e);
+            touch.x = x;
+            touch.y = y;
+            if (!touch.moved && Math.hypot(e.clientX - touch.startX, e.clientY - touch.startY) > MOVE_TOLERANCE) {
+                touch.moved = true;
+                clearTimeout(touch.timer);
+                hideRing();
+                // 触れた位置からマップをドラッグする（マウスの左ボタンのドラッグと同じスクロール。クリックにはしない）
+                gui.Pointer(3, touch.downX, touch.downY, 0, 0);
+            }
+            if (touch.moved) {
+                gui.Pointer(2, x, y, 0, 0);
+            }
+            e.preventDefault();
+        });
+        const endTouch = (e, cancelled) => {
+            if (!touch || e.pointerId !== touch.id) {
+                return;
+            }
+            lastTouch = performance.now();
             clearTimeout(touch.timer);
             hideRing();
-            // 触れた位置からマップをドラッグする（マウスの左ボタンのドラッグと同じスクロール。クリックにはしない）
-            gui.Pointer(3, touch.downX, touch.downY, 0, 0);
+            if (touch.moved) {
+                gui.Pointer(4, touch.x, touch.y, 0, 0);
+            }
+            if (touch.held) {
+                release(touch.x, touch.y, 2);
+            } else if (!cancelled && !touch.moved) {
+                // 近くを続けてタップしたらダブルクリック
+                const now = performance.now();
+                const double = lastTap && now - lastTap.time < 400 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 24;
+                const { x, y } = touch;
+                press(x, y, 0, double ? 2 : 1);
+                setTimeout(() => release(x, y, 0), TAP_HOLD_MS);
+                lastTap = double ? null : { time: now, x: e.clientX, y: e.clientY };
+            }
+            touch = null;
+            e.preventDefault();
+        };
+        el.addEventListener('pointerup', e => endTouch(e, false));
+        el.addEventListener('pointercancel', e => endTouch(e, true));
+
+        // 長押しの間、触れた位置に輪を出す（右クリックになることを知らせる）
+        const ring = document.createElement('div');
+        ring.className = 'touch-ring';
+        document.body.appendChild(ring);
+        function showRing(clientX, clientY) {
+            ring.style.left = `${clientX}px`;
+            ring.style.top = `${clientY}px`;
+            ring.style.setProperty('--hold', `${LONG_PRESS_MS}ms`);
+            ring.classList.remove('active');
+            void ring.offsetWidth;
+            ring.classList.add('active');
         }
-        if (touch.moved) {
+        function hideRing() {
+            ring.classList.remove('active');
+        }
+
+        // タッチの後にブラウザが作る互換のマウスイベントは無視する（タッチは下の Pointer Events で扱う）
+        const fromTouch = () => performance.now() - lastTouch < 1000;
+        el.addEventListener('mousedown', e => {
+            if (fromTouch()) {
+                e.preventDefault();
+                return;
+            }
+            canvas.focus({ preventScroll: true });
+            resumeAudio();
+            const [x, y] = position(e);
+            gui.Pointer(0, x, y, e.button, e.detail || 1);
+            e.preventDefault();
+        });
+        el.addEventListener('mouseup', e => {
+            if (fromTouch()) {
+                e.preventDefault();
+                return;
+            }
+            const [x, y] = position(e);
+            gui.Pointer(1, x, y, e.button, 0);
+            e.preventDefault();
+        });
+        el.addEventListener('mousemove', e => {
+            if (fromTouch()) {
+                return;
+            }
+            const [x, y] = position(e);
             gui.Pointer(2, x, y, 0, 0);
-        }
-        e.preventDefault();
-    });
-    const endTouch = (e, cancelled) => {
-        if (!touch || e.pointerId !== touch.id) {
-            return;
-        }
-        lastTouch = performance.now();
-        clearTimeout(touch.timer);
-        hideRing();
-        if (touch.moved) {
-            gui.Pointer(4, touch.x, touch.y, 0, 0);
-        }
-        if (touch.held) {
-            release(touch.x, touch.y, 2);
-        } else if (!cancelled && !touch.moved) {
-            // 近くを続けてタップしたらダブルクリック
-            const now = performance.now();
-            const double = lastTap && now - lastTap.time < 400 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 24;
-            const { x, y } = touch;
-            press(x, y, 0, double ? 2 : 1);
-            setTimeout(() => release(x, y, 0), TAP_HOLD_MS);
-            lastTap = double ? null : { time: now, x: e.clientX, y: e.clientY };
-        }
-        touch = null;
-        e.preventDefault();
+        });
+        el.addEventListener('contextmenu', e => e.preventDefault());
+        el.addEventListener('wheel', e => {
+            const [x, y] = position(e);
+            const delta = -Math.sign(e.deltaY);
+            if (delta !== 0) {
+                gui.Wheel(x, y, delta);
+            }
+            e.preventDefault();
+        }, { passive: false });
     };
-    canvas.addEventListener('pointerup', e => endTouch(e, false));
-    canvas.addEventListener('pointercancel', e => endTouch(e, true));
-
-    // 長押しの間、触れた位置に輪を出す（右クリックになることを知らせる）
-    const ring = document.createElement('div');
-    ring.className = 'touch-ring';
-    document.body.appendChild(ring);
-    function showRing(clientX, clientY) {
-        ring.style.left = `${clientX}px`;
-        ring.style.top = `${clientY}px`;
-        ring.style.setProperty('--hold', `${LONG_PRESS_MS}ms`);
-        ring.classList.remove('active');
-        void ring.offsetWidth;
-        ring.classList.add('active');
+    bindPointer(canvas, position);
+    const mapView = document.getElementById('view-map');
+    if (mapView) {
+        bindPointer(mapView, positionOn(mapView, 0, 0, mapView.width, mapView.height));
     }
-    function hideRing() {
-        ring.classList.remove('active');
-    }
-
-    // タッチの後にブラウザが作る互換のマウスイベントは無視する（タッチは下の Pointer Events で扱う）
-    const fromTouch = () => performance.now() - lastTouch < 1000;
-    canvas.addEventListener('mousedown', e => {
-        if (fromTouch()) {
-            e.preventDefault();
-            return;
-        }
-        canvas.focus();
-        resumeAudio();
-        const [x, y] = position(e);
-        gui.Pointer(0, x, y, e.button, e.detail || 1);
-        e.preventDefault();
-    });
-    canvas.addEventListener('mouseup', e => {
-        if (fromTouch()) {
-            e.preventDefault();
-            return;
-        }
-        const [x, y] = position(e);
-        gui.Pointer(1, x, y, e.button, 0);
-        e.preventDefault();
-    });
-    canvas.addEventListener('mousemove', e => {
-        if (fromTouch()) {
-            return;
-        }
-        const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
-    });
-    canvas.addEventListener('contextmenu', e => e.preventDefault());
-    canvas.addEventListener('wheel', e => {
-        const [x, y] = position(e);
-        const delta = -Math.sign(e.deltaY);
-        if (delta !== 0) {
-            gui.Wheel(x, y, delta);
-        }
-        e.preventDefault();
-    }, { passive: false });
 
     // SRC が使うキー（矢印・Enter・Space・Esc・BackSpace・Delete）はブラウザの既定の動作（スクロールなど）を止める
     const handled = new Set([8, 13, 27, 32, 37, 38, 39, 40, 46]);
@@ -228,6 +239,78 @@ async function start() {
     };
     requestAnimationFrame(loop);
     canvas.focus();
+}
+
+// スマートフォン向けの配置（試作。html の data-layout="phone"）。
+// ゲームの画面（720×620）はそのまま描き、マップ（480×480）を切り出して幅いっぱいに、ステータス（240×496）は開閉できる欄に出す。
+// メッセージは文字で出し、押したらメッセージウィンドウのクリックとしてゲームに渡す（WebInterop.TouchChoose の 4）。
+// マップを表示していないとき（タイトル・イベントの画面など）は、ゲームの画面をそのまま出す
+const isPhoneLayout = () => document.documentElement.dataset.layout === 'phone';
+let phoneViewActive = false;
+
+function copyPhoneViews() {
+    if (!phoneViewActive || !canvas) {
+        return;
+    }
+    const map = document.getElementById('view-map');
+    map?.getContext('2d').drawImage(canvas, 0, 0, map.width, map.height, 0, 0, map.width, map.height);
+    const status = document.getElementById('view-status');
+    if (status && !status.hidden) {
+        status.getContext('2d').drawImage(canvas, map.width, 0, status.width, status.height, 0, 0, status.width, status.height);
+    }
+}
+
+let phoneViewBound = false;
+let lastMessage = '';
+function updatePhoneView(gui, state) {
+    const view = document.getElementById('phone-view');
+    const play = view?.closest('.play');
+    if (!view || !play) {
+        return;
+    }
+    if (!phoneViewBound) {
+        phoneViewBound = true;
+        const tab = document.getElementById('status-tab');
+        const status = document.getElementById('view-status');
+        tab.addEventListener('click', () => {
+            status.hidden = !status.hidden;
+            tab.setAttribute('aria-expanded', String(!status.hidden));
+            copyPhoneViews();
+        });
+        document.getElementById('view-message').addEventListener('click', () => {
+            resumeAudio();
+            gui.TouchChoose(4, 0);
+        });
+    }
+    const active = isPhoneLayout() && !!state.showMap;
+    if (active !== phoneViewActive) {
+        phoneViewActive = active;
+        view.hidden = !active;
+        play.classList.toggle('phone-active', active);
+        copyPhoneViews();
+    }
+    const message = document.getElementById('view-message');
+    // 文字の無いメッセージウィンドウ（表示しただけのもの）は出さない
+    const hasText = state.message && (state.message.speaker || state.message.lines.some(x => x));
+    const key = active && hasText ? JSON.stringify(state.message) : '';
+    if (key !== lastMessage) {
+        lastMessage = key;
+        message.replaceChildren();
+        if (key) {
+            if (state.message.speaker) {
+                const speaker = document.createElement('div');
+                speaker.className = 'view-message-speaker';
+                speaker.textContent = state.message.speaker;
+                message.appendChild(speaker);
+            }
+            const text = document.createElement('div');
+            text.className = 'view-message-text';
+            text.textContent = state.message.lines.join('\n');
+            message.appendChild(text);
+            message.classList.toggle('waiting', !!state.message.waiting);
+        }
+        message.hidden = !key;
+    }
 }
 
 // タッチ向けの選択画面。ゲームの画面に描く小さなリスト・メニュー・ダイアログを、タッチ向けの画面（data-input="touch"）では
@@ -323,9 +406,15 @@ function buildTouchUi(gui) {
         }
         busy = true;
         try {
-            const json = isTouchMode() ? await gui.TouchUi() : '{}';
+            const json = isTouchMode() || isPhoneLayout() ? await gui.TouchUi() : '{}';
             const state = JSON.parse(json);
             if (state.error) {
+                return;
+            }
+            updatePhoneView(gui, state);
+            if (!isTouchMode()) {
+                panel.hidden = true;
+                last = '{}';
                 return;
             }
             if (performance.now() < suppressUntil) {

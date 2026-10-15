@@ -819,6 +819,109 @@ input[type=file]::file-selector-button {
     margin: 6px 4px 4px auto;
 }
 
+/*
+  スマートフォン向けの配置（試作。srcweb.js の updatePhoneView）。マップを表示している間は、ゲームの画面（#screen）を見えなくし
+  （キー入力を受けるため要素は残す）、切り出したマップ・ステータスと、文字のメッセージを縦に並べる
+*/
+.play.phone-active #screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.phone-view {
+    display: flex;
+    flex-direction: column;
+    background: #000;
+}
+
+.phone-view[hidden] {
+    display: none;
+}
+
+.view-map {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.status-tab {
+    width: 100%;
+    min-height: 32px;
+    border-radius: 0;
+}
+
+.status-tab::after {
+    content: " ▼";
+}
+
+.status-tab[aria-expanded="true"]::after {
+    content: " ▲";
+}
+
+.view-status {
+    display: block;
+    width: min(100%, 360px);
+    height: auto;
+    margin: 0 auto;
+    aspect-ratio: 240 / 496;
+}
+
+.view-status[hidden] {
+    display: none;
+}
+
+.view-message {
+    position: relative;
+    min-height: 88px;
+    padding: 8px 12px 20px;
+    color: #fff;
+    background: #101828;
+    border-top: 2px solid #4a5a7a;
+    font-size: 16px;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.view-message[hidden] {
+    display: none;
+}
+
+.view-message-speaker {
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #ffe08a;
+}
+
+.view-message-text {
+    white-space: pre-wrap;
+}
+
+/* クリック待ち */
+.view-message.waiting::after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    bottom: 4px;
+    font-size: 12px;
+    animation: view-message-wait 1s steps(2) infinite;
+}
+
+@keyframes view-message-wait {
+    50% {
+        opacity: 0;
+    }
+}
+
 /* 長押しで右クリックになるまでの輪 */
 .touch-ring {
     position: fixed;

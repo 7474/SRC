@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>画面布局</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>标准</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>手机（试作）</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>切换画面布局</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>状态</value>
+  </data>
 </root>

@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>İptal</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>Ekran düzeni</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>Telefon (prototip)</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>Ekran düzenini değiştir</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
 </root>

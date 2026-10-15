@@ -188,6 +188,26 @@ namespace SRCSharpWeb
             try
             {
                 var state = gui?.State;
+                if (state != null)
+                {
+                    // スマートフォン向けの配置（試作）で使う: マップを表示しているか、表示中のメッセージ
+                    json["showMap"] = state.ShowMap && state.Title == null && state.Splash == null;
+                    if (state.Message.Visible)
+                    {
+                        var lines = new JsonArray();
+                        foreach (var line in state.Message.Lines)
+                        {
+                            lines.Add(line);
+                        }
+                        json["message"] = new JsonObject
+                        {
+                            ["speaker"] = state.Message.Speaker,
+                            ["lines"] = lines,
+                            ["waiting"] = state.Message.Waiting,
+                            ["count"] = state.Message.WaitCount,
+                        };
+                    }
+                }
                 var list = state?.List;
                 if (list != null && gui.IsWaitingList)
                 {
@@ -229,7 +249,7 @@ namespace SRCSharpWeb
 
         /// <summary>
         /// タッチ向けの選択画面で選んだものをゲームに渡す。自動プレイ（SRCPlay の PlayScript）と同じ操作にする。
-        /// kind: 0 リストの項目（カーソルを合わせて Enter）、1 メニューの項目（項目をクリック）、2 ダイアログのボタン（ボタンをクリック）、3 キャンセル（右クリック）
+        /// kind: 0 リストの項目（カーソルを合わせて Enter）、1 メニューの項目（項目をクリック）、2 ダイアログのボタン（ボタンをクリック）、3 キャンセル（右クリック）、4 メッセージを送る（メッセージウィンドウをクリック）
         /// </summary>
         [JSExport]
         public static Task TouchChoose(int kind, int index)
@@ -265,6 +285,10 @@ namespace SRCSharpWeb
                         break;
                     case 3:
                         Click(g, ScreenLayout.MapWidthPx / 2f, ScreenLayout.MapHeightPx / 2f, GuiButton.Right);
+                        break;
+                    case 4:
+                        // メッセージを送る（メッセージウィンドウをクリック）
+                        Click(g, ScreenLayout.MessageArea.MidX, ScreenLayout.MessageArea.MidY, GuiButton.Left);
                         break;
                 }
             });

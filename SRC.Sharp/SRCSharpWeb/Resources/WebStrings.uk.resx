@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>Скасувати</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>Розташування екрана</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>Стандартне</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>Смартфон (прототип)</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>Перемкнути розташування екрана</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>Стан</value>
+  </data>
 </root>

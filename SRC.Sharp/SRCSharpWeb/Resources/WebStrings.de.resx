@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>Bildschirmlayout</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>Smartphone (Prototyp)</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>Bildschirmlayout wechseln</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>

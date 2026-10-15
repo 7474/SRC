@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>ยกเลิก</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>การจัดวางหน้าจอ</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>มาตรฐาน</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>สมาร์ทโฟน (ต้นแบบ)</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>สลับการจัดวางหน้าจอ</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>สถานะ</value>
+  </data>
 </root>

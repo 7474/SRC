@@ -15,6 +15,12 @@
         } catch {
             document.documentElement.dataset.theme = '95';
         }
+        // ゲームの画面の配置（classic・phone）。phone はスマートフォン向けの試作（srcweb.js の buildPhoneView）
+        try {
+            document.documentElement.dataset.layout = localStorage.getItem('srcweb.layout') === 'phone' ? 'phone' : 'classic';
+        } catch {
+            document.documentElement.dataset.layout = 'classic';
+        }
         // 操作の種類（touch・mouse）。タッチの端末では押しやすい大きさの画面にする（app.css の [data-input="touch"]）。
         // 利用者の設定（localStorage の srcweb.input: auto・touch・mouse）が auto なら、主なポインタがタッチかで決める
         globalThis.srcwebInput = (() => {

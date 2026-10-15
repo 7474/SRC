@@ -198,4 +198,19 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>취소</value>
   </data>
+  <data name="Layout" xml:space="preserve">
+    <value>화면 배치</value>
+  </data>
+  <data name="LayoutClassic" xml:space="preserve">
+    <value>표준</value>
+  </data>
+  <data name="LayoutPhone" xml:space="preserve">
+    <value>스마트폰용 (시제품)</value>
+  </data>
+  <data name="MenuLayout" xml:space="preserve">
+    <value>화면 배치 전환</value>
+  </data>
+  <data name="ShowStatus" xml:space="preserve">
+    <value>상태</value>
+  </data>
 </root>

@@ -15,6 +15,13 @@
         <canvas id="screen" width="@ScreenLayout.Width" height="@ScreenLayout.Height" tabindex="0"></canvas>
         @* タッチ向けの選択画面（タッチの端末で、ゲームのリスト・メニュー・ダイアログを大きなボタンで出す）。中身は srcweb.js が作る *@
         <div id="touch-ui" class="touch-ui" role="dialog" hidden data-cancel="@L["TouchCancel"]"></div>
+        @* スマートフォン向けの配置（試作）。ゲームの画面からマップとステータスを切り出して大きく出し、メッセージは文字で出す。中身は srcweb.js が作る *@
+        <div id="phone-view" class="phone-view" hidden>
+            <canvas id="view-map" class="view-map" width="@ScreenLayout.MapWidthPx" height="@ScreenLayout.MapHeightPx"></canvas>
+            <button type="button" id="status-tab" class="status-tab" aria-expanded="false">@L["ShowStatus"]</button>
+            <canvas id="view-status" class="view-status" width="@ScreenLayout.StatusWidthPx" height="@ScreenLayout.StatusHeightPx" hidden></canvas>
+            <div id="view-message" class="view-message" hidden></div>
+        </div>
         @if (mode == Mode.Ended)
         {
             <div class="ended">
@@ -44,6 +51,7 @@
                     <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
                     <button role="menuitem" @onclick="ToggleVirtualKeysAsync">@L["MenuVirtualKeys"]</button>
+                    <button role="menuitem" @onclick="ToggleLayoutAsync">@L["MenuLayout"]</button>
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
@@ -244,6 +252,11 @@ else
                             <option value="95">Windows 95</option>
                             <option value="xp">Windows XP</option>
                         </select>
+                        <label for="layout">@L["Layout"]</label>
+                        <select id="layout" value="@screenLayout" @onchange="ChangeLayoutAsync">
+                            <option value="classic">@L["LayoutClassic"]</option>
+                            <option value="phone">@L["LayoutPhone"]</option>
+                        </select>
                         <label for="input-mode">@L["InputMode"]</label>
                         <select id="input-mode" value="@inputMode" @onchange="ChangeInputModeAsync">
                             <option value="auto">@L["InputAuto"]</option>
@@ -285,6 +298,8 @@ else
     private string theme = "95";
     /// <summary>操作の種類の設定（auto・touch・mouse）。srcwebStore.setInputMode で html の data-input に反映し、localStorage に保存する</summary>
     private string inputMode = "auto";
+    /// <summary>ゲームの画面の配置（classic: 元の SRC と同じ、phone: スマートフォン向け（試作））。srcwebStore.setLayout で html の data-layout に反映する</summary>
+    private string screenLayout = "classic";
     private SiteConfig site = new SiteConfig();
     private List<Catalog> catalogs = new List<Catalog>();
     private List<string> catalogErrors = new List<string>();
@@ -331,6 +346,20 @@ else
         await FocusScreenAsync();
     }
 
+    private async Task ChangeLayoutAsync(ChangeEventArgs e)
+    {
+        screenLayout = e.Value?.ToString() ?? "classic";
+        await JS.InvokeVoidAsync("srcwebStore.setLayout", screenLayout);
+    }
+
+    private async Task ToggleLayoutAsync()
+    {
+        systemMenuOpen = false;
+        screenLayout = screenLayout == "phone" ? "classic" : "phone";
+        await JS.InvokeVoidAsync("srcwebStore.setLayout", screenLayout);
+        await FocusScreenAsync();
+    }
+
     private async Task ToggleVirtualKeysAsync()
     {
         systemMenuOpen = false;
@@ -351,6 +380,7 @@ else
         {
             theme = await JS.InvokeAsync<string>("srcwebStore.getTheme");
             inputMode = await JS.InvokeAsync<string>("srcwebStore.getInputMode");
+            screenLayout = await JS.InvokeAsync<string>("srcwebStore.getLayout");
             await WebFonts.LoadAsync(Http);
             site = await SiteConfig.LoadAsync(Http);
             await JS.InvokeVoidAsync("srcwebStore.setTitle", site.Title);

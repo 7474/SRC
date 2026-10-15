@@ -101,6 +101,19 @@
         setInputMode(mode) {
             globalThis.srcwebInput?.set(mode);
         },
+        // ゲームの画面の配置（classic・phone）。html の data-layout に付け、localStorage に保存する（index.html が描画の前に付ける）
+        getLayout() {
+            return document.documentElement.dataset.layout === 'phone' ? 'phone' : 'classic';
+        },
+        setLayout(layout) {
+            layout = layout === 'phone' ? 'phone' : 'classic';
+            document.documentElement.dataset.layout = layout;
+            try {
+                localStorage.setItem('srcweb.layout', layout);
+            } catch {
+                // 保存できなくても表示は切り替える
+            }
+        },
         setTitle(title) {
             document.title = title;
         },
