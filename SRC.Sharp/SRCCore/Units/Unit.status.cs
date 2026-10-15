@@ -11,6 +11,23 @@ namespace SRCCore.Units
     // === ユニットステータスの更新処理 ===
     public partial class Unit
     {
+        // 属性文字列から重複した属性を取り除く
+        private static string RemoveDuplicatedClass(string aclass)
+        {
+            var buf = "";
+            var alen = Strings.Len(aclass);
+            for (var i = 1; i <= alen; i++)
+            {
+                var ch = GeneralLib.GetClassBundle(aclass, ref i);
+                if (GeneralLib.InStrNotNest(buf, ch) == 0)
+                {
+                    buf = buf + ch;
+                }
+            }
+
+            return buf;
+        }
+
         // ユニットの各種パラメータを更新するサブルーチン
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
@@ -1067,152 +1084,68 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // 攻撃への耐性を更新
-            //    strAbsorb = "";
-            //    strImmune = "";
-            //    strResist = "";
-            //    strWeakness = "";
-            //    strEffective = "";
-            //    strSpecialEffectImmune = "";
-            //    // 特殊能力によって得られた耐性
-            //    foreach (FeatureData currentFd5 in colFeature)
-            //    {
-            //        fd = currentFd5;
-            //        switch (fd.Name ?? "")
-            //        {
-            //            case "吸収":
-            //                {
-            //                    strAbsorb = strAbsorb + fd.StrData;
-            //                    break;
-            //                }
+            // 攻撃への耐性を更新
+            strAbsorb = "";
+            strImmune = "";
+            strResist = "";
+            strWeakness = "";
+            strEffective = "";
+            strSpecialEffectImmune = "";
+            // 特殊能力によって得られた耐性
+            foreach (var fd in colFeature.List)
+            {
+                switch (fd.Name ?? "")
+                {
+                    case "吸収":
+                        strAbsorb = strAbsorb + fd.StrData;
+                        break;
 
-            //            case "無効化":
-            //                {
-            //                    strImmune = strImmune + fd.StrData;
-            //                    break;
-            //                }
+                    case "無効化":
+                        strImmune = strImmune + fd.StrData;
+                        break;
 
-            //            case "耐性":
-            //                {
-            //                    strResist = strResist + fd.StrData;
-            //                    break;
-            //                }
+                    case "耐性":
+                        strResist = strResist + fd.StrData;
+                        break;
 
-            //            case "弱点":
-            //                {
-            //                    strWeakness = strWeakness + fd.StrData;
-            //                    break;
-            //                }
+                    case "弱点":
+                        strWeakness = strWeakness + fd.StrData;
+                        break;
 
-            //            case "有効":
-            //                {
-            //                    strEffective = strEffective + fd.StrData;
-            //                    break;
-            //                }
+                    case "有効":
+                        strEffective = strEffective + fd.StrData;
+                        break;
 
-            //            case "特殊効果無効化":
-            //                {
-            //                    strSpecialEffectImmune = strSpecialEffectImmune + fd.StrData;
-            //                    break;
-            //                }
-            //        }
-            //    }
-            //    // 弱点、有効付加属性攻撃による弱点、有効の付加
-            //    var loopTo8 = CountCondition();
-            //    for (i = 1; i <= loopTo8; i++)
-            //    {
-            //        if (ConditionLifetime(i) != 0)
-            //        {
-            //            ch = Condition(i);
-            //            switch (Strings.Right(ch, 6) ?? "")
-            //            {
-            //                case "属性弱点付加":
-            //                    {
-            //                        strWeakness = strWeakness + Strings.Left(ch, Strings.Len(ch) - 6);
-            //                        break;
-            //                    }
+                    case "特殊効果無効化":
+                        strSpecialEffectImmune = strSpecialEffectImmune + fd.StrData;
+                        break;
+                }
+            }
+            // 弱点、有効付加属性攻撃による弱点、有効の付加
+            foreach (Condition cnd in colCondition)
+            {
+                if (cnd.Lifetime != 0)
+                {
+                    var cname = cnd.Name;
+                    switch (Strings.Right(cname, 6) ?? "")
+                    {
+                        case "属性弱点付加":
+                            strWeakness = strWeakness + Strings.Left(cname, Strings.Len(cname) - 6);
+                            break;
 
-            //                case "属性有効付加":
-            //                    {
-            //                        strEffective = strEffective + Strings.Left(ch, Strings.Len(ch) - 6);
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
-            //    // 属性のダブりをなくす
-            //    buf = "";
-            //    var loopTo9 = Strings.Len(strAbsorb);
-            //    for (i = 1; i <= loopTo9; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strAbsorb, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strAbsorb = buf;
-            //    buf = "";
-            //    var loopTo10 = Strings.Len(strImmune);
-            //    for (i = 1; i <= loopTo10; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strImmune, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strImmune = buf;
-            //    buf = "";
-            //    var loopTo11 = Strings.Len(strResist);
-            //    for (i = 1; i <= loopTo11; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strResist, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strResist = buf;
-            //    buf = "";
-            //    var loopTo12 = Strings.Len(strWeakness);
-            //    for (i = 1; i <= loopTo12; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strWeakness, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strWeakness = buf;
-            //    buf = "";
-            //    var loopTo13 = Strings.Len(strEffective);
-            //    for (i = 1; i <= loopTo13; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strEffective, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strEffective = buf;
-            //    buf = "";
-            //    var loopTo14 = Strings.Len(strSpecialEffectImmune);
-            //    for (i = 1; i <= loopTo14; i++)
-            //    {
-            //        ch = GeneralLib.GetClassBundle(strSpecialEffectImmune, i);
-            //        if (GeneralLib.InStrNotNest(buf, ch) == 0)
-            //        {
-            //            buf = buf + ch;
-            //        }
-            //    }
-
-            //    strSpecialEffectImmune = buf;
+                        case "属性有効付加":
+                            strEffective = strEffective + Strings.Left(cname, Strings.Len(cname) - 6);
+                            break;
+                    }
+                }
+            }
+            // 属性のダブりをなくす
+            strAbsorb = RemoveDuplicatedClass(strAbsorb);
+            strImmune = RemoveDuplicatedClass(strImmune);
+            strResist = RemoveDuplicatedClass(strResist);
+            strWeakness = RemoveDuplicatedClass(strWeakness);
+            strEffective = RemoveDuplicatedClass(strEffective);
+            strSpecialEffectImmune = RemoveDuplicatedClass(strSpecialEffectImmune);
 
             // 武器データを更新
             {
@@ -1226,7 +1159,7 @@ namespace SRCCore.Units
                     newWeapons.AddRange(AllPilots.SelectMany(p => p.Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons))));
                 }
                 // アイテム分
-                newWeapons.AddRange(ItemList.SelectMany(itm => itm.Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons))));
+                newWeapons.AddRange(ItemList.Where(itm => itm.Activated).SelectMany(itm => itm.Data.Weapons.Select(x => UnitWeapon.NewOrRef(SRC, this, x, prevWeapons))));
                 WData = newWeapons;
             }
 
@@ -1240,8 +1173,8 @@ namespace SRCCore.Units
                     // 非表示の属性がある場合は一旦抜き出す
                     if (GeneralLib.InStrNotNest(wclass, "|") > 0)
                     {
-                        wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, "|") - 1);
                         hidden_attr = Strings.Mid(wclass, GeneralLib.InStrNotNest(wclass, "|") + 1);
+                        wclass = Strings.Left(wclass, GeneralLib.InStrNotNest(wclass, "|") - 1);
                     }
                     else
                     {
@@ -1272,7 +1205,7 @@ namespace SRCCore.Units
                         else
                         {
                             // 武器指定がある場合
-                            skip = 2;
+                            skip = 1;
                         }
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata).Skip(skip).ToList()))
@@ -1330,7 +1263,12 @@ namespace SRCCore.Units
                         }
                     }
 
-                    w.SetWeaponClass(wclass + "|" + hidden_attr);
+                    // 非表示の属性を追加
+                    if (Strings.Len(hidden_attr) > 0)
+                    {
+                        wclass = wclass + "|" + hidden_attr;
+                    }
+                    w.SetWeaponClass(wclass);
                 }
             }
 
@@ -1751,6 +1689,7 @@ namespace SRCCore.Units
                         }
                     }
                 }
+                w.SetCriticalCorrection(correction);
             }
 
             // 最大弾数を更新
@@ -1809,10 +1748,24 @@ namespace SRCCore.Units
             //}
 
             // アビリティデータを更新
+            // 使用回数は同じアビリティデータのものを引き継ぎ、新しいアビリティは最大にする
+            var prevAbilities = AData?.CloneList() ?? new List<UnitAbility>();
             AData = Data.Abilities
                 .AppendRange(Pilots.Any() ? AllPilots.SelectMany(x => x.Data.Abilities) : new AbilityData[] { })
                 .AppendRange(ItemList.Where(x => x.Activated).SelectMany(x => x.Data.Abilities))
-                .Select(x => new UnitAbility(SRC, this, x)).ToList();
+                .Select(x =>
+                {
+                    var prevAbility = prevAbilities.FirstOrDefault(pa => ReferenceEquals(pa.Data, x));
+                    if (prevAbility != null)
+                    {
+                        prevAbilities.Remove(prevAbility);
+                        return prevAbility;
+                    }
+
+                    var ua = new UnitAbility(SRC, this, x);
+                    ua.SetStockFull();
+                    return ua;
+                }).ToList();
             //    prev_adata = new AbilityData[Information.UBound(adata) + 1];
             //    prev_astocks = new double[Information.UBound(adata) + 1];
             //    var loopTo57 = Information.UBound(adata);

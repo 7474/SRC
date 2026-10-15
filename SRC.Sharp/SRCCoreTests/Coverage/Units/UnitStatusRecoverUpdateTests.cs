@@ -587,7 +587,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update がＣＴ率強化の補正値を計算するが SetCriticalCorrection を呼ばず捨てている")]
         public void CriticalEnhance_Adds5PerLevel()
         {
             // ＣＴ率強化は通常武器のＣＴ率を +5/Lv（元の SRC の Unit.Update「ＣＴ率強化による修正」）
@@ -631,7 +630,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 攻撃属性の処理で武器属性を「|」で切った後の文字列から非表示属性を取り出しているため非表示属性が失われる")]
         public void AttackAttribute_KeepsHiddenAttribute()
         {
             // 元の SRC は「|」以降の非表示属性を退避し、攻撃属性を付けた後に戻す
@@ -645,7 +643,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 攻撃属性の処理で非表示属性が無くても武器属性の末尾に「|」を付けている")]
         public void AttackAttribute_NoHiddenAttribute_NoTrailingBar()
         {
             // 元の SRC は非表示属性がある場合のみ「|」＋非表示属性を付ける（Unit.Update「非表示の属性を追加」）
@@ -659,7 +656,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 攻撃属性=属性 武器指定 の武器指定を Skip(2) で読むため最初の武器指定が捨てられ全武器に付加される")]
         public void AttackAttribute_WithTarget_AppliesOnlyToMatchingWeapons()
         {
             // 攻撃属性=属性 武器指定 は指定に合う武器にだけ属性を付ける
@@ -730,7 +726,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が有効化されていない（Activated でない）アイテムの武器も追加している")]
         public void ItemWeapons_OnlyFromActivatedItems()
         {
             // 元の SRC の Unit.Update は「If .Activated Then」のアイテムの武器のみ追加する
@@ -777,7 +772,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が特殊効果発動率強化の補正値を計算するが SetCriticalCorrection を呼ばず捨てている")]
         public void SpecialEffectRateEnhance_Adds5PerLevelToEffectWeapons()
         {
             // 特殊効果発動率強化は特殊効果を持つ武器のＣＴ率を +5/Lv（通常武器には効かない）
@@ -812,7 +806,6 @@ namespace SRCCore.Coverage.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が吸収/無効化/耐性/弱点/有効/特殊効果無効化の属性文字列を更新していない")]
         public void DefenseFeatures_UpdateAttributeResistance()
         {
             // 元の SRC の Unit.Update「攻撃への耐性を更新」で特殊能力から耐性文字列が作られる

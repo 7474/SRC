@@ -297,7 +297,7 @@ namespace SRCCore.Units
                                     if (n == 0)
                                     {
                                         Class0Ret = Strings.Left(Class0Ret, i - 1);
-                                        break;
+                                        return Class0Ret;
                                     }
 
                                     break;
@@ -1091,16 +1091,16 @@ namespace SRCCore.Units
                 int ValueRet = Data.Value;
                 if (IsFeatureAvailable("修理費修正"))
                 {
-                    ValueRet = GeneralLib.MaxLng((int)(ValueRet + 1000d * FeatureLevel("修理費修正")), 0);
+                    ValueRet = GeneralLib.MaxLng(VBMath.CLng(ValueRet + 1000d * FeatureLevel("修理費修正")), 0);
                 }
 
                 if (BossRank > 0)
                 {
-                    ValueRet = (int)(ValueRet * (1d + 0.5d * BossRank + 0.05d * Rank));
+                    ValueRet = VBMath.CLng(ValueRet * (1d + 0.5d * BossRank + 0.05d * Rank));
                 }
                 else
                 {
-                    ValueRet = (int)(ValueRet * (1d + 0.05d * Rank));
+                    ValueRet = VBMath.CLng(ValueRet * (1d + 0.05d * Rank));
                 }
 
                 return ValueRet;

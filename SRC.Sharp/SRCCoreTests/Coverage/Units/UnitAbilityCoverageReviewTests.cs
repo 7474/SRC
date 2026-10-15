@@ -136,7 +136,6 @@ namespace SRCCore.Coverage.Tests
         // ===== ExecuteAbility: 無効化・不得手 =====
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が無効化・弱点・有効などの耐性文字列(strImmune 等)を設定しないため、無効化/弱点/有効が常に効かない")]
         public void Execute_TargetImmuneToClass_HasNoEffect()
         {
             // 対象がアビリティの属性を無効化するなら効果なし（Unit.cls: If t.Immune(aclass) Then GoTo Finish）
@@ -253,7 +252,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update がアビリティを作り直す際に使用回数を引き継がず 0 にするため、ExecuteAbility 後に対象の使用回数が 0 になる")]
         public void Reload_WithoutData_RefillsSharedAbilityStock()
         {
             // 装填（データなし）は共属性の武器と同じ共レベルのアビリティの使用回数も最大にする
@@ -397,7 +395,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が無効化・弱点・有効などの耐性文字列(strImmune 等)を設定しないため、無効化/弱点/有効が常に効かない")]
         public void Applicable_SealedClass_RequiresWeaknessOrEffective()
         {
             // 封属性は対象が弱点か有効を持つ場合のみ使用可能
@@ -412,7 +409,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が無効化・弱点・有効などの耐性文字列(strImmune 等)を設定しないため、無効化/弱点/有効が常に効かない")]
         public void Applicable_ImmuneTarget_IsFalse()
         {
             fx.AddUnitData("対象機").AddFeature("無効化=魔");
@@ -443,7 +439,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update がアビリティを作り直す際に使用回数を引き継がず 0 にする")]
         public void Update_KeepsAbilityStock()
         {
             // 元の SRC の Unit.Update は同じアビリティデータの使用回数(dblStock)を引き継ぎ、新規分は 1（満タン）にする

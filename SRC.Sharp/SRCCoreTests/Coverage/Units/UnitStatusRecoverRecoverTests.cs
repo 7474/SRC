@@ -585,7 +585,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が耐性/弱点/無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
         public void Rest_Poison_ModifiedByResistanceAndWeakness()
         {
             // 毒のＨＰ減少は耐性で半減、弱点で倍、無効化で 0
@@ -633,7 +632,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が耐性/吸収/無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
         public void Rest_TerrainDecrease_ModifiedByAttributes()
         {
             // 地形のＨＰ減少=属性 は耐性で半減、吸収で回復、無効化で 0
@@ -754,7 +752,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が特殊効果無効化の属性文字列を特殊能力から更新していない（耐性文字列未更新）")]
         public void Rest_TerrainCondition_ImmuneUnitIsNotAffected()
         {
             // 状態付加は特殊効果無効化を持つユニットには付加されない

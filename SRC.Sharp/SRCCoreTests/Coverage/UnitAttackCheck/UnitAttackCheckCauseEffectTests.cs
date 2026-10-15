@@ -165,7 +165,6 @@ AAAA, -.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が特殊効果無効化を strSpecialEffectImmune に反映しない")]
         public void SpecialEffectImmune_PreventsEffect()
         {
             // 特殊効果無効化=縛 を持つユニットは捕縛されない
