@@ -352,20 +352,28 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
-        public void AddItem_Hardpoint_FreesSlotsAsNeeded()
+        public void AddItem_Hardpoint_ReplacesFirstItemWhenFull()
         {
             // ハードポイントの空きスロットが足りなければ同じ装備個所のアイテムを先頭から外す
             var src = CreateSRC();
             var u = CreateUnit(src, "武装機", "汎用", 4, "味方", "ハードポイントLv2=武器");
-            u.AddItem(CreateItem(src, "銃Ａ", "武器"));
+            var a = CreateItem(src, "銃Ａ", "武器");
+            u.AddItem(a);
             u.AddItem(CreateItem(src, "銃Ｂ", "武器"));
-            CollectionAssert.AreEqual(new[] { "銃Ａ", "銃Ｂ" }, Names(u), string.Join(",", Names(u)));
-
             u.AddItem(CreateItem(src, "銃Ｃ", "武器"));
             CollectionAssert.AreEqual(new[] { "銃Ｂ", "銃Ｃ" }, Names(u), string.Join(",", Names(u)));
+            Assert.IsNull(a.Unit);
+        }
 
-            // サイズ２のアイテムは２つ外す
+        [TestMethod]
+        [Ignore("移植の不具合: AddItem のハードポイント処理で２つ以上外す場合、foreach 中の DeleteItem で列挙中のコレクション変更例外になる")]
+        public void AddItem_Hardpoint_LargeItemFreesMultipleSlots()
+        {
+            // サイズ２のアイテムは空きが足りるまで先頭から２つ外す
+            var src = CreateSRC();
+            var u = CreateUnit(src, "武装機", "汎用", 4, "味方", "ハードポイントLv2=武器");
+            u.AddItem(CreateItem(src, "銃Ａ", "武器"));
+            u.AddItem(CreateItem(src, "銃Ｂ", "武器"));
             u.AddItem(CreateItem(src, "大砲", "武器", "汎用", "大型アイテム"));
             CollectionAssert.AreEqual(new[] { "大砲" }, Names(u), string.Join(",", Names(u)));
         }
@@ -382,16 +390,22 @@ namespace SRCCore.Coverage.Tests.UnitItem
             var u = CreateUnit(src, "機体");
             var itm = CreateItem(src, "装甲板", "アイテム");
             itm.Data.Armor = 200;
+            var other = CreateItem(src, "追加装甲", "アイテム");
+            other.Data.Armor = 50;
             u.AddItem(itm);
-            Assert.AreEqual(300, u.get_Armor(""));
+            u.AddItem(other);
+            Assert.AreEqual(350, u.get_Armor(""));
 
             u.DeleteItem(itm);
-            Assert.AreEqual(0, u.CountItem());
+            CollectionAssert.AreEqual(new[] { "追加装甲" }, Names(u), string.Join(",", Names(u)));
             Assert.IsNull(itm.Unit);
-            Assert.AreEqual(100, u.get_Armor(""));
+            Assert.AreEqual(150, u.get_Armor(""));
 
-            // null は無視
+            // 存在しないアイテム（null）は無視し、残りの装備と能力値は変わらない（Unit.cls DeleteItem）
             u.DeleteItem(null);
+            CollectionAssert.AreEqual(new[] { "追加装甲" }, Names(u), string.Join(",", Names(u)));
+            Assert.AreSame(u, other.Unit);
+            Assert.AreEqual(150, u.get_Armor(""));
         }
 
         [TestMethod]
@@ -405,6 +419,9 @@ namespace SRCCore.Coverage.Tests.UnitItem
             var p = src.PList.Add("搭載ＡＩ", 1, "味方");
             var itm = CreateItem(src, "ＡＩユニット", "アイテム", "汎用", "追加パイロット=搭載ＡＩ");
             u.AddItem0(itm);
+            // 追加パイロットとしてユニットに乗っている状態にする
+            p.Unit = u;
+            Assert.AreSame(u, p.Unit);
 
             u.DeleteItem(itm);
             Assert.IsFalse(p.Alive);

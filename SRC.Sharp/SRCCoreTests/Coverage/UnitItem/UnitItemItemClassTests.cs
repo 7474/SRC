@@ -252,25 +252,43 @@ namespace SRCCore.Coverage.Tests.UnitItem
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Parameters_AndSize_FromItemData()
+        public void Size_AndFeatures_FromItemData()
         {
-            // 修正値と特殊能力はアイテムデータから取得し、サイズは 1+大型アイテムLv
+            // サイズは 1+大型アイテムLv（Item.cls Size）、特殊能力はアイテムデータから取得する
             var src = CreateSRC();
-            var itm = CreateItem(src, "大型ブースター", "強化パーツ", "汎用", "大型アイテムLv2", "ハードポイント=強化パーツ");
+            var big = CreateItem(src, "大型ブースター", "強化パーツ", "汎用", "大型アイテムLv2", "ハードポイント=強化パーツ");
+            var normal = CreateItem(src, "小型ブースター", "強化パーツ");
+            Assert.AreEqual(3, big.Size());
+            Assert.AreEqual(1, normal.Size());
+            Assert.AreEqual(2, big.CountFeature());
+            Assert.AreEqual(2d, big.FeatureLevel("大型アイテム"));
+            Assert.AreEqual("強化パーツ", big.FeatureData("ハードポイント"));
+        }
+
+        [TestMethod]
+        public void Parameters_AreAppliedToEquippedUnit()
+        {
+            // アイテムの HP/EN/装甲/運動性/移動力の修正値は装備したユニットの能力値に加算される（Unit.cls Update）
+            var src = CreateSRC();
+            var u = CreateUnit(src, "機体");
+            var itm = CreateItem(src, "強化キット", "アイテム");
             itm.Data.HP = 300;
             itm.Data.EN = 20;
             itm.Data.Armor = 50;
             itm.Data.Mobility = 5;
             itm.Data.Speed = 1;
-            Assert.AreEqual(300, itm.HP());
-            Assert.AreEqual(20, itm.EN());
-            Assert.AreEqual(50, itm.Armor());
-            Assert.AreEqual(5, itm.Mobility());
-            Assert.AreEqual(1, itm.Speed());
-            Assert.AreEqual(3, itm.Size());
-            Assert.AreEqual(2, itm.CountFeature());
-            Assert.AreEqual(2d, itm.FeatureLevel("大型アイテム"));
-            Assert.AreEqual("強化パーツ", itm.FeatureData("ハードポイント"));
+            u.AddItem(itm);
+            Assert.AreEqual(1300, u.MaxHP);
+            Assert.AreEqual(120, u.MaxEN);
+            Assert.AreEqual(150, u.get_Armor(""));
+            Assert.AreEqual(55, u.get_Mobility(""));
+            Assert.AreEqual(5, u.Speed);
+
+            u.DeleteItem(itm);
+            Assert.AreEqual(1000, u.MaxHP);
+            Assert.AreEqual(100, u.MaxEN);
+            Assert.AreEqual(50, u.get_Mobility(""));
+            Assert.AreEqual(4, u.Speed);
         }
     }
 }
