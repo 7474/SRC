@@ -526,6 +526,7 @@ namespace SRCRender
             var dialog = State.Dialog;
             var menu = State.Menu;
             var listWaiting = State.List != null && waitingList;
+            keyOperating = true;
             switch (key)
             {
                 case ScreenKey.Enter:
@@ -640,6 +641,8 @@ namespace SRCRender
         private volatile KeyCursorCell keyCursor;
         // キー操作から作ったクリック（マウス・タッチの操作ではないので、マップカーソルを消さない）
         private bool keyClicking;
+        // 直前の操作がキー（物理キー・仮想パッド）か。キーで開いたメニューは先頭の項目を選んだ状態にする
+        private volatile bool keyOperating;
 
         /// <summary>マップでのクリック（ユニットの選択・移動先・攻撃対象など）を受け付けるか</summary>
         private bool IsMapOperable => !IsGUILocked && State.ShowMap && Map != null && !MessageFormVisible && !Commands.WaitClickMode;
@@ -722,7 +725,12 @@ namespace SRCRender
         /// <summary>マウス・タッチを使ったら、マップカーソルを消す</summary>
         private void HideKeyCursorOnPointer()
         {
-            if (!keyClicking && keyCursor != null)
+            if (keyClicking)
+            {
+                return;
+            }
+            keyOperating = false;
+            if (keyCursor != null)
             {
                 keyCursor = null;
                 game.Post(Present);

@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>仮想パッドの表示の切り替え</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>選択画面の拡大表示の切り替え</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>閉じる</value>
   </data>

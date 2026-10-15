@@ -32,7 +32,7 @@ flowchart LR
 ```
 
 - シナリオはゲームスレッドで実行する。メッセージ・リスト・ダイアログの待ちはゲームスレッドで行い、UI からの入力はゲームスレッドへ渡して処理する
-- 画面（720×620）はマップ・ステータス・メッセージ・リスト・メニュー・ダイアログをすべて `SRCRender` が描く。Avalonia はでき上がった画像を表示し、マウス・キー入力を `ScreenGUI` に渡すだけ
+- 画面（720×496）はマップ・ステータス・メッセージ・リスト・メニュー・ダイアログをすべて `SRCRender` が描く。Avalonia はでき上がった画像を表示し、マウス・キー入力を `ScreenGUI` に渡すだけ
 - 文字入力（IME を使う）とファイル選択だけは Avalonia の部品（`TextBox`、[StorageProvider](https://docs.avaloniaui.net/docs/concepts/services/storage-provider/)）を使う。`IScreenDialogHost` を実装しないホストでは、文字入力は既定値で確定し、セーブはシナリオフォルダに保存する
 
 ## WinForms 版との対応

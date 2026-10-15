@@ -38,6 +38,9 @@
   <data name="AutoAdvance" xml:space="preserve">
     <value>自動送り</value>
   </data>
+  <data name="MessageWindowTitle" xml:space="preserve">
+    <value>メッセージ</value>
+  </data>
   <data name="SelectFromTop" xml:space="preserve">
     <value>先頭から選択</value>
   </data>

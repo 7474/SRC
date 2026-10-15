@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>Afficher/masquer la manette virtuelle</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>Afficher/masquer le grand panneau de choix</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Fermer</value>
   </data>

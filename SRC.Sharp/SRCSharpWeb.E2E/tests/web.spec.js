@@ -88,6 +88,12 @@ async function expectAdvancesWithEnter(page) {
 }
 
 /** プレイ中に画面の右下のシステムメニューからシナリオ選択へ戻る（確認に「はい」と答える） */
+/** 選択画面の拡大表示（既定では出さない）をシステムメニューで出す */
+async function enableTouchUi(page) {
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: '選択画面の拡大表示の切り替え' }).click();
+}
+
 async function backToMenu(page) {
   await page.locator('#system-menu-button').click();
   await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
@@ -491,6 +497,9 @@ test.describe('タッチ向けの画面', () => {
     await open(page);
     await page.getByRole('button', { name: 'intermission-save' }).click();
     await expect(page.locator('#screen')).toBeVisible();
+    // スマートフォンの既定は仮想パッドだけを出す。拡大表示はシステムメニューで出す
+    await expect(page.locator('#virtual-pad')).toBeVisible();
+    await enableTouchUi(page);
     const panel = page.locator('#touch-ui');
     // メッセージは画面をタップして送る。インターミッションのコマンドの一覧が選択画面に出る
     await expect.poll(async () => {
@@ -526,6 +535,7 @@ test.describe('タッチ向けの画面', () => {
     await open(page);
     await page.getByRole('button', { name: 'battle-basic' }).click();
     await expect(page.locator('#screen')).toBeVisible();
+    await enableTouchUi(page);
     // 「戦闘開始」のメッセージを送り、味方フェイズにする
     let shown = false;
     await expect.poll(async () => {

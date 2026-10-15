@@ -108,6 +108,9 @@
   <data name="MenuVirtualPad" xml:space="preserve">
     <value>Показати/сховати віртуальний геймпад</value>
   </data>
+  <data name="MenuTouchUi" xml:space="preserve">
+    <value>Показати/сховати велику панель вибору</value>
+  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Закрити</value>
   </data>

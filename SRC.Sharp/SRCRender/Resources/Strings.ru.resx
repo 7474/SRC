@@ -36,6 +36,9 @@
   <data name="AutoAdvance" xml:space="preserve">
     <value>Авто</value>
   </data>
+  <data name="MessageWindowTitle" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
   <data name="SelectFromTop" xml:space="preserve">
     <value>Выбор сверху</value>
   </data>

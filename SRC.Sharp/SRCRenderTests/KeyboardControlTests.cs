@@ -86,11 +86,12 @@ namespace SRCRender.Tests
                     Press(ScreenKey.Enter);
                     WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
                     CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
-                    // ↑↓ で選び、Esc で取り消す
-                    Press(ScreenKey.Down);
+                    // キーで開いたメニューは先頭の項目を選んでいる。↑↓ で選び、Esc で取り消す
                     Assert.AreEqual(0, state.Menu.Highlight);
                     Press(ScreenKey.Down);
                     Assert.AreEqual(1, state.Menu.Highlight);
+                    Press(ScreenKey.Up);
+                    Assert.AreEqual(0, state.Menu.Highlight);
                     Press(ScreenKey.Escape);
                     WaitUntil(() => state.Menu == null, "メニューの取り消し");
 
@@ -100,7 +101,8 @@ namespace SRCRender.Tests
                     WaitUntil(() => state.Menu != null, "マップのコマンドのメニュー");
                     var end = state.Menu.Items.IndexOf("ターン終了");
                     Assert.IsTrue(end >= 0, string.Join(",", state.Menu.Items));
-                    for (var i = 0; i <= end; i++)
+                    Assert.AreEqual(0, state.Menu.Highlight);
+                    for (var i = 0; i < end; i++)
                     {
                         Press(ScreenKey.Down);
                     }
@@ -120,7 +122,7 @@ namespace SRCRender.Tests
                     Press(ScreenKey.Enter);
                     WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
                     var move = state.Menu.Items.IndexOf("移動");
-                    for (var i = 0; i <= move; i++)
+                    for (var i = 0; i < move; i++)
                     {
                         Press(ScreenKey.Down);
                     }

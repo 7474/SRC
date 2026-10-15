@@ -650,7 +650,8 @@ namespace SRCRender
             listHasFlag = true;
             box.lstItems.Items.Clear();
             box.lstItems.Items.AddRange(args.Items.Select(x => x.TextWithFlag));
-            box.lstItems.SelectedIndex = -1;
+            // キー操作で開いたときは、そのまま決定できるよう先頭の項目を選んでおく
+            box.lstItems.SelectedIndex = keyOperating && box.lstItems.Items.Count > 0 ? 0 : -1;
             box.lstItems.TopIndex = 0;
 
             // 先頭に表示するアイテムを設定
@@ -760,7 +761,8 @@ namespace SRCRender
             listHasFlag = false;
             multiSelectMax = max_num;
             multiSelectClosed = false;
-            box.lstItems.SelectedIndex = -1;
+            // キー操作で開いたときは、そのまま決定できるよう先頭の項目を選んでおく
+            box.lstItems.SelectedIndex = keyOperating && box.lstItems.Items.Count > 0 ? 0 : -1;
             box.lstItems.TopIndex = 0;
 
             box.PlaceOnScreen(ScreenLayout.Width, ScreenLayout.Height, true, false);
@@ -960,6 +962,8 @@ namespace SRCRender
                 Checked = commands.Select(x => x.IsChecked).ToList(),
                 X = (int)MouseX,
                 Y = (int)MouseY + 6,
+                // キー操作で開いたときは、そのまま決定できるよう先頭の項目を選んでおく
+                Highlight = keyOperating ? 0 : -1,
             };
             Present();
         }

@@ -230,14 +230,16 @@ async function start() {
     canvas.focus();
 }
 
-// タッチ向けの選択画面。ゲームの画面に描く小さなリスト・メニュー・ダイアログを、タッチ向けの画面（data-input="touch"）では
-// 大きなボタンの一覧で出す。中身は WebInterop.TouchUi で読み、選んだものは WebInterop.TouchChoose でゲームに渡す
-// （自動プレイと同じ操作。ゲームの画面の描画は変えない）
+// タッチ向けの選択画面（拡大表示）。ゲームの画面に描く小さなリスト・メニュー・ダイアログを、大きなボタンの一覧でも出す。
+// 中身は WebInterop.TouchUi で読み、選んだものは WebInterop.TouchChoose でゲームに渡す
+// （自動プレイと同じ操作。ゲームの画面の描画は変えない）。
+// 仮想パッドと場所が重なるため、既定では出さない。システムメニューで切り替え、設定は localStorage に残す
 const TOUCH_UI_INTERVAL = 150;
 const TOUCH_UI_LIST = 0;
 const TOUCH_UI_MENU = 1;
 const TOUCH_UI_DIALOG = 2;
 const TOUCH_UI_CANCEL = 3;
+const TOUCH_UI_SETTING = 'srcweb.touchUi';
 
 function buildTouchUi(gui) {
     const panel = document.getElementById('touch-ui');
@@ -248,6 +250,24 @@ function buildTouchUi(gui) {
     let busy = false;
     // 選んだ直後は、ゲームが次の表示に移るまで同じものを出さない
     let suppressUntil = 0;
+    let enabled = false;
+    try {
+        enabled = localStorage.getItem(TOUCH_UI_SETTING) === 'on';
+    } catch {
+        // 保存先を読めなければ出さない
+    }
+    globalThis.srcwebToggleTouchUi = () => {
+        enabled = !enabled;
+        last = '{}';
+        if (!enabled) {
+            panel.hidden = true;
+        }
+        try {
+            localStorage.setItem(TOUCH_UI_SETTING, enabled ? 'on' : 'off');
+        } catch {
+            // 保存できなくても表示は切り替える
+        }
+    };
 
     const choose = (kind, index) => {
         panel.hidden = true;
@@ -333,7 +353,7 @@ function buildTouchUi(gui) {
         }
         busy = true;
         try {
-            const json = isTouchMode() ? await gui.TouchUi() : '{}';
+            const json = enabled ? await gui.TouchUi() : '{}';
             const state = JSON.parse(json);
             if (state.error) {
                 return;
