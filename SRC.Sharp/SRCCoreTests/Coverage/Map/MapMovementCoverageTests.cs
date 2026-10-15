@@ -537,9 +537,10 @@ namespace SRCCore.Coverage.Tests
             f.Map.AreaInSpeed(u);
 
             f.Map.NearestPoint(u, 3, 3, out var x, out var y);
-            // 壁を迂回して (1,2) か (5,2) へ向かう
+            // 壁を迂回できる (1,2) と (5,2) は必要移動力も距離も同じ。
+            // 同点の場合は x 外側の走査で先に見つかった (1,2) が残る（VB: NearestPoint は「より小さい」場合のみ更新）
+            Assert.AreEqual(1, x);
             Assert.AreEqual(2, y);
-            Assert.IsTrue(x == 1 || x == 5, "x=" + x);
         }
 
         [TestMethod]

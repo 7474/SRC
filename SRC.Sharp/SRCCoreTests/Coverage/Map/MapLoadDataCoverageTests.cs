@@ -257,6 +257,8 @@ namespace SRCCore.Coverage.Tests
             {
                 Directory.CreateDirectory(Path.Combine(dir, "Bitmap", "Map", "mountain"));
                 File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "plain3.bmp"), new byte[0]);
+                File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "plain0003.bmp"), new byte[0]);
+                File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "plain5.bmp"), new byte[0]);
                 File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "mountain0002.bmp"), new byte[0]);
                 File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "mountain", "mountain0002.bmp"), new byte[0]);
 
@@ -264,19 +266,24 @@ namespace SRCCore.Coverage.Tests
                 var fs = new LocalFileSystem();
                 fs.AddPath(dir);
                 f.Src.FileSystem = fs;
-                var text = "MapData\r\n\r\n3,1\r\n0,3\r\n1,2\r\n0,5\r\n";
+                var text = "MapData\r\n\r\n4,1\r\n0,3\r\n1,2\r\n0,5\r\n0,6\r\n";
                 f.Map.LoadMapData("img.map", MapCoverageFixture.ToStream(text));
 
+                // 4桁ゼロ埋めの plain0003.bmp は桁埋め無しの plain3.bmp より優先される
                 var plain = f.Map.SearchTerrainImageFile(f.Map.MapData[1, 1]);
-                StringAssert.EndsWith(plain.Replace('\\', '/'), "Bitmap/Map/plain3.bmp");
+                StringAssert.EndsWith(plain.Replace('\\', '/'), "Bitmap/Map/plain0003.bmp");
                 Assert.AreEqual(plain, f.Map.MapUnderImageFilePath[1, 1]);
+
+                // 桁埋め無しのファイルしか無ければそれを使う
+                var unpadded = f.Map.SearchTerrainImageFile(f.Map.MapData[3, 1]);
+                StringAssert.EndsWith(unpadded.Replace('\\', '/'), "Bitmap/Map/plain5.bmp");
 
                 var mountain = f.Map.SearchTerrainImageFile(f.Map.MapData[2, 1]);
                 StringAssert.EndsWith(mountain.Replace('\\', '/'), "Bitmap/Map/mountain/mountain0002.bmp");
 
                 // どの候補も無ければ null
-                Assert.IsNull(f.Map.SearchTerrainImageFile(f.Map.MapData[3, 1]));
-                Assert.IsNull(f.Map.MapUnderImageFilePath[3, 1]);
+                Assert.IsNull(f.Map.SearchTerrainImageFile(f.Map.MapData[4, 1]));
+                Assert.IsNull(f.Map.MapUnderImageFilePath[4, 1]);
                 // 下層地形が無いセルは null
                 Assert.IsNull(f.Map.SearchTerrainImageFile(new MapCell()));
                 // 上層地形が無いセルの上層画像も null
