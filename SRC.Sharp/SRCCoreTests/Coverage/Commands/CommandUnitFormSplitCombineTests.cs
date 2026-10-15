@@ -269,7 +269,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 合体パートナーの距離判定がマンハッタン距離になっている")]
         public void Combine_OnMap_PartnerDiagonalWithinTwo_IsCombined()
         {
             // 元の SRC は Abs(dx) > 2 Or Abs(dy) > 2 のときだけ除外する（縦横それぞれ２マス以内の正方形）。
@@ -497,7 +496,6 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器を持たない換装先があると最大攻撃力・最大射程の計算で例外になる")]
         public void ExchangeForm_FormsWithoutWeapons_ShowsZeroPowerAndRange()
         {
             // 元の SRC は max_value = 0 から求めるので、武器がなければ 0 と表示して換装できる

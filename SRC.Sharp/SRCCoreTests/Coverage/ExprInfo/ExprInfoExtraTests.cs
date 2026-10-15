@@ -130,7 +130,6 @@ cmd.bmp, -
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 属性レベルの後ろに別の属性が続くと数字の切り出しが止まらず 0 になる")]
         public void Unit_Weapon_AttributeLevel_FollowedByOtherAttribute()
         {
             // 「実L3突」の実のレベルは 3。VB の WeaponLevel は数字以外の文字で切り出しを止める

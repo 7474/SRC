@@ -1316,28 +1316,8 @@ namespace SRCCore
         {
             if (findex == "武器・防具クラス")
             {
-                // XXX 意味わからん混ざり方している
-                var fname = Conversions.ToString(findex);
-                var fdata = Strings.Trim(u.WeaponProficiency());
-                var msg = "";
-                if (!string.IsNullOrEmpty(fdata))
-                {
-                    msg = "武器【" + fdata + "】;";
-                }
-                else
-                {
-                    msg = "武器【-】;";
-                }
-
-                fdata = Strings.Trim(u.ArmorProficiency());
-                if (!string.IsNullOrEmpty(fdata))
-                {
-                    msg = msg + "防具【" + fdata + "】";
-                }
-                else
-                {
-                    msg = msg + "防具【-】";
-                }
+                var fname = findex;
+                var msg = FeatureHelpMessage(u, findex, is_additional);
                 FeatureHelpInternal(fname, msg);
             }
             else
@@ -1374,7 +1354,38 @@ namespace SRCCore
         }
         public string FeatureHelpMessage(Unit u, string findex, bool is_additional)
         {
+            if (findex == "武器・防具クラス")
+            {
+                return WeaponArmorClassHelpMessage(u);
+            }
             return FeatureHelpMessage(u, u.AllFeature(findex), is_additional);
+        }
+
+        // ユニット u の武器・防具クラスの解説
+        private string WeaponArmorClassHelpMessage(Unit u)
+        {
+            string msg;
+            var fdata = Strings.Trim(u.WeaponProficiency());
+            if (!string.IsNullOrEmpty(fdata))
+            {
+                msg = "武器【" + fdata + "】;";
+            }
+            else
+            {
+                msg = "武器【-】;";
+            }
+
+            fdata = Strings.Trim(u.ArmorProficiency());
+            if (!string.IsNullOrEmpty(fdata))
+            {
+                msg = msg + "防具【" + fdata + "】";
+            }
+            else
+            {
+                msg = msg + "防具【-】";
+            }
+
+            return msg;
         }
         public string FeatureHelpMessage(Unit u, FeatureData fd, bool is_additional)
         {
@@ -1400,7 +1411,7 @@ namespace SRCCore
                 ftype = fd.Name;
                 fname = fd.FeatureName(u);
                 fdata = fd.Data;
-                flevel = fd.Level;
+                flevel = fd.FeatureLevel;
                 flevel_specified = fd.HasLevel;
                 fid = u.AllFeatures.IndexOf(fd) + 1;
 
@@ -5115,7 +5126,7 @@ namespace SRCCore
                                 msg = Strings.Mid(msg, 2, Strings.Len(msg) - 2);
                             }
                         }
-                        else if (u.AllFeature(fname).DataL.FirstOrDefault() != "解説")
+                        else if (u.AllFeature(fname)?.DataL.FirstOrDefault() != "解説")
                         {
                             // 解説がない場合
                             return FeatureHelpMessageRet;

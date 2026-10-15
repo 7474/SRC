@@ -233,7 +233,7 @@ namespace SRCCore.Units
                 {
                     if (GeneralLib.LLength(p.SkillData("先手必勝")) == 2)
                     {
-                        if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex("先手必勝", 2)))
+                        if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(p.SkillData("先手必勝"), 2)))
                         {
                             MaxCounterAttackRet = 1000;
                         }
@@ -269,7 +269,15 @@ namespace SRCCore.Units
 
             var team = MainPilot().SkillData("チーム");
             var max_wpower = -1;
-            foreach (var u in Map.AdjacentUnit(this))
+            // 隣接ユニットは左、右、上、下の順に調べる
+            var adjacentUnits = new[]
+                {
+                    Map.UnitAtPoint(x - 1, y),
+                    Map.UnitAtPoint(x + 1, y),
+                    Map.UnitAtPoint(x, y - 1),
+                    Map.UnitAtPoint(x, y + 1),
+                }.Where(au => au != null);
+            foreach (var u in adjacentUnits)
             {
                 // サポートアタック数が残っている？
                 if (u.MaxSupportAttack() <= u.UsedSupportAttack)

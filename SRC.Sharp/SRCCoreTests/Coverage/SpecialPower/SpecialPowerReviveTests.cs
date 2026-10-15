@@ -55,7 +55,6 @@ namespace SRCCore.Coverage.Tests.SpecialPower
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 復活時のノーマルモード復帰で FeatureData 全体を形態名として Transform に渡している (VB は LIndex(…, 1))")]
         public void Revive_HyperModeUnit_ReturnsToNormalFormEvenWithOptions()
         {
             // VB: .Transform LIndex(.FeatureData("ノーマルモード"), 1)

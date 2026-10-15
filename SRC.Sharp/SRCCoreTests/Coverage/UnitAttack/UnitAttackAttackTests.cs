@@ -579,7 +579,6 @@ namespace SRCCore.Coverage.Tests.UnitAttack
 
         // VB の Attack ではパートナーごとに同名武器を探し（Exit For は武器ループのみ抜ける）、全パートナーの弾数を消費する
         [TestMethod]
-        [Ignore("移植の不具合: 合体技のパートナー消費ループで break が foreach(partners) を抜け、2 体目以降のパートナーの弾数＆ＥＮが消費されない")]
         public void Attack_Combination_TwoPartners_ConsumesEveryPartner()
         {
             var (_, a, t, partners) = SetupCombination("僚機Ａ", "僚機Ｂ");

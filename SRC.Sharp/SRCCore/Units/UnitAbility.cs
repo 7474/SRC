@@ -297,12 +297,13 @@ namespace SRCCore.Units
 
                         default:
                             {
-                                break;
+                                goto EndLoop;
                             }
                     }
 
                     i = (i + 1);
                 }
+            EndLoop:
 
                 return Conversions.ToDouble(Strings.Mid(aclass, start_idx, i - start_idx));
             }
@@ -742,31 +743,31 @@ namespace SRCCore.Units
                                 break;
                             }
                     }
+                }
 
-                    // 召喚ユニットのデータがちゃんと定義されているかチェック
-                    if (!SRC.UDList.IsDefined(effect.Data))
-                    {
-                        return IsAbilityAvailableRet;
-                    }
-                    pname = SRC.UDList.Item(effect.Data).FeatureData("追加パイロット");
-                    if (!SRC.PDList.IsDefined(pname))
-                    {
-                        return IsAbilityAvailableRet;
-                    }
+                // 召喚ユニットのデータがちゃんと定義されているかチェック
+                if (!SRC.UDList.IsDefined(effect.Data))
+                {
+                    return IsAbilityAvailableRet;
+                }
+                pname = SRC.UDList.Item(effect.Data).FeatureData("追加パイロット");
+                if (!SRC.PDList.IsDefined(pname))
+                {
+                    return IsAbilityAvailableRet;
+                }
 
-                    // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
-                    // ない場合、そのユニットが既に出撃中であれば使用不可
-                    if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
+                // 召喚するユニットに乗るパイロットが汎用パイロットでもザコパイロットでも
+                // ない場合、そのユニットが既に出撃中であれば使用不可
+                if (Strings.InStr(pname, "(汎用)") == 0 && Strings.InStr(pname, "(ザコ)") == 0)
+                {
+                    if (SRC.PList.IsDefined(pname))
                     {
-                        if (SRC.PList.IsDefined(pname))
+                        u = SRC.PList.Item(pname).Unit;
+                        if (u is object)
                         {
-                            u = SRC.PList.Item(pname).Unit;
-                            if (u is object)
+                            if (u.Status == "出撃" || u.Status == "格納")
                             {
-                                if (u.Status == "出撃" || u.Status == "格納")
-                                {
-                                    return IsAbilityAvailableRet;
-                                }
+                                return IsAbilityAvailableRet;
                             }
                         }
                     }
@@ -1364,7 +1365,7 @@ namespace SRCCore.Units
             if (IsAbilityClassifiedAs("合") && !IsAbilityClassifiedAs("Ｍ") && AbilityMaxRange() == 1)
             {
                 var partners = CombinationPartner(t.x, t.y);
-                if (partners.Count > 0)
+                if (partners.Count == 0)
                 {
                     return false;
                 }
@@ -1576,7 +1577,7 @@ namespace SRCCore.Units
             var baseCondition = !Unit.IsDisabled(Data.Name)
                 && IsAbilityMastered()
                 // XXX 条件によって check_formation 見直す
-                && !(IsAbilityClassifiedAs("合") && IsCombinationAbilityAvailable(true))
+                && !(IsAbilityClassifiedAs("合") && !IsCombinationAbilityAvailable(true))
                 ;
             return baseCondition;
         }

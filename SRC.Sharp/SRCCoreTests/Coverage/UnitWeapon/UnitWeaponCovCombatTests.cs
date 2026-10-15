@@ -338,7 +338,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update で 耐性/弱点/吸収/無効化/有効 の特殊能力から strResist 等を組み立てる処理がコメントアウトされたまま")]
         public void Damage_ResistanceAttribute_Halves()
         {
             // 耐性=火 を持つ相手への火属性攻撃はダメージ半減

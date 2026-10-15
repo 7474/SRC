@@ -260,7 +260,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 隣接ユニットＺＯＣ無効化の判定で、ＺＯＣ側と同じ陣営の隣接ユニットを除外していない")]
         public void AreaInSpeed_AdjacentZocNullification_IgnoresSameSideUnits()
         {
             // VB: 隣接ユニットＺＯＣ無効化は「対抗陣営」の隣接ユニットのみ有効。
@@ -360,7 +359,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: FillMoveCost が進入不可・移動制限を移動コストでなく MaskData に反映しており、移動範囲に効かない")]
         public void AreaInSpeed_ProhibitedTerrain_CannotBeEntered()
         {
             // VB: 進入不可の地形は move_cost を 1000000 にして進入できなくする
@@ -411,7 +409,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SearchMoveRoute の直進距離 MovedUnitSpeed の判定条件が反転しており、先頭の移動方向も飛ばしている")]
         public void SearchMoveRoute_StraightRoute_CountsStraightDistance()
         {
             // VB: 目的地側から同じ方向が続く数を数える。３マス直進なら 3

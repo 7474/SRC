@@ -97,7 +97,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AreaWithUnit が対象陣営のユニットのマスを選択せず全マスがマスクされたままになる")]
         public void AreaWithUnit_SelectsOnlyCellsWithUnitsOfParty()
         {
             // VB: マップ全域で uparty に該当するユニットのいるマスだけを選択する
@@ -268,7 +267,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AreaInPointToPoint が座標を切り捨てで求めている（VB は Integer 代入で四捨五入）")]
         public void AreaInPointToPoint_RoundsIntermediateCoordinatesLikeVB()
         {
             // VB: yy = y1 + (y2 - y1) * (x1 - xx) / (x1 - x2) を Integer に代入するので丸められる
@@ -307,7 +305,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: IsLineBlocked が座標を切り捨てで求めている（VB は Integer 代入で四捨五入）")]
         public void IsLineBlocked_RoundsIntermediateCoordinatesLikeVB()
         {
             // VB: (1,1)→(4,2) の直線は xx=3 で yy=2 に丸められ、(3,2) の壁に遮られる

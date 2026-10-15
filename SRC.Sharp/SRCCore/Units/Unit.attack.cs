@@ -2503,8 +2503,6 @@ namespace SRCCore.Units
                                     }
                                 }
                             }
-
-                            break;
                         }
                         else
                         {
@@ -2555,7 +2553,7 @@ namespace SRCCore.Units
                             {
                                 if (cf.IsFeatureAvailable("パーツ分離"))
                                 {
-                                    var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 1);
+                                    var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 2);
                                     if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                     {
                                         cf.Transform(uname);

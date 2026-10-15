@@ -2276,7 +2276,7 @@ namespace SRCCore.Units
             }
 
             // 行動可能？
-            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能") || t.IsUnderSpecialPowerEffect("行動不能1"))
+            if (t.IsConditionSatisfied("行動不能") || t.IsConditionSatisfied("麻痺") || t.IsConditionSatisfied("石化") || t.IsConditionSatisfied("凍結") || t.IsConditionSatisfied("睡眠") || t.IsUnderSpecialPowerEffect("行動不能") || t.IsUnderSpecialPowerEffect("無防備"))
             {
                 return default;
             }
@@ -6230,8 +6230,8 @@ namespace SRCCore.Units
                         msg = msg + MainPilot().get_Nickname(false) + "は[" + t.MainPilot().get_Nickname(false) + "]の" + Expression.Term("気力", t) + "を吸い取った。;";
                         if (w.IsWeaponLevelSpecified("Ｄ"))
                         {
-                            t.IncreaseMorale((-5 * (int)w.WeaponLevel("Ｄ")));
-                            IncreaseMorale((int)(2.5d * (int)w.WeaponLevel("Ｄ")));
+                            t.IncreaseMorale(VBMath.CLng(-5 * w.WeaponLevel("Ｄ")));
+                            IncreaseMorale(VBMath.CLng(2.5d * w.WeaponLevel("Ｄ")));
                         }
                         else
                         {

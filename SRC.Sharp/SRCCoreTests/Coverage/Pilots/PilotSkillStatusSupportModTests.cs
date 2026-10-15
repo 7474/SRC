@@ -183,7 +183,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: UpdateSupportMod の cmd_level 初期値が DEFAULT_LEVEL(-1000) で、指揮官がいないザコの命中回避が -5000 される")]
         public void UpdateSupportMod_指揮官が範囲外ならザコの命中回避は変化しない()
         {
             // VB: Dim cmd_level As Double（初期値 0）で、Case 0 では HitMod2 + 5 * cmd_level

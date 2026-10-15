@@ -104,7 +104,6 @@ namespace SRCCore.Coverage.Tests.PilotsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Update の最後の SetMorale(Morale)（気力を気力上限・下限に収める処理）が未移植（コメントアウト）")]
         public void Update_気力上限が下がると気力が上限に収められる()
         {
             // VB Pilot.cls: ユニット修正の最後に SetMorale Morale を呼び、気力を上限・下限の範囲にする

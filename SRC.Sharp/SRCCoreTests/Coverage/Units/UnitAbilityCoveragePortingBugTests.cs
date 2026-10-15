@@ -30,7 +30,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AbilityLevel が数字以外の文字で読み取りを打ち切らず、後続の属性があるとレベル 0 になる")]
         public void AbilityLevel_StopsAtNonNumericCharacter()
         {
             // 元の SRC の AbilityLevel は数字・"-"・"." 以外の文字で Exit Do する
@@ -39,7 +38,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 召喚ユニットが未定義でも、召喚済みユニットがいなければ使用可能と判定される")]
         public void Available_SummonWithUndefinedUnit_IsFalse()
         {
             // 元の SRC では召喚ユニットのデータ定義チェックは Servant の有無に関係なく行う
@@ -48,7 +46,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: IdDisplayFor が使用可能な合体技を隠し、使用できない合体技を表示する（条件が反転）")]
         public void IdDisplayFor_HidesUnavailableCombinationAbility()
         {
             // 元の SRC（GUI.bas AbilityListBox）: 合体技は IsCombinationAbilityAvailable(i, True) でなければ表示しない
@@ -59,7 +56,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 射程1の合体技でパートナーが見つからない場合に射程内と判定される（条件が反転）")]
         public void TargetWithinRange_CombinationWithoutPartner_IsFalse()
         {
             // 元の SRC: 合体技で射程1なら相手を囲むパートナーが必要。見つからなければ射程外
@@ -72,7 +68,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 装填=武器名 が対象ではなく使用者自身の武器の弾数を回復する")]
         public void Reload_SpecificWeapon_RefillsTargetWeapon()
         {
             // 元の SRC の「装填」（データ指定あり）は対象ユニット t の該当武器の弾数を最大にする

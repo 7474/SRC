@@ -875,7 +875,7 @@ namespace SRCCore.Units
                                 {
                                     // 特定の武器の弾数のみを回復
                                     var wlist = new List<UnitWeapon>();
-                                    foreach (var uw in t.OtherForms.Append(t).SelectMany(t => Weapons.Where(uw => uw.WeaponNickname() == edata
+                                    foreach (var uw in t.OtherForms.Append(t).SelectMany(x => x.Weapons.Where(uw => uw.WeaponNickname() == edata
                                         || GeneralLib.InStrNotNest(uw.WeaponClass(), edata) > 0)))
                                     {
                                         uw.SetBulletFull();

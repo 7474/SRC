@@ -143,9 +143,10 @@ namespace SRCCore.Models.Tests
         [TestMethod]
         public void SetEffect_SimpleEffect_DefaultLevel()
         {
+            // VB の SetEffect ではレベル指定のない効果の dblEffectLevel は 0 のまま
             var sp = new SpecialPowerData(CreateSrc());
             sp.SetEffect("必中");
-            Assert.AreEqual(Constants.DEFAULT_LEVEL, sp.Effects[0].dblEffectLevel);
+            Assert.AreEqual(0d, sp.Effects[0].dblEffectLevel);
         }
 
         [TestMethod]

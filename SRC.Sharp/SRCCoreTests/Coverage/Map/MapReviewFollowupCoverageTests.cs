@@ -180,7 +180,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: FillMoveCost が移動制限を移動コストでなく MaskData に反映しており、移動範囲に効かない")]
         public void AreaInSpeed_AllowedTerrains_CannotEnterOtherTerrain()
         {
             // VB: 移動制限で列挙されていない地形は move_cost を 1000000 にして進入・通過できなくする

@@ -2136,7 +2136,7 @@ namespace SRCCore
                 // テレポート能力を使える場合は優先的に使用
                 if (GeneralLib.LLength(selectedUnit.FeatureData("テレポート")) == 2)
                 {
-                    tmp = Conversions.ToInteger(GeneralLib.LIndex("テレポート", 2));
+                    tmp = Conversions.ToInteger(GeneralLib.LIndex(selectedUnit.FeatureData("テレポート"), 2));
                 }
                 else
                 {
@@ -2154,7 +2154,7 @@ namespace SRCCore
                 // ジャンプ能力を使う？
                 if (GeneralLib.LLength(selectedUnit.FeatureData("ジャンプ")) == 2)
                 {
-                    tmp = Conversions.ToInteger(GeneralLib.LIndex("ジャンプ", 2));
+                    tmp = Conversions.ToInteger(GeneralLib.LIndex(selectedUnit.FeatureData("ジャンプ"), 2));
                 }
                 else
                 {
@@ -2742,7 +2742,7 @@ namespace SRCCore
 
                 // 通常形態は弱い形態であるという仮定に基づき、その形態が
                 // ノーマルモードで指定されている場合ば無視する
-                if ((tfuname ?? "") == (GeneralLib.LIndex("ノーマルモード", 1) ?? ""))
+                if ((tfuname ?? "") == (GeneralLib.LIndex(tfu.FeatureData("ノーマルモード"), 1) ?? ""))
                 {
                     continue;
                 }
@@ -2808,11 +2808,12 @@ namespace SRCCore
                     }
                     else if (u.Data.CountWeapon() > 0)
                     {
-                        if (tfu.Weapons.Max(x => x.WeaponData.Power) < u.Weapons.Max(x => x.WeaponData.Power))
+                        // 最後の武器の攻撃力で比べる
+                        if (tfu.Data.Weapon(tfu.Data.CountWeapon()).Power < u.Data.Weapon(u.Data.CountWeapon()).Power)
                         {
                             continue;
                         }
-                        else if (tfu.Weapons.Max(x => x.WeaponData.Power) == u.Weapons.Max(x => x.WeaponData.Power))
+                        else if (tfu.Data.Weapon(tfu.Data.CountWeapon()).Power == u.Data.Weapon(u.Data.CountWeapon()).Power)
                         {
                             // 攻撃力も同じなら装甲が高いものを優先
                             if (tfu.Data.Armor <= u.Data.Armor)
@@ -6383,7 +6384,7 @@ namespace SRCCore
                     if (sp_prob > 0d)
                     {
                         // 特殊効果の影響を加味してダメージの期待値を計算
-                        exp_dmg = (int)(dmg + (GeneralLib.MaxLng(t.HP - dmg, 0) * sp_prob) / 100);
+                        exp_dmg = dmg + VBMath.CLng(GeneralLib.MaxLng(t.HP - dmg, 0) * sp_prob) / 100;
                     }
                     else
                     {
@@ -6392,33 +6393,33 @@ namespace SRCCore
                         {
                             if (selectedWeapon.IsWeaponClassifiedAs("痛"))
                             {
-                                exp_dmg = (int)(dmg + (0.1d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100);
+                                exp_dmg = dmg + VBMath.CLng(0.1d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100;
                             }
                             else
                             {
-                                exp_dmg = (int)(dmg + (0.2d * dmg * ct_prob) / 100);
+                                exp_dmg = dmg + VBMath.CLng(0.2d * dmg * ct_prob) / 100;
                             }
                         }
                         else
                         {
                             if (selectedWeapon.IsWeaponClassifiedAs("痛"))
                             {
-                                exp_dmg = (int)(dmg + (0.25d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100);
+                                exp_dmg = dmg + VBMath.CLng(0.25d * selectedWeapon.WeaponLevel("痛") * dmg * ct_prob) / 100;
                             }
                             else
                             {
-                                exp_dmg = (int)(dmg + (0.5d * dmg * ct_prob) / 100);
+                                exp_dmg = dmg + VBMath.CLng(0.5d * dmg * ct_prob) / 100;
                             }
                         }
                     }
 
-                    exp_dmg = (int)(exp_dmg * 0.01d * GeneralLib.MinLng(prob, 100));
+                    exp_dmg = VBMath.CLng(exp_dmg * 0.01d * GeneralLib.MinLng(prob, 100));
                 }
                 else
                 {
                     // 命中が当たらない場合は期待値を思い切り下げる
                     prob = 1;
-                    exp_dmg = (int)((dmg / 10 + (GeneralLib.MaxLng(t.HP - dmg / 10, 0) * sp_prob) / 100) / 10L);
+                    exp_dmg = (dmg / 10 + VBMath.CLng(GeneralLib.MaxLng(t.HP - dmg / 10, 0) * sp_prob) / 100) / 10;
                 }
 
                 // サポートによるダメージを期待値に追加
@@ -6575,7 +6576,7 @@ namespace SRCCore
                 max_prob = 0;
             }
 
-            max_dmg = (int)(100d * (max_exp_dmg / (double)u.HP));
+            max_dmg = VBMath.CLng(100d * (max_exp_dmg / (double)u.HP));
             return SelectWeaponRet;
         }
 

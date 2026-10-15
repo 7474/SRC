@@ -139,7 +139,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 全弾一斉発射（斉）で他の武器の弾数を一斉発射後の比率に上書きしており、VB のように現在の弾数との小さい方を取らないため弾数が回復する")]
         public void UseWeapon_FullBurst_DoesNotRefillOtherWeapons()
         {
             // VB: SetBullet i, MinLng(MaxBullet(i) * dblBullet(w), Bullet(i))
@@ -171,7 +170,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 他の武器使用時の斉属性武器の弾数を CInt(x + 0.49999) ではなく (int) 切り捨てで計算している")]
         public void UseWeapon_OtherWeapon_RoundsFullBurstAmmoUp()
         {
             // VB: SetBullet i, MinLng(CInt(MaxBullet(i) * dblBullet(w) + 0.49999), Bullet(i))
@@ -218,7 +216,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Bullet() が VB の Integer 代入（丸め）ではなく (int) 切り捨てのため、比率の誤差で 1 発少なく表示される")]
         public void Bullet_RoundsRatioTimesMax()
         {
             // VB: Bullet = dblBullet(w) * intMaxBullet(w)（Integer への代入で丸め）

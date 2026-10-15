@@ -124,7 +124,6 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 攻撃力の比較を VB の「最後の武器の攻撃力」ではなく全武器の最大攻撃力で行っている")]
         public void TryBattleTransform_SameMobility_ComparesLastWeaponPower()
         {
             // VB: .Data.Weapon(.Data.CountWeapon).Power < u.Data.Weapon(u.Data.CountWeapon).Power なら変形しない
@@ -141,7 +140,6 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: ノーマルモードの判定で FeatureData ではなく文字列 \"ノーマルモード\" を LIndex している")]
         public void TryBattleTransform_FormDesignatedAsNormalMode_IsIgnored()
         {
             // VB: uname = LIndex(.OtherForm(uname).FeatureData("ノーマルモード"), 1) の形態は候補から外す

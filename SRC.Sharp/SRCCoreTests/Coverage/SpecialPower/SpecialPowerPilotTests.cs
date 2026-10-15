@@ -74,7 +74,6 @@ namespace SRCCore.Coverage.Tests.SpecialPower
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: MaxSP の ＳＰ高成長 1.5 倍が VB の Long 代入 (偶数丸め) でなく切り捨てになっている")]
         public void MaxSP_HighGrowth_RoundsLikeVBLongAssignment()
         {
             // VB: MaxSP = 1.5 * MaxSP は Long への代入で偶数丸め。Lv41 → (41+40)×1.5 = 121.5 → 122
@@ -168,7 +167,6 @@ namespace SRCCore.Coverage.Tests.SpecialPower
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SpecialPowerCost の 0.8/1.2 倍が VB の Integer 代入 (丸め) でなく切り捨てになっている")]
         public void SpecialPowerCost_ConcentrationRoundsLikeVBIntegerAssignment()
         {
             // VB: SpecialPowerCost = 0.8 * SpecialPowerCost は Integer 代入で丸め。7 × 0.8 = 5.6 → 6

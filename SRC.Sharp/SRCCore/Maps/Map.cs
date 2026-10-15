@@ -679,7 +679,67 @@ namespace SRCCore.Maps
         public void AreaWithUnit(string uparty)
         {
             ClearMask();
-            SelectUnitInMask(uparty);
+
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    var u = MapDataForUnit[i, j];
+                    if (u is null)
+                    {
+                        continue;
+                    }
+
+                    switch (uparty ?? "")
+                    {
+                        case "味方":
+                            if (u.Party == "味方" || u.Party == "ＮＰＣ")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        case "味方の敵":
+                            if (u.Party != "味方" && u.Party != "ＮＰＣ")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        case "敵":
+                            if (u.Party == "敵")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        case "敵の敵":
+                            if (u.Party != "敵")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        case "中立":
+                            if (u.Party == "中立")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        case "中立の敵":
+                            if (u.Party != "中立")
+                            {
+                                MaskData[i, j] = false;
+                            }
+                            break;
+
+                        default:
+                            MaskData[i, j] = false;
+                            break;
+                    }
+                }
+            }
         }
 
         // 十字状のエリアを選択 (Ｍ直の攻撃方向選択用)
@@ -1289,7 +1349,7 @@ namespace SRCCore.Maps
                     }
 
                     MaskData[xx, yy] = false;
-                    yy = (int)(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
+                    yy = VBMath.CLng(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
                     MaskData[xx, yy] = false;
                 }
                 while (xx != x2);
@@ -1308,7 +1368,7 @@ namespace SRCCore.Maps
                     }
 
                     MaskData[xx, yy] = false;
-                    xx = (int)(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
+                    xx = VBMath.CLng(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
                     MaskData[xx, yy] = false;
                 }
                 while (yy != y2);
@@ -1480,28 +1540,27 @@ namespace SRCCore.Maps
                                                     {
                                                         var withBlock2 = MapDataForUnit[(u2.x + i), (u2.y + j)];
                                                         // 敵対陣営？
+                                                        bool isSameSide;
                                                         switch (withBlock2.Party0 ?? "")
                                                         {
                                                             case "味方":
                                                             case "ＮＰＣ":
                                                                 {
-                                                                    if (buf == "味方" || buf == "ＮＰＣ")
-                                                                    {
-                                                                        break;
-                                                                    }
-
+                                                                    isSameSide = buf == "味方" || buf == "ＮＰＣ";
                                                                     break;
                                                                 }
 
                                                             default:
                                                                 {
-                                                                    if ((withBlock2.Party0 ?? "") == (buf ?? ""))
-                                                                    {
-                                                                        break;
-                                                                    }
-
+                                                                    isSameSide = (withBlock2.Party0 ?? "") == (buf ?? "");
                                                                     break;
                                                                 }
+                                                        }
+
+                                                        // VB の Exit For と同じく j のループを抜ける
+                                                        if (isSameSide)
+                                                        {
+                                                            break;
                                                         }
 
                                                         var l = withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化");
@@ -2550,20 +2609,26 @@ namespace SRCCore.Maps
                 }
             }
 
-            for (var i = x1; i <= x2; i++)
+            // 移動制限・進入不可
+            // ジャンプ時以外は進入できない地形の移動コストを 1000000 にする
+            if (!ByJump)
             {
-                for (var j = y1; j <= y2; j++)
+                for (var i = x1; i <= x2; i++)
                 {
-                    // 移動制限
-                    if (unitProps.allowed_terrains.Any())
+                    for (var j = y1; j <= y2; j++)
                     {
-                        MaskData[i, j] = MaskData[i, j] || !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name);
-                    }
+                        // 移動制限
+                        if (unitProps.allowed_terrains.Any()
+                            && !unitProps.allowed_terrains.Any(x => x == Terrain(i, j).Name))
+                        {
+                            move_cost[i, j] = 1000000;
+                        }
 
-                    // 進入不可
-                    if (unitProps.prohibited_terrains.Any())
-                    {
-                        MaskData[i, j] = MaskData[i, j] || unitProps.prohibited_terrains.Any(x => x == Terrain(i, j).Name);
+                        // 進入不可
+                        if (unitProps.prohibited_terrains.Any(x => x == Terrain(i, j).Name))
+                        {
+                            move_cost[i, j] = 1000000;
+                        }
                     }
                 }
             }
@@ -3099,7 +3164,7 @@ namespace SRCCore.Maps
                     }
 
                     yy2 = yy;
-                    yy = (int)(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
+                    yy = VBMath.CLng(y1 + (y2 - y1) * (x1 - xx + 0d) / (x1 - x2));
 
                     // 壁？
                     if (is_flying)
@@ -3149,7 +3214,7 @@ namespace SRCCore.Maps
                     }
 
                     xx2 = xx;
-                    xx = (int)(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
+                    xx = VBMath.CLng(x1 + (x2 - x1) * (y1 - yy + 0d) / (y1 - y2));
 
                     // 壁？
                     if (is_flying)
@@ -3592,9 +3657,9 @@ namespace SRCCore.Maps
 
             // 直線を走った距離を計算
             Commands.MovedUnitSpeed = 1;
-            for (var i = 1; i < move_direction.Count - 1; i++)
+            for (var i = 0; i < move_direction.Count - 1; i++)
             {
-                if (move_direction[i] == move_direction[i + 1])
+                if (move_direction[i] != move_direction[i + 1])
                 {
                     break;
                 }

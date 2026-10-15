@@ -165,7 +165,6 @@ AAAA, -.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Unit.Update が特殊効果無効化を strSpecialEffectImmune に反映しない")]
         public void SpecialEffectImmune_PreventsEffect()
         {
             // 特殊効果無効化=縛 を持つユニットは捕縛されない
@@ -355,7 +354,6 @@ AAAA, -.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 気力吸収の 2.5×Lv を (int) で切り捨てている（VB は Integer 引数への丸めで ＤL3 は +8）")]
         public void MoraleAbsorb_Level3_RoundsLikeVB()
         {
             // VB: IncreaseMorale 2.5 * WeaponLevel(w, "Ｄ") は Integer 引数への暗黙変換で 7.5 → 8（偶数丸め）

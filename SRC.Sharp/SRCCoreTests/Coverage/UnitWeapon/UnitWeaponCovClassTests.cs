@@ -82,7 +82,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: WeaponLevel が数字以外の文字でループを抜けないため、レベル指定の後ろに属性が続くと 0 になる")]
         public void WeaponLevel_StopsAtNextAttribute()
         {
             // VB: Select Case Asc(c) の Case Else で Exit Do し、数字部分だけを CDbl する
@@ -204,7 +203,6 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 消費ＥＮの倍率計算を VB の Integer 代入（丸め）ではなく (int) 切り捨てで行っている")]
         public void WeaponENConsumption_RoundsLikeVbIntegerAssignment()
         {
             // VB: WeaponENConsumption = rate * WeaponENConsumption（Integer への代入で丸め）

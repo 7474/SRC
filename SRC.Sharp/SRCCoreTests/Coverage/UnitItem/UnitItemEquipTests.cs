@@ -262,7 +262,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_Shield_ReplacesShield_KeepsOneHandWeapon()
         {
             // 盾は既存の盾・両手武器と入れ替わるが、片手武器は１つなら残す
@@ -275,7 +274,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_OneHanded_Ambidextrous_KeepsOneOtherHandItem()
         {
             // 両手利きなら片手武器を２つ持てる（３つ目で２つ目を外す）
@@ -289,7 +287,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_OneHanded_ReplacesOneHandedWeapon_KeepsShield()
         {
             // 両手利きでなければ片手武器は持ち替える（盾は残す）
@@ -302,7 +299,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_BothShoulders_RemovesAllShoulderItems()
         {
             // 両肩のアイテムは肩のアイテムを全て外す
@@ -315,7 +311,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_Shoulder_ThirdReplacesSecond()
         {
             // 肩のアイテムは２つまで。３つ目は２つ目と入れ替わり、両肩とは入れ替わる
@@ -328,7 +323,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の foreach 中で DeleteItem して列挙中のコレクション変更例外になる（switch 内 break が Exit For にならない）")]
         public void AddItem_Shoulder_ReplacesBothShoulders()
         {
             var src = CreateSRC();
@@ -339,7 +333,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem の Case Else で For 変数 i が進まず i > 0 にならないため同じ装備個所のアイテムを外さない")]
         public void AddItem_SamePart_ReplacesExisting()
         {
             // 体・頭などハードポイントの無い装備個所は１つだけ
@@ -366,7 +359,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: AddItem のハードポイント処理で２つ以上外す場合、foreach 中の DeleteItem で列挙中のコレクション変更例外になる")]
         public void AddItem_Hardpoint_LargeItemFreesMultipleSlots()
         {
             // サイズ２のアイテムは空きが足りるまで先頭から２つ外す
@@ -449,7 +441,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: DeleteItem が Update 後に両手利きを記録するため、両手利きを失っても２つ目の片手武器を外さない")]
         public void DeleteItem_LosingAmbidexterity_RemovesSecondOneHandedWeapon()
         {
             // 両手利きを与えるアイテムを外すと、２つ目の片手武器を外す
@@ -467,7 +458,6 @@ namespace SRCCore.Coverage.Tests.UnitItem
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: DeleteItem が ItemSlots に収まらない表示アイテムを全て外すため、自作装備個所のアイテムまで外れる")]
         public void DeleteItem_KeepsCustomPartItem()
         {
             // VB の DeleteItem はアイテム枠・ハードポイントが減った場合のみ他のアイテムを外す。

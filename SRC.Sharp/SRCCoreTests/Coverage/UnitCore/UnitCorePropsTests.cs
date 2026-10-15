@@ -218,7 +218,6 @@ namespace SRCCore.Coverage.Tests.UnitCore
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: Class0 の「(」検出時の break が switch しか抜けず、より前の括弧まで削ってしまう")]
         public void Class0_KeepsEarlierParenthesesBeforeExclusiveSpec()
         {
             // VB は対応する「(」で Exit Do するため、それより前の括弧付き部分は残る
@@ -517,7 +516,6 @@ namespace SRCCore.Coverage.Tests.UnitCore
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 修理費の端数を切り捨てている（VB は Long 代入で丸める）")]
         public void Value_FractionIsRoundedLikeVbLong()
         {
             // VB: Value = Value * (1 + 0.05 * Rank) を Long に代入するので四捨五入（偶数丸め）される
