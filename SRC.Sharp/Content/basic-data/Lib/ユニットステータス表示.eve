@@ -1,0 +1,45 @@
+# インターミッションコマンド「ユニットステータス」（Lib\ユニットステータス表示.eve）
+# SRC# の最小の汎用データ用に、ヘルプ（ユニットステータス.md・MakeUnitListコマンド.md）から書いた。
+# 味方のユニットをＨＰの大きい順にマップに並べる。ユニットをクリックするとステータスを見られる。
+# マップのコマンド（右クリック）の「並べ替え」で基準を変え、「インターミッションに戻る」で戻る。
+
+スタート:
+MakeUnitList ＨＰ
+Exit
+
+マップコマンド 並べ替え:
+Ask 並べ替えの基準
+ランク
+ＨＰ
+ＥＮ
+装甲
+運動性
+移動力
+最大攻撃力
+最長射程
+名称
+End
+Switch 選択
+Case 1
+  MakeUnitList ランク
+Case 2
+  MakeUnitList ＨＰ
+Case 3
+  MakeUnitList ＥＮ
+Case 4
+  MakeUnitList 装甲
+Case 5
+  MakeUnitList 運動性
+Case 6
+  MakeUnitList 移動力
+Case 7
+  MakeUnitList 最大攻撃力
+Case 8
+  MakeUnitList 最長射程
+Case 9
+  MakeUnitList 名称
+EndSw
+Exit
+
+マップコマンド インターミッションに戻る:
+Continue

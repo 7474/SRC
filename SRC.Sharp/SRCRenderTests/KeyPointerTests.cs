@@ -79,7 +79,8 @@ namespace SRCRender.Tests
                 runner.WaitForMessage();
                 runner.ClickMessage();
                 runner.WaitFor(s => runner.GUI.IsWaitingClick, "click wait");
-                Assert.IsTrue(runner.State.MainFormVisible);
+                // Wait Click はメインウィンドウを表示する（画面への反映は次の描画）
+                runner.WaitFor(s => s.MainFormVisible, "main form shown");
 
                 void Press(ScreenKey key)
                 {

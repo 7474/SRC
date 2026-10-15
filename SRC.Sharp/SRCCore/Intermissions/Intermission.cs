@@ -245,10 +245,6 @@ namespace SRCCore
 
                     case "パイロットステータス":
                         {
-                            GUI.CloseListBox();
-                            GUI.ReduceListBoxHeight();
-                            SRC.IsSubStage = true;
-
                             var eveFile = new string[]
                             {
                                 SRC.ScenarioPath,
@@ -256,10 +252,18 @@ namespace SRCCore
                             }.Select(x => Path.Combine(x, "Lib", "パイロットステータス表示.eve"))
                                 .Where(x => SRC.FileSystem.FileExists(x))
                                 .FirstOrDefault();
-                            if (!string.IsNullOrEmpty(eveFile))
+                            if (string.IsNullOrEmpty(eveFile))
                             {
-                                SRC.StartScenario(eveFile);
+                                // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラー）。
+                                // 何も始めずに戻ると操作できなくなるため、知らせてインターミッションを続ける
+                                GUI.ErrorMessage(@"Lib\パイロットステータス表示.eve が見つかりません");
+                                break;
                             }
+
+                            GUI.CloseListBox();
+                            GUI.ReduceListBoxHeight();
+                            SRC.IsSubStage = true;
+                            SRC.StartScenario(eveFile);
                             // サブステージを通常のステージとして実行
                             SRC.IsSubStage = true;
                             return;
@@ -267,10 +271,6 @@ namespace SRCCore
 
                     case "ユニットステータス":
                         {
-                            GUI.CloseListBox();
-                            GUI.ReduceListBoxHeight();
-                            SRC.IsSubStage = true;
-
                             var eveFile = new string[]
                             {
                                 SRC.ScenarioPath,
@@ -278,10 +278,18 @@ namespace SRCCore
                             }.Select(x => Path.Combine(x, "Lib", "ユニットステータス表示.eve"))
                                 .Where(x => SRC.FileSystem.FileExists(x))
                                 .FirstOrDefault();
-                            if (!string.IsNullOrEmpty(eveFile))
+                            if (string.IsNullOrEmpty(eveFile))
                             {
-                                SRC.StartScenario(eveFile);
+                                // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラー）。
+                                // 何も始めずに戻ると操作できなくなるため、知らせてインターミッションを続ける
+                                GUI.ErrorMessage(@"Lib\ユニットステータス表示.eve が見つかりません");
+                                break;
                             }
+
+                            GUI.CloseListBox();
+                            GUI.ReduceListBoxHeight();
+                            SRC.IsSubStage = true;
+                            SRC.StartScenario(eveFile);
                             // サブステージを通常のステージとして実行
                             SRC.IsSubStage = true;
                             return;

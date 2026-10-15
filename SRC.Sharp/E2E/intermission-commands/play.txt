@@ -1,0 +1,38 @@
+# インターミッションのコマンドをひととおり実行し、毎回インターミッションへ戻れることを確かめる
+wait message ステージ1
+key Enter
+wait list コマンド
+# ユニットステータス: ユニットの一覧をマップに出し、並べ替えてから戻る
+list ユニットステータス
+wait ready
+cell 10 10 right
+menu 並べ替え
+list 名称
+wait ready
+cell 10 10 right
+menu インターミッションに戻る
+wait list コマンド
+# パイロットステータス: パイロットを表示用のユニットに乗せ替えて並べ、戻るときに元の乗機に戻す
+list パイロットステータス
+wait ready
+cell 10 10 right
+menu インターミッションに戻る
+wait list コマンド
+# パイロットは元の乗機に戻っている
+expect eval InStr(Unit("テストパイロット"), "テスト機") = 1
+# ユーザー定義のコマンド
+list 部隊名簿
+wait message 部隊名簿
+key Enter
+wait list コマンド
+# 機体改造: ユニット選択のリストを出して閉じる
+list 機体改造
+wait list ユニット選択
+key Escape
+wait list コマンド
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2
+expect finished
+expect error none

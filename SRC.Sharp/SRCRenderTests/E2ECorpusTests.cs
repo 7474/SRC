@@ -59,6 +59,8 @@ namespace SRCRender.Tests
             using (var workspace = new ScenarioWorkspace())
             {
                 CopyDirectory(source, workspace.AppPath);
+                // SRC 本体と同じく、インターミッションのステータス表示などの Lib を AppPath に置く（SRC.Sharp/Content/basic-data/Lib）
+                CopyDirectory(Path.Combine(Path.GetDirectoryName(CorpusDirectory), "Content", "basic-data", "Lib"), Path.Combine(workspace.AppPath, "Lib"));
                 using (var runner = new ScreenScenarioRunner(workspace.AppPath))
                 {
                     var script = new PlayScript(runner)

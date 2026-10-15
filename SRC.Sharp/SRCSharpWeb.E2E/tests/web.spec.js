@@ -225,6 +225,60 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
   }, { intervals: [500, 1000] }).toBe(true);
 });
 
+test('インターミッションのコマンドを開き、仮想パッドと同じキー操作でインターミッションへ戻る', async ({ page }, testInfo) => {
+  await open(page);
+  await page.getByRole('button', { name: 'intermission-commands' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+
+  /** マップのコマンドのメニューを Esc（右クリック）で開き、項目をキーで選ぶ */
+  const chooseMapCommand = async item => {
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (!s.menu && s.locked === false) {
+        await page.keyboard.press('Escape');
+      }
+      return !!s.menu;
+    }, { intervals: [500, 1000] }).toBe(true);
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      const target = s.menu.items.findIndex(x => x.includes(item));
+      if (target < 0) {
+        throw new Error(`メニューに「${item}」がありません: ${JSON.stringify(s.menu)}`);
+      }
+      if (s.menu.highlight === target) {
+        return true;
+      }
+      await page.keyboard.press('ArrowDown');
+      return false;
+    }, { intervals: [200, 500] }).toBe(true);
+    await page.keyboard.press('Enter');
+  };
+
+  for (const command of ['ユニットステータス', 'パイロットステータス']) {
+    await chooseListItem(page, 'コマンド', command);
+    // メインウィンドウを出し、一覧のマップを操作できる
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      return s.mainFormVisible === true && s.locked === false && !s.list;
+    }, { intervals: [500, 1000] }).toBe(true);
+    await attachScreen(page, testInfo, command);
+    await chooseMapCommand('インターミッションに戻る');
+    await expect.poll(async () => (await screenState(page)).list?.caption ?? '').toContain('コマンド');
+  }
+
+  // ユーザー定義のコマンドも戻ってこられる
+  await chooseListItem(page, 'コマンド', '部隊名簿');
+  await expect.poll(async () => {
+    const st = await screenState(page);
+    if (st.message !== undefined) {
+      await page.keyboard.press('Enter');
+    }
+    return st.list?.caption ?? '';
+  }, { intervals: [500, 1000] }).toContain('コマンド');
+  const s = await screenState(page);
+  expect(s.error).toBeUndefined();
+});
+
 const corpus = path.resolve(__dirname, '../../E2E');
 const soundFont = process.env.SRC_SOUNDFONT ?? '/usr/share/sounds/sf2/TimGM6mb.sf2';
 

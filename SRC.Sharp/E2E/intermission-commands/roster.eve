@@ -1,0 +1,13 @@
+# ユーザー定義のインターミッションコマンド「部隊名簿」。ユニットの一覧を出してから戻る
+プロローグ:
+KeepBGM
+Show
+MakeUnitList ＨＰ
+Talk システム
+部隊名簿
+End
+Hide
+Continue
+
+スタート:
+Exit
