@@ -107,7 +107,6 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         // パートナーはパーツ分離の第 2 引数（分離後の形態）に変化してＨＰ全快で残る
         // （VB: Unit.cls Attack の j > .CountWeapon 側も LIndex(.FeatureData("パーツ分離"), 2)）
         [TestMethod]
-        [Ignore("移植の不具合: 同名武器を持たないパートナーの自爆時パーツ分離で LIndex(…, 1)（分離名）を形態名として使っている")]
         public void Attack_Combination_PartnerWithoutWeapon_SelfDestructSeparatesParts()
         {
             var f = new UnitAttackFixture();

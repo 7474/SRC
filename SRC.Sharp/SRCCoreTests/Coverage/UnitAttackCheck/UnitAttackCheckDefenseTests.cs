@@ -693,7 +693,6 @@ AAAA, -.bmp
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: CheckShieldFeature が「無防備」ではなく「行動不能1」を判定している")]
         public void ShieldDefense_Defenseless_NotUsed()
         {
             // VB では防御側が「無防備」効果下ならシールド防御できない

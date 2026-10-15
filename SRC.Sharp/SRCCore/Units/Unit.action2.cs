@@ -92,7 +92,7 @@ namespace SRCCore.Units
                         xp = t.ExpValue + t.MainPilot().ExpValue;
                         if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
                         {
-                            xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
+                            xp = VBMath.CLng(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
                         }
                         break;
 
@@ -100,7 +100,7 @@ namespace SRCCore.Units
                         xp = (t.ExpValue + t.MainPilot().ExpValue) / 10;
                         if (IsUnderSpecialPowerEffect("獲得経験値増加") && exp_mode != "パートナー")
                         {
-                            xp = (int)(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
+                            xp = VBMath.CLng(xp * (1d + 0.1d * SpecialPowerEffectLevel("獲得経験値増加")));
                         }
                         break;
 
@@ -123,11 +123,11 @@ namespace SRCCore.Units
                     {
                         if (p.IsSkillLevelSpecified("素質"))
                         {
-                            xp = (int)((long)(xp * (10d + p.SkillLevel("素質", ref_mode: ""))) / 10L);
+                            xp = VBMath.CLng(xp * (10d + p.SkillLevel("素質", ref_mode: ""))) / 10;
                         }
                         else
                         {
-                            xp = (int)(1.5d * xp);
+                            xp = VBMath.CLng(1.5d * xp);
                         }
                     }
                 }
@@ -147,13 +147,13 @@ namespace SRCCore.Units
                 {
                     switch (levelDiff)
                     {
-                        case 7: xp = (int)(4.5d * xp); break;
+                        case 7: xp = VBMath.CLng(4.5d * xp); break;
                         case 6: xp = 4 * xp; break;
-                        case 5: xp = (int)(3.5d * xp); break;
+                        case 5: xp = VBMath.CLng(3.5d * xp); break;
                         case 4: xp = 3 * xp; break;
-                        case 3: xp = (int)(2.5d * xp); break;
+                        case 3: xp = VBMath.CLng(2.5d * xp); break;
                         case 2: xp = 2 * xp; break;
-                        case 1: xp = (int)(1.5d * xp); break;
+                        case 1: xp = VBMath.CLng(1.5d * xp); break;
                         case 0: break;
                         case -1: xp /= 2; break;
                         case -2: xp /= 4; break;

@@ -145,7 +145,6 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 経験値の小数倍（1.5倍等）を切り捨てている。元の SRC は Long への代入で丸める")]
         public void GetExp_FractionalMultiplier_RoundsLikeVbLongAssignment()
         {
             // 元の SRC では xp は Long で、xp = 1.5 * xp は銀行丸めで整数化される（7.5 → 8）

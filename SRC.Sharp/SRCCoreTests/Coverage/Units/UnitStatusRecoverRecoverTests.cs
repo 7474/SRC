@@ -449,7 +449,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: SyncBullet の共属性の端数処理が CInt(x + 0.49999)（四捨五入）でなく切り捨てになっている")]
         public void SyncBullet_SharedWeapons_RoundsWhenFewerMaxBullets()
         {
             // 元の SRC の Unit.SyncBullet: 合わせられる側（i）の最大弾数が相手（w）以下の場合は

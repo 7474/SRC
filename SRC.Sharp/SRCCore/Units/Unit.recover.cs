@@ -1285,7 +1285,7 @@ namespace SRCCore.Units
                         }
                         else
                         {
-                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (int)(wi.MaxBullet() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), VBMath.CLng(wi.MaxBullet() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
                         }
                     }
                 }
@@ -1301,7 +1301,7 @@ namespace SRCCore.Units
                         }
                         else
                         {
-                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (int)(ai.MaxStock() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), VBMath.CLng(ai.MaxStock() * ww.Bullet() / (double)ww.MaxBullet() + 0.49999d)));
                         }
                     }
                 }
@@ -1327,7 +1327,7 @@ namespace SRCCore.Units
                         }
                         else
                         {
-                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), (int)(ai.MaxStock() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
+                            ai.SetStock(GeneralLib.MinLng(ai.Stock(), VBMath.CLng(ai.MaxStock() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
                         }
                     }
                 }
@@ -1343,7 +1343,7 @@ namespace SRCCore.Units
                         }
                         else
                         {
-                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), (int)(wi.MaxBullet() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
+                            wi.SetBullet(GeneralLib.MinLng(wi.Bullet(), VBMath.CLng(wi.MaxBullet() * aa.Stock() / (double)aa.MaxStock() + 0.49999d)));
                         }
                     }
                 }
@@ -1362,7 +1362,7 @@ namespace SRCCore.Units
                 {
                     if (!ReferenceEquals(ww, wi) && wi.MaxBullet() > 0)
                     {
-                        ww.SetBullet(GeneralLib.MinLng(ww.Bullet(), (int)(ww.MaxBullet() * wi.Bullet() / (double)wi.MaxBullet() + 0.49999d)));
+                        ww.SetBullet(GeneralLib.MinLng(ww.Bullet(), VBMath.CLng(ww.MaxBullet() * wi.Bullet() / (double)wi.MaxBullet() + 0.49999d)));
                     }
                 }
             }
