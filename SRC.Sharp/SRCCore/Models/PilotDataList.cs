@@ -1070,7 +1070,7 @@ namespace SRCCore.Models
                 }
 
                 // 特殊能力データ
-                line_buf = UnitDataList.LoadFeature(data_name, pd, reader, SRC);
+                line_buf = UnitDataList.LoadFeature(data_name, pd, reader, SRC, isPilot: true);
 
 
                 if (line_buf != "===")

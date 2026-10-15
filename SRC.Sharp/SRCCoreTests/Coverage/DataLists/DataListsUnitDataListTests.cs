@@ -304,7 +304,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 特殊能力行のコンマ探索で switch 内の break が for を抜けず最後のコンマで区切られる")]
         public void Load_OldFormatThreeFeatures_SplitsEachFeature()
         {
             // VB: 最初のコンマで Exit For し、以降も1つずつ特殊能力として登録する
@@ -315,7 +314,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 特殊能力行のコンマ探索で switch 内の break が for を抜けず最後のコンマで区切られる")]
         public void Load_NewFormatThreeFeaturesOnOneLine_SplitsEachFeature()
         {
             var src = CreateSrc();
@@ -603,7 +601,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 特殊能力行のコンマ探索で switch 内の break が for を抜けず最後のコンマで区切られる")]
         public void Load_NewFormatEmptyMiddleFeature_ReportsErrorAndKeepsOthers()
         {
             // VB: 「剣装備,,シールド」は 2 番目が空としてエラーになり、剣装備・シールドは登録される
@@ -636,7 +633,6 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        [Ignore("移植の不具合: 武器の消費ＥＮ不正時に If LLength(buf2) > 1 の判定が抜けており、後続の項目が1つずれる")]
         public void Load_WeaponInvalidENConsumption_ReportsErrorWithoutShiftingFollowingFields()
         {
             // VB: 消費ＥＮが不正でも空白区切りでなければ後続の項目はずれない
