@@ -26,8 +26,6 @@ With single commands:
 - ✅ 人間が考えることは最小限
 - ✅ セットアップ不要
 
-ユニットテストの補完は、Agentic Workflow（[complete-unit-tests.md](../../.github/workflows/complete-unit-tests.md)、[GitHub Agentic Workflows](https://github.github.com/gh-aw/)）でも日次で行う。SRCCoreTests と SRCRenderTests の行カバレッジを合わせて測り、未カバー行の多いファイルから補う。
-
 **詳細**: [Copilot Agent Instructions](../../.github/copilot/README.md)
 
 ---

@@ -276,8 +276,6 @@ PR作成 → ビルド → ユニットテスト → コードカバレッジ �
 @copilot 移植精度を検証してください
 ```
 
-ユニットテストの補完は、Agentic Workflow（`.github/workflows/complete-unit-tests.md`）でも日次で行う。
-
 ---
 
 ## 7. まとめ / Summary

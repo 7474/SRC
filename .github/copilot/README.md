@@ -11,7 +11,6 @@ This directory contains instructions for GitHub Copilot Agents to operate the SR
 - TODO消化フェーズは完了（137+ TODO解消済み、約88%）
 - 残存するTODO（2026-10 時点で19件）は精査・最適化・リファクタリング課題
 - 現在の焦点：テストカバレッジ向上、VB6版との精度検証、残存TODO解消
-- ユニットテストの補完は、Agentic Workflow（`.github/workflows/complete-unit-tests.md`）が日次で行う
 
 ## 🤖 基本コマンド / Basic Commands
 
