@@ -170,7 +170,7 @@ namespace SRCCore.Models
 
                     // ビットマップ
                     buf2 = Strings.Trim(buf);
-                    if (Strings.LCase(Strings.Right(buf2, 4)) == ".bmp")
+                    if (GeneralLib.IsImageFileName(buf2))
                     {
                         pd.Bitmap = buf2;
                     }

@@ -49,6 +49,19 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_PngJpgGifBitmap_Accepted()
+        {
+            // 元の SRC は .bmp だけだが、SRC# は .png・.jpg・.gif も受け付ける（#1212）
+            foreach (var name in new[] { "test.png", "test.JPG", "test.gif" })
+            {
+                var src = CreateSrc();
+                var ud = Load(src, UnitWith(line5: "BBAA," + name)).Item("テスト機");
+                Assert.AreEqual(name, ud.Bitmap);
+                Assert.IsFalse(ud.IsBitmapMissing, name);
+            }
+        }
+
+        [TestMethod]
         public void Load_StandardUnit_ParsesAllBasicFields()
         {
             var src = CreateSrc();
@@ -190,7 +203,7 @@ namespace SRCCore.Coverage.Tests
                 line2: "テスト機,1,X,Y",
                 line3: "2,X,XXL,X,X",
                 status: "X,X,X,X",
-                line5: "ABC,test.png")).Item("テスト機");
+                line5: "ABC,test.txt")).Item("テスト機");
 
             Assert.AreEqual("汎用", ud.Class);
             Assert.AreEqual(1, ud.PilotNum);
