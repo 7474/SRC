@@ -24,7 +24,7 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         // 地上・空中・地中・水中
         // ──────────────────────────────────────────────
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("陸", "地上")]
         [DataRow("水", "水上")]
         [DataRow("深水", "水上")]
@@ -46,7 +46,7 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             Assert.AreEqual("ユニット選択", f.Src.Commands.CommandState);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("陸", "空中")]
         [DataRow("月面", "宇宙")]
         public void Sky_SetsAreaByTerrainClass(string terrainClass, string expectedArea)

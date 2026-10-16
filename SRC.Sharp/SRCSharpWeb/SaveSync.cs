@@ -6,22 +6,18 @@ using System.Linq;
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// シナリオのフォルダにあるセーブデータ（.srcs・.srcq）の変化を見つける。
-    /// 見つけたものはブラウザ（IndexedDB）に保存し、次にシナリオを開くときに戻す。
-    /// 大きいシナリオ（ロボダンは 1 万ファイル以上）のフォルダ全体を毎回たどると重いため、
-    /// セーブデータが書かれ得るフォルダ（シナリオのフォルダの直下・イベントファイルのフォルダ・
-    /// 復元したセーブデータのフォルダ・保存のダイアログで選んだフォルダ）の直下だけを調べる。
+    /// ゲームがシナリオのフォルダに書いたセーブデータ（.srcs・.srcq）を受け取る。
+    /// 受け取ったものはブラウザ（IndexedDB）に保存し、次にシナリオを開くときに戻す。
+    /// 書き込みはフォルダを走査せず、ファイルシステムの書き込みの通知（<see cref="SRCCore.Filesystem.IFileSystem.FileWritten"/>）で知る。
     /// </summary>
     public sealed class SaveSync
     {
         private static readonly string[] Extensions = { ".srcs", ".srcq" };
-        private readonly Dictionary<string, (long Length, DateTime Written)> known = new Dictionary<string, (long, DateTime)>();
-        private readonly HashSet<string> watched = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> written = new HashSet<string>(StringComparer.Ordinal);
 
         public SaveSync(string root)
         {
-            Root = root;
-            watched.Add(Path.GetFullPath(root));
+            Root = Path.GetFullPath(root);
         }
 
         public string Root { get; }
@@ -31,72 +27,71 @@ namespace SRCSharpWeb
             return Extensions.Any(x => name.EndsWith(x, StringComparison.OrdinalIgnoreCase));
         }
 
-        private IEnumerable<string> Files()
+        private bool IsInRoot(string fullPath)
         {
-            string[] dirs;
-            lock (watched)
-            {
-                dirs = watched.ToArray();
-            }
-            return dirs.Where(Directory.Exists)
-                .SelectMany(dir => Extensions.SelectMany(ext => Directory.GetFiles(dir, "*" + ext, SearchOption.TopDirectoryOnly)))
-                .Distinct(StringComparer.Ordinal);
-        }
-
-        /// <summary>
-        /// セーブデータが書かれ得るフォルダを調べる対象に加える（どのスレッドから呼んでもよい）。
-        /// そのフォルダに既にあるセーブデータは、次に調べたときに一度だけブラウザに保存される。
-        /// </summary>
-        public void Watch(string directory)
-        {
-            if (string.IsNullOrEmpty(directory))
-            {
-                return;
-            }
-            var full = Path.GetFullPath(directory);
-            if (!full.StartsWith(Path.GetFullPath(Root), StringComparison.Ordinal))
-            {
-                return;
-            }
-            lock (watched)
-            {
-                watched.Add(full);
-            }
+            return fullPath.StartsWith(Root.TrimEnd('/') + "/", StringComparison.Ordinal);
         }
 
         private string Relative(string path) => Path.GetRelativePath(Root, path).Replace('\\', '/');
 
-        /// <summary>今あるファイルを保存済みとして扱う（展開・復元の直後に呼ぶ）</summary>
-        public void MarkAll()
+        /// <summary>
+        /// ファイルを書き終えたことを知らせる（どのスレッドから呼んでもよい）。
+        /// シナリオのフォルダにあるセーブデータなら次の <see cref="CollectWritten"/> で返し、true を返す。
+        /// </summary>
+        public bool Notify(string path)
         {
-            foreach (var file in Files())
+            if (string.IsNullOrEmpty(path))
             {
-                var info = new FileInfo(file);
-                known[Relative(file)] = (info.Length, info.LastWriteTimeUtc);
+                return false;
+            }
+            var full = Path.GetFullPath(path);
+            if (!IsInRoot(full) || !IsSaveFile(full))
+            {
+                return false;
+            }
+            lock (written)
+            {
+                written.Add(full);
+            }
+            return true;
+        }
+
+        /// <summary>まだブラウザに保存していないセーブデータがあるか</summary>
+        public bool HasWritten
+        {
+            get
+            {
+                lock (written)
+                {
+                    return written.Count > 0;
+                }
             }
         }
 
         /// <summary>前回から書き込まれたセーブデータ（相対パスと内容）</summary>
-        public IList<(string Name, byte[] Data)> CollectChanged()
+        public IList<(string Name, byte[] Data)> CollectWritten()
         {
-            var changed = new List<(string, byte[])>();
-            foreach (var file in Files())
+            string[] files;
+            lock (written)
             {
-                var info = new FileInfo(file);
-                var name = Relative(file);
-                if (known.TryGetValue(name, out var k) && k.Length == info.Length && k.Written == info.LastWriteTimeUtc)
-                {
-                    continue;
-                }
+                files = written.ToArray();
+                written.Clear();
+            }
+            var changed = new List<(string, byte[])>();
+            foreach (var file in files)
+            {
                 try
                 {
-                    var data = File.ReadAllBytes(file);
-                    known[name] = (info.Length, info.LastWriteTimeUtc);
-                    changed.Add((name, data));
+                    changed.Add((Relative(file), File.ReadAllBytes(file)));
+                }
+                catch (FileNotFoundException)
+                {
+                    // 書いた後に消された
                 }
                 catch (IOException)
                 {
                     // 書き込み中。次の機会に読む
+                    Notify(file);
                 }
             }
             return changed;
@@ -106,16 +101,12 @@ namespace SRCSharpWeb
         public string Restore(string name, byte[] data)
         {
             var path = Path.GetFullPath(Path.Combine(Root, name));
-            if (!path.StartsWith(Path.GetFullPath(Root) + "/", StringComparison.Ordinal) || !IsSaveFile(path))
+            if (!IsInRoot(path) || !IsSaveFile(path))
             {
                 return null;
             }
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, data);
-            lock (watched)
-            {
-                watched.Add(Path.GetDirectoryName(path));
-            }
             return path;
         }
     }

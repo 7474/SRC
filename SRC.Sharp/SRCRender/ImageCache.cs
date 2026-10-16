@@ -92,7 +92,7 @@ namespace SRCRender
         }
 
         /// <summary>
-        /// 白を透過色とした画像を取得する。
+        /// 白を透過色とした画像を取得する。画像がアルファチャネルで透過を指定している場合（PNG など）は、そちらを使う。
         /// </summary>
         public SKBitmap GetTransparent(string name)
         {
@@ -172,22 +172,7 @@ namespace SRCRender
 
         private static SKBitmap MakeTransparent(SKBitmap bitmap, SKColor transparentColor)
         {
-            if (bitmap == null)
-            {
-                return null;
-            }
-            var result = new SKBitmap(bitmap.Width, bitmap.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            for (var y = 0; y < bitmap.Height; y++)
-            {
-                for (var x = 0; x < bitmap.Width; x++)
-                {
-                    var c = bitmap.GetPixel(x, y);
-                    result.SetPixel(x, y, c.Red == transparentColor.Red && c.Green == transparentColor.Green && c.Blue == transparentColor.Blue
-                        ? SKColors.Transparent
-                        : c);
-                }
-            }
-            return result;
+            return bitmap == null ? null : ImageFilters.MakeTransparent(bitmap, transparentColor);
         }
     }
 }

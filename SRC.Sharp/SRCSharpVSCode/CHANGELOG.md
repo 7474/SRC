@@ -1,6 +1,8 @@
 # Change Log
 
-## 0.5.1
+## 0.5.2
+
+The version now follows the SRC# library version (srcsharp 0.5.2). 0.5.1 was not published.
 
 - Play the debugged scenario in the "SRC# 画面" tab (`interactive` launch attribute, used by the run buttons, F5 and the launch.json template): frames are sent from the debug adapter, and clicks, keys, the mouse wheel, text input (`Input`) and file dialogs are passed to the scenario. No sound. Breakpoints and stepping work as before.
 - Without `interactive`, show the game screen, refreshed when the debugger stops and when the scenario ends, and every 0.5 seconds while running.

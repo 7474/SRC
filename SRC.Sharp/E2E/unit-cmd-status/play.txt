@@ -16,7 +16,7 @@ expect eval Y(換装パイロット) = 1
 cell 1 1
 menu 換装
 wait list 変更先選択
-key Enter
+list 換装機(重装)
 wait ready
 expect eval InStr(Unit(換装パイロット), "換装機(重装)") = 1
 

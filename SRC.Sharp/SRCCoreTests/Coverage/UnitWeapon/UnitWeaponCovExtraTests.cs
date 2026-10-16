@@ -293,6 +293,30 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
+        public void HitProbability_NegativeEcm_IncreasesHitRate()
+        {
+            // マイナスのレベルは、能力の説明どおり命中率を (100 - 5×レベル)% に増やす（#612）
+            var (_, _, t, w) = Battle(configureTarget: ud => ud.AddFeature("ＥＣＭLv-2"));
+            Assert.AreEqual(132, w.HitProbability(t, true));
+            // ホーミング攻撃は (100 - 10×レベル)%
+            var (_, _, th, wh) = Battle(wclass: "射Ｈ", configureTarget: ud => ud.AddFeature("ＥＣＭLv-2"));
+            Assert.AreEqual(144, wh.HitProbability(th, true));
+            // 攻撃側のＥＣＭは相手のＥＣＭのレベルを下げるだけで、マイナスのときは影響しない
+            var (src, _, t2, w2) = Battle(configureTarget: ud => ud.AddFeature("ＥＣＭLv-2"));
+            CreateUnit(src, x: 3, y: 1, configure: ud => ud.AddFeature("ＥＣＭLv1"));
+            Assert.AreEqual(132, w2.HitProbability(t2, true));
+        }
+
+        [TestMethod]
+        public void HitProbability_Ecm_PositiveLevelWinsOverNegative()
+        {
+            // 相手側にプラスとマイナスのＥＣＭがあれば、最大のレベルが効く
+            var (src, _, t, w) = Battle(configureTarget: ud => ud.AddFeature("ＥＣＭLv-2"));
+            CreateUnit(src, party: "敵", x: 2, y: 2, configure: ud => ud.AddFeature("ＥＣＭLv2"));
+            Assert.AreEqual(108, w.HitProbability(t, true));
+        }
+
+        [TestMethod]
         public void HitProbability_AbsoluteSpecialPowers()
         {
             // 絶対命中は 1000、相手の絶対回避は 0（絶対回避が優先）

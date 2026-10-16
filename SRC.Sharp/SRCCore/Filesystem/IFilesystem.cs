@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -40,6 +41,17 @@ namespace SRCCore.Filesystem
         /// <param name="paths"></param>
         /// <returns></returns>
         Stream OpenSafe(SafeOpenMode mode, params string[] paths);
+        /// <summary>
+        /// ファイルを作って書き込みで開きます（既にあれば中身を消します）。
+        /// ストリームを閉じたときに <see cref="FileWritten"/> を発生させます。
+        /// </summary>
+        /// <param name="path">ファイルのパス</param>
+        Stream Create(string path);
+        /// <summary>
+        /// <see cref="Create"/> や <see cref="OpenSafe"/>（書き込み・追記）で開いたファイルを書き終えた（ストリームを閉じた）ときに発生します。
+        /// 引数はファイルの絶対パスです。書き込んだスレッドから呼ばれます。
+        /// </summary>
+        event Action<string> FileWritten;
         bool Remove(params string[] paths);
 
         bool MkDir(params string[] paths);

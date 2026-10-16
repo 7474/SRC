@@ -1,0 +1,69 @@
+name: 不具合の報告 / Bug report
+description: SRC#（SRC#Form・SRC#Avalonia・SRC#Web・作成支援ツール）で遊んだり、シナリオを作ったりして見つけた不具合を報告する
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        報告ありがとうございます。再現できるように、使ったもの・シナリオ・手順をできるだけ書いてください。
+        元の SRC（VB 版）と動きが違う場合は、元の SRC での動きも書いてください。
+  - type: dropdown
+    id: app
+    attributes:
+      label: 使った SRC# / App
+      multiple: true
+      options:
+        - SRC#Form（Windows）
+        - SRC#Avalonia（Windows・macOS・Linux）
+        - SRC#Web（ブラウザ）
+        - VS Code 拡張（SRC# Authoring）
+        - srcsharp（lint・play・balance など）
+        - その他
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: バージョン / Version
+      description: タイトルやバージョン情報の画面、Releases のファイル名など（例 3.5.2）。SRC#Web は日付でも構いません
+      placeholder: 3.5.2
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 環境 / Environment
+      description: OS、ブラウザ（SRC#Web の場合）など
+      placeholder: Windows 11 / Chrome 141
+  - type: input
+    id: scenario
+    attributes:
+      label: シナリオ / Scenario
+      description: シナリオの名前と入手先（配布ページの URL など）。自作の場合はその旨
+  - type: textarea
+    id: actual
+    attributes:
+      label: 起きたこと / What happened
+      description: エラーのメッセージは、そのまま貼り付けてください
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待した動き / Expected behavior
+      description: 元の SRC での動きやヘルプの記載があれば書いてください
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現の手順 / Steps to reproduce
+      placeholder: |
+        1. シナリオを開く
+        2. ○ステージのマップで △△ を選ぶ
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: attachments
+    attributes:
+      label: 添付 / Attachments
+      description: スクリーンショット、セーブデータ（.srcs・.srcq）、問題の起きるイベントファイルやデータの抜粋など。ファイルはここにドラッグして添付できます

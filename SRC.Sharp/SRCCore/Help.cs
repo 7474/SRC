@@ -4571,7 +4571,7 @@ namespace SRCCore
                             buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                         }
 
-                        msg = msg + "同時に相手の" + buf + "能力の効果を無効化。";
+                        msg = msg + "同時に相手の" + buf + "能力のレベルを、この能力のレベル分だけ下げる。";
                         msg = msg + ";思念誘導攻撃や近接攻撃には無効。";
                         break;
                     }
