@@ -84,6 +84,14 @@ namespace SRCRender
         public ScreenRenderer Renderer => renderer;
 
         private ImageCache Images => images ?? (images = new ImageCache(src));
+
+        /// <summary>
+        /// 読み込んだ画像を捨てる。次に描く時にファイルから読み直す（デバッガのホットリロード用）。ゲームスレッドで呼ぶ。
+        /// </summary>
+        public void ClearImageCache()
+        {
+            images = null;
+        }
         private Map Map => src.Map;
         // WinForms 版から移植したコードとの互換のため
         private SRC SRC => src;
@@ -152,6 +160,14 @@ namespace SRCRender
         /// </summary>
         public void SnapshotPng(Stream stream)
         {
+            Snapshot(stream, SKEncodedImageFormat.Png, 100);
+        }
+
+        /// <summary>
+        /// 現在の画面を format の画像として書き出す（VS Code 拡張の画面への転送など）。
+        /// </summary>
+        public void Snapshot(Stream stream, SKEncodedImageFormat format, int quality)
+        {
             lock (renderLock)
             {
                 if (disposed)
@@ -159,7 +175,7 @@ namespace SRCRender
                     return;
                 }
                 using (var image = SKImage.FromBitmap(frame))
-                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (var data = image.Encode(format, quality))
                 {
                     data.SaveTo(stream);
                 }

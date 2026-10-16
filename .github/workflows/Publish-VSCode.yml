@@ -4,7 +4,8 @@ name: Publish VS Code Extension
 # - タグ（v*）の push: .vsix を作って GitHub Release に添付し、Marketplace・Open VSX に出す。
 #   拡張の版（package.json）は SRC# 本体と別に管理し、公開済みの版なら飛ばす（--skip-duplicate）。
 # - 手動実行: publish（公開）か profile-id（Marketplace の publisher に加える ID を出す）。
-# - 版（package.json）のマイナーが奇数ならプレリリース、偶数なら正式版として出す。
+# - 版（package.json）のマイナーが 7 以上の奇数ならプレリリース、それ以外は正式版として出す。
+#   0.5.x は、プレリリースだと既存の利用者の版が切り替わらないため正式版で出す。
 # Marketplace へは Microsoft Entra ID のマネージド ID（GitHub Actions の OIDC）で認証する。
 # https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 
@@ -78,9 +79,9 @@ jobs:
           npm ci
           version=$(jq -r .version package.json)
           vsix="src-vscode-${version}.vsix"
-          # マイナーが奇数ならプレリリース
+          # マイナーが 7 以上の奇数ならプレリリース（0.5.x は正式版）
           minor=$(echo "$version" | cut -d. -f2)
-          if [ $((minor % 2)) -eq 1 ]; then PRE_RELEASE=1; else PRE_RELEASE=; fi
+          if [ "$minor" -ge 7 ] && [ $((minor % 2)) -eq 1 ]; then PRE_RELEASE=1; else PRE_RELEASE=; fi
           # package.json の package（README の相対リンクを SRC.Sharp/SRCSharpVSCode 基準で書き換える）
           npm run package -- ${PRE_RELEASE:+--pre-release} -o "$vsix"
           echo "vsix=$vsix" >> "$GITHUB_OUTPUT"

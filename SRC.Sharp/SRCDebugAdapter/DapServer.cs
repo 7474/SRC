@@ -21,14 +21,23 @@ namespace SRCDebugAdapter
         private const int LocalsReference = 1;
         private const int GlobalsReference = 2;
 
+        /// <summary>
+        /// 画面（最後に表示したフレーム）を PNG で返す独自のリクエスト。シナリオが終わる時は同じ名前のイベントで最後の画面を送る。
+        /// VS Code 拡張の画面のビューが使う
+        /// </summary>
+        public const string ScreenCommand = "srcsharpScreen";
+
         private readonly MessageStream stream;
         private int seq;
         private JsonNode launchArgs;
         private ScreenScenarioRunner runner;
         private EventDebugger debugger;
+        private InteractiveScreen interactive;
+        private HotReloader reloader;
         private readonly Dictionary<string, List<int>> pendingBreakpoints = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
         private Task session;
         private volatile bool disconnected;
+        private volatile bool sessionEnded;
 
         public DapServer(Stream input, Stream output)
         {
@@ -185,6 +194,16 @@ namespace SRCDebugAdapter
                     return null;
                 case "evaluate":
                     return Evaluate(args["expression"]?.GetValue<string>());
+                case ScreenCommand:
+                    return Screen();
+                case InteractiveScreen.InputCommand:
+                    RequireInteractive().Input(args);
+                    return null;
+                case HotReloader.ReloadCommand:
+                    return (reloader ?? throw new InvalidOperationException("シナリオを実行していません")).Request(args);
+                case InteractiveScreen.PromptResultCommand:
+                    RequireInteractive().PromptResult(args);
+                    return null;
                 case "terminate":
                 case "disconnect":
                     disconnected = true;
@@ -203,9 +222,15 @@ namespace SRCDebugAdapter
         {
             var program = Path.GetFullPath(launchArgs["program"].GetValue<string>());
             var script = launchArgs["script"]?.GetValue<string>();
-            var appPath = launchArgs["appPath"]?.GetValue<string>() ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(program);
+            // SRC 本体のフォルダ（Lib・Data\System・Bitmap などの共通の素材）。無ければシナリオのフォルダの親から探し、それも無ければシナリオのフォルダ
+            var scenarioRoot = SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(program);
+            var appPath = launchArgs["appPath"]?.GetValue<string>()
+                ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindAppPath(scenarioRoot)
+                ?? scenarioRoot;
             var stopOnEntry = launchArgs["stopOnEntry"]?.GetValue<bool>() ?? false;
             var maxSteps = launchArgs["maxSteps"]?.GetValue<int>() ?? 100000;
+            // .play スクリプトがあればそれで動かし、タブの操作は受けない
+            var isInteractive = (launchArgs["interactive"]?.GetValue<bool>() ?? false) && string.IsNullOrEmpty(script);
 
             runner = new ScreenScenarioRunner(appPath);
             debugger = new EventDebugger(runner.Session.SRC);
@@ -236,13 +261,27 @@ namespace SRCDebugAdapter
             };
             debugger.Resumed = () => runner.IsSuspended = false;
             runner.Session.SRC.Event.Debugger = debugger;
+            reloader = new HotReloader(runner, SendEventAsync);
+            if (isInteractive)
+            {
+                interactive = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused);
+                interactive.Start();
+            }
 
             session = Task.Run(() =>
             {
                 try
                 {
                     runner.Start(program);
-                    if (!string.IsNullOrEmpty(script))
+                    if (interactive != null)
+                    {
+                        // タブの操作で進める。シナリオが終わるか、デバッグを止めるまで待つ
+                        while (!runner.IsFinished && !disconnected)
+                        {
+                            Thread.Sleep(50);
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(script))
                     {
                         var play = new PlayScript(runner) { Trace = line => Output(line) };
                         play.Run(File.ReadAllLines(script));
@@ -263,6 +302,18 @@ namespace SRCDebugAdapter
                 }
                 finally
                 {
+                    // 終わった後はリクエストで画面を取れないため、最後の画面をイベントで送る
+                    try
+                    {
+                        SendEventAsync(ScreenCommand, ScreenBody(false)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        Output(ex.Message, "stderr");
+                    }
+                    interactive?.Dispose();
+                    reloader?.Dispose();
+                    sessionEnded = true;
                     _ = SendEventAsync("terminated", null);
                     runner.Dispose();
                 }
@@ -314,8 +365,53 @@ namespace SRCDebugAdapter
             return new JsonObject { ["result"] = value, ["variablesReference"] = 0 };
         }
 
+        private InteractiveScreen RequireInteractive()
+        {
+            return interactive ?? throw new InvalidOperationException("interactive で起動した時だけ使えます");
+        }
+
+        private JsonNode Screen()
+        {
+            return ScreenBody(runner != null && !sessionEnded);
+        }
+
+        /// <summary>画面の応答・イベントの本体。png は最後に表示したフレーム（base64）</summary>
+        private JsonObject ScreenBody(bool running)
+        {
+            var result = new JsonObject
+            {
+                ["running"] = running,
+                ["paused"] = debugger?.IsPaused ?? false,
+            };
+            if (runner == null || sessionEnded)
+            {
+                return result;
+            }
+            // 止まっている間はゲームスレッドが待っているため、描画の反映を待たずに最後のフレームを撮る
+            using (var png = new MemoryStream())
+            {
+                try
+                {
+                    runner.GUI.SnapshotPng(png);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // 終わった直後
+                    return result;
+                }
+                if (png.Length > 0)
+                {
+                    result["png"] = Convert.ToBase64String(png.ToArray());
+                }
+            }
+            return result;
+        }
+
         private void Shutdown()
         {
+            // 答えを待っている文字入力などを打ち切る
+            interactive?.Dispose();
+            reloader?.Dispose();
             debugger?.Terminate();
             if (runner != null)
             {

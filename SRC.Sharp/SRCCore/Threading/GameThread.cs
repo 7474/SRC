@@ -121,21 +121,37 @@ namespace SRCCore.Threading
             }
         }
 
+        private int depth;
+
+        /// <summary>
+        /// 実行中の処理が、待ちのループ（ProcessPending）から呼ばれたものでないか。ゲームスレッドの上でのみ意味を持つ。
+        /// true の間は、イベントやコマンドの処理の途中ではない（デバッガのホットリロードがセーブとロードをしてよい）。
+        /// </summary>
+        public bool IsTopLevel => IsCurrentThread && depth == 1;
+
         private void Execute(Action action)
         {
-            var handler = UnhandledException;
-            if (handler == null)
-            {
-                action();
-                return;
-            }
+            depth++;
             try
             {
-                action();
+                var handler = UnhandledException;
+                if (handler == null)
+                {
+                    action();
+                    return;
+                }
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    handler(this, new GameThreadExceptionEventArgs(ex));
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                handler(this, new GameThreadExceptionEventArgs(ex));
+                depth--;
             }
         }
     }

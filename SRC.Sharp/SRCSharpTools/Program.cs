@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,12 @@ namespace SRCSharpTools
             {
                 Console.Write(Strings.Usage);
                 return args.Length == 0 ? 2 : 0;
+            }
+            if (args[0] == "--version")
+            {
+                // VS Code 拡張が入っている版を調べるのに使う
+                Console.WriteLine(typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "");
+                return 0;
             }
             var (positional, options) = Parse(args.Skip(1));
             switch (args[0])
