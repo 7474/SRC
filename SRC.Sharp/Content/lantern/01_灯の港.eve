@@ -146,7 +146,7 @@ Line 240 244 450 190 RGB(255, 230, 140)
 DrawWidth 1
 Oval 240 244 16 0.6 RGB(255, 240, 160)
 # ランタン号
-PaintPicture Unit\OBJ_SailShip01.bmp 60 300 64 64 透過
+PaintPicture Unit\Lantern_Ship.bmp 60 300 64 64 透過
 DrawOption 通常
 FillStyle 透明
 # 題字
@@ -156,6 +156,9 @@ Font 44pt #fff4c0 Bold
 PaintString - 110 ランタン号
 Font 14pt #c0c8ff Regular
 PaintString - 175 ～ 煙の海の灯守り ～
+# 生成AIの利用の表示（README.md の「生成AIの利用について」）
+Font 9pt #c0c0d0 Regular
+PaintString - 455 本作は生成AIを使って作られています（詳しくは「あそびかた」）
 # メニュー
 Font 18pt #ffffff Bold
 PaintString 320 270 はじめから
@@ -197,6 +200,10 @@ Talk システム
 Talk システム
 インターミッションでは、よろず屋で装備を買ったり、訓練所でパイロットを鍛えたりできます。
 敵を倒して手に入る$(Term("資金"))をうまく使いましょう。
+Talk システム
+本作は生成AIを使って作られています。
+原案・シナリオ・データ・BGM は Claude（Anthropic）が作り、顔グラフィックとユニットの画像は PixelLab で生成しました。
+詳しくはシナリオのフォルダの README.md をご覧ください。
 End
 Return
 
@@ -207,13 +214,13 @@ Return
 StopBGM
 Call 章題 "第一話.灯の港"
 Center 8 7
-Create 味方 ランタン号 0 グスタフ 6 3 8
-Create 味方 灯機ホタル 0 ソラ 3 8 6
-Create 味方 灯機ツバメ 0 リオ 3 8 9
-Create 敵 煤機兵 0 煤兵(ザコ) 2 16 5
-Create 敵 煤機兵 0 煤兵(ザコ) 2 17 9
-Create 敵 煤機兵 0 煤兵(ザコ) 2 15 12
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 2 18 7
+Create 味方 ランタン号 0 グスタフ 10 3 8
+Create 味方 灯機ホタル 0 ソラ 7 8 6
+Create 味方 灯機ツバメ 0 リオ 7 8 9
+Create 敵 煤機兵 0 煤兵(ザコ) 6 16 5
+Create 敵 煤機兵 0 煤兵(ザコ) 6 17 9
+Create 敵 煤機兵 0 煤兵(ザコ) 6 15 12
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 6 18 7
 先陣 = UnitID(煤鴉兵(ザコ))
 Wait 5
 
@@ -264,11 +271,11 @@ Exit
 Talk 謎の少女 13 13
 た、助けて……！
 End
-Create 味方 祈り手 0 ミュウ 4 13 13
+Create 味方 祈り手 0 ミュウ 8 13 13
 Item 灯石の首飾り
 Equip ミュウ 灯石の首飾り
 Fix 灯石の首飾り
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 2 18 14
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 6 18 14
 ChangeMode ミュウ
 Center ミュウ
 Talk ミュウ

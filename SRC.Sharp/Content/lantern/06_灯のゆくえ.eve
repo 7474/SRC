@@ -119,7 +119,7 @@ For i = 1 To 6
   Circle x (y - 14) 5 RGB(255, 230, 120)
 Next
 FillStyle 透明
-PaintPicture Unit\OBJ_SailShip01.bmp 380 40 48 48 透過
+PaintPicture Unit\Lantern_Ship.bmp 380 40 48 48 透過
 Refresh
 Return
 
@@ -130,7 +130,7 @@ Return
 Local i 行 名簿 写し 数
 Show
 Cls RGB(8, 10, 30)
-Array 名簿 "原案・シナリオ・データ:Claude（SRC-Host）,BGM・顔グラフィック:シナリオのための自作,マップ・ユニット画像:SRC 汎用グラフィック集,効果音:SRC 汎用効果音集,エンジン:SRC#（SRC のC#版）" ","
+Array 名簿 "原案・シナリオ・データ・BGM:Claude（生成AI、SRC-Host）,顔グラフィック・ユニット画像:PixelLab（生成AI）,マップ画像:SRC 汎用グラフィック集,効果音:SRC 汎用効果音集,エンジン:SRC#（SRC のC#版）" ","
 CopyArray 名簿 写し
 数 = 0
 ForEach i In 写し

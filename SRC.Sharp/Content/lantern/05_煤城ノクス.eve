@@ -36,13 +36,13 @@ Launch グスタフ 11 18
 Center 11 15
 Organize 4 11 16 通常ユニット
 
-Create 敵 煤帝ノクス(第一形態) 0 ノクス 10 10 3
+Create 敵 煤帝ノクス(第一形態) 0 ノクス 12 10 3
 BossRank 1
 ChangeMode 固定
-Create 敵 煤機兵 0 煤兵(ザコ) 5 8 6
-Create 敵 煤機兵 0 煤兵(ザコ) 5 13 7
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 5 15 10
-Create 敵 黒鉄鴉 0 クロウ 10 11 6
+Create 敵 煤機兵 0 煤兵(ザコ) 10 8 6
+Create 敵 煤機兵 0 煤兵(ザコ) 10 13 7
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 10 15 10
+Create 敵 黒鉄鴉 0 クロウ 12 11 6
 StopBGM
 PlayMIDI lantern_boss.mid
 KeepBGM

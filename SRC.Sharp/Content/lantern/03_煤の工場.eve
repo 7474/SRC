@@ -28,14 +28,14 @@ Launch グスタフ 10 18
 Center 10 15
 Organize 3 10 16 通常ユニット
 
-Create 敵 煤炉 0 煤兵(ザコ) 5 13 2
+Create 敵 煤炉 0 煤兵(ザコ) 9 13 2
 ChangeMode 固定
-Create 敵 煤機兵 0 煤兵(ザコ) 4 12 5
-Create 敵 煤機兵 0 煤兵(ザコ) 4 15 6
-Create 敵 煤機兵 0 煤兵(ザコ) 4 7 7
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 4 4 9
-Create 敵 ススガラス 0 煤鴉兵(ザコ) 4 17 9
-Create 敵 灰狼 0 ヴォルフ 12 10 11
+Create 敵 煤機兵 0 煤兵(ザコ) 8 12 5
+Create 敵 煤機兵 0 煤兵(ザコ) 8 15 6
+Create 敵 煤機兵 0 煤兵(ザコ) 8 7 7
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 8 4 9
+Create 敵 ススガラス 0 煤鴉兵(ザコ) 8 17 9
+Create 敵 灰狼 0 ヴォルフ 10 10 11
 SetSkill ヴォルフ 煤の呪縛 -1
 
 Talk ヴォルフ
@@ -85,7 +85,7 @@ Cancel
 Exit
 
 ターン 2 味方:
-Create 敵 黒鉄鴉 0 クロウ 8 16 2
+Create 敵 黒鉄鴉 0 クロウ 10 16 2
 PlayMIDI lantern_boss.mid
 KeepBGM
 Center クロウ

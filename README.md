@@ -46,6 +46,15 @@
   - [規約（形式１）](http://www.src-srpg.jpn.org/hasei_kiyaku1.html)（[本リポジトリへの転記](src_hasei_kiyaku1.md)）
   - [規約（形式２）](http://www.src-srpg.jpn.org/hasei_kiyaku2.html)（[本リポジトリへの転記](src_hasei_kiyaku2.md)）
 
+## ライセンス
+
+- 全体を GPL-3.0（[LICENSE](./LICENSE)）とする。SRC# 本体とその周辺（ツール・テスト・ドキュメント・VS Code 拡張など）は、元の SRC の意向を尊重してコピーレフトにする
+- 例外として、元の SRC から派生していない遊べるシナリオと素材（`SRC.Sharp/Content`）は、コンテンツを [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)、プログラムを MIT で配布する。該当するフォルダに `LICENSE` を置くか、ファイルの先頭に書いている
+
+| パス | ライセンス |
+|---|---|
+| [SRC.Sharp/Content](./SRC.Sharp/Content) | CC0 1.0（`make.py` は MIT、一部は GPL-3.0。[内訳](./SRC.Sharp/Content/README.md#ライセンス)） |
+
 ## リポジトリの構成
 
 | パス | 内容 |

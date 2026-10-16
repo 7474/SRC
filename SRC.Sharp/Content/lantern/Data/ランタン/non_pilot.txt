@@ -7,7 +7,7 @@
 よろず屋ポポ, Lantern_Popo.bmp
 
 ドーラ教官
-ドーラ, -.bmp
+ドーラ, Lantern_Dora.bmp
 
 灯台の声
 灯台の声, -.bmp

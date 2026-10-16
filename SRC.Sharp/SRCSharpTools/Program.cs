@@ -107,6 +107,11 @@ namespace SRCSharpTools
             }
             var eve = Path.GetFullPath(paths[0]);
             options.TryGetValue("app-path", out var appPath);
+            // 相対パスのままだとスペシャルパワーデータ（Data\System\sp.txt）などが読み込まれないため、絶対パスにする
+            if (!string.IsNullOrEmpty(appPath))
+            {
+                appPath = Path.GetFullPath(appPath);
+            }
             options.TryGetValue("out", out var outDir);
             using (var runner = new ScreenScenarioRunner(appPath ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(eve)))
             {
