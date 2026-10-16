@@ -52,7 +52,8 @@ namespace SRCCore.Expressions.Functions
 
             if (_lastResults != null && _lastResults.MoveNext())
             {
-                str_result = _lastResults.Current;
+                // 元の SRC（VB の Dir$）と同じく、パスを除いたファイル名・フォルダ名を返す
+                str_result = Path.GetFileName(_lastResults.Current.TrimEnd('/', '\\'));
             }
             return ValueType.StringType;
         }

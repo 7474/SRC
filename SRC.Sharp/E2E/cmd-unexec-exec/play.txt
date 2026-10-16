@@ -1,0 +1,16 @@
+# ステージ1 の味方フェイズで Exec 幕間.eve → 幕間.eve から Exec ステージ2.eve 通常ステージ
+auto 60
+expect message ステージ1
+# 出撃中の味方パイロットに追加経験値（2×SP。テストパイロットの SP は 52）が入る
+expect message テスト 経験値 +104
+# Exec の前にエピローグイベントが実行され、ステージの終わりの処理で敵ユニットは消え、味方は待機になる。
+# Exec 以降のコマンドは実行されない（Exec後 は未定義のまま）
+expect message エピローグ
+expect message 幕間 味方=[待機] 敵=[] Exec後=[Exec後]
+# 通常ステージとして実行したファイルはプロローグ・スタート・味方フェイズ（ターン 1）と進む
+expect message ステージ2のプロローグ
+expect message ステージ2 味方=[待機]
+expect message ステージ2 ターン=[1]
+expect message 順序=[エピローグ>幕間>ステージ2>]
+expect finished
+expect error none

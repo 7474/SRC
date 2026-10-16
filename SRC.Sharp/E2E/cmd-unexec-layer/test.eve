@@ -1,0 +1,42 @@
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+# ChangeLayer: 上層レイヤーに地形を置く。通常（省略時）と情報限定は上層の地形が効き、画像限定は下層の地形のまま
+ChangeLayer 2 2 海 0
+ChangeLayer 3 3 海 0 情報限定
+ChangeLayer 4 4 海 0 画像限定
+ChangeLayer 5 5 海(ローカル) 0 通常
+A1 = Info(マップ, 2, 2, 地形名)
+A2 = Info(マップ, 3, 3, 地形名)
+A3 = Info(マップ, 4, 4, 地形名)
+A4 = Info(マップ, 5, 5, 地形名)
+A移動 = Info(マップ, 2, 2, 移動コスト)
+Talk システム
+変更=[$(A1)][$(A2)][$(A3)][$(A4)]
+End
+# ClearLayer x y: そのマスだけ。情報限定は情報だけを消し（下層の地形に戻る）、画像限定は画像だけを消す（上層の地形が残る）
+ClearLayer 2 2
+ClearLayer 5 5 情報限定
+ClearLayer 3 3 画像限定
+B1 = Info(マップ, 2, 2, 地形名)
+B2 = Info(マップ, 5, 5, 地形名)
+B3 = Info(マップ, 3, 3, 地形名)
+B4 = Info(マップ, 4, 4, 地形名)
+B移動 = Info(マップ, 2, 2, 移動コスト)
+Talk システム
+個別消去=[$(B1)][$(B2)][$(B3)][$(B4)]
+End
+# ClearLayer 情報限定（座標省略）: マップ全体の上層の情報を消す
+ClearLayer 情報限定
+C1 = Info(マップ, 3, 3, 地形名)
+# ClearLayer（引数なし）: マップ全体のレイヤーを消す
+ChangeLayer 6 6 海 0
+D0 = Info(マップ, 6, 6, 地形名)
+ClearLayer
+D1 = Info(マップ, 6, 6, 地形名)
+Talk システム
+全体消去=[$(C1)][$(D0)][$(D1)]
+End
+Quit

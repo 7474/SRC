@@ -1,0 +1,16 @@
+# ChangeLayer / ClearLayer の各オプションで、マスの地形（Info(マップ, x, y, 地形名) / 移動コスト）がどう変わるかを確かめる
+wait message 変更=
+snapshot changelayer
+# 通常（省略時）の上層の海は移動コストにも効く（平地 1 → 海 2）
+expect eval A移動 = 2
+auto 30
+# ClearLayer x y でレイヤーを消すと下層の平地に戻る
+expect eval B移動 = 1
+# ChangeLayer: 省略時・通常・情報限定は上層の地形（海）、画像限定は下層の地形（平地）。「(ローカル)」は取り除いて地形名を探す
+expect message 変更=[海][海][平地][海]
+# ClearLayer x y: 省略時はレイヤーを丸ごと、情報限定は情報だけ消して平地に戻る。画像限定は画像だけ消すので海のまま。他のマスは変わらない
+expect message 個別消去=[平地][平地][海][平地]
+# ClearLayer 情報限定（全体）で残っていた海の情報が消え、ClearLayer（全体）で新しく置いたレイヤーも消える
+expect message 全体消去=[平地][海][平地]
+expect finished
+expect error none

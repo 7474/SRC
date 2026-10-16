@@ -1,0 +1,53 @@
+# 自作のインターミッション（幕間.eve）から SaveData と CallIntermissionCommand を呼ぶ
+wait message ステージ1
+key Enter
+wait message 幕間 保存=
+# SaveData 保存.src: シナリオフォルダに 保存.src ができる（Dir はファイル名「保存.src」を返す）
+expect eval Len(Dir("保存.src")) = 6
+expect eval 保存あり = 6
+# 書かれたセーブデータにパイロットとユニットが入っている
+expect eval セーブにパイロット > 0
+expect eval セーブにユニット > 0
+# SaveData（ファイル名なし）: 保存先の選択がキャンセルされたのでセーブされない
+expect eval 選択セーブあり = 0
+key Enter
+# CallIntermissionCommand ユニットの強化: 改造するユニットを選ぶリスト（資金つき）を出す
+wait list ユニット選択： 資金
+snapshot rankup
+key Escape
+wait message ユニットの強化の後
+key Enter
+# 機体改造（ユニットの強化の別名）も同じリストを出す
+wait list ユニット選択： 資金
+key Escape
+wait message 機体改造の後
+key Enter
+# 乗り換え: パイロットを選ぶリストを出す
+wait list パイロット
+snapshot exchange-unit
+key Escape
+wait message 乗り換えの後
+key Enter
+# アイテム交換: アイテムを交換するユニットを選ぶリストを出す
+wait list アイテムを交換するユニットを選択
+snapshot exchange-item
+key Escape
+wait message アイテム交換の後
+key Enter
+# 換装: 換装できるユニットを選ぶリストを出す（換装できるユニットはいない）
+wait list ユニット選択
+key Escape
+wait message 換装の後
+key Enter
+wait message 幕間の確認
+# CallIntermissionCommand データセーブ: 保存先の選択がキャンセルされたのでセーブされない
+expect eval データセーブあり = 0
+key Enter
+# CallIntermissionCommand ユニットステータス: ステータス表示用のシナリオ（Lib\ユニットステータス表示.eve）に切り替わり、
+# 呼び出したイベントの続きは実行されない
+wait ready
+snapshot unit-status
+# ステータス表示のマップにはテスト機が並ぶ
+expect eval InStr(Info(マップ, 1, 1, ユニットＩＤ), "テスト機") = 1
+expect eval IsVarDefined(ユニットステータス後) = 0
+expect error none

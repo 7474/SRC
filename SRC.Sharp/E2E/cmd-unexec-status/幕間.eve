@@ -1,0 +1,8 @@
+# 自作のインターミッション。CallIntermissionCommand パイロットステータス で本体のパイロットステータス表示を呼び出す
+プロローグ:
+Talk システム
+幕間 乗機=[$(Unit(テストパイロット))]
+End
+CallIntermissionCommand パイロットステータス
+パイロットステータス後 = 1
+Exit

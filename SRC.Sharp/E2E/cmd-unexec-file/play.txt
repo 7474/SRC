@@ -1,0 +1,20 @@
+# Write で書いたファイルを Read で読み戻し、カンマ区切りの CSV も Read で読む
+wait message 値1=
+# Write → Read: 引用符が外れ、数値も文字列として読める。引用符の中のカンマは区切りにならない
+expect eval 値2 = 123
+expect eval 値終端 = 1
+# Write は引数ごとに引用符で囲んだ 1 行を書く（LineRead で生の行を読む）
+expect eval Len(行1) = 5
+expect eval InStr(行1, "ABC") = 2
+expect eval Len(行2) = 5
+# Read: 前後の空白を除いたカンマ区切りのフィールド、改行区切り、ファイルの末尾
+expect eval 欄2 = 12
+expect eval Len(欄2) = 2
+expect eval Len(欄4) = 11
+expect eval 欄終端 = 1
+auto 30
+expect message 値1=[ABC] 値2=[123] 値3=[カンマ,入り] 値4=[末尾]
+expect message 行1=["ABC"] 行2=["123"] 行3=["カンマ,入り"]
+expect message 欄1=[abc] 欄2=[12] 欄3=[x,y] 欄4=[second line]
+expect finished
+expect error none

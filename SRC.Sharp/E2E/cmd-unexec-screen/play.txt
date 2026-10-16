@@ -1,0 +1,31 @@
+# ShowImage・ClearImage・PaintSysString の各段階で Wait Click で止め、スナップショットを撮る
+wait click
+expect eval 段階 = 1
+# ShowImage（原寸）
+snapshot showimage
+key Enter
+wait click
+expect eval 段階 = 2
+# ClearImage で画像が消える
+snapshot clearimage
+key Enter
+wait click
+expect eval 段階 = 3
+# ShowImage 128 64（拡大）
+snapshot showimage-size
+key Enter
+wait click
+expect eval 段階 = 4
+# PaintSysString 6 6 1234
+snapshot paintsysstring
+key Enter
+wait click
+expect eval 段階 = 5
+# PaintSysString 8 6 5678 非同期 → Refresh で両方の文字列が出る
+snapshot paintsysstring-async
+key Enter
+auto 30
+# 最後まで進んでいる
+expect message 描画の確認=[6]
+expect finished
+expect error none

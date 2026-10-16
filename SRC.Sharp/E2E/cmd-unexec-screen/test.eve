@@ -1,0 +1,33 @@
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+# ShowImage: 画像を画面中央に原寸で表示する
+ShowImage テスト画像.png
+段階 = 1
+Wait Click
+# ClearImage: 表示した画像を消す
+ClearImage
+段階 = 2
+Wait Click
+# ShowImage 幅 高さ: 大きさを指定して表示する
+ShowImage テスト画像.png 128 64
+段階 = 3
+Wait Click
+ClearImage
+# PaintSysString: マップ座標のマスにシステム用の文字列を表示する
+PaintSysString 6 6 1234
+段階 = 4
+Wait Click
+# PaintSysString 非同期: 画面を更新しないので Refresh で反映する
+PaintSysString 8 6 5678 非同期
+段階 = 5
+Refresh
+Wait Click
+ClearPicture
+段階 = 6
+Talk システム
+描画の確認=[$(段階)]
+End
+Quit
