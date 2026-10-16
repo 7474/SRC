@@ -59,6 +59,7 @@ export class ScreenView implements vscode.Disposable {
   private unsupported = false;
   private image: Image | undefined;
   private status: 'idle' | 'running' | 'paused' | 'ended' = 'idle';
+  private reload: { text: string; waiting: boolean; error: boolean } | undefined;
   private readonly disposables: vscode.Disposable[] = [];
 
   constructor() {
@@ -68,6 +69,7 @@ export class ScreenView implements vscode.Disposable {
           return;
         }
         this.session = s;
+        this.reload = undefined;
         this.interactive = isInteractive(s);
         this.unsupported = false;
         this.status = 'running';
@@ -157,6 +159,10 @@ export class ScreenView implements vscode.Disposable {
         void this.refresh();
       } else if (m.type === 'save') {
         void this.save();
+      } else if (m.type === 'reload') {
+        void vscode.commands.executeCommand('srcsharp.reload');
+      } else if (m.type === 'cancelReload') {
+        void vscode.commands.executeCommand('srcsharp.cancelReload');
       } else if (m.type === 'start') {
         void vscode.commands.executeCommand('srcsharp.runFile');
       }
@@ -257,7 +263,14 @@ export class ScreenView implements vscode.Disposable {
       src: this.dataUrl(),
       interactive: this.interactive && this.status !== 'ended',
       unsupported: this.unsupported,
+      reload: this.status === 'ended' ? undefined : this.reload,
     });
+  }
+
+  /** ホットリロードの状態を出す（undefined で消す） */
+  setReloadStatus(reload: { text: string; waiting: boolean; error: boolean } | undefined): void {
+    this.reload = reload;
+    this.post();
   }
 
   private async save(): Promise<void> {
@@ -300,8 +313,13 @@ export class ScreenView implements vscode.Disposable {
       `
 <div class="bar">
   <span class="status" id="status"></span>
+  <button class="secondary" id="reload" title="イベント・データ・画像を、プレイの状態を保ったまま読み直す">読み直す</button>
   <button class="secondary" id="refresh">取り直す</button>
   <button class="secondary" id="save" disabled>画像を保存</button>
+</div>
+<div class="bar" id="reloadBar" hidden>
+  <span class="status" id="reloadStatus"></span>
+  <button class="secondary" id="cancelReload" hidden>取りやめる</button>
 </div>
 <div id="unsupported" class="error" hidden>この srcsharp は画面の取得に対応していません。操作パネルの「srcsharp を入れる／更新する」で更新してください。</div>
 <img class="screen" id="screen" alt="SRC の画面" tabindex="0" draggable="false" hidden>
@@ -317,6 +335,8 @@ let interactive = false;
 document.getElementById('refresh').addEventListener('click', () => vscode.postMessage({ type: 'refresh' }));
 document.getElementById('save').addEventListener('click', () => vscode.postMessage({ type: 'save' }));
 document.getElementById('start').addEventListener('click', () => vscode.postMessage({ type: 'start' }));
+document.getElementById('reload').addEventListener('click', () => vscode.postMessage({ type: 'reload' }));
+document.getElementById('cancelReload').addEventListener('click', () => vscode.postMessage({ type: 'cancelReload' }));
 
 function show(src) {
   if (!src) return;
@@ -341,6 +361,14 @@ window.addEventListener('message', (e) => {
   document.getElementById('unsupported').hidden = !m.unsupported;
   show(m.src);
   document.getElementById('refresh').disabled = interactive || m.status === 'idle' || m.status === 'ended';
+  document.getElementById('reload').disabled = m.status === 'idle' || m.status === 'ended';
+  document.getElementById('reloadBar').hidden = !m.reload;
+  if (m.reload) {
+    const r = document.getElementById('reloadStatus');
+    r.textContent = m.reload.text;
+    r.className = 'status ' + (m.reload.error ? 'error' : 'muted');
+    document.getElementById('cancelReload').hidden = !m.reload.waiting;
+  }
 });
 
 // 画面の座標（拡大・縮小を戻す）

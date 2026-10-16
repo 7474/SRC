@@ -30,6 +30,7 @@ interface Values {
   appPath: string;
   language: string;
   screenAutoOpen: boolean;
+  hotReload: string;
 }
 
 type Message =
@@ -72,6 +73,7 @@ export class SettingsView implements vscode.Disposable {
       appPath: config.get<string>('appPath', ''),
       language: config.get<string>('language', ''),
       screenAutoOpen: config.get<boolean>('screen.autoOpen', true),
+      hotReload: config.get<string>('hotReload', 'onChange'),
     };
   }
 
@@ -106,6 +108,7 @@ export class SettingsView implements vscode.Disposable {
         await config.update('appPath', v.appPath.trim() || undefined, target);
         await config.update('language', v.language || undefined, target);
         await config.update('screen.autoOpen', v.screenAutoOpen ? undefined : false, target);
+        await config.update('hotReload', v.hotReload === 'onChange' ? undefined : v.hotReload, target);
         if (v.appPath.trim() && !isAppFolder(v.appPath.trim())) {
           vscode.window.showWarningMessage(`SRC 本体のフォルダ ${v.appPath} に Lib も Data/System もありません。`);
         }
@@ -186,6 +189,16 @@ label.check { display: flex; gap: 6px; align-items: center; }
 <h2>画面</h2>
 <label class="check"><input type="checkbox" id="screenAutoOpen"> デバッグを始めたら画面のビューを開く</label>
 
+<h2>ホットリロード</h2>
+<div class="row">
+  <select id="hotReload" aria-label="ホットリロード">
+    <option value="onChange">ファイルが変わったら読み直す</option>
+    <option value="manual">「読み直す」を押した時だけ</option>
+    <option value="off">読み直さない</option>
+  </select>
+</div>
+<p class="help muted">デバッグ中のシナリオのイベント・データ・画像を、プレイの状態を保ったまま読み直します。イベントとデータは、味方フェイズのマップでコマンドを待つ時に読み直します。</p>
+
 <div class="actions">
   <label>保存先
     <select id="target">
@@ -208,6 +221,7 @@ function setValues(v) {
   if (v.appPath !== undefined) $('appPath').value = v.appPath;
   if (v.language !== undefined) $('language').value = v.language;
   if (v.screenAutoOpen !== undefined) $('screenAutoOpen').checked = v.screenAutoOpen;
+  if (v.hotReload !== undefined) $('hotReload').value = v.hotReload;
 }
 window.addEventListener('message', (e) => {
   const m = e.data;
@@ -252,6 +266,7 @@ $('save').addEventListener('click', () => vscode.postMessage({
     appPath: $('appPath').value,
     language: $('language').value,
     screenAutoOpen: $('screenAutoOpen').checked,
+    hotReload: $('hotReload').value,
   },
 }));
 vscode.postMessage({ type: 'ready' });

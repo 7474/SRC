@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
+import { HotReload } from './hotReload';
 import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
@@ -109,7 +110,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   current = controller;
   const screen = new ScreenView();
   const settings = new SettingsView(controller);
-  context.subscriptions.push(output, controller, screen, settings);
+  const hotReload = new HotReload(output, screen);
+  context.subscriptions.push(output, controller, screen, settings, hotReload);
 
   // 状態バー
   const status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
@@ -258,6 +260,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.commands.registerCommand('srcsharp.runFile', () => startEvent(false)),
     vscode.commands.registerCommand('srcsharp.debugFile', () => startEvent(true)),
     vscode.commands.registerCommand('srcsharp.showScreen', () => screen.show()),
+    vscode.commands.registerCommand('srcsharp.reload', () => hotReload.request()),
+    vscode.commands.registerCommand('srcsharp.cancelReload', () => hotReload.cancel()),
     vscode.commands.registerCommand('srcsharp.openSettings', () => settings.show()),
     vscode.commands.registerCommand('srcsharp.pickAppPath', () => pickAppPath()),
     vscode.commands.registerCommand('srcsharp.restartServer', () => controller.startClient()),

@@ -91,6 +91,17 @@
           "enumDescriptions": ["指定しない（環境変数 SRCSHARP_LANG か日本語）", "日本語", "English", "简体中文", "繁體中文", "한국어", "Français", "Deutsch", "Español", "Português (Brasil)", "Italiano", "Русский", "Polski", "Türkçe", "ไทย", "Українська", "OS の言語に従う"],
           "description": "srcsharp の表示言語（lint・バランスレポート・自動プレイの出力）。環境変数 SRCSHARP_LANG として渡す"
         },
+        "srcsharp.hotReload": {
+          "type": "string",
+          "default": "onChange",
+          "enum": ["onChange", "manual", "off"],
+          "enumDescriptions": [
+            "シナリオのフォルダと SRC 本体のフォルダのイベント・データ・画像が変わったら読み直す",
+            "「SRC#: 読み直す」（画面のタブ・デバッグのツールバー）で読み直す",
+            "読み直さない"
+          ],
+          "description": "デバッグ中のシナリオを、プレイの状態を保ったまま読み直す（ホットリロード）。イベントとデータは、味方フェイズのマップでコマンドを待つ時に読み直す"
+        },
         "srcsharp.screen.autoOpen": {
           "type": "boolean",
           "default": true,
@@ -162,6 +173,8 @@
       { "command": "srcsharp.runFile", "title": "開いているイベントを実行（画面で操作）", "category": "SRC#", "icon": "$(play)" },
       { "command": "srcsharp.debugFile", "title": "開いているイベントをデバッグ", "category": "SRC#", "icon": "$(debug-alt)" },
       { "command": "srcsharp.showScreen", "title": "画面を表示", "category": "SRC#", "icon": "$(device-desktop)" },
+      { "command": "srcsharp.reload", "title": "読み直す（状態を保つ）", "category": "SRC#", "icon": "$(flame)" },
+      { "command": "srcsharp.cancelReload", "title": "読み直しを取りやめる", "category": "SRC#" },
       { "command": "srcsharp.openSettings", "title": "設定を開く", "category": "SRC#", "icon": "$(gear)" },
       { "command": "srcsharp.installServer", "title": "srcsharp を入れる／更新する", "category": "SRC#", "icon": "$(cloud-download)" },
       { "command": "srcsharp.pickAppPath", "title": "SRC 本体のフォルダを選ぶ", "category": "SRC#" },
@@ -175,6 +188,10 @@
         { "command": "srcsharp.runFile", "when": "resourceLangId == src-eve", "group": "navigation@1" },
         { "command": "srcsharp.debugFile", "when": "resourceLangId == src-eve", "group": "navigation@2" }
       ],
+      "debug/toolBar": [
+        { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
+        { "command": "srcsharp.showScreen", "when": "debugType == srcsharp" }
+      ],
       "view/title": [
         { "command": "srcsharp.showScreen", "when": "view == srcsharp.panel", "group": "navigation@1" },
         { "command": "srcsharp.openSettings", "when": "view == srcsharp.panel", "group": "navigation@2" },
@@ -183,7 +200,9 @@
       "commandPalette": [
         { "command": "srcsharp.runFile", "when": "editorLangId == src-eve" },
         { "command": "srcsharp.debugFile", "when": "editorLangId == src-eve" },
-        { "command": "srcsharp.play", "when": "editorLangId == src-eve" }
+        { "command": "srcsharp.play", "when": "editorLangId == src-eve" },
+        { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
+        { "command": "srcsharp.cancelReload", "when": "debugType == srcsharp" }
       ]
     }
   },

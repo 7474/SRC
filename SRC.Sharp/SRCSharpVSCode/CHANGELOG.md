@@ -5,6 +5,7 @@
 - Play the debugged scenario in the "SRC# 画面" tab (`interactive` launch attribute, used by the run buttons, F5 and the launch.json template): frames are sent from the debug adapter, and clicks, keys, the mouse wheel, text input (`Input`) and file dialogs are passed to the scenario. No sound. Breakpoints and stepping work as before.
 - Without `interactive`, show the game screen, refreshed when the debugger stops and when the scenario ends, and every 0.5 seconds while running.
 - Both require a srcsharp that supports the screen requests (later than 0.5.1).
+- Hot reload (`srcsharp.hotReload`): when event files, data or images of the debugged scenario change, reload them keeping the play state. Events and data are reloaded while the player phase waits for a map command, by saving the state like a quick save, reloading, and restoring it like a quick load. Events and data are checked first and not reloaded if they have errors. Images are reloaded at once. Reload manually from the screen tab or the debug toolbar.
 - Pass `srcsharp.appPath` to the debugger, so the scenario loads the SRC folder's common files (Lib, Data/System, Bitmap).
 - Add the SRC# control panel to the activity bar: status of srcsharp, the language server and the SRC folder, and buttons to run, debug, show the screen, lint, make the balance report and open the settings.
 - Add a settings page (`SRC#: 設定を開く`) to set the srcsharp path, its arguments, the SRC folder and the display language with a form.

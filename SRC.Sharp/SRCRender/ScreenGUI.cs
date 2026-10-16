@@ -84,6 +84,14 @@ namespace SRCRender
         public ScreenRenderer Renderer => renderer;
 
         private ImageCache Images => images ?? (images = new ImageCache(src));
+
+        /// <summary>
+        /// 読み込んだ画像を捨てる。次に描く時にファイルから読み直す（デバッガのホットリロード用）。ゲームスレッドで呼ぶ。
+        /// </summary>
+        public void ClearImageCache()
+        {
+            images = null;
+        }
         private Map Map => src.Map;
         // WinForms 版から移植したコードとの互換のため
         private SRC SRC => src;

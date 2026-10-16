@@ -157,6 +157,85 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        private static void CopyDirectory(string from, string to)
+        {
+            foreach (var dir in System.IO.Directory.GetDirectories(from, "*", System.IO.SearchOption.AllDirectories))
+            {
+                System.IO.Directory.CreateDirectory(dir.Replace(from, to));
+            }
+            foreach (var file in System.IO.Directory.GetFiles(from, "*", System.IO.SearchOption.AllDirectories))
+            {
+                System.IO.File.Copy(file, file.Replace(from, to), true);
+            }
+        }
+
+        private static JsonNode WaitReload(ProtocolClient client, string status)
+        {
+            return client.WaitFor(x => x["type"]?.GetValue<string>() == "event"
+                && x["event"]?.GetValue<string>() == HotReloader.ReloadEvent
+                && x["body"]?["status"]?.GetValue<string>() == status, "読み直し: " + status, 60);
+        }
+
+        [TestMethod]
+        public void Dap_HotReloadKeepsStateAndReloadsEventsAndData()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                // 味方フェイズのマップまで進むシナリオ（E2E の battle-basic）
+                var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+                while (!System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "SRC.Sharp.sln")))
+                {
+                    dir = dir.Parent;
+                }
+                CopyDirectory(System.IO.Path.Combine(dir.FullName, "E2E", "battle-basic"), scenario.Root);
+                var eve = System.IO.Path.Combine(scenario.Root, "test.eve");
+                var robot = System.IO.Path.Combine(scenario.Root, "Data", "テスト", "robot.txt");
+                var server = new DapServer(client.ServerInput, client.ServerOutput);
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["adapterID"] = "srcsharp" });
+                Request(client, "launch", new JsonObject { ["program"] = eve, ["appPath"] = scenario.Root, ["interactive"] = true });
+                Request(client, "configurationDone");
+
+                // 「戦闘開始」のメッセージを送る前に頼むと、マップでコマンドを待つまで待つ
+                System.Threading.Thread.Sleep(1500);
+                var original = System.IO.File.ReadAllText(eve);
+                var lines = original.TrimEnd('\n').Split('\n').ToList();
+                lines.AddRange(new[] { "", "再開:", "Set リロード確認 1", "Exit" });
+                System.IO.File.WriteAllText(eve, string.Join("\n", lines) + "\n");
+                System.IO.File.WriteAllText(robot, System.IO.File.ReadAllText(robot).Replace("1000, 100, 600, 60", "1500, 100, 600, 60"));
+                Request(client, "setBreakpoints", new JsonObject
+                {
+                    ["source"] = new JsonObject { ["path"] = eve },
+                    ["breakpoints"] = new JsonArray { new JsonObject { ["line"] = lines.Count - 1 } },
+                });
+                Request(client, HotReloader.ReloadCommand, new JsonObject { ["events"] = true, ["data"] = true });
+                WaitReload(client, "waiting");
+                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "down", ["keyCode"] = 13 });
+                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "up", ["keyCode"] = 13 });
+
+                // 読み直したイベントの「再開」が動く。データも読み直している
+                var stopped = WaitEvent(client, "stopped");
+                Assert.AreEqual("breakpoint", stopped["body"]["reason"].GetValue<string>());
+                Assert.AreEqual("1500", Request(client, "evaluate", new JsonObject { ["expression"] = "Info(ユニットデータ, テスト機, 最大ＨＰ)" })["result"].GetValue<string>());
+                // マップにいるユニットは残り、新しいデータで動く
+                Assert.AreEqual("1500", Request(client, "evaluate", new JsonObject { ["expression"] = "Info(ユニット, テスト機, 最大ＨＰ)" })["result"].GetValue<string>());
+                Request(client, "continue", new JsonObject { ["threadId"] = 1 });
+                var reloaded = WaitReload(client, "reloaded");
+                StringAssert.Contains(reloaded["body"]["message"].GetValue<string>(), "イベント");
+
+                // エラーのあるイベントは読み直さない
+                System.IO.File.WriteAllText(eve, original + "\nIf x = 1 Then\n");
+                Request(client, HotReloader.ReloadCommand, new JsonObject { ["events"] = true });
+                var failed = WaitReload(client, "failed");
+                Assert.IsTrue(failed["body"]["diagnostics"].AsArray().Count > 0, failed.ToJsonString());
+
+                Request(client, "disconnect");
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
         [TestMethod]
         public void Dap_StopsOnEventError()
         {

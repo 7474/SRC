@@ -33,6 +33,7 @@ namespace SRCDebugAdapter
         private ScreenScenarioRunner runner;
         private EventDebugger debugger;
         private InteractiveScreen interactive;
+        private HotReloader reloader;
         private readonly Dictionary<string, List<int>> pendingBreakpoints = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
         private Task session;
         private volatile bool disconnected;
@@ -198,6 +199,8 @@ namespace SRCDebugAdapter
                 case InteractiveScreen.InputCommand:
                     RequireInteractive().Input(args);
                     return null;
+                case HotReloader.ReloadCommand:
+                    return (reloader ?? throw new InvalidOperationException("シナリオを実行していません")).Request(args);
                 case InteractiveScreen.PromptResultCommand:
                     RequireInteractive().PromptResult(args);
                     return null;
@@ -258,6 +261,7 @@ namespace SRCDebugAdapter
             };
             debugger.Resumed = () => runner.IsSuspended = false;
             runner.Session.SRC.Event.Debugger = debugger;
+            reloader = new HotReloader(runner, SendEventAsync);
             if (isInteractive)
             {
                 interactive = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused);
@@ -308,6 +312,7 @@ namespace SRCDebugAdapter
                         Output(ex.Message, "stderr");
                     }
                     interactive?.Dispose();
+                    reloader?.Dispose();
                     sessionEnded = true;
                     _ = SendEventAsync("terminated", null);
                     runner.Dispose();
@@ -406,6 +411,7 @@ namespace SRCDebugAdapter
         {
             // 答えを待っている文字入力などを打ち切る
             interactive?.Dispose();
+            reloader?.Dispose();
             debugger?.Terminate();
             if (runner != null)
             {
