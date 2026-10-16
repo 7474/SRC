@@ -145,7 +145,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
             Assert.IsTrue(t.HP < 5000);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("", "標的機は攻撃をかわした。")]
         [DataRow("防御", "標的機は防御行動をとったが、攻撃は外れた。")]
         public void Attack_Miss_MessageDependsOnDefenseMode(string defMode, string expected)
@@ -368,7 +368,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         }
 
         // ダメージを受けると睡眠・凍結が解除される
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("睡眠", "標的機は眠りから覚めた。")]
         [DataRow("凍結", "標的機は凍結状態から開放された。")]
         public void Attack_Damage_ClearsSleepAndFreeze(string condition, string message)
@@ -483,7 +483,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         }
 
         // 武器名に応じて攻撃メッセージの言い回しが変わる
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ミサイル", "実", "攻撃機は[ミサイル]を発射した。;")]
         [DataRow("ファイアブレス", "", "攻撃機は[ファイアブレス]を放った。;")]
         [DataRow("体当たり攻撃", "突", "攻撃機は[体当たり攻撃]をかけた。;")]
@@ -598,7 +598,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         }
 
         // 盗属性：盗みに失敗した場合、すかんぴんかどうかでメッセージが変わる
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(false, "標的機は素早く持ち物を守った。")]
         [DataRow(true, "標的機は盗める物を持っていなかった。")]
         public void Attack_StealFailed_Message(bool penniless, string expected)
