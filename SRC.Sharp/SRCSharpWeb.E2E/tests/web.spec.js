@@ -105,6 +105,12 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await testInfo.attach('menu', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
+  // 実寸（720 ピクセル）で表示しているときは補間しない。縮小するときは補間する
+  await expect(page.locator('#screen')).toHaveClass(/pixelated/);
+  await page.setViewportSize({ width: 600, height: 800 });
+  await expect(page.locator('#screen')).not.toHaveClass(/pixelated/);
+  await page.setViewportSize({ width: 800, height: 800 });
+  await expect(page.locator('#screen')).toHaveClass(/pixelated/);
   await expect.poll(() => debugState(page)).toContain('test.eve');
   await expectAdvancesWithEnter(page);
   await expect(page).toHaveTitle(/SRC#Web/);
