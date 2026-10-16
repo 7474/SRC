@@ -19,6 +19,9 @@ expect eval if11 = 1
 expect eval if12 = 1
 expect eval if15 = 1
 expect eval if16 = 1
+# 「$(v)」は式の中では置き換わらない（元の SRC と同じ。#1218）
+expect eval IsVarDefined(if13) = 0
+expect eval if14 = 1
 # ElseIf のパイロット名・Not パイロット名
 expect eval if17 = 3
 # 入れ子

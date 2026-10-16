@@ -212,11 +212,23 @@ namespace SRCAuthoring.Tests
                 });
                 Request(client, HotReloader.ReloadCommand, new JsonObject { ["events"] = true, ["data"] = true });
                 WaitReload(client, "waiting");
-                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "down", ["keyCode"] = 13 });
-                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "up", ["keyCode"] = 13 });
 
                 // 読み直したイベントの「再開」が動く。データも読み直している
-                var stopped = WaitEvent(client, "stopped");
+                // メッセージが出る前に押したキーは捨てられるため、止まるまで押し直す（遅い環境では 1.5 秒で出ていないことがある）
+                JsonNode stopped = null;
+                for (var i = 0; stopped == null && i < 30; i++)
+                {
+                    Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "down", ["keyCode"] = 13 });
+                    Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "up", ["keyCode"] = 13 });
+                    try
+                    {
+                        stopped = client.WaitFor(x => x["type"]?.GetValue<string>() == "event" && x["event"]?.GetValue<string>() == "stopped", "stopped イベント", 2);
+                    }
+                    catch (TimeoutException)
+                    {
+                    }
+                }
+                Assert.IsNotNull(stopped, "stopped イベントが来ません");
                 Assert.AreEqual("breakpoint", stopped["body"]["reason"].GetValue<string>());
                 Assert.AreEqual("1500", Request(client, "evaluate", new JsonObject { ["expression"] = "Info(ユニットデータ, テスト機, 最大ＨＰ)" })["result"].GetValue<string>());
                 // マップにいるユニットは残り、新しいデータで動く
