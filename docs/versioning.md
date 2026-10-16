@@ -10,7 +10,7 @@ SRC# のバージョンの付け方と、リリースの手順。
 |---|---|---|---|
 | アプリ（プレイできる SRC としての版） | SRC#Form（`SRCSharpForm`）・SRC#Avalonia・SRC#Web・データビューア（`SRCTestBlazor`） | `3.<マイナー>.<パッチ>` | 3.5.0 |
 | ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・SRCDebugAdapter・srcsharp（`SRCSharpTools`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
-| VS Code 拡張 | `SRCSharpVSCode`（Marketplace の `koudenpa.src-vscode`） | `0.<マイナー>.<パッチ>`（`package.json` の `version`。ほかとは別に上げる） | 0.5.0 |
+| VS Code 拡張 | `SRCSharpVSCode`（Marketplace の `koudenpa.src-vscode`） | `0.<マイナー>.<パッチ>`（`package.json` の `version`。ライブラリと同じ版にする） | 0.5.2 |
 
 - **メジャー**: 2 までを元の SRC（VB 版）とみなし、3 を SRC# のメジャーバージョンとする。ライブラリは API が固まるまで 0
 - **マイナー**: 元の SRC にならい、奇数を開発版とする。5 が実質の初版（4 はそれを参照しているシナリオなどがあるため使わない）
@@ -54,7 +54,7 @@ SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたた�
 
 ### VS Code 拡張
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.1 からは正式版で出す。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.2 からは正式版で出す。0.5.2 から版をライブラリ（srcsharp）と合わせる（0.5.1 は出していない）。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
 
 `.github/workflows/Publish-VSCode.yml` が次のことをする。
 
