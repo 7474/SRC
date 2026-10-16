@@ -14,6 +14,7 @@ namespace SRCRender.Tests
     /// 表示言語の切り替え（UiLanguage・Resources/Strings.resx）。
     /// </summary>
     [TestClass]
+    [DoNotParallelize]
     public class UiLanguageTests
     {
         private CultureInfo savedUICulture;

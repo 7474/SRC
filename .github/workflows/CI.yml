@@ -13,7 +13,8 @@ on:
 #       - SRC.Sharp/**
 
 jobs:
-  # SRCCore / SRCRender / SRCSound / SRC#Avalonia がプラットフォーム非依存であることを確認する
+  # SRCCore / SRCRender がプラットフォーム非依存であることを確認する
+  # （所要時間を縮めるため、ツール・SRC#Web は別のジョブで並べて動かす）
   test-srccore-linux:
     runs-on: ubuntu-24.04
 
@@ -33,17 +34,48 @@ jobs:
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
+    # カバレッジの収集は後処理に数分かかるため、master への push のときだけ行う
     - name: Test SRCRender (E2E / VRT)
+      if: github.event_name != 'push'
+      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
+
+    - name: Test SRCRender (E2E / VRT, with coverage)
+      if: github.event_name == 'push'
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./RenderCoverage
 
     # シナリオ（E2E コーパス・画面テスト）でどれだけコマンドを実行できているかをジョブのサマリーに出す
     - name: Report command coverage of scenarios
-      if: always()
+      if: always() && github.event_name == 'push'
       run: |
         files=$(find RenderCoverage -name coverage.cobertura.xml)
         if [ -n "$files" ]; then
           python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
         fi
+
+    - name: Upload screenshots
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: screenshots
+        path: |
+          SRC.Sharp/SRCRenderTests/bin/**/TestResults/vrt/
+          SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
+        if-no-files-found: ignore
+
+  # SRC#Avalonia・作成支援ツール・SRCSound
+  test-tools-linux:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install fonts and SoundFont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
 
     # マウスカーソルの移動（X11）を確かめるため Xvfb 上で実行する
     - name: Test SRC#Avalonia (headless)
@@ -58,12 +90,6 @@ jobs:
       run: dotnet test SRC.Sharp/SRCSoundTests/SRCSoundTests.csproj --verbosity normal
       env:
         ALSOFT_DRIVERS: "null"
-
-    # SRC#Web（マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要）
-    - name: Build SRC#Web
-      run: |
-        dotnet workload install wasm-tools
-        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
 
     - name: Setup Node.js
       uses: actions/setup-node@v7
@@ -91,6 +117,39 @@ jobs:
         name: src-vscode-vsix
         path: SRC.Sharp/SRCSharpVSCode/*.vsix
 
+    - name: Upload screenshots
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: screenshots-avalonia
+        path: SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
+        if-no-files-found: ignore
+
+  # SRC#Web（マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要）
+  test-web:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install fonts
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
+    - name: Build SRC#Web
+      run: |
+        dotnet workload install wasm-tools
+        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
     # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする
     - name: Test SRC#Web (Playwright)
       working-directory: SRC.Sharp/SRCSharpWeb.E2E
@@ -113,17 +172,6 @@ jobs:
         path: |
           SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
-        if-no-files-found: ignore
-
-    - name: Upload screenshots
-      if: always()
-      uses: actions/upload-artifact@v7
-      with:
-        name: screenshots
-        path: |
-          SRC.Sharp/SRCRenderTests/bin/**/TestResults/vrt/
-          SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
-          SRC.Sharp/SRCSharpAvaloniaTests/bin/**/TestResults/avalonia/
         if-no-files-found: ignore
 
   # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
