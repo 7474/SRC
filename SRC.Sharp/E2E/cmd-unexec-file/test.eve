@@ -1,0 +1,41 @@
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+# Write: 引数ごとに引用符で囲んだ 1 行を書く（VB の Write # 文）
+Open 書き込み.txt For 出力 As F
+Write F "ABC" 123
+Write F "カンマ,入り"
+Close F
+# 追加出力で開いたファイルにも Write できる
+Open 書き込み.txt For 追加出力 As F
+Write F 末尾
+Close F
+# Read: Write で書いたものを引用符を外して読み戻す
+Open 書き込み.txt For 入力 As F
+Read F 値1 値2 値3
+Read F 値4
+値終端 = EOF(F)
+Close F
+# Write が書いた生の行を LineRead で確かめる
+Open 書き込み.txt For 入力 As F
+LineRead F 行1
+LineRead F 行2
+LineRead F 行3
+Close F
+# Read: カンマ区切り（前後の空白を除く）、引用符で囲んだフィールド、改行区切り
+Open 入力.csv For 入力 As F
+Read F 欄1 欄2 欄3
+Read F 欄4
+欄終端 = EOF(F)
+Close F
+Talk システム
+値1=[$(値1)] 値2=[$(値2)] 値3=[$(値3)] 値4=[$(値4)]
+行1=[$(行1)] 行2=[$(行2)] 行3=[$(行3)]
+欄1=[$(欄1)] 欄2=[$(欄2)] 欄3=[$(欄3)] 欄4=[$(欄4)]
+End
+Talk システム
+確認
+End
+Quit

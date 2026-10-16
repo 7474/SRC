@@ -1,0 +1,103 @@
+# 支援系のユニットコマンド（アビリティ・修理・補給・スペシャルパワー・マップアビリティ）と、マップコマンドの「ターン終了」を
+# マスのクリックとメニュー・リストの選択で行い、結果を確かめる
+auto 60
+expect message 支援テスト開始
+# 前提: 損傷機ＡＢは最大ＨＰ4000・最大ＥＮ200 の 25%（ＨＰ1000・ＥＮ50）
+expect eval HP(損傷パイロットＡ) = 1000
+expect eval EN(損傷パイロットＢ) = 50
+
+# ── 1 ターン目 ──
+# アビリティ（回復Lv1 = ＨＰ+500、消費ＥＮ10）を射程 2 の味方に使う
+cell 5 5
+menu アビリティ
+wait list アビリティ
+list 回復ビーム
+cell 7 5
+auto 30
+expect eval HP(損傷パイロットＡ) = 1500
+expect eval EN(支援パイロット) = 190
+expect eval Action(支援パイロット) = 0
+
+# 移動してから隣接する味方に修理装置（Lv1 = 最大ＨＰの 30%）を使う
+cell 10 10
+menu 移動
+cell 11 11
+wait menu
+menu 修理装置
+cell 11 10
+auto 30
+expect eval X(工作パイロット) = 11
+expect eval Y(工作パイロット) = 11
+expect eval HP(損傷パイロットＢ) = 2200
+expect eval Action(工作パイロット) = 0
+
+# マップコマンドの「ターン終了」（行動していないユニットがいるので確認が出る）
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+expect eval ターン数 = 2
+expect eval Action(工作パイロット) = 1
+
+# ── 2 ターン目 ──
+# 補給装置: ＥＮを全快し、補給を受けたパイロットの気力が 10 下がる
+expect eval Morale(損傷パイロットＢ) = 100
+cell 11 11
+menu 補給装置
+cell 11 10
+auto 30
+expect eval EN(損傷パイロットＢ) = 200
+expect eval Morale(損傷パイロットＢ) = 90
+
+# ユニットのメニューからスペシャルパワー「信頼」（味方 1 体のＨＰを最大ＨＰの 1/3 回復、ＳＰ30）
+expect eval SP(支援パイロット) = 102
+cell 5 5
+menu スペシャルパワー
+wait list スペシャルパワー
+list 信頼
+# 「ターゲットを選んでください」の表示（一定時間で閉じる）を待ってからターゲットを選ぶ
+stall 600
+auto 3
+stall 5
+cell 7 5
+auto 30
+expect eval SP(支援パイロット) = 72
+expect eval HP(損傷パイロットＡ) = 2820
+# スペシャルパワーでは行動を消費しない
+expect eval Action(支援パイロット) = 1
+
+# アビリティ（補給Lv1 = ＥＮ+50）。ＥＮはターン開始時に 5 回復している（55 → 105）
+cell 5 5
+menu アビリティ
+list 補給ビーム
+cell 7 5
+auto 30
+expect eval EN(損傷パイロットＡ) = 105
+expect eval Action(支援パイロット) = 0
+
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+expect eval ターン数 = 3
+
+# ── 3 ターン目 ──
+# 自分にかけるスペシャルパワー「加速」はターゲットを選ばずにすぐ効く
+cell 5 5
+menu スペシャルパワー
+list 加速
+auto 30
+expect eval SpecialPower(支援パイロット, 加速) = 1
+expect eval SP(支援パイロット) = 62
+
+# マップアビリティ（Ｍ全、射程 2 の回復Lv1）: 効果範囲内のマスを選ぶと範囲内の味方全員に効く
+cell 5 5
+menu アビリティ
+list 全体回復
+cell 7 5
+auto 30
+expect eval HP(損傷パイロットＡ) = 3320
+expect eval Action(支援パイロット) = 0
+expect error none

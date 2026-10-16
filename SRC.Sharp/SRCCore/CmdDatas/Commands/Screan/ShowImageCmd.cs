@@ -47,7 +47,14 @@ namespace SRCCore.CmdDatas.Commands
                 dh = Constants.DEFAULT_LEVEL;
             }
 
+            if (!GUI.MainFormVisible)
+            {
+                GUI.MainFormShow();
+            }
+
             GUI.DrawPicture(fname, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, dw, dh, 0, 0, 0, 0, "");
+            // 元の SRC（ExecShowImageCmd）と同じく、描いた画像をすぐに画面へ反映する
+            GUI.UpdateScreen();
             return EventData.NextID;
         }
     }

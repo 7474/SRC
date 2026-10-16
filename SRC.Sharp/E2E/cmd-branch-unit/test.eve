@@ -1,0 +1,152 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+
+# ---- RankUp ----
+Create 味方 テスト機 0 パイロットＡ 1 2 2
+Set idA UnitID(パイロットＡ)
+# ユニットＩＤ指定（引数３個）
+RankUp idA 2
+Set rkA1 Rank(パイロットＡ)
+# 対象省略（デフォルトユニット）
+Select パイロットＡ
+RankUp 1
+Set rkA2 Rank(パイロットＡ)
+Set hpA HP(パイロットＡ)
+# 変形できるユニット: 他形態のランクも上がる
+Create 味方 変形機 0 パイロットＢ 1 3 2
+RankUp 変形機 2
+Transform パイロットＢ 変形機改
+Set rkB Rank(パイロットＢ)
+Set nameB Unit(パイロットＢ)
+# 合体ユニット: 分離ユニットのランクも上がる
+Create 味方 合体機 0 パイロットＣ 1 4 2
+Unit 分離機Ａ 0
+Set idSA UnitID()
+Unit 分離機Ｂ 0
+Set idSB UnitID()
+RankUp 合体機 3
+Set rkC Rank(パイロットＣ)
+Set rkSA1 Rank(idSA)
+Set rkSB1 Rank(idSB)
+# 分離ユニット: 合体後の形態の他の分離ユニットのランクも上がる
+RankUp idSA 2
+Set rkSA2 Rank(idSA)
+Set rkSB2 Rank(idSB)
+
+# ---- ChangeMode ----
+Create 敵 標的機 0 標的パイロット 1 15 15
+Create 中立 テスト機 0 パイロットＧ 1 16 15
+# 対象省略・モードのみ
+Select パイロットＡ
+ChangeMode 待機
+Set modeA1 Info(ユニット, idA, 思考モード)
+# 対象省略・座標
+ChangeMode 8 9
+Set modeA2 Info(ユニット, idA, 思考モード)
+# 陣営指定
+ChangeMode 敵 固定
+Set modeT1 Info(ユニット, UnitID(標的パイロット), 思考モード)
+# パイロット名指定
+ChangeMode パイロットＧ 逃亡
+Set modeG1 Info(ユニット, UnitID(パイロットＧ), 思考モード)
+# ユニットＩＤ指定
+ChangeMode idA 通常
+Set modeA3 Info(ユニット, idA, 思考モード)
+# パイロット名 + 座標
+ChangeMode パイロットＧ 10 11
+Set modeG2 Info(ユニット, UnitID(パイロットＧ), 思考モード)
+# 陣営 + 座標
+ChangeMode 中立 12 13
+Set modeG3 Info(ユニット, UnitID(パイロットＧ), 思考モード)
+# ユニットＩＤ + 座標
+ChangeMode UnitID(標的パイロット) 5 6
+Set modeT2 Info(ユニット, UnitID(標的パイロット), 思考モード)
+
+# ---- RemoveUnit ----
+# 名前指定: パイロットの乗っていないユニットを優先して削除する
+Create 味方 複座機 0 パイロットＤ 1 6 2
+Unit 複座機 0
+Set idEmpty UnitID()
+Set idD UnitID(パイロットＤ)
+RemoveUnit 複座機
+Set stEmpty Status(idEmpty)
+Set stD1 Status(idD)
+# 名前指定（乗っていないユニットがなければ乗っているユニット）・非同期
+RemoveUnit 複座機 非同期
+Set stD2 Status(idD)
+Set unitD Unit(パイロットＤ)
+# 存在しないユニットは何もしない
+RemoveUnit 存在しない機
+# ユニットＩＤ指定（変形できるユニットは他形態も破棄）
+Set idB UnitID(パイロットＢ)
+RemoveUnit idB
+Set stB Status(idB)
+# 対象省略（デフォルトユニット）
+Create 味方 変形機 0 パイロットＥ 1 7 2
+Set idE UnitID(パイロットＥ)
+RemoveUnit
+Set stE Status(idE)
+Set aliveE IsDefined(パイロットＥ)
+Set unitE Unit(パイロットＥ)
+
+# ---- RemovePilot ----
+# サブパイロットのみ削除（ユニットは残る）
+Create 味方 複座機 0 パイロットＦ 1 8 2
+Pilot 副操縦士 1
+Ride 副操縦士 UnitID(パイロットＦ)
+Set crewF1 Info(ユニット, UnitID(パイロットＦ), パイロット数)
+RemovePilot 副操縦士
+Set crewF2 Info(ユニット, UnitID(パイロットＦ), パイロット数)
+Set aliveSub IsDefined(副操縦士)
+Set stF1 Status(パイロットＦ)
+# メインパイロット削除（ユニットも削除）・非同期
+Set idF UnitID(パイロットＦ)
+RemovePilot パイロットＦ 非同期
+Set aliveF IsDefined(パイロットＦ)
+Set stF2 Status(idF)
+# 対象省略（デフォルトユニットのパイロット、変形できるユニット）
+Create 味方 変形機 0 パイロットＨ 1 9 2
+Set idH UnitID(パイロットＨ)
+RemovePilot
+Set aliveH IsDefined(パイロットＨ)
+Set stH Status(idH)
+# ユニットに乗っていないパイロット
+Pilot 副操縦士 1
+RemovePilot 副操縦士
+Set aliveSub2 IsDefined(副操縦士)
+
+Talk システム
+検証開始
+End
+Exit
+
+ターン 1 味方:
+# ---- Destroy ----
+# パイロット名指定（出撃中）
+Destroy パイロットＡ
+Set stDA Status(idA)
+# ユニットＩＤ指定（未出撃）
+Destroy idSB
+Set stDSB Status(idSB)
+# 既に破壊されたユニット（マップ上にはいない）
+Destroy idA
+Set stDA2 Status(idA)
+# 対象省略（デフォルトユニット）
+Select パイロットＧ
+Destroy
+Set stDG Status(パイロットＧ)
+# 敵の最後の１機を破壊すると全滅イベントが起きる
+Destroy 標的パイロット
+Set stDT Status(標的パイロット)
+Exit
+
+全滅 敵:
+Set annihilated 1
+Talk システム
+全滅
+End
+Quit

@@ -1,0 +1,10 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Talk システム
+ステージ2
+End
+Quit

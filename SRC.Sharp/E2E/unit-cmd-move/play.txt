@@ -1,0 +1,75 @@
+# 特殊な移動（テレポート・ジャンプ）、地上／空中の切り替え、召喚アビリティ・召喚ユニットへの命令・召喚解除を
+# マスのクリックとメニュー・リストの選択で行い、位置・ＥＮ・陣営・状態を確かめる
+auto 60
+expect message 移動テスト開始
+
+# テレポート（Lv1・ＥＮ20）: 移動力 3 + 1 = 4 マス先へ移動し、移動後のメニューで待機する
+cell 3 3
+menu テレポート
+cell 3 7
+wait menu
+menu 待機
+auto 10
+expect eval X(テレポパイロット) = 3
+expect eval Y(テレポパイロット) = 7
+expect eval EN(テレポパイロット) = 80
+expect eval Action(テレポパイロット) = 0
+
+# ジャンプ（Lv1・ＥＮ10）: 移動力 3 + 1 = 4 マス先へ移動する
+cell 3 10
+menu ジャンプ
+cell 3 14
+wait menu
+menu 待機
+auto 10
+expect eval Y(ジャンプパイロット) = 14
+expect eval EN(ジャンプパイロット) = 90
+expect eval Action(ジャンプパイロット) = 0
+
+# 空を飛べるユニットは空中で出撃する。「地上」「空中」で切り替える（行動は消費しない）
+expect eval InStr(Area(飛行パイロット), "空中") = 1
+cell 8 3
+menu 地上
+wait ready
+expect eval InStr(Area(飛行パイロット), "地上") = 1
+cell 8 3
+menu 空中
+wait ready
+expect eval InStr(Area(飛行パイロット), "空中") = 1
+expect eval Action(飛行パイロット) = 1
+
+# 召喚アビリティ（射程 0）: 隣のマスに召喚ユニット（ＮＰＣ）が出て、召喚したユニットは行動を終える
+cell 10 10
+menu 精霊召喚
+auto 10
+expect eval InStr(Status(精霊パイロット), "出撃") = 1
+expect eval InStr(Party(精霊パイロット), "ＮＰＣ") = 1
+expect eval X(精霊パイロット) = 10
+expect eval Y(精霊パイロット) = 11
+expect eval Action(召喚パイロット) = 0
+
+# 召喚ユニットへの「命令」: 移動先を指定すると、ＮＰＣフェイズにそこへ移動する
+cell 10 11
+menu 命令
+wait list 命令
+list 移動
+cell 10 14
+wait ready
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+expect eval ターン数 = 2
+expect eval X(精霊パイロット) = 10
+expect eval Y(精霊パイロット) = 14
+
+# 召喚解除: 召喚ユニットが消える（行動は消費しない）
+cell 10 10
+menu 召喚解除
+# 召喚解除の後はコマンド選択の状態のまま（VB と同じ）。空きマスのクリックでユニット選択に戻る
+cell 1 1
+wait ready
+expect eval InStr(Status(精霊パイロット), "破棄") = 1
+expect eval Action(召喚パイロット) = 1
+expect error none

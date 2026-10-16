@@ -1,0 +1,76 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 支援機 0 パイロットＡ 1 5 5
+Create 味方 支援機 0 パイロットＢ 1 6 5
+Create 味方 支援機 0 パイロットＣ 1 7 5
+Create 味方 支援機 0 パイロットＤ 1 18 18
+Create 敵 標的機 0 標的パイロット 1 10 10
+Set m0A Morale(パイロットＡ)
+Set m0B Morale(パイロットＢ)
+Set m0C Morale(パイロットＣ)
+Set m0D Morale(パイロットＤ)
+Set sp0A SP(パイロットＡ)
+
+# ---- UseAbility ----
+# 使用ユニット・アビリティ・対象（引数４個）
+UseAbility パイロットＡ 激励 パイロットＢ
+Set u1B (Morale(パイロットＢ) - m0B)
+# アビリティ・対象（デフォルトユニットが使う）
+Select パイロットＡ
+UseAbility 激励 パイロットＣ
+Set u2C (Morale(パイロットＣ) - m0C)
+# 使用ユニット・アビリティ（対象は自分）
+UseAbility パイロットＢ 激励
+Set u3B (Morale(パイロットＢ) - m0B)
+# アビリティのみ（デフォルトユニットが自分に使う）
+Select パイロットＣ
+UseAbility 激励
+Set u4C (Morale(パイロットＣ) - m0C)
+Set u4A (Morale(パイロットＡ) - m0A)
+
+# ---- MapAbility ----
+# 使用ユニット・アビリティ・座標（引数５個）。射程内の味方の気力が上がり、離れた味方は変わらない
+Set m1A Morale(パイロットＡ)
+Set m1B Morale(パイロットＢ)
+Set m1D Morale(パイロットＤ)
+MapAbility パイロットＡ 激励波 5 5
+Set p1B (Morale(パイロットＢ) - m1B)
+Set p1D (Morale(パイロットＤ) - m1D)
+# アビリティ・座標（デフォルトユニット）。範囲外の座標はマップ内に収める
+Select パイロットＤ
+MapAbility 激励波 0 99
+Set p2D (Morale(パイロットＤ) - m1D)
+Set p2B (Morale(パイロットＢ) - m1B)
+
+# ---- SpecialPower ----
+# スペシャルパワーのみ（デフォルトユニット・即効）
+Select パイロットＡ
+Set s0A Morale(パイロットＡ)
+SpecialPower 気合
+Set s1A (Morale(パイロットＡ) - s0A)
+# ユニット・スペシャルパワー（持続）
+SpecialPower パイロットＢ 必中
+Set s2B SpecialPower(パイロットＢ, 必中)
+Set s2A SpecialPower(パイロットＡ, 必中)
+# スペシャルパワー・対象（挑発: デフォルトユニットが使う）
+Select パイロットＡ
+SpecialPower 挑発 標的パイロット
+Set s3T SpecialPower(標的パイロット, 挑発)
+# ユニット・スペシャルパワー・対象（即効）
+Set s0C Morale(パイロットＣ)
+SpecialPower パイロットＡ 友情 パイロットＣ
+Set s4C (Morale(パイロットＣ) - s0C)
+# ユニット・スペシャルパワー・対象（持続）
+SpecialPower パイロットＣ みがわり パイロットＢ
+Set s5B SpecialPower(パイロットＢ, みがわり)
+# ＳＰは消費しない
+Set spA SP(パイロットＡ)
+
+Talk システム
+検証終了
+End
+Exit

@@ -1,0 +1,82 @@
+# 形態を変えるユニットコマンド（変形・ハイパーモード・変身と特殊モード解除・合体・分離）を
+# マスのクリックとメニューの選択で行い、形態・位置・行動数を確かめる
+auto 60
+expect message 形態テスト開始
+
+# 変形: 変形先が 1 つなのでリストを出さずに変形する。変形しても行動は終わらない
+cell 3 3
+menu 変形
+auto 30
+expect eval InStr(Unit(変形パイロット), "変形機Ｂ") = 1
+expect eval 変形イベント = 1
+expect eval Action(変形パイロット) = 1
+# 変形後の形態（移動力 6）で移動できる（変形前の移動力は 3）
+cell 3 3
+menu 移動
+cell 9 3
+wait menu
+menu 待機
+auto 30
+expect eval X(変形パイロット) = 9
+expect eval Y(変形パイロット) = 3
+expect eval Action(変形パイロット) = 0
+
+# ハイパーモード（Lv0 なので気力 100 で使える）
+expect eval Morale(ハイパーパイロット) = 100
+cell 3 8
+menu ハイパーモード
+auto 30
+expect eval InStr(Unit(ハイパーパイロット), "ハイパー機(ハイパー)") = 1
+expect eval Action(ハイパーパイロット) = 1
+
+# 変身アビリティ（射程 0・手動解除可）: 自分だけに使う変身は行動済みにならない
+cell 3 12
+menu 変身
+auto 30
+expect eval InStr(Unit(変身パイロット), "変身機(変身)") = 1
+expect eval Condition(変身パイロット, ノーマルモード付加) = 1
+expect eval Action(変身パイロット) = 1
+# 特殊モード解除（確認のダイアログで OK）で元の形態に戻る
+cell 3 12
+menu 特殊モード解除
+wait dialog
+dialog OK
+auto 30
+expect eval InStr(Unit(変身パイロット), "変身機(変身)") = 0
+expect eval InStr(Unit(変身パイロット), "変身機") = 1
+
+# 3 体合体: パートナーが近くにいれば「合体」コマンドで合体する（行動を消費する）
+cell 10 10
+menu 合体
+auto 30
+expect eval InStr(Unit(合体パイロットＡ), "合体ロボ") = 1
+expect eval InStr(Unit(合体パイロットＢ), "合体ロボ") = 1
+expect eval InStr(Unit(合体パイロットＣ), "合体ロボ") = 1
+expect eval CountPilot(合体パイロットＡ) = 3
+expect eval X(合体パイロットＡ) = 10
+expect eval Y(合体パイロットＡ) = 10
+expect eval 合体イベント = 1
+expect eval Action(合体パイロットＡ) = 0
+
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+expect eval ターン数 = 2
+
+# 分離（確認のダイアログで OK）: 分離後の形態の順にパイロットが乗り移り、近くのマスに出る
+cell 10 10
+menu 分離
+wait dialog
+dialog OK
+auto 30
+expect eval InStr(Unit(合体パイロットＡ), "合体Ａ") = 1
+expect eval InStr(Unit(合体パイロットＢ), "合体Ｂ") = 1
+expect eval InStr(Unit(合体パイロットＣ), "合体Ｃ") = 1
+expect eval InStr(Status(合体パイロットＢ), "出撃") = 1
+expect eval InStr(Status(合体パイロットＣ), "出撃") = 1
+expect eval X(合体パイロットＡ) = 10
+expect eval Y(合体パイロットＡ) = 10
+expect eval Action(合体パイロットＡ) = 1
+expect error none

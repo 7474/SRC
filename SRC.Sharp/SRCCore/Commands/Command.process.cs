@@ -195,7 +195,7 @@ namespace SRCCore.Commands
                     // 作戦目的
                     if (Event.IsEventDefined("勝利条件"))
                     {
-                        mapCommands.Add(new UiCommand(OperationObjectCmdID, "勝利条件"));
+                        mapCommands.Add(new UiCommand(OperationObjectCmdID, "作戦目的"));
                     }
 
                     // 自動反撃モード

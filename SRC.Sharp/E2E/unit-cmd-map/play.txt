@@ -1,0 +1,128 @@
+# マップコマンド（作戦目的・イベントで定義したマップコマンド・部隊表・全体マップ・スペシャルパワー検索・自動反撃モード・
+# クイックセーブ／クイックロード・リスタート・中断のキャンセル）と、ユニットの一覧系コマンド・イベントで定義したユニットコマンドを
+# 空きマスの右クリックとメニュー・リストの選択で行い、結果を確かめる
+auto 60
+expect message マップテスト開始
+
+# 作戦目的: 勝利条件イベントを実行する
+cell 1 1 right
+menu 作戦目的
+wait message 勝利条件
+key Enter
+wait ready
+
+# マップコマンドイベント
+cell 1 1 right
+menu 状況確認
+wait message 状況確認コマンドです
+key Enter
+wait ready
+expect eval 状況確認済み = 1
+
+# 部隊表: 味方ユニットの一覧から選んだユニットを画面の中央に表示する
+cell 1 1 right
+menu 部隊表
+wait list 味方ユニット一覧
+list 僚機
+wait ready
+
+# 全体マップ: マップ全体と陣営ごとのユニット数を表示する
+cell 1 1 right
+menu 全体マップ
+wait message 味方ユニット
+key Enter
+wait ready
+
+# スペシャルパワー検索: スペシャルパワーを選び、それを使えるパイロットを選ぶ
+cell 1 1 right
+menu スペシャルパワー検索
+wait list スペシャルパワー検索
+list 必中
+wait list パイロット選択
+list 隊長
+wait ready
+
+# ユニットを右クリックすると武装一覧を表示する
+cell 5 5 right
+wait list
+key Escape
+wait ready
+# ユニットのメニューの武装一覧・特殊能力一覧（特殊能力が 1 つなら解説を表示）・アビリティ一覧
+cell 5 5
+menu 武装一覧
+wait list
+key Escape
+wait ready
+cell 5 5
+menu 特殊能力一覧
+wait message ダメージ1000以下の攻撃
+key Enter
+wait ready
+cell 5 5
+menu アビリティ一覧
+wait list
+key Escape
+wait ready
+
+# ユニットコマンドイベント（行動を消費しない）
+cell 5 5
+menu 合図
+wait message 合図を送る
+key Enter
+wait ready
+expect eval 合図済み = 1
+expect eval Action(隊長) = 1
+
+# 自動反撃モードの切り替え（2 回選んで元に戻す）
+cell 1 1 right
+menu 自動反撃モード
+wait ready
+cell 1 1 right
+menu 自動反撃モード
+wait ready
+
+# クイックセーブ → 移動 → クイックロードで、セーブした時点（移動前）に戻る
+cell 1 1 right
+menu クイックセーブ
+wait ready
+cell 5 5
+menu 移動
+cell 5 8
+wait menu
+menu 待機
+auto 10
+expect eval Y(隊長) = 8
+expect eval Action(隊長) = 0
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Y(隊長) = 5
+expect eval Action(隊長) = 1
+
+# リスタート: ステージの開始時点に戻る
+cell 8 8
+menu 移動
+cell 8 11
+wait menu
+menu 待機
+auto 10
+expect eval Y(僚機パイロット) = 11
+cell 1 1 right
+menu リスタート
+wait dialog
+dialog OK
+auto 30
+expect eval Y(僚機パイロット) = 8
+expect eval Action(僚機パイロット) = 1
+
+# 中断: 確認の後の保存先の選択をキャンセルすると、プレイを続ける
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+auto 10
+expect eval ターン数 = 1
+expect eval Action(隊長) = 1
+expect error none

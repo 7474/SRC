@@ -1,0 +1,13 @@
+# 自作のインターミッション（幕間.eve）から CallIntermissionCommand パイロットステータス を呼ぶ
+auto 30
+expect message 幕間 乗機=[テスト機]
+# パイロットステータス表示（Lib\パイロットステータス表示.eve）に切り替わり、パイロットは表示用のユニットに乗せ替えて並べられる
+wait ready
+snapshot pilot-status
+expect eval InStr(Info(マップ, 1, 1, ユニットＩＤ), "ステータス表示用ダミーユニット") = 1
+expect eval InStr(Unit(テストパイロット), "ステータス表示用ダミーユニット") = 1
+# 呼び出したイベントの続きは実行されない
+expect eval IsVarDefined(パイロットステータス後) = 0
+# 表示の前の乗機は覚えてある（「インターミッションに戻る」で乗せ直す）
+expect eval InStr(ステータス表示_搭乗ユニット[テストパイロット], "テスト機") = 1
+expect error none

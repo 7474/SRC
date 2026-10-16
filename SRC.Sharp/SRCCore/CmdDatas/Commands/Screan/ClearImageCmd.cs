@@ -17,6 +17,8 @@ namespace SRCCore.CmdDatas.Commands
         protected override int ExecInternal()
         {
             GUI.ClearPicture();
+            // 元の SRC（ExecClearImageCmd）と同じく、消した結果をすぐに画面へ反映する
+            GUI.UpdateScreen();
             return EventData.NextID;
         }
     }

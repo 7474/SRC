@@ -104,7 +104,7 @@ namespace SRCCore.CmdDatas.Commands
                                 sd.StrData = Strings.Trim(sdata + " " + GeneralLib.ListTail(elm.strAliasData, 2));
                             }
 
-                            if (elm.blnAliasLevelIsPlusMod || elm.blnAliasLevelIsPlusMod)
+                            if (elm.blnAliasLevelIsPlusMod || elm.blnAliasLevelIsMultMod)
                             {
                                 sd.StrData = Strings.Trim(GeneralLib.LIndex(sd.StrData, 1) + "Lv" + SrcFormatter.Format(slevel) + " " + GeneralLib.ListTail(sd.StrData, 2));
                             }

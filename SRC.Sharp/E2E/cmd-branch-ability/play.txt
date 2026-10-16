@@ -1,0 +1,37 @@
+# UseAbility・MapAbility・SpecialPower の引数の形ごとの結果を確かめる（効果は確定値の気力増加で見る）
+auto 60
+expect message 検証終了
+expect eval m0A = 100
+expect eval m0B = 100
+# UseAbility ユニット アビリティ 対象
+expect eval u1B = 10
+# UseAbility アビリティ 対象（デフォルトユニットが使う）
+expect eval u2C = 10
+# UseAbility ユニット アビリティ（対象は自分）
+expect eval u3B = 20
+# UseAbility アビリティ（デフォルトユニットが自分に使う。使用者以外は変わらない）
+expect eval u4C = 20
+expect eval u4A = 0
+# MapAbility ユニット アビリティ X Y: 射程内の味方だけ気力が上がる
+expect eval p1B = 10
+expect eval p1D = 0
+# MapAbility アビリティ X Y（デフォルトユニット、座標はマップ内に収める）
+expect eval p2D = 10
+expect eval p2B = 10
+# SpecialPower スペシャルパワー（デフォルトユニット・即効）
+expect eval s1A = 10
+# SpecialPower ユニット スペシャルパワー（持続はそのユニットにだけ付く）
+expect eval s2B = 1
+expect eval s2A = 0
+# SpecialPower 挑発 対象（デフォルトユニットが対象に使う）
+expect eval s3T = 1
+# SpecialPower ユニット スペシャルパワー 対象（即効は対象に効く）
+expect eval s4C = 10
+# SpecialPower ユニット スペシャルパワー 対象（持続は対象に付く）
+expect eval s5B = 1
+# ＳＰは消費しない
+expect eval spA = sp0A
+# 現在の状態でも確かめる
+expect eval SpecialPower(パイロットＢ, 必中) = 1
+expect eval SpecialPower(標的パイロット, 挑発) = 1
+expect error none

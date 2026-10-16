@@ -1,0 +1,46 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 母艦 0 艦長 1 5 5
+Create 味方 艦載機 0 艦載パイロット 1 7 5
+Create 味方 会話機 0 会話パイロットＡ 1 10 5
+Create 味方 会話機 0 会話パイロットＢ 1 12 5
+Create 味方 チャージ機 0 チャージパイロット 1 10 10
+Create 味方 突撃機 0 突撃パイロット 1 15 12
+Create 味方 援護機 0 援護パイロット 1 15 10
+Create 敵 標的機 0 標的パイロット 1 13 10
+ChangeMode 標的パイロット 固定
+SpecialPower チャージパイロット 必中
+SpecialPower 突撃パイロット 必中
+SpecialPower 援護パイロット 必中
+RecoverHP 艦載パイロット -50
+RecoverEN 艦載パイロット -50
+Talk システム
+母艦テスト開始
+End
+Exit
+
+# 命中を確実にする（戦闘の結果を乱数に左右させない）
+ターン 全 味方:
+SpecialPower チャージパイロット 必中
+SpecialPower 突撃パイロット 必中
+SpecialPower 援護パイロット 必中
+# チャージ攻撃の前のＨＰを記録する
+Set 標的ＨＰ HP(標的パイロット)
+Exit
+
+会話 会話パイロットＡ 会話パイロットＢ:
+Talk 会話パイロットＡ
+こんにちは
+Talk 会話パイロットＢ
+会話イベントです
+End
+Set 会話済み 1
+Exit
+
+収納 艦載パイロット:
+Set 収納イベント 1
+Exit

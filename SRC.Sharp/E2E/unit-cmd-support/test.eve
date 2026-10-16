@@ -1,0 +1,20 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 支援機 0 支援パイロット 1 5 5
+Create 味方 損傷機 0 損傷パイロットＡ 1 7 5
+Create 味方 工作機 0 工作パイロット 1 10 10
+Create 味方 損傷機 0 損傷パイロットＢ 1 11 10
+Create 敵 標的機 0 標的パイロット 1 19 19
+ChangeMode 標的パイロット 固定
+RecoverHP 損傷パイロットＡ -75
+RecoverEN 損傷パイロットＡ -75
+RecoverHP 損傷パイロットＢ -75
+RecoverEN 損傷パイロットＢ -75
+Talk システム
+支援テスト開始
+End
+Exit

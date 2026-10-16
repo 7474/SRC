@@ -1,0 +1,34 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 隊長機 0 隊長 1 5 5
+Create 味方 僚機 0 僚機パイロット 1 8 8
+Create 敵 標的機 0 標的パイロット 1 19 19
+ChangeMode 標的パイロット 固定
+Talk システム
+マップテスト開始
+End
+Exit
+
+勝利条件:
+Talk システム
+勝利条件;敵の全滅
+End
+Exit
+
+マップコマンド 状況確認:
+Talk システム
+状況確認コマンドです
+End
+Set 状況確認済み 1
+Exit
+
+ユニットコマンド 合図 隊長:
+Talk 隊長
+合図を送る
+End
+Set 合図済み 1
+Exit

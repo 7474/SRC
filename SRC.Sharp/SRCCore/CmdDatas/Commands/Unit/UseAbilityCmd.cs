@@ -40,7 +40,9 @@ namespace SRCCore.CmdDatas.Commands
                             aname = GetArgAsString(2);
                             ua = u1.Abilities.FirstOrDefault(x => x.Data.Name == aname);
 
-                            if (ua == null)
+                            // VB版と同様、デフォルトユニットのアビリティ名なら「アビリティ 対象」、
+                            // そうでなければ「ユニット アビリティ」（対象は自分）と解釈する
+                            if (ua != null)
                             {
                                 u2 = GetArgAsUnit(3);
                             }

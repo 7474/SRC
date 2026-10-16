@@ -238,6 +238,9 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            // ShowImage は描いた後に画面を更新する（元の SRC の picMain.Refresh）
+            gui.MainFormVisible = true;
+            gui.UpdateScreenHandler = () => { };
             string capturedFname = null;
             int capturedDw = 0, capturedDh = 0;
             gui.DrawPictureHandler = (fname, dx, dy, dw, dh, sx, sy, sw, sh, opt) =>
@@ -262,6 +265,9 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            // ShowImage は描いた後に画面を更新する（元の SRC の picMain.Refresh）
+            gui.MainFormVisible = true;
+            gui.UpdateScreenHandler = () => { };
             int capturedDw = 0, capturedDh = 0;
             gui.DrawPictureHandler = (fname, dx, dy, dw, dh, sx, sy, sw, sh, opt) =>
             {

@@ -1,0 +1,55 @@
+# 自作のインターミッション。SaveData と CallIntermissionCommand で本体の機能を呼び出す
+プロローグ:
+# SaveData ファイル名: シナリオフォルダにセーブデータを書く
+SaveData 保存.src
+保存あり = Len(Dir("保存.src"))
+# 書かれたセーブデータにはユニットとパイロットが入っている
+Open 保存.src For 入力 As F
+セーブ内容 = ""
+Do While (EOF(F) = 0)
+	LineRead F 行
+	セーブ内容 = セーブ内容 & 行
+Loop
+Close F
+セーブにパイロット = InStr(セーブ内容, "テストパイロット")
+セーブにユニット = InStr(セーブ内容, "テスト機")
+# SaveData（ファイル名なし）: 保存先を選んでセーブする
+SaveData
+選択セーブあり = Len(Dir("*.srcs"))
+Talk システム
+幕間 保存=[$(保存あり)] 選択=[$(選択セーブあり)]
+End
+# CallIntermissionCommand データセーブ
+CallIntermissionCommand データセーブ
+データセーブあり = Len(Dir("*.srcs"))
+# CallIntermissionCommand ユニットの強化 / 機体改造: 改造するユニットを選ぶリストを出す
+CallIntermissionCommand ユニットの強化
+Talk システム
+ユニットの強化の後
+End
+CallIntermissionCommand 機体改造
+Talk システム
+機体改造の後
+End
+# 乗り換え・アイテム交換・換装
+CallIntermissionCommand 乗り換え
+Talk システム
+乗り換えの後
+End
+CallIntermissionCommand アイテム交換
+Talk システム
+アイテム交換の後
+End
+CallIntermissionCommand 換装
+Talk システム
+換装の後
+End
+# 対象外のコマンド名は何もしない
+CallIntermissionCommand 存在しないコマンド
+Talk システム
+幕間の確認 データセーブ=[$(データセーブあり)]
+End
+# ユニットステータス: ステータス表示用のシナリオに切り替わる
+CallIntermissionCommand ユニットステータス
+ユニットステータス後 = 1
+Exit

@@ -1,0 +1,35 @@
+# ステータスウィンドウの色・枠の幅の設定、Debug、ElseIf、Talk/AutoTalk の Suspend
+wait message 中断前のメッセージ
+snapshot suspend
+# SetWindowColor: #RRGGBB は VB の色（&HBBGGRR）として StatusWindow(FrameColor) / StatusWindow(BackBolor) に記録される
+# 対象を省略すると枠と背景の両方（#102030 → &H302010 = 3153936）
+expect eval 両方枠 = 3153936
+expect eval 両方背景 = 3153936
+# 「枠」は枠だけ（#FF0000 → 255）
+expect eval 枠のみ枠 = 255
+expect eval 枠のみ背景 = 3153936
+# 「背景」は背景だけ（#0000FF → &HFF0000 = 16711680）
+expect eval StatusWindow(FrameColor) = 255
+expect eval StatusWindow(BackBolor) = 16711680
+# SetWindowFrameWidth
+expect eval StatusWindow(FrameWidth) = 3
+# SetStatusStringColor: 通常・能力名・有効・無効
+expect eval StatusWindow(StringColor) = 65280
+expect eval StatusWindow(ANameColor) = 197121
+expect eval StatusWindow(EnableColor) = 16777215
+expect eval StatusWindow(DisableColor) = 8421504
+# Debug の後もイベントは続いている
+expect eval デバッグ後 = 1
+# Suspend で Talk を終えた時点では、まだ後続のコマンドは実行されていない
+expect eval IsVarDefined(中断中) = 0
+auto 30
+# Suspend の後のコマンドが実行されてから、次の Talk / AutoTalk が続く
+expect message 再開後のメッセージ1
+# AutoTalk の Suspend の後のコマンドも実行され、最後まで進んでいる（AutoTalk のメッセージはクリックを待たないため記録されない）
+expect eval 自動中断中 = 1
+# ElseIf: n=1 は If、n=2 は最初の ElseIf、n=3 は 2 番目の ElseIf、n=4 は Else。
+# Else の無い ElseIf でどれも成り立たなければ何もしない。入れ子でも内側の ElseIf だけを実行する
+expect message 結果=[If][ElseIf1][ElseIf2][Else]
+expect message 該当=[なし] 入れ子=[内ElseIf]
+expect finished
+expect error none
