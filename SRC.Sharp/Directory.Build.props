@@ -8,7 +8,7 @@
   -->
   <PropertyGroup>
     <SrcSharpVersionMinor>5</SrcSharpVersionMinor>
-    <SrcSharpVersionPatch>1</SrcSharpVersionPatch>
+    <SrcSharpVersionPatch>2</SrcSharpVersionPatch>
     <SrcSharpAppVersion>3.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpAppVersion>
     <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
   </PropertyGroup>

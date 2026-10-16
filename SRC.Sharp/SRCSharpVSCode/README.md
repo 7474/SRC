@@ -159,7 +159,7 @@ SRC# のデバッグを始めると「SRC# 画面」のタブを横に開き、�
 
 `interactive` でない場合（`script` がある、または `interactive: false`）は表示だけで、止まった時と終わった時に取り直し、実行中は 0.5 秒ごとに取り直します（`srcsharp.screen.autoOpen` が `false` なら自動では開かない）。
 
-画面はデバッグアダプタの独自のリクエスト・イベント（`srcsharpScreen`・`srcsharpFrame`・`srcsharpInput` など）でやり取りします。0.5.1 までの srcsharp は対応していないため、「srcsharp を入れる／更新する」で更新してください（NuGet にまだ無い場合は、リポジトリから作って入れる）。
+画面はデバッグアダプタの独自のリクエスト・イベント（`srcsharpScreen`・`srcsharpFrame`・`srcsharpInput` など）でやり取りします。0.5.2 以降の srcsharp が要ります。古い場合は「srcsharp を入れる／更新する」で更新してください。
 
 ## ホットリロード
 
