@@ -101,6 +101,9 @@ expect eval Damage(標的パイロット) > 0
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
+| `cmd-unexec-*` | それまでどのシナリオでも実行されなかったイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
+| `cmd-branch-*` | 行カバレッジの低かったイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
+| `unit-cmd-*` | ユニット・マップのコマンドをマスのクリックとメニューで実行する（アビリティ・修理・補給・スペシャルパワー・変形・合体・分離・母艦への収納と発進・会話・チャージ・援護攻撃・テレポート・ジャンプ・召喚・命令・マップのメニュー・クイックセーブ／ロード・ユニットステータスでの換装など） |
 
 ## VRT
 
@@ -140,6 +143,6 @@ expect eval Damage(標的パイロット) > 0
 ## 次の作業
 
 1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
-2. コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する
+2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `test-srccore-linux` で `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す）
 3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
 4. ~~セーブ／ロード、インターミッション、次ステージへの遷移を通す~~（`intermission-save`。ロードは SRC#Web の E2E で確かめる）
