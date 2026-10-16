@@ -1633,7 +1633,7 @@ namespace SRCSharpForm
                     return null;
                 }
             }
-            return new FileInfo(fname).Open(FileMode.Create);
+            return SRC.FileSystem.Create(fname);
         }
 
         public Stream OpenQuikSaveStream(FileAccess fileAccess)
@@ -1644,7 +1644,7 @@ namespace SRCSharpForm
             }
             else
             {
-                return new FileInfo(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq")).Open(FileMode.Create);
+                return SRC.FileSystem.Create(Path.Combine(SRC.ScenarioPath, "_クイックセーブ.srcq"));
             }
         }
 

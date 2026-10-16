@@ -51,6 +51,16 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_PngBitmap_Accepted()
+        {
+            // 元の SRC は .bmp だけだが、SRC# は .png・.jpg・.gif も受け付ける（#1212）
+            var src = CreateSrc();
+            var pd = Load(src, PilotWith(bitmap: "test.png,-")).Item("テスト");
+            Assert.AreEqual("test.png", pd.Bitmap);
+            Assert.IsFalse(pd.IsBitmapMissing);
+        }
+
+        [TestMethod]
         public void Load_StandardPilot_ParsesBasicFields()
         {
             var src = CreateSrc();
@@ -160,7 +170,7 @@ namespace SRCCore.Coverage.Tests
                 line2: "テスト,てすと,男性,1,AB,X",
                 status: "X,X,X,X,X,X,1",
                 sp: "精神,X",
-                bitmap: "test.png,bgm.txt")).Item("テスト");
+                bitmap: "test.txt,bgm.txt")).Item("テスト");
 
             Assert.AreEqual("AAAA", pd.Adaption);
             Assert.AreEqual(1, pd.SP);

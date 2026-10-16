@@ -77,6 +77,36 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void アルファチャネルで透過を指定した画像は白を抜かずにそのまま使う()
+        {
+            // 左半分は透明、右半分は不透明な白（#1212）
+            var path = Path.Combine(dir, "alpha.png");
+            using (var bitmap = new SKBitmap(Size, Size, SKColorType.Rgba8888, SKAlphaType.Unpremul))
+            {
+                bitmap.Erase(SKColors.White);
+                for (var y = 0; y < Size; y++)
+                {
+                    for (var x = 0; x < Size / 2; x++)
+                    {
+                        bitmap.SetPixel(x, y, SKColors.Transparent);
+                    }
+                }
+                using (var file = File.Create(path))
+                {
+                    bitmap.Encode(file, SKEncodedImageFormat.Png, 100);
+                }
+            }
+            var cache = new ImageCache(src);
+            var t = cache.GetTransparent(path);
+            Assert.AreEqual(0, t.GetPixel(0, 0).Alpha);
+            // 白でも抜かない
+            Assert.AreEqual(SKColors.White, t.GetPixel(Size - 1, 0));
+
+            // アルファチャネルの無い（全画素が不透明な）画像は、これまでどおり白を抜く
+            Assert.AreEqual(0, cache.GetTransparent(PathOf("a")).GetPixel(0, 0).Alpha);
+        }
+
+        [TestMethod]
         public void 透過色の画像も上限に数える()
         {
             var cache = new ImageCache(src, ImageBytes * 2);

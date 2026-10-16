@@ -27,6 +27,24 @@ namespace SRCCore.Lib
 
         //        // Windowsが起動してからの時間を返す(ミリ秒)
         //        [DllImport("winmm.dll")]
+        /// <summary>
+        /// データ（ユニット・パイロット・非戦闘員）の画像に指定できるファイル名か。
+        /// 元の SRC は .bmp だけだが、SRC# は PaintPicture コマンドなどと同じく .png・.jpg・.gif も受け付ける。
+        /// </summary>
+        public static bool IsImageFileName(string fname)
+        {
+            switch (Strings.LCase(Strings.Right(fname ?? "", 4)))
+            {
+                case ".bmp":
+                case ".png":
+                case ".jpg":
+                case ".gif":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         private static Stopwatch sw = new Stopwatch();
         public static int timeGetTime()
         {
