@@ -68,6 +68,12 @@ namespace SRCAuthoring.Analysis
         public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions) => inner.GetFileSystemEntries(path, searchPattern, enumerationOptions);
         public void AddSafePath(string basePath) => inner.AddSafePath(basePath);
         public Stream OpenSafe(SafeOpenMode mode, params string[] paths) => inner.OpenSafe(mode, paths);
+        public Stream Create(string path) => inner.Create(path);
+        public event Action<string> FileWritten
+        {
+            add => inner.FileWritten += value;
+            remove => inner.FileWritten -= value;
+        }
         public bool Remove(params string[] paths) => inner.Remove(paths);
         public bool MkDir(params string[] paths) => inner.MkDir(paths);
         public bool RmDir(params string[] paths) => inner.RmDir(paths);
