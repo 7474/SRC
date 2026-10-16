@@ -34,7 +34,16 @@ jobs:
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
     - name: Test SRCRender (E2E / VRT)
-      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
+      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./RenderCoverage
+
+    # シナリオ（E2E コーパス・画面テスト）でどれだけコマンドを実行できているかをジョブのサマリーに出す
+    - name: Report command coverage of scenarios
+      if: always()
+      run: |
+        files=$(find RenderCoverage -name coverage.cobertura.xml)
+        if [ -n "$files" ]; then
+          python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
+        fi
 
     # マウスカーソルの移動（X11）を確かめるため Xvfb 上で実行する
     - name: Test SRC#Avalonia (headless)
