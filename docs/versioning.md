@@ -1,6 +1,6 @@
 # バージョンの管理
 
-> 更新日: 2026-10-13
+> 更新日: 2026-10-16
 
 SRC# のバージョンの付け方と、リリースの手順。
 
@@ -54,7 +54,7 @@ SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたた�
 
 ### VS Code 拡張
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.2 からは正式版で出す。0.5.2 から版をライブラリ（srcsharp）と合わせる（0.5.1 は出していない）。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.1（`v3.5.2` のタグで公開）からは正式版で出す。0.5.2 から版をライブラリ（srcsharp）と合わせる。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
 
 `.github/workflows/Publish-VSCode.yml` が次のことをする。
 
