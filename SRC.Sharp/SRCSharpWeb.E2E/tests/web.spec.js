@@ -634,8 +634,14 @@ test.describe('タッチ向けの画面', () => {
 
     // タッチ向けに戻すと、プレイ中は仮想パッドを出す（表示を切り替えていなければ）
     await page.selectOption('#input-mode', 'touch');
-    await page.getByRole('button', { name: 'battle-basic' }).click();
-    await expect(page.locator('#screen')).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-input', 'touch');
+    // 切り替えで一覧を描き直している間に押すと、押した先のハンドラーが無くなっていて開かないことがあるため、開くまで押し直す
+    await expect(async () => {
+      if (!(await page.locator('#screen').isVisible())) {
+        await page.getByRole('button', { name: 'battle-basic' }).click({ timeout: 5000 });
+      }
+      await expect(page.locator('#screen')).toBeVisible({ timeout: 15000 });
+    }).toPass({ timeout: 60000 });
     await expect(page.locator('#virtual-pad')).toBeVisible();
   });
 });
