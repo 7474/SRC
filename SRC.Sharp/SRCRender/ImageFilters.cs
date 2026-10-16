@@ -199,9 +199,33 @@ namespace SRCRender
             return Replace(source, result, dispose);
         }
 
-        /// <summary>指定色を透明にした画像を返す（元の画像は変更しない）。</summary>
+        /// <summary>透明・半透明の画素を持つか（PNG などのアルファチャネル）。</summary>
+        public static bool HasTransparency(SKBitmap source)
+        {
+            if (source == null || source.AlphaType == SKAlphaType.Opaque)
+            {
+                return false;
+            }
+            foreach (var c in source.Pixels)
+            {
+                if (c.Alpha < 255)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 指定色を透明にした画像を返す（元の画像は変更しない）。
+        /// 画像が透明な画素を持つ（アルファチャネルで透過を指定している）場合は、指定色では抜かずにそのまま使う。
+        /// </summary>
         public static SKBitmap MakeTransparent(SKBitmap source, SKColor transparentColor)
         {
+            if (HasTransparency(source))
+            {
+                return Copy(source);
+            }
             var result = new SKBitmap(source.Width, source.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
             for (var y = 0; y < source.Height; y++)
             {

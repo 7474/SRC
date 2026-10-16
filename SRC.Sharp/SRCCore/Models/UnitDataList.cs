@@ -537,7 +537,7 @@ namespace SRCCore.Models
                     throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
                 }
 
-                if (Strings.LCase(Strings.Right(buf, 4)) == ".bmp")
+                if (GeneralLib.IsImageFileName(buf))
                 {
                     ud.Bitmap = buf;
                 }

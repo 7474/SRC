@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Units;
+using SRCCore.Lib;
 using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
@@ -37,7 +38,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             prev_bmp = u.get_Bitmap(false);
-            if (Strings.LCase(Strings.Right(new_bmp, 4)) == ".bmp")
+            if (GeneralLib.IsImageFileName(new_bmp))
             {
                 u.AddCondition("ユニット画像", -1, 0d, "非表示 " + new_bmp);
             }
