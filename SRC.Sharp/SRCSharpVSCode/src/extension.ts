@@ -167,6 +167,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
           config.request = 'launch';
           config.name = 'SRC# イベントを実行';
           config.program = '${file}';
+          config.interactive = true;
           config.stopOnEntry = true;
         }
         if (!config.program) {
@@ -176,6 +177,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             return undefined;
           }
           config.program = file.fsPath;
+        }
+        // SRC 本体のフォルダ（共通の素材・Lib）は設定から渡す
+        const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+        if (!config.appPath && appPath) {
+          config.appPath = appPath;
         }
         return config;
       },
@@ -221,6 +227,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       request: 'launch',
       name: stopOnEntry ? 'SRC# イベントをデバッグ' : 'SRC# イベントを実行',
       program: file.fsPath,
+      interactive: true,
       stopOnEntry,
     });
   };

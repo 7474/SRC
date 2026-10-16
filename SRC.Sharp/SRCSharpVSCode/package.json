@@ -113,6 +113,7 @@
               "program": { "type": "string", "description": "実行するイベントファイル", "default": "${file}" },
               "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければメッセージを送り、選択肢は先頭を選ぶ）" },
               "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
+              "interactive": { "type": "boolean", "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）", "default": true },
               "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
               "maxSteps": { "type": "number", "description": "自動で進める操作の上限", "default": 100000 }
             }
@@ -124,13 +125,14 @@
             "request": "launch",
             "name": "SRC# イベントを実行",
             "program": "${file}",
+            "interactive": true,
             "stopOnEntry": true
           }
         ],
         "configurationSnippets": [
           {
             "label": "SRC#: イベントを実行",
-            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# イベントを実行", "program": "^\"\\${file}\"", "stopOnEntry": true }
+            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# イベントを実行", "program": "^\"\\${file}\"", "interactive": true, "stopOnEntry": true }
           },
           {
             "label": "SRC#: .play スクリプトで実行",
@@ -157,7 +159,7 @@
       }
     ],
     "commands": [
-      { "command": "srcsharp.runFile", "title": "開いているイベントを実行（画面付き）", "category": "SRC#", "icon": "$(play)" },
+      { "command": "srcsharp.runFile", "title": "開いているイベントを実行（画面で操作）", "category": "SRC#", "icon": "$(play)" },
       { "command": "srcsharp.debugFile", "title": "開いているイベントをデバッグ", "category": "SRC#", "icon": "$(debug-alt)" },
       { "command": "srcsharp.showScreen", "title": "画面を表示", "category": "SRC#", "icon": "$(device-desktop)" },
       { "command": "srcsharp.openSettings", "title": "設定を開く", "category": "SRC#", "icon": "$(gear)" },

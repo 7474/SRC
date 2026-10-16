@@ -2,7 +2,10 @@
 
 ## 0.5.1 (pre-release)
 
-- Show the game screen of the debugged scenario in the "SRC# 画面" view. It refreshes when the debugger stops and when the scenario ends, and every 0.5 seconds while running. Requires a srcsharp that supports the `srcsharpScreen` request (later than 0.5.1).
+- Play the debugged scenario in the "SRC# 画面" tab (`interactive` launch attribute, used by the run buttons, F5 and the launch.json template): frames are sent from the debug adapter, and clicks, keys, the mouse wheel, text input (`Input`) and file dialogs are passed to the scenario. No sound. Breakpoints and stepping work as before.
+- Without `interactive`, show the game screen, refreshed when the debugger stops and when the scenario ends, and every 0.5 seconds while running.
+- Both require a srcsharp that supports the screen requests (later than 0.5.1).
+- Pass `srcsharp.appPath` to the debugger, so the scenario loads the SRC folder's common files (Lib, Data/System, Bitmap).
 - Add the SRC# control panel to the activity bar: status of srcsharp, the language server and the SRC folder, and buttons to run, debug, show the screen, lint, make the balance report and open the settings.
 - Add a settings page (`SRC#: 設定を開く`) to set the srcsharp path, its arguments, the SRC folder and the display language with a form.
 - Find srcsharp in `~/.dotnet/tools` even when it is not on PATH, set `DOTNET_ROOT` when dotnet is installed in a non-default location, and install or update srcsharp (`dotnet tool update -g SRCSharpTools`) from a notification or the control panel.

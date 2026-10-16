@@ -152,6 +152,14 @@ namespace SRCRender
         /// </summary>
         public void SnapshotPng(Stream stream)
         {
+            Snapshot(stream, SKEncodedImageFormat.Png, 100);
+        }
+
+        /// <summary>
+        /// 現在の画面を format の画像として書き出す（VS Code 拡張の画面への転送など）。
+        /// </summary>
+        public void Snapshot(Stream stream, SKEncodedImageFormat format, int quality)
+        {
             lock (renderLock)
             {
                 if (disposed)
@@ -159,7 +167,7 @@ namespace SRCRender
                     return;
                 }
                 using (var image = SKImage.FromBitmap(frame))
-                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (var data = image.Encode(format, quality))
                 {
                     data.SaveTo(stream);
                 }

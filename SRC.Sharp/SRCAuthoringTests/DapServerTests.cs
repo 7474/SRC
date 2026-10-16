@@ -101,6 +101,63 @@ namespace SRCAuthoring.Tests
         }
 
         [TestMethod]
+        public void Dap_InteractiveSendsFramesAndTakesInput()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var eve = scenario.Write("test.eve",
+                    "プロローグ:",
+                    "Exit",
+                    "",
+                    "スタート:",
+                    "Input 名前 名前を入れてください 既定",
+                    "Talk システム",
+                    "こんにちは",
+                    "End",
+                    "Set 確認 1",
+                    "Quit");
+                var server = new DapServer(client.ServerInput, client.ServerOutput);
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["adapterID"] = "srcsharp" });
+                Request(client, "launch", new JsonObject { ["program"] = eve, ["appPath"] = scenario.Root, ["interactive"] = true });
+                var breakpoints = Request(client, "setBreakpoints", new JsonObject
+                {
+                    ["source"] = new JsonObject { ["path"] = eve },
+                    ["breakpoints"] = new JsonArray { new JsonObject { ["line"] = 10 } },
+                });
+                Request(client, "configurationDone");
+
+                // 文字入力はイベントで尋ね、答えをリクエストで受ける
+                var prompt = WaitEvent(client, InteractiveScreen.PromptEvent);
+                Assert.AreEqual("input", prompt["body"]["kind"].GetValue<string>());
+                Assert.AreEqual("既定", prompt["body"]["value"].GetValue<string>());
+                Request(client, InteractiveScreen.PromptResultCommand, new JsonObject { ["id"] = prompt["body"]["id"].GetValue<int>(), ["value"] = "ゲスト" });
+
+                // 表示したフレームを送る
+                var frame = WaitEvent(client, InteractiveScreen.FrameEvent);
+                Assert.AreEqual("webp", frame["body"]["format"].GetValue<string>());
+                var webp = Convert.FromBase64String(frame["body"]["data"].GetValue<string>());
+                CollectionAssert.AreEqual(new byte[] { (byte)'R', (byte)'I', (byte)'F', (byte)'F' }, webp.Take(4).ToArray(), "WebP");
+
+                // メッセージは送らない限り進まない（自動の入力は無い）。キー（Enter）で送る
+                System.Threading.Thread.Sleep(1000);
+                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "down", ["keyCode"] = 13 });
+                Request(client, InteractiveScreen.InputCommand, new JsonObject { ["type"] = "key", ["kind"] = "up", ["keyCode"] = 13 });
+
+                var stopped = WaitEvent(client, "stopped");
+                Assert.AreEqual("breakpoint", stopped["body"]["reason"].GetValue<string>());
+                Assert.AreEqual("ゲスト", Request(client, "evaluate", new JsonObject { ["expression"] = "名前" })["result"].GetValue<string>());
+
+                Request(client, "continue", new JsonObject { ["threadId"] = 1 });
+                WaitEvent(client, "terminated");
+                Request(client, "disconnect");
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
+        [TestMethod]
         public void Dap_StopsOnEventError()
         {
             using (var scenario = new TestScenario())
