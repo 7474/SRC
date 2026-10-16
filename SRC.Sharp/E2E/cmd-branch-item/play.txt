@@ -1,0 +1,44 @@
+# RemoveItem の４通りの書式（両方省略・ユニットのみ・アイテムのみ・両方）の結果を確かめる
+wait message 検証終了
+# (1) 両方省略: デフォルトユニットのアイテムをすべて外し、味方なので在庫に残る
+expect eval a1 = 2
+expect eval a2 = 0
+expect eval stock1 = 2
+# (2) ユニットＩＤ・ユニット名称・パイロット名で指定して外す
+expect eval a3 = 0
+expect eval c1 = 0
+expect eval b1 = 0
+expect eval stock2 = 2
+# 味方以外のユニットから外したアイテムは削除され、在庫に残らない
+expect eval t1 = 1
+expect eval t2 = 0
+expect eval stock3 = 2
+# (3) アイテム番号: デフォルトユニットの２番目を削除する（在庫に戻らない）
+expect eval stock4 = 0
+expect eval a4 = 1
+expect eval InStr(a4item, "強化Ａ") = 1
+expect eval stock5 = 0
+# アイテムＩＤ: 装備中・未装備のどちらも削除する
+expect eval a5 = 0
+expect eval stock6 = 1
+expect eval stock7 = 0
+# 名称: 装備されていないものを優先して削除する
+expect eval stock8 = 1
+expect eval stock9 = 0
+expect eval b2 = 1
+# 名称: 装備されていないものがなければ装備されたものを削除する
+expect eval b3 = 2
+expect eval b4 = 1
+expect eval InStr(b4item, "強化Ａ") = 1
+# (4) ユニットとアイテム: 番号・名称・ＩＤで、そのユニットのアイテムを削除する
+expect eval c2 = 3
+expect eval c3 = 2
+expect eval InStr(c3item, "強化Ｂ") = 1
+expect eval c4 = 1
+expect eval InStr(c4item, "強化Ｂ") = 1
+expect eval c5 = 0
+# 削除したアイテムは在庫に残らない
+expect eval stock10 = 0
+key Enter
+auto 30
+expect error none

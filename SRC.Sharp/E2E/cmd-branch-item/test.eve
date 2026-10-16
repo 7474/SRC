@@ -1,0 +1,99 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テスト機 0 パイロットＡ 1 2 2
+Create 味方 テスト機 0 パイロットＢ 1 3 2
+Create 味方 重機 0 パイロットＣ 1 4 2
+Create 敵 標的機 0 標的パイロット 1 10 10
+Set idA UnitID(パイロットＡ)
+Set idC UnitID(パイロットＣ)
+
+# ---- (1) 両方省略: デフォルトユニットのアイテムをすべて外す（味方なので在庫に残る） ----
+Select パイロットＡ
+Equip 強化Ａ
+Equip 強化Ｂ
+Set a1 CountItem(パイロットＡ)
+RemoveItem
+Set a2 CountItem(パイロットＡ)
+Set stock1 CountItem(未装備)
+
+# ---- (2) ユニットのみ指定: ユニットＩＤ・ユニット名称・パイロット名 ----
+Equip idA 強化Ａ
+RemoveItem idA
+Set a3 CountItem(パイロットＡ)
+Equip パイロットＣ 強化Ｂ
+RemoveItem 重機
+Set c1 CountItem(パイロットＣ)
+Equip パイロットＢ 強化Ａ
+Equip パイロットＢ 強化Ｂ
+RemoveItem パイロットＢ
+Set b1 CountItem(パイロットＢ)
+Set stock2 CountItem(未装備)
+# 味方以外のユニットから外したアイテムは削除される
+Equip 標的パイロット 強化Ｃ
+Set t1 CountItem(標的パイロット)
+RemoveItem 標的パイロット
+Set t2 CountItem(標的パイロット)
+Set stock3 CountItem(未装備)
+
+# ---- (3) アイテムのみ指定: 番号・アイテムＩＤ・名称 ----
+Select パイロットＡ
+Equip 強化Ａ
+Equip 強化Ｂ
+Set stock4 CountItem(未装備)
+# デフォルトユニットの２番目のアイテムを削除
+RemoveItem 2
+Set a4 CountItem(パイロットＡ)
+Set a4item Item(パイロットＡ, 1)
+Set stock5 CountItem(未装備)
+# 装備中のアイテムをＩＤで削除
+Set iid ItemID(パイロットＡ, 1)
+RemoveItem iid
+Set a5 CountItem(パイロットＡ)
+# 未装備のアイテムをＩＤで削除
+Item 強化Ｃ
+Set stock6 CountItem(未装備)
+Set sid ItemID(未装備, 1)
+RemoveItem sid
+Set stock7 CountItem(未装備)
+# 名称指定: 装備されていないものを優先して削除
+Equip パイロットＢ 強化Ａ
+Item 強化Ａ
+Set stock8 CountItem(未装備)
+RemoveItem 強化Ａ
+Set stock9 CountItem(未装備)
+Set b2 CountItem(パイロットＢ)
+# 名称指定: 装備されていなければ装備されたものを削除（ひらがなの読みでなく名称で照合）
+Equip パイロットＢ 強化Ｄ
+Set b3 CountItem(パイロットＢ)
+RemoveItem 強化Ｄ
+Set b4 CountItem(パイロットＢ)
+Set b4item Item(パイロットＢ, 1)
+# 存在しないアイテムは何もしない
+RemoveItem 強化Ｄ
+
+# ---- (4) ユニットとアイテムを指定: 番号・名称・ＩＤ ----
+Equip パイロットＣ 強化Ａ
+Equip パイロットＣ 強化Ｂ
+Equip パイロットＣ 強化Ｃ
+Set c2 CountItem(パイロットＣ)
+RemoveItem パイロットＣ 1
+Set c3 CountItem(パイロットＣ)
+Set c3item Item(パイロットＣ, 1)
+RemoveItem idC 強化Ｃ
+Set c4 CountItem(パイロットＣ)
+Set c4item Item(パイロットＣ, 1)
+Set cid ItemID(パイロットＣ, 1)
+RemoveItem 重機 cid
+Set c5 CountItem(パイロットＣ)
+# 装備していないアイテムは何もしない
+RemoveItem パイロットＣ 強化Ｄ
+Set stock10 CountItem(未装備)
+
+Talk システム
+検証終了
+End
+Exit

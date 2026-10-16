@@ -21,7 +21,7 @@ namespace SRCCore.CmdDatas.Commands
                 without_cr = true;
 
                 var edata = Strings.Left(orgEdata, Strings.Len(orgEdata) - 1);
-                if (Strings.Right(orgEdata, 1) == " ")
+                if (Strings.Right(edata, 1) == " ")
                 {
                     // メッセージが空文字列
                     edata = edata + "\"\"";
@@ -243,86 +243,94 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            string sx, sy;
-            int xx, yy;
-
-            // PaintStringはあらかじめ構文解析済み
+            // VB版では構文解析時に引数を整理していた（上のコメントアウト部分）。
+            // ここでは実行時に同じ解釈を行う。
             switch (ArgNum)
             {
                 case 2:
                     // 座標指定がないことが確定
-                    GUI.DrawString(GetArgAsString(2), Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
-                    break;
-                case 4:
-                    // 座標指定付きであることが確定
-                    sx = GetArgAsString(2);
-                    sy = GetArgAsString(3);
-                    if (sx == "-")
-                    {
-                        GUI.HCentering = true;
-                        xx = -1;
-                    }
-                    else
-                    {
-                        GUI.HCentering = false;
-                        xx = Conversions.ToInteger(sx) + Event.BaseX;
-                    }
-
-                    if (sy == "-")
-                    {
-                        GUI.VCentering = true;
-                        yy = -1;
-                    }
-                    else
-                    {
-                        GUI.VCentering = false;
-                        yy = Conversions.ToInteger(sy) + Event.BaseY;
-                    }
-
-                    GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
+                    GUI.DrawString(ArgString(2), Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
                     break;
 
-                case 5:
-                    // 座標指定付きかどうか実行時まで不明
-                    sx = GetArgAsString(2);
-                    sy = GetArgAsString(3);
+                case 3:
+                    // 引数が２個の場合は座標指定なし。表示文字列は必ず文字列
+                    GUI.DrawString(TailString(2), Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, without_cr);
+                    break;
 
-                    // 最初の2引数が有効な座標指定かどうかで判断する
-                    if ((Information.IsNumeric(sx) || sx == "-") && (Information.IsNumeric(sy) || sy == "-"))
+                default:
                     {
-                        if (sx == "-")
+                        if (ArgNum < 4)
                         {
-                            GUI.HCentering = true;
-                            xx = -1;
+                            break;
+                        }
+
+                        // 最初の2引数が有効な座標指定かどうかで判断する
+                        var sx = GetArgAsString(2);
+                        var sy = GetArgAsString(3);
+                        if ((Information.IsNumeric(sx) || sx == "-") && (Information.IsNumeric(sy) || sy == "-"))
+                        {
+                            int xx, yy;
+                            if (sx == "-")
+                            {
+                                GUI.HCentering = true;
+                                xx = -1;
+                            }
+                            else
+                            {
+                                GUI.HCentering = false;
+                                xx = Conversions.ToInteger(sx) + Event.BaseX;
+                            }
+
+                            if (sy == "-")
+                            {
+                                GUI.VCentering = true;
+                                yy = -1;
+                            }
+                            else
+                            {
+                                GUI.VCentering = false;
+                                yy = Conversions.ToInteger(sy) + Event.BaseY;
+                            }
+
+                            // 座標指定があった場合の表示文字列
+                            var msg = ArgNum == 4 ? ArgString(4) : TailString(4);
+                            GUI.DrawString(msg, xx, yy, without_cr);
                         }
                         else
                         {
-                            GUI.HCentering = false;
-                            xx = Conversions.ToInteger(sx) + Event.BaseX;
+                            // 座標指定がなかった場合の表示文字列
+                            GUI.DrawString(TailString(2), -1, -1, without_cr);
                         }
 
-                        if (sy == "-")
-                        {
-                            GUI.VCentering = true;
-                            yy = -1;
-                        }
-                        else
-                        {
-                            GUI.VCentering = false;
-                            yy = Conversions.ToInteger(sy) + Event.BaseY;
-                        }
-
-                        GUI.DrawString(GetArgAsString(4), xx, yy, without_cr);
+                        break;
                     }
-                    else
-                    {
-                        GUI.DrawString(GetArgAsString(5), -1, -1, without_cr);
-                    }
-
-                    break;
             }
 
             return EventData.NextID;
+        }
+
+        // idx 番目の引数を表示文字列として返す。
+        // 引用符で囲まれていない引数に式置換が含まれる場合は文字列として式置換を行う（VB版の構文解析時の処理）
+        private string ArgString(int idx)
+        {
+            var raw = GetArgRaw(idx).RawArg ?? "";
+            if (Strings.Left(raw, 1) != "\"" && Strings.Left(raw, 1) != "`" && Strings.InStr(raw, "$(") > 0)
+            {
+                Expression.ReplaceSubExpression(ref raw);
+                return raw;
+            }
+            return GetArgAsString(idx);
+        }
+
+        // idx 番目以降の引数を空白で区切られたままひとつの文字列として返す（式置換は行う）
+        private string TailString(int idx)
+        {
+            var buf = GeneralLib.ListTail(EventData.Data, idx);
+            if (Strings.InStr(buf, "$(") > 0)
+            {
+                Expression.ReplaceSubExpression(ref buf);
+            }
+            return buf;
         }
     }
 }

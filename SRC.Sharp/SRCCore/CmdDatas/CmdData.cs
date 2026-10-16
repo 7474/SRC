@@ -220,6 +220,8 @@ namespace SRCCore.CmdDatas
         {
             string[] rawArgs;
             ArgNum = GeneralLib.ListSplit(list, out rawArgs);
+            // SetEventData で解析し直す場合（PaintString の末尾の「;」など）に前の引数を残さない
+            args.Clear();
 
             // コマンド名も含める
             foreach (var buf in rawArgs)

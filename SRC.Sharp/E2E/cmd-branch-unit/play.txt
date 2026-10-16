@@ -1,0 +1,63 @@
+# RankUp・ChangeMode・RemoveUnit・RemovePilot・Destroy の引数の形ごとの結果を確かめる
+wait message 検証開始
+# RankUp: ユニットＩＤ指定・対象省略
+expect eval rkA1 = 2
+expect eval rkA2 = 3
+# ＨＰの割合（全快）を保ったまま最大ＨＰが増える
+expect eval hpA > 1000
+# 変形できるユニットは他形態のランクも上がる
+expect eval InStr(nameB, "変形機改") = 1
+expect eval rkB = 2
+# 分離できるユニットは分離ユニットのランクも上がる
+expect eval rkC = 3
+expect eval rkSA1 = 3
+expect eval rkSB1 = 3
+# 分離ユニットは合体後の形態の他の分離ユニットのランクも上がる
+expect eval rkSA2 = 5
+expect eval rkSB2 = 5
+# ChangeMode: 対象省略・座標・陣営・パイロット名・ユニットＩＤ
+expect eval InStr(modeA1, "待機") = 1
+expect eval InStr(modeA2, "8 9") = 1
+expect eval InStr(modeT1, "固定") = 1
+expect eval InStr(modeG1, "逃亡") = 1
+expect eval InStr(modeA3, "通常") = 1
+expect eval InStr(modeG2, "10 11") = 1
+expect eval InStr(modeG3, "12 13") = 1
+expect eval InStr(modeT2, "5 6") = 1
+# RemoveUnit: 名前指定はパイロットの乗っていないユニットを優先する
+expect eval InStr(stEmpty, "破棄") = 1
+expect eval InStr(stD1, "出撃") = 1
+# 次の名前指定（非同期）でパイロットの乗ったユニットが削除され、パイロットは降ろされる
+expect eval InStr(stD2, "破棄") = 1
+expect eval Len(unitD) = 0
+# ユニットＩＤ指定・対象省略
+expect eval InStr(stB, "破棄") = 1
+expect eval InStr(stE, "破棄") = 1
+expect eval Len(unitE) = 0
+# パイロットは削除されない
+expect eval aliveE = 1
+# RemovePilot: サブパイロットだけを削除するとユニットは残る
+expect eval crewF1 = 2
+expect eval crewF2 = 1
+expect eval aliveSub = 0
+expect eval InStr(stF1, "出撃") = 1
+# メインパイロット（非同期）・対象省略ではユニットも削除する
+expect eval aliveF = 0
+expect eval InStr(stF2, "破棄") = 1
+expect eval aliveH = 0
+expect eval InStr(stH, "破棄") = 1
+# ユニットに乗っていないパイロット
+expect eval aliveSub2 = 0
+key Enter
+# Destroy（味方フェイズ開始のイベント）。敵の最後の１機を破壊すると全滅イベントが起きる
+wait message 全滅
+expect eval InStr(stDA, "破壊") = 1
+expect eval InStr(stDSB, "破壊") = 1
+expect eval InStr(stDA2, "破壊") = 1
+expect eval InStr(stDG, "破壊") = 1
+expect eval InStr(stDT, "破壊") = 1
+expect eval annihilated = 1
+key Enter
+auto 30
+expect finished
+expect error none

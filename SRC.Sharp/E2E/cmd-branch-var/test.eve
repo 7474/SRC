@@ -1,0 +1,269 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テスト機 0 パイロットＡ 1 2 2
+Pilot パイロットＢ 1
+Create 味方 テスト機 0 パイロットＣ 1 3 2
+Escape パイロットＣ
+
+# ---- If / ElseIf ----
+# パイロット名だけの条件: 出撃していれば真
+If パイロットＡ Then
+  Set if1 1
+Else
+  Set if1 2
+EndIf
+# ユニットに乗っていないパイロットは偽
+If パイロットＢ Then
+  Set if2 1
+Else
+  Set if2 2
+EndIf
+# 出撃していないユニットのパイロットは偽
+If パイロットＣ Then
+  Set if3 1
+Else
+  Set if3 2
+EndIf
+# パイロット名でなければ値で判定
+If 1 Then
+  Set if4 1
+EndIf
+If 0 Then
+  Set if5 1
+Else
+  Set if5 2
+EndIf
+# Not パイロット名
+If Not パイロットＡ Then
+  Set if6 1
+Else
+  Set if6 2
+EndIf
+If Not パイロットＢ Then
+  Set if7 1
+EndIf
+If Not パイロットＣ Then
+  Set if8 1
+EndIf
+If Not 0 Then
+  Set if9 1
+EndIf
+If Not 1 Then
+  Set if10 1
+Else
+  Set if10 2
+EndIf
+# 括弧・変数・複数の項からなる式
+Set v 1
+If (v = 1) Then
+  Set if11 1
+EndIf
+If Not (v = 2) Then
+  Set if12 1
+EndIf
+If $(v) Then
+  Set if13 1
+EndIf
+If Not $(v) Then
+  Set if14 1
+Else
+  Set if14 2
+EndIf
+If v = 1 Then
+  Set if15 1
+EndIf
+If v Then
+  Set if16 1
+EndIf
+# ElseIf のパイロット名・Not
+If v = 2 Then
+  Set if17 1
+ElseIf パイロットＢ Then
+  Set if17 2
+ElseIf Not パイロットＣ Then
+  Set if17 3
+Else
+  Set if17 4
+EndIf
+# 入れ子
+If パイロットＡ Then
+  If v = 1 Then
+    Set if18 1
+  Else
+    Set if18 2
+  EndIf
+Else
+  Set if18 3
+EndIf
+# Goto 形式
+If v = 1 Goto 飛び先
+Set if19 1
+飛び先:
+Set if20 1
+
+# ---- CopyArray ----
+Global ga
+Set ga[1] 一
+Set ga[2] 二
+Set ga[3] 三
+Global gb
+Set gb[9] 古い
+# グローバル配列のコピー（コピー先の元の内容は消去される）
+CopyArray ga gb
+Set ca1 Count(gb)
+Set ca2 gb[2]
+Set ca3 IsVarDefined(gb[9])
+# 要素のない変数のコピー
+Global gs
+Set gs 42
+CopyArray gs gs2
+Set ca4 gs2
+# コピー元に $ ・Eval を使う
+CopyArray $ga gc
+Set ca5 gc[3]
+Set srcname "ga"
+Set dstname "gd"
+CopyArray Eval(srcname) Eval(dstname)
+Set ca6 Count(gd)
+Set ca7 gd[1]
+# ローカル配列
+Local la
+Set la[1] 甲
+Set la[2] 乙
+Local lb
+Set lb[5] 古い
+CopyArray la lb
+Set ca8 Count(lb)
+Set ca9 lb[2]
+Set ca10 IsVarDefined(lb[5])
+Local ls
+Set ls 7
+CopyArray ls ls2
+Set ca11 ls2
+# サブルーチンローカル配列（結果はグローバル変数に残す）
+Global cs1
+Global cs2
+Global cs3
+Global cs4
+Call 配列コピー
+
+# ---- SetSkill ----
+SetSkill パイロットＡ 底力 3
+Set sk1 Skill(パイロットＡ, 底力)
+SetSkill パイロットＡ 底力 4
+Set sk2 Skill(パイロットＡ, 底力)
+# 別名を指定
+SetSkill パイロットＡ 切り払い 2 剣技
+Set sk3 Skill(パイロットＡ, 切り払い)
+# 非表示
+SetSkill パイロットＡ 見切り 1 非表示
+Set sk4 Skill(パイロットＡ, 見切り)
+# レベル0で削除
+SetSkill パイロットＡ 底力 0
+Set sk5 Skill(パイロットＡ, 底力)
+# まだ作成されていないパイロット（パイロットデータ名）
+SetSkill パイロットＤ 底力 2
+Pilot パイロットＤ 1
+# 作成時にはまだ反映されないので、レベルを変えて能力を更新する
+LevelUp パイロットＤ 1
+Set sk6 Skill(パイロットＤ, 底力)
+# エリアス: レベル加算・レベル指定なし
+Pilot パイロットＥ 1
+SetSkill パイロットＥ 剣豪 2
+Set sk7 Skill(パイロットＥ, 切り払い)
+Set sk8 Skill(パイロットＥ, 見切り)
+# エリアス: レベル乗算
+SetSkill パイロットＥ 豪腕 3
+Set sk9 Skill(パイロットＥ, 底力)
+# エリアス: レベル -1 はエリアスで指定されたレベル
+SetSkill パイロットＥ 豪腕 -1
+Set sk10 Skill(パイロットＥ, 底力)
+# エリアス: 別名を指定
+SetSkill パイロットＥ 剣豪 1 疾風
+Set sk11 Skill(パイロットＥ, 切り払い)
+# エリアス: 解説（別名指定あり・なし）
+SetSkill パイロットＢ 天才 1
+Set sk12 Skill(パイロットＢ, 天才)
+SetSkill パイロットＢ 天才 1 秀才
+Set sk13 Skill(パイロットＢ, 秀才)
+SetSkill パイロットＢ 天才 0
+Set sk14 Skill(パイロットＢ, 天才)
+
+# ---- Print ----
+Open 出力テスト.txt For 出力 As F
+Print F
+Print F 一行目 です
+Set pv 42
+Print F pv
+Print F $(pv)
+Print F `pv そのまま`
+Print F 前半;
+Print F 後半
+Print F pv;
+Print F `!`;
+Print F $(pv);
+Print F
+Print F 値は$(pv)です
+Close F
+Open 出力テスト.txt For 入力 As F
+LineRead F r1
+LineRead F r2
+LineRead F r3
+LineRead F r4
+LineRead F r5
+LineRead F r6
+LineRead F r7
+LineRead F r8
+Set eof EOF(F)
+Close F
+
+# ---- FillStyle / PaintString ----
+FillStyle 塗りつぶし
+FillStyle 透明
+FillStyle 横線
+FillStyle 縦線
+FillStyle 斜線
+FillStyle 斜線２
+FillStyle クロス
+FillStyle 網かけ
+FillStyle 塗りつぶし
+Color #FFFFFF
+PaintString 文字列
+PaintString 10 20 座標指定
+PaintString - - 中央
+PaintString 10 - 縦中央
+PaintString 続けて;
+PaintString 表示
+PaintString 二語の 文字列
+PaintString 30 300 三語の 長い 文字列
+PaintString 座標 でない 並び
+PaintString 値は$(pv)です
+Set painted 1
+
+Talk システム
+検証終了
+End
+# Exit 形式（以降は実行されない）
+If v = 1 Exit
+Set afterExit 1
+Exit
+
+配列コピー:
+Local sa
+Set sa[1] 子
+Set sa[2] 丑
+Local sb
+Set sb[3] 古い
+CopyArray sa sb
+Set cs1 Count(sb)
+Set cs2 sb[2]
+Set cs3 IsVarDefined(sb[3])
+Local ss
+Set ss 9
+CopyArray ss ss2
+Set cs4 ss2
+Return

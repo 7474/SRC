@@ -1,0 +1,86 @@
+# If/ElseIf の条件の形・CopyArray・SetSkill・Print・FillStyle・PaintString の結果を確かめる
+wait message 検証終了
+snapshot paint
+# If パイロット名: 出撃していれば真、ユニットに乗っていない・出撃していなければ偽
+expect eval if1 = 1
+expect eval if2 = 2
+expect eval if3 = 2
+# パイロット名でなければ値で判定
+expect eval if4 = 1
+expect eval if5 = 2
+# If Not パイロット名・値
+expect eval if6 = 2
+expect eval if7 = 1
+expect eval if8 = 1
+expect eval if9 = 1
+expect eval if10 = 2
+# 括弧・Not 括弧・複数の項・変数だけの式
+expect eval if11 = 1
+expect eval if12 = 1
+expect eval if15 = 1
+expect eval if16 = 1
+# ElseIf のパイロット名・Not パイロット名
+expect eval if17 = 3
+# 入れ子
+expect eval if18 = 1
+# Goto 形式: 条件が真ならラベルへ飛ぶ
+expect eval IsVarDefined(if19) = 0
+expect eval if20 = 1
+# CopyArray: グローバル配列（コピー先の元の内容は消える）
+expect eval ca1 = 3
+expect eval InStr(ca2, "二") = 1
+expect eval ca3 = 0
+# 要素のない変数
+expect eval ca4 = 42
+# コピー元の $ ・Eval、コピー先の Eval
+expect eval InStr(ca5, "三") = 1
+expect eval ca6 = 3
+expect eval InStr(ca7, "一") = 1
+# ローカル配列・ローカル変数
+expect eval ca8 = 2
+expect eval InStr(ca9, "乙") = 1
+expect eval ca10 = 0
+expect eval ca11 = 7
+# サブルーチンローカル配列・変数
+expect eval cs1 = 2
+expect eval InStr(cs2, "丑") = 1
+expect eval cs3 = 0
+expect eval cs4 = 9
+# SetSkill: 付加・上書き・別名・非表示・レベル0で削除
+expect eval sk1 = 3
+expect eval sk2 = 4
+expect eval sk3 = 2
+expect eval sk4 = 1
+expect eval sk5 = 0
+# まだ作成されていないパイロットにも付加できる
+expect eval sk6 = 2
+# エリアス: レベル加算・レベル指定なし・レベル乗算・レベル -1・別名指定
+expect eval sk7 = 3
+expect eval sk8 = 2
+expect eval sk9 = 6
+expect eval sk10 = 2
+expect eval sk11 = 2
+# エリアス: 解説（別名指定あり・なし・レベル0）
+expect eval sk12 = 1
+expect eval sk13 = 1
+expect eval sk14 = 0
+# Print: 改行のみ・複数の語・式・式置換・` で囲んだ文字列・「;」で改行しない
+expect eval Len(r1) = 0
+expect eval InStr(r2, "一行目 です") = 1
+expect eval Len(r2) = 6
+expect eval r3 = 42
+expect eval r4 = 42
+expect eval InStr(r5, "pv そのまま") = 1
+expect eval InStr(r6, "前半後半") = 1
+expect eval Len(r6) = 4
+expect eval InStr(r7, "42!42") = 1
+expect eval Len(r7) = 5
+expect eval InStr(r8, "値は42です") = 1
+expect eval eof = 1
+# FillStyle・PaintString の各形がエラーにならずに最後まで実行される
+expect eval painted = 1
+key Enter
+auto 30
+# If 条件 Exit 形式: 以降は実行されない
+expect eval IsVarDefined(afterExit) = 0
+expect error none
