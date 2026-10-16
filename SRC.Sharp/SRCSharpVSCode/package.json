@@ -57,11 +57,11 @@
     ],
     "configurationDefaults": {
       "[src-eve]": {
-        "files.encoding": "shiftjis",
+        "files.encoding": "utf8",
         "files.autoGuessEncoding": true
       },
       "[src-data]": {
-        "files.encoding": "shiftjis",
+        "files.encoding": "utf8",
         "files.autoGuessEncoding": true
       }
     },

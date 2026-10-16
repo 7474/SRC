@@ -190,12 +190,12 @@ SRC# のデバッグを始めると「SRC# 画面」のタブを横に開き、�
 
 ## 文字コード
 
-`*.eve` の既定の文字コードを Shift_JIS にし、自動判別（`files.autoGuessEncoding`）を有効にしています（`configurationDefaults`）。UTF-8 のシナリオでは、`[src-eve]` の `files.encoding` を `utf8` にしてください（[File encoding support](https://code.visualstudio.com/docs/editing/codebasics#_file-encoding-support)）。
+`*.eve` とデータファイルの既定の文字コードを UTF-8（SRC# の推奨）にし、自動判別（`files.autoGuessEncoding`）を有効にしています（`configurationDefaults`）。新しく作るファイルは UTF-8 になり、元の SRC の Shift_JIS のファイルは自動判別で開けます。判別を誤る場合や、Shift_JIS のまま書くシナリオでは、`[src-eve]`・`[src-data]` の `files.encoding` を `shiftjis` にしてください（[File encoding support](https://code.visualstudio.com/docs/editing/codebasics#_file-encoding-support)）。
 
 ```json
 {
   "[src-eve]": {
-    "files.encoding": "utf8"
+    "files.encoding": "shiftjis"
   }
 }
 ```

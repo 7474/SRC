@@ -14,6 +14,7 @@
 - Restart the language server when the settings change, without reloading the window.
 - Run or debug the open event from the editor title, and with F5 without launch.json.
 - Add `srcsharp.language` and `srcsharp.screen.autoOpen`.
+- Change the default encoding of event and data files from Shift_JIS to UTF-8, which SRC# recommends. Shift_JIS files are still opened by `files.autoGuessEncoding`.
 
 ## 0.5.0 (pre-release)
 
