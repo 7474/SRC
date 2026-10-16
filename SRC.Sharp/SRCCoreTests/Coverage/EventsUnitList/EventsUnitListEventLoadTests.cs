@@ -121,7 +121,7 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.AreEqual(src.Event.EventData.Count, src.Event.EventCmd.Count);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("If a = 1 Then|Set b 1", "Ifに対応するEndIfがありません", "If a = 1 Then")]
         [DataRow("Set b 1|EndIf", "EndIfに対応するIfがありません", "EndIf")]
         [DataRow("Do|Set b 1", "Doに対応するLoopがありません", "Do")]
@@ -179,7 +179,7 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.IsTrue(gui.TerminateCalled);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Create 味方 ガンダム 0 アムロ 1 1", "Createコマンドのパラメータ数が違います")]
         [DataRow("Pilot アムロ", "Pilotコマンドのパラメータ数が違います")]
         [DataRow("Unit ガンダム", "Unitコマンドのパラメータ数が違います")]
@@ -226,7 +226,7 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.IsTrue(gui.TerminateCalled);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Ask 選んでください|はい|いいえ", "Askに対応するEndがありません", "Ask 選んでください")]
         [DataRow("Ask 選んでください キャンセル可|はい", "Askに対応するEndがありません", "Ask 選んでください キャンセル可")]
         [DataRow("Question 25 その声は|アリスだな？", "Questionに対応するEndがありません", "Question 25 その声は")]
@@ -255,7 +255,7 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.IsTrue(gui.TerminateCalled);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Ask 選択肢 選んでください キャンセル可")]
         [DataRow("Ask 選択肢 選んでください")]
         [DataRow("Ask 選んでください 終了")]

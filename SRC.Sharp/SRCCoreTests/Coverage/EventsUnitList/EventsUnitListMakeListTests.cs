@@ -341,7 +341,7 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         // MakeUnitList（表示内容・件数上限）
         // ──────────────────────────────────────────────
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ＨＰ")]
         [DataRow("ＥＮ")]
         [DataRow("名称")]

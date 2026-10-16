@@ -93,7 +93,7 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
             Assert.AreEqual((4, 5), (u.x, u.y));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("陸", "空陸", "AAAA", "空中")]   // 空の適応が陸以上なら空中
         [DataRow("陸", "空陸", "BAAA", "地上")]   // 空の適応が陸より低ければ地上
         [DataRow("屋内", "空陸", "BAAA", "地上")]
@@ -214,7 +214,7 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
             Assert.AreSame(u, f.Painted.Last().u);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("陸", "AAAA", new string[0], "地上", 100)]           // 地上の通常移動は消費なし
         [DataRow("陸", "AAAA", new[] { "ホバー移動" }, "地上", 95)]    // ホバー移動は地上でも5消費
         [DataRow("陸地中", "AAAA", new string[0], "地中", 90)]        // 地中は10消費
@@ -264,7 +264,7 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
             Assert.AreSame(u, f.Painted.Single().u);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("水", "陸", "地上", "水中")]       // 地上から水へ入ると水中
         [DataRow("水", "水上陸", "地上", "水上")]   // 水上移動できれば水上
         [DataRow("深水", "陸", "宇宙", "水中")]     // 宇宙から水へは水中

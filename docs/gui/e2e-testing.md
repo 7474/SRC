@@ -123,12 +123,16 @@ expect eval Damage(標的パイロット) > 0
 |---|---|---|
 | `SRCCoreTests` | ユニットテスト。`E2E/HeadlessScenarioTests` は GUI 呼び出しの記録を、ゲームスレッドあり／なしで比較 | Windows / Linux |
 | `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Windows / Linux（VRT は Linux のみ） |
-| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存 | Windows / Linux |
+| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Windows / Linux |
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Windows / Linux（出力を開けない環境では再生のテストは Inconclusive） |
 | `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Windows / Linux |
 | `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
 | `SRCSharpFormTestWinAppDriver` | SRC#Form の起動確認 | Windows のみ |
 | `SRCTestBlazor/E2E` | Cypress。データ閲覧画面 | ブラウザ |
+
+`SRCRenderTests` は、待ち時間の長いシナリオのテストが多いため、メソッド単位で並べて動かす（`AssemblyInfo.cs` の `Parallelize`、ワーカーは CPU の数）。プロセス全体の UI カルチャを変えるテスト（`UiLanguageTests`）は `[DoNotParallelize]` にしている。テストを足すときは、静的な状態やプロセス全体の設定を変えないようにし、変える場合は `[DoNotParallelize]` を付ける（[MSTest の並列実行](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-controlling-execution#parallelization-attributes)）。
+
+CI（`.github/workflows/CI.yml`）は、Linux の `test-srccore-linux`（SRCCore・SRCRender）・`test-tools-linux`（Avalonia・作成支援ツール・SRCSound・VS Code 拡張）・`test-web`（SRC#Web）と、Windows の `build-and-test-srcs` を並べて動かす。
 
 ## フロントエンドごとの UI テスト
 
@@ -143,6 +147,6 @@ expect eval Damage(標的パイロット) > 0
 ## 次の作業
 
 1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
-2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `test-srccore-linux` で `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す）
+2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `test-srccore-linux` で、master への push のときに `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す。カバレッジの収集は後処理に数分かかるため PR では行わない）
 3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
 4. ~~セーブ／ロード、インターミッション、次ステージへの遷移を通す~~（`intermission-save`。ロードは SRC#Web の E2E で確かめる）

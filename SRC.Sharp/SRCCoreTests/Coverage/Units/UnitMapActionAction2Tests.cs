@@ -81,7 +81,7 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
             Assert.AreEqual(0, f.SysMessages.Count);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(10, 19, 500)]  // 相手が8以上高い: 5倍
         [DataRow(10, 17, 450)]  // 7: 4.5倍
         [DataRow(10, 16, 400)]
