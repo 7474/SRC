@@ -94,7 +94,7 @@ namespace SRCSharpForm.Lib
             {
                 Print();
             }
-            g.DrawString(str, currentFont, currentBrush, currentPoint);
+            g.DrawStringWithoutMargin(str, currentFont, currentBrush, currentPoint);
             currentPoint.X += textSize.Width;
         }
     }
