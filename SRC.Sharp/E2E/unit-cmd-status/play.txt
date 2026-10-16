@@ -1,0 +1,74 @@
+# インターミッションの「ユニットステータス」の画面で、形態を変えるコマンド（換装・変形・ハイパーモード・ノーマルモード・合体・分離）を
+# マスのクリックとメニュー・リストの選択で行い、形態とパイロットを確かめる。
+# ユニットはＨＰの大きい順に (1,1) (6,1) (11,1) (1,2) (6,2) … に並び、形態が変わるたびに並べ直される
+wait message ステージ1
+key Enter
+wait list コマンド
+list ユニットステータス
+wait ready
+# 前提: 2 体合体の合体ロボはインターミッションで自動的に分離している
+expect eval InStr(Unit(合体パイロットＡ), "合体Ａ") = 1
+expect eval InStr(Unit(合体パイロットＢ), "合体Ｂ") = 1
+expect eval X(換装パイロット) = 1
+expect eval Y(換装パイロット) = 1
+
+# 換装: 換装先のリストから選ぶ（換装はインターミッションでのみできる）
+cell 1 1
+menu 換装
+wait list 変更先選択
+key Enter
+wait ready
+expect eval InStr(Unit(換装パイロット), "換装機(重装)") = 1
+
+# 変形（変形先が 1 つならリストを出さない）
+expect eval X(変形パイロット) = 6
+expect eval Y(変形パイロット) = 1
+cell 6 1
+menu 変形
+wait ready
+expect eval InStr(Unit(変形パイロット), "変形機Ｂ") = 1
+
+# ハイパーモード: ユニットステータスでは気力の条件なしに切り替えられる。ノーマルモードで元に戻す
+expect eval Morale(ハイパーパイロット) = 100
+expect eval X(ハイパーパイロット) = 6
+expect eval Y(ハイパーパイロット) = 1
+cell 6 1
+menu ハイパーモード
+wait ready
+expect eval InStr(Unit(ハイパーパイロット), "ハイパー機(ハイパー)") = 1
+expect eval X(ハイパーパイロット) = 6
+cell 6 1
+menu ノーマルモード
+wait ready
+expect eval InStr(Unit(ハイパーパイロット), "ハイパー機(ハイパー)") = 0
+expect eval InStr(Unit(ハイパーパイロット), "ハイパー機") = 1
+
+# 合体: ユニットステータスでは 2 体合体もコマンドで行い、パートナーの位置は問わない
+expect eval X(合体パイロットＡ) = 1
+expect eval Y(合体パイロットＡ) = 2
+cell 1 2
+menu 合体
+wait ready
+expect eval InStr(Unit(合体パイロットＡ), "合体ロボ") = 1
+expect eval InStr(Unit(合体パイロットＢ), "合体ロボ") = 1
+expect eval CountPilot(合体パイロットＡ) = 2
+# 分離（ユニットステータスでは確認なし）
+expect eval X(合体パイロットＡ) = 1
+expect eval Y(合体パイロットＡ) = 1
+cell 1 1
+menu 分離
+wait ready
+expect eval InStr(Unit(合体パイロットＡ), "合体Ａ") = 1
+expect eval InStr(Unit(合体パイロットＢ), "合体Ｂ") = 1
+
+# インターミッションに戻り、次のステージへ進む。換装と変形はそのまま
+cell 15 15 right
+menu インターミッションに戻る
+wait list コマンド
+expect eval InStr(Unit(換装パイロット), "換装機(重装)") = 1
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2
+expect finished
+expect error none

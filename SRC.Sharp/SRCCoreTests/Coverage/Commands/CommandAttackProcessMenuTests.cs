@@ -104,14 +104,14 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         [TestMethod]
         public void UnitSelect_EmptyCell_VictoryConditionEventShowsOperationObject()
         {
-            // 「勝利条件」イベントが定義されていれば作戦目的コマンドを表示する
+            // 「勝利条件」イベントが定義されていれば作戦目的コマンドを表示する（VB Main.frm の mnuMapCommandItem(5) の Caption は「作戦目的」）
             var f = new CommandAttackProcessFixture();
             f.AddEventLabel("勝利条件", 1);
             f.Commands.CommandState = "ユニット選択";
 
             f.Commands.ProceedCommand(false, GuiButton.Left, f.SRC.Map.MapData[3, 3], null);
 
-            Assert.AreEqual("勝利条件", Label(f.LastMapCommandMenu(), Command.OperationObjectCmdID));
+            Assert.AreEqual("作戦目的", Label(f.LastMapCommandMenu(), Command.OperationObjectCmdID));
         }
 
         [TestMethod]

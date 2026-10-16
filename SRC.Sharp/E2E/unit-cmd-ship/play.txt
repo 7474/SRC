@@ -1,0 +1,98 @@
+# 母艦への着艦（格納）と発進、会話、チャージ、移動後の攻撃と援護攻撃を
+# マスのクリックとメニュー・リスト・ダイアログの選択で行い、結果を確かめる
+auto 60
+expect message 母艦テスト開始
+# 前提: 艦載機はＨＰ・ＥＮが最大値（3000・200）の 50%
+expect eval HP(艦載パイロット) = 1500
+expect eval EN(艦載パイロット) = 100
+
+# ── 1 ターン目 ──
+# 母艦のマスへ移動すると着艦の確認が出て、OK で格納される（収納イベントが起きる）
+cell 7 5
+menu 移動
+cell 5 5
+wait dialog
+dialog OK
+auto 30
+expect eval InStr(Status(艦載パイロット), "格納") = 1
+expect eval 収納イベント = 1
+
+# 移動後のメニューの「会話」で隣のユニットを選ぶと会話イベントが起き、行動が終わる
+cell 10 5
+menu 移動
+cell 11 5
+wait menu
+menu 会話
+cell 12 5
+auto 30
+expect message 会話イベントです
+expect eval 会話済み = 1
+expect eval Action(会話パイロットＡ) = 0
+
+# チャージ（確認のダイアログで OK）: チャージ状態になり、行動が終わる
+cell 10 10
+menu チャージ
+wait dialog
+dialog OK
+auto 30
+expect eval Condition(チャージパイロット, チャージ) = 1
+expect eval Action(チャージパイロット) = 0
+
+# 移動後の攻撃（射程 1 の武器は移動後に使える）。隣にいる援護攻撃を持つ味方がサポートアタックする
+expect eval EN(援護パイロット) = 100
+cell 15 12
+menu 移動
+cell 14 10
+wait menu
+menu 攻撃
+wait list
+list 突撃パンチ
+cell 13 10
+auto 60
+expect eval X(突撃パイロット) = 14
+expect eval Y(突撃パイロット) = 10
+expect eval HP(標的パイロット) < 60000
+# 援護ビーム（消費ＥＮ10）でサポートアタックした。サポートアタックでは行動を消費しない
+expect eval EN(援護パイロット) = 90
+expect eval Action(援護パイロット) = 1
+
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+expect eval ターン数 = 2
+
+# ── 2 ターン目 ──
+# 格納中のユニットは 1 ターンでＨＰ・ＥＮを最大値の 50% 回復する（1500 + 1500、100 + 100）
+expect eval HP(艦載パイロット) = 3000
+expect eval EN(艦載パイロット) = 200
+# チャージは次のターンに完了する
+expect eval Condition(チャージパイロット, チャージ) = 0
+expect eval Condition(チャージパイロット, チャージ完了) = 1
+
+# 発進: 格納しているユニットを選び、母艦から移動できる範囲のマスに出す
+cell 5 5
+menu 発進
+wait list ユニット選択
+list 艦載機
+cell 5 7
+wait menu
+menu 待機
+auto 30
+expect eval InStr(Status(艦載パイロット), "出撃") = 1
+expect eval X(艦載パイロット) = 5
+expect eval Y(艦載パイロット) = 7
+expect eval Action(艦載パイロット) = 0
+
+# チャージ完了後はチャージ武器（Ｃ）で攻撃できる
+expect eval 標的ＨＰ = HP(標的パイロット)
+cell 10 10
+menu 攻撃
+wait list
+list チャージ砲
+cell 13 10
+auto 60
+expect eval HP(標的パイロット) < 標的ＨＰ
+expect eval Action(チャージパイロット) = 0
+expect error none

@@ -1,0 +1,16 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テレポ機 0 テレポパイロット 1 3 3
+Create 味方 ジャンプ機 0 ジャンプパイロット 1 3 10
+Create 味方 飛行機 0 飛行パイロット 1 8 3
+Create 味方 召喚機 0 召喚パイロット 1 10 10
+Create 敵 標的機 0 標的パイロット 1 19 19
+ChangeMode 標的パイロット 固定
+Talk システム
+移動テスト開始
+End
+Exit
