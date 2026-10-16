@@ -17,7 +17,7 @@ SRC のシナリオ（`*.eve`）の編集支援と、イベントのデバッガ
 
 ## 導入
 
-Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) の更新として出します。0.0.5 は色分けだけの旧版です。0.5.0 はプレリリースで出すため、拡張機能ビューでこの拡張の「Switch to Pre-Release Version」を選ぶと入ります（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。正式版は、`srcsharp` が NuGet に出てから偶数マイナー（0.6.0 など）で出します（7474/SRC#1175）。`.vsix` から入れることもできます。
+Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) の更新として出します。0.0.5 は色分けだけの旧版です。0.5.1 から正式版で出すため、拡張機能ビューから入れる・更新すると入ります（0.5.0 はプレリリースでした）。0.7 以降は、マイナーが奇数の版をプレリリースで出します（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)、7474/SRC#1175）。`.vsix` から入れることもできます。
 
 ### かんたんな手順
 

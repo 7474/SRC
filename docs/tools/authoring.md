@@ -168,7 +168,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter play /s/test.eve 
 | コマンド | 開いているイベントの実行（画面付き）・デバッグ、画面の表示、ワークスペースの lint・バランスレポート・このイベントの自動プレイ、srcsharp を入れる／更新する |
 | デバッガ | 型 `srcsharp`、`launch` だけ。属性は `program`（必須）・`script`・`appPath`・`stopOnEntry`・`maxSteps`（`script` が無いときの操作の上限） |
 | 表示言語 | `srcsharp.language`（環境変数 `SRCSHARP_LANG` として渡す）か、`srcsharp.serverArgs` に `["--lang", "en"]` などを入れる。切り替わるのはコマンドの出力だけで、LSP の診断と DAP のメッセージは日本語のまま |
-| 導入 | Marketplace の `koudenpa.src-vscode`（0.5.0 はプレリリース）。CI の成果物 `src-vscode-vsix` か、`npm run package`（esbuild でまとめる）で作った `.vsix` も入れられる |
+| 導入 | Marketplace の `koudenpa.src-vscode`（0.5.1 から正式版。0.5.0 はプレリリース）。CI の成果物 `src-vscode-vsix` か、`npm run package`（esbuild でまとめる）で作った `.vsix` も入れられる |
 
 導入・設定・デバッガの構成・トラブルシューティングは [拡張の README](../../SRC.Sharp/SRCSharpVSCode/README.md) にまとめた。
 
@@ -183,5 +183,5 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter play /s/test.eve 
 | エディタ：データの名前 | ユニット・パイロット・アイテムの名前の補完・ホバー・定義へ移動（データの読み込みを伴う） |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | 画面：音 | `interactive` で、効果音・BGM を Webview の Web Audio で鳴らす |
-| 拡張の公開 | 正式版の公開（`srcsharp` の NuGet 公開の後）と Open VSX への公開（7474/SRC#1175）。Marketplace へのプレリリースの公開と CI での .vsix の作成は済み |
+| 拡張の公開 | Open VSX への公開（7474/SRC#1175）。Marketplace への公開と CI での .vsix の作成は済み |
 | SRC#Web | Monaco と同じ LSP でブラウザ上の編集支援（[SRC#Web](../gui/web.md) の外部コンテンツ管理と合わせて） |

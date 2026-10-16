@@ -54,7 +54,7 @@ SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたた�
 
 ### VS Code 拡張
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出し、正式版は `srcsharp` が NuGet に出てから偶数マイナー（0.6.0 など）で出す。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.1 からは正式版で出す。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
 
 `.github/workflows/Publish-VSCode.yml` が次のことをする。
 
@@ -64,7 +64,7 @@ VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` 
   - 拡張の版（`package.json` の `version`）が公開済みなら、出さずに飛ばす（`--skip-duplicate`）。拡張を出すときは、`version` と `CHANGELOG.md` を上げてからタグを打つ。
 - 手動実行もできる。
   - `publish` は、タグを打たずに出す。
-- 版のマイナーが奇数ならプレリリース、偶数なら正式版として出す（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。タグの push でも手動実行でも同じ。
+- 版のマイナーが 7 以上の奇数ならプレリリース、それ以外（0.5.x と偶数）は正式版として出す（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。タグの push でも手動実行でも同じ。
   - `profile-id` は、Marketplace の publisher に加える ID を出す。初回に 1 度だけ使う。
 - Marketplace への認証には、Azure のユーザー割り当てマネージド ID（`mi-src-vscode-publish`）を使う。GitHub Actions の OIDC でログインし、`vsce publish --azure-credential` で出す。
   - フェデレーション資格情報は、environment `vscode-marketplace` のジョブだけを信頼する。
