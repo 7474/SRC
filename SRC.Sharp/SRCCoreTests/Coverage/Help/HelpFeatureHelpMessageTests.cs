@@ -226,7 +226,7 @@ namespace SRCCore.Coverage.Tests.HelpCoverage
         public void Ecm_ReducesHitRateAndCancelsEnemyEcm()
         {
             Assert.AreEqual(
-                "半径３マス以内の味方ユニットに対する攻撃の命中率を元の85%に減少させる。同時に相手のＥＣＭ能力の効果を無効化。;思念誘導攻撃や近接攻撃には無効。",
+                "半径３マス以内の味方ユニットに対する攻撃の命中率を元の85%に減少させる。同時に相手のＥＣＭ能力のレベルを、この能力のレベル分だけ下げる。;思念誘導攻撃や近接攻撃には無効。",
                 FeatureMessage("ＥＣＭLv3"));
         }
 
