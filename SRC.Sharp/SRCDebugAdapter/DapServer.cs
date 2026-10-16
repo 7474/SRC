@@ -21,6 +21,12 @@ namespace SRCDebugAdapter
         private const int LocalsReference = 1;
         private const int GlobalsReference = 2;
 
+        /// <summary>
+        /// 画面（最後に表示したフレーム）を PNG で返す独自のリクエスト。シナリオが終わる時は同じ名前のイベントで最後の画面を送る。
+        /// VS Code 拡張の画面のビューが使う
+        /// </summary>
+        public const string ScreenCommand = "srcsharpScreen";
+
         private readonly MessageStream stream;
         private int seq;
         private JsonNode launchArgs;
@@ -29,6 +35,7 @@ namespace SRCDebugAdapter
         private readonly Dictionary<string, List<int>> pendingBreakpoints = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
         private Task session;
         private volatile bool disconnected;
+        private volatile bool sessionEnded;
 
         public DapServer(Stream input, Stream output)
         {
@@ -185,6 +192,8 @@ namespace SRCDebugAdapter
                     return null;
                 case "evaluate":
                     return Evaluate(args["expression"]?.GetValue<string>());
+                case ScreenCommand:
+                    return Screen();
                 case "terminate":
                 case "disconnect":
                     disconnected = true;
@@ -263,6 +272,16 @@ namespace SRCDebugAdapter
                 }
                 finally
                 {
+                    // 終わった後はリクエストで画面を取れないため、最後の画面をイベントで送る
+                    try
+                    {
+                        SendEventAsync(ScreenCommand, ScreenBody(false)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        Output(ex.Message, "stderr");
+                    }
+                    sessionEnded = true;
                     _ = SendEventAsync("terminated", null);
                     runner.Dispose();
                 }
@@ -312,6 +331,43 @@ namespace SRCDebugAdapter
             }
             var value = runner.Session.SRC.Expression.GetValueAsString(expression ?? "");
             return new JsonObject { ["result"] = value, ["variablesReference"] = 0 };
+        }
+
+        private JsonNode Screen()
+        {
+            return ScreenBody(runner != null && !sessionEnded);
+        }
+
+        /// <summary>画面の応答・イベントの本体。png は最後に表示したフレーム（base64）</summary>
+        private JsonObject ScreenBody(bool running)
+        {
+            var result = new JsonObject
+            {
+                ["running"] = running,
+                ["paused"] = debugger?.IsPaused ?? false,
+            };
+            if (runner == null || sessionEnded)
+            {
+                return result;
+            }
+            // 止まっている間はゲームスレッドが待っているため、描画の反映を待たずに最後のフレームを撮る
+            using (var png = new MemoryStream())
+            {
+                try
+                {
+                    runner.GUI.SnapshotPng(png);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // 終わった直後
+                    return result;
+                }
+                if (png.Length > 0)
+                {
+                    result["png"] = Convert.ToBase64String(png.ToArray());
+                }
+            }
+            return result;
         }
 
         private void Shutdown()

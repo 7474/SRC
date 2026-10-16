@@ -1,8 +1,8 @@
 {
   "name": "src-vscode",
   "displayName": "SRC# Authoring",
-  "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion and an event debugger. Requires the srcsharp .NET tool.",
-  "version": "0.5.0",
+  "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion, an event debugger with the game screen, a control panel and a settings page. Installs the srcsharp .NET tool for you.",
+  "version": "0.5.1",
   "publisher": "koudenpa",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode/README.md",
@@ -24,7 +24,8 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "onDebugResolve:srcsharp"
+    "onDebugResolve:srcsharp",
+    "workspaceContains:**/*.eve"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -70,7 +71,7 @@
         "srcsharp.serverPath": {
           "type": "string",
           "default": "srcsharp",
-          "description": "srcsharp コマンド（dotnet tool install -g SRCSharpTools）。dotnet で dll を動かす場合は dotnet を指定し、serverArgs に dll のパスを入れる"
+          "description": "srcsharp コマンド（dotnet tool install -g SRCSharpTools）。既定（srcsharp）なら PATH と ~/.dotnet/tools から探す。dotnet で dll を動かす場合は dotnet を指定し、serverArgs に dll のパスを入れる"
         },
         "srcsharp.serverArgs": {
           "type": "array",
@@ -81,7 +82,19 @@
         "srcsharp.appPath": {
           "type": "string",
           "default": "",
-          "description": "SRC 本体のフォルダ（Lib や共通の Data を探す）"
+          "description": "SRC 本体のフォルダ（Lib や共通の Data を探す）。空ならシナリオのフォルダの親から探す"
+        },
+        "srcsharp.language": {
+          "type": "string",
+          "default": "",
+          "enum": ["", "ja", "en", "zh-Hans", "zh-Hant", "ko", "fr", "de", "es", "pt-BR", "it", "ru", "pl", "tr", "th", "uk", "auto"],
+          "enumDescriptions": ["指定しない（環境変数 SRCSHARP_LANG か日本語）", "日本語", "English", "简体中文", "繁體中文", "한국어", "Français", "Deutsch", "Español", "Português (Brasil)", "Italiano", "Русский", "Polski", "Türkçe", "ไทย", "Українська", "OS の言語に従う"],
+          "description": "srcsharp の表示言語（lint・バランスレポート・自動プレイの出力）。環境変数 SRCSHARP_LANG として渡す"
+        },
+        "srcsharp.screen.autoOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "SRC# のデバッグを始めたら画面のビューを開く"
         }
       }
     },
@@ -126,11 +139,51 @@
         ]
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "srcsharp", "title": "SRC#", "icon": "media/srcsharp.svg" }
+      ]
+    },
+    "views": {
+      "srcsharp": [
+        { "id": "srcsharp.panel", "name": "操作パネル" }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "srcsharp.panel",
+        "when": "srcsharp.serverMissing",
+        "contents": "srcsharp（SRC# の .NET tool）が見つかりません。診断・デバッガ・画面の表示に要ります。\n[srcsharp を入れる](command:srcsharp.installServer)\n.NET 10 SDK が要ります（[ダウンロード](https://dotnet.microsoft.com/download/dotnet/10.0)）。入れた場所を指定する場合は設定を開きます。\n[設定を開く](command:srcsharp.openSettings)"
+      }
+    ],
     "commands": [
-      { "command": "srcsharp.lint", "title": "SRC#: ワークスペースを lint する" },
-      { "command": "srcsharp.balance", "title": "SRC#: バランスレポートを作る" },
-      { "command": "srcsharp.play", "title": "SRC#: このイベントを自動プレイする" }
-    ]
+      { "command": "srcsharp.runFile", "title": "開いているイベントを実行（画面付き）", "category": "SRC#", "icon": "$(play)" },
+      { "command": "srcsharp.debugFile", "title": "開いているイベントをデバッグ", "category": "SRC#", "icon": "$(debug-alt)" },
+      { "command": "srcsharp.showScreen", "title": "画面を表示", "category": "SRC#", "icon": "$(device-desktop)" },
+      { "command": "srcsharp.openSettings", "title": "設定を開く", "category": "SRC#", "icon": "$(gear)" },
+      { "command": "srcsharp.installServer", "title": "srcsharp を入れる／更新する", "category": "SRC#", "icon": "$(cloud-download)" },
+      { "command": "srcsharp.pickAppPath", "title": "SRC 本体のフォルダを選ぶ", "category": "SRC#" },
+      { "command": "srcsharp.restartServer", "title": "Language Server を起動し直す", "category": "SRC#", "icon": "$(refresh)" },
+      { "command": "srcsharp.lint", "title": "ワークスペースを lint する", "category": "SRC#" },
+      { "command": "srcsharp.balance", "title": "バランスレポートを作る", "category": "SRC#" },
+      { "command": "srcsharp.play", "title": "このイベントを自動プレイする", "category": "SRC#" }
+    ],
+    "menus": {
+      "editor/title/run": [
+        { "command": "srcsharp.runFile", "when": "resourceLangId == src-eve", "group": "navigation@1" },
+        { "command": "srcsharp.debugFile", "when": "resourceLangId == src-eve", "group": "navigation@2" }
+      ],
+      "view/title": [
+        { "command": "srcsharp.showScreen", "when": "view == srcsharp.panel", "group": "navigation@1" },
+        { "command": "srcsharp.openSettings", "when": "view == srcsharp.panel", "group": "navigation@2" },
+        { "command": "srcsharp.restartServer", "when": "view == srcsharp.panel", "group": "navigation@3" }
+      ],
+      "commandPalette": [
+        { "command": "srcsharp.runFile", "when": "editorLangId == src-eve" },
+        { "command": "srcsharp.debugFile", "when": "editorLangId == src-eve" },
+        { "command": "srcsharp.play", "when": "editorLangId == src-eve" }
+      ]
+    }
   },
   "scripts": {
     "check-types": "tsc -p ./ --noEmit",

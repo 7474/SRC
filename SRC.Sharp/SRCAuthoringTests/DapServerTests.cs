@@ -78,12 +78,22 @@ namespace SRCAuthoring.Tests
                 Assert.IsFalse(globals.Any(x => x["name"].GetValue<string>() == "x"), globals.ToJsonString());
                 Assert.AreEqual("3", Request(client, "evaluate", new JsonObject { ["expression"] = "y + 1" })["result"].GetValue<string>());
 
+                // 止まっている間も画面を撮れる（VS Code 拡張の画面のビュー）
+                var screen = Request(client, DapServer.ScreenCommand);
+                Assert.IsTrue(screen["paused"].GetValue<bool>());
+                var png = Convert.FromBase64String(screen["png"].GetValue<string>());
+                CollectionAssert.AreEqual(new byte[] { 0x89, 0x50, 0x4E, 0x47 }, png.Take(4).ToArray(), "PNG");
+
                 Request(client, "next", new JsonObject { ["threadId"] = 1 });
                 WaitEvent(client, "stopped");
                 frames = Request(client, "stackTrace", new JsonObject { ["threadId"] = 1 })["stackFrames"].AsArray();
                 Assert.AreEqual(15, frames[0]["line"].GetValue<int>());
 
                 Request(client, "continue", new JsonObject { ["threadId"] = 1 });
+                // 終わる時に最後の画面を送る
+                var lastScreen = WaitEvent(client, DapServer.ScreenCommand);
+                Assert.IsFalse(lastScreen["body"]["running"].GetValue<bool>());
+                Assert.IsNotNull(lastScreen["body"]["png"], lastScreen.ToJsonString());
                 WaitEvent(client, "terminated");
                 Request(client, "disconnect");
                 Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
