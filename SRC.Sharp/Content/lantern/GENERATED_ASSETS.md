@@ -28,17 +28,17 @@
 | `Bitmap/Unit/Lantern_HotaruFly.bmp` | 灯機ホタル(飛行形態) | 共通 + blue and white jet fighter mecha in flight mode seen from above, firefly motif, glowing yellow lantern light at the tail, sleek |
 | `Bitmap/Unit/Lantern_Tsubame.bmp` | 灯機ツバメ | 共通 + slim white and teal humanoid mecha robot with swallow-like wings on back, lantern light on chest |
 | `Bitmap/Unit/Lantern_Hikario.bmp` | 灯翼ヒカリオー | 共通 + large heroic combined super robot, blue white and teal armor, big swallow wings, glowing lantern core on chest |
-| `Bitmap/Unit/Lantern_Ship.bmp` | ランタン号（タイトル・終話の一枚絵にも使う） | 共通 + flying airship with warm glowing lanterns hanging, wooden hull and large balloon envelope |
+| `Bitmap/Unit/Lantern_Ship.bmp` | ランタン号（タイトル・終話の一枚絵にも使う） | 共通 + airship with a large cream colored canvas balloon envelope on top and a small wooden gondola hanging below, warm glowing lanterns, side view |
 | `Bitmap/Unit/Lantern_Inorite.bmp` | 祈り手 | 共通 + shrine maiden girl in white and red robes holding a glowing lantern staff, full body |
-| `Bitmap/Unit/Lantern_Tousei.bmp` | 灯精 | 共通 + small floating spirit of light, glowing orange wisp fairy, firefly-like |
+| `Bitmap/Unit/Lantern_Tousei.bmp` | 灯精 | 共通 + small glowing orange ball of light like a firefly lantern flame with soft glow and tiny sparkles, not a person, no face, no ground, no shadow |
 | `Bitmap/Unit/Lantern_Hairou.bmp` | 灰狼 | 共通 + grey wolf shaped beast mecha robot, four legs, metal armor |
 | `Bitmap/Unit/Lantern_Ginrou.bmp` | 灰狼改 | 共通 + silver wolf shaped beast mecha robot upgraded, four legs, sleek silver armor with blue lights |
 | `Bitmap/Unit/Lantern_Kagerou.bmp` | 予備機カゲロウ | 共通 + plain olive green spare humanoid mecha robot, simple design |
-| `Bitmap/Unit/Lantern_Dummy.bmp` | 模擬戦用ダミー | 共通 + wooden training dummy target on a post with a bullseye |
+| `Bitmap/Unit/Lantern_Dummy.bmp` | 模擬戦用ダミー | 共通 + wooden training dummy target on a post with a red bullseye, no ground, no base tile, no shadow, floating object only |
 | `Bitmap/Unit/Lantern_Sukihei.bmp` | 煤機兵 | 共通 + soot black small tank-like walking machine with smoke stack, glowing orange eye |
 | `Bitmap/Unit/Lantern_Susugarasu.bmp` | ススガラス | 共通 + black mechanical crow made of soot and iron, wings spread, glowing red eye |
 | `Bitmap/Unit/Lantern_Susuro.bmp` | 煤炉 | 共通 + black iron furnace with burning orange fire and smoke chimneys, industrial |
 | `Bitmap/Unit/Lantern_Kyohei.bmp` | 煤の巨兵 | 共通 + giant hulking soot black iron golem robot, glowing orange cracks |
 | `Bitmap/Unit/Lantern_Kurogane.bmp` | 黒鉄鴉 | 共通 + black iron humanoid with crow-like black wings, sinister knight mecha, red visor |
-| `Bitmap/Unit/Lantern_Nox1.bmp` | 煤帝ノクス(第一形態) | 共通 + huge black castle fortress monster with towers and smoke, glowing red eyes, walking fortress |
+| `Bitmap/Unit/Lantern_Nox1.bmp` | 煤帝ノクス(第一形態) | 共通 + bold simple silhouette of a black walking castle fortress with two towers and a gate mouth, two glowing red eyes, low detail, readable at small size |
 | `Bitmap/Unit/Lantern_Nox2.bmp` | 煤帝ノクス(第二形態) | 共通 + flying demonic black iron warship emperor, spiky silhouette, red glowing core, smoke trails |
