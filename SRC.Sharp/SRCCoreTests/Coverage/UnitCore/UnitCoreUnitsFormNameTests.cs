@@ -33,7 +33,7 @@ AA-A, test.bmp
             return src;
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("変形=未定義名 変形先")]
         [DataRow("ハイパーモード=未定義名 変形先")]
         [DataRow("パーツ分離=未定義名 変形先")]

@@ -230,7 +230,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         }
 
         // レベル付きパーツ分離は Dice(100) <= 10 * レベル の場合のみ発動する（Dice(100)=51）
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(6, true)]
         [DataRow(5, false)]
         public void Attack_Destroy_PartsSeparationWithLevel(int level, bool separates)
@@ -256,7 +256,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
         }
 
         // 失属性：使用時に最大ＨＰ×レベル/10 を失い、ＨＰが 0 になれば攻撃後に破壊される
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(10, 0, "破壊")]
         [DataRow(5, 500, "出撃")]
         public void Attack_HpCostWeapon_KillsAttackerAtZeroHp(int level, int expectedHp, string expectedStatus)

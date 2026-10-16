@@ -156,7 +156,7 @@ namespace SRCCore
         {
             // XXX FileName
             LastSaveDataFileName = fname;
-            using (var stream = new FileInfo(fname).Open(FileMode.Create))
+            using (var stream = FileSystem.Create(fname))
             {
                 DumpData(stream, saveKind);
             }

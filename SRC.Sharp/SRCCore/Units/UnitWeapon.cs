@@ -2385,7 +2385,9 @@ namespace SRCCore.Units
                 }
 
                 // ＥＣＭ
+                // 相手側はＥＣＭを持つユニットの最大のレベル。マイナスのレベルしか無ければ命中率が上がる（能力の説明どおり）
                 var ecm_lv = 0d;
+                var has_ecm = false;
                 var eccm_lv = 0d;
                 var loopTo = GeneralLib.MinLng((int)(t.x + 3), Map.MapWidth);
                 for (var i = GeneralLib.MaxLng((int)(t.x - 3), 1); i <= loopTo; i++)
@@ -2400,7 +2402,12 @@ namespace SRCCore.Units
                             {
                                 if (u.IsAlly(t))
                                 {
-                                    ecm_lv = GeneralLib.MaxDbl(ecm_lv, u.FeatureLevel("ＥＣＭ"));
+                                    if (u.IsFeatureAvailable("ＥＣＭ"))
+                                    {
+                                        var lv = u.FeatureLevel("ＥＣＭ");
+                                        ecm_lv = has_ecm ? GeneralLib.MaxDbl(ecm_lv, lv) : lv;
+                                        has_ecm = true;
+                                    }
                                 }
                                 else if (u.IsAlly(Unit))
                                 {
@@ -2410,14 +2417,16 @@ namespace SRCCore.Units
                         }
                     }
                 }
+                // 攻撃側のＥＣＭは、そのレベル分だけ相手のＥＣＭのレベルを下げる（0 未満にはしない）
+                var effective_ecm_lv = ecm_lv > 0d ? GeneralLib.MaxDbl(ecm_lv - eccm_lv, 0d) : ecm_lv;
                 // ホーミング攻撃はＥＣＭの影響を強く受ける
                 if (GeneralLib.InStrNotNest(WeaponClass(), "Ｈ") > 0)
                 {
-                    prob = ((int)(prob * (100d - 10d * GeneralLib.MaxDbl(ecm_lv - eccm_lv, 0d))) / 100);
+                    prob = ((int)(prob * (100d - 10d * effective_ecm_lv)) / 100);
                 }
                 else
                 {
-                    prob = ((int)(prob * (100d - 5d * GeneralLib.MaxDbl(ecm_lv - eccm_lv, 0d))) / 100);
+                    prob = ((int)(prob * (100d - 5d * effective_ecm_lv)) / 100);
                 }
             }
 

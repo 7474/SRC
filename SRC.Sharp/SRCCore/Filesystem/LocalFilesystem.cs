@@ -108,10 +108,27 @@ namespace SRCCore.Filesystem
             switch (mode)
             {
                 case SafeOpenMode.Read: return entry.OpenRead(path);
-                case SafeOpenMode.Write: return entry.OpenWrite(path);
-                case SafeOpenMode.Append: return entry.OpenAppend(path);
+                case SafeOpenMode.Write: return NotifyOnClose(entry.OpenWrite(path), path);
+                case SafeOpenMode.Append: return NotifyOnClose(entry.OpenAppend(path), path);
                 default: throw new NotSupportedException();
             }
+        }
+
+        public event Action<string> FileWritten;
+
+        public Stream Create(string path)
+        {
+            return NotifyOnClose(new FileStream(path, FileMode.Create), path);
+        }
+
+        private Stream NotifyOnClose(Stream stream, string path)
+        {
+            if (stream == null)
+            {
+                return null;
+            }
+            var fullPath = stream is FileStream fileStream ? fileStream.Name : Path.GetFullPath(path);
+            return new WriteNotifyStream(stream, fullPath, x => FileWritten?.Invoke(x));
         }
 
         public bool Remove(params string[] paths)

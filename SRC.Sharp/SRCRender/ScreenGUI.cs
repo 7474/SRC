@@ -1325,11 +1325,11 @@ namespace SRCRender
                     FileType = "save files",
                     FileExtension = ext,
                 }));
-                return string.IsNullOrEmpty(path) ? null : new FileStream(path, FileMode.Create);
+                return string.IsNullOrEmpty(path) ? null : src.FileSystem.Create(path);
             }
             // 保存先を選ぶ手段が無い場合はシナリオフォルダへ保存する
             var name = defaultName ?? (saveKind == SRCSaveKind.Suspend ? "_suspend.srcq" : "_save.srcs");
-            return new FileStream(SavePath(name), FileMode.Create);
+            return src.FileSystem.Create(SavePath(name));
         }
 
         public Stream OpenQuikSaveStream(FileAccess fileAccess)
@@ -1337,7 +1337,7 @@ namespace SRCRender
             var path = SavePath("_quik.srcq");
             return fileAccess == FileAccess.Read
                 ? new FileStream(path, FileMode.Open, FileAccess.Read)
-                : new FileStream(path, FileMode.Create, fileAccess);
+                : src.FileSystem.Create(path);
         }
 
         private string EffectiveDirectory(string initialDirectory)
