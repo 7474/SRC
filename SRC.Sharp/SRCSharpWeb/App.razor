@@ -730,7 +730,6 @@ else
                 saveSync.Restore(save.Name, data);
             }
         }
-        saveSync.MarkAll();
     }
 
     /// <summary>ゲームが書いたセーブデータをブラウザに保存する</summary>
@@ -742,9 +741,18 @@ else
         }
         try
         {
-            foreach (var (name, data) in saveSync.CollectChanged())
+            // 保存している間に書かれたものも続けて保存する
+            while (saveSync.HasWritten)
             {
-                await JS.InvokeVoidAsync("srcwebStore.putSave", scenarioId, name, data);
+                var written = saveSync.CollectWritten();
+                if (written.Count == 0)
+                {
+                    break;
+                }
+                foreach (var (name, data) in written)
+                {
+                    await JS.InvokeVoidAsync("srcwebStore.putSave", scenarioId, name, data);
+                }
             }
         }
         catch (Exception ex)
@@ -812,10 +820,6 @@ else
         await Task.Delay(1);
         Directory.CreateDirectory(ScenarioArchive.AppPath);
         var host = new WebScreenHost(scenarioDir, L);
-        // セーブデータはイベントファイルのフォルダと、保存のダイアログで選んだフォルダに書かれる
-        saveSync?.Watch(Path.GetDirectoryName(evePath));
-        var sync = saveSync;
-        host.SaveDirectoryChosen = dir => sync?.Watch(dir);
         // MIDI の SoundFont は同梱しない。アーカイブに含まれる .sf2 を使う。
         // シナリオのものを優先し、無ければ素材（requires や利用者が追加した素材。SRC のフォルダに展開される）のものを使う
         var roots = new[] { scenarioDir, ScenarioArchive.AppPath };
@@ -828,6 +832,15 @@ else
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
+        // ゲームがセーブデータを書き終えたら、UI のスレッドでブラウザに保存する
+        var sync = saveSync;
+        session.SRC.FileSystem.FileWritten += path =>
+        {
+            if (sync?.Notify(path) ?? false)
+            {
+                InvokeAsync(SyncSavesAsync);
+            }
+        };
         session.Game.UnhandledException += (s, e) =>
         {
             Console.Error.WriteLine(e.Exception);
@@ -839,7 +852,6 @@ else
         session.Start(evePath);
         watch = new System.Threading.Timer(_ =>
         {
-            InvokeAsync(SyncSavesAsync);
             if (WebInterop.Terminated && mode == Mode.Playing)
             {
                 mode = Mode.Ended;

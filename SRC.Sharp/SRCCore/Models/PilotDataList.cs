@@ -1017,7 +1017,7 @@ namespace SRCCore.Models
 
                 buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
                 buf = Strings.Mid(line_buf, ret + 1);
-                if (Strings.LCase(Strings.Right(buf2, 4)) == ".bmp")
+                if (GeneralLib.IsImageFileName(buf2))
                 {
                     pd.Bitmap = buf2;
                 }
