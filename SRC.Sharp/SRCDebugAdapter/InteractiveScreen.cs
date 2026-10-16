@@ -88,7 +88,16 @@ namespace SRCDebugAdapter
         {
             while (!stop.IsCancellationRequested)
             {
-                SendFrameIfChanged();
+                try
+                {
+                    SendFrameIfChanged();
+                }
+                catch (Exception ex)
+                {
+                    // 送れなくなった（クライアントが切れたなど）。このスレッドの例外はプロセスを落とすため、ここで止める
+                    Console.Error.WriteLine(ex);
+                    return;
+                }
                 stop.Token.WaitHandle.WaitOne(FrameInterval);
             }
         }
@@ -122,6 +131,10 @@ namespace SRCDebugAdapter
             catch (ObjectDisposedException)
             {
                 // 終わった直後
+            }
+            catch (AggregateException ex) when (ex.InnerException is ObjectDisposedException || ex.InnerException is IOException)
+            {
+                // 送る先のパイプが閉じた直後
             }
         }
 
