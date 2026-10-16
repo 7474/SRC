@@ -74,6 +74,14 @@ jobs:
     - name: Build VS Code extension
       working-directory: SRC.Sharp/SRCSharpVSCode
       run: |
+        # 拡張の版はライブラリ（srcsharp）の版と合わせる（docs/versioning.md）
+        minor=$(sed -n 's:.*<SrcSharpVersionMinor>\(.*\)</SrcSharpVersionMinor>.*:\1:p' ../Directory.Build.props)
+        patch=$(sed -n 's:.*<SrcSharpVersionPatch>\(.*\)</SrcSharpVersionPatch>.*:\1:p' ../Directory.Build.props)
+        version=$(jq -r .version package.json)
+        if [ "$version" != "0.$minor.$patch" ]; then
+          echo "::error file=SRC.Sharp/SRCSharpVSCode/package.json::拡張の版 $version がライブラリの版 0.$minor.$patch と違います"
+          exit 1
+        fi
         npm ci
         npm run package
 
