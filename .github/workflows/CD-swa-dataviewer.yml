@@ -38,12 +38,13 @@ jobs:
           dotnet-version: '10.0.x'
 
       # データビューア（SRCTestBlazor）をサイトのルートに、SRC#Web（SRCSharpWeb）を web/ に置く。
-      # SRC#Web はマルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
+      # SRC#Web はマルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要。
+      # PR のプレビューは確認用なので AOT を切って早く出す。master（本番）は AOT（docs/gui/web.md）
       - name: Build
         run: |
           dotnet workload install wasm-tools
           dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release -o out/dataviewer
-          dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o out/web
+          dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o out/web -p:RunAOTCompilation=${{ github.event_name == 'pull_request' && 'false' || 'true' }}
           mkdir -p site
           cp -r out/dataviewer/wwwroot/. site/
           mkdir -p site/web
