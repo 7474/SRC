@@ -2,7 +2,8 @@
 
 ## 0.5.2
 
-- The version now follows the SRC# library version (srcsharp 0.5.2). No other changes from 0.5.1.
+- The version now follows the SRC# library version (srcsharp 0.5.2).
+- Add the extension icon and change the activity bar icon to "SRC#".
 
 ## 0.5.1
 

@@ -4,6 +4,7 @@
   "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion, an event debugger with the game screen, a control panel and a settings page. Installs the srcsharp .NET tool for you.",
   "version": "0.5.2",
   "publisher": "koudenpa",
+  "icon": "media/icon.png",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode/README.md",
   "bugs": {
