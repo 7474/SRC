@@ -1,5 +1,6 @@
 
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Drawing;
@@ -12,7 +13,7 @@ namespace SRCCore.Events
         // イベントの実行
         public void HandleEvent(params string[] Args)
         {
-            SRC.LogDebug(">", Args);
+            SRC.EventLog.DebugWithCaller(">", Args);
 
             // 画面入力をロック
             var prev_is_gui_locked = GUI.IsGUILocked;
@@ -224,7 +225,7 @@ namespace SRCCore.Events
             for (var i = event_que_idx; i < EventQue.Count; i++)
             {
                 var eventItem = EventQue[i];
-                SRC.LogDebug("EventQue", eventItem);
+                SRC.EventLog.DebugWithCaller("EventQue", eventItem);
 
                 // 前のイベントで他のユニットが出現している可能性があるので
                 // 本当に全滅したのか判定

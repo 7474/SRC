@@ -1,5 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Lib;
+using SRCCore.Logging;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -132,7 +133,7 @@ namespace SRCCore.Expressions.Functions
             }
             finally
             {
-                SRC.LogTrace("Called",
+                SRC.ExpressionLog.TraceWithCaller("Called",
                    etype.ToString().Substring(0, 1),
                    @params[1] + "(" + string.Join(",", Enumerable.Range(2, pcount - 1).Select(x => @params[x])) + ")",
                    str_result,

@@ -31,6 +31,10 @@
 공통 옵션:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       표시 언어. 환경 변수 SRCSHARP_LANG으로도 지정할 수 있습니다(옵션 우선). 기본값은 ja, auto는 OS 설정을 따릅니다
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      로그 수준(play, lsp, dap). -v는 Debug, -vv는 Trace. 환경 변수 SRCSHARP_LOG_LEVEL로도 지정할 수 있습니다. 기본값은 Information
+  --log-dir &lt;폴더&gt;, --no-log-file
+      로그 파일 폴더. --no-log-file은 파일에 기록하지 않습니다. 환경 변수 SRCSHARP_LOG_DIR, SRCSHARP_LOG_FILE(On|Off)로도 지정할 수 있습니다
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

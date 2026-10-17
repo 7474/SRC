@@ -1,6 +1,7 @@
 @using SRCRender
 @using System.IO
 @using System.Threading
+@using Microsoft.Extensions.Logging
 @implements IDisposable
 @inject HttpClient Http
 @inject IJSRuntime JS
@@ -251,6 +252,14 @@ else
                             <option value="touch">@L["InputTouch"]</option>
                             <option value="mouse">@L["InputMouse"]</option>
                         </select>
+                        <label for="log-level">@L["LogLevel"]</label>
+                        <select id="log-level" value="@WebLogging.Options.Level" @onchange="ChangeLogLevelAsync">
+                            <option value="Trace">Trace</option>
+                            <option value="Debug">Debug</option>
+                            <option value="Information">Information</option>
+                            <option value="Warning">Warning</option>
+                            <option value="Error">Error</option>
+                        </select>
                     </div>
                 </section>
             </aside>
@@ -418,7 +427,7 @@ else
         catch (Exception ex)
         {
             status = L["InitFailed", ex.Message];
-            Console.Error.WriteLine(ex);
+            WebLogging.Log.LogError(ex, "初期化できません");
         }
     }
 
@@ -450,7 +459,7 @@ else
             catch (Exception ex)
             {
                 catalogErrors.Add(L["CatalogLoadFailed", url, ex.Message]);
-                Console.Error.WriteLine(ex);
+                WebLogging.Log.LogWarning(ex, "カタログを読めません {Url}", url);
             }
         }
     }
@@ -610,7 +619,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine(ex);
+            WebLogging.Log.LogWarning(ex, "ダウンロードを消せません {Path}", path);
         }
     }
 
@@ -656,7 +665,7 @@ else
             catch (Exception ex)
             {
                 status = L["AssetLoadFailed", asset.Title, ex.Message];
-                Console.Error.WriteLine(ex);
+                WebLogging.Log.LogError(ex, "素材を読み込めません {Asset}", asset.Title);
                 return false;
             }
         }
@@ -712,7 +721,7 @@ else
         catch (Exception ex)
         {
             status = L["LoadFailed", title, ex.Message];
-            Console.Error.WriteLine(ex);
+            WebLogging.Log.LogError(ex, "シナリオを読み込めません {Title}", title);
         }
     }
 
@@ -757,7 +766,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine(ex);
+            WebLogging.Log.LogWarning(ex, "セーブデータをブラウザに保存できません");
         }
         finally
         {
@@ -832,6 +841,8 @@ else
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
+        // シナリオの設定ファイルのログの設定（Log セクション）
+        WebLogging.ApplyConfig(session.SRC.SystemConfig);
         // ゲームがセーブデータを書き終えたら、UI のスレッドでブラウザに保存する
         var sync = saveSync;
         session.SRC.FileSystem.FileWritten += path =>
@@ -843,7 +854,7 @@ else
         };
         session.Game.UnhandledException += (s, e) =>
         {
-            Console.Error.WriteLine(e.Exception);
+            WebLogging.Log.LogCritical(e.Exception, "ゲームの実行中の例外");
             host.ReportError(e.Exception.GetType().FullName, e.Exception.Message, e.Exception.ToString());
         };
         // イベントエラーなど、ゲームが出すエラーのダイアログも送る（シナリオの行は errorreport.js が添える）
@@ -891,6 +902,13 @@ else
     {
         theme = e.Value?.ToString() ?? "95";
         await JS.InvokeVoidAsync("srcwebStore.setTheme", theme);
+    }
+
+    private async Task ChangeLogLevelAsync(ChangeEventArgs e)
+    {
+        var value = e.Value?.ToString() ?? "";
+        WebLogging.SetLevel(value);
+        await JS.InvokeVoidAsync("localStorage.setItem", WebLogging.StorageKey, value);
     }
 
     private async Task ChangeLanguageAsync(ChangeEventArgs e)

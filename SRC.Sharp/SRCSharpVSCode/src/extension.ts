@@ -18,7 +18,7 @@ export class Controller implements vscode.Disposable {
   private readonly changed = new vscode.EventEmitter<void>();
   readonly onDidChange = this.changed.event;
 
-  constructor(readonly output: vscode.OutputChannel) {}
+  constructor(readonly output: vscode.LogOutputChannel) {}
 
   /** srcsharp を探し直し、版を調べる */
   async refresh(): Promise<void> {
@@ -43,7 +43,10 @@ export class Controller implements vscode.Disposable {
       documentSelector: [{ scheme: 'file', language: 'src-eve' }],
       initializationOptions: {
         appPath: vscode.workspace.getConfiguration('srcsharp').get<string>('appPath') || undefined,
+        logLevel: vscode.workspace.getConfiguration('srcsharp').get<string>('logLevel') || undefined,
       },
+      // Language Server のログ（window/logMessage）も同じ出力パネルに出す
+      outputChannel: this.output,
     };
     this.client = new LanguageClient('srcsharp', 'SRC#', serverOptions, clientOptions);
     this.setState('starting');
@@ -52,7 +55,7 @@ export class Controller implements vscode.Disposable {
       this.setState('running');
     } catch (e) {
       this.setState('error');
-      this.output.appendLine(`Language Server を起動できませんでした: ${(e as Error)?.message ?? e}`);
+      this.output.error(`Language Server を起動できませんでした: ${(e as Error)?.message ?? e}`);
     }
   }
 
@@ -105,7 +108,8 @@ function activeEventFile(): vscode.Uri | undefined {
 }
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const output = vscode.window.createOutputChannel('SRC#');
+  // レベル付きの出力パネル（Developer: Set Log Level で絞れる）
+  const output = vscode.window.createOutputChannel('SRC#', { log: true });
   const controller = new Controller(output);
   current = controller;
   const screen = new ScreenView();
@@ -184,6 +188,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
         if (!config.appPath && appPath) {
           config.appPath = appPath;
+        }
+        // ログのレベル（launch.json に無ければ設定から）
+        const logLevel = vscode.workspace.getConfiguration('srcsharp').get<string>('logLevel');
+        if (!config.logLevel && logLevel) {
+          config.logLevel = logLevel;
         }
         return config;
       },
@@ -277,7 +286,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   let restartTimer: NodeJS.Timeout | undefined;
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.language'].some((k) => e.affectsConfiguration(k))) {
+      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.language', 'srcsharp.logLevel'].some((k) => e.affectsConfiguration(k))) {
         return;
       }
       // 設定画面の保存は複数の値を続けて書くため、まとめて 1 度だけ起動し直す

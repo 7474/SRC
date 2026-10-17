@@ -141,11 +141,23 @@
                 if (text.setting === '' && language !== '') {
                     text = bootText.apply(language);
                 }
-                // 表示言語は環境変数で .NET に渡す（WebLocalization.cs）。マルチスレッドの .NET は起動前に JS とやりとりできないため
+                // ログのレベル（WebLogging.cs）。URL の ?log= を優先し、無ければ localStorage の srcweb.logLevel
+                let logLevel = new URLSearchParams(location.search).get('log') ?? '';
+                if (logLevel === '') {
+                    try {
+                        logLevel = localStorage.getItem('srcweb.logLevel') ?? '';
+                    } catch {
+                        // localStorage を使えない
+                    }
+                }
+                // 表示言語・ログのレベルは環境変数で .NET に渡す（WebLocalization.cs）。マルチスレッドの .NET は起動前に JS とやりとりできないため
                 Blazor.start({
                     configureRuntime: dotnet => {
                         dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE', text.language);
                         dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE_SETTING', text.setting);
+                        if (logLevel.trim() !== '') {
+                            dotnet.withEnvironmentVariable('SRCSHARP_LOG_LEVEL', logLevel.trim());
+                        }
                     },
                 });
             })();

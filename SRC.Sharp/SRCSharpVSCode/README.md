@@ -86,8 +86,9 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 | `srcsharp.language` | 空 | srcsharp の表示言語（`ja`・`en`・`auto` など）。環境変数 `SRCSHARP_LANG` として渡す |
 | `srcsharp.screen.autoOpen` | `true` | デバッグを始めたら画面のビューを開く |
 | `srcsharp.hotReload` | `onChange` | ホットリロード。`onChange`（ファイルが変わったら）・`manual`（「読み直す」を押した時）・`off` |
+| `srcsharp.logLevel` | `Information` | Language Server とデバッガのログのレベル（`Trace`・`Debug`・`Information`・`Warning`・`Error`）。[ログ](#ログ) |
 
-`serverPath`・`serverArgs`・`appPath`・`language` を変えると、Language Server を起動し直します（ウィンドウの再読み込みは要りません）。デバッガとコマンドは、実行のたびに設定を読みます。
+`serverPath`・`serverArgs`・`appPath`・`language`・`logLevel` を変えると、Language Server を起動し直します（ウィンドウの再読み込みは要りません）。デバッガとコマンドは、実行のたびに設定を読みます。
 
 ## デバッガ
 
@@ -126,6 +127,7 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 | `interactive` | `false`（launch.json の雛形・実行ボタン・F5 は `true`） | 画面のタブのクリック・キーで操作する。`false` なら自動の入力で進める。`script` があれば `script` で動かす |
 | `stopOnEntry` | `false` | 最初のコマンドで止める |
 | `maxSteps` | `100000` | `script` が無いときに自動で進める操作の上限 |
+| `logLevel` | `srcsharp.logLevel` | ログのレベル。[ログ](#ログ) |
 
 パスは `${workspaceFolder}` などで絶対パスにしてください。`request` は `launch` だけです（`attach` はありません）。
 
@@ -214,6 +216,19 @@ Language Server はエディタで開いたファイルの内容を受け取る�
 
 切り替わるのは lint・バランスレポート・自動プレイのコマンドの出力（出力パネルの「SRC#」）だけです。エディタの診断とデバッガのメッセージは日本語のままです。
 
+## ログ
+
+srcsharp のログ（[ログの設計](../../docs/logging.md)）は次に出ます。
+
+| 出し元 | 出る場所 |
+|---|---|
+| Language Server | 出力パネルの「SRC#」と、ファイル `srcsharp-lsp-<日付>.log` |
+| デバッガ | デバッグコンソール（警告以上は赤）と、ファイル `srcsharp-dap-<日付>.log` |
+
+- レベルは `srcsharp.logLevel`（設定画面の「ログ」）か launch.json の `logLevel` で変えます。`Debug` でイベントのコマンドの実行、`Trace` で変数・関数の呼び出しまで出ます。
+- ファイルの場所は、Windows は `%LOCALAPPDATA%\SRCSharp\logs`、macOS は `~/Library/Logs/SRCSharp`、Linux・WSL は `~/.local/state/srcsharp/logs` です（WSL では WSL 側）。7 日分を残します。
+- 出力パネルの「SRC#」の表示は、「Developer: Set Log Level...」でも絞れます。
+
 ## トラブルシューティング
 
 | 症状 | 確かめること |
@@ -226,7 +241,8 @@ Language Server はエディタで開いたファイルの内容を受け取る�
 | 日本語が文字化けする | ファイルの文字コード。ステータスバーの文字コードから「エンコード付きで再度開く」で Shift_JIS か UTF-8 を選ぶ |
 | システムのラベル（汎用戦闘アニメなど）が見つからないと警告される | 「SRC#: SRC 本体のフォルダを選ぶ」で Lib のある SRC 本体のフォルダを設定する |
 | デバッガが止まらない・すぐ終わる | `program`・`script` が絶対パスか。ブレークポイントがコマンドの行にあるか |
-| 診断の動きを詳しく見たい | 「Developer: Set Log Level...」で「SRC#」を Trace にし、出力パネルの「SRC#」で LSP のやり取りを見る |
+| 診断の動きを詳しく見たい | `srcsharp.logLevel` を `Debug` にし、「Developer: Set Log Level...」で「SRC#」を Trace にして、出力パネルの「SRC#」でログと LSP のやり取りを見る |
+| 不具合を報告したい | [ログ](#ログ)のファイルを添えて Issue を作る |
 
 ## ビルド
 

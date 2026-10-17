@@ -31,6 +31,10 @@
 Общие параметры:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Язык интерфейса. Также задаётся переменной среды SRCSHARP_LANG (параметр важнее). По умолчанию ja; auto — по настройкам ОС
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      Уровень журнала (play, lsp, dap). -v — Debug, -vv — Trace. Также задаётся через SRCSHARP_LOG_LEVEL. По умолчанию Information
+  --log-dir &lt;папка&gt;, --no-log-file
+      Папка файлов журнала. --no-log-file отключает файл. Также задаётся через SRCSHARP_LOG_DIR и SRCSHARP_LOG_FILE (On|Off)
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

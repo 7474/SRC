@@ -1,6 +1,6 @@
 # ログの設計
 
-SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針。7474/SRC#358 で検討した。
+SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針と構成。7474/SRC#358 で検討し、実装した。使う人向けの説明はヘルプの「[ログ](../SRC.Sharp.Help/src/ログ.md)」にある。
 
 ## 目的
 
@@ -10,27 +10,16 @@ SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針。7474/SR
 | シナリオ・データの作成 | シナリオ作者 | イベントのエラー・素材の欠落・未対応コマンドが、ファイル名・行番号つきで出ること |
 | 開発・調査 | 開発者 | コマンド・変数・関数の実行を細かく追えること。アプリを作り直さずにレベルを変えられること |
 
-## 現状（2026-10 時点）
+## 以前の問題点
 
-| 対象 | 出力先 | レベル | 変えられるか |
-|---|---|---|---|
-| SRC#Form | デバッガ出力（Serilog.Sinks.Debug）、`<exe のフォルダ>/logs/srcsform.<日付>.log`（1 日ごと） | Information | 引数 `-v`（Debug）・`-vv`（Verbose）だけ |
-| SRC#Avalonia | デバッガ出力（`SRC()` の既定）。Avalonia 自体は `.LogToTrace()` | Debug 固定 | 不可 |
-| SRC#Web | ブラウザのコンソール（Blazor の既定） | Information | 不可 |
-| `srcsharp play`・DAP | デバッガ出力（`SRC()` の既定）。CLI 自身は Console、DAP は `output` イベント | Debug 固定 | 不可 |
-| `srcsharp lsp` | なし（例外だけ stderr） | ― | 不可 |
-| VS Code 拡張 | 出力パネル「SRC#」（`createOutputChannel`） | なし | 不可 |
+#358 の時点（3.5.2）では次の問題があった。
 
-問題点
-
-- 設定ファイル（`srcs.json`）でログを設定できない。
-- SRC#Form 以外はファイルに残らない。デバッガを付けていないと SRCCore のログを見られない。
-- `SRC.LogError`・`SRC.LogWarn`（`SRCCore/SRC.cs`）が `Log.LogDebug` で出しているため、Information 以上の設定では**エラーが記録されない**。
-- SRCCore のカテゴリが `SRCCore` の 1 つだけで、範囲を絞れない。
-- メッセージを文字列連結で作っており、`{}` を含む値で書式が崩れうる。構造化もされていない。
-- SRC#Form は起動直後（`RootForm` でファイル出力を足すまで）のログがファイルに残らない。
-- SRC#Web・SRCDebugAdapter・SRCAuthoring に `Console.WriteLine`・`Console.Error.WriteLine` が散らばっていて、レベルで制御できない。
-- ログの場所・取り方がヘルプにない。
+- 設定ファイル（`srcs.json`）でログを設定できなかった。レベルを変えられたのは SRC#Form の引数 `-v`・`-vv` だけだった。
+- SRC#Form 以外はファイルに残らず、デバッガを付けていないと SRCCore のログを見られなかった。
+- `SRC.LogError`・`SRC.LogWarn` が `Log.LogDebug` で出していたため、Information 以上の設定ではエラーが記録されなかった。
+- SRCCore のカテゴリが `SRCCore` の 1 つだけだった。メッセージを文字列連結で作っており、`{}` を含む値で書式が崩れうる箇所もあった。
+- SRC#Web・SRCDebugAdapter・SRCAuthoring に `Console.WriteLine`・`Console.Error.WriteLine` が散らばっていた。
+- ログの場所・取り方がヘルプになかった。
 
 ## 方針
 
@@ -38,26 +27,25 @@ SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針。7474/SR
 2. **設定は「引数 > 環境変数 > `srcs.json` > 既定値」の順に効く**。項目名はすべてのアプリで共通にする。
 3. **デスクトップ（SRC#Form・SRC#Avalonia・`srcsharp`）は既定でファイルに Information 以上を残す**。場所は OS ごとのユーザーの領域にする。
 4. **プロトコルが使う stdout にはログを書かない**（LSP・DAP）。ログはプロトコルのログ通知で送る。
-5. **レベルは実行中に変えられる**（設定画面・VS Code の設定から）。
+5. **レベルは実行中に変えられる**（設定ファイルを読んだ後、VS Code の設定、SRC#Web の設定画面）。
 
 ```mermaid
 flowchart LR
   subgraph Core[ライブラリ]
     SRCCore -->|ILogger| F
-    SRCRender -->|ILogger| F
     SRCSound -->|ILogger| F
     SRCPlay -->|ILogger| F
   end
-  F[ILoggerFactory]
+  F[ILoggerFactory<br/>フィルター: LogOptions.IsEnabled]
   subgraph Hosts[ホストが決める出力先]
-    F --> D[SRC#Form / SRC#Avalonia<br/>Serilog: ファイル + デバッガ]
+    F --> D[SRC#Form / SRC#Avalonia<br/>LogHost: ファイル + デバッガ]
     F --> W[SRC#Web<br/>ブラウザのコンソール]
-    F --> P[srcsharp play<br/>Serilog: stderr + ファイル]
-    F --> G[srcsharp dap<br/>DAP output イベント + ファイル]
-    F --> L[srcsharp lsp<br/>window/logMessage + ファイル]
+    F --> P[srcsharp play<br/>LogHost: ファイル + stderr]
+    F --> G[srcsharp dap<br/>LogHost: ファイル + output イベント]
+    F --> L[srcsharp lsp<br/>LogHost: ファイル + window/logMessage]
   end
-  S[(引数 / 環境変数 / srcs.json)] --> O[LogOptions]
-  O --> Hosts
+  S[(引数 / 環境変数 / srcs.json)] --> O[LogSettings → LogOptions]
+  O --> F
 ```
 
 ## 設定
@@ -68,11 +56,12 @@ flowchart LR
 |---|---|---|---|---|
 | レベル | `Level` | `SRCSHARP_LOG_LEVEL` | `--log-level <レベル>`、`-v`（Debug）、`-vv`（Trace） | `Information` |
 | カテゴリごとのレベル | `Level:<カテゴリ>`（例: `Level:SRCCore.Expression`） | ― | ― | なし |
-| ファイル出力 | `File`（`On`・`Off`） | `SRCSHARP_LOG_FILE`（`Off` またはパス） | `--log-file <パス>`、`--no-log-file` | デスクトップは `On`、Web は対象外 |
-| ファイルの場所 | `Path` | （同上） | （同上） | 下表 |
+| ファイル出力 | `File`（`On`・`Off`） | `SRCSHARP_LOG_FILE`（`On`・`Off`） | `--no-log-file` | デスクトップは `On`、Web はファイルなし |
+| ファイルの場所 | `Path` | `SRCSHARP_LOG_DIR` | `--log-dir <フォルダ>` | 下表 |
 | 残す日数 | `RetainDays` | ― | ― | `7` |
 
-- レベル名は `Trace`・`Debug`・`Information`・`Warning`・`Error`・`Critical`・`None`（[LogLevel](https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel)）。既存の `-vv` の Serilog の `Verbose` は `Trace` と同じ扱いにする。
+- レベル名は `Trace`・`Debug`・`Information`・`Warning`・`Error`・`Critical`・`None`（[LogLevel](https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel)）。Serilog の `Verbose`・`Fatal`、短い `Info`・`Warn` も受け付ける。
+- カテゴリごとのレベルは、前方一致する最も長いカテゴリのものを使う（`Level:SRCCore` は `SRCCore.Event` にも効く）。`srcs.json` から読めるカテゴリは `LogCategories.All` のもの。
 - `srcs.json` の書き方は既存の `Option` セクションと同じ（`Sections` の `Name`・`Items`）。
 
 ```json
@@ -98,87 +87,87 @@ flowchart LR
 | macOS | `~/Library/Logs/SRCSharp/` |
 | Linux | `$XDG_STATE_HOME/srcsharp/logs/`（未設定なら `~/.local/state/srcsharp/logs/`、[XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/)） |
 
-- ファイル名は `<アプリ>-<日付>.log`（`srcsform-20261017.log`・`srcsavalonia-…`・`srcsharp-…`）。Serilog.Sinks.File の `rollingInterval: Day`・`retainedFileCountLimit`・`fileSizeLimitBytes`（既定 1 GB）で回す（[serilog-sinks-file](https://github.com/serilog/serilog-sinks-file)）。
-- 実行ファイルの場所にしないのは、macOS の `.app` や `Program Files`・`dotnet tool` の置き場所に書けないことがあるため。SRC#Form は今の `<exe のフォルダ>/logs` から移る。
-- 同時に起動した複数のプロセスが同じファイルに書くときは `shared: true` にする。
+- ファイル名は `<アプリ>-<日付>.log`（`srcsform`・`srcsavalonia`・`srcsharp-play`・`srcsharp-lsp`・`srcsharp-dap`）。Serilog.Sinks.File の `rollingInterval: Day`・`retainedFileCountLimit`・`rollOnFileSizeLimit`（既定 1 GB）で回す（[serilog-sinks-file](https://github.com/serilog/serilog-sinks-file)）。
+- 実行ファイルの場所にしないのは、macOS の `.app` や `Program Files`・`dotnet tool` の置き場所に書けないことがあるため。SRC#Form は 3.5.2 までの `<exe のフォルダ>/logs` から移った。
+- 同時に起動した複数のプロセスが同じファイルに書けるよう `shared: true` にする。
+- フォルダを作れない・書けないときは、ファイルに出さずに動かす（デバッガ・stderr などには警告を出す）。
 
 ### いつ読むか
 
-`srcs.json` はシナリオを選ぶまで読めない（`AppPath` が決まらない）。そのため 2 段階で構成する。
+`srcs.json` はアプリの設定を読むまで（SRC#Web・`srcsharp` はシナリオを選ぶまで）読めない。そのため 2 段階で構成する。
 
-1. 起動直後: 引数・環境変数・既定値で構成する。起動のログ（版・OS・.NET）はここで出す。
-2. `srcs.json` を読んだ後: Serilog の `LoggingLevelSwitch` でレベルを、ファイルの設定が変わっていればシンクを差し替える（[Dynamic levels](https://github.com/serilog/serilog/wiki/Writing-Log-Events#dynamic-levels)）。引数・環境変数で指定された項目は上書きしない。
+1. 起動直後: 引数・環境変数・既定値で構成する。起動のログ（版・OS・.NET・引数）はここで出す。
+2. `srcs.json` を読んだ後: `LogHost.ApplyConfig`（SRC#Web は `WebLogging.ApplyConfig`）で、レベル・ファイルを反映する。引数・環境変数で指定された項目は上書きしない。
 
-設定画面からレベルを変えたときも `LoggingLevelSwitch` で反映する。
+レベルは `ILoggerFactory` のフィルター（`AddFilter((category, level) => options.IsEnabled(category, level))`）で出すたびに判定するため、`LogOptions` を変えればすぐ効く。ファイルの出力先は `SwitchableSink` で差し替える。
 
 ## レベルの使い分け
 
 | レベル | 出すもの | 例 |
 |---|---|---|
-| Critical | プロセスが続けられない例外 | 未処理例外（`AppDomain.UnhandledException`・`GameThread.UnhandledException`） |
+| Critical | プロセスが続けられない例外 | 未処理例外（`AppDomain.UnhandledException`・SRC#Web の `GameThread.UnhandledException`） |
 | Error | 処理を中断した失敗 | イベントのエラー（ファイル名・行番号つき）、セーブ・ロードの失敗、データの読み込みエラー |
-| Warning | 続けられるが結果が元の SRC と違うもの | 未対応コマンド（`GUINotImplemented`）、素材の欠落（`AllowMissingAssets`）、SoundFont・フォントが見つからず代わりのものを使ったとき |
-| Information | 起動・終了と大きな状態の変化 | 起動（版・OS・.NET・引数）、シナリオの読み込み（パス・所要時間）、セーブ・ロード、ステージの開始・終了、効いている設定 |
+| Warning | 続けられるが結果が元の SRC と違うもの | 未対応コマンド（`GUINotImplemented`）、SoundFont が無い・読めない、OpenAL を開けない |
+| Information | 起動・終了と大きな状態の変化 | 起動（版・OS・.NET・引数）、効いているログの設定、素材が見つからないこと、[Debug コマンド](../SRC.Sharp.Help/src/Debugコマンド.md) のメッセージ |
 | Debug | 処理の流れ | イベントコマンドの実行（`CmdData`）、ユニットへのコマンド（`Commands`）、イベントのキュー、COM の思考 |
 | Trace | 量の多い細部 | 変数の読み書き、関数の呼び出し、描画（`PaintPicture`） |
 
 - 既定の Information で、不具合報告に要る情報（版・環境・シナリオ・エラー）がそろうようにする。
-- Debug 以下は量が多いので、`IsEnabled` で確かめてから文字列を作る（今の `SRC.LogDebug` と同じ）。
+- Debug 以下は量が多いので、`IsEnabled` で確かめてから文字列を作る（`LoggerExtensions.WriteWithCaller`。呼び出し元のメソッド名を調べるのもこの時だけ）。
 
 ## カテゴリ
 
-`ILoggerFactory.CreateLogger(<カテゴリ>)` で分け、カテゴリごとのレベルを設定できるようにする。
+`ILoggerFactory.CreateLogger(<カテゴリ>)` で分ける。名前は `SRCCore.Logging.LogCategories`。
 
-| カテゴリ | 範囲 |
-|---|---|
-| `SRCCore` | 起動・データの読み込み・セーブ・ロード |
-| `SRCCore.Event` | イベントの実行・コマンド |
-| `SRCCore.Expression` | 式・変数・関数 |
-| `SRCCore.Command` | ユニットへのコマンド・COM |
-| `SRCRender` | 画面・画像・フォント |
-| `SRCSound` | 音の再生・SoundFont |
-| `SRCSharpForm`・`SRCSharpAvalonia`・`SRCSharpWeb`・`SRCSharp.Tools` | 各アプリ自身 |
-| `SRCSharp.Lsp`・`SRCSharp.Dap` | Language Server・Debug Adapter |
+| カテゴリ | 範囲 | `SRC` のプロパティ |
+|---|---|---|
+| `SRCCore` | 起動・データの読み込み・セーブ・ロード | `Log` |
+| `SRCCore.Event` | イベントの実行・コマンド | `EventLog` |
+| `SRCCore.Expression` | 式・変数・関数 | `ExpressionLog` |
+| `SRCCore.Command` | ユニットへのコマンド・COM | `CommandLog` |
+| `SRCRender` | 画面・画像・フォント | ― |
+| `SRCSound` | 音の再生・SoundFont | ― |
+| `SRCSharpForm`・`SRCSharpAvalonia`・`SRCSharpWeb`・`SRCSharp.Tools` | 各アプリ自身 | ― |
+| `SRCSharp.Lsp`・`SRCSharp.Dap` | Language Server・Debug Adapter | ― |
+| `Avalonia` | Avalonia 自体（警告以上） | ― |
 
 ## 書式
 
-- ファイル: `{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {SourceContext}: {Message:lj}{NewLine}{Exception}`
-- メッセージはテンプレートで書く（`Log.LogError(ex, "イベントのエラー {File}({Line}): {Message}", ...)`）。文字列連結はやめる（[ログのメッセージテンプレート](https://learn.microsoft.com/dotnet/core/extensions/logging#log-message-template)）。
+- ファイル・デバッガ・stderr: `{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {SourceContext}: {Message:lj}{NewLine}{Exception}`
+- DAP・LSP: `[INF] SRCCore.Event: メッセージ`（時刻はクライアントがつける）
+- メッセージはテンプレートで書く（`Log.LogError(ex, "イベントのエラー {File}({Line}): {Message}", ...)`）。文字列連結はやめる（[ログのメッセージテンプレート](https://learn.microsoft.com/dotnet/core/extensions/logging#log-message-template)）。元の SRC から移したコードの `SRC.LogDebug(message, params string[])` などは、`{Message} {Args}` のテンプレートで出す。
 - 例外は `Exception` 引数で渡し、スタックトレースをメッセージに連結しない。
 
 ## アプリ・ツールごとの出力
 
 | 対象 | 出力先 | レベルの変え方 |
 |---|---|---|
-| SRC#Form | ファイル + デバッガ出力 | `srcs.json`・引数・環境変数・設定画面 |
-| SRC#Avalonia | ファイル + デバッガ出力（Avalonia 自体のログもファイルへ） | 同上 |
-| SRC#Web | ブラウザのコンソール。ファイルは無し | URL の `?log=<レベル>`、設定画面（`localStorage` に保存）。`builder.Logging.SetMinimumLevel` で反映（[Blazor のログ](https://learn.microsoft.com/aspnet/core/blazor/fundamentals/logging)） |
-| `srcsharp play` | stderr（stdout は結果用）+ ファイル | `--log-level`・`-v`・`-vv`・環境変数 |
-| `srcsharp dap` | DAP の `output` イベント（`category: console`、Warning 以上は `stderr`）+ ファイル | `launch.json` の `logLevel`（[Output Event](https://microsoft.github.io/debug-adapter-protocol/specification#Events_Output)） |
-| `srcsharp lsp` | `window/logMessage` + ファイル | 初期化オプション・`srcsharp.trace.server`（[window/logMessage](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#window_logMessage)） |
-| VS Code 拡張 | 出力パネル「SRC#」を `LogOutputChannel`（`createOutputChannel('SRC#', { log: true })`）にする。レベルは VS Code の「Developer: Set Log Level」で変える | ― ([LogOutputChannel](https://code.visualstudio.com/api/references/vscode-api#LogOutputChannel)) |
-| SRCDataLinter・`srcsharp lint` | 対象外（出力は結果そのもの） | ― |
+| SRC#Form | ファイル + デバッガ出力 | 引数・環境変数・`srcs.json` |
+| SRC#Avalonia | ファイル + デバッガ出力（Avalonia 自体の警告以上も） | 同上 |
+| SRC#Web | ブラウザのコンソール（Blazor の既定の出力。Error 以上は `console.error` なので、エラーの収集にも乗る）。ファイルは無し | URL の `?log=<レベル>`、システムメニューの設定の「ログ」（`localStorage` の `srcweb.logLevel`）、`srcs.json`。index.html が環境変数 `SRCSHARP_LOG_LEVEL` で .NET に渡す（[Blazor のログ](https://learn.microsoft.com/aspnet/core/blazor/fundamentals/logging)） |
+| `srcsharp play` | ファイル + stderr（stdout は結果用。stderr は、レベルを引数・環境変数で指定しない限り警告以上） | 引数・環境変数・`srcs.json` |
+| `srcsharp dap` | ファイル + DAP の `output` イベント（`category: console`、Warning 以上は `stderr`） | `launch.json` の `logLevel`（無ければ `srcsharp.logLevel`）（[Output Event](https://microsoft.github.io/debug-adapter-protocol/specification#Events_Output)） |
+| `srcsharp lsp` | ファイル + `window/logMessage` | 初期化オプションの `logLevel`（`srcsharp.logLevel`）（[window/logMessage](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#window_logMessage)） |
+| VS Code 拡張 | 出力パネル「SRC#」を `LogOutputChannel`（`createOutputChannel('SRC#', { log: true })`）にし、Language Server のログも同じパネルに出す。表示は「Developer: Set Log Level」で絞れる（[LogOutputChannel](https://code.visualstudio.com/api/references/vscode-api#LogOutputChannel)） | `srcsharp.logLevel`（設定画面の「ログ」） |
+| SRCDataLinter・`srcsharp lint`・`balance` | 対象外（出力は結果そのもの） | ― |
+
+SRC#Form・SRC#Avalonia の設定ダイアログ（元の SRC の設定変更の移植）には、ログの項目を足していない。画面のテスト（VRT）の基準が変わるため。`srcs.json` か引数で設定する。
 
 ## 実装の置き場所
 
 | 置き場所 | 内容 |
 |---|---|
-| `SRCCore/Logging/LogOptions.cs`（netstandard2.1、依存なし） | 設定の読み取り（引数・環境変数・`ISystemConfig`）と優先順位、既定のファイルの場所 |
-| `SRCCore/SRC.cs` | `LogError`・`LogWarn` のレベルを直す。カテゴリごとの `ILogger` を持つ。`SRC()` の既定は `NullLoggerFactory` にする（ログを出すかどうかはホストが決める） |
-| `SRCLogging`（新規、net10.0、Serilog 依存） | デスクトップ用の構成（ファイル・デバッガ・stderr、`LoggingLevelSwitch`）。SRC#Form・SRC#Avalonia・`srcsharp` が使う |
-| SRCDebugAdapter・SRCAuthoring | DAP・LSP へ送る `ILoggerProvider` |
-| SRCSharpWeb | `Console.WriteLine` を `ILogger` に置き換え、URL・設定でレベルを変える |
+| `SRCCore/Logging/LogSettings.cs` | 1 つの指定元（引数・環境変数・`ISystemConfig`）の設定を読む |
+| `SRCCore/Logging/LogOptions.cs` | 優先順位で合わせた、効いている設定。`IsEnabled(category, level)`・既定のファイルの場所 |
+| `SRCCore/Logging/LogCategories.cs`・`LoggerExtensions.cs` | カテゴリ名、元の SRC の形のログをテンプレートで出す拡張メソッド |
+| `SRCCore/Logging/DelegateLoggerProvider.cs` | ログを関数に渡す `ILoggerProvider`（DAP・LSP が使う） |
+| `SRCCore/SRC.cs` | カテゴリごとの `ILogger`。`SRC()` の既定は `NullLoggerFactory`（ログを出すかどうかはホストが決める） |
+| `SRCLogging`（net10.0、Serilog） | `LogHost`: デスクトップ用の構成（ファイル・デバッガ・stderr、設定の反映、起動のログ）。SRC#Form・SRC#Avalonia・`srcsharp` が使う |
+| SRCDebugAdapter・SRCAuthoring | DAP の `output` イベント・LSP の `window/logMessage` に送る |
+| `SRCSharpWeb/WebLogging.cs` | SRC#Web のレベルの判定と、URL・設定画面・`srcs.json` の反映 |
 
 ## ヘルプ・docs
 
-- ヘルプ（`SRC.Sharp.Help`）に「ログ」のページを作る。各アプリでの場所、レベルの変え方、不具合報告で添えるファイルを書く。ログにはファイルのパス（ユーザー名を含む）が入ることも書く。
-- `srcsharp` の `--help` と VS Code 拡張の README に、引数と設定を書く。
-
-## 進める順番
-
-1. SRCCore: `LogError`・`LogWarn` のレベルを直す。メッセージをテンプレートにする。カテゴリを分ける
-2. `LogOptions` と `SRCLogging` を作り、SRC#Form を移す（#358 の本体。`srcs.json` での設定）
-3. SRC#Avalonia・`srcsharp play` に入れる
-4. DAP・LSP・VS Code 拡張（`LogOutputChannel`）
-5. SRC#Web
-6. 設定画面（レベル・ファイルを開くボタン）とヘルプ
+- ヘルプの「[ログ](../SRC.Sharp.Help/src/ログ.md)」: 各アプリでの場所、レベルの変え方、不具合報告で添えるもの。ログにはファイルのパス（ユーザー名を含む）が入ること。
+- `srcsharp --help`（15 言語）と [VS Code 拡張の README](../SRC.Sharp/SRCSharpVSCode/README.md#ログ) に、引数と設定を書いた。
+- Issue テンプレート（不具合の報告）に、ログの欄と場所を書いた。

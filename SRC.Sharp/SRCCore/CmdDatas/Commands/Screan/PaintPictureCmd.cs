@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Extensions;
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.VB;
 using System.Drawing;
 
@@ -248,7 +249,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             GUI.DrawPicture(fname, dx, dy, dw, dh, sx, sy, sw, sh, options);
-            SRC.LogTrace($"DrawPicture({fname}, {dx}, {dy}, {dw}, {dh}, {sx}, {sy}, {sw}, {sh}, {options})");
+            SRC.EventLog.TraceWithCaller($"DrawPicture({fname}, {dx}, {dy}, {dw}, {dh}, {sx}, {sy}, {sw}, {sh}, {options})");
 
             return EventData.NextID;
         }

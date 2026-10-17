@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Extensions.Logging;
+using SRCCore.Logging;
+using SRCLogging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -11,7 +11,8 @@ namespace SRCSharpForm
     static class Program
     {
         internal static Microsoft.Extensions.Logging.ILogger Log { get; private set; }
-        internal static ILoggerFactory LoggerFactory { get; private set; }
+        internal static ILoggerFactory LoggerFactory => LogHost.LoggerFactory;
+        internal static LogHost LogHost { get; private set; }
 
         /// <summary>
         ///  The main entry point for the application.
@@ -29,15 +30,10 @@ namespace SRCSharpForm
                 return;
             }
 
-            LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
-            {
-                builder.SetMinimumLevel(LogLevel.Trace);
-            });
-            LoggerFactory.AddProvider(new SerilogLoggerProvider(new LoggerConfiguration()
-                    .WriteTo.Debug()
-                    .MinimumLevel.Debug()
-                    .CreateLogger()));
-            UpdateLogger();
+            // ログ（docs/logging.md）。設定ファイル（srcs.json）は RootForm で読んで反映する
+            LogHost = new LogHost("srcsform", LogSettings.FromArgs(args), outputs: LogOutputs.Debug);
+            Log = LoggerFactory.CreateLogger("SRCSharpForm");
+            LogHost.LogStartup(Log, "SRC#Form", args);
 
             Application.ApplicationExit += Application_ApplicationExit;
             Application.ThreadException += Application_ThreadException;
@@ -54,16 +50,12 @@ namespace SRCSharpForm
             try
             {
                 Log.LogInformation("SRC#Form終了");
+                LogHost.Dispose();
             }
             catch
             {
                 // ignore
             }
-        }
-
-        internal static void UpdateLogger()
-        {
-            Log = LoggerFactory.CreateLogger("SRCSharpForm");
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
@@ -82,7 +74,7 @@ namespace SRCSharpForm
         {
             try
             {
-                Log.LogError(ex, "UnhandledException");
+                Log.LogCritical(ex, "UnhandledException");
                 MessageBox.Show($@"不明なエラーが発生しました。
 詳細はログを確認してください。
 {ex?.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);

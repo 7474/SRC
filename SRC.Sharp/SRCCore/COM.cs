@@ -2,9 +2,11 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SRCCore.Extensions;
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
@@ -75,7 +77,7 @@ namespace SRCCore
             bool is_p_weapon;
             var took_action = default(bool);
 
-            SRC.LogDebug("Start", Commands.SelectedUnit.ID);
+            SRC.CommandLog.DebugWithCaller("Start", Commands.SelectedUnit.ID);
 
             Event.SelectedUnitForEvent = Commands.SelectedUnit;
             Commands.SelectedTarget = null;
@@ -695,7 +697,7 @@ namespace SRCCore
             // TODO 武器選択に失敗してるケースがある（発生時は LogWarn を出してこのターンの行動を中断する）
             if (w <= 0)
             {
-                SRC.LogWarn("Weapon not found. " + JsonConvert.SerializeObject(Commands.SelectedUnit), null);
+                SRC.CommandLog.LogWarning("Weapon not found. {Unit}", JsonConvert.SerializeObject(Commands.SelectedUnit));
                 goto EndOfOperation;
             }
 

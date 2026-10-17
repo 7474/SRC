@@ -63,6 +63,17 @@ body:
     validations:
       required: true
   - type: textarea
+    id: log
+    attributes:
+      label: ログ / Log
+      description: |
+        不具合が起きたときのログ。ファイルはここにドラッグして添付できます。場所とレベルの変え方は [ログ](https://srch.7474.jp/ログ) を見てください
+        - SRC#Form・SRC#Avalonia・srcsharp: Windows は `%LOCALAPPDATA%\SRCSharp\logs`、macOS は `~/Library/Logs/SRCSharp`、Linux は `~/.local/state/srcsharp/logs` のその日のファイル。起動の引数に `-v` を付けると詳しく出ます
+        - SRC#Web: ブラウザの開発者ツール（F12）のコンソールの内容。URL に `?log=Debug` を付けると詳しく出ます
+        - VS Code 拡張: 出力パネルの「SRC#」とデバッグコンソールの内容
+        ログにはファイルのパス（ユーザー名を含むことがあります）が入ります。必要に応じて伏せてください
+      render: text
+  - type: textarea
     id: attachments
     attributes:
       label: 添付 / Attachments

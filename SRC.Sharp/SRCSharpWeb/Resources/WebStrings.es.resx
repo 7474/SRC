@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>Registro (consola del navegador)</value>
+  </data>
 </root>

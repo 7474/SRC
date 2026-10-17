@@ -31,6 +31,10 @@ Utilisation :
 Options communes :
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Langue d'affichage. Peut aussi être définie via la variable d'environnement SRCSHARP_LANG (l'option est prioritaire). Par défaut : ja ; auto suit le réglage du système
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      Niveau de journalisation (play, lsp, dap). -v correspond à Debug, -vv à Trace. Aussi via SRCSHARP_LOG_LEVEL. Par défaut : Information
+  --log-dir &lt;dossier&gt;, --no-log-file
+      Dossier des fichiers journaux. --no-log-file désactive le fichier. Aussi via SRCSHARP_LOG_DIR et SRCSHARP_LOG_FILE (On|Off)
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

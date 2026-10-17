@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Extensions.Logging;
 using SRCCore.Config;
 using SRCCore.Filesystem;
 using SRCCore.Threading;
@@ -19,16 +17,6 @@ namespace SRCSharpForm
         private SRCSharpFormGUI formGUI;
         private string[] _args;
         private bool _firstShown;
-
-        private bool IsDebugLogEnabled()
-        {
-            return _args.Any(x => x == "-v");
-        }
-
-        private bool IsTraceLogEnabled()
-        {
-            return _args.Any(x => x == "-vv");
-        }
 
         // SRCCore を UI スレッドとは別のゲームスレッドで実行する（試験的機能）
         private bool IsGameThreadEnabled()
@@ -59,26 +47,8 @@ namespace SRCSharpForm
             // XXX 単位変換をここで行うのは将来的には改善したい（IPlayer が 0.0-1.0 スケールを要求するため）
             soundPlayer.SoundVolume = config.SoundVolume / 100f;
 
-            var logConf = new LoggerConfiguration()
-                .WriteTo.File(
-                    // 実行ファイル配下の logs フォルダに出力する
-                    Path.Combine(AppContext.BaseDirectory, "logs\\srcsform..log"),
-                    rollingInterval: RollingInterval.Day);
-            if (IsTraceLogEnabled())
-            {
-                logConf = logConf.MinimumLevel.Verbose();
-            }
-            else if (IsDebugLogEnabled())
-            {
-                logConf = logConf.MinimumLevel.Debug();
-            }
-            else
-            {
-                logConf = logConf.MinimumLevel.Information();
-            }
-            Program.LoggerFactory.AddProvider(new SerilogLoggerProvider(logConf.CreateLogger()));
-            Program.UpdateLogger();
-            Program.Log.LogInformation("SRC#Form起動");
+            // 設定ファイルのログの設定（Log セクション）を反映する
+            Program.LogHost.ApplyConfig(config);
 
             SRC = new SRCCore.SRC(Program.LoggerFactory);
             SRC.SystemConfig = config;

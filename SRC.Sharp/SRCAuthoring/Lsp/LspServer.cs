@@ -1,6 +1,9 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SRCAuthoring.Analysis;
 using SRCAuthoring.Protocol;
 using SRCCore.Events;
+using SRCCore.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -24,6 +27,8 @@ namespace SRCAuthoring.Lsp
         private readonly ConcurrentDictionary<string, ScenarioAnalysis> analyses = new ConcurrentDictionary<string, ScenarioAnalysis>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, CancellationTokenSource> pending = new ConcurrentDictionary<string, CancellationTokenSource>(StringComparer.OrdinalIgnoreCase);
         private bool shutdown;
+        private readonly ILogger log;
+        private readonly Action<LogLevel?> setLogLevel;
 
         /// <summary>変更してから解析するまでの待ち</summary>
         public TimeSpan Debounce { get; set; } = TimeSpan.FromMilliseconds(800);
@@ -31,9 +36,32 @@ namespace SRCAuthoring.Lsp
         // 解析は重い（大きなシナリオでは include 先を含めて数十万行）ので、同時には 1 つだけ行う
         private readonly SemaphoreSlim analyzing = new SemaphoreSlim(1, 1);
 
-        public LspServer(Stream input, Stream output)
+        /// <param name="loggerFactory">ログの出力先。ログは window/logMessage でクライアントにも送る</param>
+        /// <param name="setLogLevel">初期化オプションの logLevel を反映する</param>
+        public LspServer(Stream input, Stream output, ILoggerFactory loggerFactory = null, Action<LogLevel?> setLogLevel = null)
         {
             stream = new MessageStream(input, output);
+            this.setLogLevel = setLogLevel;
+            if (loggerFactory != null)
+            {
+                loggerFactory.AddProvider(new DelegateLoggerProvider((category, level, message, ex) =>
+                    _ = stream.WriteAsync(new JsonObject
+                    {
+                        ["jsonrpc"] = "2.0",
+                        ["method"] = "window/logMessage",
+                        ["params"] = new JsonObject
+                        {
+                            // 1: Error、2: Warning、3: Info、4: Log
+                            ["type"] = level >= LogLevel.Error ? 1 : level == LogLevel.Warning ? 2 : level == LogLevel.Information ? 3 : 4,
+                            ["message"] = $"[{DelegateLoggerProvider.ShortLevel(level)}] {category}: {message}" + (ex == null ? "" : "\n" + ex),
+                        },
+                    })));
+                log = loggerFactory.CreateLogger("SRCSharp.Lsp");
+            }
+            else
+            {
+                log = NullLogger.Instance;
+            }
         }
 
         /// <summary>exit を受け取るか入力が終わるまで処理する。戻り値は終了コード</summary>
@@ -63,6 +91,7 @@ namespace SRCAuthoring.Lsp
                 }
                 catch (Exception ex)
                 {
+                    log.LogError(ex, "{Method} を処理できません", method);
                     if (id != null)
                     {
                         await stream.WriteAsync(new JsonObject
@@ -87,6 +116,13 @@ namespace SRCAuthoring.Lsp
                     {
                         analyzer.AppPath = appPath;
                     }
+                    // ログのレベル（VS Code 拡張の srcsharp.logLevel）
+                    var logLevel = LogSettings.ParseLevel(@params?["initializationOptions"]?["logLevel"]?.GetValue<string>());
+                    if (logLevel.HasValue)
+                    {
+                        setLogLevel?.Invoke(logLevel);
+                    }
+                    log.LogInformation("Language Server を開始 SRC のフォルダ: {AppPath}", analyzer.AppPath ?? "");
                     return new JsonObject
                     {
                         ["capabilities"] = new JsonObject
@@ -202,7 +238,7 @@ namespace SRCAuthoring.Lsp
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    log.LogError(ex, "解析できません {Path}", path);
                 }
             });
         }

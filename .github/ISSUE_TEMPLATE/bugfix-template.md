@@ -28,6 +28,12 @@ assignees: ''
 2. [手順2 / Step 2]
 3. [手順3 / Step 3]
 
+## ログ（該当する場合） / Log (if applicable)
+
+```text
+[ログの該当箇所 / Relevant log lines（場所とレベルは docs/logging.md / see docs/logging.md）]
+```
+
 ## TODOコメント（該当する場合） / TODO Comment (if applicable)
 
 ```csharp

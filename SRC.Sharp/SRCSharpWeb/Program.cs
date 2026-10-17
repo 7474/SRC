@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCSharpWeb;
 using SRCSharpWeb.Resources;
@@ -18,4 +19,8 @@ builder.Services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer
 await JSHost.ImportAsync(WebInterop.ModuleName, "../js/srcweb.js");
 // 表示言語（index.html が決めて環境変数で渡す）。RunAsync がこの UI カルチャのサテライトアセンブリを読み込む
 WebLocalization.Apply();
-await builder.Build().RunAsync();
+// ログのレベル（index.html が環境変数で渡す）
+WebLogging.Configure(builder.Logging);
+var host = builder.Build();
+WebLogging.Attach(host.Services.GetRequiredService<ILoggerFactory>());
+await host.RunAsync();

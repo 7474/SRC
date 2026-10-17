@@ -31,6 +31,10 @@ Użycie:
 Opcje wspólne:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Język wyświetlania. Można go też ustawić zmienną środowiskową SRCSHARP_LANG (opcja ma pierwszeństwo). Domyślnie ja; auto używa ustawień systemu
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      Poziom logowania (play, lsp, dap). -v to Debug, -vv to Trace. Można też ustawić przez SRCSHARP_LOG_LEVEL. Domyślnie Information
+  --log-dir &lt;folder&gt;, --no-log-file
+      Folder plików logu. --no-log-file wyłącza plik logu. Można też ustawić przez SRCSHARP_LOG_DIR i SRCSHARP_LOG_FILE (On|Off)
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

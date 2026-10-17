@@ -33,6 +33,8 @@ toc:
     subfolderitems:
       - page: SRCの起動
         url: /SRCの起動
+      - page: ログ
+        url: /ログ
       - page: ゲームの流れ
         url: /ゲームの流れ
       - page: 基本操作

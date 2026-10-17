@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>İptal</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>Günlük (tarayıcı konsolu)</value>
+  </data>
 </root>

@@ -2,8 +2,11 @@ using SRCAuthoring.Balance;
 using SRCDebugAdapter;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
+using SRCCore.Logging;
+using SRCLogging;
 using SRCPlay;
 using SRCSharpTools.Resources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,10 +19,20 @@ namespace SRCSharpTools
 {
     public static class Program
     {
+        private static LogSettings logSettings = LogSettings.Empty;
+
+        /// <summary>ログの構成。play・lsp・dap で使う</summary>
+        private static LogHost CreateLogHost(string command, LogOutputs outputs)
+        {
+            return new LogHost("srcsharp-" + command, logSettings, outputs: outputs);
+        }
+
         public static async Task<int> Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false);
             args = UiLanguage.Apply(args);
+            // ログの引数（docs/logging.md）
+            logSettings = LogSettings.FromArgs(args, out args);
             if (args.Length == 0 || args[0] == "-h" || args[0] == "--help")
             {
                 Console.Write(Strings.Usage);
@@ -41,9 +54,20 @@ namespace SRCSharpTools
                 case "balance":
                     return Balance(positional, options);
                 case "lsp":
-                    return await new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput()).RunAsync();
+                    // stdout はプロトコルに使うため、ログはファイルとプロトコルのログ通知に出す
+                    using (var logHost = CreateLogHost("lsp", LogOutputs.None))
+                    {
+                        var server = new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost.LoggerFactory, logHost.OverrideLevel);
+                        logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp lsp", args);
+                        return await server.RunAsync();
+                    }
                 case "dap":
-                    return await new DapServer(Console.OpenStandardInput(), Console.OpenStandardOutput()).RunAsync();
+                    using (var logHost = CreateLogHost("dap", LogOutputs.None))
+                    {
+                        var server = new DapServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost);
+                        logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp dap", args);
+                        return await server.RunAsync();
+                    }
                 default:
                     Console.Error.WriteLine(Strings.UnknownCommand(args[0]));
                     Console.Error.Write(Strings.Usage);
@@ -120,8 +144,12 @@ namespace SRCSharpTools
                 appPath = Path.GetFullPath(appPath);
             }
             options.TryGetValue("out", out var outDir);
-            using (var runner = new ScreenScenarioRunner(appPath ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(eve)))
+            using (var logHost = CreateLogHost("play", LogOutputs.StandardError))
+            using (var runner = new ScreenScenarioRunner(appPath ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(eve), logHost.LoggerFactory))
             {
+                var log = logHost.LoggerFactory.CreateLogger("SRCSharp.Tools");
+                logHost.ApplyConfig(runner.Session.SRC.SystemConfig);
+                logHost.LogStartup(log, "srcsharp play", new[] { eve });
                 runner.Start(eve);
                 try
                 {
@@ -148,6 +176,7 @@ namespace SRCSharpTools
                 }
                 if (runner.Error != null && !(runner.Error is SRCCore.TestLib.HeadlessTerminatedException))
                 {
+                    log.LogError(runner.Error, "シナリオの実行中のエラー");
                     Console.Error.WriteLine("error: " + runner.Error);
                     return 1;
                 }

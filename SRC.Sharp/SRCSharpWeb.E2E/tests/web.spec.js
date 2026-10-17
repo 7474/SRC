@@ -377,6 +377,16 @@ test('URL の play で登録済シナリオを直接始める', async ({ page })
   await expectAdvancesWithEnter(page);
 });
 
+test('URL の log でログのレベルを変える', async ({ page }) => {
+  const messages = [];
+  page.on('console', m => messages.push({ type: m.type(), text: m.text() }));
+  await page.goto('./?play=battle-basic&log=Debug');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+  // 既定（Information）では出ない、イベントの実行（SRCCore.Event の Debug）が出る
+  await expect.poll(() => messages.some(m => m.text.includes('SRCCore.Event')), { timeout: 60 * 1000 }).toBe(true);
+});
+
 test.describe('サイトの設定とカタログ', () => {
 test.use({ serviceWorkers: 'block' });
 

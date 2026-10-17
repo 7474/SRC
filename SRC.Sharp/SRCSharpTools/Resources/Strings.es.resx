@@ -31,6 +31,10 @@ Uso:
 Opciones comunes:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Idioma de la interfaz. También se puede definir con la variable de entorno SRCSHARP_LANG (la opción tiene prioridad). Por defecto es ja; auto sigue la configuración del SO
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      Nivel de registro (play, lsp, dap). -v es Debug, -vv es Trace. También con SRCSHARP_LOG_LEVEL. Por defecto es Information
+  --log-dir &lt;carpeta&gt;, --no-log-file
+      Carpeta de los archivos de registro. --no-log-file desactiva el archivo. También con SRCSHARP_LOG_DIR y SRCSHARP_LOG_FILE (On|Off)
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

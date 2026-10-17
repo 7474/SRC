@@ -642,7 +642,7 @@ namespace SRCCore.CmdDatas
             }
             catch (Exception ex)
             {
-                src.Log.LogError(ex, ex.Message);
+                src.EventLog.LogError(ex, "{Message}", ex.Message);
                 src.Event.DisplayEventErrorMessage(data.LineNum, "イベントコマンドの内容が不正です");
                 return new NopCmd(src, data);
             }

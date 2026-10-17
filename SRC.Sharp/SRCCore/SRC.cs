@@ -3,21 +3,32 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SRCCore.Config;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Filesystem;
+using SRCCore.Logging;
 using SRCCore.Maps;
 using SRCCore.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SRCCore
 {
     public partial class SRC
     {
+        /// <summary>ログの出力先。ホスト（各アプリ）が渡す</summary>
+        public ILoggerFactory LoggerFactory { get; private set; }
+        /// <summary>起動・データの読み込み・セーブ・ロード（カテゴリ SRCCore）</summary>
         public ILogger Log { get; private set; }
+        /// <summary>イベントの実行・コマンド（カテゴリ SRCCore.Event）</summary>
+        public ILogger EventLog { get; private set; }
+        /// <summary>式・変数・関数（カテゴリ SRCCore.Expression）</summary>
+        public ILogger ExpressionLog { get; private set; }
+        /// <summary>ユニットへのコマンド・COM（カテゴリ SRCCore.Command）</summary>
+        public ILogger CommandLog { get; private set; }
 
         public IGUI GUI { get; set; }
 
@@ -143,20 +154,21 @@ namespace SRCCore
         // SRC.exeのある場所
         public string AppPath => SystemConfig.AppPath;
 
-        // XXX 既定のログ構成
+        /// <summary>
+        /// ログを出さずに作る。ログの出力先はホストが <see cref="SRC(ILoggerFactory)"/> で渡す。
+        /// </summary>
         public SRC()
-            : this(LoggerFactory.Create(builder =>
-             {
-                 builder
-                     .SetMinimumLevel(LogLevel.Debug)
-                     .AddDebug();
-             }))
+            : this(NullLoggerFactory.Instance)
         {
         }
 
         public SRC(ILoggerFactory loggerFactory)
         {
-            Log = loggerFactory.CreateLogger("SRCCore");
+            LoggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
+            Log = LoggerFactory.CreateLogger(LogCategories.Core);
+            EventLog = LoggerFactory.CreateLogger(LogCategories.Event);
+            ExpressionLog = LoggerFactory.CreateLogger(LogCategories.Expression);
+            CommandLog = LoggerFactory.CreateLogger(LogCategories.Command);
 
             Help = new Help(this);
             Event = new Event(this);
@@ -201,20 +213,7 @@ namespace SRCCore
         }
         public void LogError(string message, Exception ex, params string[] param)
         {
-            try
-            {
-                if (!Log.IsEnabled(LogLevel.Error)) { return; }
-                Log.LogDebug(message
-                    + " "
-                    + string.Join(", ", param)
-                    + " "
-                    + ex?.Message
-                    + ex?.StackTrace);
-            }
-            catch
-            {
-                // ignore
-            }
+            Log.Write(LogLevel.Error, ex, message, param);
         }
 
         public void LogWarn(Exception ex)
@@ -223,70 +222,24 @@ namespace SRCCore
         }
         public void LogWarn(string message, Exception ex, params string[] param)
         {
-            try
-            {
-                if (!Log.IsEnabled(LogLevel.Warning)) { return; }
-                Log.LogDebug(message
-                    + " "
-                    + string.Join(", ", param)
-                    + " "
-                    + ex?.Message
-                    + ex?.StackTrace);
-            }
-            catch
-            {
-                // ignore
-            }
+            Log.Write(LogLevel.Warning, ex, message, param);
         }
 
         public void LogInfo(string message, params string[] param)
         {
-            try
-            {
-                Log.LogInformation(message
-                    + " "
-                    + string.Join(", ", param));
-            }
-            catch
-            {
-                // ignore
-            }
+            Log.Write(LogLevel.Information, null, message, param);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void LogDebug(string message = "", params string[] param)
         {
-            try
-            {
-                if (!Log.IsEnabled(LogLevel.Debug)) { return; }
-                string method = new StackFrame(1).GetMethod().Name;
-                Log.LogDebug(method
-                    + " "
-                    + message
-                    + " "
-                    + string.Join(", ", param));
-            }
-            catch
-            {
-                // ignore
-            }
+            Log.WriteWithCaller(LogLevel.Debug, message, param);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void LogTrace(string message = "", params string[] param)
         {
-            try
-            {
-                if (!Log.IsEnabled(LogLevel.Trace)) { return; }
-                string method = new StackFrame(1).GetMethod().Name;
-                Log.LogTrace(method
-                    + " "
-                    + message
-                    + " "
-                    + string.Join(", ", param));
-            }
-            catch
-            {
-                // ignore
-            }
+            Log.WriteWithCaller(LogLevel.Trace, message, param);
         }
     }
 }

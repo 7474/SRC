@@ -31,6 +31,7 @@ interface Values {
   language: string;
   screenAutoOpen: boolean;
   hotReload: string;
+  logLevel: string;
 }
 
 type Message =
@@ -74,6 +75,7 @@ export class SettingsView implements vscode.Disposable {
       language: config.get<string>('language', ''),
       screenAutoOpen: config.get<boolean>('screen.autoOpen', true),
       hotReload: config.get<string>('hotReload', 'onChange'),
+      logLevel: config.get<string>('logLevel', 'Information'),
     };
   }
 
@@ -109,6 +111,7 @@ export class SettingsView implements vscode.Disposable {
         await config.update('language', v.language || undefined, target);
         await config.update('screen.autoOpen', v.screenAutoOpen ? undefined : false, target);
         await config.update('hotReload', v.hotReload === 'onChange' ? undefined : v.hotReload, target);
+        await config.update('logLevel', v.logLevel === 'Information' ? undefined : v.logLevel, target);
         if (v.appPath.trim() && !isAppFolder(v.appPath.trim())) {
           vscode.window.showWarningMessage(`SRC 本体のフォルダ ${v.appPath} に Lib も Data/System もありません。`);
         }
@@ -199,6 +202,18 @@ label.check { display: flex; gap: 6px; align-items: center; }
 </div>
 <p class="help muted">デバッグ中のシナリオのイベント・データ・画像を、プレイの状態を保ったまま読み直します。イベントとデータは、味方フェイズのマップでコマンドを待つ時に読み直します。</p>
 
+<h2>ログ</h2>
+<div class="row">
+  <select id="logLevel" aria-label="ログのレベル">
+    <option value="Trace">Trace（変数・関数の呼び出しまで）</option>
+    <option value="Debug">Debug（コマンドの実行まで）</option>
+    <option value="Information">Information（既定）</option>
+    <option value="Warning">Warning</option>
+    <option value="Error">Error</option>
+  </select>
+</div>
+<p class="help muted">Language Server とデバッガのログのレベル。ログは出力パネルの「SRC#」・デバッグコンソールとファイルに出ます。</p>
+
 <div class="actions">
   <label>保存先
     <select id="target">
@@ -222,6 +237,7 @@ function setValues(v) {
   if (v.language !== undefined) $('language').value = v.language;
   if (v.screenAutoOpen !== undefined) $('screenAutoOpen').checked = v.screenAutoOpen;
   if (v.hotReload !== undefined) $('hotReload').value = v.hotReload;
+  if (v.logLevel !== undefined) $('logLevel').value = v.logLevel;
 }
 window.addEventListener('message', (e) => {
   const m = e.data;
@@ -267,6 +283,7 @@ $('save').addEventListener('click', () => vscode.postMessage({
     language: $('language').value,
     screenAutoOpen: $('screenAutoOpen').checked,
     hotReload: $('hotReload').value,
+    logLevel: $('logLevel').value,
   },
 }));
 vscode.postMessage({ type: 'ready' });
