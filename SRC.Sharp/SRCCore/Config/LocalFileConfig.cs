@@ -16,7 +16,6 @@ namespace SRCCore.Config
         public bool KeepEnemyBGM { get; set; }
         public string ExtDataPath { get; set; }
         public string ExtDataPath2 { get; set; }
-        public string MidiResetType { get; set; }
         public bool AutoMoveCursor { get; set; }
         public bool SpecialPowerAnimation { get; set; }
         public bool BattleAnimation { get; set; }

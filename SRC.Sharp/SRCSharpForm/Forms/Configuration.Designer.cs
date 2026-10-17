@@ -89,7 +89,6 @@ namespace SRCSharpForm
             }
         }
 
-        public ComboBox cboMidiReset;
         private Button _cmdCancel;
 
         public Button cmdCancel
@@ -175,7 +174,6 @@ namespace SRCSharpForm
         }
 
         public Label labMP3Volume;
-        public Label labMidiReset;
         public Label labMessageSpeed;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
@@ -191,7 +189,6 @@ namespace SRCSharpForm
             this.chkWeaponAnimation = new System.Windows.Forms.CheckBox();
             this._txtMP3Volume = new System.Windows.Forms.TextBox();
             this._hscMP3Volume = new System.Windows.Forms.HScrollBar();
-            this.cboMidiReset = new System.Windows.Forms.ComboBox();
             this._cmdCancel = new System.Windows.Forms.Button();
             this._cmdOK = new System.Windows.Forms.Button();
             this.chkKeepEnemyBGM = new System.Windows.Forms.CheckBox();
@@ -202,7 +199,6 @@ namespace SRCSharpForm
             this.chkSpecialPowerAnimation = new System.Windows.Forms.CheckBox();
             this._chkBattleAnimation = new System.Windows.Forms.CheckBox();
             this.labMP3Volume = new System.Windows.Forms.Label();
-            this.labMidiReset = new System.Windows.Forms.Label();
             this.labMessageSpeed = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -252,7 +248,7 @@ namespace SRCSharpForm
             this._txtMP3Volume.Cursor = System.Windows.Forms.Cursors.IBeam;
             this._txtMP3Volume.Font = new System.Drawing.Font("ＭＳ Ｐゴシック", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._txtMP3Volume.ForeColor = System.Drawing.Color.Black;
-            this._txtMP3Volume.Location = new System.Drawing.Point(87, 327);
+            this._txtMP3Volume.Location = new System.Drawing.Point(87, 296);
             this._txtMP3Volume.MaxLength = 0;
             this._txtMP3Volume.Name = "_txtMP3Volume";
             this._txtMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -265,7 +261,7 @@ namespace SRCSharpForm
             // _hscMP3Volume
             // 
             this._hscMP3Volume.Cursor = System.Windows.Forms.Cursors.Default;
-            this._hscMP3Volume.Location = new System.Drawing.Point(128, 328);
+            this._hscMP3Volume.Location = new System.Drawing.Point(128, 297);
             this._hscMP3Volume.Maximum = 109;
             this._hscMP3Volume.Name = "_hscMP3Volume";
             this._hscMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -275,23 +271,12 @@ namespace SRCSharpForm
             this._hscMP3Volume.Value = 50;
             this._hscMP3Volume.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscMP3Volume_Scroll);
             // 
-            // cboMidiReset
-            // 
-            this.cboMidiReset.BackColor = System.Drawing.Color.White;
-            this.cboMidiReset.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cboMidiReset.ForeColor = System.Drawing.Color.Black;
-            this.cboMidiReset.Location = new System.Drawing.Point(168, 296);
-            this.cboMidiReset.Name = "cboMidiReset";
-            this.cboMidiReset.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cboMidiReset.Size = new System.Drawing.Size(115, 23);
-            this.cboMidiReset.TabIndex = 10;
-            // 
             // _cmdCancel
             // 
             this._cmdCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this._cmdCancel.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdCancel.Location = new System.Drawing.Point(216, 360);
+            this._cmdCancel.Location = new System.Drawing.Point(216, 329);
             this._cmdCancel.Name = "_cmdCancel";
             this._cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdCancel.Size = new System.Drawing.Size(97, 25);
@@ -305,7 +290,7 @@ namespace SRCSharpForm
             this._cmdOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this._cmdOK.Cursor = System.Windows.Forms.Cursors.Default;
             this._cmdOK.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._cmdOK.Location = new System.Drawing.Point(112, 360);
+            this._cmdOK.Location = new System.Drawing.Point(112, 329);
             this._cmdOK.Name = "_cmdOK";
             this._cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._cmdOK.Size = new System.Drawing.Size(97, 25);
@@ -409,24 +394,12 @@ namespace SRCSharpForm
             this.labMP3Volume.BackColor = System.Drawing.Color.Transparent;
             this.labMP3Volume.Cursor = System.Windows.Forms.Cursors.Default;
             this.labMP3Volume.ForeColor = System.Drawing.Color.Black;
-            this.labMP3Volume.Location = new System.Drawing.Point(33, 330);
+            this.labMP3Volume.Location = new System.Drawing.Point(33, 299);
             this.labMP3Volume.Name = "labMP3Volume";
             this.labMP3Volume.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labMP3Volume.Size = new System.Drawing.Size(49, 17);
             this.labMP3Volume.TabIndex = 15;
             this.labMP3Volume.Text = "MP3音量";
-            // 
-            // labMidiReset
-            // 
-            this.labMidiReset.BackColor = System.Drawing.Color.Transparent;
-            this.labMidiReset.Cursor = System.Windows.Forms.Cursors.Default;
-            this.labMidiReset.ForeColor = System.Drawing.Color.Black;
-            this.labMidiReset.Location = new System.Drawing.Point(33, 301);
-            this.labMidiReset.Name = "labMidiReset";
-            this.labMidiReset.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.labMidiReset.Size = new System.Drawing.Size(192, 17);
-            this.labMidiReset.TabIndex = 1;
-            this.labMidiReset.Text = "MIDI音源リセットの種類";
             // 
             // labMessageSpeed
             // 
@@ -446,13 +419,12 @@ namespace SRCSharpForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(346, 405);
+            this.ClientSize = new System.Drawing.Size(346, 374);
             this.Controls.Add(this.chkExtendedAnimation);
             this.Controls.Add(this.chkMoveAnimation);
             this.Controls.Add(this.chkWeaponAnimation);
             this.Controls.Add(this._txtMP3Volume);
             this.Controls.Add(this._hscMP3Volume);
-            this.Controls.Add(this.cboMidiReset);
             this.Controls.Add(this._cmdCancel);
             this.Controls.Add(this._cmdOK);
             this.Controls.Add(this.chkKeepEnemyBGM);
@@ -463,7 +435,6 @@ namespace SRCSharpForm
             this.Controls.Add(this.chkSpecialPowerAnimation);
             this.Controls.Add(this._chkBattleAnimation);
             this.Controls.Add(this.labMP3Volume);
-            this.Controls.Add(this.labMidiReset);
             this.Controls.Add(this.labMessageSpeed);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.ForeColor = System.Drawing.Color.Black;

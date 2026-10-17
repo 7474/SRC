@@ -11,7 +11,7 @@ SRCとSRC#の互換性について。
 
 - VB5 ランタイムライブラリ・PNG 用の Susie プラグイン・MP3 用の `VBMP3.dll` は要りません（[インストールの手順](インストールの手順.md)）。
 - SRC のフォルダは、SRC# の実行ファイルを置いたフォルダです。SRC#Avalonia・SRC#Web は素材が足りなくても止まらずに動きます（[SRCのインストール](SRCのインストール.md)）。
-- MIDI は、SRC#Form は Windows の MIDI 出力、SRC#Avalonia・SRC#Web は SoundFont で鳴らします（[MIDIファイルのインストール](MIDIファイルのインストール.md)）。
+- MIDI は、SRC#Form は Windows の MIDI 出力、SRC#Avalonia・SRC#Web は SoundFont で鳴らします（[MIDIファイルのインストール](MIDIファイルのインストール.md)）。MIDI 音源リセット（`MidiReset`）・DirectMusic・`MIDIPortID` の設定は使いません（[設定変更](設定変更.md)）。
 
 ### セーブファイル
 

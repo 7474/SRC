@@ -50,15 +50,25 @@ namespace SRCCore.Config.Tests
         }
 
         // ──────────────────────────────────────────────
-        // MidiResetType プロパティ
+        // MidiResetType（SRC# では使わないため廃止した。7474/SRC#483）
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void MidiResetType_CanBeSet()
+        public void Load_IgnoresRemovedMidiResetType()
         {
-            var config = new LocalFileConfig();
-            config.MidiResetType = "GM";
-            Assert.AreEqual("GM", config.MidiResetType);
+            var dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "srcconf-" + System.Guid.NewGuid().ToString("N"));
+            System.IO.Directory.CreateDirectory(dir);
+            try
+            {
+                System.IO.File.WriteAllText(System.IO.Path.Combine(dir, "srcs.json"), "{\"MidiResetType\": \"GM\", \"KeepEnemyBGM\": true}");
+                var config = new LocalFileConfig { AppPath = dir };
+                config.Load();
+                Assert.IsTrue(config.KeepEnemyBGM);
+            }
+            finally
+            {
+                System.IO.Directory.Delete(dir, true);
+            }
         }
 
         // ──────────────────────────────────────────────
