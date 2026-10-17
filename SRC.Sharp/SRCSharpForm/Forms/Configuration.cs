@@ -188,10 +188,7 @@ namespace SRCSharpForm
                 SystemConfig.KeepEnemyBGM = false;
             }
 
-            //// MIDI音源リセットの種類
-            //SystemConfig.MidiResetType = cboMidiReset.Text;
-            //SystemConfig.SetItem("Option", "MidiReset", cboMidiReset.Text);
-            //cboMidiReset.Text = argini_data21;
+            // MIDI音源リセットの種類は SRC# では使わない（Windows の MIDI 出力でそのまま鳴らす。7474/SRC#483）
 
             // MP3再生音量
             SystemConfig.SoundVolume = (int)(Sound.Player.SoundVolume * 100);
@@ -378,12 +375,6 @@ namespace SRCSharpForm
             //    chkUseDirectMusic.CheckState = CheckState.Unchecked;
             //}
 
-            //// MIDI音源リセットの種類
-            //cboMidiReset.Items.Add("None");
-            //cboMidiReset.Items.Add("GM");
-            //cboMidiReset.Items.Add("GS");
-            //cboMidiReset.Items.Add("XG");
-            //cboMidiReset.Text = SRC.MidiResetType;
 
             // MP3音量
             SavedMP3Volume = Sound.Player.SoundVolume;

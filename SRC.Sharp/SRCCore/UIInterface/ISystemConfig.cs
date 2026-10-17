@@ -30,8 +30,6 @@ namespace SRCCore
         bool MoveAnimation { get; set; }
 
         // XXX この辺はSRCのコア的にはどうでもいい
-        // MIDI音源リセットの種類
-        string MidiResetType { get; set; }
         // 画像バッファの枚数
         int ImageBufferSize { get; set; }
         // 画像バッファの最大バイト数

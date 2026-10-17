@@ -122,8 +122,6 @@ namespace SRCCore
         // 拡張データフォルダへのパス
         public string ExtDataPath => SystemConfig.ExtDataPath;
         public string ExtDataPath2 => SystemConfig.ExtDataPath2;
-        // MIDI音源リセットの種類
-        public string MidiResetType => SystemConfig.MidiResetType;
         // 自動防御モードを使うか
         public bool AutoMoveCursor => SystemConfig.AutoMoveCursor;
         // スペシャルパワーアニメを表示するか
