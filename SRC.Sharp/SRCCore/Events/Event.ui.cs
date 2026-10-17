@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using SRCCore.Exceptions;
 
 namespace SRCCore.Events
@@ -44,7 +45,7 @@ namespace SRCCore.Events
                 var afterLine = EventData[line.ID + 1];
                 buf = buf + afterLine.LineNum + ": " + afterLine.Data + Constants.vbCr + Constants.vbLf;
             }
-            SRC.LogError(buf);
+            SRC.EventLog.LogError("イベントのエラー {File}({Line}): {Message}\n{Lines}", line.File, line.LineNum, msg, buf);
             GUI.ErrorMessage(buf);
         }
     }

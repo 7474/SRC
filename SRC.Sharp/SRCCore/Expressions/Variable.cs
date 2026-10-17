@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -48,7 +49,7 @@ namespace SRCCore.Expressions
             }
             finally
             {
-                SRC.LogTrace("<", etype.ToString().Substring(0, 1), var_name, str_result, num_result.ToString());
+                SRC.ExpressionLog.TraceWithCaller("<", etype.ToString().Substring(0, 1), var_name, str_result, num_result.ToString());
             }
         }
 
@@ -245,7 +246,7 @@ namespace SRCCore.Expressions
         // 変数の値を設定
         public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
         {
-            SRC.LogTrace(">", etype.ToString().Substring(0, 1), var_name, str_value, num_value.ToString());
+            SRC.ExpressionLog.TraceWithCaller(">", etype.ToString().Substring(0, 1), var_name, str_value, num_value.ToString());
 
             VarData new_var;
             string vname = var_name;

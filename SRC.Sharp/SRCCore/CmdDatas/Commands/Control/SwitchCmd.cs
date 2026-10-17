@@ -1,5 +1,6 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Logging;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -17,7 +18,7 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var a = GetArgAsString(2);
-            SRC.LogTrace("Switch", a);
+            SRC.EventLog.TraceWithCaller("Switch", a);
             var depth = 1;
             foreach (var i in this.AfterEventIdRange())
             {

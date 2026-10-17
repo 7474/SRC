@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.VB;
 using System.Linq;
 
@@ -235,7 +236,7 @@ namespace SRCCore.Events
                 }
 
                 // ここまでたどり付けばラベルは一致している
-                SRC.LogDebug("Found", lab.Name.ToString(), lab.Data);
+                SRC.EventLog.DebugWithCaller("Found", lab.Name.ToString(), lab.Data);
 
                 // 対象と相手を入れ替えて一致した場合はグローバル変数も入れ替え
                 if (reversed)

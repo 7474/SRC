@@ -5,6 +5,7 @@
 
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SRCCore.Commands
 {
@@ -28,17 +29,20 @@ namespace SRCCore.Commands
             SRC = src;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private void LogDebug(string message = "", params string[] param)
         {
             try
             {
-                if (!SRC.Log.IsEnabled(LogLevel.Debug)) { return; }
+                if (!SRC.CommandLog.IsEnabled(LogLevel.Debug)) { return; }
                 string method = new StackFrame(1).GetMethod().Name;
-                SRC.Log.LogDebug(method
-                    + $"({CommandState},{(WaitClickMode ? "W" : "-")},{(ViewMode ? "V" : "-")})"
-                    + message
-                    + " "
-                    + string.Join(", ", param));
+                SRC.CommandLog.LogDebug("{Method}({State},{Wait},{View}) {Message} {Args}",
+                    method,
+                    CommandState,
+                    WaitClickMode ? "W" : "-",
+                    ViewMode ? "V" : "-",
+                    message,
+                    string.Join(", ", param));
             }
             catch
             {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
+using SRCCore.Logging;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -60,7 +61,7 @@ namespace SRCCore.CmdDatas
         public int Exec()
         {
             Event.Debugger?.BeforeExecute(this);
-            SRC.LogDebug(Name.ToString(), args.Select(x => x.strArg).ToArray());
+            SRC.EventLog.DebugWithCaller(Name.ToString(), args.Select(x => x.strArg).ToArray());
             try
             {
                 return ExecInternal();
@@ -72,12 +73,12 @@ namespace SRCCore.CmdDatas
             }
             catch (GUINotImplementedException)
             {
-                SRC.Log.LogWarning("GUINotImplemented: " + EventData.Data);
+                SRC.EventLog.LogWarning("未対応のコマンド {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);
                 return EventData.NextID;
             }
             catch (Exception ex)
             {
-                SRC.Log.LogError(ex, ex.Message);
+                SRC.EventLog.LogError(ex, "コマンドの実行中のエラー {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);
                 if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
                 {
                     Event.DisplayEventErrorMessage(EventData, "Talkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");

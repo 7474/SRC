@@ -1,3 +1,4 @@
+using SRCCore.Logging;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -15,7 +16,7 @@ namespace SRCCore.Expressions.Functions
         public ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             var res = InvokeInternal(SRC, etype, @params, pcount, is_term, out str_result, out num_result);
-            SRC.LogTrace("Invoked",
+            SRC.ExpressionLog.TraceWithCaller("Invoked",
                res.ToString().Substring(0, 1),
                GetType().Name + "(" + string.Join(",", Enumerable.Range(1, pcount).Select(x => @params[x])) + ")",
                str_result,

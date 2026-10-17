@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using SRCCore.Events;
 using SRCCore.VB;
 using System;
@@ -20,7 +21,7 @@ namespace SRCCore.CmdDatas.Commands
                     Expression.FormatMessage(ref x);
                     return Strings.Trim(x);
                 }));
-            SRC.LogInfo(message);
+            SRC.EventLog.LogInformation("{Message}", message);
             return EventData.NextID;
         }
     }

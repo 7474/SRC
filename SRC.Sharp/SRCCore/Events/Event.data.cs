@@ -1064,7 +1064,7 @@ namespace SRCCore.Events
             }
             catch (Exception ex)
             {
-                SRC.Log.LogError(ex, ex.Message);
+                SRC.Log.LogError(ex, "イベントデータを読み込めません {File}({Line})", fname, lineNumber);
                 // XXX
                 GUI.ErrorMessage(fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です");
                 SRC.TerminateSRC();
