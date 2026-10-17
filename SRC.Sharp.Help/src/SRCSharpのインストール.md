@@ -22,7 +22,8 @@ SRC# の入手と起動の手順です。動く環境は [動作環境](動作�
     - Windows: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
     - Linux: `SRCSharpAvalonia-linux-x64.zip`
     - macOS: `SRCSharpAvalonia-osx-arm64.zip`（Apple シリコン）・`SRCSharpAvalonia-osx-x64.zip`（Intel）。署名していないため、初回は Finder で右クリックして「開く」で起動します。
-2. `SRCSharpAvalonia <SRC のフォルダ内のシナリオ（.eve）>` を実行します。
+2. 展開した実行ファイルを SRC のフォルダにコピーします。SRC#Avalonia は、実行ファイルを置いたフォルダを SRC のフォルダとして使います。
+3. 実行ファイルを起動して、シナリオ（.eve）を選びます（[SRCの起動](SRCの起動.md)）。
 
 MIDI を鳴らすには SoundFont（.sf2）が要ります。次の順に探し、最初に見つかったものを使います。
 
@@ -36,7 +37,7 @@ MIDI を鳴らすには SoundFont（.sf2）が要ります。次の順に探し�
 1. [.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) の x64 版を入れます。
 2. [Releases](https://github.com/7474/SRC/releases) から `SRCSharpForm.zip` を取って展開します。
 3. 展開した実行ファイル（`SRCSharpForm.exe`）と DLL を、SRC のフォルダにコピーします。
-4. `SRCSharpForm.exe` を実行します。
+4. `SRCSharpForm.exe` を実行して、シナリオ（.eve）を選びます（[SRCの起動](SRCの起動.md)）。
 
 ## シナリオを作る人へ
 
