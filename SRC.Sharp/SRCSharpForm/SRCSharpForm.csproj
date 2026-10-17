@@ -17,17 +17,14 @@
 	<ItemGroup>
 		<PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
 		<PackageReference Include="NAudio" Version="2.3.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 		<PackageReference Include="System.Runtime.Caching" Version="10.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
+	  <ProjectReference Include="..\SRCLogging\SRCLogging.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>

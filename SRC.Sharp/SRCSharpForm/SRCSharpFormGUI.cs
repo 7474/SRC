@@ -1481,16 +1481,16 @@ namespace SRCSharpForm
 
         public void LogDebug(string message)
         {
-            Program.Log.LogDebug(message);
+            Program.Log.LogDebug("{Message}", message);
         }
 
         public void LogInfo(string message)
         {
-            Program.Log.LogInformation(message);
+            Program.Log.LogInformation("{Message}", message);
         }
         public void LogError(string message)
         {
-            Program.Log.LogError(message);
+            Program.Log.LogError("{Message}", message);
         }
 
         public void ChangeStatus(GuiStatus status)

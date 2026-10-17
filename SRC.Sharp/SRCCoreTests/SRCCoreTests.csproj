@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
+    <ProjectReference Include="..\SRCLogging\SRCLogging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
