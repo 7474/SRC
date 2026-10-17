@@ -108,17 +108,24 @@ namespace SRCCore.Filesystem
             switch (mode)
             {
                 case SafeOpenMode.Read: return entry.OpenRead(path);
-                case SafeOpenMode.Write: return NotifyOnClose(entry.OpenWrite(path), path);
-                case SafeOpenMode.Append: return NotifyOnClose(entry.OpenAppend(path), path);
+                case SafeOpenMode.Write: return Changed(NotifyOnClose(entry.OpenWrite(path), path));
+                case SafeOpenMode.Append: return Changed(NotifyOnClose(entry.OpenAppend(path), path));
                 default: throw new NotSupportedException();
             }
+        }
+
+        /// <summary>作った・消したファイルやフォルダを探せるよう、フォルダの一覧のキャッシュを捨てる</summary>
+        private static T Changed<T>(T result)
+        {
+            PathResolver.Invalidate();
+            return result;
         }
 
         public event Action<string> FileWritten;
 
         public Stream Create(string path)
         {
-            return NotifyOnClose(new FileStream(path, FileMode.Create), path);
+            return Changed(NotifyOnClose(new FileStream(path, FileMode.Create), path));
         }
 
         private Stream NotifyOnClose(Stream stream, string path)
@@ -137,7 +144,7 @@ namespace SRCCore.Filesystem
             var entry = safeEntrySets.FirstOrDefault(x => x.Exists(path));
             if (entry != null)
             {
-                return entry.Remove(path);
+                return Changed(entry.Remove(path));
             }
             return false;
         }
@@ -148,7 +155,7 @@ namespace SRCCore.Filesystem
             var target = safeEntrySets.FirstOrDefault(x => x.MatchRoot(path));
             if (target != null)
             {
-                return target.MkDir(path);
+                return Changed(target.MkDir(path));
             }
             return false;
         }
@@ -159,7 +166,7 @@ namespace SRCCore.Filesystem
             var target = safeEntrySets.FirstOrDefault(x => x.MatchRoot(path));
             if (target != null)
             {
-                return target.RmDir(path);
+                return Changed(target.RmDir(path));
             }
             return false;
         }

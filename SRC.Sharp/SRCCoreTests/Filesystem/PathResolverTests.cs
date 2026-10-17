@@ -50,6 +50,50 @@ namespace SRCCore.Filesystem.Tests
         }
 
         [TestMethod]
+        public void Resolve_FileCreatedLater_FoundAfterInvalidateOrExpiry()
+        {
+            // 無いファイルを探して、フォルダの一覧をキャッシュさせる
+            PathResolver.Resolve(root + @"\data\unit\Later.txt");
+            File.WriteAllText(Path.Combine(root, "data", "Unit", "Later.txt"), "x");
+            // 同じ名前（大文字・小文字も同じ）なら、キャッシュによらず見つかる
+            Assert.IsTrue(File.Exists(PathResolver.Resolve(root + @"\data\Unit\Later.txt")));
+            if (OperatingSystem.IsWindows())
+            {
+                return;
+            }
+            PathResolver.Invalidate();
+            Assert.IsTrue(File.Exists(PathResolver.Resolve(root + @"\DATA\unit\later.TXT")));
+
+            // 一覧が古くなれば、Invalidate しなくても作り直して探す
+            var lifetime = PathResolver.CacheLifetime;
+            try
+            {
+                PathResolver.Resolve(root + @"\data\unit\Later2.txt");
+                File.WriteAllText(Path.Combine(root, "data", "Unit", "Later2.txt"), "x");
+                PathResolver.CacheLifetime = TimeSpan.Zero;
+                System.Threading.Thread.Sleep(10);
+                Assert.IsTrue(File.Exists(PathResolver.Resolve(root + @"\data\unit\LATER2.txt")));
+            }
+            finally
+            {
+                PathResolver.CacheLifetime = lifetime;
+            }
+        }
+
+        [TestMethod]
+        public void LocalFileSystem_OpenSafeWrite_InvalidatesCache()
+        {
+            var fs = new LocalFileSystem();
+            fs.AddPath(root);
+            fs.AddSafePath(root);
+            Assert.IsFalse(fs.FileExists(@"data\unit\Saved.txt"));
+            using (fs.OpenSafe(SafeOpenMode.Write, root, @"data\Unit\Saved.txt"))
+            {
+            }
+            Assert.IsTrue(fs.FileExists(@"DATA\UNIT\SAVED.TXT"));
+        }
+
+        [TestMethod]
         public void LocalFileSystem_FileExists_IgnoresCaseAndSeparator()
         {
             var fs = new LocalFileSystem();

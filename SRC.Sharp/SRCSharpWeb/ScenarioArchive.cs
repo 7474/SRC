@@ -115,6 +115,8 @@ namespace SRCSharpWeb
                     entry.ExtractToFile(path, true);
                 }
             }
+            // 展開したファイルを探せるよう、フォルダの一覧のキャッシュを捨てる
+            SRCCore.Filesystem.PathResolver.Invalidate();
         }
 
         /// <summary>シナリオ（.eve）の一覧。浅い階層・名前順</summary>
