@@ -995,7 +995,7 @@ namespace SRCCore
             }
             else
             {
-                GUI.ErrorMessage("「" + fname + "」はSRC用のファイルではありません！" + Constants.vbCr + Constants.vbLf + "拡張子が「.eve」のイベントファイル、" + "または拡張子が「.src」のセーブデータファイルを指定して下さい。");
+                GUI.ErrorMessage("「" + fname + "」はSRC用のファイルではありません！" + Constants.vbCr + Constants.vbLf + "拡張子が「.eve」のイベントファイル、" + "拡張子が「.srcs」のセーブデータファイル、" + "または拡張子が「.srcq」の中断データファイルを指定して下さい。");
                 TerminateSRC();
             }
         }
