@@ -82,7 +82,8 @@ else
             <span class="address-label">@L["Address"]</span>
             <span class="address"><span class="icon icon-folder" aria-hidden="true"></span>@AddressText</span>
         </div>
-        <div class="explorer-body">
+        @* シナリオ・素材を読み込んでいる間は、ほかの操作を受け付けない（inert） *@
+        <div class="explorer-body" inert="@busy" aria-busy="@(busy ? "true" : "false")">
         <div class="listpane">
         @if (!string.IsNullOrEmpty(status))
         {
@@ -291,6 +292,9 @@ else
 
     private Mode mode = Mode.Loading;
     private string status;
+
+    /// <summary>シナリオ・素材を読み込んでいる間。一覧と作業ウィンドウの操作を受け付けない</summary>
+    private bool busy;
     /// <summary>画面のテーマ（95・xp）。srcwebStore.setTheme で html の data-theme に反映し、localStorage に保存する</summary>
     private string theme = "95";
     /// <summary>操作の種類の設定（auto・touch・mouse）。srcwebStore.setInputMode で html の data-input に反映し、localStorage に保存する</summary>
@@ -521,7 +525,7 @@ else
         archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
     }
 
-    private async Task AddArchivesAsync(InputFileChangeEventArgs e, string kind)
+    private Task AddArchivesAsync(InputFileChangeEventArgs e, string kind) => RunBusyAsync(async () =>
     {
         foreach (var file in e.GetMultipleFiles(32))
         {
@@ -534,6 +538,29 @@ else
         }
         status = null;
         await RefreshArchivesAsync();
+    });
+
+    /// <summary>
+    /// 読み込みの間、ほかの操作（別のシナリオの選択・削除・追加など）を受け付けない。
+    /// 画面が inert になる前に続けて押された分も、ここで捨てる
+    /// </summary>
+    private async Task RunBusyAsync(Func<Task> action)
+    {
+        if (busy)
+        {
+            return;
+        }
+        busy = true;
+        StateHasChanged();
+        try
+        {
+            await action();
+        }
+        finally
+        {
+            busy = false;
+            StateHasChanged();
+        }
     }
 
     private async Task DeleteArchiveAsync(StoredArchive archive)
@@ -542,14 +569,14 @@ else
         await RefreshArchivesAsync();
     }
 
-    private async Task PlayCatalogAsync(CatalogEntry entry)
+    private Task PlayCatalogAsync(CatalogEntry entry) => RunBusyAsync(async () =>
     {
         if (!await PrepareAssetsAsync(entry.Requires))
         {
             return;
         }
         await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version), entry.Eve, entry.Root);
-    }
+    });
 
     /// <summary>この大きさを超える zip は、メモリ（byte[]）に読まずにブラウザ内のファイルシステムに書いてから展開する</summary>
     private const long StreamToFileThreshold = 32L * 1024 * 1024;
@@ -672,14 +699,14 @@ else
         return true;
     }
 
-    private async Task PlayArchiveAsync(StoredArchive archive)
+    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async () =>
     {
         if (!await PrepareAssetsAsync(null))
         {
             return;
         }
         await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), false), null, null);
-    }
+    });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>
     private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root)

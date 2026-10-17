@@ -377,6 +377,26 @@ test('URL の play で登録済シナリオを直接始める', async ({ page })
   await expectAdvancesWithEnter(page);
 });
 
+test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }) => {
+  await open(page);
+  // シナリオの zip の取得を遅らせ、読み込み中の状態を確かめる
+  let release;
+  const gate = new Promise(resolve => (release = resolve));
+  await page.route('**/*.zip', async route => {
+    await gate;
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  const body = page.locator('.explorer-body');
+  await expect(body).toHaveAttribute('inert', '');
+  await expect(body).toHaveAttribute('aria-busy', 'true');
+  // inert の間は、ほかのシナリオを押しても始まらない
+  await page.getByRole('button', { name: 'sound', exact: true }).click({ force: true, timeout: 2000 }).catch(() => {});
+  release();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+});
+
 test('URL の log でログのレベルを変える', async ({ page }) => {
   const messages = [];
   page.on('console', m => messages.push({ type: m.type(), text: m.text() }));
