@@ -1,10 +1,11 @@
+using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCRender;
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices.JavaScript;
-using System.Threading;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SRCSharpWeb
@@ -79,7 +80,7 @@ namespace SRCSharpWeb
                     }
                     catch (Exception ex)
                     {
-                        Console.Error.WriteLine(ex);
+                        WebLogging.Log.LogError(ex, "画面の操作を渡せません");
                     }
                 }
             })

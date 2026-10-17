@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Localization;
-using SkiaSharp;
+using Microsoft.Extensions.Logging;
 using SRCRender;
 using SRCSharpWeb.Resources;
+using SkiaSharp;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -110,7 +111,7 @@ namespace SRCSharpWeb
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    WebLogging.Log.LogError(ex, "画面の処理に失敗しました");
                 }
             }
             try
@@ -119,7 +120,7 @@ namespace SRCSharpWeb
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex);
+                WebLogging.Log.LogError(ex, "画面を描けません");
             }
             var t = Interlocked.Exchange(ref title, null);
             if (t != null)
@@ -147,7 +148,7 @@ namespace SRCSharpWeb
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    WebLogging.Log.LogError(ex, "ダイアログを出せません");
                     result.TrySetResult(null);
                 }
             });

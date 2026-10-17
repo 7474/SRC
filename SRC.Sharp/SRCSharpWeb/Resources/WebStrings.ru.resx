@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>Журнал (консоль браузера)</value>
+  </data>
 </root>

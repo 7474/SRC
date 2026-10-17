@@ -1,4 +1,5 @@
 using MeltySynth;
+using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCSound;
 using System;
@@ -143,11 +144,11 @@ namespace SRCSharpWeb
                     }
                     catch (Exception ex)
                     {
-                        Console.Error.WriteLine("SoundFont を読み込めません: " + ex.Message);
+                        WebLogging.SoundLog.LogWarning(ex, "SoundFont を読み込めません");
                     }
                     if (soundFont == null)
                     {
-                        Console.WriteLine("SoundFont（.sf2）が無いため MIDI は鳴りません。");
+                        WebLogging.SoundLog.LogWarning("SoundFont（.sf2）が無いため MIDI は鳴りません。");
                     }
                 }
                 return soundFont;
@@ -246,7 +247,7 @@ namespace SRCSharpWeb
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("MIDI を合成できません: " + ex.Message);
+                    WebLogging.SoundLog.LogWarning(ex, "MIDI を合成できません");
                 }
                 Finished = true;
             }

@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>ยกเลิก</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>ล็อก (คอนโซลของเบราว์เซอร์)</value>
+  </data>
 </root>

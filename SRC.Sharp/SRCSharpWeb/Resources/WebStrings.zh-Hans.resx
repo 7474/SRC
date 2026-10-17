@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>日志（浏览器控制台）</value>
+  </data>
 </root>

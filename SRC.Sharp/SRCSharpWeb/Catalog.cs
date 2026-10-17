@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace SRCSharpWeb
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"{FileName} を読めません: {ex.Message}");
+                WebLogging.Log.LogWarning(ex, "{File} を読めません", FileName);
                 return new SiteConfig();
             }
         }

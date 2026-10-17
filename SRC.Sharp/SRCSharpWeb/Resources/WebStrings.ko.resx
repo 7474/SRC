@@ -201,4 +201,7 @@
   <data name="TouchCancel" xml:space="preserve">
     <value>취소</value>
   </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>로그(브라우저 콘솔)</value>
+  </data>
 </root>
