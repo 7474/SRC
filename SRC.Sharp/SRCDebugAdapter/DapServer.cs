@@ -231,6 +231,11 @@ namespace SRCDebugAdapter
             var maxSteps = launchArgs["maxSteps"]?.GetValue<int>() ?? 100000;
             // .play スクリプトがあればそれで動かし、タブの操作は受けない
             var isInteractive = (launchArgs["interactive"]?.GetValue<bool>() ?? false) && string.IsNullOrEmpty(script);
+            if (!SRCRender.Compat.SkiaFonts.HasJapaneseFont())
+            {
+                // 画面の日本語が豆腐になる。important は VS Code が通知で出す
+                Output($"日本語のフォントが見つからないため、画面の日本語が表示されません。日本語のフォントを入れるか（Ubuntu・Debian: sudo apt install fonts-noto-cjk）、環境変数 {SRCRender.Compat.SkiaFonts.FontsEnvironmentVariable} にフォントのファイルかフォルダを指定してください。", "important");
+            }
 
             runner = new ScreenScenarioRunner(appPath);
             debugger = new EventDebugger(runner.Session.SRC);

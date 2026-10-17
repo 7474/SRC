@@ -22,6 +22,29 @@ namespace SRCRenderTests
         }
 
         [TestMethod]
+        public void RegisterFile_RegistersEveryFaceOfCollection()
+        {
+            // 複数の書体を持つ .ttc（WSL の Windows の msgothic.ttc など）は、すべての書体を登録する
+            var dir = "/usr/share/fonts";
+            var ttc = System.IO.Directory.Exists(dir)
+                ? System.Linq.Enumerable.FirstOrDefault(System.IO.Directory.GetFiles(dir, "*.ttc", System.IO.SearchOption.AllDirectories))
+                : null;
+            if (ttc == null)
+            {
+                Assert.Inconclusive("フォントのコレクション（.ttc）が無い");
+            }
+            SkiaFonts.RegisterFile(ttc);
+            using (var second = SKTypeface.FromFile(ttc, 1))
+            {
+                if (second == null)
+                {
+                    Assert.Inconclusive("書体が 1 つしかない .ttc");
+                }
+                Assert.AreEqual(second.FamilyName, SkiaFonts.ResolveTypeface(second.FamilyName, SKFontStyle.Normal).FamilyName);
+            }
+        }
+
+        [TestMethod]
         public void FixedPitchFont_AlignsSpacesWithFullWidthCharacters()
         {
             using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
