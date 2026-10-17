@@ -801,7 +801,8 @@ else
         }
     }
 
-    private async Task ImportSavesAsync(InputFileChangeEventArgs e)
+    /// <summary>書き終わる前に同じセーブデータで再開しないよう、インポートの間はほかの操作を受け付けない</summary>
+    private Task ImportSavesAsync(InputFileChangeEventArgs e) => RunBusyAsync(async () =>
     {
         // シナリオ（.eve）と同じフォルダに置く
         var folder = Path.GetDirectoryName(defaultEve ?? "")?.Replace('\\', '/') ?? "";
@@ -818,7 +819,7 @@ else
             await JS.InvokeVoidAsync("srcwebStore.putSave", scenarioId, name, buffer.ToArray());
         }
         await RestoreSavesAsync();
-    }
+    });
 
     private async Task ExportSaveAsync(StoredSave save)
     {
