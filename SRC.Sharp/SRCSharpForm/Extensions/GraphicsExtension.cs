@@ -4,24 +4,41 @@ namespace SRCSharpForm.Extensions
 {
     public static class GraphicsExtension
     {
-        private static Font RefFont = SystemFonts.DefaultFont;
+        /// <summary>
+        /// 余白を付けずに測って描くための書式（元の SRC の Print と同じく、文字の幅だけ進める）。
+        /// GDI+ の既定の書式は文字列の前後に余白を付けて測り、描くときも前に余白を空けるため、
+        /// 区切って続けて描くと区切りごとに間が空く（7474/SRC#155）。末尾の空白も幅に含める。
+        /// https://learn.microsoft.com/dotnet/api/system.drawing.stringformat.generictypographic
+        /// </summary>
+        private static readonly StringFormat TypographicFormat = CreateTypographicFormat();
+
+        private static StringFormat CreateTypographicFormat()
+        {
+            var format = (StringFormat)StringFormat.GenericTypographic.Clone();
+            format.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+            return format;
+        }
+
+        /// <summary>余白を付けずに文字列の大きさを測る。<see cref="DrawStringWithoutMargin(Graphics, string, Font, Brush, float, float)"/> で描いたときの幅になる。</summary>
         public static SizeF MeasureStringWithoutRightMargin(this Graphics g, string str, Font font)
         {
-            var size = g.MeasureString(str, font);
-            if (!string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
             {
-                if (str.Length == str.TrimEnd().Length)
-                {
-                    // 終端が空白文字列ではない場合はMeasureが付与する余白をカットする
-                    // https://github.com/dotnet/runtime/blob/33033b22eccf50550451387ac8927ad1b5f17768/src/libraries/System.Drawing.Common/src/System/Drawing/Graphics.cs#L1565
-                    // 最終的には GdipMeasureString に移譲されていて余白の付与量が具体的にどうなのかサッとは分からなかった。
-                    // 雰囲気デフォルトっぽい文字サイズの 0.5em 位な感じはするのでそのくらいにしておく。
-                    // XXX 終端空白以外でも文字によって余白調整されていそう
-                    size.Width -= RefFont.Size / 2f;
-                }
-                // XXX 終端空白無視されてそう。どうすっかな。
+                return g.MeasureString(str, font);
             }
-            return size;
+            return g.MeasureString(str, font, PointF.Empty, TypographicFormat);
+        }
+
+        /// <summary>余白を付けずに文字列を描く</summary>
+        public static void DrawStringWithoutMargin(this Graphics g, string str, Font font, Brush brush, float x, float y)
+        {
+            g.DrawString(str, font, brush, x, y, TypographicFormat);
+        }
+
+        /// <summary>余白を付けずに文字列を描く</summary>
+        public static void DrawStringWithoutMargin(this Graphics g, string str, Font font, Brush brush, PointF point)
+        {
+            g.DrawString(str, font, brush, point, TypographicFormat);
         }
 
         public static void DrawBar(this Graphics g, RectangleF rect, float ratio, Brush back, Brush fore)

@@ -1632,7 +1632,7 @@ namespace SRCSharpForm
         private void PrintString(string msg, Graphics g)
         {
             g.TextRenderingHint = RenderingConfig.TextHint;
-            g.DrawString(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
+            g.DrawStringWithoutMargin(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
             currentMessagePoint = currentMessagePoint.AddX(MessageLen(msg, g, currentMessageFont).Width);
         }
 

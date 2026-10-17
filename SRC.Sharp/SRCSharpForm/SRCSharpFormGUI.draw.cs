@@ -770,7 +770,7 @@ namespace SRCSharpForm
                     ty = Y;
                 }
 
-                g.DrawString(msg, currentDrawFont, currentDrawFontColor, tx, ty);
+                g.DrawStringWithoutMargin(msg, currentDrawFont, currentDrawFontColor, tx, ty);
 
                 // 背景書き込みの場合
                 if (PermanentStringMode)
@@ -785,7 +785,7 @@ namespace SRCSharpForm
                     using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
                     {
                         gBack.TextRenderingHint = RenderingConfig.TextHint;
-                        gBack.DrawString(msg, currentDrawFont, currentDrawFontColor, tx, ty);
+                        gBack.DrawStringWithoutMargin(msg, currentDrawFont, currentDrawFontColor, tx, ty);
                     }
                 }
 
