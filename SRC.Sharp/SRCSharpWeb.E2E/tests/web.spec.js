@@ -364,6 +364,9 @@ test('遊べるシナリオ（ランタン号）を、組み込みの最小の�
   await page.waitForTimeout(3000);
   expect((await screenState(page)).dialog).toBeUndefined();
   await attachScreen(page, testInfo, 'lantern');
+  // 素材として重ねた SoundFont（TimGM6mb）で、タイトルの BGM（MIDI）を合成して鳴らす
+  await page.locator('#screen').click({ position: { x: 600, y: 450 } });
+  await expect.poll(async () => (await soundCounts(page)).pcm, { timeout: 120 * 1000 }).toBeGreaterThan(0);
 });
 
 test('URL の play で登録済シナリオを直接始める', async ({ page }) => {

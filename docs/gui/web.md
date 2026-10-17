@@ -79,7 +79,8 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 | MIDI | SRC#Avalonia と同じく [MeltySynth](https://github.com/sinshu/meltysynth)（MIT）で合成する。別のスレッドで少し先まで合成し、描画の機会ごとに約 1 秒先まで PCM を送る |
 
 - ブラウザは利用者の操作があるまで音を鳴らさないため、画面の最初のクリック・キー入力で開始する（[Autoplay policy](https://developer.chrome.com/blog/autoplay)）
-- SoundFont（.sf2）は同梱しない。シナリオのアーカイブに含まれる .sf2 を使い、無ければ素材（カタログの `requires` や利用者が追加した素材のアーカイブ）に含まれる .sf2 を使う。どちらにも無ければ MIDI は鳴らさない
+- SoundFont（.sf2）は SRC#Web の本体には同梱しない。シナリオのアーカイブに含まれる .sf2 を使い、無ければ素材（カタログの `requires` や利用者が追加した素材のアーカイブ）に含まれる .sf2 を使う。どちらにも無ければ MIDI は鳴らさない
+- 組み込みのカタログでは、遊べるシナリオ（ランタン号）が素材 `timgm6mb`（TimGM6mb、約 6 MB、GPL-2.0）を `requires` で重ね、MIDI の BGM を鳴らす。ビルド時に MuseScore のリポジトリ（Debian の `timgm6mb-soundfont` と同じ版）から取得し、ライセンス（GPL-2.0 の全文）と出典を添えて `assets/timgm6mb.zip` にする（`SRCSharpWeb.csproj`）
 - 和音 3 つの短い MIDI で、合成が実時間に間に合うことを確認した。重い曲で間に合わない場合は AOT コンパイル（`RunAOTCompilation`）を検討する
 
 ### タッチ操作
