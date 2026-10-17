@@ -140,10 +140,12 @@ jobs:
     - name: Install fonts
       run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
 
+    # PR はインタープリターで発行して待ち時間を減らす（AOT は 8 分ほどかかる）。
+    # master への push は公開するものと同じ AOT で発行し、E2E を通す（docs/gui/web.md）
     - name: Build SRC#Web
       run: |
         dotnet workload install wasm-tools
-        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
+        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web -p:RunAOTCompilation=${{ github.event_name == 'pull_request' && 'false' || 'true' }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v7

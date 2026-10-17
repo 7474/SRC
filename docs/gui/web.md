@@ -40,7 +40,21 @@ SRCCore はゲームスレッドで処理を止めて待つ（メッセージ送
 - マルチスレッドには SharedArrayBuffer が必要で、ページがクロスオリジン分離されている（`Cross-Origin-Opener-Policy: same-origin` と `Cross-Origin-Embedder-Policy: require-corp`）必要がある
 - GitHub Pages はヘッダを設定できないため、[coi-serviceworker](https://github.com/gzuidhof/coi-serviceworker)（MIT）でヘッダを付ける。初回は Service Worker を有効にするために 1 回再読み込みする。分離が有効になるまで .NET を起動しない
 - 確認済み（Chromium、ローカル）: ヘッダ付きの配信と coi-serviceworker のどちらでも、裏のスレッドが `Thread.Sleep` で待つ間もメインスレッドの画面が更新される。SkiaSharp（`SkiaSharp.NativeAssets.WebAssembly` のマルチスレッド版）で裏のスレッドから描画できる
-- ビルドには `wasm-tools` ワークロードが必要（SkiaSharp のネイティブライブラリのリンクのため）
+- ビルドには `wasm-tools` ワークロードが必要（SkiaSharp のネイティブライブラリのリンクと AOT コンパイルのため）
+
+### 速さ
+
+- 発行（publish）は既定で AOT コンパイルする（`RunAOTCompilation`、[ASP.NET Core Blazor WebAssembly build tools and ahead-of-time (AOT) compilation](https://learn.microsoft.com/aspnet/core/blazor/webassembly-build-tools-and-aot)）。試しに速く作るときは `-p:RunAOTCompilation=false` で切る
+- CI では、PR（`CI.yml` の `test-web`、SWA のプレビュー）は AOT を切って待ち時間を減らす。master への push の `test-web` は公開するものと同じ AOT で発行して E2E を通し、AOT 固有の問題をマージ直後に見つける。Pages・SWA の本番・リリースは AOT
+- ブラウザ内のファイルシステムの操作は、ゲームスレッド（Web Worker）から 1 回ごとに UI スレッドへの呼び出しになり重い。大文字・小文字を区別しないパスの解決（`PathResolver`）はフォルダの一覧をキャッシュし、無いファイルを探すたびに一覧を作り直さない
+
+ランタン号を選んでから最初の行を実行するまで（ローカル・Chromium、3 回）:
+
+| 版 | 時間 | ダウンロード（`_framework` の brotli） | 発行の時間 |
+|---|---|---|---|
+| インタープリター（以前） | 4.2〜4.7 秒 | 5.8 MB | ― |
+| パスの解決のキャッシュ | 約 3.4 秒 | 5.8 MB | ― |
+| ＋ AOT | 約 2.2 秒 | 11.0 MB | ＋約 8 分 |
 
 ### ファイル
 
@@ -81,7 +95,7 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 - ブラウザは利用者の操作があるまで音を鳴らさないため、画面の最初のクリック・キー入力で開始する（[Autoplay policy](https://developer.chrome.com/blog/autoplay)）
 - SoundFont（.sf2）は SRC#Web の本体には同梱しない。シナリオのアーカイブに含まれる .sf2 を使い、無ければ素材（カタログの `requires` や利用者が追加した素材のアーカイブ）に含まれる .sf2 を使う。どちらにも無ければ MIDI は鳴らさない
 - 組み込みのカタログでは、遊べるシナリオ（ランタン号）が素材 `timgm6mb`（TimGM6mb、約 6 MB、GPL-2.0）を `requires` で重ね、MIDI の BGM を鳴らす。ビルド時に MuseScore のリポジトリ（Debian の `timgm6mb-soundfont` と同じ版）から取得し、ライセンス（GPL-2.0 の全文）と出典を添えて `assets/timgm6mb.zip` にする（`SRCSharpWeb.csproj`）
-- 和音 3 つの短い MIDI で、合成が実時間に間に合うことを確認した。重い曲で間に合わない場合は AOT コンパイル（`RunAOTCompilation`）を検討する
+- 和音 3 つの短い MIDI で、合成が実時間に間に合うことを確認した（インタープリターで。発行は AOT コンパイルする）
 
 ### タッチ操作
 
@@ -304,6 +318,7 @@ Azure Static Web Apps（データビューアの配信先、`.github/workflows/C
 
 ```sh
 dotnet workload install wasm-tools
+# AOT コンパイルするため数分かかる。-p:RunAOTCompilation=false で切ると速い
 dotnet publish SRC.Sharp/SRCSharpWeb -c Release -o SRC.Sharp/SRCSharpWeb/bin/web
 cd SRC.Sharp/SRCSharpWeb.E2E && npm ci && npx playwright install chromium && npx playwright test
 ```

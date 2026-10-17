@@ -57,6 +57,8 @@ namespace SRCDebugAdapter
         /// <summary>読み直しを受け付ける。結果は ReloadEvent で送る</summary>
         public JsonNode Request(JsonNode args)
         {
+            // 足された・名前の変わったファイルを探せるよう、フォルダの一覧のキャッシュを捨てる
+            SRCCore.Filesystem.PathResolver.Invalidate();
             var kinds = Kinds.None;
             if (args?["events"]?.GetValue<bool>() ?? false)
             {
