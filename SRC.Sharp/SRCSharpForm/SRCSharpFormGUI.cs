@@ -1595,14 +1595,14 @@ namespace SRCSharpForm
             {
                 fsd.Filter = $"save files (*.{ext})|*.{ext}";
                 fsd.InitialDirectory = SRC.ScenarioPath;
-                fsd.FileName = string.IsNullOrEmpty(defaultName)
+                fsd.FileName = GeneralLib.ToSaveFileName(string.IsNullOrEmpty(defaultName)
                     ? Expression.GetValueAsString("セーブデータファイル名")
-                    : defaultName;
+                    : defaultName, ext);
 
                 var res = fsd.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    fname = fsd.FileName;
+                    fname = GeneralLib.ToSaveFileName(fsd.FileName, ext);
                 }
                 else
                 {

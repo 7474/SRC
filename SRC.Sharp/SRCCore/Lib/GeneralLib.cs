@@ -31,6 +31,29 @@ namespace SRCCore.Lib
         /// データ（ユニット・パイロット・非戦闘員）の画像に指定できるファイル名か。
         /// 元の SRC は .bmp だけだが、SRC# は PaintPicture コマンドなどと同じく .png・.jpg・.gif も受け付ける。
         /// </summary>
+        /// <summary>
+        /// セーブデータのファイル名の拡張子を SRC# のもの（extension。srcs・srcq）にする。
+        /// 元の SRC の拡張子 .src で終わる名前（シナリオが「セーブデータファイル名」に設定したものなど）は、
+        /// .src を置き換える。保存のダイアログが付け足した「.src.srcs」も「.srcs」にする。
+        /// </summary>
+        public static string ToSaveFileName(string fname, string extension)
+        {
+            if (string.IsNullOrEmpty(fname) || string.IsNullOrEmpty(extension))
+            {
+                return fname;
+            }
+            var ext = "." + extension.TrimStart('.');
+            if (fname.EndsWith(".src" + ext, StringComparison.OrdinalIgnoreCase))
+            {
+                return fname.Substring(0, fname.Length - (".src" + ext).Length) + ext;
+            }
+            if (fname.EndsWith(".src", StringComparison.OrdinalIgnoreCase))
+            {
+                return fname.Substring(0, fname.Length - ".src".Length) + ext;
+            }
+            return fname;
+        }
+
         public static bool IsImageFileName(string fname)
         {
             switch (Strings.LCase(Strings.Right(fname ?? "", 4)))

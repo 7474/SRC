@@ -48,10 +48,10 @@ namespace SRCCore.Coverage.Tests
             Assert.IsFalse(f.Src.IsQuickSaveDataAvailable);
             Assert.IsFalse(f.Src.IsSubStage);
             Assert.AreEqual("SRC# - test", f.Gui.GUI.MainFormText);
-            // ステージ名はファイル名部分、クリア時のセーブファイル名は「<ステージ名>までクリア.src」、次ステージはクリア
+            // ステージ名はファイル名部分、クリア時のセーブファイル名は「<ステージ名>までクリア.srcs」、次ステージはクリア
             // （VB SRC.bas StartScenario）
             Assert.AreEqual("test.eve", f.Src.Expression.GetValueAsString("ステージ"));
-            Assert.AreEqual("testまでクリア.src", f.Src.Expression.GetValueAsString("セーブデータファイル名"));
+            Assert.AreEqual("testまでクリア.srcs", f.Src.Expression.GetValueAsString("セーブデータファイル名"));
             Assert.AreEqual("", f.Src.Expression.GetValueAsString("次ステージ"));
             // メインウィンドウが非表示ならスタートイベントの前に表示する
             Assert.IsTrue(f.Called(nameof(IGUI.MainFormShow)));
