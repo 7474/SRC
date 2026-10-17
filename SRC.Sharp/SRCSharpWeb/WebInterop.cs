@@ -150,6 +150,13 @@ namespace SRCSharpWeb
                 json["mapX"] = gui.MapX;
                 json["mapY"] = gui.MapY;
                 json["locked"] = gui.IsGUILocked;
+                // ステータスウィンドウに出しているユニットと、キー操作のマップカーソルのマス
+                json["statusUnit"] = gui.DisplayedUnit?.Name;
+                var cursor = gui.State.MapCursor;
+                if (cursor != null)
+                {
+                    json["cursor"] = new JsonArray(gui.PixelToMapX(cursor.Value.Left), gui.PixelToMapY(cursor.Value.Top));
+                }
             }
             var state = gui?.State;
             var list = state?.List;

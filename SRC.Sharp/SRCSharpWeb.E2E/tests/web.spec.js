@@ -397,6 +397,42 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
   await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
 });
 
+test('仮想パッドで動かしたマップカーソルのマスのユニットをステータスに出す', async ({ page }, testInfo) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.evaluate(() => globalThis.srcwebToggleVirtualPad?.());
+  await expect(page.locator('#virtual-pad')).toBeVisible();
+  const pad = code => page.locator(`#virtual-pad .vkey[data-code="${code}"]`);
+  // 「戦闘開始」を A（Enter）で送り、味方フェイズのマップで → を押してマップカーソルを出す
+  await expect.poll(async () => {
+    const s = await screenState(page);
+    if (s.cursor) {
+      return true;
+    }
+    await pad(s.message !== undefined ? 13 : 39).click();
+    return false;
+  }, { intervals: [500, 1000] }).toBe(true);
+  /** 仮想パッドの矢印でマップカーソルを (x, y) に動かす */
+  const moveTo = async (x, y) => {
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      const [cx, cy] = s.cursor ?? [0, 0];
+      if (s.cursor && cx === x && cy === y) {
+        return true;
+      }
+      const code = !s.cursor ? 39 : cx < x ? 39 : cx > x ? 37 : cy < y ? 40 : 38;
+      await pad(code).click();
+      return false;
+    }, { intervals: [200, 300, 500] }).toBe(true);
+  };
+  await moveTo(6, 6);
+  await expect.poll(async () => (await screenState(page)).statusUnit).toBe('テスト機');
+  await moveTo(12, 6);
+  await expect.poll(async () => (await screenState(page)).statusUnit).toBe('標的機');
+  await attachScreen(page, testInfo, 'virtual-pad-status');
+});
+
 test('URL の log でログのレベルを変える', async ({ page }) => {
   const messages = [];
   page.on('console', m => messages.push({ type: m.type(), text: m.text() }));
