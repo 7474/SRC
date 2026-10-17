@@ -26,6 +26,7 @@ namespace SRCLogging
         private readonly SwitchableSink fileSink = new SwitchableSink();
         private readonly Serilog.Core.Logger serilog;
         private LogSettings config = LogSettings.Empty;
+        private LogSettings overrides = LogSettings.Empty;
         private string currentFilePath;
         private string currentFileKey;
 
@@ -79,7 +80,7 @@ namespace SRCLogging
         public ILoggerFactory LoggerFactory { get; }
 
         /// <summary>レベルが引数・環境変数で指定されていて、設定ファイル・設定画面では変わらないか</summary>
-        public bool LevelFixed => commandLine.Level.HasValue || environment.Level.HasValue;
+        public bool LevelFixed => overrides.Level.HasValue || commandLine.Level.HasValue || environment.Level.HasValue;
 
         /// <summary>ログのファイルを出しているフォルダ。ファイルに出していなければ null</summary>
         public string FileDirectory => currentFilePath == null ? null : Path.GetDirectoryName(currentFilePath);
@@ -88,7 +89,21 @@ namespace SRCLogging
         public void ApplyConfig(ISystemConfig systemConfig)
         {
             config = LogSettings.FromConfig(systemConfig);
-            Options.Update(fileByDefault, commandLine, environment, config);
+            Update();
+        }
+
+        /// <summary>
+        /// 引数より優先するレベルを指定する（VS Code 拡張の設定・launch.json の logLevel など、ホストが受け取ったもの）。null で取り消す
+        /// </summary>
+        public void OverrideLevel(LogLevel? level)
+        {
+            overrides = new LogSettings { Level = level };
+            Update();
+        }
+
+        private void Update()
+        {
+            Options.Update(fileByDefault, overrides, commandLine, environment, config);
             UpdateFileSink();
         }
 

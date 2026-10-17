@@ -1,5 +1,10 @@
 # Change Log
 
+## Unreleased
+
+- Add `srcsharp.logLevel` (also on the settings page) and the `logLevel` launch attribute. The language server's log goes to the "SRC#" output panel and the debugger's log to the debug console (warnings and errors as stderr), both also to log files. Requires a srcsharp that supports logging (0.5.3 or later).
+- The "SRC#" output panel is now a log output channel (levels and timestamps, filtered with "Developer: Set Log Level...").
+
 ## 0.5.2
 
 - The version now follows the SRC# library version (srcsharp 0.5.2).

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SkiaSharp;
 using SRCCore;
 using SRCPlay;
@@ -34,14 +36,16 @@ namespace SRCDebugAdapter
         private readonly ScreenScenarioRunner runner;
         private readonly Func<string, JsonNode, Task> sendEvent;
         private readonly Func<bool> isPaused;
+        private readonly ILogger log;
         private readonly BlockingCollection<Action<ScreenGUI>> inputs = new BlockingCollection<Action<ScreenGUI>>();
         private readonly ConcurrentDictionary<int, TaskCompletionSource<string>> prompts = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         private readonly CancellationTokenSource stop = new CancellationTokenSource();
         private int promptId;
         private int sentFrame = -1;
 
-        public InteractiveScreen(ScreenScenarioRunner runner, Func<string, JsonNode, Task> sendEvent, Func<bool> isPaused)
+        public InteractiveScreen(ScreenScenarioRunner runner, Func<string, JsonNode, Task> sendEvent, Func<bool> isPaused, ILogger log = null)
         {
+            this.log = log ?? NullLogger.Instance;
             this.runner = runner;
             this.sendEvent = sendEvent;
             this.isPaused = isPaused;
@@ -75,7 +79,7 @@ namespace SRCDebugAdapter
                     }
                     catch (Exception ex)
                     {
-                        Console.Error.WriteLine(ex);
+                        log.LogError(ex, "画面の操作を渡せません");
                     }
                 }
             }
@@ -95,7 +99,7 @@ namespace SRCDebugAdapter
                 catch (Exception ex)
                 {
                     // 送れなくなった（クライアントが切れたなど）。このスレッドの例外はプロセスを落とすため、ここで止める
-                    Console.Error.WriteLine(ex);
+                    log.LogWarning(ex, "画面を送れません");
                     return;
                 }
                 stop.Token.WaitHandle.WaitOne(FrameInterval);

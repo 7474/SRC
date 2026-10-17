@@ -1,4 +1,8 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SRCAuthoring.Protocol;
+using SRCCore.Logging;
+using SRCLogging;
 using SRCPlay;
 using System;
 using System.Collections.Generic;
@@ -28,6 +32,8 @@ namespace SRCDebugAdapter
         public const string ScreenCommand = "srcsharpScreen";
 
         private readonly MessageStream stream;
+        private readonly LogHost logHost;
+        private readonly ILogger log;
         private int seq;
         private JsonNode launchArgs;
         private ScreenScenarioRunner runner;
@@ -39,9 +45,22 @@ namespace SRCDebugAdapter
         private volatile bool disconnected;
         private volatile bool sessionEnded;
 
-        public DapServer(Stream input, Stream output)
+        /// <param name="logHost">ログの構成。ログは output イベントでデバッグコンソールにも送る（警告以上は stderr）</param>
+        public DapServer(Stream input, Stream output, LogHost logHost = null)
         {
             stream = new MessageStream(input, output);
+            this.logHost = logHost;
+            if (logHost != null)
+            {
+                logHost.LoggerFactory.AddProvider(new DelegateLoggerProvider((category, level, message, ex) =>
+                    Output($"[{DelegateLoggerProvider.ShortLevel(level)}] {category}: {message}" + (ex == null ? "" : "\n" + ex),
+                        level >= LogLevel.Warning ? "stderr" : "console")));
+                log = logHost.LoggerFactory.CreateLogger("SRCSharp.Dap");
+            }
+            else
+            {
+                log = NullLogger.Instance;
+            }
         }
 
         public async Task<int> RunAsync(CancellationToken cancellationToken = default)
@@ -70,6 +89,7 @@ namespace SRCDebugAdapter
                 }
                 catch (Exception ex)
                 {
+                    log.LogError(ex, "{Command} を処理できません", command);
                     await RespondAsync(requestSeq, command, false, null, ex.Message);
                 }
             }
@@ -237,7 +257,15 @@ namespace SRCDebugAdapter
                 Output($"日本語のフォントが見つからないため、画面の日本語が表示されません。日本語のフォントを入れるか（Ubuntu・Debian: sudo apt install fonts-noto-cjk）、環境変数 {SRCRender.Compat.SkiaFonts.FontsEnvironmentVariable} にフォントのファイルかフォルダを指定してください。", "important");
             }
 
-            runner = new ScreenScenarioRunner(appPath);
+            // ログのレベル（launch.json の logLevel、VS Code 拡張の srcsharp.logLevel）
+            var logLevel = LogSettings.ParseLevel(launchArgs["logLevel"]?.GetValue<string>());
+            if (logLevel.HasValue)
+            {
+                logHost?.OverrideLevel(logLevel);
+            }
+            runner = new ScreenScenarioRunner(appPath, logHost?.LoggerFactory);
+            logHost?.ApplyConfig(runner.Session.SRC.SystemConfig);
+            log.LogInformation("デバッグを開始 {Program} SRC のフォルダ: {AppPath}", program, appPath);
             debugger = new EventDebugger(runner.Session.SRC);
             foreach (var kv in pendingBreakpoints)
             {
@@ -269,7 +297,7 @@ namespace SRCDebugAdapter
             reloader = new HotReloader(runner, SendEventAsync);
             if (isInteractive)
             {
-                interactive = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused);
+                interactive = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused, log);
                 interactive.Start();
             }
 

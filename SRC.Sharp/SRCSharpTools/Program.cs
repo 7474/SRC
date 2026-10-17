@@ -54,9 +54,20 @@ namespace SRCSharpTools
                 case "balance":
                     return Balance(positional, options);
                 case "lsp":
-                    return await new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput()).RunAsync();
+                    // stdout はプロトコルに使うため、ログはファイルとプロトコルのログ通知に出す
+                    using (var logHost = CreateLogHost("lsp", LogOutputs.None))
+                    {
+                        var server = new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost.LoggerFactory, logHost.OverrideLevel);
+                        logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp lsp", args);
+                        return await server.RunAsync();
+                    }
                 case "dap":
-                    return await new DapServer(Console.OpenStandardInput(), Console.OpenStandardOutput()).RunAsync();
+                    using (var logHost = CreateLogHost("dap", LogOutputs.None))
+                    {
+                        var server = new DapServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost);
+                        logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp dap", args);
+                        return await server.RunAsync();
+                    }
                 default:
                     Console.Error.WriteLine(Strings.UnknownCommand(args[0]));
                     Console.Error.Write(Strings.Usage);

@@ -107,6 +107,13 @@
           "type": "boolean",
           "default": true,
           "description": "SRC# のデバッグを始めたら画面のビューを開く"
+        },
+        "srcsharp.logLevel": {
+          "type": "string",
+          "default": "Information",
+          "enum": ["Trace", "Debug", "Information", "Warning", "Error"],
+          "enumDescriptions": ["変数・関数の呼び出しまで", "コマンドの実行まで", "既定", "警告以上", "エラーだけ"],
+          "description": "Language Server とデバッガのログのレベル。ログは出力パネルの「SRC#」・デバッグコンソールと、ログのファイルに出る"
         }
       }
     },
@@ -127,7 +134,8 @@
               "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
               "interactive": { "type": "boolean", "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）", "default": true },
               "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
-              "maxSteps": { "type": "number", "description": "自動で進める操作の上限", "default": 100000 }
+              "maxSteps": { "type": "number", "description": "自動で進める操作の上限", "default": 100000 },
+              "logLevel": { "type": "string", "enum": ["Trace", "Debug", "Information", "Warning", "Error"], "description": "ログのレベル（無ければ設定の srcsharp.logLevel）。ログはデバッグコンソールとファイルに出る" }
             }
           }
         },
