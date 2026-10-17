@@ -51,7 +51,9 @@ namespace SRCLogging
             }
             if (outputs.HasFlag(LogOutputs.StandardError))
             {
-                conf = conf.WriteTo.Console(outputTemplate: OutputTemplate, standardErrorFromLevel: LogEventLevel.Verbose);
+                // CLI の出力に混ざるため、レベルを引数・環境変数で指定しない限り警告以上だけにする
+                var level = this.commandLine.Level.HasValue || this.environment.Level.HasValue ? LogEventLevel.Verbose : LogEventLevel.Warning;
+                conf = conf.WriteTo.Console(outputTemplate: OutputTemplate, standardErrorFromLevel: LogEventLevel.Verbose, restrictedToMinimumLevel: level);
             }
             serilog = conf.CreateLogger();
             UpdateFileSink();
@@ -98,10 +100,10 @@ namespace SRCLogging
                 appTitle,
                 version,
                 RuntimeInformation.OSDescription,
-                RuntimeInformation.OSArchitecture,
+                RuntimeInformation.OSArchitecture.ToString(),
                 RuntimeInformation.FrameworkDescription,
                 string.Join(" ", args ?? Array.Empty<string>()));
-            log.LogInformation("ログ レベル: {Level} ファイル: {File}", Options.Level, FileDirectory ?? "なし");
+            log.LogInformation("ログ レベル: {Level} ファイル: {File}", Options.Level.ToString(), FileDirectory ?? "なし");
         }
 
         private void UpdateFileSink()

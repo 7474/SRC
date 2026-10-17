@@ -31,6 +31,10 @@ Kullanım:
 Ortak seçenekler:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       Görüntüleme dili. SRCSHARP_LANG ortam değişkeniyle de ayarlanabilir (seçenek önceliklidir). Varsayılan ja; auto işletim sistemi ayarını kullanır
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      Günlük düzeyi (play, lsp, dap). -v Debug, -vv Trace'tir. SRCSHARP_LOG_LEVEL ile de ayarlanabilir. Varsayılan Information
+  --log-dir &lt;klasör&gt;, --no-log-file
+      Günlük dosyalarının klasörü. --no-log-file dosyaya yazmayı kapatır. SRCSHARP_LOG_DIR ve SRCSHARP_LOG_FILE (On|Off) ile de ayarlanabilir
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

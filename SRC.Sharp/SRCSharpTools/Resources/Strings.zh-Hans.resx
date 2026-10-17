@@ -31,6 +31,10 @@
 通用选项:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       显示语言。也可通过环境变量 SRCSHARP_LANG 指定（选项优先）。默认为 ja，auto 跟随系统设置
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      日志级别（play、lsp、dap）。-v 为 Debug，-vv 为 Trace。也可通过环境变量 SRCSHARP_LOG_LEVEL 指定。默认为 Information
+  --log-dir &lt;文件夹&gt;, --no-log-file
+      日志文件的文件夹。--no-log-file 不写入文件。也可通过环境变量 SRCSHARP_LOG_DIR、SRCSHARP_LOG_FILE（On|Off）指定
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

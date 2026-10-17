@@ -31,6 +31,10 @@
 共通選項:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       顯示語言。也可透過環境變數 SRCSHARP_LANG 指定（選項優先）。預設為 ja，auto 依循作業系統設定
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      記錄層級（play、lsp、dap）。-v 為 Debug，-vv 為 Trace。也可透過環境變數 SRCSHARP_LOG_LEVEL 指定。預設為 Information
+  --log-dir &lt;資料夾&gt;, --no-log-file
+      記錄檔的資料夾。--no-log-file 不寫入檔案。也可透過環境變數 SRCSHARP_LOG_DIR、SRCSHARP_LOG_FILE（On|Off）指定
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

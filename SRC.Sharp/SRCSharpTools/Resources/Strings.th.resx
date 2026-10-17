@@ -31,6 +31,10 @@
 ตัวเลือกทั่วไป:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
       ภาษาที่แสดง ตั้งค่าผ่านตัวแปรสภาพแวดล้อม SRCSHARP_LANG ได้เช่นกัน (ตัวเลือกมีลำดับความสำคัญสูงกว่า) ค่าเริ่มต้นคือ ja ส่วน auto จะใช้ตามการตั้งค่าของ OS
+  --log-level &lt;Trace|Debug|Information|Warning|Error&gt;, -v, -vv
+      ระดับของล็อก (play, lsp, dap) -v คือ Debug, -vv คือ Trace ตั้งค่าผ่าน SRCSHARP_LOG_LEVEL ได้เช่นกัน ค่าเริ่มต้นคือ Information
+  --log-dir &lt;โฟลเดอร์&gt;, --no-log-file
+      โฟลเดอร์ของไฟล์ล็อก --no-log-file จะไม่เขียนไฟล์ ตั้งค่าผ่าน SRCSHARP_LOG_DIR และ SRCSHARP_LOG_FILE (On|Off) ได้เช่นกัน
 </value>
   </data>
   <data name="UnknownCommand" xml:space="preserve">

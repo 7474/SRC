@@ -2,7 +2,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.Themes.Fluent;
+using Microsoft.Extensions.Logging;
 using SRCCore.Config;
+using SRCCore.Logging;
 using SRCRender;
 using SRCSound;
 using System.IO;
@@ -50,6 +52,8 @@ namespace SRCSharpAvalonia
                 // 設定ファイルが無い場合は既定（日本語）
             }
             UiLanguage.Apply(config);
+            // ログの設定（Log セクション）
+            Program.LogHost?.ApplyConfig(config);
         }
 
         private async Task StartAsync(MainWindow window, string[] args)
@@ -75,10 +79,12 @@ namespace SRCSharpAvalonia
             }
 
             // 音声は OpenAL で再生する。MIDI の SoundFont は設定（Option/SoundFont）・環境変数・SRC のフォルダなどから探す
+            var loggerFactory = Program.LogHost?.LoggerFactory;
             var player = new OpenALSoundPlayer(() => SoundFontLocator.Load(
                 session?.SRC.AppPath,
-                session?.SRC.SystemConfig.GetItem("Option", "SoundFont")));
-            session = new ScreenSession(window, soundPlayer: player);
+                session?.SRC.SystemConfig.GetItem("Option", "SoundFont")),
+                loggerFactory?.CreateLogger(LogCategories.Sound));
+            session = new ScreenSession(window, soundPlayer: player, loggerFactory: loggerFactory);
             window.View.GUI = session.GUI;
             window.View.Focus();
             session.Start(file);
