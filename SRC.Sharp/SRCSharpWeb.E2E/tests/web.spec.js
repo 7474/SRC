@@ -401,8 +401,14 @@ test('仮想パッドで動かしたマップカーソルのマスのユニッ�
   await open(page);
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
-  await page.evaluate(() => globalThis.srcwebToggleVirtualPad?.());
-  await expect(page.locator('#virtual-pad')).toBeVisible();
+  // 仮想パッドを組み立て終わってから（切り替えの関数ができてから）出す。出ていなければ切り替える
+  await expect.poll(async () => {
+    if (await page.locator('#virtual-pad').isVisible()) {
+      return true;
+    }
+    await page.evaluate(() => globalThis.srcwebToggleVirtualPad?.());
+    return false;
+  }, { intervals: [500, 1000] }).toBe(true);
   const pad = code => page.locator(`#virtual-pad .vkey[data-code="${code}"]`);
   // 「戦闘開始」を A（Enter）で送り、味方フェイズのマップで → を押してマップカーソルを出す
   await expect.poll(async () => {

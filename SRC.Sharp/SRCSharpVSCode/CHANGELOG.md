@@ -1,11 +1,16 @@
 # Change Log
 
-## Unreleased
+## 0.5.3
 
+0.5.2 was not published to the Marketplace. This release includes its changes.
+
+- The version now follows the SRC# library version (srcsharp 0.5.3).
+- Add the extension icon and change the activity bar icon to "SRC#".
+- When srcsharp runs in WSL, the game screen uses the Windows Japanese fonts (ＭＳ ゴシック・ＭＳ 明朝). When no Japanese font is found, the debugger shows a notice (srcsharp 0.5.3).
 - Add `srcsharp.logLevel` (also on the settings page) and the `logLevel` launch attribute. The language server's log goes to the "SRC#" output panel and the debugger's log to the debug console (warnings and errors as stderr), both also to log files. Requires a srcsharp that supports logging (0.5.3 or later).
 - The "SRC#" output panel is now a log output channel (levels and timestamps, filtered with "Developer: Set Log Level...").
 
-## 0.5.2
+## 0.5.2 (not published)
 
 - The version now follows the SRC# library version (srcsharp 0.5.2).
 - Add the extension icon and change the activity bar icon to "SRC#".
