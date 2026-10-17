@@ -11,10 +11,10 @@ toc:
         url: /SRCとの互換性
   - title: インストールとアンインストール
     subfolderitems:
+      - page: SRC#のインストール
+        url: /SRCSharpのインストール
       - page: インストールの手順
         url: /インストールの手順
-      - page: ランタイムライブラリのインストール
-        url: /ランタイムライブラリのインストール
       - page: SRCのインストール
         url: /SRCのインストール
       - page: サンプルシナリオをプレイする
@@ -749,3 +749,7 @@ toc:
         url: /サポート情報
       - page: スペシャルサンクス
         url: /スペシャルサンクス
+  - title: 元の SRC について
+    subfolderitems:
+      - page: ランタイムライブラリのインストール
+        url: /ランタイムライブラリのインストール
