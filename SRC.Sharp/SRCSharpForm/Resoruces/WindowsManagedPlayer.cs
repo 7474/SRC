@@ -1,5 +1,6 @@
+using Melanchall.DryWetMidi.Common;
 using Melanchall.DryWetMidi.Core;
-using Melanchall.DryWetMidi.Devices;
+using Melanchall.DryWetMidi.Multimedia;
 using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -76,14 +77,7 @@ namespace SRCSharpForm.Resoruces
                         Program.Log.LogWarning(ex, ex.Message);
                     }
                 }
-                try
-                {
-                    midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
-                }
-                catch (Exception ex)
-                {
-                    Program.Log.LogWarning(ex, ex.Message);
-                }
+                // MIDI は、これから鳴らすノートの強さ（ベロシティ）に反映する（ScaleVelocity）
             }
         }
 
@@ -175,7 +169,9 @@ namespace SRCSharpForm.Resoruces
                 midiOutput = OutputDevice.GetAll().First();
                 midiPlayback = midiFile.GetPlayback(midiOutput);
                 midiPlayback.Loop = mode.HasFlag(PlaySoundMode.Repeat);
-                midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
+                // DryWetMidi 6 以降は出力デバイスの音量（midiOutSetVolume）を設定できないため、ノートの強さで音量を付ける
+                midiPlayback.NoteCallback = (data, rawTime, rawLength, playbackTime) =>
+                    new NotePlaybackData(data.NoteNumber, ScaleVelocity(data.Velocity, volume), data.OffVelocity, data.Channel);
                 midiPlayback.Start();
                 // XXX いい感じに無音シークしたい。
                 //Task.Delay(100).Wait();
@@ -186,6 +182,17 @@ namespace SRCSharpForm.Resoruces
                 ReleaseMidiPlayback();
                 throw;
             }
+        }
+
+        /// <summary>ノートの強さに音量（0〜1）を掛ける。鳴っていたノートは音量 0 でも 1 にとどめる（強さ 0 はノートオフになるため、音量 0 のときだけ 0）</summary>
+        internal static SevenBitNumber ScaleVelocity(SevenBitNumber velocity, float volume)
+        {
+            if (volume <= 0)
+            {
+                return (SevenBitNumber)0;
+            }
+            var scaled = (int)Math.Round(velocity * Math.Min(volume, 1f));
+            return (SevenBitNumber)Math.Clamp(velocity > 0 ? Math.Max(scaled, 1) : 0, 0, 127);
         }
 
         private void ReleaseMidiPlayback()
