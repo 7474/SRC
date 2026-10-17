@@ -102,7 +102,7 @@ namespace SRCCore.E2E.Tests
             Assert.IsInstanceOfType(error, typeof(HeadlessTerminatedException), error?.ToString());
 
             Assert.AreEqual("test.eve", src.Expression.GetValueAsString("確認ステージ"));
-            Assert.AreEqual("testまでクリア.src", src.Expression.GetValueAsString("セーブデータファイル名"));
+            Assert.AreEqual("testまでクリア.srcs", src.Expression.GetValueAsString("セーブデータファイル名"));
             Assert.AreEqual("", src.Expression.GetValueAsString("次ステージ"));
             Assert.IsTrue(src.Expression.IsGlobalVariableDefined("次ステージ"));
             Assert.IsTrue(src.Expression.IsGlobalVariableDefined("セーブデータファイル名"));

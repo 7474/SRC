@@ -78,7 +78,7 @@ namespace SRCCore
                     Expression.DefineGlobalVariable("セーブデータファイル名");
                 }
 
-                Expression.SetVariableAsString("セーブデータファイル名", Strings.Left(stageFileName, Math.Max(0, Strings.Len(stageFileName) - 4)) + "までクリア.src");
+                Expression.SetVariableAsString("セーブデータファイル名", Strings.Left(stageFileName, Math.Max(0, Strings.Len(stageFileName) - 4)) + "までクリア.srcs");
 
                 // ウィンドウのタイトルにシナリオファイル名を表示
                 GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(ScenarioFileName);

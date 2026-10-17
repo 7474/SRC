@@ -1319,13 +1319,13 @@ namespace SRCRender
                 {
                     Title = Resources.Strings.SaveDialogTitle,
                     InitialDirectory = src.ScenarioPath,
-                    InitialFile = string.IsNullOrEmpty(defaultName)
+                    InitialFile = GeneralLib.ToSaveFileName(string.IsNullOrEmpty(defaultName)
                         ? Expression.GetValueAsString("セーブデータファイル名")
-                        : defaultName,
+                        : defaultName, ext),
                     FileType = "save files",
                     FileExtension = ext,
                 }));
-                return string.IsNullOrEmpty(path) ? null : src.FileSystem.Create(path);
+                return string.IsNullOrEmpty(path) ? null : src.FileSystem.Create(GeneralLib.ToSaveFileName(path, ext));
             }
             // 保存先を選ぶ手段が無い場合はシナリオフォルダへ保存する
             var name = defaultName ?? (saveKind == SRCSaveKind.Suspend ? "_suspend.srcq" : "_save.srcs");
