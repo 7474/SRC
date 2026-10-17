@@ -77,7 +77,21 @@ namespace SRCSharpAvalonia
 
         public override void Render(DrawingContext context)
         {
-            context.DrawImage(bitmap, new Rect(0, 0, ScreenLayout.Width, ScreenLayout.Height));
+            var scaling = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1.0;
+            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling) }))
+            {
+                context.DrawImage(bitmap, new Rect(0, 0, ScreenLayout.Width, ScreenLayout.Height));
+            }
+        }
+
+        /// <summary>
+        /// 画面の拡大の方法。実際の画素で 1 倍以上に拡大して表示するとき（表示倍率 100%・125%・150% など）は、
+        /// 補間せずドットのまま拡大する。縮小するときは補間する（補間しないと文字の線が抜ける）。7474/SRC#1148
+        /// </summary>
+        /// <param name="renderScaling">表示倍率（TopLevel.RenderScaling）</param>
+        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling)
+        {
+            return renderScaling >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
