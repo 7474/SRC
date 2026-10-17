@@ -20,6 +20,10 @@
          SRCCore.EmbeddedCultureResourceManager が埋め込んだ訳を引く -->
     <NeutralLanguage>ja</NeutralLanguage>
     <SatelliteResourceLanguages>ja</SatelliteResourceLanguages>
+    <!-- 発行（publish）は既定で AOT コンパイルする。インタープリターより速い（ランタン号の読み込みで約 35%）が、
+         ダウンロードは brotli で約 5.8 MB → 約 11 MB に増え、発行に 8 分ほど余計にかかる。
+         試しに速く作るときは -p:RunAOTCompilation=false で切る（docs/gui/web.md）。wasm-tools のワークロードが要る -->
+    <RunAOTCompilation Condition="'$(RunAOTCompilation)' == ''">true</RunAOTCompilation>
     <!-- スレッドを使うが、プラットフォーム互換性アナライザーはマルチスレッドの WebAssembly を考慮しない -->
     <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
