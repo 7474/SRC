@@ -300,8 +300,92 @@ namespace SRCRender.Compat
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<(string, int, int, int), SKTypeface> typefaceCache
             = new System.Collections.Concurrent.ConcurrentDictionary<(string, int, int, int), SKTypeface>();
 
+        /// <summary>追加で読み込むフォントのファイル・フォルダ（パスの区切り文字で区切る）を指定する環境変数</summary>
+        public const string FontsEnvironmentVariable = "SRCSHARP_FONTS";
+        /// <summary>WSL から見た Windows のフォントのフォルダ</summary>
+        public const string WslWindowsFontsDirectory = "/mnt/c/Windows/Fonts";
+
+        // Windows のフォントの英語名と、SRC のデータ・設定で使う日本語名
+        private static readonly (string English, string Japanese)[] windowsFontNames =
+        {
+            ("MS Gothic", "ＭＳ ゴシック"),
+            ("MS PGothic", "ＭＳ Ｐゴシック"),
+            ("MS UI Gothic", "MS UI Gothic"),
+            ("MS Mincho", "ＭＳ 明朝"),
+            ("MS PMincho", "ＭＳ Ｐ明朝"),
+        };
+        private static readonly string[] windowsFontFiles = { "msgothic.ttc", "msmincho.ttc" };
+        private static int extraFontsLoaded;
+
+        /// <summary>
+        /// 追加のフォントを読み込む（初めて書体を引くときに一度だけ）。
+        /// - 環境変数 SRCSHARP_FONTS のファイル・フォルダ
+        /// - WSL（Linux から /mnt/c/Windows/Fonts が見える）では、Windows の ＭＳ ゴシック・ＭＳ 明朝。
+        ///   WSL の Linux には日本語のフォントが入っていないことが多く、日本語が豆腐になるため
+        /// </summary>
+        private static void EnsureExtraFontsLoaded()
+        {
+            if (System.Threading.Interlocked.Exchange(ref extraFontsLoaded, 1) == 1)
+            {
+                return;
+            }
+            try
+            {
+                var paths = new System.Collections.Generic.List<string>();
+                var env = Environment.GetEnvironmentVariable(FontsEnvironmentVariable);
+                if (!string.IsNullOrEmpty(env))
+                {
+                    paths.AddRange(env.Split(System.IO.Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries));
+                }
+                if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux) && System.IO.Directory.Exists(WslWindowsFontsDirectory))
+                {
+                    paths.AddRange(windowsFontFiles.Select(x => System.IO.Path.Combine(WslWindowsFontsDirectory, x)));
+                }
+                foreach (var path in paths)
+                {
+                    var files = System.IO.Directory.Exists(path)
+                        ? System.IO.Directory.GetFiles(path).Where(x => new[] { ".ttf", ".ttc", ".otf", ".otc" }.Contains(System.IO.Path.GetExtension(x).ToLowerInvariant()))
+                        : new[] { path };
+                    foreach (var file in files.Where(System.IO.File.Exists))
+                    {
+                        RegisterFile(file);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        }
+
+        /// <summary>フォントのファイル（.ttc はすべての書体）を登録する。Windows の ＭＳ 系は日本語名でも引けるようにする</summary>
+        public static void RegisterFile(string path)
+        {
+            for (var index = 0; ; index++)
+            {
+                var typeface = SKTypeface.FromFile(path, index);
+                if (typeface == null)
+                {
+                    break;
+                }
+                registered.TryAdd(typeface.FamilyName, typeface);
+                foreach (var (english, japanese) in windowsFontNames.Where(x => x.English == typeface.FamilyName))
+                {
+                    registered.TryAdd(japanese, typeface);
+                }
+            }
+            typefaceCache.Clear();
+        }
+
+        /// <summary>日本語を描ける書体があるか（無いと日本語が豆腐になる）</summary>
+        public static bool HasJapaneseFont()
+        {
+            return ResolveTypeface("", SKFontStyle.Normal).ContainsGlyph('あ');
+        }
+
         public static SKTypeface ResolveTypeface(string name, SKFontStyle style)
         {
+            EnsureExtraFontsLoaded();
             name = name ?? "";
             return typefaceCache.GetOrAdd((name, style.Weight, style.Width, (int)style.Slant), _ => FindTypeface(name, style));
         }
@@ -327,7 +411,21 @@ namespace SRCRender.Compat
                     return candidate;
                 }
             }
-            return SKFontManager.Default.MatchCharacter(null, style, null, 'あ') ?? registered.Values.FirstOrDefault() ?? SKTypeface.Default;
+            // 登録した書体（WSL の Windows のフォントなど）から、明朝・ゴシック・等幅の別に合うものを選ぶ
+            var preferred = name.Contains("明朝") || name.Contains("Mincho")
+                ? new[] { "ＭＳ Ｐ明朝", "ＭＳ 明朝" }
+                : IsFixedPitchName(name) ? new[] { "ＭＳ ゴシック" } : new[] { "ＭＳ Ｐゴシック", "ＭＳ ゴシック" };
+            foreach (var family in preferred)
+            {
+                if (registered.TryGetValue(family, out var own))
+                {
+                    return own;
+                }
+            }
+            return SKFontManager.Default.MatchCharacter(null, style, null, 'あ')
+                ?? registered.Values.FirstOrDefault(x => x.ContainsGlyph('あ'))
+                ?? registered.Values.FirstOrDefault()
+                ?? SKTypeface.Default;
         }
 
         // フォントを作ったときに指定されたフォント名の寸法（Windows の寸法表にある場合）

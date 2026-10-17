@@ -97,6 +97,15 @@ flowchart LR
 - 音声出力デバイスを開けない環境では、何も鳴らさずに動く
 - SRC フルパッケージの効果音・MIDI（242 ファイル）がすべて読み込めることを確認した
 
+### フォント
+
+日本語は、指定のフォント（ＭＳ 明朝など）が無ければ Noto CJK、それも無ければ OS が「あ」を描けるとするフォントで描く（`SRCRender/Compat/Drawing.cs` の `SkiaFonts`）。次のフォントも読み込む。
+
+- 環境変数 `SRCSHARP_FONTS` に指定したフォントのファイル・フォルダ（パスの区切り文字で区切る）
+- WSL（Linux から `/mnt/c/Windows/Fonts` が見える）では、Windows の ＭＳ ゴシック・ＭＳ 明朝（`msgothic.ttc`・`msmincho.ttc`）。日本語名（ＭＳ ゴシックなど）でも引ける
+
+日本語のフォントが一つも無いと豆腐になる。`srcsharp dap` はデバッグの開始時にこれを調べ、無ければ通知する（VS Code の `important` の出力）。
+
 ### SoundFont
 
 MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で同梱しない（[素材データの再配布の検討](../assets/redistribution-study.md)）。次の順に探し、最初に見つかったものを使う。

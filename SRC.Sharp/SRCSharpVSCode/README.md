@@ -222,6 +222,7 @@ Language Server はエディタで開いたファイルの内容を受け取る�
 | `You must install .NET to run this application` と出る | .NET 10 のランタイムがあるか。拡張は PATH・`DOTNET_ROOT`・`~/.dotnet` から dotnet を探して `DOTNET_ROOT` を渡す。ほかの場所に入れた場合は環境変数 `DOTNET_ROOT` を設定する（[.NET environment variables](https://learn.microsoft.com/dotnet/core/tools/dotnet-environment-variables)） |
 | 画面のビューに「この srcsharp は画面の取得に対応していません」と出る | srcsharp が 0.5.1 以前。「srcsharp を入れる／更新する」で更新する |
 | `Cannot find module 'vscode-languageclient/node'` と出る | esbuild でまとめる前の古い `.vsix`（v0.5.0 までの `npm run package` で作ったもの）。`npm run package` で作り直す |
+| 画面の日本語が豆腐（□）になり、「日本語のフォントが見つからない」と通知される | srcsharp が動く環境（WSL・Dev Container・SSH 先の Linux など）に日本語のフォントが無い。WSL では Windows の ＭＳ ゴシック・ＭＳ 明朝（`/mnt/c/Windows/Fonts`）を自動で使う。ほかの Linux では日本語のフォントを入れる（Ubuntu・Debian: `sudo apt install fonts-noto-cjk`）か、環境変数 `SRCSHARP_FONTS` にフォントのファイルかフォルダを指定する（複数はパスの区切り文字 `:` で区切る） |
 | 日本語が文字化けする | ファイルの文字コード。ステータスバーの文字コードから「エンコード付きで再度開く」で Shift_JIS か UTF-8 を選ぶ |
 | システムのラベル（汎用戦闘アニメなど）が見つからないと警告される | 「SRC#: SRC 本体のフォルダを選ぶ」で Lib のある SRC 本体のフォルダを設定する |
 | デバッガが止まらない・すぐ終わる | `program`・`script` が絶対パスか。ブレークポイントがコマンドの行にあるか |
