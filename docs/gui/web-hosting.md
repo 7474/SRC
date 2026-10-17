@@ -141,6 +141,7 @@ MIDI の SoundFont（.sf2）も素材として配信できます。シナリオ�
 | `?catalog=https://example.com/catalog.json` | そのカタログも一覧に出す（その表示の間だけ。保存はしない） |
 | `?catalog=…&play=…` | 別のサイトのカタログのシナリオをすぐに始める |
 | `?archive=https://example.com/a.zip&eve=start.eve` | zip を直接読んで始める。`root`・`requires`（素材の `id` をカンマ区切り）も指定できる |
+| `?log=Debug` | ブラウザのコンソールに出すログのレベル（`Trace`・`Debug`・`Information`・`Warning`・`Error`）。ほかの指定と組み合わせられる（[ログの設計](../logging.md)） |
 
 一覧の各シナリオの「リンク」が、そのシナリオを直接開く URL です。`catalog`・`archive` は `allowUserCatalogs` が `true` のときだけ使えます。
 
