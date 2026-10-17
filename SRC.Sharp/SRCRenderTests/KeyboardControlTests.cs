@@ -41,6 +41,75 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void MapCursor_ShowsUnitStatus()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    void Press(ScreenKey key)
+                    {
+                        gui.KeyPressed(key);
+                        runner.Sync();
+                    }
+
+                    (int x, int y) Cursor()
+                    {
+                        WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                        var rect = state.MapCursor.Value;
+                        return (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top));
+                    }
+
+                    void MoveTo(int x, int y)
+                    {
+                        Press(ScreenKey.Right);
+                        Press(ScreenKey.Left);
+                        for (var i = 0; i < 40 && Cursor() != (x, y); i++)
+                        {
+                            var (cx, cy) = Cursor();
+                            Press(cx < x ? ScreenKey.Right : cx > x ? ScreenKey.Left : cy < y ? ScreenKey.Down : ScreenKey.Up);
+                        }
+                        Assert.AreEqual((x, y), Cursor());
+                        runner.Sync();
+                    }
+
+                    // マウスを置いたときと同じく、カーソルのマスのユニットをステータスに出す
+                    MoveTo(6, 6);
+                    WaitUntil(() => gui.DisplayedUnit?.Name == "テスト機", "味方ユニットのステータス（" + gui.DisplayedUnit?.Name + "）");
+                    MoveTo(12, 6);
+                    WaitUntil(() => gui.DisplayedUnit?.Name == "標的機", "敵ユニットのステータス（" + gui.DisplayedUnit?.Name + "）");
+                    // ユニットのいないマスでは、そのマスの地形を出す（マウスの位置もカーソルのマスに合わせる）
+                    MoveTo(9, 8);
+                    WaitUntil(() => gui.DisplayedUnit == null, "地形の表示");
+                    Assert.AreEqual((9, 8), (gui.PixelToMapX((int)gui.MouseX), gui.PixelToMapY((int)gui.MouseY)));
+                    MoveTo(6, 6);
+                    WaitUntil(() => gui.DisplayedUnit?.Name == "テスト機", "味方ユニットのステータスに戻る（" + gui.DisplayedUnit?.Name + "）");
+
+                    // 移動先を選んでいる間も、カーソルのマスのユニットを出す
+                    Press(ScreenKey.Enter);
+                    WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
+                    var move = state.Menu.Items.IndexOf("移動");
+                    for (var i = 0; i < move; i++)
+                    {
+                        Press(ScreenKey.Down);
+                    }
+                    Press(ScreenKey.Enter);
+                    WaitUntil(() => state.Menu == null, "移動を選ぶ");
+                    MoveTo(12, 6);
+                    WaitUntil(() => gui.DisplayedUnit?.Name == "標的機", "移動先の選択中の敵ユニットのステータス（" + gui.DisplayedUnit?.Name + "）");
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
+
+        [TestMethod]
         public void MapCursorMenuAndDialog_CanBeOperatedWithKeysOnly()
         {
             using (var workspace = new ScenarioWorkspace())

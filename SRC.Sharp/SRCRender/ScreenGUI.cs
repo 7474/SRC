@@ -726,9 +726,14 @@ namespace SRCRender
                     Center(newX, newY);
                     RefreshScreen();
                 }
-                // カーソルのマスのユニット・地形をステータスに出す（マウスを置いたときと同じ）
+                // カーソルのマスのユニット・地形をステータスに出す（マウスを置いたときと同じ）。
+                // 元の SRC と同じくマウスの位置もカーソルのマスに合わせる。地形の表示（DisplayGlobalStatus）はマウスの位置のマスを使うため
+                var px = MapToPixelX(x) + ScreenLayout.CellPx / 2;
+                var py = MapToPixelY(y) + ScreenLayout.CellPx / 2;
+                MouseX = px;
+                MouseY = py;
                 lastHoverCell = (0, 0);
-                HoverMap(MapToPixelX(x) + ScreenLayout.CellPx / 2, MapToPixelY(y) + ScreenLayout.CellPx / 2);
+                HoverMap(px, py);
                 Present();
             });
         }
