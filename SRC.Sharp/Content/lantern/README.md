@@ -16,7 +16,7 @@
 | 顔グラフィック（`Bitmap/Pilot/Lantern_*.bmp`、12 枚） | 生成AI の PixelLab で生成した |
 | ユニットの画像（`Bitmap/Unit/Lantern_*.bmp`、18 枚） | 生成AI の PixelLab で生成した |
 | BGM（`Midi/`） | 生成AI の Claude（Anthropic）が作った |
-| 地形の画像・地形データ・スペシャルパワーデータ（`../basic-data`） | プログラム（`make.py`）で描いたもの。画像生成AIは使っていない |
+| 地形の画像・地形データ・スペシャルパワーデータ・効果音・標準の BGM（`../basic-data`） | Claude が書いたプログラム（`make.py`）で描いた・合成したもの。画像生成AI・音声生成AIは使っていない（[生成法](../README.md#生成法)） |
 
 ゲームの中でも、タイトル画面の下と「あそびかた」、終話のスタッフロールで生成AIの利用を示している。
 

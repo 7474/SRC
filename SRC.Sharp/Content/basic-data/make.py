@@ -11,13 +11,18 @@ SRC のフルパッケージの汎用データ（グラフィック集など）�
 - Data/System/sp.txt: スペシャルパワーデータ。ヘルプ（スペシャルパワー.md）の効果の説明から書いた
 - Bitmap/Map/<名前>/<名前>0000.bmp: 地形の画像（32×32）
 - Bitmap/Unit/OBJ_*.bmp: ユニットの画像（32×32、白が透過色）
+- Sound/*.wav: 効果音（汎用効果音集と同じ名前）。ノイズと波形を数式で合成する（録音や音声生成 AI は使わない）
+- Midi/*.mid: SRC が場面ごとに鳴らす BGM（Opening・Briefing・Intermission・Subtitle・Map1〜6・default）。規則で音符を並べて作曲する
 - Lib/ユニットステータス表示.eve・Lib/パイロットステータス表示.eve: インターミッションの「ユニットステータス」「パイロットステータス」。
   ヘルプ（ユニットステータス.md・MakeUnitListコマンド.md など）から書いた手書きのファイルで、このスクリプトは作らない
 
 使い方: python3 make.py（Pillow が必要）。出力はこのフォルダに書く。乱数の種を固定しているので、何度作っても同じになる。
 """
+import math
 import os
 import random
+import struct
+import wave
 
 from PIL import Image, ImageDraw
 
@@ -344,6 +349,295 @@ def sp_txt():
     return "\n".join(lines)
 
 
+# ── 効果音 ──
+# 汎用効果音集（Sound/*.wav）と同じ名前の効果音を、数式で合成する。録音や生成 AI の音声は使わない。
+# 22050 Hz・16 ビット・モノラルの WAV。音の部品（ノイズ・波形・周波数の変化・音量の変化）を組み合わせて作る。
+RATE = 22050
+
+
+def noise(rnd, dur, cutoff=1.0, highpass=0.0):
+    """ホワイトノイズ。cutoff（0〜1）で高い音を削り（1 次のローパス）、highpass（0〜1）で低い音を削る"""
+    out, low, prev = [], 0.0, 0.0
+    for _ in range(int(RATE * dur)):
+        x = rnd.uniform(-1, 1)
+        low += cutoff * (x - low)
+        y = low - highpass * prev
+        prev = low
+        out.append(y)
+    return out
+
+
+def osc(freq, dur, shape="sine", vibrato=0.0, vib_rate=0.0):
+    """周波数が変わる波形。freq は時間（秒）から周波数（Hz）を返す関数か定数"""
+    out, phase = [], 0.0
+    f = freq if callable(freq) else (lambda t: freq)
+    for i in range(int(RATE * dur)):
+        t = i / RATE
+        hz = f(t) * (1 + vibrato * math.sin(2 * math.pi * vib_rate * t))
+        phase += hz / RATE
+        p = phase % 1.0
+        if shape == "square":
+            out.append(1.0 if p < 0.5 else -1.0)
+        elif shape == "saw":
+            out.append(2 * p - 1)
+        elif shape == "triangle":
+            out.append(4 * abs(p - 0.5) - 1)
+        else:
+            out.append(math.sin(2 * math.pi * p))
+    return out
+
+
+def env(samples, attack=0.005, decay=None, curve=2.0):
+    """音量の変化。立ち上がり attack 秒、その後は終わりに向けて curve 乗で減衰する"""
+    n = len(samples)
+    a = max(1, int(RATE * attack))
+    out = []
+    for i, x in enumerate(samples):
+        if i < a:
+            g = i / a
+        else:
+            g = (1 - (i - a) / max(1, n - a)) ** curve
+        out.append(x * g)
+    return out
+
+
+def mix(*tracks, at=None):
+    """重ねる。at は各トラックの開始時刻（秒）"""
+    at = at or [0.0] * len(tracks)
+    n = max(int(RATE * t) + len(x) for t, x in zip(at, tracks))
+    out = [0.0] * n
+    for t, x in zip(at, tracks):
+        o = int(RATE * t)
+        for i, v in enumerate(x):
+            out[o + i] += v
+    return out
+
+
+def gain(samples, g):
+    return [x * g for x in samples]
+
+
+def repeat(make, count, interval):
+    """同じ音を一定の間隔で繰り返す（連射など）。make は回数から音を返す"""
+    return mix(*[make(i) for i in range(count)], at=[i * interval for i in range(count)])
+
+
+def save_wav(samples, path, volume=0.8):
+    full = os.path.join(HERE, path)
+    os.makedirs(os.path.dirname(full), exist_ok=True)
+    peak = max([abs(x) for x in samples] + [1e-9])
+    with wave.open(full, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(RATE)
+        w.writeframes(b"".join(struct.pack("<h", int(x / peak * volume * 32767)) for x in samples))
+
+
+def shot(rnd, dur=0.15, cutoff=0.6, pitch=900):
+    """銃声: 短いノイズと、下がる音の打撃"""
+    return mix(env(noise(rnd, dur, cutoff), 0.001, curve=3), gain(env(osc(lambda t: pitch * (1 - t * 4), dur * 0.6), 0.001, curve=3), 0.6))
+
+
+def boom(rnd, dur=0.8, cutoff=0.08):
+    """爆発: 低い音のノイズと、下がる低音"""
+    return mix(env(noise(rnd, dur, cutoff), 0.004, curve=2.2), gain(env(osc(lambda t: 90 * (1 - t / dur * 0.6), dur), 0.002, curve=2.5), 0.8))
+
+
+def whoosh(rnd, dur=0.35, up=True):
+    """風切り: 高い音を残したノイズを、ふくらませて消す"""
+    x = noise(rnd, dur, 0.5, 0.9)
+    n = len(x)
+    return [v * math.sin(math.pi * (i / n if up else 1 - i / n) ** 0.7) for i, v in enumerate(x)]
+
+
+def chime(freqs, dur=0.6, step=0.06):
+    """鈴のような音を順に鳴らす"""
+    return mix(*[env(osc(f, dur), 0.002, curve=3) for f in freqs], at=[i * step for i in range(len(freqs))])
+
+
+def sounds():
+    """名前と合成のしかた。名前は汎用効果音集と同じ（SRCCore が武器の種類などから選ぶ名前と、ランタン号が使う名前）"""
+    R = random.Random
+    return {
+        # 銃・砲
+        "Gun": lambda r: shot(r),
+        "Rifle": lambda r: shot(r, 0.22, 0.5, 700),
+        "GunPod": lambda r: repeat(lambda i: shot(r, 0.12, 0.5, 800), 3, 0.09),
+        "FastGun": lambda r: repeat(lambda i: shot(r, 0.08, 0.7, 1200), 4, 0.06),
+        "MachineGun": lambda r: repeat(lambda i: shot(r, 0.08, 0.6, 1000), 8, 0.07),
+        "MachineCannon": lambda r: repeat(lambda i: shot(r, 0.14, 0.3, 500), 5, 0.11),
+        "LaserGun": lambda r: env(osc(lambda t: 2400 * (1 - t * 3), 0.25, "square"), 0.002, curve=2),
+        "Cannon": lambda r: mix(shot(r, 0.1, 0.4, 600), boom(r, 0.6, 0.1)),
+        "Bazooka": lambda r: mix(whoosh(r, 0.3), boom(r, 0.6, 0.1), at=[0, 0.25]),
+        "Missile": lambda r: mix(whoosh(r, 0.5), boom(r, 0.7, 0.1), at=[0, 0.45]),
+        "MicroMissile": lambda r: repeat(lambda i: mix(whoosh(r, 0.2), boom(r, 0.3, 0.15), at=[0, 0.18]), 4, 0.12),
+        "AntiShipMissile": lambda r: mix(whoosh(r, 0.9), boom(r, 1.4, 0.06), at=[0, 0.8]),
+        "MultipleRocketLauncher(Light)": lambda r: repeat(lambda i: whoosh(r, 0.25), 6, 0.08),
+        "Bomb": lambda r: mix(gain(env(osc(lambda t: 1800 - 1400 * t / 0.6, 0.6), 0.01, curve=0.5), 0.4), boom(r, 0.9, 0.07), at=[0, 0.55]),
+        "Bow": lambda r: mix(env(osc(lambda t: 220 * (1 + 0.3 * math.exp(-t * 30)), 0.3, "triangle"), 0.001, curve=3), whoosh(r, 0.2), at=[0, 0.05]),
+        # 爆発・破壊
+        "Explode": lambda r: boom(r, 0.9),
+        "Explode(Small)": lambda r: boom(r, 0.4, 0.15),
+        "Explode(Far)": lambda r: gain(boom(r, 1.0, 0.03), 0.6),
+        "Explode(Long)": lambda r: mix(boom(r, 1.0), boom(r, 1.0), boom(r, 1.4), at=[0, 0.4, 0.8]),
+        "Explode(Nuclear)": lambda r: mix(boom(r, 3.0, 0.03), gain(env(noise(r, 2.5, 0.2), 0.3, curve=1.5), 0.5)),
+        "Crash": lambda r: mix(boom(r, 0.5, 0.2), env(noise(r, 0.5, 0.8, 0.5), 0.001, curve=4)),
+        "Break": lambda r: mix(env(noise(r, 0.4, 0.7), 0.001, curve=3), *[env(osc(f, 0.3, "square"), 0.001, curve=4) for f in (330, 470)]),
+        "BreakOff": lambda r: mix(env(noise(r, 0.3, 0.6, 0.3), 0.001, curve=3), env(osc(lambda t: 600 - 400 * t, 0.3, "saw"), 0.001, curve=3)),
+        "Glass": lambda r: mix(env(noise(r, 0.3, 1.0, 0.95), 0.001, curve=3), chime([2637, 3136, 3520, 4186], 0.5, 0.03)),
+        "Shock(Low)": lambda r: env(osc(lambda t: 60 + 40 * math.exp(-t * 8), 0.6, "square"), 0.002, curve=2),
+        # ビーム・エネルギー
+        "Beam": lambda r: env(osc(lambda t: 1800 - 1200 * t / 0.6, 0.6, "square", 0.05, 30), 0.005, curve=1.5),
+        "BeamSaber": lambda r: env(mix(osc(lambda t: 110 + 300 * t, 0.5, "saw", 0.03, 8), gain(osc(220, 0.5), 0.5)), 0.01, curve=1.2),
+        "Saber": lambda r: env(mix(osc(lambda t: 140 + 200 * t, 0.4, "saw", 0.04, 9), gain(whoosh(r, 0.4), 0.6)), 0.01, curve=1.2),
+        "BeamCoat": lambda r: env(osc(lambda t: 400 + 1600 * t, 0.6, "sine", 0.1, 20), 0.05, curve=1),
+        "Thunder": lambda r: mix(env(noise(r, 0.15, 1.0), 0.001, curve=2), boom(r, 1.2, 0.05), *[env(noise(r, 0.05, 1.0), 0.001, curve=2) for _ in range(3)], at=[0, 0.05, 0.2, 0.35, 0.5]),
+        "Fire": lambda r: env(mix(noise(r, 0.8, 0.3), *[env(noise(r, 0.02, 1.0), 0.001) for _ in range(12)], at=[0] + [r.uniform(0, 0.75) for _ in range(12)]), 0.05, curve=1),
+        "Breath": lambda r: env(noise(r, 1.0, 0.25), 0.1, curve=1),
+        "Storm": lambda r: env([v * (0.6 + 0.4 * math.sin(i / RATE * 9)) for i, v in enumerate(noise(r, 1.4, 0.15))], 0.2, curve=1),
+        "Shower": lambda r: env(noise(r, 1.0, 0.9, 0.7), 0.1, curve=1),
+        "Splash": lambda r: mix(env(noise(r, 0.5, 0.6, 0.3), 0.003, curve=3), chime([700, 900, 1200], 0.2, 0.05)),
+        "Bubble": lambda r: mix(*[env(osc(lambda t, b=b: b * (1 + t * 8), 0.08), 0.002, curve=2) for b in (300, 420, 360, 500, 450)], at=[0, 0.07, 0.15, 0.22, 0.3]),
+        "Drill": lambda r: env(osc(lambda t: 90 + 60 * t, 1.0, "saw", 0.3, 40), 0.03, curve=0.8),
+        # 格闘・刃物
+        "Punch": lambda r: mix(env(osc(lambda t: 140 * (1 - t * 3), 0.15), 0.001, curve=3), env(noise(r, 0.08, 0.3), 0.001, curve=3)),
+        "Slap": lambda r: env(noise(r, 0.12, 0.9, 0.6), 0.001, curve=4),
+        "Combo": lambda r: repeat(lambda i: mix(env(osc(lambda t: 160 * (1 - t * 3), 0.12), 0.001, curve=3), env(noise(r, 0.06, 0.4), 0.001, curve=3)), 4, 0.1),
+        "Swing": lambda r: whoosh(r, 0.3),
+        "Whiz": lambda r: whoosh(r, 0.18),
+        "Sword": lambda r: mix(whoosh(r, 0.25), chime([1500, 2250], 0.4, 0.0), at=[0, 0.2]),
+        "Slash": lambda r: mix(whoosh(r, 0.2), env(noise(r, 0.15, 1.0, 0.8), 0.001, curve=3), at=[0, 0.15]),
+        "Stab": lambda r: mix(whoosh(r, 0.12), env(osc(lambda t: 300 * (1 - t * 4), 0.12), 0.001, curve=3), at=[0, 0.1]),
+        "Whip": lambda r: mix(whoosh(r, 0.2), env(noise(r, 0.04, 1.0, 0.9), 0.001, curve=2), at=[0, 0.18]),
+        # その他
+        "Charge": lambda r: env(osc(lambda t: 200 + 1200 * t, 0.8, "square", 0.02, 25), 0.05, curve=0.5),
+        "Hide": lambda r: env(osc(lambda t: 1200 - 1000 * t / 0.5, 0.5, "triangle"), 0.01, curve=1),
+        "Inori": lambda r: chime([523, 659, 784, 1047], 1.2, 0.15),
+        "UnitOn": lambda r: chime([392, 523, 659], 0.25, 0.07),
+        "Transform": lambda r: mix(env(osc(lambda t: 200 + 900 * t, 0.8, "square", 0.05, 12), 0.02, curve=0.6), chime([523, 659, 784, 1047, 1319], 0.4, 0.08), at=[0, 0.6]),
+        "Sharara": lambda r: chime([1047, 1175, 1319, 1568, 1760, 2093, 2349, 2637], 0.7, 0.05),
+        "Applause": lambda r: mix(*[env(noise(r, 0.03, 0.8, 0.5), 0.001, curve=3) for _ in range(160)], at=[r.uniform(0, 2.0) for _ in range(160)]),
+        "Null": lambda r: [0.0] * int(RATE * 0.05),
+    }
+
+
+# ── BGM ──
+# SRC が場面ごとに鳴らす BGM（Midi/<名前>.mid）を、規則で音符を並べて作曲する（音声生成 AI は使わない）。
+# 名前と場面: Opening（タイトル）・Briefing（ブリーフィング）・Intermission（インターミッション）・Subtitle（サブタイトル）、
+# Map1・Map2（地上の味方・敵フェイズ）、Map3・Map4（屋内の味方・敵）、Map5・Map6（宇宙の味方・敵）、default（戦闘）
+TPQ = 480  # 4 分音符の分解能
+MAJOR = [0, 2, 4, 5, 7, 9, 11]
+MINOR = [0, 2, 3, 5, 7, 8, 10]
+
+# 名前: (主音の MIDI ノート番号, 音階, テンポ, 和音の進行（音階の度数）, メロディの音色, 伴奏の音色, ドラム, 小節数)
+BGMS = {
+    "Opening": (60, MAJOR, 120, [0, 4, 5, 3], 56, 48, "march", 16),       # トランペット・弦
+    "Briefing": (57, MINOR, 84, [0, 5, 3, 4], 73, 89, "soft", 16),        # フルート・パッド
+    "Intermission": (65, MAJOR, 100, [0, 3, 4, 0], 11, 0, "soft", 16),    # ビブラフォン・ピアノ
+    "Subtitle": (62, MINOR, 96, [0, 5, 6, 4], 48, 89, "none", 8),         # 弦・パッド
+    "Map1": (62, MAJOR, 132, [0, 4, 5, 3], 81, 33, "rock", 16),           # シンセリード・ベース
+    "Map2": (64, MINOR, 132, [0, 6, 5, 4], 30, 33, "rock", 16),           # ディストーションギター
+    "Map3": (60, MAJOR, 112, [0, 5, 3, 4], 80, 33, "beat", 16),
+    "Map4": (59, MINOR, 112, [0, 3, 5, 4], 87, 38, "beat", 16),
+    "Map5": (67, MAJOR, 124, [0, 2, 3, 4], 81, 38, "beat", 16),
+    "Map6": (63, MINOR, 124, [0, 5, 2, 4], 84, 38, "beat", 16),
+    "default": (64, MINOR, 150, [0, 5, 6, 4], 30, 33, "rock", 16),
+}
+
+
+def vlq(n):
+    """MIDI の可変長の数値"""
+    out = [n & 0x7F]
+    n >>= 7
+    while n:
+        out.insert(0, (n & 0x7F) | 0x80)
+        n >>= 7
+    return bytes(out)
+
+
+def save_midi(events, tempo, path):
+    """events: (時刻（tick）, 状態バイト, データ…) の並び。フォーマット 0 の標準 MIDI ファイルに書く"""
+    full = os.path.join(HERE, path)
+    os.makedirs(os.path.dirname(full), exist_ok=True)
+    body = b"\x00\xff\x51\x03" + int(60_000_000 / tempo).to_bytes(3, "big")
+    now = 0
+    for ev in sorted(events, key=lambda e: (e[0], 0 if (e[1] & 0xF0) == 0x80 else 1)):
+        body += vlq(ev[0] - now) + bytes(ev[1:])
+        now = ev[0]
+    body += b"\x00\xff\x2f\x00"
+    with open(full, "wb") as f:
+        f.write(b"MThd" + struct.pack(">IHHH", 6, 0, 1, TPQ))
+        f.write(b"MTrk" + struct.pack(">I", len(body)) + body)
+
+
+def note(events, ch, start, length, key, vel):
+    events.append((start, 0x90 | ch, key, vel))
+    events.append((start + length, 0x80 | ch, key, 0))
+
+
+def compose(name):
+    """主音・音階・和音の進行から、伴奏（和音）・ベース・メロディ・ドラムを作る。乱数の種は名前"""
+    root, scale, tempo, progression, lead, pad, drums, bars = BGMS[name]
+    rnd = random.Random(name)
+    bar = TPQ * 4
+    events = [(0, 0xC0, lead), (0, 0xC1, pad), (0, 0xC2, 33 if pad != 33 else 38),
+              (0, 0xB0, 7, 100), (0, 0xB1, 7, 80), (0, 0xB2, 7, 95)]
+
+    def pitch(degree, octave=0):
+        return root + scale[degree % 7] + 12 * (degree // 7 + octave)
+
+    # メロディのリズム（1 小節を 8 分音符 8 つに分け、鳴らす位置と長さ）を 2 つ作り、交互に使う
+    rhythms = []
+    for _ in range(2):
+        pattern, pos = [], 0
+        while pos < 8:
+            length = rnd.choice([1, 1, 2, 2, 3, 4])
+            length = min(length, 8 - pos)
+            pattern.append((pos, length, rnd.random() < 0.85))
+            pos += length
+        rhythms.append(pattern)
+    degree = 0
+    for b in range(bars):
+        chord = progression[b % len(progression)]
+        start = b * bar
+        # 伴奏: 和音（1・3・5 度）を全音符で
+        for d in (0, 2, 4):
+            note(events, 1, start, bar - 10, pitch(chord + d, -1), 60)
+        # ベース: 和音の根音を 4 分音符で（1 拍目は 1 オクターブ下）
+        for beat in range(4):
+            note(events, 2, start + beat * TPQ, TPQ - 20, pitch(chord, -2 if beat % 2 else -3) + 12, 90)
+        # メロディ: 和音の音を中心に、前の音から近い音へ動く
+        for pos, length, on in rhythms[(b // 2) % 2]:
+            if not on:
+                continue
+            target = chord + rnd.choice([0, 2, 4, 0, 2, 4, 1, 3, 5])
+            degree += max(-2, min(2, target - degree + rnd.choice([-7, 0, 0, 7]) if abs(target - degree) > 4 else target - degree))
+            degree = max(-2, min(9, degree))
+            note(events, 0, start + pos * TPQ // 2, length * TPQ // 2 - 20, pitch(degree), 96 if pos % 4 == 0 else 84)
+        # ドラム（チャンネル 10）
+        for step in range(8):
+            t = start + step * TPQ // 2
+            if drums == "none":
+                break
+            if drums == "soft":
+                if step % 4 == 0:
+                    note(events, 9, t, 60, 36, 60)
+                note(events, 9, t, 60, 42, 40)
+            elif drums == "march":
+                if step in (0, 4):
+                    note(events, 9, t, 60, 36, 100)
+                note(events, 9, t, 60, 38, 70 if step % 2 else 95)
+            else:
+                if step in (0, 3 if drums == "rock" else 5):
+                    note(events, 9, t, 60, 36, 110)
+                if step in (2, 6):
+                    note(events, 9, t, 60, 38, 105)
+                note(events, 9, t, 60, 42, 75)
+            if step == 0 and b % 4 == 0:
+                note(events, 9, t, 60, 49, 90)
+    return events, tempo
+
+
 def main():
     write("Data/System/terrain.txt", terrain_txt())
     write("Data/System/sp.txt", sp_txt())
@@ -351,6 +645,11 @@ def main():
         save(tile(bitmap), f"Bitmap/Map/{bitmap}/{bitmap}0000.bmp")
     for name in UNITS:
         save(unit(name), f"Bitmap/Unit/{name}.bmp")
+    for name in BGMS:
+        events, tempo = compose(name)
+        save_midi(events, tempo, f"Midi/{name}.mid")
+    for name, make in sounds().items():
+        save_wav(make(random.Random(name)), f"Sound/{name}.wav", 0.0 if name == "Null" else 0.8)
 
 
 if __name__ == "__main__":
