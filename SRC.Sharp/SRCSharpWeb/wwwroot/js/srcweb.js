@@ -32,7 +32,17 @@ export function drawFrame(view, width, height) {
 export function bindCanvas(id) {
     canvas = document.getElementById(id);
     ctx = canvas.getContext('2d');
+    // 表示の大きさ（画面の拡大率を含む）が変わったら、拡大の方法を選び直す
+    new ResizeObserver(updateScaling).observe(canvas);
+    window.addEventListener('resize', updateScaling);
+    updateScaling();
     start();
+}
+
+// 実際の画素で canvas の大きさ以上に表示するとき（拡大）は、補間せずドットのまま拡大する
+function updateScaling() {
+    const devicePixels = canvas.clientWidth * (window.devicePixelRatio || 1);
+    canvas.classList.toggle('pixelated', devicePixels >= canvas.width);
 }
 
 async function start() {

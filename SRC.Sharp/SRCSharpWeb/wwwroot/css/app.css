@@ -712,6 +712,15 @@ input[type=file]::file-selector-button {
 }
 
 /*
+  拡大して表示するときは補間せず、ドットのまま拡大する（srcweb.js の updateScaling。7474/SRC#1148）。
+  縮小するときは補間する（補間しないと文字の線が抜ける）
+  https://developer.mozilla.org/ja/docs/Web/CSS/image-rendering
+*/
+#screen.pixelated {
+    image-rendering: pixelated;
+}
+
+/*
   タッチ向けの選択画面（srcweb.js の buildTouchUi）。ゲームのリスト・メニュー・ダイアログを、画面の下側に大きなボタンで出す。
   タッチ向けの画面（data-input="touch"）のときだけ出る。ゲームの画面の上側（マップ）は見えるようにし、画面の下に寄せる
 */
