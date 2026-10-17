@@ -167,6 +167,7 @@ namespace SRCSharpForm.Resoruces
             try
             {
                 midiOutput = OutputDevice.GetAll().First();
+                ResetMidiOutput(midiOutput);
                 midiPlayback = midiFile.GetPlayback(midiOutput);
                 midiPlayback.Loop = mode.HasFlag(PlaySoundMode.Repeat);
                 // DryWetMidi 6 以降は出力デバイスの音量（midiOutSetVolume）を設定できないため、ノートの強さで音量を付ける
@@ -181,6 +182,34 @@ namespace SRCSharpForm.Resoruces
             {
                 ReleaseMidiPlayback();
                 throw;
+            }
+        }
+
+        // GM システムオン（F0 7E 7F 09 01 F7。先頭の F0 を除く）
+        private static readonly byte[] GmSystemOn = { 0x7E, 0x7F, 0x09, 0x01, 0xF7 };
+
+        /// <summary>
+        /// 曲の頭で音源を初期化する。元の SRC の「MIDI音源リセット」（Reset(GM/GS/XG).mid）の代わりに、
+        /// 設定によらず GM システムオンと、全チャンネルのリセットオールコントローラー（CC121）・オールサウンドオフ（CC120）を送り、
+        /// 前の曲のピッチベンド・モジュレーションなどが残らないようにする（7474/SRC#483）
+        /// </summary>
+        private static void ResetMidiOutput(OutputDevice output)
+        {
+            try
+            {
+                output.SendEvent(new NormalSysExEvent(GmSystemOn));
+                // GM システムオンの後は、音源が受け付けるまで少し待つ
+                System.Threading.Thread.Sleep(50);
+                for (var channel = 0; channel < 16; channel++)
+                {
+                    output.SendEvent(new ControlChangeEvent((SevenBitNumber)120, (SevenBitNumber)0) { Channel = (FourBitNumber)channel });
+                    output.SendEvent(new ControlChangeEvent((SevenBitNumber)121, (SevenBitNumber)0) { Channel = (FourBitNumber)channel });
+                }
+            }
+            catch (Exception ex)
+            {
+                // 初期化に失敗しても曲は鳴らす
+                Program.Log.LogWarning(ex, ex.Message);
             }
         }
 
