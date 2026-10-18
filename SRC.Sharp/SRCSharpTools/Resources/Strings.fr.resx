@@ -27,8 +27,8 @@ Utilisation :
       Language Server (entrée/sortie standard)
   srcsharp dap
       Débogueur (Debug Adapter Protocol, entrée/sortie standard)
-  srcsharp help [sujet] [--list] [--search texte] [--export répertoire]
-      Affiche l'aide de SRC# (référence des données, commandes d'événement, fonctions, etc., Markdown en japonais). --list liste les sujets, --search cherche dans le texte, --export écrit toutes les pages
+  srcsharp help [sujet] [--list] [--search texte [--limit nombre]] [--grep texte] [--export répertoire]
+      Affiche l'aide de SRC# (référence des données, commandes d'événement, fonctions, etc., Markdown en japonais). --list liste les sujets, --search trouve les pages par pertinence, --grep affiche les lignes contenant le texte, --export écrit toutes les pages
 
 Options communes :
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

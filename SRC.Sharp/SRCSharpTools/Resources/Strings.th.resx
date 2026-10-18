@@ -27,8 +27,8 @@
       Language Server (stdio)
   srcsharp dap
       ดีบักเกอร์ (Debug Adapter Protocol, stdio)
-  srcsharp help [หัวข้อ] [--list] [--search ข้อความ] [--export ไดเรกทอรี]
-      แสดงวิธีใช้ SRC# (ข้อมูลอ้างอิงของข้อมูล คำสั่งอีเวนต์ ฟังก์ชัน ฯลฯ เป็น Markdown ภาษาญี่ปุ่น) --list แสดงรายการหัวข้อ --search ค้นหาในเนื้อหา --export เขียนทุกหน้าออก
+  srcsharp help [หัวข้อ] [--list] [--search ข้อความ [--limit จำนวน]] [--grep ข้อความ] [--export ไดเรกทอรี]
+      แสดงวิธีใช้ SRC# (ข้อมูลอ้างอิงของข้อมูล คำสั่งอีเวนต์ ฟังก์ชัน ฯลฯ เป็น Markdown ภาษาญี่ปุ่น) --list แสดงรายการหัวข้อ --search ค้นหาหน้าตามความเกี่ยวข้อง --grep แสดงบรรทัดที่มีข้อความ --export เขียนทุกหน้าออก
 
 ตัวเลือกทั่วไป:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

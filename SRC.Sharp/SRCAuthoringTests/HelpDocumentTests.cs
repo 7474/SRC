@@ -53,10 +53,36 @@ namespace SRCAuthoring.Tests
         }
 
         [TestMethod]
-        public void Search_ReturnsLines()
+        public void Grep_ReturnsLines()
         {
-            var hits = HelpDocument.Search("プレイヤーによる選択肢入力").ToList();
+            var hits = HelpDocument.Grep("プレイヤーによる選択肢入力").ToList();
             Assert.IsTrue(hits.Any(x => x.topic.Name == "Askコマンド" && x.line > 0));
+        }
+
+        [TestMethod]
+        [DataRow("選択肢を表示する", "Askコマンド")]
+        [DataRow("ユニットのHPを回復", "RecoverHPコマンド")]
+        [DataRow("配列をコピー", "CopyArrayコマンド")]
+        [DataRow("ｂｇｍ 再生", "StartBGMコマンド")]
+        public void Search_RanksRelevantPages(string query, string expected)
+        {
+            var results = HelpDocument.Search(query, 5);
+            CollectionAssert.Contains(results.Select(x => x.Topic.Name).ToList(), expected);
+            Assert.IsTrue(results.Zip(results.Skip(1)).All(x => x.First.Score >= x.Second.Score));
+            Assert.IsTrue(results.All(x => x.Lines.Count > 0));
+        }
+
+        [TestMethod]
+        public void Search_NoTerms()
+        {
+            Assert.AreEqual(0, HelpDocument.Search("  ", 5).Count);
+        }
+
+        [TestMethod]
+        public void Tokenize_JapaneseBigramsAndWords()
+        {
+            CollectionAssert.AreEqual(new[] { "changemap", "マッ", "ップ", "hp" }, HelpIndex.Tokenize("ChangeMap マップ ＨＰ").ToArray());
+            CollectionAssert.AreEqual(new[] { "回" }, HelpIndex.Tokenize("回").ToArray());
         }
 
         [TestMethod]

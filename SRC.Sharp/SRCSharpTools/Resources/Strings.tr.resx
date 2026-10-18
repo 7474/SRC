@@ -27,8 +27,8 @@ Kullanım:
       Language Server (stdio)
   srcsharp dap
       Hata ayıklayıcı (Debug Adapter Protocol, stdio)
-  srcsharp help [konu] [--list] [--search metin] [--export dizin]
-      SRC# yardımını gösterir (veri, olay komutları, fonksiyonlar vb. başvurusu, Japonca Markdown). --list konuları listeler, --search metinde arar, --export tüm sayfaları yazar
+  srcsharp help [konu] [--list] [--search metin [--limit sayı]] [--grep metin] [--export dizin]
+      SRC# yardımını gösterir (veri, olay komutları, fonksiyonlar vb. başvurusu, Japonca Markdown). --list konuları listeler, --search sayfaları ilgiye göre bulur, --grep metni içeren satırları yazar, --export tüm sayfaları yazar
 
 Ortak seçenekler:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

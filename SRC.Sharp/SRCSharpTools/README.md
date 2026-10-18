@@ -8,7 +8,8 @@ srcsharp lint path/to/scenario
 srcsharp play path/to/scenario/test.eve --script test.play --out snapshots
 srcsharp balance path/to/data --output balance.md
 srcsharp help Askコマンド              # SRC# のヘルプ（リファレンス）を引く
-srcsharp help --search ChangeMap       # ヘルプの本文を探す
+srcsharp help --search 選択肢を表示する  # 関連の高い順にページを探す
+srcsharp help --grep ChangeMap         # 文字列を含む行を探す
 srcsharp help --export srcsharp-help   # ヘルプを Markdown で書き出す（AI に読ませるなど）
 ```
 

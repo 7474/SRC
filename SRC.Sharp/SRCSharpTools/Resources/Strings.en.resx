@@ -27,8 +27,8 @@ Usage:
       Language Server (stdio)
   srcsharp dap
       Debugger (Debug Adapter Protocol, stdio)
-  srcsharp help [topic] [--list] [--search text] [--export directory]
-      Show the SRC# help (reference for data, event commands, functions, etc., Japanese Markdown). --list lists topics, --search searches the text, --export writes all pages
+  srcsharp help [topic] [--list] [--search text [--limit count]] [--grep text] [--export directory]
+      Show the SRC# help (reference for data, event commands, functions, etc., Japanese Markdown). --list lists topics, --search finds pages ranked by relevance, --grep prints lines containing the text, --export writes all pages
 
 Common options:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

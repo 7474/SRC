@@ -27,8 +27,8 @@ Uso:
       Language Server (stdio)
   srcsharp dap
       Depurador (Debug Adapter Protocol, stdio)
-  srcsharp help [tema] [--list] [--search texto] [--export directorio]
-      Muestra la ayuda de SRC# (referencia de datos, comandos de evento, funciones, etc., Markdown en japonés). --list lista los temas, --search busca en el texto, --export escribe todas las páginas
+  srcsharp help [tema] [--list] [--search texto [--limit número]] [--grep texto] [--export directorio]
+      Muestra la ayuda de SRC# (referencia de datos, comandos de evento, funciones, etc., Markdown en japonés). --list lista los temas, --search busca páginas ordenadas por relevancia, --grep muestra las líneas que contienen el texto, --export escribe todas las páginas
 
 Opciones comunes:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

@@ -117,8 +117,19 @@ namespace SRCSharpTools
             return match(topic.Name, key) || match(topic.Title, key);
         }
 
+        private static readonly Lazy<HelpIndex> index = new Lazy<HelpIndex>(() => new HelpIndex(Topics));
+
+        /// <summary>
+        /// 関連の高い順にページを探す（BM25。日本語は文字の 2-gram、英数字は単語。見出しは重く数える）。
+        /// 空白で区切った複数の語も、語順や表記の揺れが少しあっても当たる
+        /// </summary>
+        public static IReadOnlyList<HelpSearchResult> Search(string query, int limit = 10)
+        {
+            return index.Value.Search(query, limit);
+        }
+
         /// <summary>本文の行を探す（大文字・小文字は区別しない）。行番号は Body の 1 始まり</summary>
-        public static IEnumerable<(HelpTopic topic, int line, string text)> Search(string text)
+        public static IEnumerable<(HelpTopic topic, int line, string text)> Grep(string text)
         {
             foreach (var topic in Topics)
             {

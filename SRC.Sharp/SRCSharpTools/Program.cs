@@ -9,6 +9,7 @@ using SRCSharpTools.Resources;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -215,8 +216,23 @@ namespace SRCSharpTools
             }
             if (options.TryGetValue("search", out var text))
             {
+                var limit = options.TryGetValue("limit", out var l) ? int.Parse(l) : 10;
+                var results = HelpDocument.Search(text, limit);
+                foreach (var result in results)
+                {
+                    var topic = result.Topic;
+                    Console.WriteLine((topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title) + "\t" + result.Score.ToString("0.00", CultureInfo.InvariantCulture));
+                    foreach (var (line, content) in result.Lines)
+                    {
+                        Console.WriteLine($"  {line}: {content}");
+                    }
+                }
+                return results.Count > 0 ? 0 : 1;
+            }
+            if (options.TryGetValue("grep", out var pattern))
+            {
                 var found = false;
-                foreach (var (topic, line, content) in HelpDocument.Search(text))
+                foreach (var (topic, line, content) in HelpDocument.Grep(pattern))
                 {
                     Console.WriteLine($"{topic.Name}:{line}: {content}");
                     found = true;

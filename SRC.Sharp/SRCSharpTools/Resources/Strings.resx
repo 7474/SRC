@@ -27,8 +27,8 @@
       Language Server（標準入出力）
   srcsharp dap
       デバッガ（Debug Adapter Protocol、標準入出力）
-  srcsharp help [項目] [--list] [--search 文字列] [--export ディレクトリ]
-      SRC# のヘルプ（データ・イベントコマンド・関数などのリファレンス、日本語の Markdown）を表示する。--list で項目の一覧、--search で本文を探す、--export ですべてを書き出す
+  srcsharp help [項目] [--list] [--search 文字列 [--limit 数]] [--grep 文字列] [--export ディレクトリ]
+      SRC# のヘルプ（データ・イベントコマンド・関数などのリファレンス、日本語の Markdown）を表示する。--list で項目の一覧、--search で関連の高い順にページを探す、--grep で文字列を含む行を出す、--export ですべてを書き出す
 
 共通のオプション:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

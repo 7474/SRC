@@ -27,8 +27,8 @@
       Language Server(표준 입출력)
   srcsharp dap
       디버거(Debug Adapter Protocol, 표준 입출력)
-  srcsharp help [항목] [--list] [--search 문자열] [--export 디렉터리]
-      SRC# 도움말(데이터·이벤트 명령·함수 등의 레퍼런스, 일본어 Markdown)을 표시. --list는 항목 목록, --search는 본문 검색, --export는 전체를 내보냄
+  srcsharp help [항목] [--list] [--search 문자열 [--limit 수]] [--grep 문자열] [--export 디렉터리]
+      SRC# 도움말(데이터·이벤트 명령·함수 등의 레퍼런스, 일본어 Markdown)을 표시. --list는 항목 목록, --search는 관련도 순으로 페이지 검색, --grep은 문자열을 포함한 줄 출력, --export는 전체를 내보냄
 
 공통 옵션:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;

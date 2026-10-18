@@ -27,8 +27,8 @@
       Language Server (stdio)
   srcsharp dap
       Отладчик (Debug Adapter Protocol, stdio)
-  srcsharp help [раздел] [--list] [--search текст] [--export каталог]
-      Показать справку SRC# (справочник по данным, командам событий, функциям и т. д., Markdown на японском). --list — список разделов, --search — поиск по тексту, --export — записать все страницы
+  srcsharp help [раздел] [--list] [--search текст [--limit число]] [--grep текст] [--export каталог]
+      Показать справку SRC# (справочник по данным, командам событий, функциям и т. д., Markdown на японском). --list — список разделов, --search — поиск страниц по релевантности, --grep — строки, содержащие текст, --export — записать все страницы
 
 Общие параметры:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
