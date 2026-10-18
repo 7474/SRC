@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- srcsharp help で引くヘルプ（HelpDocument）。Docker イメージのビルドではフォルダが無いため同梱されない -->
+    <!-- srcsharp help で引くヘルプ（HelpDocument）。Docker イメージもリポジトリのルートをコンテキストにして含める -->
     <EmbeddedResource Include="..\..\SRC.Sharp.Help\src\*.md" Exclude="..\..\SRC.Sharp.Help\src\404.md" LogicalName="help/%(Filename)%(Extension)" Link="Help\%(Filename)%(Extension)" />
   </ItemGroup>
 
