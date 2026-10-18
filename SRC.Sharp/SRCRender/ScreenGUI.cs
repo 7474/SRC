@@ -229,10 +229,16 @@ namespace SRCRender
             {
                 DoEvents();
             }
-            if (dwMilliseconds > 0)
-            {
-                Thread.Sleep(dwMilliseconds);
-            }
+            GeneralLib.TimedSleep(dwMilliseconds);
+        }
+
+        /// <summary>
+        /// 入力や UI スレッドの処理を待つポーリングの一回分。待ちを飛ばすときも実時間で待つ。
+        /// </summary>
+        private void PollWait()
+        {
+            DoEvents();
+            Thread.Sleep(WaitIntervalMillis);
         }
 
         /// <summary>
@@ -247,7 +253,7 @@ namespace SRCRender
                 {
                     return false;
                 }
-                Sleep(WaitIntervalMillis);
+                PollWait();
             }
             return true;
         }

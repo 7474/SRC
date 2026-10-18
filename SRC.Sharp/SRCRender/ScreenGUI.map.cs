@@ -217,7 +217,7 @@ namespace SRCRender
 
         public void TransionScrean(TransionPattern pattern, Color fillColor, int frame, int frameMillis)
         {
-            var start = Environment.TickCount;
+            var start = GeneralLib.timeGetTime();
             using (var copy = ImageFilters.Copy(mainBuffer))
             {
                 for (var i = 0; i <= frame; i++)
@@ -239,7 +239,7 @@ namespace SRCRender
                     UpdateScreen();
                     if (frame != i)
                     {
-                        while (Environment.TickCount < start + frameMillis * (i + 1))
+                        while (GeneralLib.timeGetTime() < start + frameMillis * (i + 1))
                         {
                             Sleep(1);
                         }
@@ -474,7 +474,7 @@ namespace SRCRender
             do
             {
                 Sleep(1);
-                now = Environment.TickCount;
+                now = GeneralLib.timeGetTime();
             }
             while (startTime + waitTime > now);
             startTime = now;
@@ -483,7 +483,7 @@ namespace SRCRender
         public void MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division = 2)
         {
             var waitTime = wait_time0 / division;
-            var startTime = Environment.TickCount;
+            var startTime = GeneralLib.timeGetTime();
             SaveScreen();
             using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
             {
@@ -520,7 +520,7 @@ namespace SRCRender
         public void MoveUnitBitmap2(Unit u, int wait_time0, int division = 2)
         {
             var waitTime = wait_time0 / division;
-            var startTime = Environment.TickCount;
+            var startTime = GeneralLib.timeGetTime();
             SaveScreen();
             using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
             {

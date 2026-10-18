@@ -288,7 +288,7 @@ namespace SRCRender
             var start = Environment.TickCount;
             while (!IsFormClicked)
             {
-                Sleep(WaitIntervalMillis);
+                PollWait();
                 // Questionコマンドの制限時間
                 if (listTimeLimit > 0)
                 {
@@ -674,7 +674,7 @@ namespace SRCRender
             box.Show();
             while (!IsFormClicked)
             {
-                Sleep(WaitIntervalMillis);
+                PollWait();
             }
             waitingList = false;
             State.List = null;
@@ -781,7 +781,7 @@ namespace SRCRender
                 box.Show();
                 while (!multiSelectClosed)
                 {
-                    Sleep(WaitIntervalMillis);
+                    PollWait();
                 }
             }
             finally

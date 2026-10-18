@@ -148,6 +148,8 @@ namespace SRCSharpTools
                 appPath = Path.GetFullPath(appPath);
             }
             options.TryGetValue("out", out var outDir);
+            // 画面を見ないので、決まった時間だけ待つ処理（戦闘アニメ、メッセージ、移動、Wait コマンドなど）を飛ばす
+            SRCCore.Lib.GeneralLib.SkipWait = options.ContainsKey("skip-wait");
             using (var logHost = CreateLogHost("play", LogOutputs.StandardError))
             using (var runner = new ScreenScenarioRunner(appPath ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(eve), logHost.LoggerFactory))
             {

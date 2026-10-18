@@ -52,10 +52,7 @@ namespace SRCCore.Threading
                         {
                             threading.Game.ProcessPending();
                         }
-                        if (milliseconds > 0)
-                        {
-                            Thread.Sleep(milliseconds);
-                        }
+                        Lib.GeneralLib.TimedSleep(milliseconds);
                         return null;
                 }
             }

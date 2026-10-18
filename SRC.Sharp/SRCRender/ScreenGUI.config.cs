@@ -47,7 +47,7 @@ namespace SRCRender
             {
                 while (!configClosed)
                 {
-                    Sleep(WaitIntervalMillis);
+                    PollWait();
                 }
             }
             finally

@@ -19,8 +19,8 @@
 Uso:
   srcsharp lint &lt;diretório ou arquivo&gt;... [--format text|sarif] [--output arquivo]
       Verifica dados (*.txt) e eventos (*.eve). Código de saída 1 se houver problemas
-  srcsharp play &lt;arquivo de evento&gt; [--script arquivo.play] [--out diretório] [--app-path pasta do SRC] [--steps número]
-      Executa um cenário sem tela. Sem --script, avança as mensagens e escolhe a primeira opção
+  srcsharp play &lt;arquivo de evento&gt; [--script arquivo.play] [--out diretório] [--app-path pasta do SRC] [--steps número] [--skip-wait]
+      Executa um cenário sem tela. Sem --script, avança as mensagens e escolhe a primeira opção. Com --skip-wait, pula as esperas fixas (animações, mensagens, Wait).
   srcsharp balance &lt;diretório ou arquivo&gt;... [--format md|csv] [--output arquivo]
       Lista os atributos dos dados de unidades e os valores atípicos
   srcsharp lsp
