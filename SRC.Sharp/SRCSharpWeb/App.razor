@@ -315,6 +315,8 @@ else
     private IList<string> eventFiles = new List<string>();
     private ScreenSession session;
     private System.Threading.Timer watch;
+    /// <summary>プレイの画面（canvas）を描き終えたら完了する。StartAsync が待つ</summary>
+    private TaskCompletionSource rendered;
     private bool systemMenuOpen;
     private bool confirmingBack;
 
@@ -363,6 +365,14 @@ else
     private async Task FocusScreenAsync()
     {
         await JS.InvokeVoidAsync("srcwebStore.focus", "screen");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (mode == Mode.Playing)
+        {
+            rendered?.TrySetResult();
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -852,9 +862,12 @@ else
     {
         status = null;
         mode = Mode.Playing;
+        // canvas を表示してから始める。Task.Delay では描画が終わっている保証が無く、
+        // canvas が無いまま srcweb.js の bindCanvas が getContext を呼んで失敗することがあった
+        rendered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         StateHasChanged();
-        // canvas を表示してから始める
-        await Task.Delay(1);
+        await rendered.Task;
+        rendered = null;
         Directory.CreateDirectory(ScenarioArchive.AppPath);
         var host = new WebScreenHost(scenarioDir, L);
         // MIDI の SoundFont は同梱しない。アーカイブに含まれる .sf2 を使う。
