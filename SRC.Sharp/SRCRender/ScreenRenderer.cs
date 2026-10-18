@@ -98,7 +98,7 @@ namespace SRCRender
             // メインウィンドウを隠している間（プロローグ・インターミッションなど）は、マップとステータスを描かない（黒いまま）
             if (layers.Map != null && state.MainFormVisible)
             {
-                canvas.DrawBitmap(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
+                canvas.DrawBitmapShared(layers.Map, ScreenLayout.MapArea.Left, ScreenLayout.MapArea.Top);
                 if (state.MapCursor is SKRectI cursor)
                 {
                     DrawMapCursor(canvas, cursor);
@@ -319,13 +319,13 @@ namespace SRCRender
             }
             if (picture.StretchImage)
             {
-                canvas.DrawBitmap(picture.Image, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
+                canvas.DrawBitmapShared(picture.Image, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
             }
             else
             {
                 canvas.Save();
                 canvas.ClipRect(SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
-                canvas.DrawBitmap(picture.Image, picture.Left, picture.Top);
+                canvas.DrawBitmapShared(picture.Image, picture.Left, picture.Top);
                 canvas.Restore();
             }
         }
