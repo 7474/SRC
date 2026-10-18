@@ -27,6 +27,8 @@
       Language Server (stdio)
   srcsharp dap
       ดีบักเกอร์ (Debug Adapter Protocol, stdio)
+  srcsharp help [หัวข้อ] [--list] [--search ข้อความ] [--export ไดเรกทอรี]
+      แสดงวิธีใช้ SRC# (ข้อมูลอ้างอิงของข้อมูล คำสั่งอีเวนต์ ฟังก์ชัน ฯลฯ เป็น Markdown ภาษาญี่ปุ่น) --list แสดงรายการหัวข้อ --search ค้นหาในเนื้อหา --export เขียนทุกหน้าออก
 
 ตัวเลือกทั่วไป:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>โปรดระบุไฟล์อีเวนต์ 1 ไฟล์</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>ไม่ได้รวมวิธีใช้ไว้</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>ไม่พบหัวข้อวิธีใช้: {0} (ค้นหาในเนื้อหาด้วย srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>มีหลายหัวข้อที่ตรงกับ {0}:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>เขียนวิธีใช้ {0} หน้าไปที่ {1} แล้ว</value>
   </data>
 </root>

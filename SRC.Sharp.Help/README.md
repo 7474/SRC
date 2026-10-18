@@ -61,6 +61,10 @@ https://srch.7474.jp/
 - です・ます調。
 - 能力名・コマンド名など、データやイベントに書く名前は元の SRC の表記（全角の英数字など）のままにする。
 
+## srcsharp への同梱
+
+`src` の `*.md` は CLI `srcsharp` に埋め込まれ、`srcsharp help <項目>`・`--search`・`--export` で引ける（[作成支援ツール](../docs/tools/authoring.md#cli)）。項目の名前はファイル名なので、ファイル名を変えると `srcsharp help` で引く名前も変わる。
+
 ## Develop
 
 ```sh

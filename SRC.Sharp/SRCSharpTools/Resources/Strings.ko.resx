@@ -27,6 +27,8 @@
       Language Server(표준 입출력)
   srcsharp dap
       디버거(Debug Adapter Protocol, 표준 입출력)
+  srcsharp help [항목] [--list] [--search 문자열] [--export 디렉터리]
+      SRC# 도움말(데이터·이벤트 명령·함수 등의 레퍼런스, 일본어 Markdown)을 표시. --list는 항목 목록, --search는 본문 검색, --export는 전체를 내보냄
 
 공통 옵션:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>이벤트 파일을 하나 지정해 주세요</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>도움말이 포함되어 있지 않습니다</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>도움말 항목을 찾을 수 없습니다: {0} (srcsharp help --search로 본문을 검색할 수 있습니다)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>{0}에 해당하는 항목이 여러 개 있습니다:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>도움말 {0}개를 {1}에 내보냈습니다</value>
   </data>
 </root>

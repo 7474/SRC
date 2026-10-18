@@ -27,6 +27,8 @@ Verwendung:
       Language Server (stdio)
   srcsharp dap
       Debugger (Debug Adapter Protocol, stdio)
+  srcsharp help [Thema] [--list] [--search Text] [--export Verzeichnis]
+      Zeigt die SRC#-Hilfe (Referenz zu Daten, Event-Befehlen, Funktionen usw., japanisches Markdown). --list listet die Themen, --search durchsucht den Text, --export schreibt alle Seiten
 
 Allgemeine Optionen:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@ Allgemeine Optionen:
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Gib genau eine Event-Datei an</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>Die Hilfe ist nicht enthalten</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Hilfethema nicht gefunden: {0} (Text mit srcsharp help --search durchsuchen)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Mehrere Themen passen zu {0}:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>{0} Hilfeseiten nach {1} geschrieben</value>
   </data>
 </root>

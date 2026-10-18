@@ -27,6 +27,8 @@ Kullanım:
       Language Server (stdio)
   srcsharp dap
       Hata ayıklayıcı (Debug Adapter Protocol, stdio)
+  srcsharp help [konu] [--list] [--search metin] [--export dizin]
+      SRC# yardımını gösterir (veri, olay komutları, fonksiyonlar vb. başvurusu, Japonca Markdown). --list konuları listeler, --search metinde arar, --export tüm sayfaları yazar
 
 Ortak seçenekler:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@ Ortak seçenekler:
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Tam olarak bir olay dosyası belirtin</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>Yardım dahil değil</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Yardım konusu bulunamadı: {0} (metinde srcsharp help --search ile arayın)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>{0} ile eşleşen birden fazla konu var:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>{0} yardım sayfası {1} konumuna yazıldı</value>
   </data>
 </root>

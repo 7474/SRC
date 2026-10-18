@@ -27,6 +27,8 @@
       Language Server (stdio)
   srcsharp dap
       Отладчик (Debug Adapter Protocol, stdio)
+  srcsharp help [раздел] [--list] [--search текст] [--export каталог]
+      Показать справку SRC# (справочник по данным, командам событий, функциям и т. д., Markdown на японском). --list — список разделов, --search — поиск по тексту, --export — записать все страницы
 
 Общие параметры:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Укажите ровно один файл события</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>Справка не включена</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Раздел справки не найден: {0} (ищите по тексту с помощью srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Под {0} подходит несколько разделов:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>Записано страниц справки: {0} в {1}</value>
   </data>
 </root>

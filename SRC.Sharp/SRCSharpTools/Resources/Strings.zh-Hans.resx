@@ -27,6 +27,8 @@
       Language Server（标准输入输出）
   srcsharp dap
       调试器（Debug Adapter Protocol，标准输入输出）
+  srcsharp help [条目] [--list] [--search 文本] [--export 目录]
+      显示 SRC# 帮助（数据、事件命令、函数等的参考，日语 Markdown）。--list 列出条目，--search 搜索正文，--export 导出全部页面
 
 通用选项:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>请指定一个事件文件</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>未包含帮助</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>找不到帮助条目：{0}（可用 srcsharp help --search 搜索正文）</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>有多个条目与 {0} 匹配：</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>已将 {0} 个帮助页面写入 {1}</value>
   </data>
 </root>

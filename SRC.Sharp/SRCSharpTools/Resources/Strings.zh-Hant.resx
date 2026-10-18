@@ -27,6 +27,8 @@
       Language Server（標準輸入輸出）
   srcsharp dap
       偵錯器（Debug Adapter Protocol，標準輸入輸出）
+  srcsharp help [項目] [--list] [--search 文字] [--export 目錄]
+      顯示 SRC# 說明（資料、事件指令、函式等的參考，日文 Markdown）。--list 列出項目，--search 搜尋內文，--export 匯出全部頁面
 
 共通選項:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>請指定一個事件檔案</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>未包含說明</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>找不到說明項目：{0}（可用 srcsharp help --search 搜尋內文）</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>有多個項目符合 {0}：</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>已將 {0} 個說明頁面寫入 {1}</value>
   </data>
 </root>

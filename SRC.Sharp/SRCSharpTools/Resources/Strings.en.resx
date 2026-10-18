@@ -27,6 +27,8 @@ Usage:
       Language Server (stdio)
   srcsharp dap
       Debugger (Debug Adapter Protocol, stdio)
+  srcsharp help [topic] [--list] [--search text] [--export directory]
+      Show the SRC# help (reference for data, event commands, functions, etc., Japanese Markdown). --list lists topics, --search searches the text, --export writes all pages
 
 Common options:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@ Common options:
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Specify exactly one event file</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>The help is not bundled</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Help topic not found: {0} (search the text with srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Multiple topics match {0}:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>Wrote {0} help pages to {1}</value>
   </data>
 </root>

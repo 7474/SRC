@@ -7,6 +7,9 @@ dotnet tool install -g SRCSharpTools
 srcsharp lint path/to/scenario
 srcsharp play path/to/scenario/test.eve --script test.play --out snapshots
 srcsharp balance path/to/data --output balance.md
+srcsharp help Askコマンド              # SRC# のヘルプ（リファレンス）を引く
+srcsharp help --search ChangeMap       # ヘルプの本文を探す
+srcsharp help --export srcsharp-help   # ヘルプを Markdown で書き出す（AI に読ませるなど）
 ```
 
 表示の言語は `--lang en` などか環境変数 `SRCSHARP_LANG` で切り替えます（[多言語対応](https://github.com/7474/SRC/blob/master/docs/i18n.md)）。

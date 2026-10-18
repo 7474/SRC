@@ -27,6 +27,8 @@ Uso:
       Language Server (stdio)
   srcsharp dap
       Depurador (Debug Adapter Protocol, stdio)
+  srcsharp help [tópico] [--list] [--search texto] [--export diretório]
+      Mostra a ajuda do SRC# (referência de dados, comandos de evento, funções etc., Markdown em japonês). --list lista os tópicos, --search busca no texto, --export grava todas as páginas
 
 Opções comuns:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,17 @@ Opções comuns:
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Informe exatamente um arquivo de evento</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>A ajuda não está incluída</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Tópico de ajuda não encontrado: {0} (busque no texto com srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Vários tópicos correspondem a {0}:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>{0} páginas de ajuda gravadas em {1}</value>
   </data>
 </root>
