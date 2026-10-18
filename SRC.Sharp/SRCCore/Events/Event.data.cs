@@ -313,6 +313,24 @@ namespace SRCCore.Events
 
         private bool RegisterLabel()
         {
+            // 「登録済なら無視」の判定に、登録済みの行の索引を使う
+            registeringNormalLabelIds = new LabelIdIndex(colNormalLabelList);
+            registeringEventLabelIds = new LabelIdIndex(colEventLabelList);
+            registeringSysNormalLabelIds = new LabelIdIndex(colSysNormalLabelList);
+            try
+            {
+                return RegisterLabels();
+            }
+            finally
+            {
+                registeringNormalLabelIds = null;
+                registeringEventLabelIds = null;
+                registeringSysNormalLabelIds = null;
+            }
+        }
+
+        private bool RegisterLabels()
+        {
             var error_found = false;
             foreach (var line in EventData)
             {

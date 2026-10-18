@@ -1122,7 +1122,8 @@ namespace SRCRender
                             {
                                 break;
                             }
-                            Thread.Sleep(100);
+                            // クリックを待つポーリング。間隔は他の入力待ち（WaitUntil）と揃える
+                            Thread.Sleep(WaitIntervalMillis);
                             DoEvents();
 
                             // 自動送りモードが切り替えられた場合
