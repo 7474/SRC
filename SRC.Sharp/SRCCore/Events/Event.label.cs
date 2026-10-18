@@ -1,6 +1,7 @@
 using SRCCore.Lib;
 using SRCCore.Logging;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Events
@@ -461,19 +462,20 @@ namespace SRCCore.Events
             if (new_label.Name == LabelType.NormalLabel)
             {
                 // 登録済なら無視
-                if (colNormalLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+                if (IsLabelRegistered(colNormalLabelList, registeringNormalLabelIds, eventDataId)) { return; }
 
                 // 通常ラベルを追加
                 if (FindNormalLabel0(lname) < 0)
                 {
                     colNormalLabelList.Add(new_label, lname);
+                    registeringNormalLabelIds?.Add(eventDataId);
                 }
                 // 通常ラベルが重複定義されている場合は無視
             }
             else
             {
                 // 登録済なら無視
-                if (colEventLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+                if (IsLabelRegistered(colEventLabelList, registeringEventLabelIds, eventDataId)) { return; }
 
                 // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
@@ -483,6 +485,7 @@ namespace SRCCore.Events
                 if (!IsLabelDefined(lname2))
                 {
                     colEventLabelList.Add(new_label, lname2);
+                    registeringEventLabelIds?.Add(eventDataId);
                 }
                 else
                 {
@@ -490,6 +493,7 @@ namespace SRCCore.Events
                     if (!IsLabelDefined(lname3))
                     {
                         colEventLabelList.Add(new_label, lname3);
+                        registeringEventLabelIds?.Add(eventDataId);
                     }
                 }
             }
@@ -507,7 +511,7 @@ namespace SRCCore.Events
             if (new_label.Name == LabelType.NormalLabel)
             {
                 // 登録済なら無視
-                if(colSysNormalLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+                if (IsLabelRegistered(colSysNormalLabelList, registeringSysNormalLabelIds, eventDataId)) { return; }
 
                 // 通常ラベルを追加
                 if (FindSysNormalLabel(lname) < 0)
@@ -516,13 +520,16 @@ namespace SRCCore.Events
                 }
                 else
                 {
-                    colSysNormalLabelList[lname].EventDataId = eventDataId;
+                    var label = colSysNormalLabelList[lname];
+                    registeringSysNormalLabelIds?.Remove(label.EventDataId);
+                    label.EventDataId = eventDataId;
                 }
+                registeringSysNormalLabelIds?.Add(eventDataId);
             }
             else
             {
                 // 登録済なら無視
-                if (colEventLabelList.Values.Any(x => x.EventDataId == eventDataId)) { return; }
+                if (IsLabelRegistered(colEventLabelList, registeringEventLabelIds, eventDataId)) { return; }
 
                 // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
@@ -536,6 +543,65 @@ namespace SRCCore.Events
                 else
                 {
                     colEventLabelList.Add(new_label, lname2 + "(" + SrcFormatter.Format(eventDataId) + ")");
+                }
+                registeringEventLabelIds?.Add(eventDataId);
+            }
+        }
+
+        // RegisterLabel の間だけ使う、各ラベルの一覧に登録済みの行（EventDataId）の数。
+        // 「登録済なら無視」を一覧の全件の走査にしないため（Require のたびに全行のラベルを登録し直すので、ラベル数の二乗になる）
+        private LabelIdIndex registeringNormalLabelIds;
+        private LabelIdIndex registeringEventLabelIds;
+        private LabelIdIndex registeringSysNormalLabelIds;
+
+        private static bool IsLabelRegistered(SrcCollection<LabelData> labels, LabelIdIndex ids, int eventDataId)
+        {
+            if (ids != null)
+            {
+                return ids.Contains(eventDataId);
+            }
+            foreach (LabelData label in labels)
+            {
+                if (label.EventDataId == eventDataId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private sealed class LabelIdIndex
+        {
+            private readonly Dictionary<int, int> counts = new Dictionary<int, int>();
+
+            public LabelIdIndex(SrcCollection<LabelData> labels)
+            {
+                foreach (LabelData label in labels)
+                {
+                    Add(label.EventDataId);
+                }
+            }
+
+            public bool Contains(int eventDataId) => counts.ContainsKey(eventDataId);
+
+            public void Add(int eventDataId)
+            {
+                counts.TryGetValue(eventDataId, out var count);
+                counts[eventDataId] = count + 1;
+            }
+
+            public void Remove(int eventDataId)
+            {
+                if (counts.TryGetValue(eventDataId, out var count))
+                {
+                    if (count <= 1)
+                    {
+                        counts.Remove(eventDataId);
+                    }
+                    else
+                    {
+                        counts[eventDataId] = count - 1;
+                    }
                 }
             }
         }

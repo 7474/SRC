@@ -337,6 +337,24 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.AreEqual(count, src.Event.EventData.Count);
         }
 
+        [TestMethod]
+        public void LoadDynamic_RegistersEachLabelLineOnce()
+        {
+            // 読み込むたびに全行のラベルを登録し直すが、登録済みの行は増やさない。
+            // 同じ名前の通常ラベルは先のものを使い、同じ名前のイベントラベルは行番号を付けて別に登録する
+            WriteFile("dyn1.eve", "共通:", "Exit", "ターン 1 味方:", "Exit");
+            WriteFile("dyn2.eve", "別の:", "Exit");
+            var (src, gui) = Load("共通:", "Exit", "ターン 1 味方:", "Exit");
+
+            src.Event.LoadDynamic(Path.Combine(appPath, "dyn1.eve"));
+            src.Event.LoadDynamic(Path.Combine(appPath, "dyn2.eve"));
+
+            Assert.AreEqual(LineOf(src, "共通:"), src.Event.FindLabel("共通"));
+            Assert.AreEqual(LineOf(src, "別の:"), src.Event.FindLabel("別の"));
+            var turnLabels = src.Event.colEventLabelList.Keys.Where(x => x.StartsWith("ターン 1 味方")).ToList();
+            Assert.AreEqual(2, turnLabels.Count, string.Join(", ", turnLabels));
+        }
+
         // ──────────────────────────────────────────────
         // ラベル検索 (SearchLabel / IsEventDefined / FindLabel)
         // ──────────────────────────────────────────────
