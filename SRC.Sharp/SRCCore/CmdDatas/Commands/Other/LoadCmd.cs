@@ -19,6 +19,7 @@ namespace SRCCore.CmdDatas.Commands
                 if (!SRC.Titles.Contains(tname))
                 {
                     new_titles.Add(tname);
+                    SRC.Titles.Add(tname);
                 }
             }
 
