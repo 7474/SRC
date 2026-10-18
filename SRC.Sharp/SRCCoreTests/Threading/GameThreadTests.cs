@@ -48,5 +48,57 @@ namespace SRCCore.Threading.Tests
                 game.Join(Timeout);
             }
         }
+
+        [TestMethod]
+        public void WaitPending_RunsPostedActionWithoutWaitingInterval()
+        {
+            using (var game = new GameThread())
+            using (var waiting = new ManualResetEventSlim())
+            using (var done = new ManualResetEventSlim())
+            {
+                game.Start();
+                var handled = false;
+                long elapsed = -1;
+                // 待ちのループ（メッセージのクリック待ちなど）。間隔は長くても、渡された入力にはすぐ応じる
+                game.Post(() =>
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    waiting.Set();
+                    while (!handled && watch.ElapsedMilliseconds < 5000)
+                    {
+                        game.WaitPending(5000);
+                    }
+                    elapsed = watch.ElapsedMilliseconds;
+                    done.Set();
+                });
+                Assert.IsTrue(waiting.Wait(Timeout));
+                game.Post(() => handled = true);
+                Assert.IsTrue(done.Wait(Timeout));
+                Assert.IsTrue(handled);
+                Assert.IsTrue(elapsed < 2000, $"elapsed {elapsed}ms");
+                game.Stop();
+                game.Join(Timeout);
+            }
+        }
+
+        [TestMethod]
+        public void WaitActivity_ReturnsWhenActionFinishes()
+        {
+            using (var game = new GameThread())
+            using (var release = new ManualResetEventSlim())
+            {
+                game.Start();
+                game.Post(() => release.Wait(Timeout));
+                Assert.IsTrue(WaitUntil(() => game.IsBusy));
+                var seen = game.Activity;
+
+                // 処理が終わるまでは変わらない
+                Assert.IsFalse(game.WaitActivity(seen, 50));
+                release.Set();
+                Assert.IsTrue(game.WaitActivity(seen, (int)Timeout.TotalMilliseconds), "処理を終えて手が空いたら戻る");
+                game.Stop();
+                game.Join(Timeout);
+            }
+        }
     }
 }

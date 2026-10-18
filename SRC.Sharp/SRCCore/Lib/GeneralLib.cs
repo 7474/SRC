@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace SRCCore.Lib
 {
@@ -69,6 +70,15 @@ namespace SRCCore.Lib
         }
 
         private static Stopwatch sw = new Stopwatch();
+        private static long skippedMillis;
+
+        /// <summary>
+        /// true のあいだ、決まった時間だけ待つ処理（<see cref="TimedSleep"/>）は眠らず、
+        /// 待つはずだった時間だけ <see cref="timeGetTime"/> を進める。
+        /// 画面を見ないヘッドレス実行（srcsharp play --skip-wait）で使う。
+        /// </summary>
+        public static bool SkipWait { get; set; }
+
         public static int timeGetTime()
         {
             if (!sw.IsRunning)
@@ -76,7 +86,25 @@ namespace SRCCore.Lib
                 sw.Start();
             }
             // XXX
-            return (int)sw.ElapsedMilliseconds;
+            return (int)(sw.ElapsedMilliseconds + Interlocked.Read(ref skippedMillis));
+        }
+
+        /// <summary>
+        /// 決まった時間だけ待つ。<see cref="SkipWait"/> のときは眠らずに <see cref="timeGetTime"/> を進める。
+        /// 入力や別スレッドを待つポーリングには使わない（そちらは実時間で待つ）。
+        /// </summary>
+        public static void TimedSleep(int milliseconds)
+        {
+            if (milliseconds <= 0)
+            {
+                return;
+            }
+            if (SkipWait)
+            {
+                Interlocked.Add(ref skippedMillis, milliseconds);
+                return;
+            }
+            Thread.Sleep(milliseconds);
         }
 
         //        // 時間処理の解像度を変更する

@@ -229,9 +229,24 @@ namespace SRCRender
             {
                 DoEvents();
             }
-            if (dwMilliseconds > 0)
+            GeneralLib.TimedSleep(dwMilliseconds);
+        }
+
+        /// <summary>
+        /// 入力や UI スレッドの処理を待つポーリングの一回分。待ちを飛ばすときも実時間で待つ。
+        /// </summary>
+        private void PollWait()
+        {
+            DoEvents();
+            if (game.IsCurrentThread)
             {
-                Thread.Sleep(dwMilliseconds);
+                // UI から入力が渡されたら、間隔を待たずに処理する
+                game.WaitPending(WaitIntervalMillis);
+                FlushInvalidatedScreen();
+            }
+            else
+            {
+                Thread.Sleep(WaitIntervalMillis);
             }
         }
 
@@ -247,7 +262,7 @@ namespace SRCRender
                 {
                     return false;
                 }
-                Sleep(WaitIntervalMillis);
+                PollWait();
             }
             return true;
         }
@@ -1050,10 +1065,22 @@ namespace SRCRender
             isDragging = false;
         }
 
+        // KeyState 関数でキー・ボタンの状態が読まれた回数
+        private long keyStatePolls;
+
+        /// <summary>
+        /// KeyState 関数でキー・ボタンの状態が読まれた回数。
+        /// 画面に待ちの状態が出ないまま、スクリプトが入力を待っている（KeyState を読むループ）ことを、ランナーが見分けるのに使う。
+        /// 押したあとにこの値が増えたら、その押下はスクリプトに読まれている。
+        /// </summary>
+        public long KeyStatePolls => Interlocked.Read(ref keyStatePolls);
+
         public bool GetKeyState(int key)
         {
             lock (pressedKeys)
             {
+                // 読んだ状態と回数を同じロックの中で揃える（回数が増えたら、それより前の押下は読まれている）
+                Interlocked.Increment(ref keyStatePolls);
                 return pressedKeys.Contains(key);
             }
         }

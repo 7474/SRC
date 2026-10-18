@@ -19,8 +19,8 @@
 Usage:
   srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file]
       Check data (*.txt) and events (*.eve). Exit code 1 if problems are found
-  srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--steps count]
-      Run a scenario without a screen. Without --script, advance messages and pick the first choice
+  srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--steps count] [--skip-wait]
+      Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped.
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
   srcsharp lsp

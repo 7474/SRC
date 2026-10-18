@@ -30,6 +30,18 @@ namespace SRCPlay
         public int StallClickMillis { get; set; } = 5000;
 
         /// <summary>
+        /// --skip-wait のとき、KeyState が読まれていないなら、この時間（と StallClickMillis の長い方）操作が無いまで押さない（ミリ秒）。
+        /// 決まった時間の待ちは仮想時計ですぐ終わるので、押してもスクリプトに読まれない押下は、押して保つ時間の分だけ遅くなる
+        /// </summary>
+        public int StallFallbackMillis { get; set; } = 5000;
+
+        // この時間以内に KeyState が読まれていれば、スクリプトが入力を待っているとみなす（ミリ秒）
+        private const int PollRecentMillis = 500;
+
+        // ボタンを押して保つ最長の時間（ミリ秒）。KeyState に読まれたらその時点で離す
+        private const int HoldMillis = 300;
+
+        /// <summary>
         /// そのときに押す位置。順に使う。スクリプトが描いたメニュー（マウスの位置で選ぶもの）を進めるため、マップ上の複数の場所を含める
         /// </summary>
         public IList<(float x, float y)> StallClickPositions { get; set; } = new List<(float x, float y)>
@@ -176,10 +188,28 @@ namespace SRCPlay
             var y = form.ScreenTop + SRCRender.Compat.Form.TitleBarHeight + control.Top + control.Height / 2f;
             runner.GUI.PointerPressed(x, y, GuiButton.Left);
             runner.GUI.PointerReleased(x, y, GuiButton.Left);
-            Thread.Sleep(50);
+            runner.TrySync(TimeSpan.FromSeconds(1));
         }
 
         public void Run(int maxSteps, int idleMillis = 10000) => Run(maxSteps, idleMillis, null);
+
+        /// <summary>
+        /// 人の操作と同じく、左ボタンを押してしばらく保ってから離す。
+        /// KeyState に押された状態が読まれたら、HoldMillis を待たずに離す
+        /// </summary>
+        private void HoldLeftButton(float x, float y)
+        {
+            var gui = runner.GUI;
+            gui.PointerMoved(x, y);
+            gui.PointerPressed(x, y, GuiButton.Left);
+            var polls = gui.KeyStatePolls;
+            var until = DateTime.UtcNow.AddMilliseconds(HoldMillis);
+            while (gui.KeyStatePolls == polls && DateTime.UtcNow < until)
+            {
+                Thread.Sleep(1);
+            }
+            gui.PointerReleased(x, y, GuiButton.Left);
+        }
 
         /// <summary>
         /// stopWhen が真になったら（例: マップで操作を受け付ける状態）その場で戻る。真で戻った場合は true。
@@ -190,6 +220,8 @@ namespace SRCPlay
             var idleSince = DateTime.UtcNow;
             var lastFrame = runner.FrameCount;
             var lastActed = DateTime.UtcNow;
+            var lastPolls = gui.KeyStatePolls;
+            var lastPolledAt = DateTime.MinValue;
             while (Steps < maxSteps && !runner.IsFinished)
             {
                 // デバッガが止めている間は操作しない（待った時間は停滞に数えない）
@@ -200,8 +232,24 @@ namespace SRCPlay
                 {
                     return true;
                 }
+                var seen = runner.GameActivity;
                 var state = runner.State;
                 var acted = false;
+                var polls = gui.KeyStatePolls;
+                if (polls != lastPolls)
+                {
+                    lastPolls = polls;
+                    lastPolledAt = DateTime.UtcNow;
+                }
+                var stalledMillis = (DateTime.UtcNow - lastActed).TotalMilliseconds;
+                // 待ちの状態でないまま進まないときに押すか。
+                // 時間の待ちを飛ばさないときは、押すとメッセージや演出の待ちも進むので、従来どおり StallClickMillis で押す。
+                // --skip-wait のときは、スクリプトが KeyState を読んでいる（入力を待っている）ときだけ押し、
+                // 読んでいないなら処理中とみなして StallFallbackMillis まで待つ
+                var stalled = stalledMillis > StallClickMillis
+                    && (!SRCCore.Lib.GeneralLib.SkipWait
+                        || (DateTime.UtcNow - lastPolledAt).TotalMilliseconds <= PollRecentMillis
+                        || stalledMillis > StallFallbackMillis);
                 if (state.Dialog != null)
                 {
                     var dialog = state.Dialog;
@@ -289,21 +337,19 @@ namespace SRCPlay
                         gui.KeyPressed(ScreenKey.Enter);
                     }
                     acted = true;
-                    Thread.Sleep(30);
+                    // 押した入力が処理されるまで待つ（処理前のクリック待ちを見て二度押さない）
+                    runner.TrySync(TimeSpan.FromSeconds(1));
                 }
-                else if ((DateTime.UtcNow - lastActed).TotalMilliseconds > StallClickMillis && ChooseMousePoint() is MousePoint point)
+                else if (stalled && ChooseMousePoint() is MousePoint point)
                 {
                     // スクリプトが描いたクリック領域（MousePoint.eve の MP_ClickPoint）のうち、規則に合うものを押す
                     var (mx, my) = ((point.X1 + point.X2) / 2f, (point.Y1 + point.Y2) / 2f);
                     ListChosen?.Invoke(MousePointCaption, point.ID);
                     Snapshot("mousepoint");
-                    gui.PointerMoved(mx, my);
-                    gui.PointerPressed(mx, my, GuiButton.Left);
-                    Thread.Sleep(300);
-                    gui.PointerReleased(mx, my, GuiButton.Left);
+                    HoldLeftButton(mx, my);
                     acted = true;
                 }
-                else if ((DateTime.UtcNow - lastActed).TotalMilliseconds > StallClickMillis)
+                else if (stalled)
                 {
                     // 待ちの状態でないまま進まない（KeyState でボタンが押されるのを待つループなど）。
                     // 人の操作と同じく、ボタンを押してしばらく保ってから離す
@@ -311,10 +357,7 @@ namespace SRCPlay
                     var pointIds = string.Join(" | ", MousePoints().Select(x => x.ID));
                     Trace?.Invoke($"stall: hold left button at ({cx}, {cy})" + (pointIds.Length > 0 ? " points: " + pointIds : ""));
                     Snapshot("stall");
-                    gui.PointerMoved(cx, cy);
-                    gui.PointerPressed(cx, cy, GuiButton.Left);
-                    Thread.Sleep(300);
-                    gui.PointerReleased(cx, cy, GuiButton.Left);
+                    HoldLeftButton(cx, cy);
                     Stalls++;
                     acted = true;
                 }
@@ -339,7 +382,7 @@ namespace SRCPlay
                         Snapshot("idle");
                         return false;
                     }
-                    Thread.Sleep(20);
+                    runner.WaitGame(seen, 20);
                 }
             }
             return false;
@@ -494,18 +537,22 @@ namespace SRCPlay
             return null;
         }
 
-        private static bool WaitChange(Func<bool> changed)
+        private bool WaitChange(Func<bool> changed)
         {
             var deadline = DateTime.UtcNow.AddSeconds(5);
-            while (!changed())
+            while (true)
             {
+                var seen = runner.GameActivity;
+                if (changed())
+                {
+                    return true;
+                }
                 if (DateTime.UtcNow > deadline)
                 {
                     return false;
                 }
-                Thread.Sleep(5);
+                runner.WaitGame(seen, 5);
             }
-            return true;
         }
 
         private int snapshotNo;

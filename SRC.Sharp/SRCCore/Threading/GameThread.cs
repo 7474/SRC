@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 
 namespace SRCCore.Threading
@@ -72,6 +73,62 @@ namespace SRCCore.Threading
         }
 
         /// <summary>
+        /// 待ちのループから呼ぶ。キューに処理が来るまで（最長 millis ミリ秒）待ち、来た処理を実行する。
+        /// 決まった時間だけ眠るのと違い、UI から渡された入力にすぐ応じる。ゲームスレッド上でのみ呼び出せる。
+        /// </summary>
+        public void WaitPending(int millis)
+        {
+            if (!IsCurrentThread)
+            {
+                throw new InvalidOperationException("WaitPending must be called on the game thread.");
+            }
+            NotifyActivity();
+            if (queue.TryTake(out var action, millis))
+            {
+                Execute(action);
+                ProcessPending();
+            }
+        }
+
+        private readonly object activityLock = new object();
+        private long activity;
+
+        /// <summary>
+        /// ゲームスレッドが手を空けた（キューの処理を終えた、または待ちのループに入った）回数。
+        /// 画面なしで操作するランナーが、決まった時間だけ眠らずに次の状態を待つのに使う（WaitActivity）。
+        /// </summary>
+        public long Activity => Interlocked.Read(ref activity);
+
+        /// <summary>
+        /// Activity が seen から変わるまで、最長 millis ミリ秒待つ。変わったら true。
+        /// </summary>
+        public bool WaitActivity(long seen, int millis)
+        {
+            var watch = Stopwatch.StartNew();
+            lock (activityLock)
+            {
+                while (activity == seen)
+                {
+                    var remaining = millis - watch.ElapsedMilliseconds;
+                    if (remaining <= 0 || !Monitor.Wait(activityLock, (int)remaining))
+                    {
+                        return activity != seen;
+                    }
+                }
+                return true;
+            }
+        }
+
+        private void NotifyActivity()
+        {
+            lock (activityLock)
+            {
+                activity++;
+                Monitor.PulseAll(activityLock);
+            }
+        }
+
+        /// <summary>
         /// Stop が呼ばれたか。待ちのループはこれを見て抜ける。
         /// </summary>
         public bool IsStopping => queue.IsAddingCompleted;
@@ -117,6 +174,10 @@ namespace SRCCore.Threading
                 finally
                 {
                     busy = queue.Count > 0;
+                    if (!busy)
+                    {
+                        NotifyActivity();
+                    }
                 }
             }
         }

@@ -19,8 +19,8 @@
 Użycie:
   srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik]
       Sprawdza dane (*.txt) i zdarzenia (*.eve). Kod wyjścia 1, jeśli są problemy
-  srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--steps liczba]
-      Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję
+  srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--steps liczba] [--skip-wait]
+      Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję. Z --skip-wait pomija stałe oczekiwania (animacje, komunikaty, Wait).
   srcsharp balance &lt;katalog lub plik&gt;... [--format md|csv] [--output plik]
       Zestawienie statystyk jednostek i wartości odstające
   srcsharp lsp

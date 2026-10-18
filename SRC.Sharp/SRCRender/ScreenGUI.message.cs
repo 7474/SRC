@@ -1122,8 +1122,8 @@ namespace SRCRender
                             {
                                 break;
                             }
-                            Thread.Sleep(100);
-                            DoEvents();
+                            // クリックを待つ。入力が渡されたらすぐ処理する
+                            PollWait();
 
                             // 自動送りモードが切り替えられた場合
                             if (is_automode != AutoMessageMode)
