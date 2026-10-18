@@ -36,7 +36,7 @@ namespace SRCRender
             using (var canvas = new SKCanvas(to))
             {
                 canvas.Clear(SKColors.Black);
-                canvas.DrawBitmap(from, 0, 0);
+                canvas.DrawBitmapShared(from, 0, 0);
             }
         }
 
@@ -178,6 +178,21 @@ namespace SRCRender
                 canvas.Clear(SKColors.Black);
                 var mx = MapX - (MainWidth + 1) / 2 + 1;
                 var my = MapY - (MainHeight + 1) / 2 + 1;
+                if (backgroundBuffer != null)
+                {
+                    // 見えているマスの背景は、背景の上でも並びが同じなので一度に写す
+                    var x0 = Math.Max(1, mx);
+                    var y0 = Math.Max(1, my);
+                    var x1 = Math.Min(Map.MapWidth, mx + MainWidth - 1);
+                    var y1 = Math.Min(Map.MapHeight, my + MainHeight - 1);
+                    if (x0 <= x1 && y0 <= y1)
+                    {
+                        var source = SKRect.Create(ScreenLayout.CellPx * (x0 - 1), ScreenLayout.CellPx * (y0 - 1),
+                            ScreenLayout.CellPx * (x1 - x0 + 1), ScreenLayout.CellPx * (y1 - y0 + 1));
+                        var dest = SKRect.Create(ScreenLayout.CellPx * (x0 - mx), ScreenLayout.CellPx * (y0 - my), source.Width, source.Height);
+                        canvas.DrawBitmapShared(backgroundBuffer, source, dest);
+                    }
+                }
                 for (var i = 0; i < MainWidth; i++)
                 {
                     for (var j = 0; j < MainHeight; j++)
@@ -189,11 +204,6 @@ namespace SRCRender
                             continue;
                         }
                         var dest = SKRect.Create(ScreenLayout.CellPx * i, ScreenLayout.CellPx * j, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        if (backgroundBuffer != null)
-                        {
-                            var source = SKRect.Create(ScreenLayout.CellPx * (x - 1), ScreenLayout.CellPx * (y - 1), ScreenLayout.CellPx, ScreenLayout.CellPx);
-                            canvas.DrawBitmap(backgroundBuffer, source, dest);
-                        }
                         var cell = Map.MapData[x, y];
                         var u = Map.MapDataForUnit[x, y];
                         if (u != null)
@@ -442,7 +452,7 @@ namespace SRCRender
             {
                 using (var canvas = new SKCanvas(buffer))
                 {
-                    canvas.DrawBitmap(backgroundBuffer, source, dest);
+                    canvas.DrawBitmapShared(backgroundBuffer, source, dest);
                 }
             }
         }
