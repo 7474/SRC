@@ -238,7 +238,16 @@ namespace SRCRender
         private void PollWait()
         {
             DoEvents();
-            Thread.Sleep(WaitIntervalMillis);
+            if (game.IsCurrentThread)
+            {
+                // UI から入力が渡されたら、間隔を待たずに処理する
+                game.WaitPending(WaitIntervalMillis);
+                FlushInvalidatedScreen();
+            }
+            else
+            {
+                Thread.Sleep(WaitIntervalMillis);
+            }
         }
 
         /// <summary>

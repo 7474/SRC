@@ -160,13 +160,33 @@ namespace SRCPlay
         /// </summary>
         public void Sync()
         {
+            if (!TrySync(Timeout))
+            {
+                throw new TimeoutException("timeout waiting for game thread");
+            }
+        }
+
+        /// <summary>ゲームスレッドが手を空けた回数（WaitGame に渡す）</summary>
+        public long GameActivity => Session.Game.Activity;
+
+        /// <summary>
+        /// GameActivity が seen から変わる（ゲームスレッドが処理を終えるか、待ちのループに入る）まで、最長 millis ミリ秒待つ。
+        /// 状態の変化を決まった間隔で見に行く代わりに使う
+        /// </summary>
+        public void WaitGame(long seen, int millis)
+        {
+            Session.Game.WaitActivity(seen, millis);
+        }
+
+        /// <summary>
+        /// それまでにゲームスレッドへ渡した処理が終わる（または、待ちのループで処理される）まで待つ。待てたら true。
+        /// </summary>
+        public bool TrySync(TimeSpan timeout)
+        {
             using (var done = new ManualResetEventSlim())
             {
                 Session.Game.Post(done.Set);
-                if (!done.Wait(Timeout))
-                {
-                    throw new TimeoutException("timeout waiting for game thread");
-                }
+                return done.Wait(timeout);
             }
         }
 

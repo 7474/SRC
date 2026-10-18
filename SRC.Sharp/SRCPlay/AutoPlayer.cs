@@ -188,7 +188,7 @@ namespace SRCPlay
             var y = form.ScreenTop + SRCRender.Compat.Form.TitleBarHeight + control.Top + control.Height / 2f;
             runner.GUI.PointerPressed(x, y, GuiButton.Left);
             runner.GUI.PointerReleased(x, y, GuiButton.Left);
-            Thread.Sleep(50);
+            runner.TrySync(TimeSpan.FromSeconds(1));
         }
 
         public void Run(int maxSteps, int idleMillis = 10000) => Run(maxSteps, idleMillis, null);
@@ -232,6 +232,7 @@ namespace SRCPlay
                 {
                     return true;
                 }
+                var seen = runner.GameActivity;
                 var state = runner.State;
                 var acted = false;
                 var polls = gui.KeyStatePolls;
@@ -336,7 +337,8 @@ namespace SRCPlay
                         gui.KeyPressed(ScreenKey.Enter);
                     }
                     acted = true;
-                    Thread.Sleep(30);
+                    // 押した入力が処理されるまで待つ（処理前のクリック待ちを見て二度押さない）
+                    runner.TrySync(TimeSpan.FromSeconds(1));
                 }
                 else if (stalled && ChooseMousePoint() is MousePoint point)
                 {
@@ -380,7 +382,7 @@ namespace SRCPlay
                         Snapshot("idle");
                         return false;
                     }
-                    Thread.Sleep(20);
+                    runner.WaitGame(seen, 20);
                 }
             }
             return false;
@@ -535,18 +537,22 @@ namespace SRCPlay
             return null;
         }
 
-        private static bool WaitChange(Func<bool> changed)
+        private bool WaitChange(Func<bool> changed)
         {
             var deadline = DateTime.UtcNow.AddSeconds(5);
-            while (!changed())
+            while (true)
             {
+                var seen = runner.GameActivity;
+                if (changed())
+                {
+                    return true;
+                }
                 if (DateTime.UtcNow > deadline)
                 {
                     return false;
                 }
-                Thread.Sleep(5);
+                runner.WaitGame(seen, 5);
             }
-            return true;
         }
 
         private int snapshotNo;

@@ -402,16 +402,21 @@ namespace SRCPlay
         public bool WaitUntil(Func<bool> condition, TimeSpan timeout)
         {
             var deadline = DateTime.UtcNow + timeout;
-            while (!condition())
+            while (true)
             {
+                // 条件を見る前の回数を控え、その後にゲームスレッドが手を空けたらすぐ見直す
+                var seen = runner.GameActivity;
+                if (condition())
+                {
+                    return true;
+                }
                 deadline += runner.WaitWhileSuspended();
                 if (runner.IsFinished || DateTime.UtcNow > deadline)
                 {
                     return condition();
                 }
-                Thread.Sleep(20);
+                runner.WaitGame(seen, 20);
             }
-            return true;
         }
 
         /// <summary>マップで操作を受け付ける状態になるまで、メッセージ等を自動で進める。</summary>
@@ -421,10 +426,11 @@ namespace SRCPlay
             while (DateTime.UtcNow < deadline && !runner.IsFinished)
             {
                 deadline += runner.WaitWhileSuspended();
-                // 状態が落ち着いてから判定する（入力の処理中の一瞬を拾わない）
+                // 状態が落ち着いてから判定する（入力の処理中の一瞬を拾わない）。
+                // 渡した入力は、ゲームスレッドが取り出すまで IsBusy にならないので、渡した処理が済むのを待ってから見直す
                 if (IsReady)
                 {
-                    Thread.Sleep(150);
+                    runner.TrySync(TimeSpan.FromSeconds(1));
                     if (IsReady)
                     {
                         auto.ResetLoopDetection();
