@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace SRCSharpTools
+namespace SRCHelpSearch
 {
     /// <summary>ヘルプの検索の結果。Lines は語をよく含む本文の行（行番号は Body の 1 始まり）</summary>
     public class HelpSearchResult

@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCHelpSearch;
 using SRCSharpTools;
 using System.IO;
 using System.Linq;
@@ -64,12 +65,38 @@ namespace SRCAuthoring.Tests
         [DataRow("ユニットのHPを回復", "RecoverHPコマンド")]
         [DataRow("配列をコピー", "CopyArrayコマンド")]
         [DataRow("ｂｇｍ 再生", "StartBGMコマンド")]
-        public void Search_RanksRelevantPages(string query, string expected)
+        public void Search_Bm25RanksRelevantPages(string query, string expected)
         {
-            var results = HelpDocument.Search(query, 5);
+            var results = HelpDocument.Search(query, 5, HelpSearchMethod.Bm25);
             CollectionAssert.Contains(results.Select(x => x.Topic.Name).ToList(), expected);
             Assert.IsTrue(results.Zip(results.Skip(1)).All(x => x.First.Score >= x.Second.Score));
             Assert.IsTrue(results.All(x => x.Lines.Count > 0));
+        }
+
+        [TestMethod]
+        public void Search_VectorIsBundled()
+        {
+            // ビルドの時に埋め込みのモデルを取れなかったら失敗する（CI で気付けるように）
+            Assert.IsTrue(HelpDocument.CanSearchVector);
+        }
+
+        [TestMethod]
+        [DataRow("ユニットが倒されたとき", "破壊イベント")]
+        [DataRow("選択肢を表示する", "Askコマンド")]
+        [DataRow("繰り返し処理", "Forコマンド")]
+        public void Search_HybridRanksRelevantPages(string query, string expected)
+        {
+            var results = HelpDocument.Search(query, 5);
+            CollectionAssert.Contains(results.Select(x => x.Topic.Name).ToList(), expected);
+            Assert.IsTrue(results.All(x => x.Lines.Count > 0));
+        }
+
+        [TestMethod]
+        public void Search_VectorOnly()
+        {
+            var results = HelpDocument.Search("ユニットが倒されたとき", 5, HelpSearchMethod.Vector);
+            CollectionAssert.Contains(results.Select(x => x.Topic.Name).ToList(), "破壊イベント");
+            Assert.IsTrue(results.Zip(results.Skip(1)).All(x => x.First.Score >= x.Second.Score));
         }
 
         [TestMethod]

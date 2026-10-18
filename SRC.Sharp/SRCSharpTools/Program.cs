@@ -1,5 +1,6 @@
 using SRCAuthoring.Balance;
 using SRCDebugAdapter;
+using SRCHelpSearch;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
 using SRCCore.Logging;
@@ -217,11 +218,21 @@ namespace SRCSharpTools
             if (options.TryGetValue("search", out var text))
             {
                 var limit = options.TryGetValue("limit", out var l) ? int.Parse(l) : 10;
-                var results = HelpDocument.Search(text, limit);
+                var method = HelpSearchMethod.Hybrid;
+                if (options.TryGetValue("method", out var m) && !Enum.TryParse(m, true, out method))
+                {
+                    Console.Error.WriteLine(Strings.UnknownSearchMethod(m));
+                    return 2;
+                }
+                if (method != HelpSearchMethod.Bm25 && !HelpDocument.CanSearchVector)
+                {
+                    Console.Error.WriteLine(Strings.HelpVectorUnavailable);
+                }
+                var results = HelpDocument.Search(text, limit, method);
                 foreach (var result in results)
                 {
                     var topic = result.Topic;
-                    Console.WriteLine((topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title) + "\t" + result.Score.ToString("0.00", CultureInfo.InvariantCulture));
+                    Console.WriteLine((topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title) + "\t" + result.Score.ToString("0.0000", CultureInfo.InvariantCulture));
                     foreach (var (line, content) in result.Lines)
                     {
                         Console.WriteLine($"  {line}: {content}");

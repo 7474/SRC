@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    srcsharp help の検索（docs/tools/authoring.md）。
+    - 全文検索（BM25、HelpIndex）と、埋め込みのベクトルの検索（HelpEmbedder・HelpVectors）
+    - 実行すると、ヘルプの断片のベクトル（help-vectors.bin）を作る。SRCSharpTools のビルドで使う
+    埋め込みのモデルは ruri-v3-30m（https://huggingface.co/cl-nagoya/ruri-v3-30m、Apache-2.0）の int8 の ONNX
+    （https://huggingface.co/onnx-community/ruri-v3-30m-ONNX）。ビルドの時に取ってきて、出力の help-model に置く。
+    取れなければ（ネットワークが無いなど）警告にして、ベクトルの検索なしで作る
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <HelpModelDirectory>$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)help-model\</HelpModelDirectory>
+    <HelpModelOnnxUrl>https://huggingface.co/onnx-community/ruri-v3-30m-ONNX/resolve/1b41a27f31213fc55a9c4653c067770e39406408/onnx/model_int8.onnx</HelpModelOnnxUrl>
+    <HelpModelOnnxHash>bd07545fa4eb8e7765939536944da1138a7e61441d81633adfa1faf218df6bb1</HelpModelOnnxHash>
+    <HelpModelTokenizerUrl>https://huggingface.co/cl-nagoya/ruri-v3-30m/resolve/24899e5de370b56d179604a007c0d727bf144504/tokenizer.model</HelpModelTokenizerUrl>
+    <HelpModelTokenizerHash>008293028e1a9d9a1038d9b63d989a2319797dfeaa03f171093a57b33a3a8277</HelpModelTokenizerHash>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.31.0" />
+    <PackageReference Include="Microsoft.ML.Tokenizers" Version="2.0.1" />
+  </ItemGroup>
+
+  <Target Name="DownloadHelpModel" BeforeTargets="AssignTargetPaths">
+    <DownloadFile Condition="!Exists('$(HelpModelDirectory)model_int8.onnx')" SourceUrl="$(HelpModelOnnxUrl)" DestinationFolder="$(HelpModelDirectory)" DestinationFileName="model_int8.onnx" ContinueOnError="WarnAndContinue" />
+    <DownloadFile Condition="!Exists('$(HelpModelDirectory)tokenizer.model')" SourceUrl="$(HelpModelTokenizerUrl)" DestinationFolder="$(HelpModelDirectory)" DestinationFileName="tokenizer.model" ContinueOnError="WarnAndContinue" />
+    <VerifyFileHash Condition="Exists('$(HelpModelDirectory)model_int8.onnx')" File="$(HelpModelDirectory)model_int8.onnx" Hash="$(HelpModelOnnxHash)" />
+    <VerifyFileHash Condition="Exists('$(HelpModelDirectory)tokenizer.model')" File="$(HelpModelDirectory)tokenizer.model" Hash="$(HelpModelTokenizerHash)" />
+    <ItemGroup Condition="Exists('$(HelpModelDirectory)model_int8.onnx') And Exists('$(HelpModelDirectory)tokenizer.model')">
+      <None Include="$(HelpModelDirectory)model_int8.onnx" Link="help-model\model_int8.onnx" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="$(HelpModelDirectory)tokenizer.model" Link="help-model\tokenizer.model" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
+</Project>

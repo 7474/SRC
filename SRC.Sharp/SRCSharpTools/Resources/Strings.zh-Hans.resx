@@ -27,7 +27,7 @@
       Language Server（标准输入输出）
   srcsharp dap
       调试器（Debug Adapter Protocol，标准输入输出）
-  srcsharp help [条目] [--list] [--search 文本 [--limit 数量]] [--grep 文本] [--export 目录]
+  srcsharp help [条目] [--list] [--search 文本 [--limit 数量] [--method hybrid|bm25|vector]] [--grep 文本] [--export 目录]
       显示 SRC# 帮助（数据、事件命令、函数等的参考，日语 Markdown）。--list 列出条目，--search 按相关度查找页面，--grep 输出包含文本的行，--export 导出全部页面
 
 通用选项:
@@ -62,5 +62,11 @@
   </data>
   <data name="HelpExported" xml:space="preserve">
     <value>已将 {0} 个帮助页面写入 {1}</value>
+  </data>
+  <data name="HelpVectorUnavailable" xml:space="preserve">
+    <value>无法使用向量搜索，仅使用全文搜索</value>
+  </data>
+  <data name="UnknownSearchMethod" xml:space="preserve">
+    <value>未知的搜索方法：{0}（hybrid、bm25 或 vector）</value>
   </data>
 </root>

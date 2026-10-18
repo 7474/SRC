@@ -25,6 +25,42 @@
     <EmbeddedResource Include="..\..\SRC.Sharp.Help\src\*.md" Exclude="..\..\SRC.Sharp.Help\src\404.md" LogicalName="help/%(Filename)%(Extension)" Link="Help\%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <!--
+    srcsharp help の検索のベクトル（help-vectors.bin）。SRCHelpSearch を実行してヘルプの断片の埋め込みを作り、埋め込む。
+    埋め込みのモデルを取れなかった（SRCHelpSearch の出力に help-model が無い）ときは作らず、全文検索だけになる
+  -->
+  <Target Name="FindHelpSearchTool" AfterTargets="ResolveProjectReferences">
+    <ItemGroup>
+      <_HelpMarkdown Include="..\..\SRC.Sharp.Help\src\*.md" />
+      <_HelpSearchTool Include="@(_ResolvedProjectReferencePaths)" Condition="'%(Filename)' == 'SRCHelpSearch' And Exists('%(RootDir)%(Directory)help-model\model_int8.onnx')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="GenerateHelpVectors" AfterTargets="FindHelpSearchTool" Inputs="@(_HelpMarkdown);@(_HelpSearchTool)" Outputs="$(IntermediateOutputPath)help-vectors.bin">
+    <PropertyGroup>
+      <_DotnetHost>$(DOTNET_HOST_PATH)</_DotnetHost>
+      <_DotnetHost Condition="'$(_DotnetHost)' == ''">dotnet</_DotnetHost>
+    </PropertyGroup>
+    <Exec Condition="'@(_HelpSearchTool)' != ''" Command="&quot;$(_DotnetHost)&quot; &quot;@(_HelpSearchTool)&quot; &quot;$(MSBuildProjectDirectory)\..\..\SRC.Sharp.Help\src&quot; &quot;$(IntermediateOutputPath)help-vectors.bin&quot;" />
+  </Target>
+
+  <Target Name="EmbedHelpVectors" AfterTargets="GenerateHelpVectors" BeforeTargets="PrepareResources">
+    <ItemGroup Condition="'@(_HelpSearchTool)' != '' And Exists('$(IntermediateOutputPath)help-vectors.bin')">
+      <EmbeddedResource Include="$(IntermediateOutputPath)help-vectors.bin" LogicalName="help-vectors.bin" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    .NET tool では使わないネイティブのファイルを発行しない（NuGet.org のパッケージの上限 250MB に収めるため）。
+    ONNX Runtime の Android・iOS 用とリンク用の .lib、SkiaSharp などのネイティブのライブラリのデバッグシンボル（runtimes の下の .pdb）
+  -->
+  <Target Name="RemoveUnusedNativeFiles" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_UnusedNativeFile Include="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\', '/').StartsWith('runtimes/android/')) Or $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\', '/').StartsWith('runtimes/ios/')) Or ($([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Contains('onnxruntime')) And '%(ResolvedFileToPublish.Extension)' == '.lib') Or ($([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\', '/').StartsWith('runtimes/')) And '%(ResolvedFileToPublish.Extension)' == '.pdb')" />
+      <ResolvedFileToPublish Remove="@(_UnusedNativeFile)" />
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
   </ItemGroup>
@@ -32,6 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SRCAuthoring\SRCAuthoring.csproj" />
     <ProjectReference Include="..\SRCDebugAdapter\SRCDebugAdapter.csproj" />
+    <ProjectReference Include="..\SRCHelpSearch\SRCHelpSearch.csproj" />
     <ProjectReference Include="..\SRCLogging\SRCLogging.csproj" />
     <ProjectReference Include="..\SRCPlay\SRCPlay.csproj" />
   </ItemGroup>

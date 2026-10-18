@@ -27,7 +27,7 @@
       Language Server(표준 입출력)
   srcsharp dap
       디버거(Debug Adapter Protocol, 표준 입출력)
-  srcsharp help [항목] [--list] [--search 문자열 [--limit 수]] [--grep 문자열] [--export 디렉터리]
+  srcsharp help [항목] [--list] [--search 문자열 [--limit 수] [--method hybrid|bm25|vector]] [--grep 문자열] [--export 디렉터리]
       SRC# 도움말(데이터·이벤트 명령·함수 등의 레퍼런스, 일본어 Markdown)을 표시. --list는 항목 목록, --search는 관련도 순으로 페이지 검색, --grep은 문자열을 포함한 줄 출력, --export는 전체를 내보냄
 
 공통 옵션:
@@ -62,5 +62,11 @@
   </data>
   <data name="HelpExported" xml:space="preserve">
     <value>도움말 {0}개를 {1}에 내보냈습니다</value>
+  </data>
+  <data name="HelpVectorUnavailable" xml:space="preserve">
+    <value>벡터 검색을 사용할 수 없어 전문 검색만 사용합니다</value>
+  </data>
+  <data name="UnknownSearchMethod" xml:space="preserve">
+    <value>알 수 없는 검색 방법: {0} (hybrid, bm25, vector 중 하나)</value>
   </data>
 </root>

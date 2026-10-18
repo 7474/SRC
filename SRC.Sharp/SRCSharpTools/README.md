@@ -8,7 +8,7 @@ srcsharp lint path/to/scenario
 srcsharp play path/to/scenario/test.eve --script test.play --out snapshots
 srcsharp balance path/to/data --output balance.md
 srcsharp help Askコマンド              # SRC# のヘルプ（リファレンス）を引く
-srcsharp help --search 選択肢を表示する  # 関連の高い順にページを探す
+srcsharp help --search 選択肢を表示する  # 関連の高い順にページを探す（全文検索とベクトルの検索）
 srcsharp help --grep ChangeMap         # 文字列を含む行を探す
 srcsharp help --export srcsharp-help   # ヘルプを Markdown で書き出す（AI に読ませるなど）
 ```
@@ -23,3 +23,5 @@ dotnet tool install -g SRCSharpTools --add-source out/srcsharp
 ```
 
 VS Code 拡張（`lsp`・`dap` を使う）の使い方は [SRCSharpVSCode の README](https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode/README.md) を参照してください。
+
+ヘルプの検索には、埋め込みのモデル [ruri-v3-30m](https://huggingface.co/cl-nagoya/ruri-v3-30m)（Apache License 2.0）の ONNX（[onnx-community/ruri-v3-30m-ONNX](https://huggingface.co/onnx-community/ruri-v3-30m-ONNX)）を同梱しています。

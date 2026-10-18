@@ -25,6 +25,7 @@ COPY ["SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj", "SRC.Sharp/SRCSharpTools/"
 COPY ["SRC.Sharp/SRCCore/SRCCore.csproj", "SRC.Sharp/SRCCore/"]
 COPY ["SRC.Sharp/SRCAuthoring/SRCAuthoring.csproj", "SRC.Sharp/SRCAuthoring/"]
 COPY ["SRC.Sharp/SRCDebugAdapter/SRCDebugAdapter.csproj", "SRC.Sharp/SRCDebugAdapter/"]
+COPY ["SRC.Sharp/SRCHelpSearch/SRCHelpSearch.csproj", "SRC.Sharp/SRCHelpSearch/"]
 COPY ["SRC.Sharp/SRCPlay/SRCPlay.csproj", "SRC.Sharp/SRCPlay/"]
 COPY ["SRC.Sharp/SRCRender/SRCRender.csproj", "SRC.Sharp/SRCRender/"]
 RUN dotnet restore "SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj" \

@@ -27,7 +27,7 @@ Usage:
       Language Server (stdio)
   srcsharp dap
       Debugger (Debug Adapter Protocol, stdio)
-  srcsharp help [topic] [--list] [--search text [--limit count]] [--grep text] [--export directory]
+  srcsharp help [topic] [--list] [--search text [--limit count] [--method hybrid|bm25|vector]] [--grep text] [--export directory]
       Show the SRC# help (reference for data, event commands, functions, etc., Japanese Markdown). --list lists topics, --search finds pages ranked by relevance, --grep prints lines containing the text, --export writes all pages
 
 Common options:
@@ -62,5 +62,11 @@ Common options:
   </data>
   <data name="HelpExported" xml:space="preserve">
     <value>Wrote {0} help pages to {1}</value>
+  </data>
+  <data name="HelpVectorUnavailable" xml:space="preserve">
+    <value>Vector search is not available; using full-text search only</value>
+  </data>
+  <data name="UnknownSearchMethod" xml:space="preserve">
+    <value>Unknown search method: {0} (hybrid, bm25, or vector)</value>
   </data>
 </root>

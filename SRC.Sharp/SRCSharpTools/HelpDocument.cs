@@ -4,53 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
+using SRCHelpSearch;
 
 namespace SRCSharpTools
 {
-    /// <summary>ヘルプの 1 ページ（SRC.Sharp.Help/src の *.md）</summary>
-    public class HelpTopic
-    {
-        /// <summary>ファイル名から .md を除いたもの。srcsharp help に渡す名前で、ページの中のリンク先とも同じ</summary>
-        public string Name { get; }
-        /// <summary>見出し。front matter の title（HLP000164 などの番号だけのものは本文の最初の太字）</summary>
-        public string Title { get; }
-        /// <summary>ファイルの内容（front matter を含む）</summary>
-        public string Source { get; }
-        /// <summary>front matter を除いた本文</summary>
-        public string Body { get; }
-
-        public HelpTopic(string name, string source)
-        {
-            Name = name;
-            Source = source;
-            var title = name;
-            var match = Regex.Match(source, @"\A---\r?\n(.*?)\r?\n---\r?\n?", RegexOptions.Singleline);
-            if (match.Success)
-            {
-                var titleLine = Regex.Match(match.Groups[1].Value, @"^title:\s*(.+?)\s*$", RegexOptions.Multiline);
-                if (titleLine.Success)
-                {
-                    title = titleLine.Groups[1].Value;
-                }
-                Body = source.Substring(match.Length);
-            }
-            else
-            {
-                Body = source;
-            }
-            if (Regex.IsMatch(title, @"^HLP\d+$"))
-            {
-                var heading = Regex.Match(Body, @"^\*\*(?!\s)([^*]+)\*\*\s*$", RegexOptions.Multiline);
-                if (heading.Success)
-                {
-                    title = heading.Groups[1].Value;
-                }
-            }
-            Title = title;
-        }
-    }
-
     /// <summary>
     /// 同梱のヘルプ（SRCSharpTools.csproj で SRC.Sharp.Help/src の *.md を埋め込む）。
     /// srcsharp help で、人や AI がデータ・イベントコマンド・関数などのリファレンスを引くのに使う
@@ -117,15 +74,31 @@ namespace SRCSharpTools
             return match(topic.Name, key) || match(topic.Title, key);
         }
 
-        private static readonly Lazy<HelpIndex> index = new Lazy<HelpIndex>(() => new HelpIndex(Topics));
+        private const string VectorsResource = "help-vectors.bin";
+
+        private static readonly Lazy<HelpSearcher> searcher = new Lazy<HelpSearcher>(() =>
+        {
+            HelpVectors vectors = null;
+            using (var stream = typeof(HelpDocument).Assembly.GetManifestResourceStream(VectorsResource))
+            {
+                if (stream != null)
+                {
+                    vectors = HelpVectors.Read(stream);
+                }
+            }
+            return new HelpSearcher(Topics, vectors, vectors == null ? null : HelpEmbedder.TryCreate());
+        });
+
+        /// <summary>ベクトルの検索ができるか（ビルドの時にモデルを取れて、help-vectors.bin を埋め込めたか）</summary>
+        public static bool CanSearchVector => searcher.Value.CanSearchVector;
 
         /// <summary>
-        /// 関連の高い順にページを探す（BM25。日本語は文字の 2-gram、英数字は単語。見出しは重く数える）。
-        /// 空白で区切った複数の語も、語順や表記の揺れが少しあっても当たる
+        /// 関連の高い順にページを探す。既定は全文検索（BM25）とベクトルの検索（ruri-v3-30m）のハイブリッド。
+        /// ベクトルの検索ができなければ全文検索だけ
         /// </summary>
-        public static IReadOnlyList<HelpSearchResult> Search(string query, int limit = 10)
+        public static IReadOnlyList<HelpSearchResult> Search(string query, int limit = 10, HelpSearchMethod method = HelpSearchMethod.Hybrid)
         {
-            return index.Value.Search(query, limit);
+            return searcher.Value.Search(query, limit, method);
         }
 
         /// <summary>本文の行を探す（大文字・小文字は区別しない）。行番号は Body の 1 始まり</summary>
