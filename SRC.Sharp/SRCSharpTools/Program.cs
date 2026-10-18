@@ -1,5 +1,6 @@
 using SRCAuthoring.Balance;
 using SRCDebugAdapter;
+using SRCHelpSearch;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
 using SRCCore.Logging;
@@ -9,6 +10,7 @@ using SRCSharpTools.Resources;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,6 +55,8 @@ namespace SRCSharpTools
                     return Play(positional, options);
                 case "balance":
                     return Balance(positional, options);
+                case "help":
+                    return Help(positional, options);
                 case "lsp":
                     // stdout はプロトコルに使うため、ログはファイルとプロトコルのログ通知に出す
                     using (var logHost = CreateLogHost("lsp", LogOutputs.None))
@@ -183,6 +187,87 @@ namespace SRCSharpTools
                 Console.WriteLine(runner.IsTerminated ? "terminated" : "stopped");
                 return 0;
             }
+        }
+
+        private static int Help(List<string> topics, Dictionary<string, string> options)
+        {
+            if (topics.Count == 0 && options.Count == 0)
+            {
+                Console.Write(Strings.Usage);
+                return 0;
+            }
+            if (HelpDocument.Topics.Count == 0)
+            {
+                Console.Error.WriteLine(Strings.HelpNotBundled);
+                return 1;
+            }
+            if (options.TryGetValue("export", out var directory))
+            {
+                var count = HelpDocument.Export(directory);
+                Console.Error.WriteLine(Strings.HelpExported(count, directory));
+                return 0;
+            }
+            if (options.ContainsKey("list"))
+            {
+                foreach (var topic in HelpDocument.Topics)
+                {
+                    Console.WriteLine(topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title);
+                }
+                return 0;
+            }
+            if (options.TryGetValue("search", out var text))
+            {
+                var limit = options.TryGetValue("limit", out var l) ? int.Parse(l) : 10;
+                var method = HelpSearchMethod.Hybrid;
+                if (options.TryGetValue("method", out var m) && !Enum.TryParse(m, true, out method))
+                {
+                    Console.Error.WriteLine(Strings.UnknownSearchMethod(m));
+                    return 2;
+                }
+                if (method != HelpSearchMethod.Bm25 && !HelpDocument.CanSearchVector)
+                {
+                    Console.Error.WriteLine(Strings.HelpVectorUnavailable);
+                }
+                var results = HelpDocument.Search(text, limit, method);
+                foreach (var result in results)
+                {
+                    var topic = result.Topic;
+                    Console.WriteLine((topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title) + "\t" + result.Score.ToString("0.0000", CultureInfo.InvariantCulture));
+                    foreach (var (line, content) in result.Lines)
+                    {
+                        Console.WriteLine($"  {line}: {content}");
+                    }
+                }
+                return results.Count > 0 ? 0 : 1;
+            }
+            if (options.TryGetValue("grep", out var pattern))
+            {
+                var found = false;
+                foreach (var (topic, line, content) in HelpDocument.Grep(pattern))
+                {
+                    Console.WriteLine($"{topic.Name}:{line}: {content}");
+                    found = true;
+                }
+                return found ? 0 : 1;
+            }
+            var query = string.Join(" ", topics);
+            var matches = HelpDocument.Find(query);
+            if (matches.Count == 1)
+            {
+                Console.Write(matches[0].Body);
+                return 0;
+            }
+            if (matches.Count == 0)
+            {
+                Console.Error.WriteLine(Strings.HelpNotFound(query));
+                return 1;
+            }
+            Console.Error.WriteLine(Strings.HelpAmbiguous(query));
+            foreach (var topic in matches)
+            {
+                Console.Error.WriteLine("  " + (topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title));
+            }
+            return 1;
         }
 
         private static int Balance(List<string> paths, Dictionary<string, string> options)

@@ -27,6 +27,8 @@
       Language Server (stdio)
   srcsharp dap
       Налагоджувач (Debug Adapter Protocol, stdio)
+  srcsharp help [розділ] [--list] [--search текст [--limit число] [--method hybrid|bm25|vector]] [--grep текст] [--export каталог]
+      Показати довідку SRC# (довідник з даних, команд подій, функцій тощо, Markdown японською). --list — список розділів, --search — пошук сторінок за релевантністю, --grep — рядки, що містять текст, --export — записати всі сторінки
 
 Спільні параметри:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,23 @@
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Вкажіть рівно один файл події</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>Довідку не включено</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>Розділ довідки не знайдено: {0} (шукайте в тексті за допомогою srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Під {0} підходить кілька розділів:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>Записано сторінок довідки: {0} у {1}</value>
+  </data>
+  <data name="HelpVectorUnavailable" xml:space="preserve">
+    <value>Векторний пошук недоступний; використовується лише повнотекстовий пошук</value>
+  </data>
+  <data name="UnknownSearchMethod" xml:space="preserve">
+    <value>Невідомий метод пошуку: {0} (hybrid, bm25 або vector)</value>
   </data>
 </root>

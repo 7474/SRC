@@ -184,7 +184,7 @@ jobs:
     - uses: actions/checkout@v7
 
     - name: Build image
-      run: docker build -f SRC.Sharp/SRCDataLinter/Dockerfile -t srcdatalinter:test SRC.Sharp
+      run: docker build -f SRC.Sharp/SRCDataLinter/Dockerfile -t srcdatalinter:test .
 
     - name: Lint (従来の使い方)
       run: docker run --rm -v "$PWD/SRC.Sharp/E2E/sound:/app/data" srcdatalinter:test data
@@ -198,6 +198,11 @@ jobs:
         ls /tmp/scenario/snapshots
         docker run --rm -v /tmp/scenario:/scenario srcdatalinter:test balance /scenario/Data | tee /tmp/balance.md
         grep -q "テスト機" /tmp/balance.md
+
+    - name: srcsharp help
+      run: |
+        docker run --rm srcdatalinter:test help Askコマンド | grep -q "Askコマンド"
+        docker run --rm srcdatalinter:test help --search 選択肢を表示する | grep -q "Askコマンド"
 
   build-and-test-srcs:
     runs-on: windows-2025

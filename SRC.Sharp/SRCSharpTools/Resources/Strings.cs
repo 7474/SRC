@@ -31,6 +31,18 @@ namespace SRCSharpTools.Resources
         public static string UnknownLanguage(string language) => Format(nameof(UnknownLanguage), language,
             string.Join(", ", SRCCore.UiLanguages.Supported.Select(x => x.Code).Append(SRCCore.UiLanguages.Auto)));
 
+        public static string HelpNotBundled => Get(nameof(HelpNotBundled));
+
+        public static string HelpNotFound(string topic) => Format(nameof(HelpNotFound), topic);
+
+        public static string HelpAmbiguous(string topic) => Format(nameof(HelpAmbiguous), topic);
+
+        public static string HelpExported(int count, string directory) => Format(nameof(HelpExported), count, directory);
+
+        public static string HelpVectorUnavailable => Get(nameof(HelpVectorUnavailable));
+
+        public static string UnknownSearchMethod(string method) => Format(nameof(UnknownSearchMethod), method);
+
         public static string LintSummary(int files, int problems) => Format(nameof(LintSummary), files, problems);
     }
 }

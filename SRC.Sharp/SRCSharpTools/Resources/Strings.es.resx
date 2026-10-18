@@ -27,6 +27,8 @@ Uso:
       Language Server (stdio)
   srcsharp dap
       Depurador (Debug Adapter Protocol, stdio)
+  srcsharp help [tema] [--list] [--search texto [--limit número] [--method hybrid|bm25|vector]] [--grep texto] [--export directorio]
+      Muestra la ayuda de SRC# (referencia de datos, comandos de evento, funciones, etc., Markdown en japonés). --list lista los temas, --search busca páginas ordenadas por relevancia, --grep muestra las líneas que contienen el texto, --export escribe todas las páginas
 
 Opciones comunes:
   --lang &lt;ja|en|zh-Hans|...|auto&gt;
@@ -48,5 +50,23 @@ Opciones comunes:
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Indica exactamente un archivo de evento</value>
+  </data>
+  <data name="HelpNotBundled" xml:space="preserve">
+    <value>La ayuda no está incluida</value>
+  </data>
+  <data name="HelpNotFound" xml:space="preserve">
+    <value>No se encontró el tema de ayuda: {0} (busca en el texto con srcsharp help --search)</value>
+  </data>
+  <data name="HelpAmbiguous" xml:space="preserve">
+    <value>Varios temas coinciden con {0}:</value>
+  </data>
+  <data name="HelpExported" xml:space="preserve">
+    <value>Se escribieron {0} páginas de ayuda en {1}</value>
+  </data>
+  <data name="HelpVectorUnavailable" xml:space="preserve">
+    <value>La búsqueda vectorial no está disponible; se usa solo la búsqueda de texto completo</value>
+  </data>
+  <data name="UnknownSearchMethod" xml:space="preserve">
+    <value>Método de búsqueda desconocido: {0} (hybrid, bm25 o vector)</value>
   </data>
 </root>
