@@ -999,6 +999,8 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
       '',
       '[外のリンク](https://example.com/) と [危ないリンク](javascript:alert(1))',
       '',
+      '[説明書を開く](manual/%E8%AA%AC%E6%98%8E%E6%9B%B8.html)',
+      '',
       '| 項目 | 値 |',
       '|---|---|',
       '| A | 1 |',
@@ -1012,7 +1014,7 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
     data: Buffer.concat([
       Buffer.from('<html><head><meta charset="Shift_JIS"></head><body><h1>', 'latin1'),
       Buffer.from([144, 224, 150, 190, 143, 145, 130, 204, 131, 121, 129, 91, 131, 87]),
-      Buffer.from('</h1><script>parent.injectedHtml = true; document.body.append("script ran")</script></body></html>', 'latin1'),
+      Buffer.from('</h1><script>parent.injectedHtml = true; document.body.append("script ran")</script><p><a href="../%E6%9B%B4%E6%96%B0%E5%B1%A5%E6%AD%B4.txt">history</a></p></body></html>', 'latin1'),
     ]),
   });
   await open(page);
@@ -1058,6 +1060,32 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   expect(await page.evaluate(() => window.injectedHtml)).toBeUndefined();
   await expect(page.locator('#doc-view')).not.toHaveAttribute('sandbox', /allow-scripts/);
   await page.screenshot({ path: testInfo.outputPath('document-html.png') });
+  await page.locator('.doc-close').click();
+
+  // 文書の中のリンクでシナリオの中の別の文書へ移り、戻る・進むとアドレス欄で動く
+  await documents.first().getByRole('button', { name: 'README.md' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('README.md');
+  await view.getByRole('link', { name: '説明書を開く' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('manual/説明書.html');
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  // iframe の中のリンク（相対パスで上のフォルダの .txt）も、同じウィンドウで開く
+  await frame.getByRole('link', { name: 'history' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('更新履歴.txt');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.locator('#doc-back').click();
+  await expect(page.locator('#doc-address')).toHaveValue('manual/説明書.html');
+  await page.locator('#doc-back').click();
+  await expect(page.locator('#doc-address')).toHaveValue('README.md');
+  await expect(page.locator('#doc-back')).toBeDisabled();
+  await page.locator('#doc-forward').click();
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  await page.screenshot({ path: testInfo.outputPath('document-nav.png') });
+  await page.locator('#doc-address').fill('更新履歴.txt');
+  await page.locator('#doc-address').press('Enter');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.locator('#doc-address').fill('nothing.md');
+  await page.locator('#doc-address').press('Enter');
+  await expect(page.locator('.doc-status')).toContainText('nothing.md が見つかりません');
   await page.locator('.doc-close').click();
 
   // プレイ中もシステムメニューから読める

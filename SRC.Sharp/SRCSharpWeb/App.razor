@@ -319,13 +319,26 @@ else
 @if (viewing != null)
 {
     <div class="modal doc-modal" @onclick="CloseDocumentAsync">
-        <div class="doc-window @(viewing.IsPage ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
+        <div class="doc-window @(Browsing ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
              @onclick:stopPropagation="true" @onkeydown="DocumentKeyDownAsync">
             <div class="titlebar">
-                <span class="doc-title">@(viewing.IsPage ? L["PageViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
+                <span class="doc-title">@(Browsing ? L["PageViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
                 <button class="doc-close" aria-label="@L["MenuClose"]" title="@L["MenuClose"]" @onclick="CloseDocumentAsync">×</button>
             </div>
-            @if (!viewing.IsPage)
+            @if (Browsing)
+            {
+                @* 往年のブラウザのように、戻る・進むとアドレス欄を出す *@
+                <div class="doc-toolbar doc-nav">
+                    <button id="doc-back" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)">← @L["DocumentBack"]</button>
+                    <button id="doc-forward" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)">@L["DocumentForward"] →</button>
+                    <form class="doc-address" @onsubmit="GoAddressAsync">
+                        <label for="doc-address">@L["Address"]</label>
+                        <input id="doc-address" type="text" @bind="addressText" @bind:event="oninput" spellcheck="false" />
+                        <button type="submit">@L["DocumentGo"]</button>
+                    </form>
+                </div>
+            }
+            else
             {
                 <div class="doc-toolbar">
                     <label><input type="checkbox" id="doc-wrap" @bind="documentWrap" /> @L["WordWrap"]</label>
@@ -333,8 +346,11 @@ else
             }
             @if (viewingFrame != null)
             {
-                @* シナリオの HTML はスクリプトを動かさない（sandbox に allow-scripts を付けない）。リンクは別のタブで開く *@
-                <iframe class="doc-view doc-frame" id="doc-view" title="@viewing.Name" sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="@viewingFrame"></iframe>
+                @*
+                    シナリオの HTML はスクリプトを動かさない（sandbox に allow-scripts を付けない）。外へのリンクは別のタブで開く。
+                    allow-same-origin は、中のリンクのクリックを srcwebDocs.bind で受け取るため（スクリプトが動かないので中から外は触れない）
+                *@
+                <iframe class="doc-view doc-frame" id="doc-view" title="@viewing.Name" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox" srcdoc="@viewingFrame"></iframe>
             }
             else if (viewingHtml != null)
             {
@@ -344,7 +360,7 @@ else
             {
                 <pre class="doc-view doc-text @(documentWrap ? "wrap" : null)" id="doc-view" tabindex="0">@viewingText</pre>
             }
-            <div class="doc-status">@viewing.Path</div>
+            <div class="doc-status">@(documentStatus ?? viewing.Path)</div>
         </div>
     </div>
 }
@@ -411,6 +427,18 @@ else
     private bool choosingDocument;
     /// <summary>開いた文書にキー入力を向ける（Esc で閉じ、矢印キーでスクロールする）</summary>
     private bool focusDocument;
+    /// <summary>文書の中のリンクを受け取る（srcwebDocs.bind）。開くたびに結び直す</summary>
+    private bool bindDocument;
+    private DotNetObjectReference<App> documentRef;
+    /// <summary>.md・.htm・.html で開いた文書の履歴（戻る・進む）</summary>
+    private List<ScenarioDocuments.Document> history = new List<ScenarioDocuments.Document>();
+    private int historyIndex = -1;
+    /// <summary>ブラウザ風のウィンドウで出している（.md・.htm・.html から開いた）。.txt を一覧から開いたときはメモ帳</summary>
+    private bool Browsing => history.Count > 0;
+    /// <summary>アドレス欄</summary>
+    private string addressText;
+    /// <summary>文書のウィンドウの下の欄に出す知らせ（見つからないなど）。無ければパスを出す</summary>
+    private string documentStatus;
 
     /// <summary>文書の一覧。README を先に、「はじめにお読みください」を添えて出す</summary>
     private RenderFragment DocumentList => @<ul class="items" id="documents">
@@ -441,6 +469,66 @@ else
 
     private void OpenDocument(ScenarioDocuments.Document document)
     {
+        // 一覧から開いたときは履歴を始め直す
+        history.Clear();
+        historyIndex = -1;
+        ShowDocument(document, true);
+    }
+
+    /// <summary>文書の中のリンク（data-srcweb-doc）から開く。srcwebDocs から呼ばれる</summary>
+    [JSInvokable]
+    public Task OpenLinkedDocument(string path)
+    {
+        return InvokeAsync(() =>
+        {
+            var document = scenarioDir == null ? null : ScenarioDocuments.Open(scenarioDir, path);
+            if (document == null)
+            {
+                documentStatus = L["DocumentNotFound", path];
+            }
+            else
+            {
+                ShowDocument(document, true);
+            }
+            StateHasChanged();
+        });
+    }
+
+    private void MoveHistory(int delta)
+    {
+        var index = historyIndex + delta;
+        if (index >= 0 && index < history.Count)
+        {
+            historyIndex = index;
+            ShowDocument(history[index], false);
+        }
+    }
+
+    /// <summary>アドレス欄のパス（シナリオのフォルダからの相対パス）か外の URL を開く</summary>
+    private async Task GoAddressAsync()
+    {
+        var text = addressText?.Trim() ?? "";
+        if (Uri.TryCreate(text, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+        {
+            await JS.InvokeVoidAsync("srcwebDocs.openExternal", uri.ToString());
+            addressText = viewing?.Path;
+            return;
+        }
+        await OpenLinkedDocument(text);
+    }
+
+    /// <param name="push">履歴に積む（戻る・進むで動くときは積まない）</param>
+    private void ShowDocument(ScenarioDocuments.Document document, bool push)
+    {
+        // .md・.htm・.html から辿った .txt もブラウザの中で出す（往年のブラウザと同じ）
+        if (push && (document.IsPage || history.Count > 0))
+        {
+            history.RemoveRange(historyIndex + 1, history.Count - historyIndex - 1);
+            history.Add(document);
+            historyIndex = history.Count - 1;
+        }
+        documentStatus = null;
+        addressText = document.Path;
         viewingText = null;
         viewingHtml = null;
         viewingFrame = null;
@@ -467,6 +555,7 @@ else
         choosingDocument = false;
         viewing = document;
         focusDocument = true;
+        bindDocument = document.IsPage;
     }
 
     private async Task CloseDocumentAsync()
@@ -546,6 +635,12 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (bindDocument && viewing != null)
+        {
+            bindDocument = false;
+            documentRef ??= DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("srcwebDocs.bind", "doc-view", documentRef);
+        }
         if (focusDocument && viewing != null)
         {
             focusDocument = false;
@@ -1192,6 +1287,7 @@ else
 
     public void Dispose()
     {
+        documentRef?.Dispose();
         watch?.Dispose();
     }
 }

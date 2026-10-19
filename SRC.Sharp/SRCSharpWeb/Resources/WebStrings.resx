@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>右端で折り返す</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>進む</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>移動</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} が見つかりません。</value>
+  </data>
 </root>

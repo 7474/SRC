@@ -200,3 +200,58 @@
     const archiveCacheName = 'srcweb-archives';
     const versionHeader = 'X-SRCWeb-Version';
 })();
+
+// シナリオに同梱された文書のリンク（ScenarioDocuments）。
+// 別の文書へのリンク（data-srcweb-doc）は .NET の OpenLinkedDocument で開き、ページの中の移動（#）はその文書の中でスクロールする。
+// .htm・.html は iframe（allow-scripts なし・allow-same-origin あり）に入れるので、中のスクリプトは動かず、ここから中のクリックを受け取れる
+window.srcwebDocs = {
+    bind(id, dotnet) {
+        const view = document.getElementById(id);
+        if (!view) {
+            return;
+        }
+        const handle = (e, root) => {
+            const a = e.target.closest && e.target.closest('a[href]');
+            if (!a) {
+                return;
+            }
+            const doc = a.getAttribute('data-srcweb-doc');
+            const href = a.getAttribute('href') || '';
+            if (doc) {
+                e.preventDefault();
+                e.stopPropagation();
+                dotnet.invokeMethodAsync('OpenLinkedDocument', doc);
+            } else if (href.startsWith('#')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const name = decodeURIComponent(href.slice(1));
+                const target = name ? root.getElementById(name) || root.getElementsByName(name)[0] : null;
+                if (target) {
+                    target.scrollIntoView();
+                } else if (!name) {
+                    (root.scrollingElement || view).scrollTop = 0;
+                }
+            }
+        };
+        if (view.tagName === 'IFRAME') {
+            const attach = () => {
+                const inner = view.contentDocument;
+                if (inner && !inner.srcwebBound) {
+                    inner.srcwebBound = true;
+                    inner.addEventListener('click', e => handle(e, inner), true);
+                }
+            };
+            view.addEventListener('load', attach);
+            if (view.contentDocument && view.contentDocument.readyState === 'complete') {
+                attach();
+            }
+        } else if (!view.srcwebBound) {
+            view.srcwebBound = true;
+            view.addEventListener('click', e => handle(e, document), true);
+        }
+    },
+    // アドレス欄に外の URL を入れたときは別のタブで開く
+    openExternal(url) {
+        window.open(url, '_blank', 'noopener');
+    },
+};

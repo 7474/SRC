@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Перенесення слів</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Вперед</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Перейти</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} не знайдено.</value>
+  </data>
 </root>

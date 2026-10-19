@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>自動換行</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>上一頁</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>下一頁</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>移至</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>找不到 {0}。</value>
+  </data>
 </root>

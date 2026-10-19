@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>ตัดบรรทัดอัตโนมัติ</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>ย้อนกลับ</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>ไปข้างหน้า</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>ไป</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>ไม่พบ {0}</value>
+  </data>
 </root>

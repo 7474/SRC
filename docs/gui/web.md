@@ -204,11 +204,15 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 - `.txt` はメモ帳を模したウィンドウで、等幅のゴシックで出す。「右端で折り返す」を切り替えられる（既定は折り返す）
 - `.md` は [Markdig](https://github.com/xoofx/markdig)（BSD-2-Clause）で HTML にし、往年の Internet Explorer の既定の表示（白地・明朝・青い下線のリンク・余白 8px）を模して出す。見出しは h1 でも本文の 1.4 倍にとどめる
   - 文書の中の HTML は文字として出す（`DisableHtml`）
-  - リンクは http・https・mailto だけを残して別のタブで開く。`javascript:` やシナリオの中のファイルへのリンクは文字だけにする
+  - リンクは http・https・mailto だけを残して別のタブで開く。シナリオの中の別の文書へのリンクは同じウィンドウで開く（下の「文書のリンク」）。`javascript:` や文書でないファイルへのリンクは文字だけにする
   - シナリオの中の画像（相対パス、4 MB まで）は data URI にして表示する
 - `.htm`・`.html` も同じ見た目で出す。サンドボックスの iframe（`srcdoc`、`allow-scripts` を付けない）に入れ、スクリプトは動かさない
   - 先頭に既定のスタイル（`ScenarioDocuments.PageStyle`。`.md` と同じ書体・リンクの色・見出しの大きさ）を入れる。文書が自分のスタイルを持つときはそちらを使う
-  - `<img>` のシナリオの中の画像は data URI にし、リンクは `<base target="_blank">` で別のタブで開く。CSS の背景画像や、シナリオの中の別のページへのリンクは開けない
+  - `<img>` のシナリオの中の画像は data URI にし、外へのリンクは `<base target="_blank">` で別のタブで開く。CSS の背景画像は出ない
+- 文書のリンク
+  - シナリオの中の別の文書（`.txt`・`.md`・`.htm`・`.html`）への相対リンクは、`ScenarioDocuments.ResolveLink` が `data-srcweb-doc`（シナリオのフォルダからの相対パス）に書き換え、`srcwebDocs.bind`（store.js）がクリックを受けて .NET の `OpenLinkedDocument` で開く。`#` のリンクはその文書の中でスクロールする
+  - `.htm`・`.html` の iframe は、中のクリックを受け取るため `allow-same-origin` を付ける。`allow-scripts` は付けないので、中のスクリプトは動かず、中から外のページには触れない
+  - `.md`・`.htm`・`.html` は往年のブラウザのように「戻る」「進む」とアドレス欄を出す。アドレス欄にはシナリオのフォルダからの相対パスを入れて開ける（http・https の URL なら別のタブで開く）。辿った先の `.txt` も同じウィンドウで出す
 - Esc か「×」で閉じる。プレイ中なら閉じるとキー入力をゲームの画面に戻す
 
 ### 表示言語

@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>자동 줄 바꿈</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0}을(를) 찾을 수 없습니다.</value>
+  </data>
 </root>

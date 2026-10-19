@@ -133,8 +133,18 @@ namespace SRCSharpWeb
                 }
                 else if (!(link.Url ?? "").StartsWith("#", StringComparison.Ordinal))
                 {
-                    // javascript: やシナリオの中のファイルなど、開けない先へのリンクは文字だけにする
-                    Unwrap(link);
+                    var target = ResolveLink(dir, document, link.Url);
+                    if (target != null)
+                    {
+                        // シナリオの中の別の文書は、ページの中で開く（srcweb.js の文書のリンク）
+                        link.Url = "#";
+                        link.GetAttributes().AddPropertyIfNotExist(LinkAttribute, target);
+                    }
+                    else
+                    {
+                        // javascript: や文書でないファイルなど、開けない先へのリンクは文字だけにする
+                        Unwrap(link);
+                    }
                 }
             }
             foreach (var link in markdown.Descendants<AutolinkInline>().ToList())
@@ -179,6 +189,50 @@ namespace SRCSharpWeb
             + "code,pre,tt{font-family:\"Courier New\",\"MS Gothic\",\"ＭＳ ゴシック\",monospace}"
             + "</style>";
 
+        /// <summary>シナリオの中の別の文書へのリンクに付ける属性。値はシナリオのフォルダからの相対パス</summary>
+        public const string LinkAttribute = "data-srcweb-doc";
+
+        private static readonly Regex AnchorHref = new Regex(@"(<a\b[^>]*?\bhref\s*=\s*)(""([^""]*)""|'([^']*)'|([^\s>]+))", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// 文書の中の相対リンクの先にある文書（シナリオのフォルダからの相対パス）。文書でないもの・無いもの・外を指すものは null。
+        /// ? と # より後は捨てる
+        /// </summary>
+        public static string ResolveLink(string dir, Document from, string href)
+        {
+            if (string.IsNullOrEmpty(href) || Uri.TryCreate(href, UriKind.Absolute, out _))
+            {
+                return null;
+            }
+            var path = href.Split('#', '?')[0];
+            if (path.Length == 0)
+            {
+                return null;
+            }
+            try
+            {
+                path = Uri.UnescapeDataString(path).Replace('\\', '/');
+                var baseDir = from == null ? "" : System.IO.Path.GetDirectoryName(from.Path) ?? "";
+                var full = Resolve(dir, path.StartsWith("/", StringComparison.Ordinal) ? path.TrimStart('/') : System.IO.Path.Combine(baseDir, path));
+                if (!File.Exists(full) || !Extensions.Contains(System.IO.Path.GetExtension(full)))
+                {
+                    return null;
+                }
+                return System.IO.Path.GetRelativePath(dir, full).Replace('\\', '/');
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>アドレス欄に入れたパス（シナリオのフォルダからの相対パス）の文書。無ければ null</summary>
+        public static Document Open(string dir, string path)
+        {
+            var target = ResolveLink(dir, null, path);
+            return target == null ? null : new Document { Path = target };
+        }
+
         private static readonly Regex HeadTag = new Regex(@"<head(\s[^>]*)?>", RegexOptions.IgnoreCase);
         private static readonly Regex ImageSource = new Regex(@"(<img\b[^>]*?\bsrc\s*=\s*)(""([^""]*)""|'([^']*)'|([^\s>]+))", RegexOptions.IgnoreCase);
 
@@ -194,6 +248,22 @@ namespace SRCSharpWeb
             {
                 var url = System.Net.WebUtility.HtmlDecode(m.Groups[3].Success ? m.Groups[3].Value : m.Groups[4].Success ? m.Groups[4].Value : m.Groups[5].Value);
                 return m.Groups[1].Value + "\"" + System.Net.WebUtility.HtmlEncode(ImageUrl(dir, baseDir, url)) + "\"";
+            });
+            html = AnchorHref.Replace(html, m =>
+            {
+                var url = System.Net.WebUtility.HtmlDecode(m.Groups[3].Success ? m.Groups[3].Value : m.Groups[4].Success ? m.Groups[4].Value : m.Groups[5].Value);
+                if (IsExternal(url))
+                {
+                    return m.Value;
+                }
+                if (url.StartsWith("#", StringComparison.Ordinal))
+                {
+                    // ページの中の移動は同じ枠で（base の target="_blank" で別のタブにしない）
+                    return m.Groups[1].Value.Insert(2, " target=\"_self\"") + m.Groups[2].Value;
+                }
+                var target = ResolveLink(dir, document, url);
+                // シナリオの中の別の文書は、ページの中で開く（srcweb.js の文書のリンク）。開けない先は何もしない
+                return m.Groups[1].Value.Insert(2, target == null ? " target=\"_self\"" : $" {LinkAttribute}=\"{System.Net.WebUtility.HtmlEncode(target)}\" target=\"_self\"") + "\"#\"";
             });
             var head = HeadTag.Match(html);
             return head.Success

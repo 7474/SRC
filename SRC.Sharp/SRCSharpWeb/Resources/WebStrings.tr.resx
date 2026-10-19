@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Sözcük kaydır</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>İleri</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Git</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} bulunamadı.</value>
+  </data>
 </root>

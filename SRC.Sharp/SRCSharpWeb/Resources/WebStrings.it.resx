@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>A capo automatico</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Avanti</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Vai</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} non trovato.</value>
+  </data>
 </root>

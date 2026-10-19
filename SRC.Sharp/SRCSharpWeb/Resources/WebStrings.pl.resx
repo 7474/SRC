@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Zawijanie wierszy</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Dalej</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Przejdź</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>Nie znaleziono {0}.</value>
+  </data>
 </root>

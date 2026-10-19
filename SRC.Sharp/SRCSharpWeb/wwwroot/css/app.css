@@ -1703,3 +1703,38 @@ label.button input.hidden-file {
     padding: 2px;
     box-sizing: border-box;
 }
+
+/* 文書のウィンドウの戻る・進むとアドレス欄 */
+.doc-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+.doc-nav > button {
+    min-height: 21px;
+    padding: 1px 8px;
+}
+
+.doc-address {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 200px;
+}
+
+.doc-address input {
+    flex: 1;
+    min-width: 0;
+}
+
+.doc-address button {
+    min-height: 21px;
+    padding: 1px 8px;
+}
+
+.doc-browser .doc-text {
+    padding: 8px;
+}

@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Ajuste de línea</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Adelante</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Ir</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>No se encontró {0}.</value>
+  </data>
 </root>

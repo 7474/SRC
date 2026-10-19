@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Zeilenumbruch</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Vorwärts</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>Wechseln zu</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} wurde nicht gefunden.</value>
+  </data>
 </root>

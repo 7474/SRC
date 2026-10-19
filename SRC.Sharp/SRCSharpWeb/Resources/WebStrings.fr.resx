@@ -237,4 +237,16 @@
   <data name="WordWrap" xml:space="preserve">
     <value>Retour automatique à la ligne</value>
   </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Précédente</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Suivante</value>
+  </data>
+  <data name="DocumentGo" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} est introuvable.</value>
+  </data>
 </root>
