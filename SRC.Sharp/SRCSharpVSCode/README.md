@@ -181,7 +181,7 @@ SRC# のデバッグを始めると「SRC# 画面」のタブを横に開き、�
 - 音は鳴らない
 - 「画像を保存」で、表示中の画面を PNG で保存する
 
-`interactive` でない場合（`script` がある、または `interactive: false`）は表示だけです。表示が変わった時に送られるフレームを出します（0.5.3 より後の srcsharp）。それより古い srcsharp では、止まった時と終わった時に取り直し、実行中は 0.5 秒ごとに取り直します（`srcsharp.screen.autoOpen` が `false` なら自動では開かない）。
+`interactive` でない場合（`script` がある、または `interactive: false`）は表示だけです。表示が変わった時に送られるフレームを出します（0.5.4 以降の srcsharp）。それより古い srcsharp では、止まった時と終わった時に取り直し、実行中は 0.5 秒ごとに取り直します（`srcsharp.screen.autoOpen` が `false` なら自動では開かない）。
 
 画面はデバッグアダプタの独自のリクエスト・イベント（`srcsharpScreen`・`srcsharpFrame`・`srcsharpInput` など）でやり取りします。0.5.2 以降の srcsharp が要ります。古い場合は「srcsharp を入れる／更新する」で更新してください。
 
