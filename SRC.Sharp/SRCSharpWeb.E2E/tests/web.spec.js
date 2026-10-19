@@ -418,8 +418,8 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
   await expect(body).toHaveAttribute('aria-busy', 'true');
   // 読み込み中のダイアログを出す（操作できないことが見て分かる）
   await expect(page.locator('#loading')).toBeVisible();
-  // 素材（requires）から読み込む
-  await expect(page.locator('#loading-status')).toContainText('読み込んでいます');
+  // 今の処理を出す。CI では zip の取得を止めきれず、展開まで進んでいることがあるので、どちらでもよい
+  await expect(page.locator('#loading-status')).toContainText(/読み込んでいます|展開しています/);
   await page.screenshot({ path: testInfo.outputPath('loading.png') });
   // inert の間は、ほかのシナリオを押しても始まらない
   await page.getByRole('button', { name: 'sound', exact: true }).click({ force: true, timeout: 2000 }).catch(() => {});
