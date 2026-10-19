@@ -204,4 +204,100 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Registro (consola del navegador)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Se canceló la carga.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Reemplazar</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Reemplazar por otro zip con el mismo nombre (se conservan las partidas guardadas)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>Se sobrescribió {0}.</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Documentos</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Léeme primero</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Leer documentos incluidos…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Bloc de notas</value>
+  </data>
+  <data name="PageViewerTitle" xml:space="preserve">
+    <value>{0} - Visor de documentos</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>No se pudo abrir {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>Ajuste de línea</value>
+  </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>Adelante</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>No se encontró {0}.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>Detener</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>Favoritos</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>Listo</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>Mi PC</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>Seleccionar todo</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>Archivo</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>Edición</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>Ir</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>Favoritos</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>Página de inicio</value>
+  </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>Ir</value>
+  </data>
 </root>

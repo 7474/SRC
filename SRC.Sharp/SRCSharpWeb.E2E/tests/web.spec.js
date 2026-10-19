@@ -183,12 +183,37 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await expectAdvancesWithEnter(page);
   await attachScreen(page, testInfo, 'archive');
 
-  // 削除する
+  // 同じ名前のまま別の zip に置き換える
   await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  const replacement = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-basic.zip'));
+  await page.locator('#archives li', { hasText: name }).locator('input.hidden-file').setInputFiles({
+    name: 'other.zip',
+    mimeType: 'application/zip',
+    buffer: replacement,
+  });
+  await expect(page.locator('#status')).toContainText('上書きしました');
+  await expect(page.locator('#archives li')).toHaveCount(1);
+  await expect(page.locator('#archives li')).toContainText(name);
+  await expect(page.locator('#archives li .size')).toHaveText(formatSize(replacement.length));
+  // 同じ名前で追加しても上書きする
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip')),
+  });
+  await expect(page.locator('#status')).toContainText('上書きしました');
+  await expect(page.locator('#archives li')).toHaveCount(1);
+
+  // 削除する
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   await expect(page.locator('#archives li')).toHaveCount(0);
 });
+
+// App.razor の FormatSize と同じ表示
+function formatSize(size) {
+  return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.round(size / 1024)} KB`;
+}
 
 test('インターミッションでセーブし、ブラウザに残ったセーブデータから再開する', async ({ page }, testInfo) => {
   const scenario = 'catalog-intermission-save';
@@ -377,7 +402,7 @@ test('URL の play で登録済シナリオを直接始める', async ({ page })
   await expectAdvancesWithEnter(page);
 });
 
-test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }) => {
+test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }, testInfo) => {
   await open(page);
   // シナリオの zip の取得を遅らせ、読み込み中の状態を確かめる
   let release;
@@ -390,9 +415,39 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
   const body = page.locator('.explorer-body');
   await expect(body).toHaveAttribute('inert', '');
   await expect(body).toHaveAttribute('aria-busy', 'true');
+  // 読み込み中のダイアログを出す（操作できないことが見て分かる）
+  await expect(page.locator('#loading')).toBeVisible();
+  // 素材（requires）から読み込む
+  await expect(page.locator('#loading-status')).toContainText('読み込んでいます');
+  await page.screenshot({ path: testInfo.outputPath('loading.png') });
   // inert の間は、ほかのシナリオを押しても始まらない
   await page.getByRole('button', { name: 'sound', exact: true }).click({ force: true, timeout: 2000 }).catch(() => {});
   release();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+});
+
+test('シナリオの読み込みを取り消し、もう一度始められる', async ({ page }) => {
+  await open(page);
+  // 1 回目の取得は応答を返さず、取り消しを待つ
+  let first = true;
+  await page.route('**/*.zip', async route => {
+    if (first) {
+      first = false;
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#loading')).toBeVisible();
+  await page.locator('#cancel-loading').click();
+  await expect(page.locator('#loading')).toHaveCount(0);
+  await expect(page.locator('.explorer-body')).not.toHaveAttribute('inert', '');
+  await expect(page.locator('#status')).toContainText('取り消しました');
+  await expect(page.locator('#screen')).toHaveCount(0);
+
+  // 取り消した後も、同じシナリオを始められる
+  await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
   await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
 });
@@ -918,6 +973,139 @@ test('仮想パッドをシステムメニューで表示し、押したキー�
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
   await expect(page.locator('#virtual-pad')).toBeVisible();
+  await backToMenu(page);
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+});
+
+// シナリオのフォルダの中のファイルを zip の項目にする（name はフォルダからの相対パス）
+function corpusFiles(dir, prefix = '') {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
+    ? corpusFiles(path.join(dir, e.name), prefix + e.name + '/')
+    : [{ name: prefix + e.name, data: fs.readFileSync(path.join(dir, e.name)) }]);
+}
+
+test('シナリオに同梱された文書（README・Shift_JIS のテキスト）を読む', async ({ page }, testInfo) => {
+  const name = '文書つき.zip';
+  const files = corpusFiles(path.join(corpus, 'battle-basic')).filter(x => x.name !== 'README.md' && x.name !== 'play.txt');
+  // .eve が 2 つあるので、シナリオを開くと選ぶ画面になる
+  files.push({ name: 'other.eve', data: files.find(x => x.name === 'test.eve').data });
+  files.push({
+    name: 'README.md',
+    data: Buffer.from([
+      '# はじめに',
+      '',
+      '<script>window.injected = true</script>',
+      '',
+      '[外のリンク](https://example.com/) と [危ないリンク](javascript:alert(1))',
+      '',
+      '[説明書を開く](manual/%E8%AA%AC%E6%98%8E%E6%9B%B8.html)',
+      '',
+      '| 項目 | 値 |',
+      '|---|---|',
+      '| A | 1 |',
+    ].join('\n'), 'utf8'),
+  });
+  // 「更新履歴：シフトJISの文書」を Shift_JIS で書いたもの
+  files.push({ name: '更新履歴.txt', data: Buffer.from([141, 88, 144, 86, 151, 154, 151, 240, 129, 70, 131, 86, 131, 116, 131, 103, 74, 73, 83, 130, 204, 149, 182, 143, 145]) });
+  // Shift_JIS の HTML（スクリプトは動かさない）
+  files.push({
+    name: 'manual/説明書.html',
+    data: Buffer.concat([
+      Buffer.from('<html><head><meta charset="Shift_JIS"></head><body><h1>', 'latin1'),
+      Buffer.from([144, 224, 150, 190, 143, 145, 130, 204, 131, 121, 129, 91, 131, 87]),
+      Buffer.from('</h1><script>parent.injectedHtml = true; document.body.append("script ran")</script><p><a href="../%E6%9B%B4%E6%96%B0%E5%B1%A5%E6%AD%B4.txt">history</a></p></body></html>', 'latin1'),
+    ]),
+  });
+  await open(page);
+  await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files) });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+
+  // README を先頭に、目印を付けて出す。シナリオのデータ（Data の下の .txt）は出さない
+  const documents = page.locator('#documents li');
+  await expect(documents).toHaveCount(3);
+  await expect(documents.first()).toHaveClass(/readme/);
+  await expect(documents.first()).toContainText('はじめにお読みください');
+  await expect(documents.nth(1)).toContainText('更新履歴.txt');
+  await expect(documents.nth(2)).toContainText('manual/説明書.html');
+
+  // Markdown は HTML にする。中の HTML は文字のまま、javascript: のリンクは外す。見出しは大きくし過ぎない
+  await documents.first().getByRole('button', { name: 'README.md' }).click();
+  const view = page.locator('#doc-view');
+  await expect(view.locator('h1')).toHaveText('はじめに');
+  const sizes = await view.evaluate(e => [getComputedStyle(e).fontSize, getComputedStyle(e.querySelector('h1')).fontSize].map(parseFloat));
+  expect(sizes[1] / sizes[0]).toBeLessThanOrEqual(1.5);
+  await expect(view).toContainText('<script>');
+  expect(await page.evaluate(() => window.injected)).toBeUndefined();
+  await expect(view.getByRole('link', { name: '外のリンク' })).toHaveAttribute('href', 'https://example.com/');
+  await expect(view.getByRole('link', { name: '危ないリンク' })).toHaveCount(0);
+  await expect(view.locator('table td')).toHaveCount(2);
+  await page.screenshot({ path: testInfo.outputPath('document-markdown.png') });
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#doc-window')).toHaveCount(0);
+
+  // Shift_JIS のテキストはメモ帳で読む
+  await documents.nth(1).getByRole('button').click();
+  await expect(page.locator('#doc-window')).toContainText('更新履歴.txt - メモ帳');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.screenshot({ path: testInfo.outputPath('document-text.png') });
+  await page.locator('.doc-close').click();
+
+  // HTML はサンドボックスの iframe に入れ、スクリプトは動かさない
+  await documents.nth(2).getByRole('button').click();
+  await expect(page.locator('#doc-window')).toContainText('説明書.html - 文書の表示');
+  const frame = page.frameLocator('#doc-view');
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  await expect(frame.locator('body')).not.toContainText('script ran');
+  expect(await page.evaluate(() => window.injectedHtml)).toBeUndefined();
+  await expect(page.locator('#doc-view')).not.toHaveAttribute('sandbox', /allow-scripts/);
+  await page.screenshot({ path: testInfo.outputPath('document-html.png') });
+  await page.locator('.doc-close').click();
+
+  // 文書の中のリンクでシナリオの中の別の文書へ移り、戻る・進むとアドレス欄で動く
+  await documents.first().getByRole('button', { name: 'README.md' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('README.md');
+  await view.getByRole('link', { name: '説明書を開く' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('manual/説明書.html');
+  await expect(page.locator('iframe#doc-view')).toBeVisible();
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  // iframe の中のリンク（相対パスで上のフォルダの .txt）も、同じウィンドウで開く
+  await frame.getByRole('link', { name: 'history' }).click();
+  await expect(page.locator('#doc-address')).toHaveValue('更新履歴.txt');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.locator('#doc-back').click();
+  await expect(page.locator('#doc-address')).toHaveValue('manual/説明書.html');
+  await page.locator('#doc-back').click();
+  await expect(page.locator('#doc-address')).toHaveValue('README.md');
+  await expect(page.locator('#doc-back')).toBeDisabled();
+  await page.locator('#doc-forward').click();
+  await expect(page.locator('iframe#doc-view')).toBeVisible();
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  await page.screenshot({ path: testInfo.outputPath('document-nav.png') });
+  // 95 のテーマは IE4（「移動」ボタンなし）、XP のテーマは IE6（「移動」ボタンあり）
+  await expect(page.locator('.ie-go')).toBeHidden();
+  await page.evaluate(() => window.srcwebStore.setTheme('xp'));
+  await expect(page.locator('.ie-go')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('document-xp.png') });
+  await page.evaluate(() => window.srcwebStore.setTheme('95'));
+  await page.locator('#doc-address').fill('更新履歴.txt');
+  await page.locator('#doc-address').press('Enter');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.locator('#doc-address').fill('nothing.md');
+  await page.locator('#doc-address').press('Enter');
+  await expect(page.locator('.doc-status')).toContainText('nothing.md が見つかりません');
+  await page.locator('.doc-close').click();
+
+  // プレイ中もシステムメニューから読める
+  await page.getByRole('button', { name: 'test.eve' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: '同梱の文書を読む…' }).click();
+  await page.locator('#documents li').first().getByRole('button').click();
+  await expect(page.locator('#doc-view h1')).toHaveText('はじめに');
+  await page.locator('.doc-close').click();
+  await expect(page.locator('#doc-window')).toHaveCount(0);
+
   await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();

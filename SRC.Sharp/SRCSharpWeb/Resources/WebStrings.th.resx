@@ -204,4 +204,100 @@
   <data name="LogLevel" xml:space="preserve">
     <value>ล็อก (คอนโซลของเบราว์เซอร์)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>ยกเลิกการโหลดแล้ว</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>แทนที่</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>แทนที่ด้วย zip อื่นโดยใช้ชื่อเดิม (ข้อมูลเซฟยังคงอยู่)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>เขียนทับ {0} แล้ว</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>เอกสาร</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>โปรดอ่านก่อน</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>อ่านเอกสารที่แนบมา…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Notepad</value>
+  </data>
+  <data name="PageViewerTitle" xml:space="preserve">
+    <value>{0} - ตัวดูเอกสาร</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>ไม่สามารถเปิด {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>ตัดบรรทัดอัตโนมัติ</value>
+  </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>ย้อนกลับ</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>ไปข้างหน้า</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>ไม่พบ {0}</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>หยุด</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>หน้าแรก</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>รายการโปรด</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>ที่อยู่</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>เสร็จสิ้น</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>My Computer</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>เลือกทั้งหมด</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>แฟ้ม</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>แก้ไข</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>มุมมอง</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>ไป</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>รายการโปรด</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>วิธีใช้</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>หน้าแรก</value>
+  </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>ไป</value>
+  </data>
 </root>

@@ -46,12 +46,31 @@
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
                     <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
                     <button role="menuitem" @onclick="ToggleTouchUiAsync">@L["MenuTouchUi"]</button>
+                    @if (documents.Count > 0)
+                    {
+                        <hr />
+                        <button role="menuitem" id="menu-documents" @onclick="ChooseDocument">@L["MenuDocuments"]</button>
+                    }
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
             }
         </div>
     </div>
+    @if (choosingDocument)
+    {
+        <div class="modal">
+            <div class="dialog" role="dialog" aria-label="@L["Documents"]">
+                <div class="titlebar">@L["Documents"]</div>
+                <div class="dialog-body">
+                    @DocumentList
+                    <div class="dialog-buttons">
+                        <button @onclick="CloseDocumentChooser">@L["MenuClose"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     @if (confirmingBack)
     {
         <div class="modal">
@@ -85,7 +104,7 @@ else
         @* シナリオ・素材を読み込んでいる間は、ほかの操作を受け付けない（inert） *@
         <div class="explorer-body" inert="@busy" aria-busy="@(busy ? "true" : "false")">
         <div class="listpane">
-        @if (!string.IsNullOrEmpty(status))
+        @if (!busy && !string.IsNullOrEmpty(status))
         {
             <p id="status" class="status">@status</p>
         }
@@ -148,6 +167,8 @@ else
                                     <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
                                 }
                                 <span class="size">@FormatSize(archive.Size)</span>
+                                @* 同じ名前のまま別の zip に置き換える（セーブデータは名前で引き継ぐ） *@
+                                <label class="button replace" title="@L["ReplaceTitle"]">@L["Replace"]<InputFile class="hidden-file" OnChange="e => ReplaceArchiveAsync(e, archive)" accept=".zip" /></label>
                                 <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">@L["Delete"]</button>
                             </li>
                         }
@@ -163,6 +184,11 @@ else
         {
             <section class="group">
                 <h2>@choosingTitle</h2>
+                @if (documents.Count > 0)
+                {
+                    <h3>@L["Documents"]</h3>
+                    @DocumentList
+                }
                 @if (saves.Count > 0)
                 {
                     <h3>@L["ResumeFromSave"]</h3>
@@ -271,6 +297,120 @@ else
             <span class="statusbar-cell statusbar-grip"></span>
         </div>
     </main>
+    @* 読み込みの間は画面を暗くして操作できないことを示し、取り消せるようにする *@
+    @if (busy)
+    {
+        <div class="modal loading" id="loading">
+            <div class="dialog" role="alertdialog" aria-label="@L["Loading"]" aria-busy="true">
+                <div class="titlebar">SRC#Web</div>
+                <div class="dialog-body">
+                    <p id="loading-status">@(string.IsNullOrEmpty(status) ? L["Loading"] : status)</p>
+                    <div class="progress" role="progressbar" aria-label="@L["Loading"]"><span></span></div>
+                    <div class="dialog-buttons">
+                        <button id="cancel-loading" @onclick="CancelLoad" disabled="@(loadCancel?.IsCancellationRequested ?? true)">@L["ModalCancel"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@* シナリオに同梱された文書。.txt はメモ帳、.md・.htm・.html は Internet Explorer（95 のテーマは IE4、XP のテーマは IE6）を模す *@
+@if (viewing != null)
+{
+    <div class="modal doc-modal" @onclick="CloseDocumentAsync">
+        <div class="doc-window @(Browsing ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
+             @onclick:stopPropagation="true" @onkeydown="DocumentKeyDownAsync">
+            <div class="titlebar">
+                <span class="icon @(Browsing ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                <span class="doc-title">@(Browsing ? L["PageViewerTitle", viewingTitle ?? viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
+                <button class="doc-close" aria-label="@L["MenuClose"]" title="@L["MenuClose"]" @onclick="CloseDocumentAsync">×</button>
+            </div>
+            @* メニューバー。開いているメニューの外を押したら閉じる *@
+            @if (documentMenu != null)
+            {
+                <div class="doc-menu-backdrop" @onclick="() => documentMenu = null"></div>
+            }
+            <div class="doc-menubar" role="menubar">
+                @foreach (var menu in DocumentMenus)
+                {
+                    <div class="doc-menu">
+                        <button role="menuitem" class="@(documentMenu == menu.Key ? "open" : null)" aria-haspopup="menu" aria-expanded="@(documentMenu == menu.Key ? "true" : "false")"
+                                @onclick="() => documentMenu = documentMenu == menu.Key ? null : menu.Key"
+                                @onmouseenter="() => { if (documentMenu != null) documentMenu = menu.Key; }">@menu.Label</button>
+                        @if (documentMenu == menu.Key)
+                        {
+                            <div class="popup-menu doc-menu-popup" role="menu">
+                                @foreach (var item in menu.Items)
+                                {
+                                    @if (item == null)
+                                    {
+                                        <hr />
+                                    }
+                                    else
+                                    {
+                                        <button role="menuitem" class="@(item.Checked ? "checked" : null)" disabled="@(!item.Enabled)" @onclick="() => RunDocumentMenuAsync(item.Action)">@item.Label</button>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            @if (Browsing)
+            {
+                @* 標準のボタン（文字付きの平らなボタン）とアドレスバーを積み、右に回る地球（スロバー）を置く *@
+                <div class="ie-rebar">
+                    <div class="ie-bands">
+                        <div class="ie-band ie-buttons">
+                            @* XP のテーマでは Internet Explorer 6 のように、絵の右に文字を出し、文字は戻る・お気に入りだけにする（ie-labeled） *@
+                            <button id="doc-back" class="ie-button ie-labeled" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)" title="@L["DocumentBack"]"><span class="ie-icon ie-back" aria-hidden="true"></span><span class="ie-label">@L["DocumentBack"]</span></button>
+                            <button id="doc-forward" class="ie-button" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)" title="@L["DocumentForward"]"><span class="ie-icon ie-forward" aria-hidden="true"></span><span class="ie-label">@L["DocumentForward"]</span></button>
+                            <button class="ie-button" disabled title="@L["IeStop"]"><span class="ie-icon ie-stop" aria-hidden="true"></span><span class="ie-label">@L["IeStop"]</span></button>
+                            <button id="doc-refresh" class="ie-button" @onclick="RefreshDocument" title="@L["IeRefresh"]"><span class="ie-icon ie-refresh" aria-hidden="true"></span><span class="ie-label">@L["IeRefresh"]</span></button>
+                            <button id="doc-home" class="ie-button" disabled="@(HomeDocument == null)" @onclick="GoHome" title="@L["IeHome"]"><span class="ie-icon ie-home" aria-hidden="true"></span><span class="ie-label">@L["IeHome"]</span></button>
+                            <span class="ie-separator" aria-hidden="true"></span>
+                            <button class="ie-button ie-labeled" @onclick="@(() => documentMenu = "favorites")" title="@L["IeFavoritesButton"]"><span class="ie-icon ie-favorites" aria-hidden="true"></span><span class="ie-label">@L["IeFavoritesButton"]</span></button>
+                        </div>
+                        <form class="ie-band ie-address" @onsubmit="GoAddressAsync">
+                            <label for="doc-address">@L["IeAddress"]</label>
+                            <span class="ie-combo">
+                                <span class="icon @(viewing.IsPage ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                                <input id="doc-address" type="text" @bind="addressText" @bind:event="oninput" spellcheck="false" autocomplete="off" />
+                            </span>
+                            @* Internet Explorer 6（XP のテーマ）の「移動」ボタン。IE4（95 のテーマ）には無いので出さない *@
+                            <button type="submit" class="ie-go"><span class="ie-icon ie-go-arrow" aria-hidden="true"></span>@L["IeGoButton"]</button>
+                        </form>
+                    </div>
+                    <div class="ie-throbber" aria-hidden="true"></div>
+                </div>
+            }
+            @if (viewingFrame != null)
+            {
+                @*
+                    シナリオの HTML はスクリプトを動かさない（sandbox に allow-scripts を付けない）。外へのリンクは別のタブで開く。
+                    allow-same-origin は、中のリンクのクリックを srcwebDocs.bind で受け取るため（スクリプトが動かないので中から外は触れない）
+                *@
+                <iframe class="doc-view doc-frame" id="doc-view" title="@viewing.Name" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox" srcdoc="@viewingFrame"></iframe>
+            }
+            else if (viewingHtml != null)
+            {
+                <div class="doc-view doc-page" id="doc-view" tabindex="0">@viewingHtml</div>
+            }
+            else
+            {
+                <pre class="doc-view doc-text @(documentWrap ? "wrap" : null)" id="doc-view" tabindex="0">@viewingText</pre>
+            }
+            @if (Browsing)
+            {
+                <div class="ie-statusbar">
+                    <span class="ie-status-main doc-status"><span class="icon @(documentStatus == null ? "icon-page" : "icon-error")" aria-hidden="true"></span>@(documentStatus ?? L["IeDone"])</span>
+                    <span class="ie-status-pane" aria-hidden="true"></span>
+                    <span class="ie-status-zone"><span class="icon icon-computer" aria-hidden="true"></span>@L["IeZone"]</span>
+                </div>
+            }
+        </div>
+    </div>
 }
 
 @code {
@@ -295,6 +435,8 @@ else
 
     /// <summary>シナリオ・素材を読み込んでいる間。一覧と作業ウィンドウの操作を受け付けない</summary>
     private bool busy;
+    /// <summary>読み込みの取り消し。読み込みの間（busy）だけある</summary>
+    private CancellationTokenSource loadCancel;
     /// <summary>画面のテーマ（95・xp）。srcwebStore.setTheme で html の data-theme に反映し、localStorage に保存する</summary>
     private string theme = "95";
     /// <summary>操作の種類の設定（auto・touch・mouse）。srcwebStore.setInputMode で html の data-input に反映し、localStorage に保存する</summary>
@@ -319,6 +461,257 @@ else
     private TaskCompletionSource rendered;
     private bool systemMenuOpen;
     private bool confirmingBack;
+    /// <summary>シナリオに同梱された文書（README・更新履歴など）</summary>
+    private IList<ScenarioDocuments.Document> documents = new List<ScenarioDocuments.Document>();
+    /// <summary>表示している文書。.md は viewingHtml、.txt は viewingText に入れる</summary>
+    private ScenarioDocuments.Document viewing;
+    private string viewingText;
+    private MarkupString? viewingHtml;
+    /// <summary>.htm・.html を入れる iframe の srcdoc</summary>
+    private string viewingFrame;
+    /// <summary>タイトルバーに出す文書のタイトル（HTML の title）。無ければファイル名</summary>
+    private string viewingTitle;
+    /// <summary>メモ帳の「右端で折り返す」</summary>
+    private bool documentWrap = true;
+    /// <summary>プレイ中にシステムメニューから文書を選んでいる</summary>
+    private bool choosingDocument;
+    /// <summary>開いた文書にキー入力を向ける（Esc で閉じ、矢印キーでスクロールする）</summary>
+    private bool focusDocument;
+    /// <summary>文書の中のリンクを受け取る（srcwebDocs.bind）。開くたびに結び直す</summary>
+    private bool bindDocument;
+    private DotNetObjectReference<App> documentRef;
+    /// <summary>.md・.htm・.html で開いた文書の履歴（戻る・進む）</summary>
+    private List<ScenarioDocuments.Document> history = new List<ScenarioDocuments.Document>();
+    private int historyIndex = -1;
+    /// <summary>ブラウザ風のウィンドウで出している（.md・.htm・.html から開いた）。.txt を一覧から開いたときはメモ帳</summary>
+    private bool Browsing => history.Count > 0;
+    /// <summary>アドレス欄</summary>
+    private string addressText;
+    /// <summary>文書のウィンドウの下の欄に出す知らせ（見つからないなど）。無ければパスを出す</summary>
+    private string documentStatus;
+
+    /// <summary>文書の一覧。README を先に、「はじめにお読みください」を添えて出す</summary>
+    private RenderFragment DocumentList => @<ul class="items" id="documents">
+        @foreach (var document in documents)
+        {
+            <li class="@(document.IsReadme ? "readme" : null)">
+                <span class="icon @(document.IsPage ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                <button @onclick="() => OpenDocument(document)">@document.Path</button>
+                @if (document.IsReadme)
+                {
+                    <span class="badge">@L["ReadFirst"]</span>
+                }
+            </li>
+        }
+    </ul>;
+
+    private void ChooseDocument()
+    {
+        systemMenuOpen = false;
+        choosingDocument = true;
+    }
+
+    private async Task CloseDocumentChooser()
+    {
+        choosingDocument = false;
+        await FocusScreenAsync();
+    }
+
+    private void OpenDocument(ScenarioDocuments.Document document)
+    {
+        // 一覧から開いたときは履歴を始め直す
+        history.Clear();
+        historyIndex = -1;
+        ShowDocument(document, true);
+    }
+
+    /// <summary>文書の中のリンク（data-srcweb-doc）から開く。srcwebDocs から呼ばれる</summary>
+    [JSInvokable]
+    public Task OpenLinkedDocument(string path)
+    {
+        return InvokeAsync(() =>
+        {
+            var document = scenarioDir == null ? null : ScenarioDocuments.Open(scenarioDir, path);
+            if (document == null)
+            {
+                documentStatus = L["DocumentNotFound", path];
+            }
+            else
+            {
+                ShowDocument(document, true);
+            }
+            StateHasChanged();
+        });
+    }
+
+    private void MoveHistory(int delta)
+    {
+        var index = historyIndex + delta;
+        if (index >= 0 && index < history.Count)
+        {
+            historyIndex = index;
+            ShowDocument(history[index], false);
+        }
+    }
+
+    /// <summary>アドレス欄のパス（シナリオのフォルダからの相対パス）か外の URL を開く</summary>
+    private async Task GoAddressAsync()
+    {
+        var text = addressText?.Trim() ?? "";
+        if (Uri.TryCreate(text, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+        {
+            await JS.InvokeVoidAsync("srcwebDocs.openExternal", uri.ToString());
+            addressText = viewing?.Path;
+            return;
+        }
+        await OpenLinkedDocument(text);
+    }
+
+    /// <param name="push">履歴に積む（戻る・進むで動くときは積まない）</param>
+    private void ShowDocument(ScenarioDocuments.Document document, bool push)
+    {
+        // .md・.htm・.html から辿った .txt もブラウザの中で出す（往年のブラウザと同じ）
+        if (push && (document.IsPage || history.Count > 0))
+        {
+            history.RemoveRange(historyIndex + 1, history.Count - historyIndex - 1);
+            history.Add(document);
+            historyIndex = history.Count - 1;
+        }
+        documentStatus = null;
+        addressText = document.Path;
+        viewingText = null;
+        viewingHtml = null;
+        viewingFrame = null;
+        viewingTitle = null;
+        try
+        {
+            if (document.IsHtml)
+            {
+                viewingFrame = ScenarioDocuments.RenderHtml(scenarioDir, document, out viewingTitle);
+            }
+            else if (document.IsMarkdown)
+            {
+                viewingHtml = new MarkupString(ScenarioDocuments.RenderMarkdown(scenarioDir, document));
+            }
+            else
+            {
+                viewingText = ScenarioDocuments.ReadText(scenarioDir, document);
+            }
+        }
+        catch (Exception ex)
+        {
+            viewingText = L["DocumentOpenFailed", document.Path, ex.Message];
+            WebLogging.Log.LogWarning(ex, "文書を開けません {Path}", document.Path);
+        }
+        choosingDocument = false;
+        viewing = document;
+        focusDocument = true;
+        bindDocument = document.IsPage;
+    }
+
+    private async Task CloseDocumentAsync()
+    {
+        documentMenu = null;
+        viewing = null;
+        viewingText = null;
+        viewingHtml = null;
+        viewingFrame = null;
+        if (mode == Mode.Playing)
+        {
+            await FocusScreenAsync();
+        }
+    }
+
+    private async Task DocumentKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            if (documentMenu != null)
+            {
+                documentMenu = null;
+                return;
+            }
+            await CloseDocumentAsync();
+        }
+        else if (Browsing && e.AltKey && e.Key == "ArrowLeft")
+        {
+            MoveHistory(-1);
+        }
+        else if (Browsing && e.AltKey && e.Key == "ArrowRight")
+        {
+            MoveHistory(1);
+        }
+        else if (e.Key == "F5")
+        {
+            RefreshDocument();
+        }
+    }
+
+    /// <summary>文書のウィンドウのメニュー。null の項目は区切り線</summary>
+    private sealed record DocumentMenu(string Key, string Label, IList<DocumentMenuItem> Items);
+    private sealed record DocumentMenuItem(string Label, Func<Task> Action, bool Enabled = true, bool Checked = false);
+
+    /// <summary>開いているメニュー（DocumentMenu.Key）</summary>
+    private string documentMenu;
+
+    private static DocumentMenuItem Item(string label, Action action, bool enabled = true, bool isChecked = false)
+        => new DocumentMenuItem(label, () => { action(); return Task.CompletedTask; }, enabled, isChecked);
+
+    /// <summary>Internet Explorer 4・メモ帳（Windows 95）と同じ並びのメニュー。動かせるものだけを入れる</summary>
+    private IEnumerable<DocumentMenu> DocumentMenus
+    {
+        get
+        {
+            var close = new DocumentMenuItem(L["IeClose"], CloseDocumentAsync);
+            var selectAll = new DocumentMenuItem(L["IeSelectAll"], () => JS.InvokeVoidAsync("srcwebDocs.selectAll", "doc-view").AsTask());
+            if (!Browsing)
+            {
+                yield return new DocumentMenu("file", L["IeMenuFile"], new[] { close });
+                yield return new DocumentMenu("edit", L["IeMenuEdit"], new[] { selectAll, null, Item(L["WordWrap"], () => documentWrap = !documentWrap, true, documentWrap) });
+                yield break;
+            }
+            yield return new DocumentMenu("file", L["IeMenuFile"], new[] { close });
+            yield return new DocumentMenu("edit", L["IeMenuEdit"], new[] { selectAll });
+            yield return new DocumentMenu("view", L["IeMenuView"], new[] { Item(L["IeRefreshMenu"], RefreshDocument) });
+            yield return new DocumentMenu("go", L["IeMenuGo"], new[]
+            {
+                Item(L["DocumentBack"], () => MoveHistory(-1), historyIndex > 0),
+                Item(L["DocumentForward"], () => MoveHistory(1), historyIndex < history.Count - 1),
+                null,
+                Item(L["IeHomeMenu"], GoHome, HomeDocument != null),
+            });
+            // お気に入り: 同梱の文書の一覧
+            yield return new DocumentMenu("favorites", L["IeMenuFavorites"], documents.Select(d => Item(d.Path, () => ShowDocument(d, true), true, d.Path == viewing?.Path)).ToList());
+            yield return new DocumentMenu("help", L["IeMenuHelp"], new[] { Item(L["ReadFirst"], GoHome, HomeDocument != null) });
+        }
+    }
+
+    private async Task RunDocumentMenuAsync(Func<Task> action)
+    {
+        documentMenu = null;
+        await action();
+    }
+
+    /// <summary>ホーム: README（無ければ最初の文書）</summary>
+    private ScenarioDocuments.Document HomeDocument => documents.FirstOrDefault(x => x.IsReadme) ?? documents.FirstOrDefault();
+
+    private void GoHome()
+    {
+        var home = HomeDocument;
+        if (home != null)
+        {
+            ShowDocument(home, true);
+        }
+    }
+
+    /// <summary>最新の情報に更新（読み直す）</summary>
+    private void RefreshDocument()
+    {
+        if (viewing != null)
+        {
+            ShowDocument(viewing, false);
+        }
+    }
 
     private void ToggleSystemMenu() => systemMenuOpen = !systemMenuOpen;
 
@@ -372,6 +765,21 @@ else
         if (mode == Mode.Playing)
         {
             rendered?.TrySetResult();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (bindDocument && viewing != null)
+        {
+            bindDocument = false;
+            documentRef ??= DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("srcwebDocs.bind", "doc-view", documentRef);
+        }
+        if (focusDocument && viewing != null)
+        {
+            focusDocument = false;
+            await JS.InvokeVoidAsync("srcwebStore.focus", "doc-view");
         }
     }
 
@@ -535,42 +943,88 @@ else
         archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
     }
 
-    private Task AddArchivesAsync(InputFileChangeEventArgs e, string kind) => RunBusyAsync(async () =>
+    /// <summary>
+    /// アーカイブを追加する。同じ名前のものがあれば上書きする（セーブデータはシナリオの名前で引き継ぐ）
+    /// </summary>
+    private Task AddArchivesAsync(InputFileChangeEventArgs e, string kind) => RunBusyAsync(async token =>
     {
+        var overwritten = new List<string>();
         foreach (var file in e.GetMultipleFiles(32))
         {
-            status = L["AddingArchive", file.Name];
-            StateHasChanged();
-            using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
-            using var buffer = new MemoryStream();
-            await stream.CopyToAsync(buffer);
-            await JS.InvokeVoidAsync("srcwebStore.put", file.Name, buffer.ToArray(), kind);
+            if (archives.Any(x => x.Name == file.Name))
+            {
+                overwritten.Add(file.Name);
+            }
+            await StoreArchiveAsync(file, file.Name, kind, token);
         }
-        status = null;
+        status = overwritten.Count > 0 ? L["ArchiveOverwritten", string.Join(", ", overwritten)] : null;
         await RefreshArchivesAsync();
     });
 
+    /// <summary>追加したアーカイブを、名前と種類はそのままに別の zip に置き換える</summary>
+    private Task ReplaceArchiveAsync(InputFileChangeEventArgs e, StoredArchive archive) => RunBusyAsync(async token =>
+    {
+        await StoreArchiveAsync(e.File, archive.Name, archive.Kind, token);
+        status = L["ArchiveOverwritten", archive.Name];
+        await RefreshArchivesAsync();
+    });
+
+    private async Task StoreArchiveAsync(IBrowserFile file, string name, string kind, CancellationToken token)
+    {
+        status = L["AddingArchive", file.Name];
+        StateHasChanged();
+        using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024, token);
+        using var buffer = new MemoryStream();
+        await stream.CopyToAsync(buffer, token);
+        token.ThrowIfCancellationRequested();
+        await JS.InvokeVoidAsync("srcwebStore.put", token, name, buffer.ToArray(), kind);
+    }
+
     /// <summary>
     /// 読み込みの間、ほかの操作（別のシナリオの選択・削除・追加など）を受け付けない。
-    /// 画面が inert になる前に続けて押された分も、ここで捨てる
+    /// 画面が inert になる前に続けて押された分も、ここで捨てる。
+    /// 読み込み中のダイアログの「キャンセル」（CancelLoad）で token が取り消される
     /// </summary>
-    private async Task RunBusyAsync(Func<Task> action)
+    private async Task RunBusyAsync(Func<CancellationToken, Task> action)
     {
         if (busy)
         {
             return;
         }
         busy = true;
+        loadCancel = new CancellationTokenSource();
+        var token = loadCancel.Token;
         StateHasChanged();
         try
         {
-            await action();
+            await action(token);
+        }
+        catch (Exception ex) when (token.IsCancellationRequested && IsCancellation(ex))
+        {
+            status = L["LoadCancelled"];
         }
         finally
         {
             busy = false;
+            loadCancel.Dispose();
+            loadCancel = null;
             StateHasChanged();
         }
+    }
+
+    /// <summary>取り消しによる例外。ブラウザの取得の中止（AbortError）は JSException になる</summary>
+    private static bool IsCancellation(Exception ex) => ex is OperationCanceledException || ex is JSException;
+
+    private async Task CancelLoad()
+    {
+        if (loadCancel == null || loadCancel.IsCancellationRequested)
+        {
+            return;
+        }
+        loadCancel.Cancel();
+        status = L["LoadCancelled"];
+        // 取得中の zip のダウンロードも止める
+        await JS.InvokeVoidAsync("srcwebStore.abortFetches");
     }
 
     private async Task DeleteArchiveAsync(StoredArchive archive)
@@ -579,13 +1033,13 @@ else
         await RefreshArchivesAsync();
     }
 
-    private Task PlayCatalogAsync(CatalogEntry entry) => RunBusyAsync(async () =>
+    private Task PlayCatalogAsync(CatalogEntry entry) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(entry.Requires))
+        if (!await PrepareAssetsAsync(entry.Requires, token))
         {
             return;
         }
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version), entry.Eve, entry.Root);
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version, token), entry.Eve, entry.Root, token);
     });
 
     /// <summary>この大きさを超える zip は、メモリ（byte[]）に読まずにブラウザ内のファイルシステムに書いてから展開する</summary>
@@ -599,20 +1053,20 @@ else
     /// 大きいものはストリームのままファイルに書く。WebAssembly のメモリは一度に読む分しか使わない（ファイルの中身は JS 側のメモリに置かれる）。
     /// 小さいものは、展開が速いため従来どおりメモリに読む。
     /// </summary>
-    private async Task<Stream> DownloadAsync(string url, string version)
+    private async Task<Stream> DownloadAsync(string url, string version, CancellationToken token)
     {
-        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", url, version ?? "");
-        using var source = await archive.OpenReadStreamAsync(long.MaxValue);
-        return await OpenDownloadAsync(source, archive.Length);
+        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "");
+        using var source = await archive.OpenReadStreamAsync(long.MaxValue, token);
+        return await OpenDownloadAsync(source, archive.Length, token);
     }
 
     /// <summary>zip を、小さいものはメモリに、大きいものはファイルに書いて開く</summary>
-    private static async Task<Stream> OpenDownloadAsync(Stream source, long length)
+    private static async Task<Stream> OpenDownloadAsync(Stream source, long length, CancellationToken token)
     {
         if (length <= StreamToFileThreshold)
         {
             var buffer = new MemoryStream((int)length);
-            await source.CopyToAsync(buffer, 1024 * 1024);
+            await source.CopyToAsync(buffer, 1024 * 1024, token);
             buffer.Position = 0;
             return buffer;
         }
@@ -623,7 +1077,7 @@ else
             {
                 // 先に大きさを決めておくと、書き込むたびにファイルの領域を広げ直さない
                 file.SetLength(length);
-                await source.CopyToAsync(file, 1024 * 1024);
+                await source.CopyToAsync(file, 1024 * 1024, token);
                 file.SetLength(file.Position);
             }
             return ScenarioArchive.OpenDownload(path);
@@ -663,7 +1117,7 @@ else
     /// <summary>
     /// 素材を SRC のフォルダに重ねる。利用者が追加した素材を先に、シナリオが求める素材（requires）を後に展開する（後のものが優先）。
     /// </summary>
-    private async Task<bool> PrepareAssetsAsync(IEnumerable<string> requires)
+    private async Task<bool> PrepareAssetsAsync(IEnumerable<string> requires, CancellationToken token)
     {
         if (site.AllowUserArchives)
         {
@@ -671,8 +1125,8 @@ else
             {
                 status = L["ExtractingAsset", archive.Name];
                 StateHasChanged();
-                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name);
-                await Task.Run(() => ScenarioArchive.ExtractAsset(data));
+                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name);
+                await Task.Run(() => ScenarioArchive.ExtractAsset(data, null, token), token);
             }
         }
         foreach (var id in requires ?? Enumerable.Empty<string>())
@@ -687,19 +1141,19 @@ else
             {
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
-                var zip = await DownloadAsync(asset.Archive, asset.Version);
+                var zip = await DownloadAsync(asset.Archive, asset.Version, token);
                 try
                 {
                     status = L["ExtractingAsset", asset.Title];
                     StateHasChanged();
-                    await Task.Run(() => ScenarioArchive.ExtractAsset(zip, asset.Root));
+                    await Task.Run(() => ScenarioArchive.ExtractAsset(zip, asset.Root, token), token);
                 }
                 finally
                 {
                     CloseDownload(zip);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!token.IsCancellationRequested)
             {
                 status = L["AssetLoadFailed", asset.Title, ex.Message];
                 WebLogging.Log.LogError(ex, "素材を読み込めません {Asset}", asset.Title);
@@ -709,17 +1163,17 @@ else
         return true;
     }
 
-    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async () =>
+    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(null))
+        if (!await PrepareAssetsAsync(null, token))
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), false), null, null);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name), false), null, null, token);
     });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>
-    private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root)
+    private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root, CancellationToken token)
     {
         try
         {
@@ -731,15 +1185,18 @@ else
                 status = L["ExtractingArchive", title];
                 StateHasChanged();
                 scenarioId = id;
-                scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
+                scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root, token), token);
             }
             finally
             {
                 CloseDownload(zip);
             }
             eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
+            documents = ScenarioDocuments.Find(scenarioDir);
             defaultEve = !string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)) ? eve : eventFiles.FirstOrDefault();
             await RestoreSavesAsync();
+            // ここまでに取り消されていれば始めない（始めたゲームは止められない）
+            token.ThrowIfCancellationRequested();
             if (eventFiles.Count == 0)
             {
                 status = L["NoEventFiles", title];
@@ -755,7 +1212,7 @@ else
                 mode = Mode.ChooseEvent;
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!token.IsCancellationRequested)
         {
             status = L["LoadFailed", title, ex.Message];
             WebLogging.Log.LogError(ex, "シナリオを読み込めません {Title}", title);
@@ -812,7 +1269,7 @@ else
     }
 
     /// <summary>書き終わる前に同じセーブデータで再開しないよう、インポートの間はほかの操作を受け付けない</summary>
-    private Task ImportSavesAsync(InputFileChangeEventArgs e) => RunBusyAsync(async () =>
+    private Task ImportSavesAsync(InputFileChangeEventArgs e) => RunBusyAsync(async token =>
     {
         // シナリオ（.eve）と同じフォルダに置く
         var folder = Path.GetDirectoryName(defaultEve ?? "")?.Replace('\\', '/') ?? "";
@@ -930,7 +1387,7 @@ else
 
     /// <summary>ステータスバーに出す、一覧の項目の数</summary>
     private int ObjectCount => mode == Mode.ChooseEvent
-        ? saves.Count + eventFiles.Count
+        ? documents.Count + saves.Count + eventFiles.Count
         : catalogs.Sum(x => x.Scenarios.Count()) + (site.AllowUserArchives ? archives.Count : 0);
 
     private async Task ChangeInputModeAsync(ChangeEventArgs e)
@@ -965,6 +1422,7 @@ else
 
     public void Dispose()
     {
+        documentRef?.Dispose();
         watch?.Dispose();
     }
 }

@@ -204,4 +204,100 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Günlük (tarayıcı konsolu)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Yükleme iptal edildi.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Değiştir</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Aynı adla başka bir zip ile değiştir (kayıtlar korunur)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} üzerine yazıldı.</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Belgeler</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Önce beni oku</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Ekli belgeleri oku…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Not Defteri</value>
+  </data>
+  <data name="PageViewerTitle" xml:space="preserve">
+    <value>{0} - Belge görüntüleyici</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>{0} açılamadı: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>Sözcük kaydır</value>
+  </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>İleri</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>{0} bulunamadı.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>Durdur</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>Sık Kullanılanlar</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>Bitti</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>Bilgisayarım</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>Tümünü Seç</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>Dosya</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>Düzen</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>Git</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>Sık Kullanılanlar</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>Yardım</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>Giriş Sayfası</value>
+  </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>Git</value>
+  </data>
 </root>

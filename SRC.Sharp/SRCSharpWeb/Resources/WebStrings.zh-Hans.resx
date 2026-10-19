@@ -204,4 +204,100 @@
   <data name="LogLevel" xml:space="preserve">
     <value>日志（浏览器控制台）</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>已取消加载。</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>替换</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>以同一名称替换为其他 zip（保留存档）</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>已覆盖 {0}。</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>文档</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>请先阅读</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>阅读附带的文档…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - 记事本</value>
+  </data>
+  <data name="PageViewerTitle" xml:space="preserve">
+    <value>{0} - 文档查看</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>无法打开 {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>自动换行</value>
+  </data>
+  <data name="DocumentBack" xml:space="preserve">
+    <value>后退</value>
+  </data>
+  <data name="DocumentForward" xml:space="preserve">
+    <value>前进</value>
+  </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>找不到 {0}。</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>地址(D)</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>我的电脑</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>关闭(C)</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>全选(A)</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>文件(F)</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>编辑(E)</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>查看(V)</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>转到(G)</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>收藏(A)</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>帮助(H)</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>刷新(R)</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>主页(H)</value>
+  </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>转到</value>
+  </data>
 </root>

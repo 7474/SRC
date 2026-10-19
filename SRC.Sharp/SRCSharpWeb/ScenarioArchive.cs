@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SRCSharpWeb
 {
@@ -20,6 +21,9 @@ namespace SRCSharpWeb
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
+        /// <summary>Shift_JIS（コードページ 932）。Windows で作った zip のファイル名や文書に使われる</summary>
+        public static Encoding ShiftJis => Encoding.GetEncoding(932);
+
         /// <summary>
         /// シナリオの zip を展開し、展開先のフォルダを返す。
         /// root を指定すると、zip の中のそのフォルダ以下だけを展開する。
@@ -33,14 +37,14 @@ namespace SRCSharpWeb
         }
 
         /// <summary>シナリオの zip（読み込み位置を変えられるストリーム。ファイルなど）を展開し、展開先のフォルダを返す。</summary>
-        public static string Extract(string id, Stream zip, string root = null)
+        public static string Extract(string id, Stream zip, string root = null, CancellationToken token = default)
         {
             var dir = Path.Combine(Root, "scenarios", Sanitize(id));
             if (Directory.Exists(dir))
             {
                 Directory.Delete(dir, true);
             }
-            ExtractTo(dir, zip, root);
+            ExtractTo(dir, zip, root, token);
             return dir;
         }
 
@@ -48,18 +52,18 @@ namespace SRCSharpWeb
         /// 素材（汎用グラフィック集など）の zip を SRC のフォルダ（AppPath）に重ねて展開する。
         /// 元の SRC で素材を SRC のフォルダに置くのと同じ扱いで、後から展開したものが優先される。
         /// </summary>
-        public static void ExtractAsset(byte[] zip, string root = null)
+        public static void ExtractAsset(byte[] zip, string root = null, CancellationToken token = default)
         {
             using (var stream = new MemoryStream(zip, false))
             {
-                ExtractAsset(stream, root);
+                ExtractAsset(stream, root, token);
             }
         }
 
-        /// <inheritdoc cref="ExtractAsset(byte[], string)"/>
-        public static void ExtractAsset(Stream zip, string root = null)
+        /// <inheritdoc cref="ExtractAsset(byte[], string, CancellationToken)"/>
+        public static void ExtractAsset(Stream zip, string root = null, CancellationToken token = default)
         {
-            ExtractTo(AppPath, zip, root);
+            ExtractTo(AppPath, zip, root, token);
         }
 
         /// <summary>ダウンロードした zip を一時的に置くファイルのパス（展開したら消す）</summary>
@@ -82,16 +86,31 @@ namespace SRCSharpWeb
         /// <summary>
         /// zip を dir に展開する。
         /// Windows で作った zip のファイル名は Shift_JIS のことが多いため、UTF-8 の印が無いものは Shift_JIS として読む。
+        /// token が取り消されたら、途中まで展開したところで OperationCanceledException を投げる。
         /// </summary>
-        private static void ExtractTo(string dir, Stream zip, string root)
+        private static void ExtractTo(string dir, Stream zip, string root, CancellationToken token)
         {
             Directory.CreateDirectory(dir);
             var fullDir = Path.GetFullPath(dir) + "/";
             var prefix = string.IsNullOrEmpty(root) ? "" : root.Replace('\\', '/').Trim('/') + "/";
-            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, Encoding.GetEncoding(932)))
+            try
+            {
+                ExtractEntries(dir, fullDir, zip, prefix, token);
+            }
+            finally
+            {
+                // 展開したファイルを探せるよう、フォルダの一覧のキャッシュを捨てる（取り消して途中までのときも）
+                SRCCore.Filesystem.PathResolver.Invalidate();
+            }
+        }
+
+        private static void ExtractEntries(string dir, string fullDir, Stream zip, string prefix, CancellationToken token)
+        {
+            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, ShiftJis))
             {
                 foreach (var entry in archive.Entries)
                 {
+                    token.ThrowIfCancellationRequested();
                     var name = entry.FullName.Replace('\\', '/');
                     if (name.EndsWith("/"))
                     {
@@ -115,8 +134,6 @@ namespace SRCSharpWeb
                     entry.ExtractToFile(path, true);
                 }
             }
-            // 展開したファイルを探せるよう、フォルダの一覧のキャッシュを捨てる
-            SRCCore.Filesystem.PathResolver.Invalidate();
         }
 
         /// <summary>シナリオ（.eve）の一覧。浅い階層・名前順</summary>

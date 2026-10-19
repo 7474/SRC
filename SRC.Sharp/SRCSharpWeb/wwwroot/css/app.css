@@ -91,6 +91,26 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Cpath d='M4 7h7M4 9h7M4 11h7M4 13h5' stroke='%23000080'/%3E%3C/svg%3E");
 }
 
+/* メモ帳の文書（.txt） */
+.icon-text {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 1.5h11v14h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M2 1h12v2H2z' fill='%2300a0c0'/%3E%3Cpath d='M4 5h8M4 7h8M4 9h8M4 11h8M4 13h6' stroke='%23808080'/%3E%3C/svg%3E");
+}
+
+/* 状態の表示の「見つかりません」など */
+.icon-error {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6.5' fill='%23e00000' stroke='%23800000'/%3E%3Cpath d='M5.5 5.5l5 5M10.5 5.5l-5 5' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E");
+}
+
+/* マイ コンピュータ（状態欄のゾーン） */
+.icon-computer {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 1.5h11v9h-11z' fill='%23c0c0c0' stroke='%23000'/%3E%3Cpath d='M4 3h8v6H4z' fill='%23008080'/%3E%3Cpath d='M1.5 11.5h13v3h-13z' fill='%23c0c0c0' stroke='%23000'/%3E%3Cpath d='M10 13h3' stroke='%23008000'/%3E%3C/svg%3E");
+}
+
+/* ブラウザで開く文書（.md・.htm・.html） */
+.icon-page {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Ccircle cx='8' cy='10' r='3.5' fill='%231e6fd9'/%3E%3Cpath d='M6 10h4M8 8.5c1 0 1.5.6 1.5 1.5' stroke='%23fff' fill='none'/%3E%3C/svg%3E");
+}
+
 .title-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M0.5 2.5h15v11h-15z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M1 3h14v2H1z' fill='%23000080'/%3E%3Cpath d='M3 7h3v3H3zM8 9h3v3H8z' fill='%23c00000'/%3E%3Cpath d='M6 7h2v2H6zM11 6h2v2h-2z' fill='%23008000'/%3E%3C/svg%3E");
 }
@@ -428,7 +448,9 @@ h3 {
 
 /* ── ボタン・入力欄 ── */
 
-button {
+button,
+label.button {
+    display: inline-block;
     font: inherit;
     font-size: 12px;
     color: var(--text);
@@ -440,7 +462,8 @@ button {
     cursor: pointer;
 }
 
-button:active {
+button:active,
+label.button:active {
     box-shadow: inset -1px -1px var(--hilight), inset 1px 1px var(--dark), inset -2px -2px var(--light), inset 2px 2px var(--shadow);
     padding: 4px 11px 2px 13px;
 }
@@ -451,7 +474,8 @@ button:focus-visible {
 }
 
 button.delete,
-button.export {
+button.export,
+label.button.replace {
     min-height: 19px;
     padding: 1px 8px;
 }
@@ -633,6 +657,7 @@ input[type=file]::file-selector-button {
 }
 
 [data-theme="xp"] button,
+[data-theme="xp"] label.button,
 [data-theme="xp"] input[type=file]::file-selector-button {
     border: 1px solid #003c74;
     border-radius: 3px;
@@ -641,11 +666,13 @@ input[type=file]::file-selector-button {
 }
 
 [data-theme="xp"] button:hover,
+[data-theme="xp"] label.button:hover,
 [data-theme="xp"] input[type=file]::file-selector-button:hover {
     box-shadow: inset -1px 1px #fff0cf, inset 1px 2px #fdd889, inset -2px 2px #fbc761, inset 2px -2px #e5a01a;
 }
 
-[data-theme="xp"] button:active {
+[data-theme="xp"] button:active,
+[data-theme="xp"] label.button:active {
     padding: 3px 12px;
     background: linear-gradient(#cdcac3, #e3e3db 8%, #e5e5de 94%, #f2f2f1);
     box-shadow: none;
@@ -1400,4 +1427,746 @@ input[type=file]::file-selector-button {
     .items .note {
         display: none;
     }
+}
+
+/* ── 読み込み中 ── */
+
+/* 読み込みの間は一覧を薄くし、読み込み中のダイアログを重ねて、操作できないことを示す */
+.explorer-body[aria-busy="true"] {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+.modal.loading {
+    cursor: progress;
+}
+
+.modal.loading .dialog {
+    cursor: default;
+    min-width: 320px;
+}
+
+/* 終わりの分からない進み具合（往年のファイルのコピーのように左から右へ流れる） */
+.progress {
+    position: relative;
+    height: 16px;
+    margin: 8px 0 12px;
+    overflow: hidden;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.progress span {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    width: 30%;
+    background: repeating-linear-gradient(to right, var(--select) 0 8px, transparent 8px 10px);
+    animation: progress-slide 1.6s linear infinite;
+}
+
+[data-theme="xp"] .progress {
+    border: 1px solid #686868;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+[data-theme="xp"] .progress span {
+    background: repeating-linear-gradient(to right, #2fd22c 0 8px, transparent 8px 10px);
+}
+
+@keyframes progress-slide {
+    from { left: -30%; }
+    to { left: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress span {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.5;
+    }
+}
+
+/* 追加したアーカイブの「置き換え」。ファイルの選択欄は隠し、ボタン（label）で開く */
+label.button input.hidden-file {
+    display: none;
+}
+
+/* ── 同梱の文書 ── */
+
+/* 一覧の README を目立たせる */
+.items li.readme > .icon + button {
+    font-weight: bold;
+}
+
+.items li .badge {
+    flex: none;
+    padding: 0 4px;
+    color: var(--text);
+    background: var(--tip);
+    border: 1px solid var(--tip-border);
+    font-size: 11px;
+}
+
+.modal .dialog #documents {
+    margin: 0 0 8px;
+    max-height: 50vh;
+    overflow: auto;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.doc-modal {
+    z-index: 40;
+}
+
+.doc-window {
+    display: flex;
+    flex-direction: column;
+    width: min(760px, calc(100% - 16px));
+    height: min(640px, calc(100% - 16px));
+    padding: 3px;
+    background: var(--face);
+    box-shadow: var(--raised);
+}
+
+[data-theme="xp"] .doc-window {
+    padding: 0 3px 3px;
+    border-radius: 8px 8px 0 0;
+    background: #0831d9;
+}
+
+.doc-window .titlebar {
+    flex: none;
+}
+
+.doc-title {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.doc-close {
+    flex: none;
+    min-height: 0;
+    width: 16px;
+    height: 14px;
+    padding: 0;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+}
+
+[data-theme="xp"] .doc-close {
+    width: 21px;
+    height: 21px;
+    color: #fff;
+    border: 1px solid #fff;
+    background: linear-gradient(#e08a6a, #c8452c);
+}
+
+.doc-view {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    overflow: auto;
+    color: #000;
+    background: #fff;
+    box-shadow: var(--sunken);
+}
+
+/* メモ帳: 等幅のゴシック。既定では右端で折り返す */
+.doc-text {
+    padding: 2px 4px;
+    font-family: "MS Gothic", "ＭＳ ゴシック", "Osaka-Mono", "Noto Sans Mono CJK JP", monospace;
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: pre;
+    tab-size: 8;
+}
+
+.doc-text.wrap {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/*
+  Markdown: 日本語の Internet Explorer 4 の既定の表示を模す（ScenarioDocuments.PageStyle と同じ）。
+  Web ページのフォントは ＭＳ Ｐゴシック、文字のサイズは「中」（12pt = 16px）、余白は上下 15px・左右 10px、リンクは #0000ff・訪問済みは #800080。
+  見出しは既定の大きさ（h1 が 2em）だと大き過ぎるため、本文から少しずつ大きくする程度にとどめる。
+*/
+.doc-page {
+    padding: 15px 10px;
+    font-family: "MS PGothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.doc-page h1,
+.doc-page h2,
+.doc-page h3,
+.doc-page h4,
+.doc-page h5,
+.doc-page h6 {
+    margin: 0.8em 0 0.5em;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.doc-page h1 { font-size: 1.4em; }
+.doc-page h2 { font-size: 1.25em; }
+.doc-page h3 { font-size: 1.12em; }
+.doc-page h4,
+.doc-page h5,
+.doc-page h6 { font-size: 1em; }
+
+.doc-page > :first-child {
+    margin-top: 0;
+}
+
+.doc-page p,
+.doc-page ul,
+.doc-page ol,
+.doc-page pre,
+.doc-page table,
+.doc-page blockquote {
+    margin: 1em 0;
+}
+
+.doc-page ul,
+.doc-page ol {
+    padding-left: 40px;
+}
+
+.doc-page blockquote {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.doc-page a {
+    color: #0000ff;
+    text-decoration: underline;
+}
+
+.doc-page a:visited {
+    color: #800080;
+}
+
+.doc-page code,
+.doc-page pre {
+    font-family: "MS Gothic", "ＭＳ ゴシック", "Osaka-Mono", "Noto Sans Mono CJK JP", monospace;
+    font-size: 13px;
+}
+
+.doc-page pre {
+    white-space: pre-wrap;
+}
+
+.doc-page hr {
+    border: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #fff;
+}
+
+/* 表は境界線の付いた素朴なもの（border="1"） */
+.doc-page table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    border: 1px solid #808080;
+}
+
+.doc-page th,
+.doc-page td {
+    padding: 1px 4px;
+    border: 1px solid #c0c0c0;
+}
+
+.doc-page img {
+    max-width: 100%;
+}
+
+/* .htm・.html は iframe に入れる（既定のスタイルは ScenarioDocuments.PageStyle） */
+.doc-frame {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+/* ── 文書のウィンドウ: メニューバー（メモ帳・Internet Explorer 4） ── */
+
+.doc-menubar {
+    position: relative;
+    z-index: 2;
+    flex: none;
+    display: flex;
+    padding: 1px 0;
+    background: var(--face);
+}
+
+.doc-menu {
+    position: relative;
+}
+
+.doc-menubar .doc-menu > button {
+    min-height: 0;
+    padding: 2px 7px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.doc-menubar .doc-menu > button:hover,
+.doc-menubar .doc-menu > button.open {
+    box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--hilight);
+}
+
+[data-theme="xp"] .doc-menubar .doc-menu > button:hover,
+[data-theme="xp"] .doc-menubar .doc-menu > button.open {
+    color: var(--select-text);
+    background: var(--select);
+    box-shadow: none;
+}
+
+.doc-menu-popup {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    min-width: 160px;
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.doc-menu-popup button {
+    position: relative;
+    white-space: nowrap;
+}
+
+.doc-menu-popup button:disabled {
+    color: var(--shadow);
+    text-shadow: 1px 1px var(--hilight);
+    background: transparent;
+    cursor: default;
+}
+
+.doc-menu-popup button.checked::before {
+    content: "✓";
+    position: absolute;
+    margin-left: -14px;
+}
+
+.doc-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+/* ── Internet Explorer 4: ツールバー（Coolbar）・アドレスバー・スロバー・状態欄 ── */
+
+.ie-rebar {
+    flex: none;
+    display: flex;
+    border-top: 1px solid var(--shadow);
+    box-shadow: inset 0 1px var(--hilight);
+    background: var(--face);
+}
+
+.ie-bands {
+    flex: 1;
+    min-width: 0;
+}
+
+/* バンド: 左端につまみ（2 本の縦線）を付け、上下に溝を入れる */
+.ie-band {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 2px 4px 2px 12px;
+    border-bottom: 1px solid var(--shadow);
+    box-shadow: 0 1px var(--hilight);
+}
+
+.ie-band::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    bottom: 3px;
+    width: 3px;
+    border-left: 1px solid var(--hilight);
+    border-right: 1px solid var(--shadow);
+}
+
+/* 標準のボタン: 平らで、指したときだけ浮き上がる。絵は灰色で、指したときに色が付く */
+.ie-button {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 50px;
+    min-height: 0;
+    padding: 3px 4px 2px;
+    border: 1px solid transparent;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.ie-button:hover:not(:disabled) {
+    border-color: var(--hilight) var(--shadow) var(--shadow) var(--hilight);
+    background: none;
+    box-shadow: none;
+}
+
+.ie-button:active:not(:disabled) {
+    border-color: var(--shadow) var(--hilight) var(--hilight) var(--shadow);
+    padding: 4px 3px 1px 5px;
+    box-shadow: none;
+}
+
+.ie-button:disabled {
+    color: var(--shadow);
+    text-shadow: 1px 1px var(--hilight);
+    cursor: default;
+}
+
+[data-theme="xp"] .ie-button,
+[data-theme="xp"] .ie-button:hover:not(:disabled),
+[data-theme="xp"] .ie-button:active:not(:disabled) {
+    background: none;
+}
+
+[data-theme="xp"] .ie-button:hover:not(:disabled) {
+    border-radius: 3px;
+    border-color: #ceceC3;
+    background: linear-gradient(#fff, #e9e8e2);
+}
+
+.ie-icon {
+    width: 20px;
+    height: 20px;
+    background: no-repeat center / 20px 20px;
+    filter: grayscale(1) contrast(0.9);
+}
+
+.ie-button:hover:not(:disabled) .ie-icon {
+    filter: none;
+}
+
+.ie-button:disabled .ie-icon {
+    filter: grayscale(1) opacity(0.4);
+}
+
+.ie-separator {
+    align-self: stretch;
+    width: 0;
+    margin: 2px 3px;
+    border-left: 1px solid var(--shadow);
+    border-right: 1px solid var(--hilight);
+}
+
+.ie-back {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M2 10l8-7v4h8v6h-8v4z' fill='%2300a000' stroke='%23005000'/%3E%3C/svg%3E");
+}
+
+.ie-forward {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M18 10l-8-7v4H2v6h8v4z' fill='%2300a000' stroke='%23005000'/%3E%3C/svg%3E");
+}
+
+.ie-stop {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M3 3.5h12l2 2v11H5l-2-2z' fill='%23fff' stroke='%23000'/%3E%3Ccircle cx='10' cy='10' r='5' fill='%23e00000' stroke='%23800000'/%3E%3Cpath d='M7.5 7.5l5 5M12.5 7.5l-5 5' stroke='%23fff' stroke-width='1.8'/%3E%3C/svg%3E");
+}
+
+.ie-refresh {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M3 2.5h11l3 3v12H3z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M6.5 10a3.5 3.5 0 0 1 6-2.5' fill='none' stroke='%2300a000' stroke-width='2'/%3E%3Cpath d='M13.5 5v4h-4z' fill='%2300a000'/%3E%3Cpath d='M13.5 11a3.5 3.5 0 0 1-6 2.5' fill='none' stroke='%2300a000' stroke-width='2'/%3E%3Cpath d='M6.5 16v-4h4z' fill='%2300a000'/%3E%3C/svg%3E");
+}
+
+.ie-home {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M2 10l8-7 8 7' fill='%23c03020' stroke='%23601000' stroke-width='1.5'/%3E%3Cpath d='M4.5 9.5h11v8h-11z' fill='%23f0d890' stroke='%23604010'/%3E%3Cpath d='M8.5 12.5h3v5h-3z' fill='%23804010'/%3E%3C/svg%3E");
+}
+
+.ie-favorites {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M1.5 5.5h6l1.5 1.5h9.5v10h-17z' fill='%23f6d55c' stroke='%23866a1e'/%3E%3Cpath d='M12 8.5l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3z' fill='%23ffe000' stroke='%23a07000'/%3E%3C/svg%3E");
+}
+
+/* アドレスバー: 「アドレス(D)」と、ページの絵を付けたコンボボックス */
+.ie-address {
+    gap: 4px;
+}
+
+.ie-address label {
+    flex: none;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.ie-combo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 3px;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.ie-combo::after {
+    content: "▼";
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--text);
+    background: var(--face);
+    box-shadow: var(--raised);
+    font-size: 8px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.ie-combo input {
+    flex: 1;
+    min-width: 0;
+    padding: 1px 2px;
+    border: 0;
+    box-shadow: none;
+    background: none;
+    font-size: 12px;
+}
+
+[data-theme="xp"] .ie-combo {
+    border: 1px solid #7f9db9;
+    box-shadow: none;
+}
+
+[data-theme="xp"] .ie-combo input {
+    border: 0;
+}
+
+/* スロバー: 右上の黒い枠の中の地球（読み込み中に回る。文書はすぐ出るので止まっている） */
+.ie-throbber {
+    flex: none;
+    width: 38px;
+    margin: 2px;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='%231e6fd9' stroke='%23a0c8ff'/%3E%3Cpath d='M5 9c3-2 4 1 7 0s3-3 5-2M4.5 14c3 1 5-1 7 1s4 1 7-1' fill='none' stroke='%2350c040' stroke-width='2'/%3E%3Cpath d='M3 12h18M12 3c-4 4-4 14 0 18M12 3c4 4 4 14 0 18' fill='none' stroke='%23a0c8ff' stroke-width='.6'/%3E%3C/svg%3E") no-repeat center / 26px 26px,
+        #000;
+    box-shadow: var(--sunken);
+}
+
+/* 状態欄: 左に状態の文字、中に進み具合、右にゾーン（マイ コンピュータ） */
+.ie-statusbar {
+    flex: none;
+    display: flex;
+    gap: 2px;
+    padding: 2px 0 0;
+    background: var(--face);
+    font-size: 12px;
+}
+
+.ie-statusbar > span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 1px 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--hilight);
+}
+
+.ie-status-main {
+    flex: 1;
+    color: var(--text);
+}
+
+.ie-status-pane {
+    flex: none;
+    width: 90px;
+}
+
+.ie-status-zone {
+    flex: none;
+    width: 130px;
+}
+
+@media (max-width: 560px) {
+    .ie-button {
+        min-width: 40px;
+    }
+
+    .ie-status-pane {
+        display: none;
+    }
+}
+
+/* ブラウザで辿った .txt（往年のブラウザはテキストをそのまま等幅で出す） */
+.doc-browser .doc-text {
+    padding: 15px 10px;
+}
+
+/* ── XP のテーマ: Internet Explorer 6（Windows XP） ── */
+
+/* 「移動」ボタンは IE6 から。95 のテーマ（IE4）では出さない */
+.ie-go {
+    display: none;
+}
+
+[data-theme="xp"] .ie-rebar {
+    border-top: 0;
+    box-shadow: none;
+    background: var(--face);
+}
+
+[data-theme="xp"] .ie-band {
+    border-bottom: 1px solid #d8d2bd;
+    box-shadow: 0 1px #fff;
+}
+
+/* つまみは点の縦の列 */
+[data-theme="xp"] .ie-band::before {
+    left: 4px;
+    width: 2px;
+    border: 0;
+    background: radial-gradient(circle at 1px 1px, #a8a593 0.9px, transparent 1px) 0 0 / 2px 4px repeat-y;
+}
+
+/* ボタンは絵の右に文字（「選択したテキストを表示」）。文字を出すのは戻る・お気に入りだけ */
+[data-theme="xp"] .ie-button {
+    flex-direction: row;
+    gap: 4px;
+    min-width: 0;
+    padding: 2px 5px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+[data-theme="xp"] .ie-button:not(.ie-labeled) .ie-label {
+    display: none;
+}
+
+[data-theme="xp"] .ie-button:active:not(:disabled) {
+    padding: 3px 4px 1px 6px;
+    border-color: #9d9d92;
+    background: linear-gradient(#e5e4dc, #f2f1ea);
+}
+
+[data-theme="xp"] .ie-button:disabled {
+    color: #aca899;
+    text-shadow: none;
+}
+
+[data-theme="xp"] .ie-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+    filter: none;
+}
+
+[data-theme="xp"] .ie-button:disabled .ie-icon {
+    filter: grayscale(1) opacity(0.45);
+}
+
+[data-theme="xp"] .ie-separator {
+    margin: 3px 2px;
+    border-left: 1px solid #c5c2b2;
+    border-right: 1px solid #fff;
+}
+
+/* IE6 の絵: 緑の丸い矢印・赤い中止・緑の更新・家・星・緑の「移動」 */
+[data-theme="xp"] .ie-back {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.35' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23b8f08a'/%3E%3Cstop offset='.6' stop-color='%2338a820'/%3E%3Cstop offset='1' stop-color='%23157010'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='12' cy='12' r='10.5' fill='url(%23g)' stroke='%23105a10'/%3E%3Cpath d='M5.5 12l6-5.5v3.5h6.5v4h-6.5v3.5z' fill='%23fff' stroke='%23206020' stroke-width='.6'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-forward {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.35' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23b8f08a'/%3E%3Cstop offset='.6' stop-color='%2338a820'/%3E%3Cstop offset='1' stop-color='%23157010'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='12' cy='12' r='10.5' fill='url(%23g)' stroke='%23105a10'/%3E%3Cpath d='M18.5 12l-6-5.5v3.5H6v4h6.5v3.5z' fill='%23fff' stroke='%23206020' stroke-width='.6'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-stop {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4.5 2.5h11l4 4v15h-15z' fill='%23fff' stroke='%23707070'/%3E%3Crect x='7' y='8' width='11' height='11' rx='2.5' fill='%23e03a1e' stroke='%23901808'/%3E%3Cpath d='M9.8 10.8l5.4 5.4M15.2 10.8l-5.4 5.4' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-refresh {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4.5 2.5h11l4 4v15h-15z' fill='%23fff' stroke='%23707070'/%3E%3Cpath d='M8 13.5a4.5 4.5 0 0 1 7.8-3' fill='none' stroke='%2330a020' stroke-width='2.4'/%3E%3Cpath d='M17.5 7.5v5h-5z' fill='%2330a020'/%3E%3Cpath d='M16.5 14.5a4.5 4.5 0 0 1-7.8 3' fill='none' stroke='%2330a020' stroke-width='2.4'/%3E%3Cpath d='M7 20.5v-5h5z' fill='%2330a020'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-home {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.5 11.5h13v10h-13z' fill='%23f6e8c0' stroke='%23806030'/%3E%3Cpath d='M2 12.5l10-9 10 9' fill='%23e05030' stroke='%23802010' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M10 15h4v6.5h-4z' fill='%233070c0' stroke='%23204080'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-favorites {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff6a0'/%3E%3Cstop offset='1' stop-color='%23f0b000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M12 2l3 6.3 6.8.8-5 4.7 1.3 6.8L12 17.3l-6.1 3.3 1.3-6.8-5-4.7 6.8-.8z' fill='url(%23g)' stroke='%23b07800' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+[data-theme="xp"] .ie-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    min-height: 0;
+    padding: 1px 4px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: none;
+    box-shadow: none;
+}
+
+[data-theme="xp"] .ie-go:hover {
+    border-color: #cecec3;
+    background: linear-gradient(#fff, #e9e8e2);
+    box-shadow: none;
+}
+
+[data-theme="xp"] .ie-go .ie-icon {
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+}
+
+.ie-go-arrow {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Crect x='.5' y='.5' width='17' height='17' rx='3' fill='%2338a820' stroke='%23157010'/%3E%3Cpath d='M4 7.5h5v-3l5 4.5-5 4.5v-3H4z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+/* スロバー: 白地に地球。メニューバーとツールバーの右に置く */
+[data-theme="xp"] .ie-throbber {
+    width: 40px;
+    margin: 0;
+    background-color: #fff;
+    border-left: 1px solid #d8d2bd;
+    box-shadow: none;
+}
+
+/* 状態欄: 欄の間を細い線で区切る */
+[data-theme="xp"] .ie-statusbar {
+    gap: 0;
+    padding: 2px 2px 1px;
+    border-top: 1px solid #d8d2bd;
+}
+
+[data-theme="xp"] .ie-statusbar > span {
+    box-shadow: none;
+    border-left: 1px solid #d8d2bd;
+}
+
+[data-theme="xp"] .ie-statusbar > span:first-child {
+    border-left: 0;
+}
+
+[data-theme="xp"] .ie-combo::after {
+    color: #4d6185;
+    background: linear-gradient(#c3d3fd, #b1c8fb 50%, #9fb7ee);
+    border: 1px solid #b6c9f7;
+    border-radius: 2px;
+    box-shadow: none;
 }
