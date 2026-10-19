@@ -1,0 +1,5 @@
+# 画面で折り返された文を、折り返しをまたいで照合する
+auto 60
+expect message いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす
+expect finished
+expect error none
