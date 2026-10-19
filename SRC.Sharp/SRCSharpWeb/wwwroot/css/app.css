@@ -91,6 +91,16 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Cpath d='M4 7h7M4 9h7M4 11h7M4 13h5' stroke='%23000080'/%3E%3C/svg%3E");
 }
 
+/* メモ帳の文書（.txt） */
+.icon-text {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 1.5h11v14h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M2 1h12v2H2z' fill='%2300a0c0'/%3E%3Cpath d='M4 5h8M4 7h8M4 9h8M4 11h8M4 13h6' stroke='%23808080'/%3E%3C/svg%3E");
+}
+
+/* ブラウザで開く文書（.md） */
+.icon-page {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Ccircle cx='8' cy='10' r='3.5' fill='%231e6fd9'/%3E%3Cpath d='M6 10h4M8 8.5c1 0 1.5.6 1.5 1.5' stroke='%23fff' fill='none'/%3E%3C/svg%3E");
+}
+
 .title-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M0.5 2.5h15v11h-15z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M1 3h14v2H1z' fill='%23000080'/%3E%3Cpath d='M3 7h3v3H3zM8 9h3v3H8z' fill='%23c00000'/%3E%3Cpath d='M6 7h2v2H6zM11 6h2v2h-2z' fill='%23008000'/%3E%3C/svg%3E");
 }
@@ -1472,4 +1482,215 @@ input[type=file]::file-selector-button {
 /* 追加したアーカイブの「置き換え」。ファイルの選択欄は隠し、ボタン（label）で開く */
 label.button input.hidden-file {
     display: none;
+}
+
+/* ── 同梱の文書 ── */
+
+/* 一覧の README を目立たせる */
+.items li.readme > .icon + button {
+    font-weight: bold;
+}
+
+.items li .badge {
+    flex: none;
+    padding: 0 4px;
+    color: var(--text);
+    background: var(--tip);
+    border: 1px solid var(--tip-border);
+    font-size: 11px;
+}
+
+.modal .dialog #documents {
+    margin: 0 0 8px;
+    max-height: 50vh;
+    overflow: auto;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.doc-modal {
+    z-index: 40;
+}
+
+.doc-window {
+    display: flex;
+    flex-direction: column;
+    width: min(760px, calc(100% - 16px));
+    height: min(640px, calc(100% - 16px));
+    padding: 3px;
+    background: var(--face);
+    box-shadow: var(--raised);
+}
+
+[data-theme="xp"] .doc-window {
+    padding: 0 3px 3px;
+    border-radius: 8px 8px 0 0;
+    background: #0831d9;
+}
+
+.doc-window .titlebar {
+    flex: none;
+}
+
+.doc-title {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.doc-close {
+    flex: none;
+    min-height: 0;
+    width: 16px;
+    height: 14px;
+    padding: 0;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+}
+
+[data-theme="xp"] .doc-close {
+    width: 21px;
+    height: 21px;
+    color: #fff;
+    border: 1px solid #fff;
+    background: linear-gradient(#e08a6a, #c8452c);
+}
+
+.doc-toolbar {
+    flex: none;
+    padding: 2px 4px;
+    background: var(--face);
+    font-size: 12px;
+}
+
+.doc-view {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    overflow: auto;
+    color: #000;
+    background: #fff;
+    box-shadow: var(--sunken);
+}
+
+.doc-status {
+    flex: none;
+    padding: 2px 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: var(--face);
+    color: var(--text);
+    font-size: 11px;
+}
+
+/* メモ帳: 等幅のゴシック。既定では右端で折り返す */
+.doc-text {
+    padding: 2px 4px;
+    font-family: "MS Gothic", "ＭＳ ゴシック", "Osaka-Mono", "Noto Sans Mono CJK JP", monospace;
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: pre;
+    tab-size: 8;
+}
+
+.doc-text.wrap {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/*
+  Markdown: 往年の Internet Explorer の既定の表示（白地・明朝・青い下線のリンク・余白 8px）を模す。
+  見出しは既定の大きさ（h1 が 2em）だと大き過ぎるため、本文から少しずつ大きくする程度にとどめる。
+*/
+.doc-page {
+    padding: 8px;
+    font-family: "Times New Roman", "MS PMincho", "ＭＳ Ｐ明朝", "Hiragino Mincho ProN", "Noto Serif CJK JP", serif;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.doc-page h1,
+.doc-page h2,
+.doc-page h3,
+.doc-page h4,
+.doc-page h5,
+.doc-page h6 {
+    margin: 0.8em 0 0.5em;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.doc-page h1 { font-size: 1.4em; }
+.doc-page h2 { font-size: 1.25em; }
+.doc-page h3 { font-size: 1.12em; }
+.doc-page h4,
+.doc-page h5,
+.doc-page h6 { font-size: 1em; }
+
+.doc-page > :first-child {
+    margin-top: 0;
+}
+
+.doc-page p,
+.doc-page ul,
+.doc-page ol,
+.doc-page pre,
+.doc-page table,
+.doc-page blockquote {
+    margin: 1em 0;
+}
+
+.doc-page ul,
+.doc-page ol {
+    padding-left: 40px;
+}
+
+.doc-page blockquote {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.doc-page a {
+    color: #0000ee;
+    text-decoration: underline;
+}
+
+.doc-page a:visited {
+    color: #551a8b;
+}
+
+.doc-page code,
+.doc-page pre {
+    font-family: "Courier New", "MS Gothic", "ＭＳ ゴシック", monospace;
+    font-size: 13px;
+}
+
+.doc-page pre {
+    white-space: pre-wrap;
+}
+
+.doc-page hr {
+    border: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #fff;
+}
+
+/* 表は境界線の付いた素朴なもの（border="1"） */
+.doc-page table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    border: 1px solid #808080;
+}
+
+.doc-page th,
+.doc-page td {
+    padding: 1px 4px;
+    border: 1px solid #c0c0c0;
+}
+
+.doc-page img {
+    max-width: 100%;
 }

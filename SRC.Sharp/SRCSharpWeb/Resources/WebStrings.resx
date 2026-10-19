@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>{0} を上書きしました。</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>文書</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>はじめにお読みください</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>同梱の文書を読む…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - メモ帳</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - 文書の表示</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>{0} を開けませんでした: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>右端で折り返す</value>
+  </data>
 </root>

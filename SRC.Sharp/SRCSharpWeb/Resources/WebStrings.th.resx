@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>เขียนทับ {0} แล้ว</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>เอกสาร</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>โปรดอ่านก่อน</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>อ่านเอกสารที่แนบมา…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Notepad</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - ตัวดูเอกสาร</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>ไม่สามารถเปิด {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>ตัดบรรทัดอัตโนมัติ</value>
+  </data>
 </root>

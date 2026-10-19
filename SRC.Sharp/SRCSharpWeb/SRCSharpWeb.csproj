@@ -36,6 +36,8 @@
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.4" />
     <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
     <PackageReference Include="MeltySynth" Version="2.4.1" />
+    <!-- シナリオに同梱された Markdown の文書を表示する（ScenarioDocuments） -->
+    <PackageReference Include="Markdig" Version="1.4.1" />
   </ItemGroup>
 
   <ItemGroup>

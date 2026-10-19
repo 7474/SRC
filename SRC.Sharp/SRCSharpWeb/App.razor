@@ -46,12 +46,31 @@
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
                     <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
                     <button role="menuitem" @onclick="ToggleTouchUiAsync">@L["MenuTouchUi"]</button>
+                    @if (documents.Count > 0)
+                    {
+                        <hr />
+                        <button role="menuitem" id="menu-documents" @onclick="ChooseDocument">@L["MenuDocuments"]</button>
+                    }
                     <hr />
                     <button role="menuitem" @onclick="CloseSystemMenu">@L["MenuClose"]</button>
                 </div>
             }
         </div>
     </div>
+    @if (choosingDocument)
+    {
+        <div class="modal">
+            <div class="dialog" role="dialog" aria-label="@L["Documents"]">
+                <div class="titlebar">@L["Documents"]</div>
+                <div class="dialog-body">
+                    @DocumentList
+                    <div class="dialog-buttons">
+                        <button @onclick="CloseDocumentChooser">@L["MenuClose"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     @if (confirmingBack)
     {
         <div class="modal">
@@ -165,6 +184,11 @@ else
         {
             <section class="group">
                 <h2>@choosingTitle</h2>
+                @if (documents.Count > 0)
+                {
+                    <h3>@L["Documents"]</h3>
+                    @DocumentList
+                }
                 @if (saves.Count > 0)
                 {
                     <h3>@L["ResumeFromSave"]</h3>
@@ -291,6 +315,35 @@ else
     }
 }
 
+@* シナリオに同梱された文書。.txt はメモ帳、.md は往年のブラウザの既定の表示を模す *@
+@if (viewing != null)
+{
+    <div class="modal doc-modal" @onclick="CloseDocumentAsync">
+        <div class="doc-window @(viewing.IsMarkdown ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
+             @onclick:stopPropagation="true" @onkeydown="DocumentKeyDownAsync">
+            <div class="titlebar">
+                <span class="doc-title">@(viewing.IsMarkdown ? L["MarkdownViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
+                <button class="doc-close" aria-label="@L["MenuClose"]" title="@L["MenuClose"]" @onclick="CloseDocumentAsync">×</button>
+            </div>
+            @if (!viewing.IsMarkdown)
+            {
+                <div class="doc-toolbar">
+                    <label><input type="checkbox" id="doc-wrap" @bind="documentWrap" /> @L["WordWrap"]</label>
+                </div>
+            }
+            @if (viewingHtml != null)
+            {
+                <div class="doc-view doc-page" id="doc-view" tabindex="0">@viewingHtml</div>
+            }
+            else
+            {
+                <pre class="doc-view doc-text @(documentWrap ? "wrap" : null)" id="doc-view" tabindex="0">@viewingText</pre>
+            }
+            <div class="doc-status">@viewing.Path</div>
+        </div>
+    </div>
+}
+
 @code {
     private enum Mode { Loading, Menu, ChooseEvent, Playing, Ended }
 
@@ -339,6 +392,89 @@ else
     private TaskCompletionSource rendered;
     private bool systemMenuOpen;
     private bool confirmingBack;
+    /// <summary>シナリオに同梱された文書（README・更新履歴など）</summary>
+    private IList<ScenarioDocuments.Document> documents = new List<ScenarioDocuments.Document>();
+    /// <summary>表示している文書。.md は viewingHtml、.txt は viewingText に入れる</summary>
+    private ScenarioDocuments.Document viewing;
+    private string viewingText;
+    private MarkupString? viewingHtml;
+    /// <summary>メモ帳の「右端で折り返す」</summary>
+    private bool documentWrap = true;
+    /// <summary>プレイ中にシステムメニューから文書を選んでいる</summary>
+    private bool choosingDocument;
+    /// <summary>開いた文書にキー入力を向ける（Esc で閉じ、矢印キーでスクロールする）</summary>
+    private bool focusDocument;
+
+    /// <summary>文書の一覧。README を先に、「はじめにお読みください」を添えて出す</summary>
+    private RenderFragment DocumentList => @<ul class="items" id="documents">
+        @foreach (var document in documents)
+        {
+            <li class="@(document.IsReadme ? "readme" : null)">
+                <span class="icon @(document.IsMarkdown ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                <button @onclick="() => OpenDocument(document)">@document.Path</button>
+                @if (document.IsReadme)
+                {
+                    <span class="badge">@L["ReadFirst"]</span>
+                }
+            </li>
+        }
+    </ul>;
+
+    private void ChooseDocument()
+    {
+        systemMenuOpen = false;
+        choosingDocument = true;
+    }
+
+    private async Task CloseDocumentChooser()
+    {
+        choosingDocument = false;
+        await FocusScreenAsync();
+    }
+
+    private void OpenDocument(ScenarioDocuments.Document document)
+    {
+        viewingText = null;
+        viewingHtml = null;
+        try
+        {
+            if (document.IsMarkdown)
+            {
+                viewingHtml = new MarkupString(ScenarioDocuments.RenderMarkdown(scenarioDir, document));
+            }
+            else
+            {
+                viewingText = ScenarioDocuments.ReadText(scenarioDir, document);
+            }
+        }
+        catch (Exception ex)
+        {
+            viewingText = L["DocumentOpenFailed", document.Path, ex.Message];
+            WebLogging.Log.LogWarning(ex, "文書を開けません {Path}", document.Path);
+        }
+        choosingDocument = false;
+        viewing = document;
+        focusDocument = true;
+    }
+
+    private async Task CloseDocumentAsync()
+    {
+        viewing = null;
+        viewingText = null;
+        viewingHtml = null;
+        if (mode == Mode.Playing)
+        {
+            await FocusScreenAsync();
+        }
+    }
+
+    private async Task DocumentKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            await CloseDocumentAsync();
+        }
+    }
 
     private void ToggleSystemMenu() => systemMenuOpen = !systemMenuOpen;
 
@@ -392,6 +528,15 @@ else
         if (mode == Mode.Playing)
         {
             rendered?.TrySetResult();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (focusDocument && viewing != null)
+        {
+            focusDocument = false;
+            await JS.InvokeVoidAsync("srcwebStore.focus", "doc-view");
         }
     }
 
@@ -804,6 +949,7 @@ else
                 CloseDownload(zip);
             }
             eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
+            documents = ScenarioDocuments.Find(scenarioDir);
             defaultEve = !string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)) ? eve : eventFiles.FirstOrDefault();
             await RestoreSavesAsync();
             // ここまでに取り消されていれば始めない（始めたゲームは止められない）
@@ -998,7 +1144,7 @@ else
 
     /// <summary>ステータスバーに出す、一覧の項目の数</summary>
     private int ObjectCount => mode == Mode.ChooseEvent
-        ? saves.Count + eventFiles.Count
+        ? documents.Count + saves.Count + eventFiles.Count
         : catalogs.Sum(x => x.Scenarios.Count()) + (site.AllowUserArchives ? archives.Count : 0);
 
     private async Task ChangeInputModeAsync(ChangeEventArgs e)

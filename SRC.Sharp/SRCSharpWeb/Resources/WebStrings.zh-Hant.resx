@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>已覆寫 {0}。</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>請先閱讀</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>閱讀附帶的文件…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - 記事本</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - 文件檢視</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>無法開啟 {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>自動換行</value>
+  </data>
 </root>

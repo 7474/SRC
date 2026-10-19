@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>Nadpisano {0}.</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Dokumenty</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Przeczytaj najpierw</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Czytaj dołączone dokumenty…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Notatnik</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - Przeglądarka dokumentów</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>Nie można otworzyć {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>Zawijanie wierszy</value>
+  </data>
 </root>

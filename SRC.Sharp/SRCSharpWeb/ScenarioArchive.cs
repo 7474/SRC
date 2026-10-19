@@ -21,6 +21,9 @@ namespace SRCSharpWeb
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
+        /// <summary>Shift_JIS（コードページ 932）。Windows で作った zip のファイル名や文書に使われる</summary>
+        public static Encoding ShiftJis => Encoding.GetEncoding(932);
+
         /// <summary>
         /// シナリオの zip を展開し、展開先のフォルダを返す。
         /// root を指定すると、zip の中のそのフォルダ以下だけを展開する。
@@ -103,7 +106,7 @@ namespace SRCSharpWeb
 
         private static void ExtractEntries(string dir, string fullDir, Stream zip, string prefix, CancellationToken token)
         {
-            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, Encoding.GetEncoding(932)))
+            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, ShiftJis))
             {
                 foreach (var entry in archive.Entries)
                 {

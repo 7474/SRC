@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>{0} foi substituído.</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Documentos</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Leia primeiro</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Ler documentos incluídos…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Bloco de Notas</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - Visualizador de documentos</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>Não foi possível abrir {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>Quebra automática de linha</value>
+  </data>
 </root>

@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>{0}을(를) 덮어썼습니다.</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>문서</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>먼저 읽어 주세요</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>포함된 문서 읽기…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - 메모장</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - 문서 보기</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>{0}을(를) 열 수 없습니다: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>자동 줄 바꿈</value>
+  </data>
 </root>

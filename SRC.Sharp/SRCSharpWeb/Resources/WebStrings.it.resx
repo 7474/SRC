@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>{0} è stato sovrascritto.</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Documenti</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Leggimi prima</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Leggi i documenti inclusi…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} - Blocco note</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} - Visualizzatore documenti</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>Impossibile aprire {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>A capo automatico</value>
+  </data>
 </root>

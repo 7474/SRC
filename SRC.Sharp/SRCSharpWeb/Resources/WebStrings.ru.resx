@@ -216,4 +216,25 @@
   <data name="ArchiveOverwritten" xml:space="preserve">
     <value>{0} перезаписан.</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Документы</value>
+  </data>
+  <data name="ReadFirst" xml:space="preserve">
+    <value>Прочтите сначала</value>
+  </data>
+  <data name="MenuDocuments" xml:space="preserve">
+    <value>Читать прилагаемые документы…</value>
+  </data>
+  <data name="TextViewerTitle" xml:space="preserve">
+    <value>{0} — Блокнот</value>
+  </data>
+  <data name="MarkdownViewerTitle" xml:space="preserve">
+    <value>{0} — Просмотр документа</value>
+  </data>
+  <data name="DocumentOpenFailed" xml:space="preserve">
+    <value>Не удалось открыть {0}: {1}</value>
+  </data>
+  <data name="WordWrap" xml:space="preserve">
+    <value>Перенос по словам</value>
+  </data>
 </root>

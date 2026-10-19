@@ -977,3 +977,79 @@ test('仮想パッドをシステムメニューで表示し、押したキー�
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
+
+// シナリオのフォルダの中のファイルを zip の項目にする（name はフォルダからの相対パス）
+function corpusFiles(dir, prefix = '') {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
+    ? corpusFiles(path.join(dir, e.name), prefix + e.name + '/')
+    : [{ name: prefix + e.name, data: fs.readFileSync(path.join(dir, e.name)) }]);
+}
+
+test('シナリオに同梱された文書（README・Shift_JIS のテキスト）を読む', async ({ page }, testInfo) => {
+  const name = '文書つき.zip';
+  const files = corpusFiles(path.join(corpus, 'battle-basic')).filter(x => x.name !== 'README.md' && x.name !== 'play.txt');
+  // .eve が 2 つあるので、シナリオを開くと選ぶ画面になる
+  files.push({ name: 'other.eve', data: files.find(x => x.name === 'test.eve').data });
+  files.push({
+    name: 'README.md',
+    data: Buffer.from([
+      '# はじめに',
+      '',
+      '<script>window.injected = true</script>',
+      '',
+      '[外のリンク](https://example.com/) と [危ないリンク](javascript:alert(1))',
+      '',
+      '| 項目 | 値 |',
+      '|---|---|',
+      '| A | 1 |',
+    ].join('\n'), 'utf8'),
+  });
+  // 「更新履歴：シフトJISの文書」を Shift_JIS で書いたもの
+  files.push({ name: '更新履歴.txt', data: Buffer.from([141, 88, 144, 86, 151, 154, 151, 240, 129, 70, 131, 86, 131, 116, 131, 103, 74, 73, 83, 130, 204, 149, 182, 143, 145]) });
+  await open(page);
+  await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files) });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+
+  // README を先頭に、目印を付けて出す。シナリオのデータ（Data の下の .txt）は出さない
+  const documents = page.locator('#documents li');
+  await expect(documents).toHaveCount(2);
+  await expect(documents.first()).toHaveClass(/readme/);
+  await expect(documents.first()).toContainText('はじめにお読みください');
+  await expect(documents.nth(1)).toContainText('更新履歴.txt');
+
+  // Markdown は HTML にする。中の HTML は文字のまま、javascript: のリンクは外す。見出しは大きくし過ぎない
+  await documents.first().getByRole('button', { name: 'README.md' }).click();
+  const view = page.locator('#doc-view');
+  await expect(view.locator('h1')).toHaveText('はじめに');
+  const sizes = await view.evaluate(e => [getComputedStyle(e).fontSize, getComputedStyle(e.querySelector('h1')).fontSize].map(parseFloat));
+  expect(sizes[1] / sizes[0]).toBeLessThanOrEqual(1.5);
+  await expect(view).toContainText('<script>');
+  expect(await page.evaluate(() => window.injected)).toBeUndefined();
+  await expect(view.getByRole('link', { name: '外のリンク' })).toHaveAttribute('href', 'https://example.com/');
+  await expect(view.getByRole('link', { name: '危ないリンク' })).toHaveCount(0);
+  await expect(view.locator('table td')).toHaveCount(2);
+  await page.screenshot({ path: testInfo.outputPath('document-markdown.png') });
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#doc-window')).toHaveCount(0);
+
+  // Shift_JIS のテキストはメモ帳で読む
+  await documents.nth(1).getByRole('button').click();
+  await expect(page.locator('#doc-window')).toContainText('更新履歴.txt - メモ帳');
+  await expect(view).toHaveText('更新履歴：シフトJISの文書');
+  await page.screenshot({ path: testInfo.outputPath('document-text.png') });
+  await page.locator('.doc-close').click();
+
+  // プレイ中もシステムメニューから読める
+  await page.getByRole('button', { name: 'test.eve' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await page.locator('#system-menu-button').click();
+  await page.getByRole('menuitem', { name: '同梱の文書を読む…' }).click();
+  await page.locator('#documents li').first().getByRole('button').click();
+  await expect(page.locator('#doc-view h1')).toHaveText('はじめに');
+  await page.locator('.doc-close').click();
+  await expect(page.locator('#doc-window')).toHaveCount(0);
+
+  await backToMenu(page);
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+});
