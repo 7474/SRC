@@ -25,6 +25,38 @@ namespace SRCSharpWeb
         public static Encoding ShiftJis => Encoding.GetEncoding(932);
 
         /// <summary>
+        /// zip のファイル名の文字コード（UTF-8 の印が無い名前に使う）。UTF-8 として正しく読めれば UTF-8、読めなければ Shift_JIS として読む。
+        /// Windows で作った zip は Shift_JIS、macOS・Linux で作った zip は UTF-8 の名前に印を付けないことがあるため
+        /// </summary>
+        private sealed class ZipNameEncoding : Encoding
+        {
+            private static readonly Encoding Utf8 = new UTF8Encoding(false, true);
+
+            private static Encoding Pick(byte[] bytes, int index, int count)
+            {
+                try
+                {
+                    Utf8.GetCharCount(bytes, index, count);
+                    return Utf8;
+                }
+                catch (DecoderFallbackException)
+                {
+                    return ShiftJis;
+                }
+            }
+
+            public override int GetByteCount(char[] chars, int index, int count) => Utf8.GetByteCount(chars, index, count);
+            public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex) => Utf8.GetBytes(chars, charIndex, charCount, bytes, byteIndex);
+            public override int GetCharCount(byte[] bytes, int index, int count) => Pick(bytes, index, count).GetCharCount(bytes, index, count);
+            public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex) => Pick(bytes, byteIndex, byteCount).GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+            public override int GetMaxByteCount(int charCount) => Utf8.GetMaxByteCount(charCount);
+            // UTF-8・Shift_JIS とも、1 バイトから 2 文字以上にはならない
+            public override int GetMaxCharCount(int byteCount) => byteCount;
+        }
+
+        private static readonly Encoding ZipNames = new ZipNameEncoding();
+
+        /// <summary>
         /// シナリオの zip を展開し、展開先のフォルダを返す。
         /// root を指定すると、zip の中のそのフォルダ以下だけを展開する。
         /// </summary>
@@ -85,7 +117,7 @@ namespace SRCSharpWeb
 
         /// <summary>
         /// zip を dir に展開する。
-        /// Windows で作った zip のファイル名は Shift_JIS のことが多いため、UTF-8 の印が無いものは Shift_JIS として読む。
+        /// UTF-8 の印が無いファイル名は、UTF-8 として正しく読めれば UTF-8、読めなければ Shift_JIS として読む（ZipNameEncoding）。
         /// token が取り消されたら、途中まで展開したところで OperationCanceledException を投げる。
         /// </summary>
         private static void ExtractTo(string dir, Stream zip, string root, CancellationToken token)
@@ -106,7 +138,7 @@ namespace SRCSharpWeb
 
         private static void ExtractEntries(string dir, string fullDir, Stream zip, string prefix, CancellationToken token)
         {
-            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, ShiftJis))
+            using (var archive = new ZipArchive(zip, ZipArchiveMode.Read, true, ZipNames))
             {
                 foreach (var entry in archive.Entries)
                 {
