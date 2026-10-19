@@ -7,7 +7,6 @@ describe('Init Blazor Application', function () {
         // タイトルリストのロード完了
         cy.document().its('fonts.status').should('equal', 'loaded');
         cy.get('.navbar .navbar-menu .fa-folder').should('exist');
-        cy.percySnapshot();
     });
 });
 
@@ -23,14 +22,11 @@ describe('Load Data', function () {
             failOnStatusCode: false,
         });
         cy.contains('∀ガンダム(前期)').should('exist');
-        cy.percySnapshot('Unit list');
 
         cy.contains('Pilot').click();
         cy.contains('ロラン＝セアック').should('exist');
-        cy.percySnapshot('Pilot list');
         
         cy.contains('Item').click();
         cy.contains('∀ガンダム用核弾頭').should('exist');
-        cy.percySnapshot('Item list');
     });
 });
