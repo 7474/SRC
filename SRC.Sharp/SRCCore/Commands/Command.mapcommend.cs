@@ -565,7 +565,7 @@ namespace SRCCore.Commands
             }
 
             GUI.LockGUI();
-            // 読み終えたら閉じる（開いたままだと、Windows では次のクイックセーブ・ロードで開けない）
+            // ストリームは閉じる（開いたままだと、Windows では次のクイックセーブ・ロードでファイルを開けない）
             using (var stream = GUI.OpenQuikSaveStream(FileAccess.Read))
             {
                 SRC.RestoreData(stream, SRCSaveKind.Quik);
@@ -586,7 +586,6 @@ namespace SRCCore.Commands
             GUI.ChangeStatus(GuiStatus.WaitCursor);
 
             // 中断データをセーブ
-            // 書き終えたら閉じる（開いたままだと、Windows ではクイックロードで開けない）
             using (var stream = GUI.OpenQuikSaveStream(FileAccess.Write))
             {
                 SRC.DumpData(stream, SRCSaveKind.Quik);

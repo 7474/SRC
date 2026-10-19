@@ -1,0 +1,9 @@
+# advance で、攻撃できず近づけるマスも無い味方のターンを 3 回終える（移動先に今いるマスを選んで止まらない）
+auto 60
+expect message 戦闘開始
+policy advance
+turns 3
+expect eval ターン数 >= 3
+expect log 近づけるマスが無い
+expect eval X(テストパイロット) = 11
+expect error none
