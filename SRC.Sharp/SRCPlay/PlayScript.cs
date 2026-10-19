@@ -95,9 +95,12 @@ namespace SRCPlay
         public SRC Src => runner.Session.SRC;
         private ScreenGUI GUI => runner.GUI;
 
+        // スクリプトの行の記録の印。expect log はこの行を見ない（expect log の行そのものに一致してしまうため）
+        private const string ScriptMark = " SCRIPT ";
+
         private void Log(string message)
         {
-            Record($"{DateTime.Now:HH:mm:ss} SCRIPT {message}");
+            Record($"{DateTime.Now:HH:mm:ss}{ScriptMark}{message}");
         }
 
         public void Run(IEnumerable<string> lines)
@@ -294,7 +297,7 @@ namespace SRCPlay
                     }
                     break;
                 case "log":
-                    if (!TraceLog.Any(x => x.Contains(text)))
+                    if (!TraceLog.Any(x => !x.Contains(ScriptMark) && x.Contains(text)))
                     {
                         throw new PlayScriptException($"操作の記録に「{text}」がありません");
                     }
@@ -676,8 +679,35 @@ namespace SRCPlay
                 }
                 acted.Add(unit.ID);
                 ActUnit(unit);
+                LeaveSelection();
             }
             EndTurn();
+        }
+
+        /// <summary>
+        /// ユニットの行動の後に、移動先や攻撃先の選択が残っていたらやめる。
+        /// 残ったままだと操作を受け付ける状態にならず、停滞時のクリックが選択の操作になってしまう
+        /// </summary>
+        private void LeaveSelection()
+        {
+            for (var i = 0; i < 3; i++)
+            {
+                var menu = script.Runner.State.Menu;
+                if (menu != null && menu.Items.Contains("待機"))
+                {
+                    // 取り消してユニットのメニューに戻った
+                    Log("ユニットのメニューが残ったので待機する");
+                    script.SelectMenu("待機");
+                    return;
+                }
+                if (menu != null || !script.CommandState.Contains("ターゲット選択"))
+                {
+                    return;
+                }
+                Log("選択が残ったので取り消す");
+                script.Cancel();
+                script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択") || script.Runner.State.Menu != null, TimeSpan.FromSeconds(5));
+            }
         }
 
         private void ActUnit(UnitInfo unit)
@@ -1211,12 +1241,13 @@ namespace SRCPlay
                     return ((int, int)?)null;
                 }
                 (int, int)? best = null;
-                var bestDistance = int.MaxValue;
+                // 今いるマスより敵に近いマスだけを選ぶ。今いるマスを選ぶと、移動先の選択のまま進まない
+                var bestDistance = enemies.Min(e => Math.Abs(e.x - unit.X) + Math.Abs(e.y - unit.Y));
                 for (var x = 1; x <= map.MapWidth; x++)
                 {
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
-                        if (map.MaskData[x, y] || (map.MapDataForUnit[x, y] != null && !(x == unit.X && y == unit.Y)))
+                        if (map.MaskData[x, y] || map.MapDataForUnit[x, y] != null)
                         {
                             continue;
                         }
@@ -1232,7 +1263,10 @@ namespace SRCPlay
             });
             if (dest == null)
             {
+                // 近づけるマスが無い。移動先の選択をやめてユニットのメニューに戻る
+                Log("近づけるマスが無い");
                 script.Cancel();
+                script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10));
                 return false;
             }
             Log($"移動: ({dest.Value.Item1},{dest.Value.Item2})");

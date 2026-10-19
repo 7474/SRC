@@ -77,7 +77,7 @@ PlayScript の実装は `SRC.Sharp/SRCPlay` にある。作成支援ツールの
 | `print 式` | SRC の式の値を記録する（例: `print ダンジョン階数`） |
 | `stall 秒` | 待ちの状態でないまま進まない（`KeyState` でクリックを待つ演出など）ときにボタンを押すまでの時間（既定 5 秒）。押したボタンは、`KeyState` に読まれた時点（最長 300ms）で離す。`--skip-wait` のときは、直近に `KeyState` が読まれている（スクリプトが入力を待っている）ときだけ押し、読まれていなければ処理中とみなして 5 秒まで押さない |
 | `snapshot 名前` | 画面を保存する（`TestResults/e2e/ケース名/`、CI の成果物 `screenshots`） |
-| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる |
+| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる。`log` はスクリプトの行の記録（`SCRIPT` の行）を見ない |
 | `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`） |
 
 ```text
@@ -98,6 +98,7 @@ expect eval Damage(標的パイロット) > 0
 |---|---|
 | `battle-basic` | 出撃・移動・待機・ターン終了・敵フェイズ（攻撃と反撃）を 3 ターン |
 | `battle-victory` | 敵を倒し「全滅 敵」イベントで勝利してシナリオが終わるまで |
+| `battle-advance-adjacent` | `policy advance` で、攻撃できない味方が敵の隣にいて、近づけるマスが無いときに、移動せず待機してターンを進める |
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
