@@ -404,10 +404,11 @@ test('URL の play で登録済シナリオを直接始める', async ({ page })
 
 test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }, testInfo) => {
   await open(page);
-  // シナリオの zip の取得を遅らせ、読み込み中の状態を確かめる
+  // シナリオの zip の取得を遅らせ、読み込み中の状態を確かめる。
+  // zip は coi-serviceworker を通ることがあり、そのときは Service Worker の要求になるので、page.route ではなくコンテキストで止める
   let release;
   const gate = new Promise(resolve => (release = resolve));
-  await page.route('**/*.zip', async route => {
+  await page.context().route('**/*.zip', async route => {
     await gate;
     await route.continue();
   });
@@ -417,8 +418,8 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
   await expect(body).toHaveAttribute('aria-busy', 'true');
   // 読み込み中のダイアログを出す（操作できないことが見て分かる）
   await expect(page.locator('#loading')).toBeVisible();
-  // 素材（requires）から読み込む
-  await expect(page.locator('#loading-status')).toContainText('読み込んでいます');
+  // 今の処理を出す。CI では zip の取得を止めきれず、展開まで進んでいることがあるので、どちらでもよい
+  await expect(page.locator('#loading-status')).toContainText(/読み込んでいます|展開しています/);
   await page.screenshot({ path: testInfo.outputPath('loading.png') });
   // inert の間は、ほかのシナリオを押しても始まらない
   await page.getByRole('button', { name: 'sound', exact: true }).click({ force: true, timeout: 2000 }).catch(() => {});
@@ -429,9 +430,9 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
 
 test('シナリオの読み込みを取り消し、もう一度始められる', async ({ page }) => {
   await open(page);
-  // 1 回目の取得は応答を返さず、取り消しを待つ
+  // 1 回目の取得は応答を返さず、取り消しを待つ（Service Worker を通る要求も止めるため、コンテキストで止める）
   let first = true;
-  await page.route('**/*.zip', async route => {
+  await page.context().route('**/*.zip', async route => {
     if (first) {
       first = false;
       return;
