@@ -128,5 +128,57 @@ namespace SRCCore.Filesystem.Tests
             var fs = new LocalFileSystem();
             Assert.AreEqual(Path.Combine(root, "data", "Save"), fs.ToAbsolutePath(Path.Combine(root, "data"), "Save"));
         }
+        // TrustDirectoryCache はプロセス全体の設定なので、ほかのテストと並べて走らせない
+        [TestMethod]
+        [DoNotParallelize]
+        public void FileExists_TrustDirectoryCache_AnswersFromListing()
+        {
+            PathResolver.Invalidate();
+            PathResolver.TrustDirectoryCache = true;
+            try
+            {
+                Assert.IsTrue(PathResolver.FileExists(root + @"\Data\unit\robot.TXT"), "大文字・小文字と \\ の違い");
+                Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "Unit")), "フォルダはファイルではない");
+                Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
+                Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "None", "Pilot.txt")));
+
+                // 一覧を作った後に作ったファイルは、Invalidate するまで見えない（書き換えたら Invalidate を呼ぶ前提）
+                File.WriteAllText(Path.Combine(root, "data", "Unit", "Pilot.txt"), "x");
+                Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
+                PathResolver.Invalidate();
+                Assert.IsTrue(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
+            }
+            finally
+            {
+                PathResolver.TrustDirectoryCache = false;
+                PathResolver.Invalidate();
+            }
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        public void LocalFileSystem_TrustDirectoryCache_SeesFilesItWrites()
+        {
+            PathResolver.Invalidate();
+            PathResolver.TrustDirectoryCache = true;
+            try
+            {
+                var fs = new LocalFileSystem();
+                fs.AddPath(root);
+                Assert.IsTrue(fs.FileExists(@"data\unit\robot.txt"));
+                Assert.IsFalse(fs.FileExists(@"data\unit\save.srcs"));
+                // LocalFileSystem で書いたファイルは、すぐに見える
+                using (var stream = fs.Create(Path.Combine(root, "data", "Unit", "save.srcs")))
+                {
+                    stream.WriteByte(1);
+                }
+                Assert.IsTrue(fs.FileExists(@"data\unit\save.srcs"));
+            }
+            finally
+            {
+                PathResolver.TrustDirectoryCache = false;
+                PathResolver.Invalidate();
+            }
+        }
     }
 }

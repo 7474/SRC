@@ -30,6 +30,13 @@ namespace SRCCore.Filesystem
         };
 
         /// <summary>
+        /// ファイルシステムを書き換えるのがこのプロセスだけで、書き換えたら <see cref="Invalidate"/> を呼ぶ環境（ブラウザ）なら true にする。
+        /// 存在の確認と解決を、フォルダの一覧（キャッシュ）だけで行い、ファイルシステムへの問い合わせを減らす。
+        /// ブラウザ（マルチスレッドの WebAssembly）では、ファイルシステムの操作が 1 回ごとに UI スレッドへの呼び出しになる。
+        /// </summary>
+        public static bool TrustDirectoryCache { get; set; }
+
+        /// <summary>
         /// パス区切りを実行環境のものにする。
         /// </summary>
         public static string ToNative(string path)
@@ -51,7 +58,7 @@ namespace SRCCore.Filesystem
             {
                 return native;
             }
-            if (File.Exists(native) || Directory.Exists(native))
+            if (!TrustDirectoryCache && (File.Exists(native) || Directory.Exists(native)))
             {
                 return native;
             }
@@ -71,12 +78,12 @@ namespace SRCCore.Filesystem
                     current = Path.Combine(current, component);
                     continue;
                 }
-                var actual = FindEntry(current, component);
+                var actual = FindEntry(current, component, out _);
                 if (actual == null)
                 {
                     // 一覧を作った後に作られたもの（同じ名前）は、一覧によらず確かめる
                     var candidate = Path.Combine(current, component);
-                    if (File.Exists(candidate) || Directory.Exists(candidate))
+                    if (!TrustDirectoryCache && (File.Exists(candidate) || Directory.Exists(candidate)))
                     {
                         directoryEntries.TryRemove(current, out _);
                         current = candidate;
@@ -96,6 +103,42 @@ namespace SRCCore.Filesystem
         }
 
         /// <summary>
+        /// path が実在するファイルか。<see cref="TrustDirectoryCache"/> のときは、フォルダの一覧（キャッシュ）で答える。
+        /// </summary>
+        public static bool FileExists(string path)
+        {
+            if (!TrustDirectoryCache || isBackslashSeparator)
+            {
+                return File.Exists(Resolve(path));
+            }
+            var native = ToNative(path);
+            if (string.IsNullOrEmpty(native))
+            {
+                return false;
+            }
+            var root = Path.GetPathRoot(native);
+            var components = native.Substring(root.Length).Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var current = string.IsNullOrEmpty(root) ? "." : root;
+            for (var i = 0; i < components.Length; i++)
+            {
+                var component = components[i];
+                if (component == "." || component == "..")
+                {
+                    // 一覧ではたどれないので、ファイルシステムに問い合わせる
+                    return File.Exists(Resolve(path));
+                }
+                var actual = FindEntry(current, component, out var isDirectory);
+                var last = i == components.Length - 1;
+                if (actual == null || isDirectory != !last)
+                {
+                    return false;
+                }
+                current = Path.Combine(current, actual);
+            }
+            return components.Length > 0;
+        }
+
+        /// <summary>
         /// フォルダの一覧のキャッシュを捨てる。ファイル・フォルダを作った・消した後に呼ぶ（LocalFileSystem・ブラウザでの展開など）。
         /// 呼ばなくても、見つからなかった名前は <see cref="CacheLifetime"/> を過ぎると一覧を作り直して探す
         /// </summary>
@@ -109,7 +152,7 @@ namespace SRCCore.Filesystem
 
         private sealed class DirectoryEntries
         {
-            public DirectoryEntries(IEnumerable<string> names)
+            public DirectoryEntries(IEnumerable<string> names, IEnumerable<string> directories)
             {
                 CreatedAt = DateTime.UtcNow;
                 if (names == null)
@@ -117,6 +160,7 @@ namespace SRCCore.Filesystem
                     return;
                 }
                 Names = new HashSet<string>(names, StringComparer.Ordinal);
+                Directories = new HashSet<string>(directories ?? Enumerable.Empty<string>(), StringComparer.Ordinal);
                 ByLowerName = Names
                     .GroupBy(x => x.ToLowerInvariant())
                     .ToDictionary(x => x.Key, x => x.OrderBy(y => y, StringComparer.Ordinal).First());
@@ -125,6 +169,8 @@ namespace SRCCore.Filesystem
             public DateTime CreatedAt { get; }
             /// <summary>フォルダが無ければ null</summary>
             public HashSet<string> Names { get; }
+            /// <summary>Names のうちフォルダのもの</summary>
+            public HashSet<string> Directories { get; }
             public Dictionary<string, string> ByLowerName { get; }
             public bool IsExpired => DateTime.UtcNow - CreatedAt > CacheLifetime;
 
@@ -143,33 +189,39 @@ namespace SRCCore.Filesystem
             }
         }
 
-        private static string FindEntry(string directory, string name)
+        private static string FindEntry(string directory, string name, out bool isDirectory)
         {
             if (directoryEntries.TryGetValue(directory, out var entries))
             {
                 var cached = entries.Find(name);
-                if (cached != null || !entries.IsExpired)
+                // 一覧を信じる環境では、作り直さない（書き換えたら Invalidate で捨てる）
+                if (cached != null || !entries.IsExpired || TrustDirectoryCache)
                 {
+                    isDirectory = cached != null && entries.Directories.Contains(cached);
                     return cached;
                 }
             }
             // 見つからず、一覧が古い場合は作り直す（その後に作られたファイルに対応するため）
-            entries = new DirectoryEntries(Enumerate(directory));
+            entries = Enumerate(directory);
             directoryEntries[directory] = entries;
-            return entries.Find(name);
+            var found = entries.Find(name);
+            isDirectory = found != null && entries.Directories.Contains(found);
+            return found;
         }
 
-        private static IEnumerable<string> Enumerate(string directory)
+        private static DirectoryEntries Enumerate(string directory)
         {
             try
             {
                 return Directory.Exists(directory)
-                    ? Directory.EnumerateFileSystemEntries(directory).Select(Path.GetFileName).ToList()
-                    : null;
+                    ? new DirectoryEntries(
+                        Directory.EnumerateFileSystemEntries(directory).Select(Path.GetFileName).ToList(),
+                        Directory.EnumerateDirectories(directory).Select(Path.GetFileName).ToList())
+                    : new DirectoryEntries(null, null);
             }
             catch (Exception)
             {
-                return null;
+                return new DirectoryEntries(null, null);
             }
         }
     }

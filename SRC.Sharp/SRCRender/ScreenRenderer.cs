@@ -182,6 +182,8 @@ namespace SRCRender
         {
             var map = src.Map;
             var bitmap = new SKBitmap(Math.Max(1, map.MapWidth * ScreenLayout.CellPx), Math.Max(1, map.MapHeight * ScreenLayout.CellPx));
+            // 同じ地形の画像ファイルを、マスごとに探し直さない
+            var found = new Dictionary<(string Name, int No), string>();
             using (var canvas = new SKCanvas(bitmap))
             using (var paint = new SKPaint())
             {
@@ -192,7 +194,7 @@ namespace SRCRender
                     {
                         var cell = map.MapData[x, y];
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell)));
+                        var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
                         if (image != null)
                         {
                             canvas.DrawBitmap(image, rect);
@@ -208,7 +210,7 @@ namespace SRCRender
                             canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
                             paint.Style = SKPaintStyle.Fill;
                         }
-                        var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell)));
+                        var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
                         if (layer != null)
                         {
                             canvas.DrawBitmap(layer, rect);
