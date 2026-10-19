@@ -682,8 +682,9 @@ test('利用者が追加した素材は、シナリオが求める素材の同�
   const siteAsset = makeZip([{ name: 'Lib/which.eve', data: which('site') }]);
   const userAsset = makeZip([{ name: 'Lib/which.eve', data: which('user') }]);
   const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  let config = { catalogs: ['dist/catalog.json'] };
   await isolateWithHeaders(page);
-  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/srcweb.json', route => route.fulfill(json(config)));
   await page.route('**/dist/catalog.json', route => route.fulfill(json({
     format: 1,
     entries: [
@@ -701,13 +702,49 @@ test('利用者が追加した素材は、シナリオが求める素材の同�
   await page.getByRole('button', { name: '素材の順のシナリオ' }).click();
   await expect(page.locator('#screen')).toBeVisible();
   await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toContain('ASSET=user');
+
+  // サイトの設定で素材の追加を止めると、追加済みの素材も出さず、重ねない。シナリオの追加はできる
+  config = { catalogs: ['dist/catalog.json'], allowUserAssets: false };
+  await open(page);
+  await expect(page.locator('#add-asset')).toHaveCount(0);
+  await expect(page.locator('#add-archive')).toHaveCount(1);
+  await expect(page.locator('#archives li', { hasText: name })).toHaveCount(0);
+  await page.getByRole('button', { name: '素材の順のシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toContain('ASSET=site');
+
+  // シナリオの追加だけを止める
+  config = { catalogs: ['dist/catalog.json'], allowUserScenarios: false };
+  await open(page);
+  await expect(page.locator('#add-archive')).toHaveCount(0);
+  await expect(page.locator('#add-asset')).toHaveCount(1);
+  await expect(page.locator('#archives li', { hasText: name })).toBeVisible();
+});
+
+test('サイトの設定の ratingConfirm が無ければ、年齢の区分を確かめず印も付けない', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    entries: [{ id: 'adult', title: 'R18 のシナリオ', archive: 'victory.zip', eve: 'test.eve', rating: 'r18' }],
+  })));
+  await page.route('**/dist/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+
+  await open(page);
+  await expect(page.locator('#catalog button', { hasText: 'R18 のシナリオ' })).toBeVisible();
+  await expect(page.locator('#catalog .badge.rating')).toHaveCount(0);
+  await page.getByRole('button', { name: 'R18 のシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
+  await expect(page.locator('#rating-confirm')).toHaveCount(0);
 });
 
 test('年齢の区分（R18）のシナリオは始める前に確かめ、「はい」と答えたら次からは確かめない', async ({ page }) => {
   const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
   const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   await isolateWithHeaders(page);
-  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'], ratingConfirm: true })));
   await page.route('**/dist/catalog.json', route => route.fulfill(json({
     format: 1,
     entries: [

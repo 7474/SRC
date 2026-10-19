@@ -125,7 +125,7 @@ else
                             <li>
                                 <span class="icon icon-zip" aria-hidden="true"></span>
                                 <button @onclick="() => PlayCatalogAsync(entry)">@entry.Title</button>
-                                @if (entry.RatingAge > 0)
+                                @if (site.RatingAgeOf(entry) > 0)
                                 {
                                     <span class="badge rating" title="@L["RatingBadgeTitle", entry.RatingAge]">R@(entry.RatingAge)</span>
                                 }
@@ -151,7 +151,7 @@ else
             {
                 <p class="status">@error</p>
             }
-            @if (site.AllowUserArchives)
+            @if (site.UserArchivesEnabled)
             {
                 <section class="group">
                     <h2>@L["AddedArchives"]</h2>
@@ -237,15 +237,21 @@ else
                         </div>
                     </section>
                 }
-                @if (site.AllowUserArchives)
+                @if (site.UserArchivesEnabled)
                 {
                     <section class="task">
                         <h2>@L["AddArchives"]</h2>
                         <div class="task-body">
-                            <p class="note">@L["AddArchiveNote"]</p>
-                            <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
-                            <p class="note">@L["AddAssetNote"]</p>
-                            <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
+                            @if (site.UserScenariosEnabled)
+                            {
+                                <p class="note">@L["AddArchiveNote"]</p>
+                                <InputFile id="add-archive" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindScenario)" accept=".zip" multiple />
+                            }
+                            @if (site.UserAssetsEnabled)
+                            {
+                                <p class="note">@L["AddAssetNote"]</p>
+                                <InputFile id="add-asset" OnChange="e => AddArchivesAsync(e, CatalogEntry.KindAsset)" accept=".zip" multiple />
+                            }
                         </div>
                     </section>
                 }
@@ -846,7 +852,7 @@ else
             {
                 await LoadCatalogsAsync(urls);
             }
-            if (site.AllowUserArchives)
+            if (site.UserArchivesEnabled)
             {
                 await RefreshArchivesAsync();
             }
@@ -1014,7 +1020,10 @@ else
 
     private async Task RefreshArchivesAsync()
     {
-        archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
+        // サイトの設定で追加できない種類のもの（以前に追加したもの）は出さない
+        archives = (await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list"))
+            .Where(x => x.Kind == CatalogEntry.KindAsset ? site.UserAssetsEnabled : site.UserScenariosEnabled)
+            .ToList();
     }
 
     /// <summary>
@@ -1114,7 +1123,7 @@ else
             return;
         }
         // 年齢の区分があれば、始める前に確かめる（一度「はい」と答えた年齢以下の区分は確かめない）
-        if (entry.RatingAge > 0 && await JS.InvokeAsync<int>("srcwebStore.getRatingConsent") < entry.RatingAge)
+        if (site.RatingAgeOf(entry) > 0 && await JS.InvokeAsync<int>("srcwebStore.getRatingConsent") < entry.RatingAge)
         {
             confirmingRating = entry;
             return;
@@ -1260,7 +1269,7 @@ else
                 return false;
             }
         }
-        if (site.AllowUserArchives)
+        if (site.UserAssetsEnabled)
         {
             foreach (var archive in archives.Where(x => x.Kind == CatalogEntry.KindAsset))
             {
@@ -1499,7 +1508,7 @@ else
     /// <summary>ステータスバーに出す、一覧の項目の数</summary>
     private int ObjectCount => mode == Mode.ChooseEvent
         ? documents.Count + saves.Count + eventFiles.Count
-        : catalogs.Sum(x => x.Scenarios.Count()) + (site.AllowUserArchives ? archives.Count : 0);
+        : catalogs.Sum(x => x.Scenarios.Count()) + (site.UserArchivesEnabled ? archives.Count : 0);
 
     private async Task ChangeInputModeAsync(ChangeEventArgs e)
     {

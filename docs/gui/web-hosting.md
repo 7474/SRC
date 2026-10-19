@@ -45,7 +45,10 @@ SRC#Web（ブラウザ版）は静的ファイルだけで動くため、どこ�
 | `title` | `SRC#Web` | 画面の見出しとページのタイトル |
 | `catalogs` | `["scenarios/catalog.json"]` | 読み込むカタログの URL。サイトからの相対 URL か絶対 URL |
 | `playCatalog` | なし | URL の `play` で開いたときに読む、シナリオごとのカタログの URL。`{id}` をシナリオの `id`（URL エンコードしたもの）に置き換える（例: `/api/catalog/{id}.json`）。指定すると `catalogs` をすべて読まずに、そのカタログだけからシナリオと `requires` の素材を探して始める。読めない・シナリオか素材が無い場合は `catalogs` を読む。URL に `catalog`・`archive` があるときは使わない |
-| `allowUserArchives` | `true` | 利用者が zip（シナリオ・素材）を追加できるか |
+| `allowUserArchives` | `true` | 利用者が zip（シナリオ・素材）を追加できるか。`false` なら下の 2 つにかかわらず追加できない |
+| `allowUserScenarios` | `true` | 利用者がシナリオの zip を追加できるか |
+| `allowUserAssets` | `true` | 利用者が素材の zip を追加できるか。`false` なら以前に追加した素材も一覧に出さず、シナリオに重ねない（サイトの素材だけで遊ばせる） |
+| `ratingConfirm` | `false` | カタログの `rating`（年齢の区分）を使うか。`true` なら `r15`・`r18` のシナリオに印を付け、始める前に年齢を確かめる。`false` なら `rating` を無視する |
 | `allowUserCatalogs` | `true` | 利用者がカタログの URL を追加できるか。URL の `catalog`・`archive` パラメータも、これが `true` のときだけ使える |
 | `start` | なし | 開いたらすぐに始めるシナリオ（カタログの `id`）。シナリオ 1 本だけを配信するサイト向け |
 | `language` | なし（日本語） | 表示言語の既定。対応言語のカルチャ名（`ja`・`en`・`zh-Hans` など 15 の言語）か `auto`。利用者が画面で選んだ言語が優先する（[多言語対応](../i18n.md#srcweb)） |
@@ -120,7 +123,7 @@ SRC#Web（ブラウザ版）は静的ファイルだけで動くため、どこ�
 | `root` | zip の中のフォルダ。そのフォルダ以下だけを使う（zip がフォルダごと圧縮されている場合に指定する） |
 | `eve` | はじめに実行するイベントファイル（`root` からのパス）。セーブデータが無ければ、選んだらすぐに始める |
 | `requires` | 一緒に使う素材の `id` |
-| `rating` | 年齢の区分。`general`（既定）・`r15`・`r18`。`r15`・`r18` のシナリオは一覧に「R15」「R18」の印を付け、始める前（一覧から選んだとき・URL の `play`・`start`）に「15 歳（18 歳）以上ですか」と確かめる。「はい」と答えた区分はブラウザ（localStorage）に覚え、次からは確かめない（`r18` に答えれば `r15` も確かめない）。「いいえ」なら始めずに一覧に留まる |
+| `rating` | 年齢の区分。`general`（既定）・`r15`・`r18`。サイトの設定の `ratingConfirm` が `true` のときだけ使う。`r15`・`r18` のシナリオは一覧に「R15」「R18」の印を付け、始める前（一覧から選んだとき・URL の `play`・`start`）に「15 歳（18 歳）以上ですか」と確かめる。「はい」と答えた区分はブラウザ（localStorage）に覚え、次からは確かめない（`r18` に答えれば `r15` も確かめない）。「いいえ」なら始めずに一覧に留まる |
 | `title`・`author`・`license`・`description` | 一覧に表示する情報 |
 
 エントリの一覧だけの配列（`[{ "id": …, "archive": … }]`）も読めます。
@@ -151,8 +154,22 @@ MIDI の SoundFont（.sf2）も素材として配信できます。シナリオ�
 
 `allowUserArchives` が `true` のとき、利用者は一覧の画面で次のものを追加できます。追加したものはブラウザ（IndexedDB）に保存され、次回も使えます。
 
-- シナリオの zip: 一覧から選んで遊ぶ
-- 素材の zip: どのシナリオにも重ねる
+- シナリオの zip（`allowUserScenarios`）: 一覧から選んで遊ぶ
+- 素材の zip（`allowUserAssets`）: どのシナリオにも重ねる。シナリオが求める素材（`requires`）の後に重ねるので、同じ名前のファイルは利用者のものが使われる
+
+シナリオ 1 本だけを配信するサイトの例（利用者の追加を許さず、開いたらすぐに始める）:
+
+```json
+{
+  "title": "○○",
+  "catalogs": ["scenarios/catalog.json"],
+  "start": "my-scenario",
+  "allowUserArchives": false,
+  "allowUserCatalogs": false
+}
+```
+
+利用者に手元の BGM などで差し替えさせたいときは、`"allowUserArchives": true, "allowUserScenarios": false` にする（素材だけを追加できる）。
 
 `allowUserCatalogs` が `true` のとき、カタログの URL を追加できます（localStorage に保存）。
 

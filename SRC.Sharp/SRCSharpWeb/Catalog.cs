@@ -29,8 +29,32 @@ namespace SRCSharpWeb
         /// </summary>
         public string PlayCatalog { get; set; }
 
-        /// <summary>利用者が zip（シナリオ・素材）を追加できるか</summary>
+        /// <summary>利用者が zip（シナリオ・素材）を追加できるか。false なら allowUserScenarios・allowUserAssets にかかわらず追加できない</summary>
         public bool AllowUserArchives { get; set; } = true;
+
+        /// <summary>利用者がシナリオの zip を追加できるか</summary>
+        public bool AllowUserScenarios { get; set; } = true;
+
+        /// <summary>利用者が素材の zip を追加できるか。false なら追加済みの素材も重ねない</summary>
+        public bool AllowUserAssets { get; set; } = true;
+
+        /// <summary>カタログの rating（年齢の区分）を見て、一覧に印を付け、始める前に年齢を確かめるか（既定は確かめない）</summary>
+        public bool RatingConfirm { get; set; }
+
+        /// <summary>利用者がシナリオの zip を追加・使用できる</summary>
+        [JsonIgnore]
+        public bool UserScenariosEnabled => AllowUserArchives && AllowUserScenarios;
+
+        /// <summary>利用者が素材の zip を追加・使用できる</summary>
+        [JsonIgnore]
+        public bool UserAssetsEnabled => AllowUserArchives && AllowUserAssets;
+
+        /// <summary>利用者が何らかの zip を追加できる</summary>
+        [JsonIgnore]
+        public bool UserArchivesEnabled => UserScenariosEnabled || UserAssetsEnabled;
+
+        /// <summary>そのエントリについて年齢を確かめる年齢（確かめないなら 0）</summary>
+        public int RatingAgeOf(CatalogEntry entry) => RatingConfirm ? entry.RatingAge : 0;
 
         /// <summary>利用者がカタログの URL を追加できるか（URL の catalog・archive パラメータも含む）</summary>
         public bool AllowUserCatalogs { get; set; } = true;
