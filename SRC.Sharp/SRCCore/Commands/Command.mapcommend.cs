@@ -565,7 +565,11 @@ namespace SRCCore.Commands
             }
 
             GUI.LockGUI();
-            SRC.RestoreData(GUI.OpenQuikSaveStream(FileAccess.Read), SRCSaveKind.Quik);
+            // ストリームは閉じる（開いたままだと、Windows では次のクイックセーブ・ロードでファイルを開けない）
+            using (var stream = GUI.OpenQuikSaveStream(FileAccess.Read))
+            {
+                SRC.RestoreData(stream, SRCSaveKind.Quik);
+            }
 
             // 画面を書き直してステータスを表示
             GUI.RedrawScreen();
@@ -582,7 +586,10 @@ namespace SRCCore.Commands
             GUI.ChangeStatus(GuiStatus.WaitCursor);
 
             // 中断データをセーブ
-            SRC.DumpData(GUI.OpenQuikSaveStream(FileAccess.Write), SRCSaveKind.Quik);
+            using (var stream = GUI.OpenQuikSaveStream(FileAccess.Write))
+            {
+                SRC.DumpData(stream, SRCSaveKind.Quik);
+            }
             GUI.UnlockGUI();
 
             // マウスカーソルを元に戻す
