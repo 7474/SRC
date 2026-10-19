@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Log (console del browser)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Caricamento annullato.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Sostituisci</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Sostituisci con un altro zip con lo stesso nome (i salvataggi vengono mantenuti)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} è stato sovrascritto.</value>
+  </data>
 </root>

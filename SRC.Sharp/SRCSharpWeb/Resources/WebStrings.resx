@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>ログ（ブラウザのコンソール）</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>読み込みを取り消しました。</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>置き換え</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>同じ名前のまま別の zip に置き換えます（セーブデータは引き継ぎます）</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} を上書きしました。</value>
+  </data>
 </root>

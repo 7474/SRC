@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Günlük (tarayıcı konsolu)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Yükleme iptal edildi.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Değiştir</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Aynı adla başka bir zip ile değiştir (kayıtlar korunur)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} üzerine yazıldı.</value>
+  </data>
 </root>

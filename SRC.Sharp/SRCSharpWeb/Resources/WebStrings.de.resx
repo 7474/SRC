@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Protokoll (Browserkonsole)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Das Laden wurde abgebrochen.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Ersetzen</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Durch ein anderes ZIP mit demselben Namen ersetzen (Spielstände bleiben erhalten)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} wurde überschrieben.</value>
+  </data>
 </root>

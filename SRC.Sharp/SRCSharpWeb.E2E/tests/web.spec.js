@@ -183,12 +183,37 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await expectAdvancesWithEnter(page);
   await attachScreen(page, testInfo, 'archive');
 
-  // 削除する
+  // 同じ名前のまま別の zip に置き換える
   await backToMenu(page);
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  const replacement = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-basic.zip'));
+  await page.locator('#archives li', { hasText: name }).locator('input.hidden-file').setInputFiles({
+    name: 'other.zip',
+    mimeType: 'application/zip',
+    buffer: replacement,
+  });
+  await expect(page.locator('#status')).toContainText('上書きしました');
+  await expect(page.locator('#archives li')).toHaveCount(1);
+  await expect(page.locator('#archives li')).toContainText(name);
+  await expect(page.locator('#archives li .size')).toHaveText(formatSize(replacement.length));
+  // 同じ名前で追加しても上書きする
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip')),
+  });
+  await expect(page.locator('#status')).toContainText('上書きしました');
+  await expect(page.locator('#archives li')).toHaveCount(1);
+
+  // 削除する
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   await expect(page.locator('#archives li')).toHaveCount(0);
 });
+
+// App.razor の FormatSize と同じ表示
+function formatSize(size) {
+  return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.round(size / 1024)} KB`;
+}
 
 test('インターミッションでセーブし、ブラウザに残ったセーブデータから再開する', async ({ page }, testInfo) => {
   const scenario = 'catalog-intermission-save';
@@ -377,7 +402,7 @@ test('URL の play で登録済シナリオを直接始める', async ({ page })
   await expectAdvancesWithEnter(page);
 });
 
-test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }) => {
+test('シナリオを読み込んでいる間はほかの操作を受け付けない', async ({ page }, testInfo) => {
   await open(page);
   // シナリオの zip の取得を遅らせ、読み込み中の状態を確かめる
   let release;
@@ -390,9 +415,39 @@ test('シナリオを読み込んでいる間はほかの操作を受け付け�
   const body = page.locator('.explorer-body');
   await expect(body).toHaveAttribute('inert', '');
   await expect(body).toHaveAttribute('aria-busy', 'true');
+  // 読み込み中のダイアログを出す（操作できないことが見て分かる）
+  await expect(page.locator('#loading')).toBeVisible();
+  // 素材（requires）から読み込む
+  await expect(page.locator('#loading-status')).toContainText('読み込んでいます');
+  await page.screenshot({ path: testInfo.outputPath('loading.png') });
   // inert の間は、ほかのシナリオを押しても始まらない
   await page.getByRole('button', { name: 'sound', exact: true }).click({ force: true, timeout: 2000 }).catch(() => {});
   release();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
+});
+
+test('シナリオの読み込みを取り消し、もう一度始められる', async ({ page }) => {
+  await open(page);
+  // 1 回目の取得は応答を返さず、取り消しを待つ
+  let first = true;
+  await page.route('**/*.zip', async route => {
+    if (first) {
+      first = false;
+      return;
+    }
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#loading')).toBeVisible();
+  await page.locator('#cancel-loading').click();
+  await expect(page.locator('#loading')).toHaveCount(0);
+  await expect(page.locator('.explorer-body')).not.toHaveAttribute('inert', '');
+  await expect(page.locator('#status')).toContainText('取り消しました');
+  await expect(page.locator('#screen')).toHaveCount(0);
+
+  // 取り消した後も、同じシナリオを始められる
+  await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
   await expect.poll(() => debugState(page)).toContain('catalog-battle-basic');
 });

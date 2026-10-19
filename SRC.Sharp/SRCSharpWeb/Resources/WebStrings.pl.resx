@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Log (konsola przeglądarki)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Wczytywanie zostało anulowane.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Zastąp</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Zastąp innym plikiem zip o tej samej nazwie (zapisy gry zostaną zachowane)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>Nadpisano {0}.</value>
+  </data>
 </root>

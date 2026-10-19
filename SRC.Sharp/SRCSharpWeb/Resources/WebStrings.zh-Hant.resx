@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>記錄（瀏覽器主控台）</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>已取消載入。</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>取代</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>以同一名稱取代為其他 zip（保留存檔）</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>已覆寫 {0}。</value>
+  </data>
 </root>

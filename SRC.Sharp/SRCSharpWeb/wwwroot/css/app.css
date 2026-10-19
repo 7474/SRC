@@ -428,7 +428,9 @@ h3 {
 
 /* ── ボタン・入力欄 ── */
 
-button {
+button,
+label.button {
+    display: inline-block;
     font: inherit;
     font-size: 12px;
     color: var(--text);
@@ -440,7 +442,8 @@ button {
     cursor: pointer;
 }
 
-button:active {
+button:active,
+label.button:active {
     box-shadow: inset -1px -1px var(--hilight), inset 1px 1px var(--dark), inset -2px -2px var(--light), inset 2px 2px var(--shadow);
     padding: 4px 11px 2px 13px;
 }
@@ -451,7 +454,8 @@ button:focus-visible {
 }
 
 button.delete,
-button.export {
+button.export,
+label.button.replace {
     min-height: 19px;
     padding: 1px 8px;
 }
@@ -633,6 +637,7 @@ input[type=file]::file-selector-button {
 }
 
 [data-theme="xp"] button,
+[data-theme="xp"] label.button,
 [data-theme="xp"] input[type=file]::file-selector-button {
     border: 1px solid #003c74;
     border-radius: 3px;
@@ -641,11 +646,13 @@ input[type=file]::file-selector-button {
 }
 
 [data-theme="xp"] button:hover,
+[data-theme="xp"] label.button:hover,
 [data-theme="xp"] input[type=file]::file-selector-button:hover {
     box-shadow: inset -1px 1px #fff0cf, inset 1px 2px #fdd889, inset -2px 2px #fbc761, inset 2px -2px #e5a01a;
 }
 
-[data-theme="xp"] button:active {
+[data-theme="xp"] button:active,
+[data-theme="xp"] label.button:active {
     padding: 3px 12px;
     background: linear-gradient(#cdcac3, #e3e3db 8%, #e5e5de 94%, #f2f2f1);
     box-shadow: none;
@@ -1400,4 +1407,69 @@ input[type=file]::file-selector-button {
     .items .note {
         display: none;
     }
+}
+
+/* ── 読み込み中 ── */
+
+/* 読み込みの間は一覧を薄くし、読み込み中のダイアログを重ねて、操作できないことを示す */
+.explorer-body[aria-busy="true"] {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+.modal.loading {
+    cursor: progress;
+}
+
+.modal.loading .dialog {
+    cursor: default;
+    min-width: 320px;
+}
+
+/* 終わりの分からない進み具合（往年のファイルのコピーのように左から右へ流れる） */
+.progress {
+    position: relative;
+    height: 16px;
+    margin: 8px 0 12px;
+    overflow: hidden;
+    background: var(--well);
+    box-shadow: var(--sunken);
+}
+
+.progress span {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    width: 30%;
+    background: repeating-linear-gradient(to right, var(--select) 0 8px, transparent 8px 10px);
+    animation: progress-slide 1.6s linear infinite;
+}
+
+[data-theme="xp"] .progress {
+    border: 1px solid #686868;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+[data-theme="xp"] .progress span {
+    background: repeating-linear-gradient(to right, #2fd22c 0 8px, transparent 8px 10px);
+}
+
+@keyframes progress-slide {
+    from { left: -30%; }
+    to { left: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress span {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.5;
+    }
+}
+
+/* 追加したアーカイブの「置き換え」。ファイルの選択欄は隠し、ボタン（label）で開く */
+label.button input.hidden-file {
+    display: none;
 }

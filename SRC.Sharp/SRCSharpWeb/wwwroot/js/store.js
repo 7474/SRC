@@ -128,50 +128,74 @@
             a.remove();
             setTimeout(() => URL.revokeObjectURL(url), 10000);
         },
-        // カタログのアーカイブ（zip）を取得する。一度取得したものは Cache Storage に置き、次からはネットワークを使わない。
-        // version（カタログの version）が置いたときと違えば取得し直す。Blob を返す（大きいものはブラウザがディスクに置く）
+        // 読み込み中のダイアログの「キャンセル」で、取得中の zip のダウンロードを止める（fetchArchive は AbortError で失敗する）
+        abortFetches() {
+            for (const controller of fetches) {
+                controller.abort();
+            }
+            fetches.clear();
+        },
         async fetchArchive(url, version) {
-            let cache = null;
+            const controller = new AbortController();
+            fetches.add(controller);
             try {
-                cache = await caches.open(archiveCacheName);
-            } catch {
-                // 安全でない接続（http）などで Cache Storage が使えない
+                return await fetchArchive(url, version, controller.signal);
+            } finally {
+                fetches.delete(controller);
             }
-            if (!cache) {
-                return await fetchBlob(url);
-            }
-            version = version || '';
-            const hit = await cache.match(url);
-            if (hit && hit.headers.get(versionHeader) === version) {
-                return await hit.blob();
-            }
-            const response = await fetchOk(url);
-            if (navigator.storage && navigator.storage.persist) {
-                navigator.storage.persist();
-            }
-            try {
-                await cache.put(url, new Response(response.body, { headers: { 'Content-Type': 'application/zip', [versionHeader]: version } }));
-                const stored = await cache.match(url);
-                if (stored) {
-                    return await stored.blob();
-                }
-            } catch (e) {
-                // 容量が足りないなど。置けなければキャッシュせずに取得し直す
-                console.warn('アーカイブをキャッシュできません', url, e);
-                await cache.delete(url).catch(() => { });
-            }
-            return await fetchBlob(url);
         },
     };
 
-    const fetchOk = async url => {
-        const response = await fetch(url);
+    // 取得中のダウンロード（abortFetches で止める）
+    const fetches = new Set();
+
+    // カタログのアーカイブ（zip）を取得する。一度取得したものは Cache Storage に置き、次からはネットワークを使わない。
+    // version（カタログの version）が置いたときと違えば取得し直す。Blob を返す（大きいものはブラウザがディスクに置く）
+    const fetchArchive = async (url, version, signal) => {
+        let cache = null;
+        try {
+            cache = await caches.open(archiveCacheName);
+        } catch {
+            // 安全でない接続（http）などで Cache Storage が使えない
+        }
+        if (!cache) {
+            return await fetchBlob(url, signal);
+        }
+        version = version || '';
+        const hit = await cache.match(url);
+        if (hit && hit.headers.get(versionHeader) === version) {
+            return await hit.blob();
+        }
+        const response = await fetchOk(url, signal);
+        if (navigator.storage && navigator.storage.persist) {
+            navigator.storage.persist();
+        }
+        try {
+            await cache.put(url, new Response(response.body, { headers: { 'Content-Type': 'application/zip', [versionHeader]: version } }));
+            const stored = await cache.match(url);
+            if (stored) {
+                return await stored.blob();
+            }
+        } catch (e) {
+            // 途中まで置いたものは消す。取り消したときはそのまま終える
+            await cache.delete(url).catch(() => { });
+            if (signal.aborted) {
+                throw e;
+            }
+            // 容量が足りないなど。置けなければキャッシュせずに取得し直す
+            console.warn('アーカイブをキャッシュできません', url, e);
+        }
+        return await fetchBlob(url, signal);
+    };
+
+    const fetchOk = async (url, signal) => {
+        const response = await fetch(url, { signal });
         if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText} (${url})`);
         }
         return response;
     };
-    const fetchBlob = async url => await (await fetchOk(url)).blob();
+    const fetchBlob = async (url, signal) => await (await fetchOk(url, signal)).blob();
 
     const archiveCacheName = 'srcweb-archives';
     const versionHeader = 'X-SRCWeb-Version';

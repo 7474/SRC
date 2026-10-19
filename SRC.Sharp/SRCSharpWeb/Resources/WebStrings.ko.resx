@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>로그(브라우저 콘솔)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>불러오기를 취소했습니다.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>바꾸기</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>같은 이름으로 다른 zip으로 바꿉니다 (세이브 데이터는 유지됩니다)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0}을(를) 덮어썼습니다.</value>
+  </data>
 </root>

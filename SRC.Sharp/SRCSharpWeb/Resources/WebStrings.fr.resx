@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Journal (console du navigateur)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Le chargement a été annulé.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Remplacer</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Remplacer par un autre zip sous le même nom (les sauvegardes sont conservées)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} a été remplacé.</value>
+  </data>
 </root>

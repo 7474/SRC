@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Журнал (консоль браузера)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>Завантаження скасовано.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Замінити</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Замінити іншим zip з тією ж назвою (збереження залишаться)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} перезаписано.</value>
+  </data>
 </root>

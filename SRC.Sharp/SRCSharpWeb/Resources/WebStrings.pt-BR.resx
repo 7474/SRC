@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>Log (console do navegador)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>O carregamento foi cancelado.</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Substituir</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>Substituir por outro zip com o mesmo nome (os jogos salvos são mantidos)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>{0} foi substituído.</value>
+  </data>
 </root>

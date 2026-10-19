@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>ล็อก (คอนโซลของเบราว์เซอร์)</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>ยกเลิกการโหลดแล้ว</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>แทนที่</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>แทนที่ด้วย zip อื่นโดยใช้ชื่อเดิม (ข้อมูลเซฟยังคงอยู่)</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>เขียนทับ {0} แล้ว</value>
+  </data>
 </root>

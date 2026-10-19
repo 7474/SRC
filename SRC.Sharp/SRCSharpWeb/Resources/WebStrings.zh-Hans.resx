@@ -204,4 +204,16 @@
   <data name="LogLevel" xml:space="preserve">
     <value>日志（浏览器控制台）</value>
   </data>
+  <data name="LoadCancelled" xml:space="preserve">
+    <value>已取消加载。</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>替换</value>
+  </data>
+  <data name="ReplaceTitle" xml:space="preserve">
+    <value>以同一名称替换为其他 zip（保留存档）</value>
+  </data>
+  <data name="ArchiveOverwritten" xml:space="preserve">
+    <value>已覆盖 {0}。</value>
+  </data>
 </root>

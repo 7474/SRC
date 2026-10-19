@@ -85,7 +85,7 @@ else
         @* シナリオ・素材を読み込んでいる間は、ほかの操作を受け付けない（inert） *@
         <div class="explorer-body" inert="@busy" aria-busy="@(busy ? "true" : "false")">
         <div class="listpane">
-        @if (!string.IsNullOrEmpty(status))
+        @if (!busy && !string.IsNullOrEmpty(status))
         {
             <p id="status" class="status">@status</p>
         }
@@ -148,6 +148,8 @@ else
                                     <button @onclick="() => PlayArchiveAsync(archive)">@archive.Name</button>
                                 }
                                 <span class="size">@FormatSize(archive.Size)</span>
+                                @* 同じ名前のまま別の zip に置き換える（セーブデータは名前で引き継ぐ） *@
+                                <label class="button replace" title="@L["ReplaceTitle"]">@L["Replace"]<InputFile class="hidden-file" OnChange="e => ReplaceArchiveAsync(e, archive)" accept=".zip" /></label>
                                 <button class="delete" @onclick="() => DeleteArchiveAsync(archive)">@L["Delete"]</button>
                             </li>
                         }
@@ -271,6 +273,22 @@ else
             <span class="statusbar-cell statusbar-grip"></span>
         </div>
     </main>
+    @* 読み込みの間は画面を暗くして操作できないことを示し、取り消せるようにする *@
+    @if (busy)
+    {
+        <div class="modal loading" id="loading">
+            <div class="dialog" role="alertdialog" aria-label="@L["Loading"]" aria-busy="true">
+                <div class="titlebar">SRC#Web</div>
+                <div class="dialog-body">
+                    <p id="loading-status">@(string.IsNullOrEmpty(status) ? L["Loading"] : status)</p>
+                    <div class="progress" role="progressbar" aria-label="@L["Loading"]"><span></span></div>
+                    <div class="dialog-buttons">
+                        <button id="cancel-loading" @onclick="CancelLoad" disabled="@(loadCancel?.IsCancellationRequested ?? true)">@L["ModalCancel"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 
 @code {
@@ -295,6 +313,8 @@ else
 
     /// <summary>シナリオ・素材を読み込んでいる間。一覧と作業ウィンドウの操作を受け付けない</summary>
     private bool busy;
+    /// <summary>読み込みの取り消し。読み込みの間（busy）だけある</summary>
+    private CancellationTokenSource loadCancel;
     /// <summary>画面のテーマ（95・xp）。srcwebStore.setTheme で html の data-theme に反映し、localStorage に保存する</summary>
     private string theme = "95";
     /// <summary>操作の種類の設定（auto・touch・mouse）。srcwebStore.setInputMode で html の data-input に反映し、localStorage に保存する</summary>
@@ -535,42 +555,88 @@ else
         archives = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list");
     }
 
-    private Task AddArchivesAsync(InputFileChangeEventArgs e, string kind) => RunBusyAsync(async () =>
+    /// <summary>
+    /// アーカイブを追加する。同じ名前のものがあれば上書きする（セーブデータはシナリオの名前で引き継ぐ）
+    /// </summary>
+    private Task AddArchivesAsync(InputFileChangeEventArgs e, string kind) => RunBusyAsync(async token =>
     {
+        var overwritten = new List<string>();
         foreach (var file in e.GetMultipleFiles(32))
         {
-            status = L["AddingArchive", file.Name];
-            StateHasChanged();
-            using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024);
-            using var buffer = new MemoryStream();
-            await stream.CopyToAsync(buffer);
-            await JS.InvokeVoidAsync("srcwebStore.put", file.Name, buffer.ToArray(), kind);
+            if (archives.Any(x => x.Name == file.Name))
+            {
+                overwritten.Add(file.Name);
+            }
+            await StoreArchiveAsync(file, file.Name, kind, token);
         }
-        status = null;
+        status = overwritten.Count > 0 ? L["ArchiveOverwritten", string.Join(", ", overwritten)] : null;
         await RefreshArchivesAsync();
     });
 
+    /// <summary>追加したアーカイブを、名前と種類はそのままに別の zip に置き換える</summary>
+    private Task ReplaceArchiveAsync(InputFileChangeEventArgs e, StoredArchive archive) => RunBusyAsync(async token =>
+    {
+        await StoreArchiveAsync(e.File, archive.Name, archive.Kind, token);
+        status = L["ArchiveOverwritten", archive.Name];
+        await RefreshArchivesAsync();
+    });
+
+    private async Task StoreArchiveAsync(IBrowserFile file, string name, string kind, CancellationToken token)
+    {
+        status = L["AddingArchive", file.Name];
+        StateHasChanged();
+        using var stream = file.OpenReadStream(maxAllowedSize: 2L * 1024 * 1024 * 1024, token);
+        using var buffer = new MemoryStream();
+        await stream.CopyToAsync(buffer, token);
+        token.ThrowIfCancellationRequested();
+        await JS.InvokeVoidAsync("srcwebStore.put", token, name, buffer.ToArray(), kind);
+    }
+
     /// <summary>
     /// 読み込みの間、ほかの操作（別のシナリオの選択・削除・追加など）を受け付けない。
-    /// 画面が inert になる前に続けて押された分も、ここで捨てる
+    /// 画面が inert になる前に続けて押された分も、ここで捨てる。
+    /// 読み込み中のダイアログの「キャンセル」（CancelLoad）で token が取り消される
     /// </summary>
-    private async Task RunBusyAsync(Func<Task> action)
+    private async Task RunBusyAsync(Func<CancellationToken, Task> action)
     {
         if (busy)
         {
             return;
         }
         busy = true;
+        loadCancel = new CancellationTokenSource();
+        var token = loadCancel.Token;
         StateHasChanged();
         try
         {
-            await action();
+            await action(token);
+        }
+        catch (Exception ex) when (token.IsCancellationRequested && IsCancellation(ex))
+        {
+            status = L["LoadCancelled"];
         }
         finally
         {
             busy = false;
+            loadCancel.Dispose();
+            loadCancel = null;
             StateHasChanged();
         }
+    }
+
+    /// <summary>取り消しによる例外。ブラウザの取得の中止（AbortError）は JSException になる</summary>
+    private static bool IsCancellation(Exception ex) => ex is OperationCanceledException || ex is JSException;
+
+    private async Task CancelLoad()
+    {
+        if (loadCancel == null || loadCancel.IsCancellationRequested)
+        {
+            return;
+        }
+        loadCancel.Cancel();
+        status = L["LoadCancelled"];
+        // 取得中の zip のダウンロードも止める
+        await JS.InvokeVoidAsync("srcwebStore.abortFetches");
     }
 
     private async Task DeleteArchiveAsync(StoredArchive archive)
@@ -579,13 +645,13 @@ else
         await RefreshArchivesAsync();
     }
 
-    private Task PlayCatalogAsync(CatalogEntry entry) => RunBusyAsync(async () =>
+    private Task PlayCatalogAsync(CatalogEntry entry) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(entry.Requires))
+        if (!await PrepareAssetsAsync(entry.Requires, token))
         {
             return;
         }
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version), entry.Eve, entry.Root);
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version, token), entry.Eve, entry.Root, token);
     });
 
     /// <summary>この大きさを超える zip は、メモリ（byte[]）に読まずにブラウザ内のファイルシステムに書いてから展開する</summary>
@@ -599,20 +665,20 @@ else
     /// 大きいものはストリームのままファイルに書く。WebAssembly のメモリは一度に読む分しか使わない（ファイルの中身は JS 側のメモリに置かれる）。
     /// 小さいものは、展開が速いため従来どおりメモリに読む。
     /// </summary>
-    private async Task<Stream> DownloadAsync(string url, string version)
+    private async Task<Stream> DownloadAsync(string url, string version, CancellationToken token)
     {
-        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", url, version ?? "");
-        using var source = await archive.OpenReadStreamAsync(long.MaxValue);
-        return await OpenDownloadAsync(source, archive.Length);
+        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "");
+        using var source = await archive.OpenReadStreamAsync(long.MaxValue, token);
+        return await OpenDownloadAsync(source, archive.Length, token);
     }
 
     /// <summary>zip を、小さいものはメモリに、大きいものはファイルに書いて開く</summary>
-    private static async Task<Stream> OpenDownloadAsync(Stream source, long length)
+    private static async Task<Stream> OpenDownloadAsync(Stream source, long length, CancellationToken token)
     {
         if (length <= StreamToFileThreshold)
         {
             var buffer = new MemoryStream((int)length);
-            await source.CopyToAsync(buffer, 1024 * 1024);
+            await source.CopyToAsync(buffer, 1024 * 1024, token);
             buffer.Position = 0;
             return buffer;
         }
@@ -623,7 +689,7 @@ else
             {
                 // 先に大きさを決めておくと、書き込むたびにファイルの領域を広げ直さない
                 file.SetLength(length);
-                await source.CopyToAsync(file, 1024 * 1024);
+                await source.CopyToAsync(file, 1024 * 1024, token);
                 file.SetLength(file.Position);
             }
             return ScenarioArchive.OpenDownload(path);
@@ -663,7 +729,7 @@ else
     /// <summary>
     /// 素材を SRC のフォルダに重ねる。利用者が追加した素材を先に、シナリオが求める素材（requires）を後に展開する（後のものが優先）。
     /// </summary>
-    private async Task<bool> PrepareAssetsAsync(IEnumerable<string> requires)
+    private async Task<bool> PrepareAssetsAsync(IEnumerable<string> requires, CancellationToken token)
     {
         if (site.AllowUserArchives)
         {
@@ -671,8 +737,8 @@ else
             {
                 status = L["ExtractingAsset", archive.Name];
                 StateHasChanged();
-                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name);
-                await Task.Run(() => ScenarioArchive.ExtractAsset(data));
+                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name);
+                await Task.Run(() => ScenarioArchive.ExtractAsset(data, null, token), token);
             }
         }
         foreach (var id in requires ?? Enumerable.Empty<string>())
@@ -687,19 +753,19 @@ else
             {
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
-                var zip = await DownloadAsync(asset.Archive, asset.Version);
+                var zip = await DownloadAsync(asset.Archive, asset.Version, token);
                 try
                 {
                     status = L["ExtractingAsset", asset.Title];
                     StateHasChanged();
-                    await Task.Run(() => ScenarioArchive.ExtractAsset(zip, asset.Root));
+                    await Task.Run(() => ScenarioArchive.ExtractAsset(zip, asset.Root, token), token);
                 }
                 finally
                 {
                     CloseDownload(zip);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!token.IsCancellationRequested)
             {
                 status = L["AssetLoadFailed", asset.Title, ex.Message];
                 WebLogging.Log.LogError(ex, "素材を読み込めません {Asset}", asset.Title);
@@ -709,17 +775,17 @@ else
         return true;
     }
 
-    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async () =>
+    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(null))
+        if (!await PrepareAssetsAsync(null, token))
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", archive.Name), false), null, null);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name), false), null, null, token);
     });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>
-    private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root)
+    private async Task LoadAsync(string id, string title, Func<Task<Stream>> fetch, string eve, string root, CancellationToken token)
     {
         try
         {
@@ -731,7 +797,7 @@ else
                 status = L["ExtractingArchive", title];
                 StateHasChanged();
                 scenarioId = id;
-                scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root));
+                scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root, token), token);
             }
             finally
             {
@@ -740,6 +806,8 @@ else
             eventFiles = ScenarioArchive.FindEventFiles(scenarioDir);
             defaultEve = !string.IsNullOrEmpty(eve) && File.Exists(Path.Combine(scenarioDir, eve)) ? eve : eventFiles.FirstOrDefault();
             await RestoreSavesAsync();
+            // ここまでに取り消されていれば始めない（始めたゲームは止められない）
+            token.ThrowIfCancellationRequested();
             if (eventFiles.Count == 0)
             {
                 status = L["NoEventFiles", title];
@@ -755,7 +823,7 @@ else
                 mode = Mode.ChooseEvent;
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!token.IsCancellationRequested)
         {
             status = L["LoadFailed", title, ex.Message];
             WebLogging.Log.LogError(ex, "シナリオを読み込めません {Title}", title);
@@ -812,7 +880,7 @@ else
     }
 
     /// <summary>書き終わる前に同じセーブデータで再開しないよう、インポートの間はほかの操作を受け付けない</summary>
-    private Task ImportSavesAsync(InputFileChangeEventArgs e) => RunBusyAsync(async () =>
+    private Task ImportSavesAsync(InputFileChangeEventArgs e) => RunBusyAsync(async token =>
     {
         // シナリオ（.eve）と同じフォルダに置く
         var folder = Path.GetDirectoryName(defaultEve ?? "")?.Replace('\\', '/') ?? "";
