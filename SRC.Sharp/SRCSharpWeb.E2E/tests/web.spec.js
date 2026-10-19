@@ -345,6 +345,22 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
 
+test('UTF-8 の印の無い zip（macOS・Linux の zip）の日本語のファイル名を読める', async ({ page }) => {
+  // .eve が 2 つあるので、始める .eve を選ぶ画面にファイル名が並ぶ
+  const eve = fs.readFileSync(path.join(corpus, 'sound', 'test.eve'));
+  const files = [
+    { name: 'テスト/開始.eve', data: eve },
+    { name: 'テスト/続き.eve', data: eve },
+    { name: 'テスト/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+  ];
+  const name = '印の無い zip.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files, { utf8Flag: false }) });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  // Shift_JIS として読むと「繝�繧ｹ繝�/髢句ｧ�.eve」のように化ける
+  await expect(page.locator('#events button')).toHaveText(['テスト/続き.eve', 'テスト/開始.eve']);
+});
+
 // ── 外部ホスティング（docs/gui/web-hosting.md） ──
 
 /**

@@ -1,7 +1,9 @@
 // テスト用に無圧縮の zip を作る（ファイル名は UTF-8）
+// utf8Flag: false で、UTF-8 の印（bit 11）を付けない（macOS・Linux の zip コマンドが作る形）
 const zlib = require('node:zlib');
 
-function makeZip(files) {
+function makeZip(files, { utf8Flag = true } = {}) {
+  const flags = utf8Flag ? 0x0800 : 0;
   const local = [];
   const central = [];
   let offset = 0;
@@ -11,7 +13,7 @@ function makeZip(files) {
     const header = Buffer.alloc(30);
     header.writeUInt32LE(0x04034b50, 0);
     header.writeUInt16LE(20, 4);
-    header.writeUInt16LE(0x0800, 6); // UTF-8 のファイル名
+    header.writeUInt16LE(flags, 6); // UTF-8 のファイル名
     header.writeUInt16LE(0, 8); // 無圧縮
     header.writeUInt32LE(crc, 14);
     header.writeUInt32LE(data.length, 18);
@@ -23,7 +25,7 @@ function makeZip(files) {
     entry.writeUInt32LE(0x02014b50, 0);
     entry.writeUInt16LE(20, 4);
     entry.writeUInt16LE(20, 6);
-    entry.writeUInt16LE(0x0800, 8);
+    entry.writeUInt16LE(flags, 8);
     entry.writeUInt32LE(crc, 16);
     entry.writeUInt32LE(data.length, 20);
     entry.writeUInt32LE(data.length, 24);
