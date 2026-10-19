@@ -50,5 +50,6 @@ namespace SRCCore.Commands
         public const int RestartCmdID = 18;
         public const int QuickLoadCmdID = 19;
         public const int QuickSaveCmdID = 20;
+        public const int AutoPlayCmdID = 21;
     }
 }
