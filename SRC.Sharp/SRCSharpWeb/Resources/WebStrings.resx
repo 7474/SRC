@@ -148,7 +148,7 @@
     <value>追加</value>
   </data>
   <data name="AddAssetNote" xml:space="preserve">
-    <value>素材（汎用グラフィック集など）の zip を追加すると、どのシナリオにも重ねて使います。</value>
+    <value>素材（汎用グラフィック集など）の zip を追加すると、どのシナリオでも使えます。</value>
   </data>
   <data name="Asset" xml:space="preserve">
     <value>素材</value>
