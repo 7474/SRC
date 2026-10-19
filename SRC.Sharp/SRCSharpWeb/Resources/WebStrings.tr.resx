@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>İleri</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>Git</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>{0} bulunamadı.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>Durdur</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>Sık Kullanılanlar</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>Bitti</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>Bilgisayarım</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>Tümünü Seç</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>Dosya</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>Düzen</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>Git</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>Sık Kullanılanlar</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>Yardım</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>Giriş Sayfası</value>
   </data>
 </root>

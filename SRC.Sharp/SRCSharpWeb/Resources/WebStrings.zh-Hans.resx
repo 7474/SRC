@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>前进</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>转到</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>找不到 {0}。</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>地址(D)</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>我的电脑</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>关闭(C)</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>全选(A)</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>文件(F)</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>编辑(E)</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>查看(V)</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>转到(G)</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>收藏(A)</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>帮助(H)</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>刷新(R)</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>主页(H)</value>
   </data>
 </root>

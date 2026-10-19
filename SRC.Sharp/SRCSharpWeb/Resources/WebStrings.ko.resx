@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>앞으로</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>이동</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>{0}을(를) 찾을 수 없습니다.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>중지</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>새로 고침</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>홈</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>즐겨찾기</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>주소(D)</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>내 컴퓨터</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>닫기(C)</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>모두 선택(A)</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>파일(F)</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>편집(E)</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>보기(V)</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>이동(G)</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>즐겨찾기(A)</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>도움말(H)</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>새로 고침(R)</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>홈 페이지(H)</value>
   </data>
 </root>

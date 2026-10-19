@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>Вперед</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>Перейти</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>{0} не знайдено.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>Зупинити</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>Додому</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>Вибране</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>Адреса</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>Мій комп’ютер</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>Виділити все</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>Редагування</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>Вигляд</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>Перехід</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>Вибране</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>Довідка</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>Домашня сторінка</value>
   </data>
 </root>

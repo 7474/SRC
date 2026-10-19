@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>ไปข้างหน้า</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>ไป</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>ไม่พบ {0}</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>หยุด</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>หน้าแรก</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>รายการโปรด</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>ที่อยู่</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>เสร็จสิ้น</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>My Computer</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>เลือกทั้งหมด</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>แฟ้ม</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>แก้ไข</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>มุมมอง</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>ไป</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>รายการโปรด</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>วิธีใช้</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>หน้าแรก</value>
   </data>
 </root>

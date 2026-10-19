@@ -179,14 +179,15 @@ namespace SRCSharpWeb
         }
 
         /// <summary>
-        /// 往年の Internet Explorer の既定の表示に近づけるスタイル。文書のスタイルより先に置き、文書が決めたものはそちらを使う。
-        /// 見出しは既定の大きさ（h1 が 2em）だと大き過ぎるため、本文から少しずつ大きくする程度にとどめる（app.css の .doc-page と同じ）
+        /// 日本語の Internet Explorer 4 の既定の表示に近づけるスタイル（app.css の .doc-page と同じ）。文書のスタイルより先に置き、文書が決めたものはそちらを使う。
+        /// Web ページのフォントは ＭＳ Ｐゴシック、文字のサイズは「中」（12pt = 16px）、余白は上下 15px・左右 10px、リンクは #0000ff・訪問済みは #800080。
+        /// 見出しは既定の大きさ（h1 が 2em）だと大き過ぎるため、本文から少しずつ大きくする程度にとどめる
         /// </summary>
         private const string PageStyle = "<base target=\"_blank\"><style>"
-            + "body{margin:8px;color:#000;background:#fff;font-family:\"Times New Roman\",\"MS PMincho\",\"ＭＳ Ｐ明朝\",\"Hiragino Mincho ProN\",\"Noto Serif CJK JP\",serif;font-size:16px;line-height:1.25}"
+            + "body{margin:15px 10px;color:#000;background:#fff;font-family:\"MS PGothic\",\"ＭＳ Ｐゴシック\",\"Hiragino Kaku Gothic ProN\",\"Noto Sans CJK JP\",sans-serif;font-size:16px;line-height:1.2}"
             + "h1{font-size:1.4em}h2{font-size:1.25em}h3{font-size:1.12em}h4,h5,h6{font-size:1em}"
-            + "a:link{color:#0000ee}a:visited{color:#551a8b}img{max-width:100%}"
-            + "code,pre,tt{font-family:\"Courier New\",\"MS Gothic\",\"ＭＳ ゴシック\",monospace}"
+            + "a:link{color:#0000ff}a:visited{color:#800080}img{max-width:100%}"
+            + "code,pre,tt,kbd,samp{font-family:\"MS Gothic\",\"ＭＳ ゴシック\",\"Osaka-Mono\",\"Noto Sans Mono CJK JP\",monospace;font-size:13px}"
             + "</style>";
 
         /// <summary>シナリオの中の別の文書へのリンクに付ける属性。値はシナリオのフォルダからの相対パス</summary>
@@ -233,6 +234,8 @@ namespace SRCSharpWeb
             return target == null ? null : new Document { Path = target };
         }
 
+        private static readonly Regex TitleTag = new Regex(@"<title[^>]*>(.*?)</title>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         private static readonly Regex HeadTag = new Regex(@"<head(\s[^>]*)?>", RegexOptions.IgnoreCase);
         private static readonly Regex ImageSource = new Regex(@"(<img\b[^>]*?\bsrc\s*=\s*)(""([^""]*)""|'([^']*)'|([^\s>]+))", RegexOptions.IgnoreCase);
 
@@ -240,9 +243,16 @@ namespace SRCSharpWeb
         /// HTML の文書を、サンドボックスの iframe（srcdoc。スクリプトは動かさない）に入れる文字列にする。
         /// 既定のスタイルを先頭に入れ、シナリオの中の画像（相対パス）は data URI にする。リンクは別のタブで開く。
         /// </summary>
-        public static string RenderHtml(string dir, Document document)
+        /// <param name="title">HTML の title（タイトルバーに出す）。無ければ null</param>
+        public static string RenderHtml(string dir, Document document, out string title)
         {
             var html = ReadText(dir, document);
+            var titleMatch = TitleTag.Match(html);
+            title = titleMatch.Success ? System.Net.WebUtility.HtmlDecode(Regex.Replace(titleMatch.Groups[1].Value, @"\s+", " ").Trim()) : null;
+            if (string.IsNullOrEmpty(title))
+            {
+                title = null;
+            }
             var baseDir = System.IO.Path.GetDirectoryName(document.Path.Replace('/', System.IO.Path.DirectorySeparatorChar)) ?? "";
             html = ImageSource.Replace(html, m =>
             {

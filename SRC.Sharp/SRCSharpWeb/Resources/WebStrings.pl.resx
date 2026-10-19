@@ -243,10 +243,58 @@
   <data name="DocumentForward" xml:space="preserve">
     <value>Dalej</value>
   </data>
-  <data name="DocumentGo" xml:space="preserve">
-    <value>Przejdź</value>
-  </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>Nie znaleziono {0}.</value>
+  </data>
+  <data name="IeStop" xml:space="preserve">
+    <value>Zatrzymaj</value>
+  </data>
+  <data name="IeRefresh" xml:space="preserve">
+    <value>Odśwież</value>
+  </data>
+  <data name="IeHome" xml:space="preserve">
+    <value>Strona główna</value>
+  </data>
+  <data name="IeFavoritesButton" xml:space="preserve">
+    <value>Ulubione</value>
+  </data>
+  <data name="IeAddress" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="IeDone" xml:space="preserve">
+    <value>Gotowe</value>
+  </data>
+  <data name="IeZone" xml:space="preserve">
+    <value>Mój komputer</value>
+  </data>
+  <data name="IeClose" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="IeSelectAll" xml:space="preserve">
+    <value>Zaznacz wszystko</value>
+  </data>
+  <data name="IeMenuFile" xml:space="preserve">
+    <value>Plik</value>
+  </data>
+  <data name="IeMenuEdit" xml:space="preserve">
+    <value>Edycja</value>
+  </data>
+  <data name="IeMenuView" xml:space="preserve">
+    <value>Widok</value>
+  </data>
+  <data name="IeMenuGo" xml:space="preserve">
+    <value>Przejdź</value>
+  </data>
+  <data name="IeMenuFavorites" xml:space="preserve">
+    <value>Ulubione</value>
+  </data>
+  <data name="IeMenuHelp" xml:space="preserve">
+    <value>Pomoc</value>
+  </data>
+  <data name="IeRefreshMenu" xml:space="preserve">
+    <value>Odśwież</value>
+  </data>
+  <data name="IeHomeMenu" xml:space="preserve">
+    <value>Strona główna</value>
   </data>
 </root>

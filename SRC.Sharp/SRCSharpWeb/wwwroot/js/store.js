@@ -250,6 +250,23 @@ window.srcwebDocs = {
             view.addEventListener('click', e => handle(e, document), true);
         }
     },
+    // 編集 - すべて選択。iframe（.htm・.html）なら中の文書を選ぶ
+    selectAll(id) {
+        const view = document.getElementById(id);
+        if (!view) {
+            return;
+        }
+        const doc = view.tagName === 'IFRAME' ? view.contentDocument : document;
+        const target = view.tagName === 'IFRAME' ? doc && doc.body : view;
+        if (!doc || !target) {
+            return;
+        }
+        const range = doc.createRange();
+        range.selectNodeContents(target);
+        const selection = (view.tagName === 'IFRAME' ? view.contentWindow : window).getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    },
     // アドレス欄に外の URL を入れたときは別のタブで開く
     openExternal(url) {
         window.open(url, '_blank', 'noopener');

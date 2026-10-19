@@ -315,33 +315,71 @@ else
     }
 }
 
-@* シナリオに同梱された文書。.txt はメモ帳、.md は往年のブラウザの既定の表示を模す *@
+@* シナリオに同梱された文書。.txt はメモ帳（Windows 95）、.md・.htm・.html は Internet Explorer 4 を模す *@
 @if (viewing != null)
 {
     <div class="modal doc-modal" @onclick="CloseDocumentAsync">
         <div class="doc-window @(Browsing ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
              @onclick:stopPropagation="true" @onkeydown="DocumentKeyDownAsync">
             <div class="titlebar">
-                <span class="doc-title">@(Browsing ? L["PageViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
+                <span class="icon @(Browsing ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                <span class="doc-title">@(Browsing ? L["PageViewerTitle", viewingTitle ?? viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
                 <button class="doc-close" aria-label="@L["MenuClose"]" title="@L["MenuClose"]" @onclick="CloseDocumentAsync">×</button>
+            </div>
+            @* メニューバー。開いているメニューの外を押したら閉じる *@
+            @if (documentMenu != null)
+            {
+                <div class="doc-menu-backdrop" @onclick="() => documentMenu = null"></div>
+            }
+            <div class="doc-menubar" role="menubar">
+                @foreach (var menu in DocumentMenus)
+                {
+                    <div class="doc-menu">
+                        <button role="menuitem" class="@(documentMenu == menu.Key ? "open" : null)" aria-haspopup="menu" aria-expanded="@(documentMenu == menu.Key ? "true" : "false")"
+                                @onclick="() => documentMenu = documentMenu == menu.Key ? null : menu.Key"
+                                @onmouseenter="() => { if (documentMenu != null) documentMenu = menu.Key; }">@menu.Label</button>
+                        @if (documentMenu == menu.Key)
+                        {
+                            <div class="popup-menu doc-menu-popup" role="menu">
+                                @foreach (var item in menu.Items)
+                                {
+                                    @if (item == null)
+                                    {
+                                        <hr />
+                                    }
+                                    else
+                                    {
+                                        <button role="menuitem" class="@(item.Checked ? "checked" : null)" disabled="@(!item.Enabled)" @onclick="() => RunDocumentMenuAsync(item.Action)">@item.Label</button>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
             </div>
             @if (Browsing)
             {
-                @* 往年のブラウザのように、戻る・進むとアドレス欄を出す *@
-                <div class="doc-toolbar doc-nav">
-                    <button id="doc-back" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)">← @L["DocumentBack"]</button>
-                    <button id="doc-forward" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)">@L["DocumentForward"] →</button>
-                    <form class="doc-address" @onsubmit="GoAddressAsync">
-                        <label for="doc-address">@L["Address"]</label>
-                        <input id="doc-address" type="text" @bind="addressText" @bind:event="oninput" spellcheck="false" />
-                        <button type="submit">@L["DocumentGo"]</button>
-                    </form>
-                </div>
-            }
-            else
-            {
-                <div class="doc-toolbar">
-                    <label><input type="checkbox" id="doc-wrap" @bind="documentWrap" /> @L["WordWrap"]</label>
+                @* 標準のボタン（文字付きの平らなボタン）とアドレスバーを積み、右に回る地球（スロバー）を置く *@
+                <div class="ie-rebar">
+                    <div class="ie-bands">
+                        <div class="ie-band ie-buttons">
+                            <button id="doc-back" class="ie-button" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)"><span class="ie-icon ie-back" aria-hidden="true"></span>@L["DocumentBack"]</button>
+                            <button id="doc-forward" class="ie-button" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)"><span class="ie-icon ie-forward" aria-hidden="true"></span>@L["DocumentForward"]</button>
+                            <button class="ie-button" disabled><span class="ie-icon ie-stop" aria-hidden="true"></span>@L["IeStop"]</button>
+                            <button id="doc-refresh" class="ie-button" @onclick="RefreshDocument"><span class="ie-icon ie-refresh" aria-hidden="true"></span>@L["IeRefresh"]</button>
+                            <button id="doc-home" class="ie-button" disabled="@(HomeDocument == null)" @onclick="GoHome"><span class="ie-icon ie-home" aria-hidden="true"></span>@L["IeHome"]</button>
+                            <span class="ie-separator" aria-hidden="true"></span>
+                            <button class="ie-button" @onclick="@(() => documentMenu = "favorites")"><span class="ie-icon ie-favorites" aria-hidden="true"></span>@L["IeFavoritesButton"]</button>
+                        </div>
+                        <form class="ie-band ie-address" @onsubmit="GoAddressAsync">
+                            <label for="doc-address">@L["IeAddress"]</label>
+                            <span class="ie-combo">
+                                <span class="icon @(viewing.IsPage ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                                <input id="doc-address" type="text" @bind="addressText" @bind:event="oninput" spellcheck="false" autocomplete="off" />
+                            </span>
+                        </form>
+                    </div>
+                    <div class="ie-throbber" aria-hidden="true"></div>
                 </div>
             }
             @if (viewingFrame != null)
@@ -360,7 +398,14 @@ else
             {
                 <pre class="doc-view doc-text @(documentWrap ? "wrap" : null)" id="doc-view" tabindex="0">@viewingText</pre>
             }
-            <div class="doc-status">@(documentStatus ?? viewing.Path)</div>
+            @if (Browsing)
+            {
+                <div class="ie-statusbar">
+                    <span class="ie-status-main doc-status"><span class="icon @(documentStatus == null ? "icon-page" : "icon-error")" aria-hidden="true"></span>@(documentStatus ?? L["IeDone"])</span>
+                    <span class="ie-status-pane" aria-hidden="true"></span>
+                    <span class="ie-status-zone"><span class="icon icon-computer" aria-hidden="true"></span>@L["IeZone"]</span>
+                </div>
+            }
         </div>
     </div>
 }
@@ -421,6 +466,8 @@ else
     private MarkupString? viewingHtml;
     /// <summary>.htm・.html を入れる iframe の srcdoc</summary>
     private string viewingFrame;
+    /// <summary>タイトルバーに出す文書のタイトル（HTML の title）。無ければファイル名</summary>
+    private string viewingTitle;
     /// <summary>メモ帳の「右端で折り返す」</summary>
     private bool documentWrap = true;
     /// <summary>プレイ中にシステムメニューから文書を選んでいる</summary>
@@ -532,11 +579,12 @@ else
         viewingText = null;
         viewingHtml = null;
         viewingFrame = null;
+        viewingTitle = null;
         try
         {
             if (document.IsHtml)
             {
-                viewingFrame = ScenarioDocuments.RenderHtml(scenarioDir, document);
+                viewingFrame = ScenarioDocuments.RenderHtml(scenarioDir, document, out viewingTitle);
             }
             else if (document.IsMarkdown)
             {
@@ -560,6 +608,7 @@ else
 
     private async Task CloseDocumentAsync()
     {
+        documentMenu = null;
         viewing = null;
         viewingText = null;
         viewingHtml = null;
@@ -574,7 +623,90 @@ else
     {
         if (e.Key == "Escape")
         {
+            if (documentMenu != null)
+            {
+                documentMenu = null;
+                return;
+            }
             await CloseDocumentAsync();
+        }
+        else if (Browsing && e.AltKey && e.Key == "ArrowLeft")
+        {
+            MoveHistory(-1);
+        }
+        else if (Browsing && e.AltKey && e.Key == "ArrowRight")
+        {
+            MoveHistory(1);
+        }
+        else if (e.Key == "F5")
+        {
+            RefreshDocument();
+        }
+    }
+
+    /// <summary>文書のウィンドウのメニュー。null の項目は区切り線</summary>
+    private sealed record DocumentMenu(string Key, string Label, IList<DocumentMenuItem> Items);
+    private sealed record DocumentMenuItem(string Label, Func<Task> Action, bool Enabled = true, bool Checked = false);
+
+    /// <summary>開いているメニュー（DocumentMenu.Key）</summary>
+    private string documentMenu;
+
+    private static DocumentMenuItem Item(string label, Action action, bool enabled = true, bool isChecked = false)
+        => new DocumentMenuItem(label, () => { action(); return Task.CompletedTask; }, enabled, isChecked);
+
+    /// <summary>Internet Explorer 4・メモ帳（Windows 95）と同じ並びのメニュー。動かせるものだけを入れる</summary>
+    private IEnumerable<DocumentMenu> DocumentMenus
+    {
+        get
+        {
+            var close = new DocumentMenuItem(L["IeClose"], CloseDocumentAsync);
+            var selectAll = new DocumentMenuItem(L["IeSelectAll"], () => JS.InvokeVoidAsync("srcwebDocs.selectAll", "doc-view").AsTask());
+            if (!Browsing)
+            {
+                yield return new DocumentMenu("file", L["IeMenuFile"], new[] { close });
+                yield return new DocumentMenu("edit", L["IeMenuEdit"], new[] { selectAll, null, Item(L["WordWrap"], () => documentWrap = !documentWrap, true, documentWrap) });
+                yield break;
+            }
+            yield return new DocumentMenu("file", L["IeMenuFile"], new[] { close });
+            yield return new DocumentMenu("edit", L["IeMenuEdit"], new[] { selectAll });
+            yield return new DocumentMenu("view", L["IeMenuView"], new[] { Item(L["IeRefreshMenu"], RefreshDocument) });
+            yield return new DocumentMenu("go", L["IeMenuGo"], new[]
+            {
+                Item(L["DocumentBack"], () => MoveHistory(-1), historyIndex > 0),
+                Item(L["DocumentForward"], () => MoveHistory(1), historyIndex < history.Count - 1),
+                null,
+                Item(L["IeHomeMenu"], GoHome, HomeDocument != null),
+            });
+            // お気に入り: 同梱の文書の一覧
+            yield return new DocumentMenu("favorites", L["IeMenuFavorites"], documents.Select(d => Item(d.Path, () => ShowDocument(d, true), true, d.Path == viewing?.Path)).ToList());
+            yield return new DocumentMenu("help", L["IeMenuHelp"], new[] { Item(L["ReadFirst"], GoHome, HomeDocument != null) });
+        }
+    }
+
+    private async Task RunDocumentMenuAsync(Func<Task> action)
+    {
+        documentMenu = null;
+        await action();
+    }
+
+    /// <summary>ホーム: README（無ければ最初の文書）</summary>
+    private ScenarioDocuments.Document HomeDocument => documents.FirstOrDefault(x => x.IsReadme) ?? documents.FirstOrDefault();
+
+    private void GoHome()
+    {
+        var home = HomeDocument;
+        if (home != null)
+        {
+            ShowDocument(home, true);
+        }
+    }
+
+    /// <summary>最新の情報に更新（読み直す）</summary>
+    private void RefreshDocument()
+    {
+        if (viewing != null)
+        {
+            ShowDocument(viewing, false);
         }
     }
 
