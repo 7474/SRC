@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>Ir</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>Este escenario es para mayores de {0} años ({1}). ¿Tienes {0} años o más?</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>Para mayores de {0} años</value>
+  </data>
 </root>

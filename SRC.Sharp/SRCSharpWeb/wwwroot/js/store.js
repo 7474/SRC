@@ -81,6 +81,21 @@
         saveCatalogs(urls) {
             localStorage.setItem('srcweb.catalogs', JSON.stringify(urls));
         },
+        // 年齢の確認で「はい」と答えた年齢（15・18。localStorage）。18 は 15 も含む
+        getRatingConsent() {
+            try {
+                return Number(localStorage.getItem('srcweb.rating') || 0) || 0;
+            } catch {
+                return 0;
+            }
+        },
+        setRatingConsent(age) {
+            try {
+                localStorage.setItem('srcweb.rating', String(age));
+            } catch {
+                // localStorage を使えない（次回もまた確かめる）
+            }
+        },
         // 画面のテーマ（95・xp）。index.html が描画の前に同じ値を html の data-theme に付ける
         getTheme() {
             return document.documentElement.dataset.theme === 'xp' ? 'xp' : '95';

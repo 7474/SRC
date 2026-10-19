@@ -1510,6 +1510,14 @@ label.button input.hidden-file {
     font-size: 11px;
 }
 
+/* 年齢の区分（R15・R18）。どちらのテーマでも目立つ色にする */
+.items li .badge.rating {
+    color: #ffffff;
+    background: #c00000;
+    border-color: #800000;
+    font-weight: bold;
+}
+
 .modal .dialog #documents {
     margin: 0 0 8px;
     max-height: 50vh;

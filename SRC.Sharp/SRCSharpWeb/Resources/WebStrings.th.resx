@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>ไป</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>ซีนาริโอนี้สำหรับผู้ที่มีอายุ {0} ปีขึ้นไป ({1}) คุณมีอายุ {0} ปีขึ้นไปหรือไม่?</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>สำหรับอายุ {0} ปีขึ้นไป</value>
+  </data>
 </root>

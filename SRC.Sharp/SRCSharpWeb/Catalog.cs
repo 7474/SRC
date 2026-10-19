@@ -23,6 +23,12 @@ namespace SRCSharpWeb
         /// <summary>読み込むカタログの URL（サイトからの相対 URL か絶対 URL）</summary>
         public List<string> Catalogs { get; set; } = new List<string> { "scenarios/catalog.json" };
 
+        /// <summary>
+        /// URL の play で開いたときに読むシナリオごとのカタログの URL（{id} をシナリオの id に置き換える）。
+        /// 指定すると、すべてのカタログ（catalogs）を読まずにそのシナリオのカタログだけを読んで始める。読めなければ catalogs を読む
+        /// </summary>
+        public string PlayCatalog { get; set; }
+
         /// <summary>利用者が zip（シナリオ・素材）を追加できるか</summary>
         public bool AllowUserArchives { get; set; } = true;
 
@@ -154,5 +160,23 @@ namespace SRCSharpWeb
 
         /// <summary>一緒に重ねる素材の id</summary>
         public List<string> Requires { get; set; } = new List<string>();
+
+        public const string RatingGeneral = "general";
+        public const string RatingR15 = "r15";
+        public const string RatingR18 = "r18";
+
+        /// <summary>年齢の区分（general・r15・r18）。r15・r18 は始める前に年齢を確かめる</summary>
+        public string Rating { get; set; }
+
+        /// <summary>年齢の区分の対象の年齢。区分の無いもの（general）は 0</summary>
+        [JsonIgnore]
+        public int RatingAge => RatingAgeOf(Rating);
+
+        public static int RatingAgeOf(string rating) => rating?.ToLowerInvariant() switch
+        {
+            RatingR15 => 15,
+            RatingR18 => 18,
+            _ => 0,
+        };
     }
 }

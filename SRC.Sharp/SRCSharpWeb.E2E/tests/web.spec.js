@@ -657,6 +657,157 @@ test('エラーは直前のログとシナリオの行を付けて OTLP で送�
   expect(span.events.map(e => e.name)).toContain('exception');
   expect(JSON.stringify(span.events)).toContain('エラーの前のログ');
 });
+
+test('利用者が追加した素材は、シナリオが求める素材の同じ名前のファイルより優先する', async ({ page }) => {
+  // 素材の Lib/which.eve を Require で読み、どちらの素材のものが使われたかを選択肢の見出しに出す
+  // （DebugState の JSON は ASCII 以外をエスケープするため、見出しは ASCII にする）
+  const eve = [
+    'プロローグ:',
+    'ChangeMap test.map',
+    'Global 素材',
+    'Set 素材 "none"',
+    'Require "/srcweb/app/Lib/which.eve"',
+    'Call 素材の判定',
+    'Ask "ASSET=$(素材)"',
+    'OK',
+    'End',
+    'Quit',
+    '',
+  ].join('\r\n');
+  const which = from => Buffer.from(['素材の判定:', `Set 素材 "${from}"`, 'Return', ''].join('\r\n'), 'utf8');
+  const scenario = makeZip([
+    { name: 'シナリオ/test.eve', data: Buffer.from(eve, 'utf8') },
+    { name: 'シナリオ/test.map', data: fs.readFileSync(path.join(corpus, 'sound', 'test.map')) },
+  ]);
+  const siteAsset = makeZip([{ name: 'Lib/which.eve', data: which('site') }]);
+  const userAsset = makeZip([{ name: 'Lib/which.eve', data: which('user') }]);
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    entries: [
+      { id: 'asset-order', title: '素材の順のシナリオ', archive: 'scenario.zip', root: 'シナリオ', eve: 'test.eve', requires: ['site-asset'] },
+      { id: 'site-asset', kind: 'asset', title: 'サイトの素材', archive: 'assets/site.zip' },
+    ],
+  })));
+  await page.route('**/dist/scenario.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: scenario }));
+  await page.route('**/dist/assets/site.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: siteAsset }));
+
+  await open(page);
+  const name = '利用者の素材.zip';
+  await page.setInputFiles('#add-asset', { name, mimeType: 'application/zip', buffer: userAsset });
+  await expect(page.locator('#archives li', { hasText: name })).toBeVisible();
+  await page.getByRole('button', { name: '素材の順のシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toContain('ASSET=user');
+});
+
+test('年齢の区分（R18）のシナリオは始める前に確かめ、「はい」と答えたら次からは確かめない', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'] })));
+  await page.route('**/dist/catalog.json', route => route.fulfill(json({
+    format: 1,
+    entries: [
+      { id: 'all-ages', title: '全年齢のシナリオ', archive: 'victory.zip', eve: 'test.eve' },
+      { id: 'teen', title: 'R15 のシナリオ', archive: 'victory.zip', eve: 'test.eve', rating: 'r15' },
+      { id: 'adult', title: 'R18 のシナリオ', archive: 'victory.zip', eve: 'test.eve', rating: 'r18' },
+    ],
+  })));
+  await page.route('**/dist/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+
+  await open(page);
+  // 区分のあるものだけに印を付ける
+  await expect(page.locator('#catalog .badge.rating')).toHaveText(['R15', 'R18']);
+  await expect(page.locator('#catalog li', { hasText: '全年齢のシナリオ' }).locator('.badge')).toHaveCount(0);
+
+  // 「いいえ」なら始めずに一覧に留まる
+  await page.getByRole('button', { name: 'R18 のシナリオ' }).click();
+  await expect(page.locator('#rating-confirm')).toContainText('18歳以上（R18）');
+  await page.locator('#rating-no').click();
+  await expect(page.locator('#rating-confirm')).toHaveCount(0);
+  await expect(page.locator('#catalog button', { hasText: 'R18 のシナリオ' })).toBeVisible();
+  await expect(page.locator('#screen')).toHaveCount(0);
+
+  // 「はい」なら始める
+  await page.getByRole('button', { name: 'R18 のシナリオ' }).click();
+  await page.locator('#rating-yes').click();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-adult');
+
+  // 次からは確かめない
+  await open(page);
+  await page.getByRole('button', { name: 'R18 のシナリオ' }).click();
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
+  await expect(page.locator('#rating-confirm')).toHaveCount(0);
+  await expect.poll(() => debugState(page)).toContain('catalog-adult');
+
+  // R18 に答えれば R15 も確かめない（URL の play でも同じ）
+  await page.goto('./?play=teen');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect(page.locator('#rating-confirm')).toHaveCount(0);
+  await expect.poll(() => debugState(page)).toContain('catalog-teen');
+});
+
+test('URL の play で開くと、サイトの設定の playCatalog のシナリオごとのカタログだけを読んで始める', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  const asset = makeZip([{ name: 'Lib/readme.txt', data: Buffer.from('asset', 'utf8') }]);
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  let fullCatalog = 0;
+  let assetDownloads = 0;
+  const playCatalogs = [];
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'], playCatalog: 'dist/catalog/{id}.json' })));
+  await page.route('**/dist/catalog.json', route => {
+    fullCatalog++;
+    return route.fulfill(json({ format: 1, entries: [{ id: 'solo-game', title: 'すべてのカタログ', archive: 'victory.zip', eve: 'test.eve' }] }));
+  });
+  await page.route('**/dist/catalog/*.json', route => {
+    playCatalogs.push(route.request().url());
+    return route.fulfill(json({
+      format: 1,
+      entries: [
+        { id: 'solo-game', title: 'シナリオごとのカタログ', archive: '../victory.zip', eve: 'test.eve', requires: ['solo-asset'] },
+        { id: 'solo-asset', kind: 'asset', title: '素材', archive: '../assets/solo.zip' },
+      ],
+    }));
+  });
+  await page.route('**/dist/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+  await page.route('**/dist/assets/solo.zip', route => {
+    assetDownloads++;
+    return route.fulfill({ status: 200, contentType: 'application/zip', body: asset });
+  });
+
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?play=solo-game');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-solo-game');
+  expect(playCatalogs.some(url => url.endsWith('/dist/catalog/solo-game.json'))).toBe(true);
+  expect(fullCatalog).toBe(0);
+  expect(assetDownloads).toBe(1);
+});
+
+test('playCatalog のカタログを読めなければ、すべてのカタログから探して始める', async ({ page }) => {
+  const zip = fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip'));
+  const json = body => ({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+  let fullCatalog = 0;
+  await isolateWithHeaders(page);
+  await page.route('**/srcweb.json', route => route.fulfill(json({ catalogs: ['dist/catalog.json'], playCatalog: 'dist/catalog/{id}.json' })));
+  await page.route('**/dist/catalog.json', route => {
+    fullCatalog++;
+    return route.fulfill(json({ format: 1, entries: [{ id: 'fallback', title: 'すべてのカタログ', archive: 'victory.zip', eve: 'test.eve' }] }));
+  });
+  await page.route('**/dist/catalog/*.json', route => route.fulfill({ status: 404, body: '' }));
+  await page.route('**/dist/victory.zip', route => route.fulfill({ status: 200, contentType: 'application/zip', body: zip }));
+
+  page.on('pageerror', e => console.log('pageerror:', e.message));
+  await page.goto('./?play=fallback');
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(() => debugState(page)).toContain('catalog-fallback');
+  expect(fullCatalog).toBeGreaterThan(0);
+});
 });
 
 test('システムメニューから戻るときは確認し、「いいえ」ならプレイを続ける', async ({ page }, testInfo) => {
