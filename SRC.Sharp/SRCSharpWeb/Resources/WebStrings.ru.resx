@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>Переход</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>Этот сценарий предназначен для лиц от {0} лет ({1}). Вам уже исполнилось {0} лет?</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>От {0} лет</value>
+  </data>
 </root>

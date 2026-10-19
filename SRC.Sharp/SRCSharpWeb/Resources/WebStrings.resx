@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>移動</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>このシナリオは{0}歳以上（{1}）向けです。あなたは{0}歳以上ですか？</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>{0}歳以上向け</value>
+  </data>
 </root>

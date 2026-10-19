@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>移至</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>此劇本適合{0}歲以上（{1}）。你已年滿{0}歲嗎？</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>{0}歲以上</value>
+  </data>
 </root>

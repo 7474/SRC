@@ -300,4 +300,10 @@
   <data name="IeGoButton" xml:space="preserve">
     <value>Git</value>
   </data>
+  <data name="RatingConfirm" xml:space="preserve">
+    <value>Bu senaryo {0} yaş ve üzeri içindir ({1}). {0} yaşında veya daha büyük müsünüz?</value>
+  </data>
+  <data name="RatingBadgeTitle" xml:space="preserve">
+    <value>{0} yaş ve üzeri için</value>
+  </data>
 </root>
