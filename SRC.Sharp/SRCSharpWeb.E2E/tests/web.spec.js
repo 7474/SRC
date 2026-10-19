@@ -207,6 +207,8 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
 
   // 削除する
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
+  await expect.poll(() => page.evaluate(archiveName =>
+    window.srcwebStore.list().then(items => items.some(item => item.name === archiveName)), name)).toBe(false);
   await expect(page.locator('#archives li')).toHaveCount(0);
 });
 
@@ -354,10 +356,15 @@ test('アーカイブの SoundFont で MIDI を合成して鳴らす', async ({ 
 async function isolateWithHeaders(page) {
   await page.route('**/*', async route => {
     // 前のテストの直後などに、テスト用のサーバーへの接続が切られる（socket hang up）ことがあるため、取り直す
-    let response;
+    let status;
+    let headers;
+    let body;
     for (let attempt = 1; ; attempt++) {
       try {
-        response = await route.fetch();
+        const response = await route.fetch();
+        status = response.status();
+        headers = response.headers();
+        body = await response.body();
         break;
       } catch (e) {
         if (attempt >= 3) {
@@ -367,12 +374,13 @@ async function isolateWithHeaders(page) {
       }
     }
     await route.fulfill({
-      response,
       headers: {
-        ...response.headers(),
+        ...headers,
         'cross-origin-opener-policy': 'same-origin',
         'cross-origin-embedder-policy': 'require-corp',
       },
+      status,
+      body,
     });
   });
 }
