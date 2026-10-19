@@ -2,6 +2,19 @@
 
 全五話＋終話の短いオリジナルシナリオ。SRC#（SRC の C# 版）で遊ぶ。動かし方は [Content の README](../README.md) を参照。
 
+## ファイルの置き場所
+
+遊ぶときに開くのは `01_灯の港.eve` だけ。
+
+| 置き場所 | 中身 |
+|---|---|
+| `01_灯の港.eve` | 入口（第一話）。第二話以降へ `Continue` でつながる |
+| `ステージ/` | 第二話〜終話のイベントとマップ。`Continue ステージ\02_霧の渓谷.eve` のように、シナリオのフォルダからの相対で呼ぶ |
+| `Lib/` | 共通のイベント（`include.eve`、灯台の記録）と、インターミッションのよろず屋・訓練所・部隊名簿 |
+| `Data/`・`Bitmap/`・`Midi/` | データ・画像・BGM |
+
+`ステージ/` のイベントを単体で動かすときは、シナリオのフォルダ（`lantern`）を基準にする。`srcsharp play` と VS Code 拡張のデバッガは、`Data` の無いサブフォルダのイベントファイルなら `Data` のある親を自動で基準にする（`--scenario-root`・launch.json の `scenarioRoot` でも指定できる）。
+
 ## ライセンス
 
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja)（`LICENSE`）。SRC# 本体（GPL-3.0）とは別。

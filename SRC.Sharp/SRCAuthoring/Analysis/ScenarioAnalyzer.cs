@@ -79,6 +79,27 @@ namespace SRCAuthoring.Analysis
         }
 
         /// <summary>
+        /// イベントファイルを実行するときのシナリオのフォルダ（ScenarioPath）を推定する。
+        /// ファイルのあるフォルダに src.ini か Data があれば、そのフォルダ（元の SRC と同じ）。
+        /// 無ければ、それを持ついちばん近い親（シナリオのサブフォルダに置いたイベントファイル）。
+        /// ただし Data\System のあるフォルダは SRC 本体とみなして選ばず、ファイルのあるフォルダにする。
+        /// </summary>
+        public static string FindRunRoot(string file)
+        {
+            var dir = Path.GetDirectoryName(Path.GetFullPath(file));
+            var root = FindScenarioRoot(file);
+            if (string.IsNullOrEmpty(root) || root == dir)
+            {
+                return dir;
+            }
+            if (Directory.Exists(Path.Combine(root, "Data", "System")) || Directory.Exists(Path.Combine(root, "data", "System")))
+            {
+                return dir;
+            }
+            return root;
+        }
+
+        /// <summary>
         /// SRC 本体のフォルダを推定する。シナリオのフォルダの親のうち、Lib か Data\System のあるいちばん近いもの。無ければ null。
         /// </summary>
         public static string FindAppPath(string scenarioRoot)

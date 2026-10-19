@@ -128,7 +128,7 @@ Talk グスタフ
 End
 Escape 敵
 Call 報酬 2000 渓谷の突破
-Continue 03_煤の工場.eve
+Continue ステージ\03_煤の工場.eve
 
 全滅 敵:
 ClearEvent "ターン 5 味方"
@@ -138,7 +138,7 @@ Talk グスタフ
 見事だ。これで心置きなく渓谷を抜けられる。
 End
 Call 報酬 3500 渓谷の煤軍の全滅
-Continue 03_煤の工場.eve
+Continue ステージ\03_煤の工場.eve
 
 損傷率 グスタフ 50:
 Talk グスタフ

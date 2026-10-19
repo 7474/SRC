@@ -125,6 +125,7 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 | `program` | （必須） | 実行するイベントファイル |
 | `script` | なし | 入力を与える `.play` スクリプト（書式は [E2E テスト方針](../../docs/gui/e2e-testing.md) の PlayScript） |
 | `appPath` | `srcsharp.appPath`、無ければシナリオのフォルダの親の SRC 本体のフォルダ、それも無ければシナリオのフォルダ | SRC 本体のフォルダ |
+| `scenarioRoot` | `program` のあるフォルダ。そこに `Data`・`src.ini` が無ければ、それを持ついちばん近い親（`Data\System` のある SRC 本体のフォルダは除く） | シナリオのフォルダ（`Data`・`Lib`・`Continue` の基準）。シナリオのサブフォルダに置いたイベントファイルを、単体で実行・デバッグするのに使う |
 | `interactive` | `false`（launch.json の雛形・実行ボタン・F5 は `true`） | 画面のタブのクリック・キーで操作する。`false` なら自動の入力で進める。`script` があれば `script` で動かす |
 | `stopOnEntry` | `false` | 最初のコマンドで止める |
 | `skipWait` | `false` | ウェイト（`Wait`・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので、早送りで眺められる |

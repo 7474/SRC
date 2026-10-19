@@ -24,7 +24,7 @@ End
 Exit
 
 スタート:
-ChangeMap 05_煤城ノクス.map
+ChangeMap ステージ\05_煤城ノクス.map
 # ノクスの過去（白黒）
 Monotone
 Require Lib\灯台の記録.eve
@@ -173,7 +173,7 @@ ForEach 敵 出撃
   Destroy
 Next
 Call 報酬 10000 煤の帝の打倒
-Continue 06_灯のゆくえ.eve
+Continue ステージ\06_灯のゆくえ.eve
 Return
 
 # 念のため：帝の破壊イベントを経ずに敵がいなくなった場合

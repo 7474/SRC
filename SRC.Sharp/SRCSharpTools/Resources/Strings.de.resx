@@ -19,8 +19,8 @@
 Verwendung:
   srcsharp lint &lt;Verzeichnis oder Datei&gt;... [--format text|sarif] [--output Datei]
       Prüft Daten (*.txt) und Events (*.eve). Exitcode 1, wenn Probleme gefunden werden
-  srcsharp play &lt;Event-Datei&gt; [--script Datei.play] [--out Verzeichnis] [--app-path SRC-Ordner] [--steps Anzahl] [--skip-wait]
-      Führt ein Szenario ohne Bildschirm aus. Ohne --script werden Nachrichten weitergeschaltet und jeweils die erste Auswahl gewählt. Mit --skip-wait werden feste Wartezeiten (Animationen, Nachrichten, Wait) übersprungen.
+  srcsharp play &lt;Event-Datei&gt; [--script Datei.play] [--out Verzeichnis] [--app-path SRC-Ordner] [--scenario-root Szenario-Ordner] [--steps Anzahl] [--skip-wait]
+      Führt ein Szenario ohne Bildschirm aus. Ohne --script werden Nachrichten weitergeschaltet und jeweils die erste Auswahl gewählt. Mit --skip-wait werden feste Wartezeiten (Animationen, Nachrichten, Wait) übersprungen. --scenario-root legt den Szenario-Ordner fest (Basis für Data, Lib und Continue); standardmäßig verwendet eine Event-Datei in einem Unterordner ohne Data den nächsten übergeordneten Ordner mit Data.
   srcsharp balance &lt;Verzeichnis oder Datei&gt;... [--format md|csv] [--output Datei]
       Listet Werte der Einheitendaten und Ausreißer auf
   srcsharp lsp

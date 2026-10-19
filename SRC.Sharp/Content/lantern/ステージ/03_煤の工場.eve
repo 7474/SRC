@@ -13,7 +13,7 @@ End
 Exit
 
 スタート:
-ChangeMap 03_煤の工場.map
+ChangeMap ステージ\03_煤の工場.map
 # ミュウの見た昔の光景（セピア）
 Sepia
 Talk ミュウ
@@ -160,7 +160,7 @@ Talk ソラ
 やった……！ 灯が、空に帰っていく……
 End
 Call 報酬 4000 煤の工場の破壊
-Continue 04_月下の追撃.eve
+Continue ステージ\04_月下の追撃.eve
 
 破壊 グスタフ:
 Call 敗北

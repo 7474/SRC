@@ -12,7 +12,12 @@ namespace SRCCore
 {
     public partial class SRC
     {
-        public void Execute(string fname)
+        /// <summary>
+        /// fname（シナリオのイベントファイルかセーブデータ）を実行する。
+        /// scenarioPath はシナリオのフォルダ（Data・Lib・Continue の基準）。省略すると fname のあるフォルダ（元の SRC と同じ）。
+        /// サブフォルダに置いたイベントファイルを、シナリオのフォルダを基準に動かすのに使う。
+        /// </summary>
+        public void Execute(string fname, string scenarioPath = null)
         {
             //            string fname;
             //            int i;
@@ -60,7 +65,7 @@ namespace SRCCore
 
             ConfigureSound();
 
-            ConfigureExecuteFile(fname);
+            ConfigureExecuteFile(fname, scenarioPath);
 
             // Src.iniから各種パラメータの読み込み
             LoadIni();
@@ -759,7 +764,7 @@ namespace SRCCore
             }
         }
 
-        private void ConfigureExecuteFile(string fname)
+        private void ConfigureExecuteFile(string fname, string scenarioPath)
         {
             //if (Strings.LCase(Strings.Right(fname, 4)) != ".src" && Strings.LCase(Strings.Right(fname, 4)) != ".eve")
             //{
@@ -916,7 +921,7 @@ namespace SRCCore
             }
 
             // シナリオのあるフォルダのパスを収得
-            ScenarioPath = Path.GetDirectoryName(fname);
+            ScenarioPath = string.IsNullOrEmpty(scenarioPath) ? Path.GetDirectoryName(fname) : scenarioPath;
 
             //// 拡張データのフォルダを設定
             //ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");

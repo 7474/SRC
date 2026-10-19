@@ -23,7 +23,7 @@ Ride ヴォルフ 予備機カゲロウ
 Exit
 
 スタート:
-ChangeMap 04_月下の追撃.map
+ChangeMap ステージ\04_月下の追撃.map
 # ミュウの夢（水中のような青い光景）
 Water
 Talk ミュウ
@@ -137,7 +137,7 @@ Talk ソラ
 クロウの部隊は退いた……。次は、煤の帝の城だ。
 End
 Call 報酬 4000 夜の荒野の突破
-Continue 05_煤城ノクス.eve
+Continue ステージ\05_煤城ノクス.eve
 
 エピローグ:
 StartBGM lantern_briefing.mid
