@@ -83,9 +83,10 @@ namespace SRCPlay
             }
         }
 
-        public void Start(string eve)
+        /// <summary>eve を実行する。scenarioRoot はシナリオのフォルダ（省略すると eve のあるフォルダ）。</summary>
+        public void Start(string eve, string scenarioRoot = null)
         {
-            Session.Start(eve);
+            Session.Start(eve, scenarioRoot);
         }
 
         /// <summary>シナリオが終了（Quit など）するまで待つ。</summary>

@@ -132,6 +132,7 @@
               "program": { "type": "string", "description": "実行するイベントファイル", "default": "${file}" },
               "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければ自動で進める：メッセージを送り、選択肢は先頭を選び、マップは policy で動かす）" },
               "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
+              "scenarioRoot": { "type": "string", "description": "シナリオのフォルダ（Data・Lib・Continue の基準）。無ければ program のあるフォルダ。そこに Data が無ければ、Data のあるいちばん近い親（Data\\System のある SRC 本体は除く）" },
               "interactive": { "type": "boolean", "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）", "default": true },
               "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
               "skipWait": { "type": "boolean", "description": "ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので早送りで眺められる", "default": false },

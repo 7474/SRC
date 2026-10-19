@@ -19,8 +19,8 @@
 使い方:
   srcsharp lint &lt;ディレクトリかファイル&gt;... [--format text|sarif] [--output ファイル]
       データ（*.txt）とイベント（*.eve）を検査する。問題があれば終了コード 1
-  srcsharp play &lt;イベントファイル&gt; [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--steps 数] [--skip-wait]
-      シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める。--skip-wait を付けると、決まった時間だけ待つ処理（アニメーション、メッセージ、Wait など）を飛ばす
+  srcsharp play &lt;イベントファイル&gt; [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ] [--steps 数] [--skip-wait]
+      シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める。--skip-wait を付けると、決まった時間だけ待つ処理（アニメーション、メッセージ、Wait など）を飛ばす。--scenario-root はシナリオのフォルダ（Data・Lib・Continue の基準）。無ければ、Data の無いサブフォルダのイベントファイルは、Data のあるいちばん近い親フォルダを使う。
   srcsharp balance &lt;ディレクトリかファイル&gt;... [--format md|csv] [--output ファイル]
       ユニットデータの能力値の一覧と外れ値
   srcsharp lsp

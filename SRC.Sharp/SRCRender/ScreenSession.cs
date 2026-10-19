@@ -5,6 +5,7 @@ using SRCCore.Filesystem;
 using SRCCore.Threading;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace SRCRender
@@ -90,14 +91,19 @@ namespace SRCRender
 
         /// <summary>
         /// ゲームスレッドを開始し、シナリオ（.eve）またはセーブデータを実行する。
+        /// scenarioRoot はシナリオのフォルダ。省略すると filePath のあるフォルダ。
         /// </summary>
-        public void Start(string filePath)
+        public void Start(string filePath, string scenarioRoot = null)
         {
             var path = Path.GetFullPath(filePath);
-            SRC.FileSystem.AddPath(Path.GetDirectoryName(path));
-            SRC.FileSystem.AddSafePath(Path.GetDirectoryName(path));
+            var root = string.IsNullOrEmpty(scenarioRoot) ? null : Path.GetFullPath(scenarioRoot);
+            foreach (var dir in new[] { Path.GetDirectoryName(path), root }.Where(x => x != null).Distinct())
+            {
+                SRC.FileSystem.AddPath(dir);
+                SRC.FileSystem.AddSafePath(dir);
+            }
             Game.Start();
-            Game.Post(() => SRC.Execute(path));
+            Game.Post(() => SRC.Execute(path, root));
         }
 
         public void Dispose()

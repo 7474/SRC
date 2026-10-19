@@ -243,9 +243,12 @@ namespace SRCDebugAdapter
         private void StartSession()
         {
             var program = Path.GetFullPath(launchArgs["program"].GetValue<string>());
+            // シナリオのフォルダ（Data・Lib・Continue の基準）。無ければ、サブフォルダのイベントファイルなら Data のある親
+            var scenarioRoot = launchArgs["scenarioRoot"]?.GetValue<string>() is string rootArg && rootArg.Length > 0
+                ? Path.GetFullPath(rootArg)
+                : SRCAuthoring.Analysis.ScenarioAnalyzer.FindRunRoot(program);
             var script = launchArgs["script"]?.GetValue<string>();
             // SRC 本体のフォルダ（Lib・Data\System・Bitmap などの共通の素材）。無ければシナリオのフォルダの親から探し、それも無ければシナリオのフォルダ
-            var scenarioRoot = SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(program);
             var appPath = launchArgs["appPath"]?.GetValue<string>()
                 ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindAppPath(scenarioRoot)
                 ?? scenarioRoot;
@@ -318,7 +321,7 @@ namespace SRCDebugAdapter
             {
                 try
                 {
-                    runner.Start(program);
+                    runner.Start(program, scenarioRoot);
                     if (interactive != null)
                     {
                         // タブの操作で進める。シナリオが終わるか、デバッグを止めるまで待つ

@@ -19,8 +19,8 @@
 Uso:
   srcsharp lint &lt;cartella o file&gt;... [--format text|sarif] [--output file]
       Controlla i dati (*.txt) e gli eventi (*.eve). Codice di uscita 1 se ci sono problemi
-  srcsharp play &lt;file evento&gt; [--script file.play] [--out cartella] [--app-path cartella di SRC] [--steps numero] [--skip-wait]
-      Esegue uno scenario senza schermo. Senza --script, fa avanzare i messaggi e sceglie la prima opzione. Con --skip-wait salta le attese fisse (animazioni, messaggi, Wait).
+  srcsharp play &lt;file evento&gt; [--script file.play] [--out cartella] [--app-path cartella di SRC] [--scenario-root cartella dello scenario] [--steps numero] [--skip-wait]
+      Esegue uno scenario senza schermo. Senza --script, fa avanzare i messaggi e sceglie la prima opzione. Con --skip-wait salta le attese fisse (animazioni, messaggi, Wait). --scenario-root indica la cartella dello scenario (base di Data, Lib e Continue); per impostazione predefinita, un file evento in una sottocartella senza Data usa la cartella superiore più vicina con Data.
   srcsharp balance &lt;cartella o file&gt;... [--format md|csv] [--output file]
       Elenca le statistiche dei dati delle unità e i valori anomali
   srcsharp lsp

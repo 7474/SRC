@@ -19,8 +19,8 @@
 用法:
   srcsharp lint &lt;目录或文件&gt;... [--format text|sarif] [--output 文件]
       检查数据（*.txt）和事件（*.eve）。发现问题时退出码为 1
-  srcsharp play &lt;事件文件&gt; [--script 文件.play] [--out 目录] [--app-path SRC文件夹] [--steps 步数] [--skip-wait]
-      在无画面状态下运行剧本。未指定 --script 时，自动推进消息，选项选择第一项。指定 --skip-wait 时跳过固定等待（动画、消息、Wait）
+  srcsharp play &lt;事件文件&gt; [--script 文件.play] [--out 目录] [--app-path SRC文件夹] [--scenario-root 剧本文件夹] [--steps 步数] [--skip-wait]
+      在无画面状态下运行剧本。未指定 --script 时，自动推进消息，选项选择第一项。指定 --skip-wait 时跳过固定等待（动画、消息、Wait）。--scenario-root 指定剧本文件夹（Data、Lib、Continue 的基准）；未指定时，位于没有 Data 的子文件夹中的事件文件使用最近的含 Data 的上级文件夹。
   srcsharp balance &lt;目录或文件&gt;... [--format md|csv] [--output 文件]
       列出单位数据的能力值及异常值
   srcsharp lsp

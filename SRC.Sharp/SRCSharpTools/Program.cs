@@ -147,16 +147,20 @@ namespace SRCSharpTools
             {
                 appPath = Path.GetFullPath(appPath);
             }
+            // シナリオのフォルダ（Data・Lib・Continue の基準）。無ければ、サブフォルダのイベントファイルなら Data のある親
+            var scenarioRoot = options.TryGetValue("scenario-root", out var root)
+                ? Path.GetFullPath(root)
+                : SRCAuthoring.Analysis.ScenarioAnalyzer.FindRunRoot(eve);
             options.TryGetValue("out", out var outDir);
             // 画面を見ないので、決まった時間だけ待つ処理（戦闘アニメ、メッセージ、移動、Wait コマンドなど）を飛ばす
             SRCCore.Lib.GeneralLib.SkipWait = options.ContainsKey("skip-wait");
             using (var logHost = CreateLogHost("play", LogOutputs.StandardError))
-            using (var runner = new ScreenScenarioRunner(appPath ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindScenarioRoot(eve), logHost.LoggerFactory))
+            using (var runner = new ScreenScenarioRunner(appPath ?? scenarioRoot, logHost.LoggerFactory))
             {
                 var log = logHost.LoggerFactory.CreateLogger("SRCSharp.Tools");
                 logHost.ApplyConfig(runner.Session.SRC.SystemConfig);
                 logHost.LogStartup(log, "srcsharp play", new[] { eve });
-                runner.Start(eve);
+                runner.Start(eve, scenarioRoot);
                 try
                 {
                     if (options.TryGetValue("script", out var script))

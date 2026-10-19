@@ -19,8 +19,8 @@
 Kullanım:
   srcsharp lint &lt;dizin veya dosya&gt;... [--format text|sarif] [--output dosya]
       Verileri (*.txt) ve olayları (*.eve) denetler. Sorun varsa çıkış kodu 1
-  srcsharp play &lt;olay dosyası&gt; [--script dosya.play] [--out dizin] [--app-path SRC klasörü] [--steps sayı] [--skip-wait]
-      Senaryoyu ekransız çalıştırır. --script yoksa mesajları geçer ve ilk seçeneği seçer. --skip-wait ile sabit beklemeler (animasyonlar, mesajlar, Wait) atlanır.
+  srcsharp play &lt;olay dosyası&gt; [--script dosya.play] [--out dizin] [--app-path SRC klasörü] [--scenario-root senaryo klasörü] [--steps sayı] [--skip-wait]
+      Senaryoyu ekransız çalıştırır. --script yoksa mesajları geçer ve ilk seçeneği seçer. --skip-wait ile sabit beklemeler (animasyonlar, mesajlar, Wait) atlanır. --scenario-root senaryo klasörünü (Data, Lib ve Continue için temel) belirtir; varsayılan olarak Data içermeyen bir alt klasördeki olay dosyası, Data içeren en yakın üst klasörü kullanır.
   srcsharp balance &lt;dizin veya dosya&gt;... [--format md|csv] [--output dosya]
       Birim verilerinin istatistik listesi ve aykırı değerler
   srcsharp lsp
