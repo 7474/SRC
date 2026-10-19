@@ -228,7 +228,7 @@
   <data name="TextViewerTitle" xml:space="preserve">
     <value>{0} — Блокнот</value>
   </data>
-  <data name="MarkdownViewerTitle" xml:space="preserve">
+  <data name="PageViewerTitle" xml:space="preserve">
     <value>{0} — Перегляд документа</value>
   </data>
   <data name="DocumentOpenFailed" xml:space="preserve">

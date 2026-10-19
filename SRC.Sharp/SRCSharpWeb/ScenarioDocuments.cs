@@ -8,11 +8,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// シナリオに同梱された文書（.txt・.md。はじめに読む文章や更新履歴など）。
+    /// シナリオに同梱された文書（.txt・.md・.htm・.html。はじめに読む文章や更新履歴など）。
     /// シナリオのデータ（unit.txt など）は除く。
     /// </summary>
     public static class ScenarioDocuments
@@ -23,9 +24,17 @@ namespace SRCSharpWeb
             public string Path { get; set; }
             public string Name => System.IO.Path.GetFileName(Path);
             public bool IsMarkdown => Path.EndsWith(".md", StringComparison.OrdinalIgnoreCase);
-            /// <summary>README.txt・README.md（大文字小文字は問わない）</summary>
+            public bool IsHtml => Path.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) || Path.EndsWith(".html", StringComparison.OrdinalIgnoreCase);
+            /// <summary>ブラウザ風（往年の Internet Explorer）に表示するもの。.md・.htm・.html</summary>
+            public bool IsPage => IsMarkdown || IsHtml;
+            /// <summary>README.txt・README.md・README.htm(l)（大文字小文字は問わない）</summary>
             public bool IsReadme => System.IO.Path.GetFileNameWithoutExtension(Path).Equals("README", StringComparison.OrdinalIgnoreCase);
         }
+
+        private static readonly HashSet<string> Extensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ".txt", ".md", ".htm", ".html",
+        };
 
         /// <summary>データを置くフォルダ。この下の .txt はデータとして扱い、文書に含めない</summary>
         private static readonly HashSet<string> DataFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -49,7 +58,7 @@ namespace SRCSharpWeb
                 return new List<Document>();
             }
             return Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
-                .Where(x => x.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) || x.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+                .Where(x => Extensions.Contains(System.IO.Path.GetExtension(x)))
                 .Select(x => System.IO.Path.GetRelativePath(dir, x).Replace('\\', '/'))
                 .Where(x => !x.Split('/').SkipLast(1).Any(DataFolders.Contains) && !DataFiles.Contains(System.IO.Path.GetFileName(x)))
                 .Select(x => new Document { Path = x })
@@ -157,6 +166,39 @@ namespace SRCSharpWeb
                 child = next;
             }
             link.Remove();
+        }
+
+        /// <summary>
+        /// 往年の Internet Explorer の既定の表示に近づけるスタイル。文書のスタイルより先に置き、文書が決めたものはそちらを使う。
+        /// 見出しは既定の大きさ（h1 が 2em）だと大き過ぎるため、本文から少しずつ大きくする程度にとどめる（app.css の .doc-page と同じ）
+        /// </summary>
+        private const string PageStyle = "<base target=\"_blank\"><style>"
+            + "body{margin:8px;color:#000;background:#fff;font-family:\"Times New Roman\",\"MS PMincho\",\"ＭＳ Ｐ明朝\",\"Hiragino Mincho ProN\",\"Noto Serif CJK JP\",serif;font-size:16px;line-height:1.25}"
+            + "h1{font-size:1.4em}h2{font-size:1.25em}h3{font-size:1.12em}h4,h5,h6{font-size:1em}"
+            + "a:link{color:#0000ee}a:visited{color:#551a8b}img{max-width:100%}"
+            + "code,pre,tt{font-family:\"Courier New\",\"MS Gothic\",\"ＭＳ ゴシック\",monospace}"
+            + "</style>";
+
+        private static readonly Regex HeadTag = new Regex(@"<head(\s[^>]*)?>", RegexOptions.IgnoreCase);
+        private static readonly Regex ImageSource = new Regex(@"(<img\b[^>]*?\bsrc\s*=\s*)(""([^""]*)""|'([^']*)'|([^\s>]+))", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// HTML の文書を、サンドボックスの iframe（srcdoc。スクリプトは動かさない）に入れる文字列にする。
+        /// 既定のスタイルを先頭に入れ、シナリオの中の画像（相対パス）は data URI にする。リンクは別のタブで開く。
+        /// </summary>
+        public static string RenderHtml(string dir, Document document)
+        {
+            var html = ReadText(dir, document);
+            var baseDir = System.IO.Path.GetDirectoryName(document.Path.Replace('/', System.IO.Path.DirectorySeparatorChar)) ?? "";
+            html = ImageSource.Replace(html, m =>
+            {
+                var url = System.Net.WebUtility.HtmlDecode(m.Groups[3].Success ? m.Groups[3].Value : m.Groups[4].Success ? m.Groups[4].Value : m.Groups[5].Value);
+                return m.Groups[1].Value + "\"" + System.Net.WebUtility.HtmlEncode(ImageUrl(dir, baseDir, url)) + "\"";
+            });
+            var head = HeadTag.Match(html);
+            return head.Success
+                ? html.Insert(head.Index + head.Length, PageStyle)
+                : PageStyle + html;
         }
 
         private static bool IsExternal(string url)

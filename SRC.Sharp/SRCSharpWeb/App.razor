@@ -319,19 +319,24 @@ else
 @if (viewing != null)
 {
     <div class="modal doc-modal" @onclick="CloseDocumentAsync">
-        <div class="doc-window @(viewing.IsMarkdown ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
+        <div class="doc-window @(viewing.IsPage ? "doc-browser" : "doc-notepad")" role="dialog" aria-label="@viewing.Name" id="doc-window"
              @onclick:stopPropagation="true" @onkeydown="DocumentKeyDownAsync">
             <div class="titlebar">
-                <span class="doc-title">@(viewing.IsMarkdown ? L["MarkdownViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
+                <span class="doc-title">@(viewing.IsPage ? L["PageViewerTitle", viewing.Name] : L["TextViewerTitle", viewing.Name])</span>
                 <button class="doc-close" aria-label="@L["MenuClose"]" title="@L["MenuClose"]" @onclick="CloseDocumentAsync">×</button>
             </div>
-            @if (!viewing.IsMarkdown)
+            @if (!viewing.IsPage)
             {
                 <div class="doc-toolbar">
                     <label><input type="checkbox" id="doc-wrap" @bind="documentWrap" /> @L["WordWrap"]</label>
                 </div>
             }
-            @if (viewingHtml != null)
+            @if (viewingFrame != null)
+            {
+                @* シナリオの HTML はスクリプトを動かさない（sandbox に allow-scripts を付けない）。リンクは別のタブで開く *@
+                <iframe class="doc-view doc-frame" id="doc-view" title="@viewing.Name" sandbox="allow-popups allow-popups-to-escape-sandbox" srcdoc="@viewingFrame"></iframe>
+            }
+            else if (viewingHtml != null)
             {
                 <div class="doc-view doc-page" id="doc-view" tabindex="0">@viewingHtml</div>
             }
@@ -398,6 +403,8 @@ else
     private ScenarioDocuments.Document viewing;
     private string viewingText;
     private MarkupString? viewingHtml;
+    /// <summary>.htm・.html を入れる iframe の srcdoc</summary>
+    private string viewingFrame;
     /// <summary>メモ帳の「右端で折り返す」</summary>
     private bool documentWrap = true;
     /// <summary>プレイ中にシステムメニューから文書を選んでいる</summary>
@@ -410,7 +417,7 @@ else
         @foreach (var document in documents)
         {
             <li class="@(document.IsReadme ? "readme" : null)">
-                <span class="icon @(document.IsMarkdown ? "icon-page" : "icon-text")" aria-hidden="true"></span>
+                <span class="icon @(document.IsPage ? "icon-page" : "icon-text")" aria-hidden="true"></span>
                 <button @onclick="() => OpenDocument(document)">@document.Path</button>
                 @if (document.IsReadme)
                 {
@@ -436,9 +443,14 @@ else
     {
         viewingText = null;
         viewingHtml = null;
+        viewingFrame = null;
         try
         {
-            if (document.IsMarkdown)
+            if (document.IsHtml)
+            {
+                viewingFrame = ScenarioDocuments.RenderHtml(scenarioDir, document);
+            }
+            else if (document.IsMarkdown)
             {
                 viewingHtml = new MarkupString(ScenarioDocuments.RenderMarkdown(scenarioDir, document));
             }
@@ -462,6 +474,7 @@ else
         viewing = null;
         viewingText = null;
         viewingHtml = null;
+        viewingFrame = null;
         if (mode == Mode.Playing)
         {
             await FocusScreenAsync();

@@ -228,7 +228,7 @@
   <data name="TextViewerTitle" xml:space="preserve">
     <value>{0} - 记事本</value>
   </data>
-  <data name="MarkdownViewerTitle" xml:space="preserve">
+  <data name="PageViewerTitle" xml:space="preserve">
     <value>{0} - 文档查看</value>
   </data>
   <data name="DocumentOpenFailed" xml:space="preserve">

@@ -1006,16 +1006,26 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   });
   // 「更新履歴：シフトJISの文書」を Shift_JIS で書いたもの
   files.push({ name: '更新履歴.txt', data: Buffer.from([141, 88, 144, 86, 151, 154, 151, 240, 129, 70, 131, 86, 131, 116, 131, 103, 74, 73, 83, 130, 204, 149, 182, 143, 145]) });
+  // Shift_JIS の HTML（スクリプトは動かさない）
+  files.push({
+    name: 'manual/説明書.html',
+    data: Buffer.concat([
+      Buffer.from('<html><head><meta charset="Shift_JIS"></head><body><h1>', 'latin1'),
+      Buffer.from([144, 224, 150, 190, 143, 145, 130, 204, 131, 121, 129, 91, 131, 87]),
+      Buffer.from('</h1><script>parent.injectedHtml = true; document.body.append("script ran")</script></body></html>', 'latin1'),
+    ]),
+  });
   await open(page);
   await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files) });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
 
   // README を先頭に、目印を付けて出す。シナリオのデータ（Data の下の .txt）は出さない
   const documents = page.locator('#documents li');
-  await expect(documents).toHaveCount(2);
+  await expect(documents).toHaveCount(3);
   await expect(documents.first()).toHaveClass(/readme/);
   await expect(documents.first()).toContainText('はじめにお読みください');
   await expect(documents.nth(1)).toContainText('更新履歴.txt');
+  await expect(documents.nth(2)).toContainText('manual/説明書.html');
 
   // Markdown は HTML にする。中の HTML は文字のまま、javascript: のリンクは外す。見出しは大きくし過ぎない
   await documents.first().getByRole('button', { name: 'README.md' }).click();
@@ -1037,6 +1047,17 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   await expect(page.locator('#doc-window')).toContainText('更新履歴.txt - メモ帳');
   await expect(view).toHaveText('更新履歴：シフトJISの文書');
   await page.screenshot({ path: testInfo.outputPath('document-text.png') });
+  await page.locator('.doc-close').click();
+
+  // HTML はサンドボックスの iframe に入れ、スクリプトは動かさない
+  await documents.nth(2).getByRole('button').click();
+  await expect(page.locator('#doc-window')).toContainText('説明書.html - 文書の表示');
+  const frame = page.frameLocator('#doc-view');
+  await expect(frame.locator('h1')).toHaveText('説明書のページ');
+  await expect(frame.locator('body')).not.toContainText('script ran');
+  expect(await page.evaluate(() => window.injectedHtml)).toBeUndefined();
+  await expect(page.locator('#doc-view')).not.toHaveAttribute('sandbox', /allow-scripts/);
+  await page.screenshot({ path: testInfo.outputPath('document-html.png') });
   await page.locator('.doc-close').click();
 
   // プレイ中もシステムメニューから読める

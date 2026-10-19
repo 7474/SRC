@@ -228,7 +228,7 @@
   <data name="TextViewerTitle" xml:space="preserve">
     <value>{0} - メモ帳</value>
   </data>
-  <data name="MarkdownViewerTitle" xml:space="preserve">
+  <data name="PageViewerTitle" xml:space="preserve">
     <value>{0} - 文書の表示</value>
   </data>
   <data name="DocumentOpenFailed" xml:space="preserve">

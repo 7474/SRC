@@ -96,7 +96,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 1.5h11v14h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M2 1h12v2H2z' fill='%2300a0c0'/%3E%3Cpath d='M4 5h8M4 7h8M4 9h8M4 11h8M4 13h6' stroke='%23808080'/%3E%3C/svg%3E");
 }
 
-/* ブラウザで開く文書（.md） */
+/* ブラウザで開く文書（.md・.htm・.html） */
 .icon-page {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2.5 0.5h7l4 4v11h-11z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M9.5 0.5v4h4' fill='%23c0c0c0' stroke='%23000'/%3E%3Ccircle cx='8' cy='10' r='3.5' fill='%231e6fd9'/%3E%3Cpath d='M6 10h4M8 8.5c1 0 1.5.6 1.5 1.5' stroke='%23fff' fill='none'/%3E%3C/svg%3E");
 }
@@ -1693,4 +1693,13 @@ label.button input.hidden-file {
 
 .doc-page img {
     max-width: 100%;
+}
+
+/* .htm・.html は iframe に入れる（既定のスタイルは ScenarioDocuments.PageStyle） */
+.doc-frame {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 2px;
+    box-sizing: border-box;
 }
