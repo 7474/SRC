@@ -669,6 +669,67 @@ namespace SRCCore.Coverage.Tests
             }
         }
 
+        // 閉じられたかを記録する（内容は閉じた後も ToArray で読める）
+        private class DisposeTrackingStream : MemoryStream
+        {
+            public bool Disposed { get; private set; }
+
+            public DisposeTrackingStream()
+            {
+            }
+
+            public DisposeTrackingStream(byte[] data) : base(data)
+            {
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                Disposed = true;
+                base.Dispose(disposing);
+            }
+        }
+
+        [TestMethod]
+        public void QuickSave_ClosesStream()
+        {
+            // 書き終えたら閉じる。開いたままだと Windows では続くクイックロードでファイルを開けない
+            var f = new CommandUnitOpsFixture();
+            f.DefineUnit("機体");
+            f.Place("機体", "乗り手", "味方", 2, 2);
+            var stream = new DisposeTrackingStream();
+            f.Gui.Handle("OpenQuikSaveStream", args => stream);
+
+            f.Commands.MapCommand(new UiCommand(Command.QuickSaveCmdID, "クイックセーブ"));
+
+            Assert.IsTrue(stream.Disposed);
+            Assert.IsTrue(stream.ToArray().Length > 0);
+        }
+
+        [TestMethod]
+        public void QuickLoad_ClosesStream()
+        {
+            var f = new CommandUnitOpsFixture();
+            f.DefineUnit("機体");
+            f.Place("機体", "乗り手", "味方", 2, 2);
+            var dir = LoadEvents(f, "スタート:", "Exit");
+            try
+            {
+                var saved = new KeepOpenMemoryStream();
+                f.Src.DumpData(saved, SRCSaveKind.Quik);
+                var stream = new DisposeTrackingStream(saved.ToArray());
+                f.Gui.Handle("Confirm", args => GuiDialogResult.Ok);
+                f.Gui.Handle("OpenQuikSaveStream", args => stream);
+
+                f.Commands.MapCommand(new UiCommand(Command.QuickLoadCmdID, "クイックロード"));
+
+                Assert.IsTrue(stream.Disposed);
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
         [TestMethod]
         public void UnitList_PersonScale_UsesUnitNameAndLevelColumns()
         {
