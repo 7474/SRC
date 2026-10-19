@@ -76,14 +76,11 @@ jobs:
         uses: actions/checkout@v7
       - run: npm ci
         working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
-      # percy/exec-action は公開を終えたため、devDependencies の @percy/cli で直接実行する
-      - name: Percy exec Cypress run
+      # 配信した頁を開き、データビューアがデータを読み込めるか確かめる（結果は外部のサービスに送らない）
+      - name: Cypress run
         working-directory: ./SRC.Sharp/SRCTestBlazor/E2E
-        run: npx percy exec -- cypress run --record
+        run: npx cypress run
         env:
-          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_BASE_URL: ${{ needs.build_and_deploy_job.outputs.static_web_app_url }}
 
   close_pull_request_job:
