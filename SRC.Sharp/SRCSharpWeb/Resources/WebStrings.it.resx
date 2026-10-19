@@ -297,4 +297,7 @@
   <data name="IeHomeMenu" xml:space="preserve">
     <value>Pagina iniziale</value>
   </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>Vai</value>
+  </data>
 </root>

@@ -297,4 +297,7 @@
   <data name="IeHomeMenu" xml:space="preserve">
     <value>首頁(H)</value>
   </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>移至</value>
+  </data>
 </root>

@@ -315,7 +315,7 @@ else
     }
 }
 
-@* シナリオに同梱された文書。.txt はメモ帳（Windows 95）、.md・.htm・.html は Internet Explorer 4 を模す *@
+@* シナリオに同梱された文書。.txt はメモ帳、.md・.htm・.html は Internet Explorer（95 のテーマは IE4、XP のテーマは IE6）を模す *@
 @if (viewing != null)
 {
     <div class="modal doc-modal" @onclick="CloseDocumentAsync">
@@ -363,13 +363,14 @@ else
                 <div class="ie-rebar">
                     <div class="ie-bands">
                         <div class="ie-band ie-buttons">
-                            <button id="doc-back" class="ie-button" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)"><span class="ie-icon ie-back" aria-hidden="true"></span>@L["DocumentBack"]</button>
-                            <button id="doc-forward" class="ie-button" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)"><span class="ie-icon ie-forward" aria-hidden="true"></span>@L["DocumentForward"]</button>
-                            <button class="ie-button" disabled><span class="ie-icon ie-stop" aria-hidden="true"></span>@L["IeStop"]</button>
-                            <button id="doc-refresh" class="ie-button" @onclick="RefreshDocument"><span class="ie-icon ie-refresh" aria-hidden="true"></span>@L["IeRefresh"]</button>
-                            <button id="doc-home" class="ie-button" disabled="@(HomeDocument == null)" @onclick="GoHome"><span class="ie-icon ie-home" aria-hidden="true"></span>@L["IeHome"]</button>
+                            @* XP のテーマでは Internet Explorer 6 のように、絵の右に文字を出し、文字は戻る・お気に入りだけにする（ie-labeled） *@
+                            <button id="doc-back" class="ie-button ie-labeled" disabled="@(historyIndex <= 0)" @onclick="() => MoveHistory(-1)" title="@L["DocumentBack"]"><span class="ie-icon ie-back" aria-hidden="true"></span><span class="ie-label">@L["DocumentBack"]</span></button>
+                            <button id="doc-forward" class="ie-button" disabled="@(historyIndex >= history.Count - 1)" @onclick="() => MoveHistory(1)" title="@L["DocumentForward"]"><span class="ie-icon ie-forward" aria-hidden="true"></span><span class="ie-label">@L["DocumentForward"]</span></button>
+                            <button class="ie-button" disabled title="@L["IeStop"]"><span class="ie-icon ie-stop" aria-hidden="true"></span><span class="ie-label">@L["IeStop"]</span></button>
+                            <button id="doc-refresh" class="ie-button" @onclick="RefreshDocument" title="@L["IeRefresh"]"><span class="ie-icon ie-refresh" aria-hidden="true"></span><span class="ie-label">@L["IeRefresh"]</span></button>
+                            <button id="doc-home" class="ie-button" disabled="@(HomeDocument == null)" @onclick="GoHome" title="@L["IeHome"]"><span class="ie-icon ie-home" aria-hidden="true"></span><span class="ie-label">@L["IeHome"]</span></button>
                             <span class="ie-separator" aria-hidden="true"></span>
-                            <button class="ie-button" @onclick="@(() => documentMenu = "favorites")"><span class="ie-icon ie-favorites" aria-hidden="true"></span>@L["IeFavoritesButton"]</button>
+                            <button class="ie-button ie-labeled" @onclick="@(() => documentMenu = "favorites")" title="@L["IeFavoritesButton"]"><span class="ie-icon ie-favorites" aria-hidden="true"></span><span class="ie-label">@L["IeFavoritesButton"]</span></button>
                         </div>
                         <form class="ie-band ie-address" @onsubmit="GoAddressAsync">
                             <label for="doc-address">@L["IeAddress"]</label>
@@ -377,6 +378,8 @@ else
                                 <span class="icon @(viewing.IsPage ? "icon-page" : "icon-text")" aria-hidden="true"></span>
                                 <input id="doc-address" type="text" @bind="addressText" @bind:event="oninput" spellcheck="false" autocomplete="off" />
                             </span>
+                            @* Internet Explorer 6（XP のテーマ）の「移動」ボタン。IE4（95 のテーマ）には無いので出さない *@
+                            <button type="submit" class="ie-go"><span class="ie-icon ie-go-arrow" aria-hidden="true"></span>@L["IeGoButton"]</button>
                         </form>
                     </div>
                     <div class="ie-throbber" aria-hidden="true"></div>

@@ -1067,6 +1067,7 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   await expect(page.locator('#doc-address')).toHaveValue('README.md');
   await view.getByRole('link', { name: '説明書を開く' }).click();
   await expect(page.locator('#doc-address')).toHaveValue('manual/説明書.html');
+  await expect(page.locator('iframe#doc-view')).toBeVisible();
   await expect(frame.locator('h1')).toHaveText('説明書のページ');
   // iframe の中のリンク（相対パスで上のフォルダの .txt）も、同じウィンドウで開く
   await frame.getByRole('link', { name: 'history' }).click();
@@ -1078,8 +1079,15 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   await expect(page.locator('#doc-address')).toHaveValue('README.md');
   await expect(page.locator('#doc-back')).toBeDisabled();
   await page.locator('#doc-forward').click();
+  await expect(page.locator('iframe#doc-view')).toBeVisible();
   await expect(frame.locator('h1')).toHaveText('説明書のページ');
   await page.screenshot({ path: testInfo.outputPath('document-nav.png') });
+  // 95 のテーマは IE4（「移動」ボタンなし）、XP のテーマは IE6（「移動」ボタンあり）
+  await expect(page.locator('.ie-go')).toBeHidden();
+  await page.evaluate(() => window.srcwebStore.setTheme('xp'));
+  await expect(page.locator('.ie-go')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('document-xp.png') });
+  await page.evaluate(() => window.srcwebStore.setTheme('95'));
   await page.locator('#doc-address').fill('更新履歴.txt');
   await page.locator('#doc-address').press('Enter');
   await expect(view).toHaveText('更新履歴：シフトJISの文書');

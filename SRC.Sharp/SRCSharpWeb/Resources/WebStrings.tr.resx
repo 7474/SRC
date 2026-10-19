@@ -297,4 +297,7 @@
   <data name="IeHomeMenu" xml:space="preserve">
     <value>Giriş Sayfası</value>
   </data>
+  <data name="IeGoButton" xml:space="preserve">
+    <value>Git</value>
+  </data>
 </root>
