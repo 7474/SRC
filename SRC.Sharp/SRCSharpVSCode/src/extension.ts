@@ -243,6 +243,40 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     });
   };
 
+  // 開いているイベントを画面付き・早送りで自動プレイする。.play スクリプトは選ばなくてもよい
+  const autoPlay = async (): Promise<void> => {
+    const file = activeEventFile();
+    if (!file) {
+      vscode.window.showErrorMessage('SRC#: イベントファイル（*.eve）を開いてください。');
+      return;
+    }
+    const folder = vscode.workspace.getWorkspaceFolder(file);
+    const dir = path.dirname(file.fsPath);
+    const scripts = (await vscode.workspace.findFiles(new vscode.RelativePattern(folder ?? dir, '**/*.play'), '**/node_modules/**', 200))
+      .map((u) => u.fsPath)
+      // 同じフォルダのものを先に、名前の順に
+      .sort((a, b) => Number(path.dirname(b) === dir) - Number(path.dirname(a) === dir) || a.localeCompare(b));
+    type Pick = vscode.QuickPickItem & { script?: string };
+    const items: Pick[] = [
+      { label: '$(run-all) スクリプト無し', description: '選択肢は先頭、味方フェイズは自動' },
+      ...scripts.map((s) => ({ label: path.basename(s), description: path.relative(folder?.uri.fsPath ?? dir, path.dirname(s)) || undefined, script: s })),
+    ];
+    const picked = scripts.length === 0
+      ? items[0]
+      : await vscode.window.showQuickPick(items, { title: `${path.basename(file.fsPath)} を自動プレイ`, placeHolder: '入力を与える .play スクリプト' });
+    if (!picked) {
+      return;
+    }
+    await vscode.debug.startDebugging(folder, {
+      type: 'srcsharp',
+      request: 'launch',
+      name: `SRC# 自動プレイ（${picked.script ? path.basename(picked.script) : 'スクリプト無し'}）`,
+      program: file.fsPath,
+      ...(picked.script ? { script: picked.script } : {}),
+      skipWait: true,
+    });
+  };
+
   context.subscriptions.push(
     vscode.commands.registerCommand('srcsharp.lint', async () => {
       const dir = workspaceDir();
@@ -266,6 +300,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         await run('play', [file], path.dirname(file));
       }
     }),
+    vscode.commands.registerCommand('srcsharp.autoPlay', () => autoPlay()),
     vscode.commands.registerCommand('srcsharp.runFile', () => startEvent(false)),
     vscode.commands.registerCommand('srcsharp.debugFile', () => startEvent(true)),
     vscode.commands.registerCommand('srcsharp.showScreen', () => screen.show()),

@@ -37,7 +37,7 @@ namespace SRCPlay
     ///   phase                  味方フェイズを簡単な方針で自動で行い、ターンを終える（ScriptedPhase）
     ///   turns 回数             「auto → phase」を繰り返す
     ///   expect finished        シナリオが終わっていることを確かめる
-    ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる
+    ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる（画面の折り返しはまたいで探す）
     ///   expect log 文字列      操作の記録（phase の「攻撃: 敵の名前」など）にその文字列があることを確かめる
     ///   expect error none      エラーが起きていないことを確かめる
     ///   expect eval 式 演算子 式  SRC の式を評価して比べる（例: expect eval HP(標的) &lt; MaxHP(標的)）
@@ -291,7 +291,8 @@ namespace SRCPlay
                     }
                     break;
                 case "message":
-                    if (!Messages.Any(x => x.Contains(text)))
+                    // メッセージは表示の行を "/" でつないで記録しているので、行の折り返しをまたぐ文字列も探す
+                    if (!Messages.Any(x => x.Contains(text) || x.Replace("/", "").Contains(text)))
                     {
                         throw new PlayScriptException($"メッセージ「{text}」が表示されていません: {string.Join(" / ", Messages)}");
                     }

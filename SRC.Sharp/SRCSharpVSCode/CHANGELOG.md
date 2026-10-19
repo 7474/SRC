@@ -1,5 +1,12 @@
 # Change Log
 
+## Unreleased
+
+- Add "開いているイベントを自動プレイ（画面付き・早送り）" (`srcsharp.autoPlay`) to the editor title, the control panel and the command palette. It runs the open event in the debugger with `skipWait`, with a `.play` script picked from the workspace or without one, and shows the play in the "SRC# 画面" tab.
+- Add the `skipWait`, `policy` and `turns` launch attributes. Without `script` and `interactive`, the debugger now plays the player phases with `policy` (default `smart`) and picks "次のステージへ" in the intermission, instead of only sending messages. `maxSteps` is no longer used.
+- Without `interactive`, the screen tab shows the frames sent by the debug adapter instead of refreshing every 0.5 seconds (a srcsharp later than 0.5.3).
+- Add the launch.json snippet "SRC#: 自動プレイ（画面付き・早送り）", and set `skipWait` in the ".play スクリプトで実行" snippet.
+
 ## 0.5.3
 
 0.5.2 was not published to the Marketplace. This release includes its changes.

@@ -130,11 +130,13 @@
             "required": ["program"],
             "properties": {
               "program": { "type": "string", "description": "実行するイベントファイル", "default": "${file}" },
-              "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければメッセージを送り、選択肢は先頭を選ぶ）" },
+              "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければ自動で進める：メッセージを送り、選択肢は先頭を選び、マップは policy で動かす）" },
               "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
               "interactive": { "type": "boolean", "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）", "default": true },
               "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
-              "maxSteps": { "type": "number", "description": "自動で進める操作の上限", "default": 100000 },
+              "skipWait": { "type": "boolean", "description": "ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので早送りで眺められる", "default": false },
+              "policy": { "type": "string", "enum": ["smart", "advance", "hold"], "description": "script が無いときの味方フェイズの動かし方（smart：SRC の CPU と同じ見積もりで目標を選び、危なければ下がる。advance：攻撃できなければ最も近い敵へ近づく。hold：移動せず届く敵だけ攻撃する）", "default": "smart" },
+              "turns": { "type": "number", "description": "script が無いときに自動で進める味方フェイズの上限", "default": 1000 },
               "logLevel": { "type": "string", "enum": ["Trace", "Debug", "Information", "Warning", "Error"], "description": "ログのレベル（無ければ設定の srcsharp.logLevel）。ログはデバッグコンソールとファイルに出る" }
             }
           }
@@ -156,7 +158,11 @@
           },
           {
             "label": "SRC#: .play スクリプトで実行",
-            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# スクリプトで実行", "program": "^\"\\${workspaceFolder}/test.eve\"", "script": "^\"\\${workspaceFolder}/test.play\"" }
+            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# スクリプトで実行", "program": "^\"\\${workspaceFolder}/test.eve\"", "script": "^\"\\${workspaceFolder}/test.play\"", "skipWait": true }
+          },
+          {
+            "label": "SRC#: 自動プレイ（画面付き・早送り）",
+            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# 自動プレイ", "program": "^\"\\${file}\"", "skipWait": true }
           }
         ]
       }
@@ -190,12 +196,14 @@
       { "command": "srcsharp.restartServer", "title": "Language Server を起動し直す", "category": "SRC#", "icon": "$(refresh)" },
       { "command": "srcsharp.lint", "title": "ワークスペースを lint する", "category": "SRC#" },
       { "command": "srcsharp.balance", "title": "バランスレポートを作る", "category": "SRC#" },
-      { "command": "srcsharp.play", "title": "このイベントを自動プレイする", "category": "SRC#" }
+      { "command": "srcsharp.play", "title": "このイベントを自動プレイする（出力のみ）", "category": "SRC#" },
+      { "command": "srcsharp.autoPlay", "title": "開いているイベントを自動プレイ（画面付き・早送り）", "category": "SRC#", "icon": "$(run-all)" }
     ],
     "menus": {
       "editor/title/run": [
         { "command": "srcsharp.runFile", "when": "resourceLangId == src-eve", "group": "navigation@1" },
-        { "command": "srcsharp.debugFile", "when": "resourceLangId == src-eve", "group": "navigation@2" }
+        { "command": "srcsharp.debugFile", "when": "resourceLangId == src-eve", "group": "navigation@2" },
+        { "command": "srcsharp.autoPlay", "when": "resourceLangId == src-eve", "group": "navigation@3" }
       ],
       "debug/toolBar": [
         { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
@@ -210,6 +218,7 @@
         { "command": "srcsharp.runFile", "when": "editorLangId == src-eve" },
         { "command": "srcsharp.debugFile", "when": "editorLangId == src-eve" },
         { "command": "srcsharp.play", "when": "editorLangId == src-eve" },
+        { "command": "srcsharp.autoPlay", "when": "editorLangId == src-eve" },
         { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
         { "command": "srcsharp.cancelReload", "when": "debugType == srcsharp" }
       ]

@@ -157,6 +157,57 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        [TestMethod]
+        [DoNotParallelize]
+        public void Dap_AutoPlayWithoutScriptSendsFramesAndSkipsWait()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var eve = scenario.Write("test.eve",
+                    "プロローグ:",
+                    "Exit",
+                    "",
+                    "スタート:",
+                    "Talk システム",
+                    "こんにちは",
+                    "End",
+                    "Ask どうする",
+                    "進む",
+                    "戻る",
+                    "End",
+                    "Set 答え 選択",
+                    "Wait 600",
+                    "Set 確認 1",
+                    "Quit");
+                var server = new DapServer(client.ServerInput, client.ServerOutput);
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["adapterID"] = "srcsharp" });
+                // script も interactive も無ければ自動で進める。skipWait で Wait 600（60 秒）を待たない
+                Request(client, "launch", new JsonObject { ["program"] = eve, ["appPath"] = scenario.Root, ["skipWait"] = true });
+                Request(client, "setBreakpoints", new JsonObject
+                {
+                    ["source"] = new JsonObject { ["path"] = eve },
+                    ["breakpoints"] = new JsonArray { new JsonObject { ["line"] = 14 } },
+                });
+                Request(client, "configurationDone");
+
+                // 自動で進めるときも、表示したフレームを送る
+                var frame = WaitEvent(client, InteractiveScreen.FrameEvent);
+                Assert.AreEqual("webp", frame["body"]["format"].GetValue<string>());
+
+                var stopped = client.WaitFor(x => x["type"]?.GetValue<string>() == "event" && x["event"]?.GetValue<string>() == "stopped", "stopped イベント", 30);
+                Assert.AreEqual("breakpoint", stopped["body"]["reason"].GetValue<string>());
+                Assert.AreEqual("1", Request(client, "evaluate", new JsonObject { ["expression"] = "答え" })["result"].GetValue<string>(), "選択肢は先頭");
+
+                Request(client, "continue", new JsonObject { ["threadId"] = 1 });
+                WaitEvent(client, "terminated");
+                Request(client, "disconnect");
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
         private static void CopyDirectory(string from, string to)
         {
             foreach (var dir in System.IO.Directory.GetDirectories(from, "*", System.IO.SearchOption.AllDirectories))
