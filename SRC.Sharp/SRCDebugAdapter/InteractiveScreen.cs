@@ -17,6 +17,7 @@ namespace SRCDebugAdapter
     /// デバッグ中のシナリオを VS Code のタブで遊ぶための中継（launch の interactive）。
     /// 表示したフレームを独自のイベントで送り、タブのクリック・キーを独自のリクエストで受けて ScreenGUI に渡す。
     /// 文字入力・ファイル選択は独自のイベントで尋ね、独自のリクエストで答えを受ける。
+    /// acceptInput が false なら（自動で進めるとき）フレームを送るだけで、操作も尋ねることもしない。
     /// </summary>
     public sealed class InteractiveScreen : IDisposable
     {
@@ -40,15 +41,21 @@ namespace SRCDebugAdapter
         private readonly BlockingCollection<Action<ScreenGUI>> inputs = new BlockingCollection<Action<ScreenGUI>>();
         private readonly ConcurrentDictionary<int, TaskCompletionSource<string>> prompts = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         private readonly CancellationTokenSource stop = new CancellationTokenSource();
+        private readonly bool acceptInput;
         private int promptId;
         private int sentFrame = -1;
 
-        public InteractiveScreen(ScreenScenarioRunner runner, Func<string, JsonNode, Task> sendEvent, Func<bool> isPaused, ILogger log = null)
+        public InteractiveScreen(ScreenScenarioRunner runner, Func<string, JsonNode, Task> sendEvent, Func<bool> isPaused, ILogger log = null, bool acceptInput = true)
         {
             this.log = log ?? NullLogger.Instance;
             this.runner = runner;
             this.sendEvent = sendEvent;
             this.isPaused = isPaused;
+            this.acceptInput = acceptInput;
+            if (!acceptInput)
+            {
+                return;
+            }
             runner.InputHandler = (title, message, defaultValue) => Ask(new JsonObject
             {
                 ["kind"] = "input",
@@ -63,7 +70,10 @@ namespace SRCDebugAdapter
         /// <summary>入力を渡すスレッドと、フレームを送るスレッドを動かす</summary>
         public void Start()
         {
-            new Thread(PumpInputs) { IsBackground = true, Name = "SRC# DAP input" }.Start();
+            if (acceptInput)
+            {
+                new Thread(PumpInputs) { IsBackground = true, Name = "SRC# DAP input" }.Start();
+            }
             new Thread(PumpFrames) { IsBackground = true, Name = "SRC# DAP frame" }.Start();
         }
 

@@ -48,12 +48,15 @@ export function isInteractive(session: vscode.DebugSession): boolean {
 /**
  * デバッグ中のシナリオの画面のタブ。
  * interactive なら、送られてくるフレームを出し、クリック・キーをシナリオに渡す。
- * そうでなければ、止まった時と終わった時に取り直し、実行中は一定の間隔で取り直す（表示している間だけ）
+ * そうでなければ、止まった時と終わった時に取り直し、実行中は一定の間隔で取り直す（表示している間だけ）。
+ * 自動で進めるときもフレームを送る srcsharp なら、フレームを出し、間隔での取り直しはしない
  */
 export class ScreenView implements vscode.Disposable {
   private panel: vscode.WebviewPanel | undefined;
   private session: vscode.DebugSession | undefined;
   private interactive = false;
+  /** このセッションでフレームが送られてきたか */
+  private framed = false;
   private timer: NodeJS.Timeout | undefined;
   private requesting = false;
   private unsupported = false;
@@ -71,6 +74,7 @@ export class ScreenView implements vscode.Disposable {
         this.session = s;
         this.reload = undefined;
         this.interactive = isInteractive(s);
+        this.framed = false;
         this.unsupported = false;
         this.status = 'running';
         if (this.interactive || vscode.workspace.getConfiguration('srcsharp').get<boolean>('screen.autoOpen', true)) {
@@ -95,6 +99,10 @@ export class ScreenView implements vscode.Disposable {
           const body = e.body as FrameBody;
           this.image = { mime: `image/${body.format}`, data: body.data };
           void this.panel?.webview.postMessage({ type: 'frame', src: this.dataUrl() });
+          if (!this.framed) {
+            this.framed = true;
+            this.updateTimer();
+          }
         } else if (e.event === PROMPT_EVENT) {
           void this.prompt(e.session, e.body as PromptBody);
         } else if (e.event === SCREEN_COMMAND) {
@@ -212,7 +220,7 @@ export class ScreenView implements vscode.Disposable {
   }
 
   private updateTimer(): void {
-    const poll = !!this.panel?.visible && !!this.session && !this.interactive && this.status === 'running' && !this.unsupported;
+    const poll = !!this.panel?.visible && !!this.session && !this.interactive && !this.framed && this.status === 'running' && !this.unsupported;
     if (poll && !this.timer) {
       this.timer = setInterval(() => void this.refresh(), POLL_INTERVAL_MS);
     } else if (!poll && this.timer) {

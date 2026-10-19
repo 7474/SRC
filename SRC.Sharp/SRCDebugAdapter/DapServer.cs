@@ -39,6 +39,8 @@ namespace SRCDebugAdapter
         private ScreenScenarioRunner runner;
         private EventDebugger debugger;
         private InteractiveScreen interactive;
+        /// <summary>自動で進めるときにフレームだけを送る</summary>
+        private InteractiveScreen frames;
         private HotReloader reloader;
         private readonly Dictionary<string, List<int>> pendingBreakpoints = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
         private Task session;
@@ -248,7 +250,11 @@ namespace SRCDebugAdapter
                 ?? SRCAuthoring.Analysis.ScenarioAnalyzer.FindAppPath(scenarioRoot)
                 ?? scenarioRoot;
             var stopOnEntry = launchArgs["stopOnEntry"]?.GetValue<bool>() ?? false;
-            var maxSteps = launchArgs["maxSteps"]?.GetValue<int>() ?? 100000;
+            // script が無く interactive でもないときの自動プレイ：選択肢は先頭、マップは方針（policy）で動かし、ターンを終える
+            var policy = launchArgs["policy"]?.GetValue<string>() ?? "smart";
+            var turns = launchArgs["turns"]?.GetValue<int>() ?? 1000;
+            // ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので、早送りで眺められる
+            var skipWait = launchArgs["skipWait"]?.GetValue<bool>() ?? false;
             // .play スクリプトがあればそれで動かし、タブの操作は受けない
             var isInteractive = (launchArgs["interactive"]?.GetValue<bool>() ?? false) && string.IsNullOrEmpty(script);
             if (!SRCRender.Compat.SkiaFonts.HasJapaneseFont())
@@ -300,6 +306,13 @@ namespace SRCDebugAdapter
                 interactive = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused, log);
                 interactive.Start();
             }
+            else
+            {
+                // 自動で進めるときも、表示したフレームを送る（タブの操作は受けない）
+                frames = new InteractiveScreen(runner, SendEventAsync, () => debugger.IsPaused, log, acceptInput: false);
+                frames.Start();
+            }
+            SRCCore.Lib.GeneralLib.SkipWait = skipWait;
 
             session = Task.Run(() =>
             {
@@ -321,8 +334,13 @@ namespace SRCDebugAdapter
                     }
                     else
                     {
-                        var auto = new AutoPlayer(runner) { Trace = line => { if (line.StartsWith("stall")) { Output(line); } } };
-                        auto.Run(maxSteps);
+                        var play = new PlayScript(runner) { Trace = line => Output(line) };
+                        play.Run(new[]
+                        {
+                            "policy " + policy,
+                            "choose コマンド 次のステージへ",
+                            "turns " + turns,
+                        });
                     }
                     if (runner.Error != null && !(runner.Error is SRCCore.TestLib.HeadlessTerminatedException))
                     {
@@ -345,7 +363,9 @@ namespace SRCDebugAdapter
                         Output(ex.Message, "stderr");
                     }
                     interactive?.Dispose();
+                    frames?.Dispose();
                     reloader?.Dispose();
+                    SRCCore.Lib.GeneralLib.SkipWait = false;
                     sessionEnded = true;
                     _ = SendEventAsync("terminated", null);
                     runner.Dispose();
@@ -444,6 +464,7 @@ namespace SRCDebugAdapter
         {
             // 答えを待っている文字入力などを打ち切る
             interactive?.Dispose();
+            frames?.Dispose();
             reloader?.Dispose();
             debugger?.Terminate();
             if (runner != null)
