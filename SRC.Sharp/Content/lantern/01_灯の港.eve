@@ -302,7 +302,7 @@ Talk ソラ
 Talk リオ
 やったね、$(主人公愛称)！
 End
-Continue 02_霧の渓谷.eve
+Continue ステージ\02_霧の渓谷.eve
 
 #===============================================================
 # エピローグ
@@ -334,9 +334,9 @@ Talk マルタ
 船長、港を守ってくれたお礼です。それと、よろず屋のポポと、訓練所のドーラ教官に話を通しておきました。
 旅の支度に役立ててください。
 End
-IntermissionCommand よろず屋 shop.eve
-IntermissionCommand 訓練所 training.eve
-IntermissionCommand 部隊名簿 roster.eve
+IntermissionCommand よろず屋 Lib\shop.eve
+IntermissionCommand 訓練所 Lib\training.eve
+IntermissionCommand 部隊名簿 Lib\roster.eve
 Talk システム
 インターミッションに「よろず屋」「訓練所」「部隊名簿」が加わった。
 End
