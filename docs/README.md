@@ -49,4 +49,5 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 - [SRC 公式サイト](http://www.src-srpg.jpn.org/)
 - [SRC# GitHub](https://github.com/7474/SRC)
 - [SRC# デモ（データビューア）](https://7474.github.io/SRC/)
+- [SRC#Web（ブラウザ版、リリース版）](https://src.koudenpa.net/)（[7474/SRC-Site](https://github.com/7474/SRC-Site)）
 - [SRC#Web（ブラウザ版、開発版）](https://7474.github.io/SRC/web/)
