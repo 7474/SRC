@@ -68,6 +68,10 @@ namespace SRCCore.Commands
                     SystemConfig.Save();
                     break;
 
+                case AutoPlayCmdID: // オートプレイ
+                    AutoPlayCommand();
+                    break;
+
                 case ConfigurationCmdID: // 設定変更
                     GUI.Configure();
                     break;
@@ -125,6 +129,12 @@ namespace SRCCore.Commands
                 }
             }
 
+            ProceedToNextTurn();
+        }
+
+        // 敵・中立・ＮＰＣのフェイズを行い、次の味方フェイズに移る
+        private void ProceedToNextTurn()
+        {
             // 各陣営のフェイズに移行
             SRC.StartTurn("敵");
             if (SRC.IsScenarioFinished)
@@ -150,6 +160,38 @@ namespace SRCCore.Commands
             // 味方フェイズに戻る
             SRC.StartTurn("味方");
             SRC.IsScenarioFinished = false;
+        }
+
+        // 「オートプレイ」コマンド
+        // 味方フェイズを CPU と同じ思考で自動で行い、ターンを終える。次の味方フェイズからも続ける（SRC.StartTurn）
+        private void AutoPlayCommand()
+        {
+            if (SRC.AutoPlay)
+            {
+                SRC.AutoPlay = false;
+                return;
+            }
+
+            var ret = GUI.Confirm(
+                "味方ユニットを自動で動かし、ターンを進めます。"
+                + Environment.NewLine
+                + "止めるときは、味方フェイズの間に右ボタンを押してください。",
+                "オートプレイ",
+                GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
+            if (ret == GuiDialogResult.Cancel)
+            {
+                return;
+            }
+
+            SRC.AutoPlay = true;
+            // 今の味方フェイズの残りを行い、ターンを終える
+            if (!SRC.AutoPlayPhase())
+            {
+                SRC.IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
+            ProceedToNextTurn();
         }
 
         // ユニット一覧の表示

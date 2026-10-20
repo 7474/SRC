@@ -379,7 +379,7 @@ namespace SRCCore.Units
                         }
 
                         // 自動反撃の場合、味方ユニットは残弾数が少ない武器を使用しない
-                        if (SRC.SystemConfig.AutoDefense)
+                        if (SRC.IsAutoDefense)
                         {
                             if (!w.IsWeaponClassifiedAs("永"))
                             {
@@ -453,7 +453,7 @@ namespace SRCCore.Units
 
             // かばう必要がない？
             // 手動反撃で味方の場合はダメージにかかわらず常にかばう
-            if (Party != "味方" || SRC.SystemConfig.AutoDefense)
+            if (Party != "味方" || SRC.IsAutoDefense)
             {
                 if (tw.IsNormalWeapon())
                 {

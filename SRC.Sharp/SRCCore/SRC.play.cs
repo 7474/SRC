@@ -294,17 +294,40 @@ namespace SRCCore
                         return;
                     }
 
-                    // 操作可能なユニットがいるかどうかチェック
-                    if (UList.Items.Count(x => x.Party == "味方" && x.CanAction) > 0
-                        || Expression.IsOptionDefined("味方フェイズ強制発動"))
+                    // オートプレイ: 操作可能な味方ユニットを CPU が動かし、そのまま敵フェイズへ進む
+                    var autoPlayed = false;
+                    if (AutoPlay && UList.Items.Count(x => x.Party == "味方" && x.CanAction) > 0)
                     {
-                        break;
+                        if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") == 0)
+                        {
+                            // 相手がいなければ止める（ターンだけが進み続けないように）
+                            AutoPlay = false;
+                        }
+                        else
+                        {
+                            autoPlayed = AutoPlayPhase();
+                            if (IsScenarioFinished)
+                            {
+                                GUI.UnlockGUI();
+                                return;
+                            }
+                        }
                     }
 
-                    // CPUが操作するユニットがいるかどうかチェック
-                    if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") == 0)
+                    if (!autoPlayed)
                     {
-                        break;
+                        // 操作可能なユニットがいるかどうかチェック
+                        if (UList.Items.Count(x => x.Party == "味方" && x.CanAction) > 0
+                            || Expression.IsOptionDefined("味方フェイズ強制発動"))
+                        {
+                            break;
+                        }
+
+                        // CPUが操作するユニットがいるかどうかチェック
+                        if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") == 0)
+                        {
+                            break;
+                        }
                     }
 
                     // 敵フェイズ
@@ -524,6 +547,33 @@ namespace SRCCore
             GUIStatus.ClearUnitStatus();
         }
 
+        /// <summary>
+        /// オートプレイで味方フェイズを行う。操作可能な味方ユニットを CPU と同じ思考で動かし、
+        /// 行動しなかったユニットの行動終了イベントまで済ませる。
+        /// 途中で止めた（右ボタン）・シナリオが終わったときは false（残りはプレイヤーが動かす）
+        /// </summary>
+        public bool AutoPlayPhase()
+        {
+            GUI.LockGUI();
+            CPUOperation("味方");
+            if (IsScenarioFinished || !AutoPlay)
+            {
+                return false;
+            }
+
+            // 「ターン終了」と同じく、行動していないユニットの行動終了イベントを行う
+            foreach (var u in UList.Items.Where(x => x.Party == "味方" && x.CanAction).ToList())
+            {
+                Commands.SelectedUnit = u;
+                Event.HandleEvent("行動終了", u.MainPilot().ID);
+                if (IsScenarioFinished)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void CPUOperation(string uparty)
         {
             // CPUによるユニット操作
@@ -531,6 +581,19 @@ namespace SRCCore
             {
                 foreach (var u in UList.Items)
                 {
+                    // オートプレイは右ボタンを押すと止まる（残りのユニットはプレイヤーが動かす）
+                    if (uparty == "味方")
+                    {
+                        if (GUI.IsRButtonPressed(true))
+                        {
+                            AutoPlay = false;
+                        }
+                        if (!AutoPlay)
+                        {
+                            return;
+                        }
+                    }
+
                     // フェイズ中に行動するユニットを選択
                     Commands.SelectedUnit = u;
                     if (u.Status != "出撃")

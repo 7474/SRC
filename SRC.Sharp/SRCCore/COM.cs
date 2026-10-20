@@ -963,7 +963,7 @@ namespace SRCCore
                         def_mode = "防御";
                     }
                 }
-                else if (Commands.SelectedTarget.Party == "味方" && !SystemConfig.AutoDefense)
+                else if (Commands.SelectedTarget.Party == "味方" && !SRC.IsAutoDefense)
                 {
                     // 味方ユニットによる手動反撃を行う場合
 
@@ -5238,7 +5238,7 @@ namespace SRCCore
                     }
 
                     // 手動反撃時のサポートアタック以外は残弾数が少ない武器を使用しない
-                    if (amode != "サポートアタック" || SystemConfig.AutoDefense)
+                    if (amode != "サポートアタック" || SRC.IsAutoDefense)
                     {
                         if (!selectedWeapon.IsWeaponClassifiedAs("永"))
                         {
@@ -6486,7 +6486,7 @@ namespace SRCCore
                     if (u.Party == "味方")
                     {
                         // 自動反撃モードかどうか
-                        if (SystemConfig.AutoDefense)
+                        if (SRC.IsAutoDefense)
                         {
                             goto NextWeapon;
                         }

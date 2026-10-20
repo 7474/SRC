@@ -126,6 +126,15 @@ namespace SRCCore
         // システムオプション
         public ISystemConfig SystemConfig { get; set; }
 
+        /// <summary>
+        /// オートプレイ（味方フェイズを CPU と同じ思考で自動で行い、ターンを終える）。マップコマンドで切り替える。
+        /// 設定ファイル・セーブデータには残さない
+        /// </summary>
+        public bool AutoPlay { get; set; }
+
+        /// <summary>敵の攻撃への反撃・防御・回避を CPU と同じ判断で選ぶか（自動反撃モードかオートプレイ中）</summary>
+        public bool IsAutoDefense => SystemConfig.AutoDefense || AutoPlay;
+
         // マス目の表示をするか
         public bool ShowSquareLine => SystemConfig.ShowSquareLine;
         // 敵フェイズにはＢＧＭを変更しないか

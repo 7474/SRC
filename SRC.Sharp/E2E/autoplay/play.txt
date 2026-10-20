@@ -1,0 +1,12 @@
+# マップコマンド「オートプレイ」を選ぶと、味方フェイズを CPU が行い、ターンを進めて敵を倒し、シナリオを終える
+auto 60
+expect message 戦闘開始
+cell 10 1 right
+menu オートプレイ
+wait dialog
+dialog OK
+auto 120
+expect message 勝利
+expect finished
+expect eval ターン数 >= 2
+expect error none

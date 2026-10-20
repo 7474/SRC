@@ -201,6 +201,12 @@ namespace SRCCore.Commands
                     // 自動反撃モード
                     mapCommands.Add(new UiCommand(AutoDefenseCmdID, "自動反撃モード", SystemConfig.AutoDefense));
 
+                    // オートプレイ
+                    if (!ViewMode)
+                    {
+                        mapCommands.Add(new UiCommand(AutoPlayCmdID, "オートプレイ", SRC.AutoPlay));
+                    }
+
                     // 設定変更
                     mapCommands.Add(new UiCommand(ConfigurationCmdID, "設定変更"));
 
