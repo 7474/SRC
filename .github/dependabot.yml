@@ -3,6 +3,13 @@
 updates:
 - directory: /SRC.Sharp/
   groups:
+    # SkiaSharp は管理側とネイティブ（NativeAssets.*）の版が揃っていないと起動時に失敗するため、
+    # メジャーの更新も 1 つの PR にまとめる（人が確かめてマージする）。マイナー・パッチは下の nuget-minor-patch に入る
+    skiasharp-major:
+      patterns:
+      - 'SkiaSharp*'
+      update-types:
+      - major
     nuget-minor-patch:
       patterns:
       - '*'
