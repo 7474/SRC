@@ -158,7 +158,7 @@ else
                     <ul class="items" id="archives">
                         @foreach (var archive in archives)
                         {
-                            <li>
+                            <li @key="archive.Name">
                                 @if (archive.Kind == CatalogEntry.KindAsset)
                                 {
                                     <span class="icon icon-asset" aria-hidden="true"></span>
