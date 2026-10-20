@@ -8,6 +8,11 @@ Azure Static Web Apps（SWA）へのデプロイと、その後始末に使う�
 | `.github/workflows/CD-swa-help.yml` | SRC#Help（`SRC.Sharp.Help`）を SWA にデプロイする。PR のプレビュー環境の扱いは上と同じ |
 | `.github/workflows/CD-swa-cleanup-previews.yml` | PR がクローズ済みなのに残っているプレビュー環境を毎日閉じる |
 
+## 実行の重なりとトークンの無い PR
+
+- 本番（master への push）への配信が重なると、後から始めたものが「No matching Static Web App environment was found」などで失敗する。そのため `concurrency` で本番への配信は 1 つずつ動かし（待っているものは最新だけが残る）、PR では同じ PR の古い実行を取り消す（[Control the concurrency of workflows and jobs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)）
+- Dependabot やフォークからの PR では Actions のシークレットが渡されない（[Troubleshooting Dependabot on GitHub Actions](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）。デプロイ用のトークンが空のときは、プレビュー環境への配信と Cypress を省く。SRC#DataViewer は配信の前のビルドまでは行い、SRC#Help のビルドは CI の `build-help` で確かめる（[テストと CI の設計](./testing.md)）
+
 ## プレビュー環境の定期削除
 
 SWA のプレビュー環境の数には上限があります（[Preview environments](https://learn.microsoft.com/azure/static-web-apps/preview-environments)）。PR を閉じたときの削除が失敗したり、ワークフローが動かなかったりして環境が残ると、新しい PR のデプロイが次のエラーで失敗します。

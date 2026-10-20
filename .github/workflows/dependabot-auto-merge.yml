@@ -1,0 +1,32 @@
+name: Dependabot auto-merge
+
+# Dependabot がまとめたマイナー・パッチの更新（.github/dependabot.yml のグループ）に自動マージを設定する。
+# マージされるのはブランチ保護の必須チェック（CI の ci-passed）が通ったときだけ（docs/testing.md）。
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+#
+# GITHUB_TOKEN で設定した自動マージによる master への push では、push で動くワークフロー（配信など）が動かない
+# （https://docs.github.com/en/actions/concepts/security/github_token）。
+# Dependabot のシークレットに AUTOMERGE_TOKEN（contents・pull-requests の書き込み権限を持つトークン）があればそれを使う。
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == '7474/SRC'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fetch metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v3
+
+      # CI でビルド・テストしているもののグループだけ（HelpConverter のグループ・メジャーの更新・セキュリティの更新は人がマージする）
+      - name: Enable auto-merge
+        if: contains(fromJSON('["nuget-minor-patch", "bundler-minor-patch", "actions-minor-patch"]'), steps.metadata.outputs.dependency-group)
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
