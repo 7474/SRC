@@ -142,9 +142,9 @@ namespace SRCCore.Filesystem.Tests
                 Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
                 Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "None", "Pilot.txt")));
 
-                // 一覧を作った後に作ったファイルは、Invalidate するまで見えない（書き換えたら Invalidate を呼ぶ前提）
+                // 一覧を作った後に作ったファイルは、非Windowsでは Invalidate するまで見えない
                 File.WriteAllText(Path.Combine(root, "data", "Unit", "Pilot.txt"), "x");
-                Assert.IsFalse(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
+                Assert.AreEqual(OperatingSystem.IsWindows(), PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
                 PathResolver.Invalidate();
                 Assert.IsTrue(PathResolver.FileExists(Path.Combine(root, "data", "Unit", "Pilot.txt")));
             }
