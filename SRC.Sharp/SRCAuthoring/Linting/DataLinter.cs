@@ -34,7 +34,9 @@ namespace SRCAuthoring.Linting
         }
 
         /// <summary>ディレクトリ（中の *.txt と *.eve）またはファイルを検査する</summary>
-        public async Task<LintResult> LintAsync(IEnumerable<string> paths, string scenarioPath = null)
+        /// <param name="systemFiles">先に読み込む汎用データ（Data\System の sp.txt・alias.txt など）。検査の対象にせず、問題も報告しない。
+        /// シナリオに含まれないスペシャルパワーなどを参照しても問題にしないために使う</param>
+        public async Task<LintResult> LintAsync(IEnumerable<string> paths, string scenarioPath = null, IEnumerable<string> systemFiles = null)
         {
             var src = new SRCCore.SRC();
             src.SystemConfig.AppPath = AppContext.BaseDirectory;
@@ -53,6 +55,18 @@ namespace SRCAuthoring.Linting
                     .SelectMany(x => Directory.EnumerateFiles(x, "*.eve", SearchOption.AllDirectories)))
                 .Concat(targets.Where(x => File.Exists(x)))
                 .ToList();
+
+            foreach (var file in (systemFiles ?? Enumerable.Empty<string>()).Where(x => File.Exists(x) && !x.EndsWith(".eve", StringComparison.OrdinalIgnoreCase)))
+            {
+                var ignored = new LintResult();
+                foreach (var proc in LintProcs)
+                {
+                    if (await proc.ExecuteAsync(src, new FileInfo(file), ignored))
+                    {
+                        break;
+                    }
+                }
+            }
 
             var result = new LintResult();
             var processed = new HashSet<string>();

@@ -37,7 +37,7 @@ jobs:
       # マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
       - name: Build SRC#Web
         run: |
-          dotnet workload install wasm-tools
+          dotnet workload install wasm-tools --skip-manifest-update
           dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o ${{ env.WEB_PUBLISH_DIR }}
 
       - name: Setup Pages

@@ -169,8 +169,10 @@ jobs:
     # master への push は公開するものと同じ AOT で発行し、E2E を通す（docs/gui/web.md）
     - name: Build SRC#Web
       run: |
-        dotnet workload install wasm-tools
+        dotnet workload install wasm-tools --skip-manifest-update
         dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web -p:RunAOTCompilation=${{ github.event_name == 'pull_request' && 'false' || 'true' }}
+        # ブラウザで動く lint（スレッドを使わない別の WebAssembly）
+        dotnet publish SRC.Sharp/SRCLintWeb/SRCLintWeb.csproj -c Release -o SRC.Sharp/SRCLintWeb/bin/web
 
     - name: Setup Node.js
       uses: actions/setup-node@v7
@@ -186,6 +188,8 @@ jobs:
       run: |
         mkdir -p ${SRCWEB_ROOT}${SRCWEB_BASE}
         cp -r ../SRCSharpWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}${SRCWEB_BASE}
+        mkdir -p ${SRCWEB_ROOT}/lint
+        cp -r ../SRCLintWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}/lint/
         sed -i "s|<base href=\"/\" />|<base href=\"${SRCWEB_BASE}\" />|" ${SRCWEB_ROOT}${SRCWEB_BASE}index.html
         npm ci
         npx playwright install --with-deps chromium
