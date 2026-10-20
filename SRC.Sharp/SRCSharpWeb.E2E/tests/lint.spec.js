@@ -9,7 +9,11 @@ const file = (name, text) => ({ name, data: Buffer.from(text.split('\n').join('\
 const pilot = (sp) => file('シナリオ/Data/pilot.txt', [
   'テスト', 'テスト, てすと, 男性, 汎用, AAAA, 100', '特殊能力なし', '100, 100, 100, 100, 100, 100, 普通', `ＳＰ, 30, ${sp}, 1`, '-.bmp, -.mid', '',
 ].join('\n'));
-const system = makeZip([file('Data/System/sp.txt', ['集中, しゅうちゅう', '集, 15, 自分, ターン, -, -, 集中', '命中強化Lv3 回避強化Lv3', '１ターンの間、命中＆回避+30', ''].join('\n'))]);
+const system = makeZip([
+  file('Data/System/sp.txt', ['集中, しゅうちゅう', '集, 15, 自分, ターン, -, -, 集中', '命中強化Lv3 回避強化Lv3', '１ターンの間、命中＆回避+30', ''].join('\n')),
+  // 汎用戦闘アニメ（本体の Lib）のラベル。静的解析はここにあるラベルも見る
+  file('Lib/汎用戦闘アニメ/include.eve', 'AttackDemo:\nReturn\n'),
+]);
 
 async function lint(page, zip) {
   return page.evaluate(async ([base, zipB64, systemB64]) => {
@@ -39,4 +43,17 @@ test('イベントとデータの問題をファイル・行つきで返す', as
   const messages = result.diagnostics.map(d => `${d.file}:${d.line} ${d.message}`);
   expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/test\.eve:2 .*EndIf/));
   expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/Data\/pilot\.txt:\d+ 存在しないというスペシャルパワーは存在しません/));
+});
+
+test('静的解析: Call の飛び先のラベルと include するファイルが無ければ知らせる（汎用データの Lib のラベルは見つかる）', async ({ page }) => {
+  const zip = makeZip([
+    file('シナリオ/test.eve', '<部品.eve>\n<無いファイル.eve>\nスタート:\nCall AttackDemo\nCall 部品のラベル\nCall 無いラベル\nExit\n\n呼び出し元のラベル:\nReturn\n'),
+    // include される側は単独では解析しない（呼び出し元のラベルを「見つからない」としないため）
+    file('シナリオ/部品.eve', '部品のラベル:\nCall 呼び出し元のラベル\nReturn\n'),
+  ]);
+  const result = await lint(page, zip);
+  const messages = result.diagnostics.map(d => `${d.file}:${d.line} ${d.message}`);
+  expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/test\.eve:\d+ ラベル「無いラベル」が見つかりません/));
+  expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/test\.eve:2 include するファイル「無いファイル\.eve」が見つかりません/));
+  expect(messages.filter(m => /AttackDemo|部品のラベル|呼び出し元のラベル/.test(m))).toEqual([]);
 });

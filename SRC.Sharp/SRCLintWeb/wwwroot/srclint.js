@@ -5,7 +5,8 @@
 //   // result.diagnostics: [{ file, line, severity: 'error' | 'warning', message, source }]
 //
 // zip の目次を読み、*.eve と *.txt だけを取り出して検査する（画像や音は読まない）。
-// systemArchives の zip（URL か Blob）からは Data/System/*.txt（sp.txt など）を汎用データとして読み込む（検査はしない）。
+// systemArchives の zip（URL か Blob）からは汎用データとして Data/System/*.txt（sp.txt など）と Lib/**/*.eve（汎用戦闘アニメなど）を読み込む（検査はしない）。
+// 静的解析（Call・Goto の飛び先のラベル、include するファイル）は、汎用データの Lib にあるラベルも見る。
 import { dotnet } from './_framework/dotnet.js';
 
 const MAX_TEXT_TOTAL = 128 * 1024 * 1024;
@@ -53,8 +54,11 @@ export async function lintZip(zip, options = {}) {
     try {
       const r = typeof archive === 'string' ? await httpReader(archive) : blobReader(archive);
       for (const e of await readEntries(r)) {
-        if (!e.directory && /(^|\/)Data\/System\/[^/]+\.txt$/i.test(e.name)) {
-          lint.AddFile(`system/${n}/${e.name.split('/').pop()}`, await extract(r, e));
+        const m = !e.directory && e.name.match(/(?:^|\/)((?:Data\/System\/[^/]+\.txt)|(?:Lib\/.+\.eve))$/i);
+        if (m) {
+          const data = await extract(r, e);
+          // Lib のイベントは、静的解析に要るラベルと include の行だけにする（汎用戦闘アニメは 8 万行あり、読み込みに時間がかかる）
+          lint.AddFile(`app/${m[1]}`, /\.eve$/i.test(m[1]) ? labelsOnly(data) : data);
         }
       }
     } catch (err) {
@@ -63,6 +67,18 @@ export async function lintZip(zip, options = {}) {
   }
   const result = JSON.parse(await lint.LintAsync(root));
   return { ...result, root, systemErrors };
+}
+
+const encoder = new TextEncoder();
+function labelsOnly(bytes) {
+  let text;
+  try {
+    text = strictUtf8.decode(bytes);
+  } catch {
+    text = sjis.decode(bytes);
+  }
+  const kept = text.split(/\r?\n/).filter(line => /^\s*[^#\s].*:\s*$/.test(line) || /^\s*<[^>]+>\s*$/.test(line));
+  return encoder.encode(kept.join('\n') + '\n');
 }
 
 // すべての名前が同じフォルダの下にあれば、そのフォルダ（SRC#Web と SRC-Site の root と同じ考え方）

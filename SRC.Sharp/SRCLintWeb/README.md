@@ -1,10 +1,16 @@
 # SRCLintWeb
 
-`srcsharp lint` と同じ検査（SRCAuthoring の `DataLinter`）を、ブラウザの中で動かす WebAssembly。シナリオの zip を、どこにも送らずに検査する。
+`srcsharp lint` と同じ検査（SRCAuthoring の `DataLinter`）と静的解析（`ScenarioAnalyzer`。VS Code 拡張の LSP と同じ）を、ブラウザの中で動かす WebAssembly。シナリオの zip を、どこにも送らずに検査する。
+
+| 検査 | 内容 |
+|---|---|
+| データ | `*.txt`（ユニット・パイロット・アイテム・メッセージ・戦闘アニメなど）を SRCCore の読み込み処理で読む。存在しないスペシャルパワーの参照など |
+| イベント | `*.eve` の読み込み（`If` と `EndIf` の対応など） |
+| 静的解析 | `Call`・`Goto` の飛び先のラベルが無い、include（`<ファイル>`）するファイルが無い。入口のイベントファイル（ほかから include されず、シナリオの `Lib` の下でないもの）ごとに解析する |
 
 - スレッドを使わない（SRC#Web と違ってクロスオリジン分離（COOP/COEP）が要らない）ので、普通の頁から読み込める。
 - zip の目次を読み、`*.eve` と `*.txt` だけを展開して検査する。画像・音は読まない。
-- 汎用データ（`Data/System` の `sp.txt` など）を別の zip から読み込める。シナリオに含まれないスペシャルパワーなどを参照しても、問題にしない。
+- 汎用データを別の zip から読み込める。`Data/System/*.txt`（`sp.txt` など）と `Lib/**/*.eve`（汎用戦闘アニメなど）。シナリオに含まれないスペシャルパワーや、汎用戦闘アニメのラベル（`AttackDemo` など）を参照しても問題にしない。`Lib` のイベントはラベルと include の行だけを読む（汎用戦闘アニメは 8 万行あるため）。
 - 文字コードの警告（Shift_JIS のデータ）は出さない。SRC# は Shift_JIS も読めるため。
 
 ## 発行
@@ -29,7 +35,7 @@ const result = await lintZip(file, { systemArchives: ['/files/packs/src-basic/xx
 // result.systemErrors: 読めなかった汎用データの zip
 ```
 
-- `systemArchives` は汎用データの zip。URL（Range 要求に応えること）か Blob。中の `Data/System/*.txt` だけを読む。読めなかった zip は飛ばし、`result.systemErrors` に理由を入れる。
+- `systemArchives` は汎用データの zip。URL（Range 要求に応えること）か Blob。中の `Data/System/*.txt` と `Lib/**/*.eve` だけを読む。読めなかった zip は飛ばし、`result.systemErrors` に理由を入れる。
 - イベントの問題（`If` に対応する `EndIf` が無いなど）は、`srcsharp lint` と同じく `warning` になる。
 
 ## テスト
