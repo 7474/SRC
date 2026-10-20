@@ -25,6 +25,11 @@ updates:
   schedule:
     interval: daily
 - directory: /SRC.Sharp.Help/
+  # Static Web Apps（Oryx）で使う Ruby は 3.1（SRC.Sharp.Help/.ruby-version）。public_suffix 7 は Ruby 3.2 以上が要る
+  ignore:
+  - dependency-name: public_suffix
+    versions:
+    - '>= 7'
   groups:
     bundler-minor-patch:
       patterns:

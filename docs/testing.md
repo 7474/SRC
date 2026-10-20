@@ -89,6 +89,8 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 Windows のシナリオ E2E のタイムアウトは、同じテストが Linux では通っていた。タイムアウトのほかに Windows でだけ落ちたのは `PathResolverTests`（大文字・小文字を区別しないファイルシステムでの期待値。`SRCCoreTests` に含まれ、引き続き Windows で動かす）だけだった。
 
+`build-help` を足したところ、`SRC.Sharp.Help/Gemfile.lock` に Ruby 3.1 では入れられない `public_suffix` 7.0.5（Ruby 3.2 以上が要る）が入っていた。Static Web Apps（Oryx）の `bundle install` は黙って 6.0.2 に解決し直してビルドしていたため、配信は成功していた。6.0.2 に戻し、Dependabot では 7 以上を無視する。
+
 ## 廃止したもの
 
 | もの | 理由 |
