@@ -49,6 +49,25 @@ namespace SRCAuthoring.Tests
         }
 
         [TestMethod]
+        public void Lint_SystemFilesDefineSpecialPowersWithoutBeingChecked()
+        {
+            using (var scenario = new TestScenario())
+            {
+                var pilot = scenario.Write(Path.Combine("Data", "pilot.txt"),
+                    "テスト", "テスト, てすと, 男性, 汎用, AAAA, 100", "特殊能力なし", "100, 100, 100, 100, 100, 100, 普通", "ＳＰ, 30, 集中, 1", "-.bmp, -.mid");
+                var sp = scenario.Write(Path.Combine("System", "sp.txt"),
+                    "集中, しゅうちゅう", "集, 15, 自分, ターン, -, -, 集中", "命中強化Lv3 回避強化Lv3", "１ターンの間、命中＆回避+30");
+
+                var without = new DataLinter().LintAsync(new[] { pilot }, scenario.Root).Result;
+                Assert.IsTrue(without.Diagnostics.Any(x => x.Message.Contains("集中というスペシャルパワーは存在しません")), string.Join("\n", without.Diagnostics));
+
+                var with = new DataLinter().LintAsync(new[] { pilot }, scenario.Root, new[] { sp }).Result;
+                Assert.IsFalse(with.Diagnostics.Any(x => x.Message.Contains("スペシャルパワー")), string.Join("\n", with.Diagnostics));
+                CollectionAssert.DoesNotContain(with.CheckedFiles, Path.GetFullPath(sp));
+            }
+        }
+
+        [TestMethod]
         public void Lint_ReportsEventErrorsAsSarif()
         {
             using (var scenario = new TestScenario())

@@ -87,7 +87,7 @@ jobs:
         dotnet-version: '10.0.x'
 
     # マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
-    - run: dotnet workload install wasm-tools
+    - run: dotnet workload install wasm-tools --skip-manifest-update
     - run: dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o out/web
     - run: cd out/web/wwwroot && zip -qr ../../../SRCSharpWeb.zip .
 
