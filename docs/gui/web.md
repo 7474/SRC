@@ -1,8 +1,6 @@
 # SRC#Web（ブラウザ版）
 
-> 更新日: 2026-10-16
-
-ブラウザで動く SRC#。データビューアの `SRCTestBlazor` とは別のプロジェクト `SRCSharpWeb` として作る。
+ブラウザで動く SRC#。データビューアの `SRCTestBlazor` とは別のプロジェクト `SRCSharpWeb`。
 
 ## 方針
 
@@ -39,7 +37,7 @@ SRCCore はゲームスレッドで処理を止めて待つ（メッセージ送
 
 - マルチスレッドには SharedArrayBuffer が必要で、ページがクロスオリジン分離されている（`Cross-Origin-Opener-Policy: same-origin` と `Cross-Origin-Embedder-Policy: require-corp`）必要がある
 - GitHub Pages はヘッダを設定できないため、[coi-serviceworker](https://github.com/gzuidhof/coi-serviceworker)（MIT）でヘッダを付ける。初回は Service Worker を有効にするために 1 回再読み込みする。分離が有効になるまで .NET を起動しない
-- 確認済み（Chromium、ローカル）: ヘッダ付きの配信と coi-serviceworker のどちらでも、裏のスレッドが `Thread.Sleep` で待つ間もメインスレッドの画面が更新される。SkiaSharp（`SkiaSharp.NativeAssets.WebAssembly` のマルチスレッド版）で裏のスレッドから描画できる
+- ヘッダ付きの配信と coi-serviceworker のどちらでも、裏のスレッドが `Thread.Sleep` で待つ間もメインスレッドの画面が更新される（Chromium）。描画は SkiaSharp（`SkiaSharp.NativeAssets.WebAssembly` のマルチスレッド版）で裏のスレッドから行う
 - ビルドには `wasm-tools` ワークロードが必要（SkiaSharp のネイティブライブラリのリンクと AOT コンパイルのため）
 
 ### 速さ
@@ -48,13 +46,14 @@ SRCCore はゲームスレッドで処理を止めて待つ（メッセージ送
 - CI では、PR（`CI.yml` の `test-web`、SWA のプレビュー）は AOT を切って待ち時間を減らす。master への push の `test-web` は公開するものと同じ AOT で発行して E2E を通し、AOT 固有の問題をマージ直後に見つける。Pages・SWA の本番・リリースは AOT
 - ブラウザ内のファイルシステムの操作は、ゲームスレッド（Web Worker）から 1 回ごとに UI スレッドへの呼び出しになり重い。大文字・小文字を区別しないパスの解決（`PathResolver`）はフォルダの一覧をキャッシュし、無いファイルを探すたびに一覧を作り直さない
 
-ランタン号を選んでから最初の行を実行するまで（ローカル・Chromium、3 回）:
+ランタン号を選んでから最初の行を実行するまで（ローカル・Chromium）:
 
-| 版 | 時間 | ダウンロード（`_framework` の brotli） | 発行の時間 |
+| 発行 | 時間 | ダウンロード（`_framework` の brotli） | 発行にかかる時間 |
 |---|---|---|---|
-| インタープリター（以前） | 4.2〜4.7 秒 | 5.8 MB | ― |
-| パスの解決のキャッシュ | 約 3.4 秒 | 5.8 MB | ― |
-| ＋ AOT | 約 2.2 秒 | 11.0 MB | ＋約 8 分 |
+| AOT（既定） | 約 2.2 秒 | 11.0 MB | インタープリターより約 8 分長い |
+| インタープリター（`-p:RunAOTCompilation=false`） | 約 3.4 秒 | 5.8 MB | — |
+
+AOT を既定にした判断は [SRC#Web の発行を AOT コンパイルにする](../decisions/2026-10-17-srcweb-aot.md) を参照。
 
 ### ファイル
 
@@ -96,7 +95,6 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 - ブラウザは利用者の操作があるまで音を鳴らさないため、画面の最初のクリック・キー入力で開始する（[Autoplay policy](https://developer.chrome.com/blog/autoplay)）
 - SoundFont（.sf2）は SRC#Web の本体には同梱しない。シナリオのアーカイブに含まれる .sf2 を使い、無ければ素材（カタログの `requires` や利用者が追加した素材のアーカイブ）に含まれる .sf2 を使う。どちらにも無ければ MIDI は鳴らさない
 - 組み込みのカタログでは、遊べるシナリオ（ランタン号）が素材 `timgm6mb`（TimGM6mb、約 6 MB、GPL-2.0）を `requires` で重ね、MIDI の BGM を鳴らす。ビルド時に MuseScore のリポジトリ（Debian の `timgm6mb-soundfont` と同じ版）から取得し、ライセンス（GPL-2.0 の全文）と出典を添えて `assets/timgm6mb.zip` にする（`SRCSharpWeb.csproj`）
-- 和音 3 つの短い MIDI で、合成が実時間に間に合うことを確認した（インタープリターで。発行は AOT コンパイルする）
 
 ### タッチ操作
 
@@ -154,9 +152,9 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 マップのカーソル・クリック待ちのポインタは、十字キーを押すと出て、マウス・タッチを使うと消える。
 
-未対応: `MouseX`・`MouseY` で位置を判定する画面はポインタを 16px ずつ動かして狙う。描いた画像・文字（PaintPicture・PaintString）や MousePoint.eve のクリック領域への吸い付き、`Wait Click` 以外（`KeyState` でボタンを待つループ）でのポインタは今後の課題。
+未対応: `MouseX`・`MouseY` で位置を判定する画面はポインタを 16px ずつ動かして狙う。描いた画像・文字（PaintPicture・PaintString）や MousePoint.eve のクリック領域への吸い付きと、`Wait Click` 以外（`KeyState` でボタンを待つループ）でのポインタは無い。
 
-タッチの端末（`pointer: coarse`）では既定で出し、それ以外では出さない。システムメニューの「仮想パッドの表示の切り替え」で切り替えられ、設定はブラウザ（localStorage の `srcweb.virtualPad`。以前の `srcweb.virtualKeys` も読む）に残る。
+タッチの端末（`pointer: coarse`）では既定で出し、それ以外では出さない。システムメニューの「仮想パッドの表示の切り替え」で切り替えられ、設定はブラウザ（localStorage の `srcweb.virtualPad`。古い名前の `srcweb.virtualKeys` も読む）に残る。
 
 画面ではスクロール・拡大・長押しのメニューを止める（`touch-action: none`）。タッチの後にブラウザが作る互換のマウスイベントは無視する。プレイ中のシステムメニュー（画面の右下の ≡）は、タッチの端末では押しやすい大きさにする。
 
@@ -239,83 +237,30 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 ## 外部のコンテンツ源
 
-> サイトの設定（`srcweb.json`）、カタログ（名前付きの形式・`kind`・`requires`・`root`）、URL での起動、利用者による素材・カタログの追加は実装済み。置き方と形式は [SRC#Web を外部のサイトに置く](./web-hosting.md) を参照。取得したアーカイブは Cache Storage に置き、`version` で更新を判定する。`sha256` による確認、`soundfont`、セーブデータの保存先の差し替え、Range 要求による部分読み込みは未実装。
-
-SRC#Web はゲームプレイヤーに徹し、シナリオ・素材・セーブデータは外部から管理できるようにする。権利の扱いは各コンテンツの配布元が負い、SRC#Web のサイトはコンテンツを配布しない。利用者登録や更新ができるホスティングサイトは別のプロジェクトとし、SRC#Web は決まった形式を読むだけにする。
+SRC#Web はゲームプレイヤーに徹し、シナリオ・素材・セーブデータは外部から管理する。権利の扱いは各コンテンツの配布元が負い、SRC#Web のサイトはコンテンツを配布しない。利用者登録や更新ができるホスティングサイトは SRC#Web とは別のもの（無い）とし、SRC#Web は決まった形式を読むだけにする。
 
 ```mermaid
 flowchart LR
   subgraph Player[SRC#Web（静的サイト）]
     Catalogs[カタログの一覧<br/>組み込み・URL で追加・ローカル]
-    Store[IndexedDB<br/>取得したアーカイブ・セーブ]
+    Store[Cache Storage / IndexedDB<br/>取得したアーカイブ・セーブ]
   end
   Host1[配布元 A<br/>catalog.json と zip] -->|CORS| Catalogs
   Host2[配布元 B（素材集）] -->|CORS| Catalogs
-  Hosting[ホスティングサイト（別プロジェクト）<br/>カタログ・アーカイブ・セーブの API] -->|CORS・OAuth| Catalogs
   Catalogs --> Store
 ```
 
-### カタログの形式（案）
+サイトの設定（`srcweb.json`）、カタログ（`catalog.json`。`kind`・`requires`・`root`）、URL での起動、利用者による素材・カタログの追加の形式は [SRC#Web を外部のサイトに置く](./web-hosting.md) にある。
 
-```json
-{
-  "format": 1,
-  "name": "配布元の名前",
-  "entries": [
-    {
-      "id": "robodan",
-      "kind": "scenario",
-      "title": "ロボッとダンジョンＢ！",
-      "author": "作者",
-      "license": "配布条件の説明または URL",
-      "archive": "https://example.com/robodan.zip",
-      "size": 276897247,
-      "sha256": "…",
-      "eve": "ロボッとダンジョンＢ！_-ロボダン-/ニューゲーム.eve",
-      "requires": ["asset:general-graphics"]
-    },
-    {
-      "id": "general-graphics",
-      "kind": "asset",
-      "title": "汎用グラフィック集",
-      "archive": "https://example.com/graphics.zip"
-    }
-  ]
-}
-```
-
-- `kind`: `scenario`（シナリオ）・`asset`（汎用グラフィック集などの素材）・`soundfont`（MIDI の SoundFont）
-- `requires`: 一緒に重ねる素材。`LocalFileSystem` のアーカイブの重ね合わせ（シナリオ → 素材 → なし）に使う
-- `sha256`: 取得したアーカイブの確認と、IndexedDB に保存したものの更新判定に使う
-
-### 方針
-
-| 項目 | 方針 |
+| 項目 | 動作 |
 |---|---|
-| カタログの追加 | 組み込みのカタログ（現在の `scenarios/catalog.json`）に加え、利用者が URL を追加できる。追加した URL は localStorage に保存する |
-| 取得 | 配布元は CORS を許可する必要がある（クロスオリジン分離のため）。GitHub Pages は `Access-Control-Allow-Origin: *` を返す。Google Drive のダウンロードリンクは CORS を返さないため直接は使えない |
+| カタログ | 組み込みのカタログ（`scenarios/catalog.json`）に加え、利用者が URL で追加できる。追加した URL は localStorage に保存する |
+| 取得 | 配布元は CORS を許可する必要がある（クロスオリジン分離のため）。GitHub Pages は `Access-Control-Allow-Origin: *` を返す。Google Drive のダウンロードリンクは CORS を返さないため直接は使えない。取得したアーカイブは Cache Storage に置き、カタログの `version` で更新を判定する |
 | 素材の重ね合わせ | `requires` の素材を取得し、シナリオと重ねて展開する。素材の配布元は別でもよい |
-| セーブデータ | 保存先を差し替えられるようにする。既定は IndexedDB とファイルの書き出し・読み込み。選択肢として、ローカルのフォルダ（[File System API](https://developer.mozilla.org/docs/Web/API/File_System_API)、Chromium のみ）やホスティングサイトの API（静的サイトからも OAuth の PKCE で認証できる）を置ける |
-| 大きいアーカイブ | カタログの大きい zip（32MB を超えるもの）はストリームのままブラウザ内のファイルシステムに書いてから展開する（WebAssembly のメモリは増えたら返せないため、zip を byte[] に読まない）。展開したファイルはすべてメモリ（JS 側）に置かれる。将来は HTTP の Range 要求と zip の目録で必要なファイルだけを読む（ゲームスレッドは Worker のため同期の取得もできる） |
-| 安全性 | シナリオは SRC のイベントとして解釈されるだけで、JS は実行されない。zip の展開サイズなどの上限を設ける |
+| 大きいアーカイブ | カタログの大きい zip はストリームのままブラウザ内のファイルシステムに書いてから展開する（WebAssembly のメモリは増えたら返せないため、zip を byte[] に読まない）。展開したファイルはすべてメモリ（JS 側）に置かれる |
+| 安全性 | シナリオは SRC のイベントとして解釈されるだけで、JS は実行されない |
 
-### 段階
-
-1. カタログの形式を決め、組み込みのカタログを同じ形式にする
-2. カタログの URL の追加・削除と、取得したアーカイブのキャッシュ（Cache Storage。`version` で更新判定）
-3. `requires` による素材の重ね合わせ
-4. セーブデータの保存先の差し替え（ローカルのフォルダ）
-5. ホスティングサイト向けの API（カタログ・アーカイブ・セーブ）の仕様
-
-## 段階（SRC#Web 全体）
-
-| 段階 | 内容 | 状況 |
-|---|---|---|
-| 1 | 登録済シナリオを選んでプレイできる（メッセージ・選択肢・マップ・戦闘） | 済 |
-| 2 | zip のアーカイブを追加してプレイできる（ブラウザに保存し、次回も選べる。Shift_JIS のファイル名） | 済 |
-| 3 | セーブ・ロード（ブラウザ内保存、ファイルの書き出し・読み込み）、文字入力 | 済 |
-| 4 | 音声（WAV・MP3・MIDI） | 済 |
-| 5 | GitHub Pages への配置（データビューアと同じサイトの `web/`） | 済 |
+未対応: カタログの `sha256` による確認、`kind` の `soundfont`、セーブデータの保存先の差し替え（ローカルのフォルダの [File System API](https://developer.mozilla.org/docs/Web/API/File_System_API) やホスティングサイトの API）、HTTP の Range 要求と zip の目録で必要なファイルだけを読むこと、zip の展開サイズの上限。
 
 ## 配置
 
@@ -331,7 +276,7 @@ Azure Static Web Apps（データビューアの配信先、`.github/workflows/C
 
 - `index.html` の `<base href>` を `<Pages のベースパス>/web/` に書き換える
 - coi-serviceworker のスコープは `web/` になるため、クロスオリジン分離はデータビューアには及ばない
-- データビューアの Service Worker（スコープはサイト全体）は `web/` 配下の要求を扱わないようにした。扱うと、ページ遷移にデータビューアの index.html を返してしまう
+- データビューアの Service Worker（スコープはサイト全体）は `web/` 配下の要求を扱わない。扱うと、ページ遷移にデータビューアの index.html を返してしまう
 
 ## テスト
 

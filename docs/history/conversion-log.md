@@ -1,4 +1,8 @@
-# Convert log
+# 変換の記録 / Convert log
+
+> 記録として残している文書です（移植を始めたときの作業の記録）。移植は完了した（[移植の記録](./porting/README.md)）。
+
+元の SRC（VB）のソースを C# にするまでに使ったツール。
 
 - VB5 -> VB.NET
     - Visual Basic 2008 Express Edition

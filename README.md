@@ -61,7 +61,7 @@
 |---|---|
 | [SRC.Sharp](./SRC.Sharp) | SRC#（C# の実装。ソリューションは `SRC.Sharp.sln`） |
 | [SRC.Sharp.Help](./SRC.Sharp.Help) | SRC# のヘルプのサイト（https://srch.7474.jp/ ） |
-| [docs](./docs) | 設計・方針などのドキュメント（[一覧](./docs/README.md)） |
+| [docs](./docs) | 設計・運用の現状のドキュメント（[一覧](./docs/README.md)）。判断の理由は [判断の記録](./docs/decisions/README.md)、移植などの過去の作業は [履歴](./docs/history/README.md) |
 | [SRC/SRC_20121125](./SRC/SRC_20121125) | 移植の元にした SRC（VB6）のソース。参照用に文字コードを UTF-8 にしてある |
 | [SRC/Help](./SRC/Help)・[SRC/HelpChm](./SRC/HelpChm) | SRC Ver2.2.33 のヘルプのプロジェクトと、その CHM |
 | [SRC.NET](./SRC.NET) | SRC_20121125 をツールで .NET に変換したもの（移植の参考） |
@@ -87,7 +87,7 @@
 
 ## 開発
 
-- 貢献の方法は [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+- 貢献の方法とコードの規約は [CONTRIBUTING.md](./CONTRIBUTING.md)、テストと CI は [テストと CI の設計](./docs/testing.md) を参照してください。
 - SRC に付属のサンプルシナリオや https://github.com/7474/SRC-SharpTestScenario で動作を確かめながら作っています。
 
 ## 元の SRC

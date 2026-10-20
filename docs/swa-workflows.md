@@ -1,6 +1,6 @@
 # Static Web Apps のワークフロー
 
-Azure Static Web Apps（SWA）へのデプロイと、その後始末に使うワークフローです。
+Azure Static Web Apps（SWA）へのデプロイと、その後始末に使うワークフローです。実行の重なりとトークンの無い PR の扱いを決めた経緯は [判断の記録](./decisions/2026-10-20-ci-gate-and-auto-merge.md) にあります。
 
 | ワークフロー | 役割 |
 | --- | --- |
@@ -10,7 +10,7 @@ Azure Static Web Apps（SWA）へのデプロイと、その後始末に使う�
 
 ## 実行の重なりとトークンの無い PR
 
-- 本番（master への push）への配信が重なると、後から始めたものが「No matching Static Web App environment was found」などで失敗する。そのため `concurrency` で本番への配信は 1 つずつ動かし（待っているものは最新だけが残る）、PR では同じ PR の古い実行を取り消す（[Control the concurrency of workflows and jobs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)）
+- `concurrency` で、本番（master への push）への配信は 1 つずつ動かし（待っているものは最新だけが残る）、PR では同じ PR の古い実行を取り消す。本番への配信が重なると、後から始めたものが「No matching Static Web App environment was found」などで失敗するため（[Control the concurrency of workflows and jobs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)）
 - Dependabot やフォークからの PR では Actions のシークレットが渡されない（[Troubleshooting Dependabot on GitHub Actions](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）。デプロイ用のトークンが空のときは、プレビュー環境への配信と Cypress を省く。SRC#DataViewer は配信の前のビルドまでは行い、SRC#Help のビルドは CI の `build-help` で確かめる（[テストと CI の設計](./testing.md)）
 
 ## プレビュー環境の定期削除
@@ -29,5 +29,5 @@ This Static Web App already has the maximum number of staging environments
 閉じ方は、PR を閉じたときの Close Pull Request Job と同じです。デプロイ用のトークン（`AZURE_STATIC_WEB_APPS_API_TOKEN_…`）で StaticSitesClient の `close` を実行するため、Azure への追加の認証情報は要りません。
 
 - `Azure/static-web-apps-deploy` は、実行中のイベント（PR）のプレビュー環境を閉じる作りです。そのため、同じイメージ（`mcr.microsoft.com/appsvc/staticappsclient:stable`）を `docker run` で直接動かし、閉じる PR のイベントのペイロードを渡しています。
-- Docker を使うため、ジョブは `ubuntu-slim`（非特権のコンテナで、Docker を使えない）ではなく `ubuntu-latest` で動かします（[GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)）。
+- Docker を使うため、ジョブは `ubuntu-slim`（非特権のコンテナで、Docker を使えない）ではなく `ubuntu-24.04` で動かします（[GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)）。
 - 既に無い環境を閉じようとした場合は警告を出して続けます。

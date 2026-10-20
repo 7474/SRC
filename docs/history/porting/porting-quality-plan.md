@@ -1,5 +1,7 @@
 # SRC# 移植精度 評価・向上計画 / Porting Quality Evaluation & Improvement Plan
 
+> 記録として残している文書です（2026-10-20 時点）。移植は完了した（[移植の記録](./README.md)）。
+
 > **作成日**: 2026-02-20  
 > **前提**: [移植状況 総合評価レポート](./porting-assessment.md) を参照  
 > **対象**: SRC# (Simulation RPG Construction Sharp) — GUIを備えた複雑なゲームエンジン
@@ -78,8 +80,8 @@ GUIを備えた複雑なゲームエンジンの移植精度は、ロジック�
 | **サンプルシナリオ通しプレイ** | SRC付属サンプルシナリオの完走確認 | 手動テスト + 結果記録 |
 | **VB6版比較テスト** | 同一シナリオをVB6版とSRC#版で実行し、画面・動作を比較 | スクリーンショット比較 |
 | **回帰テストシナリオ** | 修正後の再確認用シナリオ集 | [SRC-SharpTestScenario](https://github.com/7474/SRC-SharpTestScenario) |
-| ~~**WinAppDriverテスト**~~ | Windows Forms UIの自動操作テスト | 廃止（CI で動いていなかった。[テストと CI の設計](../testing.md)） |
-| **ヘッドレス E2E・VRT** | テスト用コーパス（`SRC.Sharp/E2E/`）を画面なしでプレイし、画面の状態と描画結果を検証 | `SRCRenderTests`（実施中。[E2E テスト方針](../gui/e2e-testing.md)） |
+| ~~**WinAppDriverテスト**~~ | Windows Forms UIの自動操作テスト | 廃止（CI で動いていなかった。[テストと CI の設計](../../testing.md)） |
+| **ヘッドレス E2E・VRT** | テスト用コーパス（`SRC.Sharp/E2E/`）を画面なしでプレイし、画面の状態と描画結果を検証 | `SRCRenderTests`（実施中。[E2E テスト方針](../../gui/e2e-testing.md)） |
 
 ---
 
@@ -183,7 +185,7 @@ GUIを備えたゲームエンジンの移植では、描画の正確性が体�
 
 ### Phase Q4: 統合・リリース品質（2027年Q1）— リリース準備
 
-**目標**: リリース品質に到達し、正式版（偶数マイナー。[バージョンの管理](../versioning.md)）のリリース判定を行う。
+**目標**: リリース品質に到達し、正式版（偶数マイナー。[バージョンの管理](../../versioning.md)）のリリース判定を行う。
 
 | タスク | 成果物 | 優先度 |
 |--------|--------|--------|

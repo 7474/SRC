@@ -1,8 +1,6 @@
 # バージョンの管理
 
-> 更新日: 2026-10-16
-
-SRC# のバージョンの付け方と、リリースの手順。
+SRC# のバージョンの付け方と、リリースの手順。リリースのタグと VS Code 拡張の版の決め方の経緯は [判断の記録](./decisions/2026-10-16-release-tags-and-vscode-version.md) にある。
 
 ## バージョン
 
@@ -50,11 +48,9 @@ SRC# のバージョンの付け方と、リリースの手順。
 
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
 
-SRCSharpTools と SRC#Web のパッケージは `v0.5.0` の後に加えたため、`v3.5.1` から公開される。それまでは手元で作る（[作成支援ツール](./tools/authoring.md#cli)・[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)）。
-
 ### VS Code 拡張
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` の更新として出す。0.5.0 はプレリリースで出した。プレリリースのままでは既存の利用者（0.0.5）の版が切り替わらないため、0.5.1（`v3.5.2` のタグで公開）からは正式版で出す。0.5.2 から版をライブラリ（srcsharp）と合わせる。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。旧版（0.0.5）は 7474/SRC-VSCode から出していた（7474/SRC#1175）。
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` として出す。版はライブラリ（srcsharp）と同じにする。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。
 
 `.github/workflows/Publish-VSCode.yml` が次のことをする。
 
@@ -72,5 +68,3 @@ VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` 
 - Open VSX には、Secrets に `OVSX_PAT` があるときだけ出す。
 
 `.vsix` の README の相対リンクは、`npm run package` の `--baseContentUrl` で `SRC.Sharp/SRCSharpVSCode` 基準の GitHub の URL に書き換わる。vsce は `repository.directory` を見ないため。
-
-`v0.5.0` まではライブラリのバージョンでタグを打っていた。以降はアプリのバージョン（`v3.x.x`）で打つ。
