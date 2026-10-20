@@ -183,6 +183,8 @@ namespace SRCCore.Commands
                 return;
             }
 
+            // オートプレイを止める右ボタンがマップの右クリック（マップコマンドのメニュー）にならないよう、先に GUI を固める
+            GUI.LockGUI();
             SRC.AutoPlay = true;
             // 今の味方フェイズの残りを行い、ターンを終える
             if (!SRC.AutoPlayPhase())
