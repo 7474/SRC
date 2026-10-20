@@ -1,5 +1,7 @@
 # SRC# 移植完了計画 / Migration Completion Plan
 
+> 記録として残している文書です（2026-10-14 時点）。現在の状態は [移植の現状](../../porting.md) を参照してください。
+
 ## 概要 / Overview
 
 本ドキュメントは、SRC（Simulation RPG Construction）のC# .NET移植版であるSRC#の移植作業の記録と、品質検証・精度向上フェーズの計画を記載しています。

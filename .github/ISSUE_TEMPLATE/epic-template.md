@@ -41,8 +41,9 @@ assignees: ''
 
 ## 参考資料 / References
 
-- [移植完了計画](https://github.com/7474/SRC/blob/master/docs/porting/migration-plan.md)
-- [個別Issue詳細](https://github.com/7474/SRC/blob/master/docs/porting/issue-breakdown.md)
+- [移植の現状](https://github.com/7474/SRC/blob/master/docs/porting.md)
+- [移植完了計画（記録）](https://github.com/7474/SRC/blob/master/docs/history/porting/migration-plan.md)
+- [個別Issue詳細（記録）](https://github.com/7474/SRC/blob/master/docs/history/porting/issue-breakdown.md)
 
 ## Labels
 

@@ -11,7 +11,7 @@ assignees: ['copilot']
 **タスク**: (例: セーブ・ロードの互換性の精査)
 
 ## 参照ドキュメント
-**必読**: `docs/porting/migration-plan.md`（該当する Epic の節）、`docs/porting/porting-quality-plan.md`
+**必読**: `docs/porting.md`（移植の現状・規約）、`docs/testing.md`（テストの責務）。Epic の元の計画は `docs/history/porting/migration-plan.md`
 
 ## @copilot への指示
 上記参照ドキュメントのタスクを実装してください。
