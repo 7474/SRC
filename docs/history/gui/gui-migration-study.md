@@ -1,5 +1,7 @@
 # GUI 実装移行の検討 / GUI Migration Study
 
+> 記録として残している文書です（2026-10-13 時点）。現在の状態は [GUI の構成](../../gui/README.md)、判断は [GUI を SRCRender と新しいフロントエンドに移す](../../decisions/2026-10-12-gui-frontend-architecture.md) を参照してください。
+
 > 調査日: 2026-10-12
 
 現在の GUI 実装（`SRCCore/TestLib` のモック、`SRCSharpForm` の Windows Forms）から、メンテナンス性を考慮して新規実装へ移行する場合の候補と進め方を検討する。
@@ -21,7 +23,7 @@
 | WinForms 実装 | 約 28,800 行（うち `GUI.ref.cs` 11,640 行は参照用） | 実移植対象は約 17,000 行。`Forms/Main.guistatus.cs`（3,421 行）、`SRCSharpFormGUI.message.cs`（2,675 行）が大きい |
 | 描画 | GDI+（`Graphics` / `Bitmap`）直描き | 描画 API の置き換えが必須 |
 | 音声 | NAudio、Melanchall.DryWetMidi | NAudio の出力部は Windows 依存。クロスプラットフォーム化には別実装が必要 |
-| テスト / CI | `SRCSharpFormTestWinAppDriver`、CI は `windows-latest` | WinAppDriver は長期間メンテナンスされておらず置き換えたい（2026-10 に廃止。[テストと CI の設計](../testing.md)） |
+| テスト / CI | `SRCSharpFormTestWinAppDriver`、CI は `windows-latest` | WinAppDriver は長期間メンテナンスされておらず置き換えたい（2026-10 に廃止。[テストと CI の設計](../../testing.md)） |
 | Web | `SRCTestBlazor`（WASM、データ閲覧のみ）が SRCCore を参照 | Web 版プレイヤーの土台になり得る |
 
 ## 候補比較
@@ -67,15 +69,15 @@ flowchart LR
 2. **Linux 上でのテスト実行**（対応済み）: CI に `SRCCoreTests` を `ubuntu-latest` で実行するジョブ `test-srccore-linux` を追加した
 3. **スレッドモデル分離**（実装済み・Windows での確認待ち）: まず WinForms 上でゲームスレッド方式に切り替え、挙動不変を確認する。最大のリスク要因のため、新 UI 作成前に既存 UI で検証する
     - `SRCCore.Threading`（`GameThread` / `CoreThreadProxy` / `CoreThreading`）を追加し、SRC#Form は起動引数 `--game-thread` を付けた場合のみゲームスレッドで動く（既定は従来どおり）
-    - Linux ではヘッドレス E2E テストでスレッド分離あり／なしの GUI 呼び出しが一致することを確認済み。詳細は [E2E テスト方針](./e2e-testing.md)
+    - Linux ではヘッドレス E2E テストでスレッド分離あり／なしの GUI 呼び出しが一致することを確認済み。詳細は [E2E テスト方針](../../gui/e2e-testing.md)
 4. **描画層の切り出し**（対応済み）: SkiaSharp で画面全体を描く `SRCRender` を新設した。WinForms 版の描画（`SRCSharpFormGUI.draw.cs`、`Forms/Main.guimap.cs`、`Forms/Main.guiscrean.cs`）はそのまま残し、新しいフロントエンドから使う
     - 同等の操作感・表示感が得られればよいので、OS のフォーム部品は使わず、マップ・ステータス・メッセージ・リスト・メニュー・ダイアログをすべて1枚の画面に描画する
     - 表示と操作は WinForms 版に合わせる。フォームの部品配置を `SRCRender/Compat` のモデルに写し、WinForms 版の処理をほぼそのまま移植した
     - GUI 実装 `ScreenGUI`（`IGUI` / `IGUIMap` / `IGUIStatus` / `IGUIScrean`）も UI フレームワークに依存しない形で `SRCRender` に置く。待ちはゲームスレッドで行い、入力は `PointerPressed` などで受け取る
-5. **Avalonia 版の作成**（対応済み）: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作った。`SRCRender` の画面を表示し、入力を渡すだけの薄い層にする。文字入力（IME）とファイル選択だけは Avalonia の部品を使う。UI テストは `Avalonia.Headless` で書く。詳細は [SRC#Avalonia](./avalonia.md)
-6. **音声の差し替え**（対応済み）: OpenAL（OpenAL Soft）で WAV・MP3・MIDI を鳴らす `IPlaySound` の別実装 `SRCSound` を作った。MIDI は SoundFont から合成する（SoundFont は同梱しない）。詳細は [SRC#Avalonia](./avalonia.md#音声srcsound)
+5. **Avalonia 版の作成**（対応済み）: WinForms 版（SRC#Form）とは別のプロジェクト SRC#Avalonia（`SRCSharpAvalonia`）として作った。`SRCRender` の画面を表示し、入力を渡すだけの薄い層にする。文字入力（IME）とファイル選択だけは Avalonia の部品を使う。UI テストは `Avalonia.Headless` で書く。詳細は [SRC#Avalonia](../../gui/avalonia.md)
+6. **音声の差し替え**（対応済み）: OpenAL（OpenAL Soft）で WAV・MP3・MIDI を鳴らす `IPlaySound` の別実装 `SRCSound` を作った。MIDI は SoundFont から合成する（SoundFont は同梱しない）。詳細は [SRC#Avalonia](../../gui/avalonia.md#音声srcsound)
 7. **（任意）Web 版**（対応済み）: 3 で分離したゲームスレッドを、WASM 向けには `IGUI` の非同期版で置き換えるかをこの時点で判断する
-    - `IGUI` は非同期化せず、.NET の WebAssembly マルチスレッドでゲームスレッドを Web Worker で動かす SRC#Web（`SRCSharpWeb`）として作った。`SRCTestBlazor` とは別のプロジェクト。詳細は [SRC#Web（ブラウザ版）](./web.md)
+    - `IGUI` は非同期化せず、.NET の WebAssembly マルチスレッドでゲームスレッドを Web Worker で動かす SRC#Web（`SRCSharpWeb`）として作った。`SRCTestBlazor` とは別のプロジェクト。詳細は [SRC#Web（ブラウザ版）](../../gui/web.md)
 
 ## 判断の分岐
 

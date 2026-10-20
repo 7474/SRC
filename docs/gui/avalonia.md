@@ -1,8 +1,6 @@
 # SRC#Avalonia
 
-> 更新日: 2026-10-12
-
-Windows / macOS / Linux で動く SRC# のフロントエンド。WinForms 版（SRC#Form）とは別のプロジェクト `SRCSharpAvalonia` として作っている。
+Windows / macOS / Linux で動く SRC# のフロントエンド。WinForms 版（SRC#Form）とは別のプロジェクト `SRCSharpAvalonia`。フロントエンド全体の構成は [GUI の構成](./README.md) を参照。
 
 ## 構成
 
@@ -48,7 +46,7 @@ flowchart LR
 
 ## WinForms 版との対応
 
-表示と操作は WinForms 版に合わせた。フォームの部品配置（`*.Designer.cs`）を `SRCRender/Compat` のモデルに写し、WinForms 版の処理をほぼそのまま移植している。
+表示と操作は WinForms 版に合わせている。フォームの部品配置（`*.Designer.cs`）を `SRCRender/Compat` のモデルに写し、WinForms 版の処理をほぼそのまま移植している。
 
 | WinForms 版 | SRC#Avalonia（SRCRender） | 備考 |
 |---|---|---|
@@ -95,7 +93,7 @@ flowchart LR
 
 - AIFF は再生しない（ログに警告を出す）
 - 音声出力デバイスを開けない環境では、何も鳴らさずに動く
-- SRC フルパッケージの効果音・MIDI（242 ファイル）がすべて読み込めることを確認した
+- SRC フルパッケージの効果音・MIDI（242 ファイル）はすべて読み込める
 
 ### フォント
 
@@ -108,7 +106,7 @@ flowchart LR
 
 ### SoundFont
 
-MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で同梱しない（[素材データの再配布の検討](../assets/redistribution-study.md)）。次の順に探し、最初に見つかったものを使う。
+MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で同梱しない（[素材](../assets.md)）。次の順に探し、最初に見つかったものを使う。
 
 1. 設定ファイル `srcs.json` の `Option` セクションの `SoundFont`（パス）
 2. 環境変数 `SRC_SOUNDFONT`
@@ -134,4 +132,4 @@ dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオの .eve / セ�
 | `SRCSharpAvaloniaTests` | `Avalonia.Headless` でウィンドウを動かし、マウス入力でシナリオを進める。文字入力ダイアログ、キーコードの変換 |
 | `SRCSoundTests` | WAV・MP3・MIDI の復号と、OpenAL Soft の null 出力（環境変数 `ALSOFT_DRIVERS=null`）での再生・ループ・停止 |
 
-詳細は [E2E テスト方針](./e2e-testing.md)。
+詳細は [E2E テスト](./e2e-testing.md)。

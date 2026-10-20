@@ -1,8 +1,6 @@
 # テストと CI の設計 / Testing and CI
 
-> 更新: 2026-10-20
-
-「CI が通れば人が見なくてもマージしてよい」と言える状態を保つための、テストの責務の分け方と CI の構成。シナリオの E2E・VRT の詳細は [E2E テスト方針](./gui/e2e-testing.md) にある。
+「CI が通れば人が見なくてもマージしてよい」と言える状態を保つための、テストの責務の分け方と CI の構成。シナリオの E2E・VRT の詳細は [E2E テスト方針](./gui/e2e-testing.md) にある。経緯は [判断の記録](./decisions/2026-10-20-ci-gate-and-auto-merge.md) にある。
 
 ## 方針
 
@@ -47,9 +45,9 @@ flowchart LR
 
 ### ブランチ保護
 
-master のブランチ保護の必須チェック（Require status checks to pass）は `ci-passed` だけにする。以前の必須チェック `build-and-test-srcs` は Windows のジョブだけで、Linux のテスト（シナリオ E2E・VRT・SRC#Web）が失敗していてもマージできた。
+master のブランチ保護の必須チェック（Require status checks to pass）は `ci-passed` だけにする。ほかのジョブを必須チェックにすると、そのジョブを省いたり名前を変えたりしたときにマージできなくなる。
 
-設定は Settings → Branches → master のルール → Require status checks to pass before merging で、`build-and-test-srcs` を外して `ci-passed` を足す（[Managing a branch protection rule](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)）。
+設定は Settings → Branches → master のルール → Require status checks to pass before merging で行う（[Managing a branch protection rule](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)）。
 
 ## 自動マージ
 
@@ -71,38 +69,14 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 マージを止めるテストが時々落ちると、自動マージは止まり、人は「また flaky だろう」と失敗を読まなくなる。そのため次のようにする。
 
-- **待ちの長いシナリオ E2E は Linux だけで動かす**。Windows のランナーでは同じテストがタイムアウトしやすかった（下の表）
+- **待ちの長いシナリオ E2E は Linux だけで動かす**。Windows のランナーでは同じテストがタイムアウトしやすい
 - **Playwright は CI で 1 度だけやり直す**（`retries`）。やり直して通ったテストは結果に `flaky` と出て、PR に注釈が付く（[Retries](https://playwright.dev/docs/test-retries)）。同じテストが続けて flaky になったら直す
 - **MSTest はやり直さない**。落ちたら、待ちの条件（`wait`・`auto` の秒数、`[DoNotParallelize]`）か、テストの前提（静的な状態・プロセス全体の設定）を直す
 - ジョブの再実行で通すのは、ランナーの不調（取得・インストールの失敗）のときだけにする
 
-### 調べた結果（2026-10-13〜10-20）
-
-`CI.yml` と `CD-swa-dataviewer.yml` の直近それぞれ 300 回の実行のうち、失敗したジョブとテストは次のとおり（実行数は省いたジョブを除く）。
-
-| ジョブ | 失敗 / 実行 | 主な原因 |
-|---|---|---|
-| `build-and-test-srcs`（Windows） | 21 / 299 | シナリオ E2E のタイムアウト（`E2ECorpusTests.Play`・`RightButtonStopsAutoPlay`・`Dap_HotReloadKeepsStateAndReloadsEventsAndData`）、Windows でだけ落ちるテスト（`PathResolverTests`）、NU1605 |
-| `test-web`（Playwright） | 14 / 162 | 読み込みの待ちのタイムアウト（`シナリオを読み込んでいる間はほかの操作を受け付けない`・`アーカイブを追加し、再読み込み後もプレイできる` など） |
-| `test-srccore-linux` | 6 / 299 | 多くは SRC#Web の E2E がこのジョブにあった頃のもの |
-| `CD-swa-dataviewer.yml` の配信 | 45 / 217 | Dependabot の PR でトークンが無い（25）、プレビュー環境の数の上限（5）、本番への配信の失敗（15。多くは数秒おきに続けてマージして配信が重なったとき） |
-
-Windows のシナリオ E2E のタイムアウトは、同じテストが Linux では通っていた。タイムアウトのほかに Windows でだけ落ちたのは `PathResolverTests`（大文字・小文字を区別しないファイルシステムでの期待値。`SRCCoreTests` に含まれ、引き続き Windows で動かす）だけだった。
-
-`build-help` を足したところ、`SRC.Sharp.Help/Gemfile.lock` には Ruby 3.1 では入れられない版（`public_suffix` 7.0.5・`google-protobuf` 4.36 など、Ruby 3.2 以上が要るもの）が入っていた。Static Web Apps（Oryx）の `bundle install` は黙って入れられる版に解決し直してビルドしていたため、配信は成功していた。`build-help` も Oryx と同じく `Gemfile.lock` を固定せずに入れてビルドする。
-
-## 廃止したもの
-
-| もの | 理由 |
-|---|---|
-| `SRCSharpFormTestWinAppDriver` | CI で一度も動いていなかった（ソリューションの Any CPU の構成でビルドの対象外）。WinAppDriver は保守されていない。Dependabot の PR だけが続いていた。SRC#Form の UI テストが要る場合は FlaUI で作り直す（[E2E テスト方針](./gui/e2e-testing.md)） |
-| Windows でのソリューション全体のテスト | Linux と同じテストを遅いランナーで重ねて動かしていた。VRT は Windows では Inconclusive で、シナリオ E2E はタイムアウトしやすかった |
-| Windows で集めたカバレッジ | `coverage.cobertura.xml` のうち最後に書かれた 1 つ（`SRCCore` か `SRCRender` のどちらか）を Mackerel に送っていた。`coverage` ジョブで 2 つを合わせたものを送るように変えた（値の意味が変わる） |
-| 必須チェック `build-and-test-srcs` | Linux のテストが失敗していてもマージできた。`ci-passed` に置き換える |
-
 ## 残っている課題
 
-- Playwright の flaky なテスト（上の表）の待ちの条件を直す
+- Playwright の flaky なテスト（`シナリオを読み込んでいる間はほかの操作を受け付けない`・`アーカイブを追加し、再読み込み後もプレイできる` など、読み込みの待ちのタイムアウト）の待ちの条件を直す
 - `SRCTestBlazor/E2E`（Cypress）は配信した後に動き、外部（`7474/SRC-Data`）のデータを読む。マージの可否には使わない
-- SRC#Help の Ruby は Static Web Apps（Oryx）に合わせて 3.1 のままで、`Gemfile.lock` が実際に入る版と合っていない。Ruby を上げるか、Ruby 3.1 で `Gemfile.lock` を作り直す
+- SRC#Help の Ruby は Static Web Apps（Oryx）に合わせて 3.1 のままで、`Gemfile.lock` には Ruby 3.2 以上が要る版（`public_suffix` 7.0.5・`google-protobuf` 4.36 など）が入っている。Oryx と `build-help` は `Gemfile.lock` を固定せずに入れられる版に解決し直してビルドしている。Ruby を上げるか、Ruby 3.1 で `Gemfile.lock` を作り直す
 - npm の依存（`SRCSharpWeb.E2E`・`SRCSharpVSCode`・`SRCTestBlazor/E2E`）は Dependabot の対象に入っていない

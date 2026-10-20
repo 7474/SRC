@@ -4,7 +4,7 @@
 """
 SRC# の最小の汎用データ（basic-data）を作る。
 
-SRC のフルパッケージの汎用データ（グラフィック集など）は再配布できないため（docs/assets/redistribution-study.md）、
+SRC のフルパッケージの汎用データ（グラフィック集など）は再配布できないため（docs/decisions/2026-10-12-asset-redistribution.md）、
 同じファイル名で差し替えられる素材を自作する。ライセンスは ../README.md の「ライセンス」を参照（このスクリプトは MIT、作る素材は CC0 1.0）。
 
 - Data/System/terrain.txt: 地形データ。地形の番号と名前は汎用データと同じにする（汎用データ用のマップをそのまま使える）

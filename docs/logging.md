@@ -1,6 +1,6 @@
 # ログの設計
 
-SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針と構成。7474/SRC#358 で検討し、実装した。使う人向けの説明はヘルプの「[ログ](../SRC.Sharp.Help/src/ログ.md)」にある。
+SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針と構成。この形にした経緯は [判断の記録](./decisions/2026-10-17-logging-design.md) にある。使う人向けの説明はヘルプの「[ログ](../SRC.Sharp.Help/src/ログ.md)」にある。
 
 ## 目的
 
@@ -9,17 +9,6 @@ SRC#（各アプリ・`srcsharp`・VS Code 拡張）のログの方針と構成�
 | 不具合報告 | プレイヤー → 開発者 | 既定でファイルに残っていること。版・OS・シナリオ・例外が入っていること。場所がヘルプに書いてあること |
 | シナリオ・データの作成 | シナリオ作者 | イベントのエラー・素材の欠落・未対応コマンドが、ファイル名・行番号つきで出ること |
 | 開発・調査 | 開発者 | コマンド・変数・関数の実行を細かく追えること。アプリを作り直さずにレベルを変えられること |
-
-## 以前の問題点
-
-#358 の時点（3.5.2）では次の問題があった。
-
-- 設定ファイル（`srcs.json`）でログを設定できなかった。レベルを変えられたのは SRC#Form の引数 `-v`・`-vv` だけだった。
-- SRC#Form 以外はファイルに残らず、デバッガを付けていないと SRCCore のログを見られなかった。
-- `SRC.LogError`・`SRC.LogWarn` が `Log.LogDebug` で出していたため、Information 以上の設定ではエラーが記録されなかった。
-- SRCCore のカテゴリが `SRCCore` の 1 つだけだった。メッセージを文字列連結で作っており、`{}` を含む値で書式が崩れうる箇所もあった。
-- SRC#Web・SRCDebugAdapter・SRCAuthoring に `Console.WriteLine`・`Console.Error.WriteLine` が散らばっていた。
-- ログの場所・取り方がヘルプになかった。
 
 ## 方針
 
@@ -88,7 +77,7 @@ flowchart LR
 | Linux | `$XDG_STATE_HOME/srcsharp/logs/`（未設定なら `~/.local/state/srcsharp/logs/`、[XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/)） |
 
 - ファイル名は `<アプリ>-<日付>.log`（`srcsform`・`srcsavalonia`・`srcsharp-play`・`srcsharp-lsp`・`srcsharp-dap`）。Serilog.Sinks.File の `rollingInterval: Day`・`retainedFileCountLimit`・`rollOnFileSizeLimit`（既定 1 GB）で回す（[serilog-sinks-file](https://github.com/serilog/serilog-sinks-file)）。
-- 実行ファイルの場所にしないのは、macOS の `.app` や `Program Files`・`dotnet tool` の置き場所に書けないことがあるため。SRC#Form は 3.5.2 までの `<exe のフォルダ>/logs` から移った。
+- 実行ファイルの場所にしないのは、macOS の `.app` や `Program Files`・`dotnet tool` の置き場所に書けないことがあるため。
 - 同時に起動した複数のプロセスが同じファイルに書けるよう `shared: true` にする。
 - フォルダを作れない・書けないときは、ファイルに出さずに動かす（デバッガ・stderr などには警告を出す）。
 
@@ -135,7 +124,7 @@ flowchart LR
 
 - ファイル・デバッガ・stderr: `{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {SourceContext}: {Message:lj}{NewLine}{Exception}`
 - DAP・LSP: `[INF] SRCCore.Event: メッセージ`（時刻はクライアントがつける）
-- メッセージはテンプレートで書く（`Log.LogError(ex, "イベントのエラー {File}({Line}): {Message}", ...)`）。文字列連結はやめる（[ログのメッセージテンプレート](https://learn.microsoft.com/dotnet/core/extensions/logging#log-message-template)）。元の SRC から移したコードの `SRC.LogDebug(message, params string[])` などは、`{Message} {Args}` のテンプレートで出す。
+- メッセージはテンプレートで書く（`Log.LogError(ex, "イベントのエラー {File}({Line}): {Message}", ...)`）。文字列連結では作らない（[ログのメッセージテンプレート](https://learn.microsoft.com/dotnet/core/extensions/logging#log-message-template)）。元の SRC から移したコードの `SRC.LogDebug(message, params string[])` などは、`{Message} {Args}` のテンプレートで出す。
 - 例外は `Exception` 引数で渡し、スタックトレースをメッセージに連結しない。
 
 ## アプリ・ツールごとの出力
@@ -169,5 +158,5 @@ SRC#Form・SRC#Avalonia の設定ダイアログ（元の SRC の設定変更の
 ## ヘルプ・docs
 
 - ヘルプの「[ログ](../SRC.Sharp.Help/src/ログ.md)」: 各アプリでの場所、レベルの変え方、不具合報告で添えるもの。ログにはファイルのパス（ユーザー名を含む）が入ること。
-- `srcsharp --help`（15 言語）と [VS Code 拡張の README](../SRC.Sharp/SRCSharpVSCode/README.md#ログ) に、引数と設定を書いた。
-- Issue テンプレート（不具合の報告）に、ログの欄と場所を書いた。
+- `srcsharp --help`（15 言語）と [VS Code 拡張の README](../SRC.Sharp/SRCSharpVSCode/README.md#ログ): 引数と設定。
+- Issue テンプレート（不具合の報告）: ログの欄と場所。

@@ -1,7 +1,7 @@
 # 移植を TODO の消化から品質の検証に移す
 
 - 日付: 2026-02-21
-- 状態: 採用
+- 状態: 採用（移植は [VB から C# への移植を完了とする](./2026-10-20-porting-complete.md) で完了）
 
 ## 背景
 
@@ -31,4 +31,4 @@
 - [移植状況 総合評価レポート](../history/porting/porting-assessment.md)
 - [移植精度 評価・向上計画](../history/porting/porting-quality-plan.md)
 - [移植完了計画](../history/porting/migration-plan.md)
-- [移植の現状](../porting.md)
+- [移植の記録](../history/porting/README.md)

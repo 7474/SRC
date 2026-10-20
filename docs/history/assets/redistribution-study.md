@@ -1,5 +1,7 @@
 # 素材データの再配布の検討 / Asset Redistribution Study
 
+> 記録として残している文書です（2026-10-13 時点）。現在の状態は [素材](../../assets.md)、判断は [フルパッケージの素材を再配布しない](../../decisions/2026-10-12-asset-redistribution.md) を参照してください。
+
 > 調査日: 2026-10-12
 > 対象: SRC安定版フルパッケージ Ver.2.2.33-111106（`srcall-2_2_33-111106.zip`）
 
@@ -78,7 +80,7 @@ flowchart TD
    - `ScreenSession`（SRC#Avalonia が使う）は既定で `AllowMissingAssets = true`。SRC#Form は従来どおり素材を必須とする
 2. **A**: 取得スクリプトを用意する（公式 ZIP の URL と SHA-256 を固定する）
 3. **C/E**（一部対応済み）: E2E テスト用コーパスで使う素材を自作・CC0 で用意する。遊べるシナリオ（ランタン号）に必要な地形データ・スペシャルパワーデータ・地形の画像は `SRC.Sharp/Content/basic-data` に自作した。ランタン号の顔グラフィックとユニットの画像は生成AI（PixelLab）で生成し、シナリオに含めた（`SRC.Sharp/Content/lantern/README.md`）
-   - `SRC.Sharp/E2E/` のケースは、自作の最小のデータと音声（`sound` の MIDI・WAV）で動く（[E2E テスト方針](../gui/e2e-testing.md)）
+   - `SRC.Sharp/E2E/` のケースは、自作の最小のデータと音声（`sound` の MIDI・WAV）で動く（[E2E テスト方針](../../gui/e2e-testing.md)）
 4. **B**: 公式管理人へ問い合わせる。対象（グラフィック集・汎用戦闘アニメ・地形データ・スペシャルパワー eve。効果音は除く）、配布形態（別リポジトリ、用途を SRC 本体および派生版に限定、クレジット付き）、形式変換（PNG 化など）が改変にあたるかを確認する
 
 ## 出典
@@ -88,4 +90,4 @@ flowchart TD
 - [SRC公式サイト 新規インストール](http://www.src-srpg.jpn.org/play_newinstall.shtml)
 - [SRC公式ページ 個別ダウンロード](http://www.src-srpg.jpn.org/play_download.shtml)
 - フルパッケージ内の `Readme.txt`、`フルパッケージ版内容.txt`、`Sound/Readme.txt`、`サンプルシナリオ/readme.txt`
-- 本リポジトリの [派生版規約（形式１）](../../src_hasei_kiyaku1.md) / [（形式２）](../../src_hasei_kiyaku2.md)、[LICENSE](../../LICENSE)（GPLv3）
+- 本リポジトリの [派生版規約（形式１）](../../../src_hasei_kiyaku1.md) / [（形式２）](../../../src_hasei_kiyaku2.md)、[LICENSE](../../../LICENSE)（GPLv3）

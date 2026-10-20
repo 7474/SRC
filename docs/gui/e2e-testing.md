@@ -1,12 +1,10 @@
-# E2E テスト方針 / E2E Testing
+# E2E テスト / E2E Testing
 
-> 調査日: 2026-10-12（更新: 2026-10-13）
+SRC# の E2E テスト（シナリオを実際にプレイして挙動を確認するテスト）と VRT（ビジュアルリグレッションテスト）の仕組み。テスト全体の層と CI での扱いは [テストと CI の設計](../testing.md)、この方式を選んだ理由は [判断の記録](../decisions/2026-10-12-headless-e2e-vrt.md) にある。
 
-SRC# の E2E テスト（シナリオを実際にプレイして挙動を確認するテスト）と VRT（ビジュアルリグレッションテスト）の方針。
+## 方式
 
-## 結論
-
-- **全コマンドと運用フローを網羅するテスト用データ・シナリオを用意し、入力スクリプトに沿ってヘッドレスでプレイする**
+- **コマンドと運用フローを網羅するテスト用データ・シナリオ（コーパス）を、入力スクリプトに沿ってヘッドレスでプレイする**
 - 検証は2系統で行う
   - **挙動**: 画面の状態（メッセージ、選択肢、マップ、ユニット）と、GUI 呼び出しの記録
   - **見た目（VRT）**: `SRCRender` が描画した画面を基準画像と比較する
@@ -51,7 +49,7 @@ flowchart LR
 
 - 置き場所は `SRC.Sharp/E2E/`（データ・シナリオ・入力スクリプト）。基準画像は `SRCRenderTests/Baselines/` に置く
 - 乱数を使うシナリオは乱数系列を固定して実行する（`GeneralLib.RndSeed`）
-- **網羅率の検査**: 実行したコマンドの種類（`CmdType`）を記録し、コーパス全体で未実行のコマンドがあればテストを失敗させる。これでコマンドの追加・移植漏れを検出できる
+- **コマンド網羅率**: master への push のとき、CI の `coverage` ジョブが `SRCRenderTests` のカバレッジから、コーパスと画面のテストで実行したイベントコマンドの割合を `.github/scripts/command-coverage.py` で集計し、ジョブのサマリーに出す（テストは失敗させない）。カバレッジの収集は後処理に数分かかるため PR では行わない
 
 ### 入力スクリプト（PlayScript）
 
@@ -102,8 +100,8 @@ expect eval Damage(標的パイロット) > 0
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
-| `cmd-unexec-*` | それまでどのシナリオでも実行されなかったイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
-| `cmd-branch-*` | 行カバレッジの低かったイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
+| `cmd-unexec-*` | ほかのケースでは実行しないイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
+| `cmd-branch-*` | 引数の形で処理が分かれるイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
 | `unit-cmd-*` | ユニット・マップのコマンドをマスのクリックとメニューで実行する（アビリティ・修理・補給・スペシャルパワー・変形・合体・分離・母艦への収納と発進・会話・チャージ・援護攻撃・テレポート・ジャンプ・召喚・命令・マップのメニュー・クイックセーブ／ロード・ユニットステータスでの換装など） |
 
 ## VRT
@@ -116,9 +114,9 @@ expect eval Damage(標的パイロット) > 0
 - **フォントを固定する**: 基準画像は Ubuntu 24.04 + `fonts-noto-cjk`（Noto Sans CJK JP / Noto Sans Mono CJK JP）で作成している。CI の Linux ジョブも同じフォントを入れる。Noto CJK が無い環境（Windows など）では比較せず Inconclusive とする
 - **撮影前に描画を待つ**: UI からの入力はゲームスレッドで処理して描画するため、`ScreenScenarioRunner.SnapshotPng` はそれまでに渡した処理が終わるのを待ってから撮る
 - 対象: メッセージ・選択肢・`Paint` 系コマンド・素材なしの表示・リスト（多段・出撃選択）・設定変更・メニュー・メッセージボックス・ホットポイント・ドラッグ後のマップ
-- 今後の対象: 戦闘画面・移動アニメーション（ユニット・パイロットのテスト用データを用意した後）
+- 未対応: 戦闘画面・移動アニメーションの VRT
 
-## 現在のテスト
+## テストのプロジェクト
 
 | プロジェクト | 内容 | 実行環境 |
 |---|---|---|
@@ -141,12 +139,5 @@ CI（`.github/workflows/CI.yml`）の構成と、各テストの責務・マー�
 | 対象 | 方針 | 根拠 |
 |---|---|---|
 | SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画・文字入力ダイアログを確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
-| SRC#Form | WinAppDriver のテスト（`SRCSharpFormTestWinAppDriver`）は CI で動いていなかったため廃止した。必要になったら FlaUI（UIA3）で作る。対象は起動・終了程度 | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)）。WinForms 版は移行後に縮退させる前提 |
+| SRC#Form | UI テストは無い。作る場合は FlaUI（UIA3）で、対象は起動・終了程度にする | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)） |
 | SRCTestBlazor | 既存の Cypress を、配信した後の確認として継続する（マージの可否には使わない） | — |
-
-## 次の作業
-
-1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
-2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `coverage` で、master への push のときに `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す。カバレッジの収集は後処理に数分かかるため PR では行わない）
-3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
-4. ~~セーブ／ロード、インターミッション、次ステージへの遷移を通す~~（`intermission-save`。ロードは SRC#Web の E2E で確かめる）

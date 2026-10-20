@@ -1,6 +1,19 @@
-# 移植の現状 / Porting Status
+# 移植の記録 / Porting Archive
 
-SRC#（`SRC.Sharp`）は、元の SRC（VB6。`SRC/SRC_20121125`）を C# に移植したものです。この文書は、移植の状態・移植の規約・品質の確かめ方をまとめます。
+> 記録として残している文書です（2026-10-20 時点）。VB から C# への移植は 2026-10-20 に完了とした（[判断の記録](../../decisions/2026-10-20-porting-complete.md)）。コードの規約は [CONTRIBUTING.md](../../../CONTRIBUTING.md)、テストは [テストと CI の設計](../../testing.md) を参照してください。
+
+SRC#（`SRC.Sharp`）は、元の SRC（VB6。`SRC/SRC_20121125`）を C# に移植したものです。この文書は、移植を完了としたときの状態・移植の規約・品質の確かめ方をまとめたものです。
+
+## このフォルダの文書
+
+| 文書 | 内容 |
+|---|---|
+| [porting-assessment.md](./porting-assessment.md) | 移植状況の総合評価（2026-02-20） |
+| [porting-quality-plan.md](./porting-quality-plan.md) | 移植精度の評価・向上計画（2026-02-20） |
+| [migration-plan.md](./migration-plan.md) | 移植完了計画と、TODO の分類（2026-02） |
+| [issue-breakdown.md](./issue-breakdown.md) | Epic ごとの Issue の分解（2026-02） |
+| [coverage-porting-bugs.md](./coverage-porting-bugs.md) | カバレッジを上げる過程で見つけた移植の不具合と、その修正（2026-10） |
+| [../conversion-log.md](../conversion-log.md) | VB から C# に変換したときに使ったツール |
 
 ## 状態
 
@@ -53,12 +66,12 @@ SRC#（`SRC.Sharp`）は、元の SRC（VB6。`SRC/SRC_20121125`）を C# に移
 
 ## 品質の確かめ方
 
-移植の正しさは、ユニットテスト（`SRCCoreTests`）と、テスト用のシナリオをヘッドレスでプレイするシナリオ E2E・VRT（`SRCRenderTests`）で確かめる。テストの層ごとの責務と CI の構成は [テストと CI の設計](./testing.md)、シナリオ E2E・VRT の詳細は [E2E テスト方針](./gui/e2e-testing.md) を参照。
+移植の正しさは、ユニットテスト（`SRCCoreTests`）と、テスト用のシナリオをヘッドレスでプレイするシナリオ E2E・VRT（`SRCRenderTests`）で確かめる。テストの層ごとの責務と CI の構成は [テストと CI の設計](../../testing.md)、シナリオ E2E・VRT の詳細は [E2E テスト方針](../../gui/e2e-testing.md) を参照。
 
 元の SRC との挙動の違いを確かめるためのシナリオは [SRC-SharpTestScenario](https://github.com/7474/SRC-SharpTestScenario) にある。
 
 ## 関連
 
-- [判断の記録: 移植を TODO の消化から品質の検証に移す](./decisions/2026-02-21-porting-quality-phase.md)
-- [判断の記録: 元の SRC の動作を期待値にしたテストで移植の不具合を記録する](./decisions/2026-10-15-vb-behavior-as-test-oracle.md)
-- 移植の計画・評価・不具合の一覧（記録）: [docs/history/porting](./history/porting/)
+- [判断の記録: 移植を TODO の消化から品質の検証に移す](../../decisions/2026-02-21-porting-quality-phase.md)
+- [判断の記録: 元の SRC の動作を期待値にしたテストで移植の不具合を記録する](../../decisions/2026-10-15-vb-behavior-as-test-oracle.md)
+- [判断の記録: VB から C# への移植を完了とする](../../decisions/2026-10-20-porting-complete.md)

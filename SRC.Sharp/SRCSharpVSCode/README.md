@@ -18,7 +18,7 @@ SRC のシナリオ（`*.eve`）の編集支援と、イベントのデバッガ
 
 ## 導入
 
-Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) の更新として出します。0.0.5 は色分けだけの旧版です。0.5.1 から正式版で出しているため、拡張機能ビューから入れる・更新すると入ります（0.5.0 はプレリリースでした）。0.7 以降は、マイナーが奇数の版をプレリリースで出します（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)、7474/SRC#1175）。`.vsix` から入れることもできます。
+Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) で出しています。拡張機能ビューから入れる・更新すると入ります。版はマイナーが 7 以上の奇数ならプレリリースで出します（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)、7474/SRC#1175）。`.vsix` から入れることもできます。
 
 ### かんたんな手順
 
@@ -123,7 +123,7 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 | 属性 | 既定 | 内容 |
 |---|---|---|
 | `program` | （必須） | 実行するイベントファイル |
-| `script` | なし | 入力を与える `.play` スクリプト（書式は [E2E テスト方針](../../docs/gui/e2e-testing.md) の PlayScript） |
+| `script` | なし | 入力を与える `.play` スクリプト（書式は [E2E テスト](../../docs/gui/e2e-testing.md) の PlayScript） |
 | `appPath` | `srcsharp.appPath`、無ければシナリオのフォルダの親の SRC 本体のフォルダ、それも無ければシナリオのフォルダ | SRC 本体のフォルダ |
 | `scenarioRoot` | `program` のあるフォルダ。そこに `Data`・`src.ini` が無ければ、それを持ついちばん近い親（`Data\System` のある SRC 本体のフォルダは除く） | シナリオのフォルダ（`Data`・`Lib`・`Continue` の基準）。シナリオのサブフォルダに置いたイベントファイルを、単体で実行・デバッグするのに使う |
 | `interactive` | `false`（launch.json の雛形・実行ボタン・F5 は `true`） | 画面のタブのクリック・キーで操作する。`false` なら自動の入力で進める。`script` があれば `script` で動かす |
@@ -274,4 +274,4 @@ npm run compile
 npm run package   # .vsix を作る（vsce は devDependencies に入っている）
 ```
 
-CI（`.github/workflows/CI.yml`）は `.vsix` を作り、成果物 `src-vscode-vsix` として残します。拡張のバージョン（`package.json`）は SRC# 本体とは別に上げます。公開は `.github/workflows/Publish-VSCode.yml` が行います（[バージョンの管理](../../docs/versioning.md#vs-code-拡張)）。
+CI（`.github/workflows/CI.yml`）は `.vsix` を作り、成果物 `src-vscode-vsix` として残します。拡張のバージョン（`package.json`）はライブラリ（srcsharp）と同じにし、手で上げます。公開は `.github/workflows/Publish-VSCode.yml` が行います（[バージョンの管理](../../docs/versioning.md#vs-code-拡張)）。

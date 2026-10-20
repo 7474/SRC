@@ -1,23 +1,23 @@
 # SRC# ドキュメント / Documentation
 
-このディレクトリには SRC#（Simulation RPG Construction Sharp）プロジェクトのドキュメントが含まれています。
+SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメントです。
+
+- この一覧の文書には**現状だけ**を書きます
+- なぜそうしたか（経緯・比較・判断の理由）は [判断の記録](./decisions/README.md) に、過去の計画・調査・移植の作業の記録は [履歴](./history/README.md) に置きます
 
 ## 📚 ドキュメント一覧 / Document Index
 
-### 🔧 移植・品質向上 / Porting & Quality Improvement
-
-移植作業のTODO消化フェーズは完了し、現在は**品質検証・精度向上フェーズ**にあります。
-
-- **[移植ドキュメント](./porting/README.md)** — 移植計画・評価・品質向上計画など
-- **[テストと CI の設計](./testing.md)** — ユニット・シナリオ E2E・VRT・フロントエンド E2E の責務、CI の構成と必須チェック、Dependabot の自動マージ、不安定なテストの扱い
-
 ### 🖥️ GUI / GUI
 
-- **[GUI 実装移行の検討](./gui/gui-migration-study.md)** — WinForms から新規 GUI 実装へ移行する場合の候補比較と移行手順
+- **[GUI の構成](./gui/README.md)** — フロントエンド（SRC#Form・SRC#Avalonia・SRC#Web）と、共通の SRCCore・SRCRender・SRCSound の関係
 - **[SRC#Avalonia](./gui/avalonia.md)** — Windows / macOS / Linux で動くフロントエンドの構成・WinForms 版との対応・音声・実行方法
-- **[E2E テスト方針](./gui/e2e-testing.md)** — テスト用コーパスをヘッドレスでプレイする E2E テストと VRT の方針
 - **[SRC#Web（ブラウザ版）](./gui/web.md)** — 静的サイトで動くブラウザ版の設計（マルチスレッド WebAssembly・ブラウザ内保存・タッチ操作・仮想パッド・システムメニュー）
 - **[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)** — リリースのパッケージ・サイトの設定・カタログ・素材の同梱・URL での起動
+
+### 🧪 テスト / Testing
+
+- **[テストと CI の設計](./testing.md)** — ユニット・シナリオ E2E・VRT・フロントエンド E2E の責務、CI の構成と必須チェック、Dependabot の自動マージ、不安定なテストの扱い
+- **[E2E テスト](./gui/e2e-testing.md)** — テスト用コーパスをヘッドレスでプレイするシナリオ E2E・VRT と、入力スクリプト（PlayScript）の書式
 
 ### 🌐 多言語対応 / Internationalization
 
@@ -36,11 +36,16 @@
 
 ### 📦 素材 / Assets
 
-- **[素材データの再配布の検討](./assets/redistribution-study.md)** — 汎用グラフィック集・戦闘アニメ・効果音などの再配布可否と、素材なしで動かす対応
+- **[素材](./assets.md)** — リポジトリに含める素材・含めない素材と、素材が無いときの動作
+
+### 🗂️ 判断の記録・履歴 / Decisions & History
+
+- **[判断の記録](./decisions/README.md)** — 設計・運用の判断（背景・判断・理由・影響）
+- **[履歴](./history/README.md)** — 移植の作業の記録（計画・評価・不具合の一覧）と、過去の調査
 
 ## 🔗 関連リンク / Related Links
 
-- [CONTRIBUTING.md](../CONTRIBUTING.md) — 貢献ガイドライン
+- [CONTRIBUTING.md](../CONTRIBUTING.md) — 貢献ガイドライン・コードの規約
 - [SRC 公式サイト](http://www.src-srpg.jpn.org/)
 - [SRC# GitHub](https://github.com/7474/SRC)
 - [SRC# デモ（データビューア）](https://7474.github.io/SRC/)

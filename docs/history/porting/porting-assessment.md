@@ -1,6 +1,6 @@
 # SRC# 移植状況 総合評価レポート / Porting Assessment Report
 
-> 記録として残している文書です（2026-10-14 時点）。現在の状態は [移植の現状](../../porting.md) を参照してください。
+> 記録として残している文書です（2026-10-14 時点）。移植は完了した（[移植の記録](./README.md)）。
 
 > **作成日**: 2026-02-20  
 > **対象**: SRC# (Simulation RPG Construction Sharp) — VB6 → C# .NET 移植プロジェクト

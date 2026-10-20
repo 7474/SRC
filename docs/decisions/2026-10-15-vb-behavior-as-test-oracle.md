@@ -22,9 +22,9 @@
 ## 影響
 
 - 見つかった 121 件はすべて直し、テストの `[Ignore]` を外した（7474/SRC#1215 で 57 件、続く PR で残り 64 件）
-- 規約は [移植の現状](../porting.md) の「移植の規約」「既知の移植の不具合」に書いている
+- 規約は [CONTRIBUTING.md](../../CONTRIBUTING.md) の「コードの規約」に書いている
 
 ## 参照
 
 - [カバレッジ強化で見つかった移植の不具合](../history/porting/coverage-porting-bugs.md)
-- [移植の現状](../porting.md)
+- [移植の記録](../history/porting/README.md)
