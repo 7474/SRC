@@ -89,7 +89,7 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 Windows のシナリオ E2E のタイムアウトは、同じテストが Linux では通っていた。タイムアウトのほかに Windows でだけ落ちたのは `PathResolverTests`（大文字・小文字を区別しないファイルシステムでの期待値。`SRCCoreTests` に含まれ、引き続き Windows で動かす）だけだった。
 
-`build-help` を足したところ、`SRC.Sharp.Help/Gemfile.lock` に Ruby 3.1 では入れられない `public_suffix` 7.0.5（Ruby 3.2 以上が要る）が入っていた。Static Web Apps（Oryx）の `bundle install` は黙って 6.0.2 に解決し直してビルドしていたため、配信は成功していた。6.0.2 に戻し、Dependabot では 7 以上を無視する。
+`build-help` を足したところ、`SRC.Sharp.Help/Gemfile.lock` には Ruby 3.1 では入れられない版（`public_suffix` 7.0.5・`google-protobuf` 4.36 など、Ruby 3.2 以上が要るもの）が入っていた。Static Web Apps（Oryx）の `bundle install` は黙って入れられる版に解決し直してビルドしていたため、配信は成功していた。`build-help` も Oryx と同じく `Gemfile.lock` を固定せずに入れてビルドする。
 
 ## 廃止したもの
 
@@ -104,4 +104,5 @@ Windows のシナリオ E2E のタイムアウトは、同じテストが Linux 
 
 - Playwright の flaky なテスト（上の表）の待ちの条件を直す
 - `SRCTestBlazor/E2E`（Cypress）は配信した後に動き、外部（`7474/SRC-Data`）のデータを読む。マージの可否には使わない
+- SRC#Help の Ruby は Static Web Apps（Oryx）に合わせて 3.1 のままで、`Gemfile.lock` が実際に入る版と合っていない。Ruby を上げるか、Ruby 3.1 で `Gemfile.lock` を作り直す
 - npm の依存（`SRCSharpWeb.E2E`・`SRCSharpVSCode`・`SRCTestBlazor/E2E`）は Dependabot の対象に入っていない

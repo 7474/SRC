@@ -273,7 +273,9 @@ jobs:
       run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
 
   # SRC#Help（Jekyll）のビルド。配信は CD-swa-help.yml が行うが、Dependabot の PR では配信用のトークンが無く
-  # ビルドもされないため、ここで確かめる。Ruby は Static Web Apps（Oryx）と同じ版（SRC.Sharp.Help/.ruby-version）
+  # ビルドもされないため、ここで確かめる。Static Web Apps（Oryx）と同じく、Ruby は SRC.Sharp.Help/.ruby-version の版で、
+  # Gemfile.lock を固定せずに bundle install する（Gemfile.lock には Ruby 3.1 では入れられない版が含まれていて、
+  # Oryx はそれを入れられる版に解決し直してビルドしている。docs/testing.md）
   build-help:
     needs: changes
     if: needs.changes.outputs.help == 'true'
@@ -288,10 +290,11 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         working-directory: SRC.Sharp.Help
-        bundler-cache: true
 
     - name: Build
-      run: bundle exec jekyll build
+      run: |
+        bundle install
+        bundle exec jekyll build
 
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
