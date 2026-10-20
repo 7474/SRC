@@ -92,6 +92,7 @@ namespace SRCCore.Config
         {
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(Path.Combine(AppPath, "srcs.json"), json);
+            Filesystem.PathResolver.Invalidate();
         }
     }
 

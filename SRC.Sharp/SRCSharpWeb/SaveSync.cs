@@ -107,6 +107,7 @@ namespace SRCSharpWeb
             }
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, data);
+            SRCCore.Filesystem.PathResolver.Invalidate();
             return path;
         }
     }

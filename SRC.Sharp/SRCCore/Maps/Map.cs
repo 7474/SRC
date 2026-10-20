@@ -171,37 +171,42 @@ namespace SRCCore.Maps
         }
 
         // 指定したマップ画像を検索する
-        public string SearchTerrainImageFile(MapCell cell)
+        /// <summary>
+        /// cell の地形の画像ファイルを探す。
+        /// found を渡すと、同じ画像名・番号を探した結果を使い回す（マップ全体を描くときに、同じ地形のファイルを何度も探さない）。
+        /// </summary>
+        public string SearchTerrainImageFile(MapCell cell, IDictionary<(string Name, int No), string> found = null)
         {
             if (cell?.UnderTerrain == null) { return null; }
-            // マップ画像のファイル名を作成
-            var tbmpname = cell.UnderTerrain.Bitmap;
-            var tbitmap = cell.BitmapNo;
-            var fnames = new string[]
+            var file = SearchMapImageFile(cell.UnderTerrain.Bitmap, cell.BitmapNo, found);
+            if (file != null)
             {
-                SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
-            };
-            // ビットマップを探す
-            foreach (var file in fnames)
-            {
-                if (SRC.FileSystem.FileExists(file))
-                {
-                    // ビットマップ名記録
-                    MapUnderImageFilePath[cell.X, cell.Y] = file;
-                    return file;
-                }
+                // ビットマップ名記録
+                MapUnderImageFilePath[cell.X, cell.Y] = file;
             }
-            return null;
+            return file;
         }
 
-        public string SearchLayerImageFile(MapCell cell)
+        /// <inheritdoc cref="SearchTerrainImageFile(MapCell, IDictionary{ValueTuple{string, int}, string})"/>
+        public string SearchLayerImageFile(MapCell cell, IDictionary<(string Name, int No), string> found = null)
         {
             if (cell?.UpperTerrain == null) { return null; }
+            var file = SearchMapImageFile(cell.UpperTerrain.Bitmap, cell.LayerBitmapNo, found);
+            if (file != null)
+            {
+                // ビットマップ名記録
+                MapUpperImageFilePath[cell.X, cell.Y] = file;
+            }
+            return file;
+        }
+
+        private string SearchMapImageFile(string tbmpname, int tbitmap, IDictionary<(string Name, int No), string> found)
+        {
+            if (found != null && found.TryGetValue((tbmpname, tbitmap), out var cached))
+            {
+                return cached;
+            }
             // マップ画像のファイル名を作成
-            var tbmpname = cell.UpperTerrain.Bitmap;
-            var tbitmap = cell.LayerBitmapNo;
             var fnames = new string[]
             {
                 SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
@@ -209,16 +214,12 @@ namespace SRCCore.Maps
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
             // ビットマップを探す
-            foreach (var file in fnames)
+            var file = fnames.FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            if (found != null)
             {
-                if (SRC.FileSystem.FileExists(file))
-                {
-                    // ビットマップ名記録
-                    MapUpperImageFilePath[cell.X, cell.Y] = file;
-                    return file;
-                }
+                found[(tbmpname, tbitmap)] = file;
             }
-            return null;
+            return file;
         }
 
         // マップファイル fname のデータをロード

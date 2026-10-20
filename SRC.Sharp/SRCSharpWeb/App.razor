@@ -1250,12 +1250,15 @@ else
             {
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 var zip = await DownloadAsync(asset.Archive, asset.Version, token);
+                var downloaded = watch.ElapsedMilliseconds;
                 try
                 {
                     status = L["ExtractingAsset", asset.Title];
                     StateHasChanged();
                     await Task.Run(() => ScenarioArchive.ExtractAsset(zip, asset.Root, token), token);
+                    WebLogging.Log.LogDebug("素材を読み込みました {Asset} 取得 {Download}ms 展開 {Extract}ms", asset.Title, downloaded, watch.ElapsedMilliseconds - downloaded);
                 }
                 finally
                 {
@@ -1298,13 +1301,16 @@ else
         {
             status = L["LoadingArchive", title];
             StateHasChanged();
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             var zip = await fetch();
+            var downloaded = watch.ElapsedMilliseconds;
             try
             {
                 status = L["ExtractingArchive", title];
                 StateHasChanged();
                 scenarioId = id;
                 scenarioDir = await Task.Run(() => ScenarioArchive.Extract(id, zip, root, token), token);
+                WebLogging.Log.LogDebug("シナリオを読み込みました {Title} 取得 {Download}ms 展開 {Extract}ms", title, downloaded, watch.ElapsedMilliseconds - downloaded);
             }
             finally
             {
@@ -1423,6 +1429,7 @@ else
         if (File.Exists(path))
         {
             File.Delete(path);
+            SRCCore.Filesystem.PathResolver.Invalidate();
         }
         await RestoreSavesAsync();
     }

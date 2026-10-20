@@ -332,7 +332,8 @@ namespace SRCCore.Filesystem
             }
         }
 
-        private FileInfo GetFileInfo(string entryName)
+        /// <summary>entryName のこのフォルダでのパス。このフォルダの外を指す絶対パスなら null</summary>
+        private string EntryPath(string entryName)
         {
             var archivePath = entryName.Replace("\\", "/");
             var isAbsolute = Path.IsPathRooted(entryName);
@@ -341,13 +342,19 @@ namespace SRCCore.Filesystem
                 return null;
             }
             var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
+            return Path.Combine(BasePath, entryPath);
+        }
 
-            return new FileInfo(PathResolver.Resolve(Path.Combine(BasePath, entryPath)));
+        private FileInfo GetFileInfo(string entryName)
+        {
+            var path = EntryPath(entryName);
+            return path == null ? null : new FileInfo(PathResolver.Resolve(path));
         }
 
         public bool Exists(string entryName)
         {
-            return GetFileInfo(entryName)?.Exists ?? false;
+            var path = EntryPath(entryName);
+            return path != null && PathResolver.FileExists(path);
         }
 
         public Stream OpenRead(string entryName)

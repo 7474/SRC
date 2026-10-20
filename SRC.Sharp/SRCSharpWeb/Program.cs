@@ -21,6 +21,8 @@ await JSHost.ImportAsync(WebInterop.ModuleName, "../js/srcweb.js");
 WebLocalization.Apply();
 // ログのレベル（index.html が環境変数で渡す）
 WebLogging.Configure(builder.Logging);
+// ブラウザのファイルシステムを書き換えるのはこのアプリだけ（書き換えたらキャッシュを捨てる）。存在の確認をフォルダの一覧のキャッシュで答える
+SRCCore.Filesystem.PathResolver.TrustDirectoryCache = true;
 var host = builder.Build();
 WebLogging.Attach(host.Services.GetRequiredService<ILoggerFactory>());
 await host.RunAsync();

@@ -3,6 +3,7 @@ using SRCCore.Exceptions;
 using SRCCore.Filesystem;
 using SRCCore.Maps;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -246,6 +247,42 @@ namespace SRCCore.Coverage.Tests
 
             // 角では範囲外の方向を無視する
             Assert.AreEqual(0, f.Map.AdjacentUnit(1, 3).Count);
+        }
+
+        [TestMethod]
+        public void SearchTerrainImageFile_WithFound_ReusesResultForSameBitmap()
+        {
+            // マップ全体を描くとき、同じ画像名・番号の地形はファイルを探し直さない（見つからなかったものも覚える）
+            var dir = Path.Combine(Path.GetTempPath(), "srcs-mapcov-" + Guid.NewGuid());
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(dir, "Bitmap", "Map"));
+                File.WriteAllBytes(Path.Combine(dir, "Bitmap", "Map", "plain0003.bmp"), new byte[0]);
+
+                var f = new MapCoverageFixture();
+                var fs = new LocalFileSystem();
+                fs.AddPath(dir);
+                f.Src.FileSystem = fs;
+                var text = "MapData\r\n\r\n3,1\r\n0,3\r\n0,3\r\n0,6\r\n";
+                f.Map.LoadMapData("img.map", MapCoverageFixture.ToStream(text));
+
+                var found = new Dictionary<(string Name, int No), string>();
+                var first = f.Map.SearchTerrainImageFile(f.Map.MapData[1, 1], found);
+                // 探した後にファイルを消しても、同じ画像名・番号は覚えた結果を使う
+                File.Delete(Path.Combine(dir, "Bitmap", "Map", "plain0003.bmp"));
+                PathResolver.Invalidate();
+                Assert.AreEqual(first, f.Map.SearchTerrainImageFile(f.Map.MapData[2, 1], found));
+                // 覚えた結果を使ったセルにも、ビットマップ名を記録する
+                Assert.AreEqual(first, f.Map.MapUnderImageFilePath[2, 1]);
+                Assert.IsNull(f.Map.SearchTerrainImageFile(f.Map.MapData[3, 1], found));
+                Assert.AreEqual(2, found.Count);
+                // found を渡さなければ、毎回探す
+                Assert.IsNull(f.Map.SearchTerrainImageFile(f.Map.MapData[1, 1]));
+            }
+            finally
+            {
+                try { Directory.Delete(dir, true); } catch { }
+            }
         }
 
         [TestMethod]
