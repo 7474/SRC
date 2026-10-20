@@ -59,7 +59,8 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 | `SRC.Sharp.Help/` の bundler（`bundler-minor-patch`） | 自動マージ（`build-help` で Jekyll のビルドを確かめる） |
 | GitHub Actions（`actions-minor-patch`） | 自動マージ |
 | HelpConverter の NuGet（`helpconverter-minor-patch`） | まとめるだけ。CI でビルドしていないため人がマージする |
-| メジャーの更新・セキュリティの更新 | 個別の PR。人が確かめてマージする |
+| SkiaSharp のメジャーの更新（`skiasharp-major`） | `SkiaSharp*` をまとめて 1 つの PR にする（管理側とネイティブの版が揃わないと動かないため）。人が確かめてマージする |
+| そのほかのメジャーの更新・セキュリティの更新 | 個別の PR。人が確かめてマージする |
 
 - まとめるのは、同じファイル（`.csproj`・`packages.config` など）を書き換える PR が何本も並び、1 本マージするたびに残りが競合して作り直しになるのを避けるため
 - `GITHUB_TOKEN` で設定した自動マージによる push では、push で動くワークフロー（GitHub Pages・Static Web Apps への配信、`coverage`、`CodeInfo`）が動かない（[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)）。次に人がマージしたときにまとめて配信される。すぐに配信したい場合は、Dependabot のシークレットに `AUTOMERGE_TOKEN`（このリポジトリの contents・pull requests に書き込める fine-grained personal access token）を登録すると、それで自動マージを設定する（[Dependabot のシークレット](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）
