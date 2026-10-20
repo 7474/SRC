@@ -17,9 +17,9 @@
 	<ItemGroup>
 		<PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
-		<PackageReference Include="NAudio" Version="2.3.0" />
+		<PackageReference Include="NAudio" Version="2.4.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="System.Runtime.Caching" Version="10.0.3" />
+		<PackageReference Include="System.Runtime.Caching" Version="10.0.13" />
 	</ItemGroup>
 
 	<ItemGroup>
