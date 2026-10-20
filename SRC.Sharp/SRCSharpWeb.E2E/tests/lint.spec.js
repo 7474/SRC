@@ -13,14 +13,16 @@ const system = makeZip([
   file('Data/System/sp.txt', ['集中, しゅうちゅう', '集, 15, 自分, ターン, -, -, 集中', '命中強化Lv3 回避強化Lv3', '１ターンの間、命中＆回避+30', ''].join('\n')),
   // 汎用戦闘アニメ（本体の Lib）のラベル。静的解析はここにあるラベルも見る
   file('Lib/汎用戦闘アニメ/include.eve', 'AttackDemo:\nReturn\n'),
+  // 汎用データの素材（中身は検査しない）
+  { name: 'Bitmap/Event/共通の背景.bmp', data: Buffer.from('BM') },
 ]);
 
-async function lint(page, zip) {
-  return page.evaluate(async ([base, zipB64, systemB64]) => {
+async function lint(page, zip, options = {}) {
+  return page.evaluate(async ([base, zipB64, systemB64, options]) => {
     const bytes = (b64) => new Blob([Uint8Array.from(atob(b64), c => c.charCodeAt(0))]);
     const { lintZip } = await import(base + 'srclint.js');
-    return lintZip(bytes(zipB64), { systemArchives: [bytes(systemB64)] });
-  }, [lintBase, zip.toString('base64'), system.toString('base64')]);
+    return lintZip(bytes(zipB64), { ...options, systemArchives: [bytes(systemB64)] });
+  }, [lintBase, zip.toString('base64'), system.toString('base64'), options]);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -56,4 +58,19 @@ test('静的解析: Call の飛び先のラベルと include するファイル�
   expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/test\.eve:\d+ ラベル「無いラベル」が見つかりません/));
   expect(messages).toContainEqual(expect.stringMatching(/^シナリオ\/test\.eve:2 include するファイル「無いファイル\.eve」が見つかりません/));
   expect(messages.filter(m => /AttackDemo|部品のラベル|呼び出し元のラベル/.test(m))).toEqual([]);
+});
+
+test('素材の参照: シナリオと汎用データの zip に無い画像・音を info で知らせる（assets を指定したときだけ）', async ({ page }) => {
+  const zip = makeZip([
+    file('シナリオ/test.eve', 'スタート:\nPaintPicture Event\\共通の背景.bmp 0 0\nPaintPicture 同梱.png 0 0\nPaintPicture 無い画像.bmp 0 0\nStartBGM 無い曲.mid\nPaintPicture $(画像) 0 0\nExit\n'),
+    { name: 'シナリオ/Bitmap/同梱.png', data: Buffer.from('PNG') },
+    pilot('集中'),
+  ]);
+  const result = await lint(page, zip, { assets: true });
+  const messages = result.diagnostics.map(d => `${d.severity} ${d.file}:${d.line} ${d.message}`);
+  expect(messages).toEqual([
+    'info シナリオ/test.eve:4 素材が見つかりません: 無い画像.bmp',
+    'info シナリオ/test.eve:5 素材が見つかりません: 無い曲.mid',
+  ]);
+  expect((await lint(page, zip)).diagnostics).toEqual([]);
 });

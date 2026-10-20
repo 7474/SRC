@@ -2,9 +2,10 @@
 //
 //   import { lintZip } from '<置き場所>/srclint.js';
 //   const result = await lintZip(file, { systemArchives: ['/files/packs/src-basic/xxxx.zip'] });
-//   // result.diagnostics: [{ file, line, severity: 'error' | 'warning', message, source }]
+//   // result.diagnostics: [{ file, line, severity: 'error' | 'warning' | 'info', message, source }]
 //
 // zip の目次を読み、*.eve と *.txt だけを取り出して検査する（画像や音は読まない）。
+// assets: true なら、イベントとデータが参照する画像・音・マップのファイルが、シナリオの zip か汎用データの zip の目次にあるかも確かめる（見つからないものは info）。
 // systemArchives の zip（URL か Blob）からは汎用データとして Data/System/*.txt（sp.txt など）と Lib/**/*.eve（汎用戦闘アニメなど）を読み込む（検査はしない）。
 // 静的解析（Call・Goto の飛び先のラベル、include するファイル）は、汎用データの Lib にあるラベルも見る。
 import { dotnet } from './_framework/dotnet.js';
@@ -29,14 +30,19 @@ export function preload() {
 /**
  * zip（Blob・File）を検査する。
  * @param {Blob} zip
- * @param {{ systemArchives?: (string | Blob)[] }} options systemArchives: 汎用データの zip。URL（Range 要求に応えること）か Blob
- * @returns {Promise<{ diagnostics: { file: string, line: number, severity: 'error' | 'warning', message: string, source?: string }[], checkedFiles: number, root: string, systemErrors: string[] }>}
+ * @param {{ systemArchives?: (string | Blob)[], assets?: boolean }} options systemArchives: 汎用データの zip。URL（Range 要求に応えること）か Blob。
+ *   assets: 素材の参照も確かめる
+ * @returns {Promise<{ diagnostics: { file: string, line: number, severity: 'error' | 'warning' | 'info', message: string, source?: string }[], checkedFiles: number, root: string, systemErrors: string[] }>}
  */
 export async function lintZip(zip, options = {}) {
   const lint = await lintExports();
   lint.Reset();
   const reader = blobReader(zip);
-  const entries = (await readEntries(reader)).filter(e => !e.directory && /\.(eve|txt)$/i.test(e.name));
+  const all = (await readEntries(reader)).filter(e => !e.directory);
+  if (options.assets) {
+    lint.AddKnownFiles(all.map(e => e.name));
+  }
+  const entries = all.filter(e => /\.(eve|txt)$/i.test(e.name));
   const root = commonRoot(entries.map(e => e.name));
   let total = 0;
   for (const e of entries) {
@@ -53,7 +59,11 @@ export async function lintZip(zip, options = {}) {
     n++;
     try {
       const r = typeof archive === 'string' ? await httpReader(archive) : blobReader(archive);
-      for (const e of await readEntries(r)) {
+      const systemEntries = await readEntries(r);
+      if (options.assets) {
+        lint.AddKnownFiles(systemEntries.filter(e => !e.directory).map(e => e.name));
+      }
+      for (const e of systemEntries) {
         const m = !e.directory && e.name.match(/(?:^|\/)((?:Data\/System\/[^/]+\.txt)|(?:Lib\/.+\.eve))$/i);
         if (m) {
           const data = await extract(r, e);

@@ -25,10 +25,14 @@ namespace SRCLintWeb
         // SRC 本体のフォルダの代わり（Data\System と Lib）
         private static string AppDir => Path.Combine(Root, "app");
 
+        // 素材の参照を確かめるときの、手元のファイルの一覧（AddKnownFiles で渡す。渡さなければ確かめない）
+        private static AssetReferenceChecker assets;
+
         /// <summary>前の検査で置いたファイルを消す</summary>
         [JSExport]
         internal static void Reset()
         {
+            assets = null;
             if (Directory.Exists(Root))
             {
                 Directory.Delete(Root, true);
@@ -49,8 +53,19 @@ namespace SRCLintWeb
         }
 
         /// <summary>
+        /// 手元にあるファイルのパス（シナリオの zip と汎用データの zip の中の、画像・音などを含むすべて）を加える。
+        /// 一度でも呼ぶと、イベントとデータが参照する素材のファイルがあるかも確かめる（見つからないものは info）
+        /// </summary>
+        [JSExport]
+        internal static void AddKnownFiles(string[] paths)
+        {
+            assets ??= new AssetReferenceChecker();
+            assets.AddKnownFiles(paths);
+        }
+
+        /// <summary>
         /// 検査して結果を JSON で返す。scenarioRoot はシナリオのフォルダ（scenario/ からの相対。イベントの include の基準）。
-        /// 結果: { "diagnostics": [{ "file", "line", "severity"（error|warning）, "message", "source" }], "checkedFiles": 数 }
+        /// 結果: { "diagnostics": [{ "file", "line", "severity"（error|warning|info）, "message", "source" }], "checkedFiles": 数 }
         /// </summary>
         [JSExport]
         internal static async Task<string> LintAsync(string scenarioRoot)
@@ -74,6 +89,12 @@ namespace SRCLintWeb
                 diagnostics.AddRange(analysis.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Warning));
             }
 
+            // 素材の参照（画像・音・マップのファイル）
+            if (assets != null)
+            {
+                diagnostics.AddRange(assets.Check(Directory.EnumerateFiles(ScenarioDir, "*", SearchOption.AllDirectories)));
+            }
+
             using var stream = new MemoryStream();
             using (var w = new Utf8JsonWriter(stream))
             {
@@ -86,7 +107,12 @@ namespace SRCLintWeb
                     w.WriteStartObject();
                     w.WriteString("file", Relative(d.File));
                     w.WriteNumber("line", d.Line);
-                    w.WriteString("severity", d.Severity == DiagnosticSeverity.Error ? "error" : "warning");
+                    w.WriteString("severity", d.Severity switch
+                    {
+                        DiagnosticSeverity.Error => "error",
+                        DiagnosticSeverity.Warning => "warning",
+                        _ => "info",
+                    });
                     w.WriteString("message", d.Message);
                     if (!string.IsNullOrEmpty(d.Source))
                     {
