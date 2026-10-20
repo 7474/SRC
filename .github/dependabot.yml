@@ -1,30 +1,48 @@
+# マイナー・パッチの更新はディレクトリ（エコシステム）ごとに 1 つの PR にまとめ、CI が通れば自動でマージする
+# （.github/workflows/dependabot-auto-merge.yml、docs/testing.md）。メジャーの更新は個別の PR にし、人が確かめてマージする
 updates:
 - directory: /SRC.Sharp/
   groups:
-    aspnetcore:
+    nuget-minor-patch:
       patterns:
-      - Microsoft.AspNetCore*
-      update-types:
-      - minor
-      - patch
-    selenium:
-      patterns:
-      - Selenium*
+      - '*'
       update-types:
       - minor
       - patch
   package-ecosystem: nuget
   schedule:
     interval: daily
+# HelpConverter は CI でビルドしていないため、まとめるだけで自動ではマージしない
 - directory: /SRC.Sharp.Help/HelpConverter/
+  groups:
+    helpconverter-minor-patch:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
   package-ecosystem: nuget
   schedule:
     interval: daily
 - directory: /SRC.Sharp.Help/
+  groups:
+    bundler-minor-patch:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
   package-ecosystem: bundler
   schedule:
     interval: daily
 - directory: /
+  groups:
+    actions-minor-patch:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
   package-ecosystem: github-actions
   schedule:
     interval: daily

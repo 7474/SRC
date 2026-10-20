@@ -21,7 +21,7 @@
 | WinForms 実装 | 約 28,800 行（うち `GUI.ref.cs` 11,640 行は参照用） | 実移植対象は約 17,000 行。`Forms/Main.guistatus.cs`（3,421 行）、`SRCSharpFormGUI.message.cs`（2,675 行）が大きい |
 | 描画 | GDI+（`Graphics` / `Bitmap`）直描き | 描画 API の置き換えが必須 |
 | 音声 | NAudio、Melanchall.DryWetMidi | NAudio の出力部は Windows 依存。クロスプラットフォーム化には別実装が必要 |
-| テスト / CI | `SRCSharpFormTestWinAppDriver`、CI は `windows-latest` | WinAppDriver は長期間メンテナンスされておらず置き換えたい |
+| テスト / CI | `SRCSharpFormTestWinAppDriver`、CI は `windows-latest` | WinAppDriver は長期間メンテナンスされておらず置き換えたい（2026-10 に廃止。[テストと CI の設計](../testing.md)） |
 | Web | `SRCTestBlazor`（WASM、データ閲覧のみ）が SRCCore を参照 | Web 版プレイヤーの土台になり得る |
 
 ## 候補比較

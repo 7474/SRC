@@ -123,17 +123,16 @@ expect eval Damage(標的パイロット) > 0
 | プロジェクト | 内容 | 実行環境 |
 |---|---|---|
 | `SRCCoreTests` | ユニットテスト。`E2E/HeadlessScenarioTests` は GUI 呼び出しの記録を、ゲームスレッドあり／なしで比較 | Windows / Linux |
-| `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Windows / Linux（VRT は Linux のみ） |
-| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Windows / Linux |
-| `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Windows / Linux（出力を開けない環境では再生のテストは Inconclusive） |
-| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Windows / Linux |
+| `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Linux（CI の Windows ではフォントのテストだけ。VRT は Linux のみ） |
+| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
+| `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Linux（ローカルでは Windows でも動く。出力を開けない環境では再生のテストは Inconclusive） |
+| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Linux（ローカルでは Windows でも動く） |
 | `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
-| `SRCSharpFormTestWinAppDriver` | SRC#Form の起動確認 | Windows のみ |
-| `SRCTestBlazor/E2E` | Cypress。データ閲覧画面 | ブラウザ |
+| `SRCTestBlazor/E2E` | Cypress。配信したデータ閲覧画面 | ブラウザ（配信した後） |
 
 `SRCRenderTests` は、待ち時間の長いシナリオのテストが多いため、メソッド単位で並べて動かす（`AssemblyInfo.cs` の `Parallelize`、ワーカーは CPU の数）。プロセス全体の UI カルチャを変えるテスト（`UiLanguageTests`）は `[DoNotParallelize]` にしている。テストを足すときは、静的な状態やプロセス全体の設定を変えないようにし、変える場合は `[DoNotParallelize]` を付ける（[MSTest の並列実行](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-controlling-execution#parallelization-attributes)）。
 
-CI（`.github/workflows/CI.yml`）は、Linux の `test-srccore-linux`（SRCCore・SRCRender）・`test-tools-linux`（Avalonia・作成支援ツール・SRCSound・VS Code 拡張）・`test-web`（SRC#Web）と、Windows の `build-and-test-srcs` を並べて動かす。
+CI（`.github/workflows/CI.yml`）の構成と、各テストの責務・マージの条件は [テストと CI の設計](../testing.md) にまとめている。
 
 ## フロントエンドごとの UI テスト
 
@@ -142,12 +141,12 @@ CI（`.github/workflows/CI.yml`）は、Linux の `test-srccore-linux`（SRCCore
 | 対象 | 方針 | 根拠 |
 |---|---|---|
 | SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画・文字入力ダイアログを確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
-| SRC#Form | WinAppDriver の継続は避け、必要なら FlaUI（UIA3）に置き換える。対象は起動・終了程度 | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)）。WinForms 版は移行後に縮退させる前提 |
-| SRCTestBlazor | 既存の Cypress を継続 | — |
+| SRC#Form | WinAppDriver のテスト（`SRCSharpFormTestWinAppDriver`）は CI で動いていなかったため廃止した。必要になったら FlaUI（UIA3）で作る。対象は起動・終了程度 | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)）。WinForms 版は移行後に縮退させる前提 |
+| SRCTestBlazor | 既存の Cypress を、配信した後の確認として継続する（マージの可否には使わない） | — |
 
 ## 次の作業
 
 1. ~~`SRC.Sharp/E2E/` にコーパスの置き場所と、テキスト形式の入力スクリプトの実行器を作る~~（対応済み）
-2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `test-srccore-linux` で、master への push のときに `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す。カバレッジの収集は後処理に数分かかるため PR では行わない）
+2. ~~コマンド網羅率の検査を入れ、未実行のコマンドを一覧化する~~（CI の `coverage` で、master への push のときに `SRCRenderTests` のカバレッジから `.github/scripts/command-coverage.py` が集計し、ジョブのサマリーに出す。カバレッジの収集は後処理に数分かかるため PR では行わない）
 3. ~~ユニット・パイロットの最小データを用意し、出撃・移動・戦闘・勝利条件までの運用フローを通す~~（`battle-basic` / `battle-victory`）
 4. ~~セーブ／ロード、インターミッション、次ステージへの遷移を通す~~（`intermission-save`。ロードは SRC#Web の E2E で確かめる）

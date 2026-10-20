@@ -38,8 +38,9 @@ namespace SRCCore.CmdDatas.Commands
                         case "click":
                             //// 先行入力されていたクリックイベントを解消
                             GUI.Sleep(0, true);
-                            Commands.WaitClickMode = true;
+                            // クリックの記録を消してから待ちに入る（逆の順だと、待ちに入った直後のクリックを消してしまう）
                             GUI.IsFormClicked = false;
+                            Commands.WaitClickMode = true;
                             Event.SelectedAlternative = "";
 
                             // ウィンドウが表示されていない場合は表示

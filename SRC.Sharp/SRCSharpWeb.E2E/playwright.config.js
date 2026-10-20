@@ -12,8 +12,13 @@ module.exports = defineConfig({
   expect: { timeout: 60 * 1000 },
   fullyParallel: false,
   workers: 1,
-  retries: 0,
-  reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
+  // CI では失敗したテストを 1 度だけやり直す。やり直して通ったものは flaky として結果と注釈に残る（docs/testing.md）
+  retries: process.env.CI ? 1 : 0,
+  reporter: [
+    ['list'],
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+    ...(process.env.CI ? [['github']] : []),
+  ],
   use: {
     baseURL: `http://127.0.0.1:${port}${base}`,
     viewport: { width: 800, height: 800 },

@@ -1,21 +1,57 @@
 name: CI
 
+# テストの責務と、どのジョブがマージを止めるかは docs/testing.md にまとめている。
+# ブランチ保護の必須チェックは、すべてのジョブの結果をまとめる ci-passed だけにする。
+
 on:
   push:
     branches: [ master ]
-#     paths: 
-#       - .github/workflows/CI.yml
-#       - SRC.Sharp/**
   pull_request:
     branches: [ master ]
-#     paths: 
-#       - .github/workflows/CI.yml
-#       - SRC.Sharp/**
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
-  # SRCCore / SRCRender がプラットフォーム非依存であることを確認する
-  # （所要時間を縮めるため、ツール・SRC#Web は別のジョブで並べて動かす）
+  # 文書だけの変更では、ビルドとテストを省く（ci-passed は省いたジョブを成功として扱う）。
+  # ワークフローの paths で絞ると必須チェックが報告されずマージできなくなるため、ジョブの中で判定する
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      help: ${{ steps.filter.outputs.help }}
+    steps:
+    - name: Detect code changes
+      id: filter
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
+          echo "code=true" >> "$GITHUB_OUTPUT"
+          echo "help=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        files=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename')
+        echo "$files"
+        # docs/・memo/・ルートの *.md・Issue のテンプレートだけなら、コードの変更は無い
+        if echo "$files" | grep -qvE '^(docs/|memo/|\.github/ISSUE_TEMPLATE/|[^/]+\.md$)'; then
+          echo "code=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "code=false" >> "$GITHUB_OUTPUT"
+        fi
+        # ヘルプ（Jekyll のサイト）は、ヘルプかこのワークフローを変えたときだけビルドする
+        if echo "$files" | grep -qE '^(SRC\.Sharp\.Help/|\.github/workflows/CI\.yml$)'; then
+          echo "help=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "help=false" >> "$GITHUB_OUTPUT"
+        fi
+
+  # SRCCore のユニットテストと、SRCRender の E2E・VRT（正とする環境は Linux）
   test-srccore-linux:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
@@ -34,23 +70,8 @@ jobs:
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
-    # カバレッジの収集は後処理に数分かかるため、master への push のときだけ行う
     - name: Test SRCRender (E2E / VRT)
-      if: github.event_name != 'push'
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
-
-    - name: Test SRCRender (E2E / VRT, with coverage)
-      if: github.event_name == 'push'
-      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./RenderCoverage
-
-    # シナリオ（E2E コーパス・画面テスト）でどれだけコマンドを実行できているかをジョブのサマリーに出す
-    - name: Report command coverage of scenarios
-      if: always() && github.event_name == 'push'
-      run: |
-        files=$(find RenderCoverage -name coverage.cobertura.xml)
-        if [ -n "$files" ]; then
-          python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
-        fi
 
     - name: Upload screenshots
       if: always()
@@ -64,6 +85,8 @@ jobs:
 
   # SRC#Avalonia・作成支援ツール・SRCSound
   test-tools-linux:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
@@ -127,6 +150,8 @@ jobs:
 
   # SRC#Web（マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要）
   test-web:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
@@ -178,6 +203,8 @@ jobs:
 
   # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
   docker-srcdatalinter:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
@@ -204,7 +231,12 @@ jobs:
         docker run --rm srcdatalinter:test help Askコマンド | grep -q "Askコマンド"
         docker run --rm srcdatalinter:test help --search 選択肢を表示する | grep -q "Askコマンド"
 
+  # Windows でしか確かめられないもの: ソリューション全体（WinForms の SRC#Form を含む）のビルドと発行、
+  # SRCCore のユニットテスト（大文字・小文字を区別しないファイルシステムなど）、Windows の実フォントの寸法。
+  # シナリオの E2E・VRT は Linux（test-srccore-linux）を正とし、ここでは動かさない（docs/testing.md）
   build-and-test-srcs:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: windows-2025
 
     steps:
@@ -221,15 +253,13 @@ jobs:
     - name: Build
       run: dotnet build SRC.Sharp/SRC.Sharp.sln --no-restore
 
-    - name: Test
-      if: github.event_name == 'pull_request'
-      run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal
+    - name: Test SRCCore
+      run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build --verbosity normal
 
-    - name: Test (with coverage)
-      if: github.event_name == 'push'
-      run: dotnet test SRC.Sharp/SRC.Sharp.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
+    # SkiaSharp のネイティブライブラリの読み込みと、Windows の実フォントで測った縦の寸法（WindowsFontMetrics の検証用）
+    - name: Test SRCRender (Windows fonts)
+      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --no-build --verbosity normal --filter "FullyQualifiedName~WindowsFontMetricsTests|FullyQualifiedName~SkiaFontsTests"
 
-    # Windows の実フォントで測った縦の寸法（SRCRender の WindowsFontMetrics の検証用）
     - name: Upload font metrics
       if: always()
       uses: actions/upload-artifact@v7
@@ -238,50 +268,98 @@ jobs:
         path: SRC.Sharp/SRCRenderTests/bin/**/TestResults/fontmetrics.txt
         if-no-files-found: ignore
 
+    # Check NU1605 https://github.com/7474/SRC/pull/262
+    - name: Try Publish
+      run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+
+  # SRC#Help（Jekyll）のビルド。配信は CD-swa-help.yml が行うが、Dependabot の PR では配信用のトークンが無く
+  # ビルドもされないため、ここで確かめる。Static Web Apps（Oryx）と同じく、Ruby は SRC.Sharp.Help/.ruby-version の版で、
+  # Gemfile.lock を固定せずに bundle install する（Gemfile.lock には Ruby 3.1 では入れられない版が含まれていて、
+  # Oryx はそれを入れられる版に解決し直してビルドしている。docs/testing.md）
+  build-help:
+    needs: changes
+    if: needs.changes.outputs.help == 'true'
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: SRC.Sharp.Help
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        working-directory: SRC.Sharp.Help
+
+    - name: Build
+      run: |
+        bundle install
+        bundle exec jekyll build
+
+  # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
+  ci-passed:
+    if: always()
+    needs: [changes, test-srccore-linux, test-tools-linux, test-web, docker-srcdatalinter, build-and-test-srcs, build-help]
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Check results
+      env:
+        RESULTS: ${{ toJSON(needs) }}
+      run: |
+        echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+        echo "$RESULTS" | jq -e 'all(.[]; .result == "success" or .result == "skipped")' > /dev/null
+
+  # カバレッジの計測（master への push のときだけ）。マージの可否には使わない。
+  # 収集は後処理に数分かかるため、テストのジョブとは分けて動かす
+  coverage:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install fonts and SoundFont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
+
+    # テストの成否は test-srccore-linux で見るため、失敗しても計測を続ける
+    - name: Test with coverage
+      continue-on-error: true
+      run: |
+        dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/core
+        dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/render
+
+    # シナリオ（E2E コーパス・画面テスト）でどれだけコマンドを実行できているかをジョブのサマリーに出す
+    - name: Report command coverage of scenarios
+      run: |
+        files=$(find TestResults/render -name coverage.cobertura.xml)
+        if [ -n "$files" ]; then
+          python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
+        fi
+
     - name: Generate Coverage Report
-      if: github.event_name == 'push'
       uses: danielpalme/ReportGenerator-GitHub-Action@5.5.11
       with:
         reports: TestResults/**/coverage.cobertura.xml
         targetdir: CoverageReport
-        reporttypes: MarkdownSummaryGithub
+        reporttypes: Cobertura;MarkdownSummaryGithub
 
     - name: Upload Coverage Report to Summary
-      if: github.event_name == 'push'
-      run: cat CoverageReport/SummaryGithub.md >> $env:GITHUB_STEP_SUMMARY
-      shell: pwsh
+      run: cat CoverageReport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
 
+    # SRCCore と SRCRender を合わせたカバレッジ
     - name: Send Coverage Summary to Mackerel (service metrics)
-      if: github.event_name == 'push'
-      shell: pwsh
       env:
         MACKEREL_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
       run: |
-        $ErrorActionPreference = 'Stop'
-        $files = Get-ChildItem -Path TestResults -Recurse -Filter coverage.cobertura.xml -ErrorAction SilentlyContinue
-        if (-not $files) {
-          Write-Error "No coverage.cobertura.xml file found under TestResults."
-          exit 1
-        }
-        $latest = $files | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-        [xml]$xml = Get-Content $latest.FullName
-        $lineRateAttr   = $xml.coverage.'line-rate'
-        $branchRateAttr = $xml.coverage.'branch-rate'
-        if ($null -eq $lineRateAttr)   { Write-Error "Missing 'line-rate' attribute in coverage XML.";   exit 1 }
-        if ($null -eq $branchRateAttr) { Write-Error "Missing 'branch-rate' attribute in coverage XML."; exit 1 }
-        $lineRate   = [math]::Round([double]$lineRateAttr   * 100, 2)
-        $branchRate = [math]::Round([double]$branchRateAttr * 100, 2)
-        $epoch = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-        $body = ConvertTo-Json @(
-          @{ name = 'srcs.coverage.line_rate_percent';   time = $epoch; value = $lineRate },
-          @{ name = 'srcs.coverage.branch_rate_percent'; time = $epoch; value = $branchRate }
-        )
-        Invoke-RestMethod -Method Post `
-          -Uri 'https://api.mackerelio.com/api/v0/services/SRCS/tsdb' `
-          -Headers @{ 'X-Api-Key' = $env:MACKEREL_API_KEY } `
-          -ContentType 'application/json' `
-          -Body $body
-
-    # Check NU1605 https://github.com/7474/SRC/pull/262
-    - name: Try Publish
-      run: dotnet publish SRC.Sharp/SRCSharpForm/SRCSharpForm.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+        line=$(python3 -c "import sys,xml.etree.ElementTree as E; r=E.parse(sys.argv[1]).getroot(); print(round(float(r.get('line-rate'))*100,2))" CoverageReport/Cobertura.xml)
+        branch=$(python3 -c "import sys,xml.etree.ElementTree as E; r=E.parse(sys.argv[1]).getroot(); print(round(float(r.get('branch-rate'))*100,2))" CoverageReport/Cobertura.xml)
+        echo "line=${line}% branch=${branch}%"
+        now=$(date +%s)
+        curl -sSf -X POST https://api.mackerelio.com/api/v0/services/SRCS/tsdb \
+          -H "X-Api-Key: ${MACKEREL_API_KEY}" -H 'Content-Type: application/json' \
+          -d "[{\"name\":\"srcs.coverage.line_rate_percent\",\"time\":${now},\"value\":${line}},{\"name\":\"srcs.coverage.branch_rate_percent\",\"time\":${now},\"value\":${branch}}]"

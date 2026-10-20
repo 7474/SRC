@@ -78,7 +78,7 @@ GUIを備えた複雑なゲームエンジンの移植精度は、ロジック�
 | **サンプルシナリオ通しプレイ** | SRC付属サンプルシナリオの完走確認 | 手動テスト + 結果記録 |
 | **VB6版比較テスト** | 同一シナリオをVB6版とSRC#版で実行し、画面・動作を比較 | スクリーンショット比較 |
 | **回帰テストシナリオ** | 修正後の再確認用シナリオ集 | [SRC-SharpTestScenario](https://github.com/7474/SRC-SharpTestScenario) |
-| **WinAppDriverテスト** | Windows Forms UIの自動操作テスト | 既存のSRCSharpFormTestWinAppDriver |
+| ~~**WinAppDriverテスト**~~ | Windows Forms UIの自動操作テスト | 廃止（CI で動いていなかった。[テストと CI の設計](../testing.md)） |
 | **ヘッドレス E2E・VRT** | テスト用コーパス（`SRC.Sharp/E2E/`）を画面なしでプレイし、画面の状態と描画結果を検証 | `SRCRenderTests`（実施中。[E2E テスト方針](../gui/e2e-testing.md)） |
 
 ---
@@ -174,12 +174,12 @@ GUIを備えたゲームエンジンの移植では、描画の正確性が体�
 | 主要画面の視覚比較テスト実施 | 差異レポート | 🔴 高 |
 | アルファチャネル・FillStyle 修正 | コード修正 | 🟡 中 |
 | フィルタ実装（地形ユニット描画） | Main.guimap.cs 更新 | 🟡 中 |
-| WinAppDriver テストの拡充 | UI自動テスト | 🟢 低 |
+| ~~WinAppDriver テストの拡充~~（WinAppDriver のテストは廃止） | UI自動テスト | 🟢 低 |
 
 **KPI**:
 - 主要画面の視覚一致率: 95%以上
 - GUI 関連バグの発見・修正件数
-- WinAppDriver テストケース数
+- ~~WinAppDriver テストケース数~~（廃止）
 
 ### Phase Q4: 統合・リリース品質（2027年Q1）— リリース準備
 
