@@ -9,13 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SRCSharpForm.Resoruces
 {
     class WaveChannel : IDisposable
     {
         // https://github.com/naudio/NAudio/blob/master/Docs/PlayAudioFileWinForms.md
-        public WaveOutEvent outputDevice;
+        public WaveOut outputDevice;
         //public AudioFileReader audioFile;
         public bool repeat;
 
@@ -143,7 +144,7 @@ namespace SRCSharpForm.Resoruces
         {
             if (!outputMap.ContainsKey(channel))
             {
-                var outputDevice = new WaveOutEvent();
+                var outputDevice = new WaveOut();
                 //outputDevice.PlaybackStopped += OnPlaybackStopped;
                 outputMap[channel] = new WaveChannel()
                 {
@@ -433,9 +434,7 @@ namespace SRCSharpForm.Resoruces
         /// <returns>Number of bytes read</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            var waveBuffer = new WaveBuffer(buffer);
-            int samplesRequired = count / 4;
-            int samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
+            int samplesRead = Read(MemoryMarshal.Cast<byte, float>(buffer.AsSpan(offset, count)));
             return samplesRead * 4;
         }
 
@@ -448,9 +447,19 @@ namespace SRCSharpForm.Resoruces
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int count)
         {
+            return Read(buffer.AsSpan(offset, count));
+        }
+
+        /// <summary>
+        /// Reads audio from this sample provider
+        /// </summary>
+        /// <param name="buffer">Sample buffer</param>
+        /// <returns>Number of samples read</returns>
+        public int Read(Span<float> buffer)
+        {
             lock (lockObject)
             {
-                return sampleChannel.Read(buffer, offset, count);
+                return sampleChannel.Read(buffer);
             }
         }
 
