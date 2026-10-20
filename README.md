@@ -8,7 +8,7 @@
 
 | 用途 | ソフトウェア | 入手・実行 |
 |---|---|---|
-| ブラウザで遊ぶ | SRC#Web | https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
+| ブラウザで遊ぶ | SRC#Web | https://src.koudenpa.net/ （リリース版。サイトは [7474/SRC-Site](https://github.com/7474/SRC-Site) で管理）・ https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
 | Windows・macOS・Linux で遊ぶ | SRC#Avalonia | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
 | Windows（x64）で遊ぶ | SRC#Form | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
 | データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
