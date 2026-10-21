@@ -474,6 +474,19 @@ namespace SRCRender
             Present();
         }
 
+        /// <summary>
+        /// 移動アニメーションの最後のコマを画面のバッファに残す。
+        /// 元の SRC は picMain(0) に描いたまま終わるので、呼び出し元が描き直さなくてもユニットが見える
+        /// （表示用バッファだけに描くと、次に画面を更新したときに消える）。
+        /// </summary>
+        private void LeaveMovedUnit(SKBitmap unitImage, int xx, int yy)
+        {
+            using (var canvas = new SKCanvas(mainBuffer))
+            {
+                canvas.DrawBitmap(unitImage, xx, yy);
+            }
+        }
+
         private void WaitFrame(ref int startTime, int waitTime)
         {
             if (waitTime <= 0)
@@ -523,6 +536,7 @@ namespace SRCRender
                         WaitFrame(ref startTime, waitTime);
                     }
                 }
+                LeaveMovedUnit(unitImage, xx, yy);
             }
             ScreenIsSaved = false;
         }
@@ -553,6 +567,7 @@ namespace SRCRender
                         WaitFrame(ref startTime, waitTime);
                     }
                 }
+                LeaveMovedUnit(unitImage, xx, yy);
             }
             ScreenIsSaved = false;
         }
