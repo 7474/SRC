@@ -35,14 +35,16 @@ namespace SRCAuthoring.Tests
                 var pilot = scenario.Write(Path.Combine("Data", "pilot.txt"),
                     "テスト", "テスト, てすと, 男性, 汎用, AAAA, 100", "特殊能力なし", "100, 100, 100, 100, 100, 100, 普通", "-.bmp, -.mid");
                 var readme = scenario.Write("readme.txt", "画像.bmp を使っています");
+                // 特殊効果は ; で続ける
+                var effect = scenario.Write(Path.Combine("Data", "effect.txt"), "ビーム", "1;Beam.wav;1;無い音(low).wav;1;Beam.wav");
 
                 var checker = new AssetReferenceChecker();
                 // 汎用データの zip のように、シナリオと違うフォルダの下にあってもよい
-                checker.AddKnownFiles(new[] { "src-data/Bitmap/Event/背景.bmp", "src-data/Midi/戦闘.mp3", "scenario/マップ/始まり.map", "Bitmap/Unit/ロボ.BMP" });
+                checker.AddKnownFiles(new[] { "src-sound/Sound/Beam.wav", "src-data/Bitmap/Event/背景.bmp", "src-data/Midi/戦闘.mp3", "scenario/マップ/始まり.map", "Bitmap/Unit/ロボ.BMP" });
 
-                var found = checker.Check(new[] { eve, robot, pilot, readme }).ToList();
+                var found = checker.Check(new[] { eve, robot, pilot, readme, effect }).ToList();
 
-                CollectionAssert.AreEqual(new[] { "Event/無い.bmp", "無い.wav" }, found.Select(x => x.Source).ToArray());
+                CollectionAssert.AreEqual(new[] { "Event/無い.bmp", "無い.wav", "無い音(low).wav" }, found.Select(x => x.Source).ToArray());
                 Assert.IsTrue(found.All(x => x.Severity == DiagnosticSeverity.Information));
                 Assert.AreEqual(4, found[0].Line);
                 Assert.AreEqual(eve, found[0].File);

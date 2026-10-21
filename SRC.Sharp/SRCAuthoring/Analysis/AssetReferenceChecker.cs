@@ -24,7 +24,8 @@ namespace SRCAuthoring.Analysis
         // 素材を参照するデータのファイル（ほかの *.txt は説明書などのことがあるので見ない）
         private static readonly Regex DataFile = new Regex(@"^(robot|unit|pilot|non_pilot|animation|effect|item|terrain)\.txt$", RegexOptions.IgnoreCase);
 
-        private static readonly Regex Token = new Regex(@"""(?<t>[^""]*)""|(?<t>[^\s,""]+)");
+        // 引数の区切り（空白・カンマ）と、戦闘アニメ・特殊効果のデータの ; （「1;Shock(low).wav;1;...」のように続ける）
+        private static readonly Regex Token = new Regex(@"""(?<t>[^""]*)""|(?<t>[^\s,;""]+)");
 
         // 手元のファイルのパス（小文字・/ 区切り）の、フォルダの切れ目から後ろの部分すべて
         private readonly HashSet<string> known = new HashSet<string>(StringComparer.Ordinal);
