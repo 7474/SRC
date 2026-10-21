@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-// JavaScript（wwwroot/srclint.js）から LintExports を呼ぶ。Main では何もしない
+// JavaScript（wwwroot/srclint-core.js。srclint.js が Web Worker の中で読み込む）から LintExports を呼ぶ。Main では何もしない
 return;
 
 namespace SRCLintWeb
@@ -24,6 +24,13 @@ namespace SRCLintWeb
         private static string ScenarioDir => Path.Combine(Root, "scenario");
         // SRC 本体のフォルダの代わり（Data\System と Lib）
         private static string AppDir => Path.Combine(Root, "app");
+
+        /// <summary>
+        /// 進み具合を JavaScript に知らせる（srclint-core.js が setModuleImports("srclint", { progress }) で渡す）。
+        /// phase: data（データとイベントの検査）・analyze（静的解析）・assets（素材の参照）。done は済んだ件数
+        /// </summary>
+        [JSImport("progress", "srclint")]
+        internal static partial void ReportProgress(string phase, string file, int done, int total);
 
         // 素材の参照を確かめるときの、手元のファイルの一覧（AddKnownFiles で渡す。渡さなければ確かめない）
         private static AssetReferenceChecker assets;
@@ -77,13 +84,17 @@ namespace SRCLintWeb
                 ? Directory.EnumerateFiles(systemDir, "*.txt").ToList()
                 : new System.Collections.Generic.List<string>();
             var scenarioPath = Path.Combine(ScenarioDir, scenarioRoot ?? "");
-            var result = await new DataLinter().LintAsync(new[] { ScenarioDir }, scenarioPath, system);
+            var linter = new DataLinter { Progress = (file, done, total) => ReportProgress("data", Relative(file), done - 1, total) };
+            var result = await linter.LintAsync(new[] { ScenarioDir }, scenarioPath, system);
 
             // 静的解析（Call・Goto の飛び先のラベル、include するファイル）。汎用データの Lib を本体のフォルダとして読む
             var diagnostics = result.Diagnostics.ToList();
             var analyzer = new ScenarioAnalyzer { AppPath = AppDir };
-            foreach (var eve in EntryEvents(scenarioPath))
+            var entries = EntryEvents(scenarioPath).ToList();
+            for (var i = 0; i < entries.Count; i++)
             {
+                var eve = entries[i];
+                ReportProgress("analyze", Relative(eve), i, entries.Count);
                 var analysis = analyzer.Analyze(eve, null, scenarioPath);
                 // イベントの読み込みの問題は DataLinter も出すので、ラベル・include の問題だけを足す
                 diagnostics.AddRange(analysis.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Warning));
@@ -92,7 +103,12 @@ namespace SRCLintWeb
             // 素材の参照（画像・音・マップのファイル）
             if (assets != null)
             {
-                diagnostics.AddRange(assets.Check(Directory.EnumerateFiles(ScenarioDir, "*", SearchOption.AllDirectories)));
+                var targets = Directory.EnumerateFiles(ScenarioDir, "*", SearchOption.AllDirectories).Where(AssetReferenceChecker.IsTarget).ToList();
+                for (var i = 0; i < targets.Count; i++)
+                {
+                    ReportProgress("assets", Relative(targets[i]), i, targets.Count);
+                    diagnostics.AddRange(assets.Check(new[] { targets[i] }));
+                }
             }
 
             using var stream = new MemoryStream();

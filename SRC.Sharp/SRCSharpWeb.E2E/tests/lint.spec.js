@@ -74,3 +74,31 @@ test('素材の参照: シナリオと汎用データの zip に無い画像・�
   ]);
   expect((await lint(page, zip)).diagnostics).toEqual([]);
 });
+
+test('進み具合を段階の順に知らせ、中止できる（検査は Web Worker で動く）', async ({ page }) => {
+  const zip = makeZip([file('シナリオ/test.eve', 'スタート:\nExit\n'), pilot('集中')]);
+  const result = await page.evaluate(async ([base, zipB64, systemB64]) => {
+    const bytes = (b64) => new Blob([Uint8Array.from(atob(b64), c => c.charCodeAt(0))]);
+    const { lintZip, PHASES } = await import(base + 'srclint.js');
+    const seen = [];
+    const r = await lintZip(bytes(zipB64), { systemArchives: [bytes(systemB64)], assets: true, onProgress: p => seen.push(p) });
+    // 中止すると AbortError で終わり、そのあとの検査は動く
+    const controller = new AbortController();
+    const aborted = lintZip(bytes(zipB64), { signal: controller.signal, onProgress: () => controller.abort() }).then(() => 'resolved', e => e.name);
+    const abortedName = await aborted;
+    const again = await lintZip(bytes(zipB64), { systemArchives: [bytes(systemB64)] });
+    return {
+      phases: [...new Set(seen.map(p => p.phase))],
+      order: PHASES,
+      files: seen.filter(p => p.phase === 'data').map(p => `${p.file} ${p.done}/${p.total}`),
+      diagnostics: r.diagnostics.length,
+      abortedName,
+      again: again.diagnostics.length,
+    };
+  }, [lintBase, zip.toString('base64'), system.toString('base64')]);
+  expect(result.phases).toEqual(result.order);
+  expect(result.files).toEqual(['シナリオ/Data/pilot.txt 0/2', 'シナリオ/test.eve 1/2']);
+  expect(result.diagnostics).toBe(0);
+  expect(result.abortedName).toBe('AbortError');
+  expect(result.again).toBe(0);
+});
