@@ -30,8 +30,11 @@
       if (!file) return;
       status.textContent = '検査しています…';
       table.hidden = true;
+      const names = { scenario: 'zip を読んでいます', system: '汎用データを読んでいます', runtime: '実行環境を読み込んでいます', data: 'データとイベントを検査しています', analyze: '静的解析をしています', assets: '素材の参照を確かめています' };
       try {
-        const r = await lintZip(file);
+        const r = await lintZip(file, {
+          onProgress: p => (status.textContent = `${names[p.phase]}: ${p.file}（${Math.min(p.done + 1, p.total)}/${p.total}）`),
+        });
         status.textContent = `${r.checkedFiles} ファイルを検査、問題 ${r.diagnostics.length} 件`;
         const body = table.tBodies[0];
         body.replaceChildren(...r.diagnostics.map(d => {

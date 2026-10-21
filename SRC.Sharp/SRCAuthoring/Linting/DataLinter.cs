@@ -33,6 +33,9 @@ namespace SRCAuthoring.Linting
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
+        /// <summary>1 ファイル検査するごとに呼ぶ（検査したファイル、何件目（1 始まり）、全体の件数）。進み具合の表示に使う</summary>
+        public Action<string, int, int> Progress { get; set; }
+
         /// <summary>ディレクトリ（中の *.txt と *.eve）またはファイルを検査する</summary>
         /// <param name="systemFiles">先に読み込む汎用データ（Data\System の sp.txt・alias.txt など）。検査の対象にせず、問題も報告しない。
         /// シナリオに含まれないスペシャルパワーなどを参照しても問題にしないために使う</param>
@@ -78,6 +81,7 @@ namespace SRCAuthoring.Linting
                     {
                         processed.Add(file);
                         result.CheckedFiles.Add(Path.GetFullPath(file));
+                        Progress?.Invoke(file, processed.Count, files.Count);
                     }
                 }
             }
