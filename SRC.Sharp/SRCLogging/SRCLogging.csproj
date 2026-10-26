@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <!-- デスクトップのアプリ・ツール（SRC#Form・SRC#Avalonia・srcsharp）のログの出力先（docs/logging.md） -->
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.14" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />

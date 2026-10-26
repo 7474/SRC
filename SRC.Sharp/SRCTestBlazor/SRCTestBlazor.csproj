@@ -19,10 +19,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Markdig" Version="1.4.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
+		<PackageReference Include="Markdig" Version="1.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.14" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.14" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="ShiftJISExtension" Version="1.1.0" />
 	</ItemGroup>
