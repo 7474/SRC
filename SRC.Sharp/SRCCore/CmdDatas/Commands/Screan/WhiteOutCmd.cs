@@ -31,9 +31,16 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "WhiteOutコマンドの引数の数が違います");
             }
 
+            // 画面を退避してから塗りつぶし、塗りつぶした画面を描画済みの画面とする（VB 版と同じ）。
+            // 続く PaintPicture などは塗りつぶした画面に描き、ClearPicture で退避した画面に戻る
+            GUI.SaveScreen();
             GUI.TransionScrean(TransionPattern.FadeOut, Color.White, num, 50);
-            //GUI.SaveScreen();
-            // XXX 処理後の画面状態
+
+            GUI.IsPictureVisible = true;
+            GUI.PaintedAreaX1 = GUI.MainPWidth;
+            GUI.PaintedAreaY1 = GUI.MainPHeight;
+            GUI.PaintedAreaX2 = -1;
+            GUI.PaintedAreaY2 = -1;
 
             return EventData.NextID;
         }
