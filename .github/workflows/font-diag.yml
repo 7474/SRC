@@ -1,0 +1,34 @@
+name: Font diagnostics (temporary)
+
+# 一時的な調査：ランナーのイメージ（ubuntu24/20261025.353 など）で VRT の書体が変わる件。
+# どのイメージに当たるかは選べないので、同じ調査を並べて動かす。原因が分かったら消す
+on:
+  pull_request:
+    paths:
+      - .github/workflows/font-diag.yml
+
+jobs:
+  diag:
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1, 2, 3, 4, 5, 6, 7, 8]
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+    - name: Install fonts
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+    - name: Font diagnostics
+      run: |
+        echo "IMAGE: $ImageVersion $ImageOS"
+        dpkg -l | grep -iE "fontconfig|freetype|harfbuzz|fonts-" | awk '{print $2, $3}'
+        fc-list : family style file | grep -iE "cjk" | grep -E "JP" | sort
+        echo "fonts total: $(fc-list | wc -l)"
+        fc-list : file | sort > fonts.txt; cat fonts.txt
+        for f in "Noto Serif CJK JP" "Noto Sans CJK JP" "Noto Sans Mono CJK JP"; do echo "== $f"; fc-match -v "$f" | grep -E "family:|style:|weight:|file:|index:|variable:" ; done
+        ls /etc/fonts/conf.d
+    - name: VRT
+      run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~TitleTests|FullyQualifiedName~ConfigWindowTests" --logger "console;verbosity=normal"
