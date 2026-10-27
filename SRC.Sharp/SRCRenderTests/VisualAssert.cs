@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SRCRender.Tests
@@ -37,6 +38,17 @@ namespace SRCRender.Tests
 
         /// <summary>基準画像を更新するモードか（環境変数 SRC_VRT_UPDATE=1）</summary>
         public static bool IsUpdateMode => Environment.GetEnvironmentVariable("SRC_VRT_UPDATE") == "1";
+
+        // 描画に使った書体（環境による書体の違いで VRT が失敗したときに原因を見分けるため）
+        private static string FontReport()
+        {
+            string Describe(string name)
+            {
+                var t = SRCRender.Compat.SkiaFonts.ResolveTypeface(name, SKFontStyle.Normal);
+                return $"「{name}」→ {t.FamilyName} weight={t.FontStyle.Weight} width={t.FontStyle.Width} slant={t.FontStyle.Slant} bold={t.IsBold}";
+            }
+            return string.Join(" / ", new[] { "ＭＳ 明朝", "ＭＳ Ｐゴシック", "ＭＳ ゴシック" }.Select(Describe));
+        }
 
         public static void MatchesBaseline(byte[] actualPng, string name, [CallerFilePath] string callerPath = "")
         {
@@ -95,7 +107,7 @@ namespace SRCRender.Tests
                         {
                             data.SaveTo(stream);
                         }
-                        Assert.Fail($"{name}: 基準画像と {ratio:P2}（{mismatch} px）異なります。差分は {outputDir} を参照");
+                        Assert.Fail($"{name}: 基準画像と {ratio:P2}（{mismatch} px）異なります。差分は {outputDir} を参照。描画に使った書体: {FontReport()}");
                     }
                 }
             }
