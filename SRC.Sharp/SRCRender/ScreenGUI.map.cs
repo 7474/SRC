@@ -255,7 +255,11 @@ namespace SRCRender
                         }
                     }
                 }
-                CopyBitmap(copy, mainBuffer);
+                // フェードインは元の画面に戻す。フェードアウトは塗りつぶした画面のままにする（VB 版と同じ）
+                if (pattern == TransionPattern.FadeIn)
+                {
+                    CopyBitmap(copy, mainBuffer);
+                }
             }
         }
 

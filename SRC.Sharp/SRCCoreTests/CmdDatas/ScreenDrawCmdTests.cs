@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.CmdDatas;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
@@ -167,6 +167,7 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
             gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeOut", 2);
             var result = cmd.Exec();
@@ -178,6 +179,7 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
             gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "FadeOut 5", 0);
             var result = cmd.Exec();
@@ -191,6 +193,29 @@ namespace SRCCore.CmdDatas.Tests
             var cmd = CreateCmd(src, "FadeOut 10 20");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        [DataRow("FadeOut", 0x00)]
+        [DataRow("WhiteOut", 0xff)]
+        public void FadeOutCmd_SavesScreenAndKeepsFilledPicture(string command, int level)
+        {
+            // VB 版: SaveScreen してから塗りつぶし、塗りつぶした画面を描画済みの画面とする
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.MainPWidth = 640;
+            gui.MainPHeight = 480;
+            var calls = new List<string>();
+            gui.SaveScreenHandler = () => calls.Add("SaveScreen");
+            gui.TransionScreanHandler = (p, c, f, fm) => calls.Add($"{p} {c.R},{c.G},{c.B} {f}");
+            var cmd = CreateCmd(src, command + " 5");
+            Assert.AreEqual(1, cmd.Exec());
+            CollectionAssert.AreEqual(new[] { "SaveScreen", $"FadeOut {level},{level},{level} 5" }, calls);
+            Assert.IsTrue(gui.IsPictureVisible);
+            Assert.AreEqual(640, gui.PaintedAreaX1);
+            Assert.AreEqual(480, gui.PaintedAreaY1);
+            Assert.AreEqual(-1, gui.PaintedAreaX2);
+            Assert.AreEqual(-1, gui.PaintedAreaY2);
         }
 
         // ──────────────────────────────────────────────
@@ -248,6 +273,7 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
             gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteOut", 0);
             var result = cmd.Exec();
@@ -259,6 +285,7 @@ namespace SRCCore.CmdDatas.Tests
         {
             var src = CreateSrc();
             var gui = (MockGUI)src.GUI;
+            gui.SaveScreenHandler = () => { };
             gui.TransionScreanHandler = (p, c, f, fm) => { };
             var cmd = CreateCmd(src, "WhiteOut 5", 0);
             var result = cmd.Exec();

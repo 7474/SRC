@@ -306,8 +306,11 @@ namespace SRCSharpForm
                         }
                     }
                 }
-                // XXX バッファ戻しておく
-                g.DrawImage(copyBuffer, 0, 0);
+                // フェードインは元の画面に戻す。フェードアウトは塗りつぶした画面のままにする（VB 版と同じ）
+                if (pattern == TransionPattern.FadeIn)
+                {
+                    g.DrawImage(copyBuffer, 0, 0);
+                }
             }
         }
 
