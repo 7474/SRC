@@ -31,6 +31,14 @@ namespace SRCCore.Lib.Tests
         }
 
         [TestMethod]
+        public void ListSplit_WhitespaceSeparators_ReturnElements()
+        {
+            var count = GeneralLib.ListSplit("abc　def\tghi", out var arr);
+            Assert.AreEqual(3, count);
+            CollectionAssert.AreEqual(new[] { "abc", "def", "ghi" }, arr);
+        }
+
+        [TestMethod]
         public void ListSplit_EmptyString_ReturnsZero()
         {
             var count = GeneralLib.ListSplit("", out var arr);
@@ -169,6 +177,16 @@ namespace SRCCore.Lib.Tests
             var list = GeneralLib.ToL("x y z");
             Assert.AreEqual(3, list.Count);
             Assert.AreEqual("x", list[0]);
+        }
+
+        [TestMethod]
+        public void ToL_WhitespaceDelimited_ReturnsElements()
+        {
+            var list = GeneralLib.ToL("x　y\tz");
+            Assert.AreEqual(3, list.Count);
+            Assert.AreEqual("x", list[0]);
+            Assert.AreEqual("y", list[1]);
+            Assert.AreEqual("z", list[2]);
         }
 
         [TestMethod]

@@ -181,7 +181,7 @@ namespace SRCCore.Lib
 
         public static IList<string> ToL(string list)
         {
-            return (list ?? "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return (list ?? "").Split(new char[] { ' ', '\t', '\u3000' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public static string LNormalize(string list)
@@ -293,7 +293,7 @@ namespace SRCCore.Lib
                 i++;
                 if (!in_single_quote && !in_double_quote && paren == 0)
                 {
-                    if (c == ' ' || c == '\t')
+                    if (c == ' ' || c == '\t' || c == '\u3000')
                     {
                         if (current.Length > 0)
                         {

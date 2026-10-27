@@ -443,6 +443,23 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_WeaponMissingComma_RecoversFromFullWidthSpaceSeparatedValue()
+        {
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "ビーム,1400　1,5,+10,8,10,110,AABA,+0,B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual(1400, w.Power);
+            Assert.AreEqual(1, w.MinRange);
+            Assert.AreEqual(5, w.MaxRange);
+            Assert.AreEqual(10, w.Precision);
+            Assert.AreEqual(8, w.Bullet);
+            Assert.AreEqual("AABA", w.Adaption);
+            Assert.AreEqual("B", w.Class);
+            CollectionAssert.AreEqual(new[] { "ビームの攻撃力の設定が間違っています。" }, Errors(src));
+        }
+
+        [TestMethod]
         public void Load_WeaponInvalidAdaption_ReportsErrorAndUsesHyphens()
         {
             var src = CreateSrc();
