@@ -244,18 +244,20 @@ namespace SRCCore.Commands
                 // イベントで定義されたマップコマンド
                 if (!ViewMode)
                 {
+                    var mapCommandCount = 0;
                     foreach (LabelData lab in Event.colEventLabelList.Values
                         .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable))
                     {
-                        if (lab.CountPara() == 2)
+                        // 無条件で実行できるコマンド、または条件を満たした場合のみ実行できるコマンド
+                        if (lab.CountPara() == 2 || GeneralLib.StrToLng(lab.Para(3)) != 0)
                         {
-                            // 無条件で実行できるコマンド
                             mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
-                        }
-                        else if (GeneralLib.StrToLng(lab.Para(3)) != 0)
-                        {
-                            // 条件を満たした場合のみ実行できるコマンド
-                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
+                            // VB: メニュー項目は MapCommand10CmdID までなので10個で打ち切る
+                            mapCommandCount++;
+                            if (mapCommandCount >= MaxUserCommandCount)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
@@ -641,7 +643,8 @@ namespace SRCCore.Commands
                     // ユニットコマンド
                     if (!ViewMode)
                     {
-                        AddUserUnitCommand(unitCommands);
+                        // VB: Command.bas ProceedCommand（味方以外のメニュー、735行目付近）ではこの箇所だけ条件式を GetValueAsLong で評価する（他は StrToLng）
+                        AddUserUnitCommand(unitCommands, evalConditionAsExpression: true);
                     }
 
                     // 未確認ユニットの場合は情報を隠蔽
@@ -1134,13 +1137,20 @@ namespace SRCCore.Commands
             }
         }
 
-        private void AddUserUnitCommand(List<UiCommand> unitCommands, Func<LabelData, bool> labelFilter = null)
+        // イベントで定義できるユニットコマンド・マップコマンドのメニュー項目の上限
+        // （VB: UnitCommand1CmdID ～ UnitCommand10CmdID、MapCommand1CmdID ～ MapCommand10CmdID）
+        public const int MaxUserCommandCount = 10;
+
+        private void AddUserUnitCommand(List<UiCommand> unitCommands, Func<LabelData, bool> labelFilter = null, bool evalConditionAsExpression = false)
         {
+            // VB: Command.bas ProceedCommand のユニットコマンドの列挙
+            // 同名のコマンドでもラベルごとに1項目とし、名前で重複を除くことはしない。
+            // 条件を満たしたラベルのみ表示し、選択時にはそのラベル（行番号）のイベントを実行する。
+            var count = 0;
             foreach (LabelData lab in Event.colEventLabelList.Values
                 .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable)
                 .Where(x => labelFilter == null || labelFilter(x)))
             {
-                var label = lab.Para(2);
                 var target = lab.Para(3);
                 if (SelectedUnit.Party == "味方" && (
                         (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
@@ -1150,15 +1160,33 @@ namespace SRCCore.Commands
                     || (target ?? "") == (SelectedUnit.Party ?? "")
                     || target == "全")
                 {
+                    bool visible;
                     if (lab.CountPara() <= 3)
                     {
                         // 無条件で実行できるコマンド
-                        unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                        visible = true;
                     }
-                    else if (GeneralLib.StrToLng(lab.Para(4)) != 0)
+                    else if (evalConditionAsExpression)
                     {
                         // 条件を満たした場合のみ実行できるコマンド
+                        // VB: GetValueAsLong(.Para(4)) で評価した値をさらに式として評価する
+                        visible = Expression.GetValueAsLong(lab.Para(4)) != 0;
+                    }
+                    else
+                    {
+                        // 条件を満たした場合のみ実行できるコマンド
+                        visible = GeneralLib.StrToLng(lab.Para(4)) != 0;
+                    }
+
+                    if (visible)
+                    {
                         unitCommands.Add(new UiCommand(UnitCommandCmdID, lab.Para(2), lab));
+                        // VB: メニュー項目は UnitCommand10CmdID までなので10個で打ち切る
+                        count++;
+                        if (count >= MaxUserCommandCount)
+                        {
+                            break;
+                        }
                     }
                 }
             }

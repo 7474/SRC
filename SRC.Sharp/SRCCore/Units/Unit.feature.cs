@@ -13,6 +13,17 @@ namespace SRCCore.Units
         public IList<Models.FeatureData> Features => colFeature.List;
         public IList<Models.FeatureData> AllFeatures => colAllFeature.List;
 
+        // ステータス画面の特殊能力一覧に並べる特殊能力と表示名
+        // (VB: Status.bas DisplayUnitStatus の
+        //  For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i))
+        // 付加された特殊能力は特殊ステータスとして別に表示されるので含めない。
+        // 表示名が空のものは非表示の能力(別名が「非表示」「解説」の能力や常に非表示の能力)。
+        public IEnumerable<(FeatureData Feature, string Name)> StatusFeatures()
+        {
+            return AllFeatures.Skip(AdditionalFeaturesNum)
+                .Select(fd => (fd, fd.FeatureName(this)));
+        }
+
         // 特殊能力の総数
         public int CountFeature()
         {

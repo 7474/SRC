@@ -2045,9 +2045,10 @@ namespace SRCRender
                         }
 
                         // 特殊能力一覧
-                        foreach (var fd in u.AllFeatures)
+                        // 付加された特殊能力を除き、別名等を反映した表示名で並べる (VB: Status.bas AllFeatureName)
+                        foreach (var (fd, statusName) in u.StatusFeatures())
                         {
-                            var fname = fd.Name;
+                            var fname = statusName;
 
                             // ユニットステータスコマンド時は通常は非表示のパーツ合体、
                             // ノーマルモード、換装も表示

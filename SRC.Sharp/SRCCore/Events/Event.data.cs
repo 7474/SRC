@@ -215,10 +215,13 @@ namespace SRCCore.Events
                     LoadEventData2IfExist(SRC.FileSystem.PathCombine(tfolder, "include.eve"), EventDataSource.Scenario);
                 }
                 // 汎用Dataインクルードファイルをロード
-                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario);
-                LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
+                // 最初に見つかったひとつだけを読み込む（VB: Event.bas LoadEventData の If ... ElseIf）
+                // すべて読み込むと ScenarioPath と AppPath 等が同じ場合に同じファイルを重複して読み込み、
+                // 常時イベントのラベルが二重に登録されて繰り返し起動してしまう
+                _ = LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Data", "include.eve"), EventDataSource.Scenario)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario)
+                    || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
             }
 
             // XXX 多分要らん
@@ -1032,6 +1035,10 @@ namespace SRCCore.Events
             {
                 return;
             }
+
+            // イベントファイル名を記録しておく（VB: Event.bas LoadEventData2）
+            // Require コマンド等で既に読み込まれたファイルを再度読み込まないための判定に使う
+            EventFileNames.Add(fname);
 
             var lineNumber = -1;
             try
