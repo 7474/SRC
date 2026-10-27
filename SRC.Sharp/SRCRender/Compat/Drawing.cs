@@ -262,9 +262,35 @@ namespace SRCRender.Compat
         public static string SansFamily { get; set; } = "Noto Sans CJK JP";
         public static string SerifFamily { get; set; } = "Noto Serif CJK JP";
 
-        // OS のフォント一覧に無い書体（ブラウザ版で読み込んだフォントなど）
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface> registered
-            = new System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface>();
+        // OS のフォント一覧に無い書体（ブラウザ版で読み込んだフォントなど）。名前ごとに太さ・斜体の違う書体を持つ
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface[]> registered
+            = new System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface[]>();
+
+        // 名前に書体を加える。同じ太さ・斜体の書体があれば、replace なら差し替え、そうでなければそのまま
+        private static void AddRegistered(string familyName, SKTypeface typeface, bool replace)
+        {
+            registered.AddOrUpdate(familyName, _ => new[] { typeface }, (_, faces) =>
+            {
+                var same = faces.Where(x => x.FontWeight == typeface.FontWeight && x.FontSlant == typeface.FontSlant).ToArray();
+                if (same.Length > 0 && !replace)
+                {
+                    return faces;
+                }
+                return faces.Except(same).Append(typeface).ToArray();
+            });
+        }
+
+        // 登録した書体から選ぶ。exact なら太さ・斜体が同じものだけ、そうでなければ近いもの
+        private static SKTypeface FindRegistered(string familyName, SKFontStyle style, bool exact)
+        {
+            if (!registered.TryGetValue(familyName, out var faces))
+            {
+                return null;
+            }
+            return exact
+                ? faces.FirstOrDefault(x => x.FontWeight == style.Weight && x.FontSlant == style.Slant)
+                : faces.OrderBy(x => x.FontSlant == style.Slant ? 0 : 1).ThenBy(x => Math.Abs(x.FontWeight - style.Weight)).FirstOrDefault();
+        }
 
         /// <summary>
         /// 書体を登録する。登録した書体は OS のフォントより優先して名前で引く。
@@ -272,7 +298,7 @@ namespace SRCRender.Compat
         /// </summary>
         public static void Register(SKTypeface typeface, string familyName = null)
         {
-            registered[familyName ?? typeface.FamilyName] = typeface;
+            AddRegistered(familyName ?? typeface.FamilyName, typeface, true);
             typefaceCache.Clear();
         }
 
@@ -368,10 +394,10 @@ namespace SRCRender.Compat
                 {
                     break;
                 }
-                registered.TryAdd(typeface.FamilyName, typeface);
+                AddRegistered(typeface.FamilyName, typeface, false);
                 foreach (var (english, japanese) in windowsFontNames.Where(x => x.English == typeface.FamilyName))
                 {
-                    registered.TryAdd(japanese, typeface);
+                    AddRegistered(japanese, typeface, false);
                 }
             }
             typefaceCache.Clear();
@@ -401,7 +427,10 @@ namespace SRCRender.Compat
                 {
                     continue;
                 }
-                if (registered.TryGetValue(family, out var own))
+                // 登録した書体は、太さ・斜体が合うときだけ OS のフォントより優先する。
+                // 太字だけの .ttc（NotoSansCJK-Bold.ttc など）を登録しても、標準の太さを引いたときに太字にならないように
+                var own = FindRegistered(family, style, true);
+                if (own != null)
                 {
                     return own;
                 }
@@ -410,6 +439,11 @@ namespace SRCRender.Compat
                 {
                     return candidate;
                 }
+                own = FindRegistered(family, style, false);
+                if (own != null)
+                {
+                    return own;
+                }
             }
             // 登録した書体（WSL の Windows のフォントなど）から、明朝・ゴシック・等幅の別に合うものを選ぶ
             var preferred = name.Contains("明朝") || name.Contains("Mincho")
@@ -417,14 +451,15 @@ namespace SRCRender.Compat
                 : IsFixedPitchName(name) ? new[] { "ＭＳ ゴシック" } : new[] { "ＭＳ Ｐゴシック", "ＭＳ ゴシック" };
             foreach (var family in preferred)
             {
-                if (registered.TryGetValue(family, out var own))
+                var own = FindRegistered(family, style, false);
+                if (own != null)
                 {
                     return own;
                 }
             }
             return SKFontManager.Default.MatchCharacter(null, style, null, 'あ')
-                ?? registered.Values.FirstOrDefault(x => x.ContainsGlyph('あ'))
-                ?? registered.Values.FirstOrDefault()
+                ?? registered.Values.SelectMany(x => x).FirstOrDefault(x => x.ContainsGlyph('あ'))
+                ?? registered.Values.SelectMany(x => x).FirstOrDefault()
                 ?? SKTypeface.Default;
         }
 

@@ -26,8 +26,9 @@ namespace SRCRenderTests
         {
             // 複数の書体を持つ .ttc（WSL の Windows の msgothic.ttc など）は、すべての書体を登録する
             var dir = "/usr/share/fonts";
+            // 並びはファイルシステムで変わるため、名前の順にする
             var ttc = System.IO.Directory.Exists(dir)
-                ? System.Linq.Enumerable.FirstOrDefault(System.IO.Directory.GetFiles(dir, "*.ttc", System.IO.SearchOption.AllDirectories))
+                ? System.Linq.Enumerable.FirstOrDefault(System.Linq.Enumerable.OrderBy(System.IO.Directory.GetFiles(dir, "*.ttc", System.IO.SearchOption.AllDirectories), x => x, System.StringComparer.Ordinal))
                 : null;
             if (ttc == null)
             {
@@ -42,6 +43,22 @@ namespace SRCRenderTests
                 }
                 Assert.AreEqual(second.FamilyName, SkiaFonts.ResolveTypeface(second.FamilyName, SKFontStyle.Normal).FamilyName);
             }
+        }
+
+        [TestMethod]
+        public void RegisterFile_BoldOnlyCollection_DoesNotReplaceRegular()
+        {
+            // 太字だけの .ttc を登録しても、標準の太さは OS の標準の書体で描く（太字の書体で描かない）
+            var bold = "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc";
+            if (!System.IO.File.Exists(bold))
+            {
+                Assert.Inconclusive("NotoSansCJK-Bold.ttc が無い");
+            }
+            SkiaFonts.RegisterFile(bold);
+            var regular = SkiaFonts.ResolveTypeface(SkiaFonts.SansFamily, SKFontStyle.Normal);
+            Assert.AreEqual(SkiaFonts.SansFamily, regular.FamilyName);
+            Assert.AreEqual((int)SKFontStyleWeight.Normal, regular.FontWeight);
+            Assert.AreEqual((int)SKFontStyleWeight.Bold, SkiaFonts.ResolveTypeface(SkiaFonts.SansFamily, SKFontStyle.Bold).FontWeight);
         }
 
         [TestMethod]

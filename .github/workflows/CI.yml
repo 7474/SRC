@@ -67,15 +67,6 @@ jobs:
     - name: Install fonts and SoundFont
       run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
 
-    # 一時的な調査（ランナーのイメージで VRT の書体が変わった件）
-    - name: Font diagnostics
-      run: |
-        dpkg -l | grep -iE "fontconfig|freetype|harfbuzz|fonts-|libskia" | awk '{print $2, $3}'
-        fc-list : family style file | grep -iE "cjk" | sort
-        echo "fonts total: $(fc-list | wc -l)"
-        for f in "Noto Serif CJK JP" "Noto Serif CJK JP:weight=80" "Noto Sans CJK JP" "Noto Sans Mono CJK JP"; do echo "== $f"; fc-match -v "$f" | grep -E "family:|style:|weight:|file:|index:|variable:" ; done
-        ls /etc/fonts/conf.d
-
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
