@@ -81,7 +81,7 @@ namespace SRCLintWeb
             Directory.CreateDirectory(AppDir);
             var systemDir = Path.Combine(AppDir, "Data", "System");
             var system = Directory.Exists(systemDir)
-                ? Directory.EnumerateFiles(systemDir, "*.txt").ToList()
+                ? Directory.EnumerateFiles(systemDir, "*.txt", SearchOption.AllDirectories).ToList()
                 : new System.Collections.Generic.List<string>();
             var scenarioPath = Path.Combine(ScenarioDir, scenarioRoot ?? "");
             var linter = new DataLinter { Progress = (file, done, total) => ReportProgress("data", Relative(file), done - 1, total) };

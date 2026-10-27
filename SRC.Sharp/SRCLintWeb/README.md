@@ -18,7 +18,7 @@
 | `srclint-worker.js` | Worker の中身。`srclint-core.js` を呼ぶ |
 | `srclint-core.js` | zip の読み取りと .NET の実行環境の呼び出し（`Program.cs` の `LintExports`）。進み具合は C# から `[JSImport("progress", "srclint")]` で受け取る |
 - zip の目次を読み、`*.eve` と `*.txt` だけを展開して検査する。画像・音は展開しない（素材の参照は目次の名前で確かめる）。
-- 汎用データを別の zip から読み込める。`Data/System/*.txt`（`sp.txt` など）と `Lib/**/*.eve`（汎用戦闘アニメなど）。シナリオに含まれないスペシャルパワーや、汎用戦闘アニメのラベル（`AttackDemo` など）を参照しても問題にしない。`Lib` のイベントはラベルと include の行だけを読む（汎用戦闘アニメは 8 万行あるため）。
+- 汎用データを別の zip から読み込める。`Data/System/*.txt`・`<任意のフォルダ>/System/*.txt`（`sp.txt` など。SRC 本体の形と、GSC データパックなどの `<パック>/System` の形）と `Lib/**/*.eve`（汎用戦闘アニメなど）。シナリオに含まれないスペシャルパワーや、汎用戦闘アニメのラベル（`AttackDemo` など）を参照しても問題にしない。`Lib` のイベントはラベルと include の行だけを読む（汎用戦闘アニメは 8 万行あるため）。
 - 文字コードの警告（Shift_JIS のデータ）は出さない。SRC# は Shift_JIS も読めるため。
 
 ## 発行
@@ -49,7 +49,7 @@ const result = await lintZip(file, {
 // result.systemErrors: 読めなかった汎用データの zip
 ```
 
-- `systemArchives` は汎用データの zip。URL（Range 要求に応えること）か Blob。中の `Data/System/*.txt` と `Lib/**/*.eve` だけを読む。読めなかった zip は飛ばし、`result.systemErrors` に理由を入れる。
+- `systemArchives` は汎用データの zip。URL（Range 要求に応えること）か Blob。中の `Data/System/*.txt`・`<任意のフォルダ>/System/*.txt` と `Lib/**/*.eve` だけを読む。`System` は zip ごと・フォルダごとに分けて読むので、複数の zip の `sp.txt` はどれも効く（重ねて読む）。読めなかった zip は飛ばし、`result.systemErrors` に理由を入れる。
 - イベントの問題（`If` に対応する `EndIf` が無いなど）は、`srcsharp lint` と同じく `warning` になる。
 - `onProgress` は進み具合を受け取る。`phase` は `scenario`（zip からテキストを取り出す）→ `system`（汎用データの zip を読む）→ `runtime`（実行環境の読み込みを待つ）→ `data`（データとイベントの検査）→ `analyze`（静的解析）→ `assets`（素材の参照）の順に進む（`PHASES`）。`file` はそのとき扱っているもの、`done` は済んだ件数、`total` は全体の件数。
 - `signal` で中止すると `AbortError` で終わる。C# の検査は途中で止められないので Worker ごと止め、次の検査で作り直す（実行環境の読み込みからやり直す）。

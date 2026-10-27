@@ -71,8 +71,20 @@ export async function lintZip(zip, options = {}) {
       if (options.assets) {
         knownFiles.push(systemEntries.filter(e => !e.directory).map(e => e.name));
       }
+      // 汎用データの System は、SRC 本体の Data/System と、GSC データパックなどの <パック>/System のどちらの形でもよい。
+      // zip ごと・フォルダごとに分けて置く（どれにも sp.txt があり、上書きし合わないように）
+      const systemDirs = new Map();
       for (const e of systemEntries) {
-        const m = !e.directory && e.name.match(/(?:^|\/)((?:Data\/System\/[^/]+\.txt)|(?:Lib\/.+\.eve))$/i);
+        const system = !e.directory && e.name.match(/^(.*?)(?:Data\/)?System\/([^/]+\.txt)$/i);
+        if (system && (system[1] === '' || system[1].endsWith('/'))) {
+          if (!systemDirs.has(system[1])) {
+            systemDirs.set(system[1], systemDirs.size);
+          }
+          progress({ phase: 'system', file: `${label}: ${e.name}`, done: n - 1, total: archives.length });
+          files.push([`app/Data/System/${n}-${systemDirs.get(system[1])}/${system[2]}`, await extract(r, e)]);
+          continue;
+        }
+        const m = !e.directory && e.name.match(/(?:^|\/)(Lib\/.+\.eve)$/i);
         if (m) {
           progress({ phase: 'system', file: `${label}: ${m[1]}`, done: n - 1, total: archives.length });
           const data = await extract(r, e);

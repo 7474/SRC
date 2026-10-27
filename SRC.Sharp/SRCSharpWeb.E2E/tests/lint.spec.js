@@ -102,3 +102,23 @@ test('進み具合を段階の順に知らせ、中止できる（検査は Web 
   expect(result.abortedName).toBe('AbortError');
   expect(result.again).toBe(0);
 });
+
+test('汎用データ: GSC データパックの形（<パック>/System）も読み、複数の zip の sp.txt はどちらも効く', async ({ page }) => {
+  const sp = (name, short) => [`${name}, ${short}`, `${short}, 15, 自分, ターン, -, -, ${name}`, '命中強化Lv3', `${name}の説明`, ''].join('\n');
+  const body = makeZip([file('Data/System/sp.txt', sp('集中', 'しゅうちゅう'))]);
+  const gsc = makeZip([file('GSCデータパック/ロボ/System/sp.txt', sp('独自の気合', 'どくじのきあい'))]);
+  const pilotWith = (sps) => file('シナリオ/Data/pilot.txt', [
+    'テスト', 'テスト, てすと, 男性, 汎用, AAAA, 100', '特殊能力なし', '100, 100, 100, 100, 100, 100, 普通', `ＳＰ, 30, ${sps}`, '-.bmp, -.mid', '',
+  ].join('\n'));
+  const zip = makeZip([file('シナリオ/test.eve', 'スタート:\nExit\n'), pilotWith('集中, 1, 独自の気合, 2')]);
+  const result = await page.evaluate(async ([base, zipB64, archives]) => {
+    const bytes = (b64) => new Blob([Uint8Array.from(atob(b64), c => c.charCodeAt(0))]);
+    const { lintZip } = await import(base + 'srclint.js');
+    const both = await lintZip(bytes(zipB64), { systemArchives: archives.map(bytes) });
+    const bodyOnly = await lintZip(bytes(zipB64), { systemArchives: [bytes(archives[0])] });
+    return { both: both.diagnostics.map(d => d.message), bodyOnly: bodyOnly.diagnostics.map(d => d.message) };
+  }, [lintBase, zip.toString('base64'), [body.toString('base64'), gsc.toString('base64')]]);
+  expect(result.both).toEqual([]);
+  expect(result.bodyOnly).toContainEqual(expect.stringMatching(/独自の気合というスペシャルパワーは存在しません/));
+  expect(result.bodyOnly.filter(m => /集中/.test(m))).toEqual([]);
+});
