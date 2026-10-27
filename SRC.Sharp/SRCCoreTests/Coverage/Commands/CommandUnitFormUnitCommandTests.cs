@@ -190,6 +190,38 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
+        public void UserUnitCommand_StackedConditionalLabels_ShownOnceAndRunFromSatisfiedLabel()
+        {
+            // 同名の条件付きユニットコマンドのラベルを重ねて1つの本体を共有する場合（#1331）
+            // VB: Command.bas ProceedCommand は条件を満たしたラベルだけを表示し、
+            // 選択時は UnitCommandLabelList に控えたそのラベルの行からイベントを実行する
+            using var f = new CommandUnitFormFixture(onMap: true);
+            f.LoadEvents(
+                "ユニットコマンド 回復 全 (段階 = 1):",
+                "ユニットコマンド 回復 全 (段階 = 2):",
+                "ユニットコマンド 回復 全 (段階 = 3):",
+                "Set 記録 (記録 & \"本体\")",
+                "Exit");
+            f.Src.Expression.DefineGlobalVariable("段階");
+            f.Src.Expression.SetVariableAsLong("段階", 2);
+            f.AddUnitData("機体");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            f.Src.Commands.CommandState = "ユニット選択";
+
+            f.Src.Commands.ProceedInput(GuiButton.Left, f.Src.Map.MapData[3, 3], u);
+
+            var menu = (System.Collections.Generic.IList<UiCommand>)f.Gui.CallsOf("ShowUnitCommandMenu").Last().Args[0];
+            var commands = menu.Where(x => x.Id == Command.UnitCommandCmdID).ToList();
+            Assert.AreEqual(1, commands.Count);
+            Assert.AreEqual("回復", commands[0].Label);
+            Assert.AreEqual("ユニットコマンド 回復 全 (段階 = 2)", commands[0].LabelData.Data);
+
+            f.Src.Commands.UnitCommand(commands[0]);
+
+            Assert.AreEqual("本体", f.Record);
+        }
+
+        [TestMethod]
         public void UserUnitCommand_AfterMove_EndsAction()
         {
             // 移動後に使ったユニットコマンドは行動数が変化しなくても待機扱いで行動を終える

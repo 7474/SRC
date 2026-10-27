@@ -488,6 +488,143 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             CollectionAssert.AreEqual(new[] { "陣営指定" }, labels);
         }
 
+        // ── 同名の条件付きユニットコマンド（#1331） ──
+
+        [TestMethod]
+        public void CommandSelect_StackedConditionalUnitCommands_OnlySatisfiedLabelsShown()
+        {
+            // VB: Command.bas ProceedCommand ではラベルごとに条件式を評価し、満たしたラベルだけを
+            // 1項目ずつ表示する（同名でも名前で重複を除くことはしない）。選択時はそのラベルの行を実行する
+            var f = CreateWithAlly(out var ally);
+            f.SRC.Expression.DefineGlobalVariable("段階");
+            f.SRC.Expression.SetVariableAsLong("段階", 2);
+            f.AddEventLabel("ユニットコマンド 回復 全 (段階 = 1):", 1);
+            f.AddEventLabel("ユニットコマンド 回復 全 (段階 = 2):", 2);
+            f.AddEventLabel("ユニットコマンド 回復 全 (段階 = 3):", 3);
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var commands = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).ToList();
+            Assert.AreEqual(1, commands.Count);
+            Assert.AreEqual("回復", commands[0].Label);
+            Assert.AreEqual(2, commands[0].LabelData.EventDataId);
+        }
+
+        [TestMethod]
+        public void CommandSelect_StackedConditionalUnitCommands_AllSatisfied_EachShown()
+        {
+            // VB: 複数のラベルが条件を満たせば同名でもその数だけ表示される
+            var f = CreateWithAlly(out var ally);
+            f.AddEventLabel("ユニットコマンド 回復 全 1:", 1);
+            f.AddEventLabel("ユニットコマンド 回復 全 0:", 2);
+            f.AddEventLabel("ユニットコマンド 回復 全 1:", 3);
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var ids = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).Select(x => x.LabelData.EventDataId).ToList();
+            CollectionAssert.AreEqual(new[] { 1, 3 }, ids);
+        }
+
+        [TestMethod]
+        public void CommandSelect_UnitCommands_LimitedToTen()
+        {
+            // VB: ユニットコマンドのメニュー項目は UnitCommand1CmdID ～ UnitCommand10CmdID の10個まで
+            // （Command.bas ProceedCommand の「If i > UnitCommand10CmdID Then Exit For」）
+            var f = CreateWithAlly(out var ally);
+            for (var i = 1; i <= 12; i++)
+            {
+                f.AddEventLabel("ユニットコマンド コマンド" + i + " 全:", i);
+            }
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var labels = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).Select(x => x.Label).ToList();
+            CollectionAssert.AreEqual(Enumerable.Range(1, 10).Select(i => "コマンド" + i).ToList(), labels);
+        }
+
+        [TestMethod]
+        public void CommandSelect_UnitCommands_LimitCountsOnlyShownLabels()
+        {
+            // VB: 条件を満たさず表示されないラベルは10個の枠を消費しない
+            var f = CreateWithAlly(out var ally);
+            f.AddEventLabel("ユニットコマンド 非表示 全 0:", 1);
+            for (var i = 1; i <= 10; i++)
+            {
+                f.AddEventLabel("ユニットコマンド コマンド" + i + " 全:", i + 1);
+            }
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var labels = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).Select(x => x.Label).ToList();
+            CollectionAssert.AreEqual(Enumerable.Range(1, 10).Select(i => "コマンド" + i).ToList(), labels);
+        }
+
+        [TestMethod]
+        public void UnitSelect_EmptyCell_MapCommands_LimitedToTen()
+        {
+            // VB: マップコマンドのメニュー項目は MapCommand1CmdID ～ MapCommand10CmdID の10個まで
+            var f = new CommandAttackProcessFixture();
+            for (var i = 1; i <= 12; i++)
+            {
+                f.AddEventLabel("マップコマンド コマンド" + i + ":", i);
+            }
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedCommand(false, GuiButton.Left, f.SRC.Map.MapData[3, 3], null);
+
+            var labels = f.LastMapCommandMenu().Where(x => x.Id == Command.MapCommandCmdID).Select(x => x.Label).ToList();
+            CollectionAssert.AreEqual(Enumerable.Range(1, 10).Select(i => "コマンド" + i).ToList(), labels);
+        }
+
+        [TestMethod]
+        public void CommandSelect_EnemyUnitCommandCondition_EvaluatedAsExpression()
+        {
+            // VB: 味方以外（操作できないユニット）のメニューでは条件式を GetValueAsLong(.Para(4)) で評価する。
+            // ラベルの引数を評価した値（ここでは変数の値の「段階 = 1」）を、さらに式として評価する
+            var f = new CommandAttackProcessFixture();
+            f.AddUnitData("敵機");
+            var enemy = f.Deploy("敵機", "敵兵", "敵", 5, 5);
+            DefineConditionVariables(f);
+            f.AddEventLabel("ユニットコマンド 調べる 敵 条件Ａ:", 1);
+            f.AddEventLabel("ユニットコマンド 説得 敵 条件Ｂ:", 2);
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], enemy);
+
+            var labels = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).Select(x => x.Label).ToList();
+            CollectionAssert.AreEqual(new[] { "調べる" }, labels);
+        }
+
+        [TestMethod]
+        public void CommandSelect_AllyUnitCommandCondition_NotReevaluated()
+        {
+            // VB: 味方の通常のメニューでは条件式を StrToLng(.Para(4)) で数値化するだけなので、
+            // 引数を評価した値が「段階 = 1」のような数値でない文字列なら 0 扱いで表示されない
+            var f = CreateWithAlly(out var ally);
+            DefineConditionVariables(f);
+            f.AddEventLabel("ユニットコマンド 調べる 全 条件Ａ:", 1);
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var labels = f.LastUnitCommandMenu().Where(x => x.Id == Command.UnitCommandCmdID).Select(x => x.Label).ToList();
+            CollectionAssert.AreEqual(new string[0], labels);
+        }
+
+        private static void DefineConditionVariables(CommandAttackProcessFixture f)
+        {
+            f.SRC.Expression.DefineGlobalVariable("段階");
+            f.SRC.Expression.SetVariableAsLong("段階", 1);
+            f.SRC.Expression.DefineGlobalVariable("条件Ａ");
+            f.SRC.Expression.SetVariableAsString("条件Ａ", "段階 = 1");
+            f.SRC.Expression.DefineGlobalVariable("条件Ｂ");
+            f.SRC.Expression.SetVariableAsString("条件Ｂ", "段階 = 2");
+        }
+
         private static CommandAttackProcessFixture CreateSplitUnit(out Units.Unit u, int partAPilots, int partBPilots)
         {
             // 2 人乗りのユニットが 分離 で 2 機に分かれる
