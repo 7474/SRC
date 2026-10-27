@@ -425,6 +425,46 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_WeaponFullWidthSpaceAroundNumbers_ReadsValuesLikeVb()
+        {
+            // 桁揃えの全角の空白（7474/SRC#1323）。VB は全角を半角にして読むので、エラーにせず値をそのまま読む
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "ビーム,　1400,　1,5　,+10　,　8,　10,　110,AABA,+0　,B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual(1400, w.Power);
+            Assert.AreEqual(1, w.MinRange);
+            Assert.AreEqual(5, w.MaxRange);
+            Assert.AreEqual(10, w.Precision);
+            Assert.AreEqual(8, w.Bullet);
+            Assert.AreEqual(10, w.ENConsumption);
+            Assert.AreEqual(110, w.NecessaryMorale);
+            Assert.AreEqual(0, w.Critical);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponFullWidthDigits_ReadsValuesLikeVb()
+        {
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "ビーム,１４００,1,5,+10,8,10,110,AABA,+0,B\n")).Item("テスト機");
+
+            Assert.AreEqual(1400, ud.Weapons.Single().Power);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponFullWidthSpaceInsideNumber_ReportsErrorWithoutSplitting()
+        {
+            // 「1400　1」は VB でも数値でない。VB の LLength は全角の空白で分けないので、半角の空白のような復旧はしない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "ビーム,1400　1,5,+10,8,10,110,AABA,+0,B,-\n")).Item("テスト機");
+
+            Assert.AreEqual(0, ud.Weapons.Single().Power);
+            CollectionAssert.Contains(Errors(src), "ビームの攻撃力の設定が間違っています。");
+        }
+
+        [TestMethod]
         public void Load_WeaponMissingComma_RecoversFromSpaceSeparatedValue()
         {
             // 「1400 1」のようにコンマが抜けていた場合、エラーを出しつつ空白で分割して後続の項目に回す

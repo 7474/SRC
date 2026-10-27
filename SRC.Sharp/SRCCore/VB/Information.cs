@@ -7,8 +7,9 @@ namespace SRCCore.VB
         {
             try
             {
-                // 前後の空白は無視するが、途中の空白は無視しない（VB: IsNumeric("1400 1") は False）
-                var str = (Expression?.ToString() ?? "").Trim();
+                // 前後の空白は無視するが、途中の空白は無視しない（VB: IsNumeric("1400 1") は False）。
+                // 全角の数字・空白は半角として読む（Conversions.NumericText。変換の側と同じ規則にする）
+                var str = Conversions.NumericText(Expression?.ToString() ?? "");
                 decimal dumy;
                 if (decimal.TryParse(str, out dumy))
                 {

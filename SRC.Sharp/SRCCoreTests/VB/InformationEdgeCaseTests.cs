@@ -80,10 +80,10 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void IsNumeric_JapaneseDigits_ReturnsFalse()
+        public void IsNumeric_JapaneseDigits_ReturnsTrue()
         {
-            // 全角数字はdecimal.TryParseに通らない（通常）
-            Assert.IsFalse(Information.IsNumeric("１２３"));
+            // 日本語の Windows の VB は全角を半角にしてから読むので、全角数字も数値（Conversions.NumericText）
+            Assert.IsTrue(Information.IsNumeric("１２３"));
         }
 
         [TestMethod]

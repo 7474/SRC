@@ -498,7 +498,7 @@ namespace SRCCore.Lib
         public static int StrToLng(string expr)
         {
             // VB版は IsNumeric なら CLng で変換し、エラー（オーバーフロー）時は0を返す
-            expr = expr ?? "";
+            expr = Conversions.NumericText(expr);
             if (int.TryParse(expr, out var ret))
             {
                 return ret;
