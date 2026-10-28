@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.14" />
     <!-- Avalonia.Skia は SkiaSharp 3 の Linux のネイティブライブラリを引くため、SRCRender の SkiaSharp と版を揃える
          （管理側とネイティブの版が違うと起動時に失敗する。Windows・macOS のものは SkiaSharp が引く） -->
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.153.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.154.0" />
   </ItemGroup>
 
   <ItemGroup>

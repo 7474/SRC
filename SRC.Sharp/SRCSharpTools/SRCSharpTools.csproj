@@ -62,7 +62,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.153.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.154.0" />
   </ItemGroup>
 
   <ItemGroup>
