@@ -4,11 +4,16 @@ SRC# のフロントエンドと、それらが共有する部品の構成。各
 
 ## フロントエンド
 
-| フロントエンド | プロジェクト | 動く環境 | 描画 | 音声 | 文書 |
-|---|---|---|---|---|---|
-| SRC#Avalonia | `SRCSharpAvalonia` | Windows・macOS・Linux | `SRCRender`（SkiaSharp） | `SRCSound`（OpenAL） | [SRC#Avalonia](./avalonia.md) |
-| SRC#Web | `SRCSharpWeb` | ブラウザ（静的サイト） | `SRCRender`（SkiaSharp の WebAssembly 版） | Web Audio API（MIDI は MeltySynth） | [SRC#Web](./web.md)・[外部のサイトに置く](./web-hosting.md) |
-| SRC#Form | `SRCSharpForm` | Windows（x64） | GDI+（Windows Forms の部品と直描き） | NAudio・DryWetMidi | — |
+| フロントエンド | 階層 | プロジェクト | 動く環境 | 描画 | 音声 | 文書 |
+|---|---|---|---|---|---|---|
+| SRC#Avalonia | 推奨 | `SRCSharpAvalonia` | Windows・macOS・Linux | `SRCRender`（SkiaSharp） | `SRCSound`（OpenAL） | [SRC#Avalonia](./avalonia.md) |
+| SRC#Web | 推奨 | `SRCSharpWeb` | ブラウザ（静的サイト） | `SRCRender`（SkiaSharp の WebAssembly 版） | Web Audio API（MIDI は MeltySynth） | [SRC#Web](./web.md)・[外部のサイトに置く](./web-hosting.md) |
+| SRC#Form | 維持 | `SRCSharpForm` | Windows（x64） | GDI+（Windows Forms の部品と直描き） | NAudio・DryWetMidi | — |
+
+階層は、開発・検証でどのフロントエンドを優先するかを表す（[判断の記録](../decisions/2026-10-29-frontend-support-tiers.md)）。
+
+- **推奨**: 開発・検証の軸。新機能を先に対応し、不具合を直す
+- **維持**: 削除はしないが、重大な不具合と元の SRC（VB6）との互換性に関わる不具合を可能な範囲で直すにとどめる。新機能は後追い、または対応しない
 
 SRC#Avalonia と SRC#Web は、`SRCRender` が描いた 1 枚の画面を表示し、入力を渡すだけの薄い層になっている。SRC#Form は元の SRC（VB6）の画面をそのまま Windows Forms に移したもので、`SRCRender` を使わない。
 
