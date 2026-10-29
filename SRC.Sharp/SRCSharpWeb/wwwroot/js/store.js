@@ -166,7 +166,7 @@
 
     // カタログのアーカイブ（zip）を取得する。一度取得したものは Cache Storage に置き、次からはネットワークを使わない。
     // version（カタログの version）が置いたときと違えば取得し直す。Blob を返す（大きいものはブラウザがディスクに置く）
-    // id（カタログの項目の id）を一緒に置き、取得し直したら、同じサイトの同じ id で URL が違うもの（版ごとに URL が変わるカタログの古い版）を消す
+    // id（カタログの項目の種類と id。例: asset:soundfont）を一緒に置き、取得し直したら、同じサイトの同じ id で URL が違うもの（版ごとに URL が変わるカタログの古い版）を消す
     const fetchArchive = async (url, version, id, signal) => {
         let cache = null;
         try {

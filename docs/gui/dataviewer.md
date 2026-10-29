@@ -49,10 +49,10 @@
 {
   "format": 1,
   "name": "SRC#Site",
-  "soundFont": "soundfont",
+  "soundFont": "packs/soundfont",
   "archives": [
     {
-      "id": "lantern",
+      "id": "scenarios/lantern",
       "kind": "scenario",
       "title": "灯の巡航船ランタン号",
       "author": "…",
@@ -60,10 +60,10 @@
       "files": "/api/viewer/archives/scenarios/lantern/3.json",
       "base": "/files/scenarios/lantern/3/",
       "root": "lantern",
-      "requires": ["src-basic", "faces"]
+      "requires": ["packs/src-basic", "packs/faces"]
     },
     {
-      "id": "faces",
+      "id": "packs/faces",
       "kind": "pack",
       "title": "顔グラフィック",
       "page": "/packs/faces",
@@ -76,7 +76,7 @@
 
 | 項目 | 内容 |
 |---|---|
-| `id` | アーカイブの ID（`/archive?id=` と `requires`・`members` に使う） |
+| `id` | アーカイブの ID（`/archive?id=` と `requires`・`members` に使う）。一覧の中で重ならないようにする（SRC#Site は種類を前に付ける。`scenarios/<ID>`・`packs/<ID>`） |
 | `kind` | `scenario`・`pack`・`resource`（素材） |
 | `title`・`author`・`description`・`license` | 表示に使う |
 | （一覧の）`soundFont` | 任意。MIDI を鳴らす SoundFont（.sf2）を探すアーカイブの ID |
