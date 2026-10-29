@@ -25,6 +25,30 @@ ZIP 内の全ファイルを名前で検索できます。選択中の SRC デ�
 回帰テストは `SRC.Sharp/SRCTestBlazor/E2E/cypress/e2e/packs.cy.js`。外部データに依存せず、
 合成した画像・音声の ZIP とカタログで root・メタデータ・プレビュー・検索・ローカル ZIP・失敗表示を確認します。
 
+#### `/viewer/` 配置のローカル結合確認
+
+SRC-Site の `scripts/assemble.sh` は発行した `wwwroot` を `/viewer/` に配置し、圧縮済み `.br`・`.gz` を除外、
+`index.html` の base を `/viewer/` に置換して Service Worker のマニフェスト内の `index.html` の SHA256 も更新します。
+配信側は `/viewer` を `/viewer/` にリダイレクトし、`/viewer/*` のアセットが 404 かつ
+リクエストの `Accept` に `text/html` がある場合だけ `/viewer/` の HTML にフォールバックします。
+API や ZIP の 404 を HTML に置換してはいけません。
+
+この配置契約は発行成果物を使って次のように確認できます（Node.js と既存の Cypress 依存が必要）。
+
+```powershell
+dotnet publish .\SRC.Sharp\SRCTestBlazor\SRCTestBlazor.csproj -c Release -o .\out\viewer
+$env:SRCVIEWER_DIR = (Resolve-Path .\out\viewer\wwwroot).Path
+Set-Location .\SRC.Sharp\SRCTestBlazor\E2E
+npm ci
+npx cypress run --browser chrome --headless --config-file deployment.config.cjs
+```
+
+ローカル HTTP ホストは上記の base・マニフェスト更新とフォールバックを再現し、実際の
+`/api/packs.json`・`/files/packs/media/v1.zip` を合成素材で配信します。
+テストは初回ディープリンク・再読み込み・画像表示・WAV 再生・絶対パスのリクエスト・404 の扱いを検証します。
+これは Cloudflare Workers / ASSETS や本番データベースのテストではありません。
+発行版 Service Worker のインストールと制御下での再読み込みは、Cypress のプロキシを介さないブラウザーでも別途確認します。
+
 ## 実行の重なりとトークンの無い PR
 
 - `concurrency` で、本番（master への push）への配信は 1 つずつ動かし（待っているものは最新だけが残る）、PR では同じ PR の古い実行を取り消す。本番への配信が重なると、後から始めたものが「No matching Static Web App environment was found」などで失敗するため（[Control the concurrency of workflows and jobs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)）
