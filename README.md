@@ -8,15 +8,20 @@
 
 | 用途 | ソフトウェア | 入手・実行 |
 |---|---|---|
-| ブラウザで遊ぶ | SRC#Web | https://src.koudenpa.net/ （リリース版。サイトは [7474/SRC-Site](https://github.com/7474/SRC-Site) で管理）・ https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
-| Windows・macOS・Linux で遊ぶ | SRC#Avalonia | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
-| Windows（x64）で遊ぶ | SRC#Form | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
+| ブラウザで遊ぶ | SRC#Web（推奨） | https://src.koudenpa.net/ （リリース版。サイトは [7474/SRC-Site](https://github.com/7474/SRC-Site) で管理）・ https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
+| Windows・macOS・Linux で遊ぶ | SRC#Avalonia（推奨） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
+| Windows（x64）で遊ぶ | SRC#Form（維持） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
 | データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
 | データ・シナリオを作る | `srcsharp`（lint・自動プレイ・バランス集計） | [作成支援ツール](./docs/tools/authoring.md) |
 | シナリオを VS Code で書く | VS Code 拡張 | Marketplace の [SRC](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）・[使い方](./SRC.Sharp/SRCSharpVSCode/README.md) |
 | CI でデータを検査する | SRCDataLinter | [GitHub Action](https://github.com/7474/SRC-DataLinter)・[Docker イメージ](https://hub.docker.com/r/koudenpa/srcdatalinter) |
 
 ヘルプは https://srch.7474.jp/ にあります。
+
+ゲームを遊ぶソフトウェアには、開発・検証の優先度を表す階層があります（[GUI の構成](./docs/gui/README.md#フロントエンド)）。
+
+- **推奨**（SRC#Web・SRC#Avalonia）: 開発の軸です。新しい機能はこちらから対応します。
+- **維持**（SRC#Form）: 元の SRC（VB6）の見た目に近いまま、Windows で使えます。重大な不具合と元の SRC との互換性に関わる不具合は可能な範囲で直しますが、新しい機能は後から対応するか、対応しないことがあります。
 
 表示言語は、日本語を既定に 15 の言語から選べます（[多言語対応](./docs/i18n.md)）。
 
@@ -31,6 +36,8 @@
     - MIDI を鳴らすには SoundFont（.sf2）が要る（[SoundFont](./docs/gui/avalonia.md#soundfont)）。
 
 ### SRC#Form
+
+維持の階層です（[上記](#使う)）。
 
 1. Windows（x64）に [.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) の x64 版を入れる。
     - 配布している実行ファイルは x64 版だけ。Arm の Windows でも x64 のエミュレーションで動くはずだが、ランタイムも x64 版が要る（[Arm ベースの Windows PC](https://learn.microsoft.com/dotnet/core/install/windows#arm-based-windows-pcs)）。
