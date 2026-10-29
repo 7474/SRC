@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>Назва</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Архіви</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>Переглядайте вміст (дані, зображення, звуки) архівів сценаріїв, ресурсів і пакетів, опублікованих на цьому сайті, зокрема зображення та звуки, які не використовуються даними.</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>Список архівів не налаштовано (viewer.json).</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>Усі</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>Сценарій</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>Ресурс</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>Пакет</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>Завантаження…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>Архів не знайдено.</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>Сторінка сайту</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>Ресурси в пакеті:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>Накладається з:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>Дані</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>Зображення</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>Звуки</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>Файли</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>Немає даних (unit.txt, pilot.txt тощо).</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>Немає зображень.</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>Немає звуків.</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>Усі теки</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>Лише ті, що не використовуються даними</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>Використовується даними</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>Показати ще (залишилося {0})</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>Файлів: {0}</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI перед відтворенням синтезується за допомогою SoundFont (це займає трохи часу).</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>Завантажити</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>SoundFont (.sf2) не знайдено, тому MIDI тут відтворити не можна. Завантажте файл або відтворіть його в SRC#Web.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>Синтезувати й відтворити</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>Синтез…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>Зупинити</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>Цієї BGM немає у відкритому архіві</value>
+  </data>
 </root>

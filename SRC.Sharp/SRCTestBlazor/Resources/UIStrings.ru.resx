@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>Название</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Архивы</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>Просматривайте содержимое (данные, изображения, звуки) архивов сценариев, ресурсов и пакетов, опубликованных на этом сайте, включая изображения и звуки, которые не используются данными.</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>Список архивов не настроен (viewer.json).</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>Сценарий</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>Ресурс</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>Пакет</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>Архив не найден.</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>Страница сайта</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>Ресурсы в пакете:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>Накладывается с:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>Данные</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>Изображения</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>Звуки</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>Файлы</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>Нет данных (unit.txt, pilot.txt и т. д.).</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>Нет изображений.</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>Нет звуков.</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>Все папки</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>Только не используемые данными</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>Используется данными</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>Показать ещё (осталось {0})</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>Файлов: {0}</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI перед воспроизведением синтезируется с помощью SoundFont (это занимает немного времени).</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>Скачать</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>SoundFont (.sf2) не найден, поэтому MIDI здесь воспроизвести нельзя. Скачайте файл или воспроизведите его в SRC#Web.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>Синтезировать и воспроизвести</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>Синтез…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>Остановить</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>Этой BGM нет в открытом архиве</value>
+  </data>
 </root>
