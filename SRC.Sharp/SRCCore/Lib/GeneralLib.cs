@@ -141,7 +141,7 @@ namespace SRCCore.Lib
         // 乱数発生用シード値
         public static int RndSeed;
 
-        // 乱数系列のサイズ（VB6の元実装に合わせて4096個）
+        // 乱数系列のサイズ（VB5の元実装に合わせて4096個）
         private const int RndHistorySize = 4096;
 
         // 乱数系列のセーブ＆ロードが出来るよう乱数系列をあらかじめ配列に保存して確定させる
@@ -556,7 +556,7 @@ namespace SRCCore.Lib
         }
 
         // TODO 精査、 Byte length 系と統合する
-        // StrWidth は半角換算の文字幅を返す。VB6の LenB/StrConv による Byte 長計算との統合は将来の検討課題。
+        // StrWidth は半角換算の文字幅を返す。VB5の LenB/StrConv による Byte 長計算との統合は将来の検討課題。
         /// <summary>
         /// 半角英数と半角カナ
         /// </summary>

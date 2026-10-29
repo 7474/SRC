@@ -83,7 +83,7 @@ namespace SRCCore.Commands
                 GUI.Center(launchUnit.x, launchUnit.y);
 
                 // 発進ユニットの画像表示:
-                // 旧VB6版では BitmapID を使った画像バッファシステムで母艦の代わりに発進ユニットを
+                // 旧VB5版では BitmapID を使った画像バッファシステムで母艦の代わりに発進ユニットを
                 // 表示していたが、新システムではユニット画像はファイル名で動的に取得されるため
                 // 描画時に自動的に正しい画像が表示される。
 

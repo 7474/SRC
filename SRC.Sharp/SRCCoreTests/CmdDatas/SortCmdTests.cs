@@ -54,7 +54,7 @@ namespace SRCCore.CmdDatas.Tests
         [TestMethod]
         public void SortDescendingNumericTest()
         {
-            // For numeric-keyed arrays, VB6 SRC's 降順 sorts keys descending first
+            // For numeric-keyed arrays, VB5 SRC's 降順 sorts keys descending first
             // then values descending within fixed key positions.
             // This produces the same mapping as ascending (smallest key = smallest value).
             var src = CreateSrc();

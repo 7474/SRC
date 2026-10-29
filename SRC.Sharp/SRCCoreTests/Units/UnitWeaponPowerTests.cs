@@ -7,7 +7,7 @@ namespace SRCCore.Units.Tests
 {
     /// <summary>
     /// 移植精度検証: UnitWeapon.WeaponPower() のパイロット能力値による補正計算テスト。
-    /// VB6 版の数値をそのまま期待値として検証する。
+    /// VB5 版の数値をそのまま期待値として検証する。
     /// tarea="初期値" を使用して地形補正前の値を検証する。
     /// </summary>
     [TestClass]

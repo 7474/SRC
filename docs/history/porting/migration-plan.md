@@ -64,7 +64,7 @@ The TODO消化 (TODO resolution) phase is complete. The project has moved to the
 | Epic 3: GUI・UI | 1 | 8 | フィルタ, タイルUI, インタフェース分割, FillStyle, アルファチャネル, レンダリング, 愛称描画 |
 | Epic 4: イベント・コマンド | 1 | 0 | CmdParser Talk |
 | Epic 5: データ管理 | 2 | 1 | セーブ精査, 設定反映 |
-| Epic 6: VB6レガシー | 2 | 0 | GeneralLib Byte length, Expression ref→out |
+| Epic 6: VB5レガシー | 2 | 0 | GeneralLib Byte length, Expression ref→out |
 | Epic 7: パフォーマンス | 2 | 0 | Sound 再検索, PaintString |
 | Epic 8: バグ・エッジケース | 1 | 0 | COM 武器選択 |
 | **合計** | **10** | **9** | |
@@ -242,7 +242,7 @@ GitHub ProjectsやWebUIの手動セットアップは必須ではありません
 
 ---
 
-### 6. VB6レガシー関数置換 / VB6 Legacy Function Replacement
+### 6. VB5レガシー関数置換 / VB5 Legacy Function Replacement
 **優先度**: 低 / Priority: Low
 **推定作業量**: 極小 / Effort: Minimal
 **残存TODO**: 2
@@ -320,7 +320,7 @@ COM の EN 以外の使用条件確認と、`SRC.main.cs`（実行環境依存�
 - "全てのTODOを解決" (多数のファイル)
 
 #### 🔄 横断的な関心事の例外 (Cross-Cutting Concerns Exception):
-- "VB6文字列関数の一括置換" (複数ファイル、単純な置換)
+- "VB5文字列関数の一括置換" (複数ファイル、単純な置換)
 - "コメントアウトコードの削除" (複数ファイル、削除のみ)
 
 ---

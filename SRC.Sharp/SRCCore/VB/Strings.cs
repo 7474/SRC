@@ -12,7 +12,7 @@ namespace SRCCore.VB
         Hiragana
     }
 
-    // VB6の文字列処理（Microsoft.VisualBasic.Strings）のうちSRCで使用していたものの仮実装。
+    // VB5の文字列処理（Microsoft.VisualBasic.Strings）のうちSRCで使用していたものの仮実装。
     // memo:
     // - Binaryベースの処理はしていなさそうなので割愛
     public static class Strings
@@ -39,7 +39,7 @@ namespace SRCCore.VB
         private static System.Text.Encoding ShiftJISEncodingWithFallback => _shiftJISEncodingWithFallback.Value;
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.asc?view=net-5.0
-        // VB6 と同様に Shift_JIS の文字コードを返す。
+        // VB5 と同様に Shift_JIS の文字コードを返す。
         // 2バイト文字は符号付き16ビット値（例: "あ" → &H82A0 → -32096）となる。
         // Shift_JIS で表せない文字は Unicode のコードポイントを返す。
         public static int Asc(char _String)
@@ -69,7 +69,7 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.chr?view=net-5.0
-        // VB6 と同様に Shift_JIS の文字コードから文字を返す。
+        // VB5 と同様に Shift_JIS の文字コードから文字を返す。
         // 2バイト文字のコードは符号付き16ビット値、符号なし16ビット値のどちらでも指定できる。
         public static string Chr(int CharCode)
         {
@@ -205,7 +205,7 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.strcomp?view=net-5.0
-        // VB6 の既定（Option Compare Binary）と同様にバイナリ比較を行い -1, 0, 1 を返す
+        // VB5 の既定（Option Compare Binary）と同様にバイナリ比較を行い -1, 0, 1 を返す
         public static int StrComp(string String1, string String2)
         {
             return Math.Sign(string.CompareOrdinal(String1 ?? "", String2 ?? ""));
@@ -341,7 +341,7 @@ namespace SRCCore.VB
 
         /// <summary>
         /// Converts full-width katakana characters to full-width hiragana characters.
-        /// In VB6, StrConv with vbHiragana converts katakana to hiragana.
+        /// In VB5, StrConv with vbHiragana converts katakana to hiragana.
         /// Full-width katakana (ァ-ン, 0x30A1-0x30F3) maps to hiragana (ぁ-ん, 0x3041-0x3093)
         /// by subtracting 0x60.
         /// </summary>
@@ -364,7 +364,7 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
-        // VB6 の Trim$ と同様に前後の半角スペースのみを取り除く
+        // VB5 の Trim$ と同様に前後の半角スペースのみを取り除く
         public static string Trim(string str)
         {
             return string.IsNullOrEmpty(str) ? "" : str.Trim(' ');
@@ -446,7 +446,7 @@ namespace SRCCore.VB
 
             var bytes = ShiftJISEncoding.GetBytes(str);
             
-            // Adjust for 1-based indexing (VB6 style)
+            // Adjust for 1-based indexing (VB5 style)
             var startIndex = startByte - 1;
             
             if (startIndex >= bytes.Length || startIndex < 0)

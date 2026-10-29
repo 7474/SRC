@@ -306,7 +306,7 @@ namespace SRCCore.VB.Tests
         [TestMethod()]
         public void AscTest_JapaneseChar_ReturnsShiftJisCode()
         {
-            // VB6 と同様に Shift_JIS の文字コード（符号付き16ビット）を返す: &H82A0
+            // VB5 と同様に Shift_JIS の文字コード（符号付き16ビット）を返す: &H82A0
             Assert.AreEqual(-32096, Strings.Asc('あ'));
             // 半角カナは1バイト
             Assert.AreEqual(177, Strings.Asc('ｱ'));

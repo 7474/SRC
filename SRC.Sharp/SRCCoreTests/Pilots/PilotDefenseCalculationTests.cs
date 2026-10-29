@@ -5,7 +5,7 @@ namespace SRCCore.Pilots.Tests
 {
     /// <summary>
     /// 移植精度検証: Pilot の防御力計算 (Defense) のユニットテスト。
-    /// VB6 版の数値をそのまま期待値として検証する。
+    /// VB5 版の数値をそのまま期待値として検証する。
     /// </summary>
     [TestClass]
     public class PilotDefenseCalculationTests

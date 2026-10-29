@@ -2,7 +2,7 @@
 
 [SRC（Simulation RPG Construction）](http://www.src-srpg.jpn.org/) の C# .NET への移植版です。SRC#（SRCシャープ）と呼びます。
 
-元の SRC（VB6）のシナリオとデータをそのまま動かすことを目指しています。Windows に加えて macOS・Linux・ブラウザでも動きます。
+元の SRC（VB5）のシナリオとデータをそのまま動かすことを目指しています。Windows に加えて macOS・Linux・ブラウザでも動きます。
 
 ## 使う
 
@@ -21,7 +21,7 @@
 ゲームを遊ぶソフトウェアには、開発・検証の優先度を表す階層があります（[GUI の構成](./docs/gui/README.md#フロントエンド)）。
 
 - **推奨**（SRC#Web・SRC#Avalonia）: 開発の軸です。新しい機能はこちらから対応します。
-- **維持**（SRC#Form）: 元の SRC（VB6）の見た目に近いまま、Windows で使えます。重大な不具合と元の SRC との互換性に関わる不具合は可能な範囲で直しますが、新しい機能は後から対応するか、対応しないことがあります。
+- **維持**（SRC#Form）: 元の SRC（VB5）の見た目に近いまま、Windows で使えます。重大な不具合と元の SRC との互換性に関わる不具合は可能な範囲で直しますが、新しい機能は後から対応するか、対応しないことがあります。
 
 表示言語は、日本語を既定に 15 の言語から選べます（[多言語対応](./docs/i18n.md)）。
 
@@ -69,7 +69,7 @@
 | [SRC.Sharp](./SRC.Sharp) | SRC#（C# の実装。ソリューションは `SRC.Sharp.sln`） |
 | [SRC.Sharp.Help](./SRC.Sharp.Help) | SRC# のヘルプのサイト（https://srch.7474.jp/ ） |
 | [docs](./docs) | 設計・運用の現状のドキュメント（[一覧](./docs/README.md)）。判断の理由は [判断の記録](./docs/decisions/README.md)、移植などの過去の作業は [履歴](./docs/history/README.md) |
-| [SRC/SRC_20121125](./SRC/SRC_20121125) | 移植の元にした SRC（VB6）のソース。参照用に文字コードを UTF-8 にしてある |
+| [SRC/SRC_20121125](./SRC/SRC_20121125) | 移植の元にした SRC（VB5）のソース。参照用に文字コードを UTF-8 にしてある |
 | [SRC/Help](./SRC/Help)・[SRC/HelpChm](./SRC/HelpChm) | SRC Ver2.2.33 のヘルプのプロジェクトと、その CHM |
 | [SRC.NET](./SRC.NET) | SRC_20121125 をツールで .NET に変換したもの（移植の参考） |
 

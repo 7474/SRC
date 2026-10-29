@@ -7,7 +7,7 @@
 
 - SRC# には、ゲームをプレイするフロントエンドが 3 つある（[GUI の構成](../gui/README.md)）
   - SRC#Web（`SRCSharpWeb`、ブラウザ）と SRC#Avalonia（`SRCSharpAvalonia`、Windows・macOS・Linux）は、共通の `SRCRender`・`SRCSound` の上の薄い層
-  - SRC#Form（`SRCSharpForm`、Windows Forms）は元の SRC（VB6）の画面をそのまま移したもので、`SRCRender` を使わない
+  - SRC#Form（`SRCSharpForm`、Windows Forms）は元の SRC（VB5）の画面をそのまま移したもので、`SRCRender` を使わない
 - [GUI の判断](./2026-10-12-gui-frontend-architecture.md)では、SRC#Form を「新しいフロントエンドの機能が揃うまでの比較対象・利用者の移行先」として残した。どこまで手を入れるかは決めていなかった
 - 新しい機能・修正を 3 つのフロントエンドすべてに入れると、SRC#Form の分だけ実装と確認が増える。SRC#Form は Windows でしか動かず、CI でもビルドと発行しか確かめていない（[テストと CI の設計](../testing.md)）
 - 一方で SRC#Form は VB 版との見た目の移植度が高く、`SRCRender` の表示を合わせる基準にもなっている（`SRCRender/Compat`）
