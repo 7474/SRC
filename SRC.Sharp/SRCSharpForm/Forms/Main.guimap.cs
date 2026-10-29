@@ -533,9 +533,9 @@ namespace SRCSharpForm
                 g.DrawImage(unitImage, destRect);
             }
 
-            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB6の BitBlt→新システムは DrawImage + アルファブレンドで代替）
+            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB5の BitBlt→新システムは DrawImage + アルファブレンドで代替）
             // 地形ユニットフィルタ:
-            // 旧VB6では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
+            // 旧VB5では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
             // 新システムでは DrawImage + アルファブレンドで代替する。地形ユニットの特別処理は未実装。
             //            if (u.IsFeatureAvailable("地形ユニット"))
             //            {

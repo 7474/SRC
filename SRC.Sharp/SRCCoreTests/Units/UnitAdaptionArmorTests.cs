@@ -8,7 +8,7 @@ namespace SRCCore.Units.Tests
     /// <summary>
     /// 移植精度検証: Unit の地形適応計算 (get_AdaptionMod / get_Adaption) と
     /// 装甲値計算 (get_Armor) のユニットテスト。
-    /// VB6 版の数値をそのまま期待値として検証する。
+    /// VB5 版の数値をそのまま期待値として検証する。
     /// </summary>
     [TestClass]
     public class UnitAdaptionArmorTests

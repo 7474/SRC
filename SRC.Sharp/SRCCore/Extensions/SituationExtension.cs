@@ -350,7 +350,7 @@ namespace SRCCore.Extensions
                     {
                         return list.Dice();
                     }
-                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB6 互換。Option「相手限定メッセージ等確率」では等確率）
+                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB5 互換。Option「相手限定メッセージ等確率」では等確率）
                     targetList = list;
                 }
             }
@@ -402,7 +402,7 @@ namespace SRCCore.Extensions
                 {
                     return list.Concat(targetList).ToList().Dice();
                 }
-                // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB6互換)
+                // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB5互換)
                 if (targetList != null)
                 {
                     var targetMsg = targetList.Dice();

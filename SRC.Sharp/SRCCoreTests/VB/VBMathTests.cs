@@ -6,7 +6,7 @@ namespace SRCCore.VB.Tests
     [TestClass]
     public class VBMathTests
     {
-        // VB6 の CLng は偶数丸め（銀行型丸め）
+        // VB5 の CLng は偶数丸め（銀行型丸め）
         [TestMethod]
         [DataRow(0.5, 0)]
         [DataRow(1.5, 2)]

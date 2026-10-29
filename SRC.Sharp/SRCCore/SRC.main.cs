@@ -188,9 +188,9 @@ namespace SRCCore
         private void ConfigureSound()
         {
             // サウンド設定は IPlayer/ISystemConfig の抽象化で管理する。
-            // VB6版の DirectSound/DirectMusic 初期化はプラットフォーム依存のため
+            // VB5版の DirectSound/DirectMusic 初期化はプラットフォーム依存のため
             // WindowsManagedPlayer 等の実装クラスに委ねる。
-            // 以下は旧VB6実装（参考）:
+            // 以下は旧VB5実装（参考）:
             //            switch (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectSound")) ?? "")
             //            {
             //                case "on":

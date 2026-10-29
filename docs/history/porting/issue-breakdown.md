@@ -764,7 +764,7 @@
 
 ---
 
-## Epic 6: VB6レガシー関数置換 / VB6 Legacy Function Replacement
+## Epic 6: VB5レガシー関数置換 / VB5 Legacy Function Replacement
 
 ### Issue 6.1: バイト単位文字列関数の実装
 **ファイル**: `VB/Strings.cs`  
@@ -994,7 +994,7 @@
 
 4. **Phase 4 (v3.4.0)**:
    - Epic 4: Issues 4.5-4.8 (残りのイベントコマンド)
-   - Epic 6: All issues (VB6レガシー)
+   - Epic 6: All issues (VB5レガシー)
    - Epic 7: All issues (最適化)
    - Epic 8: Issues 8.5-8.7 (残りのバグ修正)
 
