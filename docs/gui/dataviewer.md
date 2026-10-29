@@ -14,13 +14,13 @@
 | `/` | 手元のデータのファイル（`robot.txt`・`pilot.txt` など）を選んで見る |
 | `/titles/…` | 7474/SRC-Data の作品のデータ（上のメニューの「Titles」から選ぶ） |
 | `/archives` | 置いたサイトが公開している zip（シナリオ・素材・パック）の一覧。下の「アーカイブを読む」の設定があるときだけ、上のメニューに出る |
-| `/archive?id=<ID>` | 1 つの zip の中身。タブで「データ」「画像」「音」「ファイル」を切り替える |
+| `/archive?id=<ID>` | 1 つの zip の中身。タブで「データ」「画像」「音」「ファイル」を切り替える。`index=<一覧の道>` を付けると、その一覧も読んでから開く（置いたサイトの中の道だけ。サイトが承認前の投稿などを見せるのに使う） |
 
 `/archive` の各タブ:
 
 - **データ**: zip の中の `unit.txt`・`robot.txt`・`pilot.txt`・`non_pilot.txt`・`pilot_message.txt`・`pilot_dialog.txt`・`item.txt`（フォルダはどこでもよい）を読み、`/titles/…` と同じ形で見せる。ユニット・パイロットの画像は、その zip と、一緒に重ねる zip（`requires`）の `Bitmap/<分類>/` から探し、無ければ 7474/SRC-Data の画像を使う
 - **画像**: BMP・PNG・JPEG・GIF をフォルダ・名前で絞って並べる。データで使っている画像には印を付け、「データで使っていないものだけ」に絞れる
-- **音**: WAV・MP3・OGG をその場で鳴らす。MIDI はダウンロードだけ（この画面では鳴らせない）
+- **音**: WAV・MP3・OGG をその場で鳴らす。MIDI は「合成して鳴らす」で、SoundFont（.sf2）を使って WAV に合成してから鳴らす（ブラウザは MIDI を鳴らせないため。SRC#Web と同じ [MeltySynth](https://github.com/sinshu/meltysynth)）。SoundFont は、その zip と一緒に重ねる zip にある .sf2（後ろほど優先）、無ければ一覧の `soundFont` の zip から探す。見つからなければダウンロードだけ。合成するのは 10 分まで
 - **ファイル**: zip の中のすべてのファイル
 
 パック（`kind: pack`）は中の素材（`members`）をまとめて見せる。
@@ -45,6 +45,7 @@
 {
   "format": 1,
   "name": "SRC#Site",
+  "soundFont": "soundfont",
   "archives": [
     {
       "id": "lantern",
@@ -74,6 +75,7 @@
 | `id` | アーカイブの ID（`/archive?id=` と `requires`・`members` に使う） |
 | `kind` | `scenario`・`pack`・`resource`（素材） |
 | `title`・`author`・`description`・`license` | 表示に使う |
+| （一覧の）`soundFont` | 任意。MIDI を鳴らす SoundFont（.sf2）を探すアーカイブの ID |
 | `page` | サイトの頁 |
 | `files` | zip の中のファイルの一覧の URL |
 | `base` | zip の中のファイルの URL の前に付けるもの。ファイルの URL は `base` ＋ zip の中の道（区切りごとに URL エンコード） |

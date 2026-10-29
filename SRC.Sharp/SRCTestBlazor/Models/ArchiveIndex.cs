@@ -20,6 +20,8 @@ namespace SRCTestBlazor.Models
     {
         public int Format { get; set; }
         public string Name { get; set; }
+        /// <summary>MIDI を鳴らす SoundFont（.sf2）を探すアーカイブの ID。アーカイブ自身と重ねるものに .sf2 が無いときに使う</summary>
+        public string SoundFont { get; set; }
         public List<ArchiveInfo> Archives { get; set; }
     }
 
@@ -101,6 +103,7 @@ namespace SRCTestBlazor.Models
         Image,
         Audio,
         Midi,
+        SoundFont,
         Data,
         Event,
         Map,
@@ -135,6 +138,8 @@ namespace SRCTestBlazor.Models
                 case ".mid":
                 case ".midi":
                     return ArchiveFileKind.Midi;
+                case ".sf2":
+                    return ArchiveFileKind.SoundFont;
                 case ".eve":
                     return ArchiveFileKind.Event;
                 case ".map":

@@ -173,9 +173,18 @@
     <value>{0} files</value>
   </data>
   <data name="ArchiveMidiNote" xml:space="preserve">
-    <value>MIDI files cannot be played here. Download them or play them in SRC#Web.</value>
+    <value>MIDI files are synthesized with a SoundFont before playing (this takes a moment).</value>
   </data>
   <data name="ArchiveDownload" xml:space="preserve">
     <value>Download</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>No SoundFont (.sf2) was found, so MIDI files cannot be played here. Download them or play them in SRC#Web.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>Synthesize and play</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>Synthesizing...</value>
   </data>
 </root>

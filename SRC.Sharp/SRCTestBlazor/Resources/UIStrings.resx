@@ -181,9 +181,18 @@
     <comment>{0} はファイルの数</comment>
   </data>
   <data name="ArchiveMidiNote" xml:space="preserve">
-    <value>MIDI はこの画面では鳴らせません。ダウンロードするか、SRC#Web で鳴らしてください。</value>
+    <value>MIDI は SoundFont で合成して鳴らします（合成に少し時間がかかります）。</value>
   </data>
   <data name="ArchiveDownload" xml:space="preserve">
     <value>ダウンロード</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>SoundFont（.sf2）が見つからないため、MIDI はこの画面では鳴らせません。ダウンロードするか、SRC#Web で鳴らしてください。</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>合成して鳴らす</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>合成しています…</value>
   </data>
 </root>

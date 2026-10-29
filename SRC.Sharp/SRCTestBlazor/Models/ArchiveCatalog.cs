@@ -21,6 +21,8 @@ namespace SRCTestBlazor.Models
         private bool loaded;
 
         public IReadOnlyList<ArchiveInfo> Archives { get; private set; } = Array.Empty<ArchiveInfo>();
+        /// <summary>MIDI の SoundFont を探すアーカイブの ID（一覧の soundFont。先に読んだ一覧のもの）</summary>
+        public string SoundFontArchive { get; private set; }
         /// <summary>アーカイブの一覧が設定されているか</summary>
         public bool Enabled { get; private set; }
 
@@ -43,14 +45,7 @@ namespace SRCTestBlazor.Models
                 var archives = new List<ArchiveInfo>();
                 foreach (var indexUri in config?.ArchiveIndexes ?? Array.Empty<string>())
                 {
-                    var uri = new Uri(http.BaseAddress, indexUri);
-                    var index = await TryGetAsync(http, uri, SrcJsonContext.Default.ArchiveIndex);
-                    foreach (var archive in index?.Archives ?? new List<ArchiveInfo>())
-                    {
-                        archive.Source = index.Name;
-                        archive.ResolveUris(uri);
-                        archives.Add(archive);
-                    }
+                    archives.AddRange(await LoadIndexAsync(http, new Uri(http.BaseAddress, indexUri)));
                 }
                 Archives = archives;
                 Enabled = config?.ArchiveIndexes?.Any() ?? false;
@@ -61,6 +56,56 @@ namespace SRCTestBlazor.Models
                 loadLock.Release();
             }
             OnChange?.Invoke();
+        }
+
+        private async Task<IEnumerable<ArchiveInfo>> LoadIndexAsync(HttpClient http, Uri uri)
+        {
+            var index = await TryGetAsync(http, uri, SrcJsonContext.Default.ArchiveIndex);
+            SoundFontArchive ??= index?.SoundFont;
+            var archives = index?.Archives ?? new List<ArchiveInfo>();
+            foreach (var archive in archives)
+            {
+                archive.Source = index.Name;
+                archive.ResolveUris(uri);
+            }
+            return archives;
+        }
+
+        /// <summary>
+        /// 一覧をもう 1 つ読む（/archive?index= で開いたとき。サイトが承認前の投稿などを見せる）。
+        /// 置いたサイトの中の道（/ で始まるもの）だけを読む。同じ ID のアーカイブは後から読んだもので置き換える
+        /// </summary>
+        public async Task AddIndexAsync(HttpClient http, string indexPath)
+        {
+            await EnsureLoadedAsync(http);
+            if (string.IsNullOrEmpty(indexPath) || !indexPath.StartsWith("/") || indexPath.StartsWith("//"))
+            {
+                return;
+            }
+            var added = (await LoadIndexAsync(http, new Uri(http.BaseAddress, indexPath))).ToList();
+            var ids = added.Select(x => x.Id).ToHashSet();
+            Archives = Archives.Where(x => !ids.Contains(x.Id)).Concat(added).ToList();
+            OnChange?.Invoke();
+        }
+
+        /// <summary>MIDI の SoundFont（.sf2）の URL。アーカイブ自身と重ねるもの（後ろほど優先）、無ければ一覧の soundFont のアーカイブから探す。無ければ null</summary>
+        public async Task<string> FindSoundFontAsync(HttpClient http, ArchiveInfo archive)
+        {
+            var candidates = Layers(archive).Reverse().ToList();
+            var fallback = SoundFontArchive != null ? Find(SoundFontArchive) : null;
+            if (fallback != null && fallback.HasFiles)
+            {
+                candidates.Add(fallback);
+            }
+            foreach (var layer in candidates)
+            {
+                var file = (await GetFilesAsync(http, layer)).FirstOrDefault(x => x.Kind == ArchiveFileKind.SoundFont);
+                if (file != null)
+                {
+                    return file.Url;
+                }
+            }
+            return null;
         }
 
         // 設定や一覧が無い・読めないサイトでも、データビューアは今までどおり動かす

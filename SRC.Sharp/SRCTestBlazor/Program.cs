@@ -27,6 +27,7 @@ namespace SRCTestBlazor
                 })
                 .AddSingleton<SrcDataContainer>()
                 .AddSingleton<ArchiveCatalog>()
+                .AddSingleton<MidiRenderer>()
                 .AddSingleton<DataViewerSettingsService>()
                 .AddLocalization()
                 .AddSingleton<Random>(sp =>
