@@ -1,0 +1,315 @@
+@page "/archive"
+@implements IDisposable
+
+<section class="mt-5 mb-5">
+    @if (archive == null)
+    {
+        <p>@(loading ? L["ArchiveLoading"] : L["ArchiveNotFound"])</p>
+    }
+    else
+    {
+        <h1 class="title">@archive.Title</h1>
+        <p class="subtitle is-6">
+            <span class="tag">@KindLabel(archive.Kind)</span>
+            @if (!string.IsNullOrEmpty(archive.Author))
+            {
+                <span class="ml-2">@archive.Author</span>
+            }
+            @if (!string.IsNullOrEmpty(archive.Page))
+            {
+                <a class="ml-2" href="@archive.Page" target="_blank" rel="noopener">@L["ArchiveOpenPage"]</a>
+            }
+        </p>
+        @if (!string.IsNullOrEmpty(archive.License))
+        {
+            <p class="is-size-7 src-comment">@archive.License</p>
+        }
+        @if (layers.Count > 1 || archive.Kind == "pack")
+        {
+            <p class="is-size-7">
+                @(archive.Kind == "pack" ? L["ArchivePackMembers"] : L["ArchiveRequires"])
+                @foreach (var layer in layers.Where(x => x != archive))
+                {
+                    <a class="tag ml-1" href="@ArchivesPage.ArchivePageUri(layer)">@layer.Title</a>
+                }
+            </p>
+        }
+        <div class="tabs">
+            <ul>
+                @foreach (var (tab, label) in Tabs)
+                {
+                    <li class="@(currentTab == tab ? "is-active" : "")">
+                        <a @onclick:preventDefault @onclick="@(() => currentTab = tab)">@label</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        @if (loading)
+        {
+            <p>@L["ArchiveLoading"]</p>
+        }
+        <div class="@(currentTab != Tab.Data ? "is-hidden" : "")">
+            @if (!loading && dataFiles.Count == 0)
+            {
+                <p>@L["ArchiveNoData"]</p>
+            }
+            else if (dataFiles.Count > 0)
+            {
+                <p class="is-size-7">@string.Join(", ", dataFiles.Select(x => x.RelativePath))</p>
+                <TitleView SRC="@SRC" DataTitle="" />
+            }
+        </div>
+        @if (currentTab == Tab.Images)
+        {
+            <div class="field is-grouped is-grouped-multiline">
+                <div class="control">
+                    <div class="select">
+                        <select @bind="imageFolder">
+                            <option value="">@L["ArchiveFolderAll"]</option>
+                            @foreach (var folder in ownFiles.Where(x => x.Kind == ArchiveFileKind.Image).Select(x => x.Folder).Distinct().OrderBy(x => x))
+                            {
+                                <option value="@folder">@folder</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="control is-expanded">
+                    <input class="input" type="search" placeholder="@L["Filter"]" @bind="fileFilter" @bind:event="oninput" />
+                </div>
+                <label class="checkbox control">
+                    <input type="checkbox" @bind="unreferencedOnly" /> @L["ArchiveUnreferencedOnly"]
+                </label>
+            </div>
+            var images = Matching(ArchiveFileKind.Image).Where(x => imageFolder == "" || x.Folder == imageFolder)
+                .Where(x => !unreferencedOnly || !IsReferenced(x)).ToList();
+            @if (images.Count == 0)
+            {
+                <p>@L["ArchiveNoImages"]</p>
+            }
+            <div class="src-archive-images">
+                @foreach (var file in images.Take(shown))
+                {
+                    <figure class="src-archive-image" title="@file.RelativePath">
+                        <a href="@file.Url" target="_blank" rel="noopener"><img src="@file.Url" loading="lazy" alt="@file.Name" /></a>
+                        <figcaption class="is-size-7">
+                            @file.Name
+                            @if (IsReferenced(file))
+                            {
+                                <span class="tag is-info is-light">@L["ArchiveReferenced"]</span>
+                            }
+                        </figcaption>
+                    </figure>
+                }
+            </div>
+            @if (images.Count > shown)
+            {
+                <button class="button" @onclick="@(() => shown += PageSize)">@string.Format(L["ArchiveShowMore"], images.Count - shown)</button>
+            }
+        }
+        @if (currentTab == Tab.Audio)
+        {
+            <div class="field">
+                <input class="input" type="search" placeholder="@L["Filter"]" @bind="fileFilter" @bind:event="oninput" />
+            </div>
+            var sounds = Matching(ArchiveFileKind.Audio).Concat(Matching(ArchiveFileKind.Midi)).OrderBy(x => x.RelativePath).ToList();
+            @if (sounds.Count == 0)
+            {
+                <p>@L["ArchiveNoAudio"]</p>
+            }
+            @if (sounds.Any(x => x.Kind == ArchiveFileKind.Midi))
+            {
+                <p class="is-size-7">@L["ArchiveMidiNote"]</p>
+            }
+            <table class="table is-fullwidth is-narrow">
+                <tbody>
+                    @foreach (var file in sounds.Take(shown))
+                    {
+                        <tr>
+                            <td>@file.RelativePath</td>
+                            <td>
+                                @if (file.Kind == ArchiveFileKind.Audio)
+                                {
+                                    <audio controls preload="none" src="@file.Url"></audio>
+                                }
+                                else
+                                {
+                                    <a href="@file.Url" download="@file.Name">@L["ArchiveDownload"]</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (sounds.Count > shown)
+            {
+                <button class="button" @onclick="@(() => shown += PageSize)">@string.Format(L["ArchiveShowMore"], sounds.Count - shown)</button>
+            }
+        }
+        @if (currentTab == Tab.Files)
+        {
+            <div class="field">
+                <input class="input" type="search" placeholder="@L["Filter"]" @bind="fileFilter" @bind:event="oninput" />
+            </div>
+            var all = ownFiles.Where(MatchesFilter).ToList();
+            <p class="is-size-7">@string.Format(L["ArchiveFileCount"], all.Count)</p>
+            <table class="table is-fullwidth is-narrow">
+                <tbody>
+                    @foreach (var file in all.Take(shown))
+                    {
+                        <tr>
+                            <td><a href="@file.Url" target="_blank" rel="noopener">@file.Path</a></td>
+                            <td class="has-text-right">@file.Size.ToString("N0")</td>
+                            @if (archive.Kind == "pack")
+                            {
+                                <td>@file.Archive.Title</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (all.Count > shown)
+            {
+                <button class="button" @onclick="@(() => shown += PageSize)">@string.Format(L["ArchiveShowMore"], all.Count - shown)</button>
+            }
+        }
+    }
+</section>
+
+@code {
+    [Inject]
+    private HttpClient Http { get; set; }
+    [Inject]
+    private ArchiveCatalog Catalog { get; set; }
+    [Inject]
+    private SrcDataContainer DataContainer { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string Id { get; set; }
+
+    private enum Tab { Data, Images, Audio, Files }
+
+    private const int PageSize = 200;
+
+    private ArchiveInfo archive;
+    private IReadOnlyList<ArchiveInfo> layers = Array.Empty<ArchiveInfo>();
+    // このアーカイブ（パックなら中の素材）のファイル
+    private List<ArchiveFile> ownFiles = new List<ArchiveFile>();
+    private List<ArchiveFile> dataFiles = new List<ArchiveFile>();
+    private HashSet<string> referencedImages = new HashSet<string>();
+    private SRC SRC = new SRC();
+    private bool loading = true;
+    private Tab currentTab = Tab.Data;
+    private string imageFolder = "";
+    private string fileFilter = "";
+    private bool unreferencedOnly;
+    private int shown = PageSize;
+    private string loadedId;
+
+    private (Tab Tab, string Label)[] Tabs => new[]
+    {
+        (Tab.Data, L["ArchiveTabData"].Value),
+        (Tab.Images, L["ArchiveTabImages"].Value),
+        (Tab.Audio, L["ArchiveTabAudio"].Value),
+        (Tab.Files, L["ArchiveTabFiles"].Value),
+    };
+
+    private string KindLabel(string kind) => kind switch
+    {
+        "scenario" => L["ArchiveKindScenario"],
+        "resource" => L["ArchiveKindResource"],
+        "pack" => L["ArchiveKindPack"],
+        _ => kind,
+    };
+
+    protected override void OnInitialized()
+    {
+        SRC.InitSPDList();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == loadedId)
+        {
+            return;
+        }
+        loadedId = Id;
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        loading = true;
+        archive = null;
+        ownFiles = new List<ArchiveFile>();
+        dataFiles = new List<ArchiveFile>();
+        referencedImages = new HashSet<string>();
+        shown = PageSize;
+        DataContainer.BitmapIndex.ClearOverlay();
+        SRC = new SRC();
+        SRC.InitSPDList();
+
+        await Catalog.EnsureLoadedAsync(Http);
+        archive = Catalog.Find(Id);
+        if (archive == null)
+        {
+            loading = false;
+            return;
+        }
+        layers = Catalog.Layers(archive);
+        // 重ねるアーカイブ（requires）の一覧もまとめて読む
+        var layerFiles = await Task.WhenAll(layers.Select(x => Catalog.GetFilesAsync(Http, x)));
+        var own = archive.Kind == "pack" ? layers : layers.Where(x => x == archive).ToList();
+        ownFiles = layers.Zip(layerFiles).Where(x => own.Contains(x.First)).SelectMany(x => x.Second).ToList();
+
+        // データの画像は、重ねるアーカイブの Bitmap の下からも探す。後ろのものほど優先する。
+        // データの表示（UnitDataView など）は描き直さないので、データを読む前に決める
+        DataContainer.BitmapIndex.SetOverlay(layerFiles.SelectMany(x => x)
+            .Where(x => x.Kind == ArchiveFileKind.Image)
+            .Select(x => (Key: ArchiveFiles.BitmapKey(x.RelativePath), x.Url))
+            .Where(x => x.Key != null)
+            .Select(x => (x.Key.Value.Category, x.Key.Value.FileName, x.Url)));
+
+        // データ（root の中の unit.txt・pilot.txt など）を読む
+        dataFiles = ownFiles
+            .Where(x => x.Kind == ArchiveFileKind.Data && ArchiveFiles.DataFileNames.Contains(x.Name.ToLowerInvariant()))
+            .OrderBy(x => x.RelativePath)
+            .ToList();
+        foreach (var file in dataFiles)
+        {
+            try
+            {
+                using var stream = await Http.GetStreamAsync(file.Url);
+                var memory = new System.IO.MemoryStream();
+                await stream.CopyToAsync(memory);
+                memory.Position = 0;
+                SRC.LoadDataFile(file.RelativePath, memory);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error loading file [{file.Path}]: {ex.Message}");
+            }
+        }
+        referencedImages = SRC.UDList.Items.Select(x => x.Bitmap0)
+            .Concat(SRC.PDList.Items.Select(x => x.Bitmap0))
+            .Concat(SRC.NPDList.Items.Select(x => x.Bitmap0))
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Select(x => System.IO.Path.GetFileName(x.Replace('\\', '/')).ToLowerInvariant())
+            .ToHashSet();
+        if (dataFiles.Count == 0 && ownFiles.Any(x => x.Kind == ArchiveFileKind.Image))
+        {
+            currentTab = Tab.Images;
+        }
+        loading = false;
+    }
+
+    private bool IsReferenced(ArchiveFile file) => referencedImages.Contains(file.Name.ToLowerInvariant());
+
+    private bool MatchesFilter(ArchiveFile file) => string.IsNullOrEmpty(fileFilter) || file.RelativePath.Contains(fileFilter, StringComparison.OrdinalIgnoreCase);
+
+    private IEnumerable<ArchiveFile> Matching(ArchiveFileKind kind) => ownFiles.Where(x => x.Kind == kind).Where(MatchesFilter);
+
+    public void Dispose()
+    {
+        DataContainer.BitmapIndex.ClearOverlay();
+    }
+}

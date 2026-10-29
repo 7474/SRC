@@ -38,6 +38,13 @@
                     <TitleNavMenu />
                 </div>
             </div>
+            @if (ArchiveCatalog.Enabled)
+            {
+                <NavLink class="navbar-item" href="archives">
+                    <span class="icon"><i class="far fa-file-archive"></i></span>
+                    <span>@L["Archives"]</span>
+                </NavLink>
+            }
         </nav>
     </div>
 </nav>
@@ -58,6 +65,10 @@
     private SrcDataContainer DataContainer { get; set; }
     [Inject]
     private DataViewerSettingsService SettingsService { get; set; }
+    [Inject]
+    private ArchiveCatalog ArchiveCatalog { get; set; }
+    [Inject]
+    private HttpClient Http { get; set; }
         
     private bool IsBurgerActive = false;
     private bool IsSettingsModalVisible = false;
@@ -82,12 +93,18 @@
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
         DataContainer.OnChange += StateHasChanged;
+        ArchiveCatalog.OnChange += OnArchiveCatalogChanged;
         await SettingsService.InitializeAsync();
+        // 置いたサイトがアーカイブの一覧を設定していれば（viewer.json）、メニューに出す
+        await ArchiveCatalog.EnsureLoadedAsync(Http);
     }
+
+    private void OnArchiveCatalogChanged() => InvokeAsync(StateHasChanged);
 
     public void Dispose()
     {
         DataContainer.OnChange -= StateHasChanged;
+        ArchiveCatalog.OnChange -= OnArchiveCatalogChanged;
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 

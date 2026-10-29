@@ -106,4 +106,84 @@
     <value>名称</value>
     <comment>武器・アビリティの表の名前の列</comment>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>アーカイブ</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>このサイトが公開しているシナリオ・素材・パックの zip の中身（データ・画像・音）を見られます。データから使われていない画像や音も見られます。</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>アーカイブの一覧が設定されていません（viewer.json）。</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>すべて</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>シナリオ</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>素材</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>パック</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>読み込んでいます…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>アーカイブが見つかりません。</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>サイトの頁</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>中の素材:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>一緒に重ねるもの:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>データ</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>画像</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>音</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>データ（unit.txt・pilot.txt など）はありません。</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>画像はありません。</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>音はありません。</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>すべてのフォルダ</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>データで使っていないものだけ</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>データで使用</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>もっと見る（残り {0}）</value>
+    <comment>{0} は残りの件数</comment>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>{0} ファイル</value>
+    <comment>{0} はファイルの数</comment>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI はこの画面では鳴らせません。ダウンロードするか、SRC#Web で鳴らしてください。</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>ダウンロード</value>
+  </data>
 </root>

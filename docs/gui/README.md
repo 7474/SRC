@@ -12,7 +12,7 @@ SRC# のフロントエンドと、それらが共有する部品の構成。各
 
 SRC#Avalonia と SRC#Web は、`SRCRender` が描いた 1 枚の画面を表示し、入力を渡すだけの薄い層になっている。SRC#Form は元の SRC（VB6）の画面をそのまま Windows Forms に移したもので、`SRCRender` を使わない。
 
-データビューア（`SRCTestBlazor`）と動作確認用のフォーム（`SRCTestForm`）はデータを見るためのもので、シナリオはプレイしない。
+データビューア（`SRCTestBlazor`。[データビューア](./dataviewer.md)）と動作確認用のフォーム（`SRCTestForm`）はデータを見るためのもので、シナリオはプレイしない。
 
 ## 構成
 
