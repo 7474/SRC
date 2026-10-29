@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="Packs" xml:space="preserve"><value>Paketler</value></data>
+  <data name="PackIntro" xml:space="preserve"><value>Seçili verilerin başvurmadığı görüntü ve sesler dahil, paketleri kaynak ve kullanım koşullarıyla inceleyin. ZIP sınırı: 64 MiB. Dosya başına önizleme/indirme: 16 MiB.</value></data>
+  <data name="PackCatalogUrl" xml:space="preserve"><value>Katalog URL'si</value></data>
+  <data name="PackLoad" xml:space="preserve"><value>Yükle</value></data>
+  <data name="PackLocalZip" xml:space="preserve"><value>Veya yerel ZIP açın (sunucuya gönderilmez)</value></data>
+  <data name="PackLoading" xml:space="preserve"><value>Yükleniyor…</value></data>
+  <data name="PackEmptyCatalog" xml:space="preserve"><value>Kullanılabilir kaynak paketi yok.</value></data>
+  <data name="PackAuthor" xml:space="preserve"><value>Kaynak / yazar</value></data>
+  <data name="PackLicense" xml:space="preserve"><value>Kullanım koşulları</value></data>
+  <data name="PackVersion" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="PackFilter" xml:space="preserve"><value>Dosya adına göre filtrele</value></data>
+  <data name="PackFileCount" xml:space="preserve"><value>Toplam {0} dosya</value></data>
+  <data name="PackNoPreview" xml:space="preserve"><value>Bu biçim için önizleme yok (MIDI dahil). Ayrı açmak için dosyayı indirin.</value></data>
+  <data name="PackDownload" xml:space="preserve"><value>Dosyayı indir</value></data>
+  <data name="PackFailed" xml:space="preserve"><value>Yüklenemedi: {0}</value></data>
+  <data name="PackMediaFailed" xml:space="preserve"><value>Tarayıcı dosyayı görüntüleyemedi veya oynatamadı. Biçimini ve bütünlüğünü kontrol edin.</value></data>
   <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>

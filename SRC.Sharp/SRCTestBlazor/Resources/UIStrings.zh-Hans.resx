@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="Packs" xml:space="preserve"><value>资源包</value></data>
+  <data name="PackIntro" xml:space="preserve"><value>查看资源包的来源和使用条件并浏览文件，包括所选数据未引用的图像和音频。ZIP 上限：64 MiB。单个文件预览/下载上限：16 MiB。</value></data>
+  <data name="PackCatalogUrl" xml:space="preserve"><value>目录 URL</value></data>
+  <data name="PackLoad" xml:space="preserve"><value>加载</value></data>
+  <data name="PackLocalZip" xml:space="preserve"><value>或打开本地 ZIP（不会上传到服务器）</value></data>
+  <data name="PackLoading" xml:space="preserve"><value>正在加载…</value></data>
+  <data name="PackEmptyCatalog" xml:space="preserve"><value>没有可用的资源包。</value></data>
+  <data name="PackAuthor" xml:space="preserve"><value>来源 / 作者</value></data>
+  <data name="PackLicense" xml:space="preserve"><value>使用条件</value></data>
+  <data name="PackVersion" xml:space="preserve"><value>版本</value></data>
+  <data name="PackFilter" xml:space="preserve"><value>按文件名筛选</value></data>
+  <data name="PackFileCount" xml:space="preserve"><value>共 {0} 个文件</value></data>
+  <data name="PackNoPreview" xml:space="preserve"><value>此格式不支持预览（包括 MIDI）。请下载文件后单独打开。</value></data>
+  <data name="PackDownload" xml:space="preserve"><value>下载文件</value></data>
+  <data name="PackFailed" xml:space="preserve"><value>无法加载：{0}</value></data>
+  <data name="PackMediaFailed" xml:space="preserve"><value>此浏览器无法显示或播放该文件。请检查文件格式和完整性。</value></data>
   <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>

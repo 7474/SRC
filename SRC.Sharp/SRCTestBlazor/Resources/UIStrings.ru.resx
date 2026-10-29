@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="Packs" xml:space="preserve"><value>Пакеты</value></data>
+  <data name="PackIntro" xml:space="preserve"><value>Просматривайте пакеты с источниками и условиями использования, включая изображения и звук, на которые нет ссылок в выбранных данных. Лимит ZIP: 64 MiB. Просмотр/скачивание файла: 16 MiB.</value></data>
+  <data name="PackCatalogUrl" xml:space="preserve"><value>URL каталога</value></data>
+  <data name="PackLoad" xml:space="preserve"><value>Загрузить</value></data>
+  <data name="PackLocalZip" xml:space="preserve"><value>Или открыть локальный ZIP (без отправки на сервер)</value></data>
+  <data name="PackLoading" xml:space="preserve"><value>Загрузка…</value></data>
+  <data name="PackEmptyCatalog" xml:space="preserve"><value>Нет доступных пакетов ресурсов.</value></data>
+  <data name="PackAuthor" xml:space="preserve"><value>Источник / автор</value></data>
+  <data name="PackLicense" xml:space="preserve"><value>Условия использования</value></data>
+  <data name="PackVersion" xml:space="preserve"><value>Версия</value></data>
+  <data name="PackFilter" xml:space="preserve"><value>Фильтр по имени файла</value></data>
+  <data name="PackFileCount" xml:space="preserve"><value>Всего файлов: {0}</value></data>
+  <data name="PackNoPreview" xml:space="preserve"><value>Предпросмотр этого формата не поддерживается (включая MIDI). Скачайте файл для открытия отдельно.</value></data>
+  <data name="PackDownload" xml:space="preserve"><value>Скачать файл</value></data>
+  <data name="PackFailed" xml:space="preserve"><value>Не удалось загрузить: {0}</value></data>
+  <data name="PackMediaFailed" xml:space="preserve"><value>Браузер не смог показать или воспроизвести файл. Проверьте его формат и целостность.</value></data>
   <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
