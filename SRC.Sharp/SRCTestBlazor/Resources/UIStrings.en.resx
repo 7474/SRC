@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="Packs" xml:space="preserve"><value>Packs</value></data>
+  <data name="PackIntro" xml:space="preserve"><value>Browse each pack with its source and usage terms, including images and audio not referenced by the selected data. ZIP limit: 64 MiB. Individual preview/download limit: 16 MiB.</value></data>
+  <data name="PackCatalogUrl" xml:space="preserve"><value>Catalog URL</value></data>
+  <data name="PackLoad" xml:space="preserve"><value>Load</value></data>
+  <data name="PackLocalZip" xml:space="preserve"><value>Or open a local ZIP (not uploaded to a server)</value></data>
+  <data name="PackLoading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="PackEmptyCatalog" xml:space="preserve"><value>No asset packs available.</value></data>
+  <data name="PackAuthor" xml:space="preserve"><value>Source / author</value></data>
+  <data name="PackLicense" xml:space="preserve"><value>Usage terms</value></data>
+  <data name="PackVersion" xml:space="preserve"><value>Version</value></data>
+  <data name="PackFilter" xml:space="preserve"><value>Filter by file name</value></data>
+  <data name="PackFileCount" xml:space="preserve"><value>{0} files in total</value></data>
+  <data name="PackNoPreview" xml:space="preserve"><value>No preview for this format (including MIDI). Download the file to open it separately.</value></data>
+  <data name="PackDownload" xml:space="preserve"><value>Download file</value></data>
+  <data name="PackFailed" xml:space="preserve"><value>Could not load: {0}</value></data>
+  <data name="PackMediaFailed" xml:space="preserve"><value>This browser could not display or play the file. Check its format and integrity.</value></data>
   <!-- データビューアの画面の文言（英語）。キーは UIStrings.resx と揃える -->
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>

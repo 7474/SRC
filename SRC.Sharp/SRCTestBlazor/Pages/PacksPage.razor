@@ -1,0 +1,266 @@
+@page "/packs"
+@implements IAsyncDisposable
+@using System.IO
+@using System.Linq
+@using System.Threading
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<section class="section">
+    <h1 class="title">@L["Packs"]</h1>
+    <p class="mb-3">@L["PackIntro"]</p>
+    <form @onsubmit="LoadCatalogAsync" @onsubmit:preventDefault>
+        <label class="label" for="catalog-url">@L["PackCatalogUrl"]</label>
+        <div class="field has-addons">
+            <div class="control is-expanded">
+                <input id="catalog-url" class="input" type="url" @bind="catalogUrl" disabled="@busy" required />
+            </div>
+            <div class="control"><button class="button" disabled="@busy">@L["PackLoad"]</button></div>
+        </div>
+    </form>
+    <label class="label" for="pack-zip">@L["PackLocalZip"]</label>
+    <InputFile id="pack-zip" OnChange="LoadLocalAsync" accept=".zip" disabled="@busy" />
+    @if (busy)
+    {
+        <p role="status">@L["PackLoading"]</p>
+    }
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <p class="notification is-danger mt-3" role="alert">@error</p>
+    }
+    @if (packs != null)
+    {
+        <h2 class="subtitle mt-4">@catalogName (@packs.Count)</h2>
+        @foreach (var pack in packs)
+        {
+            <button class="button m-1" disabled="@busy" @onclick="() => LoadPackAsync(pack)">@(pack.Title ?? pack.Id)</button>
+        }
+        @if (packs.Count == 0)
+        {
+            <p>@L["PackEmptyCatalog"]</p>
+        }
+    }
+    @if (selectedPack != null)
+    {
+        <h2 class="title is-4 mt-4">@(selectedPack.Title ?? selectedPack.Id)</h2>
+        <p>@selectedPack.Description</p>
+        <dl>
+            <dt>@L["PackAuthor"]</dt><dd>@selectedPack.Author</dd>
+            <dt>@L["PackLicense"]</dt><dd>@selectedPack.License</dd>
+            <dt>@L["PackVersion"]</dt><dd>@selectedPack.Version</dd>
+        </dl>
+    }
+    @if (resources != null)
+    {
+        <label class="label mt-4" for="resource-filter">@L["PackFilter"]</label>
+        <input id="resource-filter" class="input" @bind="filter" @bind:event="oninput" />
+        <p>@L["PackFileCount", resources.Files.Count]</p>
+        <div style="max-height: 24rem; overflow: auto" class="mt-3">
+            @foreach (var file in resources.Files.Where(f => f.Path.Contains(filter, StringComparison.OrdinalIgnoreCase)))
+            {
+                <div><button class="button is-text" disabled="@busy" @onclick="() => OpenResourceAsync(file)">@file.Path (@file.Entry.Length B)</button></div>
+            }
+        </div>
+    }
+    @if (selectedResource != null)
+    {
+        <h3 class="subtitle mt-4">@selectedResource.Path</h3>
+        @if (previewUrl != null)
+        {
+            @if (selectedResource.IsImage)
+            {
+                <img @key="previewUrl" src="@previewUrl" alt="@selectedResource.Path" style="max-width:100%; max-height:32rem" @onerror="MediaError" />
+            }
+            else if (selectedResource.IsAudio)
+            {
+                <audio @key="previewUrl" src="@previewUrl" controls preload="metadata" @onerror="MediaError"></audio>
+            }
+            else
+            {
+                <p>@L["PackNoPreview"]</p>
+            }
+            <p><a href="@previewUrl" download="@Path.GetFileName(selectedResource.Path)">@L["PackDownload"]</a></p>
+        }
+    }
+</section>
+
+@code {
+    [SupplyParameterFromQuery(Name = "catalog")] public string Catalog { get; set; }
+    [SupplyParameterFromQuery(Name = "pack")] public string PackId { get; set; }
+    private string catalogUrl;
+    private Uri loadedCatalogUri;
+    private string catalogName;
+    private List<ResourcePack> packs;
+    private ResourcePack selectedPack;
+    private PackResources resources;
+    private PackResource selectedResource;
+    private string previewUrl;
+    private string filter = "";
+    private string error;
+    private bool busy;
+    private bool parametersLoaded;
+    private string previousCatalog;
+    private string previousPackId;
+    private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
+    private CancellationToken token;
+
+    protected override void OnInitialized() => token = lifetime.Token;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (parametersLoaded && previousCatalog == Catalog && previousPackId == PackId)
+        {
+            return;
+        }
+        parametersLoaded = true;
+        previousCatalog = Catalog;
+        previousPackId = PackId;
+        catalogUrl = Catalog ?? new Uri(new Uri(Navigation.BaseUri), "/api/packs.json").AbsoluteUri;
+        if (Catalog != null || PackId != null)
+        {
+            await LoadCatalogAsync();
+        }
+        else
+        {
+            packs = null;
+            error = null;
+            await ClearPackAsync();
+        }
+    }
+
+    private Uri HttpUri(string value, Uri baseUri)
+    {
+        var uri = new Uri(baseUri, value);
+        if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+        {
+            throw new InvalidDataException("Only HTTP(S) URLs are supported.");
+        }
+        return uri;
+    }
+
+    private async Task RunAsync(Func<Task> action)
+    {
+        busy = true;
+        error = null;
+        try
+        {
+            await action();
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            // Navigation away cancels outstanding downloads.
+        }
+        catch (Exception ex) when (ex is HttpRequestException || ex is IOException || ex is InvalidDataException
+            || ex is System.Text.Json.JsonException || ex is UriFormatException || ex is JSException
+            || ex is InvalidOperationException || ex is NotSupportedException || ex is OperationCanceledException)
+        {
+            Console.Error.WriteLine(ex);
+            error = L["PackFailed", ex.Message];
+        }
+        finally
+        {
+            busy = false;
+        }
+    }
+
+    private async Task LoadCatalogAsync()
+    {
+        await RunAsync(async () =>
+        {
+            packs = null;
+            await ClearPackAsync();
+            loadedCatalogUri = HttpUri(catalogUrl, new Uri(Navigation.BaseUri));
+            var catalog = await Http.GetFromJsonAsync(loadedCatalogUri, SrcJsonContext.Default.ResourceCatalog, token);
+            if (catalog?.Format != 1 || catalog.Entries == null)
+            {
+                throw new InvalidDataException("Expected a format-1 pack catalog.");
+            }
+            packs = catalog.Entries.Where(p => p != null && p.Kind == "asset"
+                && !string.IsNullOrWhiteSpace(p.Id) && !string.IsNullOrWhiteSpace(p.Archive)).ToList();
+            catalogName = catalog.Name;
+            if (PackId != null)
+            {
+                var pack = packs.FirstOrDefault(p => p.Id == PackId)
+                    ?? throw new InvalidDataException("Requested pack was not found.");
+                await ReadPackAsync(pack);
+            }
+        });
+    }
+
+    private Task LoadPackAsync(ResourcePack pack) => RunAsync(() => ReadPackAsync(pack));
+
+    private async Task ReadPackAsync(ResourcePack pack)
+    {
+        await ClearPackAsync();
+        using var response = await Http.GetAsync(HttpUri(pack.Archive, loadedCatalogUri), HttpCompletionOption.ResponseHeadersRead, token);
+        response.EnsureSuccessStatusCode();
+        if (response.Content.Headers.ContentLength > PackResources.MaxArchiveBytes)
+        {
+            throw new InvalidDataException("ZIP exceeds 64 MiB.");
+        }
+        using var input = await response.Content.ReadAsStreamAsync(token);
+        var buffer = await PackResources.ReadLimitedAsync(input, PackResources.MaxArchiveBytes, token);
+        resources = new PackResources(buffer, pack.Root);
+        selectedPack = pack;
+    }
+
+    private Task LoadLocalAsync(InputFileChangeEventArgs e) => RunAsync(async () =>
+    {
+        await ClearPackAsync();
+        using var input = e.File.OpenReadStream(PackResources.MaxArchiveBytes);
+        var buffer = await PackResources.ReadLimitedAsync(input, PackResources.MaxArchiveBytes, token);
+        resources = new PackResources(buffer, null);
+        selectedPack = new ResourcePack { Title = e.File.Name };
+    });
+
+    private Task OpenResourceAsync(PackResource file) => RunAsync(async () =>
+    {
+        await ClearPreviewAsync();
+        selectedResource = file;
+        if (file.Entry.Length > PackResources.MaxPreviewBytes)
+        {
+            throw new InvalidDataException("Preview/download exceeds 16 MiB.");
+        }
+        using var input = file.Entry.Open();
+        using var content = await PackResources.ReadLimitedAsync(input, PackResources.MaxPreviewBytes, token);
+        token.ThrowIfCancellationRequested();
+        var url = await JS.InvokeAsync<string>("packMedia.create", content.ToArray(), file.MediaType);
+        if (token.IsCancellationRequested)
+        {
+            await JS.InvokeVoidAsync("packMedia.revoke", url);
+        }
+        else
+        {
+            previewUrl = url;
+        }
+    });
+
+    private void MediaError() => error = L["PackMediaFailed"];
+
+    private async Task ClearPreviewAsync()
+    {
+        if (previewUrl != null)
+        {
+            await JS.InvokeVoidAsync("packMedia.revoke", previewUrl);
+            previewUrl = null;
+        }
+        selectedResource = null;
+    }
+
+    private async Task ClearPackAsync()
+    {
+        await ClearPreviewAsync();
+        resources?.Dispose();
+        resources = null;
+        selectedPack = null;
+        filter = "";
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        lifetime.Cancel();
+        lifetime.Dispose();
+        await ClearPackAsync();
+    }
+}

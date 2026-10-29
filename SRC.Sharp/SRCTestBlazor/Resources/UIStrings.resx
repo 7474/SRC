@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="Packs" xml:space="preserve"><value>パック</value></data>
+  <data name="PackIntro" xml:space="preserve"><value>パックごとの出典・利用条件を確認し、収録ファイルを閲覧できます。選択中のデータから参照されていない画像・音声も対象です。ZIP は 64 MiB、個別の表示・ダウンロードは 16 MiB までです。</value></data>
+  <data name="PackCatalogUrl" xml:space="preserve"><value>カタログ URL</value></data>
+  <data name="PackLoad" xml:space="preserve"><value>読み込む</value></data>
+  <data name="PackLocalZip" xml:space="preserve"><value>またはローカルの ZIP を開く（サーバーには送信しません）</value></data>
+  <data name="PackLoading" xml:space="preserve"><value>読み込み中…</value></data>
+  <data name="PackEmptyCatalog" xml:space="preserve"><value>利用可能な素材パックはありません。</value></data>
+  <data name="PackAuthor" xml:space="preserve"><value>出典・作者</value></data>
+  <data name="PackLicense" xml:space="preserve"><value>利用条件</value></data>
+  <data name="PackVersion" xml:space="preserve"><value>バージョン</value></data>
+  <data name="PackFilter" xml:space="preserve"><value>ファイル名で検索</value></data>
+  <data name="PackFileCount" xml:space="preserve"><value>全 {0} ファイル</value></data>
+  <data name="PackNoPreview" xml:space="preserve"><value>この形式はプレビューに対応していません（MIDI など）。個別にダウンロードして確認してください。</value></data>
+  <data name="PackDownload" xml:space="preserve"><value>ファイルをダウンロード</value></data>
+  <data name="PackFailed" xml:space="preserve"><value>読み込めませんでした: {0}</value></data>
+  <data name="PackMediaFailed" xml:space="preserve"><value>このブラウザーでは表示・再生できません。ファイルの形式や破損を確認してください。</value></data>
   <!-- データビューアの画面の文言（既定の日本語）。英語は UIStrings.en.resx -->
   <!-- ＨＰ・装甲・格闘・射程など SRC のデータの用語はデータの定義に合わせて訳さない -->
   <resheader name="resmimetype">
