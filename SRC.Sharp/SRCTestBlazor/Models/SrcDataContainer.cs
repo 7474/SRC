@@ -38,6 +38,8 @@ namespace SRCTestBlazor.Models
             var newIndex = await http.GetFromJsonAsync(uri, SrcJsonContext.Default.SrcBitmapIndex)
                 ?? throw new InvalidOperationException($"Failed to load bitmap index from {uri}");
             newIndex.BuildIndex(baseUri);
+            // アーカイブの頁（ArchivePage）が先に開いていれば、その画像を引き継ぐ
+            newIndex.CopyOverlayFrom(BitmapIndex);
             BitmapIndex = newIndex;
 
             NotifyStateChanged();

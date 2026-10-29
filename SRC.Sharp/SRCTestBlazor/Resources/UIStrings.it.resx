@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>Nome</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Archivi</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>Sfoglia il contenuto (dati, immagini, suoni) degli archivi di scenari, risorse e pacchetti pubblicati su questo sito, comprese le immagini e i suoni che nessun dato utilizza.</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>Nessun elenco di archivi configurato (viewer.json).</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>Scenario</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>Risorsa</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>Pacchetto</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>Caricamento…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>Archivio non trovato.</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>Pagina del sito</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>Risorse nel pacchetto:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>Sovrapposto con:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>Dati</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>Immagini</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>Suoni</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>Nessun dato (unit.txt, pilot.txt ecc.).</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>Nessuna immagine.</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>Nessun suono.</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>Tutte le cartelle</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>Solo quelli non usati dai dati</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>Usato dai dati</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>Mostra altri ({0} rimanenti)</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>{0} file</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>I file MIDI vengono sintetizzati con una SoundFont prima della riproduzione (richiede un momento).</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>Scarica</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>Nessuna SoundFont (.sf2) trovata, quindi i MIDI non possono essere riprodotti qui. Scaricali o riproducili in SRC#Web.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>Sintetizza e riproduci</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>Sintesi in corso…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>Ferma</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>Questa BGM non è nell'archivio aperto</value>
+  </data>
 </root>

@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>Ad</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Arşivler</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>Bu sitede yayımlanan senaryo, kaynak ve paket arşivlerinin içeriğine (veriler, görüntüler, sesler) göz atın; hiçbir verinin kullanmadığı görüntü ve sesler de dahil.</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>Yapılandırılmış bir arşiv listesi yok (viewer.json).</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>Senaryo</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>Kaynak</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>Paket</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>Yükleniyor…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>Arşiv bulunamadı.</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>Site sayfası</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>Paketteki kaynaklar:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>Birlikte katmanlanan:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>Veriler</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>Görüntüler</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>Sesler</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>Dosyalar</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>Veri yok (unit.txt, pilot.txt vb.).</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>Görüntü yok.</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>Ses yok.</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>Tüm klasörler</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>Yalnızca verilerin kullanmadıkları</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>Verilerde kullanılıyor</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>Daha fazla göster ({0} kaldı)</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>{0} dosya</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI dosyaları çalınmadan önce bir SoundFont ile sentezlenir (biraz zaman alır).</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>İndir</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>SoundFont (.sf2) bulunamadı, bu yüzden MIDI dosyaları burada çalınamaz. İndirin veya SRC#Web'de çalın.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>Sentezle ve çal</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>Sentezleniyor…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>Durdur</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>Bu BGM açık arşivde yok</value>
+  </data>
 </root>

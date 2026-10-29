@@ -21708,6 +21708,59 @@ has-background-danger.is-hoverable:active {
   background-color: var(--bulma-scheme-main-bis);
 }
 
+.src-archive-list .box {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.src-archive-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.src-archive-image {
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.src-archive-image img {
+  max-width: 100%;
+  max-height: 120px;
+  image-rendering: pixelated;
+}
+
+.src-bgm-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background-color: var(--bulma-scheme-main-bis);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.2);
+}
+.src-bgm-bar audio {
+  height: 2rem;
+}
+.src-bgm-bar .progress {
+  width: 8rem;
+  margin: 0;
+}
+
+.src-bgm-name {
+  overflow-wrap: anywhere;
+}
+
+main.container {
+  padding-bottom: 4rem;
+}
+
 #blazor-error-ui {
   background: lightyellow;
   bottom: 0;

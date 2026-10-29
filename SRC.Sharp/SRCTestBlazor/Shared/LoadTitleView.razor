@@ -57,36 +57,13 @@
         {
             try
             {
-                switch (file.ToLower())
+                if (SRC.LoadDataFile(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}")))
                 {
-                    case "unit.txt":
-                    case "robot.txt":
-                        SRC.UDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    case "pilot.txt":
-                        SRC.PDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    case "non_pilot.txt":
-                        SRC.NPDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    case "pilot_message.txt":
-                        SRC.MDList.Load(file, false, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    case "pilot_dialog.txt":
-                        SRC.DDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    case "item.txt":
-                        SRC.IDList.Load(file, await FetchAsMemoryStreamAsync($"{baseUri}/{file}"));
-                        Console.WriteLine($"{file} was loaded.");
-                        break;
-                    default:
-                        Console.WriteLine($"{file} is not supported.");
-                        break;
+                    Console.WriteLine($"{file} was loaded.");
+                }
+                else
+                {
+                    Console.WriteLine($"{file} is not supported.");
                 }
             }
             catch (Exception ex)

@@ -12,6 +12,7 @@
                 <div class="media-content">
                     <p class="title is-4">@Data.Name</p>
                     <p class="subtitle is-6">@Data.Nickname</p>
+                    <BgmButton Bgm="@Data.Features.FirstOrDefault(x => x.Name == "ＢＧＭ")?.Data" />
                 </div>
             </div>
         </div>

@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>이름</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>아카이브</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>이 사이트에 공개된 시나리오·소재·팩 zip의 내용(데이터·이미지·소리)을 볼 수 있습니다. 데이터에서 사용하지 않는 이미지와 소리도 볼 수 있습니다.</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>아카이브 목록이 설정되어 있지 않습니다(viewer.json).</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>전체</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>시나리오</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>소재</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>팩</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>불러오는 중…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>아카이브를 찾을 수 없습니다.</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>사이트 페이지</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>팩의 소재:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>함께 겹치는 것:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>데이터</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>이미지</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>소리</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>데이터(unit.txt, pilot.txt 등)가 없습니다.</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>이미지가 없습니다.</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>소리가 없습니다.</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>모든 폴더</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>데이터에서 사용하지 않는 것만</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>데이터에서 사용</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>더 보기(남은 {0}개)</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>파일 {0}개</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI는 SoundFont로 합성한 뒤 재생합니다(합성에 시간이 조금 걸립니다).</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>다운로드</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>SoundFont(.sf2)를 찾을 수 없어 이 화면에서는 MIDI를 재생할 수 없습니다. 다운로드하거나 SRC#Web에서 재생하세요.</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>합성해서 재생</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>합성 중…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>정지</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>열린 아카이브에 이 BGM이 없습니다</value>
+  </data>
 </root>

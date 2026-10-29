@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>名稱</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>封存</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>可以檢視本站公開的劇本、素材和素材包 zip 的內容（資料、圖片、聲音），包括資料未參照的圖片和聲音。</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>未設定封存清單（viewer.json）。</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>劇本</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>素材</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>素材包</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>正在載入…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>找不到該封存。</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>網站頁面</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>包中的素材：</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>一起疊加：</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>資料</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>圖片</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>聲音</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>檔案</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>沒有資料（unit.txt、pilot.txt 等）。</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>沒有圖片。</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>沒有聲音。</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>所有資料夾</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>僅顯示資料未使用的</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>資料使用中</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>顯示更多（剩餘 {0}）</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>{0} 個檔案</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI 會先用 SoundFont 合成後再播放（合成需要一點時間）。</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>下載</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>找不到 SoundFont（.sf2），無法在此播放 MIDI。請下載或在 SRC#Web 中播放。</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>合成並播放</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>正在合成…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>開啟的封存中沒有此 BGM</value>
+  </data>
 </root>

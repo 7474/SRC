@@ -1,0 +1,39 @@
+@implements IDisposable
+
+@* データが参照する BGM（パイロットの BGM・ユニットの特殊能力「ＢＧＭ」）。開いているアーカイブにあれば鳴らせる *@
+@if (BgmPlayer.Candidates(Bgm).Any())
+{
+    var file = Player.Resolve(Bgm);
+    @if (file != null)
+    {
+        <button class="button is-small is-rounded @(Player.IsPlaying(file) ? "is-info" : "")" title="@file.Path" @onclick="@(() => Player.PlayAsync(file))">
+            <span class="icon"><i class="fas fa-music"></i></span>
+            <span>@Bgm</span>
+        </button>
+    }
+    else
+    {
+        <span class="tag is-light" title="@L["BgmNotFound"]"><span class="icon"><i class="fas fa-music"></i></span>@Bgm</span>
+    }
+}
+
+@code {
+    [Inject]
+    private BgmPlayer Player { get; set; }
+
+    /// <summary>BGM の指定（例: "battle.mid"）</summary>
+    [Parameter]
+    public string Bgm { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Player.OnChange += OnPlayerChanged;
+    }
+
+    private void OnPlayerChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Player.OnChange -= OnPlayerChanged;
+    }
+}

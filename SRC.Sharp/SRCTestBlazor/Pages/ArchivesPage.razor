@@ -1,0 +1,90 @@
+@page "/archives"
+@implements IDisposable
+
+<section class="mt-5 mb-5">
+    <h1 class="title">@L["Archives"]</h1>
+    @if (!Catalog.Enabled)
+    {
+        <p>@L["ArchivesNotConfigured"]</p>
+    }
+    else
+    {
+        <p>@L["ArchivesIntro"]</p>
+        <div class="tabs">
+            <ul>
+                @foreach (var (kind, label) in Kinds)
+                {
+                    <li class="@(currentKind == kind ? "is-active" : "")">
+                        <a @onclick:preventDefault @onclick="@(() => currentKind = kind)">@label</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="field">
+            <input class="input" type="search" placeholder="@L["Filter"]" @bind="filter" @bind:event="oninput" />
+        </div>
+        <div class="src-archive-list">
+            @foreach (var archive in Filtered)
+            {
+                <a class="box" href="@ArchivePageUri(archive)">
+                    <span class="has-text-weight-semibold">@archive.Title</span>
+                    <span class="tag ml-2">@KindLabel(archive.Kind)</span>
+                    @if (!string.IsNullOrEmpty(archive.Author))
+                    {
+                        <span class="ml-2">@archive.Author</span>
+                    }
+                    @if (!string.IsNullOrEmpty(archive.Description))
+                    {
+                        <p class="is-size-7">@archive.Description</p>
+                    }
+                </a>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Inject]
+    private HttpClient Http { get; set; }
+    [Inject]
+    private ArchiveCatalog Catalog { get; set; }
+
+    private string currentKind = "";
+    private string filter = "";
+
+    private (string Kind, string Label)[] Kinds => new[]
+    {
+        ("", L["ArchiveKindAll"].Value),
+        ("scenario", L["ArchiveKindScenario"].Value),
+        ("resource", L["ArchiveKindResource"].Value),
+        ("pack", L["ArchiveKindPack"].Value),
+    };
+
+    private IEnumerable<ArchiveInfo> Filtered
+    {
+        get
+        {
+            var words = filter.Split(new[] { ' ', '\t', '　' }, StringSplitOptions.RemoveEmptyEntries);
+            return Catalog.Archives
+                .Where(x => currentKind == "" || x.Kind == currentKind)
+                .Where(x => words.All(w => $"{x.Title} {x.Author} {x.Id}".Contains(w, StringComparison.OrdinalIgnoreCase)));
+        }
+    }
+
+    private string KindLabel(string kind) => Kinds.FirstOrDefault(x => x.Kind == kind).Label ?? kind;
+
+    public static string ArchivePageUri(ArchiveInfo archive) => "archive?id=" + Uri.EscapeDataString(archive.Id);
+
+    protected override async Task OnInitializedAsync()
+    {
+        Catalog.OnChange += OnCatalogChanged;
+        await Catalog.EnsureLoadedAsync(Http);
+    }
+
+    private void OnCatalogChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Catalog.OnChange -= OnCatalogChanged;
+    }
+}

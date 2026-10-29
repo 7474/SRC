@@ -73,7 +73,7 @@ AOT を既定にした判断は [SRC#Web の発行を AOT コンパイルにす�
 | データ | 保存先 | 備考 |
 |---|---|---|
 | アーカイブ（zip） | IndexedDB | 利用者が追加したもの。大きいため IndexedDB に Blob で保存する |
-| カタログのアーカイブ（zip） | Cache Storage | 取得したものを URL ごとに置き、次からはネットワークを使わない。カタログの `version` が置いたときと違えば取得し直す（`wwwroot/js/store.js` の `fetchArchive`）。組み込みのカタログの `version` は zip の SHA-256 |
+| カタログのアーカイブ（zip） | Cache Storage | 取得したものを URL ごとに置き、次からはネットワークを使わない。カタログの `version` が置いたときと違えば取得し直す（`wwwroot/js/store.js` の `fetchArchive`）。取得し直したら、同じサイトの同じ項目（カタログの `kind` と `id`）で URL が違うもの（版ごとに URL を変えるカタログの古い版）を消す。組み込みのカタログの `version` は zip の SHA-256 |
 | セーブデータ（通常・中断・クイック） | IndexedDB | シナリオごとに保存する。ファイルとして書き出す・読み込む操作も用意する |
 | 設定（`srcs.json` 相当） | localStorage | |
 

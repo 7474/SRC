@@ -13,6 +13,7 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 - **[SRC#Avalonia](./gui/avalonia.md)** — Windows / macOS / Linux で動くフロントエンドの構成・WinForms 版との対応・音声・実行方法
 - **[SRC#Web（ブラウザ版）](./gui/web.md)** — 静的サイトで動くブラウザ版の設計（マルチスレッド WebAssembly・ブラウザ内保存・タッチ操作・仮想パッド・システムメニュー）
 - **[SRC#Web を外部のサイトに置く](./gui/web-hosting.md)** — リリースのパッケージ・サイトの設定・カタログ・素材の同梱・URL での起動
+- **[データビューア](./gui/dataviewer.md)** — データビューア（SRC#DataViewer）の頁と、置いたサイトの zip（シナリオ・素材・パック）のデータ・画像・音を読む設定
 
 ### 🧪 テスト / Testing
 

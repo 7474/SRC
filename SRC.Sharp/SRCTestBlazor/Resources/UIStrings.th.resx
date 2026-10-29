@@ -100,4 +100,97 @@
   <data name="ColumnName" xml:space="preserve">
     <value>ชื่อ</value>
   </data>
+  <data name="Archives" xml:space="preserve">
+    <value>คลังไฟล์</value>
+  </data>
+  <data name="ArchivesIntro" xml:space="preserve">
+    <value>ดูเนื้อหา (ข้อมูล รูปภาพ เสียง) ของไฟล์ zip ฉากเรื่อง ทรัพยากร และแพ็กที่เผยแพร่บนเว็บไซต์นี้ รวมถึงรูปภาพและเสียงที่ไม่มีข้อมูลใดใช้</value>
+  </data>
+  <data name="ArchivesNotConfigured" xml:space="preserve">
+    <value>ยังไม่ได้ตั้งค่ารายการคลังไฟล์ (viewer.json)</value>
+  </data>
+  <data name="ArchiveKindAll" xml:space="preserve">
+    <value>ทั้งหมด</value>
+  </data>
+  <data name="ArchiveKindScenario" xml:space="preserve">
+    <value>ฉากเรื่อง</value>
+  </data>
+  <data name="ArchiveKindResource" xml:space="preserve">
+    <value>ทรัพยากร</value>
+  </data>
+  <data name="ArchiveKindPack" xml:space="preserve">
+    <value>แพ็ก</value>
+  </data>
+  <data name="ArchiveLoading" xml:space="preserve">
+    <value>กำลังโหลด…</value>
+  </data>
+  <data name="ArchiveNotFound" xml:space="preserve">
+    <value>ไม่พบคลังไฟล์</value>
+  </data>
+  <data name="ArchiveOpenPage" xml:space="preserve">
+    <value>หน้าเว็บไซต์</value>
+  </data>
+  <data name="ArchivePackMembers" xml:space="preserve">
+    <value>ทรัพยากรในแพ็ก:</value>
+  </data>
+  <data name="ArchiveRequires" xml:space="preserve">
+    <value>ซ้อนร่วมกับ:</value>
+  </data>
+  <data name="ArchiveTabData" xml:space="preserve">
+    <value>ข้อมูล</value>
+  </data>
+  <data name="ArchiveTabImages" xml:space="preserve">
+    <value>รูปภาพ</value>
+  </data>
+  <data name="ArchiveTabAudio" xml:space="preserve">
+    <value>เสียง</value>
+  </data>
+  <data name="ArchiveTabFiles" xml:space="preserve">
+    <value>ไฟล์</value>
+  </data>
+  <data name="ArchiveNoData" xml:space="preserve">
+    <value>ไม่มีข้อมูล (unit.txt, pilot.txt ฯลฯ)</value>
+  </data>
+  <data name="ArchiveNoImages" xml:space="preserve">
+    <value>ไม่มีรูปภาพ</value>
+  </data>
+  <data name="ArchiveNoAudio" xml:space="preserve">
+    <value>ไม่มีเสียง</value>
+  </data>
+  <data name="ArchiveFolderAll" xml:space="preserve">
+    <value>ทุกโฟลเดอร์</value>
+  </data>
+  <data name="ArchiveUnreferencedOnly" xml:space="preserve">
+    <value>เฉพาะที่ข้อมูลไม่ได้ใช้</value>
+  </data>
+  <data name="ArchiveReferenced" xml:space="preserve">
+    <value>ข้อมูลใช้อยู่</value>
+  </data>
+  <data name="ArchiveShowMore" xml:space="preserve">
+    <value>แสดงเพิ่ม (เหลือ {0})</value>
+  </data>
+  <data name="ArchiveFileCount" xml:space="preserve">
+    <value>{0} ไฟล์</value>
+  </data>
+  <data name="ArchiveMidiNote" xml:space="preserve">
+    <value>MIDI จะถูกสังเคราะห์ด้วย SoundFont ก่อนเล่น (ใช้เวลาสักครู่)</value>
+  </data>
+  <data name="ArchiveDownload" xml:space="preserve">
+    <value>ดาวน์โหลด</value>
+  </data>
+  <data name="ArchiveMidiNoSoundFont" xml:space="preserve">
+    <value>ไม่พบ SoundFont (.sf2) จึงเล่น MIDI ที่นี่ไม่ได้ ดาวน์โหลดไปหรือเล่นใน SRC#Web</value>
+  </data>
+  <data name="ArchiveMidiPlay" xml:space="preserve">
+    <value>สังเคราะห์และเล่น</value>
+  </data>
+  <data name="ArchiveMidiRendering" xml:space="preserve">
+    <value>กำลังสังเคราะห์…</value>
+  </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>หยุด</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>ไม่มี BGM นี้ในคลังไฟล์ที่เปิดอยู่</value>
+  </data>
 </root>

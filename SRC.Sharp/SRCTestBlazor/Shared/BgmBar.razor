@@ -1,0 +1,44 @@
+@implements IDisposable
+
+@* 画面の下に固定する BGM の再生（MainLayout に置くので、画面を移っても鳴り続ける） *@
+@if (Player.Current != null)
+{
+    <div class="src-bgm-bar">
+        <span class="icon"><i class="fas fa-music"></i></span>
+        <span class="src-bgm-name" title="@Player.Current.Path">@Player.Current.Name <span class="is-size-7">（@Player.Current.Archive?.Title）</span></span>
+        @if (Player.Url != null)
+        {
+            <audio controls autoplay loop src="@Player.Url"></audio>
+        }
+        else if (Player.Error != null)
+        {
+            <span class="has-text-danger is-size-7">@Player.Error</span>
+        }
+        else
+        {
+            <progress class="progress is-small" value="@((int)(Player.Progress * 100))" max="100"></progress>
+            <span class="is-size-7">@L["ArchiveMidiRendering"]</span>
+        }
+        <button class="button is-small" @onclick="Player.Stop" title="@L["BgmStop"]">
+            <span class="icon"><i class="fas fa-stop"></i></span>
+            <span>@L["BgmStop"]</span>
+        </button>
+    </div>
+}
+
+@code {
+    [Inject]
+    private BgmPlayer Player { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Player.OnChange += OnPlayerChanged;
+    }
+
+    private void OnPlayerChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Player.OnChange -= OnPlayerChanged;
+    }
+}

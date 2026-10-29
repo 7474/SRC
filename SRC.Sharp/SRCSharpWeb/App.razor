@@ -1158,7 +1158,7 @@ else
         {
             return;
         }
-        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version, token), entry.Eve, entry.Root, token);
+        await LoadAsync("catalog-" + entry.Id, entry.Title, () => DownloadAsync(entry.Archive, entry.Version, CatalogEntry.KindScenario + ":" + entry.Id, token), entry.Eve, entry.Root, token);
     });
 
     /// <summary>この大きさを超える zip は、メモリ（byte[]）に読まずにブラウザ内のファイルシステムに書いてから展開する</summary>
@@ -1167,14 +1167,15 @@ else
     /// <summary>
     /// zip をダウンロードして開く。展開したら Dispose し、FileStream ならファイルを消す（CloseDownload）。
     /// 一度取得した zip はブラウザの Cache Storage に置き、次からはネットワークを使わない（version が変われば取得し直す。srcwebStore.fetchArchive）。
+    /// 版ごとに URL が変わるカタログでは、同じ項目（種類と id。シナリオと素材は同じ id でもよい）の古い URL の zip を消す。
     /// 応答を byte[] に読むと、大きいシナリオ（数百 MB）では WebAssembly のメモリがその分（読み込み中はそれ以上）増え、
     /// 増えたメモリは返せないため、スマートフォンではタブが落ちる原因になる。
     /// 大きいものはストリームのままファイルに書く。WebAssembly のメモリは一度に読む分しか使わない（ファイルの中身は JS 側のメモリに置かれる）。
     /// 小さいものは、展開が速いため従来どおりメモリに読む。
     /// </summary>
-    private async Task<Stream> DownloadAsync(string url, string version, CancellationToken token)
+    private async Task<Stream> DownloadAsync(string url, string version, string key, CancellationToken token)
     {
-        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "");
+        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "", key ?? "");
         using var source = await archive.OpenReadStreamAsync(long.MaxValue, token);
         return await OpenDownloadAsync(source, archive.Length, token);
     }
@@ -1252,7 +1253,7 @@ else
                 status = L["LoadingAsset", asset.Title];
                 StateHasChanged();
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                var zip = await DownloadAsync(asset.Archive, asset.Version, token);
+                var zip = await DownloadAsync(asset.Archive, asset.Version, CatalogEntry.KindAsset + ":" + asset.Id, token);
                 var downloaded = watch.ElapsedMilliseconds;
                 try
                 {

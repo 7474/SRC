@@ -150,11 +150,11 @@
             }
             fetches.clear();
         },
-        async fetchArchive(url, version) {
+        async fetchArchive(url, version, id) {
             const controller = new AbortController();
             fetches.add(controller);
             try {
-                return await fetchArchive(url, version, controller.signal);
+                return await fetchArchive(url, version, id, controller.signal);
             } finally {
                 fetches.delete(controller);
             }
@@ -166,7 +166,8 @@
 
     // カタログのアーカイブ（zip）を取得する。一度取得したものは Cache Storage に置き、次からはネットワークを使わない。
     // version（カタログの version）が置いたときと違えば取得し直す。Blob を返す（大きいものはブラウザがディスクに置く）
-    const fetchArchive = async (url, version, signal) => {
+    // id（カタログの項目の種類と id。例: asset:soundfont）を一緒に置き、取得し直したら、同じサイトの同じ id で URL が違うもの（版ごとに URL が変わるカタログの古い版）を消す
+    const fetchArchive = async (url, version, id, signal) => {
         let cache = null;
         try {
             cache = await caches.open(archiveCacheName);
@@ -186,7 +187,8 @@
             navigator.storage.persist();
         }
         try {
-            await cache.put(url, new Response(response.body, { headers: { 'Content-Type': 'application/zip', [versionHeader]: version } }));
+            await cache.put(url, new Response(response.body, { headers: { 'Content-Type': 'application/zip', [versionHeader]: version, [idHeader]: id || '' } }));
+            await deleteOldVersions(cache, url, id);
             const stored = await cache.match(url);
             if (stored) {
                 return await stored.blob();
@@ -203,6 +205,28 @@
         return await fetchBlob(url, signal);
     };
 
+    const deleteOldVersions = async (cache, url, id) => {
+        if (!id) {
+            return;
+        }
+        try {
+            const current = new URL(url, location.href);
+            for (const request of await cache.keys()) {
+                const other = new URL(request.url);
+                if (other.href === current.href || other.origin !== current.origin) {
+                    continue;
+                }
+                const old = await cache.match(request);
+                if (old && old.headers.get(idHeader) === id) {
+                    await cache.delete(request);
+                }
+            }
+        } catch (e) {
+            // 消せなくても、取得したものはそのまま使う
+            console.warn('古いアーカイブを消せません', url, e);
+        }
+    };
+
     const fetchOk = async (url, signal) => {
         const response = await fetch(url, { signal });
         if (!response.ok) {
@@ -214,6 +238,7 @@
 
     const archiveCacheName = 'srcweb-archives';
     const versionHeader = 'X-SRCWeb-Version';
+    const idHeader = 'X-SRCWeb-Archive-Id';
 })();
 
 // シナリオに同梱された文書のリンク（ScenarioDocuments）。

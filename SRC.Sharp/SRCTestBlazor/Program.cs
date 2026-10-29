@@ -26,6 +26,10 @@ namespace SRCTestBlazor
                     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
                 })
                 .AddSingleton<SrcDataContainer>()
+                .AddSingleton<ArchiveCatalog>()
+                .AddSingleton<MidiRenderer>()
+                // HttpClient（Scoped）を使う。WebAssembly では Scoped もアプリの間 1 つ
+                .AddScoped<BgmPlayer>()
                 .AddSingleton<DataViewerSettingsService>()
                 .AddLocalization()
                 .AddSingleton<Random>(sp =>
