@@ -195,4 +195,10 @@
   <data name="ArchiveMidiRendering" xml:space="preserve">
     <value>合成しています…</value>
   </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>止める</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>開いているアーカイブにこの BGM がありません</value>
+  </data>
 </root>

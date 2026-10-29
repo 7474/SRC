@@ -18,12 +18,16 @@
 
 `/archive` の各タブ:
 
-- **データ**: zip の中の `unit.txt`・`robot.txt`・`pilot.txt`・`non_pilot.txt`・`pilot_message.txt`・`pilot_dialog.txt`・`item.txt`（フォルダはどこでもよい）を読み、`/titles/…` と同じ形で見せる。ユニット・パイロットの画像は、その zip と、一緒に重ねる zip（`requires`）の `Bitmap/<分類>/` から探し、無ければ 7474/SRC-Data の画像を使う
+- **データ**: zip の中の `unit.txt`・`robot.txt`・`pilot.txt`・`non_pilot.txt`・`pilot_message.txt`・`pilot_dialog.txt`・`item.txt`（フォルダはどこでもよい）を読み、`/titles/…` と同じ形で見せる。ユニット・パイロットの画像は、その zip と、一緒に重ねる zip（`requires`）の `Bitmap/<分類>/` から探し、無ければ 7474/SRC-Data の画像を使う。パイロットの BGM とユニットの特殊能力「ＢＧＭ」は、その zip と重ねる zip から SRC と同じ規則（左の候補から順に、`Midi` フォルダ → SRC のフォルダ、同じ名前の .mp3 を .mid より先）で探し、見つかればボタンで鳴らせる（見つからなければ名前だけを出す）
 - **画像**: BMP・PNG・JPEG・GIF をフォルダ・名前で絞って並べる。データで使っている画像には印を付け、「データで使っていないものだけ」に絞れる
 - **音**: WAV・MP3・OGG をその場で鳴らす。MIDI は「合成して鳴らす」で、SoundFont（.sf2）を使って WAV に合成してから鳴らす（ブラウザは MIDI を鳴らせないため。SRC#Web と同じ [MeltySynth](https://github.com/sinshu/meltysynth)）。SoundFont は、その zip と一緒に重ねる zip にある .sf2（後ろほど優先）、無ければ一覧の `soundFont` の zip から探す。見つからなければダウンロードだけ。合成するのは 10 分まで
 - **ファイル**: zip の中のすべてのファイル
 
 パック（`kind: pack`）は中の素材（`members`）をまとめて見せる。
+
+### BGM の再生
+
+データの BGM のボタンと、「音」タブの MIDI の「合成して鳴らす」は、画面の下の再生の帯（`BgmBar`。`MainLayout` に置く）で鳴らす。帯は画面を移っても残り、曲は繰り返して鳴り続ける。「止める」で止める。一度合成した MIDI は、頁を読み込み直すまで合成し直さない。
 
 ## アーカイブを読む
 

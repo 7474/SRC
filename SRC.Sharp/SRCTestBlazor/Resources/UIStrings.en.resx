@@ -187,4 +187,10 @@
   <data name="ArchiveMidiRendering" xml:space="preserve">
     <value>Synthesizing...</value>
   </data>
+  <data name="BgmStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="BgmNotFound" xml:space="preserve">
+    <value>This BGM is not in the opened archive</value>
+  </data>
 </root>

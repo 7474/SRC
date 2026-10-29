@@ -28,6 +28,8 @@ namespace SRCTestBlazor
                 .AddSingleton<SrcDataContainer>()
                 .AddSingleton<ArchiveCatalog>()
                 .AddSingleton<MidiRenderer>()
+                // HttpClient（Scoped）を使う。WebAssembly では Scoped もアプリの間 1 つ
+                .AddScoped<BgmPlayer>()
                 .AddSingleton<DataViewerSettingsService>()
                 .AddLocalization()
                 .AddSingleton<Random>(sp =>

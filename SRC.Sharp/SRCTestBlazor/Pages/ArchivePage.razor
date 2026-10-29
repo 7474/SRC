@@ -131,26 +131,16 @@
                                 {
                                     <audio controls preload="none" src="@file.Url"></audio>
                                 }
-                                else if (midi.TryGetValue(file.Url, out var state) && state.AudioUrl != null)
-                                {
-                                    <audio controls autoplay src="@state.AudioUrl"></audio>
-                                }
-                                else if (state != null && state.Error == null)
-                                {
-                                    <progress class="progress is-small" value="@((int)(state.Progress * 100))" max="100"></progress>
-                                    <span class="is-size-7">@L["ArchiveMidiRendering"]</span>
-                                }
                                 else
                                 {
                                     @if (soundFontUri != null)
                                     {
-                                        <button class="button is-small" @onclick="@(() => PlayMidiAsync(file))">@L["ArchiveMidiPlay"]</button>
+                                        <button class="button is-small @(Player.IsPlaying(file) ? "is-info" : "")" @onclick="@(() => Player.PlayAsync(file))">
+                                            <span class="icon"><i class="fas fa-music"></i></span>
+                                            <span>@L["ArchiveMidiPlay"]</span>
+                                        </button>
                                     }
                                     <a class="ml-2" href="@file.Url" download="@file.Name">@L["ArchiveDownload"]</a>
-                                    @if (state?.Error != null)
-                                    {
-                                        <span class="is-size-7 has-text-danger ml-2">@state.Error</span>
-                                    }
                                 }
                             </td>
                         </tr>
@@ -200,10 +190,6 @@
     [Inject]
     private SrcDataContainer DataContainer { get; set; }
 
-    [Inject]
-    private MidiRenderer MidiRenderer { get; set; }
-    [Inject]
-    private IJSRuntime JS { get; set; }
 
     [SupplyParameterFromQuery]
     public string Id { get; set; }
@@ -211,15 +197,9 @@
     [SupplyParameterFromQuery]
     public string Index { get; set; }
 
-    private class MidiState
-    {
-        public double Progress { get; set; }
-        public string AudioUrl { get; set; }
-        public string Error { get; set; }
-    }
+    [Inject]
+    private BgmPlayer Player { get; set; }
 
-    // MIDI を合成したもの（ファイルの URL ごと）
-    private Dictionary<string, MidiState> midi = new Dictionary<string, MidiState>();
     private string soundFontUri;
 
     private enum Tab { Data, Images, Audio, Files }
@@ -284,8 +264,8 @@
         SRC = new SRC();
         SRC.InitSPDList();
 
-        RevokeMidi();
         soundFontUri = null;
+        Player.ClearSource();
         await Catalog.EnsureLoadedAsync(Http);
         await Catalog.AddIndexAsync(Http, Index);
         archive = Catalog.Find(Id);
@@ -307,6 +287,10 @@
             .Select(x => (Key: ArchiveFiles.BitmapKey(x.RelativePath), x.Url))
             .Where(x => x.Key != null)
             .Select(x => (x.Key.Value.Category, x.Key.Value.FileName, x.Url)));
+
+        // データの BGM（パイロットの BGM・ユニットの「ＢＧＭ」）も、重ねるアーカイブから探して鳴らせるようにする（データを読む前に決める）
+        soundFontUri = await Catalog.FindSoundFontAsync(Http, archive);
+        Player.SetSource(layerFiles.SelectMany(x => x), soundFontUri);
 
         // データ（root の中の unit.txt・pilot.txt など）を読む
         dataFiles = ownFiles
@@ -338,43 +322,7 @@
         {
             currentTab = Tab.Images;
         }
-        soundFontUri = await Catalog.FindSoundFontAsync(Http, archive);
         loading = false;
-    }
-
-    private async Task PlayMidiAsync(ArchiveFile file)
-    {
-        var state = new MidiState();
-        midi[file.Url] = state;
-        try
-        {
-            var lastShown = 0.0;
-            var wav = await MidiRenderer.RenderAsync(Http, file.Url, soundFontUri, p =>
-            {
-                state.Progress = p;
-                if (p - lastShown >= 0.05)
-                {
-                    lastShown = p;
-                    StateHasChanged();
-                }
-            });
-            state.AudioUrl = await JS.InvokeAsync<string>("srcArchive.audioUrl", wav);
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Error rendering MIDI [{file.Path}]: {ex}");
-            state.Error = ex.Message;
-        }
-        StateHasChanged();
-    }
-
-    private void RevokeMidi()
-    {
-        foreach (var state in midi.Values.Where(x => x.AudioUrl != null))
-        {
-            _ = JS.InvokeVoidAsync("srcArchive.revoke", state.AudioUrl);
-        }
-        midi = new Dictionary<string, MidiState>();
     }
 
     private bool IsReferenced(ArchiveFile file) => referencedImages.Contains(file.Name.ToLowerInvariant());
@@ -385,7 +333,8 @@
 
     public void Dispose()
     {
-        RevokeMidi();
+        // 鳴らしている BGM は止めない（画面を移っても鳴り続ける）
+        Player.ClearSource();
         DataContainer.BitmapIndex.ClearOverlay();
     }
 }
