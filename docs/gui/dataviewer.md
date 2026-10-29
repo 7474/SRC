@@ -55,10 +55,16 @@
       "files": "/api/viewer/archives/scenarios/lantern/3.json",
       "base": "/files/scenarios/lantern/3/",
       "root": "lantern",
-      "requires": ["src-basic", "resource.faces"]
+      "requires": ["src-basic", "faces"]
     },
-    { "id": "resource.faces", "kind": "resource", "title": "顔グラフィック", "pack": "user-credit", "files": "…", "base": "…" },
-    { "id": "user-credit", "kind": "pack", "title": "投稿素材（作者表記）", "members": ["resource.faces"] }
+    {
+      "id": "faces",
+      "kind": "pack",
+      "title": "顔グラフィック",
+      "page": "/packs/faces",
+      "files": "/api/viewer/archives/packs/faces/5-8a9d11ee.json",
+      "base": "/files/packs/faces/5-8a9d11ee/"
+    }
   ]
 }
 ```
@@ -66,14 +72,14 @@
 | 項目 | 内容 |
 |---|---|
 | `id` | アーカイブの ID（`/archive?id=` と `requires`・`members` に使う） |
-| `kind` | `scenario`・`resource`（素材）・`pack` |
+| `kind` | `scenario`・`pack`・`resource`（素材） |
 | `title`・`author`・`description`・`license` | 表示に使う |
 | `page` | サイトの頁 |
 | `files` | zip の中のファイルの一覧の URL |
 | `base` | zip の中のファイルの URL の前に付けるもの。ファイルの URL は `base` ＋ zip の中の道（区切りごとに URL エンコード） |
 | `root` | zip の中のフォルダ。データの名前・画像の分類（`Bitmap/<分類>/`）はこの下で見る |
 | `requires` | 一緒に重ねるアーカイブ（前から順に重ね、後ろほど優先する。最後に自分を重ねる） |
-| `pack`・`members` | 素材の投稿先のパック・パックの中の素材 |
+| `pack`・`members` | 任意。素材を 1 つずつのアーカイブで出すサイトが、素材の投稿先のパック・パックの中の素材（重ねる順）を書く。`members` を持つパックは、中の素材をまとめて見せる |
 
 URL は、一覧の URL を基準に解決する。
 
