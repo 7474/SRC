@@ -94,6 +94,12 @@ namespace SRCAuthoring.Analysis
         public static string AssetName(string token)
         {
             var name = token.Trim();
+            // データの特殊能力は「ＢＧＭ=曲.mid」のように 名前=値 と書くので、値だけを見る
+            var eq = name.IndexOf('=');
+            if (eq >= 0)
+            {
+                name = name.Substring(eq + 1).Trim();
+            }
             // SearchMidiFile と同じく、全体を囲む () は外す
             if (name.StartsWith("(") && name.EndsWith(")"))
             {

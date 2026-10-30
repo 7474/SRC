@@ -28,7 +28,8 @@ namespace SRCAuthoring.Tests
                     "ロボ",
                     "ロボ, ろぼ, 汎用, 1, 2",
                     "陸, 4, M, 1000, 100",
-                    "特殊能力なし",
+                    "特殊能力",
+                    "ＢＧＭ=戦闘.mid, ＢＧＭ=無い曲.mid",
                     "1000, 100, 1000, 60",
                     "AAAA, ロボ.bmp",
                     "===");
@@ -44,7 +45,7 @@ namespace SRCAuthoring.Tests
 
                 var found = checker.Check(new[] { eve, robot, pilot, readme, effect }).ToList();
 
-                CollectionAssert.AreEqual(new[] { "Event/無い.bmp", "無い.wav", "無い音(low).wav" }, found.Select(x => x.Source).ToArray());
+                CollectionAssert.AreEqual(new[] { "Event/無い.bmp", "無い.wav", "無い曲.mid", "無い音(low).wav" }, found.Select(x => x.Source).ToArray());
                 Assert.IsTrue(found.All(x => x.Severity == DiagnosticSeverity.Information));
                 Assert.AreEqual(4, found[0].Line);
                 Assert.AreEqual(eve, found[0].File);
@@ -60,6 +61,9 @@ namespace SRCAuthoring.Tests
             Assert.IsNull(AssetReferenceChecker.AssetName("ラベル:"));
             Assert.AreEqual("Bitmap/Unit/a.bmp", AssetReferenceChecker.AssetName("Bitmap\\Unit\\a.bmp"));
             Assert.AreEqual("a.mid", AssetReferenceChecker.AssetName("(a.mid)"));
+            // 特殊能力の 名前=値
+            Assert.AreEqual("a.mid", AssetReferenceChecker.AssetName("ＢＧＭ=a.mid"));
+            Assert.AreEqual("a.mid", AssetReferenceChecker.AssetName("ＢＧＭ=(a.mid)"));
         }
     }
 }
