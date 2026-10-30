@@ -155,17 +155,18 @@ namespace SRCRender
         /// <summary>キー操作のポインタ（矢印のマウスカーソルの形）を描く</summary>
         private static void DrawKeyPointer(SKCanvas canvas, SKPointI p)
         {
-            using (var path = new SKPath())
+            using (var builder = new SKPathBuilder())
             using (var paint = new SKPaint { IsAntialias = true })
             {
-                path.MoveTo(p.X, p.Y);
-                path.LineTo(p.X, p.Y + 17);
-                path.LineTo(p.X + 4, p.Y + 13);
-                path.LineTo(p.X + 7, p.Y + 20);
-                path.LineTo(p.X + 10, p.Y + 19);
-                path.LineTo(p.X + 7, p.Y + 12);
-                path.LineTo(p.X + 12, p.Y + 12);
-                path.Close();
+                builder.MoveTo(p.X, p.Y);
+                builder.LineTo(p.X, p.Y + 17);
+                builder.LineTo(p.X + 4, p.Y + 13);
+                builder.LineTo(p.X + 7, p.Y + 20);
+                builder.LineTo(p.X + 10, p.Y + 19);
+                builder.LineTo(p.X + 7, p.Y + 12);
+                builder.LineTo(p.X + 12, p.Y + 12);
+                builder.Close();
+                using var path = builder.Detach();
                 paint.Color = SKColors.White;
                 canvas.DrawPath(path, paint);
                 paint.Style = SKPaintStyle.Stroke;
@@ -197,7 +198,7 @@ namespace SRCRender
                         var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
                         if (image != null)
                         {
-                            canvas.DrawBitmap(image, rect);
+                            canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
                         }
                         else
                         {
@@ -213,7 +214,7 @@ namespace SRCRender
                         var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
                         if (layer != null)
                         {
-                            canvas.DrawBitmap(layer, rect);
+                            canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
                         }
                     }
                 }
@@ -530,11 +531,12 @@ namespace SRCRender
                 paint.Style = SKPaintStyle.Stroke;
                 paint.StrokeWidth = 2;
                 paint.IsAntialias = true;
-                using (var path = new SKPath())
+                using (var builder = new SKPathBuilder())
                 {
-                    path.MoveTo(rect.Left + 3, rect.MidY);
-                    path.LineTo(rect.Left + 5.5f, rect.Bottom - 3.5f);
-                    path.LineTo(rect.Right - 3, rect.Top + 3);
+                    builder.MoveTo(rect.Left + 3, rect.MidY);
+                    builder.LineTo(rect.Left + 5.5f, rect.Bottom - 3.5f);
+                    builder.LineTo(rect.Right - 3, rect.Top + 3);
+                    using var path = builder.Detach();
                     canvas.DrawPath(path, paint);
                 }
                 paint.IsAntialias = false;

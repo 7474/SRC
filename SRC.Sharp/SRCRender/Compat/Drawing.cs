@@ -199,12 +199,12 @@ namespace SRCRender.Compat
 
         public void DrawImage(SKBitmap image, float x, float y)
         {
-            canvas.DrawBitmap(image, x, y);
+            canvas.DrawBitmap(image, x, y, SKSamplingOptions.Default);
         }
 
         public void DrawImage(SKBitmap image, Rectangle destRect)
         {
-            canvas.DrawBitmap(image, SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height));
+            canvas.DrawBitmap(image, SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height), SKSamplingOptions.Default);
         }
 
         /// <summary>image の srcRect の部分を (x, y) に等倍で描く。</summary>
@@ -212,14 +212,14 @@ namespace SRCRender.Compat
         {
             canvas.DrawBitmap(image,
                 SKRect.Create(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height),
-                SKRect.Create(x, y, srcRect.Width, srcRect.Height));
+                SKRect.Create(x, y, srcRect.Width, srcRect.Height), SKSamplingOptions.Default);
         }
 
         public void DrawImage(SKBitmap image, Rectangle destRect, Rectangle srcRect, GraphicsUnit unit)
         {
             canvas.DrawBitmap(image,
                 SKRect.Create(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height),
-                SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height));
+                SKRect.Create(destRect.X, destRect.Y, destRect.Width, destRect.Height), SKSamplingOptions.Default);
         }
 
         public void Dispose()
@@ -406,7 +406,16 @@ namespace SRCRender.Compat
         /// <summary>日本語を描ける書体があるか（無いと日本語が豆腐になる）</summary>
         public static bool HasJapaneseFont()
         {
-            return ResolveTypeface("", SKFontStyle.Normal).ContainsGlyph('あ');
+            return HasJapaneseGlyph(ResolveTypeface("", SKFontStyle.Normal));
+        }
+
+        /// <summary>書体に「あ」の字形があるか</summary>
+        private static bool HasJapaneseGlyph(SKTypeface typeface)
+        {
+            using (var font = typeface.ToFont())
+            {
+                return font.ContainsGlyph('あ');
+            }
         }
 
         public static SKTypeface ResolveTypeface(string name, SKFontStyle style)
@@ -435,7 +444,7 @@ namespace SRCRender.Compat
                     return own;
                 }
                 var candidate = SKTypeface.FromFamilyName(family, style);
-                if (candidate != null && candidate.FamilyName == family && candidate.ContainsGlyph('あ'))
+                if (candidate != null && candidate.FamilyName == family && HasJapaneseGlyph(candidate))
                 {
                     return candidate;
                 }
@@ -458,7 +467,7 @@ namespace SRCRender.Compat
                 }
             }
             return SKFontManager.Default.MatchCharacter(null, style, null, 'あ')
-                ?? registered.Values.SelectMany(x => x).FirstOrDefault(x => x.ContainsGlyph('あ'))
+                ?? registered.Values.SelectMany(x => x).FirstOrDefault(HasJapaneseGlyph)
                 ?? registered.Values.SelectMany(x => x).FirstOrDefault()
                 ?? SKTypeface.Default;
         }

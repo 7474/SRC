@@ -11,7 +11,7 @@ namespace SRCCore.VB.Tests
     [TestClass]
     public class FullWidthNumericTests
     {
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("　1400", 1400)]
         [DataRow("1400　", 1400)]
         [DataRow("　 1400 　", 1400)]
@@ -26,7 +26,7 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual(expected, GeneralLib.StrToLng(text), text);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("1400　1")]
         [DataRow("1400 1")]
         [DataRow("　")]

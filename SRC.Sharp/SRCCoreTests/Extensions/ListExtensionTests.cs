@@ -41,8 +41,8 @@ namespace SRCCore.Extensions.Tests
             Assert.IsTrue(orgArray.SequenceEqual(clone1));
             Assert.IsTrue(orgArray.SequenceEqual(clone2));
             Assert.IsTrue(orgArray.SequenceEqual(clone3));
-            Assert.AreNotEqual(clone1, clone2);
-            Assert.AreNotEqual(clone2, clone3);
+            Assert.AreNotSame(clone1, clone2);
+            Assert.AreNotSame(clone2, clone3);
         }
 
         [TestMethod()]
