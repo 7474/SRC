@@ -32,8 +32,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
-    <PackageReference Include="SkiaSharp" Version="4.153.1" />
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.153.1" />
+    <PackageReference Include="SkiaSharp" Version="4.154.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.154.0" />
     <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
     <PackageReference Include="MeltySynth" Version="2.4.1" />
     <!-- シナリオに同梱された Markdown の文書を表示する（ScenarioDocuments） -->
