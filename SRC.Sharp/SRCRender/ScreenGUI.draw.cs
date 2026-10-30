@@ -175,7 +175,7 @@ namespace SRCRender
                 using (var canvas = new SKCanvas(drawBuffer))
                 {
                     canvas.Clear(SKColors.Transparent);
-                    canvas.DrawBitmap(image, SKRect.Create(sx, sy, sw, sh), SKRect.Create(0, 0, sw, sh));
+                    canvas.DrawBitmap(image, SKRect.Create(sx, sy, sw, sh), SKRect.Create(0, 0, sw, sh), SKSamplingOptions.Default);
                 }
                 origWidth = sw;
                 origHeight = sh;
@@ -270,7 +270,7 @@ namespace SRCRender
                 var dest = SKRect.Create(dx, dy, dw, dh);
                 using (var canvas = new SKCanvas(target))
                 {
-                    canvas.DrawBitmap(drawBuffer, dest);
+                    canvas.DrawBitmap(drawBuffer, dest, SKSamplingOptions.Default);
                 }
                 if (permanent)
                 {
@@ -285,7 +285,7 @@ namespace SRCRender
                     {
                         using (var canvas = new SKCanvas(mainBufferBack))
                         {
-                            canvas.DrawBitmap(drawBuffer, dest);
+                            canvas.DrawBitmap(drawBuffer, dest, SKSamplingOptions.Default);
                         }
                     }
                 }
@@ -299,12 +299,13 @@ namespace SRCRender
 
         private static void FillTriangle(SKCanvas canvas, SKPaint paint, float x1, float y1, float x2, float y2, float x3, float y3)
         {
-            using (var path = new SKPath())
+            using (var builder = new SKPathBuilder())
             {
-                path.MoveTo(x1, y1);
-                path.LineTo(x2, y2);
-                path.LineTo(x3, y3);
-                path.Close();
+                builder.MoveTo(x1, y1);
+                builder.LineTo(x2, y2);
+                builder.LineTo(x3, y3);
+                builder.Close();
+                using var path = builder.Detach();
                 canvas.DrawPath(path, paint);
             }
         }
@@ -550,7 +551,7 @@ namespace SRCRender
             {
                 // 元の SRC（GUI.bas ClearPicture2）と同じく x2, y2 を含む
                 var rect = SKRect.Create(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-                canvas.DrawBitmap(mainBufferBack, rect, rect);
+                canvas.DrawBitmap(mainBufferBack, rect, rect, SKSamplingOptions.Default);
             }
         }
 
@@ -673,14 +674,15 @@ namespace SRCRender
             }
             DrawShape(option, (canvas, pen, brush) =>
             {
-                using (var path = new SKPath())
+                using (var builder = new SKPathBuilder())
                 {
-                    path.MoveTo(points[0].X, points[0].Y);
+                    builder.MoveTo(points[0].X, points[0].Y);
                     for (var i = 1; i < points.Length; i++)
                     {
-                        path.LineTo(points[i].X, points[i].Y);
+                        builder.LineTo(points[i].X, points[i].Y);
                     }
-                    path.Close();
+                    builder.Close();
+                    using var path = builder.Detach();
                     if (brush != null)
                     {
                         canvas.DrawPath(path, brush);

@@ -243,7 +243,7 @@ namespace SRCRender
                     using (var paint = new SKPaint { Color = new SKColor(fillColor.R, fillColor.G, fillColor.B, (byte)opacity) })
                     {
                         canvas.Clear(SKColors.Black);
-                        canvas.DrawBitmap(copy, 0, 0);
+                        canvas.DrawBitmap(copy, 0, 0, SKSamplingOptions.Default);
                         canvas.DrawRect(0, 0, mainBuffer.Width, mainBuffer.Height, paint);
                     }
                     UpdateScreen();
@@ -313,7 +313,7 @@ namespace SRCRender
         {
             using (var image = CreateUnitImage(cell, u, useOrigColor))
             {
-                target.DrawBitmap(image, dest);
+                target.DrawBitmap(image, dest, SKSamplingOptions.Default);
             }
         }
 
@@ -340,11 +340,11 @@ namespace SRCRender
                 var frame = UnitFrames.ForParty(u.Party0);
                 if (frame != null)
                 {
-                    canvas.DrawBitmap(frame, rect);
+                    canvas.DrawBitmap(frame, rect, SKSamplingOptions.Default);
                 }
                 if (unitImage != null && !emitLight)
                 {
-                    canvas.DrawBitmap(unitImage, rect);
+                    canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
                 }
                 else if (unitImage == null)
                 {
@@ -359,7 +359,7 @@ namespace SRCRender
                 {
                     using (var canvas = new SKCanvas(image))
                     {
-                        canvas.DrawBitmap(unitImage, rect);
+                        canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
                     }
                 }
             }
@@ -471,8 +471,8 @@ namespace SRCRender
                 using (var canvas = new SKCanvas(displayBuffer))
                 {
                     canvas.Clear(SKColors.Black);
-                    canvas.DrawBitmap(mainBuffer, 0, 0);
-                    canvas.DrawBitmap(unitImage, xx, yy);
+                    canvas.DrawBitmap(mainBuffer, 0, 0, SKSamplingOptions.Default);
+                    canvas.DrawBitmap(unitImage, xx, yy, SKSamplingOptions.Default);
                 }
             }
             Present();
@@ -487,7 +487,7 @@ namespace SRCRender
         {
             using (var canvas = new SKCanvas(mainBuffer))
             {
-                canvas.DrawBitmap(unitImage, xx, yy);
+                canvas.DrawBitmap(unitImage, xx, yy, SKSamplingOptions.Default);
             }
         }
 
@@ -597,7 +597,7 @@ namespace SRCRender
                 {
                     if (backgroundBuffer != null)
                     {
-                        canvas.DrawBitmap(backgroundBuffer, 0, 0);
+                        canvas.DrawBitmap(backgroundBuffer, 0, 0, SKSamplingOptions.Default);
                     }
                     for (var x = 1; x <= Map.MapWidth; x++)
                     {

@@ -113,7 +113,7 @@ namespace SRCRender
             using (var paint = new SKPaint { ColorFilter = filter })
             {
                 canvas.Clear(SKColors.Transparent);
-                canvas.DrawBitmap(source, 0, 0, paint);
+                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default, paint);
             }
             return result;
         }
@@ -181,7 +181,7 @@ namespace SRCRender
             {
                 canvas.Clear(SKColors.Transparent);
                 canvas.Scale(horizontal ? -1 : 1, vertical ? -1 : 1, source.Width / 2f, source.Height / 2f);
-                canvas.DrawBitmap(source, 0, 0);
+                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default);
             }
             return Replace(source, result, dispose);
         }
@@ -194,7 +194,7 @@ namespace SRCRender
             {
                 canvas.Clear(background);
                 canvas.RotateDegrees(angle % 360, source.Width / 2f, source.Height / 2f);
-                canvas.DrawBitmap(source, 0, 0);
+                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default);
             }
             return Replace(source, result, dispose);
         }
@@ -246,7 +246,7 @@ namespace SRCRender
             using (var canvas = new SKCanvas(result))
             {
                 canvas.Clear(SKColors.Transparent);
-                canvas.DrawBitmap(source, 0, 0);
+                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default);
             }
             return result;
         }

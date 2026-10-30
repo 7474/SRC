@@ -19,10 +19,10 @@ namespace SRCRender
             {
                 if (image == null)
                 {
-                    canvas.DrawBitmap(bitmap, source, dest, paint);
+                    canvas.DrawBitmap(bitmap, source, dest, SKSamplingOptions.Default, paint);
                     return;
                 }
-                canvas.DrawImage(image, source, dest, paint);
+                canvas.DrawImage(image, source, dest, SKSamplingOptions.Default, paint);
             }
         }
 
