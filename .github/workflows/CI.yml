@@ -286,6 +286,63 @@ jobs:
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
         if-no-files-found: ignore
 
+  # データビューア（SRCTestBlazor）。置いたサイトのアーカイブ（viewer-fixtures.mjs が作る）でデータ・画像・音と BGM の帯を確かめる（#1361）
+  test-viewer:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
+
+    # MIDI の合成に使う SoundFont（アーカイブのパックとして置く）
+    - name: Install SoundFont
+      run: sudo apt-get update && sudo apt-get install -y timgm6mb-soundfont
+
+    # wasm-tools は要らない（GitHub Pages への配信と同じ発行）
+    - name: Build data viewer
+      run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release -o SRC.Sharp/SRCTestBlazor/bin/viewer
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - name: Test data viewer (Playwright)
+      working-directory: SRC.Sharp/SRCSharpWeb.E2E
+      env:
+        SRCWEB_ROOT: ../SRCTestBlazor/bin/viewer/wwwroot
+        SRCWEB_BASE: /
+        SPA_FALLBACK: 1
+        VIEWER_REQUIRED: 1
+        SRC_SOUNDFONT_ARCHIVE: 1
+      run: |
+        node viewer-fixtures.mjs ${SRCWEB_ROOT} /usr/share/sounds/sf2/TimGM6mb.sf2
+        npm ci
+        npx playwright install --with-deps chromium
+        npx playwright test tests/viewer.spec.js
+
+    - name: Summarize data viewer tests
+      if: always()
+      run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'データビューア（Playwright）' >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload data viewer test report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: viewer-playwright
+        path: |
+          SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
+          SRC.Sharp/SRCSharpWeb.E2E/test-results/
+        if-no-files-found: ignore
+
   # ブラウザで動く lint（SRCLintWeb。スレッドを使わない別の WebAssembly）。test-web と並べて動かし、待ち時間を減らす
   test-lint:
     needs: changes
@@ -441,7 +498,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results
