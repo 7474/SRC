@@ -21,6 +21,7 @@ jobs:
     outputs:
       code: ${{ steps.filter.outputs.code }}
       help: ${{ steps.filter.outputs.help }}
+      aot: ${{ steps.filter.outputs.aot }}
     steps:
     - name: Detect code changes
       id: filter
@@ -31,6 +32,8 @@ jobs:
         if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
           echo "code=true" >> "$GITHUB_OUTPUT"
           echo "help=true" >> "$GITHUB_OUTPUT"
+          # push の test-web は AOT で発行するので、別には動かさない
+          echo "aot=false" >> "$GITHUB_OUTPUT"
           exit 0
         fi
         files=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename')
@@ -46,6 +49,13 @@ jobs:
           echo "help=true" >> "$GITHUB_OUTPUT"
         else
           echo "help=false" >> "$GITHUB_OUTPUT"
+        fi
+        # SRC#Web の AOT 版の E2E は、SRC#Web・発行の設定・依存の版・このワークフローを変えた PR だけで動かす（#1360）。
+        # AOT の発行は約 8 分かかるため、ほかの PR はインタープリターだけにする（master への push では毎回 AOT）
+        if echo "$files" | grep -qE '^(SRC\.Sharp/SRCSharpWeb/|SRC\.Sharp/Directory\.(Build|Packages)\.props$|\.github/workflows/CI\.yml$)'; then
+          echo "aot=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "aot=false" >> "$GITHUB_OUTPUT"
         fi
 
   # 版・VS Code 拡張の版と CHANGELOG・リリースの案内（docs/releases）が揃っているか（docs/versioning.md）。
@@ -219,6 +229,63 @@ jobs:
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
         if-no-files-found: ignore
 
+  # SRC#Web の AOT 版（配るものと同じ）の E2E。関係する PR だけで動かす（changes の aot）。test-web と並べる
+  test-web-aot:
+    needs: changes
+    if: needs.changes.outputs.aot == 'true'
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
+
+    - name: Install fonts and SoundFont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont
+
+    - name: Build SRC#Web (AOT)
+      run: |
+        dotnet workload install wasm-tools --skip-manifest-update
+        dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web -p:RunAOTCompilation=true
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - name: Test SRC#Web AOT (Playwright)
+      working-directory: SRC.Sharp/SRCSharpWeb.E2E
+      env:
+        SRCWEB_ROOT: ../SRCSharpWeb/bin/pages-test
+        SRCWEB_BASE: /SRC/web/
+        PW_WORKERS: 2
+      run: |
+        mkdir -p ${SRCWEB_ROOT}${SRCWEB_BASE}
+        cp -r ../SRCSharpWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}${SRCWEB_BASE}
+        sed -i "s|<base href=\"/\" />|<base href=\"${SRCWEB_BASE}\" />|" ${SRCWEB_ROOT}${SRCWEB_BASE}index.html
+        npm ci
+        npx playwright install --with-deps chromium
+        npx playwright test tests/web.spec.js
+
+    - name: Summarize SRC#Web AOT tests
+      if: always()
+      run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web AOT（Playwright）' >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload SRC#Web AOT test report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: srcweb-aot-playwright
+        path: |
+          SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
+          SRC.Sharp/SRCSharpWeb.E2E/test-results/
+        if-no-files-found: ignore
+
   # ブラウザで動く lint（SRCLintWeb。スレッドを使わない別の WebAssembly）。test-web と並べて動かし、待ち時間を減らす
   test-lint:
     needs: changes
@@ -374,7 +441,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results
