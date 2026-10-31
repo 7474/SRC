@@ -122,8 +122,10 @@ namespace SRCPlay
                 }
                 if (runner.IsFinished && args[0] != "expect" && args[0] != "snapshot")
                 {
-                    Log($"line {lineNo}: シナリオが終わっているため以降を実行しない");
-                    return;
+                    // シナリオが終わった後の操作は行わない。ただし後ろの expect は確かめる
+                    // （ここで抜けると、手順より早く終わったシナリオでも、最後の expect を飛ばして通ってしまう）
+                    Log($"line {lineNo}: シナリオが終わっているため実行しない: {line.Trim()}");
+                    continue;
                 }
                 Log($"line {lineNo}: {line.Trim()}");
                 try

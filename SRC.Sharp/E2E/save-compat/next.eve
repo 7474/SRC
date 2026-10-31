@@ -1,0 +1,10 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Talk システム
+ステージ2 引き継ぎ=$(引き継ぎ)
+End
+Quit

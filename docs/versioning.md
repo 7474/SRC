@@ -39,7 +39,7 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
    - VS Code 拡張の `package.json`・`package-lock.json` の版
    - VS Code 拡張の `CHANGELOG.md` に節を足す
    - リリースの案内 `docs/releases/v<版>.md` をひな形から作る
-2. 案内と CHANGELOG を書き（[リリースの案内](./releases/README.md)）、PR にして master に入れる。CI の `release-check`（`release.py check`）が、版・CHANGELOG・案内が揃っているかを確かめる
+2. 案内と CHANGELOG を書き（[リリースの案内](./releases/README.md)）、`python3 tools/release.py saves` でその版のセーブを作って（[テストと CI の設計](./testing.md)の「セーブデータの版をまたぐ互換」）、PR にして master に入れる。CI の `release-check`（`release.py check`）が、版・CHANGELOG・案内・セーブが揃っているかを確かめる
 3. アプリのバージョンでタグを打つ（`v3.<マイナー>.<パッチ>`）
 4. 公開ワークフローが、タグと版・CHANGELOG・案内が揃っていることを確かめてから公開する（`release.py check --tag`）。リリースの本文は `docs/releases/v<版>.md` になる
 

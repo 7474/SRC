@@ -7,11 +7,13 @@
                                                         # 前のタグからの PR を分野ごとに並べた下書き（Markdown）
   python3 tools/release.py bump [--minor N] [--patch N]
                                                         # 版を上げ、CHANGELOG とリリースの案内のひな形を作る
+  python3 tools/release.py saves                        # いまの版のセーブ（版をまたぐ互換の確かめに使う）を作る（dotnet が要る）
 
 標準ライブラリと git だけを使う。同じコミットからは同じ結果になる。
 """
 
 import argparse
+import os
 import json
 import re
 import subprocess
@@ -24,6 +26,9 @@ VSCODE = ROOT / "SRC.Sharp" / "SRCSharpVSCode"
 CHANGELOG = VSCODE / "CHANGELOG.md"
 NOTES_DIR = ROOT / "docs" / "releases"
 TEMPLATE = NOTES_DIR / "template.md"
+# 版ごとのセーブ（SaveCompatibilityTests が、すべての版のセーブから再開できることを確かめる。#1357）
+SAVES_DIR = ROOT / "SRC.Sharp" / "E2E" / "saves"
+SAVE_PATTERNS = ["_quik.srcq", "*.srcs", "_リスタート.srcq"]
 # リリースの案内で、まだ書いていない所の印。残っていると check が通らない
 TODO = "<!-- TODO"
 
@@ -92,6 +97,10 @@ def cmd_check(args):
         for expected in (f"SRC# {v['app']}", v["library"]):
             if expected not in text:
                 errors.append(f"リリースの案内 {notes.relative_to(ROOT)} に {expected} がありません")
+    saves = SAVES_DIR / f"v{v['app']}"
+    missing = [p for p in SAVE_PATTERNS if len(list(saves.glob(p))) != 1]
+    if missing:
+        errors.append(f"いまの版のセーブ {saves.relative_to(ROOT)} に {'・'.join(missing)} がありません（release.py saves で作る）")
     for e in errors:
         print(f"::error::{e}")
     if errors:
@@ -186,6 +195,15 @@ def cmd_bump(args):
         notes.write_text(body, encoding="utf-8")
     print(f"{old['app']} → {new['app']}（ライブラリ・VS Code 拡張 {lib}）")
     print(f"書き直すもの: {notes.relative_to(ROOT)}、{CHANGELOG.relative_to(ROOT)}（{TODO} の所）")
+    print("セーブ: python3 tools/release.py saves（版をまたぐ互換の確かめに使う）")
+
+
+def cmd_saves(_):
+    v = read_version()
+    env = dict(os.environ, SRC_SAVE_GENERATE=v["app"])
+    subprocess.run(["dotnet", "test", str(ROOT / "SRC.Sharp" / "SRCRenderTests"),
+                    "--filter", "FullyQualifiedName~SaveCompatibilityTests.GenerateSaves"], cwd=ROOT, env=env, check=True)
+    print(f"{(SAVES_DIR / ('v' + v['app'])).relative_to(ROOT)} にセーブを作った")
 
 
 def main():
@@ -204,6 +222,7 @@ def main():
     p.add_argument("--patch", type=int)
     p.add_argument("--to", default="HEAD", help="下書きに入れる PR の終わり")
     p.set_defaults(func=cmd_bump)
+    sub.add_parser("saves").set_defaults(func=cmd_saves)
     args = parser.parse_args()
     args.func(args)
 

@@ -1,0 +1,144 @@
+{
+  "GlobalVariableList": {
+    "次ステージ": {
+      "Name": "次ステージ",
+      "VariableType": 1,
+      "StringValue": "",
+      "NumericValue": 0.0
+    },
+    "セーブデータファイル名": {
+      "Name": "セーブデータファイル名",
+      "VariableType": 1,
+      "StringValue": "nextまでクリア.srcs",
+      "NumericValue": 0.0
+    },
+    "引き継ぎ": {
+      "Name": "引き継ぎ",
+      "VariableType": 2,
+      "StringValue": "42",
+      "NumericValue": 42.0
+    }
+  },
+  "ScenarioFileName": "/tmp/srcs-save-compat/next.eve",
+  "Turn": 0,
+  "LocalVariableList": {
+    "ステージ": {
+      "Name": "ステージ",
+      "VariableType": 1,
+      "StringValue": "next.eve",
+      "NumericValue": 0.0
+    }
+  },
+  "DisableEventLabels": [],
+  "AdditionalEventFileNames": [],
+  "Map": {
+    "MapFileName": "",
+    "MapWidth": 1,
+    "MapHeight": 1,
+    "MapDrawMode": "",
+    "MapDrawFilterColor": "Black",
+    "MapDrawFilterTransPercent": 0.0,
+    "MapDrawIsMapOnly": false,
+    "MapData": {
+      "x": 1,
+      "y": 1,
+      "data": [
+        [
+          {
+            "X": 1,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ]
+      ]
+    }
+  },
+  "MapX": 8,
+  "MapY": 8,
+  "BGMFileName": "",
+  "RepeatMode": true,
+  "KeepBGM": false,
+  "BossBGM": false,
+  "RndSeed": 507902,
+  "RndIndex": 0,
+  "Version": "15.0.0.0",
+  "Kind": 3,
+  "Titles": [
+    "テスト"
+  ],
+  "NextStage": "",
+  "TotalTurn": 2,
+  "Money": 0,
+  "PList": {
+    "colPilots": {
+      "テストパイロット": {
+        "ID": "テストパイロット",
+        "Party": "味方",
+        "Alive": true,
+        "Away": false,
+        "IsAdditionalPilot": false,
+        "IsAdditionalSupport": false,
+        "SupportIndex": 0,
+        "proLevel": 1,
+        "proEXP": 104,
+        "proSP": 52,
+        "proMorale": 100,
+        "proPlana": 0,
+        "PilotName": "テストパイロット",
+        "UnitId": "テスト機:1"
+      }
+    }
+  },
+  "UList": {
+    "IDCount": 2,
+    "colUnits": {
+      "テスト機:1": {
+        "ID": "テスト機:1",
+        "x": 3,
+        "y": 3,
+        "Area": "地上",
+        "UsedAction": 0,
+        "strMode": "通常",
+        "Status": "待機",
+        "UsedSupportAttack": 0,
+        "UsedSupportGuard": 0,
+        "UsedSyncAttack": 0,
+        "UsedCounterAttack": 0,
+        "strName": "テスト機",
+        "strParty": "味方",
+        "intRank": 0,
+        "intBossRank": -1,
+        "lngHP": 1000,
+        "intEN": 100,
+        "WData": [
+          {
+            "dblBulletRate": 1.0,
+            "Name": "テストビーム"
+          }
+        ],
+        "PreviousSummonerId": null,
+        "LinkData": {
+          "OtherFormIds": [],
+          "PilotIds": [
+            "テストパイロット"
+          ],
+          "SupportIds": [],
+          "ItemIds": [],
+          "MasterId": null,
+          "SummonerId": null,
+          "UnitOnBoardIds": [],
+          "ServantIds": []
+        },
+        "UnitName": "テスト機"
+      }
+    }
+  },
+  "IList": {
+    "IDCount": 0,
+    "colItems": {}
+  }
+}

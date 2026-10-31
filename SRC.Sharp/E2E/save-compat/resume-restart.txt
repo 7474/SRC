@@ -1,0 +1,5 @@
+# リスタートのセーブ（2 ステージ目の始め）から再開し、最後まで進める
+auto 60
+expect message ステージ2 引き継ぎ=42
+expect finished
+expect error none

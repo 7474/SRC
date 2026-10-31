@@ -99,6 +99,7 @@ expect eval Damage(標的パイロット) > 0
 | `battle-advance-adjacent` | `policy advance` で、攻撃できない味方が敵の隣にいて、近づけるマスが無いときに、移動せず待機してターンを進める |
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
+| `save-compat` | クイックセーブ・データセーブ・リスタートの 3 種類のセーブを作りながら最後まで進める。`SaveCompatibilityTests` が、版ごとのセーブ（`E2E/saves/v<版>/`）のすべてから再開できることを確かめる（[テストと CI の設計](../testing.md)） |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
 | `cmd-unexec-*` | ほかのケースでは実行しないイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
 | `cmd-branch-*` | 引数の形で処理が分かれるイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |

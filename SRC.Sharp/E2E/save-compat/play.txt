@@ -1,0 +1,30 @@
+# 3 種類のセーブ（クイックセーブ・データセーブ・リスタート）を作りながら最後まで進める
+# SaveCompatibilityTests が、作ったセーブを SRC.Sharp/E2E/saves/v<版>/ に残し、すべての版のセーブから再開できることを確かめる
+auto 60
+expect message ステージ1
+wait ready
+# 1 ターン目の味方フェイズ: クイックセーブ（_quik.srcq）してからターンを終える
+cell 10 10 right
+menu クイックセーブ
+wait ready
+cell 10 10 right
+menu ターン終了
+wait dialog
+dialog OK
+# 敵フェイズのあと、2 ターン目のイベントでインターミッションへ（auto はリストも選んでしまうので使わない）
+wait message ターン2 引き継ぎ=42
+key Enter
+# ステージの終わりの経験値の表示
+wait message 経験値
+key Enter
+# インターミッション: データセーブ（保存先はテストが決める。決めなければ保存しない）してから次のステージへ。
+# 次のステージの始めにリスタートのセーブ（_リスタート.srcq）ができる
+wait list コマンド
+list データセーブ
+wait list コマンド
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2 引き継ぎ=42
+expect finished
+expect error none

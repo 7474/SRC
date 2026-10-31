@@ -38,7 +38,7 @@ namespace SRCRender.Tests
             .OrderBy(x => x, StringComparer.Ordinal)
             .Select(x => new object[] { Path.GetFileName(x) });
 
-        private static void CopyDirectory(string from, string to)
+        internal static void CopyDirectory(string from, string to)
         {
             Directory.CreateDirectory(to);
             foreach (var file in Directory.GetFiles(from))

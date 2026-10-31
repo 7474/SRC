@@ -40,6 +40,13 @@
 SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedName~Golden
 ```
 
+## セーブデータの版をまたぐ互換
+
+`SRCRenderTests/SaveCompatibilityTests.cs` が、出した版ごとのセーブ（`SRC.Sharp/E2E/saves/v<版>/` のクイックセーブ・データセーブ・リスタート）のすべてから再開し、最後まで進められることを確かめる（#1357）。セーブはコーパス `save-compat` で作る。
+
+- リリースのときに、その版のセーブを足す（`python3 tools/release.py saves`）。`release.py check`（CI の `release-check`）は、いまの版のセーブが無いと通らない
+- 中断・クイックセーブ・リスタートのデータはシナリオのファイルを絶対パスで持つため、作るときと再開するときで同じ一時フォルダ（`srcs-save-compat`）を使う（#1375）
+
 ## CI の構成
 
 ```mermaid

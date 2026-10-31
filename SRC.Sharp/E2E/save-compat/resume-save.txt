@@ -1,0 +1,8 @@
+# データセーブ（インターミッション）から再開し、最後まで進める
+wait list コマンド
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2 引き継ぎ=42
+expect finished
+expect error none
