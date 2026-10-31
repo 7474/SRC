@@ -3,6 +3,7 @@ using SRCCore.Lib;
 using SRCCore.Pilots;
 using SRCCore.VB;
 using System;
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,8 +66,9 @@ namespace SRCCore.Units
         // 各判定にはこのパイロットの能力を用いる
         public Pilot MainPilot(bool without_update = false)
         {
+            // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
+            RuntimeHelpers.EnsureSufficientExecutionStack();
             string pname;
-            Pilot p;
 
             // パイロットが乗っていない？
             if (CountPilot() == 0)
@@ -106,42 +108,73 @@ namespace SRCCore.Units
                         return colPilot[1];
                     }
 
-                    if (SRC.PList.IsDefined(pname))
+                    // 暴走時パイロットを合わせている最中に呼ばれたら、合わせ直さずに返す。
+                    // 気力の設定・Update は気力上限などの技能を見るためにこのユニットの MainPilot を呼ぶので、
+                    // 止めないと呼ぶたびに合わせ直して止まらなくなる（#1411）。VB 版も同じ形で、止める仕組みが無い
+                    if (syncingBerserkPilot && SRC.PList.IsDefined(pname))
                     {
-                        // 既に暴走時パイロットが作成済み
-                        var berserkPilot = SRC.PList.Item(pname);
-                        berserkPilot.Morale = Pilots.First().Morale;
-                        berserkPilot.Level = Pilots.First().Level;
-                        berserkPilot.Exp = Pilots.First().Exp;
-                        if (!without_update)
-                        {
-                            if (!ReferenceEquals(berserkPilot.Unit, this))
-                            {
-                                berserkPilot.Unit = this;
-                                berserkPilot.Update();
-                                berserkPilot.UpdateSupportMod();
-                            }
-                        }
-
-                        return berserkPilot;
+                        return SRC.PList.Item(pname);
                     }
-                    else
+                    syncingBerserkPilot = true;
+                    try
                     {
-                        // 暴走時パイロットが作成されていないので作成する
-                        var berserkPilot = SRC.PList.Add(pname, Pilots.First().Level, Party0, gid: "");
-                        if (berserkPilot == null)
-                        {
-                            return colPilot[1];
-                        }
-                        berserkPilot.Morale = Pilots.First().Morale;
-                        berserkPilot.Exp = Pilots.First().Exp;
-                        berserkPilot.Unit = this;
-                        berserkPilot.Update();
-                        berserkPilot.UpdateSupportMod();
-                        return berserkPilot;
+                        return SyncBerserkPilot(pname, without_update);
+                    }
+                    finally
+                    {
+                        syncingBerserkPilot = false;
                     }
                 }
             }
+
+            return MainPilotWithoutBerserk(without_update);
+        }
+
+        /// <summary>暴走時パイロットを合わせているところか（MainPilot の再入を止める。#1411）</summary>
+        private bool syncingBerserkPilot;
+
+        private Pilot SyncBerserkPilot(string pname, bool without_update)
+        {
+            if (SRC.PList.IsDefined(pname))
+            {
+                // 既に暴走時パイロットが作成済み
+                var berserkPilot = SRC.PList.Item(pname);
+                berserkPilot.Morale = Pilots.First().Morale;
+                berserkPilot.Level = Pilots.First().Level;
+                berserkPilot.Exp = Pilots.First().Exp;
+                if (!without_update)
+                {
+                    if (!ReferenceEquals(berserkPilot.Unit, this))
+                    {
+                        berserkPilot.Unit = this;
+                        berserkPilot.Update();
+                        berserkPilot.UpdateSupportMod();
+                    }
+                }
+
+                return berserkPilot;
+            }
+            else
+            {
+                // 暴走時パイロットが作成されていないので作成する
+                var berserkPilot = SRC.PList.Add(pname, Pilots.First().Level, Party0, gid: "");
+                if (berserkPilot == null)
+                {
+                    return colPilot[1];
+                }
+                berserkPilot.Morale = Pilots.First().Morale;
+                berserkPilot.Exp = Pilots.First().Exp;
+                berserkPilot.Unit = this;
+                berserkPilot.Update();
+                berserkPilot.UpdateSupportMod();
+                return berserkPilot;
+            }
+        }
+
+        private Pilot MainPilotWithoutBerserk(bool without_update)
+        {
+            string pname;
+            Pilot p;
 
             // 追加パイロットがいれば、それを使用
             if (IsFeatureAvailable("追加パイロット"))
@@ -183,10 +216,11 @@ namespace SRCCore.Units
                                 }
                             }
 
+                            // VB 版と同じく、ここでは周りのユニットからの支援の修正（UpdateSupportMod）を見直さない。
+                            // 見直すと、同じ追加パイロットを持つ近くのユニットとパイロットを取り合い続ける（#1411）
                             if (!without_update)
                             {
                                 pltAdditionalPilot.Update();
-                                pltAdditionalPilot.UpdateSupportMod();
                             }
                         }
 
@@ -218,8 +252,8 @@ namespace SRCCore.Units
                                     }
                                 }
 
+                                // 支援の修正は見直さない（上と同じ理由。#1411）
                                 additionalPilot.Update();
-                                additionalPilot.UpdateSupportMod();
                             }
 
                             return pltAdditionalPilot;
