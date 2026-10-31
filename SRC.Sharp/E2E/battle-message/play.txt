@@ -1,0 +1,78 @@
+# 戦闘中のメッセージ（pilot_message.txt）が、状況ごとに正しく選ばれることを確かめる。
+# 5 人の攻撃役（台詞は同じ）が、必中でそれぞれの相手を 1 回ずつ攻撃する。相手は射程 1 の武器しかないので反撃できない
+autodefense on
+# 戦闘中のメッセージは一定時間で進む。待たずに進めるため、0.2 秒止まったらボタンを押す
+stall 0.2
+auto 30
+expect message 戦闘中のメッセージのテストを始める
+
+# ダメージの後もＨＰが 80% より多い → ダメージ小
+cell 3 3
+menu 攻撃
+wait list
+list テストライフル
+cell 5 3
+auto 60
+# 武器の名前の台詞（「攻撃」より優先）。カットイン・ウェイト・効果音・keep・clear の区切りも通る
+expect message 狙い撃つ！
+expect message 小破のダメージ小
+expect message 小破は届かない
+expect message 手応えあり、まだ動くか
+expect eval HP(小破パイロット) > 48000
+
+# ＨＰ 50% の相手 → ダメージ中
+cell 3 7
+menu 攻撃
+wait list
+list テストライフル
+cell 5 7
+auto 60
+expect message 中破のダメージ中
+expect message 『中破は届かない』
+expect eval HP(中破パイロット) < 30000
+
+# ＨＰ 20% の相手 → ダメージの後は 25% 未満なのでダメージ大
+cell 3 11
+menu 攻撃
+wait list
+list テストライフル
+cell 5 11
+auto 60
+expect message 大破のダメージ大
+expect eval HP(大破パイロット) > 0
+
+# ＨＰ 1% の相手 → 破壊。攻撃役はとどめの台詞
+cell 3 15
+menu 攻撃
+wait list
+list テストライフル
+cell 5 15
+auto 60
+expect message 撃墜の破壊
+expect message とどめの一撃だ
+expect eval InStr(Status(撃墜パイロット), "破壊") = 1
+
+# ひらめきの相手 → 回避。攻撃役はかわされたときの台詞
+cell 9 3
+menu 攻撃
+wait list
+list テストライフル
+cell 11 3
+auto 60
+expect message 回避の回避
+expect message かわされただと
+expect eval HP(回避パイロット) = 60000
+
+# 敵フェイズ: 隣の敵が攻撃してきて、攻撃パイロット１はテストパンチで反撃する（自動反撃）。
+# 味方は全員行動を終えているので、ターン終了の確認のダイアログは出ない
+cell 1 1 right
+menu ターン終了
+auto 60
+expect eval ターン数 = 2
+expect message 攻め役の攻撃の台詞
+expect message (この程度なら問題ない)
+# 「:」で区切った台詞は、前半（「:」で終わる）を出してから、続きを足した全体（「:」は除く）を出す
+expect message 返す刀で:
+expect message 返す刀で斬る！
+expect message 攻め役のダメージ小
+expect error none
