@@ -42,16 +42,15 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      # 作り方は master への push ごとに確かめているものと同じ（Packages.yml）。
+      # 手動で過去のタグに添付するときもこのワークフローの版の手順を使うため、スクリプトは別に取り出す
+      - uses: actions/checkout@v7
+        with:
+          path: .ci
+          sparse-checkout: .github/scripts
+
       - name: Publish
-        run: |
-          dotnet publish SRC.Sharp/SRCSharpAvalonia/SRCSharpAvalonia.csproj -c Release -r ${{ matrix.rid }} \
-            --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:DebugType=none -o out/${{ matrix.rid }}
-          # ネイティブライブラリの pdb（SkiaSharp など）は要らない
-          rm -f out/${{ matrix.rid }}/*.pdb
-          cp LICENSE out/${{ matrix.rid }}/
-          # zip は実行権限を保つ（macOS・Linux 向け）
-          (cd out/${{ matrix.rid }} && zip -qr ../../SRCSharpAvalonia-${{ matrix.rid }}.zip .)
+        run: .ci/.github/scripts/publish-avalonia.sh ${{ matrix.rid }}
 
       - name: Attach to GitHub Release
         uses: softprops/action-gh-release@v3

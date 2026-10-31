@@ -190,6 +190,8 @@ namespace SRCCore.Threading
         /// </summary>
         public bool IsTopLevel => IsCurrentThread && depth == 1;
 
+        private bool IsStopSignal(Exception ex) => ex is OperationCanceledException && IsStopping;
+
         private void Execute(Action action)
         {
             depth++;
@@ -205,10 +207,15 @@ namespace SRCCore.Threading
                 {
                     action();
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (!IsStopSignal(ex))
                 {
                     handler(this, new GameThreadExceptionEventArgs(ex));
                 }
+            }
+            // 終了処理中に待ちのループ（ScreenGUI.DoEvents など）が投げる OperationCanceledException は、
+            // ゲームスレッドを終わらせるための合図。外に出すとプロセスが落ちる（ウィンドウを閉じたときなど。#1359）
+            catch (OperationCanceledException) when (IsStopping)
+            {
             }
             finally
             {
