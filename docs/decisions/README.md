@@ -23,3 +23,4 @@
 | 2026-10-20 | [CI の必須チェックを ci-passed にまとめ、Dependabot の更新を自動でマージする](./2026-10-20-ci-gate-and-auto-merge.md) | 採用 |
 | 2026-10-20 | [VB から C# への移植を完了とする](./2026-10-20-porting-complete.md) | 採用 |
 | 2026-10-29 | [フロントエンドにサポート階層を設け、SRC#Form を維持の階層にする](./2026-10-29-frontend-support-tiers.md) | 採用 |
+| 2026-10-31 | [役目を終えたコード・ツール・ワークフローを消す](./2026-10-31-repository-cleanup.md) | 採用 |

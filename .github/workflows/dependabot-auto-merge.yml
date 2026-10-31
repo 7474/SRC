@@ -23,7 +23,7 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@v3
 
-      # CI でビルド・テストしているもののグループだけ（HelpConverter のグループ・メジャーの更新・セキュリティの更新は人がマージする）
+      # CI でビルド・テストしているもののグループだけ（メジャーの更新・セキュリティの更新は人がマージする）
       - name: Enable auto-merge
         if: contains(fromJSON('["nuget-minor-patch", "bundler-minor-patch", "actions-minor-patch"]'), steps.metadata.outputs.dependency-group)
         run: gh pr merge --auto --merge "$PR_URL"

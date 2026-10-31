@@ -19,18 +19,6 @@ updates:
   package-ecosystem: nuget
   schedule:
     interval: daily
-# HelpConverter は CI でビルドしていないため、まとめるだけで自動ではマージしない
-- directory: /SRC.Sharp.Help/HelpConverter/
-  groups:
-    helpconverter-minor-patch:
-      patterns:
-      - '*'
-      update-types:
-      - minor
-      - patch
-  package-ecosystem: nuget
-  schedule:
-    interval: daily
 - directory: /SRC.Sharp.Help/
   groups:
     bundler-minor-patch:

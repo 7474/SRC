@@ -39,7 +39,7 @@ AREAS = [
     ("VS Code 拡張", ["SRC.Sharp/SRCSharpVSCode/"]),
     ("ヘルプ", ["SRC.Sharp.Help/"]),
     ("CI", [".github/"]),
-    ("文書", ["docs/", "memo/", "AGENTS.md", "CONTRIBUTING.md", "README.md"]),
+    ("文書", ["docs/", "AGENTS.md", "CONTRIBUTING.md", "README.md"]),
 ]
 # 分野を決めるときに数えないファイル（テストだけの変更で分野が決まらないように）
 TESTS = re.compile(r"(^|/)[^/]*Tests?/|/E2E/")

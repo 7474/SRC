@@ -71,7 +71,6 @@
 | [docs](./docs) | 設計・運用の現状のドキュメント（[一覧](./docs/README.md)）。判断の理由は [判断の記録](./docs/decisions/README.md)、移植などの過去の作業は [履歴](./docs/history/README.md) |
 | [SRC/SRC_20121125](./SRC/SRC_20121125) | 移植の元にした SRC（VB5）のソース。参照用に文字コードを UTF-8 にしてある |
 | [SRC/Help](./SRC/Help)・[SRC/HelpChm](./SRC/HelpChm) | SRC Ver2.2.33 のヘルプのプロジェクトと、その CHM |
-| [SRC.NET](./SRC.NET) | SRC_20121125 をツールで .NET に変換したもの（移植の参考） |
 
 ### SRC.Sharp のプロジェクト
 
@@ -84,7 +83,6 @@
 | [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb) | SRC#Web（Blazor WebAssembly、[ドキュメント](./docs/gui/web.md)） | .NET 10 |
 | [SRCSharpForm](./SRC.Sharp/SRCSharpForm) | SRC#Form（Windows Forms、Windows） | .NET 10 |
 | [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor) | データビューア（Blazor WebAssembly） | .NET 10 |
-| [SRCTestForm](./SRC.Sharp/SRCTestForm) | 動作確認用のフォーム（データの閲覧、Windows） | .NET 10 |
 | [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 10 |
 | [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 10 |
 | [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 10 |
