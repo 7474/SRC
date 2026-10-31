@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using SRCCore.Extensions;
 using SRCCore.Items;
 using SRCCore.Lib;
@@ -32,6 +33,8 @@ namespace SRCCore.Units
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
         {
+            // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
+            RuntimeHelpers.EnsureSufficientExecutionStack();
             //    WeaponData[] prev_wdata;
             //    double[] prev_wbullets;
             //    AbilityData[] prev_adata;
