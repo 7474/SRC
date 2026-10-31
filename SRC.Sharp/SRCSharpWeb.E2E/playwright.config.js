@@ -10,8 +10,9 @@ module.exports = defineConfig({
   // .NET の WebAssembly の読み込みとシナリオの実行に時間がかかる
   timeout: 5 * 60 * 1000,
   expect: { timeout: 60 * 1000 },
-  fullyParallel: false,
-  workers: 1,
+  // 並列の数は PW_WORKERS（既定 1）。2 以上ならファイルの中のテストも並べる（CI は 2。docs/testing.md）
+  fullyParallel: Number(process.env.PW_WORKERS ?? 1) > 1,
+  workers: Number(process.env.PW_WORKERS ?? 1),
   // CI では失敗したテストを 1 度だけやり直す。やり直して通ったものは flaky として結果と注釈に残る（docs/testing.md）
   retries: process.env.CI ? 1 : 0,
   reporter: [

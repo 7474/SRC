@@ -16,7 +16,7 @@
 | ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests` | `test-srccore-linux`・`test-tools-linux`（`SRCCoreTests` は `build-and-test-srcs` でも） |
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
-| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ） | `test-tools-linux`・`test-web` |
+| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint） | `test-tools-linux`・`test-web`・`test-lint` |
 | 配布物 | 配る形でビルド・発行でき、最低限動くこと | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
@@ -47,11 +47,12 @@ flowchart LR
   changes -->|コードの変更あり| core[test-srccore-linux<br/>ユニット・シナリオ E2E・VRT]
   changes -->|コードの変更あり| tools[test-tools-linux<br/>Avalonia・作成支援ツール・音声・VS Code 拡張]
   changes -->|コードの変更あり| web[test-web<br/>SRC#Web の Playwright]
+  changes -->|コードの変更あり| lint[test-lint<br/>SRCLintWeb の Playwright]
   changes -->|コードの変更あり| docker[docker-srcdatalinter]
   changes -->|コードの変更あり| win[build-and-test-srcs<br/>Windows 固有]
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
-  core & tools & web & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
+  core & tools & web & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
   PR -->|push のみ| coverage[coverage<br/>計測・Mackerel]
 ```
 
@@ -88,6 +89,7 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 - **待ちの長いシナリオ E2E は Linux だけで動かす**。Windows のランナーでは同じテストがタイムアウトしやすい
 - **Playwright は CI で 1 度だけやり直す**（`retries`）。やり直して通ったテストは結果に `flaky` と出る（[Retries](https://playwright.dev/docs/test-retries)）。`test-web` の「Summarize SRC#Web tests」が、ジョブのサマリに flaky のテストの一覧を出し、テストの行に warning の注釈を付ける（`.github/scripts/playwright-summary.mjs`）。flaky が出たら、待ちの条件か前提を直す
+- **Playwright は CI で 2 並列で動かす**（`PW_WORKERS=2`、ファイルの中のテストも並べる）。ランナーは 4 vCPU。手元の計測では 1 並列 317 秒・2 並列 191 秒・3 並列 163 秒で、3 並列では負荷で落ちるテストが出たため 2 にしている。手元では既定の 1 並列
 - **MSTest はやり直さない**。落ちたら、待ちの条件（`wait`・`auto` の秒数、`[DoNotParallelize]`）か、テストの前提（静的な状態・プロセス全体の設定）を直す
 - ジョブの再実行で通すのは、ランナーの不調（取得・インストールの失敗）のときだけにする
 

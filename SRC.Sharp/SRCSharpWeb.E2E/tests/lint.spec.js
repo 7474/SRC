@@ -28,7 +28,12 @@ async function lint(page, zip, options = {}) {
 test.beforeEach(async ({ page }) => {
   // 配信のルートからの絶対パス（baseURL のサブパスに関わらず同じオリジンの /lint/）
   const res = await page.goto(lintBase + 'srclint.js');
-  test.skip(!res || res.status() !== 200, 'SRCLintWeb が配信されていない（SRCLINT_BASE）');
+  const served = res && res.status() === 200;
+  // CI の test-lint では、配信されていなければ飛ばさずに落とす（飛ばすと、発行の失敗に気づけない）
+  if (process.env.SRCLINT_REQUIRED) {
+    expect(served, 'SRCLintWeb が配信されていない（SRCLINT_BASE）').toBe(true);
+  }
+  test.skip(!served, 'SRCLintWeb が配信されていない（SRCLINT_BASE）');
 });
 
 test('正しいシナリオは問題なし（汎用データのスペシャルパワーを参照できる）', async ({ page }) => {
