@@ -114,7 +114,7 @@ namespace SRCCore.Units
                                 {
                                     if (!SRC.PList.IsDefined(tfu.FeatureData("追加パイロット")))
                                     {
-                                        SRC.PList.Add(t.FeatureData("追加パイロット"), MainPilot().Level, Party0, gid: "");
+                                        SRC.PList.Add(tfu.FeatureData("追加パイロット"), MainPilot().Level, Party0, gid: "");
                                     }
                                 }
 
