@@ -1,0 +1,100 @@
+name: Packages
+
+# 配る形（リリースと同じ作り方）で作って起動を確かめる（#1359）。タグを打つ前に、配る物が作れて起動することを知る。
+# - SRC#Avalonia の自己完結の単一ファイル（.github/scripts/publish-avalonia.sh。Publish-Avalonia.yml と同じ）。
+#   linux-x64・win-x64 は --smoke で起動し、シナリオが始まって終わることを確かめる。
+#   osx-arm64・osx-x64 は作れることだけを確かめる（macOS は理屈の上で動くところまで。docs/decisions/2026-10-31-regression-first-qa-plan.md）
+# - srcsharp（NuGet の .NET tool）: pack → tool install → --version・lint
+# PR の待ち時間を増やさないよう、master への push のときだけ動かす（作り方そのものを変えた PR では動かす。必須のチェックではない）。SRC#Form は対象外
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - .github/workflows/Packages.yml
+      - .github/scripts/publish-avalonia.sh
+      - SRC.Sharp/**
+  pull_request:
+    paths:
+      - .github/workflows/Packages.yml
+      - .github/workflows/Publish-Avalonia.yml
+      - .github/scripts/publish-avalonia.sh
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  avalonia:
+    name: SRC#Avalonia ${{ matrix.rid }}
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        rid: [linux-x64, win-x64, osx-arm64, osx-x64]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: SRC.Sharp/Directory.Packages.props
+      - name: Publish
+        run: .github/scripts/publish-avalonia.sh ${{ matrix.rid }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: SRCSharpAvalonia-${{ matrix.rid }}
+          path: SRCSharpAvalonia-${{ matrix.rid }}.zip
+          retention-days: 7
+
+  # 配る zip を展開し、E2E のコーパスのシナリオで起動する（シナリオが最初のメッセージかマップを出したら終了コード 0）
+  avalonia-smoke-linux:
+    needs: avalonia
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: SRCSharpAvalonia-linux-x64
+      - name: Install fonts and Xvfb
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk xvfb
+      - name: Smoke
+        run: |
+          mkdir app && unzip -q SRCSharpAvalonia-linux-x64.zip -d app
+          cp -r SRC.Sharp/E2E/battle-basic scenario
+          xvfb-run -a timeout 180 app/SRCSharpAvalonia --smoke "$PWD/scenario/test.eve"
+
+  avalonia-smoke-windows:
+    needs: avalonia
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: SRCSharpAvalonia-win-x64
+      - name: Smoke
+        shell: pwsh
+        run: |
+          Expand-Archive SRCSharpAvalonia-win-x64.zip -DestinationPath app
+          Copy-Item -Recurse SRC.Sharp/E2E/battle-basic scenario
+          $p = Start-Process -FilePath app/SRCSharpAvalonia.exe -ArgumentList '--smoke', "$PWD/scenario/test.eve" -PassThru
+          if (-not $p.WaitForExit(180000)) { $p.Kill(); throw 'SRC#Avalonia の起動の確かめが 180 秒で終わらない' }
+          if ($p.ExitCode -ne 0) { throw "SRC#Avalonia の起動の確かめが終了コード $($p.ExitCode) で終わった" }
+
+  # NuGet に出すものと同じ作り方（Publish-Package.yml）で pack し、.NET tool として入れて動かす
+  srcsharp:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: SRC.Sharp/Directory.Packages.props
+      - name: Pack
+        run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp
+      - name: Install and run
+        run: |
+          version=$(python3 tools/release.py version | sed -n 's/.*library=\([^ ]*\).*/\1/p')
+          dotnet tool install SRCSharpTools --version "$version" --add-source out/srcsharp --tool-path out/tool
+          out/tool/srcsharp --version
+          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data

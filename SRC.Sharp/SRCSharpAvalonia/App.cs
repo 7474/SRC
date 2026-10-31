@@ -35,7 +35,7 @@ namespace SRCSharpAvalonia
                     session?.Dispose();
                     session?.SRC.Sound.Player.Dispose();
                 };
-                window.Opened += async (s, e) => await StartAsync(window, desktop.Args ?? new string[0]);
+                window.Opened += async (s, e) => await StartAsync(window, desktop, desktop.Args ?? new string[0]);
             }
             base.OnFrameworkInitializationCompleted();
         }
@@ -56,9 +56,17 @@ namespace SRCSharpAvalonia
             Program.LogHost?.ApplyConfig(config);
         }
 
-        private async Task StartAsync(MainWindow window, string[] args)
+        private async Task StartAsync(MainWindow window, IClassicDesktopStyleApplicationLifetime desktop, string[] args)
         {
             var file = args.FirstOrDefault(File.Exists);
+            if (file == null && args.Contains(SmokeOption))
+            {
+                // 起動の確かめでは、ファイルを選ぶ画面で止まらないようにする
+                System.Console.WriteLine("SRC#Avalonia smoke: シナリオのファイルがありません");
+                // Opened の中で Shutdown するとライフタイムの開始の処理が落ちるため、UI スレッドに積んで後で終える
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => desktop.Shutdown(3));
+                return;
+            }
             if (file == null)
             {
                 var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -88,6 +96,35 @@ namespace SRCSharpAvalonia
             window.View.GUI = session.GUI;
             window.View.Focus();
             session.Start(file);
+
+            if (args.Contains(SmokeOption))
+            {
+                _ = Task.Run(() => SmokeAsync(desktop));
+            }
+        }
+
+        /// <summary>起動の確かめ（--smoke）。配る形（自己完結の単一ファイル）で起動できるかを CI で見る（#1359）</summary>
+        private const string SmokeOption = "--smoke";
+
+        /// <summary>
+        /// シナリオが最初のメッセージかマップを出すまで待ってから終わる。出たら終了コード 0、60 秒で出なければ 2
+        /// </summary>
+        private async Task SmokeAsync(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var started = System.Diagnostics.Stopwatch.StartNew();
+            var ok = false;
+            while (started.Elapsed < System.TimeSpan.FromSeconds(60))
+            {
+                var state = session?.GUI.State;
+                if (state != null && state.Dialog == null && (state.Message.Visible || state.ShowMap))
+                {
+                    ok = true;
+                    break;
+                }
+                await Task.Delay(200);
+            }
+            System.Console.WriteLine(ok ? "SRC#Avalonia smoke: OK" : "SRC#Avalonia smoke: シナリオが始まらない");
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => desktop.Shutdown(ok ? 0 : 2));
         }
     }
 }
