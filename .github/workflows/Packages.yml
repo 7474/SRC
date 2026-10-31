@@ -97,4 +97,12 @@ jobs:
           version=$(python3 tools/release.py version | sed -n 's/.*library=\([^ ]*\).*/\1/p')
           dotnet tool install SRCSharpTools --version "$version" --add-source out/srcsharp --tool-path out/tool
           out/tool/srcsharp --version
-          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data
+          # 問題の無いシナリオは 0、問題のあるもの（共通の SP を持たない battle-basic）は件数を出して 1 で終わる
+          out/tool/srcsharp lint SRC.Sharp/E2E/unit-cmd-map
+          set +e
+          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data > lint.txt
+          code=$?
+          set -e
+          cat lint.txt
+          test "$code" -eq 1
+          grep -q 'スペシャルパワーは存在しません' lint.txt
