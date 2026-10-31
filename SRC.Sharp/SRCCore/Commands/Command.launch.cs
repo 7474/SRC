@@ -21,9 +21,9 @@ namespace SRCCore.Commands
                 {
                     Text = GeneralLib.RightPaddedString(onBoardUnit.Nickname0, 25)
                         + GeneralLib.RightPaddedString(onBoardUnit.MainPilot().get_Nickname(false), 17)
-                        + GeneralLib.LeftPaddedString(SrcFormatter.Format(onBoardUnit.MainPilot().Level), 2)
+                        + GeneralLib.LeftPaddedString(SrcFormatter.Format(onBoardUnit.MainPilot().Level), 2) + " "
                         + GeneralLib.RightPaddedString(SrcFormatter.Format(onBoardUnit.HP) + "/" + SrcFormatter.Format(onBoardUnit.MaxHP), 12)
-                        + " " + GeneralLib.RightPaddedString(SrcFormatter.Format(onBoardUnit.EN) + "/" + SrcFormatter.Format(onBoardUnit.MaxEN), 8),
+                        + GeneralLib.RightPaddedString(SrcFormatter.Format(onBoardUnit.EN) + "/" + SrcFormatter.Format(onBoardUnit.MaxEN), 8),
                     ListItemID = onBoardUnit.ID,
                     ListItemFlag = onBoardUnit.Action <= 0,
                 };
