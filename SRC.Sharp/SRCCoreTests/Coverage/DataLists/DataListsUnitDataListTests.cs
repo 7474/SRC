@@ -494,6 +494,24 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_WeaponSignFollowedBySpace_ReadsAsNumber()
+        {
+            // 7474/SRC#1413。GSC データパックのアーマード・コアＮＥＸＵＳ・ゲッターロボ(漫画版) などの行。
+            // 「- 10」「+ 20」は数値として読み、後ろの項目をずらさない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "CR-WR81B2,               2200,  2,  3, - 10,   4,   -,   -, AABA, + 20, B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual(2200, w.Power);
+            Assert.AreEqual(-10, w.Precision);
+            Assert.AreEqual(4, w.Bullet);
+            Assert.AreEqual("AABA", w.Adaption);
+            Assert.AreEqual(20, w.Critical);
+            Assert.AreEqual("B", w.Class);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
         public void Load_WeaponFullWidthDigits_ReadsValuesLikeVb()
         {
             var src = CreateSrc();
