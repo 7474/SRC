@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    準拠データパックの分析の試作（docs/tools/balance-pack-analysis.md のサンプル計測を再現する）。
+    srcsharp の機能ではない。ソリューション・CI には入れない。使い方は README.md。
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <RootNamespace>PackAnalysis</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../SRC.Sharp/SRCCore/SRCCore.csproj" />
+  </ItemGroup>
+
+</Project>
