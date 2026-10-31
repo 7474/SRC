@@ -1,5 +1,5 @@
 // @ts-check
-// データビューア（SRCTestBlazor）。置いたサイトのアーカイブ（viewer-fixtures.mjs が作る）を読み、データ・画像・音と、
+// データビューア（SRCDataViewer）。置いたサイトのアーカイブ（viewer-fixtures.mjs が作る）を読み、データ・画像・音と、
 // データの BGM を鳴らす帯（画面を移っても鳴り続ける）を確かめる（#1361、docs/gui/dataviewer.md）。
 // CI の test-viewer は、データビューアの発行物を配信のルートに置いて動かす。配信されていなければ飛ばす（VIEWER_REQUIRED なら落とす）
 const { test, expect } = require('@playwright/test');

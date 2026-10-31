@@ -1,0 +1,158 @@
+﻿@using SRCDataViewer.Models
+
+@if (IsVisible)
+{
+    <div class="modal is-active">
+        <div class="modal-background" @onclick="OnClickClose"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">@L["DisplaySettings"]</p>
+                <button class="delete" aria-label="close" @onclick="OnClickClose"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">@L["Theme"]</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.ThemeMode" @onchange="OnThemeModeChanged">
+                                <option value="@ThemeMode.System">@L["ThemeSystem"]</option>
+                                <option value="@ThemeMode.Light">@L["ThemeLight"]</option>
+                                <option value="@ThemeMode.Dark">@L["ThemeDark"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">@L["DataDisplayOrder"]</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.DataDisplayOrder" @onchange="OnDataDisplayOrderChanged">
+                                <option value="@DataDisplayOrder.UnitFirst">@L["UnitFirst"]</option>
+                                <option value="@DataDisplayOrder.PilotFirst">@L["PilotFirst"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowComment"
+                               @onchange="@(e => editSettings.ShowComment = (bool)e.Value)" />
+                        @L["ShowComment"]
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowRawButton"
+                               @onchange="@(e => editSettings.ShowRawButton = (bool)e.Value)" />
+                        @L["ShowRawButton"]
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox" checked="@editSettings.ShowPilotMessage"
+                               @onchange="@(e => editSettings.ShowPilotMessage = (bool)e.Value)" />
+                        @L["ShowPilotMessage"]
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="label">@L["Language"]</label>
+                    <div class="control">
+                        <div class="select">
+                            <select value="@editSettings.Language" @onchange="OnLanguageChanged">
+                                @* 言語の名前はその言語で表示する *@
+                                @foreach (var language in SRCCore.UiLanguages.Supported)
+                                {
+                                    <option value="@language.Code">@language.NativeName</option>
+                                }
+                                <option value="@UiLanguage.Auto">@L["LanguageAuto"]</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="help">@L["LanguageReloadNote"]</p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" @onclick="OnClickSave">@L["Save"]</button>
+                <button class="button" @onclick="OnClickClose">@L["Cancel"]</button>
+            </footer>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    private DataViewerSettingsService SettingsService { get; set; }
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private DataViewerSettings editSettings = new();
+
+    protected override void OnParametersSet()
+    {
+        if (IsVisible)
+        {
+            // モーダルを開くときに現在の設定をコピー
+            var current = SettingsService.Settings;
+            editSettings = new DataViewerSettings
+            {
+                ThemeMode = current.ThemeMode,
+                ShowComment = current.ShowComment,
+                ShowRawButton = current.ShowRawButton,
+                ShowPilotMessage = current.ShowPilotMessage,
+                DataDisplayOrder = current.DataDisplayOrder,
+                Language = current.Language,
+            };
+        }
+    }
+
+    private void OnThemeModeChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<ThemeMode>(e.Value?.ToString(), out var mode))
+        {
+            editSettings.ThemeMode = mode;
+        }
+    }
+
+    private void OnDataDisplayOrderChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<DataDisplayOrder>(e.Value?.ToString(), out var order))
+        {
+            editSettings.DataDisplayOrder = order;
+        }
+    }
+
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        editSettings.Language = e.Value?.ToString() ?? UiLanguage.Japanese;
+    }
+
+    private async Task OnClickSave()
+    {
+        var languageChanged = SettingsService.Settings.Language != editSettings.Language;
+        SettingsService.Settings.ThemeMode = editSettings.ThemeMode;
+        SettingsService.Settings.ShowComment = editSettings.ShowComment;
+        SettingsService.Settings.ShowRawButton = editSettings.ShowRawButton;
+        SettingsService.Settings.ShowPilotMessage = editSettings.ShowPilotMessage;
+        SettingsService.Settings.DataDisplayOrder = editSettings.DataDisplayOrder;
+        SettingsService.Settings.Language = editSettings.Language;
+        await SettingsService.SaveAsync();
+        if (languageChanged)
+        {
+            // 言語は起動時に決めるので、ページを読み込み直す
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            return;
+        }
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task OnClickClose()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

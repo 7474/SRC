@@ -6,7 +6,7 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
 
 | 系統 | 対象 | 形式 | 例 |
 |---|---|---|---|
-| アプリ（プレイできる SRC としての版） | SRC#Form（`SRCSharpForm`）・SRC#Avalonia・SRC#Web・データビューア（`SRCTestBlazor`） | `3.<マイナー>.<パッチ>` | 3.5.0 |
+| アプリ（プレイできる SRC としての版） | SRC#Form（`SRCSharpForm`）・SRC#Avalonia・SRC#Web・データビューア（`SRCDataViewer`） | `3.<マイナー>.<パッチ>` | 3.5.0 |
 | ライブラリ・ツール | SRCCore・SRCDataLinter・SRCRender・SRCSound・SRCPlay・SRCAuthoring・SRCDebugAdapter・srcsharp（`SRCSharpTools`） | `0.<マイナー>.<パッチ>` | 0.5.0 |
 | VS Code 拡張 | `SRCSharpVSCode`（Marketplace の `koudenpa.src-vscode`） | `0.<マイナー>.<パッチ>`（`package.json` の `version`。ライブラリと同じ版にする） | 0.5.2 |
 

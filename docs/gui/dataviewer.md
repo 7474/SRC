@@ -1,6 +1,6 @@
 # データビューア（SRC#DataViewer）
 
-ユニット・パイロット・アイテムのデータを見るための Blazor WebAssembly のアプリ（`SRC.Sharp/SRCTestBlazor`）。シナリオはプレイしない。
+ユニット・パイロット・アイテムのデータを見るための Blazor WebAssembly のアプリ（`SRC.Sharp/SRCDataViewer`）。シナリオはプレイしない。
 
 | 置き場所 | データ |
 |---|---|

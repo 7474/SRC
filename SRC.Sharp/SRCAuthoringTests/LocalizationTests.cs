@@ -18,7 +18,7 @@ namespace SRCAuthoring.Tests
         public static IEnumerable<object[]> ResxPairs => new[]
         {
             new object[] { Path.Combine("SRCSharpTools", "Resources", "Strings") },
-            new object[] { Path.Combine("SRCTestBlazor", "Resources", "UIStrings") },
+            new object[] { Path.Combine("SRCDataViewer", "Resources", "UIStrings") },
         };
 
         private static string SolutionDirectory()

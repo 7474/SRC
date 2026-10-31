@@ -35,7 +35,7 @@ TODO = "<!-- TODO"
 # 分野（リリースの案内の「主な変更」の見出しの順）。PR が変えたファイルのうち、最初に当たった分野に入れる
 AREAS = [
     ("SRC#Web", ["SRC.Sharp/SRCSharpWeb/"]),
-    ("データビューア", ["SRC.Sharp/SRCTestBlazor/"]),
+    ("データビューア", ["SRC.Sharp/SRCDataViewer/"]),
     ("SRC#Avalonia", ["SRC.Sharp/SRCSharpAvalonia/"]),
     ("SRC#Form", ["SRC.Sharp/SRCSharpForm/"]),
     ("本体（SRCCore・SRCRender・SRCSound）", ["SRC.Sharp/SRCCore/", "SRC.Sharp/SRCRender/", "SRC.Sharp/SRCSound/"]),

@@ -296,7 +296,7 @@ jobs:
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
         if-no-files-found: ignore
 
-  # データビューア（SRCTestBlazor）。置いたサイトのアーカイブ（viewer-fixtures.mjs が作る）でデータ・画像・音と BGM の帯を確かめる（#1361）
+  # データビューア（SRCDataViewer）。置いたサイトのアーカイブ（viewer-fixtures.mjs が作る）でデータ・画像・音と BGM の帯を確かめる（#1361）
   test-viewer:
     needs: changes
     if: needs.changes.outputs.code == 'true'
@@ -318,7 +318,7 @@ jobs:
 
     # wasm-tools は要らない（GitHub Pages への配信と同じ発行）
     - name: Build data viewer
-      run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release -o SRC.Sharp/SRCTestBlazor/bin/viewer
+      run: dotnet publish SRC.Sharp/SRCDataViewer/SRCDataViewer.csproj -c Release -o SRC.Sharp/SRCDataViewer/bin/viewer
 
     - name: Setup Node.js
       uses: actions/setup-node@v7
@@ -328,7 +328,7 @@ jobs:
     - name: Test data viewer (Playwright)
       working-directory: SRC.Sharp/SRCSharpWeb.E2E
       env:
-        SRCWEB_ROOT: ../SRCTestBlazor/bin/viewer/wwwroot
+        SRCWEB_ROOT: ../SRCDataViewer/bin/viewer/wwwroot
         SRCWEB_BASE: /
         SPA_FALLBACK: 1
         VIEWER_REQUIRED: 1
