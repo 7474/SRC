@@ -100,7 +100,7 @@ jobs:
           # 問題の無いシナリオは 0、問題のあるもの（共通の SP を持たない battle-basic）は件数を出して 1 で終わる
           out/tool/srcsharp lint SRC.Sharp/E2E/unit-cmd-map
           set +e
-          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data > lint.txt
+          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data > lint.txt 2>&1
           code=$?
           set -e
           cat lint.txt
