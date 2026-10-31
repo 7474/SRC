@@ -97,6 +97,62 @@ namespace SRCCore.Events.Tests
         }
 
         [TestMethod]
+        public void DataInclude_UnitCommandLabels_AreRegisteredOnce_WhenAppPathIsSeparate()
+        {
+            // #1331: Web 版と同じ配置（シナリオのフォルダと SRC のフォルダ（AppPath）が別、ExtDataPath・ExtDataPath2 は空）。
+            // 空の ExtDataPath と結合した "Data/include.eve" は相対パスになり、ファイルシステムがシナリオのフォルダから解決するため、
+            // ScenarioPath・ExtDataPath・ExtDataPath2 の３回 Data\include.eve を読み込み、
+            // そこ（とそこからインクルードしたファイル）のユニットコマンドがメニューに３つずつ表示されていた。
+            // 報告のシナリオ（Data\include.eve の「ユニットコマンド 消耗品交換 味方」と、
+            // lib の第２次α風ステータス表示の、条件付きで重ねた「ユニットコマンド 能力 …」）を模している
+            var scenarioPath = Path.Combine(appPath, "scenario");
+            var sysPath = Path.Combine(appPath, "app");
+            Directory.CreateDirectory(sysPath);
+            WriteFile(Path.Combine("scenario", "test.eve"),
+                "スタート:",
+                "Exit");
+            WriteFile(Path.Combine("scenario", "Data", "include.eve"),
+                "<lib\\status.eve>",
+                "ユニットコマンド 消耗品交換 味方:",
+                "Exit");
+            WriteFile(Path.Combine("scenario", "lib", "status.eve"),
+                "ユニットコマンド 能力 敵 (Condition(対象パイロット,ユニット情報隠蔽) = 0):",
+                "ユニットコマンド 能力 ＮＰＣ (Condition(対象パイロット,ユニット情報隠蔽) = 0):",
+                "-*ユニットコマンド 能力 味方 (Condition(対象パイロット,ユニット情報隠蔽) = 0):",
+                "Exit");
+
+            var src = new SRC
+            {
+                SystemConfig = new LocalFileConfig { AppPath = sysPath, ExtDataPath = "", ExtDataPath2 = "" },
+            };
+            var fs = new LocalFileSystem();
+            fs.AddPath(scenarioPath);
+            fs.AddPath(sysPath);
+            src.FileSystem = fs;
+            new HeadlessGUI().Install(src);
+            src.ScenarioPath = scenarioPath;
+            src.Event.SkipExternalSourceLoad = true;
+            src.Event.InitEventData();
+            src.Event.LoadEventData(Path.Combine(scenarioPath, "test.eve"));
+
+            var unitCommands = src.Event.colEventLabelList.List
+                .Where(x => x.Name == LabelType.UnitCommandEventLabel)
+                .Select(x => x.Data)
+                .ToList();
+            CollectionAssert.AreEquivalent(new List<string>
+            {
+                "ユニットコマンド 能力 敵 (Condition(対象パイロット,ユニット情報隠蔽) = 0)",
+                "ユニットコマンド 能力 ＮＰＣ (Condition(対象パイロット,ユニット情報隠蔽) = 0)",
+                "-*ユニットコマンド 能力 味方 (Condition(対象パイロット,ユニット情報隠蔽) = 0)",
+                "ユニットコマンド 消耗品交換 味方",
+            }, unitCommands);
+
+            // 次のステージでも増えない
+            src.Event.LoadEventData(Path.Combine(scenarioPath, "test.eve"));
+            Assert.AreEqual(4, src.Event.colEventLabelList.List.Count(x => x.Name == LabelType.UnitCommandEventLabel));
+        }
+
+        [TestMethod]
         public void DataInclude_IsLoadedOnlyOnce_OnNextStage()
         {
             WriteFile("test.eve",
