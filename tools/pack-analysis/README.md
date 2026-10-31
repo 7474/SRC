@@ -4,7 +4,7 @@
 
 ## 再現
 
-GSC データパックは [7474/SRC-Data](https://github.com/7474/SRC-Data) の `GSCデータパック` を使う。試作結果は SRC-Data のコミット `a802b31`（2026-05-06）で計測した。SRC# は、全角スペースで桁をそろえた欄を読めるように直した版（https://github.com/7474/SRC/issues/1413 。`Strings.Trim` が全角スペースも取り除く）が要る。直す前の SRC# では、一部の武器の地形適応・クリティカル率・属性がずれて、結果が変わる。
+GSC データパックは [7474/SRC-Data](https://github.com/7474/SRC-Data) の `GSCデータパック` を使う。試作結果は SRC-Data のコミット `a802b31`（2026-05-06）で計測した。SRC# は、全角スペースで桁をそろえた欄と、符号の後に空白がある数値を読めるように直した版（https://github.com/7474/SRC/pull/1415 で master に入った）が要る。直す前の SRC# では、一部の武器の地形適応・クリティカル率・属性がずれて、結果が変わる。
 
 ```bash
 git clone https://github.com/7474/SRC-Data ../SRC-Data
