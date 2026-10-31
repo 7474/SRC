@@ -308,9 +308,10 @@ namespace SRCCore.VB.Tests
         [TestMethod]
         public void Trim_WithTabAndSpace_RemovesOnlySpaces()
         {
-            // VB の Trim$ は半角スペースのみを取り除く
+            // 日本語版の VB の Trim$ は半角・全角のスペースを取り除き、タブは取り除かない
             Assert.AreEqual("\t hello", Strings.Trim(" \t hello "));
-            Assert.AreEqual("　hello　", Strings.Trim("　hello　"));
+            Assert.AreEqual("hello", Strings.Trim("　hello　"));
+            Assert.AreEqual("\t　hello", Strings.Trim("　 \t　hello 　"));
         }
 
         // ──────────────────────────────────────────────

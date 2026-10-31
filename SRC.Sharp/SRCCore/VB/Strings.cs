@@ -364,10 +364,14 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.trim?view=net-5.0
-        // VB5 の Trim$ と同様に前後の半角スペースのみを取り除く
+        // 日本語版の VB の Trim$ と同様に、前後の半角スペースと全角スペース（U+3000）を取り除く。
+        // タブは取り除かない。Microsoft.VisualBasic.Strings.Trim も同じ 2 文字を取り除く。
+        // GSC データパックなどは項目を全角スペースで桁揃えしている（#1413）。
+        private static readonly char[] TrimChars = { ' ', '\u3000' };
+
         public static string Trim(string str)
         {
-            return string.IsNullOrEmpty(str) ? "" : str.Trim(' ');
+            return string.IsNullOrEmpty(str) ? "" : str.Trim(TrimChars);
         }
 
         // ---- xxxB
