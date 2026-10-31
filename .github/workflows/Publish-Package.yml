@@ -6,25 +6,15 @@ on:
       - 'v*'
 
 jobs:
-  # タグ（v3.<マイナー>.<パッチ>）と SRC.Sharp/Directory.Build.props のバージョンが一致することを確かめる（docs/versioning.md）
+  # タグ（v3.<マイナー>.<パッチ>）と SRC.Sharp/Directory.Build.props の版、VS Code 拡張の版と CHANGELOG、
+  # リリースの案内（docs/releases/<タグ>.md）が揃っていることを確かめる（docs/versioning.md）
   check-version:
     name: Check version
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
-    - uses: actions/setup-dotnet@v6
-      with:
-        dotnet-version: '10.0.x'
-    - name: Compare tag and version
-      run: |
-        app=$(dotnet msbuild SRC.Sharp/SRCCore/SRCCore.csproj -getProperty:SrcSharpAppVersion)
-        lib=$(dotnet msbuild SRC.Sharp/SRCCore/SRCCore.csproj -getProperty:Version)
-        tag="${GITHUB_REF_NAME#v}"
-        echo "tag=${tag} app=${app} library=${lib}"
-        if [ "${tag}" != "${app}" ]; then
-          echo "::error::タグ ${GITHUB_REF_NAME} が SRC# のバージョン ${app} と一致しません（SRC.Sharp/Directory.Build.props）"
-          exit 1
-        fi
+    - name: Check version and release notes
+      run: python3 tools/release.py check --tag "$GITHUB_REF_NAME"
 
   push-nuget-package:
     name: Push Nuget Package to NuGet.org
@@ -69,6 +59,8 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v3
       with:
+        # 本文はリポジトリのリリースの案内（docs/releases/README.md）。ほかのワークフローが先にリリースを作っていても上書きする
+        body_path: docs/releases/${{ github.ref_name }}.md
         files: |
           SRCSharpForm.zip
           LICENSE
@@ -94,6 +86,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v3
       with:
+        body_path: docs/releases/${{ github.ref_name }}.md
         files: SRCSharpWeb.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
