@@ -1,0 +1,33 @@
+# ChangeTerrain・ChangeArea・MapAttack の結果を確かめる
+wait message 検証開始
+# ChangeTerrain: 地形とビットマップが変わる
+expect eval InStr(tn0, "平地") = 1
+expect eval InStr(tn1, "海") = 1
+expect eval InStr(tc1, "水") = 1
+expect eval InStr(tb1, "sea0000.bmp") > 0
+# ローカルな地形ビットマップ
+expect eval InStr(tn2, "海") = 1
+expect eval InStr(tb2, "sea-0001.bmp") > 0
+# ChangeArea: 地形の種類ごとに指定できるエリアへ移る
+expect eval InStr(ar1, "空中") = 1
+expect eval InStr(ar2, "地中") = 1
+expect eval InStr(ar3, "水中") = 1
+expect eval InStr(ar4, "地上") = 1
+expect eval InStr(ar5, "宇宙") = 1
+expect eval InStr(ar6, "水上") = 1
+expect eval InStr(ar7, "宇宙") = 1
+# MapAttack: 目標地点の周りのユニットを攻撃する
+expect eval InStr(maT1, "破壊") = 1
+expect eval InStr(maT2, "破壊") = 1
+expect eval InStr(maT3a, "出撃") = 1
+expect eval InStr(maT3b, "出撃") = 1
+expect eval InStr(maT3c, "破壊") = 1
+# 使用・破壊・全滅のイベントは起きず、資金も得られない
+expect eval IsVarDefined(usedEvent) = 0
+expect eval IsVarDefined(destroyEvent) = 0
+expect eval IsVarDefined(annihilated) = 0
+expect eval money1 = money0
+key Enter
+wait ready
+expect eval IsVarDefined(annihilated) = 0
+expect error none

@@ -1,0 +1,132 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テスト機 0 パイロットＡ 1 2 2
+Set idA UnitID(パイロットＡ)
+# パイロットＢは反応が 200 なので２回行動できる
+Create 味方 テスト機 0 パイロットＢ 1 3 2
+Set idB UnitID(パイロットＢ)
+Create 敵 標的機 0 標的パイロット 1 15 15
+Set idT UnitID(標的パイロット)
+
+# ---- SetStatus / ClearStatus ----
+# ユニット指定
+SetStatus パイロットＡ 攻撃力ＵＰ 3
+Set cUp1 Condition(パイロットＡ, 攻撃力ＵＰ)
+# 対象省略（デフォルトユニット）。行動不能では行動できない
+Select パイロットＢ
+SetStatus 行動不能 2
+Set cStun1 Condition(パイロットＢ, 行動不能)
+Set actStun1 Action(パイロットＢ)
+# ユニットＩＤ指定
+SetStatus idT 装甲劣化 1
+Set cArmor1 Condition(idT, 装甲劣化)
+# ClearStatus: ユニット指定
+ClearStatus パイロットＡ 攻撃力ＵＰ
+Set cUp2 Condition(パイロットＡ, 攻撃力ＵＰ)
+# 対象省略（デフォルトユニット）。行動できるようになる
+ClearStatus 行動不能
+Set cStun2 Condition(パイロットＢ, 行動不能)
+Set actStun2 Action(パイロットＢ)
+# 状態にかかっていないときは何もしない
+ClearStatus パイロットＡ 毒
+Set cPoison Condition(パイロットＡ, 毒)
+ClearStatus idT 装甲劣化
+Set cArmor2 Condition(idT, 装甲劣化)
+
+# ---- Finish ----
+# ２回行動のユニットは１回分ずつ終わる
+Set actB0 Action(パイロットＢ)
+Finish パイロットＢ
+Set actB1 Action(パイロットＢ)
+# 対象省略（デフォルトユニット）
+Select パイロットＢ
+Finish
+Set actB2 Action(パイロットＢ)
+# 行動が残っていなければ何もしない
+Finish パイロットＢ
+Set actB3 Action(パイロットＢ)
+# ユニットＩＤ指定
+Set actA0 Action(パイロットＡ)
+Finish idA
+Set actA1 Action(パイロットＡ)
+
+# ---- ChangeUnitBitmap ----
+Set bmp0 Info(ユニット, idA, グラフィック)
+ChangeUnitBitmap パイロットＡ change.bmp
+Set bmp1 Info(ユニット, idA, グラフィック)
+# 「-」で元の画像に戻る
+ChangeUnitBitmap パイロットＡ -
+Set bmp2 Info(ユニット, idA, グラフィック)
+# 対象省略（デフォルトユニット）: 非表示・非表示解除
+Select パイロットＡ
+ChangeUnitBitmap 非表示
+Set hide1 Condition(パイロットＡ, 非表示付加)
+ChangeUnitBitmap 非表示解除
+Set hide2 Condition(パイロットＡ, 非表示付加)
+
+# ---- SetBullet ----
+Set bulMax Info(ユニット, idA, 武器, テストミサイル, 最大弾数)
+# 武器名で指定
+SetBullet パイロットＡ テストミサイル 2
+Set bul1 Info(ユニット, idA, 武器, テストミサイル, 弾数)
+# 武器番号で指定。最大弾数を超える値は最大弾数になる
+SetBullet idA 2 99
+Set bul2 Info(ユニット, idA, 武器, テストミサイル, 弾数)
+# 対象省略（デフォルトユニット）
+Select パイロットＡ
+SetBullet テストミサイル 0
+Set bul3 Info(ユニット, idA, 武器, テストミサイル, 弾数)
+
+# ---- SetStock ----
+Set stkMax Info(ユニット, idB, アビリティ, テスト修理, 最大使用回数)
+# アビリティ名で指定
+SetStock パイロットＢ テスト修理 1
+Set stk1 Info(ユニット, idB, アビリティ, テスト修理, 使用回数)
+# アビリティ番号で指定。最大使用回数を超える値は最大使用回数になる
+SetStock idB 1 99
+Set stk2 Info(ユニット, idB, アビリティ, テスト修理, 使用回数)
+# 対象省略（デフォルトユニット）
+Select パイロットＢ
+SetStock テスト修理 0
+Set stk3 Info(ユニット, idB, アビリティ, テスト修理, 使用回数)
+
+# ---- BossRank ----
+Set brA0 Info(ユニット, idA, ボスランク)
+Set mhpT0 Info(ユニット, idT, 最大ＨＰ)
+# ユニット指定: ロボット基準のランク2はＨＰ２倍
+BossRank 標的パイロット 2
+Set brT Info(ユニット, idT, ボスランク)
+Set mhpT1 Info(ユニット, idT, 最大ＨＰ)
+Set hpT1 HP(標的パイロット)
+# 対象省略（デフォルトユニット）。ランク0は修正を受けない
+Set mhpA0 Info(ユニット, idA, 最大ＨＰ)
+Select パイロットＡ
+BossRank 0
+Set brA1 Info(ユニット, idA, ボスランク)
+Set mhpA1 Info(ユニット, idA, 最大ＨＰ)
+# ボスランクを持つユニットは弾数も全快する（SetBullet で 0 にしたもの）
+Set bul4 Info(ユニット, idA, 武器, テストミサイル, 弾数)
+
+# ---- Disable / Enable ----
+# ユニット名称つき
+Disable テスト機 ＨＰ回復
+Set enA0 IsAvailable(パイロットＡ, ＨＰ回復)
+Enable テスト機 ＨＰ回復
+Set enA1 IsAvailable(パイロットＡ, ＨＰ回復)
+# ユニット名称なし（すべてのユニット）
+Disable ＥＮ回復
+Set enB0 IsAvailable(パイロットＢ, ＥＮ回復)
+Enable ＥＮ回復
+Set enB1 IsAvailable(パイロットＢ, ＥＮ回復)
+# 封印されていないものを Enable しても何もしない
+Enable ＥＮ回復
+Set enB2 IsAvailable(パイロットＢ, ＥＮ回復)
+
+Talk システム
+検証開始
+End
+Exit

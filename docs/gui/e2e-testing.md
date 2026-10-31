@@ -104,6 +104,7 @@ expect eval Damage(標的パイロット) > 0
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
 | `cmd-unexec-*` | ほかのケースでは実行しないイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
 | `cmd-branch-*` | 引数の形で処理が分かれるイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
+| `cmd-unit-condition`・`cmd-pilot-upgrade`・`cmd-party-leave`・`cmd-map-attack` | ユニット・パイロット・陣営・マップを操作するイベントコマンド（`SetStatus`・`ClearStatus`・`Finish`・`ChangeUnitBitmap`・`SetBullet`・`SetStock`・`BossRank`・`Enable`・`Upgrade`・`ClearSkill`・`RecoverPlana`・`Release`・`RenameFile`・`Leave`・`Join`・`ChangeParty`・`ChangeTerrain`・`ChangeArea`・`MapAttack`）を引数の形ごとに実行し、結果を `Condition`・`Action`・`Info`・`Status`・`Area` などで確かめる |
 | `unit-cmd-*` | ユニット・マップのコマンドをマスのクリックとメニューで実行する（アビリティ・修理・補給・スペシャルパワー・変形・合体・分離・母艦への収納と発進・会話・チャージ・援護攻撃・テレポート・ジャンプ・召喚・命令・マップのメニュー・クイックセーブ／ロード・ユニットステータスでの換装など） |
 
 ## VRT
