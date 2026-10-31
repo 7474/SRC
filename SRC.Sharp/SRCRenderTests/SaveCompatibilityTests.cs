@@ -16,9 +16,10 @@ namespace SRCRender.Tests
     [DoNotParallelize]
     public class SaveCompatibilityTests
     {
-        // 中断・クイックセーブ・リスタートのデータはシナリオのファイルを絶対パスで持ち、別のフォルダでは再開できない（#1375）。
-        // 版をまたぐ形式の互換だけを確かめるため、セーブを作るときも再開するときも同じフォルダを使う
-        private const string WorkspaceName = "srcs-save-compat";
+        // セーブを作るときと再開するときで、シナリオのフォルダを変える（#1375）。
+        // 中断・クイックセーブ・リスタートのデータは、シナリオのファイルをシナリオのフォルダからの相対パスで持つ。
+        // v3.5.5 までのセーブは絶対パス（作ったときの一時フォルダ srcs-save-compat）で持っていて、それでも再開できることも確かめる
+        private const string GenerateWorkspaceName = "srcs-save-compat";
 
         private static string ScenarioDirectory => Path.Combine(E2ECorpusTests.CorpusDirectory, "save-compat");
         private static string SavesDirectory => Path.Combine(E2ECorpusTests.CorpusDirectory, "saves");
@@ -57,7 +58,7 @@ namespace SRCRender.Tests
         public void ResumeFromSave(string version, string save)
         {
             var kind = Kinds.First(k => k.Key.StartsWith("*") ? save.EndsWith(k.Key.Substring(1)) : save == k.Key);
-            using (var workspace = new ScenarioWorkspace(name: WorkspaceName))
+            using (var workspace = new ScenarioWorkspace())
             {
                 Prepare(workspace);
                 var path = Path.Combine(workspace.AppPath, save);
@@ -83,7 +84,7 @@ namespace SRCRender.Tests
                 Assert.Inconclusive("SRC_SAVE_GENERATE が無いので作らない");
             }
             string requested = null;
-            using (var workspace = new ScenarioWorkspace(name: WorkspaceName))
+            using (var workspace = new ScenarioWorkspace(name: GenerateWorkspaceName))
             {
                 Prepare(workspace);
                 using (var runner = new ScreenScenarioRunner(workspace.AppPath))
