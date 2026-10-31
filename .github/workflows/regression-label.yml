@@ -1,0 +1,33 @@
+name: Regression label
+
+# 不具合の報告（.github/ISSUE_TEMPLATE/bug-report.yml）で「前の版では動いていたか」に「はい」と答えたものに、
+# ラベル regression を付ける。リグレッションが起きた領域のテスト・ゲートを見直すための印（docs/testing.md）
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  label:
+    if: github.repository == '7474/SRC'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Add regression label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: ${{ github.event.issue.body }}
+        run: |
+          # フォームの回答は「### <項目名>」の次の段落に入る
+          answer=$(printf '%s\n' "$BODY" | awk '/^### 前の版では動いていたか/{f=1;next} f&&/^### /{exit} f&&NF{print;exit}')
+          echo "answer=${answer}"
+          case "$answer" in
+            はい*)
+              gh label create regression --color B60205 --description '前の版で動いていたものが壊れた（docs/testing.md）' --force
+              gh issue edit "$NUMBER" --add-label regression
+              ;;
+          esac

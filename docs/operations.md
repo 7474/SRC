@@ -60,6 +60,7 @@ flowchart LR
 | `Publish-Avalonia.yml` | タグの push・手動（過去のリリースに添付） | SRC#Avalonia を OS ごと（4 つ）の zip にする | GitHub Releases |
 | `Publish-VSCode.yml` | タグの push・手動 | VS Code 拡張の .vsix を作って出す。公開済みの版なら飛ばす | Visual Studio Marketplace・Open VSX・GitHub Releases |
 | `dependabot-auto-merge.yml` | Dependabot の PR | マイナー・パッチの更新のまとめに自動マージを設定する | master（`ci-passed` が通ったとき） |
+| `regression-label.yml` | Issue の作成・編集 | 不具合の報告で「前の版では動いていた」と答えたものにラベル `regression` を付ける（[テストと CI の設計](./testing.md)） | Issue のラベル |
 
 リポジトリの設定で動くもの（ワークフローのファイルは無い）として、Dependabot の更新の PR（毎日。`.github/dependabot.yml`）と、Copilot cloud agent・Copilot code review がある。
 

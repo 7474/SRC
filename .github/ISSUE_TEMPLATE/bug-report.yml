@@ -29,6 +29,22 @@ body:
       placeholder: 3.5.2
     validations:
       required: true
+  - type: dropdown
+    id: regression
+    attributes:
+      label: 前の版では動いていたか / Did it work in an earlier version?
+      description: 前の版で動いていたものが壊れた場合（リグレッション）は「はい」を選んでください。ラベル regression が付き、同じ壊れ方を防ぐテストを足します
+      options:
+        - 分からない・初めから / Unknown or never worked
+        - はい / Yes, it worked in an earlier version
+    validations:
+      required: true
+  - type: input
+    id: worked-version
+    attributes:
+      label: 動いていた版 / Last working version
+      description: 「はい」の場合、動いていた版（分かれば）
+      placeholder: 3.5.4
   - type: input
     id: environment
     attributes:
