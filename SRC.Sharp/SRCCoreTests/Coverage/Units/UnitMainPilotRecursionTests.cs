@@ -71,6 +71,66 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Nickname_SelfReferencingNicknameChange_DoesNotRecurse()
+        {
+            // 愛称変更の式がそのユニット自身の愛称を参照すると、式置換が自分を呼び続けていた
+            var fx = new UnitAbilityCoverageFixture();
+            var ud = fx.AddUnitData("自己参照機");
+            ud.PilotNum = 1;
+            ud.AddFeature("愛称変更=改$(Nickname())");
+            var u = fx.CreateUnit("自己参照機", "乗るパイロット");
+
+            var nickname = u.Nickname0;
+
+            // 内側の自分の愛称はデータの愛称になる
+            Assert.AreEqual("改自己参照機", nickname);
+        }
+
+        [TestMethod]
+        public void Nickname_SelfReferencingPilotNickname_DoesNotRecurse()
+        {
+            // パイロット愛称の式が自分のパイロット愛称を参照する場合も同じ
+            var fx = new UnitAbilityCoverageFixture();
+            var ud = fx.AddUnitData("自己参照機");
+            ud.PilotNum = 1;
+            ud.AddFeature("パイロット愛称=隊長$(Nickname(乗るパイロット))");
+            var u = fx.CreateUnit("自己参照機", "乗るパイロット");
+
+            var nickname = u.MainPilot().get_Nickname(false);
+
+            // 内側の自分の愛称はデータの愛称になる
+            Assert.AreEqual("隊長乗るパイロット", nickname);
+        }
+
+        [TestMethod]
+        public void Nickname_DeeplyChainedNicknames_StopsAtSubExpressionDepthLimit()
+        {
+            // 愛称が次のユニットの愛称を参照する鎖が、式置換の入れ子の上限より長いとき。
+            // 上限より内側は式置換をせずに返し、終わる
+            var fx = new UnitAbilityCoverageFixture();
+            const int count = Expressions.Expression.MaxSubExpressionDepth + 2;
+            for (var i = 0; i < count; i++)
+            {
+                var ud = fx.AddUnitData("鎖" + i);
+                ud.PilotNum = 1;
+                ud.AddFeature(i + 1 < count ? "愛称変更=" + i + "$(Nickname(鎖" + (i + 1) + "))" : "愛称変更=終");
+            }
+            var units = new Unit[count];
+            for (var i = 0; i < count; i++)
+            {
+                units[i] = fx.CreateUnit("鎖" + i, "乗る" + i);
+            }
+
+            var nickname = units[0].Nickname0;
+
+            // 上限までの分は置き換わり、上限より先は式置換の印を外した式のまま残る
+            StringAssert.StartsWith(nickname, "0123456789");
+            Assert.IsFalse(nickname.Contains("$("), nickname);
+            // 鎖が上限より短ければ、最後まで置き換わる
+            Assert.AreEqual("9" + "10" + "終", units[Expressions.Expression.MaxSubExpressionDepth - 1].Nickname0);
+        }
+
+        [TestMethod]
         public void StandBy_UncontrollableUnitWithBerserkPilot_DoesNotRecurse()
         {
             // 制御不可のユニットは出撃するときに暴走の状態になり、そのまま Update で暴走時パイロットを使う
