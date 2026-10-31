@@ -3,3 +3,6 @@ tsconfig.json
 **/*.map
 .gitignore
 node_modules/**
+test/**
+.vscode-test.mjs
+.vscode-test/**

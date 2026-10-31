@@ -151,6 +151,11 @@ jobs:
         npm ci
         npm run package
 
+    # 拡張が有効になり、コマンドが登録され、.eve・データの言語が決まることを、VS Code（stable）の中で確かめる（#1364）
+    - name: Test VS Code extension
+      working-directory: SRC.Sharp/SRCSharpVSCode
+      run: xvfb-run -a npm test
+
     - name: Upload VS Code extension
       uses: actions/upload-artifact@v7
       with:
