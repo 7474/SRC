@@ -109,6 +109,17 @@ namespace PackStats
             Row("運動性", 10, us.Select(u => u.Mobility));
             Row("武器の攻撃力", 100, ws.Select(w => w.Power));
             Row("武器の消費EN", 5, ws.Select(w => w.ENConsumption));
+
+            // パイロットの能力値（サポートパイロットなど、6 能力がすべて 1 のものは除く）
+            var ps = d.Src.PDList.Items.Where(p => !(p.Infight == 1 && p.Shooting == 1 && p.Hit == 1 && p.Dodge == 1 && p.Technique == 1 && p.Intuition == 1)).ToList();
+            var values = ps.SelectMany(p => new[] { p.Infight, p.Shooting, p.Hit, p.Dodge, p.Technique, p.Intuition }).ToList();
+            Console.WriteLine();
+            Console.WriteLine($"パイロット {ps.Count} 人の能力値（格闘〜反応）");
+            Console.WriteLine();
+            Console.WriteLine("| 項目 | 合う割合 |");
+            Console.WriteLine("|---|--:|");
+            Console.WriteLine($"| 能力値のうち 5 の倍数 | {Pct(values.Count(x => x % 5 == 0), values.Count)} |");
+            Console.WriteLine($"| 6 能力がすべて 5 の倍数のパイロット | {Pct(ps.Count(p => new[] { p.Infight, p.Shooting, p.Hit, p.Dodge, p.Technique, p.Intuition }.All(x => x % 5 == 0)), ps.Count)} |");
         }
 
         // ---- bands
