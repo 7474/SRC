@@ -15,10 +15,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Include="E2E\cypress.config.js" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Markdig" />
 		<PackageReference Include="MeltySynth" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />

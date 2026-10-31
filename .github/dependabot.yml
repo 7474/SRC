@@ -50,7 +50,6 @@ updates:
 - directories:
   - /SRC.Sharp/SRCSharpVSCode/
   - /SRC.Sharp/SRCSharpWeb.E2E/
-  - /SRC.Sharp/SRCTestBlazor/E2E/
   groups:
     npm-minor-patch:
       patterns:

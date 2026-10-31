@@ -130,7 +130,7 @@ expect eval Damage(標的パイロット) > 0
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Linux（ローカルでは Windows でも動く。出力を開けない環境では再生のテストは Inconclusive） |
 | `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Linux（ローカルでは Windows でも動く） |
 | `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
-| `SRCTestBlazor/E2E` | Cypress。配信したデータ閲覧画面 | ブラウザ（配信した後） |
+| `SRCSharpWeb.E2E/tests/deployed.spec.js` | Playwright。配信したデータ閲覧画面（`DEPLOYED_URL`） | ブラウザ（配信した後） |
 
 `SRCRenderTests` は、待ち時間の長いシナリオのテストが多いため、メソッド単位で並べて動かす（`AssemblyInfo.cs` の `Parallelize`、ワーカーは CPU の数）。プロセス全体の UI カルチャを変えるテスト（`UiLanguageTests`）は `[DoNotParallelize]` にしている。テストを足すときは、静的な状態やプロセス全体の設定を変えないようにし、変える場合は `[DoNotParallelize]` を付ける（[MSTest の並列実行](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-controlling-execution#parallelization-attributes)）。
 
@@ -144,4 +144,4 @@ CI（`.github/workflows/CI.yml`）の構成と、各テストの責務・マー�
 |---|---|---|
 | SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画・文字入力ダイアログを確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
 | SRC#Form | UI テストは無い。作る場合は FlaUI（UIA3）で、対象は起動・終了程度にする | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)） |
-| SRCTestBlazor | 既存の Cypress を、配信した後の確認として継続する（マージの可否には使わない） | — |
+| SRCTestBlazor | 配信の前は `viewer.spec.js`、配信した後は `deployed.spec.js`（どちらも Playwright。Cypress から移した） | — |
