@@ -25,6 +25,20 @@
 
 テストを足すときは、上の表で「保証すること」に当たる層に足す。シナリオの挙動を Playwright や Avalonia のテストで確かめたくなったら、まずコーパスにケースを足せないかを考える。
 
+## 結果の固定（ゴールデン）
+
+いまの振る舞いを表にしてリポジトリに置き、変わったら知らせるテスト。正しさは VB 版を期待値にしたテストが受け持ち、ここは「黙って変わっていないこと」を見る（[判断の記録](./decisions/2026-10-31-regression-first-qa-plan.md)）。
+
+| 対象 | テスト | 表 |
+|---|---|---|
+| 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+
+意図して結果を変えたときは、表を作り直して差分を PR に載せる。人のレビューは必須にしない（自動化を優先し、リグレッションが起きたら見直す）。
+
+```sh
+SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedName~Golden
+```
+
 ## CI の構成
 
 ```mermaid
