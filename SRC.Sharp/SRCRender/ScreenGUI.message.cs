@@ -1655,6 +1655,12 @@ namespace SRCRender
             return g.MeasureStringWithoutRightMargin(buf, font);
         }
 
+        /// <summary>
+        /// 戦闘中のメッセージ（DisplayBattleMessage）を区切りごとに出すとき。話者と式を置き換えたメッセージを渡す。
+        /// 戦闘中のメッセージはクリックを待たないので、自動プレイが表示したメッセージを記録するのに使う
+        /// </summary>
+        public event Action<string, string> BattleMessageShown;
+
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)
         {
             ResetMessage();
@@ -1717,6 +1723,7 @@ namespace SRCRender
                     Event.SaveBasePoint();
                     Expression.FormatMessage(ref buf);
                     Event.RestoreBasePoint();
+                    BattleMessageShown?.Invoke(pname, buf);
 
                     // 特殊効果
                     switch (Strings.LCase(Strings.Right(GeneralLib.LIndex(buf, 1), 4)) ?? "")
