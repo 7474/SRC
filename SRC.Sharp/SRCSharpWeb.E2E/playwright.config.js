@@ -17,7 +17,8 @@ module.exports = defineConfig({
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ...(process.env.CI ? [['github']] : []),
+    // CI では結果を JSON にも残し、やり直して通ったテストをジョブのサマリに出す（.github/scripts/playwright-summary.mjs）
+    ...(process.env.CI ? [['github'], ['json', { outputFile: 'test-results/results.json' }]] : []),
   ],
   use: {
     baseURL: `http://127.0.0.1:${port}${base}`,

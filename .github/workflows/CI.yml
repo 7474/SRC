@@ -197,6 +197,11 @@ jobs:
         npx playwright install --with-deps chromium
         npx playwright test
 
+    # 通った・やり直して通った（flaky）・失敗・飛ばしたテストの数と、flaky の一覧をサマリに出す
+    - name: Summarize SRC#Web tests
+      if: always()
+      run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web（Playwright）' >> "$GITHUB_STEP_SUMMARY"
+
     - name: Upload SRC#Web test report
       if: always()
       uses: actions/upload-artifact@v7

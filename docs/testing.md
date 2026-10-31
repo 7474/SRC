@@ -73,7 +73,7 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 マージを止めるテストが時々落ちると、自動マージは止まり、人は「また flaky だろう」と失敗を読まなくなる。そのため次のようにする。
 
 - **待ちの長いシナリオ E2E は Linux だけで動かす**。Windows のランナーでは同じテストがタイムアウトしやすい
-- **Playwright は CI で 1 度だけやり直す**（`retries`）。やり直して通ったテストは結果に `flaky` と出て、PR に注釈が付く（[Retries](https://playwright.dev/docs/test-retries)）。同じテストが続けて flaky になったら直す
+- **Playwright は CI で 1 度だけやり直す**（`retries`）。やり直して通ったテストは結果に `flaky` と出る（[Retries](https://playwright.dev/docs/test-retries)）。`test-web` の「Summarize SRC#Web tests」が、ジョブのサマリに flaky のテストの一覧を出し、テストの行に warning の注釈を付ける（`.github/scripts/playwright-summary.mjs`）。flaky が出たら、待ちの条件か前提を直す
 - **MSTest はやり直さない**。落ちたら、待ちの条件（`wait`・`auto` の秒数、`[DoNotParallelize]`）か、テストの前提（静的な状態・プロセス全体の設定）を直す
 - ジョブの再実行で通すのは、ランナーの不調（取得・インストールの失敗）のときだけにする
 
