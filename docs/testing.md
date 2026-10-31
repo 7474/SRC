@@ -13,11 +13,11 @@
 
 | 層 | 保証すること | 保証しないこと | プロジェクト | CI のジョブ |
 |---|---|---|---|---|
-| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests` | `test-srccore-linux`・`test-tools-linux`（`SRCCoreTests` は `build-and-test-srcs` でも） |
+| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests`・`SRCSharpWebTests`（SRC#Web のうちブラウザに依存しない処理。セーブの同期・zip の展開・カタログの読み取り） | `test-srccore-linux`・`test-tools-linux`・`test-web`（`SRCCoreTests` は `build-and-test-srcs` でも） |
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
-| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
-| 配布物 | 配る形でビルド・発行でき、最低限動くこと。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
+| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless。起動の引数と `--smoke` の終了コード・効果音の再生の呼び出しも）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
+| 配布物 | 配る形でビルド・発行でき、最低限動くこと（`srcsharp` の各コマンドの終了コードと出力は、ユニットの `SRCAuthoringTests` の `CliTests` が確かめる）。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
@@ -47,6 +47,11 @@ SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedNa
 
 - リリースのときに、その版のセーブを足す（`python3 tools/release.py saves`）。`release.py check`（CI の `release-check`）は、いまの版のセーブが無いと通らない
 - 再開は、セーブを作ったときとは別の一時フォルダで行う。シナリオのフォルダを移しても再開できることを確かめる。v3.5.5 までのセーブはシナリオのファイルを絶対パスで持ち、それより後はシナリオのフォルダからの相対パスで持つ（#1375）
+
+SRC#Web がブラウザ（IndexedDB）に保存したセーブも、版をまたいで確かめる（#1398）。`SRCSharpWeb.E2E/fixtures/srcweb-indexeddb-3.5.5.json` は、3.5.5 が保存した IndexedDB の中身（データベースの名前・版・ストアとキー、セーブのレコード）を書き出したもの。`web.spec.js` が、アプリを読み込む前にこれを IndexedDB にそのまま書き、そのセーブから再開して次のステージへ進めることを確かめる。
+
+- 保存の形（`wwwroot/js/store.js` のデータベース・ストア・レコードの項目）を変えるときは、前の形のものを読めるように移す。fixture は変えない
+- 保存の形を変えた版を出したら、その版の fixture を足す（書き出し方は fixture の `description` にある）
 
 ## CI の構成
 

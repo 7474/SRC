@@ -24,6 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- 起動の確かめ（smoke）の引数と音声の再生の作り方を確かめる（App） -->
+    <InternalsVisibleTo Include="SRCSharpAvaloniaTests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
     <ProjectReference Include="..\SRCLogging\SRCLogging.csproj" />
     <ProjectReference Include="..\SRCRender\SRCRender.csproj" />
