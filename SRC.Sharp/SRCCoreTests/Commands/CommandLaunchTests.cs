@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Commands;
 using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.TestLib;
 using SRCCore.Units;
 
@@ -198,6 +199,31 @@ namespace SRCCore.Commands.Tests
         {
             var src = CreateSrc();
             Assert.IsTrue(string.IsNullOrEmpty(src.Commands.SelectedCommand));
+        }
+
+        [TestMethod]
+        public void LaunchCmdID_ListItemText_MatchesVbColumns()
+        {
+            // VB 版 Command.bas と同じく Lv の後に空白を入れ、ＨＰとＥＮの間には入れない
+            var f = new SRCCore.Coverage.Tests.SpecialPower.SpecialPowerTestFixture();
+            var carrier = f.AddUnit("母艦", "艦長", "味方", 1, 1);
+            var child = f.AddUnit("搭載機", "パイロット", "味方", 2, 2, level: 12, hp: 3000, en: 150);
+            carrier.LoadUnit(child);
+            var src = f.Src;
+            src.Commands.SelectedUnit = carrier;
+            src.Commands.CommandState = "コマンド選択";
+
+            string text = null;
+            f.GUI.ListBoxHandler = args => { text = args.Items[0].Text; return 0; };
+
+            try { src.Commands.UnitCommand(new UiCommand(Command.LaunchCmdID, "発進")); }
+            catch (GUINotImplementedException) { }
+
+            Assert.AreEqual(
+                GeneralLib.RightPaddedString("搭載機", 25)
+                    + GeneralLib.RightPaddedString("パイロット", 17)
+                    + "12 3000/3000   150/150 ",
+                text);
         }
     }
 }
