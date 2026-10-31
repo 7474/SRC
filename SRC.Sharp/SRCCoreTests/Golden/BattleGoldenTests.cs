@@ -12,7 +12,7 @@ using static SRCCore.Coverage.Tests.UnitWeaponCov.UnitWeaponCovHelper;
 namespace SRCCore.Golden.Tests
 {
     /// <summary>
-    /// 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率）を、組み合わせごとの表にして固定する（#1355）。
+    /// 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）を、組み合わせごとの表にして固定する（#1355）。
     /// いまの結果を Golden/Battle/expected.txt に置き、変わったら知らせる。正しさの確かめは
     /// UnitWeaponCovCombatTests など（VB 版を期待値にしたもの）が受け持ち、ここは「変わっていないこと」を見る。
     /// 意図して変えたときは、SRC_GOLDEN_UPDATE=1 で表を作り直し、差分を PR に載せる（docs/testing.md）。
@@ -76,7 +76,7 @@ namespace SRCCore.Golden.Tests
         {
             var sb = new StringBuilder();
             sb.Append("# 戦闘の計算結果（BattleGoldenTests が作る。手で直さない）\n");
-            sb.Append("# 攻撃側のパイロット/ユニット | 武器 | 防御側 | 地形 | 距離 | 気力 | スペシャルパワー => 使える 命中率 ダメージ クリティカル率\n");
+            sb.Append("# 攻撃側のパイロット/ユニット | 武器 | 防御側 | 地形 | 距離 | 気力 | スペシャルパワー => 使える 命中率 ダメージ クリティカル率 期待ダメージ\n");
             foreach (var pilot in AttackerPilots)
             {
                 var weapons = NewBattle(pilot, "基準機", Terrains[0], 1, 100).Attacker.Weapons.Select(w => w.Name).ToList();
@@ -104,7 +104,7 @@ namespace SRCCore.Golden.Tests
                                         var w = b.Attacker.Weapons.First(x => x.Name == weapon);
                                         sb.Append($"{pilot}/基準機 | {weapon} | {target} | {terrain.Name} | {distance} | {morale} | {sp.Label} => ")
                                             .Append(w.IsWeaponAvailable("移動前") ? "可" : "不可")
-                                            .Append($" {w.HitProbability(b.Target, true)} {w.Damage(b.Target, true)} {w.CriticalProbability(b.Target)}\n");
+                                            .Append($" {w.HitProbability(b.Target, true)} {w.Damage(b.Target, true)} {w.CriticalProbability(b.Target)} {w.ExpDamage(b.Target, true)}\n");
                                     }
                                 }
                             }
