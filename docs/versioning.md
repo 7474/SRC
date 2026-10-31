@@ -15,7 +15,7 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
 - **パッチ**: 上げる時期は定めない
 - **マイナーとパッチは両系統で共通**（アプリ 3.5.0 ↔ ライブラリ 0.5.0）
 
-値は `SRC.Sharp/Directory.Build.props` の 1 か所で決める（`SrcSharpVersionMinor`・`SrcSharpVersionPatch`）。各プロジェクトは `SrcSharpAppVersion` か `SrcSharpLibraryVersion` を参照する。
+値は `SRC.Sharp/Directory.Build.props` の 1 か所で決める（`SrcSharpVersionMinor`・`SrcSharpVersionPatch`）。手で書き換えず、`tools/release.py bump` で上げる。各プロジェクトは `SrcSharpAppVersion` か `SrcSharpLibraryVersion` を参照する。
 
 ### シナリオから見えるバージョン
 
@@ -32,11 +32,16 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
 
 ## リリース
 
-リリースは、タグを明示的に打った場合のみ行う。
+リリースは、タグを明示的に打った場合のみ行う。作業の詳しい順は `.claude/skills/release/SKILL.md`（スキル `release`）にある。
 
-1. `SRC.Sharp/Directory.Build.props` のマイナー・パッチを決めて master に入れる
-2. アプリのバージョンでタグを打つ（`v3.<マイナー>.<パッチ>`）
-3. `.github/workflows/Publish-Package.yml` が、タグとバージョンが一致することを確かめてから公開する
+1. `python3 tools/release.py bump` で版を上げる。次のものが変わる。
+   - `SRC.Sharp/Directory.Build.props` のマイナー・パッチ
+   - VS Code 拡張の `package.json`・`package-lock.json` の版
+   - VS Code 拡張の `CHANGELOG.md` に節を足す
+   - リリースの案内 `docs/releases/v<版>.md` をひな形から作る
+2. 案内と CHANGELOG を書き（[リリースの案内](./releases/README.md)）、PR にして master に入れる。CI の `release-check`（`release.py check`）が、版・CHANGELOG・案内が揃っているかを確かめる
+3. アプリのバージョンでタグを打つ（`v3.<マイナー>.<パッチ>`）
+4. 公開ワークフローが、タグと版・CHANGELOG・案内が揃っていることを確かめてから公開する（`release.py check --tag`）。リリースの本文は `docs/releases/v<版>.md` になる
 
 | 公開先 | 内容 | バージョン |
 |---|---|---|
@@ -50,14 +55,14 @@ GitHub Pages（データビューア・SRC#Web）は master に入るたびに�
 
 ### VS Code 拡張
 
-VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` として出す。版はライブラリ（srcsharp）と同じにする。`package.json` の `version` は手で上げ、CI（`CI.yml`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。
+VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` として出す。版はライブラリ（srcsharp）と同じにする。`package.json` の `version` は `release.py bump` が上げ、CI（`CI.yml` の `release-check`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。
 
 `.github/workflows/Publish-VSCode.yml` が次のことをする。
 
 - タグ（`v*`）の push で動く。
   - .vsix を作り、GitHub Release に添付する。
   - [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode) と Open VSX に出す。
-  - 拡張の版（`package.json` の `version`）が公開済みなら、出さずに飛ばす（`--skip-duplicate`）。拡張を出すときは、`version` と `CHANGELOG.md` を上げてからタグを打つ。
+  - 拡張の版（`package.json` の `version`）が公開済みなら、出さずに飛ばす（`--skip-duplicate`）。`CHANGELOG.md` に版の節が無いと、タグの公開は止まる（`release.py check --tag`）。
 - 手動実行もできる。
   - `publish` は、タグを打たずに出す。
 - 版のマイナーが 7 以上の奇数ならプレリリース、それ以外（0.5.x と偶数）は正式版として出す（[Pre-release extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions)）。タグの push でも手動実行でも同じ。

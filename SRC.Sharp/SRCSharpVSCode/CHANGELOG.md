@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.5
+
+- The version follows the SRC# library version (srcsharp 0.5.5).
+- No changes to the extension itself. srcsharp 0.5.5 adds the "オートプレイ" map command and the fixes listed in the SRC# 3.5.5 release notes.
+
 ## 0.5.4
 
 - The version follows the SRC# library version (srcsharp 0.5.4).

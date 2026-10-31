@@ -2,7 +2,7 @@ name: Publish VS Code Extension
 
 # VS Code 拡張（SRC.Sharp/SRCSharpVSCode、koudenpa.src-vscode）を Visual Studio Marketplace と Open VSX に出す。
 # - タグ（v*）の push: .vsix を作って GitHub Release に添付し、Marketplace・Open VSX に出す。
-#   拡張の版（package.json）は SRC# 本体と別に管理し、公開済みの版なら飛ばす（--skip-duplicate）。
+#   拡張の版（package.json）はライブラリと同じ。公開済みの版なら飛ばす（--skip-duplicate）。
 # - 手動実行: publish（公開）か profile-id（Marketplace の publisher に加える ID を出す）。
 # - 版（package.json）のマイナーが 7 以上の奇数ならプレリリース、それ以外は正式版として出す。
 #   0.5.x は、プレリリースだと既存の利用者の版が切り替わらないため正式版で出す。
@@ -68,6 +68,12 @@ jobs:
         working-directory: SRC.Sharp/SRCSharpVSCode
     steps:
       - uses: actions/checkout@v7
+
+      # タグで動くときは、タグと版・CHANGELOG・リリースの案内が揃っているかを確かめてから出す（Publish-Package.yml と同じ）
+      - name: Check version
+        if: github.event_name == 'push'
+        working-directory: .
+        run: python3 tools/release.py check --tag "$GITHUB_REF_NAME"
 
       - uses: actions/setup-node@v7
         with:

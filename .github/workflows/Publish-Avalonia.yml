@@ -33,6 +33,11 @@ jobs:
         with:
           ref: ${{ env.TAG }}
 
+      # タグで動くときは、タグと版・リリースの案内が揃っているかを確かめてから添付する（Publish-Package.yml と同じ）
+      - name: Check version
+        if: github.event_name == 'push'
+        run: python3 tools/release.py check --tag "$TAG"
+
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
