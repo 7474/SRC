@@ -10,6 +10,6 @@
   "license": "",
   "dependencies": {},
   "devDependencies": {
-    "cypress": "^15.15.0"
+    "cypress": "^16.2.0"
   }
 }
