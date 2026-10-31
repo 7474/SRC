@@ -282,6 +282,8 @@ jobs:
 
     - name: Summarize SRC#Web AOT tests
       if: always()
+      env:
+        PERF_MODE: aot
       run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web AOT（Playwright）' >> "$GITHUB_STEP_SUMMARY"
 
     - name: Upload SRC#Web AOT test report

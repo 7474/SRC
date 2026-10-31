@@ -1,1 +1,1 @@
-{ "interpreter": {}, "aot": {} }
+{ "interpreter": { "lantern-start-ms": 2055 }, "aot": { "lantern-start-ms": 2061 } }
