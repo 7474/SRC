@@ -1,7 +1,12 @@
 # マイナー・パッチの更新はディレクトリ（エコシステム）ごとに 1 つの PR にまとめ、CI が通れば自動でマージする
 # （.github/workflows/dependabot-auto-merge.yml、docs/testing.md）。メジャーの更新は個別の PR にし、人が確かめてマージする
 updates:
-- directory: /SRC.Sharp/
+# NuGet の版は SRC.Sharp/Directory.Packages.props の 1 か所で決める（Central Package Management）。
+# SRCSharpWeb・SRCLintWeb はソリューションに入っていないため、ディレクトリを並べて対象にする（#1352）
+- directories:
+  - /SRC.Sharp/
+  - /SRC.Sharp/SRCSharpWeb/
+  - /SRC.Sharp/SRCLintWeb/
   groups:
     # SkiaSharp は管理側とネイティブ（NativeAssets.*）の版が揃っていないと起動時に失敗するため、
     # メジャーの更新も 1 つの PR にまとめる（人が確かめてマージする）。マイナー・パッチは下の nuget-minor-patch に入る
@@ -39,6 +44,21 @@ updates:
       - minor
       - patch
   package-ecosystem: github-actions
+  schedule:
+    interval: daily
+# VS Code 拡張・SRC#Web の E2E・データビューアの E2E の npm。CI でビルド・テストしている（#1352）
+- directories:
+  - /SRC.Sharp/SRCSharpVSCode/
+  - /SRC.Sharp/SRCSharpWeb.E2E/
+  - /SRC.Sharp/SRCTestBlazor/E2E/
+  groups:
+    npm-minor-patch:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+  package-ecosystem: npm
   schedule:
     interval: daily
 version: 2

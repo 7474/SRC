@@ -57,7 +57,8 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 | 更新 | 扱い |
 |---|---|
-| `SRC.Sharp/` の NuGet（`nuget-minor-patch`） | 自動マージ |
+| `SRC.Sharp/` の NuGet（`nuget-minor-patch`。版は `SRC.Sharp/Directory.Packages.props` の 1 か所。ソリューションに無い `SRCSharpWeb`・`SRCLintWeb` もディレクトリを並べて対象にする） | 自動マージ |
+| npm（`npm-minor-patch`。VS Code 拡張・SRC#Web の E2E・データビューアの E2E） | 自動マージ |
 | `SRC.Sharp.Help/` の bundler（`bundler-minor-patch`） | 自動マージ（`build-help` で Jekyll のビルドを確かめる） |
 | GitHub Actions（`actions-minor-patch`） | 自動マージ |
 | SkiaSharp のメジャーの更新（`skiasharp-major`） | `SkiaSharp*` をまとめて 1 つの PR にする（管理側とネイティブの版が揃わないと動かないため）。人が確かめてマージする |

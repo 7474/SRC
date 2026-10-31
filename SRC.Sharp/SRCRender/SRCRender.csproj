@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <!-- Avalonia.Skia が依存する版に合わせる -->
-    <PackageReference Include="SkiaSharp" Version="4.154.0" />
+    <PackageReference Include="SkiaSharp" />
   </ItemGroup>
 
   <ItemGroup>

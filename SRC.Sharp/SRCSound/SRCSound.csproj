@@ -10,13 +10,13 @@
 
   <ItemGroup>
     <!-- OpenAL のバインディング（MIT）。https://github.com/dotnet/Silk.NET -->
-    <PackageReference Include="Silk.NET.OpenAL" Version="2.23.0" />
+    <PackageReference Include="Silk.NET.OpenAL" />
     <!-- OpenAL Soft のネイティブライブラリ（LGPL-2.0-or-later、動的リンク）。https://github.com/kcat/openal-soft -->
-    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.23.1" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" />
     <!-- MP3 デコーダ（MIT）。https://github.com/naudio/NLayer -->
-    <PackageReference Include="NLayer" Version="3.0.0" />
+    <PackageReference Include="NLayer" />
     <!-- MIDI シンセサイザ（MIT、SoundFont が必要）。https://github.com/sinshu/meltysynth -->
-    <PackageReference Include="MeltySynth" Version="2.4.1" />
+    <PackageReference Include="MeltySynth" />
   </ItemGroup>
 
   <ItemGroup>

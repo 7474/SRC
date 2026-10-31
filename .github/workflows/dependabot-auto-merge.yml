@@ -25,7 +25,7 @@ jobs:
 
       # CI でビルド・テストしているもののグループだけ（メジャーの更新・セキュリティの更新は人がマージする）
       - name: Enable auto-merge
-        if: contains(fromJSON('["nuget-minor-patch", "bundler-minor-patch", "actions-minor-patch"]'), steps.metadata.outputs.dependency-group)
+        if: contains(fromJSON('["nuget-minor-patch", "bundler-minor-patch", "actions-minor-patch", "npm-minor-patch"]'), steps.metadata.outputs.dependency-group)
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}

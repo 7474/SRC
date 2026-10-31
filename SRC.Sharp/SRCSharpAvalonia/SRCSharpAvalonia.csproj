@@ -14,13 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.1.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.1.4" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.14" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <!-- Avalonia.Skia は SkiaSharp 3 の Linux のネイティブライブラリを引くため、SRCRender の SkiaSharp と版を揃える
          （管理側とネイティブの版が違うと起動時に失敗する。Windows・macOS のものは SkiaSharp が引く） -->
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.154.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
   </ItemGroup>
 
   <ItemGroup>
