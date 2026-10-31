@@ -21,7 +21,7 @@
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
-| 配信後の確認 | 配信したデータビューアが開き、データを読めること | マージの可否（マージの後に動く） | `SRCTestBlazor/E2E`（Cypress） | `CD-swa-dataviewer.yml` の `e2e` |
+| 配信後の確認 | 配信したデータビューアが開き、データを読めること | マージの可否（マージの後に動く） | `SRCSharpWeb.E2E/tests/deployed.spec.js`（Playwright。配信した先を `DEPLOYED_URL` で渡す） | `CD-swa-dataviewer.yml` の `e2e` |
 | 計測 | カバレッジ（テストのあるすべてのアセンブリを合わせたもの）、PR で変えた行のカバレッジ（`.github/scripts/diff-coverage.py`。50% を下回ると warning）、シナリオで実行したコマンドの網羅率 | マージの可否（`ci-passed` は待たない） | — | `CI.yml` の `coverage`（PR と master への push。Mackerel には push のときだけ送る） |
 
 テストを足すときは、上の表で「保証すること」に当たる層に足す。シナリオの挙動を Playwright や Avalonia のテストで確かめたくなったら、まずコーパスにケースを足せないかを考える。
@@ -93,7 +93,7 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 - まとめるのは、同じファイル（`.csproj`・`packages.config` など）を書き換える PR が何本も並び、1 本マージするたびに残りが競合して作り直しになるのを避けるため
 - `GITHUB_TOKEN` で設定した自動マージによる push では、push で動くワークフロー（GitHub Pages・Static Web Apps への配信、`coverage`）が動かない（[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)）。次に人がマージしたときにまとめて配信される。すぐに配信したい場合は、Dependabot のシークレットに `AUTOMERGE_TOKEN`（このリポジトリの contents・pull requests に書き込める fine-grained personal access token）を登録すると、それで自動マージを設定する（[Dependabot のシークレット](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）
-- Dependabot の PR では Actions のシークレットが渡されないため、Static Web Apps のプレビュー環境への配信と、その後の Cypress は省く（[Static Web Apps のワークフロー](./swa-workflows.md)）
+- Dependabot の PR では Actions のシークレットが渡されないため、Static Web Apps のプレビュー環境への配信と、その後の E2E は省く（[Static Web Apps のワークフロー](./swa-workflows.md)）
 
 ## 速さの計測
 
@@ -126,6 +126,5 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 ## 残っている課題
 
 - Playwright の flaky なテスト（`シナリオを読み込んでいる間はほかの操作を受け付けない`・`アーカイブを追加し、再読み込み後もプレイできる` など、読み込みの待ちのタイムアウト）の待ちの条件を直す
-- `SRCTestBlazor/E2E`（Cypress）は配信した後に動き、外部（`7474/SRC-Data`）のデータを読む。マージの可否には使わない
+- `SRCSharpWeb.E2E/tests/deployed.spec.js` は配信した後に動き、外部（`7474/SRC-Data`）のデータを読む。マージの可否には使わない
 - SRC#Help の Ruby は Static Web Apps（Oryx）に合わせて 3.1 のままで、`Gemfile.lock` には Ruby 3.2 以上が要る版（`public_suffix` 7.0.5・`google-protobuf` 4.36 など）が入っている。Oryx と `build-help` は `Gemfile.lock` を固定せずに入れられる版に解決し直してビルドしている。Ruby を上げるか、Ruby 3.1 で `Gemfile.lock` を作り直す
-- npm の依存（`SRCSharpWeb.E2E`・`SRCSharpVSCode`・`SRCTestBlazor/E2E`）は Dependabot の対象に入っていない
