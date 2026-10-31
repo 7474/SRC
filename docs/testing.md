@@ -32,8 +32,12 @@
 
 | 対象 | テスト | 表 |
 |---|---|---|
-| 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+| 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+| 攻撃 1 回の結果。乱数の種を組み合わせごとに固定して Attack コマンド（通常戦闘）を 1 回動かし、両方の HP・EN・位置と戦闘のメッセージを記録する。武器（属性違い 16 種）× 防御側（シールド・バリア・フィールド・切り払い・迎撃・分身・反射・当て身技・自動反撃・広域の防御・パイロットの能力による強化など 45 種）× 防御の仕方（反撃・防御・回避）。どの防御の特殊能力が働いたか・反撃の結果がメッセージに出る | `SRCCoreTests/Golden/AttackGoldenTests.cs` | `SRCCoreTests/Golden/Attack/expected.txt`（データは同じフォルダの `Data/`） |
+| 武器の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）。攻撃側のパイロット（技能の有無）× 武器（属性違い・特殊効果つきの 25 種）× 防御側（上の防御側・大きさ違い・特殊効果無効化など 50 種）× 距離。一部はオプション（距離修正・ダメージ倍率低下など）とバトルコンフィグデータ（`Attack/battle.txt`）を変えて見る | 同上 | `SRCCoreTests/Golden/Attack/calc.txt`（データは `Attack/Data`） |
 | 敵の思考（`COM.OperateUnit`）。敵 5 体・味方 3 体の戦場で、乱数の種を固定して敵を 5 回ずつ動かし、行動のたびに全ユニットの位置・HP・EN・気力を記録する。移動先・武器・対象の選び方と、命中・ダメージの判定が変わると記録が変わる | `SRCCoreTests/Golden/ComGoldenTests.cs` | `SRCCoreTests/Golden/Com/expected.txt`（データは `Battle/Data` と同じ） |
+
+表のデータ（`Data/` のユニット・パイロット）はテストごとに分ける。`Battle/Data` を変えると `Com/expected.txt` まで変わるため、新しい組み合わせは別のフォルダに足す。
 
 意図して結果を変えたときは、表を作り直して差分を PR に載せる。人のレビューは必須にしない（自動化を優先し、リグレッションが起きたら見直す）。
 
