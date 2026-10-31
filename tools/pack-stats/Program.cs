@@ -172,13 +172,13 @@ namespace PackStats
             Console.WriteLine();
             Console.WriteLine("## ユニット（ユニットの経験値の帯。25%〜75%（中央値））");
             Console.WriteLine();
-            Console.WriteLine("| ユニットの経験値 | 体数 | HP | EN | 装甲 | 運動性 | 移動力 | 最大攻撃力 | 武器数 |");
-            Console.WriteLine("|---|--:|---|---|---|---|---|---|---|");
+            Console.WriteLine("| ユニットの経験値 | 体数 | HP | EN | 装甲 | 運動性 | 移動力 | 最大攻撃力 | 最大射程 | 武器数 |");
+            Console.WriteLine("|---|--:|---|---|---|---|---|---|---|---|");
             foreach (var b in UnitBands)
             {
                 var g = us.Where(u => ExpBand(u.ExpValue) == b).ToList();
                 if (g.Count == 0) continue;
-                Console.WriteLine($"| {b} | {g.Count} | {Iqr(g.Select(u => u.HP))} | {Iqr(g.Select(u => u.EN))} | {Iqr(g.Select(u => u.Armor))} | {Iqr(g.Select(u => u.Mobility))} | {Iqr(g.Select(u => u.Speed))} | {Iqr(g.Select(u => u.Weapons.Max(w => w.Power)))} | {Iqr(g.Select(u => u.Weapons.Count))} |");
+                Console.WriteLine($"| {b} | {g.Count} | {Iqr(g.Select(u => u.HP))} | {Iqr(g.Select(u => u.EN))} | {Iqr(g.Select(u => u.Armor))} | {Iqr(g.Select(u => u.Mobility))} | {Iqr(g.Select(u => u.Speed))} | {Iqr(g.Select(u => u.Weapons.Max(w => w.Power)))} | {Iqr(g.Select(u => u.Weapons.Max(w => w.MaxRange)))} | {Iqr(g.Select(u => u.Weapons.Count))} |");
             }
 
             Console.WriteLine();
@@ -198,6 +198,33 @@ namespace PackStats
             Console.WriteLine($"- 攻撃力（攻撃するもの）: {Iqr(ws.Where(w => w.Power > 0).Select(w => w.Power))}");
             Console.WriteLine($"- 命中補正: {Iqr(ws.Select(w => w.Precision))}");
             Console.WriteLine($"- クリティカル率: {Iqr(ws.Select(w => w.Critical))}");
+
+            // 射程ごと（マップ兵器を除く、攻撃するもの）
+            var sw = ws.Where(w => !IsMap(w) && w.Power > 0).ToList();
+            Console.WriteLine();
+            Console.WriteLine("## 武器の射程（マップ兵器を除く。25%〜75%（中央値））");
+            Console.WriteLine();
+            Console.WriteLine("| 最大射程 | 件数 | 割合 | 最小射程 2 以上 | 攻撃力 | 命中補正 | 移動後に使える（Ｐ） |");
+            Console.WriteLine("|---|--:|--:|--:|---|---|--:|");
+            foreach (var (label, f) in new (string, Func<WeaponData, bool>)[] {
+                ("1", w => w.MaxRange == 1), ("2", w => w.MaxRange == 2), ("3", w => w.MaxRange == 3),
+                ("4", w => w.MaxRange == 4), ("5", w => w.MaxRange == 5), ("6 以上", w => w.MaxRange >= 6) })
+            {
+                var g = sw.Where(f).ToList();
+                if (g.Count == 0) continue;
+                Console.WriteLine($"| {label} | {g.Count} | {Pct(g.Count, sw.Count)} | {Pct(g.Count(w => w.MinRange >= 2), g.Count)} | {Iqr(g.Select(w => w.Power))} | {Iqr(g.Select(w => w.Precision))} | {Pct(g.Count(w => w.Class.Contains("Ｐ")), g.Count)} |");
+            }
+            Console.WriteLine();
+            Console.WriteLine("ユニットごとの射程 3 以上の武器（マップ兵器を除く）を持つ割合（ユニットの経験値の帯）");
+            Console.WriteLine();
+            Console.WriteLine("| ユニットの経験値 | 割合 |");
+            Console.WriteLine("|---|--:|");
+            foreach (var b in UnitBands)
+            {
+                var g = us.Where(u => ExpBand(u.ExpValue) == b).ToList();
+                if (g.Count == 0) continue;
+                Console.WriteLine($"| {b} | {Pct(g.Count(u => u.Weapons.Any(w => !IsMap(w) && w.Power > 0 && w.MaxRange >= 3)), g.Count)} |");
+            }
         }
 
         // ---- tiers
@@ -251,20 +278,44 @@ namespace PackStats
             Console.WriteLine();
             Console.WriteLine($"マップ兵器を持つユニット: {withMap} / {us.Count}（{Pct(withMap, us.Count)}）");
             Console.WriteLine();
-            Console.WriteLine("| 種類 | 件数（攻撃するもの） | 攻撃力 | EN | 気力 | 識の割合 | 弾数制の割合 |");
-            Console.WriteLine("|---|--:|---|---|---|--:|--:|");
+            Console.WriteLine("| 種類 | 件数（攻撃するもの） | 攻撃力 | 最大射程 | EN | 気力 | 識の割合 | 弾数制の割合 |");
+            Console.WriteLine("|---|--:|---|---|---|---|--:|--:|");
             var ws = us.SelectMany(u => u.Weapons).ToList();
             foreach (var k in MapKinds)
             {
                 var g = ws.Where(w => w.Class.Contains(k) && w.Power > 0).ToList();
                 if (g.Count == 0) continue;
-                Console.WriteLine($"| {k} | {g.Count} | {Iqr(g.Select(w => w.Power))} | {Iqr(g.Where(w => w.ENConsumption > 0).Select(w => w.ENConsumption))} | {Iqr(g.Where(w => w.NecessaryMorale > 0).Select(w => w.NecessaryMorale))} | {Pct(g.Count(w => w.Class.Contains("識")), g.Count)} | {Pct(g.Count(w => w.Bullet > 0), g.Count)} |");
+                Console.WriteLine($"| {k} | {g.Count} | {Iqr(g.Select(w => w.Power))} | {Iqr(g.Select(w => w.MaxRange))} | {Iqr(g.Where(w => w.ENConsumption > 0).Select(w => w.ENConsumption))} | {Iqr(g.Where(w => w.NecessaryMorale > 0).Select(w => w.NecessaryMorale))} | {Pct(g.Count(w => w.Class.Contains("識")), g.Count)} | {Pct(g.Count(w => w.Bullet > 0), g.Count)} |");
             }
             var ratio = us
                 .Where(u => u.Weapons.Any(w => IsMap(w) && w.Power > 0) && u.Weapons.Any(w => !IsMap(w) && w.Power > 0))
                 .Select(u => (int)(100.0 * u.Weapons.Where(IsMap).Max(w => w.Power) / u.Weapons.Where(w => !IsMap(w)).Max(w => w.Power)));
             Console.WriteLine();
             Console.WriteLine($"マップ兵器の最大攻撃力 ÷ 単体武器の最大攻撃力（%）: {Iqr(ratio)}");
+
+            // 範囲のレベル（Ｍ扇・Ｍ投）
+            foreach (var k in new[] { "Ｍ扇", "Ｍ投" })
+            {
+                var g = ws.Where(w => w.Class.Contains(k) && w.Power > 0).ToList();
+                if (g.Count == 0) continue;
+                Console.WriteLine();
+                Console.WriteLine($"{k} の範囲のレベルごと（25%〜75%（中央値））");
+                Console.WriteLine();
+                Console.WriteLine("| レベル | 件数 | 攻撃力 | 最大射程 | EN | 気力 |");
+                Console.WriteLine("|---|--:|---|---|---|---|");
+                foreach (var lg in g.GroupBy(w => MapLevel(w, k)).OrderBy(x => x.Key))
+                {
+                    var a = lg.ToList();
+                    Console.WriteLine($"| {(lg.Key < 0 ? "書かれていない" : "L" + lg.Key)} | {a.Count} | {Iqr(a.Select(w => w.Power))} | {Iqr(a.Select(w => w.MaxRange))} | {Iqr(a.Where(w => w.ENConsumption > 0).Select(w => w.ENConsumption))} | {Iqr(a.Where(w => w.NecessaryMorale > 0).Select(w => w.NecessaryMorale))} |");
+                }
+            }
+        }
+
+        // 「Ｍ投L2」のような属性のレベル。書かれていなければ -1
+        private static int MapLevel(WeaponData w, string kind)
+        {
+            var m = Regex.Match(w.Class, kind + "L(\\d+)");
+            return m.Success ? int.Parse(m.Groups[1].Value) : -1;
         }
 
         private static void MapList(Data d, string pattern)
