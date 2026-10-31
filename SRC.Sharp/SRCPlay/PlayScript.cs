@@ -1,6 +1,7 @@
 using SRCCore;
 using SRCRender;
 using SRCCore.Units;
+using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -327,6 +328,20 @@ namespace SRCPlay
                         var op = tokens[opIndex];
                         var lhs = string.Join(" ", tokens.Take(opIndex));
                         var rhs = string.Join(" ", tokens.Skip(opIndex + 1));
+                        var (ls, rs) = OnGame(() => (Src.Expression.GetValueAsString(lhs), Src.Expression.GetValueAsString(rhs)));
+                        if (!GeneralLib.IsNumber(ls) || !GeneralLib.IsNumber(rs))
+                        {
+                            // 数値でない側があれば文字列として比べる（数値として比べると、どちらも 0 になって常に成り立つ）
+                            if (op != "=" && op != "<>")
+                            {
+                                throw new PlayScriptException($"{lhs}（{ls}） {op} {rhs}（{rs}）: 文字列は = か <> で比べてください");
+                            }
+                            if ((ls == rs) != (op == "="))
+                            {
+                                throw new PlayScriptException($"{lhs}（{ls}） {op} {rhs}（{rs}） が成り立ちません");
+                            }
+                            break;
+                        }
                         var (l, r) = OnGame(() => (Src.Expression.GetValueAsDouble(lhs), Src.Expression.GetValueAsDouble(rhs)));
                         bool ok;
                         switch (op)

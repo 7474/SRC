@@ -76,7 +76,7 @@ PlayScript の実装は `SRC.Sharp/SRCPlay` にある。作成支援ツールの
 | `stall 秒` | 待ちの状態でないまま進まない（`KeyState` でクリックを待つ演出など）ときにボタンを押すまでの時間（既定 5 秒）。押したボタンは、`KeyState` に読まれた時点（最長 300ms）で離す。`--skip-wait` のときは、直近に `KeyState` が読まれている（スクリプトが入力を待っている）ときだけ押し、読まれていなければ処理中とみなして 5 秒まで押さない |
 | `snapshot 名前` | 画面を保存する（`TestResults/e2e/ケース名/`、CI の成果物 `screenshots`） |
 | `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる。`log` はスクリプトの行の記録（`SCRIPT` の行）を見ない |
-| `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`） |
+| `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`）。両辺が数値なら数値として、どちらかが数値でなければ文字列として比べる（文字列は `=`・`<>` だけ。例: `expect eval Unit(テストパイロット) = テスト機`） |
 
 ```text
 # battle-basic/play.txt
