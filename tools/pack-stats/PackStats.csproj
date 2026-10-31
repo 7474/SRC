@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    GSC データパックの実態の集計（7474/SRC-Data の docs/データ作成ガイドライン.md の表を再現する）。
+    srcsharp の機能ではない。ソリューション・CI には入れない。使い方は README.md。
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <RootNamespace>PackStats</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../SRC.Sharp/SRCCore/SRCCore.csproj" />
+  </ItemGroup>
+
+</Project>
