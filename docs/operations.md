@@ -53,7 +53,7 @@ flowchart LR
 |---|---|---|---|
 | `CI.yml` | PR・master への push | ビルドとテスト、版と案内の確かめ（`release-check`）。結果を `ci-passed` にまとめる。push のときだけカバレッジを計る（`coverage`） | `ci-passed`（ブランチ保護の必須チェック）・Mackerel（サービス `SRCS` のカバレッジ） |
 | `Packages.yml` | master への push（`SRC.Sharp/` を変えたとき）・手動 | 配る形で作って起動を確かめる。SRC#Avalonia の単一ファイル（linux-x64・win-x64 は `--smoke` で起動、osx は作るだけ）と、srcsharp の pack → tool install → `--version`・`lint`（#1359） | なし（確かめるだけ。Actions の成果物に 7 日残す） |
-| `CD-pages.yml` | master への push | データビューア（`SRCTestBlazor`）をルートに、SRC#Web を `web/` に置いて発行する | GitHub Pages（https://7474.github.io/SRC/ ・ https://7474.github.io/SRC/web/ ） |
+| `CD-pages.yml` | master への push | データビューア（`SRCDataViewer`）をルートに、SRC#Web を `web/` に置いて発行する | GitHub Pages（https://7474.github.io/SRC/ ・ https://7474.github.io/SRC/web/ ） |
 | `CD-swa-dataviewer.yml` | master への push・PR（`SRC.Sharp/` を変えたとき） | `CD-pages.yml` と同じ構成を発行する。PR ではプレビュー環境に出して E2E を流し、PR が閉じたら閉じる | Static Web Apps（https://srcv.7474.jp/ ） |
 | `CD-swa-help.yml` | master への push・PR（`SRC.Sharp.Help/` を変えたとき） | ヘルプ（Jekyll）を発行する。プレビュー環境の扱いは上と同じ | Static Web Apps（https://srch.7474.jp/ ） |
 | `CD-swa-cleanup-previews.yml` | 毎日 03:17 JST・手動・このワークフローを変えた PR | PR が閉じたのに残っているプレビュー環境を閉じる | Static Web Apps |
@@ -87,7 +87,7 @@ flowchart LR
 |---|---|---|
 | SRC#Web（`SRCSharpWeb`） | `/play/` で遊ぶ | SRC-Site の配信（main への push・PR・手動） |
 | lint（`SRCLintWeb`） | シナリオの投稿の前の確かめ | 同上 |
-| データビューア（`SRCTestBlazor`） | `/viewer/` でシナリオ・共有パックを見る | 同上 |
+| データビューア（`SRCDataViewer`） | `/viewer/` でシナリオ・共有パックを見る | 同上 |
 | `srcsharp`（`SRCSharpTools`） | サンドボックスのシナリオを画面なしで通す | SRC-Site のサンドボックスの CI（`sandbox/` を変えたとき・毎週） |
 
 取り込む 7474/SRC の版は、SRC-Site の変数 `SRC_REF`（既定は `master`）で決まる。**7474/SRC をマージしても、src.koudenpa.net には SRC-Site が次に配信するまで入らない。** すぐに入れるには、SRC-Site の `Deploy` ワークフローを手動で動かす（配信先 `production`）。いま配信している版は https://src.koudenpa.net/play/version.txt で分かる。

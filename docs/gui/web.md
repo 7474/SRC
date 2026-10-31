@@ -1,6 +1,6 @@
 # SRC#Web（ブラウザ版）
 
-ブラウザで動く SRC#。データビューアの `SRCTestBlazor` とは別のプロジェクト `SRCSharpWeb`。
+ブラウザで動く SRC#。データビューアの `SRCDataViewer` とは別のプロジェクト `SRCSharpWeb`。
 
 ## 方針
 
@@ -264,7 +264,7 @@ flowchart LR
 
 ## 配置
 
-GitHub Pages に、データビューア（`SRCTestBlazor`）と同じサイトの `web/` として置く（`.github/workflows/CD-pages.yml`）。master に入るたびに更新する開発版。
+GitHub Pages に、データビューア（`SRCDataViewer`）と同じサイトの `web/` として置く（`.github/workflows/CD-pages.yml`）。master に入るたびに更新する開発版。
 
 Azure Static Web Apps（データビューアの配信先、`.github/workflows/CD-swa-dataviewer.yml`）にも、同じく `web/` として置く。pull request ごとのプレビュー環境で、マージ前の SRC#Web を試せる（プレビュー環境の URL の `/web/`）。
 - クロスオリジン分離のヘッダ（`Cross-Origin-Opener-Policy`・`Cross-Origin-Embedder-Policy`）は、`staticwebapp.config.json` で `web/` にだけ付ける。ヘッダがあるので coi-serviceworker は登録されない

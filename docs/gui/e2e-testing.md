@@ -144,4 +144,4 @@ CI（`.github/workflows/CI.yml`）の構成と、各テストの責務・マー�
 |---|---|---|
 | SRC#Avalonia | `Avalonia.Headless` で起動・入力・描画・文字入力ダイアログを確認する | [Headless Testing with XUnit](https://docs.avaloniaui.net/docs/testing/headless-xunit)、[Headless Testing Platform](https://docs.avaloniaui.net/docs/concepts/headless/) |
 | SRC#Form | UI テストは無い。作る場合は FlaUI（UIA3）で、対象は起動・終了程度にする | WinAppDriver は大きな更新がなく保守モードとされる（[TestGuild](https://testguild.com/automation-tools-desktop/)、[FlaUI.WebDriver](https://github.com/FlaUI/FlaUI.WebDriver)） |
-| SRCTestBlazor | 配信の前は `viewer.spec.js`、配信した後は `deployed.spec.js`（どちらも Playwright。Cypress から移した） | — |
+| SRCDataViewer | 配信の前は `viewer.spec.js`、配信した後は `deployed.spec.js`（どちらも Playwright。Cypress から移した） | — |

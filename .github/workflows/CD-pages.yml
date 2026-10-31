@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PUBLISH_DIR: SRC.Sharp/SRCTestBlazor/bin/Release/net10.0/publish/wwwroot
+  PUBLISH_DIR: SRC.Sharp/SRCDataViewer/bin/Release/net10.0/publish/wwwroot
   # SRC#Web（ブラウザ版）は同じサイトの web/ に置く
   WEB_PUBLISH_DIR: SRC.Sharp/SRCSharpWeb/bin/pages
 
@@ -32,7 +32,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Build project
-        run: dotnet publish SRC.Sharp/SRCTestBlazor/SRCTestBlazor.csproj -c Release
+        run: dotnet publish SRC.Sharp/SRCDataViewer/SRCDataViewer.csproj -c Release
 
       # マルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要
       - name: Build SRC#Web

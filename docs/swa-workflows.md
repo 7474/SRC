@@ -4,7 +4,7 @@ Azure Static Web Apps（SWA）へのデプロイと、その後始末に使う�
 
 | ワークフロー | 役割 |
 | --- | --- |
-| `.github/workflows/CD-swa-dataviewer.yml` | SRC#DataViewer（`SRC.Sharp/SRCTestBlazor`）を SWA にデプロイする。PR ではプレビュー環境を作り、E2E を流す。PR が閉じたらプレビュー環境を閉じる |
+| `.github/workflows/CD-swa-dataviewer.yml` | SRC#DataViewer（`SRC.Sharp/SRCDataViewer`）を SWA にデプロイする。PR ではプレビュー環境を作り、E2E を流す。PR が閉じたらプレビュー環境を閉じる |
 | `.github/workflows/CD-swa-help.yml` | SRC#Help（`SRC.Sharp.Help`）を SWA にデプロイする。PR のプレビュー環境の扱いは上と同じ |
 | `.github/workflows/CD-swa-cleanup-previews.yml` | PR がクローズ済みなのに残っているプレビュー環境を毎日閉じる |
 

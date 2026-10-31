@@ -82,7 +82,7 @@
 | [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia) | SRC#Avalonia（Windows・macOS・Linux） | .NET 10 |
 | [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb) | SRC#Web（Blazor WebAssembly、[ドキュメント](./docs/gui/web.md)） | .NET 10 |
 | [SRCSharpForm](./SRC.Sharp/SRCSharpForm) | SRC#Form（Windows Forms、Windows） | .NET 10 |
-| [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor) | データビューア（Blazor WebAssembly） | .NET 10 |
+| [SRCDataViewer](./SRC.Sharp/SRCDataViewer) | データビューア（Blazor WebAssembly） | .NET 10 |
 | [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 10 |
 | [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 10 |
 | [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 10 |
