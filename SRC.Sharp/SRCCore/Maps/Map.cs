@@ -47,7 +47,8 @@ namespace SRCCore.Maps
             //    MapFileName = sbuf1;
             //    is_map_changed = true;
             //}
-            MapFileName = map.MapFileName;
+            // セーブデータはシナリオのフォルダからの相対パス（以前の版は絶対パス）で持つ（#1375）
+            MapFileName = SRC.ResolveSavedPath(map.MapFileName);
             MapDrawMode = map.MapDrawMode;
             MapDrawIsMapOnly = map.MapDrawIsMapOnly;
             IsMapDirty = map.IsMapDirty;
@@ -74,8 +75,16 @@ namespace SRCCore.Maps
         public const int MAX_TERRAIN_DATA_NUM = 2000;
 
         // マップファイル名
-        [JsonProperty]
         public string MapFileName;
+
+        // セーブデータ（中断・クイックセーブ・リスタート）には、シナリオのフォルダからの相対パスで持つ（#1375、VB: DumpMapData）。
+        // 読むときは Restore でいまのシナリオのフォルダで解く
+        [JsonProperty(nameof(MapFileName))]
+        private string MapFileNameForSave
+        {
+            get => SRC?.FileSystem == null ? MapFileName : SRC.ToSavedPath(MapFileName);
+            set => MapFileName = value;
+        }
         // XXX
         public bool IsStatusView => string.IsNullOrEmpty(MapFileName);
         // マップの横サイズ

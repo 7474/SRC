@@ -2,6 +2,7 @@ using System;
 using Newtonsoft.Json;
 using SRCCore.Events;
 using SRCCore.Expressions;
+using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
@@ -181,7 +182,8 @@ namespace SRCCore
                     UList = UList,
                     IList = IList,
                     // QuikSave
-                    ScenarioFileName = ScenarioFileName,
+                    // シナリオのフォルダからの相対パスで持つ。フォルダを移しても再開できる（#1375、VB: DumpData）
+                    ScenarioFileName = ToSavedPath(ScenarioFileName),
                     Turn = Turn,
                     LocalVariableList = Event.LocalVariableList,
                     DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).Distinct().ToList(),
@@ -219,6 +221,49 @@ namespace SRCCore
 
         }
 
+        /// <summary>
+        /// セーブデータに書くシナリオのファイルのパス。シナリオのフォルダの中ならシナリオのフォルダからの相対パスにする（#1375）。
+        /// </summary>
+        public string ToSavedPath(string path)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(ScenarioPath))
+            {
+                return path;
+            }
+            var relative = FileSystem.ToRelativePath(ScenarioPath, path);
+            return relative == FileSystem.NormalizePath(path) ? path : relative.TrimStart('\\');
+        }
+
+        /// <summary>
+        /// セーブデータが持つシナリオのファイル（イベント・マップ）のパスを、いまのシナリオのフォルダで解く（#1375）。
+        /// シナリオのフォルダからの相対パスならそのまま繋ぐ。
+        /// 以前の版のセーブは絶対パスで持っていたので、いまのシナリオのフォルダの外を指していれば、
+        /// 先頭から区切りを 1 つずつ外し、いまのシナリオのフォルダにあるファイルを探す（長く一致するものを先に）。
+        /// 見つからなければ元のパスのままにする。
+        /// </summary>
+        public string ResolveSavedPath(string path)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(ScenarioPath))
+            {
+                return path;
+            }
+            // 相対パス、またはいまのシナリオのフォルダの中を指す絶対パス
+            if (!FileSystem.IsAbsolutePath(path) || FileSystem.ToRelativePath(ScenarioPath, path) != FileSystem.NormalizePath(path))
+            {
+                return FileSystem.ToAbsolutePath(ScenarioPath, path);
+            }
+            var parts = FileSystem.NormalizePath(path).Split('\\', StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < parts.Length; i++)
+            {
+                var candidate = FileSystem.PathCombine(ScenarioPath, string.Join("\\", parts.Skip(i)));
+                if (FileSystem.FileExists(candidate))
+                {
+                    return candidate;
+                }
+            }
+            return path;
+        }
+
         public void RestoreData(string fname, SRCSaveKind saveKind)
         {
             // XXX FileName
@@ -251,11 +296,12 @@ namespace SRCCore
                 // XXX Version プロパティだけのオブジェクトでバージョンチェックなど
                 var data = JsonConvert.DeserializeObject<SRCSuspendData>((new StreamReader(stream).ReadToEnd()));
                 //SaveDataVersion = Conversions.ToInteger(fname2);
-                var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, data.ScenarioFileName);
+                var savedScenarioFileName = ResolveSavedPath(data.ScenarioFileName);
+                var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, savedScenarioFileName);
                 if (scenario_file_is_different)
                 {
                     // ウィンドウのタイトルを設定（セーブデータ側のシナリオ名）
-                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(data.ScenarioFileName);
+                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(PathResolver.ToNative(savedScenarioFileName));
                 }
                 Titles = data.Titles;
                 TotalTurn = data.TotalTurn;
@@ -265,7 +311,7 @@ namespace SRCCore
                 UList = data.UList;
                 IList = data.IList;
                 //
-                ScenarioFileName = FileSystem.ToAbsolutePath(ScenarioPath, data.ScenarioFileName);
+                ScenarioFileName = savedScenarioFileName;
                 Turn = data.Turn;
                 Event.LocalVariableList = data.LocalVariableList;
 

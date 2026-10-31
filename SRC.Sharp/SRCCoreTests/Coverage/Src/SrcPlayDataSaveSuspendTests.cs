@@ -168,13 +168,64 @@ namespace SRCCore.Coverage.Tests
 
             var data = Parse(Dump(f, SRCSaveKind.Suspend));
 
-            Assert.AreEqual(path, data.ScenarioFileName);
+            // シナリオのファイルとマップのファイルは、シナリオのフォルダからの相対パスで持つ（#1375、VB: DumpData・DumpMapData）
+            Assert.AreEqual("test.eve", data.ScenarioFileName);
             Assert.AreEqual(3, data.Turn);
             Assert.AreEqual(10, data.TotalTurn);
             Assert.AreEqual(5000, data.Money);
             CollectionAssert.AreEqual(new[] { "ターン 2 味方" }, data.DisableEventLabels.ToArray());
             Assert.AreEqual(3, data.Map.MapWidth);
-            Assert.AreEqual(f.Src.Map.MapFileName, data.Map.MapFileName);
+            Assert.AreEqual("test.map", data.Map.MapFileName);
+            // 書いても実行中のマップのファイル名は変わらない
+            Assert.AreEqual(Path.Combine(f.ScenarioDir, "test.map"), f.Src.Map.MapFileName);
+        }
+
+        [TestMethod]
+        public void RestoreData_InAnotherFolder_ResolvesScenarioAndMapInCurrentFolder()
+        {
+            // シナリオのフォルダを移しても（別の PC に写しても）再開できる（#1375）
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Suspend);
+
+            using var moved = new SrcPlayDataSaveFixture();
+            var path = moved.Write("test.eve", Scenario);
+            moved.Src.RestoreData(stream, SRCSaveKind.Suspend);
+
+            Assert.AreEqual(path, moved.Src.ScenarioFileName);
+            Assert.AreEqual(Path.Combine(moved.ScenarioDir, "test.map"), moved.Src.Map.MapFileName);
+            Assert.AreEqual(7, moved.Src.Expression.GetValueAsLong("進行度"));
+        }
+
+        [TestMethod]
+        public void RestoreData_LegacyAbsolutePathFromAnotherFolder_FindsFileInCurrentFolder()
+        {
+            // v3.5.5 までのセーブはシナリオのファイルを絶対パスで持っていた。別のフォルダで作ったものも、
+            // いまのシナリオのフォルダにある同じ名前のファイルで再開する（#1375）
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var json = Encoding.UTF8.GetString(Dump(f, SRCSaveKind.Suspend).ToArray());
+            var legacy = Newtonsoft.Json.Linq.JObject.Parse(json);
+            legacy["ScenarioFileName"] = "/elsewhere/old/test.eve";
+            legacy["Map"]["MapFileName"] = "/elsewhere/old/sub/test.map";
+
+            using var moved = new SrcPlayDataSaveFixture();
+            var path = moved.Write("test.eve", Scenario);
+            var map = moved.Write("sub/test.map", "");
+            moved.Src.RestoreData(new MemoryStream(Encoding.UTF8.GetBytes(legacy.ToString())), SRCSaveKind.Suspend);
+
+            Assert.AreEqual(path, moved.Src.ScenarioFileName);
+            Assert.AreEqual(map, moved.Src.Map.MapFileName);
+        }
+
+        [TestMethod]
+        public void ResolveSavedPath_KeepsPathWhenNotFound()
+        {
+            using var f = new SrcPlayDataSaveFixture();
+            Assert.AreEqual(Path.Combine(f.ScenarioDir, "a.eve"), f.Src.ResolveSavedPath("a.eve"));
+            Assert.AreEqual(Path.Combine(f.ScenarioDir, "a.eve"), f.Src.ResolveSavedPath(Path.Combine(f.ScenarioDir, "a.eve")));
+            Assert.AreEqual("/elsewhere/none.eve", f.Src.ResolveSavedPath("/elsewhere/none.eve"));
+            Assert.AreEqual("", f.Src.ResolveSavedPath(""));
         }
 
         [TestMethod]
