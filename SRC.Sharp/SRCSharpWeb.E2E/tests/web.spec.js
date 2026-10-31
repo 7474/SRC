@@ -615,6 +615,13 @@ test('取得したアーカイブはキャッシュし、version が変わるま
   });
   const play = async () => {
     await page.getByRole('button', { name: 'キャッシュするシナリオ' }).click();
+    // 前の回のリスタートのセーブ（_リスタート.srcq）がブラウザに残っていると、すぐには始まらず
+    // 「セーブデータから再開・新しく始める」を選ぶ画面になる。残るかは前の回がどこまで進んだかで決まるため、どちらでも進める
+    const start = page.getByRole('button', { name: 'test.eve' });
+    await expect(page.locator('#screen').or(start)).toBeVisible({ timeout: 60 * 1000 });
+    if (await start.isVisible()) {
+      await start.click();
+    }
     await expect(page.locator('#screen')).toBeVisible({ timeout: 60 * 1000 });
     await expect.poll(() => debugState(page)).toContain('catalog-cached');
   };
