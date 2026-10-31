@@ -258,6 +258,74 @@ test('インターミッションでセーブし、ブラウザに残ったセ�
   }, { intervals: [500, 1000] }).toBe(true);
 });
 
+/**
+ * 前の版の SRC#Web がブラウザ（IndexedDB）に保存したセーブデータ（fixtures/srcweb-indexeddb-*.json）を、その版の形のまま置く。
+ * アプリ（store.js）を通さず、IndexedDB を直に書く。アプリを読み込む前に、同じオリジンの別のファイルを開いて書く
+ */
+async function putStoredSaves(page, fixture) {
+  await page.goto('./licenses/coi-serviceworker.LICENSE.txt');
+  await page.evaluate(async ({ database, saves }) => {
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open(database.name, database.version);
+      request.onupgradeneeded = () => {
+        for (const store of database.stores) {
+          request.result.createObjectStore(store.name, { keyPath: store.keyPath });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction('saves', 'readwrite');
+        for (const save of saves) {
+          const { text, ...record } = save;
+          tx.objectStore('saves').put({ ...record, data: new Blob([new TextEncoder().encode(text)]) });
+        }
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    } finally {
+      db.close();
+    }
+  }, fixture);
+}
+
+// 保存の形（データベースの名前・版・ストア・キー・レコードの項目、セーブデータの中身）を変えたら、前の版のセーブを読めるように移すこと（#1398）
+test('前の版（3.5.5）がブラウザに保存したセーブデータから再開し、続きを遊べる', async ({ page }, testInfo) => {
+  const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'srcweb-indexeddb-3.5.5.json'), 'utf8'));
+  const save = fixture.saves[0];
+  await putStoredSaves(page, fixture);
+
+  await open(page);
+  // アプリからも前の版のセーブデータが見える
+  expect(await page.evaluate(id => window.srcwebStore.listSaves(id).then(x => x.map(s => s.name)), save.scenario)).toContain(save.name);
+  await page.getByRole('button', { name: 'intermission-save' }).click();
+  await page.locator('#saves li', { hasText: save.name }).getByRole('button', { name: save.name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await expect.poll(async () => (await screenState(page)).list?.info ?? '').toContain('コマンド');
+  await attachScreen(page, testInfo, 'resumed-3.5.5');
+
+  // セーブデータの次のステージ（next.eve）へ進んで終わる
+  await chooseListItem(page, 'コマンド', '次のステージへ');
+  await expect.poll(async () => (await screenState(page)).dialog ?? '').toContain('次のステージへ進みますか');
+  await page.keyboard.press('Enter');
+  await expect.poll(async () => {
+    const s = await screenState(page);
+    if (s.message !== undefined) {
+      await page.keyboard.press('Enter');
+    }
+    return s.message ?? '';
+  }, { intervals: [500, 1000] }).toContain('ステージ2');
+  await expect.poll(async () => {
+    const s = await screenState(page);
+    if (s.message !== undefined) {
+      await page.keyboard.press('Enter');
+    }
+    return s.terminated;
+  }, { intervals: [500, 1000] }).toBe(true);
+});
+
 test('インターミッションのコマンドを開き、仮想パッドと同じキー操作でインターミッションへ戻る', async ({ page }, testInfo) => {
   await open(page);
   await page.getByRole('button', { name: 'intermission-commands' }).click();

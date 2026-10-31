@@ -24,6 +24,9 @@ namespace SRCCore.Units
             }
         }
 
+        /// <summary>愛称の式置換をしているところか（自分の愛称を参照する式の再入を止める。#1411）</summary>
+        private bool resolvingNickname0;
+
         // 愛称
         public string Nickname0
         {
@@ -58,10 +61,24 @@ namespace SRCCore.Units
                     }
                 }
 
+                // 愛称の式がこのユニットの愛称を参照していたら、内側ではデータの愛称を返す（#1411）。
+                // 式を残して返すと、外側の式置換がそれをまた置き換えようとして終わらない
+                if (resolvingNickname0)
+                {
+                    return Data.Nickname;
+                }
                 u = Event.SelectedUnitForEvent;
                 Event.SelectedUnitForEvent = this;
-                Expression.ReplaceSubExpression(ref Nickname0Ret);
-                Event.SelectedUnitForEvent = u;
+                resolvingNickname0 = true;
+                try
+                {
+                    Expression.ReplaceSubExpression(ref Nickname0Ret);
+                }
+                finally
+                {
+                    resolvingNickname0 = false;
+                    Event.SelectedUnitForEvent = u;
+                }
                 return Nickname0Ret;
             }
         }

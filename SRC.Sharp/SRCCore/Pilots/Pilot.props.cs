@@ -31,7 +31,28 @@ namespace SRCCore.Pilots
         // 愛称
         public string Nickname0 => Data.Nickname;
 
+        /// <summary>愛称の式置換をしているところか（自分の愛称を参照する式の再入を止める。#1411）</summary>
+        private bool resolvingNickname;
+
         public string get_Nickname(bool dont_call_unit_nickname)
+        {
+            // 愛称の式がこのパイロットの愛称を参照していたら、内側では式置換をせずに元の愛称を返す（#1411）
+            if (resolvingNickname)
+            {
+                return Nickname0;
+            }
+            resolvingNickname = true;
+            try
+            {
+                return GetNicknameCore(dont_call_unit_nickname);
+            }
+            finally
+            {
+                resolvingNickname = false;
+            }
+        }
+
+        private string GetNicknameCore(bool dont_call_unit_nickname)
         {
             string NicknameRet = Nickname0;
 

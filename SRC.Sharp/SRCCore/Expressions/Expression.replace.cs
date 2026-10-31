@@ -13,8 +13,38 @@ namespace SRCCore.Expressions
         // TODO ref 取って戻り値か out 変数を受けるようにする決断をする。
         // (現在は ref string を受け取る形だが、戻り値または out 変数への変換が望ましい)
 
+        /// <summary>
+        /// 式置換の入れ子の上限。式置換の中から別の式置換を呼ぶ（愛称の中の Nickname() など）深さ。
+        /// 式の評価は 1 つの式置換を何度か評価することがあり、深さに対して呼び出しの数が指数で増えるので小さく取る
+        /// </summary>
+        public const int MaxSubExpressionDepth = 10;
+
+        private int subExpressionDepth;
+
         // str に対して式置換を行う
         public void ReplaceSubExpression(ref string str)
+        {
+            // 愛称変更・パイロット愛称の式がそのユニット自身の愛称を参照するなど、式置換が自分を呼び続けると
+            // スタックオーバーフローで落ちる。深くなったら、それより内側の式置換は行わずにそのまま返す（#1411）
+            if (subExpressionDepth >= MaxSubExpressionDepth)
+            {
+                SRC.LogWarn("式置換の入れ子が深すぎるため、内側の式置換を行わない: " + str, null);
+                // 式を残すと、外側の式置換が返した文字列をまた置き換えようとして終わらないので、式置換の印を外す
+                str = str.Replace("$(", "(");
+                return;
+            }
+            subExpressionDepth++;
+            try
+            {
+                ReplaceSubExpressionCore(ref str);
+            }
+            finally
+            {
+                subExpressionDepth--;
+            }
+        }
+
+        private void ReplaceSubExpressionCore(ref string str)
         {
             int start_idx, end_idx = default;
             int str_len;

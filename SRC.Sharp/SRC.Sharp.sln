@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCLogging", "SRCLogging\SR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCHelpSearch", "SRCHelpSearch\SRCHelpSearch.csproj", "{869E0C61-425E-4346-9B54-76B1BB9381F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCSharpWebTests", "SRCSharpWebTests\SRCSharpWebTests.csproj", "{4EE0D3AF-290A-4D28-9754-556C96D79478}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -270,6 +272,18 @@ Global
 		{869E0C61-425E-4346-9B54-76B1BB9381F3}.Release|x64.Build.0 = Release|Any CPU
 		{869E0C61-425E-4346-9B54-76B1BB9381F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{869E0C61-425E-4346-9B54-76B1BB9381F3}.Release|x86.Build.0 = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|x64.Build.0 = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Debug|x86.Build.0 = Debug|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|x64.ActiveCfg = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|x64.Build.0 = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|x86.ActiveCfg = Release|Any CPU
+		{4EE0D3AF-290A-4D28-9754-556C96D79478}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

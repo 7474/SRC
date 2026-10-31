@@ -1,0 +1,30 @@
+{
+  "description": "SRC#Web 3.5.5 がブラウザ（IndexedDB）に保存したセーブデータ。前の版のセーブから再開できることを確かめる（tests/web.spec.js、#1398）。作り方: 3.5.5 の SRC#Web で E2E の intermission-save をデータセーブし、IndexedDB（srcweb）の版・ストアとキー（database）と、saves ストアのレコードを書き出した。レコードの data（Blob）は UTF-8 の文字列（text）にしている。.srcs だけを入れ、ステージの開始時の .srcq は入れない。保存の形を変えても、このファイルは変えない",
+  "appVersion": "3.5.5",
+  "database": {
+    "name": "srcweb",
+    "version": 2,
+    "stores": [
+      {
+        "name": "archives",
+        "keyPath": "name"
+      },
+      {
+        "name": "saves",
+        "keyPath": [
+          "scenario",
+          "name"
+        ]
+      }
+    ]
+  },
+  "saves": [
+    {
+      "scenario": "catalog-intermission-save",
+      "name": "testまでクリア.srcs",
+      "size": 2127,
+      "updated": 1793463940569,
+      "text": "{\n  \"GlobalVariableList\": {\n    \"次ステージ\": {\n      \"Name\": \"次ステージ\",\n      \"VariableType\": 1,\n      \"StringValue\": \"next.eve\",\n      \"NumericValue\": 0.0\n    },\n    \"セーブデータファイル名\": {\n      \"Name\": \"セーブデータファイル名\",\n      \"VariableType\": 1,\n      \"StringValue\": \"testまでクリア.srcs\",\n      \"NumericValue\": 0.0\n    }\n  },\n  \"Version\": \"3.5.5.0\",\n  \"Kind\": 0,\n  \"Titles\": [\n    \"テスト\"\n  ],\n  \"NextStage\": \"next.eve\",\n  \"TotalTurn\": 0,\n  \"Money\": 0,\n  \"PList\": {\n    \"colPilots\": {\n      \"テストパイロット\": {\n        \"ID\": \"テストパイロット\",\n        \"Party\": \"味方\",\n        \"Alive\": true,\n        \"Away\": false,\n        \"IsAdditionalPilot\": false,\n        \"IsAdditionalSupport\": false,\n        \"SupportIndex\": 0,\n        \"proLevel\": 1,\n        \"proEXP\": 0,\n        \"proSP\": 52,\n        \"proMorale\": 100,\n        \"proPlana\": 0,\n        \"PilotName\": \"テストパイロット\",\n        \"UnitId\": \"テスト機:1\"\n      }\n    }\n  },\n  \"UList\": {\n    \"IDCount\": 1,\n    \"colUnits\": {\n      \"テスト機:1\": {\n        \"ID\": \"テスト機:1\",\n        \"x\": 6,\n        \"y\": 6,\n        \"Area\": \"地上\",\n        \"UsedAction\": 0,\n        \"strMode\": \"通常\",\n        \"Status\": \"待機\",\n        \"UsedSupportAttack\": 0,\n        \"UsedSupportGuard\": 0,\n        \"UsedSyncAttack\": 0,\n        \"UsedCounterAttack\": 0,\n        \"strName\": \"テスト機\",\n        \"strParty\": \"味方\",\n        \"intRank\": 0,\n        \"intBossRank\": -1,\n        \"lngHP\": 1000,\n        \"intEN\": 100,\n        \"WData\": [\n          {\n            \"dblBulletRate\": 1.0,\n            \"Name\": \"テストビーム\"\n          }\n        ],\n        \"PreviousSummonerId\": null,\n        \"LinkData\": {\n          \"OtherFormIds\": [],\n          \"PilotIds\": [\n            \"テストパイロット\"\n          ],\n          \"SupportIds\": [],\n          \"ItemIds\": [],\n          \"MasterId\": null,\n          \"SummonerId\": null,\n          \"UnitOnBoardIds\": [],\n          \"ServantIds\": []\n        },\n        \"UnitName\": \"テスト機\"\n      }\n    }\n  },\n  \"IList\": {\n    \"IDCount\": 0,\n    \"colItems\": {}\n  }\n}"
+    }
+  ]
+}

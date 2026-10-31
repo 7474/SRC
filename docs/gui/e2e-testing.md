@@ -75,7 +75,7 @@ PlayScript の実装は `SRC.Sharp/SRCPlay` にある。作成支援ツールの
 | `print 式` | SRC の式の値を記録する（例: `print ダンジョン階数`） |
 | `stall 秒` | 待ちの状態でないまま進まない（`KeyState` でクリックを待つ演出など）ときにボタンを押すまでの時間（既定 5 秒）。押したボタンは、`KeyState` に読まれた時点（最長 300ms）で離す。`--skip-wait` のときは、直近に `KeyState` が読まれている（スクリプトが入力を待っている）ときだけ押し、読まれていなければ処理中とみなして 5 秒まで押さない |
 | `snapshot 名前` | 画面を保存する（`TestResults/e2e/ケース名/`、CI の成果物 `screenshots`） |
-| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる。`log` はスクリプトの行の記録（`SCRIPT` の行）を見ない |
+| `expect finished\|message 文字列\|log 文字列\|error none` | シナリオの終了・表示されたメッセージ・操作の記録・エラーの有無を確かめる。`message` は戦闘中のメッセージ（クリックを待たないもの。`ScreenGUI.BattleMessageShown` で区切りごとに記録する）も探す。`log` はスクリプトの行の記録（`SCRIPT` の行）を見ない |
 | `expect eval 式 演算子 式` | SRC の式を評価して比べる（例: `expect eval Damage(標的パイロット) > 0`）。両辺が数値なら数値として、どちらかが数値でなければ文字列として比べる（文字列は `=`・`<>` だけ。例: `expect eval Unit(テストパイロット) = テスト機`） |
 
 ```text
@@ -101,6 +101,8 @@ expect eval Damage(標的パイロット) > 0
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 | `save-compat` | クイックセーブ・データセーブ・リスタートの 3 種類のセーブを作りながら最後まで進める。`SaveCompatibilityTests` が、版ごとのセーブ（`E2E/saves/v<版>/`）のすべてから再開できることを確かめる（[テストと CI の設計](../testing.md)） |
 | `vrt-screens` | 画面の VRT のためのシナリオ。顔の絵つきのメッセージ・ユニットのコマンドとステータス・特殊能力一覧とその解説・武装一覧で snapshot を撮る（`GameScreenVrtTests`） |
+| `vrt-units` | ユニットの種類ごとのステータスと戦闘の予想の VRT のためのシナリオ。母艦・変形・合体・分離・召喚・アイテムの装備・特殊能力と武器の多いユニット・情報を隠したユニットのステータス、アビリティ一覧、攻撃の相手を選ぶときの予想、敵の攻撃への対応と反撃の武器のリストで snapshot を撮る（`UnitStatusVrtTests`） |
+| `battle-message` | 戦闘中のメッセージ（`pilot_message.txt`）が状況ごとに選ばれること。武器の名前・攻撃・反撃・ダメージ小・中・大・破壊・回避・射程外・とどめを `expect message` で確かめる。台詞にはカットイン・ウェイト・効果音・`keep`・`clear`・`:` の区切りを混ぜる |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
 | `cmd-unexec-*` | ほかのケースでは実行しないイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
 | `cmd-branch-*` | 引数の形で処理が分かれるイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
@@ -114,7 +116,7 @@ expect eval Damage(標的パイロット) > 0
   - チャンネルごとに ±24、不一致ピクセル 0.2% までを許容（アンチエイリアスの揺れの吸収）
   - 差分があると `TestResults/vrt/` に `*.actual.png` と `*.diff.png`（差分をマゼンタで表示）を書き出す。CI では成果物 `screenshots` として保存する
   - 基準画像の更新は `SRC_VRT_UPDATE=1 dotnet test SRC.Sharp/SRCRenderTests` で行い、差分をレビューしてコミットする
-  - コーパスの `snapshot` で撮った画面も VRT にできる。`GameScreenVrtTests` は `vrt-screens` の snapshot（顔の絵つきのメッセージ・ステータスの欄・特殊能力一覧とその解説・武装一覧）を `Baselines/vrt-screens-<名前>.png` と比べる。`PlayScript.SnapshotTaken` で撮った画面を受け取る（#1358）
+  - コーパスの `snapshot` で撮った画面も VRT にできる。`GameScreenVrtTests` は `vrt-screens` の snapshot（顔の絵つきのメッセージ・ステータスの欄・特殊能力一覧とその解説・武装一覧）を `Baselines/vrt-screens-<名前>.png` と比べる。`PlayScript.SnapshotTaken` で撮った画面を受け取る（#1358）。`UnitStatusVrtTests` は `vrt-units` の snapshot（ユニットの種類ごとのステータス・戦闘の予想）を `Baselines/vrt-units-<名前>.png` と比べる（#1400）
 - **フォントを固定する**: 基準画像は Ubuntu 24.04 + `fonts-noto-cjk`（Noto Sans CJK JP / Noto Sans Mono CJK JP）で作成している。CI の Linux ジョブも同じフォントを入れる。Noto CJK が無い環境（Windows など）では比較せず Inconclusive とする
 - **撮影前に描画を待つ**: UI からの入力はゲームスレッドで処理して描画するため、`ScreenScenarioRunner.SnapshotPng` はそれまでに渡した処理が終わるのを待ってから撮る
 - 対象: メッセージ・選択肢・`Paint` 系コマンド・素材なしの表示・リスト（多段・出撃選択）・設定変更・メニュー・メッセージボックス・ホットポイント・ドラッグ後のマップ
@@ -126,10 +128,11 @@ expect eval Damage(標的パイロット) > 0
 |---|---|---|
 | `SRCCoreTests` | ユニットテスト。`E2E/HeadlessScenarioTests` は GUI 呼び出しの記録を、ゲームスレッドあり／なしで比較 | Windows / Linux |
 | `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Linux（CI の Windows ではフォントのテストだけ。VRT は Linux のみ） |
-| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
+| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。起動の引数と `--smoke` の終了コード（0: 始まった・2: 始まらない・3: ファイルが無い）、効果音の再生の呼び出し（`AppTests`）。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Linux（ローカルでは Windows でも動く。出力を開けない環境では再生のテストは Inconclusive） |
-| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Linux（ローカルでは Windows でも動く） |
-| `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
+| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計）。`srcsharp` の各コマンド（`lint`・`play`・`balance`・`help`・`--version`・不明なコマンド）の終了コードと出力は、`Program.Main` をテストのプロセスの中で呼んで確かめる（`CliTests`） | Linux（ローカルでは Windows でも動く） |
+| `SRCSharpWebTests` | SRC#Web のうちブラウザに依存しない処理（セーブの同期・zip の展開・カタログの読み取り）。SRCSharpWeb のファイルを取り込んでテストする | Linux（パスの区切りを `/` として扱うため） |
+| `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)）。前の版がブラウザに保存したセーブからの再開（`fixtures/`） | ブラウザ（CI は Linux） |
 | `SRCSharpWeb.E2E/tests/deployed.spec.js` | Playwright。配信したデータ閲覧画面（`DEPLOYED_URL`） | ブラウザ（配信した後） |
 
 `SRCRenderTests` は、待ち時間の長いシナリオのテストが多いため、メソッド単位で並べて動かす（`AssemblyInfo.cs` の `Parallelize`、ワーカーは CPU の数）。プロセス全体の UI カルチャを変えるテスト（`UiLanguageTests`）は `[DoNotParallelize]` にしている。テストを足すときは、静的な状態やプロセス全体の設定を変えないようにし、変える場合は `[DoNotParallelize]` を付ける（[MSTest の並列実行](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-controlling-execution#parallelization-attributes)）。

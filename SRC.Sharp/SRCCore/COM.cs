@@ -3674,12 +3674,13 @@ namespace SRCCore
                         is_able_to_move = false;
                     }
 
-                    switch (tu.Area ?? "")
+                    // 使うユニットの地形と EN で判定する（VB 版 COM.bas と同じ）
+                    switch (u.Area ?? "")
                     {
                         case "空中":
                         case "宇宙":
                             {
-                                if (tu.EN - ua.AbilityENConsumption() < 5)
+                                if (u.EN - ua.AbilityENConsumption() < 5)
                                 {
                                     is_able_to_move = false;
                                 }
@@ -3756,12 +3757,12 @@ namespace SRCCore
                         {
                             continue;
                         }
-                        // コストが低い方を優先
-                        if (ua.Data.ENConsumption > tu.Ability(Commands.SelectedAbility).Data.ENConsumption)
+                        // コストが低い方を優先（いま選んでいるアビリティと比べる）
+                        if (ua.Data.ENConsumption > selUa.Data.ENConsumption)
                         {
                             continue;
                         }
-                        if (ua.Stock() < tu.Ability(Commands.SelectedAbility).Stock())
+                        if (ua.Stock() < selUa.Stock())
                         {
                             continue;
                         }

@@ -13,11 +13,11 @@
 
 | 層 | 保証すること | 保証しないこと | プロジェクト | CI のジョブ |
 |---|---|---|---|---|
-| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests` | `test-srccore-linux`・`test-tools-linux`（`SRCCoreTests` は `build-and-test-srcs` でも） |
+| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests`・`SRCSharpWebTests`（SRC#Web のうちブラウザに依存しない処理。セーブの同期・zip の展開・カタログの読み取り） | `test-srccore-linux`・`test-tools-linux`・`test-web`（`SRCCoreTests` は `build-and-test-srcs` でも） |
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
-| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
-| 配布物 | 配る形でビルド・発行でき、最低限動くこと。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
+| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless。起動の引数と `--smoke` の終了コード・効果音の再生の呼び出しも）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
+| 配布物 | 配る形でビルド・発行でき、最低限動くこと（`srcsharp` の各コマンドの終了コードと出力は、ユニットの `SRCAuthoringTests` の `CliTests` が確かめる）。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
@@ -32,8 +32,15 @@
 
 | 対象 | テスト | 表 |
 |---|---|---|
-| 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+| 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+| 攻撃 1 回の結果。乱数の種を組み合わせごとに固定して Attack コマンド（通常戦闘）を 1 回動かし、両方の HP・EN・位置と戦闘のメッセージを記録する。武器（属性違い 16 種）× 防御側（シールド・バリア・フィールド・切り払い・迎撃・分身・反射・当て身技・自動反撃・広域の防御・パイロットの能力による強化など 45 種）× 防御の仕方（反撃・防御・回避）。どの防御の特殊能力が働いたか・反撃の結果がメッセージに出る | `SRCCoreTests/Golden/AttackGoldenTests.cs` | `SRCCoreTests/Golden/Attack/expected.txt`（データは同じフォルダの `Data/`） |
+| 武器の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）。攻撃側のパイロット（技能の有無）× 武器（属性違い・特殊効果つきの 25 種）× 防御側（上の防御側・大きさ違い・特殊効果無効化など 50 種）× 距離。一部はオプション（距離修正・ダメージ倍率低下など）とバトルコンフィグデータ（`Attack/battle.txt`）を変えて見る | 同上 | `SRCCoreTests/Golden/Attack/calc.txt`（データは `Attack/Data`） |
 | 敵の思考（`COM.OperateUnit`）。敵 5 体・味方 3 体の戦場で、乱数の種を固定して敵を 5 回ずつ動かし、行動のたびに全ユニットの位置・HP・EN・気力を記録する。移動先・武器・対象の選び方と、命中・ダメージの判定が変わると記録が変わる | `SRCCoreTests/Golden/ComGoldenTests.cs` | `SRCCoreTests/Golden/Com/expected.txt`（データは `Battle/Data` と同じ） |
+| 敵の思考のうち、回復アビリティ（マップ型を含む）・マップ兵器・変形・スペシャルパワーを使うもの（`COM.TryHealing` / `TryMapHealing` / `TryMapAttack` / `TryMoveTransform` / `TrySpecialPower`）。傷ついた仲間・並んだ味方・遠い敵を置き、オプション「敵ユニットスペシャルパワー使用」で敵 6 体を 5 回ずつ動かし、行動ごとのメッセージ（何を誰に使ったか）と全ユニットの状態を記録する | `SRCCoreTests/Golden/ComTacticsGoldenTests.cs` | `SRCCoreTests/Golden/ComTactics/expected.txt`（データは同じフォルダの `Data/`） |
+| スペシャルパワーとアビリティの効果（`SpecialPowerData.Apply`・`Unit.ExecuteAbility`・`Unit.ExecuteMapAbility`）。basic-data の sp.txt と、効果の種類・適用条件の足りない分を足した sp.txt のスペシャルパワーを 1 つずつ対象の種類に合わせて使い、使ったあとと効果が切れたあとの HP・EN・気力・SP・霊力・行動数・弾数・効いているスペシャルパワー・特殊状態を記録する。回復・補給・状態・付加・強化・変身・召喚・合体技などのアビリティと、範囲の形ごとのマップアビリティも使って記録する | `SRCCoreTests/Golden/SpecialPowerGoldenTests.cs` | `SRCCoreTests/Golden/SpecialPower/expected.txt`（データは同じフォルダの `Data/`） |
+| 戦闘の演出の選び方。武器の名前と属性（3,300 通り）ごとに、準備・攻撃・命中で呼ぶ戦闘アニメ（名前と引数）と、戦闘アニメをオフにしたときの効果音（`Effect` の `PrepareWeaponAnimation`・`AttackAnimation`・`HitAnimation`・`AttackSound`・`HitSound` など）を記録する | `SRCCoreTests/Golden/EffectGoldenTests.cs` | `SRCCoreTests/Golden/Effect/expected.txt`（武器は同じフォルダの `weapons.txt`） |
+
+表のデータ（`Data/` のユニット・パイロット）はテストごとに分ける。`Battle/Data` を変えると `Com/expected.txt` まで変わるため、新しい組み合わせは別のフォルダに足す。
 
 意図して結果を変えたときは、表を作り直して差分を PR に載せる。人のレビューは必須にしない（自動化を優先し、リグレッションが起きたら見直す）。
 
@@ -47,6 +54,11 @@ SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedNa
 
 - リリースのときに、その版のセーブを足す（`python3 tools/release.py saves`）。`release.py check`（CI の `release-check`）は、いまの版のセーブが無いと通らない
 - 再開は、セーブを作ったときとは別の一時フォルダで行う。シナリオのフォルダを移しても再開できることを確かめる。v3.5.5 までのセーブはシナリオのファイルを絶対パスで持ち、それより後はシナリオのフォルダからの相対パスで持つ（#1375）
+
+SRC#Web がブラウザ（IndexedDB）に保存したセーブも、版をまたいで確かめる（#1398）。`SRCSharpWeb.E2E/fixtures/srcweb-indexeddb-3.5.5.json` は、3.5.5 が保存した IndexedDB の中身（データベースの名前・版・ストアとキー、セーブのレコード）を書き出したもの。`web.spec.js` が、アプリを読み込む前にこれを IndexedDB にそのまま書き、そのセーブから再開して次のステージへ進めることを確かめる。
+
+- 保存の形（`wwwroot/js/store.js` のデータベース・ストア・レコードの項目）を変えるときは、前の形のものを読めるように移す。fixture は変えない
+- 保存の形を変えた版を出したら、その版の fixture を足す（書き出し方は fixture の `description` にある）
 
 ## CI の構成
 

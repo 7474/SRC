@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -128,6 +129,8 @@ namespace SRCCore.Pilots
 
         private void SetMorale(int new_morale)
         {
+            // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
+            RuntimeHelpers.EnsureSufficientExecutionStack();
             var maxm = MaxMorale;
             var minm = MinMorale;
             if (new_morale > maxm)

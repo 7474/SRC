@@ -7,6 +7,7 @@ using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,8 @@ namespace SRCCore.Pilots
         // 能力値を更新
         public void Update()
         {
+            // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
+            RuntimeHelpers.EnsureSufficientExecutionStack();
             #region // 現在のレベルで使用可能な特殊能力の一覧を作成
 
             // 以前の一覧を削除
@@ -494,6 +497,8 @@ namespace SRCCore.Pilots
         // 周りのユニットによる支援効果を更新
         public void UpdateSupportMod()
         {
+            // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
+            RuntimeHelpers.EnsureSufficientExecutionStack();
             Unit u, my_unit;
             string my_party;
             int my_cmd_rank;

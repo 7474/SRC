@@ -119,8 +119,9 @@ namespace SRCSharpWeb
         /// zip を dir に展開する。
         /// UTF-8 の印が無いファイル名は、UTF-8 として正しく読めれば UTF-8、読めなければ Shift_JIS として読む（ZipNameEncoding）。
         /// token が取り消されたら、途中まで展開したところで OperationCanceledException を投げる。
+        /// ブラウザ内のファイルシステム（Root）を使わずにテストできるよう internal にする（SRCSharpWebTests）
         /// </summary>
-        private static void ExtractTo(string dir, Stream zip, string root, CancellationToken token)
+        internal static void ExtractTo(string dir, Stream zip, string root, CancellationToken token)
         {
             Directory.CreateDirectory(dir);
             var fullDir = Path.GetFullPath(dir) + "/";

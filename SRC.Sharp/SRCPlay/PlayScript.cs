@@ -38,7 +38,7 @@ namespace SRCPlay
     ///   phase                  味方フェイズを簡単な方針で自動で行い、ターンを終える（ScriptedPhase）
     ///   turns 回数             「auto → phase」を繰り返す
     ///   expect finished        シナリオが終わっていることを確かめる
-    ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる（画面の折り返しはまたいで探す）
+    ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる（画面の折り返しはまたいで探す。戦闘中のメッセージも探す）
     ///   expect log 文字列      操作の記録（phase の「攻撃: 敵の名前」など）にその文字列があることを確かめる
     ///   expect error none      エラーが起きていないことを確かめる
     ///   expect eval 式 演算子 式  SRC の式を評価して比べる（例: expect eval HP(標的) &lt; MaxHP(標的)）
@@ -54,6 +54,14 @@ namespace SRCPlay
             this.runner = runner;
             auto = new AutoPlayer(runner);
             auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
+            // 戦闘中のメッセージはクリックを待たないので、表示したときに記録する（ゲームスレッドから呼ばれる）
+            runner.GUI.BattleMessageShown += (pname, msg) =>
+            {
+                lock (battleMessages)
+                {
+                    battleMessages.Add(msg);
+                }
+            };
             // 止まって押した位置（スクリプトが描いたクリック領域があればその ID）を記録する
             auto.Trace = m =>
             {
@@ -84,6 +92,20 @@ namespace SRCPlay
 
         /// <summary>これまでに表示されたメッセージ（自動で進めたもの）</summary>
         public IList<string> Messages => auto.Messages;
+
+        private readonly List<string> battleMessages = new List<string>();
+
+        /// <summary>これまでに表示された戦闘中のメッセージ（DisplayBattleMessage の区切りごと）</summary>
+        public IList<string> BattleMessages
+        {
+            get
+            {
+                lock (battleMessages)
+                {
+                    return battleMessages.ToList();
+                }
+            }
+        }
 
         internal void Record(string line)
         {
@@ -299,10 +321,12 @@ namespace SRCPlay
                     }
                     break;
                 case "message":
-                    // メッセージは表示の行を "/" でつないで記録しているので、行の折り返しをまたぐ文字列も探す
-                    if (!Messages.Any(x => x.Contains(text) || x.Replace("/", "").Contains(text)))
+                    // メッセージは表示の行を "/" でつないで記録しているので、行の折り返しをまたぐ文字列も探す。
+                    // 戦闘中のメッセージ（クリックを待たない）も探す
+                    if (!Messages.Any(x => x.Contains(text) || x.Replace("/", "").Contains(text))
+                        && !BattleMessages.Any(x => x.Contains(text)))
                     {
-                        throw new PlayScriptException($"メッセージ「{text}」が表示されていません: {string.Join(" / ", Messages)}");
+                        throw new PlayScriptException($"メッセージ「{text}」が表示されていません: {string.Join(" / ", Messages.Concat(BattleMessages))}");
                     }
                     break;
                 case "log":

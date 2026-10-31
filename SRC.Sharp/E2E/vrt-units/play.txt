@@ -1,0 +1,112 @@
+# ユニットの種類ごとのステータスの欄と、戦闘の予想の画面の VRT（UnitStatusVrtTests が基準画像と比べる）。
+# ステータスの欄は、マスにポインタを動かしたときに描き換わる。続けて同じマスを押すと描き換わらないので、毎回ちがうマスを押す
+# 戦闘の演出は一定時間で進む。待たずに進めるため、auto では 0.2 秒止まったらボタンを押す
+stall 0.2
+auto 30
+expect message ステータスの VRT を始める
+
+# 艦載機を母艦へ着艦させる
+cell 2 4
+menu 移動
+cell 2 2
+wait dialog
+dialog OK
+auto 30
+expect eval InStr(Status(艦載パイロット), "格納") = 1
+
+# 変形・ハイパーモード（気力が足りず使えない）を持つユニット。回復の地形にいる
+cell 6 2
+wait menu
+snapshot transform
+key Escape
+wait ready
+
+# 母艦のコマンドとステータス、発進するユニットのリスト
+cell 2 2
+wait menu
+snapshot carrier
+menu 発進
+wait list
+snapshot carrier-launch
+key Escape
+wait ready
+
+# 合体できるユニット（相手が隣にいる）
+cell 9 2
+wait menu
+snapshot combine
+key Escape
+wait ready
+
+# 分離できるユニット
+cell 13 2
+wait menu
+snapshot separate
+key Escape
+wait ready
+
+# アイテムを装備したユニット（表示の指定があるアイテムだけ出す。長い名前は一行に一つ）。武器を付け加えるアイテムもある
+expect eval Info(ユニット, UnitID(アイテムパイロット), 武器数) = 2
+cell 6 8
+wait menu
+snapshot items
+key Escape
+wait ready
+
+# 特殊能力と武器の多いユニット。特殊なステータスがかかっていて、減少・摩擦の地形にいる
+cell 10 8
+wait menu
+snapshot many-features
+key Escape
+wait ready
+
+# 情報を隠した敵ユニット（敵を押すとメニューは出さずにステータスだけを出す）
+cell 18 18
+wait ready
+snapshot unknown
+
+# 召喚アビリティを持つユニットのアビリティ一覧
+cell 2 8
+menu アビリティ一覧
+wait list
+snapshot ability-list
+key Escape
+wait ready
+# 召喚したユニット（ＮＰＣ）
+cell 2 8
+menu アビリティ
+wait list
+list 精霊召喚
+auto 10
+expect eval InStr(Status(精霊パイロット), "出撃") = 1
+expect eval X(精霊パイロット) = 3
+expect eval Y(精霊パイロット) = 8
+cell 3 8
+wait menu
+snapshot summoned
+key Escape
+wait ready
+
+# 攻撃の相手を選ぶときの予想（ダメージ・命中率・反撃）
+cell 10 8
+menu 攻撃
+wait list
+list 多機能ビーム
+snapshot attack-preview
+cell 13 8
+auto 60
+
+# 敵の攻撃への対応を選ぶリスト（命中率の予想）と、反撃の武器のリスト
+autodefense off
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+wait list
+snapshot counter-select
+list 反撃
+wait list
+snapshot counter-weapon
+list 多機能ビーム
+auto 60
+expect error none
