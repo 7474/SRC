@@ -70,6 +70,11 @@ namespace SRCPlay
             set => auto.SnapshotDirectory = value;
         }
 
+        /// <summary>
+        /// スクリプトの snapshot で撮った画面（名前と PNG）を受け取る。VRT で基準画像と比べるのに使う
+        /// </summary>
+        public Action<string, byte[]> SnapshotTaken { get; set; }
+
         /// <summary>進行状況の通知</summary>
         public Action<string> Trace { get; set; }
 
@@ -516,12 +521,17 @@ namespace SRCPlay
 
         public void Snapshot(string name)
         {
-            if (SnapshotDirectory == null)
+            if (SnapshotDirectory == null && SnapshotTaken == null)
             {
                 return;
             }
-            Directory.CreateDirectory(SnapshotDirectory);
-            File.WriteAllBytes(Path.Combine(SnapshotDirectory, $"script-{++snapshotNo:0000}-{name}.png"), runner.SnapshotPng());
+            var png = runner.SnapshotPng();
+            if (SnapshotDirectory != null)
+            {
+                Directory.CreateDirectory(SnapshotDirectory);
+                File.WriteAllBytes(Path.Combine(SnapshotDirectory, $"script-{++snapshotNo:0000}-{name}.png"), png);
+            }
+            SnapshotTaken?.Invoke(name, png);
         }
 
         public void Click(float x, float y, GuiButton button = GuiButton.Left)

@@ -100,6 +100,7 @@ expect eval Damage(標的パイロット) > 0
 | `sound` | `StartBGM`（MIDI）と `PlaySound`（WAV）。音声ファイルはこのケースのために作ったもの |
 | `intermission-save` | `Continue` でインターミッションに入り、データセーブしてから次のステージへ進んで終わるまで。SRC#Web ではブラウザに残ったセーブデータから再開できることも確かめる |
 | `save-compat` | クイックセーブ・データセーブ・リスタートの 3 種類のセーブを作りながら最後まで進める。`SaveCompatibilityTests` が、版ごとのセーブ（`E2E/saves/v<版>/`）のすべてから再開できることを確かめる（[テストと CI の設計](../testing.md)） |
+| `vrt-screens` | 画面の VRT のためのシナリオ。顔の絵つきのメッセージ・ユニットのコマンドとステータス・特殊能力一覧とその解説・武装一覧で snapshot を撮る（`GameScreenVrtTests`） |
 | `intermission-commands` | インターミッションのコマンド（ユニットステータス・パイロットステータス・ユーザー定義のコマンド・機体改造）を開き、毎回インターミッションへ戻れるまで。ステータス表示は `SRC.Sharp/Content/basic-data/Lib` を AppPath に置いて使う（E2E のコーパスはすべて同じ Lib を重ねる）。SRC#Web では仮想パッドと同じキー操作で戻る |
 | `cmd-unexec-*` | ほかのケースでは実行しないイベントコマンド 16 種（`Read`・`Write`・`Exec`・`SaveData`・`Suspend`・`CallIntermissionCommand`・`ShowImage`・`ClearImage`・`ChangeLayer`・`ClearLayer`・`PaintSysString`・`SetWindowColor`・`SetWindowFrameWidth`・`SetStatusStringColor`・`Debug`・`ElseIf`）。結果を変数・ファイル・`Info` で確かめる |
 | `cmd-branch-*` | 引数の形で処理が分かれるイベントコマンド（`RankUp`・`ChangeMode`・`RemoveUnit`・`RemovePilot`・`Destroy`・`RemoveItem`・`UseAbility`・`MapAbility`・`SpecialPower`・`If`・`CopyArray`・`SetSkill`・`Print`・`FillStyle`・`PaintString`）の引数の形ごとの分岐 |
@@ -112,6 +113,7 @@ expect eval Damage(標的パイロット) > 0
   - チャンネルごとに ±24、不一致ピクセル 0.2% までを許容（アンチエイリアスの揺れの吸収）
   - 差分があると `TestResults/vrt/` に `*.actual.png` と `*.diff.png`（差分をマゼンタで表示）を書き出す。CI では成果物 `screenshots` として保存する
   - 基準画像の更新は `SRC_VRT_UPDATE=1 dotnet test SRC.Sharp/SRCRenderTests` で行い、差分をレビューしてコミットする
+  - コーパスの `snapshot` で撮った画面も VRT にできる。`GameScreenVrtTests` は `vrt-screens` の snapshot（顔の絵つきのメッセージ・ステータスの欄・特殊能力一覧とその解説・武装一覧）を `Baselines/vrt-screens-<名前>.png` と比べる。`PlayScript.SnapshotTaken` で撮った画面を受け取る（#1358）
 - **フォントを固定する**: 基準画像は Ubuntu 24.04 + `fonts-noto-cjk`（Noto Sans CJK JP / Noto Sans Mono CJK JP）で作成している。CI の Linux ジョブも同じフォントを入れる。Noto CJK が無い環境（Windows など）では比較せず Inconclusive とする
 - **撮影前に描画を待つ**: UI からの入力はゲームスレッドで処理して描画するため、`ScreenScenarioRunner.SnapshotPng` はそれまでに渡した処理が終わるのを待ってから撮る
 - 対象: メッセージ・選択肢・`Paint` 系コマンド・素材なしの表示・リスト（多段・出撃選択）・設定変更・メニュー・メッセージボックス・ホットポイント・ドラッグ後のマップ

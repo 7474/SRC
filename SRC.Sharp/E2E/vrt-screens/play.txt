@@ -1,0 +1,25 @@
+# 画面の VRT（GameScreenVrtTests が snapshot を基準画像と比べる）。
+# 顔の絵つきのメッセージ・ユニットのコマンドとステータス・特殊能力一覧とその解説・武装一覧
+wait message 顔の絵を出したメッセージ
+snapshot message-face
+key Enter
+wait ready
+cell 3 3
+snapshot unit-menu
+menu 特殊能力一覧
+wait list
+snapshot feature-list
+list バリア
+wait message
+snapshot feature-help
+key Enter
+wait list
+key Escape
+wait ready
+cell 3 3
+menu 武装一覧
+wait list
+snapshot weapon-list
+key Escape
+wait ready
+expect error none
