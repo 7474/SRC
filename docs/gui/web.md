@@ -287,6 +287,7 @@ Azure Static Web Apps（データビューアの配信先、`.github/workflows/C
 - シナリオに同梱された文書（README.md・Shift_JIS の .txt・Shift_JIS の .html）を一覧の先頭の README から読む。Markdown の中の HTML と `javascript:` のリンク、HTML のスクリプトは動かさない。プレイ中もシステムメニューから読める
 - シナリオの読み込み中は読み込み中のダイアログを出し、ほかの操作を受け付けない。「キャンセル」で取り消した後、同じシナリオをもう一度始められる
 - インターミッションでデータセーブし、再読み込み後にセーブデータから再開して次のステージへ進む
+- 前の版（3.5.5）がブラウザに保存したセーブデータ（`fixtures/srcweb-indexeddb-3.5.5.json`）から再開し、次のステージへ進む（[セーブデータの版をまたぐ互換](../testing.md#セーブデータの版をまたぐ互換)）
 - 効果音（WAV）が鳴る。SoundFont が無ければ MIDI は鳴らさずに進む
 - アーカイブに含めた SoundFont で MIDI を合成して鳴らす（テストの中で zip を作る。SoundFont は CI で入れる TimGM6mb）
 - 表示言語を英語にし、選択欄で日本語に戻す。`auto` ではブラウザの言語（韓国語のブラウザで韓国語）に従う
@@ -300,6 +301,12 @@ Azure Static Web Apps（データビューアの配信先、`.github/workflows/C
 - 仮想パッドをシステムメニューで表示し、押したキーがシナリオの `KeyState` に届く
 
 画面の状態は `WebInterop.DebugState`（実行中のイベントの行・リスト・ダイアログ・メッセージの JSON）で調べる。
+
+ブラウザに依存しない処理（`SaveSync`・`ScenarioArchive` の zip の展開・`Catalog` とサイトの設定の読み取り）は、`SRC.Sharp/SRCSharpWebTests` でユニットテストする。SRCSharpWeb は WebAssembly 向けのため参照できず、これらのファイルをテストのプロジェクトに取り込んでビルドする。ブラウザ内のファイルシステム（`/srcweb`）を使わずに展開を確かめるため、`ScenarioArchive.ExtractTo` は internal にしている。
+
+```sh
+dotnet test SRC.Sharp/SRCSharpWebTests
+```
 
 ```sh
 dotnet workload install wasm-tools

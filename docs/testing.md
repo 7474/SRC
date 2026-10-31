@@ -13,7 +13,7 @@
 
 | 層 | 保証すること | 保証しないこと | プロジェクト | CI のジョブ |
 |---|---|---|---|---|
-| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests` | `test-srccore-linux`・`test-tools-linux`（`SRCCoreTests` は `build-and-test-srcs` でも） |
+| ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests`・`SRCSharpWebTests`（SRC#Web のうちブラウザに依存しない処理。セーブの同期・zip の展開・カタログの読み取り） | `test-srccore-linux`・`test-tools-linux`・`test-web`（`SRCCoreTests` は `build-and-test-srcs` でも） |
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
 | フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
@@ -47,6 +47,11 @@ SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedNa
 
 - リリースのときに、その版のセーブを足す（`python3 tools/release.py saves`）。`release.py check`（CI の `release-check`）は、いまの版のセーブが無いと通らない
 - 再開は、セーブを作ったときとは別の一時フォルダで行う。シナリオのフォルダを移しても再開できることを確かめる。v3.5.5 までのセーブはシナリオのファイルを絶対パスで持ち、それより後はシナリオのフォルダからの相対パスで持つ（#1375）
+
+SRC#Web がブラウザ（IndexedDB）に保存したセーブも、版をまたいで確かめる（#1398）。`SRCSharpWeb.E2E/fixtures/srcweb-indexeddb-3.5.5.json` は、3.5.5 が保存した IndexedDB の中身（データベースの名前・版・ストアとキー、セーブのレコード）を書き出したもの。`web.spec.js` が、アプリを読み込む前にこれを IndexedDB にそのまま書き、そのセーブから再開して次のステージへ進めることを確かめる。
+
+- 保存の形（`wwwroot/js/store.js` のデータベース・ストア・レコードの項目）を変えるときは、前の形のものを読めるように移す。fixture は変えない
+- 保存の形を変えた版を出したら、その版の fixture を足す（書き出し方は fixture の `description` にある）
 
 ## CI の構成
 

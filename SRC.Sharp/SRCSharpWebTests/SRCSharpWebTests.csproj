@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SRC#Web のうち、ブラウザに依存しない処理（セーブの同期・zip の展開・カタログの読み取り）のユニットテスト。
+    SRCSharpWeb は WebAssembly 向けのため参照できない。対象のファイルをこのプロジェクトに取り込んでテストする（#1398）。
+    パスの区切りを / として扱うコードがあるため、Linux（CI の test-web）で動かす
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SRCSharpWeb\SaveSync.cs" Link="SRCSharpWeb\SaveSync.cs" />
+    <Compile Include="..\SRCSharpWeb\ScenarioArchive.cs" Link="SRCSharpWeb\ScenarioArchive.cs" />
+    <Compile Include="..\SRCSharpWeb\Catalog.cs" Link="SRCSharpWeb\Catalog.cs" />
+    <Compile Include="..\SRCSharpWeb\WebLogging.cs" Link="SRCSharpWeb\WebLogging.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
+  </ItemGroup>
+
+</Project>

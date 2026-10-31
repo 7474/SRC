@@ -129,7 +129,8 @@ expect eval Damage(標的パイロット) > 0
 | `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Linux（ローカルでは Windows でも動く。出力を開けない環境では再生のテストは Inconclusive） |
 | `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Linux（ローカルでは Windows でも動く） |
-| `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)） | ブラウザ（CI は Linux） |
+| `SRCSharpWebTests` | SRC#Web のうちブラウザに依存しない処理（セーブの同期・zip の展開・カタログの読み取り）。SRCSharpWeb のファイルを取り込んでテストする | Linux（パスの区切りを `/` として扱うため） |
+| `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)）。前の版がブラウザに保存したセーブからの再開（`fixtures/`） | ブラウザ（CI は Linux） |
 | `SRCSharpWeb.E2E/tests/deployed.spec.js` | Playwright。配信したデータ閲覧画面（`DEPLOYED_URL`） | ブラウザ（配信した後） |
 
 `SRCRenderTests` は、待ち時間の長いシナリオのテストが多いため、メソッド単位で並べて動かす（`AssemblyInfo.cs` の `Parallelize`、ワーカーは CPU の数）。プロセス全体の UI カルチャを変えるテスト（`UiLanguageTests`）は `[DoNotParallelize]` にしている。テストを足すときは、静的な状態やプロセス全体の設定を変えないようにし、変える場合は `[DoNotParallelize]` を付ける（[MSTest の並列実行](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-controlling-execution#parallelization-attributes)）。
