@@ -215,10 +215,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void Trim_RemovesOnlyHalfWidthSpaces()
+        public void Trim_RemovesHalfAndFullWidthSpaces()
         {
             var (src, _) = CreateSrc();
-            Assert.AreEqual("　a　", src.Expression.GetValueAsString("Trim(\" 　a　 \")"));
+            Assert.AreEqual("a", src.Expression.GetValueAsString("Trim(\" 　a　 \")"));
+            Assert.AreEqual("a　b", src.Expression.GetValueAsString("Trim(\"　a　b　\")"));
         }
 
         [TestMethod]
