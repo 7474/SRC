@@ -37,6 +37,7 @@
 | 武器の計算結果（使えるか・命中率・ダメージ・クリティカル率・期待ダメージ）。攻撃側のパイロット（技能の有無）× 武器（属性違い・特殊効果つきの 25 種）× 防御側（上の防御側・大きさ違い・特殊効果無効化など 50 種）× 距離。一部はオプション（距離修正・ダメージ倍率低下など）とバトルコンフィグデータ（`Attack/battle.txt`）を変えて見る | 同上 | `SRCCoreTests/Golden/Attack/calc.txt`（データは `Attack/Data`） |
 | 敵の思考（`COM.OperateUnit`）。敵 5 体・味方 3 体の戦場で、乱数の種を固定して敵を 5 回ずつ動かし、行動のたびに全ユニットの位置・HP・EN・気力を記録する。移動先・武器・対象の選び方と、命中・ダメージの判定が変わると記録が変わる | `SRCCoreTests/Golden/ComGoldenTests.cs` | `SRCCoreTests/Golden/Com/expected.txt`（データは `Battle/Data` と同じ） |
 | 敵の思考のうち、回復アビリティ（マップ型を含む）・マップ兵器・変形・スペシャルパワーを使うもの（`COM.TryHealing` / `TryMapHealing` / `TryMapAttack` / `TryMoveTransform` / `TrySpecialPower`）。傷ついた仲間・並んだ味方・遠い敵を置き、オプション「敵ユニットスペシャルパワー使用」で敵 6 体を 5 回ずつ動かし、行動ごとのメッセージ（何を誰に使ったか）と全ユニットの状態を記録する | `SRCCoreTests/Golden/ComTacticsGoldenTests.cs` | `SRCCoreTests/Golden/ComTactics/expected.txt`（データは同じフォルダの `Data/`） |
+| スペシャルパワーとアビリティの効果（`SpecialPowerData.Apply`・`Unit.ExecuteAbility`・`Unit.ExecuteMapAbility`）。basic-data の sp.txt と、効果の種類・適用条件の足りない分を足した sp.txt のスペシャルパワーを 1 つずつ対象の種類に合わせて使い、使ったあとと効果が切れたあとの HP・EN・気力・SP・霊力・行動数・弾数・効いているスペシャルパワー・特殊状態を記録する。回復・補給・状態・付加・強化・変身・召喚・合体技などのアビリティと、範囲の形ごとのマップアビリティも使って記録する | `SRCCoreTests/Golden/SpecialPowerGoldenTests.cs` | `SRCCoreTests/Golden/SpecialPower/expected.txt`（データは同じフォルダの `Data/`） |
 
 表のデータ（`Data/` のユニット・パイロット）はテストごとに分ける。`Battle/Data` を変えると `Com/expected.txt` まで変わるため、新しい組み合わせは別のフォルダに足す。
 
