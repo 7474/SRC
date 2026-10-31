@@ -95,6 +95,14 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 - `GITHUB_TOKEN` で設定した自動マージによる push では、push で動くワークフロー（GitHub Pages・Static Web Apps への配信、`coverage`）が動かない（[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)）。次に人がマージしたときにまとめて配信される。すぐに配信したい場合は、Dependabot のシークレットに `AUTOMERGE_TOKEN`（このリポジトリの contents・pull requests に書き込める fine-grained personal access token）を登録すると、それで自動マージを設定する（[Dependabot のシークレット](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）
 - Dependabot の PR では Actions のシークレットが渡されないため、Static Web Apps のプレビュー環境への配信と、その後の Cypress は省く（[Static Web Apps のワークフロー](./swa-workflows.md)）
 
+## 速さの計測
+
+`test-web` は、SRC#Web で「灯の巡航船ランタン号」を選んでから最初のイベントが動くまでの時間（`lantern-start-ms`）を測り、ジョブのサマリに出す（#1365）。
+
+- 基準は `.github/perf-baseline.json` に、発行の種類ごと（PR は `interpreter`、master への push は `aot`）に置く
+- 基準の 1.5 倍を超えたら warning の注釈を出す。マージは止めない（ランナーによるばらつきがあるため）
+- 意図して速さが変わったときや、ランナーが変わったときは、CI のサマリの値で基準を直す
+
 ## 不安定なテスト（flaky）の扱い
 
 マージを止めるテストが時々落ちると、自動マージは止まり、人は「また flaky だろう」と失敗を読まなくなる。そのため次のようにする。

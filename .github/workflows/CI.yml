@@ -215,8 +215,11 @@ jobs:
         npx playwright test tests/web.spec.js
 
     # 通った・やり直して通った（flaky）・失敗・飛ばしたテストの数と、flaky の一覧をサマリに出す
+    # ランタン号の起動時間（lantern-start-ms）も出し、基準（.github/perf-baseline.json）の 1.5 倍を超えたら warning
     - name: Summarize SRC#Web tests
       if: always()
+      env:
+        PERF_MODE: ${{ github.event_name == 'pull_request' && 'interpreter' || 'aot' }}
       run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web（Playwright）' >> "$GITHUB_STEP_SUMMARY"
 
     - name: Upload SRC#Web test report
