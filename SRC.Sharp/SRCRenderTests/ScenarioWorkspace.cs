@@ -12,9 +12,14 @@ namespace SRCRender.Tests
         private static readonly Encoding Utf8 = new UTF8Encoding(false);
 
         /// <param name="withAssets">false の場合は素材（Bitmap / Sound / 地形データ）を置かない</param>
-        public ScenarioWorkspace(bool withAssets = true)
+        /// <param name="name">一時フォルダの名前。省略すると毎回違う名前にする。同じ名前で作ると、前の中身を消して作り直す</param>
+        public ScenarioWorkspace(bool withAssets = true, string name = null)
         {
-            AppPath = Path.Combine(Path.GetTempPath(), "srcs-render-" + Guid.NewGuid());
+            AppPath = Path.Combine(Path.GetTempPath(), name ?? "srcs-render-" + Guid.NewGuid());
+            if (name != null && Directory.Exists(AppPath))
+            {
+                Directory.Delete(AppPath, true);
+            }
             Directory.CreateDirectory(AppPath);
             if (!withAssets)
             {

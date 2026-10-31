@@ -1,0 +1,19 @@
+# クイックセーブ（1 ターン目の味方フェイズ）から再開し、最後まで進める
+wait ready
+cell 10 10 right
+menu ターン終了
+wait dialog
+dialog OK
+# 敵フェイズのあと、2 ターン目のイベントでインターミッションへ（auto はリストも選んでしまうので使わない）
+wait message ターン2 引き継ぎ=42
+key Enter
+# ステージの終わりの経験値の表示
+wait message 経験値
+key Enter
+wait list コマンド
+list 次のステージへ
+dialog OK
+auto 60
+expect message ステージ2 引き継ぎ=42
+expect finished
+expect error none

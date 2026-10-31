@@ -53,6 +53,14 @@ python3 tools/release.py bump --minor 7    # マイナーを上げる（パッ�
 
 過去の案内（`docs/releases/v3.5.*.md`）を文体の手本にする。
 
+## 3.5 セーブを作る
+
+```sh
+python3 tools/release.py saves
+```
+
+`SRC.Sharp/E2E/saves/v<版>/` に、その版のセーブ（クイックセーブ・データセーブ・リスタート）ができる。後の版がこのセーブから再開できることを CI が確かめる。dotnet が要る。
+
 ## 4. 確かめる
 
 ```sh
