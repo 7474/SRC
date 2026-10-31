@@ -69,6 +69,9 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10.0.x
+        # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
     # VRT の基準画像は Noto Sans CJK JP で作成している
     # MIDI の合成テストには SoundFont（TimGM6mb）、カーソル移動のテストには Xvfb を使う
@@ -104,6 +107,9 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10.0.x
+        # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
     - name: Install fonts and SoundFont
       run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
@@ -162,6 +168,9 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10.0.x
+        # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
     # SoundFont（TimGM6mb）は MIDI を合成するテストが使う（無いとそのテストは飛ばす）
     - name: Install fonts and SoundFont
@@ -173,29 +182,27 @@ jobs:
       run: |
         dotnet workload install wasm-tools --skip-manifest-update
         dotnet publish SRC.Sharp/SRCSharpWeb/SRCSharpWeb.csproj -c Release -o SRC.Sharp/SRCSharpWeb/bin/web -p:RunAOTCompilation=${{ github.event_name == 'pull_request' && 'false' || 'true' }}
-        # ブラウザで動く lint（スレッドを使わない別の WebAssembly）
-        dotnet publish SRC.Sharp/SRCLintWeb/SRCLintWeb.csproj -c Release -o SRC.Sharp/SRCLintWeb/bin/web
 
     - name: Setup Node.js
       uses: actions/setup-node@v7
       with:
         node-version: 22
 
-    # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする
+    # 発行した SRC#Web を GitHub Pages と同じくサブパス（/SRC/web/）に置いて配信し、Chromium でプレイする。
+    # テストは 2 並列で動かす（ランナーは 4 vCPU。3 並列では負荷で落ちるテストが出た。docs/testing.md）
     - name: Test SRC#Web (Playwright)
       working-directory: SRC.Sharp/SRCSharpWeb.E2E
       env:
         SRCWEB_ROOT: ../SRCSharpWeb/bin/pages-test
         SRCWEB_BASE: /SRC/web/
+        PW_WORKERS: 2
       run: |
         mkdir -p ${SRCWEB_ROOT}${SRCWEB_BASE}
         cp -r ../SRCSharpWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}${SRCWEB_BASE}
-        mkdir -p ${SRCWEB_ROOT}/lint
-        cp -r ../SRCLintWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}/lint/
         sed -i "s|<base href=\"/\" />|<base href=\"${SRCWEB_BASE}\" />|" ${SRCWEB_ROOT}${SRCWEB_BASE}index.html
         npm ci
         npx playwright install --with-deps chromium
-        npx playwright test
+        npx playwright test tests/web.spec.js
 
     # 通った・やり直して通った（flaky）・失敗・飛ばしたテストの数と、flaky の一覧をサマリに出す
     - name: Summarize SRC#Web tests
@@ -207,6 +214,60 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: srcweb-playwright
+        path: |
+          SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
+          SRC.Sharp/SRCSharpWeb.E2E/test-results/
+        if-no-files-found: ignore
+
+  # ブラウザで動く lint（SRCLintWeb。スレッドを使わない別の WebAssembly）。test-web と並べて動かし、待ち時間を減らす
+  test-lint:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
+
+    - name: Build SRCLintWeb
+      run: |
+        dotnet workload install wasm-tools --skip-manifest-update
+        dotnet publish SRC.Sharp/SRCLintWeb/SRCLintWeb.csproj -c Release -o SRC.Sharp/SRCLintWeb/bin/web
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    # 配信のルートの /lint/ に置く（SRC#Site と同じ）。発行物が無ければ飛ばさずに落とす（SRCLINT_REQUIRED）
+    - name: Test SRCLintWeb (Playwright)
+      working-directory: SRC.Sharp/SRCSharpWeb.E2E
+      env:
+        SRCWEB_ROOT: ../SRCLintWeb/bin/pages-test
+        SRCWEB_BASE: /lint/
+        SRCLINT_REQUIRED: 1
+      run: |
+        mkdir -p ${SRCWEB_ROOT}/lint
+        cp -r ../SRCLintWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}/lint/
+        npm ci
+        npx playwright install --with-deps chromium
+        npx playwright test tests/lint.spec.js
+
+    - name: Summarize SRCLintWeb tests
+      if: always()
+      run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRCLintWeb（Playwright）' >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload SRCLintWeb test report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: srclint-playwright
         path: |
           SRC.Sharp/SRCSharpWeb.E2E/playwright-report/
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
@@ -257,6 +318,9 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10.0.x
+        # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
     - name: Restore dependencies
       run: dotnet restore SRC.Sharp/SRC.Sharp.sln
@@ -310,7 +374,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results
@@ -333,6 +397,9 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10.0.x
+        # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
     - name: Install fonts and SoundFont
       run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont xvfb
