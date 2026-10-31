@@ -22,7 +22,7 @@
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
 | 配信後の確認 | 配信したデータビューアが開き、データを読めること | マージの可否（マージの後に動く） | `SRCTestBlazor/E2E`（Cypress） | `CD-swa-dataviewer.yml` の `e2e` |
-| 計測 | カバレッジ（`SRCCore`・`SRCRender` を合わせたもの）、シナリオで実行したコマンドの網羅率 | マージの可否 | — | `CI.yml` の `coverage`（master への push のみ） |
+| 計測 | カバレッジ（テストのあるすべてのアセンブリを合わせたもの）、PR で変えた行のカバレッジ（`.github/scripts/diff-coverage.py`。50% を下回ると warning）、シナリオで実行したコマンドの網羅率 | マージの可否（`ci-passed` は待たない） | — | `CI.yml` の `coverage`（PR と master への push。Mackerel には push のときだけ送る） |
 
 テストを足すときは、上の表で「保証すること」に当たる層に足す。シナリオの挙動を Playwright や Avalonia のテストで確かめたくなったら、まずコーパスにケースを足せないかを考える。
 
@@ -64,7 +64,7 @@ flowchart LR
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
   core & tools & web & aot & viewer & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
-  PR -->|push のみ| coverage[coverage<br/>計測・Mackerel]
+  PR -->|待たない| coverage[coverage<br/>計測・変えた行・Mackerel は push のみ]
 ```
 
 - `changes` は PR の変更されたファイルを見て、文書だけ（`docs/`・ルートの `*.md`・Issue のテンプレート）の PR ではビルドとテストを省く。ワークフローの `paths` で絞ると必須チェックが報告されずにマージできなくなるため、ジョブの中で判定している。`if` で省いたジョブは成功として扱われる（[Using conditions to control job execution](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions)）
