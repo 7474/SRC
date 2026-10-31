@@ -24,7 +24,19 @@ namespace PackStats
                 Console.Error.WriteLine("  tiers <パック> <格の一覧.tsv>         格ごとの比較（格<TAB>パイロット[<TAB>ユニット]）");
                 Console.Error.WriteLine("  map <パック>                          マップ兵器の種類ごとの実態");
                 Console.Error.WriteLine("  map-list <パック> <属性の正規表現>    属性に合う武器の一覧と、ユニットの経験値の帯ごとの集計");
+                Console.Error.WriteLine("  skills <パック>                       パイロットの特殊能力・ユニットの特殊能力の保有率");
+                Console.Error.WriteLine("  endurance <パック>                    最大攻撃力の武器を撃てる回数、切り札の気力");
+                Console.Error.WriteLine("  growth <パック>                       要の SP を覚えるレベル");
+                Console.Error.WriteLine("  spread <パック>                       同じ帯の中での得意・苦手の数（個性の偏り）");
+                Console.Error.WriteLine("  types <パック>                        同じ帯の中での位置による系統（リアル・スーパー・グレー）");
+                Console.Error.WriteLine("  map-types <パック>                    マップ兵器の持たせ方の型");
+                Console.Error.WriteLine("  roles <組の評価の結果.md> <格の一覧>  組の評価（tools/pack-analysis）で、格ごとに決め手の使いどころを持つ割合");
                 return 2;
+            }
+            if (args[0] == "roles")
+            {
+                Roles(args[1], args[2]);
+                return 0;
             }
             var data = Data.Load(args[1]);
             switch (args[0])
@@ -34,6 +46,12 @@ namespace PackStats
                 case "tiers": Tiers(data, args[2]); break;
                 case "map": Map(data); break;
                 case "map-list": MapList(data, args[2]); break;
+                case "skills": Skills(data); break;
+                case "endurance": Endurance(data); break;
+                case "growth": Growth(data); break;
+                case "spread": Spread(data); break;
+                case "types": Types(data, args.Length > 2 ? args[2] : null); break;
+                case "map-types": MapTypes(data); break;
                 default: Console.Error.WriteLine($"不明なコマンド: {args[0]}"); return 2;
             }
             return 0;
@@ -339,6 +357,259 @@ namespace PackStats
                 string N(int v) => v > 0 ? v.ToString() : "-";
                 Console.WriteLine($"| {d.UnitWork.GetValueOrDefault(u.Name)} | {u.Name} | {u.ExpValue} | {w.Name} | {w.Power} | {w.MinRange}-{w.MaxRange} | {N(w.ENConsumption)} | {N(w.Bullet)} | {N(w.NecessaryMorale)} | {w.Precision:+0;-0;+0} | {w.Critical:+0;-0;+0} | {w.Class} |");
             }
+        }
+
+        // ---- skills
+
+        private static void Skills(Data d)
+        {
+            var ps = Pilots(d).Where(p => !p.Name.Contains("(ザコ)")).ToList();
+            Console.WriteLine($"# {d.Name} 特殊能力");
+            Console.WriteLine();
+            Console.WriteLine("## パイロットの特殊能力を持つ割合（レベル 30 までに覚えるもの。上位 20）");
+            Console.WriteLine();
+            var names = ps.SelectMany(p => p.Skills.Where(k => k.NecessaryLevel <= 30).Select(k => k.Name).Distinct())
+                .GroupBy(x => x).OrderByDescending(g => g.Count()).Take(20).Select(g => g.Key).ToList();
+            var bands = PilotBands.Where(b => b != "ザコ").ToList();
+            Console.WriteLine("| 特殊能力 | " + string.Join(" | ", bands) + " |");
+            Console.WriteLine("|---|" + string.Concat(bands.Select(_ => "--:|")));
+            foreach (var n in names)
+            {
+                Console.WriteLine($"| {n} | " + string.Join(" | ", bands.Select(b =>
+                {
+                    var g = ps.Where(p => PilotBand(p) == b).ToList();
+                    return Pct(g.Count(p => p.Skills.Any(k => k.Name == n && k.NecessaryLevel <= 30)), g.Count);
+                })) + " |");
+            }
+
+            var us = Units(d);
+            Console.WriteLine();
+            Console.WriteLine("## ユニットの特殊能力を持つ割合（上位 25）");
+            Console.WriteLine();
+            var fnames = us.SelectMany(u => u.Features.Select(f => f.Name).Distinct())
+                .GroupBy(x => x).OrderByDescending(g => g.Count()).Take(25).Select(g => g.Key).ToList();
+            Console.WriteLine("| 特殊能力 | " + string.Join(" | ", UnitBands) + " | レベル（25%〜75%（中央値）） |");
+            Console.WriteLine("|---|" + string.Concat(UnitBands.Select(_ => "--:|")) + "---|");
+            foreach (var n in fnames)
+            {
+                var lv = us.SelectMany(u => u.Features.Where(f => f.Name == n && f.HasLevel).Select(f => (int)Math.Round(f.Level))).ToList();
+                Console.WriteLine($"| {n} | " + string.Join(" | ", UnitBands.Select(b =>
+                {
+                    var g = us.Where(u => ExpBand(u.ExpValue) == b).ToList();
+                    return Pct(g.Count(u => u.Features.Any(f => f.Name == n)), g.Count);
+                })) + $" | {(lv.Count > 0 ? Iqr(lv) : "-")} |");
+            }
+        }
+
+        // ---- endurance
+
+        // 1 回の出撃で撃てる回数（弾数か、EN ÷ 消費 EN。どちらも無ければ制限なし = -1）
+        private static int Uses(UnitData u, WeaponData w)
+        {
+            if (w.Bullet > 0) return w.ENConsumption > 0 ? Math.Min(w.Bullet, u.EN / w.ENConsumption) : w.Bullet;
+            if (w.ENConsumption > 0) return u.EN / w.ENConsumption;
+            return -1;
+        }
+
+        private static void Endurance(Data d)
+        {
+            var us = Units(d);
+            Console.WriteLine($"# {d.Name} 継戦能力");
+            Console.WriteLine();
+            Console.WriteLine("最大攻撃力の武器（マップ兵器を除く）を、1 回の出撃で撃てる回数（弾数か、ユニットの EN ÷ 消費 EN）");
+            Console.WriteLine();
+            Console.WriteLine("| ユニットの経験値 | 体数 | 制限なし | 1 回 | 2 回 | 3〜4 回 | 5 回以上 | 最大攻撃力の武器の気力 | 気力の条件あり |");
+            Console.WriteLine("|---|--:|--:|--:|--:|--:|--:|---|--:|");
+            foreach (var b in UnitBands)
+            {
+                var g = us.Where(u => ExpBand(u.ExpValue) == b && u.Weapons.Any(w => !IsMap(w) && w.Power > 0)).ToList();
+                if (g.Count == 0) continue;
+                var top = g.Select(u => (u, w: u.Weapons.Where(w => !IsMap(w) && w.Power > 0).OrderByDescending(w => w.Power).First())).ToList();
+                var n = top.Select(x => Uses(x.u, x.w)).ToList();
+                Console.WriteLine($"| {b} | {g.Count} | {Pct(n.Count(x => x < 0), n.Count)} | {Pct(n.Count(x => x == 1 || x == 0), n.Count)} | {Pct(n.Count(x => x == 2), n.Count)} | {Pct(n.Count(x => x >= 3 && x <= 4), n.Count)} | {Pct(n.Count(x => x >= 5), n.Count)} | {Iqr(top.Where(x => x.w.NecessaryMorale > 0).Select(x => x.w.NecessaryMorale))} | {Pct(top.Count(x => x.w.NecessaryMorale > 0), top.Count)} |");
+            }
+        }
+
+        // ---- growth
+
+        private static void Growth(Data d)
+        {
+            var ps = Pilots(d).Where(p => !p.Name.Contains("(ザコ)") && !p.Name.Contains("(汎用)")).ToList();
+            string[] sps = { "熱血", "魂", "覚醒", "集中", "ひらめき", "必中", "信頼", "激励" };
+            Console.WriteLine($"# {d.Name} SP を覚えるレベル（持つパイロットのみ。25%〜75%（中央値））");
+            Console.WriteLine();
+            Console.WriteLine("| 層 | " + string.Join(" | ", sps) + " |");
+            Console.WriteLine("|---|" + string.Concat(sps.Select(_ => "---|")));
+            foreach (var b in PilotBands.Take(5))
+            {
+                var g = ps.Where(p => PilotBand(p) == b).ToList();
+                if (g.Count == 0) continue;
+                Console.WriteLine($"| {b} | " + string.Join(" | ", sps.Select(x => Iqr(g.SelectMany(p => p.DefinedSpecialPowers().Where(s => s.Name == x).Select(s => s.NecessaryLevel))))) + " |");
+            }
+            Console.WriteLine();
+            Console.WriteLine("性格ごとの、熱血・魂のどちらかを覚えるレベル（早いほう。25%〜75%（中央値））");
+            Console.WriteLine();
+            Console.WriteLine("| 性格 | 人数 | 熱血か魂を持つ | 覚えるレベル |");
+            Console.WriteLine("|---|--:|--:|---|");
+            foreach (var per in new[] { "超強気", "強気", "普通", "弱気", "機械" })
+            {
+                var g = ps.Where(p => p.Personality == per && p.ExpValue >= 120).ToList();
+                if (g.Count == 0) continue;
+                var lv = g.Select(p => p.DefinedSpecialPowers().Where(s => s.Name == "熱血" || s.Name == "魂").Select(s => s.NecessaryLevel).DefaultIfEmpty(-1).Min()).Where(x => x >= 0).ToList();
+                Console.WriteLine($"| {per} | {g.Count} | {Pct(lv.Count, g.Count)} | {Iqr(lv)} |");
+            }
+        }
+
+        // ---- spread
+
+        private static void Spread(Data d)
+        {
+            var ps = Pilots(d).Where(p => !p.Name.Contains("(ザコ)") && !p.Name.Contains("(汎用)") && p.ExpValue >= 120).ToList();
+            Func<PilotData, int>[] f = { p => p.Infight, p => p.Shooting, p => p.Hit, p => p.Dodge, p => p.Technique, p => p.Intuition };
+            Console.WriteLine($"# {d.Name} 個性の偏り（経験値 120 以上の名前付きのパイロット）");
+            Console.WriteLine();
+            Console.WriteLine("同じ帯の中で 75% 以上の能力（得意）と 25% 以下の能力（苦手）の数");
+            Console.WriteLine();
+            var q = new Dictionary<string, (int lo, int hi)[]>();
+            foreach (var b in PilotBands.Take(4))
+            {
+                var g = ps.Where(p => PilotBand(p) == b).ToList();
+                q[b] = f.Select(fn => (Quantile(g.Select(fn), .25), Quantile(g.Select(fn), .75))).ToArray();
+            }
+            var rows = ps.Select(p =>
+            {
+                var t = q[PilotBand(p)];
+                var hi = Enumerable.Range(0, 6).Count(i => f[i](p) > t[i].hi);
+                var lo = Enumerable.Range(0, 6).Count(i => f[i](p) < t[i].lo);
+                return (hi, lo);
+            }).ToList();
+            Console.WriteLine("| 得意＼苦手 | 0 | 1 | 2 | 3 以上 |");
+            Console.WriteLine("|---|--:|--:|--:|--:|");
+            foreach (var h in new[] { 0, 1, 2, 3 })
+            {
+                Console.WriteLine($"| {(h == 3 ? "3 以上" : h.ToString())} | " + string.Join(" | ", new[] { 0, 1, 2, 3 }.Select(l =>
+                    Pct(rows.Count(r => (h == 3 ? r.hi >= 3 : r.hi == h) && (l == 3 ? r.lo >= 3 : r.lo == l)), rows.Count))) + " |");
+            }
+            Console.WriteLine();
+            Console.WriteLine($"得意も苦手も無い（全能力が 25%〜75% に収まる）: {Pct(rows.Count(r => r.hi == 0 && r.lo == 0), rows.Count)}");
+            Console.WriteLine();
+            Console.WriteLine("各能力の 25%〜75% の幅（帯ごと）");
+            Console.WriteLine();
+            Console.WriteLine("| 層 | 格闘 | 射撃 | 命中 | 回避 | 技量 | 反応 |");
+            Console.WriteLine("|---|--:|--:|--:|--:|--:|--:|");
+            foreach (var b in q.Keys) Console.WriteLine($"| {b} | " + string.Join(" | ", q[b].Select(x => x.hi - x.lo)) + " |");
+        }
+
+        // ---- types
+
+        private static void Types(Data d, string listPath)
+        {
+            var us = Units(d).Where(u => u.ExpValue >= 120).ToList();
+            Console.WriteLine($"# {d.Name} 系統（ユニットの経験値 120 以上。同じ帯の中での位置）");
+            Console.WriteLine();
+            Console.WriteLine("- リアル系: 運動性が 75% 以上で、HP・装甲がどちらも 50% 以下");
+            Console.WriteLine("- スーパー系: HP か装甲が 75% 以上で、運動性が 25% 以下");
+            Console.WriteLine("- グレー系: 最大攻撃力が 75% 以上で、リアル系・スーパー系に当たらない");
+            Console.WriteLine();
+            var med = new Dictionary<string, (int[] q25, int[] q50, int[] q75)>();
+            Func<UnitData, int>[] f = { u => u.HP, u => u.Armor, u => u.Mobility, u => u.Weapons.Max(w => w.Power) };
+            foreach (var b in UnitBands.Take(4))
+            {
+                var g = us.Where(u => ExpBand(u.ExpValue) == b).ToList();
+                med[b] = (f.Select(fn => Quantile(g.Select(fn), .25)).ToArray(), f.Select(fn => Quantile(g.Select(fn), .5)).ToArray(), f.Select(fn => Quantile(g.Select(fn), .75)).ToArray());
+            }
+            string Type(UnitData u)
+            {
+                var (q25, q50, q75) = med[ExpBand(u.ExpValue)];
+                if (u.Mobility >= q75[2] && u.HP <= q50[0] && u.Armor <= q50[1]) return "リアル系";
+                if ((u.HP >= q75[0] || u.Armor >= q75[1]) && u.Mobility <= q25[2]) return "スーパー系";
+                if (u.Weapons.Max(w => w.Power) >= q75[3]) return "グレー系";
+                return "どれにも当たらない";
+            }
+            var t = us.Select(u => (u, type: Type(u))).ToList();
+            Console.WriteLine("| 系統 | 割合 | HP | 装甲 | 運動性 | 最大攻撃力 |");
+            Console.WriteLine("|---|--:|---|---|---|---|");
+            foreach (var g in t.GroupBy(x => x.type).OrderBy(g => g.Key))
+            {
+                var a = g.Select(x => x.u).ToList();
+                Console.WriteLine($"| {g.Key} | {Pct(a.Count, t.Count)} | {Iqr(a.Select(u => u.HP))} | {Iqr(a.Select(u => u.Armor))} | {Iqr(a.Select(u => u.Mobility))} | {Iqr(a.Select(u => u.Weapons.Max(w => w.Power)))} |");
+            }
+            if (listPath == null) return;
+            Console.WriteLine();
+            Console.WriteLine("格の一覧のキャラのユニットの系統");
+            Console.WriteLine();
+            Console.WriteLine("| 格 | ユニット | 系統 | HP | 装甲 | 運動性 | 最大攻撃力 |");
+            Console.WriteLine("|---|---|---|--:|--:|--:|--:|");
+            foreach (var r in File.ReadAllLines(listPath).Where(l => l.Trim() != "" && !l.StartsWith("#")).Select(l => l.Split('\t')).Where(x => x.Length >= 2))
+            {
+                var name = r.Length > 2 && r[2] != "" ? r[2] : r[1];
+                var u = t.FirstOrDefault(x => x.u.Name == name).u;
+                if (u == null) continue;
+                Console.WriteLine($"| {r[0]} | {u.Name} | {Type(u)} | {u.HP} | {u.Armor} | {u.Mobility} | {u.Weapons.Max(w => w.Power)} |");
+            }
+        }
+
+        // ---- map-types
+
+        private static void MapTypes(Data d)
+        {
+            var us = Units(d).Where(u => u.Weapons.Any(w => IsMap(w) && w.Power > 0)).ToList();
+            Console.WriteLine($"# {d.Name} マップ兵器の持たせ方の型（攻撃するマップ兵器を持つユニット {us.Count} 体）");
+            Console.WriteLine();
+            Console.WriteLine("- 補助型: 最も強いマップ兵器が、単体武器の最大攻撃力の 9 割未満");
+            Console.WriteLine("- 切り札型: 補助型に当たらず、攻撃するマップ兵器が 1 つだけで、2 回以下しか撃てない");
+            Console.WriteLine("- マップ兵器屋: 補助型に当たらず、攻撃するマップ兵器が 2 つ以上か、3 回以上撃てる（マップ兵器が主力）");
+            Console.WriteLine();
+            string Type(UnitData u)
+            {
+                var mw = u.Weapons.Where(w => IsMap(w) && w.Power > 0).ToList();
+                var top = mw.OrderByDescending(w => w.Power).First();
+                var single = u.Weapons.Where(w => !IsMap(w) && w.Power > 0).Select(w => w.Power).DefaultIfEmpty(0).Max();
+                if (top.Power < single * 0.9) return "補助型";
+                var n = Uses(u, top);
+                if (mw.Count == 1 && n >= 0 && n <= 2) return "切り札型";
+                return "マップ兵器屋";
+            }
+            var t = us.Select(u => (u, type: Type(u))).ToList();
+            Console.WriteLine("| 型 | 割合 | 最も強いマップ兵器の攻撃力 | 単体武器の最大攻撃力 | 最も強いマップ兵器の回数 | 気力 | 識あり |");
+            Console.WriteLine("|---|--:|---|---|---|---|--:|");
+            foreach (var g in t.GroupBy(x => x.type).OrderBy(g => g.Key))
+            {
+                var a = g.Select(x => (x.u, w: x.u.Weapons.Where(w => IsMap(w) && w.Power > 0).OrderByDescending(w => w.Power).First())).ToList();
+                Console.WriteLine($"| {g.Key} | {Pct(a.Count, t.Count)} | {Iqr(a.Select(x => x.w.Power))} | {Iqr(a.Select(x => x.u.Weapons.Where(w => !IsMap(w) && w.Power > 0).Select(w => w.Power).DefaultIfEmpty(0).Max()))} | {Iqr(a.Select(x => Uses(x.u, x.w)).Where(n => n >= 0))} | {Iqr(a.Where(x => x.w.NecessaryMorale > 0).Select(x => x.w.NecessaryMorale))} | {Pct(a.Count(x => x.w.Class.Contains("識")), a.Count)} |");
+            }
+        }
+
+        // ---- roles
+
+        // tools/pack-analysis の結果（Markdown）から、格の一覧のパイロットの組の評価を拾う
+        private static void Roles(string analysisPath, string listPath)
+        {
+            var tiers = File.ReadAllLines(listPath).Where(l => l.Trim() != "" && !l.StartsWith("#")).Select(l => l.Split('\t'))
+                .Where(t => t.Length >= 2).GroupBy(t => t[1]).ToDictionary(g => g.Key, g => g.First()[0]);
+            var grades = new Dictionary<string, string[]>();
+            foreach (var line in File.ReadAllLines(analysisPath))
+            {
+                var c = line.Trim().Trim('|').Split('|').Select(x => x.Trim()).ToArray();
+                if (c.Length != 10 || !Regex.IsMatch(c[3], "^[SABCD-]$")) continue;
+                var pilot = Regex.Replace(c[0].Split('／')[0], "（サブ:.*", "");
+                if (tiers.ContainsKey(pilot) && !grades.ContainsKey(pilot)) grades[pilot] = c.Skip(3).Take(6).ToArray();
+            }
+            Console.WriteLine("# 格ごとの、組の評価で決め手（S・A）を持つ割合");
+            Console.WriteLine();
+            Console.WriteLine("使いどころ: ボス戦・ザコ掃討・回避・囮・遊撃・長距離・支援。評価は同じ経験値の帯の中での順位（S 上位 5%、A 上位 25%）");
+            Console.WriteLine();
+            Console.WriteLine("| 格 | 人数（評価あり） | S を持つ | S か A を持つ | どれも B 以下 |");
+            Console.WriteLine("|---|--:|--:|--:|--:|");
+            foreach (var g in grades.GroupBy(x => tiers[x.Key]))
+            {
+                var a = g.ToList();
+                Console.WriteLine($"| {g.Key} | {a.Count} | {Pct(a.Count(x => x.Value.Contains("S")), a.Count)} | {Pct(a.Count(x => x.Value.Any(v => v == "S" || v == "A")), a.Count)} | {Pct(a.Count(x => !x.Value.Any(v => v == "S" || v == "A")), a.Count)} |");
+            }
+            Console.WriteLine();
+            Console.WriteLine("| 格 | パイロット | ボス戦 | ザコ掃討 | 回避・囮 | 遊撃 | 長距離 | 支援 |");
+            Console.WriteLine("|---|---|---|---|---|---|---|---|");
+            foreach (var x in grades.OrderBy(x => tiers[x.Key])) Console.WriteLine($"| {tiers[x.Key]} | {x.Key} | " + string.Join(" | ", x.Value) + " |");
         }
     }
 
