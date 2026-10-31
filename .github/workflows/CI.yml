@@ -35,8 +35,8 @@ jobs:
         fi
         files=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename')
         echo "$files"
-        # docs/・memo/・ルートの *.md・Issue のテンプレートだけなら、コードの変更は無い
-        if echo "$files" | grep -qvE '^(docs/|memo/|\.github/ISSUE_TEMPLATE/|[^/]+\.md$)'; then
+        # docs/・ルートの *.md・Issue のテンプレートだけなら、コードの変更は無い
+        if echo "$files" | grep -qvE '^(docs/|\.github/ISSUE_TEMPLATE/|[^/]+\.md$)'; then
           echo "code=true" >> "$GITHUB_OUTPUT"
         else
           echo "code=false" >> "$GITHUB_OUTPUT"

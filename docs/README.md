@@ -26,6 +26,7 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 
 ### 🚀 リリース・運用 / Release & Operations
 
+- **[運用の全体像](./operations.md)** — ワークフローのきっかけと出る先、公開しているサイト・パッケージ、7474/SRC-Site とのつながり、Secrets、人がやること（図あり）
 - **[バージョンの管理](./versioning.md)** — SRC# のバージョンの付け方とリリースの手順（NuGet・GitHub Releases・Docker Hub）
 - **[リリースの案内](./releases/README.md)** — 版ごとの GitHub Releases の本文と、その書き方
 - **[ログの設計](./logging.md)** — 各アプリ・ツールのログの出力先・レベル・設定（`srcs.json`・引数・環境変数）・カテゴリ
