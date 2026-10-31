@@ -126,9 +126,9 @@ expect eval Damage(標的パイロット) > 0
 |---|---|---|
 | `SRCCoreTests` | ユニットテスト。`E2E/HeadlessScenarioTests` は GUI 呼び出しの記録を、ゲームスレッドあり／なしで比較 | Windows / Linux |
 | `SRCRenderTests` | `ScreenGUI` でシナリオをプレイし、画面の状態と VRT を検証。リスト・設定変更・メニュー・ダイアログ・マップ操作・文字入力（`IScreenDialogHost`）・`KeyState` | Linux（CI の Windows ではフォントのテストだけ。VRT は Linux のみ） |
-| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
+| `SRCSharpAvaloniaTests` | SRC#Avalonia のウィンドウを `Avalonia.Headless` で動かし、マウス入力でシナリオを進める。文字入力ダイアログ。起動の引数と `--smoke` の終了コード（0: 始まった・2: 始まらない・3: ファイルが無い）、効果音の再生の呼び出し（`AppTests`）。描画結果を `TestResults/avalonia/` に保存（CI の成果物 `screenshots-avalonia`） | Linux（ローカルでは Windows でも動く） |
 | `SRCSoundTests` | 音声の復号と、OpenAL Soft の null 出力（`ALSOFT_DRIVERS=null`）での再生 | Linux（ローカルでは Windows でも動く。出力を開けない環境では再生のテストは Inconclusive） |
-| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計） | Linux（ローカルでは Windows でも動く） |
+| `SRCAuthoringTests` | 作成支援ツール（`srcsharp` の LSP・DAP・lint・バランス集計）。`srcsharp` の各コマンド（`lint`・`play`・`balance`・`help`・`--version`・不明なコマンド）の終了コードと出力は、`Program.Main` をテストのプロセスの中で呼んで確かめる（`CliTests`） | Linux（ローカルでは Windows でも動く） |
 | `SRCSharpWebTests` | SRC#Web のうちブラウザに依存しない処理（セーブの同期・zip の展開・カタログの読み取り）。SRCSharpWeb のファイルを取り込んでテストする | Linux（パスの区切りを `/` として扱うため） |
 | `SRCSharpWeb.E2E` | Playwright。発行した SRC#Web を Chromium でプレイする（[SRC#Web](./web.md)）。前の版がブラウザに保存したセーブからの再開（`fixtures/`） | ブラウザ（CI は Linux） |
 | `SRCSharpWeb.E2E/tests/deployed.spec.js` | Playwright。配信したデータ閲覧画面（`DEPLOYED_URL`） | ブラウザ（配信した後） |
