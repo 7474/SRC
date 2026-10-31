@@ -56,17 +56,19 @@ flowchart LR
   changes -->|コードの変更あり| tools[test-tools-linux<br/>Avalonia・作成支援ツール・音声・VS Code 拡張]
   changes -->|コードの変更あり| web[test-web<br/>SRC#Web の Playwright]
   changes -->|コードの変更あり| lint[test-lint<br/>SRCLintWeb の Playwright]
+  changes -->|SRC#Web・発行の設定を変えた PR| aot[test-web-aot<br/>SRC#Web の AOT 版の Playwright]
   changes -->|コードの変更あり| docker[docker-srcdatalinter]
   changes -->|コードの変更あり| win[build-and-test-srcs<br/>Windows 固有]
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
-  core & tools & web & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
+  core & tools & web & aot & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
   PR -->|push のみ| coverage[coverage<br/>計測・Mackerel]
 ```
 
 - `changes` は PR の変更されたファイルを見て、文書だけ（`docs/`・ルートの `*.md`・Issue のテンプレート）の PR ではビルドとテストを省く。ワークフローの `paths` で絞ると必須チェックが報告されずにマージできなくなるため、ジョブの中で判定している。`if` で省いたジョブは成功として扱われる（[Using conditions to control job execution](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions)）
 - `ci-passed` は、すべてのジョブが成功か省略なら成功する。失敗・取り消しが 1 つでもあれば失敗する
 - PR と master への push で動かすテストは同じ。違うのは SRC#Web の発行（PR はインタープリター、push は AOT）と、push のときだけの `coverage`
+- SRC#Web・発行の設定（`Directory.Build.props`・`Directory.Packages.props`）・`CI.yml` を変えた PR では、`test-web-aot` が配るものと同じ AOT 版でも E2E を通す（約 12 分。ほかのジョブと並べて動く）。AOT の発行は約 8 分かかるため、ほかの PR では動かさない（#1360）
 
 ### ブランチ保護
 
