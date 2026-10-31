@@ -1,0 +1,36 @@
+# Leave・Join・ChangeParty の結果を確かめる
+wait message 検証開始
+# Leave: パイロット名（出撃中のユニットは退却する）・非同期・対象省略・ユニット名称・味方でないユニット
+expect eval InStr(lvA, "離脱") = 1
+expect eval Len(lvAmap) = 0
+expect eval InStr(lvB, "離脱") = 1
+expect eval InStr(lvD, "離脱") = 1
+expect eval InStr(lvR, "離脱") = 1
+expect eval InStr(lvT, "離脱") = 1
+expect eval InStr(lvTp, "味方") = 1
+# ユニットに乗っていないパイロットは一覧に出なくなる
+expect eval lvC = 0
+expect eval InStr(lvList, "パイロットＦ") > 0
+# 非戦闘員
+expect eval lvM = 1
+# Join: パイロット名・ユニット名称・ユニットＩＤで復帰したユニットは待機になる
+expect eval InStr(jnA, "待機") = 1
+expect eval InStr(jnR, "待機") = 1
+expect eval InStr(jnT, "待機") = 1
+# ユニットに乗っていないパイロット・非戦闘員
+expect eval jnC > 0
+expect eval jnM = 0
+# 対象省略（ForEach 味方 離脱 の中）
+expect eval InStr(jnB, "待機") = 1
+expect eval InStr(jnD, "待機") = 1
+# ChangeParty: パイロット名・対象省略・ユニットＩＤ
+expect eval InStr(cpT2, "中立") = 1
+expect eval InStr(cpT2b, "ＮＰＣ") = 1
+expect eval InStr(cpT3, "味方") = 1
+# ユニットに乗っていないパイロットの陣営も変わる
+expect eval cpF = "敵"
+key Enter
+# 陣営の変更で敵がいなくなっても全滅イベントは起きない
+wait ready
+expect eval IsVarDefined(annihilated) = 0
+expect error none

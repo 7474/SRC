@@ -151,6 +151,11 @@ jobs:
         npm ci
         npm run package
 
+    # 拡張が有効になり、コマンドが登録され、.eve・データの言語が決まることを、VS Code（stable）の中で確かめる（#1364）
+    - name: Test VS Code extension
+      working-directory: SRC.Sharp/SRCSharpVSCode
+      run: xvfb-run -a npm test
+
     - name: Upload VS Code extension
       uses: actions/upload-artifact@v7
       with:
@@ -215,8 +220,11 @@ jobs:
         npx playwright test tests/web.spec.js
 
     # 通った・やり直して通った（flaky）・失敗・飛ばしたテストの数と、flaky の一覧をサマリに出す
+    # ランタン号の起動時間（lantern-start-ms）も出し、基準（.github/perf-baseline.json）の 1.5 倍を超えたら warning
     - name: Summarize SRC#Web tests
       if: always()
+      env:
+        PERF_MODE: ${{ github.event_name == 'pull_request' && 'interpreter' || 'aot' }}
       run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web（Playwright）' >> "$GITHUB_STEP_SUMMARY"
 
     - name: Upload SRC#Web test report
@@ -274,6 +282,8 @@ jobs:
 
     - name: Summarize SRC#Web AOT tests
       if: always()
+      env:
+        PERF_MODE: aot
       run: node .github/scripts/playwright-summary.mjs SRC.Sharp/SRCSharpWeb.E2E/test-results/results.json 'SRC#Web AOT（Playwright）' >> "$GITHUB_STEP_SUMMARY"
 
     - name: Upload SRC#Web AOT test report
@@ -508,14 +518,18 @@ jobs:
         echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
         echo "$RESULTS" | jq -e 'all(.[]; .result == "success" or .result == "skipped")' > /dev/null
 
-  # カバレッジの計測（master への push のときだけ）。マージの可否には使わない。
-  # 収集は後処理に数分かかるため、テストのジョブとは分けて動かす
+  # カバレッジの計測。テストのあるすべてのアセンブリを計り、PR では変えた行のカバレッジも出す（#1363）。
+  # 計測は時間がかかる（数分）ため、ci-passed は待たない（マージの可否に使わない）。Mackerel には push のときだけ送る
   coverage:
-    if: github.event_name == 'push'
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v7
+      with:
+        # 変えた行を PR の基準と比べるため
+        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
@@ -534,6 +548,9 @@ jobs:
       run: |
         dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/core
         dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/render
+        dotnet test SRC.Sharp/SRCAuthoringTests/SRCAuthoringTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/authoring
+        ALSOFT_DRIVERS=null dotnet test SRC.Sharp/SRCSoundTests/SRCSoundTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/sound
+        xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --collect:"XPlat Code Coverage" --results-directory ./TestResults/avalonia
 
     # シナリオ（E2E コーパス・画面テスト）でどれだけコマンドを実行できているかをジョブのサマリーに出す
     - name: Report command coverage of scenarios
@@ -542,6 +559,11 @@ jobs:
         if [ -n "$files" ]; then
           python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
         fi
+
+    # PR で変えた行のうち、テストが通った割合（少なければ warning。止めはしない）
+    - name: Report coverage of changed lines
+      if: github.event_name == 'pull_request'
+      run: python3 .github/scripts/diff-coverage.py ${{ github.event.pull_request.base.sha }} $(find TestResults -name coverage.cobertura.xml) >> "$GITHUB_STEP_SUMMARY"
 
     - name: Generate Coverage Report
       uses: danielpalme/ReportGenerator-GitHub-Action@5.5.12
@@ -553,8 +575,9 @@ jobs:
     - name: Upload Coverage Report to Summary
       run: cat CoverageReport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
 
-    # SRCCore と SRCRender を合わせたカバレッジ
+    # テストのあるすべてのアセンブリを合わせたカバレッジ
     - name: Send Coverage Summary to Mackerel (service metrics)
+      if: github.event_name == 'push'
       env:
         MACKEREL_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
       run: |

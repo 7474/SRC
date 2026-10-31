@@ -1,0 +1,53 @@
+# SetStatus・ClearStatus・Finish・ChangeUnitBitmap・SetBullet・SetStock・BossRank・Enable の結果を確かめる
+wait message 検証開始
+# SetStatus: ユニット指定・対象省略・ユニットＩＤ指定
+expect eval cUp1 = 1
+expect eval cStun1 = 1
+expect eval actStun1 = 0
+expect eval cArmor1 = 1
+# ClearStatus: ユニット指定・対象省略・ユニットＩＤ指定
+expect eval cUp2 = 0
+expect eval cStun2 = 0
+expect eval actStun2 = 2
+expect eval cPoison = 0
+expect eval cArmor2 = 0
+# Finish: 終了するのは１回分の行動
+expect eval actB0 = 2
+expect eval actB1 = 1
+expect eval actB2 = 0
+expect eval actB3 = 0
+expect eval actA0 = 1
+expect eval actA1 = 0
+# ChangeUnitBitmap: 画像の変更（Info の画像名も変わる）・「-」で元に戻す・非表示・非表示解除
+expect eval InStr(bmp1, "change.bmp") = 1
+expect eval Len(bmp1) = 10
+expect eval InStr(bmp2, bmp0) = 1
+expect eval Len(bmp2) = Len(bmp0)
+expect eval Len(bmp0) > 0
+expect eval hide1 = 1
+expect eval hide2 = 0
+# SetBullet: 武器名・武器番号（最大弾数まで）・対象省略
+expect eval bulMax = 6
+expect eval bul1 = 2
+expect eval bul2 = 6
+expect eval bul3 = 0
+# SetStock: アビリティ名・アビリティ番号（最大使用回数まで）・対象省略
+expect eval stkMax = 4
+expect eval stk1 = 1
+expect eval stk2 = 4
+expect eval stk3 = 0
+# BossRank: ボスランクを設定し、ＨＰ・弾数を全快させる。適用しないユニットのボスランクは -1
+expect eval brA0 = -1
+expect eval brT = 2
+expect eval mhpT1 = mhpT0 * 2
+expect eval hpT1 = mhpT1
+expect eval brA1 = 0
+expect eval mhpA1 = mhpA0
+expect eval bul4 = 6
+# Enable: Disable で封印した特殊能力を使用可能にする
+expect eval enA0 = 0
+expect eval enA1 = 1
+expect eval enB0 = 0
+expect eval enB1 = 1
+expect eval enB2 = 1
+expect error none

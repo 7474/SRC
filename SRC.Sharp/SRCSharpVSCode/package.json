@@ -507,7 +507,8 @@
     "compile": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap",
     "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --sourcemap --watch",
     "vscode:prepublish": "npm run check-types && esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20 --minify",
-    "package": "vsce package --no-dependencies --baseContentUrl https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode --baseImagesUrl https://github.com/7474/SRC/raw/master/SRC.Sharp/SRCSharpVSCode"
+    "package": "vsce package --no-dependencies --baseContentUrl https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCSharpVSCode --baseImagesUrl https://github.com/7474/SRC/raw/master/SRC.Sharp/SRCSharpVSCode",
+    "test": "vscode-test"
   },
   "dependencies": {
     "vscode-languageclient": "^10.1.2"
@@ -515,8 +516,11 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/vscode": "~1.91.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^4.1.0",
     "esbuild": "^0.25.12",
+    "mocha": "^12.0.3",
     "typescript": "~5.9.3"
   }
 }

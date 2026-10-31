@@ -1,0 +1,121 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+
+# ---- Upgrade ----
+Create 味方 テスト機 2 パイロットＡ 1 2 2
+Set idA0 UnitID(パイロットＡ)
+Item 強化Ａ
+Equip パイロットＡ 強化Ａ
+# ユニット名称で指定。ランク・位置・アイテム・パイロットは引き継ぐ
+Upgrade テスト機 テスト機改
+Set upName1 Unit(パイロットＡ)
+Set upOld Status(idA0)
+Set upSt1 Status(パイロットＡ)
+Set upX1 X(パイロットＡ)
+Set upY1 Y(パイロットＡ)
+Set upRank1 Rank(パイロットＡ)
+Set upItem1 CountItem(パイロットＡ)
+Set upHP1 HP(パイロットＡ)
+Set upMHP1 Info(ユニット, UnitID(パイロットＡ), 最大ＨＰ)
+# 対象省略（デフォルトユニット）
+Select パイロットＡ
+Upgrade テスト機
+Set upName2 Unit(パイロットＡ)
+# 待機中のユニット（ユニットＩＤ指定）は待機のまま
+Unit テスト機 0
+Set idW UnitID()
+Pilot パイロットＢ 1
+Ride パイロットＢ idW
+Upgrade idW テスト機改
+Set upName3 Unit(パイロットＢ)
+Set upSt3 Status(パイロットＢ)
+# ボスランクは引き継ぐ
+Create 敵 標的機 0 標的パイロット 1 10 10
+Create 敵 標的機 0 標的パイロット２ 1 12 10
+BossRank 標的パイロット 1
+Upgrade UnitID(標的パイロット) 標的機改
+Set upName4 Unit(標的パイロット)
+Set upBoss4 Info(ユニット, UnitID(標的パイロット), ボスランク)
+# 破壊されたユニットはその場で復活する
+Destroy 標的パイロット２
+Set upSt5a Status(標的パイロット２)
+Upgrade UnitID(標的パイロット２) 標的機改
+Set upSt5b Status(標的パイロット２)
+Set upName5 Unit(標的パイロット２)
+Set upX5 X(標的パイロット２)
+Set upY5 Y(標的パイロット２)
+
+# ---- ClearSkill ----
+SetSkill パイロットＡ 底力 2
+Set sk1 Skill(パイロットＡ, 底力)
+ClearSkill パイロットＡ 底力
+Set sk2 Skill(パイロットＡ, 底力)
+# 別名をつけて追加したもの
+SetSkill パイロットＡ 見切り 1 心眼
+Set sk3 Skill(パイロットＡ, 見切り)
+ClearSkill パイロットＡ 見切り
+Set sk4 Skill(パイロットＡ, 見切り)
+# エリアス（底力・見切り）で追加したもの
+SetSkill パイロットＡ 達人 1
+Set sk5a Skill(パイロットＡ, 底力)
+Set sk5b Skill(パイロットＡ, 見切り)
+ClearSkill パイロットＡ 達人
+Set sk6a Skill(パイロットＡ, 底力)
+Set sk6b Skill(パイロットＡ, 見切り)
+# まだ作られていないパイロット（パイロットデータの名称で指定）
+SetSkill 予備パイロット 底力 1
+ClearSkill 予備パイロット 底力
+Pilot 予備パイロット 1
+Set sk7 Skill(予備パイロット, 底力)
+
+# ---- RecoverPlana ----
+Set plMax Info(パイロット, パイロットＡ, 最大霊力)
+Set pl0 Plana(パイロットＡ)
+# 減らす
+RecoverPlana パイロットＡ -50
+Set pl1 Plana(パイロットＡ)
+# 対象省略（デフォルトユニットのメインパイロット）。最大霊力を越えない
+Select パイロットＡ
+RecoverPlana 200
+Set pl2 Plana(パイロットＡ)
+# 0 未満にならない
+RecoverPlana パイロットＡ -300
+Set pl3 Plana(パイロットＡ)
+# 霊力を持たないパイロットは何もしない
+RecoverPlana パイロットＢ 50
+Set pl4 Plana(パイロットＢ)
+
+# ---- Release ----
+Fix パイロットＢ
+Set fx1 IsVarDefined(Fix(パイロットＢ))
+Release パイロットＢ
+Set fx2 IsVarDefined(Fix(パイロットＢ))
+# アイテム
+Item 強化Ｂ
+Fix 強化Ｂ
+Set fx3 IsVarDefined(Fix(強化Ｂ))
+Release 強化Ｂ
+Set fx4 IsVarDefined(Fix(強化Ｂ))
+# 対象省略（デフォルトユニットのパイロット）
+Select パイロットＡ
+Fix
+Set fx5 IsVarDefined(Fix(パイロットＡ))
+Release
+Set fx6 IsVarDefined(Fix(パイロットＡ))
+
+# ---- RenameFile ----
+RenameFile 改名前.txt 改名後.txt
+Set rn1 Dir(改名前.txt)
+Set rn2 Dir(改名後.txt)
+Open 改名後.txt For 入力 As F
+LineRead F rnLine
+Close F
+
+Talk システム
+検証開始
+End
+Exit

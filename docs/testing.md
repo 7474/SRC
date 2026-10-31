@@ -16,13 +16,13 @@
 | ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests` | `test-srccore-linux`・`test-tools-linux`（`SRCCoreTests` は `build-and-test-srcs` でも） |
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
-| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint） | `test-tools-linux`・`test-web`・`test-lint` |
+| フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
 | 配布物 | 配る形でビルド・発行でき、最低限動くこと。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
 | 配信後の確認 | 配信したデータビューアが開き、データを読めること | マージの可否（マージの後に動く） | `SRCTestBlazor/E2E`（Cypress） | `CD-swa-dataviewer.yml` の `e2e` |
-| 計測 | カバレッジ（`SRCCore`・`SRCRender` を合わせたもの）、シナリオで実行したコマンドの網羅率 | マージの可否 | — | `CI.yml` の `coverage`（master への push のみ） |
+| 計測 | カバレッジ（テストのあるすべてのアセンブリを合わせたもの）、PR で変えた行のカバレッジ（`.github/scripts/diff-coverage.py`。50% を下回ると warning）、シナリオで実行したコマンドの網羅率 | マージの可否（`ci-passed` は待たない） | — | `CI.yml` の `coverage`（PR と master への push。Mackerel には push のときだけ送る） |
 
 テストを足すときは、上の表で「保証すること」に当たる層に足す。シナリオの挙動を Playwright や Avalonia のテストで確かめたくなったら、まずコーパスにケースを足せないかを考える。
 
@@ -64,7 +64,7 @@ flowchart LR
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
   core & tools & web & aot & viewer & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
-  PR -->|push のみ| coverage[coverage<br/>計測・Mackerel]
+  PR -->|待たない| coverage[coverage<br/>計測・変えた行・Mackerel は push のみ]
 ```
 
 - `changes` は PR の変更されたファイルを見て、文書だけ（`docs/`・ルートの `*.md`・Issue のテンプレート）の PR ではビルドとテストを省く。ワークフローの `paths` で絞ると必須チェックが報告されずにマージできなくなるため、ジョブの中で判定している。`if` で省いたジョブは成功として扱われる（[Using conditions to control job execution](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions)）
@@ -94,6 +94,14 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 - まとめるのは、同じファイル（`.csproj`・`packages.config` など）を書き換える PR が何本も並び、1 本マージするたびに残りが競合して作り直しになるのを避けるため
 - `GITHUB_TOKEN` で設定した自動マージによる push では、push で動くワークフロー（GitHub Pages・Static Web Apps への配信、`coverage`）が動かない（[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token)）。次に人がマージしたときにまとめて配信される。すぐに配信したい場合は、Dependabot のシークレットに `AUTOMERGE_TOKEN`（このリポジトリの contents・pull requests に書き込める fine-grained personal access token）を登録すると、それで自動マージを設定する（[Dependabot のシークレット](https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions)）
 - Dependabot の PR では Actions のシークレットが渡されないため、Static Web Apps のプレビュー環境への配信と、その後の Cypress は省く（[Static Web Apps のワークフロー](./swa-workflows.md)）
+
+## 速さの計測
+
+`test-web` は、SRC#Web で「灯の巡航船ランタン号」を選んでから最初のイベントが動くまでの時間（`lantern-start-ms`）を測り、ジョブのサマリに出す（#1365）。
+
+- 基準は `.github/perf-baseline.json` に、発行の種類ごと（PR は `interpreter`、master への push は `aot`）に置く
+- 基準の 1.5 倍を超えたら warning の注釈を出す。マージは止めない（ランナーによるばらつきがあるため）
+- 意図して速さが変わったときや、ランナーが変わったときは、CI のサマリの値で基準を直す
 
 ## 不安定なテスト（flaky）の扱い
 

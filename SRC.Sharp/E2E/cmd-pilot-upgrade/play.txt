@@ -1,0 +1,62 @@
+# Upgrade・ClearSkill・RecoverPlana・Release・RenameFile の結果を確かめる
+wait message 検証開始
+# Upgrade: ユニット名称指定。ランク・位置・アイテム・パイロットを引き継ぎ、ＨＰは全快
+expect eval InStr(upName1, "テスト機改") = 1
+expect eval Len(upName1) = 5
+expect eval InStr(upOld, "破棄") = 1
+expect eval InStr(upSt1, "出撃") = 1
+expect eval upX1 = 2
+expect eval upY1 = 2
+expect eval upRank1 = 2
+expect eval upItem1 = 1
+expect eval upHP1 = upMHP1
+# 対象省略
+expect eval InStr(upName2, "テスト機") = 1
+expect eval Len(upName2) = 4
+# 待機中のユニットは待機のまま
+expect eval InStr(upName3, "テスト機改") = 1
+expect eval Len(upName3) = 5
+expect eval InStr(upSt3, "待機") = 1
+# ボスランクを引き継ぐ
+expect eval InStr(upName4, "標的機改") = 1
+expect eval Len(upName4) = 4
+expect eval upBoss4 = 1
+# 破壊されたユニットはその場で復活する
+expect eval InStr(upSt5a, "破壊") = 1
+expect eval InStr(upSt5b, "出撃") = 1
+expect eval InStr(upName5, "標的機改") = 1
+expect eval Len(upName5) = 4
+expect eval upX5 = 12
+expect eval upY5 = 10
+# ClearSkill: SetSkill で追加した特殊能力を解除する（別名つき・エリアス・未作成のパイロット）
+expect eval sk1 = 2
+expect eval sk2 = 0
+expect eval sk3 = 1
+expect eval sk4 = 0
+expect eval sk5a = 1
+expect eval sk5b = 1
+expect eval sk6a = 0
+expect eval sk6b = 0
+expect eval sk7 = 0
+# RecoverPlana: 割合で増減し、最大霊力を越えず 0 未満にならない
+expect eval plMax > 0
+expect eval pl0 = plMax
+expect eval pl1 < plMax
+expect eval pl1 > 0
+expect eval pl2 = plMax
+expect eval pl3 = 0
+expect eval pl4 = 0
+# Release: Fix で固定したパイロット・アイテムの固定を解除する
+expect eval fx1 = 1
+expect eval fx2 = 0
+expect eval fx3 = 1
+expect eval fx4 = 0
+expect eval fx5 = 1
+expect eval fx6 = 0
+# RenameFile: ファイル名が変わり、中身はそのまま
+expect eval Len(rn1) = 0
+expect eval InStr(rn2, "改名後.txt") = 1
+expect eval Len(rn2) = 7
+expect eval InStr(rnLine, "改名するファイル") = 1
+expect eval Len(rnLine) = 8
+expect error none

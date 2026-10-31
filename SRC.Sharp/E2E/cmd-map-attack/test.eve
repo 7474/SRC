@@ -1,0 +1,90 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+
+# ---- ChangeTerrain ----
+Set tn0 Info(マップ, 3, 10, 地形名)
+ChangeTerrain 3 10 海 0
+Set tn1 Info(マップ, 3, 10, 地形名)
+Set tc1 Info(マップ, 3, 10, 地形クラス)
+Set tb1 Info(マップ, 3, 10, ビットマップ名)
+# ローカルな地形ビットマップ（ビットマップ番号は負の値として扱う）
+ChangeTerrain 4 10 海(ローカル) 1
+Set tn2 Info(マップ, 4, 10, 地形名)
+Set tb2 Info(マップ, 4, 10, ビットマップ名)
+Redraw
+
+# ---- ChangeArea ----
+# 陸: 地上・空中・地中
+Create 味方 砲撃機 0 パイロットＣ 1 2 2
+ChangeArea パイロットＣ 空中
+Set ar1 Area(パイロットＣ)
+ChangeArea パイロットＣ 地中
+Set ar2 Area(パイロットＣ)
+# 水（対象省略）: 水中
+Create 味方 砲撃機 0 パイロットＤ 1 5 5
+Select パイロットＤ
+ChangeArea 水中
+Set ar3 Area(パイロットＤ)
+# 屋内: 地上
+Create 味方 砲撃機 0 パイロットＥ 1 6 5
+ChangeArea パイロットＥ 地上
+Set ar4 Area(パイロットＥ)
+# 月面: 宇宙
+Create 味方 砲撃機 0 パイロットＦ 1 7 5
+ChangeArea UnitID(パイロットＦ) 宇宙
+Set ar5 Area(パイロットＦ)
+# 深水: 水上
+Create 味方 砲撃機 0 パイロットＧ 1 8 5
+ChangeArea パイロットＧ 水上
+Set ar6 Area(パイロットＧ)
+# 宇宙: 宇宙
+Create 味方 砲撃機 0 パイロットＢ 1 9 5
+ChangeArea パイロットＢ 宇宙
+Set ar7 Area(パイロットＢ)
+
+# ---- MapAttack ----
+Create 味方 砲撃機 0 パイロットＡ 1 10 10
+Create 敵 標的機 0 標的パイロット 1 12 10
+Create 敵 標的機 0 標的パイロット２ 1 13 10
+Create 敵 標的機 0 標的パイロット３ 1 15 17
+# 行動不能のユニットへの攻撃は必ず命中する
+SetStatus 標的パイロット 行動不能 3
+SetStatus 標的パイロット２ 行動不能 3
+SetStatus 標的パイロット３ 行動不能 3
+Set money0 資金
+# ユニット指定: (12,10) を目標に半径１の範囲を攻撃する
+MapAttack パイロットＡ テスト爆撃 12 10
+Set maT1 Status(標的パイロット)
+Set maT2 Status(標的パイロット２)
+Set maT3a Status(標的パイロット３)
+# 「Ｍ全」は座標によらず自分の周り。座標はマップの範囲に収める
+MapAttack パイロットＡ テスト全方位 99 0
+Set maT3b Status(標的パイロット３)
+# 対象省略（デフォルトユニット）
+Create 味方 砲撃機 0 パイロットＨ 1 15 16
+Select パイロットＨ
+MapAttack テスト全方位 0 99
+Set maT3c Status(標的パイロット３)
+# 標的を破壊しても資金は得られない
+Set money1 資金
+
+Talk システム
+検証開始
+End
+Exit
+
+使用 パイロットＡ テスト爆撃:
+Set usedEvent 1
+Exit
+
+破壊 標的パイロット:
+Set destroyEvent 1
+Exit
+
+全滅 敵:
+Set annihilated 1
+Exit

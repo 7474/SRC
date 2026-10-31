@@ -1,0 +1,107 @@
+@テスト
+プロローグ:
+Exit
+
+スタート:
+ChangeMap test.map
+Create 味方 テスト機 0 パイロットＡ 1 2 2
+Set idA UnitID(パイロットＡ)
+Create 味方 テスト機 0 パイロットＢ 1 3 2
+Set idB UnitID(パイロットＢ)
+Create 味方 テスト機 0 パイロットＤ 1 4 2
+Set idD UnitID(パイロットＤ)
+# パイロットの乗っていないユニット
+Unit 予備機 0
+Set idR UnitID()
+# ユニットに乗っていないパイロット
+Pilot パイロットＣ 1
+Pilot パイロットＦ 1
+Create 敵 標的機 0 標的パイロット 1 15 15
+Set idT UnitID(標的パイロット)
+Create 敵 標的機 0 標的パイロット２ 1 16 15
+Set idT2 UnitID(標的パイロット２)
+Create 敵 標的機 0 標的パイロット３ 1 17 15
+Set idT3 UnitID(標的パイロット３)
+
+# ---- Leave ----
+# パイロット名指定（出撃中のユニットは退却する）
+Leave パイロットＡ
+Set lvA Status(idA)
+Set lvAmap Info(マップ, 2, 2, ユニットＩＤ)
+# 非同期
+Leave パイロットＢ 非同期
+Set lvB Status(idB)
+# 対象省略（デフォルトユニット）
+Select パイロットＤ
+Leave
+Set lvD Status(idD)
+# ユニット名称指定
+Leave 予備機
+Set lvR Status(idR)
+# 味方でないユニットは味方になって離脱する
+Leave idT
+Set lvT Status(idT)
+Set lvTp Party(idT)
+# ユニットに乗っていないパイロット
+Leave パイロットＣ
+Set lvList Call(一覧)
+Set lvC InStr(lvList, "パイロットＣ")
+# 非戦闘員
+Leave マルタ
+Set lvM IsVarDefined(IsAway(マルタ))
+
+# ---- Join ----
+# パイロット名指定
+Join パイロットＡ
+Set jnA Status(idA)
+# ユニット名称指定
+Join 予備機
+Set jnR Status(idR)
+# ユニットＩＤ指定
+Join idT
+Set jnT Status(idT)
+# ユニットに乗っていないパイロット
+Join パイロットＣ
+Set jnC InStr(Call(一覧), "パイロットＣ")
+# 非戦闘員
+Join マルタ
+Set jnM IsVarDefined(IsAway(マルタ))
+# 対象省略: 離脱しているユニットを ForEach で全て復帰させる（ヘルプの例）
+ForEach 味方 離脱
+Join
+Next
+Set jnB Status(idB)
+Set jnD Status(idD)
+
+# ---- ChangeParty ----
+# パイロット名指定
+ChangeParty 標的パイロット２ 中立
+Set cpT2 Party(idT2)
+# 対象省略（デフォルトユニット）
+Select 標的パイロット２
+ChangeParty ＮＰＣ
+Set cpT2b Party(idT2)
+# ユニットＩＤ指定。敵がいなくなっても全滅イベントは起きない
+ChangeParty idT3 味方
+Set cpT3 Party(idT3)
+# ユニットに乗っていないパイロット（Party はパイロット名でパイロットの陣営を返す）
+ChangeParty パイロットＦ 敵
+Set cpF Party(パイロットＦ)
+
+Talk システム
+検証開始
+End
+Exit
+
+# 離脱していないパイロットの名前を並べる
+一覧:
+Local 名前
+名前 = ""
+ForEach p In パイロット一覧(名称)
+名前 = 名前 & " " & Info(パイロット, p, 名称)
+Next
+Return 名前
+
+全滅 敵:
+Set annihilated 1
+Exit

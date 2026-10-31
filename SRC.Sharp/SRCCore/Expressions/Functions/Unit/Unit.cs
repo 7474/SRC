@@ -360,6 +360,15 @@ namespace SRCCore.Expressions.Functions
         {
             str_result = unit?.Party0 ?? "";
             num_result = 0d;
+            // パイロット名で指定したときはパイロットの陣営（ユニットに乗っていなくても返す。VB 版と同じ）
+            if (pcount == 1)
+            {
+                var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                if (!SRC.UList.IsDefined2(pname) && SRC.PList.IsDefined(pname))
+                {
+                    str_result = SRC.PList.Item(pname).Party;
+                }
+            }
             return ValueType.StringType;
         }
     }
