@@ -41,3 +41,14 @@ Talk システム
 ステータスの VRT を始める
 End
 Exit
+
+# 敵のターンの前に、攻撃で変わった値をそろえる（命中・クリティカル・防御の特殊能力は乱数で決まるので、
+# このままでは敵の攻撃への対応を選ぶ画面の数字が実行ごとに変わる）
+ターン 1 敵:
+RecoverHP 多機能パイロット 100
+RecoverEN 多機能パイロット 100
+IncreaseMorale 多機能パイロット (100 - Morale(多機能パイロット))
+RecoverHP 標的パイロット 100
+RecoverEN 標的パイロット 100
+IncreaseMorale 標的パイロット (100 - Morale(標的パイロット))
+Exit
