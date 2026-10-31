@@ -19,7 +19,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 # バージョンは Directory.Build.props で決める
-COPY ["SRC.Sharp/Directory.Build.props", "SRC.Sharp/"]
+COPY ["SRC.Sharp/Directory.Build.props", "SRC.Sharp/Directory.Packages.props", "SRC.Sharp/"]
 COPY ["SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj", "SRC.Sharp/SRCDataLinter/"]
 COPY ["SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj", "SRC.Sharp/SRCSharpTools/"]
 COPY ["SRC.Sharp/SRCCore/SRCCore.csproj", "SRC.Sharp/SRCCore/"]

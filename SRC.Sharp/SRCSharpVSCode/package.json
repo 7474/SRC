@@ -18,8 +18,18 @@
   "engines": {
     "vscode": "^1.91.0"
   },
-  "categories": ["Programming Languages", "Debuggers", "Linters"],
-  "keywords": ["SRC", "Simulation RPG Construction", "SRPG", "eve", "srcsharp"],
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Linters"
+  ],
+  "keywords": [
+    "SRC",
+    "Simulation RPG Construction",
+    "SRPG",
+    "eve",
+    "srcsharp"
+  ],
   "galleryBanner": {
     "color": "#2b2b2b",
     "theme": "dark"
@@ -33,14 +43,38 @@
     "languages": [
       {
         "id": "src-eve",
-        "aliases": ["SRC Event", "src-eve"],
-        "extensions": [".eve"],
+        "aliases": [
+          "SRC Event",
+          "src-eve"
+        ],
+        "extensions": [
+          ".eve"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
         "id": "src-data",
-        "aliases": ["SRC Data", "src-data"],
-        "filenames": ["alias.txt", "animation.txt", "battle.txt", "effect.txt", "ext_animation.txt", "item.txt", "mind.txt", "non_pilot.txt", "pilot.txt", "pilot_dialog.txt", "pilot_message.txt", "robot.txt", "sp.txt", "terrain.txt", "unit.txt"],
+        "aliases": [
+          "SRC Data",
+          "src-data"
+        ],
+        "filenames": [
+          "alias.txt",
+          "animation.txt",
+          "battle.txt",
+          "effect.txt",
+          "ext_animation.txt",
+          "item.txt",
+          "mind.txt",
+          "non_pilot.txt",
+          "pilot.txt",
+          "pilot_dialog.txt",
+          "pilot_message.txt",
+          "robot.txt",
+          "sp.txt",
+          "terrain.txt",
+          "unit.txt"
+        ],
         "configuration": "./src-data-language-configuration.json"
       }
     ],
@@ -76,7 +110,9 @@
         },
         "srcsharp.serverArgs": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "srcsharp の前に付ける引数（例: [\"path/to/srcsharp.dll\"]）"
         },
@@ -88,14 +124,54 @@
         "srcsharp.language": {
           "type": "string",
           "default": "",
-          "enum": ["", "ja", "en", "zh-Hans", "zh-Hant", "ko", "fr", "de", "es", "pt-BR", "it", "ru", "pl", "tr", "th", "uk", "auto"],
-          "enumDescriptions": ["指定しない（環境変数 SRCSHARP_LANG か日本語）", "日本語", "English", "简体中文", "繁體中文", "한국어", "Français", "Deutsch", "Español", "Português (Brasil)", "Italiano", "Русский", "Polski", "Türkçe", "ไทย", "Українська", "OS の言語に従う"],
+          "enum": [
+            "",
+            "ja",
+            "en",
+            "zh-Hans",
+            "zh-Hant",
+            "ko",
+            "fr",
+            "de",
+            "es",
+            "pt-BR",
+            "it",
+            "ru",
+            "pl",
+            "tr",
+            "th",
+            "uk",
+            "auto"
+          ],
+          "enumDescriptions": [
+            "指定しない（環境変数 SRCSHARP_LANG か日本語）",
+            "日本語",
+            "English",
+            "简体中文",
+            "繁體中文",
+            "한국어",
+            "Français",
+            "Deutsch",
+            "Español",
+            "Português (Brasil)",
+            "Italiano",
+            "Русский",
+            "Polski",
+            "Türkçe",
+            "ไทย",
+            "Українська",
+            "OS の言語に従う"
+          ],
           "description": "srcsharp の表示言語（lint・バランスレポート・自動プレイの出力）。環境変数 SRCSHARP_LANG として渡す"
         },
         "srcsharp.hotReload": {
           "type": "string",
           "default": "onChange",
-          "enum": ["onChange", "manual", "off"],
+          "enum": [
+            "onChange",
+            "manual",
+            "off"
+          ],
           "enumDescriptions": [
             "シナリオのフォルダと SRC 本体のフォルダのイベント・データ・画像が変わったら読み直す",
             "「SRC#: 読み直す」（画面のタブ・デバッグのツールバー）で読み直す",
@@ -111,34 +187,100 @@
         "srcsharp.logLevel": {
           "type": "string",
           "default": "Information",
-          "enum": ["Trace", "Debug", "Information", "Warning", "Error"],
-          "enumDescriptions": ["変数・関数の呼び出しまで", "コマンドの実行まで", "既定", "警告以上", "エラーだけ"],
+          "enum": [
+            "Trace",
+            "Debug",
+            "Information",
+            "Warning",
+            "Error"
+          ],
+          "enumDescriptions": [
+            "変数・関数の呼び出しまで",
+            "コマンドの実行まで",
+            "既定",
+            "警告以上",
+            "エラーだけ"
+          ],
           "description": "Language Server とデバッガのログのレベル。ログは出力パネルの「SRC#」・デバッグコンソールと、ログのファイルに出る"
         }
       }
     },
     "breakpoints": [
-      { "language": "src-eve" }
+      {
+        "language": "src-eve"
+      }
     ],
     "debuggers": [
       {
         "type": "srcsharp",
         "label": "SRC# イベント",
-        "languages": ["src-eve"],
+        "languages": [
+          "src-eve"
+        ],
         "configurationAttributes": {
           "launch": {
-            "required": ["program"],
+            "required": [
+              "program"
+            ],
             "properties": {
-              "program": { "type": "string", "description": "実行するイベントファイル", "default": "${file}" },
-              "script": { "type": "string", "description": "入力を与える .play スクリプト（無ければ自動で進める：メッセージを送り、選択肢は先頭を選び、マップは policy で動かす）" },
-              "appPath": { "type": "string", "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）" },
-              "scenarioRoot": { "type": "string", "description": "シナリオのフォルダ（Data・Lib・Continue の基準）。無ければ program のあるフォルダ。そこに Data が無ければ、Data のあるいちばん近い親（Data\\System のある SRC 本体は除く）" },
-              "interactive": { "type": "boolean", "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）", "default": true },
-              "stopOnEntry": { "type": "boolean", "description": "最初のコマンドで止める", "default": false },
-              "skipWait": { "type": "boolean", "description": "ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので早送りで眺められる", "default": false },
-              "policy": { "type": "string", "enum": ["smart", "advance", "hold"], "description": "script が無いときの味方フェイズの動かし方（smart：SRC の CPU と同じ見積もりで目標を選び、危なければ下がる。advance：攻撃できなければ最も近い敵へ近づく。hold：移動せず届く敵だけ攻撃する）", "default": "smart" },
-              "turns": { "type": "number", "description": "script が無いときに自動で進める味方フェイズの上限", "default": 1000 },
-              "logLevel": { "type": "string", "enum": ["Trace", "Debug", "Information", "Warning", "Error"], "description": "ログのレベル（無ければ設定の srcsharp.logLevel）。ログはデバッグコンソールとファイルに出る" }
+              "program": {
+                "type": "string",
+                "description": "実行するイベントファイル",
+                "default": "${file}"
+              },
+              "script": {
+                "type": "string",
+                "description": "入力を与える .play スクリプト（無ければ自動で進める：メッセージを送り、選択肢は先頭を選び、マップは policy で動かす）"
+              },
+              "appPath": {
+                "type": "string",
+                "description": "SRC 本体のフォルダ（無ければシナリオのフォルダ）"
+              },
+              "scenarioRoot": {
+                "type": "string",
+                "description": "シナリオのフォルダ（Data・Lib・Continue の基準）。無ければ program のあるフォルダ。そこに Data が無ければ、Data のあるいちばん近い親（Data\\System のある SRC 本体は除く）"
+              },
+              "interactive": {
+                "type": "boolean",
+                "description": "画面のタブのクリック・キーで操作する（script があれば script で動かす）",
+                "default": true
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "最初のコマンドで止める",
+                "default": false
+              },
+              "skipWait": {
+                "type": "boolean",
+                "description": "ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので早送りで眺められる",
+                "default": false
+              },
+              "policy": {
+                "type": "string",
+                "enum": [
+                  "smart",
+                  "advance",
+                  "hold"
+                ],
+                "description": "script が無いときの味方フェイズの動かし方（smart：SRC の CPU と同じ見積もりで目標を選び、危なければ下がる。advance：攻撃できなければ最も近い敵へ近づく。hold：移動せず届く敵だけ攻撃する）",
+                "default": "smart"
+              },
+              "turns": {
+                "type": "number",
+                "description": "script が無いときに自動で進める味方フェイズの上限",
+                "default": 1000
+              },
+              "logLevel": {
+                "type": "string",
+                "enum": [
+                  "Trace",
+                  "Debug",
+                  "Information",
+                  "Warning",
+                  "Error"
+                ],
+                "description": "ログのレベル（無ければ設定の srcsharp.logLevel）。ログはデバッグコンソールとファイルに出る"
+              }
             }
           }
         },
@@ -155,27 +297,54 @@
         "configurationSnippets": [
           {
             "label": "SRC#: イベントを実行",
-            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# イベントを実行", "program": "^\"\\${file}\"", "interactive": true, "stopOnEntry": true }
+            "body": {
+              "type": "srcsharp",
+              "request": "launch",
+              "name": "SRC# イベントを実行",
+              "program": "^\"\\${file}\"",
+              "interactive": true,
+              "stopOnEntry": true
+            }
           },
           {
             "label": "SRC#: .play スクリプトで実行",
-            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# スクリプトで実行", "program": "^\"\\${workspaceFolder}/test.eve\"", "script": "^\"\\${workspaceFolder}/test.play\"", "skipWait": true }
+            "body": {
+              "type": "srcsharp",
+              "request": "launch",
+              "name": "SRC# スクリプトで実行",
+              "program": "^\"\\${workspaceFolder}/test.eve\"",
+              "script": "^\"\\${workspaceFolder}/test.play\"",
+              "skipWait": true
+            }
           },
           {
             "label": "SRC#: 自動プレイ（画面付き・早送り）",
-            "body": { "type": "srcsharp", "request": "launch", "name": "SRC# 自動プレイ", "program": "^\"\\${file}\"", "skipWait": true }
+            "body": {
+              "type": "srcsharp",
+              "request": "launch",
+              "name": "SRC# 自動プレイ",
+              "program": "^\"\\${file}\"",
+              "skipWait": true
+            }
           }
         ]
       }
     ],
     "viewsContainers": {
       "activitybar": [
-        { "id": "srcsharp", "title": "SRC#", "icon": "media/srcsharp.svg" }
+        {
+          "id": "srcsharp",
+          "title": "SRC#",
+          "icon": "media/srcsharp.svg"
+        }
       ]
     },
     "views": {
       "srcsharp": [
-        { "id": "srcsharp.panel", "name": "操作パネル" }
+        {
+          "id": "srcsharp.panel",
+          "name": "操作パネル"
+        }
       ]
     },
     "viewsWelcome": [
@@ -186,42 +355,150 @@
       }
     ],
     "commands": [
-      { "command": "srcsharp.runFile", "title": "開いているイベントを実行（画面で操作）", "category": "SRC#", "icon": "$(play)" },
-      { "command": "srcsharp.debugFile", "title": "開いているイベントをデバッグ", "category": "SRC#", "icon": "$(debug-alt)" },
-      { "command": "srcsharp.showScreen", "title": "画面を表示", "category": "SRC#", "icon": "$(device-desktop)" },
-      { "command": "srcsharp.reload", "title": "読み直す（状態を保つ）", "category": "SRC#", "icon": "$(flame)" },
-      { "command": "srcsharp.cancelReload", "title": "読み直しを取りやめる", "category": "SRC#" },
-      { "command": "srcsharp.openSettings", "title": "設定を開く", "category": "SRC#", "icon": "$(gear)" },
-      { "command": "srcsharp.installServer", "title": "srcsharp を入れる／更新する", "category": "SRC#", "icon": "$(cloud-download)" },
-      { "command": "srcsharp.pickAppPath", "title": "SRC 本体のフォルダを選ぶ", "category": "SRC#" },
-      { "command": "srcsharp.restartServer", "title": "Language Server を起動し直す", "category": "SRC#", "icon": "$(refresh)" },
-      { "command": "srcsharp.lint", "title": "ワークスペースを lint する", "category": "SRC#" },
-      { "command": "srcsharp.balance", "title": "バランスレポートを作る", "category": "SRC#" },
-      { "command": "srcsharp.play", "title": "このイベントを自動プレイする（出力のみ）", "category": "SRC#" },
-      { "command": "srcsharp.autoPlay", "title": "開いているイベントを自動プレイ（画面付き・早送り）", "category": "SRC#", "icon": "$(run-all)" }
+      {
+        "command": "srcsharp.runFile",
+        "title": "開いているイベントを実行（画面で操作）",
+        "category": "SRC#",
+        "icon": "$(play)"
+      },
+      {
+        "command": "srcsharp.debugFile",
+        "title": "開いているイベントをデバッグ",
+        "category": "SRC#",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "srcsharp.showScreen",
+        "title": "画面を表示",
+        "category": "SRC#",
+        "icon": "$(device-desktop)"
+      },
+      {
+        "command": "srcsharp.reload",
+        "title": "読み直す（状態を保つ）",
+        "category": "SRC#",
+        "icon": "$(flame)"
+      },
+      {
+        "command": "srcsharp.cancelReload",
+        "title": "読み直しを取りやめる",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.openSettings",
+        "title": "設定を開く",
+        "category": "SRC#",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "srcsharp.installServer",
+        "title": "srcsharp を入れる／更新する",
+        "category": "SRC#",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "srcsharp.pickAppPath",
+        "title": "SRC 本体のフォルダを選ぶ",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.restartServer",
+        "title": "Language Server を起動し直す",
+        "category": "SRC#",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "srcsharp.lint",
+        "title": "ワークスペースを lint する",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.balance",
+        "title": "バランスレポートを作る",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.play",
+        "title": "このイベントを自動プレイする（出力のみ）",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.autoPlay",
+        "title": "開いているイベントを自動プレイ（画面付き・早送り）",
+        "category": "SRC#",
+        "icon": "$(run-all)"
+      }
     ],
     "menus": {
       "editor/title/run": [
-        { "command": "srcsharp.runFile", "when": "resourceLangId == src-eve", "group": "navigation@1" },
-        { "command": "srcsharp.debugFile", "when": "resourceLangId == src-eve", "group": "navigation@2" },
-        { "command": "srcsharp.autoPlay", "when": "resourceLangId == src-eve", "group": "navigation@3" }
+        {
+          "command": "srcsharp.runFile",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation@1"
+        },
+        {
+          "command": "srcsharp.debugFile",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation@2"
+        },
+        {
+          "command": "srcsharp.autoPlay",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation@3"
+        }
       ],
       "debug/toolBar": [
-        { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
-        { "command": "srcsharp.showScreen", "when": "debugType == srcsharp" }
+        {
+          "command": "srcsharp.reload",
+          "when": "debugType == srcsharp"
+        },
+        {
+          "command": "srcsharp.showScreen",
+          "when": "debugType == srcsharp"
+        }
       ],
       "view/title": [
-        { "command": "srcsharp.showScreen", "when": "view == srcsharp.panel", "group": "navigation@1" },
-        { "command": "srcsharp.openSettings", "when": "view == srcsharp.panel", "group": "navigation@2" },
-        { "command": "srcsharp.restartServer", "when": "view == srcsharp.panel", "group": "navigation@3" }
+        {
+          "command": "srcsharp.showScreen",
+          "when": "view == srcsharp.panel",
+          "group": "navigation@1"
+        },
+        {
+          "command": "srcsharp.openSettings",
+          "when": "view == srcsharp.panel",
+          "group": "navigation@2"
+        },
+        {
+          "command": "srcsharp.restartServer",
+          "when": "view == srcsharp.panel",
+          "group": "navigation@3"
+        }
       ],
       "commandPalette": [
-        { "command": "srcsharp.runFile", "when": "editorLangId == src-eve" },
-        { "command": "srcsharp.debugFile", "when": "editorLangId == src-eve" },
-        { "command": "srcsharp.play", "when": "editorLangId == src-eve" },
-        { "command": "srcsharp.autoPlay", "when": "editorLangId == src-eve" },
-        { "command": "srcsharp.reload", "when": "debugType == srcsharp" },
-        { "command": "srcsharp.cancelReload", "when": "debugType == srcsharp" }
+        {
+          "command": "srcsharp.runFile",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.debugFile",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.play",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.autoPlay",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.reload",
+          "when": "debugType == srcsharp"
+        },
+        {
+          "command": "srcsharp.cancelReload",
+          "when": "debugType == srcsharp"
+        }
       ]
     }
   },
@@ -238,7 +515,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/vscode": "~1.91.0",
-    "@vscode/vsce": "^3.9.2",
+    "@vscode/vsce": "^4.1.0",
     "esbuild": "^0.25.12",
     "typescript": "~5.9.3"
   }
