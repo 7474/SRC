@@ -163,8 +163,9 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
-    - name: Install fonts
-      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+    # SoundFont（TimGM6mb）は MIDI を合成するテストが使う（無いとそのテストは飛ばす）
+    - name: Install fonts and SoundFont
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk timgm6mb-soundfont
 
     # PR はインタープリターで発行して待ち時間を減らす（AOT は 8 分ほどかかる）。
     # master への push は公開するものと同じ AOT で発行し、E2E を通す（docs/gui/web.md）
