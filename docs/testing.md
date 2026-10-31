@@ -20,6 +20,7 @@
 | 配布物 | 配る形でビルド・発行でき、最低限動くこと。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
+| データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
 | 配信後の確認 | 配信したデータビューアが開き、データを読めること | マージの可否（マージの後に動く） | `SRCTestBlazor/E2E`（Cypress） | `CD-swa-dataviewer.yml` の `e2e` |
 | 計測 | カバレッジ（`SRCCore`・`SRCRender` を合わせたもの）、シナリオで実行したコマンドの網羅率 | マージの可否 | — | `CI.yml` の `coverage`（master への push のみ） |
 
@@ -57,11 +58,12 @@ flowchart LR
   changes -->|コードの変更あり| web[test-web<br/>SRC#Web の Playwright]
   changes -->|コードの変更あり| lint[test-lint<br/>SRCLintWeb の Playwright]
   changes -->|SRC#Web・発行の設定を変えた PR| aot[test-web-aot<br/>SRC#Web の AOT 版の Playwright]
+  changes -->|コードの変更あり| viewer[test-viewer<br/>データビューアの Playwright]
   changes -->|コードの変更あり| docker[docker-srcdatalinter]
   changes -->|コードの変更あり| win[build-and-test-srcs<br/>Windows 固有]
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
-  core & tools & web & aot & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
+  core & tools & web & aot & viewer & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
   PR -->|push のみ| coverage[coverage<br/>計測・Mackerel]
 ```
 
