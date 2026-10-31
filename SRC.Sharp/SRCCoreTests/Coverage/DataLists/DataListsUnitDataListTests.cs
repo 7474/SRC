@@ -444,6 +444,74 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void Load_WeaponFullWidthSpacePaddedFields_ReadsLikeVb()
+        {
+            // 7474/SRC#1413。GSC データパックの Ξガンダム の行。日本語版の VB の Trim$ は全角の空白も除くので、
+            // 「　 -」は「-」、「 AABA」は「AABA」として読み、エラーにしない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "60mmバルカン砲,　　　　　　800,　1,　1,　+30,　10,　 -,　 -, AABA,　-20, 射先連L10\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual("60mmバルカン砲", w.Name);
+            Assert.AreEqual(800, w.Power);
+            Assert.AreEqual(30, w.Precision);
+            Assert.AreEqual(10, w.Bullet);
+            Assert.AreEqual(0, w.ENConsumption);
+            Assert.AreEqual(0, w.NecessaryMorale);
+            Assert.AreEqual("AABA", w.Adaption);
+            Assert.AreEqual(-20, w.Critical);
+            Assert.AreEqual("射先連L10", w.Class);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponFullWidthSpacePaddedClass_ReadsLikeVb()
+        {
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "格闘,　1200,　1,　1,　+20,　 -,　 -,　 -,　AA-A,　+10,　　突\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual("AA-A", w.Adaption);
+            Assert.AreEqual(10, w.Critical);
+            Assert.AreEqual("突", w.Class);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_AbilityFullWidthSpacePaddedFields_ReadsLikeVb()
+        {
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "===\n修理装置,　回復Lv2,　1,　 3,　 40,　 -,　 -\n")).Item("テスト機");
+
+            var ab = ud.Abilities.Single();
+            Assert.AreEqual("回復", ab.Effects.Single().Name);
+            Assert.AreEqual(1, ab.MaxRange);
+            Assert.AreEqual(3, ab.Stock);
+            Assert.AreEqual(40, ab.ENConsumption);
+            Assert.AreEqual(0, ab.NecessaryMorale);
+            Assert.AreEqual("", ab.Class);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
+        public void Load_WeaponSignFollowedBySpace_ReadsAsNumber()
+        {
+            // 7474/SRC#1413。GSC データパックのアーマード・コアＮＥＸＵＳ・ゲッターロボ(漫画版) などの行。
+            // 「- 10」「+ 20」は数値として読み、後ろの項目をずらさない
+            var src = CreateSrc();
+            var ud = Load(src, UnitWith(rest: "CR-WR81B2,               2200,  2,  3, - 10,   4,   -,   -, AABA, + 20, B\n")).Item("テスト機");
+
+            var w = ud.Weapons.Single();
+            Assert.AreEqual(2200, w.Power);
+            Assert.AreEqual(-10, w.Precision);
+            Assert.AreEqual(4, w.Bullet);
+            Assert.AreEqual("AABA", w.Adaption);
+            Assert.AreEqual(20, w.Critical);
+            Assert.AreEqual("B", w.Class);
+            CollectionAssert.AreEqual(new string[0], Errors(src));
+        }
+
+        [TestMethod]
         public void Load_WeaponFullWidthDigits_ReadsValuesLikeVb()
         {
             var src = CreateSrc();

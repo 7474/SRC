@@ -33,7 +33,18 @@ namespace SRCCore.VB
                     chars[i] = ' ';
                 }
             }
-            return new string(chars).Trim(' ', '\t', '\r', '\n');
+            var text = new string(chars).Trim(' ', '\t', '\r', '\n');
+            // 符号と数字のあいだの空白（「- 10」「+ 20」）は詰めて読む。
+            // GSC データパックの武器データなどにこの書き方があり、データの実態として数値として扱う（7474/SRC#1413）
+            if (text.Length > 1 && (text[0] == '+' || text[0] == '-') && (text[1] == ' ' || text[1] == '\t'))
+            {
+                var rest = text.Substring(1).TrimStart(' ', '\t');
+                if (rest.Length > 0 && ((rest[0] >= '0' && rest[0] <= '9') || rest[0] == '.'))
+                {
+                    text = text[0] + rest;
+                }
+            }
+            return text;
         }
 
         public static int ToInteger(string Value)

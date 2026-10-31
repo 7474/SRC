@@ -27,6 +27,32 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
+        [DataRow("- 10", -10)]
+        [DataRow("+ 20", 20)]
+        [DataRow("-  5", -5)]
+        [DataRow("－　５", -5)]
+        [DataRow(" + 0", 0)]
+        public void SignFollowedBySpace_IsNumeric(string text, int expected)
+        {
+            // GSC データパックの武器データにある「- 10」「+ 20」。データの実態として数値として扱う（7474/SRC#1413）
+            Assert.IsTrue(Information.IsNumeric(text), text);
+            Assert.AreEqual(expected, Conversions.ToInteger(text), text);
+            Assert.AreEqual(expected, Conversions.ToDouble(text), text);
+            Assert.AreEqual(expected, GeneralLib.StrToLng(text), text);
+        }
+
+        [TestMethod]
+        [DataRow("- ")]
+        [DataRow("-")]
+        [DataRow("- a")]
+        [DataRow("- 1 0")]
+        [DataRow("+ - 1")]
+        public void SignFollowedBySpace_WithoutNumber_IsNotNumeric(string text)
+        {
+            Assert.IsFalse(Information.IsNumeric(text), text);
+        }
+
+        [TestMethod]
         [DataRow("1400　1")]
         [DataRow("1400 1")]
         [DataRow("　")]
