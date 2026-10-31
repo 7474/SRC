@@ -161,8 +161,12 @@ namespace SRCCore.Units
                 {
                     if ((pltAdditionalPilot.Name ?? "") == (pname ?? ""))
                     {
-                        if (pltAdditionalPilot.IsAdditionalPilot)
+                        // まだこのユニットのものでないときだけ設定し直す（VB 版と同じ）。
+                        // 気力の設定は気力上限の技能を見るためにこのユニットの MainPilot を呼ぶので、
+                        // 先にユニットを設定しておかないと、呼ぶたびに設定し直して止まらなくなる（#1407）
+                        if (pltAdditionalPilot.IsAdditionalPilot && !ReferenceEquals(pltAdditionalPilot.Unit, this))
                         {
+                            pltAdditionalPilot.Unit = this;
                             pltAdditionalPilot.Party = Party0;
                             if (CountPilot() > 0)
                             {
@@ -179,14 +183,10 @@ namespace SRCCore.Units
                                 }
                             }
 
-                            if (!ReferenceEquals(pltAdditionalPilot.Unit, this))
+                            if (!without_update)
                             {
-                                pltAdditionalPilot.Unit = this;
-                                if (!without_update)
-                                {
-                                    pltAdditionalPilot.Update();
-                                    pltAdditionalPilot.UpdateSupportMod();
-                                }
+                                pltAdditionalPilot.Update();
+                                pltAdditionalPilot.UpdateSupportMod();
                             }
                         }
 
@@ -204,8 +204,10 @@ namespace SRCCore.Units
                         {
                             pltAdditionalPilot = additionalPilot;
                             additionalPilot.Party = Party0;
-                            if (additionalPilot.IsAdditionalPilot)
+                            // 気力の設定がこのユニットの MainPilot を呼んでも同じ処理を繰り返さないよう、先にユニットを設定する（#1407）
+                            if (additionalPilot.IsAdditionalPilot && !ReferenceEquals(additionalPilot.Unit, this))
                             {
+                                additionalPilot.Unit = this;
                                 if (CountPilot() > 0)
                                 {
                                     additionalPilot.Level = Pilots.First().Level;
@@ -216,12 +218,8 @@ namespace SRCCore.Units
                                     }
                                 }
 
-                                if (!ReferenceEquals(additionalPilot.Unit, this))
-                                {
-                                    additionalPilot.Unit = this;
-                                    additionalPilot.Update();
-                                    additionalPilot.UpdateSupportMod();
-                                }
+                                additionalPilot.Update();
+                                additionalPilot.UpdateSupportMod();
                             }
 
                             return pltAdditionalPilot;
