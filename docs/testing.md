@@ -32,6 +32,7 @@
 | 対象 | テスト | 表 |
 |---|---|---|
 | 戦闘の計算結果（使えるか・命中率・ダメージ・クリティカル率）。攻撃側 × 武器 × 防御側 × 地形 × 距離 × 気力 × スペシャルパワーの 2,400 通り | `SRCCoreTests/Golden/BattleGoldenTests.cs` | `SRCCoreTests/Golden/Battle/expected.txt`（データは同じフォルダの `Data/`） |
+| 敵の思考（`COM.OperateUnit`）。敵 5 体・味方 3 体の戦場で、乱数の種を固定して敵を 5 回ずつ動かし、行動のたびに全ユニットの位置・HP・EN・気力を記録する。移動先・武器・対象の選び方と、命中・ダメージの判定が変わると記録が変わる | `SRCCoreTests/Golden/ComGoldenTests.cs` | `SRCCoreTests/Golden/Com/expected.txt`（データは `Battle/Data` と同じ） |
 
 意図して結果を変えたときは、表を作り直して差分を PR に載せる。人のレビューは必須にしない（自動化を優先し、リグレッションが起きたら見直す）。
 
