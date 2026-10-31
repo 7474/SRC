@@ -84,8 +84,9 @@ Set cpT2b Party(idT2)
 # ユニットＩＤ指定。敵がいなくなっても全滅イベントは起きない
 ChangeParty idT3 味方
 Set cpT3 Party(idT3)
-# ユニットに乗っていないパイロット（陣営は関数で参照できないので、実行できることだけを確かめる）
+# ユニットに乗っていないパイロット（Party はパイロット名でパイロットの陣営を返す）
 ChangeParty パイロットＦ 敵
+Set cpF Party(パイロットＦ)
 
 Talk システム
 検証開始

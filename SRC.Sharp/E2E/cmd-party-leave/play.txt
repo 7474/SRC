@@ -27,6 +27,8 @@ expect eval InStr(jnD, "待機") = 1
 expect eval InStr(cpT2, "中立") = 1
 expect eval InStr(cpT2b, "ＮＰＣ") = 1
 expect eval InStr(cpT3, "味方") = 1
+# ユニットに乗っていないパイロットの陣営も変わる
+expect eval cpF = "敵"
 key Enter
 # 陣営の変更で敵がいなくなっても全滅イベントは起きない
 wait ready
