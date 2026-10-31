@@ -514,13 +514,13 @@
     "vscode-languageclient": "^11.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.6.6",
     "@types/vscode": "~1.91.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^4.1.0",
-    "esbuild": "^0.25.12",
+    "esbuild": "^0.28.2",
     "mocha": "^12.0.3",
-    "typescript": "~5.9.3"
+    "typescript": "~7.0.2"
   }
 }

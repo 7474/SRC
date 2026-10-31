@@ -7,7 +7,9 @@
     "outDir": "out",
     "rootDir": "src",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    // TypeScript 6 から types の既定は空になった。Node の型（process・Buffer・crypto）を読む
+    "types": ["node"]
   },
   "include": ["src"]
 }

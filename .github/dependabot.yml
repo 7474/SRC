@@ -58,6 +58,10 @@ updates:
       update-types:
       - minor
       - patch
+  # @types/vscode は拡張が対応する最も古い VS Code（package.json の engines.vscode）に合わせる。
+  # 新しくすると vsce package が「engines.vscode より新しい」として拒む。engines.vscode を上げるときに人が上げる
+  ignore:
+  - dependency-name: '@types/vscode'
   package-ecosystem: npm
   schedule:
     interval: daily
