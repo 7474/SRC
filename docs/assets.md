@@ -10,7 +10,7 @@ SRC# でのプレイに使う汎用データ（グラフィック・戦闘アニ
 | 自作の最小の汎用データ（`SRC.Sharp/Content/basic-data`） | 含む（CC0 1.0）。地形データ・スペシャルパワーデータ・地形とユニットの画像・効果音・BGM を、汎用データと同じ番号・ファイル名で作っている（[Content](../SRC.Sharp/Content/README.md)） |
 | 遊べるシナリオ「灯の巡航船ランタン号」（`SRC.Sharp/Content/lantern`） | 含む（CC0 1.0） |
 | E2E テストのコーパス（`SRC.Sharp/E2E/`）のデータと音声 | 含む。自作の最小のもの（[E2E テスト](./gui/e2e-testing.md)） |
-| MIDI の SoundFont（.sf2） | 含まない。SRC#Avalonia は手元の SoundFont を探して使う（[SoundFont](./gui/avalonia.md#soundfont)）。SRC#Web の組み込みのカタログは、ビルド時に TimGM6mb（GPL-2.0）を取得して素材として配信する（[SRC#Web の音声](./gui/web.md#音声)） |
+| MIDI の SoundFont（.sf2） | リポジトリには含まない。SRC#Avalonia はビルド時に TimGM6mb（GPL-2.0）を取得して同梱し、手元の SoundFont が無いときに使う（[SoundFont](./gui/avalonia.md#soundfont)・[判断の記録](./decisions/2026-11-01-bundle-soundfont.md)）。SRC#Web の組み込みのカタログは、ビルド時に TimGM6mb（GPL-2.0）を取得して素材として配信する（[SRC#Web の音声](./gui/web.md#音声)） |
 
 ## 素材が無い場合の動作
 

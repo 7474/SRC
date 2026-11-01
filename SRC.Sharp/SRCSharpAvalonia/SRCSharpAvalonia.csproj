@@ -35,4 +35,23 @@
     <ProjectReference Include="..\SRCSound\SRCSound.csproj" />
   </ItemGroup>
 
+  <!--
+    MIDI の SoundFont（TimGM6mb、GPL-2.0）を実行ファイルの隣の SoundFont フォルダに同梱する。利用者が SoundFont を用意しなくても MIDI が鳴るように、
+    探す場所の最後の候補にする（SRCSound の SoundFontLocator）。取得元は Directory.Build.props（SRC#Web と同じ）。
+    取得できない（ネットワークが無い）場合はビルドを止めず、同梱しないで続ける
+  -->
+  <PropertyGroup>
+    <BundledSoundFontDir>$(BaseIntermediateOutputPath)soundfont\</BundledSoundFontDir>
+  </PropertyGroup>
+  <Target Name="BundleSoundFont" BeforeTargets="AssignTargetPaths">
+    <DownloadFile SourceUrl="$(SoundFontUrl)" DestinationFolder="$(BundledSoundFontDir)" Condition="!Exists('$(BundledSoundFontDir)TimGM6mb.sf2')" Retries="3" ContinueOnError="WarnAndContinue" />
+    <DownloadFile SourceUrl="$(SoundFontLicenseUrl)" DestinationFolder="$(BundledSoundFontDir)" DestinationFileName="COPYING" Condition="!Exists('$(BundledSoundFontDir)COPYING')" Retries="3" ContinueOnError="WarnAndContinue" />
+    <WriteLinesToFile File="$(BundledSoundFontDir)README.txt" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="utf-8" Lines="$(SoundFontReadme)" Condition="Exists('$(BundledSoundFontDir)TimGM6mb.sf2')" />
+    <ItemGroup Condition="Exists('$(BundledSoundFontDir)TimGM6mb.sf2') And Exists('$(BundledSoundFontDir)COPYING')">
+      <None Include="$(BundledSoundFontDir)TimGM6mb.sf2" Link="SoundFont\TimGM6mb.sf2" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+      <None Include="$(BundledSoundFontDir)COPYING" Link="SoundFont\COPYING" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+      <None Include="$(BundledSoundFontDir)README.txt" Link="SoundFont\README.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    </ItemGroup>
+  </Target>
+
 </Project>

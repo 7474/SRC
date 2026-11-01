@@ -78,6 +78,19 @@ flowchart LR
 - 設定が無ければ、ウィンドウ（タイトルバー・メニューを含む）が画面の作業領域に収まる、いちばん大きな倍率にして画面の中央に置く（`App.FitToScreen`）
 - 100%・200% でも、OS の表示倍率が整数でない（125% など）と、実際の画素では整数倍にならない（OS の拡大が加わる）
 
+## 素材フォルダの設定
+
+メニューの「設定 > 素材フォルダの設定...」で、素材の場所を設定するウィンドウを開く（`AssetSettingsWindow`）。保存すると `srcs.json` に書き、次に起動したときから効く。
+
+| 項目 | `srcs.json` | 内容 |
+|---|---|---|
+| 拡張データフォルダ 1・2 | `ExtDataPath`・`ExtDataPath2` | 元の SRC の Src.ini と同じ。SRC# のフォルダとシナリオのフォルダに無いデータ・グラフィック・音楽を探すフォルダ。SRC 本体（汎用グラフィック集などを入れたもの）や開発パックのフォルダを指定する |
+| MIDI の SoundFont | `Option/SoundFont` | 下記の [SoundFont](#soundfont) の 1 番目 |
+
+- フォルダは参照ボタンで選べる。指定したフォルダに `Bitmap`・`Data`・`Midi`・`Sound` のどれがあるかを示し、無いフォルダ・素材のフォルダが一つも無いフォルダ・`Bitmap` などのフォルダそのもの（親を指定する）は警告する
+- SoundFont が空欄なら、自動で探して見つかるもの（無ければ MIDI が鳴らないこと）を示す
+- シナリオの実行中に保存した場合も、ゲーム中に変えた設定を上書きしないよう、実行中のシナリオが持つ設定に書いてから保存する
+
 ## マウスカーソルの自動移動
 
 設定「マウスカーソルを自動的に移動する」（メッセージ・リスト・ユニットへカーソルを動かす）は、Avalonia にカーソルを動かす API が無いため、OS の API を直接呼ぶ（`SRCSharpAvalonia/NativeCursor.cs`）。`ScreenGUI` は WinForms 版の `MoveCursorPos` / `RestoreCursorPos` を移植し、カーソルの操作は `IScreenCursorHost` でホストに任せる。
@@ -117,14 +130,15 @@ flowchart LR
 
 ### SoundFont
 
-MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で同梱しない（[素材](../assets.md)）。次の順に探し、最初に見つかったものを使う。
+MIDI の合成には SoundFont（.sf2）が必要。次の順に探し、最初に見つかったものを使う。
 
 1. 設定ファイル `srcs.json` の `Option` セクションの `SoundFont`（パス）
 2. 環境変数 `SRC_SOUNDFONT`
 3. SRC のフォルダ直下、`Midi` フォルダの `*.sf2`
 4. Linux の標準の場所（`/usr/share/sounds/sf2/default-GM.sf2` など。Debian / Ubuntu では `fluid-soundfont-gm` や `timgm6mb-soundfont` パッケージで入る）
+5. 同梱の TimGM6mb（実行ファイルの隣の `SoundFont` フォルダ）
 
-見つからない場合、MIDI は鳴らない。
+TimGM6mb（約 6 MB、GPL-2.0）はビルド時に取得して同梱する（`SRCSharpAvalonia.csproj`。取得元は `Directory.Build.props` で SRC#Web と同じ）。ライセンスの全文（`COPYING`）と出典（`README.txt`）を添える。取得できない（ネットワークが無い）ビルドでは同梱せず、そのときに 1〜4 が無ければ MIDI は鳴らない（[判断の記録](../decisions/2026-11-01-bundle-soundfont.md)）。
 
 ## 実行
 
@@ -132,7 +146,7 @@ MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で�
 dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオの .eve / セーブデータ>
 ```
 
-- 引数を省くとファイル選択ダイアログを表示する
+- 引数を省くとファイル選択ダイアログを表示する。前回ファイル選択で開いたシナリオのフォルダ（`srcs.json` の `Option/LastScenarioFolder`）から選ばせる
 - 汎用グラフィック集などの素材が無くても起動できる（画像は代替表示になる）
 
 ## テスト

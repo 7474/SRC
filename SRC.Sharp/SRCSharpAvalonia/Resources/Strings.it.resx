@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>_Visualizza</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>_Impostazioni</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>Cartelle delle _risorse...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>Cartelle delle risorse</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>Dati, grafica e musica che non si trovano nella cartella di SRC# ({0}) né in quella dello scenario vengono cercati nelle cartelle indicate qui. Indica la cartella del pacchetto principale di SRC (con la raccolta di grafica generica, ecc.) o di un pacchetto di sviluppo.</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>Cartella dati aggiuntiva 1 (ExtDataPath)</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>Cartella dati aggiuntiva 2 (ExtDataPath2)</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>SoundFont MIDI (.sf2)</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Sfoglia...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>La cartella non esiste</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>Indica la cartella superiore, non la cartella "{0}" stessa</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>Nessuna delle cartelle Bitmap, Data, Midi o Sound è stata trovata</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>Cartelle trovate: {0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>Il file non esiste</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>Cercato automaticamente se vuoto (trovato: {0})</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>Cercato automaticamente se vuoto, ma non trovato. Il MIDI non verrà riprodotto</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>Le modifiche avranno effetto al prossimo avvio.</value>
+  </data>
 </root>

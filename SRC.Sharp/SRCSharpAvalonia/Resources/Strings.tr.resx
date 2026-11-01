@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>_Görünüm</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>_Ayarlar</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>_Kaynak klasörleri...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>Kaynak klasörleri</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>SRC# klasöründe ({0}) ve senaryo klasöründe bulunmayan veriler, grafikler ve müzikler burada belirtilen klasörlerde aranır. SRC ana paketinin (genel grafik koleksiyonu vb. içeren) veya bir geliştirme paketinin klasörünü belirtin.</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>Ek veri klasörü 1 (ExtDataPath)</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>Ek veri klasörü 2 (ExtDataPath2)</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>MIDI SoundFont (.sf2)</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Gözat...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Temizle</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>Klasör yok</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>"{0}" klasörünün kendisini değil, üst klasörünü belirtin</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>Bitmap, Data, Midi veya Sound klasörlerinden hiçbiri bulunamadı</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>Bulunan klasörler: {0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>Dosya yok</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>Boşsa otomatik olarak aranır (bulunan: {0})</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>Boşsa otomatik olarak aranır, ancak bulunamadı. MIDI çalmayacak</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>Değişiklikler uygulama bir sonraki başlatıldığında geçerli olur.</value>
+  </data>
 </root>

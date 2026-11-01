@@ -7,7 +7,7 @@ using System.Linq;
 namespace SRCSound
 {
     /// <summary>
-    /// MIDI の合成に使う SoundFont（.sf2）を探す。SoundFont は同梱しないため、利用者が用意したものを使う。
+    /// MIDI の合成に使う SoundFont（.sf2）を探す。利用者が用意したものを優先し、無ければ同梱のもの（SRC#Avalonia の TimGM6mb）を使う。
     /// </summary>
     public static class SoundFontLocator
     {
@@ -23,14 +23,24 @@ namespace SRCSound
             "/usr/share/soundfonts/FluidR3_GM.sf2",
         };
 
+        /// <summary>同梱の SoundFont を置くフォルダ（実行ファイルの隣の SoundFont フォルダ）</summary>
+        public static string BundledDirectory => Path.Combine(AppContext.BaseDirectory, "SoundFont");
+
         /// <summary>
         /// 次の順に探して最初に見つかったものを返す。無ければ null。
         /// 1. configuredPath（設定ファイルの指定）
         /// 2. 環境変数 SRC_SOUNDFONT
         /// 3. appPath（SRC のフォルダ）直下と Midi フォルダの *.sf2
         /// 4. SystemPaths
+        /// 5. 同梱のもの（BundledDirectory の *.sf2）
         /// </summary>
         public static string Find(string appPath, string configuredPath = null)
+        {
+            return Find(appPath, configuredPath, SystemPaths, BundledDirectory);
+        }
+
+        /// <summary>探す場所を指定して探す（テスト用）</summary>
+        public static string Find(string appPath, string configuredPath, IEnumerable<string> systemPaths, string bundledDirectory)
         {
             var candidates = new List<string> { configuredPath, Environment.GetEnvironmentVariable(EnvironmentVariable) };
             if (!string.IsNullOrEmpty(appPath))
@@ -43,7 +53,11 @@ namespace SRCSound
                     }
                 }
             }
-            candidates.AddRange(SystemPaths);
+            candidates.AddRange(systemPaths);
+            if (!string.IsNullOrEmpty(bundledDirectory) && Directory.Exists(bundledDirectory))
+            {
+                candidates.AddRange(Directory.GetFiles(bundledDirectory, "*.sf2").OrderBy(x => x, StringComparer.Ordinal));
+            }
             return candidates.FirstOrDefault(x => !string.IsNullOrEmpty(x) && File.Exists(x));
         }
 

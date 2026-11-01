@@ -38,9 +38,17 @@ namespace SRCSharpAvalonia
                 };
                 return item;
             }).ToArray();
+            // 素材フォルダなどの設定（設定 > 素材フォルダの設定...）
+            var assetSettingsItem = new MenuItem { Header = Strings.AssetSettingsMenu };
+            assetSettingsItem.Click += (s, e) => AssetSettingsRequested?.Invoke();
+            AssetSettingsItem = assetSettingsItem;
             var menu = new Menu
             {
-                ItemsSource = new[] { new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems } },
+                ItemsSource = new[]
+                {
+                    new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems },
+                    new MenuItem { Header = Strings.SettingsMenu, ItemsSource = new[] { assetSettingsItem } },
+                },
             };
             DockPanel.SetDock(menu, Dock.Top);
             Content = new DockPanel { Children = { menu, View } };
@@ -49,10 +57,16 @@ namespace SRCSharpAvalonia
 
         private readonly MenuItem[] scaleItems;
 
+        /// <summary>「素材フォルダの設定...」のメニュー項目（テスト用）</summary>
+        internal MenuItem AssetSettingsItem { get; }
+
         /// <summary>表示倍率のメニュー項目（テスト用）</summary>
         internal System.Collections.Generic.IReadOnlyList<MenuItem> ScaleItems => scaleItems;
 
         public ScreenView View { get; }
+
+        /// <summary>メニューで「素材フォルダの設定...」を選んだときに呼ばれる</summary>
+        public event Action AssetSettingsRequested;
 
         /// <summary>メニューで表示倍率を選んだときに呼ばれる（設定に保存する）</summary>
         public event Action<double> DisplayScaleChosen;

@@ -25,3 +25,4 @@
 | 2026-10-29 | [フロントエンドにサポート階層を設け、SRC#Form を維持の階層にする](./2026-10-29-frontend-support-tiers.md) | 採用 |
 | 2026-10-31 | [役目を終えたコード・ツール・ワークフローを消す](./2026-10-31-repository-cleanup.md) | 採用 |
 | 2026-10-31 | [リグレッションを防ぐことを最優先にした品質保証の改善](./2026-10-31-regression-first-qa-plan.md) | 採用 |
+| 2026-11-01 | [SRC#Avalonia に SoundFont（TimGM6mb）を同梱する](./2026-11-01-bundle-soundfont.md) | 採用 |

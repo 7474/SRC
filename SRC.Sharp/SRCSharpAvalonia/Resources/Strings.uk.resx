@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>_Вигляд</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>_Налаштування</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>Папки _ресурсів...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>Папки ресурсів</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>Дані, графіка й музика, яких немає в папці SRC# ({0}) і в папці сценарію, шукаються у вказаних тут папках. Вкажіть папку основного пакета SRC (із загальною колекцією графіки тощо) або пакета розробки.</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>Додаткова папка даних 1 (ExtDataPath)</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>Додаткова папка даних 2 (ExtDataPath2)</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>MIDI SoundFont (.sf2)</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Огляд...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>Папки не існує</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>Вкажіть батьківську папку, а не саму папку «{0}»</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>Не знайдено жодної з папок Bitmap, Data, Midi або Sound</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>Знайдені папки: {0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>Файлу не існує</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>Якщо порожньо, шукається автоматично (знайдено: {0})</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>Якщо порожньо, шукається автоматично, але нічого не знайдено. MIDI не відтворюватиметься</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>Зміни набудуть чинності під час наступного запуску.</value>
+  </data>
 </root>

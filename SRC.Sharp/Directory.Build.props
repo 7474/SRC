@@ -13,6 +13,15 @@
     <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
   </PropertyGroup>
   <!--
+    MIDI の SoundFont（TimGM6mb。Tim Brechbill、GPL-2.0）。SRC#Web は素材の zip として配信し、SRC#Avalonia は実行ファイルの隣（SoundFont フォルダ）に同梱する。
+    Debian の timgm6mb-soundfont と同じく、MuseScore のリポジトリの版を使う。ライセンスの全文（COPYING）と出典（README.txt）を添える
+  -->
+  <PropertyGroup>
+    <SoundFontUrl>https://raw.githubusercontent.com/musescore/musescore-old/90c33ef9d87b3f5ff92efd3b07d89eb455fb1fef/mscore/share/sound/TimGM6mb.sf2</SoundFontUrl>
+    <SoundFontLicenseUrl>https://raw.githubusercontent.com/spdx/license-list-data/v3.24.0/text/GPL-2.0-only.txt</SoundFontLicenseUrl>
+    <SoundFontReadme>TimGM6mb.sf2 - General MIDI SoundFont;Copyright 2004 Tim Brechbill (https://www.timbrechbill.com), 2010 David Bolton;License: GNU General Public License version 2 (COPYING);Source: $(SoundFontUrl)</SoundFontReadme>
+  </PropertyGroup>
+  <!--
     開発版（master へのマージごとに出す dev のプレリリース。docs/versioning.md の「開発版」）。
     -p:SrcSharpDevBuild=<番号> を付けると、次のパッチのプレリリース（3.5.6-dev.<番号>・0.5.6-dev.<番号>）にする。
     正式版と同じ版にすると、NuGet のキャッシュで中身の違う開発版と正式版が混ざるため。

@@ -85,6 +85,31 @@ namespace SRCSound.Tests
         }
 
         [TestMethod]
+        public void SoundFontLocator_UsesBundledAsLastResort()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "srcsound-" + Guid.NewGuid().ToString("N"));
+            var bundled = Path.Combine(dir, "SoundFont");
+            Directory.CreateDirectory(bundled);
+            try
+            {
+                var bundledFont = Path.Combine(bundled, "TimGM6mb.sf2");
+                File.WriteAllBytes(bundledFont, new byte[0]);
+                var system = Path.Combine(dir, "system.sf2");
+                // 利用者のものもシステムのものも無ければ、同梱のものを使う
+                Assert.AreEqual(bundledFont, SoundFontLocator.Find(null, null, new[] { system }, bundled));
+                // システムのものがあればそちらを先に使う
+                File.WriteAllBytes(system, new byte[0]);
+                Assert.AreEqual(system, SoundFontLocator.Find(null, null, new[] { system }, bundled));
+                // 同梱のフォルダが無くてもよい
+                Assert.IsNull(SoundFontLocator.Find(null, null, new string[0], Path.Combine(dir, "missing")));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
+        [TestMethod]
         public void MidiSource_SynthesizesWithSoundFont()
         {
             var font = SoundFontLocator.Load(null);

@@ -66,9 +66,7 @@
   <PropertyGroup>
     <GoogleFontsCommit>66928797f271fed5ee428544e7229685e2d90127</GoogleFontsCommit>
     <GoogleFontsBase>https://raw.githubusercontent.com/google/fonts/$(GoogleFontsCommit)/ofl</GoogleFontsBase>
-    <!-- TimGM6mb（Tim Brechbill、GPL-2.0）。Debian の timgm6mb-soundfont と同じく、MuseScore のリポジトリの版を使う -->
-    <SoundFontUrl>https://raw.githubusercontent.com/musescore/musescore-old/90c33ef9d87b3f5ff92efd3b07d89eb455fb1fef/mscore/share/sound/TimGM6mb.sf2</SoundFontUrl>
-    <SoundFontLicenseUrl>https://raw.githubusercontent.com/spdx/license-list-data/v3.24.0/text/GPL-2.0-only.txt</SoundFontLicenseUrl>
+    <!-- SoundFont（TimGM6mb）の取得元は Directory.Build.props（SRC#Avalonia も同梱する） -->
     <SoundFontDir>$(BaseIntermediateOutputPath)soundfont\</SoundFontDir>
     <E2EDir>$(MSBuildThisFileDirectory)..\E2E\</E2EDir>
     <ContentDir>$(MSBuildThisFileDirectory)..\Content\</ContentDir>
@@ -97,7 +95,7 @@
     <ZipDirectory SourceDirectory="$(ContentDir)lantern" DestinationFile="wwwroot/scenarios/lantern.zip" Overwrite="true" />
     <DownloadFile SourceUrl="$(SoundFontUrl)" DestinationFolder="$(SoundFontDir)" Condition="!Exists('$(SoundFontDir)TimGM6mb.sf2')" Retries="3" />
     <DownloadFile SourceUrl="$(SoundFontLicenseUrl)" DestinationFolder="$(SoundFontDir)" DestinationFileName="COPYING" Condition="!Exists('$(SoundFontDir)COPYING')" Retries="3" />
-    <WriteLinesToFile File="$(SoundFontDir)README.txt" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="utf-8" Lines="TimGM6mb.sf2 - General MIDI SoundFont;Copyright 2004 Tim Brechbill (https://www.timbrechbill.com), 2010 David Bolton;License: GNU General Public License version 2 (COPYING);Source: $(SoundFontUrl)" />
+    <WriteLinesToFile File="$(SoundFontDir)README.txt" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="utf-8" Lines="$(SoundFontReadme)" />
     <ZipDirectory SourceDirectory="$(SoundFontDir)" DestinationFile="wwwroot/assets/timgm6mb.zip" Overwrite="true" />
     <GetFileHash Files="wwwroot/assets/basic-data.zip;wwwroot/scenarios/lantern.zip;wwwroot/assets/timgm6mb.zip" Algorithm="SHA256" HashEncoding="hex">
       <Output TaskParameter="Items" ItemName="_ContentZip" />

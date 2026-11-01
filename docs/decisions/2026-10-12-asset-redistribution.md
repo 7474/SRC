@@ -44,7 +44,7 @@ SRC# でプレイするには汎用データ（グラフィック集・汎用戦
 ## 影響
 
 - SRC#Avalonia・SRC#Web・`srcsharp play` は素材が無くても動き、代替の表示をする。SRC#Form は素材を必須とする
-- SoundFont も同梱しない
+- SoundFont も同梱しない（SRC#Avalonia の配布物には TimGM6mb を同梱することにした。[2026-11-01](./2026-11-01-bundle-soundfont.md)）
 - A（取得スクリプト）と B（許諾）は未対応
 
 ## 参照
