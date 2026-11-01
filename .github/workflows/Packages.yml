@@ -3,7 +3,7 @@ name: Packages
 # 配る形（リリースと同じ作り方）で作って起動を確かめる（#1359）。タグを打つ前に、配る物が作れて起動することを知る。
 # - SRC#Avalonia の自己完結の単一ファイル（.github/scripts/publish-avalonia.sh。Publish-Avalonia.yml と同じ）。
 #   linux-x64・win-x64 は --smoke で起動し、シナリオが始まって終わることを確かめる。
-#   osx-arm64・osx-x64 は作れることだけを確かめる（macOS は理屈の上で動くところまで。docs/decisions/2026-10-31-regression-first-qa-plan.md）
+#   win-arm64・osx-arm64・osx-x64 は作れることだけを確かめる（macOS は理屈の上で動くところまで。docs/decisions/2026-10-31-regression-first-qa-plan.md）
 # - srcsharp（NuGet の .NET tool）: pack → tool install → --version・lint
 # - VS Code 拡張の vsix・SRC#Web（AOT）・ブラウザで動く lint・データビューアの zip・Docker イメージ（koudenpa/srcdatalinter）
 # PR の待ち時間を増やさないよう、master への push のときだけ動かす（作り方そのものを変えた PR では動かす。必須のチェックではない）。SRC#Form は対象外
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        rid: [linux-x64, win-x64, osx-arm64, osx-x64]
+        rid: [linux-x64, win-x64, win-arm64, osx-arm64, osx-x64]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-dotnet@v6
