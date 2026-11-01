@@ -68,7 +68,7 @@ namespace SRCCore.Coverage.Tests.UnitAttack
 
             // 味方の攻撃では UpdateMessageForm(標的, 攻撃側) の順で個々の攻撃を表示する
             var order = f.Calls(nameof(IGUI.UpdateMessageForm))
-                .Where(c => ReferenceEquals(c.Args[1], a) && c.Args[0] != null && !ReferenceEquals(c.Args[0], a))
+                .Where(c => c.Args.Length > 1 && ReferenceEquals(c.Args[1], a) && c.Args[0] != null && !ReferenceEquals(c.Args[0], a))
                 .Select(c => (Unit)c.Args[0])
                 .Distinct()
                 .ToList();

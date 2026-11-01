@@ -535,7 +535,7 @@ namespace SRCCore.Units
 
             // 自分を破壊
             HP = 0;
-            GUI.UpdateMessageForm(this, u2: null);
+            GUI.UpdateMessageForm(this);
             // 既に爆発アニメーションを表示しているので
             AddCondition("破壊キャンセル", 1, cdata: "");
             Map.MapDataForUnit[x, y] = null;

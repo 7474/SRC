@@ -514,7 +514,7 @@ namespace SRCCore.Units
                                 GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.HP - prev_value));
                                 if (ReferenceEquals(t, this))
                                 {
-                                    GUI.UpdateMessageForm(this, u2: null);
+                                    GUI.UpdateMessageForm(this);
                                 }
                                 else
                                 {
@@ -544,7 +544,7 @@ namespace SRCCore.Units
                                 GUI.DrawSysString(t.x, t.y, "-" + SrcFormatter.Format(prev_value - t.HP));
                                 if (ReferenceEquals(t, this))
                                 {
-                                    GUI.UpdateMessageForm(this, u2: null);
+                                    GUI.UpdateMessageForm(this);
                                 }
                                 else
                                 {
@@ -599,7 +599,7 @@ namespace SRCCore.Units
                                     GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(t.EN - prev_value));
                                     if (ReferenceEquals(t, this))
                                     {
-                                        GUI.UpdateMessageForm(this, u2: null);
+                                        GUI.UpdateMessageForm(this);
                                     }
                                     else
                                     {
@@ -635,7 +635,7 @@ namespace SRCCore.Units
                                     GUI.DrawSysString(t.x, t.y, "-" + SrcFormatter.Format(prev_value - t.EN));
                                     if (ReferenceEquals(t, this))
                                     {
-                                        GUI.UpdateMessageForm(this, u2: null);
+                                        GUI.UpdateMessageForm(this);
                                     }
                                     else
                                     {
@@ -676,7 +676,7 @@ namespace SRCCore.Units
                                     GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(p.Plana - prev_value));
                                     if (ReferenceEquals(t, this))
                                     {
-                                        GUI.UpdateMessageForm(this, u2: null);
+                                        GUI.UpdateMessageForm(this);
                                     }
                                     else
                                     {
@@ -708,7 +708,7 @@ namespace SRCCore.Units
                                     GUI.DrawSysString(t.x, t.y, "-" + SrcFormatter.Format(prev_value - p.Plana));
                                     if (ReferenceEquals(t, this))
                                     {
-                                        GUI.UpdateMessageForm(this, u2: null);
+                                        GUI.UpdateMessageForm(this);
                                     }
                                     else
                                     {
@@ -1102,7 +1102,7 @@ namespace SRCCore.Units
                                     {
                                         if (ReferenceEquals(t, CurrentForm()))
                                         {
-                                            GUI.UpdateMessageForm(t, u2: null);
+                                            GUI.UpdateMessageForm(t);
                                         }
                                         else
                                         {
@@ -1123,7 +1123,7 @@ namespace SRCCore.Units
                                             t.DeleteCondition(cname);
                                             if (ReferenceEquals(t, CurrentForm()))
                                             {
-                                                GUI.UpdateMessageForm(t, u2: null);
+                                                GUI.UpdateMessageForm(t);
                                             }
                                             else
                                             {
@@ -1250,7 +1250,7 @@ namespace SRCCore.Units
                                 t.Update();
                                 if (ReferenceEquals(t, CurrentForm()))
                                 {
-                                    GUI.UpdateMessageForm(t, u2: null);
+                                    GUI.UpdateMessageForm(t);
                                 }
                                 else
                                 {
@@ -1447,7 +1447,7 @@ namespace SRCCore.Units
                                 t.Update();
                                 if (ReferenceEquals(t, CurrentForm()))
                                 {
-                                    GUI.UpdateMessageForm(t, u2: null);
+                                    GUI.UpdateMessageForm(t);
                                 }
                                 else
                                 {
@@ -1569,7 +1569,7 @@ namespace SRCCore.Units
 
                     case "召喚":
                         {
-                            GUI.UpdateMessageForm(CurrentForm(), u2: null);
+                            GUI.UpdateMessageForm(CurrentForm());
 
                             if (!SRC.UDList.IsDefined(edata))
                             {
@@ -2395,7 +2395,7 @@ namespace SRCCore.Units
 
             // ＥＮ消費＆使用回数減少
             a.UseAbility();
-            GUI.UpdateMessageForm(this, u2: null);
+            GUI.UpdateMessageForm(this);
             var msg = "";
             switch (partners.Count)
             {
@@ -2518,7 +2518,7 @@ namespace SRCCore.Units
                 {
                     if (ReferenceEquals(t, this))
                     {
-                        GUI.UpdateMessageForm(this, u2: null);
+                        GUI.UpdateMessageForm(this);
                     }
                     else
                     {
