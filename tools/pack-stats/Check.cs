@@ -50,6 +50,7 @@ namespace PackStats
 
         // 直前の Check の件数（site の一覧に出す）
         private static (int pilots, int units, int must, int info) lastCheck;
+        private static string lastTerms = "";
 
         private static void Check(Data pack, string dir)
         {
@@ -62,7 +63,7 @@ namespace PackStats
 
             Console.WriteLine($"# {t.Name} の評価（基準: {pack.Name}）");
             Console.WriteLine();
-            Console.WriteLine("数値の横の「P」は、パックの同じ層の中での位置（%）。↑↓ は 25%〜75% の外、↑↑↓↓ は 5%〜95% の外。外れていても誤りではないが、原作の描写や役どころで理由を説明できるようにする。");
+            Console.WriteLine("数値の横の「P」は、パックの同じ層の中での位置（%）。↑↓ は 25%〜75% の外、↑↑↓↓ は 5%〜95% の外。外れ値はキャラの個性でもあり、外れていること自体は誤りではない。");
             Console.WriteLine();
 
             var refPilots = Memo(pack, "pilots", () => Pilots(pack));
@@ -354,6 +355,12 @@ namespace PackStats
             Console.WriteLine("「要確認」はデータの形式の誤りと、ガイドラインの決まり（数値の刻み、名前付きの SP は 6 つ、SP 使用時のメッセージを入れない など）から外れているもの。「参考」は外れ値の情報で、外れ値はキャラの個性でもあるので、それ自体は直す理由にならない。役どころの評価（組の評価）は tools/pack-analysis で行う。");
             Console.WriteLine();
             lastCheck = (tPilots.Count, tUnits.Count, fs.Count(f => f.Level == "要確認"), fs.Count(f => f.Level == "参考"));
+            // サイト内検索の語句: 作品名・パイロット・ユニット・武器の名前と、＝・括弧などで区切った部分
+            var names = new[] { t.Name }.Concat(tPilots.SelectMany(p => new[] { p.Name, p.Nickname }))
+                .Concat(tUnits.SelectMany(u => new[] { u.Name, u.Nickname })).Concat(tUnits.SelectMany(u => u.Weapons.Select(w => w.Name)))
+                .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            lastTerms = string.Join(" ", names.Concat(names.SelectMany(n => n.Split(new[] { '＝', '・', '(', ')', '（', '）', '／', '/', ' ', '　' }, StringSplitOptions.RemoveEmptyEntries)))
+                .Distinct());
             foreach (var level in new[] { "要確認", "参考" })
             {
                 var g = fs.Where(f => f.Level == level).ToList();
