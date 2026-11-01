@@ -26,7 +26,8 @@ namespace PackStats
                 Console.Error.WriteLine("  map-list <パック> <属性の正規表現>    属性に合う武器の一覧と、ユニットの経験値の帯ごとの集計");
                 Console.Error.WriteLine("  skills <パック>                       パイロットの特殊能力・ユニットの特殊能力の保有率");
                 Console.Error.WriteLine("  endurance <パック>                    最大攻撃力の武器を撃てる回数、切り札の気力");
-                Console.Error.WriteLine("  growth <パック>                       要の SP を覚えるレベル");
+                Console.Error.WriteLine("  growth <パック>                       要の SP を覚えるレベル、レベルの刻み");
+                Console.Error.WriteLine("  sp-mix <パック>                       SP の効果の分類ごとの持ち方");
                 Console.Error.WriteLine("  spread <パック>                       同じ帯の中での得意・苦手の数（個性の偏り）");
                 Console.Error.WriteLine("  types <パック>                        同じ帯の中での位置による系統（リアル・スーパー・グレー）");
                 Console.Error.WriteLine("  map-types <パック>                    マップ兵器の持たせ方の型");
@@ -49,6 +50,7 @@ namespace PackStats
                 case "skills": Skills(data); break;
                 case "endurance": Endurance(data); break;
                 case "growth": Growth(data); break;
+                case "sp-mix": SpMix(data); break;
                 case "spread": Spread(data); break;
                 case "types": Types(data, args.Length > 2 ? args[2] : null); break;
                 case "map-types": MapTypes(data); break;
@@ -359,6 +361,81 @@ namespace PackStats
             }
         }
 
+
+        // ---- sp-mix
+
+        private static readonly string[] SpCategories = { "攻撃", "命中", "回避", "防御", "気力", "移動・射程", "行動", "支援", "妨害", "その他" };
+
+        // SP の効果の分類。複合の SP（スペシャルパワー=…）は中身をたどる
+        private static HashSet<string> SpCategory(Data d, string name, int depth = 0)
+        {
+            var r = new HashSet<string>();
+            if (depth > 3 || !d.Src.SPDList.IsDefined(name)) { r.Add("その他"); return r; }
+            var sp = d.Src.SPDList.Item(name);
+            var target = sp.TargetType ?? "";
+            if (target.Contains("味方")) { r.Add("支援"); return r; }
+            if (target.Contains("敵")) { r.Add(sp.Effects.All(e => (e.strEffectType ?? "") == "偵察") ? "その他" : "妨害"); return r; }
+            foreach (var e in sp.Effects)
+            {
+                var t = e.strEffectType ?? "";
+                if (t == "スペシャルパワー") { r.UnionWith(SpCategory(d, e.strEffectData, depth + 1)); continue; }
+                if (t.Contains("ダメージ増加") || t.Contains("クリティカル率増加") || t.Contains("無効化") && !t.Contains("被")) r.Add("攻撃");
+                else if (t.Contains("命中")) r.Add("命中");
+                else if (t.Contains("回避")) r.Add("回避");
+                else if (t.Contains("装甲") || t.Contains("被ダメージ") || t.Contains("ＨＰ回復")) r.Add("防御");
+                else if (t.Contains("気力増加")) r.Add("気力");
+                else if (t.Contains("移動") || t.Contains("射程")) r.Add("移動・射程");
+                else if (t.Contains("行動数")) r.Add("行動");
+            }
+            if (r.Count == 0) r.Add("その他");
+            return r;
+        }
+
+        private static void SpMix(Data d)
+        {
+            var ps = Pilots(d).Where(p => !p.Name.Contains("(ザコ)") && !p.Name.Contains("(汎用)") && p.ExpValue >= 120).ToList();
+            Console.WriteLine($"# {d.Name} SP の効果の分類ごとの持ち方（経験値 120 以上の名前付きのパイロット）");
+            Console.WriteLine();
+            Console.WriteLine("分類は sp.txt の効果から決める（複合の SP は中身をたどる）: 攻撃（ダメージ増加・クリティカル・防御無効化）、命中、回避、防御（装甲・被ダメージ低下・自分の HP 回復）、気力、移動・射程、行動（行動数増加）、支援（味方が対象）、妨害（敵が対象）、その他（資金・経験値・偵察など）");
+            Console.WriteLine();
+            Console.WriteLine("分類ごとの、その分類の SP を持つ割合と、持つ数の平均（帯ごと）");
+            Console.WriteLine();
+            Console.WriteLine("| 層 | " + string.Join(" | ", SpCategories) + " |");
+            Console.WriteLine("|---|" + string.Concat(SpCategories.Select(_ => "---|")));
+            foreach (var b in PilotBands.Take(4))
+            {
+                var g = ps.Where(p => PilotBand(p) == b).ToList();
+                var cats = g.Select(p => p.DefinedSpecialPowers().Select(x => SpCategory(d, x.Name)).ToList()).ToList();
+                Console.WriteLine($"| {b} | " + string.Join(" | ", SpCategories.Select(c =>
+                {
+                    var have = cats.Count(l => l.Any(x => x.Contains(c)));
+                    var avg = cats.Average(l => l.Count(x => x.Contains(c)));
+                    return $"{Pct(have, g.Count)}（{avg:F1}）";
+                })) + " |");
+            }
+            Console.WriteLine();
+            Console.WriteLine("命中・回避に効く SP（集中・必中・ひらめき・心眼など）の数");
+            Console.WriteLine();
+            Console.WriteLine("| 層 | 0 | 1 | 2 | 3 | 4 以上 |");
+            Console.WriteLine("|---|--:|--:|--:|--:|--:|");
+            foreach (var b in PilotBands.Take(4))
+            {
+                var g = ps.Where(p => PilotBand(p) == b).ToList();
+                var n = g.Select(p => p.DefinedSpecialPowers().Count(x => { var c = SpCategory(d, x.Name); return c.Contains("命中") || c.Contains("回避"); })).ToList();
+                Console.WriteLine($"| {b} | {Pct(n.Count(x => x == 0), n.Count)} | {Pct(n.Count(x => x == 1), n.Count)} | {Pct(n.Count(x => x == 2), n.Count)} | {Pct(n.Count(x => x == 3), n.Count)} | {Pct(n.Count(x => x >= 4), n.Count)} |");
+            }
+            Console.WriteLine();
+            Console.WriteLine("持つ SP の分類の種類の数");
+            Console.WriteLine();
+            Console.WriteLine("| 層 | 25%〜75%（中央値） |");
+            Console.WriteLine("|---|---|");
+            foreach (var b in PilotBands.Take(4))
+            {
+                var g = ps.Where(p => PilotBand(p) == b).ToList();
+                Console.WriteLine($"| {b} | {Iqr(g.Select(p => p.DefinedSpecialPowers().SelectMany(x => SpCategory(d, x.Name)).Distinct().Count()))} |");
+            }
+        }
+
         // ---- skills
 
         private static void Skills(Data d)
@@ -446,6 +523,18 @@ namespace PackStats
                 if (g.Count == 0) continue;
                 Console.WriteLine($"| {b} | " + string.Join(" | ", sps.Select(x => Iqr(g.SelectMany(p => p.DefinedSpecialPowers().Where(s => s.Name == x).Select(s => s.NecessaryLevel))))) + " |");
             }
+            // 覚えるレベルの刻み（レベル 1 を除く）
+            var lvs = ps.SelectMany(p => p.DefinedSpecialPowers().Select(x => x.NecessaryLevel).Where(l => l > 1)).ToList();
+            var named = ps.Where(p => p.DefinedSpecialPowers().Count(x => x.NecessaryLevel > 1) >= 3).ToList();
+            Console.WriteLine();
+            Console.WriteLine("覚えるレベルの刻み（レベル 1 を除く。名前付きのパイロット）");
+            Console.WriteLine();
+            Console.WriteLine("| 項目 | 割合 |");
+            Console.WriteLine("|---|--:|");
+            Console.WriteLine($"| 覚えるレベルのうち 5 の倍数 | {Pct(lvs.Count(l => l % 5 == 0), lvs.Count)} |");
+            Console.WriteLine($"| レベル 1 以外を 3 つ以上覚え、その全てが 5 の倍数のパイロット | {Pct(named.Count(p => p.DefinedSpecialPowers().Where(x => x.NecessaryLevel > 1).All(x => x.NecessaryLevel % 5 == 0)), named.Count)} |");
+            var gaps = ps.SelectMany(p => { var l = p.DefinedSpecialPowers().Select(x => x.NecessaryLevel).OrderBy(x => x).ToList(); return l.Zip(l.Skip(1), (a, b) => b - a); }).ToList();
+            Console.WriteLine($"| 続けて覚える SP のレベルの間隔（25%〜75%（中央値）） | {Iqr(gaps)} |");
             Console.WriteLine();
             Console.WriteLine("性格ごとの、熱血・魂のどちらかを覚えるレベル（早いほう。25%〜75%（中央値））");
             Console.WriteLine();
