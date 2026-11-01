@@ -522,18 +522,16 @@ jobs:
         echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
         echo "$RESULTS" | jq -e 'all(.[]; .result == "success" or .result == "skipped")' > /dev/null
 
-  # カバレッジの計測。テストのあるすべてのアセンブリを計り、PR では変えた行のカバレッジも出す（#1363）。
-  # 計測は時間がかかる（数分）ため、ci-passed は待たない（マージの可否に使わない）。Mackerel には push のときだけ送る
+  # カバレッジの計測。テストのあるすべてのアセンブリを計る（#1363）。
+  # 計測は時間がかかる（10 分以上）ため、PR では行わず master への push のときだけ計り、Mackerel に送る。
+  # PR で変えた行のカバレッジ（.github/scripts/diff-coverage.py）も、当面は出さない
   coverage:
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: github.event_name == 'push' && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v7
-      with:
-        # 変えた行を PR の基準と比べるため
-        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
@@ -564,11 +562,6 @@ jobs:
           python3 .github/scripts/command-coverage.py $files >> "$GITHUB_STEP_SUMMARY"
         fi
 
-    # PR で変えた行のうち、テストが通った割合（少なければ warning。止めはしない）
-    - name: Report coverage of changed lines
-      if: github.event_name == 'pull_request'
-      run: python3 .github/scripts/diff-coverage.py ${{ github.event.pull_request.base.sha }} $(find TestResults -name coverage.cobertura.xml) >> "$GITHUB_STEP_SUMMARY"
-
     - name: Generate Coverage Report
       uses: danielpalme/ReportGenerator-GitHub-Action@5.5.12
       with:
@@ -581,7 +574,6 @@ jobs:
 
     # テストのあるすべてのアセンブリを合わせたカバレッジ
     - name: Send Coverage Summary to Mackerel (service metrics)
-      if: github.event_name == 'push'
       env:
         MACKEREL_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
       run: |
