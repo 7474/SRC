@@ -1,8 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using SRCCore.Units;
 using SRCPlay;
 
 namespace SRCRender.Tests
@@ -158,6 +160,160 @@ namespace SRCRender.Tests
                     Assert.IsTrue(values.Count > 0, "each HP/EN field was refreshed");
                     Assert.IsFalse(values.Any(value => value.Contains(".")), string.Join(", ", values));
                 }
+            }
+        }
+
+        [TestMethod]
+        public void UpdateMessageForm_ReflectionKeepsBattleUnitOrder()
+        {
+            workspace.Write(Path.Combine("Data", "robot.txt"),
+                "標的機",
+                "標的機, ひょうてきき, 汎用, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力なし",
+                "1000, 100, 1000, 60",
+                "AAAA, -.bmp",
+                "===",
+                "");
+            workspace.Write(Path.Combine("Data", "pilot.txt"),
+                "テスト",
+                "テスト, てすと, 男性, 汎用, AAAA, 100",
+                "特殊能力なし",
+                "100, 100, 100, 100, 100, 100, 普通",
+                "ＳＰなし",
+                "-.bmp, -.mid",
+                "");
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "Create 味方 標的機 0 テスト 1 3 3",
+                "Refresh",
+                "Talk システム",
+                "待機",
+                "End",
+                "Quit",
+                "");
+
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                Unit attacker = null;
+                Exception updateError = null;
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        try
+                        {
+                            attacker = runner.Session.SRC.Map.MapDataForUnit[3, 3];
+                            attacker.HP = 500;
+                            var src = runner.Session.SRC;
+                            var defender = src.UList.Add("標的機", 0, "敵");
+                            src.PList.Add("テスト", 1, "敵", "defender").Ride(defender);
+                            defender.x = 8;
+                            defender.y = 3;
+                            defender.Update();
+                            defender.FullRecover();
+                            runner.GUI.OpenMessageForm(attacker, defender);
+                        }
+                        catch (Exception ex)
+                        {
+                            updateError = ex;
+                        }
+                        finally
+                        {
+                            done.Set();
+                        }
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                Assert.IsNull(updateError, updateError?.ToString());
+                var before = runner.SnapshotPng();
+
+                runner.Session.Game.Post(() => runner.GUI.UpdateMessageForm(attacker, null));
+                runner.Sync();
+
+                CollectionAssert.AreEqual(before, runner.SnapshotPng());
+            }
+        }
+
+        [TestMethod]
+        public void UpdateMessageForm_SingleUnitRedrawsLikeOmittedArgument()
+        {
+            workspace.Write(Path.Combine("Data", "robot.txt"),
+                "標的機",
+                "標的機, ひょうてきき, 汎用, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力なし",
+                "1000, 100, 1000, 60",
+                "AAAA, -.bmp",
+                "===",
+                "");
+            workspace.Write(Path.Combine("Data", "pilot.txt"),
+                "テスト",
+                "テスト, てすと, 男性, 汎用, AAAA, 100",
+                "特殊能力なし",
+                "100, 100, 100, 100, 100, 100, 普通",
+                "ＳＰなし",
+                "-.bmp, -.mid",
+                "");
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "Create 味方 標的機 0 テスト 1 3 3",
+                "Refresh",
+                "Talk システム",
+                "待機",
+                "End",
+                "Quit",
+                "");
+
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                Unit attacker = null;
+                Exception updateError = null;
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        try
+                        {
+                            attacker = runner.Session.SRC.Map.MapDataForUnit[3, 3];
+                            attacker.HP = 500;
+                            var src = runner.Session.SRC;
+                            var defender = src.UList.Add("標的機", 0, "敵");
+                            src.PList.Add("テスト", 1, "敵", "defender").Ride(defender);
+                            defender.x = 8;
+                            defender.y = 3;
+                            defender.Update();
+                            defender.FullRecover();
+                            runner.GUI.OpenMessageForm(attacker, defender);
+                        }
+                        catch (Exception ex)
+                        {
+                            updateError = ex;
+                        }
+                        finally
+                        {
+                            done.Set();
+                        }
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                Assert.IsNull(updateError, updateError?.ToString());
+                var before = runner.SnapshotPng();
+
+                // 元の SRC で u2 を省略した UpdateMessageForm と同じく、前回の表示を維持せずに 1 体だけの表示にする
+                // （u2 に Nothing を渡す反射攻撃の場合とは異なる）
+                runner.Session.Game.Post(() => runner.GUI.UpdateMessageForm(attacker));
+                runner.Sync();
+
+                CollectionAssert.AreNotEqual(before, runner.SnapshotPng());
             }
         }
 

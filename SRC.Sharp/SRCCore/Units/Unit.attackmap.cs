@@ -344,7 +344,7 @@ namespace SRCCore.Units
 
             // 武器使用による弾数＆ＥＮ消費
             w.UseWeapon();
-            GUI.UpdateMessageForm(this, u2: null);
+            GUI.UpdateMessageForm(this);
 
             // 攻撃時のシステムメッセージ
             if (IsSysMessageDefined(wname, sub_situation: ""))

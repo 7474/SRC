@@ -149,7 +149,7 @@ namespace SRCSharpForm
                     frmMessage.picUnit2.Visible = false;
                 }
 
-                UpdateMessageForm(u1, null);
+                UpdateMessageForm(u1);
                 // XXX 余白
                 frmMessage.Width = frmMessage.Width - frmMessage.ClientRectangle.Width + 508;
                 frmMessage.Height = frmMessage.Height - frmMessage.ClientRectangle.Height + 118;
@@ -206,7 +206,17 @@ namespace SRCSharpForm
         private Brush BarBackBrush = new SolidBrush(Color.FromArgb(0xc0, 0, 0));
         private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
 
+        public void UpdateMessageForm(Unit u1)
+        {
+            UpdateMessageForm(u1, null, false);
+        }
+
         public void UpdateMessageForm(Unit u1, Unit u2)
+        {
+            UpdateMessageForm(u1, u2, true);
+        }
+
+        private void UpdateMessageForm(Unit u1, Unit u2, bool hasSecondUnit)
         {
             Unit lu, ru;
             // ウィンドウにユニット情報が表示されていない場合はそのまま終了
@@ -219,9 +229,7 @@ namespace SRCSharpForm
             }
 
             // luを左に表示するユニット、ruを右に表示するユニットに設定
-            // XXX IsNothing と Null の差分とか考慮してねー。裏技的だが null, null 指定でそうすることができなくもない。
-            //if (Information.IsNothing(u2))
-            if (u2 is null)
+            if (!hasSecondUnit)
             {
                 // １体のユニットのみ表示
                 if (u1.Party == "味方" || u1.Party == "ＮＰＣ")
