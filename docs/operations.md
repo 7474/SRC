@@ -52,13 +52,13 @@ flowchart LR
 | ワークフロー | きっかけ | すること | 出る先 |
 |---|---|---|---|
 | `CI.yml` | PR・master への push | ビルドとテスト、版と案内の確かめ（`release-check`）。結果を `ci-passed` にまとめる。push のときだけカバレッジを計る（`coverage`） | `ci-passed`（ブランチ保護の必須チェック）・Mackerel（サービス `SRCS` のカバレッジ） |
-| `Packages.yml` | master への push（`SRC.Sharp/` を変えたとき）・手動 | 配る形で作って起動を確かめる。SRC#Avalonia の単一ファイル（linux-x64・win-x64 は `--smoke` で起動、osx は作るだけ）と、srcsharp の pack → tool install → `--version`・`lint`（#1359） | なし（確かめるだけ。Actions の成果物に 7 日残す） |
+| `Packages.yml` | master への push（`SRC.Sharp/` を変えたとき）・手動 | 配る形で作って起動を確かめる。SRC#Avalonia の単一ファイル（linux-x64・win-x64 は `--smoke` で起動、win-arm64・osx は作るだけ）と、srcsharp の pack → tool install → `--version`・`lint`（#1359） | なし（確かめるだけ。Actions の成果物に 7 日残す） |
 | `CD-pages.yml` | master への push | データビューア（`SRCDataViewer`）をルートに、SRC#Web を `web/` に置いて発行する | GitHub Pages（https://7474.github.io/SRC/ ・ https://7474.github.io/SRC/web/ ） |
 | `CD-swa-dataviewer.yml` | master への push・PR（`SRC.Sharp/` を変えたとき） | `CD-pages.yml` と同じ構成を発行する。PR ではプレビュー環境に出して E2E を流し、PR が閉じたら閉じる | Static Web Apps（https://srcv.7474.jp/ ） |
 | `CD-swa-help.yml` | master への push・PR（`SRC.Sharp.Help/` を変えたとき） | ヘルプ（Jekyll）を発行する。プレビュー環境の扱いは上と同じ | Static Web Apps（https://srch.7474.jp/ ） |
 | `CD-swa-cleanup-previews.yml` | 毎日 03:17 JST・手動・このワークフローを変えた PR | PR が閉じたのに残っているプレビュー環境を閉じる | Static Web Apps |
 | `Publish-Package.yml` | タグ（`v*`）の push | 版の確かめの後、NuGet（SRCCore・SRCDataLinter・SRCSharpTools）、SRC#Form と SRC#Web の zip、Docker イメージを出す。リリースの本文は `docs/releases/<タグ>.md` | NuGet・GitHub Releases・Docker Hub（`koudenpa/srcdatalinter`） |
-| `Publish-Avalonia.yml` | タグの push・手動（過去のリリースに添付） | SRC#Avalonia を OS ごと（4 つ）の zip にする | GitHub Releases |
+| `Publish-Avalonia.yml` | タグの push・手動（過去のリリースに添付） | SRC#Avalonia を OS ごと（5 つ）の zip にする | GitHub Releases |
 | `Publish-VSCode.yml` | タグの push・手動 | VS Code 拡張の .vsix を作って出す。公開済みの版なら飛ばす | Visual Studio Marketplace・Open VSX・GitHub Releases |
 | `dependabot-auto-merge.yml` | Dependabot の PR | マイナー・パッチの更新のまとめに自動マージを設定する | master（`ci-passed` が通ったとき） |
 | `regression-label.yml` | Issue の作成・編集 | 不具合の報告で「前の版では動いていた」と答えたものにラベル `regression` を付ける（[テストと CI の設計](./testing.md)） | Issue のラベル |

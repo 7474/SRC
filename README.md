@@ -29,7 +29,8 @@
 ### SRC#Avalonia
 
 1. [Releases](https://github.com/7474/SRC/releases) から、OS に合った zip を取って展開する。.NET を入れる必要はない（自己完結の単一ファイル）。
-    - Windows: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
+    - Windows（x64）: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
+    - Windows（Arm64）: `SRCSharpAvalonia-win-arm64.zip`（`SRCSharpAvalonia.exe`）
     - Linux: `SRCSharpAvalonia-linux-x64.zip`
     - macOS: `SRCSharpAvalonia-osx-arm64.zip`（Apple シリコン）・`SRCSharpAvalonia-osx-x64.zip`（Intel）。署名していないため、初回は Finder で右クリック→「開く」で起動する。
 1. 実行ファイルを構築済みの SRC フォルダにコピーし（実行ファイルを置いたフォルダを SRC のフォルダとして使う）、`SRCSharpAvalonia <シナリオ（.eve）>` を実行する。引数を省くとファイルを選ぶダイアログが開く。

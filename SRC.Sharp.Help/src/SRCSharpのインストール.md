@@ -19,7 +19,8 @@ SRC# の入手と起動の手順です。動く環境は [動作環境](動作�
 ## SRC#Avalonia（Windows・macOS・Linux）
 
 1. [Releases](https://github.com/7474/SRC/releases) から、OS に合った zip を取って展開します。.NET を入れる必要はありません。
-    - Windows: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
+    - Windows（x64）: `SRCSharpAvalonia-win-x64.zip`（`SRCSharpAvalonia.exe`）
+    - Windows（Arm64）: `SRCSharpAvalonia-win-arm64.zip`（`SRCSharpAvalonia.exe`）
     - Linux: `SRCSharpAvalonia-linux-x64.zip`
     - macOS: `SRCSharpAvalonia-osx-arm64.zip`（Apple シリコン）・`SRCSharpAvalonia-osx-x64.zip`（Intel）。署名していないため、初回は Finder で右クリックして「開く」で起動します。
 2. 展開した実行ファイルを SRC のフォルダにコピーします。SRC#Avalonia は、実行ファイルを置いたフォルダを SRC のフォルダとして使います。
