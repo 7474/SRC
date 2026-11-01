@@ -21,6 +21,7 @@ namespace SRCCore.Units
         public IEnumerable<(FeatureData Feature, string Name)> StatusFeatures()
         {
             return AllFeatures.Skip(AdditionalFeaturesNum)
+                .Where(fd => GeneralLib.LIndex(fd.Data, 1) != "非表示")
                 .Select(fd => (fd, fd.FeatureName(this)));
         }
 

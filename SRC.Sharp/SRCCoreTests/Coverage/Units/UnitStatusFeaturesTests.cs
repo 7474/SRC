@@ -51,15 +51,15 @@ namespace SRCCore.Coverage.Tests.UnitStatusFeatures
         }
 
         [TestMethod]
-        public void PilotFeature_HiddenAlias_IsNotDisplayed()
+        public void PilotFeature_HiddenAliasForTransformAbility_IsNotDisplayed()
         {
             var fx = new HelpTestFixture();
-            fx.Src.ALDList.Add("隠し能力").AddAlias("バリア=非表示 全 1000 10");
-            fx.PilotData.AddFeature("隠し能力");
+            fx.Src.ALDList.Add("隠し換装").AddAlias("換装=非表示");
+            fx.PilotData.AddFeature("隠し換装");
             var u = fx.Build();
 
-            CollectionAssert.AreEqual(new string[0],
-                u.StatusFeatures().Select(x => x.Name).Where(x => !string.IsNullOrEmpty(x)).ToArray());
+            Assert.IsTrue(u.AllFeatures.Any(fd => fd.Name == "換装"));
+            Assert.AreEqual(0, u.StatusFeatures().Count());
         }
 
         [TestMethod]
