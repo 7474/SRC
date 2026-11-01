@@ -106,7 +106,7 @@ namespace PackStats
                 if (b == "ザコ" || b == "汎用")
                 {
                     var ep = Pctl(s.Exp, p.ExpValue);
-                    if (ep < 5 || ep > 95) Add("要確認", p.Name, $"経験値 {p.ExpValue} が{b}の 5%〜95% の外（{Iqr(s.Exp)}）");
+                    if (ep < 5 || ep > 95) Add("参考", p.Name, $"経験値 {p.ExpValue} が{b}の 5%〜95% の外（{Iqr(s.Exp)}）");
                 }
                 else if (b != "120未満" && hi == 0 && lo == 0)
                 {
@@ -180,7 +180,7 @@ namespace PackStats
                     continue;
                 }
                 var cp = Pctl(s.SpCount, sps.Count);
-                if (cp < 5 || cp > 95) Add("要確認", p.Name, $"SP の数 {sps.Count} が同じ層の 5%〜95% の外（{Iqr(s.SpCount)}）");
+                if (sps.Count != 6) Add("要確認", p.Name, $"名前付きの SP が {sps.Count} 個（名前付きは 6 つにそろえる。同じ層は {Iqr(s.SpCount)}）");
                 if (hd >= 3) Add("要確認", p.Name, $"命中・回避に効く SP が {hd} 個（{string.Join("・", sps.Where(x => IsHitDodge(t, x.Name)).Select(x => x.Name))}）。3 つ以上はパックで {Pct(hdRef.Count(n => n >= 3), hdRef.Count)}");
                 var ctp = Pctl(s.Cats, cats.Count);
                 if (ctp < 5) Add("参考", p.Name, $"SP の分類が {cats.Count} 種類（{string.Join("・", cats)}）で、用途が偏っている（同じ層は {Iqr(s.Cats)}）");
@@ -195,8 +195,8 @@ namespace PackStats
                     // 比べるのは経験値 120 以上の名前付きなので、それより低い帯は覚えるレベルを見ない
                     if (lv.Count < 10 || p.ExpValue < 120) continue;
                     var lp = Pctl(lv, x.NecessaryLevel);
-                    if (lp < 5) Add(lp < 3 ? "要確認" : "参考", p.Name, $"{x.Name}をレベル {x.NecessaryLevel} で覚えるのは早い（パックは {Iqr(lv)}）");
-                    if (lp > 95) Add(lp > 97 ? "要確認" : "参考", p.Name, $"{x.Name}をレベル {x.NecessaryLevel} で覚えるのは遅い（パックは {Iqr(lv)}）");
+                    if (lp < 5) Add("参考", p.Name, $"{x.Name}をレベル {x.NecessaryLevel} で覚えるのは早い（パックは {Iqr(lv)}）");
+                    if (lp > 95) Add("参考", p.Name, $"{x.Name}をレベル {x.NecessaryLevel} で覚えるのは遅い（パックは {Iqr(lv)}）");
                     var (have, cnt) = Have(b, x.Name);
                     if (cnt > 0 && 100.0 * have / cnt < 1) Add("参考", p.Name, $"{x.Name}は同じ層で持つのが {Pct(have, cnt)}");
                 }
@@ -351,7 +351,7 @@ namespace PackStats
             Console.WriteLine();
             Console.WriteLine("## 指摘");
             Console.WriteLine();
-            Console.WriteLine("「要確認」はガイドラインの目安から外れているもの、「参考」は外れ値の情報。役どころの評価（組の評価）は tools/pack-analysis で行う。");
+            Console.WriteLine("「要確認」はデータの形式の誤りと、ガイドラインの決まり（数値の刻み、名前付きの SP は 6 つ、SP 使用時のメッセージを入れない など）から外れているもの。「参考」は外れ値の情報で、外れ値はキャラの個性でもあるので、それ自体は直す理由にならない。役どころの評価（組の評価）は tools/pack-analysis で行う。");
             Console.WriteLine();
             lastCheck = (tPilots.Count, tUnits.Count, fs.Count(f => f.Level == "要確認"), fs.Count(f => f.Level == "参考"));
             foreach (var level in new[] { "要確認", "参考" })
