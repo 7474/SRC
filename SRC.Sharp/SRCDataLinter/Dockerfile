@@ -33,8 +33,11 @@ RUN dotnet restore "SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj" \
 COPY . .
 
 FROM build AS publish
-RUN dotnet publish "SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj" -c Release -o /app/publish \
-    && dotnet publish "SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj" -c Release -o /app/publish
+# 開発版（master へのマージごとの koudenpa/srcdatalinter:dev）は --build-arg SRCSHARP_DEV_BUILD=<番号> で
+# 次のパッチのプレリリースの版にする（docs/versioning.md の「開発版」）。正式版では渡さない
+ARG SRCSHARP_DEV_BUILD=
+RUN dotnet publish "SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj" -c Release -o /app/publish ${SRCSHARP_DEV_BUILD:+-p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD} \
+    && dotnet publish "SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj" -c Release -o /app/publish ${SRCSHARP_DEV_BUILD:+-p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD}
 
 FROM base AS final
 WORKDIR /app

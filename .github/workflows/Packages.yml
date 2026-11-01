@@ -5,7 +5,11 @@ name: Packages
 #   linux-x64・win-x64 は --smoke で起動し、シナリオが始まって終わることを確かめる。
 #   osx-arm64・osx-x64 は作れることだけを確かめる（macOS は理屈の上で動くところまで。docs/decisions/2026-10-31-regression-first-qa-plan.md）
 # - srcsharp（NuGet の .NET tool）: pack → tool install → --version・lint
+# - VS Code 拡張の vsix・SRC#Web（AOT）・ブラウザで動く lint・データビューアの zip・Docker イメージ（koudenpa/srcdatalinter）
 # PR の待ち時間を増やさないよう、master への push のときだけ動かす（作り方そのものを変えた PR では動かす。必須のチェックではない）。SRC#Form は対象外
+#
+# 開発版（#1418。docs/versioning.md の「開発版」）: どれも次のパッチのプレリリースの版（3.5.6-dev.<実行番号>）で作る。
+# master への push で全部が通ったら、タグ dev のプレリリースの添付と koudenpa/srcdatalinter:dev を入れ替える
 
 on:
   push:
@@ -23,6 +27,10 @@ on:
 
 permissions:
   contents: read
+
+env:
+  # 開発版の番号（Directory.Build.props の SrcSharpDevBuild。.github/scripts/publish-avalonia.sh も読む）
+  SRCSHARP_DEV_BUILD: ${{ github.run_number }}
 
 jobs:
   avalonia:
@@ -91,12 +99,14 @@ jobs:
           cache: true
           cache-dependency-path: SRC.Sharp/Directory.Packages.props
       - name: Pack
-        run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp
+        run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp -p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD
       - name: Install and run
         run: |
-          version=$(python3 tools/release.py version | sed -n 's/.*library=\([^ ]*\).*/\1/p')
+          version=$(basename out/srcsharp/SRCSharpTools.*.nupkg .nupkg | sed 's/^SRCSharpTools\.//')
           dotnet tool install SRCSharpTools --version "$version" --add-source out/srcsharp --tool-path out/tool
-          out/tool/srcsharp --version
+          # 開発版の版（例: 0.5.6-dev.123）になっている
+          out/tool/srcsharp --version | tee version.txt
+          grep -q -- "-dev.$SRCSHARP_DEV_BUILD" version.txt
           # 問題の無いシナリオは 0、問題のあるもの（共通の SP を持たない battle-basic）は件数を出して 1 で終わる
           out/tool/srcsharp lint SRC.Sharp/E2E/unit-cmd-map
           set +e
@@ -106,3 +116,135 @@ jobs:
           cat lint.txt
           test "$code" -eq 1
           grep -q 'スペシャルパワーは存在しません' lint.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: srcsharp-nupkg
+          path: out/srcsharp/SRCSharpTools.*.nupkg
+          retention-days: 7
+
+  # VS Code 拡張（Publish-VSCode.yml と同じ作り方。版だけ開発版にする）
+  vscode:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Package
+        working-directory: SRC.Sharp/SRCSharpVSCode
+        run: |
+          version=$(python3 ../../.github/scripts/dev-release.py --version library "$SRCSHARP_DEV_BUILD")
+          npm ci
+          npm version --no-git-tag-version "$version"
+          npm run package -- -o "../../src-vscode-$version.vsix"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: src-vscode-vsix
+          path: src-vscode-*.vsix
+          retention-days: 7
+
+  # SRC#Web（AOT。リリースの SRCSharpWeb.zip と同じ）・ブラウザで動く lint・データビューアの発行物（外部のサイトに置く zip）
+  web:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: SRC.Sharp/Directory.Packages.props
+      - name: Publish
+        run: |
+          dotnet workload install wasm-tools --skip-manifest-update
+          for p in SRCSharpWeb SRCLintWeb SRCDataViewer; do
+            dotnet publish "SRC.Sharp/$p/$p.csproj" -c Release -o "out/$p" -p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD
+            (cd "out/$p/wwwroot" && zip -qr "../../../$p.zip" .)
+          done
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web
+          path: '*.zip'
+          retention-days: 7
+
+  # Docker イメージ（Publish-Package.yml と同じ Dockerfile）。作って srcsharp と従来の lint が動くことを確かめ、
+  # master への push のときだけ koudenpa/srcdatalinter:dev として出す（dev-release が全部通ってから出す）
+  docker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build
+        run: docker build -f SRC.Sharp/SRCDataLinter/Dockerfile --build-arg SRCSHARP_DEV_BUILD=$SRCSHARP_DEV_BUILD -t srcdatalinter:dev .
+      - name: Run
+        run: |
+          docker run --rm srcdatalinter:dev --version | tee version.txt
+          grep -q -- "-dev.$SRCSHARP_DEV_BUILD" version.txt
+          docker run --rm -v "$PWD/SRC.Sharp/E2E/sound:/app/data" srcdatalinter:dev data
+          docker run --rm -v "$PWD/SRC.Sharp/E2E/unit-cmd-map:/s" srcdatalinter:dev lint /s
+      - name: Save
+        run: docker save srcdatalinter:dev | gzip > srcdatalinter-dev.tar.gz
+      - uses: actions/upload-artifact@v7
+        with:
+          name: docker-image
+          path: srcdatalinter-dev.tar.gz
+          retention-days: 1
+
+  # 開発版を出す。master への push で、配る物が作れて起動の確かめがすべて通ったときだけ。
+  # リリースは 1 つ（タグ dev のプレリリース）を使い回し、タグを付け直して添付と本文を入れ替える（作り直すと Watch に通知が飛ぶ）。
+  # Latest にはしない（正式版の Latest はそのまま）
+  dev-release:
+    # 手動実行（master）でも出せる。初めて出すときや、出すのに失敗したときにやり直す
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master'
+    needs: [avalonia-smoke-linux, avalonia-smoke-windows, srcsharp, vscode, web, docker]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    # 続けてマージしたときは最後のものだけを出す
+    concurrency:
+      group: dev-release
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # 前の正式版のタグからの変更の一覧（tools/release.py changes）に要る
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Push Docker image
+        id: docker
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          gunzip -c dist/srcdatalinter-dev.tar.gz | docker load
+          rm dist/srcdatalinter-dev.tar.gz
+          echo "$DOCKER_PASSWORD" | docker login -u koudenpa --password-stdin
+          docker tag srcdatalinter:dev koudenpa/srcdatalinter:dev
+          docker push koudenpa/srcdatalinter:dev
+          echo "image=$(docker inspect --format '{{index .RepoDigests 0}}' koudenpa/srcdatalinter:dev)" >> "$GITHUB_OUTPUT"
+      - name: Manifest and notes
+        env:
+          DEV_DOCKER_IMAGE: ${{ steps.docker.outputs.image }}
+        run: python3 .github/scripts/dev-release.py dist "$SRCSHARP_DEV_BUILD"
+      - name: Update the dev release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          app=$(python3 .github/scripts/dev-release.py --version app "$SRCSHARP_DEV_BUILD")
+          # タグ dev を、このコミットに付け直す（無ければ作る）
+          if ! gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/dev" -f sha="$GITHUB_SHA" -F force=true > /dev/null 2>&1; then
+            gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref=refs/tags/dev -f sha="$GITHUB_SHA" > /dev/null
+          fi
+          if gh release view dev > /dev/null 2>&1; then
+            gh release edit dev --prerelease --latest=false --title "開発版 $app" --notes-file dev-release-notes.md
+          else
+            gh release create dev --prerelease --latest=false --verify-tag --title "開発版 $app" --notes-file dev-release-notes.md
+          fi
+          # 新しい添付を上げてから、今回の物に無い古い添付（版の入ったファイル名の nupkg・vsix など）を消す
+          gh release upload dev dist/* --clobber
+          new=$(ls dist)
+          gh release view dev --json assets -q '.assets[].name' | while read -r name; do
+            if ! printf '%s\n' "$new" | grep -qxF "$name"; then
+              gh release delete-asset dev "$name" -y
+            fi
+          done

@@ -10,6 +10,7 @@
 |---|---|---|
 | ブラウザで遊ぶ | SRC#Web（推奨） | https://src.koudenpa.net/ （リリース版。サイトは [7474/SRC-Site](https://github.com/7474/SRC-Site) で管理）・ https://7474.github.io/SRC/web/ （開発版）。自分のサイトに置くこともできる（[外部のサイトに置く](./docs/gui/web-hosting.md)） |
 | Windows・macOS・Linux で遊ぶ | SRC#Avalonia（推奨） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
+| 開発版を試す | SRC#Avalonia・`srcsharp`・VS Code 拡張・SRC#Web の zip | master にマージされるたびに入れ替わる [開発版（`dev`）](https://github.com/7474/SRC/releases/tag/dev)・Docker の `koudenpa/srcdatalinter:dev`（[バージョンの管理](./docs/versioning.md#開発版)） |
 | Windows（x64）で遊ぶ | SRC#Form（維持） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
 | データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
 | データ・シナリオを作る | `srcsharp`（lint・自動プレイ・バランス集計） | [作成支援ツール](./docs/tools/authoring.md) |
