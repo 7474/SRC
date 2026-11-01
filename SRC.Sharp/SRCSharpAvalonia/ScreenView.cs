@@ -80,7 +80,7 @@ namespace SRCSharpAvalonia
         public override void Render(DrawingContext context)
         {
             var scaling = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1.0;
-            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling * DisplayScale) }))
+            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling) }))
             {
                 context.DrawImage(bitmap, new Rect(Bounds.Size));
             }
@@ -90,10 +90,10 @@ namespace SRCSharpAvalonia
         /// 画面の拡大の方法。実際の画素で 1 倍以上に拡大して表示するときは補間せず、
         /// 縮小するときは補間する（補間しないと文字の線が抜ける）。7474/SRC#1148
         /// </summary>
-        /// <param name="displayScaling">OS の表示倍率を含む画面の拡大率</param>
-        public static BitmapInterpolationMode InterpolationModeFor(double displayScaling)
+        /// <param name="renderScaling">OS の表示倍率（TopLevel.RenderScaling）</param>
+        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling)
         {
-            return displayScaling >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+            return renderScaling * DisplayScale >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

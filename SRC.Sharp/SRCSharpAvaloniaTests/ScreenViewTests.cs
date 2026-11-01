@@ -1,5 +1,7 @@
+using Avalonia.Headless;
 using Avalonia.Media.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading;
 
 namespace SRCSharpAvalonia.Tests
 {
@@ -26,10 +28,16 @@ namespace SRCSharpAvalonia.Tests
         [TestMethod]
         public void Constructor_ScalesDisplaySizeTo200Percent()
         {
-            var view = new ScreenView();
-
-            Assert.AreEqual(1440, view.Width);
-            Assert.AreEqual(992, view.Height);
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var view = new ScreenView();
+                    Assert.AreEqual(1440, view.Width);
+                    Assert.AreEqual(992, view.Height);
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
         }
     }
 }
