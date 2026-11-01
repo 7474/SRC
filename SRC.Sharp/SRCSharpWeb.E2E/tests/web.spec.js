@@ -105,7 +105,9 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await testInfo.attach('menu', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
-  // 実寸（720 ピクセル）で表示しているときは補間しない。縮小するときは補間する
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await expect(page.locator('#screen')).toHaveCSS('width', '1440px');
+  // 拡大して表示するときは補間せず、縮小するときは補間する
   await expect(page.locator('#screen')).toHaveClass(/pixelated/);
   await page.setViewportSize({ width: 600, height: 800 });
   await expect(page.locator('#screen')).not.toHaveClass(/pixelated/);
