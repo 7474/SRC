@@ -34,6 +34,18 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual(expected, VBMath.CLng(x));
         }
 
+        // VB5 の \ は割る前に被除数を偶数丸めする
+        [TestMethod]
+        [DataRow(7.5, 2L, 4L)]
+        [DataRow(6.5, 2L, 3L)]
+        [DataRow(1499.6, 3L, 500L)]
+        [DataRow(1499.4, 3L, 499L)]
+        [DataRow(9.0, 4L, 2L)]
+        public void IntDiv_RoundsDividendBeforeDivision(double dividend, long divisor, long expected)
+        {
+            Assert.AreEqual(expected, VBMath.IntDiv(dividend, divisor));
+        }
+
         [TestMethod]
         public void CLng_DiffersFromTruncation()
         {
