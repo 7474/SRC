@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>มุมมอง(_V)</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>การตั้งค่า(_S)</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>โฟลเดอร์ทรัพยากร(_A)...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>โฟลเดอร์ทรัพยากร</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>ข้อมูล กราฟิก และเพลงที่ไม่มีในโฟลเดอร์ของ SRC# ({0}) และโฟลเดอร์ของซีนาริโอ จะค้นหาจากโฟลเดอร์ที่ระบุที่นี่ ให้ระบุโฟลเดอร์ของแพ็กเกจหลักของ SRC (ที่มีชุดกราฟิกทั่วไป ฯลฯ) หรือแพ็กสำหรับพัฒนา</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>โฟลเดอร์ข้อมูลเพิ่มเติม 1 (ExtDataPath)</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>โฟลเดอร์ข้อมูลเพิ่มเติม 2 (ExtDataPath2)</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>SoundFont สำหรับ MIDI (.sf2)</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>เรียกดู...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>ล้าง</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>ไม่มีโฟลเดอร์นี้</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>ให้ระบุโฟลเดอร์แม่ ไม่ใช่โฟลเดอร์ "{0}" เอง</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>ไม่พบโฟลเดอร์ Bitmap, Data, Midi หรือ Sound เลย</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>โฟลเดอร์ที่พบ: {0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>ไม่มีไฟล์นี้</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>ถ้าเว้นว่างจะค้นหาอัตโนมัติ (พบ: {0})</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>ถ้าเว้นว่างจะค้นหาอัตโนมัติ แต่ไม่พบ MIDI จะไม่เล่น</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>การเปลี่ยนแปลงจะมีผลเมื่อเริ่มโปรแกรมครั้งถัดไป</value>
+  </data>
 </root>

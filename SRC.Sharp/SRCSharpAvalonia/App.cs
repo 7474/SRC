@@ -48,6 +48,7 @@ namespace SRCSharpAvalonia
                     window.SetDisplayScale(savedScale.Value);
                 }
                 window.DisplayScaleChosen += SaveDisplayScale;
+                window.AssetSettingsRequested += async () => await EditAssetSettingsAsync(window);
                 window.Opened += async (s, e) =>
                 {
                     if (!savedScale.HasValue)
@@ -119,21 +120,76 @@ namespace SRCSharpAvalonia
         }
 
         /// <summary>
-        /// メニューで選んだ表示倍率を設定に保存する。シナリオの実行中は、その設定（ゲームスレッドが持つ）に書く
+        /// 素材フォルダの設定のウィンドウを開き、保存を選んだら設定に書く。
+        /// 素材の場所はシナリオを始めるときに読むため、次に起動したときから効く
         /// </summary>
-        private void SaveDisplayScale(double scale)
+        internal async Task EditAssetSettingsAsync(MainWindow window)
         {
-            var value = ((int)Math.Round(scale * 100)).ToString();
+            var current = await ReadConfigAsync(ReadAssetSettings);
+            var appPath = session?.SRC.AppPath ?? new LocalFileConfig().AppPath;
+            var result = await new AssetSettingsWindow(current, appPath).ShowDialog<AssetSettings>(window);
+            if (result != null)
+            {
+                UpdateConfig(config => WriteAssetSettings(config, result));
+            }
+            window.View.Focus();
+        }
+
+        internal static AssetSettings ReadAssetSettings(ISystemConfig config)
+        {
+            return new AssetSettings
+            {
+                ExtDataPath = config.ExtDataPath ?? "",
+                ExtDataPath2 = config.ExtDataPath2 ?? "",
+                SoundFont = config.GetItem("Option", "SoundFont"),
+            };
+        }
+
+        internal static void WriteAssetSettings(ISystemConfig config, AssetSettings settings)
+        {
+            config.ExtDataPath = settings.ExtDataPath ?? "";
+            config.ExtDataPath2 = settings.ExtDataPath2 ?? "";
+            config.SetItem("Option", "SoundFont", settings.SoundFont ?? "");
+        }
+
+        /// <summary>設定を読む。シナリオの実行中は、その設定（ゲームスレッドが持つ）から読む</summary>
+        private Task<T> ReadConfigAsync<T>(Func<ISystemConfig, T> read)
+        {
+            if (session == null)
+            {
+                return Task.FromResult(read(LoadConfigFile()));
+            }
+            var done = new TaskCompletionSource<T>();
+            session.Game.Post(() =>
+            {
+                try
+                {
+                    done.SetResult(read(session.SRC.SystemConfig));
+                }
+                catch (Exception ex)
+                {
+                    done.SetException(ex);
+                }
+            });
+            return done.Task;
+        }
+
+        /// <summary>
+        /// 設定を書き換えて srcs.json に保存する。シナリオの実行中は、その設定（ゲームスレッドが持つ）に書く
+        /// （別に読んだ設定を保存すると、ゲーム中に変えた設定を上書きしてしまうため）
+        /// </summary>
+        private void UpdateConfig(Action<ISystemConfig> update)
+        {
             void Save(ISystemConfig config)
             {
                 try
                 {
-                    config.SetItem(DisplayScaleSection, DisplayScaleName, value);
+                    update(config);
                     config.Save();
                 }
                 catch (Exception ex)
                 {
-                    Program.LogHost?.LoggerFactory?.CreateLogger("SRCSharpAvalonia").LogWarning(ex, "表示倍率を保存できませんでした");
+                    Program.LogHost?.LoggerFactory?.CreateLogger("SRCSharpAvalonia").LogWarning(ex, "設定を保存できませんでした");
                 }
             }
             if (session != null)
@@ -142,17 +198,32 @@ namespace SRCSharpAvalonia
             }
             else
             {
-                var config = new LocalFileConfig();
-                try
-                {
-                    config.Load();
-                }
-                catch
-                {
-                    // 設定ファイルが無ければ作る
-                }
-                Save(config);
+                Save(LoadConfigFile());
             }
+        }
+
+        private static LocalFileConfig LoadConfigFile()
+        {
+            var config = new LocalFileConfig();
+            try
+            {
+                config.Load();
+            }
+            catch
+            {
+                // 設定ファイルが無ければ、シナリオを始めるときと同じ既定値にする（保存すると作る）
+                ScreenSession.ApplyDefaultConfig(config);
+            }
+            return config;
+        }
+
+        /// <summary>
+        /// メニューで選んだ表示倍率を設定に保存する。シナリオの実行中は、その設定（ゲームスレッドが持つ）に書く
+        /// </summary>
+        private void SaveDisplayScale(double scale)
+        {
+            var value = ((int)Math.Round(scale * 100)).ToString();
+            UpdateConfig(config => config.SetItem(DisplayScaleSection, DisplayScaleName, value));
         }
 
         /// <summary>終わるときに、シナリオと音声の再生を片付ける</summary>

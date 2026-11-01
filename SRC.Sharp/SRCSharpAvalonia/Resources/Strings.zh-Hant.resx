@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>檢視(_V)</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>設定(_S)</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>素材資料夾設定(_A)...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>素材資料夾設定</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>SRC# 資料夾（{0}）和劇本資料夾中沒有的資料、圖像和音樂，會從這裡指定的資料夾中尋找。請指定 SRC 本體（放有通用圖像集等）或開發包的資料夾。</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>擴充資料資料夾 1（ExtDataPath）</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>擴充資料資料夾 2（ExtDataPath2）</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>MIDI 的 SoundFont（.sf2）</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>瀏覽...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>儲存</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>資料夾不存在</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>請指定其上層資料夾，而不是「{0}」資料夾本身</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>沒有 Bitmap、Data、Midi、Sound 中的任何資料夾</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>找到的資料夾：{0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>檔案不存在</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>留空時自動尋找（找到：{0}）</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>留空時自動尋找，但找不到。MIDI 將不會播放</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>變更將在下次啟動時生效。</value>
+  </data>
 </root>

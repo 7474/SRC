@@ -24,4 +24,58 @@
   <data name="ViewMenu" xml:space="preserve">
     <value>表示(_V)</value>
   </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>設定(_S)</value>
+  </data>
+  <data name="AssetSettingsMenu" xml:space="preserve">
+    <value>素材フォルダの設定(_A)...</value>
+  </data>
+  <data name="AssetSettingsTitle" xml:space="preserve">
+    <value>素材フォルダの設定</value>
+  </data>
+  <data name="AssetSettingsDescription" xml:space="preserve">
+    <value>SRC# のフォルダ（{0}）とシナリオのフォルダに無いデータ・グラフィック・音楽を、ここで指定したフォルダから探します。SRC 本体（汎用グラフィック集などを入れたもの）や開発パックのフォルダを指定してください。</value>
+  </data>
+  <data name="ExtDataPathLabel" xml:space="preserve">
+    <value>拡張データフォルダ 1（ExtDataPath）</value>
+  </data>
+  <data name="ExtDataPath2Label" xml:space="preserve">
+    <value>拡張データフォルダ 2（ExtDataPath2）</value>
+  </data>
+  <data name="SoundFontLabel" xml:space="preserve">
+    <value>MIDI の SoundFont（.sf2）</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>参照...</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="FolderMissing" xml:space="preserve">
+    <value>フォルダがありません</value>
+  </data>
+  <data name="FolderIsAssetFolder" xml:space="preserve">
+    <value>「{0}」フォルダそのものではなく、その親のフォルダを指定してください</value>
+  </data>
+  <data name="FolderHasNoAssets" xml:space="preserve">
+    <value>Bitmap・Data・Midi・Sound のどのフォルダもありません</value>
+  </data>
+  <data name="FolderFound" xml:space="preserve">
+    <value>見つかったフォルダ: {0}</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>ファイルがありません</value>
+  </data>
+  <data name="SoundFontAuto" xml:space="preserve">
+    <value>空欄なら自動で探します（見つかったもの: {0}）</value>
+  </data>
+  <data name="SoundFontNotFound" xml:space="preserve">
+    <value>空欄なら自動で探しますが、見つかりません。MIDI は鳴りません</value>
+  </data>
+  <data name="AssetSettingsApplyNote" xml:space="preserve">
+    <value>変更は次に起動したときに反映されます。</value>
+  </data>
 </root>
