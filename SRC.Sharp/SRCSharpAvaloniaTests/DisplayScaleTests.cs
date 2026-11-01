@@ -14,14 +14,14 @@ namespace SRCSharpAvalonia.Tests
     public class DisplayScaleTests
     {
         [TestMethod]
-        [DataRow("100", 1)]
-        [DataRow("200", 2)]
-        [DataRow("400", 4)]
-        [DataRow("150", null)]
-        [DataRow("500", null)]
+        [DataRow("100", 1.0)]
+        [DataRow("150", 1.5)]
+        [DataRow("200", 2.0)]
+        [DataRow("300", null)]
+        [DataRow("125", null)]
         [DataRow("", null)]
         [DataRow("abc", null)]
-        public void ReadDisplayScale_AcceptsSupportedPercentages(string value, int? expected)
+        public void ReadDisplayScale_AcceptsSupportedPercentages(string value, double? expected)
         {
             var config = new LocalFileConfig();
             config.SetItem(App.DisplayScaleSection, App.DisplayScaleName, value);
@@ -40,14 +40,15 @@ namespace SRCSharpAvalonia.Tests
                     Assert.AreEqual(1, window.View.DisplayScale);
                     Assert.IsTrue(window.ScaleItems[0].IsChecked);
 
-                    int? chosen = null;
+                    CollectionAssert.AreEqual(new[] { "100%", "150%", "200%" }, window.ScaleItems.Select(item => (string)item.Header).ToArray());
+                    double? chosen = null;
                     window.DisplayScaleChosen += scale => chosen = scale;
-                    window.ScaleItems.Single(item => (int)item.Tag == 3).RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
+                    window.ScaleItems.Single(item => (double)item.Tag == 1.5).RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
 
-                    Assert.AreEqual(3, chosen);
-                    Assert.AreEqual(3, window.View.DisplayScale);
-                    Assert.AreEqual(2160, window.View.Width);
-                    CollectionAssert.AreEqual(new[] { false, false, true, false }, window.ScaleItems.Select(item => item.IsChecked).ToArray());
+                    Assert.AreEqual(1.5, chosen);
+                    Assert.AreEqual(1.5, window.View.DisplayScale);
+                    Assert.AreEqual(1080, window.View.Width);
+                    CollectionAssert.AreEqual(new[] { false, true, false }, window.ScaleItems.Select(item => item.IsChecked).ToArray());
                     window.Close();
                     return true;
                 }, CancellationToken.None).GetAwaiter().GetResult();

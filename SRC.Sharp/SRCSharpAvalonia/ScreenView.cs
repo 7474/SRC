@@ -18,11 +18,12 @@ namespace SRCSharpAvalonia
     public class ScreenView : Control
     {
         /// <summary>
-        /// 選べる表示倍率。ドットのまま拡大するため整数倍だけにする（画面の描画は 720×496 のまま）。7474/SRC#1424
+        /// 選べる表示倍率（画面の描画は 720×496 のまま、補間せずドットのまま拡大する）。
+        /// 1.5 倍は画面に収まりやすい大きさとして選べるようにする（整数倍でないため、ドットの太さは揃わない）。7474/SRC#1424
         /// </summary>
-        public static readonly int[] DisplayScales = { 1, 2, 3, 4 };
+        public static readonly double[] DisplayScales = { 1, 1.5, 2 };
 
-        private int displayScale = 1;
+        private double displayScale = 1;
 
         private readonly WriteableBitmap bitmap;
         private readonly object pixelLock = new object();
@@ -43,7 +44,7 @@ namespace SRCSharpAvalonia
         public ScreenGUI GUI { get; set; }
 
         /// <summary>表示倍率（<see cref="DisplayScales"/> のいずれか）。表示の大きさは画面の大きさ × 倍率になる</summary>
-        public int DisplayScale
+        public double DisplayScale
         {
             get => displayScale;
             set
@@ -62,7 +63,7 @@ namespace SRCSharpAvalonia
         /// <summary>
         /// 指定した大きさ（論理ピクセル）に収まる、いちばん大きな表示倍率。収まらなければ 1
         /// </summary>
-        public static int FitScale(double width, double height)
+        public static double FitScale(double width, double height)
         {
             var fit = DisplayScales[0];
             foreach (var scale in DisplayScales)
@@ -129,7 +130,7 @@ namespace SRCSharpAvalonia
         /// </summary>
         /// <param name="renderScaling">OS の表示倍率（TopLevel.RenderScaling）</param>
         /// <param name="displayScale">画面の表示倍率（<see cref="DisplayScale"/>）</param>
-        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling, int displayScale)
+        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling, double displayScale)
         {
             return renderScaling * displayScale >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
         }

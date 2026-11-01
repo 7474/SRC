@@ -83,13 +83,12 @@ namespace SRCSharpAvalonia
         internal const string DisplayScaleName = "DisplayScale";
 
         /// <summary>設定の表示倍率。無いか選べない値なら null</summary>
-        internal static int? ReadDisplayScale(ISystemConfig config)
+        internal static double? ReadDisplayScale(ISystemConfig config)
         {
             if (int.TryParse(config.GetItem(DisplayScaleSection, DisplayScaleName), out var percent)
-                && percent % 100 == 0
-                && Array.IndexOf(ScreenView.DisplayScales, percent / 100) >= 0)
+                && Array.IndexOf(ScreenView.DisplayScales, percent / 100.0) >= 0)
             {
-                return percent / 100;
+                return percent / 100.0;
             }
             return null;
         }
@@ -122,9 +121,9 @@ namespace SRCSharpAvalonia
         /// <summary>
         /// メニューで選んだ表示倍率を設定に保存する。シナリオの実行中は、その設定（ゲームスレッドが持つ）に書く
         /// </summary>
-        private void SaveDisplayScale(int scale)
+        private void SaveDisplayScale(double scale)
         {
-            var value = (scale * 100).ToString();
+            var value = ((int)Math.Round(scale * 100)).ToString();
             void Save(ISystemConfig config)
             {
                 try

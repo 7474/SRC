@@ -28,12 +28,13 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
-        [DataRow(1920.0, 1040.0, 2)]
-        [DataRow(1536.0, 820.0, 1)]
-        [DataRow(2560.0, 1500.0, 3)]
-        [DataRow(4000.0, 3000.0, 4)]
-        [DataRow(600.0, 400.0, 1)]
-        public void FitScale_ChoosesLargestScaleThatFits(double width, double height, int expected)
+        [DataRow(1920.0, 1000.0, 2.0)]
+        [DataRow(1536.0, 780.0, 1.5)]
+        [DataRow(1470.0, 850.0, 1.5)]
+        [DataRow(1366.0, 700.0, 1.0)]
+        [DataRow(4000.0, 3000.0, 2.0)]
+        [DataRow(600.0, 400.0, 1.0)]
+        public void FitScale_ChoosesLargestScaleThatFits(double width, double height, double expected)
         {
             Assert.AreEqual(expected, ScreenView.FitScale(width, height));
         }
@@ -48,10 +49,10 @@ namespace SRCSharpAvalonia.Tests
                     var view = new ScreenView();
                     Assert.AreEqual(720, view.Width);
                     Assert.AreEqual(496, view.Height);
-                    view.DisplayScale = 3;
-                    Assert.AreEqual(2160, view.Width);
-                    Assert.AreEqual(1488, view.Height);
-                    Assert.ThrowsExactly<System.ArgumentOutOfRangeException>(() => view.DisplayScale = 5);
+                    view.DisplayScale = 1.5;
+                    Assert.AreEqual(1080, view.Width);
+                    Assert.AreEqual(744, view.Height);
+                    Assert.ThrowsExactly<System.ArgumentOutOfRangeException>(() => view.DisplayScale = 3);
                     return true;
                 }, CancellationToken.None).GetAwaiter().GetResult();
             }

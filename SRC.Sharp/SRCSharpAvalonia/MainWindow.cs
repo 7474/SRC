@@ -55,17 +55,17 @@ namespace SRCSharpAvalonia
         public ScreenView View { get; }
 
         /// <summary>メニューで表示倍率を選んだときに呼ばれる（設定に保存する）</summary>
-        public event Action<int> DisplayScaleChosen;
+        public event Action<double> DisplayScaleChosen;
 
         /// <summary>
         /// 表示倍率を変える。ウィンドウの大きさは画面に合わせて変わる（SizeToContent）
         /// </summary>
-        public void SetDisplayScale(int scale)
+        public void SetDisplayScale(double scale)
         {
             View.DisplayScale = scale;
             foreach (var item in scaleItems)
             {
-                item.IsChecked = (int)item.Tag == scale;
+                item.IsChecked = (double)item.Tag == scale;
             }
         }
 
