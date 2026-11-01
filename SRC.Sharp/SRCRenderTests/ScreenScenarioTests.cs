@@ -1,5 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using SRCPlay;
 
 namespace SRCRender.Tests
@@ -67,6 +70,94 @@ namespace SRCRender.Tests
 
                 runner.WaitForTermination();
                 Assert.IsTrue(runner.IsTerminated);
+            }
+        }
+
+        [TestMethod]
+        public void MessageWindowStatusAnimation_DisplaysIntegerHPAndEN()
+        {
+            workspace.Write(Path.Combine("Data", "robot.txt"),
+                "標的機",
+                "標的機, ひょうてきき, 汎用, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力なし",
+                "1000, 100, 1000, 60",
+                "AAAA, -.bmp",
+                "===",
+                "");
+            workspace.Write(Path.Combine("Data", "pilot.txt"),
+                "テスト",
+                "テスト, てすと, 男性, 汎用, AAAA, 100",
+                "特殊能力なし",
+                "100, 100, 100, 100, 100, 100, 普通",
+                "ＳＰなし",
+                "-.bmp, -.mid",
+                "");
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "Create 敵 標的機 0 テスト 1 3 3",
+                "Refresh",
+                "Talk システム",
+                "待機",
+                "End",
+                "Quit",
+                "");
+
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                var unit = runner.Session.SRC.Map.MapDataForUnit[3, 3];
+                var labels = new[]
+                {
+                    runner.GUI.MessageWindow.txtHP1,
+                    runner.GUI.MessageWindow.txtHP2,
+                    runner.GUI.MessageWindow.txtEN1,
+                    runner.GUI.MessageWindow.txtEN2,
+                };
+                var observed = labels.ToDictionary(label => label, _ => new List<string>());
+                System.Exception updateError = null;
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        try
+                        {
+                            runner.GUI.OpenMessageForm(unit, unit);
+                            runner.GUI.UpdateMessageForm(unit, unit);
+                            foreach (var label in labels)
+                            {
+                                var refreshed = label.Refreshed;
+                                label.Refreshed = () =>
+                                {
+                                    observed[label].Add(label.Text);
+                                    refreshed?.Invoke();
+                                };
+                            }
+                            unit.HP = 777;
+                            unit.EN = 73;
+                            runner.GUI.UpdateMessageForm(unit, unit);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            updateError = ex;
+                        }
+                        finally
+                        {
+                            done.Set();
+                        }
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout), "HP/EN animation completed");
+                }
+
+                Assert.IsNull(updateError, updateError?.ToString());
+                foreach (var values in observed.Values)
+                {
+                    Assert.IsTrue(values.Count > 0, "each HP/EN field was refreshed");
+                    Assert.IsFalse(values.Any(value => value.Contains(".")), string.Join(", ", values));
+                }
             }
         }
 

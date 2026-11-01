@@ -532,7 +532,7 @@ namespace SRCSharpForm
                     // ＨＰ
                     if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
                     {
-                        var tmp = ((lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
+                        var tmp = ((long)(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
                         if (lu.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtHP1.Text = "?????/?????";
@@ -566,7 +566,7 @@ namespace SRCSharpForm
                     // ＥＮ
                     if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
                     {
-                        var tmp = ((lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
+                        var tmp = ((long)(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
                         if (lu.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtEN1.Text = "???/???";
@@ -638,7 +638,7 @@ namespace SRCSharpForm
                     // ＥＮ
                     if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                     {
-                        var tmp = ((ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
+                        var tmp = ((long)(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
                         if (ru.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtEN2.Text = "???/???";
