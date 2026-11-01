@@ -12,4 +12,15 @@
     <SrcSharpAppVersion>3.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpAppVersion>
     <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
   </PropertyGroup>
+  <!--
+    開発版（master へのマージごとに出す dev のプレリリース。docs/versioning.md の「開発版」）。
+    -p:SrcSharpDevBuild=<番号> を付けると、次のパッチのプレリリース（3.5.6-dev.<番号>・0.5.6-dev.<番号>）にする。
+    正式版と同じ版にすると、NuGet のキャッシュで中身の違う開発版と正式版が混ざるため。
+    プレリリースは正式版より小さいので、次の正式版が出れば置き換わる
+  -->
+  <PropertyGroup Condition="'$(SrcSharpDevBuild)' != ''">
+    <SrcSharpDevPatch>$([MSBuild]::Add($(SrcSharpVersionPatch), 1))</SrcSharpDevPatch>
+    <SrcSharpAppVersion>3.$(SrcSharpVersionMinor).$(SrcSharpDevPatch)-dev.$(SrcSharpDevBuild)</SrcSharpAppVersion>
+    <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpDevPatch)-dev.$(SrcSharpDevBuild)</SrcSharpLibraryVersion>
+  </PropertyGroup>
 </Project>

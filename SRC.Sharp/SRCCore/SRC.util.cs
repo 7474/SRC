@@ -62,6 +62,20 @@ namespace SRCCore
         // EntryAssemblyが取れない場合はCoreのバージョンを返す
         public Version Version { get; set; } = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version;
 
+        /// <summary>
+        /// 開発版のプレリリースの印（例: dev.123）。正式版では空。
+        /// 実行ファイルの InformationalVersion（3.5.6-dev.123+&lt;コミット&gt;）の「-」の後ろ・「+」の前（docs/versioning.md の「開発版」）
+        /// </summary>
+        public string PreRelease { get; set; } = PreReleaseOf(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+
+        public static string PreReleaseOf(Assembly assembly)
+        {
+            var version = (assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "").Split('+')[0];
+            // 開発版の印（dev.<番号>）だけを見る。テストの実行環境など、ほかの実行ファイルのプレリリースは出さない
+            var idx = version.IndexOf("-dev.", StringComparison.Ordinal);
+            return idx < 0 ? "" : version.Substring(idx + 1);
+        }
+
         // 互換の対象とする元の SRC のバージョン（移植元の SRC Ver2.2.33）
         // シナリオは AppVersion で本体のバージョンを確かめるため、SRC# 自身のバージョンではなくこちらを返す
         public Version CompatibleVersion { get; set; } = new Version(2, 2, 33);

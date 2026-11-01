@@ -76,6 +76,8 @@ flowchart LR
 | GitHub Releases | SRC#Form・SRC#Avalonia・SRC#Web の zip、VS Code 拡張の .vsix、リリースの案内 | タグの push | タグ |
 | NuGet | `SRCCore`・`SRCDataLinter`・`SRCSharpTools`（`srcsharp`） | タグの push | タグ |
 | Docker Hub | `koudenpa/srcdatalinter:<タグ>`・`latest` | タグの push | タグ |
+| GitHub Releases の `dev`（プレリリース） | 開発版：SRC#Avalonia・srcsharp の nupkg・VS Code 拡張の .vsix・SRC#Web・lint・データビューアの zip、`manifest.json` | `SRC.Sharp/` を変えた master への push ごと（`Packages.yml` の起動の確かめが通ったとき。添付を入れ替える） | master（開発版。[バージョンの管理](./versioning.md)の「開発版」） |
+| Docker Hub | `koudenpa/srcdatalinter:dev` | 同上 | master（開発版） |
 | Visual Studio Marketplace・Open VSX | `koudenpa.src-vscode` | タグの push（公開済みの版なら飛ばす） | タグ |
 | Mackerel（サービス `SRCS`） | カバレッジ（行・分岐） | master への push ごと | master |
 

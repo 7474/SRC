@@ -4,11 +4,12 @@
 # 使い方: .github/scripts/publish-avalonia.sh <RID> → SRCSharpAvalonia-<RID>.zip
 # https://learn.microsoft.com/dotnet/core/deploying/single-file/overview
 set -euo pipefail
+# 環境変数 SRCSHARP_DEV_BUILD（番号）があれば開発版の版にする（Packages.yml。docs/versioning.md の「開発版」）
 rid="$1"
 out="out/${rid}"
 dotnet publish SRC.Sharp/SRCSharpAvalonia/SRCSharpAvalonia.csproj -c Release -r "${rid}" \
   --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
-  -p:DebugType=none -o "${out}"
+  -p:DebugType=none ${SRCSHARP_DEV_BUILD:+-p:SrcSharpDevBuild=${SRCSHARP_DEV_BUILD}} -o "${out}"
 # ネイティブライブラリの pdb（SkiaSharp など）は要らない
 rm -f "${out}"/*.pdb
 cp LICENSE "${out}/"

@@ -53,6 +53,34 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
 
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
 
+## 開発版
+
+master にマージされるたびに、配る物の開発版を出す（#1418、`.github/workflows/Packages.yml`）。
+
+| 出す先 | 中身 |
+|---|---|
+| GitHub Releases の [`dev`](https://github.com/7474/SRC/releases/tag/dev)（プレリリース） | SRC#Avalonia（4 RID）・srcsharp の nupkg・VS Code 拡張の .vsix・SRCSharpWeb.zip（AOT）・SRCLintWeb.zip・SRCDataViewer.zip・`manifest.json` |
+| Docker Hub | `koudenpa/srcdatalinter:dev` |
+
+- **出すとき**：`SRC.Sharp/` を変えた master への push で、配る物がすべて作れ、起動の確かめ（SRC#Avalonia の `--smoke`、srcsharp と Docker イメージの `--version`・lint）が通ったときだけ出す。続けてマージしたときは最後のものだけを出す
+- **リリースは 1 つ**：タグ `dev` のリリースを使い回し、タグをそのコミットに付け直して、添付と本文を入れ替える。前の添付は消す。作り直さないので Watch に通知は飛ばない。Latest にはしない（正式版の Latest はそのまま）
+- **版**：次のパッチのプレリリースにする（3.5.5 の後なら `3.5.6-dev.<実行番号>`・`0.5.6-dev.<実行番号>`）。`dotnet build` に `-p:SrcSharpDevBuild=<番号>` を渡すと、`Directory.Build.props` がこの版にする
+  - 正式版と同じ版にすると、NuGet のキャッシュ（パッケージの ID と版で覚える）で中身の違う開発版と正式版が混ざる。プレリリースは正式版より小さいので、次の正式版が出れば置き換わる
+  - タイトル（`3.5.6-dev.123`）と `srcsharp --version` に出る。アセンブリの版（`3.5.6.0`）とセーブデータの版にはプレリリースの印は入らない
+- **SRC#Form は出さない**（維持の階層）。Marketplace・Open VSX・NuGet にも出さない（正式版だけ）
+
+### 他のリポジトリから使う
+
+| 使うもの | 書き方 |
+|---|---|
+| ファイル | `https://github.com/7474/SRC/releases/download/dev/<ファイル名>`、または `gh release download dev -R 7474/SRC -p '<パターン>'`（公開リポジトリなので、トークンは要らない。Actions の中では `GITHUB_TOKEN` で足りる） |
+| srcsharp（.NET tool） | nupkg を取って `dotnet tool install SRCSharpTools --add-source <フォルダ> --prerelease` |
+| srcsharp（Docker） | `docker run --rm -v "$PWD:/s" koudenpa/srcdatalinter:dev lint /s` |
+
+`dev` はマージのたびに中身が変わる。同じものを使い続けたいとき・何を使ったかを残したいときは、`manifest.json`（元のコミット・版・各ファイルの SHA-256・Docker イメージのダイジェスト）を記録し、ファイルは SHA-256 で確かめ、Docker はダイジェスト（`koudenpa/srcdatalinter@sha256:…`）で指す。
+
+Docker の `dev` のタグを付け替えると、前のイメージはタグの無いイメージとして Docker Hub に残る。溜まったら Docker Hub で消す。
+
 ### VS Code 拡張
 
 VS Code 拡張（`SRCSharpVSCode`）は、Marketplace の `koudenpa.src-vscode` として出す。版はライブラリ（srcsharp）と同じにする。`package.json` の `version` は `release.py bump` が上げ、CI（`CI.yml` の `release-check`）が `Directory.Build.props` のライブラリの版と同じかを確かめる。

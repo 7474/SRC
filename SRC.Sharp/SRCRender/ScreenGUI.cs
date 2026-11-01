@@ -1159,8 +1159,14 @@ namespace SRCRender
         public void OpenTitleForm()
         {
             // 元の SRC と同じく、起動時のタイトルにだけバージョンを出す（docs/versioning.md）
+            // 開発版はプレリリースの印も出す（例: 3.5.6-dev.123）
             var v = src.Version;
-            State.Title = new TitleState { Version = v == null ? "" : $"{v.Major}.{v.Minor}.{Math.Max(0, v.Build)}" };
+            var version = v == null ? "" : $"{v.Major}.{v.Minor}.{Math.Max(0, v.Build)}";
+            if (!string.IsNullOrEmpty(version) && !string.IsNullOrEmpty(src.PreRelease))
+            {
+                version += "-" + src.PreRelease;
+            }
+            State.Title = new TitleState { Version = version };
             Present();
         }
 

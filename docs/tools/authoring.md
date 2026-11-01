@@ -110,7 +110,8 @@ SRCSHARP_LANG=en srcsharp balance path/to/data
 
 検証用のイメージ `koudenpa/srcdatalinter`（`SRC.Sharp/SRCDataLinter/Dockerfile`）には、従来の SRCDataLinter と `srcsharp` の両方を入れる。
 
-- 最初の引数が `srcsharp` のコマンド（`lint`・`play`・`balance`・`lsp`・`dap`・`help`）なら `srcsharp` を動かす。それ以外は従来どおり SRCDataLinter を動かす（`docker-entrypoint.sh`）
+- タグ：`latest`・`v3.x.x` は正式版（タグの push のとき）。`dev` は開発版で、master にマージされるたびに入れ替わる（[バージョンの管理](../versioning.md)の「開発版」）。他のリポジトリの CI で最新の `srcsharp` を使うときは `dev` を使い、同じものを使い続けたいときは、開発版のリリースの `manifest.json` にあるダイジェストで固定する
+- 最初の引数が `srcsharp` のコマンド（`lint`・`play`・`balance`・`lsp`・`dap`・`help`）か `--version` なら `srcsharp` を動かす。それ以外は従来どおり SRCDataLinter を動かす（`docker-entrypoint.sh`）
 - シナリオを画面なしで動かすため、fontconfig と Noto Sans CJK（CI の VRT と同じフォント）を入れる
 - ビルドのコンテキストはリポジトリのルート（`docker build -f SRC.Sharp/SRCDataLinter/Dockerfile .`）。`srcsharp help` のヘルプ（`SRC.Sharp.Help/src`）を含めるため。コンテキストに含めるものは `Dockerfile.dockerignore` で `SRC.Sharp` とヘルプに絞る
 - CI（`docker-srcdatalinter`）で、イメージのビルドと、従来の lint・`srcsharp` の lint・play・balance・help を確かめる
@@ -118,6 +119,7 @@ SRCSHARP_LANG=en srcsharp balance path/to/data
 ```sh
 docker run --rm -v /path/to/data:/app/data koudenpa/srcdatalinter data
 docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter play /s/test.eve --script /s/test.play --out /s/snapshots
+docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # 開発版（master の最新）
 ```
 
 ## エディタ（LSP）
