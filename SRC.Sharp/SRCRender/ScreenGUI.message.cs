@@ -502,7 +502,8 @@ namespace SRCRender
                     // ＨＰ
                     if (lu.HP / (double)lu.MaxHP != LeftUnitHPRatio)
                     {
-                        var tmp = ((long)(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) / num);
+                        // 元の SRC と同じく \ で割る（割る前に偶数丸め）
+                        var tmp = VBMath.IntDiv(lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i, num);
                         if (lu.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtHP1.Text = "?????/?????";
@@ -536,7 +537,8 @@ namespace SRCRender
                     // ＥＮ
                     if (lu.EN / (double)lu.MaxEN != LeftUnitENRatio)
                     {
-                        var tmp = ((long)(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) / num);
+                        // 元の SRC と同じく \ で割る（割る前に偶数丸め）
+                        var tmp = VBMath.IntDiv(lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i, num);
                         if (lu.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtEN1.Text = "???/???";
@@ -574,7 +576,8 @@ namespace SRCRender
                     // ＨＰ
                     if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio)
                     {
-                        var tmp = ((long)(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) / num);
+                        // 元の SRC と同じく \ で割る（割る前に偶数丸め）
+                        var tmp = VBMath.IntDiv(ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i, num);
                         if (ru.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtHP2.Text = "?????/?????";
@@ -608,7 +611,8 @@ namespace SRCRender
                     // ＥＮ
                     if (ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                     {
-                        var tmp = ((long)(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) / num);
+                        // 元の SRC と同じく \ で割る（割る前に偶数丸め）
+                        var tmp = VBMath.IntDiv(ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i, num);
                         if (ru.IsConditionSatisfied("データ不明"))
                         {
                             frmMessage.txtEN2.Text = "???/???";
