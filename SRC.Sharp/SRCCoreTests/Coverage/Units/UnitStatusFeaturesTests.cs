@@ -51,6 +51,20 @@ namespace SRCCore.Coverage.Tests.UnitStatusFeatures
         }
 
         [TestMethod]
+        public void PilotFeature_HiddenAlias_IsNotDisplayed()
+        {
+            // パイロットデータで付けたユニット用特殊能力も、別名が「非表示」なら表示しない
+            var fx = new HelpTestFixture();
+            fx.Src.ALDList.Add("隠しバリア").AddAlias("バリア=非表示 全 1000 10");
+            fx.PilotData.AddFeature("隠しバリア");
+            fx.PilotData.AddFeature("分身");
+            var u = fx.Build();
+
+            CollectionAssert.AreEqual(new[] { "分身" },
+                u.StatusFeatures().Select(x => x.Name).Where(x => !string.IsNullOrEmpty(x)).ToArray());
+        }
+
+        [TestMethod]
         public void AlwaysHiddenFeature_IsNotDisplayed()
         {
             // 「非表示」「吸収」「ＢＧＭ」等の常に非表示の能力は表示しない

@@ -76,6 +76,55 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void SystemAliasFile_HidesAliasedFeature()
+        {
+            // 元の SRC と同じく Data\System\alias.txt を読み込み、エリアスで「非表示」にした能力を表示しない。7474/SRC#1425
+            workspace.Write(Path.Combine("Data", "System", "alias.txt"),
+                "隠しバリア",
+                "バリア=非表示 全 1000 10",
+                "");
+            workspace.Write(Path.Combine("Data", "robot.txt"),
+                "標的機",
+                "標的機, ひょうてきき, 汎用, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力",
+                "隠しバリア, 分身",
+                "1000, 100, 1000, 60",
+                "AAAA, -.bmp",
+                "===",
+                "");
+            workspace.Write(Path.Combine("Data", "pilot.txt"),
+                "テスト",
+                "テスト, てすと, 男性, 汎用, AAAA, 100",
+                "特殊能力なし",
+                "100, 100, 100, 100, 100, 100, 普通",
+                "ＳＰなし",
+                "-.bmp, -.mid",
+                "");
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "Create 味方 標的機 0 テスト 1 3 3",
+                "Talk システム",
+                "待機",
+                "End",
+                "Quit",
+                "");
+
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                Assert.IsTrue(runner.Session.SRC.ALDList.IsDefined("隠しバリア"));
+                var unit = runner.Session.SRC.Map.MapDataForUnit[3, 3];
+                Assert.IsTrue(unit.IsFeatureAvailable("バリア"));
+                CollectionAssert.AreEqual(new[] { "分身" },
+                    unit.StatusFeatures().Select(x => x.Name).Where(x => !string.IsNullOrEmpty(x)).ToArray());
+            }
+        }
+
+        [TestMethod]
         public void MessageWindowStatusAnimation_DisplaysIntegerHPAndEN()
         {
             workspace.Write(Path.Combine("Data", "robot.txt"),

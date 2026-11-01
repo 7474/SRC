@@ -689,17 +689,20 @@ namespace SRCCore
 
             //            GUI.ListItemComment = new string[1];
 
-            //            // エリアスデータをロード
-            //            bool localFileExists1() { string argfname = AppPath + @"Data\System\alias.txt"; var ret = FileSystem.FileExists(argfname); return ret; }
-
-            //            if (FileSystem.FileExists(ScenarioPath + @"Data\System\alias.txt"))
-            //            {
-            //                ALDList.Load(ScenarioPath + @"Data\System\alias.txt");
-            //            }
-            //            else if (localFileExists1())
-            //            {
-            //                ALDList.Load(AppPath + @"Data\System\alias.txt");
-            //            }
+            // エリアスデータをロード（元の SRC と同じく、シナリオの Data\System を優先する）7474/SRC#1425
+            var aliasFiles = new string[]
+            {
+                FileSystem.PathCombine(ScenarioPath, "Data", "System", "alias.txt"),
+                FileSystem.PathCombine(AppPath, "Data", "System", "alias.txt"),
+            };
+            foreach (var aliasFile in aliasFiles)
+            {
+                if (FileSystem.FileExists(aliasFile))
+                {
+                    ALDList.Load(aliasFile);
+                    break;
+                }
+            }
 
             // スペシャルパワーデータをロード
             var spFiles = new string[]
