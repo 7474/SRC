@@ -75,6 +75,18 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
+        public void ReadLastScenarioFolder_ReturnsExistingFolderOnly()
+        {
+            var config = new LocalFileConfig();
+            Assert.IsNull(App.ReadLastScenarioFolder(config));
+            config.SetItem(App.LastScenarioFolderSection, App.LastScenarioFolderName, root);
+            Assert.AreEqual(root, App.ReadLastScenarioFolder(config));
+            // 消えたフォルダは使わない（OS の既定の場所から選ばせる）
+            config.SetItem(App.LastScenarioFolderSection, App.LastScenarioFolderName, Path.Combine(root, "removed"));
+            Assert.IsNull(App.ReadLastScenarioFolder(config));
+        }
+
+        [TestMethod]
         public void Window_ShowsStatusAndReturnsEditedSettings()
         {
             Directory.CreateDirectory(Path.Combine(root, "Sound"));

@@ -119,6 +119,17 @@ namespace SRCSharpAvalonia
                 area.Y + Math.Max(0, (area.Height - height) / 2));
         }
 
+        /// <summary>前回ファイル選択で開いたシナリオのフォルダ（srcs.json の Option/LastScenarioFolder）</summary>
+        internal const string LastScenarioFolderSection = "Option";
+        internal const string LastScenarioFolderName = "LastScenarioFolder";
+
+        /// <summary>前回開いたシナリオのフォルダ。無いか、もう存在しなければ null</summary>
+        internal static string ReadLastScenarioFolder(ISystemConfig config)
+        {
+            var folder = config.GetItem(LastScenarioFolderSection, LastScenarioFolderName);
+            return !string.IsNullOrEmpty(folder) && Directory.Exists(folder) ? folder : null;
+        }
+
         /// <summary>
         /// 素材フォルダの設定のウィンドウを開き、保存を選んだら設定に書く。
         /// 素材の場所はシナリオを始めるときに読むため、次に起動したときから効く
@@ -250,16 +261,25 @@ namespace SRCSharpAvalonia
             }
             if (file == null)
             {
+                // 前回ファイル選択で開いたシナリオのフォルダから選ばせる
+                var lastFolder = ReadLastScenarioFolder(LoadConfigFile());
                 var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = Strings.SelectScenario,
                     AllowMultiple = false,
+                    SuggestedStartLocation = lastFolder == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(lastFolder),
                     FileTypeFilter = new[]
                     {
                         new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq" } },
                     },
                 });
                 file = files.FirstOrDefault()?.TryGetLocalPath();
+                if (!string.IsNullOrEmpty(file))
+                {
+                    // シナリオを始める前（設定を読む前）に保存する
+                    var folder = Path.GetDirectoryName(Path.GetFullPath(file));
+                    UpdateConfig(config => config.SetItem(LastScenarioFolderSection, LastScenarioFolderName, folder));
+                }
             }
             if (string.IsNullOrEmpty(file))
             {

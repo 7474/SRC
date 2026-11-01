@@ -146,7 +146,7 @@ TimGM6mb（約 6 MB、GPL-2.0）はビルド時に取得して同梱する（`SR
 dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオの .eve / セーブデータ>
 ```
 
-- 引数を省くとファイル選択ダイアログを表示する
+- 引数を省くとファイル選択ダイアログを表示する。前回ファイル選択で開いたシナリオのフォルダ（`srcs.json` の `Option/LastScenarioFolder`）から選ばせる
 - 汎用グラフィック集などの素材が無くても起動できる（画像は代替表示になる）
 
 ## テスト
