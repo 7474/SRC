@@ -136,7 +136,8 @@ namespace SRCCore
         // メッセージウィンドウをクリア
         void ClearMessageForm();
         // メッセージウィンドウに表示しているユニット情報を更新
-        void UpdateMessageForm(Unit u1, Unit u2 = null);
+        void UpdateMessageForm(Unit u1);
+        void UpdateMessageForm(Unit u1, Unit u2);
         // メッセージウィンドウの状態を記録する
         void SaveMessageFormStatus();
         // メッセージウィンドウの状態を記録した状態に保つ

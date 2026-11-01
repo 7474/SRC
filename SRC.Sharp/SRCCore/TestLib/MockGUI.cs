@@ -692,7 +692,13 @@ namespace SRCCore.TestLib
         }
 
         public Action<Unit, Unit> UpdateMessageFormHandler { get; set; }
-        public void UpdateMessageForm(Unit u1, Unit u2 = null)
+        public void UpdateMessageForm(Unit u1)
+        {
+            if (UpdateMessageFormHandler != null) { UpdateMessageFormHandler(u1, null); return; }
+            throw new GUINotImplementedException(nameof(UpdateMessageForm));
+        }
+
+        public void UpdateMessageForm(Unit u1, Unit u2)
         {
             if (UpdateMessageFormHandler != null) { UpdateMessageFormHandler(u1, u2); return; }
             throw new GUINotImplementedException(nameof(UpdateMessageForm));
