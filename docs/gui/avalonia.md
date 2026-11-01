@@ -130,14 +130,15 @@ flowchart LR
 
 ### SoundFont
 
-MIDI の合成には SoundFont（.sf2）が必要。ライセンスの都合で同梱しない（[素材](../assets.md)）。次の順に探し、最初に見つかったものを使う。
+MIDI の合成には SoundFont（.sf2）が必要。次の順に探し、最初に見つかったものを使う。
 
 1. 設定ファイル `srcs.json` の `Option` セクションの `SoundFont`（パス）
 2. 環境変数 `SRC_SOUNDFONT`
 3. SRC のフォルダ直下、`Midi` フォルダの `*.sf2`
 4. Linux の標準の場所（`/usr/share/sounds/sf2/default-GM.sf2` など。Debian / Ubuntu では `fluid-soundfont-gm` や `timgm6mb-soundfont` パッケージで入る）
+5. 同梱の TimGM6mb（実行ファイルの隣の `SoundFont` フォルダ）
 
-見つからない場合、MIDI は鳴らない。
+TimGM6mb（約 6 MB、GPL-2.0）はビルド時に取得して同梱する（`SRCSharpAvalonia.csproj`。取得元は `Directory.Build.props` で SRC#Web と同じ）。ライセンスの全文（`COPYING`）と出典（`README.txt`）を添える。取得できない（ネットワークが無い）ビルドでは同梱せず、そのときに 1〜4 が無ければ MIDI は鳴らない（[判断の記録](../decisions/2026-11-01-bundle-soundfont.md)）。
 
 ## 実行
 
