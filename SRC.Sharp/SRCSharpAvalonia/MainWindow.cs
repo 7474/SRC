@@ -56,7 +56,7 @@ namespace SRCSharpAvalonia
                     return ((float, float)?)null;
                 }
                 var p = View.PointToClient(ToPixelPoint(sx, sy));
-                return ((float)p.X, (float)p.Y);
+                return ((float)(p.X / ScreenView.DisplayScale), (float)(p.Y / ScreenView.DisplayScale));
             });
             x = result?.Item1 ?? 0;
             y = result?.Item2 ?? 0;
@@ -67,7 +67,7 @@ namespace SRCSharpAvalonia
         {
             return Dispatcher.UIThread.Invoke(() =>
             {
-                var p = View.PointToScreen(new Avalonia.Point(x, y));
+                var p = View.PointToScreen(new Avalonia.Point(x * ScreenView.DisplayScale, y * ScreenView.DisplayScale));
                 if (OperatingSystem.IsMacOS())
                 {
                     // macOS の CoreGraphics はポイント単位

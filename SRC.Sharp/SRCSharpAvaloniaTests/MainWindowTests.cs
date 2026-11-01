@@ -95,8 +95,9 @@ namespace SRCSharpAvalonia.Tests
 
         private static void Click(MainWindow window, Point point, MouseButton button = MouseButton.Left)
         {
-            window.MouseDown(point, button);
-            window.MouseUp(point, button);
+            var displayPoint = new Point(point.X * ScreenView.DisplayScale, point.Y * ScreenView.DisplayScale);
+            window.MouseDown(displayPoint, button);
+            window.MouseUp(displayPoint, button);
         }
 
         private static string SaveFrame(MainWindow window, string name)

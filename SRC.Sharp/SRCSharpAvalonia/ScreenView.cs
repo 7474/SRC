@@ -17,6 +17,8 @@ namespace SRCSharpAvalonia
     /// </summary>
     public class ScreenView : Control
     {
+        public const double DisplayScale = 2.0;
+
         private readonly WriteableBitmap bitmap;
         private readonly object pixelLock = new object();
         private byte[] pendingPixels;
@@ -28,8 +30,8 @@ namespace SRCSharpAvalonia
                 new Vector(96, 96),
                 PixelFormat.Bgra8888,
                 AlphaFormat.Premul);
-            Width = ScreenLayout.Width;
-            Height = ScreenLayout.Height;
+            Width = ScreenLayout.Width * DisplayScale;
+            Height = ScreenLayout.Height * DisplayScale;
             Focusable = true;
             ClipToBounds = true;
         }
@@ -78,20 +80,20 @@ namespace SRCSharpAvalonia
         public override void Render(DrawingContext context)
         {
             var scaling = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1.0;
-            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling) }))
+            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling * DisplayScale) }))
             {
-                context.DrawImage(bitmap, new Rect(0, 0, ScreenLayout.Width, ScreenLayout.Height));
+                context.DrawImage(bitmap, new Rect(Bounds.Size));
             }
         }
 
         /// <summary>
-        /// 画面の拡大の方法。実際の画素で 1 倍以上に拡大して表示するとき（表示倍率 100%・125%・150% など）は、
-        /// 補間せずドットのまま拡大する。縮小するときは補間する（補間しないと文字の線が抜ける）。7474/SRC#1148
+        /// 画面の拡大の方法。実際の画素で 1 倍以上に拡大して表示するときは補間せず、
+        /// 縮小するときは補間する（補間しないと文字の線が抜ける）。7474/SRC#1148
         /// </summary>
-        /// <param name="renderScaling">表示倍率（TopLevel.RenderScaling）</param>
-        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling)
+        /// <param name="displayScaling">OS の表示倍率を含む画面の拡大率</param>
+        public static BitmapInterpolationMode InterpolationModeFor(double displayScaling)
         {
-            return renderScaling >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+            return displayScaling >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -99,7 +101,7 @@ namespace SRCSharpAvalonia
             base.OnPointerPressed(e);
             Focus();
             var point = e.GetCurrentPoint(this);
-            GUI?.PointerPressed((float)point.Position.X, (float)point.Position.Y,
+            GUI?.PointerPressed((float)(point.Position.X / DisplayScale), (float)(point.Position.Y / DisplayScale),
                 point.Properties.IsRightButtonPressed ? GuiButton.Right : GuiButton.Left, e.ClickCount);
         }
 
@@ -107,7 +109,7 @@ namespace SRCSharpAvalonia
         {
             base.OnPointerReleased(e);
             var point = e.GetCurrentPoint(this);
-            GUI?.PointerReleased((float)point.Position.X, (float)point.Position.Y,
+            GUI?.PointerReleased((float)(point.Position.X / DisplayScale), (float)(point.Position.Y / DisplayScale),
                 e.InitialPressMouseButton == MouseButton.Right ? GuiButton.Right : GuiButton.Left);
         }
 
@@ -115,7 +117,7 @@ namespace SRCSharpAvalonia
         {
             base.OnPointerMoved(e);
             var point = e.GetPosition(this);
-            GUI?.PointerMoved((float)point.X, (float)point.Y);
+            GUI?.PointerMoved((float)(point.X / DisplayScale), (float)(point.Y / DisplayScale));
         }
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
@@ -125,7 +127,7 @@ namespace SRCSharpAvalonia
             var delta = Math.Sign(e.Delta.Y);
             if (delta != 0)
             {
-                GUI?.PointerWheel((float)point.X, (float)point.Y, delta);
+                GUI?.PointerWheel((float)(point.X / DisplayScale), (float)(point.Y / DisplayScale), delta);
             }
         }
 
