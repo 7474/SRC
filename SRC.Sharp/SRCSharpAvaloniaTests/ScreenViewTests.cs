@@ -1,5 +1,7 @@
+using Avalonia.Headless;
 using Avalonia.Media.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading;
 
 namespace SRCSharpAvalonia.Tests
 {
@@ -7,9 +9,10 @@ namespace SRCSharpAvalonia.Tests
     public class ScreenViewTests
     {
         [TestMethod]
+        [DataRow(0.5)]
+        [DataRow(0.75)]
         [DataRow(1.0)]
         [DataRow(1.25)]
-        [DataRow(1.5)]
         [DataRow(2.0)]
         public void InterpolationModeFor_Enlarging_IsNearestNeighbor(double scaling)
         {
@@ -19,7 +22,22 @@ namespace SRCSharpAvalonia.Tests
         [TestMethod]
         public void InterpolationModeFor_Shrinking_Interpolates()
         {
-            Assert.AreEqual(BitmapInterpolationMode.HighQuality, ScreenView.InterpolationModeFor(0.75));
+            Assert.AreEqual(BitmapInterpolationMode.HighQuality, ScreenView.InterpolationModeFor(0.49));
+        }
+
+        [TestMethod]
+        public void Constructor_ScalesDisplaySizeTo200Percent()
+        {
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var view = new ScreenView();
+                    Assert.AreEqual(1440, view.Width);
+                    Assert.AreEqual(992, view.Height);
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
         }
     }
 }

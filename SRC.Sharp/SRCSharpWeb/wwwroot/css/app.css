@@ -693,7 +693,7 @@ input[type=file]::file-selector-button {
 /* ── プレイ中 ── */
 
 .play {
-    width: 720px;
+    width: 1440px;
     max-width: 100%;
     margin: 0 auto;
 }
@@ -719,7 +719,7 @@ input[type=file]::file-selector-button {
 
 .screen-wrap {
     position: relative;
-    width: 720px;
+    width: 1440px;
     max-width: 100%;
     margin: 0 auto;
 }
@@ -905,7 +905,7 @@ input[type=file]::file-selector-button {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    width: 720px;
+    width: 1440px;
     max-width: 100%;
     min-height: 28px;
     margin: 0 auto;
