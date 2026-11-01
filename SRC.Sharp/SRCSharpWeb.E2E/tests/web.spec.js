@@ -94,6 +94,21 @@ async function enableTouchUi(page) {
   await page.getByRole('menuitem', { name: '選択画面の拡大表示の切り替え' }).click();
 }
 
+// 画面（canvas）の表示幅（CSS の px）
+async function expectScreenWidth(page, width) {
+  await expect.poll(async () => (await page.locator('#screen').boundingBox()).width).toBeCloseTo(width, 0);
+}
+
+// 画面と下のバーがビューポートに収まっている（スクロールしない）
+async function expectFitsViewport(page) {
+  const viewport = page.viewportSize();
+  await expect.poll(async () => {
+    const screen = await page.locator('#screen').boundingBox();
+    const bar = await page.locator('.screen-bar').boundingBox();
+    return screen.x >= 0 && screen.x + screen.width <= viewport.width + 0.5 && bar.y + bar.height <= viewport.height + 0.5;
+  }).toBe(true);
+}
+
 async function backToMenu(page) {
   await page.locator('#system-menu-button').click();
   await page.getByRole('menuitem', { name: 'シナリオ選択へ戻る…' }).click();
@@ -105,8 +120,12 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await testInfo.attach('menu', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
+  // 既定では、ビューポートの幅と高さに収まる大きさにする（下のバーの 28px を除く）
   await page.setViewportSize({ width: 1600, height: 1000 });
-  await expect(page.locator('#screen')).toHaveCSS('width', '1440px');
+  await expectScreenWidth(page, Math.min(1600, (1000 - 28) * 720 / 496));
+  await expectFitsViewport(page);
+  await page.setViewportSize({ width: 800, height: 1000 });
+  await expectScreenWidth(page, 800);
   // 拡大して表示するときは補間せず、縮小するときは補間する
   await expect(page.locator('#screen')).toHaveClass(/pixelated/);
   await page.setViewportSize({ width: 600, height: 800 });
@@ -117,6 +136,32 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await expectAdvancesWithEnter(page);
   await expect(page).toHaveTitle(/SRC#Web/);
   await attachScreen(page, testInfo, 'battle-basic');
+});
+
+test('システムメニューで表示倍率を選び、開き直しても保つ', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  const choose = async name => {
+    await page.locator('#system-menu-button').click();
+    await page.getByRole('menuitemradio', { name }).click();
+  };
+  // 実際の画素で 1 倍（ピクセル等倍）。テストのブラウザは devicePixelRatio が 1
+  await choose('100%');
+  await expectScreenWidth(page, 720);
+  await expect(page.locator('#screen')).toHaveClass(/pixelated/);
+  // ビューポートより大きくてもよい（スクロールする）
+  await choose('200%');
+  await expectScreenWidth(page, 1440);
+  await page.locator('#system-menu-button').click();
+  await expect(page.getByRole('menuitemradio', { name: '200%' })).toHaveAttribute('aria-checked', 'true');
+  await page.locator('.menu-backdrop').click();
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expectScreenWidth(page, 1440);
+  await choose('画面に合わせる');
+  await expectScreenWidth(page, Math.min(800, (800 - 28) * 720 / 496));
 });
 
 test('テーマを XP に切り替え、開き直しても保つ', async ({ page }) => {

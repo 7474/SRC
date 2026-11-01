@@ -692,35 +692,36 @@ input[type=file]::file-selector-button {
 
 /* ── プレイ中 ── */
 
+/*
+  画面は、ビューポートの幅と高さの両方に収まる大きさにする（縦横比 720:496 のまま。下のバーの分の高さを除く）。
+  全画面表示でも同じ。仮想パッドを出すときは、その分だけ画面を小さくする
+*/
 .play {
-    width: 1440px;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .play:fullscreen {
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     background: #000;
 }
 
-.play:fullscreen .screen-wrap,
-.play:fullscreen .screen-bar {
+.screen-wrap,
+.screen-bar {
     width: min(100vw, calc((100vh - 28px) * 720 / 496));
+    width: min(100vw, calc((100dvh - 28px) * 720 / 496));
 }
 
-/* 全画面で仮想パッドを出すときは、その分だけ画面を小さくする */
-.play:fullscreen:has(.virtual-pad:not([hidden])) .screen-wrap,
-.play:fullscreen:has(.virtual-pad:not([hidden])) .screen-bar {
+.play:has(.virtual-pad:not([hidden])) .screen-wrap,
+.play:has(.virtual-pad:not([hidden])) .screen-bar {
     width: min(100vw, calc((100vh - 170px) * 720 / 496));
+    width: min(100vw, calc((100dvh - 170px) * 720 / 496));
 }
 
 .screen-wrap {
     position: relative;
-    width: 1440px;
-    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -905,8 +906,6 @@ input[type=file]::file-selector-button {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    width: 1440px;
-    max-width: 100%;
     min-height: 28px;
     margin: 0 auto;
     background: var(--face);
@@ -1081,6 +1080,30 @@ input[type=file]::file-selector-button {
     background: var(--select);
     box-shadow: none;
     outline: none;
+}
+
+/* 表示倍率の選択（見出しと、横に並べた選択肢） */
+.popup-menu .menu-choices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    padding: 3px 4px 3px 20px;
+}
+
+.popup-menu .menu-choices span {
+    flex-basis: 100%;
+}
+
+.popup-menu .menu-choices button {
+    display: inline-block;
+    width: auto;
+    padding: 2px 6px;
+}
+
+.popup-menu .menu-choices button[aria-checked="true"] {
+    box-shadow: var(--sunken, inset 1px 1px var(--shadow));
+    font-weight: bold;
 }
 
 .popup-menu hr {

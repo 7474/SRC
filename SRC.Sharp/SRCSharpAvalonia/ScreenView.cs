@@ -17,7 +17,13 @@ namespace SRCSharpAvalonia
     /// </summary>
     public class ScreenView : Control
     {
-        public const double DisplayScale = 2.0;
+        /// <summary>
+        /// 選べる表示倍率（画面の描画は 720×496 のまま、補間せずドットのまま拡大する）。
+        /// 1.5 倍は画面に収まりやすい大きさとして選べるようにする（整数倍でないため、ドットの太さは揃わない）。7474/SRC#1424
+        /// </summary>
+        public static readonly double[] DisplayScales = { 1, 1.5, 2 };
+
+        private double displayScale = 1;
 
         private readonly WriteableBitmap bitmap;
         private readonly object pixelLock = new object();
@@ -30,13 +36,45 @@ namespace SRCSharpAvalonia
                 new Vector(96, 96),
                 PixelFormat.Bgra8888,
                 AlphaFormat.Premul);
-            Width = ScreenLayout.Width * DisplayScale;
-            Height = ScreenLayout.Height * DisplayScale;
+            DisplayScale = 1;
             Focusable = true;
             ClipToBounds = true;
         }
 
         public ScreenGUI GUI { get; set; }
+
+        /// <summary>表示倍率（<see cref="DisplayScales"/> のいずれか）。表示の大きさは画面の大きさ × 倍率になる</summary>
+        public double DisplayScale
+        {
+            get => displayScale;
+            set
+            {
+                if (Array.IndexOf(DisplayScales, value) < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "unsupported display scale");
+                }
+                displayScale = value;
+                Width = ScreenLayout.Width * value;
+                Height = ScreenLayout.Height * value;
+                InvalidateVisual();
+            }
+        }
+
+        /// <summary>
+        /// 指定した大きさ（論理ピクセル）に収まる、いちばん大きな表示倍率。収まらなければ 1
+        /// </summary>
+        public static double FitScale(double width, double height)
+        {
+            var fit = DisplayScales[0];
+            foreach (var scale in DisplayScales)
+            {
+                if (ScreenLayout.Width * scale <= width && ScreenLayout.Height * scale <= height)
+                {
+                    fit = scale;
+                }
+            }
+            return fit;
+        }
 
         /// <summary>表示中の画面（テスト用）</summary>
         public WriteableBitmap Bitmap => bitmap;
@@ -80,7 +118,7 @@ namespace SRCSharpAvalonia
         public override void Render(DrawingContext context)
         {
             var scaling = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1.0;
-            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling) }))
+            using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = InterpolationModeFor(scaling, DisplayScale) }))
             {
                 context.DrawImage(bitmap, new Rect(Bounds.Size));
             }
@@ -91,9 +129,10 @@ namespace SRCSharpAvalonia
         /// 縮小するときは補間する（補間しないと文字の線が抜ける）。7474/SRC#1148
         /// </summary>
         /// <param name="renderScaling">OS の表示倍率（TopLevel.RenderScaling）</param>
-        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling)
+        /// <param name="displayScale">画面の表示倍率（<see cref="DisplayScale"/>）</param>
+        public static BitmapInterpolationMode InterpolationModeFor(double renderScaling, double displayScale)
         {
-            return renderScaling * DisplayScale >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
+            return renderScaling * displayScale >= 1.0 ? BitmapInterpolationMode.None : BitmapInterpolationMode.HighQuality;
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

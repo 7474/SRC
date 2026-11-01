@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>{0}세 이상 대상</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>표시 배율</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>창에 맞추기</value>
+  </data>
 </root>

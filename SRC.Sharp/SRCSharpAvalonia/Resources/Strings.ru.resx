@@ -21,4 +21,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>_Вид</value>
+  </data>
 </root>

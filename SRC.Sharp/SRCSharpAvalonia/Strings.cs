@@ -12,5 +12,6 @@ namespace SRCSharpAvalonia
         public static string SelectScenario => Rm.GetString(nameof(SelectScenario));
         public static string AllFiles => Rm.GetString(nameof(AllFiles));
         public static string Cancel => Rm.GetString(nameof(Cancel));
+        public static string ViewMenu => Rm.GetString(nameof(ViewMenu));
     }
 }

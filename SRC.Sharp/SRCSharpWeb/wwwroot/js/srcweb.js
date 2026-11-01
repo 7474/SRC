@@ -39,8 +39,51 @@ export function bindCanvas(id) {
     start();
 }
 
+// 表示倍率（システムメニューで選ぶ。localStorage に残す）。
+// 'fit' はビューポートに合わせる（app.css）。'1'〜'4' は実際の画素で canvas の 1 画素を N×N 画素にする（ピクセル等倍は '1'）
+const DISPLAY_SCALE_SETTING = 'srcweb.displayScale';
+const DISPLAY_SCALES = ['fit', '1', '2', '3', '4'];
+
+function getDisplayScale() {
+    try {
+        const saved = localStorage.getItem(DISPLAY_SCALE_SETTING);
+        return DISPLAY_SCALES.includes(saved) ? saved : 'fit';
+    } catch {
+        return displayScaleFallback;
+    }
+}
+let displayScaleFallback = 'fit';
+
+globalThis.srcwebGetDisplayScale = getDisplayScale;
+globalThis.srcwebSetDisplayScale = scale => {
+    scale = DISPLAY_SCALES.includes(scale) ? scale : 'fit';
+    displayScaleFallback = scale;
+    try {
+        localStorage.setItem(DISPLAY_SCALE_SETTING, scale);
+    } catch {
+        // 保存できなくても、この表示の間は変える
+    }
+    updateScaling();
+};
+
+// 倍率を選んでいれば、画面と下のバーの幅を「canvas の幅 × 倍率 ÷ devicePixelRatio」（CSS の px）にする。
+// devicePixelRatio はブラウザの拡大縮小・画面の移動で変わるため、表示の大きさが変わるたびに計算し直す
+function applyDisplayScale() {
+    const scale = getDisplayScale();
+    const width = scale === 'fit' ? '' : `${canvas.width * Number(scale) / (window.devicePixelRatio || 1)}px`;
+    for (const element of [canvas.closest('.screen-wrap'), document.querySelector('.screen-bar')]) {
+        if (element && element.style.width !== width) {
+            element.style.width = width;
+        }
+    }
+}
+
 // 実際の画素で canvas の大きさ以上に表示するとき（拡大）は、補間せずドットのまま拡大する
 function updateScaling() {
+    if (!canvas?.isConnected) {
+        return;
+    }
+    applyDisplayScale();
     const devicePixels = canvas.clientWidth * (window.devicePixelRatio || 1);
     canvas.classList.toggle('pixelated', devicePixels >= canvas.width);
 }

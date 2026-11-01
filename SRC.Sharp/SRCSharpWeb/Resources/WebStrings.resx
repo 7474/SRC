@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>{0}歳以上向け</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>表示倍率</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>画面に合わせる</value>
+  </data>
 </root>
