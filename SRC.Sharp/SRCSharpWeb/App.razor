@@ -44,6 +44,14 @@
                 <div class="popup-menu" role="menu">
                     <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
+                    <div class="menu-choices" role="group" aria-label="@L["MenuDisplayScale"]">
+                        <span>@L["MenuDisplayScale"]</span>
+                        @foreach (var scale in DisplayScales)
+                        {
+                            <button role="menuitemradio" aria-checked="@(displayScale == scale ? "true" : "false")"
+                                    @onclick="() => SetDisplayScaleAsync(scale)">@(scale == "fit" ? L["MenuDisplayScaleFit"] : scale + "00%")</button>
+                        }
+                    </div>
                     <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
                     <button role="menuitem" @onclick="ToggleTouchUiAsync">@L["MenuTouchUi"]</button>
                     @if (documents.Count > 0)
@@ -746,7 +754,28 @@ else
         }
     }
 
-    private void ToggleSystemMenu() => systemMenuOpen = !systemMenuOpen;
+    private async Task ToggleSystemMenu()
+    {
+        systemMenuOpen = !systemMenuOpen;
+        if (systemMenuOpen)
+        {
+            displayScale = await JS.InvokeAsync<string>("srcwebGetDisplayScale");
+        }
+    }
+
+    /// <summary>表示倍率の選択肢。fit はビューポートに合わせ、数字は実際の画素での倍率（srcweb.js）</summary>
+    private static readonly string[] DisplayScales = { "fit", "1", "2", "3", "4" };
+
+    /// <summary>今の表示倍率（システムメニューを開いたときに srcweb.js から読む）</summary>
+    private string displayScale = "fit";
+
+    private async Task SetDisplayScaleAsync(string scale)
+    {
+        systemMenuOpen = false;
+        displayScale = scale;
+        await JS.InvokeVoidAsync("srcwebSetDisplayScale", scale);
+        await FocusScreenAsync();
+    }
 
     private async Task CloseSystemMenu()
     {

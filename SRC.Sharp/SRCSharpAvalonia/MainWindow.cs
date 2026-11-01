@@ -20,10 +20,54 @@ namespace SRCSharpAvalonia
             CanResize = false;
             SizeToContent = SizeToContent.WidthAndHeight;
             View = new ScreenView();
-            Content = View;
+            // 表示倍率を選ぶメニュー（表示 > 100%〜400%）
+            scaleItems = ScreenView.DisplayScales.Select(scale =>
+            {
+                var item = new MenuItem
+                {
+                    Header = $"{scale * 100}%",
+                    ToggleType = MenuItemToggleType.Radio,
+                    GroupName = "DisplayScale",
+                    Tag = scale,
+                };
+                item.Click += (s, e) =>
+                {
+                    SetDisplayScale(scale);
+                    DisplayScaleChosen?.Invoke(scale);
+                    View.Focus();
+                };
+                return item;
+            }).ToArray();
+            var menu = new Menu
+            {
+                ItemsSource = new[] { new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems } },
+            };
+            DockPanel.SetDock(menu, Dock.Top);
+            Content = new DockPanel { Children = { menu, View } };
+            SetDisplayScale(View.DisplayScale);
         }
 
+        private readonly MenuItem[] scaleItems;
+
+        /// <summary>表示倍率のメニュー項目（テスト用）</summary>
+        internal System.Collections.Generic.IReadOnlyList<MenuItem> ScaleItems => scaleItems;
+
         public ScreenView View { get; }
+
+        /// <summary>メニューで表示倍率を選んだときに呼ばれる（設定に保存する）</summary>
+        public event Action<int> DisplayScaleChosen;
+
+        /// <summary>
+        /// 表示倍率を変える。ウィンドウの大きさは画面に合わせて変わる（SizeToContent）
+        /// </summary>
+        public void SetDisplayScale(int scale)
+        {
+            View.DisplayScale = scale;
+            foreach (var item in scaleItems)
+            {
+                item.IsChecked = (int)item.Tag == scale;
+            }
+        }
 
         /// <summary>
         /// 終了要求時の処理。既定ではアプリケーションを終了する。
@@ -56,7 +100,7 @@ namespace SRCSharpAvalonia
                     return ((float, float)?)null;
                 }
                 var p = View.PointToClient(ToPixelPoint(sx, sy));
-                return ((float)(p.X / ScreenView.DisplayScale), (float)(p.Y / ScreenView.DisplayScale));
+                return ((float)(p.X / View.DisplayScale), (float)(p.Y / View.DisplayScale));
             });
             x = result?.Item1 ?? 0;
             y = result?.Item2 ?? 0;
@@ -67,7 +111,7 @@ namespace SRCSharpAvalonia
         {
             return Dispatcher.UIThread.Invoke(() =>
             {
-                var p = View.PointToScreen(new Avalonia.Point(x * ScreenView.DisplayScale, y * ScreenView.DisplayScale));
+                var p = View.PointToScreen(new Avalonia.Point(x * View.DisplayScale, y * View.DisplayScale));
                 if (OperatingSystem.IsMacOS())
                 {
                     // macOS の CoreGraphics はポイント単位

@@ -68,6 +68,14 @@ flowchart LR
     - 確かめる手順: Windows で `dotnet test SRC.Sharp/SRCRenderTests --filter MatchesInstalledWindowsFonts` を実行し、書き出された値で表を更新して `Verified` を `true` にする
 - **ウィンドウ**: リスト・設定変更・メッセージボックスは別ウィンドウではなく、画面内にタイトルバー付きの枠として描く
 
+## 表示倍率
+
+画面は 720×496 で描き、`ScreenView` が補間せずドットのまま整数倍に拡大して表示する（`ScreenView.DisplayScales`。100%〜400%）。ウィンドウの大きさは画面に合わせて決まり、ドラッグでは変えられない。
+
+- メニューの「表示」で倍率を選ぶ。選んだ倍率は `srcs.json` の `Option/DisplayScale`（100 = 100%）に保存し、次に起動したときも使う
+- 設定が無ければ、ウィンドウ（タイトルバー・メニューを含む）が画面の作業領域に収まる、いちばん大きな倍率にして画面の中央に置く（`App.FitToScreen`）
+- OS の表示倍率が整数でない（125% など）と、実際の画素では整数倍にならない（OS の拡大が加わる）
+
 ## マウスカーソルの自動移動
 
 設定「マウスカーソルを自動的に移動する」（メッセージ・リスト・ユニットへカーソルを動かす）は、Avalonia にカーソルを動かす API が無いため、OS の API を直接呼ぶ（`SRCSharpAvalonia/NativeCursor.cs`）。`ScreenGUI` は WinForms 版の `MoveCursorPos` / `RestoreCursorPos` を移植し、カーソルの操作は `IScreenCursorHost` でホストに任せる。

@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>Ab {0} Jahren</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>Anzeigegröße</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>An Fenster anpassen</value>
+  </data>
 </root>

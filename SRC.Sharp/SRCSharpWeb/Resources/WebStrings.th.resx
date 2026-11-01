@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>สำหรับอายุ {0} ปีขึ้นไป</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>มาตราส่วนการแสดงผล</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>พอดีกับหน้าต่าง</value>
+  </data>
 </root>

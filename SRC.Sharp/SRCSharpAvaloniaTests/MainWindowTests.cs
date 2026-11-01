@@ -95,7 +95,8 @@ namespace SRCSharpAvalonia.Tests
 
         private static void Click(MainWindow window, Point point, MouseButton button = MouseButton.Left)
         {
-            var displayPoint = new Point(point.X * ScreenView.DisplayScale, point.Y * ScreenView.DisplayScale);
+            // 画面の座標を、表示倍率とメニューの分だけずらしたウィンドウの座標にする
+            var displayPoint = window.View.TranslatePoint(new Point(point.X * window.View.DisplayScale, point.Y * window.View.DisplayScale), window).Value;
             window.MouseDown(displayPoint, button);
             window.MouseUp(displayPoint, button);
         }
@@ -158,8 +159,9 @@ namespace SRCSharpAvalonia.Tests
                         var framePath = SaveFrame(window, "01-message");
                         using (var frame = SKBitmap.Decode(framePath))
                         {
-                            // マップ左上は平地（緑）、ウィンドウ経由で描画されている
-                            var pixel = frame.GetPixel(16, 16);
+                            // マップ左上は平地（緑）、ウィンドウ経由で描画されている（メニューの下に画面がある）
+                            var origin = window.View.TranslatePoint(new Point(0, 0), window).Value;
+                            var pixel = frame.GetPixel((int)origin.X + 16, (int)origin.Y + 16);
                             Assert.IsTrue(pixel.Green > pixel.Red && pixel.Green > pixel.Blue, pixel.ToString());
                         }
                         Click(window, new Point(ScreenLayout.MessageArea.MidX, ScreenLayout.MessageArea.MidY));

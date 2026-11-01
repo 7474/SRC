@@ -21,4 +21,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>_Ansicht</value>
+  </data>
 </root>

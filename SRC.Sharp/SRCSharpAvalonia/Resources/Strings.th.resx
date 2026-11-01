@@ -21,4 +21,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>ยกเลิก</value>
   </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>มุมมอง(_V)</value>
+  </data>
 </root>

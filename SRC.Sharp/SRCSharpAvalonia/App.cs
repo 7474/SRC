@@ -38,16 +38,30 @@ namespace SRCSharpAvalonia
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // 表示言語（srcs.json の Option/Language）は、ウィンドウを作る前に設定する
-                ApplyLanguage();
+                var config = LoadConfig();
                 var window = new MainWindow();
                 desktop.MainWindow = window;
                 desktop.Exit += (s, e) => Stop();
-                window.Opened += async (s, e) => await StartAsync(window, desktop.Args ?? new string[0], desktop.Shutdown);
+                var savedScale = ReadDisplayScale(config);
+                if (savedScale.HasValue)
+                {
+                    window.SetDisplayScale(savedScale.Value);
+                }
+                window.DisplayScaleChosen += SaveDisplayScale;
+                window.Opened += async (s, e) =>
+                {
+                    if (!savedScale.HasValue)
+                    {
+                        // 設定が無ければ、画面（作業領域）に収まるいちばん大きな倍率にする
+                        FitToScreen(window);
+                    }
+                    await StartAsync(window, desktop.Args ?? new string[0], desktop.Shutdown);
+                };
             }
             base.OnFrameworkInitializationCompleted();
         }
 
-        private static void ApplyLanguage()
+        private static LocalFileConfig LoadConfig()
         {
             var config = new LocalFileConfig();
             try
@@ -61,6 +75,85 @@ namespace SRCSharpAvalonia
             UiLanguage.Apply(config);
             // ログの設定（Log セクション）
             Program.LogHost?.ApplyConfig(config);
+            return config;
+        }
+
+        /// <summary>表示倍率の設定（srcs.json の Option/DisplayScale。100 = 100%）</summary>
+        internal const string DisplayScaleSection = "Option";
+        internal const string DisplayScaleName = "DisplayScale";
+
+        /// <summary>設定の表示倍率。無いか選べない値なら null</summary>
+        internal static int? ReadDisplayScale(ISystemConfig config)
+        {
+            if (int.TryParse(config.GetItem(DisplayScaleSection, DisplayScaleName), out var percent)
+                && percent % 100 == 0
+                && Array.IndexOf(ScreenView.DisplayScales, percent / 100) >= 0)
+            {
+                return percent / 100;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// ウィンドウ（タイトルバー・メニューを含む）が画面の作業領域に収まる、いちばん大きな倍率にして、画面の中央に置く
+        /// </summary>
+        internal static void FitToScreen(MainWindow window)
+        {
+            var screen = window.Screens.ScreenFromWindow(window) ?? window.Screens.Primary;
+            if (screen == null)
+            {
+                return;
+            }
+            var area = screen.WorkingArea;
+            var scaling = screen.Scaling;
+            // 画面の表示以外の大きさ（タイトルバー・枠・メニュー）
+            var frame = window.FrameSize ?? window.ClientSize;
+            var extraWidth = frame.Width - window.View.Width;
+            var extraHeight = frame.Height - window.View.Height;
+            var scale = ScreenView.FitScale(area.Width / scaling - extraWidth, area.Height / scaling - extraHeight);
+            window.SetDisplayScale(scale);
+            var width = (int)Math.Round((ScreenLayout.Width * scale + extraWidth) * scaling);
+            var height = (int)Math.Round((ScreenLayout.Height * scale + extraHeight) * scaling);
+            window.Position = new PixelPoint(
+                area.X + Math.Max(0, (area.Width - width) / 2),
+                area.Y + Math.Max(0, (area.Height - height) / 2));
+        }
+
+        /// <summary>
+        /// メニューで選んだ表示倍率を設定に保存する。シナリオの実行中は、その設定（ゲームスレッドが持つ）に書く
+        /// </summary>
+        private void SaveDisplayScale(int scale)
+        {
+            var value = (scale * 100).ToString();
+            void Save(ISystemConfig config)
+            {
+                try
+                {
+                    config.SetItem(DisplayScaleSection, DisplayScaleName, value);
+                    config.Save();
+                }
+                catch (Exception ex)
+                {
+                    Program.LogHost?.LoggerFactory?.CreateLogger("SRCSharpAvalonia").LogWarning(ex, "表示倍率を保存できませんでした");
+                }
+            }
+            if (session != null)
+            {
+                session.Game.Post(() => Save(session.SRC.SystemConfig));
+            }
+            else
+            {
+                var config = new LocalFileConfig();
+                try
+                {
+                    config.Load();
+                }
+                catch
+                {
+                    // 設定ファイルが無ければ作る
+                }
+                Save(config);
+            }
         }
 
         /// <summary>終わるときに、シナリオと音声の再生を片付ける</summary>

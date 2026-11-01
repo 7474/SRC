@@ -21,4 +21,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>보기(_V)</value>
+  </data>
 </root>

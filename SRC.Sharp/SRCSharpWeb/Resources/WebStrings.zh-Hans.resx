@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>{0}岁以上</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>显示比例</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>适应窗口</value>
+  </data>
 </root>

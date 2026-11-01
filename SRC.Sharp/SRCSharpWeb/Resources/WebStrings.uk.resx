@@ -306,4 +306,10 @@
   <data name="RatingBadgeTitle" xml:space="preserve">
     <value>Від {0} років</value>
   </data>
+  <data name="MenuDisplayScale" xml:space="preserve">
+    <value>Масштаб відображення</value>
+  </data>
+  <data name="MenuDisplayScaleFit" xml:space="preserve">
+    <value>За розміром вікна</value>
+  </data>
 </root>

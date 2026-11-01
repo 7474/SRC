@@ -21,4 +21,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="ViewMenu" xml:space="preserve">
+    <value>檢視(_V)</value>
+  </data>
 </root>
