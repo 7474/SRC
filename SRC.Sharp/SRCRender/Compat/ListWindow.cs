@@ -279,9 +279,9 @@ namespace SRCRender.Compat
             labCaption = new Label { Left = 6, Top = 5, Width = 643, Height = 23, BackColor = Color.White, Font = ListFont };
             items = new ListBoxControl { Left = 6, Top = 32, Width = 643, Height = 100, Font = ListFont };
             txtComment = new Label { Left = 6, Top = 141, Width = 637, Height = 38, BackColor = Color.White, Font = CommentFont, Visible = false };
-            picBar = new PictureBox { Left = 6, Top = 123, Width = 643, Height = 13, BackColor = Color.White, Visible = false };
+            picBar = new PictureBox { Left = 6, Top = 123, Width = 643, Height = 13, BackColor = Color.White, Border3D = true, Visible = false };
 
-            imgPilot1 = new PictureBox { Left = 6, Top = 3, Width = 36, Height = 36, StretchImage = true, Visible = false };
+            imgPilot1 = new PictureBox { Left = 6, Top = 3, Width = 36, Height = 36, StretchImage = true, Border3D = true, Visible = false };
             labLevel1 = new Label { Left = 45, Top = 4, Width = 20, Height = 17, Text = "Lv", Font = LabelFont, Visible = false };
             txtLevel1 = new Label { Left = 66, Top = 6, Width = 17, Height = 13, Text = "99", Font = ValueFont, Visible = false };
             labMorale1 = new Label { Left = 46, Top = 20, Width = 12, Height = 17, Text = "M", Font = SmallLabelFont, Visible = false };
@@ -289,12 +289,12 @@ namespace SRCRender.Compat
             picUnit1 = new PictureBox { Left = 85, Top = 4, Width = 32, Height = 32, BackColor = Color.White, Visible = false };
             labHP1 = new Label { Left = 121, Top = 6, Width = 23, Height = 17, Text = "HP", Font = LabelFont, Visible = false };
             txtHP1 = new Label { Left = 148, Top = 8, Width = 88, Height = 13, Text = "99999/99999", Font = ValueFont, Visible = false };
-            picHP1 = new PictureBox { Left = 122, Top = 26, Width = 114, Height = 8, BackColor = Red, ForeColor = Green, Visible = false };
+            picHP1 = new PictureBox { Left = 122, Top = 26, Width = 114, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true, Visible = false };
             labEN1 = new Label { Left = 238, Top = 6, Width = 22, Height = 17, Text = "EN", Font = LabelFont, Visible = false };
             txtEN1 = new Label { Left = 263, Top = 8, Width = 57, Height = 13, Text = "999/999", Font = ValueFont, Visible = false };
-            picEN1 = new PictureBox { Left = 240, Top = 26, Width = 79, Height = 8, BackColor = Red, ForeColor = Green, Visible = false };
+            picEN1 = new PictureBox { Left = 240, Top = 26, Width = 79, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true, Visible = false };
 
-            imgPilot2 = new PictureBox { Left = 331, Top = 3, Width = 36, Height = 36, StretchImage = true, Visible = false };
+            imgPilot2 = new PictureBox { Left = 331, Top = 3, Width = 36, Height = 36, StretchImage = true, Border3D = true, Visible = false };
             labLevel2 = new Label { Left = 370, Top = 4, Width = 20, Height = 17, Text = "Lv", Font = LabelFont, Visible = false };
             txtLevel2 = new Label { Left = 391, Top = 7, Width = 17, Height = 13, Text = "99", Font = ValueFont, Visible = false };
             labMorale2 = new Label { Left = 372, Top = 22, Width = 12, Height = 17, Text = "M", Font = SmallLabelFont, Visible = false };
@@ -302,10 +302,10 @@ namespace SRCRender.Compat
             picUnit2 = new PictureBox { Left = 412, Top = 5, Width = 32, Height = 32, BackColor = Color.White, Visible = false };
             labHP2 = new Label { Left = 448, Top = 6, Width = 25, Height = 17, Text = "HP", Font = LabelFont, Visible = false };
             txtHP2 = new Label { Left = 473, Top = 8, Width = 88, Height = 13, Text = "99999/99999", Font = ValueFont, Visible = false };
-            picHP2 = new PictureBox { Left = 449, Top = 27, Width = 112, Height = 8, BackColor = Red, ForeColor = Green, Visible = false };
+            picHP2 = new PictureBox { Left = 449, Top = 27, Width = 112, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true, Visible = false };
             labEN2 = new Label { Left = 563, Top = 6, Width = 25, Height = 17, Text = "EN", Font = LabelFont, Visible = false };
             txtEN2 = new Label { Left = 587, Top = 8, Width = 57, Height = 13, Text = "999/999", Font = ValueFont, Visible = false };
-            picEN2 = new PictureBox { Left = 565, Top = 27, Width = 78, Height = 8, BackColor = Red, ForeColor = Green, Visible = false };
+            picEN2 = new PictureBox { Left = 565, Top = 27, Width = 78, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true, Visible = false };
         }
 
         /// <summary>リストボックスのサイズ (通常:M 大型:L)。幅は S / M。</summary>

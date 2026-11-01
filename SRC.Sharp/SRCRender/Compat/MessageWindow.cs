@@ -22,14 +22,14 @@ namespace SRCRender.Compat
             BackColor = Gray;
             Text = "メッセージ";
 
-            picFace = new PictureBox { Left = 8, Top = 43, Width = 68, Height = 68, BackColor = Gray };
-            picMessage = new PictureBox { Left = 84, Top = 42, Width = 417, Height = 70, BackColor = Color.White, ForeColor = Color.Black };
+            picFace = new PictureBox { Left = 8, Top = 43, Width = 68, Height = 68, BackColor = Gray, Border3D = true };
+            picMessage = new PictureBox { Left = 84, Top = 42, Width = 417, Height = 70, BackColor = Color.White, ForeColor = Color.Black, Border3D = true };
             picUnit1 = new PictureBox { Left = 8, Top = 4, Width = 32, Height = 32, BackColor = Color.White };
             picUnit2 = new PictureBox { Left = 260, Top = 5, Width = 32, Height = 32, BackColor = Color.White };
-            picHP1 = new PictureBox { Left = 45, Top = 28, Width = 116, Height = 8, BackColor = Red, ForeColor = Green };
-            picEN1 = new PictureBox { Left = 166, Top = 28, Width = 83, Height = 8, BackColor = Red, ForeColor = Green };
-            picHP2 = new PictureBox { Left = 297, Top = 28, Width = 116, Height = 8, BackColor = Red, ForeColor = Green };
-            picEN2 = new PictureBox { Left = 418, Top = 28, Width = 82, Height = 8, BackColor = Red, ForeColor = Green };
+            picHP1 = new PictureBox { Left = 45, Top = 28, Width = 116, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true };
+            picEN1 = new PictureBox { Left = 166, Top = 28, Width = 83, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true };
+            picHP2 = new PictureBox { Left = 297, Top = 28, Width = 116, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true };
+            picEN2 = new PictureBox { Left = 418, Top = 28, Width = 82, Height = 8, BackColor = Red, ForeColor = Green, Border3D = true };
             labHP1 = new Label { Left = 44, Top = 8, Width = 22, Height = 17, Text = "HP", Font = LabelFont };
             labEN1 = new Label { Left = 165, Top = 8, Width = 22, Height = 17, Text = "EN", Font = LabelFont };
             labHP2 = new Label { Left = 296, Top = 8, Width = 22, Height = 17, Text = "HP", Font = LabelFont };
