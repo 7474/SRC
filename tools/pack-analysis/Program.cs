@@ -23,7 +23,7 @@ namespace PackAnalysis
         {
             if (args.Length < 4)
             {
-                Console.Error.WriteLine("使い方: PackAnalysis <パックのフォルダ> <ロボ|拡張> <役割表.csv|-> <対象作品.txt> [--sample 数] [--seed 数] [--level 数]");
+                Console.Error.WriteLine("使い方: PackAnalysis <パックのフォルダ> <ロボ|拡張> <役割表.csv|-> <対象作品.txt> [--sample 数] [--seed 数] [--level 数] [--tiers 格の一覧.tsv] [--cards 1]");
                 return 1;
             }
             var options = new Options
@@ -40,6 +40,8 @@ namespace PackAnalysis
                     case "--sample": options.Sample = int.Parse(args[i + 1]); break;
                     case "--seed": options.Seed = int.Parse(args[i + 1]); break;
                     case "--level": options.Level = int.Parse(args[i + 1]); break;
+                    case "--tiers": options.TiersFile = args[i + 1]; break;
+                    case "--cards": options.Cards = args[i + 1] != "0"; break;
                 }
             }
             new Analysis(options).Run(Console.Out);
@@ -56,6 +58,8 @@ namespace PackAnalysis
         public int Sample = 400;
         public int Seed = 1;
         public int Level = 30;
+        public string TiersFile;
+        public bool Cards;
     }
 
     /// <summary>役割表の 1 行</summary>
@@ -100,6 +104,7 @@ namespace PackAnalysis
         private readonly List<(PilotData p, UnitData u)> bossPanel = new List<(PilotData, UnitData)>();
         private readonly Dictionary<string, (PilotData p, UnitData u)> bandOpponent = new Dictionary<string, (PilotData, UnitData)>();
         private readonly Dictionary<string, Dictionary<string, double>> cache = new Dictionary<string, Dictionary<string, double>>();
+        private readonly Dictionary<string, List<string>> spUsed = new Dictionary<string, List<string>>();
         private readonly Dictionary<string, List<Dictionary<string, double>>> bandReference = new Dictionary<string, List<Dictionary<string, double>>>();
         private readonly List<(Unit u, Pilot p)> spawned = new List<(Unit, Pilot)>();
         private string mapKind = "陸";
@@ -449,6 +454,9 @@ namespace PackAnalysis
         }
 
         /// <summary>a から t への 1 回の攻撃の期待ダメージ（命中率 × ダメージ）の最大。距離は武器の射程の中で最も有利なもの</summary>
+        // 直前の Best で選んだ攻撃の、100% で切らない命中率
+        private double lastRawHit;
+
         private (double damage, double hit) Best(Unit a, Unit t, Func<UnitWeapon, bool> filter, int minDistance = 1, bool capByHp = true)
         {
             double best = 0, bestHit = 0;
@@ -463,7 +471,8 @@ namespace PackAnalysis
                         t.x = a.x + d;
                         t.y = 1;
                         src.Map.MapDataForUnit[t.x, 1] = t;
-                        var hit = Math.Min(100, w.HitProbability(t, true));
+                        var rawHit = w.HitProbability(t, true);
+                        var hit = Math.Min(100, rawHit);
                         var dmg = w.ExpDamage(t, true);
                         if (capByHp) dmg = Math.Min(dmg, t.MaxHP);
                         var v = hit / 100.0 * dmg;
@@ -471,6 +480,7 @@ namespace PackAnalysis
                         {
                             best = v;
                             bestHit = hit;
+                            lastRawHit = rawHit;
                         }
                     }
                     catch { }
@@ -523,9 +533,11 @@ namespace PackAnalysis
         }
 
         /// <summary>効果の種類ごとに、最も強い SP を 1 つずつかける。かけた SP の名前を返す</summary>
-        private List<string> ApplyBest(Unit u, params string[] types)
+        private List<string> ApplyBest(Unit u, params string[] types) => ApplyBest(u, _ => true, types);
+
+        private List<string> ApplyBest(Unit u, Func<SpecialPowerData, bool> filter, params string[] types)
         {
-            var sps = AvailableSpecialPowers(u);
+            var sps = AvailableSpecialPowers(u).Where(x => filter(x.sp)).ToList();
             var applied = new List<string>();
             foreach (var type in types)
             {
@@ -537,6 +549,61 @@ namespace PackAnalysis
                 }
             }
             return applied;
+        }
+
+        // ---- 単純数字（ゲームの計算を通さない、データの数字だけの値） ----
+
+        private static readonly string[] MapKinds = { "Ｍ直", "Ｍ拡", "Ｍ扇", "Ｍ全", "Ｍ投", "Ｍ移", "Ｍ線" };
+
+        private static bool IsMap(WeaponData w) => MapKinds.Any(k => (w.Class ?? "").Contains(k));
+
+        /// <summary>格闘の値を使う武器か（射程 1 で「射」が無いか、「格」がある）</summary>
+        private static bool UsesInfight(WeaponData w) => (w.Class ?? "").Contains("格") || (w.MaxRange <= 1 && !(w.Class ?? "").Contains("射"));
+
+        /// <summary>武器の攻撃力 × パイロットの格闘か射撃 ÷ 100</summary>
+        private static double Raw(PilotData p, WeaponData w) => w.Power * (UsesInfight(w) ? p.Infight : p.Shooting) / 100.0;
+
+        private static double RawMax(PilotData p, UnitData u, Func<WeaponData, bool> f) =>
+            u.Weapons.Where(w => w.Power > 0 && f(w)).Select(w => Raw(p, w)).DefaultIfEmpty(0).Max();
+
+        /// <summary>1 回の出撃で撃てる回数（弾数か、EN ÷ 消費 EN。どちらも無ければ -1）</summary>
+        private static int RawUses(UnitData u, WeaponData w)
+        {
+            if (w.Bullet > 0) return w.ENConsumption > 0 ? Math.Min(w.Bullet, u.EN / w.ENConsumption) : w.Bullet;
+            if (w.ENConsumption > 0) return u.EN / w.ENConsumption;
+            return -1;
+        }
+
+        /// <summary>マップ兵器の範囲のマス数（ヘルプの「マップ攻撃に関する属性」の図から）</summary>
+        private static int MapCells(WeaponData w)
+        {
+            var c = w.Class ?? "";
+            int Lv(string k)
+            {
+                var m = Regex.Match(c, k + @"L(\d+)");
+                return m.Success ? int.Parse(m.Groups[1].Value) : 1;
+            }
+            int r = Math.Max(1, w.MaxRange), mn = Math.Max(1, w.MinRange);
+            if (c.Contains("Ｍ全")) return 2 * r * (r + 1) - (mn > 1 ? 2 * (mn - 1) * mn : 0);
+            if (c.Contains("Ｍ投")) { var l = Lv("Ｍ投"); return 2 * l * (l + 1) + 1; }
+            if (c.Contains("Ｍ扇"))
+            {
+                var l = Lv("Ｍ扇");
+                var n = 0;
+                for (var d = mn; d <= r; d++) n += 1 + 2 * (l == 1 ? d / 3 : l == 2 ? d / 2 : l == 3 ? d - 1 : d);
+                return n;
+            }
+            if (c.Contains("Ｍ拡")) return (r - mn + 1) + 2 * Math.Max(0, r - mn - 1);
+            return r - mn + 1;
+        }
+
+        /// <summary>マップ兵器が当たる体数の目安: 範囲の半分のマスに敵がいるとして最大 9 体。識が無い全方位・投下・扇・拡散は、味方を避ける分 1 体減らす</summary>
+        private static int MapTargets(WeaponData w)
+        {
+            var n = Math.Min(9, (MapCells(w) + 1) / 2);
+            var c = w.Class ?? "";
+            if (!c.Contains("識") && (c.Contains("Ｍ全") || c.Contains("Ｍ投") || c.Contains("Ｍ扇") || c.Contains("Ｍ拡"))) n--;
+            return Math.Max(1, n);
         }
 
         private Dictionary<string, double> Evaluate(PilotData pd, UnitData ud)
@@ -591,8 +658,9 @@ namespace PackAnalysis
                 }
                 r["ザコ掃討"] = kills + (1 - zakoHp / z.MaxHP);
                 r["攻撃回数"] = attacks;
-                r["移動後の火力"] = Best(a, z, w => Usable(w, "移動後")).damage;
-                r["長距離"] = Best(a, z, w => Usable(w, "移動前"), 3).damage;
+                // ザコの HP で切ると強い組が同じ値に並ぶので、切らない
+                r["移動後の火力"] = Best(a, z, w => Usable(w, "移動後"), 1, false).damage;
+                r["長距離"] = Best(a, z, w => Usable(w, "移動前"), 3, false).damage;
                 r["遊撃"] = r["移動後の火力"] * a.Speed / 4.0;
                 var cover = 0;
                 for (var d = 1; d <= 3; d++)
@@ -602,8 +670,29 @@ namespace PackAnalysis
                 r["反撃できる距離"] = cover;
                 DespawnAll();
 
+                // マップ兵器: 気力 130 で、名前なしへの 1 回の期待ダメージ × 当たる体数の目安 × 撃てる回数（3 回まで）
+                double mapBest = 0, mapUses = 0;
+                SetTerrain(kind);
+                var (am, apm) = Spawn(pd, ud, "味方", 1);
+                var (zm, _) = Spawn(zakoOpp.p, zakoOpp.u, "敵", 2);
+                apm.Morale = 130;
+                foreach (var w in am.Weapons.Where(x => IsMap(x.WeaponData) && x.WeaponData.Power > 0 && Usable(x, "移動前")))
+                {
+                    var n = RawUses(ud, w.WeaponData);
+                    var times = n < 0 ? 3 : Math.Min(3, n);
+                    var v = Best(am, zm, x => x == w).damage * MapTargets(w.WeaponData) * times;
+                    if (v > mapBest)
+                    {
+                        mapBest = v;
+                        mapUses = times;
+                    }
+                }
+                r["マップ兵器"] = mapBest;
+                r["マップ兵器の回数"] = mapUses;
+                DespawnAll();
+
                 // ボス戦: ボスの候補それぞれに、気力 130 で、ダメージ・命中を上げる SP を 1 つずつ使ったときの 1 回の期待ダメージ ÷ ボスの最大 HP（平均）
-                double ratioSum = 0, hitSum = 0, dmgSum = 0;
+                double ratioSum = 0, hitSum = 0, dmgSum = 0, initSum = 0;
                 var usedSp = new HashSet<string>();
                 // 自分自身はボスの候補から外す（同じパイロットを 2 人作れない）
                 var panel = bossPanel.Where(b => b.p.Name != pd.Name).ToList();
@@ -612,6 +701,8 @@ namespace PackAnalysis
                     SetTerrain(kind);
                     var (ab, ap) = Spawn(pd, ud, "味方", 1);
                     var (b, _) = Spawn(boss.p, boss.u, "敵", 2);
+                    // 初動火力: 気力 100・SP なしの、ボスへの 1 回の期待ダメージ（マップ兵器を除く）
+                    initSum += Best(ab, b, w => Usable(w, "移動前") && !IsMap(w.WeaponData), 1, false).damage;
                     ap.Morale = 130;
                     foreach (var n in ApplyBest(ab, "ダメージ増加", "絶対命中", "命中強化")) usedSp.Add(n);
                     var (fb, hb) = Best(ab, b, w => Usable(w, "移動前"), 1, false);
@@ -621,26 +712,39 @@ namespace PackAnalysis
                     DespawnAll();
                 }
                 r["ボス戦"] = ratioSum / panel.Count;
+                r["初動火力"] = initSum / panel.Count;
                 r["ボスへの期待ダメージ"] = dmgSum / panel.Count;
                 r["ボスへの命中率"] = hitSum / panel.Count;
                 r["ボス戦のSP"] = usedSp.Count;
+                spUsed[key + "/ボス戦"] = usedSp.ToList();
 
                 // 回避・囮: 同じ帯の代表の組から受ける攻撃に、倒されるまで何回耐えるか（回避・被ダメージを下げる SP を使い、絶対回避の SP は使える回数を足す）
                 SetTerrain(kind);
                 var (ad, _) = Spawn(pd, ud, "味方", 1);
                 var opp = BandOpponent(Band(pd), pd.Name);
                 var (o, _) = Spawn(opp.p, opp.u, "敵", 2);
-                ApplyBest(ad, "回避強化", "被ダメージ低下");
+                // SP なしの被ダメージ
+                var (od0, oh0) = Best(o, ad, w => Usable(w, "移動前"), 1, false);
+                // 1 ターン続く SP（集中・鉄壁・堅牢 など）を、効果の種類ごとに最も強いものを 1 つずつかける
+                spUsed[key + "/回避・囮"] = ApplyBest(ad, sp => sp.Duration == "ターン", "回避強化", "被ダメージ低下", "装甲強化");
+                lastRawHit = 0;
                 var (od, oh) = Best(o, ad, w => Usable(w, "移動前"), 1, false);
+                r["相手の命中率(上限なし)"] = lastRawHit;
+                // 一度だけ効く SP（ひらめき・忍耐 など。絶対回避か、被弾時の被ダメージ低下）は、使える回数だけ攻撃を防ぐとして足す
                 var absoluteEvasion = 0;
                 foreach (var p in ad.Pilots.Concat(ad.SupportPilots))
                 {
-                    var cheapest = AvailableSpecialPowers(ad).Where(x => x.p == p && EffectLevel(x.sp, "絶対回避") > 0)
+                    var cheapest = AvailableSpecialPowers(ad).Where(x => x.p == p && (EffectLevel(x.sp, "絶対回避") > 0 || (x.sp.Duration == "被弾" && EffectLevel(x.sp, "被ダメージ低下") > 0)))
                         .Select(x => p.Data.SpecialPowerCost(x.sp.Name)).Where(c => c > 0).DefaultIfEmpty(0).Min();
                     if (cheapest > 0) absoluteEvasion += p.MaxSP / cheapest;
                 }
+                // 1 ターン続く SP は相手の 1 ターン（3 回の攻撃）だけ効き、残りの HP は SP なしで耐えるとする
+                double hp = ad.MaxHP, hits;
+                var afterTurn = hp - 3 * od;
+                hits = afterTurn <= 0 ? hp / Math.Max(1, od) : 3 + afterTurn / Math.Max(1, od0);
                 r["相手の命中率"] = oh;
-                r["回避・囮"] = ad.MaxHP / Math.Max(1, od) + absoluteEvasion;
+                r["相手の命中率(SPなし)"] = oh0;
+                r["回避・囮"] = hits + absoluteEvasion;
                 r["絶対回避の回数"] = absoluteEvasion;
                 DespawnAll();
 
@@ -651,6 +755,33 @@ namespace PackAnalysis
                 var support = ud.Abilities.Count(ab => Regex.IsMatch(ab.Name ?? "", "修理|補給|回復"));
                 r["支援"] = allySp + 2 * support;
                 r["地形"] = kind == "陸" ? 0 : kind == "水" ? 1 : 2;
+
+                // 単純数字: SP・属性・特殊能力・命中率・地形を通さない、データの数字だけの値
+                var oppRaw = RawMax(opp.p, opp.u, w => !IsMap(w));
+                r["初動火力(単純)"] = RawMax(pd, ud, w => !IsMap(w) && w.NecessaryMorale <= 100);
+                r["ボス火力(単純)"] = RawMax(pd, ud, w => !IsMap(w));
+                r["耐久力(単純)"] = ud.HP / Math.Max(100.0, oppRaw - ud.Armor);
+                r["回避(単純)"] = ud.Mobility + pd.Dodge;
+                r["遊撃(単純)"] = RawMax(pd, ud, w => !IsMap(w) && (w.MaxRange <= 1 || (w.Class ?? "").Contains("Ｐ"))) * ud.Speed / 4.0;
+                r["長距離(単純)"] = RawMax(pd, ud, w => !IsMap(w) && w.MaxRange >= 3);
+                r["マップ兵器(単純)"] = ud.Weapons.Where(w => IsMap(w) && w.Power > 0)
+                    .Select(w => { var n = RawUses(ud, w); return Raw(pd, w) * MapTargets(w) * (n < 0 ? 3 : Math.Min(3, n)); }).DefaultIfEmpty(0).Max();
+                // ザコ掃討（単純）: 攻撃力の高い武器から、撃てる回数の分だけ 30 回まで撃った攻撃力の合計 ÷ 名前なしの HP
+                var left = 30;
+                double rawSum = 0;
+                foreach (var w in ud.Weapons.Where(w => !IsMap(w) && w.Power > 0 && w.NecessaryMorale <= 100).OrderByDescending(w => Raw(pd, w)))
+                {
+                    var n = RawUses(ud, w);
+                    var k = n < 0 ? left : Math.Min(left, n);
+                    rawSum += k * Raw(pd, w);
+                    left -= k;
+                    if (left <= 0) break;
+                }
+                r["ザコ掃討(単純)"] = rawSum / Math.Max(1, zakoOpp.u.HP);
+                r["ボス火力"] = r["ボスへの期待ダメージ"];
+                r["耐久力"] = r["回避・囮"];
+                // 命中率は 100% で頭打ちになり差が出ないので、100% を超える分も数える
+                r["回避"] = Math.Max(1, 200 - r["相手の命中率(上限なし)"]);
             }
             catch (Exception ex)
             {
@@ -760,7 +891,7 @@ namespace PackAnalysis
 
         private void BuildReference()
         {
-            var targets = TargetPairs().ToList();
+            var targets = TargetPairs().Concat(TierPairs().Select(t => t.pair)).ToList();
             foreach (var band in targets.Select(t => Band(t.Pilot)).Distinct().OrderBy(b => Array.IndexOf(Bands, b)))
             {
                 var rnd = new Random(opt.Seed);
@@ -770,6 +901,86 @@ namespace PackAnalysis
                     .Take(opt.Sample).ToList();
                 bandReference[band] = l.Select(x => Evaluate(x.Pilot, x.Unit)).Where(d => d.Count > 0).ToList();
                 Console.Error.WriteLine($"比べる組 {band}: {bandReference[band].Count}");
+            }
+        }
+
+        private List<(string tier, Pair pair)> tierPairs;
+
+        /// <summary>格の一覧（pack-stats の tiers-*.tsv。格・パイロット・乗るユニット）の組</summary>
+        private List<(string tier, Pair pair)> TierPairs()
+        {
+            if (tierPairs != null) return tierPairs;
+            tierPairs = new List<(string, Pair)>();
+            if (opt.TiersFile == null) return tierPairs;
+            foreach (var t in File.ReadAllLines(opt.TiersFile).Where(l => l.Trim() != "" && !l.StartsWith("#")).Select(l => l.Split('\t')).Where(t => t.Length >= 2))
+            {
+                var unit = t.Length > 2 && t[2] != "" ? t[2] : null;
+                var pair = pairs.FirstOrDefault(x => x.Pilot.Name == t[1] && (unit == null || x.Unit.Name == unit));
+                if (pair == null && src.PDList.IsDefined2(t[1]) && unit != null && unitByName.ContainsKey(unit))
+                    pair = new Pair { Pilot = src.PDList.Item(t[1]), Unit = unitByName[unit], How = "格の一覧" };
+                if (pair == null)
+                {
+                    Console.Error.WriteLine($"格の一覧の組が見つからない: {t[1]}");
+                    continue;
+                }
+                tierPairs.Add((t[0], pair));
+            }
+            return tierPairs;
+        }
+
+        // 指数にする値（実効性能と単純数字の対）
+        private static readonly (string label, string eff, string raw)[] Indices =
+        {
+            ("初動火力", "初動火力", "初動火力(単純)"),
+            ("ボス火力", "ボス火力", "ボス火力(単純)"),
+            ("ザコ掃討", "ザコ掃討", "ザコ掃討(単純)"),
+            ("耐久力", "耐久力", "耐久力(単純)"),
+            ("回避", "回避", "回避(単純)"),
+            ("遊撃", "遊撃", "遊撃(単純)"),
+            ("長距離", "長距離", "長距離(単純)"),
+            ("マップ兵器", "マップ兵器", "マップ兵器(単純)"),
+        };
+
+        private readonly Dictionary<string, double> medianCache = new Dictionary<string, double>();
+
+        /// <summary>同じ帯の比べる組の中央値（0 より大きい値のみ）を 100 とした指数。値が 0 か、比べる組が足りなければ -1</summary>
+        private double Index(string band, string key, double v)
+        {
+            if (!bandReference.TryGetValue(band, out var l) || l.Count < 20) return -1;
+            // 長距離・マップ兵器は、持たなければ「-」。ほかは 0
+            if (v <= 0) return key.StartsWith("長距離") || key.StartsWith("マップ兵器") || key.StartsWith("遊撃") ? -1 : 0;
+            var ck = band + "/" + key;
+            if (!medianCache.TryGetValue(ck, out var m))
+            {
+                var a = l.Select(d => d.GetValueOrDefault(key)).Where(x => x > 0).OrderBy(x => x).ToList();
+                m = a.Count == 0 ? 0 : a[a.Count / 2];
+                medianCache[ck] = m;
+            }
+            return m <= 0 ? -1 : 100 * v / m;
+        }
+
+        private static string Ix(double v) => v < 0 ? "-" : $"{v:0}";
+
+        /// <summary>実効性能の指数と単純数字の指数の差の平均（両方ある指数のみ）</summary>
+        private double Gap(string band, Dictionary<string, double> e)
+        {
+            var g = Indices.Select(x => (a: Index(band, x.eff, e.GetValueOrDefault(x.eff)), b: Index(band, x.raw, e.GetValueOrDefault(x.raw))))
+                .Where(x => x.a >= 0 && x.b >= 0).Select(x => Math.Min(250, x.a) - Math.Min(250, x.b)).ToList();
+            return g.Count == 0 ? double.NaN : g.Average();
+        }
+
+        private void WriteIndexTable(TextWriter o, IEnumerable<(string label, Pair t)> rows)
+        {
+            o.WriteLine("| 組 | 帯 | " + string.Join(" | ", Indices.Select(x => x.label)) + " | 実効−単純 |");
+            o.WriteLine("|---|---|" + string.Concat(Indices.Select(_ => "--:|")) + "--:|");
+            foreach (var (label, t) in rows)
+            {
+                var e = Evaluate(t.Pilot, t.Unit);
+                if (e.Count == 0) continue;
+                var band = Band(t.Pilot);
+                var gap = Gap(band, e);
+                o.WriteLine($"| {label} | {band} | " + string.Join(" | ", Indices.Select(x => $"{Ix(Index(band, x.eff, e.GetValueOrDefault(x.eff)))}／{Ix(Index(band, x.raw, e.GetValueOrDefault(x.raw)))}"))
+                    + $" | {(double.IsNaN(gap) ? "-" : gap.ToString("+0;-0;0"))} |");
             }
         }
 
@@ -840,13 +1051,21 @@ namespace PackAnalysis
                         + $" | {(bandReference[band].Count < 20 ? "比べる組が足りない" : role.Count > 0 ? string.Join("・", role) : "見当たらない")} |");
                 }
                 o.WriteLine();
-                o.WriteLine("| 組 | ボスの HP を 1 回で削る割合 | ボスへの期待ダメージ | ボスへの命中率 | 30 回の行動で倒せるザコ | 攻撃回数 | 同じ帯の相手の命中率 | 同じ帯の相手の攻撃に耐える回数（うち絶対回避） | 移動後の火力 | 射程 3 以上の火力 | 反撃できる距離（1〜3） |");
-                o.WriteLine("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|");
+                o.WriteLine("| 組 | ボスの HP を 1 回で削る割合 | ボスへの期待ダメージ | ボスへの命中率 | 30 回の行動で倒せるザコ | 攻撃回数 | 同じ帯の相手の命中率 | 同じ帯の相手の攻撃に耐える回数（うち一度だけ効く SP） | 移動後の火力 | 射程 3 以上の火力 | 反撃できる距離（1〜3） | 初動火力 | マップ兵器（回数） |");
+                o.WriteLine("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|");
                 foreach (var t in tp)
                 {
                     var e = Evaluate(t.Pilot, t.Unit);
                     if (e.Count == 0) continue;
-                    o.WriteLine($"| {t.Pilot.Name}／{t.Unit.Name} | {e["ボス戦"]:0.00} | {e["ボスへの期待ダメージ"]:0} | {e["ボスへの命中率"]:0}% | {e["ザコ掃討"]:0.0} | {e["攻撃回数"]:0} | {e["相手の命中率"]:0}% | {e["回避・囮"]:0.0}（{e["絶対回避の回数"]:0}） | {e["移動後の火力"]:0} | {e["長距離"]:0} | {e["反撃できる距離"]:0} |");
+                    o.WriteLine($"| {t.Pilot.Name}／{t.Unit.Name} | {e["ボス戦"]:0.00} | {e["ボスへの期待ダメージ"]:0} | {e["ボスへの命中率"]:0}% | {e["ザコ掃討"]:0.0} | {e["攻撃回数"]:0} | {e["相手の命中率"]:0}% | {e["回避・囮"]:0.0}（{e["絶対回避の回数"]:0}） | {e["移動後の火力"]:0} | {e["長距離"]:0} | {e["反撃できる距離"]:0} | {e["初動火力"]:0} | {e["マップ兵器"]:0}（{e["マップ兵器の回数"]:0}） |");
+                }
+                o.WriteLine();
+                o.WriteLine("指数（同じ帯の比べる組の中央値 = 100。実効性能／単純数字）:");
+                o.WriteLine();
+                WriteIndexTable(o, tp.Select(t => ($"{t.Pilot.Name}／{t.Unit.Name}", t)));
+                if (opt.Cards)
+                {
+                    foreach (var t in tp) WriteCard(o, t);
                 }
                 // 逆転: 経験値が上の組が、下の組に全ての使いどころで並ばれるか上回られている
                 var named = tp.Where(t => !IsZako(t.Pilot)).Select(t => (t, e: Evaluate(t.Pilot, t.Unit))).Where(x => x.e.Count > 0).ToList();
@@ -866,6 +1085,135 @@ namespace PackAnalysis
                 o.WriteLine("逆転（経験値が上の組が、下の組に全ての使いどころで並ばれるか上回られている）: " + (inversions.Count == 0 ? "なし" : ""));
                 foreach (var s in inversions.Take(6)) o.WriteLine($"- {s}");
             }
+            WriteTiers(o);
+        }
+
+        // ---- データページ（組ごとのレーダーチャートと総評） ----
+
+        // 総評で触れるユニットの特殊能力・パイロットの特殊能力
+        private static readonly string[] NotableFeatures = { "バリア", "フィールド", "プロテクション", "分身", "超回避", "阻止", "反射", "当て身技", "ＨＰ回復", "ＥＮ回復", "シールド", "ステルス", "変形", "合体", "ハイパーモード", "他形態" };
+        private static readonly string[] NotableSkills = { "切り払い", "Ｓ防御", "迎撃", "底力", "不屈", "覚悟", "カウンター", "先読み", "ＮＴ", "超能力", "術", "援護攻撃", "援護防御", "統率" };
+
+        private void WriteCard(TextWriter o, Pair t)
+        {
+            var e = Evaluate(t.Pilot, t.Unit);
+            if (e.Count == 0) return;
+            var pd = t.Pilot;
+            var ud = t.Unit;
+            var band = Band(pd);
+            var key = pd.Name + "/" + ud.Name;
+            var eff = Indices.Select(x => Index(band, x.eff, e.GetValueOrDefault(x.eff))).ToList();
+            var raw = Indices.Select(x => Index(band, x.raw, e.GetValueOrDefault(x.raw))).ToList();
+            string R(double v) => v < 0 ? "0" : $"{Math.Min(250, v):0}";
+
+            o.WriteLine();
+            o.WriteLine($"#### {pd.Name}／{ud.Name}");
+            o.WriteLine();
+            o.WriteLine("```mermaid");
+            // 線は直線で結ぶ（curveTension 0）。目盛りも多角形にする
+            o.WriteLine("---");
+            o.WriteLine("config:");
+            o.WriteLine("  radar:");
+            o.WriteLine("    curveTension: 0");
+            o.WriteLine("---");
+            o.WriteLine("radar-beta");
+            o.WriteLine($"  title {pd.Nickname}（{band}。中央値 = 100）");
+            o.WriteLine("  axis " + string.Join(", ", Indices.Select((x, i) => $"a{i}[\"{x.label}\"]")));
+            o.WriteLine("  curve eff[\"実効性能\"]{" + string.Join(", ", eff.Select(R)) + "}");
+            o.WriteLine("  curve raw[\"単純数字\"]{" + string.Join(", ", raw.Select(R)) + "}");
+            o.WriteLine("  max 200");
+            o.WriteLine("  min 0");
+            o.WriteLine("  graticule polygon");
+            o.WriteLine("```");
+            o.WriteLine();
+
+            // 諸元
+            var sps = pd.DefinedSpecialPowers().Select(x => $"{x.Name}{x.NecessaryLevel}");
+            o.WriteLine($"- パイロット: 経験値 {pd.ExpValue}、格闘 {pd.Infight}・射撃 {pd.Shooting}・命中 {pd.Hit}・回避 {pd.Dodge}・技量 {pd.Technique}・反応 {pd.Intuition}、{pd.Personality}、SP {pd.SP}（{string.Join("・", sps)}）");
+            var skills = pd.Skills.Where(k => k.NecessaryLevel <= opt.Level).Select(k => k.Name).Distinct().ToList();
+            if (skills.Any()) o.WriteLine($"- パイロットの特殊能力（レベル {opt.Level} まで）: {string.Join("・", skills)}");
+            o.WriteLine($"- ユニット: 経験値 {ud.ExpValue}、HP {ud.HP}・EN {ud.EN}・装甲 {ud.Armor}・運動性 {ud.Mobility}・移動力 {ud.Speed}、{ud.Adaption}、{ud.Size}");
+            var feats = ud.Features.Select(f => f.Name).Distinct().ToList();
+            if (feats.Any()) o.WriteLine($"- ユニットの特殊能力: {string.Join("・", feats)}");
+            o.WriteLine("- 武器: " + string.Join("、", ud.Weapons.Select(w => $"{w.Name} {w.Power}（{w.MinRange}-{w.MaxRange}{(w.ENConsumption > 0 ? $"、EN {w.ENConsumption}" : "")}{(w.Bullet > 0 ? $"、弾 {w.Bullet}" : "")}{(w.NecessaryMorale > 0 ? $"、気力 {w.NecessaryMorale}" : "")}{(string.IsNullOrEmpty(w.Class) || w.Class == "-" ? "" : "、" + w.Class)}）")));
+            o.WriteLine();
+            o.WriteLine("| | " + string.Join(" | ", Indices.Select(x => x.label)) + " |");
+            o.WriteLine("|---|" + string.Concat(Indices.Select(_ => "--:|")));
+            o.WriteLine("| 実効性能 | " + string.Join(" | ", eff.Select(Ix)) + " |");
+            o.WriteLine("| 単純数字 | " + string.Join(" | ", raw.Select(Ix)) + " |");
+            o.WriteLine();
+
+            // 総評
+            var notes = new List<string>();
+            var strong = Indices.Select((x, i) => (x.label, v: eff[i])).Where(x => x.v >= 125).OrderByDescending(x => x.v).ToList();
+            var weak = Indices.Select((x, i) => (x.label, v: eff[i])).Where(x => x.v >= 0 && x.v <= 75).OrderBy(x => x.v).ToList();
+            var none = Indices.Select((x, i) => (x.label, v: eff[i])).Where(x => x.v < 0 && x.label != "マップ兵器").Select(x => x.label).ToList();
+            if (strong.Any()) notes.Add("強み: " + string.Join("・", strong.Select(x => $"{x.label}（{x.v:0}）")));
+            if (weak.Any()) notes.Add("弱み: " + string.Join("・", weak.Select(x => $"{x.label}（{x.v:0}）")));
+            if (none.Any()) notes.Add("持たない: " + string.Join("・", none));
+            var gap = Gap(band, e);
+            if (!double.IsNaN(gap))
+            {
+                notes.Add(gap >= 15 ? $"データの数字より実効性能が高い（実効−単純 {gap:+0;-0;0}）。SP・属性・特殊能力が効いている、主役向きの作り"
+                    : gap <= -15 ? $"データの数字ほど実効性能が伸びない（実効−単純 {gap:+0;-0;0}）。数字で押す、敵・ボス向きの作り"
+                    : $"データの数字と実効性能が釣り合う（実効−単純 {gap:+0;-0;0}）");
+            }
+            var bossSp = spUsed.GetValueOrDefault(key + "/ボス戦") ?? new List<string>();
+            var evadeSp = spUsed.GetValueOrDefault(key + "/回避・囮") ?? new List<string>();
+            if (bossSp.Any()) notes.Add($"ボス戦で使う SP: {string.Join("・", bossSp)}（命中率 {e["ボスへの命中率"]:0}%）");
+            if (evadeSp.Any() || e["絶対回避の回数"] > 0)
+            {
+                var parts = new List<string>();
+                if (evadeSp.Any()) parts.Add(string.Join("・", evadeSp));
+                if (e["絶対回避の回数"] > 0) parts.Add($"一度だけ効く SP（ひらめき・忍耐 など）{e["絶対回避の回数"]:0} 回");
+                notes.Add($"守りで使う SP: {string.Join("、", parts)}（同じ帯の相手の命中率 {e["相手の命中率"]:0}%）");
+            }
+            var nf = feats.Where(f => NotableFeatures.Any(n => f.Contains(n))).ToList();
+            var ns = skills.Where(k => NotableSkills.Any(n => k.Contains(n))).ToList();
+            if (nf.Any() || ns.Any()) notes.Add("効いている特殊能力: " + string.Join("・", nf.Concat(ns)));
+            var attrs = ud.Weapons.SelectMany(w => new[] { "Ｂ", "実", "Ｐ", "Ｈ", "貫", "連", "接", "先", "識" }.Where(a => (w.Class ?? "").Contains(a))).Distinct().ToList();
+            if (attrs.Any()) notes.Add("武器の属性: " + string.Join("・", attrs));
+            if (e["反撃できる距離"] < 3) notes.Add($"射程 1〜3 のうち {3 - e["反撃できる距離"]:0} つの距離で反撃できない");
+            if (e["マップ兵器"] > 0)
+            {
+                var mw = ud.Weapons.Where(w => IsMap(w) && w.Power > 0).OrderByDescending(w => w.Power).First();
+                var single = ud.Weapons.Where(w => !IsMap(w) && w.Power > 0).Select(w => w.Power).DefaultIfEmpty(0).Max();
+                var n = RawUses(ud, mw);
+                var type = mw.Power < single * 0.9 ? "補助型" : ud.Weapons.Count(w => IsMap(w) && w.Power > 0) == 1 && n >= 0 && n <= 2 ? "切り札型" : "マップ兵器屋";
+                notes.Add($"マップ兵器: {mw.Name}（{type}。範囲 {MapCells(mw)} マス、当たる目安 {MapTargets(mw)} 体、{(n < 0 ? "回数の制限なし" : $"{n} 回")}{((mw.Class ?? "").Contains("識") ? "、識あり" : "")}）");
+            }
+            o.WriteLine("**総評**: " + string.Join("。", notes) + "。");
+        }
+
+        // 格ごとの、実効性能と単純数字の指数
+        private void WriteTiers(TextWriter o)
+        {
+            var tp = TierPairs();
+            if (tp.Count == 0) return;
+            o.WriteLine();
+            o.WriteLine("### 格ごとの指数");
+            o.WriteLine();
+            o.WriteLine("格の一覧のキャラの組。指数は同じ帯の比べる組の中央値 = 100。「実効−単純」は、両方ある指数の差の平均（正なら、データの数字より実効性能が高い）。");
+            o.WriteLine();
+            o.WriteLine("| 格 | 組の数 | " + string.Join(" | ", Indices.Select(x => x.label)) + " | 実効−単純 |");
+            o.WriteLine("|---|--:|" + string.Concat(Indices.Select(_ => "---|")) + "--:|");
+            foreach (var g in tp.GroupBy(x => x.tier))
+            {
+                var es = g.Select(x => (band: Band(x.pair.Pilot), e: Evaluate(x.pair.Pilot, x.pair.Unit))).Where(x => x.e.Count > 0).ToList();
+                string Med(Func<(string band, Dictionary<string, double> e), double> f)
+                {
+                    var a = es.Select(f).Where(v => v >= 0).OrderBy(v => v).ToList();
+                    return a.Count == 0 ? "-" : $"{a[a.Count / 2]:0}";
+                }
+                var gaps = es.Select(x => Gap(x.band, x.e)).Where(v => !double.IsNaN(v)).OrderBy(v => v).ToList();
+                o.WriteLine($"| {g.Key} | {es.Count} | " + string.Join(" | ", Indices.Select(ix =>
+                    $"{Med(x => Index(x.band, ix.eff, x.e.GetValueOrDefault(ix.eff)))}／{Med(x => Index(x.band, ix.raw, x.e.GetValueOrDefault(ix.raw)))}"))
+                    + $" | {(gaps.Count == 0 ? "-" : gaps[gaps.Count / 2].ToString("+0;-0;0"))} |");
+            }
+            o.WriteLine();
+            o.WriteLine("各値は格の中での中央値（実効性能／単純数字）。");
+            o.WriteLine();
+            WriteIndexTable(o, tp.Select(x => ($"{x.tier}: {x.pair.Pilot.Name}／{x.pair.Unit.Name}", x.pair)));
         }
     }
 }
