@@ -314,22 +314,27 @@ namespace SRCRender
             {
                 return;
             }
+            // 画像は枠の内側に表示する（元の SRC の PictureBox の ScaleWidth × ScaleHeight）
+            var client = SKRect.Create(picture.Left + picture.BorderPx, picture.Top + picture.BorderPx, picture.ClientSize.Width, picture.ClientSize.Height);
             paint.Color = Compat.Graphics.ToSKColor(picture.BackColor);
-            canvas.DrawRect(picture.Left, picture.Top, picture.Width, picture.Height, paint);
-            if (picture.Image == null)
+            canvas.DrawRect(client, paint);
+            if (picture.Image != null)
             {
-                return;
+                if (picture.StretchImage)
+                {
+                    canvas.DrawBitmapShared(picture.Image, client);
+                }
+                else
+                {
+                    canvas.Save();
+                    canvas.ClipRect(client);
+                    canvas.DrawBitmapShared(picture.Image, client.Left, client.Top);
+                    canvas.Restore();
+                }
             }
-            if (picture.StretchImage)
+            if (picture.Border3D)
             {
-                canvas.DrawBitmapShared(picture.Image, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
-            }
-            else
-            {
-                canvas.Save();
-                canvas.ClipRect(SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height));
-                canvas.DrawBitmapShared(picture.Image, picture.Left, picture.Top);
-                canvas.Restore();
+                DrawSunkenEdge(canvas, SKRect.Create(picture.Left, picture.Top, picture.Width, picture.Height), paint);
             }
         }
 
@@ -409,6 +414,7 @@ namespace SRCRender
         private static readonly SKColor WindowsHighlight = new SKColor(0, 0, 128);
         private static readonly SKColor WindowsShadow = new SKColor(128, 128, 128);
         private static readonly SKColor WindowsDarkShadow = new SKColor(64, 64, 64);
+        private static readonly SKColor WindowsLight = new SKColor(192, 192, 192);
         private static readonly Compat.Font ListTitleFont = new Compat.Font("ＭＳ Ｐゴシック", 9F, Compat.FontStyle.Bold);
 
         /// <summary>
@@ -524,7 +530,7 @@ namespace SRCRender
             var rect = SKRect.Create(check.Left, top, box, box);
             paint.Color = check.Enabled ? SKColors.White : new SKColor(192, 192, 192);
             canvas.DrawRect(rect, paint);
-            DrawBevel(canvas, rect, raised: false, paint);
+            DrawSunkenEdge(canvas, rect, paint);
             if (check.Checked)
             {
                 paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
@@ -611,7 +617,7 @@ namespace SRCRender
             var rect = SKRect.Create(label.Left, label.Top, label.Width, label.Height);
             paint.Color = Compat.Graphics.ToSKColor(label.BackColor);
             canvas.DrawRect(rect, paint);
-            DrawBevel(canvas, rect, raised: false, paint);
+            DrawSunkenEdge(canvas, rect, paint);
             if (string.IsNullOrEmpty(label.Text))
             {
                 return;
@@ -694,7 +700,7 @@ namespace SRCRender
                 canvas.DrawRect(thumb, paint);
                 DrawBevel(canvas, thumb, raised: true, paint);
             }
-            DrawBevel(canvas, rect, raised: false, paint);
+            DrawSunkenEdge(canvas, rect, paint);
         }
 
         /// <summary>Windows クラシックの立体枠。</summary>
@@ -711,6 +717,33 @@ namespace SRCRender
             canvas.DrawLine(rect.Right - 0.5f, rect.Top, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
             canvas.DrawLine(rect.Left, rect.Bottom - 0.5f, rect.Right - 0.5f, rect.Bottom - 0.5f, paint);
             paint.Style = SKPaintStyle.Fill;
+        }
+
+        /// <summary>
+        /// 元の SRC（VB）の 3D の部品（Appearance = 1）のへこんだ枠（2px）。PictureBox・TextBox・ListBox・CheckBox などの枠に当たる。
+        /// 外側は左上が影・右下が白、内側は左上が濃い影・右下が明るい灰色。
+        /// https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-drawedge （EDGE_SUNKEN）
+        /// </summary>
+        private static void DrawSunkenEdge(SKCanvas canvas, SKRect rect, SKPaint paint)
+        {
+            DrawEdgeLines(canvas, rect, WindowsShadow, SKColors.White, paint);
+            DrawEdgeLines(canvas, SKRect.Create(rect.Left + 1, rect.Top + 1, rect.Width - 2, rect.Height - 2), WindowsDarkShadow, WindowsLight, paint);
+        }
+
+        /// <summary>1px の枠。左上の 2 辺と右下の 2 辺を別の色で塗る。</summary>
+        private static void DrawEdgeLines(SKCanvas canvas, SKRect rect, SKColor topLeft, SKColor bottomRight, SKPaint paint)
+        {
+            if (rect.Width <= 0 || rect.Height <= 0)
+            {
+                return;
+            }
+            paint.Style = SKPaintStyle.Fill;
+            paint.Color = topLeft;
+            canvas.DrawRect(rect.Left, rect.Top, rect.Width - 1, 1, paint);
+            canvas.DrawRect(rect.Left, rect.Top, 1, rect.Height - 1, paint);
+            paint.Color = bottomRight;
+            canvas.DrawRect(rect.Left, rect.Bottom - 1, rect.Width, 1, paint);
+            canvas.DrawRect(rect.Right - 1, rect.Top, 1, rect.Height, paint);
         }
 
         private static readonly Compat.Font MenuFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);

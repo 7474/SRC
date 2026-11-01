@@ -330,12 +330,14 @@ namespace SRCRender
         {
             var bar = frmListBox.picBar;
             bar.ClearImage(new SolidBrush(bar.BackColor));
-            var barWidth = (int)((float)bar.Width * listCurrentTime / listTimeLimit);
+            // 元の SRC（frmListBox の picBar.Line (0, 0)-(picBar.ScaleWidth * CurrentTime \ TimeLimit, picBar.ScaleHeight), , BF）と同じく枠の内側に描く
+            var client = bar.ClientSize;
+            var barWidth = (int)((float)client.Width * listCurrentTime / listTimeLimit);
             if (barWidth > 0)
             {
                 using (var g = Graphics.FromImage(bar.Image))
                 {
-                    g.FillRectangle(BarForeBrush, 0, 0, Math.Min(barWidth, bar.Width), bar.Height);
+                    g.FillRectangle(BarForeBrush, 0, 0, Math.Min(barWidth, client.Width), client.Height);
                 }
             }
             Present();
