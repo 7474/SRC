@@ -5,6 +5,7 @@
 
 - 本書の数字は、[準拠データパックの分析の試作結果](./balance-pack-analysis.md) の計測値（GSC データパック、7474/SRC-Data のコミット `a802b31`。SRC# は全角スペースなどの読み込みを直した版）。試作のプログラムは [`tools/pack-analysis`](../../tools/pack-analysis/README.md) で、だれでも同じ結果を出せる
 - SRC# の本体の機能ではないぞ。遊びの読み物として楽しんでほしい
+- 本書の評価は、耐久力（回避・囮）の SP の扱いと、遊撃・長距離の頭打ちを見直す前の計測値。いまの評価は [試作結果](./balance-pack-analysis.md) を見てほしい
 
 ---
 

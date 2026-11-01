@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace PackStats
 {
-    public static class Program
+    public static partial class Program
     {
         public static int Main(string[] args)
         {
@@ -31,12 +31,26 @@ namespace PackStats
                 Console.Error.WriteLine("  spread <パック>                       同じ帯の中での得意・苦手の数（個性の偏り）");
                 Console.Error.WriteLine("  types <パック>                        同じ帯の中での位置による系統（リアル・スーパー・グレー）");
                 Console.Error.WriteLine("  map-types <パック>                    マップ兵器の持たせ方の型");
+                Console.Error.WriteLine("  sp-set <パック> [格の一覧]            SP ごとの持つ割合・消費・覚えるレベル、SP の数、格ごとの SP");
+                Console.Error.WriteLine("  messages <パック>                     パイロットのメッセージ（pilot_message.txt）の量とシチュエーション");
+                Console.Error.WriteLine("  check <パック> <作品のフォルダ>       作品のデータを、パックの実態と比べて総合的に評価する");
+                Console.Error.WriteLine("  site <出力> <GSCデータパック> [作品のルート …]  GitHub Pages 用の、作品ごとのデータと評価のページ");
                 Console.Error.WriteLine("  roles <組の評価の結果.md> <格の一覧>  組の評価（tools/pack-analysis）で、格ごとに決め手の使いどころを持つ割合");
                 return 2;
             }
             if (args[0] == "roles")
             {
                 Roles(args[1], args[2]);
+                return 0;
+            }
+            if (args[0] == "site")
+            {
+                Site(args[1], args[2], args.Skip(3));
+                return 0;
+            }
+            if (args[0] == "check")
+            {
+                Check(Data.Load(args[1]), args[2]);
                 return 0;
             }
             var data = Data.Load(args[1]);
@@ -54,6 +68,8 @@ namespace PackStats
                 case "spread": Spread(data); break;
                 case "types": Types(data, args.Length > 2 ? args[2] : null); break;
                 case "map-types": MapTypes(data); break;
+                case "sp-set": SpSet(data, args.Length > 2 ? args[2] : null); break;
+                case "messages": MessagesStats(data); break;
                 default: Console.Error.WriteLine($"不明なコマンド: {args[0]}"); return 2;
             }
             return 0;
@@ -75,7 +91,10 @@ namespace PackStats
 
         // SP を持つパイロット（サポートパイロットなどを除く）と、ザコ・汎用
         private static List<PilotData> Pilots(Data d) => d.Src.PDList.Items
-            .Where(p => p.SP > 0 || p.Name.Contains("(ザコ)") || p.Name.Contains("(汎用)")).ToList();
+            .Where(p => !IsSystemPilot(p) && (p.SP > 0 || p.Name.Contains("(ザコ)") || p.Name.Contains("(汎用)"))).ToList();
+
+        // SRCCore が自動で加えるパイロット（ステータス表示用ダミーパイロット など）
+        private static bool IsSystemPilot(PilotData p) => p.Name.StartsWith("ステータス表示用");
 
         // 武器を持つユニット
         private static List<UnitData> Units(Data d) => d.Src.UDList.Items.Where(u => u.Weapons.Any() && u.HP > 0).ToList();
@@ -709,13 +728,23 @@ namespace PackStats
         public string Name;
         public Dictionary<string, string> UnitWork = new Dictionary<string, string>();
 
-        public static Data Load(string root)
+        public string Root;
+        public List<MessageBlock> Messages = new List<MessageBlock>();
+
+        // spFile: 作品のフォルダに sp.txt が無いとき、先に読む sp.txt
+        public static Data Load(string root, string spFile = null)
         {
             var d = new Data
             {
                 Src = new SRC { GUI = new MockGUI(), FileSystem = new LocalFileSystem() },
                 Name = Path.GetFileName(Path.GetFullPath(root).TrimEnd('/', '\\')),
+                Root = root,
             };
+            if (spFile != null)
+            {
+                using var s = File.OpenRead(spFile);
+                d.Src.SPDList.Load("sp.txt", s);
+            }
             var files = Directory.EnumerateFiles(root, "*.txt", SearchOption.AllDirectories)
                 .OrderBy(f => Path.GetFileName(f).ToLowerInvariant() == "sp.txt" ? 0 : 1)
                 .ThenBy(f => f, StringComparer.Ordinal);
@@ -730,6 +759,7 @@ namespace PackStats
                     if (name == "sp.txt") d.Src.SPDList.Load(name, s);
                     else if (name == "robot.txt" || name == "unit.txt") d.Src.UDList.Load(name, s);
                     else if (name == "pilot.txt") d.Src.PDList.Load(name, s);
+                    else if (name == "pilot_message.txt") d.Messages.AddRange(MessageBlock.Parse(f));
                 }
                 catch (Exception ex)
                 {
