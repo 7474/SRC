@@ -193,6 +193,99 @@
     <value>Как пользоваться SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Ресурсы и язык применяются при следующем запуске, журнал — при сохранении.</value>
+    <value>Ресурсы и язык применяются при следующем запуске, остальное — при сохранении (сетка — при следующем запуске).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Игра</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Для разработчиков</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Настройки для _разработчиков...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Режим автоматической контратаки</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Имена файлов музыки для каждой сцены ([BGM] в Src.ini исходного SRC). Если пусто, используется стандартное имя (Map1.mid и т. п.). Музыка, заданная сценарием командой RenameBGM и т. п., имеет приоритет.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Импортировать из Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>Импортировано записей: {0} ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Нет раздела [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Вступление</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Карта (земля, фаза союзников)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Карта (земля, фаза врага)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Карта (помещение, фаза союзников)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Карта (помещение, фаза врага)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Карта (космос, фаза союзников)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Карта (космос, фаза врага)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Брифинг</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Антракт</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Подзаголовок</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Концовка</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Бой</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Настройки для авторов сценариев и разработчиков. Чтобы просто играть, менять их не нужно.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Режим отладки (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Перечитывает данные событий при быстрой загрузке и перезапуске. То же, что «デバッグ» команды Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Читать текстовые файлы также в Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Записывать файлы в Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Для совместимости с данными исходного SRC (Shift_JIS). По умолчанию включены оба.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Число буферов изображений (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Максимальный размер буфера изображений (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Сохранять растянутые изображения (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Настройки буфера изображений нужны для совместимости с исходным SRC и не используются при отрисовке в SRC# (их можно прочитать функцией Info).</value>
   </data>
 </root>

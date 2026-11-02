@@ -193,6 +193,99 @@
     <value>SRC#Avalonia の使い方(_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>素材と表示言語は次に起動したときから、ログは保存したときから反映されます。</value>
+    <value>素材・表示言語は次に起動したときから、それ以外は保存したときから反映されます（マス目の表示は次に起動したときから）。</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>ゲーム</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>開発者向け</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>開発者向けの設定(_D)...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>自動反撃モード</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>場面ごとに鳴らす曲のファイル名です（元の SRC の Src.ini の [BGM]）。空欄なら標準の名前（Map1.mid など）です。シナリオが RenameBGM などで指定した曲が優先します。</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Src.ini から取り込む...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0} 件を取り込みました（{1}）</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>[BGM] がありません（{0}）</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>オープニング</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>マップ（地上・味方フェイズ）</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>マップ（地上・敵フェイズ）</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>マップ（屋内・味方フェイズ）</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>マップ（屋内・敵フェイズ）</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>マップ（宇宙・味方フェイズ）</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>マップ（宇宙・敵フェイズ）</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>ブリーフィング</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>インターミッション</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>サブタイトル</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>エンディング</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>戦闘</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>シナリオを作る人・開発者向けの設定です。遊ぶだけなら変える必要はありません。</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>デバッグモード（DebugMode）</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>クイックロード・リスタートのときにイベントデータを読み直します。Option コマンドの「デバッグ」と同じです。</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>テキストのファイルを読むとき、Shift_JIS のものも読む</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>ファイルに書き出すとき、Shift_JIS で書く</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>元の SRC のデータ（Shift_JIS）と互換にするための設定です。どちらも有効が既定です。</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>画像のバッファの数（ImageBufferSize）</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>画像のバッファの大きさの上限（MaxImageBufferByteSize）</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>拡大した画像を残す（KeepStretchedImage）</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>画像のバッファの設定は元の SRC の互換のための値で、SRC# の描画では使いません（Info 関数で読めます）。</value>
   </data>
 </root>

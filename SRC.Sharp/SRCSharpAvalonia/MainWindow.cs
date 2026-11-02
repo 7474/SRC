@@ -49,8 +49,11 @@ namespace SRCSharpAvalonia
             }).ToArray();
             // 素材フォルダなどの設定（設定 > 素材フォルダの設定...）
             var assetSettingsItem = new MenuItem { Header = Strings.SettingsMenuItem };
-            assetSettingsItem.Click += (s, e) => SettingsRequested?.Invoke();
+            assetSettingsItem.Click += (s, e) => SettingsRequested?.Invoke(0);
             SettingsItem = assetSettingsItem;
+            // シナリオを作る人・開発者向けの設定（設定のウィンドウの「開発者向け」のタブを開く）
+            DeveloperSettingsItem = new MenuItem { Header = Strings.DeveloperSettingsMenu };
+            DeveloperSettingsItem.Click += (s, e) => SettingsRequested?.Invoke(SettingsWindow.DeveloperTabIndex);
             // ファイル（シナリオを開く・最初からやり直す・終了）。シナリオの切り替えは App が行う
             OpenScenarioItem = new MenuItem { Header = Strings.OpenScenarioMenu };
             OpenScenarioItem.Click += (s, e) => OpenScenarioRequested?.Invoke();
@@ -79,7 +82,7 @@ namespace SRCSharpAvalonia
                 {
                     new MenuItem { Header = Strings.FileMenu, ItemsSource = new object[] { OpenScenarioItem, RestartItem, new Separator(), ExitItem } },
                     new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems },
-                    new MenuItem { Header = Strings.SettingsMenu, ItemsSource = new[] { assetSettingsItem } },
+                    new MenuItem { Header = Strings.SettingsMenu, ItemsSource = new object[] { assetSettingsItem, new Separator(), DeveloperSettingsItem } },
                     new MenuItem { Header = Strings.HelpMenu, ItemsSource = new object[] { helpItem, usageItem, websiteItem, new Separator(), logFolderItem, new Separator(), AboutItem } },
                 },
             };
@@ -112,7 +115,10 @@ namespace SRCSharpAvalonia
             RestartItem.IsEnabled = running;
         }
 
-        /// <summary>「素材フォルダの設定...」のメニュー項目（テスト用）</summary>
+        /// <summary>「開発者向けの設定...」のメニュー項目（テスト用）</summary>
+        internal MenuItem DeveloperSettingsItem { get; }
+
+        /// <summary>「設定...」のメニュー項目（テスト用）</summary>
         internal MenuItem SettingsItem { get; }
 
         /// <summary>表示倍率のメニュー項目（テスト用）</summary>
@@ -120,8 +126,8 @@ namespace SRCSharpAvalonia
 
         public ScreenView View { get; }
 
-        /// <summary>メニューで「素材フォルダの設定...」を選んだときに呼ばれる</summary>
-        public event Action SettingsRequested;
+        /// <summary>メニューで「設定...」「開発者向けの設定...」を選んだときに呼ばれる（開くタブの位置）</summary>
+        public event Action<int> SettingsRequested;
 
         /// <summary>メニューで表示倍率を選んだときに呼ばれる（設定に保存する）</summary>
         public event Action<double> DisplayScaleChosen;

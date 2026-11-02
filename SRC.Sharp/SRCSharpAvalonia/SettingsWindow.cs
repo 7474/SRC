@@ -31,6 +31,36 @@ namespace SRCSharpAvalonia
         public string LogPath { get; set; } = "";
         /// <summary>ログを残す日数（Log/RetainDays）</summary>
         public int LogRetainDays { get; set; } = SRCCore.Logging.LogOptions.DefaultRetainDays;
+
+        // ゲーム（元の SRC の設定変更の画面と同じ項目と、自動反撃モード）
+        public bool BattleAnimation { get; set; } = true;
+        public bool ExtendedAnimation { get; set; } = true;
+        public bool WeaponAnimation { get; set; } = true;
+        public bool SpecialPowerAnimation { get; set; } = true;
+        public bool MoveAnimation { get; set; } = true;
+        public bool AutoMoveCursor { get; set; } = true;
+        public bool ShowSquareLine { get; set; }
+        /// <summary>味方フェイズ開始時にターン表示を行う（Option/Turn）</summary>
+        public bool ShowTurn { get; set; }
+        public bool KeepEnemyBGM { get; set; }
+        /// <summary>自動反撃モード（Option/AutoDefense）</summary>
+        public bool AutoDefense { get; set; }
+        /// <summary>音量（0〜100）</summary>
+        public int SoundVolume { get; set; } = 50;
+
+        /// <summary>場面ごとの BGM のファイル名（BGM セクション。空なら標準の名前）</summary>
+        public Dictionary<string, string> Bgm { get; set; } = new Dictionary<string, string>();
+
+        // 開発者向け
+        /// <summary>デバッグモード（Option/DebugMode）</summary>
+        public bool DebugMode { get; set; }
+        /// <summary>テキストを読むとき Shift_JIS も読む・ファイルに書くとき Shift_JIS で書く（SRCCompatibilityMode）</summary>
+        public bool CompatibleRead { get; set; } = true;
+        public bool CompatibleWrite { get; set; } = true;
+        /// <summary>画像のバッファの設定（SRC# の描画では使わない。Info 関数で読める）</summary>
+        public int ImageBufferSize { get; set; }
+        public int MaxImageBufferByteSize { get; set; }
+        public bool KeepStretchedImage { get; set; }
     }
 
     /// <summary>
@@ -53,7 +83,33 @@ namespace SRCSharpAvalonia
         /// <summary>ログのレベルの選択肢（空は既定）</summary>
         internal static readonly IReadOnlyList<string> LogLevels = new[] { "", "Trace", "Debug", "Information", "Warning", "Error", "Critical", "None" };
 
-        public SettingsWindow(AppSettings settings, string appPath, bool logLevelFixed = false)
+        /// <summary>場面ごとの BGM の名前（元の SRC の Src.ini の [BGM]・Sound.BGMName）</summary>
+        internal static readonly IReadOnlyList<string> BgmNames = new[] { "Opening", "Map1", "Map2", "Map3", "Map4", "Map5", "Map6", "Briefing", "Intermission", "Subtitle", "End", "default" };
+
+        /// <summary>BGM の名前の説明</summary>
+        internal static string BgmDescription(string name)
+        {
+            switch (name)
+            {
+                case "Opening": return Strings.BgmOpening;
+                case "Map1": return Strings.BgmMap1;
+                case "Map2": return Strings.BgmMap2;
+                case "Map3": return Strings.BgmMap3;
+                case "Map4": return Strings.BgmMap4;
+                case "Map5": return Strings.BgmMap5;
+                case "Map6": return Strings.BgmMap6;
+                case "Briefing": return Strings.BgmBriefing;
+                case "Intermission": return Strings.BgmIntermission;
+                case "Subtitle": return Strings.BgmSubtitle;
+                case "End": return Strings.BgmEnd;
+                default: return Strings.BgmBattle;
+            }
+        }
+
+        /// <summary>開発者向けのタブの位置（メニューの「開発者向けの設定...」で開く）</summary>
+        public const int DeveloperTabIndex = 5;
+
+        public SettingsWindow(AppSettings settings, string appPath, bool logLevelFixed = false, int initialTab = 0)
         {
             this.appPath = appPath;
             Title = Strings.SettingsTitle;
@@ -140,11 +196,116 @@ namespace SRCSharpAvalonia
                 },
             };
 
+            // ゲーム（元の SRC の設定変更の画面と同じ項目と、自動反撃モード・音量）
+            BattleAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.BattleAnimation, IsChecked = settings.BattleAnimation };
+            ExtendedAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.ExtendedAnimation, IsChecked = settings.ExtendedAnimation, Margin = new Thickness(20, 0, 0, 0) };
+            WeaponAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.WeaponAnimation, IsChecked = settings.WeaponAnimation, Margin = new Thickness(20, 0, 0, 0) };
+            SpecialPowerAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.SpecialPowerAnimation, IsChecked = settings.SpecialPowerAnimation };
+            MoveAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.MoveAnimation, IsChecked = settings.MoveAnimation };
+            AutoMoveCursor = new CheckBox { Content = SRCRender.GameConfigLabels.AutoMoveCursor, IsChecked = settings.AutoMoveCursor };
+            ShowSquareLine = new CheckBox { Content = SRCRender.GameConfigLabels.ShowSquareLine, IsChecked = settings.ShowSquareLine };
+            ShowTurn = new CheckBox { Content = SRCRender.GameConfigLabels.ShowTurn, IsChecked = settings.ShowTurn };
+            KeepEnemyBGM = new CheckBox { Content = SRCRender.GameConfigLabels.KeepEnemyBGM, IsChecked = settings.KeepEnemyBGM };
+            AutoDefense = new CheckBox { Content = Strings.AutoDefenseLabel, IsChecked = settings.AutoDefense };
+            // 戦闘アニメを表示しない場合は、拡張戦闘アニメ・武器準備アニメを選べない（元の SRC と同じ）
+            void UpdateAnimationEnabled()
+            {
+                ExtendedAnimation.IsEnabled = BattleAnimation.IsChecked == true;
+                WeaponAnimation.IsEnabled = BattleAnimation.IsChecked == true;
+            }
+            BattleAnimation.IsCheckedChanged += (s, e) => UpdateAnimationEnabled();
+            UpdateAnimationEnabled();
+            SoundVolume = new Slider { Minimum = 0, Maximum = 100, Value = settings.SoundVolume, Width = 240, TickFrequency = 1, IsSnapToTickEnabled = true };
+            var volumeText = new TextBlock { Text = settings.SoundVolume.ToString(), VerticalAlignment = VerticalAlignment.Center, MinWidth = 32 };
+            SoundVolume.PropertyChanged += (s, e) =>
+            {
+                if (e.Property == Slider.ValueProperty)
+                {
+                    volumeText.Text = ((int)SoundVolume.Value).ToString();
+                }
+            };
+            var gamePanel = new StackPanel
+            {
+                Spacing = 6,
+                Children =
+                {
+                    BattleAnimation, ExtendedAnimation, WeaponAnimation, SpecialPowerAnimation, MoveAnimation,
+                    AutoMoveCursor, ShowSquareLine, ShowTurn, KeepEnemyBGM, AutoDefense,
+                    new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children = { new TextBlock { Text = SRCRender.GameConfigLabels.Volume, VerticalAlignment = VerticalAlignment.Center }, SoundVolume, volumeText },
+                    },
+                },
+            };
+
+            // BGM（場面ごとの曲のファイル名）
+            BgmFields = BgmNames.ToDictionary(name => name, name =>
+            {
+                settings.Bgm.TryGetValue(name, out var file);
+                return new TextBox { Text = file ?? "", PlaceholderText = name + ".mid", MinWidth = 300 };
+            });
+            var bgmGrid = new Grid { ColumnDefinitions = new ColumnDefinitions("Auto,*"), RowSpacing = 4, ColumnSpacing = 8 };
+            for (var i = 0; i < BgmNames.Count; i++)
+            {
+                bgmGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+                var label = new TextBlock { Text = BgmNames[i] + "（" + BgmDescription(BgmNames[i]) + "）", VerticalAlignment = VerticalAlignment.Center };
+                Grid.SetRow(label, i);
+                var box = BgmFields[BgmNames[i]];
+                Grid.SetRow(box, i);
+                Grid.SetColumn(box, 1);
+                bgmGrid.Children.Add(label);
+                bgmGrid.Children.Add(box);
+            }
+            BgmImportStatus = new TextBlock { TextWrapping = TextWrapping.Wrap, FontSize = 12, IsVisible = false };
+            var importBgm = new Button { Content = Strings.BgmImport };
+            importBgm.Click += async (s, e) => await ImportBgmAsync(ExtDataPath.Value);
+            var bgmPanel = new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    new TextBlock { Text = Strings.BgmDescriptionText, TextWrapping = TextWrapping.Wrap, FontSize = 12 },
+                    bgmGrid,
+                    importBgm,
+                    BgmImportStatus,
+                },
+            };
+
+            // 開発者向け
+            DebugMode = new CheckBox { Content = Strings.DebugModeLabel, IsChecked = settings.DebugMode };
+            // 「Shift_JIS」の _ をアクセスキーにしないよう、文字は TextBlock で示す
+            CompatibleRead = new CheckBox { Content = new TextBlock { Text = Strings.CompatibleReadLabel }, IsChecked = settings.CompatibleRead };
+            CompatibleWrite = new CheckBox { Content = new TextBlock { Text = Strings.CompatibleWriteLabel }, IsChecked = settings.CompatibleWrite };
+            ImageBufferSize = new NumericUpDown { Value = settings.ImageBufferSize, Minimum = 0, Maximum = 100000, FormatString = "0", MinWidth = 160, HorizontalAlignment = HorizontalAlignment.Left };
+            MaxImageBufferByteSize = new NumericUpDown { Value = settings.MaxImageBufferByteSize, Minimum = 0, Maximum = 100000, FormatString = "0", MinWidth = 160, HorizontalAlignment = HorizontalAlignment.Left };
+            KeepStretchedImage = new CheckBox { Content = Strings.KeepStretchedImageLabel, IsChecked = settings.KeepStretchedImage };
+            var developerPanel = new StackPanel
+            {
+                Spacing = 6,
+                Children =
+                {
+                    new TextBlock { Text = Strings.DeveloperDescription, TextWrapping = TextWrapping.Wrap, FontSize = 12, Foreground = Brushes.DarkRed },
+                    DebugMode,
+                    new TextBlock { Text = Strings.DebugModeNote, TextWrapping = TextWrapping.Wrap, FontSize = 12, Opacity = 0.75, Margin = new Thickness(28, 0, 0, 4) },
+                    CompatibleRead,
+                    CompatibleWrite,
+                    new TextBlock { Text = Strings.CompatibleNote, TextWrapping = TextWrapping.Wrap, FontSize = 12, Opacity = 0.75, Margin = new Thickness(28, 0, 0, 4) },
+                    new TextBlock { Text = Strings.ImageBufferSizeLabel, FontWeight = FontWeight.Bold },
+                    ImageBufferSize,
+                    new TextBlock { Text = Strings.MaxImageBufferByteSizeLabel, FontWeight = FontWeight.Bold },
+                    MaxImageBufferByteSize,
+                    KeepStretchedImage,
+                    new TextBlock { Text = Strings.ImageBufferNote, TextWrapping = TextWrapping.Wrap, FontSize = 12, Opacity = 0.75 },
+                },
+            };
+
             Content = new StackPanel
             {
                 Margin = new Thickness(12),
                 Spacing = 12,
-                Width = 600,
+                Width = 640,
                 Children =
                 {
                     new TabControl
@@ -168,9 +329,13 @@ namespace SRCSharpAvalonia
                                     },
                                 },
                             },
+                            new TabItem { Header = Strings.GameTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { gamePanel } } },
+                            new TabItem { Header = Strings.BgmTab, Content = new ScrollViewer { MaxHeight = 480, Margin = new Thickness(0, 8, 0, 0), Content = bgmPanel } },
                             new TabItem { Header = Strings.DisplayTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { displayPanel } } },
                             new TabItem { Header = Strings.LogTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { logPanel } } },
+                            new TabItem { Header = Strings.DeveloperTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { developerPanel } } },
                         },
+                        SelectedIndex = initialTab,
                     },
                     new TextBlock { Text = Strings.SettingsApplyNote, TextWrapping = TextWrapping.Wrap, Opacity = 0.75 },
                     new StackPanel
@@ -192,6 +357,67 @@ namespace SRCSharpAvalonia
         internal CheckBox LogFile { get; }
         internal PathField LogPath { get; }
         internal NumericUpDown LogRetainDays { get; }
+        internal CheckBox BattleAnimation { get; }
+        internal CheckBox ExtendedAnimation { get; }
+        internal CheckBox WeaponAnimation { get; }
+        internal CheckBox SpecialPowerAnimation { get; }
+        internal CheckBox MoveAnimation { get; }
+        internal CheckBox AutoMoveCursor { get; }
+        internal CheckBox ShowSquareLine { get; }
+        internal CheckBox ShowTurn { get; }
+        internal CheckBox KeepEnemyBGM { get; }
+        internal CheckBox AutoDefense { get; }
+        internal Slider SoundVolume { get; }
+        internal IReadOnlyDictionary<string, TextBox> BgmFields { get; }
+        internal TextBlock BgmImportStatus { get; }
+        internal CheckBox DebugMode { get; }
+        internal CheckBox CompatibleRead { get; }
+        internal CheckBox CompatibleWrite { get; }
+        internal NumericUpDown ImageBufferSize { get; }
+        internal NumericUpDown MaxImageBufferByteSize { get; }
+        internal CheckBox KeepStretchedImage { get; }
+
+        /// <summary>
+        /// 元の SRC の設定ファイル（Src.ini）の [BGM] を読んで、BGM の欄に入れる。入れた数を返す
+        /// </summary>
+        internal int ImportBgm(string srcIniPath)
+        {
+            var bgm = SrcIni.ReadSection(srcIniPath, App.BgmSection);
+            var count = 0;
+            foreach (var name in BgmNames)
+            {
+                if (bgm.TryGetValue(name, out var file) && !string.IsNullOrWhiteSpace(file))
+                {
+                    BgmFields[name].Text = file.Trim();
+                    count++;
+                }
+            }
+            BgmImportStatus.Text = count > 0 ? string.Format(Strings.BgmImported, count, srcIniPath) : string.Format(Strings.BgmImportNone, srcIniPath);
+            BgmImportStatus.Foreground = count > 0 ? Brushes.DarkGreen : Brushes.DarkRed;
+            BgmImportStatus.IsVisible = true;
+            return count;
+        }
+
+        /// <summary>Src.ini を選ばせて取り込む。拡張データフォルダ 1 に Src.ini があれば、そこから選ばせる</summary>
+        private async System.Threading.Tasks.Task ImportBgmAsync(string extDataPath)
+        {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = Strings.BgmImport,
+                AllowMultiple = false,
+                SuggestedStartLocation = await StartLocation(extDataPath),
+                FileTypeFilter = new[]
+                {
+                    new FilePickerFileType("Src.ini") { Patterns = new[] { "*.ini" } },
+                    new FilePickerFileType(Strings.AllFiles) { Patterns = new[] { "*" } },
+                },
+            });
+            var file = files.FirstOrDefault()?.TryGetLocalPath();
+            if (!string.IsNullOrEmpty(file))
+            {
+                ImportBgm(file);
+            }
+        }
 
         /// <summary>ログのフォルダの状態。空欄なら既定のフォルダを示す</summary>
         internal static (string Text, bool Warning) DescribeLogFolder(string path)
@@ -319,6 +545,24 @@ namespace SRCSharpAvalonia
                 LogFile = LogFile.IsChecked ?? true,
                 LogPath = LogPath.Value,
                 LogRetainDays = (int)(LogRetainDays.Value ?? SRCCore.Logging.LogOptions.DefaultRetainDays),
+                BattleAnimation = BattleAnimation.IsChecked == true,
+                ExtendedAnimation = ExtendedAnimation.IsChecked == true,
+                WeaponAnimation = WeaponAnimation.IsChecked == true,
+                SpecialPowerAnimation = SpecialPowerAnimation.IsChecked == true,
+                MoveAnimation = MoveAnimation.IsChecked == true,
+                AutoMoveCursor = AutoMoveCursor.IsChecked == true,
+                ShowSquareLine = ShowSquareLine.IsChecked == true,
+                ShowTurn = ShowTurn.IsChecked == true,
+                KeepEnemyBGM = KeepEnemyBGM.IsChecked == true,
+                AutoDefense = AutoDefense.IsChecked == true,
+                SoundVolume = (int)SoundVolume.Value,
+                Bgm = BgmFields.ToDictionary(x => x.Key, x => (x.Value.Text ?? "").Trim()),
+                DebugMode = DebugMode.IsChecked == true,
+                CompatibleRead = CompatibleRead.IsChecked == true,
+                CompatibleWrite = CompatibleWrite.IsChecked == true,
+                ImageBufferSize = (int)(ImageBufferSize.Value ?? 0),
+                MaxImageBufferByteSize = (int)(MaxImageBufferByteSize.Value ?? 0),
+                KeepStretchedImage = KeepStretchedImage.IsChecked == true,
             };
         }
 

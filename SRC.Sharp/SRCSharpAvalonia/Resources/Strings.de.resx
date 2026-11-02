@@ -193,6 +193,99 @@
     <value>SRC#Avalonia verwenden (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Asset- und Spracheinstellungen gelten ab dem nächsten Start, Protokolleinstellungen ab dem Speichern.</value>
+    <value>Asset- und Spracheinstellungen gelten ab dem nächsten Start, die übrigen ab dem Speichern (das Raster ab dem nächsten Start).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Spiel</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Entwickler</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>_Entwicklereinstellungen...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Automatischer Gegenangriff</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Dateinamen der Musik für jede Szene ([BGM] in der Src.ini des ursprünglichen SRC). Wenn leer, wird der Standardname (Map1.mid usw.) verwendet. Vom Szenario mit RenameBGM usw. festgelegte Musik hat Vorrang.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Aus Src.ini importieren...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0} Einträge importiert ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Kein Abschnitt [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Eröffnung</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Karte (Boden, eigene Phase)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Karte (Boden, gegnerische Phase)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Karte (innen, eigene Phase)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Karte (innen, gegnerische Phase)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Karte (Weltraum, eigene Phase)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Karte (Weltraum, gegnerische Phase)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Einsatzbesprechung</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Zwischenspiel</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Untertitel</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Abspann</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Kampf</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Einstellungen für Szenarioautoren und Entwickler. Zum Spielen müssen Sie sie nicht ändern.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Debug-Modus (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Lädt die Ereignisdaten beim Schnellladen und Neustart neu. Wie „デバッグ“ des Option-Befehls.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Textdateien auch in Shift_JIS lesen</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Dateien in Shift_JIS schreiben</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Für die Kompatibilität mit Daten des ursprünglichen SRC (Shift_JIS). Standardmäßig ist beides aktiviert.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Anzahl der Bildpuffer (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Maximale Größe des Bildpuffers (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Gestreckte Bilder behalten (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Die Bildpuffer-Einstellungen dienen der Kompatibilität mit dem ursprünglichen SRC und werden beim Zeichnen von SRC# nicht verwendet (mit der Info-Funktion lesbar).</value>
   </data>
 </root>

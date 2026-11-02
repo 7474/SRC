@@ -193,6 +193,99 @@
     <value>Jak używać SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Zasoby i język zostaną zastosowane przy następnym uruchomieniu, dziennik — po zapisaniu.</value>
+    <value>Zasoby i język zostaną zastosowane przy następnym uruchomieniu, pozostałe — po zapisaniu (siatka przy następnym uruchomieniu).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Gra</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Deweloper</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Ustawienia _deweloperskie...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Tryb automatycznego kontrataku</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Nazwy plików muzyki dla każdej sceny ([BGM] w Src.ini oryginalnego SRC). Gdy puste, używana jest nazwa standardowa (Map1.mid itp.). Muzyka wskazana przez scenariusz poleceniem RenameBGM itp. ma pierwszeństwo.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Importuj z Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>Zaimportowano {0} pozycji ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Brak sekcji [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Otwarcie</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Mapa (ląd, faza sojusznicza)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Mapa (ląd, faza wroga)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Mapa (wnętrze, faza sojusznicza)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Mapa (wnętrze, faza wroga)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Mapa (kosmos, faza sojusznicza)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Mapa (kosmos, faza wroga)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Odprawa</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Przerwa</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Podtytuł</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Zakończenie</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Walka</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Ustawienia dla autorów scenariuszy i deweloperów. Do samej gry nie trzeba ich zmieniać.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Tryb debugowania (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Ponownie wczytuje dane zdarzeń przy szybkim wczytaniu i restarcie. To samo co „デバッグ” polecenia Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Czytaj też pliki tekstowe w Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Zapisuj pliki w Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Dla zgodności z danymi oryginalnego SRC (Shift_JIS). Domyślnie oba są włączone.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Liczba buforów obrazów (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Maksymalny rozmiar bufora obrazów (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Zachowuj powiększone obrazy (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Ustawienia bufora obrazów służą zgodności z oryginalnym SRC i nie są używane przy rysowaniu w SRC# (można je odczytać funkcją Info).</value>
   </data>
 </root>

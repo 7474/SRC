@@ -5,6 +5,7 @@ using Avalonia.Themes.Fluent;
 using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Config;
+using SRCCore.Extensions;
 using SRCCore.Logging;
 using SRCRender;
 using SRCSound;
@@ -48,7 +49,7 @@ namespace SRCSharpAvalonia
                     window.SetDisplayScale(savedScale.Value);
                 }
                 window.DisplayScaleChosen += SaveDisplayScale;
-                window.SettingsRequested += async () => await EditSettingsAsync(window);
+                window.SettingsRequested += async tab => await EditSettingsAsync(window, tab);
                 window.OpenScenarioRequested += async () => await OpenScenarioAsync(window);
                 window.RestartRequested += async () => await RestartAsync(window);
                 window.ExitRequested += async () => await ExitAsync(window);
@@ -137,18 +138,24 @@ namespace SRCSharpAvalonia
         /// 素材フォルダの設定のウィンドウを開き、保存を選んだら設定に書く。
         /// 素材の場所はシナリオを始めるときに読むため、次に起動したときから効く
         /// </summary>
-        internal async Task EditSettingsAsync(MainWindow window)
+        internal async Task EditSettingsAsync(MainWindow window, int tab = 0)
         {
             var current = await ReadConfigAsync(ReadSettings);
             var appPath = session?.SRC.AppPath ?? new LocalFileConfig().AppPath;
-            var result = await new SettingsWindow(current, appPath, Program.LogHost?.LevelFixed ?? false).ShowDialog<AppSettings>(window);
+            var result = await new SettingsWindow(current, appPath, Program.LogHost?.LevelFixed ?? false, tab).ShowDialog<AppSettings>(window);
             if (result != null)
             {
+                var running = session;
                 UpdateConfig(config =>
                 {
                     WriteSettings(config, result);
                     // ログの設定は保存したときから効かせる（引数・環境変数で指定したものは上書きしない）
                     Program.LogHost?.ApplyConfig(config);
+                    // 音量はその場で変える（元の SRC の設定変更の画面と同じ）
+                    if (running != null)
+                    {
+                        running.SRC.Sound.Player.SoundVolume = result.SoundVolume / 100f;
+                    }
                 });
             }
             window.View.Focus();
@@ -168,8 +175,29 @@ namespace SRCSharpAvalonia
                 LogRetainDays = int.TryParse(config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays"), out var days) && days > 0
                     ? days
                     : SRCCore.Logging.LogOptions.DefaultRetainDays,
+                BattleAnimation = config.BattleAnimation,
+                ExtendedAnimation = config.ExtendedAnimation,
+                WeaponAnimation = config.WeaponAnimation,
+                SpecialPowerAnimation = config.SpecialPowerAnimation,
+                MoveAnimation = config.MoveAnimation,
+                AutoMoveCursor = config.AutoMoveCursor,
+                ShowSquareLine = config.ShowSquareLine,
+                ShowTurn = string.Equals(config.GetItem("Option", "Turn"), "On", StringComparison.OrdinalIgnoreCase),
+                KeepEnemyBGM = config.KeepEnemyBGM,
+                AutoDefense = config.AutoDefense,
+                SoundVolume = config is LocalFileConfig local ? local.SoundVolume : 50,
+                Bgm = SettingsWindow.BgmNames.ToDictionary(x => x, x => config.GetItem(BgmSection, x)),
+                DebugMode = config.GetFlag("Option", "DebugMode"),
+                CompatibleRead = config.SRCCompatibilityMode.HasFlag(SRCCompatibilityMode.Read),
+                CompatibleWrite = config.SRCCompatibilityMode.HasFlag(SRCCompatibilityMode.Write),
+                ImageBufferSize = config.ImageBufferSize,
+                MaxImageBufferByteSize = config.MaxImageBufferByteSize,
+                KeepStretchedImage = config.KeepStretchedImage,
             };
         }
+
+        /// <summary>場面ごとの BGM の設定のセクション（元の SRC の Src.ini の [BGM]）</summary>
+        internal const string BgmSection = "BGM";
 
         internal static void WriteSettings(ISystemConfig config, AppSettings settings)
         {
@@ -181,6 +209,31 @@ namespace SRCSharpAvalonia
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "File", settings.LogFile ? "On" : "Off");
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "Path", settings.LogPath ?? "");
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays", settings.LogRetainDays.ToString());
+            config.BattleAnimation = settings.BattleAnimation;
+            config.ExtendedAnimation = settings.ExtendedAnimation;
+            config.WeaponAnimation = settings.WeaponAnimation;
+            config.SpecialPowerAnimation = settings.SpecialPowerAnimation;
+            config.MoveAnimation = settings.MoveAnimation;
+            config.AutoMoveCursor = settings.AutoMoveCursor;
+            config.ShowSquareLine = settings.ShowSquareLine;
+            config.SetItem("Option", "Turn", settings.ShowTurn ? "On" : "Off");
+            config.KeepEnemyBGM = settings.KeepEnemyBGM;
+            config.AutoDefense = settings.AutoDefense;
+            if (config is LocalFileConfig local)
+            {
+                local.SoundVolume = Math.Max(0, Math.Min(100, settings.SoundVolume));
+            }
+            foreach (var name in SettingsWindow.BgmNames)
+            {
+                settings.Bgm.TryGetValue(name, out var file);
+                config.SetItem(BgmSection, name, (file ?? "").Trim());
+            }
+            config.SetFlag("Option", "DebugMode", settings.DebugMode);
+            config.SRCCompatibilityMode = (settings.CompatibleRead ? SRCCompatibilityMode.Read : SRCCompatibilityMode.None)
+                | (settings.CompatibleWrite ? SRCCompatibilityMode.Write : SRCCompatibilityMode.None);
+            config.ImageBufferSize = settings.ImageBufferSize;
+            config.MaxImageBufferByteSize = settings.MaxImageBufferByteSize;
+            config.KeepStretchedImage = settings.KeepStretchedImage;
         }
 
         /// <summary>設定を読む。シナリオの実行中は、その設定（ゲームスレッドが持つ）から読む</summary>

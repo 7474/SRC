@@ -70,5 +70,36 @@ namespace SRCSharpAvalonia
         public static string OpenLogFolder => Rm.GetString(nameof(OpenLogFolder));
         public static string UsageMenu => Rm.GetString(nameof(UsageMenu));
         public static string SettingsApplyNote => Rm.GetString(nameof(SettingsApplyNote));
+        public static string GameTab => Rm.GetString(nameof(GameTab));
+        public static string BgmTab => Rm.GetString(nameof(BgmTab));
+        public static string DeveloperTab => Rm.GetString(nameof(DeveloperTab));
+        public static string DeveloperSettingsMenu => Rm.GetString(nameof(DeveloperSettingsMenu));
+        public static string AutoDefenseLabel => Rm.GetString(nameof(AutoDefenseLabel));
+        public static string BgmDescriptionText => Rm.GetString(nameof(BgmDescriptionText));
+        public static string BgmImport => Rm.GetString(nameof(BgmImport));
+        public static string BgmImported => Rm.GetString(nameof(BgmImported));
+        public static string BgmImportNone => Rm.GetString(nameof(BgmImportNone));
+        public static string BgmOpening => Rm.GetString(nameof(BgmOpening));
+        public static string BgmMap1 => Rm.GetString(nameof(BgmMap1));
+        public static string BgmMap2 => Rm.GetString(nameof(BgmMap2));
+        public static string BgmMap3 => Rm.GetString(nameof(BgmMap3));
+        public static string BgmMap4 => Rm.GetString(nameof(BgmMap4));
+        public static string BgmMap5 => Rm.GetString(nameof(BgmMap5));
+        public static string BgmMap6 => Rm.GetString(nameof(BgmMap6));
+        public static string BgmBriefing => Rm.GetString(nameof(BgmBriefing));
+        public static string BgmIntermission => Rm.GetString(nameof(BgmIntermission));
+        public static string BgmSubtitle => Rm.GetString(nameof(BgmSubtitle));
+        public static string BgmEnd => Rm.GetString(nameof(BgmEnd));
+        public static string BgmBattle => Rm.GetString(nameof(BgmBattle));
+        public static string DeveloperDescription => Rm.GetString(nameof(DeveloperDescription));
+        public static string DebugModeLabel => Rm.GetString(nameof(DebugModeLabel));
+        public static string DebugModeNote => Rm.GetString(nameof(DebugModeNote));
+        public static string CompatibleReadLabel => Rm.GetString(nameof(CompatibleReadLabel));
+        public static string CompatibleWriteLabel => Rm.GetString(nameof(CompatibleWriteLabel));
+        public static string CompatibleNote => Rm.GetString(nameof(CompatibleNote));
+        public static string ImageBufferSizeLabel => Rm.GetString(nameof(ImageBufferSizeLabel));
+        public static string MaxImageBufferByteSizeLabel => Rm.GetString(nameof(MaxImageBufferByteSizeLabel));
+        public static string KeepStretchedImageLabel => Rm.GetString(nameof(KeepStretchedImageLabel));
+        public static string ImageBufferNote => Rm.GetString(nameof(ImageBufferNote));
     }
 }

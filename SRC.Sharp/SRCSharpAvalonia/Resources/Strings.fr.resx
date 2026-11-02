@@ -193,6 +193,99 @@
     <value>Utiliser SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Les ressources et la langue s’appliquent au prochain démarrage ; le journal, à l’enregistrement.</value>
+    <value>Les ressources et la langue s’appliquent au prochain démarrage ; le reste, à l’enregistrement (la grille, au prochain démarrage).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Jeu</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Développeur</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Paramètres _développeur...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Mode contre-attaque automatique</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Noms des fichiers de musique de chaque scène ([BGM] du Src.ini du SRC original). Si vide, le nom standard (Map1.mid, etc.) est utilisé. La musique indiquée par le scénario avec RenameBGM, etc. est prioritaire.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Importer depuis Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0} entrées importées ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Pas de section [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Ouverture</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Carte (sol, phase alliée)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Carte (sol, phase ennemie)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Carte (intérieur, phase alliée)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Carte (intérieur, phase ennemie)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Carte (espace, phase alliée)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Carte (espace, phase ennemie)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Briefing</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Intermission</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Sous-titre</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Combat</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Paramètres pour les auteurs de scénarios et les développeurs. Inutile de les changer pour jouer.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Mode débogage (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Relit les données d’événements lors du chargement rapide et du redémarrage. Identique à « デバッグ » de la commande Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Lire aussi les fichiers texte en Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Écrire les fichiers en Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Pour la compatibilité avec les données du SRC original (Shift_JIS). Les deux sont activés par défaut.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Nombre de tampons d’image (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Taille maximale du tampon d’image (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Conserver les images agrandies (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Les paramètres du tampon d’image servent à la compatibilité avec le SRC original et ne sont pas utilisés par l’affichage de SRC# (lisibles avec la fonction Info).</value>
   </data>
 </root>

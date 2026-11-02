@@ -193,6 +193,99 @@
     <value>Como usar o SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Recursos e idioma valem a partir da próxima inicialização; o log, ao salvar.</value>
+    <value>Recursos e idioma valem a partir da próxima inicialização; o restante, ao salvar (a grade, na próxima inicialização).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Jogo</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Desenvolvedor</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Configurações de _desenvolvedor...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Modo de contra-ataque automático</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Nomes dos arquivos de música de cada cena ([BGM] do Src.ini do SRC original). Se vazio, usa o nome padrão (Map1.mid etc.). A música indicada pelo cenário com RenameBGM etc. tem prioridade.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Importar do Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0} itens importados ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Não há seção [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Abertura</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Mapa (terra, fase aliada)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Mapa (terra, fase inimiga)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Mapa (interior, fase aliada)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Mapa (interior, fase inimiga)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Mapa (espaço, fase aliada)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Mapa (espaço, fase inimiga)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Briefing</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Intermissão</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Subtítulo</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Encerramento</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Batalha</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Configurações para autores de cenários e desenvolvedores. Para apenas jogar, não é preciso alterá-las.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Modo de depuração (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Relê os dados de eventos ao carregar rápido e reiniciar. Igual a "デバッグ" do comando Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Ler também arquivos de texto em Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Gravar arquivos em Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Para compatibilidade com os dados do SRC original (Shift_JIS). Ambos ficam ativados por padrão.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Número de buffers de imagem (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Tamanho máximo do buffer de imagem (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Manter imagens ampliadas (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>As configurações do buffer de imagem são valores de compatibilidade com o SRC original e não são usadas no desenho do SRC# (podem ser lidas com a função Info).</value>
   </data>
 </root>

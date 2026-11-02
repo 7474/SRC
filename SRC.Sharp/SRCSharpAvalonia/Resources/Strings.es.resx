@@ -193,6 +193,99 @@
     <value>Cómo usar SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Los recursos y el idioma se aplican la próxima vez que inicie la aplicación; el registro, al guardar.</value>
+    <value>Los recursos y el idioma se aplican la próxima vez que inicie la aplicación; el resto, al guardar (la cuadrícula, en el próximo inicio).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Juego</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Desarrollador</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Configuración de _desarrollador...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Modo de contraataque automático</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Nombres de archivo de la música de cada escena ([BGM] del Src.ini del SRC original). Si está vacío, se usa el nombre estándar (Map1.mid, etc.). La música indicada por el escenario con RenameBGM, etc., tiene prioridad.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Importar desde Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>Se importaron {0} entradas ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>No hay sección [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Apertura</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Mapa (tierra, fase propia)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Mapa (tierra, fase enemiga)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Mapa (interior, fase propia)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Mapa (interior, fase enemiga)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Mapa (espacio, fase propia)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Mapa (espacio, fase enemiga)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Briefing</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Intermedio</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Subtítulo</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Final</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Combate</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Configuración para autores de escenarios y desarrolladores. No necesita cambiarla solo para jugar.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Modo de depuración (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Vuelve a leer los datos de eventos al cargar rápido y reiniciar. Igual que «デバッグ» del comando Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Leer también archivos de texto en Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Escribir archivos en Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Para la compatibilidad con los datos del SRC original (Shift_JIS). Ambos están activados por defecto.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Número de búferes de imagen (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Tamaño máximo del búfer de imagen (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Conservar imágenes ampliadas (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>La configuración del búfer de imagen es para la compatibilidad con el SRC original y SRC# no la usa al dibujar (se puede leer con la función Info).</value>
   </data>
 </root>

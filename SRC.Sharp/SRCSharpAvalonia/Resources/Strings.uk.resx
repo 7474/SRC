@@ -193,6 +193,99 @@
     <value>Як користуватися SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Ресурси й мова застосовуються під час наступного запуску, журнал — під час збереження.</value>
+    <value>Ресурси й мова застосовуються під час наступного запуску, решта — під час збереження (сітка — під час наступного запуску).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Гра</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Для розробників</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>Налаштування для _розробників...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Режим автоматичної контратаки</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Назви файлів музики для кожної сцени ([BGM] у Src.ini початкового SRC). Якщо порожньо, використовується стандартна назва (Map1.mid тощо). Музика, задана сценарієм командою RenameBGM тощо, має пріоритет.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Імпортувати з Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>Імпортовано записів: {0} ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>Немає розділу [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Вступ</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Карта (земля, фаза союзників)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Карта (земля, фаза ворога)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Карта (приміщення, фаза союзників)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Карта (приміщення, фаза ворога)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Карта (космос, фаза союзників)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Карта (космос, фаза ворога)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Брифінг</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Антракт</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Підзаголовок</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Фінал</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Бій</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Налаштування для авторів сценаріїв і розробників. Щоб просто грати, змінювати їх не потрібно.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Режим налагодження (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Перечитує дані подій під час швидкого завантаження та перезапуску. Те саме, що «デバッグ» команди Option.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Читати текстові файли також у Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Записувати файли в Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Для сумісності з даними початкового SRC (Shift_JIS). Типово обидва ввімкнено.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Кількість буферів зображень (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Найбільший розмір буфера зображень (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Зберігати розтягнуті зображення (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Налаштування буфера зображень потрібні для сумісності з початковим SRC і не використовуються під час малювання в SRC# (їх можна прочитати функцією Info).</value>
   </data>
 </root>

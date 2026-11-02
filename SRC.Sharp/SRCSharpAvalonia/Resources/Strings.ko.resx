@@ -193,6 +193,99 @@
     <value>SRC#Avalonia 사용법(_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>소재와 표시 언어는 다음 시작부터, 로그는 저장했을 때부터 반영됩니다.</value>
+    <value>소재와 표시 언어는 다음 시작부터, 그 밖의 설정은 저장했을 때부터 반영됩니다(칸 표시는 다음 시작부터).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>게임</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>개발자</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>개발자 설정(_D)...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>자동 반격 모드</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>장면별로 재생하는 곡의 파일 이름입니다(원래 SRC의 Src.ini의 [BGM]). 비워 두면 표준 이름(Map1.mid 등)을 씁니다. 시나리오가 RenameBGM 등으로 지정한 곡이 우선합니다.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Src.ini에서 가져오기...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0}건을 가져왔습니다({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>[BGM]이 없습니다({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>오프닝</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>맵(지상·아군 페이즈)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>맵(지상·적 페이즈)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>맵(실내·아군 페이즈)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>맵(실내·적 페이즈)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>맵(우주·아군 페이즈)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>맵(우주·적 페이즈)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>브리핑</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>인터미션</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>서브타이틀</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>엔딩</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>전투</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>시나리오 제작자·개발자를 위한 설정입니다. 플레이만 한다면 바꿀 필요가 없습니다.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>디버그 모드(DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>퀵로드·재시작 때 이벤트 데이터를 다시 읽습니다. Option 명령의 "デバッグ"와 같습니다.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>텍스트 파일을 읽을 때 Shift_JIS도 읽기</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>파일을 쓸 때 Shift_JIS로 쓰기</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>원래 SRC의 데이터(Shift_JIS)와 호환하기 위한 설정입니다. 기본값은 둘 다 사용입니다.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>이미지 버퍼 수(ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>이미지 버퍼 크기 상한(MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>확대한 이미지 유지(KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>이미지 버퍼 설정은 원래 SRC와의 호환을 위한 값으로, SRC#의 그리기에는 쓰지 않습니다(Info 함수로 읽을 수 있습니다).</value>
   </data>
 </root>

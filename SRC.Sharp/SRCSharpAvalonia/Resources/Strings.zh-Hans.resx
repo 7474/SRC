@@ -193,6 +193,99 @@
     <value>SRC#Avalonia 使用方法(_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>素材和显示语言在下次启动时生效，日志在保存时生效。</value>
+    <value>素材和显示语言在下次启动时生效，其他设置在保存时生效（网格显示在下次启动时生效）。</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>游戏</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>开发者</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>开发者设置(_D)...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>自动反击模式</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>各场景播放的乐曲文件名（原 SRC 的 Src.ini 中的 [BGM]）。留空时使用标准名称（Map1.mid 等）。剧本用 RenameBGM 等指定的乐曲优先。</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>从 Src.ini 导入...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>已导入 {0} 项（{1}）</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>没有 [BGM]（{0}）</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>开场</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>地图（地面・我方回合）</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>地图（地面・敌方回合）</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>地图（室内・我方回合）</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>地图（室内・敌方回合）</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>地图（宇宙・我方回合）</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>地图（宇宙・敌方回合）</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>简报</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>幕间</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>副标题</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>结局</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>战斗</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>面向剧本作者和开发者的设置。只是游玩的话无需更改。</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>调试模式（DebugMode）</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>快速读档和重新开始时重新读取事件数据。与 Option 命令的“デバッグ”相同。</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>读取文本文件时也读取 Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>写出文件时使用 Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>用于与原 SRC 的数据（Shift_JIS）兼容。默认两者均启用。</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>图像缓冲区数量（ImageBufferSize）</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>图像缓冲区大小上限（MaxImageBufferByteSize）</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>保留放大后的图像（KeepStretchedImage）</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>图像缓冲区的设置是为了与原 SRC 兼容的值，SRC# 绘制时不使用（可用 Info 函数读取）。</value>
   </data>
 </root>
