@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>{0} を追加できません（使用中の可能性があります。SRC# を終了してから Packs フォルダに置いてください）</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>ファイル(_F)</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>シナリオを開く(_O)...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>最初からやり直す(_R)</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>終了(_X)</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>ヘルプ(_H)</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>ヘルプを開く(_H)</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>SRC# のサイト(_W)</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>バージョン情報(_A)</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>セーブしていない進行状況は失われます。よろしいですか？</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>SRC#Avalonia について</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>バージョン {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC# は GPL-3.0 で配布しています。同梱の SoundFont（TimGM6mb）は GPL-2.0 です（SoundFont フォルダの COPYING）。</value>
+  </data>
 </root>

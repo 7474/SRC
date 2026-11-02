@@ -167,6 +167,78 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
+        public void SwitchScenario_StopsCurrentAndStartsAnother()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                workspace.WriteMap("test.map", 10, 10, (x, y) => 0);
+                var first = workspace.Write("first.eve", "プロローグ:", "ChangeMap test.map", "Talk システム", "一つ目", "End", "Exit", "");
+                var second = workspace.Write("second.eve", "プロローグ:", "ChangeMap test.map", "Talk システム", "二つ目", "End", "Exit", "");
+                Run(() =>
+                {
+                    var players = new System.Collections.Generic.List<RecordingPlayer>();
+                    var started = Start(x => x.CreateSoundPlayer = () =>
+                    {
+                        var player = new RecordingPlayer(x.CreateDefaultSoundPlayer());
+                        players.Add(player);
+                        return player;
+                    }, first);
+                    PumpUntil(() => App.HasStarted(started.App.Session?.GUI.State), "first scenario");
+                    var firstSession = started.App.Session;
+                    Assert.AreEqual(first, started.App.CurrentFile);
+                    Assert.IsTrue(started.Window.RestartItem.IsEnabled);
+
+                    // シナリオを開き直す（メニューの「シナリオを開く...」で選んだあと）
+                    started.App.StopSession(started.Window);
+                    Assert.IsNull(started.App.Session);
+                    Assert.IsFalse(started.Window.RestartItem.IsEnabled, "シナリオが無ければやり直せない");
+                    Assert.IsTrue(players[0].Disposed, "前のシナリオの音を止める");
+                    started.App.StartSession(started.Window, second);
+                    PumpUntil(() => App.HasStarted(started.App.Session?.GUI.State), "second scenario");
+
+                    Assert.AreNotSame(firstSession, started.App.Session);
+                    Assert.AreEqual(second, started.App.Session.SRC.ScenarioFileName);
+                    Assert.AreEqual(second, started.App.CurrentFile);
+                    Assert.AreSame(started.App.Session.GUI, started.Window.View.GUI);
+                    started.App.Stop();
+                });
+            }
+        }
+
+        [TestMethod]
+        public void Menu_RaisesFileMenuRequests()
+        {
+            Run(() =>
+            {
+                var window = new MainWindow();
+                window.Show();
+                var requests = new System.Collections.Generic.List<string>();
+                window.OpenScenarioRequested += () => requests.Add("open");
+                window.RestartRequested += () => requests.Add("restart");
+                window.ExitRequested += () => requests.Add("exit");
+                foreach (var item in new[] { window.OpenScenarioItem, window.RestartItem, window.ExitItem })
+                {
+                    item.RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
+                }
+                CollectionAssert.AreEqual(new[] { "open", "restart", "exit" }, requests);
+                window.Close();
+            });
+        }
+
+        [TestMethod]
+        public void AboutWindow_ShowsVersion()
+        {
+            Run(() =>
+            {
+                StringAssert.StartsWith(AboutWindow.Version, "3.");
+                Assert.IsFalse(AboutWindow.Version.Contains('+'), "ビルドの識別子を含めない");
+                var about = new AboutWindow();
+                about.Show();
+                about.Close();
+            });
+        }
+
+        [TestMethod]
         public void HasStarted()
         {
             Assert.IsFalse(App.HasStarted(null));

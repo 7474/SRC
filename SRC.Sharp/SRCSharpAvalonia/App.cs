@@ -49,6 +49,9 @@ namespace SRCSharpAvalonia
                 }
                 window.DisplayScaleChosen += SaveDisplayScale;
                 window.AssetSettingsRequested += async () => await EditAssetSettingsAsync(window);
+                window.OpenScenarioRequested += async () => await OpenScenarioAsync(window);
+                window.RestartRequested += async () => await RestartAsync(window);
+                window.ExitRequested += async () => await ExitAsync(window);
                 window.Opened += async (s, e) =>
                 {
                     if (!savedScale.HasValue)
@@ -261,25 +264,7 @@ namespace SRCSharpAvalonia
             }
             if (file == null)
             {
-                // 前回ファイル選択で開いたシナリオのフォルダから選ばせる
-                var lastFolder = ReadLastScenarioFolder(LoadConfigFile());
-                var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-                {
-                    Title = Strings.SelectScenario,
-                    AllowMultiple = false,
-                    SuggestedStartLocation = lastFolder == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(lastFolder),
-                    FileTypeFilter = new[]
-                    {
-                        new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq" } },
-                    },
-                });
-                file = files.FirstOrDefault()?.TryGetLocalPath();
-                if (!string.IsNullOrEmpty(file))
-                {
-                    // シナリオを始める前（設定を読む前）に保存する
-                    var folder = Path.GetDirectoryName(Path.GetFullPath(file));
-                    UpdateConfig(config => config.SetItem(LastScenarioFolderSection, LastScenarioFolderName, folder));
-                }
+                file = await PickScenarioAsync(window);
             }
             if (string.IsNullOrEmpty(file))
             {
@@ -287,17 +272,124 @@ namespace SRCSharpAvalonia
                 return;
             }
 
-            var loggerFactory = Program.LogHost?.LoggerFactory;
-            var player = CreateSoundPlayer?.Invoke() ?? CreateDefaultSoundPlayer();
-            session = new ScreenSession(window, soundPlayer: player, loggerFactory: loggerFactory);
-            window.View.GUI = session.GUI;
-            window.View.Focus();
-            session.Start(file);
+            StartSession(window, file);
 
             if (args.Contains(SmokeOption))
             {
                 _ = Task.Run(() => SmokeAsync(shutdown));
             }
+        }
+
+        /// <summary>今のシナリオ（最初からやり直すときに使う）</summary>
+        internal string CurrentFile { get; private set; }
+
+        /// <summary>今のシナリオからウィンドウへの窓口（止めるときに切り離す）</summary>
+        private SessionHost sessionHost;
+
+        /// <summary>
+        /// シナリオを選ばせる。前回ファイル選択で開いたシナリオのフォルダから選ばせ、選んだらそのフォルダを覚える。選ばなければ null
+        /// </summary>
+        private async Task<string> PickScenarioAsync(MainWindow window)
+        {
+            var lastFolder = ReadLastScenarioFolder(LoadConfigFile());
+            var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = Strings.SelectScenario,
+                AllowMultiple = false,
+                SuggestedStartLocation = lastFolder == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(lastFolder),
+                FileTypeFilter = new[]
+                {
+                    new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq" } },
+                },
+            });
+            var file = files.FirstOrDefault()?.TryGetLocalPath();
+            if (!string.IsNullOrEmpty(file))
+            {
+                // シナリオを始める前（設定を読む前）に保存する
+                var folder = Path.GetDirectoryName(Path.GetFullPath(file));
+                UpdateConfig(config => config.SetItem(LastScenarioFolderSection, LastScenarioFolderName, folder));
+            }
+            return file;
+        }
+
+        /// <summary>シナリオを始める</summary>
+        internal void StartSession(MainWindow window, string file)
+        {
+            var loggerFactory = Program.LogHost?.LoggerFactory;
+            var player = CreateSoundPlayer?.Invoke() ?? CreateDefaultSoundPlayer();
+            sessionHost = new SessionHost(window);
+            session = new ScreenSession(sessionHost, soundPlayer: player, loggerFactory: loggerFactory);
+            CurrentFile = file;
+            window.View.GUI = session.GUI;
+            window.SetScenarioRunning(true);
+            window.View.Focus();
+            session.Start(file);
+        }
+
+        /// <summary>
+        /// 今のシナリオを止める（ゲームスレッドを止め、音を止めて、ウィンドウから切り離す）。
+        /// 止まりきる前に描いたものなどは、新しいシナリオに混ざらないよう捨てる（SessionHost）
+        /// </summary>
+        internal void StopSession(MainWindow window)
+        {
+            sessionHost?.Deactivate();
+            window.View.GUI = null;
+            Stop();
+            session = null;
+            sessionHost = null;
+            window.SetScenarioRunning(false);
+        }
+
+        /// <summary>シナリオの実行中なら、進行状況が失われることを確かめる。続けてよければ true</summary>
+        private async Task<bool> ConfirmDiscardAsync(MainWindow window)
+        {
+            if (session == null)
+            {
+                return true;
+            }
+            return await new ConfirmWindow(Strings.ConfirmTitle, Strings.ConfirmDiscardProgress).ShowDialog<bool>(window);
+        }
+
+        /// <summary>メニューの「シナリオを開く...」。選んだシナリオを始める（選ばなければ今のシナリオを続ける）</summary>
+        internal async Task OpenScenarioAsync(MainWindow window)
+        {
+            if (!await ConfirmDiscardAsync(window))
+            {
+                window.View.Focus();
+                return;
+            }
+            var file = await PickScenarioAsync(window);
+            if (string.IsNullOrEmpty(file))
+            {
+                window.View.Focus();
+                return;
+            }
+            StopSession(window);
+            StartSession(window, file);
+        }
+
+        /// <summary>メニューの「最初からやり直す」。今のシナリオ（ファイル）を始め直す</summary>
+        internal async Task RestartAsync(MainWindow window)
+        {
+            if (CurrentFile == null || !await ConfirmDiscardAsync(window))
+            {
+                window.View.Focus();
+                return;
+            }
+            var file = CurrentFile;
+            StopSession(window);
+            StartSession(window, file);
+        }
+
+        /// <summary>メニューの「終了」</summary>
+        internal async Task ExitAsync(MainWindow window)
+        {
+            if (!await ConfirmDiscardAsync(window))
+            {
+                window.View.Focus();
+                return;
+            }
+            window.Close();
         }
 
         /// <summary>

@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>Nie można dodać {0} (może być używany. Zamknij SRC# i umieść go w folderze Packs)</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>_Plik</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>_Otwórz scenariusz...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>_Zacznij od nowa</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>_Zakończ</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>Pomo_c</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>Otwórz pomo_c</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>_Strona SRC#</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>_O programie</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>Potwierdzenie</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>Niezapisany postęp zostanie utracony. Kontynuować?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Tak</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>O SRC#Avalonia</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Wersja {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC# jest rozpowszechniany na licencji GPL-3.0. Dołączony SoundFont (TimGM6mb) jest na licencji GPL-2.0 (COPYING w folderze SoundFont).</value>
+  </data>
 </root>

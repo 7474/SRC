@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>無法新增 {0}（可能正在使用。請結束 SRC# 後放入 Packs 資料夾）</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>檔案(_F)</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>開啟劇本(_O)...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>從頭開始(_R)</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>結束(_X)</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>說明(_H)</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>開啟說明(_H)</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>SRC# 網站(_W)</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>關於(_A)</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>未儲存的進度將會遺失。是否繼續？</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>關於 SRC#Avalonia</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC# 以 GPL-3.0 發佈。附帶的 SoundFont（TimGM6mb）為 GPL-2.0（SoundFont 資料夾中的 COPYING）。</value>
+  </data>
 </root>

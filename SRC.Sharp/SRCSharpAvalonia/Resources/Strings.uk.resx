@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>Не вдається додати {0} (можливо, файл використовується. Закрийте SRC# і покладіть його в папку Packs)</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>_Файл</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>_Відкрити сценарій...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>_Почати спочатку</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>_Вихід</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>_Довідка</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>Відкрити _довідку</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>_Сайт SRC#</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>_Про програму</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>Підтвердження</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>Незбережений прогрес буде втрачено. Продовжити?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Так</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ні</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Про SRC#Avalonia</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Версія {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC# поширюється за ліцензією GPL-3.0. Доданий SoundFont (TimGM6mb) поширюється за GPL-2.0 (COPYING у папці SoundFont).</value>
+  </data>
 </root>
