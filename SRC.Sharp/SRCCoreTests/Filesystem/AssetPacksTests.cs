@@ -82,7 +82,7 @@ namespace SRCCore.Filesystem.Tests
             Directory.CreateDirectory(Path.Combine(appPath, "Data", "System"));
             File.WriteAllText(Path.Combine(appPath, "Data", "System", "terrain.txt"), "terrain-app");
 
-            var fs = new LocalFileSystem();
+            using var fs = new LocalFileSystem();
             fs.AddPath(appPath);
             var skipped = new System.Collections.Generic.List<string>();
             var mounted = AssetPacks.Mount(fs, appPath, (zip, ex) => skipped.Add(Path.GetFileName(zip)));

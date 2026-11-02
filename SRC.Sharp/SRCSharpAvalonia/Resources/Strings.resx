@@ -99,4 +99,7 @@
   <data name="PackUnreadable" xml:space="preserve">
     <value>zip を読めません</value>
   </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>{0} を追加できません（使用中の可能性があります。SRC# を終了してから Packs フォルダに置いてください）</value>
+  </data>
 </root>

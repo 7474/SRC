@@ -122,6 +122,8 @@ namespace SRCRender
             if (Game.Join(TimeSpan.FromSeconds(2)))
             {
                 GUI.Dispose();
+                // 重ねた素材パック（zip）を閉じる
+                (SRC.FileSystem as IDisposable)?.Dispose();
             }
         }
     }

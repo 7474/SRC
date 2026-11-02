@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SRCCore.Filesystem
 {
-    public class LocalFileSystem : IFileSystem
+    public class LocalFileSystem : IFileSystem, IDisposable
     {
         private IList<ILocalFileSystemEntrySet> entrySets;
         private IList<ILocalFileSystemEntrySet> safeEntrySets;
@@ -54,6 +54,15 @@ namespace SRCCore.Filesystem
                 ));
             }
             // XXX Log
+        }
+
+        /// <summary>重ねた zip アーカイブを閉じる（Windows では開いている間、zip を削除・置き換えできない）</summary>
+        public void Dispose()
+        {
+            foreach (var entrySet in entrySets.OfType<IDisposable>())
+            {
+                entrySet.Dispose();
+            }
         }
 
         public void AddAchive(string basePath, string archivePath)
@@ -418,7 +427,7 @@ namespace SRCCore.Filesystem
     /// zip アーカイブを basePath のフォルダに重ねる。root を指定すると、zip の中のそのフォルダ以下を basePath に重ねる。
     /// zip の中の名前は大文字・小文字（と全角・半角）を区別せずに探す。
     /// </summary>
-    public class LocalFileSystemArchive : ILocalFileSystemEntrySet
+    public class LocalFileSystemArchive : ILocalFileSystemEntrySet, IDisposable
     {
         public string BasePath { get; private set; }
         /// <summary>zip の中で basePath にあたるフォルダ（"Pack/" など。zip の最上位なら空）</summary>
@@ -549,6 +558,12 @@ namespace SRCCore.Filesystem
         public Stream OpenRead(string entryName)
         {
             return GetEntry(entryName).Open();
+        }
+
+        public void Dispose()
+        {
+            WaitForEntryMap();
+            _archive.Dispose();
         }
 
         public Stream OpenWrite(string entryName)

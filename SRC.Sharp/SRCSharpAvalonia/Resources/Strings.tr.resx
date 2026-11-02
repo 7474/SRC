@@ -99,4 +99,7 @@
   <data name="PackUnreadable" xml:space="preserve">
     <value>Zip dosyası okunamıyor</value>
   </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>{0} eklenemiyor (kullanımda olabilir. SRC# uygulamasını kapatıp Packs klasörüne koyun)</value>
+  </data>
 </root>

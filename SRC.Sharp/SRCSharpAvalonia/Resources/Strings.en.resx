@@ -99,4 +99,7 @@
   <data name="PackUnreadable" xml:space="preserve">
     <value>Cannot read the zip file</value>
   </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>Cannot add {0} (it may be in use. Quit SRC# and place it in the Packs folder)</value>
+  </data>
 </root>

@@ -38,5 +38,6 @@ namespace SRCSharpAvalonia
         public static string NoPacks => Rm.GetString(nameof(NoPacks));
         public static string PackHasNoAssets => Rm.GetString(nameof(PackHasNoAssets));
         public static string PackUnreadable => Rm.GetString(nameof(PackUnreadable));
+        public static string PackCopyFailed => Rm.GetString(nameof(PackCopyFailed));
     }
 }

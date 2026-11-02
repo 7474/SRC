@@ -99,4 +99,7 @@
   <data name="PackUnreadable" xml:space="preserve">
     <value>Die ZIP-Datei kann nicht gelesen werden</value>
   </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>{0} kann nicht hinzugefügt werden (wird möglicherweise verwendet. Beenden Sie SRC# und legen Sie die Datei in den Ordner „Packs“)</value>
+  </data>
 </root>

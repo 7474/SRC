@@ -152,15 +152,30 @@ namespace SRCSharpAvalonia
             }
         }
 
-        /// <summary>選んだ zip を Packs フォルダに写す（同じ名前のものは置き換える）</summary>
+        /// <summary>
+        /// 選んだ zip を Packs フォルダに写す（同じ名前のものは置き換える）。
+        /// 写せなかったもの（シナリオの実行中に読んでいる zip の置き換えなど）は、一覧の後ろに理由を示す
+        /// </summary>
         internal void AddPacks(IEnumerable<string> zips)
         {
-            Directory.CreateDirectory(PacksDirectory);
+            var failed = new List<string>();
             foreach (var zip in zips)
             {
-                File.Copy(zip, Path.Combine(PacksDirectory, Path.GetFileName(zip)), true);
+                try
+                {
+                    Directory.CreateDirectory(PacksDirectory);
+                    File.Copy(zip, Path.Combine(PacksDirectory, Path.GetFileName(zip)), true);
+                }
+                catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+                {
+                    failed.Add(Path.GetFileName(zip));
+                }
             }
             UpdatePackList();
+            foreach (var name in failed)
+            {
+                PackList.Children.Add(new TextBlock { Text = string.Format(Strings.PackCopyFailed, name), TextWrapping = TextWrapping.Wrap, FontSize = 12, Foreground = Brushes.DarkRed });
+            }
         }
 
         private async System.Threading.Tasks.Task AddPacksAsync()
