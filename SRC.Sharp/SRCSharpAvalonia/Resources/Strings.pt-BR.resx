@@ -78,4 +78,28 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>As alterações terão efeito na próxima vez que o aplicativo for iniciado.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Pacotes de recursos</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>Arquivos zip como a coleção de gráficos genéricos ou um pacote de desenvolvimento colocados na pasta Packs ({0}) são lidos como se estivessem na pasta do SRC#, sem extraí-los.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Adicionar pacote de recursos...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Abrir pasta</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>Nenhum pacote de recursos</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Não carregado: não há pastas como Bitmap ou Data</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Não é possível ler o zip</value>
+  </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>Não é possível adicionar {0} (pode estar em uso. Feche o SRC# e coloque-o na pasta Packs)</value>
+  </data>
 </root>

@@ -86,6 +86,8 @@ namespace SRCCore
             // ファイルが見つかった？
             if (Strings.Len(fname) == 0)
             {
+                // 素材の置き場所を確かめられるよう、見つからなかった名前を残す
+                SRC.LogInfo("BGM {BGM} が見つかりません（シナリオ・拡張データフォルダ・SRC# のフォルダの Midi フォルダを探しました）", bgm_name);
                 return;
             }
 

@@ -31,5 +31,13 @@ namespace SRCSharpAvalonia
         public static string SoundFontAuto => Rm.GetString(nameof(SoundFontAuto));
         public static string SoundFontNotFound => Rm.GetString(nameof(SoundFontNotFound));
         public static string AssetSettingsApplyNote => Rm.GetString(nameof(AssetSettingsApplyNote));
+        public static string PacksLabel => Rm.GetString(nameof(PacksLabel));
+        public static string PacksDescription => Rm.GetString(nameof(PacksDescription));
+        public static string AddPack => Rm.GetString(nameof(AddPack));
+        public static string OpenPacksFolder => Rm.GetString(nameof(OpenPacksFolder));
+        public static string NoPacks => Rm.GetString(nameof(NoPacks));
+        public static string PackHasNoAssets => Rm.GetString(nameof(PackHasNoAssets));
+        public static string PackUnreadable => Rm.GetString(nameof(PackUnreadable));
+        public static string PackCopyFailed => Rm.GetString(nameof(PackCopyFailed));
     }
 }

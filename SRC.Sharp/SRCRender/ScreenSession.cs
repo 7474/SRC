@@ -50,6 +50,14 @@ namespace SRCRender
             try
             {
                 fileSystem.AddPath(SRC.AppPath);
+                // 素材パック（SRC のフォルダの Packs フォルダの zip）を SRC のフォルダに重ねる
+                foreach (var pack in AssetPacks.Mount(fileSystem, SRC.AppPath, (zip, ex) =>
+                    SRC.LogWarn(ex == null
+                        ? "素材パック「{Pack}」に素材のフォルダ（Bitmap・Data など）が無いため、読み込みません"
+                        : "素材パック「{Pack}」を読み込めません", ex, Path.GetFileName(zip))))
+                {
+                    SRC.LogInfo("素材パック「{Pack}」を読み込みました", Path.GetFileName(pack));
+                }
                 if (!string.IsNullOrEmpty(SRC.ExtDataPath2))
                 {
                     fileSystem.AddPath(SRC.ExtDataPath2);
@@ -114,6 +122,8 @@ namespace SRCRender
             if (Game.Join(TimeSpan.FromSeconds(2)))
             {
                 GUI.Dispose();
+                // 重ねた素材パック（zip）を閉じる
+                (SRC.FileSystem as IDisposable)?.Dispose();
             }
         }
     }

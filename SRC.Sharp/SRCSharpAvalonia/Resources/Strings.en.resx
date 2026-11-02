@@ -78,4 +78,28 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>Changes take effect the next time you start the app.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Asset packs</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>Zip files such as the generic graphics collection or a development pack placed in the Packs folder ({0}) are read as if they were in the SRC# folder, without extracting them.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Add asset pack...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>No asset packs</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Not loaded: no Bitmap, Data or similar folders</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Cannot read the zip file</value>
+  </data>
+  <data name="PackCopyFailed" xml:space="preserve">
+    <value>Cannot add {0} (it may be in use. Quit SRC# and place it in the Packs folder)</value>
+  </data>
 </root>

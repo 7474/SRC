@@ -24,37 +24,8 @@ namespace SRCSharpWeb
         /// <summary>Shift_JIS（コードページ 932）。Windows で作った zip のファイル名や文書に使われる</summary>
         public static Encoding ShiftJis => Encoding.GetEncoding(932);
 
-        /// <summary>
-        /// zip のファイル名の文字コード（UTF-8 の印が無い名前に使う）。UTF-8 として正しく読めれば UTF-8、読めなければ Shift_JIS として読む。
-        /// Windows で作った zip は Shift_JIS、macOS・Linux で作った zip は UTF-8 の名前に印を付けないことがあるため
-        /// </summary>
-        private sealed class ZipNameEncoding : Encoding
-        {
-            private static readonly Encoding Utf8 = new UTF8Encoding(false, true);
-
-            private static Encoding Pick(byte[] bytes, int index, int count)
-            {
-                try
-                {
-                    Utf8.GetCharCount(bytes, index, count);
-                    return Utf8;
-                }
-                catch (DecoderFallbackException)
-                {
-                    return ShiftJis;
-                }
-            }
-
-            public override int GetByteCount(char[] chars, int index, int count) => Utf8.GetByteCount(chars, index, count);
-            public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex) => Utf8.GetBytes(chars, charIndex, charCount, bytes, byteIndex);
-            public override int GetCharCount(byte[] bytes, int index, int count) => Pick(bytes, index, count).GetCharCount(bytes, index, count);
-            public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex) => Pick(bytes, byteIndex, byteCount).GetChars(bytes, byteIndex, byteCount, chars, charIndex);
-            public override int GetMaxByteCount(int charCount) => Utf8.GetMaxByteCount(charCount);
-            // UTF-8・Shift_JIS とも、1 バイトから 2 文字以上にはならない
-            public override int GetMaxCharCount(int byteCount) => byteCount;
-        }
-
-        private static readonly Encoding ZipNames = new ZipNameEncoding();
+        // zip のファイル名の文字コード（UTF-8 か Shift_JIS。SRCCore.Filesystem.ZipNameEncoding）
+        private static readonly Encoding ZipNames = SRCCore.Filesystem.ZipNameEncoding.Instance;
 
         /// <summary>
         /// シナリオの zip を展開し、展開先のフォルダを返す。

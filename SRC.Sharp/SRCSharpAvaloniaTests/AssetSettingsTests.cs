@@ -60,6 +60,44 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
+        public void Packs_AreListedWithTheirAssetFolders()
+        {
+            var source = Path.Combine(root, "source");
+            Directory.CreateDirectory(source);
+            var good = Path.Combine(source, "graphics.zip");
+            using (var archive = System.IO.Compression.ZipFile.Open(good, System.IO.Compression.ZipArchiveMode.Create))
+            {
+                archive.CreateEntry("汎用グラフィック集/Bitmap/Unit/a.bmp");
+                archive.CreateEntry("汎用グラフィック集/Sound/a.wav");
+            }
+            var bad = Path.Combine(source, "readme.zip");
+            using (var archive = System.IO.Compression.ZipFile.Open(bad, System.IO.Compression.ZipArchiveMode.Create))
+            {
+                archive.CreateEntry("readme.txt");
+            }
+            File.WriteAllText(Path.Combine(source, "broken.zip"), "not a zip");
+
+            Assert.AreEqual((string.Format(Strings.FolderFound, "Bitmap, Sound"), false), AssetSettingsWindow.DescribePack(good));
+            Assert.AreEqual((Strings.PackHasNoAssets, true), AssetSettingsWindow.DescribePack(bad));
+            Assert.AreEqual((Strings.PackUnreadable, true), AssetSettingsWindow.DescribePack(Path.Combine(source, "broken.zip")));
+
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var window = new AssetSettingsWindow(new AssetSettings(), root);
+                    Assert.AreEqual(1, window.PackList.Children.Count, "no packs");
+                    // 追加すると Packs フォルダに写し、一覧に出す
+                    window.AddPacks(new[] { good, bad });
+                    Assert.IsTrue(File.Exists(Path.Combine(root, "Packs", "graphics.zip")));
+                    Assert.AreEqual(2, window.PackList.Children.Count);
+                    StringAssert.StartsWith(((Avalonia.Controls.TextBlock)window.PackList.Children[0]).Text, "graphics.zip");
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
+        }
+
+        [TestMethod]
         public void AssetSettings_RoundTripsThroughConfig()
         {
             var config = new LocalFileConfig();
