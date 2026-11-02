@@ -193,6 +193,99 @@
     <value>วิธีใช้ SRC#Avalonia(_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>ทรัพยากรและภาษาจะมีผลเมื่อเริ่มครั้งถัดไป ส่วนบันทึกมีผลเมื่อบันทึกการตั้งค่า</value>
+    <value>ทรัพยากรและภาษาจะมีผลเมื่อเริ่มครั้งถัดไป ส่วนอื่นมีผลเมื่อบันทึก (การแสดงตารางมีผลเมื่อเริ่มครั้งถัดไป)</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>เกม</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>สำหรับนักพัฒนา</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>การตั้งค่าสำหรับนักพัฒนา(_D)...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>โหมดตอบโต้อัตโนมัติ</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>ชื่อไฟล์เพลงที่เล่นในแต่ละฉาก ([BGM] ใน Src.ini ของ SRC ดั้งเดิม) ถ้าเว้นว่างจะใช้ชื่อมาตรฐาน (Map1.mid ฯลฯ) เพลงที่ซีนาริโอระบุด้วย RenameBGM ฯลฯ มีลำดับความสำคัญสูงกว่า</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>นำเข้าจาก Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>นำเข้า {0} รายการ ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>ไม่มีส่วน [BGM] ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>เปิดเรื่อง</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>แผนที่ (พื้นดิน เฟสฝ่ายเรา)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>แผนที่ (พื้นดิน เฟสศัตรู)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>แผนที่ (ในอาคาร เฟสฝ่ายเรา)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>แผนที่ (ในอาคาร เฟสศัตรู)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>แผนที่ (อวกาศ เฟสฝ่ายเรา)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>แผนที่ (อวกาศ เฟสศัตรู)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>บรีฟฟิง</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>ช่วงพัก</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>คำบรรยายตอน</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>ตอนจบ</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>การต่อสู้</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>การตั้งค่าสำหรับผู้สร้างซีนาริโอและนักพัฒนา ถ้าแค่เล่นไม่จำเป็นต้องเปลี่ยน</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>โหมดดีบัก (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>อ่านข้อมูลอีเวนต์ใหม่เมื่อโหลดด่วนและเริ่มใหม่ เหมือน "デバッグ" ของคำสั่ง Option</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>อ่านไฟล์ข้อความแบบ Shift_JIS ด้วย</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>เขียนไฟล์เป็น Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>สำหรับความเข้ากันได้กับข้อมูลของ SRC ดั้งเดิม (Shift_JIS) ค่าเริ่มต้นคือเปิดทั้งสองอย่าง</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>จำนวนบัฟเฟอร์ภาพ (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>ขนาดสูงสุดของบัฟเฟอร์ภาพ (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>เก็บภาพที่ขยายไว้ (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>การตั้งค่าบัฟเฟอร์ภาพเป็นค่าเพื่อความเข้ากันได้กับ SRC ดั้งเดิม SRC# ไม่ได้ใช้ในการวาด (อ่านได้ด้วยฟังก์ชัน Info)</value>
   </data>
 </root>

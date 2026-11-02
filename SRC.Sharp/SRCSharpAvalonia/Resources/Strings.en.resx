@@ -193,6 +193,99 @@
     <value>How to use SRC#Avalonia (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Asset and language settings take effect the next time you start the app; log settings take effect when saved.</value>
+    <value>Asset and language settings take effect the next time you start the app; the others take effect when saved (the grid takes effect on the next start).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Developer</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>_Developer settings...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Automatic counterattack mode</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>File names of the music played for each scene (the [BGM] of the original SRC Src.ini). When empty, the standard name (Map1.mid, etc.) is used. Music set by the scenario with RenameBGM and so on takes precedence.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Import from Src.ini...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>Imported {0} entries ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>No [BGM] section ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Opening</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Map (ground, player phase)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Map (ground, enemy phase)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Map (indoors, player phase)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Map (indoors, enemy phase)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Map (space, player phase)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Map (space, enemy phase)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Briefing</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Intermission</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Subtitle</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Ending</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Battle</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Settings for scenario authors and developers. You do not need to change them just to play.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Debug mode (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Reloads event data on quick load and restart. Same as "デバッグ" of the Option command.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Also read text files in Shift_JIS</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Write files in Shift_JIS</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>For compatibility with data of the original SRC (Shift_JIS). Both are enabled by default.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Number of image buffers (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Maximum size of the image buffer (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Keep stretched images (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>The image buffer settings are values for compatibility with the original SRC and are not used by SRC# rendering (they can be read with the Info function).</value>
   </data>
 </root>

@@ -193,6 +193,99 @@
     <value>SRC#Avalonia nasıl kullanılır (_U)</value>
   </data>
   <data name="SettingsApplyNote" xml:space="preserve">
-    <value>Kaynak ve dil ayarları bir sonraki başlatmada, günlük ayarları kaydettiğinizde geçerli olur.</value>
+    <value>Kaynak ve dil ayarları bir sonraki başlatmada, diğerleri kaydettiğinizde geçerli olur (ızgara bir sonraki başlatmada).</value>
+  </data>
+  <data name="GameTab" xml:space="preserve">
+    <value>Oyun</value>
+  </data>
+  <data name="BgmTab" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="DeveloperTab" xml:space="preserve">
+    <value>Geliştirici</value>
+  </data>
+  <data name="DeveloperSettingsMenu" xml:space="preserve">
+    <value>_Geliştirici ayarları...</value>
+  </data>
+  <data name="AutoDefenseLabel" xml:space="preserve">
+    <value>Otomatik karşı saldırı modu</value>
+  </data>
+  <data name="BgmDescriptionText" xml:space="preserve">
+    <value>Her sahnede çalan müziğin dosya adları (özgün SRC Src.ini dosyasındaki [BGM]). Boşsa standart ad (Map1.mid vb.) kullanılır. Senaryonun RenameBGM vb. ile belirttiği müzik önceliklidir.</value>
+  </data>
+  <data name="BgmImport" xml:space="preserve">
+    <value>Src.ini dosyasından içe aktar...</value>
+  </data>
+  <data name="BgmImported" xml:space="preserve">
+    <value>{0} kayıt içe aktarıldı ({1})</value>
+  </data>
+  <data name="BgmImportNone" xml:space="preserve">
+    <value>[BGM] bölümü yok ({0})</value>
+  </data>
+  <data name="BgmOpening" xml:space="preserve">
+    <value>Açılış</value>
+  </data>
+  <data name="BgmMap1" xml:space="preserve">
+    <value>Harita (kara, dost evresi)</value>
+  </data>
+  <data name="BgmMap2" xml:space="preserve">
+    <value>Harita (kara, düşman evresi)</value>
+  </data>
+  <data name="BgmMap3" xml:space="preserve">
+    <value>Harita (iç mekân, dost evresi)</value>
+  </data>
+  <data name="BgmMap4" xml:space="preserve">
+    <value>Harita (iç mekân, düşman evresi)</value>
+  </data>
+  <data name="BgmMap5" xml:space="preserve">
+    <value>Harita (uzay, dost evresi)</value>
+  </data>
+  <data name="BgmMap6" xml:space="preserve">
+    <value>Harita (uzay, düşman evresi)</value>
+  </data>
+  <data name="BgmBriefing" xml:space="preserve">
+    <value>Brifing</value>
+  </data>
+  <data name="BgmIntermission" xml:space="preserve">
+    <value>Ara bölüm</value>
+  </data>
+  <data name="BgmSubtitle" xml:space="preserve">
+    <value>Alt başlık</value>
+  </data>
+  <data name="BgmEnd" xml:space="preserve">
+    <value>Bitiş</value>
+  </data>
+  <data name="BgmBattle" xml:space="preserve">
+    <value>Savaş</value>
+  </data>
+  <data name="DeveloperDescription" xml:space="preserve">
+    <value>Senaryo yazarları ve geliştiriciler için ayarlar. Yalnızca oynamak için değiştirmeniz gerekmez.</value>
+  </data>
+  <data name="DebugModeLabel" xml:space="preserve">
+    <value>Hata ayıklama modu (DebugMode)</value>
+  </data>
+  <data name="DebugModeNote" xml:space="preserve">
+    <value>Hızlı yükleme ve yeniden başlatmada olay verilerini yeniden okur. Option komutunun "デバッグ" seçeneğiyle aynıdır.</value>
+  </data>
+  <data name="CompatibleReadLabel" xml:space="preserve">
+    <value>Metin dosyalarını Shift_JIS olarak da oku</value>
+  </data>
+  <data name="CompatibleWriteLabel" xml:space="preserve">
+    <value>Dosyaları Shift_JIS olarak yaz</value>
+  </data>
+  <data name="CompatibleNote" xml:space="preserve">
+    <value>Özgün SRC verileriyle (Shift_JIS) uyumluluk için. Varsayılan olarak ikisi de açıktır.</value>
+  </data>
+  <data name="ImageBufferSizeLabel" xml:space="preserve">
+    <value>Görüntü arabelleği sayısı (ImageBufferSize)</value>
+  </data>
+  <data name="MaxImageBufferByteSizeLabel" xml:space="preserve">
+    <value>Görüntü arabelleğinin en büyük boyutu (MaxImageBufferByteSize)</value>
+  </data>
+  <data name="KeepStretchedImageLabel" xml:space="preserve">
+    <value>Büyütülmüş görüntüleri sakla (KeepStretchedImage)</value>
+  </data>
+  <data name="ImageBufferNote" xml:space="preserve">
+    <value>Görüntü arabelleği ayarları özgün SRC ile uyumluluk içindir ve SRC# çiziminde kullanılmaz (Info işleviyle okunabilir).</value>
   </data>
 </root>

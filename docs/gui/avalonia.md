@@ -78,7 +78,8 @@ flowchart LR
 | | 最初からやり直す | 今のシナリオ（ファイル）を始め直す。実行中なら確かめる |
 | | 終了 | アプリを終える。実行中なら確かめる |
 | 表示 | 100%・150%・200% | 表示倍率（下記） |
-| 設定 | 設定... | 素材・表示言語・ログの設定（下記） |
+| 設定 | 設定... | 素材・ゲーム・BGM・表示言語・ログ・開発者向けの設定（下記） |
+| | 開発者向けの設定... | 設定のウィンドウを「開発者向け」のタブで開く |
 | ヘルプ | ヘルプを開く | [SRC# のヘルプ](https://srch.7474.jp/)をブラウザで開く |
 | | SRC#Avalonia の使い方 | ヘルプの [SRC#Avaloniaの使い方](../../SRC.Sharp.Help/src/SRCSharpAvaloniaの使い方.md) を開く |
 | | SRC# のサイト | [リポジトリ](https://github.com/7474/SRC)をブラウザで開く |
@@ -102,11 +103,16 @@ flowchart LR
 
 メニューの「設定 > 設定...」で設定のウィンドウを開く（`SettingsWindow`）。「素材」「表示」「ログ」のタブに分ける。保存すると `srcs.json` に書く。素材と表示言語は次に起動したときから、ログは保存したときから効く（`LogHost.ApplyConfig`。引数・環境変数で指定した項目は上書きしない）。
 
+SRC# が `srcs.json` から読む設定（フロントエンドの設定を含む）は、すべてこのウィンドウか「表示」メニューで変えられるようにする。
+
 | タブ | 項目 | `srcs.json` |
 |---|---|---|
 | 素材 | 拡張データフォルダ 1・2、MIDI の SoundFont、素材パック | 下表 |
+| ゲーム | 元の SRC の設定変更の画面と同じ項目（`ScreenGUI.Configure`）と自動反撃モード。音量はその場で変える | `BattleAnimation` など、`Option/Turn`、`Option/AutoDefense`、`SoundVolume` |
+| BGM | 場面ごとの曲のファイル名（`Sound.BGMName`）。元の SRC の Src.ini の `[BGM]` を取り込める（`SrcIni`） | `BGM/<名前>` |
 | 表示 | 表示言語（OS の言語に合わせる・対応言語） | `Option/Language` |
 | ログ | レベル・ファイルに出すか・フォルダ・残す日数（[ログの設計](../logging.md)） | `Log/Level`・`Log/File`・`Log/Path`・`Log/RetainDays` |
+| 開発者向け | デバッグモード、Shift_JIS の読み書き（`SRCCompatibilityMode`）、画像のバッファ（描画では使わず `Info` で読めるだけ） | `Option/DebugMode`・`SRCCompatibilityMode`・`ImageBufferSize` など |
 
 ### 素材
 

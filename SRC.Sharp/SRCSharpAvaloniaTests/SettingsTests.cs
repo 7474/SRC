@@ -1,6 +1,7 @@
 using Avalonia.Headless;
 using Avalonia.Interactivity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCCore;
 using SRCCore.Config;
 using System;
 using System.IO;
@@ -136,6 +137,76 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
+        public void GameBgmAndDeveloperSettings_RoundTripThroughConfig()
+        {
+            var config = new LocalFileConfig();
+            var settings = new AppSettings
+            {
+                BattleAnimation = false, ExtendedAnimation = false, WeaponAnimation = true, SpecialPowerAnimation = false, MoveAnimation = false,
+                AutoMoveCursor = false, ShowSquareLine = true, ShowTurn = true, KeepEnemyBGM = true, AutoDefense = true, SoundVolume = 80,
+                Bgm = new System.Collections.Generic.Dictionary<string, string> { ["Map1"] = "地上.mid", ["default"] = "battle.mid" },
+                DebugMode = true, CompatibleRead = true, CompatibleWrite = false, ImageBufferSize = 64, MaxImageBufferByteSize = 32, KeepStretchedImage = true,
+            };
+            App.WriteSettings(config, settings);
+
+            Assert.IsFalse(config.BattleAnimation);
+            Assert.IsTrue(config.ShowSquareLine);
+            Assert.AreEqual("On", config.GetItem("Option", "Turn"));
+            Assert.IsTrue(config.AutoDefense);
+            Assert.AreEqual(80, config.SoundVolume);
+            Assert.AreEqual("地上.mid", config.GetItem("BGM", "Map1"));
+            Assert.AreEqual("battle.mid", config.GetItem("BGM", "default"));
+            Assert.AreEqual("", config.GetItem("BGM", "Map2"));
+            Assert.AreEqual("On", config.GetItem("Option", "DebugMode"));
+            Assert.AreEqual(SRCCompatibilityMode.Read, config.SRCCompatibilityMode);
+            Assert.AreEqual(64, config.ImageBufferSize);
+
+            var read = App.ReadSettings(config);
+            Assert.IsFalse(read.BattleAnimation);
+            Assert.IsTrue(read.WeaponAnimation);
+            Assert.IsTrue(read.ShowTurn);
+            Assert.IsTrue(read.KeepEnemyBGM);
+            Assert.IsTrue(read.AutoDefense);
+            Assert.AreEqual(80, read.SoundVolume);
+            Assert.AreEqual("地上.mid", read.Bgm["Map1"]);
+            Assert.AreEqual("", read.Bgm["Map2"]);
+            Assert.IsTrue(read.DebugMode);
+            Assert.IsTrue(read.CompatibleRead);
+            Assert.IsFalse(read.CompatibleWrite);
+            Assert.AreEqual(32, read.MaxImageBufferByteSize);
+            Assert.IsTrue(read.KeepStretchedImage);
+        }
+
+        [TestMethod]
+        public void Window_ImportsBgmFromSrcIni()
+        {
+            // 元の SRC の Src.ini（Shift_JIS）
+            var ini = Path.Combine(root, "Src.ini");
+            File.WriteAllBytes(ini, SRCCore.Filesystem.ZipNameEncoding.ShiftJis.GetBytes(
+                "[Option]\r\nDebugMode=Off\r\n[BGM]\r\nOpening=オープニング.mid\r\nMap1=GSC_Map1.mid\r\nUnknown=x.mid\r\n[Other]\r\nMap2=no.mid\r\n"));
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var window = new SettingsWindow(new AppSettings(), root, initialTab: SettingsWindow.DeveloperTabIndex);
+                    window.Show();
+                    Assert.AreEqual(SettingsWindow.DeveloperTabIndex, window.GetLogicalDescendants().OfType<Avalonia.Controls.TabControl>().First().SelectedIndex);
+                    Assert.AreEqual(2, window.ImportBgm(ini));
+                    var result = window.Result();
+                    Assert.AreEqual("オープニング.mid", result.Bgm["Opening"]);
+                    Assert.AreEqual("GSC_Map1.mid", result.Bgm["Map1"]);
+                    Assert.AreEqual("", result.Bgm["Map2"], "[BGM] 以外の項目は読まない");
+                    // 戦闘アニメを表示しなければ、拡張戦闘アニメ・武器準備アニメを選べない
+                    window.BattleAnimation.IsChecked = false;
+                    Assert.IsFalse(window.ExtendedAnimation.IsEnabled);
+                    Assert.IsFalse(window.WeaponAnimation.IsEnabled);
+                    window.Close();
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
+        }
+
+        [TestMethod]
         public void Settings_DefaultsWhenEmpty()
         {
             var read = App.ReadSettings(new LocalFileConfig());
@@ -173,14 +244,13 @@ namespace SRCSharpAvalonia.Tests
 
                     // ログのタブの見た目を確かめるため、画面を保存する
                     var tabs = window.GetLogicalDescendants().OfType<Avalonia.Controls.TabControl>().First();
-                    tabs.SelectedIndex = 2;
-                    Avalonia.Headless.AvaloniaHeadlessPlatform.ForceRenderTimerTick();
-                    var frame = window.CaptureRenderedFrame();
-                    if (frame != null)
+                    var dir = Path.Combine(AppContext.BaseDirectory, "TestResults", "avalonia");
+                    Directory.CreateDirectory(dir);
+                    foreach (var (index, name) in new[] { (1, "game"), (2, "bgm"), (4, "log"), (SettingsWindow.DeveloperTabIndex, "developer") })
                     {
-                        var dir = Path.Combine(AppContext.BaseDirectory, "TestResults", "avalonia");
-                        Directory.CreateDirectory(dir);
-                        frame.Save(Path.Combine(dir, "settings-log.png"));
+                        tabs.SelectedIndex = index;
+                        Avalonia.Headless.AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                        window.CaptureRenderedFrame()?.Save(Path.Combine(dir, "settings-" + name + ".png"));
                     }
                     window.Close();
                     return true;
@@ -247,10 +317,12 @@ namespace SRCSharpAvalonia.Tests
                 {
                     var window = new MainWindow();
                     window.Show();
-                    var requested = false;
-                    window.SettingsRequested += () => requested = true;
+                    var requested = new System.Collections.Generic.List<int>();
+                    window.SettingsRequested += tab => requested.Add(tab);
                     window.SettingsItem.RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
-                    Assert.IsTrue(requested);
+                    window.DeveloperSettingsItem.RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
+                    // 「開発者向けの設定...」は開発者向けのタブを開く
+                    CollectionAssert.AreEqual(new[] { 0, SettingsWindow.DeveloperTabIndex }, requested);
                     window.Close();
                     return true;
                 }, CancellationToken.None).GetAwaiter().GetResult();
