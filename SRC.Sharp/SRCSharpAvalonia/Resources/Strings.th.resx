@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>การเปลี่ยนแปลงจะมีผลเมื่อเริ่มโปรแกรมครั้งถัดไป</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>แพ็กทรัพยากร</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>ไฟล์ zip เช่น ชุดกราฟิกทั่วไปหรือแพ็กสำหรับพัฒนา ที่วางในโฟลเดอร์ Packs ({0}) จะถูกอ่านเหมือนอยู่ในโฟลเดอร์ของ SRC# โดยไม่ต้องแตกไฟล์</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>เพิ่มแพ็กทรัพยากร...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>เปิดโฟลเดอร์</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>ไม่มีแพ็กทรัพยากร</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>ไม่โหลด: ไม่มีโฟลเดอร์อย่าง Bitmap หรือ Data</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>อ่านไฟล์ zip ไม่ได้</value>
+  </data>
 </root>

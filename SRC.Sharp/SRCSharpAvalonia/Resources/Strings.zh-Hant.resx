@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>變更將在下次啟動時生效。</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>素材包</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>將通用圖像集或開發包等 zip 放入 Packs 資料夾（{0}）後，不需解壓即可像放在 SRC# 資料夾中一樣讀取。</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>新增素材包...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>開啟資料夾</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>沒有素材包</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>沒有 Bitmap、Data 等資料夾，不會讀取</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>無法讀取 zip</value>
+  </data>
 </root>

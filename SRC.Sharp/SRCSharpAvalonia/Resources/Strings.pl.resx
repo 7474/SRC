@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>Zmiany zostaną zastosowane przy następnym uruchomieniu.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Pakiety zasobów</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>Pliki zip, takie jak ogólna kolekcja grafik lub pakiet deweloperski, umieszczone w folderze Packs ({0}) są odczytywane bez rozpakowywania, tak jakby były w folderze SRC#.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Dodaj pakiet zasobów...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Otwórz folder</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>Brak pakietów zasobów</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Nie wczytano: brak folderów takich jak Bitmap lub Data</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Nie można odczytać pliku zip</value>
+  </data>
 </root>

@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>Änderungen werden beim nächsten Start wirksam.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Asset-Pakete</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>ZIP-Dateien wie die allgemeine Grafiksammlung oder ein Entwicklungspaket im Ordner „Packs“ ({0}) werden ohne Entpacken so gelesen, als lägen sie im SRC#-Ordner.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Asset-Paket hinzufügen...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Ordner öffnen</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>Keine Asset-Pakete</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Nicht geladen: keine Ordner wie Bitmap oder Data</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Die ZIP-Datei kann nicht gelesen werden</value>
+  </data>
 </root>

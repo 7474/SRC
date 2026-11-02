@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>変更は次に起動したときに反映されます。</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>素材パック</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>汎用グラフィック集や開発パックなどの zip を Packs フォルダ（{0}）に置くと、展開せずに SRC# のフォルダに重ねて読み込みます。</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>素材パックを追加...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>フォルダを開く</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>素材パックはありません</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Bitmap・Data などのフォルダが無いため、読み込みません</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>zip を読めません</value>
+  </data>
 </root>

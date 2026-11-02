@@ -58,8 +58,17 @@ namespace SRCCore.Filesystem
 
         public void AddAchive(string basePath, string archivePath)
         {
+            AddAchive(basePath, archivePath, null);
+        }
+
+        /// <summary>
+        /// zip アーカイブを basePath のフォルダに重ねる。root を指定すると、zip の中のそのフォルダ以下を重ねる。
+        /// 後に重ねたものほど優先する（実在するファイルは常に優先する）
+        /// </summary>
+        public void AddAchive(string basePath, string archivePath, string root)
+        {
             AddEntrySet(new LocalFileSystemArchive(
-                basePath, ZipFile.Open(archivePath, ZipArchiveMode.Read)
+                basePath, ZipFile.Open(archivePath, ZipArchiveMode.Read, ZipNameEncoding.Instance), root
             ));
         }
 
@@ -405,14 +414,24 @@ namespace SRCCore.Filesystem
         }
     }
 
+    /// <summary>
+    /// zip アーカイブを basePath のフォルダに重ねる。root を指定すると、zip の中のそのフォルダ以下を basePath に重ねる。
+    /// zip の中の名前は大文字・小文字（と全角・半角）を区別せずに探す。
+    /// </summary>
     public class LocalFileSystemArchive : ILocalFileSystemEntrySet
     {
         public string BasePath { get; private set; }
+        /// <summary>zip の中で basePath にあたるフォルダ（"Pack/" など。zip の最上位なら空）</summary>
+        public string Root { get; private set; }
         private ZipArchive _archive;
         private SrcCollection<ZipArchiveEntry> _entryMap;
         private Task _entryMapResolveTask;
 
-        public LocalFileSystemArchive(string basePath, ZipArchive archive)
+        public LocalFileSystemArchive(string basePath, ZipArchive archive) : this(basePath, archive, null)
+        {
+        }
+
+        public LocalFileSystemArchive(string basePath, ZipArchive archive, string root)
         {
             var tmpBasePath = basePath.Replace("\\", "/");
             if (!tmpBasePath.EndsWith("/"))
@@ -420,6 +439,7 @@ namespace SRCCore.Filesystem
                 tmpBasePath += "/";
             }
             BasePath = tmpBasePath;
+            Root = string.IsNullOrEmpty(root) ? "" : root.Replace("\\", "/").Trim('/') + "/";
             _archive = archive;
             _entryMap = new SrcCollection<ZipArchiveEntry>();
 
@@ -427,7 +447,7 @@ namespace SRCCore.Filesystem
             {
                 foreach (var entry in _archive.Entries.Where(x => !string.IsNullOrEmpty(x.Name)))
                 {
-                    _entryMap[entry.FullName] = entry;
+                    _entryMap[entry.FullName.Replace("\\", "/")] = entry;
                 }
             });
         }
@@ -436,26 +456,38 @@ namespace SRCCore.Filesystem
             return entryName.Replace("\\", "/").StartsWith(BasePath);
         }
 
-        private ZipArchiveEntry GetEntry(string entryName)
+        private void WaitForEntryMap()
         {
             while (!_entryMapResolveTask.IsCompleted)
             {
                 Task.Delay(100).Wait();
             }
+        }
+
+        /// <summary>entryName の zip の中での名前。basePath の外を指す絶対パスなら null</summary>
+        private string ArchivePath(string entryName)
+        {
             var archivePath = entryName.Replace("\\", "/");
-            var isAbsolute = Path.IsPathRooted(entryName);
-            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            if (Path.IsPathRooted(entryName))
+            {
+                if (!archivePath.StartsWith(BasePath))
+                {
+                    return null;
+                }
+                archivePath = archivePath.Substring(BasePath.Length);
+            }
+            return Root + archivePath;
+        }
+
+        private ZipArchiveEntry GetEntry(string entryName)
+        {
+            WaitForEntryMap();
+            var entryPath = ArchivePath(entryName);
+            if (entryPath == null)
             {
                 return null;
             }
-            var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
-
-            var entry = _archive.GetEntry(entryPath);
-            if (entry == null)
-            {
-                entry = _entryMap[entryPath];
-            }
-            return entry;
+            return _archive.GetEntry(entryPath) ?? _entryMap[entryPath];
         }
 
         public bool Exists(string entryName)
@@ -469,39 +501,49 @@ namespace SRCCore.Filesystem
             {
                 return new string[] { };
             }
-            while (!_entryMapResolveTask.IsCompleted)
+            WaitForEntryMap();
+            var entryPath = ArchivePath(path);
+            if (entryPath == null)
             {
-                Task.Delay(100).Wait();
+                return new string[] { };
             }
-            var archivePath = path.Replace("\\", "/");
-            var isAbsolute = Path.IsPathRooted(path);
-            if (isAbsolute && !archivePath.StartsWith(BasePath))
-            {
-                return null;
-            }
-            var entryPath = isAbsolute ? archivePath.Replace(BasePath, "") : archivePath;
             var regBase = Regex.Escape(Path.Combine(entryPath, searchPattern).Replace("\\", "/"))
                     .Replace(@"\*", "[^/]*").Replace(@"\?", ".");
             var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/") ? "" : "/") + "$", RegexOptions.IgnoreCase);
             var fileRegex = new Regex("^" + regBase + "$", RegexOptions.IgnoreCase);
 
+            // zip の中の名前（Root を除いたもの）を basePath のパスにする
+            string ToPath(string fullName) => Path.Combine(BasePath, fullName.Replace("\\", "/").Substring(Root.Length));
+            var names = _archive.Entries.Select(x => x.FullName.Replace("\\", "/")).Where(x => x.StartsWith(Root, StringComparison.OrdinalIgnoreCase)).ToList();
             var dirs = new List<string>();
             var files = new List<string>();
-            if (enumerationOptions.HasFlag(EntryOption.File))
+            if (enumerationOptions.HasFlag(EntryOption.Directory))
             {
-                dirs = _archive.Entries
-                    .Where(x => dirRegex.IsMatch(x.FullName))
-                    .Select(x => Path.Combine(BasePath, x.FullName))
+                // フォルダの項目が無い zip もあるため、ファイルの名前からもフォルダを求める
+                dirs = names
+                    .SelectMany(ParentDirectories)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Where(x => dirRegex.IsMatch(x))
+                    .Select(x => ToPath(x).TrimEnd('/'))
                     .ToList();
             }
             if (enumerationOptions.HasFlag(EntryOption.File))
             {
-                files = _archive.Entries
-                    .Where(x => fileRegex.IsMatch(x.FullName))
-                    .Select(x => Path.Combine(BasePath, x.FullName))
+                files = names
+                    .Where(x => !x.EndsWith("/") && fileRegex.IsMatch(x))
+                    .Select(ToPath)
                     .ToList();
             }
             return dirs.Concat(files).OrderBy(x => x);
+        }
+
+        /// <summary>zip の中の名前の親のフォルダ（"a/b/c.txt" なら "a/"・"a/b/"。フォルダの項目ならそれ自身も）</summary>
+        private static IEnumerable<string> ParentDirectories(string name)
+        {
+            for (var i = name.IndexOf('/'); i >= 0; i = name.IndexOf('/', i + 1))
+            {
+                yield return name.Substring(0, i + 1);
+            }
         }
 
         public Stream OpenRead(string entryName)

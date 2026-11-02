@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>Değişiklikler uygulama bir sonraki başlatıldığında geçerli olur.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Kaynak paketleri</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>Packs klasörüne ({0}) konan genel grafik koleksiyonu veya geliştirme paketi gibi zip dosyaları, açılmadan SRC# klasöründeymiş gibi okunur.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Kaynak paketi ekle...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Klasörü aç</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>Kaynak paketi yok</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Yüklenmedi: Bitmap veya Data gibi klasörler yok</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Zip dosyası okunamıyor</value>
+  </data>
 </root>

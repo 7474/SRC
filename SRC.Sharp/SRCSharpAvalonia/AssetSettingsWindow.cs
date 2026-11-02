@@ -27,8 +27,8 @@ namespace SRCSharpAvalonia
     /// </summary>
     public class AssetSettingsWindow : Window
     {
-        /// <summary>素材のフォルダにあるはずのフォルダ（元の SRC の本体・開発パックと同じ構成）</summary>
-        internal static readonly string[] AssetFolders = { "Bitmap", "Data", "Midi", "Sound" };
+        /// <summary>素材のフォルダにあるはずのフォルダ（元の SRC の本体・開発パックと同じ構成。素材パックと共通）</summary>
+        internal static IReadOnlyList<string> AssetFolders => SRCCore.Filesystem.AssetPacks.AssetFolders;
 
         private readonly string appPath;
 
@@ -44,6 +44,29 @@ namespace SRCSharpAvalonia
             ExtDataPath = new PathField(Strings.ExtDataPathLabel, settings.ExtDataPath, DescribeFolder, BrowseFolderAsync);
             ExtDataPath2 = new PathField(Strings.ExtDataPath2Label, settings.ExtDataPath2, DescribeFolder, BrowseFolderAsync);
             SoundFont = new PathField(Strings.SoundFontLabel, settings.SoundFont, DescribeSoundFont, BrowseSoundFontAsync);
+
+            // 素材パック（Packs フォルダの zip）。追加は zip を Packs フォルダに写す
+            PackList = new StackPanel { Spacing = 2 };
+            var addPack = new Button { Content = Strings.AddPack };
+            var openPacks = new Button { Content = Strings.OpenPacksFolder };
+            addPack.Click += async (s, e) => await AddPacksAsync();
+            openPacks.Click += async (s, e) =>
+            {
+                Directory.CreateDirectory(PacksDirectory);
+                await Launcher.LaunchDirectoryInfoAsync(new DirectoryInfo(PacksDirectory));
+            };
+            var packsPanel = new StackPanel
+            {
+                Spacing = 4,
+                Children =
+                {
+                    new TextBlock { Text = Strings.PacksLabel, FontWeight = FontWeight.Bold },
+                    new TextBlock { Text = string.Format(Strings.PacksDescription, PacksDirectory), TextWrapping = TextWrapping.Wrap, FontSize = 12 },
+                    PackList,
+                    new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4, Children = { addPack, openPacks } },
+                },
+            };
+            UpdatePackList();
 
             var save = new Button { Content = Strings.Save, IsDefault = true, MinWidth = 90 };
             var cancel = new Button { Content = Strings.Cancel, IsCancel = true, MinWidth = 90 };
@@ -61,6 +84,7 @@ namespace SRCSharpAvalonia
                     ExtDataPath.Panel,
                     ExtDataPath2.Panel,
                     SoundFont.Panel,
+                    packsPanel,
                     new TextBlock { Text = Strings.AssetSettingsApplyNote, TextWrapping = TextWrapping.Wrap, Opacity = 0.75 },
                     new StackPanel
                     {
@@ -76,6 +100,79 @@ namespace SRCSharpAvalonia
         internal PathField ExtDataPath { get; }
         internal PathField ExtDataPath2 { get; }
         internal PathField SoundFont { get; }
+
+        /// <summary>素材パックの一覧（zip ごとに 1 行）</summary>
+        internal StackPanel PackList { get; }
+
+        /// <summary>素材パックを置くフォルダ（SRC# のフォルダの Packs）</summary>
+        internal string PacksDirectory => SRCCore.Filesystem.AssetPacks.Directory(appPath);
+
+        /// <summary>素材パックの一覧を、Packs フォルダの中身に合わせて作り直す</summary>
+        internal void UpdatePackList()
+        {
+            PackList.Children.Clear();
+            var packs = SRCCore.Filesystem.AssetPacks.Find(appPath);
+            if (packs.Count == 0)
+            {
+                PackList.Children.Add(new TextBlock { Text = Strings.NoPacks, FontSize = 12, Opacity = 0.75 });
+                return;
+            }
+            foreach (var pack in packs)
+            {
+                var (text, warning) = DescribePack(pack);
+                PackList.Children.Add(new TextBlock
+                {
+                    Text = Path.GetFileName(pack) + " — " + text,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 12,
+                    Foreground = warning ? Brushes.DarkRed : Brushes.DarkGreen,
+                });
+            }
+        }
+
+        /// <summary>素材パックの状態（中の素材のフォルダ）。素材のフォルダが無いか読めなければ warning</summary>
+        internal static (string Text, bool Warning) DescribePack(string zip)
+        {
+            try
+            {
+                using (var archive = System.IO.Compression.ZipFile.Open(zip, System.IO.Compression.ZipArchiveMode.Read, SRCCore.Filesystem.ZipNameEncoding.Instance))
+                {
+                    var root = SRCCore.Filesystem.AssetPacks.FindRoot(archive);
+                    if (root == null)
+                    {
+                        return (Strings.PackHasNoAssets, true);
+                    }
+                    var found = SRCCore.Filesystem.AssetPacks.FoundAssetFolders(archive, root);
+                    return (string.Format(Strings.FolderFound, string.Join(", ", found)), false);
+                }
+            }
+            catch (Exception ex) when (ex is IOException || ex is InvalidDataException || ex is UnauthorizedAccessException)
+            {
+                return (Strings.PackUnreadable, true);
+            }
+        }
+
+        /// <summary>選んだ zip を Packs フォルダに写す（同じ名前のものは置き換える）</summary>
+        internal void AddPacks(IEnumerable<string> zips)
+        {
+            Directory.CreateDirectory(PacksDirectory);
+            foreach (var zip in zips)
+            {
+                File.Copy(zip, Path.Combine(PacksDirectory, Path.GetFileName(zip)), true);
+            }
+            UpdatePackList();
+        }
+
+        private async System.Threading.Tasks.Task AddPacksAsync()
+        {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = Strings.AddPack,
+                AllowMultiple = true,
+                FileTypeFilter = new[] { new FilePickerFileType("zip (*.zip)") { Patterns = new[] { "*.zip" } } },
+            });
+            AddPacks(files.Select(x => x.TryGetLocalPath()).Where(x => !string.IsNullOrEmpty(x)));
+        }
 
         /// <summary>入力している設定</summary>
         internal AssetSettings Result()

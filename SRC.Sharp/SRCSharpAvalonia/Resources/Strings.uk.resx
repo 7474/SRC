@@ -78,4 +78,25 @@
   <data name="AssetSettingsApplyNote" xml:space="preserve">
     <value>Зміни набудуть чинності під час наступного запуску.</value>
   </data>
+  <data name="PacksLabel" xml:space="preserve">
+    <value>Пакети ресурсів</value>
+  </data>
+  <data name="PacksDescription" xml:space="preserve">
+    <value>Zip-файли, як-от загальна колекція графіки чи пакет розробки, покладені в папку Packs ({0}), читаються без розпакування, ніби вони лежать у папці SRC#.</value>
+  </data>
+  <data name="AddPack" xml:space="preserve">
+    <value>Додати пакет ресурсів...</value>
+  </data>
+  <data name="OpenPacksFolder" xml:space="preserve">
+    <value>Відкрити папку</value>
+  </data>
+  <data name="NoPacks" xml:space="preserve">
+    <value>Немає пакетів ресурсів</value>
+  </data>
+  <data name="PackHasNoAssets" xml:space="preserve">
+    <value>Не завантажено: немає папок Bitmap, Data тощо</value>
+  </data>
+  <data name="PackUnreadable" xml:space="preserve">
+    <value>Не вдається прочитати zip-файл</value>
+  </data>
 </root>
