@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>設定(_S)</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>素材資料夾設定(_A)...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>素材資料夾設定</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>SRC# 資料夾（{0}）和劇本資料夾中沒有的資料、圖像和音樂，會從這裡指定的資料夾中尋找。請指定 SRC 本體（放有通用圖像集等）或開發包的資料夾。</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>留空時自動尋找，但找不到。MIDI 將不會播放</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>變更將在下次啟動時生效。</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>素材包</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# 以 GPL-3.0 發佈。附帶的 SoundFont（TimGM6mb）為 GPL-2.0（SoundFont 資料夾中的 COPYING）。</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>設定(_S)...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>素材</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>顯示</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>記錄</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>顯示語言</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>跟隨作業系統的語言</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>顯示比例在「檢視」選單中變更。</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>記錄層級</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>預設（Information）</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>已透過命令列引數或環境變數指定層級，以其為準。</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>將記錄寫入檔案</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>記錄資料夾</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>留空時使用預設資料夾：{0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>資料夾不存在時會建立</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>記錄保留天數</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>開啟記錄資料夾</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>SRC#Avalonia 使用方式(_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>素材和顯示語言在下次啟動時生效，記錄在儲存時生效。</value>
   </data>
 </root>

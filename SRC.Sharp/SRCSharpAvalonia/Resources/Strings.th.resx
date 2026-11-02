@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>การตั้งค่า(_S)</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>โฟลเดอร์ทรัพยากร(_A)...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>โฟลเดอร์ทรัพยากร</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>ข้อมูล กราฟิก และเพลงที่ไม่มีในโฟลเดอร์ของ SRC# ({0}) และโฟลเดอร์ของซีนาริโอ จะค้นหาจากโฟลเดอร์ที่ระบุที่นี่ ให้ระบุโฟลเดอร์ของแพ็กเกจหลักของ SRC (ที่มีชุดกราฟิกทั่วไป ฯลฯ) หรือแพ็กสำหรับพัฒนา</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>ถ้าเว้นว่างจะค้นหาอัตโนมัติ แต่ไม่พบ MIDI จะไม่เล่น</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>การเปลี่ยนแปลงจะมีผลเมื่อเริ่มโปรแกรมครั้งถัดไป</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>แพ็กทรัพยากร</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# เผยแพร่ภายใต้ GPL-3.0 SoundFont ที่แนบมา (TimGM6mb) เป็น GPL-2.0 (COPYING ในโฟลเดอร์ SoundFont)</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>การตั้งค่า(_S)...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>ทรัพยากร</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>การแสดงผล</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>ภาษาที่แสดง</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>ตามภาษาของระบบปฏิบัติการ</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>เปลี่ยนมาตราส่วนการแสดงผลได้ที่เมนู "มุมมอง"</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>ระดับบันทึก</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>ค่าเริ่มต้น (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>ระบุระดับไว้ด้วยอาร์กิวเมนต์บรรทัดคำสั่งหรือตัวแปรสภาพแวดล้อม ซึ่งมีลำดับความสำคัญสูงกว่า</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>เขียนบันทึกลงไฟล์</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>โฟลเดอร์บันทึก</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>ถ้าเว้นว่างจะใช้โฟลเดอร์เริ่มต้น: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>ถ้าไม่มีโฟลเดอร์จะสร้างให้</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>จำนวนวันที่เก็บบันทึก</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>เปิดโฟลเดอร์บันทึก</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>วิธีใช้ SRC#Avalonia(_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>ทรัพยากรและภาษาจะมีผลเมื่อเริ่มครั้งถัดไป ส่วนบันทึกมีผลเมื่อบันทึกการตั้งค่า</value>
   </data>
 </root>

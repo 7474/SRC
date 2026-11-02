@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>_Налаштування</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>Папки _ресурсів...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>Папки ресурсів</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>Дані, графіка й музика, яких немає в папці SRC# ({0}) і в папці сценарію, шукаються у вказаних тут папках. Вкажіть папку основного пакета SRC (із загальною колекцією графіки тощо) або пакета розробки.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>Якщо порожньо, шукається автоматично, але нічого не знайдено. MIDI не відтворюватиметься</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>Зміни набудуть чинності під час наступного запуску.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>Пакети ресурсів</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# поширюється за ліцензією GPL-3.0. Доданий SoundFont (TimGM6mb) поширюється за GPL-2.0 (COPYING у папці SoundFont).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>_Налаштування...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>Ресурси</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>Відображення</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>Журнал</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Мова інтерфейсу</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Як в операційній системі</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>Масштаб відображення змінюється в меню «Вигляд».</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>Рівень журналу</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>Типовий (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>Рівень задано аргументом командного рядка або змінною середовища, вони мають пріоритет.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>Записувати журнал у файл</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>Папка журналів</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>Типова папка, якщо порожньо: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>Папку буде створено, якщо її немає</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>Скільки днів зберігати журнали</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Відкрити папку журналів</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>Як користуватися SRC#Avalonia (_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>Ресурси й мова застосовуються під час наступного запуску, журнал — під час збереження.</value>
   </data>
 </root>

@@ -33,6 +33,8 @@ toc:
     subfolderitems:
       - page: SRCの起動
         url: /SRCの起動
+      - page: SRC#Avaloniaの使い方
+        url: /SRCSharpAvaloniaの使い方
       - page: ログ
         url: /ログ
       - page: ゲームの流れ

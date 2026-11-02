@@ -17,6 +17,9 @@ namespace SRCSharpAvalonia
         /// <summary>SRC# のヘルプ（SRC.Sharp.Help）</summary>
         public static readonly Uri HelpUri = new Uri("https://srch.7474.jp/");
 
+        /// <summary>ヘルプの「SRC#Avalonia の使い方」（メニュー・設定）</summary>
+        public static readonly Uri UsageUri = new Uri("https://srch.7474.jp/SRCSharpAvaloniaの使い方/");
+
         /// <summary>SRC# のサイト（リポジトリ）</summary>
         public static readonly Uri WebsiteUri = new Uri("https://github.com/7474/SRC");
 
@@ -45,9 +48,9 @@ namespace SRCSharpAvalonia
                 return item;
             }).ToArray();
             // 素材フォルダなどの設定（設定 > 素材フォルダの設定...）
-            var assetSettingsItem = new MenuItem { Header = Strings.AssetSettingsMenu };
-            assetSettingsItem.Click += (s, e) => AssetSettingsRequested?.Invoke();
-            AssetSettingsItem = assetSettingsItem;
+            var assetSettingsItem = new MenuItem { Header = Strings.SettingsMenuItem };
+            assetSettingsItem.Click += (s, e) => SettingsRequested?.Invoke();
+            SettingsItem = assetSettingsItem;
             // ファイル（シナリオを開く・最初からやり直す・終了）。シナリオの切り替えは App が行う
             OpenScenarioItem = new MenuItem { Header = Strings.OpenScenarioMenu };
             OpenScenarioItem.Click += (s, e) => OpenScenarioRequested?.Invoke();
@@ -58,6 +61,10 @@ namespace SRCSharpAvalonia
             // ヘルプ（ヘルプ・サイトはブラウザで開く）
             var helpItem = new MenuItem { Header = Strings.HelpContentsMenu };
             helpItem.Click += async (s, e) => await Launcher.LaunchUriAsync(HelpUri);
+            var usageItem = new MenuItem { Header = Strings.UsageMenu };
+            usageItem.Click += async (s, e) => await Launcher.LaunchUriAsync(UsageUri);
+            var logFolderItem = new MenuItem { Header = Strings.OpenLogFolder };
+            logFolderItem.Click += async (s, e) => await SettingsWindow.OpenLogFolderAsync(this, Program.LogHost?.FileDirectory);
             var websiteItem = new MenuItem { Header = Strings.WebsiteMenu };
             websiteItem.Click += async (s, e) => await Launcher.LaunchUriAsync(WebsiteUri);
             AboutItem = new MenuItem { Header = Strings.AboutMenu };
@@ -73,7 +80,7 @@ namespace SRCSharpAvalonia
                     new MenuItem { Header = Strings.FileMenu, ItemsSource = new object[] { OpenScenarioItem, RestartItem, new Separator(), ExitItem } },
                     new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems },
                     new MenuItem { Header = Strings.SettingsMenu, ItemsSource = new[] { assetSettingsItem } },
-                    new MenuItem { Header = Strings.HelpMenu, ItemsSource = new object[] { helpItem, websiteItem, new Separator(), AboutItem } },
+                    new MenuItem { Header = Strings.HelpMenu, ItemsSource = new object[] { helpItem, usageItem, websiteItem, new Separator(), logFolderItem, new Separator(), AboutItem } },
                 },
             };
             DockPanel.SetDock(menu, Dock.Top);
@@ -106,7 +113,7 @@ namespace SRCSharpAvalonia
         }
 
         /// <summary>「素材フォルダの設定...」のメニュー項目（テスト用）</summary>
-        internal MenuItem AssetSettingsItem { get; }
+        internal MenuItem SettingsItem { get; }
 
         /// <summary>表示倍率のメニュー項目（テスト用）</summary>
         internal System.Collections.Generic.IReadOnlyList<MenuItem> ScaleItems => scaleItems;
@@ -114,7 +121,7 @@ namespace SRCSharpAvalonia
         public ScreenView View { get; }
 
         /// <summary>メニューで「素材フォルダの設定...」を選んだときに呼ばれる</summary>
-        public event Action AssetSettingsRequested;
+        public event Action SettingsRequested;
 
         /// <summary>メニューで表示倍率を選んだときに呼ばれる（設定に保存する）</summary>
         public event Action<double> DisplayScaleChosen;

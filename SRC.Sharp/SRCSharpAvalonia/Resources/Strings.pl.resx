@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>_Ustawienia</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>Foldery _zasobów...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>Foldery zasobów</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>Dane, grafiki i muzyka, których nie ma w folderze SRC# ({0}) ani w folderze scenariusza, są wyszukiwane w podanych tutaj folderach. Wskaż folder głównego pakietu SRC (z ogólną kolekcją grafik itp.) lub pakietu deweloperskiego.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>Wyszukiwany automatycznie, gdy puste, ale nic nie znaleziono. MIDI nie będzie odtwarzane</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>Zmiany zostaną zastosowane przy następnym uruchomieniu.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>Pakiety zasobów</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# jest rozpowszechniany na licencji GPL-3.0. Dołączony SoundFont (TimGM6mb) jest na licencji GPL-2.0 (COPYING w folderze SoundFont).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>_Ustawienia...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>Zasoby</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>Wyświetlanie</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>Dziennik</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Język interfejsu</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Język systemu operacyjnego</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>Skalę wyświetlania zmienia się w menu Widok.</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>Poziom dziennika</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>Domyślny (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>Poziom jest podany argumentem wiersza poleceń lub zmienną środowiskową, która ma pierwszeństwo.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>Zapisuj dziennik do pliku</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>Folder dzienników</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>Folder domyślny, gdy puste: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>Folder zostanie utworzony, jeśli nie istnieje</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>Liczba dni przechowywania dzienników</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Otwórz folder dzienników</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>Jak używać SRC#Avalonia (_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>Zasoby i język zostaną zastosowane przy następnym uruchomieniu, dziennik — po zapisaniu.</value>
   </data>
 </root>

@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>설정(_S)</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>소재 폴더 설정(_A)...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>소재 폴더 설정</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>SRC# 폴더({0})와 시나리오 폴더에 없는 데이터·그래픽·음악을 여기서 지정한 폴더에서 찾습니다. SRC 본체(범용 그래픽집 등을 넣은 것)나 개발 팩의 폴더를 지정하세요.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>비워 두면 자동으로 찾지만 찾지 못했습니다. MIDI가 재생되지 않습니다</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>변경 사항은 다음에 시작할 때 적용됩니다.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>소재 팩</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC#은 GPL-3.0으로 배포됩니다. 동봉된 SoundFont(TimGM6mb)는 GPL-2.0입니다(SoundFont 폴더의 COPYING).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>설정(_S)...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>소재</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>표시</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>로그</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>표시 언어</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>OS 언어에 맞추기</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>표시 배율은 메뉴의 "보기"에서 바꿉니다.</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>로그 레벨</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>기본값(Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>명령줄 인수나 환경 변수로 레벨을 지정하고 있어 그쪽이 우선합니다.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>로그를 파일로 출력</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>로그 폴더</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>비워 두면 기본 폴더: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>폴더가 없으면 만듭니다</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>로그 보관 일수</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>로그 폴더 열기</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>SRC#Avalonia 사용법(_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>소재와 표시 언어는 다음 시작부터, 로그는 저장했을 때부터 반영됩니다.</value>
   </data>
 </root>
