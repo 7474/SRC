@@ -36,6 +36,19 @@
   </ItemGroup>
 
   <!--
+    OpenAL Soft のネイティブライブラリ（soft_oal.dll・libopenal.so・libopenal.dylib）は、自己完結の単一ファイルに詰め込まず、実行ファイルの隣に置く。
+    単一ファイルに詰めたネイティブライブラリは起動時に一時フォルダへ展開されるが、Silk.NET の読み込み（DefaultPathResolver）は
+    その展開先を探さないため、OS に OpenAL が入っていない Windows などで音が鳴らなかった（実行ファイルの場所は探す）
+  -->
+  <Target Name="KeepOpenALBesideExecutable" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_OpenALNative Include="@(ResolvedFileToPublish)" Condition="'%(Filename)' == 'soft_oal' Or '%(Filename)' == 'libopenal'" />
+      <ResolvedFileToPublish Remove="@(_OpenALNative)" />
+      <ResolvedFileToPublish Include="@(_OpenALNative)" ExcludeFromSingleFile="true" />
+    </ItemGroup>
+  </Target>
+
+  <!--
     MIDI の SoundFont（TimGM6mb、GPL-2.0）を実行ファイルの隣の SoundFont フォルダに同梱する。利用者が SoundFont を用意しなくても MIDI が鳴るように、
     探す場所の最後の候補にする（SRCSound の SoundFontLocator）。取得元は Directory.Build.props（SRC#Web と同じ）。
     取得できない（ネットワークが無い）場合はビルドを止めず、同梱しないで続ける
