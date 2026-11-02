@@ -62,6 +62,43 @@ namespace SRCSound.Tests
             }
         }
 
+        /// <summary>
+        /// 元の SRC の時代の素材で使われていた圧縮形式などの WAV を、ffmpeg が復号した結果（*.ref.wav、PCM 16 bit）と同じに読む。
+        /// テストの WAV は ffmpeg で作った（440 Hz・0.3 秒）。extensible.wav は PCM を WAVE_FORMAT_EXTENSIBLE のヘッダで書いたもの
+        /// </summary>
+        [TestMethod]
+        [DataRow("ms-adpcm-mono", 1)]
+        [DataRow("ms-adpcm-stereo", 2)]
+        [DataRow("ima-adpcm-mono", 1)]
+        [DataRow("ima-adpcm-stereo", 2)]
+        [DataRow("mulaw", 1)]
+        [DataRow("alaw", 1)]
+        [DataRow("extensible", 2)]
+        public void WaveSource_DecodesLegacyFormatsLikeFfmpeg(string name, int channels)
+        {
+            float[] Decode(string file, out int rate, out int ch)
+            {
+                using (var stream = File.OpenRead(Path.Combine(AppContext.BaseDirectory, "Assets", file)))
+                {
+                    var source = new WaveSource(stream);
+                    rate = source.SampleRate;
+                    ch = source.Channels;
+                    return ReadAll(source);
+                }
+            }
+            var actual = Decode(name + ".wav", out var actualRate, out var actualChannels);
+            var expected = Decode(name + ".ref.wav", out var expectedRate, out _);
+
+            Assert.AreEqual(expectedRate, actualRate);
+            Assert.AreEqual(channels, actualChannels);
+            Assert.AreEqual(expected.Length, actual.Length, "サンプル数");
+            var maxDiff = expected.Zip(actual, (x, y) => Math.Abs(x - y)).Max();
+            // IMA ADPCM は差分を Windows の標準（IMA の参照実装）と同じくシフトの和で求める。ffmpeg は掛け算で求めるため、わずかに違う
+            var tolerance = name.StartsWith("ima-") ? 64 / 32768f : 2 / 32768f;
+            Assert.IsTrue(maxDiff <= tolerance, $"ffmpeg との差 {maxDiff * 32768} / 32768");
+            Assert.IsTrue(actual.Any(x => Math.Abs(x) > 0.01f), "audible");
+        }
+
         [TestMethod]
         public void SoundFontLocator_PrefersConfiguredPath()
         {

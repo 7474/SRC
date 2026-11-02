@@ -11,6 +11,52 @@ namespace SRCRender.Tests
     [TestClass]
     public class ExtDataPathTests
     {
+        /// <summary>再生を頼まれた効果音の中身を記録する</summary>
+        private sealed class RecordingPlayer : SRCRender.NullSoundPlayer, SRCCore.IPlaySound
+        {
+            public readonly System.Collections.Generic.List<string> Played = new System.Collections.Generic.List<string>();
+
+            void SRCCore.IPlaySound.Play(int channel, Stream stream, SRCCore.SoundType soundType, SRCCore.PlaySoundMode mode)
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    Played.Add(reader.ReadToEnd());
+                }
+            }
+        }
+
+        [TestMethod]
+        public void WaveSounds_AreFoundInExtDataPathAndAssetPacks()
+        {
+            using (var app = new ScenarioWorkspace(withAssets: true))
+            using (var ext = new ScenarioWorkspace(withAssets: false))
+            {
+                // 効果音は拡張データフォルダの Sound と、素材パック（Packs の zip）の Sound にだけある
+                ext.Write(Path.Combine("Sound", "Beam.wav"), "ext-beam");
+                Directory.CreateDirectory(Path.Combine(app.AppPath, "Packs"));
+                using (var zip = System.IO.Compression.ZipFile.Open(Path.Combine(app.AppPath, "Packs", "sound.zip"), System.IO.Compression.ZipArchiveMode.Create))
+                using (var writer = new StreamWriter(zip.CreateEntry("効果音集/Sound/Sword.wav").Open()))
+                {
+                    writer.Write("pack-sword");
+                }
+                app.Write("srcs.json", "{ \"ExtDataPath\": " + Newtonsoft.Json.JsonConvert.SerializeObject(ext.AppPath) + " }");
+                app.WriteMap("test.map", 5, 5, (x, y) => 0);
+                app.Write("test.eve", "スタート:", "ChangeMap test.map", "Talk システム", "待機", "End", "Quit", "");
+
+                var player = new RecordingPlayer();
+                using (var runner = new ScreenScenarioRunner(app.AppPath, soundPlayer: player))
+                {
+                    runner.Start(Path.Combine(app.AppPath, "test.eve"));
+                    runner.WaitForMessage();
+                    var src = runner.Session.SRC;
+                    src.Sound.PlayWave("Beam.wav");
+                    src.Sound.PlayWave("Sword.wav");
+                    src.Sound.PlayWave("Missing.wav");
+                    CollectionAssert.AreEqual(new[] { "ext-beam", "pack-sword" }, player.Played);
+                }
+            }
+        }
+
         [TestMethod]
         public void SystemDataAndAssets_AreReadFromExtDataPath()
         {
