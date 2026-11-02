@@ -391,9 +391,10 @@ namespace SRCCore
                 SRC.ExtDataPath2,
                 SRC.AppPath,
             }
-                .Where(x => !string.IsNullOrEmpty(x) && Directory.Exists(PathResolver.Resolve(x)))
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Distinct()
+                // フォルダが実在するかは見ない（素材パックの zip の中の Sound も探すため。FileExists が実在するファイルと zip の両方を見る）
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
-                .Where(x => Directory.Exists(PathResolver.Resolve(x)))
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？
@@ -409,7 +410,8 @@ namespace SRCCore
                 // 絶対表記？
                 if (!SRC.FileSystem.FileExists(wave_name))
                 {
-                    // 見つからなかった
+                    // 見つからなかった。素材の置き場所を確かめられるよう、名前を残す
+                    SRC.LogInfo("効果音 {Wave} が見つかりません（シナリオ・拡張データフォルダ・SRC# のフォルダの Sound フォルダを探しました）", wave_name);
                     return;
                 }
                 existFile = wave_name;

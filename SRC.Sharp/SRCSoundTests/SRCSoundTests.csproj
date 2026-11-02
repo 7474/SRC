@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <!-- テスト用に ffmpeg で生成した 0.5 秒の正弦波 -->
-    <None Include="Assets\*.mp3" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\*.mp3;Assets\*.wav" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
