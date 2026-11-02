@@ -1,5 +1,8 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Primitives;
+using Avalonia.Styling;
 using Avalonia.Platform.Storage;
 using Avalonia.Themes.Fluent;
 using Microsoft.Extensions.Logging;
@@ -31,8 +34,36 @@ namespace SRCSharpAvalonia
 
         public override void Initialize()
         {
-            Styles.Add(new FluentTheme());
+            ApplyTheme(this, SystemUiFont.Detect());
         }
+
+        /// <summary>
+        /// テーマ（Fluent）を設定する。メニュー・ダイアログの文字と余白を OS の表示に合わせる。
+        /// Fluent の既定（文字 14 ピクセル・広い余白）は Windows のメニュー（9 ポイント＝12 ピクセル）より大きいため、
+        /// 密度を Compact にし、文字の名前と大きさを OS のもの（SystemUiFont）にする
+        /// </summary>
+        internal static void ApplyTheme(Application app, SystemUiFont font)
+        {
+            app.Styles.Add(new FluentTheme { DensityStyle = DensityStyle.Compact });
+            // OS の文字が分からなければ Avalonia の既定の大きさ（14 ピクセル）
+            var size = font?.Size ?? DefaultFontSize;
+            // メニューの項目はテーマの資源（ControlContentThemeFontSize）、ダイアログの文字はウィンドウから受け継ぐ大きさを使う。
+            // タブの中身はタブの見出しの大きさ（Fluent の既定は 24 ピクセル）を受け継ぐため、見出しも同じ大きさにする
+            app.Resources["ControlContentThemeFontSize"] = size;
+            app.Resources["TabItemHeaderFontSize"] = size;
+            var window = new Style(x => x.Is<Window>());
+            window.Setters.Add(new Setter(TemplatedControl.FontSizeProperty, size));
+            if (!string.IsNullOrEmpty(font?.FamilyName))
+            {
+                var family = new Avalonia.Media.FontFamily(font.FamilyName);
+                app.Resources["ContentControlThemeFontFamily"] = family;
+                window.Setters.Add(new Setter(TemplatedControl.FontFamilyProperty, family));
+            }
+            app.Styles.Add(window);
+        }
+
+        /// <summary>Avalonia の既定の文字の大きさ（TextElement.FontSize）</summary>
+        internal const double DefaultFontSize = 14;
 
         public override void OnFrameworkInitializationCompleted()
         {
