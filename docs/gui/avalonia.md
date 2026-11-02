@@ -88,6 +88,7 @@ flowchart LR
 
 - シナリオを開き直す・やり直すときは、今のシナリオを止め（ゲームスレッド・音）、同じウィンドウで新しく始める（`App.StopSession`・`App.StartSession`）。止まりきる前に前のシナリオが描いたものなどは、新しいシナリオに混ざらないよう捨てる（`SessionHost`）
 - メニューは Alt キーでも操作できる（Avalonia の標準の動き）。押すとゲームの画面からフォーカスが移る
+- メニュー・設定などのウィンドウの文字は OS に合わせる（`App.ApplyTheme`・`SystemUiFont`）。Windows はメニューのフォント（[SystemParametersInfoForDpi](https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-systemparametersinfofordpi) の `SPI_GETNONCLIENTMETRICS` の `lfMenuFont`。既定は Yu Gothic UI 9 ポイント＝12 ピクセル）、macOS は 13 ピクセル、それ以外は Avalonia の既定の 14 ピクセル。余白は Fluent の `DensityStyle.Compact`（Fluent の既定は文字 14 ピクセル・余白が広く、Windows のメニューより大きく見える）
 
 ## 表示倍率
 
