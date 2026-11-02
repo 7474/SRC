@@ -4,6 +4,7 @@ using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -690,11 +691,8 @@ namespace SRCCore
             //            GUI.ListItemComment = new string[1];
 
             // エリアスデータをロード（元の SRC と同じく、シナリオの Data\System を優先する）7474/SRC#1425
-            var aliasFiles = new string[]
-            {
-                FileSystem.PathCombine(ScenarioPath, "Data", "System", "alias.txt"),
-                FileSystem.PathCombine(AppPath, "Data", "System", "alias.txt"),
-            };
+            var aliasFiles = new[] { FileSystem.PathCombine(ScenarioPath, "Data", "System", "alias.txt") }
+                .Concat(SystemDataFiles("alias.txt"));
             foreach (var aliasFile in aliasFiles)
             {
                 if (FileSystem.FileExists(aliasFile))
@@ -709,9 +707,11 @@ namespace SRCCore
             {
                 FileSystem.PathCombine(ScenarioPath, "Data", "System", "sp.txt"),
                 FileSystem.PathCombine(ScenarioPath, "Data", "System", "mind.txt"),
-                FileSystem.PathCombine(AppPath, "Data", "System", "sp.txt"),
-                FileSystem.PathCombine(AppPath, "Data", "System", "mind.txt"),
-            };
+            }.Concat(SystemDataRoots().SelectMany(root => new[]
+            {
+                FileSystem.PathCombine(root, "Data", "System", "sp.txt"),
+                FileSystem.PathCombine(root, "Data", "System", "mind.txt"),
+            }));
             foreach (var spFile in spFiles)
             {
 
@@ -727,13 +727,13 @@ namespace SRCCore
             {
                 IDList.Load(FileSystem.PathCombine(ScenarioPath, @"Data\System\item.txt"));
             }
-            else if (FileSystem.FileExists(AppPath, @"Data\System\item.txt"))
+            else if (SystemDataFiles("item.txt").FirstOrDefault(x => FileSystem.FileExists(x)) is string itemFile)
             {
-                IDList.Load(FileSystem.PathCombine(AppPath, @"Data\System\item.txt"));
+                IDList.Load(itemFile);
             }
             // 地形データをロード
-            string appTerrainPath = FileSystem.PathCombine(AppPath, "Data", "System", "terrain.txt");
-            if (FileSystem.FileExists(appTerrainPath))
+            string appTerrainPath = SystemDataFiles("terrain.txt").FirstOrDefault(x => FileSystem.FileExists(x));
+            if (appTerrainPath != null)
             {
                 TDList.Load(appTerrainPath);
             }
@@ -755,8 +755,7 @@ namespace SRCCore
             var bcFiles = new string[]
             {
                 FileSystem.PathCombine(ScenarioPath, "Data", "System", "battle.txt"),
-                FileSystem.PathCombine(AppPath, "Data", "System", "battle.txt"),
-            };
+            }.Concat(SystemDataFiles("battle.txt"));
             foreach (var bcFile in bcFiles)
             {
                 if (FileSystem.FileExists(bcFile))
@@ -765,6 +764,24 @@ namespace SRCCore
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// SRC のシステムデータ（Data\System）を探すフォルダ。元の SRC は SRC のフォルダ（AppPath）だけを見る。
+        /// SRC# は SRC 本体と別のフォルダに置き、拡張データフォルダ（ExtDataPath・ExtDataPath2）で SRC 本体を指すことがあるため、
+        /// AppPath に無ければ拡張データフォルダも見る
+        /// </summary>
+        internal IEnumerable<string> SystemDataRoots()
+        {
+            return new[] { AppPath, ExtDataPath, ExtDataPath2 }
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Distinct();
+        }
+
+        /// <summary>SystemDataRoots の Data\System\name（探す順）</summary>
+        internal IEnumerable<string> SystemDataFiles(string name)
+        {
+            return SystemDataRoots().Select(root => FileSystem.PathCombine(root, "Data", "System", name));
         }
 
         private void ConfigureExecuteFile(string fname, string scenarioPath)
