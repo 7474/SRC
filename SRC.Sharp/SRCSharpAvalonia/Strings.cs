@@ -14,8 +14,6 @@ namespace SRCSharpAvalonia
         public static string Cancel => Rm.GetString(nameof(Cancel));
         public static string ViewMenu => Rm.GetString(nameof(ViewMenu));
         public static string SettingsMenu => Rm.GetString(nameof(SettingsMenu));
-        public static string AssetSettingsMenu => Rm.GetString(nameof(AssetSettingsMenu));
-        public static string AssetSettingsTitle => Rm.GetString(nameof(AssetSettingsTitle));
         public static string AssetSettingsDescription => Rm.GetString(nameof(AssetSettingsDescription));
         public static string ExtDataPathLabel => Rm.GetString(nameof(ExtDataPathLabel));
         public static string ExtDataPath2Label => Rm.GetString(nameof(ExtDataPath2Label));
@@ -30,7 +28,6 @@ namespace SRCSharpAvalonia
         public static string FileMissing => Rm.GetString(nameof(FileMissing));
         public static string SoundFontAuto => Rm.GetString(nameof(SoundFontAuto));
         public static string SoundFontNotFound => Rm.GetString(nameof(SoundFontNotFound));
-        public static string AssetSettingsApplyNote => Rm.GetString(nameof(AssetSettingsApplyNote));
         public static string PacksLabel => Rm.GetString(nameof(PacksLabel));
         public static string PacksDescription => Rm.GetString(nameof(PacksDescription));
         public static string AddPack => Rm.GetString(nameof(AddPack));
@@ -54,5 +51,24 @@ namespace SRCSharpAvalonia
         public static string AboutTitle => Rm.GetString(nameof(AboutTitle));
         public static string AboutVersion => Rm.GetString(nameof(AboutVersion));
         public static string AboutLicense => Rm.GetString(nameof(AboutLicense));
+        public static string SettingsTitle => Rm.GetString(nameof(SettingsTitle));
+        public static string SettingsMenuItem => Rm.GetString(nameof(SettingsMenuItem));
+        public static string AssetsTab => Rm.GetString(nameof(AssetsTab));
+        public static string DisplayTab => Rm.GetString(nameof(DisplayTab));
+        public static string LogTab => Rm.GetString(nameof(LogTab));
+        public static string LanguageLabel => Rm.GetString(nameof(LanguageLabel));
+        public static string LanguageAuto => Rm.GetString(nameof(LanguageAuto));
+        public static string DisplayScaleNote => Rm.GetString(nameof(DisplayScaleNote));
+        public static string LogLevelLabel => Rm.GetString(nameof(LogLevelLabel));
+        public static string LogLevelDefault => Rm.GetString(nameof(LogLevelDefault));
+        public static string LogLevelFixedNote => Rm.GetString(nameof(LogLevelFixedNote));
+        public static string LogFileLabel => Rm.GetString(nameof(LogFileLabel));
+        public static string LogFolderLabel => Rm.GetString(nameof(LogFolderLabel));
+        public static string LogFolderDefault => Rm.GetString(nameof(LogFolderDefault));
+        public static string LogFolderWillBeCreated => Rm.GetString(nameof(LogFolderWillBeCreated));
+        public static string LogRetainDaysLabel => Rm.GetString(nameof(LogRetainDaysLabel));
+        public static string OpenLogFolder => Rm.GetString(nameof(OpenLogFolder));
+        public static string UsageMenu => Rm.GetString(nameof(UsageMenu));
+        public static string SettingsApplyNote => Rm.GetString(nameof(SettingsApplyNote));
     }
 }

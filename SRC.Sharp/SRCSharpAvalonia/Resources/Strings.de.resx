@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>_Einstellungen</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>_Asset-Ordner...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>Asset-Ordner</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>Daten, Grafiken und Musik, die weder im SRC#-Ordner ({0}) noch im Szenario-Ordner liegen, werden in den hier angegebenen Ordnern gesucht. Geben Sie den Ordner des SRC-Hauptpakets (mit der allgemeinen Grafiksammlung usw.) oder eines Entwicklungspakets an.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>Wird automatisch gesucht, wenn leer, aber nichts gefunden. MIDI wird nicht abgespielt</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>Änderungen werden beim nächsten Start wirksam.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>Asset-Pakete</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# wird unter GPL-3.0 verteilt. Der mitgelieferte SoundFont (TimGM6mb) steht unter GPL-2.0 (COPYING im Ordner „SoundFont“).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>_Einstellungen...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>Anzeige</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>Protokoll</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Anzeigesprache</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Sprache des Betriebssystems verwenden</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>Die Anzeigegröße ändern Sie im Menü „Ansicht“.</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>Protokollstufe</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>Standard (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>Die Stufe ist per Befehlszeilenargument oder Umgebungsvariable angegeben; diese hat Vorrang.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>Protokoll in eine Datei schreiben</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>Protokollordner</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>Standardordner, wenn leer: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>Der Ordner wird erstellt, falls er nicht existiert</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>Tage, die Protokolle aufbewahrt werden</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Protokollordner öffnen</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>SRC#Avalonia verwenden (_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>Asset- und Spracheinstellungen gelten ab dem nächsten Start, Protokolleinstellungen ab dem Speichern.</value>
   </data>
 </root>

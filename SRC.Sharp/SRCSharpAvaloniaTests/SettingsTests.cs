@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Config;
 using System;
 using System.IO;
+using System.Linq;
+using Avalonia.LogicalTree;
 using System.Threading;
 
 namespace SRCSharpAvalonia.Tests
@@ -12,7 +14,7 @@ namespace SRCSharpAvalonia.Tests
     /// 素材フォルダの設定（メニューの「設定 > 素材フォルダの設定...」）。
     /// </summary>
     [TestClass]
-    public class AssetSettingsTests
+    public class SettingsTests
     {
         private string root;
 
@@ -36,10 +38,10 @@ namespace SRCSharpAvalonia.Tests
             Directory.CreateDirectory(Path.Combine(root, "Data"));
             Directory.CreateDirectory(Path.Combine(root, "Other"));
 
-            var (text, warning) = AssetSettingsWindow.DescribeFolder(root);
+            var (text, warning) = SettingsWindow.DescribeFolder(root);
 
             Assert.IsFalse(warning);
-            CollectionAssert.AreEqual(new[] { "Bitmap", "Data" }, (System.Collections.ICollection)AssetSettingsWindow.FoundAssetFolders(root));
+            CollectionAssert.AreEqual(new[] { "Bitmap", "Data" }, (System.Collections.ICollection)SettingsWindow.FoundAssetFolders(root));
             StringAssert.Contains(text, "Bitmap, Data");
         }
 
@@ -47,14 +49,14 @@ namespace SRCSharpAvalonia.Tests
         public void DescribeFolder_WarnsAboutLikelyMistakes()
         {
             // 空欄は何も示さない
-            Assert.AreEqual(("", false), AssetSettingsWindow.DescribeFolder(""));
+            Assert.AreEqual(("", false), SettingsWindow.DescribeFolder(""));
             // 無いフォルダ
-            Assert.IsTrue(AssetSettingsWindow.DescribeFolder(Path.Combine(root, "missing")).Warning);
+            Assert.IsTrue(SettingsWindow.DescribeFolder(Path.Combine(root, "missing")).Warning);
             // 素材のフォルダが一つも無い
-            Assert.IsTrue(AssetSettingsWindow.DescribeFolder(root).Warning);
+            Assert.IsTrue(SettingsWindow.DescribeFolder(root).Warning);
             // Bitmap フォルダそのものを選んだ（親を指定する）
             var bitmap = Directory.CreateDirectory(Path.Combine(root, "Bitmap")).FullName;
-            var (text, warning) = AssetSettingsWindow.DescribeFolder(bitmap + Path.DirectorySeparatorChar);
+            var (text, warning) = SettingsWindow.DescribeFolder(bitmap + Path.DirectorySeparatorChar);
             Assert.IsTrue(warning);
             StringAssert.Contains(text, "Bitmap");
         }
@@ -77,15 +79,15 @@ namespace SRCSharpAvalonia.Tests
             }
             File.WriteAllText(Path.Combine(source, "broken.zip"), "not a zip");
 
-            Assert.AreEqual((string.Format(Strings.FolderFound, "Bitmap, Sound"), false), AssetSettingsWindow.DescribePack(good));
-            Assert.AreEqual((Strings.PackHasNoAssets, true), AssetSettingsWindow.DescribePack(bad));
-            Assert.AreEqual((Strings.PackUnreadable, true), AssetSettingsWindow.DescribePack(Path.Combine(source, "broken.zip")));
+            Assert.AreEqual((string.Format(Strings.FolderFound, "Bitmap, Sound"), false), SettingsWindow.DescribePack(good));
+            Assert.AreEqual((Strings.PackHasNoAssets, true), SettingsWindow.DescribePack(bad));
+            Assert.AreEqual((Strings.PackUnreadable, true), SettingsWindow.DescribePack(Path.Combine(source, "broken.zip")));
 
             using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
             {
                 session.Dispatch(() =>
                 {
-                    var window = new AssetSettingsWindow(new AssetSettings(), root);
+                    var window = new SettingsWindow(new AppSettings(), root);
                     Assert.AreEqual(1, window.PackList.Children.Count, "no packs");
                     // 追加すると Packs フォルダに写し、一覧に出す
                     window.AddPacks(new[] { good, bad });
@@ -98,18 +100,92 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
-        public void AssetSettings_RoundTripsThroughConfig()
+        public void Settings_RoundTripThroughConfig()
         {
             var config = new LocalFileConfig();
-            App.WriteAssetSettings(config, new AssetSettings { ExtDataPath = "/a", ExtDataPath2 = "/b", SoundFont = "/c.sf2" });
+            App.WriteSettings(config, new AppSettings
+            {
+                ExtDataPath = "/a", ExtDataPath2 = "/b", SoundFont = "/c.sf2",
+                Language = "en", LogLevel = "Debug", LogFile = false, LogPath = "/logs", LogRetainDays = 3,
+            });
 
             Assert.AreEqual("/a", config.ExtDataPath);
             Assert.AreEqual("/b", config.ExtDataPath2);
             Assert.AreEqual("/c.sf2", config.GetItem("Option", "SoundFont"));
-            var read = App.ReadAssetSettings(config);
+            Assert.AreEqual("en", config.GetItem("Option", "Language"));
+            Assert.AreEqual("Debug", config.GetItem("Log", "Level"));
+            Assert.AreEqual("Off", config.GetItem("Log", "File"));
+            Assert.AreEqual("/logs", config.GetItem("Log", "Path"));
+            Assert.AreEqual("3", config.GetItem("Log", "RetainDays"));
+            // ログの設定として読める（docs/logging.md の Log セクション）
+            var log = SRCCore.Logging.LogSettings.FromConfig(config);
+            Assert.AreEqual(Microsoft.Extensions.Logging.LogLevel.Debug, log.Level);
+            Assert.AreEqual(false, log.File);
+            Assert.AreEqual("/logs", log.Directory);
+            Assert.AreEqual(3, log.RetainDays);
+
+            var read = App.ReadSettings(config);
             Assert.AreEqual("/a", read.ExtDataPath);
             Assert.AreEqual("/b", read.ExtDataPath2);
             Assert.AreEqual("/c.sf2", read.SoundFont);
+            Assert.AreEqual("en", read.Language);
+            Assert.AreEqual("Debug", read.LogLevel);
+            Assert.IsFalse(read.LogFile);
+            Assert.AreEqual("/logs", read.LogPath);
+            Assert.AreEqual(3, read.LogRetainDays);
+        }
+
+        [TestMethod]
+        public void Settings_DefaultsWhenEmpty()
+        {
+            var read = App.ReadSettings(new LocalFileConfig());
+            // 設定が無ければ日本語・既定のレベル・ファイルに出す・7 日
+            Assert.AreEqual("ja", read.Language);
+            Assert.AreEqual("", read.LogLevel);
+            Assert.IsTrue(read.LogFile);
+            Assert.AreEqual("", read.LogPath);
+            Assert.AreEqual(7, read.LogRetainDays);
+        }
+
+        [TestMethod]
+        public void Window_ReturnsDisplayAndLogSettings()
+        {
+            using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
+            {
+                session.Dispatch(() =>
+                {
+                    var window = new SettingsWindow(new AppSettings { Language = "auto", LogLevel = "Warning" }, root, logLevelFixed: true);
+                    window.Show();
+                    Assert.AreEqual(0, window.Language.SelectedIndex, "auto");
+                    Assert.AreEqual("Warning", SettingsWindow.LogLevels[window.LogLevel.SelectedIndex]);
+                    // 空欄なら既定のフォルダを示す
+                    StringAssert.Contains(window.LogPath.Status.Text, SRCCore.Logging.LogOptions.DefaultDirectory());
+
+                    window.Language.SelectedIndex = SettingsWindow.Languages.ToList().FindIndex(x => x.Code == "en");
+                    window.LogLevel.SelectedIndex = SettingsWindow.LogLevels.ToList().IndexOf("Trace");
+                    window.LogFile.IsChecked = false;
+                    window.LogRetainDays.Value = 30;
+                    var result = window.Result();
+                    Assert.AreEqual("en", result.Language);
+                    Assert.AreEqual("Trace", result.LogLevel);
+                    Assert.IsFalse(result.LogFile);
+                    Assert.AreEqual(30, result.LogRetainDays);
+
+                    // ログのタブの見た目を確かめるため、画面を保存する
+                    var tabs = window.GetLogicalDescendants().OfType<Avalonia.Controls.TabControl>().First();
+                    tabs.SelectedIndex = 2;
+                    Avalonia.Headless.AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                    var frame = window.CaptureRenderedFrame();
+                    if (frame != null)
+                    {
+                        var dir = Path.Combine(AppContext.BaseDirectory, "TestResults", "avalonia");
+                        Directory.CreateDirectory(dir);
+                        frame.Save(Path.Combine(dir, "settings-log.png"));
+                    }
+                    window.Close();
+                    return true;
+                }, CancellationToken.None).GetAwaiter().GetResult();
+            }
         }
 
         [TestMethod]
@@ -132,7 +208,7 @@ namespace SRCSharpAvalonia.Tests
             {
                 session.Dispatch(() =>
                 {
-                    var window = new AssetSettingsWindow(new AssetSettings { ExtDataPath = "", ExtDataPath2 = "", SoundFont = "" }, root);
+                    var window = new SettingsWindow(new AppSettings { ExtDataPath = "", ExtDataPath2 = "", SoundFont = "" }, root);
                     window.Show();
                     Assert.IsFalse(window.ExtDataPath.Status.IsVisible);
 
@@ -163,7 +239,7 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
-        public void MenuItem_RequestsAssetSettings()
+        public void MenuItem_RequestsSettings()
         {
             using (var session = HeadlessUnitTestSession.StartNew(typeof(TestApp)))
             {
@@ -172,8 +248,8 @@ namespace SRCSharpAvalonia.Tests
                     var window = new MainWindow();
                     window.Show();
                     var requested = false;
-                    window.AssetSettingsRequested += () => requested = true;
-                    window.AssetSettingsItem.RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
+                    window.SettingsRequested += () => requested = true;
+                    window.SettingsItem.RaiseEvent(new RoutedEventArgs(Avalonia.Controls.MenuItem.ClickEvent));
                     Assert.IsTrue(requested);
                     window.Close();
                     return true;

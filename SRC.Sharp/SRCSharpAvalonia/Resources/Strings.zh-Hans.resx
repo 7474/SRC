@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>设置(_S)</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>素材文件夹设置(_A)...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>素材文件夹设置</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>SRC# 文件夹（{0}）和剧本文件夹中没有的数据、图像和音乐，会从这里指定的文件夹中查找。请指定 SRC 本体（放有通用图像集等）或开发包的文件夹。</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>留空时自动查找，但未找到。MIDI 将不会播放</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>更改将在下次启动时生效。</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>素材包</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# 以 GPL-3.0 发布。附带的 SoundFont（TimGM6mb）为 GPL-2.0（SoundFont 文件夹中的 COPYING）。</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>设置(_S)...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>素材</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>显示语言</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>跟随操作系统的语言</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>显示比例在“视图”菜单中更改。</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>日志级别</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>默认（Information）</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>已通过命令行参数或环境变量指定级别，以其为准。</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>将日志写入文件</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>日志文件夹</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>留空时使用默认文件夹：{0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>文件夹不存在时会创建</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>日志保留天数</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>打开日志文件夹</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>SRC#Avalonia 使用方法(_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>素材和显示语言在下次启动时生效，日志在保存时生效。</value>
   </data>
 </root>

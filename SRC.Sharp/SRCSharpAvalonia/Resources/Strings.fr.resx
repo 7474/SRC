@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>_Paramètres</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>Dossiers de _ressources...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>Dossiers de ressources</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>Les données, graphismes et musiques absents du dossier de SRC# ({0}) et du dossier du scénario sont recherchés dans les dossiers indiqués ici. Indiquez le dossier du paquet principal de SRC (avec la collection de graphismes génériques, etc.) ou d’un pack de développement.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>Recherché automatiquement si vide, mais aucun trouvé. Le MIDI ne sera pas joué</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>Les modifications prendront effet au prochain démarrage.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>Packs de ressources</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC# est distribué sous GPL-3.0. Le SoundFont fourni (TimGM6mb) est sous GPL-2.0 (COPYING dans le dossier SoundFont).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>_Paramètres...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>Ressources</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>Affichage</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Langue de l’interface</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>Suivre la langue du système</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>L’échelle d’affichage se change dans le menu Affichage.</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>Niveau de journal</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>Par défaut (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>Le niveau est indiqué par un argument de ligne de commande ou une variable d’environnement, qui a la priorité.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>Écrire le journal dans un fichier</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>Dossier des journaux</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>Dossier par défaut si vide : {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>Le dossier sera créé s’il n’existe pas</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>Jours de conservation des journaux</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Ouvrir le dossier des journaux</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>Utiliser SRC#Avalonia (_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>Les ressources et la langue s’appliquent au prochain démarrage ; le journal, à l’enregistrement.</value>
   </data>
 </root>

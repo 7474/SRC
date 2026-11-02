@@ -27,12 +27,6 @@
   <data name="SettingsMenu" xml:space="preserve">
     <value>_Ayarlar</value>
   </data>
-  <data name="AssetSettingsMenu" xml:space="preserve">
-    <value>_Kaynak klasörleri...</value>
-  </data>
-  <data name="AssetSettingsTitle" xml:space="preserve">
-    <value>Kaynak klasörleri</value>
-  </data>
   <data name="AssetSettingsDescription" xml:space="preserve">
     <value>SRC# klasöründe ({0}) ve senaryo klasöründe bulunmayan veriler, grafikler ve müzikler burada belirtilen klasörlerde aranır. SRC ana paketinin (genel grafik koleksiyonu vb. içeren) veya bir geliştirme paketinin klasörünü belirtin.</value>
   </data>
@@ -74,9 +68,6 @@
   </data>
   <data name="SoundFontNotFound" xml:space="preserve">
     <value>Boşsa otomatik olarak aranır, ancak bulunamadı. MIDI çalmayacak</value>
-  </data>
-  <data name="AssetSettingsApplyNote" xml:space="preserve">
-    <value>Değişiklikler uygulama bir sonraki başlatıldığında geçerli olur.</value>
   </data>
   <data name="PacksLabel" xml:space="preserve">
     <value>Kaynak paketleri</value>
@@ -146,5 +137,62 @@
   </data>
   <data name="AboutLicense" xml:space="preserve">
     <value>SRC#, GPL-3.0 ile dağıtılır. Birlikte gelen SoundFont (TimGM6mb) GPL-2.0 lisanslıdır (SoundFont klasöründeki COPYING).</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="SettingsMenuItem" xml:space="preserve">
+    <value>_Ayarlar...</value>
+  </data>
+  <data name="AssetsTab" xml:space="preserve">
+    <value>Kaynaklar</value>
+  </data>
+  <data name="DisplayTab" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="LogTab" xml:space="preserve">
+    <value>Günlük</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Arayüz dili</value>
+  </data>
+  <data name="LanguageAuto" xml:space="preserve">
+    <value>İşletim sisteminin dilini kullan</value>
+  </data>
+  <data name="DisplayScaleNote" xml:space="preserve">
+    <value>Görüntü ölçeği Görünüm menüsünden değiştirilir.</value>
+  </data>
+  <data name="LogLevelLabel" xml:space="preserve">
+    <value>Günlük düzeyi</value>
+  </data>
+  <data name="LogLevelDefault" xml:space="preserve">
+    <value>Varsayılan (Information)</value>
+  </data>
+  <data name="LogLevelFixedNote" xml:space="preserve">
+    <value>Düzey bir komut satırı bağımsız değişkeni veya ortam değişkeniyle belirtildiği için o önceliklidir.</value>
+  </data>
+  <data name="LogFileLabel" xml:space="preserve">
+    <value>Günlüğü dosyaya yaz</value>
+  </data>
+  <data name="LogFolderLabel" xml:space="preserve">
+    <value>Günlük klasörü</value>
+  </data>
+  <data name="LogFolderDefault" xml:space="preserve">
+    <value>Boşsa varsayılan klasör: {0}</value>
+  </data>
+  <data name="LogFolderWillBeCreated" xml:space="preserve">
+    <value>Klasör yoksa oluşturulur</value>
+  </data>
+  <data name="LogRetainDaysLabel" xml:space="preserve">
+    <value>Günlüklerin saklanacağı gün sayısı</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Günlük klasörünü aç</value>
+  </data>
+  <data name="UsageMenu" xml:space="preserve">
+    <value>SRC#Avalonia nasıl kullanılır (_U)</value>
+  </data>
+  <data name="SettingsApplyNote" xml:space="preserve">
+    <value>Kaynak ve dil ayarları bir sonraki başlatmada, günlük ayarları kaydettiğinizde geçerli olur.</value>
   </data>
 </root>

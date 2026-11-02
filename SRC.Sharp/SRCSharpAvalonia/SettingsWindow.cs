@@ -12,30 +12,51 @@ using System.Linq;
 namespace SRCSharpAvalonia
 {
     /// <summary>
-    /// 素材の場所の設定（srcs.json の ExtDataPath・ExtDataPath2・Option/SoundFont）。
+    /// 設定のウィンドウで変える設定（srcs.json）。
     /// </summary>
-    public sealed class AssetSettings
+    public sealed class AppSettings
     {
+        /// <summary>拡張データフォルダ（ExtDataPath・ExtDataPath2）</summary>
         public string ExtDataPath { get; set; } = "";
         public string ExtDataPath2 { get; set; } = "";
+        /// <summary>MIDI の SoundFont（Option/SoundFont）</summary>
         public string SoundFont { get; set; } = "";
+        /// <summary>表示言語（Option/Language。対応言語のカルチャ名か "auto"）</summary>
+        public string Language { get; set; } = SRCCore.UiLanguages.Default;
+        /// <summary>ログのレベル（Log/Level。空なら既定）</summary>
+        public string LogLevel { get; set; } = "";
+        /// <summary>ログをファイルに出すか（Log/File）</summary>
+        public bool LogFile { get; set; } = true;
+        /// <summary>ログのフォルダ（Log/Path。空なら既定）</summary>
+        public string LogPath { get; set; } = "";
+        /// <summary>ログを残す日数（Log/RetainDays）</summary>
+        public int LogRetainDays { get; set; } = SRCCore.Logging.LogOptions.DefaultRetainDays;
     }
 
     /// <summary>
-    /// 素材フォルダの設定を補助するウィンドウ。フォルダ・ファイルを選ばせ、中身（Bitmap・Data などのフォルダ、SoundFont）が
+    /// 設定のウィンドウ（素材・表示・ログ）。素材はフォルダ・ファイルを選ばせ、中身（Bitmap・Data などのフォルダ、SoundFont）が
     /// 見つかるかをその場で示す。閉じるときの結果は設定、キャンセル時は null。
     /// </summary>
-    public class AssetSettingsWindow : Window
+    public class SettingsWindow : Window
     {
         /// <summary>素材のフォルダにあるはずのフォルダ（元の SRC の本体・開発パックと同じ構成。素材パックと共通）</summary>
         internal static IReadOnlyList<string> AssetFolders => SRCCore.Filesystem.AssetPacks.AssetFolders;
 
         private readonly string appPath;
 
-        public AssetSettingsWindow(AssetSettings settings, string appPath)
+        /// <summary>表示言語の選択肢（"auto" と対応言語）</summary>
+        internal static IReadOnlyList<(string Code, string Name)> Languages =>
+            new[] { (SRCCore.UiLanguages.Auto, Strings.LanguageAuto) }
+                .Concat(SRCCore.UiLanguages.Supported.Select(x => (x.Code, x.NativeName)))
+                .ToList();
+
+        /// <summary>ログのレベルの選択肢（空は既定）</summary>
+        internal static readonly IReadOnlyList<string> LogLevels = new[] { "", "Trace", "Debug", "Information", "Warning", "Error", "Critical", "None" };
+
+        public SettingsWindow(AppSettings settings, string appPath, bool logLevelFixed = false)
         {
             this.appPath = appPath;
-            Title = Strings.AssetSettingsTitle;
+            Title = Strings.SettingsTitle;
             CanResize = false;
             SizeToContent = SizeToContent.WidthAndHeight;
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -73,19 +94,85 @@ namespace SRCSharpAvalonia
             save.Click += (s, e) => Close(Result());
             cancel.Click += (s, e) => Close(null);
 
+            // 表示: 表示言語（表示倍率はメニューの「表示」）
+            Language = new ComboBox
+            {
+                ItemsSource = Languages.Select(x => x.Name).ToList(),
+                SelectedIndex = Math.Max(0, Languages.ToList().FindIndex(x => x.Code == settings.Language)),
+                MinWidth = 240,
+            };
+            var displayPanel = new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    new TextBlock { Text = Strings.LanguageLabel, FontWeight = FontWeight.Bold },
+                    Language,
+                    new TextBlock { Text = Strings.DisplayScaleNote, TextWrapping = TextWrapping.Wrap, FontSize = 12, Opacity = 0.75 },
+                },
+            };
+
+            // ログ: レベル・ファイルに出すか・フォルダ・残す日数
+            LogLevel = new ComboBox
+            {
+                ItemsSource = LogLevels.Select(x => x == "" ? Strings.LogLevelDefault : x).ToList(),
+                SelectedIndex = Math.Max(0, LogLevels.ToList().FindIndex(x => string.Equals(x, settings.LogLevel, StringComparison.OrdinalIgnoreCase))),
+                MinWidth = 240,
+            };
+            LogFile = new CheckBox { Content = Strings.LogFileLabel, IsChecked = settings.LogFile };
+            LogPath = new PathField(Strings.LogFolderLabel, settings.LogPath, DescribeLogFolder, BrowseFolderAsync);
+            LogRetainDays = new NumericUpDown { Value = settings.LogRetainDays, Minimum = 1, Maximum = 365, Increment = 1, FormatString = "0", MinWidth = 140, HorizontalAlignment = HorizontalAlignment.Left };
+            var openLogs = new Button { Content = Strings.OpenLogFolder };
+            openLogs.Click += async (s, e) => await OpenLogFolderAsync(this, LogPath.Value);
+            var logPanel = new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    new TextBlock { Text = Strings.LogLevelLabel, FontWeight = FontWeight.Bold },
+                    LogLevel,
+                    new TextBlock { Text = Strings.LogLevelFixedNote, TextWrapping = TextWrapping.Wrap, FontSize = 12, Foreground = Brushes.DarkRed, IsVisible = logLevelFixed },
+                    LogFile,
+                    LogPath.Panel,
+                    new TextBlock { Text = Strings.LogRetainDaysLabel, FontWeight = FontWeight.Bold },
+                    LogRetainDays,
+                    openLogs,
+                },
+            };
+
             Content = new StackPanel
             {
                 Margin = new Thickness(12),
                 Spacing = 12,
-                Width = 560,
+                Width = 600,
                 Children =
                 {
-                    new TextBlock { Text = string.Format(Strings.AssetSettingsDescription, appPath), TextWrapping = TextWrapping.Wrap },
-                    ExtDataPath.Panel,
-                    ExtDataPath2.Panel,
-                    SoundFont.Panel,
-                    packsPanel,
-                    new TextBlock { Text = Strings.AssetSettingsApplyNote, TextWrapping = TextWrapping.Wrap, Opacity = 0.75 },
+                    new TabControl
+                    {
+                        ItemsSource = new[]
+                        {
+                            new TabItem
+                            {
+                                Header = Strings.AssetsTab,
+                                Content = new StackPanel
+                                {
+                                    Spacing = 12,
+                                    Margin = new Thickness(0, 8, 0, 0),
+                                    Children =
+                                    {
+                                        new TextBlock { Text = string.Format(Strings.AssetSettingsDescription, appPath), TextWrapping = TextWrapping.Wrap },
+                                        ExtDataPath.Panel,
+                                        ExtDataPath2.Panel,
+                                        SoundFont.Panel,
+                                        packsPanel,
+                                    },
+                                },
+                            },
+                            new TabItem { Header = Strings.DisplayTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { displayPanel } } },
+                            new TabItem { Header = Strings.LogTab, Content = new StackPanel { Margin = new Thickness(0, 8, 0, 0), Children = { logPanel } } },
+                        },
+                    },
+                    new TextBlock { Text = Strings.SettingsApplyNote, TextWrapping = TextWrapping.Wrap, Opacity = 0.75 },
                     new StackPanel
                     {
                         Orientation = Orientation.Horizontal,
@@ -100,6 +187,36 @@ namespace SRCSharpAvalonia
         internal PathField ExtDataPath { get; }
         internal PathField ExtDataPath2 { get; }
         internal PathField SoundFont { get; }
+        internal ComboBox Language { get; }
+        internal ComboBox LogLevel { get; }
+        internal CheckBox LogFile { get; }
+        internal PathField LogPath { get; }
+        internal NumericUpDown LogRetainDays { get; }
+
+        /// <summary>ログのフォルダの状態。空欄なら既定のフォルダを示す</summary>
+        internal static (string Text, bool Warning) DescribeLogFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return (string.Format(Strings.LogFolderDefault, SRCCore.Logging.LogOptions.DefaultDirectory()), false);
+            }
+            return Directory.Exists(path) ? ("", false) : (Strings.LogFolderWillBeCreated, false);
+        }
+
+        /// <summary>ログのフォルダ（空なら既定のフォルダ）を開く。無ければ作る</summary>
+        internal static async System.Threading.Tasks.Task OpenLogFolderAsync(TopLevel topLevel, string path)
+        {
+            var dir = string.IsNullOrEmpty(path) ? SRCCore.Logging.LogOptions.DefaultDirectory() : path;
+            try
+            {
+                Directory.CreateDirectory(dir);
+                await topLevel.Launcher.LaunchDirectoryInfoAsync(new DirectoryInfo(dir));
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+                // 作れない・開けないときは何もしない
+            }
+        }
 
         /// <summary>素材パックの一覧（zip ごとに 1 行）</summary>
         internal StackPanel PackList { get; }
@@ -190,13 +307,18 @@ namespace SRCSharpAvalonia
         }
 
         /// <summary>入力している設定</summary>
-        internal AssetSettings Result()
+        internal AppSettings Result()
         {
-            return new AssetSettings
+            return new AppSettings
             {
                 ExtDataPath = ExtDataPath.Value,
                 ExtDataPath2 = ExtDataPath2.Value,
                 SoundFont = SoundFont.Value,
+                Language = Languages[Math.Max(0, Language.SelectedIndex)].Code,
+                LogLevel = LogLevels[Math.Max(0, LogLevel.SelectedIndex)],
+                LogFile = LogFile.IsChecked ?? true,
+                LogPath = LogPath.Value,
+                LogRetainDays = (int)(LogRetainDays.Value ?? SRCCore.Logging.LogOptions.DefaultRetainDays),
             };
         }
 
@@ -247,7 +369,7 @@ namespace SRCSharpAvalonia
         {
             var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = Strings.AssetSettingsTitle,
+                Title = Strings.SettingsTitle,
                 AllowMultiple = false,
                 SuggestedStartLocation = await StartLocation(current),
             });

@@ -48,7 +48,7 @@ namespace SRCSharpAvalonia
                     window.SetDisplayScale(savedScale.Value);
                 }
                 window.DisplayScaleChosen += SaveDisplayScale;
-                window.AssetSettingsRequested += async () => await EditAssetSettingsAsync(window);
+                window.SettingsRequested += async () => await EditSettingsAsync(window);
                 window.OpenScenarioRequested += async () => await OpenScenarioAsync(window);
                 window.RestartRequested += async () => await RestartAsync(window);
                 window.ExitRequested += async () => await ExitAsync(window);
@@ -137,33 +137,50 @@ namespace SRCSharpAvalonia
         /// 素材フォルダの設定のウィンドウを開き、保存を選んだら設定に書く。
         /// 素材の場所はシナリオを始めるときに読むため、次に起動したときから効く
         /// </summary>
-        internal async Task EditAssetSettingsAsync(MainWindow window)
+        internal async Task EditSettingsAsync(MainWindow window)
         {
-            var current = await ReadConfigAsync(ReadAssetSettings);
+            var current = await ReadConfigAsync(ReadSettings);
             var appPath = session?.SRC.AppPath ?? new LocalFileConfig().AppPath;
-            var result = await new AssetSettingsWindow(current, appPath).ShowDialog<AssetSettings>(window);
+            var result = await new SettingsWindow(current, appPath, Program.LogHost?.LevelFixed ?? false).ShowDialog<AppSettings>(window);
             if (result != null)
             {
-                UpdateConfig(config => WriteAssetSettings(config, result));
+                UpdateConfig(config =>
+                {
+                    WriteSettings(config, result);
+                    // ログの設定は保存したときから効かせる（引数・環境変数で指定したものは上書きしない）
+                    Program.LogHost?.ApplyConfig(config);
+                });
             }
             window.View.Focus();
         }
 
-        internal static AssetSettings ReadAssetSettings(ISystemConfig config)
+        internal static AppSettings ReadSettings(ISystemConfig config)
         {
-            return new AssetSettings
+            return new AppSettings
             {
                 ExtDataPath = config.ExtDataPath ?? "",
                 ExtDataPath2 = config.ExtDataPath2 ?? "",
                 SoundFont = config.GetItem("Option", "SoundFont"),
+                Language = SRCCore.UiLanguages.SelectorValue(config.GetItem(UiLanguage.ConfigSection, UiLanguage.ConfigKey)),
+                LogLevel = SRCCore.Logging.LogSettings.ParseLevel(config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "Level"))?.ToString() ?? "",
+                LogFile = !string.Equals(config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "File"), "Off", StringComparison.OrdinalIgnoreCase),
+                LogPath = config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "Path"),
+                LogRetainDays = int.TryParse(config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays"), out var days) && days > 0
+                    ? days
+                    : SRCCore.Logging.LogOptions.DefaultRetainDays,
             };
         }
 
-        internal static void WriteAssetSettings(ISystemConfig config, AssetSettings settings)
+        internal static void WriteSettings(ISystemConfig config, AppSettings settings)
         {
             config.ExtDataPath = settings.ExtDataPath ?? "";
             config.ExtDataPath2 = settings.ExtDataPath2 ?? "";
             config.SetItem("Option", "SoundFont", settings.SoundFont ?? "");
+            config.SetItem(UiLanguage.ConfigSection, UiLanguage.ConfigKey, settings.Language ?? "");
+            config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "Level", settings.LogLevel ?? "");
+            config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "File", settings.LogFile ? "On" : "Off");
+            config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "Path", settings.LogPath ?? "");
+            config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays", settings.LogRetainDays.ToString());
         }
 
         /// <summary>設定を読む。シナリオの実行中は、その設定（ゲームスレッドが持つ）から読む</summary>

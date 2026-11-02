@@ -58,9 +58,36 @@ namespace SRCSound
             }
             catch (Exception ex)
             {
-                // OpenAL のネイティブライブラリが無い環境など
-                logger?.LogWarning(ex, "OpenAL を初期化できません。音は鳴りません。");
+                // OpenAL のネイティブライブラリが無い・読めない環境など。原因を見分けられるよう、実行ファイルの隣にあるかを残す
+                logger?.LogWarning(ex, "OpenAL を初期化できません。音は鳴りません。プロセス: {Architecture}、実行ファイルの隣の OpenAL: {Files}",
+                    System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture,
+                    DescribeBundledOpenAL());
                 IsAvailable = false;
+            }
+        }
+
+        /// <summary>OpenAL Soft のネイティブライブラリの名前（Windows・Linux・macOS）</summary>
+        private static readonly string[] OpenALLibraryNames = { "soft_oal.dll", "libopenal.so", "libopenal.dylib" };
+
+        /// <summary>実行ファイルの場所にある OpenAL のネイティブライブラリ（無ければ「なし」）</summary>
+        private static string DescribeBundledOpenAL()
+        {
+            try
+            {
+                var found = new List<string>();
+                foreach (var name in OpenALLibraryNames)
+                {
+                    var path = Path.Combine(AppContext.BaseDirectory, name);
+                    if (File.Exists(path))
+                    {
+                        found.Add(path + " (" + new FileInfo(path).Length + " bytes)");
+                    }
+                }
+                return found.Count == 0 ? "なし（" + AppContext.BaseDirectory + "）" : string.Join(", ", found);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
 
