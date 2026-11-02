@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>เพิ่ม {0} ไม่ได้ (อาจกำลังใช้งานอยู่ ให้ปิด SRC# แล้ววางไว้ในโฟลเดอร์ Packs)</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>ไฟล์(_F)</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>เปิดซีนาริโอ(_O)...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>เริ่มใหม่ตั้งแต่ต้น(_R)</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>ออก(_X)</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>วิธีใช้(_H)</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>เปิดวิธีใช้(_H)</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>เว็บไซต์ SRC#(_W)</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>เกี่ยวกับ(_A)</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>ยืนยัน</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>ความคืบหน้าที่ยังไม่ได้บันทึกจะหายไป ดำเนินการต่อหรือไม่</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>ใช่</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>ไม่</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>เกี่ยวกับ SRC#Avalonia</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>เวอร์ชัน {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC# เผยแพร่ภายใต้ GPL-3.0 SoundFont ที่แนบมา (TimGM6mb) เป็น GPL-2.0 (COPYING ในโฟลเดอร์ SoundFont)</value>
+  </data>
 </root>

@@ -39,5 +39,20 @@ namespace SRCSharpAvalonia
         public static string PackHasNoAssets => Rm.GetString(nameof(PackHasNoAssets));
         public static string PackUnreadable => Rm.GetString(nameof(PackUnreadable));
         public static string PackCopyFailed => Rm.GetString(nameof(PackCopyFailed));
+        public static string FileMenu => Rm.GetString(nameof(FileMenu));
+        public static string OpenScenarioMenu => Rm.GetString(nameof(OpenScenarioMenu));
+        public static string RestartMenu => Rm.GetString(nameof(RestartMenu));
+        public static string ExitMenu => Rm.GetString(nameof(ExitMenu));
+        public static string HelpMenu => Rm.GetString(nameof(HelpMenu));
+        public static string HelpContentsMenu => Rm.GetString(nameof(HelpContentsMenu));
+        public static string WebsiteMenu => Rm.GetString(nameof(WebsiteMenu));
+        public static string AboutMenu => Rm.GetString(nameof(AboutMenu));
+        public static string ConfirmTitle => Rm.GetString(nameof(ConfirmTitle));
+        public static string ConfirmDiscardProgress => Rm.GetString(nameof(ConfirmDiscardProgress));
+        public static string Yes => Rm.GetString(nameof(Yes));
+        public static string No => Rm.GetString(nameof(No));
+        public static string AboutTitle => Rm.GetString(nameof(AboutTitle));
+        public static string AboutVersion => Rm.GetString(nameof(AboutVersion));
+        public static string AboutLicense => Rm.GetString(nameof(AboutLicense));
     }
 }

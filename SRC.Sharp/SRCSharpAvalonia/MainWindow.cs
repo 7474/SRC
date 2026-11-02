@@ -14,6 +14,12 @@ namespace SRCSharpAvalonia
     {
         public const string AppTitle = "SRC#Avalonia";
 
+        /// <summary>SRC# のヘルプ（SRC.Sharp.Help）</summary>
+        public static readonly Uri HelpUri = new Uri("https://srch.7474.jp/");
+
+        /// <summary>SRC# のサイト（リポジトリ）</summary>
+        public static readonly Uri WebsiteUri = new Uri("https://github.com/7474/SRC");
+
         public MainWindow()
         {
             Title = AppTitle;
@@ -42,20 +48,62 @@ namespace SRCSharpAvalonia
             var assetSettingsItem = new MenuItem { Header = Strings.AssetSettingsMenu };
             assetSettingsItem.Click += (s, e) => AssetSettingsRequested?.Invoke();
             AssetSettingsItem = assetSettingsItem;
+            // ファイル（シナリオを開く・最初からやり直す・終了）。シナリオの切り替えは App が行う
+            OpenScenarioItem = new MenuItem { Header = Strings.OpenScenarioMenu };
+            OpenScenarioItem.Click += (s, e) => OpenScenarioRequested?.Invoke();
+            RestartItem = new MenuItem { Header = Strings.RestartMenu };
+            RestartItem.Click += (s, e) => RestartRequested?.Invoke();
+            ExitItem = new MenuItem { Header = Strings.ExitMenu };
+            ExitItem.Click += (s, e) => ExitRequested?.Invoke();
+            // ヘルプ（ヘルプ・サイトはブラウザで開く）
+            var helpItem = new MenuItem { Header = Strings.HelpContentsMenu };
+            helpItem.Click += async (s, e) => await Launcher.LaunchUriAsync(HelpUri);
+            var websiteItem = new MenuItem { Header = Strings.WebsiteMenu };
+            websiteItem.Click += async (s, e) => await Launcher.LaunchUriAsync(WebsiteUri);
+            AboutItem = new MenuItem { Header = Strings.AboutMenu };
+            AboutItem.Click += async (s, e) =>
+            {
+                await new AboutWindow().ShowDialog(this);
+                View.Focus();
+            };
             var menu = new Menu
             {
                 ItemsSource = new[]
                 {
+                    new MenuItem { Header = Strings.FileMenu, ItemsSource = new object[] { OpenScenarioItem, RestartItem, new Separator(), ExitItem } },
                     new MenuItem { Header = Strings.ViewMenu, ItemsSource = scaleItems },
                     new MenuItem { Header = Strings.SettingsMenu, ItemsSource = new[] { assetSettingsItem } },
+                    new MenuItem { Header = Strings.HelpMenu, ItemsSource = new object[] { helpItem, websiteItem, new Separator(), AboutItem } },
                 },
             };
             DockPanel.SetDock(menu, Dock.Top);
             Content = new DockPanel { Children = { menu, View } };
             SetDisplayScale(View.DisplayScale);
+            SetScenarioRunning(false);
         }
 
         private readonly MenuItem[] scaleItems;
+
+        /// <summary>ファイル・ヘルプのメニュー項目（テスト用）</summary>
+        internal MenuItem OpenScenarioItem { get; }
+        internal MenuItem RestartItem { get; }
+        internal MenuItem ExitItem { get; }
+        internal MenuItem AboutItem { get; }
+
+        /// <summary>メニューで「シナリオを開く...」を選んだときに呼ばれる</summary>
+        public event Action OpenScenarioRequested;
+
+        /// <summary>メニューで「最初からやり直す」を選んだときに呼ばれる</summary>
+        public event Action RestartRequested;
+
+        /// <summary>メニューで「終了」を選んだときに呼ばれる</summary>
+        public event Action ExitRequested;
+
+        /// <summary>シナリオを実行しているか。実行していなければ「最初からやり直す」を選べない</summary>
+        public void SetScenarioRunning(bool running)
+        {
+            RestartItem.IsEnabled = running;
+        }
 
         /// <summary>「素材フォルダの設定...」のメニュー項目（テスト用）</summary>
         internal MenuItem AssetSettingsItem { get; }

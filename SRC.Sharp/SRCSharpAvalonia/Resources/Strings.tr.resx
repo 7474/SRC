@@ -102,4 +102,49 @@
   <data name="PackCopyFailed" xml:space="preserve">
     <value>{0} eklenemiyor (kullanımda olabilir. SRC# uygulamasını kapatıp Packs klasörüne koyun)</value>
   </data>
+  <data name="FileMenu" xml:space="preserve">
+    <value>_Dosya</value>
+  </data>
+  <data name="OpenScenarioMenu" xml:space="preserve">
+    <value>Senaryo _aç...</value>
+  </data>
+  <data name="RestartMenu" xml:space="preserve">
+    <value>_Baştan başla</value>
+  </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>Çı_kış</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>_Yardım</value>
+  </data>
+  <data name="HelpContentsMenu" xml:space="preserve">
+    <value>_Yardımı aç</value>
+  </data>
+  <data name="WebsiteMenu" xml:space="preserve">
+    <value>SRC# _web sitesi</value>
+  </data>
+  <data name="AboutMenu" xml:space="preserve">
+    <value>_Hakkında</value>
+  </data>
+  <data name="ConfirmTitle" xml:space="preserve">
+    <value>Onay</value>
+  </data>
+  <data name="ConfirmDiscardProgress" xml:space="preserve">
+    <value>Kaydedilmemiş ilerleme kaybolacak. Devam edilsin mi?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>SRC#Avalonia hakkında</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Sürüm {0}</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>SRC#, GPL-3.0 ile dağıtılır. Birlikte gelen SoundFont (TimGM6mb) GPL-2.0 lisanslıdır (SoundFont klasöründeki COPYING).</value>
+  </data>
 </root>
