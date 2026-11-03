@@ -309,5 +309,54 @@ namespace SRCRender.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void MapCommandMenu_AfterCancel_OpensAgainWithOnePress()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    void Press(ScreenKey key)
+                    {
+                        gui.KeyPressed(key);
+                        runner.Sync();
+                    }
+
+                    // 何も無いマス（3,3）にカーソルを置く
+                    Press(ScreenKey.Right);
+                    for (var i = 0; i < 40; i++)
+                    {
+                        WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                        var rect = state.MapCursor.Value;
+                        var (cx, cy) = (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top));
+                        if ((cx, cy) == (3, 3))
+                        {
+                            break;
+                        }
+                        Press(cx > 3 ? ScreenKey.Left : cx < 3 ? ScreenKey.Right : cy > 3 ? ScreenKey.Up : ScreenKey.Down);
+                    }
+
+                    // B（Esc）でマップのコマンドのメニューを開いて閉じる。もう一度 B を 1 回押せば、また開く
+                    for (var round = 0; round < 3; round++)
+                    {
+                        Press(ScreenKey.Escape);
+                        WaitUntil(() => state.Menu != null, "マップのコマンドのメニュー（" + round + " 回目）");
+                        CollectionAssert.Contains(state.Menu.Items.ToList(), "ターン終了");
+                        Press(ScreenKey.Escape);
+                        WaitUntil(() => state.Menu == null, "メニューを閉じる");
+                        runner.Sync();
+                    }
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
     }
 }

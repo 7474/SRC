@@ -1005,6 +1005,13 @@ namespace SRCRender
                 else
                 {
                     Commands.CancelCommand();
+                    // マップのコマンドのメニューを閉じたら、ユニットの選択に戻す。
+                    // 元の SRC は、ポップアップメニューを閉じたクリックを次のクリックで読み捨てるために「マップコマンド」の状態を残す
+                    // （次のクリックは状態を戻すだけ）。このメニューは閉じたクリックをここで受けるので、残すと次の操作が 1 回効かなくなる
+                    if (!isUnitMenu && Commands.CommandState == "マップコマンド")
+                    {
+                        Commands.CommandState = "ユニット選択";
+                    }
                 }
                 Present();
             });
