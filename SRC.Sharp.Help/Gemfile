@@ -1,8 +1,7 @@
 source "https://rubygems.org"
-# Azure Static Web Apps (Oryx) でサポートされる Ruby の最新バージョン。
-# 対応バージョン: 2.5.8, 2.6.6, 2.7.1, 2.7.2, 2.7.6, 2.7.7, 3.0.0, 3.0.3, 3.0.5, 3.1.1, 3.1.3
-# 3.1 系より新しいバージョンへ上げる場合は Oryx のサポート状況を確認してください。
-ruby "~> 3.1"
+# Ruby の版は .ruby-version で決める。組み立ては GitHub Actions（.github/workflows/CD-swa-help.yml）で行い、
+# Static Web Apps には組み立てた頁だけを送るので、Static Web Apps（Oryx）の Ruby の対応（3.1.3 まで）には縛られない
+ruby "~> 4.0"
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the

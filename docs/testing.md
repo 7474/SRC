@@ -139,4 +139,4 @@ Dependabot のマイナー・パッチの更新は、ディレクトリ（エコ
 
 - Playwright の flaky なテスト（`シナリオを読み込んでいる間はほかの操作を受け付けない`・`アーカイブを追加し、再読み込み後もプレイできる` など、読み込みの待ちのタイムアウト）の待ちの条件を直す
 - `SRCSharpWeb.E2E/tests/deployed.spec.js` は配信した後に動き、外部（`7474/SRC-Data`）のデータを読む。マージの可否には使わない
-- SRC#Help は GitHub Actions（`CD-swa-help.yml`）で Jekyll を組み立て、組み立てた頁を Static Web Apps に送る（`skip_app_build`）。Static Web Apps の組み立て（[Oryx](https://github.com/microsoft/Oryx/blob/main/doc/supportedPlatformVersions.md)）が使える Ruby は 3.1.3 までで、保守の終わった版になるため。Ruby は `SRC.Sharp.Help/.ruby-version`（3.4）、Gem は `Gemfile.lock` のとおりに入れる（CI の `build-help` も同じ）
+- SRC#Help は GitHub Actions（`CD-swa-help.yml`）で Jekyll を組み立て、組み立てた頁を Static Web Apps に送る（`skip_app_build`）。Static Web Apps の組み立て（[Oryx](https://github.com/microsoft/Oryx/blob/main/doc/supportedPlatformVersions.md)）が使える Ruby は 3.1.3 までで、保守の終わった版になるため。Ruby は `SRC.Sharp.Help/.ruby-version`（4.0）、Gem は `Gemfile.lock` のとおりに入れる（CI の `build-help` も同じ）
