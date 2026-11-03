@@ -52,7 +52,8 @@ namespace SRCRender.Tests
                 runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
                 runner.WaitForMessage();
                 var config = runner.Session.SRC.SystemConfig;
-                var battle = config.BattleAnimation;
+                // 汎用戦闘アニメが無ければ戦闘アニメは使えない（ダイアログはゲームが使う値を見せる）
+                var battle = runner.Session.SRC.BattleAnimation;
                 var move = config.MoveAnimation;
 
                 var closed = new ManualResetEventSlim();

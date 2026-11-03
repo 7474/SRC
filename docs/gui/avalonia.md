@@ -110,7 +110,7 @@ SRC# が `srcs.json` から読む設定（フロントエンドの設定を含�
 |---|---|---|
 | 素材 | 拡張データフォルダ 1・2、MIDI の SoundFont、素材パック | 下表 |
 | ゲーム | 元の SRC の設定変更の画面と同じ項目（`ScreenGUI.Configure`）と自動反撃モード。音量はその場で変える | `BattleAnimation` など、`Option/Turn`、`Option/AutoDefense`、`SoundVolume` |
-| BGM | 場面ごとの曲のファイル名（`Sound.BGMName`）。元の SRC の Src.ini の `[BGM]` を取り込める（`SrcIni`） | `BGM/<名前>` |
+| BGM | 場面ごとの曲のファイル名（`Sound.BGMName`）。元の SRC の Src.ini の `[BGM]` を取り込める（`SRCCore.Config.SrcIni`） | `BGM/<名前>` |
 | 表示 | 表示言語（OS の言語に合わせる・対応言語） | `Option/Language` |
 | ログ | レベル・ファイルに出すか・フォルダ・残す日数（[ログの設計](../logging.md)） | `Log/Level`・`Log/File`・`Log/Path`・`Log/RetainDays` |
 | 開発者向け | デバッグモード、Shift_JIS の読み書き（`SRCCompatibilityMode`）、画像のバッファ（描画では使わず `Info` で読めるだけ） | `Option/DebugMode`・`SRCCompatibilityMode`・`ImageBufferSize` など |

@@ -77,7 +77,7 @@ namespace SRCCore.Events
             colSysNormalLabelList.Clear();
 
             // デバッグモードの設定
-            if (SRC.SystemConfig.GetFlag("Option", "DebugMode"))
+            if (SRC.Config.GetFlag("Option", "DebugMode"))
             {
                 if (!Expression.IsOptionDefined("デバッグ"))
                 {
@@ -106,11 +106,8 @@ namespace SRCCore.Events
                     LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                     || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                     || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
-                if (!battleAnimeIncludeLoaded)
-                {
-                    // 戦闘アニメ表示切り替えコマンドを非表示に
-                    SRC.SystemConfig.BattleAnimation = false;
-                }
+                // 無ければ戦闘アニメを使わない（設定には残さない）
+                SRC.BattleAnimationUnavailable = !battleAnimeIncludeLoaded;
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
                 // XXX 要らんのでは
@@ -156,11 +153,8 @@ namespace SRCCore.Events
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
                         || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
-                    if (!battleAnimeIncludeLoaded)
-                    {
-                        // 戦闘アニメ表示切り替えコマンドを非表示に
-                        SRC.SystemConfig.BattleAnimation = false;
-                    }
+                    // 無ければ戦闘アニメを使わない（設定には残さない）
+                    SRC.BattleAnimationUnavailable = !battleAnimeIncludeLoaded;
                 }
 
                 // シナリオ添付の汎用インクルードファイルをダウンロード
@@ -1043,7 +1037,7 @@ namespace SRCCore.Events
             var lineNumber = -1;
             try
             {
-                using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+                using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
                 using (var reader = new SrcEveReader(fname, stream))
                 {
                     while (reader.HasMore)

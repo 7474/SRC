@@ -351,7 +351,7 @@ namespace SRCCore
             }
 
             // そうでなければSrc.iniで設定されているファイルを使用
-            var configName = SRC.SystemConfig.GetItem("BGM", bgm_name);
+            var configName = SRC.Config.GetItem("BGM", bgm_name);
 
             // Src.iniでも設定されていなければ標準のファイルを使用
             if (string.IsNullOrEmpty(configName))

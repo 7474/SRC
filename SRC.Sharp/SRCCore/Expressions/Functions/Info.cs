@@ -2663,7 +2663,7 @@ namespace SRCCore.Expressions.Functions
 
                             case "AutoDeffence":
                                 {
-                                    if (SRC.SystemConfig.AutoDefense)
+                                    if (SRC.Config.AutoDefense)
                                     {
                                         str_result = "On";
                                     }
@@ -2699,7 +2699,7 @@ namespace SRCCore.Expressions.Functions
                             case "UseTransparentBlt":
                             case "NewGUI":
                                 {
-                                    str_result = SRC.SystemConfig.GetItem("Option", @params[idx]);
+                                    str_result = SRC.Config.GetItem("Option", @params[idx]);
                                     break;
                                 }
 

@@ -74,7 +74,8 @@ namespace SRCCore.Coverage.Tests.Effects
             Src.ScenarioPath = Dir;
             Src.Event.InitEventData();
             Src.Event.LoadEventData(eve);
-            // 汎用戦闘アニメの include.eve が無いと読み込み時に戦闘アニメがオフにされるので、読み込み後に設定する
+            // 汎用戦闘アニメの include.eve が無いと読み込み時に戦闘アニメが使えなくなるので、読み込み後に戻す
+            Src.BattleAnimationUnavailable = false;
             Src.SystemConfig.BattleAnimation = battleAnimation;
             Src.Expression.DefineGlobalVariable("記録");
             Src.Expression.SetVariableAsString("記録", "");
