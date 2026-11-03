@@ -6,7 +6,7 @@ using SRCCore.Logging;
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// ログ（docs/logging.md）。出力先はブラウザのコンソール（Blazor の既定）で、ファイルは無い。
+    /// ログ（docs/logging.md）。出力先はブラウザのコンソール（Blazor の既定）と画面の下のログ（WebLogPanelProvider）で、ファイルは無い。
     /// レベルは wwwroot/index.html が URL の ?log=（無ければ localStorage の srcweb.logLevel）から決め、
     /// 環境変数 SRCSHARP_LOG_LEVEL で渡す（マルチスレッドの .NET は起動前に JS とやりとりできないため）。
     /// </summary>
@@ -36,7 +36,9 @@ namespace SRCSharpWeb
             logging
                 .SetMinimumLevel(LogLevel.Trace)
                 // レベルは実行中に変わるため、出すたびに Options で判定する
-                .AddFilter((category, level) => Options.IsEnabled(category, level));
+                .AddFilter((category, level) => Options.IsEnabled(category, level))
+                // 画面の下のログ（設定の「ログを表示する」。WebLogPanel.cs）
+                .AddProvider(new WebLogPanelProvider());
         }
 
         /// <summary>LoggerFactory を受け取る。builder.Build の後に呼ぶ</summary>

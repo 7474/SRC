@@ -321,6 +321,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Mostrar o controle virtual</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Depuração</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Mostrar o registro abaixo da tela</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Com o nível de registro Trace, toques, controle virtual e teclas também são registrados.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copiar</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Limpar</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Mostrar o painel de escolhas grande</value>
   </data>

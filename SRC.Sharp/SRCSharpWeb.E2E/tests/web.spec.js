@@ -1193,6 +1193,40 @@ test.describe('タッチ向けの画面', () => {
 test.describe('タッチ操作', () => {
   test.use({ hasTouch: true });
 
+  test('マップをタップするとそのマスにカーソルを置き、仮想パッドで続けて選べる', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    // 「戦闘開始」のメッセージを送り、味方フェイズにする
+    let shown = false;
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        shown = true;
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return shown && s.message === undefined && s.locked === false;
+    }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+    await openSettings(page);
+    await page.locator('#setting-virtual-pad').check();
+    await closeSettings(page);
+    // 味方ユニット（6,6）の左隣（5,6）をタップした（指が隣のマスに当たった）
+    const s = await screenState(page);
+    const box = await page.locator('#screen').boundingBox();
+    const scale = box.width / 720;
+    await page.locator('#screen').tap({ position: { x: ((5 - s.mapX + 7) * 32 + 16) * scale, y: ((6 - s.mapY + 7) * 32 + 16) * scale } });
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([5, 6]);
+    // 仮想パッドの ▶ で 1 マス直し、A で選ぶ
+    const tapKey = async area => {
+      const b = await page.locator('.vkey-' + area).boundingBox();
+      await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
+    };
+    await tapKey('right');
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([6, 6]);
+    await tapKey('a');
+    await expect.poll(async () => (await screenState(page)).menu?.items ?? []).toContain('移動');
+  });
+
   test('タップで左クリック、長押しで右クリックになる', async ({ page }) => {
     await open(page);
     await page.getByRole('button', { name: 'battle-basic' }).click();
@@ -1321,6 +1355,45 @@ test.describe('タッチ操作', () => {
     await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
     await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   });
+});
+
+test('設定でログを画面の下に出し、Trace ではタップの入力も記録する', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // 既定では出さない
+  await expect(page.locator('#log-panel')).toBeHidden();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').check();
+  await page.locator('#setting-log-level').selectOption('Trace');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  // 画面・下のバー・ログが同じ幅でビューポートに収まる
+  const screen = await page.locator('#screen').boundingBox();
+  const panel = await page.locator('#log-panel').boundingBox();
+  expect(Math.abs(screen.width - panel.width)).toBeLessThan(1);
+  expect(panel.y + panel.height).toBeLessThanOrEqual(page.viewportSize().height + 0.5);
+
+  // ゲームの画面を押すと、届いた入力・ゲームに渡した入力・その後のゲームの状態が出る
+  await page.locator('#screen').click({ position: { x: 200, y: 200 } });
+  const lines = page.locator('#log-lines');
+  await expect(lines).toContainText('SRCSharpWeb.Input: gui.Pointer down');
+  await expect(lines).toContainText('SRCSharpWeb.Input: state {');
+  // .NET のログ（Trace のゲームのログ）も出る
+  await expect(lines).toContainText(/ (TRC|DBG|INF) SRCCore/);
+  await page.locator('#log-clear').click();
+  await expect(lines).not.toContainText('gui.Pointer down');
+
+  // 表示の設定は次回も残る
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await restartBattleBasic(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').uncheck();
+  await page.locator('#setting-log-level').selectOption('Information');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeHidden();
 });
 
 test('仮想パッドをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {

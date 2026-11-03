@@ -274,9 +274,20 @@ namespace SRCRender
         /// <summary>
         /// 画面上でポインタが押された。座標は画面（ScreenLayout）のピクセル座標。
         /// </summary>
-        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1)
+        /// <param name="touch">
+        /// タッチの操作か（SRC#Web）。マップをタップしたら、そのマスにマップカーソルを置く。
+        /// 指はマスより大きく隣のマスに当たりやすいため、カーソルで当たったマスを見せ、続けて十字キー・A で直せるようにする
+        /// </param>
+        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1, bool touch = false)
         {
-            HideKeyCursorOnPointer();
+            if (touch)
+            {
+                HideKeyPointerOnTouch();
+            }
+            else
+            {
+                HideKeyCursorOnPointer();
+            }
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = true;
@@ -354,6 +365,10 @@ namespace SRCRender
             {
                 var mx = PixelToMapX((int)x);
                 var my = PixelToMapY((int)y);
+                if (touch)
+                {
+                    PlaceKeyCursorOnTouch(mx, my);
+                }
                 if (button == GuiButton.Left)
                 {
                     // ドラッグによるマップのスクロールの開始
@@ -474,9 +489,13 @@ namespace SRCRender
 
         private (int x, int y) lastHoverCell;
 
-        public void PointerMoved(float x, float y)
+        /// <param name="touch">タッチの操作か（SRC#Web）。タッチではマップカーソルを消さない（PointerPressed）</param>
+        public void PointerMoved(float x, float y, bool touch = false)
         {
-            HideKeyCursorOnPointer();
+            if (!touch)
+            {
+                HideKeyCursorOnPointer();
+            }
             MouseX = x;
             MouseY = y;
             UpdateTooltip();
@@ -587,6 +606,12 @@ namespace SRCRender
                     {
                         ClickKeyCursor(GuiButton.Left);
                     }
+                    else if (IsMapOperable)
+                    {
+                        // カーソルが出ていなければ、最後にポインタを置いたマス（無ければ表示の中心）に出して、そのまま選ぶ
+                        MoveKeyCursor(0, 0);
+                        ClickKeyCursor(GuiButton.Left);
+                    }
                     else if (IsKeyPointerOperable && keyPointer != null)
                     {
                         ClickKeyPointer(GuiButton.Left);
@@ -612,6 +637,11 @@ namespace SRCRender
                     }
                     else if (IsMapOperable)
                     {
+                        // カーソルが出ていなければ、Enter と同じマスに出して、どこを右クリックしたかを見せる
+                        if (keyCursor == null)
+                        {
+                            MoveKeyCursor(0, 0);
+                        }
                         ClickKeyCursor(GuiButton.Right);
                     }
                     else if (IsKeyPointerOperable && keyPointer != null)
@@ -769,6 +799,35 @@ namespace SRCRender
             finally
             {
                 keyClicking = false;
+            }
+        }
+
+        /// <summary>タップしたマスにマップカーソルを置く（マップの外なら消す）</summary>
+        private void PlaceKeyCursorOnTouch(int x, int y)
+        {
+            if (Map == null || !State.ShowMap || !Map.IsInside(x, y))
+            {
+                keyCursor = null;
+            }
+            else
+            {
+                keyCursor = new KeyCursorCell(x, y);
+            }
+            game.Post(Present);
+        }
+
+        /// <summary>
+        /// タッチを使ったら、クリック待ちのキー操作のポインタを消す（マップカーソルは PlaceKeyCursorOnTouch が置く）。
+        /// タッチではマウスのように項目の上にポインタを置けないので、キーで開いたときと同じく、メニュー・リストは先頭の項目を選んだ状態で開く。
+        /// 続けて仮想パッドの A を 1 回押せば選べる
+        /// </summary>
+        private void HideKeyPointerOnTouch()
+        {
+            keyOperating = true;
+            if (keyPointer != null)
+            {
+                keyPointer = null;
+                game.Post(Present);
             }
         }
 
@@ -946,6 +1005,13 @@ namespace SRCRender
                 else
                 {
                     Commands.CancelCommand();
+                    // マップのコマンドのメニューを閉じたら、ユニットの選択に戻す。
+                    // 元の SRC は、ポップアップメニューを閉じたクリックを次のクリックで読み捨てるために「マップコマンド」の状態を残す
+                    // （次のクリックは状態を戻すだけ）。このメニューは閉じたクリックをここで受けるので、残すと次の操作が 1 回効かなくなる
+                    if (!isUnitMenu && Commands.CommandState == "マップコマンド")
+                    {
+                        Commands.CommandState = "ユニット選択";
+                    }
                 }
                 Present();
             });

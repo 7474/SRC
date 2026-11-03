@@ -321,6 +321,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>แสดงแป้นเสมือน</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>ดีบัก</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>แสดงบันทึกใต้หน้าจอ</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>เมื่อตั้งระดับบันทึกเป็น Trace จะบันทึกการแตะ แป้นเสมือน และการกดปุ่มด้วย</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>คัดลอก</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>ล้าง</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>แสดงแผงตัวเลือกขนาดใหญ่</value>
   </data>
