@@ -1,0 +1,459 @@
+/*
+  元の SRC のヘルプのアーカイブ（/vb/）の見た目。Windows 95 のヘルプ（WinHelp）に似せる。
+  tools/vb_help_archive.py が SRC.Sharp.Help/src/vb/ に写す。ここを直したら作り直す。
+*/
+:root {
+  --face: #c0c0c0;
+  --light: #dfdfdf;
+  --hilight: #ffffff;
+  --shadow: #808080;
+  --dark: #000000;
+  --title: #000080;
+  --select: #000080;
+  --select-text: #ffffff;
+  --raised: inset -1px -1px var(--dark), inset 1px 1px var(--hilight), inset -2px -2px var(--shadow), inset 2px 2px var(--light);
+  --sunken: inset -1px -1px var(--hilight), inset 1px 1px var(--shadow), inset -2px -2px var(--light), inset 2px 2px var(--dark);
+  --ui-font: "MS UI Gothic", "MS PGothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  --panel-width: 300px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #008080;
+  font: 13px/1.5 var(--ui-font);
+  color: var(--dark);
+}
+
+.wh-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: 3px;
+  background: var(--face);
+  box-shadow: var(--raised);
+}
+
+/* タイトルバー */
+.wh-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 20px;
+  padding: 1px 4px;
+  overflow: hidden;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+  background: var(--title);
+}
+
+.wh-titlebar span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 黄色い「?」の本（ヘルプのアイコン） */
+.wh-titleicon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='2' y='1' width='12' height='14' fill='%23ffff00' stroke='%23000'/%3E%3Ctext x='8' y='12.5' font-size='11' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23000080'%3E%3F%3C/text%3E%3C/svg%3E") no-repeat center;
+}
+
+/* ボタンの列 */
+.wh-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 2px;
+}
+
+.wh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  min-height: 24px;
+  padding: 2px 10px;
+  font: inherit;
+  color: var(--dark);
+  text-decoration: none;
+  background: var(--face);
+  border: 0;
+  border-radius: 0;
+  box-shadow: var(--raised);
+  cursor: pointer;
+}
+
+.wh-button:active,
+.wh-button[aria-expanded="true"] {
+  box-shadow: var(--sunken);
+}
+
+.wh-button:focus-visible {
+  outline: 1px dotted var(--dark);
+  outline-offset: -5px;
+}
+
+.wh-button[aria-disabled="true"] {
+  color: var(--shadow);
+  text-shadow: 1px 1px var(--hilight);
+  cursor: default;
+}
+
+.wh-button u {
+  text-decoration: underline;
+}
+
+/* 左の欄と本文 */
+.wh-main {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  min-height: 0;
+}
+
+.wh-panel {
+  display: none;
+  flex-direction: column;
+  flex: none;
+  width: var(--panel-width);
+  min-height: 0;
+  padding: 4px;
+  background: var(--face);
+}
+
+.wh-panel-open .wh-panel {
+  display: flex;
+}
+
+/* タブ（ヘルプ トピックのダイアログ） */
+.wh-tabs {
+  display: flex;
+  gap: 0;
+  padding-left: 2px;
+}
+
+.wh-tabs button {
+  position: relative;
+  top: 2px;
+  margin-right: -2px;
+  padding: 3px 10px 2px;
+  font: inherit;
+  background: var(--face);
+  border: 0;
+  box-shadow: inset 1px 1px var(--hilight), inset -1px 0 var(--dark), inset -2px 0 var(--shadow), inset 2px 2px var(--light);
+  cursor: pointer;
+}
+
+.wh-tabs button[aria-selected="true"] {
+  z-index: 1;
+  top: 0;
+  padding-bottom: 4px;
+  margin: 0 -2px;
+}
+
+.wh-tabpanel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+  box-shadow: var(--raised);
+}
+
+.wh-tabpanel[hidden] {
+  display: none;
+}
+
+.wh-label {
+  display: block;
+  margin: 0 0 6px;
+}
+
+.wh-input {
+  display: block;
+  width: 100%;
+  margin-top: 2px;
+  padding: 3px 4px;
+  font: inherit;
+  font-size: 16px;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: var(--sunken);
+}
+
+.wh-tree,
+.wh-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 4px;
+  overflow: auto;
+  list-style: none;
+  background: #fff;
+  box-shadow: var(--sunken);
+}
+
+.wh-status {
+  margin: 0 0 4px;
+  min-height: 1.5em;
+}
+
+/* 目次のツリー（閉じた本・開いた本・頁の絵） */
+.wh-tree ul {
+  margin: 0;
+  padding-left: 18px;
+  list-style: none;
+}
+
+.wh-tree > ul {
+  padding-left: 0;
+}
+
+.wh-tree li {
+  margin: 1px 0;
+}
+
+.wh-tree summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+}
+
+.wh-tree summary::-webkit-details-marker {
+  display: none;
+}
+
+.wh-tree summary,
+.wh-tree .wh-page {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 1px 2px;
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.wh-tree summary::before,
+.wh-tree .wh-page::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  background: no-repeat center;
+}
+
+.wh-tree summary::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='3' y='2' width='10' height='12' fill='%23800000' stroke='%23000'/%3E%3Crect x='4' y='12' width='9' height='1.5' fill='%23fff'/%3E%3Cpath d='M5 4h6' stroke='%23ffff00'/%3E%3C/svg%3E");
+}
+
+.wh-tree details[open] > summary::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 4l7 2v8l-7-2z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M15 4l-7 2v8l7-2z' fill='%23fff' stroke='%23000'/%3E%3Cpath d='M2.5 6.5l4 1.2M2.5 8.5l4 1.2M13.5 6.5l-4 1.2M13.5 8.5l-4 1.2' stroke='%23808080'/%3E%3C/svg%3E");
+}
+
+.wh-tree .wh-page::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 1h7l3 3v11H3z' fill='%23fff' stroke='%23000'/%3E%3Ctext x='8' y='13' font-size='9' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23000080'%3E%3F%3C/text%3E%3C/svg%3E");
+}
+
+.wh-tree summary:hover span,
+.wh-tree .wh-page:hover span {
+  text-decoration: underline;
+}
+
+.wh-tree [aria-current="page"] span,
+.wh-list a[aria-current="page"] {
+  color: var(--select-text);
+  background: var(--select);
+}
+
+.wh-tree summary:focus-visible,
+.wh-tree a:focus-visible,
+.wh-list a:focus-visible {
+  outline: 1px dotted var(--dark);
+}
+
+/* キーワード・検索の一覧 */
+.wh-list li {
+  margin: 0;
+}
+
+.wh-list a {
+  display: block;
+  padding: 1px 3px;
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.wh-list a:hover {
+  color: var(--select-text);
+  background: var(--select);
+}
+
+.wh-results a {
+  padding: 3px;
+  border-bottom: 1px solid var(--light);
+}
+
+.wh-results .wh-snippet {
+  display: block;
+  font-size: 12px;
+  color: #444;
+}
+
+.wh-results a:hover .wh-snippet {
+  color: var(--select-text);
+}
+
+mark {
+  background: #ffff00;
+  color: inherit;
+}
+
+/* 本文（元の頁）。白地に、WinHelp と同じく左寄せで読む */
+.wh-topic {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  background: #fff;
+  box-shadow: var(--sunken);
+}
+
+.wh-content {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: "MS PGothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.wh-content h1 {
+  font-size: 20px;
+}
+
+.wh-content a {
+  color: #008000;
+}
+
+.wh-content table {
+  max-width: 100%;
+}
+
+.wh-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.wh-credit {
+  color: #444;
+  font-size: 12px;
+}
+
+/* 本文の下の前後の頁へのリンク */
+.wh-browse {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 16px 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--shadow);
+}
+
+.wh-browse a {
+  display: flex;
+  flex-direction: column;
+  max-width: 48%;
+  padding: 4px 10px;
+  color: var(--dark);
+  text-decoration: none;
+  background: var(--face);
+  box-shadow: var(--raised);
+}
+
+.wh-browse a:active {
+  box-shadow: var(--sunken);
+}
+
+.wh-browse a[rel="next"] {
+  margin-left: auto;
+  text-align: right;
+}
+
+.wh-browse a span {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 狭い画面: 左の欄は引き出し。本文の上に重ねる */
+.wh-backdrop {
+  display: none;
+}
+
+@media (max-width: 799px) {
+  .wh-window {
+    padding: 0;
+  }
+
+  .wh-panel {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: min(var(--panel-width), 86vw);
+    box-shadow: var(--raised), 4px 0 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .wh-panel-open .wh-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .wh-button {
+    min-width: 0;
+    min-height: 36px;
+    padding: 2px 8px;
+  }
+
+  .wh-tabs button {
+    padding: 6px 10px 4px;
+  }
+
+  .wh-tree summary,
+  .wh-tree .wh-page,
+  .wh-list a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .wh-content {
+    padding: 10px 12px;
+  }
+
+  .wh-browse {
+    margin: 0 12px 12px;
+  }
+}
+
+@media print {
+  body { background: #fff; }
+  .wh-window { display: block; height: auto; padding: 0; box-shadow: none; }
+  .wh-titlebar, .wh-buttons, .wh-panel, .wh-browse { display: none !important; }
+  .wh-topic { box-shadow: none; overflow: visible; }
+}

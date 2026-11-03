@@ -2,16 +2,22 @@
 """
 元の SRC（Ver2.2.33）のヘルプを、SRC# のヘルプのサイトの /vb/ にアーカイブとして置く。
 
-元にするのは SRC/HelpChm（CHM の元の HTML・画像・目次 src.hhc）。元のヘルプは変わらないので、
+元にするのは SRC/HelpChm（CHM の元の HTML・画像・目次 src.hhc・キーワード SRC.hhk）。元のヘルプは変わらないので、
 このスクリプトで一度作ってコミットする（SRC.Sharp.Help/src/vb/）。作り直すときもこのスクリプトを使い、手で直さない。
 
     python3 tools/vb_help_archive.py
 
+見た目は Windows 95 のヘルプ（WinHelp）に似せ、使い勝手は今のサイトに合わせる。
+- 各頁: 上にボタンの列（目次・表紙・戻る・<<・>>）、左に「ヘルプ トピック」の欄（目次・キーワード・検索のタブ）、
+  本文の下に前後の頁へのリンク（目次の順）。狭い画面では左の欄を「目次」のボタンで引き出す
+- 本文は元の HTML のまま（UTF-8 にし、CHM 用の ActiveX を除く）。アーカイブの説明は表紙（index.html）にだけ出す
+
 作るもの:
-- html/*.htm   元の頁。UTF-8 にする（元は Shift_JIS で、文字コードの宣言も誤っていた）。アーカイブの説明は index.html にだけ出す
-- images/      元の画像
-- index.html   目次（src.hhc）と検索
-- search.json  検索の索引（頁ごとの題と本文）。検索はブラウザの中で行う（SRC# のヘルプの検索とは混ぜない）
+- html/*.htm     元の頁（上の枠に入れたもの）
+- images/        元の画像
+- index.html     表紙（アーカイブの説明）
+- winhelp.css・winhelp.js  見た目と、左の欄（目次のツリー・キーワード・検索）。元は tools/vb_help_archive/
+- toc.json・keywords.json・search.json  目次・キーワード・検索の索引（検索の索引は検索したときだけ読む）
 
 Jekyll は front matter の無いファイルをそのまま配信するので、/vb/ は SRC# のヘルプの見た目・検索・
 srcsharp help とは独立する。
@@ -21,25 +27,18 @@ import json
 import pathlib
 import re
 import shutil
-import unicodedata
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "SRC" / "HelpChm"
+ASSETS = pathlib.Path(__file__).resolve().parent / "vb_help_archive"
 OUT = ROOT / "SRC.Sharp.Help" / "src" / "vb"
 
-TITLE = "SRC Ver2.2.33 ヘルプ（アーカイブ）"
+TITLE = "SRC ヘルプ"
 CREDIT = "SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki"
+
 
 def read(path):
     return path.read_bytes().decode("cp932", errors="replace")
-
-
-def page(text):
-    """元の頁を UTF-8 の頁にする。CHM 用の ActiveX（キーワードの OBJECT）を除く。アーカイブの説明は目次の頁にだけ出す"""
-    text = re.sub(r"<OBJECT\b.*?</OBJECT>", "", text, flags=re.I | re.S)
-    text = re.sub(r"<META[^>]*Content-Type[^>]*>", "", text, flags=re.I)
-    head = '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-    return re.sub(r"<HEAD>", lambda m: m.group(0) + "\n" + head, text, count=1, flags=re.I)
 
 
 def title_of(text):
@@ -47,134 +46,129 @@ def title_of(text):
     return html.unescape(m.group(1)).strip() if m else ""
 
 
-def body_text(text):
-    text = re.sub(r"<OBJECT\b.*?</OBJECT>", " ", text, flags=re.I | re.S)
-    text = re.sub(r"<(script|style|title)\b.*?</\1>", " ", text, flags=re.I | re.S)
+def body_of(text):
+    """元の頁の本文。CHM 用の ActiveX（キーワードの OBJECT）を除く"""
+    m = re.search(r"<BODY[^>]*>(.*?)</BODY>", text, re.I | re.S)
+    body = m.group(1) if m else text
+    return re.sub(r"<OBJECT\b.*?</OBJECT>", "", body, flags=re.I | re.S).strip()
+
+
+def body_text(body):
+    text = re.sub(r"<(script|style)\b.*?</\1>", " ", body, flags=re.I | re.S)
     text = re.sub(r"<[^>]+>", " ", text)
-    text = html.unescape(text)
-    return re.sub(r"\s+", " ", text).strip()
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()
 
 
-def toc(text):
-    """src.hhc（入れ子の UL・LI と OBJECT の Name・Local）を、入れ子の (名前, リンク, 子) の並びにする"""
-    tokens = re.finditer(r"<UL>|</UL>|<OBJECT type=\"text/sitemap\">(.*?)</OBJECT>", text, re.I | re.S)
+def sitemap(text):
+    """src.hhc・SRC.hhk（入れ子の UL・LI と OBJECT の Name・Local）を、入れ子の {n: 名前, u: リンク, c: 子} にする"""
     root = []
     stack = [root]
     started = False
-    for token in tokens:
-        tag = token.group(0)
-        if tag.upper() == "<UL>":
-            if started:
-                parent = stack[-1]
-                stack.append(parent[-1][2] if parent else parent)
+    for token in re.finditer(r"<UL>|</UL>|<OBJECT type=\"text/sitemap\">(.*?)</OBJECT>", text, re.I | re.S):
+        tag = token.group(0).upper()
+        if tag == "<UL>":
+            if started and stack[-1]:
+                stack.append(stack[-1][-1].setdefault("c", []))
+            elif started:
+                stack.append(stack[-1])
             started = True
-        elif tag.upper() == "</UL>":
+        elif tag == "</UL>":
             if len(stack) > 1:
                 stack.pop()
         else:
             params = dict(re.findall(r'<param name="(\w+)" value="([^"]*)"', token.group(1), re.I))
-            stack[-1].append((html.unescape(params.get("Name", "")), params.get("Local", ""), []))
+            item = {"n": html.unescape(params.get("Name", ""))}
+            if params.get("Local"):
+                item["u"] = params["Local"]
+            stack[-1].append(item)
     return root
 
 
-def toc_html(items):
-    lines = ["<ul>"]
-    for name, local, children in items:
-        label = html.escape(name)
-        if local:
-            label = f'<a href="{html.escape(local)}">{label}</a>'
-        if children:
-            lines.append(f"<li><details><summary>{label}</summary>{toc_html(children)}</details></li>")
-        else:
-            lines.append(f"<li>{label}</li>")
-    lines.append("</ul>")
-    return "".join(lines)
+def sequence(items, out=None):
+    """目次の順に並べた頁（前後の頁へのリンクに使う）"""
+    out = [] if out is None else out
+    for item in items:
+        if item.get("u") and item["u"] not in out:
+            out.append(item["u"])
+        sequence(item.get("c", []), out)
+    return out
 
 
-INDEX = """<!doctype html>
+def chrome(title, content, root, prev, next, titles, home=False, current=None):
+    """WinHelp に似せた枠。root は vb/ への相対パス"""
+    def button(target, label, cls, key):
+        if not target:
+            return f'<span class="wh-button {cls}" aria-disabled="true">{label}</span>'
+        return f'<a class="wh-button {cls}" href="{root}{target}" title="{html.escape(titles.get(target, ""))}" accesskey="{key}">{label}</a>'
+
+    browse = ""
+    if not home:
+        def side(target, label, rel):
+            if not target:
+                return "<span></span>"
+            return f'<a href="{root}{target}" rel="{rel}">{label}<span>{html.escape(titles.get(target, ""))}</span></a>'
+        browse = f'<nav class="wh-browse" aria-label="前後の頁">{side(prev, "« 前へ", "prev")}{side(next, "次へ »", "next")}</nav>'
+    return f"""<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<style>
-body{{margin:0 auto;max-width:960px;padding:12px 16px;font:15px/1.7 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;color:#222}}
-h1{{font-size:20px;margin:8px 0}}
-.note{{padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;font-size:13px}}
-#q{{width:100%;box-sizing:border-box;font-size:16px;padding:6px 8px;margin:12px 0 4px}}
-#results li{{margin:6px 0}}
-#results .snippet{{display:block;color:#555;font-size:13px}}
-mark{{background:#ffe680}}
-ul{{padding-left:20px}} li{{margin:2px 0}} summary{{cursor:pointer}}
-a{{color:#0645ad}}
-</style>
+<title>{html.escape(title)} - {TITLE}</title>
+<link rel="stylesheet" href="{root}winhelp.css">
+<script src="{root}winhelp.js" defer></script>
 </head>
-<body>
-<h1>{title}</h1>
-<p class="note">元の SRC（VB 版、Ver2.2.33）に付いていたヘルプのアーカイブです。データ・イベントの書き方を元の SRC と比べるときなどに使ってください。
-SRC# の使い方と、SRC# での動作は <a href="https://srch.7474.jp/">SRC# のヘルプ</a> を見てください。<br>{credit}。元の HTML は <a href="https://github.com/7474/SRC/tree/master/SRC/HelpChm">7474/SRC の SRC/HelpChm</a> にあります。</p>
-<input id="q" type="search" placeholder="このアーカイブの中を検索（空白で区切ると、すべての語を含む頁）" autocomplete="off">
-<div id="status" class="note" hidden></div>
-<ol id="results"></ol>
-<h2>目次</h2>
-{toc}
-<script>
-(() => {{
-  const q = document.getElementById('q');
-  const results = document.getElementById('results');
-  const status = document.getElementById('status');
-  let pages = null;
-  // 全角・半角、大文字・小文字の違いを無視して比べる
-  const norm = s => s.normalize('NFKC').toLowerCase();
-  const escape = s => s.replace(/[&<>"]/g, c => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
-  async function load() {{
-    if (!pages) {{
-      const data = await (await fetch('search.json')).json();
-      pages = data.map(p => ({{ ...p, nt: normMap(p.t)[0], nb: normMap(p.b)[0] }}));
-    }}
-    return pages;
-  }}
-  // 1 文字ずつそろえ、そろえた後の位置から元の文字の位置を引けるようにする（強調の位置をずらさない）
-  function normMap(s) {{
-    let out = '';
-    const map = [];
-    for (let i = 0; i < s.length; i++) {{
-      for (const c of norm(s[i])) {{ out += c; map.push(i); }}
-    }}
-    map.push(s.length);
-    return [out, map];
-  }}
-  function snippet(page, term) {{
-    const [n, map] = normMap(page.b);
-    const i = n.indexOf(term);
-    if (i < 0) return escape(page.b.slice(0, 80));
-    const from = map[i];
-    const to = map[i + term.length - 1] + 1;
-    const start = Math.max(0, from - 30);
-    return (start > 0 ? '…' : '') + escape(page.b.slice(start, from)) + '<mark>' + escape(page.b.slice(from, to)) + '</mark>' + escape(page.b.slice(to, to + 50)) + '…';
-  }}
-  async function search() {{
-    const terms = normMap(q.value)[0].split(/\\s+/).filter(Boolean);
-    const hash = q.value ? '#q=' + encodeURIComponent(q.value) : location.pathname;
-    history.replaceState(null, '', hash);
-    if (!terms.length) {{ results.innerHTML = ''; status.hidden = true; return; }}
-    const all = await load();
-    const hits = all.filter(p => terms.every(t => p.nt.includes(t) || p.nb.includes(t)))
-      .map(p => ({{ p, score: terms.reduce((s, t) => s + (p.nt.includes(t) ? 10 : 0), 0) }}))
-      .sort((a, b) => b.score - a.score);
-    status.hidden = false;
-    status.textContent = hits.length + ' 件' + (hits.length > 200 ? '（先頭の 200 件を出しています）' : '');
-    results.innerHTML = hits.slice(0, 200).map(({{ p }}) =>
-      '<li><a href="' + p.u + '">' + escape(p.t || p.u) + '</a><span class="snippet">' + snippet(p, terms[0]) + '</span></li>').join('');
-  }}
-  let timer;
-  q.addEventListener('input', () => {{ clearTimeout(timer); timer = setTimeout(search, 200); }});
-  const m = location.hash.match(/^#q=(.*)$/);
-  if (m) {{ q.value = decodeURIComponent(m[1]); search(); }}
-}})();
-</script>
+<body data-root="{root}"{f' data-current="{current}"' if current else ""}>
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>{TITLE}（元の SRC のヘルプのアーカイブ）</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="{root}index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+{button(prev, "&lt;&lt;", "wh-prev", ",")}
+{button(next, "&gt;&gt;", "wh-next", ".")}
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+{content}
+</div>
+{browse}
+</main>
+</div>
+</div>
 </body>
 </html>
+"""
+
+
+HOME = f"""<h1>元の SRC のヘルプ（アーカイブ）</h1>
+<p>元の SRC（VB 版、Ver2.2.33）に付いていたヘルプを、ブラウザで読めるようにしたものです。データ・イベントの書き方を元の SRC と比べるときなどに使ってください。</p>
+<p>SRC# とは動作が違うところがあります。SRC# の使い方と、SRC# での動作は <a href="https://srch.7474.jp/">SRC# のヘルプ</a> を見てください。</p>
+<ul>
+<li>「目次」のボタンで、目次・キーワード・検索の欄を出し入れします（広い画面でははじめから出ています）。</li>
+<li>本文の下の「前へ」「次へ」と、上のボタンの「&lt;&lt;」「&gt;&gt;」で、目次の順に頁を移ります。</li>
+<li>検索は、このアーカイブの中だけを探します。</li>
+</ul>
+<p><a href="html/00000001.htm">はじめに</a>から読む</p>
+<p class="wh-credit">{CREDIT}。元の HTML は <a href="https://github.com/7474/SRC/tree/master/SRC/HelpChm">7474/SRC の SRC/HelpChm</a> にあります。文字コードを UTF-8 に直し、この枠に入れたほかは手を加えていません。</p>
 """
 
 
@@ -183,15 +177,50 @@ def main():
         shutil.rmtree(OUT)
     (OUT / "html").mkdir(parents=True)
     shutil.copytree(SOURCE / "images", OUT / "images")
-    index = []
+    for name in ("winhelp.css", "winhelp.js"):
+        shutil.copy(ASSETS / name, OUT / name)
+
+    tree = sitemap(read(SOURCE / "src.hhc"))
+    order = sequence(tree)
+    keywords = [{"n": k["n"], "u": k["u"]} for k in sitemap(read(SOURCE / "SRC.hhk")) if k.get("u")]
+    keywords.sort(key=lambda k: k["n"])
+
+    pages = {}
     for path in sorted((SOURCE / "html").glob("*.htm")):
         text = read(path)
-        (OUT / "html" / path.name).write_text(page(text), encoding="utf-8")
-        index.append({"u": f"html/{path.name}", "t": title_of(text), "b": body_text(text)})
-    (OUT / "search.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    tree = toc(read(SOURCE / "src.hhc"))
-    (OUT / "index.html").write_text(INDEX.format(title=TITLE, credit=CREDIT, toc=toc_html(tree)), encoding="utf-8")
-    print(f"{OUT.relative_to(ROOT)}: {len(index)} 頁")
+        pages[f"html/{path.name}"] = (title_of(text), body_of(text))
+    titles = {key: title for key, (title, _) in pages.items()}
+
+    # 目次に無い頁の多くは、目次の頁と題も本文も同じ写し（元のヘルプの WinHelp 版から残ったもの）。
+    # 写しは目次の頁と同じ位置として扱い（前後の頁・目次の印）、検索の結果には目次の頁だけを出す
+    by_title = {}
+    for key in order:
+        by_title.setdefault(titles[key], []).append(key)
+    canonical = {}
+    for key, (title, body) in pages.items():
+        if key in order:
+            canonical[key] = key
+        elif len(by_title.get(title, [])) == 1 and body_text(pages[by_title[title][0]][1]) == body_text(body):
+            canonical[key] = by_title[title][0]
+
+    index = []
+    for key, (title, body) in pages.items():
+        base = canonical.get(key)
+        position = order.index(base) if base else -1
+        prev = order[position - 1] if position > 0 else None
+        next = order[position + 1] if 0 <= position < len(order) - 1 else None
+        (OUT / key).write_text(chrome(title, body, "../", prev, next, titles, current=base), encoding="utf-8")
+        if base in (None, key):
+            index.append({"u": key, "t": title, "b": body_text(body)})
+
+    (OUT / "index.html").write_text(chrome("表紙", HOME, "", None, order[0], titles, home=True), encoding="utf-8")
+
+    def dump(name, data):
+        (OUT / name).write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    dump("toc.json", tree)
+    dump("keywords.json", keywords)
+    dump("search.json", index)
+    print(f"{OUT.relative_to(ROOT)}: {len(pages)} 頁（目次 {len(order)} 頁・その写し {len(canonical) - len(order)} 頁）、検索 {len(index)} 頁、キーワード {len(keywords)} 語")
 
 
 if __name__ == "__main__":
