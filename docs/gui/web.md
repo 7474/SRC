@@ -268,6 +268,15 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 ゲームはシナリオのフォルダ（.NET のメモリ上のファイルシステム）にセーブデータ（.srcs・.srcq）を書く。プレイ中は、ゲームがファイルを書き終えたときの通知（SRCCore の `IFileSystem.FileWritten`）を受け、書き込まれたセーブデータを UI のスレッドで IndexedDB に保存する（`SaveSync`）。フォルダは走査しない。シナリオを開くときに保存しておいたものをフォルダに戻し、「セーブデータから再開」に並べる。書き出し（ダウンロード）・読み込み・削除もここで行う。
 
+### 診断表示
+
+URL に `?debug` を付けて開くと（例: `https://7474.github.io/SRC/web/?debug`）、画面の左上に次のものを出す（`wwwroot/js/srcweb.js` の `debugOverlay`）。実機で操作が効かないときに、パソコンにつながなくてもスクリーンショットで状況を伝えられるようにするためのもの。表示はタップを受けない（`pointer-events: none`）。
+
+- ゲームの状態（`WebInterop.DebugState` の実行中の行・GUI のロック・カーソル・メニューなど）
+- 指が触れたままと扱っているタッチ（`touch`）、操作の種類（`data-input`）、フォーカスのある要素
+- `devicePixelRatio`・Visual Viewport の大きさと拡大率・画面（canvas）の位置と大きさ
+- 直近の入力。ブラウザから届いたもの（`pointerdown`・`pointercancel`・`touchstart` など）と、ゲームに渡したもの（`gui.Pointer`・`gui.Key` など）
+
 ## 外部のコンテンツ源
 
 SRC#Web はゲームプレイヤーに徹し、シナリオ・素材・セーブデータは外部から管理する。権利の扱いは各コンテンツの配布元が負い、SRC#Web のサイトはコンテンツを配布しない。利用者登録や更新ができるホスティングサイトは SRC#Web とは別のもの（無い）とし、SRC#Web は決まった形式を読むだけにする。

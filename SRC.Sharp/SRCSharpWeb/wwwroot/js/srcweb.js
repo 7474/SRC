@@ -92,10 +92,124 @@ function updateScaling() {
     canvas.classList.toggle('pixelated', devicePixels >= canvas.width);
 }
 
+// 診断表示（URL に ?debug を付けたときだけ）。実機で操作が効かないときに、ゲームの状態と受けた入力を画面の隅に出す。
+// スクリーンショットで状況を伝えられるようにする（パソコンにつないだリモートデバッグが無くても見られる）
+const debugOverlay = (() => {
+    let enabled = false;
+    try {
+        enabled = new URLSearchParams(location.search).has('debug');
+    } catch {
+        // URL を読めない
+    }
+    const events = [];
+    const started = performance.now();
+    const log = text => {
+        if (!enabled) {
+            return;
+        }
+        events.push(`${((performance.now() - started) / 1000).toFixed(2)} ${text}`);
+        if (events.length > 14) {
+            events.shift();
+        }
+    };
+    const describe = target => {
+        if (!(target instanceof Element)) {
+            return '?';
+        }
+        if (target.id) {
+            return '#' + target.id;
+        }
+        const cls = target.classList[0];
+        return target.tagName.toLowerCase() + (cls ? '.' + cls : '');
+    };
+    const overlay = {
+        touchState: () => null,
+        /** ゲームへの入力（Pointer・Key・Wheel・TouchChoose）を記録する。診断表示が無ければそのまま返す */
+        wrap(gui) {
+            if (!enabled) {
+                return gui;
+            }
+            const names = { Pointer: ['down', 'up', 'move', 'drag', 'drop'], Key: ['down', 'up', 'reset'] };
+            return new Proxy(gui, {
+                get(target, prop) {
+                    const value = target[prop];
+                    if (typeof value !== 'function' || !['Pointer', 'Key', 'Wheel', 'TouchChoose'].includes(prop)) {
+                        return value;
+                    }
+                    return (...args) => {
+                        // マウスの移動は多いので記録しない
+                        if (!(prop === 'Pointer' && args[0] === 2)) {
+                            const kind = names[prop]?.[args[0]] ?? args[0];
+                            const rest = args.slice(1).map(x => typeof x === 'number' ? Math.round(x) : x).join(',');
+                            log(`gui.${prop} ${kind} ${rest}`);
+                        }
+                        return value.apply(target, args);
+                    };
+                },
+            });
+        },
+        start(gui) {
+            if (!enabled) {
+                return;
+            }
+            const panel = document.createElement('pre');
+            panel.id = 'debug-overlay';
+            panel.style.cssText = 'position:fixed;left:0;top:0;z-index:10000;margin:0;padding:4px;max-width:100vw;max-height:45vh;overflow:hidden;'
+                + 'font:10px/1.25 monospace;color:#0f0;background:rgba(0,0,0,.75);pointer-events:none;white-space:pre-wrap;word-break:break-all;';
+            document.body.appendChild(panel);
+            // ブラウザから届いた入力（ゲームに渡す前）。キャプチャで先に見る
+            for (const type of ['pointerdown', 'pointerup', 'pointercancel', 'lostpointercapture', 'touchstart', 'touchend', 'touchcancel']) {
+                document.addEventListener(type, e => {
+                    const pointer = e.pointerType !== undefined ? ` ${e.pointerType}#${e.pointerId}` : ` touches=${e.touches?.length}`;
+                    const at = e.clientX !== undefined ? ` @${Math.round(e.clientX)},${Math.round(e.clientY)}` : '';
+                    log(`${type}${pointer}${at} ${describe(e.target)}`);
+                }, { capture: true, passive: true });
+            }
+            const update = async () => {
+                let state;
+                try {
+                    // ゲームのスレッドに問い合わせる（非同期）
+                    state = JSON.parse(await gui.DebugState());
+                } catch (ex) {
+                    state = { error: String(ex) };
+                }
+                const summary = {
+                    line: state.line,
+                    locked: state.locked,
+                    map: state.mapX !== undefined ? [state.mapX, state.mapY] : undefined,
+                    cursor: state.cursor,
+                    unit: state.statusUnit,
+                    menu: state.menu?.items?.join('/'),
+                    list: state.list?.caption,
+                    dialog: state.dialog,
+                    message: state.message?.slice(0, 40),
+                    error: state.error,
+                };
+                const viewport = window.visualViewport;
+                const rect = canvas?.getBoundingClientRect();
+                panel.textContent = [
+                    Object.entries(summary).filter(([, v]) => v !== undefined && v !== null).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(',') : v}`).join('\n'),
+                    `touch: ${JSON.stringify(overlay.touchState())} input: ${document.documentElement.dataset.input} focus: ${describe(document.activeElement)}`,
+                    `dpr: ${window.devicePixelRatio} vv: ${viewport ? `${Math.round(viewport.width)}x${Math.round(viewport.height)} x${viewport.scale.toFixed(2)}` : '-'}`
+                        + ` screen: ${rect ? `${Math.round(rect.left)},${Math.round(rect.top)} ${Math.round(rect.width)}x${Math.round(rect.height)}` : '-'}`,
+                    '--',
+                    ...events,
+                ].join('\n');
+            };
+            const loop = async () => {
+                await update();
+                setTimeout(loop, 300);
+            };
+            loop();
+        },
+    };
+    return overlay;
+})();
+
 async function start() {
     const runtime = await globalThis.getDotnetRuntime(0);
     const exports = await runtime.getAssemblyExports('SRCSharpWeb.dll');
-    const gui = exports.SRCSharpWeb.WebInterop;
+    const gui = debugOverlay.wrap(exports.SRCSharpWeb.WebInterop);
     // エラーを送るときに、実行中のシナリオの行を添える（errorreport.js）
     globalThis.srcwebErrorReporting?.setDebugState(() => gui.DebugState());
 
@@ -204,6 +318,7 @@ async function start() {
     };
     canvas.addEventListener('pointerup', e => endTouch(e, false));
     canvas.addEventListener('pointercancel', e => endTouch(e, true));
+    debugOverlay.touchState = () => touch && { id: touch.id, moved: touch.moved, held: touch.held };
 
     // 長押しの間、触れた位置に輪を出す（右クリックになることを知らせる）
     const ring = document.createElement('div');
@@ -274,6 +389,7 @@ async function start() {
 
     buildVirtualPad(gui);
     buildTouchUi(gui);
+    debugOverlay.start(gui);
 
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
     const loop = async () => {
