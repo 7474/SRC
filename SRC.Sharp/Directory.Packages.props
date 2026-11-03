@@ -8,11 +8,11 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="12.1.4" />
-    <PackageVersion Include="Avalonia.Desktop" Version="12.1.4" />
-    <PackageVersion Include="Avalonia.Headless" Version="12.1.4" />
-    <PackageVersion Include="Avalonia.Skia" Version="12.1.4" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.4" />
+    <PackageVersion Include="Avalonia" Version="12.1.5" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.5" />
+    <PackageVersion Include="Avalonia.Headless" Version="12.1.5" />
+    <PackageVersion Include="Avalonia.Skia" Version="12.1.5" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.5" />
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="Markdig" Version="1.5.1" />
     <PackageVersion Include="Melanchall.DryWetMidi" Version="8.0.3" />
