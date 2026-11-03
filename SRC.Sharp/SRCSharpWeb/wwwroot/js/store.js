@@ -116,6 +116,21 @@
         setInputMode(mode) {
             globalThis.srcwebInput?.set(mode);
         },
+        // localStorage の文字列の設定（ゲームの設定など）。使えなければ null・保存しない
+        getSetting(key) {
+            try {
+                return localStorage.getItem(key);
+            } catch {
+                return null;
+            }
+        },
+        setSetting(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch {
+                // localStorage を使えない（この表示の間だけ変える）
+            }
+        },
         setTitle(title) {
             document.title = title;
         },

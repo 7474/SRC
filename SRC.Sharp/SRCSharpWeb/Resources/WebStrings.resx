@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>全画面表示の切り替え</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>仮想パッドの表示の切り替え</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>選択画面の拡大表示の切り替え</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>閉じる</value>
   </data>
@@ -202,7 +196,7 @@
     <value>キャンセル</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>ログ（ブラウザのコンソール）</value>
+    <value>ログ</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>読み込みを取り消しました。</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>画面に合わせる</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>設定…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>ゲーム</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>自動反撃モード</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>仮想パッドを表示する</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>選択画面を拡大して表示する</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>ゲームの設定はこのブラウザに保存します。</value>
   </data>
 </root>

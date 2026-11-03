@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>สลับโหมดเต็มหน้าจอ</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>แสดง/ซ่อนจอยเสมือน</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>แสดง/ซ่อนแผงตัวเลือกขนาดใหญ่</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>ปิด</value>
   </data>
@@ -202,7 +196,7 @@
     <value>ยกเลิก</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>ล็อก (คอนโซลของเบราว์เซอร์)</value>
+    <value>ล็อก</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>ยกเลิกการโหลดแล้ว</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>พอดีกับหน้าต่าง</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>การตั้งค่า…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>การแสดงผล</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>เกม</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>โหมดตอบโต้อัตโนมัติ</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>แสดงแป้นเสมือน</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>แสดงแผงตัวเลือกขนาดใหญ่</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>การตั้งค่าเกมจะบันทึกไว้ในเบราว์เซอร์นี้</value>
   </data>
 </root>

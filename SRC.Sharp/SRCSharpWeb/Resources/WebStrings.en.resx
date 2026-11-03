@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Toggle full screen</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>Show/hide virtual pad</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>Show/hide large choice panel</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Close</value>
   </data>
@@ -202,7 +196,7 @@
     <value>Cancel</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>Log (browser console)</value>
+    <value>Log</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>Loading was cancelled.</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>Fit to window</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>Settings…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>Automatic counterattack mode</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>Show virtual pad</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>Show large choice panel</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>Game settings are saved in this browser.</value>
   </data>
 </root>

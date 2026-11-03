@@ -133,7 +133,7 @@ flowchart LR
 |---|---|---|
 | SRC#Form | ファイル + デバッガ出力 | 引数・環境変数・`srcs.json` |
 | SRC#Avalonia | ファイル + デバッガ出力（Avalonia 自体の警告以上も） | 同上 |
-| SRC#Web | ブラウザのコンソール（Blazor の既定の出力。Error 以上は `console.error` なので、エラーの収集にも乗る）。ファイルは無し | URL の `?log=<レベル>`、システムメニューの設定の「ログ」（`localStorage` の `srcweb.logLevel`）、`srcs.json`。index.html が環境変数 `SRCSHARP_LOG_LEVEL` で .NET に渡す（[Blazor のログ](https://learn.microsoft.com/aspnet/core/blazor/fundamentals/logging)） |
+| SRC#Web | ブラウザのコンソール（Blazor の既定の出力。Error 以上は `console.error` なので、エラーの収集にも乗る）。ファイルは無し | URL の `?log=<レベル>`、シナリオ選択の画面の「設定」の「ログ」（`localStorage` の `srcweb.logLevel`）、`srcs.json`。index.html が環境変数 `SRCSHARP_LOG_LEVEL` で .NET に渡す（[Blazor のログ](https://learn.microsoft.com/aspnet/core/blazor/fundamentals/logging)） |
 | `srcsharp play` | ファイル + stderr（stdout は結果用。stderr は、レベルを引数・環境変数で指定しない限り警告以上） | 引数・環境変数・`srcs.json` |
 | `srcsharp dap` | ファイル + DAP の `output` イベント（`category: console`、Warning 以上は `stderr`） | `launch.json` の `logLevel`（無ければ `srcsharp.logLevel`）（[Output Event](https://microsoft.github.io/debug-adapter-protocol/specification#Events_Output)） |
 | `srcsharp lsp` | ファイル + `window/logMessage` | 初期化オプションの `logLevel`（`srcsharp.logLevel`）（[window/logMessage](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#window_logMessage)） |

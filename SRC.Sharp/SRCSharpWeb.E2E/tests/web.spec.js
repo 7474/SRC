@@ -88,10 +88,38 @@ async function expectAdvancesWithEnter(page) {
 }
 
 /** プレイ中に画面の右下のシステムメニューからシナリオ選択へ戻る（確認に「はい」と答える） */
-/** 選択画面の拡大表示（既定では出さない）をシステムメニューで出す */
-async function enableTouchUi(page) {
+/** システムメニューの「設定…」を開く */
+async function openSettings(page) {
   await page.locator('#system-menu-button').click();
-  await page.getByRole('menuitem', { name: '選択画面の拡大表示の切り替え' }).click();
+  await page.getByRole('menuitem', { name: '設定…' }).click();
+  await expect(page.getByRole('dialog', { name: '設定' })).toBeVisible();
+}
+
+/**
+ * 読み込み直した後に battle-basic を始める。前のプレイのセーブ（リスタートなど）が残っていれば
+ * .eve を選ぶ画面が出るので、test.eve を選んで新しく始める
+ */
+async function restartBattleBasic(page) {
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  const eve = page.getByRole('button', { name: 'test.eve' });
+  await expect(page.locator('#screen').or(eve)).toBeVisible();
+  if (await eve.isVisible()) {
+    await eve.click();
+  }
+  await expect(page.locator('#screen')).toBeVisible();
+}
+
+/** 設定を閉じる */
+async function closeSettings(page) {
+  await page.locator('#settings-close').click();
+  await expect(page.getByRole('dialog', { name: '設定' })).toHaveCount(0);
+}
+
+/** 選択画面の拡大表示（既定では出さない）をシステムメニューの設定で出す */
+async function enableTouchUi(page) {
+  await openSettings(page);
+  await page.locator('#setting-touch-ui').check();
+  await closeSettings(page);
 }
 
 // 画面（canvas）の表示幅（CSS の px）
@@ -138,27 +166,30 @@ test('登録済シナリオを選んでプレイする', async ({ page }, testIn
   await attachScreen(page, testInfo, 'battle-basic');
 });
 
-test('システムメニューで表示倍率を選び、開き直しても保つ', async ({ page }) => {
+test('システムメニューの設定で表示倍率を選び、開き直しても保つ', async ({ page }) => {
   await open(page);
   await page.getByRole('button', { name: 'battle-basic' }).click();
   await expect(page.locator('#screen')).toBeVisible();
   const choose = async name => {
-    await page.locator('#system-menu-button').click();
-    await page.getByRole('menuitemradio', { name }).click();
+    await openSettings(page);
+    await page.getByRole('radio', { name }).click();
+    await closeSettings(page);
   };
   // 実際の画素で 1 倍（ピクセル等倍）。テストのブラウザは devicePixelRatio が 1
   await choose('100%');
   await expectScreenWidth(page, 720);
   await expect(page.locator('#screen')).toHaveClass(/pixelated/);
+  await choose('150%');
+  await expectScreenWidth(page, 1080);
   // ビューポートより大きくてもよい（スクロールする）
   await choose('200%');
   await expectScreenWidth(page, 1440);
-  await page.locator('#system-menu-button').click();
-  await expect(page.getByRole('menuitemradio', { name: '200%' })).toHaveAttribute('aria-checked', 'true');
-  await page.locator('.menu-backdrop').click();
+  await openSettings(page);
+  await expect(page.getByRole('radio', { name: '200%' })).toHaveAttribute('aria-checked', 'true');
+  await closeSettings(page);
   await page.reload();
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
-  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await restartBattleBasic(page);
   await expectScreenWidth(page, 1440);
   await choose('画面に合わせる');
   await expectScreenWidth(page, Math.min(800, (800 - 28) * 720 / 496));
@@ -1021,6 +1052,33 @@ test('システムメニューから戻るときは確認し、「いいえ」�
 test.describe('タッチ向けの画面', () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
 
+  test('設定は横向きの小さな画面にも収まり、ゲームの設定をブラウザに残す', async ({ page }, testInfo) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    // 横向きのスマートフォン。設定のダイアログは画面に収まり、中をスクロールして閉じるまで届く
+    await page.setViewportSize({ width: 844, height: 390 });
+    await openSettings(page);
+    const dialog = page.getByRole('dialog', { name: '設定' });
+    const box = await dialog.boundingBox();
+    expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.y + box.height).toBeLessThanOrEqual(390 + 0.5);
+    await testInfo.attach('settings', { body: await page.screenshot(), contentType: 'image/png' });
+    const battle = dialog.getByRole('checkbox', { name: '戦闘アニメを表示する' });
+    const before = await battle.isChecked();
+    await battle.setChecked(!before);
+    await dialog.getByRole('checkbox', { name: '自動反撃モード' }).check();
+    await closeSettings(page);
+    // 読み込み直しても残る
+    await page.reload();
+    await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+    await restartBattleBasic(page);
+    await openSettings(page);
+    await expect(dialog.getByRole('checkbox', { name: '戦闘アニメを表示する' })).toBeChecked({ checked: !before });
+    await expect(dialog.getByRole('checkbox', { name: '自動反撃モード' })).toBeChecked();
+    await closeSettings(page);
+  });
+
   test('ゲームのリスト・ダイアログを、タッチ向けの選択画面の大きなボタンで選ぶ', async ({ page }, testInfo) => {
     await open(page);
     await page.getByRole('button', { name: 'intermission-save' }).click();
@@ -1291,8 +1349,9 @@ test('仮想パッドをシステムメニューで表示し、押したキー�
 
   // マウスの端末では既定で出さない。システムメニューで出す
   await expect(page.locator('#virtual-pad')).toBeHidden();
-  await page.locator('#system-menu-button').click();
-  await page.getByRole('menuitem', { name: '仮想パッドの表示の切り替え' }).click();
+  await openSettings(page);
+  await page.locator('#setting-virtual-pad').check();
+  await closeSettings(page);
   await expect(page.locator('#virtual-pad')).toBeVisible();
   await expect(page.locator('#virtual-pad .vkey')).toHaveCount(11);
 
