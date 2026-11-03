@@ -46,7 +46,12 @@ updates:
   package-ecosystem: github-actions
   schedule:
     interval: daily
-# VS Code 拡張・SRC#Web の E2E・データビューアの E2E の npm。CI でビルド・テストしている（#1352）
+# VS Code 拡張（Open VSX への公開に使う ovsx を含む）・SRC#Web の E2E・データビューアの E2E の npm。CI でビルド・テストしている（#1352）。
+# 対象にしないもの:
+# - SRC.Sharp/SRCDataViewer/Npm（データビューアの CSS を作る sass・bulma など）。手元で作った app.css をコミットしていて、
+#   CI では動かさないため、更新しても確かめられない。CSS を作り直すときに人が上げる
+# - SRC.Sharp/SRCDataLinter/Dockerfile の土台のイメージ（mcr.microsoft.com/dotnet/*:10.0-noble）。.NET の版の付いた
+#   動くタグで、パッチは公開のたびに取り込まれる。.NET のメジャーを上げるときに、ほかのプロジェクトと一緒に人が上げる
 - directories:
   - /SRC.Sharp/SRCSharpVSCode/
   - /SRC.Sharp/SRCSharpWeb.E2E/
@@ -57,6 +62,10 @@ updates:
       update-types:
       - minor
       - patch
+  # VS Code 拡張の package.json の overrides（npm audit の脆弱性を消すための上書き）は、上流が追いついたら外す:
+  # - @vscode/test-cli の mocha を拡張の mocha（12）にそろえる。test-cli が mocha 12 以上を使うようになったら外す
+  # - minimatch を 11.0.1 以上（DoS の修正）、glob を 14（minimatch 11 を使う版）にする。使っている側（vscode-languageclient・
+  #   @vscode/vsce・@vscode/test-cli）が minimatch 11 以上を求めるようになったら外す
   # @types/vscode は拡張が対応する最も古い VS Code（package.json の engines.vscode）に合わせる。
   # 新しくすると vsce package が「engines.vscode より新しい」として拒む。engines.vscode を上げるときに人が上げる
   ignore:

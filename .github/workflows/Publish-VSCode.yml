@@ -110,10 +110,11 @@ jobs:
         env:
           PRE_RELEASE: ${{ steps.package.outputs.pre_release }}
 
-      # Open VSX は、名前空間とトークン（Secrets の OVSX_PAT）を用意してから出す（7474/SRC#1175 の A3）
+      # Open VSX は、名前空間とトークン（Secrets の OVSX_PAT）を用意してから出す（7474/SRC#1175 の A3）。
+      # ovsx は拡張の devDependencies にあり、版は package-lock.json で決まる（Dependabot が上げる）
       - name: Publish to Open VSX
         if: env.OVSX_PAT != ''
-        run: npx --yes ovsx@1.2.0 publish --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}" -p "$OVSX_PAT"
+        run: npx ovsx publish --skip-duplicate ${PRE_RELEASE:+--pre-release} --packagePath "${{ steps.package.outputs.vsix }}" -p "$OVSX_PAT"
         env:
           PRE_RELEASE: ${{ steps.package.outputs.pre_release }}
 

@@ -35,7 +35,22 @@ jobs:
       - uses: actions/checkout@v7
         with:
           submodules: true
-      - name: Build And Deploy
+      # Jekyll はここで組み立て、組み立てた頁を Static Web Apps に送る（skip_app_build）。
+      # Static Web Apps の組み立て（Oryx）が使える Ruby は 3.1 までで、保守の終わった版になるため（docs/testing.md）。
+      # Ruby の版は SRC.Sharp.Help/.ruby-version、Gem の版は Gemfile.lock のとおりに入れる
+      - name: Setup Ruby
+        if: env.SWA_TOKEN != ''
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: SRC.Sharp.Help
+          bundler-cache: true
+      - name: Build
+        if: env.SWA_TOKEN != ''
+        working-directory: SRC.Sharp.Help
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build
+      - name: Deploy
         id: builddeploy
         if: env.SWA_TOKEN != ''
         uses: Azure/static-web-apps-deploy@v1
@@ -43,9 +58,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ env.SWA_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "/SRC.Sharp.Help/"
-          api_location: "" 
-          output_location: "_site" 
+          app_location: "/SRC.Sharp.Help/_site"
+          api_location: ""
+          output_location: ""
+          skip_app_build: true
       - name: Skip Deploy
         if: env.SWA_TOKEN == ''
         run: echo "::notice::デプロイ用のトークンが渡されていない（Dependabot やフォークからの PR）ため、プレビュー環境への配信を省きます"

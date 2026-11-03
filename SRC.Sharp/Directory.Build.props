@@ -13,6 +13,16 @@
     <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
   </PropertyGroup>
   <!--
+    NuGet のパッケージ（SRCCore・SRCDataLinter・SRCSharpTools）のライセンスと出典。
+    ソースは GPL Ver.3 またはそれ以降（各ファイルの先頭・LICENSE）で、VS Code 拡張（package.json の license）と同じ
+  -->
+  <PropertyGroup>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/7474/SRC</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/7474/SRC</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <!--
     MIDI の SoundFont（TimGM6mb。Tim Brechbill、GPL-2.0）。SRC#Web は素材の zip として配信し、SRC#Avalonia は実行ファイルの隣（SoundFont フォルダ）に同梱する。
     Debian の timgm6mb-soundfont と同じく、MuseScore のリポジトリの版を使う。ライセンスの全文（COPYING）と出典（README.txt）を添える
   -->

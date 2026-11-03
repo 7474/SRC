@@ -250,7 +250,7 @@ namespace SRCSharpAvalonia.Tests
                     {
                         tabs.SelectedIndex = index;
                         Avalonia.Headless.AvaloniaHeadlessPlatform.ForceRenderTimerTick();
-                        window.CaptureRenderedFrame()?.Save(Path.Combine(dir, "settings-" + name + ".png"));
+                        window.CaptureRenderedFrame()?.Save(Path.Combine(dir, "settings-" + name + ".png"), Avalonia.Media.Imaging.PngBitmapEncoderOptions.Default);
                     }
                     window.Close();
                     return true;
@@ -295,7 +295,7 @@ namespace SRCSharpAvalonia.Tests
                     {
                         var dir = Path.Combine(AppContext.BaseDirectory, "TestResults", "avalonia");
                         Directory.CreateDirectory(dir);
-                        frame.Save(Path.Combine(dir, "asset-settings.png"));
+                        frame.Save(Path.Combine(dir, "asset-settings.png"), Avalonia.Media.Imaging.PngBitmapEncoderOptions.Default);
                     }
 
                     var result = window.Result();

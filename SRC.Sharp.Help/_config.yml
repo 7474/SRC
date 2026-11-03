@@ -36,3 +36,13 @@ kramdown:
 permalink: pretty
 encoding: UTF-8
 
+
+# テーマ（just-the-docs）の SCSS が、Dart Sass 3.0 で無くなる書き方（@import・グローバルな組み込み関数・
+# darken()/lighten()）を使っていて、組み立てのたびに 60 件の非推奨の警告が出る。テーマの側で直るまで出さない。
+# テーマを上げたときは、この行を外して警告が消えたかを確かめる
+# https://github.com/jekyll/jekyll-sass-converter#sass-and-scss
+sass:
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
