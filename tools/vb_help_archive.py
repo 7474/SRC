@@ -27,6 +27,7 @@ import json
 import pathlib
 import re
 import shutil
+import struct
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "SRC" / "HelpChm"
@@ -82,6 +83,50 @@ def sitemap(text):
                 item["u"] = params["Local"]
             stack[-1].append(item)
     return root
+
+
+# ── ポップアップ（WinHelp では、押すと頁を移らずに小さな窓で説明を出していたもの） ──
+# 元の WinHelp のプロジェクト（SRC/Help/Src.hdp）の {\ul 語}{\v 飛び先} が本文の中の用語のポップアップ、
+# SHG（SRC/Help/*.shg）の押せる場所が図の上のポップアップ。CHM にしたときに普通のリンクになり、
+# 図の押せる場所は失われていた
+HELP = ROOT / "SRC" / "Help"
+# SHG と、それを表示している図、その説明の頁の題に付ける呼び出し元の名前
+FIGURES = [
+    ("StatusWindow.shg", "bm8.gif", "ステータスウインドウ"),
+    ("MapEdit.shg", "bm23.gif", "MapEdit"),
+]
+# 図の押せる場所の説明だが、押せる場所の情報が残っていない頁（呼び出し元の名前）
+ORPHANS = {**{f"HLP{n:06d}": "反撃" for n in range(192, 196)}, "HLP000284": "MapEdit", "HLP000285": "MapEdit"}
+
+
+def popup_terms():
+    """本文の中の用語のポップアップの飛び先の頁の題"""
+    text = read(HELP / "Src.hdp")
+    pages = dict(re.findall(r"//Page//\n(HLP\d+)\n([^\n]*)\n", text))
+    return {pages[i] for i in re.findall(r"\{\\ul [^}]*\}\{\\v (HLP\d+)\}", text) if i in pages}
+
+
+def hotspots(name):
+    """SHG の押せる場所 (x, y, 幅, 高さ, 飛び先)。SHG の形は helpdeco の資料による（押せる場所の数・マクロの大きさ・15 バイトずつの位置）"""
+    d = (HELP / name).read_bytes()
+    for q in range(len(d) - 3000, len(d)):
+        if d[q] != 1:
+            continue
+        n, size = struct.unpack("<HI", d[q + 1:q + 7])
+        names = d.find(b"Hotspot", q)
+        if 0 < n < 100 and size < 5000 and abs(q + 7 + 15 * n + size - names) < 4:
+            strings = d[q + 7 + 15 * n + size:].split(b"\x00")
+            spots = []
+            for k in range(n):
+                x, y, w, h = struct.unpack("<4h", d[q + 7 + 15 * k + 3:q + 7 + 15 * k + 11])
+                spots.append((max(x, 0), max(y, 0), w, h, strings[2 * k + 1].decode("cp932")))
+            return spots
+    raise ValueError(f"{name} の押せる場所を読めません")
+
+
+def first_bold(body):
+    m = re.search(r"<B>(.*?)</B>", body, re.I | re.S)
+    return body_text(m.group(1)) if m else ""
 
 
 def sequence(items, out=None):
@@ -189,6 +234,42 @@ def main():
     for path in sorted((SOURCE / "html").glob("*.htm")):
         text = read(path)
         pages[f"html/{path.name}"] = (title_of(text), body_of(text))
+    by_page_title = {title: key for key, (title, _) in pages.items()}
+
+    # 図の押せる場所の説明の頁（題が「HLP000164」のような頁）に、呼び出し元と項目の名前で題を付ける
+    callers = dict(ORPHANS)
+    figures = {}
+    for shg, image, caller in FIGURES:
+        spots = hotspots(shg)
+        figures[image] = (caller, spots)
+        for *_, target in spots:
+            callers.setdefault(target, caller)
+    for hid, caller in callers.items():
+        key = by_page_title.get(hid)
+        if key:
+            title, body = pages[key]
+            pages[key] = (f"{caller}: {first_bold(body)}", body)
+    popups = {by_page_title[t] for t in popup_terms() if t in by_page_title}
+    popups |= {by_page_title[h] for h in callers if h in by_page_title}
+
+    # 本文の中の、ポップアップだったリンクに印を付ける。図には押せる場所（image map）を付ける
+    def mark(body):
+        def link(m):
+            target = "html/" + m.group(2)
+            return m.group(1) + (' class="wh-popup"' if target in popups else "")
+        body = re.sub(r'(<A\s+HREF="([^"#]+\.htm)(?:#[^"]*)?")', link, body, flags=re.I)
+        for image, (caller, spots) in figures.items():
+            if f"images/{image}" not in body:
+                continue
+            areas = "".join(
+                f'<area shape="rect" coords="{x},{y},{x + w},{y + h}" href="{by_page_title[t].split("/")[1]}" class="wh-popup" '
+                f'alt="{html.escape(pages[by_page_title[t]][0])}">'
+                for x, y, w, h, t in spots if t in by_page_title)
+            name = image.split(".")[0]
+            body = re.sub(rf'(<IMG\s+SRC="\.\./images/{re.escape(image)}")', rf'\1 usemap="#{name}"', body, count=1, flags=re.I)
+            body += f'<map name="{name}">{areas}</map>'
+        return body
+    pages = {key: (title, mark(body)) for key, (title, body) in pages.items()}
     titles = {key: title for key, (title, _) in pages.items()}
 
     # 目次に無い頁の多くは、目次の頁と題も本文も同じ写し（元のヘルプの WinHelp 版から残ったもの）。
@@ -220,6 +301,7 @@ def main():
     dump("toc.json", tree)
     dump("keywords.json", keywords)
     dump("search.json", index)
+    print(f"ポップアップ {len(popups)} 頁・図の押せる場所 {sum(len(v[1]) for v in figures.values())} か所")
     print(f"{OUT.relative_to(ROOT)}: {len(pages)} 頁（目次 {len(order)} 頁・その写し {len(canonical) - len(order)} 頁）、検索 {len(index)} 頁、キーワード {len(keywords)} 語")
 
 

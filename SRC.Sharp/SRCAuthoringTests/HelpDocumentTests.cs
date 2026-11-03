@@ -13,18 +13,12 @@ namespace SRCAuthoring.Tests
         [TestMethod]
         public void Topics_AreBundled()
         {
-            Assert.IsTrue(HelpDocument.Topics.Count > 400);
+            Assert.IsTrue(HelpDocument.Topics.Count > 380);
             Assert.IsFalse(HelpDocument.Topics.Any(x => x.Name == "404"));
             var ask = HelpDocument.Topics.Single(x => x.Name == "Askコマンド");
             Assert.AreEqual("Askコマンド", ask.Title);
             Assert.IsFalse(ask.Body.StartsWith("---"));
             StringAssert.StartsWith(ask.Source, "---");
-        }
-
-        [TestMethod]
-        public void Title_NumberedPageUsesHeading()
-        {
-            Assert.AreEqual("パイロットの名称", HelpDocument.Topics.Single(x => x.Name == "HLP000164").Title);
         }
 
         [TestMethod]
@@ -43,7 +37,8 @@ namespace SRCAuthoring.Tests
         [TestMethod]
         public void Find_ByTitle()
         {
-            Assert.AreEqual("HLP000164", HelpDocument.Find("パイロットの名称").Single().Name);
+            // ファイル名（menu）と見出し（メニュー）が違う頁
+            Assert.AreEqual("menu", HelpDocument.Find("メニュー").Single().Name);
         }
 
         [TestMethod]

@@ -362,6 +362,43 @@ mark {
   font-size: 12px;
 }
 
+/* ポップアップだったリンク（WinHelp と同じく点線の下線）と、その説明の窓 */
+.wh-content a.wh-popup {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
+.wh-popupbox {
+  position: fixed;
+  z-index: 10;
+  width: min(420px, calc(100vw - 16px));
+  max-height: min(60vh, 480px);
+  overflow: auto;
+  padding: 8px 12px;
+  font-family: "MS PGothic", "ＭＳ Ｐゴシック", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #ffffe1;
+  border: 1px solid var(--dark);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+  outline: none;
+}
+
+.wh-popupbox p {
+  margin: 0 0 6px;
+}
+
+.wh-popupbox a {
+  color: #008000;
+}
+
+.wh-popupbox .wh-popupmore {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #0645ad;
+}
+
 /* 本文の下の前後の頁へのリンク */
 .wh-browse {
   display: flex;

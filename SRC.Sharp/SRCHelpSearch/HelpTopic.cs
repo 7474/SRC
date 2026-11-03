@@ -7,7 +7,7 @@ namespace SRCHelpSearch
     {
         /// <summary>ファイル名から .md を除いたもの。srcsharp help に渡す名前で、ページの中のリンク先とも同じ</summary>
         public string Name { get; }
-        /// <summary>見出し。front matter の title（HLP000164 などの番号だけのものは本文の最初の太字）</summary>
+        /// <summary>見出し。front matter の title</summary>
         public string Title { get; }
         /// <summary>ファイルの内容（front matter を含む）</summary>
         public string Source { get; }
@@ -32,14 +32,6 @@ namespace SRCHelpSearch
             else
             {
                 Body = source;
-            }
-            if (Regex.IsMatch(title, @"^HLP\d+$"))
-            {
-                var heading = Regex.Match(Body, @"^\*\*(?!\s)([^*]+)\*\*\s*$", RegexOptions.Multiline);
-                if (heading.Success)
-                {
-                    title = heading.Groups[1].Value;
-                }
             }
             Title = title;
         }

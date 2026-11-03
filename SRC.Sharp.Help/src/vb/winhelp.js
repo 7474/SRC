@@ -176,5 +176,70 @@
     }
   }
 
+  // ポップアップ（WinHelp で、押すと頁を移らずに小さな窓で説明を出していた用語と、図の押せる場所）。
+  // 説明の頁を読み、その本文を窓に出す。窓の外を押すか Esc で閉じる
+  const popup = document.createElement('div');
+  popup.className = 'wh-popupbox';
+  popup.setAttribute('role', 'dialog');
+  popup.hidden = true;
+  document.body.append(popup);
+  let opener = null;
+  const closePopup = () => {
+    if (!popup.hidden) {
+      popup.hidden = true;
+      opener?.focus?.();
+      opener = null;
+    }
+  };
+  async function openPopup(link, x, y) {
+    const response = await fetch(link.href);
+    const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const content = doc.querySelector('.wh-content');
+    if (!content) {
+      location.href = link.href;
+      return;
+    }
+    // 説明の中のリンク・画像は、説明の頁からの相対で書かれているので、今の頁から辿れるようにする
+    for (const a of content.querySelectorAll('[href]')) a.setAttribute('href', new URL(a.getAttribute('href'), link.href).href);
+    for (const img of content.querySelectorAll('[src]')) img.setAttribute('src', new URL(img.getAttribute('src'), link.href).href);
+    popup.innerHTML = '';
+    popup.append(...content.childNodes);
+    const more = document.createElement('a');
+    more.className = 'wh-popupmore';
+    more.href = link.href;
+    more.textContent = 'この説明の頁を開く';
+    popup.append(more);
+    popup.setAttribute('aria-label', doc.title.replace(/ - [^-]+$/, ''));
+    popup.hidden = false;
+    // 押した場所の下に出し、画面からはみ出さないようにする
+    const margin = 8;
+    const width = popup.offsetWidth;
+    const height = popup.offsetHeight;
+    const left = Math.min(Math.max(margin, x - width / 2), window.innerWidth - width - margin);
+    const below = y + 16;
+    const top = below + height > window.innerHeight - margin ? Math.max(margin, y - height - 16) : below;
+    popup.style.left = left + 'px';
+    popup.style.top = top + 'px';
+    opener = link;
+    popup.tabIndex = -1;
+    popup.focus({ preventScroll: true });
+  }
+  document.addEventListener('click', e => {
+    const link = e.target.closest('.wh-popup');
+    if (link && !popup.contains(link)) {
+      e.preventDefault();
+      const rect = link.tagName === 'AREA' ? null : link.getBoundingClientRect();
+      openPopup(link, rect ? rect.left + rect.width / 2 : e.clientX, rect ? rect.bottom - 8 : e.clientY);
+      return;
+    }
+    if (!popup.hidden && !popup.contains(e.target)) {
+      closePopup();
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePopup();
+  });
+  document.querySelector('.wh-topic').addEventListener('scroll', closePopup, { passive: true });
+
   selectTab(store.get('srcvb.tab') || 'toc', false);
 })();
