@@ -8,7 +8,7 @@
     python3 tools/vb_help_archive.py
 
 作るもの:
-- html/*.htm   元の頁。UTF-8 にし（元は Shift_JIS で、文字コードの宣言も誤っていた）、上にアーカイブであることの帯を付ける
+- html/*.htm   元の頁。UTF-8 にする（元は Shift_JIS で、文字コードの宣言も誤っていた）。アーカイブの説明は index.html にだけ出す
 - images/      元の画像
 - index.html   目次（src.hhc）と検索
 - search.json  検索の索引（頁ごとの題と本文）。検索はブラウザの中で行う（SRC# のヘルプの検索とは混ぜない）
@@ -30,35 +30,16 @@ OUT = ROOT / "SRC.Sharp.Help" / "src" / "vb"
 TITLE = "SRC Ver2.2.33 ヘルプ（アーカイブ）"
 CREDIT = "SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki"
 
-STYLE = """
-.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
-  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
-.srcvb-banner a{color:#0645ad;margin-right:12px}
-"""
-
-
-def banner(prefix):
-    return (
-        f'<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。'
-        f'<br><a href="{prefix}index.html">目次・検索</a>'
-        f'<a href="https://srch.7474.jp/">SRC# のヘルプ</a>'
-        f'<span>{CREDIT}</span></div>'
-    )
-
-
 def read(path):
     return path.read_bytes().decode("cp932", errors="replace")
 
 
 def page(text):
-    """元の頁を UTF-8 の頁にする。CHM 用の ActiveX（キーワードの OBJECT）を除き、帯を付ける"""
+    """元の頁を UTF-8 の頁にする。CHM 用の ActiveX（キーワードの OBJECT）を除く。アーカイブの説明は目次の頁にだけ出す"""
     text = re.sub(r"<OBJECT\b.*?</OBJECT>", "", text, flags=re.I | re.S)
     text = re.sub(r"<META[^>]*Content-Type[^>]*>", "", text, flags=re.I)
-    head = ('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            f"<style>{STYLE}</style>\n")
-    text = re.sub(r"<HEAD>", lambda m: m.group(0) + "\n" + head, text, count=1, flags=re.I)
-    text = re.sub(r"<BODY[^>]*>", lambda m: m.group(0) + "\n" + banner("../"), text, count=1, flags=re.I)
-    return text
+    head = '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+    return re.sub(r"<HEAD>", lambda m: m.group(0) + "\n" + head, text, count=1, flags=re.I)
 
 
 def title_of(text):
