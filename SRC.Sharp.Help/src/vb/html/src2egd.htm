@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>移動 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000020.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000019.htm" title="メッセージウインドウ" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000021.htm" title="攻撃" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.l_m"></A></P>
+
+<P><B>移動</B></P>
+
+<P>ユニットを移動させます。ユニットがジャンプやテレポートを使って移動を行う場合も操作方法は共通になっています。</P>
+
+<P>ユニットコマンドメニューから移動を選択するとユニットの移動可能範囲が表示されます。移動範囲はユニットの移動力とマップの地形によって変化します。</P>
+
+<P>移動可能範囲から移動先を左クリックで選択してください。ユニットが移動します。右クリックで移動コマンドをキャンセルできます。この際、左ボタンを押しながらマップを動かせますが、網掛けになっていない場所を左クリックするとその場所に移動してしまうので注意してください。</P>
+
+<P><IMG SRC="../images/bm3.gif" ALT="" BORDER=0></P>
+
+<P>移動先を指定するとユニットコマンドメニューが表示され、その場に待機するかそれとも移動に継続して他の行動を取るか尋ねてきます。ここで右クリックして操作をキャンセルすることもできます。移動後に選択可能なユニットコマンドは以下の通りです。</P>
+
+<P><B>コマンド名解説</B></P>
+
+<P><A HREF="src2egf.htm">攻撃</A>他のユニットを攻撃します</P>
+
+<P><A HREF="src2hmc.htm">アビリティ</A>アビリティを使用します</P>
+
+<P><A HREF="src2egg.htm">会話</A>隣接したユニットのパイロットに話し掛けます</P>
+
+<P><A HREF="src2egh.htm">修理</A>隣接したユニットを修理します</P>
+
+<P><A HREF="src2egi.htm">補給</A>隣接したユニットを補給します</P>
+
+<P><A HREF="src76ej.htm">待機</A>その場で行動を終了します</P>
+
+<P>通常、ユニットは他のユニット上には移動できません。ただし例外が2つあります。</P>
+
+<P><B>母艦</B>母艦能力を持つユニット上に移動することで着艦します</P>
+
+<P>弾薬とＥＮの補給を受けることができますが、<A HREF="src7co3.htm" class="wh-popup">気力</A>が5低下します</P>
+
+<P><B>合体</B>2体合体の場合にはパートナー上に移動することで合体します</P>
+
+<P>以上の場合は進入可能なユニットが網掛けではなく普通に表示されます。</P>
+
+<P>ユニットは基本的に移動力と同じだけの距離を移動できます。ただしユニットが空中にいない場合は地形による影響を受けます。地形による移動力への影響については<A HREF="src2hx0.htm">マップデータ</A>のページを参照してください。なおユニットは敵ユニットがいる場所を通り抜けることはできません。</P>
+
+<P>ユニットの移動距離を伸ばす手段としてはスペシャルパワー<B>加速</B>(及び<B>神速</B>)があります。<B>加速</B>は1ターンの間、移動力を2増加させます(<B>神速</B>は3)。森や海などでは空中に上がって地形による移動距離低下を防ぐのも効果的です。ユニットが地中移動の能力を持っている場合には地中に潜ることによって地形を無視することもできます。</P>
+
+<P>ユニットのいる場所によっては移動する際にＥＮが消費されます。空中や宇宙では5ＥＮ、地中では10ＥＮが必要です。</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000019.htm" rel="prev">« 前へ<span>メッセージウインドウ</span></a><a href="../html/00000021.htm" rel="next">次へ »<span>攻撃</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

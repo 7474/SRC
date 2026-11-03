@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arcコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000164.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000163.htm" title="ユニットコマンドイベント" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000165.htm" title="Arrayコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.nep"></A></P>
+
+<P><B>Arcコマンド</B></P>
+
+<P>円弧を描画</P>
+
+<P><B>書式</B></P>
+
+<P><B>Arc</B> <I>x y r start end</I> [<I>color</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x y</I>描画する円弧の中心(ピクセル)</P>
+
+<P><I>r</I>描画する円弧の半径(ピクセル)</P>
+
+<P><I>start</I>描画する円弧の開始角度</P>
+
+<P><I>end</I>描画する円弧の終了角度</P>
+
+<P><I>color</I>描画色(省略可能)</P>
+
+<P><B>解説</B></P>
+
+<P>マップウインドウの(<I>x</I>,<I>y</I>)を中心とする半径<I>r</I> の円弧を描きます。描画した図形は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>を実行した時点で表示されます。</P>
+
+<P>マップウィンドウの左上隅の座標は(0,0)、右下隅の座標は(479,479)となっています。(<I>x</I>,<I>y</I>)はこの範囲で指定して下さい。</P>
+
+<P>ただし、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="00000135.htm">変数</A>のページを参照してください。</P>
+
+<P>円弧の開始・終了角度は<I>start</I>,<I>end</I> で指定します。角度の指定は右向きが0度で、そこから時計と逆周りに増加していきます(<B>例</B> 上向きが90)。0から360までの値で指定して下さい。</P>
+
+<P><I>color</I>には円弧の描画色を指定することができます。指定を省略した場合は<A HREF="00000191.htm"><B>Color</B>コマンド</A>で指定した色が使われます。描画色はＲＧＢ16進(HTMLの色指定と同形式)で指定します。ＲＧＢ値からＲＧＢ16進を計算するにはRGB関数を使います。</P>
+
+<P><B>Arc</B>コマンドで描画される円弧の線の太さは通常1ピクセルです。線をより太くしたい場合は<A HREF="00000204.htm"><B>DrawWidth</B>コマンド</A>を使ってください。</P>
+
+<P><B>Arc</B>コマンドで描画される円弧は塗りつぶしが行われません。円弧の内側を塗りつぶしたい場合には<A HREF="00000215.htm"><B>FillStyle</B>コマンド</A>及び<A HREF="00000214.htm"><B>FillColor</B>コマンド</A>を併用してください。</P>
+
+<P><B>例</B></P>
+
+<P>#(100,150)を中心とする、半径50の半円(円の上半分)を描画</P>
+
+<P>Arc 100 150 50 0 180</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000163.htm" rel="prev">« 前へ<span>ユニットコマンドイベント</span></a><a href="../html/00000165.htm" rel="next">次へ »<span>Arrayコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

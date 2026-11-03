@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UnSetコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000319.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000318.htm" title="Unitコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000320.htm" title="Upgradeコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME="1kdtlbd"></A></P>
+
+<P><B>UnSetコマンド</B></P>
+
+<P>変数を消去</P>
+
+<P><B>書式</B></P>
+
+<P><B>UnSet</B> <I>variable</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>variable</I>変数名</P>
+
+<P><B>解説</B></P>
+
+<P>変数<I>variable</I> を消去します。配列を消す場合、変数名だけを指定すれば配列の要素すべてを、インデックスを付けて指定すれば配列の要素１つを消すことができます。</P>
+
+<P><B>例</B></P>
+
+<P>要素すべてを消去</P>
+
+<P>UnSet X</P>
+
+<P>要素を一つだけ消去</P>
+
+<P>UnSet  X[1]</P>
+
+<P>消去された変数の情報は変数の属性情報も含めて全て削除されてしまうため、<A HREF="src3705.htm"><B>Global</B>コマンド</A>で作成したグローバル変数や、<A HREF="src79lu.htm"><B>Local</B>コマンド</A>で作成したサブルーチンローカル変数を<B>UnSet</B>コマンドで消去した後に再設定する場合は、再度<B>Global</B>コマンド、<B>Local</B>コマンドを実行する必要があります。なお、配列の要素のみを消去した場合はこの操作は必要ありません。</P>
+
+<P><B>例</B></P>
+
+<P>#変数を消去した後に、</P>
+
+<P>UnSet array</P>
+
+<P>#再度Local変数として作成</P>
+
+<P>Local array</P>
+
+<P>サブルーチンローカル変数を<B>UnSet</B>コマンドで消去してもその変数のために確保された領域はサブルーチンを出るまで開放されません。このため、<B>UnSet</B>コマンドで変数を消去しても、消去された変数はサブルーチンローカル変数の個数の上限である2000個の一部としてカウントされてしまうので注意してください。</P>
+
+<P>消去する変数名 <I>variable</I> にEval関数を使うことで、消去する変数の指定に式を使うことが出来ます。</P>
+
+<P><B>例</B></P>
+
+<P>#変数xを消去する</P>
+
+<P>a = "x"</P>
+
+<P>UnSet Eval(a)</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000318.htm" rel="prev">« 前へ<span>Unitコマンド</span></a><a href="../html/00000320.htm" rel="next">次へ »<span>Upgradeコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

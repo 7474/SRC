@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StartBGMコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000308.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000307.htm" title="Splitコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000309.htm" title="StopBGMコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.let"></A></P>
+
+<P><B>StartBGMコマンド</B></P>
+
+<P>ＢＧＭを演奏</P>
+
+<P><B>書式</B></P>
+
+<P><B>StartBGM</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>再生するMIDIファイル名(もしくはMP3ファイル名)。</P>
+
+<P>通常のコマンドの引数と違ってスペースを使用しても「"」で</P>
+
+<P>囲う必要はないが、式を指定する場合は括弧で囲むこと。</P>
+
+<P>リスト形式で指定することで複数のファイルを指定することも可能。</P>
+
+<P><B>解説</B></P>
+
+<P>MIDIファイル<I>file</I>の再生を開始します。<I>file</I> は戦闘用ＢＧＭと同じ<A HREF="src7yuj.htm" class="wh-popup">Midiフォルダ</A>内に置かれている必要があります。</P>
+
+<P><I>file</I> の再生が終了した際には自動的に再生がリピートされます。リピートさせたくない場合には<A HREF="src373o.htm"><B>PlayMIDI</B>コマンド</A>を使用してください。</P>
+
+<P>設定したＢＧＭをターン開始時や戦闘開始時に変更したくない場合には<A HREF="src2hma.htm"><B>KeepBGM</B>コマンド</A>を<B>StartBGM</B>コマンドの直後に使用して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk 速人</P>
+
+<P>さあ、行くとしましょうか！</P>
+
+<P>End</P>
+
+<P>#MIDIファイル「Ride of the Valkyrie.mid」の演奏を開始</P>
+
+<P>StartBGM Ride of the Valkyrie.mid</P>
+
+<P>SRCでは幾つかのシチュエーションで特定のMIDIが再生されるようになっています。</P>
+
+<P><B>SRC起動時</B>Opening.mid</P>
+
+<P><B>味方フェイズBGM</B>Map1.mid</P>
+
+<P><B>敵フェイズBGM</B>Map2.mid</P>
+
+<P><B>味方フェイズBGM（屋内）</B>Map3.mid</P>
+
+<P><B>敵フェイズBGM（屋内）</B>Map4.mid</P>
+
+<P><B>味方フェイズBGM（宇宙）</B>Map5.mid</P>
+
+<P><B>敵フェイズBGM（宇宙）</B>Map6.mid</P>
+
+<P><B>プロローグ・エピローグ</B>Briefing.mid</P>
+
+<P><B>インターミッション</B>Intermission.mid</P>
+
+<P><B>テロップ</B>Subtitle.mid</P>
+
+<P><B>ゲームオーバー時</B>End.mid</P>
+
+<P>このようなシチュエーションのMIDIを変更したい場合は幾つかの方法があります。</P>
+
+<P>・RenameBGMコマンドを使う</P>
+
+<P>・シナリオのフォルダに<A HREF="src76ef.htm">Src.ini</A>ファイルを作り、Src.iniファイル内に再生したMIDIファイルを指定</P>
+
+<P>([BGM]のOpeningの項目だけを指定して下さい)</P>
+
+<P>・再生したいMIDIファイルをシナリオ側のMIDIフォルダに<A HREF="src2hpx.htm"><B>CopyFile</B>コマンド</A>で上のファイル名に合わせてコピー</P>
+
+<P>シナリオにMIDIファイルを添付しない場合、シナリオをプレイする人がシナリオ作者の望むMIDIファイルを持っているかどうかは分かりません。このような場合、<B>StartBGM</B>コマンドを列挙して再生するMIDIファイルを複数指定することでMIDIファイルが全く再生されないという危険性を下げることが出来ます。このとき、後ろの<B>StartBGM</B>コマンドに指定されたMIDIファイルほど優先度が高くなります。</P>
+
+<P><B>例</B></P>
+
+<P>#「ばっちり.mid」があればそれを再生し、無ければ「間に合わせ.mid」を再生</P>
+
+<P>StartBGM 間に合わせ.mid</P>
+
+<P>StartBGM ばっちり.mid</P>
+
+<P>また、複数のMIDIファイルをリスト形式で指定するという方法もあります。最初のファイルから検索が行われ、最初に見つかったファイルが再生されます。リスト形式で指定するには全体を「"」で囲み、ファイル名にスペースが使われている場合はファイル名()で囲んでください。</P>
+
+<P><B>例</B></P>
+
+<P>StartBGM "ばっちり.mid それなり.mid (かな～り 間に合わせの.mid)"</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000307.htm" rel="prev">« 前へ<span>Splitコマンド</span></a><a href="../html/00000309.htm" rel="next">次へ »<span>StopBGMコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

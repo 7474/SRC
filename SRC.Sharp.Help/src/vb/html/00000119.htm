@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>チャージ攻撃に関する属性 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000119.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000118.htm" title="弾数に関する属性" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000120.htm" title="合体技に関する属性" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.o.v"></A></P>
+
+<P><B>チャージ攻撃に関する属性</B></P>
+
+<P><B>Ｃ</B></P>
+
+<P>チャージ式攻撃であることを示します。この攻撃は<A HREF="00000026.htm">チャージコマンド</A>を使ってチャージが完了してからでないと使用できません。チャージには１ターンかかり、その間は一切の行動が取れません。ただし敵の攻撃に対して防御行動をとることは可能です。チャージ式攻撃を使用するとチャージは解除されるため、チャージ式攻撃の連続使用はできません。</P>
+
+<P>コンピューターが操作するユニットはチャージを行わないため、チャージ式攻撃を使ってくることはありません。敵ユニットに持たせる場合は注意して下さい。</P>
+
+<P><B>Ａ</B>L数字</P>
+
+<P>自動チャージ式攻撃であることを示します。一度使用すると指定した属性レベル分のターンが経過するまで使用できません。ただし上のチャージ式攻撃によるチャージと異なり、チャージ中のペナルティは該当する武器が使用不能になる以外一切ありません。</P>
+
+<P>使用した武器と表示名称が同じ武器が他にある場合、自動チャージ中はその武器も使用不能になります(<B>例</B> 「重力波砲」と「重力波砲(Ｍ)」は同時に使用不能になる)。また、自動チャージ中の武器に前述した「共」属性が指定されている場合、同じ「共」指定を持つ武器も同時に使用不能となります(その武器が弾数を消費しない場合も該当します)。</P>
+
+<P>イベント等で強制的にチャージ状態を解除し、武器を使用可能にするには<A HREF="00000188.htm"><B>ClearStatus</B></A>コマンドを使います。「ClearStatus <I>武器表示名</I>充填中」を実行して下さい。逆にチャージ状態にしたい場合は<A HREF="00000300.htm"><B>SetStatus</B>コマンド</A>を使います。「SetStatus <I>武器表示名</I>充填中 <I>ターン数</I>」を実行して下さい。</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000118.htm" rel="prev">« 前へ<span>弾数に関する属性</span></a><a href="../html/00000120.htm" rel="next">次へ »<span>合体技に関する属性</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

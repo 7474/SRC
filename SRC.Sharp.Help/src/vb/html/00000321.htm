@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UpVarコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000321.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000320.htm" title="Upgradeコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000322.htm" title="UseAbilityコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.neu"></A></P>
+
+<P><B>UpVarコマンド</B></P>
+
+<P>参照可能なサブルーチンの引数のレベルを変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>UpVar</B></P>
+
+<P><B>解説</B></P>
+
+<P><B>Args</B>関数でサブルーチンの引数を参照する場合、通常はそのサブルーチンに指定された引数のみを参照することができます。しかし、場合によってはそのサブルーチンを呼び出したサブルーチンの引数を直接参照したい場合があります。<B>UpVar</B>コマンドは参照可能なサブルーチンの引数のレベルを変更し、サブルーチンを呼び出したサブルーチンの引数への参照を可能にします。</P>
+
+<P><B>・UpVarコマンドが引数を持たないサブルーチン内部で呼び出された場合</B></P>
+
+<P>Args(<I>i</I>)はそのサブルーチンを呼び出したサブルーチンの<I>i</I>番目の引数を参照します。また、システム変数ArgNumはそのサブルーチンを呼び出したサブルーチンの引数の数を返します。</P>
+
+<P>例えばＡ(1,10)として実行されたサブルーチンＡ内でサブルーチンＢが実行され、そのサブルーチンＢの中で<B>UpVar</B>コマンドが呼び出されたとすると、</P>
+
+<P>Args(1) = 1, Args(2) = 10, ArgNum = 2</P>
+
+<P>となります。</P>
+
+<P><B>・UpVarコマンドが引数を持つサブルーチン内部で呼び出された場合</B></P>
+
+<P><I>i</I>がそのサブルーチンの引数の数以下の場合、Args(<I>i</I>)はそのサブルーチンの<I>i</I>番目の引数を参照します。<I>i</I>がそのサブルーチンの引数の数を超えた場合、Args(<I>i</I>)はそのサブルーチンを呼び出したサブルーチンの引数の(<I>i</I> - そのサブルーチンの引数の個数)番目の引数を参照します。ArgNumはそのサブルーチンの引数の個数と、そのサブルーチンを呼び出したサブルーチンの引数の個数の和を返します。</P>
+
+<P>例えばＡ(1,10)として実行されたサブルーチンＡ内でサブルーチンＢがＢ(100)として実行され、そのサブルーチンＢの中で<B>UpVar</B>コマンドが呼び出されたとすると、</P>
+
+<P>Args(1) = 100, Args(2) = 1, Args(3) = 10, ArgNum = 3</P>
+
+<P>となります。</P>
+
+<P>UpVarコマンドは同じサブルーチン内で複数回実行可能です。この場合、呼び出した回数の分だけ上の階層のサブルーチンの引数が参照できるようになります。</P>
+
+<P>UpVarコマンドを実行して上の階層のサブルーチンの引数を参照可能にした際にその階層のサブルーチンでもUpVarコマンドが実行されていた場合、UpVarコマンドの効果は累計されます。例えばサブルーチン１からサブルーチン２を呼び出し、サブルーチン２からサブルーチン３を呼び出した際にサブルーチン２、３においてそれぞれUpVarコマンドが１回ずつ実行されていたとすると、サブルーチン３からはサブルーチン１～３の引数全てが参照できるようになります。</P>
+
+<P><B>例</B></P>
+
+<P>サブルーチンＡ:</P>
+
+<P>Local wname</P>
+
+<P>#引数からWAVファイル名を検索</P>
+
+<P>wname = GetWavFromArgs()</P>
+
+<P>#WAVファイル名が指定されていればそれを再生</P>
+
+<P>If wname &lt;&gt; "" Then</P>
+
+<P>PlaySound wname</P>
+
+<P>EndIf</P>
+
+<P>#サブルーチンＢを呼び出す</P>
+
+<P>Call サブルーチンＢ</P>
+
+<P>Return</P>
+
+<P>#GetWavFromArgsを実行したサブルーチンの引数からWAVファイル名を検索</P>
+
+<P>GetWavFromArgs:</P>
+
+<P>Local i</P>
+
+<P>#GetWavFromArgsを実行したサブルーチンの引数への参照を可能にする</P>
+
+<P>UpVar</P>
+
+<P>#引数の中から末尾が「.wav」になっている引数を探す</P>
+
+<P>For i = 1 To ArgNum</P>
+
+<P>If LCase(Right(Args(i),4)) = ".wav" Then</P>
+
+<P>Return Args(i)</P>
+
+<P>EndIf</P>
+
+<P>Next</P>
+
+<P>Return</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000320.htm" rel="prev">« 前へ<span>Upgradeコマンド</span></a><a href="../html/00000322.htm" rel="next">次へ »<span>UseAbilityコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

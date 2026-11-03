@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClearEventコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000182.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000181.htm" title="Circleコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000183.htm" title="ClearFlashコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME="1kdttdk"></A></P>
+
+<P><B>ClearEventコマンド</B></P>
+
+<P>イベントラベルを消去</P>
+
+<P><B>書式</B></P>
+
+<P><B>ClearEvent</B> [<I>label</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>label</I>消去するイベントラベル（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>指定されたイベントラベル<I>label</I> を消去します。ラベルの消去後は同じイベントが発生してもそのイベントラベルへの分岐は行われません。戦闘時の会話イベントや説得イベントなど、同じイベントを２回以上発生させたくない場合に使用してください。</P>
+
+<P><I>label</I> を省略した場合には発生したイベントに対応したイベントラベルが指定されたと解釈されます。ラベル名を指定する場合、「:」は必要ありません。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> ラベル名は必ず「"」で括ってください。</P>
+
+<P>消去したイベントラベルは<A HREF="00000289.htm"><B>RestoreEvent</B>コマンド</A>で復活させることができます。</P>
+
+<P><B>例</B></P>
+
+<P>攻撃 バルド ジョー:</P>
+
+<P>Talk バルド</P>
+
+<P>ジョー！ 今ままでの借り、ここで返させてもらう！</P>
+
+<P>Talk ジョー</P>
+
+<P>憎しみのからは何も生まれない！ バルド！！</P>
+
+<P>End</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 ジョー バルド"</P>
+
+<P>Exit</P>
+
+<P>攻撃 ジョー バルド:</P>
+
+<P>Talk ジョー</P>
+
+<P>バルド！ なぜだ、なぜそこまで戦いにこだわる！？</P>
+
+<P>Talk バルド</P>
+
+<P>戦いこそが私の生きがいなのだ！ 貴様を倒すことがな！</P>
+
+<P>End</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 バルド ジョー"</P>
+
+<P>Exit</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000181.htm" rel="prev">« 前へ<span>Circleコマンド</span></a><a href="../html/00000183.htm" rel="next">次へ »<span>ClearFlashコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

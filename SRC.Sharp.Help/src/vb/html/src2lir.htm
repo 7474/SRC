@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>防御能力を無効化する属性 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000123.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000122.htm" title="特殊効果攻撃属性" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000124.htm" title="吸収攻撃に関する属性" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.o.s"></A></P>
+
+<P><B>防御能力を無効化する属性</B></P>
+
+<P><B>貫</B> or <B>貫</B>L数字</P>
+
+<P>貫通攻撃であることを示します。内部から相手を破壊する武器などの装甲を無視して攻撃できる武器の表現に用います。</P>
+
+<P>本属性を持つ武器によるダメージは相手の装甲をレベル指定を省略した場合は通常の半分、レベルを指定した場合は (100 - 10×貫属性レベル)% とみなして計算されます。</P>
+
+<P>単に装甲を貫く威力が高い場合(徹甲弾など)は「<B>貫</B>」属性ではなくクリティカル率を上げることで表現するようにして下さい。</P>
+
+<P>本属性を持つ武器はボス戦において多大な威力を持ちます。データ作成の際には濫用しないように注意してください。「<B>Ｒ</B>」属性と併用するのも良いでしょう。</P>
+
+<P><B>固</B></P>
+
+<P>ダメージ固定武器であることを示します。パイロットの気力や攻撃力、防御側の装甲にかかわらず武器の攻撃力と同じダメージを与えます。ただし、<A HREF="src2ks4.htm" class="wh-popup">ユニットランク</A>が上がっても攻撃力は増えません。</P>
+
+<P>スペシャルパワーや地形適応、クリティカルによるダメージ修正は有効です。それ以外のダメージ修正は無効になります。</P>
+
+<P>なお、武器属性「固」を持つ武器の場合は地形適応によるダメージ修正が0.2減少します。(適応Ａで武器攻撃力と同じダメージを与える)</P>
+
+<P>武器強化による攻撃能力上昇は武器強化の武器指定が武器名、武器表示名、「固」のいずれかで行われた場合にのみ有効です。</P>
+
+<P><B>殺</B></P>
+
+<P>抹殺攻撃であることを示します。相手の防御及びシールド系防御能力(シールドや盾)を無効化しますが、相手を一撃で倒せる場合にのみ有効です。ダメージが相手ユニットのＨＰに満たない場合、ダメージは0になります。</P>
+
+<P><B>無</B></P>
+
+<P>防御能力無効化攻撃であることを示します。この武器は相手のバリアやフィールド、エネルギーシールド、反射、阻止、自動反撃などの防御能力を無視してダメージを与えることができます(アーマーには無効)。</P>
+
+<P><B>浸</B></P>
+
+<P>毒ガス等の浸蝕攻撃であることを示します。この攻撃に対してはシールド系防御能力(シールドや盾)が無効です。</P>
+
+<P><B>破</B></P>
+
+<P>シールド貫通攻撃であることを示します。この武器による攻撃に対してはシールド能力、盾能力によるダメージ減少量が半減します。</P>
+
+<P>また、攻撃が盾を貫通した場合(ダメージが盾能力のダメージ減少値を上回った場合)、盾の使用回数が2減少します。</P>
+
+<P><B>間</B></P>
+
+<P>間接攻撃であることを示します。攻撃が視界外から行われるため、この武器を使った攻撃に対してターゲット側は反撃できません。</P>
+
+<P><B>浄</B></P>
+
+<P>浄化攻撃であることを示します。パイロット、またはサポートパイロットに浄化能力を持つ者がいればパイロット用特殊能力再生による敵ユニットの復活を防ぐことができます。ただし<A HREF="src2krz.htm" class="wh-popup">人間ユニット</A>はパイロットが浄化能力を持っていなくても浄化技の効果が発動します。</P>
+
+<P>浄化により敵ユニットの復活を防いだ際にはメッセージ「浄化」が表示されます。</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000122.htm" rel="prev">« 前へ<span>特殊効果攻撃属性</span></a><a href="../html/00000124.htm" rel="next">次へ »<span>吸収攻撃に関する属性</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

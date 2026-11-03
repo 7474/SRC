@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>マップ攻撃に関する属性 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000113.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000112.htm" title="攻撃の実行手順に関する属性" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000114.htm" title="パイロット能力と連動する属性" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.oep"></A></P>
+
+<P><B>マップ攻撃に関する属性</B></P>
+
+<P><B>Ｍ直</B></P>
+
+<P>直線型マップ攻撃であることを示します。自分から上下左右のいずれか一方向の直線が有効範囲になります。</P>
+
+<P>有効範囲）</P>
+
+<P>□□□□□□□</P>
+
+<P>自■■■■■■</P>
+
+<P>□□□□□□□</P>
+
+<P><B>Ｍ拡</B></P>
+
+<P>拡散型マップ攻撃であることを示します。自分から上下左右のいずれか一方向の直線が有効範囲になります。<B>Ｍ直</B>の場合と異なるのは直線の幅が1マスではなく3マスであることです。</P>
+
+<P>有効範囲）</P>
+
+<P>□□□□□□□</P>
+
+<P>□□■■■■□</P>
+
+<P>自■■■■■■</P>
+
+<P>□□■■■■□</P>
+
+<P>□□□□□□□</P>
+
+<P><B>Ｍ扇</B>L数字</P>
+
+<P>扇型マップ攻撃であることを示します。有効範囲は扇型になり、属性レベルによって広がりかたが異なります。レベルは1～4で指定します。</P>
+
+<P>有効範囲）</P>
+
+<P>レベル1       </P>
+
+<P>□□□□□□■</P>
+
+<P>□□□■■■■</P>
+
+<P>自■■■■■■</P>
+
+<P>□□□■■■■</P>
+
+<P>□□□□□□■</P>
+
+<P>レベル2       </P>
+
+<P>□□□□□□■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□■■■■■</P>
+
+<P>自■■■■■■</P>
+
+<P>□□■■■■■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□□□□□■</P>
+
+<P>レベル3       </P>
+
+<P>□□□□□□■</P>
+
+<P>□□□□□■■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□自■■■■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□□□□■■</P>
+
+<P>□□□□□□■</P>
+
+<P>レベル4       </P>
+
+<P>□□□□□□■</P>
+
+<P>□□□□□■■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□□■■■■</P>
+
+<P>□□自■■■■</P>
+
+<P>□□□■■■■</P>
+
+<P>□□□□■■■</P>
+
+<P>□□□□□■■</P>
+
+<P>□□□□□□■</P>
+
+<P><B>Ｍ全</B></P>
+
+<P>全方位型マップ攻撃であることを示します。</P>
+
+<P>有効範囲）</P>
+
+<P>□□□■□□□</P>
+
+<P>□□■■■□□</P>
+
+<P>□■■■■■□</P>
+
+<P>■■■自■■■</P>
+
+<P>□■■■■■□</P>
+
+<P>□□■■■□□</P>
+
+<P>□□□■□□□</P>
+
+<P><B>Ｍ投</B>L数字</P>
+
+<P>投下型マップ攻撃であることを示します。有効範囲は指定地点から属性レベル分の距離の範囲です。</P>
+
+<P>なお、有効範囲に自分が入っていてもダメージは被りません。レベル0を指定することも可能です。</P>
+
+<P><B>例</B> Ｍ投L3</P>
+
+<P>有効範囲）「目」が目標地点</P>
+
+<P>□□□■□□□</P>
+
+<P>□□■■■□□</P>
+
+<P>□■■■■■□</P>
+
+<P>■■■目■■■</P>
+
+<P>□■■■■■□</P>
+
+<P>□□■■■□□</P>
+
+<P>□□□■□□□</P>
+
+<P><B>Ｍ移</B></P>
+
+<P>移動型マップ攻撃であることを示します。プレイヤーが指定した射程内の地点と自分の間を結ぶ直線が有効範囲になります。マップ攻撃使用後、ユニットは指定した地点に移動します。</P>
+
+<P>移動を伴う攻撃であるため、壁を越えた地点には攻撃できません(透過移動を持つユニットの場合は例外)。</P>
+
+<P>有効範囲）「目」が目標地点</P>
+
+<P>□□□□□□□</P>
+
+<P>自■■■■□□</P>
+
+<P>□□□□■■目</P>
+
+<P><B>Ｍ線</B></P>
+
+<P>線状マップ攻撃であることを示します。プレイヤーが指定した射程内の地点と自分の間を結ぶ直線が有効範囲になります。</P>
+
+<P>有効範囲）「目」が目標地点</P>
+
+<P>□□□□□□□</P>
+
+<P>自■■■■□□</P>
+
+<P>□□□□■■目</P>
+
+<P><B>識</B></P>
+
+<P>敵味方を識別して攻撃する能力を持つことを示します。マップ攻撃の能力の一つですので必ず上のマップ攻撃属性のいずれかと併用して下さい。</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000112.htm" rel="prev">« 前へ<span>攻撃の実行手順に関する属性</span></a><a href="../html/00000114.htm" rel="next">次へ »<span>パイロット能力と連動する属性</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

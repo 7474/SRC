@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ファイル処理関数 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000333.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000332.htm" title="算術処理関数" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000334.htm" title="描画処理関数" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.ndr"></A></P>
+
+<P><B>ファイル処理関数</B></P>
+
+<P><B>Dir(ファイルパス[,ファイル属性])</B></P>
+
+<P>指定したパターンやファイル属性と一致するファイル名またはフォルダ名を返します。ファイルが存在しなければ空文字列""が返ります。</P>
+
+<P>「*」を使って複数のファイルを指定することができます。例えば「*.txt」を使えばテキストファイルを検索することができます。パターンに一致するファイルが複数ある場合、Dir関数を引数なしで連続して実行するとパターンに一致するファイル名が順に返ります。</P>
+
+<P>ファイルパスはシナリオのフォルダを起点として検索されます。システム変数AppPath、ExtDataPathを使えばシナリオのフォルダ以外のフォルダのファイルを検索することができます。</P>
+
+<P>検索するファイル属性を指定して検索することもできます。指定可能な属性は「ファイル」と「フォルダ」です。</P>
+
+<P><B>例</B></P>
+
+<P>If Dir(ScenarioPath &amp; "\" &amp; "セーブデータ", フォルダ) &lt;&gt; "" Then</P>
+
+<P>で「セーブデータ」というフォルダがシナリオのあるフォルダ内に作成されているかどうか分かります。</P>
+
+<P><B>EOF(ファイルハンドル)</B></P>
+
+<P>指定したファイルハンドルのファイルの読み出しがファイルの末尾に達している場合に 1、そうでなければ 0 を返します。</P>
+
+<P><B>LoadFileDialog(ファイルタイプ,拡張子[,デフォルトファイル,相対パス])</B></P>
+
+<P>「ファイルを開く」のダイアログを開き、ユーザーが選択したファイルへのパスを返します。ファイルパスはシナリオのあるフォルダを起点として計算されるのでそのまま<A HREF="src79lv.htm"><B>Open</B>コマンド</A>等の引数に使うことができます。</P>
+
+<P>ユーザーがキャンセルしたり、シナリオのフォルダの中にないファイルを指定すると空文字列""を返します。</P>
+
+<P>ファイルタイプに読みこむデータの種類を(単なる名称なので自由に設定して下さい)、拡張子にその拡張子を指定して下さい。</P>
+
+<P>デフォルトファイル、相対パスを設定するとダイアログを開いた時にダイアログに表示されているファイル名とパス名を変更することができます。</P>
+
+<P><B>例</B> fname = LoadFileDialog("データファイル", "dat")</P>
+
+<P><B>SaveFileDialog(ファイルタイプ,拡張子[,デフォルトファイル,相対パス])</B></P>
+
+<P>「ファイル名を付けて保存」のダイアログを開き、ユーザーが選択したファイルへのパスを返します。ファイルパスはシナリオのあるフォルダを起点として計算されるのでそのまま<A HREF="src79lv.htm"><B>Open</B>コマンド</A>等の引数に使うことができます。</P>
+
+<P>ユーザーがキャンセルしたり、シナリオのフォルダの中にないファイルを指定すると空文字列""を返します。</P>
+
+<P>ファイルタイプに読みこむデータの種類を(単なる名称なので自由に設定して下さい)、拡張子にその拡張子を指定して下さい。</P>
+
+<P>デフォルトファイル、相対パスを設定するとダイアログを開いた時にダイアログに表示されているファイル名とパス名を変更することができます。</P>
+
+<P><B>例</B> fname = SaveFileDialog("データファイル", "dat","セーブデータ","Save")</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000332.htm" rel="prev">« 前へ<span>算術処理関数</span></a><a href="../html/00000334.htm" rel="next">次へ »<span>描画処理関数</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

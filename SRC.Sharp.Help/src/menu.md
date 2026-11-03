@@ -2,25 +2,30 @@
 layout: default
 title: メニュー
 ---
-- [はじめに](はじめに.md)
+<!-- このファイルは tools/help_menu.py が _data/menu.yml から作る。手で直さない -->
 - お使いになる前に
+    - [はじめに](はじめに.md)
     - [動作環境](動作環境.md)
     - [使用条件](使用条件.md)
     - [SRCとの互換性](SRCとの互換性.md)
-- インストールとアンインストール
+- 遊ぶ
     - [SRC#のインストール](SRCSharpのインストール.md)
-    - [インストールの手順](インストールの手順.md)
-    - [SRCのインストール](SRCのインストール.md)
+    - [SRC#Webの使い方](SRCSharpWebの使い方.md)
+    - [SRC#Avaloniaの使い方](SRCSharpAvaloniaの使い方.md)
+    - [SRC#Formの使い方](SRCSharpFormの使い方.md)
+    - [SRCの起動](SRCの起動.md)
     - [サンプルシナリオをプレイする](サンプルシナリオをプレイする.md)
-    - [インストール時のエラーへの対処](インストール時のエラーへの対処.md)
     - [他のシナリオをプレイする](他のシナリオをプレイする.md)
-    - [MIDIファイルのインストール](MIDIファイルのインストール.md)
     - [更新インストール](更新インストール.md)
     - [アンインストール](アンインストール.md)
-- 操作方法
-    - [SRCの起動](SRCの起動.md)
-    - [SRC#Avaloniaの使い方](SRCSharpAvaloniaの使い方.md)
+- シナリオ・素材の用意
+    - [SRCのインストール](SRCのインストール.md)
+    - [インストールの手順](インストールの手順.md)
+    - [MIDIファイルのインストール](MIDIファイルのインストール.md)
+- 困ったとき
+    - [インストール時のエラーへの対処](インストール時のエラーへの対処.md)
     - [ログ](ログ.md)
+- 操作方法
     - [ゲームの流れ](ゲームの流れ.md)
     - [基本操作](基本操作.md)
     - 画面の説明
@@ -62,6 +67,7 @@ title: メニュー
         - [全体マップ](全体マップ.md)
         - [作戦目的](作戦目的.md)
         - [自動反撃モード](自動反撃モード.md)
+        - [オートプレイ](オートプレイ.md)
         - [設定変更](設定変更.md)
         - [リスタート](リスタート.md)
         - [クイックロード](クイックロード.md)
@@ -202,7 +208,6 @@ title: メニュー
         - [Chargeコマンド](Chargeコマンド.md)
         - [Circleコマンド](Circleコマンド.md)
         - [ClearEventコマンド](ClearEventコマンド.md)
-        - ~~[ClearFlashコマンド](ClearFlashコマンド.md)~~
         - [ClearObjコマンド](ClearObjコマンド.md)
         - [ClearPictureコマンド](ClearPictureコマンド.md)
         - [ClearSkillコマンド](ClearSkillコマンド.md)
@@ -221,8 +226,8 @@ title: メニュー
         - [Createコマンド](Createコマンド.md)
         - [CreateFolderコマンド](CreateFolderコマンド.md)
         - [Debugコマンド](Debugコマンド.md)
-        - [CallIntermissionCommandコマンド](CallIntermissionCommandコマンド.md)
         - [Destroyコマンド](Destroyコマンド.md)
+        - [CallIntermissionCommandコマンド](CallIntermissionCommandコマンド.md)
         - [Disableコマンド](Disableコマンド.md)
         - [Doコマンド](Doコマンド.md)
         - [DrawOptionコマンド](DrawOptionコマンド.md)
@@ -285,7 +290,6 @@ title: メニュー
         - [PaintStringコマンド](PaintStringコマンド.md)
         - [PaintSysStringコマンド](PaintSysStringコマンド.md)
         - [Pilotコマンド](Pilotコマンド.md)
-        - ~~[PlayFlashコマンド](PlayFlashコマンド.md)~~
         - [PlayMIDIコマンド](PlayMIDIコマンド.md)
         - [PlaySoundコマンド](PlaySoundコマンド.md)
         - [Polygonコマンド](Polygonコマンド.md)
@@ -365,6 +369,7 @@ title: メニュー
         - [その他の関数](その他の関数.md)
 - 最後に
     - [更新履歴(移植中)](更新履歴%28移植中%29.md)
+    - [更新履歴(v2.3)](更新履歴%28v2.3%29.md)
     - [更新履歴(2010)](更新履歴%282010%29.md)
     - [更新履歴(2008)](更新履歴%282008%29.md)
     - [更新履歴(2007)](更新履歴%282007%29.md)
@@ -381,4 +386,5 @@ title: メニュー
     - [サポート情報](サポート情報.md)
     - [スペシャルサンクス](スペシャルサンクス.md)
 - 元の SRC について
+    - [元のSRCのヘルプ](元のSRCのヘルプ.md)
     - [ランタイムライブラリのインストール](ランタイムライブラリのインストール.md)

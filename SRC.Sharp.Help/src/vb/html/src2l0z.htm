@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>その他の関数 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000337.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000336.htm" title="正規表現関数" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000338.htm" title="更新履歴(2010)" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.nds"></A></P>
+
+<P><B>その他の関数</B></P>
+
+<P><B>Args(引数の番号)</B></P>
+
+<P>指定した番号(最初の引数の番号が1)の引数の値を返します。サブルーチン内でしか使用できません。サブルーチンに指定された引数の数を超えた番号を指定した場合、空文字列""が返ります。</P>
+
+<P>通常、Args関数では現在実行中のサブルーチンに指定された引数の値しか参照できませんが、<A HREF="src2l2t.htm"><B>UpVar</B>コマンド</A>を使うことにより、現在実行中のサブルーチンを呼び出したサブルーチンの引数を参照することが可能です。</P>
+
+<P><B>Call(ラベル名,引数１,引数２ …)</B></P>
+
+<P>指定したラベルに対してサブルーチンコールを行います。サブルーチンコールの引数を指定することもできます。指定された引数はサブルーチン内でArgs関数を使って参照可能です。</P>
+
+<P>サブルーチンコールの最後に実行された<A HREF="src79if.htm"><B>Return</B>コマンド</A>の引数の値が関数の値として返されます。詳しくは<B>Return</B>コマンドを参照してください。</P>
+
+<P>「Call」の部分を省略し、ラベル名を関数名のところに書くこともできます。例えば下の例ですと「Call(信頼度,クレア)」の代わりに「信頼度(クレア)」と指定しても同じ動作になります。</P>
+
+<P><B>例 </B> If Call(信頼度,クレア) = 3 Then</P>
+
+<P><B>Count(配列名)</B></P>
+
+<P>指定した配列の要素数を返します。</P>
+
+<P><B>例</B> a[1], a[2], a[3] が定義されている場合、Count(a)は3を返す。 </P>
+
+<P><B>Eval(式)</B></P>
+
+<P>与えられた式を評価し、その値を返します。</P>
+
+<P><B>例</B> expr が「1 + 3」なら Eval(expr) は 4 を返す</P>
+
+<P>式の左辺値として使用することもできます。</P>
+
+<P><B>例</B> a = "b"の時に</P>
+
+<P>Eval(a) = 1 #変数bを1に設定</P>
+
+<P><B>IIf(条件式,値１,値２)</B></P>
+
+<P>指定した条件式が成り立つ場合(値が0以外)は値１を、そうでなければ値２を返します。</P>
+
+<P><A HREF="src371q.htm">Ifコマンド</A>と同様に、条件式としてパイロット名を指定することが出来ます。</P>
+
+<P><B>例</B> IIf(a &gt; b, a + 1, b - 1)</P>
+
+<P><B>IsDefined(名称) or IsDefined(名称,データ種類)</B></P>
+
+<P>指定した名称のユニット、パイロット、アイテムが存在すれば 1 を 、存在しなければ 0 を返します。</P>
+
+<P>データ種類(ユニット、パイロット、アイテムのいずれか)を指定することで検索対象を限定する事も出来ます。</P>
+
+<P><B>IsVarDefined(名称)</B></P>
+
+<P>指定した名称の変数、または配列の要素が存在すれば 1 を 、存在しなければ 0 を返します。他の関数とは異なり、「名称」は式として解釈されずそのまま使用されるので注意してください。</P>
+
+<P><B>例</B> IsVarDefined(A[i])</P>
+
+<P><B>KeyState(キー番号)</B></P>
+
+<P>指定したキーが押されているか判定します。キーが押されていれば1を、押されていなければ0を返します。メインウィンドウがアクティブになっていない(フォーカスされていない)場合はキーが押されていても0を返します。マウスボタンのキー入力検出の際はさらにマウスカーソルがマップウィンドウ上にない場合も0を返します。</P>
+
+<P>1マウスの左ボタン</P>
+
+<P>2マウスの右ボタン</P>
+
+<P>16シフト</P>
+
+<P>17コントロール</P>
+
+<P>32スペースキー</P>
+
+<P>37カーソルキー←</P>
+
+<P>38カーソルキー↑</P>
+
+<P>39カーソルキー→</P>
+
+<P>40カーソルキー↓</P>
+
+<P>48-57数字0-9(Q W E…の上段に並んでいるキー)</P>
+
+<P>65-90アルファベットA-Z</P>
+
+<P>96-105テンキーの0-9</P>
+
+<P><B>例</B> スペースキーが押されているか判定： If KeyState(32) Then</P>
+
+<P>上記以外のキーのキー番号を調べる場合、次のイベントコマンドを実行すると良いでしょう。</P>
+
+<P>Cls</P>
+
+<P>Do While 1</P>
+
+<P>Wait Click</P>
+
+<P>ClearPicture</P>
+
+<P>PaintString 0 0 "キーが押されました"</P>
+
+<P>For i = 1 To 229</P>
+
+<P>If KeyState(i) Then</P>
+
+<P>PaintString "キー番号 = $(i)"</P>
+
+<P>EndIf</P>
+
+<P>Next</P>
+
+<P>Refresh</P>
+
+<P>Loop</P>
+
+<P><B>Nickname(名称)</B></P>
+
+<P>指定した名称のパイロット、ユニット、アイテムの愛称を返します。同じ名称のユニットとパイロットがある場合にはパイロットの方が優先されます。名称を省略した場合はイベントで選択されているユニットの愛称を返します。</P>
+
+<P><B>Term(用語,ユニットＩＤ)</B></P>
+
+<P>指定した用語の名称を表示します。</P>
+
+<P>(用語の名称は<A HREF="src2nxr.htm">RenameTermコマンド</A>及びユニット用特殊能力「<A HREF="src2kvo.htm">用語名</A>」で変更可能です。)</P>
+
+<P>指定可能な用語の種類についてはRenameTermコマンドの解説を参照して下さい。</P>
+
+<P>ユニットＩＤには用語の表示の対象になるユニットを指定します。</P>
+
+<P>ユニットＩＤを省略した場合、用語名能力による設定は無視されます。</P>
+
+<P><B>例</B> Term("ＨＰ",対象ユニットＩＤ)</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000336.htm" rel="prev">« 前へ<span>正規表現関数</span></a><a href="../html/00000338.htm" rel="next">次へ »<span>更新履歴(2010)</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

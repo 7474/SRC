@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inputコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000233.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000232.htm" title="IncreaseMoraleコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000234.htm" title="IntermissionCommandコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.m_m"></A></P>
+
+<P><B>Inputコマンド</B></P>
+
+<P>プレイヤーによる文字列入力</P>
+
+<P><B>書式</B></P>
+
+<P><B>Input</B> <I>variable</I> <I>message</I> [<I>value</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>variable</I>入力した変数名</P>
+
+<P><I>message</I>ダイアログに表示されるメッセージ</P>
+
+<P><I>value</I>ダイアログに表示される文字列の既定値（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>ダイアログを表示してプレイヤーに文字列入力を行わせます。入力された文字列は変数<I>variable</I> に格納されます(入力がキャンセルされた場合は空文字列が格納される)。ダイアログには<I>message</I> が表示されます。</P>
+
+<P><I>value</I> を指定すると指定した文字列がダイアログの入力欄に表示されます。<I>value</I> を省略した場合は空白が表示されます。</P>
+
+<P><B>Input</B>コマンドを使って下の愛称用変数を設定することでプレイヤーが主人公やその専用機の名称を変更できるようにすることができます。<A HREF="00000067.htm">パイロットデータ</A>、<A HREF="00000070.htm">ユニットデータ</A>の愛称の項目を参照して下さい。</P>
+
+<P>主人公の名前を設定できるようにする場合は愛称だけでなく、名前や名字も設定させ状況に応じて呼び方を変えるとよいでしょう。</P>
+
+<P><B>例</B></P>
+
+<P>#主人公の名称に関するデータを保存するためのグローバル変数を作成</P>
+
+<P>Global 主人公名字</P>
+
+<P>Global 主人公名前</P>
+
+<P>Global 主人公愛称</P>
+
+<P>Talk 美咲</P>
+
+<P>もう知っている人もいると思うけど、今日からみなさんに新しく仲間が加わることになりました。</P>
+
+<P>転校生の……</P>
+
+<P>End</P>
+
+<P>#名字と名前を入力</P>
+
+<P>Input 主人公名字 主人公の名字を入力してください 辰巳</P>
+
+<P>Input 主人公名前 主人公の名前を入力してください 烈</P>
+
+<P>#「$(式)」と文字列結合演算子「&amp;」を使ってメッセージ中にフルネームを表示</P>
+
+<P>Talk 美咲</P>
+
+<P>$(主人公名字 &amp; 主人公名前)くんです。転校して来たばかりで分からないことも多いと思うからみなさん仲良くしてあげてね</P>
+
+<P>Talk 女生徒</P>
+
+<P>はい！ しつも～ん！ 前の学校ではみんなになんて呼ばれてたんですか？</P>
+
+<P>End</P>
+
+<P>#愛称を入力</P>
+
+<P>Input 主人公愛称 主人公の愛称を入力してください 烈</P>
+
+<P>Talk 女生徒</P>
+
+<P>きゃ～ 私だんぜん$(主人公愛称)のファンになっちゃう！</P>
+
+<P>End</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000232.htm" rel="prev">« 前へ<span>IncreaseMoraleコマンド</span></a><a href="../html/00000234.htm" rel="next">次へ »<span>IntermissionCommandコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

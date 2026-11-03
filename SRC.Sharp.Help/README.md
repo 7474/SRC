@@ -78,4 +78,8 @@ https://github.com/pmarsceill/just-the-docs
 
 ## 留意点
 
-- メニューが[menu.yml](src/_data/menu.yml)と[menu.md](src/menu.md)とで二重管理されている。メニュー項目を追加する際には両ファイルを編集すること。
+- メニューは [menu.yml](src/_data/menu.yml)（サイトの左のナビゲーション）を正とする。メニューの頁 [menu.md](src/menu.md) は `python3 tools/help_menu.py` で menu.yml から作るので、手で直さない。CI（`build-help`）は `--check` で、menu.md が合っているか、リンク先の頁があるか、頁の `title` とメニューの名前が同じか（違うと今いる頁の印が付かない）を確かめる。
+- [src/vb](src/vb) は元の SRC（Ver2.2.33）のヘルプのアーカイブ（https://srch.7474.jp/vb/ ）。`python3 tools/vb_help_archive.py` で [SRC/HelpChm](../SRC/HelpChm) から作るので、手で直さない。見た目（Windows 95 のヘルプに似せた枠）と左の欄（目次・キーワード・検索）は [tools/vb_help_archive](../tools/vb_help_archive) の `winhelp.css`・`winhelp.js` を直してから作り直す。front matter が無いため Jekyll はそのまま配信し、SRC# のヘルプの見た目・検索・`srcsharp help` とは独立する。
+- 元の SRC のヘルプ（WinHelp）のポップアップは、次のように扱う。
+  - 本文の中の用語（ユニットＩＤ・気力など 20 語）: SRC# のヘルプでは頁へのリンクのまま、リンクに説明の最初の一文を `title` で付ける（指すと出る）。アーカイブでは押すと小さな窓で説明を出す。
+  - 図の押せる場所（ステータスウインドウ・MapEdit の図）: SRC# のヘルプでは、図に押せる場所（image map）と、図の下の「項目と説明」の表を呼び出し元の頁に置く（説明の頁 `HLP000xxx` は独立した頁にしない）。アーカイブでは押すと小さな窓で説明を出す。押せる場所の座標は `SRC/Help/*.shg` から読む（`tools/vb_help_archive.py` の `hotspots`）。

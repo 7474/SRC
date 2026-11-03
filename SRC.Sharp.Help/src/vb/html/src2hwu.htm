@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>シナリオの構成 - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000130.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000129.htm" title="シナリオを作成する前に" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000131.htm" title="イベントデータ" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.men"></A></P>
+
+<P><B>シナリオの構成</B></P>
+
+<P>シナリオは独立した一つのフォルダに格納されます。フォルダ名はシナリオ名と同一にしておくのがいいでしょう。フォルダ内にはシナリオで使用するデータや画像、イベントファイルのすべてを含む必要があります。多くのシナリオの場合、ファイル構成は以下のようになります。</P>
+
+<P>【シナリオ名のフォルダ】</P>
+
+<P>│</P>
+
+<P>├ イベントファイル各種</P>
+
+<P>│</P>
+
+<P>├── Bitmap</P>
+
+<P>│     ├── Pilot</P>
+
+<P>│     │     └── パイロットアイコン各種</P>
+
+<P>│     │</P>
+
+<P>│     └── Unit</P>
+
+<P>│            └── ユニットアイコン各種</P>
+
+<P>│</P>
+
+<P>└── Data</P>
+
+<P>├── System</P>
+
+<P>│     ├── Exit.eve</P>
+
+<P>│     ├── GameOver.eve</P>
+
+<P>│     ├── alias.txt</P>
+
+<P>│     ├── item.txt</P>
+
+<P>│     └── sp.txt</P>
+
+<P>│</P>
+
+<P>├── 作品名</P>
+
+<P>│     ├── データ各種</P>
+
+<P>：     ：</P>
+
+<P>シナリオによってはさらに</P>
+
+<P><B>Bitmap\Mapフォルダ</B>自作のマップ画像</P>
+
+<P><B>Midiフォルダ</B>自作もしくは添付許可をもらったMidiファイルを格納</P>
+
+<P><B>Soundフォルダ</B>自作の効果音ファイル</P>
+
+<P>などが加わることもあるでしょう。このようにシナリオ用にシナリオのフォルダ内に収納されたデータをローカルデータと呼びます。</P>
+
+<P>画像ファイル、データファイルは開発パックから必要な作品のものをそのままコピーすればＯＫです。もちろん一から自作してもかまいません。自作の方法については<A HREF="src2ks2.htm">データの作成</A>のページを参照してください。</P>
+
+<P>なお、多くの開発パックにおいてはデータファイルはシナリオに合わせて自由に改変可能ですが、画像ファイルを改変したい場合は画像作者の了解が必要であることが普通です。データや画像を改変して使用する場合にはまず開発パックの注意書きをお読みください。また、使用した画像の作者名をシナリオ解説のスペシャルサンクスに表記することが義務付けられている場合もあります。このような使用条件についても開発パックの注意書きに従ってください。</P>
+
+<P>DataフォルダにあるSystemフォルダは特殊なフォルダとなっており、シナリオ中断時やゲームオーバーの際の処理を行うイベントファイルや汎用アイテムデータ、標準スペシャルパワーファイルなどが含まれています。このフォルダの作成方法については<A HREF="src2hv4.htm">Systemフォルダ</A>のページを参照してください。</P>
+
+<P>イベントファイルとして必要なものは以下の２種類のファイルです。</P>
+
+<P><A HREF="src34hh.htm"><B>イベントデータ</B></A>１つのステージ各種のイベントを定義したデータ(.eve)</P>
+
+<P><A HREF="src2hx0.htm"><B>マップデータ</B></A>戦闘時のマップデータ(.map)</P>
+
+<P>イベントデータとマップデータを拡張子だけが異なるファイル名にしておけば、ステージに対応するマップファイルが自動的に表示されます。異なるファイル名にしておいて<A HREF="src7yuf.htm"><B>ChangeMap</B>コマンド</A>でマップを表示する方法もあります。なお、順番が分かりやすいようにファイル名の最後は二桁の数字にしておくことをお勧めします。</P>
+
+<P><B>例</B></P>
+
+<P>シナリオ-01.eveシナリオ-01.map</P>
+
+<P>イベントデータはテキストエディタで、マップデータはMapEdit.exeで作成します。それぞれのデータの作り方については双方の解説を参照してください。</P>
+
+<P><IMG SRC="../images/bm22.gif" ALT="" BORDER=0></P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000129.htm" rel="prev">« 前へ<span>シナリオを作成する前に</span></a><a href="../html/00000131.htm" rel="next">次へ »<span>イベントデータ</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

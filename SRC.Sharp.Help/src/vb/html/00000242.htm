@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lineコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000242.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000241.htm" title="LevelUpコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000243.htm" title="LineReadコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.mbr"></A></P>
+
+<P><B>Lineコマンド</B></P>
+
+<P>線や長方形を描画</P>
+
+<P><B>書式</B></P>
+
+<P><B>Line</B> <I>x1 y1 x2 y2</I> [<I>options</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x1 y1</I>描画する図形の始点(ピクセル)</P>
+
+<P><I>x2 y2</I>描画する図形の終点(ピクセル)</P>
+
+<P><I>options</I>描画方法を示すオプション</P>
+
+<P>描画色と描画タイプ(<B>B</B>または<B>BF</B>)が指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>マップウインドウの(<I>x1</I>,<I>y1</I>)から(<I>x2</I>,<I>y2</I>)に直線または長方形を描きます。描画した図形は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>を実行した時点で表示されます。</P>
+
+<P>マップウィンドウの左上隅の座標は(0,0)、右下隅の座標は(479,479)となっています。(<I>x1</I>,<I>y1</I>)と(<I>x2</I>,<I>y2</I>)はこの範囲で指定して下さい。</P>
+
+<P>ただし、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="00000135.htm">変数</A>のページを参照してください。</P>
+
+<P><I>options</I>にオプションを指定し、描画方法を変更することができます。</P>
+
+<P><B>#rrggbb</B>ＲＧＢ16進(HTMLの色指定と同形式)で描画色を指定します。</P>
+
+<P>RGB関数を使えばＲＧＢ値からＲＧＢ16進は計算することができます。</P>
+
+<P>指定を省略した場合は<A HREF="00000191.htm"><B>Color</B>コマンド</A>で指定した色が使われます</P>
+
+<P><B>B</B>直線の代わりに長方形を描画します。</P>
+
+<P>長方形の中は<A HREF="00000215.htm"><B>FillStyle</B>コマンド</A>と<A HREF="00000214.htm"><B>FillColor</B>コマンド</A>の設定に応じて描画されます。</P>
+
+<P>通常は透過されます。</P>
+
+<P><B>BF</B>直線の代わりに中が塗りつぶされた長方形を描画します。</P>
+
+<P>塗りつぶしに使われる色は線の色と同じです。</P>
+
+<P><B>Line</B>コマンドで描画される直線及び長方形の線の太さは通常1ピクセルです。線をより太くしたい場合は<A HREF="00000204.htm"><B>DrawWidth</B>コマンド</A>を使ってください。</P>
+
+<P><B>例</B></P>
+
+<P>#描画色を(0,255,0)に変更</P>
+
+<P>Color RGB(0,255,0)</P>
+
+<P>#(0,0)から(100,100)に直線を描画</P>
+
+<P>Line 0 0 100 100</P>
+
+<P>#(100,100)と(200,200)を両端とする長方形を描画</P>
+
+<P>Line 100 100 200 200 B</P>
+
+<P>#(200,200)と(300,300)を両端とする塗りつぶされた長方形を描画</P>
+
+<P>#描画色は(255,0,255)</P>
+
+<P>Line 200 200 300 300 RGB(255,0,255) BF</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000241.htm" rel="prev">« 前へ<span>LevelUpコマンド</span></a><a href="../html/00000243.htm" rel="next">次へ »<span>LineReadコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

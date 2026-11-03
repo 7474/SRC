@@ -45,7 +45,7 @@ jobs:
           echo "code=false" >> "$GITHUB_OUTPUT"
         fi
         # ヘルプ（Jekyll のサイト）は、ヘルプかこのワークフローを変えたときだけビルドする
-        if echo "$files" | grep -qE '^(SRC\.Sharp\.Help/|\.github/workflows/CI\.yml$)'; then
+        if echo "$files" | grep -qE '^(SRC\.Sharp\.Help/|tools/help_menu\.py$|\.github/workflows/CI\.yml$)'; then
           echo "help=true" >> "$GITHUB_OUTPUT"
         else
           echo "help=false" >> "$GITHUB_OUTPUT"
@@ -498,6 +498,10 @@ jobs:
         working-directory: SRC.Sharp.Help
     steps:
     - uses: actions/checkout@v7
+
+    # メニューの頁（menu.md）が _data/menu.yml から作ったものと同じか、リンク先の頁があるかを確かめる
+    - name: Check menu
+      run: python3 ../tools/help_menu.py --check
 
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1

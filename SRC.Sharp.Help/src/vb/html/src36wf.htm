@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>破壊イベント - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000144.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000143.htm" title="損傷率イベント" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000145.htm" title="全滅イベント" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.u_o"></A></P>
+
+<P><B>破壊イベント</B></P>
+
+<P>指定したユニットが破壊されたときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>破壊</B> <I>unit</I> : または <B>破壊</B> <I>party</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>破壊されたユニットの<A HREF="src7ysq.htm" class="wh-popup">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm" class="wh-popup">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P>ユニット<I>unit</I> が破壊された時に発生するイベントです。</P>
+
+<P>破壊されたユニットが各陣営の最後のユニットである場合には<B>破壊イベント</B>の後に<A HREF="src7ysn.htm"><B>全滅イベント</B></A>が発生します。ただし<B>破壊イベント</B>中で増援を登場させた場合は別です。</P>
+
+<P><B>破壊イベント</B>は<A HREF="src7ysl.htm"><B>Attack</B>コマンド</A>や<A HREF="src373q.htm"><B>MapAttack</B>コマンド</A>などによるイベント上の戦闘では発生しません。</P>
+
+<P><I>unit</I> を破壊したユニットはシステム変数相手パイロットまたは相手ユニットＩＤを使って参照可能です。</P>
+
+<P><B>破壊イベント</B>が定義されていると破壊されたユニットの脱出メッセージが表示されません。これを防ぐには<B>破壊イベント</B>を常時イベントとして定義してください。</P>
+
+<P><B>破壊イベント</B>はユニットが爆発し、マップ上から取り除かれた後で発生しますが、爆発前に最期の言葉を語らせたい場合や、相手を破壊させずに脱出させたい場合など、<B>破壊イベント</B>の前に発生するユニットの爆発をキャンセルしたい場合には相手ユニットを<A HREF="src2er2.htm"><B>SetStatus</B>コマンド</A>で<B>破壊キャンセル</B>状態にしておいて下さい。破壊キャンセル状態のユニットはＨＰが0になっても爆発せず、マップ上から削除されません。ただし、ＨＰが0になった戦闘後には破壊イベントが発生します。破壊イベント中で<A HREF="src2hv6.htm"><B>Destroy</B>コマンド</A>を使ってイベントでユニットを破壊するか、<A HREF="src7ywa.htm"><B>Escape</B>コマンド</A>で脱出させてください。</P>
+
+<P>マップ攻撃による攻撃で発生した<B>破壊イベント</B>中に攻撃元のユニットを<A HREF="src2c1c.htm"><B>Upgrade</B>コマンド</A>などで変化させた場合、攻撃が途中で継続不能になるためエラーが発生します。このような場合には<A HREF="src7yuc.htm"><B>Cancel</B>コマンド</A>を利用してマップ攻撃による攻撃を途中で中止して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#レウラが乗るユニットが破壊された場合</P>
+
+<P>破壊 レウラ:</P>
+
+<P>Talk レウラ</P>
+
+<P>きゃあああっ！ ロディマスッ！！</P>
+
+<P>Talk ロディマス</P>
+
+<P>レウラ！ 脱出しろ！</P>
+
+<P>Talk レウラ</P>
+
+<P>わ、わかったわ…ごめんなさい、役に立たなくて…</P>
+
+<P>Talk ロディマス</P>
+
+<P>気にするな……それよりも、そろそろ本気で行かせてもらおう！</P>
+
+<P>End</P>
+
+<P>#ロディマスの気力が30上昇</P>
+
+<P>IncreaseMorale ロディマス 30</P>
+
+<P>#「破壊 レウラ」イベントを終了</P>
+
+<P>Exit</P>
+
+<P>#敵ユニットが破壊された場合</P>
+
+<P>破壊 敵:</P>
+
+<P>#敵数が10機より多ければなにもしない</P>
+
+<P>If 敵数 &gt; 10 Exit</P>
+
+<P>#レウラがやられている場合は撤退しない</P>
+
+<P>If Not レウラ Exit</P>
+
+<P>Talk ロディマス</P>
+
+<P>そろそろ潮時だな…… いくぞ、レウラ</P>
+
+<P>Talk レウラ</P>
+
+<P>ええ、わかったわ</P>
+
+<P>End</P>
+
+<P>#敵数が10機未満でレウラがやられていない場合は敵が撤退</P>
+
+<P>Escape 敵</P>
+
+<P>#「破壊 敵」イベントを終了</P>
+
+<P>Exit</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000143.htm" rel="prev">« 前へ<span>損傷率イベント</span></a><a href="../html/00000145.htm" rel="next">次へ »<span>全滅イベント</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

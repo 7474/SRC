@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000166.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000165.htm" title="Arrayコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000167.htm" title="Attackコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.u_n"></A></P>
+
+<P><B>Askコマンド</B></P>
+
+<P>プレイヤーによる選択肢入力</P>
+
+<P><B>書式１</B></P>
+
+<P><B>Ask</B> <I>message</I> [<I>option</I> …]</P>
+
+<P>選択肢１</P>
+
+<P>選択肢２</P>
+
+<P>：</P>
+
+<P><B>End</B></P>
+
+<P><B>書式２</B></P>
+
+<P><B>Ask</B> <I>array message</I> [<I>option</I> …]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>message</I>説明用メッセージ。書式１で、かつ<I>option</I>を省略した場合にのみ省略可</P>
+
+<P><I>array</I>選択肢用配列名</P>
+
+<P><I>option</I>ダイアログの表示の仕方を指定するオプション</P>
+
+<P><B>解説</B></P>
+
+<P>選択肢の一覧からなるダイアログを表示し、プレイヤーの選択を促します。選択された選択肢はシステム変数選択を使うことで参照できます。選択の値は何番目の選択肢が選択されたかを表し、先頭の選択肢が選択されたときに１になります（書式１の場合）。<I>message</I> には選択肢のダイアログに表示される説明文を指定します。</P>
+
+<P><B>書式１</B>の場合、選択肢は直接記述します。選択肢に「$(式)」という文字列を入れることで任意の式の値を表示することもできます。空行の選択肢は表示されないので、表示させたくない選択肢の行を式を使って空行にし、表示する選択肢の数を変えることもできます。この場合、空行を含めた順番の値が選択の値に設定されます。キャンセル時の選択の値は0です。</P>
+
+<P><B>書式２</B>の場合、選択肢は配列を使って指定します。指定した配列<I>message</I> の要素の値が選択肢として使用されます。この時、選択肢の順番は要素を定義した順番で決まります。システム変数選択の値は選択された選択肢に対応する要素のインデックスに設定されます。キャンセル時の選択の値は空文字列""です。</P>
+
+<P>ダイアログの表示方法は<I>option</I>に下の表示オプションを指定することで制御可能です。オプションは複数指定することもできます。</P>
+
+<P><B>通常</B>標準サイズ（高さ６行）のリストを表示します。</P>
+
+<P>選択肢が７個以上でもダイアログを大きくしたくない場合に使用します。</P>
+
+<P><B>拡大</B>拡大サイズのリストを表示します。選択肢が７個以上ある場合はこのオプションを</P>
+
+<P>指定しなくてもダイアログは自動的に拡大されます。</P>
+
+<P><B>連続表示</B>プレイヤーが選択肢を選んだ後もダイアログを閉じません。</P>
+
+<P><B>Ask</B>コマンドを連続使用する時のちらつきを無くしたり、選択結果の確認のために</P>
+
+<P><A HREF="src79ka.htm"><B>Confirm</B>コマンド</A>を併用する場合に用います。</P>
+
+<P><B>キャンセル可</B>マウスの右ボタンクリックを使ったキャンセルを可能にします。</P>
+
+<P><B>終了</B>連続表示したダイアログを閉じます。このオプションを使う場合はイベントコマンド</P>
+
+<P>としてAsk 終了だけを指定し、選択肢及び<B>End</B>行は指定しません。</P>
+
+<P><B>例１</B></P>
+
+<P>Talk ミサキ</P>
+
+<P>じゃ、いくわよ～ ジャ～ンケ～ン ポイッ！</P>
+
+<P>End</P>
+
+<P>#プレイヤーが出す手を選択</P>
+
+<P>ジャンケン:</P>
+
+<P>Ask どれを出す？</P>
+
+<P>グー</P>
+
+<P>チョキ</P>
+
+<P>パー</P>
+
+<P>End</P>
+
+<P>Talk システム</P>
+
+<P>ミサキはチョキを出した！</P>
+
+<P>End</P>
+
+<P>#プレイヤーが出した手に合わせた処理を行う</P>
+
+<P>Switch 選択</P>
+
+<P>Case 1</P>
+
+<P>Talk ミサキ</P>
+
+<P>あっちゃ～ 私の負けね。じゃあこの日の当番は私かあ～</P>
+
+<P>End</P>
+
+<P>Case 2</P>
+
+<P>Talk ミサキ</P>
+
+<P>あいこで～しょっ！</P>
+
+<P>End</P>
+
+<P>#もう一回選択肢のところからやり直し</P>
+
+<P>GoTo ジャンケン</P>
+
+<P>Case 3</P>
+
+<P>Talk ミサキ</P>
+
+<P>へっへ～ん、私の勝ちね。じゃあこの日の当番はシンイチ君と…</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+
+<P><B>例２</B></P>
+
+<P>#まず配列を初期化</P>
+
+<P>UnSet アイテムリスト</P>
+
+<P>#所持しているアイテムの名前を配列に格納</P>
+
+<P>For i = 1 To CountItem()</P>
+
+<P>アイテムリスト[i] = Item(i)</P>
+
+<P>Next</P>
+
+<P>#アイテムの一覧を表示</P>
+
+<P>Ask アイテムリスト "アイテムを選んで下さい"</P>
+
+<P><B>例３</B></P>
+
+<P>#選択のやり直しができるようにループを使う</P>
+
+<P>Do</P>
+
+<P>#選択をやり直した際にダイアログを消さないよう連続表示を使う</P>
+
+<P>Ask "あまったユニットをどうしますか？" 連続表示 キャンセル可</P>
+
+<P>処分して資金にする</P>
+
+<P>取っておく</P>
+
+<P>End</P>
+
+<P></P>
+
+<P>#処分を選んだ場合は再確認</P>
+
+<P>If 選択 = １ Then</P>
+
+<P>Confirm 本当に処分していいですか？</P>
+
+<P>EndIf</P>
+
+<P></P>
+
+<P>#上のConfirmでキャンセルを選んだ場合(選択 = 0)は選択をやり直す</P>
+
+<P>Loop While (選択 = 0)</P>
+
+<P>#選択のダイアログを消去</P>
+
+<P>Ask 終了</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000165.htm" rel="prev">« 前へ<span>Arrayコマンド</span></a><a href="../html/00000167.htm" rel="next">次へ »<span>Attackコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

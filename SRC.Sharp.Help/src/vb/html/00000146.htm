@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>攻撃イベント - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000146.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000145.htm" title="全滅イベント" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000147.htm" title="攻撃後イベント" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.u_q"></A></P>
+
+<P><B>攻撃イベント</B></P>
+
+<P>ユニットが他のユニットに攻撃をかけるときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>攻撃</B> <I>unit1</I> <I>unit2</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit1</I>攻撃元のユニットの<A HREF="src7ysq.htm" class="wh-popup">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm" class="wh-popup">陣営名</A></P>
+
+<P><I>unit2</I>攻撃先のユニットの<A HREF="src7ysq.htm" class="wh-popup">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm" class="wh-popup">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P><I>unit1</I> が<I>unit2</I> に対して攻撃した場合、あるいはその逆の場合に発生するイベントです。<B>攻撃イベント</B>は攻撃の直前に発生します。マップ攻撃の場合にはマップ攻撃の発動の前にまとめて発生し、個々の目標を攻撃する際には発生しません(<A HREF="00000147.htm"><B>攻撃後イベント</B></A>、<A HREF="00000143.htm"><B>損傷率イベント</B></A>、<A HREF="00000144.htm"><B>破壊イベント</B></A>は個々の目標への攻撃直後に発生します)。</P>
+
+<P><I>unit1</I> が <I>unit2</I> に攻撃する場合のほうが優先して適用されるので<I>unit1</I> と<I>unit2</I> の順番を入れ替えた<B>攻撃イベント</B>を作成し、どちらから攻撃をしかけたかによってイベント内容を変えることもできます。ただしこの場合には<A HREF="00000182.htm"><B>ClearEvent</B>コマンド</A>を２回使う必要があるので注意して下さい。</P>
+
+<P>ユニットを<A HREF="src7ysp.htm" class="wh-popup">陣営名</A>で指定した場合に攻撃を仕掛けた、あるいは攻撃を受けるユニットを識別するにはシステム変数対象パイロット、相手パイロットまたは対象ユニットＩＤ、相手ユニットＩＤを使用します。</P>
+
+<P>攻撃イベント終了後の戦闘時に表示されるメッセージを特別なものに変更したい場合は<A HREF="00000297.htm"><B>SetMessage</B>コマンド</A>を使います。</P>
+
+<P><B>攻撃イベント</B>は<A HREF="00000167.htm"><B>Attack</B>コマンド</A>や<A HREF="00000249.htm"><B>MapAttack</B>コマンド</A>などによるイベント上の戦闘では発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#ミカからバッスに攻撃をかけた場合</P>
+
+<P>攻撃 ミカ バッス:</P>
+
+<P>Talk ミカ</P>
+
+<P>いい加減あんたの濃い顔は見飽きたのよ！</P>
+
+<P>Talk バッス</P>
+
+<P>ふはははは！ 何を照れておるか婦女子よ！ 今日こそ我が筋肉の前にひれ伏すがよい！</P>
+
+<P>End</P>
+
+<P>#両方のイベントを消して再度発生しないようにする</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 バッス ミカ"</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+<P>#バッスからミカに攻撃をかけた場合</P>
+
+<P>攻撃 バッス ミカ:</P>
+
+<P>Talk バッス</P>
+
+<P>ふはははは！ また会ったな婦女子よ！</P>
+
+<P>Talk ミカ</P>
+
+<P>ゲッ、いつかの筋肉親父！？</P>
+
+<P>Talk バッス</P>
+
+<P>前回は敗れたが、今度こそ貴女に我が筋肉の素晴らしさを堪能させてやろう！</P>
+
+<P>Talk レン</P>
+
+<P>…とんでもない奴に目をつけられたわね、ミカ…</P>
+
+<P>End</P>
+
+<P>#両方のイベントを消して再度発生しないようにする</P>
+
+<P>ClearEvent</P>
+
+<P>ClearEvent "攻撃 ミカ バッス" </P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000145.htm" rel="prev">« 前へ<span>全滅イベント</span></a><a href="../html/00000147.htm" rel="next">次へ »<span>攻撃後イベント</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

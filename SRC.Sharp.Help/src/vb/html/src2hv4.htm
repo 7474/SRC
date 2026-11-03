@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Systemフォルダ - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000137.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000136.htm" title="関数" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000138.htm" title="マップデータ" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.mdp"></A></P>
+
+<P><B>Systemフォルダ</B></P>
+
+<P><B>Systemフォルダ</B>は特殊なデータフォルダであり、以下のファイルが含まれます。</P>
+
+<P><B>GameOver.eve</B>ゲームオーバー時の処理</P>
+
+<P><B>Exit.eve</B>SRC終了時の処理</P>
+
+<P><B>alias.txt</B>標準エリアスデータ</P>
+
+<P><B>item.txt</B>汎用アイテムデータ</P>
+
+<P><B>sp.txt</B>標準スペシャルパワーデータ</P>
+
+<P>これらのファイルは開発パックに含まれている場合が多いので、まずは開発パックを調べてみてください。ただし、GameOver.eve と Exit.eve は登場キャラをシナリオの登場キャラに合わせるため、自作した方が良いでしょう。</P>
+
+<P>alias.txt 及び sp.txt はVer.1.6系との互換性維持のためにSRC本体に添付されているデータが流用できるようになっています。これらのファイルはSRC本体側の Data\System フォルダに置かれています。</P>
+
+<P>GameOver.eve や Exit.eve を自作する場合は下記の例を参考にして下さい。なお、両ファイルでは処理の最後に<A HREF="src7co7.htm">Quitコマンド</A>を実行させてください。また、GameOver.eveからゲームオーバー時のコンティニューをさせる場合<A HREF="src3771.htm">はQuickLoadコマンド</A>を使用して下さい。</P>
+
+<P>GameOver.eve や Exit.eve を作るのが面倒 or 作り方がよく分からないという場合はこれらのファイルをSystemフォルダ内に置かなくてもかまいません。なくてもゲーム終了時やゲームオーバー時にメッセージが表示されないだけでプレイは可能です(ただしGameOver.eveがないとゲームオーバー時にコンティニューできなくなります)。</P>
+
+<P>############### Exit.eve ###############</P>
+
+<P>プロローグ:</P>
+
+<P>#終了時のBGM</P>
+
+<P>StartBGM End.mid</P>
+
+<P>#用意したメッセージパターンからランダムに１つを選択</P>
+
+<P>Switch Random(2)</P>
+
+<P>Case 1</P>
+
+<P>StartBGM xxxxxxx.mid</P>
+
+<P>Talk ○○</P>
+
+<P>終了時メッセージです</P>
+
+<P>End</P>
+
+<P>Case 2</P>
+
+<P>StartBGM xxxxxx2.mid</P>
+
+<P>StartBGM xxxxxx3.mid</P>
+
+<P>Talk ○○２</P>
+
+<P>またお会いしましょう～</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+
+<P>#SRCを終了</P>
+
+<P>Quit</P>
+
+<P>############### GameOver.eve ###############</P>
+
+<P>プロローグ:</P>
+
+<P>#用意したゲームオーバーメッセージからランダムに一つを選択</P>
+
+<P>Switch Random(2)</P>
+
+<P>Case 1</P>
+
+<P>Talk ○○</P>
+
+<P>ＧＡＭＥ ＯＶＥＲメッセージです</P>
+
+<P>End</P>
+
+<P>Case 2</P>
+
+<P>Talk ○○</P>
+
+<P>ＧＡＭＥ ＯＶＥＲだ</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+
+<P>#コンティニュー時ＢＧＭ</P>
+
+<P>StartBGM Continue.mid</P>
+
+<P>Wait 10</P>
+
+<P>#用意したコンティニューメッセージからランダムに一つを選択</P>
+
+<P>Switch Random(2)</P>
+
+<P>Case 1</P>
+
+<P>Talk ○○</P>
+
+<P>コンテニューする？</P>
+
+<P>End</P>
+
+<P>#プレイヤーにコンティニューするか尋ねる</P>
+
+<P>Ask</P>
+
+<P>ようし！ リベンジだ！！</P>
+
+<P>いや、もういい…</P>
+
+<P>End</P>
+
+<P>PlaySound Type.wav</P>
+
+<P>If 選択 = 1 Then</P>
+
+<P>Talk ○○</P>
+
+<P>そうこなくっちゃ！ それじゃいくよ！</P>
+
+<P>End</P>
+
+<P>#クイックロードしてやり直す</P>
+
+<P>QuickLoad</P>
+
+<P>Endif</P>
+
+<P>Talk ○○</P>
+
+<P>え～っ！ やめちゃうの！？</P>
+
+<P>End</P>
+
+<P>Case 2</P>
+
+<P>Talk ○○２</P>
+
+<P>コンティニューする？</P>
+
+<P>End</P>
+
+<P>#プレイヤーにコンティニューするか尋ねる</P>
+
+<P>Ask</P>
+
+<P>無論コンティニュー</P>
+
+<P>やる気無くなったよ…</P>
+
+<P>End</P>
+
+<P>PlaySound Type.wav</P>
+
+<P>If 選択 = 1 Then</P>
+
+<P>Talk ○○２</P>
+
+<P>お～、やっぱそうでなくっちゃね！ それじゃ頑張ってね～</P>
+
+<P>End</P>
+
+<P>#クイックロードしてやり直す</P>
+
+<P>QuickLoad</P>
+
+<P>Endif</P>
+
+<P>Talk ○○</P>
+
+<P>え？ もう寝ちゃうわけ？ ちょっと早いんじゃない？</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+
+<P>Quit</P>
+
+<P>########################################</P>
+
+<P>GameOver.eve と Exit.eve 内に登場するキャラは、Systemフォルダ内に non_pilot.txt 作って登録しておけば「@」を使って対応する作品のデータをロードしておかなくても済みます。</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000136.htm" rel="prev">« 前へ<span>関数</span></a><a href="../html/00000138.htm" rel="next">次へ »<span>マップデータ</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questionコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000268.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000267.htm" title="PSetコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000269.htm" title="Quitコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.udv"></A></P>
+
+<P><B>Questionコマンド</B></P>
+
+<P>プレイヤーによる制限時間付き選択肢入力</P>
+
+<P><B>書式</B></P>
+
+<P><B>Question</B> <I>time</I> [<I>message</I>]</P>
+
+<P>選択肢１</P>
+
+<P>選択肢２</P>
+
+<P>：</P>
+
+<P><B>End</B></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>time</I>制限時間（0.1秒単位）</P>
+
+<P><I>message</I>説明用メッセージ（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>プレイヤーに時間制限付きで選択を促すためのコマンドです。制限時間は 0.1 ×<I>time</I> 秒です。</P>
+
+<P><B>Question</B>行の後に選択肢を続けて書いていき、最後に<B>End</B>とだけ書かれた行を配置します。選択された選択肢はシステム変数選択を使うことで参照できます。選択の値は先頭の選択肢が選択されたときに1、時間内に選択されなかった時に0になります。</P>
+
+<P>選択肢に「$(式)」という文字列を入れることで任意の値を表示することもできます。空行の選択肢は表示されないので式を利用して任意の数の選択肢を表示することもできます。</P>
+
+<P>選択肢のダイアログの説明行にはデフォルトで「さあ、どうする？」と表示されます。このメッセージを変えたい場合には <I>message</I> に代わりの説明を指定してください。</P>
+
+<P><B>例</B></P>
+
+<P>#制限時間2.5秒で選択肢を表示</P>
+
+<P>Question 25 その声は……</P>
+
+<P>アリスだな？</P>
+
+<P>サラだな？</P>
+
+<P>End</P>
+
+<P>#選択肢を元に処理を行う</P>
+
+<P>Switch 選択</P>
+
+<P>#「アリスだな？」を選んだ場合</P>
+
+<P>Case 1</P>
+
+<P>Talk サラ(不機嫌)</P>
+
+<P>違います。私、サラ</P>
+
+<P>Talk サラ(笑顔)</P>
+
+<P>でも、会ったばっかりだからまだ分かりませんよね</P>
+
+<P>End</P>
+
+<P>#「サラだな？」を選んだ場合</P>
+
+<P>Case 2</P>
+
+<P>Talk サラ(笑顔)</P>
+
+<P>あはは、ばれちゃいました</P>
+
+<P>Talk サラ(てれ笑い)</P>
+
+<P>でも声を覚えて下さってて嬉しいです</P>
+
+<P>End</P>
+
+<P>Incr 信頼度[サラ]</P>
+
+<P>#選択肢を選ばないまま、制限時間が切れた場合</P>
+
+<P>Case 0</P>
+
+<P>Talk サラ(悩み)</P>
+
+<P>ご、ごめんなさい。わたしったら子供みたいなことしちゃって……</P>
+
+<P>End</P>
+
+<P>EndSw</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000267.htm" rel="prev">« 前へ<span>PSetコマンド</span></a><a href="../html/00000269.htm" rel="next">次へ »<span>Quitコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>

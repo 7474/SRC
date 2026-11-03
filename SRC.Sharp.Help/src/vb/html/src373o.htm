@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlayMIDIコマンド - SRC ヘルプ</title>
+<link rel="stylesheet" href="../winhelp.css">
+<script src="../winhelp.js" defer></script>
+</head>
+<body data-root="../" data-current="html/00000263.htm">
+<div class="wh-window">
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>SRC ヘルプ</span></header>
+<div class="wh-buttons" role="toolbar" aria-label="ボタン">
+<button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
+<a class="wh-button" href="../index.html" accesskey="h">表紙(<u>H</u>)</a>
+<button type="button" class="wh-button wh-back" accesskey="b">戻る(<u>B</u>)</button>
+<a class="wh-button wh-prev" href="../html/00000262.htm" title="PlayFlashコマンド" accesskey=",">&lt;&lt;</a>
+<a class="wh-button wh-next" href="../html/00000264.htm" title="PlaySoundコマンド" accesskey=".">&gt;&gt;</a>
+</div>
+<div class="wh-main">
+<aside id="wh-panel" class="wh-panel" aria-label="ヘルプ トピック">
+<div class="wh-tabs" role="tablist">
+<button type="button" role="tab" data-tab="toc" aria-selected="true">目次</button>
+<button type="button" role="tab" data-tab="keywords" aria-selected="false">キーワード</button>
+<button type="button" role="tab" data-tab="search" aria-selected="false">検索</button>
+</div>
+<div class="wh-tabpanel" data-panel="toc"><div class="wh-tree" role="tree" aria-label="目次"></div></div>
+<div class="wh-tabpanel" data-panel="keywords" hidden>
+<label class="wh-label">1 調べたい語の最初の何文字かを入力してください。<input type="search" class="wh-input" data-input="keywords" autocomplete="off"></label>
+<div class="wh-label">2 見たいキーワードをクリックしてください。</div>
+<ul class="wh-list" data-list="keywords"></ul>
+</div>
+<div class="wh-tabpanel" data-panel="search" hidden>
+<label class="wh-label">探したい語を入力してください（空白で区切ると、すべての語を含む頁）。<input type="search" class="wh-input" data-input="search" autocomplete="off"></label>
+<div class="wh-status" data-status="search"></div>
+<ul class="wh-list wh-results" data-list="search"></ul>
+</div>
+</aside>
+<main class="wh-topic">
+<div class="wh-content">
+<P><A NAME=".2.uct"></A></P>
+
+<P><B>PlayMIDIコマンド</B></P>
+
+<P>MIDIファイルを再生(MP3ファイルを再生)</P>
+
+<P><B>書式</B></P>
+
+<P><B>PlayMIDI</B> <I>file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>再生するMIDIファイル名(もしくはMP3ファイル名)。</P>
+
+<P>通常のコマンドの引数と違ってスペースを使用しても「"」で</P>
+
+<P>囲う必要はないが、式を指定する場合は括弧で囲むこと。</P>
+
+<P>リスト形式で指定することで複数のファイルを指定することも可能。</P>
+
+<P><B>解説</B></P>
+
+<P>ＢＧＭ用ファイル<I>file</I> を再生します。<I>file</I> は戦闘用ＢＧＭと同じ<A HREF="src7yuj.htm" class="wh-popup">Midiフォルダ</A>内に置かれている必要があります。</P>
+
+<P><A HREF="src2er8.htm"><B>StartBGM</B>コマンド</A>と異なり<I>file</I> の再生が終了しても再生はリピートされません。</P>
+
+<P>MP3ファイルを再生する場合、MP3ファイルの効果音が再生されるとＢＧＭのMP3ファイルの再生は中断されてしまうので注意して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>増援ユニット出現時に音楽を演奏したいときには</P>
+
+<P>PlayMIDI Enemy Appears.mid</P>
+
+<P>を実行してください。</P>
+
+<P>シナリオにMIDIファイルを添付しない場合、シナリオをプレイする人がシナリオ作者の望むMIDIファイルを持っているかどうかは分かりません。このような場合、<B>PlayMIDI</B>コマンドを列挙して再生するMIDIファイルを複数指定することでMIDIファイルが全く再生されないという危険性を下げることが出来ます。このとき、後ろの<B>PlayMIDI</B>コマンドに指定されたMIDIファイルほど優先度が高くなります。</P>
+
+<P><B>例</B></P>
+
+<P>#「ばっちり.mid」があればそれを再生し、無ければ「間に合わせ.mid」を再生</P>
+
+<P>PlayMIDI 間に合わせ.mid</P>
+
+<P>PlayMIDI ばっちり.mid</P>
+
+<P>また、複数のMIDIファイルをリスト形式で指定するという方法もあります。最初のファイルから検索が行われ、最初に見つかったファイルが再生されます。リスト形式で指定するには全体を「"」で囲み、ファイル名にスペースが使われている場合はファイル名()で囲んでください。</P>
+
+<P><B>例</B></P>
+
+<P>PlayMIDI "ばっちり.mid それなり.mid (かな～り 間に合わせの.mid)"</P>
+</div>
+<nav class="wh-browse" aria-label="前後の頁"><a href="../html/00000262.htm" rel="prev">« 前へ<span>PlayFlashコマンド</span></a><a href="../html/00000264.htm" rel="next">次へ »<span>PlaySoundコマンド</span></a></nav>
+</main>
+</div>
+</div>
+</body>
+</html>
