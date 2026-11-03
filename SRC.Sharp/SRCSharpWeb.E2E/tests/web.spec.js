@@ -1396,6 +1396,34 @@ test('設定でログを画面の下に出し、Trace ではタップの入力�
   await expect(page.locator('#log-panel')).toBeHidden();
 });
 
+test('仮想パッドの B を押し続けると、右ボタンを押し続けたのと同じくメッセージを送る', async ({ page }) => {
+  const talks = [];
+  for (let i = 1; i <= 6; i++) {
+    talks.push('Talk システム', `メッセージ ${i}`, 'End');
+  }
+  const eve = ['プロローグ:', ...talks, 'Ask "送り終えた"', 'OK', 'End', 'Quit', ''].join('\r\n');
+  const name = 'B の長押しのテスト.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: makeZip([{ name: 'bhold/test.eve', data: Buffer.from(eve, 'utf8') }]),
+  });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await openSettings(page);
+  await page.locator('#setting-virtual-pad').check();
+  await closeSettings(page);
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toContain('メッセージ 1');
+
+  // B を押したままにする（離さない）。メッセージを次々に送り、最後の Ask まで進む
+  const box = await page.locator('.vkey-b').boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await expect.poll(() => debugState(page), { timeout: 30 * 1000 }).toContain('送り終えた');
+  await page.mouse.up();
+});
+
 test('仮想パッドをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
   const eve = [
     'プロローグ:',
