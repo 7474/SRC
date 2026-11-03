@@ -9,34 +9,42 @@ toc:
         url: /使用条件
       - page: SRCとの互換性
         url: /SRCとの互換性
-  - title: インストールとアンインストール
+  - title: 遊ぶ
     subfolderitems:
       - page: SRC#のインストール
         url: /SRCSharpのインストール
-      - page: インストールの手順
-        url: /インストールの手順
-      - page: SRCのインストール
-        url: /SRCのインストール
+      - page: SRC#Webの使い方
+        url: /SRCSharpWebの使い方
+      - page: SRC#Avaloniaの使い方
+        url: /SRCSharpAvaloniaの使い方
+      - page: SRC#Formの使い方
+        url: /SRCSharpFormの使い方
+      - page: SRCの起動
+        url: /SRCの起動
       - page: サンプルシナリオをプレイする
         url: /サンプルシナリオをプレイする
-      - page: インストール時のエラーへの対処
-        url: /インストール時のエラーへの対処
       - page: 他のシナリオをプレイする
         url: /他のシナリオをプレイする
-      - page: MIDIファイルのインストール
-        url: /MIDIファイルのインストール
       - page: 更新インストール
         url: /更新インストール
       - page: アンインストール
         url: /アンインストール
-  - title: 操作方法
+  - title: シナリオ・素材の用意
     subfolderitems:
-      - page: SRCの起動
-        url: /SRCの起動
-      - page: SRC#Avaloniaの使い方
-        url: /SRCSharpAvaloniaの使い方
+      - page: SRCのインストール
+        url: /SRCのインストール
+      - page: インストールの手順
+        url: /インストールの手順
+      - page: MIDIファイルのインストール
+        url: /MIDIファイルのインストール
+  - title: 困ったとき
+    subfolderitems:
+      - page: インストール時のエラーへの対処
+        url: /インストール時のエラーへの対処
       - page: ログ
         url: /ログ
+  - title: 操作方法
+    subfolderitems:
       - page: ゲームの流れ
         url: /ゲームの流れ
       - page: 基本操作

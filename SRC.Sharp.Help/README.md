@@ -78,4 +78,4 @@ https://github.com/pmarsceill/just-the-docs
 
 ## 留意点
 
-- メニューが[menu.yml](src/_data/menu.yml)と[menu.md](src/menu.md)とで二重管理されている。メニュー項目を追加する際には両ファイルを編集すること。
+- メニューは [menu.yml](src/_data/menu.yml)（サイトの左のナビゲーション）を正とする。メニューの頁 [menu.md](src/menu.md) は `python3 tools/help_menu.py` で menu.yml から作るので、手で直さない。CI（`build-help`）は `--check` で、menu.md が合っているか、リンク先の頁があるか、頁の `title` とメニューの名前が同じか（違うと今いる頁の印が付かない）を確かめる。

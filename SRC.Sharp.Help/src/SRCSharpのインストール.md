@@ -11,10 +11,12 @@ SRC# の入手と起動の手順です。動く環境は [動作環境](動作�
 
 ## SRC#Web（ブラウザ）
 
-1. https://7474.github.io/SRC/web/ を開きます。
+1. https://src.koudenpa.net/ か https://7474.github.io/SRC/web/ を開きます。
 2. 一覧からシナリオを選ぶか、シナリオと素材の zip を追加して始めます。
     - 追加した zip とセーブデータはブラウザに保存され、次に開いたときも使えます。ブラウザのデータを消すと消えるため、大事なセーブデータはファイルに書き出してください。
     - 音はブラウザの決まりにより、画面を最初にクリック（またはキーを押す）してから鳴ります。
+
+使い方は [SRC#Webの使い方](SRCSharpWebの使い方.md) を見てください。
 
 ## SRC#Avalonia（Windows・macOS・Linux）
 
@@ -42,6 +44,8 @@ MIDI を鳴らすには SoundFont（.sf2）が要ります。SRC#Avalonia には
 2. [Releases](https://github.com/7474/SRC/releases) から `SRCSharpForm.zip` を取って展開します。
 3. 展開した実行ファイル（`SRCSharpForm.exe`）と DLL を、SRC のフォルダにコピーします。
 4. `SRCSharpForm.exe` を実行して、シナリオ（.eve）を選びます（[SRCの起動](SRCの起動.md)）。
+
+使い方は [SRC#Formの使い方](SRCSharpFormの使い方.md) を見てください。
 
 ## シナリオを作る人へ
 
