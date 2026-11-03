@@ -306,11 +306,11 @@ async function start() {
     // シナリオの KeyState(1)・KeyState(2) はボタンが押されている間を調べるため、押した状態を保ってから離す
     const TAP_HOLD_MS = 200;
     const press = (x, y, button, clicks) => {
-        gui.Pointer(2, x, y, 0, 0);
-        gui.Pointer(0, x, y, button, clicks);
+        gui.Pointer(2, x, y, 0, 0, true);
+        gui.Pointer(0, x, y, button, clicks, true);
         globalThis.srcwebTouchClicks = [...(globalThis.srcwebTouchClicks || []), { button, clicks }];
     };
-    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0);
+    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0, true);
     canvas.addEventListener('pointerdown', e => {
         if (e.pointerType === 'mouse') {
             return;
@@ -324,7 +324,7 @@ async function start() {
         resumeAudio();
         canvas.setPointerCapture?.(e.pointerId);
         const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
+        gui.Pointer(2, x, y, 0, 0, true);
         touch = {
             id: e.pointerId,
             startX: e.clientX,
@@ -361,10 +361,10 @@ async function start() {
             clearTimeout(touch.timer);
             hideRing();
             // 触れた位置からマップをドラッグする（マウスの左ボタンのドラッグと同じスクロール。クリックにはしない）
-            gui.Pointer(3, touch.downX, touch.downY, 0, 0);
+            gui.Pointer(3, touch.downX, touch.downY, 0, 0, true);
         }
         if (touch.moved) {
-            gui.Pointer(2, x, y, 0, 0);
+            gui.Pointer(2, x, y, 0, 0, true);
         }
         e.preventDefault();
     });
@@ -376,7 +376,7 @@ async function start() {
         clearTimeout(touch.timer);
         hideRing();
         if (touch.moved) {
-            gui.Pointer(4, touch.x, touch.y, 0, 0);
+            gui.Pointer(4, touch.x, touch.y, 0, 0, true);
         }
         if (touch.held) {
             release(touch.x, touch.y, 2);
@@ -422,7 +422,7 @@ async function start() {
         canvas.focus();
         resumeAudio();
         const [x, y] = position(e);
-        gui.Pointer(0, x, y, e.button, e.detail || 1);
+        gui.Pointer(0, x, y, e.button, e.detail || 1, false);
         e.preventDefault();
     });
     canvas.addEventListener('mouseup', e => {
@@ -431,7 +431,7 @@ async function start() {
             return;
         }
         const [x, y] = position(e);
-        gui.Pointer(1, x, y, e.button, 0);
+        gui.Pointer(1, x, y, e.button, 0, false);
         e.preventDefault();
     });
     canvas.addEventListener('mousemove', e => {
@@ -439,7 +439,7 @@ async function start() {
             return;
         }
         const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
+        gui.Pointer(2, x, y, 0, 0, false);
     });
     canvas.addEventListener('contextmenu', e => e.preventDefault());
     canvas.addEventListener('wheel', e => {

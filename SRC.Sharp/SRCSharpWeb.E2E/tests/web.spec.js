@@ -1193,6 +1193,40 @@ test.describe('タッチ向けの画面', () => {
 test.describe('タッチ操作', () => {
   test.use({ hasTouch: true });
 
+  test('マップをタップするとそのマスにカーソルを置き、仮想パッドで続けて選べる', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    // 「戦闘開始」のメッセージを送り、味方フェイズにする
+    let shown = false;
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        shown = true;
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return shown && s.message === undefined && s.locked === false;
+    }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+    await openSettings(page);
+    await page.locator('#setting-virtual-pad').check();
+    await closeSettings(page);
+    // 味方ユニット（6,6）の左隣（5,6）をタップした（指が隣のマスに当たった）
+    const s = await screenState(page);
+    const box = await page.locator('#screen').boundingBox();
+    const scale = box.width / 720;
+    await page.locator('#screen').tap({ position: { x: ((5 - s.mapX + 7) * 32 + 16) * scale, y: ((6 - s.mapY + 7) * 32 + 16) * scale } });
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([5, 6]);
+    // 仮想パッドの ▶ で 1 マス直し、A で選ぶ
+    const tapKey = async area => {
+      const b = await page.locator('.vkey-' + area).boundingBox();
+      await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
+    };
+    await tapKey('right');
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([6, 6]);
+    await tapKey('a');
+    await expect.poll(async () => (await screenState(page)).menu?.items ?? []).toContain('移動');
+  });
+
   test('タップで左クリック、長押しで右クリックになる', async ({ page }) => {
     await open(page);
     await page.getByRole('button', { name: 'battle-basic' }).click();

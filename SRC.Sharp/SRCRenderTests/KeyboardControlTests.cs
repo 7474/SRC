@@ -210,5 +210,97 @@ namespace SRCRender.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void TouchTap_PlacesMapCursor_AndKeysContinueFromIt()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    void Press(ScreenKey key)
+                    {
+                        gui.KeyPressed(key);
+                        runner.Sync();
+                    }
+
+                    (int x, int y) Cursor()
+                    {
+                        WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                        var rect = state.MapCursor.Value;
+                        return (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top));
+                    }
+
+                    // 味方ユニット（6,6）の左隣のマスをタップした（指が隣のマスに当たった）
+                    float px = gui.MapToPixelX(5) + 16;
+                    float py = gui.MapToPixelY(6) + 16;
+                    gui.PointerMoved(px, py, touch: true);
+                    gui.PointerPressed(px, py, SRCCore.GuiButton.Left, 1, touch: true);
+                    gui.PointerReleased(px, py, SRCCore.GuiButton.Left);
+                    runner.Sync();
+                    // 当たったマスにカーソルが出る（何も無いマスなので、ほかには何も起きない）
+                    Assert.AreEqual((5, 6), Cursor());
+                    Assert.IsNull(state.Menu);
+
+                    // 十字キーで 1 マス直して、A（Enter）で選ぶ
+                    Press(ScreenKey.Right);
+                    Assert.AreEqual((6, 6), Cursor());
+                    Press(ScreenKey.Enter);
+                    WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
+                    CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
+                    Press(ScreenKey.Escape);
+                    WaitUntil(() => state.Menu == null, "メニューの取り消し");
+
+                    // マウスの操作ではカーソルを消す（これまでどおり）
+                    gui.PointerMoved(px, py);
+                    WaitUntil(() => state.MapCursor == null, "マップカーソルを消す");
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Enter_WithoutMapCursor_ShowsCursorFirst()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    // 味方ユニット（6,6）にポインタを置いてから離した（カーソルは出ていない）
+                    gui.PointerMoved(gui.MapToPixelX(6) + 16, gui.MapToPixelY(6) + 16);
+                    runner.Sync();
+                    Assert.IsNull(state.MapCursor);
+
+                    // 1 回目の A（Enter）はカーソルを出すだけ
+                    gui.KeyPressed(ScreenKey.Enter);
+                    runner.Sync();
+                    WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                    var rect = state.MapCursor.Value;
+                    Assert.AreEqual((6, 6), (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top)));
+                    Assert.IsNull(state.Menu);
+
+                    // 2 回目でそのマスを選ぶ
+                    gui.KeyPressed(ScreenKey.Enter);
+                    runner.Sync();
+                    WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
+                    CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
     }
 }

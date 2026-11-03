@@ -300,9 +300,9 @@ namespace SRCSharpWeb
             g.PointerReleased(x, y, button);
         }
 
-        /// <summary>kind: 0 押した、1 離した、2 移動</summary>
+        /// <summary>kind: 0 押した、1 離した、2 移動、3 ドラッグの開始、4 ドラッグの終わり。touch はタッチの操作か（タップしたマスにマップカーソルを置く）</summary>
         [JSExport]
-        public static Task Pointer(int kind, double x, double y, int button, int clicks)
+        public static Task Pointer(int kind, double x, double y, int button, int clicks, bool touch)
         {
             var b = button == 2 ? GuiButton.Right : GuiButton.Left;
             var fx = (float)x;
@@ -310,7 +310,7 @@ namespace SRCSharpWeb
             switch (kind)
             {
                 case 0:
-                    inputs.Add(g => g.PointerPressed(fx, fy, b, Math.Max(1, clicks)));
+                    inputs.Add(g => g.PointerPressed(fx, fy, b, Math.Max(1, clicks), touch));
                     break;
                 case 1:
                     inputs.Add(g => g.PointerReleased(fx, fy, b));
@@ -323,7 +323,7 @@ namespace SRCSharpWeb
                     inputs.Add(g => g.EndMapDrag());
                     break;
                 default:
-                    inputs.Add(g => g.PointerMoved(fx, fy));
+                    inputs.Add(g => g.PointerMoved(fx, fy, touch));
                     break;
             }
             return Task.CompletedTask;

@@ -274,9 +274,20 @@ namespace SRCRender
         /// <summary>
         /// 画面上でポインタが押された。座標は画面（ScreenLayout）のピクセル座標。
         /// </summary>
-        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1)
+        /// <param name="touch">
+        /// タッチの操作か（SRC#Web）。マップをタップしたら、そのマスにマップカーソルを置く。
+        /// 指はマスより大きく隣のマスに当たりやすいため、カーソルで当たったマスを見せ、続けて十字キー・A で直せるようにする
+        /// </param>
+        public void PointerPressed(float x, float y, GuiButton button, int clickCount = 1, bool touch = false)
         {
-            HideKeyCursorOnPointer();
+            if (touch)
+            {
+                HideKeyPointerOnTouch();
+            }
+            else
+            {
+                HideKeyCursorOnPointer();
+            }
             if (button == GuiButton.Right)
             {
                 isRightButtonDown = true;
@@ -354,6 +365,10 @@ namespace SRCRender
             {
                 var mx = PixelToMapX((int)x);
                 var my = PixelToMapY((int)y);
+                if (touch)
+                {
+                    PlaceKeyCursorOnTouch(mx, my);
+                }
                 if (button == GuiButton.Left)
                 {
                     // ドラッグによるマップのスクロールの開始
@@ -474,9 +489,13 @@ namespace SRCRender
 
         private (int x, int y) lastHoverCell;
 
-        public void PointerMoved(float x, float y)
+        /// <param name="touch">タッチの操作か（SRC#Web）。タッチではマップカーソルを消さない（PointerPressed）</param>
+        public void PointerMoved(float x, float y, bool touch = false)
         {
-            HideKeyCursorOnPointer();
+            if (!touch)
+            {
+                HideKeyCursorOnPointer();
+            }
             MouseX = x;
             MouseY = y;
             UpdateTooltip();
@@ -586,6 +605,12 @@ namespace SRCRender
                     else if (IsMapOperable && keyCursor != null)
                     {
                         ClickKeyCursor(GuiButton.Left);
+                    }
+                    else if (IsMapOperable)
+                    {
+                        // カーソルが出ていなければ、まず出す（最後にポインタを置いたマス、無ければ表示の中心）。
+                        // 何も起きないように見えないよう、次の Enter でそのマスを選ぶ
+                        MoveKeyCursor(0, 0);
                     }
                     else if (IsKeyPointerOperable && keyPointer != null)
                     {
@@ -769,6 +794,31 @@ namespace SRCRender
             finally
             {
                 keyClicking = false;
+            }
+        }
+
+        /// <summary>タップしたマスにマップカーソルを置く（マップの外なら消す）</summary>
+        private void PlaceKeyCursorOnTouch(int x, int y)
+        {
+            if (Map == null || !State.ShowMap || !Map.IsInside(x, y))
+            {
+                keyCursor = null;
+            }
+            else
+            {
+                keyCursor = new KeyCursorCell(x, y);
+            }
+            game.Post(Present);
+        }
+
+        /// <summary>タッチを使ったら、クリック待ちのキー操作のポインタを消す（マップカーソルは PlaceKeyCursorOnTouch が置く）</summary>
+        private void HideKeyPointerOnTouch()
+        {
+            keyOperating = false;
+            if (keyPointer != null)
+            {
+                keyPointer = null;
+                game.Post(Present);
             }
         }
 
