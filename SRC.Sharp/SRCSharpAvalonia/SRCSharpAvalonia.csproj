@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>$(SrcSharpTargetFramework)</TargetFramework>
     <Nullable>disable</Nullable>
     <RootNamespace>SRCSharpAvalonia</RootNamespace>
     <AssemblyName>SRCSharpAvalonia</AssemblyName>
