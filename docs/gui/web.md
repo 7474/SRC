@@ -268,14 +268,15 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 ゲームはシナリオのフォルダ（.NET のメモリ上のファイルシステム）にセーブデータ（.srcs・.srcq）を書く。プレイ中は、ゲームがファイルを書き終えたときの通知（SRCCore の `IFileSystem.FileWritten`）を受け、書き込まれたセーブデータを UI のスレッドで IndexedDB に保存する（`SaveSync`）。フォルダは走査しない。シナリオを開くときに保存しておいたものをフォルダに戻し、「セーブデータから再開」に並べる。書き出し（ダウンロード）・読み込み・削除もここで行う。
 
-### 診断表示
+### 入力のトレース
 
-URL に `?debug` を付けて開くと（例: `https://7474.github.io/SRC/web/?debug`）、画面の左上に次のものを出す（`wwwroot/js/srcweb.js` の `debugOverlay`）。実機で操作が効かないときに、パソコンにつながなくてもスクリーンショットで状況を伝えられるようにするためのもの。表示はタップを受けない（`pointer-events: none`）。
+ログのレベルが Trace のとき（URL の `?log=Trace`、またはシナリオ選択の画面の「設定」の「ログ」）、入力をカテゴリ `SRCSharpWeb.Input` でコンソールに出す（`wwwroot/js/srcweb.js` の `inputTrace`）。実機で操作が効かないときの調べに使う。
 
-- ゲームの状態（`WebInterop.DebugState` の実行中の行・GUI のロック・カーソル・メニューなど）
-- 指が触れたままと扱っているタッチ（`touch`）、操作の種類（`data-input`）、フォーカスのある要素
-- `devicePixelRatio`・Visual Viewport の大きさと拡大率・画面（canvas）の位置と大きさ
-- 直近の入力。ブラウザから届いたもの（`pointerdown`・`pointercancel`・`touchstart` など）と、ゲームに渡したもの（`gui.Pointer`・`gui.Key` など）
+- ブラウザから届いた入力（`pointerdown`・`pointerup`・`pointercancel`・`lostpointercapture`・`touchstart` など）。`pointerdown` には、指が触れたままと扱っているタッチ・操作の種類（`data-input`）・フォーカス・`devicePixelRatio`・Visual Viewport を添える
+- ゲームに渡した入力（`gui.Pointer`・`gui.Key`・`gui.Wheel`・`gui.TouchChoose`。マウスの移動は除く）
+- 押した 0.3 秒後のゲームの状態（`WebInterop.DebugState`）
+
+Android の Chrome のコンソールは、パソコンと USB でつないだリモートデバッグで見る（[Remote debug Android devices](https://developer.chrome.com/docs/devtools/remote-debugging)）。
 
 ## 外部のコンテンツ源
 
