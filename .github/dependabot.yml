@@ -46,7 +46,12 @@ updates:
   package-ecosystem: github-actions
   schedule:
     interval: daily
-# VS Code 拡張・SRC#Web の E2E・データビューアの E2E の npm。CI でビルド・テストしている（#1352）
+# VS Code 拡張（Open VSX への公開に使う ovsx を含む）・SRC#Web の E2E・データビューアの E2E の npm。CI でビルド・テストしている（#1352）。
+# 対象にしないもの:
+# - SRC.Sharp/SRCDataViewer/Npm（データビューアの CSS を作る sass・bulma など）。手元で作った app.css をコミットしていて、
+#   CI では動かさないため、更新しても確かめられない。CSS を作り直すときに人が上げる
+# - SRC.Sharp/SRCDataLinter/Dockerfile の土台のイメージ（mcr.microsoft.com/dotnet/*:10.0-noble）。.NET の版の付いた
+#   動くタグで、パッチは公開のたびに取り込まれる。.NET のメジャーを上げるときに、ほかのプロジェクトと一緒に人が上げる
 - directories:
   - /SRC.Sharp/SRCSharpVSCode/
   - /SRC.Sharp/SRCSharpWeb.E2E/
