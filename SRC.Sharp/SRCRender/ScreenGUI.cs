@@ -608,9 +608,9 @@ namespace SRCRender
                     }
                     else if (IsMapOperable)
                     {
-                        // カーソルが出ていなければ、まず出す（最後にポインタを置いたマス、無ければ表示の中心）。
-                        // 何も起きないように見えないよう、次の Enter でそのマスを選ぶ
+                        // カーソルが出ていなければ、最後にポインタを置いたマス（無ければ表示の中心）に出して、そのまま選ぶ
                         MoveKeyCursor(0, 0);
+                        ClickKeyCursor(GuiButton.Left);
                     }
                     else if (IsKeyPointerOperable && keyPointer != null)
                     {
@@ -637,6 +637,11 @@ namespace SRCRender
                     }
                     else if (IsMapOperable)
                     {
+                        // カーソルが出ていなければ、Enter と同じマスに出して、どこを右クリックしたかを見せる
+                        if (keyCursor == null)
+                        {
+                            MoveKeyCursor(0, 0);
+                        }
                         ClickKeyCursor(GuiButton.Right);
                     }
                     else if (IsKeyPointerOperable && keyPointer != null)
@@ -811,10 +816,14 @@ namespace SRCRender
             game.Post(Present);
         }
 
-        /// <summary>タッチを使ったら、クリック待ちのキー操作のポインタを消す（マップカーソルは PlaceKeyCursorOnTouch が置く）</summary>
+        /// <summary>
+        /// タッチを使ったら、クリック待ちのキー操作のポインタを消す（マップカーソルは PlaceKeyCursorOnTouch が置く）。
+        /// タッチではマウスのように項目の上にポインタを置けないので、キーで開いたときと同じく、メニュー・リストは先頭の項目を選んだ状態で開く。
+        /// 続けて仮想パッドの A を 1 回押せば選べる
+        /// </summary>
         private void HideKeyPointerOnTouch()
         {
-            keyOperating = false;
+            keyOperating = true;
             if (keyPointer != null)
             {
                 keyPointer = null;

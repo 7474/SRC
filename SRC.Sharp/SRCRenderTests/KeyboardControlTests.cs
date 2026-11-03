@@ -258,6 +258,18 @@ namespace SRCRender.Tests
                     Press(ScreenKey.Escape);
                     WaitUntil(() => state.Menu == null, "メニューの取り消し");
 
+                    // ユニットをタップして開いたメニューも先頭を選んでいて、A を 1 回押せば選べる
+                    float ux = gui.MapToPixelX(6) + 16;
+                    float uy = gui.MapToPixelY(6) + 16;
+                    gui.PointerMoved(ux, uy, touch: true);
+                    gui.PointerPressed(ux, uy, SRCCore.GuiButton.Left, 1, touch: true);
+                    gui.PointerReleased(ux, uy, SRCCore.GuiButton.Left);
+                    runner.Sync();
+                    WaitUntil(() => state.Menu != null, "タップで開いたユニットのコマンドのメニュー");
+                    Assert.AreEqual(0, state.Menu.Highlight);
+                    Press(ScreenKey.Escape);
+                    WaitUntil(() => state.Menu == null, "メニューの取り消し");
+
                     // マウスの操作ではカーソルを消す（これまでどおり）
                     gui.PointerMoved(px, py);
                     WaitUntil(() => state.MapCursor == null, "マップカーソルを消す");
@@ -267,7 +279,7 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
-        public void Enter_WithoutMapCursor_ShowsCursorFirst()
+        public void Enter_WithoutMapCursor_ShowsCursorAndSelects()
         {
             using (var workspace = new ScenarioWorkspace())
             {
@@ -285,19 +297,14 @@ namespace SRCRender.Tests
                     runner.Sync();
                     Assert.IsNull(state.MapCursor);
 
-                    // 1 回目の A（Enter）はカーソルを出すだけ
-                    gui.KeyPressed(ScreenKey.Enter);
-                    runner.Sync();
-                    WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
-                    var rect = state.MapCursor.Value;
-                    Assert.AreEqual((6, 6), (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top)));
-                    Assert.IsNull(state.Menu);
-
-                    // 2 回目でそのマスを選ぶ
+                    // 1 回の A（Enter）で、そのマスにカーソルを出して選ぶ
                     gui.KeyPressed(ScreenKey.Enter);
                     runner.Sync();
                     WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
                     CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
+                    WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                    var rect = state.MapCursor.Value;
+                    Assert.AreEqual((6, 6), (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top)));
                     Assert.IsNull(runner.Error);
                 }
             }
