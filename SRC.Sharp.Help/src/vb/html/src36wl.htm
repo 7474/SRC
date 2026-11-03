@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>進入イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.u_u"></A></P>
+
+<P><B>進入イベント</B></P>
+
+<P>ユニットが特定の地点に進入したときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>進入</B> <I>unit x y</I> : または  <B>進入</B> <I>unit terrain</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><I>x y</I>ユニットが進入した座標（左上隅が(1,1)）</P>
+
+<P><I>terrain</I>ユニットが進入した地形の名称</P>
+
+<P><B>解説</B></P>
+
+<P>(<I>x</I>,<I>y</I>)のポイントに<I>unit</I> が進入した場合に発生するイベントです。マップの左上隅の座標が(1,1)になります。</P>
+
+<P>ユニットが進入した地点がマップの端に位置するときには<B>進入イベント</B>に続いて<A HREF="src7ysr.htm"><B>脱出イベント</B></A>が発生します。</P>
+
+<P><A HREF="src373j.htm"><B>Move</B>コマンド</A>等を使ってイベントでユニットを移動させた場合、<B>進入イベント</B>は発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#敵が(4,4)の地点に進入</P>
+
+<P>進入 敵 4 4:</P>
+
+<P>Talk エリック</P>
+
+<P>よーし、敵拠点を制覇だ！ ざまあねえな！</P>
+
+<P>End</P>
+
+<P>#ゲームオーバー</P>
+
+<P>GameOver</P>
+
+</BODY>
+</HTML>

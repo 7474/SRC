@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>パイロット情報関数</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.ndv"></A></P>
+
+<P><B>パイロット情報関数</B></P>
+
+<P><B>Level(パイロット名)</B></P>
+
+<P>パイロットのレベルを返します。パイロットが存在しなければ 0 になります。</P>
+
+<P><B>Morale(パイロット名)</B></P>
+
+<P>パイロットの<A HREF="src7co3.htm">気力</A>を返します。</P>
+
+<P><B>Plana(パイロット名)</B></P>
+
+<P>パイロットの霊力値を返します。式の左辺値としても使用可能なので代入文「=」を使って霊力値を設定することもできます。</P>
+
+<P><B>例</B> ジェイの霊力を10にする</P>
+
+<P>Plana(ジェイ) = 10</P>
+
+<P><B>Relation(パイロット名１,パイロット名２)</B></P>
+
+<P><A HREF="src2er1.htm"><B>SetRelation</B>コマンド</A>で設定されたパイロット１のパイロット２に対する信頼度を返します。信頼度が設定されていない場合は 0 が返されます。</P>
+
+<P><B>Skill(パイロット名, 特殊能力名)</B></P>
+
+<P>パイロットが持っている指定したパイロット用特殊能力のレベルを返します。パイロットがその能力を持っていなければ0を返します。特殊能力名は別名では指定できません。</P>
+
+<P><B>SP(パイロット名)</B></P>
+
+<P>パイロットのＳＰ値を返します。式の左辺値としても使用可能なので代入文「=」を使ってＳＰ値を設定することもできます。</P>
+
+<P><B>例</B> ジェイのＳＰを30減らす</P>
+
+<P>SP(ジェイ) = SP(ジェイ) - 30</P>
+
+</BODY>
+</HTML>

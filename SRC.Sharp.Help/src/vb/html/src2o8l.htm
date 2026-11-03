@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>弾数に関する属性</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.oeu"></A></P>
+
+<P><B>弾数に関する属性</B></P>
+
+<P><B>共</B>L数字</P>
+
+<P>弾薬共有武器であることを示します。この種の武器を使用するとそのユニットが持つ同じ属性レベルの弾薬共有武器の弾数は全て減少します。レベル指定をしていない場合はレベル指定がない武器の弾数が減少します。減少する弾数はその武器の最大弾数によって決まります。なお、同じ武器に複数の「共」指定をすることはできません。</P>
+
+<P><B>例</B> 最大弾数が2の武器を使うと最大弾数が8の武器の弾数は4減少する</P>
+
+<P><B>斉</B></P>
+
+<P>全ての弾薬制武器による一斉発射を表します。上の弾薬共有攻撃「<B>共</B>」の場合と異なり、「斉」属性を持つ武器を使った時にのみ弾数の同期化が行われます(「共」の場合は指定がされているどの武器を使っても同期化が行われる)。</P>
+
+<P>なお、斉属性武器を使用した際には武器の残弾数のみが減少し、アビリティの残り使用回数は減少しません。</P>
+
+<P><B>例</B> 最大弾数が2の「斉」武器を使うと全ての武器の弾数がそれぞれ最大弾数の半分だけ減少する</P>
+
+<P><B>永</B></P>
+
+<P>永続武器であることを示します。切り払いや迎撃されない限り弾数が減少しません。</P>
+
+<P>マップ攻撃の場合、切り払いや迎撃されると弾数が減少すると同時にそれ以降の攻撃がキャンセルされます。</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>分離イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.nev"></A></P>
+
+<P><B>分離イベント</B></P>
+
+<P>ユニットが特定の形態から分離したとき発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>分離</B> <I>unit name</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>またはユニット名</P>
+
+<P><I>name</I>分離前の形態の名称</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> が<I>name</I> から分離した後に発生するイベントです。分離・パーツ分離の際に発生しますが、パーツ分離の場合は手動で分離を行った場合にのみ発生します。戦闘によりユニットが破壊されて強制的にパーツ分離が発生した際は、攻撃後イベントで攻撃を受けたユニット名をチェックするなどして判定して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#ジェイの乗るオメガバスターが分離</P>
+
+<P>分離 ジェイ オメガバスター:</P>
+
+<P>Talk ブラック将軍</P>
+
+<P>む！ 奴が分離した？</P>
+
+<P>なるほど…… 長時間の合体は無理ということか</P>
+
+<P>よし、全機攻撃に移れ！ この機を逃すな！！</P>
+
+<P>End</P>
+
+<P>#待機中の敵ユニットが参戦</P>
+
+<P>ChangeMode 敵 通常</P>
+
+<P>#イベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

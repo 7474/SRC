@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>使用後イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME="1kdtlbi"></A></P>
+
+<P><B>使用後イベント</B></P>
+
+<P>ユニットが特定の武器やアビリティ、スペシャルパワー、召喚解除を使用した後に発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>使用後</B> <I>unit device</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><I>device</I>ユニットが使用した武器、アビリティ、スペシャルパワー名または召喚解除</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> が<I>device</I> を使用した後に発生するイベントです。<I>device</I> が武器の場合、イベントは<A HREF="src36wi.htm"><B>攻撃後イベント</B></A>の前に発生します。ただし、<A HREF="src2ks5.htm">サポートアタック</A>で使われた武器に対しては<B>使用後イベント</B>は発生しません。<B>使用後イベント</B>はそのユニットが生存していないと発生しないため、戦闘によりユニットが破壊された場合はたとえ <I>device</I> を使っていても<B>使用後イベント</B>は発生しません。</P>
+
+<P>使用する前にイベントを起こす場合は<A HREF="src79ig.htm"><B>使用イベント</B></A>を使用してください。</P>
+
+<P><B>例</B></P>
+
+<P>#サラがラグナロクを使用した戦闘後</P>
+
+<P>使用後 サラ ラグナロク:</P>
+
+<P>#リリィが生き残っている場合はリリィのメッセージを表示</P>
+
+<P>If リリィ Then</P>
+
+<P>Talk リリィ</P>
+
+<P>な、なにいいっ！！</P>
+
+<P>End</P>
+
+<P>EndIf</P>
+
+<P>Talk サラ</P>
+
+<P>つ、使っちゃった……</P>
+
+<P>Talk ヒル</P>
+
+<P>そ、そいつは伝説の禁呪……</P>
+
+<P>End</P>
+
+<P>#イベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

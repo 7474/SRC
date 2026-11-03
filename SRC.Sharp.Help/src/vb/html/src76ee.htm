@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>リスタート</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME="1kdtkcf"></A></P>
+
+<P><B>リスタート</B></P>
+
+<P>ステージをスタートイベント時からやり直します。ステージを中断セーブデータから再開していない場合にのみ使用可能です。</P>
+
+<P>リスタートするとクイックセーブするまでクイックロードは使えなくなります。</P>
+
+<P>リスタート用のセーブデータとしてシナリオフォルダの「_リスタート.src」が使われます。従ってこのファイルを削除するとリスタートが出来なくなるので注意して下さい。</P>
+
+<P><A HREF="src373l.htm">イベントコマンド<B>Option</B></A>でデバッグモードにしている場合はリスタートの際にイベントデータファイルの再読み込みが行われます。これにより修正したイベントデータをすぐに確かめてみることができます。(ただし、戦闘アニメ及びスペシャルパワーアニメ表示用インクルードファイルとシナリオフォルダのLib\include.eveで読み込まれたファイルは再読み込みの対象外になります)</P>
+
+<P>なお、マップ上に直接画像を描画しているシナリオの場合、リスタートを使うとマップ上に描画された画像が正しく表示されない事があります。(シナリオ側で<A HREF="src2icx.htm">再開イベント</A>を使って画像を再描画する必要があるため)</P>
+
+</BODY>
+</HTML>

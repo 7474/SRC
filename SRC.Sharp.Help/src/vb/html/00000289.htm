@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>RestoreEventコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.m_p"></A></P>
+
+<P><B>RestoreEventコマンド</B></P>
+
+<P>イベントラベルを復活</P>
+
+<P><B>書式</B></P>
+
+<P><B>RestoreEvent</B> <I>label</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>label</I>復活させるイベントラベル名（「:」は不要）</P>
+
+<P><B>解説</B></P>
+
+<P><A HREF="00000182.htm"><B>ClearEvent</B>コマンド</A>で消去したイベントラベルを復活させます。</P>
+
+<P>プロローグイベントやスタートイベントでイベントラベルを消去し、特定の条件を満たしたときに<B>RestoreEvent</B>コマンドでイベントラベルを復活させることで、条件を満たした場合にのみ会話コマンドや新規ユニットコマンドを表示させることが可能になります。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>ラベル名は必ず「"」で括っておいてください。</P>
+
+<P><B>例</B></P>
+
+<P>#3ターン目の味方フェイズの開始時</P>
+
+<P>ターン 3 味方:</P>
+
+<P>Talk 司会者</P>
+
+<P>さあ、ショータイムの始まりです！</P>
+
+<P>End</P>
+
+<P>#霞のユニットコマンドラベルを復活させ、ユニットコマンド「隠し芸」を使用可能にする</P>
+
+<P>RestoreEvent "ユニットコマンド 隠し芸 霞"</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

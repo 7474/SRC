@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>ReplacePilotコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME="1kdtlch"></A></P>
+
+<P><B>ReplacePilotコマンド</B></P>
+
+<P>パイロットを入れ替え</P>
+
+<P><B>書式</B></P>
+
+<P><B>ReplacePilot</B> <I>pilot1 pilot2</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>pilot1</I>入れ替え前のパイロットの名称</P>
+
+<P><I>pilot2</I>入れ替え後のパイロットの名称</P>
+
+<P><B>解説</B></P>
+
+<P><I>pilot1</I> を<I>pilot2</I> と入れ替えます。レベル、経験値などの各値は入れ替え前のものと一致するよう設定されます。パイロットがユニットに乗っていた場合は自動的にパイロットの乗せ換えが行われます。</P>
+
+<P><B>ReplacePilot</B>コマンドは<I>pilot1</I> の削除と<I>pilot2</I> の作成を自動的に行います。<I>pilot1</I> を<A HREF="00000282.htm"><B>RemovePilot</B>コマンド</A>で消去したり<I>pilot2</I> を<A HREF="00000261.htm"><B>Pilot</B>コマンド</A>で作成しておく必要はありません。逆に<I>pilot2</I> があらかじめ作成されているとエラーになるので注意して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk おしし仮面</P>
+
+<P>人呼んで正義の使者おしし仮面。その正体は……</P>
+
+<P>Talk ドラン</P>
+
+<P>無敵の剣士ドラン、ただいま参上！</P>
+
+<P>End</P>
+
+<P>#パイロット「ドラン(おしし仮面)」を「ドラン＝ロラン」と入れ替える</P>
+
+<P>ReplacePilot ドラン(おしし仮面) ドラン＝ロラン</P>
+
+</BODY>
+</HTML>

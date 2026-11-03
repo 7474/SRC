@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>Upgradeコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.l.p"></A></P>
+
+<P><B>Upgradeコマンド</B></P>
+
+<P>ユニットを別のユニットに入れ替え</P>
+
+<P><B>書式</B></P>
+
+<P><B>Upgrade</B> [<I>unit1</I>] <I>unit2</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit1</I>ユニットを変更するユニットのユニット名称または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>メインパイロット名ではありません</P>
+
+<P><I>unit2</I>変換先のユニット名称</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit1</I> を<I>unit2</I> と入れ替えます。<A HREF="src2ks4.htm">ユニットランク</A>は元のランクのままです。ＨＰ、ＥＮ、弾薬は全快します。パイロットの乗り換えは自動で行われます。出撃中のユニットに対しても有効です。</P>
+
+<P><B>Upgrade</B>コマンドを使ってイベントでユニットをグレードアップすることができます。</P>
+
+<P><B>例</B> Upgrade 龍神機 龍神機改</P>
+
+<P>また、出撃中のユニットに対して<B>Upgrade</B>コマンドを使うことで、ＲＰＧのボスに見られるような戦闘中に複数の形態に進化する敵を表現することもできます。なお、このような処理がやりやすいように、破壊されたユニットに対して<B>Upgrade</B>コマンドを使った場合はユニットがその場で復活したと見なします。</P>
+
+<P><B>例</B></P>
+
+<P>#宇宙怪獣ギルガスの破壊時</P>
+
+<P>破壊 宇宙怪獣ギルガス:</P>
+
+<P>#宇宙怪獣ギルガスが第一形態の場合</P>
+
+<P>If Unit() = "宇宙怪獣ギルガス(第一形態)" Then</P>
+
+<P>#ギルガスを第二形態に変化させて復活させる</P>
+
+<P>Upgrade 宇宙怪獣ギルガス(第二形態)</P>
+
+<P>Talk 烈</P>
+
+<P>な！？ 復活しやがった！！</P>
+
+<P>Talk 速人</P>
+
+<P>しかも、進化してやがるぜ…… 気をつけろ！</P>
+
+<P>End</P>
+
+<P>EndIf</P>
+
+<P>#イベントの終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

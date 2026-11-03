@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>RemovePilotコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.udr"></A></P>
+
+<P><B>RemovePilotコマンド</B></P>
+
+<P>パイロットを削除</P>
+
+<P><B>書式</B></P>
+
+<P><B>RemovePilot</B> <I>pilot</I> [<I>option</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>pilot</I>削除するパイロットの名称または愛称</P>
+
+<P><I>option</I>ユニット削除の表示方法を指定（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>pilot</I> を削除します。<I>pilot</I> がユニットに乗っており、かつそのユニットのメインパイロットである場合はそのユニットとそのユニットに乗っている他のパイロットも削除されます。ユニットを削除したくない場合にはあらかじめ<A HREF="src3704.htm"><B>GetOff</B>コマンド</A>を使って<I>pilot</I> をユニットから降ろして下さい。</P>
+
+<P><I>pilot</I> を省略した場合にはデフォルトユニットの<A HREF="src7ysq.htm">メインパイロット名</A>が指定されたものと見なされます。</P>
+
+<P><B>RemovePilot</B>コマンドでユニットをマップ上から削除した際に画面更新をキャンセルしたい場合は<I>option</I>に「非同期」を指定して下さい。非同期オプションを使って削除したユニットは<A HREF="src79m2.htm"><B>Refresh</B>コマンド</A>等で画面更新が行われた際に画面から消去されます。</P>
+
+<P><B>RemovePilot</B>コマンドで削除したパイロット・ユニットはそのステージが終了した時点で初めてデータ中から削除されます。このため<B>RemovePilot</B>コマンドを実行した直後に削除したパイロット・ユニットを使ってもエラーにはならないので注意してください。</P>
+
+<P><B>例</B></P>
+
+<P>RemovePilot レイ</P>
+
+</BODY>
+</HTML>

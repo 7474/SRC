@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>リスト処理関数</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.ndo"></A></P>
+
+<P><B>リスト処理関数</B></P>
+
+<P>複数の要素が空白と括弧で区切られた文字列をリストと呼びます。SRCではリストを扱うための関数が用意されています。</P>
+
+<P><B>List(要素１,要素２,……)</B></P>
+
+<P>引数の要素をすべて連結したリストを返します。</P>
+
+<P><B>例</B> List("いちご", "ニンジン", "サンダル") は「いちご ニンジン サンダル」を返す。</P>
+
+<P><B>LLength(リスト)</B></P>
+
+<P>リストの要素数を返します。</P>
+
+<P><B>例</B> LLength("This is a pen.") は 4 を LLength("a (b c) (d (e f))") は 3 を返す。</P>
+
+<P><B>LIndex(リスト,位置)</B></P>
+
+<P>リスト中の指定した位置の要素を返します。（1が先頭の要素）</P>
+
+<P><B>例</B> LIndex("a (b c) (d (e f))", 2) は 「b c」を返す。</P>
+
+<P><B>LSearch(リスト,検索値[,検索開始位置])</B></P>
+
+<P>リスト中の指定した要素の位置を返します。（1が先頭の要素）</P>
+
+<P><B>例</B> LSearch("こぶた たぬき きつね ねこ", "ねこ") は 4 を返す。</P>
+
+</BODY>
+</HTML>

@@ -79,3 +79,4 @@ https://github.com/pmarsceill/just-the-docs
 ## 留意点
 
 - メニューは [menu.yml](src/_data/menu.yml)（サイトの左のナビゲーション）を正とする。メニューの頁 [menu.md](src/menu.md) は `python3 tools/help_menu.py` で menu.yml から作るので、手で直さない。CI（`build-help`）は `--check` で、menu.md が合っているか、リンク先の頁があるか、頁の `title` とメニューの名前が同じか（違うと今いる頁の印が付かない）を確かめる。
+- [src/vb](src/vb) は元の SRC（Ver2.2.33）のヘルプのアーカイブ（https://srch.7474.jp/vb/ ）。`python3 tools/vb_help_archive.py` で [SRC/HelpChm](../SRC/HelpChm) から作るので、手で直さない。front matter が無いため Jekyll はそのまま配信し、SRC# のヘルプの見た目・検索・`srcsharp help` とは独立する（検索はアーカイブの中だけを探す。索引は `search.json`）。

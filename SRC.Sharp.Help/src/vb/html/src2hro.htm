@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>Colorコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.mbt"></A></P>
+
+<P><B>Colorコマンド</B></P>
+
+<P>描画色を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>Color</B> <I>rgb</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>rgb</I>描画色のＲＧＢ値</P>
+
+<P><B>解説</B></P>
+
+<P><A HREF="src2hrm.htm"><B>Line</B>コマンド</A>などのコマンドで描画する図形の色を変更するためのコマンドです。ＲＧＢ16進(HTMLの色指定と同形式)で描画色を指定します。RGB関数を使えばＲＧＢ値からＲＧＢ16進を計算することができます。</P>
+
+<P><B>Color</B>コマンドが実行されてない場合、描画色は白(255,255,255)になります。</P>
+
+<P><B>Color</B>コマンドで行った設定はイベント終了時に自動的に解除されます。</P>
+
+<P><B>例</B></P>
+
+<P>#色を変えながら直線を描画</P>
+
+<P>For i = 1 To 255</P>
+
+<P>Color RGB(i, 0, - i)</P>
+
+<P>Line 1 i 255 i</P>
+
+<P>Next</P>
+
+</BODY>
+</HTML>

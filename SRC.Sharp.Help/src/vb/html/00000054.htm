@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>クイックロード</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME="1kdtkcd"></A></P>
+
+<P><B>クイックロード</B></P>
+
+<P>クイックセーブしたデータを使ってやり直します。従ってクイックセーブをしていないと使用できません。</P>
+
+<P>クイックロードすると乱数系列も同時に復元されます。このため、</P>
+
+<P>クイックセーブ =&gt; 戦闘 =&gt; クイックロードしてやり直し</P>
+
+<P>ということをしても戦闘結果は変わりません。スペシャルパワーを使用するなどして戦略を練り直して挑んで下さい。(シナリオによっては<A HREF="00000256.htm">イベントコマンド<B>Option</B></A>で乱数系列を保存しないように変更している場合もあります)</P>
+
+<P>クイックロード用のセーブデータとしてシナリオフォルダの「_クイックセーブ.src」が使われます。従ってこのファイルを削除するとクイックロードが出来なくなるので注意して下さい。</P>
+
+<P><A HREF="00000256.htm">イベントコマンド<B>Option</B></A>でデバッグモードにしている場合はクイックロードの際にイベントデータファイルの再読み込みが行われます。これにより修正したイベントデータをすぐに確かめてみることができます。(ただし、戦闘アニメ及びスペシャルパワーアニメ表示用インクルードファイルとシナリオフォルダのLib\include.eveで読み込まれたファイルは再読み込みの対象外になります)</P>
+
+<P>なお、マップ上に直接画像を描画しているシナリオの場合、クイックロードを使うとマップ上に描画された画像が正しく表示されない事があります。(シナリオ側で<A HREF="00000161.htm">再開イベント</A>を使って画像を再描画する必要があるため)</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>Finishコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.m_q"></A></P>
+
+<P><B>Finishコマンド</B></P>
+
+<P>ユニットの行動を終了させる</P>
+
+<P><B>書式</B></P>
+
+<P><B>Finish</B> [<I>unit</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>行動を終了させるユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>(省略可)</P>
+
+<P><B>解説</B></P>
+
+<P>指定した <I>unit</I> の行動を終了させます。終了されるのは１回分の行動のみなので、２回行動が可能な場合に完全に行動を終了させるにはAction関数を使用して残り行動数の分だけ<B>Finish</B>コマンドを実行して下さい。なお、Action関数を使えば残り行動数を任意の数に設定することが可能です。行動数を増やしたい場合等はそちらを使ってください。</P>
+
+<P><A HREF="src2hm7.htm"><B>ユニットコマンドラベル</B></A>と併用すれば実行後にユニットが行動終了するコマンドを作ることができます。</P>
+
+<P><B>例</B></P>
+
+<P>#舞の乗るユニットのユニットコマンド「隠し芸」を実行した時</P>
+
+<P>ユニットコマンド 隠し芸 舞:</P>
+
+<P>Talk 舞</P>
+
+<P>え～ また隠し芸～ ？</P>
+
+<P>えっ？ 前回は歌ってないだろうって？ あ～もう、仕方ないなあ……</P>
+
+<P>愛の歌、心をこめて歌います</P>
+
+<P>End</P>
+
+<P>#MIDIファイルをPlease Kiss Me Now.midの演奏を開始してから１秒待つ</P>
+
+<P>StartBGM Please Kiss Me Now.mid</P>
+
+<P>Wait 10</P>
+
+<P>Talk 舞</P>
+
+<P>もうあなたを忘れることなんてできない。だからさよならなんて言わないで、もう一度キスしてよ……</P>
+
+<P>End</P>
+
+<P>#舞を行動済みにする</P>
+
+<P>Finish 舞</P>
+
+<P>#一回限りのコマンドにする</P>
+
+<P>ClearEvent</P>
+
+<P>#ユニットコマンドを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

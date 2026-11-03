@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>レベルアップイベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME="1kdtmbe"></A></P>
+
+<P><B>レベルアップイベント</B></P>
+
+<P>指定したユニットのメインパイロットがレベルアップしたときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>レベルアップ</B> <I>unit</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>メインパイロットがレベルアップしたユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P>ユニット<I>unit</I> のメインパイロットがレベルアップしたときに発生するイベントです。メインパイロット以外のパイロットがレベルアップしてもイベントは発生しないので注意して下さい。</P>
+
+<P>レベルアップイベントはスーテージ終了時の残りＳＰボーナスによる経験値収得や、<A HREF="src371x.htm"><B>LevelUp</B>コマンド</A>によるレベルアップでは発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#アリスがレベルアップした</P>
+
+<P>レベルアップ アリス:</P>
+
+<P>Talk アリス</P>
+
+<P>やったあ！ レベルアップ！！</P>
+
+<P>Talk 親切なおじさん</P>
+
+<P>よくがんばったね。おこずかいをあげよう</P>
+
+<P>Suspend</P>
+
+<P>#効果音を鳴らす</P>
+
+<P>PlaySound Sharara.wav</P>
+
+<P>#資金を1000増やす</P>
+
+<P>Money 1000</P>
+
+<P>Talk システム</P>
+
+<P>なぜか資金1000をもらった！</P>
+
+<P>End</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>再開イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.n.q"></A></P>
+
+<P><B>再開イベント</B></P>
+
+<P>中断セーブデータから再開した際にマップの再描画を行うためのイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>再開</B>:</P>
+
+<P><B>解説</B></P>
+
+<P>中断セーブデータからプレイを再開した時に発生するイベントです。マップに直接画像を描画している場合、中断セーブデータからの再開時には描画した画像が消えてしまうため、<B>再開</B>イベントを使って再描画する必要があります。なお、<B>再開</B>イベント実行後には自動的に画面の描画が行われるため、<A HREF="00000259.htm"><B>PaintPicture</B>コマンド</A>を使った後に<A HREF="00000276.htm"><B>Redraw</B>コマンド</A>を使って画面を更新する必要はありません。</P>
+
+<P><B>例</B></P>
+
+<P>#プレイヤーが中断セーブデータからプレイを再開</P>
+
+<P>再開:</P>
+
+<P>#(5,8)の位置に宇宙要塞の画像を描画</P>
+
+<P>PaintPicture SpaceFortress.bmp (32 * (5 - 1)) (32 * (8 - 1)) 透過 背景</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

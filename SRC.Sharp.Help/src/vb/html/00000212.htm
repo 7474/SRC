@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.srcvb-banner{margin:0 0 12px;padding:6px 10px;border:1px solid #c9b46a;background:#fff8dc;color:#333;
+  font:13px/1.6 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif}
+.srcvb-banner a{color:#0645ad;margin-right:12px}
+</style>
+
+
+<TITLE>FadeInコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+<div class="srcvb-banner">元の SRC（Ver2.2.33）のヘルプのアーカイブです。SRC# とは動作が違うところがあります。<br><a href="../index.html">目次・検索</a><a href="https://srch.7474.jp/">SRC# のヘルプ</a><span>SRC © 1997-2012 Kei Sakamoto / Inui Tetsuyuki</span></div>
+
+
+
+<P><A NAME=".2.mbm"></A></P>
+
+<P><B>FadeInコマンド</B></P>
+
+<P>画面をフェードイン</P>
+
+<P><B>書式</B></P>
+
+<P><B>FadeIn</B> [<I>times</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>times</I>フェードインの段階数(省略可能)</P>
+
+<P><B>解説</B></P>
+
+<P>画面をフェードイン(真っ黒な画面から段階的に画像を浮かび上がらせる)します。<A HREF="00000259.htm"><B>PaintPicture</B>コマンド</A>や<A HREF="00000260.htm"><B>PaintString</B>コマンド</A>で画面を描画した後、<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>を使わずに<B>FadeIn</B>コマンドを使用して下さい。</P>
+
+<P><I>times</I> を指定すると指定した段階数でフェードインを行います。省略した場合は10段階でフェードインします。1段階の描画にかかる時間は0.05秒です(描画処理が遅いPCではもっと時間がかかる場合があります)。</P>
+
+<P><B>例</B></P>
+
+<P>#フォントサイズ・種類を変更</P>
+
+<P>Font 24pt Ｐゴシック Regular</P>
+
+<P>#色を変更</P>
+
+<P>Font RGB(80,160,255)</P>
+
+<P>#メッセージを描画</P>
+
+<P>PaintString - 200 A long time ago in a galaxy far,</P>
+
+<P>PaintString far away ....</P>
+
+<P>#フェードイン</P>
+
+<P>FadeIn</P>
+
+<P>#デフォルトのフォント設定に戻しておく</P>
+
+<P>Font</P>
+
+</BODY>
+</HTML>

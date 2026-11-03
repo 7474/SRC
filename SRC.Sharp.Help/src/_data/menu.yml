@@ -765,5 +765,7 @@ toc:
         url: /スペシャルサンクス
   - title: 元の SRC について
     subfolderitems:
+      - page: 元のSRCのヘルプ
+        url: /元のSRCのヘルプ
       - page: ランタイムライブラリのインストール
         url: /ランタイムライブラリのインストール
