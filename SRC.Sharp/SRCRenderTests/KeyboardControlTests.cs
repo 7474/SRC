@@ -358,5 +358,31 @@ namespace SRCRender.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void EscapeHeld_CountsAsRightButtonHeld()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+
+                    // 仮想パッドの B（Esc）を押している間は、右ボタンを押し続けているのと同じ（メッセージを飛ばす）
+                    gui.KeyStateChanged(0x1B, true);
+                    Assert.IsTrue(gui.IsRButtonPressed(true));
+                    gui.KeyStateChanged(0x1B, false);
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+
+                    // ほかのキーは右ボタンにしない
+                    gui.KeyStateChanged(0x0D, true);
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+                    gui.KeyStateChanged(0x0D, false);
+                }
+            }
+        }
     }
 }

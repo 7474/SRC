@@ -1151,13 +1151,28 @@ namespace SRCRender
             }
         }
 
+        /// <summary>Esc（Windows の仮想キーコード。SRC#Web の仮想パッドの B）</summary>
+        private const int VirtualKeyEscape = 0x1B;
+
+        /// <summary>
+        /// 右ボタンを押しているか（押し続けてメッセージ・アニメーションを飛ばす）。
+        /// 右クリックの代わりの Esc（仮想パッドの B）を押している間も、右ボタンを押しているとみなす
+        /// （元の SRC はマウスの右ボタンだけを見る。キー操作だけでも同じく飛ばせるようにする）
+        /// </summary>
         public bool IsRButtonPressed(bool ignore_message_wait = false)
         {
             if (!ignore_message_wait && MessageWait == 0)
             {
                 return true;
             }
-            return isRightButtonDown;
+            if (isRightButtonDown)
+            {
+                return true;
+            }
+            lock (pressedKeys)
+            {
+                return pressedKeys.Contains(VirtualKeyEscape);
+            }
         }
 
         public void LockGUI()
