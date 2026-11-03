@@ -321,6 +321,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Показувати віртуальний геймпад</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Налагодження</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Показувати журнал під екраном</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>З рівнем журналу Trace також записуються дотики, віртуальний геймпад і клавіші.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Копіювати</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Показувати велику панель вибору</value>
   </data>

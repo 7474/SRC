@@ -75,7 +75,7 @@ globalThis.srcwebSetDisplayScale = scale => {
 function applyDisplayScale() {
     const scale = getDisplayScale();
     const width = scale === 'fit' ? '' : `${canvas.width * Number(scale) / (window.devicePixelRatio || 1)}px`;
-    for (const element of [canvas.closest('.screen-wrap'), document.querySelector('.screen-bar')]) {
+    for (const element of [canvas.closest('.screen-wrap'), document.querySelector('.screen-bar'), document.getElementById('log-panel')]) {
         if (element && element.style.width !== width) {
             element.style.width = width;
         }
@@ -92,6 +92,107 @@ function updateScaling() {
     canvas.classList.toggle('pixelated', devicePixels >= canvas.width);
 }
 
+// 画面の下のログ（ブラウザのコンソールの代わり。設定の「ログを画面の下に表示する」で出す。設定は localStorage に残す）。
+// .NET のログは WebLogPanelProvider がため、WebInterop.TakeLogLines で取り出す。JS の入力のトレースもここに出す
+const LOG_PANEL_SETTING = 'srcweb.logPanel';
+const LOG_PANEL_LINES = 500;
+const LOG_PANEL_INTERVAL = 500;
+const logPanel = (() => {
+    const lines = [];
+    let gui = null;
+    let renderRequested = false;
+    const element = () => document.getElementById('log-panel');
+    const visible = () => !(element()?.hidden ?? true);
+    const render = () => {
+        renderRequested = false;
+        const view = document.getElementById('log-lines');
+        if (!view || !visible()) {
+            return;
+        }
+        // 末尾を見ているときだけ、新しい行に合わせてスクロールする
+        const atBottom = view.scrollHeight - view.scrollTop - view.clientHeight < 8;
+        view.textContent = lines.join('\n');
+        if (atBottom) {
+            view.scrollTop = view.scrollHeight;
+        }
+    };
+    const requestRender = () => {
+        if (!renderRequested) {
+            renderRequested = true;
+            requestAnimationFrame(render);
+        }
+    };
+    const append = text => {
+        lines.push(...text.split('\n'));
+        if (lines.length > LOG_PANEL_LINES) {
+            lines.splice(0, lines.length - LOG_PANEL_LINES);
+        }
+        requestRender();
+    };
+    // 出していない間も取り出す（.NET の側にたまり続けないように。行の順もそろう）
+    const poll = async () => {
+        try {
+            const text = gui ? await gui.TakeLogLines() : '';
+            if (text) {
+                append(text);
+            }
+        } catch {
+            // 取り出せなくても続ける
+        } finally {
+            setTimeout(poll, LOG_PANEL_INTERVAL);
+        }
+    };
+    const setVisible = value => {
+        const panel = element();
+        if (panel) {
+            panel.hidden = !value;
+            requestRender();
+        }
+        updateScaling();
+    };
+    return {
+        append,
+        start(wrapped) {
+            gui = wrapped;
+            let saved = false;
+            try {
+                saved = localStorage.getItem(LOG_PANEL_SETTING) === 'on';
+            } catch {
+                // localStorage を使えない
+            }
+            setVisible(saved);
+            document.getElementById('log-clear')?.addEventListener('click', () => {
+                lines.length = 0;
+                requestRender();
+            });
+            document.getElementById('log-copy')?.addEventListener('click', async () => {
+                const text = lines.join('\n');
+                try {
+                    await navigator.clipboard.writeText(text);
+                } catch {
+                    // クリップボードを使えなければ、選んだ状態にして手で写せるようにする
+                    const view = document.getElementById('log-lines');
+                    if (view) {
+                        getSelection()?.selectAllChildren(view);
+                    }
+                }
+            });
+            poll();
+        },
+        get: visible,
+        set(value) {
+            try {
+                localStorage.setItem(LOG_PANEL_SETTING, value ? 'on' : 'off');
+            } catch {
+                // 保存できなくても、この表示の間は切り替える
+            }
+            setVisible(value);
+        },
+    };
+})();
+globalThis.srcwebGetLogPanel = () => logPanel.get();
+globalThis.srcwebSetLogPanel = value => logPanel.set(value);
+
 // 入力のトレース（ログのレベルが Trace のときだけ。URL の ?log=Trace か、設定の「ログ」）。
 // 実機で操作が効かないときに、ブラウザから届いた入力・ゲームに渡した入力・その後のゲームの状態をコンソールに出す
 const inputTrace = (() => {
@@ -104,7 +205,12 @@ const inputTrace = (() => {
         }
         return level.trim().toLowerCase() === 'trace';
     };
-    const write = text => console.debug(`trce: SRCSharpWeb.Input ${text}`);
+    const write = text => {
+        console.debug(`trce: SRCSharpWeb.Input ${text}`);
+        const now = new Date();
+        const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+        logPanel.append(`${time} TRC SRCSharpWeb.Input: ${text}`);
+    };
     const describe = target => {
         if (!(target instanceof Element)) {
             return '?';
@@ -360,6 +466,7 @@ async function start() {
     buildVirtualPad(gui);
     buildTouchUi(gui);
     inputTrace.start(gui);
+    logPanel.start(gui);
 
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
     const loop = async () => {

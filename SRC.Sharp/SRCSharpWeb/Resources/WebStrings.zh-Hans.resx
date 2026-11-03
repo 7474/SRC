@@ -321,6 +321,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>显示虚拟手柄</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>在画面下方显示日志</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>将日志级别设为 Trace 时，也会记录点击、虚拟手柄和按键输入。</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>清除</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>放大显示选择画面</value>
   </data>

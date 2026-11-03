@@ -1323,6 +1323,45 @@ test.describe('タッチ操作', () => {
   });
 });
 
+test('設定でログを画面の下に出し、Trace ではタップの入力も記録する', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // 既定では出さない
+  await expect(page.locator('#log-panel')).toBeHidden();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').check();
+  await page.locator('#setting-log-level').selectOption('Trace');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  // 画面・下のバー・ログが同じ幅でビューポートに収まる
+  const screen = await page.locator('#screen').boundingBox();
+  const panel = await page.locator('#log-panel').boundingBox();
+  expect(Math.abs(screen.width - panel.width)).toBeLessThan(1);
+  expect(panel.y + panel.height).toBeLessThanOrEqual(page.viewportSize().height + 0.5);
+
+  // ゲームの画面を押すと、届いた入力・ゲームに渡した入力・その後のゲームの状態が出る
+  await page.locator('#screen').click({ position: { x: 200, y: 200 } });
+  const lines = page.locator('#log-lines');
+  await expect(lines).toContainText('SRCSharpWeb.Input: gui.Pointer down');
+  await expect(lines).toContainText('SRCSharpWeb.Input: state {');
+  // .NET のログ（Trace のゲームのログ）も出る
+  await expect(lines).toContainText(/ (TRC|DBG|INF) SRCCore/);
+  await page.locator('#log-clear').click();
+  await expect(lines).not.toContainText('gui.Pointer down');
+
+  // 表示の設定は次回も残る
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await restartBattleBasic(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').uncheck();
+  await page.locator('#setting-log-level').selectOption('Information');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeHidden();
+});
+
 test('仮想パッドをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {
   const eve = [
     'プロローグ:',

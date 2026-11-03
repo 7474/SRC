@@ -268,15 +268,19 @@ Web Audio API で鳴らす（`WebSoundPlayer`）。
 
 ゲームはシナリオのフォルダ（.NET のメモリ上のファイルシステム）にセーブデータ（.srcs・.srcq）を書く。プレイ中は、ゲームがファイルを書き終えたときの通知（SRCCore の `IFileSystem.FileWritten`）を受け、書き込まれたセーブデータを UI のスレッドで IndexedDB に保存する（`SaveSync`）。フォルダは走査しない。シナリオを開くときに保存しておいたものをフォルダに戻し、「セーブデータから再開」に並べる。書き出し（ダウンロード）・読み込み・削除もここで行う。
 
-### 入力のトレース
+### 画面の下のログ・入力のトレース
 
-ログのレベルが Trace のとき（URL の `?log=Trace`、またはシナリオ選択の画面の「設定」の「ログ」）、入力をカテゴリ `SRCSharpWeb.Input` でコンソールに出す（`wwwroot/js/srcweb.js` の `inputTrace`）。実機で操作が効かないときの調べに使う。
+ブラウザのコンソールの代わりに、画面（仮想パッド）の下にログを出せる。スマートフォンのように開発者ツールの無いブラウザでも、ログを見て不具合を調べるためのもの。プレイ中の設定の「デバッグ」で、出すかどうか（localStorage の `srcweb.logPanel`）とログのレベルを選ぶ。
+
+- .NET のログは `WebLogPanelProvider`（`WebLogPanel.cs`）が 500 行までため、`srcweb.js` の `logPanel` が `WebInterop.TakeLogLines` で 0.5 秒ごとに取り出す。出すログはコンソールと同じ（レベルの判定は `WebLogging` のフィルター）
+- 出している間は、その高さ（`--log-height`、表示の高さの 30%）の分だけ画面を小さくする（`app.css`）
+- 「コピー」で全体をクリップボードに写し（写せなければ選んだ状態にする）、「クリア」で消す
+
+ログのレベルが Trace のとき、入力もカテゴリ `SRCSharpWeb.Input` で出す（`srcweb.js` の `inputTrace`。コンソールと画面の下のログの両方）。
 
 - ブラウザから届いた入力（`pointerdown`・`pointerup`・`pointercancel`・`lostpointercapture`・`touchstart` など）。`pointerdown` には、指が触れたままと扱っているタッチ・操作の種類（`data-input`）・フォーカス・`devicePixelRatio`・Visual Viewport を添える
 - ゲームに渡した入力（`gui.Pointer`・`gui.Key`・`gui.Wheel`・`gui.TouchChoose`。マウスの移動は除く）
 - 押した 0.3 秒後のゲームの状態（`WebInterop.DebugState`）
-
-Android の Chrome のコンソールは、パソコンと USB でつないだリモートデバッグで見る（[Remote debug Android devices](https://developer.chrome.com/docs/devtools/remote-debugging)）。
 
 ## 外部のコンテンツ源
 

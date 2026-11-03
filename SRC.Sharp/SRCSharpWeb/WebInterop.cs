@@ -336,6 +336,13 @@ namespace SRCSharpWeb
             return Task.CompletedTask;
         }
 
+        /// <summary>画面の下のログに出す行（前に取り出してから増えた分）。行は改行で区切る</summary>
+        [JSExport]
+        public static Task<string> TakeLogLines()
+        {
+            return Task.FromResult(WebLogPanelProvider.Take());
+        }
+
         /// <summary>kind: 0 押した、1 離した、2 フォーカスを失った。keyCode は KeyboardEvent.keyCode（Windows の仮想キーコードと同じ）</summary>
         [JSExport]
         public static Task Key(int kind, int keyCode)
