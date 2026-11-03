@@ -52,12 +52,13 @@ jobs:
     # 作成支援ツール（srcsharp、.NET tool）
     - run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp
 
-    # 一時的な API キーは 1 時間で切れるので、作り終えてから取る。user は nuget.org のユーザー名（メールアドレスではない）
+    # 一時的な API キーは 1 時間で切れるので、作り終えてから取る。
+    # user はパッケージを所有する nuget.org のユーザー名（公開されている名前で、資格情報ではない）
     - name: NuGet login (OIDC)
       id: login
       uses: NuGet/login@v1
       with:
-        user: ${{ secrets.NUGET_USER }}
+        user: koudenpa
 
     # 公開し直すときに、すでに出ているパッケージは飛ばす
     - name: Push
