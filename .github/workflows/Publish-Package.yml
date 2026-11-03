@@ -4,6 +4,13 @@ on:
   push:
     tags:
       - 'v*'
+  # NuGet への公開だけをやり直す（タグの push で失敗したときなど）。指定したタグの版を作って出す。
+  # タグのワークフローを「やり直し」ても、タグの時点のワークフローで動くため、その後に直した公開の仕方は使われない
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '公開し直すタグ（例: v3.5.6）'
+        required: true
 
 jobs:
   # タグ（v3.<マイナー>.<パッチ>）と SRC.Sharp/Directory.Build.props の版、VS Code 拡張の版と CHANGELOG、
@@ -13,37 +20,57 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7
+      with:
+        ref: ${{ inputs.tag || github.ref }}
     - name: Check version and release notes
-      run: python3 tools/release.py check --tag "$GITHUB_REF_NAME"
+      env:
+        TAG: ${{ inputs.tag || github.ref_name }}
+      run: python3 tools/release.py check --tag "$TAG"
 
+  # NuGet には信頼された発行（Trusted Publishing）で出す。長く使える API キーは持たない（docs/operations.md）。
+  # GitHub の OIDC トークンを nuget.org で 1 時間だけ使える API キーに換える（NuGet/login）。
+  # nuget.org の信頼された発行のポリシー: 所有者 7474、リポジトリ SRC、ワークフロー Publish-Package.yml、環境 nuget
+  # https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
   push-nuget-package:
     name: Push Nuget Package to NuGet.org
     needs: check-version
     runs-on: ubuntu-24.04
+    environment: nuget
+    permissions:
+      contents: read
+      id-token: write
     steps:
     - uses: actions/checkout@v7
+      with:
+        ref: ${{ inputs.tag || github.ref }}
     - uses: actions/setup-dotnet@v6
       with:
         dotnet-version: '10.0.x'
 
     - run: dotnet build SRC.Sharp/SRCCore/SRCCore.csproj --configuration Release
-    - run: dotnet nuget push SRC.Sharp/SRCCore/bin/Release/SRCCore.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
-      env:
-        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
-
     - run: dotnet build SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj --configuration Release
-    - run: dotnet nuget push SRC.Sharp/SRCDataLinter/bin/Release/SRCDataLinter.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
-      env:
-        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
-
     # 作成支援ツール（srcsharp、.NET tool）
     - run: dotnet pack SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj --configuration Release -o out/srcsharp
-    - run: dotnet nuget push out/srcsharp/SRCSharpTools.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
+
+    # 一時的な API キーは 1 時間で切れるので、作り終えてから取る。user は nuget.org のユーザー名（メールアドレスではない）
+    - name: NuGet login (OIDC)
+      id: login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
+    # 公開し直すときに、すでに出ているパッケージは飛ばす
+    - name: Push
       env:
-        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
+        NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+      run: |
+        for package in SRC.Sharp/SRCCore/bin/Release/SRCCore.*.nupkg SRC.Sharp/SRCDataLinter/bin/Release/SRCDataLinter.*.nupkg out/srcsharp/SRCSharpTools.*.nupkg; do
+          dotnet nuget push "$package" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        done
 
   release-github-artifacts:
     name: Release artifacts to GitHub
+    if: github.event_name == 'push'
     needs: check-version
     runs-on: windows-2025
     steps:
@@ -70,6 +97,7 @@ jobs:
   # SRC#Web（ブラウザ版）を外部のサイトに置くためのパッケージ（docs/gui/web-hosting.md）
   release-web:
     name: Release SRC#Web package to GitHub
+    if: github.event_name == 'push'
     needs: check-version
     runs-on: ubuntu-24.04
     steps:
@@ -95,6 +123,7 @@ jobs:
 # https://hub.docker.com/repository/docker/koudenpa/srcdatalinter/builds
   push-to-dockerhub:
     name: Push Docker image to Docker Hub
+    if: github.event_name == 'push'
     needs: check-version
     runs-on: ubuntu-24.04
     steps:
