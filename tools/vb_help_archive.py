@@ -164,7 +164,7 @@ def chrome(title, content, root, prev, next, titles, home=False, current=None):
 </head>
 <body data-root="{root}"{f' data-current="{current}"' if current else ""}>
 <div class="wh-window">
-<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>{TITLE}（元の SRC のヘルプのアーカイブ）</span></header>
+<header class="wh-titlebar"><span class="wh-titleicon" aria-hidden="true"></span><span>{TITLE}</span></header>
 <div class="wh-buttons" role="toolbar" aria-label="ボタン">
 <button type="button" class="wh-button wh-topics" aria-controls="wh-panel" aria-expanded="false" accesskey="c">目次(<u>C</u>)</button>
 <a class="wh-button" href="{root}index.html" accesskey="h">表紙(<u>H</u>)</a>
@@ -204,8 +204,8 @@ def chrome(title, content, root, prev, next, titles, home=False, current=None):
 """
 
 
-HOME = f"""<h1>元の SRC のヘルプ（アーカイブ）</h1>
-<p>元の SRC（VB 版、Ver2.2.33）に付いていたヘルプを、ブラウザで読めるようにしたものです。データ・イベントの書き方を元の SRC と比べるときなどに使ってください。</p>
+HOME = f"""<h1>SRC（Simulation RPG Construction）のヘルプ（アーカイブ）</h1>
+<p>SRC（Ver2.2.33）のヘルプを、ブラウザで読めるようにしたものです。</p>
 <p>SRC# とは動作が違うところがあります。SRC# の使い方と、SRC# での動作は <a href="https://srch.7474.jp/">SRC# のヘルプ</a> を見てください。</p>
 <ul>
 <li>「目次」のボタンで、目次・キーワード・検索の欄を出し入れします（広い画面でははじめから出ています）。</li>
