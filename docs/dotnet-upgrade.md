@@ -25,11 +25,12 @@ dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj -p:SrcSharpTargetFramewor
 | 何 | 内容 | 対応 |
 |---|---|---|
 | SRC#Web の SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使い、4.154.0（Emscripten 3.1.34・3.1.56）ではリンクできない（`undefined symbol: saveSetjmp`） | Emscripten 6.0.2 のライブラリが入った 4.156.0 以降を使う。今は 4.156.0-preview.1 を .NET 11 のときだけ使う |
+| SRC#Web が始まらない | .NET 11 RC3 で発行した SRC#Web は、.NET のランタイムが始まり最初の描画もするが、最初の JS の呼び出し（`App.razor` の `OnInitializedAsync` の `srcwebStore.getTheme`）から戻らず「読み込み中」のまま止まる（マルチスレッドの WebAssembly、インタープリター。.NET 10 で同じ手順で発行したものは始まる） | 未解決。RC・正式版で直るかを `dotnet-next.yml` の E2E で見る。直らなければ原因を調べて上流（dotnet/runtime・dotnet/aspnetcore）に報告する |
 | Blazor WebAssembly のパッケージ | `Microsoft.AspNetCore.Components.WebAssembly`（`.DevServer`）は SDK とメジャーをそろえる | .NET 11 のときだけ 11 の版を使う |
 | SRC#Form の WinForms のアナライザー | Designer のファイルに手で書いたメンバー（VB の WithEvents から変換したプロパティ）が WFO3001 のエラーになる | プロパティを `*.Events.cs` に移した（.NET 10 でも同じ動き） |
 | 警告（エラーではない） | SRC#Form の WFO3002（Designer のメンバーの並び、約 100）・WFO2000、SRC#Web・データビューアの BL0016（JS の呼び出しを try/catch で囲む）・BL0012 | 切り替えるときに直すか、理由を書いて抑える |
 
-ほかの Microsoft.Extensions.*・System.* のパッケージは 10 の版のまま .NET 11 で動く。.NET 11 でもユニットテスト・VRT・SRC#Web の E2E は通る。
+ほかの Microsoft.Extensions.*・System.* のパッケージは 10 の版のまま .NET 11 で動く。.NET 11 でもユニットテスト・VRT は通る。SRC#Web の E2E は上の「SRC#Web が始まらない」で通らない。
 
 ## サポートの期間
 
