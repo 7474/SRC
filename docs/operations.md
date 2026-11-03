@@ -98,7 +98,7 @@ flowchart LR
 
 | Secret・設定 | 使うワークフロー | 切れると止まるもの |
 |---|---|---|
-| `NUGET_OLG_API_KEY` | `Publish-Package.yml` | NuGet への公開 |
+| nuget.org の信頼された発行（Trusted Publishing）のポリシー（所有者 `7474`・リポジトリ `SRC`・ワークフロー `Publish-Package.yml`・環境 `nuget`）と、environment `nuget`。nuget.org のユーザー名（`koudenpa`）はワークフローに書く | `Publish-Package.yml`（`push-nuget-package`） | NuGet への公開。API キーは持たず、GitHub の OIDC トークンを 1 時間だけ使える API キーに換える（[信頼された発行](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing)）。期限の切れる Secret は無い |
 | `DOCKER_PASSWORD` | `Publish-Package.yml` | Docker Hub への公開 |
 | environment `vscode-marketplace`（Azure のマネージド ID `mi-src-vscode-publish`、OIDC） | `Publish-VSCode.yml` | Marketplace への公開 |
 | `OVSX_PAT`（任意） | `Publish-VSCode.yml` | Open VSX への公開（無ければ飛ばす） |

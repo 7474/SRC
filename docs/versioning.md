@@ -51,6 +51,8 @@ SRC# のバージョンの付け方と、リリースの手順。リリースの
 
 ジョブは `check-version` の後に、`push-nuget-package`（NuGet）・`release-github-artifacts`（SRC#Form）・`release-web`（SRC#Web）・`push-to-dockerhub`（Docker Hub）が並んで動く。
 
+NuGet へは信頼された発行（Trusted Publishing）で出し、API キーを持たない（[運用の全体像](./operations.md#secrets-と外部サービス)）。NuGet への公開だけが失敗したときは、`Publish-Package.yml` を手動で動かし、`tag` に公開し直すタグ（例: `v3.5.6`）を渡す。NuGet の公開だけをやり直し、すでに出ているパッケージは飛ばす。タグのワークフローの「やり直し」は、タグの時点のワークフローで動くので使わない。
+
 GitHub Pages（データビューア・SRC#Web）は master に入るたびに更新する（開発版）。
 
 ## 開発版
