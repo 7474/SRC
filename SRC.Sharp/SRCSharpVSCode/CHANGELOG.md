@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.6
+
+- The version follows the SRC# library version (srcsharp 0.5.6).
+- Update vscode-languageclient to 11.0.0 and build with TypeScript 7. No changes to the extension's features.
+- srcsharp 0.5.6 includes the fixes listed in the SRC# 3.5.6 release notes (for example, data fields padded with full-width spaces and the crash with additional pilots).
+
 ## 0.5.5
 
 - The version follows the SRC# library version (srcsharp 0.5.5).

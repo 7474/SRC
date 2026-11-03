@@ -88,6 +88,6 @@ git push origin v<版>
 | `Publish-Avalonia.yml` | SRC#Avalonia の OS ごとの zip |
 | `Publish-VSCode.yml` | VS Code 拡張（Marketplace・Open VSX・.vsix） |
 
-終わったら、リリースの頁で本文と添付（`SRCSharpForm.zip`・`SRCSharpWeb.zip`・`SRCSharpAvalonia-<RID>.zip` 4 つ・`src-vscode-<版>.vsix`・`LICENSE`）を確かめる。
+終わったら、リリースの頁で本文と添付（`SRCSharpForm.zip`・`SRCSharpWeb.zip`・`SRCSharpAvalonia-<RID>.zip` 5 つ・`src-vscode-<版>.vsix`・`LICENSE`）を確かめる。
 
 案内をリリースの後に直すときは、`docs/releases/v<版>.md` を直す PR を作り、GitHub のリリースの本文にも同じものを貼る。
