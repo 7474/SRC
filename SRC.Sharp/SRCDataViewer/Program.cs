@@ -18,7 +18,17 @@ namespace SRCDataViewer
 
             // https://github.com/dotnet/aspnetcore/issues/24461#issuecomment-667068936
             var js = (IJSInProcessRuntime)builder.Services.BuildServiceProvider().GetRequiredService<IJSRuntime>();
-            var startupParams = js.Invoke<string[]>("getStartupParams");
+            string[] startupParams;
+            try
+            {
+                startupParams = js.Invoke<string[]>("getStartupParams");
+            }
+            catch (JSException ex)
+            {
+                // 起動の引数（E2E のテストの印）が読めなければ、普通の起動にする
+                Console.Error.WriteLine($"起動の引数を読めません: {ex.Message}");
+                startupParams = Array.Empty<string>();
+            }
 
             builder.Services
                 .AddScoped(sp => new HttpClient

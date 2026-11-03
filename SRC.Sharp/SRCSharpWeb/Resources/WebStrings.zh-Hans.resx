@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>初始化失败：{0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>无法访问浏览器存储：{0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>操作失败：{0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>剧本已结束。</value>
   </data>

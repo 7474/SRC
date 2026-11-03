@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Ошибка инициализации: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Не удалось получить доступ к хранилищу браузера: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Не удалось выполнить операцию: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>Сценарий завершён.</value>
   </data>

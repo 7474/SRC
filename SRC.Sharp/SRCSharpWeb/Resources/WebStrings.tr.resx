@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Başlatma başarısız: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Tarayıcı depolamasına erişilemedi: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>İşlem başarısız oldu: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>Senaryo sona erdi.</value>
   </data>

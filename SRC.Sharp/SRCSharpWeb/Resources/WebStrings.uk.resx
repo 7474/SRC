@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Помилка ініціалізації: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Не вдалося отримати доступ до сховища браузера: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Не вдалося виконати операцію: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>Сценарій завершено.</value>
   </data>

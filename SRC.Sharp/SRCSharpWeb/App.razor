@@ -634,7 +634,7 @@ else
         var text = addressText?.Trim() ?? "";
         if (Uri.TryCreate(text, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
         {
-            await JS.InvokeVoidAsync("srcwebDocs.openExternal", uri.ToString());
+            await TryInvokeVoidAsync("srcwebDocs.openExternal", uri.ToString());
             addressText = viewing?.Path;
             return;
         }
@@ -737,7 +737,7 @@ else
         get
         {
             var close = new DocumentMenuItem(L["IeClose"], CloseDocumentAsync);
-            var selectAll = new DocumentMenuItem(L["IeSelectAll"], () => JS.InvokeVoidAsync("srcwebDocs.selectAll", "doc-view").AsTask());
+            var selectAll = new DocumentMenuItem(L["IeSelectAll"], () => TryInvokeVoidAsync("srcwebDocs.selectAll", "doc-view"));
             if (!Browsing)
             {
                 yield return new DocumentMenu("file", L["IeMenuFile"], new[] { close });
@@ -792,7 +792,7 @@ else
         systemMenuOpen = !systemMenuOpen;
         if (systemMenuOpen)
         {
-            displayScale = await JS.InvokeAsync<string>("srcwebGetDisplayScale");
+            displayScale = await TryInvokeAsync("srcwebGetDisplayScale", displayScale);
         }
     }
 
@@ -833,9 +833,9 @@ else
     private async Task OpenSettingsAsync()
     {
         systemMenuOpen = false;
-        displayScale = await JS.InvokeAsync<string>("srcwebGetDisplayScale");
-        virtualPad = await JS.InvokeAsync<bool>("srcwebGetVirtualPad");
-        touchUi = await JS.InvokeAsync<bool>("srcwebGetTouchUi");
+        displayScale = await TryInvokeAsync("srcwebGetDisplayScale", displayScale);
+        virtualPad = await TryInvokeAsync("srcwebGetVirtualPad", virtualPad);
+        touchUi = await TryInvokeAsync("srcwebGetTouchUi", touchUi);
         // ブラウザに保存した設定（ゲームの中の設定変更で変えたものを含む）を出す
         gameSettings = WebGameSettings.FromJson((savedGameSettings ?? gameSettings).ToJson());
         settingsOpen = true;
@@ -850,19 +850,19 @@ else
     private async Task SetDisplayScaleAsync(string scale)
     {
         displayScale = scale;
-        await JS.InvokeVoidAsync("srcwebSetDisplayScale", scale);
+        await TryInvokeVoidAsync("srcwebSetDisplayScale", scale);
     }
 
     private async Task SetVirtualPadAsync(ChangeEventArgs e)
     {
         virtualPad = e.Value is bool value && value;
-        await JS.InvokeVoidAsync("srcwebSetVirtualPad", virtualPad);
+        await TryInvokeVoidAsync("srcwebSetVirtualPad", virtualPad);
     }
 
     private async Task SetTouchUiAsync(ChangeEventArgs e)
     {
         touchUi = e.Value is bool value && value;
-        await JS.InvokeVoidAsync("srcwebSetTouchUi", touchUi);
+        await TryInvokeVoidAsync("srcwebSetTouchUi", touchUi);
     }
 
     /// <summary>ゲームの設定のチェックボックス。変えたときの処理は一度だけ作る（描画のたびに作ると、続けて押したときに古い処理に届いて捨てられる）</summary>
@@ -914,7 +914,7 @@ else
         change(gameSettings);
         var settings = WebGameSettings.FromJson(gameSettings.ToJson());
         savedGameSettings = settings;
-        await JS.InvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, settings.ToJson());
+        await TryInvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, settings.ToJson());
         var running = session;
         running?.Game.Post(() =>
         {
@@ -956,14 +956,14 @@ else
     private async Task ToggleFullscreenAsync()
     {
         systemMenuOpen = false;
-        await JS.InvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
+        await TryInvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
         await FocusScreenAsync();
     }
 
     // メニューを閉じたらキー入力をゲームの画面へ戻す
     private async Task FocusScreenAsync()
     {
-        await JS.InvokeVoidAsync("srcwebStore.focus", "screen");
+        await TryInvokeVoidAsync("srcwebStore.focus", "screen");
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -980,12 +980,12 @@ else
         {
             bindDocument = false;
             documentRef ??= DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("srcwebDocs.bind", "doc-view", documentRef);
+            await TryInvokeVoidAsync("srcwebDocs.bind", "doc-view", documentRef);
         }
         if (focusDocument && viewing != null)
         {
             focusDocument = false;
-            await JS.InvokeVoidAsync("srcwebStore.focus", "doc-view");
+            await TryInvokeVoidAsync("srcwebStore.focus", "doc-view");
         }
     }
 
@@ -1026,11 +1026,12 @@ else
             {
                 await LoadCatalogsAsync(urls);
             }
+            // 追加したアーカイブを読めなかったこと（RefreshArchivesAsync が出す）は残す
+            status = null;
             if (site.UserArchivesEnabled)
             {
                 await RefreshArchivesAsync();
             }
-            status = null;
             mode = Mode.Menu;
 
             // URL・サイトの設定で指定されたシナリオをすぐに始める
@@ -1186,7 +1187,15 @@ else
     private async Task RemoveCatalogAsync(string url)
     {
         userCatalogs.Remove(url);
-        await JS.InvokeVoidAsync("srcwebStore.saveCatalogs", userCatalogs);
+        try
+        {
+            await JS.InvokeVoidAsync("srcwebStore.saveCatalogs", userCatalogs);
+        }
+        catch (JSException ex)
+        {
+            // 一覧からは消す（次に開いたときは残っている）
+            ShowStorageError(ex, "カタログの一覧を保存できません");
+        }
         catalogs.RemoveAll(x => x.Url == url);
     }
 
@@ -1195,7 +1204,18 @@ else
     private async Task RefreshArchivesAsync()
     {
         // サイトの設定で追加できない種類のもの（以前に追加したもの）は出さない
-        archives = (await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list"))
+        List<StoredArchive> stored;
+        try
+        {
+            stored = await JS.InvokeAsync<List<StoredArchive>>("srcwebStore.list") ?? new List<StoredArchive>();
+        }
+        catch (JSException ex)
+        {
+            // 追加したアーカイブを出さずに、ほかの操作は続けられるようにする
+            ShowStorageError(ex, "追加したアーカイブの一覧を読めません");
+            stored = new List<StoredArchive>();
+        }
+        archives = stored
             .Where(x => x.Kind == CatalogEntry.KindAsset ? site.UserAssetsEnabled : site.UserScenariosEnabled)
             .ToList();
     }
@@ -1212,7 +1232,11 @@ else
             {
                 overwritten.Add(file.Name);
             }
-            await StoreArchiveAsync(file, file.Name, kind, token);
+            if (!await StoreArchiveAsync(file, file.Name, kind, token))
+            {
+                await RefreshArchivesAsync();
+                return;
+            }
         }
         status = overwritten.Count > 0 ? L["ArchiveOverwritten", string.Join(", ", overwritten)] : null;
         await RefreshArchivesAsync();
@@ -1221,12 +1245,16 @@ else
     /// <summary>追加したアーカイブを、名前と種類はそのままに別の zip に置き換える</summary>
     private Task ReplaceArchiveAsync(InputFileChangeEventArgs e, StoredArchive archive) => RunBusyAsync(async token =>
     {
-        await StoreArchiveAsync(e.File, archive.Name, archive.Kind, token);
+        if (!await StoreArchiveAsync(e.File, archive.Name, archive.Kind, token))
+        {
+            return;
+        }
         status = L["ArchiveOverwritten", archive.Name];
         await RefreshArchivesAsync();
     });
 
-    private async Task StoreArchiveAsync(IBrowserFile file, string name, string kind, CancellationToken token)
+    /// <summary>アーカイブをブラウザに保存する。保存できなければ（容量が足りないなど）画面に出して false</summary>
+    private async Task<bool> StoreArchiveAsync(IBrowserFile file, string name, string kind, CancellationToken token)
     {
         status = L["AddingArchive", file.Name];
         StateHasChanged();
@@ -1234,7 +1262,67 @@ else
         using var buffer = new MemoryStream();
         await stream.CopyToAsync(buffer, token);
         token.ThrowIfCancellationRequested();
-        await JS.InvokeVoidAsync("srcwebStore.put", token, name, buffer.ToArray(), kind);
+        try
+        {
+            await JS.InvokeVoidAsync("srcwebStore.put", token, name, buffer.ToArray(), kind);
+            return true;
+        }
+        catch (JSException ex) when (!token.IsCancellationRequested)
+        {
+            ShowStorageError(ex, "アーカイブを保存できません");
+            return false;
+        }
+    }
+
+    // ── JS の呼び出しの失敗 ──
+    // JS の関数が例外を投げると JSException になる（ブラウザの保存領域が使えない・容量が足りないなど）。
+    // 処理しないと描画が止まり、エラーの帯が出て画面が操作できなくなる（docs/gui/web.md の「JS の呼び出しの失敗」）。
+
+    /// <summary>失敗しても続けてよい JS の呼び出し（表示・フォーカス・設定の保存など）。失敗はログに残し、fallback を返す</summary>
+    private async Task<T> TryInvokeAsync<T>(string identifier, T fallback, params object[] args)
+    {
+        try
+        {
+            return await JS.InvokeAsync<T>(identifier, args);
+        }
+        catch (JSException ex)
+        {
+            WebLogging.Log.LogWarning(ex, "JS の呼び出しに失敗しました {Identifier}", identifier);
+            return fallback;
+        }
+    }
+
+    /// <summary>失敗しても続けてよい JS の呼び出し。失敗はログに残す</summary>
+    private async Task TryInvokeVoidAsync(string identifier, params object[] args)
+    {
+        try
+        {
+            await JS.InvokeVoidAsync(identifier, args);
+        }
+        catch (JSException ex)
+        {
+            WebLogging.Log.LogWarning(ex, "JS の呼び出しに失敗しました {Identifier}", identifier);
+        }
+    }
+
+    /// <summary>ブラウザの保存領域の操作の失敗を画面に出し、ログに残す</summary>
+    private void ShowStorageError(JSException ex, string message)
+    {
+        status = L["StorageFailed", ex.Message];
+        WebLogging.Log.LogError(ex, message);
+    }
+
+    /// <summary>追加したアーカイブの中身。読めなければ IOException（呼び出し元の読み込みの失敗として出す）</summary>
+    private async Task<byte[]> GetStoredArchiveAsync(string name, CancellationToken token)
+    {
+        try
+        {
+            return await JS.InvokeAsync<byte[]>("srcwebStore.get", token, name);
+        }
+        catch (JSException ex) when (!token.IsCancellationRequested)
+        {
+            throw new IOException(ex.Message, ex);
+        }
     }
 
     /// <summary>
@@ -1260,6 +1348,12 @@ else
         {
             status = L["LoadCancelled"];
         }
+        catch (Exception ex)
+        {
+            // ほかで扱っていない失敗。処理しないと描画が止まり、画面が操作できなくなる
+            status = L["OperationFailed", ex.Message];
+            WebLogging.Log.LogError(ex, "処理に失敗しました");
+        }
         finally
         {
             busy = false;
@@ -1281,12 +1375,19 @@ else
         loadCancel.Cancel();
         status = L["LoadCancelled"];
         // 取得中の zip のダウンロードも止める
-        await JS.InvokeVoidAsync("srcwebStore.abortFetches");
+        await TryInvokeVoidAsync("srcwebStore.abortFetches");
     }
 
     private async Task DeleteArchiveAsync(StoredArchive archive)
     {
-        await JS.InvokeVoidAsync("srcwebStore.remove", archive.Name);
+        try
+        {
+            await JS.InvokeVoidAsync("srcwebStore.remove", archive.Name);
+        }
+        catch (JSException ex)
+        {
+            ShowStorageError(ex, "アーカイブを消せません");
+        }
         await RefreshArchivesAsync();
     }
 
@@ -1297,7 +1398,7 @@ else
             return;
         }
         // 年齢の区分があれば、始める前に確かめる（一度「はい」と答えた年齢以下の区分は確かめない）
-        if (site.RatingAgeOf(entry) > 0 && await JS.InvokeAsync<int>("srcwebStore.getRatingConsent") < entry.RatingAge)
+        if (site.RatingAgeOf(entry) > 0 && await TryInvokeAsync("srcwebStore.getRatingConsent", 0) < entry.RatingAge)
         {
             confirmingRating = entry;
             return;
@@ -1313,8 +1414,9 @@ else
         {
             return;
         }
-        var consent = await JS.InvokeAsync<int>("srcwebStore.getRatingConsent");
-        await JS.InvokeVoidAsync("srcwebStore.setRatingConsent", Math.Max(consent, entry.RatingAge));
+        // 答えを残せなくても、この回は始める（次はまた確かめる）
+        var consent = await TryInvokeAsync("srcwebStore.getRatingConsent", 0);
+        await TryInvokeVoidAsync("srcwebStore.setRatingConsent", Math.Max(consent, entry.RatingAge));
         await LoadCatalogEntryAsync(entry);
     }
 
@@ -1348,7 +1450,17 @@ else
     /// </summary>
     private async Task<Stream> DownloadAsync(string url, string version, string key, CancellationToken token)
     {
-        await using var archive = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "", key ?? "");
+        IJSStreamReference fetched;
+        try
+        {
+            fetched = await JS.InvokeAsync<IJSStreamReference>("srcwebStore.fetchArchive", token, url, version ?? "", key ?? "");
+        }
+        catch (JSException ex) when (!token.IsCancellationRequested)
+        {
+            // 取得の失敗（ネットワーク・HTTP のエラー）。取り消し（AbortError）と分けるため IOException にし、呼び出し元の読み込みの失敗として出す
+            throw new IOException(ex.Message, ex);
+        }
+        await using var archive = fetched;
         using var source = await archive.OpenReadStreamAsync(long.MaxValue, token);
         return await OpenDownloadAsync(source, archive.Length, token);
     }
@@ -1453,7 +1565,7 @@ else
             {
                 status = L["ExtractingAsset", archive.Name];
                 StateHasChanged();
-                var data = await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name);
+                var data = await GetStoredArchiveAsync(archive.Name, token);
                 await Task.Run(() => ScenarioArchive.ExtractAsset(data, null, token), token);
             }
         }
@@ -1466,7 +1578,7 @@ else
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await JS.InvokeAsync<byte[]>("srcwebStore.get", token, archive.Name), false), null, null, token);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await GetStoredArchiveAsync(archive.Name, token), false), null, null, token);
     });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>
@@ -1524,14 +1636,23 @@ else
     private async Task RestoreSavesAsync()
     {
         saveSync = new SaveSync(scenarioDir);
-        saves = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId);
-        foreach (var save in saves)
+        try
         {
-            var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
-            if (data != null)
+            saves = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId) ?? new List<StoredSave>();
+            foreach (var save in saves)
             {
-                saveSync.Restore(save.Name, data);
+                var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
+                if (data != null)
+                {
+                    saveSync.Restore(save.Name, data);
+                }
             }
+        }
+        catch (JSException ex)
+        {
+            // 読めたセーブデータまでで続ける（新しく始めることはできる）
+            saves ??= new List<StoredSave>();
+            ShowStorageError(ex, "セーブデータを読めません");
         }
     }
 
@@ -1583,23 +1704,47 @@ else
             using var buffer = new MemoryStream();
             await stream.CopyToAsync(buffer);
             var name = string.IsNullOrEmpty(folder) ? file.Name : folder + "/" + file.Name;
-            await JS.InvokeVoidAsync("srcwebStore.putSave", scenarioId, name, buffer.ToArray());
+            try
+            {
+                await JS.InvokeVoidAsync("srcwebStore.putSave", scenarioId, name, buffer.ToArray());
+            }
+            catch (JSException ex)
+            {
+                ShowStorageError(ex, "セーブデータを保存できません");
+                break;
+            }
         }
         await RestoreSavesAsync();
     });
 
     private async Task ExportSaveAsync(StoredSave save)
     {
-        var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
-        if (data != null)
+        try
         {
-            await JS.InvokeVoidAsync("srcwebStore.download", Path.GetFileName(save.Name), data);
+            var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
+            if (data != null)
+            {
+                await JS.InvokeVoidAsync("srcwebStore.download", Path.GetFileName(save.Name), data);
+            }
+        }
+        catch (JSException ex)
+        {
+            ShowStorageError(ex, "セーブデータを書き出せません");
         }
     }
 
     private async Task DeleteSaveAsync(StoredSave save)
     {
-        await JS.InvokeVoidAsync("srcwebStore.removeSave", scenarioId, save.Name);
+        try
+        {
+            await JS.InvokeVoidAsync("srcwebStore.removeSave", scenarioId, save.Name);
+        }
+        catch (JSException ex)
+        {
+            // ブラウザから消せなければ、ゲームのフォルダのものも残す（一覧と食い違わないように）
+            ShowStorageError(ex, "セーブデータを消せません");
+            return;
+        }
         var path = Path.Combine(scenarioDir, save.Name);
         if (File.Exists(path))
         {
@@ -1660,7 +1805,7 @@ else
         session.GUI.ErrorShown += message => host.ReportError("SRC.ErrorMessage", message, "");
         WebInterop.Attach("screen", host, session);
         // ブラウザに保存したゲームの設定を重ねる（srcs.json はブラウザを閉じると消えるため）
-        var saved = WebGameSettings.FromJson(await JS.InvokeAsync<string>("srcwebStore.getSetting", WebGameSettings.StorageKey));
+        var saved = WebGameSettings.FromJson(await TryInvokeAsync<string>("srcwebStore.getSetting", null, WebGameSettings.StorageKey));
         if (saved != null)
         {
             saved.ApplyTo(session.SRC.SystemConfig);
@@ -1685,7 +1830,7 @@ else
                     if (!current.SameAs(savedGameSettings))
                     {
                         savedGameSettings = current;
-                        InvokeAsync(() => JS.InvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, current.ToJson()).AsTask());
+                        InvokeAsync(() => TryInvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, current.ToJson()));
                     }
                 }
             }
@@ -1707,7 +1852,7 @@ else
         }
         // ゲームスレッドは止められないため、ページを読み込み直す
         await SyncSavesAsync();
-        await JS.InvokeVoidAsync("location.reload");
+        await TryInvokeVoidAsync("location.reload");
     }
 
     /// <summary>表示言語を保存し、読み込み直して反映する（カルチャは起動時にしか変えられない）</summary>
@@ -1722,26 +1867,26 @@ else
     private async Task ChangeInputModeAsync(ChangeEventArgs e)
     {
         inputMode = e.Value?.ToString() ?? "auto";
-        await JS.InvokeVoidAsync("srcwebStore.setInputMode", inputMode);
+        await TryInvokeVoidAsync("srcwebStore.setInputMode", inputMode);
     }
 
     private async Task ChangeThemeAsync(ChangeEventArgs e)
     {
         theme = e.Value?.ToString() ?? "95";
-        await JS.InvokeVoidAsync("srcwebStore.setTheme", theme);
+        await TryInvokeVoidAsync("srcwebStore.setTheme", theme);
     }
 
     private async Task ChangeLogLevelAsync(ChangeEventArgs e)
     {
         var value = e.Value?.ToString() ?? "";
         WebLogging.SetLevel(value);
-        await JS.InvokeVoidAsync("localStorage.setItem", WebLogging.StorageKey, value);
+        await TryInvokeVoidAsync("localStorage.setItem", WebLogging.StorageKey, value);
     }
 
     private async Task ChangeLanguageAsync(ChangeEventArgs e)
     {
-        await JS.InvokeVoidAsync("localStorage.setItem", WebLocalization.StorageKey, e.Value?.ToString() ?? "");
-        await JS.InvokeVoidAsync("location.reload");
+        await TryInvokeVoidAsync("localStorage.setItem", WebLocalization.StorageKey, e.Value?.ToString() ?? "");
+        await TryInvokeVoidAsync("location.reload");
     }
 
     private static string FormatSize(long size)

@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>初期化に失敗しました: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>ブラウザの保存領域を読み書きできませんでした: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>処理できませんでした: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>シナリオが終了しました。</value>
   </data>
