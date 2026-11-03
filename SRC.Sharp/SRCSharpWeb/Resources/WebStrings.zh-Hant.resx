@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>切換全螢幕</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>顯示/隱藏虛擬手把</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>顯示/隱藏放大的選擇面板</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>關閉</value>
   </data>
@@ -202,7 +196,7 @@
     <value>取消</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>記錄（瀏覽器主控台）</value>
+    <value>記錄</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>已取消載入。</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>符合視窗</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>設定…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>顯示</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>遊戲</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>自動反擊模式</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>顯示虛擬手把</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>放大顯示選擇畫面</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>遊戲設定會儲存在此瀏覽器中。</value>
   </data>
 </root>

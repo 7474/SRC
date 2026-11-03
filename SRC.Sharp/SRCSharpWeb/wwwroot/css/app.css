@@ -1051,6 +1051,10 @@ input[type=file]::file-selector-button {
     bottom: 26px;
     z-index: 20;
     min-width: 200px;
+    /* 画面が低くても見切れないよう、はみ出す分はスクロールする */
+    max-height: calc(100vh - 60px);
+    max-height: calc(100dvh - 60px);
+    overflow-y: auto;
     padding: 3px;
     background: var(--face);
     box-shadow: var(--raised);
@@ -1080,30 +1084,6 @@ input[type=file]::file-selector-button {
     background: var(--select);
     box-shadow: none;
     outline: none;
-}
-
-/* 表示倍率の選択（見出しと、横に並べた選択肢） */
-.popup-menu .menu-choices {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 2px;
-    padding: 3px 4px 3px 20px;
-}
-
-.popup-menu .menu-choices span {
-    flex-basis: 100%;
-}
-
-.popup-menu .menu-choices button {
-    display: inline-block;
-    width: auto;
-    padding: 2px 6px;
-}
-
-.popup-menu .menu-choices button[aria-checked="true"] {
-    box-shadow: var(--sunken, inset 1px 1px var(--shadow));
-    font-weight: bold;
 }
 
 .popup-menu hr {
@@ -1200,6 +1180,78 @@ input[type=file]::file-selector-button {
 .modal-box input[type=text] {
     width: 100%;
     box-sizing: border-box;
+}
+
+/* プレイ中の設定（システムメニューの「設定…」）。ダイアログの中をスクロールする（.dialog） */
+.settings-dialog {
+    width: 420px;
+}
+
+.settings-dialog fieldset {
+    margin: 0 0 10px;
+    padding: 6px 10px 8px;
+    border: 1px solid var(--shadow);
+    box-shadow: 1px 1px var(--hilight), inset 1px 1px var(--hilight);
+}
+
+.settings-dialog label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.settings-dialog label.disabled {
+    opacity: 0.6;
+}
+
+.settings-dialog .indent {
+    margin-left: 22px;
+}
+
+.settings-dialog .choices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 8px;
+}
+
+.settings-dialog .choices span {
+    flex-basis: 100%;
+}
+
+.settings-dialog .choices button {
+    min-width: 0;
+    padding: 2px 8px;
+}
+
+.settings-dialog .choices button[aria-checked="true"] {
+    box-shadow: var(--sunken, inset 1px 1px var(--shadow));
+    font-weight: bold;
+}
+
+.settings-dialog .volume input {
+    flex: 1;
+}
+
+.settings-dialog .note {
+    margin: 6px 0 0;
+    font-size: 12px;
+}
+
+[data-input="touch"] .settings-dialog label {
+    min-height: 36px;
+}
+
+[data-input="touch"] .settings-dialog input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}
+
+[data-input="touch"] .settings-dialog .choices button {
+    min-height: 40px;
+    padding: 6px 12px;
 }
 
 .dialog-buttons,

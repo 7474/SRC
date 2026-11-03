@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Alternar pantalla completa</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>Mostrar/ocultar mando virtual</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>Mostrar/ocultar panel de selección grande</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Cerrar</value>
   </data>
@@ -202,7 +196,7 @@
     <value>Cancelar</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>Registro (consola del navegador)</value>
+    <value>Registro</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>Se canceló la carga.</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>Ajustar a la ventana</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>Configuración…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>Pantalla</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>Juego</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>Modo de contraataque automático</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>Mostrar el mando virtual</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>Mostrar el panel de opciones grande</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>La configuración del juego se guarda en este navegador.</value>
   </data>
 </root>

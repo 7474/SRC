@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>Повноекранний режим</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>Показати/сховати віртуальний геймпад</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>Показати/сховати велику панель вибору</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>Закрити</value>
   </data>
@@ -202,7 +196,7 @@
     <value>Скасувати</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>Журнал (консоль браузера)</value>
+    <value>Журнал</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>Завантаження скасовано.</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>За розміром вікна</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>Налаштування…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>Відображення</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>Гра</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>Режим автоматичної контратаки</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>Показувати віртуальний геймпад</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>Показувати велику панель вибору</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>Налаштування гри зберігаються в цьому браузері.</value>
   </data>
 </root>

@@ -105,12 +105,6 @@
   <data name="MenuFullscreen" xml:space="preserve">
     <value>전체 화면 전환</value>
   </data>
-  <data name="MenuVirtualPad" xml:space="preserve">
-    <value>가상 패드 표시/숨기기</value>
-  </data>
-  <data name="MenuTouchUi" xml:space="preserve">
-    <value>선택 화면 확대 표시/숨기기</value>
-  </data>
   <data name="MenuClose" xml:space="preserve">
     <value>닫기</value>
   </data>
@@ -202,7 +196,7 @@
     <value>취소</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>로그(브라우저 콘솔)</value>
+    <value>로그</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
     <value>불러오기를 취소했습니다.</value>
@@ -311,5 +305,26 @@
   </data>
   <data name="MenuDisplayScaleFit" xml:space="preserve">
     <value>창에 맞추기</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>설정…</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>표시</value>
+  </data>
+  <data name="SettingsGame" xml:space="preserve">
+    <value>게임</value>
+  </data>
+  <data name="SettingsAutoDefense" xml:space="preserve">
+    <value>자동 반격 모드</value>
+  </data>
+  <data name="SettingsVirtualPad" xml:space="preserve">
+    <value>가상 패드 표시</value>
+  </data>
+  <data name="SettingsTouchUi" xml:space="preserve">
+    <value>선택 화면을 크게 표시</value>
+  </data>
+  <data name="SettingsGameNote" xml:space="preserve">
+    <value>게임 설정은 이 브라우저에 저장됩니다.</value>
   </data>
 </root>

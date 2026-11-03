@@ -40,13 +40,17 @@ export function bindCanvas(id) {
 }
 
 // 表示倍率（システムメニューで選ぶ。localStorage に残す）。
-// 'fit' はビューポートに合わせる（app.css）。'1'〜'4' は実際の画素で canvas の 1 画素を N×N 画素にする（ピクセル等倍は '1'）
+// 'fit' はビューポートに合わせる（app.css）。'1'・'1.5'・'2' は実際の画素で canvas の 1 画素を N×N 画素にする（ピクセル等倍は '1'）。
+// デスクトップ版（SRC#Avalonia）と同じく 100%・150%・200% にする。以前に選んだ 300%・400% は 200% として扱う
 const DISPLAY_SCALE_SETTING = 'srcweb.displayScale';
-const DISPLAY_SCALES = ['fit', '1', '2', '3', '4'];
+const DISPLAY_SCALES = ['fit', '1', '1.5', '2'];
 
 function getDisplayScale() {
     try {
         const saved = localStorage.getItem(DISPLAY_SCALE_SETTING);
+        if (saved === '3' || saved === '4') {
+            return '2';
+        }
         return DISPLAY_SCALES.includes(saved) ? saved : 'fit';
     } catch {
         return displayScaleFallback;
@@ -309,6 +313,12 @@ function buildTouchUi(gui) {
     } catch {
         // 保存先を読めなければ出さない
     }
+    globalThis.srcwebGetTouchUi = () => enabled;
+    globalThis.srcwebSetTouchUi = value => {
+        if (enabled !== !!value) {
+            globalThis.srcwebToggleTouchUi();
+        }
+    };
     globalThis.srcwebToggleTouchUi = () => {
         enabled = !enabled;
         last = '{}';
@@ -446,6 +456,35 @@ const VIRTUAL_PAD_SETTING = 'srcweb.virtualPad';
 // 以前の名前（仮想キー）で保存した設定も読む
 const OLD_VIRTUAL_PAD_SETTING = 'srcweb.virtualKeys';
 
+// 仮想パッド・選択画面の拡大表示を組み立てる前（ゲームの画面ができる前）に設定を開いたときの読み書き。
+// 組み立てた後は buildVirtualPad・buildTouchUi が置き換える
+globalThis.srcwebGetVirtualPad = () => !(document.getElementById('virtual-pad')?.hidden ?? true);
+globalThis.srcwebSetVirtualPad = value => {
+    const container = document.getElementById('virtual-pad');
+    if (container) {
+        container.hidden = !value;
+    }
+    try {
+        localStorage.setItem(VIRTUAL_PAD_SETTING, value ? 'on' : 'off');
+    } catch {
+        // 保存できなくても表示は切り替える
+    }
+};
+globalThis.srcwebGetTouchUi = () => {
+    try {
+        return localStorage.getItem(TOUCH_UI_SETTING) === 'on';
+    } catch {
+        return false;
+    }
+};
+globalThis.srcwebSetTouchUi = value => {
+    try {
+        localStorage.setItem(TOUCH_UI_SETTING, value ? 'on' : 'off');
+    } catch {
+        // 保存できなくても、組み立てた後に切り替えられる
+    }
+};
+
 /** タッチ向けの画面か（index.html が html の data-input に付ける。利用者が切り替えられる） */
 const isTouchMode = () => document.documentElement.dataset.input === 'touch';
 
@@ -506,6 +545,12 @@ function buildVirtualPad(gui) {
         visible = isTouchMode();
     }
     container.hidden = !visible;
+    globalThis.srcwebGetVirtualPad = () => !container.hidden;
+    globalThis.srcwebSetVirtualPad = value => {
+        if (container.hidden === !!value) {
+            globalThis.srcwebToggleVirtualPad();
+        }
+    };
     globalThis.srcwebToggleVirtualPad = () => {
         container.hidden = !container.hidden;
         try {

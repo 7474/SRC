@@ -44,16 +44,7 @@
                 <div class="popup-menu" role="menu">
                     <button role="menuitem" @onclick="AskBackToMenu">@L["MenuBackToMenu"]</button>
                     <button role="menuitem" @onclick="ToggleFullscreenAsync">@L["MenuFullscreen"]</button>
-                    <div class="menu-choices" role="group" aria-label="@L["MenuDisplayScale"]">
-                        <span>@L["MenuDisplayScale"]</span>
-                        @foreach (var scale in DisplayScales)
-                        {
-                            <button role="menuitemradio" aria-checked="@(displayScale == scale ? "true" : "false")"
-                                    @onclick="() => SetDisplayScaleAsync(scale)">@(scale == "fit" ? L["MenuDisplayScaleFit"] : scale + "00%")</button>
-                        }
-                    </div>
-                    <button role="menuitem" @onclick="ToggleVirtualPadAsync">@L["MenuVirtualPad"]</button>
-                    <button role="menuitem" @onclick="ToggleTouchUiAsync">@L["MenuTouchUi"]</button>
+                    <button role="menuitem" id="menu-settings" @onclick="OpenSettingsAsync">@L["MenuSettings"]</button>
                     @if (documents.Count > 0)
                     {
                         <hr />
@@ -65,6 +56,48 @@
             }
         </div>
     </div>
+    @* 設定（表示とゲーム）。小さな画面でも見切れないよう、ダイアログの中をスクロールする *@
+    @if (settingsOpen)
+    {
+        <div class="modal">
+            <div class="dialog settings-dialog" role="dialog" aria-label="@L["Settings"]">
+                <div class="titlebar">@L["Settings"]</div>
+                <div class="dialog-body">
+                    <fieldset>
+                        <legend>@L["SettingsDisplay"]</legend>
+                        <div class="choices" role="radiogroup" aria-label="@L["MenuDisplayScale"]">
+                            <span>@L["MenuDisplayScale"]</span>
+                            @foreach (var scale in DisplayScales)
+                            {
+                                <button role="radio" aria-checked="@(displayScale == scale ? "true" : "false")"
+                                        @onclick="DisplayScaleHandler(scale)">@DisplayScaleLabel(scale)</button>
+                            }
+                        </div>
+                        <label><input type="checkbox" id="setting-virtual-pad" checked="@virtualPad" @onchange="SetVirtualPadAsync" />@L["SettingsVirtualPad"]</label>
+                        <label><input type="checkbox" id="setting-touch-ui" checked="@touchUi" @onchange="SetTouchUiAsync" />@L["SettingsTouchUi"]</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>@L["SettingsGame"]</legend>
+                        @foreach (var option in GameOptions)
+                        {
+                            var disabled = option.DependsOnBattleAnimation && !gameSettings.BattleAnimation;
+                            <label class="@(option.DependsOnBattleAnimation ? "indent" : null) @(disabled ? "disabled" : null)">
+                                <input type="checkbox" checked="@option.Get(gameSettings)" disabled="@disabled" @onchange="option.OnChange" />@option.Label()
+                            </label>
+                        }
+                        <label class="volume">@SRCRender.GameConfigLabels.Volume
+                            <input type="range" id="setting-volume" min="0" max="100" step="1" value="@gameSettings.SoundVolume" @onchange="SetVolumeAsync" />
+                            <span>@gameSettings.SoundVolume</span>
+                        </label>
+                        <p class="note">@L["SettingsGameNote"]</p>
+                    </fieldset>
+                    <div class="dialog-buttons">
+                        <button id="settings-close" @onclick="CloseSettingsAsync">@L["MenuClose"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     @if (choosingDocument)
     {
         <div class="modal">
@@ -763,18 +796,143 @@ else
         }
     }
 
-    /// <summary>表示倍率の選択肢。fit はビューポートに合わせ、数字は実際の画素での倍率（srcweb.js）</summary>
-    private static readonly string[] DisplayScales = { "fit", "1", "2", "3", "4" };
+    /// <summary>表示倍率の選択肢。fit はビューポートに合わせ、数字は実際の画素での倍率（srcweb.js）。デスクトップ版と同じく 100%・150%・200%</summary>
+    private static readonly string[] DisplayScales = { "fit", "1", "1.5", "2" };
 
-    /// <summary>今の表示倍率（システムメニューを開いたときに srcweb.js から読む）</summary>
+    /// <summary>表示倍率のボタンを押したときの処理（描画のたびに作らない）</summary>
+    private readonly Dictionary<string, Func<Task>> displayScaleHandlers = new Dictionary<string, Func<Task>>();
+
+    private Func<Task> DisplayScaleHandler(string scale)
+    {
+        if (!displayScaleHandlers.TryGetValue(scale, out var handler))
+        {
+            handler = () => SetDisplayScaleAsync(scale);
+            displayScaleHandlers[scale] = handler;
+        }
+        return handler;
+    }
+
+    private string DisplayScaleLabel(string scale)
+    {
+        return scale == "fit"
+            ? L["MenuDisplayScaleFit"]
+            : (double.Parse(scale, System.Globalization.CultureInfo.InvariantCulture) * 100).ToString(System.Globalization.CultureInfo.InvariantCulture) + "%";
+    }
+
+    /// <summary>今の表示倍率・仮想パッド・選択画面の拡大表示（設定を開いたときに srcweb.js から読む）</summary>
     private string displayScale = "fit";
+    private bool virtualPad;
+    private bool touchUi;
+
+    /// <summary>設定のダイアログを開いているか</summary>
+    private bool settingsOpen;
+
+    /// <summary>ゲームの設定（設定を開いたときに、プレイ中のゲームの設定から読む）</summary>
+    private WebGameSettings gameSettings = new WebGameSettings();
+
+    private async Task OpenSettingsAsync()
+    {
+        systemMenuOpen = false;
+        displayScale = await JS.InvokeAsync<string>("srcwebGetDisplayScale");
+        virtualPad = await JS.InvokeAsync<bool>("srcwebGetVirtualPad");
+        touchUi = await JS.InvokeAsync<bool>("srcwebGetTouchUi");
+        // ブラウザに保存した設定（ゲームの中の設定変更で変えたものを含む）を出す
+        gameSettings = WebGameSettings.FromJson((savedGameSettings ?? gameSettings).ToJson());
+        settingsOpen = true;
+    }
+
+    private async Task CloseSettingsAsync()
+    {
+        settingsOpen = false;
+        await FocusScreenAsync();
+    }
 
     private async Task SetDisplayScaleAsync(string scale)
     {
-        systemMenuOpen = false;
         displayScale = scale;
         await JS.InvokeVoidAsync("srcwebSetDisplayScale", scale);
-        await FocusScreenAsync();
+    }
+
+    private async Task SetVirtualPadAsync(ChangeEventArgs e)
+    {
+        virtualPad = e.Value is bool value && value;
+        await JS.InvokeVoidAsync("srcwebSetVirtualPad", virtualPad);
+    }
+
+    private async Task SetTouchUiAsync(ChangeEventArgs e)
+    {
+        touchUi = e.Value is bool value && value;
+        await JS.InvokeVoidAsync("srcwebSetTouchUi", touchUi);
+    }
+
+    /// <summary>ゲームの設定のチェックボックス。変えたときの処理は一度だけ作る（描画のたびに作ると、続けて押したときに古い処理に届いて捨てられる）</summary>
+    private sealed class GameOption
+    {
+        public Func<string> Label { get; init; }
+        public Func<WebGameSettings, bool> Get { get; init; }
+        public Action<WebGameSettings, bool> Set { get; init; }
+        /// <summary>戦闘アニメを表示するときだけ選べる</summary>
+        public bool DependsOnBattleAnimation { get; init; }
+        public Func<ChangeEventArgs, Task> OnChange { get; set; }
+    }
+
+    private List<GameOption> gameOptions;
+
+    private List<GameOption> GameOptions => gameOptions ??= CreateGameOptions();
+
+    private List<GameOption> CreateGameOptions()
+    {
+        var options = new List<GameOption>
+        {
+            new GameOption { Label = () => SRCRender.GameConfigLabels.BattleAnimation, Get = x => x.BattleAnimation, Set = (x, v) => x.BattleAnimation = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.ExtendedAnimation, Get = x => x.ExtendedAnimation, Set = (x, v) => x.ExtendedAnimation = v, DependsOnBattleAnimation = true },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.WeaponAnimation, Get = x => x.WeaponAnimation, Set = (x, v) => x.WeaponAnimation = v, DependsOnBattleAnimation = true },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.SpecialPowerAnimation, Get = x => x.SpecialPowerAnimation, Set = (x, v) => x.SpecialPowerAnimation = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.MoveAnimation, Get = x => x.MoveAnimation, Set = (x, v) => x.MoveAnimation = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.AutoMoveCursor, Get = x => x.AutoMoveCursor, Set = (x, v) => x.AutoMoveCursor = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.ShowSquareLine, Get = x => x.ShowSquareLine, Set = (x, v) => x.ShowSquareLine = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.ShowTurn, Get = x => x.ShowTurn, Set = (x, v) => x.ShowTurn = v },
+            new GameOption { Label = () => SRCRender.GameConfigLabels.KeepEnemyBGM, Get = x => x.KeepEnemyBGM, Set = (x, v) => x.KeepEnemyBGM = v },
+            new GameOption { Label = () => L["SettingsAutoDefense"], Get = x => x.AutoDefense, Set = (x, v) => x.AutoDefense = v },
+        };
+        foreach (var option in options)
+        {
+            var o = option;
+            o.OnChange = e => ChangeGameSettingAsync(x => o.Set(x, e.Value is bool value && value));
+        }
+        return options;
+    }
+
+    private Task SetVolumeAsync(ChangeEventArgs e)
+    {
+        return ChangeGameSettingAsync(x => x.SoundVolume = int.TryParse(e.Value?.ToString(), out var volume) ? volume : x.SoundVolume);
+    }
+
+    /// <summary>ゲームの設定を変え、ブラウザに保存し、プレイ中のゲームにその場で反映する（音量も）</summary>
+    private async Task ChangeGameSettingAsync(Action<WebGameSettings> change)
+    {
+        change(gameSettings);
+        var settings = WebGameSettings.FromJson(gameSettings.ToJson());
+        savedGameSettings = settings;
+        await JS.InvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, settings.ToJson());
+        var running = session;
+        running?.Game.Post(() =>
+        {
+            settings.ApplyTo(running.SRC.SystemConfig);
+            running.SRC.Sound.Player.SoundVolume = settings.SoundVolume / 100f;
+        });
+    }
+
+    /// <summary>最後にブラウザに保存したゲームの設定（ゲームの中の設定変更で変わったら保存し直す）</summary>
+    private WebGameSettings savedGameSettings;
+
+    /// <summary>srcs.json を最後に書いた時刻（ゲームの中の設定変更で書いたかを調べる）</summary>
+    private DateTime configWrittenAt;
+
+    private static DateTime ConfigWrittenAt()
+    {
+        var path = Path.Combine(ScenarioArchive.AppPath, "srcs.json");
+        return File.Exists(path) ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue;
     }
 
     private async Task CloseSystemMenu()
@@ -799,20 +957,6 @@ else
     {
         systemMenuOpen = false;
         await JS.InvokeVoidAsync("srcwebStore.toggleFullscreen", "screen");
-        await FocusScreenAsync();
-    }
-
-    private async Task ToggleTouchUiAsync()
-    {
-        systemMenuOpen = false;
-        await JS.InvokeVoidAsync("srcwebToggleTouchUi");
-        await FocusScreenAsync();
-    }
-
-    private async Task ToggleVirtualPadAsync()
-    {
-        systemMenuOpen = false;
-        await JS.InvokeVoidAsync("srcwebToggleVirtualPad");
         await FocusScreenAsync();
     }
 
@@ -1515,9 +1659,36 @@ else
         // イベントエラーなど、ゲームが出すエラーのダイアログも送る（シナリオの行は errorreport.js が添える）
         session.GUI.ErrorShown += message => host.ReportError("SRC.ErrorMessage", message, "");
         WebInterop.Attach("screen", host, session);
+        // ブラウザに保存したゲームの設定を重ねる（srcs.json はブラウザを閉じると消えるため）
+        var saved = WebGameSettings.FromJson(await JS.InvokeAsync<string>("srcwebStore.getSetting", WebGameSettings.StorageKey));
+        if (saved != null)
+        {
+            saved.ApplyTo(session.SRC.SystemConfig);
+            session.SRC.Sound.Player.SoundVolume = saved.SoundVolume / 100f;
+        }
+        savedGameSettings = saved ?? WebGameSettings.FromConfig(session.SRC.SystemConfig);
+        configWrittenAt = ConfigWrittenAt();
         session.Start(evePath);
         watch = new System.Threading.Timer(_ =>
         {
+            // ゲームの中の設定変更で変えた設定も、ブラウザに保存する。
+            // 設定変更は srcs.json に書くので、書いたときだけ読む（SRC# が始めるときに変える値、たとえば
+            // 汎用戦闘アニメが無いときに戦闘アニメを切るのは、利用者の設定ではないので残さない）
+            var running = session;
+            if (running != null && mode == Mode.Playing)
+            {
+                var written = ConfigWrittenAt();
+                if (written != configWrittenAt)
+                {
+                    configWrittenAt = written;
+                    var current = WebGameSettings.FromConfig(running.SRC.SystemConfig);
+                    if (!current.SameAs(savedGameSettings))
+                    {
+                        savedGameSettings = current;
+                        InvokeAsync(() => JS.InvokeVoidAsync("srcwebStore.setSetting", WebGameSettings.StorageKey, current.ToJson()).AsTask());
+                    }
+                }
+            }
             if (WebInterop.Terminated && mode == Mode.Playing)
             {
                 mode = Mode.Ended;
