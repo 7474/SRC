@@ -1064,18 +1064,30 @@ test.describe('タッチ向けの画面', () => {
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.y + box.height).toBeLessThanOrEqual(390 + 0.5);
     await testInfo.attach('settings', { body: await page.screenshot(), contentType: 'image/png' });
+    // 移動アニメ（戦闘アニメは、汎用戦闘アニメの無いシナリオでは SRC# が始めるときに切るので使わない）
+    const move = dialog.getByRole('checkbox', { name: '移動アニメを表示する' });
+    const before = await move.isChecked();
+    await move.setChecked(!before);
+    await expect(move).toBeChecked({ checked: !before });
+    // 戦闘アニメを表示しないときは、拡張機能・武器準備アニメを選べない
     const battle = dialog.getByRole('checkbox', { name: '戦闘アニメを表示する' });
-    const before = await battle.isChecked();
-    await battle.setChecked(!before);
-    await dialog.getByRole('checkbox', { name: '自動反撃モード' }).check();
+    const extended = dialog.getByRole('checkbox', { name: '戦闘アニメの拡張機能を使用する' });
+    await battle.uncheck();
+    await expect(extended).toBeDisabled();
+    await battle.check();
+    await expect(extended).toBeEnabled();
+    const autoDefense = dialog.getByRole('checkbox', { name: '自動反撃モード' });
+    await autoDefense.check();
+    await expect(autoDefense).toBeChecked();
     await closeSettings(page);
     // 読み込み直しても残る
     await page.reload();
     await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
     await restartBattleBasic(page);
     await openSettings(page);
-    await expect(dialog.getByRole('checkbox', { name: '戦闘アニメを表示する' })).toBeChecked({ checked: !before });
-    await expect(dialog.getByRole('checkbox', { name: '自動反撃モード' })).toBeChecked();
+    await expect(move).toBeChecked({ checked: !before });
+    await expect(battle).toBeChecked();
+    await expect(autoDefense).toBeChecked();
     await closeSettings(page);
   });
 
