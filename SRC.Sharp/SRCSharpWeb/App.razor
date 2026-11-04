@@ -56,6 +56,15 @@
             }
         </div>
     </div>
+    @* ログ（ブラウザのコンソールの代わり。設定の「ログを表示する」で出す）。中身は srcweb.js が書く *@
+    <div id="log-panel" class="log-panel" hidden>
+        <div class="log-panel-bar">
+            <span class="log-panel-title">@L["LogLevel"]</span>
+            <button type="button" id="log-copy">@L["LogCopy"]</button>
+            <button type="button" id="log-clear">@L["LogClear"]</button>
+        </div>
+        <pre id="log-lines" class="log-lines" tabindex="-1"></pre>
+    </div>
     @* 設定（表示とゲーム）。小さな画面でも見切れないよう、ダイアログの中をスクロールする *@
     @if (settingsOpen)
     {
@@ -90,6 +99,20 @@
                             <span>@gameSettings.SoundVolume</span>
                         </label>
                         <p class="note">@L["SettingsGameNote"]</p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>@L["SettingsDebug"]</legend>
+                        <label><input type="checkbox" id="setting-log-panel" checked="@logPanel" @onchange="SetLogPanelAsync" />@L["SettingsLogPanel"]</label>
+                        <label class="log-level">@L["LogLevel"]
+                            <select id="setting-log-level" value="@WebLogging.Options.Level" @onchange="ChangeLogLevelAsync">
+                                <option value="Trace">Trace</option>
+                                <option value="Debug">Debug</option>
+                                <option value="Information">Information</option>
+                                <option value="Warning">Warning</option>
+                                <option value="Error">Error</option>
+                            </select>
+                        </label>
+                        <p class="note">@L["SettingsDebugNote"]</p>
                     </fieldset>
                     <div class="dialog-buttons">
                         <button id="settings-close" @onclick="CloseSettingsAsync">@L["MenuClose"]</button>
@@ -823,6 +846,8 @@ else
     private string displayScale = "fit";
     private bool virtualPad;
     private bool touchUi;
+    /// <summary>画面の下にログを出すか</summary>
+    private bool logPanel;
 
     /// <summary>設定のダイアログを開いているか</summary>
     private bool settingsOpen;
@@ -836,6 +861,7 @@ else
         displayScale = await TryInvokeAsync("srcwebGetDisplayScale", displayScale);
         virtualPad = await TryInvokeAsync("srcwebGetVirtualPad", virtualPad);
         touchUi = await TryInvokeAsync("srcwebGetTouchUi", touchUi);
+        logPanel = await TryInvokeAsync("srcwebGetLogPanel", logPanel);
         // ブラウザに保存した設定（ゲームの中の設定変更で変えたものを含む）を出す
         gameSettings = WebGameSettings.FromJson((savedGameSettings ?? gameSettings).ToJson());
         settingsOpen = true;
@@ -857,6 +883,12 @@ else
     {
         virtualPad = e.Value is bool value && value;
         await TryInvokeVoidAsync("srcwebSetVirtualPad", virtualPad);
+    }
+
+    private async Task SetLogPanelAsync(ChangeEventArgs e)
+    {
+        logPanel = e.Value is bool value && value;
+        await TryInvokeVoidAsync("srcwebSetLogPanel", logPanel);
     }
 
     private async Task SetTouchUiAsync(ChangeEventArgs e)

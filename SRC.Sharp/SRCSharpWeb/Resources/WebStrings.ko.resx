@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>가상 패드 표시</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>디버그</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>화면 아래에 로그 표시</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>로그 수준을 Trace로 하면 탭, 가상 패드, 키 입력도 기록합니다.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>지우기</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>선택 화면을 크게 표시</value>
   </data>

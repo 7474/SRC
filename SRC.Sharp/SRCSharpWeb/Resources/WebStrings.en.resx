@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Show virtual pad</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Show the log below the screen</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>With the log level set to Trace, taps, virtual pad and key input are also logged.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Show large choice panel</value>
   </data>

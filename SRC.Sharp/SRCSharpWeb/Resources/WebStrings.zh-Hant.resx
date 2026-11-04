@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>顯示虛擬手把</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>偵錯</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>在畫面下方顯示記錄</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>將記錄層級設為 Trace 時，也會記錄點擊、虛擬手把與按鍵輸入。</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>清除</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>放大顯示選擇畫面</value>
   </data>

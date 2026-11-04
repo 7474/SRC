@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Sanal pedi göster</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Hata ayıklama</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Günlüğü ekranın altında göster</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Günlük düzeyi Trace olduğunda dokunmalar, sanal kumanda ve tuşlar da kaydedilir.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Kopyala</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Temizle</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Büyük seçim panelini göster</value>
   </data>

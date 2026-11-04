@@ -75,7 +75,7 @@ globalThis.srcwebSetDisplayScale = scale => {
 function applyDisplayScale() {
     const scale = getDisplayScale();
     const width = scale === 'fit' ? '' : `${canvas.width * Number(scale) / (window.devicePixelRatio || 1)}px`;
-    for (const element of [canvas.closest('.screen-wrap'), document.querySelector('.screen-bar')]) {
+    for (const element of [canvas.closest('.screen-wrap'), document.querySelector('.screen-bar'), document.getElementById('log-panel')]) {
         if (element && element.style.width !== width) {
             element.style.width = width;
         }
@@ -92,10 +92,200 @@ function updateScaling() {
     canvas.classList.toggle('pixelated', devicePixels >= canvas.width);
 }
 
+// 画面の下のログ（ブラウザのコンソールの代わり。設定の「ログを画面の下に表示する」で出す。設定は localStorage に残す）。
+// .NET のログは WebLogPanelProvider がため、WebInterop.TakeLogLines で取り出す。JS の入力のトレースもここに出す
+const LOG_PANEL_SETTING = 'srcweb.logPanel';
+const LOG_PANEL_LINES = 500;
+const LOG_PANEL_INTERVAL = 500;
+const logPanel = (() => {
+    const lines = [];
+    let gui = null;
+    let renderRequested = false;
+    const element = () => document.getElementById('log-panel');
+    const visible = () => !(element()?.hidden ?? true);
+    const render = () => {
+        renderRequested = false;
+        const view = document.getElementById('log-lines');
+        if (!view || !visible()) {
+            return;
+        }
+        // 末尾を見ているときだけ、新しい行に合わせてスクロールする
+        const atBottom = view.scrollHeight - view.scrollTop - view.clientHeight < 8;
+        view.textContent = lines.join('\n');
+        if (atBottom) {
+            view.scrollTop = view.scrollHeight;
+        }
+    };
+    const requestRender = () => {
+        if (!renderRequested) {
+            renderRequested = true;
+            requestAnimationFrame(render);
+        }
+    };
+    const append = text => {
+        lines.push(...text.split('\n'));
+        if (lines.length > LOG_PANEL_LINES) {
+            lines.splice(0, lines.length - LOG_PANEL_LINES);
+        }
+        requestRender();
+    };
+    // 出していない間も取り出す（.NET の側にたまり続けないように。行の順もそろう）
+    const poll = async () => {
+        try {
+            const text = gui ? await gui.TakeLogLines() : '';
+            if (text) {
+                append(text);
+            }
+        } catch {
+            // 取り出せなくても続ける
+        } finally {
+            setTimeout(poll, LOG_PANEL_INTERVAL);
+        }
+    };
+    const setVisible = value => {
+        const panel = element();
+        if (panel) {
+            panel.hidden = !value;
+            requestRender();
+        }
+        updateScaling();
+    };
+    return {
+        append,
+        start(wrapped) {
+            gui = wrapped;
+            let saved = false;
+            try {
+                saved = localStorage.getItem(LOG_PANEL_SETTING) === 'on';
+            } catch {
+                // localStorage を使えない
+            }
+            setVisible(saved);
+            document.getElementById('log-clear')?.addEventListener('click', () => {
+                lines.length = 0;
+                requestRender();
+            });
+            document.getElementById('log-copy')?.addEventListener('click', async () => {
+                const text = lines.join('\n');
+                try {
+                    await navigator.clipboard.writeText(text);
+                } catch {
+                    // クリップボードを使えなければ、選んだ状態にして手で写せるようにする
+                    const view = document.getElementById('log-lines');
+                    if (view) {
+                        getSelection()?.selectAllChildren(view);
+                    }
+                }
+            });
+            poll();
+        },
+        get: visible,
+        set(value) {
+            try {
+                localStorage.setItem(LOG_PANEL_SETTING, value ? 'on' : 'off');
+            } catch {
+                // 保存できなくても、この表示の間は切り替える
+            }
+            setVisible(value);
+        },
+    };
+})();
+globalThis.srcwebGetLogPanel = () => logPanel.get();
+globalThis.srcwebSetLogPanel = value => logPanel.set(value);
+
+// 入力のトレース（ログのレベルが Trace のときだけ。URL の ?log=Trace か、設定の「ログ」）。
+// 実機で操作が効かないときに、ブラウザから届いた入力・ゲームに渡した入力・その後のゲームの状態をコンソールに出す
+const inputTrace = (() => {
+    const enabled = () => {
+        let level = '';
+        try {
+            level = new URLSearchParams(location.search).get('log') ?? localStorage.getItem('srcweb.logLevel') ?? '';
+        } catch {
+            // localStorage を使えない
+        }
+        return level.trim().toLowerCase() === 'trace';
+    };
+    const write = text => {
+        console.debug(`trce: SRCSharpWeb.Input ${text}`);
+        const now = new Date();
+        const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+        logPanel.append(`${time} TRC SRCSharpWeb.Input: ${text}`);
+    };
+    const describe = target => {
+        if (!(target instanceof Element)) {
+            return '?';
+        }
+        if (target.id) {
+            return '#' + target.id;
+        }
+        const cls = target.classList[0];
+        return target.tagName.toLowerCase() + (cls ? '.' + cls : '');
+    };
+    let gui = null;
+    let stateTimer = null;
+    // 押した後のゲームの状態（実行中の行・GUI のロック・カーソル・メニューなど）
+    const traceStateLater = () => {
+        clearTimeout(stateTimer);
+        stateTimer = setTimeout(async () => {
+            try {
+                write(`state ${await gui.DebugState()}`);
+            } catch (ex) {
+                write(`state error ${ex}`);
+            }
+        }, 300);
+    };
+    const trace = {
+        touchState: () => null,
+        /** ゲームへの入力（Pointer・Key・Wheel・TouchChoose）を記録する */
+        wrap(target) {
+            const names = { Pointer: ['down', 'up', 'move', 'drag', 'drop'], Key: ['down', 'up', 'reset'] };
+            return new Proxy(target, {
+                get(obj, prop) {
+                    const value = obj[prop];
+                    if (typeof value !== 'function' || !['Pointer', 'Key', 'Wheel', 'TouchChoose'].includes(prop)) {
+                        return value;
+                    }
+                    return (...args) => {
+                        // マウスの移動は多いので記録しない
+                        if (!(prop === 'Pointer' && args[0] === 2) && enabled()) {
+                            const kind = names[prop]?.[args[0]] ?? args[0];
+                            const rest = args.slice(1).map(x => typeof x === 'number' ? Math.round(x) : x).join(',');
+                            write(`gui.${prop} ${kind} ${rest}`);
+                            if (args[0] === 0 || prop === 'TouchChoose') {
+                                traceStateLater();
+                            }
+                        }
+                        return value.apply(obj, args);
+                    };
+                },
+            });
+        },
+        /** ブラウザから届いた入力（ゲームに渡す前）を記録する */
+        start(wrapped) {
+            gui = wrapped;
+            for (const type of ['pointerdown', 'pointerup', 'pointercancel', 'lostpointercapture', 'touchstart', 'touchend', 'touchcancel']) {
+                document.addEventListener(type, e => {
+                    if (!enabled()) {
+                        return;
+                    }
+                    const pointer = e.pointerType !== undefined ? ` ${e.pointerType}#${e.pointerId}` : ` touches=${e.touches?.length}`;
+                    const at = e.clientX !== undefined ? ` @${Math.round(e.clientX)},${Math.round(e.clientY)}` : '';
+                    const extra = type === 'pointerdown'
+                        ? ` touch=${JSON.stringify(trace.touchState())} input=${document.documentElement.dataset.input} focus=${describe(document.activeElement)}`
+                            + ` dpr=${window.devicePixelRatio} vv=${window.visualViewport ? `${Math.round(visualViewport.width)}x${Math.round(visualViewport.height)}x${visualViewport.scale.toFixed(2)}` : '-'}`
+                        : '';
+                    write(`${type}${pointer}${at} ${describe(e.target)}${extra}`);
+                }, { capture: true, passive: true });
+            }
+        },
+    };
+    return trace;
+})();
+
 async function start() {
     const runtime = await globalThis.getDotnetRuntime(0);
     const exports = await runtime.getAssemblyExports('SRCSharpWeb.dll');
-    const gui = exports.SRCSharpWeb.WebInterop;
+    const gui = inputTrace.wrap(exports.SRCSharpWeb.WebInterop);
     // エラーを送るときに、実行中のシナリオの行を添える（errorreport.js）
     globalThis.srcwebErrorReporting?.setDebugState(() => gui.DebugState());
 
@@ -116,11 +306,11 @@ async function start() {
     // シナリオの KeyState(1)・KeyState(2) はボタンが押されている間を調べるため、押した状態を保ってから離す
     const TAP_HOLD_MS = 200;
     const press = (x, y, button, clicks) => {
-        gui.Pointer(2, x, y, 0, 0);
-        gui.Pointer(0, x, y, button, clicks);
+        gui.Pointer(2, x, y, 0, 0, true);
+        gui.Pointer(0, x, y, button, clicks, true);
         globalThis.srcwebTouchClicks = [...(globalThis.srcwebTouchClicks || []), { button, clicks }];
     };
-    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0);
+    const release = (x, y, button) => gui.Pointer(1, x, y, button, 0, true);
     canvas.addEventListener('pointerdown', e => {
         if (e.pointerType === 'mouse') {
             return;
@@ -134,7 +324,7 @@ async function start() {
         resumeAudio();
         canvas.setPointerCapture?.(e.pointerId);
         const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
+        gui.Pointer(2, x, y, 0, 0, true);
         touch = {
             id: e.pointerId,
             startX: e.clientX,
@@ -171,10 +361,10 @@ async function start() {
             clearTimeout(touch.timer);
             hideRing();
             // 触れた位置からマップをドラッグする（マウスの左ボタンのドラッグと同じスクロール。クリックにはしない）
-            gui.Pointer(3, touch.downX, touch.downY, 0, 0);
+            gui.Pointer(3, touch.downX, touch.downY, 0, 0, true);
         }
         if (touch.moved) {
-            gui.Pointer(2, x, y, 0, 0);
+            gui.Pointer(2, x, y, 0, 0, true);
         }
         e.preventDefault();
     });
@@ -186,7 +376,7 @@ async function start() {
         clearTimeout(touch.timer);
         hideRing();
         if (touch.moved) {
-            gui.Pointer(4, touch.x, touch.y, 0, 0);
+            gui.Pointer(4, touch.x, touch.y, 0, 0, true);
         }
         if (touch.held) {
             release(touch.x, touch.y, 2);
@@ -204,6 +394,7 @@ async function start() {
     };
     canvas.addEventListener('pointerup', e => endTouch(e, false));
     canvas.addEventListener('pointercancel', e => endTouch(e, true));
+    inputTrace.touchState = () => touch && { id: touch.id, moved: touch.moved, held: touch.held };
 
     // 長押しの間、触れた位置に輪を出す（右クリックになることを知らせる）
     const ring = document.createElement('div');
@@ -231,7 +422,7 @@ async function start() {
         canvas.focus();
         resumeAudio();
         const [x, y] = position(e);
-        gui.Pointer(0, x, y, e.button, e.detail || 1);
+        gui.Pointer(0, x, y, e.button, e.detail || 1, false);
         e.preventDefault();
     });
     canvas.addEventListener('mouseup', e => {
@@ -240,7 +431,7 @@ async function start() {
             return;
         }
         const [x, y] = position(e);
-        gui.Pointer(1, x, y, e.button, 0);
+        gui.Pointer(1, x, y, e.button, 0, false);
         e.preventDefault();
     });
     canvas.addEventListener('mousemove', e => {
@@ -248,7 +439,7 @@ async function start() {
             return;
         }
         const [x, y] = position(e);
-        gui.Pointer(2, x, y, 0, 0);
+        gui.Pointer(2, x, y, 0, 0, false);
     });
     canvas.addEventListener('contextmenu', e => e.preventDefault());
     canvas.addEventListener('wheel', e => {
@@ -274,6 +465,8 @@ async function start() {
 
     buildVirtualPad(gui);
     buildTouchUi(gui);
+    inputTrace.start(gui);
+    logPanel.start(gui);
 
     // .NET は UI スレッドとは別のスレッドで動くため、呼び出しは非同期になる。前の書き込みが終わってから次を求める
     const loop = async () => {

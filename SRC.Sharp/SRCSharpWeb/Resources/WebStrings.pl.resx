@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Pokaż wirtualny pad</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Debugowanie</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Pokaż dziennik pod ekranem</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Przy poziomie dziennika Trace zapisywane są też dotknięcia, wirtualny pad i klawisze.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Kopiuj</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Wyczyść</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Pokaż duży panel wyboru</value>
   </data>

@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Mostra il pad virtuale</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Mostra il registro sotto lo schermo</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Con il livello di registro Trace vengono registrati anche tocchi, controller virtuale e tasti.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Mostra il pannello di scelta grande</value>
   </data>

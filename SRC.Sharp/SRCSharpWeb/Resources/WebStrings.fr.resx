@@ -327,6 +327,21 @@
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Afficher la manette virtuelle</value>
   </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Débogage</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Afficher le journal sous l'écran</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Avec le niveau de journal Trace, les appuis, la manette virtuelle et les touches sont aussi enregistrés.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Afficher le grand panneau de choix</value>
   </data>
