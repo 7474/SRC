@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Falha na inicialização: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Não foi possível acessar o armazenamento do navegador: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>A operação falhou: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>O cenário terminou.</value>
   </data>

@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>초기화에 실패했습니다: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>브라우저 저장소에 접근할 수 없습니다: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>작업에 실패했습니다: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>시나리오가 종료되었습니다.</value>
   </data>

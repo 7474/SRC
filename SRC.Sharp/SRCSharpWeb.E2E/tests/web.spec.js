@@ -290,6 +290,37 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await expect(page.locator('#archives li')).toHaveCount(0);
 });
 
+test('ブラウザの保存領域を使えなくても、失敗を出して一覧は使える', async ({ page }) => {
+  // IndexedDB を使えない・容量が足りないときと同じく、保存領域の操作を失敗させる（JS の例外は .NET では JSException になる）
+  await page.addInitScript(() => {
+    let store;
+    Object.defineProperty(window, 'srcwebStore', {
+      configurable: true,
+      get: () => store,
+      set: value => {
+        store = {
+          ...value,
+          list: () => Promise.reject(new Error('QuotaExceededError (test)')),
+          put: () => Promise.reject(new Error('QuotaExceededError (test)')),
+        };
+      },
+    });
+  });
+  await open(page);
+  await expect(page.locator('#status')).toContainText('ブラウザの保存領域を読み書きできませんでした');
+  await expect(page.locator('#archives li')).toHaveCount(0);
+
+  // 追加も失敗を出し、画面は操作できるまま（Blazor のエラーの帯を出さない）
+  await page.setInputFiles('#add-archive', {
+    name: '保存できない.zip',
+    mimeType: 'application/zip',
+    buffer: fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip')),
+  });
+  await expect(page.locator('#status')).toContainText('QuotaExceededError (test)');
+  await expect(page.locator('#blazor-error-ui')).toBeHidden();
+  await expect(page.locator('#catalog button').first()).toBeEnabled();
+});
+
 // App.razor の FormatSize と同じ表示
 function formatSize(size) {
   return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.round(size / 1024)} KB`;

@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>การเริ่มต้นล้มเหลว: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>ไม่สามารถเข้าถึงพื้นที่จัดเก็บของเบราว์เซอร์: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>การดำเนินการล้มเหลว: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>ซีนาริโอจบแล้ว</value>
   </data>

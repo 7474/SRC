@@ -115,7 +115,15 @@
         // ナビゲーションがあったらハンバーガーを閉じる
         IsBurgerActive = false;
         // ドロップダウンを閉じるためにフォーカスを外す
-        await JsInterop.InvokeVoidAsync("bulma.blur", null);
+        // async void なので、例外をここで止めないとアプリが止まる
+        try
+        {
+            await JsInterop.InvokeVoidAsync("bulma.blur", null);
+        }
+        catch (JSException ex)
+        {
+            Console.Error.WriteLine($"フォーカスを外せません: {ex.Message}");
+        }
 
         StateHasChanged();
     }
