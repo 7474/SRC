@@ -517,9 +517,9 @@ namespace SRCCore
                     }
 
                     // 間接攻撃？
-                    // VB 版は tmp_w ではなく w（それまでに選んだターゲットへの武器。まだ選んでいなければ 0 で常に偽）
-                    // を見ている。ターゲットの選び方を元の SRC と同じにするため、そのままにする
-                    indirect_attack = w > 0 && selectedUnit.Weapon(w).IsWeaponClassifiedAs("間");
+                    // VB 版は tmp_w ではなく w（それまでに選んだターゲットへの武器。まだ選んでいなければ 0 で常に偽）を見ている。
+                    // 評価しているターゲットへの武器を見るつもりの書き誤りなので、VB の不具合は再現せず tmp_w を見る（#1501）
+                    indirect_attack = selectedUnit.Weapon(tmp_w).IsWeaponClassifiedAs("間");
 
                     // 召喚ユニットは自分がやられてしまうような攻撃はかけない
                     if (selectedUnit.Party == "ＮＰＣ"

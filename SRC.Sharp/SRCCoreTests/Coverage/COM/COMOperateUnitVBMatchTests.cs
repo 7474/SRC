@@ -96,12 +96,12 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
-        public void OperateUnit_IndirectAttackCheck_UsesPreviouslySelectedWeapon()
+        public void OperateUnit_IndirectAttackCheck_UsesWeaponForEvaluatedTarget()
         {
-            // VB: 間接攻撃かどうかは tmp_w ではなく w（それまでに選んだターゲットへの武器）で判定する。
-            // 最初に見たユニット（装甲が薄くダメージが大きい）にはまだ w = 0 なので間接攻撃と見なさず、
-            // 反撃してくるのでダメージを 1.5 倍にしない。後に見たユニットは w が間接攻撃の武器なので
-            // 反撃されないと見なして 1.5 倍にし、こちらを狙う
+            // 間接攻撃かどうかは、評価しているターゲットへの武器（tmp_w）で判定する。
+            // VB 版は w（それまでに選んだターゲットへの武器。最初は 0）を見ていて、最初に見たユニットだけ
+            // 間接攻撃と見なさない書き誤りがある。その不具合は再現しないので、どちらも 1.5 倍になり、
+            // ダメージの大きい装甲の薄いほうを狙う（#1501）
             var f = CreateField();
             var attacker = DeployTacticalAttacker(f, "射間");
             DefineTargetUnit(f, "薄装甲機", armor: 950, counterRange: 4);
@@ -117,7 +117,7 @@ namespace SRCCore.Coverage.Tests.COMTests
 
             Operate(f, attacker);
 
-            Assert.AreSame(plain, f.Src.Commands.SelectedTarget);
+            Assert.AreSame(weak, f.Src.Commands.SelectedTarget);
         }
 
         private static int RandomCountOfPreemptiveCounter(string targetWeaponClass, double readAhead)
