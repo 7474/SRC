@@ -21,10 +21,11 @@ namespace SRCCore.Coverage.Tests.UnitItem
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void AddItem_OnlyHardpointItems_RemovesFirstItem()
+        public void AddItem_OnlyHardpointItems_RemovesNothing()
         {
-            // アイテム枠が埋まっていて、装備中のものが全てハードポイント付きなら先頭のアイテムを外す
-            // （Unit.cls AddItem「ハードポイント付きのものしかない場合」）
+            // アイテム枠が埋まっていても、装備中のものが全てハードポイント付きなら何も外さずに装備する。
+            // Unit.cls AddItem の「ハードポイント付きのものしかない場合」（If Not itm2 Is Nothing）は、
+            // VB の For Each が最後まで回るとループの変数が Nothing になるので実行されない
             var src = CreateSRC();
             var u = CreateUnit(src, "機体", "汎用", 2);
             var mountA = CreateItem(src, "武器ラックＡ", "アイテム", "汎用", "ハードポイント=武器");
@@ -34,8 +35,8 @@ namespace SRCCore.Coverage.Tests.UnitItem
             u.AddItem(mountB);
             u.AddItem(plain);
 
-            CollectionAssert.AreEqual(new[] { "武器ラックＢ", "お守り" }, Names(u), string.Join(",", Names(u)));
-            Assert.IsNull(mountA.Unit);
+            CollectionAssert.AreEqual(new[] { "武器ラックＡ", "武器ラックＢ", "お守り" }, Names(u), string.Join(",", Names(u)));
+            Assert.AreSame(u, mountA.Unit);
         }
 
         [TestMethod]
