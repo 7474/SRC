@@ -517,9 +517,9 @@ namespace SRCCore
                     }
 
                     // 間接攻撃？
-                    indirect_attack = selectedUnit.Weapon(tmp_w).IsWeaponClassifiedAs("間");
-                    // w は常に0？
-                    //indirect_attack = selectedUnit.IsWeaponClassifiedAs(w, "間");
+                    // VB 版は tmp_w ではなく w（それまでに選んだターゲットへの武器。まだ選んでいなければ 0 で常に偽）
+                    // を見ている。ターゲットの選び方を元の SRC と同じにするため、そのままにする
+                    indirect_attack = w > 0 && selectedUnit.Weapon(w).IsWeaponClassifiedAs("間");
 
                     // 召喚ユニットは自分がやられてしまうような攻撃はかけない
                     if (selectedUnit.Party == "ＮＰＣ"
@@ -552,11 +552,12 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている？
+                                // VB 版と同じく、効果の 1 番目が「回復」のアビリティだけを見る
                                 foreach (var adata in u.Abilities)
                                 {
                                     if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.FirstOrDefault()?.EffectType == "回復")
                                         {
                                             prob = VBMath.CLng(1.5d * prob);
                                             break;
@@ -633,11 +634,12 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている場合も重要ユニットと認定
+                                // VB 版と同じく、効果の 1 番目が「回復」のアビリティだけを見る
                                 foreach (var adata in u.Abilities)
                                 {
                                     if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.FirstOrDefault()?.EffectType == "回復")
                                         {
                                             dmg = VBMath.CLng(1.5d * dmg);
                                             break;
@@ -694,7 +696,8 @@ namespace SRCCore
             ;
 
             // 敵を攻撃
-            // TODO 武器選択に失敗してるケースがある（発生時は LogWarn を出してこのターンの行動を中断する）
+            // VB 版では w = 0 のままここに来ると武器を参照して実行時エラーになる。
+            // SRC# では警告を記録してこのターンの行動を終える
             if (w <= 0)
             {
                 SRC.CommandLog.LogWarning("Weapon not found. {Unit}", JsonConvert.SerializeObject(Commands.SelectedUnit));
@@ -707,7 +710,6 @@ namespace SRCCore
             // 敵の位置を記録しておく
             tx = Commands.SelectedTarget.x;
             ty = Commands.SelectedTarget.y;
-            //string[] list;
             string caption_msg;
             int hit_prob, crit_prob;
             IList<Unit> partners;
@@ -1060,7 +1062,7 @@ namespace SRCCore
                             if (Expression.IsOptionDefined("等身大基準"))
                             {
                                 confirmList.Add(new ListBoxItem(
-                                    $"援護防御：使用{(Commands.UseSupportGuard ? "する" : "しない")}("
+                                    $"援護防御：使用{(Commands.UseSupportGuard ? "する" : "しない")} ("
                                         + Commands.SupportGuardUnit.Nickname + ")",
                                     "援護防御"));
                             }
@@ -1084,9 +1086,9 @@ namespace SRCCore
                             lb_mode = "連続表示,カーソル移動",
                         });
                         var selectedItem = confirmList.SafeRefZeroOffset(i - 1);
-                        if (selectedItem != null)
                         {
-                            switch (selectedItem.ListItemID)
+                            // 選ばなかった（i = 0）場合は VB 版の Case Else に当たる
+                            switch (selectedItem?.ListItemID)
                             {
                                 case "反撃":
                                     {
@@ -1299,9 +1301,10 @@ namespace SRCCore
                             targetUnit.Attack(targetWeapon, Commands.SelectedUnit, "先制攻撃", "");
                             Commands.SelectedTarget = targetUnit.CurrentForm();
                         }
+                        // VB 版の Or は短絡しないので、武器が「先」でも乱数を 1 つ消費する
                         else if (targetWeapon.IsWeaponClassifiedAs("先")
-                            || targetUnit.MainPilot().SkillLevel("先読み", ref_mode: "") >= GeneralLib.Dice(16)
-                            || targetUnit.IsUnderSpecialPowerEffect("カウンター"))
+                            | targetUnit.MainPilot().SkillLevel("先読み", ref_mode: "") >= GeneralLib.Dice(16)
+                            | targetUnit.IsUnderSpecialPowerEffect("カウンター"))
                         {
                             def_mode = "先制攻撃";
                             targetUnit.Attack(targetWeapon, Commands.SelectedUnit, "カウンター", "");
@@ -1380,11 +1383,8 @@ namespace SRCCore
                     }
                     else if ((wname ?? "") != (selectedUnit.Weapon(w).Name ?? ""))
                     {
-                        // インデックスがずれた場合は名前で検索
-                        var foundIdx = selectedUnit.Weapons
-                            .Select((weapon, idx) => (weapon, idx))
-                            .FirstOrDefault(t => (t.weapon.Name ?? "") == (wname ?? ""));
-                        w = foundIdx.weapon != null ? foundIdx.idx + 1 : -1;
+                        // VB 版と同じく、武器の並びが変わっていれば攻撃しない
+                        w = -1;
                     }
                     else if (moved)
                     {
