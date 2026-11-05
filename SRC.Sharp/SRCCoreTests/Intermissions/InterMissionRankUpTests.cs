@@ -409,6 +409,34 @@ namespace SRCCore.Intermissions.Tests
         }
 
         [TestMethod]
+        public void RankUpCost_WithFractionalCostModifier_RoundsToEven()
+        {
+            // VB: Intermission.bas RankUpCost（As Long）= RankUpCost * (1# + Lv / 10) は代入で偶数丸め
+            var src = CreateSrc();
+            var unit = CreateUnit(src, "改造費修正機C", 0);
+            var im = new InterMission(src);
+
+            // 10000 * (1 + 0.0007 / 10) = 10000.7 → 10001（切り捨てなら 10000）
+            AddFeatureToUnit(unit, "改造費修正", 0.0007);
+
+            Assert.AreEqual(10001, im.RankUpCost(unit));
+        }
+
+        [TestMethod]
+        public void MaxRank_WithFractionalMaxUpgradeFeature_RoundsToEven()
+        {
+            // VB: Intermission.bas MaxRank の MinLng(MaxRank, .FeatureLevel("最大改造数")) は
+            // ByVal Long への受け渡しで偶数丸め。3.6 → 4（切り捨てなら 3）
+            var src = CreateSrc();
+            var unit = CreateUnit(src, "端数改造機体");
+            var im = new InterMission(src);
+
+            AddFeatureToUnit(unit, "最大改造数", 3.6);
+
+            Assert.AreEqual(4, im.MaxRank(unit));
+        }
+
+        [TestMethod]
         public void RankUpCost_UpgradeDisabledByDisableGlobal_Returns999999999()
         {
             var src = CreateSrc();

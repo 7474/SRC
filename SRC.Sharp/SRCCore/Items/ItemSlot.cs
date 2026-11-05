@@ -21,12 +21,12 @@ namespace SRCCore.Items
         public bool IsMatch(string partName)
         {
             return SlotName == partName
-                   || (partName == "片手" || partName == "両手" || partName == "盾")
-                       && (SlotName == "右手" || SlotName == "左手")
-                   || (partName == "肩" || partName == "両肩")
-                       && (SlotName == "右肩" || SlotName == "左肩")
-                   || (partName == "アイテム" || partName == "強化パーツ")
-                       && (SlotName == "アイテム" || SlotName == "強化パーツ");
+                   || ((partName == "片手" || partName == "両手" || partName == "盾")
+                       && (SlotName == "右手" || SlotName == "左手"))
+                   || ((partName == "肩" || partName == "両肩")
+                       && (SlotName == "右肩" || SlotName == "左肩"))
+                   || ((partName == "アイテム" || partName == "強化パーツ")
+                       && (SlotName == "アイテム" || SlotName == "強化パーツ"));
         }
     }
 
@@ -214,7 +214,7 @@ namespace SRCCore.Items
                     return slots.Count >= 2;
 
                 case "片手":
-                    return Unit.IsFeatureAvailable("両手持ち") && slots.Any()
+                    return (Unit.IsFeatureAvailable("両手持ち") && slots.Any())
                         || slots.Any(x => x.SlotName == "右手");
 
                 case "盾":

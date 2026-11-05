@@ -764,8 +764,8 @@ namespace SRCCore
                 // 合体状態にある場合はそれが主形態でない限り改造不可
                 if (u.IsFeatureAvailable("分離"))
                 {
-                    if (GeneralLib.LLength(u.FeatureData("分離")) == 3
-                        && !u.IsFeatureAvailable("主形態") || u.IsFeatureAvailable("制限時間"))
+                    if ((GeneralLib.LLength(u.FeatureData("分離")) == 3
+                        && !u.IsFeatureAvailable("主形態")) || u.IsFeatureAvailable("制限時間"))
                     {
                         RankUpCostRet = 999999999;
                         return RankUpCostRet;
@@ -1053,7 +1053,7 @@ namespace SRCCore
                 // ユニット用特殊能力「改造費修正」による修正
                 if (u.IsFeatureAvailable("改造費修正"))
                 {
-                    RankUpCostRet = (int)(RankUpCostRet * (1d + u.FeatureLevel("改造費修正") / 10d));
+                    RankUpCostRet = VBMath.CLng(RankUpCostRet * (1d + u.FeatureLevel("改造費修正") / 10d));
                 }
             }
 
@@ -1090,7 +1090,7 @@ namespace SRCCore
             // 最大改造数が設定されている？
             if (u.IsFeatureAvailable("最大改造数"))
             {
-                MaxRankRet = GeneralLib.MinLng(MaxRankRet, (int)u.FeatureLevel("最大改造数"));
+                MaxRankRet = GeneralLib.MinLng(MaxRankRet, VBMath.CLng(u.FeatureLevel("最大改造数")));
             }
 
             return MaxRankRet;
