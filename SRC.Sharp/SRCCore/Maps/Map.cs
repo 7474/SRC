@@ -455,6 +455,7 @@ namespace SRCCore.Maps
                 }
             }
             MapUnderImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
+            MapUpperImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
             MapDataForUnit = new Src2DArray<Unit>(MapWidth, MapHeight);
             MaskData = new Src2DArray<bool>(MapWidth, MapHeight);
             TotalMoveCost = new int[MapWidth + 2, MapHeight + 2];

@@ -278,5 +278,30 @@ namespace SRCCore.Coverage.Tests
             Assert.IsNull(f.Map.MapDataForUnit[3, 2]);
             Assert.AreSame(u, f.Map.MapDataForUnit[u.x, u.y]);
         }
+    
+        [TestMethod]
+        public void ChangeLayer_BitmapNotFound_ThrowsEventError()
+        {
+            // 元の SRC と同じく、レイヤーの画像が見つからなければエラーにする（7474/SRC#1495）
+            var f = CreateFixture();
+
+            var result = CreateCmd(f.Src, "ChangeLayer 3 2 山 5").Exec();
+
+            Assert.AreEqual(-1, result);
+            Assert.AreEqual(1, f.Src.DataErrors.Count);
+            Assert.AreEqual("マップビットマップ「mountain5.bmp」が見つかりません", f.Src.DataErrors[0].msg);
+            Assert.AreEqual(0, redrawnCells.Count);
+        }
+
+        [TestMethod]
+        public void ChangeLayer_DataOnly_BitmapNotFound_DoesNotThrow()
+        {
+            // 「情報限定」は画像を探さないので、画像が無くてもエラーにならない
+            var f = CreateFixture();
+
+            CreateCmd(f.Src, "ChangeLayer 3 2 山 5 情報限定").Exec();
+
+            Assert.AreEqual(SRCCore.Maps.BoxTypes.UpperDataOnly, f.Map.CellAtPoint(3, 2).BoxType);
+        }
     }
 }

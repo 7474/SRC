@@ -75,6 +75,14 @@ namespace SRCCore.CmdDatas.Commands
             // 元の SRC は「情報限定」では画像を書き込まず、ユニットも配置し直さない
             if (cell.BoxType != BoxTypes.UpperDataOnly)
             {
+                // レイヤーの画像を検索する（元の SRC と同じく、見つからなければエラー。データは変えたまま）
+                var fname = Map.SearchLayerImageFile(cell);
+                if (string.IsNullOrEmpty(fname))
+                {
+                    throw new EventErrorException(this, "マップビットマップ「"
+                        + td.Bitmap + cell.LayerBitmapNo + ".bmp" + "」が見つかりません");
+                }
+
                 // レイヤーを変えたマスだけを背景に描き直す。背景のほかのマスに描いたもの（IsMapDirty）は残す（元の SRC と同じ）
                 GUI.RedrawMapCell(x, y);
 
