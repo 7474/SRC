@@ -12,6 +12,7 @@ namespace SRCCore.Coverage.Tests
     /// ChangeTerrain・ChangeLayer コマンドで地形を変えたマスにいるユニットを配置し直すことを確かめる（7474/SRC#1462）。
     /// 元の SRC（CmdData.cls の ExecChangeTerrainCmd・ExecChangeLayerCmd）は、そのマスのユニットを
     /// StandBy で配置し直し、入れない地形なら近くの空いているマスへ移す。
+    /// 背景は変えたマスだけを描き直す（7474/SRC#1492）。ClearLayer も同じ（7474/SRC#1494）。
     /// </summary>
     [TestClass]
     public class MapChangeTerrainStandByTests
@@ -195,6 +196,87 @@ namespace SRCCore.Coverage.Tests
             Assert.IsTrue(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.Upper }.IsLayerBitmapVisible);
             Assert.IsFalse(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.UpperDataOnly }.IsLayerBitmapVisible);
             Assert.IsTrue(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.UpperBmpOnly }.IsLayerBitmapVisible);
+        }
+    
+        /// <summary>(3, 2) を、壁の上に平地のレイヤーを重ねたマスにする</summary>
+        private static void SetWallUnderPlainLayer(MapCoverageFixture f)
+        {
+            var cell = f.Map.CellAtPoint(3, 2);
+            cell.TerrainType = MapCoverageFixture.Wall;
+            cell.UnderTerrain = f.Src.TDList.Item(MapCoverageFixture.Wall);
+            cell.LayerType = MapCoverageFixture.Plain;
+            cell.UpperTerrain = f.Src.TDList.Item(MapCoverageFixture.Plain);
+            cell.LayerBitmapNo = 0;
+            cell.BoxType = SRCCore.Maps.BoxTypes.Upper;
+        }
+
+        [TestMethod]
+        public void ClearLayer_Point_RedrawsOnlyClearedCellAndMovesUnit()
+        {
+            // 元の SRC の ExecClearLayerCmd は、レイヤーを消したマスだけを描き直し、そのマスのユニットを配置し直す（7474/SRC#1494）
+            var f = CreateFixture();
+            SetWallUnderPlainLayer(f);
+            var u = f.Place("歩兵", "味方", 3, 2);
+            f.Map.IsMapDirty = true;
+
+            CreateCmd(f.Src, "ClearLayer 3 2").Exec();
+
+            CollectionAssert.AreEqual(new[] { (3, 2) }, redrawnCells);
+            Assert.IsTrue(f.Map.IsMapDirty);
+            Assert.AreEqual("壁", f.Map.Terrain(3, 2).Name);
+            Assert.IsNull(f.Map.MapDataForUnit[3, 2]);
+            Assert.AreEqual(1, Math.Abs(u.x - 3) + Math.Abs(u.y - 2));
+            Assert.AreSame(u, f.Map.MapDataForUnit[u.x, u.y]);
+        }
+
+        [TestMethod]
+        public void ClearLayer_BitmapOnly_RedrawsCellAndStandsByUnitAgain()
+        {
+            // 「画像限定」は画像だけを消し、レイヤーの地形のデータは残すので、ユニットはそのまま
+            var f = CreateFixture();
+            SetWallUnderPlainLayer(f);
+            var u = f.Place("歩兵", "味方", 3, 2);
+            var painted = 0;
+            f.GUI.PaintUnitBitmapHandler = (_, _) => painted++;
+
+            CreateCmd(f.Src, "ClearLayer 3 2 画像限定").Exec();
+
+            CollectionAssert.AreEqual(new[] { (3, 2) }, redrawnCells);
+            Assert.AreEqual(SRCCore.Maps.BoxTypes.UpperDataOnly, f.Map.CellAtPoint(3, 2).BoxType);
+            Assert.AreSame(u, f.Map.MapDataForUnit[3, 2]);
+            Assert.AreEqual(1, painted);
+        }
+
+        [TestMethod]
+        public void ClearLayer_DataOnly_DoesNotRedrawOrMoveUnit()
+        {
+            // 「情報限定」は画像を書き直さず、ユニットも配置し直さない
+            var f = CreateFixture();
+            SetWallUnderPlainLayer(f);
+            var u = f.Place("歩兵", "味方", 3, 2);
+
+            CreateCmd(f.Src, "ClearLayer 3 2 情報限定").Exec();
+
+            Assert.AreEqual(0, redrawnCells.Count);
+            Assert.AreEqual(SRCCore.Maps.BoxTypes.UpperBmpOnly, f.Map.CellAtPoint(3, 2).BoxType);
+            Assert.AreSame(u, f.Map.MapDataForUnit[3, 2]);
+        }
+
+        [TestMethod]
+        public void ClearLayer_All_RedrawsEachCellAndMovesUnit()
+        {
+            // 全体を消すときもマスごとに描き直し（背景全体は描き直さない）、ユニットを配置し直す
+            var f = CreateFixture();
+            SetWallUnderPlainLayer(f);
+            var u = f.Place("歩兵", "味方", 3, 2);
+            f.Map.IsMapDirty = true;
+
+            CreateCmd(f.Src, "ClearLayer").Exec();
+
+            Assert.AreEqual(f.Map.MapWidth * f.Map.MapHeight, redrawnCells.Count);
+            Assert.IsTrue(f.Map.IsMapDirty);
+            Assert.IsNull(f.Map.MapDataForUnit[3, 2]);
+            Assert.AreSame(u, f.Map.MapDataForUnit[u.x, u.y]);
         }
     }
 }

@@ -103,5 +103,49 @@ namespace SRCRender.Tests
                 runner.WaitForTermination();
             }
         }
+    
+        /// <summary>
+        /// ClearLayer もレイヤーを消したマスだけを描き直す（7474/SRC#1494）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_ClearLayerKeepsBackgroundDrawing()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                File.WriteAllBytes(Path.Combine(workspace.AppPath, "Bitmap", "Map", "sea0000.bmp"), new byte[0]);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    "ChangeLayer 7 5 海 0",
+                    "Sepia",
+                    "DrawOption 背景",
+                    "Line 0 40 300 40 #FF0000",
+                    "DrawOption 通常",
+                    "ClearLayer 7 5",
+                    "Redraw",
+                    "Talk システム",
+                    "消去",
+                    "End",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                Assert.AreEqual("消去", runner.WaitForMessage());
+                using (var bitmap = SKBitmap.Decode(runner.SnapshotPng()))
+                {
+                    // 背景に描いた線は残る
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(100, 40));
+                    // レイヤーを消したマスは、セピアの平地に戻る
+                    Assert.AreEqual(CellPixel(bitmap, 4, 5), CellPixel(bitmap, 7, 5));
+                }
+                runner.ClickMessage();
+
+                runner.WaitForTermination();
+            }
+        }
     }
 }
