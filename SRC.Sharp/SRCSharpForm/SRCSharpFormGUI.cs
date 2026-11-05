@@ -970,27 +970,26 @@ namespace SRCSharpForm
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             TopItem = -1;
-            var list = abilities.Items.Select(x => new ListBoxItem()
-            {
-                Text = $"{x.Ability.Data.Name}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            if (list.Count == 1 && lb_mode != "一覧" && !is_item)
+            if (abilities.Items.Count == 1 && lb_mode != "一覧" && !is_item)
             {
                 return abilities.Items[0].Ability;
             }
+            // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
+            var list = abilities.ToListBoxItems();
+            if (list.Count == 0)
+            {
+                return null;
+            }
             var ret = ListBox(new ListBoxArgs
             {
-                Items = list,
+                Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
-                lb_info = "名称",
+                lb_info = abilities.ListBoxInfo(SRC),
                 lb_mode = "",
             });
             Application.DoEvents();
-            return ret > 0 ? abilities.Items[ret - 1].Ability : null;
+            return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 
         public int LIPS(ListBoxArgs args, int time_limit)

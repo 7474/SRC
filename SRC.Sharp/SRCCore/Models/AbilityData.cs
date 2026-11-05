@@ -5,7 +5,9 @@
 
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -210,849 +212,489 @@ namespace SRCCore.Models
             }
         }
 
-        //// 効果の総数
-        //public int CountEffect()
-        //{
-        //    int CountEffectRet = default;
-        //    CountEffectRet = colEffects.Count;
-        //    return CountEffectRet;
-        //}
-
-        //// 効果の種類
-        //public string EffectType(object Index)
-        //{
-        //    string EffectTypeRet = default;
-        //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    EffectTypeRet = Conversions.ToString(colEffects[Index].Name);
-        //    return EffectTypeRet;
-        //}
-
-        //// 効果のレベル
-        //public double EffectLevel(object Index)
-        //{
-        //    double EffectLevelRet = default;
-        //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Level の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    EffectLevelRet = Conversions.ToDouble(colEffects[Index].Level);
-        //    return EffectLevelRet;
-        //}
-
-        //// 効果のデータ
-        //public string EffectData(object Index)
-        //{
-        //    string EffectDataRet = default;
-        //    // UPGRADE_WARNING: オブジェクト colEffects.Item().Data の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //    EffectDataRet = Conversions.ToString(colEffects[Index].Data);
-        //    return EffectDataRet;
-        //}
-
-        //// 効果内容の解説
-        //public string EffectName(object Index)
-        //{
-        //    string EffectNameRet = default;
-        //    AbilityEffect ae;
-        //    double elevel, elevel2;
-        //    string uname, wclass = default;
-        //    double flevel;
-        //    double heal_lv = default, supply_lv = default;
-        //    int i;
-        //    string buf;
-        //    string cname, aname;
-        //    ae = (AbilityEffect)colEffects[Index];
-        //    // 効果レベルが回復・増加量を意味するアビリティ用
-        //    elevel = ae.Level;
-        //    // 効果レベルがターン数を意味するアビリティ及び召喚アビリティ用
-        //    elevel2 = elevel;
-        //    if (Commands.SelectedUnit.CountPilot() > 0)
-        //    {
-        //        {
-        //            var withBlock = Commands.SelectedUnit.MainPilot();
-        //            // 得意技
-        //            if (withBlock.IsSkillAvailable("得意技"))
-        //            {
-        //                buf = withBlock.SkillData("得意技");
-        //                var loopTo = Strings.Len(buf);
-        //                for (i = 1; i <= loopTo; i++)
-        //                {
-        //                    if (GeneralLib.InStrNotNest(Class, GeneralLib.GetClassBundle(buf, i)) > 0)
-        //                    {
-        //                        elevel = 1.2d * elevel;
-        //                        elevel2 = 1.4d * elevel2;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-
-        //            // 不得手
-        //            if (withBlock.IsSkillAvailable("不得手"))
-        //            {
-        //                buf = withBlock.SkillData("不得手");
-        //                var loopTo1 = Strings.Len(buf);
-        //                for (i = 1; i <= loopTo1; i++)
-        //                {
-        //                    if (GeneralLib.InStrNotNest(Class, GeneralLib.GetClassBundle(buf, i)) > 0)
-        //                    {
-        //                        elevel = 0.8d * elevel;
-        //                        elevel2 = 0.6d * elevel2;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-
-        //            // 術アビリティの場合は魔力によって効果レベルが修正を受ける
-        //            if (GeneralLib.InStrNotNest(Class, "術") > 0)
-        //            {
-        //                elevel = elevel * withBlock.Shooting / 100d;
-        //            }
-        //            else
-        //            {
-        //                var loopTo2 = GeneralLib.LLength(NecessarySkill);
-        //                for (i = 1; i <= loopTo2; i++)
-        //                {
-        //                    if (withBlock.SkillType(GeneralLib.LIndex(NecessarySkill, i)) == "術")
-        //                    {
-        //                        elevel = elevel * withBlock.Shooting / 100d;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-
-        //            // 修理＆補給技能
-        //            heal_lv = withBlock.SkillLevel("修理", ref_mode: "");
-        //            supply_lv = withBlock.SkillLevel("補給", ref_mode: "");
-        //        }
-        //    }
-
-        //    // アビリティの効果は最低でも１ターン持続
-        //    if (elevel2 != 0d)
-        //    {
-        //        elevel2 = GeneralLib.MaxLng(elevel2, 1);
-        //    }
-
-        //    switch (ae.Name ?? "")
-        //    {
-        //        case "回復":
-        //            {
-        //                EffectNameRet = Expression.Term("ＨＰ", u: null) + "を";
-        //                if (elevel > 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format(((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
-        //                }
-        //                else if (elevel < 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-500 * elevel)) + "減少";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "補給":
-        //            {
-        //                EffectNameRet = Expression.Term("ＥＮ", u: null) + "を";
-        //                if (elevel > 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((50d * elevel * (10d + supply_lv)) / 10) + "回復";
-        //                }
-        //                else if (elevel < 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-50 * elevel)) + "減少";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "霊力回復":
-        //        case "プラーナ回復":
-        //            {
-        //                if (Commands.SelectedUnit.CountPilot() > 0)
-        //                {
-        //                    EffectNameRet = Commands.SelectedUnit.MainPilot().SkillName0("霊力");
-        //                }
-        //                else
-        //                {
-        //                    EffectNameRet = "霊力";
-        //                }
-
-        //                if (elevel > 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + "を" + SrcFormatter.Format((10d * elevel)) + "回復";
-        //                }
-        //                else if (elevel < 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + "を" + SrcFormatter.Format((-10 * elevel)) + "減少";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "ＳＰ回復":
-        //            {
-        //                EffectNameRet = Expression.Term("ＳＰ", u: null) + "を";
-        //                if (elevel > 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "回復";
-        //                }
-        //                else if (elevel < 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-10 * elevel)) + "減少";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "気力増加":
-        //            {
-        //                EffectNameRet = Expression.Term("気力", u: null) + "を";
-        //                if (elevel > 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((10d * elevel)) + "増加";
-        //                }
-        //                else if (elevel < 0d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + SrcFormatter.Format((-10 * elevel)) + "減少";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "装填":
-        //            {
-        //                if (Strings.Len(ae.Data) == 0)
-        //                {
-        //                    EffectNameRet = "武器の弾数を回復";
-        //                }
-        //                else
-        //                {
-        //                    var loopTo3 = Commands.SelectedUnit.CountWeapon();
-        //                    for (i = 1; i <= loopTo3; i++)
-        //                    {
-        //                        if ((Commands.SelectedUnit.WeaponNickname(i) ?? "") == (ae.Data ?? ""))
-        //                        {
-        //                            EffectNameRet = ae.Data + "の弾数を回復";
-        //                            return EffectNameRet;
-        //                        }
-        //                    }
-
-        //                    EffectNameRet = ae.Data + "属性を持つ武器の弾数を回復";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "治癒":
-        //            {
-        //                var loopTo4 = GeneralLib.LLength(ae.Data);
-        //                for (i = 1; i <= loopTo4; i++)
-        //                {
-        //                    cname = GeneralLib.LIndex(ae.Data, i);
-        //                    switch (cname ?? "")
-        //                    {
-        //                        case "装甲劣化":
-        //                            {
-        //                                cname = Expression.Term("装甲", u: null) + "劣化";
-        //                                break;
-        //                            }
-
-        //                        case "運動性ＵＰ":
-        //                            {
-        //                                cname = Expression.Term("運動性", u: null) + "ＵＰ";
-        //                                break;
-        //                            }
-
-        //                        case "運動性ＤＯＷＮ":
-        //                            {
-        //                                cname = Expression.Term("運動性", u: null) + "ＤＯＷＮ";
-        //                                break;
-        //                            }
-
-        //                        case "移動力ＵＰ":
-        //                            {
-        //                                cname = Expression.Term("移動力", u: null) + "ＵＰ";
-        //                                break;
-        //                            }
-
-        //                        case "移動力ＤＯＷＮ":
-        //                            {
-        //                                cname = Expression.Term("移動力", u: null) + "ＤＯＷＮ";
-        //                                break;
-        //                            }
-        //                    }
-
-        //                    EffectNameRet = EffectNameRet + " " + cname;
-        //                }
-
-        //                EffectNameRet = Strings.Trim(EffectNameRet);
-        //                if (Strings.Len(EffectNameRet) > 0)
-        //                {
-        //                    EffectNameRet = EffectNameRet + "を回復";
-        //                }
-        //                else
-        //                {
-        //                    EffectNameRet = "状態回復";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "状態":
-        //            {
-        //                cname = GeneralLib.LIndex(ae.Data, 1);
-        //                switch (cname ?? "")
-        //                {
-        //                    case "装甲劣化":
-        //                        {
-        //                            cname = Expression.Term("装甲", u: null) + "劣化";
-        //                            break;
-        //                        }
-
-        //                    case "運動性ＵＰ":
-        //                        {
-        //                            cname = Expression.Term("運動性", u: null) + "ＵＰ";
-        //                            break;
-        //                        }
-
-        //                    case "運動性ＤＯＷＮ":
-        //                        {
-        //                            cname = Expression.Term("運動性", u: null) + "ＤＯＷＮ";
-        //                            break;
-        //                        }
-
-        //                    case "移動力ＵＰ":
-        //                        {
-        //                            cname = Expression.Term("移動力", u: null) + "ＵＰ";
-        //                            break;
-        //                        }
-
-        //                    case "移動力ＤＯＷＮ":
-        //                        {
-        //                            cname = Expression.Term("移動力", u: null) + "ＤＯＷＮ";
-        //                            break;
-        //                        }
-        //                }
-
-        //                if (0d < elevel2 && elevel2 <= 10d)
-        //                {
-        //                    EffectNameRet = cname + "(" + SrcFormatter.Format(elevel2) + "ターン)";
-        //                }
-        //                else
-        //                {
-        //                    EffectNameRet = cname;
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "付加":
-        //            {
-        //                switch (GeneralLib.LIndex(ae.Data, 1) ?? "")
-        //                {
-        //                    case "耐性":
-        //                        {
-        //                            aname = Help.AttributeName(Commands.SelectedUnit, GeneralLib.LIndex(ae.Data, 3));
-        //                            if (string.IsNullOrEmpty(aname))
-        //                            {
-        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
-        //                            }
-
-        //                            EffectNameRet = aname + "のダメージを半減";
-        //                            break;
-        //                        }
-
-        //                    case "無効化":
-        //                        {
-        //                            aname = Help.AttributeName(Commands.SelectedUnit, GeneralLib.LIndex(ae.Data, 3));
-        //                            if (string.IsNullOrEmpty(aname))
-        //                            {
-        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
-        //                            }
-
-        //                            EffectNameRet = aname + "を無効化";
-        //                            break;
-        //                        }
-
-        //                    case "特殊効果無効化":
-        //                        {
-        //                            aname = Help.AttributeName(Commands.SelectedUnit, GeneralLib.LIndex(ae.Data, 3));
-        //                            if (string.IsNullOrEmpty(aname))
-        //                            {
-        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
-        //                            }
-
-        //                            EffectNameRet = aname + "の特殊効果を無効化";
-        //                            break;
-        //                        }
-
-        //                    case "吸収":
-        //                        {
-        //                            aname = Help.AttributeName(Commands.SelectedUnit, GeneralLib.LIndex(ae.Data, 3));
-        //                            if (string.IsNullOrEmpty(aname))
-        //                            {
-        //                                aname = GeneralLib.LIndex(ae.Data, 3) + "攻撃";
-        //                            }
-
-        //                            EffectNameRet = aname + "を吸収";
-        //                            break;
-        //                        }
-
-        //                    case "追加パイロット":
-        //                        {
-        //                            EffectNameRet = "パイロット変化";
-        //                            break;
-        //                        }
-
-        //                    case "追加サポート":
-        //                        {
-        //                            EffectNameRet = "サポート追加";
-        //                            break;
-        //                        }
-
-        //                    case "性格変更":
-        //                        {
-        //                            EffectNameRet = "パイロットの性格を" + GeneralLib.LIndex(ae.Data, 3) + "に変更";
-        //                            break;
-        //                        }
-
-        //                    case "ＢＧＭ":
-        //                        {
-        //                            EffectNameRet = "ＢＧＭ変更";
-        //                            break;
-        //                        }
-
-        //                    case "攻撃属性":
-        //                        {
-        //                            var loopTo5 = GeneralLib.LLength(ae.Data);
-        //                            for (i = 4; i <= loopTo5; i++)
-        //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
-        //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
-        //                                }
-        //                            }
-
-        //                            EffectNameRet = WeaponType(wclass) + "の属性に" + GeneralLib.LIndex(ae.Data, 3) + "を追加";
-        //                            break;
-        //                        }
-
-        //                    case "武器強化":
-        //                        {
-        //                            var loopTo6 = GeneralLib.LLength(ae.Data);
-        //                            for (i = 3; i <= loopTo6; i++)
-        //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
-        //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
-        //                                }
-        //                            }
-
-        //                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
-        //                            if (flevel >= 0d)
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の攻撃力を+" + SrcFormatter.Format(100d * flevel);
-        //                            }
-        //                            else
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の攻撃力を" + SrcFormatter.Format(100d * flevel);
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "命中率強化":
-        //                        {
-        //                            var loopTo7 = GeneralLib.LLength(ae.Data);
-        //                            for (i = 3; i <= loopTo7; i++)
-        //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
-        //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
-        //                                }
-        //                            }
-
-        //                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
-        //                            if (flevel >= 0d)
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の命中率を+" + SrcFormatter.Format(5d * flevel);
-        //                            }
-        //                            else
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の命中率を" + SrcFormatter.Format(5d * flevel);
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "ＣＴ率強化":
-        //                    case "特殊効果発動率強化":
-        //                        {
-        //                            var loopTo8 = GeneralLib.LLength(ae.Data);
-        //                            for (i = 3; i <= loopTo8; i++)
-        //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
-        //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
-        //                                }
-        //                            }
-
-        //                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
-        //                            if (flevel >= 0d)
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "のＣＴ率を+" + SrcFormatter.Format(5d * flevel);
-        //                            }
-        //                            else
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "のＣＴ率を" + SrcFormatter.Format(5d * flevel);
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "射程延長":
-        //                        {
-        //                            var loopTo9 = GeneralLib.LLength(ae.Data);
-        //                            for (i = 3; i <= loopTo9; i++)
-        //                            {
-        //                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
-        //                                {
-        //                                    wclass = wclass + GeneralLib.LIndex(ae.Data, i);
-        //                                }
-        //                            }
-
-        //                            flevel = GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 2));
-        //                            if (flevel >= 0d)
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の射程を+" + SrcFormatter.Format(flevel);
-        //                            }
-        //                            else
-        //                            {
-        //                                EffectNameRet = WeaponType(wclass) + "の射程を" + SrcFormatter.Format(flevel);
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "サイズ変更":
-        //                        {
-        //                            EffectNameRet = "サイズが" + GeneralLib.LIndex(ae.Data, 3) + "に変化";
-        //                            break;
-        //                        }
-
-        //                    case "地形適応変更":
-        //                        {
-        //                            int localStrToLng() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng1() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng2() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 3)) > 0)
-        //                            {
-        //                                EffectNameRet = "空への適応を強化";
-        //                            }
-        //                            else if (localStrToLng() > 0)
-        //                            {
-        //                                EffectNameRet = "陸への適応を強化";
-        //                            }
-        //                            else if (localStrToLng1() > 0)
-        //                            {
-        //                                EffectNameRet = "水中への適応を強化";
-        //                            }
-        //                            else if (localStrToLng2() > 0)
-        //                            {
-        //                                EffectNameRet = "宇宙への適応を強化";
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "地形適応固定変更":
-        //                        {
-        //                            int localStrToLng3() { string argexpr = GeneralLib.LIndex(ae.Data, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng4() { string argexpr = GeneralLib.LIndex(ae.Data, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng5() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng6() { string argexpr = GeneralLib.LIndex(ae.Data, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng7() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng8() { string argexpr = GeneralLib.LIndex(ae.Data, 5); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng9() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            int localStrToLng10() { string argexpr = GeneralLib.LIndex(ae.Data, 6); var ret = GeneralLib.StrToLng(argexpr); return ret; }
-
-        //                            if (localStrToLng3() <= 5 && localStrToLng4() >= 0)
-        //                            {
-        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
-        //                                {
-        //                                    EffectNameRet = "空への適応を強制的に変化";
-        //                                }
-        //                                else
-        //                                {
-        //                                    EffectNameRet = "空への適応を変化";
-        //                                }
-        //                            }
-        //                            else if (localStrToLng5() <= 5 && localStrToLng6() >= 0)
-        //                            {
-        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
-        //                                {
-        //                                    EffectNameRet = "陸への適応を強制的に変化";
-        //                                }
-        //                                else
-        //                                {
-        //                                    EffectNameRet = "陸への適応を変化";
-        //                                }
-        //                            }
-        //                            else if (localStrToLng7() <= 5 && localStrToLng8() >= 0)
-        //                            {
-        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
-        //                                {
-        //                                    EffectNameRet = "水中への適応を強制的に変化";
-        //                                }
-        //                                else
-        //                                {
-        //                                    EffectNameRet = "水中への適応を変化";
-        //                                }
-        //                            }
-        //                            else if (localStrToLng9() <= 5 && localStrToLng10() >= 0)
-        //                            {
-        //                                if (GeneralLib.LIndex(ae.Data, 6) == "強制")
-        //                                {
-        //                                    EffectNameRet = "宇宙への適応を強制的に変化";
-        //                                }
-        //                                else
-        //                                {
-        //                                    EffectNameRet = "宇宙への適応を変化";
-        //                                }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "Ｖ－ＵＰ":
-        //                        {
-        //                            switch (GeneralLib.LIndex(ae.Data, 3) ?? "")
-        //                            {
-        //                                case "武器":
-        //                                    {
-        //                                        EffectNameRet = "武器攻撃力を強化";
-        //                                        break;
-        //                                    }
-
-        //                                case "ユニット":
-        //                                    {
-        //                                        EffectNameRet = "各パラメータを強化";
-        //                                        break;
-        //                                    }
-
-        //                                default:
-        //                                    {
-        //                                        EffectNameRet = "ユニットを強化";
-        //                                        break;
-        //                                    }
-        //                            }
-
-        //                            break;
-        //                        }
-
-        //                    case "格闘武器":
-        //                    case "迎撃武器":
-        //                    case "制限時間":
-        //                        {
-        //                            EffectNameRet = EffectNameRet + "付加";
-        //                            break;
-        //                        }
-
-        //                    case "パイロット愛称":
-        //                    case "パイロット画像":
-        //                    case "愛称変更":
-        //                    case "ユニット画像":
-        //                        {
-        //                            EffectNameRet = "";
-        //                            break;
-        //                        }
-
-        //                    default:
-        //                        {
-        //                            EffectNameRet = GeneralLib.ListIndex(ae.Data, 3);
-        //                            if (Strings.Left(EffectNameRet, 1) == "\"")
-        //                            {
-        //                                EffectNameRet = GeneralLib.ListIndex(Strings.Mid(EffectNameRet, 2, Strings.Len(EffectNameRet) - 2), 1);
-        //                            }
-
-        //                            if (string.IsNullOrEmpty(EffectNameRet) || EffectNameRet == "非表示")
-        //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(Constants.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
-        //                                {
-        //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2) + "付加";
-        //                                }
-        //                                else
-        //                                {
-        //                                    EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "付加";
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                if ((GeneralLib.LIndex(ae.Data, 2) ?? "") != (SrcFormatter.Format(Constants.DEFAULT_LEVEL) ?? "") && GeneralLib.LLength(ae.Data) <= 3)
-        //                                {
-        //                                    EffectNameRet = EffectNameRet + "Lv" + GeneralLib.LIndex(ae.Data, 2);
-        //                                }
-
-        //                                EffectNameRet = EffectNameRet + "付加";
-        //                            }
-
-        //                            break;
-        //                        }
-        //                }
-
-        //                if (!string.IsNullOrEmpty(EffectNameRet))
-        //                {
-        //                    if (0d < elevel2 && elevel2 <= 10d)
-        //                    {
-        //                        EffectNameRet = EffectNameRet + "(" + SrcFormatter.Format(elevel2) + "ターン)";
-        //                    }
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "強化":
-        //            {
-        //                EffectNameRet = GeneralLib.ListIndex(ae.Data, 3);
-        //                if (string.IsNullOrEmpty(EffectNameRet) || EffectNameRet == "非表示")
-        //                {
-        //                    if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 2)) > 0)
-        //                    {
-        //                        EffectNameRet = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2);
-        //                    }
-        //                    else
-        //                    {
-        //                        EffectNameRet = GeneralLib.LIndex(ae.Data, 1);
-        //                    }
-        //                }
-
-        //                if (0d < elevel2 && elevel2 <= 10d)
-        //                {
-        //                    EffectNameRet = EffectNameRet + "強化(" + SrcFormatter.Format(elevel2) + "ターン)";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "召喚":
-        //            {
-        //                bool localIsDefined() { object argIndex1 = ae.Data; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-        //                if (!localIsDefined())
-        //                {
-        //                    GUI.ErrorMessage("召喚ユニット「" + ae.Data + "」が定義されていません");
-        //                    return EffectNameRet;
-        //                }
-
-        //                if (elevel2 > 1d)
-        //                {
-        //                    UnitData localItem() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-        //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(SrcFormatter.Format(elevel2), VbStrConv.Wide) + "体召喚";
-        //                }
-        //                else
-        //                {
-        //                    UnitData localItem1() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-        //                    EffectNameRet = localItem1().Nickname + "を召喚";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "変身":
-        //            {
-        //                uname = GeneralLib.LIndex(ae.Data, 1);
-        //                bool localIsDefined1() { object argIndex1 = uname; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-        //                if (!localIsDefined1())
-        //                {
-        //                    GUI.ErrorMessage("変身先のデータ「" + uname + "」が定義されていません");
-        //                    return EffectNameRet;
-        //                }
-
-        //                if (0d < elevel2 && elevel2 <= 10d)
-        //                {
-        //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-        //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
-        //                }
-        //                else
-        //                {
-        //                    UnitData localItem3() { object argIndex1 = uname; var ret = SRC.UDList.Item(argIndex1); return ret; }
-
-        //                    EffectNameRet = localItem3().Nickname + "に変身";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "能力コピー":
-        //            {
-        //                if (0d < elevel2 && elevel2 <= 10d)
-        //                {
-        //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + SrcFormatter.Format(elevel2) + "ターン)";
-        //                }
-        //                else
-        //                {
-        //                    EffectNameRet = "任意の味方ユニットに変身";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "再行動":
-        //            {
-        //                if (MaxRange != 0)
-        //                {
-        //                    EffectNameRet = "行動済みユニットを再行動";
-        //                }
-        //                else
-        //                {
-        //                    EffectNameRet = "行動非消費";
-        //                }
-
-        //                break;
-        //            }
-
-        //        case "解説":
-        //            {
-        //                EffectNameRet = ae.Data;
-        //                break;
-        //            }
-        //    }
-
-        //    return EffectNameRet;
-        //}
-
-        //// 付加する武器強化系能力の対象表示用に武器の種類を判定
-        //private string WeaponType(string wclass)
-        //{
-        //    string WeaponTypeRet = default;
-        //    if (wclass == "全" || string.IsNullOrEmpty(wclass))
-        //    {
-        //        WeaponTypeRet = "武器";
-        //    }
-        //    else if (Strings.Len(wclass) == 1)
-        //    {
-        //        WeaponTypeRet = Help.AttributeName(null, wclass);
-        //    }
-        //    else if (Strings.Right(wclass, 2) == "装備")
-        //    {
-        //        WeaponTypeRet = Strings.Left(wclass, Strings.Len(wclass) - 2);
-        //    }
-        //    else
-        //    {
-        //        WeaponTypeRet = wclass + "属性攻撃";
-        //    }
-
-        //    return WeaponTypeRet;
-        //}
+        // 効果の総数
+        public int CountEffect()
+        {
+            return colEffects.Count;
+        }
+
+        // 効果内容の解説
+        // AbilityData.cls の EffectName。元の SRC と同じく、選択中のユニット（Commands.SelectedUnit）の
+        // メインパイロットの技能で効果量を補正して表示する。
+        public string EffectName(AbilityEffect ae)
+        {
+            var selectedUnit = SRC.Commands.SelectedUnit;
+            var name = "";
+            string cname, uname;
+            var wclass = "";
+            double flevel;
+            double heal_lv = 0d, supply_lv = 0d;
+
+            // 効果レベルが回復・増加量を意味するアビリティ用
+            var elevel = ae.Level;
+            // 効果レベルがターン数を意味するアビリティ及び召喚アビリティ用
+            var elevel2 = elevel;
+
+            if (selectedUnit != null && selectedUnit.CountPilot() > 0)
+            {
+                var p = selectedUnit.MainPilot();
+                // 得意技
+                if (p.IsSkillAvailable("得意技"))
+                {
+                    var buf = p.SkillData("得意技");
+                    for (var i = 1; i <= Strings.Len(buf); i++)
+                    {
+                        if (GeneralLib.InStrNotNest(Class, GeneralLib.GetClassBundle(buf, ref i)) > 0)
+                        {
+                            elevel = 1.2d * elevel;
+                            elevel2 = 1.4d * elevel2;
+                            break;
+                        }
+                    }
+                }
+
+                // 不得手
+                if (p.IsSkillAvailable("不得手"))
+                {
+                    var buf = p.SkillData("不得手");
+                    for (var i = 1; i <= Strings.Len(buf); i++)
+                    {
+                        if (GeneralLib.InStrNotNest(Class, GeneralLib.GetClassBundle(buf, ref i)) > 0)
+                        {
+                            elevel = 0.8d * elevel;
+                            elevel2 = 0.6d * elevel2;
+                            break;
+                        }
+                    }
+                }
+
+                // 術アビリティの場合は魔力によって効果レベルが修正を受ける
+                if (GeneralLib.InStrNotNest(Class, "術") > 0)
+                {
+                    elevel = elevel * p.Shooting / 100d;
+                }
+                else
+                {
+                    for (var i = 1; i <= GeneralLib.LLength(NecessarySkill); i++)
+                    {
+                        if (p.SkillType(GeneralLib.LIndex(NecessarySkill, i)) == "術")
+                        {
+                            elevel = elevel * p.Shooting / 100d;
+                            break;
+                        }
+                    }
+                }
+
+                // 修理＆補給技能
+                heal_lv = p.SkillLevel("修理");
+                supply_lv = p.SkillLevel("補給");
+            }
+
+            // アビリティの効果は最低でも１ターン持続
+            if (elevel2 != 0d)
+            {
+                elevel2 = Math.Max(elevel2, 1d);
+            }
+
+            switch (ae.Name ?? "")
+            {
+                case "回復":
+                    name = Expression.Term("ＨＰ") + "を";
+                    if (elevel > 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.IntDiv(500d * elevel * (10d + heal_lv), 10)) + "回復";
+                    }
+                    else if (elevel < 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(-500d * elevel)) + "減少";
+                    }
+                    break;
+
+                case "補給":
+                    name = Expression.Term("ＥＮ") + "を";
+                    if (elevel > 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.IntDiv(50d * elevel * (10d + supply_lv), 10)) + "回復";
+                    }
+                    else if (elevel < 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(-50d * elevel)) + "減少";
+                    }
+                    break;
+
+                case "霊力回復":
+                case "プラーナ回復":
+                    if (selectedUnit != null && selectedUnit.CountPilot() > 0)
+                    {
+                        name = selectedUnit.MainPilot().SkillName0("霊力");
+                    }
+                    else
+                    {
+                        name = "霊力";
+                    }
+                    if (elevel > 0d)
+                    {
+                        name += "を" + SrcFormatter.Format(VBMath.CLng(10d * elevel)) + "回復";
+                    }
+                    else if (elevel < 0d)
+                    {
+                        name += "を" + SrcFormatter.Format(VBMath.CLng(-10d * elevel)) + "減少";
+                    }
+                    break;
+
+                case "ＳＰ回復":
+                    name = Expression.Term("ＳＰ") + "を";
+                    if (elevel > 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(10d * elevel)) + "回復";
+                    }
+                    else if (elevel < 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(-10d * elevel)) + "減少";
+                    }
+                    break;
+
+                case "気力増加":
+                    name = Expression.Term("気力") + "を";
+                    if (elevel > 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(10d * elevel)) + "増加";
+                    }
+                    else if (elevel < 0d)
+                    {
+                        name += SrcFormatter.Format(VBMath.CLng(-10d * elevel)) + "減少";
+                    }
+                    break;
+
+                case "装填":
+                    if (Strings.Len(ae.Data) == 0)
+                    {
+                        name = "武器の弾数を回復";
+                    }
+                    else
+                    {
+                        if (selectedUnit != null && selectedUnit.Weapons.Any(x => x.WeaponNickname() == ae.Data))
+                        {
+                            return ae.Data + "の弾数を回復";
+                        }
+                        name = ae.Data + "属性を持つ武器の弾数を回復";
+                    }
+                    break;
+
+                case "治癒":
+                    for (var i = 1; i <= GeneralLib.LLength(ae.Data); i++)
+                    {
+                        name = name + " " + ConditionTerm(GeneralLib.LIndex(ae.Data, i));
+                    }
+                    name = Strings.Trim(name);
+                    if (Strings.Len(name) > 0)
+                    {
+                        name += "を回復";
+                    }
+                    else
+                    {
+                        name = "状態回復";
+                    }
+                    break;
+
+                case "状態":
+                    cname = ConditionTerm(GeneralLib.LIndex(ae.Data, 1));
+                    if (0d < elevel2 && elevel2 <= 10d)
+                    {
+                        name = cname + "(" + SrcFormatter.Format(VBMath.CLng(elevel2)) + "ターン)";
+                    }
+                    else
+                    {
+                        name = cname;
+                    }
+                    break;
+
+                case "付加":
+                    switch (GeneralLib.LIndex(ae.Data, 1) ?? "")
+                    {
+                        case "耐性":
+                            name = AttributeNameOrAttack(selectedUnit, GeneralLib.LIndex(ae.Data, 3)) + "のダメージを半減";
+                            break;
+                        case "無効化":
+                            name = AttributeNameOrAttack(selectedUnit, GeneralLib.LIndex(ae.Data, 3)) + "を無効化";
+                            break;
+                        case "特殊効果無効化":
+                            name = AttributeNameOrAttack(selectedUnit, GeneralLib.LIndex(ae.Data, 3)) + "の特殊効果を無効化";
+                            break;
+                        case "吸収":
+                            name = AttributeNameOrAttack(selectedUnit, GeneralLib.LIndex(ae.Data, 3)) + "を吸収";
+                            break;
+                        case "追加パイロット":
+                            name = "パイロット変化";
+                            break;
+                        case "追加サポート":
+                            name = "サポート追加";
+                            break;
+                        case "性格変更":
+                            name = "パイロットの性格を" + GeneralLib.LIndex(ae.Data, 3) + "に変更";
+                            break;
+                        case "ＢＧＭ":
+                            name = "ＢＧＭ変更";
+                            break;
+                        case "攻撃属性":
+                            for (var i = 4; i <= GeneralLib.LLength(ae.Data); i++)
+                            {
+                                if (Strings.InStr(GeneralLib.LIndex(ae.Data, i), "!") == 0)
+                                {
+                                    wclass += GeneralLib.LIndex(ae.Data, i);
+                                }
+                            }
+                            name = WeaponType(wclass) + "の属性に" + GeneralLib.LIndex(ae.Data, 3) + "を追加";
+                            break;
+                        case "武器強化":
+                            wclass = WeaponClassFrom(ae.Data);
+                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
+                            name = WeaponType(wclass) + "の攻撃力を" + (flevel >= 0d ? "+" : "") + SrcFormatter.Format(100d * flevel);
+                            break;
+                        case "命中率強化":
+                            wclass = WeaponClassFrom(ae.Data);
+                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
+                            name = WeaponType(wclass) + "の命中率を" + (flevel >= 0d ? "+" : "") + SrcFormatter.Format(5d * flevel);
+                            break;
+                        case "ＣＴ率強化":
+                        case "特殊効果発動率強化":
+                            wclass = WeaponClassFrom(ae.Data);
+                            flevel = GeneralLib.StrToDbl(GeneralLib.LIndex(ae.Data, 2));
+                            name = WeaponType(wclass) + "のＣＴ率を" + (flevel >= 0d ? "+" : "") + SrcFormatter.Format(5d * flevel);
+                            break;
+                        case "射程延長":
+                            wclass = WeaponClassFrom(ae.Data);
+                            flevel = GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 2));
+                            name = WeaponType(wclass) + "の射程を" + (flevel >= 0d ? "+" : "") + SrcFormatter.Format(flevel);
+                            break;
+                        case "サイズ変更":
+                            name = "サイズが" + GeneralLib.LIndex(ae.Data, 3) + "に変化";
+                            break;
+                        case "地形適応変更":
+                            if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 3)) > 0)
+                            {
+                                name = "空への適応を強化";
+                            }
+                            else if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 4)) > 0)
+                            {
+                                name = "陸への適応を強化";
+                            }
+                            else if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 5)) > 0)
+                            {
+                                name = "水中への適応を強化";
+                            }
+                            else if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 6)) > 0)
+                            {
+                                name = "宇宙への適応を強化";
+                            }
+                            break;
+                        case "地形適応固定変更":
+                            {
+                                // 元の SRC と同じく、「強制」かどうかは常に 6 番目の要素で判定する
+                                var force = GeneralLib.LIndex(ae.Data, 6) == "強制" ? "強制的に" : "";
+                                var areas = new[] { "空", "陸", "水中", "宇宙" };
+                                for (var i = 0; i < areas.Length; i++)
+                                {
+                                    var lv = GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, i + 3));
+                                    if (lv <= 5 && lv >= 0)
+                                    {
+                                        name = areas[i] + "への適応を" + force + "変化";
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        case "Ｖ－ＵＰ":
+                            switch (GeneralLib.LIndex(ae.Data, 3) ?? "")
+                            {
+                                case "武器":
+                                    name = "武器攻撃力を強化";
+                                    break;
+                                case "ユニット":
+                                    name = "各パラメータを強化";
+                                    break;
+                                default:
+                                    name = "ユニットを強化";
+                                    break;
+                            }
+                            break;
+                        case "格闘武器":
+                        case "迎撃武器":
+                        case "制限時間":
+                            name += "付加";
+                            break;
+                        case "パイロット愛称":
+                        case "パイロット画像":
+                        case "愛称変更":
+                        case "ユニット画像":
+                            name = "";
+                            break;
+                        default:
+                            {
+                                name = GeneralLib.ListIndex(ae.Data, 3);
+                                if (Strings.Left(name, 1) == "\"")
+                                {
+                                    name = GeneralLib.ListIndex(Strings.Mid(name, 2, Strings.Len(name) - 2), 1);
+                                }
+                                var lv = GeneralLib.LIndex(ae.Data, 2) != SrcFormatter.Format(Constants.DEFAULT_LEVEL)
+                                    && GeneralLib.LLength(ae.Data) <= 3
+                                    ? "Lv" + GeneralLib.LIndex(ae.Data, 2)
+                                    : "";
+                                if (string.IsNullOrEmpty(name) || name == "非表示")
+                                {
+                                    name = GeneralLib.LIndex(ae.Data, 1) + lv + "付加";
+                                }
+                                else
+                                {
+                                    name = name + lv + "付加";
+                                }
+                                break;
+                            }
+                    }
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        if (0d < elevel2 && elevel2 <= 10d)
+                        {
+                            name += "(" + SrcFormatter.Format(VBMath.CLng(elevel2)) + "ターン)";
+                        }
+                    }
+                    break;
+
+                case "強化":
+                    name = GeneralLib.ListIndex(ae.Data, 3);
+                    if (string.IsNullOrEmpty(name) || name == "非表示")
+                    {
+                        if (GeneralLib.StrToLng(GeneralLib.LIndex(ae.Data, 2)) > 0)
+                        {
+                            name = GeneralLib.LIndex(ae.Data, 1) + "Lv" + GeneralLib.LIndex(ae.Data, 2);
+                        }
+                        else
+                        {
+                            name = GeneralLib.LIndex(ae.Data, 1);
+                        }
+                    }
+                    if (0d < elevel2 && elevel2 <= 10d)
+                    {
+                        name += "強化(" + SrcFormatter.Format(VBMath.CLng(elevel2)) + "ターン)";
+                    }
+                    break;
+
+                case "召喚":
+                    if (!SRC.UDList.IsDefined(ae.Data))
+                    {
+                        SRC.GUI.ErrorMessage("召喚ユニット「" + ae.Data + "」が定義されていません");
+                        return "";
+                    }
+                    if (elevel2 > 1d)
+                    {
+                        name = SRC.UDList.Item(ae.Data).Nickname + "を"
+                            + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(elevel2)), VbStrConv.Wide) + "体召喚";
+                    }
+                    else
+                    {
+                        name = SRC.UDList.Item(ae.Data).Nickname + "を召喚";
+                    }
+                    break;
+
+                case "変身":
+                    uname = GeneralLib.LIndex(ae.Data, 1);
+                    if (!SRC.UDList.IsDefined(uname))
+                    {
+                        SRC.GUI.ErrorMessage("変身先のデータ「" + uname + "」が定義されていません");
+                        return "";
+                    }
+                    name = SRC.UDList.Item(uname).Nickname + "に変身";
+                    if (0d < elevel2 && elevel2 <= 10d)
+                    {
+                        name += "(" + SrcFormatter.Format(VBMath.CLng(elevel2)) + "ターン)";
+                    }
+                    break;
+
+                case "能力コピー":
+                    name = "任意の味方ユニットに変身";
+                    if (0d < elevel2 && elevel2 <= 10d)
+                    {
+                        name += "(" + SrcFormatter.Format(VBMath.CLng(elevel2)) + "ターン)";
+                    }
+                    break;
+
+                case "再行動":
+                    name = MaxRange != 0 ? "行動済みユニットを再行動" : "行動非消費";
+                    break;
+
+                case "解説":
+                    name = ae.Data;
+                    break;
+            }
+
+            return name ?? "";
+        }
+
+        // 状態名の用語を置き換える（EffectName の「治癒」「状態」）
+        private string ConditionTerm(string cname)
+        {
+            switch (cname ?? "")
+            {
+                case "装甲劣化":
+                    return Expression.Term("装甲") + "劣化";
+                case "運動性ＵＰ":
+                    return Expression.Term("運動性") + "ＵＰ";
+                case "運動性ＤＯＷＮ":
+                    return Expression.Term("運動性") + "ＤＯＷＮ";
+                case "移動力ＵＰ":
+                    return Expression.Term("移動力") + "ＵＰ";
+                case "移動力ＤＯＷＮ":
+                    return Expression.Term("移動力") + "ＤＯＷＮ";
+                default:
+                    return cname;
+            }
+        }
+
+        // 属性名。属性名が無ければ「○○攻撃」とする（EffectName の「付加」の耐性など）
+        private string AttributeNameOrAttack(Units.Unit u, string atr)
+        {
+            var aname = SRC.Help.AttributeName(u, atr);
+            if (string.IsNullOrEmpty(aname))
+            {
+                aname = atr + "攻撃";
+            }
+            return aname;
+        }
+
+        // 武器強化系の付加で対象にする武器の属性（3 番目以降の要素から「!」の付いたものを除く）
+        private static string WeaponClassFrom(string data)
+        {
+            var wclass = "";
+            for (var i = 3; i <= GeneralLib.LLength(data); i++)
+            {
+                if (Strings.InStr(GeneralLib.LIndex(data, i), "!") == 0)
+                {
+                    wclass += GeneralLib.LIndex(data, i);
+                }
+            }
+            return wclass;
+        }
+
+        // 付加する武器強化系能力の対象表示用に武器の種類を判定
+        private string WeaponType(string wclass)
+        {
+            if (wclass == "全" || string.IsNullOrEmpty(wclass))
+            {
+                return "武器";
+            }
+            else if (Strings.Len(wclass) == 1)
+            {
+                return SRC.Help.AttributeName(null, wclass);
+            }
+            else if (Strings.Right(wclass, 2) == "装備")
+            {
+                return Strings.Left(wclass, Strings.Len(wclass) - 2);
+            }
+            else
+            {
+                return wclass + "属性攻撃";
+            }
+        }
 
         // 使い捨てアイテムによるアビリティかどうかを返す
         public bool IsItem()
