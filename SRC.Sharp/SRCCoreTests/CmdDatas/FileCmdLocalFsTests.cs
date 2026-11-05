@@ -65,6 +65,55 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         // ──────────────────────────────────────────────
+        // Open … For 出力（7474/SRC#1461）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void OpenOutput_ExistingFile_IsTruncated()
+        {
+            // 元の SRC は Open … For Output で開くので、既にあるファイルは空になる
+            var path = Path.Combine(dir, "out.txt");
+            File.WriteAllText(path, "0123456789ABCDEFGHIJ");
+            var src = CreateSrc();
+
+            ExecOk(src, "Open out.txt For 出力 As F");
+            ExecOk(src, "Print F abc");
+            ExecOk(src, "Close F");
+
+            Assert.AreEqual("abc\r\n", File.ReadAllText(path));
+        }
+
+        [TestMethod]
+        public void OpenAppend_ExistingFile_IsKept()
+        {
+            var path = Path.Combine(dir, "out.txt");
+            File.WriteAllText(path, "abc\r\n");
+            var src = CreateSrc();
+
+            ExecOk(src, "Open out.txt For 追加出力 As F");
+            ExecOk(src, "Print F def");
+            ExecOk(src, "Close F");
+
+            Assert.AreEqual("abc\r\ndef\r\n", File.ReadAllText(path));
+        }
+
+        [TestMethod]
+        public void OpenSafeWrite_ExistingFile_IsTruncated()
+        {
+            var path = Path.Combine(dir, "a.bin");
+            File.WriteAllBytes(path, new byte[10]);
+            var fs = new LocalFileSystem();
+            fs.AddSafePath(dir);
+
+            using (var stream = fs.OpenSafe(SafeOpenMode.Write, "a.bin"))
+            {
+                stream.WriteByte(1);
+            }
+
+            Assert.AreEqual(1, new FileInfo(path).Length);
+        }
+
+        // ──────────────────────────────────────────────
         // Print の改行（7474/SRC#1476）
         // ──────────────────────────────────────────────
 

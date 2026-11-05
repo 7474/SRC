@@ -384,13 +384,14 @@ namespace SRCCore.Filesystem
         public Stream OpenWrite(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.OpenWrite();
+            // 既にあるファイルは空にしてから書く（元の SRC の Open … For Output と同じ。FileInfo.OpenWrite は長さを 0 にしない）
+            return info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public Stream OpenAppend(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
+            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public bool Remove(string entryName)

@@ -36,6 +36,7 @@ namespace SRCCore.Filesystem
         void AddSafePath(string basePath);
         /// <summary>
         /// <see cref="AddSafePath"/>で追加したパスからの相対パスでファイルを開きます。
+        /// 書き込み（<see cref="SafeOpenMode.Write"/>）で開くと、既にあるファイルの中身は消します。
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="paths"></param>
