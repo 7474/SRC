@@ -233,6 +233,36 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual("待機", u.Mode);
         }
 
+        [TestMethod]
+        public void ChangeModeCmd_GroupId_StopsAtFirstMissingNumber()
+        {
+            // VB の ExecChangeModeCmd は「名前:2」「名前:3」……と番号が続く限り（生きているパイロットが
+            // 見つかる限り）ユニットを加え、途切れたらそこで止める
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddUnitData("敵機");
+            fx.AddPilotData("敵パイロット");
+            var units = new List<SRCCore.Units.Unit>();
+            for (var i = 0; i < 4; i++)
+            {
+                var unit = src.UList.Add("敵機", 0, "敵");
+                var pilot = src.PList.Add("敵パイロット", 1, "敵", "敵部隊");
+                unit.AddPilot(pilot);
+                pilot.Unit = unit;
+                units.Add(unit);
+            }
+            Assert.AreEqual("敵部隊:3", units[2].MainPilot().ID);
+            // 「敵部隊:3」が死んでいると「敵部隊:4」は対象にならない
+            units[2].MainPilot().Alive = false;
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 敵部隊 待機").Exec());
+
+            Assert.AreEqual("待機", units[0].Mode);
+            Assert.AreEqual("待機", units[1].Mode);
+            Assert.AreNotEqual("待機", units[2].Mode);
+            Assert.AreNotEqual("待機", units[3].Mode);
+        }
+
         // ──────────────────────────────────────────────
         // SplitCmd
         // ──────────────────────────────────────────────
