@@ -250,63 +250,13 @@ namespace SRCSharpForm
                 {
                     for (var y = 1; y <= Map.MapHeight; y++)
                     {
-                        var cell = Map.MapData[x, y];
-                        var xpx = (x - 1) * MapCellPx;
-                        var ypx = (y - 1) * MapCellPx;
-
-                        // 画像を描き込み
-                        var bitmapPath = Map.SearchTerrainImageFile(cell);
-                        if (!string.IsNullOrEmpty(bitmapPath))
-                        {
-                            g.DrawImage(ImageBuffer.Get(bitmapPath), xpx, ypx);
-                        }
-                        else
-                        {
-                            g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
-                        }
-
-                        // レイヤー画像を描き込み
-                        var layerBitmapPath = Map.SearchLayerImageFile(cell);
-                        if (!string.IsNullOrEmpty(layerBitmapPath))
-                        {
-                            var layerImage = ImageBuffer.GetTransparent(layerBitmapPath);
-                            if (layerImage != null)
-                            {
-                                g.DrawImage(layerImage, xpx, ypx);
-                            }
-                        }
-                        //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
+                        DrawMapCell(g, Map.MapData[x, y], (x - 1) * MapCellPx, (y - 1) * MapCellPx);
                     }
                 }
             }
 
             // マップ設定によって表示色を変更
-            switch (draw_mode ?? "")
-            {
-                case "夜":
-                    BackgroundBuffer.Dark();
-                    break;
-
-                case "セピア":
-                    BackgroundBuffer.Sepia();
-                    break;
-
-                case "白黒":
-                    BackgroundBuffer.Monotone();
-                    break;
-
-                case "夕焼け":
-                    BackgroundBuffer.Sunset();
-                    break;
-
-                case "水中":
-                    BackgroundBuffer.Water();
-                    break;
-
-                case "フィルタ":
-                    BackgroundBuffer.ColorFilter(filter_color, (float)filter_trans_par);
-                    break;
-            }
+            ApplyMapDrawMode(BackgroundBuffer, draw_mode, filter_color, filter_trans_par);
 
             // マス目の表示
             if (SRC.ShowSquareLine)
@@ -329,6 +279,109 @@ namespace SRCSharpForm
             if (!Map.IsStatusView && string.IsNullOrEmpty(draw_option))
             {
                 GUI.RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// マップの1マス分の背景（地形とレイヤー）を (xpx, ypx) に描く。描画モードの色の変更はしない。
+        /// </summary>
+        private void DrawMapCell(Graphics g, MapCell cell, int xpx, int ypx)
+        {
+            // 画像を描き込み
+            var bitmapPath = Map.SearchTerrainImageFile(cell);
+            if (!string.IsNullOrEmpty(bitmapPath))
+            {
+                g.DrawImage(ImageBuffer.Get(bitmapPath), xpx, ypx);
+            }
+            else
+            {
+                g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
+            }
+
+            // レイヤー画像を描き込み（「通常」「画像限定」のマスだけ。元の SRC の SetupBackground）
+            if (cell.IsLayerBitmapVisible)
+            {
+                var layerBitmapPath = Map.SearchLayerImageFile(cell);
+                if (!string.IsNullOrEmpty(layerBitmapPath))
+                {
+                    var layerImage = ImageBuffer.GetTransparent(layerBitmapPath);
+                    if (layerImage != null)
+                    {
+                        g.DrawImage(layerImage, xpx, ypx);
+                    }
+                }
+            }
+        }
+
+        private static void ApplyMapDrawMode(Image image, string draw_mode, Color filter_color, double filter_trans_par)
+        {
+            switch (draw_mode ?? "")
+            {
+                case "夜":
+                    image.Dark();
+                    break;
+
+                case "セピア":
+                    image.Sepia();
+                    break;
+
+                case "白黒":
+                    image.Monotone();
+                    break;
+
+                case "夕焼け":
+                    image.Sunset();
+                    break;
+
+                case "水中":
+                    image.Water();
+                    break;
+
+                case "フィルタ":
+                    image.ColorFilter(filter_color, (float)filter_trans_par);
+                    break;
+            }
+        }
+
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (BackgroundBuffer == null || Map.MapData == null
+                || X < 1 || X > Map.MapWidth || Y < 1 || Y > Map.MapHeight)
+            {
+                return;
+            }
+
+            // 元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd と同じく、そのマスだけを
+            // 今の描画モードで描き直す（背景のほかのマスに描いたものと IsMapDirty はそのまま）
+            using (var cellImage = new Bitmap(MapCellPx, MapCellPx))
+            {
+                using (var g = Graphics.FromImage(cellImage))
+                {
+                    DrawMapCell(g, Map.MapData[X, Y], 0, 0);
+                }
+                ApplyMapDrawMode(cellImage, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+                using (var g = Graphics.FromImage(cellImage))
+                {
+                    // マス目は左端・上端の線を引く
+                    if (SRC.ShowSquareLine)
+                    {
+                        g.DrawLine(MapLinePen, 0, 0, MapCellPx, 0);
+                        g.DrawLine(MapLinePen, 0, 0, 0, MapCellPx);
+                    }
+                }
+                using (var g = Graphics.FromImage(BackgroundBuffer))
+                {
+                    g.DrawImage(cellImage, (X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
+                }
+            }
+
+            // 表示用バッファのそのマスも描き直す。画面への反映は次に画面を更新したとき（元の SRC の picMain(0) への BitBlt）
+            using (var g = Graphics.FromImage(MainBuffer))
+            {
+                g.DrawImage(BackgroundBuffer,
+                    new Rectangle(GUI.MapToPixelX(X), GUI.MapToPixelY(Y), MapCellPx, MapCellPx),
+                    new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx),
+                    GraphicsUnit.Pixel);
             }
         }
 

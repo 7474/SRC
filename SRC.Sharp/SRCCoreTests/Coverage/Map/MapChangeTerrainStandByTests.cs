@@ -17,10 +17,12 @@ namespace SRCCore.Coverage.Tests
     public class MapChangeTerrainStandByTests
     {
         private string tempDir;
+        private List<(int X, int Y)> redrawnCells;
 
         [TestInitialize]
         public void Setup()
         {
+            redrawnCells = new List<(int X, int Y)>();
             tempDir = Path.Combine(Path.GetTempPath(), "SRCChangeTerrain_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(Path.Combine(tempDir, "Bitmap", "Map"));
             // ChangeTerrain は変更先の地形の画像があることを確かめる
@@ -40,7 +42,9 @@ namespace SRCCore.Coverage.Tests
             var fs = new LocalFileSystem();
             fs.AddPath(tempDir);
             f.Src.FileSystem = fs;
-            f.GUI.SetupBackgroundHandler = (_, _, _, _) => { };
+            // 背景は全部描き直さず、変えたマスだけを描き直す（7474/SRC#1492）
+            f.GUI.SetupBackgroundHandler = (_, _, _, _) => Assert.Fail("SetupBackground は呼ばない");
+            f.GUI.RedrawMapCellHandler = (x, y) => redrawnCells.Add((x, y));
             f.GUI.EraseUnitBitmapHandler = (_, _, _) => { };
             f.GUI.PaintUnitBitmapHandler = (_, _) => { };
             f.Src.Event.EventData = new List<EventDataLine>();
@@ -130,6 +134,67 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual(3, u.x);
             Assert.AreEqual(2, u.y);
             Assert.AreSame(u, f.Map.MapDataForUnit[3, 2]);
+        }
+    
+        [TestMethod]
+        public void ChangeTerrain_RedrawsOnlyChangedCellAndKeepsMapDirty()
+        {
+            // 元の SRC は変えたマスだけを背景に描き直すので、背景に描いたものは残り、IsMapDirty も変わらない（7474/SRC#1492）
+            var f = CreateFixture();
+            f.Map.IsMapDirty = true;
+
+            CreateCmd(f.Src, "ChangeTerrain 3 2 山 0").Exec();
+
+            CollectionAssert.AreEqual(new[] { (3, 2) }, redrawnCells);
+            Assert.IsTrue(f.Map.IsMapDirty);
+        }
+
+        [TestMethod]
+        public void ChangeLayer_RedrawsOnlyChangedCellAndKeepsMapDirty()
+        {
+            var f = CreateFixture();
+            f.Map.IsMapDirty = true;
+
+            CreateCmd(f.Src, "ChangeLayer 3 2 山 0 画像限定").Exec();
+
+            CollectionAssert.AreEqual(new[] { (3, 2) }, redrawnCells);
+            Assert.IsTrue(f.Map.IsMapDirty);
+        }
+
+        [TestMethod]
+        public void ChangeLayer_DataOnly_DoesNotRedraw()
+        {
+            // 「情報限定」は画像を書き込まない
+            var f = CreateFixture();
+
+            CreateCmd(f.Src, "ChangeLayer 3 2 山 0 情報限定").Exec();
+
+            Assert.AreEqual(0, redrawnCells.Count);
+        }
+
+        [TestMethod]
+        public void ChangeTerrain_UnitIsRedrawnAfterCell()
+        {
+            // マスを描き直してから、そのマスのユニットを描き直す
+            var f = CreateFixture();
+            f.Place("歩兵", "味方", 3, 2);
+            var calls = new List<string>();
+            f.GUI.RedrawMapCellHandler = (x, y) => calls.Add("cell");
+            f.GUI.PaintUnitBitmapHandler = (_, _) => calls.Add("unit");
+
+            CreateCmd(f.Src, "ChangeTerrain 3 2 山 0").Exec();
+
+            Assert.AreEqual("cell", calls[0]);
+        }
+
+        [TestMethod]
+        public void IsLayerBitmapVisible_FollowsBoxType()
+        {
+            // レイヤーの画像を描くのは「通常」「画像限定」のマスだけ（元の SRC の SetupBackground）
+            Assert.IsFalse(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.Under }.IsLayerBitmapVisible);
+            Assert.IsTrue(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.Upper }.IsLayerBitmapVisible);
+            Assert.IsFalse(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.UpperDataOnly }.IsLayerBitmapVisible);
+            Assert.IsTrue(new SRCCore.Maps.MapCell { BoxType = SRCCore.Maps.BoxTypes.UpperBmpOnly }.IsLayerBitmapVisible);
         }
     }
 }

@@ -142,6 +142,40 @@ namespace SRCRender
             }
         }
 
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (backgroundBuffer == null || Map.MapData == null
+                || X < 1 || X > Map.MapWidth || Y < 1 || Y > Map.MapHeight)
+            {
+                return;
+            }
+
+            // 元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd と同じく、そのマスだけを
+            // 今の描画モードで描き直す（背景のほかのマスに描いたものと IsMapDirty はそのまま）
+            var cellImage = renderer.BuildMapCell(src, Images, X, Y);
+            cellImage = ImageFilters.ApplyDrawMode(cellImage, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+            using (cellImage)
+            {
+                if (src.ShowSquareLine)
+                {
+                    // マス目は左端・上端の線を引く
+                    using (var canvas = new SKCanvas(cellImage))
+                    using (var paint = new SKPaint { Color = MapLineColor, Style = SKPaintStyle.Stroke })
+                    {
+                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
+                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
+                    }
+                }
+                using (var canvas = new SKCanvas(backgroundBuffer))
+                {
+                    canvas.DrawBitmap(cellImage, ScreenLayout.CellPx * (X - 1), ScreenLayout.CellPx * (Y - 1), SKSamplingOptions.Default);
+                }
+            }
+
+            // 表示用バッファのそのマスも描き直す。画面への反映は次に画面を更新したとき（元の SRC の picMain(0) への BitBlt）
+            EraseMapPointOnMain(X, Y);
+        }
+
         public void RedrawScreen(bool late_refresh = false)
         {
             ScreenIsMasked = false;
@@ -492,13 +526,24 @@ namespace SRCRender
 
         private void EraseMapPoint(int X, int Y)
         {
+            CopyBackgroundCell(X, Y, mainBuffer, mainBufferBack);
+        }
+
+        /// <summary>背景の (X, Y) のマスを表示用バッファだけに写す</summary>
+        private void EraseMapPointOnMain(int X, int Y)
+        {
+            CopyBackgroundCell(X, Y, mainBuffer);
+        }
+
+        private void CopyBackgroundCell(int X, int Y, params SKBitmap[] buffers)
+        {
             if (backgroundBuffer == null)
             {
                 return;
             }
             var dest = SKRect.Create(MapToPixelX(X), MapToPixelY(Y), ScreenLayout.CellPx, ScreenLayout.CellPx);
             var source = SKRect.Create((X - 1) * ScreenLayout.CellPx, (Y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-            foreach (var buffer in new[] { mainBuffer, mainBufferBack })
+            foreach (var buffer in buffers)
             {
                 using (var canvas = new SKCanvas(buffer))
                 {

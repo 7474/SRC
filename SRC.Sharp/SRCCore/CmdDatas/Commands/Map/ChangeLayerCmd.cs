@@ -72,13 +72,13 @@ namespace SRCCore.CmdDatas.Commands
                 cell.BoxType = BoxTypes.Upper;
             }
 
-            // マップ背景を再描画
-            GUI.SetupBackground(Map.MapDrawMode, "", Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
-
-            // 変更された地形にいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
-            // 元の SRC は画像を書き込むときだけ配置し直し、「情報限定」では配置し直さない。
+            // 元の SRC は「情報限定」では画像を書き込まず、ユニットも配置し直さない
             if (cell.BoxType != BoxTypes.UpperDataOnly)
             {
+                // レイヤーを変えたマスだけを背景に描き直す。背景のほかのマスに描いたもの（IsMapDirty）は残す（元の SRC と同じ）
+                GUI.RedrawMapCell(x, y);
+
+                // 変更された地形にいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
                 Map.StandByUnitAgain(x, y);
             }
             return EventData.NextID;

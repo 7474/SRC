@@ -630,6 +630,13 @@ namespace SRCCore.TestLib
             throw new GUINotImplementedException(nameof(SetupBackground));
         }
 
+        public Action<int, int> RedrawMapCellHandler { get; set; }
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (RedrawMapCellHandler != null) { RedrawMapCellHandler(X, Y); return; }
+            throw new GUINotImplementedException(nameof(RedrawMapCell));
+        }
+
         public Action<IList<UiCommand>> ShowMapCommandMenuHandler { get; set; }
         public void ShowMapCommandMenu(IList<UiCommand> commands)
         {

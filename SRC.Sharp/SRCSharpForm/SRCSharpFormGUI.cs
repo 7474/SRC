@@ -324,6 +324,11 @@ namespace SRCSharpForm
             MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }
 
+        public void RedrawMapCell(int X, int Y)
+        {
+            MainForm.RedrawMapCell(X, Y);
+        }
+
         public void RedrawScreen(bool late_refresh)
         {
             ScreenIsMasked = false;

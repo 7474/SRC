@@ -193,29 +193,8 @@ namespace SRCRender
                 {
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
-                        var cell = map.MapData[x, y];
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
-                        if (image != null)
-                        {
-                            canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
-                        }
-                        else
-                        {
-                            // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
-                            paint.Style = SKPaintStyle.Fill;
-                            paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
-                            canvas.DrawRect(rect, paint);
-                            paint.Style = SKPaintStyle.Stroke;
-                            paint.Color = new SKColor(0, 0, 0, 0x40);
-                            canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
-                            paint.Style = SKPaintStyle.Fill;
-                        }
-                        var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
-                        if (layer != null)
-                        {
-                            canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
-                        }
+                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found);
                     }
                 }
                 if (src.ShowSquareLine)
@@ -233,6 +212,67 @@ namespace SRCRender
                 }
             }
             return bitmap;
+        }
+
+        /// <summary>
+        /// マップの (x, y) のマス 1 つ分の背景（地形とレイヤー）を描画した画像を作る。
+        /// <see cref="BuildBackground"/> のそのマスと同じ絵になる（ChangeTerrain・ChangeLayer でそのマスだけを描き直すのに使う）。
+        /// </summary>
+        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y)
+        {
+            var map = src.Map;
+            var bitmap = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx);
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint())
+            {
+                canvas.Clear(BackColor);
+                var rect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null);
+                if (src.ShowSquareLine)
+                {
+                    // マップ全体のマス目のうち、このマスの左端・上端の線
+                    paint.Color = new SKColor(0, 0, 0, 0x60);
+                    paint.Style = SKPaintStyle.Stroke;
+                    if (x > 1)
+                    {
+                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
+                    }
+                    if (y > 1)
+                    {
+                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
+                    }
+                }
+            }
+            return bitmap;
+        }
+
+        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect, IDictionary<(string Name, int No), string> found)
+        {
+            var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
+            if (image != null)
+            {
+                canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
+            }
+            else
+            {
+                // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                paint.Style = SKPaintStyle.Fill;
+                paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
+                canvas.DrawRect(rect, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = new SKColor(0, 0, 0, 0x40);
+                canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
+                paint.Style = SKPaintStyle.Fill;
+            }
+            // レイヤーの画像は「通常」「画像限定」のマスだけ描く（元の SRC の SetupBackground）
+            if (cell.IsLayerBitmapVisible)
+            {
+                var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
+                if (layer != null)
+                {
+                    canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
+                }
+            }
         }
 
         private static string SafeSearch(Func<string> search)
