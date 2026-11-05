@@ -571,17 +571,8 @@ namespace SRCRender
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM = "")
         {
             TopItem = -1;
-            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し
-            var list = weapons.ToListBoxItems(SRC);
-            var ret = ListBox(new ListBoxArgs
-            {
-                Items = list.Cast<ListBoxItem>().ToList(),
-                HasFlag = true,
-                lb_caption = caption_msg,
-                lb_info = weapons.ListBoxInfo(SRC),
-                lb_mode = "",
-            });
-            return ret > 0 ? list[ret - 1].ListItemObject : null;
+            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
+            return weapons.SelectWeapon(SRC, caption_msg, ListBox);
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)

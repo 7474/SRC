@@ -1,5 +1,6 @@
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -66,6 +67,56 @@ namespace SRCCore.Units
                     ListItemObject = x,
                 })
                 .ToList();
+        }
+
+        // 援護攻撃を使うかどうかを切り替える行を出すか（GUI.bas の WeaponListBox）
+        // 攻撃の武器選択（移動前・移動後）で、援護攻撃をしてくれるユニットがいるときに出す。
+        public bool HasSupportAttackItem =>
+            (Mode == WeaponListMode.BeforeMove || Mode == WeaponListMode.AfterMove)
+            && Unit.LookForSupportAttack(null) != null;
+
+        // 援護攻撃を使うかどうかを切り替える行の表示内容
+        public static string SupportAttackListBoxText(bool useSupportAttack)
+        {
+            return useSupportAttack ? "援護攻撃：使用する" : "援護攻撃：使用しない";
+        }
+
+        // 武器選択用リストボックスを出して武器を選ぶ（GUI.bas の WeaponListBox）。
+        // 援護攻撃を切り替える行があれば最後に付け、それを選んだら Commands.UseSupportAttack を
+        // 切り替えてリストボックスを出し直す。キャンセルしたときは null を返す。
+        public UnitWeapon SelectWeapon(SRC src, string caption_msg, Func<ListBoxArgs, int> listBox)
+        {
+            var list = ToListBoxItems(src);
+            var items = list.Cast<ListBoxItem>().ToList();
+            ListBoxItem supportAttackItem = null;
+            if (HasSupportAttackItem)
+            {
+                // 援護攻撃を使うかどうか選択
+                src.Commands.UseSupportAttack = true;
+                supportAttackItem = new ListBoxItem(SupportAttackListBoxText(true), "");
+                items.Add(supportAttackItem);
+            }
+
+            var args = new ListBoxArgs
+            {
+                Items = items,
+                HasFlag = true,
+                lb_caption = caption_msg,
+                lb_info = ListBoxInfo(src),
+                lb_mode = "",
+            };
+            while (true)
+            {
+                var ret = listBox(args);
+                if (ret <= list.Count)
+                {
+                    return ret > 0 ? list[ret - 1].ListItemObject : null;
+                }
+
+                // 援護攻撃のオン/オフ切り替え
+                src.Commands.UseSupportAttack = !src.Commands.UseSupportAttack;
+                supportAttackItem.Text = SupportAttackListBoxText(src.Commands.UseSupportAttack);
+            }
         }
 
         // 攻撃・武装一覧での武器の表示内容
