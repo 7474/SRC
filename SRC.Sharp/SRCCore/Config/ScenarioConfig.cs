@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SRCCore.Filesystem;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -357,7 +358,7 @@ namespace SRCCore.Config
                     return int.TryParse(value, out var num) ? Math.Max(5, num).ToString() : value;
                 case nameof(ISystemConfig.MaxImageBufferByteSize):
                     // 元の SRC は MB で指定し、1 MB 未満を 1 MB にする
-                    return double.TryParse(value, out var mb) ? ((int)(Math.Max(1d, mb) * 1024 * 1024)).ToString() : value;
+                    return double.TryParse(value, out var mb) ? VBMath.CLng(Math.Max(1d, mb) * 1024 * 1024).ToString() : value;
                 case nameof(LocalFileConfig.SoundVolume):
                     return int.TryParse(value, out var volume) ? Math.Max(0, Math.Min(100, volume)).ToString() : value;
                 case nameof(ISystemConfig.MessageWait):

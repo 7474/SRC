@@ -229,8 +229,8 @@ namespace SRCCore.Extensions
             }
 
             // 対強敵
-            if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0
-                && u.MainPilot().Technique <= t.MainPilot().Technique)
+            if (t.BossRank >= 0 || (Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0
+                && u.MainPilot().Technique <= t.MainPilot().Technique))
             {
                 sub_situations.Add("(対強敵)");
             }
