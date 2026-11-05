@@ -547,7 +547,7 @@ namespace SRCCore
                                 || u.MainPilot().IsSkillAvailable("広域サポート")
                                 || u.IsFeatureAvailable("修理装置"))
                             {
-                                prob = (int)(1.5d * prob);
+                                prob = VBMath.CLng(1.5d * prob);
                             }
                             else
                             {
@@ -558,7 +558,7 @@ namespace SRCCore
                                     {
                                         if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
                                         {
-                                            prob = (int)(1.5d * prob);
+                                            prob = VBMath.CLng(1.5d * prob);
                                             break;
                                         }
                                     }
@@ -616,7 +616,7 @@ namespace SRCCore
                         // 反撃してこない？
                         if (tw == 0)
                         {
-                            dmg = (int)(1.5d * dmg);
+                            dmg = VBMath.CLng(1.5d * dmg);
                         }
 
                         // 重要なユニットは優先してターゲットにする
@@ -628,7 +628,7 @@ namespace SRCCore
                                 || u.MainPilot().IsSkillAvailable("広域サポート")
                                 || u.IsFeatureAvailable("修理装置"))
                             {
-                                dmg = (int)(1.5d * dmg);
+                                dmg = VBMath.CLng(1.5d * dmg);
                             }
                             else
                             {
@@ -639,7 +639,7 @@ namespace SRCCore
                                     {
                                         if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
                                         {
-                                            dmg = (int)(1.5d * dmg);
+                                            dmg = VBMath.CLng(1.5d * dmg);
                                             break;
                                         }
                                     }
@@ -775,7 +775,7 @@ namespace SRCCore
                                 }
 
                                 // 条件が同じであれば直線距離で近い場所を選択する
-                                tmp = ((int)(tmp - Math.Sqrt(Math.Pow(Math.Abs((selectedUnit.x - i)), 2d) + Math.Pow(Math.Abs((selectedUnit.y - j)), 2d))));
+                                tmp = VBMath.CLng(tmp - Math.Sqrt(Math.Pow(Math.Abs((selectedUnit.x - i)), 2d) + Math.Pow(Math.Abs((selectedUnit.y - j)), 2d)));
                                 if (new_locations_value < tmp)
                                 {
                                     new_locations_value = tmp;
@@ -905,7 +905,7 @@ namespace SRCCore
                         // 通常の戦闘ＢＧＭ
 
                         // ターゲットは味方？
-                        if (Commands.SelectedTarget.Party == "味方" || Commands.SelectedTarget.Party == "ＮＰＣ" && selectedUnit.Party != "ＮＰＣ")
+                        if (Commands.SelectedTarget.Party == "味方" || (Commands.SelectedTarget.Party == "ＮＰＣ" && selectedUnit.Party != "ＮＰＣ"))
                         {
                             // ターゲットが味方なのでターゲット側を優先
                             if (Commands.SelectedTarget.IsFeatureAvailable("ＢＧＭ"))
@@ -1754,7 +1754,7 @@ namespace SRCCore
                         // スペシャルパワーによる獲得資金増加
                         if (selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加"))
                         {
-                            earnings = (int)(earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel("獲得資金増加")));
+                            earnings = VBMath.CLng(earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel("獲得資金増加")));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -1762,7 +1762,7 @@ namespace SRCCore
                         {
                             if (!selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + selectedUnit.SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * ((10d + selectedUnit.SkillLevel("資金獲得", 5d)) / 10d), 999999999d));
                             }
                         }
 
@@ -1813,7 +1813,7 @@ namespace SRCCore
                             // スペシャルパワーによる獲得資金増加
                             if (selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加"))
                             {
-                                earnings = (int)(earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel("獲得資金増加")));
+                                earnings = VBMath.CLng(earnings * (1d + 0.1d * selectedUnit.SpecialPowerEffectLevel("獲得資金増加")));
                             }
 
                             // パイロット能力による獲得資金増加
@@ -1821,7 +1821,7 @@ namespace SRCCore
                             {
                                 if (!selectedUnit.IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                                 {
-                                    earnings = (int)((earnings * (10d + selectedUnit.SkillLevel("資金獲得", 5d))) / 10L);
+                                    earnings = (int)VBMath.IntDiv(earnings * (10d + selectedUnit.SkillLevel("資金獲得", 5d)), 10);
                                 }
                             }
 
@@ -2941,12 +2941,12 @@ namespace SRCCore
                 var speed1 = tfu.Data.Speed;
                 if (tfu.Data.IsFeatureAvailable("テレポート"))
                 {
-                    speed1 = (int)(speed1 + tfu.Data.FeatureLevel("テレポート") + 1d);
+                    speed1 = VBMath.CLng(speed1 + tfu.Data.FeatureLevel("テレポート") + 1d);
                 }
 
                 if (tfu.Data.IsFeatureAvailable("ジャンプ"))
                 {
-                    speed1 = (int)(speed1 + tfu.Data.FeatureLevel("ジャンプ") + 1d);
+                    speed1 = VBMath.CLng(speed1 + tfu.Data.FeatureLevel("ジャンプ") + 1d);
                 }
                 // 移動可能な地形タイプも考慮
                 switch (Map.Terrain(xx, yy).Class)
@@ -2982,12 +2982,12 @@ namespace SRCCore
                 var speed2 = u.Data.Speed;
                 if (u.Data.IsFeatureAvailable("テレポート"))
                 {
-                    speed2 = (int)(speed2 + u.Data.FeatureLevel("テレポート") + 1d);
+                    speed2 = VBMath.CLng(speed2 + u.Data.FeatureLevel("テレポート") + 1d);
                 }
 
                 if (u.Data.IsFeatureAvailable("ジャンプ"))
                 {
-                    speed2 = (int)(speed2 + u.Data.FeatureLevel("ジャンプ") + 1d);
+                    speed2 = VBMath.CLng(speed2 + u.Data.FeatureLevel("ジャンプ") + 1d);
                 }
                 // 移動可能な地形タイプも考慮
                 switch (Map.Terrain(xx, yy).Class)
@@ -3122,7 +3122,8 @@ namespace SRCCore
                     if (ua.IsAbilityClassifiedAs("霊") || ua.IsAbilityClassifiedAs("プ"))
                     {
                         var planaAttr = ua.IsAbilityClassifiedAs("霊") ? "霊" : "プ";
-                        var planaConsumption = (int)(ua.AbilityLevel(planaAttr) * 5);
+                        // 元の SRC の TryInstantAbility にはない、SRC# で足した判定。消費量の比較の目安なので切り捨てでよい
+                        var planaConsumption = VBMath.Fix(ua.AbilityLevel(planaAttr) * 5);
                         if (planaConsumption > 0 && p.MaxPlana() > 0 && planaConsumption >= p.Plana / 2)
                         {
                             continue;
@@ -3352,11 +3353,11 @@ namespace SRCCore
                 int apower;
                 if (ua.IsSpellAbility())
                 {
-                    apower = (int)(5d * healEffect.Level * p.Shooting);
+                    apower = VBMath.CLng(5d * healEffect.Level * p.Shooting);
                 }
                 else
                 {
-                    apower = (int)(500d * healEffect.Level);
+                    apower = VBMath.CLng(500d * healEffect.Level);
                 }
 
                 var max_range = ua.AbilityMaxRange();
@@ -3426,7 +3427,7 @@ namespace SRCCore
                 }
                 else if (ua.IsAbilityClassifiedAs("Ｍ投"))
                 {
-                    var mlv = (int)ua.AbilityLevel("Ｍ投");
+                    var mlv = VBMath.CLng(ua.AbilityLevel("Ｍ投"));
 
                     // 投下位置を変えながら試してみる
                     for (var xx = x1; xx <= x2; xx++)
@@ -3612,11 +3613,11 @@ namespace SRCCore
                 int apower;
                 if (ua.IsSpellAbility())
                 {
-                    apower = (int)(5d * healEffect.Level * p.Shooting);
+                    apower = VBMath.CLng(5d * healEffect.Level * p.Shooting);
                 }
                 else
                 {
-                    apower = (int)(500d * healEffect.Level);
+                    apower = VBMath.CLng(500d * healEffect.Level);
                 }
 
                 // 役立たず？
@@ -3802,7 +3803,7 @@ namespace SRCCore
                     int distance;
                     if ((Math.Abs((tu.x - new_x)) + Math.Abs((tu.y - new_y))) <= max_range)
                     {
-                        distance = (int)(Math.Pow(Math.Abs((tu.x - new_x)), 2d) + Math.Pow(Math.Abs((tu.y - new_y)), 2d));
+                        distance = VBMath.CLng(Math.Pow(Math.Abs((tu.x - new_x)), 2d) + Math.Pow(Math.Abs((tu.y - new_y)), 2d));
                     }
                     else
                     {
@@ -3824,7 +3825,7 @@ namespace SRCCore
                                     {
                                         new_x = i;
                                         new_y = j;
-                                        distance = (int)(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
+                                        distance = VBMath.CLng(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
                                     }
                                 }
                             }
@@ -4138,7 +4139,7 @@ namespace SRCCore
                                     {
                                         new_x = i;
                                         new_y = j;
-                                        tmp = (int)(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
+                                        tmp = VBMath.CLng(Math.Pow(Math.Abs((withBlock2.x - new_x)), 2d) + Math.Pow(Math.Abs((withBlock2.y - new_y)), 2d));
                                     }
                                 }
                             }
@@ -4312,7 +4313,7 @@ namespace SRCCore
                         var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
                         // マップ攻撃が最強武器であればターゲットが１体であっても使用
-                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        if (enemy_num >= score_limit || (enemy_num == 1 && uw.IsLastWeapon()))
                         {
                             switch (direction ?? "")
                             {
@@ -4361,7 +4362,7 @@ namespace SRCCore
                         var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
                         // マップ攻撃が最強武器であればターゲットが１体であっても使用
-                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        if (enemy_num >= score_limit || (enemy_num == 1 && uw.IsLastWeapon()))
                         {
                             switch (direction ?? "")
                             {
@@ -4403,14 +4404,14 @@ namespace SRCCore
                     foreach (var direction in Constants.DIRECTIONS)
                     {
                         // 効果範囲を設定
-                        Map.AreaInSector(currentUnit.x, currentUnit.y, min_range, max_range, direction, (int)uw.WeaponLevel("Ｍ扇"));
+                        Map.AreaInSector(currentUnit.x, currentUnit.y, min_range, max_range, direction, VBMath.CLng(uw.WeaponLevel("Ｍ扇")));
                         Map.MaskData[currentUnit.x, currentUnit.y] = true;
 
                         // 効果範囲内にいるユニットをカウント
                         var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
                         // マップ攻撃が最強武器であればターゲットが１体であっても使用
-                        if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                        if (enemy_num >= score_limit || (enemy_num == 1 && uw.IsLastWeapon()))
                         {
                             switch (direction ?? "")
                             {
@@ -4457,7 +4458,7 @@ namespace SRCCore
                     var enemy_num = CountTargetInRange(uw, x1, y1, x2, y2);
 
                     // マップ攻撃が最強武器であればターゲットが１体であっても使用
-                    if (enemy_num >= score_limit || enemy_num == 1 && uw.IsLastWeapon())
+                    if (enemy_num >= score_limit || (enemy_num == 1 && uw.IsLastWeapon()))
                     {
                         tx = currentUnit.x;
                         ty = currentUnit.y;
@@ -4466,7 +4467,7 @@ namespace SRCCore
                 }
                 else if (uw.IsWeaponClassifiedAs("Ｍ投"))
                 {
-                    var lv = (int)uw.WeaponLevel("Ｍ投");
+                    var lv = VBMath.CLng(uw.WeaponLevel("Ｍ投"));
                     var score = 0;
                     for (var xx = x1; xx <= x2; xx++)
                     {
@@ -4501,7 +4502,7 @@ namespace SRCCore
 
                     // マップ攻撃が最強武器であればターゲットが１体であっても使用
                     // また、Ｍ投L0の場合は最大でも１体の敵しか狙えない
-                    if (score >= score_limit || score == 1 && uw.IsLastWeapon() || score == 1 && lv == 0)
+                    if (score >= score_limit || (score == 1 && uw.IsLastWeapon()) || (score == 1 && lv == 0))
                     {
                         goto FoundWeapon;
                     }
@@ -4532,7 +4533,7 @@ namespace SRCCore
                     }
 
                     // マップ攻撃が最強武器であればターゲットが１体であっても使用
-                    if (score >= score_limit || score == 1 && uw.IsLastWeapon())
+                    if (score >= score_limit || (score == 1 && uw.IsLastWeapon()))
                     {
                         goto FoundWeapon;
                     }
@@ -4575,7 +4576,7 @@ namespace SRCCore
 
                     // マップ攻撃が最強武器であればターゲットが１体であっても使用
                     // また、射程が２の場合は最大でも１体の敵しか狙えない
-                    if (score >= score_limit || score == 1 && uw.IsLastWeapon() || score == 1 && max_range == 2)
+                    if (score >= score_limit || (score == 1 && uw.IsLastWeapon()) || (score == 1 && max_range == 2))
                     {
                         goto FoundWeapon;
                     }
@@ -5383,7 +5384,7 @@ namespace SRCCore
                     }
                     else if (selectedWeapon.IsWeaponClassifiedAs("再"))
                     {
-                        dmg = (int)(dmg + (dmg * selectedWeapon.WeaponLevel("再")) / 16);
+                        dmg = (int)(dmg + VBMath.IntDiv(dmg * selectedWeapon.WeaponLevel("再"), 16));
                     }
                 }
 
@@ -5422,21 +5423,21 @@ namespace SRCCore
                         // 切り払い出来る場合は命中率を低下
                         if (flag)
                         {
-                            parry_prob = (int)(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                            parry_prob = VBMath.CLng(2d * t.MainPilot().SkillLevel("切り払い", ref_mode: ""));
                             if (selectedWeapon.IsWeaponClassifiedAs("実"))
                             {
                                 if (selectedWeapon.IsWeaponClassifiedAs("サ"))
                                 {
-                                    parry_prob = (int)(parry_prob - u.MainPilot().SkillLevel("超感覚", ref_mode: "") - u.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
+                                    parry_prob = VBMath.CLng(parry_prob - u.MainPilot().SkillLevel("超感覚", ref_mode: "") - u.MainPilot().SkillLevel("知覚強化", ref_mode: ""));
                                     {
                                         var withBlock = t.MainPilot();
-                                        parry_prob = (int)(parry_prob + withBlock.SkillLevel("超感覚", ref_mode: "") + withBlock.SkillLevel("知覚強化", ref_mode: ""));
+                                        parry_prob = VBMath.CLng(parry_prob + withBlock.SkillLevel("超感覚", ref_mode: "") + withBlock.SkillLevel("知覚強化", ref_mode: ""));
                                     }
                                 }
                             }
                             else
                             {
-                                parry_prob = (int)(parry_prob - u.MainPilot().SkillLevel("切り払い", ref_mode: ""));
+                                parry_prob = VBMath.CLng(parry_prob - u.MainPilot().SkillLevel("切り払い", ref_mode: ""));
                             }
 
                             if (parry_prob > 0)
@@ -5457,7 +5458,7 @@ namespace SRCCore
 
                     if (t.MainPilot().SkillLevel("分身", ref_mode: "") > 0d)
                     {
-                        prob = (int)((prob * t.MainPilot().SkillLevel("分身", ref_mode: "")) / 16L);
+                        prob = (int)VBMath.IntDiv(prob * t.MainPilot().SkillLevel("分身", ref_mode: ""), 16);
                     }
 
                     // 超回避可能な場合は命中率を低下
@@ -5467,7 +5468,7 @@ namespace SRCCore
                         if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 2)) > t.EN
                             && GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > t.MainPilot().Morale)
                         {
-                            prob = (int)((prob * t.FeatureLevel("超回避")) / 10L);
+                            prob = (int)VBMath.IntDiv(prob * t.FeatureLevel("超回避"), 10);
                         }
                     }
                 }
@@ -6477,7 +6478,7 @@ namespace SRCCore
                 {
                     if (selectedWeapon.IsWeaponClassifiedAs("先") || u.UsedCounterAttack < u.MaxCounterAttack())
                     {
-                        destroy_prob = (int)(1.5d * destroy_prob);
+                        destroy_prob = VBMath.CLng(1.5d * destroy_prob);
                     }
                 }
 

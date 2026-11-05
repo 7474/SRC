@@ -225,6 +225,22 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
+        public void SelectWeapon_CounterAttackBoost_RoundsToEvenLikeVB()
+        {
+            // VB 版は destroy_prob = 1.5 * destroy_prob（Long への代入）なので偶数への丸めになる。
+            // 命中率 73 の 1.5 倍は 109.5 → 110（切り捨てなら 109）
+            var f = CreateField(targetHp: 100);
+            var ud = f.DefineUnit("攻撃機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200, precision: -27, wclass: "突先");
+            var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("標的", "ＮＰＣA", "ＮＰＣ", 4, 3);
+            Assert.AreEqual(73, u.Weapon(1).HitProbability(t, false));
+
+            Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "反撃", out var counterProb, out _));
+            Assert.AreEqual(110, counterProb);
+        }
+
+        [TestMethod]
         public void SelectWeapon_MovableMode_UsesWeaponReachableAfterMoving()
         {
             // 「移動可能」では移動後攻撃可の武器を、移動して届く相手にも使う
