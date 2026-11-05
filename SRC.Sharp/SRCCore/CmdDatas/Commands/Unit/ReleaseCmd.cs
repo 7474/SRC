@@ -1,6 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -18,7 +17,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 case 1:
                     {
-                        buf = Event.SelectedUnitForEvent.Pilots.First().Name;
+                        buf = Event.SelectedUnitForEvent.MainPilot().Name;
                         break;
                     }
 
