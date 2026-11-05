@@ -108,6 +108,15 @@ SRCではヘルプから記載が削除されているものの、後方互換�
 - FillStyle コマンドで模様（横線・縦線・斜線・斜線２・網かけ・クロス）を指定しても模様は描かれず、全体が塗りつぶされます（[FillStyleコマンド](FillStyleコマンド.md)）。
 - LineRead コマンドでファイルの最後を超えて読み出してもエラーにならず、変数は空になります（[LineReadコマンド](LineReadコマンド.md)）。
 - Swap コマンドで、サブルーチンローカル変数どうしの値が入れ替わらないことがあります（不具合）（[Swapコマンド](Swapコマンド.md)）。
+- MapAbility コマンドで *unit* を省略してアビリティ名を誤ると、「イベントデータが不正です」のエラーになります（[MapAbilityコマンド](MapAbilityコマンド.md)）。
+- Open コマンドで開いたファイルは、SRCCompatibilityMode の設定によって UTF-8 で読み書きできます。出力モードで既にあるファイルを開くと、元の内容を消さずに先頭から上書きします（不具合）（[Openコマンド](Openコマンド.md)）。
+- Print コマンドの改行は、macOS・Linux・SRC#Web では LF になります（元の SRC は CR+LF）（[Printコマンド](Printコマンド.md)）。
+- PaintPicture コマンドで画像を探すフォルダの順番が違い、地形画像のフォルダ（Bitmap\Map\plain など）は探しません。透過色の指定（#rrggbb）は使われません（[PaintPictureコマンド](PaintPictureコマンド.md)）。
+- PlaySound コマンドでスペースを含むファイル名を「"」で囲わずに書くと、最初のスペースより前だけがファイル名になります（[PlaySoundコマンド](PlaySoundコマンド.md)）。
+- SRC#Avalonia・SRC#Web では、Question コマンドの制限時間が本来の 10 倍になります（不具合）（[Questionコマンド](Questionコマンド.md)）。
+- RecoverHP・RecoverEN・RecoverSP・RecoverPlana コマンドで、回復後の値の端数を 0 に近い方へ切り捨てます（[RecoverHPコマンド](RecoverHPコマンド.md)）。
+- Release コマンドで引数を省略すると、メインパイロットではなく 1 人目のパイロットの固定を解除します（[Releaseコマンド](Releaseコマンド.md)）。
+- RemoveFolder コマンドは、中にファイルやフォルダがあるフォルダを削除できません（[RemoveFolderコマンド](RemoveFolderコマンド.md)）。
 
 ### イベント・変数・関数
 
