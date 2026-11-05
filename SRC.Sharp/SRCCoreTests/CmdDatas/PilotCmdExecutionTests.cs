@@ -203,6 +203,51 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         /// <summary>
+        /// RecoverSP の端数は元の SRC の Long への代入と同じく偶数へ丸める（7474/SRC#1471）
+        /// </summary>
+        [TestMethod]
+        public void RecoverSPCmd_RoundsFractionToEven()
+        {
+            var src = CreateSrc();
+            var pd = src.PDList.Add("SP丸め");
+            pd.SP = 98;
+            var pilot = src.PList.Add("SP丸め", 1, "味方");
+            // MaxSP = 2 × レベル1 + 98 = 100
+            Assert.AreEqual(100, pilot.MaxSP);
+
+            pilot.SP = 10;
+            Assert.AreEqual(1, CreateCmd(src, "RecoverSP SP丸め 3.5", 0).Exec());
+            Assert.AreEqual(14, pilot.SP); // 13.5 → 14
+
+            pilot.SP = 10;
+            Assert.AreEqual(2, CreateCmd(src, "RecoverSP SP丸め 2.5", 1).Exec());
+            Assert.AreEqual(12, pilot.SP); // 12.5 → 12
+        }
+
+        /// <summary>
+        /// RecoverPlana の端数は元の SRC の Long への代入と同じく偶数へ丸める（7474/SRC#1471）
+        /// </summary>
+        [TestMethod]
+        public void RecoverPlanaCmd_RoundsFractionToEven()
+        {
+            var src = CreateSrc();
+            var pd = src.PDList.Add("霊力丸め");
+            pd.SP = 10;
+            pd.AddSkill("霊力", 17d, "", 1);
+            var pilot = src.PList.Add("霊力丸め", 2, "味方");
+            // 最大霊力 = 17 + 1.5 × 2 = 20
+            Assert.AreEqual(20, pilot.MaxPlana());
+
+            pilot.Plana = 0;
+            Assert.AreEqual(1, CreateCmd(src, "RecoverPlana 霊力丸め 17.5", 0).Exec());
+            Assert.AreEqual(4, pilot.Plana); // 3.5 → 4
+
+            pilot.Plana = 0;
+            Assert.AreEqual(2, CreateCmd(src, "RecoverPlana 霊力丸め 12.5", 1).Exec());
+            Assert.AreEqual(2, pilot.Plana); // 2.5 → 2
+        }
+
+        /// <summary>
         /// RecoverSP 存在しないパイロット 100 → エラー
         /// </summary>
         [TestMethod]

@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Pilots;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -45,7 +46,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 if (p.MaxSP > 0)
                 {
-                    p.SP = (int)(p.SP + per * p.MaxSP / 100d);
+                    p.SP = VBMath.CLng(p.SP + per * p.MaxSP / 100d);
                 }
             }
 
