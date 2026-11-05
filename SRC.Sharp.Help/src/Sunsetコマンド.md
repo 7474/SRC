@@ -2,8 +2,6 @@
 layout: default
 title: Sunsetコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Sunsetコマンド**
 
 マップを夕焼け風に変更

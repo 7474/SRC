@@ -2,8 +2,6 @@
 layout: default
 title: UseAbilityコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **UseAbilityコマンド**
 
 アビリティを使用

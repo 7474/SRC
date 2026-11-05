@@ -2,8 +2,6 @@
 layout: default
 title: Switchコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Switchコマンド**
 
 条件式の値にあわせて対応するコマンドを実行します。

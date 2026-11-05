@@ -2,8 +2,6 @@
 layout: default
 title: StopSummoningコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **StopSummoningコマンド**
 
 召喚したユニットを解放

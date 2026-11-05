@@ -2,8 +2,6 @@
 layout: default
 title: Requireコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Requireコマンド**
 
 イベントデータファイルを読み込む

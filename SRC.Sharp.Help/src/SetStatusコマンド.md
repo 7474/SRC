@@ -2,8 +2,6 @@
 layout: default
 title: SetStatusコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **SetStatusコマンド**
 
 ユニットの状態を変化
