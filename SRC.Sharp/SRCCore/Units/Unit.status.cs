@@ -522,6 +522,25 @@ namespace SRCCore.Units
             //        }
             //    }
 
+            // ユニットの表示、非表示が切り替わった場合
+            if (is_invisible != IsFeatureAvailable("非表示"))
+            {
+                if (Status == "出撃")
+                {
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        if (IsFeatureAvailable("非表示"))
+                        {
+                            GUI.EraseUnitBitmap(x, y, !without_refresh);
+                        }
+                        else if (!without_refresh)
+                        {
+                            GUI.PaintUnitBitmap(this);
+                        }
+                    }
+                }
+            }
+
             // 各種パラメータ
             lngMaxHP = Data.HP + 200 * Rank;
             intMaxEN = Data.EN + 10 * Rank;

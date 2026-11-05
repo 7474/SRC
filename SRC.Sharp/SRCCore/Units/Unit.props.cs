@@ -1067,6 +1067,16 @@ namespace SRCCore.Units
             return MobilityRet;
         }
 
+        /// <summary>
+        /// ユニット画像を表示しないか（ユニット用特殊能力「非表示」、または状態「非表示付加」）。
+        /// 元の SRC の BitmapID が -1 のユニットにあたり、マップには地形だけを描き、
+        /// メッセージウィンドウなどにはユニットのいる地形のタイルを出す。
+        /// </summary>
+        public bool IsBitmapHidden()
+        {
+            return IsFeatureAvailable("非表示") || IsConditionSatisfied("非表示付加");
+        }
+
         // 描画すべきビットマップ
         public string CurrentBitmap()
         {

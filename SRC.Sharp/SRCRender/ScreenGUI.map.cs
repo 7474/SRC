@@ -312,10 +312,27 @@ namespace SRCRender
         /// </summary>
         private void DrawUnit(SKCanvas target, MapCell cell, Unit u, SKRect dest, bool useOrigColor = false)
         {
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットはユニットのいる地形のタイルを描く（元の SRC の BitmapID が -1 のユニット）
+                DrawTerrainTile(target, cell?.X ?? u.x, cell?.Y ?? u.y, dest);
+                return;
+            }
             using (var image = CreateUnitImage(cell, u, useOrigColor))
             {
                 target.DrawBitmap(image, dest, SKSamplingOptions.Default);
             }
+        }
+
+        /// <summary>マップの背景（地形）の (x, y) のマスを dest に描く</summary>
+        private void DrawTerrainTile(SKCanvas target, int x, int y, SKRect dest)
+        {
+            if (backgroundBuffer == null || x < 1 || y < 1 || x > Map.MapWidth || y > Map.MapHeight)
+            {
+                return;
+            }
+            var source = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
+            target.DrawBitmapShared(backgroundBuffer, source, dest);
         }
 
         private SKBitmap CreateUnitImage(MapCell cell, Unit u, bool useOrigColor = false)
@@ -323,6 +340,12 @@ namespace SRCRender
             var px = ScreenLayout.CellPx;
             var image = new SKBitmap(px, px, SKColorType.Bgra8888, SKAlphaType.Premul);
             var rect = SKRect.Create(0, 0, px, px);
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットは描かない（移動のアニメーションなど）
+                image.Erase(SKColors.Transparent);
+                return image;
+            }
             var emitLight = Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !useOrigColor && SafeFeature(u, "発光");
 
             // 地形ユニットは Bitmap\Map の画像（地形画像の番号付きのファイル名にも読み替える）を、
@@ -428,6 +451,11 @@ namespace SRCRender
 
         public void PaintUnitBitmap(Unit u, string smode = "")
         {
+            // 非表示？
+            if (u.IsBitmapHidden())
+            {
+                return;
+            }
             if (!IsInsideWindow(u.x, u.y))
             {
                 return;

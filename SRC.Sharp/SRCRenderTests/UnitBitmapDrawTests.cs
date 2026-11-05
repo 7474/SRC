@@ -132,5 +132,86 @@ namespace SRCRender.Tests
                 runner.WaitForTermination();
             }
         }
+
+        /// <summary>
+        /// ユニット用特殊能力「非表示」・ChangeUnitBitmap の「非表示」のユニットは、マップには地形だけを描き、
+        /// メッセージウィンドウにはユニットのいる地形のタイルを出す。
+        /// 元の SRC の GUI.bas の MakeUnitBitmap（BitmapID = -1）・UpdateMessageForm（7474/SRC#1481）。
+        /// </summary>
+        [TestMethod]
+        public void HiddenUnit_DrawsTerrainOnly()
+        {
+            workspace.Write(Path.Combine("Data", "robot.txt"),
+                Unit("隠れ", "非表示", "target.bmp"),
+                "",
+                Unit("標的機", null, "target.bmp"),
+                "===",
+                "");
+            WriteUnitImage("Bitmap", "Unit", "target.bmp");
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "Create 敵 隠れ 0 テスト1 1 3 3",
+                "Create 敵 標的機 0 テスト2 1 5 3",
+                "ChangeUnitBitmap テスト2 非表示",
+                "Refresh",
+                "Talk システム",
+                "描画",
+                "End",
+                "Quit",
+                "");
+
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                StringAssert.Contains(runner.WaitForMessage(), "描画");
+                var gui = runner.GUI;
+                var y = gui.MapToPixelY(3);
+                SKColor[] empty;
+                using (var bitmap = SKBitmap.Decode(runner.SnapshotPng()))
+                {
+                    empty = Cell(bitmap, gui.MapToPixelX(8), y);
+                    CollectionAssert.AreEqual(empty, Cell(bitmap, gui.MapToPixelX(3), y), "特殊能力「非表示」のユニットは地形だけを描く");
+                    CollectionAssert.AreEqual(empty, Cell(bitmap, gui.MapToPixelX(5), y), "ChangeUnitBitmap の「非表示」のユニットは地形だけを描く");
+                }
+
+                SKColor[] face = null;
+                System.Exception error = null;
+                using (var done = new System.Threading.ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        try
+                        {
+                            var u = runner.Session.SRC.Map.MapDataForUnit[3, 3];
+                            // 再描画しても描かない
+                            gui.PaintUnitBitmap(u);
+                            // メッセージウィンドウにはユニットのいる地形のタイルを出す
+                            gui.CloseMessageForm();
+                            gui.OpenMessageForm(u, null);
+                            gui.UpdateMessageForm(u);
+                            face = Cell(gui.MessageWindow.picUnit1.Image, 0, 0);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            error = ex;
+                        }
+                        finally
+                        {
+                            done.Set();
+                        }
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                Assert.IsNull(error, error?.ToString());
+                CollectionAssert.AreEqual(empty, face, "メッセージウィンドウには地形のタイルを出す");
+                using (var bitmap = SKBitmap.Decode(runner.SnapshotPng()))
+                {
+                    CollectionAssert.AreEqual(empty, Cell(bitmap, gui.MapToPixelX(3), y), "PaintUnitBitmap でも描かない");
+                }
+                runner.ClickMessage();
+                runner.WaitForTermination();
+            }
+        }
     }
 }

@@ -492,6 +492,18 @@ namespace SRCSharpForm
 
         public void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
         {
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットはユニットのいる地形のタイルを描く（元の SRC の BitmapID が -1 のユニット）
+                var x = cell?.X ?? u.x;
+                var y = cell?.Y ?? u.y;
+                if (BackgroundBuffer != null && x >= 1 && y >= 1 && x <= Map.MapWidth && y <= Map.MapHeight)
+                {
+                    var fromRect = new Rectangle(MapCellPx * (x - 1), MapCellPx * (y - 1), MapCellPx, MapCellPx);
+                    g.DrawImage(BackgroundBuffer, destRect, fromRect, GraphicsUnit.Pixel);
+                }
+                return;
+            }
             using var image = DrawUnit(cell, u);
             if (image != null)
             {

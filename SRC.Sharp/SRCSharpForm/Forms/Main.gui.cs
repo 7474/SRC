@@ -71,7 +71,11 @@ namespace SRCSharpForm
                 // ユニット画像を作成
                 using (var g = Graphics.FromImage(unitImage))
                 {
-                    DrawUnit(g, Map.CellAtPoint(u.x, u.y), u, new Rectangle(0, 0, unitImage.Width, unitImage.Height));
+                    // 非表示のユニットは描かない
+                    if (!u.IsBitmapHidden())
+                    {
+                        DrawUnit(g, Map.CellAtPoint(u.x, u.y), u, new Rectangle(0, 0, unitImage.Width, unitImage.Height));
+                    }
                 }
 
                 // 移動の始点を設定
@@ -230,7 +234,11 @@ namespace SRCSharpForm
                 // ユニット画像を作成
                 using (var g = Graphics.FromImage(unitImage))
                 {
-                    DrawUnit(g, Map.CellAtPoint(u.x, u.y), u, new Rectangle(0, 0, unitImage.Width, unitImage.Height));
+                    // 非表示のユニットは描かない
+                    if (!u.IsBitmapHidden())
+                    {
+                        DrawUnit(g, Map.CellAtPoint(u.x, u.y), u, new Rectangle(0, 0, unitImage.Width, unitImage.Height));
+                    }
                 }
 
                 // 移動経路を検索
@@ -287,13 +295,11 @@ namespace SRCSharpForm
 
         public void PaintUnitBitmap(Unit u, string smode)
         {
-            // 旧VB5では BitmapID == -1 のユニットを非表示にしていたが、
-            // 新システムでは画像は CurrentBitmap() のファイル名で管理されるため、
-            // 画像なしの場合は GetTransparent が null を返し描画がスキップされる。
-            //if (u.BitmapID == -1)
-            //{
-            //    return;
-            //}
+            // 非表示？（元の SRC の BitmapID が -1 のユニット）
+            if (u.IsBitmapHidden())
+            {
+                return;
+            }
 
             // 画面外？
             if (!IsInsideWindow(u.x, u.y))
