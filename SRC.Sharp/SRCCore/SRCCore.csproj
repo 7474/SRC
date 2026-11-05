@@ -19,6 +19,11 @@
     <None Include="Units\Unit.ref.cs" />
   </ItemGroup>
 
+  <!-- VB 版からの移植で起きやすい誤りを見つけるアナライザー（SRCPortingAnalyzers/README.md）。パッケージには含めない -->
+  <ItemGroup>
+    <ProjectReference Include="..\SRCPortingAnalyzers\SRCPortingAnalyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />

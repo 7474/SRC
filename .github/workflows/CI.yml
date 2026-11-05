@@ -128,6 +128,10 @@ jobs:
     - name: Test SRC#Avalonia (headless)
       run: xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
 
+    # VB 版からの移植で起きやすい誤りを見つけるアナライザー（SRC.Sharp/SRCPortingAnalyzers/README.md）
+    - name: Test SRCPortingAnalyzers
+      run: dotnet test SRC.Sharp/SRCPortingAnalyzersTests/SRCPortingAnalyzersTests.csproj --verbosity normal
+
     # 作成支援ツール（lint・解析・バランス集計・Language Server・デバッガ）
     - name: Test SRCAuthoring
       run: dotnet test SRC.Sharp/SRCAuthoringTests/SRCAuthoringTests.csproj --verbosity normal
