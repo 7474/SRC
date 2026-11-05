@@ -38,6 +38,11 @@ namespace SRCCore.Commands
         private Stack<SelectedState> SavedStateStack = new Stack<SelectedState>();
         public IEnumerable<SelectedState> SavedStates => SavedStateStack;
 
+        // ユニットコマンドのメニューの「アビリティ」コマンドの表示
+        // （元の SRC の MainForm.mnuUnitCommandItem(AbilityCmdID).Caption）。
+        // アビリティが 1 つのときはアビリティ名そのものになり、そのときはアビリティを一覧を出さずに選ぶ。
+        public string AbilityCommandCaption;
+
         // 援護を使うかどうか
         public bool UseSupportAttack;
         public bool UseSupportGuard;

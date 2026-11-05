@@ -967,9 +967,11 @@ namespace SRCSharpForm
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             TopItem = -1;
-            if (abilities.Items.Count == 1 && lb_mode != "一覧" && !is_item)
+            // メニューにアビリティ名を表示しているときは一覧を出さずに選ぶ
+            var ability = abilities.AbilityWithoutListBox(SRC, lb_mode, is_item);
+            if (ability != null)
             {
-                return abilities.Items[0].Ability;
+                return ability;
             }
             // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
             var list = abilities.ToListBoxItems();

@@ -32,6 +32,21 @@ namespace SRCCore.Units
         // アビリティを持つユニット
         public Unit Unit { get; }
 
+        // リストボックスを出さずに選ぶアビリティ（GUI.bas の AbilityListBox）。
+        // ユニットコマンドのメニューにアビリティ名そのものを表示しているとき（アビリティが 1 つのとき）は、
+        // 一覧を出さずに、アイテムでない修得済みの最初のアビリティを選ぶ。該当しなければ null。
+        public UnitAbility AbilityWithoutListBox(SRC src, string lb_mode, bool is_item)
+        {
+            var caption = src.Commands.AbilityCommandCaption;
+            if (lb_mode == "一覧" || is_item
+                || caption == null
+                || caption == src.Expression.Term("アビリティ", Unit))
+            {
+                return null;
+            }
+            return Unit.Abilities.FirstOrDefault(x => !x.Data.IsItem() && x.IsAbilityMastered());
+        }
+
         // アビリティ選択用リストボックスの見出し（GUI.bas の AbilityListBox）
         public string ListBoxInfo(SRC src)
         {

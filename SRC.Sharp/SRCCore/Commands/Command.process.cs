@@ -798,19 +798,16 @@ namespace SRCCore.Commands
                     AddFixSupplyCommand(unitCommands, currentUnit, false);
 
                     // アビリティコマンド
-                    if (currentUnit.Area != "地中")
                     {
-                        var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
-                          && !x.Data.IsItem()
-                          && x.IsAbilityUseful("移動前")
-                          ).ToList();
-                        if (displayAbilities.Count > 0)
+                        // アイテムでない修得済みのアビリティが 1 つだけなら、メニューにはアビリティ名を表示する
+                        var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem() && x.IsAbilityMastered()).ToList();
+                        AbilityCommandCaption = unitAbilities.Count == 1
+                            ? unitAbilities.First().AbilityNickname()
+                            : Expression.Term("アビリティ", SelectedUnit);
+                        if (currentUnit.Area != "地中"
+                            && unitAbilities.Any(x => x.IsAbilityUseful("移動前")))
                         {
-                            var caption = Expression.Term("アビリティ", SelectedUnit);
-                            var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
-                            unitCommands.Add(new UiCommand(
-                                AbilityCmdID,
-                                unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                            unitCommands.Add(new UiCommand(AbilityCmdID, AbilityCommandCaption));
                         }
                     }
 
@@ -1245,19 +1242,19 @@ namespace SRCCore.Commands
                 AddFixSupplyCommand(unitCommands, currentUnit, true);
 
                 // アビリティコマンド
-                if (currentUnit.Area != "地中")
                 {
-                    var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
-                      && !x.Data.IsItem()
-                      && x.IsAbilityUseful("移動後")
-                      ).ToList();
-                    if (displayAbilities.Count > 0)
+                    // アイテムでないアビリティが 1 つだけなら、メニューにはアビリティ名を表示する
+                    // （元の SRC は移動後は修得済みかどうかを問わずに数える）
+                    var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
+                    AbilityCommandCaption = unitAbilities.Count == 1
+                        ? unitAbilities.First().AbilityNickname()
+                        : Expression.Term("アビリティ", SelectedUnit);
+                    if (currentUnit.Area != "地中"
+                        && currentUnit.Abilities.Any(x => x.IsAbilityMastered()
+                            && !x.Data.IsItem()
+                            && x.IsAbilityUseful("移動後")))
                     {
-                        var caption = Expression.Term("アビリティ", SelectedUnit);
-                        var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
-                        unitCommands.Add(new UiCommand(
-                            AbilityCmdID,
-                            unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                        unitCommands.Add(new UiCommand(AbilityCmdID, AbilityCommandCaption));
                     }
                 }
 
