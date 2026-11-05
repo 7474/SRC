@@ -38,5 +38,5 @@ VB 版の `SRC/SRC_20121125/Map.bas` の手続きと、C# の対応（[説明](R
 | Sub AreaInMoveAction | 2853 | 268 | `SRCCore/Maps/Map.cs` Map.AreaInMoveAction | 未確認 |  |
 | Function IsLineBlocked | 3123 | 74 | `SRCCore/Maps/Map.cs` Map.IsLineBlocked | 未確認 |  |
 | Sub NearestPoint | 3199 | 359 | `SRCCore/Maps/Map.cs` Map.NearestPoint | 未確認 |  |
-| Sub SafetyPoint | 3560 | 67 | `SRCCore/Maps/Map.cs` Map.SafetyPoint | 未確認 |  |
+| Sub SafetyPoint | 3560 | 67 | `SRCCore/Maps/Map.cs` Map.SafetyPoint | 未確認 | #1501 で見つけた手がかり: VB は ByRef の X・Y を移動先が見つからなければ渡された値のまま残すが、C# は out で u.x・u.y を入れる（遊撃の再移動の目標が変わる） |
 | Sub SearchMoveRoute | 3630 | 178 | `SRCCore/Maps/Map.cs` Map.SearchMoveRoute | 未確認 |  |

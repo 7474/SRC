@@ -7,17 +7,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 
 | 場所 | 種類 | 本文 | 状態 | メモ |
 |---|---|---|---|---|
-| `SRCCore/COM.cs:522` | コード | indirect_attack = selectedUnit.IsWeaponClassifiedAs(w, "間"); | 未確認 |  |
-| `SRCCore/COM.cs:697` | TODO | TODO 武器選択に失敗してるケースがある（発生時は LogWarn を出してこのターンの行動を中断する） | 未確認 |  |
-| `SRCCore/COM.cs:710` | コード | string[] list; | 未確認 |  |
-| `SRCCore/COM.cs:3263` | XXX | XXX true でいいのか？ | 未確認 |  |
-| `SRCCore/COM.cs:3408` | XXX | XXX Unit.CanFix | 未確認 |  |
-| `SRCCore/COM.cs:3477` | XXX | XXX Unit.CanFix | 未確認 |  |
-| `SRCCore/COM.cs:3536` | XXX | XXX false でいいのか？ | 未確認 |  |
-| `SRCCore/COM.cs:4241` | XXX | XXX なんか移動前固定条件だったけれど、使えれば、でしょ。 | 未確認 |  |
-| `SRCCore/COM.cs:4251` | XXX | XXX を意図して逆順なのだろう | 未確認 |  |
-| `SRCCore/COM.cs:4257` | XXX | XXX ヒットはこの段階ではしてない | 未確認 |  |
-| `SRCCore/COM.cs:4961` | XXX | XXX 自分の射程見なくていいのか？ | 未確認 |  |
 | `SRCCore/CmdDatas/CmdParser.cs:636` | TODO | TODO Talkの中身が壊れる場面がある可能性あり（Issue #172 参照） | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs:166` | XXX | XXX メインパイロットが差し変わっていたら除外？ | 未確認 |  |
