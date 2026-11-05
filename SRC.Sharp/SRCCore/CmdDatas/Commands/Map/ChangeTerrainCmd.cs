@@ -41,6 +41,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     throw new EventErrorException(this, "「" + tname + "」という地形は存在しません");
                 }
+                cell.TerrainType = td.ID;
                 cell.UnderTerrain = td;
                 cell.BitmapNo = GetArgAsLong(5);
             }
@@ -52,6 +53,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     throw new EventErrorException(this, "「" + tname + "」という地形は存在しません");
                 }
+                cell.TerrainType = td.ID;
                 cell.UnderTerrain = td;
                 cell.BitmapNo = -GetArgAsLong(5);
             }

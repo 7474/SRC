@@ -92,6 +92,20 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void ChangeTerrain_UpdatesTerrainTypeForSaveData()
+        {
+            // セーブデータ（中断・クイックセーブ）には地形の番号を書くので、番号も変える（元の SRC の MapData(X, Y, TerrainType)）
+            var f = CreateFixture();
+
+            CreateCmd(f.Src, "ChangeTerrain 3 2 壁 0").Exec();
+
+            var cell = f.Map.CellAtPoint(3, 2);
+            Assert.AreEqual(MapCoverageFixture.Wall, cell.TerrainType);
+            cell.Restore(f.Src);
+            Assert.AreEqual("壁", f.Map.Terrain(3, 2).Name);
+        }
+
+        [TestMethod]
         public void ChangeLayer_ToImpassableTerrain_MovesUnitToNearbyCell()
         {
             var f = CreateFixture();
