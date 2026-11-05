@@ -624,7 +624,8 @@ namespace SRCRender
         public int LIPS(ListBoxArgs args, int time_limit)
         {
             listCurrentTime = 0;
-            listTimeLimit = Math.Max(0, time_limit) * 1000;
+            // 元の SRC（frmListBox の Timer1 は Interval=100）と同じく、制限時間は 0.1 秒単位で数える
+            listTimeLimit = Math.Max(0, time_limit) * 100;
             frmListBox.picBar.Visible = listTimeLimit > 0;
             frmListBox.picBar.Image = null;
             try
