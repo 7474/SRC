@@ -345,6 +345,33 @@ namespace SRCCore.Coverage.Tests.UnitAttack
             Assert.IsTrue(f.SysMessages().Contains("攻撃機パイロットは浄化を行って[標的機]の復活を防いだ。"));
         }
 
+        // 浄化を探すのはメインパイロット・サブパイロット・サポートだけで、追加サポートは見ない
+        // （VB: Unit.cls Attack の「浄化の適用」は MainPilot、Pilot(2..CountPilot)、Support(1..CountSupport) の順に調べる）
+        [TestMethod]
+        public void Attack_Destroy_PurifyIgnoresAdditionalSupport()
+        {
+            var f = new UnitAttackFixture();
+            var pd = f.Src.PDList.Add("妖精");
+            pd.Nickname = "妖精";
+            pd.Adaption = "AAAA";
+            pd.Class = "汎用";
+            pd.Personality = "普通";
+            pd.AddSkill("浄化", 1d, "", 1);
+            var a = f.AddUnit("攻撃機", "味方", 2, 2,
+                weapons: new[] { f.Weapon("ビームライフル", 1500, "浄", 1, 3) },
+                features: new[] { "追加サポート=妖精" });
+            var t = f.AddUnit("標的機", "敵", 3, 2, hp: 500, skills: new[] { ("再生", 16d) });
+            Assert.IsNotNull(a.AdditionalSupport());
+            Assert.IsTrue(a.AdditionalSupport().IsSkillAvailable("浄化"));
+
+            a.Attack(a.Weapons.First(), t, "", "");
+
+            // 浄化されずに再生で復活する（Dice(16)=9 <= 16）
+            Assert.AreEqual("出撃", t.Status);
+            Assert.AreEqual(250, t.HP);
+            Assert.IsFalse(f.SysMessages().Any(x => x.Contains("浄化を行って")));
+        }
+
         // 不死身状態のユニットはＨＰ10 を残して耐える
         [TestMethod]
         public void Attack_Immortal_LeavesTenHp()
