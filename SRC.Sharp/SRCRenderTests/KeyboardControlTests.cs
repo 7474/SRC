@@ -210,5 +210,179 @@ namespace SRCRender.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void TouchTap_PlacesMapCursor_AndKeysContinueFromIt()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    void Press(ScreenKey key)
+                    {
+                        gui.KeyPressed(key);
+                        runner.Sync();
+                    }
+
+                    (int x, int y) Cursor()
+                    {
+                        WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                        var rect = state.MapCursor.Value;
+                        return (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top));
+                    }
+
+                    // 味方ユニット（6,6）の左隣のマスをタップした（指が隣のマスに当たった）
+                    float px = gui.MapToPixelX(5) + 16;
+                    float py = gui.MapToPixelY(6) + 16;
+                    gui.PointerMoved(px, py, touch: true);
+                    gui.PointerPressed(px, py, SRCCore.GuiButton.Left, 1, touch: true);
+                    gui.PointerReleased(px, py, SRCCore.GuiButton.Left);
+                    runner.Sync();
+                    // 当たったマスにカーソルが出る（何も無いマスなので、ほかには何も起きない）
+                    Assert.AreEqual((5, 6), Cursor());
+                    Assert.IsNull(state.Menu);
+
+                    // 十字キーで 1 マス直して、A（Enter）で選ぶ
+                    Press(ScreenKey.Right);
+                    Assert.AreEqual((6, 6), Cursor());
+                    Press(ScreenKey.Enter);
+                    WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
+                    CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
+                    Press(ScreenKey.Escape);
+                    WaitUntil(() => state.Menu == null, "メニューの取り消し");
+
+                    // ユニットをタップして開いたメニューも先頭を選んでいて、A を 1 回押せば選べる
+                    float ux = gui.MapToPixelX(6) + 16;
+                    float uy = gui.MapToPixelY(6) + 16;
+                    gui.PointerMoved(ux, uy, touch: true);
+                    gui.PointerPressed(ux, uy, SRCCore.GuiButton.Left, 1, touch: true);
+                    gui.PointerReleased(ux, uy, SRCCore.GuiButton.Left);
+                    runner.Sync();
+                    WaitUntil(() => state.Menu != null, "タップで開いたユニットのコマンドのメニュー");
+                    Assert.AreEqual(0, state.Menu.Highlight);
+                    Press(ScreenKey.Escape);
+                    WaitUntil(() => state.Menu == null, "メニューの取り消し");
+
+                    // マウスの操作ではカーソルを消す（これまでどおり）
+                    gui.PointerMoved(px, py);
+                    WaitUntil(() => state.MapCursor == null, "マップカーソルを消す");
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Enter_WithoutMapCursor_ShowsCursorAndSelects()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    // 味方ユニット（6,6）にポインタを置いてから離した（カーソルは出ていない）
+                    gui.PointerMoved(gui.MapToPixelX(6) + 16, gui.MapToPixelY(6) + 16);
+                    runner.Sync();
+                    Assert.IsNull(state.MapCursor);
+
+                    // 1 回の A（Enter）で、そのマスにカーソルを出して選ぶ
+                    gui.KeyPressed(ScreenKey.Enter);
+                    runner.Sync();
+                    WaitUntil(() => state.Menu != null, "ユニットのコマンドのメニュー");
+                    CollectionAssert.Contains(state.Menu.Items.ToList(), "移動");
+                    WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                    var rect = state.MapCursor.Value;
+                    Assert.AreEqual((6, 6), (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top)));
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void MapCommandMenu_AfterCancel_OpensAgainWithOnePress()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    var state = runner.State;
+                    var script = new PlayScript(runner);
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    script.Run(new[] { "auto 60" });
+
+                    void Press(ScreenKey key)
+                    {
+                        gui.KeyPressed(key);
+                        runner.Sync();
+                    }
+
+                    // 何も無いマス（3,3）にカーソルを置く
+                    Press(ScreenKey.Right);
+                    for (var i = 0; i < 40; i++)
+                    {
+                        WaitUntil(() => state.MapCursor != null, "マップカーソルの表示");
+                        var rect = state.MapCursor.Value;
+                        var (cx, cy) = (gui.PixelToMapX(rect.Left), gui.PixelToMapY(rect.Top));
+                        if ((cx, cy) == (3, 3))
+                        {
+                            break;
+                        }
+                        Press(cx > 3 ? ScreenKey.Left : cx < 3 ? ScreenKey.Right : cy > 3 ? ScreenKey.Up : ScreenKey.Down);
+                    }
+
+                    // B（Esc）でマップのコマンドのメニューを開いて閉じる。もう一度 B を 1 回押せば、また開く
+                    for (var round = 0; round < 3; round++)
+                    {
+                        Press(ScreenKey.Escape);
+                        WaitUntil(() => state.Menu != null, "マップのコマンドのメニュー（" + round + " 回目）");
+                        CollectionAssert.Contains(state.Menu.Items.ToList(), "ターン終了");
+                        Press(ScreenKey.Escape);
+                        WaitUntil(() => state.Menu == null, "メニューを閉じる");
+                        runner.Sync();
+                    }
+                    Assert.IsNull(runner.Error);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void EscapeHeld_CountsAsRightButtonHeld()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+
+                    // 仮想パッドの B（Esc）を押している間は、右ボタンを押し続けているのと同じ（メッセージを飛ばす）
+                    gui.KeyStateChanged(0x1B, true);
+                    Assert.IsTrue(gui.IsRButtonPressed(true));
+                    gui.KeyStateChanged(0x1B, false);
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+
+                    // ほかのキーは右ボタンにしない
+                    gui.KeyStateChanged(0x0D, true);
+                    Assert.IsFalse(gui.IsRButtonPressed(true));
+                    gui.KeyStateChanged(0x0D, false);
+                }
+            }
+        }
     }
 }

@@ -290,6 +290,37 @@ test('アーカイブを追加し、再読み込み後もプレイできる', as
   await expect(page.locator('#archives li')).toHaveCount(0);
 });
 
+test('ブラウザの保存領域を使えなくても、失敗を出して一覧は使える', async ({ page }) => {
+  // IndexedDB を使えない・容量が足りないときと同じく、保存領域の操作を失敗させる（JS の例外は .NET では JSException になる）
+  await page.addInitScript(() => {
+    let store;
+    Object.defineProperty(window, 'srcwebStore', {
+      configurable: true,
+      get: () => store,
+      set: value => {
+        store = {
+          ...value,
+          list: () => Promise.reject(new Error('QuotaExceededError (test)')),
+          put: () => Promise.reject(new Error('QuotaExceededError (test)')),
+        };
+      },
+    });
+  });
+  await open(page);
+  await expect(page.locator('#status')).toContainText('ブラウザの保存領域を読み書きできませんでした');
+  await expect(page.locator('#archives li')).toHaveCount(0);
+
+  // 追加も失敗を出し、画面は操作できるまま（Blazor のエラーの帯を出さない）
+  await page.setInputFiles('#add-archive', {
+    name: '保存できない.zip',
+    mimeType: 'application/zip',
+    buffer: fs.readFileSync(path.join(webRoot, 'scenarios', 'battle-victory.zip')),
+  });
+  await expect(page.locator('#status')).toContainText('QuotaExceededError (test)');
+  await expect(page.locator('#blazor-error-ui')).toBeHidden();
+  await expect(page.locator('#catalog button').first()).toBeEnabled();
+});
+
 // App.razor の FormatSize と同じ表示
 function formatSize(size) {
   return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.round(size / 1024)} KB`;
@@ -1193,6 +1224,40 @@ test.describe('タッチ向けの画面', () => {
 test.describe('タッチ操作', () => {
   test.use({ hasTouch: true });
 
+  test('マップをタップするとそのマスにカーソルを置き、仮想パッドで続けて選べる', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'battle-basic' }).click();
+    await expect(page.locator('#screen')).toBeVisible();
+    // 「戦闘開始」のメッセージを送り、味方フェイズにする
+    let shown = false;
+    await expect.poll(async () => {
+      const s = await screenState(page);
+      if (s.message !== undefined) {
+        shown = true;
+        await page.locator('#screen').tap({ position: { x: 200, y: 200 } });
+      }
+      return shown && s.message === undefined && s.locked === false;
+    }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+    await openSettings(page);
+    await page.locator('#setting-virtual-pad').check();
+    await closeSettings(page);
+    // 味方ユニット（6,6）の左隣（5,6）をタップした（指が隣のマスに当たった）
+    const s = await screenState(page);
+    const box = await page.locator('#screen').boundingBox();
+    const scale = box.width / 720;
+    await page.locator('#screen').tap({ position: { x: ((5 - s.mapX + 7) * 32 + 16) * scale, y: ((6 - s.mapY + 7) * 32 + 16) * scale } });
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([5, 6]);
+    // 仮想パッドの ▶ で 1 マス直し、A で選ぶ
+    const tapKey = async area => {
+      const b = await page.locator('.vkey-' + area).boundingBox();
+      await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
+    };
+    await tapKey('right');
+    await expect.poll(async () => (await screenState(page)).cursor).toEqual([6, 6]);
+    await tapKey('a');
+    await expect.poll(async () => (await screenState(page)).menu?.items ?? []).toContain('移動');
+  });
+
   test('タップで左クリック、長押しで右クリックになる', async ({ page }) => {
     await open(page);
     await page.getByRole('button', { name: 'battle-basic' }).click();
@@ -1321,6 +1386,73 @@ test.describe('タッチ操作', () => {
     await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
     await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
   });
+});
+
+test('設定でログを画面の下に出し、Trace ではタップの入力も記録する', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: 'battle-basic' }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  // 既定では出さない
+  await expect(page.locator('#log-panel')).toBeHidden();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').check();
+  await page.locator('#setting-log-level').selectOption('Trace');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  // 画面・下のバー・ログが同じ幅でビューポートに収まる
+  const screen = await page.locator('#screen').boundingBox();
+  const panel = await page.locator('#log-panel').boundingBox();
+  expect(Math.abs(screen.width - panel.width)).toBeLessThan(1);
+  expect(panel.y + panel.height).toBeLessThanOrEqual(page.viewportSize().height + 0.5);
+
+  // ゲームの画面を押すと、届いた入力・ゲームに渡した入力・その後のゲームの状態が出る
+  await page.locator('#screen').click({ position: { x: 200, y: 200 } });
+  const lines = page.locator('#log-lines');
+  await expect(lines).toContainText('SRCSharpWeb.Input: gui.Pointer down');
+  await expect(lines).toContainText('SRCSharpWeb.Input: state {');
+  // .NET のログ（Trace のゲームのログ）も出る
+  await expect(lines).toContainText(/ (TRC|DBG|INF) SRCCore/);
+  await page.locator('#log-clear').click();
+  await expect(lines).not.toContainText('gui.Pointer down');
+
+  // 表示の設定は次回も残る
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await restartBattleBasic(page);
+  await expect(page.locator('#log-panel')).toBeVisible();
+  await openSettings(page);
+  await page.locator('#setting-log-panel').uncheck();
+  await page.locator('#setting-log-level').selectOption('Information');
+  await closeSettings(page);
+  await expect(page.locator('#log-panel')).toBeHidden();
+});
+
+test('仮想パッドの B を押し続けると、右ボタンを押し続けたのと同じくメッセージを送る', async ({ page }) => {
+  const talks = [];
+  for (let i = 1; i <= 6; i++) {
+    talks.push('Talk システム', `メッセージ ${i}`, 'End');
+  }
+  const eve = ['プロローグ:', ...talks, 'Ask "送り終えた"', 'OK', 'End', 'Quit', ''].join('\r\n');
+  const name = 'B の長押しのテスト.zip';
+  await open(page);
+  await page.setInputFiles('#add-archive', {
+    name,
+    mimeType: 'application/zip',
+    buffer: makeZip([{ name: 'bhold/test.eve', data: Buffer.from(eve, 'utf8') }]),
+  });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await openSettings(page);
+  await page.locator('#setting-virtual-pad').check();
+  await closeSettings(page);
+  await expect.poll(() => debugState(page), { timeout: 120 * 1000 }).toContain('メッセージ 1');
+
+  // B を押したままにする（離さない）。メッセージを次々に送り、最後の Ask まで進む
+  const box = await page.locator('.vkey-b').boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await expect.poll(() => debugState(page), { timeout: 30 * 1000 }).toContain('送り終えた');
+  await page.mouse.up();
 });
 
 test('仮想パッドをシステムメニューで表示し、押したキーがシナリオの KeyState に届く', async ({ page }) => {

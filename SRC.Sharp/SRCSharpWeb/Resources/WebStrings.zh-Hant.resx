@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>初始化失敗：{0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>無法存取瀏覽器儲存空間：{0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>操作失敗：{0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>劇本已結束。</value>
   </data>
@@ -320,6 +326,21 @@
   </data>
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>顯示虛擬手把</value>
+  </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>偵錯</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>在畫面下方顯示記錄</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>將記錄層級設為 Trace 時，也會記錄點擊、虛擬手把與按鍵輸入。</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>清除</value>
   </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>放大顯示選擇畫面</value>

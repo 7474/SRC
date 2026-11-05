@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>初期化に失敗しました: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>ブラウザの保存領域を読み書きできませんでした: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>処理できませんでした: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>シナリオが終了しました。</value>
   </data>
@@ -320,6 +326,21 @@
   </data>
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>仮想パッドを表示する</value>
+  </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>デバッグ</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>ログを画面の下に表示する</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>ログのレベルを Trace にすると、タップ・仮想パッド・キーの入力も記録します。</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>クリア</value>
   </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>選択画面を拡大して表示する</value>

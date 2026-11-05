@@ -122,7 +122,15 @@
     private async Task OnClickAnchor(string targetId)
     {
         // 要素までスクロールしてヘッダ分戻る
-        await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
-        await JsInterop.InvokeVoidAsync("scrollBy", 0, -160);
+        try
+        {
+            await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
+            await JsInterop.InvokeVoidAsync("scrollBy", 0, -160);
+        }
+        catch (JSException ex)
+        {
+            // スクロールできなくても一覧は使える
+            Console.Error.WriteLine($"スクロールできません: {ex.Message}");
+        }
     }
 }

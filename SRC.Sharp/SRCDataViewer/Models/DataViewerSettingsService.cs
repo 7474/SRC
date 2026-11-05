@@ -30,7 +30,17 @@ namespace SRCDataViewer.Models
         /// <summary>localStorage から設定を読む。無いか壊れていれば既定の設定</summary>
         public static async Task<DataViewerSettings> LoadAsync(IJSRuntime jsRuntime)
         {
-            var json = await jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
+            string json;
+            try
+            {
+                json = await jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
+            }
+            catch (JSException ex)
+            {
+                // localStorage を使えない（ブラウザの設定・プライベートブラウズなど）。既定の設定で動かす
+                Console.Error.WriteLine($"設定を読めません: {ex.Message}");
+                return new DataViewerSettings();
+            }
             if (!string.IsNullOrEmpty(json))
             {
                 try
@@ -48,14 +58,29 @@ namespace SRCDataViewer.Models
         public async Task SaveAsync()
         {
             var json = JsonSerializer.Serialize(_settings);
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", LocalStorageKey, json);
+            try
+            {
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", LocalStorageKey, json);
+            }
+            catch (JSException ex)
+            {
+                // 保存できなくても、変えた設定はこの表示の間は効かせる
+                Console.Error.WriteLine($"設定を保存できません: {ex.Message}");
+            }
             await ApplyThemeAsync();
             NotifyStateChanged();
         }
 
         private async Task ApplyThemeAsync()
         {
-            await _jsRuntime.InvokeVoidAsync("dataViewerSettings.applyTheme", _settings.ThemeMode.ToString());
+            try
+            {
+                await _jsRuntime.InvokeVoidAsync("dataViewerSettings.applyTheme", _settings.ThemeMode.ToString());
+            }
+            catch (JSException ex)
+            {
+                Console.Error.WriteLine($"テーマを変えられません: {ex.Message}");
+            }
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();

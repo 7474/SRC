@@ -113,7 +113,7 @@ namespace SRCCore.Config.Tests
             Assert.AreEqual(SRCCompatibilityMode.ReadWrite, baseConfig.SRCCompatibilityMode);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("false", SRCCompatibilityMode.None)]
         [DataRow("true", SRCCompatibilityMode.ReadWrite)]
         [DataRow("1", SRCCompatibilityMode.Read)]

@@ -9,8 +9,6 @@ using System.Linq;
 using Avalonia.LogicalTree;
 using System.Threading;
 
-using SRCCore.Config;
-
 namespace SRCSharpAvalonia.Tests
 {
     /// <summary>

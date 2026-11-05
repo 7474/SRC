@@ -720,6 +720,65 @@ input[type=file]::file-selector-button {
     width: min(100vw, calc((100dvh - 170px) * 720 / 496));
 }
 
+/* 画面の下のログ（設定の「ログを画面の下に表示する」）。出している間は、その高さ（--log-height）の分だけ画面を小さくする */
+.play {
+    --log-height: 30vh;
+    --log-height: 30dvh;
+}
+
+.play:has(.log-panel:not([hidden])) .screen-wrap,
+.play:has(.log-panel:not([hidden])) .screen-bar,
+.play:has(.log-panel:not([hidden])) .log-panel {
+    width: min(100vw, calc((100vh - 28px - var(--log-height)) * 720 / 496));
+    width: min(100vw, calc((100dvh - 28px - var(--log-height)) * 720 / 496));
+}
+
+.play:has(.virtual-pad:not([hidden])):has(.log-panel:not([hidden])) .screen-wrap,
+.play:has(.virtual-pad:not([hidden])):has(.log-panel:not([hidden])) .screen-bar,
+.play:has(.virtual-pad:not([hidden])):has(.log-panel:not([hidden])) .log-panel {
+    width: min(100vw, calc((100vh - 170px - var(--log-height)) * 720 / 496));
+    width: min(100vw, calc((100dvh - 170px - var(--log-height)) * 720 / 496));
+}
+
+.log-panel {
+    display: flex;
+    flex-direction: column;
+    height: var(--log-height);
+    margin: 0 auto;
+    background: var(--face);
+    box-sizing: border-box;
+}
+
+.log-panel[hidden] {
+    display: none;
+}
+
+.log-panel-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+}
+
+.log-panel-title {
+    flex: 1;
+}
+
+.log-lines {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 2px 4px;
+    overflow: auto;
+    background: #000;
+    color: #d0d0d0;
+    font: 11px/1.3 ui-monospace, Consolas, "Noto Sans Mono", monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
 .screen-wrap {
     position: relative;
     margin: 0 auto;

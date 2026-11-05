@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Error al inicializar: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>No se pudo acceder al almacenamiento del navegador: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>La operación falló: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>El escenario ha terminado.</value>
   </data>
@@ -320,6 +326,21 @@
   </data>
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Mostrar el mando virtual</value>
+  </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Depuración</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Mostrar el registro debajo de la pantalla</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Con el nivel de registro Trace, también se registran los toques, el mando virtual y las teclas.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copiar</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Borrar</value>
   </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Mostrar el panel de opciones grande</value>

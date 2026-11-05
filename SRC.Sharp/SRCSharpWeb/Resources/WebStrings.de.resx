@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Initialisierung fehlgeschlagen: {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Auf den Browser-Speicher konnte nicht zugegriffen werden: {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Der Vorgang ist fehlgeschlagen: {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>Das Szenario ist beendet.</value>
   </data>
@@ -320,6 +326,21 @@
   </data>
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Virtuelles Steuerkreuz anzeigen</value>
+  </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Protokoll unter dem Bildschirm anzeigen</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Mit der Protokollstufe Trace werden auch Tippen, virtuelles Gamepad und Tasteneingaben protokolliert.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Kopieren</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Leeren</value>
   </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Große Auswahlleiste anzeigen</value>

@@ -18,6 +18,12 @@
   <data name="InitFailed" xml:space="preserve">
     <value>Échec de l'initialisation : {0}</value>
   </data>
+  <data name="StorageFailed" xml:space="preserve">
+    <value>Impossible d'accéder au stockage du navigateur : {0}</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>L'opération a échoué : {0}</value>
+  </data>
   <data name="ScenarioEnded" xml:space="preserve">
     <value>Le scénario est terminé.</value>
   </data>
@@ -320,6 +326,21 @@
   </data>
   <data name="SettingsVirtualPad" xml:space="preserve">
     <value>Afficher la manette virtuelle</value>
+  </data>
+  <data name="SettingsDebug" xml:space="preserve">
+    <value>Débogage</value>
+  </data>
+  <data name="SettingsLogPanel" xml:space="preserve">
+    <value>Afficher le journal sous l'écran</value>
+  </data>
+  <data name="SettingsDebugNote" xml:space="preserve">
+    <value>Avec le niveau de journal Trace, les appuis, la manette virtuelle et les touches sont aussi enregistrés.</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="LogClear" xml:space="preserve">
+    <value>Effacer</value>
   </data>
   <data name="SettingsTouchUi" xml:space="preserve">
     <value>Afficher le grand panneau de choix</value>
