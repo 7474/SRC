@@ -4234,14 +4234,13 @@ namespace SRCCore
 
             // マップ攻撃を使用するターゲット数の下限を設定する
             var score_limit = 1;
-            var loopTo = currentUnit.CountWeapon();
             foreach (var uw in currentUnit.Weapons)
             {
                 // 通常攻撃を持っている場合は単独の敵への攻撃の際に通常攻撃を優先する
                 if (!uw.IsWeaponClassifiedAs("Ｍ"))
                 {
-                    // XXX なんか移動前固定条件だったけれど、使えれば、でしょ。
-                    if ((!moved && uw.IsWeaponAvailable("移動前")) || (moved && uw.IsWeaponAvailable("移動後")))
+                    // VB 版と同じく、移動後に呼ばれたときも「移動前」で使えるかを見る
+                    if (uw.IsWeaponAvailable("移動前"))
                     {
                         score_limit = 2;
                         break;
@@ -4249,14 +4248,12 @@ namespace SRCCore
                 }
             }
 
-            // 威力の高い武器を優先して選択
-            // XXX を意図して逆順なのだろう
+            // 威力の高い武器を優先して選択（武器は威力の低い順に並んでいるので後ろから見る）
             UnitWeapon useUw = null;
             int tx = -1;
             int ty = -1;
             foreach (var uw in currentUnit.Weapons.Reverse())
             {
-                // XXX ヒットはこの段階ではしてない
                 useUw = uw;
                 Commands.SelectedWeapon = uw.WeaponNo();
                 Commands.SelectedTWeapon = 0;
@@ -4760,6 +4757,8 @@ namespace SRCCore
         // スペシャルパワーを使用する
         public void TrySpecialPower(Pilot p)
         {
+            Commands.SelectedPilot = p;
+
             // ザコパイロットはスペシャルパワーを使わない
             if (Strings.InStr(p.Name, "(ザコ)") > 0)
             {
@@ -4788,7 +4787,7 @@ namespace SRCCore
             }
 
             // 使用する可能性のあるスペシャルパワーの一覧を作成
-            var slist = new List<SpecialPowerData>();
+            var slist = new List<string>();
             var loopTo = p.CountSpecialPower;
             for (var i = 1; i <= loopTo; i++)
             {
@@ -4960,7 +4959,6 @@ namespace SRCCore
                 {
                     if (sd.TargetType == "自分")
                     {
-                        // XXX 自分の射程見なくていいのか？
                         switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
                         {
                             case 5:
@@ -5009,7 +5007,7 @@ namespace SRCCore
                 ;
 
                 // スペシャルパワーを候補リストに追加
-                slist.Add(sd);
+                slist.Add(Commands.SelectedSpecialPower);
             }
 
             // 使用可能なスペシャルパワーを所有していない
@@ -5020,7 +5018,7 @@ namespace SRCCore
             }
 
             // 使用するスペシャルパワーをランダムに選択
-            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1].Name;
+            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1];
 
             // 使用イベント
             Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
