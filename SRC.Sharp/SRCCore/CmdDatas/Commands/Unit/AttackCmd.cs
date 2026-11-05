@@ -100,7 +100,7 @@ namespace SRCCore.CmdDatas.Commands
 
                 if (w1 > 0)
                 {
-                    // XXX Push/Pop
+                    // 選択中のユニットと武器を退避する（元の SRC と同じく、この 4 つだけを戻す）
                     var prev_su = Commands.SelectedUnit;
                     var prev_st = Commands.SelectedTarget;
                     var prev_w = Commands.SelectedWeapon;
@@ -122,14 +122,16 @@ namespace SRCCore.CmdDatas.Commands
                     var cur_stage = SRC.Stage;
                     SRC.Stage = u1.Party;
                     var uw1 = u1.Weapon(w1);
-                    var uw2 = u2.Weapon(w2);
                     u1.Attack(uw1, u2, "", def_mode, is_event);
                     u1 = u1.CurrentForm();
+                    // 元の SRC と同じく、攻撃の後の u2 の武器を番号で引く
+                    var uw2 = u2.Weapon(w2);
 
                     // 反撃用武器がまだ使用可能かチェック
                     if (def_option == "自動" && u2.Status == "出撃")
                     {
-                        if (!uw2.IsTargetWithinRange(u1) || !uw2.IsWeaponAvailable("移動前"))
+                        // 反撃できる武器が無かった（w2 = 0）ときは、元の SRC の IsTargetWithinRange(0) と同じく射程外とみなして選び直す
+                        if (uw2 == null || !uw2.IsTargetWithinRange(u1) || !uw2.IsWeaponAvailable("移動前"))
                         {
                             w2 = SRC.COM.SelectWeapon(u2, u1, "反撃 イベント", out _, out _);
                             uw2 = u2.Weapon(w2);

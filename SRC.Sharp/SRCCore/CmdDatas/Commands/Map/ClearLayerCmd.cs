@@ -26,6 +26,7 @@ namespace SRCCore.CmdDatas.Commands
             if (ArgNum == 2 || ArgNum == 4)
             {
                 var loption = GetArgAsString(ArgNum == 2 ? 2 : 4);
+                // 元の SRC と同じく、空文字列はオプションの指定が無いのと同じ（「通常」）
                 switch (loption)
                 {
                     case "情報限定":
@@ -34,6 +35,7 @@ namespace SRCCore.CmdDatas.Commands
                     case "画像限定":
                         isBitmapOnly = true;
                         break;
+                    case "":
                     case "通常":
                         break;
                     default:

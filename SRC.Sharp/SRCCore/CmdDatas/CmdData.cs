@@ -220,7 +220,8 @@ namespace SRCCore.CmdDatas
         private void ParseArgs(string list)
         {
             string[] rawArgs;
-            ArgNum = GeneralLib.ListSplit(list, out rawArgs);
+            // VB 版の ListSplit と同じく、末尾でクォートや括弧が閉じていなければ -1
+            ArgNum = GeneralLib.ListSplitStrict(list, out rawArgs);
             // SetEventData で解析し直す場合（PaintString の末尾の「;」など）に前の引数を残さない
             args.Clear();
 

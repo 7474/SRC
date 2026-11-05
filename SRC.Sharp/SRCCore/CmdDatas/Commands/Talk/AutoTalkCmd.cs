@@ -17,7 +17,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             // メッセージ表示速度を「普通」の値に設定
             var prev_msg_wait = GUI.MessageWait;
-            // XXX 定数にしたほうがいいかな
+            // 元の SRC と同じく 700 ミリ秒（メッセージ速度「普通」）
             GUI.MessageWait = 700;
 
             try

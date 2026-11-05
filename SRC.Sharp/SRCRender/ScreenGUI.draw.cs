@@ -661,14 +661,29 @@ namespace SRCRender
 
         public void ArcCmd(ScreanDrawOption option, int x1, int y1, int rad, float start_angle, float end_angle)
         {
+            // VB の Circle メソッドと同じく、開始から終了へ反時計回りに描く。負の角度は中心へ線を引き、
+            // 両方が負なら扇形を塗る（IGUIScrean.ArcCmd）。Skia の角度は時計回りなので符号を反転する
+            var arc = new ScreanArc(start_angle, end_angle);
             DrawShape(option, (canvas, pen, brush) =>
             {
                 var rect = CircleRect(x1, y1, rad);
-                if (brush != null)
+                if (arc.IsPie && brush != null)
                 {
-                    canvas.DrawArc(rect, -start_angle, -(end_angle - start_angle), true, brush);
+                    canvas.DrawArc(rect, -arc.StartAngle, -arc.SweepAngle, true, brush);
                 }
-                canvas.DrawArc(rect, -start_angle, -(end_angle - start_angle), false, pen);
+                canvas.DrawArc(rect, -arc.StartAngle, -arc.SweepAngle, arc.IsPie, pen);
+                if (!arc.IsPie)
+                {
+                    if (arc.LineFromStart)
+                    {
+                        canvas.DrawLine(x1, y1, x1 + rad * (float)Math.Cos(arc.StartAngle * Math.PI / 180d), y1 - rad * (float)Math.Sin(arc.StartAngle * Math.PI / 180d), pen);
+                    }
+                    if (arc.LineToEnd)
+                    {
+                        var end = arc.StartAngle + arc.SweepAngle;
+                        canvas.DrawLine(x1, y1, x1 + rad * (float)Math.Cos(end * Math.PI / 180d), y1 - rad * (float)Math.Sin(end * Math.PI / 180d), pen);
+                    }
+                }
             });
         }
 

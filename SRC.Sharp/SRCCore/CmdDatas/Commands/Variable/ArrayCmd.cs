@@ -50,7 +50,8 @@ namespace SRCCore.CmdDatas.Commands
                 // サブルーチンローカル変数の場合
                 Expression.UndefineVariable(var_name);
                 Event.VarIndex = (Event.VarIndex + 1);
-                Event.VarStack[Event.VarIndex].Init(var_name);
+                // 元の SRC は数値型の 0 で作り直す
+                Event.VarStack[Event.VarIndex].SetValue(var_name, Expressions.ValueType.NumericType, "", 0d);
             }
             else if (Expression.IsLocalVariableDefined(var_name))
             {
@@ -81,7 +82,8 @@ namespace SRCCore.CmdDatas.Commands
 
             for (var i = 1; i <= array_buf.Length; i++)
             {
-                var buf = array_buf[i - 1].Trim();
+                // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
+                var buf = array_buf[i - 1].Trim('\t', ' ', '\u3000');
                 Expressions.ValueType etype;
                 string str_value;
                 double num_value;

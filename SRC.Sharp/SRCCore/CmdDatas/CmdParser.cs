@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
 using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
-using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
@@ -13,6 +13,14 @@ namespace SRCCore.CmdDatas
         // イベントデータ行を読み込んで解析する
         public CmdData Parse(SRC src, EventDataLine data)
         {
+            return Parse(src, data, out _);
+        }
+
+        // イベントデータ行を読み込んで解析する。正常に解析が終了しなかった場合は succeeded に false を返す
+        // （VB 版の Parse の戻り値）
+        public CmdData Parse(SRC src, EventDataLine data, out bool succeeded)
+        {
+            succeeded = true;
             var edata = data.Data;
             try
             {
@@ -30,7 +38,8 @@ namespace SRCCore.CmdDatas
 
                 // コマンドのパラメータ分割
                 string[] list;
-                var llength = GeneralLib.ListSplit(edata, out list);
+                // VB 版の ListSplit と同じく、末尾でクォートや括弧が閉じていなければ -1
+                var llength = GeneralLib.ListSplitStrict(edata, out list);
 
                 // コマンドの種類を判定
                 switch (Strings.LCase(list[0]) ?? "")
@@ -613,16 +622,22 @@ namespace SRCCore.CmdDatas
                     default:
                         {
                             // 定義済みのイベントコマンドではない
-                            if (list.Length >= 3)
+                            if (llength >= 3)
                             {
                                 if (list[1] == "=")
                                 {
                                     // 代入式
-                                    // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
-                                    // されているので、わざと項にしておく
+                                    // 代入する値が項の場合は引数の処理をそのまま使う（VB 版は ArgNum = 3 のときの型を残す）
+                                    var value = list[2];
+                                    if (llength > 3)
+                                    {
+                                        // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
+                                        // されているので、わざと項にしておく
+                                        value = "(" + GeneralLib.ListTail(edata, 3) + ")";
+                                    }
                                     return new SetCmd(src, new EventDataLine(
                                         data.ID, data.Source, data.File, data.LineNum,
-                                        "Set " + list[0] + " " + "(" + string.Join(" ", list.Skip(2)) + ")"
+                                        "Set " + list[0] + " " + value
                                     ));
                                 }
                             }
@@ -633,17 +648,31 @@ namespace SRCCore.CmdDatas
                             }
 
                             // サブルーチンコール？
-                            // TODO Talkの中身が壊れる場面がある可能性あり（Issue #172 参照）
+                            // （Talk などのメッセージの行もここに来るが、Talk などはコマンドではなく Event.EventData の行をそのまま読む）
                             return new CallCmd(src, new EventDataLine(
                                 data.ID, data.Source, data.File, data.LineNum, "Call " + data.Data
                             ));
                         }
                 }
             }
+            catch (EventErrorException ex)
+            {
+                // 書式エラー（VB 版は DisplayEventErrorMessage して Parse = False を返す）
+                src.Event.DisplayEventErrorMessage(data, ex.Message);
+                succeeded = false;
+                return new NopCmd(src, data);
+            }
+            catch (NotSupportedException ex)
+            {
+                // SRC# で対応していないコマンド（PlayFlash など）。VB 版には無いエラーなので、読み込みは止めない
+                src.Event.DisplayEventErrorMessage(data, ex.Message);
+                return new NopCmd(src, data);
+            }
             catch (Exception ex)
             {
                 src.EventLog.LogError(ex, "{Message}", ex.Message);
-                src.Event.DisplayEventErrorMessage(data.LineNum, "イベントコマンドの内容が不正です");
+                src.Event.DisplayEventErrorMessage(data, "イベントコマンドの内容が不正です");
+                succeeded = false;
                 return new NopCmd(src, data);
             }
         }

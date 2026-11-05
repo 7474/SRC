@@ -181,6 +181,47 @@ namespace SRCRender.Tests
         }
 
         /// <summary>
+        /// Arc は VB の Circle メソッドと同じく、開始から終了へ反時計回りに描く（終了が小さければ 0 度をまたぐ）。
+        /// 塗りつぶしのときは開始から終了までの扇形を塗る（CmdData.cls の ExecArcCmd。7474/SRC#1503）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_ArcSweepsCounterClockwise()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    // 270 度（下）から 0 度（右）を通って 90 度（上）まで: 右半分
+                    "Arc 150 150 60 270 90 #FF0000",
+                    // 0 度から 90 度の扇形: 右上の 4 分の 1 を塗る
+                    "FillStyle 塗りつぶし",
+                    "FillColor #00FF00",
+                    "Arc 400 150 60 0 90 #FF0000",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    Assert.IsTrue(HasColorNear(bitmap, 210, 150, SKColors.Red), "右端を通る");
+                    Assert.IsFalse(HasColorNear(bitmap, 90, 150, SKColors.Red), "左端は通らない");
+                    Assert.AreEqual(new SKColor(0, 255, 0), bitmap.GetPixel(420, 130), "右上を塗る");
+                    Assert.AreNotEqual(new SKColor(0, 255, 0), bitmap.GetPixel(420, 170), "右下は塗らない");
+                    Assert.AreNotEqual(new SKColor(0, 255, 0), bitmap.GetPixel(380, 130), "左上は塗らない");
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        /// <summary>
         /// PaintPicture の透過色（#rrggbb）と、部分表示の塗りつぶし。
         /// 元の SRC（CmdData.cls の PaintPictureCmd、GUI.bas の DrawPicture）では、白以外の色は透過色（背景色）になり、
         /// 部分表示は背景色で塗りつぶしてから透過色を抜く（7474/SRC#1467）。

@@ -1,7 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using SRCCore.Extensions;
-using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -29,7 +27,15 @@ namespace SRCCore.CmdDatas.Commands
                 case 2:
                     {
                         var oname = GetArgAsString(2);
-                        Event.HotPointList.RemoveItem(x => x.Name == oname);
+                        // 元の SRC と同じく、同じ名前のホットポイントが複数あるときは最初の 1 つだけを消す
+                        for (var i = 0; i < Event.HotPointList.Count; i++)
+                        {
+                            if (Event.HotPointList[i].Name == oname)
+                            {
+                                Event.HotPointList.RemoveAt(i);
+                                break;
+                            }
+                        }
                         break;
                     }
 

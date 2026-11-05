@@ -375,11 +375,16 @@ namespace SRCCore.Events
             foreach (var eventDataLine in EventData)
             {
                 // コマンドの構文解析
-                var command = parser.Parse(SRC, eventDataLine);
+                var command = parser.Parse(SRC, eventDataLine, out var parsed);
                 EventCmd.Add(command);
 
                 // システムデータなら無視しておく
                 if (eventDataLine.IsSystemData) { continue; }
+
+                if (!parsed)
+                {
+                    error_found = true;
+                }
 
                 // リスト長がマイナスのときは括弧の対応が取れていない
                 if (command.ArgNum <= -1)

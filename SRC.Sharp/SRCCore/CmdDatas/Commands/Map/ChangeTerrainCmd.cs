@@ -63,8 +63,7 @@ namespace SRCCore.CmdDatas.Commands
             if (string.IsNullOrEmpty(fname))
             {
                 throw new EventErrorException(this, "マップビットマップ「"
-                    + cell.UnderTerrain?.Bitmap + cell.BitmapNo +
-                    "」が見つかりません");
+                    + td.Bitmap + cell.BitmapNo + ".bmp" + "」が見つかりません");
             }
 
             // 地形を変えたマスだけを背景に描き直す。背景のほかのマスに描いたもの（IsMapDirty）は残す（元の SRC と同じ）

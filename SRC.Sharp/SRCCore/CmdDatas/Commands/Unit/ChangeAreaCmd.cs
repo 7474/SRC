@@ -36,7 +36,8 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             {
-                switch (Map.Terrain(u.x, u.y).Class)
+                // マップの外（マップが無いときなど）は地形で制限しない
+                switch (Map.Terrain(u.x, u.y)?.Class ?? "")
                 {
                     case "陸":
                         {

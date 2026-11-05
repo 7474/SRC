@@ -1,5 +1,6 @@
 using SRCCore;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -88,13 +89,31 @@ namespace SRCSharpForm
                 {
                     using (var g = Graphics.FromImage(buffer))
                     {
-                        // GraphicsのインタフェースとSRCのインタフェースで回転方向が逆
-                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        // VB の Circle メソッドと同じく、開始から終了へ反時計回りに描く。負の角度は中心へ線を引き、
+                        // 両方が負なら扇形を塗る（IGUIScrean.ArcCmd）。Graphics の角度は時計回りなので符号を反転する
+                        var arc = new ScreanArc(start_angle, end_angle);
+                        var rect = GetCircleRect(x1, y1, rad);
+                        if (arc.IsPie)
                         {
-                            g.FillPie(brush, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
-
+                            if (option.FillStyle != FillStyle.VbFSTransparent)
+                            {
+                                g.FillPie(brush, rect, -arc.StartAngle, -arc.SweepAngle);
+                            }
+                            g.DrawPie(pen, rect, -arc.StartAngle, -arc.SweepAngle);
                         }
-                        g.DrawArc(pen, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
+                        else
+                        {
+                            g.DrawArc(pen, rect, -arc.StartAngle, -arc.SweepAngle);
+                            if (arc.LineFromStart)
+                            {
+                                g.DrawLine(pen, x1, y1, x1 + rad * (float)Math.Cos(arc.StartAngle * Math.PI / 180d), y1 - rad * (float)Math.Sin(arc.StartAngle * Math.PI / 180d));
+                            }
+                            if (arc.LineToEnd)
+                            {
+                                var end = arc.StartAngle + arc.SweepAngle;
+                                g.DrawLine(pen, x1, y1, x1 + rad * (float)Math.Cos(end * Math.PI / 180d), y1 - rad * (float)Math.Sin(end * Math.PI / 180d));
+                            }
+                        }
                     }
                 }
             }
