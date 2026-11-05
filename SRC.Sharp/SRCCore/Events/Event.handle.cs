@@ -158,7 +158,8 @@ namespace SRCCore.Events
                     {
                         EventQue.Add(string.Join(" ", "脱出", Args[1], "E"));
                     }
-                    else if (Conversions.ToInteger(Args[3]) == 1)
+                    // 四隅では左右と上下の両方の脱出イベントが発生する（元の SRC と同じ）
+                    if (Conversions.ToInteger(Args[3]) == 1)
                     {
                         EventQue.Add(string.Join(" ", "脱出", Args[1], "N"));
                     }
