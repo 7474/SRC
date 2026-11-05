@@ -193,7 +193,7 @@ namespace SRCCore
                     MapY = GUI.MapY,
                     // BGMファイルパスをシナリオパスからの相対パスで保存
                     BGMFileName = !string.IsNullOrEmpty(Sound.BGMFileName)
-                        ? FileSystem.ToRelativePath(ScenarioPath, Sound.BGMFileName)
+                        ? ToSavedPath(Sound.BGMFileName)
                         : "",
                     RepeatMode = Sound.RepeatMode,
                     KeepBGM = Sound.KeepBGM,

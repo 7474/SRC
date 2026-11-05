@@ -312,18 +312,43 @@ namespace SRCCore
                 }
                 else
                 {
-                    // TODO 一度検索したものを再検索している感じ — 絶対パスを返す API を作れば最適化できる
-                    fnames.Add(FileSystem.PathCombine("Midi", fnameMp3));
-                    fnames.Add(FileSystem.PathCombine("Midi", fname));
+                    // サブフォルダ指定あり？（「作品名_曲名.mid」なら Midi\作品名\ も探す）
+                    // 元の SRC は前の候補のサブフォルダを次の候補に持ち越すが、候補ごとに決め直す
+                    var subFolder = Strings.InStr(buf, "_") > 0 ? Strings.Left(buf, Strings.InStr(buf, "_") - 1) : "";
+
+                    // 元の SRC と同じく、シナリオ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に、
+                    // フォルダごとに サブフォルダの MP3 → 直下の MP3 → サブフォルダの MIDI → 直下の MIDI の順に探す。
+                    // SRC のフォルダには素材パック（Packs の zip）や SRC#Web で追加した素材も重なっている
+                    var midiDirs = new string[]
+                    {
+                        SRC.ScenarioPath,
+                        SRC.ExtDataPath,
+                        SRC.ExtDataPath2,
+                        SRC.AppPath,
+                    }
+                        .Where(x => !string.IsNullOrEmpty(x))
+                        .Distinct()
+                        // フォルダが実在するかは見ない（素材パックの zip の中の Midi も探すため）
+                        .Select(x => FileSystem.PathCombine(x, "Midi"))
+                        // SRC# 独自: 読み込み対象に加えたフォルダ（相対パス）の Midi フォルダも探す
+                        .Concat(new[] { "Midi" });
+                    foreach (var midiDir in midiDirs)
+                    {
+                        if (subFolder != "")
+                        {
+                            fnames.Add(FileSystem.PathCombine(midiDir, subFolder, fnameMp3));
+                        }
+                        fnames.Add(FileSystem.PathCombine(midiDir, fnameMp3));
+                        if (subFolder != "")
+                        {
+                            fnames.Add(FileSystem.PathCombine(midiDir, subFolder, fname));
+                        }
+                        fnames.Add(FileSystem.PathCombine(midiDir, fname));
+                    }
+                    // SRC# 独自: Midi フォルダに無ければ、読み込み対象に加えたフォルダの直下も探す
                     fnames.Add(fnameMp3);
                     fnames.Add(fname);
                 }
-                //// XXX これ何に作用してるの？
-                //// サブフォルダ指定あり？
-                //if (Strings.InStr(buf, "_") > 0)
-                //{
-                //    sub_folder = Strings.Left(buf, Strings.InStr(buf, "_") - 1) + @"\";
-                //}
                 var existFileName = fnames.FirstOrDefault(x => FileSystem.FileExists(x));
 
                 if (!string.IsNullOrEmpty(existFileName))

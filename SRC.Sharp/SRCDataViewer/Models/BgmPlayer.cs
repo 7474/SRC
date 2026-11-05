@@ -65,14 +65,17 @@ namespace SRCDataViewer.Models
 
         /// <summary>
         /// BGM の指定（例: "battle.mid"、"(a.mid) b.mid"）から鳴らすファイルを探す（SRCCore の Sound.SearchMidiFile と同じ順）。
-        /// 左の候補から順に、Midi フォルダ → SRC のフォルダの順に、同じ名前の .mp3 を .mid より先に探す。見つからなければ null
+        /// 左の候補から順に、Midi フォルダ → SRC のフォルダの順に、同じ名前の .mp3 を .mid より先に探す。
+        /// 「作品名_曲名.mid」は Midi フォルダの「作品名」のサブフォルダを先に探す。見つからなければ null
         /// </summary>
         public ArchiveFile Resolve(string bgm)
         {
             foreach (var name in Candidates(bgm))
             {
                 var mp3 = name.Substring(0, name.Length - 4) + ".mp3";
-                foreach (var path in new[] { "midi/" + mp3, "midi/" + name, mp3, name })
+                var sub = name.Contains('_') ? "midi/" + name.Substring(0, name.IndexOf('_')) + "/" : null;
+                var paths = new[] { sub == null ? null : sub + mp3, "midi/" + mp3, sub == null ? null : sub + name, "midi/" + name, mp3, name };
+                foreach (var path in paths.Where(x => x != null))
                 {
                     if (files.TryGetValue(path.ToLowerInvariant(), out var file) && (file.Kind != ArchiveFileKind.Midi || soundFontUri != null))
                     {
