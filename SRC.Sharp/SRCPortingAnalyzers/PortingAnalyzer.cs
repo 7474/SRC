@@ -17,7 +17,7 @@ namespace SRCPortingAnalyzers
             "実数を整数へ (int)・(long) で変換しない",
             "{0} から {1} への変換は切り捨てになる。VB の動作に合わせて VBMath.CLng（代入・CInt・CLng の偶数丸め）・VBMath.Int（Int 関数）・VBMath.Fix（Fix 関数）のどれかを使う",
             "Porting",
-            DiagnosticSeverity.Warning,
+            DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             helpLinkUri: "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCPortingAnalyzers/README.md");
 
@@ -26,7 +26,7 @@ namespace SRCPortingAnalyzers
             "&& と || を括弧なしで混ぜない",
             "&& と || を括弧なしで混ぜている。VB の条件と同じ組み合わせかを確かめて、括弧で書く",
             "Porting",
-            DiagnosticSeverity.Warning,
+            DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             helpLinkUri: "https://github.com/7474/SRC/blob/master/SRC.Sharp/SRCPortingAnalyzers/README.md");
 
