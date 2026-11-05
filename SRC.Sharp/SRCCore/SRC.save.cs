@@ -193,7 +193,7 @@ namespace SRCCore
                     MapY = GUI.MapY,
                     // BGMファイルパスをシナリオパスからの相対パスで保存
                     BGMFileName = !string.IsNullOrEmpty(Sound.BGMFileName)
-                        ? FileSystem.ToRelativePath(ScenarioPath, Sound.BGMFileName)
+                        ? ToSavedPath(Sound.BGMFileName)
                         : "",
                     RepeatMode = Sound.RepeatMode,
                     KeepBGM = Sound.KeepBGM,
@@ -402,9 +402,11 @@ namespace SRCCore
                 //    PList.UpdateSupportMod();
 
                 // 背景書き換え
-                // XXX 元はマップがロードに伴って変化した時のみ処理していたが一律処理する
-                //if (Map.IsMapDirty)
+                // 元の SRC はマップがロードに伴って変化したとき（または背景に書き込みがあったとき）だけ背景を書き直す。
+                // SRC# はマップの復元（Map.Restore の SetMapSize）で背景のバッファを作り直すので、背景は一律に書き直す。
+                // 再開イベントは元の SRC と同じく、背景を書き直す必要があったとき（Map.IsMapDirty）だけ発生させる（#1466）
                 {
+                    var is_map_dirty = Map.IsMapDirty;
                     int map_x, map_y;
                     map_x = GUI.MapX;
                     map_y = GUI.MapY;
@@ -412,8 +414,11 @@ namespace SRCCore
                     GUI.MapX = map_x;
                     GUI.MapY = map_y;
 
-                    // 再開イベントによるマップ画像の書き換え処理を行う
-                    Event.HandleEvent("再開");
+                    if (is_map_dirty)
+                    {
+                        // 再開イベントによるマップ画像の書き換え処理を行う
+                        Event.HandleEvent("再開");
+                    }
                     Map.IsMapDirty = false;
                 }
 

@@ -453,6 +453,78 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void SwapCmd_LocalVariables_KeepNames()
+        {
+            // VB の ExecSwapCmd は型・文字列値・数値だけを写し、変数の名前は写さない（7474/SRC#1459）
+            var src = CreateSrc();
+            src.Expression.SetVariableAsDouble("x", 1d);
+            src.Expression.SetVariableAsDouble("y", 2d);
+
+            CreateCmd(src, "Swap x y").Exec();
+
+            Assert.AreEqual("x", src.Event.LocalVariableList["x"].Name);
+            Assert.AreEqual("y", src.Event.LocalVariableList["y"].Name);
+            Assert.AreEqual(2d, src.Expression.GetValueAsDouble("x"));
+            Assert.AreEqual(1d, src.Expression.GetValueAsDouble("y"));
+        }
+
+        [TestMethod]
+        public void SwapCmd_GlobalVariables_KeepNames()
+        {
+            var src = CreateSrc();
+            src.Expression.DefineGlobalVariable("gx");
+            src.Expression.DefineGlobalVariable("gy");
+            src.Expression.SetVariableAsString("gx", "a");
+            src.Expression.SetVariableAsString("gy", "b");
+
+            CreateCmd(src, "Swap gx gy").Exec();
+
+            Assert.AreEqual("gx", src.Event.GlobalVariableList["gx"].Name);
+            Assert.AreEqual("gy", src.Event.GlobalVariableList["gy"].Name);
+            Assert.AreEqual("b", src.Expression.GetValueAsString("gx"));
+            Assert.AreEqual("a", src.Expression.GetValueAsString("gy"));
+        }
+
+        [TestMethod]
+        public void SwapCmd_SubLocalVariables_SwapsValuesAndKeepsNames()
+        {
+            // サブルーチンローカル変数でも名前は入れ替わらず、値だけが入れ替わる（7474/SRC#1459）
+            var src = CreateSrc();
+            src.Event.CallDepth = 1;
+            src.Event.VarIndex = 0;
+            src.Event.VarIndexStack[0] = 0;
+            src.Event.NewSubLocalVar().SetValue("x", Expressions.ValueType.NumericType, "", 1d);
+            src.Event.NewSubLocalVar().SetValue("y", Expressions.ValueType.NumericType, "", 2d);
+
+            CreateCmd(src, "Swap x y").Exec();
+
+            Assert.AreEqual("x", src.Event.VarStack[1].Name);
+            Assert.AreEqual("y", src.Event.VarStack[2].Name);
+            Assert.AreEqual(2d, src.Expression.GetValueAsDouble("x"));
+            Assert.AreEqual(1d, src.Expression.GetValueAsDouble("y"));
+
+            // もう一度入れ替えると元に戻る
+            CreateCmd(src, "Swap x y", 1).Exec();
+            Assert.AreEqual(1d, src.Expression.GetValueAsDouble("x"));
+            Assert.AreEqual(2d, src.Expression.GetValueAsDouble("y"));
+        }
+
+        [TestMethod]
+        public void SetCmd_VariableName_IgnoresKanaType()
+        {
+            // 元の SRC（日本語版の Windows）と同じく、変数名のひらがなとカタカナを区別しない（7474/SRC#1477）
+            var src = CreateSrc();
+            CreateCmd(src, "Set さいず 3").Exec();
+            Assert.AreEqual(3d, src.Expression.GetValueAsDouble("サイズ"));
+            Assert.IsTrue(src.Expression.IsVariableDefined("サイズ"));
+
+            src.Expression.DefineGlobalVariable("ぐろーばる");
+            CreateCmd(src, "Set グローバル 5", 1).Exec();
+            Assert.AreEqual(5d, src.Expression.GetValueAsDouble("ぐろーばる"));
+            Assert.AreEqual(1, src.Event.GlobalVariableList.Count);
+        }
+
+        [TestMethod]
         public void SwapCmd_TooManyArgs_ReturnsError()
         {
             var src = CreateSrc();

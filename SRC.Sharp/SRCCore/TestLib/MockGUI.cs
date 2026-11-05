@@ -568,8 +568,11 @@ namespace SRCCore.TestLib
             throw new GUINotImplementedException(nameof(SaveScreen));
         }
 
-        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        /// <summary>SelectLoadFile の引数（title, initialDirectory, initialFile, fileType, fileExtension）を受け取り、選んだファイルを返す</summary>
+        public Func<string, string, string, string, string, string> SelectLoadFileHandler { get; set; }
+        public string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
+            if (SelectLoadFileHandler != null) return SelectLoadFileHandler(title, initialDirectory, initialFile, fileType, fileExtension);
             return "";
         }
 
@@ -625,6 +628,13 @@ namespace SRCCore.TestLib
         {
             if (SetupBackgroundHandler != null) { SetupBackgroundHandler(draw_mode, draw_option, filter_color, filter_trans_par); return; }
             throw new GUINotImplementedException(nameof(SetupBackground));
+        }
+
+        public Action<int, int> RedrawMapCellHandler { get; set; }
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (RedrawMapCellHandler != null) { RedrawMapCellHandler(X, Y); return; }
+            throw new GUINotImplementedException(nameof(RedrawMapCell));
         }
 
         public Action<IList<UiCommand>> ShowMapCommandMenuHandler { get; set; }

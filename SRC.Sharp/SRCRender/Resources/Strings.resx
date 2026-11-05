@@ -92,4 +92,25 @@
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>MP3音量</value>
   </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>メッセージスピード</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>手動送り</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>低速</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>普通</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>高速</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>超高速</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>神の領域</value>
+  </data>
 </root>

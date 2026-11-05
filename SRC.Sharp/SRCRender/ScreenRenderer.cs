@@ -193,29 +193,8 @@ namespace SRCRender
                 {
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
-                        var cell = map.MapData[x, y];
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
-                        if (image != null)
-                        {
-                            canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
-                        }
-                        else
-                        {
-                            // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
-                            paint.Style = SKPaintStyle.Fill;
-                            paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
-                            canvas.DrawRect(rect, paint);
-                            paint.Style = SKPaintStyle.Stroke;
-                            paint.Color = new SKColor(0, 0, 0, 0x40);
-                            canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
-                            paint.Style = SKPaintStyle.Fill;
-                        }
-                        var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
-                        if (layer != null)
-                        {
-                            canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
-                        }
+                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found);
                     }
                 }
                 if (src.ShowSquareLine)
@@ -233,6 +212,67 @@ namespace SRCRender
                 }
             }
             return bitmap;
+        }
+
+        /// <summary>
+        /// マップの (x, y) のマス 1 つ分の背景（地形とレイヤー）を描画した画像を作る。
+        /// <see cref="BuildBackground"/> のそのマスと同じ絵になる（ChangeTerrain・ChangeLayer でそのマスだけを描き直すのに使う）。
+        /// </summary>
+        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y)
+        {
+            var map = src.Map;
+            var bitmap = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx);
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint())
+            {
+                canvas.Clear(BackColor);
+                var rect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null);
+                if (src.ShowSquareLine)
+                {
+                    // マップ全体のマス目のうち、このマスの左端・上端の線
+                    paint.Color = new SKColor(0, 0, 0, 0x60);
+                    paint.Style = SKPaintStyle.Stroke;
+                    if (x > 1)
+                    {
+                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
+                    }
+                    if (y > 1)
+                    {
+                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
+                    }
+                }
+            }
+            return bitmap;
+        }
+
+        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect, IDictionary<(string Name, int No), string> found)
+        {
+            var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
+            if (image != null)
+            {
+                canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
+            }
+            else
+            {
+                // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                paint.Style = SKPaintStyle.Fill;
+                paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
+                canvas.DrawRect(rect, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = new SKColor(0, 0, 0, 0x40);
+                canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
+                paint.Style = SKPaintStyle.Fill;
+            }
+            // レイヤーの画像は「通常」「画像限定」のマスだけ描く（元の SRC の SetupBackground）
+            if (cell.IsLayerBitmapVisible)
+            {
+                var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
+                if (layer != null)
+                {
+                    canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
+                }
+            }
         }
 
         private static string SafeSearch(Func<string> search)
@@ -469,10 +509,13 @@ namespace SRCRender
                         DrawLabel(canvas, cw.labMP3Volume, paint);
                         DrawTextBox(canvas, cw.txtMP3Volume, paint);
                         DrawScrollBar(canvas, cw.hscMP3Volume, paint);
+                        DrawLabel(canvas, cw.labMessageSpeed, paint);
                         foreach (var button in cw.Buttons)
                         {
                             DrawButton(canvas, button, paint);
                         }
+                        // 開いた選択肢はほかの部品の上に重ねる
+                        DrawComboBox(canvas, cw.cboMessageSpeed, paint);
                         break;
                     case Compat.MultiSelectListWindow sw:
                         DrawTextBox(canvas, sw.lblCaption, paint);
@@ -555,6 +598,70 @@ namespace SRCRender
                 paint.IsAntialias = true;
                 canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 paint.IsAntialias = false;
+            }
+        }
+
+        /// <summary>ComboBox（白地の欄と ▼ のボタン。開いていれば下に選択肢）</summary>
+        private static void DrawComboBox(SKCanvas canvas, Compat.ComboBox combo, SKPaint paint)
+        {
+            if (!combo.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(combo.Left, combo.Top, combo.Width, combo.Height);
+            paint.Color = SKColors.White;
+            canvas.DrawRect(rect, paint);
+            DrawSunkenEdge(canvas, rect, paint);
+            var buttonWidth = 16;
+            var button = SKRect.Create(rect.Right - 2 - buttonWidth, rect.Top + 2, buttonWidth, rect.Height - 4);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(button, paint);
+            DrawBevel(canvas, button, raised: true, paint);
+            paint.Color = SKColors.Black;
+            using (var builder = new SKPathBuilder())
+            {
+                builder.MoveTo(button.MidX - 4, button.MidY - 2);
+                builder.LineTo(button.MidX + 4, button.MidY - 2);
+                builder.LineTo(button.MidX, button.MidY + 2);
+                builder.Close();
+                using var path = builder.Detach();
+                canvas.DrawPath(path, paint);
+            }
+            using (var font = combo.Font.ToSKFont())
+            {
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                paint.IsAntialias = true;
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, button.Left - rect.Left - 2, rect.Height - 4));
+                canvas.DrawText(combo.Text, rect.Left + 4, rect.Top + (rect.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                canvas.Restore();
+                paint.IsAntialias = false;
+                if (!combo.DroppedDown)
+                {
+                    return;
+                }
+                // 開いた選択肢（選んでいる項目を反転する）
+                var drop = combo.DropDownRect;
+                var list = SKRect.Create(drop.Left, drop.Top, drop.Width, drop.Height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(list, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(list.Left + 0.5f, list.Top + 0.5f, list.Width - 1, list.Height - 1, paint);
+                paint.Style = SKPaintStyle.Fill;
+                for (var i = 0; i < combo.Items.Count; i++)
+                {
+                    var item = SKRect.Create(list.Left + 1, list.Top + 1 + i * Compat.ComboBox.ItemHeight, list.Width - 2, Compat.ComboBox.ItemHeight);
+                    if (i == combo.SelectedIndex)
+                    {
+                        paint.Color = WindowsHighlight;
+                        canvas.DrawRect(item, paint);
+                    }
+                    paint.Color = i == combo.SelectedIndex ? SKColors.White : SKColors.Black;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(combo.Items[i], item.Left + 3, item.Top + (item.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
             }
         }
 

@@ -150,6 +150,64 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             Assert.AreEqual(1, u.UsedAction);
         }
 
+        [TestMethod]
+        public void Wait_RunsContactEventsInLeftRightUpDownOrder()
+        {
+            // 元の SRC（Command.bas の WaitCommand）と同じく、左・右・上・下の順に接触イベントが発生する（7474/SRC#1478）
+            using var f = new CommandUnitFormFixture(onMap: true);
+            f.LoadEvents(
+                "接触 パイロット 左:",
+                "Set 記録 (記録 & \"左\")",
+                "Exit",
+                "接触 パイロット 右:",
+                "Set 記録 (記録 & \"右\")",
+                "Exit",
+                "接触 パイロット 上:",
+                "Set 記録 (記録 & \"上\")",
+                "Exit",
+                "接触 パイロット 下:",
+                "Set 記録 (記録 & \"下\")",
+                "Exit");
+            f.AddUnitData("機体");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            f.CreateUnit("機体", "下", x: 3, y: 4);
+            f.CreateUnit("機体", "上", x: 3, y: 2);
+            f.CreateUnit("機体", "右", x: 4, y: 3);
+            f.CreateUnit("機体", "左", x: 2, y: 3);
+            f.Src.Commands.SelectedUnit = u;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.WaitCmdID, "待機");
+
+            Assert.AreEqual("左右上下", f.Record);
+        }
+
+        [TestMethod]
+        public void Wait_RefetchesAdjacentUnitForEachContactEvent()
+        {
+            // 元の SRC と同じく、接触イベントのたびに隣のユニットを取り直す。
+            // 左のユニットとの接触イベントで右のユニットがいなくなれば、右のユニットとの接触イベントは発生しない
+            using var f = new CommandUnitFormFixture(onMap: true);
+            f.LoadEvents(
+                "接触 パイロット 左:",
+                "Set 記録 (記録 & \"左\")",
+                "Escape 右",
+                "Exit",
+                "接触 パイロット 右:",
+                "Set 記録 (記録 & \"右\")",
+                "Exit");
+            f.AddUnitData("機体");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            f.CreateUnit("機体", "右", x: 4, y: 3);
+            f.CreateUnit("機体", "左", x: 2, y: 3);
+            f.Src.Commands.SelectedUnit = u;
+            f.Src.Commands.CommandState = "コマンド選択";
+
+            Run(f, Command.WaitCmdID, "待機");
+
+            Assert.AreEqual("左", f.Record);
+        }
+
         // ──────────────────────────────────────────────
         // ユーザー定義のユニットコマンド
         // ──────────────────────────────────────────────

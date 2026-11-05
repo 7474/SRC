@@ -41,6 +41,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     throw new EventErrorException(this, "「" + tname + "」という地形は存在しません");
                 }
+                cell.TerrainType = td.ID;
                 cell.UnderTerrain = td;
                 cell.BitmapNo = GetArgAsLong(5);
             }
@@ -52,6 +53,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     throw new EventErrorException(this, "「" + tname + "」という地形は存在しません");
                 }
+                cell.TerrainType = td.ID;
                 cell.UnderTerrain = td;
                 cell.BitmapNo = -GetArgAsLong(5);
             }
@@ -65,8 +67,11 @@ namespace SRCCore.CmdDatas.Commands
                     "」が見つかりません");
             }
 
-            // XXX 地形変更するときは一気に行うだろうから全書き換えは不利かもしれない
-            GUI.SetupBackground(Map.MapDrawMode, "", Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+            // 地形を変えたマスだけを背景に描き直す。背景のほかのマスに描いたもの（IsMapDirty）は残す（元の SRC と同じ）
+            GUI.RedrawMapCell(tx, ty);
+
+            // 変更された地形にいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
+            Map.StandByUnitAgain(tx, ty);
             return EventData.NextID;
         }
     }

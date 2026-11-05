@@ -160,6 +160,9 @@ namespace SRCCore
         void ClearScrean();
         // マップ画面背景の設定
         void SetupBackground(string draw_mode = "", string draw_option = "", Color filter_color = default, double filter_trans_par = 0d);
+        // マップ画面背景の (X, Y) のマスだけを今の描画モードで描き直し、画面のそのマスにも写す（画面の更新はしない）。
+        // 背景のほかのマスと IsMapDirty はそのまま（元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd）
+        void RedrawMapCell(int X, int Y);
         // 画面の書き換え (ユニット表示からやり直し)
         void RedrawScreen(bool late_refresh = false);
         // 画面をマスクがけして再表示
@@ -340,10 +343,11 @@ namespace SRCCore
         /// </summary>
         /// <param name="title">ダイアログタイトル</param>
         /// <param name="initialDirectory">初期ディレクトリ</param>
+        /// <param name="initialFile">初めに選んでおくファイル名（LoadFileDialog 関数の第 3 引数）。空なら選ばない</param>
         /// <param name="fileType">フィルタ表示名</param>
         /// <param name="fileExtension">ファイル拡張子</param>
         /// <returns>選択されたファイルの絶対パス。キャンセル時は空文字列。</returns>
-        string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension);
+        string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension);
 
         /// <summary>
         /// ファイルを保存するダイアログを表示します。

@@ -66,6 +66,7 @@ namespace SRCCore.Config
         public bool WeaponAnimation { get => GetBool(nameof(WeaponAnimation), Base.WeaponAnimation); set => SetBool(nameof(WeaponAnimation), value, () => Base.WeaponAnimation = value); }
         public bool ExtendedAnimation { get => GetBool(nameof(ExtendedAnimation), Base.ExtendedAnimation); set => SetBool(nameof(ExtendedAnimation), value, () => Base.ExtendedAnimation = value); }
         public bool MoveAnimation { get => GetBool(nameof(MoveAnimation), Base.MoveAnimation); set => SetBool(nameof(MoveAnimation), value, () => Base.MoveAnimation = value); }
+        public int MessageWait { get => GetInt(nameof(MessageWait), Base.MessageWait); set => SetProperty(nameof(MessageWait), value.ToString(), () => Base.MessageWait = value); }
         public int ImageBufferSize { get => GetInt(nameof(ImageBufferSize), Base.ImageBufferSize); set => SetProperty(nameof(ImageBufferSize), value.ToString(), () => Base.ImageBufferSize = value); }
         public int MaxImageBufferByteSize { get => GetInt(nameof(MaxImageBufferByteSize), Base.MaxImageBufferByteSize); set => SetProperty(nameof(MaxImageBufferByteSize), value.ToString(), () => Base.MaxImageBufferByteSize = value); }
         public bool KeepStretchedImage { get => GetBool(nameof(KeepStretchedImage), Base.KeepStretchedImage); set => SetBool(nameof(KeepStretchedImage), value, () => Base.KeepStretchedImage = value); }

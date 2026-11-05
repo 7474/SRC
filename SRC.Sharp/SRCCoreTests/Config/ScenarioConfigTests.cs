@@ -97,6 +97,44 @@ namespace SRCCore.Config.Tests
         }
 
         [TestMethod]
+        public void MessageWait_DefaultIsNormalSpeed()
+        {
+            // 元の SRC の既定値（普通）
+            Assert.AreEqual(700, new LocalFileConfig().MessageWait);
+            Assert.AreEqual(2, MessageSpeeds.IndexOf(700));
+            Assert.AreEqual("普通", MessageSpeeds.Items[2].Name);
+            // 選択肢に無い値は選ばない
+            Assert.AreEqual(-1, MessageSpeeds.IndexOf(500));
+        }
+
+        [TestMethod]
+        public void SrcIni_MessageWait_OverridesBaseConfigAndWritesBack()
+        {
+            WriteSjisIni("[Option]\r\nMessageWait=20000000\r\n");
+            var baseConfig = NewBase();
+            var config = Compose(baseConfig);
+
+            // 元の SRC と同じく、上限（手動送り）を超えた値は上限にする
+            Assert.AreEqual(MessageSpeeds.MaxWait, config.MessageWait);
+
+            // シナリオの Src.ini にある項目は、設定変更で変えたら Src.ini に書く
+            config.MessageWait = 200;
+            config.Save();
+            StringAssert.Contains(ReadSjisIni(), "MessageWait=200");
+            Assert.AreEqual(700, baseConfig.MessageWait);
+        }
+
+        [TestMethod]
+        public void MessageWait_WithoutScenarioItem_WritesBaseConfig()
+        {
+            var baseConfig = NewBase();
+            var config = new ComposedConfig(baseConfig, null);
+            Assert.AreEqual(700, config.MessageWait);
+            config.MessageWait = 1000;
+            Assert.AreEqual(1000, baseConfig.MessageWait);
+        }
+
+        [TestMethod]
         public void SrcsJson_OverridesSrcIni()
         {
             WriteSjisIni("[Option]\r\nBattleAnimation=Off\r\n[BGM]\r\nMap1=ini.mid\r\n");

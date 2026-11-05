@@ -571,60 +571,41 @@ namespace SRCRender
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM = "")
         {
             TopItem = -1;
-            var list = weapons.Items.Select(x => new ListBoxItem
-            {
-                Text = $"{GeneralLib.RightPaddedString(x.Weapon.Name, 28)}" +
-                    $" {GeneralLib.LeftPaddedString(x.Weapon.WeaponPower("") + "", 4)}" +
-                    $" {GeneralLib.LeftPaddedString(x.Weapon.WeaponPrecision() + "", 3)}" +
-                    $" {GeneralLib.LeftPaddedString(x.Weapon.WeaponCritical() + "", 3)}" +
-                    $" {GeneralLib.LeftPaddedString(x.Weapon.Bullet() + "", 3)}" +
-                    $" {GeneralLib.LeftPaddedString(x.Weapon.WeaponENConsumption() + "", 4)}" +
-                    $" {x.Weapon.WeaponData.Adaption}" +
-                    $" {x.Weapon.WeaponClass()}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            var ret = ListBox(new ListBoxArgs
-            {
-                Items = list,
-                HasFlag = true,
-                lb_caption = caption_msg,
-                lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
-                lb_mode = "",
-            });
-            return ret > 0 ? weapons.Items[ret - 1].Weapon : null;
+            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
+            return weapons.SelectWeapon(SRC, caption_msg, ListBox);
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             TopItem = -1;
-            var list = abilities.Items.Select(x => new ListBoxItem
+            // メニューにアビリティ名を表示しているときは一覧を出さずに選ぶ
+            var ability = abilities.AbilityWithoutListBox(SRC, lb_mode, is_item);
+            if (ability != null)
             {
-                Text = $"{x.Ability.Data.Name}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            if (list.Count == 1 && lb_mode != "一覧" && !is_item)
+                return ability;
+            }
+            // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
+            var list = abilities.ToListBoxItems();
+            if (list.Count == 0)
             {
-                return abilities.Items[0].Ability;
+                return null;
             }
             var ret = ListBox(new ListBoxArgs
             {
-                Items = list,
+                Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
-                lb_info = "名称",
+                lb_info = abilities.ListBoxInfo(SRC),
                 lb_mode = "",
             });
-            return ret > 0 ? abilities.Items[ret - 1].Ability : null;
+            return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 
         public int LIPS(ListBoxArgs args, int time_limit)
         {
             listCurrentTime = 0;
-            listTimeLimit = Math.Max(0, time_limit) * 1000;
+            // 元の SRC（frmListBox の Timer1 は Interval=100）と同じく、制限時間は 0.1 秒単位で数える
+            listTimeLimit = Math.Max(0, time_limit) * 100;
             frmListBox.picBar.Visible = listTimeLimit > 0;
             frmListBox.picBar.Image = null;
             try

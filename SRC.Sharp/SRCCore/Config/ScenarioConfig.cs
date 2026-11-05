@@ -51,6 +51,7 @@ namespace SRCCore.Config
             ["ImageBufferNum"] = nameof(ISystemConfig.ImageBufferSize),
             ["MaxImageBufferSize"] = nameof(ISystemConfig.MaxImageBufferByteSize),
             ["MP3Volume"] = nameof(LocalFileConfig.SoundVolume),
+            ["MessageWait"] = nameof(ISystemConfig.MessageWait),
         };
 
         // シナリオの設定では変えないもの（アプリの場所・素材の場所はシナリオから決めない）
@@ -359,6 +360,9 @@ namespace SRCCore.Config
                     return double.TryParse(value, out var mb) ? ((int)(Math.Max(1d, mb) * 1024 * 1024)).ToString() : value;
                 case nameof(LocalFileConfig.SoundVolume):
                     return int.TryParse(value, out var volume) ? Math.Max(0, Math.Min(100, volume)).ToString() : value;
+                case nameof(ISystemConfig.MessageWait):
+                    // 元の SRC は上限（手動送り）を超えたら上限にする
+                    return int.TryParse(value, out var wait) ? MessageSpeeds.Normalize(wait).ToString() : value;
                 default:
                     return ComposedConfig.TryParseBool(value, out var b) ? (b ? "true" : "false") : value;
             }
@@ -371,6 +375,7 @@ namespace SRCCore.Config
             {
                 case nameof(ISystemConfig.ImageBufferSize):
                 case nameof(LocalFileConfig.SoundVolume):
+                case nameof(ISystemConfig.MessageWait):
                     return value;
                 case nameof(ISystemConfig.MaxImageBufferByteSize):
                     return long.TryParse(value, out var bytes) ? (bytes / 1024 / 1024).ToString() : value;

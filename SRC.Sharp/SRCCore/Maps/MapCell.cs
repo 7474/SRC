@@ -44,6 +44,11 @@ namespace SRCCore.Maps
         [JsonProperty]
         public BoxTypes BoxType { get; set; }
 
+        /// <summary>
+        /// レイヤーの画像を表示するマスか（「通常」「画像限定」のレイヤー。元の SRC の SetupBackground）。
+        /// </summary>
+        public bool IsLayerBitmapVisible => BoxType == BoxTypes.Upper || BoxType == BoxTypes.UpperBmpOnly;
+
         public TerrainData Terrain
         {
             get

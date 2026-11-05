@@ -90,4 +90,25 @@
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>MP3 음량</value>
   </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>메시지 속도</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>수동 넘기기</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>느림</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>보통</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>빠름</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>매우 빠름</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>신의 영역</value>
+  </data>
 </root>

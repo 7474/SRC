@@ -5357,8 +5357,9 @@ namespace SRCCore.Units
                         && !IsWeaponClassifiedAs("合")
                         // ダメージを与えられる
                         // 特殊効果を与えられる
-                        && (Damage(targetUnit, true) > 0) || (!IsNormalWeapon() && CriticalProbability(targetUnit) > 0)
-                        ;
+                        // （GUI.bas の WeaponListBox の ElseIf の連なりと同じく、ここまでの条件を満たすときだけ）
+                        && (Damage(targetUnit, true) > 0
+                            || (!IsNormalWeapon() && CriticalProbability(targetUnit) > 0));
 
                 default:
                     throw new NotSupportedException();

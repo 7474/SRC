@@ -216,6 +216,8 @@ namespace SRCSharpAvalonia
                 {
                     Title = request.Title,
                     AllowMultiple = false,
+                    // 初めに選んでおくファイル（LoadFileDialog 関数の第 3 引数）
+                    SuggestedFileName = string.IsNullOrEmpty(request.InitialFile) ? null : request.InitialFile,
                     SuggestedStartLocation = await StartLocation(request),
                     FileTypeFilter = FileTypes(request),
                 });

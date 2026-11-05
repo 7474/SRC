@@ -2,6 +2,7 @@ using SRCCore;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SRCSharpForm
 {
@@ -29,8 +30,27 @@ namespace SRCSharpForm
 
         private Brush GetBrush(ScreanDrawOption option)
         {
-            // TODO FillStyle（透過・単色・ハッチなど）は現状 SolidBrush のみ実装。VB5互換の塗りつぶしスタイル対応が残タスク。
-            return new SolidBrush(option.FillColor);
+            // 元の SRC（VB の FillStyle）と同じく、横線・縦線・斜線などは 8 ピクセル間隔の模様で塗る。
+            // 線の間は塗らない（元の画像が見える）。透明（VbFSTransparent）は呼び出し側で塗らない
+            switch (option.FillStyle)
+            {
+                case FillStyle.VbHorizontalLine:
+                    return new HatchBrush(HatchStyle.Horizontal, option.FillColor, Color.Transparent);
+                case FillStyle.VbVerticalLine:
+                    return new HatchBrush(HatchStyle.Vertical, option.FillColor, Color.Transparent);
+                case FillStyle.VbUpwardDiagonal:
+                    // VB の vbUpwardDiagonal は Windows の HS_FDIAGONAL（左上から右下への線）
+                    return new HatchBrush(HatchStyle.ForwardDiagonal, option.FillColor, Color.Transparent);
+                case FillStyle.VbDownwardDiagonal:
+                    // VB の vbDownwardDiagonal は Windows の HS_BDIAGONAL（左下から右上への線）
+                    return new HatchBrush(HatchStyle.BackwardDiagonal, option.FillColor, Color.Transparent);
+                case FillStyle.VbCross:
+                    return new HatchBrush(HatchStyle.Cross, option.FillColor, Color.Transparent);
+                case FillStyle.VbDiagonalCross:
+                    return new HatchBrush(HatchStyle.DiagonalCross, option.FillColor, Color.Transparent);
+                default:
+                    return new SolidBrush(option.FillColor);
+            }
         }
 
         private Rectangle GetCircleRect(int centerX, int centerY, int rad, float oval_ratio = 1f)

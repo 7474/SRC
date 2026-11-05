@@ -35,6 +35,8 @@ namespace SRCSharpAvalonia
         public int LogRetainDays { get; set; } = SRCCore.Logging.LogOptions.DefaultRetainDays;
 
         // ゲーム（元の SRC の設定変更の画面と同じ項目と、自動反撃モード）
+        /// <summary>メッセージスピード（メッセージのウェイト。MessageSpeeds の値）</summary>
+        public int MessageWait { get; set; } = MessageSpeeds.DefaultWait;
         public bool BattleAnimation { get; set; } = true;
         public bool ExtendedAnimation { get; set; } = true;
         public bool WeaponAnimation { get; set; } = true;
@@ -75,6 +77,8 @@ namespace SRCSharpAvalonia
         internal static IReadOnlyList<string> AssetFolders => SRCCore.Filesystem.AssetPacks.AssetFolders;
 
         private readonly string appPath;
+        // 開いたときのメッセージスピード（選択肢に無い値のとき、そのまま返す）
+        private readonly int messageWait;
 
         /// <summary>表示言語の選択肢（"auto" と対応言語）</summary>
         internal static IReadOnlyList<(string Code, string Name)> Languages =>
@@ -199,6 +203,14 @@ namespace SRCSharpAvalonia
             };
 
             // ゲーム（元の SRC の設定変更の画面と同じ項目と、自動反撃モード・音量）
+            // メッセージスピード（選択肢に無い値なら何も選ばず、そのままなら値を変えない。元の SRC と同じ）
+            messageWait = settings.MessageWait;
+            MessageSpeed = new ComboBox
+            {
+                ItemsSource = SRCRender.GameConfigLabels.MessageSpeedNames.ToList(),
+                SelectedIndex = MessageSpeeds.IndexOf(settings.MessageWait),
+                MinWidth = 160,
+            };
             BattleAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.BattleAnimation, IsChecked = settings.BattleAnimation };
             ExtendedAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.ExtendedAnimation, IsChecked = settings.ExtendedAnimation, Margin = new Thickness(20, 0, 0, 0) };
             WeaponAnimation = new CheckBox { Content = SRCRender.GameConfigLabels.WeaponAnimation, IsChecked = settings.WeaponAnimation, Margin = new Thickness(20, 0, 0, 0) };
@@ -231,6 +243,12 @@ namespace SRCSharpAvalonia
                 Spacing = 6,
                 Children =
                 {
+                    new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children = { new TextBlock { Text = SRCRender.GameConfigLabels.MessageSpeed, VerticalAlignment = VerticalAlignment.Center }, MessageSpeed },
+                    },
                     BattleAnimation, ExtendedAnimation, WeaponAnimation, SpecialPowerAnimation, MoveAnimation,
                     AutoMoveCursor, ShowSquareLine, ShowTurn, KeepEnemyBGM, AutoDefense,
                     new StackPanel
@@ -359,6 +377,7 @@ namespace SRCSharpAvalonia
         internal CheckBox LogFile { get; }
         internal PathField LogPath { get; }
         internal NumericUpDown LogRetainDays { get; }
+        internal ComboBox MessageSpeed { get; }
         internal CheckBox BattleAnimation { get; }
         internal CheckBox ExtendedAnimation { get; }
         internal CheckBox WeaponAnimation { get; }
@@ -547,6 +566,9 @@ namespace SRCSharpAvalonia
                 LogFile = LogFile.IsChecked ?? true,
                 LogPath = LogPath.Value,
                 LogRetainDays = (int)(LogRetainDays.Value ?? SRCCore.Logging.LogOptions.DefaultRetainDays),
+                MessageWait = MessageSpeed.SelectedIndex >= 0 && MessageSpeed.SelectedIndex < MessageSpeeds.Items.Count
+                    ? MessageSpeeds.Items[MessageSpeed.SelectedIndex].Wait
+                    : messageWait,
                 BattleAnimation = BattleAnimation.IsChecked == true,
                 ExtendedAnimation = ExtendedAnimation.IsChecked == true,
                 WeaponAnimation = WeaponAnimation.IsChecked == true,

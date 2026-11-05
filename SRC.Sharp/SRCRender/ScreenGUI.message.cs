@@ -1130,8 +1130,17 @@ namespace SRCRender
                                 }
                             }
 
-                            if (IsRButtonPressed(true))
+                            if (IsLButtonPressed())
                             {
+                                // 元の SRC と同じく、左ボタンを押し続けるとウェイト付きでメッセージを送る
+                                if (start_time + wait_time < GeneralLib.timeGetTime())
+                                {
+                                    break;
+                                }
+                            }
+                            else if (IsRButtonPressed(true))
+                            {
+                                // 右ボタンでメッセージの早送り
                                 break;
                             }
                             // クリックを待つ。入力が渡されたらすぐ処理する

@@ -339,10 +339,13 @@ namespace SRCSharpForm
                             break;
                     }
 
+                    // 部分表示（指定外の部分を背景色で塗りつぶす）。元の SRC と同じく、塗りつぶしてから透過色を抜く
+                    var partial = top_part || bottom_part || left_part || right_part || tleft_part || tright_part || bleft_part || bright_part;
+                    var whiteTransparent = transparent && BGColor.ToArgb() == Color.White.ToArgb();
                     if (image == null)
                     {
                         // 各フォルダを検索する
-                        image = transparent && BGColor == Color.White
+                        image = whiteTransparent && !partial
                            ? imageBuffer.GetTransparent(fname)
                            : imageBuffer.Get(fname);
                     }
@@ -388,43 +391,40 @@ namespace SRCSharpForm
                     {
                         drawBuffer = new Bitmap(image);
                     }
-                    if (transparent && BGColor != Color.White)
-                    {
-                        drawBuffer.MakeTransparent(BGColor);
-                    }
                     //LoadedPicture:
 
                     using (var gBuf = Graphics.FromImage(drawBuffer))
+                    using (var bgBrush = new SolidBrush(BGColor))
                     {
                         // 画像の一部を塗りつぶして描画する場合
                         if (top_part)
                         {
                             // 上半分
-                            gBuf.FillRectangle(CurrentPaintBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                            gBuf.FillRectangle(bgBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
                         }
 
                         if (bottom_part)
                         {
                             // 下半分
-                            gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                            gBuf.FillRectangle(bgBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
                         }
 
                         if (left_part)
                         {
                             // 左半分
-                            gBuf.FillRectangle(CurrentPaintBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                            gBuf.FillRectangle(bgBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
                         }
 
                         if (right_part)
                         {
                             // 右半分
-                            gBuf.FillRectangle(CurrentPaintBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                            gBuf.FillRectangle(bgBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
                         }
 
                         if (tleft_part)
                         {
                             // 左上
-                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            gBuf.FillPolygon(bgBrush, new Point[]{
                             new Point(orig_width -1,0),
                             new Point(orig_width -1,orig_height - 1),
                             new Point(0,orig_height - 1),
@@ -434,7 +434,7 @@ namespace SRCSharpForm
                         if (tright_part)
                         {
                             // 右上
-                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            gBuf.FillPolygon(bgBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,orig_height - 1),
                             new Point(0,orig_height - 1),
@@ -444,7 +444,7 @@ namespace SRCSharpForm
                         if (bleft_part)
                         {
                             // 左下
-                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            gBuf.FillPolygon(bgBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,0),
                             new Point(orig_width -1,orig_height - 1),
@@ -454,13 +454,19 @@ namespace SRCSharpForm
                         if (bright_part)
                         {
                             // 右下
-                            gBuf.FillPolygon(CurrentPaintBrush, new Point[]{
+                            gBuf.FillPolygon(bgBrush, new Point[]{
                             new Point(0,0),
                             new Point(orig_width -1,0),
                             new Point(0,orig_height - 1),
                         });
                         }
                     }
+                    // 透過色（#rrggbb で指定した色。指定が無ければ白）を抜く
+                    if (transparent && !(whiteTransparent && !partial))
+                    {
+                        drawBuffer.MakeTransparent(BGColor);
+                    }
+
                     // 特殊効果
                     if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
                     {

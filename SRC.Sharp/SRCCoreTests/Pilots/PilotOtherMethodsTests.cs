@@ -247,5 +247,45 @@ namespace SRCCore.Pilots.Tests
             var pilot = CreatePilot(src);
             Assert.IsFalse(pilot.IsActiveAdditionalPilot());
         }
+
+        // ──────────────────────────────────────────────
+        // MaxPlana
+        // 元の SRC（Pilot.cls の MaxPlana）は「1.5×レベル」を足した値を Long へ代入し、
+        // 霊力成長があるときは \ の被除数を丸めるので、どちらも偶数への丸めになる（7474/SRC#1472）
+        // ──────────────────────────────────────────────
+
+        private Pilot CreatePlanaPilot(SRC src, string name, int level, double growth = 0d)
+        {
+            var pd = src.PDList.Add(name);
+            pd.SP = 10;
+            pd.AddSkill("霊力", 10d, "", 1);
+            if (growth > 0d)
+            {
+                pd.AddSkill("霊力成長", growth, "", 1);
+            }
+            return src.PList.Add(name, level, "味方");
+        }
+
+        [TestMethod]
+        [DataRow(1, 12)] // 10 + 1.5 → 11.5 → 12
+        [DataRow(3, 14)] // 10 + 4.5 → 14.5 → 14
+        [DataRow(5, 18)] // 10 + 7.5 → 17.5 → 18
+        [DataRow(9, 24)] // 10 + 13.5 → 23.5 → 24
+        [DataRow(10, 25)]
+        public void MaxPlana_RoundsLevelBonusToEven(int level, int expected)
+        {
+            var src = CreateSrc();
+            var pilot = CreatePlanaPilot(src, "霊力パイロット", level);
+            Assert.AreEqual(expected, pilot.MaxPlana());
+        }
+
+        [TestMethod]
+        public void MaxPlana_WithGrowth_RoundsDividendToEvenBeforeIntDiv()
+        {
+            // 霊力成長Lv3・レベル1: 1.5 × 1 × 13 = 19.5 → 20 にしてから \ 10 → 2
+            var src = CreateSrc();
+            var pilot = CreatePlanaPilot(src, "霊力成長パイロット", 1, 3d);
+            Assert.AreEqual(12, pilot.MaxPlana());
+        }
     }
 }

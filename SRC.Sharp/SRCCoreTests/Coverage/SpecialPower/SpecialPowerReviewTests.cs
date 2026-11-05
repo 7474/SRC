@@ -111,6 +111,34 @@ namespace SRCCore.Coverage.Tests.SpecialPower
             Assert.AreEqual(15, p.SpecialPowerCost("必中"), "データに含まれないものは減らない");
         }
 
+        [TestMethod]
+        public void SpecialPowerCost_FractionalReductionLevel_RoundsDividendToEvenLikeVB()
+        {
+            // 元の SRC は (10 - Lv) * 消費 \ 10。\ は割る前に被除数を偶数丸めする（7.9 * 5 = 39.5 → 40 → 4）
+            var f = new SpecialPowerTestFixture();
+            f.DefineSP("熱血", "自分", "攻撃", "ダメージ増加Lv1", cost: 5);
+            var pd = f.DefinePilot("パイロット");
+            pd.AddSpecialPower("熱血", 1, 0);
+            var u = f.AddUnit("機体", "パイロット", "味方", 1, 1, level: 10);
+            var p = u.MainPilot();
+
+            u.AddCondition("ＳＰ消費減少付加", -1, 2.1, "熱い心 熱血");
+
+            Assert.AreEqual(4, p.SpecialPowerCost("熱血"));
+        }
+
+        [TestMethod]
+        public void MaxSP_FractionalSPUP_RoundsToEvenLikeVB()
+        {
+            // 元の SRC は Long への代入で偶数丸め（70 + 1.5 = 71.5 → 72）
+            var f = new SpecialPowerTestFixture();
+            var pd = f.DefinePilot("パイロット", sp: 50);
+            pd.AddSkill("ＳＰＵＰ", 1.5, "", 1);
+            var u = f.AddUnit("機体", "パイロット", "味方", 1, 1, level: 10);
+
+            Assert.AreEqual(72, u.MainPilot().MaxSP);
+        }
+
         // ──────────────────────────────────────────────
         // Load: 適用条件
         // ──────────────────────────────────────────────

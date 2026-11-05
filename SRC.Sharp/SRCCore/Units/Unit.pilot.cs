@@ -368,6 +368,88 @@ namespace SRCCore.Units
         public IEnumerable<Pilot> AllRawPilots => Pilots
                     .Concat(Supports);
 
+        // ステータスウィンドウで切り替えて表示できるパイロットの数
+        // （パイロット、サポート、追加サポートの順。Main.frm の picFace_Click）
+        public int CountStatusPilot()
+        {
+            var n = CountPilot() + CountSupport();
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                n = n + 1;
+            }
+            return n;
+        }
+
+        // ステータスウィンドウに pindex 番目に表示するパイロット（Status.bas の DisplayUnitStatus の pindex）
+        // 0 はメインパイロット
+        public Pilot StatusPilot(int pindex)
+        {
+            if (pindex <= 0)
+            {
+                return MainPilot();
+            }
+            else if (pindex == 1)
+            {
+                // メインパイロットまたは１番目のパイロット
+                if (!IsMainPilotFirstPilotForStatus())
+                {
+                    return colPilot[1];
+                }
+                return MainPilot();
+            }
+            else if (pindex <= CountPilot())
+            {
+                // サブパイロット
+                return colPilot[pindex];
+            }
+            else if (pindex <= CountPilot() + CountSupport())
+            {
+                // サポートパイロット
+                return colSupport[pindex - CountPilot()];
+            }
+            // 追加サポート
+            return AdditionalSupport() ?? MainPilot();
+        }
+
+        // ステータスウィンドウに表示しているパイロットの番号（Status.bas の DisplayedPilotInd）
+        // メインパイロット（pindex = 0）は、１番目のパイロットと同じなら 1、違うなら 0
+        public int StatusPilotIndex(Pilot p)
+        {
+            if (CountPilot() == 0)
+            {
+                return 0;
+            }
+            if (p == null)
+            {
+                return IsMainPilotFirstPilotForStatus() ? 1 : 0;
+            }
+            var n = CountStatusPilot();
+            for (var i = 1; i <= n; i++)
+            {
+                if (ReferenceEquals(StatusPilot(i), p))
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        // 顔グラフィックのクリックで次に表示するパイロットの番号（Main.frm の picFace_Click）
+        public int NextStatusPilotIndex(int pindex)
+        {
+            pindex = pindex + 1;
+            if (pindex > CountStatusPilot())
+            {
+                pindex = 1;
+            }
+            return pindex;
+        }
+
+        private bool IsMainPilotFirstPilotForStatus()
+        {
+            return MainPilot().get_Nickname(false) == colPilot[1].get_Nickname(false) || Data.PilotNum == 1;
+        }
+
 
         // サポートパイロットを追加
         public void AddSupport(Pilot p)

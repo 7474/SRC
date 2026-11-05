@@ -224,11 +224,15 @@ namespace SRCDebugAdapter
                 {
                     done.Add("画像");
                 }
-                // クイックロードと同じ処理で状態を戻す（「再開」イベントが起きる）
+                // クイックロード（QuickLoad コマンド）と同じ処理で状態を戻し、「再開」イベントを起こす。
+                // RestoreData はマップが変わったときだけ「再開」イベントを起こすので（元の SRC と同じ。#1466）、
+                // QuickLoad コマンドと同じく、戻した後にも起こす
                 using (var stream = new MemoryStream(state))
                 {
                     src.RestoreData(stream, SRCSaveKind.Quik);
                 }
+                src.Event.HandleEvent("再開");
+                src.Map.IsMapDirty = false;
                 runner.GUI.RedrawScreen();
                 src.GUIStatus.DisplayGlobalStatus();
             }

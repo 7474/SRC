@@ -324,6 +324,11 @@ namespace SRCSharpForm
             MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }
 
+        public void RedrawMapCell(int X, int Y)
+        {
+            MainForm.RedrawMapCell(X, Y);
+        }
+
         public void RedrawScreen(bool late_refresh)
         {
             ScreenIsMasked = false;
@@ -953,58 +958,37 @@ namespace SRCSharpForm
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             TopItem = -1;
-            var list = weapons.Items.Select(x => new ListBoxItem()
-            {
-                Text = $"{ GeneralLib.RightPaddedString(x.Weapon.Name, 28)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPower("") + "", 4)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPrecision() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponCritical() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.Bullet() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponENConsumption() + "", 4)}" +
-                    $" {x.Weapon.WeaponData.Adaption}" +
-                    $" {x.Weapon.WeaponClass()}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            var ret = ListBox(new ListBoxArgs
-            {
-                Items = list,
-                HasFlag = true,
-                lb_caption = caption_msg,
-                //"名称                         攻撃 命中 " + Expression.Term("EN"4, u, 2) + "   弾  " + Expression.Term("EN"5, u, 2) + " 適応 分類",
-                lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
-                lb_mode = "",
-            });
-            //var WeaponListBoxRet = wlist[ret];
+            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
+            var ret = weapons.SelectWeapon(SRC, caption_msg, ListBox);
             Application.DoEvents();
-            return ret > 0 ? weapons.Items[ret - 1].Weapon : null;
+            return ret;
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             TopItem = -1;
-            var list = abilities.Items.Select(x => new ListBoxItem()
+            // メニューにアビリティ名を表示しているときは一覧を出さずに選ぶ
+            var ability = abilities.AbilityWithoutListBox(SRC, lb_mode, is_item);
+            if (ability != null)
             {
-                Text = $"{x.Ability.Data.Name}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            if (list.Count == 1 && lb_mode != "一覧" && !is_item)
+                return ability;
+            }
+            // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
+            var list = abilities.ToListBoxItems();
+            if (list.Count == 0)
             {
-                return abilities.Items[0].Ability;
+                return null;
             }
             var ret = ListBox(new ListBoxArgs
             {
-                Items = list,
+                Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
-                lb_info = "名称",
+                lb_info = abilities.ListBoxInfo(SRC),
                 lb_mode = "",
             });
             Application.DoEvents();
-            return ret > 0 ? abilities.Items[ret - 1].Ability : null;
+            return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 
         public int LIPS(ListBoxArgs args, int time_limit)
@@ -1353,8 +1337,6 @@ namespace SRCSharpForm
             frmNowLoading.Close();
             frmNowLoading.Dispose();
             frmNowLoading = null;
-            // XXX シナリオのパスが決まってるタイミングでという意味でファイルシステムの状態を再処理してる。カス。
-            imageBuffer.InitFileSystemInfo();
         }
 
         public void DisplayLoadingProgress()
@@ -1651,7 +1633,7 @@ namespace SRCSharpForm
             }
         }
 
-        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        public string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
             using (var ofd = new OpenFileDialog())
             {
@@ -1659,6 +1641,8 @@ namespace SRCSharpForm
                 var effectiveDir = new[] { initialDirectory, SRC.ScenarioPath }
                     .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
                 if (effectiveDir != null) ofd.InitialDirectory = effectiveDir;
+                // 初めに選んでおくファイル（VB: FileDialog.bas の LoadFileDialog の default_file）
+                ofd.FileName = initialFile ?? "";
                 if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
                 {
                     ofd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";

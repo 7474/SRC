@@ -46,14 +46,14 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if ((old_var1.Name ?? "") == (Event.VarStack[i].Name ?? ""))
                             {
-                                Event.VarStack[i].SetFrom(new_var1);
+                                Event.VarStack[i].SetValueFrom(new_var1);
                                 goto Swap_Var2toVar1_End;
                             }
                         }
                     }
 
                     // ローカル・またはグローバル変数の場合
-                    old_var1.SetFrom(new_var1);
+                    old_var1.SetValueFrom(new_var1);
                 }
 
             Swap_Var2toVar1_End:
@@ -69,14 +69,14 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if ((old_var2.Name ?? "") == (Event.VarStack[i].Name ?? ""))
                             {
-                                Event.VarStack[i].SetFrom(new_var2);
+                                Event.VarStack[i].SetValueFrom(new_var2);
                                 goto Swap_Var1toVar2_End;
                             }
                         }
                     }
 
                     // ローカル・またはグローバル変数の場合
-                    old_var2.SetFrom(new_var2);
+                    old_var2.SetValueFrom(new_var2);
                 }
 
             Swap_Var1toVar2_End:

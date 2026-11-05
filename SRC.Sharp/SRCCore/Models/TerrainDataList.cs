@@ -62,6 +62,14 @@ namespace SRCCore.Models
             return td;
         }
 
+        /// <summary>
+        /// 指定したビットマップ名の地形が登録されているか（大文字・小文字を区別する）。
+        /// </summary>
+        public bool HasBitmap(string bitmap)
+        {
+            return TerrainList.Any(x => x != null && x.Bitmap == bitmap);
+        }
+
         // 名前を指定してデータを取り出す
         public TerrainData ItemByName(string name)
         {

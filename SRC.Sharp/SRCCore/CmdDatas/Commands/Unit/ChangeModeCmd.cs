@@ -114,7 +114,8 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "ChangeModeコマンドの引数の数が違います");
             }
 
-            foreach (var unit in targetUnits)
+            // ユニットに乗っていないパイロットなど、対象のユニットが無いものは飛ばす（VB 版と同じ）
+            foreach (var unit in targetUnits.Where(x => x != null))
             {
                 unit.Mode = new_mode;
             }

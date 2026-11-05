@@ -24,6 +24,12 @@ namespace SRCCore.CmdDatas.Commands
             var rad = GetArgAsLong(4);
             GUI.SaveScreen();
 
+            // 背景への描き込み（中断・クイックセーブから再開するときに再開イベントで書き直す）
+            if (Event.ObjDrawOption == "背景")
+            {
+                Map.IsMapDirty = true;
+            }
+
             var clr = Event.ObjColor;
             for (var i = 5; i <= ArgNum; i++)
             {

@@ -29,6 +29,25 @@ namespace SRCCore
             SRC = src;
         }
 
+        /// <summary>
+        /// Lib フォルダのファイル（パイロットステータス表示.eve など）を、元の SRC と同じく
+        /// シナリオのフォルダ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に探す。見つからなければ null
+        /// </summary>
+        public string SearchLibFile(string fileName)
+        {
+            return new string[]
+            {
+                SRC.ScenarioPath,
+                SRC.ExtDataPath,
+                SRC.ExtDataPath2,
+                SRC.AppPath,
+            }
+                // 拡張データフォルダを設定していなければ探さない
+                .Where((x, i) => !(i == 1 || i == 2) || !string.IsNullOrEmpty(x))
+                .Select(x => Path.Combine(x ?? "", "Lib", fileName))
+                .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+        }
+
         // インターミッション
         public void InterMissionCommand(bool skip_update = false)
         {
@@ -246,13 +265,7 @@ namespace SRCCore
 
                     case "パイロットステータス":
                         {
-                            var eveFile = new string[]
-                            {
-                                SRC.ScenarioPath,
-                                SRC.AppPath,
-                            }.Select(x => Path.Combine(x, "Lib", "パイロットステータス表示.eve"))
-                                .Where(x => SRC.FileSystem.FileExists(x))
-                                .FirstOrDefault();
+                            var eveFile = SearchLibFile("パイロットステータス表示.eve");
                             if (string.IsNullOrEmpty(eveFile))
                             {
                                 // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラー）。
@@ -272,13 +285,7 @@ namespace SRCCore
 
                     case "ユニットステータス":
                         {
-                            var eveFile = new string[]
-                            {
-                                SRC.ScenarioPath,
-                                SRC.AppPath,
-                            }.Select(x => Path.Combine(x, "Lib", "ユニットステータス表示.eve"))
-                                .Where(x => SRC.FileSystem.FileExists(x))
-                                .FirstOrDefault();
+                            var eveFile = SearchLibFile("ユニットステータス表示.eve");
                             if (string.IsNullOrEmpty(eveFile))
                             {
                                 // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラー）。

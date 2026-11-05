@@ -48,10 +48,16 @@ namespace SRCCore.Maps
             //    is_map_changed = true;
             //}
             // セーブデータはシナリオのフォルダからの相対パス（以前の版は絶対パス）で持つ（#1375）
-            MapFileName = SRC.ResolveSavedPath(map.MapFileName);
+            var mapFileName = SRC.ResolveSavedPath(map.MapFileName);
+            // 背景書き換えの必要有り？（VB: RestoreMapData の is_map_changed）
+            // マップがロードに伴って変化したときだけ。背景への書き込み（IsMapDirty）はそのまま引き継ぐ
+            if (IsMapChanged(mapFileName, map))
+            {
+                IsMapDirty = true;
+            }
+            MapFileName = mapFileName;
             MapDrawMode = map.MapDrawMode;
             MapDrawIsMapOnly = map.MapDrawIsMapOnly;
-            IsMapDirty = map.IsMapDirty;
 
             // マップ幅, マップ高さ
             var mw = map.MapWidth;
@@ -69,6 +75,39 @@ namespace SRCCore.Maps
 
             MapData = map.MapData;
             MapData.All.ToList().ForEach(cell => cell.Restore(SRC));
+        }
+
+        private bool IsMapChanged(string mapFileName, Map map)
+        {
+            if ((mapFileName ?? "") != (MapFileName ?? "")
+                || (map.MapDrawMode ?? "") != (MapDrawMode ?? "")
+                || map.MapDrawIsMapOnly != MapDrawIsMapOnly
+                || map.MapWidth != MapWidth
+                || map.MapHeight != MapHeight
+                || MapData == null
+                || map.MapData == null)
+            {
+                return true;
+            }
+
+            for (var x = 1; x <= MapWidth; x++)
+            {
+                for (var y = 1; y <= MapHeight; y++)
+                {
+                    var cur = MapData[x, y];
+                    var saved = map.MapData[x, y];
+                    if (cur == null || saved == null
+                        || cur.TerrainType != saved.TerrainType
+                        || cur.BitmapNo != saved.BitmapNo
+                        || cur.LayerType != saved.LayerType
+                        || cur.LayerBitmapNo != saved.LayerBitmapNo
+                        || cur.BoxType != saved.BoxType)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // 管理可能な地形データの総数
@@ -162,6 +201,23 @@ namespace SRCCore.Maps
             return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
+        /// <summary>
+        /// (X,Y)地点にいるユニットを、同じ地点に配置し直す。地形を変えたときに使う。
+        /// 変更後の地形に入れなければ近くの空いているマスへ移る（元の SRC の ChangeTerrain・ChangeLayer と同じ）。
+        /// </summary>
+        public void StandByUnitAgain(int X, int Y)
+        {
+            var u = UnitAtPoint(X, Y);
+            if (u == null)
+            {
+                return;
+            }
+
+            MapDataForUnit[X, Y] = null;
+            GUI.EraseUnitBitmap(X, Y, false);
+            u.StandBy(X, Y, "非同期");
+        }
+
         // uに隣接しているユニット
         public IList<Unit> AdjacentUnit(Unit u)
         {
@@ -222,8 +278,9 @@ namespace SRCCore.Maps
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
-            // ビットマップを探す
-            var file = fnames.FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            // ビットマップを探す。元の SRC と同じく、フォルダ（シナリオのフォルダ、ExtDataPath、ExtDataPath2、SRC のフォルダ）ごとに
+            // 「Bitmap\Map\"ビットマップ名"」「Bitmap\Map」の順に探す
+            var file = SRC.FileSystem.FindFirstFile(fnames);
             if (found != null)
             {
                 found[(tbmpname, tbitmap)] = file;
@@ -398,6 +455,7 @@ namespace SRCCore.Maps
                 }
             }
             MapUnderImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
+            MapUpperImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
             MapDataForUnit = new Src2DArray<Unit>(MapWidth, MapHeight);
             MaskData = new Src2DArray<bool>(MapWidth, MapHeight);
             TotalMoveCost = new int[MapWidth + 2, MapHeight + 2];

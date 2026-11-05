@@ -402,6 +402,48 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
             b.Target.AddCondition("盲目", 1);
             Assert.AreEqual(0, b.W.CriticalProbability(b.Target));
         }
+
+        // ══════════════════════════════════════════════
+        // CanUseFor（反撃）
+        // GUI.bas の WeaponListBox の「反撃」は ElseIf の連なりで、使用不能・射程外・Ｍ・合の
+        // いずれかなら、特殊効果を与えられる武器でも選べない（7474/SRC#1490）
+        // ══════════════════════════════════════════════
+
+        [TestMethod]
+        public void CanUseFor_Counter_InRange()
+        {
+            var b = Setup();
+            Assert.IsTrue(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectOutOfRange_IsNotUsable()
+        {
+            // 射程 1 の特殊効果の武器で、距離 3 の相手には反撃できない
+            var b = Setup(wclass: "武Ｓ", maxRange: 1, tx: 4, ty: 1);
+            Assert.IsTrue(b.W.CriticalProbability(b.Target) > 0);
+            Assert.IsFalse(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectMapAttack_IsNotUsable()
+        {
+            var b = Setup(wclass: "射ＳＭ投");
+            Assert.IsFalse(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectWithoutDamage_IsUsable()
+        {
+            // ダメージを与えられなくても、特殊効果を与えられれば選べる
+            var b = Setup(wclass: "射Ｓ");
+            b.W.WeaponData.Power = 0;
+            b.Attacker.Update(true);
+            var w = Weapon(b.Attacker, "武器");
+            Assert.AreEqual(0, w.Damage(b.Target, true));
+            Assert.IsTrue(w.CriticalProbability(b.Target) > 0);
+            Assert.IsTrue(w.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
     }
 
     internal static class UnitWeaponCovLetExtension

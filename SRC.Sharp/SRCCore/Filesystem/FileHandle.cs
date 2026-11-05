@@ -54,7 +54,11 @@ namespace SRCCore.Filesystem
             }
             else
             {
-                Writer = new StreamWriter(stream, srcCompatibilityMode.HasFlag(SRCCompatibilityMode.Write) ? Encoding.GetEncoding(932) : Encoding.UTF8);
+                Writer = new StreamWriter(stream, srcCompatibilityMode.HasFlag(SRCCompatibilityMode.Write) ? Encoding.GetEncoding(932) : Encoding.UTF8)
+                {
+                    // 元の SRC の Print # と同じく、動かす環境によらず改行は CR+LF にする
+                    NewLine = "\r\n",
+                };
             }
         }
 

@@ -365,6 +365,42 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void RecoverHP_RoundsFractionToEven()
+        {
+            // 元の SRC は回復後の値を Long へ代入するので偶数への丸め（7474/SRC#1471）
+            var src = CreateSrc();
+            var unit = CreateUnit(src, AddUnitData(src));
+
+            unit.HP = 500;
+            unit.RecoverHP(0.75); // 500 + 7.5 = 507.5 → 508
+            Assert.AreEqual(508, unit.HP);
+
+            unit.HP = 500;
+            unit.RecoverHP(0.25); // 500 + 2.5 = 502.5 → 502
+            Assert.AreEqual(502, unit.HP);
+
+            unit.HP = 500;
+            unit.RecoverHP(-0.04); // 500 - 0.4 = 499.6 → 500
+            Assert.AreEqual(500, unit.HP);
+        }
+
+        [TestMethod]
+        public void RecoverEN_RoundsFractionToEven()
+        {
+            // 元の SRC は回復後の値を Long へ代入するので偶数への丸め（7474/SRC#1471）
+            var src = CreateSrc();
+            var unit = CreateUnit(src, AddUnitData(src));
+
+            unit.EN = 50;
+            unit.RecoverEN(1.5); // 50 + 1.5 = 51.5 → 52
+            Assert.AreEqual(52, unit.EN);
+
+            unit.EN = 50;
+            unit.RecoverEN(2.5); // 50 + 2.5 = 52.5 → 52
+            Assert.AreEqual(52, unit.EN);
+        }
+
+        [TestMethod]
         public void Reset_ClearsAllConditionsAndRestores()
         {
             // Reset は全状態（付加状態を含む）を消去し、ＨＰ・ＥＮ・弾数を最大に戻す

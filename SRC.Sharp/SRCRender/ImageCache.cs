@@ -1,5 +1,6 @@
 using SkiaSharp;
 using SRCCore;
+using SRCCore.Filesystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,6 @@ namespace SRCRender
         // 先頭ほど最近使ったもの
         private readonly LinkedList<Entry> recent = new LinkedList<Entry>();
         private long cachedBytes;
-        private IList<string> bitmapDirectories;
 
         private sealed class Entry
         {
@@ -66,18 +66,6 @@ namespace SRCRender
                 }
             }
         }
-
-        private IList<string> BitmapDirectories => bitmapDirectories ?? (bitmapDirectories = new List<string>
-        {
-            "",
-            src.FileSystem.PathCombine("Bitmap"),
-            src.FileSystem.PathCombine("Bitmap", "Anime"),
-            src.FileSystem.PathCombine("Bitmap", "Event"),
-            src.FileSystem.PathCombine("Bitmap", "Cutin"),
-            src.FileSystem.PathCombine("Bitmap", "Pilot"),
-            src.FileSystem.PathCombine("Bitmap", "Unit"),
-            src.FileSystem.PathCombine("Bitmap", "Map"),
-        });
 
         /// <summary>
         /// 画像を取得する。見つからない、または読み込めない場合は null。
@@ -146,11 +134,8 @@ namespace SRCRender
         {
             try
             {
-                var path = src.FileSystem.FileExists(name)
-                    ? name
-                    : BitmapDirectories
-                        .Select(x => src.FileSystem.PathCombine(x, name))
-                        .FirstOrDefault(x => src.FileSystem.FileExists(x));
+                // 元の SRC と同じ順番で探す（フォルダごとに、ファイル名の候補を順に探す）
+                var path = BitmapSearch.FindPicture(src, name);
                 if (string.IsNullOrEmpty(path))
                 {
                     return null;

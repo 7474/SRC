@@ -58,6 +58,36 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void MidiFiles_AreFoundInSubFoldersOfExtDataPathAndAssetPacks()
+        {
+            using (var app = new ScenarioWorkspace(withAssets: true))
+            using (var ext = new ScenarioWorkspace(withAssets: false))
+            {
+                // 「作品名_曲名.mid」は Midi\作品名\ から探す（7474/SRC#1480）。素材パック（Packs の zip）の中も探す
+                ext.Write(Path.Combine("Midi", "ext", "ext_battle.mid"), "ext-battle");
+                Directory.CreateDirectory(Path.Combine(app.AppPath, "Packs"));
+                using (var zip = System.IO.Compression.ZipFile.Open(Path.Combine(app.AppPath, "Packs", "midi.zip"), System.IO.Compression.ZipArchiveMode.Create))
+                using (var writer = new StreamWriter(zip.CreateEntry("曲集/Midi/pack/pack_map.mp3").Open()))
+                {
+                    writer.Write("pack-map");
+                }
+                app.Write("srcs.json", "{ \"ExtDataPath\": " + Newtonsoft.Json.JsonConvert.SerializeObject(ext.AppPath) + " }");
+                app.WriteMap("test.map", 5, 5, (x, y) => 0);
+                app.Write("test.eve", "スタート:", "ChangeMap test.map", "Talk システム", "待機", "End", "Quit", "");
+
+                using (var runner = new ScreenScenarioRunner(app.AppPath))
+                {
+                    runner.Start(Path.Combine(app.AppPath, "test.eve"));
+                    runner.WaitForMessage();
+                    var src = runner.Session.SRC;
+                    StringAssert.EndsWith(src.Sound.SearchMidiFile("ext_battle.mid").Replace('\\', '/'), "Midi/ext/ext_battle.mid");
+                    StringAssert.EndsWith(src.Sound.SearchMidiFile("pack_map.mid").Replace('\\', '/'), "Midi/pack/pack_map.mp3");
+                    Assert.IsNull(src.Sound.SearchMidiFile("none_map.mid"));
+                }
+            }
+        }
+
+        [TestMethod]
         public void SystemDataAndAssets_AreReadFromExtDataPath()
         {
             using (var app = new ScenarioWorkspace(withAssets: false))

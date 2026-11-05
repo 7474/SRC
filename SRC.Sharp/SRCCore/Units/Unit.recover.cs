@@ -171,7 +171,7 @@ namespace SRCCore.Units
         // ＨＰを percent ％回復
         public void RecoverHP(double percent)
         {
-            HP = (int)(HP + MaxHP * percent / 100d);
+            HP = VBMath.CLng(HP + MaxHP * percent / 100d);
             if (HP <= 0)
             {
                 HP = 1;
@@ -190,7 +190,7 @@ namespace SRCCore.Units
         // ＥＮを percent ％回復
         public void RecoverEN(double percent)
         {
-            EN = (int)(EN + MaxEN * percent / 100d);
+            EN = VBMath.CLng(EN + MaxEN * percent / 100d);
             if (EN <= 0)
             {
                 EN = 0;

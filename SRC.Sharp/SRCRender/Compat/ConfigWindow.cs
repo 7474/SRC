@@ -39,8 +39,38 @@ namespace SRCRender.Compat
     }
 
     /// <summary>
+    /// ComboBox（ドロップダウンリスト）相当。▼ を押すと下に選択肢を開く。
+    /// </summary>
+    public class ComboBox : Control
+    {
+        public Font Font { get; set; }
+        public List<string> Items { get; } = new List<string>();
+        /// <summary>選んでいる項目（-1 なら選んでいない）</summary>
+        public int SelectedIndex { get; set; } = -1;
+        public string Text => SelectedIndex >= 0 && SelectedIndex < Items.Count ? Items[SelectedIndex] : "";
+        /// <summary>選択肢を開いているか</summary>
+        public bool DroppedDown { get; set; }
+        /// <summary>開いた選択肢の 1 行の高さ</summary>
+        public const int ItemHeight = 16;
+
+        /// <summary>開いた選択肢の範囲（ComboBox の下）</summary>
+        public RectangleF DropDownRect => new RectangleF(Left, Top + Height, Width, ItemHeight * Items.Count + 2);
+
+        /// <summary>開いた選択肢のうち、点（親のクライアント座標）にある項目。無ければ -1</summary>
+        public int ItemAt(PointF client)
+        {
+            var rect = DropDownRect;
+            if (!DroppedDown || client.X < rect.Left || client.X >= rect.Right || client.Y < rect.Top + 1 || client.Y >= rect.Bottom - 1)
+            {
+                return -1;
+            }
+            return Math.Min(Items.Count - 1, (int)((client.Y - rect.Top - 1) / ItemHeight));
+        }
+    }
+
+    /// <summary>
     /// WinForms 版の設定変更ダイアログ（Forms/Configuration.Designer.cs）と同じ部品・配置を持つ。
-    /// メッセージスピードと MIDI 音源リセットは WinForms 版でも反映していないため省く。
+    /// MIDI 音源リセットは SRC# では使わないため省く。
     /// </summary>
     public class ConfigWindow : Form
     {
@@ -52,6 +82,10 @@ namespace SRCRender.Compat
             Width = 346;
             Height = 405;
             Text = Resources.Strings.ConfigTitle;
+            // 元の SRC の設定変更の画面と同じく、一番上にメッセージスピード
+            labMessageSpeed = new Label { Left = 33, Top = 20, Width = 109, Height = 17, Text = Resources.Strings.ConfigMessageSpeed, Font = ControlFont };
+            cboMessageSpeed = new ComboBox { Left = 144, Top = 16, Width = 137, Height = 20, Font = ControlFont, BackColor = Color.White };
+            cboMessageSpeed.Items.AddRange(GameConfigLabels.MessageSpeedNames);
             chkBattleAnimation = new CheckBox { Left = 32, Top = 40, Width = 249, Height = 25, Text = Resources.Strings.ConfigBattleAnimation, Font = ControlFont };
             chkExtendedAnimation = new CheckBox { Left = 48, Top = 64, Width = 233, Height = 33, Text = Resources.Strings.ConfigExtendedAnimation, Font = ControlFont };
             chkWeaponAnimation = new CheckBox { Left = 48, Top = 96, Width = 233, Height = 33, Text = Resources.Strings.ConfigWeaponAnimation, Font = ControlFont };
@@ -70,6 +104,8 @@ namespace SRCRender.Compat
 
         public override ListBoxControl lstItems => items;
 
+        public Label labMessageSpeed { get; }
+        public ComboBox cboMessageSpeed { get; }
         public CheckBox chkBattleAnimation { get; }
         public CheckBox chkExtendedAnimation { get; }
         public CheckBox chkWeaponAnimation { get; }

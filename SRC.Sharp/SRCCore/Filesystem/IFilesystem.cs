@@ -9,6 +9,24 @@ namespace SRCCore.Filesystem
         string PathCombine(params string[] paths);
         bool PathEquals(string a, string b);
         bool FileExists(params string[] paths);
+
+        /// <summary>
+        /// 候補のファイル名のうち、最初に見つかったものを返します。見つからなければ null を返します。
+        /// 読み込みアクセス対象のフォルダ（<see cref="AddPath"/>・<see cref="AddAchive"/> で追加したもの）ごとに、候補を順に探します。
+        /// つまりフォルダの順番を候補の順番より優先します（元の SRC の画像の検索と同じ）。
+        /// </summary>
+        /// <param name="candidates">候補のファイル名（読み込みアクセス対象のフォルダからの相対パス、または絶対パス）</param>
+        string FindFirstFile(IEnumerable<string> candidates)
+        {
+            foreach (var candidate in candidates)
+            {
+                if (!string.IsNullOrEmpty(candidate) && FileExists(candidate))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
         Stream Open(params string[] paths);
 
         /// <summary>
@@ -36,6 +54,7 @@ namespace SRCCore.Filesystem
         void AddSafePath(string basePath);
         /// <summary>
         /// <see cref="AddSafePath"/>で追加したパスからの相対パスでファイルを開きます。
+        /// 書き込み（<see cref="SafeOpenMode.Write"/>）で開くと、既にあるファイルの中身は消します。
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="paths"></param>
@@ -55,6 +74,9 @@ namespace SRCCore.Filesystem
         bool Remove(params string[] paths);
 
         bool MkDir(params string[] paths);
+        /// <summary>
+        /// フォルダを中のファイルやフォルダごと削除します。
+        /// </summary>
         bool RmDir(params string[] paths);
 
         //

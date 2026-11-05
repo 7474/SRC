@@ -22,6 +22,8 @@ namespace SRCSharpForm
     {
         public Unit DisplayedUnit { get; set; }
         public Pilot DisplayedPilot { get; set; }
+        // ステータスウィンドウに表示しているパイロットの番号（Status.bas の DisplayedPilotInd）
+        public int DisplayedPilotInd { get; private set; }
 
         // XXX
         // ステータス画面の更新を一時停止するかどうか
@@ -231,6 +233,9 @@ namespace SRCSharpForm
 
             // 情報を更新
             u.Update();
+
+            // 表示するパイロットの番号（顔グラフィックのクリックで次のパイロットに切り替える）
+            DisplayedPilotInd = u.StatusPilotIndex(p);
 
             // 未確認ユニットかどうか判定しておく
             var is_unknown = Expression.IsOptionDefined("ユニット情報隠蔽") && !u.IsConditionSatisfied("識別済み") && (u.Party0 == "敵" || u.Party0 == "中立")
@@ -3282,6 +3287,28 @@ namespace SRCSharpForm
             }
 
             DisplayUnitStatus(u);
+        }
+
+        // ステータスウィンドウの顔グラフィックのクリックで、表示するパイロットを順に切り替える
+        // （Main.frm の picFace_Click）。コアのスレッドで呼ぶ
+        public void ChangeDisplayedPilot()
+        {
+            // ＧＵＩのロック中は無視
+            if (GUI.IsGUILocked)
+            {
+                return;
+            }
+
+            // ステータスウィンドウで表示しているパイロットを変更
+            var u = DisplayedUnit;
+            if (u == null || u.CountPilot() == 0)
+            {
+                return;
+            }
+
+            var pindex = u.NextStatusPilotIndex(DisplayedPilotInd);
+            SRC.GUIStatus.DisplayUnitStatus(u, u.StatusPilot(pindex));
+            DisplayedPilotInd = pindex;
         }
 
         public void ClearUnitStatus()

@@ -43,8 +43,9 @@ namespace SRCSharpWeb
         [JSImport("showInput", ModuleName)]
         internal static partial Task<string> ShowInput(string title, string message, string value, string ok, string cancel);
 
+        /// <summary>一覧から選ばせる。selected（空なら選ばない）の項目を初めに選んでおく</summary>
         [JSImport("showChoice", ModuleName)]
-        internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items, string cancel);
+        internal static partial Task<string> ShowChoice(string title, [JSMarshalAs<JSType.Array<JSType.String>>] string[] items, string selected, string cancel);
 
         [JSImport("soundPlayEncoded", ModuleName)]
         internal static partial void SoundPlayEncoded(int channel, [JSMarshalAs<JSType.MemoryView>] Span<byte> data, bool loop);

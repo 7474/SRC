@@ -384,5 +384,31 @@ namespace SRCRender.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void EnterHeld_CountsAsLeftButtonHeld()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            {
+                Copy(Path.Combine(E2ECorpusTests.CorpusDirectory, "battle-basic"), workspace.AppPath);
+                using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                {
+                    var gui = runner.GUI;
+                    runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                    Assert.IsFalse(gui.IsLButtonPressed());
+
+                    // 仮想パッドの A（Enter）を押している間は、左ボタンを押し続けているのと同じ（ウェイト付きでメッセージを送る）
+                    gui.KeyStateChanged(0x0D, true);
+                    Assert.IsTrue(gui.IsLButtonPressed());
+                    gui.KeyStateChanged(0x0D, false);
+                    Assert.IsFalse(gui.IsLButtonPressed());
+
+                    // ほかのキーは左ボタンにしない
+                    gui.KeyStateChanged(0x1B, true);
+                    Assert.IsFalse(gui.IsLButtonPressed());
+                    gui.KeyStateChanged(0x1B, false);
+                }
+            }
+        }
     }
 }

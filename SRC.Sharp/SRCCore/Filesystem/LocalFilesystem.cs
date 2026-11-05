@@ -1,6 +1,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -37,6 +38,25 @@ namespace SRCCore.Filesystem
         {
             string path = PathCombine(paths);
             return entrySets.Any(x => x.Exists(path));
+        }
+
+        public string FindFirstFile(IEnumerable<string> candidates)
+        {
+            var paths = candidates
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => (Name: x, Path: PathCombine(x)))
+                .ToList();
+            foreach (var entrySet in entrySets)
+            {
+                foreach (var (name, path) in paths)
+                {
+                    if (entrySet.Exists(path))
+                    {
+                        return name;
+                    }
+                }
+            }
+            return null;
         }
 
         public Stream Open(params string[] paths)
@@ -384,13 +404,14 @@ namespace SRCCore.Filesystem
         public Stream OpenWrite(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.OpenWrite();
+            // 既にあるファイルは空にしてから書く（元の SRC の Open … For Output と同じ。FileInfo.OpenWrite は長さを 0 にしない）
+            return info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public Stream OpenAppend(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
+            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public bool Remove(string entryName)
@@ -416,7 +437,8 @@ namespace SRCCore.Filesystem
             var info = GetFileInfo(entryName);
             if (Directory.Exists(info.FullName))
             {
-                Directory.Delete(info.FullName);
+                // 中のファイルやフォルダごと消す（元の SRC の FileSystemObject.DeleteFolder と同じ）
+                Directory.Delete(info.FullName, true);
                 return true;
             }
             return false;
@@ -436,6 +458,12 @@ namespace SRCCore.Filesystem
         private SrcCollection<ZipArchiveEntry> _entryMap;
         private Task _entryMapResolveTask;
 
+        // ファイル名はひらがな・カタカナを区別する（Windows のファイルシステムと同じ）。
+        // 変数名などと同じ SrcCollection の既定の比較にすると、ひらがなとカタカナだけが違う名前のファイルが重なる
+        private static readonly StringComparer s_entryNameComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase
+        );
+
         public LocalFileSystemArchive(string basePath, ZipArchive archive) : this(basePath, archive, null)
         {
         }
@@ -450,7 +478,7 @@ namespace SRCCore.Filesystem
             BasePath = tmpBasePath;
             Root = string.IsNullOrEmpty(root) ? "" : root.Replace("\\", "/").Trim('/') + "/";
             _archive = archive;
-            _entryMap = new SrcCollection<ZipArchiveEntry>();
+            _entryMap = new SrcCollection<ZipArchiveEntry>(s_entryNameComparer);
 
             _entryMapResolveTask = Task.Run(() =>
             {
