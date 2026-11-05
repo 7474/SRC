@@ -151,7 +151,10 @@ namespace SRCRender
                 target = mainBuffer;
             }
 
-            var image = LoadPicture(fname, target, transparent && bgColor == Color.White);
+            // 部分表示（指定外の部分を背景色で塗りつぶす）。元の SRC と同じく、塗りつぶしてから透過色を抜く
+            var partial = topPart || bottomPart || leftPart || rightPart || tleftPart || trightPart || bleftPart || brightPart;
+            var whiteTransparent = transparent && bgColor.ToArgb() == Color.White.ToArgb();
+            var image = LoadPicture(fname, target, whiteTransparent && !partial);
             if (image == null)
             {
                 return false;
@@ -187,18 +190,10 @@ namespace SRCRender
 
             try
             {
-                if (transparent && bgColor != Color.White)
-                {
-                    var t = ImageFilters.MakeTransparent(drawBuffer, ToSKColor(bgColor));
-                    drawBuffer.Dispose();
-                    drawBuffer = t;
-                }
-
-                // 部分表示（指定外の部分を描画色で塗りつぶす）
-                if (topPart || bottomPart || leftPart || rightPart || tleftPart || trightPart || bleftPart || brightPart)
+                if (partial)
                 {
                     using (var canvas = new SKCanvas(drawBuffer))
-                    using (var paint = new SKPaint { Color = ToSKColor(CurrentPaintColor), IsAntialias = false })
+                    using (var paint = new SKPaint { Color = ToSKColor(bgColor), IsAntialias = false })
                     {
                         float w = drawBuffer.Width, h = origHeight;
                         if (topPart) canvas.DrawRect(0, h / 2f, w, h / 2f, paint);
@@ -210,6 +205,14 @@ namespace SRCRender
                         if (bleftPart) FillTriangle(canvas, paint, 0, 0, origWidth - 1, 0, origWidth - 1, origHeight - 1);
                         if (brightPart) FillTriangle(canvas, paint, 0, 0, origWidth - 1, 0, 0, origHeight - 1);
                     }
+                }
+
+                // 透過色（#rrggbb で指定した色。指定が無ければ白）を抜く
+                if (transparent && !(whiteTransparent && !partial))
+                {
+                    var t = ImageFilters.MakeTransparent(drawBuffer, ToSKColor(bgColor));
+                    drawBuffer.Dispose();
+                    drawBuffer = t;
                 }
 
                 if (isMonotone) drawBuffer = ImageFilters.ApplyMonotone(drawBuffer);

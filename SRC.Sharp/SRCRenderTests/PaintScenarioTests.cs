@@ -179,6 +179,67 @@ namespace SRCRender.Tests
             }
         }
 
+        /// <summary>
+        /// PaintPicture の透過色（#rrggbb）と、部分表示の塗りつぶし。
+        /// 元の SRC（CmdData.cls の PaintPictureCmd、GUI.bas の DrawPicture）では、白以外の色は透過色（背景色）になり、
+        /// 部分表示は背景色で塗りつぶしてから透過色を抜く（7474/SRC#1467）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_PaintPictureTransparentColor()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.WriteTestImage(Path.Combine("Bitmap", "Event", "test.png"));
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    // 描画色は部分表示の塗りつぶしに使わない
+                    "Color #00FF00",
+                    "PaintPicture test.png 0 0 透過 #FF0000",
+                    "PaintPicture test.png 100 0 #FF0000",
+                    "PaintPicture test.png 200 0 透過 上半分",
+                    "PaintPicture test.png 300 0 上半分",
+                    "PaintPicture test.png 0 100 透過 #0000FF 下半分",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    bool IsTerrain(int x, int y)
+                    {
+                        var c = bitmap.GetPixel(x, y);
+                        return c != SKColors.White && c != SKColors.Red && c != SKColors.Blue && c != new SKColor(0, 255, 0);
+                    }
+                    // 透過 #FF0000: 赤が抜け、白は残る
+                    Assert.IsTrue(IsTerrain(16, 32), "赤を透過する");
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(2, 2), "白は透過しない");
+                    Assert.AreEqual(SKColors.Blue, bitmap.GetPixel(48, 32));
+                    // 透過を付けなければ色を指定しても抜かない
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(100 + 16, 32));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(100 + 2, 2));
+                    // 透過 上半分: 下半分は背景色（白）で塗りつぶして透過する
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(200 + 16, 16));
+                    Assert.IsTrue(IsTerrain(200 + 16, 48), "塗りつぶした下半分を透過する");
+                    // 上半分（透過なし）: 下半分は背景色（白）で塗りつぶす
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(300 + 16, 48));
+                    // 透過 #0000FF 下半分: 上半分は背景色（青）で塗りつぶして透過し、下半分の青も抜ける
+                    Assert.IsTrue(IsTerrain(16, 100 + 16), "塗りつぶした上半分を透過する");
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(16, 100 + 48));
+                    Assert.IsTrue(IsTerrain(48, 100 + 48), "青を透過する");
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(2, 100 + 60));
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
         private static bool HasColorNear(SKBitmap bitmap, int x, int y, SKColor color)
         {
             for (var dx = -2; dx <= 2; dx++)

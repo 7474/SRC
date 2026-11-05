@@ -89,12 +89,14 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if (Strings.Asc(buf) == 35 && Strings.Len(buf) == 7)
                             {
-                                Color filterColor = ColorExtension.FromHexString(buf);
-                                if (!filterColor.IsEmpty)
+                                // 元の SRC と同じく、白以外の色は透過色（「フィルタ」の直後ならフィルタの色）として渡す。
+                                // 16 進数として読めない指定は無視する
+                                if (ColorExtension.TryFromHexString(buf, out var color) && !color.IsEmpty)
                                 {
-                                    if (GetArgAsString((i - 1)) == "フィルタ")
+                                    tcolor = color;
+                                    if (tcolor.ToArgb() != Color.White.ToArgb() || GetArgAsString((i - 1)) == "フィルタ")
                                     {
-                                        options = options + filterColor.ToHexString() + " ";
+                                        options = options + tcolor.ToHexString() + " ";
                                     }
                                 }
                             }
