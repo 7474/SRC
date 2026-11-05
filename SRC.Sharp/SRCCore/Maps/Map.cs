@@ -1471,7 +1471,7 @@ namespace SRCCore.Maps
             uspeed = currentUnit.Speed;
             if (ByJump)
             {
-                uspeed = (int)(currentUnit.Speed + currentUnit.FeatureLevel("ジャンプ"));
+                uspeed = VBMath.CLng(currentUnit.Speed + currentUnit.FeatureLevel("ジャンプ"));
             }
             else
             {
@@ -1570,7 +1570,7 @@ namespace SRCCore.Maps
                                 zarea = 1;
 
                                 // ＺＯＣ側のＺＯＣレベル
-                                n = (int)u2.FeatureLevel("ＺＯＣ");
+                                n = VBMath.CLng(u2.FeatureLevel("ＺＯＣ"));
                                 if (n == 1)
                                     n = 10000;
 
@@ -1772,7 +1772,7 @@ namespace SRCCore.Maps
                         else if (((Math.Abs((int)(u.x - u2.x)) + Math.Abs((int)(u.y - u2.y))) - zarea) <= uspeed)
                         {
                             // レベル指定なし、またはLv1はLv10000として扱う
-                            int l = (int)u2.FeatureLevel("広域ＺＯＣ無効化");
+                            int l = VBMath.CLng(u2.FeatureLevel("広域ＺＯＣ無効化"));
                             if (l == 1)
                                 l = 10000;
                             if (l > 0)
@@ -2162,7 +2162,7 @@ namespace SRCCore.Maps
                                     // XXX 合体制限は変形してる時だけでいい？
                                     var pu = SRC.UList.Item(x.PartUnitNames.First());
                                     return u2.Name == x.PartUnitNames.First()
-                                        || u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限");
+                                        || (u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限"));
                                 }))
                             {
                                 MaskData[x, y] = false;
@@ -2183,7 +2183,7 @@ namespace SRCCore.Maps
                                     // XXX 合体制限は変形してる時だけでいい？
                                     var pu = SRC.UList.Item(x.PartUnitNames.First());
                                     return u2.Name == x.PartUnitNames.First()
-                                        || u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限");
+                                        || (u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限"));
                                 }))
                             {
                                 MaskData[x, y] = false;
@@ -2765,7 +2765,7 @@ namespace SRCCore.Maps
             }
             else
             {
-                r = (int)(currentUnit.Speed + currentUnit.FeatureLevel("テレポート"));
+                r = VBMath.CLng(currentUnit.Speed + currentUnit.FeatureLevel("テレポート"));
             }
 
             if (currentUnit.IsConditionSatisfied("移動不能"))

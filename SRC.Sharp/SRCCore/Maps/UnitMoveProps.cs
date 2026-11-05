@@ -29,7 +29,7 @@ namespace SRCCore.Maps
             is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
             is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
             is_trans_available_in_sky = u.IsTransAvailable("空") && u.get_Adaption(1) != 0;
-            is_trans_available_in_moon_sky = is_trans_available_in_sky || u.IsTransAvailable("宇宙") && u.get_Adaption(4) != 0;
+            is_trans_available_in_moon_sky = is_trans_available_in_sky || (u.IsTransAvailable("宇宙") && u.get_Adaption(4) != 0);
             is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
             is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
             is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
