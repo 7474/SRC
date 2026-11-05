@@ -444,21 +444,58 @@ namespace SRCCore.Units.Tests
         }
 
         [TestMethod]
-        public void IsAttributeClassified_NegationClass1_ReturnsFalse_WhenMatches()
+        public void IsAttributeClassified_NegationPrefix_ReturnsFalse_WhenMatches()
         {
             // "!火" → 火属性でないことを要求
             var src = CreateSrc();
             var unit = new Unit(src);
-            Assert.IsFalse(unit.IsAttributeClassified("火!", "火炎"));
+            Assert.IsFalse(unit.IsAttributeClassified("!火", "火炎"));
         }
 
         [TestMethod]
-        public void IsAttributeClassified_NegationClass1_ReturnsTrue_WhenNotMatches()
+        public void IsAttributeClassified_NegationPrefix_ReturnsTrue_WhenNotMatches()
         {
             // "!火" → 氷属性なので true
             var src = CreateSrc();
             var unit = new Unit(src);
+            Assert.IsTrue(unit.IsAttributeClassified("!火", "氷結"));
+        }
+
+        [TestMethod]
+        public void IsAttributeClassified_NegationAfterMatchedAttribute_IsNotRead()
+        {
+            // VB: 該当した属性で Exit Do するので、その後ろの "!" は読まれず否定にならない
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            Assert.IsTrue(unit.IsAttributeClassified("火!", "火炎"));
+        }
+
+        [TestMethod]
+        public void IsAttributeClassified_NegationAfterUnmatchedAttribute_Negates()
+        {
+            // "火" に該当せず、続く "!" で否定になる（VB と同じ）
+            var src = CreateSrc();
+            var unit = new Unit(src);
             Assert.IsTrue(unit.IsAttributeClassified("火!", "氷結"));
+        }
+
+        [TestMethod]
+        public void IsAttributeClassified_MagicClass1_StopsAtMagicWeapon()
+        {
+            // VB: 「魔」の判定は武器属性に魔があれば該当しなくても Exit Do する。
+            // 魔法の実弾（魔実）は続く「実」を見ずに該当しない
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            Assert.IsFalse(unit.IsAttributeClassified("魔実", "魔実"));
+        }
+
+        [TestMethod]
+        public void IsAttributeClassified_MagicClass1_WithNot_MagicWeapon()
+        {
+            // "!" の後の「魔」は魔法武器でも該当として扱い、否定で false になる
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            Assert.IsFalse(unit.IsAttributeClassified("!魔実", "魔実"));
         }
     }
 }
