@@ -953,32 +953,18 @@ namespace SRCSharpForm
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             TopItem = -1;
-            var list = weapons.Items.Select(x => new ListBoxItem()
-            {
-                Text = $"{ GeneralLib.RightPaddedString(x.Weapon.Name, 28)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPower("") + "", 4)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPrecision() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponCritical() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.Bullet() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponENConsumption() + "", 4)}" +
-                    $" {x.Weapon.WeaponData.Adaption}" +
-                    $" {x.Weapon.WeaponClass()}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
+            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し
+            var list = weapons.ToListBoxItems(SRC);
             var ret = ListBox(new ListBoxArgs
             {
-                Items = list,
+                Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
-                //"名称                         攻撃 命中 " + Expression.Term("EN"4, u, 2) + "   弾  " + Expression.Term("EN"5, u, 2) + " 適応 分類",
-                lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
+                lb_info = weapons.ListBoxInfo(SRC),
                 lb_mode = "",
             });
-            //var WeaponListBoxRet = wlist[ret];
             Application.DoEvents();
-            return ret > 0 ? weapons.Items[ret - 1].Weapon : null;
+            return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
