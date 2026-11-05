@@ -7053,6 +7053,8 @@ namespace SRCCore.Units
                 ny = ny + dy;
 
                 // 吹き飛ばしコストに地形効果【摩擦】の補正を加える
+                // （VB 版の 3 つ目の条件は With td の中の「t.Area = Class」で、攻撃側のユニットクラスと
+                // 比べていた。明らかな誤りなので、ここでは地形のクラスと比べる）
                 var td = Map.Terrain(x, y);
                 if (td != null)
                 {
@@ -7206,7 +7208,10 @@ namespace SRCCore.Units
         // 引き寄せチェック
         public bool CheckDrawAttack(UnitWeapon w, Unit t, ref string msg, string def_mode, ref string critical_type)
         {
-            int tx = t.x, ty = t.y;
+            // VB 版では tx・ty に値を入れる前に「既に隣接している？」を判定しているため、
+            // ここでは (0, 0) と比べることになり、マップ上のユニットでは成り立たない。
+            // 投下型（Ｍ投）で攻撃側が目標に隣接していても引き寄せるのは VB 版のとおり。
+            int tx = 0, ty = 0;
             int sx, sy;
             int nx, ny;
             int prob;

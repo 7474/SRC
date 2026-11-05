@@ -45,6 +45,7 @@ namespace SRCCore.Coverage.Tests.UnitAttackCheck
 AAAA, -.bmp
 吹き飛ばし拳, 1500, 1, 1, +0, -, -, -, AAAA, +0, 突吹L2
 引き寄せ鎖, 1500, 1, 5, +0, -, -, -, AAAA, +0, 実引
+投下引き寄せ, 1500, 1, 5, +0, -, -, -, AAAA, +0, 実Ｍ投L1引
 転移光線, 1500, 1, 5, +0, -, -, -, AAAA, +0, Ｂ転L1
 体当たり, 1500, 1, 1, +0, -, -, -, AAAA, +0, 突Ｋ
 コピー光線, 1500, 1, 5, +0, -, -, -, AAAA, +0, Ｂ写
@@ -298,6 +299,25 @@ AAAA, -.bmp
 
             Assert.IsFalse(a.CheckDrawAttack(WeaponOf(a, "引き寄せ鎖"), t, ref msg, "", ref ct));
             Assert.AreEqual(3, t.x);
+        }
+
+        [TestMethod]
+        public void Draw_MapThrowAttackerAdjacentToTarget_PullsToCenter()
+        {
+            // VB 版の「既に隣接している？」は tx・ty を設定する前に判定するので働かない。
+            // 投下型（Ｍ投）では攻撃側が目標に隣接していても、目標地点へ引き寄せる。
+            var f = CreateFixture();
+            var a = Attacker(f, 2, 5);
+            var t = f.Place("標的機", "標的", "敵", 3, 5);
+            f.Src.Commands.SelectedX = 6;
+            f.Src.Commands.SelectedY = 5;
+            var msg = "";
+            var ct = "";
+
+            Assert.IsTrue(a.CheckDrawAttack(WeaponOf(a, "投下引き寄せ"), t, ref msg, "", ref ct));
+            Assert.AreEqual(6, t.x);
+            Assert.AreEqual(5, t.y);
+            Assert.AreEqual(" 引き寄せ", ct);
         }
 
         [TestMethod]
