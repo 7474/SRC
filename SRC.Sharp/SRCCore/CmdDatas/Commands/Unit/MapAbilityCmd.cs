@@ -57,6 +57,10 @@ namespace SRCCore.CmdDatas.Commands
                         u = Event.SelectedUnitForEvent;
                         aname = GetArgAsString(2);
                         ua = u.Abilities.FirstOrDefault(x => x.Data.Name == aname && x.IsAbilityClassifiedAs("Ｍ"));
+                        if (ua == null)
+                        {
+                            throw new EventErrorException(this, "アビリティ名が間違っています");
+                        }
 
                         tx = GetArgAsLong(3);
                         if (tx < 1)
