@@ -375,7 +375,7 @@ namespace SRCCore.Units
                         // XXX 合体制限は変形してる時だけでいい？
                         var pu = SRC.UList.Item(x.PartUnitNames.First());
                         return targetUnit.Name == x.PartUnitNames.First()
-                            || targetUnit.Name == pu.CurrentForm().Name && !targetUnit.IsFeatureAvailable("合体制限");
+                            || (targetUnit.Name == pu.CurrentForm().Name && !targetUnit.IsFeatureAvailable("合体制限"));
                     }))
                 {
                     Combine();
@@ -1327,8 +1327,8 @@ namespace SRCCore.Units
                 foreach (var fd in u.Features.Where(x => x.Name == "分離"))
                 {
                     if (fd.DataL.Count == 3
-                        && (IsEqual(fd.DataL[1]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[2])
-                            || IsEqual(fd.DataL[2]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[1])))
+                        && ((IsEqual(fd.DataL[1]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[2]))
+                            || (IsEqual(fd.DataL[2]) && Map.MapDataForUnit[x, y].IsEqual(fd.DataL[1]))))
                     {
                         splitFeature = fd;
                         break;
