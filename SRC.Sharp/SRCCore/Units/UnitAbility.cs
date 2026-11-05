@@ -54,7 +54,7 @@ namespace SRCCore.Units
             int AbilityMinRangeRet = Data.MinRange;
             if (IsAbilityClassifiedAs("小"))
             {
-                AbilityMinRangeRet = GeneralLib.MinLng((int)(AbilityMinRangeRet + AbilityLevel("小")), Data.MaxRange);
+                AbilityMinRangeRet = GeneralLib.MinLng(VBMath.CLng(AbilityMinRangeRet + AbilityLevel("小")), Data.MaxRange);
             }
 
             return AbilityMinRangeRet;
@@ -96,55 +96,55 @@ namespace SRCCore.Units
 
                             case 2d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.9d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.9d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 3d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.8d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.8d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 4d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.7d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.7d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 5d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.6d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.6d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 6d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.5d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.5d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 7d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.45d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.45d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 8d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.4d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.4d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 9d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.35d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.35d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case var @case when @case >= 10d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.3d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.3d * AbilityENConsumptionRet);
                                     break;
                                 }
                         }
@@ -165,55 +165,55 @@ namespace SRCCore.Units
 
                             case 2d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.9d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.9d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 3d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.8d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.8d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 4d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.7d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.7d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 5d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.6d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.6d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 6d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.5d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.5d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 7d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.45d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.45d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 8d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.4d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.4d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 9d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.35d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.35d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case var case1 when case1 >= 10d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.3d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.3d * AbilityENConsumptionRet);
                                     break;
                                 }
                         }
@@ -237,7 +237,7 @@ namespace SRCCore.Units
                     rate = 0.1d;
                 }
 
-                AbilityENConsumptionRet = (int)(rate * AbilityENConsumptionRet);
+                AbilityENConsumptionRet = VBMath.CLng(rate * AbilityENConsumptionRet);
             }
 
             return AbilityENConsumptionRet;
@@ -666,7 +666,7 @@ namespace SRCCore.Units
             // 共有武器＆アビリティが充填中の場合も使用不可
             if (IsAbilityClassifiedAs("共"))
             {
-                int lv = (int)AbilityLevel("共");
+                int lv = VBMath.CLng(AbilityLevel("共"));
                 if (Unit.Weapons
                     .Where(x => x.IsWeaponClassifiedAs("共"))
                     .Where(x => x.WeaponLevel("共") == lv)
@@ -1426,8 +1426,9 @@ namespace SRCCore.Units
                     {
                         if (ua.IsAbilityClassifiedAs("斉"))
                         {
-                            // XXX これどういう式なのかいまいち分からん
-                            ua.SetStock(GeneralLib.MinLng((int)(ua.MaxStock() * dblStock + 0.49999d), ua.Stock()));
+                            // VB: SetStock i, MinLng(CInt(MaxStock(i) * Stock(a) \ MaxStock(a) + 0.49999), Stock(i))
+                            // \ は + より先に計算するので、整数の商に 0.49999 を足して CInt で丸める（商がそのまま残る）
+                            ua.SetStock(GeneralLib.MinLng(VBMath.CLng(ua.MaxStock() * Stock() / MaxStock() + 0.49999d), ua.Stock()));
                         }
                     }
                 }
@@ -1453,29 +1454,29 @@ namespace SRCCore.Units
 
             if (AbilityLevel("Ａ") > 0d)
             {
-                Unit.AddCondition(AbilityNickname() + "充填中", (int)AbilityLevel("Ａ"), cdata: "");
+                Unit.AddCondition(AbilityNickname() + "充填中", VBMath.CLng(AbilityLevel("Ａ")), cdata: "");
             }
 
             if (IsAbilityClassifiedAs("気"))
             {
-                Unit.IncreaseMorale((int)(-5 * AbilityLevel("気")));
+                Unit.IncreaseMorale(VBMath.CLng(-5 * AbilityLevel("気")));
             }
 
             if (IsAbilityClassifiedAs("霊"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("霊"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * AbilityLevel("霊"));
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
             else if (IsAbilityClassifiedAs("プ"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("プ"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * AbilityLevel("プ"));
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
 
             if (Unit.Party == "味方")
@@ -1488,7 +1489,7 @@ namespace SRCCore.Units
 
             if (IsAbilityClassifiedAs("失"))
             {
-                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - (long)(Unit.MaxHP * AbilityLevel("失")) / 10L), 0);
+                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - VBMath.IntDiv(Unit.MaxHP * AbilityLevel("失"), 10L)), 0);
             }
         }
 
@@ -1496,7 +1497,7 @@ namespace SRCCore.Units
         public int Stock()
         {
             int StockRet = default;
-            StockRet = (int)(dblStock * MaxStock());
+            StockRet = VBMath.CLng(dblStock * MaxStock());
             return StockRet;
         }
 
@@ -1506,7 +1507,7 @@ namespace SRCCore.Units
             int MaxStockRet = default;
             if (Unit.BossRank > 0)
             {
-                MaxStockRet = (int)(Data.Stock * (5 + Unit.BossRank) / 5d);
+                MaxStockRet = VBMath.CLng(Data.Stock * (5 + Unit.BossRank) / 5d);
             }
             else
             {

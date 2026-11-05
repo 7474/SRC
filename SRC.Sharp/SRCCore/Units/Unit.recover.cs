@@ -224,10 +224,10 @@ namespace SRCCore.Units
                     var plana_hp_ratio = 100 * HP / (double)MaxHP;
                     var plana_en_ratio = 100 * EN / (double)MaxEN;
                     p.Plana = (int)(p.Plana + p.MaxPlana() / 16
-                        + (long)(p.MaxPlana() * FeatureLevel("霊力回復")) / 10L
-                        - (long)(p.MaxPlana() * FeatureLevel("霊力消費")) / 10L);
-                    HP = (int)((long)(MaxHP * plana_hp_ratio) / 100L);
-                    EN = (int)((long)(MaxEN * plana_en_ratio) / 100L);
+                        + VBMath.IntDiv(p.MaxPlana() * FeatureLevel("霊力回復"), 10)
+                        - VBMath.IntDiv(p.MaxPlana() * FeatureLevel("霊力消費"), 10));
+                    HP = (int)VBMath.IntDiv(MaxHP * plana_hp_ratio, 100);
+                    EN = (int)VBMath.IntDiv(MaxEN * plana_en_ratio, 100);
                 }
 
                 // ＳＰ回復
@@ -328,23 +328,23 @@ namespace SRCCore.Units
             {
                 if (IsFeatureAvailable("ＨＰ回復"))
                 {
-                    hp_recovery = (int)(10d * FeatureLevel("ＨＰ回復"));
+                    hp_recovery = VBMath.CLng(10d * FeatureLevel("ＨＰ回復"));
                 }
 
                 if (IsFeatureAvailable("ＥＮ回復"))
                 {
-                    en_recovery = (int)(10d * FeatureLevel("ＥＮ回復"));
+                    en_recovery = VBMath.CLng(10d * FeatureLevel("ＥＮ回復"));
                 }
             }
 
             if (IsFeatureAvailable("ＨＰ消費"))
             {
-                hp_recovery = (int)(hp_recovery - 10d * FeatureLevel("ＨＰ消費"));
+                hp_recovery = VBMath.CLng(hp_recovery - 10d * FeatureLevel("ＨＰ消費"));
             }
 
             if (IsFeatureAvailable("ＥＮ消費"))
             {
-                en_recovery = (int)(en_recovery - 10d * FeatureLevel("ＥＮ消費"));
+                en_recovery = VBMath.CLng(en_recovery - 10d * FeatureLevel("ＥＮ消費"));
             }
 
             // 毒によるＨＰ減少
@@ -404,8 +404,8 @@ namespace SRCCore.Units
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
             UpdateCondition(true);
-            HP = (int)((long)(MaxHP * hp_ratio) / 100L);
-            EN = (int)((long)(MaxEN * en_ratio) / 100L);
+            HP = (int)VBMath.IntDiv(MaxHP * hp_ratio, 100);
+            EN = (int)VBMath.IntDiv(MaxEN * en_ratio, 100);
 
             // サポートアタック＆ガード
             UsedSupportAttack = 0;
@@ -531,19 +531,19 @@ namespace SRCCore.Units
                                 switch (fd.Name ?? "")
                                 {
                                     case "ＨＰ回復":
-                                        hp_recovery = (int)(hp_recovery + 10 * flevel);
+                                        hp_recovery = VBMath.CLng(hp_recovery + 10 * flevel);
                                         break;
 
                                     case "ＥＮ回復":
-                                        en_recovery = (int)(en_recovery + 10 * flevel);
+                                        en_recovery = VBMath.CLng(en_recovery + 10 * flevel);
                                         break;
 
                                     case "ＨＰ増加":
-                                        hp_up = (int)(hp_up + 1000 * flevel);
+                                        hp_up = VBMath.CLng(hp_up + 1000 * flevel);
                                         break;
 
                                     case "ＥＮ増加":
-                                        en_up = (int)(en_up + 10 * flevel);
+                                        en_up = VBMath.CLng(en_up + 10 * flevel);
                                         break;
                                 }
                             }
@@ -553,19 +553,19 @@ namespace SRCCore.Units
                                 switch (fd.Name ?? "")
                                 {
                                     case "ＨＰ減少":
-                                        hp_recovery += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        hp_recovery = VBMath.CLng(hp_recovery + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "ＥＮ減少":
-                                        en_recovery += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        en_recovery = VBMath.CLng(en_recovery + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "ＨＰ低下":
-                                        hp_up += TerrainDecreaseRate(fd.Data, 1000 * flevel);
+                                        hp_up = VBMath.CLng(hp_up + TerrainDecreaseRate(fd.Data, 1000 * flevel));
                                         break;
 
                                     case "ＥＮ低下":
-                                        en_up += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        en_up = VBMath.CLng(en_up + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "状態付加":
@@ -576,7 +576,7 @@ namespace SRCCore.Units
                                             {
                                                 if (fd.HasLevel)
                                                 {
-                                                    AddCondition(cname, (int)fd.Level, cdata: "");
+                                                    AddCondition(cname, VBMath.CLng(fd.Level), cdata: "");
                                                 }
                                                 else
                                                 {
@@ -860,27 +860,28 @@ namespace SRCCore.Units
 
         // 地形効果「ＨＰ減少」「ＥＮ減少」「ＨＰ低下」「ＥＮ低下」による変化量
         // rate は属性 attr に対して特に耐性等が無い場合の減少量
-        private int TerrainDecreaseRate(string attr, double rate)
+        // VB は「hp_recovery = hp_recovery - 20 * .FeatureLevel(i)」のように足してから丸めるので、実数のまま返す
+        private double TerrainDecreaseRate(string attr, double rate)
         {
             if (Weakness(attr))
             {
-                return (int)(-2d * rate);
+                return -2d * rate;
             }
             else if (Effective(attr))
             {
-                return (int)-rate;
+                return -rate;
             }
             else if (Absorb(attr))
             {
-                return (int)rate;
+                return rate;
             }
             else if (Resist(attr))
             {
-                return (int)(-rate / 2d);
+                return -rate / 2d;
             }
             else if (!Immune(attr))
             {
-                return (int)-rate;
+                return -rate;
             }
 
             return 0;

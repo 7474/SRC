@@ -283,7 +283,7 @@ namespace SRCCore.Expressions
                             {
                                 if (etype == ValueType.NumericType)
                                 {
-                                    u.HP = (int)num_value;
+                                    u.HP = VBMath.CLng(num_value);
                                 }
                                 else
                                 {
@@ -322,7 +322,7 @@ namespace SRCCore.Expressions
                             {
                                 if (etype == ValueType.NumericType)
                                 {
-                                    u.EN = (int)num_value;
+                                    u.EN = VBMath.CLng(num_value);
                                 }
                                 else
                                 {
@@ -365,7 +365,7 @@ namespace SRCCore.Expressions
                                     {
                                         if (etype == ValueType.NumericType)
                                         {
-                                            withBlock.SP = (int)num_value;
+                                            withBlock.SP = VBMath.CLng(num_value);
                                         }
                                         else
                                         {
@@ -403,7 +403,7 @@ namespace SRCCore.Expressions
                                 {
                                     if (etype == ValueType.NumericType)
                                     {
-                                        p.Plana = (int)num_value;
+                                        p.Plana = VBMath.CLng(num_value);
                                     }
                                     else
                                     {
@@ -438,7 +438,7 @@ namespace SRCCore.Expressions
                             {
                                 if (etype == ValueType.NumericType)
                                 {
-                                    u.UsedAction = (int)(u.MaxAction() - num_value);
+                                    u.UsedAction = VBMath.CLng(u.MaxAction() - num_value);
                                 }
                                 else
                                 {
@@ -523,7 +523,7 @@ namespace SRCCore.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            Event.BaseX = (int)num_value;
+                            Event.BaseX = VBMath.CLng(num_value);
                         }
                         else
                         {
@@ -537,7 +537,7 @@ namespace SRCCore.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            Event.BaseY = (int)num_value;
+                            Event.BaseY = VBMath.CLng(num_value);
                         }
                         else
                         {
@@ -551,7 +551,7 @@ namespace SRCCore.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.Turn = (int)num_value;
+                            SRC.Turn = VBMath.CLng(num_value);
                         }
                         else
                         {
@@ -565,7 +565,7 @@ namespace SRCCore.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.TotalTurn = (int)num_value;
+                            SRC.TotalTurn = VBMath.CLng(num_value);
                         }
                         else
                         {
@@ -580,7 +580,7 @@ namespace SRCCore.Expressions
                         SRC.Money = 0;
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.IncrMoney((int)num_value);
+                            SRC.IncrMoney(VBMath.CLng(num_value));
                         }
                         else
                         {

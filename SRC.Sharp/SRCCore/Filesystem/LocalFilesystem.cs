@@ -284,8 +284,8 @@ namespace SRCCore.Filesystem
             {
                 return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
-                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+                                    || (enumerationOptions == EntryOption.File && !Directory.Exists(x))
+                                    || (enumerationOptions == EntryOption.Directory && Directory.Exists(x)));
             }
             catch (DirectoryNotFoundException)
             {
@@ -357,8 +357,8 @@ namespace SRCCore.Filesystem
             {
                 return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
-                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+                                    || (enumerationOptions == EntryOption.File && !Directory.Exists(x))
+                                    || (enumerationOptions == EntryOption.Directory && Directory.Exists(x)));
             }
             catch (DirectoryNotFoundException)
             {

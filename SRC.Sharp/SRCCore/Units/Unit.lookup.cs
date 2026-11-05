@@ -205,7 +205,7 @@ namespace SRCCore.Units
         {
             var p = MainPilot();
             return GeneralLib.MaxLng(
-                    (int)p.SkillLevel("援護攻撃", ref_mode: ""), (int)p.SkillLevel("援護", ref_mode: ""));
+                    VBMath.CLng(p.SkillLevel("援護攻撃", ref_mode: "")), VBMath.CLng(p.SkillLevel("援護", ref_mode: "")));
         }
 
         // 最大サポートガード回数
@@ -213,13 +213,13 @@ namespace SRCCore.Units
         {
             var p = MainPilot();
             return GeneralLib.MaxLng(
-                    (int)p.SkillLevel("援護防御", ref_mode: ""), (int)p.SkillLevel("援護", ref_mode: ""));
+                    VBMath.CLng(p.SkillLevel("援護防御", ref_mode: "")), VBMath.CLng(p.SkillLevel("援護", ref_mode: "")));
         }
 
         // 最大同時援護攻撃回数
         public int MaxSyncAttack()
         {
-            return (int)MainPilot().SkillLevel("統率", ref_mode: "");
+            return VBMath.CLng(MainPilot().SkillLevel("統率", ref_mode: ""));
         }
 
         // 最大カウンター攻撃回数
@@ -228,7 +228,7 @@ namespace SRCCore.Units
             int MaxCounterAttackRet = default;
             {
                 var p = MainPilot();
-                MaxCounterAttackRet = (int)p.SkillLevel("カウンター", ref_mode: "");
+                MaxCounterAttackRet = VBMath.CLng(p.SkillLevel("カウンター", ref_mode: ""));
                 if (p.IsSkillAvailable("先手必勝"))
                 {
                     if (GeneralLib.LLength(p.SkillData("先手必勝")) == 2)
@@ -435,7 +435,7 @@ namespace SRCCore.Units
             }
 
             // 同士討ちの場合は本来の陣営に属するユニットのみを守る
-            if ((Party ?? "") == (t.Party ?? "") || Party == "ＮＰＣ" && t.Party == "味方")
+            if ((Party ?? "") == (t.Party ?? "") || (Party == "ＮＰＣ" && t.Party == "味方"))
             {
                 if ((Party ?? "") != (Party0 ?? ""))
                 {
@@ -820,7 +820,7 @@ namespace SRCCore.Units
 
             var withBlock = CurrentForm();
             // 技能チェックが必要？
-            if (withBlock.CountPilot() == 0 || !IsFeatureAvailable("必要技能") && !IsFeatureAvailable("不必要技能"))
+            if (withBlock.CountPilot() == 0 || (!IsFeatureAvailable("必要技能") && !IsFeatureAvailable("不必要技能")))
             {
                 return true;
             }
@@ -1611,7 +1611,7 @@ namespace SRCCore.Units
                                             }
 
                                             // ユニットが自分？
-                                            if (ReferenceEquals(u, this) || x == ix && y == jy)
+                                            if (ReferenceEquals(u, this) || (x == ix && y == jy))
                                             {
                                                 goto NextNeighbor;
                                             }
@@ -1728,7 +1728,7 @@ namespace SRCCore.Units
                 {
                     if (fd.HasLevel)
                     {
-                        clevel = (int)fd.FeatureLevel;
+                        clevel = VBMath.CLng(fd.FeatureLevel);
                     }
                     else
                     {

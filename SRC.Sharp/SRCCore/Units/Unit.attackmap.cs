@@ -65,24 +65,24 @@ namespace SRCCore.Units
             {
                 if (ty < y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "N", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "N", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else if (ty > y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "S", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "S", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else if (tx < x && Math.Abs((x - tx)) >= Math.Abs((y - ty)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "W", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "W", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "E", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "E", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
             }
             else if (w.IsWeaponClassifiedAs("Ｍ投"))
             {
-                Map.AreaInRange(tx, ty, (int)w.WeaponLevel("Ｍ投"), 1, "すべて");
+                Map.AreaInRange(tx, ty, VBMath.CLng(w.WeaponLevel("Ｍ投")), 1, "すべて");
             }
             else if (w.IsWeaponClassifiedAs("Ｍ全"))
             {
@@ -632,7 +632,7 @@ namespace SRCCore.Units
                         // スペシャルパワーによる獲得資金増加
                         if (IsUnderSpecialPowerEffect("獲得資金増加"))
                         {
-                            earnings = (int)GeneralLib.MinDbl(earnings * (1d + 0.1d * SpecialPowerEffectLevel("獲得資金増加")), 999999999d);
+                            earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * (1d + 0.1d * SpecialPowerEffectLevel("獲得資金増加")), 999999999d));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -640,7 +640,7 @@ namespace SRCCore.Units
                         {
                             if (!IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * ((10d + SkillLevel("資金獲得", 5d)) / 10d), 999999999d));
                             }
                         }
 
@@ -829,7 +829,7 @@ namespace SRCCore.Units
 
                     if (w.IsWeaponClassifiedAs("気"))
                     {
-                        pu.IncreaseMorale(-5 * (int)w.WeaponLevel("気"));
+                        pu.IncreaseMorale(VBMath.CLng(-5 * w.WeaponLevel("気")));
                     }
                 }
             }

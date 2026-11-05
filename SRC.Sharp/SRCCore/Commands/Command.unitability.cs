@@ -221,7 +221,7 @@ namespace SRCCore.Commands
                 }
                 else if (unitAbility.IsAbilityClassifiedAs("Ｍ扇"))
                 {
-                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, (int)unitAbility.AbilityLevel("Ｍ扇"));
+                    Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, VBMath.CLng(unitAbility.AbilityLevel("Ｍ扇")));
                 }
                 else if (unitAbility.IsAbilityClassifiedAs("Ｍ移"))
                 {
@@ -391,7 +391,7 @@ namespace SRCCore.Commands
 
             // 移動後使用後可能なアビリティか記録しておく
             var is_p_ability = unitAbility.IsAbilityClassifiedAs("Ｐ")
-                        || unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ");
+                        || (unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ"));
 
             // 使用イベント
             Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, aname);
@@ -564,7 +564,7 @@ namespace SRCCore.Commands
 
             // 移動後使用後可能なアビリティか記録しておく
             var is_p_ability = unitAbility.IsAbilityClassifiedAs("Ｐ")
-                        || unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ");
+                        || (unitAbility.AbilityMaxRange() == 1 && !unitAbility.IsAbilityClassifiedAs("Ｑ"));
 
             // 目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティの場合は再度プレイヤーの選択を促す必要がある
             if (CommandState == "ターゲット選択" || CommandState == "移動後ターゲット選択")
@@ -581,18 +581,18 @@ namespace SRCCore.Commands
                     }
 
                     // 目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 効果範囲を設定
-                    Map.AreaInRange(SelectedX, SelectedY, (int)unitAbility.AbilityLevel("Ｍ投"), 1, "味方");
+                    Map.AreaInRange(SelectedX, SelectedY, VBMath.CLng(unitAbility.AbilityLevel("Ｍ投")), 1, "味方");
                     GUI.MaskScreen();
                     return;
                 }
                 else if (unitAbility.IsAbilityClassifiedAs("Ｍ移"))
                 {
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
                     if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
                     {
                         GUI.MaskScreen();
@@ -626,8 +626,8 @@ namespace SRCCore.Commands
                     }
 
                     // 目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 効果範囲を設定
                     Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);

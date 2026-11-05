@@ -304,6 +304,36 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
+        public void IntDivide_FractionalOperands_RoundsBothToEvenBeforeDividing()
+        {
+            // VB: Expression.bas EvalExpr の num_result = lnum \ rnum。
+            // \ 演算子は割る前に被除数・除数を偶数丸めで整数にする
+            var exp = Create();
+            // 7.5 → 8、8 \ 2 = 4（切り捨てなら 7 \ 2 = 3）
+            Assert.AreEqual(4d, exp.GetValueAsDouble("7.5 \\ 2"));
+            // 3.5 → 4、6 \ 4 = 1（切り捨てなら 6 \ 3 = 2）
+            Assert.AreEqual(1d, exp.GetValueAsDouble("6 \\ 3.5"));
+            // 2.5 → 2（偶数丸め）、9 \ 2 = 4
+            Assert.AreEqual(4d, exp.GetValueAsDouble("9 \\ 2.5"));
+        }
+
+        [TestMethod]
+        public void SetVariable_SystemVariables_RoundFractionalValueToEven()
+        {
+            // VB: Expression.bas SetVariable。Turn（Integer）・TotalTurn（Long）への代入と
+            // IncrMoney（ByVal Long）への受け渡しは偶数への丸め
+            var src = new SRC { GUI = new MockGUI() };
+            src.Expression.SetVariableAsDouble("ターン数", 2.6d);
+            Assert.AreEqual(3, src.Turn);
+            src.Expression.SetVariableAsDouble("総ターン数", 4.5d);
+            Assert.AreEqual(4, src.TotalTurn);
+            src.Expression.SetVariableAsDouble("資金", 100.5d);
+            Assert.AreEqual(100, src.Money);
+            src.Expression.SetVariableAsDouble("資金", 101.5d);
+            Assert.AreEqual(102, src.Money);
+        }
+
+        [TestMethod]
         public void IntDivide_LargeNumbers_Truncates()
         {
             var exp = Create();

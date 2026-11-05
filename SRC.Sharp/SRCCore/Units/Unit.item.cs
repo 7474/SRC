@@ -21,7 +21,7 @@ namespace SRCCore.Units
                 {
                     if (fd.Name == "ハードポイント" && (fd.Data == "強化パーツ" || fd.Data == "アイテム"))
                     {
-                        MaxItemNumRet = (int)(MaxItemNumRet + fd.FeatureLevel);
+                        MaxItemNumRet = VBMath.CLng(MaxItemNumRet + fd.FeatureLevel);
                         break;
                     }
                 }
@@ -117,7 +117,7 @@ namespace SRCCore.Units
                             }
 
                             // 大型アイテムの場合は余分に外す
-                            num = (int)(num + itm.FeatureLevel("大型アイテム"));
+                            num = VBMath.CLng(num + itm.FeatureLevel("大型アイテム"));
 
                             // 何れかを外さなければならない場合
                             while (num >= MaxItemNum() && num > 0)
@@ -550,7 +550,7 @@ namespace SRCCore.Units
                 }
 
                 sizes.TryGetValue(fd.Data, out var size);
-                sizes[fd.Data] = (int)(size + fd.FeatureLevel);
+                sizes[fd.Data] = VBMath.CLng(size + fd.FeatureLevel);
             }
 
             return sizes;
@@ -606,7 +606,7 @@ namespace SRCCore.Units
                                     case "強化パーツ":
                                     case "アイテム":
                                         {
-                                            ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
+                                            ItemSlotSizeRet = VBMath.CLng(ItemSlotSizeRet + fd.FeatureLevel);
                                             break;
                                         }
                                 }
@@ -630,7 +630,7 @@ namespace SRCCore.Units
                             {
                                 if (fd.Data == ipart)
                                 {
-                                    ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
+                                    ItemSlotSizeRet = VBMath.CLng(ItemSlotSizeRet + fd.FeatureLevel);
                                 }
                             }
                         }

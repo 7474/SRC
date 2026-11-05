@@ -117,7 +117,8 @@ namespace SRCCore
                 while (!string.IsNullOrEmpty(fname2));
             }
 
-            i = (int)(i * SRC.Rand());
+            // VB: Sound.bas StartBGM。1 ～ (見つかったバリエーションの数) から一様に選ぶ
+            i = VBMath.Int(((i - 1) * SRC.Rand()) + 1);
             if (i > 1)
             {
                 fname = SearchMidiFile("(" + fname0 + "(" + SrcFormatter.Format(i) + ")" + Strings.Right(fname, 4) + ")");

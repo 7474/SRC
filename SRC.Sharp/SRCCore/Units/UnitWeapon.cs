@@ -509,7 +509,7 @@ namespace SRCCore.Units
                             // ジャンプ攻撃
                             if (IsWeaponClassifiedAs("Ｊ"))
                             {
-                                uad = (int)(uad + WeaponLevel("Ｊ"));
+                                uad = VBMath.CLng(uad + WeaponLevel("Ｊ"));
                             }
 
                             break;
@@ -533,7 +533,7 @@ namespace SRCCore.Units
                     case "水上":
                         {
                             // 水中専用ユニットが水上のユニットに格闘戦をしかけられるようにする
-                            uad = (int)GeneralLib.MaxDbl(Unit.get_Adaption(2), Unit.get_Adaption(3));
+                            uad = VBMath.CLng(GeneralLib.MaxDbl(Unit.get_Adaption(2), Unit.get_Adaption(3)));
                             if (uad <= 0)
                             {
                                 // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
@@ -557,7 +557,7 @@ namespace SRCCore.Units
                                 // 月面からのジャンプ攻撃
                                 if (IsWeaponClassifiedAs("Ｊ"))
                                 {
-                                    uad = (int)(uad + WeaponLevel("Ｊ"));
+                                    uad = VBMath.CLng(uad + WeaponLevel("Ｊ"));
                                 }
                             }
 
@@ -811,7 +811,7 @@ namespace SRCCore.Units
             // スペシャルパワーによる射程延長
             if (Unit.IsUnderSpecialPowerEffect("射程延長"))
             {
-                WeaponMaxRangeRet = (int)(WeaponMaxRangeRet + Unit.SpecialPowerEffectLevel("射程延長"));
+                WeaponMaxRangeRet = VBMath.CLng(WeaponMaxRangeRet + Unit.SpecialPowerEffectLevel("射程延長"));
             }
 
             return WeaponMaxRangeRet;
@@ -1161,7 +1161,7 @@ namespace SRCCore.Units
 
                     var code = Strings.Asc(c);
                     // "-", ".", 0-9 以外が現れたらそこで終わり
-                    if (!(45 <= code && code <= 46 || 48 <= code && code <= 57))
+                    if (!((45 <= code && code <= 46) || (48 <= code && code <= 57)))
                     {
                         break;
                     }
@@ -1565,7 +1565,7 @@ namespace SRCCore.Units
             // 共有武器＆アビリティが充填中の場合も使用不可
             if (GeneralLib.InStrNotNest(WeaponClass(), "共") > 0)
             {
-                int lv = (int)WeaponLevel("共");
+                int lv = VBMath.CLng(WeaponLevel("共"));
                 if (Unit.Weapons
                     .Where(x => x.IsWeaponClassifiedAs("共"))
                     .Where(x => x.WeaponLevel("共") == lv)
@@ -1739,7 +1739,7 @@ namespace SRCCore.Units
             max_range = WeaponMaxRange();
 
             // 投下型マップ攻撃は効果範囲が広い
-            max_range = (int)(max_range + WeaponLevel("Ｍ投"));
+            max_range = VBMath.CLng(max_range + WeaponLevel("Ｍ投"));
 
             // 敵の存在判定
             var loopTo = GeneralLib.MinLng(Unit.x + max_range, Map.MapWidth);
@@ -1834,7 +1834,7 @@ namespace SRCCore.Units
             distance = (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)));
 
             // Ｍ投武器は目標地点からさらに効果範囲が伸びるので射程修正を行う
-            range_mod = (int)WeaponLevel("Ｍ投");
+            range_mod = VBMath.CLng(WeaponLevel("Ｍ投"));
 
             // 最大射程チェック
             max_range = WeaponMaxRange();
@@ -1928,7 +1928,7 @@ namespace SRCCore.Units
             {
                 if (t.IsFeatureLevelSpecified("ステルス"))
                 {
-                    max_range = GeneralLib.MinLng(max_range, (int)(t.FeatureLevel("ステルス") + 1d));
+                    max_range = GeneralLib.MinLng(max_range, VBMath.CLng(t.FeatureLevel("ステルス") + 1d));
                 }
                 else
                 {
@@ -2422,11 +2422,11 @@ namespace SRCCore.Units
                 // ホーミング攻撃はＥＣＭの影響を強く受ける
                 if (GeneralLib.InStrNotNest(WeaponClass(), "Ｈ") > 0)
                 {
-                    prob = ((int)(prob * (100d - 10d * effective_ecm_lv)) / 100);
+                    prob = (int)VBMath.IntDiv(prob * (100d - 10d * effective_ecm_lv), 100);
                 }
                 else
                 {
-                    prob = ((int)(prob * (100d - 5d * effective_ecm_lv)) / 100);
+                    prob = (int)VBMath.IntDiv(prob * (100d - 5d * effective_ecm_lv), 100);
                 }
             }
 
@@ -2541,7 +2541,7 @@ namespace SRCCore.Units
                     }
                 }
 
-                prob = ((int)(prob * (10d - prob_mod)) / 10);
+                prob = (int)VBMath.IntDiv(prob * (10d - prob_mod), 10);
             }
 
             // 動けなければ絶対に命中
@@ -2674,7 +2674,7 @@ namespace SRCCore.Units
 
                 if (Unit.IsUnderSpecialPowerEffect("命中率低下"))
                 {
-                    prob = ((int)(prob * (10d - Unit.SpecialPowerEffectLevel("命中率低下"))) / 10);
+                    prob = (int)VBMath.IntDiv(prob * (10d - Unit.SpecialPowerEffectLevel("命中率低下")), 10);
                 }
             }
 
@@ -2921,7 +2921,7 @@ namespace SRCCore.Units
             {
                 if (IsWeaponLevelSpecified("貫"))
                 {
-                    arm = (int)(arm * (10d - WeaponLevel("貫"))) / 10;
+                    arm = (int)VBMath.IntDiv(arm * (10d - WeaponLevel("貫")), 10);
                 }
                 else
                 {
@@ -3424,7 +3424,7 @@ namespace SRCCore.Units
 
                         if (j <= GeneralLib.LLength(sdata))
                         {
-                            DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel(i)) * DamageRet) / 10);
+                            DamageRet = (int)VBMath.IntDiv((10d + Unit.MainPilot().SkillLevel(i)) * DamageRet, 10);
                             break;
                         }
                     }
@@ -3447,7 +3447,7 @@ namespace SRCCore.Units
 
                     if (i <= GeneralLib.LLength(sdata))
                     {
-                        DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet) / 10);
+                        DamageRet = (int)VBMath.IntDiv((10d + Unit.MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet, 10);
                     }
                 }
             }
@@ -3558,7 +3558,7 @@ namespace SRCCore.Units
             }
 
 
-            DamageRet = (int)(DamageRet * (100d - dmg_mod)) / 100;
+            DamageRet = (int)VBMath.IntDiv(DamageRet * (100d - dmg_mod), 100);
         SkipResist:
             ;
             if (SRC.BCList.IsDefined("最終ダメージ"))
@@ -4918,7 +4918,7 @@ namespace SRCCore.Units
                 if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
                 {
                     // プロテクション発動
-                    dmg = ((int)(dmg * (100d - 10d * flevel - slevel)) / 100);
+                    dmg = (int)VBMath.IntDiv(dmg * (100d - 10d * flevel - slevel), 100);
                     if (dmg <= 0)
                     {
                         return WeaponNo();
@@ -5042,7 +5042,7 @@ namespace SRCCore.Units
 
             if (WeaponLevel("Ａ") > 0d)
             {
-                Unit.AddCondition(WeaponNickname() + "充填中", (int)WeaponLevel("Ａ"), cdata: "");
+                Unit.AddCondition(WeaponNickname() + "充填中", VBMath.CLng(WeaponLevel("Ａ")), cdata: "");
             }
 
             if (IsWeaponClassifiedAs("気"))
@@ -5330,7 +5330,7 @@ namespace SRCCore.Units
         {
             return IsWeaponAvailable("移動後")
                 && IsWeaponClassifiedAs("射撃系")
-                && (WeaponData.Bullet >= 10 || WeaponData.Bullet == 0 && WeaponData.ENConsumption <= 5);
+                && (WeaponData.Bullet >= 10 || (WeaponData.Bullet == 0 && WeaponData.ENConsumption <= 5));
         }
 
         public bool CanUseFor(WeaponListMode mode, Unit targetUnit)

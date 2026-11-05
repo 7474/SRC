@@ -592,7 +592,7 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = (long)lnum / (long)rnum;
+                            num_result = VBMath.IntDiv(lnum, VBMath.CLng(rnum));
                         }
                         else
                         {

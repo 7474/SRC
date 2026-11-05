@@ -71,6 +71,15 @@ AAAA, -.bmp
 AAAA, -.bmp
 パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突
 
+小数防護機
+小数防護機, しょうすうぼうごき, 汎用, 1, 2
+陸, 4, M, 1000, 100
+特殊能力
+プロテクションLv2.55=防護膜 全 10
+3000, 200, 1000, 100
+AAAA, -.bmp
+パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突
+
 完全防護機
 完全防護機, かんぜんぼうごき, 汎用, 1, 2
 陸, 4, M, 1000, 100
@@ -199,6 +208,21 @@ AAAA, -.bmp
             Assert.AreEqual(500, dmg);
             Assert.AreEqual(en - 10, t.EN);
             Assert.AreEqual("[防護膜]がダメージを減少させた。;", msg);
+        }
+
+        [TestMethod]
+        public void Protection_FractionalProduct_RoundsBeforeIntegerDivision()
+        {
+            // VB: dmg = dmg * (100 - 10 * flevel - slevel) \ 100。\ は被除数を偶数への丸めで整数にしてから割る。
+            // Lv2.55 で 51 × 74.5 = 3799.5 → 3800 \ 100 = 38（切り捨ててから割ると 37 になる）
+            var f = CreateFixture();
+            var a = f.Place("攻撃機", "攻撃者", "味方", 1, 1);
+            var t = f.Place("小数防護機", "防御者", "敵", 2, 1);
+            var dmg = 51;
+            var msg = "";
+
+            Assert.IsFalse(Defense(a, WeaponOf(a, "ビーム"), t, ref dmg, ref msg));
+            Assert.AreEqual(38, dmg);
         }
 
         [TestMethod]

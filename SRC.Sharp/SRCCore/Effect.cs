@@ -142,7 +142,7 @@ namespace SRCCore
                 if (withBlock.CountWeapon() >= 4
                     && w.WeaponNo() >= withBlock.CountWeapon() - 1
                     && w.WeaponData.Power >= 1800
-                    && (w.WeaponData.Bullet > 0 && w.WeaponData.Bullet <= 4
+                    && ((w.WeaponData.Bullet > 0 && w.WeaponData.Bullet <= 4)
                         || w.WeaponData.ENConsumption >= 35))
                 {
                     // ４つ以上の武器を持つユニットがそのユニットの最高威力
@@ -171,7 +171,7 @@ namespace SRCCore
             }
 
             // 武器準備のアニメーションを非表示にするオプションを選択している？
-            if (!SRC.WeaponAnimation && !SRC.ExtendedAnimation
+            if ((!SRC.WeaponAnimation && !SRC.ExtendedAnimation)
                 || Expression.IsOptionDefined("武器準備アニメ非表示"))
             {
                 // MOD END MARGE
@@ -267,7 +267,7 @@ namespace SRCCore
             if (Strings.InStr(wname, "ライフル") > 0
                 || Strings.InStr(wname, "バズーカ") > 0
                 || Strings.Right(wname, 2) == "ガン"
-                || Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃")
+                || (Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃"))
             {
                 if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0)
                 {
@@ -407,7 +407,7 @@ namespace SRCCore
             }
 
             if (Strings.InStr(wname, "ライフル") > 0
-                || Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃"
+                || (Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃")
                 || Strings.Right(wname, 2) == "ガン")
             {
                 wtype = "ライフル";
@@ -1279,11 +1279,11 @@ namespace SRCCore
                 || Strings.InStr(wname, "乱舞") > 0
                 || Strings.InStr(wname, "乱れ") > 0
                 || Strings.InStr(wname, "百烈") > 0
-                || Strings.Right(wname, 4) == "ラッシュ"
+                || (Strings.Right(wname, 4) == "ラッシュ"
                     && Strings.InStr(wname, "クラッシュ") == 0
                     && Strings.InStr(wname, "スラッシュ") == 0
                     && Strings.InStr(wname, "スプラッシュ") == 0
-                    && Strings.InStr(wname, "フラッシュ") == 0)
+                    && Strings.InStr(wname, "フラッシュ") == 0))
             {
                 combo_attack = true;
             }
@@ -2004,7 +2004,7 @@ namespace SRCCore
             }
 
             if (Strings.InStr(wname, "ライフル") > 0
-                || Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃")
+                || (Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃"))
             {
                 wtype = "ライフル";
                 goto FoundWeaponType;
@@ -2074,7 +2074,7 @@ namespace SRCCore
                 || Strings.InStr(wname, "ガン") > 0
                 || Strings.InStr(wname, "ピストル") > 0
                 || Strings.InStr(wname, "バズーカ") > 0
-                || Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃")
+                || (Strings.Right(wname, 1) == "銃" && Strings.Right(wname, 2) != "機銃"))
             {
                 if (GeneralLib.InStrNotNest(wclass, "Ｍ") > 0)
                 {
@@ -2328,10 +2328,10 @@ namespace SRCCore
             if (Strings.InStr(wname, "音波") > 0
                 || Strings.InStr(wname, "サウンド") > 0
                 || Strings.InStr(wname, "ソニック") > 0
-                || GeneralLib.InStrNotNest(wclass, "音") > 0 && Strings.InStr(wname, "ショック") > 0
+                || (GeneralLib.InStrNotNest(wclass, "音") > 0 && Strings.InStr(wname, "ショック") > 0)
                 || Strings.InStr(wname, "ウェーブ") > 0
                 || Strings.InStr(wname, "叫び") > 0
-                || GeneralLib.InStrNotNest(wclass, "音") > 0 && Strings.InStr(wname, "咆哮") > 0)
+                || (GeneralLib.InStrNotNest(wclass, "音") > 0 && Strings.InStr(wname, "咆哮") > 0))
             {
                 wtype = "音波";
                 goto FoundWeaponType;
@@ -2697,7 +2697,7 @@ namespace SRCCore
             // また等身大基準の場合、非人間ユニットはメカであることが多いのでこちらも
             // 内蔵武器を優先する。
             if (is_handy_weapon && (u.Data.Transportation == "空"
-                || Expression.IsOptionDefined("等身大基準") && !u.IsHero()))
+                || (Expression.IsOptionDefined("等身大基準") && !u.IsHero())))
             {
                 switch (wtype ?? "")
                 {
@@ -3191,7 +3191,7 @@ namespace SRCCore
                 || Strings.InStr(wname, "レールカノン") > 0
                 || Strings.InStr(wname, "リニアガン") > 0
                 || Strings.InStr(wname, "レールガン") > 0
-                || Strings.InStr(wname, "電磁") > 0 && Strings.InStr(wname, "砲") > 0)
+                || (Strings.InStr(wname, "電磁") > 0 && Strings.InStr(wname, "砲") > 0))
             {
                 Sound.PlayWave("Thunder.wav");
                 GUI.Sleep(300);
@@ -3653,7 +3653,7 @@ namespace SRCCore
                 || Strings.InStr(wname, "フレイル") > 0
                 || Strings.InStr(wname, "ヌンチャク") > 0
                 || Strings.InStr(wname, "三節根") > 0
-                || Strings.InStr(wname, "チェーン") > 0 && Strings.InStr(wname, "チェーンソー") == 0
+                || (Strings.InStr(wname, "チェーン") > 0 && Strings.InStr(wname, "チェーンソー") == 0)
                 || Strings.InStr(wname, "バット") > 0
                 || Strings.InStr(wname, "ギター") > 0
                 || Strings.InStr(wname, "竹刀") > 0
@@ -3680,7 +3680,7 @@ namespace SRCCore
                     || Strings.InStr(wname, "チェーン") > 0
                     || Strings.InStr(wname, "触手") > 0
                     || Strings.InStr(wname, "触腕") > 0
-                    || Strings.InStr(wname, "ロッド") > 0 && wname != "ロッド"
+                    || (Strings.InStr(wname, "ロッド") > 0 && wname != "ロッド")
                     || Strings.InStr(wname, "竹刀") > 0
                     || Strings.InStr(wname, "ハリセン") > 0)
                 {
@@ -4970,8 +4970,8 @@ namespace SRCCore
                     || Strings.InStr(wname, "スパイク") > 0
                     || Strings.InStr(wname, "カトラス") > 0
                     || Strings.InStr(wname, "エッジ") > 0
-                    || Strings.InStr(wname, "剣") > 0
-                    && Strings.InStr(wname, "手裏剣") == 0
+                    || (Strings.InStr(wname, "剣") > 0
+                    && Strings.InStr(wname, "手裏剣") == 0)
                     || Strings.InStr(wname, "切") > 0
                     || Strings.InStr(wname, "斬") > 0
                     || Strings.InStr(wname, "刀") > 0
@@ -5023,7 +5023,7 @@ namespace SRCCore
                     || Strings.InStr(wname, "手裏剣") > 0
                     || Strings.InStr(wname, "苦無") > 0
                     || Strings.InStr(wname, "クナイ") > 0
-                    || Strings.InStr(wname, "突き") > 0 && Strings.InStr(wname, "拳") == 0 && Strings.InStr(wname, "頭") == 0)
+                    || (Strings.InStr(wname, "突き") > 0 && Strings.InStr(wname, "拳") == 0 && Strings.InStr(wname, "頭") == 0))
                 {
                     if (!t.IsHero()
                         || Strings.InStr(wname, "ビーム") > 0
@@ -5199,7 +5199,7 @@ namespace SRCCore
                 }
                 else if (Strings.InStr(wname, "投げ") > 0
                     || Strings.InStr(wname, "スープレック") > 0
-                    || Strings.InStr(wname, "返し") > 0 && GeneralLib.InStrNotNest(wclass, "突") > 0)
+                    || (Strings.InStr(wname, "返し") > 0 && GeneralLib.InStrNotNest(wclass, "突") > 0))
                 {
                     Sound.PlayWave("Swing.wav");
                     GUI.Sleep(500);
@@ -5630,7 +5630,7 @@ namespace SRCCore
             // 連続攻撃の場合は攻撃回数にあわせる
             if (GeneralLib.InStrNotNest(wclass, "連") > 0)
             {
-                CountAttack0Ret = (int)w.WeaponLevel("連");
+                CountAttack0Ret = VBMath.CLng(w.WeaponLevel("連"));
                 return CountAttack0Ret;
             }
 
@@ -5790,7 +5790,7 @@ namespace SRCCore
                 || Strings.InStr(wname, "機関銃") > 0
                 || Strings.InStr(wname, "バルカン") > 0
                 || Strings.InStr(wname, "ガトリング") > 0
-                || Strings.InStr(wname, "パルス") > 0 && Strings.InStr(wname, "インパルス") == 0
+                || (Strings.InStr(wname, "パルス") > 0 && Strings.InStr(wname, "インパルス") == 0)
                 || Strings.InStr(wname, "速射") > 0
                 || Strings.InStr(wname, "ロケットランチャー") > 0
                 || Strings.InStr(wname, "ミサイルランチャー") > 0

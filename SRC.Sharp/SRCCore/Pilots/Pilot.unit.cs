@@ -90,7 +90,7 @@ namespace SRCCore.Pilots
                 // 霊力値のアップデート
                 if (plana_ratio >= 0d)
                 {
-                    Plana = (int)(MaxPlana() * plana_ratio / 100d);
+                    Plana = (int)VBMath.IntDiv(MaxPlana() * plana_ratio, 100);
                 }
                 else
                 {
@@ -98,8 +98,8 @@ namespace SRCCore.Pilots
                 }
 
                 // パイロットが乗り込むことによるＨＰ＆ＥＮの増減に対応
-                u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-                u.EN = (int)(u.MaxEN * en_ratio / 100d);
+                u.HP = (int)VBMath.IntDiv(u.MaxHP * hp_ratio, 100);
+                u.EN = (int)VBMath.IntDiv(u.MaxEN * en_ratio, 100);
             }
         }
 

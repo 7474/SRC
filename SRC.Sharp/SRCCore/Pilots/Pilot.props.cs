@@ -400,19 +400,19 @@ namespace SRCCore.Pilots
                 int DefenseRet = default;
                 if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                 {
-                    DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+                    DefenseRet = VBMath.CLng(100d + 5d * SkillLevel("耐久", ref_mode: ""));
                     if (Expression.IsOptionDefined("防御力低成長"))
                     {
-                        DefenseRet = (int)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: ""))) / 2L);
+                        DefenseRet = (int)(DefenseRet + VBMath.IntDiv(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: "")), 2));
                     }
                     else
                     {
-                        DefenseRet = (int)(DefenseRet + Level * (1d + SkillLevel("防御成長", ref_mode: "")));
+                        DefenseRet = DefenseRet + VBMath.Int(Level * (1d + SkillLevel("防御成長", ref_mode: "")));
                     }
                 }
                 else
                 {
-                    DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+                    DefenseRet = VBMath.CLng(100d + 5d * SkillLevel("耐久", ref_mode: ""));
                 }
 
                 return DefenseRet;

@@ -29,6 +29,15 @@ namespace SRCCore.Units
             return buf;
         }
 
+        // 武器の値（攻撃力・射程・命中率・ＣＴ率）の補正に実数を足す。
+        // VB は元の値から始まる Long・Integer の変数（lngWeaponPower(i) など）に実数を足して代入するので、
+        // 足すたびに「元の値＋補正＋実数」を偶数へ丸める。元の値からの差で持つ C# でも、
+        // 元の値を足してから丸めないと端数が .5 のときに結果が変わる。
+        internal static int AddRoundedCorrection(int baseValue, int correction, double value)
+        {
+            return VBMath.CLng(baseValue + correction + value) - baseValue;
+        }
+
         // ユニットの各種パラメータを更新するサブルーチン
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
@@ -595,7 +604,7 @@ namespace SRCCore.Units
                 {
                     case 1:
                         {
-                            lngMaxHP = (int)(lngMaxHP + 0.5d * Data.HP);
+                            lngMaxHP = VBMath.CLng(lngMaxHP + 0.5d * Data.HP);
                             break;
                         }
 
@@ -679,7 +688,7 @@ namespace SRCCore.Units
             {
                 if (CountPilot() > 0)
                 {
-                    lngMaxHP = GeneralLib.MinLng((int)(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
+                    lngMaxHP = GeneralLib.MinLng(VBMath.CLng(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
                 }
             }
 
@@ -688,7 +697,7 @@ namespace SRCCore.Units
             {
                 if (CountPilot() > 0)
                 {
-                    intMaxEN = GeneralLib.MinLng((int)(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
+                    intMaxEN = GeneralLib.MinLng(VBMath.CLng(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
                 }
             }
 
@@ -712,7 +721,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngMaxHP = (int)(lngMaxHP + 200d * fd.Level);
+                                lngMaxHP = VBMath.CLng(lngMaxHP + 200d * fd.Level);
                             }
 
                             break;
@@ -722,7 +731,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMaxEN = (int)(intMaxEN + 10d * fd.Level);
+                                intMaxEN = VBMath.CLng(intMaxEN + 10d * fd.Level);
                             }
 
                             break;
@@ -732,7 +741,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngArmor = (int)(lngArmor + 100d * fd.Level);
+                                lngArmor = VBMath.CLng(lngArmor + 100d * fd.Level);
                             }
 
                             break;
@@ -742,7 +751,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMobility = (int)(intMobility + 5d * fd.Level);
+                                intMobility = VBMath.CLng(intMobility + 5d * fd.Level);
                             }
 
                             break;
@@ -752,7 +761,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intSpeed = (int)(intSpeed + fd.Level);
+                                intSpeed = VBMath.CLng(intSpeed + fd.Level);
                             }
 
                             break;
@@ -762,7 +771,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngMaxHP = (int)(lngMaxHP + (long)(Data.HP * fd.Level) / 20L);
+                                lngMaxHP = (int)(lngMaxHP + VBMath.IntDiv(Data.HP * fd.Level, 20));
                             }
 
                             break;
@@ -772,7 +781,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMaxEN = (int)(intMaxEN + (long)(Data.EN * fd.Level) / 20L);
+                                intMaxEN = (int)(intMaxEN + VBMath.IntDiv(Data.EN * fd.Level, 20));
                             }
 
                             break;
@@ -782,7 +791,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngArmor = (int)(lngArmor + (long)(Data.Armor * fd.Level) / 20L);
+                                lngArmor = (int)(lngArmor + VBMath.IntDiv(Data.Armor * fd.Level, 20));
                             }
 
                             break;
@@ -792,7 +801,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMobility = (int)(intMobility + (long)(Data.Mobility * fd.Level) / 20L);
+                                intMobility = (int)(intMobility + VBMath.IntDiv(Data.Mobility * fd.Level, 20));
                             }
 
                             break;
@@ -874,7 +883,7 @@ namespace SRCCore.Units
                     {
                         if ((Area ?? "") == (GeneralLib.LIndex(fd.StrData, 2) ?? ""))
                         {
-                            intSpeed = (int)(intSpeed + fd.Level);
+                            intSpeed = VBMath.CLng(intSpeed + fd.Level);
                         }
                     }
                 }
@@ -1379,12 +1388,12 @@ namespace SRCCore.Units
                                 // いずれかで行われた場合にのみ強化
                                 if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
                                 {
-                                    correction = (int)(correction + 100d * fd.FeatureLevel);
+                                    correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
                                 }
                             }
                             else
                             {
-                                correction = (int)(correction + 100d * fd.FeatureLevel);
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
                             }
                         }
                     }
@@ -1410,12 +1419,12 @@ namespace SRCCore.Units
                                 // いずれかで行われた場合にのみ強化
                                 if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
                                 {
-                                    correction = (int)(correction + w.WeaponData.Power * fd.FeatureLevel / 20);
+                                    correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
                                 }
                             }
                             else
                             {
-                                correction = (int)(correction + w.WeaponData.Power * fd.FeatureLevel / 20);
+                                correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
                             }
                         }
                     }
@@ -1435,22 +1444,22 @@ namespace SRCCore.Units
                     if (w.IsWeaponLevelSpecified("Ｒ"))
                     {
                         // レベル設定されている場合、増加量をレベル×１０×ランクにする
-                        correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * (Rank + vupNum));
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * (Rank + vupNum));
                         // オ・シ・超と併用した場合
                         if (w.IsWeaponClassifiedAs("オ") || w.IsWeaponClassifiedAs("超") || w.IsWeaponClassifiedAs("シ"))
                         {
-                            correction = (int)(correction + 10d * (10d - w.WeaponLevel("Ｒ")) * (Rank + vupNum));
+                            correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * (10d - w.WeaponLevel("Ｒ")) * (Rank + vupNum));
 
                             // オーラ技
                             if (w.IsWeaponClassifiedAs("オ"))
                             {
-                                correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * AuraLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * AuraLevel());
                             }
 
                             // サイキック攻撃
                             if (w.IsWeaponClassifiedAs("超"))
                             {
-                                correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * PsychicLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * PsychicLevel());
                             }
 
                             // 同調率対象攻撃
@@ -1460,7 +1469,7 @@ namespace SRCCore.Units
                                 {
                                     if (MainPilot().SynchroRate() > 0)
                                     {
-                                        correction = (int)(correction + (long)(15d * w.WeaponLevel("Ｒ") * (SyncLevel() - 50d)) / 10L);
+                                        correction = (int)(correction + VBMath.IntDiv(15d * w.WeaponLevel("Ｒ") * (SyncLevel() - 50d), 10));
                                     }
                                 }
                             }
@@ -1479,13 +1488,13 @@ namespace SRCCore.Units
                             // オーラ技
                             if (w.IsWeaponClassifiedAs("オ"))
                             {
-                                correction = (int)(correction + 50d * AuraLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 50d * AuraLevel());
                             }
 
                             // サイキック攻撃
                             if (w.IsWeaponClassifiedAs("超"))
                             {
-                                correction = (int)(correction + 50d * PsychicLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 50d * PsychicLevel());
                             }
 
                             // 同調率対象攻撃
@@ -1495,7 +1504,7 @@ namespace SRCCore.Units
                                 {
                                     if (MainPilot().SynchroRate() > 0)
                                     {
-                                        correction = (int)(correction + (long)(15d * (SyncLevel() - 50d)) / 2L);
+                                        correction = (int)(correction + VBMath.IntDiv(15d * (SyncLevel() - 50d), 2));
                                     }
                                 }
                             }
@@ -1508,7 +1517,7 @@ namespace SRCCore.Units
                     if (w.IsWeaponLevelSpecified("改"))
                     {
                         // レベル設定されている場合、増加量をレベル×１０×ランクにする
-                        correction = (int)(correction + 10d * w.WeaponLevel("改") * (Rank + vupNum));
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("改") * (Rank + vupNum));
                     }
                     else
                     {
@@ -1519,13 +1528,13 @@ namespace SRCCore.Units
                     // オーラ技
                     if (w.IsWeaponClassifiedAs("オ"))
                     {
-                        correction = (int)(correction + 100d * AuraLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * AuraLevel());
                     }
 
                     // サイキック攻撃
                     if (w.IsWeaponClassifiedAs("超"))
                     {
-                        correction = (int)(correction + 100d * PsychicLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * PsychicLevel());
                     }
 
                     // 同調率対象攻撃
@@ -1535,7 +1544,7 @@ namespace SRCCore.Units
                         {
                             if (MainPilot().SynchroRate() > 0)
                             {
-                                correction = (int)(correction + 15d * (SyncLevel() - 50d));
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 15d * (SyncLevel() - 50d));
                             }
                         }
                     }
@@ -1548,13 +1557,13 @@ namespace SRCCore.Units
                     // オーラ技
                     if (w.IsWeaponClassifiedAs("オ"))
                     {
-                        correction = (int)(correction + 100d * AuraLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * AuraLevel());
                     }
 
                     // サイキック攻撃
                     if (w.IsWeaponClassifiedAs("超"))
                     {
-                        correction = (int)(correction + 100d * PsychicLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * PsychicLevel());
                     }
 
                     // 同調率対象攻撃
@@ -1564,7 +1573,7 @@ namespace SRCCore.Units
                         {
                             if (MainPilot().SynchroRate() > 0)
                             {
-                                correction = (int)(correction + 15d * (SyncLevel() - 50d));
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 15d * (SyncLevel() - 50d));
                             }
                         }
                     }
@@ -1596,9 +1605,10 @@ namespace SRCCore.Units
                     if (CountPilot() > 0)
                     {
                         var p = MainPilot();
+                        // VB: .SkillLevel("超感覚") \ 4 + .SkillLevel("知覚強化") \ 4（それぞれを整数除算）
                         correction = (int)(correction
-                            + p.SkillLevel("超感覚", ref_mode: "") / 4
-                            + p.SkillLevel("知覚強化", ref_mode: "") / 4);
+                            + VBMath.IntDiv(p.SkillLevel("超感覚", ref_mode: ""), 4)
+                            + VBMath.IntDiv(p.SkillLevel("知覚強化", ref_mode: ""), 4));
                     }
                 }
 
@@ -1636,7 +1646,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.MaxRange, correction, fd.FeatureLevel);
                         }
                     }
                 }
@@ -1662,7 +1672,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Precision, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1688,7 +1698,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Critical, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1707,7 +1717,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Critical, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }

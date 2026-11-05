@@ -376,7 +376,7 @@ namespace SRCCore.Units
                     // ウェイト？
                     if (Information.IsNumeric(animepart))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(animepart));
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(animepart));
                         goto NextAnime;
                     }
 

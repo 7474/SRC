@@ -176,7 +176,7 @@ namespace SRCCore.Lib
                 RndIndex = 1;
             }
 
-            return (int)(max * RndHistory[RndIndex]) + 1;
+            return VBMath.Int((max * RndHistory[RndIndex]) + 1);
         }
 
         public static IList<string> ToL(string list)

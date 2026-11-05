@@ -348,7 +348,7 @@ namespace SRCCore.Models
                                     case "味方":
                                     case "ＮＰＣ":
                                         {
-                                            if (withBlock2.Party == "味方" && withBlock2.Party0 == "味方" || withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ")
+                                            if ((withBlock2.Party == "味方" && withBlock2.Party0 == "味方") || (withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ"))
                                             {
                                                 goto NextUnit3;
                                             }
@@ -1058,7 +1058,7 @@ namespace SRCCore.Models
                             var tmp = t.HP;
                             if (effect.strEffectType == "ＨＰ増加")
                             {
-                                t.HP = (int)(t.HP + 1000d * effect.dblEffectLevel);
+                                t.HP = VBMath.CLng(t.HP + 1000d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1149,7 +1149,7 @@ namespace SRCCore.Models
                             var tmp = t.EN;
                             if (effect.strEffectType == "ＥＮ増加")
                             {
-                                t.EN = (int)(t.EN + 10d * effect.dblEffectLevel);
+                                t.EN = VBMath.CLng(t.EN + 10d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1242,11 +1242,11 @@ namespace SRCCore.Models
                                 var tmp = withBlock2.Plana;
                                 if (effect.strEffectType == "霊力増加")
                                 {
-                                    withBlock2.Plana = (int)(withBlock2.Plana + 10d * effect.dblEffectLevel);
+                                    withBlock2.Plana = VBMath.CLng(withBlock2.Plana + 10d * effect.dblEffectLevel);
                                 }
                                 else
                                 {
-                                    withBlock2.Plana = (int)(withBlock2.Plana + (long)(withBlock2.MaxPlana() * effect.dblEffectLevel) / 10L);
+                                    withBlock2.Plana = (int)(withBlock2.Plana + VBMath.IntDiv(withBlock2.MaxPlana() * effect.dblEffectLevel, 10L));
                                 }
 
                                 if (!is_event)
@@ -1331,7 +1331,7 @@ namespace SRCCore.Models
                             {
                                 // メインパイロットのみのＳＰを回復
                                 var tmp = t.MainPilot().SP;
-                                t.MainPilot().SP = (int)(t.MainPilot().SP + 10d * effect.dblEffectLevel);
+                                t.MainPilot().SP = VBMath.CLng(t.MainPilot().SP + 10d * effect.dblEffectLevel);
                                 if (!is_event)
                                 {
                                     if (!displayed_string)
@@ -1362,7 +1362,7 @@ namespace SRCCore.Models
                                 foreach (var tp in t.AllPilots)
                                 {
                                     var tmp = tp.SP;
-                                    tp.SP = (int)(tp.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                                    tp.SP = VBMath.CLng(tp.SP + 2d * effect.dblEffectLevel + VBMath.IntDiv(10d * effect.dblEffectLevel, n));
                                     if (!is_event)
                                     {
                                         if (!displayed_string)
@@ -1745,7 +1745,7 @@ namespace SRCCore.Models
 
                             // 気力を増加させる
                             var tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((int)(10d * effect.dblEffectLevel));
+                            t.IncreaseMorale(VBMath.CLng(10d * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (!displayed_string)
@@ -1775,7 +1775,7 @@ namespace SRCCore.Models
 
                             // 気力を低下させる
                             var tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((int)(-10 * effect.dblEffectLevel));
+                            t.IncreaseMorale(VBMath.CLng(-10 * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (TargetType == "敵" || TargetType == "全敵")
@@ -1825,7 +1825,7 @@ namespace SRCCore.Models
 
                             // ダメージを与える
                             var tmp = t.HP;
-                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice((int)(10d * effect.dblEffectLevel)), 10);
+                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice(VBMath.CLng(10d * effect.dblEffectLevel)), 10);
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -1897,8 +1897,8 @@ namespace SRCCore.Models
 
                             // ＨＰを減少させる
                             var tmp = t.HP;
-                            // XXX キャスト位置、ダメージを切り捨てでいいか。
-                            t.HP = (t.HP - (int)(t.HP * effect.dblEffectLevel / 10L));
+                            // VB: .HP = .HP - .HP * EffectLevel(i) \ 10（被除数を偶数丸めしてから整数除算）
+                            t.HP = (int)(t.HP - VBMath.IntDiv(t.HP * effect.dblEffectLevel, 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -1977,7 +1977,7 @@ namespace SRCCore.Models
 
                             // ＥＮを減少させる
                             var tmp = t.EN;
-                            t.EN = (t.EN - (int)((t.EN * effect.dblEffectLevel) / 10L));
+                            t.EN = (int)(t.EN - VBMath.IntDiv(t.EN * effect.dblEffectLevel, 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -2313,7 +2313,7 @@ namespace SRCCore.Models
                                 case "味方":
                                 case "ＮＰＣ":
                                     {
-                                        if (u.Party == "味方" && u.Party0 == "味方" || u.Party == "ＮＰＣ" && u.Party0 == "ＮＰＣ")
+                                        if ((u.Party == "味方" && u.Party0 == "味方") || (u.Party == "ＮＰＣ" && u.Party0 == "ＮＰＣ"))
                                         {
                                             goto NextUnit3;
                                         }
@@ -2518,7 +2518,7 @@ namespace SRCCore.Models
                     // ウェイト？
                     if (Information.IsNumeric(anime))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(anime));
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(anime));
                         goto NextAnime;
                     }
 

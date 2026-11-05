@@ -74,7 +74,8 @@ namespace SRCCore.VB
             {
                 return int.MinValue;
             }
-            return (int)rounded;
+            // rounded は偶数丸め済みの整数なので、VBMath.CLng はそのままの値を返す
+            return VBMath.CLng(rounded);
         }
 
         public static double ToDouble(string Value)
