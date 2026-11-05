@@ -74,6 +74,13 @@ namespace SRCCore.CmdDatas.Commands
 
             // マップ背景を再描画
             GUI.SetupBackground(Map.MapDrawMode, "", Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+
+            // 変更された地形にいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
+            // 元の SRC は画像を書き込むときだけ配置し直し、「情報限定」では配置し直さない。
+            if (cell.BoxType != BoxTypes.UpperDataOnly)
+            {
+                Map.StandByUnitAgain(x, y);
+            }
             return EventData.NextID;
         }
     }

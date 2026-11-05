@@ -162,6 +162,23 @@ namespace SRCCore.Maps
             return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
+        /// <summary>
+        /// (X,Y)地点にいるユニットを、同じ地点に配置し直す。地形を変えたときに使う。
+        /// 変更後の地形に入れなければ近くの空いているマスへ移る（元の SRC の ChangeTerrain・ChangeLayer と同じ）。
+        /// </summary>
+        public void StandByUnitAgain(int X, int Y)
+        {
+            var u = UnitAtPoint(X, Y);
+            if (u == null)
+            {
+                return;
+            }
+
+            MapDataForUnit[X, Y] = null;
+            GUI.EraseUnitBitmap(X, Y, false);
+            u.StandBy(X, Y, "非同期");
+        }
+
         // uに隣接しているユニット
         public IList<Unit> AdjacentUnit(Unit u)
         {

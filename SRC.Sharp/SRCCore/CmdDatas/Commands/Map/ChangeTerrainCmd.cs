@@ -67,6 +67,9 @@ namespace SRCCore.CmdDatas.Commands
 
             // XXX 地形変更するときは一気に行うだろうから全書き換えは不利かもしれない
             GUI.SetupBackground(Map.MapDrawMode, "", Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+
+            // 変更された地形にいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
+            Map.StandByUnitAgain(tx, ty);
             return EventData.NextID;
         }
     }
