@@ -40,6 +40,25 @@ namespace SRCCore.Filesystem
             return entrySets.Any(x => x.Exists(path));
         }
 
+        public string FindFirstFile(IEnumerable<string> candidates)
+        {
+            var paths = candidates
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => (Name: x, Path: PathCombine(x)))
+                .ToList();
+            foreach (var entrySet in entrySets)
+            {
+                foreach (var (name, path) in paths)
+                {
+                    if (entrySet.Exists(path))
+                    {
+                        return name;
+                    }
+                }
+            }
+            return null;
+        }
+
         public Stream Open(params string[] paths)
         {
             var path = PathCombine(paths);

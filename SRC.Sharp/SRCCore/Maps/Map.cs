@@ -278,8 +278,9 @@ namespace SRCCore.Maps
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
                 SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
             };
-            // ビットマップを探す
-            var file = fnames.FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            // ビットマップを探す。元の SRC と同じく、フォルダ（シナリオのフォルダ、ExtDataPath、ExtDataPath2、SRC のフォルダ）ごとに
+            // 「Bitmap\Map\"ビットマップ名"」「Bitmap\Map」の順に探す
+            var file = SRC.FileSystem.FindFirstFile(fnames);
             if (found != null)
             {
                 found[(tbmpname, tbitmap)] = file;

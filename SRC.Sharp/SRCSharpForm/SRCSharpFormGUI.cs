@@ -1353,8 +1353,6 @@ namespace SRCSharpForm
             frmNowLoading.Close();
             frmNowLoading.Dispose();
             frmNowLoading = null;
-            // XXX シナリオのパスが決まってるタイミングでという意味でファイルシステムの状態を再処理してる。カス。
-            imageBuffer.InitFileSystemInfo();
         }
 
         public void DisplayLoadingProgress()
