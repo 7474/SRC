@@ -268,7 +268,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/UIInterface/ISystemConfig.cs:46` | XXX | XXX この辺に依存する処理はあんまり嬉しくない | 未確認 |  |
 | `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | 未確認 |  |
 | `SRCCore/Units/Unit.ability.cs:2644` | XXX | XXX 変形技 | 未確認 |  |
-| `SRCCore/Units/Unit.attackcheck.cs:6771` | XXX | XXX 元は変数オブジェクト取得して直接設定していた。ローカル変数と競合した時向け？ | 未確認 |  |
 | `SRCCore/Units/Unit.condition.cs:81` | コード | return colCondition[Index].Name; | 未確認 |  |
 | `SRCCore/Units/Unit.condition.cs:105`（7 行） | コード | { | 未確認 |  |
 | `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | 未確認 |  |

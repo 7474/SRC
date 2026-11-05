@@ -595,7 +595,7 @@ namespace SRCCore.Units
             string wname, wname2;
             int w2;
             int ecost, nmorale;
-            string fname = default, fdata;
+            string fname = "", fdata;
             double flevel;
             double slevel, lv_mod;
             string opt;
@@ -664,10 +664,11 @@ namespace SRCCore.Units
                 if (i == 0)
                 {
                     // 迎撃武器がない場合は迎撃用の武器としての条件を満たす武器を検索
+                    // （VB の t.Weapon(i).Bullet は武器データの弾数で、いまの残弾ではない）
                     var loopTo2 = t.CountWeapon();
                     for (i = 1; i <= loopTo2; i++)
                     {
-                        if (t.Weapon(i).IsWeaponAvailable("移動後") && t.Weapon(i).IsWeaponClassifiedAs("移動後攻撃可") && t.Weapon(i).IsWeaponClassifiedAs("射撃系") && (t.Weapon(i).Bullet() >= 10 || (t.Weapon(i).Bullet() == 0 && t.Weapon(i).WeaponData.ENConsumption <= 5)) && t.MainPilot().Morale >= t.Weapon(i).WeaponData.NecessaryMorale)
+                        if (t.Weapon(i).IsWeaponAvailable("移動後") && t.Weapon(i).IsWeaponClassifiedAs("移動後攻撃可") && t.Weapon(i).IsWeaponClassifiedAs("射撃系") && (t.Weapon(i).WeaponData.Bullet >= 10 || (t.Weapon(i).WeaponData.Bullet == 0 && t.Weapon(i).WeaponData.ENConsumption <= 5)) && t.MainPilot().Morale >= t.Weapon(i).WeaponData.NecessaryMorale)
                         {
                             break;
                         }
@@ -684,7 +685,9 @@ namespace SRCCore.Units
                 }
 
                 // 迎撃を実行
-                if (0 < i && i <= t.CountWeapon() && (slevel >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                // VB の And・Or は短絡しないので、迎撃用の武器が無くても Dice(16) を振る（乱数の消費を VB に合わせる）
+                var interceptDice = GeneralLib.Dice(16);
+                if (0 < i && i <= t.CountWeapon() && (slevel >= interceptDice || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // メッセージ
                     if (!be_quiet)
@@ -737,7 +740,7 @@ namespace SRCCore.Units
                     GUI.DisplaySysMessage(t.Nickname + "は[" + t.Weapon(i).WeaponNickname() + "]で[" + wname + "]を阻止した。");
 
                     // 迎撃された永続武器は使用回数を減らす
-                    if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                    if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                     {
                         w.SetBullet(w.Bullet() - 1);
                         SyncBullet();
@@ -1544,7 +1547,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を叩き落とした。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
@@ -1620,7 +1623,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受け流した。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
@@ -1693,7 +1696,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受けとめた。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
@@ -4846,7 +4849,9 @@ namespace SRCCore.Units
             if (t.IsFeatureAvailable("融合"))
             {
                 // 融合可能？
-                if (!w.IsWeaponClassifiedAs("武") && !w.IsWeaponClassifiedAs("突") && !w.IsWeaponClassifiedAs("接") && (t.FeatureLevel("融合") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                // VB は And・Or を短絡せずに評価するので、格闘系の武器でも Dice(16) を振る（乱数が進む）
+                var fusion_dice = GeneralLib.Dice(16);
+                if (!w.IsWeaponClassifiedAs("武") && !w.IsWeaponClassifiedAs("突") && !w.IsWeaponClassifiedAs("接") && (t.FeatureLevel("融合") >= fusion_dice || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // 融合発動
                     t.HP = t.HP + dmg;
@@ -6128,30 +6133,35 @@ namespace SRCCore.Units
                 if (w.IsWeaponClassifiedAs("除") && !t.SpecialEffectImmune("除"))
                 {
                     // 付加・強化・ＵＰ系の特殊状態が存在するか確認
-                    bool hasRemovableCondition = false;
-                    foreach (var cond in t.Conditions)
+                    static bool isRemovable(Models.Condition cond)
                     {
-                        if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
-                            && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
-                        {
-                            hasRemovableCondition = true;
-                            break;
-                        }
+                        return (Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
+                            && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0;
                     }
 
-                    if (hasRemovableCondition)
+                    var ci = 0;
+                    while (ci < t.Conditions.Count && !isRemovable(t.Conditions[ci]))
+                    {
+                        ci++;
+                    }
+
+                    if (ci < t.Conditions.Count)
                     {
                         msg = msg + "[" + t.Nickname + "]にかけられた特殊効果を打ち消した。;";
-                        // 対象条件を削除（後ろから走査して安全に削除）
-                        for (var ci = t.Conditions.Count - 1; ci >= 0; ci--)
+                        // VB と同じく前から順に消す（消すたびに Update が呼ばれることがある）
+                        do
                         {
                             var cond = t.Conditions[ci];
-                            if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
-                                && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
+                            if (isRemovable(cond))
                             {
                                 t.DeleteCondition(cond.Name);
                             }
+                            else
+                            {
+                                ci++;
+                            }
                         }
+                        while (ci < t.Conditions.Count);
                         critical_type = critical_type + " 解除";
                         CauseEffectRet = true;
                     }
@@ -6361,7 +6371,7 @@ namespace SRCCore.Units
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＨＰ", t) + "を";
                     if (t.BossRank >= 0)
                     {
-                        switch (w.WeaponLevel("衰"))
+                        switch (VBMath.CLng(w.WeaponLevel("衰")))
                         {
                             case 1:
                                 {
@@ -6387,7 +6397,7 @@ namespace SRCCore.Units
                     }
                     else
                     {
-                        switch (w.WeaponLevel("衰"))
+                        switch (VBMath.CLng(w.WeaponLevel("衰")))
                         {
                             case 1:
                                 {
@@ -6426,7 +6436,7 @@ namespace SRCCore.Units
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を";
                     if (t.BossRank >= 0)
                     {
-                        switch (w.WeaponLevel("滅"))
+                        switch (VBMath.CLng(w.WeaponLevel("滅")))
                         {
                             case 1:
                                 {
@@ -6452,7 +6462,7 @@ namespace SRCCore.Units
                     }
                     else
                     {
-                        switch (w.WeaponLevel("滅"))
+                        switch (VBMath.CLng(w.WeaponLevel("滅")))
                         {
                             case 1:
                                 {
@@ -6768,15 +6778,18 @@ namespace SRCCore.Units
                     {
                         msg = msg + "[" + MainPilot().get_Nickname(false) + "]は「" + sname + "」を習得した。;";
                         vname = "Ability(" + MainPilot().ID + ")";
-                        // XXX 元は変数オブジェクト取得して直接設定していた。ローカル変数と競合した時向け？
+                        // VB と同じくグローバル変数の文字列の値を直接書き換える
+                        // （同じ名前のローカル変数があっても、グローバル変数の文字列に足す。式として評価しない）
                         if (!Expression.IsGlobalVariableDefined(vname))
                         {
                             Expression.DefineGlobalVariable(vname);
-                            Expression.SetVariableAsString(vname, stype);
+                            var newVar = SRC.Event.GlobalVariableList[vname];
+                            newVar.SetValue(newVar.Name, newVar.VariableType, stype, newVar.NumericValue);
                         }
                         else
                         {
-                            Expression.SetVariableAsString(vname, Expression.GetValueAsString(vname) + " " + stype);
+                            var abilityVar = SRC.Event.GlobalVariableList[vname];
+                            abilityVar.SetValue(abilityVar.Name, abilityVar.VariableType, abilityVar.StringValue + " " + stype, abilityVar.NumericValue);
                         }
 
                         vname = "Ability(" + MainPilot().ID + "," + stype + ")";
@@ -7040,6 +7053,8 @@ namespace SRCCore.Units
                 ny = ny + dy;
 
                 // 吹き飛ばしコストに地形効果【摩擦】の補正を加える
+                // （VB 版の 3 つ目の条件は With td の中の「t.Area = Class」で、攻撃側のユニットクラスと
+                // 比べていた。明らかな誤りなので、ここでは地形のクラスと比べる）
                 var td = Map.Terrain(x, y);
                 if (td != null)
                 {
@@ -7193,7 +7208,10 @@ namespace SRCCore.Units
         // 引き寄せチェック
         public bool CheckDrawAttack(UnitWeapon w, Unit t, ref string msg, string def_mode, ref string critical_type)
         {
-            int tx = t.x, ty = t.y;
+            // VB 版では tx・ty に値を入れる前に「既に隣接している？」を判定しているため、
+            // ここでは (0, 0) と比べることになり、マップ上のユニットでは成り立たない。
+            // 投下型（Ｍ投）で攻撃側が目標に隣接していても引き寄せるのは VB 版のとおり。
+            int tx = 0, ty = 0;
             int sx, sy;
             int nx, ny;
             int prob;

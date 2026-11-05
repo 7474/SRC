@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCCore.Lib;
 using SRCCore.Units;
 using System.Reflection;
 
@@ -607,6 +608,22 @@ AAAA, -.bmp
 
             Assert.IsFalse(Defense(a, WeaponOf(a, "パンチ"), t, ref dmg, ref msg, out _));
             Assert.AreEqual(1000, t.HP);
+        }
+
+        [TestMethod]
+        public void Fusion_MeleeWeapon_StillRollsDice()
+        {
+            // VB の CheckDefenseFeature は「Not 武 And Not 突 And Not 接 And (融合 >= Dice(16) Or …)」を
+            // And で（短絡せずに）評価するので、格闘系の攻撃でも Dice(16) を 1 回振って乱数を進める
+            var f = CreateFixture();
+            var a = f.Place("攻撃機", "攻撃者", "味方", 1, 1);
+            var t = f.Place("融合機", "防御者", "敵", 2, 1);
+            var dmg = 700;
+            var msg = "";
+            var before = GeneralLib.RndIndex;
+
+            Assert.IsFalse(Defense(a, WeaponOf(a, "パンチ"), t, ref dmg, ref msg, out _));
+            Assert.AreEqual(before + 1, GeneralLib.RndIndex);
         }
 
         // ──────────────────────────────────────────────
