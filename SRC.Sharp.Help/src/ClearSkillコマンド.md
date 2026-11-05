@@ -2,8 +2,6 @@
 layout: default
 title: ClearSkillコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ClearSkillコマンド**
 
 パイロットに追加した特殊能力を解除

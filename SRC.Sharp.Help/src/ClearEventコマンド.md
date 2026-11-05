@@ -2,8 +2,6 @@
 layout: default
 title: ClearEventコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ClearEventコマンド**
 
 イベントラベルを消去

@@ -2,15 +2,13 @@
 layout: default
 title: ClearPictureコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ClearPictureコマンド**
 
 画像・文字列を消去
 
 **書式**
 
-**ClearPicture**  [*ｘ1 y1 x2 y2*]
+**ClearPicture** [*x1 y1 x2 y2*]
 
 **指定項目説明**
 

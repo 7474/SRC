@@ -2,8 +2,6 @@
 layout: default
 title: Createコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Createコマンド**
 
 ユニットを作成

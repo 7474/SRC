@@ -2,8 +2,6 @@
 layout: default
 title: ClearSpecialPowerコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ClearSpecialPowerコマンド**
 
 ユニットからスペシャルパワーの効果を削除

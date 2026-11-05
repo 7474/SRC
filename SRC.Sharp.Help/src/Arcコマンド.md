@@ -2,8 +2,6 @@
 layout: default
 title: Arcコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Arcコマンド**
 
 円弧を描画

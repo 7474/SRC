@@ -2,8 +2,6 @@
 layout: default
 title: CopyArrayコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **CopyArrayコマンド**
 
 配列をコピー
