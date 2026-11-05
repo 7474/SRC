@@ -132,5 +132,38 @@ namespace SRCCore.CmdDatas.Tests
             var bytes = File.ReadAllBytes(Path.Combine(dir, "out.txt"));
             Assert.AreEqual("line1\r\nnextline2\r\n", Encoding.ASCII.GetString(bytes));
         }
+
+        // ──────────────────────────────────────────────
+        // LineRead（7474/SRC#1474）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void LineRead_ReadsLines_ThenErrorsPastEndOfFile()
+        {
+            // 元の SRC は Line Input # がファイルの最後を超えると実行時エラーになり、イベントが止まる
+            File.WriteAllText(Path.Combine(dir, "in.txt"), "a\r\nb\r\n");
+            var src = CreateSrc();
+
+            ExecOk(src, "Open in.txt For 入力 As F");
+            ExecOk(src, "LineRead F x");
+            Assert.AreEqual("a", src.Expression.GetValueAsString("x"));
+            ExecOk(src, "LineRead F x");
+            Assert.AreEqual("b", src.Expression.GetValueAsString("x"));
+
+            Assert.AreEqual(-1, Exec(src, "LineRead F x"));
+            Assert.AreEqual("b", src.Expression.GetValueAsString("x"));
+            ExecOk(src, "Close F");
+        }
+
+        [TestMethod]
+        public void LineRead_EmptyFile_Errors()
+        {
+            File.WriteAllText(Path.Combine(dir, "in.txt"), "");
+            var src = CreateSrc();
+
+            ExecOk(src, "Open in.txt For 入力 As F");
+            Assert.AreEqual(-1, Exec(src, "LineRead F x"));
+            ExecOk(src, "Close F");
+        }
     }
 }
