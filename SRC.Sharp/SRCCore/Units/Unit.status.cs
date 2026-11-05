@@ -1596,6 +1596,7 @@ namespace SRCCore.Units
                 // 最大射程がもともと１ならそれ以上変化しない
                 if (w.WeaponData.MaxRange == 1)
                 {
+                    w.SetMaxRangeCorrection(0, applyMinimum: false);
                     continue;
                 }
 
@@ -1612,9 +1613,11 @@ namespace SRCCore.Units
                     }
                 }
 
+                // 以下の武器には射程延長と最低値を適用しない（思念誘導攻撃の射程延長は残る）
                 // マップ攻撃には適用されない
                 if (w.IsWeaponClassifiedAs("Ｍ"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
@@ -1623,12 +1626,14 @@ namespace SRCCore.Units
                     || w.IsWeaponClassifiedAs("突")
                     || w.IsWeaponClassifiedAs("接"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
                 // 有線式誘導攻撃には適用されない
                 if (w.IsWeaponClassifiedAs("有"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
@@ -1650,6 +1655,7 @@ namespace SRCCore.Units
                         }
                     }
                 }
+                // 最低値は1
                 w.SetMaxRangeCorrection(correction);
             }
 
