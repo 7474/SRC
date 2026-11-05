@@ -86,6 +86,7 @@ https://github.com/pmarsceill/just-the-docs
 
 ## 留意点
 
+- 頁の下の「前の頁」「次の頁」（[pager.html](src/_includes/pager.html)）は、元の SRC のヘルプの「<<」「>>」と同じく、menu.yml の順に前後の頁へ進む。menu.yml に無い頁には出さない。
 - メニューは [menu.yml](src/_data/menu.yml)（サイトの左のナビゲーション）を正とする。メニューの頁 [menu.md](src/menu.md) は `python3 tools/help_menu.py` で menu.yml から作るので、手で直さない。CI（`build-help`）は `--check` で、menu.md が合っているか、リンク先の頁があるか、頁の `title` とメニューの名前が同じか（違うと今いる頁の印が付かない）を確かめる。
 - [src/vb](src/vb) は元の SRC（Ver2.2.33）のヘルプのアーカイブ（https://srch.7474.jp/vb/ ）。`python3 tools/vb_help_archive.py` で [SRC/HelpChm](../SRC/HelpChm) から作るので、手で直さない。見た目（Windows 95 のヘルプに似せた枠）と左の欄（目次・キーワード・検索）は [tools/vb_help_archive](../tools/vb_help_archive) の `winhelp.css`・`winhelp.js` を直してから作り直す。front matter が無いため Jekyll はそのまま配信し、SRC# のヘルプの見た目・検索・`srcsharp help` とは独立する。
 - 元の SRC のヘルプ（WinHelp）のポップアップは、次のように扱う。

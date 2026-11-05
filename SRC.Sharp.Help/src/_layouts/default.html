@@ -50,9 +50,14 @@ layout: table_wrappers
     <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
       {% include menu.html pages=site.html_pages %}
     </nav>
-    <footer class="site-footer">
-      This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
-    </footer>
+    {%- comment -%}
+      テーマ（just-the-docs 0.12）の .site-footer は、幅の狭い画面では position: absolute で最初の画面の下端に置かれ、本文に重なる。
+      テーマの components/sidebar.html・components/footer.html と同じく、横の欄には幅の広い画面（md 以上）でだけ出し、
+      幅の狭い画面では頁の下の footer に出す
+    {%- endcomment -%}
+    <div class="d-md-block d-none site-footer">
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    </div>
   </div>
   <div class="main" id="top">
     <div id="main-header" class="main-header">
@@ -135,6 +140,8 @@ layout: table_wrappers
           </ul>
         {% endif %}
 
+        {% include pager.html %}
+
         {% capture footer_custom %}
           {%- include footer_custom.html -%}
         {% endcapture %}
@@ -167,6 +174,10 @@ layout: table_wrappers
                 {% endif %}
               </div>
             {% endif %}
+
+            <div class="d-md-none mt-4 fs-2">
+              This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+            </div>
           </footer>
         {% endif %}
 

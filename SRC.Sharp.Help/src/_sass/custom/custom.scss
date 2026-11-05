@@ -1,0 +1,27 @@
+// 頁の下の「前の頁」「次の頁」（_includes/pager.html）
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: $sp-4;
+  margin-top: $sp-8;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    max-width: 48%;
+    padding: $sp-2 $sp-3;
+    border: $border $border-color;
+    border-radius: $border-radius;
+    text-decoration: none;
+  }
+
+  .pager-next {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .pager-label {
+    @include fs-2;
+    color: $grey-dk-000;
+  }
+}
