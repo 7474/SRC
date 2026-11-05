@@ -6133,30 +6133,35 @@ namespace SRCCore.Units
                 if (w.IsWeaponClassifiedAs("除") && !t.SpecialEffectImmune("除"))
                 {
                     // 付加・強化・ＵＰ系の特殊状態が存在するか確認
-                    bool hasRemovableCondition = false;
-                    foreach (var cond in t.Conditions)
+                    static bool isRemovable(Models.Condition cond)
                     {
-                        if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
-                            && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
-                        {
-                            hasRemovableCondition = true;
-                            break;
-                        }
+                        return (Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
+                            && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0;
                     }
 
-                    if (hasRemovableCondition)
+                    var ci = 0;
+                    while (ci < t.Conditions.Count && !isRemovable(t.Conditions[ci]))
+                    {
+                        ci++;
+                    }
+
+                    if (ci < t.Conditions.Count)
                     {
                         msg = msg + "[" + t.Nickname + "]にかけられた特殊効果を打ち消した。;";
-                        // 対象条件を削除（後ろから走査して安全に削除）
-                        for (var ci = t.Conditions.Count - 1; ci >= 0; ci--)
+                        // VB と同じく前から順に消す（消すたびに Update が呼ばれることがある）
+                        do
                         {
                             var cond = t.Conditions[ci];
-                            if ((Strings.InStr(cond.Name, "付加") > 0 || Strings.InStr(cond.Name, "強化") > 0 || Strings.InStr(cond.Name, "ＵＰ") > 0)
-                                && cond.Name != "ノーマルモード付加" && cond.Lifetime > 0)
+                            if (isRemovable(cond))
                             {
                                 t.DeleteCondition(cond.Name);
                             }
+                            else
+                            {
+                                ci++;
+                            }
                         }
+                        while (ci < t.Conditions.Count);
                         critical_type = critical_type + " 解除";
                         CauseEffectRet = true;
                     }
@@ -6366,7 +6371,7 @@ namespace SRCCore.Units
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＨＰ", t) + "を";
                     if (t.BossRank >= 0)
                     {
-                        switch (w.WeaponLevel("衰"))
+                        switch (VBMath.CLng(w.WeaponLevel("衰")))
                         {
                             case 1:
                                 {
@@ -6392,7 +6397,7 @@ namespace SRCCore.Units
                     }
                     else
                     {
-                        switch (w.WeaponLevel("衰"))
+                        switch (VBMath.CLng(w.WeaponLevel("衰")))
                         {
                             case 1:
                                 {
@@ -6431,7 +6436,7 @@ namespace SRCCore.Units
                     msg = msg + "[" + t.Nickname + "]の" + Expression.Term("ＥＮ", t) + "を";
                     if (t.BossRank >= 0)
                     {
-                        switch (w.WeaponLevel("滅"))
+                        switch (VBMath.CLng(w.WeaponLevel("滅")))
                         {
                             case 1:
                                 {
@@ -6457,7 +6462,7 @@ namespace SRCCore.Units
                     }
                     else
                     {
-                        switch (w.WeaponLevel("滅"))
+                        switch (VBMath.CLng(w.WeaponLevel("滅")))
                         {
                             case 1:
                                 {
@@ -6773,15 +6778,18 @@ namespace SRCCore.Units
                     {
                         msg = msg + "[" + MainPilot().get_Nickname(false) + "]は「" + sname + "」を習得した。;";
                         vname = "Ability(" + MainPilot().ID + ")";
-                        // XXX 元は変数オブジェクト取得して直接設定していた。ローカル変数と競合した時向け？
+                        // VB と同じくグローバル変数の文字列の値を直接書き換える
+                        // （同じ名前のローカル変数があっても、グローバル変数の文字列に足す。式として評価しない）
                         if (!Expression.IsGlobalVariableDefined(vname))
                         {
                             Expression.DefineGlobalVariable(vname);
-                            Expression.SetVariableAsString(vname, stype);
+                            var newVar = SRC.Event.GlobalVariableList[vname];
+                            newVar.SetValue(newVar.Name, newVar.VariableType, stype, newVar.NumericValue);
                         }
                         else
                         {
-                            Expression.SetVariableAsString(vname, Expression.GetValueAsString(vname) + " " + stype);
+                            var abilityVar = SRC.Event.GlobalVariableList[vname];
+                            abilityVar.SetValue(abilityVar.Name, abilityVar.VariableType, abilityVar.StringValue + " " + stype, abilityVar.NumericValue);
                         }
 
                         vname = "Ability(" + MainPilot().ID + "," + stype + ")";
