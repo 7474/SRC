@@ -192,5 +192,55 @@ namespace SRCCore.CmdDatas.Tests
 
             ExecOk(src, "RemoveFolder nothing");
         }
+
+        // ──────────────────────────────────────────────
+        // PlaySound（7474/SRC#1469）
+        // ──────────────────────────────────────────────
+
+        private sealed class RecordingPlayer : IPlaySound
+        {
+            public List<string> Played { get; } = new List<string>();
+            public BGMStatus BGMStatus => BGMStatus.Stopped;
+            public float SoundVolume { get; set; }
+            public void Play(int channel, Stream stream, SoundType soundType, PlaySoundMode mode) { }
+            public void Stop(int channel) { }
+            public SoundType ResolveSoundType(string path)
+            {
+                Played.Add(Path.GetFileName(path));
+                return SoundType.Wave;
+            }
+            public void Dispose() { }
+        }
+
+        [TestMethod]
+        public void PlaySound_FileNameWithSpaces_UsesAllArguments()
+        {
+            // 元の SRC は ListTail で 2 番目以降の引数をまとめてファイル名にする
+            Directory.CreateDirectory(Path.Combine(dir, "Sound"));
+            File.WriteAllBytes(Path.Combine(dir, "Sound", "my se.wav"), new byte[0]);
+            File.WriteAllBytes(Path.Combine(dir, "Sound", "my"), new byte[0]);
+            var src = CreateSrc();
+            var player = new RecordingPlayer();
+            src.Sound.Player = player;
+
+            ExecOk(src, "PlaySound my se.wav");
+
+            CollectionAssert.AreEqual(new[] { "my se.wav" }, player.Played);
+        }
+
+        [TestMethod]
+        public void PlaySound_QuotedFileName_IsEvaluated()
+        {
+            // 引数が 1 つ（「"」で囲ったもの）なら式として評価する
+            Directory.CreateDirectory(Path.Combine(dir, "Sound"));
+            File.WriteAllBytes(Path.Combine(dir, "Sound", "my se.wav"), new byte[0]);
+            var src = CreateSrc();
+            var player = new RecordingPlayer();
+            src.Sound.Player = player;
+
+            ExecOk(src, "PlaySound \"my se.wav\"");
+
+            CollectionAssert.AreEqual(new[] { "my se.wav" }, player.Played);
+        }
     }
 }
