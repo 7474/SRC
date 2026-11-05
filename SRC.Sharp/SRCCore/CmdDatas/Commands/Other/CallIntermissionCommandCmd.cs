@@ -61,9 +61,8 @@ namespace SRCCore.CmdDatas.Commands
                     GUI.ReduceListBoxHeight();
                     SRC.IsSubStage = true;
                     {
-                        var eveFile = new[] { SRC.ScenarioPath, SRC.AppPath }
-                            .Select(x => Path.Combine(x, "Lib", "パイロットステータス表示.eve"))
-                            .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+                        // シナリオ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に探す（VB: CmdData.cls）
+                        var eveFile = SRC.InterMission.SearchLibFile("パイロットステータス表示.eve");
                         if (!string.IsNullOrEmpty(eveFile))
                         {
                             SRC.StartScenario(eveFile);
@@ -78,9 +77,8 @@ namespace SRCCore.CmdDatas.Commands
                     GUI.ReduceListBoxHeight();
                     SRC.IsSubStage = true;
                     {
-                        var eveFile = new[] { SRC.ScenarioPath, SRC.AppPath }
-                            .Select(x => Path.Combine(x, "Lib", "ユニットステータス表示.eve"))
-                            .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+                        // シナリオ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に探す（VB: CmdData.cls）
+                        var eveFile = SRC.InterMission.SearchLibFile("ユニットステータス表示.eve");
                         if (!string.IsNullOrEmpty(eveFile))
                         {
                             SRC.StartScenario(eveFile);
