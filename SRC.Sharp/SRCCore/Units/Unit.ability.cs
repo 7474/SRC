@@ -186,8 +186,9 @@ namespace SRCCore.Units
                     {
                         case "召喚":
                             {
+                                // VB の Exit For。以降の効果は atype に反映しない
                                 aname = "";
-                                break;
+                                goto EndAtypeLoop;
                             }
 
                         case "再行動":
@@ -212,6 +213,7 @@ namespace SRCCore.Units
                             }
                     }
                 }
+            EndAtypeLoop:
 
                 var msg = "";
                 switch (partners.Count)
@@ -324,7 +326,7 @@ namespace SRCCore.Units
                 if (IsSysMessageDefined(aname, sub_situation: ""))
                 {
                     // 「アビリティ名(解説)」のメッセージを使用
-                    if (!GUI.MainFormVisible)
+                    if (!GUI.MessageFormVisible)
                     {
                         if (ReferenceEquals(Commands.SelectedTarget, this))
                         {
@@ -341,7 +343,7 @@ namespace SRCCore.Units
                 else if (IsSysMessageDefined("アビリティ", sub_situation: ""))
                 {
                     // 「アビリティ(解説)」のメッセージを使用
-                    if (!GUI.MainFormVisible)
+                    if (!GUI.MessageFormVisible)
                     {
                         if (ReferenceEquals(Commands.SelectedTarget, this))
                         {
@@ -361,7 +363,7 @@ namespace SRCCore.Units
                 // 変身の場合はメッセージなし
                 else if (!string.IsNullOrEmpty(atype))
                 {
-                    if (!GUI.MainFormVisible)
+                    if (!GUI.MessageFormVisible)
                     {
                         if (ReferenceEquals(Commands.SelectedTarget, this))
                         {
@@ -759,11 +761,17 @@ namespace SRCCore.Units
                                     else
                                     {
                                         // 複数のパイロットが対象
+                                        // 数値を表示するのはメインパイロットだけ
+                                        var isMainPilot = true;
                                         foreach (var p in t.AllPilots)
                                         {
                                             var prev_value = p.SP;
                                             p.SP = p.SP + epower / 5 + epower / num;
-                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(p.SP - prev_value));
+                                            if (isMainPilot)
+                                            {
+                                                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(p.SP - prev_value));
+                                                isMainPilot = false;
+                                            }
                                             GUI.DisplaySysMessage(p.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(p.SP - prev_value) + "回復した。");
                                             if (p.SP > prev_value)
                                             {
@@ -788,11 +796,17 @@ namespace SRCCore.Units
                                     else
                                     {
                                         // 複数のパイロットが対象
+                                        // 数値を表示するのはメインパイロットだけ（VB と同じく符号は "+"）
+                                        var isMainPilot = true;
                                         foreach (var p in t.AllPilots)
                                         {
                                             var prev_value = p.SP;
                                             p.SP = p.SP + epower / 5 + epower / num;
-                                            GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(prev_value - p.SP));
+                                            if (isMainPilot)
+                                            {
+                                                GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(prev_value - p.SP));
+                                                isMainPilot = false;
+                                            }
                                             GUI.DisplaySysMessage(p.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(prev_value - p.SP) + "減少した。");
                                         }
                                     }
@@ -1778,7 +1792,7 @@ namespace SRCCore.Units
 
                                 if (u.IsMessageDefined("発進"))
                                 {
-                                    if (!GUI.MainFormVisible)
+                                    if (!GUI.MessageFormVisible)
                                     {
                                         GUI.OpenMessageForm(this, u2: null);
                                     }
@@ -1834,8 +1848,8 @@ namespace SRCCore.Units
                                 buf = buf + " " + GeneralLib.LIndex(edata, j);
                             t.AddCondition("ノーマルモード付加", -1, 1d, buf);
 
-                            // 変身した場合はそこで終わり
-                            break;
+                            // 変身した場合はそこで終わり（VB の Exit For。残りの効果は適用しない）
+                            goto EndEffectLoop;
                         }
 
                     case "能力コピー":
@@ -1901,6 +1915,7 @@ namespace SRCCore.Units
             NextLoop:
                 ;
             }
+        EndEffectLoop:
 
             t.CurrentForm().Update();
             t.CurrentForm().CheckAutoHyperMode();
@@ -1922,22 +1937,49 @@ namespace SRCCore.Units
             foreach (var pu in partners)
             {
                 var cf = pu.CurrentForm();
-                bool abilityFound = false;
-                for (var aj = 1; aj <= cf.CountAbility(); aj++)
+                // パートナーが同名のアビリティを持っていればそのアビリティのデータを使う
+                var cfa = cf.Abilities.FirstOrDefault(x => x.Data.Name == aname);
+                if (cfa != null)
                 {
-                    // パートナーが同名のアビリティを持っていればそのアビリティのデータを使う
-                    if (cf.Ability(aj).Data.Name == aname)
+                    cfa.UseAbility();
+                    if (cfa.IsAbilityClassifiedAs("自"))
                     {
-                        cf.Ability(aj).UseAbility();
-                        abilityFound = true;
-                        break;
+                        SelfDestructPartner(cf);
+                    }
+                    else if (cfa.IsAbilityClassifiedAs("失") && cf.HP == 0)
+                    {
+                        cf.Die();
+                    }
+                    else if (cfa.IsAbilityClassifiedAs("変"))
+                    {
+                        if (cf.IsFeatureAvailable("変形技"))
+                        {
+                            var uname = "";
+                            var fd = cf.Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == aname);
+                            if (fd != null)
+                            {
+                                uname = GeneralLib.LIndex(fd.Data, 2);
+                                if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
+                                {
+                                    cf.Transform(uname);
+                                }
+                            }
+
+                            if ((uname ?? "") != (cf.CurrentForm().Name ?? ""))
+                            {
+                                TransformPartnerToNormalMode(cf);
+                            }
+                        }
+                        else
+                        {
+                            TransformPartnerToNormalMode(cf);
+                        }
                     }
                 }
-
-                // 同名のアビリティがなかった場合は自分のデータを使って処理
-                if (!abilityFound)
+                else
                 {
-                    if (a.AbilityENConsumption() > 0)
+                    // 同名のアビリティがなかった場合は自分のデータを使って処理
+                    if (a.Data.ENConsumption > 0)
                     {
                         cf.EN = cf.EN - a.AbilityENConsumption();
                     }
@@ -1955,6 +1997,41 @@ namespace SRCCore.Units
                     if (a.IsAbilityClassifiedAs("気"))
                     {
                         cf.IncreaseMorale(VBMath.CLng(-5 * a.AbilityLevel("気")));
+                    }
+
+                    if (a.IsAbilityClassifiedAs("霊"))
+                    {
+                        var hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
+                        var en_ratio = 100 * cf.EN / (double)cf.MaxEN;
+                        cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
+                        cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                        cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
+                    }
+                    else if (a.IsAbilityClassifiedAs("プ"))
+                    {
+                        var hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
+                        var en_ratio = 100 * cf.EN / (double)cf.MaxEN;
+                        cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
+                        cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                        cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
+                    }
+
+                    if (a.IsAbilityClassifiedAs("失"))
+                    {
+                        cf.HP = GeneralLib.MaxLng((int)(cf.HP - VBMath.IntDiv(cf.MaxHP * a.AbilityLevel("失"), 10L)), 0);
+                    }
+
+                    if (a.IsAbilityClassifiedAs("自"))
+                    {
+                        SelfDestructPartner(cf);
+                    }
+                    else if (a.IsAbilityClassifiedAs("失") && cf.HP == 0)
+                    {
+                        cf.Die();
+                    }
+                    else if (a.IsAbilityClassifiedAs("変"))
+                    {
+                        TransformPartnerToNormalMode(cf);
                     }
                 }
             }
@@ -1976,8 +2053,8 @@ namespace SRCCore.Units
                                 itm.Exist = false;
                                 cf.DeleteItem(itm);
                                 cf.Update();
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -2057,10 +2134,10 @@ namespace SRCCore.Units
                 if (IsFeatureAvailable("変形技"))
                 {
                     var uname = "";
-                    var fd = Features.FirstOrDefault(x => x.Name == "変形技" && x.DataL[0] == aname);
+                    var fd = Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == a.Data.Name);
                     if (fd != null)
                     {
-                        uname = fd.DataL[1];
+                        uname = GeneralLib.LIndex(fd.Data, 2);
                         if (OtherForm(uname).IsAbleToEnter(x, y))
                         {
                             Transform(uname);
@@ -2146,6 +2223,43 @@ namespace SRCCore.Units
             }
 
             return ExecuteAbilityRet;
+        }
+
+        // 合体技アビリティのパートナーの自爆（自属性）。パーツ分離できれば分離し、できなければ破壊される
+        private static void SelfDestructPartner(Unit cf)
+        {
+            if (cf.IsFeatureAvailable("パーツ分離"))
+            {
+                var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 2);
+                if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
+                {
+                    cf.Transform(uname);
+                    var ncf = cf.CurrentForm();
+                    ncf.HP = ncf.MaxHP;
+                    ncf.UsedAction = ncf.MaxAction();
+                }
+                else
+                {
+                    cf.Die();
+                }
+            }
+            else
+            {
+                cf.Die();
+            }
+        }
+
+        // 合体技アビリティのパートナーの変属性。ノーマルモードがあれば元の形態に戻る
+        private static void TransformPartnerToNormalMode(Unit cf)
+        {
+            if (cf.IsFeatureAvailable("ノーマルモード"))
+            {
+                var uname = GeneralLib.LIndex(cf.FeatureData("ノーマルモード"), 1);
+                if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
+                {
+                    cf.Transform(uname);
+                }
+            }
         }
 
         // マップアビリティ a を (tx,ty) に使用
