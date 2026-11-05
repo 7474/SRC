@@ -1420,17 +1420,19 @@ namespace SRCCore.Units
                 Unit.EN = Unit.EN - AbilityENConsumption();
             }
 
-            // 弾数消費
-            if (Data.Stock > 0 && !IsAbilityClassifiedAs("永"))
+            // 使用回数消費（VB の UseAbility は「永」を見ない。「永」が効くのは武器の弾数だけ）
+            if (Data.Stock > 0)
             {
                 SetStock((Stock() - 1));
 
                 // 一斉使用
                 if (IsAbilityClassifiedAs("斉"))
                 {
+                    // VB: SetStock i, MinLng(MaxStock(i) * Stock(a) \ MaxStock(a), Stock(i))
+                    // 残りの割合を写すのではなく、整数の商と今の回数の小さいほうにする（自分自身も含む）
                     foreach (var ua in Unit.Abilities)
                     {
-                        ua.SetStockRate(dblStock);
+                        ua.SetStock(GeneralLib.MinLng(ua.MaxStock() * Stock() / MaxStock(), ua.Stock()));
                     }
                 }
                 else
@@ -1545,11 +1547,6 @@ namespace SRCCore.Units
             {
                 dblStock = 1d;
             }
-        }
-
-        private void SetStockRate(double new_stock)
-        {
-            dblStock = new_stock;
         }
 
         public void SetStockFull()

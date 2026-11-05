@@ -2428,12 +2428,33 @@ namespace SRCCore.Units
             }
 
             // 起点からの距離に応じて並べ替え
-            targets = targets.OrderBy(t => Math.Abs(t.x - rx) + Math.Abs(t.y - ry)).ToList();
+            // VB は入れ替えによる選択ソートなので、距離が同じユニットの順は OrderBy（安定）と違うことがある
+            for (var i = 0; i < targets.Count - 1; i++)
+            {
+                var min_item = i;
+                var min_value = Math.Abs(targets[i].x - rx) + Math.Abs(targets[i].y - ry);
+                for (var j = i + 1; j < targets.Count; j++)
+                {
+                    if (Math.Abs(targets[j].x - rx) + Math.Abs(targets[j].y - ry) < min_value)
+                    {
+                        min_item = j;
+                        min_value = Math.Abs(targets[j].x - rx) + Math.Abs(targets[j].y - ry);
+                    }
+                }
+
+                if (min_item != i)
+                {
+                    (targets[i], targets[min_item]) = (targets[min_item], targets[i]);
+                }
+            }
 
             // 合体技
-            var partners = a.CombinationPartner();
+            // VB はパートナーを「合」のアビリティのときだけ探す
+            IList<Unit> partners = new List<Unit>();
             if (a.IsAbilityClassifiedAs("合"))
             {
+                partners = a.CombinationPartner();
+
                 // 合体技のパートナーのハイライト表示
                 // MaskDataを保存して使用している
                 var tmpMaskData = new bool[Map.MapWidth + 1, Map.MapHeight + 1];
@@ -2755,14 +2776,13 @@ namespace SRCCore.Units
                     }
                     else if (cfa.IsAbilityClassifiedAs("変"))
                     {
-                        // XXX 変形技
                         if (cf.IsFeatureAvailable("変形技"))
                         {
                             var uname = "";
-                            var fd = cf.Features.FirstOrDefault(x => x.Name == "変形技" && x.DataL[0] == aname);
+                            var fd = cf.Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == aname);
                             if (fd != null)
                             {
-                                uname = fd.DataL[1];
+                                uname = GeneralLib.LIndex(fd.Data, 2);
                                 if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                                 {
                                     cf.Transform(uname);
@@ -2790,12 +2810,11 @@ namespace SRCCore.Units
                             }
                         }
                     }
-
-                    break;
+                    // VB の Exit For はアビリティを探すループを抜けるだけで、次のパートナーの処理は続ける
                 }
                 else
                 {
-                    // 同名の武器がなかった場合は自分のデータを使って処理
+                    // 同名のアビリティがなかった場合は自分のデータを使って処理
                     if (a.Data.ENConsumption > 0)
                     {
                         cf.EN = cf.EN - a.AbilityENConsumption();
@@ -2842,7 +2861,7 @@ namespace SRCCore.Units
                     {
                         if (cf.IsFeatureAvailable("パーツ分離"))
                         {
-                            var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 1);
+                            var uname = GeneralLib.LIndex(cf.FeatureData("パーツ分離"), 2);
                             if (cf.OtherForm(uname).IsAbleToEnter(cf.x, cf.y))
                             {
                                 cf.Transform(uname);
@@ -2924,27 +2943,52 @@ namespace SRCCore.Units
                     }
                     else
                     {
+                        // しかし、パーツ分離できない地形ではそのまま自爆
                         Die();
+                        if (!is_event)
+                        {
+                            Event.HandleEvent("破壊", MainPilot().ID);
+                            if (SRC.IsScenarioFinished)
+                            {
+                                return;
+                            }
+                        }
                     }
                 }
                 else
                 {
                     Die();
+                    if (!is_event)
+                    {
+                        Event.HandleEvent("破壊", MainPilot().ID);
+                        if (SRC.IsScenarioFinished)
+                        {
+                            return;
+                        }
+                    }
                 }
             }
             else if (a.IsAbilityClassifiedAs("失") && HP == 0)
             {
                 Die();
+                if (!is_event)
+                {
+                    Event.HandleEvent("破壊", MainPilot().ID);
+                    if (SRC.IsScenarioFinished)
+                    {
+                        return;
+                    }
+                }
             }
             else if (a.IsAbilityClassifiedAs("変"))
             {
                 if (IsFeatureAvailable("変形技"))
                 {
                     var uname = "";
-                    var fd = Features.FirstOrDefault(x => x.Name == "変形技" && x.DataL[0] == aname);
+                    var fd = Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == aname);
                     if (fd != null)
                     {
-                        uname = fd.DataL[1];
+                        uname = GeneralLib.LIndex(fd.Data, 2);
                         if (OtherForm(uname).IsAbleToEnter(x, y))
                         {
                             Transform(uname);
@@ -2982,32 +3026,6 @@ namespace SRCCore.Units
                 {
                     itm.Exist = false;
                     DeleteItem(itm);
-                }
-            }
-
-            // 戦闘アニメ終了処理
-            if (IsAnimationDefined(aname + "(終了)", sub_situation: ""))
-            {
-                PlayAnimation(aname + "(終了)", sub_situation: "");
-            }
-            else if (IsAnimationDefined("終了", sub_situation: ""))
-            {
-                PlayAnimation("終了", sub_situation: "");
-            }
-
-            {
-                var withBlock39 = CurrentForm();
-                // 戦闘アニメで変更されたユニット画像を元に戻す
-                if (withBlock39.IsConditionSatisfied("ユニット画像"))
-                {
-                    withBlock39.DeleteCondition("ユニット画像");
-                    GUI.PaintUnitBitmap(CurrentForm());
-                }
-
-                if (withBlock39.IsConditionSatisfied("非表示付加"))
-                {
-                    withBlock39.DeleteCondition("非表示付加");
-                    GUI.PaintUnitBitmap(CurrentForm());
                 }
             }
 
