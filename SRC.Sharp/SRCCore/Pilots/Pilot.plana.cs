@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Lib;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Pilots
@@ -130,11 +131,14 @@ namespace SRCCore.Pilots
             lv = GeneralLib.MinLng(Level, 100);
             if (IsSkillAvailable("霊力成長"))
             {
-                MaxPlanaRet = (int)(MaxPlanaRet + (long)(1.5d * lv * (10d + SkillLevel("霊力成長", ""))) / 10L);
+                // VB: MaxPlana + 1.5 * lv * (10 + SkillLevel("霊力成長")) \ 10
+                // \ の被除数は偶数丸めで整数にしてから割る
+                MaxPlanaRet = (int)(MaxPlanaRet + VBMath.IntDiv(1.5d * lv * (10d + SkillLevel("霊力成長", "")), 10L));
             }
             else
             {
-                MaxPlanaRet = (int)(MaxPlanaRet + 1.5d * lv);
+                // VB: MaxPlana + 1.5 * lv を Long へ代入するので偶数丸め
+                MaxPlanaRet = VBMath.CLng(MaxPlanaRet + 1.5d * lv);
             }
 
             return MaxPlanaRet;
