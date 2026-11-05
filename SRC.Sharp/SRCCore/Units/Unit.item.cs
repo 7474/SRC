@@ -61,7 +61,7 @@ namespace SRCCore.Units
             // 見つからなければアイテム名で検索
             foreach (Item itm in colItem.List)
             {
-                // XXX ケース考慮など
+                // VB の Unit.cls は Option Compare を指定していないので、名前は大文字・小文字を区別して比べる
                 if (itm.Name == Index)
                 {
                     ItemRet = itm;
@@ -149,19 +149,10 @@ namespace SRCCore.Units
                                     }
                                 }
 
-                                // ハードポイント付きのものしかない場合
-                                if (itm2 != null)
-                                {
-                                    num = (num - Item(1).Size());
-                                    if (Party0 != "味方")
-                                    {
-                                        Item(1).Exist = false;
-                                    }
-
-                                    DeleteItem(Item(1));
-                                    found_item = true;
-                                }
-
+                                // VB には続けて「ハードポイント付きのものしかない場合」に Item(1) を外す
+                                // If Not itm2 Is Nothing の分岐があるが、VB の For Each は最後まで回ると
+                                // ループの変数が Nothing になり、外した場合も Set itm2 = Nothing するので
+                                // この分岐には入らない。ハードポイント付きのものしかなければ何も外さない
                                 if (!found_item)
                                 {
                                     // 外せるアイテムがない
@@ -451,8 +442,9 @@ namespace SRCCore.Units
                 return;
             }
 
-            // XXX 元は削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
-            // 削除するアイテムによって付加された武器・アビリティのデータを削除していた
+            // 削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
+            // 削除するアイテムによって付加された武器・アビリティのデータを削除する
+            DetachItemWeaponsAndAbilities(itm);
             DeleteItemInternal(itm);
 
             // ハードポイントを持つアイテムをはずした場合は他のアイテムを連続してはずす必要がある
@@ -536,6 +528,43 @@ namespace SRCCore.Units
                 }
             }
             while (is_changed);
+        }
+
+        // アイテムが付加した武器・アビリティを武器・アビリティの一覧から外す。
+        // Update は同じ武器データの武器から残弾数を引き継ぐので、外さないと
+        // 同じアイテムを２つ装備しているときに、外したほうの残弾数が残ったほうに引き継がれることがある。
+        // VB は番号を数えて WData(i)・adata(i) を Nothing にする（数え方は Update の並びに合わせる）
+        private void DetachItemWeaponsAndAbilities(Item itm)
+        {
+            if (WData == null || AData == null)
+            {
+                return;
+            }
+
+            var hasPilot = CountPilot() > 0;
+            var wnum = Data.Weapons.Count + (hasPilot ? AllPilots.Sum(p => p.Data.Weapons.Count) : 0);
+            var anum = Data.Abilities.Count + (hasPilot ? AllPilots.Sum(p => p.Data.Abilities.Count) : 0);
+            foreach (var itm2 in ItemList)
+            {
+                if (!itm2.Activated)
+                {
+                    continue;
+                }
+
+                if (ReferenceEquals(itm2, itm))
+                {
+                    var weapons = WData.Where((w, i) => i >= wnum && i < wnum + itm.Data.Weapons.Count
+                        && ReferenceEquals(w.WeaponData, itm.Data.Weapons[i - wnum])).ToList();
+                    var abilities = AData.Where((a, i) => i >= anum && i < anum + itm.Data.Abilities.Count
+                        && ReferenceEquals(a.Data, itm.Data.Abilities[i - anum])).ToList();
+                    WData = WData.Where(w => !weapons.Any(x => ReferenceEquals(x, w))).ToList();
+                    AData = AData.Where(a => !abilities.Any(x => ReferenceEquals(x, a))).ToList();
+                    return;
+                }
+
+                wnum += itm2.Data.Weapons.Count;
+                anum += itm2.Data.Abilities.Count;
+            }
         }
 
         // 装備個所ごとのハードポイントのサイズ

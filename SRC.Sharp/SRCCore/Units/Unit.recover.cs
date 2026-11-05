@@ -1370,37 +1370,37 @@ namespace SRCCore.Units
             }
 
             // 他の形態の弾数も変更
+            // 元の SRC と同じく、他の形態の武器・アビリティは直前に合わせたものの次から探す
+            // （同名の武器が複数あっても、順に 1 つずつ対応させる）
             foreach (var of in OtherForms)
             {
+                var ofWeapons = of.Weapons;
+                var idx = 0;
                 foreach (var wj in Weapons)
                 {
-                    if (wj.MaxBullet() <= 0)
+                    for (var k = idx; k < ofWeapons.Count; k++)
                     {
-                        continue;
-                    }
-
-                    foreach (var wk in of.Weapons)
-                    {
-                        if ((wj.Name ?? "") == (wk.Name ?? "") && wk.MaxBullet() > 0)
+                        var wk = ofWeapons[k];
+                        if ((wj.Name ?? "") == (wk.Name ?? "") && wj.MaxBullet() > 0 && wk.MaxBullet() > 0)
                         {
                             wk.SetBullet((wk.MaxBullet() * wj.Bullet()) / wj.MaxBullet());
+                            idx = k + 1;
                             break;
                         }
                     }
                 }
 
+                var ofAbilities = of.Abilities;
+                idx = 0;
                 foreach (var aj in Abilities)
                 {
-                    if (aj.MaxStock() <= 0)
+                    for (var k = idx; k < ofAbilities.Count; k++)
                     {
-                        continue;
-                    }
-
-                    foreach (var ak in of.Abilities)
-                    {
-                        if ((aj.Data.Name ?? "") == (ak.Data.Name ?? "") && ak.MaxStock() > 0)
+                        var ak = ofAbilities[k];
+                        if ((aj.Data.Name ?? "") == (ak.Data.Name ?? "") && aj.MaxStock() > 0 && ak.MaxStock() > 0)
                         {
                             ak.SetStock((ak.MaxStock() * aj.Stock()) / aj.MaxStock());
+                            idx = k + 1;
                             break;
                         }
                     }

@@ -226,9 +226,10 @@ namespace SRCCore.Units
                 rate = 1d;
                 if (Unit.IsFeatureAvailable("ＥＮ消費減少"))
                 {
+                    // VB の FeatureLevel はレベル指定の無い特殊能力を 1 とする
                     foreach (var f in Unit.Features.Where(x => x.Name == "ＥＮ消費減少"))
                     {
-                        rate = rate - 0.1d * f.Level;
+                        rate = rate - 0.1d * f.FeatureLevel;
                     }
                 }
 
@@ -305,11 +306,21 @@ namespace SRCCore.Units
                 }
             EndLoop:
 
-                return Conversions.ToDouble(Strings.Mid(aclass, start_idx, i - start_idx));
+                // 元の SRC の CDbl は数値として読めない文字列（「霊L」の後に数字が無いなど）でエラーになり、
+                // エラーメッセージを出して 0 を返す
+                var lvText = Strings.Mid(aclass, start_idx, i - start_idx);
+                if (!double.TryParse(lvText,
+                    System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowTrailingSign,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out var lv))
+                {
+                    throw new FormatException(lvText);
+                }
+                return lv;
             }
             catch
             {
-                GUI.ErrorMessage(Data.Name + "の" + "アビリティ「" + Data.Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
+                GUI.ErrorMessage(Unit.Name + "の" + "アビリティ「" + Data.Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
                 return 0d;
             }
         }
@@ -1286,7 +1297,9 @@ namespace SRCCore.Units
                 var p = t.MainPilot();
                 if (IsAbilityClassifiedAs("対"))
                 {
-                    if (p.Level % AbilityLevel("対") != 0d)
+                    // VB の Mod は実数を偶数丸めで整数にしてから割る（0 で割ると VB は実行時エラー。ここでは適用できないとする）
+                    var lv_div = VBMath.CLng(AbilityLevel("対"));
+                    if (lv_div == 0 || p.Level % lv_div != 0)
                     {
                         return false;
                     }
@@ -1407,17 +1420,19 @@ namespace SRCCore.Units
                 Unit.EN = Unit.EN - AbilityENConsumption();
             }
 
-            // 弾数消費
-            if (Data.Stock > 0 && !IsAbilityClassifiedAs("永"))
+            // 使用回数消費（VB の UseAbility は「永」を見ない。「永」が効くのは武器の弾数だけ）
+            if (Data.Stock > 0)
             {
                 SetStock((Stock() - 1));
 
                 // 一斉使用
                 if (IsAbilityClassifiedAs("斉"))
                 {
+                    // VB: SetStock i, MinLng(MaxStock(i) * Stock(a) \ MaxStock(a), Stock(i))
+                    // 残りの割合を写すのではなく、整数の商と今の回数の小さいほうにする（自分自身も含む）
                     foreach (var ua in Unit.Abilities)
                     {
-                        ua.SetStockRate(dblStock);
+                        ua.SetStock(GeneralLib.MinLng(ua.MaxStock() * Stock() / MaxStock(), ua.Stock()));
                     }
                 }
                 else
@@ -1532,11 +1547,6 @@ namespace SRCCore.Units
             {
                 dblStock = 1d;
             }
-        }
-
-        private void SetStockRate(double new_stock)
-        {
-            dblStock = new_stock;
         }
 
         public void SetStockFull()

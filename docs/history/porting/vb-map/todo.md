@@ -255,8 +255,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/UIInterface/ISystemConfig.cs:34` | XXX | XXX この辺はSRCのコア的にはどうでもいい | 未確認 |  |
 | `SRCCore/UIInterface/ISystemConfig.cs:41` | XXX | XXX /この辺はSRCのコア的にはどうでもいい | 未確認 |  |
 | `SRCCore/UIInterface/ISystemConfig.cs:46` | XXX | XXX この辺に依存する処理はあんまり嬉しくない | 未確認 |  |
-| `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | 未確認 |  |
-| `SRCCore/Units/Unit.ability.cs:2644` | XXX | XXX 変形技 | 未確認 |  |
+| `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | SRC#で不要 | メソッドの置き場所の設計のメモで、動作に関係しない |
 | `SRCCore/Units/Unit.condition.cs:81` | コード | return colCondition[Index].Name; | 未確認 |  |
 | `SRCCore/Units/Unit.condition.cs:105`（7 行） | コード | { | 未確認 |  |
 | `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | 未確認 |  |
@@ -270,8 +269,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.feature.cs:254` | XXX | XXX 同一インスタンスじゃないかも | 未確認 |  |
 | `SRCCore/Units/Unit.feature.cs:312`（20 行） | コード | { | 未確認 |  |
 | `SRCCore/Units/Unit.feature.cs:340` | XXX | XXX colAllFeature の更新要らんの？ | 未確認 |  |
-| `SRCCore/Units/Unit.item.cs:64` | XXX | XXX ケース考慮など | 未確認 |  |
-| `SRCCore/Units/Unit.item.cs:454` | XXX | XXX 元は削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、 | 未確認 |  |
+| `SRCCore/Units/Unit.item.cs:153` | コード | If Not itm2 Is Nothing の分岐があるが、VB の For Each は最後まで回ると | 未確認 |  |
 | `SRCCore/Units/Unit.lookup.cs:1851` | XXX | XXX もうちょいいい感じにしたいもんだ | 未確認 |  |
 | `SRCCore/Units/Unit.map.cs:45` | XXX | XXX Goto 潰しておきたい | 未確認 |  |
 | `SRCCore/Units/Unit.map.cs:338` | XXX | XXX 何が違うんだ？ | 未確認 |  |
@@ -293,15 +291,13 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.status.cs:1736` | コード | intMaxBullet[i] = Weapon(i).Bullet; | 未確認 |  |
 | `SRCCore/Units/Unit.status.cs:1770`（17 行） | コード | Array.Resize(dblBullet, CountWeapon() + 1); | 未確認 |  |
 | `SRCCore/Units/Unit.status.cs:1807`（149 行） | コード | prev_adata = new AbilityData[Information.UBound(adata) + 1]; | 未確認 |  |
-| `SRCCore/Units/UnitAbility.cs:620` | XXX | XXX 変形技が妥当に定義されていなかった場合 | 未確認 |  |
-| `SRCCore/Units/UnitAbility.cs:1580` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
+| `SRCCore/Units/UnitAbility.cs:1590` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:58` | XXX | XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？ | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:163` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3968` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4288` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
-| `SRCCore/Units/UnitWeapon.cs:5025` | XXX | XXX これどういう式なのかいまいち分からん | 未確認 |  |
-| `SRCCore/Units/UnitWeapon.cs:5090` | XXX | XXX いつの仕様だろ | 未確認 |  |
-| `SRCCore/Units/UnitWeapon.cs:5092`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | 未確認 |  |
+| `SRCCore/Units/UnitWeapon.cs:5092`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
 | `SRCCore/Units/UnitWeapon.cs:5329` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
 | `SRCCore/Units/Units.cs:736`（298 行） | コード | { | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:94` | XXX | XXX DateTime パースの精査 | 未確認 |  |
