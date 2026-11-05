@@ -66,6 +66,14 @@ jobs:
     - uses: actions/checkout@v7
     - run: python3 tools/release.py check
 
+  # VB 版と C# の手続きの対応表（docs/history/porting/vb-map）に VB のすべての手続きがあり、状態の書き方が正しいか（#1498）。
+  # 表は文書なので、文書だけの PR でも動かす
+  port-map-check:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v7
+    - run: python3 tools/vb_port_map.py --check
+
   # SRCCore のユニットテストと、SRCRender の E2E・VRT（正とする環境は Linux）
   test-srccore-linux:
     needs: changes
@@ -520,7 +528,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, port-map-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results
