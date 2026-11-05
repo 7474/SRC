@@ -294,6 +294,33 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void ChangeTerrain_BitmapNotFound_ThrowsEventErrorWithBmpExtension()
+        {
+            // 元の SRC と同じく「マップビットマップ「<ビットマップ名><番号>.bmp」が見つかりません」
+            var f = CreateFixture();
+
+            var result = CreateCmd(f.Src, "ChangeTerrain 3 2 山 5").Exec();
+
+            Assert.AreEqual(-1, result);
+            Assert.AreEqual(1, f.Src.DataErrors.Count);
+            Assert.AreEqual("マップビットマップ「mountain5.bmp」が見つかりません", f.Src.DataErrors[0].msg);
+        }
+
+        [TestMethod]
+        public void ClearLayer_EmptyOption_IsSameAsNormal()
+        {
+            // 元の SRC は Option が空文字列なら指定が無いのと同じ（「通常」）に扱い、エラーにしない
+            var f = CreateFixture();
+            SetWallUnderPlainLayer(f);
+
+            var result = CreateCmd(f.Src, "ClearLayer 3 2 \"\"").Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.AreEqual(0, f.Src.DataErrors.Count);
+            Assert.AreEqual(SRCCore.Maps.BoxTypes.Under, f.Map.CellAtPoint(3, 2).BoxType);
+        }
+
+        [TestMethod]
         public void ChangeLayer_DataOnly_BitmapNotFound_DoesNotThrow()
         {
             // 「情報限定」は画像を探さないので、画像が無くてもエラーにならない
