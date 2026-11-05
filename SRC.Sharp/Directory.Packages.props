@@ -14,7 +14,7 @@
     <PackageVersion Include="Avalonia.Skia" Version="12.1.5" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.5" />
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
-    <PackageVersion Include="Markdig" Version="1.5.1" />
+    <PackageVersion Include="Markdig" Version="1.6.0" />
     <PackageVersion Include="Melanchall.DryWetMidi" Version="8.0.3" />
     <PackageVersion Include="MeltySynth" Version="2.4.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.14" />
