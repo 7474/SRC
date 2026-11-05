@@ -517,9 +517,9 @@ namespace SRCCore
                     }
 
                     // 間接攻撃？
+                    // VB 版は tmp_w ではなく w（それまでに選んだターゲットへの武器。まだ選んでいなければ 0 で常に偽）を見ている。
+                    // 評価しているターゲットへの武器を見るつもりの書き誤りなので、VB の不具合は再現せず tmp_w を見る（#1501）
                     indirect_attack = selectedUnit.Weapon(tmp_w).IsWeaponClassifiedAs("間");
-                    // w は常に0？
-                    //indirect_attack = selectedUnit.IsWeaponClassifiedAs(w, "間");
 
                     // 召喚ユニットは自分がやられてしまうような攻撃はかけない
                     if (selectedUnit.Party == "ＮＰＣ"
@@ -552,11 +552,12 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている？
+                                // VB 版と同じく、効果の 1 番目が「回復」のアビリティだけを見る
                                 foreach (var adata in u.Abilities)
                                 {
                                     if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.FirstOrDefault()?.EffectType == "回復")
                                         {
                                             prob = VBMath.CLng(1.5d * prob);
                                             break;
@@ -633,11 +634,12 @@ namespace SRCCore
                             else
                             {
                                 // 回復アビリティを持っている場合も重要ユニットと認定
+                                // VB 版と同じく、効果の 1 番目が「回復」のアビリティだけを見る
                                 foreach (var adata in u.Abilities)
                                 {
                                     if (adata.Data.MaxRange > 0)
                                     {
-                                        if (adata.Data.Effects.Any(x => x.EffectType == "回復"))
+                                        if (adata.Data.Effects.FirstOrDefault()?.EffectType == "回復")
                                         {
                                             dmg = VBMath.CLng(1.5d * dmg);
                                             break;
@@ -694,7 +696,8 @@ namespace SRCCore
             ;
 
             // 敵を攻撃
-            // TODO 武器選択に失敗してるケースがある（発生時は LogWarn を出してこのターンの行動を中断する）
+            // VB 版では w = 0 のままここに来ると武器を参照して実行時エラーになる。
+            // SRC# では警告を記録してこのターンの行動を終える
             if (w <= 0)
             {
                 SRC.CommandLog.LogWarning("Weapon not found. {Unit}", JsonConvert.SerializeObject(Commands.SelectedUnit));
@@ -707,7 +710,6 @@ namespace SRCCore
             // 敵の位置を記録しておく
             tx = Commands.SelectedTarget.x;
             ty = Commands.SelectedTarget.y;
-            //string[] list;
             string caption_msg;
             int hit_prob, crit_prob;
             IList<Unit> partners;
@@ -1060,7 +1062,7 @@ namespace SRCCore
                             if (Expression.IsOptionDefined("等身大基準"))
                             {
                                 confirmList.Add(new ListBoxItem(
-                                    $"援護防御：使用{(Commands.UseSupportGuard ? "する" : "しない")}("
+                                    $"援護防御：使用{(Commands.UseSupportGuard ? "する" : "しない")} ("
                                         + Commands.SupportGuardUnit.Nickname + ")",
                                     "援護防御"));
                             }
@@ -1084,9 +1086,9 @@ namespace SRCCore
                             lb_mode = "連続表示,カーソル移動",
                         });
                         var selectedItem = confirmList.SafeRefZeroOffset(i - 1);
-                        if (selectedItem != null)
                         {
-                            switch (selectedItem.ListItemID)
+                            // 選ばなかった（i = 0）場合は VB 版の Case Else に当たる
+                            switch (selectedItem?.ListItemID)
                             {
                                 case "反撃":
                                     {
@@ -1299,9 +1301,10 @@ namespace SRCCore
                             targetUnit.Attack(targetWeapon, Commands.SelectedUnit, "先制攻撃", "");
                             Commands.SelectedTarget = targetUnit.CurrentForm();
                         }
+                        // VB 版の Or は短絡しないので、武器が「先」でも乱数を 1 つ消費する
                         else if (targetWeapon.IsWeaponClassifiedAs("先")
-                            || targetUnit.MainPilot().SkillLevel("先読み", ref_mode: "") >= GeneralLib.Dice(16)
-                            || targetUnit.IsUnderSpecialPowerEffect("カウンター"))
+                            | targetUnit.MainPilot().SkillLevel("先読み", ref_mode: "") >= GeneralLib.Dice(16)
+                            | targetUnit.IsUnderSpecialPowerEffect("カウンター"))
                         {
                             def_mode = "先制攻撃";
                             targetUnit.Attack(targetWeapon, Commands.SelectedUnit, "カウンター", "");
@@ -1380,11 +1383,8 @@ namespace SRCCore
                     }
                     else if ((wname ?? "") != (selectedUnit.Weapon(w).Name ?? ""))
                     {
-                        // インデックスがずれた場合は名前で検索
-                        var foundIdx = selectedUnit.Weapons
-                            .Select((weapon, idx) => (weapon, idx))
-                            .FirstOrDefault(t => (t.weapon.Name ?? "") == (wname ?? ""));
-                        w = foundIdx.weapon != null ? foundIdx.idx + 1 : -1;
+                        // VB 版と同じく、武器の並びが変わっていれば攻撃しない
+                        w = -1;
                     }
                     else if (moved)
                     {
@@ -2639,7 +2639,8 @@ namespace SRCCore
             var fdata = bu.FeatureData("ハイパーモード");
 
             // 発動条件を満たす？
-            if (bu.MainPilot().Morale < 100 + (10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || bu.HP > bu.MaxHP / 4))
+            // VB 版は 100 + CInt(10# * flevel) なので、10 * レベルは偶数への丸めで整数にしてから比べる
+            if (bu.MainPilot().Morale < 100 + VBMath.CLng(10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || bu.HP > bu.MaxHP / 4))
             {
                 return;
             }
@@ -2674,7 +2675,7 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
@@ -2841,8 +2842,14 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
+                    if (!SRC.PDList.IsDefined(u.FeatureData("追加パイロット")))
+                    {
+                        GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
+                        SRC.TerminateSRC();
+                    }
+
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
             }
@@ -3048,8 +3055,14 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
+                    if (!SRC.PDList.IsDefined(u.FeatureData("追加パイロット")))
+                    {
+                        GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
+                        SRC.TerminateSRC();
+                    }
+
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
             }
@@ -3112,22 +3125,6 @@ namespace SRCCore
                     if (ua.AbilityENConsumption() >= u.EN / 2)
                     {
                         continue;
-                    }
-                }
-
-                // 霊力消費が多すぎない？
-                if (u.CountPilot() > 0)
-                {
-                    var p = u.MainPilot();
-                    if (ua.IsAbilityClassifiedAs("霊") || ua.IsAbilityClassifiedAs("プ"))
-                    {
-                        var planaAttr = ua.IsAbilityClassifiedAs("霊") ? "霊" : "プ";
-                        // 元の SRC の TryInstantAbility にはない、SRC# で足した判定。消費量の比較の目安なので切り捨てでよい
-                        var planaConsumption = VBMath.Fix(ua.AbilityLevel(planaAttr) * 5);
-                        if (planaConsumption > 0 && p.MaxPlana() > 0 && planaConsumption >= p.Plana / 2)
-                        {
-                            continue;
-                        }
                     }
                 }
 
@@ -3242,6 +3239,14 @@ namespace SRCCore
             var aname = selUa.Data.Name;
             Commands.SelectedAbilityName = aname;
 
+            // 召喚アビリティの使用イベント
+            // VB 版は使うと決めた時点で戻り値を True にしているので、中断したときも true を返す。
+            // 合体技パートナーはこのあとで設定する（VB 版と同じ順）ので、ここでは SelectedPartners を消さない
+            Event.HandleEvent("使用", u.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                return true;
+            }
 
             // 合体技パートナーの設定
             IList<Unit> partners;
@@ -3253,15 +3258,6 @@ namespace SRCCore
             {
                 Commands.SelectedPartners.Clear();
                 partners = new List<Unit>();
-            }
-
-            // 召喚アビリティの使用イベント
-            Event.HandleEvent("使用", u.MainPilot().ID, aname);
-            if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            {
-                Commands.SelectedPartners.Clear();
-                // XXX true でいいのか？
-                return true;
             }
 
             // 召喚アビリティを使用
@@ -3318,7 +3314,9 @@ namespace SRCCore
             var p = u.MainPilot();
             var max_score = 0;
             UnitAbility selUa = null;
-            foreach (var ua in u.Abilities)
+            // VB 版と同じく最後のアビリティから順に調べる（評価が同じなら番号の大きいものを選ぶ。
+            // 投下位置 tx, ty もアビリティをまたいで上書きされるので、順番を VB 版に合わせる）
+            foreach (var ua in u.Abilities.Reverse())
             {
                 // マップアビリティかどうか
                 if (!ua.IsAbilityClassifiedAs("Ｍ"))
@@ -3405,7 +3403,6 @@ namespace SRCCore
                             {
                                 var withBlock1 = t;
                                 // ゾンビ？
-                                // XXX Unit.CanFix
                                 if (withBlock1.IsConditionSatisfied("ゾンビ"))
                                 {
                                     continue;
@@ -3474,7 +3471,6 @@ namespace SRCCore
                                         continue;
                                     }
                                     // ゾンビ？
-                                    // XXX Unit.CanFix
                                     if (t.IsConditionSatisfied("ゾンビ"))
                                     {
                                         continue;
@@ -3532,8 +3528,8 @@ namespace SRCCore
             u.ExecuteMapAbility(selUa, tx, ty);
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
             {
+                // VB 版は TryMapHealing = True の前に抜けるので False を返す
                 Commands.SelectedPartners.Clear();
-                // XXX false でいいのか？
                 return false;
             }
 
@@ -3669,7 +3665,12 @@ namespace SRCCore
                     }
 
                     // 移動可能か？
-                    var is_able_to_move = ua.CanUseAfterMove();
+                    // VB 版は「射程 1 か Ｐ属性」で、Ｑ属性なら移動しない（Ｐ と Ｑ を両方持つときも移動しない）
+                    var is_able_to_move = ua.AbilityMaxRange() == 1 || ua.IsAbilityClassifiedAs("Ｐ");
+                    if (ua.IsAbilityClassifiedAs("Ｑ"))
+                    {
+                        is_able_to_move = false;
+                    }
                     if (dont_move)
                     {
                         is_able_to_move = false;
@@ -3740,11 +3741,12 @@ namespace SRCCore
                         else if (apower == max_power)
                         {
                             // 回復量が同じならコストが低い方を優先
+                            // VB 版はアビリティのデータの EN 消費と使用回数（.Ability(a).Stock）で比べる
                             if (ua.Data.ENConsumption > selUa.Data.ENConsumption)
                             {
                                 continue;
                             }
-                            if (ua.Stock() < selUa.Stock())
+                            if (ua.Data.Stock < selUa.Data.Stock)
                             {
                                 continue;
                             }
@@ -3763,7 +3765,7 @@ namespace SRCCore
                         {
                             continue;
                         }
-                        if (ua.Stock() < selUa.Stock())
+                        if (ua.Data.Stock < selUa.Data.Stock)
                         {
                             continue;
                         }
@@ -4232,14 +4234,13 @@ namespace SRCCore
 
             // マップ攻撃を使用するターゲット数の下限を設定する
             var score_limit = 1;
-            var loopTo = currentUnit.CountWeapon();
             foreach (var uw in currentUnit.Weapons)
             {
                 // 通常攻撃を持っている場合は単独の敵への攻撃の際に通常攻撃を優先する
                 if (!uw.IsWeaponClassifiedAs("Ｍ"))
                 {
-                    // XXX なんか移動前固定条件だったけれど、使えれば、でしょ。
-                    if ((!moved && uw.IsWeaponAvailable("移動前")) || (moved && uw.IsWeaponAvailable("移動後")))
+                    // VB 版と同じく、移動後に呼ばれたときも「移動前」で使えるかを見る
+                    if (uw.IsWeaponAvailable("移動前"))
                     {
                         score_limit = 2;
                         break;
@@ -4247,14 +4248,12 @@ namespace SRCCore
                 }
             }
 
-            // 威力の高い武器を優先して選択
-            // XXX を意図して逆順なのだろう
+            // 威力の高い武器を優先して選択（武器は威力の低い順に並んでいるので後ろから見る）
             UnitWeapon useUw = null;
             int tx = -1;
             int ty = -1;
             foreach (var uw in currentUnit.Weapons.Reverse())
             {
-                // XXX ヒットはこの段階ではしてない
                 useUw = uw;
                 Commands.SelectedWeapon = uw.WeaponNo();
                 Commands.SelectedTWeapon = 0;
@@ -4758,6 +4757,8 @@ namespace SRCCore
         // スペシャルパワーを使用する
         public void TrySpecialPower(Pilot p)
         {
+            Commands.SelectedPilot = p;
+
             // ザコパイロットはスペシャルパワーを使わない
             if (Strings.InStr(p.Name, "(ザコ)") > 0)
             {
@@ -4786,7 +4787,7 @@ namespace SRCCore
             }
 
             // 使用する可能性のあるスペシャルパワーの一覧を作成
-            var slist = new List<SpecialPowerData>();
+            var slist = new List<string>();
             var loopTo = p.CountSpecialPower;
             for (var i = 1; i <= loopTo; i++)
             {
@@ -4958,7 +4959,6 @@ namespace SRCCore
                 {
                     if (sd.TargetType == "自分")
                     {
-                        // XXX 自分の射程見なくていいのか？
                         switch (DistanceFromNearestEnemy(Commands.SelectedUnit))
                         {
                             case 5:
@@ -5007,7 +5007,7 @@ namespace SRCCore
                 ;
 
                 // スペシャルパワーを候補リストに追加
-                slist.Add(sd);
+                slist.Add(Commands.SelectedSpecialPower);
             }
 
             // 使用可能なスペシャルパワーを所有していない
@@ -5018,7 +5018,7 @@ namespace SRCCore
             }
 
             // 使用するスペシャルパワーをランダムに選択
-            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1].Name;
+            Commands.SelectedSpecialPower = slist[GeneralLib.Dice(slist.Count) - 1];
 
             // 使用イベント
             Event.HandleEvent("使用", Commands.SelectedUnit.MainPilot().ID, Commands.SelectedSpecialPower);
@@ -5965,7 +5965,7 @@ namespace SRCCore
                                 {
                                     if (t.BossRank >= 0)
                                     {
-                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("衰")))
                                         {
                                             case 1:
                                                 {
@@ -5988,7 +5988,7 @@ namespace SRCCore
                                     }
                                     else
                                     {
-                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("衰")))
                                         {
                                             case 1:
                                                 {
@@ -6017,7 +6017,7 @@ namespace SRCCore
                                 {
                                     if (t.BossRank >= 0)
                                     {
-                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("滅")))
                                         {
                                             case 1:
                                                 {
@@ -6040,7 +6040,7 @@ namespace SRCCore
                                     }
                                     else
                                     {
-                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("滅")))
                                         {
                                             case 1:
                                                 {

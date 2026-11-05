@@ -34,7 +34,7 @@ VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C
 | [BCVariable.bas](BCVariable_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [BattleConfigData.cls](BattleConfigData_cls.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
 | [BattleConfigDataList.cls](BattleConfigDataList_cls.md) | 7 | 7 | 0 | 0 | 0 | 0 | 0 |
-| [COM.bas](COM_bas.md) | 18 | 18 | 0 | 0 | 0 | 0 | 0 |
+| [COM.bas](COM_bas.md) | 18 | 0 | 7 | 11 | 0 | 0 | 0 |
 | [CmdData.cls](CmdData_cls.md) | 195 | 195 | 0 | 0 | 0 | 0 | 0 |
 | [Command.bas](Command_bas.md) | 52 | 52 | 0 | 0 | 0 | 0 | 0 |
 | [Configuration.frm](Configuration_frm.md) | 7 | 7 | 0 | 0 | 0 | 0 | 0 |
@@ -89,4 +89,4 @@ VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C
 | [Units.cls](Units_cls.md) | 25 | 25 | 0 | 0 | 0 | 0 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 1285 | 28 | 20 | 0 | 0 | 0 |
+| 計 | 1333 | 1267 | 35 | 31 | 0 | 0 | 0 |
