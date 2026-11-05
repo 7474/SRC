@@ -812,20 +812,32 @@ export function showInput(title, message, value, ok, cancel) {
     });
 }
 
-export function showChoice(title, items, cancel) {
+// selected（空なら選ばない）の項目を初めに選んでおく（フォーカスを置き、Enter で決まる）
+export function showChoice(title, items, selected, cancel) {
     return modal(title, (box, close) => {
         const list = document.createElement('ul');
         list.className = 'modal-list';
+        let initial = null;
         for (const item of items) {
             const li = document.createElement('li');
             const b = document.createElement('button');
             b.textContent = item;
             b.addEventListener('click', () => close(item));
+            if (selected && item === selected && !initial) {
+                b.classList.add('selected');
+                initial = b;
+            }
             li.appendChild(b);
             list.appendChild(li);
         }
         box.appendChild(list);
         buttons(box, [[cancel, () => close(null)]]);
+        if (initial) {
+            setTimeout(() => {
+                initial.focus();
+                initial.scrollIntoView({ block: 'nearest' });
+            }, 0);
+        }
     });
 }
 

@@ -1651,7 +1651,7 @@ namespace SRCSharpForm
             }
         }
 
-        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        public string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
             using (var ofd = new OpenFileDialog())
             {
@@ -1659,6 +1659,8 @@ namespace SRCSharpForm
                 var effectiveDir = new[] { initialDirectory, SRC.ScenarioPath }
                     .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
                 if (effectiveDir != null) ofd.InitialDirectory = effectiveDir;
+                // 初めに選んでおくファイル（VB: FileDialog.bas の LoadFileDialog の default_file）
+                ofd.FileName = initialFile ?? "";
                 if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
                 {
                     ofd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";

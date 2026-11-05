@@ -340,10 +340,11 @@ namespace SRCCore
         /// </summary>
         /// <param name="title">ダイアログタイトル</param>
         /// <param name="initialDirectory">初期ディレクトリ</param>
+        /// <param name="initialFile">初めに選んでおくファイル名（LoadFileDialog 関数の第 3 引数）。空なら選ばない</param>
         /// <param name="fileType">フィルタ表示名</param>
         /// <param name="fileExtension">ファイル拡張子</param>
         /// <returns>選択されたファイルの絶対パス。キャンセル時は空文字列。</returns>
-        string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension);
+        string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension);
 
         /// <summary>
         /// ファイルを保存するダイアログを表示します。

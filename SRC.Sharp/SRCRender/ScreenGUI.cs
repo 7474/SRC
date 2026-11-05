@@ -1465,7 +1465,7 @@ namespace SRCRender
                 .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
         }
 
-        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        public string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
             if (!(host is IScreenDialogHost dialogs))
             {
@@ -1475,6 +1475,8 @@ namespace SRCRender
             {
                 Title = title,
                 InitialDirectory = EffectiveDirectory(initialDirectory),
+                // 初めに選んでおくファイル（LoadFileDialog 関数の第 3 引数）
+                InitialFile = initialFile ?? "",
                 FileType = fileType,
                 FileExtension = fileExtension,
             })) ?? "";
