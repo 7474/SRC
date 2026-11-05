@@ -34,7 +34,6 @@ namespace SRCCore.Units
             string msg, buf;
             int k, i, j;
             Unit su = default, orig_t;
-            //Unit[] partners;
             int tx, ty;
             string tarea;
             int prev_x = default, prev_y = default;
@@ -100,10 +99,8 @@ namespace SRCCore.Units
             // 戦闘アニメを表示する場合はマップウィンドウをクリアする
             if (SRC.BattleAnimation)
             {
-                //if (GUI.MainWidth != 15)
-                //{
-                //    Status.ClearUnitStatus();
-                //}
+                // VB の「If MainWidth <> 15 Then ClearUnitStatus」は新ＧＵＩ（マップ幅 20）でマップ上のステータスを消す処理。
+                // SRC# は新ＧＵＩの画面配置を持たないので行わない
 
                 if (!Expression.IsOptionDefined("戦闘中画面初期化無効"))
                 {
@@ -1253,7 +1250,7 @@ namespace SRCCore.Units
                 }
                 else
                 {
-                    // XXX これ多分機能しない
+                    // VB も反射のときは UpdateMessageForm Me, Nothing を呼ぶ
                     GUI.UpdateMessageForm(this, null);
                 }
 
@@ -1766,7 +1763,8 @@ namespace SRCCore.Units
                         {
                             if (w.IsWeaponClassifiedAs("浄"))
                             {
-                                foreach (var p in AllPilots)
+                                // VB はメインパイロット、Pilot(2..CountPilot)、Support(1..CountSupport) の順に調べ、追加サポートは見ない
+                                foreach (var p in MainPilots.Concat(Supports).Where(x => x != null))
                                 {
                                     if (p.IsSkillAvailable("浄化"))
                                     {

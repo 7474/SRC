@@ -100,7 +100,7 @@ namespace SRCCore.Units
         {
             SetWeaponClass(WeaponData.Class);
             SetPowerCorrection(0);
-            SetMaxRangeCorrection(0);
+            SetMaxRangeCorrection(0, applyMinimum: false);
             SetPrecisionCorrection(0);
             SetCriticalCorrection(0);
             SetMaxBulletRate(1d);
@@ -240,7 +240,7 @@ namespace SRCCore.Units
                     // 事前にデータを登録
                     BCVariable.DataReset();
                     BCVariable.MeUnit = Unit;
-                    // UPGRADE_NOTE: オブジェクト BCVariable.DefUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                    BCVariable.AtkUnit = Unit;
                     BCVariable.DefUnit = null;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackExp = pat;
@@ -816,9 +816,12 @@ namespace SRCCore.Units
 
             return WeaponMaxRangeRet;
         }
-        public void SetMaxRangeCorrection(int correction)
+        // 元の SRC（Unit.Update）では、射程の補正を適用した武器の最大射程の最低値は 1（最小射程ではない）。
+        // 補正の対象外の武器（最大射程 1・Ｍ・武/突/接・有）は最低値を適用しないので applyMinimum に false を渡す。
+        public void SetMaxRangeCorrection(int correction, bool applyMinimum = true)
         {
-            intWeaponMaxRange = Math.Max(WeaponMinRange(), WeaponData.MaxRange + correction);
+            var range = WeaponData.MaxRange + correction;
+            intWeaponMaxRange = applyMinimum && range <= 0 ? 1 : range;
         }
 
         // 武器 w の消費ＥＮ
@@ -1053,6 +1056,7 @@ namespace SRCCore.Units
             }
 
             // 条件が複雑な場合
+            // 元の SRC は最大射程を補正前の武器データの値（Weapon(w).MaxRange）で判定する
             switch (attr ?? "")
             {
                 case "格闘系":
@@ -1065,7 +1069,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
@@ -1087,7 +1091,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
@@ -1107,7 +1111,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             if (GeneralLib.InStrNotNest(WeaponClass(), "Ｑ") == 0)
                             {
@@ -1169,12 +1173,21 @@ namespace SRCCore.Units
                     i = (i + 1);
                 }
 
-                WeaponLevelRet = Conversions.ToDouble(Strings.Mid(WeaponClass(), start_idx, i - start_idx));
+                // 元の SRC の CDbl は数値として読めない文字列（「体L」の後に数字が無いなど）でエラーになり、
+                // エラーメッセージを出して 0 を返す
+                var lvText = Strings.Mid(WeaponClass(), start_idx, i - start_idx);
+                if (!double.TryParse(lvText,
+                    System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowTrailingSign,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out WeaponLevelRet))
+                {
+                    throw new FormatException(lvText);
+                }
             }
             catch
             {
-                GUI.ErrorMessage(Name + "の" + "武装「" + Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
-
+                WeaponLevelRet = 0d;
+                GUI.ErrorMessage(Unit.Name + "の" + "武装「" + Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
             }
             return WeaponLevelRet;
         }
@@ -1434,11 +1447,15 @@ namespace SRCCore.Units
                 }
             }
 
-            foreach (var condition in Unit.Conditions.Where(x => x.Name.EndsWith("属性使用不能")))
+            foreach (var condition in Unit.Conditions)
             {
-                if (GeneralLib.InStrNotNest(WeaponClass(), condition.Name.Replace("属性使用不能", "")) > 0)
+                var cname = condition.Name;
+                if (Strings.Len(cname) > 6 && Strings.Right(cname, 6) == "属性使用不能")
                 {
-                    return false;
+                    if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Left(cname, Strings.Len(cname) - 6)) > 0)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -1516,17 +1533,7 @@ namespace SRCCore.Units
             // 変形技の場合は今いる地形で変形できる必要あり
             if (GeneralLib.InStrNotNest(WeaponClass(), "変") > 0)
             {
-                if (Unit.IsConditionSatisfied("形態固定"))
-                {
-                    return false;
-                }
-
-                if (Unit.IsConditionSatisfied("機体固定"))
-                {
-                    return false;
-                }
-
-                // XXX 変形技が妥当に定義されていなかった場合
+                // 変形先が見つからない場合は元の SRC も実行時エラーになる
                 if (Unit.IsFeatureAvailable("変形技"))
                 {
                     foreach (var feature in Unit.Features
@@ -1545,6 +1552,16 @@ namespace SRCCore.Units
                     {
                         return false;
                     }
+                }
+
+                if (Unit.IsConditionSatisfied("形態固定"))
+                {
+                    return false;
+                }
+
+                if (Unit.IsConditionSatisfied("機体固定"))
+                {
+                    return false;
                 }
             }
 
@@ -1852,10 +1869,11 @@ namespace SRCCore.Units
             // 敵がステルスの場合
             if (t.IsFeatureAvailable("ステルス"))
             {
-                double lv;
+                // VB では lv は Integer なので、レベルは偶数丸めで整数にしてから比べる
+                int lv;
                 if (t.IsFeatureLevelSpecified("ステルス"))
                 {
-                    lv = t.FeatureLevel("ステルス");
+                    lv = VBMath.CLng(t.FeatureLevel("ステルス"));
                 }
                 else
                 {
@@ -2179,8 +2197,8 @@ namespace SRCCore.Units
                         break;
                     }
                 default:
-                    // XXX 元は処理してない
-                    ed_size = 1d;
+                    // 元の SRC と同じく、未知のサイズ（サイズ変更の値の誤りなど）は 0 倍
+                    ed_size = 0d;
                     break;
             }
 
@@ -2483,32 +2501,17 @@ namespace SRCCore.Units
             }
 
             // 局地戦能力
+            // 1 つ目の要素は能力の名称なので、2 つ目以降の地形と比べる。地形適応ごとに -10
             if (t.IsFeatureAvailable("地形適応"))
             {
-                if (t.Features.Where(x => x.Name == "地形適応")
-                    //.Where(x => x.DataL.Skip(1).Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Where(x => x.DataL.Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Any())
+                var tname = Map.Terrain(t.x, t.y).Name;
+                foreach (var fd in t.Features.Where(x => x.Name == "地形適応"))
                 {
-                    prob = prob - 10;
+                    if (fd.DataL.Skip(1).Any(x => x == tname))
+                    {
+                        prob = prob - 10;
+                    }
                 }
-                // XXX これなんで1つ目飛ばしてるんだ？
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    if (t.Feature(i) == "地形適応")
-                //    {
-                //        buf = t.FeatureData(i);
-                //        var loopTo3 = GeneralLib.LLength(buf);
-                //        for (j = 2; j <= loopTo3; j++)
-                //        {
-                //            if (( ?? "") == (GeneralLib.LIndex(buf, j) ?? ""))
-                //            {
-                //                prob = prob - 10;
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
             }
 
             // 攻撃回避
@@ -3258,7 +3261,9 @@ namespace SRCCore.Units
             // 特定レベル限定攻撃
             if (WeaponLevel("対") > 0d)
             {
-                if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                // VB の Mod は実数を偶数丸めで整数にしてから割る
+                var lv_div = VBMath.CLng(WeaponLevel("対"));
+                if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                 {
                     DamageRet = 0;
                     return DamageRet;
@@ -4017,7 +4022,9 @@ namespace SRCCore.Units
                 // 特定レベル限定攻撃
                 if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
                 {
-                    if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                    // VB の Mod は実数を偶数丸めで整数にしてから割る（Damage と同じ）
+                    var lv_div = VBMath.CLng(WeaponLevel("対"));
+                    if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                     {
                         CriticalProbabilityRet = 0;
                         return CriticalProbabilityRet;
