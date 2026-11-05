@@ -510,6 +510,21 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void SetCmd_VariableName_IgnoresKanaType()
+        {
+            // 元の SRC（日本語版の Windows）と同じく、変数名のひらがなとカタカナを区別しない（7474/SRC#1477）
+            var src = CreateSrc();
+            CreateCmd(src, "Set さいず 3").Exec();
+            Assert.AreEqual(3d, src.Expression.GetValueAsDouble("サイズ"));
+            Assert.IsTrue(src.Expression.IsVariableDefined("サイズ"));
+
+            src.Expression.DefineGlobalVariable("ぐろーばる");
+            CreateCmd(src, "Set グローバル 5", 1).Exec();
+            Assert.AreEqual(5d, src.Expression.GetValueAsDouble("ぐろーばる"));
+            Assert.AreEqual(1, src.Event.GlobalVariableList.Count);
+        }
+
+        [TestMethod]
         public void SwapCmd_TooManyArgs_ReturnsError()
         {
             var src = CreateSrc();

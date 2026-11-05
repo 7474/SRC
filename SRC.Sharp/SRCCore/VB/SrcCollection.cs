@@ -14,13 +14,24 @@ namespace SRCCore.VB
     {
         private OrderedDictionary dict;
 
-        private static readonly StringComparer s_keyComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
-            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase
+        /// <summary>
+        /// キーの比較。日本語版の Windows の VB の Collection と同じく、
+        /// 大文字・小文字、全角・半角、ひらがな・カタカナを区別しない。
+        /// </summary>
+        public static readonly StringComparer KeyComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType
         );
 
-        public SrcCollection()
+        public SrcCollection() : this(KeyComparer)
         {
-            dict = new OrderedDictionary(s_keyComparer);
+        }
+
+        /// <summary>
+        /// キーの比較を指定して作る。VB の Collection の代わりでないもの（ファイル名の一覧など）に使う。
+        /// </summary>
+        public SrcCollection(StringComparer keyComparer)
+        {
+            dict = new OrderedDictionary(keyComparer);
         }
 
         [OnDeserialized]

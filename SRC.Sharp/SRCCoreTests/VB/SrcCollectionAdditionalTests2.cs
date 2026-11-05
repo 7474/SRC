@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SRCCore.VB.Tests
 {
@@ -204,6 +205,33 @@ namespace SRCCore.VB.Tests
             var col = new SrcCollection<string>();
             col["Ａ"] = "full-width";
             Assert.AreEqual("full-width", col["A"]); // 半角 A で同じキーを引ける
+        }
+
+        [TestMethod]
+        public void JapaneseKey_HiraganaAndKatakana_SameKey()
+        {
+            // 日本語版の Windows の VB の Collection と同じく、ひらがなとカタカナを区別しない（7474/SRC#1477）
+            var col = new SrcCollection<string>();
+            col["さいず"] = "hiragana";
+            Assert.IsTrue(col.ContainsKey("サイズ"));
+            Assert.AreEqual("hiragana", col["サイズ"]);
+            // 半角カタカナでも同じキー
+            Assert.AreEqual("hiragana", col["ｻｲｽﾞ"]);
+            Assert.IsTrue(col.Remove("サイズ"));
+            Assert.AreEqual(0, col.Count);
+        }
+
+        [TestMethod]
+        public void KeyComparer_Specified_DistinguishesKana()
+        {
+            // キーの比較を指定したときはその比較を使う（ファイル名の一覧など）
+            var comparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+                CompareOptions.IgnoreCase);
+            var col = new SrcCollection<string>(comparer);
+            col["あ"] = "hiragana";
+            col["ア"] = "katakana";
+            Assert.AreEqual(2, col.Count);
+            Assert.AreEqual("katakana", col["ア"]);
         }
 
         // ──────────────────────────────────────────────

@@ -1,6 +1,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -438,6 +439,12 @@ namespace SRCCore.Filesystem
         private SrcCollection<ZipArchiveEntry> _entryMap;
         private Task _entryMapResolveTask;
 
+        // ファイル名はひらがな・カタカナを区別する（Windows のファイルシステムと同じ）。
+        // 変数名などと同じ SrcCollection の既定の比較にすると、ひらがなとカタカナだけが違う名前のファイルが重なる
+        private static readonly StringComparer s_entryNameComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase
+        );
+
         public LocalFileSystemArchive(string basePath, ZipArchive archive) : this(basePath, archive, null)
         {
         }
@@ -452,7 +459,7 @@ namespace SRCCore.Filesystem
             BasePath = tmpBasePath;
             Root = string.IsNullOrEmpty(root) ? "" : root.Replace("\\", "/").Trim('/') + "/";
             _archive = archive;
-            _entryMap = new SrcCollection<ZipArchiveEntry>();
+            _entryMap = new SrcCollection<ZipArchiveEntry>(s_entryNameComparer);
 
             _entryMapResolveTask = Task.Run(() =>
             {
