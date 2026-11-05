@@ -125,7 +125,7 @@ namespace SRCCore.Pilots
             }
 
             // 霊力基本値
-            MaxPlanaRet = (int)SkillLevel("霊力", "");
+            MaxPlanaRet = VBMath.CLng(SkillLevel("霊力", ""));
 
             // レベルによる増加分
             lv = GeneralLib.MinLng(Level, 100);
