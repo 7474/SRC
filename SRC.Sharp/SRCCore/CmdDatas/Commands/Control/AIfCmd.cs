@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 
 namespace SRCCore.CmdDatas.Commands
@@ -39,6 +40,8 @@ namespace SRCCore.CmdDatas.Commands
             string RawArg(int idx) => GetArgRaw(idx).RawArg ?? GetArg(idx);
 
             var ifCmdType = IfCmdType.Undefined;
+            // 条件式の項数。VB 版は Then・Exit なら ArgNum - 2、Goto なら ArgNum - 3（後ろに余分な項があっても数える）
+            var termCount = 0;
             var terms = new List<string>();
             terms.Add(RawArg(2));
             for (var i = 3; i <= ArgNum; i++)
@@ -48,14 +51,22 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     case "then":
                         ifCmdType = IfCmdType.Then;
+                        termCount = ArgNum - 2;
                         break;
                     case "exit":
                         ifCmdType = IfCmdType.Exit;
+                        termCount = ArgNum - 2;
                         break;
 
                     case "goto":
+                        if (i + 1 > ArgNum)
+                        {
+                            // VB 版は GetArg(i + 1) が配列の範囲外になり、「イベントコマンドの内容が不正です」になる
+                            throw new IndexOutOfRangeException("Goto の後ろにラベルがありません");
+                        }
                         ifCmdType = IfCmdType.GoTo;
                         GoToLabel = GetArg(i + 1);
+                        termCount = ArgNum - 3;
                         break;
 
                     default:
@@ -68,17 +79,23 @@ namespace SRCCore.CmdDatas.Commands
 
             if (ifCmdType == IfCmdType.Undefined)
             {
-                throw new EventErrorException(this, (Name == CmdType.IfCmd ? "If" : "ElseIf") + "に対応する Then または Exit または Goto がありません");
+                // VB 版はエラーを表示して SRC を終了する
+                Event.DisplayEventErrorMessage(EventData, (Name == CmdType.IfCmd ? "If" : "ElseIf") + "に対応する Then または Exit または Goto がありません");
+                SRC.TerminateSRC();
+                return;
             }
             IfCmdType = ifCmdType;
 
             // 条件式の項数を記録。式であることが確定した場合は0に上書きする。
-            // パイロット名指定 (terms.Count==1 or 2) の場合はそのまま維持する。
-            ExprTermCount = terms.Count;
-            switch (terms.Count)
+            // パイロット名指定 (項数が 1 か 2) の場合はそのまま維持する。
+            ExprTermCount = termCount;
+            switch (termCount)
             {
                 case 0:
-                    throw new EventErrorException(this, (Name == CmdType.IfCmd ? "If" : "ElseIf") + "コマンドの条件式がありません Then または Exit または Goto がありません");
+                    // VB 版はエラーを表示して SRC を終了する
+                    Event.DisplayEventErrorMessage(EventData, (Name == CmdType.IfCmd ? "If" : "ElseIf") + "コマンドの条件式がありません");
+                    SRC.TerminateSRC();
+                    return;
 
                 case 1:
                     switch (Strings.Asc(terms[0]))

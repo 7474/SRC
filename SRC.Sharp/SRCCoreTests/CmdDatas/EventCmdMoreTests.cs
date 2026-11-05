@@ -79,13 +79,14 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void EndCmd_ReturnsNextId()
+        public void EndCmd_Alone_IsNotExecutableCommand()
         {
-            // End は TalkCmd 処理の終端として機能する（単体でも NextID を返す）
+            // End は TalkCmd などの処理の終端として読み飛ばされる。
+            // 単体で実行すると VB 版の CmdData.Exec の Case Else と同じくエラーになる（#1503）
             var src = CreateSrc();
             var cmd = CreateCmd(src, "End", 5);
             var result = cmd.Exec();
-            Assert.AreEqual(6, result);
+            Assert.AreEqual(-1, result);
         }
 
         [TestMethod]
@@ -102,12 +103,13 @@ namespace SRCCore.CmdDatas.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SuspendCmd_ReturnsNextId()
+        public void SuspendCmd_Alone_IsNotExecutableCommand()
         {
+            // VB 版の CmdData.Exec の Case Else と同じくエラーになる（#1503）
             var src = CreateSrc();
             var cmd = CreateCmd(src, "Suspend", 2);
             var result = cmd.Exec();
-            Assert.AreEqual(3, result);
+            Assert.AreEqual(-1, result);
         }
 
         [TestMethod]

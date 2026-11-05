@@ -309,17 +309,24 @@ namespace SRCCore.CmdDatas.Commands
             return EventData.NextID;
         }
 
-        // idx 番目の引数を表示文字列として返す。
-        // 引用符で囲まれていない引数に式置換が含まれる場合は文字列として式置換を行う（VB版の構文解析時の処理）
+        // idx 番目の引数を表示文字列として返す（VB版の構文解析時の処理）
         private string ArgString(int idx)
         {
             var raw = GetArgRaw(idx).RawArg ?? "";
-            if (Strings.Left(raw, 1) != "\"" && Strings.Left(raw, 1) != "`" && Strings.InStr(raw, "$(") > 0)
+            if ((Strings.Left(raw, 1) == "\"" && Strings.Right(raw, 1) == "\"")
+                || (Strings.Left(raw, 1) == "`" && Strings.Right(raw, 1) == "`"))
             {
+                // 引用符で囲まれた文字列（式置換を含む場合は式置換を行う）
+                return GetArgAsString(idx);
+            }
+            if (Strings.InStr(raw, "$(") > 0)
+            {
+                // 引用符で囲まれていない引数に式置換が含まれる場合は文字列として式置換を行う
                 Expression.ReplaceSubExpression(ref raw);
                 return raw;
             }
-            return GetArgAsString(idx);
+            // VB版は型を未定にし直して項として評価する（数値も書いたままの文字列になる）
+            return Expression.GetValueAsString(raw, true);
         }
 
         // idx 番目以降の引数を空白で区切られたままひとつの文字列として返す（式置換は行う）

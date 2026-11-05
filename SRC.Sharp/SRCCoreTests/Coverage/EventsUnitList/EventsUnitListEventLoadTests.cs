@@ -218,6 +218,26 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         }
 
         [TestMethod]
+        public void LoadEventData_CommandParseError_Terminates()
+        {
+            // VB: Parse が False を返すと error_found = True となり構文チェック後に TerminateSRC される（#1503）
+            var (src, gui) = Load("スタート:", "If", "Exit");
+
+            CollectionAssert.Contains(ErrorMessages(src), "Ifコマンドの書式に合っていません");
+            Assert.IsTrue(gui.TerminateCalled);
+        }
+
+        [TestMethod]
+        public void LoadEventData_NotSupportedCommand_DoesNotTerminate()
+        {
+            // SRC# で対応していないコマンド（Flash）はエラーを表示するが、読み込みは止めない
+            var (src, gui) = Load("スタート:", "PlayFlash a.swf 0 0 32 32", "Exit");
+
+            Assert.IsTrue(ErrorMessages(src).Any(x => x.Contains("サポートされていません")));
+            Assert.IsFalse(gui.TerminateCalled);
+        }
+
+        [TestMethod]
         public void LoadEventData_LabelEndingWithFullWidthColon_Terminates()
         {
             // VB では error_found = True となり構文チェック後に TerminateSRC される
