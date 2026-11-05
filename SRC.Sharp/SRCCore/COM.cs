@@ -5965,7 +5965,7 @@ namespace SRCCore
                                 {
                                     if (t.BossRank >= 0)
                                     {
-                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("衰")))
                                         {
                                             case 1:
                                                 {
@@ -5988,7 +5988,7 @@ namespace SRCCore
                                     }
                                     else
                                     {
-                                        switch (selectedWeapon.WeaponLevel("衰"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("衰")))
                                         {
                                             case 1:
                                                 {
@@ -6017,7 +6017,7 @@ namespace SRCCore
                                 {
                                     if (t.BossRank >= 0)
                                     {
-                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("滅")))
                                         {
                                             case 1:
                                                 {
@@ -6040,7 +6040,7 @@ namespace SRCCore
                                     }
                                     else
                                     {
-                                        switch (selectedWeapon.WeaponLevel("滅"))
+                                        switch (VBMath.CLng(selectedWeapon.WeaponLevel("滅")))
                                         {
                                             case 1:
                                                 {

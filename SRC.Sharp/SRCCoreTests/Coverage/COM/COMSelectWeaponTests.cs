@@ -421,6 +421,31 @@ namespace SRCCore.Coverage.Tests.COMTests
         }
 
         [TestMethod]
+        [DataRow("衰")]
+        [DataRow("滅")]
+        public void SelectWeapon_DecayLevelIsRoundedLikeVBCInt(string attr)
+        {
+            // VB: Select Case CInt(u.WeaponLevel(w, "衰")) は偶数丸めで整数にしてから比べる。
+            // 衰L1.5 は CInt(1.5) = 2 なので、衰L2 と同じ特殊効果の確率で期待値を見積もる
+            int MaxDmgFor(string level)
+            {
+                var f = CreateField();
+                var ud = f.DefineUnit("攻撃機");
+                COMTestField.AddWeapon(ud, "呪い", 1500, critical: 50, wclass: "突" + attr + "L" + level);
+                var u = f.Deploy("攻撃機", "敵A", "敵", 3, 3);
+                var t = f.Deploy("標的", "味方A", "味方", 4, 3);
+                Assert.AreEqual(1, f.Src.COM.SelectWeapon(u, t, "", out _, out var maxDmg));
+                return maxDmg;
+            }
+
+            var level2 = MaxDmgFor("2");
+            // 衰L2 は特殊効果を見込むので、効果の無い衰L4（Case に当たらない）より期待値が高い
+            Assert.IsTrue(level2 > MaxDmgFor("4"));
+            Assert.AreEqual(level2, MaxDmgFor("1.5"));
+            Assert.AreEqual(level2, MaxDmgFor("2.5"));
+        }
+
+        [TestMethod]
         public void SelectWeapon_MaxDmgIsRoundedLikeVBLongAssignment()
         {
             // VB: max_dmg = 100 * (max_exp_dmg / .HP) は Long への代入で四捨五入(銀行丸め)される
