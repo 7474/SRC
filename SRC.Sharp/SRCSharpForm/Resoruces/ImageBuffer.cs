@@ -40,8 +40,8 @@ namespace SRCSharpForm.Resoruces
             };
             cache = new MemoryCache("ImageBuffer", new System.Collections.Specialized.NameValueCollection()
             {
-                ["CacheMemoryLimitMegabytes"] = SRC.SystemConfig.MaxImageBufferByteSize > 0
-                    ? $"{SRC.SystemConfig.MaxImageBufferByteSize / 1024 / 1024}"
+                ["CacheMemoryLimitMegabytes"] = SRC.Config.MaxImageBufferByteSize > 0
+                    ? $"{SRC.Config.MaxImageBufferByteSize / 1024 / 1024}"
                     : "128",
             });
         }

@@ -64,7 +64,7 @@ namespace SRCCore.Models
         // メッセージデータをファイルからロード
         public void Load(string fname, bool isEffect)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, isEffect, stream);
             }

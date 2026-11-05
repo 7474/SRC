@@ -21,7 +21,8 @@ namespace SRCCore.Commands
         private Sound Sound => SRC.Sound;
         private Effect Effect => SRC.Effect;
         private COM COM => SRC.COM;
-        private ISystemConfig SystemConfig => SRC.SystemConfig;
+        // ゲームが参照する設定（アプリの設定にシナリオの設定を重ねたもの）
+        private ISystemConfig SystemConfig => SRC.Config;
         private Help Help => SRC.Help;
 
         public Command(SRC src)

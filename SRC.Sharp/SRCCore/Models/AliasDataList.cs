@@ -83,7 +83,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }

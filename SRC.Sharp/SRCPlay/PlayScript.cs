@@ -238,7 +238,7 @@ namespace SRCPlay
                 case "autodefense":
                     {
                         var on = args.Length > 1 && args[1] == "on";
-                        OnGame(() => Src.SystemConfig.AutoDefense = on);
+                        OnGame(() => Src.Config.AutoDefense = on);
                         Record($"{DateTime.Now:HH:mm:ss} AUTODEFENSE {(on ? "on" : "off")}");
                     }
                     break;

@@ -241,7 +241,7 @@ namespace SRCCore.Maps
             }
             else
             {
-                using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+                using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
                 {
                     LoadMapData(fname, stream);
                 }

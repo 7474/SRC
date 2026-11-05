@@ -23,8 +23,9 @@ namespace SRCSharpForm
 
         public SRCCore.SRC SRC;
         private Sound Sound => SRC.Sound;
-        // XXX 型
-        private LocalFileConfig SystemConfig => SRC.SystemConfig as LocalFileConfig;
+        // ゲームが参照する設定（アプリの設定にシナリオの設定を重ねたもの）。
+        // シナリオの設定ファイルにある項目はシナリオの設定に書く（元の SRC の WriteIni）
+        private ComposedConfig SystemConfig => SRC.Config as ComposedConfig;
 
         // 戦闘アニメOn・Off切り替え
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。

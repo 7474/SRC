@@ -6,13 +6,17 @@ using System.Linq;
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// ゲームがシナリオのフォルダに書いたセーブデータ（.srcs・.srcq）を受け取る。
+    /// ゲームがシナリオのフォルダに書いたセーブデータ（.srcs・.srcq）と設定ファイル（Src.ini・srcs.json）を受け取る。
     /// 受け取ったものはブラウザ（IndexedDB）に保存し、次にシナリオを開くときに戻す。
+    /// 設定ファイルは、プレイ中に変えたシナリオの設定（SRCCore の ScenarioConfig が書き戻す）をシナリオごとに残すため
+    /// （元の SRC がシナリオの Src.ini に書き込むのと同じ）。
     /// 書き込みはフォルダを走査せず、ファイルシステムの書き込みの通知（<see cref="SRCCore.Filesystem.IFileSystem.FileWritten"/>）で知る。
     /// </summary>
     public sealed class SaveSync
     {
         private static readonly string[] Extensions = { ".srcs", ".srcq" };
+        // SRCCore.Config.SrcIni.FileName・ScenarioConfig.JsonFileName
+        private static readonly string[] SettingsFiles = { "Src.ini", "srcs.json" };
         private readonly HashSet<string> written = new HashSet<string>(StringComparer.Ordinal);
 
         public SaveSync(string root)
@@ -26,6 +30,16 @@ namespace SRCSharpWeb
         {
             return Extensions.Any(x => name.EndsWith(x, StringComparison.OrdinalIgnoreCase));
         }
+
+        /// <summary>シナリオの設定ファイル（Src.ini・srcs.json）か。セーブデータの一覧には出さない</summary>
+        public static bool IsSettingsFile(string name)
+        {
+            var file = Path.GetFileName(name.Replace('\\', '/'));
+            return SettingsFiles.Any(x => string.Equals(file, x, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>ブラウザに残すファイルか</summary>
+        public static bool IsSynced(string name) => IsSaveFile(name) || IsSettingsFile(name);
 
         private bool IsInRoot(string fullPath)
         {
@@ -45,7 +59,7 @@ namespace SRCSharpWeb
                 return false;
             }
             var full = Path.GetFullPath(path);
-            if (!IsInRoot(full) || !IsSaveFile(full))
+            if (!IsInRoot(full) || !IsSynced(full))
             {
                 return false;
             }
@@ -97,11 +111,11 @@ namespace SRCSharpWeb
             return changed;
         }
 
-        /// <summary>保存しておいたセーブデータをシナリオのフォルダに戻す</summary>
+        /// <summary>保存しておいたセーブデータ・設定ファイルをシナリオのフォルダに戻す（設定ファイルはシナリオに同梱のものを上書きする）</summary>
         public string Restore(string name, byte[] data)
         {
             var path = Path.GetFullPath(Path.Combine(Root, name));
-            if (!IsInRoot(path) || !IsSaveFile(path))
+            if (!IsInRoot(path) || !IsSynced(path))
             {
                 return null;
             }

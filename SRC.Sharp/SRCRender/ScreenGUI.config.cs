@@ -22,7 +22,8 @@ namespace SRCRender
         {
             var w = frmConfiguration;
             w.Refreshed = Present;
-            var config = SRC.SystemConfig;
+            // シナリオの設定ファイルにある項目はシナリオの値を見せ、変えたらシナリオの設定に書く（元の SRC の ReadIni・WriteIni）
+            var config = SRC.Config;
 
             // ダイアログを開く
             w.chkBattleAnimation.Checked = SRC.BattleAnimation;
@@ -76,8 +77,13 @@ namespace SRCRender
         // OKボタンが押された
         private void ConfigOK(ConfigWindow w)
         {
-            var config = SRC.SystemConfig;
+            var config = SRC.Config;
             config.BattleAnimation = w.chkBattleAnimation.Checked;
+            // 汎用戦闘アニメが無くて使えなくしていた戦闘アニメも、選び直したら使う（元の SRC の設定変更と同じ）
+            if (w.chkBattleAnimation.Checked)
+            {
+                SRC.BattleAnimationUnavailable = false;
+            }
             config.ExtendedAnimation = w.chkExtendedAnimation.Checked;
             config.WeaponAnimation = w.chkWeaponAnimation.Checked;
             config.MoveAnimation = w.chkMoveAnimation.Checked;
@@ -86,7 +92,11 @@ namespace SRCRender
             config.ShowSquareLine = w.chkShowSquareLine.Checked;
             config.SetItem("Option", "Turn", w.chkShowTurn.Checked ? "On" : "Off");
             config.KeepEnemyBGM = w.chkKeepEnemyBGM.Checked;
-            if (config is SRCCore.Config.LocalFileConfig localConfig)
+            if (config is SRCCore.Config.ComposedConfig composed)
+            {
+                composed.SoundVolume = (int)(Sound.Player.SoundVolume * 100);
+            }
+            else if (config is SRCCore.Config.LocalFileConfig localConfig)
             {
                 localConfig.SoundVolume = (int)(Sound.Player.SoundVolume * 100);
             }

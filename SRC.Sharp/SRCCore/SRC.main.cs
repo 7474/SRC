@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using SRCCore.Config;
 using SRCCore.Exceptions;
 using SRCCore.Filesystem;
 using SRCCore.Lib;
@@ -368,8 +370,41 @@ namespace SRCCore
             //            }
         }
 
+        /// <summary>
+        /// シナリオのフォルダの設定ファイル（Src.ini・srcs.json）を読む。
+        /// 元の SRC の ReadIni と同じく、そこにある項目はアプリの設定より優先する（<see cref="Config"/>）
+        /// </summary>
+        public void LoadScenarioConfig()
+        {
+            // シナリオのフォルダがアプリのフォルダなら、そこの srcs.json はアプリの設定そのもの
+            if (string.IsNullOrEmpty(ScenarioPath) || (!string.IsNullOrEmpty(AppPath) && FileSystem.PathEquals(ScenarioPath, AppPath)))
+            {
+                ScenarioConfig = null;
+                return;
+            }
+            try
+            {
+                ScenarioConfig = SRCCore.Config.ScenarioConfig.Read(FileSystem, ScenarioPath);
+            }
+            catch (Exception ex)
+            {
+                ScenarioConfig = null;
+                Log.LogWarning(ex, "シナリオの設定ファイルを読めませんでした。");
+            }
+            if (ScenarioConfig != null)
+            {
+                Log.LogInformation("シナリオの設定ファイルを読みました: {Files}", string.Join(", ", ScenarioConfig.Files));
+            }
+        }
+
         private void LoadIni()
         {
+            // シナリオで音量を決めていれば、その音量にする
+            if (Config is ComposedConfig composed && composed.IsScenarioProperty(nameof(LocalFileConfig.SoundVolume)))
+            {
+                Sound.Player.SoundVolume = composed.SoundVolume / 100f;
+            }
+
             //            // スペシャルパワーアニメ
             //            buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation");
             //            if (string.IsNullOrEmpty(buf))
@@ -942,6 +977,9 @@ namespace SRCCore
 
             // シナリオのあるフォルダのパスを収得
             ScenarioPath = string.IsNullOrEmpty(scenarioPath) ? Path.GetDirectoryName(fname) : scenarioPath;
+
+            // シナリオのフォルダの設定ファイル（Src.ini・srcs.json）を読む
+            LoadScenarioConfig();
 
             //// 拡張データのフォルダを設定
             //ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");

@@ -40,14 +40,14 @@ namespace SRCCore.CmdDatas.Commands
                 case "出力":
                     f = SRC.FileHandleManager.Add(
                         SafeOpenMode.Write,
-                        SRC.SystemConfig.SRCCompatibilityMode,
+                        SRC.Config.SRCCompatibilityMode,
                         SRC.FileSystem.OpenSafe(SafeOpenMode.Write, fname));
                     break;
 
                 case "追加出力":
                     f = SRC.FileHandleManager.Add(
                         SafeOpenMode.Append,
-                        SRC.SystemConfig.SRCCompatibilityMode,
+                        SRC.Config.SRCCompatibilityMode,
                         SRC.FileSystem.OpenSafe(SafeOpenMode.Append, fname));
                     break;
 
@@ -60,7 +60,7 @@ namespace SRCCore.CmdDatas.Commands
 
                         f = SRC.FileHandleManager.Add(
                             SafeOpenMode.Read,
-                            SRC.SystemConfig.SRCCompatibilityMode,
+                            SRC.Config.SRCCompatibilityMode,
                             SRC.FileSystem.OpenSafe(SafeOpenMode.Read, fname));
                         break;
                     }

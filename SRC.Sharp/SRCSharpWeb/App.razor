@@ -1670,8 +1670,10 @@ else
         saveSync = new SaveSync(scenarioDir);
         try
         {
-            saves = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId) ?? new List<StoredSave>();
-            foreach (var save in saves)
+            // セーブデータと、プレイ中に変えたシナリオの設定ファイル（SaveSync）を戻す。一覧にはセーブデータだけを出す
+            var stored = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId) ?? new List<StoredSave>();
+            saves = stored.Where(x => SaveSync.IsSaveFile(x.Name)).ToList();
+            foreach (var save in stored)
             {
                 var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
                 if (data != null)
@@ -1688,7 +1690,7 @@ else
         }
     }
 
-    /// <summary>ゲームが書いたセーブデータをブラウザに保存する</summary>
+    /// <summary>ゲームが書いたセーブデータ・シナリオの設定ファイルをブラウザに保存する</summary>
     private async Task SyncSavesAsync()
     {
         if (saveSync == null || Interlocked.Exchange(ref syncing, 1) == 1)
