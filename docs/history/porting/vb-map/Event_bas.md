@@ -7,7 +7,7 @@ VB 版の `SRC/SRC_20121125/Event.bas` の手続きと、C# の対応（[説明]
 | Sub InitEventData | 359 | 18 | `SRCCore/Events/Event.data.cs` Event.InitEventData | 未確認 |  |
 | Sub LoadEventData | 379 | 883 | `SRCCore/Events/Event.data.cs` Event.LoadEventData | 未確認 |  |
 | Sub LoadEventData2 | 1264 | 119 | `SRCCore/Events/Event.data.cs` Event.LoadEventData2 | 未確認 |  |
-| Sub HandleEvent | 1386 | 339 | `SRCCore/Events/Event.handle.cs` Event.HandleEvent | 未確認 |  |
+| Sub HandleEvent | 1386 | 339 | `SRCCore/Events/Event.handle.cs` Event.HandleEvent | 未確認 | #1503 で見つけた手がかり: Event.CurrentLabel の初期値 0 のため、HandleEvent を通らずに引数なしの ClearEvent を実行すると 0 行目のラベルを消しうる（初期値 -1 で済む） |
 | Sub RegisterEvent | 1727 | 9 | `SRCCore/Events/Event.handle.cs` Event.RegisterEvent | 未確認 |  |
 | Function SearchLabel | 1739 | 273 | `SRCCore/Events/Event.label.cs` Event.SearchLabel | 未確認 |  |
 | Function IsEventDefined | 2016 | 25 | `SRCCore/Events/Event.label.cs` Event.IsEventDefined | 未確認 |  |

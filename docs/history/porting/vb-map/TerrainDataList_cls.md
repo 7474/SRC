@@ -7,7 +7,7 @@ VB 版の `SRC/SRC_20121125/TerrainDataList.cls` の手続きと、C# の対応�
 | Sub Class_Initialize | 31 | 7 | （見つからない） | 未確認 |  |
 | Sub Class_Terminate | 40 | 7 | （見つからない） | 未確認 |  |
 | Function IsDefined | 50 | 7 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.IsDefined | 未確認 |  |
-| Function Item | 60 | 3 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.Item | 未確認 |  |
+| Function Item | 60 | 3 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.Item | 未確認 | #1503 で見つけた手がかり: 同じ名前の地形が複数あるとき、VB は OrderedID の登録の順、C# の ItemByName は番号の小さい順で選ぶ |
 | Function Name | 65 | 3 | `SRCCore/CmdDatas/CmdData.cs` CmdData.Name<br>`SRCCore/Config/LocalFileConfig.cs` ConfigSection.Name<br>`SRCCore/Config/LocalFileConfig.cs` ConfigItem.Name | 未確認 |  |
 | Function Bitmap | 70 | 3 | `SRCCore/Models/NonPilotData.cs` NonPilotData.Bitmap<br>`SRCCore/Models/PilotData.cs` PilotData.Bitmap<br>`SRCCore/Models/UnitData.cs` UnitData.Bitmap | 未確認 |  |
 | Function Class | 75 | 3 | `SRCCore/Items/Item.cs` Item.Class<br>`SRCCore/Pilots/Pilot.props.cs` Pilot.Class<br>`SRCCore/Units/Unit.props.cs` Unit.Class | 未確認 |  |

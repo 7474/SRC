@@ -7,8 +7,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 
 | 場所 | 種類 | 本文 | 状態 | メモ |
 |---|---|---|---|---|
-| `SRCCore/CmdDatas/CmdParser.cs:636` | TODO | TODO Talkの中身が壊れる場面がある可能性あり（Issue #172 参照） | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | 未確認 |  |
+| `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | SRC#で不要 | 分岐の説明のコメントで、VB のコードの残りではない |
 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs:166` | XXX | XXX メインパイロットが差し変わっていたら除外？ | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Control/LocalCmd.cs:22` | XXX | XXX 定義済を再定義した時 | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Control/NextCmd.cs:67` | XXX | XXX Index再考するならする | 未確認 |  |
@@ -19,21 +18,11 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs:27` | XXX | XXX NewGUIMode | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs:29`（4 行） | コード | { | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Pilot/RemovePilotCmd.cs:94` | XXX | XXX いい感じに消す | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:15` | TODO | TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:33`（209 行） | コード | { | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/ATalkCmd.cs:34` | XXX | XXX | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/ATalkCmd.cs:71` | XXX | XXX これ要るの？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/ATalkCmd.cs:243` | XXX | XXX これ要るの？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/ATalkCmd.cs:264` | XXX | XXX これ要るの？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/ATalkCmd.cs:274` | XXX | XXX これ要るの？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Talk/AutoTalkCmd.cs:20` | XXX | XXX 定数にしたほうがいいかな | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Unit/AttackCmd.cs:103` | XXX | XXX Push/Pop | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Unit/ChangePartyCmd.cs:68` | XXX | XXX 実装次第要素 | 未確認 |  |
+| `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:15` | TODO | TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく | SRC#で不要 | 事前解析は高速化のためで、同じ解釈を実行時にしている |
+| `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:33`（209 行） | コード | { | Issue | 座標指定の確定の判定が未移植。ExecPaintStringCmd の突き合わせ（#1505）で直す |
 | `SRCCore/CmdDatas/Commands/Unit/OrganizeCmd.cs:18`（14 行） | コード | short unum; | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs:46` | XXX | XXX 元はSavedStateは更新していなかったけれど更新してる | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Unit/TransformCmd.cs:47` | XXX | XXX 元はSavedStateは更新していなかったけれど更新してる | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Variable/CopyArrayCmd.cs:101` | XXX | XXX 列挙時の順番がDictionaryだと問題になるかも | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Variable/CopyArrayCmd.cs:124` | XXX | XXX 列挙時の順番がDictionaryだと問題になるかも | 未確認 |  |
 | `SRCCore/Commands/Command.attack.cs:302` | XXX | XXX COMの攻撃と同じところは切り出しておきたい。。。 | 未確認 |  |
 | `SRCCore/Commands/Command.attack.cs:322`（3 行） | コード | { | 未確認 |  |
 | `SRCCore/Commands/Command.attack.cs:713`（4 行） | コード | { | 未確認 |  |
@@ -102,10 +91,10 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Events/Event.data.cs:239`（10 行） | コード | { | 未確認 |  |
 | `SRCCore/Events/Event.data.cs:261` | XXX | XXX 多分要らん | 未確認 |  |
 | `SRCCore/Events/Event.data.cs:264`（10 行） | コード | { | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:575` | XXX | XXX 条件こけてる気がする | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:810` | XXX | XXX これ消しとかないとまずいの？ | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:811` | コード | eventDataLine.Data = ""; | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:1087` | XXX | XXX | 未確認 |  |
+| `SRCCore/Events/Event.data.cs:580` | XXX | XXX 条件こけてる気がする | 未確認 |  |
+| `SRCCore/Events/Event.data.cs:815` | XXX | XXX これ消しとかないとまずいの？ | 未確認 |  |
+| `SRCCore/Events/Event.data.cs:816` | コード | eventDataLine.Data = ""; | 未確認 |  |
+| `SRCCore/Events/Event.data.cs:1092` | XXX | XXX | 未確認 |  |
 | `SRCCore/Events/Event.data2.cs:15` | XXX | XXX 消し方。。。 | 未確認 |  |
 | `SRCCore/Events/Event.data2.cs:48`（599 行） | コード | { | 未確認 |  |
 | `SRCCore/Events/Event.handle.cs:120` | XXX | XXX 全滅の処理どこでやってんの？ | 未確認 |  |
