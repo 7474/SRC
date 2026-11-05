@@ -4849,7 +4849,9 @@ namespace SRCCore.Units
             if (t.IsFeatureAvailable("融合"))
             {
                 // 融合可能？
-                if (!w.IsWeaponClassifiedAs("武") && !w.IsWeaponClassifiedAs("突") && !w.IsWeaponClassifiedAs("接") && (t.FeatureLevel("融合") >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                // VB は And・Or を短絡せずに評価するので、格闘系の武器でも Dice(16) を振る（乱数が進む）
+                var fusion_dice = GeneralLib.Dice(16);
+                if (!w.IsWeaponClassifiedAs("武") && !w.IsWeaponClassifiedAs("突") && !w.IsWeaponClassifiedAs("接") && (t.FeatureLevel("融合") >= fusion_dice || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // 融合発動
                     t.HP = t.HP + dmg;
