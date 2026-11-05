@@ -361,6 +361,17 @@ namespace SRCRender
                 return;
             }
 
+            // ステータスウィンドウの顔グラフィックのクリックで、表示するパイロットを切り替える（Main.frm の picFace_Click）
+            if (button == GuiButton.Left && IsOnStatusFace(x, y))
+            {
+                game.Post(() =>
+                {
+                    ChangeDisplayedPilot();
+                    Present();
+                });
+                return;
+            }
+
             if (ScreenLayout.IsInMap((int)x, (int)y))
             {
                 var mx = PixelToMapX((int)x);
@@ -1041,6 +1052,14 @@ namespace SRCRender
             {
                 isFormClicked = true;
             }
+        }
+
+        // 画面の座標がステータスウィンドウの顔グラフィックの上か
+        private bool IsOnStatusFace(float x, float y)
+        {
+            var fx = x - ScreenLayout.StatusArea.Left - picFace.Left;
+            var fy = y - ScreenLayout.StatusArea.Top - picFace.Top;
+            return fx >= 0 && fy >= 0 && fx < picFace.Width && fy < picFace.Height;
         }
 
         #endregion

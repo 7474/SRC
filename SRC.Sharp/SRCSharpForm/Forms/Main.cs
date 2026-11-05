@@ -275,41 +275,14 @@ namespace SRCSharpForm
         {
             Program.Log.LogDebug("picFace_Click {0}", JsonConvert.SerializeObject(eventArgs));
 
-            int n;
-
             // ＧＵＩのロック中は無視
             if (GUI.IsGUILocked)
             {
                 return;
             }
 
-            //// ステータスウィンドウで表示しているパイロットを変更
-            //if (Status.DisplayedUnit is null)
-            //{
-            //    return;
-            //}
-
-            //{
-            //    var withBlock = Status.DisplayedUnit;
-            //    if (withBlock.CountPilot() == 0)
-            //    {
-            //        return;
-            //    }
-
-            //    Status.DisplayedPilotInd = (Status.DisplayedPilotInd + 1);
-            //    n = (withBlock.CountPilot() + withBlock.CountSupport());
-            //    if (withBlock.IsFeatureAvailable(ref "追加サポート"))
-            //    {
-            //        n = (n + 1);
-            //    }
-
-            //    if (Status.DisplayedPilotInd > n)
-            //    {
-            //        Status.DisplayedPilotInd = 1;
-            //    }
-
-            //    Status.DisplayUnitStatus(ref Status.DisplayedUnit, Status.DisplayedPilotInd);
-            //}
+            // ステータスウィンドウで表示しているパイロットを変更
+            FormGUI.RunOnCore(() => ChangeDisplayedPilot());
         }
 
         private void SimpleClick()
