@@ -119,7 +119,7 @@ namespace SRCCore.Commands
             }
             else if (currentWeapon.IsWeaponClassifiedAs("Ｍ扇"))
             {
-                Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, (int)currentWeapon.WeaponLevel("Ｍ扇"));
+                Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ扇")));
             }
             else if (currentWeapon.IsWeaponClassifiedAs("Ｍ全")
                 || currentWeapon.IsWeaponClassifiedAs("Ｍ投")
@@ -177,7 +177,7 @@ namespace SRCCore.Commands
                         // 封印武器の対象属性外でない？
                         if (currentWeapon.IsWeaponClassifiedAs("封"))
                         {
-                            if (currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0
+                            if ((currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0)
                                 || currentWeapon.CriticalProbability(t) == 0)
                             {
                                 Map.MaskData[i, j] = true;
@@ -188,8 +188,8 @@ namespace SRCCore.Commands
                         // 限定武器の対象属性外でない？
                         if (currentWeapon.IsWeaponClassifiedAs("限"))
                         {
-                            if (currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0
-                                || currentWeapon.WeaponData.Power == 0 && currentWeapon.CriticalProbability(t) == 0)
+                            if ((currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0)
+                                || (currentWeapon.WeaponData.Power == 0 && currentWeapon.CriticalProbability(t) == 0))
                             {
                                 Map.MaskData[i, j] = true;
                                 goto NextLoop;
@@ -1002,7 +1002,7 @@ namespace SRCCore.Commands
                         // スペシャルパワーによる獲得資金増加
                         if (su.IsUnderSpecialPowerEffect("獲得資金増加"))
                         {
-                            earnings = (int)(earnings * (1d + 0.1d * su.SpecialPowerEffectLevel("獲得資金増加")));
+                            earnings = VBMath.CLng(earnings * (1d + 0.1d * su.SpecialPowerEffectLevel("獲得資金増加")));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -1010,7 +1010,7 @@ namespace SRCCore.Commands
                         {
                             if (!su.IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + su.SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * ((10d + su.SkillLevel("資金獲得", 5d)) / 10d), 999999999d));
                             }
                         }
 
@@ -1383,18 +1383,18 @@ namespace SRCCore.Commands
                     }
 
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃範囲を設定
                     if (currentWeapon.IsWeaponClassifiedAs("識")
                         || currentUnit.IsUnderSpecialPowerEffect("識別攻撃"))
                     {
-                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "味方の敵");
+                        Map.AreaInRange(SelectedX, SelectedY, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ投")), 1, "味方の敵");
                     }
                     else
                     {
-                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "すべて");
+                        Map.AreaInRange(SelectedX, SelectedY, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ投")), 1, "すべて");
                     }
 
                     GUI.MaskScreen();
@@ -1403,8 +1403,8 @@ namespace SRCCore.Commands
                 else if (currentWeapon.IsWeaponClassifiedAs("Ｍ移"))
                 {
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃目標地点に他のユニットがいては駄目
                     if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -1439,8 +1439,8 @@ namespace SRCCore.Commands
                     }
 
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃範囲を設定
                     Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);
