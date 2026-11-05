@@ -2639,7 +2639,8 @@ namespace SRCCore
             var fdata = bu.FeatureData("ハイパーモード");
 
             // 発動条件を満たす？
-            if (bu.MainPilot().Morale < 100 + (10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || bu.HP > bu.MaxHP / 4))
+            // VB 版は 100 + CInt(10# * flevel) なので、10 * レベルは偶数への丸めで整数にしてから比べる
+            if (bu.MainPilot().Morale < 100 + VBMath.CLng(10d * flevel) && (Strings.InStr(fdata, "気力発動") > 0 || bu.HP > bu.MaxHP / 4))
             {
                 return;
             }
@@ -2674,7 +2675,7 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
@@ -2841,8 +2842,14 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
+                    if (!SRC.PDList.IsDefined(u.FeatureData("追加パイロット")))
+                    {
+                        GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
+                        SRC.TerminateSRC();
+                    }
+
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
             }
@@ -3048,8 +3055,14 @@ namespace SRCCore
             // ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
             if (u.IsFeatureAvailable("追加パイロット"))
             {
-                if (!SRC.PList.IsDefined("追加パイロット"))
+                if (!SRC.PList.IsDefined(u.FeatureData("追加パイロット")))
                 {
+                    if (!SRC.PDList.IsDefined(u.FeatureData("追加パイロット")))
+                    {
+                        GUI.ErrorMessage(uname + "の追加パイロット「" + u.FeatureData("追加パイロット") + "」のデータが見つかりません");
+                        SRC.TerminateSRC();
+                    }
+
                     SRC.PList.Add(u.FeatureData("追加パイロット"), bu.MainPilot().Level, bu.Party0, gid: "");
                 }
             }
@@ -3112,22 +3125,6 @@ namespace SRCCore
                     if (ua.AbilityENConsumption() >= u.EN / 2)
                     {
                         continue;
-                    }
-                }
-
-                // 霊力消費が多すぎない？
-                if (u.CountPilot() > 0)
-                {
-                    var p = u.MainPilot();
-                    if (ua.IsAbilityClassifiedAs("霊") || ua.IsAbilityClassifiedAs("プ"))
-                    {
-                        var planaAttr = ua.IsAbilityClassifiedAs("霊") ? "霊" : "プ";
-                        // 元の SRC の TryInstantAbility にはない、SRC# で足した判定。消費量の比較の目安なので切り捨てでよい
-                        var planaConsumption = VBMath.Fix(ua.AbilityLevel(planaAttr) * 5);
-                        if (planaConsumption > 0 && p.MaxPlana() > 0 && planaConsumption >= p.Plana / 2)
-                        {
-                            continue;
-                        }
                     }
                 }
 
@@ -3242,6 +3239,14 @@ namespace SRCCore
             var aname = selUa.Data.Name;
             Commands.SelectedAbilityName = aname;
 
+            // 召喚アビリティの使用イベント
+            // VB 版は使うと決めた時点で戻り値を True にしているので、中断したときも true を返す。
+            // 合体技パートナーはこのあとで設定する（VB 版と同じ順）ので、ここでは SelectedPartners を消さない
+            Event.HandleEvent("使用", u.MainPilot().ID, aname);
+            if (SRC.IsScenarioFinished || SRC.IsCanceled)
+            {
+                return true;
+            }
 
             // 合体技パートナーの設定
             IList<Unit> partners;
@@ -3253,15 +3258,6 @@ namespace SRCCore
             {
                 Commands.SelectedPartners.Clear();
                 partners = new List<Unit>();
-            }
-
-            // 召喚アビリティの使用イベント
-            Event.HandleEvent("使用", u.MainPilot().ID, aname);
-            if (SRC.IsScenarioFinished || SRC.IsCanceled)
-            {
-                Commands.SelectedPartners.Clear();
-                // XXX true でいいのか？
-                return true;
             }
 
             // 召喚アビリティを使用
@@ -3318,7 +3314,9 @@ namespace SRCCore
             var p = u.MainPilot();
             var max_score = 0;
             UnitAbility selUa = null;
-            foreach (var ua in u.Abilities)
+            // VB 版と同じく最後のアビリティから順に調べる（評価が同じなら番号の大きいものを選ぶ。
+            // 投下位置 tx, ty もアビリティをまたいで上書きされるので、順番を VB 版に合わせる）
+            foreach (var ua in u.Abilities.Reverse())
             {
                 // マップアビリティかどうか
                 if (!ua.IsAbilityClassifiedAs("Ｍ"))
@@ -3405,7 +3403,6 @@ namespace SRCCore
                             {
                                 var withBlock1 = t;
                                 // ゾンビ？
-                                // XXX Unit.CanFix
                                 if (withBlock1.IsConditionSatisfied("ゾンビ"))
                                 {
                                     continue;
@@ -3474,7 +3471,6 @@ namespace SRCCore
                                         continue;
                                     }
                                     // ゾンビ？
-                                    // XXX Unit.CanFix
                                     if (t.IsConditionSatisfied("ゾンビ"))
                                     {
                                         continue;
@@ -3532,8 +3528,8 @@ namespace SRCCore
             u.ExecuteMapAbility(selUa, tx, ty);
             if (SRC.IsScenarioFinished || SRC.IsCanceled)
             {
+                // VB 版は TryMapHealing = True の前に抜けるので False を返す
                 Commands.SelectedPartners.Clear();
-                // XXX false でいいのか？
                 return false;
             }
 
@@ -3669,7 +3665,12 @@ namespace SRCCore
                     }
 
                     // 移動可能か？
-                    var is_able_to_move = ua.CanUseAfterMove();
+                    // VB 版は「射程 1 か Ｐ属性」で、Ｑ属性なら移動しない（Ｐ と Ｑ を両方持つときも移動しない）
+                    var is_able_to_move = ua.AbilityMaxRange() == 1 || ua.IsAbilityClassifiedAs("Ｐ");
+                    if (ua.IsAbilityClassifiedAs("Ｑ"))
+                    {
+                        is_able_to_move = false;
+                    }
                     if (dont_move)
                     {
                         is_able_to_move = false;
@@ -3740,11 +3741,12 @@ namespace SRCCore
                         else if (apower == max_power)
                         {
                             // 回復量が同じならコストが低い方を優先
+                            // VB 版はアビリティのデータの EN 消費と使用回数（.Ability(a).Stock）で比べる
                             if (ua.Data.ENConsumption > selUa.Data.ENConsumption)
                             {
                                 continue;
                             }
-                            if (ua.Stock() < selUa.Stock())
+                            if (ua.Data.Stock < selUa.Data.Stock)
                             {
                                 continue;
                             }
@@ -3763,7 +3765,7 @@ namespace SRCCore
                         {
                             continue;
                         }
-                        if (ua.Stock() < selUa.Stock())
+                        if (ua.Data.Stock < selUa.Data.Stock)
                         {
                             continue;
                         }
