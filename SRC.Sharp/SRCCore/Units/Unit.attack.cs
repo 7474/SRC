@@ -660,7 +660,7 @@ namespace SRCCore.Units
             // 攻撃回数を求める
             if (w.IsWeaponClassifiedAs("連"))
             {
-                attack_num = (int)w.WeaponLevel("連");
+                attack_num = VBMath.CLng(w.WeaponLevel("連"));
                 // レベル未指定の場合は最低1回攻撃とする
                 attack_num = Math.Max(attack_num, 1);
             }
@@ -1153,7 +1153,7 @@ namespace SRCCore.Units
             }
 
             // 都合により破壊させない場合
-            if (IsUnderSpecialPowerEffect("てかげん") && this.MainPilot().Technique > t.MainPilot().Technique && Strings.InStr(attack_mode, "援護攻撃") == 0 || t.IsConditionSatisfied("不死身"))
+            if ((IsUnderSpecialPowerEffect("てかげん") && this.MainPilot().Technique > t.MainPilot().Technique && Strings.InStr(attack_mode, "援護攻撃") == 0) || t.IsConditionSatisfied("不死身"))
             {
                 if (t.HP <= 10)
                 {
@@ -1414,7 +1414,7 @@ namespace SRCCore.Units
                         }
                     }
                 }
-                else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
+                else if (((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP) || dmg <= 10) && Strings.Len(critical_type) == 0)
                 {
                     // ダメージが非常に小さい
                     if (t.IsAnimationDefined("ダメージ小", sub_situation: ""))
@@ -1470,7 +1470,7 @@ namespace SRCCore.Units
                     {
                         // 破壊時メッセージは既に表示している
                     }
-                    else if ((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP || dmg <= 10) && Strings.Len(critical_type) == 0)
+                    else if (((dmg <= 0.05d * t.MaxHP && t.HP >= 0.25d * t.MaxHP) || dmg <= 10) && Strings.Len(critical_type) == 0)
                     {
                         // ダメージが非常に小さい
                         t.PilotMessage("ダメージ小", msg_mode: "");
@@ -2204,11 +2204,11 @@ namespace SRCCore.Units
                         {
                             if (this.MainPilot().Intuition >= t.MainPilot().Intuition)
                             {
-                                slevel = (int)(2d * MainPilot().SkillLevel("再攻撃", ref_mode: ""));
+                                slevel = VBMath.CLng(2d * MainPilot().SkillLevel("再攻撃", ref_mode: ""));
                             }
                             else
                             {
-                                slevel = (int)MainPilot().SkillLevel("再攻撃", ref_mode: "");
+                                slevel = VBMath.CLng(MainPilot().SkillLevel("再攻撃", ref_mode: ""));
                             }
 
                             if (slevel >= GeneralLib.Dice(32))
@@ -2304,7 +2304,7 @@ namespace SRCCore.Units
                             var cf = CurrentForm();
                             if (cf.MainPilot().IsSkillAvailable("命中時気力増加"))
                             {
-                                cf.Pilots.First().Morale = (int)(cf.Pilots.First().Morale + cf.MainPilot().SkillLevel("命中時気力増加", ref_mode: ""));
+                                cf.Pilots.First().Morale = VBMath.CLng(cf.Pilots.First().Morale + cf.MainPilot().SkillLevel("命中時気力増加", ref_mode: ""));
                             }
                         }
                     }
@@ -2313,7 +2313,7 @@ namespace SRCCore.Units
                     t.IncreaseMorale(1);
                     if (t.MainPilot().IsSkillAvailable("損傷時気力増加"))
                     {
-                        t.Pilots.First().Morale = (int)(t.Pilots.First().Morale + t.MainPilot().SkillLevel("損傷時気力増加", ref_mode: ""));
+                        t.Pilots.First().Morale = VBMath.CLng(t.Pilots.First().Morale + t.MainPilot().SkillLevel("損傷時気力増加", ref_mode: ""));
                     }
                 }
                 else
@@ -2325,7 +2325,7 @@ namespace SRCCore.Units
                             var cf = CurrentForm();
                             if (cf.MainPilot().IsSkillAvailable("失敗時気力増加"))
                             {
-                                cf.Pilots.First().Morale = (int)(cf.Pilots.First().Morale + cf.MainPilot().SkillLevel("失敗時気力増加", ref_mode: ""));
+                                cf.Pilots.First().Morale = VBMath.CLng(cf.Pilots.First().Morale + cf.MainPilot().SkillLevel("失敗時気力増加", ref_mode: ""));
                             }
                         }
                     }
@@ -2333,7 +2333,7 @@ namespace SRCCore.Units
                     // 攻撃を回避したことによる気力増加
                     if (t.MainPilot().IsSkillAvailable("回避時気力増加"))
                     {
-                        t.Pilots.First().Morale = (int)(t.Pilots.First().Morale + t.MainPilot().SkillLevel("回避時気力増加", ref_mode: ""));
+                        t.Pilots.First().Morale = VBMath.CLng(t.Pilots.First().Morale + t.MainPilot().SkillLevel("回避時気力増加", ref_mode: ""));
                     }
                 }
 
