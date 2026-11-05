@@ -28,6 +28,8 @@ namespace SRCCore
         bool ExtendedAnimation { get; set; }
         // 移動アニメを表示するか
         bool MoveAnimation { get; set; }
+        // メッセージのウェイト（メッセージスピード。元の SRC の Src.ini の [Option] MessageWait）
+        int MessageWait { get; set; }
 
         // XXX この辺はSRCのコア的にはどうでもいい
         // 画像バッファの枚数

@@ -90,4 +90,25 @@
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>Гучність MP3</value>
   </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>Швидкість повідомлень</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>Вручну</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>Повільно</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>Звичайно</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>Швидко</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>Дуже швидко</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>Миттєво</value>
+  </data>
 </root>

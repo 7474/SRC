@@ -26,6 +26,9 @@ namespace SRCRender
             var config = SRC.Config;
 
             // ダイアログを開く
+            // メッセージスピード（選択肢に無いウェイトなら何も選ばない。元の SRC と同じ）
+            w.cboMessageSpeed.SelectedIndex = SRCCore.Config.MessageSpeeds.IndexOf(MessageWait);
+            w.cboMessageSpeed.DroppedDown = false;
             w.chkBattleAnimation.Checked = SRC.BattleAnimation;
             w.chkExtendedAnimation.Checked = SRC.ExtendedAnimation;
             w.chkWeaponAnimation.Checked = SRC.WeaponAnimation;
@@ -78,6 +81,13 @@ namespace SRCRender
         private void ConfigOK(ConfigWindow w)
         {
             var config = SRC.Config;
+            // メッセージスピード（何も選んでいなければ変えない。元の SRC と同じ）
+            var speed = w.cboMessageSpeed.SelectedIndex;
+            if (speed >= 0 && speed < SRCCore.Config.MessageSpeeds.Items.Count)
+            {
+                MessageWait = SRCCore.Config.MessageSpeeds.Items[speed].Wait;
+                config.MessageWait = MessageWait;
+            }
             config.BattleAnimation = w.chkBattleAnimation.Checked;
             // 汎用戦闘アニメが無くて使えなくしていた戦闘アニメも、選び直したら使う（元の SRC の設定変更と同じ）
             if (w.chkBattleAnimation.Checked)
@@ -131,6 +141,25 @@ namespace SRCRender
                 return;
             }
             var client = w.ToClient(x, y);
+            // メッセージスピードの選択肢を開いていれば、選ぶか閉じる
+            var combo = w.cboMessageSpeed;
+            if (combo.DroppedDown)
+            {
+                var index = combo.ItemAt(client);
+                if (index >= 0)
+                {
+                    combo.SelectedIndex = index;
+                }
+                combo.DroppedDown = false;
+                Present();
+                return;
+            }
+            if (Form.HitTest(combo, client))
+            {
+                combo.DroppedDown = true;
+                Present();
+                return;
+            }
             var check = w.CheckBoxes.FirstOrDefault(c => Form.HitTest(c, client));
             if (check != null)
             {
@@ -161,16 +190,42 @@ namespace SRCRender
         private void ConfigKeyPressed(ScreenKey key)
         {
             var w = State.Config;
+            var combo = w?.cboMessageSpeed;
             switch (key)
             {
+                case ScreenKey.Up:
+                case ScreenKey.Down:
+                    // 上下キーでメッセージスピードを選ぶ（キー操作・仮想パッドだけでも変えられるように）
+                    if (combo != null)
+                    {
+                        var index = combo.SelectedIndex < 0
+                            ? SRCCore.Config.MessageSpeeds.IndexOf(SRCCore.Config.MessageSpeeds.DefaultWait)
+                            : combo.SelectedIndex + (key == ScreenKey.Up ? -1 : 1);
+                        combo.SelectedIndex = System.Math.Max(0, System.Math.Min(combo.Items.Count - 1, index));
+                        Present();
+                    }
+                    break;
                 case ScreenKey.Enter:
-                    if (w != null)
+                    if (combo != null && combo.DroppedDown)
+                    {
+                        combo.DroppedDown = false;
+                        Present();
+                    }
+                    else if (w != null)
                     {
                         ConfigOK(w);
                     }
                     break;
                 case ScreenKey.Escape:
-                    ConfigCancel();
+                    if (combo != null && combo.DroppedDown)
+                    {
+                        combo.DroppedDown = false;
+                        Present();
+                    }
+                    else
+                    {
+                        ConfigCancel();
+                    }
                     break;
             }
         }

@@ -37,5 +37,12 @@ namespace SRCRender.Resources
         public static string ConfigShowTurn => Rm.GetString(nameof(ConfigShowTurn));
         public static string ConfigKeepEnemyBGM => Rm.GetString(nameof(ConfigKeepEnemyBGM));
         public static string ConfigMP3Volume => Rm.GetString(nameof(ConfigMP3Volume));
+        public static string ConfigMessageSpeed => Rm.GetString(nameof(ConfigMessageSpeed));
+        public static string ConfigMessageSpeedManual => Rm.GetString(nameof(ConfigMessageSpeedManual));
+        public static string ConfigMessageSpeedSlow => Rm.GetString(nameof(ConfigMessageSpeedSlow));
+        public static string ConfigMessageSpeedNormal => Rm.GetString(nameof(ConfigMessageSpeedNormal));
+        public static string ConfigMessageSpeedFast => Rm.GetString(nameof(ConfigMessageSpeedFast));
+        public static string ConfigMessageSpeedVeryFast => Rm.GetString(nameof(ConfigMessageSpeedVeryFast));
+        public static string ConfigMessageSpeedInstant => Rm.GetString(nameof(ConfigMessageSpeedInstant));
     }
 }

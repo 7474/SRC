@@ -143,7 +143,7 @@ namespace SRCSharpAvalonia.Tests
             var settings = new AppSettings
             {
                 BattleAnimation = false, ExtendedAnimation = false, WeaponAnimation = true, SpecialPowerAnimation = false, MoveAnimation = false,
-                AutoMoveCursor = false, ShowSquareLine = true, ShowTurn = true, KeepEnemyBGM = true, AutoDefense = true, SoundVolume = 80,
+                AutoMoveCursor = false, ShowSquareLine = true, ShowTurn = true, KeepEnemyBGM = true, AutoDefense = true, SoundVolume = 80, MessageWait = 400,
                 Bgm = new System.Collections.Generic.Dictionary<string, string> { ["Map1"] = "地上.mid", ["default"] = "battle.mid" },
                 DebugMode = true, CompatibleRead = true, CompatibleWrite = false, ImageBufferSize = 64, MaxImageBufferByteSize = 32, KeepStretchedImage = true,
             };
@@ -154,6 +154,7 @@ namespace SRCSharpAvalonia.Tests
             Assert.AreEqual("On", config.GetItem("Option", "Turn"));
             Assert.IsTrue(config.AutoDefense);
             Assert.AreEqual(80, config.SoundVolume);
+            Assert.AreEqual(400, config.MessageWait);
             Assert.AreEqual("地上.mid", config.GetItem("BGM", "Map1"));
             Assert.AreEqual("battle.mid", config.GetItem("BGM", "default"));
             Assert.AreEqual("", config.GetItem("BGM", "Map2"));
@@ -168,6 +169,7 @@ namespace SRCSharpAvalonia.Tests
             Assert.IsTrue(read.KeepEnemyBGM);
             Assert.IsTrue(read.AutoDefense);
             Assert.AreEqual(80, read.SoundVolume);
+            Assert.AreEqual(400, read.MessageWait);
             Assert.AreEqual("地上.mid", read.Bgm["Map1"]);
             Assert.AreEqual("", read.Bgm["Map2"]);
             Assert.IsTrue(read.DebugMode);
@@ -196,6 +198,11 @@ namespace SRCSharpAvalonia.Tests
                     Assert.AreEqual("オープニング.mid", result.Bgm["Opening"]);
                     Assert.AreEqual("GSC_Map1.mid", result.Bgm["Map1"]);
                     Assert.AreEqual("", result.Bgm["Map2"], "[BGM] 以外の項目は読まない");
+                    // メッセージスピードは元の SRC と同じ選択肢（既定は「普通」）
+                    Assert.AreEqual(2, window.MessageSpeed.SelectedIndex);
+                    Assert.AreEqual(700, result.MessageWait);
+                    window.MessageSpeed.SelectedIndex = 5;
+                    Assert.AreEqual(0, window.Result().MessageWait, "神の領域");
                     // 戦闘アニメを表示しなければ、拡張戦闘アニメ・武器準備アニメを選べない
                     window.BattleAnimation.IsChecked = false;
                     Assert.IsFalse(window.ExtendedAnimation.IsEnabled);

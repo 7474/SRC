@@ -34,6 +34,20 @@ namespace SRCSharpWeb.Tests
         }
 
         [TestMethod]
+        public void MessageWait_RoundTripsAndDefaultsToNormal()
+        {
+            var config = new LocalFileConfig();
+            var settings = WebGameSettings.FromConfig(config);
+            Assert.AreEqual(700, settings.MessageWait);
+            settings.MessageWait = 10000000;
+            WebGameSettings.FromJson(settings.ToJson()).ApplyTo(config);
+            Assert.AreEqual(10000000, config.MessageWait);
+
+            // 前の版で保存した設定（メッセージスピードが無い）は「普通」
+            Assert.AreEqual(700, WebGameSettings.FromJson("{\"BattleAnimation\":true}").MessageWait);
+        }
+
+        [TestMethod]
         public void FromJson_EmptyOrBroken_IsNull()
         {
             Assert.IsNull(WebGameSettings.FromJson(null));

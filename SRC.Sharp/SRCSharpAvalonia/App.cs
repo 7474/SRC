@@ -186,6 +186,8 @@ namespace SRCSharpAvalonia
                     if (running != null)
                     {
                         running.SRC.Sound.Player.SoundVolume = result.SoundVolume / 100f;
+                        // メッセージスピードもその場で変える（シナリオの設定ファイルで決めていれば、そちらを使う）
+                        running.GUI.MessageWait = MessageSpeeds.Normalize(running.SRC.Config.MessageWait);
                     }
                 });
             }
@@ -206,6 +208,7 @@ namespace SRCSharpAvalonia
                 LogRetainDays = int.TryParse(config.GetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays"), out var days) && days > 0
                     ? days
                     : SRCCore.Logging.LogOptions.DefaultRetainDays,
+                MessageWait = config.MessageWait,
                 BattleAnimation = config.BattleAnimation,
                 ExtendedAnimation = config.ExtendedAnimation,
                 WeaponAnimation = config.WeaponAnimation,
@@ -240,6 +243,7 @@ namespace SRCSharpAvalonia
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "File", settings.LogFile ? "On" : "Off");
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "Path", settings.LogPath ?? "");
             config.SetItem(SRCCore.Logging.LogSettings.ConfigSection, "RetainDays", settings.LogRetainDays.ToString());
+            config.MessageWait = settings.MessageWait;
             config.BattleAnimation = settings.BattleAnimation;
             config.ExtendedAnimation = settings.ExtendedAnimation;
             config.WeaponAnimation = settings.WeaponAnimation;

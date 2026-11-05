@@ -55,49 +55,18 @@ namespace SRCSharpForm
         // OKボタンが押された
         private void cmdOK_Click(object eventSender, EventArgs eventArgs)
         {
-            //// 各種設定を変更
+            // 各種設定を変更
 
-            //// メッセージスピード
-            //switch (cboMessageSpeed.Text ?? "")
-            //{
-            //    case "神の領域":
-            //        {
-            //            GUI.MessageWait = 0;
-            //            break;
-            //        }
-
-            //    case "超高速":
-            //        {
-            //            GUI.MessageWait = 200;
-            //            break;
-            //        }
-
-            //    case "高速":
-            //        {
-            //            GUI.MessageWait = 400;
-            //            break;
-            //        }
-
-            //    case "普通":
-            //        {
-            //            GUI.MessageWait = 700;
-            //            break;
-            //        }
-
-            //    case "低速":
-            //        {
-            //            GUI.MessageWait = 1000;
-            //            break;
-            //        }
-
-            //    case "手動送り":
-            //        {
-            //            GUI.MessageWait = 10000000;
-            //            break;
-            //        }
-            //}
-
-            //SystemConfig.SetItem("Option", "MessageWait", SrcFormatter.Format(GUI.MessageWait));
+            // メッセージスピード（選択肢に無い値なら変えない。元の SRC と同じ）
+            foreach (var (name, wait) in MessageSpeeds.Items)
+            {
+                if (cboMessageSpeed.Text == name)
+                {
+                    SRC.GUI.MessageWait = wait;
+                    SystemConfig.MessageWait = wait;
+                    break;
+                }
+            }
 
             // 戦闘アニメ表示
             if ((int)chkBattleAnimation.CheckState == 1)
@@ -203,51 +172,14 @@ namespace SRCSharpForm
         {
             // ダイアログを初期化
 
-            //// メッセージスピード
-            //cboMessageSpeed.Items.Add("手動送り");
-            //cboMessageSpeed.Items.Add("低速");
-            //cboMessageSpeed.Items.Add("普通");
-            //cboMessageSpeed.Items.Add("高速");
-            //cboMessageSpeed.Items.Add("超高速");
-            //cboMessageSpeed.Items.Add("神の領域");
-            //switch (GUI.MessageWait)
-            //{
-            //    case 0:
-            //        {
-            //            cboMessageSpeed.Text = "神の領域";
-            //            break;
-            //        }
-
-            //    case 200:
-            //        {
-            //            cboMessageSpeed.Text = "超高速";
-            //            break;
-            //        }
-
-            //    case 400:
-            //        {
-            //            cboMessageSpeed.Text = "高速";
-            //            break;
-            //        }
-
-            //    case 700:
-            //        {
-            //            cboMessageSpeed.Text = "普通";
-            //            break;
-            //        }
-
-            //    case 1000:
-            //        {
-            //            cboMessageSpeed.Text = "低速";
-            //            break;
-            //        }
-
-            //    case 10000000:
-            //        {
-            //            cboMessageSpeed.Text = "手動送り";
-            //            break;
-            //        }
-            //}
+            // メッセージスピード（選択肢に無い値なら何も選ばない。元の SRC と同じ）
+            cboMessageSpeed.Items.Clear();
+            foreach (var (name, _) in MessageSpeeds.Items)
+            {
+                cboMessageSpeed.Items.Add(name);
+            }
+            var speed = MessageSpeeds.IndexOf(SRC.GUI.MessageWait);
+            cboMessageSpeed.SelectedIndex = speed;
 
             // 戦闘アニメ表示
             if (SRC.BattleAnimation)

@@ -405,6 +405,9 @@ namespace SRCCore
                 Sound.Player.SoundVolume = composed.SoundVolume / 100f;
             }
 
+            // メッセージ速度を設定（元の SRC の Src.ini の [Option] MessageWait）
+            GUI.MessageWait = SRCCore.Config.MessageSpeeds.Normalize(Config.MessageWait);
+
             //            // スペシャルパワーアニメ
             //            buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation");
             //            if (string.IsNullOrEmpty(buf))

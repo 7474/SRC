@@ -469,10 +469,13 @@ namespace SRCRender
                         DrawLabel(canvas, cw.labMP3Volume, paint);
                         DrawTextBox(canvas, cw.txtMP3Volume, paint);
                         DrawScrollBar(canvas, cw.hscMP3Volume, paint);
+                        DrawLabel(canvas, cw.labMessageSpeed, paint);
                         foreach (var button in cw.Buttons)
                         {
                             DrawButton(canvas, button, paint);
                         }
+                        // 開いた選択肢はほかの部品の上に重ねる
+                        DrawComboBox(canvas, cw.cboMessageSpeed, paint);
                         break;
                     case Compat.MultiSelectListWindow sw:
                         DrawTextBox(canvas, sw.lblCaption, paint);
@@ -555,6 +558,70 @@ namespace SRCRender
                 paint.IsAntialias = true;
                 canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 paint.IsAntialias = false;
+            }
+        }
+
+        /// <summary>ComboBox（白地の欄と ▼ のボタン。開いていれば下に選択肢）</summary>
+        private static void DrawComboBox(SKCanvas canvas, Compat.ComboBox combo, SKPaint paint)
+        {
+            if (!combo.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(combo.Left, combo.Top, combo.Width, combo.Height);
+            paint.Color = SKColors.White;
+            canvas.DrawRect(rect, paint);
+            DrawSunkenEdge(canvas, rect, paint);
+            var buttonWidth = 16;
+            var button = SKRect.Create(rect.Right - 2 - buttonWidth, rect.Top + 2, buttonWidth, rect.Height - 4);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(button, paint);
+            DrawBevel(canvas, button, raised: true, paint);
+            paint.Color = SKColors.Black;
+            using (var builder = new SKPathBuilder())
+            {
+                builder.MoveTo(button.MidX - 4, button.MidY - 2);
+                builder.LineTo(button.MidX + 4, button.MidY - 2);
+                builder.LineTo(button.MidX, button.MidY + 2);
+                builder.Close();
+                using var path = builder.Detach();
+                canvas.DrawPath(path, paint);
+            }
+            using (var font = combo.Font.ToSKFont())
+            {
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                paint.IsAntialias = true;
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, button.Left - rect.Left - 2, rect.Height - 4));
+                canvas.DrawText(combo.Text, rect.Left + 4, rect.Top + (rect.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                canvas.Restore();
+                paint.IsAntialias = false;
+                if (!combo.DroppedDown)
+                {
+                    return;
+                }
+                // 開いた選択肢（選んでいる項目を反転する）
+                var drop = combo.DropDownRect;
+                var list = SKRect.Create(drop.Left, drop.Top, drop.Width, drop.Height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(list, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(list.Left + 0.5f, list.Top + 0.5f, list.Width - 1, list.Height - 1, paint);
+                paint.Style = SKPaintStyle.Fill;
+                for (var i = 0; i < combo.Items.Count; i++)
+                {
+                    var item = SKRect.Create(list.Left + 1, list.Top + 1 + i * Compat.ComboBox.ItemHeight, list.Width - 2, Compat.ComboBox.ItemHeight);
+                    if (i == combo.SelectedIndex)
+                    {
+                        paint.Color = WindowsHighlight;
+                        canvas.DrawRect(item, paint);
+                    }
+                    paint.Color = i == combo.SelectedIndex ? SKColors.White : SKColors.Black;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(combo.Items[i], item.Left + 3, item.Top + (item.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
             }
         }
 

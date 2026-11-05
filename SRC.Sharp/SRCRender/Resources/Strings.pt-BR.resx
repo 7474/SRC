@@ -90,4 +90,25 @@
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>Volume do MP3</value>
   </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>Velocidade das mensagens</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>Lenta</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>Rápida</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>Muito rápida</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>Instantânea</value>
+  </data>
 </root>

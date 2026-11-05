@@ -88,6 +88,68 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void Configure_ChangesMessageSpeed()
+        {
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+                var config = runner.Session.SRC.SystemConfig;
+                // 設定ファイルの値（既定は「普通」）でメッセージを送る
+                Assert.AreEqual(700, runner.GUI.MessageWait);
+
+                var closed = new ManualResetEventSlim();
+                runner.Session.Game.Post(() =>
+                {
+                    runner.GUI.Configure();
+                    closed.Set();
+                });
+                runner.WaitFor(s => s.Config != null, "config window");
+                var w = runner.State.Config;
+                var combo = w.cboMessageSpeed;
+                // 元の SRC と同じ選択肢
+                CollectionAssert.AreEqual(new[] { "手動送り", "低速", "普通", "高速", "超高速", "神の領域" }, combo.Items);
+                Assert.AreEqual("普通", combo.Text);
+
+                // 欄を押すと選択肢を開き、選ぶと閉じる
+                Click(runner, w, combo);
+                runner.WaitFor(s => combo.DroppedDown, "dropped down");
+                var drop = combo.DropDownRect;
+                var x = w.ScreenLeft + drop.Left + drop.Width / 2;
+                var y = w.ScreenTop + Form.TitleBarHeight + drop.Top + 1 + ComboBox.ItemHeight * 4.5f;
+                runner.GUI.PointerPressed(x, y, GuiButton.Left);
+                runner.GUI.PointerReleased(x, y, GuiButton.Left);
+                runner.WaitFor(s => !combo.DroppedDown && combo.Text == "超高速", "very fast selected");
+
+                // 上下キーでも選べる
+                runner.GUI.KeyPressed(ScreenKey.Down);
+                runner.WaitFor(s => combo.Text == "神の領域", "instant selected");
+                runner.GUI.KeyPressed(ScreenKey.Up);
+                runner.WaitFor(s => combo.Text == "超高速", "very fast selected again");
+
+                Click(runner, w, w.cmdOK);
+                Assert.IsTrue(closed.Wait(ScreenScenarioRunner.Timeout), "closed");
+                Assert.AreEqual(200, runner.GUI.MessageWait);
+                Assert.AreEqual(200, config.MessageWait);
+                StringAssert.Contains(File.ReadAllText(Path.Combine(workspace.AppPath, "srcs.json")), "\"MessageWait\": 200");
+            }
+        }
+
+        [TestMethod]
+        public void MessageWait_IsReadFromScenarioSrcIni()
+        {
+            // 元の SRC と同じく、シナリオのフォルダの Src.ini の [Option] MessageWait でメッセージのウェイトを決める
+            workspace.Write(Path.Combine("scenario", "Src.ini"), "[Option]", "MessageWait=1000", "");
+            var eve = workspace.Write(Path.Combine("scenario", "test.eve"), "プロローグ:", "Talk システム", "設定のテスト", "End", "Quit", "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(eve);
+                runner.WaitForMessage();
+                Assert.AreEqual(1000, runner.GUI.MessageWait);
+            }
+        }
+
+        [TestMethod]
         public void Configure_CancelKeepsSettings()
         {
             using (var runner = new ScreenScenarioRunner(workspace.AppPath))
