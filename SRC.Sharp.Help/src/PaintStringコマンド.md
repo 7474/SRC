@@ -2,8 +2,6 @@
 layout: default
 title: PaintStringコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **PaintStringコマンド**
 
 文字列を表示

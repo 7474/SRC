@@ -2,8 +2,6 @@
 layout: default
 title: RemoveItemコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemoveItemコマンド**
 
 アイテムを削除・除去

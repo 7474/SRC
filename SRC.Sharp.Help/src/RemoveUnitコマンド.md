@@ -2,8 +2,6 @@
 layout: default
 title: RemoveUnitコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemoveUnitコマンド**
 
 ユニットを削除

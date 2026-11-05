@@ -2,8 +2,6 @@
 layout: default
 title: Nightコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Nightコマンド**
 
 マップを夜に変更

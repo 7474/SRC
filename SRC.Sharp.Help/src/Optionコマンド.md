@@ -2,8 +2,6 @@
 layout: default
 title: Optionコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Optionコマンド**
 
 オプションを設定

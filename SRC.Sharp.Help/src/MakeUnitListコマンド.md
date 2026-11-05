@@ -2,8 +2,6 @@
 layout: default
 title: MakeUnitListコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **MakeUnitListコマンド**
 
 ユニット一覧画面を表示

@@ -2,8 +2,6 @@
 layout: default
 title: PaintPictureコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **PaintPictureコマンド**
 
 画像を表示
@@ -44,71 +42,29 @@ title: PaintPictureコマンド
 
 画像ファイルはファイル名、データ名の両方で指定可能です。ファイル名にスペースが含まれている場合は画像ファイル名を「"」で囲ってください。
 
-ファイル名で指定した場合は、
+ファイル名で指定した場合は、*file* に指定したパスそのもの、次に
 
-シナリオのあるフォルダ\Bitmap
+Bitmap
 
-Src.exeのあるフォルダ\Bitmap
+Bitmap\Anime
 
-シナリオのあるフォルダ\Bitmap\Event
+Bitmap\Event
 
-シナリオのあるフォルダ\Bitmap\Cutin
+Bitmap\Cutin
 
-シナリオのあるフォルダ\Bitmap\Pilot
+Bitmap\Pilot
 
-シナリオのあるフォルダ\Bitmap\Unitt
+Bitmap\Unit
 
-シナリオのあるフォルダ\Bitmap\Map
+Bitmap\Map
 
-ExtDataPathで設定されたフォルダ\Bitmap\Event
-
-ExtDataPathで設定されたフォルダ\Bitmap\Cutin
-
-ExtDataPathで設定されたフォルダ\Bitmap\Pilot
-
-ExtDataPathで設定されたフォルダ\Bitmap\Unit
-
-ExtDataPathで設定されたフォルダ\Bitmap\Map
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Event
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Cutin
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Pilot
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Unit
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Map
-
-Src.exeのあるフォルダ\Bitmap\Event
-
-Src.exeのあるフォルダ\Bitmap\Cutin
-
-Src.exeのあるフォルダ\Bitmap\Pilot
-
-Src.exeのあるフォルダ\Bitmap\Unit
-
-Src.exeのあるフォルダ\Bitmap\Map
-
-の順で検索されて使用されます。
+の順に、それぞれのフォルダの下で検索されて使用されます。それぞれのフォルダは、シナリオのあるフォルダ、ExtDataPathで設定されたフォルダ、ExtDataPath2で設定されたフォルダ、SRC#のフォルダ（素材パックを含む）の順に検索されます。
 
 なお、フォルダ名を含めたパス名で指定することもできます。
 
 **例** Pilot\Hyp\_AlexisDelicat(19).bmp
 
-![](./images/bm0.gif) フォルダ名を含めた方がファイル検索が高速に行えるため、描画処理自体も高速になります。
-
-画像ファイルとして地形画像を指定した場合、以下のディレクトリも検索対象になります。
-
-(「画像ディレクトリ」は画像ファイル名から「数字.bmp」の部分を除いたもの(例:plain))
-
-シナリオのあるフォルダ\Bitmap\Map\画像ディレクトリ
-
-ExtDataPathで設定されたフォルダ\Bitmap\Map\画像ディレクトリ
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Map\画像ディレクトリ
-
-Src.exeのあるフォルダ\Bitmap\Map\画像ディレクトリ
+> **元の SRC との違い**: 検索するフォルダの順番が元の SRC と異なります（元の SRC はシナリオのあるフォルダの Bitmap\Event などを先に検索し、ExtDataPath などのフォルダをその後に検索します）。また、地形画像のファイル名（例: plain0.bmp）を指定しても、地形画像のフォルダ（Bitmap\Map\plain など）は検索されません（不具合）。
 
 画像をデータ名で指定した場合は下の順番でデータが検索され、該当するデータの画像が使用されます。
 
@@ -159,6 +115,8 @@ Src.exeのあるフォルダ\Bitmap\Map\画像ディレクトリ
 PaintPicture alice.bmp - - 128 128 透過 RGB(0,0,0)
 
 **RGB**関数を使うか**RGB16進**(HTMLでの色指定方法と同じ)で色を指定して下さい。
+
+> **元の SRC との違い**: SRC# では、「フィルタ」の直後以外に指定した色が無視され、透過色を白以外にできません（不具合）。
 
 ![](./images/bm0.gif) このオプションを使うと透過処理が複雑になるため描画速度は若干低下します
 

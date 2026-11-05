@@ -2,15 +2,13 @@
 layout: default
 title: RenameFileコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RenameFileコマンド**
 
 ファイル名を変更
 
 **書式**
 
-**RemoveFile** *file1 file2*
+**RenameFile** *file1 file2*
 
 **指定項目説明**
 
