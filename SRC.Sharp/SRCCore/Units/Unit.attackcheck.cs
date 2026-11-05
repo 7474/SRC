@@ -595,7 +595,7 @@ namespace SRCCore.Units
             string wname, wname2;
             int w2;
             int ecost, nmorale;
-            string fname = default, fdata;
+            string fname = "", fdata;
             double flevel;
             double slevel, lv_mod;
             string opt;
@@ -664,10 +664,11 @@ namespace SRCCore.Units
                 if (i == 0)
                 {
                     // 迎撃武器がない場合は迎撃用の武器としての条件を満たす武器を検索
+                    // （VB の t.Weapon(i).Bullet は武器データの弾数で、いまの残弾ではない）
                     var loopTo2 = t.CountWeapon();
                     for (i = 1; i <= loopTo2; i++)
                     {
-                        if (t.Weapon(i).IsWeaponAvailable("移動後") && t.Weapon(i).IsWeaponClassifiedAs("移動後攻撃可") && t.Weapon(i).IsWeaponClassifiedAs("射撃系") && (t.Weapon(i).Bullet() >= 10 || (t.Weapon(i).Bullet() == 0 && t.Weapon(i).WeaponData.ENConsumption <= 5)) && t.MainPilot().Morale >= t.Weapon(i).WeaponData.NecessaryMorale)
+                        if (t.Weapon(i).IsWeaponAvailable("移動後") && t.Weapon(i).IsWeaponClassifiedAs("移動後攻撃可") && t.Weapon(i).IsWeaponClassifiedAs("射撃系") && (t.Weapon(i).WeaponData.Bullet >= 10 || (t.Weapon(i).WeaponData.Bullet == 0 && t.Weapon(i).WeaponData.ENConsumption <= 5)) && t.MainPilot().Morale >= t.Weapon(i).WeaponData.NecessaryMorale)
                         {
                             break;
                         }
@@ -684,7 +685,9 @@ namespace SRCCore.Units
                 }
 
                 // 迎撃を実行
-                if (0 < i && i <= t.CountWeapon() && (slevel >= GeneralLib.Dice(16) || t.IsUnderSpecialPowerEffect("特殊防御発動")))
+                // VB の And・Or は短絡しないので、迎撃用の武器が無くても Dice(16) を振る（乱数の消費を VB に合わせる）
+                var interceptDice = GeneralLib.Dice(16);
+                if (0 < i && i <= t.CountWeapon() && (slevel >= interceptDice || t.IsUnderSpecialPowerEffect("特殊防御発動")))
                 {
                     // メッセージ
                     if (!be_quiet)
@@ -737,7 +740,7 @@ namespace SRCCore.Units
                     GUI.DisplaySysMessage(t.Nickname + "は[" + t.Weapon(i).WeaponNickname() + "]で[" + wname + "]を阻止した。");
 
                     // 迎撃された永続武器は使用回数を減らす
-                    if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                    if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                     {
                         w.SetBullet(w.Bullet() - 1);
                         SyncBullet();
@@ -1544,7 +1547,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を叩き落とした。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
@@ -1620,7 +1623,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受け流した。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
@@ -1693,7 +1696,7 @@ namespace SRCCore.Units
                         GUI.DisplaySysMessage(t.Nickname + "は[" + wname2 + "]で[" + wname + "]を受けとめた。");
 
                         // 切り払われた永続武器は使用回数を減らす
-                        if (w.IsWeaponClassifiedAs("永") && w.Bullet() > 0)
+                        if (w.IsWeaponClassifiedAs("永") && w.WeaponData.Bullet > 0)
                         {
                             w.SetBullet(w.Bullet() - 1);
                             SyncBullet();
