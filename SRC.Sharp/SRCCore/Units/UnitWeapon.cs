@@ -5022,7 +5022,7 @@ namespace SRCCore.Units
                     {
                         if (uw.IsWeaponClassifiedAs("斉"))
                         {
-                            // XXX これどういう式なのかいまいち分からん
+                            // 斉属性の武器の弾数を、使った武器の残りの割合以下にする（元の SRC と同じく 0.49999 を足してから丸める）
                             uw.SetBullet(GeneralLib.MinLng(VBMath.CLng(uw.MaxBullet() * dblBulletRate + 0.49999d), uw.Bullet()));
                         }
                     }
@@ -5087,7 +5087,7 @@ namespace SRCCore.Units
                 Unit.HP = GeneralLib.MaxLng(Unit.HP - VBMath.CLng(Unit.MaxHP * WeaponLevel("失")) / 10, 0);
             }
 
-            // XXX いつの仕様だろ
+            // 元の SRC でもコメントアウトされている処理
             // '合体技は１ターンに１回だけ使用可能
             // If IsWeaponClassifiedAs(w, "合") Then
             // AddCondition "合体技使用不可", 1, 0, "非表示"
