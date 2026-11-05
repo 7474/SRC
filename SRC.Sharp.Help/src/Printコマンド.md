@@ -30,7 +30,7 @@ title: Printコマンド
 
 文字列は**Open**コマンドで開いたときの文字コード（`Shift_JIS` または `UTF-8`。[**Open**コマンド](Openコマンド.md)を参照）で書き込まれます。
 
-> **元の SRC との違い**: 行末の改行は、Windows では元の SRC と同じく CR+LF ですが、macOS・Linux・SRC#Web では LF になります。
+> **元の SRC との違い**: 行末の改行は、Windows では元の SRC と同じく CR+LF ですが、macOS・Linux・SRC#Web では LF になります。（7474/SRC#1476）
 
 **Print**コマンドで書き込んだ文字列をファイルから読み出すには[**LineRead**コマンド](LineReadコマンド.md)を使います。
 
