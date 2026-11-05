@@ -110,13 +110,12 @@ namespace SRCRender.Tests
 
                 // クリックするとサブパイロットを表示する
                 ClickFace(runner);
-                runner.WaitFor(s => runner.GUI.DisplayedPilot?.Name == "サブ", "サブパイロットの表示");
-                Assert.AreEqual(2, runner.GUI.DisplayedPilotInd);
+                // 表示するパイロット（DisplayedPilot）を変えた後で番号（DisplayedPilotInd）を変えるため、両方を待つ
+                runner.WaitFor(s => runner.GUI.DisplayedPilot?.Name == "サブ" && runner.GUI.DisplayedPilotInd == 2, "サブパイロットの表示");
 
                 // もう一度クリックするとメインパイロットに戻る
                 ClickFace(runner);
-                runner.WaitFor(s => runner.GUI.DisplayedPilot?.Name == "メイン", "メインパイロットの表示");
-                Assert.AreEqual(1, runner.GUI.DisplayedPilotInd);
+                runner.WaitFor(s => runner.GUI.DisplayedPilot?.Name == "メイン" && runner.GUI.DisplayedPilotInd == 1, "メインパイロットの表示");
             }
         }
     }
