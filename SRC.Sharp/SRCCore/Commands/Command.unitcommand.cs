@@ -408,9 +408,32 @@ namespace SRCCore.Commands
             var p = SelectedUnit.Pilots.First();
 
             // 接触イベント
-            foreach (var unit in Map.AdjacentUnit(SelectedUnit))
+            // 元の SRC と同じく左・右・上・下の順に、イベントのたびに隣のユニットを取り直す
+            // （イベントでユニットが動いたり、隣のユニットが変わったりすることがあるため）
+            for (var i = 1; i <= 4; i++)
             {
-                SelectedTarget = unit;
+                SelectedTarget = null;
+                switch (i)
+                {
+                    case 1:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x - 1, SelectedUnit.y);
+                        break;
+                    case 2:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x + 1, SelectedUnit.y);
+                        break;
+                    case 3:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x, SelectedUnit.y - 1);
+                        break;
+                    case 4:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x, SelectedUnit.y + 1);
+                        break;
+                }
+
+                if (SelectedTarget is null)
+                {
+                    continue;
+                }
+
                 Event.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
                 SelectedTarget = null;
                 if (SRC.IsScenarioFinished)
