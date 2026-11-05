@@ -2,8 +2,6 @@
 layout: default
 title: GameOverコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **GameOverコマンド**
 
 ゲームオーバー
@@ -18,7 +16,7 @@ title: GameOverコマンド
 
 シナリオのあるフォルダ\Data\System\GameOver.eve
 
-Src.exeのあるフォルダ\Data\System\GameOver.eve
+SRC 本体のフォルダ\Data\System\GameOver.eve
 
 を実行した後、SRCを終了します。この時、最終セーブ時またはスタートイベント時からのコンティニューが選択できます。コンティニューの処理の関係上、プロローグイベント中に**GameOver**コマンドを使うことはできません。**GameClear**コマンドを使ってください。
 

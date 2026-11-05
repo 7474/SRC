@@ -2,8 +2,6 @@
 layout: default
 title: Escapeコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Escapeコマンド**
 
 ユニットを撤退

@@ -2,8 +2,6 @@
 layout: default
 title: Explodeコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Explodeコマンド**
 
 爆発を表示

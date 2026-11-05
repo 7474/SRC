@@ -2,8 +2,6 @@
 layout: default
 title: Forgetコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Forgetコマンド**
 
 データを消去

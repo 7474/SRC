@@ -2,8 +2,6 @@
 layout: default
 title: Hideコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Hideコマンド**
 
 メインウインドウを消去

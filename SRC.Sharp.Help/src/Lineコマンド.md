@@ -2,8 +2,6 @@
 layout: default
 title: Lineコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Lineコマンド**
 
 線や長方形を描画

@@ -2,8 +2,6 @@
 layout: default
 title: FadeInコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **FadeInコマンド**
 
 画面をフェードイン

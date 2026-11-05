@@ -2,8 +2,6 @@
 layout: default
 title: Finishコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Finishコマンド**
 
 ユニットの行動を終了させる

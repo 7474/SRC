@@ -2,8 +2,6 @@
 layout: default
 title: Joinコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Joinコマンド**
 
 パーティーに復帰

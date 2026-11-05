@@ -2,8 +2,6 @@
 layout: default
 title: Loadコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Loadコマンド**
 
 データをロード

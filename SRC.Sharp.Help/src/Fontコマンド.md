@@ -2,8 +2,6 @@
 layout: default
 title: Fontコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Fontコマンド**
 
 [**PaintString**コマンド](PaintStringコマンド.md)で使うフォントを変更
@@ -76,7 +74,7 @@ RGB関数を使えばＲＧＢ値からＲＧＢ16進を計算することがで
 
 オプションを指定せずに**Font**コマンドを実行した場合はフォント設定が標準の設定に戻されます。標準の設定は、
 
-**Font 16pt #000000 Ｐ明朝 Bold 通常**
+**Font 16pt #FFFFFF Ｐ明朝 Bold 通常**
 
 と同じです。
 
@@ -91,7 +89,7 @@ Font 24pt Ｐゴシック Regular
 #フェードインしながらメッセージを表示
 For i = 1 To 20
 #色を変更
-Font RGB(4 \* i, 8 \* i, 12.5 \* i)
+Font RGB(4 * i, 8 * i, 12.5 * i)
 #メッセージを表示
 PaintString - 200 A long time ago in a galaxy far,
 PaintString far away ....
