@@ -48,10 +48,16 @@ namespace SRCCore.Maps
             //    is_map_changed = true;
             //}
             // セーブデータはシナリオのフォルダからの相対パス（以前の版は絶対パス）で持つ（#1375）
-            MapFileName = SRC.ResolveSavedPath(map.MapFileName);
+            var mapFileName = SRC.ResolveSavedPath(map.MapFileName);
+            // 背景書き換えの必要有り？（VB: RestoreMapData の is_map_changed）
+            // マップがロードに伴って変化したときだけ。背景への書き込み（IsMapDirty）はそのまま引き継ぐ
+            if (IsMapChanged(mapFileName, map))
+            {
+                IsMapDirty = true;
+            }
+            MapFileName = mapFileName;
             MapDrawMode = map.MapDrawMode;
             MapDrawIsMapOnly = map.MapDrawIsMapOnly;
-            IsMapDirty = map.IsMapDirty;
 
             // マップ幅, マップ高さ
             var mw = map.MapWidth;
@@ -69,6 +75,39 @@ namespace SRCCore.Maps
 
             MapData = map.MapData;
             MapData.All.ToList().ForEach(cell => cell.Restore(SRC));
+        }
+
+        private bool IsMapChanged(string mapFileName, Map map)
+        {
+            if ((mapFileName ?? "") != (MapFileName ?? "")
+                || (map.MapDrawMode ?? "") != (MapDrawMode ?? "")
+                || map.MapDrawIsMapOnly != MapDrawIsMapOnly
+                || map.MapWidth != MapWidth
+                || map.MapHeight != MapHeight
+                || MapData == null
+                || map.MapData == null)
+            {
+                return true;
+            }
+
+            for (var x = 1; x <= MapWidth; x++)
+            {
+                for (var y = 1; y <= MapHeight; y++)
+                {
+                    var cur = MapData[x, y];
+                    var saved = map.MapData[x, y];
+                    if (cur == null || saved == null
+                        || cur.TerrainType != saved.TerrainType
+                        || cur.BitmapNo != saved.BitmapNo
+                        || cur.LayerType != saved.LayerType
+                        || cur.LayerBitmapNo != saved.LayerBitmapNo
+                        || cur.BoxType != saved.BoxType)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // 管理可能な地形データの総数

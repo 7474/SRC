@@ -38,6 +38,12 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             GUI.SaveScreen();
+
+            // 背景への描き込み（中断・クイックセーブから再開するときに再開イベントで書き直す）
+            if (Event.ObjDrawOption == "背景")
+            {
+                Map.IsMapDirty = true;
+            }
             // 点を描画
             SRC.GUIScrean.PSetCmd(new ScreanDrawOption(Event, clr), xx, yy);
 

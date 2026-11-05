@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using SRCCore.CmdDatas;
+using SRCCore.Events;
 using SRCCore.Lib;
 using System.Collections.Generic;
 using System.IO;
@@ -537,7 +539,111 @@ namespace SRCCore.Coverage.Tests
             var labels = f.Src.Event.colEventLabelList.List.Select(x => x.Data).ToList();
             CollectionAssert.Contains(labels, "ターン 2 味方");
             CollectionAssert.DoesNotContain(labels, "別シナリオ");
+            // マップは変わっていないので再開イベントは発生しない（元の SRC と同じ。#1466）
+            Assert.IsFalse(f.Src.Expression.IsGlobalVariableDefined("再開回数"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_QuickWithSameMap_DoesNotRaiseResumeEvent()
+        {
+            // 元の SRC は、マップがロードに伴って変化したときと、背景に書き込みがあったとき（IsMapDirty）だけ
+            // 背景を書き直して再開イベントを発生させる（SRC.bas の RestoreData。#1466）
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Quik);
+
+            f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
+            Assert.IsFalse(f.Src.Expression.IsGlobalVariableDefined("再開回数"));
+            Assert.IsFalse(f.Src.Map.IsMapDirty);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_QuickAfterBackgroundDrawing_RaisesResumeEventOnce()
+        {
+            // 背景に書き込んだ（PaintPicture などの「背景」）あとにロードすると、再開イベントで書き直す
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Quik);
+            f.Src.Map.IsMapDirty = true;
+
+            f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
             Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
+            Assert.IsFalse(f.Src.Map.IsMapDirty);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_QuickAfterTerrainChanged_RaisesResumeEvent()
+        {
+            // セーブしたあとに地形が変わっていれば（ChangeTerrain など）、マップが変化したので再開イベントが発生する
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Quik);
+            f.Src.Map.CellAtPoint(2, 2).TerrainType = 5;
+
+            f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
+            Assert.AreEqual(0, f.Src.Map.CellAtPoint(2, 2).TerrainType);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_QuickWithOtherMap_RaisesResumeEvent()
+        {
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var stream = Dump(f, SRCSaveKind.Quik);
+            f.Src.Map.MapFileName = Path.Combine(f.ScenarioDir, "other.map");
+
+            f.Src.RestoreData(stream, SRCSaveKind.Quik);
+
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_SameMap_RaisesResumeEventOnce()
+        {
+            // QuickLoad コマンドはロードのあとに再開イベントを発生させる（CmdData.cls の ExecQuickLoadCmd）。
+            // マップが変わっていなければロードの中では発生しないので 1 回
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var fname = Path.Combine(f.ScenarioDir, "クイック.srcq");
+            f.Src.DumpData(fname, SRCSaveKind.Quik);
+            f.Src.LastSaveDataFileName = fname;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(1d, f.Src.Expression.GetValueAsDouble("再開回数"));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_MapDirty_RaisesResumeEventTwice()
+        {
+            // 背景に書き込みがあれば、元の SRC と同じくロードの中とそのあとの 2 回発生する
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var fname = Path.Combine(f.ScenarioDir, "クイック.srcq");
+            f.Src.DumpData(fname, SRCSaveKind.Quik);
+            f.Src.LastSaveDataFileName = fname;
+            f.Src.Map.IsMapDirty = true;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(2d, f.Src.Expression.GetValueAsDouble("再開回数"));
+        }
+
+        private static void ExecQuickLoad(SrcPlayDataSaveFixture f)
+        {
+            var line = new EventDataLine(0, EventDataSource.Scenario, "test", 0, "QuickLoad");
+            var cmd = new CmdParser().Parse(f.Src, line);
+            cmd.Exec();
         }
 
         [TestMethod]
