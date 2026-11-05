@@ -83,10 +83,10 @@ VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C
 | [TerrainDataList.cls](TerrainDataList_cls.md) | 16 | 16 | 0 | 0 | 0 | 0 | 0 |
 | [Title.frm](Title_frm.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [ToolTip.frm](ToolTip_frm.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| [Unit.cls](Unit_cls.md) | 276 | 228 | 28 | 20 | 0 | 0 | 0 |
+| [Unit.cls](Unit_cls.md) | 276 | 192 | 54 | 30 | 0 | 0 | 0 |
 | [UnitData.cls](UnitData_cls.md) | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | [UnitDataList.cls](UnitDataList_cls.md) | 8 | 8 | 0 | 0 | 0 | 0 | 0 |
 | [Units.cls](Units_cls.md) | 25 | 25 | 0 | 0 | 0 | 0 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 1267 | 35 | 31 | 0 | 0 | 0 |
+| 計 | 1333 | 1231 | 61 | 41 | 0 | 0 | 0 |
