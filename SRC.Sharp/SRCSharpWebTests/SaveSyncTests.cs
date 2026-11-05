@@ -132,5 +132,38 @@ namespace SRCSharpWeb.Tests
             Assert.IsFalse(File.Exists(Path.Combine(root, "..", "a.srcs")));
             Assert.IsFalse(File.Exists(Path.Combine(root, "test.eve")));
         }
+
+        [TestMethod]
+        [DataRow("Src.ini", true)]
+        [DataRow("scenario/src.INI", true)]
+        [DataRow("srcs.json", true)]
+        [DataRow("dir/SRCS.JSON", true)]
+        [DataRow("Src.ini.bak", false)]
+        [DataRow("a.srcs", false)]
+        [DataRow("mysrcs.json", false)]
+        public void IsSettingsFile(string name, bool expected)
+        {
+            Assert.AreEqual(expected, SaveSync.IsSettingsFile(name));
+        }
+
+        [TestMethod]
+        public void SettingsFiles_AreCollectedAndRestored()
+        {
+            // プレイ中に変えたシナリオの設定（ScenarioConfig が Src.ini・srcs.json に書き戻す）もブラウザに残す
+            var sync = new SaveSync(root);
+            Assert.IsTrue(sync.Notify(Write("scenario/Src.ini", "[Option]\r\nBattleAnimation=On\r\n")));
+            Assert.IsTrue(sync.Notify(Write("scenario/srcs.json", "{}")));
+            Assert.IsFalse(sync.Notify(Write("scenario/readme.txt", "x")));
+            var written = sync.CollectWritten().OrderBy(x => x.Name, StringComparer.Ordinal).ToList();
+            CollectionAssert.AreEqual(new[] { "scenario/Src.ini", "scenario/srcs.json" }, written.Select(x => x.Name).ToArray());
+
+            // 次に開いたとき（シナリオの zip を展開し直した後）に、同梱の Src.ini を上書きして戻す
+            Write("scenario/Src.ini", "[Option]\r\nBattleAnimation=Off\r\n");
+            var restored = new SaveSync(root).Restore("scenario/Src.ini", written[0].Data);
+            Assert.AreEqual(Path.GetFullPath(Path.Combine(root, "scenario", "Src.ini")), restored);
+            Assert.AreEqual("[Option]\r\nBattleAnimation=On\r\n", File.ReadAllText(restored));
+            // ほかのファイルは戻さない
+            Assert.IsNull(new SaveSync(root).Restore("scenario/test.eve", Encoding.UTF8.GetBytes("x")));
+        }
     }
 }
