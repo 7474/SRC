@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCCore.Expressions.Functions
 {
@@ -183,7 +184,7 @@ namespace SRCCore.Expressions.Functions
                     break;
             }
 
-            num_result = SRC.GUI.MapToPixelX((int)num_result);
+            num_result = SRC.GUI.MapToPixelX(VBMath.CLng(num_result));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -241,7 +242,7 @@ namespace SRCCore.Expressions.Functions
                     break;
             }
 
-            num_result = SRC.GUI.MapToPixelY((int)num_result);
+            num_result = SRC.GUI.MapToPixelY(VBMath.CLng(num_result));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
