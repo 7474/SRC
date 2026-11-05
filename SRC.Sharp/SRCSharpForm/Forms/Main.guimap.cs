@@ -1,4 +1,5 @@
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCCore.Maps;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
@@ -511,53 +512,46 @@ namespace SRCSharpForm
             }
 
             using var g = Graphics.FromImage(image);
-            // タイル
-            switch (u.Party0 ?? "")
+
+            // 地形ユニットは Bitmap\Map の画像（地形画像の番号付きのファイル名にも読み替える）を探す（元の SRC の FindUnitBitmap）
+            var isTerrainUnit = u.IsFeatureAvailable("地形ユニット");
+            var bitmap = u.CurrentForm().CurrentBitmap();
+            if (isTerrainUnit)
             {
-                case "味方":
-                case "ＮＰＣ":
-                    g.DrawImage(picUnit.Image, destRect);
-                    break;
-                case "敵":
-                    g.DrawImage(picEnemy.Image, destRect);
-                    break;
-                case "中立":
-                    g.DrawImage(picNeautral.Image, destRect);
-                    break;
+                bitmap = BitmapSearch.TerrainUnitBitmap(SRC, bitmap);
+            }
+            var unitImage = ImageBuffer.GetTransparent(bitmap);
+            var terrainUnitImage = isTerrainUnit ? ImageBuffer.Get(bitmap) : null;
+
+            if (terrainUnitImage != null)
+            {
+                // 地形ユニットの場合は画像をそのまま使う（陣営色のタイルと重ねず、白も透過しない）
+                g.DrawImage(terrainUnitImage, destRect);
+            }
+            else
+            {
+                // タイル
+                switch (u.Party0 ?? "")
+                {
+                    case "味方":
+                    case "ＮＰＣ":
+                        g.DrawImage(picUnit.Image, destRect);
+                        break;
+                    case "敵":
+                        g.DrawImage(picEnemy.Image, destRect);
+                        break;
+                    case "中立":
+                        g.DrawImage(picNeautral.Image, destRect);
+                        break;
+                }
+
+                // (発光している場合は２度塗りを防ぐため描画しない)
+                if (unitImage != null && !emit_light)
+                {
+                    g.DrawImage(unitImage, destRect);
+                }
             }
 
-            var unitImage = ImageBuffer.GetTransparent(u.CurrentForm().CurrentBitmap());
-            // (発光している場合は２度塗りを防ぐため描画しない)
-            if (unitImage != null && !emit_light)
-            {
-                g.DrawImage(unitImage, destRect);
-            }
-
-            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB5の BitBlt→新システムは DrawImage + アルファブレンドで代替）
-            // 地形ユニットフィルタ:
-            // 旧VB5では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
-            // 新システムでは DrawImage + アルファブレンドで代替する。地形ユニットの特別処理は未実装。
-            //            if (u.IsFeatureAvailable("地形ユニット"))
-            //            {
-            //                // 地形ユニットの場合は画像をそのまま使う
-            //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
-            //            }
-            //            else
-            //            {
-            //                // BitBltを使ってユニット画像とタイルを重ね合わせる
-
-            //                // マスクを作成
-            //                Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref 32, ref 32, ref ColorTranslator.ToOle(Color.White));
-
-
-            //                // 画像の重ね合わせ
-            //                // (発光している場合は２度塗りを防ぐため描画しない)
-            //                if (!emit_light)
-            //                {
-            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
-            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
-            //                }
-            //            }
             // 色をステージの状況に合わせて変更
             if (!use_orig_color && !Map.MapDrawIsMapOnly)
             {
@@ -599,7 +593,7 @@ namespace SRCSharpForm
             }
 
             // 行動済のフィルタ
-            if (u.Action <= 0 && !u.IsFeatureAvailable("地形ユニット"))
+            if (u.Action <= 0 && !isTerrainUnit)
             {
                 // 行動済のユニット
                 g.FillRectangle(UnitMaskBrush, destRect);

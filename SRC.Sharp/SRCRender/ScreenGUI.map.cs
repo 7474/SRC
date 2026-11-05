@@ -1,5 +1,6 @@
 using SkiaSharp;
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Units;
@@ -324,10 +325,20 @@ namespace SRCRender
             var rect = SKRect.Create(0, 0, px, px);
             var emitLight = Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !useOrigColor && SafeFeature(u, "発光");
 
+            // 地形ユニットは Bitmap\Map の画像（地形画像の番号付きのファイル名にも読み替える）を、
+            // 陣営色の背景を描かず、白を透過せずにそのまま使う（元の SRC の FindUnitBitmap・LoadUnitBitmap）
+            var isTerrainUnit = SafeFeature(u, "地形ユニット");
             SKBitmap unitImage = null;
+            SKBitmap terrainUnitImage = null;
             try
             {
-                unitImage = Images.GetTransparent(u.CurrentForm().CurrentBitmap());
+                var bitmap = u.CurrentForm().CurrentBitmap();
+                if (isTerrainUnit)
+                {
+                    bitmap = BitmapSearch.TerrainUnitBitmap(SRC, bitmap);
+                    terrainUnitImage = Images.Get(bitmap);
+                }
+                unitImage = Images.GetTransparent(bitmap);
             }
             catch
             {
@@ -337,18 +348,25 @@ namespace SRCRender
             using (var canvas = new SKCanvas(image))
             {
                 canvas.Clear(SKColors.Transparent);
-                var frame = UnitFrames.ForParty(u.Party0);
-                if (frame != null)
+                if (terrainUnitImage != null)
                 {
-                    canvas.DrawBitmap(frame, rect, SKSamplingOptions.Default);
+                    canvas.DrawBitmap(terrainUnitImage, rect, SKSamplingOptions.Default);
                 }
-                if (unitImage != null && !emitLight)
+                else
                 {
-                    canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
-                }
-                else if (unitImage == null)
-                {
-                    renderer.DrawUnitInitial(canvas, u.Nickname0 ?? u.Name, rect);
+                    var frame = UnitFrames.ForParty(u.Party0);
+                    if (frame != null)
+                    {
+                        canvas.DrawBitmap(frame, rect, SKSamplingOptions.Default);
+                    }
+                    if (unitImage != null && !emitLight)
+                    {
+                        canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
+                    }
+                    else if (unitImage == null)
+                    {
+                        renderer.DrawUnitInitial(canvas, u.Nickname0 ?? u.Name, rect);
+                    }
                 }
             }
 
@@ -367,7 +385,7 @@ namespace SRCRender
             using (var canvas = new SKCanvas(image))
             using (var paint = new SKPaint { Color = UnitMaskColor })
             {
-                if (u.Action <= 0 && !SafeFeature(u, "地形ユニット"))
+                if (u.Action <= 0 && !isTerrainUnit)
                 {
                     canvas.DrawRect(rect, paint);
                 }
