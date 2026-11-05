@@ -500,14 +500,14 @@ namespace SRCCore.Units
                                     var p = MainPilot();
                                     if (a.IsSpellAbility())
                                     {
-                                        epower = ((int)(5d * elevel * p.Shooting));
+                                        epower = VBMath.CLng(5d * elevel * p.Shooting);
                                     }
                                     else
                                     {
-                                        epower = ((int)(500d * elevel));
+                                        epower = VBMath.CLng(500d * elevel);
                                     }
 
-                                    epower = (int)(epower * (10d + p.SkillLevel("修理", ref_mode: ""))) / 10;
+                                    epower = (int)VBMath.IntDiv(epower * (10d + p.SkillLevel("修理", ref_mode: "")), 10);
                                 }
 
                                 t.HP = t.HP + epower;
@@ -532,11 +532,11 @@ namespace SRCCore.Units
                                     var p = MainPilot();
                                     if (a.IsSpellAbility())
                                     {
-                                        epower = (int)(5d * elevel * p.Shooting);
+                                        epower = VBMath.CLng(5d * elevel * p.Shooting);
                                     }
                                     else
                                     {
-                                        epower = (int)(500d * elevel);
+                                        epower = VBMath.CLng(500d * elevel);
                                     }
                                 }
 
@@ -585,14 +585,14 @@ namespace SRCCore.Units
                                         var withBlock8 = MainPilot();
                                         if (a.IsSpellAbility())
                                         {
-                                            epower = (int)((long)(elevel * withBlock8.Shooting) / 2L);
+                                            epower = (int)VBMath.IntDiv(elevel * withBlock8.Shooting, 2L);
                                         }
                                         else
                                         {
-                                            epower = (int)(50d * elevel);
+                                            epower = VBMath.CLng(50d * elevel);
                                         }
 
-                                        epower = (int)((long)(epower * (10d + withBlock8.SkillLevel("補給", ref_mode: ""))) / 10L);
+                                        epower = (int)VBMath.IntDiv(epower * (10d + withBlock8.SkillLevel("補給", ref_mode: "")), 10L);
                                     }
 
                                     t.EN = t.EN + epower;
@@ -623,11 +623,11 @@ namespace SRCCore.Units
                                         var withBlock9 = MainPilot();
                                         if (a.IsSpellAbility())
                                         {
-                                            epower = (int)((long)(elevel * withBlock9.Shooting) / 2L);
+                                            epower = (int)VBMath.IntDiv(elevel * withBlock9.Shooting, 2L);
                                         }
                                         else
                                         {
-                                            epower = (int)(50d * elevel);
+                                            epower = VBMath.CLng(50d * elevel);
                                         }
                                     }
 
@@ -666,11 +666,11 @@ namespace SRCCore.Units
                                     var epower = 0;
                                     if (a.IsSpellAbility())
                                     {
-                                        p.Plana = (int)(p.Plana + ((long)(elevel * this.MainPilot().Shooting) / 10L));
+                                        p.Plana = (int)(p.Plana + VBMath.IntDiv(elevel * this.MainPilot().Shooting, 10L));
                                     }
                                     else
                                     {
-                                        p.Plana = (int)(p.Plana + 10d * elevel);
+                                        p.Plana = VBMath.CLng(p.Plana + 10d * elevel);
                                     }
 
                                     GUI.DrawSysString(t.x, t.y, "+" + SrcFormatter.Format(p.Plana - prev_value));
@@ -698,11 +698,11 @@ namespace SRCCore.Units
                                     var epower = 0;
                                     if (a.IsSpellAbility())
                                     {
-                                        p.Plana = (int)(p.Plana + ((long)(elevel * this.MainPilot().Shooting) / 10L));
+                                        p.Plana = (int)(p.Plana + VBMath.IntDiv(elevel * this.MainPilot().Shooting, 10L));
                                     }
                                     else
                                     {
-                                        p.Plana = (int)(p.Plana + 10d * elevel);
+                                        p.Plana = VBMath.CLng(p.Plana + 10d * elevel);
                                     }
 
                                     GUI.DrawSysString(t.x, t.y, "-" + SrcFormatter.Format(prev_value - p.Plana));
@@ -727,11 +727,11 @@ namespace SRCCore.Units
                             var epower = 0;
                             if (a.IsSpellAbility())
                             {
-                                epower = (int)((long)(elevel * this.MainPilot().Shooting) / 10L);
+                                epower = (int)VBMath.IntDiv(elevel * this.MainPilot().Shooting, 10L);
                             }
                             else
                             {
-                                epower = (int)(10d * elevel);
+                                epower = VBMath.CLng(10d * elevel);
                             }
 
                             {
@@ -807,11 +807,11 @@ namespace SRCCore.Units
                             var epower = 0;
                             if (a.IsSpellAbility())
                             {
-                                epower = (int)((long)(elevel * this.MainPilot().Shooting) / 10L);
+                                epower = (int)VBMath.IntDiv(elevel * this.MainPilot().Shooting, 10L);
                             }
                             else
                             {
-                                epower = (int)(10d * elevel);
+                                epower = VBMath.CLng(10d * elevel);
                             }
 
                             {
@@ -1156,7 +1156,7 @@ namespace SRCCore.Units
                                 else
                                 {
                                     // そうでなければ最低１ターンは効果が持続
-                                    elevel2 = GeneralLib.MaxLng((int)elevel2, 1);
+                                    elevel2 = GeneralLib.MaxLng(VBMath.CLng(elevel2), 1);
                                 }
 
                                 // 効果時間が継続中？
@@ -1239,12 +1239,12 @@ namespace SRCCore.Units
                                             }
                                         }
 
-                                        t.AddCondition(ftype2 + "付加", (int)elevel2, flevel2, fdata2);
+                                        t.AddCondition(ftype2 + "付加", VBMath.CLng(elevel2), flevel2, fdata2);
                                     }
                                 }
                                 else
                                 {
-                                    t.AddCondition(ftype + "付加", (int)elevel2, flevel, fdata);
+                                    t.AddCondition(ftype + "付加", VBMath.CLng(elevel2), flevel, fdata);
                                 }
 
                                 t.Update();
@@ -1365,7 +1365,7 @@ namespace SRCCore.Units
                                 else
                                 {
                                     // そうでなければ最低１ターンは効果が持続
-                                    elevel2 = GeneralLib.MaxLng((int)elevel2, 1);
+                                    elevel2 = GeneralLib.MaxLng(VBMath.CLng(elevel2), 1);
                                 }
 
                                 // 効果時間が継続中？
@@ -1403,7 +1403,7 @@ namespace SRCCore.Units
 
                                             flevel2 = Constants.DEFAULT_LEVEL;
                                             fdata2 = elm.strAliasData;
-                                            t.AddCondition(ftype2 + "付加", (int)elevel2, flevel2, fdata2);
+                                            t.AddCondition(ftype2 + "付加", VBMath.CLng(elevel2), flevel2, fdata2);
                                         }
                                         else
                                         {
@@ -1435,13 +1435,13 @@ namespace SRCCore.Units
                                                 }
                                             }
 
-                                            t.AddCondition(ftype2 + "強化", (int)elevel2, flevel2, fdata2);
+                                            t.AddCondition(ftype2 + "強化", VBMath.CLng(elevel2), flevel2, fdata2);
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    t.AddCondition(ftype + "強化", (int)elevel2, flevel, fdata);
+                                    t.AddCondition(ftype + "強化", VBMath.CLng(elevel2), flevel, fdata);
                                 }
 
                                 t.Update();
@@ -1487,7 +1487,7 @@ namespace SRCCore.Units
                                 else
                                 {
                                     // そうでなければ最低１ターンは状態が持続
-                                    elevel = GeneralLib.MaxLng((int)elevel2, 1);
+                                    elevel = GeneralLib.MaxLng(VBMath.CLng(elevel2), 1);
                                 }
 
                                 // 効果時間が継続中？
@@ -1496,7 +1496,7 @@ namespace SRCCore.Units
                                     goto NextLoop;
                                 }
 
-                                t.AddCondition(edata, (int)elevel2, cdata: "");
+                                t.AddCondition(edata, VBMath.CLng(elevel2), cdata: "");
 
                                 // 状態発動アニメーション表示
                                 bool localIsAnimationDefined() { string argmain_situation = aname + "(発動)"; string argsub_situation = ""; var ret = IsAnimationDefined(argmain_situation, sub_situation: argsub_situation); return ret; }
@@ -1720,7 +1720,7 @@ namespace SRCCore.Units
                                 ty2 = y;
                             }
 
-                            var loopTo24 = GeneralLib.MaxLng((int)elevel, 1);
+                            var loopTo24 = GeneralLib.MaxLng(VBMath.CLng(elevel), 1);
                             for (var j = 1; j <= loopTo24; j++)
                             {
                                 Pilot p;
@@ -1826,7 +1826,7 @@ namespace SRCCore.Units
                             t = t.CurrentForm();
                             if (elevel2 > 0d)
                             {
-                                t.AddCondition("残り時間", GeneralLib.MaxLng((int)elevel2, 1), cdata: "");
+                                t.AddCondition("残り時間", GeneralLib.MaxLng(VBMath.CLng(elevel2), 1), cdata: "");
                             }
 
                             var loopTo25 = GeneralLib.LLength(edata);
@@ -1851,7 +1851,7 @@ namespace SRCCore.Units
                                 var cf = CurrentForm();
                                 if (elevel2 > 0d)
                                 {
-                                    cf.AddCondition("残り時間", GeneralLib.MaxLng((int)elevel2, 1), cdata: "");
+                                    cf.AddCondition("残り時間", GeneralLib.MaxLng(VBMath.CLng(elevel2), 1), cdata: "");
                                 }
 
                                 // 元の形態に戻れるように設定
@@ -1954,7 +1954,7 @@ namespace SRCCore.Units
 
                     if (a.IsAbilityClassifiedAs("気"))
                     {
-                        cf.IncreaseMorale((int)(-5 * a.AbilityLevel("気")));
+                        cf.IncreaseMorale(VBMath.CLng(-5 * a.AbilityLevel("気")));
                     }
                 }
             }
@@ -2214,24 +2214,24 @@ namespace SRCCore.Units
             {
                 if (ty < y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "N", (int)a.AbilityLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "N", VBMath.CLng(a.AbilityLevel("Ｍ扇")));
                 }
                 else if (ty > y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "S", (int)a.AbilityLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "S", VBMath.CLng(a.AbilityLevel("Ｍ扇")));
                 }
                 else if (tx < x && Math.Abs((x - tx)) >= Math.Abs((y - ty)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "W", (int)a.AbilityLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "W", VBMath.CLng(a.AbilityLevel("Ｍ扇")));
                 }
                 else
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "E", (int)a.AbilityLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "E", VBMath.CLng(a.AbilityLevel("Ｍ扇")));
                 }
             }
             else if (a.IsAbilityClassifiedAs("Ｍ投"))
             {
-                Map.AreaInRange(tx, ty, (int)a.AbilityLevel("Ｍ投"), 1, "すべて");
+                Map.AreaInRange(tx, ty, VBMath.CLng(a.AbilityLevel("Ｍ投")), 1, "すべて");
             }
             else if (a.IsAbilityClassifiedAs("Ｍ全"))
             {
@@ -2699,29 +2699,29 @@ namespace SRCCore.Units
 
                     if (a.IsAbilityClassifiedAs("気"))
                     {
-                        cf.IncreaseMorale((int)(-5 * a.AbilityLevel("気")));
+                        cf.IncreaseMorale(VBMath.CLng(-5 * a.AbilityLevel("気")));
                     }
 
                     if (a.IsAbilityClassifiedAs("霊"))
                     {
                         var hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                         var en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                        cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
-                        cf.HP = (int)(cf.MaxHP * hp_ratio / 100d);
-                        cf.EN = (int)(cf.MaxEN * en_ratio / 100d);
+                        cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * a.AbilityLevel("霊"));
+                        cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                        cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                     }
                     else if (a.IsAbilityClassifiedAs("プ"))
                     {
                         var hp_ratio = 100 * cf.HP / (double)cf.MaxHP;
                         var en_ratio = 100 * cf.EN / (double)cf.MaxEN;
-                        cf.MainPilot().Plana = (int)(cf.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
-                        cf.HP = (int)(cf.MaxHP * hp_ratio / 100d);
-                        cf.EN = (int)(cf.MaxEN * en_ratio / 100d);
+                        cf.MainPilot().Plana = VBMath.CLng(cf.MainPilot().Plana - 5d * a.AbilityLevel("プ"));
+                        cf.HP = VBMath.CLng(cf.MaxHP * hp_ratio / 100d);
+                        cf.EN = VBMath.CLng(cf.MaxEN * en_ratio / 100d);
                     }
 
                     if (a.IsAbilityClassifiedAs("失"))
                     {
-                        cf.HP = GeneralLib.MaxLng((int)(cf.HP - (long)(cf.MaxHP * a.AbilityLevel("失")) / 10L), 0);
+                        cf.HP = GeneralLib.MaxLng((int)(cf.HP - VBMath.IntDiv(cf.MaxHP * a.AbilityLevel("失"), 10L)), 0);
                     }
 
                     if (a.IsAbilityClassifiedAs("自"))
