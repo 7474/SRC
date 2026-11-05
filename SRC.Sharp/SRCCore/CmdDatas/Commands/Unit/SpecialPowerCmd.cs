@@ -93,7 +93,7 @@ namespace SRCCore.CmdDatas.Commands
                     Commands.SelectedTarget = prev_target.CurrentForm();
                 }
 
-                if (prev_action == 0 && u.Action > 0 || prev_action > 0 && u.Action == 0)
+                if ((prev_action == 0 && u.Action > 0) || (prev_action > 0 && u.Action == 0))
                 {
                     GUI.RedrawScreen();
                 }
@@ -102,7 +102,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 prev_action = t.Action;
                 t.MakeSpecialPowerInEffect(sname, u.MainPilot().ID);
-                if (prev_action == 0 && t.Action > 0 || prev_action > 0 && t.Action == 0)
+                if ((prev_action == 0 && t.Action > 0) || (prev_action > 0 && t.Action == 0))
                 {
                     GUI.RedrawScreen();
                 }
@@ -111,7 +111,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 prev_action = u.Action;
                 u.MakeSpecialPowerInEffect(sname, sdata: "");
-                if (prev_action == 0 && u.Action > 0 || prev_action > 0 && u.Action == 0)
+                if ((prev_action == 0 && u.Action > 0) || (prev_action > 0 && u.Action == 0))
                 {
                     GUI.RedrawScreen();
                 }
