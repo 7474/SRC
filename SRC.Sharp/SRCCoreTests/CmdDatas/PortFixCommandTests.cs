@@ -265,7 +265,8 @@ namespace SRCCore.CmdDatas.Tests
                 $"Print {handle.Handle} abc;",
                 $"Print {handle.Handle} def");
             Run(cmds);
-            Assert.AreEqual("abcdef" + System.Environment.NewLine, Written(handle, ms));
+            // 改行は元の SRC の Print # と同じく、環境によらず CR+LF
+            Assert.AreEqual("abcdef\r\n", Written(handle, ms));
         }
 
         // Write は VB の Write # と同様に引用符で囲んで出力する
@@ -276,7 +277,8 @@ namespace SRCCore.CmdDatas.Tests
             var (handle, ms) = OpenWrite(src);
             var cmds = BuildEvent(src, $"Write {handle.Handle} \"a,b\" 12");
             Run(cmds);
-            var nl = System.Environment.NewLine;
+            // 改行は元の SRC の Write # と同じく、環境によらず CR+LF
+            var nl = "\r\n";
             Assert.AreEqual("\"a,b\"" + nl + "\"12\"" + nl, Written(handle, ms));
         }
 
