@@ -2179,8 +2179,8 @@ namespace SRCCore.Units
                         break;
                     }
                 default:
-                    // XXX 元は処理してない
-                    ed_size = 1d;
+                    // 元の SRC と同じく、未知のサイズ（サイズ変更の値の誤りなど）は 0 倍
+                    ed_size = 0d;
                     break;
             }
 
@@ -2483,32 +2483,17 @@ namespace SRCCore.Units
             }
 
             // 局地戦能力
+            // 1 つ目の要素は能力の名称なので、2 つ目以降の地形と比べる。地形適応ごとに -10
             if (t.IsFeatureAvailable("地形適応"))
             {
-                if (t.Features.Where(x => x.Name == "地形適応")
-                    //.Where(x => x.DataL.Skip(1).Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Where(x => x.DataL.Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Any())
+                var tname = Map.Terrain(t.x, t.y).Name;
+                foreach (var fd in t.Features.Where(x => x.Name == "地形適応"))
                 {
-                    prob = prob - 10;
+                    if (fd.DataL.Skip(1).Any(x => x == tname))
+                    {
+                        prob = prob - 10;
+                    }
                 }
-                // XXX これなんで1つ目飛ばしてるんだ？
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    if (t.Feature(i) == "地形適応")
-                //    {
-                //        buf = t.FeatureData(i);
-                //        var loopTo3 = GeneralLib.LLength(buf);
-                //        for (j = 2; j <= loopTo3; j++)
-                //        {
-                //            if (( ?? "") == (GeneralLib.LIndex(buf, j) ?? ""))
-                //            {
-                //                prob = prob - 10;
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
             }
 
             // 攻撃回避
@@ -3258,7 +3243,9 @@ namespace SRCCore.Units
             // 特定レベル限定攻撃
             if (WeaponLevel("対") > 0d)
             {
-                if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                // VB の Mod は実数を偶数丸めで整数にしてから割る
+                var lv_div = VBMath.CLng(WeaponLevel("対"));
+                if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                 {
                     DamageRet = 0;
                     return DamageRet;

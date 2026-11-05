@@ -271,6 +271,31 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
+        public void HitProbability_TargetTerrainAdaption_SkipsNameAndStacksPerFeature()
+        {
+            // VB HitProbability: 地形適応の 1 つ目の要素（名称）は地形と比べず、2 つ目以降を比べる
+            var (_, _, t, w) = Battle(configureTarget: ud => ud.AddFeature("地形適応=平地 砂漠"));
+            Assert.AreEqual(120, w.HitProbability(t, true));
+            // 地形適応ごとに -10
+            var (_, _, t2, w2) = Battle(configureTarget: ud =>
+            {
+                ud.AddFeature("地形適応=平地戦用 平地");
+                ud.AddFeature("地形適応=万能 平地 砂漠");
+            });
+            Assert.AreEqual(100, w2.HitProbability(t2, true));
+        }
+
+        [TestMethod]
+        public void HitProbability_UnknownSize_ZeroSizeMod()
+        {
+            // VB HitProbability: サイズが M・L・S・LL・SS・XL のどれでもなければ、サイズ補正は 0 倍
+            var (_, _, t, w) = Battle(configureTarget: ud => ud.AddFeature("サイズ変更=2L"));
+            Assert.AreEqual(0, w.HitProbability(t, true));
+            var (_, _, tx, wx) = Battle(configureTarget: ud => ud.AddFeature("サイズ変更=XL"));
+            Assert.AreEqual(240, wx.HitProbability(tx, true));
+        }
+
+        [TestMethod]
         public void HitProbability_Ecm_ReducesPerLevel_DoubleForHoming()
         {
             // ＥＣＭLv2: 通常 (100 - 5×2)%、ホーミング（Ｈ）は (100 - 10×2)%

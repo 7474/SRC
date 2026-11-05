@@ -298,6 +298,15 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
+        public void Damage_LevelLimited_FractionalLevelRoundedToEven()
+        {
+            // VB の Mod は実数を偶数丸めで整数にしてから割る: 対L1.5 → 2。レベル 3 は 2 の倍数でないので効かない
+            Assert.AreEqual(0, Setup(wclass: "射対L1.5").Let(b => { b.Target.MainPilot().Level = 3; return b.W.Damage(b.Target, true); }));
+            // 対L2.5 → 2。レベル 4 には効く
+            Assert.AreEqual(700, Setup(wclass: "射対L2.5").Let(b => { b.Target.MainPilot().Level = 4; return b.W.Damage(b.Target, true); }));
+        }
+
+        [TestMethod]
         public void Damage_AttackerConditions()
         {
             // 攻撃力ＵＰ: 1.25 倍、恐怖: 0.8 倍
