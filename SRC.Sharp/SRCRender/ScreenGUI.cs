@@ -1154,6 +1154,22 @@ namespace SRCRender
         /// <summary>Esc（Windows の仮想キーコード。SRC#Web の仮想パッドの B）</summary>
         private const int VirtualKeyEscape = 0x1B;
 
+        /// <summary>Enter（Windows の仮想キーコード。SRC#Web の仮想パッドの A）</summary>
+        private const int VirtualKeyReturn = 0x0D;
+
+        /// <summary>
+        /// 左ボタンを押しているか（押し続けてメッセージをウェイト付きで送る）。
+        /// 左クリックの代わりの Enter（仮想パッドの A）を押している間も、左ボタンを押しているとみなす
+        /// （元の SRC はマウスの左ボタンだけを見る。右ボタンの代わりの Esc と同じく、キー操作だけでも送れるようにする）
+        /// </summary>
+        internal bool IsLButtonPressed()
+        {
+            lock (pressedKeys)
+            {
+                return pressedKeys.Contains(VirtualKeyLeftButton) || pressedKeys.Contains(VirtualKeyReturn);
+            }
+        }
+
         /// <summary>
         /// 右ボタンを押しているか（押し続けてメッセージ・アニメーションを飛ばす）。
         /// 右クリックの代わりの Esc（仮想パッドの B）を押している間も、右ボタンを押しているとみなす

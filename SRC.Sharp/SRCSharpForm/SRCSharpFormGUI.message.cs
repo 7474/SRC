@@ -15,6 +15,25 @@ namespace SRCSharpForm
 {
     public partial class SRCSharpFormGUI
     {
+        /// <summary>
+        /// メッセージウィンドウかメインウィンドウの上で左ボタンを押しているか
+        /// （元の SRC の DisplayMessage と同じく、アクティブなウィンドウの上でだけ見る）
+        /// </summary>
+        private bool IsLButtonPressedOnMessageOrMainForm()
+        {
+            if (!Control.MouseButtons.HasFlag(MouseButtons.Left))
+            {
+                return false;
+            }
+            var form = Form.ActiveForm;
+            if (!ReferenceEquals(form, frmMessage) && !ReferenceEquals(form, MainForm))
+            {
+                return false;
+            }
+            var pt = Control.MousePosition;
+            return form.Left <= pt.X && pt.X <= form.Right && form.Top <= pt.Y && pt.Y <= form.Bottom;
+        }
+
         public void OpenMessageForm(Unit u1, Unit u2)
         {
             // ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
@@ -1158,8 +1177,17 @@ namespace SRCSharpForm
                                 }
                             }
 
-                            if (IsRButtonPressed(true))
+                            if (IsLButtonPressedOnMessageOrMainForm())
                             {
+                                // 左ボタンを押し続けるとウェイト付きでメッセージを送る
+                                if (start_time + wait_time < GeneralLib.timeGetTime())
+                                {
+                                    break;
+                                }
+                            }
+                            else if (IsRButtonPressed(true))
+                            {
+                                // 右ボタンでメッセージの早送り
                                 break;
                             }
                             Thread.Sleep(100);
