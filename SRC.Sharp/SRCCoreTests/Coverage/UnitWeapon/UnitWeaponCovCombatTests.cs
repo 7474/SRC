@@ -307,6 +307,14 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
+        public void CriticalProbability_LevelLimited_FractionalLevelRoundedToEven()
+        {
+            // 特殊効果の発動率も Damage と同じく、VB の Mod は実数を偶数丸めで整数にしてから割る: 対L2.5 → 2。レベル 4 には効き、3 には効かない
+            Assert.AreNotEqual(0, Setup(wclass: "射Ｓ対L2.5").Let(b => { b.Target.MainPilot().Level = 4; return b.W.CriticalProbability(b.Target); }));
+            Assert.AreEqual(0, Setup(wclass: "射Ｓ対L2.5").Let(b => { b.Target.MainPilot().Level = 3; return b.W.CriticalProbability(b.Target); }));
+        }
+
+        [TestMethod]
         public void Damage_AttackerConditions()
         {
             // 攻撃力ＵＰ: 1.25 倍、恐怖: 0.8 倍

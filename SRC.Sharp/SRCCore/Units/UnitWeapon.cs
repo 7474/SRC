@@ -4004,7 +4004,9 @@ namespace SRCCore.Units
                 // 特定レベル限定攻撃
                 if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
                 {
-                    if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                    // VB の Mod は実数を偶数丸めで整数にしてから割る（Damage と同じ）
+                    var lv_div = VBMath.CLng(WeaponLevel("対"));
+                    if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                     {
                         CriticalProbabilityRet = 0;
                         return CriticalProbabilityRet;
