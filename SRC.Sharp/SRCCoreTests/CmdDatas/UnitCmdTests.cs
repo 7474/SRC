@@ -4,6 +4,7 @@ using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
 using SRCCore.TestLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Tests
 {
@@ -201,6 +202,35 @@ namespace SRCCore.CmdDatas.Tests
             var cmd = CreateCmd(src, "ChangeMode a b c d e");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void ChangeModeCmd_PilotNotOnUnit_IsIgnored()
+        {
+            // VB の ExecChangeModeCmd は対象のユニットが Nothing なら飛ばす。
+            // ユニットに乗っていないパイロットを指定してもエラーにならない（7474/SRC#1463）
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddPilotData("待機パイロット");
+            src.PList.Add("待機パイロット", 1, "味方");
+            src.Map.MapWidth = 10;
+            src.Map.MapHeight = 10;
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 待機パイロット 待機").Exec());
+            Assert.AreEqual(2, CreateCmd(src, "ChangeMode 待機パイロット 3 4", 1).Exec());
+            Assert.AreEqual(0, fx.Gui.CallsOf(nameof(SRCCore.IGUI.ErrorMessage)).Count());
+        }
+
+        [TestMethod]
+        public void ChangeModeCmd_PilotOnUnit_ChangesUnitMode()
+        {
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddUnitData("テスト機");
+            var u = fx.CreateUnit("テスト機", "乗っているパイロット");
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 乗っているパイロット 待機").Exec());
+            Assert.AreEqual("待機", u.Mode);
         }
 
         // ──────────────────────────────────────────────
