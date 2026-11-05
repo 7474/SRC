@@ -275,7 +275,7 @@ namespace SRCCore.Commands
                                         {
                                             {
                                                 var withBlock9 = u;
-                                                if (withBlock9.Party == "味方" && withBlock9.Party0 == "味方" || withBlock9.Party == "ＮＰＣ" && withBlock9.Party0 == "ＮＰＣ")
+                                                if ((withBlock9.Party == "味方" && withBlock9.Party0 == "味方") || (withBlock9.Party == "ＮＰＣ" && withBlock9.Party0 == "ＮＰＣ"))
                                                 {
                                                     goto NextLoop;
                                                 }

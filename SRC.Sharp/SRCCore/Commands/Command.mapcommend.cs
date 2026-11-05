@@ -216,9 +216,9 @@ namespace SRCCore.Commands
             list.Add(new ListBoxItem("▽陣営変更・並べ替え▽", "▽陣営変更・並べ替え▽"));
             var units = SRC.UList.Items
                 .Where(u => u.Party0 == uparty && (u.Status == "出撃" || u.Status == "格納"))
-                .Where(u => !(Expression.IsOptionDefined("ユニット情報隠蔽")
+                .Where(u => !((Expression.IsOptionDefined("ユニット情報隠蔽")
                         && !u.IsConditionSatisfied("識別済み")
-                        && (u.Party0 == "敵" || u.Party0 == "中立")
+                        && (u.Party0 == "敵" || u.Party0 == "中立"))
                     || u.IsConditionSatisfied("ユニット情報隠蔽")))
                 .Select(u =>
                 {

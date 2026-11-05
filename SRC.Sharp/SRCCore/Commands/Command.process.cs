@@ -156,8 +156,8 @@ namespace SRCCore.Commands
 
             if (SelectedUnit is null)
             {
-                SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
                 if (!Map.IsStatusView)
                 {
                     // 通常のステージ
@@ -297,10 +297,10 @@ namespace SRCCore.Commands
                 // ユニット上でキャンセルボタンを押した場合は武器一覧
                 // もしくはアビリティ一覧を表示する
                 // 情報が隠蔽されている場合は表示しない
-                if (Expression.IsOptionDefined("ユニット情報隠蔽")
+                if ((Expression.IsOptionDefined("ユニット情報隠蔽")
                     && !SelectedUnit.IsConditionSatisfied("識別済み")
                     && (SelectedUnit.Party0 == "敵"
-                        || SelectedUnit.Party0 == "中立")
+                        || SelectedUnit.Party0 == "中立"))
                         || SelectedUnit.IsConditionSatisfied("ユニット情報隠蔽")
                         || SelectedUnit.IsFeatureAvailable("ダミーユニット"))
                 {
@@ -648,7 +648,7 @@ namespace SRCCore.Commands
                     }
 
                     // 未確認ユニットの場合は情報を隠蔽
-                    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
+                    if ((Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立")) || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
                     {
                         unitCommands.RemoveItem(uc => new int[] {
                             MoveCmdID,
@@ -736,7 +736,11 @@ namespace SRCCore.Commands
                             }
                         }
                         // 通常移動がテレポートの場合
-                        if (currentUnit.Speed0 == 0 || currentUnit.FeatureLevel("テレポート") >= 0d && enCost == 0)
+                        // VB: Command.bas 859-865。EN コストを書いたときだけ判定し、コストは文字列で "0" と比べる
+                        if (GeneralLib.LLength(currentUnit.FeatureData("テレポート")) == 2
+                            && (currentUnit.Speed0 == 0
+                                || (currentUnit.FeatureLevel("テレポート") >= 0d
+                                    && GeneralLib.LIndex(currentUnit.FeatureData("テレポート"), 2) == "0")))
                         {
                             unitCommands.RemoveItem(x => x.Id == MoveCmdID);
                         }
@@ -762,7 +766,13 @@ namespace SRCCore.Commands
                             }
                         }
                         // 通常移動がジャンプの場合
-                        if (currentUnit.Speed0 == 0 || currentUnit.FeatureLevel("ジャンプ") >= 0d && enCost == 0)
+                        // VB: Command.bas 893-904。EN コストを書いたときはコストを文字列で "0" と比べ、
+                        // 書かないときはレベルだけで判定する
+                        if (GeneralLib.LLength(currentUnit.FeatureData("ジャンプ")) == 2
+                            ? (currentUnit.Speed0 == 0
+                                || (currentUnit.FeatureLevel("ジャンプ") >= 0d
+                                    && GeneralLib.LIndex(currentUnit.FeatureData("ジャンプ"), 2) == "0"))
+                            : currentUnit.FeatureLevel("ジャンプ") >= 0d)
                         {
                             unitCommands.RemoveItem(x => x.Id == MoveCmdID);
                         }
@@ -890,8 +900,8 @@ namespace SRCCore.Commands
                     {
                         // ハイパーモードコマンド
                         if (currentUnit.IsFeatureAvailable("ハイパーモード")
-                            && (currentUnit.MainPilot().Morale >= (10d * currentUnit.FeatureLevel("ハイパーモード")) + 100
-                                || currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0)
+                            && (currentUnit.MainPilot().Morale >= VBMath.CLng(10d * currentUnit.FeatureLevel("ハイパーモード")) + 100
+                                || (currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0))
                             && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "自動発動") == 0
                             && !string.IsNullOrEmpty(currentUnit.FeatureName("ハイパーモード"))
                             && !currentUnit.IsConditionSatisfied("形態固定")
@@ -1149,11 +1159,11 @@ namespace SRCCore.Commands
                 .Where(x => labelFilter == null || labelFilter(x)))
             {
                 var target = lab.Para(3);
-                if (SelectedUnit.Party == "味方" && (
+                if ((SelectedUnit.Party == "味方" && (
                         (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
                         || (target ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "")
                         || (target ?? "") == (SelectedUnit.Name ?? "")
-                    )
+                    ))
                     || (target ?? "") == (SelectedUnit.Party ?? "")
                     || target == "全")
                 {
@@ -1447,11 +1457,11 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            if (1 <= GUI.PixelToMapX((int)GUI.MouseX) && GUI.PixelToMapX((int)GUI.MouseX) <= Map.MapWidth)
+            if (1 <= GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)) && GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)) <= Map.MapWidth)
             {
-                if (1 <= GUI.PixelToMapY((int)GUI.MouseY) && GUI.PixelToMapY((int)GUI.MouseY) <= Map.MapHeight)
+                if (1 <= GUI.PixelToMapY(VBMath.CLng(GUI.MouseY)) && GUI.PixelToMapY(VBMath.CLng(GUI.MouseY)) <= Map.MapHeight)
                 {
-                    if (!Map.MaskData[GUI.PixelToMapX((int)GUI.MouseX), GUI.PixelToMapY((int)GUI.MouseY)])
+                    if (!Map.MaskData[GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)), GUI.PixelToMapY(VBMath.CLng(GUI.MouseY))])
                     {
                         // 効果範囲内でクリックされればマップ攻撃発動
                         if (SelectedCommand == "マップ攻撃")
