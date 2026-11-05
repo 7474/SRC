@@ -76,6 +76,16 @@ namespace SRCCore.Expressions
             StringValue = v.StringValue;
             NumericValue = v.NumericValue;
         }
+        /// <summary>
+        /// Name 以外（型・文字列値・数値）を指定した変数から写す。
+        /// </summary>
+        /// <param name="v"></param>
+        public void SetValueFrom(VarData v)
+        {
+            VariableType = v.VariableType;
+            StringValue = v.StringValue;
+            NumericValue = v.NumericValue;
+        }
 
         public ValueType ReferenceValue(ValueType etype, out string str_result, out double num_result)
         {
