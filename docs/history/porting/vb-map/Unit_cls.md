@@ -146,18 +146,18 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function IsAttributeClassified | 8650 | 65 | `SRCCore/Units/Unit.attribute.cs` Unit.IsAttributeClassified | 修正済み | Exit Do が switch の break でループを抜けていなかった。該当した属性の後ろの「!」と、「魔」で魔法武器のときの判定が VB と違っていた |
 | Sub Attack | 8724 | 2147 | `SRCCore/Units/Unit.attack.cs` Unit.Attack | 修正済み | 浄化を探す相手から追加サポートを外した。レベルの無い連属性は攻撃回数 1 回（VB は実行時エラー。SRC# の利便性）。消費したアイテムは武器名で探す（VB の数え方の不具合は再現しない）。BitmapID・新ＧＵＩの ClearUnitStatus は SRC# では不要 |
 | Function CheckDodgeFeature | 10873 | 450 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDodgeFeature | 一致 |  |
-| Function CheckParryFeature | 11326 | 1054 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckParryFeature | 未確認 |  |
-| Function CheckDummyFeature | 12382 | 114 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDummyFeature | 未確認 |  |
-| Function CheckShieldFeature | 12498 | 105 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckShieldFeature | 未確認 |  |
-| Function CheckDefenseFeature | 12605 | 1728 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDefenseFeature | 未確認 |  |
-| Sub CheckAutoAttack | 14335 | 256 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckAutoAttack | 未確認 |  |
-| Sub CheckAdditionalAttack | 14594 | 175 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckAdditionalAttack | 未確認 |  |
-| Function IsSameCategory | 14772 | 19 | `SRCCore/Units/Unit.attackcheck.cs` Unit.IsSameCategory | 未確認 |  |
-| Function CauseEffect | 14793 | 983 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CauseEffect | 未確認 |  |
-| Function CheckBlowAttack | 15778 | 313 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckBlowAttack | 未確認 |  |
-| Function CheckDrawAttack | 16093 | 191 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDrawAttack | 未確認 |  |
-| Function CheckTeleportAwayAttack | 16286 | 85 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckTeleportAwayAttack | 未確認 |  |
-| Function CheckMetamorphAttack | 16373 | 103 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckMetamorphAttack | 未確認 |  |
+| Function CheckParryFeature | 11326 | 1054 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckParryFeature | 修正済み | 迎撃用の武器の自動選択と永続武器の条件を、残弾ではなく武器データの弾数（VB の Weapon(i).Bullet）で見る。迎撃用の武器が無くても Dice(16) を振る（VB の And は短絡しない） |
+| Function CheckDummyFeature | 12382 | 114 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDummyFeature | 一致 |  |
+| Function CheckShieldFeature | 12498 | 105 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckShieldFeature | 一致 |  |
+| Function CheckDefenseFeature | 12605 | 1728 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDefenseFeature | 修正済み | 融合の判定で、格闘系（武・突・接）の武器でも VB と同じく Dice(16) を振る（VB の And は短絡しない） |
+| Sub CheckAutoAttack | 14335 | 256 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckAutoAttack | 一致 |  |
+| Sub CheckAdditionalAttack | 14594 | 175 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckAdditionalAttack | 一致 |  |
+| Function IsSameCategory | 14772 | 19 | `SRCCore/Units/Unit.attackcheck.cs` Unit.IsSameCategory | 一致 | VB は Private、C# はテストのため public |
+| Function CauseEffect | 14793 | 983 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CauseEffect | 修正済み | 衰・滅のレベルを VB の CInt と同じく偶数丸めしてから選ぶ。除は前から順に消す。ラーニングは VB と同じくグローバル変数を直接書き換える |
+| Function CheckBlowAttack | 15778 | 313 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckBlowAttack | 一致 | 摩擦の 3 つ目の条件は VB では `t.Area = Class`（With td の中でドットが無く、攻撃側のユニットクラスを見る誤り）。C# は地形のクラスと比べる。VB の不具合なので再現しない |
+| Function CheckDrawAttack | 16093 | 191 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDrawAttack | 修正済み | 隣接の判定は VB では tx・ty を設定する前の (0,0) と比べるので働かない。VB と同じにし、Ｍ投で攻撃側が隣接していても目標地点へ引き寄せる |
+| Function CheckTeleportAwayAttack | 16286 | 85 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckTeleportAwayAttack | 一致 |  |
+| Function CheckMetamorphAttack | 16373 | 103 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckMetamorphAttack | 一致 |  |
 | Sub MapAttack | 16479 | 1040 | `SRCCore/Units/Unit.attackmap.cs` Unit.MapAttack | 未確認 |  |
 | Sub UseWeapon | 17521 | 87 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.UseWeapon | 未確認 |  |
 | Function Bullet | 17610 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.Bullet | 未確認 |  |
