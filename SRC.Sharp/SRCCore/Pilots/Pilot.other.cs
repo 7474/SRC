@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 
 namespace SRCCore.Pilots
 {
@@ -18,11 +19,11 @@ namespace SRCCore.Pilots
             {
                 if (MinMorale > 100)
                 {
-                    SetMorale((int)(MinMorale + 5d * SkillLevel("闘争本能", "")));
+                    SetMorale(VBMath.CLng(MinMorale + 5d * SkillLevel("闘争本能", "")));
                 }
                 else
                 {
-                    SetMorale((int)(100d + 5d * SkillLevel("闘争本能", "")));
+                    SetMorale(VBMath.CLng(100d + 5d * SkillLevel("闘争本能", "")));
                 }
             }
             else
@@ -45,13 +46,14 @@ namespace SRCCore.Pilots
             }
 
             // 同調率基本値
-            SynchroRateRet = (int)SkillLevel("同調率", ref_mode: "");
+            SynchroRateRet = VBMath.CLng(SkillLevel("同調率", ref_mode: ""));
 
             // レベルによる増加分
             lv = GeneralLib.MinLng(Level, 100);
             if (IsSkillAvailable("同調率成長"))
             {
-                SynchroRateRet = (int)(SynchroRateRet + lv * (10d + SkillLevel("同調率成長", ref_mode: "")) / 10L);
+                // VB: SynchroRate + lv * (10 + SkillLevel("同調率成長")) \ 10（\ は * より後、+ より先に計算する）
+                SynchroRateRet = (int)(SynchroRateRet + VBMath.IntDiv(lv * (10d + SkillLevel("同調率成長", ref_mode: "")), 10));
             }
             else
             {
@@ -106,7 +108,7 @@ namespace SRCCore.Pilots
         // 行動決定に用いられる戦闘判断力
         public int TacticalTechnique0()
         {
-            return (int)(TechniqueBase - Level + 10d * SkillLevel("戦術", ref_mode: ""));
+            return VBMath.CLng(TechniqueBase - Level + 10d * SkillLevel("戦術", ref_mode: ""));
         }
 
         public int TacticalTechnique()

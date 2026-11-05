@@ -360,7 +360,7 @@ namespace SRCCore.Pilots
                 my_unit.CurrentForm().MainPilot();
             }
 
-            SP = (int)(SP - sp_mod * SpecialPowerCost(sname));
+            SP = VBMath.CLng(SP - sp_mod * SpecialPowerCost(sname));
             GUI.CloseMessageForm();
         }
     }
