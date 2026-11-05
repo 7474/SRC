@@ -417,7 +417,8 @@ namespace SRCCore.Filesystem
             var info = GetFileInfo(entryName);
             if (Directory.Exists(info.FullName))
             {
-                Directory.Delete(info.FullName);
+                // 中のファイルやフォルダごと消す（元の SRC の FileSystemObject.DeleteFolder と同じ）
+                Directory.Delete(info.FullName, true);
                 return true;
             }
             return false;

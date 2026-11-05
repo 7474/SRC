@@ -56,6 +56,9 @@ namespace SRCCore.Filesystem
         bool Remove(params string[] paths);
 
         bool MkDir(params string[] paths);
+        /// <summary>
+        /// フォルダを中のファイルやフォルダごと削除します。
+        /// </summary>
         bool RmDir(params string[] paths);
 
         //

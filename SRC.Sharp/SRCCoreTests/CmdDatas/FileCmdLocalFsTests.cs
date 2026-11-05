@@ -165,5 +165,32 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(-1, Exec(src, "LineRead F x"));
             ExecOk(src, "Close F");
         }
+
+        // ──────────────────────────────────────────────
+        // RemoveFolder（7474/SRC#1470）
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void RemoveFolder_WithContents_RemovesAll()
+        {
+            // 元の SRC は FileSystemObject.DeleteFolder で中身ごと削除する
+            var target = Path.Combine(dir, "sub");
+            Directory.CreateDirectory(Path.Combine(target, "inner"));
+            File.WriteAllText(Path.Combine(target, "a.txt"), "a");
+            File.WriteAllText(Path.Combine(target, "inner", "b.txt"), "b");
+            var src = CreateSrc();
+
+            ExecOk(src, "RemoveFolder sub");
+
+            Assert.IsFalse(Directory.Exists(target));
+        }
+
+        [TestMethod]
+        public void RemoveFolder_Missing_DoesNothing()
+        {
+            var src = CreateSrc();
+
+            ExecOk(src, "RemoveFolder nothing");
+        }
     }
 }
