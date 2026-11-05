@@ -70,15 +70,15 @@ namespace SRCCore.Coverage.Tests.EventCommands
 
         // ── ExecArcCmd ──
 
-        // 色は #rrggbb の 7 文字だけ。それ以外は「色指定が不正です」
+        // 色の「#RGB」は、Circle などほかの描画コマンドと同じく受け付ける（SRC# の利便性。元の SRC は 7 文字だけ）
         [TestMethod]
-        public void Arc_ShortColor_IsError()
+        public void Arc_ShortColor_IsAccepted()
         {
             var f = CreateFixture();
             var cmds = BuildEvent(f.Src, "Arc 10 10 5 0 90 #FFF");
-            Assert.AreEqual(-1, cmds[0].Exec());
-            CollectionAssert.Contains(Errors(f.Src).ToList(), "色指定が不正です");
-            Assert.AreEqual(0, f.Calls(nameof(IGUIScrean.ArcCmd)).Count);
+            cmds[0].Exec();
+            CollectionAssert.DoesNotContain(Errors(f.Src).ToList(), "色指定が不正です");
+            Assert.AreEqual(1, f.Calls(nameof(IGUIScrean.ArcCmd)).Count);
         }
 
         [TestMethod]

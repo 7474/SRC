@@ -59,8 +59,8 @@ namespace SRCCore.CmdDatas.Commands
                 var opt = GetArgAsString(i);
                 if (Strings.Asc(opt) == 35) // #
                 {
-                    // 元の SRC は #rrggbb の 7 文字だけを受け付ける
-                    if (Strings.Len(opt) != 7 || !ColorExtension.TryFromHexString(opt, out clr))
+                    // 元の SRC は #rrggbb の 7 文字だけを受け付ける。SRC# は Circle などほかの描画コマンドと同じく「#RGB」も受け付ける（利便性）
+                    if (!ColorExtension.TryFromHexString(opt, out clr))
                     {
                         throw new EventErrorException(this, "色指定が不正です");
                     }
