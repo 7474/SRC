@@ -57,33 +57,45 @@ namespace SRCCore.CmdDatas.Commands
                     break;
 
                 case "パイロットステータス":
-                    GUI.CloseListBox();
-                    GUI.ReduceListBoxHeight();
-                    SRC.IsSubStage = true;
                     {
                         // シナリオ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に探す（VB: CmdData.cls）
                         var eveFile = SRC.InterMission.SearchLibFile("パイロットステータス表示.eve");
-                        if (!string.IsNullOrEmpty(eveFile))
+                        if (string.IsNullOrEmpty(eveFile))
                         {
-                            SRC.StartScenario(eveFile);
+                            // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラーで終了する）。
+                            // インターミッションのコマンド（Intermission.InterMissionCommand）と同じく、知らせて次の行へ進む
+                            GUI.ErrorMessage(@"Lib\パイロットステータス表示.eve が見つかりません");
+                            return EventData.NextID;
                         }
+
+                        GUI.CloseListBox();
+                        GUI.ReduceListBoxHeight();
+                        SRC.IsSubStage = true;
+                        SRC.StartScenario(eveFile);
                     }
+                    // サブステージを通常のステージとして実行
                     SRC.IsSubStage = true;
                     SRC.IsScenarioFinished = true;
                     return -1;
 
                 case "ユニットステータス":
-                    GUI.CloseListBox();
-                    GUI.ReduceListBoxHeight();
-                    SRC.IsSubStage = true;
                     {
                         // シナリオ → ExtDataPath → ExtDataPath2 → SRC のフォルダの順に探す（VB: CmdData.cls）
                         var eveFile = SRC.InterMission.SearchLibFile("ユニットステータス表示.eve");
-                        if (!string.IsNullOrEmpty(eveFile))
+                        if (string.IsNullOrEmpty(eveFile))
                         {
-                            SRC.StartScenario(eveFile);
+                            // 元の SRC は AppPath の Lib を必ず読む（無ければ読み込みのエラーで終了する）。
+                            // インターミッションのコマンド（Intermission.InterMissionCommand）と同じく、知らせて次の行へ進む
+                            GUI.ErrorMessage(@"Lib\ユニットステータス表示.eve が見つかりません");
+                            return EventData.NextID;
                         }
+
+                        GUI.CloseListBox();
+                        GUI.ReduceListBoxHeight();
+                        SRC.IsSubStage = true;
+                        SRC.StartScenario(eveFile);
                     }
+                    // サブステージを通常のステージとして実行
                     SRC.IsSubStage = true;
                     SRC.IsScenarioFinished = true;
                     return -1;

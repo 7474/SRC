@@ -72,6 +72,7 @@ namespace SRCCore.CmdDatas
                 if (pilot.Unit.Status == "出撃" || pilot.Unit.Status == "格納")
                 {
                     CenterUnitInternal(without_cursor, pilot.Unit.x, pilot.Unit.y);
+                    return;
                 }
             }
 

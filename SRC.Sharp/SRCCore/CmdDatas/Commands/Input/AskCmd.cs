@@ -244,10 +244,10 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Askコマンドのオプションが不正です");
             }
 
-            // 選択肢がなければそのまま終了
+            // 選択肢がなければそのまま終了（元の SRC はどちらの書式でも 0）
             if (!answerList.Any())
             {
-                Event.SelectedAlternative = cancelResult;
+                Event.SelectedAlternative = "0";
                 return ExecAskCmdRet;
             }
 

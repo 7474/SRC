@@ -22,6 +22,8 @@ namespace SRCCore.CmdDatas.Commands
             int lnum;
             var without_cursor = default(bool);
             string options = default, opt;
+            // エラーのメッセージのコマンド名（元の SRC は Talk と AutoTalk で別の手続き）
+            var cmdName = Name == CmdType.AutoTalkCmd ? "AutoTalk" : "Talk";
 
             for (i = EventData.ID; i < Event.EventData.Count; i++)
             {
@@ -31,7 +33,8 @@ namespace SRCCore.CmdDatas.Commands
                     case CmdType.TalkCmd:
                     case CmdType.AutoTalkCmd:
                         {
-                            // XXX
+                            // 元の SRC では、Talk 中の AutoTalk（AutoTalk 中の Talk）はメッセージの行として表示されてしまう。
+                            // 書き誤りなのでエラーにする
                             if (currentCmd.Name != Name)
                             {
                                 throw new EventErrorException(this, "Talk中またはAutoTalk中に他方のコマンドが実行されました");
@@ -68,7 +71,7 @@ namespace SRCCore.CmdDatas.Commands
                                 && !(pname == "システム")
                                 && !string.IsNullOrEmpty(pname))
                             {
-                                //LineNum = i; // XXX これ要るの？
+                                // 元の SRC の LineNum = i に当たる（エラーの行を currentCmd にする）
                                 throw new EventErrorException(currentCmd, "「" + pname + "」というパイロットが定義されていません");
                             }
 
@@ -169,7 +172,7 @@ namespace SRCCore.CmdDatas.Commands
                                 case 1:
                                     {
                                         // 引数なし
-                                        if (!GUI.MainFormVisible)
+                                        if (!GUI.MessageFormVisible)
                                         {
                                             GUI.OpenMessageForm(u1: null, u2: null);
                                         }
@@ -190,24 +193,25 @@ namespace SRCCore.CmdDatas.Commands
                                     current_pname = pname;
 
                                     // 話者中心に画面位置を変更
+                                    // 元の SRC と同じく、中央表示しないときは次の行へ進む（メッセージウィンドウはまだ開かない）
                                     // プロローグイベントやエピローグイベント時はキャンセル
                                     if (SRC.Stage == "プロローグ" || SRC.Stage == "エピローグ")
                                     {
-                                        break;
+                                        continue;
                                     }
 
                                     // 画面書き換え可能？
                                     if (!GUI.MainFormVisible)
                                     {
-                                        break;
+                                        continue;
                                     }
                                     if (GUI.IsPictureVisible)
                                     {
-                                        break;
+                                        continue;
                                     }
                                     if (Map.IsStatusView)
                                     {
-                                        break;
+                                        continue;
                                     }
 
                                     // 話者を中央表示
@@ -236,15 +240,15 @@ namespace SRCCore.CmdDatas.Commands
 
                                 case 4:
                                     current_pname = pname;
-                                    CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
+                                    // 元の SRC の AutoTalk は話者名を渡さない（座標が 0 なら中央表示しない）
+                                    CenterUnit(Name == CmdType.AutoTalkCmd ? "" : pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
                                     break;
 
                                 case -1:
-                                    //LineNum = i; // XXX これ要るの？
-                                    throw new EventErrorException(currentCmd, "Talkコマンドのパラメータの括弧の対応が取れていません");
+                                    throw new EventErrorException(currentCmd, cmdName + "コマンドのパラメータの括弧の対応が取れていません");
 
                                 default:
-                                    throw new EventErrorException(currentCmd, "Talkコマンドの引数の数が違います");
+                                    throw new EventErrorException(currentCmd, cmdName + "コマンドの引数の数が違います");
                             }
 
                             if (!GUI.MessageFormVisible)
@@ -258,10 +262,13 @@ namespace SRCCore.CmdDatas.Commands
                     case CmdType.EndCmd:
                         {
                             GUI.CloseMessageForm();
-                            GUI.MessageWindowIsOut = false;
+                            // 元の SRC の AutoTalk は「枠外」を戻さない
+                            if (Name == CmdType.TalkCmd)
+                            {
+                                GUI.MessageWindowIsOut = false;
+                            }
                             if (currentCmd.ArgNum != 1)
                             {
-                                ////LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException(currentCmd, "End部分の引数の数が違います");
                             }
                             return i + 1;
@@ -271,7 +278,6 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if (currentCmd.ArgNum != 1)
                             {
-                                //LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException(currentCmd, "Suspend部分の引数の数が違います");
                             }
                             return i + 1;
@@ -293,7 +299,7 @@ namespace SRCCore.CmdDatas.Commands
             if (i >= Event.EventData.Count)
             {
                 GUI.CloseMessageForm();
-                throw new EventErrorException(this, "TalkとEndが対応していません");
+                throw new EventErrorException(this, cmdName + "とEndが対応していません");
             }
 
             return i + 1;
