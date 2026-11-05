@@ -110,42 +110,42 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Sub SetConditionLevel | 4842 | 5 | （見つからない） | 未確認 |  |
 | Function ConditionData | 4849 | 8 | `SRCCore/Units/Unit.condition.cs` Unit.ConditionData | 未確認 |  |
 | Sub UpdateCondition | 4859 | 59 | `SRCCore/Units/Unit.condition.cs` Unit.UpdateCondition | 未確認 |  |
-| Function Weapon | 4923 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.Weapon | 未確認 |  |
-| Function CountWeapon | 4928 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.CountWeapon | 未確認 |  |
-| Function WeaponNickname | 4933 | 9 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponNickname | 未確認 |  |
-| Function WeaponPower | 4945 | 152 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponPower | 未確認 |  |
-| Function WeaponAdaption | 5099 | 201 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponAdaption | 未確認 |  |
-| Function WeaponMaxRange | 5302 | 31 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponMaxRange | 未確認 |  |
-| Function WeaponENConsumption | 5335 | 80 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponENConsumption | 未確認 |  |
-| Function WeaponPrecision | 5417 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponPrecision | 未確認 |  |
-| Function WeaponCritical | 5422 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponCritical | 未確認 |  |
-| Function WeaponClass | 5427 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponClass | 未確認 |  |
-| Function IsWeaponClassifiedAs | 5432 | 65 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponClassifiedAs | 未確認 |  |
-| Function WeaponLevel | 5499 | 44 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponLevel | 未確認 |  |
-| Function IsWeaponLevelSpecified | 5545 | 6 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponLevelSpecified | 未確認 |  |
-| Function IsNormalWeapon | 5553 | 17 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsNormalWeapon | 未確認 |  |
-| Function CountWeaponEffect | 5572 | 31 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.CountWeaponEffect | 未確認 |  |
-| Function IsSpellWeapon | 5605 | 22 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsSpellWeapon | 未確認 |  |
-| Function IsFeatWeapon | 5629 | 22 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsFeatWeapon | 未確認 |  |
-| Function IsWeaponAvailable | 5654 | 322 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponAvailable | 未確認 |  |
-| Function IsWeaponMastered | 5978 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponMastered | 未確認 |  |
-| Function IsWeaponEnabled | 5983 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponEnabled | 未確認 |  |
-| Function IsWeaponUseful | 5988 | 81 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponUseful | 未確認 |  |
-| Function IsTargetWithinRange | 6072 | 70 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsTargetWithinRange | 未確認 |  |
-| Function IsTargetReachable | 6144 | 70 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsTargetReachable | 未確認 |  |
-| Function HitProbability | 6218 | 481 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.HitProbability | 未確認 |  |
-| Function Damage | 6703 | 785 | `SRCCore/Expressions/Functions/Unit/Unit.cs` Damage<br>`SRCCore/Units/UnitWeapon.cs` UnitWeapon.Damage | 未確認 |  |
-| Function CriticalProbability | 7490 | 340 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.CriticalProbability | 未確認 |  |
-| Function ExpDamage | 7832 | 546 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.ExpDamage | 未確認 |  |
-| Function Absorb | 8383 | 52 | `SRCCore/Units/Unit.attribute.cs` Unit.Absorb | 未確認 |  |
-| Function Immune | 8437 | 51 | `SRCCore/Units/Unit.attribute.cs` Unit.Immune | 未確認 |  |
-| Function Resist | 8490 | 51 | `SRCCore/Units/Unit.attribute.cs` Unit.Resist | 未確認 |  |
-| Function Weakness | 8543 | 37 | `SRCCore/Units/Unit.attribute.cs` Unit.Weakness | 未確認 |  |
-| Function Effective | 8582 | 37 | `SRCCore/Units/Unit.attribute.cs` Unit.Effective | 未確認 |  |
-| Function SpecialEffectImmune | 8621 | 26 | `SRCCore/Units/Unit.attribute.cs` Unit.SpecialEffectImmune | 未確認 |  |
-| Function IsAttributeClassified | 8650 | 65 | `SRCCore/Units/Unit.attribute.cs` Unit.IsAttributeClassified | 未確認 |  |
-| Sub Attack | 8724 | 2147 | `SRCCore/Units/Unit.attack.cs` Unit.Attack | 未確認 |  |
-| Function CheckDodgeFeature | 10873 | 450 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDodgeFeature | 未確認 |  |
+| Function Weapon | 4923 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.Weapon | 一致 | 範囲外は null を返す（VB は実行時エラー。SRC# の利便性） |
+| Function CountWeapon | 4928 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.CountWeapon | 一致 |  |
+| Function WeaponNickname | 4933 | 9 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponNickname | 一致 |  |
+| Function WeaponPower | 4945 | 152 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponPower | 修正済み | バトルコンフィグの「攻撃補正」の前に BCVariable.AtkUnit を設定していなかった |
+| Function WeaponAdaption | 5099 | 201 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponAdaption | 一致 |  |
+| Function WeaponMaxRange | 5302 | 31 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponMaxRange<br>`SRCCore/Units/UnitWeapon.cs` UnitWeapon.SetMaxRangeCorrection | 修正済み | 補正後の最低値を 1 に（WeaponMinRange() だった）。Ｍ・武/突/接・有の武器でもサ属性の射程延長を残す |
+| Function WeaponENConsumption | 5335 | 80 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponENConsumption | 一致 |  |
+| Function WeaponPrecision | 5417 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponPrecision | 一致 |  |
+| Function WeaponCritical | 5422 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponCritical | 一致 |  |
+| Function WeaponClass | 5427 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponClass | 一致 |  |
+| Function IsWeaponClassifiedAs | 5432 | 65 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponClassifiedAs | 修正済み | 格闘系・射撃系・移動後攻撃可の判定で、補正後ではなく武器データの MaxRange を見る |
+| Function WeaponLevel | 5499 | 44 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponLevel | 修正済み | 数値として読めないレベルでエラーメッセージを出す。メッセージの先頭をユニット名に |
+| Function IsWeaponLevelSpecified | 5545 | 6 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponLevelSpecified | 一致 |  |
+| Function IsNormalWeapon | 5553 | 17 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsNormalWeapon | 一致 |  |
+| Function CountWeaponEffect | 5572 | 31 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.CountWeaponEffect | 一致 |  |
+| Function IsSpellWeapon | 5605 | 22 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsSpellWeapon | 一致 |  |
+| Function IsFeatWeapon | 5629 | 22 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsFeatWeapon | 一致 |  |
+| Function IsWeaponAvailable | 5654 | 322 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponAvailable | 修正済み | 「○属性使用不能」の判定を VB の Len>6・Right$・Left$ に合わせた。変形技の判定の順序を VB に合わせた |
+| Function IsWeaponMastered | 5978 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponMastered | 一致 |  |
+| Function IsWeaponEnabled | 5983 | 3 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponEnabled | 一致 |  |
+| Function IsWeaponUseful | 5988 | 81 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsWeaponUseful | 一致 |  |
+| Function IsTargetWithinRange | 6072 | 70 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsTargetWithinRange | 修正済み | ステルスのレベルを偶数丸めしてから距離と比べる（VB の lv は Integer） |
+| Function IsTargetReachable | 6144 | 70 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsTargetReachable | 一致 | VB の `Abs(.y - i)`（本来は j）も同じにしている |
+| Function HitProbability | 6218 | 481 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.HitProbability | 修正済み | 地形適応は 1 つ目の要素（名称）を比べず、能力ごとに -10。未知のサイズの補正を 0 倍に。ECM（マイナスのレベル・範囲）は #612・90fd4dd0 の意図した違い（SRCとの互換性）。「地形適応命中率修正」のＪは VB では wclass が空で効かない不具合なので再現しない |
+| Function Damage | 6703 | 785 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.Damage | 修正済み | 対属性のレベルが実数のとき、VB の Mod と同じく偶数丸めの整数で割る |
+| Function CriticalProbability | 7490 | 340 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.CriticalProbability | 修正済み | 対属性のレベルが実数のとき、VB の Mod と同じく偶数丸めの整数で割る（Damage と同じ） |
+| Function ExpDamage | 7832 | 546 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.ExpDamage | 一致 | 末尾の抹殺の判定は VB では `InStr(w, "殺")`（w は武器の番号）で働かない。VB の不具合なので再現しない（C# は武器属性を見る） |
+| Function Absorb | 8383 | 52 | `SRCCore/Units/Unit.attribute.cs` Unit.Absorb | 修正済み | Exit Do を return にした（戻り値は以前と同じ） |
+| Function Immune | 8437 | 51 | `SRCCore/Units/Unit.attribute.cs` Unit.Immune | 修正済み | Absorb と同じ |
+| Function Resist | 8490 | 51 | `SRCCore/Units/Unit.attribute.cs` Unit.Resist | 修正済み | Absorb と同じ |
+| Function Weakness | 8543 | 37 | `SRCCore/Units/Unit.attribute.cs` Unit.Weakness | 修正済み | Absorb と同じ |
+| Function Effective | 8582 | 37 | `SRCCore/Units/Unit.attribute.cs` Unit.Effective | 修正済み | Absorb と同じ |
+| Function SpecialEffectImmune | 8621 | 26 | `SRCCore/Units/Unit.attribute.cs` Unit.SpecialEffectImmune | 一致 |  |
+| Function IsAttributeClassified | 8650 | 65 | `SRCCore/Units/Unit.attribute.cs` Unit.IsAttributeClassified | 修正済み | Exit Do が switch の break でループを抜けていなかった。該当した属性の後ろの「!」と、「魔」で魔法武器のときの判定が VB と違っていた |
+| Sub Attack | 8724 | 2147 | `SRCCore/Units/Unit.attack.cs` Unit.Attack | 修正済み | 浄化を探す相手から追加サポートを外した。レベルの無い連属性は攻撃回数 1 回（VB は実行時エラー。SRC# の利便性）。消費したアイテムは武器名で探す（VB の数え方の不具合は再現しない）。BitmapID・新ＧＵＩの ClearUnitStatus は SRC# では不要 |
+| Function CheckDodgeFeature | 10873 | 450 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDodgeFeature | 一致 |  |
 | Function CheckParryFeature | 11326 | 1054 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckParryFeature | 未確認 |  |
 | Function CheckDummyFeature | 12382 | 114 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDummyFeature | 未確認 |  |
 | Function CheckShieldFeature | 12498 | 105 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckShieldFeature | 未確認 |  |
