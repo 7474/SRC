@@ -147,6 +147,13 @@ namespace SRCCore.CmdDatas.Commands
 
             p.Ride(u);
 
+            // 元の SRC と同じく、出撃のアニメーションを描く前に配置先を画面の中央にする
+            if (opt != "非同期" && GUI.MainFormVisible && !GUI.IsPictureVisible)
+            {
+                GUI.Center(ux, uy);
+                GUI.RefreshScreen();
+            }
+
             u.FullRecover();
             foreach (var of in u.OtherForms)
             {
@@ -157,12 +164,6 @@ namespace SRCCore.CmdDatas.Commands
             u.StandBy(ux, uy, opt);
             u.CheckAutoHyperMode();
             Event.SelectedUnitForEvent = u.CurrentForm();
-
-            if (opt != "非同期" && GUI.MainFormVisible && !GUI.IsPictureVisible)
-            {
-                GUI.Center(ux, uy);
-                GUI.RefreshScreen();
-            }
 
             return EventData.NextID;
         }

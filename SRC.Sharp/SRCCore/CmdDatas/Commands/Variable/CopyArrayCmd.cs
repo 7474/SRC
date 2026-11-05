@@ -98,7 +98,6 @@ namespace SRCCore.CmdDatas.Commands
             else if (Expression.IsLocalVariableDefined(name1))
             {
                 // ローカルな配列に対するCopyArray
-                // XXX 列挙時の順番がDictionaryだと問題になるかも
                 foreach (VarData currentVar in Event.LocalVariableList.Values)
                 {
                     var var = currentVar;
@@ -121,7 +120,6 @@ namespace SRCCore.CmdDatas.Commands
             else if (Expression.IsGlobalVariableDefined(name1))
             {
                 // グローバルな配列に対するCopyArray
-                // XXX 列挙時の順番がDictionaryだと問題になるかも
                 foreach (VarData currentVar1 in Event.GlobalVariableList.Values)
                 {
                     var var = currentVar1;
