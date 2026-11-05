@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
+using System;
 using System.IO;
 using SRCPlay;
 
@@ -234,6 +235,82 @@ namespace SRCRender.Tests
                     Assert.AreEqual(SKColors.Red, bitmap.GetPixel(16, 100 + 48));
                     Assert.IsTrue(IsTerrain(48, 100 + 48), "青を透過する");
                     Assert.AreEqual(SKColors.White, bitmap.GetPixel(2, 100 + 60));
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        [TestMethod]
+        public void FillStylePatterns_DrawLinesEvery8Pixels()
+        {
+            // 元の SRC（VB の FillStyle。Windows のハッチブラシ）と同じく、8 ピクセルごとの線だけを塗り、線の間は塗らない
+            var cases = new (SRCCore.VB.FillStyle Style, Func<int, int, bool> IsLine)[]
+            {
+                (SRCCore.VB.FillStyle.VbHorizontalLine, (x, y) => y % 8 == 7),
+                (SRCCore.VB.FillStyle.VbVerticalLine, (x, y) => x % 8 == 4),
+                (SRCCore.VB.FillStyle.VbUpwardDiagonal, (x, y) => x % 8 == y % 8),
+                (SRCCore.VB.FillStyle.VbDownwardDiagonal, (x, y) => (x + y) % 8 == 7),
+                (SRCCore.VB.FillStyle.VbCross, (x, y) => x % 8 == 4 || y % 8 == 7),
+                (SRCCore.VB.FillStyle.VbDiagonalCross, (x, y) => x % 8 == y % 8 || (x + y) % 8 == 7),
+            };
+            foreach (var (style, isLine) in cases)
+            {
+                using (var bitmap = new SKBitmap(32, 32))
+                using (var canvas = new SKCanvas(bitmap))
+                using (var paint = ScreenGUI.CreateFillPaint(style, SKColors.Red))
+                {
+                    canvas.Clear(SKColors.White);
+                    canvas.DrawRect(SKRect.Create(4, 4, 24, 24), paint);
+                    for (var y = 0; y < 32; y++)
+                    {
+                        for (var x = 0; x < 32; x++)
+                        {
+                            var inside = x >= 4 && x < 28 && y >= 4 && y < 28;
+                            var expected = inside && isLine(x, y) ? SKColors.Red : SKColors.White;
+                            Assert.AreEqual(expected, bitmap.GetPixel(x, y), $"{style} ({x}, {y})");
+                        }
+                    }
+                }
+            }
+            Assert.IsNull(ScreenGUI.CreateFillPaint(SRCCore.VB.FillStyle.VbFSTransparent, SKColors.Red));
+            using (var solid = ScreenGUI.CreateFillPaint(SRCCore.VB.FillStyle.VbFSSolid, SKColors.Red))
+            {
+                Assert.IsNull(solid.Shader);
+            }
+        }
+
+        [TestMethod]
+        public void PlayScenario_FillStyleCrossOnBox()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    "Line 0 0 199 199 BF #FFFFFF",
+                    "FillStyle クロス",
+                    "FillColor #FF0000",
+                    "Line 40 40 120 120 B #0000FF",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    // 縦線（x が 8 の倍数 + 4）と横線（y が 8 の倍数 + 7）だけを塗り、間は元の白のまま
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(60, 50));
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(50, 63));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(50, 50));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(61, 60));
+                    // 枠は線の色
+                    Assert.AreEqual(SKColors.Blue, bitmap.GetPixel(40, 80));
                 }
 
                 runner.WaitForTermination();

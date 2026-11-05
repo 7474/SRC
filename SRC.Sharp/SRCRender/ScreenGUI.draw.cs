@@ -4,6 +4,7 @@ using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace SRCRender
@@ -585,9 +586,7 @@ namespace SRCRender
                 IsPictureVisible = true;
             }
             using (var pen = new SKPaint { Color = ToSKColor(option.ForeColor), Style = SKPaintStyle.Stroke, StrokeWidth = Math.Max(1, option.DrawWidth), IsAntialias = false })
-            using (var brush = option.FillStyle != FillStyle.VbFSTransparent
-                ? new SKPaint { Color = ToSKColor(option.FillColor), Style = SKPaintStyle.Fill, IsAntialias = false }
-                : null)
+            using (var brush = CreateFillPaint(option.FillStyle, ToSKColor(option.FillColor)))
             {
                 foreach (var buffer in TargetBuffers(option))
                 {
@@ -597,6 +596,51 @@ namespace SRCRender
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// VB の FillStyle の模様（横線～網かけ）。Windows のハッチブラシと同じ 8x8 ピクセルの繰り返しで、'#' が線。
+        /// VB は FillStyle - 2 をハッチの種類（HS_HORIZONTAL・HS_VERTICAL・HS_FDIAGONAL・HS_BDIAGONAL・HS_CROSS・HS_DIAGCROSS）として使う
+        /// </summary>
+        internal static readonly IReadOnlyDictionary<FillStyle, string[]> HatchPatterns = new Dictionary<FillStyle, string[]>
+        {
+            [FillStyle.VbHorizontalLine] = new[] { "........", "........", "........", "........", "........", "........", "........", "########" },
+            [FillStyle.VbVerticalLine] = new[] { "....#...", "....#...", "....#...", "....#...", "....#...", "....#...", "....#...", "....#..." },
+            [FillStyle.VbUpwardDiagonal] = new[] { "#.......", ".#......", "..#.....", "...#....", "....#...", ".....#..", "......#.", ".......#" },
+            [FillStyle.VbDownwardDiagonal] = new[] { ".......#", "......#.", ".....#..", "....#...", "...#....", "..#.....", ".#......", "#......." },
+            [FillStyle.VbCross] = new[] { "....#...", "....#...", "....#...", "....#...", "....#...", "....#...", "....#...", "########" },
+            [FillStyle.VbDiagonalCross] = new[] { "#......#", ".#....#.", "..#..#..", "...##...", "...##...", "..#..#..", ".#....#.", "#......#" },
+        };
+
+        /// <summary>
+        /// 図形の中を塗る SKPaint。透明なら null。横線・縦線などの模様は、元の SRC と同じく線だけを塗り、線の間は塗らない
+        /// （元の画像が見える）。模様は画面の左上を起点に繰り返す
+        /// </summary>
+        internal static SKPaint CreateFillPaint(FillStyle style, SKColor color)
+        {
+            if (style == FillStyle.VbFSTransparent)
+            {
+                return null;
+            }
+            var paint = new SKPaint { Color = color, Style = SKPaintStyle.Fill, IsAntialias = false };
+            if (HatchPatterns.TryGetValue(style, out var pattern))
+            {
+                using (var bitmap = new SKBitmap(new SKImageInfo(8, 8, SKColorType.Rgba8888, SKAlphaType.Premul)))
+                {
+                    for (var y = 0; y < 8; y++)
+                    {
+                        for (var x = 0; x < 8; x++)
+                        {
+                            bitmap.SetPixel(x, y, pattern[y][x] == '#' ? color : SKColors.Transparent);
+                        }
+                    }
+                    using (var image = SKImage.FromBitmap(bitmap))
+                    {
+                        paint.Shader = image.ToShader(SKShaderTileMode.Repeat, SKShaderTileMode.Repeat);
+                    }
+                }
+            }
+            return paint;
         }
 
         private static SKRect CircleRect(int centerX, int centerY, int rad, float ovalRatio = 1f)
