@@ -2,8 +2,6 @@
 layout: default
 title: GetOffコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **GetOffコマンド**
 
 パイロットを降ろす

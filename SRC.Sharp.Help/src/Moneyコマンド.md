@@ -2,8 +2,6 @@
 layout: default
 title: Moneyコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Moneyコマンド**
 
 資金を追加・消費

@@ -2,8 +2,6 @@
 layout: default
 title: IncreaseMoraleコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **IncreaseMoraleコマンド**
 
 パイロットの[気力](気力.md "パイロットには気力が設定されています。")を増加

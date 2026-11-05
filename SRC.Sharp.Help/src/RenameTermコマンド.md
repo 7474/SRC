@@ -2,8 +2,6 @@
 layout: default
 title: RenameTermコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RenameTermコマンド**
 
 用語の名称を変更

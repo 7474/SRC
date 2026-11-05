@@ -2,8 +2,6 @@
 layout: default
 title: Incrコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Incrコマンド**
 
 変数の値を増加

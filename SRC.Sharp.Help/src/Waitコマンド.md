@@ -2,8 +2,6 @@
 layout: default
 title: Waitコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Waitコマンド**
 
 「待ち」の処理を実施

@@ -2,8 +2,6 @@
 layout: default
 title: Destroyコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Destroyコマンド**
 
 ユニットを破壊

@@ -2,8 +2,6 @@
 layout: default
 title: Combineコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Combineコマンド**
 
 ユニットを合体

@@ -2,8 +2,6 @@
 layout: default
 title: IntermissionCommandコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **IntermissionCommand**
 
 インターミッションコマンドを作成

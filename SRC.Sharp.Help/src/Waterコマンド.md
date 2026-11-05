@@ -2,8 +2,6 @@
 layout: default
 title: Waterコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Waterコマンド**
 
 マップを水中風に変更

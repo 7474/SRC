@@ -2,8 +2,6 @@
 layout: default
 title: PSetコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **PSetコマンド**
 
 点を描画

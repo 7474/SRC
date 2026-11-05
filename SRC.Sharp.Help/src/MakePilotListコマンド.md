@@ -2,8 +2,6 @@
 layout: default
 title: MakePilotListコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **MakePilotListコマンド**
 
 パイロット一覧画面を表示

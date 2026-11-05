@@ -2,8 +2,6 @@
 layout: default
 title: Inputコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Inputコマンド**
 
 プレイヤーによる文字列入力

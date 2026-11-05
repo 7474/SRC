@@ -2,8 +2,6 @@
 layout: default
 title: RemoveFileコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemoveFileコマンド**
 
 ファイルを削除

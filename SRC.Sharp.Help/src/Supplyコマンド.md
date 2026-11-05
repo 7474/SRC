@@ -2,8 +2,6 @@
 layout: default
 title: Supplyコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Supplyコマンド**
 
 ユニットを補給

@@ -2,8 +2,6 @@
 layout: default
 title: SelectTargetコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **SelectTargetコマンド**
 
 デフォルトターゲットを設定

@@ -2,8 +2,6 @@
 layout: default
 title: RestoreEventコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RestoreEventコマンド**
 
 イベントラベルを復活

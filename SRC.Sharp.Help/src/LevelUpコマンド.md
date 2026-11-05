@@ -2,8 +2,6 @@
 layout: default
 title: LevelUpコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **LevelUpコマンド**
 
 パイロットをレベルアップ

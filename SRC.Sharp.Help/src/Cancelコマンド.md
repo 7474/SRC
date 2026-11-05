@@ -2,8 +2,6 @@
 layout: default
 title: Cancelコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Cancelコマンド**
 
 イベント後の行動やイベント処理をキャンセル

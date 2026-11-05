@@ -2,8 +2,6 @@
 layout: default
 title: FillColorコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **FillColorコマンド**
 
 図形の背景色を変更

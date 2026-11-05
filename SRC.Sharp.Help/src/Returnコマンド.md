@@ -2,8 +2,6 @@
 layout: default
 title: Returnコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Returnコマンド**
 
 サブルーチンコールを終了

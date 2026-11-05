@@ -2,8 +2,6 @@
 layout: default
 title: Showコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Showコマンド**
 
 メインウィンドウを表示

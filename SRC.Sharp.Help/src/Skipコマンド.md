@@ -2,8 +2,6 @@
 layout: default
 title: Skipコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Skipコマンド**
 
 繰り返し実行を一部スキップ

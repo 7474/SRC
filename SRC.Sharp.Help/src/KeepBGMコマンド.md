@@ -2,8 +2,6 @@
 layout: default
 title: KeepBGMコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **KeepBGMコマンド**
 
 BGMを固定

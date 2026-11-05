@@ -2,8 +2,6 @@
 layout: default
 title: Ovalコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Ovalコマンド**
 
 楕円を描画
@@ -18,7 +16,7 @@ title: Ovalコマンド
 
 *r*描画する楕円の半径(ピクセル)
 
-*ratoin*描画する楕円の縦横比
+*ratio*描画する楕円の縦横比
 
 *color*描画色(省略可能)
 

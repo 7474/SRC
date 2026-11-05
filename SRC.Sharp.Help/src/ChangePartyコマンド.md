@@ -2,8 +2,6 @@
 layout: default
 title: ChangePartyコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ChangePartyコマンド**
 
 ユニットの陣営を変更

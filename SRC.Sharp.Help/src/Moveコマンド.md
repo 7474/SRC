@@ -2,8 +2,6 @@
 layout: default
 title: Moveコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Moveコマンド**
 
 ユニットを移動

@@ -2,8 +2,6 @@
 layout: default
 title: GameClearコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **GameClearコマンド**
 
 ゲームを終了

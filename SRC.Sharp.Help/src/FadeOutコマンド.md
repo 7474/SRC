@@ -2,8 +2,6 @@
 layout: default
 title: FadeOutコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **FadeOutコマンド**
 
 画面をフェードアウト

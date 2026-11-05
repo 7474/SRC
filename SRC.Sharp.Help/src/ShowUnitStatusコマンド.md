@@ -2,8 +2,6 @@
 layout: default
 title: ShowUnitStatusコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ShowUnitStatusコマンド**
 
 ユニットを[ステータスウィンドウ](ステータスウインドウ.md)に表示

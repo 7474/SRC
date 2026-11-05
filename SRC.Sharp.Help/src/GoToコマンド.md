@@ -2,8 +2,6 @@
 layout: default
 title: GoToコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **GoToコマンド**
 
 ラベルにジャンプ

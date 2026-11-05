@@ -2,8 +2,6 @@
 layout: default
 title: Unitコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Unitコマンド**
 
 ユニットを作成

@@ -2,8 +2,6 @@
 layout: default
 title: ExpUpコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ExpUpコマンド**
 
 パイロットの経験値アップ

@@ -2,8 +2,6 @@
 layout: default
 title: StopBGMコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **StopBGMコマンド**
 
 ＢＧＭを停止

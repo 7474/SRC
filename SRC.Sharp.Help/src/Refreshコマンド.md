@@ -2,8 +2,6 @@
 layout: default
 title: Refreshコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Refreshコマンド**
 
 マップウィンドウを更新

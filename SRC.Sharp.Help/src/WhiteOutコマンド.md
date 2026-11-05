@@ -2,8 +2,6 @@
 layout: default
 title: WhiteOutコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **WhiteOutコマンド**
 
 画面をホワイトアウト

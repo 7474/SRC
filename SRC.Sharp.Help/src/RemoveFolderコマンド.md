@@ -2,8 +2,6 @@
 layout: default
 title: RemoveFolderコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemoveFolderコマンド**
 
 フォルダを削除
@@ -24,9 +22,11 @@ title: RemoveFolderコマンド
 
 *folder* の中にあるファイルやフォルダも全て削除されます。
 
+> **元の SRC との違い**: SRC# では、中にファイルやフォルダがある*folder* は削除できず、エラーになります（不具合）。空のフォルダだけを削除できます。（7474/SRC#1470）
+
 **例**
 ```sh
 #Logフォルダを削除
-RomoveFolder Log
+RemoveFolder Log
 ```
 

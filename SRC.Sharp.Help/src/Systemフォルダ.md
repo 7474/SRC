@@ -2,8 +2,6 @@
 layout: default
 title: Systemフォルダ
 ---
-** 内容はSRC2.2.33のものです **
-
 **Systemフォルダ**
 
 **Systemフォルダ**は特殊なデータフォルダであり、以下のファイルが含まれます。
@@ -22,7 +20,13 @@ title: Systemフォルダ
 
 alias.txt 及び sp.txt はVer.1.6系との互換性維持のためにSRC本体に添付されているデータが流用できるようになっています。これらのファイルはSRC本体側の Data\System フォルダに置かれています。
 
-GameOver.eve や Exit.eve を自作する場合は下記の例を参考にして下さい。なお、両ファイルでは処理の最後に[Quitコマンド](Quitコマンド.md)を実行させてください。また、GameOver.eveからゲームオーバー時のコンティニューをさせる場合[はQuickLoadコマンド](はじめに.md)を使用して下さい。
+シナリオの Data\System フォルダに無いファイルは、SRC# のフォルダの Data\System フォルダから読み込みます。
+
+> **元の SRC との違い**: alias.txt・sp.txt（mind.txt）・item.txt・terrain.txt・battle.txt は、SRC# のフォルダの Data\System フォルダに無ければ、拡張データのフォルダ（[ExtDataPath・ExtDataPath2](設定変更.md)）の Data\System フォルダからも読み込みます。元の SRC は SRC のフォルダの Data\System フォルダだけを見ます。GameOver.eve と Exit.eve は、元の SRC と同じくシナリオと SRC# のフォルダの Data\System フォルダだけを見ます。
+
+> **元の SRC との違い**: 元の SRC のファイルの文字コードは Shift_JIS です。SRC# では、シナリオのファイルをすべて UTF-8 にして、シナリオのフォルダの設定ファイル `srcs.json` に `"SRCCompatibilityMode": false` を書くこともできます（[SRCとの互換性](SRCとの互換性.md)）。
+
+GameOver.eve や Exit.eve を自作する場合は下記の例を参考にして下さい。なお、両ファイルでは処理の最後に[Quitコマンド](Quitコマンド.md)を実行させてください。また、GameOver.eveからゲームオーバー時のコンティニューをさせる場合は[QuickLoadコマンド](QuickLoadコマンド.md)を使用して下さい。
 
 GameOver.eve や Exit.eve を作るのが面倒 or 作り方がよく分からないという場合はこれらのファイルをSystemフォルダ内に置かなくてもかまいません。なくてもゲーム終了時やゲームオーバー時にメッセージが表示されないだけでプレイは可能です(ただしGameOver.eveがないとゲームオーバー時にコンティニューできなくなります)。
 

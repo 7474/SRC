@@ -2,8 +2,6 @@
 layout: default
 title: FreeMemoryコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **FreeMemoryコマンド**
 
 破壊、撤退した味方以外のユニットのデータをメモリから削除

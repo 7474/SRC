@@ -2,8 +2,6 @@
 layout: default
 title: Arrayコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Arrayコマンド**
 
 文字列を分割して配列を作成する

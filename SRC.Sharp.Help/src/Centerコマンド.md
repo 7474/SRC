@@ -2,8 +2,6 @@
 layout: default
 title: Centerコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Centerコマンド**
 
 マップ表示位置を変更

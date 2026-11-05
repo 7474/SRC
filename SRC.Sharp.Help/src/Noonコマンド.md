@@ -2,8 +2,6 @@
 layout: default
 title: Noonコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Noonコマンド**
 
 マップを昼に戻す

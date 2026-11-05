@@ -2,8 +2,6 @@
 layout: default
 title: Equipコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Equipコマンド**
 
 ユニットにアイテムを装備
