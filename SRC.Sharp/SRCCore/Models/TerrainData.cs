@@ -103,12 +103,12 @@ namespace SRCCore.Models
 
         public int EffectForHPRecover()
         {
-            return (int)(10 * FeatureLevel("ＨＰ回復"));
+            return VBMath.CLng(10 * FeatureLevel("ＨＰ回復"));
         }
 
         public int EffectForENRecover()
         {
-            return (int)(10 * FeatureLevel("ＥＮ回復"));
+            return VBMath.CLng(10 * FeatureLevel("ＥＮ回復"));
         }
 
         public bool HasMoveStop()

@@ -252,7 +252,7 @@ namespace SRCCore.Models
                     else if (Information.IsNumeric(buf2))
                     {
                         // 0.5刻みの移動コストを使えるようにするため、実際の２倍の値で記録する
-                        td.MoveCost = (int)(2d * Conversions.ToDouble(buf2));
+                        td.MoveCost = VBMath.CLng(2d * Conversions.ToDouble(buf2));
                     }
 
                     if (td.MoveCost <= 0)

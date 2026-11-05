@@ -178,6 +178,17 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
+        public void Size_WithFractionalLargeItemLevel_RoundsToEven()
+        {
+            // VB: ItemData.cls Size は As Integer の関数なので 1 + Lv を偶数丸めで返す
+            var src = CreateSRC();
+            var item = new ItemData(src);
+            item.AddFeature("大型アイテムLv1.6");
+            // 2.6 → 3（切り捨てなら 2）
+            Assert.AreEqual(3, item.Size());
+        }
+
+        [TestMethod]
         public void ItemData_Nickname_CanBeSetAndRead()
         {
             var src = CreateSRC();

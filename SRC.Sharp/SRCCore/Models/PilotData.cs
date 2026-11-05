@@ -368,7 +368,7 @@ namespace SRCCore.Models
                     if (sd.NecessaryLevel > lv2)
                     {
                         lv2 = sd.NecessaryLevel;
-                        SkillLevel2Ret = (int)sd.Level;
+                        SkillLevel2Ret = VBMath.CLng(sd.Level);
                     }
                 }
             }

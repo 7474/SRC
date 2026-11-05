@@ -353,7 +353,7 @@ namespace SRCCore.Models
         // サイズ(アイテムが消費するアイテムスロット数)
         public int Size()
         {
-            return (int)(1d + FeatureLevel("大型アイテム"));
+            return VBMath.CLng(1d + FeatureLevel("大型アイテム"));
         }
     }
 }
