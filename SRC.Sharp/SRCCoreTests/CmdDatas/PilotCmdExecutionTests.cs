@@ -248,6 +248,35 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         /// <summary>
+        /// LevelUp・ExpUp はユニットの HP・EN を変化前の割合で入れ直す。VB の Long への代入と同じく
+        /// 偶数丸めにするので、割合の往復で生じる誤差（1000 × 32.3% / 100 = 322.99…）で 1 減らない
+        /// （VB: CmdData.cls ExecLevelUpCmd・ExecExpUpCmd の .HP = .MaxHP * hp_ratio / 100）
+        /// </summary>
+        [TestMethod]
+        public void LevelUpAndExpUp_KeepHPWithoutRoundTripTruncation()
+        {
+            var src = CreateSrc();
+            var ud = src.UDList.Add("割合機");
+            ud.HP = 1000;
+            ud.EN = 100;
+            ud.PilotNum = 1;
+            var u = src.UList.Add("割合機", 0, "味方");
+            u.Update();
+            var pilot = CreatePilot(src, "割合パイロット", 1);
+            pilot.Ride(u);
+
+            u.HP = 323;
+            Assert.AreEqual(1, CreateCmd(src, "LevelUp 割合パイロット 1", 0).Exec());
+            Assert.AreEqual(2, pilot.Level);
+            Assert.AreEqual(323, u.HP);
+
+            u.HP = 641;
+            Assert.AreEqual(2, CreateCmd(src, "ExpUp 割合パイロット 1000", 1).Exec());
+            Assert.IsTrue(pilot.Level > 2);
+            Assert.AreEqual(641, u.HP);
+        }
+
+        /// <summary>
         /// RecoverSP 存在しないパイロット 100 → エラー
         /// </summary>
         [TestMethod]

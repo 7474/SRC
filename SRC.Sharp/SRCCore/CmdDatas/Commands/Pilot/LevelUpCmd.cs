@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Pilots;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
@@ -70,12 +71,12 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         if (p.Morale == p.MinMorale)
                         {
-                            p.Morale = ((int)(p.MinMorale + 5d * p.SkillLevel("闘争本能", ref_mode: "")));
+                            p.Morale = VBMath.CLng(p.MinMorale + 5d * p.SkillLevel("闘争本能", ref_mode: ""));
                         }
                     }
                     else if (p.Morale == 100)
                     {
-                        p.Morale = ((int)(100d + 5d * p.SkillLevel("闘争本能", ref_mode: "")));
+                        p.Morale = VBMath.CLng(100d + 5d * p.SkillLevel("闘争本能", ref_mode: ""));
                     }
                 }
 
@@ -87,8 +88,8 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         var u = p.Unit;
                         u.Update();
-                        u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-                        u.EN = (int)(u.MaxEN * en_ratio / 100d);
+                        u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d);
+                        u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d);
                     }
 
                     SRC.PList.UpdateSupportMod(p.Unit);

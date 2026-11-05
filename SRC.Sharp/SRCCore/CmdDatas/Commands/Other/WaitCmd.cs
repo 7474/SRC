@@ -80,7 +80,7 @@ namespace SRCCore.CmdDatas.Commands
                             break;
 
                         default:
-                            wait_time = (int)(100d * GetArgAsDouble(2));
+                            wait_time = VBMath.CLng(100d * GetArgAsDouble(2));
 
                             // 待ち時間が切れるまで待機
                             if (wait_time < 1000)
@@ -112,7 +112,7 @@ namespace SRCCore.CmdDatas.Commands
 
                 case 3:
                     // Wait Until ～
-                    wait_time = (int)(100d * GetArgAsDouble(3));
+                    wait_time = VBMath.CLng(100d * GetArgAsDouble(3));
                     Event.WaitTimeCount = Event.WaitTimeCount + 1;
                     if (Event.WaitStartTime == -1)
                     {
