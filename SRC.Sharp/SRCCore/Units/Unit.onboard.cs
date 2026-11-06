@@ -21,8 +21,7 @@ namespace SRCCore.Units
         {
             if (colUnitOnBoard.Remove(Index)) { return; }
 
-            // XXX 一致のケース考慮してなかったかも？
-            //if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(colUnitOnBoard[i].Name, Index, false)))
+            // キー（ID）で消せなければ、名前が一致する最初のユニットを消す（元の SRC の ErrorHandler 以降）
             foreach (var u in UnitOnBoards.Where(x => x.Name == Index))
             {
                 colUnitOnBoard.Remove(u);
