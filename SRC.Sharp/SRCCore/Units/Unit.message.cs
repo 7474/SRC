@@ -79,11 +79,13 @@ namespace SRCCore.Units
                             wname = Situation;
 
                             // 武器番号を検索
-                            var weapon = Weapons.First(x => x.Name == wname || x.WeaponNickname() == wname);
+                            // 元の SRC は見つからないと範囲外の武器番号で属性を調べる。SRC# は格闘系でないものとして扱う
+                            var weapon = Weapons.FirstOrDefault(x => x.Name == wname || x.WeaponNickname() == wname);
+                            var isInfight = weapon != null && weapon.IsWeaponClassifiedAs("格闘系");
 
                             if (!IsDefense())
                             {
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘");
                                 }
@@ -97,7 +99,7 @@ namespace SRCCore.Units
                                 situations.Clear();
                                 situations.Add(Situation + "(反撃)");
                                 situations.Add(Situation);
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘");
                                 }
@@ -111,7 +113,7 @@ namespace SRCCore.Units
                                 situations.Clear();
                                 situations.Add(Situation + "(反撃)");
                                 situations.Add(Situation);
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘(反撃)");
                                     situations.Add("格闘");
@@ -136,11 +138,13 @@ namespace SRCCore.Units
 
                             // 武器番号を検索
                             wname = Strings.Left(Situation, GeneralLib.InStr2(Situation, "(") - 1);
-                            var weapon = Weapons.First(x => x.Name == wname || x.WeaponNickname() == wname);
+                            // 元の SRC は見つからないと範囲外の武器番号で属性を調べる。SRC# は格闘系でないものとして扱う
+                            var weapon = Weapons.FirstOrDefault(x => x.Name == wname || x.WeaponNickname() == wname);
+                            var isInfight = weapon != null && weapon.IsWeaponClassifiedAs("格闘系");
 
                             if (!IsDefense())
                             {
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")));
                                 }
@@ -154,7 +158,7 @@ namespace SRCCore.Units
                                 situations.Clear();
                                 situations.Add(Situation + "(反撃)");
                                 situations.Add(Situation);
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")));
                                 }
@@ -168,7 +172,7 @@ namespace SRCCore.Units
                                 situations.Clear();
                                 situations.Add(Situation + "(反撃)");
                                 situations.Add(Situation);
-                                if (weapon.IsWeaponClassifiedAs("格闘系"))
+                                if (isInfight)
                                 {
                                     situations.Add("格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")) + "(反撃)");
                                     situations.Add("格闘" + Strings.Mid(Situation, GeneralLib.InStr2(Situation, "(")));
@@ -509,73 +513,105 @@ namespace SRCCore.Units
             }
 
             // ゲッターのようなユニットは必ずメインパイロットを使ってメッセージを表示
-            Pilot p;
+            // 元の SRC と同じく、pi = 1 はメインパイロット、2〜CountPilot は Pilot(pi)、
+            // それより後は Support(pi - CountPilot)。追加サポートは選ばない
+            var isSelectedSpecialPower = (Situation ?? "") == (Commands.SelectedSpecialPower ?? "");
+            int pi;
             if (Data.PilotNum > 0
                 && ReferenceEquals(MainPilot(), Pilots.First())
-                && (Situation ?? "") != (Commands.SelectedSpecialPower ?? ""))
+                && !isSelectedSpecialPower)
             {
-                p = AllPilots.ToList().Dice();
+                pi = GeneralLib.Dice(CountPilot() + CountSupport());
             }
             else
             {
-                p = MainPilot();
+                pi = 1;
             }
+
+            Pilot p;
+            MessageData md;
 
         TryAgain:
             ;
 
             // 選んだパイロットによるメッセージデータで判定
-            if ((Situation ?? "") == (Commands.SelectedSpecialPower ?? ""))
+            if (isSelectedSpecialPower)
             {
                 if (!SRC.MDList.IsDefined(Commands.SelectedPilot.MessageType))
                 {
                     goto TrySelectedMessage;
                 }
             }
-            else if (p == MainPilot())
+            else if (pi == 1)
             {
-                if (!SRC.MDList.IsDefined(p.MessageType) && !SRC.MDList.IsDefined(Pilots.First().MessageType))
+                if (!SRC.MDList.IsDefined(MainPilot().MessageType) && !SRC.MDList.IsDefined(Pilots.First().MessageType))
                 {
                     goto TrySelectedMessage;
                 }
             }
+            else if (pi <= CountPilot())
+            {
+                if (!SRC.MDList.IsDefined(Pilots[pi - 1].MessageType))
+                {
+                    pi = 1;
+                    goto TryAgain;
+                }
+            }
             else
             {
-                if (!SRC.MDList.IsDefined(p.MessageType))
+                // pi > 1 なので 1 に戻して探しなおす
+                if (!SRC.MDList.IsDefined(SupportPilots[pi - CountPilot() - 1].MessageType))
                 {
-                    p = MainPilot();
+                    pi = 1;
                     goto TryAgain;
                 }
             }
 
             // メッセージを表示
-            MessageData md;
-            if ((Situation ?? "") == (Commands.SelectedSpecialPower ?? ""))
+            if (isSelectedSpecialPower)
             {
                 md = SRC.MDList.Item(Commands.SelectedPilot.MessageType);
                 p = Commands.SelectedPilot;
             }
-            else if (p == MainPilot())
+            else if (pi == 1)
             {
                 md = SRC.MDList.Item(MainPilot().MessageType);
                 p = MainPilot();
-                if (md == null)
+                if (md is object)
+                {
+                    // 元の SRC はここで結果を使わずに SelectMessage を呼ぶ。
+                    // SelectMessage は Dice を使うので、乱数の系列を合わせるために同じく呼ぶ
+                    foreach (var situation in situations)
+                    {
+                        if (Strings.Len(md.SelectMessage(situation, this)) > 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
                 {
                     md = SRC.MDList.Item(Pilots.First().MessageType);
                     p = Pilots.First();
                 }
             }
+            else if (pi <= CountPilot())
+            {
+                md = SRC.MDList.Item(Pilots[pi - 1].MessageType);
+                p = Pilots[pi - 1];
+            }
             else
             {
-                md = SRC.MDList.Item(p.MessageType);
+                md = SRC.MDList.Item(SupportPilots[pi - CountPilot() - 1].MessageType);
+                p = SupportPilots[pi - CountPilot() - 1];
             }
 
             // メッセージデータが見つからない場合は他のパイロットで探しなおす
             if (md is null)
             {
-                if (p != MainPilot() && p != Pilots.First())
+                if (pi != 1)
                 {
-                    p = MainPilot();
+                    pi = 1;
                     goto TryAgain;
                 }
                 else
@@ -620,9 +656,9 @@ namespace SRCCore.Units
                 }
             }
 
-            if (p != MainPilot() && p != Pilots.First())
+            if (pi != 1)
             {
-                p = MainPilot();
+                pi = 1;
                 goto TryAgain;
             }
 
@@ -781,13 +817,13 @@ namespace SRCCore.Units
             // ダイアログの個々のメッセージを表示
             foreach (var di in dd.Items)
             {
-                var msg = SubstituteMessageVariables(di.strMessage, wname);
-
-                // メッセージ表示のキャンセル
-                if (msg == "-")
+                // メッセージ表示のキャンセル（元の SRC と同じく置換の前に判定する）
+                if (di.strMessage == "-")
                 {
                     return;
                 }
+
+                var msg = SubstituteMessageVariables(di.strMessage, wname);
 
                 // メッセージを表示
                 if (di.strName == MainPilot().Name)
@@ -886,11 +922,8 @@ namespace SRCCore.Units
             {
                 pnames.Add(MainPilot().MessageType);
             }
-            // [3]
-            if (IsFeatureAvailable("追加パイロット"))
-            {
-                pnames.Add(Pilots.First().MessageType);
-            }
+            // [3] 1 番目のパイロット（元の SRC の IsMessageDefined は PilotMessage と違い、追加パイロットが無くても調べる）
+            pnames.Add(Pilots.First().MessageType);
 
             foreach (var pname in pnames)
             {
@@ -970,29 +1003,125 @@ namespace SRCCore.Units
             }
 
             // 変数を置換
-            string wname = "";
-            if (ReferenceEquals(Commands.SelectedUnit, this))
+            msg = SubstituteSysMessageVariables(msg);
+
+            if (!GUI.MessageFormVisible)
             {
-                if (0 < Commands.SelectedWeapon && Commands.SelectedWeapon <= CountWeapon())
-                {
-                    wname = Weapon(Commands.SelectedWeapon).Name;
-                }
+                GUI.OpenMessageForm(u1: null, u2: null);
             }
-            else if (ReferenceEquals(Commands.SelectedTarget, this))
-            {
-                if (0 < Commands.SelectedTWeapon && Commands.SelectedTWeapon <= CountWeapon())
-                {
-                    wname = Weapon(Commands.SelectedTWeapon).Name;
-                }
-            }
-            msg = SubstituteMessageVariables(msg, wname);
 
             if (!string.IsNullOrEmpty(add_msg))
             {
-                msg = msg + add_msg;
+                GUI.DisplayBattleMessage("-", msg + "." + add_msg, msg_mode: "");
+            }
+            else
+            {
+                GUI.DisplayBattleMessage("-", msg, msg_mode: "");
+            }
+        }
+
+        // 解説メッセージ中の変数を置換する。
+        // 元の SRC の SysMessage は PlayMessage と置換の仕方が違う
+        // （$(武器) は式を置換しない武器名、$(相手武器) は愛称でなく名称、相手が居なければ $(相手…) は空文字列）
+        private string SubstituteSysMessageVariables(string msg)
+        {
+            string CutAt(string buf, string s)
+            {
+                var idx = buf.IndexOf(s, System.StringComparison.Ordinal);
+                return idx >= 0 ? buf.Substring(0, idx) : buf;
             }
 
-            GUI.DisplayBattleMessage("-", msg, msg_mode: "");
+            // 「(」より後と「専用」までを除いた愛称。
+            // 元の SRC の SysMessage は「専用」の処理が Left$(buf, InStr(buf, "専用") + 2) で、
+            // 「専用」の次の 1 文字までを残す不具合がある。PlayMessage と同じく「専用」より後を使う
+            string UnitNickname(Unit u)
+            {
+                var buf = CutAt(u.Nickname, "(");
+                var idx = buf.IndexOf("専用", System.StringComparison.Ordinal);
+                if (idx >= 0)
+                {
+                    buf = buf.Substring(idx + 2);
+                }
+                return buf;
+            }
+
+            // ユニット名
+            if (msg.Contains("$(ユニット)") || msg.Contains("$(機体)"))
+            {
+                var buf = UnitNickname(this);
+                msg = msg.Replace("$(ユニット)", buf).Replace("$(機体)", buf);
+            }
+
+            // パイロット名
+            if (msg.Contains("$(パイロット)"))
+            {
+                msg = msg.Replace("$(パイロット)", CutAt(MainPilot().get_Nickname(false), "("));
+            }
+
+            // 武器名
+            if (msg.Contains("$(武器)"))
+            {
+                var w = ReferenceEquals(Commands.SelectedUnit, this)
+                    ? Weapon(Commands.SelectedWeapon)
+                    : Weapon(Commands.SelectedTWeapon);
+                var wname = w?.Name ?? "";
+                wname = CutAt(wname, "(");
+                wname = CutAt(wname, "<");
+                msg = msg.Replace("$(武器)", wname);
+            }
+
+            // 損傷率
+            if (msg.Contains("$(損傷率)"))
+            {
+                msg = msg.Replace("$(損傷率)", SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP));
+            }
+
+            // 相手ユニットを設定
+            Unit t;
+            int tw;
+            if (ReferenceEquals(Commands.SelectedUnit, this))
+            {
+                t = Commands.SelectedTarget;
+                tw = Commands.SelectedTWeapon;
+            }
+            else
+            {
+                t = Commands.SelectedUnit;
+                tw = Commands.SelectedWeapon;
+            }
+
+            // 相手ユニット名
+            if (msg.Contains("$(相手ユニット)") || msg.Contains("$(相手機体)"))
+            {
+                var buf = t is object ? UnitNickname(t) : "";
+                msg = msg.Replace("$(相手ユニット)", buf).Replace("$(相手機体)", buf);
+            }
+
+            // 相手パイロット名
+            if (msg.Contains("$(相手パイロット)"))
+            {
+                var buf = t is object ? CutAt(t.MainPilot().get_Nickname(false), "(") : "";
+                msg = msg.Replace("$(相手パイロット)", buf);
+            }
+
+            // 相手武器名
+            if (msg.Contains("$(相手武器)"))
+            {
+                var buf = t?.Weapon(tw)?.Name ?? "";
+                buf = CutAt(buf, "(");
+                buf = CutAt(buf, "<");
+                buf = CutAt(buf, "＜");
+                msg = msg.Replace("$(相手武器)", buf);
+            }
+
+            // 相手損傷率
+            if (msg.Contains("$(相手損傷率)"))
+            {
+                var buf = t is object ? SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP) : "";
+                msg = msg.Replace("$(相手損傷率)", buf);
+            }
+
+            return msg;
         }
 
         // 解説メッセージが定義されているか？
@@ -1022,21 +1151,21 @@ namespace SRCCore.Units
             {
                 uname = uname.Substring(0, ret);
             }
-            ret = uname.IndexOf("用");
+            ret = uname.IndexOf("用", System.StringComparison.Ordinal);
             if (ret >= 0 && ret < uname.Length - 1)
             {
                 uname = uname.Substring(ret + 1);
             }
-            ret = uname.IndexOf("型");
+            ret = uname.IndexOf("型", System.StringComparison.Ordinal);
             if (ret >= 0 && ret < uname.Length - 1)
             {
                 uname = uname.Substring(ret + 1);
             }
-            if (uname.EndsWith("カスタム"))
+            if (uname.EndsWith("カスタム", System.StringComparison.Ordinal))
             {
                 uname = uname.Substring(0, uname.Length - 4);
             }
-            if (uname.EndsWith("改"))
+            if (uname.EndsWith("改", System.StringComparison.Ordinal))
             {
                 uname = uname.Substring(0, uname.Length - 1);
             }

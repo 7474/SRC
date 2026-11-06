@@ -199,8 +199,8 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/SRC.save.cs:269` | XXX | XXX FileName | 未確認 |  |
 | `SRCCore/SRC.save.cs:296` | XXX | XXX Version プロパティだけのオブジェクトでバージョンチェックなど | 未確認 |  |
 | `SRCCore/SRC.save.cs:298` | コード | SaveDataVersion = Conversions.ToInteger(fname2); | 未確認 |  |
-| `SRCCore/SRC.save.cs:349` | XXX | XXX 仮処理 | 未確認 |  |
-| `SRCCore/SRC.save.cs:388`（15 行） | コード | Event.SkipEventData(); | 未確認 |  |
+| `SRCCore/SRC.save.cs:349` | XXX | XXX 仮処理 | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: ユニットの行は Unit.RestoreLinkInfo を呼ぶようにした。パイロットの行は SRC.bas・Pilot.cls の担当で見てもらう |
+| `SRCCore/SRC.save.cs:389`（15 行） | コード | Event.SkipEventData(); | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: UList.RestoreLinkInfo・RestoreParameter に当たる処理は Unit.RestoreLinkInfo と JSON で済んでいる。PList・IList の行と PList.UpdateSupportMod は SRC.bas の担当で見てもらう |
 | `SRCCore/Sound.cs:147` | XXX | XXX 止まってるってことはリピートしてないってことだろう。 | 未確認 |  |
 | `SRCCore/Sound.cs:244` | XXX | XXX なんで？ | 未確認 |  |
 | `SRCCore/Sound.cs:426` | XXX | XXX なんで wave_name 分解したんだろう？ | 未確認 |  |
@@ -219,27 +219,17 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.condition.cs:105`（7 行） | コード | { | SRC#で不要 | SetConditionLevel。呼び出し元で `Condition(name).Level` に直接代入している |
 | `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | SRC#で不要 | StatusFeatures の説明として VB の参照元（Status.bas）を書いたコメント。コメントアウトしたコードではない |
 | `SRCCore/Units/Unit.item.cs:153` | コード | If Not itm2 Is Nothing の分岐があるが、VB の For Each は最後まで回ると | 未確認 |  |
-| `SRCCore/Units/Unit.lookup.cs:1851` | XXX | XXX もうちょいいい感じにしたいもんだ | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:45` | XXX | XXX Goto 潰しておきたい | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:338` | XXX | XXX 何が違うんだ？ | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:375` | XXX | XXX 合体制限は変形してる時だけでいい？ | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:388` | XXX | XXX そういう理由でエラーするの？」 | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:1802`（2 行） | コード | n = 1; | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:1875` | XXX | XXX 列挙子の複製どうすんだっけ | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:1909` | XXX | XXX Unit同士の比較の標準化 | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:1957` | XXX | XXX 要は先頭に乗る、だろ？ | 未確認 |  |
-| `SRCCore/Units/Unit.map.cs:1958`（2 行） | コード | Unit localItem3() { object argIndex1 = GeneralLib.LIndex(buf, 2); | 未確認 |  |
-| `SRCCore/Units/Unit.onboard.cs:24` | XXX | XXX 一致のケース考慮してなかったかも？ | 未確認 |  |
+| `SRCCore/Units/Unit.lookup.cs:1857` | XXX | XXX もうちょいいい感じにしたいもんだ | SRC#で不要 | 書き方についての感想で、動作は VB と同じ |
 | `SRCCore/Units/Unit.pilot.cs:335` | TODO | TODO 使用している個所でもともと追加サポートを処理していたか精査 | 未確認 |  |
 | `SRCCore/Units/Unit.recover.cs:26` | XXX | XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？ | 未確認 |  |
 | `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
-| `SRCCore/Units/UnitAbility.cs:1590` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitAbility.cs:1598` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/UnitWeapon.cs:58` | XXX | XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？ | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:163` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3972` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4292` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:5096`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
-| `SRCCore/Units/UnitWeapon.cs:5333` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitWeapon.cs:5341` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/Units.cs:736`（298 行） | コード | { | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:94` | XXX | XXX DateTime パースの精査 | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:99` | XXX | XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。 | 未確認 |  |

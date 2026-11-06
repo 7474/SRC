@@ -95,7 +95,9 @@ namespace SRCCore.Coverage.Tests.UnitItem
             Assert.AreEqual(" 剣 槍 弓", u.WeaponProficiency());
             Assert.AreEqual(" 鎧", u.ArmorProficiency());
             var none = CreateUnit(src, "素人");
-            Assert.IsTrue(string.IsNullOrEmpty(none.WeaponProficiency()));
+            // 元の SRC の String の既定値は空文字列（Nothing ではない）
+            Assert.AreEqual("", none.WeaponProficiency());
+            Assert.AreEqual("", none.ArmorProficiency());
         }
 
         // ──────────────────────────────────────────────

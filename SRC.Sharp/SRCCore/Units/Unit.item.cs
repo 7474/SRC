@@ -680,7 +680,7 @@ namespace SRCCore.Units
         // 装備可能な武器クラス
         public string WeaponProficiency()
         {
-            string WeaponProficiencyRet = default;
+            string WeaponProficiencyRet = "";
             foreach (FeatureData fd in colFeature)
             {
                 if (fd.Name == "武器クラス")
@@ -695,7 +695,7 @@ namespace SRCCore.Units
         // 装備可能な防具クラス
         public string ArmorProficiency()
         {
-            string ArmorProficiencyRet = default;
+            string ArmorProficiencyRet = "";
             foreach (FeatureData fd in colFeature)
             {
                 if (fd.Name == "防具クラス")

@@ -47,8 +47,6 @@ namespace SRCCore.Units
         // ステータスを全回復
         public void FullRecover()
         {
-            Update();
-
             // パイロットのステータスを全回復
             foreach (var p in Pilots)
             {
@@ -76,6 +74,8 @@ namespace SRCCore.Units
                 cf.FullSupply();
 
                 // ステータス異常のみを消去
+                // 元の SRC は番号で消すが、状態の名前はキーと同じで重複しない。
+                // 残す状態（名前が「付加」で終わるもの）以外の削除では Update が呼ばれず状態の並びが変わらないので、名前で消しても同じ
                 foreach (var cnd in cf.Conditions.CloneList())
                 {
                     var cname = cnd.Name ?? "";
@@ -100,8 +100,8 @@ namespace SRCCore.Units
                 cf.UsedCounterAttack = 0;
                 cf.Mode = "通常";
 
-                // 他形態も回復
-                foreach (var of in OtherForms)
+                // 他形態も回復（元の SRC は With CurrentForm の中なので、現在の形態から見た他形態）
+                foreach (var of in cf.OtherForms)
                 {
                     of.HP = of.MaxHP;
                     of.EN = of.MaxEN;
