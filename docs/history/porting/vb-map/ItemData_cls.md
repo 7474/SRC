@@ -12,7 +12,7 @@ VB 版の `SRC/SRC_20121125/ItemData.cls` の手続きと、C# の対応（[説�
 | Sub AddFeature | 117 | 157 | `SRCCore/Models/ItemData.cs` ItemData.AddFeature | 未確認 |  |
 | Function CountFeature | 276 | 6 | `SRCCore/Models/ItemData.cs` ItemData.CountFeature | 未確認 |  |
 | Function Feature | 284 | 6 | `SRCCore/Models/ItemData.cs` ItemData.Feature | 未確認 |  |
-| Function FeatureName | 292 | 14 | `SRCCore/Models/ItemData.cs` ItemData.FeatureName | 未確認 |  |
+| Function FeatureName | 292 | 14 | `SRCCore/Models/ItemData.cs` ItemData.FeatureName | 未確認 | #1498（Pilot）で見つけた手がかり: VB は `Level <> DEFAULT_LEVEL` で「Lv」を付ける（UnitData だけが `> 0`）。共通の FeatureNameWithLv は Level > 0 のまま。PilotData は #1498 で直した |
 | Function FeatureLevel | 308 | 14 | `SRCCore/Models/ItemData.cs` ItemData.FeatureLevel | 未確認 |  |
 | Function FeatureData | 324 | 11 | `SRCCore/Models/ItemData.cs` ItemData.FeatureData | 未確認 |  |
 | Function FeatureNecessarySkill | 337 | 11 | `SRCCore/Items/Item.cs` Item.FeatureNecessarySkill | 未確認 |  |

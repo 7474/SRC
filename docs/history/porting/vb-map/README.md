@@ -116,10 +116,10 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [TerrainDataList.cls](TerrainDataList_cls.md) | 16 | 16 | 0 | 0 | 0 | 0 | 0 |
 | [Title.frm](Title_frm.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [ToolTip.frm](ToolTip_frm.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| [Unit.cls](Unit_cls.md) | 276 | 86 | 135 | 46 | 0 | 9 | 0 |
+| [Unit.cls](Unit_cls.md) | 276 | 0 | 197 | 70 | 0 | 9 | 0 |
 | [UnitData.cls](UnitData_cls.md) | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | [UnitDataList.cls](UnitDataList_cls.md) | 8 | 8 | 0 | 0 | 0 | 0 | 0 |
 | [Units.cls](Units_cls.md) | 25 | 25 | 0 | 0 | 0 | 0 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 905 | 296 | 112 | 6 | 14 | 0 |
+| 計 | 1333 | 819 | 358 | 136 | 6 | 14 | 0 |

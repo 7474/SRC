@@ -138,8 +138,8 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Models/DialogData.cs:67`（585 行） | コード | Dialog SelectDialogRet = default; | 未確認 |  |
 | `SRCCore/Models/MessageData.cs:30` | XXX | XXX MessageDataItem#IsAvailable 常に真でいいか | 未確認 |  |
 | `SRCCore/Models/NonPilotData.cs:38`（58 行） | コード | { | 未確認 |  |
-| `SRCCore/Models/PilotData.cs:506` | XXX | XXX Readonlyにするとか | 未確認 |  |
-| `SRCCore/Models/PilotData.cs:699` | XXX | XXX 例外処理要らんの？ | 未確認 |  |
+| `SRCCore/Models/PilotData.cs:495` | XXX | XXX Readonlyにするとか | SRC#で不要 | SRC# で足した DefinedSpecialPowers の設計のメモ。VB に当たるコードは無い |
+| `SRCCore/Models/PilotData.cs:688` | XXX | XXX 例外処理要らんの？ | SRC#で不要 | VB の Feature にもエラーの処理は無く、無ければ実行時エラーになる |
 | `SRCCore/Models/SpecialPowerData.cs:199`（21 行） | コード | { | 未確認 |  |
 | `SRCCore/Models/SpecialPowerData.cs:2374`（13 行） | コード | string anime; | 未確認 |  |
 | `SRCCore/Models/TerrainData.cs:128`（19 行） | コード | { | 未確認 |  |
@@ -153,12 +153,10 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Models/UnitDataList.cs:109` | コード | { | 未確認 |  |
 | `SRCCore/Models/UnitDataList.cs:119`（5 行） | コード | } | 未確認 |  |
 | `SRCCore/Models/UnitDataList.cs:311` | XXX | XXX 何で負数にしてるの？ | 未確認 |  |
-| `SRCCore/Pilots/Pilot.cs:52` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | 未確認 |  |
-| `SRCCore/Pilots/Pilot.skill.cs:101`（20 行） | コード | { | 未確認 |  |
-| `SRCCore/Pilots/Pilot.skill.cs:1228` | XXX | XXX 疎通してないから怪しいかもしれん | 未確認 |  |
-| `SRCCore/Pilots/Pilot.unit.cs:135` | XXX | XXX 外から操作したいものではない | 未確認 |  |
-| `SRCCore/Pilots/Pilots.cs:204` | XXX | XXX Clone List | 未確認 |  |
-| `SRCCore/Pilots/Pilots.cs:268`（307 行） | コード | { | 未確認 |  |
+| `SRCCore/Pilots/Pilot.cs:74` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | SRC#で不要 | Unit を UnitId から引くという SRC# の保存の設計についての覚え書き。VB の動作とは関係しない |
+| `SRCCore/Pilots/Pilot.unit.cs:135` | XXX | XXX 外から操作したいものではない | SRC#で不要 | 作りについてのメモ。VB の `Set MapDataForUnit(.X, .Y) = Nothing` と同じ動作 |
+| `SRCCore/Pilots/Pilots.cs:210` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |
+| `SRCCore/Pilots/Pilots.cs:274`（307 行） | コード | { | SRC#で不要 | Pilots.cls の Save〜Clear。セーブデータは JSON（SRC.save.cs）で、読み込んだ後の状態は対応表の Save〜Clear の行に書いた |
 | `SRCCore/SRC.config.cs:19`（147 行） | コード | { | 未確認 |  |
 | `SRCCore/SRC.cs:244` | XXX | XXX 別な実装をするならコンストラクタでは設定しない | 未確認 |  |
 | `SRCCore/SRC.data.cs:30` | XXX | XXX frmNowLoading | 未確認 |  |
@@ -199,8 +197,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/SRC.save.cs:269` | XXX | XXX FileName | 未確認 |  |
 | `SRCCore/SRC.save.cs:296` | XXX | XXX Version プロパティだけのオブジェクトでバージョンチェックなど | 未確認 |  |
 | `SRCCore/SRC.save.cs:298` | コード | SaveDataVersion = Conversions.ToInteger(fname2); | 未確認 |  |
-| `SRCCore/SRC.save.cs:349` | XXX | XXX 仮処理 | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: ユニットの行は Unit.RestoreLinkInfo を呼ぶようにした。パイロットの行は SRC.bas・Pilot.cls の担当で見てもらう |
-| `SRCCore/SRC.save.cs:389`（15 行） | コード | Event.SkipEventData(); | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: UList.RestoreLinkInfo・RestoreParameter に当たる処理は Unit.RestoreLinkInfo と JSON で済んでいる。PList・IList の行と PList.UpdateSupportMod は SRC.bas の担当で見てもらう |
+| `SRCCore/SRC.save.cs:394`（15 行） | コード | Event.SkipEventData(); | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: UList.RestoreLinkInfo・RestoreParameter に当たる処理は Unit.RestoreLinkInfo と JSON で済んでいる。PList・IList の行と PList.UpdateSupportMod は SRC.bas の担当で見てもらう |
 | `SRCCore/Sound.cs:147` | XXX | XXX 止まってるってことはリピートしてないってことだろう。 | 未確認 |  |
 | `SRCCore/Sound.cs:244` | XXX | XXX なんで？ | 未確認 |  |
 | `SRCCore/Sound.cs:426` | XXX | XXX なんで wave_name 分解したんだろう？ | 未確認 |  |
