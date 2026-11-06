@@ -29,7 +29,7 @@ namespace SRCCore.CmdDatas.Commands
                         if (SRC.UList.IsDefined(pname))
                         {
                             // 指定したユニットが装備しているアイテムすべてを外す
-                            RemoveForUnit(SRC.UList.Item(pname));
+                            RemoveForUnit(SRC.UList.Item(pname).CurrentForm());
                         }
                         else if (SRC.PList.IsDefined(pname))
                         {
@@ -53,19 +53,18 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 var itm = SRC.IList.Item(iname);
 
-                                // XXX このチェック何？
+                                // IList.Item はＩＤで見つからなければアイテム名でも探すので、
+                                // ＩＤで指定されたときだけここで削除する
                                 if (itm.ID == iname)
                                 {
                                     if (itm.Unit != null)
                                     {
                                         var iu = itm.Unit;
+                                        var item_with_image = itm.IsFeatureAvailable("ユニット画像");
                                         iu.DeleteItem(itm);
-                                        if (iu.Status == "出撃")
+                                        if (item_with_image)
                                         {
-                                            if (!GUI.IsPictureVisible && !Map.IsStatusView)
-                                            {
-                                                GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
-                                            }
+                                            RefreshUnitBitmap(iu);
                                         }
                                     }
 
@@ -102,13 +101,11 @@ namespace SRCCore.CmdDatas.Commands
                                 var iu = itm.Unit;
                                 if (iu != null)
                                 {
+                                    var item_with_image = itm.IsFeatureAvailable("ユニット画像");
                                     iu.DeleteItem(itm);
-                                    if (iu.Status == "出撃")
+                                    if (item_with_image)
                                     {
-                                        if (!GUI.IsPictureVisible && !Map.IsStatusView)
-                                        {
-                                            GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
-                                        }
+                                        RefreshUnitBitmap(iu);
                                     }
                                 }
 
@@ -129,7 +126,7 @@ namespace SRCCore.CmdDatas.Commands
 
                         if (SRC.UList.IsDefined(pname))
                         {
-                            u = SRC.UList.Item(pname);
+                            u = SRC.UList.Item(pname).CurrentForm();
                         }
                         else if (SRC.PList.IsDefined(pname))
                         {
@@ -147,7 +144,7 @@ namespace SRCCore.CmdDatas.Commands
                         var iname = GetArgAsString(3);
                         if (Information.IsNumeric(iname))
                         {
-                           var inumber = Conversions.ToInteger(iname);
+                            var inumber = Conversions.ToInteger(iname);
                             RemoveForUnitAndNumber(u, iname, inumber);
                             return EventData.NextID;
                         }
@@ -162,13 +159,11 @@ namespace SRCCore.CmdDatas.Commands
                         var itm = u.ItemList.FirstOrDefault(x => (x.Name == iname || x.ID == iname) && x.Exist);
                         if (itm != null)
                         {
+                            var item_with_image = itm.IsFeatureAvailable("ユニット画像");
                             u.DeleteItem(itm);
-                            if (u.Status == "出撃")
+                            if (item_with_image)
                             {
-                                if (!GUI.IsPictureVisible && !Map.IsStatusView)
-                                {
-                                    GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
-                                }
+                                RefreshUnitBitmap(u);
                             }
                             itm.Unit = null;
                             itm.Exist = false;
@@ -197,23 +192,31 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var itm = u.Item(inumber);
+            var item_with_image = itm.IsFeatureAvailable("ユニット画像");
             u.DeleteItem(itm);
-            if (u.Status == "出撃")
+            if (item_with_image)
             {
-                if (!GUI.IsPictureVisible && !Map.IsStatusView)
-                {
-                    GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
-                }
+                RefreshUnitBitmap(u);
             }
             itm.Unit = null;
             itm.Exist = false;
         }
 
-        private void RemoveForUnit(Units.Unit u)
+        private void RemoveForUnit(Unit u)
         {
             if (u == null) { return; }
-            foreach (var itm in u.ItemList.CloneList())
+
+            // 元の SRC と同じく、先頭のアイテムを外すことを、アイテムが無くなるまで繰り返す
+            // （ハードポイントの都合で一緒に外れたアイテムは、Exist を変えずにユニットから外れる）
+            var item_with_image = false;
+            while (u.CountItem() > 0)
             {
+                var itm = u.Item(1);
+                if (itm.IsFeatureAvailable("ユニット画像"))
+                {
+                    item_with_image = true;
+                }
+
                 if (u.Party0 != "味方")
                 {
                     itm.Exist = false;
@@ -222,11 +225,23 @@ namespace SRCCore.CmdDatas.Commands
                 u.DeleteItem(itm);
             }
 
+            if (item_with_image)
+            {
+                RefreshUnitBitmap(u);
+            }
+        }
+
+        // ユニット画像を持つアイテムを外したときに、ユニットを描き直す。
+        // 元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない。
+        // 元の SRC はユニット・アイテムＩＤ・アイテム名で指定したときに SelectedUnitForEvent を描き直すが、
+        // アイテムを外したユニットを描き直す（元の SRC の誤り）。
+        private void RefreshUnitBitmap(Unit u)
+        {
             if (u.Status == "出撃")
             {
                 if (!GUI.IsPictureVisible && !Map.IsStatusView)
                 {
-                    GUI.PaintUnitBitmap(Event.SelectedUnitForEvent);
+                    GUI.PaintUnitBitmap(u);
                 }
             }
         }

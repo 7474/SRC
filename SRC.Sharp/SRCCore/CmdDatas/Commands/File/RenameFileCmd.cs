@@ -42,12 +42,12 @@ namespace SRCCore.CmdDatas.Commands
 
             if (!SRC.FileSystem.FileExists(sourceFilePath))
             {
-                throw new EventErrorException(this, "元のファイル" + "「" + fname1 + "」が見つかりません");
+                throw new EventErrorException(this, "元のファイル" + "「" + sourceFilePath + "」が見つかりません");
             }
 
             if (SRC.FileSystem.FileExists(destFilePath))
             {
-                throw new EventErrorException(this, "既に" + "「" + fname2 + "」が存在しています");
+                throw new EventErrorException(this, "既に" + "「" + destFilePath + "」が存在しています");
             }
 
             using (var source = SRC.FileSystem.Open(sourceFilePath))
