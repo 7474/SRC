@@ -576,7 +576,8 @@ namespace SRCCore.Coverage.Tests
             f.Place("歩兵", "敵", 1, 1);
             f.Map.AreaInSpeed(u);
 
-            f.Map.SafetyPoint(u, out var x, out var y);
+            int x = u.x, y = u.y;
+            f.Map.SafetyPoint(u, ref x, ref y);
             Assert.AreEqual(6, x);
             Assert.AreEqual(1, y);
         }

@@ -33,7 +33,12 @@ namespace SRCCore.Maps
             is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
             is_adaptable_in_space = Strings.Mid(u.Data.Adaption, 4, 1) != "-" || u.IsFeatureAvailable("宇宙移動");
             is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
-            adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
+            // 地形適応のある地形のリスト
+            // VB（AreaInSpeed・AreaInMoveAction）はすべての「地形適応」の 2 つ目以降の要素を集める
+            adopted_terrain = u.Features
+                .Where(fd => fd.Name == "地形適応")
+                .SelectMany(fd => GeneralLib.ToL(fd.Data).Skip(1))
+                .ToList();
             allowed_terrains = new List<string>();
             if (u.IsFeatureAvailable("移動制限"))
             {

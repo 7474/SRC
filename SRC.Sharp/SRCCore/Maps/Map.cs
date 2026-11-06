@@ -1533,6 +1533,9 @@ namespace SRCCore.Maps
             // ユニットがいるため通り抜け出来ない場所をチェック
             if (!currentUnit.IsFeatureAvailable("すり抜け移動") && !currentUnit.IsUnderSpecialPowerEffect("すり抜け移動"))
             {
+                // VB では zarea は手続きの変数で、ＺＯＣの判定（blocked And Not ByJump）のときだけ設定し直す。
+                // 「広域ＺＯＣ無効化」の距離の判定には、前に判定したユニットの zarea がそのまま使われる
+                var zarea = 0;
                 foreach (Unit u2 in SRC.UList.Items)
                 {
                     if (u2.Status == "出撃")
@@ -1577,10 +1580,10 @@ namespace SRCCore.Maps
                         }
 
                         // ＺＯＣ
-                        var zarea = 0;
                         if (blocked && !ByJump)
                         {
                             var is_zoc = false;
+                            zarea = 0;
                             int n = 0;
                             if (u2.IsFeatureAvailable("ＺＯＣ") || Expression.IsOptionDefined("ＺＯＣ"))
                             {
@@ -1598,7 +1601,8 @@ namespace SRCCore.Maps
                                 {
                                     // 移動側のＺＯＣ無効化レベル
                                     // レベル指定なし、またはLv1はLv10000として扱う
-                                    var l = u.FeatureLevel("ＺＯＣ無効化");
+                                    // VB の l は Integer なので、レベルを偶数丸めで整数にしてから比べる
+                                    int l = VBMath.CLng(u.FeatureLevel("ＺＯＣ無効化"));
                                     if (l == 1)
                                         l = 10000;
 
@@ -1650,7 +1654,7 @@ namespace SRCCore.Maps
                                                             break;
                                                         }
 
-                                                        var l = withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化");
+                                                        int l = VBMath.CLng(withBlock2.FeatureLevel("隣接ユニットＺＯＣ無効化"));
                                                         if (l == 1)
                                                             l = 10000;
 
@@ -2153,7 +2157,10 @@ namespace SRCCore.Maps
             MaskData[currentUnit.x, currentUnit.y] = false;
         }
 
-        private void MaskAlreadyUnitExist(Unit currentUnit, int x, int y, Unit u2)
+        // ユニットのいる地点 (x, y) に、合体・着艦のために進入できるか（味方のユニットの場合だけ呼ぶ）
+        // VB: AreaInSpeed・AreaInTeleport の Select Case u2.Party0。
+        // AreaInTeleport は着艦する母艦が使用不能（IsDisabled("母艦")）なら進入できない
+        private void MaskAlreadyUnitExist(Unit currentUnit, int x, int y, Unit u2, bool by_teleport = false)
         {
             switch (u2.Party0 ?? "")
             {
@@ -2164,7 +2171,8 @@ namespace SRCCore.Maps
                             // 母艦に着艦？
                             if (!currentUnit.IsFeatureAvailable("母艦") && u2.Area != "地中")
                             {
-                                if (!currentUnit.IsFeatureAvailable("格納不可"))
+                                if (!currentUnit.IsFeatureAvailable("格納不可")
+                                    && (!by_teleport || !u2.IsDisabled("母艦")))
                                 {
                                     MaskData[x, y] = false;
                                 }
@@ -2174,14 +2182,7 @@ namespace SRCCore.Maps
                         {
                             // ２体合体？
                             MaskData[x, y] = true;
-                            foreach (var cfd in currentUnit.TwoUnitCombineFeatures(SRC)
-                                .Where(x =>
-                                {
-                                    // XXX 合体制限は変形してる時だけでいい？
-                                    var pu = SRC.UList.Item(x.PartUnitNames.First());
-                                    return u2.Name == x.PartUnitNames.First()
-                                        || (u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限"));
-                                }))
+                            if (CanCombineWith(currentUnit, u2, true))
                             {
                                 MaskData[x, y] = false;
                             }
@@ -2195,14 +2196,7 @@ namespace SRCCore.Maps
                         {
                             // ２体合体？
                             MaskData[x, y] = true;
-                            foreach (var cfd in currentUnit.TwoUnitCombineFeatures(SRC)
-                                .Where(x =>
-                                {
-                                    // XXX 合体制限は変形してる時だけでいい？
-                                    var pu = SRC.UList.Item(x.PartUnitNames.First());
-                                    return u2.Name == x.PartUnitNames.First()
-                                        || (u2.Name == pu.CurrentForm().Name && !u2.IsFeatureAvailable("合体制限"));
-                                }))
+                            if (CanCombineWith(currentUnit, u2, false))
                             {
                                 MaskData[x, y] = false;
                             }
@@ -2211,6 +2205,52 @@ namespace SRCCore.Maps
                     }
             }
         }
+
+        // currentUnit が u2 と２体合体できるか
+        // VB: For k = 1 To .CountFeature で「合体」の能力を順に見る。
+        // 合体後のユニットが行動不能・破棄なら、残りの能力を見ずに打ち切る（Exit For）。
+        // 相手が u2 そのものなら合体制限に関わらず合体でき、相手の現在の形態が u2 なら u2 が合体制限を持たない場合に合体できる。
+        // 味方のユニットでは表示名の無い（非表示の）合体能力を除く
+        private bool CanCombineWith(Unit currentUnit, Unit u2, bool require_feature_name)
+        {
+            foreach (var fd in currentUnit.Features)
+            {
+                if (fd.Name != "合体")
+                {
+                    continue;
+                }
+                if (require_feature_name && string.IsNullOrEmpty(fd.FeatureName(currentUnit)))
+                {
+                    continue;
+                }
+
+                var buf = fd.Data;
+                if (GeneralLib.LLength(buf) != 3
+                    || !SRC.UList.IsDefined(GeneralLib.LIndex(buf, 2))
+                    || !SRC.UList.IsDefined(GeneralLib.LIndex(buf, 3)))
+                {
+                    continue;
+                }
+
+                var cu = SRC.UList.Item(GeneralLib.LIndex(buf, 2));
+                if (cu.IsConditionSatisfied("行動不能") || cu.Status == "破棄")
+                {
+                    return false;
+                }
+
+                if (u2.Name == GeneralLib.LIndex(buf, 3))
+                {
+                    return true;
+                }
+                if (u2.Name == SRC.UList.Item(GeneralLib.LIndex(buf, 3)).CurrentForm().Name
+                    && !u2.IsFeatureAvailable("合体制限"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // 移動制限による制限を受けるか
         // VB では移動コストの算出（For k = 2 To n で一致しなければ進入不可）は地形の指定がなくても全地形を制限し、
         // マスクの判定（UBound(allowed_terrains) > 0）はデータが空でない場合だけ制限する
@@ -2683,7 +2723,8 @@ namespace SRCCore.Maps
                         break;
                     }
                 default:
-                    throw new NotSupportedException("Invalid terrain.");
+                    // VB の Select Case は他の場所（エリア）を扱わないので、移動コストは 1000000 のまま
+                    break;
             }
 
             // 線路移動
@@ -3001,7 +3042,7 @@ namespace SRCCore.Maps
                         goto NextLoop;
                     }
 
-                    MaskAlreadyUnitExist(currentUnit, i, j, u2);
+                    MaskAlreadyUnitExist(currentUnit, i, j, u2, true);
                 NextLoop:
                     ;
                 }
@@ -3365,14 +3406,14 @@ namespace SRCCore.Maps
             dst_x = Math.Max(Math.Min(dst_x, MapWidth), 1);
             dst_y = Math.Max(Math.Min(dst_y, MapHeight), 1);
 
-            // XXX マップの最大サイズの制限になるはず
-            var total_cost = new int[52, 52];
-            var move_cost = new int[52, 52];
-            var cur_speed = new int[52, 52];
+            // VB は 0 To 51 の固定の配列。SRC# はマップの大きさに合わせる
+            var total_cost = new int[MapWidth + 2, MapHeight + 2];
+            var move_cost = new int[MapWidth + 2, MapHeight + 2];
+            var cur_speed = new int[MapWidth + 2, MapHeight + 2];
 
             // 各地形の移動コストを算出しておく
-            // XXX ジャンプとかテレポートは？
-            FillMoveCost(u, move_cost, u.Area, 0, 0, 51, 51, false);
+            // NearestPoint の移動コストは AreaInSpeed とは別の表（VB の NearestPoint の通り）
+            FillNearestPointMoveCost(u, move_cost);
 
             var loopTo34 = (MapWidth + 1);
             for (var i = 0; i <= loopTo34; i++)
@@ -3451,7 +3492,7 @@ namespace SRCCore.Maps
                     var loopTo41 = MapHeight;
                     for (var j = 1; j <= loopTo41; j++)
                     {
-                        // XXX MaskData の更新してない気がする
+                        // MaskData は呼び出し側が事前に AreaInSpeed などで設定しておく（VB と同じ）
                         if (!MaskData[i, j])
                         {
                             if (MapDataForUnit[i, j] is null)
@@ -3477,15 +3518,208 @@ namespace SRCCore.Maps
             }
         }
 
-        // ユニット u が敵から最も遠くなる場所(X,Y)を検索
-        public void SafetyPoint(Unit u, out int X, out int Y)
+        // NearestPoint で使う各地点の移動コスト
+        // VB: NearestPoint の「各地形の移動コストを算出しておく」〜「ジャンプ移動」。
+        // AreaInSpeed とは表が違う（深水・線路・ホバー移動・ジャンプ移動はコスト 1、透過移動を見ない、
+        // 地形適応は最初の能力だけを見る、Select Case で扱わない地形はコスト 0 のまま など）
+        private void FillNearestPointMoveCost(Unit u, int[,] move_cost)
         {
-            var total_cost = new int[52, 52];
-            var cur_cost = new int[52, 52];
-            bool is_changed;
+            var is_trans_available_on_ground = u.IsTransAvailable("陸") && u.get_Adaption(2) != 0;
+            var is_trans_available_in_water = u.IsTransAvailable("水") && u.get_Adaption(3) != 0;
+            var is_adaptable_in_water = Strings.Mid(u.Data.Adaption, 3, 1) != "-" || u.IsFeatureAvailable("水中移動");
+            var is_trans_available_on_water = u.IsFeatureAvailable("水上移動") || u.IsFeatureAvailable("ホバー移動");
+            var adopted_terrain = GeneralLib.ToL(u.FeatureData("地形適応")).Skip(1).ToList();
 
-            X = u.x;
-            Y = u.y;
+            // 地形の移動コスト。地形適応のある地形は 2 を上限にする
+            int AdoptedCost(TerrainData td)
+            {
+                var cost = td.MoveCost;
+                if (adopted_terrain.Contains(td.Name))
+                {
+                    cost = Math.Min(cost, 2);
+                }
+                return cost;
+            }
+
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    var td = Terrain(i, j);
+                    switch (u.Area ?? "")
+                    {
+                        case "空中":
+                            move_cost[i, j] = td.Class == "空" ? AdoptedCost(td) : 2;
+                            break;
+
+                        case "地上":
+                            switch (td.Class ?? "")
+                            {
+                                case "陸":
+                                case "屋内":
+                                case "月面":
+                                    move_cost[i, j] = is_trans_available_on_ground ? AdoptedCost(td) : 1000000;
+                                    break;
+                                case "水":
+                                    if (is_trans_available_in_water)
+                                    {
+                                        move_cost[i, j] = 2;
+                                    }
+                                    else if (is_adaptable_in_water)
+                                    {
+                                        move_cost[i, j] = AdoptedCost(td);
+                                    }
+                                    else
+                                    {
+                                        move_cost[i, j] = 1000000;
+                                    }
+                                    break;
+                                case "深水":
+                                    move_cost[i, j] = is_trans_available_in_water ? 1 : 1000000;
+                                    break;
+                                case "空":
+                                    move_cost[i, j] = 1000000;
+                                    break;
+                            }
+                            break;
+
+                        case "水上":
+                            switch (td.Class ?? "")
+                            {
+                                case "陸":
+                                case "屋内":
+                                case "月面":
+                                    move_cost[i, j] = is_trans_available_on_ground ? AdoptedCost(td) : 1000000;
+                                    break;
+                                case "水":
+                                case "深水":
+                                    move_cost[i, j] = 2;
+                                    break;
+                                case "空":
+                                    move_cost[i, j] = 1000000;
+                                    break;
+                            }
+                            break;
+
+                        case "水中":
+                            switch (td.Class ?? "")
+                            {
+                                case "陸":
+                                case "屋内":
+                                case "月面":
+                                    move_cost[i, j] = is_trans_available_on_ground ? AdoptedCost(td) : 1000000;
+                                    break;
+                                case "水":
+                                    move_cost[i, j] = is_trans_available_in_water ? 2 : AdoptedCost(td);
+                                    break;
+                                case "深水":
+                                    move_cost[i, j] = is_trans_available_in_water ? 1 : 1000000;
+                                    break;
+                                case "空":
+                                    move_cost[i, j] = 1000000;
+                                    break;
+                            }
+                            break;
+
+                        case "宇宙":
+                            move_cost[i, j] = AdoptedCost(td);
+                            break;
+
+                        case "地中":
+                            move_cost[i, j] = td.Class == "陸" ? 2 : 1000000;
+                            break;
+                    }
+                }
+            }
+
+            // 線路移動
+            if (u.IsFeatureAvailable("線路移動"))
+            {
+                if (u.Area == "地上")
+                {
+                    for (var i = 1; i <= MapWidth; i++)
+                    {
+                        for (var j = 1; j <= MapHeight; j++)
+                        {
+                            move_cost[i, j] = Terrain(i, j).Name == "線路" ? 1 : 1000000;
+                        }
+                    }
+                }
+            }
+
+            // 移動制限・進入不可
+            // 移動制限は地形が指定されていなければ全ての地形に進入できない（For k = 2 To n）
+            var unitProps = new UnitMoveProps(u);
+            var is_move_restricted = HasMoveRestriction(u, false);
+            for (var i = 1; i <= MapWidth; i++)
+            {
+                for (var j = 1; j <= MapHeight; j++)
+                {
+                    if (is_move_restricted
+                        && !unitProps.allowed_terrains.Contains(Terrain(i, j).Name))
+                    {
+                        move_cost[i, j] = 1000000;
+                    }
+
+                    if (unitProps.prohibited_terrains.Contains(Terrain(i, j).Name))
+                    {
+                        move_cost[i, j] = 1000000;
+                    }
+                }
+            }
+
+            // ホバー移動
+            if (u.IsFeatureAvailable("ホバー移動"))
+            {
+                if (u.Area == "地上" || u.Area == "水上")
+                {
+                    for (var i = 1; i <= MapWidth; i++)
+                    {
+                        for (var j = 1; j <= MapHeight; j++)
+                        {
+                            switch (Terrain(i, j).Name ?? "")
+                            {
+                                case "砂漠":
+                                case "月面":
+                                    move_cost[i, j] = 1;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ジャンプ移動
+            if (u.IsFeatureAvailable("ジャンプ移動"))
+            {
+                if (u.Area == "地上" || u.Area == "水上" || u.Area == "水中")
+                {
+                    for (var i = 1; i <= MapWidth; i++)
+                    {
+                        for (var j = 1; j <= MapHeight; j++)
+                        {
+                            switch (Terrain(i, j).Class ?? "")
+                            {
+                                case "陸":
+                                case "月面":
+                                    move_cost[i, j] = 1;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // ユニット u が敵から最も遠くなる場所(X,Y)を検索
+        // VB の X・Y は ByRef で、移動先が見つからなければ渡された値のまま残す。
+        // 同じ距離の地点は、渡された (X,Y) よりユニットに近い場合だけ選ぶ
+        public void SafetyPoint(Unit u, ref int X, ref int Y)
+        {
+            // VB は 0 To 51 の固定の配列。SRC# はマップの大きさに合わせる
+            var total_cost = new int[MapWidth + 2, MapHeight + 2];
+            var cur_cost = new int[MapWidth + 2, MapHeight + 2];
+            bool is_changed;
 
             // 作業用配列を初期化
             var loopTo = (MapWidth + 1);
@@ -3583,9 +3817,9 @@ namespace SRCCore.Maps
             move_route_x.Add(tx);
             move_route_y.Add(ty);
 
-            // 現在位置を調べる
-            ox = tx;
-            oy = ty;
+            // 現在位置を調べる（見つからなければ VB の Integer の既定値の 0 のまま）
+            ox = 0;
+            oy = 0;
             for (xx = 1; xx <= MapWidth; xx++)
             {
                 for (yy = 1; yy <= MapHeight; yy++)
