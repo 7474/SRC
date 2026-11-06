@@ -62,66 +62,66 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecDestroyCmd | 4636 | 73 | `SRCCore/CmdDatas/Commands/Unit/DestroyCmd.cs` DestroyCmd | 一致 |  |
 | Function ExecDisableCmd | 4710 | 72 | `SRCCore/CmdDatas/Commands/Unit/DisableCmd.cs` DisableCmd | 一致 |  |
 | Function ExecDoCmd | 4783 | 46 | `SRCCore/CmdDatas/Commands/Control/DoCmd.cs` DoCmd | 一致 |  |
-| Function ExecLoopCmd | 4830 | 46 | `SRCCore/CmdDatas/Commands/Control/LoopCmd.cs` LoopCmd | 未確認 |  |
+| Function ExecLoopCmd | 4830 | 46 | `SRCCore/CmdDatas/Commands/Control/LoopCmd.cs` LoopCmd | 一致 |  |
 | Function ExecDrawOptionCmd | 4877 | 10 | `SRCCore/CmdDatas/Commands/Screan/DrawOptionCmd.cs` DrawOptionCmd | 一致 |  |
 | Function ExecDrawWidthCmd | 4888 | 10 | `SRCCore/CmdDatas/Commands/Screan/DrawWidthCmd.cs` DrawWidthCmd | 一致 |  |
-| Function ExecEnableCmd | 4899 | 49 | `SRCCore/CmdDatas/Commands/Unit/EnableCmd.cs` EnableCmd | 未確認 |  |
-| Function ExecEquipCmd | 4949 | 131 | `SRCCore/CmdDatas/Commands/Item/EquipCmd.cs` EquipCmd | 未確認 |  |
-| Function ExecEscapeCmd | 5081 | 109 | `SRCCore/CmdDatas/Commands/Unit/EscapeCmd.cs` EscapeCmd | 未確認 |  |
-| Function ExecExecCmd | 5191 | 169 | `SRCCore/CmdDatas/Commands/Stage/ExecCmd.cs` ExecCmd | 未確認 |  |
-| Function ExecExitCmd | 5361 | 3 | `SRCCore/CmdDatas/Commands/Event/ExitCmd.cs` ExitCmd | 未確認 |  |
-| Function ExecExchangeItemCmd | 5365 | 20 | `SRCCore/CmdDatas/Commands/Unit/ExchangeItemCmd.cs` ExchangeItemCmd | 未確認 |  |
-| Function ExecExplodeCmd | 5386 | 22 | `SRCCore/CmdDatas/Commands/Screan/ExplodeCmd.cs` ExplodeCmd | 未確認 |  |
-| Function ExecExpUpCmd | 5409 | 61 | `SRCCore/CmdDatas/Commands/Pilot/ExpUpCmd.cs` ExpUpCmd | 未確認 |  |
-| Function ExecFadeInCmd | 5471 | 75 | `SRCCore/CmdDatas/Commands/Screan/FadeInCmd.cs` FadeInCmd | 未確認 |  |
-| Function ExecFadeOutCmd | 5547 | 53 | `SRCCore/CmdDatas/Commands/Screan/FadeOutCmd.cs` FadeOutCmd | 未確認 |  |
-| Function ExecFillColorCmd | 5601 | 27 | `SRCCore/CmdDatas/Commands/Screan/FillColorCmd.cs` FillColorCmd | 未確認 |  |
-| Function ExecFillStyleCmd | 5629 | 30 | `SRCCore/CmdDatas/Commands/Screan/FillStyleCmd.cs` FillStyleCmd | 未確認 |  |
-| Function ExecFinishCmd | 5660 | 31 | `SRCCore/CmdDatas/Commands/Unit/FinishCmd.cs` FinishCmd | 未確認 |  |
-| Function ExecFixCmd | 5692 | 30 | `SRCCore/CmdDatas/Commands/Unit/FixCmd.cs` FixCmd | 未確認 |  |
-| Function ExecFontCmd | 5723 | 85 | `SRCCore/CmdDatas/Commands/Screan/FontCmd.cs` FontCmd | 未確認 |  |
-| Function ExecForCmd | 5809 | 57 | `SRCCore/CmdDatas/Commands/Control/ForCmd.cs` ForCmd | 未確認 |  |
-| Function ExecForEachCmd | 5867 | 491 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs` ForEachCmd | 未確認 |  |
-| Function ExecNextCmd | 6359 | 71 | `SRCCore/CmdDatas/Commands/Control/NextCmd.cs` NextCmd | 未確認 |  |
-| Function ExecForgetCmd | 6431 | 24 | `SRCCore/CmdDatas/Commands/Other/ForgetCmd.cs` ForgetCmd | 未確認 |  |
-| Function ExecFreeMemoryCmd | 6456 | 6 | `SRCCore/CmdDatas/Commands/Other/FreeMemoryCmd.cs` FreeMemoryCmd | 未確認 |  |
-| Function ExecGameClearCmd | 6463 | 8 | `SRCCore/CmdDatas/Commands/Stage/GameClearCmd.cs` GameClearCmd | 未確認 |  |
-| Function ExecGameOverCmd | 6472 | 10 | `SRCCore/CmdDatas/Commands/Stage/GameOverCmd.cs` GameOverCmd | 未確認 |  |
-| Function ExecGetOffCmd | 6483 | 35 | `SRCCore/CmdDatas/Commands/Pilot/GetOffCmd.cs` GetOffCmd | 未確認 |  |
-| Function ExecGlobalCmd | 6519 | 20 | `SRCCore/CmdDatas/Commands/Variable/GlobalCmd.cs` GlobalCmd | 未確認 |  |
-| Function ExecGotoCmd | 6540 | 26 | `SRCCore/CmdDatas/Commands/Control/GotoCmd.cs` GotoCmd | 未確認 |  |
-| Function ExecHideCmd | 6567 | 5 | `SRCCore/CmdDatas/Commands/Screan/HideCmd.cs` HideCmd | 未確認 |  |
-| Function ExecHotPointCmd | 6573 | 37 | `SRCCore/CmdDatas/Commands/Screan/HotPointCmd.cs` HotPointCmd | 未確認 |  |
-| Function ExecIfCmd | 6611 | 201 | `SRCCore/CmdDatas/Commands/Control/IfCmd.cs` IfCmd | 未確認 |  |
-| Function ExecElseCmd | 6813 | 25 | `SRCCore/CmdDatas/Commands/Control/ElseCmd.cs` ElseCmd | 未確認 |  |
-| Function ExecIncrCmd | 6839 | 17 | `SRCCore/CmdDatas/Commands/Variable/IncrCmd.cs` IncrCmd | 未確認 |  |
-| Function ExecIncreaseMoraleCmd | 6857 | 25 | `SRCCore/CmdDatas/Commands/Pilot/IncreaseMoraleCmd.cs` IncreaseMoraleCmd | 未確認 |  |
-| Function ExecInputCmd | 6883 | 18 | `SRCCore/CmdDatas/Commands/Input/InputCmd.cs` InputCmd | 未確認 |  |
-| Function ExecIntermissionCommandCmd | 6904 | 31 | `SRCCore/CmdDatas/Commands/Other/IntermissionCommandCmd.cs` IntermissionCommandCmd | 未確認 |  |
-| Function ExecItemCmd | 6936 | 18 | `SRCCore/CmdDatas/Commands/Item/ItemCmd.cs` ItemCmd | 未確認 |  |
-| Function ExecJoinCmd | 6955 | 66 | `SRCCore/CmdDatas/Commands/Unit/JoinCmd.cs` JoinCmd | 未確認 |  |
-| Function ExecKeepBGMCmd | 7022 | 10 | `SRCCore/CmdDatas/Commands/Sound/KeepBGMCmd.cs` KeepBGMCmd | 未確認 |  |
-| Function ExecLandCmd | 7033 | 28 | `SRCCore/CmdDatas/Commands/Unit/LandCmd.cs` LandCmd | 未確認 |  |
-| Function ExecLaunchCmd | 7062 | 89 | `SRCCore/CmdDatas/Commands/Unit/LaunchCmd.cs` LaunchCmd | 未確認 |  |
-| Function ExecLeaveCmd | 7152 | 81 | `SRCCore/CmdDatas/Commands/Unit/LeaveCmd.cs` LeaveCmd | 未確認 |  |
-| Function ExecLevelUpCmd | 7234 | 65 | `SRCCore/CmdDatas/Commands/Pilot/LevelUpCmd.cs` LevelUpCmd | 未確認 |  |
-| Function ExecLineCmd | 7300 | 119 | `SRCCore/CmdDatas/Commands/Screan/LineCmd.cs` LineCmd | 未確認 |  |
-| Function ExecLineReadCmd | 7420 | 13 | `SRCCore/CmdDatas/Commands/File/LineReadCmd.cs` LineReadCmd | 未確認 |  |
-| Function ExecLoadCmd | 7434 | 114 | `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs` LoadCmd | 未確認 |  |
-| Function ExecLocalCmd | 7549 | 96 | `SRCCore/CmdDatas/Commands/Control/LocalCmd.cs` LocalCmd | 未確認 |  |
-| Function ExecMakePilotListCmd | 7646 | 260 | `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` MakePilotListCmd | 未確認 |  |
-| Function ExecMakeUnitListCmd | 7907 | 5 | `SRCCore/CmdDatas/Commands/Other/MakeUnitListCmd.cs` MakeUnitListCmd | 未確認 |  |
-| Function ExecMapAbilityCmd | 7913 | 84 | `SRCCore/CmdDatas/Commands/Unit/MapAbilityCmd.cs` MapAbilityCmd | 未確認 |  |
-| Function ExecMapAttackCmd | 7998 | 114 | `SRCCore/CmdDatas/Commands/Unit/MapAttackCmd.cs` MapAttackCmd | 未確認 |  |
-| Function ExecMoneyCmd | 8113 | 10 | `SRCCore/CmdDatas/Commands/Other/MoneyCmd.cs` MoneyCmd | 未確認 |  |
-| Function ExecMonotoneCmd | 8124 | 57 | `SRCCore/CmdDatas/Commands/Map/MonotoneCmd.cs` MonotoneCmd | 未確認 | #1503 で見つけた手がかり: VB は SetupBackground の後に `Center prev_x, prev_y` で表示位置を戻すが、C# は戻さない（ColorFilter と同じ。#1503 で直した形に合わせる） |
-| Function ExecMoveCmd | 8182 | 78 | `SRCCore/CmdDatas/Commands/Unit/MoveCmd.cs` MoveCmd | 未確認 |  |
-| Function ExecNightCmd | 8261 | 57 | `SRCCore/CmdDatas/Commands/Map/NightCmd.cs` NightCmd | 未確認 | #1503 で見つけた手がかり: VB は SetupBackground の後に `Center prev_x, prev_y` で表示位置を戻すが、C# は戻さない（ColorFilter と同じ。#1503 で直した形に合わせる） |
-| Function ExecNoonCmd | 8319 | 57 | `SRCCore/CmdDatas/Commands/Map/NoonCmd.cs` NoonCmd | 未確認 | #1503 で見つけた手がかり: VB は SetupBackground の後に `Center prev_x, prev_y` で表示位置を戻すが、C# は戻さない（ColorFilter と同じ。#1503 で直した形に合わせる） |
-| Function ExecOpenCmd | 8377 | 45 | `SRCCore/CmdDatas/Commands/File/OpenCmd.cs` OpenCmd | 未確認 |  |
-| Function ExecOptionCmd | 8423 | 30 | `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs` OptionCmd | 未確認 |  |
-| Function ExecOrganizeCmd | 8454 | 284 | `SRCCore/CmdDatas/Commands/Unit/OrganizeCmd.cs` OrganizeCmd | 未確認 |  |
-| Function ExecOvalCmd | 8739 | 102 | `SRCCore/CmdDatas/Commands/Screan/OvalCmd.cs` OvalCmd | 未確認 |  |
+| Function ExecEnableCmd | 4899 | 49 | `SRCCore/CmdDatas/Commands/Unit/EnableCmd.cs` EnableCmd | 一致 |  |
+| Function ExecEquipCmd | 4949 | 131 | `SRCCore/CmdDatas/Commands/Item/EquipCmd.cs` EquipCmd | 修正済み | ユニット画像が変わったときだけ再描画し、指揮・階級・広域サポートのレベルが変わったときだけ支援効果を更新する |
+| Function ExecEscapeCmd | 5081 | 109 | `SRCCore/CmdDatas/Commands/Unit/EscapeCmd.cs` EscapeCmd | 一致 |  |
+| Function ExecExecCmd | 5191 | 169 | `SRCCore/CmdDatas/Commands/Stage/ExecCmd.cs` ExecCmd | 一致 |  |
+| Function ExecExitCmd | 5361 | 3 | `SRCCore/CmdDatas/Commands/Event/ExitCmd.cs` ExitCmd | 一致 |  |
+| Function ExecExchangeItemCmd | 5365 | 20 | `SRCCore/CmdDatas/Commands/Unit/ExchangeItemCmd.cs` ExchangeItemCmd | 一致 |  |
+| Function ExecExplodeCmd | 5386 | 22 | `SRCCore/CmdDatas/Commands/Screan/ExplodeCmd.cs` ExplodeCmd | 一致 |  |
+| Function ExecExpUpCmd | 5409 | 61 | `SRCCore/CmdDatas/Commands/Pilot/ExpUpCmd.cs` ExpUpCmd | 一致 |  |
+| Function ExecFadeInCmd | 5471 | 75 | `SRCCore/CmdDatas/Commands/Screan/FadeInCmd.cs` FadeInCmd<br>`SRCRender/ScreenGUI.map.cs` ScreenGUI.TransionScrean | 修正済み | 右ボタンで省略したときはマップを描き直さず画面を表示し直すだけ。右ボタンを確かめる間隔（VB は 4 コマごと）と 0 段階のとき（VB は 0 での割り算）は違う |
+| Function ExecFadeOutCmd | 5547 | 53 | `SRCCore/CmdDatas/Commands/Screan/FadeOutCmd.cs` FadeOutCmd | 一致 | 右ボタンを確かめる間隔は FadeIn と同じ違い |
+| Function ExecFillColorCmd | 5601 | 27 | `SRCCore/CmdDatas/Commands/Screan/FillColorCmd.cs` FillColorCmd | 一致 | 色の「#RGB」・色の名前も受け付ける（SRC# の利便性） |
+| Function ExecFillStyleCmd | 5629 | 30 | `SRCCore/CmdDatas/Commands/Screan/FillStyleCmd.cs` FillStyleCmd | 一致 |  |
+| Function ExecFinishCmd | 5660 | 31 | `SRCCore/CmdDatas/Commands/Unit/FinishCmd.cs` FinishCmd | 一致 |  |
+| Function ExecFixCmd | 5692 | 30 | `SRCCore/CmdDatas/Commands/Unit/FixCmd.cs` FixCmd | 一致 |  |
+| Function ExecFontCmd | 5723 | 85 | `SRCCore/CmdDatas/Commands/Screan/FontCmd.cs` FontCmd | 修正済み | 引数なしで既定の書式に戻す。大きさを CInt と同じく偶数丸めで整数にし、数値でなければ「イベントデータが不正です」 |
+| Function ExecForCmd | 5809 | 57 | `SRCCore/CmdDatas/Commands/Control/ForCmd.cs` ForCmd | 一致 | 入れ子が MaxCallDepth を超えたとき VB は範囲外に書き込み（範囲チェックなし）、C# は例外 |
+| Function ExecForEachCmd | 5867 | 491 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs` ForEachCmd | 修正済み | パイロット一覧・ユニット一覧の並び順を VB の選択ソートに合わせた（値が同じ要素の順）。名称の比較を vbTextCompare と同じに |
+| Function ExecNextCmd | 6359 | 71 | `SRCCore/CmdDatas/Commands/Control/NextCmd.cs` NextCmd | 一致 |  |
+| Function ExecForgetCmd | 6431 | 24 | `SRCCore/CmdDatas/Commands/Other/ForgetCmd.cs` ForgetCmd | 一致 |  |
+| Function ExecFreeMemoryCmd | 6456 | 6 | `SRCCore/CmdDatas/Commands/Other/FreeMemoryCmd.cs` FreeMemoryCmd | 一致 |  |
+| Function ExecGameClearCmd | 6463 | 8 | `SRCCore/CmdDatas/Commands/Stage/GameClearCmd.cs` GameClearCmd | 一致 |  |
+| Function ExecGameOverCmd | 6472 | 10 | `SRCCore/CmdDatas/Commands/Stage/GameOverCmd.cs` GameOverCmd | 一致 |  |
+| Function ExecGetOffCmd | 6483 | 35 | `SRCCore/CmdDatas/Commands/Pilot/GetOffCmd.cs` GetOffCmd | 一致 |  |
+| Function ExecGlobalCmd | 6519 | 20 | `SRCCore/CmdDatas/Commands/Variable/GlobalCmd.cs` GlobalCmd | 一致 |  |
+| Function ExecGotoCmd | 6540 | 26 | `SRCCore/CmdDatas/Commands/Control/GotoCmd.cs` GotoCmd | 一致 |  |
+| Function ExecHideCmd | 6567 | 5 | `SRCCore/CmdDatas/Commands/Screan/HideCmd.cs` HideCmd | 一致 |  |
+| Function ExecHotPointCmd | 6573 | 37 | `SRCCore/CmdDatas/Commands/Screan/HotPointCmd.cs` HotPointCmd | 一致 |  |
+| Function ExecIfCmd | 6611 | 201 | `SRCCore/CmdDatas/Commands/Control/IfCmd.cs` IfCmd | 修正済み | `If … Goto` でラベルが見つからないとき、式として評価した値でも探す（VB の FindLabel(GetArgAsString(5))） |
+| Function ExecElseCmd | 6813 | 25 | `SRCCore/CmdDatas/Commands/Control/AIfCmd.cs` AIfCmd.ToEnd | 一致 | Else・ElseIf のどちらからも呼ぶ |
+| Function ExecIncrCmd | 6839 | 17 | `SRCCore/CmdDatas/Commands/Variable/IncrCmd.cs` IncrCmd | 一致 |  |
+| Function ExecIncreaseMoraleCmd | 6857 | 25 | `SRCCore/CmdDatas/Commands/Pilot/IncreaseMoraleCmd.cs` IncreaseMoraleCmd | 一致 |  |
+| Function ExecInputCmd | 6883 | 18 | `SRCCore/CmdDatas/Commands/Input/InputCmd.cs` InputCmd | 一致 |  |
+| Function ExecIntermissionCommandCmd | 6904 | 31 | `SRCCore/CmdDatas/Commands/Other/IntermissionCommandCmd.cs` IntermissionCommandCmd | 一致 |  |
+| Function ExecItemCmd | 6936 | 18 | `SRCCore/CmdDatas/Commands/Item/ItemCmd.cs` ItemCmd | 一致 |  |
+| Function ExecJoinCmd | 6955 | 66 | `SRCCore/CmdDatas/Commands/Unit/JoinCmd.cs` JoinCmd | 修正済み | ユニット名で探したユニットのいまの形態の名前が違えば何もしない（VB の Set u = Nothing）。ID 指定・見つからないときの VB の実行時エラー（Set の抜け・Nothing の参照）は再現しない |
+| Function ExecKeepBGMCmd | 7022 | 10 | `SRCCore/CmdDatas/Commands/Sound/KeepBGMCmd.cs` KeepBGMCmd | 一致 |  |
+| Function ExecLandCmd | 7033 | 28 | `SRCCore/CmdDatas/Commands/Unit/LandCmd.cs` LandCmd | 一致 |  |
+| Function ExecLaunchCmd | 7062 | 89 | `SRCCore/CmdDatas/Commands/Unit/LaunchCmd.cs` LaunchCmd | 一致 |  |
+| Function ExecLeaveCmd | 7152 | 81 | `SRCCore/CmdDatas/Commands/Unit/LeaveCmd.cs` LeaveCmd | 修正済み | ユニット名で探したユニットのいまの形態の名前が違えば u を null に（VB と同じく「イベントデータが不正です」） |
+| Function ExecLevelUpCmd | 7234 | 65 | `SRCCore/CmdDatas/Commands/Pilot/LevelUpCmd.cs` LevelUpCmd | 一致 |  |
+| Function ExecLineCmd | 7300 | 119 | `SRCCore/CmdDatas/Commands/Screan/LineCmd.cs` LineCmd | 一致 | 色の「#RGB」も受け付ける（SRC# の利便性） |
+| Function ExecLineReadCmd | 7420 | 13 | `SRCCore/CmdDatas/Commands/File/LineReadCmd.cs` LineReadCmd | 一致 | VB の Line Input # は CR・CRLF だけで区切るが、C# の ReadLine は LF だけの行でも区切る（UTF-8 のファイルを扱う SRC# の利便性として残す） |
+| Function ExecLoadCmd | 7434 | 114 | `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs` LoadCmd | 違いあり | 読み込みの順序・範囲と構文解析が違う（#1518） |
+| Function ExecLocalCmd | 7549 | 96 | `SRCCore/CmdDatas/Commands/Control/LocalCmd.cs` LocalCmd | 一致 |  |
+| Function ExecMakePilotListCmd | 7646 | 260 | `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` MakePilotListCmd | 修正済み | 並べ替えを VB と同じ選択ソートに（同じ値の並び）。名称は vbTextCompare と同じ比較。追加パイロットはユニットの FeatureData("追加パイロット") の名前で判断。能力値は並べ替えのときの値を表示 |
+| Function ExecMakeUnitListCmd | 7907 | 5 | `SRCCore/CmdDatas/Commands/Other/MakeUnitListCmd.cs` MakeUnitListCmd | 一致 | 本体は Event.MakeUnitList（Event.bas の行で見る） |
+| Function ExecMapAbilityCmd | 7913 | 84 | `SRCCore/CmdDatas/Commands/Unit/MapAbilityCmd.cs` MapAbilityCmd | 一致 |  |
+| Function ExecMapAttackCmd | 7998 | 114 | `SRCCore/CmdDatas/Commands/Unit/MapAttackCmd.cs` MapAttackCmd | 一致 |  |
+| Function ExecMoneyCmd | 8113 | 10 | `SRCCore/CmdDatas/Commands/Other/MoneyCmd.cs` MoneyCmd | 一致 |  |
+| Function ExecMonotoneCmd | 8124 | 57 | `SRCCore/CmdDatas/Commands/Map/MonotoneCmd.cs` MonotoneCmd | 修正済み | SetupBackground の後に表示位置を戻す（ColorFilter と同じ） |
+| Function ExecMoveCmd | 8182 | 78 | `SRCCore/CmdDatas/Commands/Unit/MoveCmd.cs` MoveCmd | 一致 |  |
+| Function ExecNightCmd | 8261 | 57 | `SRCCore/CmdDatas/Commands/Map/NightCmd.cs` NightCmd | 修正済み | SetupBackground の後に表示位置を戻す |
+| Function ExecNoonCmd | 8319 | 57 | `SRCCore/CmdDatas/Commands/Map/NoonCmd.cs` NoonCmd | 修正済み | SetupBackground の後に表示位置を戻す。引数は「非同期」1 つだけを受け付け、ほかはエラー（VB の Select Case ArgNum） |
+| Function ExecOpenCmd | 8377 | 45 | `SRCCore/CmdDatas/Commands/File/OpenCmd.cs` OpenCmd | 一致 | ScenarioPath は OpenSafe がシナリオのフォルダを起点に解決する |
+| Function ExecOptionCmd | 8423 | 30 | `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs` OptionCmd | 一致 | 新ＧＵＩの LoadForms は SRC# では不要 |
+| Function ExecOrganizeCmd | 8454 | 284 | `SRCCore/CmdDatas/Commands/Unit/OrganizeCmd.cs` OrganizeCmd | 修正済み | 候補が無くても CheckAutoHyperMode を呼ぶ。レベルの並べ替えを VB と同じ選択ソートに |
+| Function ExecOvalCmd | 8739 | 102 | `SRCCore/CmdDatas/Commands/Screan/OvalCmd.cs` OvalCmd | 一致 | 色の「#RGB」も受け付ける（SRC# の利便性） |
 | Function ExecPaintPictureCmd | 8842 | 157 | `SRCCore/CmdDatas/Commands/Screan/PaintPictureCmd.cs` PaintPictureCmd | 未確認 |  |
 | Function ExecPaintStringCmd | 9000 | 70 | `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` PaintStringCmd | 未確認 | #1503 で見つけた手がかり: VB は座標指定が確定しているかを解析時の項（「-」・IsNumeric・IsExpr）で決め、確定していれば数値でない値は CInt のエラー。C# は実行時の値で決める（todo.md の PaintStringCmd.cs のコメントアウト） |
 | Function ExecPaintSysStringCmd | 9071 | 18 | `SRCCore/CmdDatas/Commands/Screan/PaintSysStringCmd.cs` PaintSysStringCmd | 未確認 |  |
