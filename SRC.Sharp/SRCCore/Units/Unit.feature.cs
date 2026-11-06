@@ -177,28 +177,8 @@ namespace SRCCore.Units
             return colFeature[fname] != null;
         }
 
-        //        // 特殊能力を登録済み？(必要条件を満たさない特殊能力を含む)
-        //        private bool IsAllFeatureRegistered(string fname)
-        //        {
-        //            bool IsAllFeatureRegisteredRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 108130
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[fname];
-        //            IsAllFeatureRegisteredRet = true;
-        //            return IsAllFeatureRegisteredRet;
-        //        ErrorHandler:
-        //            ;
-        //            IsAllFeatureRegisteredRet = false;
-        //        }
+        // 特殊能力を登録済み？(必要条件を満たさない特殊能力を含む)
+        // （元の SRC の IsAllFeatureRegistered。UpdateFeatures の中で colAllFeature.ContainsKey にしている）
 
         // 特殊能力が必要条件を満たしているかどうか判定し、満たしていない能力を削除する
         // fnameが指定された場合、指定された特殊能力に対してのみ必要技能を判定
@@ -207,7 +187,7 @@ namespace SRCCore.Units
             var found = false;
             if (!string.IsNullOrEmpty(fname))
             {
-                // XXX colAllFeature の更新要らんの？
+                // 元の SRC と同じく、指定した特殊能力だけを判定するときは colAllFeature を更新しない
                 // 必要技能＆条件を満たしてない特殊能力を削除。
                 foreach (var fd in colFeature.List.Where(fd => fd.Name == fname)
                     .Where(fd => !IsNecessarySkillSatisfied(fd.NecessarySkill) 
