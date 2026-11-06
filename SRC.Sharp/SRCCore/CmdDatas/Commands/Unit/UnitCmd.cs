@@ -31,7 +31,7 @@ namespace SRCCore.CmdDatas.Commands
             Unit u = SRC.UList.Add(uname, urank, "味方");
             if (u is null)
             {
-                throw new EventErrorException(this, "のユニットデータが不正です");
+                throw new EventErrorException(this, uname + "のユニットデータが不正です");
             }
 
             Event.SelectedUnitForEvent = u;

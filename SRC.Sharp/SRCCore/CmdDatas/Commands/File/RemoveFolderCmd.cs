@@ -18,14 +18,15 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var fname = GetArgAsString(2);
+            // 元の SRC と同じく、RemoveFolder の文言も「ファイル指定に」
             if (Strings.InStr(fname, @"..\") > 0)
             {
-                throw new EventErrorException(this, @"フォルダ指定に「..\」は使えません");
+                throw new EventErrorException(this, @"ファイル指定に「..\」は使えません");
             }
 
             if (Strings.InStr(fname, "../") > 0)
             {
-                throw new EventErrorException(this, "フォルダ指定に「../」は使えません");
+                throw new EventErrorException(this, "ファイル指定に「../」は使えません");
             }
 
             if (Strings.Right(fname, 1) == @"\")

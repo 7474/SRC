@@ -84,8 +84,8 @@ SRCではヘルプから記載が削除されているものの、後方互換�
 それらのうち以下はSRC#では実装されていないため機能しません。
 
 - ShowCharacterコマンド
-- ShowImageコマンド
-- ClearImageコマンド
+
+ShowImage・ClearImage コマンドは、元の SRC と同じく動きます。
 
 また、以下のコマンドはSRC#ではサポートされていません。
 

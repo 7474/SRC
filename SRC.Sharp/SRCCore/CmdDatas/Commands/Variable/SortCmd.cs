@@ -4,7 +4,6 @@ using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using ExprValueType = SRCCore.Expressions.ValueType;
 
 namespace SRCCore.CmdDatas.Commands
@@ -72,12 +71,13 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
-            // array_buf: list of (key, varType, value)
-            var arrayBuf = new List<(string key, ExprValueType varType, object value)>();
+            // array_buf(opt, value): 0…配列の添字、1…変数の ValueType、2…変数の値
+            var arrayBuf = new List<object[]>();
 
             void CollectArrayElement(Expressions.VarData v)
             {
-                if (v.Name.StartsWith(vname + "[", StringComparison.OrdinalIgnoreCase))
+                // VB: InStr(.Name, vname & "[") = 1（大文字・小文字を区別する）
+                if (v.Name.StartsWith(vname + "[", StringComparison.Ordinal))
                 {
                     var key = Strings.Mid(v.Name, Strings.InStr(v.Name, "[") + 1,
                         GeneralLib.InStr2(v.Name, "]") - Strings.InStr(v.Name, "[") - 1);
@@ -92,7 +92,7 @@ namespace SRCCore.CmdDatas.Commands
                     {
                         isStringValue = true;
                     }
-                    arrayBuf.Add((key, v.VariableType, val));
+                    arrayBuf.Add(new object[] { key, v.VariableType, val });
                 }
             }
 
@@ -123,69 +123,96 @@ namespace SRCCore.CmdDatas.Commands
                 return EventData.NextID;
             }
 
-            // 添字が数値の場合、またはインデックスのみのソートの場合、先に添字の昇順に並べ替える
-            if (!isStringKey || isKeySort)
+            var num = arrayBuf.Count - 1;
+
+            // VB と同じ交換ソート（安定ではないので、同じ値の要素の順も VB に合わせる）。
+            // 文字列の比較は StrComp(…, vbTextCompare)（大文字・小文字、全角・半角、ひらがな・カタカナを区別しない）
+            bool IsSwap(object a, object b, bool isString)
             {
-                if (isStringKey)
+                if (isString)
                 {
-                    arrayBuf = isAscOrder
-                        ? arrayBuf.OrderBy(x => x.key, StringComparer.CurrentCultureIgnoreCase).ToList()
-                        : arrayBuf.OrderByDescending(x => x.key, StringComparer.CurrentCultureIgnoreCase).ToList();
+                    var cmp = TextCompare.Compare(ToText(a), ToText(b));
+                    return isAscOrder ? cmp > 0 : cmp < 0;
                 }
                 else
                 {
-                    arrayBuf = isAscOrder
-                        ? arrayBuf.OrderBy(x => Convert.ToDouble(x.key)).ToList()
-                        : arrayBuf.OrderByDescending(x => Convert.ToDouble(x.key)).ToList();
+                    var da = ToNumber(a);
+                    var db = ToNumber(b);
+                    return isAscOrder ? da > db : da < db;
                 }
             }
 
-            // インデックスのみのソートでない場合、要素をソート
+            void Swap(int i, int j, int fromK)
+            {
+                for (var k = fromK; k <= 2; k++)
+                {
+                    var var_buf = arrayBuf[i][k];
+                    arrayBuf[i][k] = arrayBuf[j][k];
+                    arrayBuf[j][k] = var_buf;
+                }
+            }
+
+            if (!isStringKey || isKeySort)
+            {
+                // 添字が数値の場合、またはインデックスのみのソートの場合、
+                // 先に添字の昇順に並び替える
+                for (var i = 0; i <= num - 1; i++)
+                {
+                    for (var j = num; j >= i + 1; j--)
+                    {
+                        if (IsSwap(arrayBuf[i][0], arrayBuf[j][0], isStringKey))
+                        {
+                            Swap(i, j, 0);
+                        }
+                    }
+                }
+            }
+
             if (!isKeySort)
             {
-                if (isStringKey)
+                // 改めて要素をソート（添字が数値なら添字は動かさず、型と値だけを入れ替える）
+                for (var i = 0; i <= num - 1; i++)
                 {
-                    // 文字インデックスの場合はキーも一緒に移動する
-                    arrayBuf = isStringValue
-                        ? (isAscOrder
-                            ? arrayBuf.OrderBy(x => x.value?.ToString(), StringComparer.CurrentCultureIgnoreCase).ToList()
-                            : arrayBuf.OrderByDescending(x => x.value?.ToString(), StringComparer.CurrentCultureIgnoreCase).ToList())
-                        : (isAscOrder
-                            ? arrayBuf.OrderBy(x => Convert.ToDouble(x.value)).ToList()
-                            : arrayBuf.OrderByDescending(x => Convert.ToDouble(x.value)).ToList());
-                }
-                else
-                {
-                    // 数値インデックスの場合はキーは固定してバリューのみ並び替える
-                    var sortedKeys = arrayBuf.Select(x => x.key).ToList();
-                    var sortedValues = isStringValue
-                        ? (isAscOrder
-                            ? arrayBuf.Select(x => (x.varType, x.value)).OrderBy(x => x.value?.ToString(), StringComparer.CurrentCultureIgnoreCase).ToList()
-                            : arrayBuf.Select(x => (x.varType, x.value)).OrderByDescending(x => x.value?.ToString(), StringComparer.CurrentCultureIgnoreCase).ToList())
-                        : (isAscOrder
-                            ? arrayBuf.Select(x => (x.varType, x.value)).OrderBy(x => Convert.ToDouble(x.value)).ToList()
-                            : arrayBuf.Select(x => (x.varType, x.value)).OrderByDescending(x => Convert.ToDouble(x.value)).ToList());
-                    arrayBuf = sortedKeys.Zip(sortedValues, (k, v) => (k, v.varType, v.value)).ToList();
+                    for (var j = num; j >= i + 1; j--)
+                    {
+                        if (IsSwap(arrayBuf[i][2], arrayBuf[j][2], isStringValue))
+                        {
+                            Swap(i, j, isStringKey ? 0 : 1);
+                        }
+                    }
                 }
             }
 
             // SRC変数に再配置
-            for (var i = 0; i < arrayBuf.Count; i++)
+            for (var i = 0; i <= num; i++)
             {
-                var (key, varType, val) = arrayBuf[i];
-                var buf = vname + "[" + key + "]";
+                var buf = vname + "[" + ToText(arrayBuf[i][0]) + "]";
                 Expression.UndefineVariable(buf);
-                if (varType == ExprValueType.StringType)
+                if ((ExprValueType)arrayBuf[i][1] == ExprValueType.StringType)
                 {
-                    Expression.SetVariable(buf, ExprValueType.StringType, val?.ToString() ?? "", 0d);
+                    Expression.SetVariable(buf, ExprValueType.StringType, ToText(arrayBuf[i][2]), 0d);
                 }
                 else
                 {
-                    Expression.SetVariable(buf, ExprValueType.NumericType, "", Convert.ToDouble(val));
+                    Expression.SetVariable(buf, ExprValueType.NumericType, "", ToNumber(arrayBuf[i][2]));
                 }
             }
 
             return EventData.NextID;
+        }
+
+        private static readonly StringComparer TextCompare = SrcCollection<string>.KeyComparer;
+
+        // VB の CStr に当たる
+        private static string ToText(object value)
+        {
+            return Conversions.ToString(value);
+        }
+
+        // VB の CDbl に当たる（数値と判定された値だけを渡す）
+        private static double ToNumber(object value)
+        {
+            return value is double d ? d : Conversions.ToDouble(Conversions.ToString(value));
         }
     }
 }

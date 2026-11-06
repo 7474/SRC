@@ -91,10 +91,18 @@ namespace SRCCore.CmdDatas.Commands
                                 else
                                 {
                                     // メインパイロットが対象でなければ指定されたパイロットのみを削除
-                                    // XXX いい感じに消す
-                                    u.DeletePilot(p);
-                                    u.DeleteSupport(p);
-                                    p.Unit = null;
+                                    // （元の SRC と同じく、パイロット・サポートの順に探し、見つかったときだけユニットとの関係を切る。
+                                    // 追加サポートなど、どちらにもいなければ Unit はそのまま）
+                                    if (u.Pilots.Any(x => x.ID == p.ID))
+                                    {
+                                        u.DeletePilot(p);
+                                        p.Unit = null;
+                                    }
+                                    else if (u.Supports.Any(x => x.ID == p.ID))
+                                    {
+                                        u.DeleteSupport(p);
+                                        p.Unit = null;
+                                    }
                                     return EventData.NextID;
                                 }
                             }

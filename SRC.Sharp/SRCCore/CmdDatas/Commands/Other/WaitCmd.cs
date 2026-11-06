@@ -55,7 +55,8 @@ namespace SRCCore.CmdDatas.Commands
                             {
                                 if (GUI.IsRButtonPressed(true))
                                 {
-                                    GUI.MouseButton = GuiButton.Right;
+                                    // 元の SRC と同じく、押されたボタンの記録を消す（MouseButton = 0）
+                                    GUI.MouseButton = GuiButton.None;
                                     break;
                                 }
 

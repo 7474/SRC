@@ -26,6 +26,11 @@ namespace SRCCore.CmdDatas.Commands
             var f = SRC.FileHandleManager.Get(GetArgAsLong(2));
             for (var i = 3; i <= ArgNum; i++)
             {
+                // 元の SRC の Input # は、ファイルの終わりで読むと実行時エラー（62）になる
+                if (f.Reader.Peek() < 0)
+                {
+                    throw new EventErrorException(this, "イベントデータが不正です");
+                }
                 var buf = ReadInputField(f.Reader);
                 Expression.SetVariableAsString(GetArg(i), buf);
             }

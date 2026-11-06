@@ -525,7 +525,13 @@ namespace SRCCore.CmdDatas.Tests
         [TestMethod]
         public void PSetCmd_InvalidColor_ReturnsError()
         {
+            // 元の SRC は画面の外なら色指定を確かめないので、画面の中の点で確かめる
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.MapPWidth = 640;
+            gui.MapPHeight = 480;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "PSet 100 100 BADCOLOR");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
