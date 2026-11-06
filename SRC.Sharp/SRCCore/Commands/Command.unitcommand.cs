@@ -506,15 +506,15 @@ namespace SRCCore.Commands
 
             GUI.UnlockGUI();
 
-            //// ステータスウィンドウの表示内容を更新
-            //if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
-            //{
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-            //else
-            //{
-            //    Status.ClearUnitStatus();
-            //}
+            // ステータスウィンドウの表示内容を更新
+            if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
+            {
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
+            else
+            {
+                Status.ClearUnitStatus();
+            }
         }
     }
 }
