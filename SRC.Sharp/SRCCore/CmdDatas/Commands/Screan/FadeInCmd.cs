@@ -15,7 +15,8 @@ namespace SRCCore.CmdDatas.Commands
         {
             if (GUI.IsRButtonPressed())
             {
-                GUI.RefreshScreen();
+                // 元の SRC は picMain(0).Refresh（描いてある画面をそのまま表示し直す）で、マップを描き直さない
+                GUI.UpdateScreen();
                 return EventData.NextID;
             }
 
