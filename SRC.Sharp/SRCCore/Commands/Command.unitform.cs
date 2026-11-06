@@ -749,7 +749,8 @@ namespace SRCCore.Commands
                     msg += GeneralLib.LeftPaddedString(SrcFormatter.Format(u.get_Mobility("")), 5);
                     msg += " " + u.Data.Adaption;
 
-                    var weapons = u.Weapons.Where(uw => uw.IsDisplayFor(WeaponListMode.List)).ToList();
+                    // 元の SRC と同じく、使える合体技があっても合体技は数えない
+                    var weapons = u.Weapons.Where(uw => uw.IsEnable() && !uw.IsWeaponClassifiedAs("合")).ToList();
                     // 最大攻撃力
                     var maxPower = weapons.Select(uw => uw.WeaponPower("")).Append(0).Max();
                     msg += GeneralLib.LeftPaddedString("" + maxPower, 7);
@@ -757,11 +758,12 @@ namespace SRCCore.Commands
                     var maxRange = weapons.Select(uw => uw.WeaponMaxRange()).Append(0).Max();
                     msg += GeneralLib.LeftPaddedString("" + maxRange, 5);
 
-                    // 換装先が持つ特殊能力一覧
-                    var comment = string.Join(" ", u.Features
+                    // 換装先が持つ特殊能力一覧（元の SRC と同じく、各能力の後に空白を置く）
+                    var comment = string.Concat(u.Features
                             .Select(fd => fd.FeatureName(u))
                             .Where(x => !string.IsNullOrEmpty(x))
-                            .Distinct());
+                            .Distinct()
+                            .Select(x => x + " "));
                     return new ListBoxItem(msg, u.ID)
                     {
                         ListItemComment = comment,

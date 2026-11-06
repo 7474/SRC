@@ -52,7 +52,6 @@ namespace SRCCore.Commands
             SelectedCommand = "発進";
 
             // ユニットの発進処理
-            // XXX 発進後の合体がなんか変だった（バウ(ＭＡ)）
             SelectedTarget = SRC.UList.Item(list[ret - 1].ListItemID);
             {
                 var launchUnit = SelectedTarget;
@@ -103,13 +102,12 @@ namespace SRCCore.Commands
             {
                 var launchUnit = SelectedTarget;
                 // 発進コマンドの目的地にユニットがいた場合
-                // XXX 着艦と合体の処理要らんの？
+                // 着艦・合体は launchUnit.Move の中で行う
                 if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
                 {
                     GuiDialogResult res;
-                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !launchUnit.IsFeatureAvailable("母艦"))
+                    if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦"))
                     {
-
                         res = GUI.Confirm("着艦しますか？", "着艦", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
                     }
                     else
@@ -150,12 +148,15 @@ namespace SRCCore.Commands
 
             // 発進したユニットを母艦から降ろす
             {
+                // 発進をキャンセルしたときに母艦の位置へ戻す
+                PrevUnitX = SelectedUnit.x;
+                PrevUnitY = SelectedUnit.y;
                 SelectedUnit.UnloadUnit(SelectedTarget.ID);
 
-                // 母艦の位置には発進したユニットが表示されているので元に戻しておく
-                // XXX してないよ。。。
-                //Map.MapDataForUnit[withBlock1.x, withBlock1.y] = SelectedUnit;
-                //GUI.PaintUnitBitmap(SelectedUnit);
+                // 母艦の位置には発進したユニットが表示されていた（Move で消した）ので母艦を描き直す。
+                // 元の SRC はここで MapDataForUnit も母艦に戻すが、SRC# の Unit.Move は自分が
+                // 登録されているときだけマップから消すので、母艦は消えていない
+                GUI.PaintUnitBitmap(SelectedUnit);
             }
 
             SelectedUnit = SelectedTarget;
