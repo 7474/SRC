@@ -24,12 +24,8 @@ namespace SRCCore.CmdDatas.Commands
                         }
 
                         Expression.SetVariableAsLong(vname, 1);
-                        // XXX NewGUIMode
-                        //if (vname == "Option(新ＧＵＩ)")
-                        //{
-                        //    // 新ＧＵＩが指定されたら即反映するためにメイン画面をロードしなおす
-                        //    GUI.LoadForms();
-                        //}
+                        // VB は「Option(新ＧＵＩ)」のときにメイン画面をロードしなおす（LoadForms）。
+                        // SRC# は新ＧＵＩを持たないので何もしない
 
                         break;
                     }

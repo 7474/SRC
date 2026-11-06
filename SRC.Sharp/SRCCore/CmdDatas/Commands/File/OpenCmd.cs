@@ -19,8 +19,7 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Openコマンドの引数の数が違います");
             }
 
-            // 許可されたパスから相対パスで探すより単にディレクトリパスつけたほうが手堅いかもしれない。
-            //var fname = SRC.ScenarioPath + GetArgAsString(2);
+            // VB は ScenarioPath を前に付ける。SRC# は FileSystem（OpenSafe）がシナリオのフォルダを起点に解決するので付けない
             var fname = GetArgAsString(2);
             if (Strings.InStr(fname, @"..\") > 0)
             {
