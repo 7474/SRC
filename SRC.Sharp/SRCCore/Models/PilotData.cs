@@ -268,36 +268,25 @@ namespace SRCCore.Models
         }
 
         // 指定したレベルの時点で所有しているパイロット用特殊能力を列挙
+        // 同じ名前の特殊能力は 1 つにまとめる（VB: GoTo NextLoop）。
+        // 元の SRC は名前を 32 個までの配列に入れる。SRC# は個数を制限しない
         public string Skill(int lv)
         {
-            string SkillRet = default;
-            int skill_num;
-            var skill_name = new string[33];
-            int i;
-            skill_num = 0;
+            var skill_name = new List<string>();
             foreach (SkillData sd in colSkill)
             {
                 if (lv >= sd.NecessaryLevel)
                 {
-                    var loopTo = skill_num;
-                    for (i = 1; i <= loopTo; i++)
+                    if (skill_name.Contains(sd.Name ?? ""))
                     {
-                        if ((sd.Name ?? "") == (skill_name[i] ?? ""))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
-                    skill_num = (skill_num + 1);
-                    skill_name[skill_num] = sd.Name;
+                    skill_name.Add(sd.Name ?? "");
                 }
             }
 
-            SkillRet = "";
-            var loopTo1 = skill_num;
-            for (i = 1; i <= loopTo1; i++)
-                SkillRet = SkillRet + skill_name[i] + " ";
-            return SkillRet;
+            return string.Concat(skill_name.Select(x => x + " "));
         }
 
         // 指定したレベルで特殊能力snameが使えるか？
@@ -516,7 +505,8 @@ namespace SRCCore.Models
         // 指定したレベルで使用可能なidx番目のスペシャルパワー
         public string SpecialPower(int lv, int idx)
         {
-            return SpecialPowerDef(lv, idx)?.Name;
+            // 見つからなければ空文字列（VB の String の既定値）
+            return SpecialPowerDef(lv, idx)?.Name ?? "";
         }
         public PilotDataSpecialPower SpecialPowerDef(int lv, int idx)
         {
@@ -524,12 +514,11 @@ namespace SRCCore.Models
         }
 
         // 指定したレベルでスペシャルパワーsnameを使えるか？
+        // 同じスペシャルパワーが複数あるときは、元の SRC と同じく最初の定義の獲得レベルだけを見る
         public bool IsSpecialPowerAvailable(int lv, string sname)
         {
-            return SpecialPowers
-                .Where(x => x.NecessaryLevel <= lv)
-                .Where(x => x.Name == sname)
-                .Any();
+            var sp = SpecialPowers.FirstOrDefault(x => x.Name == sname);
+            return sp != null && sp.NecessaryLevel <= lv;
         }
 
         // 指定したスペシャルパワーsnameのＳＰ消費量
@@ -703,11 +692,34 @@ namespace SRCCore.Models
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+            return FeatureName(colFeature[Index]);
         }
         public string FeatureName(int Index)
         {
-            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+            return FeatureName(colFeature[Index]);
+        }
+
+        // パイロットデータでは、レベルが指定されていれば（0 以下でも）レベルを付ける。
+        // ユニットデータ（UnitData.cls）の Level > 0 とは異なる
+        private static string FeatureName(FeatureData fd)
+        {
+            if (fd is null)
+            {
+                return "";
+            }
+
+            if (Strings.Len(fd.StrData) > 0)
+            {
+                return GeneralLib.ListIndex(fd.StrData, 1);
+            }
+            else if (fd.Level != Constants.DEFAULT_LEVEL)
+            {
+                return fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
+            }
+            else
+            {
+                return fd.Name;
+            }
         }
 
         // 特殊能力のレベル
