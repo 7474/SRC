@@ -9,53 +9,11 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 |---|---|---|---|---|
 | `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | SRC#で不要 | 分岐の説明のコメントで、VB のコードの残りではない |
 | `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs:35` | XXX | XXX 読み込み順序の解決がシナリオ読み込み時と大分食い違っているはず | Issue | #1518 |
-| `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs:46` | XXX | XXX 元はSavedStateは更新していなかったけれど更新してる | Issue | #1521 |
-| `SRCCore/Commands/Command.attack.cs:302` | XXX | XXX COMの攻撃と同じところは切り出しておきたい。。。 | 未確認 |  |
-| `SRCCore/Commands/Command.attack.cs:322`（3 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.attack.cs:713`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.launch.cs:55` | XXX | XXX 発進後の合体がなんか変だった（バウ(ＭＡ)） | 未確認 |  |
-| `SRCCore/Commands/Command.launch.cs:106` | XXX | XXX 着艦と合体の処理要らんの？ | 未確認 |  |
-| `SRCCore/Commands/Command.launch.cs:156` | XXX | XXX してないよ。。。 | 未確認 |  |
-| `SRCCore/Commands/Command.launch.cs:157`（2 行） | コード | Map.MapDataForUnit[withBlock1.x, withBlock1.y] = SelectedUnit; | 未確認 |  |
-| `SRCCore/Commands/Command.mapcommend.cs:534` | XXX | XXX ここはフラグ立たない？ | 未確認 |  |
-| `SRCCore/Commands/Command.mapcommend.cs:656` | XXX | XXX Streamを取った結果ファイル目が消え失せてしまった | 未確認 |  |
-| `SRCCore/Commands/Command.preview.cs:715`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.preview.cs:735`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:112` | コード | GUI.GetAsyncKeyState(GUI.RButtonID); | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:140` | XXX | XXX ロックしたままのパターンをフォローする | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:267` | XXX | XXX | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:271`（14 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:343`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:672` | XXX | XXX ユニットコマンドの初期選択？ | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:674`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1068`（10 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1082`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1219`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1300`（15 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1498`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.process.cs:1532`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitability.cs:360`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitability.cs:540`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitability.cs:724`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitcommand.cs:28` | コード | Application.DoEvents(); | 未確認 |  |
-| `SRCCore/Commands/Command.unitcommand.cs:242` | XXX | XXX | 未確認 |  |
-| `SRCCore/Commands/Command.unitcommand.cs:243` | コード | Application.DoEvents(); | 未確認 |  |
-| `SRCCore/Commands/Command.unitcommand.cs:512`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:23`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:76` | XXX | XXX RedrawScreen 元はしてなかった気がする | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:223` | XXX | XXX RedrawScreen 元はしてなかった気がする | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:255`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:387`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:455`（4 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:621` | XXX | XXX RedrawScreen 元はしてなかった気がする | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:629`（11 行） | コード | int i, j; | 未確認 |  |
-| `SRCCore/Commands/Command.unitform.cs:642`（2 行） | コード | list = new string[1]; | 未確認 |  |
-| `SRCCore/Commands/Command.unitmove.cs:21` | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitmove.cs:23` | コード | } | 未確認 |  |
-| `SRCCore/Commands/Command.unitmove.cs:29`（5 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitmove.cs:173`（5 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitmove.cs:331`（5 行） | コード | { | 未確認 |  |
-| `SRCCore/Commands/Command.unitxxx.cs:71` | XXX | XXX 条件を満たす最初のアビリティ、武器、の順に選ばれる状態 | 未確認 |  |
+| `SRCCore/Commands/Command.attack.cs:302` | XXX | XXX COMの攻撃と同じところは切り出しておきたい。。。 | SRC#で不要 | 作り直しの希望で、動作の違いではない（VB も COM と同じ処理を重ねて書いている） |
+| `SRCCore/Commands/Command.attack.cs:322`（3 行） | コード | { | SRC#で不要 | NewGUIMode の ClearUnitStatus。SRC# は新 GUI を持たない（今は 321 行目から） |
+| `SRCCore/Commands/Command.unitmove.cs:29`（5 行） | コード | { | 直した | 大型マップの判定を戻した |
+| `SRCCore/Commands/Command.unitmove.cs:177`（5 行） | コード | { | SRC#で不要 | NewGUIMode（今は 28 行目から） |
+| `SRCCore/Commands/Command.unitmove.cs:335`（5 行） | コード | { | SRC#で不要 | NewGUIMode（今は 176 行目から） |
 | `SRCCore/Config/LocalFileConfig.cs:10` | TODO | TODO 項目の説明を設定ファイルに書けるようにする | 未確認 |  |
 | `SRCCore/Config/LocalFileConfig.cs:11` | XXX | XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。 | 未確認 |  |
 | `SRCCore/Config/LocalFileConfig.cs:30` | XXX | XXX Configの余地ないしConfigのプロパティではないかもな。 | 未確認 |  |
@@ -116,21 +74,13 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Lib/GeneralLib.cs:581`（58 行） | コード | { | 未確認 |  |
 | `SRCCore/Lib/GeneralLib.cs:679`（120 行） | コード | { | 未確認 |  |
 | `SRCCore/Lib/GeneralLib.cs:840` | XXX | XXX ヒットを配列にして返すのがよさそう | 未確認 |  |
-| `SRCCore/Maps/Map.cs:37` | XXX | XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう | 未確認 |  |
-| `SRCCore/Maps/Map.cs:39`（11 行） | コード | FileSystem.Input(SRC.SaveDataFileNumber, sbuf1); | 未確認 |  |
-| `SRCCore/Maps/Map.cs:127` | XXX | XXX | 未確認 |  |
-| `SRCCore/Maps/Map.cs:136` | XXX | XXX この辺完全に未精査 | 未確認 |  |
-| `SRCCore/Maps/Map.cs:157` | コード | public Src2DArray<MapImageFileType> MapImageFileTypeData; | 未確認 |  |
-| `SRCCore/Maps/Map.cs:464` | XXX | XXX MapのGUIインタフェースと実装に追い出す | 未確認 |  |
-| `SRCCore/Maps/Map.cs:465`（2 行） | コード | GUI.MapPWidth = (32 * w); | 未確認 |  |
-| `SRCCore/Maps/Map.cs:476` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | 未確認 |  |
-| `SRCCore/Maps/Map.cs:486` | XXX | XXX | 未確認 |  |
-| `SRCCore/Maps/Map.cs:489`（3 行） | コード | { | 未確認 |  |
-| `SRCCore/Maps/Map.cs:2162` | XXX | XXX 合体制限は変形してる時だけでいい？ | 未確認 |  |
-| `SRCCore/Maps/Map.cs:2183` | XXX | XXX 合体制限は変形してる時だけでいい？ | 未確認 |  |
-| `SRCCore/Maps/Map.cs:3350` | XXX | XXX マップの最大サイズの制限になるはず | 未確認 |  |
-| `SRCCore/Maps/Map.cs:3356` | XXX | XXX ジャンプとかテレポートは？ | 未確認 |  |
-| `SRCCore/Maps/Map.cs:3436` | XXX | XXX MaskData の更新してない気がする | 未確認 |  |
+| `SRCCore/Maps/Map.cs:37` | XXX | XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう | SRC#で不要 | JSON の Map から復元する形で動いている。RestoreMapData と突き合わせ済み |
+| `SRCCore/Maps/Map.cs:39`（11 行） | コード | FileSystem.Input(SRC.SaveDataFileNumber, sbuf1); | SRC#で不要 | VB のセーブファイルの読み込み。JSON に置き換えた |
+| `SRCCore/Maps/Map.cs:127` | XXX | XXX | SRC#で不要 | IsStatusView は VB の `MapFileName = ""` の判定をまとめたもの |
+| `SRCCore/Maps/Map.cs:156` | コード | public Src2DArray<MapImageFileType> MapImageFileTypeData; | SRC#で不要 | 格納形式の代わりに MapUnderImageFilePath・MapUpperImageFilePath にパスを残す |
+| `SRCCore/Maps/Map.cs:481` | XXX | XXX MapのGUIインタフェースと実装に追い出す | SRC#で不要 | GUIMap.SetMapSize に移してある |
+| `SRCCore/Maps/Map.cs:482`（2 行） | コード | GUI.MapPWidth = (32 * w); | SRC#で不要 | 同上 |
+| `SRCCore/Maps/Map.cs:493` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | SRC#で不要 | VB の ClearMap も MapWidth・MapHeight を 1 にする |
 | `SRCCore/Models/BattleConfigDataList.cs:91` | XXX | XXX これでいいんか？　nullになったり上書きされそう。 | 未確認 |  |
 | `SRCCore/Models/Condition.cs:14` | XXX | XXX 負数は無期限（多分） | 未確認 |  |
 | `SRCCore/Models/Dialog.cs:193`（13 行） | コード | { | 未確認 |  |
@@ -220,13 +170,11 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.pilot.cs:335` | TODO | TODO 使用している個所でもともと追加サポートを処理していたか精査 | 未確認 |  |
 | `SRCCore/Units/Unit.recover.cs:26` | XXX | XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？ | 未確認 |  |
 | `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
-| `SRCCore/Units/UnitAbility.cs:1598` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/UnitWeapon.cs:58` | XXX | XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？ | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:163` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3972` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4292` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:5096`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
-| `SRCCore/Units/UnitWeapon.cs:5341` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/Units.cs:736`（298 行） | コード | { | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:94` | XXX | XXX DateTime パースの精査 | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:99` | XXX | XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。 | 未確認 |  |

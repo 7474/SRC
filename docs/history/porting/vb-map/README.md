@@ -101,10 +101,10 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [NonPilotData.cls](NonPilotData_cls.md) | 6 | 6 | 0 | 0 | 0 | 0 | 0 |
 | [NonPilotDataList.cls](NonPilotDataList_cls.md) | 9 | 9 | 0 | 0 | 0 | 0 | 0 |
 | [NowLoading.frm](NowLoading_frm.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
-| [Pilot.cls](Pilot_cls.md) | 67 | 67 | 0 | 0 | 0 | 0 | 0 |
-| [PilotData.cls](PilotData_cls.md) | 36 | 36 | 0 | 0 | 0 | 0 | 0 |
-| [PilotDataList.cls](PilotDataList_cls.md) | 9 | 9 | 0 | 0 | 0 | 0 | 0 |
-| [Pilots.cls](Pilots_cls.md) | 20 | 20 | 0 | 0 | 0 | 0 | 0 |
+| [Pilot.cls](Pilot_cls.md) | 67 | 0 | 52 | 11 | 0 | 4 | 0 |
+| [PilotData.cls](PilotData_cls.md) | 36 | 0 | 30 | 4 | 1 | 1 | 0 |
+| [PilotDataList.cls](PilotDataList_cls.md) | 9 | 0 | 7 | 1 | 0 | 1 | 0 |
+| [Pilots.cls](Pilots_cls.md) | 20 | 0 | 9 | 2 | 0 | 9 | 0 |
 | [SRC.bas](SRC_bas.md) | 17 | 17 | 0 | 0 | 0 | 0 | 0 |
 | [SafeMain.frm](SafeMain_frm.md) | 14 | 14 | 0 | 0 | 0 | 0 | 0 |
 | [Sound.bas](Sound_bas.md) | 18 | 18 | 0 | 0 | 0 | 0 | 0 |
@@ -122,4 +122,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 25 | 0 | 0 | 0 | 0 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 819 | 358 | 136 | 6 | 14 | 0 |
+| 計 | 1333 | 687 | 456 | 154 | 7 | 29 | 0 |
