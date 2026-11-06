@@ -139,6 +139,56 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void LoadMapData_NoFile_EachCellHasOwnDataLikeVB()
+        {
+            // 元の SRC はマスごとに 地形 MAX_TERRAIN_DATA_NUM・画像 0・レイヤー NO_LAYER_NUM・画像 NO_LAYER_NUM・下層 を入れる
+            // （VB: LoadMapData のファイルが無い場合）。マスは共有しない
+            var f = new MapCoverageFixture();
+            f.GUI.MainWidth = 3;
+            f.GUI.MainHeight = 2;
+            f.Map.LoadMapData("");
+
+            var cell = f.Map.MapData[3, 2];
+            Assert.AreEqual(3, cell.X);
+            Assert.AreEqual(2, cell.Y);
+            Assert.AreEqual(Maps.Map.MAX_TERRAIN_DATA_NUM, cell.TerrainType);
+            Assert.AreEqual(0, cell.BitmapNo);
+            Assert.AreEqual(MapCell.NO_LAYER_NUM, cell.LayerType);
+            Assert.AreEqual(MapCell.NO_LAYER_NUM, cell.LayerBitmapNo);
+            Assert.AreEqual(BoxTypes.Under, cell.BoxType);
+            Assert.AreNotSame(f.Map.MapData[1, 1], cell);
+
+            cell.TerrainType = 1;
+            Assert.AreEqual(Maps.Map.MAX_TERRAIN_DATA_NUM, f.Map.MapData[1, 1].TerrainType);
+        }
+
+        [TestMethod]
+        public void SetMapSize_InitializesMaskToTrue_ClearMapLeavesFalse()
+        {
+            // 元の SRC の SetMapSize は MaskData を全マス True にする。ClearMap は ReDim だけなので False のまま
+            var f = new MapCoverageFixture();
+            f.Map.SetMapSize(3, 2);
+            Assert.IsTrue(f.Map.MaskData[1, 1]);
+            Assert.IsTrue(f.Map.MaskData[3, 2]);
+
+            f.Map.ClearMap();
+            Assert.IsFalse(f.Map.MaskData[1, 1]);
+        }
+
+        [TestMethod]
+        public void SearchLayerImageFile_NoLayerBitmap_ReturnsNull()
+        {
+            // レイヤーの地形か画像番号が NO_LAYER_NUM なら探さない（VB: SearchTerrainImageFile の冒頭）
+            var f = new MapCoverageFixture();
+            var text = "MapData\r\n\r\n1,1\r\n0,0\r\nLayer\r\n1," + MapCell.NO_LAYER_NUM + "\r\n";
+            f.Map.LoadMapData("layer.map", MapCoverageFixture.ToStream(text));
+            var cell = f.Map.MapData[1, 1];
+            Assert.AreEqual(BoxTypes.Upper, cell.BoxType);
+            Assert.IsNull(f.Map.SearchLayerImageFile(cell));
+            Assert.IsNull(f.Map.MapUpperImageFilePath[1, 1]);
+        }
+
+        [TestMethod]
         public void LoadMapData_NoFile_StatusScenario_Uses40Rows()
         {
             // 「ステータス表示.」「ランキング.」シナリオではマップの高さを 40 にする

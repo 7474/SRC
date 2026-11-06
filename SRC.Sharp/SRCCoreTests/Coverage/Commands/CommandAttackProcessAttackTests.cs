@@ -277,6 +277,8 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             var f = CreateBattle(out var ally);
             f.Commands.SelectedCommand = "攻撃";
             f.Commands.CommandState = "ターゲット選択";
+            // 射程内の空き地（マップを作った直後は元の SRC と同じく全マスがマスクされている）
+            f.SRC.Map.MaskData[6, 5] = false;
 
             f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[6, 5], null);
 

@@ -133,7 +133,6 @@ namespace SRCCore.Maps
         [JsonProperty]
         public int MapHeight;
 
-        // XXX この辺完全に未精査
         // マップの描画モード
         [JsonProperty]
         public string MapDrawMode;
@@ -243,6 +242,8 @@ namespace SRCCore.Maps
         public string SearchTerrainImageFile(MapCell cell, IDictionary<(string Name, int No), string> found = null)
         {
             if (cell?.UnderTerrain == null) { return null; }
+            // 画像無が確定してるなら処理しない（VB: SearchTerrainImageFile の NO_LAYER_NUM の判定）
+            if (cell.TerrainType == MapCell.NO_LAYER_NUM || cell.BitmapNo == MapCell.NO_LAYER_NUM) { return null; }
             var file = SearchMapImageFile(cell.UnderTerrain.Bitmap, cell.BitmapNo, found);
             if (file != null)
             {
@@ -256,6 +257,8 @@ namespace SRCCore.Maps
         public string SearchLayerImageFile(MapCell cell, IDictionary<(string Name, int No), string> found = null)
         {
             if (cell?.UpperTerrain == null) { return null; }
+            // 画像無が確定してるなら処理しない（VB: SearchTerrainImageFile の NO_LAYER_NUM の判定）
+            if (cell.LayerType == MapCell.NO_LAYER_NUM || cell.LayerBitmapNo == MapCell.NO_LAYER_NUM) { return null; }
             var file = SearchMapImageFile(cell.UpperTerrain.Bitmap, cell.LayerBitmapNo, found);
             if (file != null)
             {
@@ -318,11 +321,23 @@ namespace SRCCore.Maps
                 SetMapSize(GUI.MainWidth, GUI.MainHeight);
             }
 
+            // マスごとに作る（元の SRC は MapData の各マスに値を入れる。マスを共有すると ChangeTerrain などで全マスが変わる）
             for (var i = 1; i <= MapWidth; i++)
             {
                 for (var j = 1; j <= MapHeight; j++)
                 {
-                    MapData[i, j] = MapCell.EmptyCell;
+                    MapData[i, j] = new MapCell
+                    {
+                        X = i,
+                        Y = j,
+                        TerrainType = MAX_TERRAIN_DATA_NUM,
+                        BitmapNo = 0,
+                        LayerType = MapCell.NO_LAYER_NUM,
+                        LayerBitmapNo = MapCell.NO_LAYER_NUM,
+                        BoxType = BoxTypes.Under,
+                        UnderTerrain = TerrainData.EmptyTerrain,
+                        UpperTerrain = TerrainData.EmptyTerrain,
+                    };
                 }
             }
         }
@@ -458,6 +473,8 @@ namespace SRCCore.Maps
             MapUpperImageFilePath = new Src2DArray<string>(MapWidth, MapHeight);
             MapDataForUnit = new Src2DArray<Unit>(MapWidth, MapHeight);
             MaskData = new Src2DArray<bool>(MapWidth, MapHeight);
+            // 元の SRC と同じく、マスクは全マスを選択していない状態（True）にする
+            ClearMask();
             TotalMoveCost = new int[MapWidth + 2, MapHeight + 2];
             PointInZOC = new int[MapWidth + 2, MapHeight + 2];
 
@@ -475,6 +492,8 @@ namespace SRCCore.Maps
             MapFileName = "";
             // XXX 1というよりは0にしたいが0長配列は作れない
             SetMapSize(1, 1);
+            // 元の SRC の ClearMap は MaskData を ReDim するだけなので、残るマスは False
+            MaskData[1, 1] = false;
             MapDrawMode = "";
             MapDrawIsMapOnly = false;
             MapDrawFilterColor = Color.Black;
@@ -483,12 +502,8 @@ namespace SRCCore.Maps
             // マップ画面を消去
             GUI.RedrawScreen();
 
-            // XXX
-            //// ユニット画像をリセット
-            //if (!string.IsNullOrEmpty(MapDrawMode) && !MapDrawIsMapOnly)
-            //{
-            //    SRC.UList.ClearUnitBitmap();
-            //}
+            // 元の SRC はここで描画モードを掛けたユニット画像をリセットする（UList.ClearUnitBitmap）。
+            // SRC# はユニットを描くたびにいまの描画モードを掛けるので要らない
         }
 
         // (X,Y)を中心とする min_range - max_range のエリアを選択
@@ -537,7 +552,9 @@ namespace SRCCore.Maps
             }
         }
 
-        private void SelectUnitInMask(string uparty)
+        /// <param name="selectConfusedAndSleeping">「味方の敵」「ＮＰＣの敵」で、混乱・睡眠の味方・ＮＰＣを対象にするか。
+        /// 元の SRC の AreaInRange は対象にし、AreaInReachable は対象にしない（暴走・魅了・憑依だけを見る）</param>
+        private void SelectUnitInMask(string uparty, bool selectConfusedAndSleeping = true)
         {
             switch (uparty ?? "")
             {
@@ -577,9 +594,9 @@ namespace SRCCore.Maps
                                         if ((u.Party == "味方" || u.Party == "ＮＰＣ")
                                             && !u.IsConditionSatisfied("暴走")
                                             && !u.IsConditionSatisfied("魅了")
-                                            && !u.IsConditionSatisfied("混乱")
+                                            && !(selectConfusedAndSleeping && u.IsConditionSatisfied("混乱"))
                                             && !u.IsConditionSatisfied("憑依")
-                                            && !u.IsConditionSatisfied("睡眠")
+                                            && !(selectConfusedAndSleeping && u.IsConditionSatisfied("睡眠"))
                                             )
                                         {
                                             MaskData[i, j] = true;
@@ -738,7 +755,8 @@ namespace SRCCore.Maps
             }
 
             // エリア内のユニットを選択するかそれぞれ判定
-            SelectUnitInMask(uparty);
+            // 元の SRC の AreaInReachable の「味方の敵」は、混乱・睡眠の味方を対象にしない（AreaInRange と違う）
+            SelectUnitInMask(uparty, false);
 
             // エリアの中心は常に選択
             MaskData[u.x, u.y] = false;
