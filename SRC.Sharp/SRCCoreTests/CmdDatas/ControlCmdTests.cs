@@ -61,6 +61,12 @@ namespace SRCCore.CmdDatas.Tests
         /// </summary>
         private void RunEvent(SRC src, CmdData[] cmds, int startId = 0, int maxSteps = 1000)
         {
+            // HandleEvent と同じく、イベントの最上位は呼び出し階層 1 で実行する
+            // （元の SRC の Return は CallDepth = 1 で 1 階層目からの Call が無いとエラーにする）
+            if (src.Event.CallDepth == 0)
+            {
+                src.Event.CallDepth = 1;
+            }
             var current = startId;
             for (var step = 0; step < maxSteps && current >= 0 && current < cmds.Length; step++)
             {
