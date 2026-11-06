@@ -57,8 +57,24 @@ namespace SRCCore.Units
         // 行動数を消費
         public void UseAction()
         {
+            // ２回行動可能？
+            // VB 版と同じく、MaxAction と違って特殊状態とＥＮは見ない
+            int max_action;
+            if (CountPilot() == 0)
+            {
+                max_action = 1;
+            }
+            else if (Expression.IsOptionDefined("２回行動能力使用"))
+            {
+                max_action = MainPilot().IsSkillAvailable("２回行動") ? 2 : 1;
+            }
+            else
+            {
+                max_action = MainPilot().Intuition >= 200 ? 2 : 1;
+            }
+
             // 最大行動数まで行動消費量をカウント
-            UsedAction = Math.Min(UsedAction + 1, MaxAction());
+            UsedAction = Math.Min(UsedAction + 1, max_action);
         }
 
         // 陣営
