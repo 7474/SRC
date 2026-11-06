@@ -106,9 +106,14 @@ namespace SRCCore.CmdDatas
             GUI.UpdateScreen();
         }
 
-        protected void UpdateSelectedState(Unit fromUnit, Unit toUnit)
+        // 選択されているユニット・ターゲット（イベント用を含む）を fromUnit から toUnit に置き換える。
+        // includeSaved が true なら、SaveSelections で退避した選択も置き換える（元の SRC の Upgrade と同じ）
+        protected void UpdateSelectedState(Unit fromUnit, Unit toUnit, bool includeSaved = true)
         {
-            foreach (var state in Commands.SavedStates.Append(Commands.SelectedState))
+            var states = includeSaved
+                ? Commands.SavedStates.Append(Commands.SelectedState)
+                : new[] { Commands.SelectedState };
+            foreach (var state in states)
             {
                 if (state.SelectedUnit == fromUnit) { state.SelectedUnit = toUnit; }
                 if (state.SelectedUnitForEvent == fromUnit) { state.SelectedUnitForEvent = toUnit; }

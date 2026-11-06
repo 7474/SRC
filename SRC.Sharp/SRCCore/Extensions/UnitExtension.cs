@@ -30,28 +30,6 @@ namespace SRCCore.Extensions
 
     public static class UnitExtension
     {
-        public static List<CombineFeature> TwoUnitCombineFeatures(this Unit currentUnit, SRC SRC)
-        {
-            return currentUnit.Features
-                .Where(x => x.Name == "合体")
-                .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name)))
-                .Select(x => new CombineFeature(x))
-                .Where(x => x.PartUnitNames.Count == 1)
-                .Where(x =>
-                {
-                    var cu = SRC.UList.Item(x.ConbineUnitName);
-                    return cu != null
-                        && !cu.IsConditionSatisfied("行動不能")
-                        && cu.Status != "破棄";
-                })
-                .Where(x =>
-                {
-                    var pu = SRC.UList.Item(x.PartUnitNames.First());
-                    return pu != null
-                        && !pu.CurrentForm().IsFeatureAvailable("合体制限");
-                }).ToList();
-        }
-
         /// <summary>
         /// 3 体以上（ユニットステータスコマンドの時は 2 体も）からなる、今すぐ合体できる合体能力。
         /// </summary>
@@ -59,13 +37,14 @@ namespace SRCCore.Extensions
         /// ユニットのコマンドメニューに出すかの判定（VB Command.bas の CommandSelect）。
         /// 元の SRC はメニューではパートナーとの距離を縦横の和（2 以内）で測り、2 体合体もステータス表示の例外も無い。
         /// 偽なら合体コマンドの実行時の判定（CombineCommand）で、縦・横それぞれ 2 以内、ステータス表示では距離を見ない。
+        /// また CombineCommand は能力の名称が非表示か（FeatureName が空か）と、合体後のユニットが行動不能かを調べない。
         /// </param>
         public static List<CombineFeature> CombineFeatures(this Unit currentUnit, SRC SRC, bool forMenu = false)
         {
             var combines = new List<CombineFeature>();
             foreach (var fd in currentUnit.Features
                 .Where(x => x.Name == "合体")
-                .Where(x => !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name))))
+                .Where(x => !forMenu || !string.IsNullOrEmpty(currentUnit.FeatureName(x.Name))))
             {
                 // 3体以上からなる合体能力を持っているか？
                 // ユニットステータスコマンドの時は2体合体も対象にする
@@ -116,7 +95,7 @@ namespace SRCCore.Extensions
                     {
                         n = 0;
                     }
-                    else if (u.IsConditionSatisfied("行動不能"))
+                    else if (forMenu && u.IsConditionSatisfied("行動不能"))
                     {
                         n = 0;
                     }

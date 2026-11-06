@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SRCCore.Commands;
 using SRCCore.TestLib;
 using SRCCore.Units;
+using System.Linq;
 
 namespace SRCCore.Commands.Tests
 {
@@ -19,14 +20,78 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SaveSelections_ThenRestoreSelections_RestoresCommand()
+        public void SaveSelections_ThenRestoreSelections_DoesNotRestoreCommandAndPilot()
         {
+            // 元の SRC の SaveSelections が記録するのはユニット・ターゲット・武器・反撃武器・防御方法・アビリティ・座標だけ。
+            // コマンド・パイロット・アイテム・スペシャルパワー・合体技のパートナーは戻さない
             var src = CreateSrc();
+            var partner = new Unit(src);
             src.Commands.SelectedCommand = "攻撃";
+            src.Commands.SelectedItem = 1;
+            src.Commands.SelectedSpecialPower = "熱血";
             src.Commands.SaveSelections();
             src.Commands.SelectedCommand = "移動";
+            src.Commands.SelectedItem = 2;
+            src.Commands.SelectedSpecialPower = "必中";
+            src.Commands.SelectedPartners.Add(partner);
             src.Commands.RestoreSelections();
-            Assert.AreEqual("攻撃", src.Commands.SelectedCommand);
+            Assert.AreEqual("移動", src.Commands.SelectedCommand);
+            Assert.AreEqual(2, src.Commands.SelectedItem);
+            Assert.AreEqual("必中", src.Commands.SelectedSpecialPower);
+            Assert.AreSame(partner, src.Commands.SelectedPartners.Single());
+        }
+
+        [TestMethod]
+        public void SaveSelections_ThenRestoreSelections_RestoresAllRecordedItems()
+        {
+            var src = CreateSrc();
+            var unit = new Unit(src);
+            var target = new Unit(src);
+            var unitForEvent = new Unit(src);
+            var targetForEvent = new Unit(src);
+            src.Commands.SelectedUnit = unit;
+            src.Commands.SelectedTarget = target;
+            src.Event.SelectedUnitForEvent = unitForEvent;
+            src.Event.SelectedTargetForEvent = targetForEvent;
+            src.Commands.SelectedWeapon = 1;
+            src.Commands.SelectedWeaponName = "武器";
+            src.Commands.SelectedTWeapon = 2;
+            src.Commands.SelectedTWeaponName = "反撃武器";
+            src.Commands.SelectedDefenseOption = "防御";
+            src.Commands.SelectedAbility = 3;
+            src.Commands.SelectedAbilityName = "アビリティ";
+            src.Commands.SelectedX = 4;
+            src.Commands.SelectedY = 5;
+            src.Commands.SaveSelections();
+
+            src.Commands.SelectedUnit = null;
+            src.Commands.SelectedTarget = null;
+            src.Event.SelectedUnitForEvent = null;
+            src.Event.SelectedTargetForEvent = null;
+            src.Commands.SelectedWeapon = 0;
+            src.Commands.SelectedWeaponName = "";
+            src.Commands.SelectedTWeapon = 0;
+            src.Commands.SelectedTWeaponName = "";
+            src.Commands.SelectedDefenseOption = "";
+            src.Commands.SelectedAbility = 0;
+            src.Commands.SelectedAbilityName = "";
+            src.Commands.SelectedX = 0;
+            src.Commands.SelectedY = 0;
+            src.Commands.RestoreSelections();
+
+            Assert.AreSame(unit, src.Commands.SelectedUnit);
+            Assert.AreSame(target, src.Commands.SelectedTarget);
+            Assert.AreSame(unitForEvent, src.Event.SelectedUnitForEvent);
+            Assert.AreSame(targetForEvent, src.Event.SelectedTargetForEvent);
+            Assert.AreEqual(1, src.Commands.SelectedWeapon);
+            Assert.AreEqual("武器", src.Commands.SelectedWeaponName);
+            Assert.AreEqual(2, src.Commands.SelectedTWeapon);
+            Assert.AreEqual("反撃武器", src.Commands.SelectedTWeaponName);
+            Assert.AreEqual("防御", src.Commands.SelectedDefenseOption);
+            Assert.AreEqual(3, src.Commands.SelectedAbility);
+            Assert.AreEqual("アビリティ", src.Commands.SelectedAbilityName);
+            Assert.AreEqual(4, src.Commands.SelectedX);
+            Assert.AreEqual(5, src.Commands.SelectedY);
         }
 
         [TestMethod]
@@ -78,19 +143,19 @@ namespace SRCCore.Commands.Tests
         {
             // LIFO (後入れ先出し) の動作を確認
             var src = CreateSrc();
-            src.Commands.SelectedCommand = "状態1";
+            src.Commands.SelectedAbilityName = "状態1";
             src.Commands.SaveSelections();
-            src.Commands.SelectedCommand = "状態2";
+            src.Commands.SelectedAbilityName = "状態2";
             src.Commands.SaveSelections();
-            src.Commands.SelectedCommand = "状態3";
+            src.Commands.SelectedAbilityName = "状態3";
 
             // 最後に保存した状態2 を復元
             src.Commands.RestoreSelections();
-            Assert.AreEqual("状態2", src.Commands.SelectedCommand);
+            Assert.AreEqual("状態2", src.Commands.SelectedAbilityName);
 
             // さらに前の状態1 を復元
             src.Commands.RestoreSelections();
-            Assert.AreEqual("状態1", src.Commands.SelectedCommand);
+            Assert.AreEqual("状態1", src.Commands.SelectedAbilityName);
         }
 
         [TestMethod]
@@ -98,10 +163,10 @@ namespace SRCCore.Commands.Tests
         {
             // スタックが空のときは何もしないで正常終了することを確認
             var src = CreateSrc();
-            src.Commands.SelectedCommand = "現在の状態";
+            src.Commands.SelectedAbilityName = "現在の状態";
             src.Commands.RestoreSelections(); // スタックは空
             // 状態は変わらない
-            Assert.AreEqual("現在の状態", src.Commands.SelectedCommand);
+            Assert.AreEqual("現在の状態", src.Commands.SelectedAbilityName);
         }
 
         [TestMethod]
@@ -142,12 +207,12 @@ namespace SRCCore.Commands.Tests
         {
             // Save後に状態を変更しても、保存済み状態が影響を受けないことを確認
             var src = CreateSrc();
-            src.Commands.SelectedCommand = "元の値";
+            src.Commands.SelectedAbilityName = "元の値";
             src.Commands.SaveSelections();
-            src.Commands.SelectedCommand = "変更後の値";
+            src.Commands.SelectedAbilityName = "変更後の値";
 
             src.Commands.RestoreSelections();
-            Assert.AreEqual("元の値", src.Commands.SelectedCommand);
+            Assert.AreEqual("元の値", src.Commands.SelectedAbilityName);
         }
 
         // ──────────────────────────────────────────────

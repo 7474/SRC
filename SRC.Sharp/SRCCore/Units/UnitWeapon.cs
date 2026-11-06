@@ -5338,7 +5338,7 @@ namespace SRCCore.Units
             // Disableコマンドで使用不可にされた武器と使用できない合体技は表示しない
             // 必要技能を満たさない武器は表示しない
             var baseCondition = IsEnable()
-                // XXX 条件によって check_formation 見直す
+                // 元の SRC の一覧（GUI.bas の WeaponListBox・AbilityListBox、Status.bas）は、どの表示でも check_formation に True を渡す
                 && !(IsWeaponClassifiedAs("合") && !IsCombinationAttackAvailable(true))
                 ;
             return baseCondition;

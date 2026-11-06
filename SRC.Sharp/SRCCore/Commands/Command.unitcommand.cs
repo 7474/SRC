@@ -25,7 +25,7 @@ namespace SRCCore.Commands
                     // 移動後のコマンド選択をやり直す
                     if (CommandState == "移動後コマンド選択")
                     {
-                        //Application.DoEvents();
+                        // VB の DoEvents は SRC# では要らない（画面の処理を止めていないため）
                         return;
                     }
 
@@ -239,8 +239,7 @@ namespace SRCCore.Commands
                     // 移動後のコマンド選択をやり直す
                     if (CommandState == "移動後コマンド選択")
                     {
-                        // XXX
-                        //Application.DoEvents();
+                        // VB の DoEvents は SRC# では要らない（画面の処理を止めていないため）
                         return;
                     }
                     break;
@@ -507,15 +506,15 @@ namespace SRCCore.Commands
 
             GUI.UnlockGUI();
 
-            //// ステータスウィンドウの表示内容を更新
-            //if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
-            //{
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-            //else
-            //{
-            //    Status.ClearUnitStatus();
-            //}
+            // ステータスウィンドウの表示内容を更新
+            if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
+            {
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
+            else
+            {
+                Status.ClearUnitStatus();
+            }
         }
     }
 }

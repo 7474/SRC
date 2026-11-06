@@ -43,8 +43,9 @@ namespace SRCCore.CmdDatas.Commands
             var su = SRC.UList.Item(GeneralLib.LIndex(u.FeatureData("分離"), 2));
 
             // 変数のアップデート
-            // XXX 元はSavedStateは更新していなかったけれど更新してる
-            UpdateSelectedState(u, su);
+            // 元の SRC と同じく、今の選択だけを更新する。
+            // 退避した選択は RestoreSelections が戻すときに今の形態（CurrentForm）にする
+            UpdateSelectedState(u, su, false);
 
             return EventData.NextID;
         }

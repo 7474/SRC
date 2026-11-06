@@ -93,6 +93,23 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             Assert.AreEqual("ホバー移動|ジャンプ|合体", string.Join("|", f.ListBoxes[0].Items.Select(x => x.Text)));
         }
 
+        [TestMethod]
+        public void FeatureList_AddedHiddenUnitFeature_IsNotListedAsPilotSkill()
+        {
+            // 元の SRC はアビリティで付加された能力の表示名称を、ユニットの FeatureName0 が空なら出さない。
+            // 「耐性付加」の耐性はユニット用の非表示の特殊能力なので、パイロット能力としても出さない
+            var f = new CommandUnitFormFixture(onMap: true);
+            f.AddUnitData("機体", "ホバー移動", "ジャンプ");
+            var u = f.CreateUnit("機体", "パイロット", x: 3, y: 3);
+            u.AddCondition("耐性付加", 3, 1d, "ビーム");
+            u.Update();
+            f.Src.Commands.SelectedUnit = u;
+
+            Run(f, Command.FeatureListCmdID, "特殊能力一覧");
+
+            Assert.AreEqual("ホバー移動|ジャンプ", string.Join("|", f.ListBoxes[0].Items.Select(x => x.Text)));
+        }
+
         // ──────────────────────────────────────────────
         // 武器一覧
         // ──────────────────────────────────────────────
@@ -161,7 +178,8 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         [TestMethod]
         public void WeaponList_LevelAttribute_ShowsLevel()
         {
-            // レベル指定付きの属性は「属性Lレベル」「名称レベルn」の形で表示する
+            // レベル指定付きの属性は「属性Lレベル」「名称レベルｎ」の形で表示する。
+            // 名称の後のレベルは元の SRC と同じく全角（StrConv(alevel, vbWide)）
             var f = new CommandUnitFormFixture(onMap: false);
             var u = CreateArmedUnit(f, "Ｍ直L2", 1, 3, onMap: false);
             f.MakeStatusViewUnitList();
@@ -173,7 +191,7 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
 
             var text = f.ListBoxes.Single().Items.Single().Text;
             StringAssert.StartsWith(text, "Ｍ直L2");
-            StringAssert.EndsWith(text, "レベル2");
+            StringAssert.EndsWith(text, "レベル２");
         }
 
         [TestMethod]
@@ -302,6 +320,71 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
             Assert.IsFalse(mask[4, 1]);
             Assert.IsFalse(mask[5, 5]);
             Assert.IsTrue(mask[4, 8]);
+        }
+
+        [TestMethod]
+        public void AbilityList_AttributeNameIsForAbility_AndLevelIsWide()
+        {
+            // 元の SRC は AttributeName(SelectedUnit, buf, True) でアビリティ用の名称にする
+            // （「音」は「音波アビリティ」、末尾の「攻撃」はアビリティにする）。レベルは全角
+            var f = new CommandUnitFormFixture(onMap: false);
+            var ud = f.AddUnitData("機体");
+            var a = ud.AddAbility("歌");
+            a.MinRange = 1;
+            a.MaxRange = 1;
+            a.Class = "音視L1.5";
+            var u = f.CreateUnit("機体", "パイロット");
+            f.MakeStatusViewUnitList();
+            f.Src.Commands.SelectedUnit = u;
+            var abilityAnswers = new Queue<UnitAbility>(new[] { u.Abilities.First(), null });
+            f.Gui.Handle("AbilityListBox", args => abilityAnswers.Dequeue());
+
+            Run(f, Command.AbilityListCmdID, "アビリティ一覧");
+
+            var items = f.ListBoxes.Single().Items.Select(x => x.Text).ToList();
+            Assert.AreEqual(2, items.Count);
+            StringAssert.EndsWith(items[0], "音波アビリティ");
+            StringAssert.StartsWith(items[1], "視L1.5");
+            StringAssert.EndsWith(items[1], "視覚アビリティレベル１．５");
+        }
+
+        [TestMethod]
+        public void AbilityList_OnMap_RangeSelectsAllUnits()
+        {
+            // 元の SRC はアビリティの射程範囲を「すべて」で選ぶ（味方も敵も選ぶ）
+            var f = new CommandUnitFormFixture(onMap: true);
+            var ud = f.AddUnitData("機体");
+            var near = ud.AddAbility("修理");
+            near.MinRange = 1;
+            near.MaxRange = 1;
+            near.Class = "";
+            var far = ud.AddAbility("遠隔修理");
+            far.MinRange = 2;
+            far.MaxRange = 3;
+            far.Class = "";
+            var u = f.CreateUnit("機体", "パイロット", x: 4, y: 4);
+            f.CreateUnit("機体", "味方1", x: 4, y: 5);
+            f.CreateUnit("機体", "敵1", "敵", x: 5, y: 4);
+            f.CreateUnit("機体", "味方2", x: 4, y: 7);
+            f.CreateUnit("機体", "敵2", "敵", x: 6, y: 4);
+            f.Src.Commands.SelectedUnit = u;
+            f.Gui.Handle("IsRButtonPressed", args => true);
+
+            // 射程１（AreaInReachable）
+            var abilityAnswers = new Queue<UnitAbility>(new[] { u.Abilities.First(), null });
+            f.Gui.Handle("AbilityListBox", args => abilityAnswers.Dequeue());
+            Run(f, Command.AbilityListCmdID, "アビリティ一覧");
+            var mask = f.Src.Map.MaskData;
+            Assert.IsFalse(mask[4, 5], "隣の味方");
+            Assert.IsFalse(mask[5, 4], "隣の敵");
+
+            // 射程２以上（AreaInRange）
+            abilityAnswers = new Queue<UnitAbility>(new[] { u.Abilities.ElementAt(1), null });
+            f.Gui.Handle("AbilityListBox", args => abilityAnswers.Dequeue());
+            Run(f, Command.AbilityListCmdID, "アビリティ一覧");
+            mask = f.Src.Map.MaskData;
+            Assert.IsFalse(mask[4, 7], "射程内の味方");
+            Assert.IsFalse(mask[6, 4], "射程内の敵");
         }
 
         // ──────────────────────────────────────────────

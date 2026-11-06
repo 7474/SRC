@@ -118,16 +118,22 @@ namespace SRCCore.Commands
             }
 
             // 行動終了していないユニットに対して行動終了イベントを実施
-            foreach (var currentSelectedUnit in stillActionUnits)
+            // 元の SRC と同じく、イベントで状態が変わることがあるので、ユニットごとにその時点で判定する
+            foreach (var currentSelectedUnit in SRC.UList.Items.ToList())
             {
                 SelectedUnit = currentSelectedUnit;
-                Event.HandleEvent("行動終了", currentSelectedUnit.MainPilot().ID);
-                if (SRC.IsScenarioFinished)
+                if (currentSelectedUnit.Party == "味方" && currentSelectedUnit.CanAction)
                 {
-                    SRC.IsScenarioFinished = false;
-                    return;
+                    Event.HandleEvent("行動終了", currentSelectedUnit.MainPilot().ID);
+                    if (SRC.IsScenarioFinished)
+                    {
+                        SRC.IsScenarioFinished = false;
+                        return;
+                    }
                 }
             }
+            // 元の SRC は For Each SelectedUnit In UList で回すので、回り終えると SelectedUnit は Nothing になる
+            SelectedUnit = null;
 
             ProceedToNextTurn();
         }
@@ -296,26 +302,47 @@ namespace SRCCore.Commands
             ;
 
             // ソート
+            // 元の SRC と同じ選択ソート（安定ではないので、同じ値のユニットの順も元の SRC に合わせる）
             if (Strings.InStr(sort_mode, "名称") == 0)
             {
-                // 数値を使ったソート
-                units = units.OrderByDescending(x =>
+                // 数値を使ったソート（大きい順）
+                var keys = units.Select(x =>
                 {
                     var u = SRC.UList.Item(x.ListItemID);
                     switch (sort_mode)
                     {
-                        case "ＨＰ": return u.HP;
-                        case "ＥＮ": return u.EN;
+                        case "ＨＰ": return (long)u.HP;
+                        case "ＥＮ": return (long)u.EN;
                         case "レベル":
-                        case "パイロットレベル": return u.MainPilot()?.TotalExp ?? 0;
-                        default: return 0;
+                        case "パイロットレベル":
+                            return u.CountPilot() > 0 ? 500L * u.MainPilot().Level + u.MainPilot().Exp : 0L;
+                        default: return 0L;
                     }
                 }).ToList();
+                for (var i = 0; i < units.Count - 1; i++)
+                {
+                    var max_item = i;
+                    var max_value = keys[i];
+                    for (var j = i + 1; j < units.Count; j++)
+                    {
+                        if (keys[j] > max_value)
+                        {
+                            max_item = j;
+                            max_value = keys[j];
+                        }
+                    }
+                    if (max_item != i)
+                    {
+                        (units[i], units[max_item]) = (units[max_item], units[i]);
+                        keys[max_item] = keys[i];
+                    }
+                }
             }
             else
             {
-                // 数値以外を使ったソート
-                units = units.OrderBy(x =>
+                // 文字列を使ったソート（StrComp(…, vbTextCompare) で小さい順）
+                var comparer = SrcCollection<string>.KeyComparer;
+                var keys = units.Select(x =>
                 {
                     var u = SRC.UList.Item(x.ListItemID);
                     switch (sort_mode)
@@ -324,10 +351,28 @@ namespace SRCCore.Commands
                         case "ユニット名称":
                             return u.KanaName;
                         case "パイロット名称":
-                            return u.MainPilot()?.KanaName ?? "";
+                            return u.CountPilot() > 0 ? u.MainPilot().KanaName : "";
                         default: return "";
                     }
                 }).ToList();
+                for (var i = 0; i < units.Count - 1; i++)
+                {
+                    var max_item = i;
+                    var max_str = keys[i];
+                    for (var j = i + 1; j < units.Count; j++)
+                    {
+                        if (comparer.Compare(keys[j] ?? "", max_str ?? "") < 0)
+                        {
+                            max_item = j;
+                            max_str = keys[j];
+                        }
+                    }
+                    if (max_item != i)
+                    {
+                        (units[i], units[max_item]) = (units[max_item], units[i]);
+                        keys[max_item] = keys[i];
+                    }
+                }
             }
 
             // リストを表示
@@ -462,8 +507,29 @@ namespace SRCCore.Commands
             // イベント専用のコマンドを除いた全スペシャルパワーのリストを作成
             var allSpList = SRC.SPDList.Items
                 .Where(x => x.ShortName != "非表示")
-                .OrderBy(x => x.KanaName)
                 .ToList();
+
+            // ソート（元の SRC と同じく、読み仮名を StrComp(…, vbTextCompare) で比べる選択ソート）
+            {
+                var comparer = SrcCollection<string>.KeyComparer;
+                for (var i = 0; i < allSpList.Count - 1; i++)
+                {
+                    var max_item = i;
+                    var max_str = allSpList[i].KanaName ?? "";
+                    for (var j = i + 1; j < allSpList.Count; j++)
+                    {
+                        if (comparer.Compare(allSpList[j].KanaName ?? "", max_str) < 0)
+                        {
+                            max_item = j;
+                            max_str = allSpList[j].KanaName ?? "";
+                        }
+                    }
+                    if (max_item != i)
+                    {
+                        (allSpList[i], allSpList[max_item]) = (allSpList[max_item], allSpList[i]);
+                    }
+                }
+            }
 
             // 個々のスペシャルパワーに対して、そのスペシャルパワーを使用可能なパイロットが
             // いるかどうか判定
@@ -510,14 +576,24 @@ namespace SRCCore.Commands
                 SelectedSpecialPower = sel;
 
                 // 選択されたスペシャルパワーを使用できるパイロットの一覧を作成
-                var pilots = pilotMap.ContainsKey(sel) ? pilotMap[sel] : new List<Pilot>();
+                // 元の SRC はここでは憑依と「本当に乗っているか」を見ず、追加パイロットのため使われていない
+                // パイロット（Pilot(1) がメインパイロットでない）だけを除く
+                var pilots = SRC.PList.Items
+                    .Where(p => p.Party == "味方"
+                        && p.Unit != null
+                        && p.Unit.Status == "出撃"
+                        && !(p.Unit.CountPilot() > 0
+                            && p.ID == p.Unit.Pilots.First().ID
+                            && p.ID != p.Unit.MainPilot().ID)
+                        && p.IsSpecialPowerAvailable(SelectedSpecialPower))
+                    .ToList();
                 var list2 = pilots.Select(p =>
                 {
                     var msg = GeneralLib.RightPaddedString(p.get_Nickname(false), 19)
                         + GeneralLib.RightPaddedString(SrcFormatter.Format(p.SP) + "/" + SrcFormatter.Format(p.MaxSP), 10);
 
+                    // 持っているスペシャルパワーをすべて並べる
                     msg += GeneralLib.RightPaddedString(string.Join("", p.SpecialPowerNames
-                            .Where(x => p.IsSpecialPowerAvailable(x))
                             .Select(x => SRC.SPDList.Item(x).ShortName)), 12);
 
                     if (p.SP < p.SpecialPowerCost(SelectedSpecialPower))
@@ -529,10 +605,8 @@ namespace SRCCore.Commands
                     {
                         msg += " 行動済";
                     }
-                    return new ListBoxItem(msg, p.ID)
-                    {
-                        // XXX ここはフラグ立たない？
-                    };
+                    // 元の SRC も ListItemFlag は False（選べる）
+                    return new ListBoxItem(msg, p.ID);
                 }).ToList();
 
                 SelectedSpecialPower = "";
@@ -653,7 +727,8 @@ namespace SRCCore.Commands
 
             // 中断データをセーブするファイル名を決定
             var fname = Path.GetFileNameWithoutExtension(SRC.ScenarioFileName) + "を中断.srcq";
-            // XXX Streamを取った結果ファイル目が消え失せてしまった
+            // 元の SRC は選んだファイルがシナリオフォルダの外なら「読み込めません」と確かめる。
+            // SRC# は保存先を GUI（SelectSaveStream）が決め、SRCCore はファイル名を受け取らないので、ここでは確かめない
             using (var saveStream = GUI.SelectSaveStream(SRCSaveKind.Suspend, fname))
             {
                 if (saveStream == null)

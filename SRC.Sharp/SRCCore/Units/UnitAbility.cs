@@ -1595,7 +1595,7 @@ namespace SRCCore.Units
             // 必要技能を満たさない武器は表示しない
             var baseCondition = !Unit.IsDisabled(Data.Name)
                 && IsAbilityMastered()
-                // XXX 条件によって check_formation 見直す
+                // 元の SRC の一覧（GUI.bas の WeaponListBox・AbilityListBox、Status.bas）は、どの表示でも check_formation に True を渡す
                 && !(IsAbilityClassifiedAs("合") && !IsCombinationAbilityAvailable(true))
                 ;
             return baseCondition;

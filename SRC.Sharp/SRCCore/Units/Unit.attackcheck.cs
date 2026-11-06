@@ -453,7 +453,7 @@ namespace SRCCore.Units
                     // 逃げ場所がある？
                     int teleportRange = GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 2));
                     Map.AreaInTeleport(t, teleportRange);
-                    Map.SafetyPoint(t, out new_x, out new_y);
+                    Map.SafetyPoint(t, ref new_x, ref new_y);
                     if ((t.x != new_x || t.y != new_y) && new_x != 0 && new_y != 0)
                     {
                         // ＥＮ消費

@@ -191,11 +191,11 @@ namespace SRCCore.Commands
                 }
 
                 // 表示名称
-                var fname = currentUnit.MainPilot().SkillName0(ftype);
-                if (string.IsNullOrEmpty(fname))
+                if (string.IsNullOrEmpty(currentUnit.FeatureName0(ftype)))
                 {
                     continue;
                 }
+                var fname = currentUnit.MainPilot().SkillName0(ftype);
                 if (Strings.InStr(fname, "非表示") > 0)
                 {
                     continue;
@@ -394,7 +394,7 @@ namespace SRCCore.Commands
                         {
                             if (Strings.Len(alevel) > 0)
                             {
-                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + alevel);
+                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + Strings.StrConv(alevel, VbStrConv.Wide));
                             }
                             else
                             {
@@ -580,12 +580,12 @@ namespace SRCCore.Commands
                         }
 
                         // 属性の名称
-                        atype = Help.AttributeName(SelectedUnit, buf);
+                        atype = Help.AttributeName(SelectedUnit, buf, true);
                         if (Strings.Len(atype) > 0)
                         {
                             if (Strings.Len(alevel) > 0)
                             {
-                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + alevel);
+                                list.Add(GeneralLib.RightPaddedString(buf + "L" + alevel, 8) + atype + "レベル" + Strings.StrConv(alevel, VbStrConv.Wide));
                             }
                             else
                             {
@@ -628,13 +628,13 @@ namespace SRCCore.Commands
                             {
                                 GUI.CloseListBox();
 
-                                // 武器の射程を求めておく
+                                // アビリティの射程を求めておく
                                 var min_range = currentAbility.AbilityMinRange();
                                 var max_range = currentAbility.AbilityMaxRange();
                                 // 射程範囲表示
                                 if ((max_range == 1 || currentAbility.IsAbilityClassifiedAs("Ｐ")) && !currentAbility.IsAbilityClassifiedAs("Ｑ"))
                                 {
-                                    Map.AreaInReachable(SelectedUnit, max_range, u.Party + "の敵");
+                                    Map.AreaInReachable(SelectedUnit, max_range, "すべて");
                                 }
                                 else if (currentAbility.IsAbilityClassifiedAs("Ｍ直"))
                                 {
@@ -647,10 +647,6 @@ namespace SRCCore.Commands
                                 else if (currentAbility.IsAbilityClassifiedAs("Ｍ扇"))
                                 {
                                     Map.AreaInSectorCross(u.x, u.y, min_range, max_range, VBMath.CLng(currentAbility.AbilityLevel("Ｍ扇")));
-                                }
-                                else if (currentAbility.IsAbilityClassifiedAs("Ｍ全") || currentAbility.IsAbilityClassifiedAs("Ｍ線"))
-                                {
-                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
                                 }
                                 else if (currentAbility.IsAbilityClassifiedAs("Ｍ投"))
                                 {
@@ -665,7 +661,7 @@ namespace SRCCore.Commands
                                 }
                                 else
                                 {
-                                    Map.AreaInRange(u.x, u.y, max_range, min_range, u.Party + "の敵");
+                                    Map.AreaInRange(u.x, u.y, max_range, min_range, "すべて");
                                 }
 
                                 GUI.Center(u.x, u.y);
@@ -710,12 +706,8 @@ namespace SRCCore.Commands
             LogDebug();
 
             SelectedCommand = "移動範囲";
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // 元の SRC は新 GUI のときにここでユニットのステータスを消す（ClearUnitStatus）。
+            // SRC# は新 GUI に対応していない（SetNewGUIMode は GUI ごとに何もしないか未対応）ので消さない
 
             Map.AreaInSpeed(SelectedUnit);
             GUI.Center(SelectedUnit.x, SelectedUnit.y);
@@ -730,12 +722,8 @@ namespace SRCCore.Commands
 
             SelectedCommand = "射程範囲";
 
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // 元の SRC は新 GUI のときにここでユニットのステータスを消す（ClearUnitStatus）。
+            // SRC# は新 GUI に対応していない（SetNewGUIMode は GUI ごとに何もしないか未対応）ので消さない
 
             {
                 var currentUnit = SelectedUnit;
