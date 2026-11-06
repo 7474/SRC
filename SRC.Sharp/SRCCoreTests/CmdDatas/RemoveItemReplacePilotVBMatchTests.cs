@@ -123,13 +123,16 @@ namespace SRCCore.CmdDatas.Tests
             u.Status = "出撃";
             src.Event.SelectedUnitForEvent = other;
             var itm = CreateItem(src, "画像装備", "ユニット画像=test.bmp");
-            u.AddItem(itm);
             var painted = new List<Units.Unit>();
             gui.PaintUnitBitmapHandler = (pu, _) => painted.Add(pu);
+            // 装備したときも Unit.Update が画像の変わったユニットを描き直す
+            u.AddItem(itm);
+            painted.Clear();
 
             Assert.AreEqual(1, CreateCmd(src, "RemoveItem テスト機 画像装備").Exec());
 
-            CollectionAssert.AreEqual(new[] { u }, painted);
+            // 元の SRC は DeleteItem から呼ぶ Unit.Update でも、画像が変わった出撃中のユニットを描き直す（Unit.cls 1684〜1698 行）
+            CollectionAssert.AreEqual(new[] { u, u }, painted);
         }
 
         [TestMethod]

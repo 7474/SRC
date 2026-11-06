@@ -332,7 +332,9 @@ namespace SRCCore.CmdDatas.Tests
 
             Assert.AreEqual(1, unit.CountItem());
             Assert.AreEqual("装備後.bmp", unit.get_Bitmap(false));
-            Assert.AreEqual(1, painted);
+            // 元の SRC はマップに出ているユニット（BitmapID が 0 でない）なら AddItem から呼ぶ Unit.Update でも
+            // 描き直すので、Update と Equip で 2 回描く（Unit.cls 1684〜1698 行）
+            Assert.AreEqual(2, painted);
         }
 
         // Equip でユニット画像が変わらなければ、マップ表示中でも再描画しない（元の SRC と同じ）

@@ -215,19 +215,9 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/UIInterface/ISystemConfig.cs:41` | XXX | XXX /この辺はSRCのコア的にはどうでもいい | 未確認 |  |
 | `SRCCore/UIInterface/ISystemConfig.cs:46` | XXX | XXX この辺に依存する処理はあんまり嬉しくない | 未確認 |  |
 | `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | SRC#で不要 | メソッドの置き場所の設計のメモで、動作に関係しない |
-| `SRCCore/Units/Unit.condition.cs:81` | コード | return colCondition[Index].Name; | 未確認 |  |
-| `SRCCore/Units/Unit.condition.cs:105`（7 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:36` | XXX | XXX 参照先はNameだった | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:37` | コード | FeatureRet = fd.Name; | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:42` | XXX | XXX 参照先はNameだった | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:43` | コード | FeatureRet = fd.Name; | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:83`（20 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:118`（5 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:136`（114 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:254` | XXX | XXX 同一インスタンスじゃないかも | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:312`（20 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.feature.cs:340` | XXX | XXX colAllFeature の更新要らんの？ | 未確認 |  |
+| `SRCCore/Units/Unit.condition.cs:81` | コード | return colCondition[Index].Name; | SRC#で不要 | Condition は Condition オブジェクトを返すように変え、呼び出し側が .Name を読む |
+| `SRCCore/Units/Unit.condition.cs:105`（7 行） | コード | { | SRC#で不要 | SetConditionLevel。呼び出し元で `Condition(name).Level` に直接代入している |
+| `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | SRC#で不要 | StatusFeatures の説明として VB の参照元（Status.bas）を書いたコメント。コメントアウトしたコードではない |
 | `SRCCore/Units/Unit.item.cs:153` | コード | If Not itm2 Is Nothing の分岐があるが、VB の For Each は最後まで回ると | 未確認 |  |
 | `SRCCore/Units/Unit.lookup.cs:1851` | XXX | XXX もうちょいいい感じにしたいもんだ | 未確認 |  |
 | `SRCCore/Units/Unit.map.cs:45` | XXX | XXX Goto 潰しておきたい | 未確認 |  |
@@ -240,24 +230,16 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.map.cs:1957` | XXX | XXX 要は先頭に乗る、だろ？ | 未確認 |  |
 | `SRCCore/Units/Unit.map.cs:1958`（2 行） | コード | Unit localItem3() { object argIndex1 = GeneralLib.LIndex(buf, 2); | 未確認 |  |
 | `SRCCore/Units/Unit.onboard.cs:24` | XXX | XXX 一致のケース考慮してなかったかも？ | 未確認 |  |
-| `SRCCore/Units/Unit.pilot.cs:356` | TODO | TODO 使用している個所でもともと追加サポートを処理していたか精査 | 未確認 |  |
+| `SRCCore/Units/Unit.pilot.cs:335` | TODO | TODO 使用している個所でもともと追加サポートを処理していたか精査 | 未確認 |  |
 | `SRCCore/Units/Unit.recover.cs:26` | XXX | XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？ | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:47`（25 行） | コード | WeaponData[] prev_wdata; | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:81` | コード | ubitmap = get_Bitmap(false); | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:405`（60 行） | コード | found = false; | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:489`（44 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:1082`（35 行） | コード | { | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:1736` | コード | intMaxBullet[i] = Weapon(i).Bullet; | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:1770`（17 行） | コード | Array.Resize(dblBullet, CountWeapon() + 1); | 未確認 |  |
-| `SRCCore/Units/Unit.status.cs:1807`（149 行） | コード | prev_adata = new AbilityData[Information.UBound(adata) + 1]; | 未確認 |  |
 | `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
 | `SRCCore/Units/UnitAbility.cs:1590` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:58` | XXX | XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？ | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:163` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
-| `SRCCore/Units/UnitWeapon.cs:3968` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
-| `SRCCore/Units/UnitWeapon.cs:4288` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
-| `SRCCore/Units/UnitWeapon.cs:5092`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
-| `SRCCore/Units/UnitWeapon.cs:5329` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitWeapon.cs:3972` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
+| `SRCCore/Units/UnitWeapon.cs:4292` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
+| `SRCCore/Units/UnitWeapon.cs:5096`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
+| `SRCCore/Units/UnitWeapon.cs:5333` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
 | `SRCCore/Units/Units.cs:736`（298 行） | コード | { | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:94` | XXX | XXX DateTime パースの精査 | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:99` | XXX | XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。 | 未確認 |  |

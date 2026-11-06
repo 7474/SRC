@@ -528,7 +528,8 @@ namespace SRCCore.Coverage.Tests
         [TestMethod]
         public void WeaponEnhanceFeatures_AddPower()
         {
-            // 武器強化 +100/Lv、武器割合強化 +攻撃力×Lv÷20。固属性は明示指定された場合のみ
+            // 武器強化 +100/Lv、武器割合強化 +攻撃力×Lv÷20。
+            // 武器指定が無いときは固属性の武器も強化する（元の SRC は flen = 0 で flag = True）
             var src = CreateSrc();
             var ud = AddUnitData(src);
             AddWeapon(ud, "通常", 1000, "射");
@@ -538,7 +539,7 @@ namespace SRCCore.Coverage.Tests
             var unit = CreateUnit(src, ud);
 
             Assert.AreEqual(1200, Weapon(unit, "通常").WeaponPower(""));
-            Assert.AreEqual(1000, Weapon(unit, "固定").WeaponPower(""));
+            Assert.AreEqual(1200, Weapon(unit, "固定").WeaponPower(""));
         }
 
         [TestMethod]

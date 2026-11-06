@@ -31,20 +31,18 @@ namespace SRCCore.Units
         // 他形態を削除
         public void DeleteOtherForm(string Index)
         {
-            try
+            if (colOtherForm.Remove(Index))
             {
-                colOtherForm.Remove(Index);
+                return;
             }
-            catch
+
+            // 見つからなければユニット名称で検索
+            foreach (var u in OtherForms)
             {
-                // 見つからなければユニット名称で検索
-                foreach (var u in OtherForms)
+                if (u.Name == Index)
                 {
-                    if (u.Name == Index)
-                    {
-                        colOtherForm.Remove(u);
-                        return;
-                    }
+                    colOtherForm.Remove(u);
+                    return;
                 }
             }
         }
@@ -129,7 +127,8 @@ namespace SRCCore.Units
             for (int i = 1; i <= CountFeature(); i++)
             {
                 string fname = Feature(i).Name;
-                string fdata = FeatureData(i);
+                // 元の SRC と同じく、データは名前で引く（同じ名前の特殊能力が複数あれば最初のもののデータ）
+                string fdata = FeatureData(fname);
                 switch (fname)
                 {
                     case "変形":

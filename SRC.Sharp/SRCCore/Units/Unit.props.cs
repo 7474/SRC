@@ -1155,6 +1155,7 @@ namespace SRCCore.Units
         }
 
         // 残り行動数
-        public int Action => Math.Max(MaxAction() - UsedAction, 0);
+        // 行動できないとき（MaxAction が 0）は、再動などで UsedAction が負でも 0
+        public int Action => MaxAction() > 0 ? Math.Max(MaxAction() - UsedAction, 0) : 0;
     }
 }

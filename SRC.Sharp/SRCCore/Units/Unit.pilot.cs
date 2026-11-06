@@ -138,19 +138,14 @@ namespace SRCCore.Units
             if (SRC.PList.IsDefined(pname))
             {
                 // 既に暴走時パイロットが作成済み
+                // 元の SRC と同じく、先にユニットを設定してから気力・レベル・経験値を合わせる。
+                // 元の SRC はユニットを設定した直後に「このユニットのものでなければ Update・UpdateSupportMod」と
+                // 判定するので、その Update・UpdateSupportMod は呼ばれない（レベルが変わったときの Update だけ）
                 var berserkPilot = SRC.PList.Item(pname);
+                berserkPilot.Unit = this;
                 berserkPilot.Morale = Pilots.First().Morale;
                 berserkPilot.Level = Pilots.First().Level;
                 berserkPilot.Exp = Pilots.First().Exp;
-                if (!without_update)
-                {
-                    if (!ReferenceEquals(berserkPilot.Unit, this))
-                    {
-                        berserkPilot.Unit = this;
-                        berserkPilot.Update();
-                        berserkPilot.UpdateSupportMod();
-                    }
-                }
 
                 return berserkPilot;
             }
@@ -216,12 +211,9 @@ namespace SRCCore.Units
                                 }
                             }
 
-                            // VB 版と同じく、ここでは周りのユニットからの支援の修正（UpdateSupportMod）を見直さない。
+                            // VB 版と同じく、ここでは Update（レベルが変わったときを除く）と
+                            // 周りのユニットからの支援の修正（UpdateSupportMod）を見直さない。
                             // 見直すと、同じ追加パイロットを持つ近くのユニットとパイロットを取り合い続ける（#1411）
-                            if (!without_update)
-                            {
-                                pltAdditionalPilot.Update();
-                            }
                         }
 
                         return pltAdditionalPilot;
@@ -236,25 +228,12 @@ namespace SRCCore.Units
                         var additionalPilot = otherForm.pltAdditionalPilot;
                         if ((additionalPilot.Name ?? "") == (pname ?? ""))
                         {
+                            // 元の SRC と同じく、陣営とユニットを設定するだけで、レベル・経験値・気力は合わせない。
+                            // 元の SRC はユニットを設定した直後に「追加パイロットで、このユニットのものでなければ合わせる」と
+                            // 判定するので、合わせる処理は呼ばれない（他形態で変わった気力などをそのまま引き継ぐ）
                             pltAdditionalPilot = additionalPilot;
                             additionalPilot.Party = Party0;
-                            // 気力の設定がこのユニットの MainPilot を呼んでも同じ処理を繰り返さないよう、先にユニットを設定する（#1407）
-                            if (additionalPilot.IsAdditionalPilot && !ReferenceEquals(additionalPilot.Unit, this))
-                            {
-                                additionalPilot.Unit = this;
-                                if (CountPilot() > 0)
-                                {
-                                    additionalPilot.Level = Pilots.First().Level;
-                                    additionalPilot.Exp = Pilots.First().Exp;
-                                    if (additionalPilot.Personality != "機械")
-                                    {
-                                        additionalPilot.Morale = Pilots.First().Morale;
-                                    }
-                                }
-
-                                // 支援の修正は見直さない（上と同じ理由。#1411）
-                                additionalPilot.Update();
-                            }
+                            additionalPilot.Unit = this;
 
                             return pltAdditionalPilot;
                         }
@@ -483,9 +462,10 @@ namespace SRCCore.Units
                 }
             }
             colSupport.Clear();
+            // 元の SRC と同じく、入れ替えのあとは ID をキーにして登録し直す（AddSupport のキーは名前）
             foreach (var p0 in newList)
             {
-                AddSupport(p0);
+                colSupport.Add(p0, p0.ID);
             }
         }
 
