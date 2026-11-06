@@ -106,7 +106,14 @@ namespace SRCCore.Expressions.Functions
 
                 case var @case when @case == "":
                     {
-                        return etype;
+                        // VB は EvalInfoFunc を "" で抜け、呼び出し元（CallFunction の "info"）が
+                        // etype に応じて数値か文字列を返す。etype をそのまま返すと UndefinedType の
+                        // ときにユーザー定義関数の探索へ進んでしまう
+                        if (etype == ValueType.NumericType)
+                        {
+                            return ValueType.NumericType;
+                        }
+                        return ValueType.StringType;
                     }
 
                 default:
@@ -243,7 +250,9 @@ namespace SRCCore.Expressions.Functions
                         {
                             str_result = pd.Sex;
                         }
-                        return ValueType.StringType;
+
+                        // VB の Exit Function は EvalInfoFunc を抜けるだけで、呼び出し元で etype に応じた変換をする
+                        break;
                     }
 
                 case "ユニットクラス":
