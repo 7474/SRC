@@ -64,7 +64,7 @@ namespace SRCCore.CmdDatas.Commands
                         depth = (depth - 1);
                         if (depth == 0)
                         {
-                            // XXX Index再考するならする
+                            // ForEachIndex は VB と同じく 1 から数える。ForEachSet は 0 から数えるので 1 を引いて読む
                             Event.ForEachIndex = (Event.ForEachIndex + 1);
                             if (Event.ForEachIndex > Event.ForEachSet.Count)
                             {
