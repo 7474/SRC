@@ -346,10 +346,13 @@ namespace SRCCore
                 GUI.MapX = data.MapX;
                 GUI.MapY = data.MapY;
 
-                // XXX 仮処理
+                // 中断データのリンクとパラメータを戻す（VB: RestoreData の RestoreLinkInfo・RestoreParameter・UpdateSupportMod）
                 // ユニットのステータスを更新してアビリティの残り使用回数を戻す（VB: Unit.RestoreLinkInfo）
                 UList.Items.ToList().ForEach(x => x.RestoreLinkInfo());
                 PList.Items.ToList().ForEach(x => x.Update());
+                // ＳＰ・気力・霊力は最大値が特殊能力で変わるので、特殊能力を設定した後に設定し直す（VB: PList.RestoreParameter）
+                // ユニットのＨＰ・ＥＮは JSON の値をそのまま使う（VB: UList.RestoreParameter）
+                PList.Items.ToList().ForEach(x => x.RestoreParameter());
                 // 支援効果による修正値はセーブしないので、パラメータを戻した後に計算し直す（VB: RestoreData の PList.UpdateSupportMod）
                 PList.UpdateSupportMod();
 
