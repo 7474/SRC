@@ -1,6 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
-using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,28 +12,36 @@ namespace SRCCore.CmdDatas.Commands
         protected override int ExecInternal()
         {
             var late_refresh = false;
-            for (var i = 2; i <= ArgNum; i++)
+            switch (ArgNum)
             {
-                var buf = GetArgAsString(i);
-                switch (buf ?? "")
-                {
-                    case "非同期":
-                        {
-                            late_refresh = true;
-                            break;
-                        }
+                case 1:
+                    // ＯＫ
+                    break;
 
-                    default:
-                        {
-                            throw new EventErrorException(this, "Noonコマンドに不正なオプション「" + buf + "」が使われています");
-                        }
-                }
+                case 2:
+                    if (GetArgAsString(2) == "非同期")
+                    {
+                        late_refresh = true;
+                    }
+                    else
+                    {
+                        throw new EventErrorException(this, "Noonコマンドのオプションが不正です");
+                    }
+                    break;
+
+                default:
+                    throw new EventErrorException(this, "Noonコマンドの引数の数が違います");
             }
             Map.MapDrawIsMapOnly = false;
+
+            // SetupBackground はマップの表示位置を中央に戻すので、元の位置を覚えておいて戻す
+            var prev_x = GUI.MapX;
+            var prev_y = GUI.MapY;
 
             // マウスカーソルを砂時計に
             GUI.ChangeStatus(GuiStatus.WaitCursor);
             GUI.SetupBackground("", "非同期");
+            GUI.Center(prev_x, prev_y);
             GUI.RedrawScreen(late_refresh);
 
             // マウスカーソルを元に戻す

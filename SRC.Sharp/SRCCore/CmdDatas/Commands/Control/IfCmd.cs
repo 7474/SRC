@@ -29,10 +29,16 @@ namespace SRCCore.CmdDatas.Commands
                 case IfCmdType.GoTo:
                     if (flag)
                     {
+                        // ラベルが式でないと仮定
                         var ret = Event.FindLabel(GoToLabel);
                         if (ret < 0)
                         {
-                            throw new EventErrorException(this, "ラベル「" + GoToLabel + "」がみつかりません");
+                            // ラベルは式？（元の SRC の GetArgAsString(5)。Goto コマンドと同じ）
+                            ret = Event.FindLabel(Expression.GetValueAsString(GoToLabel, true));
+                            if (ret < 0)
+                            {
+                                throw new EventErrorException(this, "ラベル「" + GoToLabel + "」がみつかりません");
+                            }
                         }
                         return ret + 1;
                     }

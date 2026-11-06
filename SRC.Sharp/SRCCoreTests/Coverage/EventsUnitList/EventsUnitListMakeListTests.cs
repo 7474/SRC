@@ -458,5 +458,70 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.AreEqual(4, p2.Unit.x);
             Assert.IsFalse(DrawnStrings(gui).Any(d => d.y == 17));
         }
+        [TestMethod]
+        public void MakePilotList_SameLevel_IsOrderedLikeVBSelectionSort()
+        {
+            // 元の SRC は選択ソート（入れ替えあり）で並べるので、同じ値の並びは登録順にならない
+            // Lv1(A)・Lv2(B)・Lv1(C)・Lv2(D) → B・D・C・A
+            var (src, gui) = CreateSrc();
+            var a = AddPilot(src, "A", level: 1);
+            var b = AddPilot(src, "B", level: 2);
+            var c = AddPilot(src, "C", level: 1);
+            var d = AddPilot(src, "D", level: 2);
+
+            Exec(src, "MakePilotList レベル");
+
+            Assert.AreEqual(1, b.Unit.x);
+            Assert.AreEqual(4, d.Unit.x);
+            Assert.AreEqual(7, c.Unit.x);
+            Assert.AreEqual(10, a.Unit.x);
+        }
+
+        [TestMethod]
+        public void MakePilotList_SortByName_ComparesLikeVBTextCompare()
+        {
+            // 元の StrComp(…, vbTextCompare) は日本語版の Windows でひらがな・カタカナを区別しない。
+            // 選択ソートなので、同じとみなす「う」と「ウ」は入れ替えの結果の順になる
+            // う(P1)・あ(P2)・ウ(P3)・い(P4) → P2・P4・P3・P1
+            var (src, gui) = CreateSrc();
+            var p1 = AddPilot(src, "P1", kana: "う");
+            var p2 = AddPilot(src, "P2", kana: "あ");
+            var p3 = AddPilot(src, "P3", kana: "ウ");
+            var p4 = AddPilot(src, "P4", kana: "い");
+
+            Exec(src, "MakePilotList 名称");
+
+            Assert.AreEqual(1, p2.Unit.x);
+            Assert.AreEqual(4, p4.Unit.x);
+            Assert.AreEqual(7, p3.Unit.x);
+            Assert.AreEqual(10, p1.Unit.x);
+        }
+
+        [TestMethod]
+        public void MakePilotList_SortByName_JudgesAdditionalPilotByUnitFeatureName()
+        {
+            // 元の SRC の「名称」は、ユニットの「追加パイロット」に指定した名前のパイロットを勘定に入れない。
+            // IsAdditionalPilot ではなく名前で判断するので、指定の無いユニットに属する追加パイロットは一覧に出る
+            var (src, gui) = CreateSrc();
+            var proxy = AddPilot(src, "代理");
+            var u = AddUnit(src, "愛機", withPilot: false);
+            u.Data.AddFeature("追加パイロット=代理");
+            AddPilot(src, "正規").Ride(u);
+            Assert.AreSame(proxy, u.MainPilot());
+            Assert.IsTrue(proxy.IsAdditionalPilot);
+
+            var other = AddUnit(src, "別機", withPilot: false);
+            AddPilot(src, "別機の乗り手").Ride(other);
+            var orphan = AddPilot(src, "元追加");
+            orphan.IsAdditionalPilot = true;
+            orphan.Unit = other;
+
+            Exec(src, "MakePilotList 名称");
+
+            var names = DrawnStrings(gui).Select(x => x.msg).ToList();
+            CollectionAssert.Contains(names, "正規");
+            CollectionAssert.DoesNotContain(names, "代理");
+            CollectionAssert.Contains(names, "元追加");
+        }
     }
 }

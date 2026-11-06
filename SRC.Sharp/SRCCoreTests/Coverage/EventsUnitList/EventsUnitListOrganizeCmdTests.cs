@@ -464,5 +464,45 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
             Assert.AreEqual("ABC" + new string(' ', 49) + " 7", args.Items.Single().Text);
             Assert.AreEqual("ユニット                                            Lv", args.lb_info);
         }
+        [TestMethod]
+        public void Organize_SameLevelUnits_AreOrderedLikeVBSelectionSort()
+        {
+            // 元の SRC はレベルを選択ソート（入れ替えあり）で並べるので、同じレベルの並びは登録順にならない
+            // Lv1(A)・Lv2(B)・Lv1(C)・Lv2(D) → B・D・C・A
+            var (src, gui) = CreateSrc();
+            var a = AddUnit(src, "機体A", level: 1);
+            var b = AddUnit(src, "機体B", level: 2);
+            var c = AddUnit(src, "機体C", level: 1);
+            var d = AddUnit(src, "機体D", level: 2);
+
+            var args = CaptureOrganizeList(src, gui, "Organize 4 1 1", out _, out _);
+
+            CollectionAssert.AreEqual(new[] { b.ID, d.ID, c.ID, a.ID }, args.Items.Select(x => x.ListItemID).ToArray());
+        }
+
+        [TestMethod]
+        public void Organize_NoCandidate_StillChecksAutoHyperMode()
+        {
+            // 元の SRC は候補が無くても最後に UList.CheckAutoHyperMode を呼ぶ
+            var (src, gui) = CreateSrc();
+            var hd = src.UDList.Add("覚醒型");
+            hd.HP = 1000;
+            hd.EN = 100;
+            hd.PilotNum = 1;
+            hd.Class = "汎用";
+            hd.Size = "M";
+            hd.Transportation = "陸";
+            hd.Adaption = "AAAA";
+            hd.AddFeature("ノーマルモード=通常型");
+            var u = AddUnit(src, "通常型", features: new[] { "ハイパーモード=ハイパーモード 覚醒型 自動発動" });
+            u.StandBy(2, 2);
+            u.HP = u.MaxHP / 4;
+
+            var result = Exec(src, "Organize 1 1 1");
+
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(gui.CallsOf(nameof(IGUI.MultiSelectListBox)).Any());
+            Assert.AreEqual("覚醒型", u.CurrentForm().Name);
+        }
     }
 }

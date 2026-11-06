@@ -8,19 +8,11 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | 場所 | 種類 | 本文 | 状態 | メモ |
 |---|---|---|---|---|
 | `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | SRC#で不要 | 分岐の説明のコメントで、VB のコードの残りではない |
-| `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs:166` | XXX | XXX メインパイロットが差し変わっていたら除外？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Control/LocalCmd.cs:22` | XXX | XXX 定義済を再定義した時 | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Control/NextCmd.cs:67` | XXX | XXX Index再考するならする | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/File/OpenCmd.cs:23` | コード | var fname = SRC.ScenarioPath + GetArgAsString(2); | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Item/RemoveItemCmd.cs:56` | XXX | XXX このチェック何？ | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs:35` | XXX | XXX 読み込み順序の解決がシナリオ読み込み時と大分食い違っているはず | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs:154` | TODO | TODO パイロットの愛称描画をGUIに切り出す（セルサイズ 32px がコア側にハードコードされている） | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs:27` | XXX | XXX NewGUIMode | 未確認 |  |
-| `SRCCore/CmdDatas/Commands/Other/OptionCmd.cs:29`（4 行） | コード | { | 未確認 |  |
+| `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs:35` | XXX | XXX 読み込み順序の解決がシナリオ読み込み時と大分食い違っているはず | Issue | #1518 |
 | `SRCCore/CmdDatas/Commands/Pilot/RemovePilotCmd.cs:94` | XXX | XXX いい感じに消す | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:15` | TODO | TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく | SRC#で不要 | 事前解析は高速化のためで、同じ解釈を実行時にしている |
 | `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs:33`（209 行） | コード | { | Issue | 座標指定の確定の判定が未移植。ExecPaintStringCmd の突き合わせ（#1505）で直す |
-| `SRCCore/CmdDatas/Commands/Unit/OrganizeCmd.cs:18`（14 行） | コード | short unum; | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs:46` | XXX | XXX 元はSavedStateは更新していなかったけれど更新してる | 未確認 |  |
 | `SRCCore/CmdDatas/Commands/Unit/TransformCmd.cs:47` | XXX | XXX 元はSavedStateは更新していなかったけれど更新してる | 未確認 |  |
 | `SRCCore/Commands/Command.attack.cs:302` | XXX | XXX COMの攻撃と同じところは切り出しておきたい。。。 | 未確認 |  |

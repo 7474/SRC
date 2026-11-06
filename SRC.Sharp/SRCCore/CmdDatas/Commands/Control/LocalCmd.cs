@@ -19,7 +19,8 @@ namespace SRCCore.CmdDatas.Commands
             string str_result = "";
             double num_result = 0d;
 
-            // XXX 定義済を再定義した時
+            // 定義済の名前をもう一度 Local しても、元の SRC と同じく新しい変数をスタックに積むだけ。
+            // 参照はスタックの下（先に定義したもの）から探す（Expression.bas の For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex）
 
             // 代入式付きの変数定義？
             if (ArgNum >= 4)
