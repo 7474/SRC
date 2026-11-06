@@ -223,13 +223,13 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/Unit.pilot.cs:335` | TODO | TODO 使用している個所でもともと追加サポートを処理していたか精査 | 未確認 |  |
 | `SRCCore/Units/Unit.recover.cs:26` | XXX | XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？ | 未確認 |  |
 | `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
-| `SRCCore/Units/UnitAbility.cs:1598` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitAbility.cs:1598` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/UnitWeapon.cs:58` | XXX | XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？ | 未確認 |  |
 | `SRCCore/Units/UnitWeapon.cs:163` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3972` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4292` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:5096`（3 行） | コード | If IsWeaponClassifiedAs(w, "合") Then | SRC#で不要 | VB でもコメントアウトされているコード |
-| `SRCCore/Units/UnitWeapon.cs:5341` | XXX | XXX 条件によって check_formation 見直す | 未確認 |  |
+| `SRCCore/Units/UnitWeapon.cs:5341` | XXX | XXX 条件によって check_formation 見直す | 未確認 | 武器・アビリティの一覧に出すかの判定。VB で一覧を作る処理（Command.bas・GUI.bas の武器・アビリティの一覧）で check_formation をどう渡すかを見る。IsCombinationAttackAvailable・IsCombinationAbilityAvailable は #1498（Unit.cls その他）で VB に合わせた |
 | `SRCCore/Units/Units.cs:736`（298 行） | コード | { | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:94` | XXX | XXX DateTime パースの精査 | 未確認 |  |
 | `SRCCore/VB/Conversions.cs:99` | XXX | XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。 | 未確認 |  |
