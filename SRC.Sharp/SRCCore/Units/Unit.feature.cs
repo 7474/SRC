@@ -31,31 +31,42 @@ namespace SRCCore.Units
         }
 
         // 特殊能力
+        // 元の SRC は名称を返すが、SRC# は FeatureData を返す（名称は .Name で参照する）
         public FeatureData Feature(string Index)
         {
-            // XXX 参照先はNameだった
-            //FeatureRet = fd.Name;
             return colFeature[Index];
         }
         public FeatureData Feature(int Index)
         {
-            // XXX 参照先はNameだった
-            //FeatureRet = fd.Name;
             return colFeature[Index];
         }
 
+        // 番号で特殊能力を参照する。元の SRC の On Error と同じく、範囲外なら null
+        private static FeatureData FeatureAt(SrcCollection<FeatureData> list, int index)
+        {
+            return index >= 1 && index <= list.Count ? list[index] : null;
+        }
+
         // 特殊能力の名称
+        // 見つからなかった場合は、元の SRC と同じく Index をそのまま返す
         public string FeatureName(string Index)
         {
-            return colFeature[Index]?.FeatureName(this) ?? "";
+            var fd = colFeature[Index];
+            return fd is null ? Index ?? "" : fd.FeatureName(this);
         }
         public string FeatureName(int Index)
         {
-            return colFeature[Index]?.FeatureName(this) ?? "";
+            var fd = FeatureAt(colFeature, Index);
+            return fd is null ? SrcFormatter.Format(Index) : fd.FeatureName(this);
         }
         public string FeatureName0(string Index)
         {
-            return colFeature[Index]?.FeatureName0(this) ?? "";
+            var fname = FeatureName(Index);
+            if (Strings.InStr(fname, "Lv") > 0)
+            {
+                fname = Strings.Left(fname, Strings.InStr(fname, "Lv") - 1);
+            }
+            return fname;
         }
 
         // 特殊能力のレベル
@@ -65,7 +76,7 @@ namespace SRCCore.Units
         }
         public double FeatureLevel(int Index)
         {
-            return colFeature[Index]?.FeatureLevel ?? 0d;
+            return FeatureAt(colFeature, Index)?.FeatureLevel ?? 0d;
         }
 
         // 特殊能力のデータ
@@ -75,31 +86,8 @@ namespace SRCCore.Units
         }
         public string FeatureData(int Index)
         {
-            return colFeature[Index]?.Data ?? "";
+            return FeatureAt(colFeature, Index)?.Data ?? "";
         }
-
-        //        // 特殊能力の必要技能
-        //        public string FeatureNecessarySkill(string Index)
-        //        {
-        //            string FeatureNecessarySkillRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 34947
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colFeature[Index];
-        //            FeatureNecessarySkillRet = fd.NecessarySkill;
-        //            return FeatureNecessarySkillRet;
-        //        ErrorHandler:
-        //            ;
-        //            FeatureNecessarySkillRet = "";
-        //        }
 
         // 指定した特殊能力を所有しているか？
         public bool IsFeatureAvailable(string fname)
@@ -113,15 +101,10 @@ namespace SRCCore.Units
             return (colFeature[Index]?.Level ?? Constants.DEFAULT_LEVEL) != Constants.DEFAULT_LEVEL;
         }
 
-        //        // 特殊能力の総数(必要条件を満たさないものを含む)
-        //        public int CountAllFeature()
-        //        {
-        //            int CountAllFeatureRet = default;
-        //            CountAllFeatureRet = colAllFeature.Count;
-        //            return CountAllFeatureRet;
-        //        }
-
         // 特殊能力(必要条件を満たさないものを含む)
+        // 元の SRC の CountAllFeature・AllFeatureName・AllFeatureLevel・AllFeatureLevelSpecified・
+        // AllFeatureData・IsAllFeatureLevelSpecified は、AllFeatures と FeatureData のメンバー
+        // （FeatureName(unit)・FeatureLevel・HasLevel・Data）で参照する
         public FeatureData AllFeature(int Index)
         {
             return colAllFeature[Index];
@@ -131,128 +114,15 @@ namespace SRCCore.Units
             return colAllFeature[Index];
         }
 
-        //        // 特殊能力の名称(必要条件を満たさないものを含む)
-        //        public string AllFeatureName(string Index)
-        //        {
-        //            string AllFeatureNameRet = default;
-        //            AllFeatureNameRet = FeatureNameInt(Index, colAllFeature);
-        //            return AllFeatureNameRet;
-        //        }
-
-        //        // 特殊能力のレベル(必要条件を満たさないものを含む)
-        //        public double AllFeatureLevel(string Index)
-        //        {
-        //            double AllFeatureLevelRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 36565
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            AllFeatureLevelRet = fd.Level;
-        //            if (fd.Level == Constants.DEFAULT_LEVEL)
-        //            {
-        //                AllFeatureLevelRet = 1d;
-        //            }
-
-        //            return AllFeatureLevelRet;
-        //        ErrorHandler:
-        //            ;
-        //            AllFeatureLevelRet = 0d;
-        //        }
-
-        //        // 特殊能力のレベルが指定されているか(必要条件を満たさないものを含む)
-        //        public bool AllFeatureLevelSpecified(string Index)
-        //        {
-        //            bool AllFeatureLevelSpecifiedRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 37017
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            if (fd.Level != Constants.DEFAULT_LEVEL)
-        //            {
-        //                AllFeatureLevelSpecifiedRet = true;
-        //            }
-
-        //            return AllFeatureLevelSpecifiedRet;
-        //        ErrorHandler:
-        //            ;
-        //            AllFeatureLevelSpecifiedRet = false;
-        //        }
-
-        //        // 特殊能力のデータ(必要条件を満たさないものを含む)
-        //        public string AllFeatureData(string Index)
-        //        {
-        //            string AllFeatureDataRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 37422
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            AllFeatureDataRet = fd.StrData;
-        //            return AllFeatureDataRet;
-        //        ErrorHandler:
-        //            ;
-        //            AllFeatureDataRet = "";
-        //        }
-
-        //        // 特殊能力にレベル指定がされている？(必要条件を満たさないものを含む)
-        //        public bool IsAllFeatureLevelSpecified(string Index)
-        //        {
-        //            bool IsAllFeatureLevelSpecifiedRet = default;
-        //            FeatureData fd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 37760
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            fd = (FeatureData)colAllFeature[Index];
-        //            if (fd.Level == Constants.DEFAULT_LEVEL)
-        //            {
-        //                IsAllFeatureLevelSpecifiedRet = false;
-        //            }
-        //            else
-        //            {
-        //                IsAllFeatureLevelSpecifiedRet = true;
-        //            }
-
-        //            return IsAllFeatureLevelSpecifiedRet;
-        //        ErrorHandler:
-        //            ;
-        //            IsAllFeatureLevelSpecifiedRet = false;
-        //        }
-
         // 特殊能力が必要条件を満たしているか
+        // （必要条件を満たさないものを含む一覧の fd が、有効な特殊能力の一覧に同じインスタンスとしてあるか）
         public bool IsFeatureActivated(FeatureData fd)
         {
-            // XXX 同一インスタンスじゃないかも
-            return AllFeatures.Contains(fd);
+            if (fd is null)
+            {
+                return false;
+            }
+            return colFeature.List.Any(x => ReferenceEquals(x, fd));
         }
 
         // 特殊能力を登録
