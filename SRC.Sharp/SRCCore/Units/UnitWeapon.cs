@@ -5281,7 +5281,8 @@ namespace SRCCore.Units
                 cmorale,
                 cplana,
                 crange,
-                tx, ty, check_formation
+                tx, ty, check_formation,
+                "武装"
                 );
         }
 
@@ -5297,9 +5298,16 @@ namespace SRCCore.Units
             else if (WeaponMaxRange() == 1 && !IsWeaponClassifiedAs("Ｍ"))
             {
                 // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
-                partners = Map.AdjacentUnit(Unit)
-                    .Where(t => Unit.IsEnemy(t))
-                    .Select(t => CombinationPartner(t.x, t.y))
+                // VB と同じく左・右・上・下の順に調べる（最初に見つかった組が SelectedPartners に残る）
+                partners = new[]
+                    {
+                        Map.UnitAtPoint(Unit.x - 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x + 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x, Unit.y - 1),
+                        Map.UnitAtPoint(Unit.x, Unit.y + 1),
+                    }
+                    .Where(t => t != null && Unit.IsEnemy(t))
+                    .Select(t => CombinationPartner(t.x, t.y, check_formation))
                     .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
             }
             else

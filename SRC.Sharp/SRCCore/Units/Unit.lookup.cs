@@ -1708,7 +1708,11 @@ namespace SRCCore.Units
 
             return IsDefenseRet;
         }
-        public IList<Unit> CombinationPartner(string cname, int cen, int cmorale, int cplana, int crange, int tx = 0, int ty = 0, bool check_formation = false)
+        /// <summary>
+        /// 合体技のパートナーを探す（VB: CombinationPartner）。
+        /// ctype は合体技の種類で、"武装" なら同名の武器、それ以外（"アビリティ"）なら同名のアビリティでパートナーの条件を調べる。
+        /// </summary>
+        public IList<Unit> CombinationPartner(string cname, int cen, int cmorale, int cplana, int crange, int tx = 0, int ty = 0, bool check_formation = false, string ctype = "武装")
         {
             var partners = new List<Unit>();
 
@@ -2027,53 +2031,62 @@ namespace SRCCore.Units
                     // パートナーが武器を使うための条件を満たしているかを判定
                     if (!check_formation)
                     {
-                        // 合体技と同名の武器を検索
-                        var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
-                        if (uw != null)
+                        if (ctype == "武装")
                         {
-                            // 武器が使える？
-                            if (!uw.IsWeaponMastered())
+                            // 合体技と同名の武器を検索
+                            var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
+                            if (uw != null)
                             {
+                                // 武器が使える？
+                                if (!uw.IsWeaponMastered())
+                                {
+                                    goto NextNeighbor;
+                                }
+
+                                if (uw.WeaponData.NecessaryMorale > 0)
+                                {
+                                    if (u.MainPilot().Morale < uw.WeaponData.NecessaryMorale)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+
+                                if (uw.WeaponENConsumption() > 0)
+                                {
+                                    if (u.EN < uw.WeaponENConsumption())
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+
+                                // VB: .Weapon(k).Bullet（武器データの弾数）
+                                if (uw.WeaponData.Bullet > 0)
+                                {
+                                    if (uw.Bullet() == 0)
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+
+                                if (uw.WeaponLevel("霊") > 0d)
+                                {
+                                    if (u.MainPilot().Plana < 5d * uw.WeaponLevel("霊"))
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+                                else if (uw.WeaponLevel("プ") > 0d)
+                                {
+                                    if (u.MainPilot().Plana < 5d * uw.WeaponLevel("プ"))
+                                    {
+                                        goto NextNeighbor;
+                                    }
+                                }
+                            }
+                            else if (!IsCombinationPartnerReady(u, cen, cmorale, cplana))
+                            {
+                                // 同名の武器を持っていなかった場合はチェック項目を限定
                                 goto NextNeighbor;
-                            }
-
-                            if (uw.WeaponData.NecessaryMorale > 0)
-                            {
-                                if (u.MainPilot().Morale < uw.WeaponData.NecessaryMorale)
-                                {
-                                    goto NextNeighbor;
-                                }
-                            }
-
-                            if (uw.WeaponENConsumption() > 0)
-                            {
-                                if (u.EN < uw.WeaponENConsumption())
-                                {
-                                    goto NextNeighbor;
-                                }
-                            }
-
-                            if (uw.MaxBullet() > 0)
-                            {
-                                if (uw.Bullet() == 0)
-                                {
-                                    goto NextNeighbor;
-                                }
-                            }
-
-                            if (uw.WeaponLevel("霊") > 0d)
-                            {
-                                if (u.MainPilot().Plana < 5d * uw.WeaponLevel("霊"))
-                                {
-                                    goto NextNeighbor;
-                                }
-                            }
-                            else if (uw.WeaponLevel("プ") > 0d)
-                            {
-                                if (u.MainPilot().Plana < 5d * uw.WeaponLevel("プ"))
-                                {
-                                    goto NextNeighbor;
-                                }
                             }
                         }
                         else
@@ -2104,7 +2117,8 @@ namespace SRCCore.Units
                                     }
                                 }
 
-                                if (ua.MaxStock() > 0)
+                                // VB: .Ability(k).Stock（アビリティデータの回数）
+                                if (ua.Data.Stock > 0)
                                 {
                                     if (ua.Stock() == 0)
                                     {
@@ -2127,42 +2141,20 @@ namespace SRCCore.Units
                                     }
                                 }
                             }
-                            else
+                            else if (!IsCombinationPartnerReady(u, cen, cmorale, cplana))
                             {
-                                // 同名の武器・アビリティを持っていなかった場合はチェック項目を限定
-                                if (cmorale > 0)
-                                {
-                                    if (u.MainPilot().Morale < cmorale)
-                                    {
-                                        goto NextNeighbor;
-                                    }
-                                }
-
-                                if (cen > 0)
-                                {
-                                    if (u.EN < cen)
-                                    {
-                                        goto NextNeighbor;
-                                    }
-                                }
-
-                                if (cplana > 0)
-                                {
-                                    if (u.MainPilot().Plana < cplana)
-                                    {
-                                        goto NextNeighbor;
-                                    }
-                                }
+                                // 同名のアビリティを持っていなかった場合はチェック項目を限定
+                                goto NextNeighbor;
                             }
                         }
                     }
                     else
                     {
                         // フォーメーションのチェックだけの時も必要技能は調べておく
-                        var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
-                        if (uw != null)
+                        if (ctype == "武装")
                         {
-                            if (!uw.IsWeaponMastered())
+                            var uw = u.Weapons.FirstOrDefault(w => (w.Name ?? "") == (cname ?? ""));
+                            if (uw != null && !uw.IsWeaponMastered())
                             {
                                 goto NextNeighbor;
                             }
@@ -2170,12 +2162,9 @@ namespace SRCCore.Units
                         else
                         {
                             var ua = u.Abilities.FirstOrDefault(a => (a.Data.Name ?? "") == (cname ?? ""));
-                            if (ua != null)
+                            if (ua != null && !ua.IsAbilityMastered())
                             {
-                                if (!ua.IsAbilityMastered())
-                                {
-                                    goto NextNeighbor;
-                                }
+                                goto NextNeighbor;
                             }
                         }
                     }
@@ -2198,6 +2187,36 @@ namespace SRCCore.Units
             // 合体技メッセージ判定用にパートナー一覧を記録
             Commands.SelectedPartners = partners.CloneList();
             return partners;
+        }
+
+        // 合体技と同名の武器・アビリティを持たないパートナーの条件（気力・ＥＮ・霊力）
+        private static bool IsCombinationPartnerReady(Unit u, int cen, int cmorale, int cplana)
+        {
+            if (cmorale > 0)
+            {
+                if (u.MainPilot().Morale < cmorale)
+                {
+                    return false;
+                }
+            }
+
+            if (cen > 0)
+            {
+                if (u.EN < cen)
+                {
+                    return false;
+                }
+            }
+
+            if (cplana > 0)
+            {
+                if (u.MainPilot().Plana < cplana)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
