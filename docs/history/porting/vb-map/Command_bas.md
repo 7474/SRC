@@ -54,5 +54,5 @@ VB 版の `SRC/SRC_20121125/Command.bas` の手続きと、C# の対応（[説�
 | Sub DumpCommand | 8534 | 57 | `SRCCore/Commands/Command.mapcommend.cs` Command.DumpCommand | 未確認 |  |
 | Sub GlobalMapCommand | 8596 | 126 | `SRCCore/Commands/Command.mapcommend.cs` Command.GlobalMapCommand | 未確認 |  |
 | Sub SaveSelections | 8725 | 34 | `SRCCore/Commands/Command.state.cs` Command.SaveSelections | 未確認 |  |
-| Sub RestoreSelections | 8761 | 57 | `SRCCore/Commands/Command.state.cs` Command.RestoreSelections | 未確認 |  |
+| Sub RestoreSelections | 8761 | 57 | `SRCCore/Commands/Command.state.cs` Command.RestoreSelections | 未確認 | #1505 で見つけた手がかり: VB は SavedSelectedUnit(i).CurrentForm で戻すが、C# はスタックから取り出すだけ。コマンドを通らずに形態が変わったとき（戦闘中の変形など）古い形態に戻す（#1521） |
 | Sub SwapSelections | 8820 | 20 | `SRCCore/Commands/Command.state.cs` Command.SwapSelections | 未確認 |  |
