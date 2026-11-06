@@ -100,11 +100,13 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // XXX 元は expr 切り出してたけれどなんでだろ
-            var list = GeneralLib.ToList(@params[1]);
-            var num = list.Count;
+            // 条件をリストとして分ける（VB の ListSplit。括弧・クォートが閉じていなければ -1 で Case Else）。
+            // VB の Case 2 にある pname = ListIndex(expr, 2) は値を使っていないので移さない
+            var num = GeneralLib.ListSplitStrict(@params[1], out var larray);
+            var list = larray;
             var flag = false;
-            // XXX このSwitch何を意図したものなのか分からん。。。
+            // 条件が 1 語でパイロット名なら、そのパイロットが出撃中（出撃・格納）か。
+            // 「Not パイロット名」の 2 語なら、その否定。どちらでもなければ式として評価する
             switch (num)
             {
                 case 1:

@@ -152,7 +152,6 @@ namespace SRCCore.Expressions
             int ret;
             int cur_depth;
             VarData var;
-            //Item it;
             int depth;
             bool in_single_quote, in_double_quote;
             var @params = new string[(Event.MaxArgIndex + 1)];

@@ -102,8 +102,9 @@ namespace SRCCore.Expressions.Functions
             num_result = unit?.CountItem() ?? 0d;
             if (pcount == 1)
             {
+                // 元の SRC と同じく、ユニットにもパイロットにも当たらないときだけ「未装備」のアイテムを数える
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "未装備")
+                if (!SRC.UList.IsDefined2(pname) && !SRC.PList.IsDefined(pname) && pname == "未装備")
                 {
                     num_result = SRC.IList.List.Count(itm => itm.Unit == null && itm.Exist);
                 }
@@ -230,7 +231,11 @@ namespace SRCCore.Expressions.Functions
             // エリアスが定義されている？
             if (SRC.ALDList.IsDefined(name))
             {
-                name = SRC.ALDList.Item(name).ReplaceTypeName(name);
+                // 元の SRC と同じく、ユニットを指定したとき（引数 2 個）はデータの先頭が名前と同じ要素を探し、
+                // 指定しないとき（引数 1 個）は最初の要素の種類にする
+                name = pcount == 1
+                    ? SRC.ALDList.Item(name).Elements.First().strAliasType
+                    : SRC.ALDList.Item(name).ReplaceTypeName(name);
             }
             num_result = unit?.IsFeatureAvailable(name) ?? false ? 1d : 0d;
             if (etype == ValueType.StringType)
