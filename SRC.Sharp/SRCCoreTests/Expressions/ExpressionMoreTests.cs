@@ -168,29 +168,50 @@ namespace SRCCore.Expressions.Tests
         public void FormatMessage_MixedDash1_ConvertedToHorizontalLine()
         {
             var exp = Create();
-            // 「─―」（ U+2500 + U+2015）は「──」に変換される
+            // 「─―」（ U+2500 + U+2015）は、「――」を置き換えたときに「──」に変換される
+            var msg = "A――B─―C";
+            exp.FormatMessage(ref msg);
+            Assert.AreEqual("A──B──C", msg);
+        }
+
+        [TestMethod]
+        public void FormatMessage_MixedDash1_WithoutDoubleDash_Unchanged()
+        {
+            // VB: Expression.bas FormatMessage。「─―」は ReplaceString(msg, "――", ...) が置き換えたときだけ直す
+            var exp = Create();
             var msg = "A─―B";
             exp.FormatMessage(ref msg);
-            Assert.AreEqual("A──B", msg);
+            Assert.AreEqual("A─―B", msg);
         }
 
         [TestMethod]
         public void FormatMessage_MixedDash2_ConvertedToHorizontalLine()
         {
             var exp = Create();
-            // 「─ー」（ U+2500 + ー）は「──」に変換される
-            var msg = "A─ーB";
+            // 「─ー」（ U+2500 + ー）は、「ーー」を置き換えたときに「──」に変換される
+            var msg = "AーーB─ーC";
             exp.FormatMessage(ref msg);
-            Assert.AreEqual("A──B", msg);
+            Assert.AreEqual("A──B──C", msg);
         }
 
         [TestMethod]
-        public void FormatMessage_MultipleDashes_AllConverted()
+        public void FormatMessage_MixedDash2_WithoutDoubleLongVowel_Unchanged()
         {
+            // VB: Expression.bas FormatMessage。「─ー」は ReplaceString(msg, "ーー", ...) が置き換えたときだけ直す
+            var exp = Create();
+            var msg = "A─ーB";
+            exp.FormatMessage(ref msg);
+            Assert.AreEqual("A─ーB", msg);
+        }
+
+        [TestMethod]
+        public void FormatMessage_DoubleDashAndDoubleLongVowel_OnlyDoubleDashConverted()
+        {
+            // VB: Expression.bas FormatMessage は If ... ElseIf。「――」を置き換えたら「ーー」は見ない
             var exp = Create();
             var msg = "――ーー";
             exp.FormatMessage(ref msg);
-            Assert.AreEqual("────", msg);
+            Assert.AreEqual("──ーー", msg);
         }
 
         // ──────────────────────────────────────────────

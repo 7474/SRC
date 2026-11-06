@@ -10,8 +10,7 @@ namespace SRCCore.Expressions
 {
     public partial class Expression
     {
-        // TODO ref 取って戻り値か out 変数を受けるようにする決断をする。
-        // (現在は ref string を受け取る形だが、戻り値または out 変数への変換が望ましい)
+        // ReplaceSubExpression・FormatMessage は VB の ByRef の引数と同じく ref string で受け、その場で書き換える
 
         /// <summary>
         /// 式置換の入れ子の上限。式置換の中から別の式置換を呼ぶ（愛称の中の Nickname() など）深さ。
@@ -105,10 +104,15 @@ namespace SRCCore.Expressions
         public void FormatMessage(ref string msg)
         {
             // ちゃんと横棒がつながって表示されるように罫線文字に置換
-            msg = msg.Replace("――", "──")
-                .Replace("ーー", "──")
-                .Replace("─―", "──")
-                .Replace("─ー", "──");
+            // VB は ReplaceString が置き換えたかで分ける。「――」があれば「─―」も直し、無いときだけ「ーー」と「─ー」を見る
+            if (msg.Contains("――"))
+            {
+                msg = msg.Replace("――", "──").Replace("─―", "──");
+            }
+            else if (msg.Contains("ーー"))
+            {
+                msg = msg.Replace("ーー", "──").Replace("─ー", "──");
+            }
             // 式置換
             ReplaceSubExpression(ref msg);
         }
