@@ -95,7 +95,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            if (pcount >= 2)
+            // 元の SRC: 引数が 2〜4 個のときだけダイアログを出す
+            if (2 <= pcount && pcount <= 4)
             {
                 var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
@@ -133,7 +134,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            if (pcount >= 2)
+            // 元の SRC: 引数が 2〜4 個のときだけダイアログを出す
+            if (2 <= pcount && pcount <= 4)
             {
                 var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);

@@ -91,25 +91,8 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Events/Event.label.cs:18` | XXX | XXX 死にたい | 未確認 |  |
 | `SRCCore/Events/Event.label.cs:265` | XXX | XXX 考えさせられる | 未確認 |  |
 | `SRCCore/Events/Event.props.cs:136` | XXX | XXX GUIの責務にしたい | 未確認 |  |
-| `SRCCore/Expressions/Expression.function.cs:155` | コード | Item it; | 未確認 |  |
-| `SRCCore/Expressions/Expression.function.cs:372`（4042 行） | コード | var PT = default(GUI.POINTAPI); | 未確認 |  |
-| `SRCCore/Expressions/Expression.replace.cs:13` | TODO | TODO ref 取って戻り値か out 変数を受けるようにする決断をする。 | 未確認 |  |
-| `SRCCore/Expressions/Functions/Info.cs:2584` | XXX | XXX 多分一度レンダリングしてないと取れない | 未確認 |  |
-| `SRCCore/Expressions/Functions/Info.cs:2591` | XXX | XXX 未対応 | 未確認 |  |
-| `SRCCore/Expressions/Functions/Other/Other.cs:103` | XXX | XXX 元は expr 切り出してたけれどなんでだろ | 未確認 |  |
-| `SRCCore/Expressions/Functions/Other/Other.cs:107` | XXX | XXX このSwitch何を意図したものなのか分からん。。。 | 未確認 |  |
-| `SRCCore/Expressions/Functions/Other/Other.cs:317` | XXX | XXX 元は expr 切り出してたけれどなんでだろ | 未確認 |  |
-| `SRCCore/Expressions/Functions/Regex.cs:8` | XXX | XXX 全般に未疎通かつ互換性分からん | 未確認 |  |
-| `SRCCore/Expressions/Functions/Regex.cs:11` | XXX | XXX 現状状態はここに持っていて動作上の問題ないがそうじゃないだろという感じ | 未確認 |  |
 | `SRCCore/Expressions/VarData.cs:111` | XXX | XXX Undefind 時の参照、Numeric？ | 未確認 |  |
-| `SRCCore/Expressions/VarData.cs:126` | XXX | XXX 逆の側の型に値入れなくていいの？ | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:58` | XXX | XXX 正規表現のほうが楽に書けそうではある | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:71` | XXX | XXX StringBuilder | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:859` | XXX | XXX 配列の取得 | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:1268` | XXX | XXX GetVariableObjectと実装が違う、そもそもこの辺はバグフィクスで修正したい | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:1269`（4 行） | コード | num = (short)(Event.ArgIndex - Event.ArgIndexStack[Event.CallDepth - 1 - Event.UpVarLevel]); | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:1339` | XXX | XXX Format DateTime | 未確認 |  |
-| `SRCCore/Expressions/Variable.cs:1873` | XXX | XXX 0 と 未定義の区別ついていない | 未確認 |  |
+| `SRCCore/Expressions/VarData.cs:126` | XXX | XXX 逆の側の型に値入れなくていいの？ | 未確認 | VB の VarData は渡した値だけを持つが、C# の SetValue はもう一方の型の値も埋める。GetVariable の読み出しには表れないが、フィールドを直接読む処理（Sort など）では違いうる。データの項目（VarData.cls）で判断する（#1498 の Expression.bas の突き合わせで見つけた） |
 | `SRCCore/Extensions/ListExtension.cs:11` | XXX | XXX EnumerableExtension | 未確認 |  |
 | `SRCCore/Extensions/ListExtension.cs:12` | XXX | XXX 多分遅い | 未確認 |  |
 | `SRCCore/Extensions/StreamExtension.cs:42` | XXX | XXX あまりいい同期化ではないはず | 未確認 |  |

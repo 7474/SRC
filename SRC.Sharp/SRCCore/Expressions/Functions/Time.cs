@@ -128,11 +128,15 @@ namespace SRCCore.Expressions.Functions
                         break;
                     }
 
-                default:
+                case 0:
                     {
                         weekday = Conversions.GetNow().DayOfWeek;
                         break;
                     }
+
+                default:
+                    // 元の SRC: 引数が 2 個以上なら空
+                    return ValueType.StringType;
             }
             switch (weekday)
             {

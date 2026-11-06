@@ -32,9 +32,10 @@ namespace SRCCore.Expressions.Tests
         {
             var (exp, src) = Create();
 
+            // 型が UndefinedType の変数は、VB の GetVariable と同じく文字列としては数値の値を FormatNum で返す
             exp.SetVariable("フラグ名", ValueType.UndefinedType, "001", 1d);
             Assert.AreEqual(1d, exp.GetValueAsDouble("フラグ名"));
-            Assert.AreEqual("001", exp.GetValueAsString("フラグ名"));
+            Assert.AreEqual("1", exp.GetValueAsString("フラグ名"));
             exp.SetVariable("フラグ名", ValueType.StringType, "001", 1d);
             Assert.AreEqual(1d, exp.GetValueAsDouble("フラグ名"));
             Assert.AreEqual("001", exp.GetValueAsString("フラグ名"));
