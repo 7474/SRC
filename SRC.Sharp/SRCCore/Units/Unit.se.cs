@@ -121,7 +121,8 @@ namespace SRCCore.Units
         {
             // 特殊効果データを検索
             var anime = SpecialEffectData(main_situation, sub_situation);
-            anime = anime.Trim();
+            // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
+            anime = anime.Trim('\t', ' ', '\u3000');
 
             // 表示キャンセル
             if (string.IsNullOrEmpty(anime) || anime == "-")

@@ -42,7 +42,6 @@ namespace SRCCore.Units
             }
 
             // 空いた場所を検索
-            // XXX Goto 潰しておきたい
             for (var i = 0; i <= 20; i++)
             {
                 // ユニット同士を隣接させずに配置する？
@@ -252,7 +251,7 @@ namespace SRCCore.Units
             string fname;
             int start_time, current_time;
             if ((Strings.InStr(smode, "出撃") > 0 || Strings.InStr(smode, "部隊配置") > 0)
-                && GUI.MainFormVisible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && !string.IsNullOrEmpty(get_Bitmap(false)))
+                && GUI.MainFormVisible && !GUI.IsPictureVisible && !GUI.IsRButtonPressed() && !IsBitmapHidden())
             {
                 // ユニット出現音
                 Sound.PlayWave("UnitOn.wav");
@@ -285,6 +284,7 @@ namespace SRCCore.Units
                         {
                             break;
                         }
+                        GUI.UpdateScreen();
 
                         // ウェイト
                         do
@@ -335,15 +335,8 @@ namespace SRCCore.Units
                 Map.MapDataForUnit[x, y] = null;
             }
 
-            // XXX 何が違うんだ？
-            if (GUI.IsPictureVisible)
-            {
-                GUI.EraseUnitBitmap(x, y, false);
-            }
-            else
-            {
-                GUI.EraseUnitBitmap(x, y, false);
-            }
+            // 元の SRC は IsPictureVisible で分岐しているが、どちらも同じ処理
+            GUI.EraseUnitBitmap(x, y, false);
 
             SRC.PList.UpdateSupportMod(this);
 
@@ -369,23 +362,24 @@ namespace SRCCore.Units
             {
                 var targetUnit = Map.MapDataForUnit[x, y];
                 // 合体？
-                foreach (var cfd in this.TwoUnitCombineFeatures(SRC)
-                    .Where(x =>
-                    {
-                        // XXX 合体制限は変形してる時だけでいい？
-                        var pu = SRC.UList.Item(x.PartUnitNames.First());
-                        return targetUnit.Name == x.PartUnitNames.First()
-                            || (targetUnit.Name == pu.CurrentForm().Name && !targetUnit.IsFeatureAvailable("合体制限"));
-                    }))
+                // 元の SRC と同じく、移動先のユニットの合体能力（「表示名 合体後 相手」の 3 要素）の
+                // 相手の現在の形態が自分なら合体する
+                foreach (var fd in targetUnit.Features.Where(fd => fd.Name == "合体").ToList())
                 {
-                    Combine();
-                    return;
+                    if (GeneralLib.LLength(fd.Data) == 3)
+                    {
+                        var partner = SRC.UList.Item(GeneralLib.LIndex(fd.Data, 3));
+                        if (partner != null && ReferenceEquals(partner.CurrentForm(), this))
+                        {
+                            Combine();
+                            return;
+                        }
+                    }
                 }
 
                 // 着艦？
                 if (!targetUnit.IsFeatureAvailable("母艦"))
                 {
-                    // XXX そういう理由でエラーするの？」
                     GUI.ErrorMessage("合体元ユニット「" + Name + "」が複数あるため合体処理が出来ません");
                     return;
                 }
@@ -566,11 +560,7 @@ namespace SRCCore.Units
             GUI.EraseUnitBitmap(x, y, do_refresh);
             SRC.PList.UpdateSupportMod(this);
 
-            // 空き位置を検索
-            var prev_x = x;
-            var prev_y = y;
-            x = new_x;
-            y = new_y;
+            // 空き位置を検索（見つからなければ元の位置のまま）
             for (var i = 0; i <= 10; i++)
             {
                 var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
@@ -856,7 +846,8 @@ namespace SRCCore.Units
                     }
                 }
 
-                foreach (var p in SubPilots)
+                // 元の SRC と同じく、メインパイロット以外の全パイロット（1 人目を含む）
+                foreach (var p in Pilots)
                 {
                     if (p.ID != MainPilot().ID && p.Personality != "機械")
                     {
