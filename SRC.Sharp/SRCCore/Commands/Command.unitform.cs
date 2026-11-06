@@ -17,13 +17,7 @@ namespace SRCCore.Commands
         // 「変形」コマンド
         private void TransformCommand()
         {
-            // MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
             var fdata = SelectedUnit.FeatureData("変形");
@@ -36,7 +30,8 @@ namespace SRCCore.Commands
                     .Select(x => new ListBoxItem
                     {
                         ListItemID = x.Name,
-                        Text = x.Nickname0,
+                        // VB はステータス表示では Nickname（マップ上では Nickname0）を出す
+                        Text = x.Nickname,
                     }).ToList();
                 var ret = 1;
                 if (forms.Count > 1)
@@ -73,7 +68,8 @@ namespace SRCCore.Commands
                 Status.DisplayUnitStatus(u.CurrentForm());
 
                 // コマンドを終了
-                // XXX RedrawScreen 元はしてなかった気がする
+                // VB はここで RedrawScreen しない。SRC# の Unit.StandBy は VB と違ってユニットの絵を描かない
+                // （PaintUnitBitmap しない）ので、画面を描き直す
                 GUI.RedrawScreen();
                 GUI.UnlockGUI();
                 CommandState = "ユニット選択";
@@ -220,7 +216,8 @@ namespace SRCCore.Commands
                     Status.DisplayUnitStatus(SelectedUnit);
                 }
 
-                // XXX RedrawScreen 元はしてなかった気がする
+                // VB はここで RedrawScreen しない。SRC# の Unit.StandBy は VB と違ってユニットの絵を描かない
+                // （PaintUnitBitmap しない）ので、画面を描き直す
                 GUI.RedrawScreen();
                 CommandState = "ユニット選択";
                 GUI.UnlockGUI();
@@ -249,13 +246,7 @@ namespace SRCCore.Commands
         // 「ハイパーモード」コマンド
         private void HyperModeCommand()
         {
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
             var uname = GeneralLib.LIndex(SelectedUnit.FeatureData("ハイパーモード"), 2);
@@ -325,7 +316,8 @@ namespace SRCCore.Commands
                 {
                     "ハイパーモード(" + SelectedUnit.Name + "=>" + uname + ")",
                     "ハイパーモード(" + uname + ")",
-                    "ハイパーモード(" + fname + ")"
+                    "ハイパーモード(" + fname + ")",
+                    "ハイパーモード",
                 });
 
                 // アニメ表示
@@ -381,13 +373,7 @@ namespace SRCCore.Commands
         // 「変身解除」コマンド
         private void CancelTransformationCommand()
         {
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
             {
@@ -449,13 +435,7 @@ namespace SRCCore.Commands
         {
             string uname, tname, fname;
 
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
             if (Map.IsStatusView)
@@ -618,29 +598,17 @@ namespace SRCCore.Commands
             SRC.UList.CheckAutoNormalMode();
             CommandState = "ユニット選択";
             GUI.UnlockGUI();
-            // XXX RedrawScreen 元はしてなかった気がする
+            // VB はここで RedrawScreen しない。SRC# の Unit.StandBy は VB と違ってユニットの絵を描かない
+            // （PaintUnitBitmap しない）ので、画面を描き直す
             GUI.RedrawScreen();
         }
 
         // 「合体」コマンド
         private void CombineCommand(UiCommand command)
         {
-            //// MOD END MARGE
-            //int i, j;
-            //string[] list;
-            //Unit u;
-
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
-            //list = new string[1];
-            //GUI.ListItemFlag = new bool[1];
             var currentUnit = SelectedUnit;
             if (string.IsNullOrEmpty(Map.MapFileName))
             {

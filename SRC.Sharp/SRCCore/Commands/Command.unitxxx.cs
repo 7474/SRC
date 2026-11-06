@@ -68,19 +68,25 @@ namespace SRCCore.Commands
             }
 
             // チャージ攻撃のパートナーを探す
-            // XXX 条件を満たす最初のアビリティ、武器、の順に選ばれる状態
+            // VB: チャージで使える最初のＣ・合の武器でパートナーを探し、見つからなければ
+            // チャージで使える最初のＣ・合のアビリティで探す
             IList<Unit> partners = new List<Unit>();
             var cuw = currentUnit.Weapons
-                .FirstOrDefault(uw => uw.IsWeaponClassifiedAs("Ｃ") && uw.IsWeaponClassifiedAs("合"));
+                .FirstOrDefault(uw => uw.IsWeaponClassifiedAs("Ｃ") && uw.IsWeaponClassifiedAs("合")
+                    && uw.IsWeaponAvailable("チャージ"));
             if (cuw != null)
             {
                 partners = cuw.CombinationPartner();
             }
-            var cua = currentUnit.Abilities
-                .FirstOrDefault(ua => ua.IsAbilityClassifiedAs("Ｃ") && ua.IsAbilityClassifiedAs("合"));
-            if (cua != null)
+            if (partners.Count == 0)
             {
-                partners = cua.CombinationPartner();
+                var cua = currentUnit.Abilities
+                    .FirstOrDefault(ua => ua.IsAbilityClassifiedAs("Ｃ") && ua.IsAbilityClassifiedAs("合")
+                        && ua.IsAbilityAvailable("チャージ"));
+                if (cua != null)
+                {
+                    partners = cua.CombinationPartner();
+                }
             }
 
             // ユニットの状態をチャージ中に

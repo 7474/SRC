@@ -4,7 +4,9 @@
 // 再頒布または改変することができます。
 
 using SRCCore.Lib;
+using SRCCore.Models;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SRCCore.Commands
@@ -145,13 +147,14 @@ namespace SRCCore.Commands
 
             // 味方スペシャルパワー実行の効果により他のパイロットが持っているスペシャルパワーを
             // 使う場合は記録しておき、後で消費ＳＰを倍にする必要がある
-            if (SRC.SPDList.Item(SelectedSpecialPower).Effects.Any(x => x.strEffectType == "味方スペシャルパワー実行"))
+            // VB は最初の効果（EffectType(1)）だけを見る
+            if (FirstEffectType(SRC.SPDList.Item(SelectedSpecialPower)) == "味方スペシャルパワー実行")
             {
                 // スペシャルパワー一覧
-                var list = SRC.SPDList.Items.Where(x =>
-                        !x.Effects.Any(x => x.strEffectType == "味方スペシャルパワー実行")
+                var list = SortSpecialPowersByKana(SRC.SPDList.Items.Where(x =>
+                        FirstEffectType(x) != "味方スペシャルパワー実行"
                         && x.ShortName != "非表示")
-                    .OrderBy(x => x.KanaName)
+                    .ToList())
                     .Select(spd =>
                     {
                         var learned = false;
@@ -405,6 +408,41 @@ namespace SRCCore.Commands
             SelectedSpecialPower = "";
             GUI.UnlockGUI();
             CommandState = "ユニット選択";
+        }
+
+        // SpecialPowerData.EffectType(1) に当たる。効果が無ければ空文字列
+        private static string FirstEffectType(SpecialPowerData spd)
+        {
+            return spd.Effects.FirstOrDefault()?.strEffectType ?? "";
+        }
+
+        // VB の StartSpecialPowerCommand の並べ替え: 読み仮名を StrComp(…, vbTextCompare) = -1 で比べて
+        // 最小のものを前に出す選択ソート。同じ読み仮名の並びも VB と同じになる
+        // （文字列の比較は日本語版の Windows の VB と同じく大文字・小文字、全角・半角、ひらがな・カタカナを区別しない）
+        private static IList<SpecialPowerData> SortSpecialPowersByKana(IList<SpecialPowerData> list)
+        {
+            var comparer = SrcCollection<string>.KeyComparer;
+            var keys = list.Select(x => x.KanaName ?? "").ToList();
+            for (var i = 0; i < list.Count - 1; i++)
+            {
+                var max_item = i;
+                var max_str = keys[i];
+                for (var j = i + 1; j < list.Count; j++)
+                {
+                    if (comparer.Compare(keys[j], max_str) < 0)
+                    {
+                        max_item = j;
+                        max_str = keys[j];
+                    }
+                }
+                if (max_item != i)
+                {
+                    (list[i], list[max_item]) = (list[max_item], list[i]);
+                    keys[max_item] = keys[i];
+                    keys[i] = max_str;
+                }
+            }
+            return list;
         }
 
         // スペシャルパワーコマンドを終了

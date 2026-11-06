@@ -354,13 +354,7 @@ namespace SRCCore.Commands
         // 「アビリティ」コマンドを終了
         private void FinishAbilityCommand()
         {
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Status.ClearUnitStatus();
-            //}
+            // VB は新ＧＵＩ（NewGUIMode）のときだけ ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
 
             GUI.LockGUI();
             var currentUnit = SelectedUnit;
@@ -440,13 +434,13 @@ namespace SRCCore.Commands
                 Status.ClearUnitStatus();
             }
 
-            // 破壊イベント
+            // 破壊イベント（VB は実行後の形態の SelectedUnit を見る）
             {
-                if (currentUnit.Status == "破壊")
+                if (SelectedUnit.Status == "破壊")
                 {
-                    if (currentUnit.CountPilot() > 0)
+                    if (SelectedUnit.CountPilot() > 0)
                     {
-                        Event.HandleEvent("破壊", currentUnit.MainPilot().ID);
+                        Event.HandleEvent("破壊", SelectedUnit.MainPilot().ID);
                         if (SRC.IsScenarioFinished)
                         {
                             SRC.IsScenarioFinished = false;
@@ -536,15 +530,8 @@ namespace SRCCore.Commands
                     }
 
                     GUI.MaskScreen();
-                    //if (GUI.NewGUIMode)
-                    //{
-                    //    Application.DoEvents();
-                    //    Status.ClearUnitStatus();
-                    //}
-                    //else
-                    {
-                        Status.DisplayUnitStatus(SelectedUnit);
-                    }
+                    // VB は新ＧＵＩ（NewGUIMode）のときは DoEvents して ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
+                    Status.DisplayUnitStatus(SelectedUnit);
 
                     CommandState = "ターゲット選択";
                     return;
@@ -636,24 +623,16 @@ namespace SRCCore.Commands
                 }
             }
 
-            // 合体技のパートナーを設定
+            // 合体技パートナーの設定
+            // VB はマップアビリティでは射程に関わらず目標の座標を渡さずに探す（SelectedTarget は使わない）
             IList<Unit> partners = new List<Unit>();
+            if (unitAbility.IsAbilityClassifiedAs("合"))
             {
-                if (unitAbility.IsAbilityClassifiedAs("合"))
-                {
-                    if (unitAbility.AbilityMaxRange() == 1)
-                    {
-                        partners = unitAbility.CombinationPartner(SelectedTarget.x, SelectedTarget.y);
-                    }
-                    else
-                    {
-                        partners = unitAbility.CombinationPartner();
-                    }
-                }
-                else
-                {
-                    SelectedPartners.Clear();
-                }
+                partners = unitAbility.CombinationPartner();
+            }
+            else
+            {
+                SelectedPartners.Clear();
             }
 
             // アビリティを実行
@@ -720,15 +699,8 @@ namespace SRCCore.Commands
                     }
 
                     GUI.MaskScreen();
-                    //if (GUI.NewGUIMode)
-                    //{
-                    //    Application.DoEvents();
-                    //    Status.ClearUnitStatus();
-                    //}
-                    //else
-                    {
-                        Status.DisplayUnitStatus(SelectedUnit);
-                    }
+                    // VB は新ＧＵＩ（NewGUIMode）のときは DoEvents して ClearUnitStatus する。SRC# は新ＧＵＩに対応しない
+                    Status.DisplayUnitStatus(SelectedUnit);
 
                     CommandState = "ターゲット選択";
                     return;
