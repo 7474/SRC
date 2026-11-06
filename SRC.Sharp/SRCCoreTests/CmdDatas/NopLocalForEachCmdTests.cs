@@ -109,6 +109,8 @@ namespace SRCCore.CmdDatas.Tests
         {
             // ヘルプ: ローカル変数variableを作成します（SubLocalVar として作成）
             var src = CreateSrc();
+            // VB と同じく、サブルーチンローカル変数はイベントの中（CallDepth > 0）でだけ見える
+            src.Event.CallDepth = 1;
             var cmds = BuildEvent(src, "Local myLocal");
             var result = cmds[0].Exec();
             Assert.AreEqual(1, result);
@@ -119,6 +121,7 @@ namespace SRCCore.CmdDatas.Tests
         public void LocalCmd_MultipleLocalVariables_AllDefined()
         {
             var src = CreateSrc();
+            src.Event.CallDepth = 1;
             var cmds = BuildEvent(src, "Local a b c");
             cmds[0].Exec();
             Assert.IsTrue(src.Expression.IsSubLocalVariableDefined("a"));
