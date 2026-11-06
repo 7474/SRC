@@ -15,20 +15,6 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            //            short unum;
-            //            short ux, uy;
-            //            var uclass = default(string);
-            //            string buf, opt = default;
-            //            short j, i, num;
-            //            int tmp;
-            //            int min_value;
-            //            short max_item;
-            //            int max_value;
-            //            int[] lv_list;
-            //            string[] list;
-            //            short ret;
-            //            bool without_refresh;
-            //            bool without_animation;
             var opt = "";
             var num = ArgNum;
             for (var i = 5; i <= num; i++)
@@ -89,7 +75,6 @@ namespace SRCCore.CmdDatas.Commands
             }
             else
             {
-                var loopTo1 = num;
                 for (var i = 5; i <= num; i++)
                     uclass = uclass + " " + GetArgAsString(i);
                 uclass = Strings.Trim(uclass);
@@ -204,19 +189,43 @@ namespace SRCCore.CmdDatas.Commands
                 })
                 .ToList();
 
-            if (!units.Any())
+            // レベルの一覧と最大値・最小値を求める
+            var lv_list = units.Select(u => 500L * u.MainPilot().Level + u.MainPilot().Exp).ToList();
+            var min_value = 100000L;
+            var max_value = 0L;
+            foreach (var lv in lv_list)
             {
-                return EventData.NextID;
+                if (lv > max_value)
+                {
+                    max_value = lv;
+                }
+                if (lv < min_value)
+                {
+                    min_value = lv;
+                }
             }
 
-            // レベルの一覧と最大値・最小値を求める
-            var min_value = units.Min(u => 500L * u.MainPilot().Level + u.MainPilot().Exp);
-            var max_value = units.Max(u => 500L * u.MainPilot().Level + u.MainPilot().Exp);
-
-            // レベルにばらつきがある時にのみレベルでソート
+            // レベルにばらつきがある時にのみレベルでソート（VB と同じ選択ソート。同じ値の並びも VB に合わせる）
             if (min_value != max_value)
             {
-                units = units.OrderByDescending(u => 500L * u.MainPilot().Level + u.MainPilot().Exp).ToList();
+                for (var i = 0; i < units.Count - 1; i++)
+                {
+                    var max_item = i;
+                    max_value = lv_list[i];
+                    for (var j = i + 1; j < units.Count; j++)
+                    {
+                        if (lv_list[j] > max_value)
+                        {
+                            max_item = j;
+                            max_value = lv_list[j];
+                        }
+                    }
+                    if (max_item != i)
+                    {
+                        (units[i], units[max_item]) = (units[max_item], units[i]);
+                        lv_list[max_item] = lv_list[i];
+                    }
+                }
             }
             var list = units
                 .Select(u =>
@@ -239,55 +248,58 @@ namespace SRCCore.CmdDatas.Commands
                     return new ListBoxItem(msg, u.ID);
                 }).ToList();
 
-            int ret;
-            do
+            if (list.Count > 0)
             {
-                string info;
-                if (Expression.IsOptionDefined("等身大基準"))
+                int ret;
+                do
                 {
-                    info = "ユニット                                            Lv";
-                }
-                else
-                {
-                    info = "ユニット                            パイロット       Lv";
-                }
-
-                ret = GUI.MultiSelectListBox(new ListBoxArgs
-                {
-                    lb_caption = "出撃ユニット選択",
-                    lb_info = info,
-                    Items = list,
-                }, unum);
-                if (ret == 0)
-                {
-                    Commands.CommandState = "ユニット選択";
-                    GUI.UnlockGUI();
-                    Commands.ViewMode = true;
-                    while (Commands.ViewMode)
+                    string info;
+                    if (Expression.IsOptionDefined("等身大基準"))
                     {
-                        GUI.Sleep(50);
+                        info = "ユニット                                            Lv";
+                    }
+                    else
+                    {
+                        info = "ユニット                            パイロット       Lv";
                     }
 
-                    GUI.LockGUI();
-                    goto Beginning;
-                }
-            }
-            while (ret == 0);
-            if (Strings.InStr(opt, "非同期") > 0)
-            {
-                GUI.Center(ux, uy);
-                GUI.RefreshScreen();
-            }
+                    ret = GUI.MultiSelectListBox(new ListBoxArgs
+                    {
+                        lb_caption = "出撃ユニット選択",
+                        lb_info = info,
+                        Items = list,
+                    }, unum);
+                    if (ret == 0)
+                    {
+                        Commands.CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        Commands.ViewMode = true;
+                        while (Commands.ViewMode)
+                        {
+                            GUI.Sleep(50);
+                        }
 
-            foreach(var u in list.Where(x => x.ListItemFlag)
-                .Select(x => SRC.UList.Item(x.ListItemID)))
-            {
-                u.UsedAction = 0;
-                u.UsedSupportAttack = 0;
-                u.UsedSupportGuard = 0;
-                u.UsedSyncAttack = 0;
-                u.UsedCounterAttack = 0;
-                u.StandBy(ux, uy, opt);
+                        GUI.LockGUI();
+                        goto Beginning;
+                    }
+                }
+                while (ret == 0);
+                if (Strings.InStr(opt, "非同期") > 0)
+                {
+                    GUI.Center(ux, uy);
+                    GUI.RefreshScreen();
+                }
+
+                foreach(var u in list.Where(x => x.ListItemFlag)
+                    .Select(x => SRC.UList.Item(x.ListItemID)))
+                {
+                    u.UsedAction = 0;
+                    u.UsedSupportAttack = 0;
+                    u.UsedSupportGuard = 0;
+                    u.UsedSyncAttack = 0;
+                    u.UsedCounterAttack = 0;
+                    u.StandBy(ux, uy, opt);
+                }
             }
 
             SRC.UList.CheckAutoHyperMode();
