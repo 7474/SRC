@@ -167,16 +167,23 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
-        [DataRow("PSet 10 10 #FFF")]
-        [DataRow("PSet 10 10 Red")]
         [DataRow("PSet 10 10 #GGGGGG")]
-        public void PSet_ColorNotSevenCharHex_IsError(string line)
+        public void PSet_InvalidHexColor_IsError(string line)
         {
-            // VB: Asc(opt) <> 35 Or Len(opt) <> 7、または 16 進数として読めなければ「色指定が不正です」
+            // 16 進数として読めなければ「色指定が不正です」
             var (src, _) = CreatePSetSrc();
             var cmds = BuildEvent(src, line);
             Assert.AreEqual(-1, cmds[0].Exec());
             CollectionAssert.Contains(Errors(src).ToList(), "色指定が不正です");
+        }
+
+        [TestMethod]
+        public void PSet_ShortHexColor_IsAccepted()
+        {
+            // 「#RGB」は Circle などほかの描画コマンドと同じく受け付ける（SRC# の利便性。元の SRC は 7 文字だけ）
+            var (src, _) = CreatePSetSrc();
+            var cmds = BuildEvent(src, "PSet 10 10 #FFF");
+            Assert.AreEqual(1, cmds[0].Exec());
         }
 
         [TestMethod]

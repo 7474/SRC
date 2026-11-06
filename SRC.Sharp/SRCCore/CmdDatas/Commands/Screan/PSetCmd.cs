@@ -30,15 +30,11 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // 描画色
-            // 元の SRC と同じく「#」で始まる 7 文字の 16 進数だけを受け付ける（「#RGB」や色の名前はエラー）
+            // 元の SRC は「#」で始まる 7 文字の 16 進数だけを受け付ける。SRC# は Circle などほかの描画コマンドと同じく「#RGB」も受け付ける（利便性）
             var clr = Event.ObjColor;
             if (ArgNum == 4)
             {
                 var opt = GetArgAsString(4);
-                if (Strings.Asc(opt) != 35 || Strings.Len(opt) != 7)
-                {
-                    throw new EventErrorException(this, "色指定が不正です");
-                }
                 if (!ColorExtension.TryFromHexString(opt, out clr))
                 {
                     throw new EventErrorException(this, "色指定が不正です");
