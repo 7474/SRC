@@ -17,10 +17,10 @@ namespace SRCCore.Commands
 
             SelectedCommand = "移動";
             Map.AreaInSpeed(SelectedUnit);
-            //if (!Expression.IsOptionDefined("大型マップ"))
-            //{
-            GUI.Center(SelectedUnit.x, SelectedUnit.y);
-            //}
+            if (!Expression.IsOptionDefined("大型マップ"))
+            {
+                GUI.Center(SelectedUnit.x, SelectedUnit.y);
+            }
 
             GUI.MaskScreen();
             //// MOD START MARGE
@@ -49,7 +49,7 @@ namespace SRCCore.Commands
             PrevUnitEN = u.EN;
 
             // 移動後に着艦or合体する場合はプレイヤーに確認を取る
-            if (!ConfirmMoveFinish(u)) { return; }
+            if (!ConfirmMoveFinish(u, true)) { return; }
 
             // ユニットを移動
             u.Move(SelectedX, SelectedY);
@@ -131,12 +131,16 @@ namespace SRCCore.Commands
             ProceedCommand();
         }
 
-        private bool ConfirmMoveFinish(Units.Unit u)
+        // 移動先にユニットがいれば、着艦か合体かをプレイヤーに確かめる。
+        // 元の SRC では「移動」だけが移動するユニット自身の母艦を見て、母艦どうしなら「合体」と聞く。
+        // 「テレポート」「ジャンプ」は移動先が母艦なら必ず「着艦」と聞く。
+        private bool ConfirmMoveFinish(Units.Unit u, bool checkOwnCarrier = false)
         {
             if (Map.MapDataForUnit[SelectedX, SelectedY] != null)
             {
                 GuiDialogResult res;
-                if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦") && !u.IsFeatureAvailable("母艦"))
+                if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦")
+                    && !(checkOwnCarrier && u.IsFeatureAvailable("母艦")))
                 {
 
                     res = GUI.Confirm("着艦しますか？", "着艦", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
