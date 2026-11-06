@@ -101,9 +101,16 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            num_result = Enumerable.Range(1, pcount)
-                .Select(x => SRC.Expression.GetValueAsDouble(@params[x], is_term[x]))
-                .Max();
+            // 元の SRC: 1 つ目の引数から順に比べる（引数が無いときは空の 1 つ目の引数を評価して 0）
+            num_result = SRC.Expression.GetValueAsDouble(@params[1] ?? "", is_term[1]);
+            for (var i = 2; i <= pcount; i++)
+            {
+                var rdbl = SRC.Expression.GetValueAsDouble(@params[i], is_term[i]);
+                if (num_result < rdbl)
+                {
+                    num_result = rdbl;
+                }
+            }
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -122,9 +129,16 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            num_result = Enumerable.Range(1, pcount)
-                .Select(x => SRC.Expression.GetValueAsDouble(@params[x], is_term[x]))
-                .Min();
+            // 元の SRC: 1 つ目の引数から順に比べる（引数が無いときは空の 1 つ目の引数を評価して 0）
+            num_result = SRC.Expression.GetValueAsDouble(@params[1] ?? "", is_term[1]);
+            for (var i = 2; i <= pcount; i++)
+            {
+                var rdbl = SRC.Expression.GetValueAsDouble(@params[i], is_term[i]);
+                if (num_result > rdbl)
+                {
+                    num_result = rdbl;
+                }
+            }
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);

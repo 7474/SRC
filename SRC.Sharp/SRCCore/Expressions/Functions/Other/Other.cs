@@ -316,7 +316,9 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // XXX 元は expr 切り出してたけれどなんでだろ
+            // 元の SRC は括弧の中の全体（Trim$(Mid$(expr, 14, Len(expr) - 14))）を評価せずに変数名にする。
+            // 引数は評価しないので、括弧の中が 1 つの引数なら同じ。違うのは、括弧の外側の深さに「,」があるとき
+            // （元の SRC は全体を 1 つの変数名にする）と、先頭がタブのとき（元の SRC はタブを残す）だけ。
             if (SRC.Expression.IsVariableDefined(Strings.Trim(@params[1])))
             {
                 if (etype == ValueType.StringType)

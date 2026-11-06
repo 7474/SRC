@@ -12,6 +12,7 @@ namespace SRCCore.Expressions.Functions
 
     public class Level : APilotFunction
     {
+        protected override bool CheckSelectedUnitHasPilot => true;
         protected override ValueType InvokeInternal(SRC SRC, Pilots.Pilot pilot, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
@@ -31,6 +32,7 @@ namespace SRCCore.Expressions.Functions
 
     public class Morale : APilotFunction
     {
+        protected override bool CheckSelectedUnitHasPilot => true;
         protected override ValueType InvokeInternal(SRC SRC, Pilots.Pilot pilot, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
@@ -74,13 +76,17 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
+            // 元の SRC: 1 人目のパイロットがいなければ、2 つ目の引数を評価せずに 0 を返す
             var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-            var pname2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
-            var p1 = SRC.PList.Item(pname);
-            var p2 = SRC.PList.Item(pname2);
-            if (p1 != null && p2 != null)
+            if (SRC.PList.IsDefined(pname))
             {
-                num_result = SRC.Expression.GetValueAsLong("関係:" + p1.Name + ":" + p2.Name);
+                var p1 = SRC.PList.Item(pname);
+                var pname2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                if (SRC.PList.IsDefined(pname2))
+                {
+                    var p2 = SRC.PList.Item(pname2);
+                    num_result = SRC.Expression.GetValueAsLong("関係:" + p1.Name + ":" + p2.Name);
+                }
             }
 
             if (etype == ValueType.StringType)
