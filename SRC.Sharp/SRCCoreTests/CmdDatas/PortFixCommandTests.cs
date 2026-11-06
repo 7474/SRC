@@ -312,9 +312,32 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual("z", ReadCmd.ReadInputField(reader));
         }
 
-        // Equip でマップ表示中なら出撃中ユニットの画像を再描画する
+        // Equip でユニット画像が変わったら、マップ表示中なら出撃中ユニットの画像を再描画する
+        // （元の SRC の ExecEquipCmd は ubitmap <> .Bitmap のときだけ PaintUnitBitmap を呼ぶ）
         [TestMethod]
         public void EquipCmd_OnMap_RepaintsUnit()
+        {
+            var (src, gui) = CreateSrc();
+            var painted = 0;
+            gui.PaintUnitBitmapHandler = (u, m) => painted++;
+            src.Map.MapFileName = "test.map";
+            var unit = CreateUnit(src, "テスト機");
+            unit.Status = "出撃";
+            var id = src.IDList.Add("テスト装備");
+            id.AddFeature("ユニット画像=装備後.bmp");
+            src.Event.SelectedUnitForEvent = unit;
+
+            var cmds = BuildEvent(src, "Equip テスト装備");
+            Assert.AreEqual(1, cmds[0].Exec());
+
+            Assert.AreEqual(1, unit.CountItem());
+            Assert.AreEqual("装備後.bmp", unit.get_Bitmap(false));
+            Assert.AreEqual(1, painted);
+        }
+
+        // Equip でユニット画像が変わらなければ、マップ表示中でも再描画しない（元の SRC と同じ）
+        [TestMethod]
+        public void EquipCmd_OnMap_BitmapUnchanged_DoesNotRepaint()
         {
             var (src, gui) = CreateSrc();
             var painted = 0;
@@ -329,7 +352,7 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(1, cmds[0].Exec());
 
             Assert.AreEqual(1, unit.CountItem());
-            Assert.AreEqual(1, painted);
+            Assert.AreEqual(0, painted);
         }
 
         // Equip でステータス表示中は再描画しない
