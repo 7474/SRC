@@ -511,9 +511,9 @@ namespace SRCCore.Units
                 {
                     Transform(uname);
                     {
+                        // 元の SRC は HP だけを全快にする（行動済みにはしない。行動回数は Transform で受け継ぐ）
                         var cf = CurrentForm();
                         cf.HP = cf.MaxHP;
-                        cf.UsedAction = cf.MaxAction();
                     }
 
                     var fname = FeatureName("パーツ分離");

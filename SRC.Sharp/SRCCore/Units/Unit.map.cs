@@ -984,7 +984,6 @@ namespace SRCCore.Units
                 DeleteCondition("非表示付加");
             }
 
-            int counter;
             {
                 // パラメータ受け継ぎ
                 u.BossRank = BossRank;
@@ -1301,16 +1300,34 @@ namespace SRCCore.Units
             if (string.IsNullOrEmpty(uname))
             {
                 // 合体形態が指定されてなければその場所にいるユニットと２体合体
+                // 元の SRC と同じく、まず相手のユニット名が一致するものを探し、
+                // 無ければ相手の他形態の名前が一致するもの（IsEqual）を探す。
+                // データが 3 つでない「合体」は飛ばす
                 u = null;
+                var partner = Map.MapDataForUnit[x, y];
                 foreach (var fd in Features.Where(x => x.Name == "合体"))
                 {
-                    var combineData = new CombineFeature(fd);
-                    if (combineData.PartUnitNames.Count == 1
-                        && (Map.MapDataForUnit[x, y]?.IsEqual(combineData.PartUnitNames.First()) ?? false)
-                        && SRC.UList.IsDefined(combineData.ConbineUnitName))
+                    var fdata = fd.Data;
+                    if (GeneralLib.LLength(fdata) == 3
+                        && (partner?.Name ?? "") == GeneralLib.LIndex(fdata, 3)
+                        && SRC.UList.IsDefined(GeneralLib.LIndex(fdata, 2)))
                     {
-                        u = SRC.UList.Item(combineData.ConbineUnitName).CurrentForm();
+                        u = SRC.UList.Item(GeneralLib.LIndex(fdata, 2)).CurrentForm();
                         break;
+                    }
+                }
+                if (u is null)
+                {
+                    foreach (var fd in Features.Where(x => x.Name == "合体"))
+                    {
+                        var fdata = fd.Data;
+                        if (GeneralLib.LLength(fdata) == 3
+                            && (partner?.IsEqual(GeneralLib.LIndex(fdata, 3)) ?? false)
+                            && SRC.UList.IsDefined(GeneralLib.LIndex(fdata, 2)))
+                        {
+                            u = SRC.UList.Item(GeneralLib.LIndex(fdata, 2)).CurrentForm();
+                            break;
+                        }
                     }
                 }
 
@@ -1758,9 +1775,10 @@ namespace SRCCore.Units
             RemoveAllSpecialPowerInEffect();
             {
                 // アイテム受け継ぎ
+                // 元の SRC と同じく AddItem で装備させる（装備個所が足りなければ外す）
                 for (var j = 1; j <= CountItem(); j++)
                 {
-                    firstUnit.AddItem0(Item(j));
+                    firstUnit.AddItem(Item(j));
                 }
 
                 var splitItemCount = CountItem();
@@ -1790,11 +1808,12 @@ namespace SRCCore.Units
             }
 
             // 各分離ユニットに対する処理
-            //n = 1;
-            //int counter;
+            // pilotIndex は元の SRC の n（次に乗せるパイロットの番号）を 0 から数えたもの
             var pilotIndex = 0;
+            var uindex = 0;
             foreach (var u in uarray)
             {
+                uindex++;
                 // 召喚ユニットでない場合は陣営を合わせる
                 if (!u.IsFeatureAvailable("召喚ユニット"))
                 {
@@ -1863,7 +1882,7 @@ namespace SRCCore.Units
                 // 母艦の場合は格納したユニットを受け渡し
                 if (u.IsFeatureAvailable("母艦"))
                 {
-                    // XXX 列挙子の複製どうすんだっけ
+                    // 受け渡しの途中で搭載の一覧が変わるので、複製してから回す
                     foreach (var lu in UnitOnBoards.AsEnumerable().ToList())
                     {
                         u.LoadUnit(lu);
@@ -1897,8 +1916,8 @@ namespace SRCCore.Units
                 switch (Status ?? "")
                 {
                     case "出撃":
-                        // XXX Unit同士の比較の標準化
-                        if (u == firstUnit)
+                        // 元の SRC と同じく、１番機（旧主形態）ではなく分離先の並びの１番目を見る
+                        if (uindex == 1)
                         {
                             u.UsedAction = UsedAction;
                         }
@@ -1945,10 +1964,7 @@ namespace SRCCore.Units
             {
                 if (sup.SupportIndex == 0)
                 {
-                    // XXX 要は先頭に乗る、だろ？
-                    //Unit localItem3() { object argIndex1 = GeneralLib.LIndex(buf, 2); 
-                    //    var ret = SRC.UList.Item(argIndex1); return ret; }
-
+                    // 元の SRC の UList.Item(LIndex(buf, 2)) は分離先の並びの１番目（uarray(1)）と同じ
                     sup.Ride(uarray.First());
                 }
                 else
