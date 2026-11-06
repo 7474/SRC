@@ -163,7 +163,16 @@ namespace SRCCore.CmdDatas.Commands
 
                 case "格納":
                     {
-                        SRC.UList.SwapOnBardUnit(u1, u2);
+                        // 元の SRC と同じく、母艦から降ろして Land で格納する（状態・座標・地形も母艦に合わせる）
+                        foreach (var u in SRC.UList.Items)
+                        {
+                            if (u.UnitOnBoards.Any(x => x.ID == u1.ID))
+                            {
+                                u.UnloadUnit(u1.ID);
+                                u2.Land(u, true);
+                                break;
+                            }
+                        }
                         break;
                     }
 

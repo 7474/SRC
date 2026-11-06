@@ -44,8 +44,10 @@ namespace SRCCore.CmdDatas.Commands
             u.Transform(tname);
 
             // グローバル変数の更新
-            // XXX 元はSavedStateは更新していなかったけれど更新してる
-            UpdateSelectedState(u, u.CurrentForm()); 
+            // 元の SRC はここで退避した選択（SavedSelectedUnit など）を更新しないが、
+            // RestoreSelections が戻すときに .CurrentForm にする。SRC# の RestoreSelections はそうしないので、
+            // 退避した選択もここで変形後のユニットにする（Restore の後の結果は元の SRC と同じ）
+            UpdateSelectedState(u, u.CurrentForm());
             return EventData.NextID;
         }
     }

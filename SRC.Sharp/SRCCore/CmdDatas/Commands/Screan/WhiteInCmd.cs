@@ -13,12 +13,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            if (GUI.IsRButtonPressed())
-            {
-                GUI.RefreshScreen();
-                return EventData.NextID;
-            }
-
+            // 元の SRC の WhiteIn は FadeIn と違い、最初に右ボタンを確かめて省略しない
+            // （引数を確かめて画面を退避し、右ボタンが押されていればフェードの途中で元の画面に戻す。TransionScrean が行う）
             int num;
             switch (ArgNum)
             {

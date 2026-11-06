@@ -38,9 +38,14 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
+            // SetupBackground はマップの表示位置を中央に戻すので、元の位置を覚えておいて戻す
+            var prev_x = GUI.MapX;
+            var prev_y = GUI.MapY;
+
             // マウスカーソルを砂時計に
             GUI.ChangeStatus(GuiStatus.WaitCursor);
             GUI.SetupBackground("水中", "非同期");
+            GUI.Center(prev_x, prev_y);
             GUI.RedrawScreen(late_refresh);
 
             // マウスカーソルを元に戻す
