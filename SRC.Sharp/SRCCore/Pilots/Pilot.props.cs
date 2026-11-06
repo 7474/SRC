@@ -6,7 +6,6 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace SRCCore.Pilots
 {
@@ -121,7 +120,9 @@ namespace SRCCore.Pilots
             // Nickname()への呼び出しは無効化
             if (dont_call_unit_nickname)
             {
-                NicknameRet = new Regex(@"nickname\(\)", RegexOptions.IgnoreCase).Replace(NicknameRet, "");
+                // VB の ReplaceString は大文字・小文字を区別するので、この 2 つの書き方だけを消す
+                NicknameRet = GeneralLib.ReplaceString(NicknameRet, "Nickname()", "");
+                NicknameRet = GeneralLib.ReplaceString(NicknameRet, "nickname()", "");
             }
 
             // 愛称内の式置換のため、デフォルトユニットを一時的に変更する

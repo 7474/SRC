@@ -25,35 +25,60 @@ namespace SRCCore.Pilots
             // 以前の一覧を削除
             colSkill.Clear();
 
+            // VB の skill_name()・skill_data() と同じく、番号ごとに名前とデータを持つ。
+            // 封印した能力は名前を残したままデータを null にする（番号と、同種の能力の登録キーが VB と同じになるように）
+            var skillNames = new List<string>();
+            var skillDatas = new List<SkillData>();
+
+            // 同種の能力を複数持つことが出来る特殊能力か
+            bool isMultiSkill(string name)
+            {
+                return name == "ＳＰ消費減少" || name == "スペシャルパワー自動発動" || name == "ハンター";
+            }
+
+            // 登録済みの番号（0 から）を探す。無ければ -1
+            int findRegistered(string name, string sdata)
+            {
+                for (var k = 0; k < skillNames.Count; k++)
+                {
+                    if (name != skillNames[k])
+                    {
+                        continue;
+                    }
+                    if (isMultiSkill(name))
+                    {
+                        // これらの特殊能力は同種の能力を複数持つことが出来る
+                        // ただしデータ指定まで同一であれば同じ能力と見なす
+                        if ((sdata ?? "") == (skillDatas[k]?.StrData ?? ""))
+                        {
+                            return k;
+                        }
+                    }
+                    else
+                    {
+                        return k;
+                    }
+                }
+                return -1;
+            }
+
             // パイロットデータを参照しながら使用可能な特殊能力を検索
-            var effectiveSkills = new List<SkillData>();
             foreach (SkillData sd in Data.Skills)
             {
                 if (Level >= sd.NecessaryLevel)
                 {
-                    SkillData registerd;
                     // 既に登録済み？
-                    if (sd.Name == "ＳＰ消費減少" || sd.Name == "スペシャルパワー自動発動" || sd.Name == "ハンター")
-                    {
-                        // これらの特殊能力は同種の能力を複数持つことが出来る
-                        // ただしデータ指定まで同一であれば同じ能力と見なす
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name && x.StrData == sd.StrData);
-                    }
-                    else
-                    {
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name);
-                    }
-
-                    if (registerd == null)
+                    var registerd = findRegistered(sd.Name, sd.StrData);
+                    if (registerd < 0)
                     {
                         // 未登録
-                        effectiveSkills.Add(sd);
+                        skillNames.Add(sd.Name);
+                        skillDatas.Add(sd);
                     }
-                    else if (sd.NecessaryLevel > registerd.NecessaryLevel)
+                    else if (sd.NecessaryLevel > skillDatas[registerd].NecessaryLevel)
                     {
-                        // 登録済みである場合は習得レベルが高いものを優先
-                        effectiveSkills.Remove(registerd);
-                        effectiveSkills.Add(sd);
+                        // 登録済みである場合は習得レベルが高いものを優先（VB と同じく元の位置で置き換える）
+                        skillDatas[registerd] = sd;
                     }
                 }
             }
@@ -70,28 +95,24 @@ namespace SRCCore.Pilots
                     var sdata = GeneralLib.ListTail(buf, 2);
 
                     // 既に登録済み？
-                    SkillData registerd = null;
-                    if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
+                    var j = findRegistered(sname, sdata);
+                    if (j < 0)
                     {
-                        // これらの特殊能力は同種の能力を複数持つことが出来る
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname && x.StrData == sdata);
-                    }
-                    else
-                    {
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname);
+                        // 未登録
+                        skillNames.Add(sname);
+                        skillDatas.Add(null);
+                        j = skillNames.Count - 1;
                     }
 
                     var slevel = GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1));
                     if (slevel == 0d)
                     {
                         // レベル0の場合は能力を封印
-                        if (registerd != null)
-                        {
-                            effectiveSkills.Remove(registerd);
-                        }
+                        skillDatas[j] = null;
                     }
                     else
                     {
+                        // PDListのデータを書き換えるわけにはいかないので
                         // アビリティデータを新規に作成
                         var newSd = new SkillData();
                         newSd.Name = sname;
@@ -101,16 +122,7 @@ namespace SRCCore.Pilots
                             newSd.Level = Constants.DEFAULT_LEVEL;
                         }
                         newSd.StrData = GeneralLib.ListTail(buf, 2);
-
-                        if (registerd != null)
-                        {
-                            var idx = effectiveSkills.IndexOf(registerd);
-                            effectiveSkills[idx] = newSd;
-                        }
-                        else
-                        {
-                            effectiveSkills.Add(newSd);
-                        }
+                        skillDatas[j] = newSd;
                     }
                 }
             }
@@ -118,43 +130,42 @@ namespace SRCCore.Pilots
             // 属性使用不能状態の際、対応する技能を封印する。
             if (Unit != null)
             {
-                for (var si = effectiveSkills.Count - 1; si >= 0; si--)
+                for (var j = 0; j < skillDatas.Count; j++)
                 {
-                    if (effectiveSkills[si] != null)
+                    if (skillDatas[j] != null)
                     {
-                        if (Unit.ConditionLifetime(effectiveSkills[si].Name + "使用不能") > 0)
+                        if (Unit.ConditionLifetime(skillDatas[j].Name + "使用不能") > 0)
                         {
-                            effectiveSkills.RemoveAt(si);
+                            skillDatas[j] = null;
                         }
                     }
                 }
             }
 
             // 使用可能な特殊能力を登録
+            for (var i = 0; i < skillNames.Count; i++)
             {
-                var i = 0;
-                foreach (var sd in effectiveSkills)
+                if (skillDatas[i] is null)
                 {
-                    i++;
-                    switch (sd.Name ?? "")
-                    {
-                        case "ＳＰ消費減少":
-                        case "スペシャルパワー自動発動":
-                        case "ハンター":
-                            if (colSkill.ContainsKey(sd.Name))
-                            {
-                                colSkill.Add(sd, sd.Name + ":" + i);
-                            }
-                            else
-                            {
-                                colSkill.Add(sd, sd.Name);
-                            }
-                            break;
+                    continue;
+                }
 
-                        default:
-                            colSkill.Add(sd, sd.Name);
-                            break;
+                var sname = skillNames[i];
+                if (isMultiSkill(sname))
+                {
+                    // 封印した番号も含めて、同じ名前が前にあれば番号付きのキーにする
+                    if (skillNames.IndexOf(sname) >= i)
+                    {
+                        colSkill.Add(skillDatas[i], sname);
                     }
+                    else
+                    {
+                        colSkill.Add(skillDatas[i], sname + ":" + SrcFormatter.Format(i + 1));
+                    }
+                }
+                else
+                {
+                    colSkill.Add(skillDatas[i], sname);
                 }
             }
             #endregion
