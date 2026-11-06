@@ -194,89 +194,89 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Sub AddItem | 21407 | 265 | `SRCCore/Units/Unit.item.cs` Unit.AddItem | 修正済み | ハードポイント付きのものしか無いとき、何も外さない（VB の For Each は最後まで回ると変数が Nothing になる） |
 | Sub AddItem0 | 21673 | 4 | `SRCCore/Units/Unit.item.cs` Unit.AddItem0 | 一致 |  |
 | Sub DeleteItem | 21679 | 256 | `SRCCore/Units/Unit.item.cs` Unit.DeleteItem | 修正済み | 外すアイテムの武器・アビリティを外してから Update する（同じアイテムを 2 つ装備しているとき残弾数が引き継がれていた） |
-| Function ItemSlotSize | 21937 | 31 | `SRCCore/Units/Unit.item.cs` Unit.ItemSlotSize | 未確認 |  |
-| Function IsEquiped | 21970 | 11 | `SRCCore/Units/Unit.item.cs` Unit.IsEquiped | 未確認 |  |
-| Function WeaponProficiency | 21983 | 11 | `SRCCore/Units/Unit.item.cs` Unit.WeaponProficiency | 未確認 |  |
-| Function ArmorProficiency | 21996 | 11 | `SRCCore/Units/Unit.item.cs` Unit.ArmorProficiency | 未確認 |  |
-| Function IsAbleToEquip | 22009 | 259 | `SRCCore/Units/Unit.item.cs` Unit.IsAbleToEquip | 未確認 |  |
-| Sub PilotMessage | 22273 | 453 | `SRCCore/Units/Unit.message.cs` Unit.PilotMessage | 未確認 |  |
-| Sub PlayDialog | 22728 | 167 | `SRCCore/Units/Unit.message.cs` Unit.PlayDialog | 未確認 |  |
-| Sub PlayMessage | 22897 | 154 | `SRCCore/Units/Unit.message.cs` Unit.PlayMessage | 未確認 |  |
-| Function IsMessageDefined | 23053 | 100 | `SRCCore/Units/Unit.message.cs` Unit.IsMessageDefined | 未確認 |  |
-| Sub SysMessage | 23155 | 418 | `SRCCore/Units/Unit.message.cs` Unit.SysMessage | 未確認 |  |
-| Function IsSysMessageDefined | 23575 | 252 | `SRCCore/Units/Unit.message.cs` Unit.IsSysMessageDefined | 未確認 |  |
-| Function SpecialEffectData | 23832 | 87 | `SRCCore/Units/Unit.se.cs` Unit.SpecialEffectData | 未確認 |  |
-| Sub SpecialEffect | 23921 | 325 | `SRCCore/Units/Unit.se.cs` Unit.SpecialEffect | 未確認 |  |
-| Function IsSpecialEffectDefined | 24248 | 10 | `SRCCore/Units/Unit.se.cs` Unit.IsSpecialEffectDefined | 未確認 |  |
-| Function AnimationData | 24265 | 182 | `SRCCore/Units/Unit.anime.cs` Unit.AnimationData | 未確認 |  |
-| Sub PlayAnimation | 24449 | 357 | `SRCCore/Units/Unit.anime.cs` Unit.PlayAnimation | 未確認 |  |
-| Function IsAnimationDefined | 24811 | 16 | `SRCCore/Units/Unit.anime.cs` Unit.IsAnimationDefined | 未確認 |  |
-| Sub StandBy | 24831 | 264 | `SRCCore/Units/Unit.map.cs` Unit.StandBy | 未確認 |  |
-| Sub Move | 25097 | 143 | `SRCCore/Units/Unit.map.cs` Unit.Move | 未確認 |  |
-| Sub Jump | 25242 | 119 | `SRCCore/Units/Unit.map.cs` Unit.Jump | 未確認 |  |
-| Sub Escape | 25363 | 60 | `SRCCore/Units/Unit.map.cs` Unit.Escape | 未確認 |  |
-| Sub Land | 25425 | 136 | `SRCCore/Units/Unit.map.cs` Unit.Land | 未確認 |  |
-| Sub Transform | 25563 | 343 | `SRCCore/Units/Unit.map.cs` Unit.Transform | 未確認 |  |
-| Sub Combine | 25908 | 427 | `SRCCore/Units/Unit.map.cs` Unit.Combine | 未確認 |  |
-| Sub Split | 26337 | 290 | `SRCCore/Units/Unit.map.cs` Unit.Split | 未確認 |  |
-| Function GetExp | 26632 | 234 | `SRCCore/Units/Unit.action2.cs` Unit.GetExp | 未確認 |  |
-| Sub ChangeParty | 26868 | 41 | `SRCCore/Units/Unit.action2.cs` Unit.ChangeParty | 未確認 |  |
-| Sub IncreaseMorale | 26912 | 43 | `SRCCore/Units/Unit.action2.cs` Unit.IncreaseMorale | 未確認 |  |
-| Sub Die | 26957 | 68 | `SRCCore/Units/Unit.action2.cs` Unit.Die | 未確認 |  |
-| Sub SuicidalExplosion | 27027 | 179 | `SRCCore/Units/Unit.action2.cs` Unit.SuicidalExplosion | 未確認 |  |
-| Sub FullRecover | 27211 | 63 | `SRCCore/Units/Unit.recover.cs` Unit.FullRecover | 未確認 | #1498（Unit.cls 能力値）で見つけた手がかり: VB は DeleteCondition を番号で呼んでいる（27247 行）。C# の DeleteCondition は名前だけを受けるので、移し方を確かめる |
-| Sub FullSupply | 27276 | 27 | `SRCCore/Units/Unit.recover.cs` Unit.FullSupply | 未確認 |  |
-| Sub BulletSupply | 27305 | 16 | `SRCCore/Units/Unit.recover.cs` Unit.BulletSupply | 未確認 |  |
-| Sub RecoverHP | 27323 | 15 | `SRCCore/Units/Unit.recover.cs` Unit.RecoverHP | 未確認 |  |
-| Sub RecoverEN | 27340 | 6 | `SRCCore/Units/Unit.recover.cs` Unit.RecoverEN | 未確認 |  |
-| Sub Rest | 27348 | 1008 | `SRCCore/Units/Unit.recover.cs` Unit.Rest | 未確認 |  |
-| Sub CheckAutoHyperMode | 28358 | 178 | `SRCCore/Units/Unit.recover.cs` Unit.CheckAutoHyperMode | 未確認 |  |
-| Function CheckAutoNormalMode | 28538 | 139 | `SRCCore/Units/Unit.recover.cs` Unit.CheckAutoNormalMode | 未確認 |  |
-| Sub Reset | 28680 | 33 | `SRCCore/Units/Unit.recover.cs` Unit.Reset | 未確認 |  |
-| Property Get Party0 | 28718 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Party0 | 未確認 |  |
-| Property Get Party | 28722 | 29 | `SRCCore/Units/Unit.action.cs` Unit.Party | 未確認 |  |
-| Property Let Party | 28752 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Party | 未確認 |  |
-| Function IsEnemy | 28757 | 106 | `SRCCore/Units/Unit.party.cs` Unit.IsEnemy | 未確認 |  |
-| Function IsAlly | 28865 | 39 | `SRCCore/Units/Unit.party.cs` Unit.IsAlly | 未確認 |  |
-| Property Get Mode | 28906 | 38 | `SRCCore/Units/Unit.action.cs` Unit.Mode | 未確認 |  |
-| Property Let Mode | 28945 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Mode | 未確認 |  |
-| Sub LoadUnit | 28953 | 3 | `SRCCore/Units/Unit.onboard.cs` Unit.LoadUnit | 未確認 |  |
-| Sub UnloadUnit | 28958 | 15 | `SRCCore/Units/Unit.onboard.cs` Unit.UnloadUnit | 未確認 |  |
-| Function CountUnitOnBoard | 28975 | 3 | `SRCCore/Units/Unit.onboard.cs` Unit.CountUnitOnBoard | 未確認 |  |
-| Function UnitOnBoard | 28980 | 15 | `SRCCore/Units/Unit.onboard.cs` Unit.UnitOnBoard | 未確認 |  |
-| Sub AddServant | 29000 | 8 | `SRCCore/Units/Unit.summon.cs` Unit.AddServant | 未確認 |  |
-| Sub DeleteServant | 29010 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.DeleteServant | 未確認 |  |
-| Function CountServant | 29027 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.CountServant | 未確認 |  |
-| Function Servant | 29032 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.Servant | 未確認 |  |
-| Sub DismissServant | 29049 | 29 | `SRCCore/Units/Unit.summon.cs` Unit.DismissServant | 未確認 |  |
-| Sub AddSlave | 29083 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.AddSlave | 未確認 |  |
-| Sub DeleteSlave | 29088 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.DeleteSlave | 未確認 |  |
-| Function CountSlave | 29105 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.CountSlave | 未確認 |  |
-| Function Slave | 29110 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.Slave | 未確認 |  |
-| Sub DismissSlave | 29127 | 22 | `SRCCore/Units/Unit.summon.cs` Unit.DismissSlave | 未確認 |  |
-| Sub Dump | 29153 | 84 | （見つからない） | 未確認 |  |
-| Sub Restore | 29239 | 163 | `SRCCore/Units/Unit.cs` Unit.Restore | 未確認 |  |
-| Sub RestoreLinkInfo | 29404 | 107 | （見つからない） | 未確認 |  |
-| Sub RestoreParameter | 29513 | 95 | （見つからない） | 未確認 |  |
-| Function IsOperational | 29613 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsOperational | 未確認 |  |
-| Function IsEqual | 29632 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsEqual | 未確認 |  |
-| Function CurrentForm | 29651 | 14 | `SRCCore/Units/Unit.otherform.cs` Unit.CurrentForm | 未確認 |  |
-| Function IsHero | 29667 | 9 | `SRCCore/Units/Unit.lookup.cs` Unit.IsHero | 未確認 |  |
-| Function LookForAttackHelp | 29678 | 73 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForAttackHelp | 未確認 |  |
-| Function LookForGuardHelp | 29753 | 135 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForGuardHelp | 未確認 |  |
-| Function MaxSupportAttack | 29890 | 5 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSupportAttack | 未確認 |  |
-| Function MaxSupportGuard | 29897 | 5 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSupportGuard | 未確認 |  |
-| Function MaxSyncAttack | 29904 | 3 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSyncAttack | 未確認 |  |
-| Function MaxCounterAttack | 29909 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxCounterAttack | 未確認 |  |
-| Function LookForSupportAttack | 29928 | 151 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportAttack | 未確認 |  |
-| Function LookForSupportGuard | 30082 | 217 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportGuard | 未確認 |  |
-| Function LookForSupport | 30301 | 109 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupport | 未確認 |  |
-| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 未確認 |  |
-| Function IsCombinationAttackAvailable | 30820 | 56 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsCombinationAttackAvailable | 未確認 |  |
-| Function IsCombinationAbilityAvailable | 30878 | 56 | `SRCCore/Units/UnitAbility.cs` UnitAbility.IsCombinationAbilityAvailable | 未確認 |  |
-| Function IsAbleToEnter | 30936 | 99 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAbleToEnter | 未確認 |  |
-| Function IsAvailable | 31037 | 45 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAvailable | 未確認 |  |
-| Function IsNecessarySkillSatisfied | 31084 | 50 | `SRCCore/Units/Unit.lookup.cs` Unit.IsNecessarySkillSatisfied | 未確認 |  |
-| Function IsNecessarySkillSatisfied2 | 31135 | 570 | `SRCCore/Units/Unit.lookup.cs` Unit.IsNecessarySkillSatisfied2 | 未確認 |  |
-| Function IsDisabled | 31707 | 18 | `SRCCore/Units/Unit.lookup.cs` Unit.IsDisabled | 未確認 |  |
-| Function IsDefense | 31728 | 7 | `SRCCore/Units/Unit.lookup.cs` Unit.IsDefense | 未確認 |  |
+| Function ItemSlotSize | 21937 | 31 | `SRCCore/Units/Unit.item.cs` Unit.ItemSlotSize | 一致 | FeatureLevel を足すたびに Integer へ丸める処理（VBMath.CLng）も同じ |
+| Function IsEquiped | 21970 | 11 | `SRCCore/Units/Unit.item.cs` Unit.IsEquiped | 一致 |  |
+| Function WeaponProficiency | 21983 | 11 | `SRCCore/Units/Unit.item.cs` Unit.WeaponProficiency | 修正済み | 武器クラスが無いときに null を返していたのを、VB の String の既定値と同じ "" にした |
+| Function ArmorProficiency | 21996 | 11 | `SRCCore/Units/Unit.item.cs` Unit.ArmorProficiency | 修正済み | 同上 |
+| Function IsAbleToEquip | 22009 | 259 | `SRCCore/Units/Unit.item.cs` Unit.IsAbleToEquip | 一致 |  |
+| Sub PilotMessage | 22273 | 453 | `SRCCore/Units/Unit.message.cs` Unit.PilotMessage | 修正済み | 話すパイロットを VB と同じ番号 i（Dice(CountPilot+CountSupport)、追加サポートは候補に入れない）で選ぶようにした。スペシャルパワーを使ったサブパイロット・サポートにメッセージが無いと止まらなくなっていたのを直した。VB が結果を使わずに呼ぶ SelectMessage（乱数を 1 回分進める）を移した。武器が見つからないときは例外にせず射撃として扱う |
+| Sub PlayDialog | 22728 | 167 | `SRCCore/Units/Unit.message.cs` Unit.PlayDialog | 修正済み | 「-」での打ち切りを、VB と同じく置換の前に判定する |
+| Sub PlayMessage | 22897 | 154 | `SRCCore/Units/Unit.message.cs` Unit.PlayMessage | 一致 | 置換は SubstituteMessageVariables にまとめてある。結果は VB と同じ |
+| Function IsMessageDefined | 23053 | 100 | `SRCCore/Units/Unit.message.cs` Unit.IsMessageDefined | 修正済み | pnames(4) = Pilot(1).MessageType を、追加パイロットが無くても調べるようにした |
+| Sub SysMessage | 23155 | 418 | `SRCCore/Units/Unit.message.cs` Unit.SysMessage | 修正済み | メッセージウィンドウが開いていなければ開く。add_msg を "." を挟んで連結する。変数の置換を VB に合わせた（置換は SubstituteSysMessageVariables に分けた）。「専用」の扱いは VB の不具合として直さない（5 に記載） |
+| Function IsSysMessageDefined | 23575 | 252 | `SRCCore/Units/Unit.message.cs` Unit.IsSysMessageDefined | 一致 | 検索は FindSysMessage・SearchMessageInList にまとめてある。愛称から余分な部分を除く処理の IndexOf・EndsWith を Ordinal にした（動作は同じ） |
+| Function SpecialEffectData | 23832 | 87 | `SRCCore/Units/Unit.se.cs` Unit.SpecialEffectData | 一致 |  |
+| Sub SpecialEffect | 23921 | 325 | `SRCCore/Units/Unit.se.cs` Unit.SpecialEffect | 修正済み | #1498。前後の空白の除去を TrimString と同じくタブ・空白・全角空白だけにした（C# の Trim() は改行も除いていた）。glass.wav は VB でも w=0 のとき strWeaponClass(0)="" なので何も再生しない（C# と同じ）。エラーのとき C# は例外のメッセージを出す（VB は EventErrorMessage か空。SRC# の利便性として残す） |
+| Function IsSpecialEffectDefined | 24248 | 10 | `SRCCore/Units/Unit.se.cs` Unit.IsSpecialEffectDefined | 一致 |  |
+| Function AnimationData | 24265 | 182 | `SRCCore/Units/Unit.anime.cs` Unit.AnimationData | 修正済み | #1498。見つからないとき・戦闘アニメが無効なときに null を返していたのを、VB と同じく空文字列にした |
+| Sub PlayAnimation | 24449 | 357 | `SRCCore/Units/Unit.anime.cs` Unit.PlayAnimation | 修正済み | #1498。引数の無い指定でも「,」を付けて Call していたのを VB の `For j = 2 To ListLength` に合わせた（一括指定の「一括指定」が Args(2) になっていた）。戦闘アニメが無効なときに AnimationData の null で例外になっていたのを直した。TrimString の範囲も SpecialEffect と同じに直した。エラーのときのメッセージの扱いは SpecialEffect と同じ |
+| Function IsAnimationDefined | 24811 | 16 | `SRCCore/Units/Unit.anime.cs` Unit.IsAnimationDefined | 一致 |  |
+| Sub StandBy | 24831 | 264 | `SRCCore/Units/Unit.map.cs` Unit.StandBy | 修正済み | #1498。登場時アニメの条件 `BitmapID > 0` を `!IsBitmapHidden()` にした（以前は画像のファイル名が空でないかで判定していた）。コマごとの `picMain(0).Refresh` に当たる UpdateScreen を足した。BitmapID の作成は SRC# では要らない |
+| Sub Move | 25097 | 143 | `SRCCore/Units/Unit.map.cs` Unit.Move | 修正済み | #1498。合体の判定を VB のとおり「移動先のユニットの合体能力（3 要素）の相手の CurrentForm が自分」にした（以前は自分の合体能力と合体制限・行動不能などで判定していた）。最後の Update で、空を飛べない空中のユニットが戻る前提は変えていない |
+| Sub Jump | 25242 | 119 | `SRCCore/Units/Unit.map.cs` Unit.Jump | 修正済み | #1498。探す前に x,y を移動先にしていたため、空き位置が無いと移動先にいるユニットの上に置いていた。VB のとおり元の位置に戻す |
+| Sub Escape | 25363 | 60 | `SRCCore/Units/Unit.map.cs` Unit.Escape | 一致 | 載せているユニットを降ろす処理（VB は For Each の中で Remove する）は、C# ではすべて降ろす |
+| Sub Land | 25425 | 136 | `SRCCore/Units/Unit.map.cs` Unit.Land | 修正済み | #1498。気力の低下を `SubPilots`（1 人目を除く）から、メインパイロット以外の全パイロットにした。メインが追加パイロットのとき 1 人目も下がる。is_event のときの BitmapID の処理は SRC# では要らない |
+| Sub Transform | 25563 | 343 | `SRCCore/Units/Unit.map.cs` Unit.Transform | 一致 | VB の BitmapID の作り直し（MakeUnitBitmap）は、SRC# では描画のときに画像を引くので要らない。使っていない変数 `counter` を消した |
+| Sub Combine | 25908 | 427 | `SRCCore/Units/Unit.map.cs` Unit.Combine | 修正済み | 合体形態を指定しないときの相手の探し方を VB に合わせた（#1498）。まずユニット名が一致するものを探し、無ければ IsEqual（他形態の名前）で探す。データが 3 つでない「合体」は、例外にせず飛ばす（以前は CombineFeature が例外を出していた） |
+| Sub Split | 26337 | 290 | `SRCCore/Units/Unit.map.cs` Unit.Split | 修正済み | １番機へのアイテムの受け渡しを AddItem0 から AddItem に直した（装備個所が足りなければ外す）。行動回数を受け継ぐ先を、１番機ではなく並びの１番目（VB の `i = 1`）で決めるように直した（#1498）。VB の「格納」の分岐は `.CountOtherForm` で `.UnitOnBoard(j)` を回す不具合があり、たいてい 91 のエラーになる。SRC# は LoadSameUnit で母艦に正しく載せるので、そのままにした。分離先が無いときのメッセージは VB では `LIndex(buf, i - 1)`（一つ前の名前）を出すが、SRC# は正しい名前を出す（VB の不具合なので直していない） |
+| Function GetExp | 26632 | 234 | `SRCCore/Units/Unit.action2.cs` Unit.GetExp | 一致 | 追加サポートが Nothing のとき、VB は 91 のエラーになり、SRC# は飛ばす |
+| Sub ChangeParty | 26868 | 41 | `SRCCore/Units/Unit.action2.cs` Unit.ChangeParty | 一致 | BitmapID の作り直しは SRC# では要らない |
+| Sub IncreaseMorale | 26912 | 43 | `SRCCore/Units/Unit.action2.cs` Unit.IncreaseMorale | 一致 |  |
+| Sub Die | 26957 | 68 | `SRCCore/Units/Unit.action2.cs` Unit.Die | 一致 | SRC# では PreviousSummonerId も記録する（VB には無い。#627 で、祈りで復活したときに召喚主に戻すため）。動作が変わるのはスペシャルパワーの側 |
+| Sub SuicidalExplosion | 27027 | 179 | `SRCCore/Units/Unit.action2.cs` Unit.SuicidalExplosion | 修正済み | 自分が自爆したあとにパーツ分離したとき、VB は HP を全快にするだけ。SRC# は `UsedAction = MaxAction` で行動済みにもしていたので、その処理を消した（#1498）。周りのユニットがパーツ分離したときの行動済みは VB にもあるので、そのままにした |
+| Sub FullRecover | 27211 | 63 | `SRCCore/Units/Unit.recover.cs` Unit.FullRecover | 修正済み | 他形態の回復を `OtherForms` から `cf.OtherForms` に変えた（VB は With CurrentForm の中で .OtherForm(i) を回復する）。VB に無い冒頭の Update を外した。手がかりの DeleteCondition の番号指定は、C# のように名前で消しても同じ（状態の名前はキーと同じで重複しない。消す状態は名前が「付加」で終わらないので、DeleteCondition の中で Update が呼ばれず、状態の並びも変わらない） |
+| Sub FullSupply | 27276 | 27 | `SRCCore/Units/Unit.recover.cs` Unit.FullSupply | 一致 | 処理の順は違う（他形態の EN を先に回復し、弾数は BulletSupply・StockSupply に分けている）が、結果は同じ。SetBulletFull・SetStockFull は dblBullet・dblStock を 1 にするのと同じ |
+| Sub BulletSupply | 27305 | 16 | `SRCCore/Units/Unit.recover.cs` Unit.BulletSupply | 一致 |  |
+| Sub RecoverHP | 27323 | 15 | `SRCCore/Units/Unit.recover.cs` Unit.RecoverHP | 一致 | 実数から Long への丸めは CLng |
+| Sub RecoverEN | 27340 | 6 | `SRCCore/Units/Unit.recover.cs` Unit.RecoverEN | 一致 |  |
+| Sub Rest | 27348 | 1008 | `SRCCore/Units/Unit.recover.cs` Unit.Rest | 一致 | 活動限界による退却を C# は UpdateCondition だけで行う。VB は Rest と UpdateCondition の両方で行うので、退却のメッセージと「破壊」イベントが 2 回出る。VB の明らかな不具合なので合わせない。地形効果の判定の順（弱点・有効・吸収・耐性・無効以外）、BoxType による地形の選び方、霊力・ＨＰ・ＥＮの `\` の丸め、MainPilot と Pilot(2..) の扱いは一致 |
+| Sub CheckAutoHyperMode | 28358 | 178 | `SRCCore/Units/Unit.recover.cs` Unit.CheckAutoHyperMode | 一致 | CInt は Math.Round（偶数への丸め）で同じ。VB は `With UDList.Item(uname)` の中で `.` を付けずに IsFeatureAvailable("追加パイロット") を呼ぶので、自分の特殊能力を見ている。C# の CreateAdditionalPilotForMessage も同じ |
+| Function CheckAutoNormalMode | 28538 | 139 | `SRCCore/Units/Unit.recover.cs` Unit.CheckAutoNormalMode | 一致 |  |
+| Sub Reset | 28680 | 33 | `SRCCore/Units/Unit.recover.cs` Unit.Reset | 一致 | VB の DeleteCondition0 1 の繰り返しは、C# の ClearCondition と同じ |
+| Property Get Party0 | 28718 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Party0 | 一致 |  |
+| Property Get Party | 28722 | 29 | `SRCCore/Units/Unit.action.cs` Unit.Party | 一致 |  |
+| Property Let Party | 28752 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Party | 一致 |  |
+| Function IsEnemy | 28757 | 106 | `SRCCore/Units/Unit.party.cs` Unit.IsEnemy | 一致 |  |
+| Function IsAlly | 28865 | 39 | `SRCCore/Units/Unit.party.cs` Unit.IsAlly | 一致 |  |
+| Property Get Mode | 28906 | 38 | `SRCCore/Units/Unit.action.cs` Unit.Mode | 一致 |  |
+| Property Let Mode | 28945 | 3 | `SRCCore/Units/Unit.action.cs` Unit.Mode | 一致 |  |
+| Sub LoadUnit | 28953 | 3 | `SRCCore/Units/Unit.onboard.cs` Unit.LoadUnit | 一致 |  |
+| Sub UnloadUnit | 28958 | 15 | `SRCCore/Units/Unit.onboard.cs` Unit.UnloadUnit | 一致 | キーで消せないときに名前で探す（VB の ErrorHandler 以降）のも同じ。VB の Index は Variant で番号も受けるが、C# は文字列だけを受け、C# の呼び出し元はすべて ID を渡している |
+| Function CountUnitOnBoard | 28975 | 3 | `SRCCore/Units/Unit.onboard.cs` Unit.CountUnitOnBoard | 一致 |  |
+| Function UnitOnBoard | 28980 | 15 | `SRCCore/Units/Unit.onboard.cs` Unit.UnitOnBoard | 一致 |  |
+| Sub AddServant | 29000 | 8 | `SRCCore/Units/Unit.summon.cs` Unit.AddServant | 一致 |  |
+| Sub DeleteServant | 29010 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.DeleteServant | 一致 |  |
+| Function CountServant | 29027 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.CountServant | 一致 |  |
+| Function Servant | 29032 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.Servant | 一致 |  |
+| Sub DismissServant | 29049 | 29 | `SRCCore/Units/Unit.summon.cs` Unit.DismissServant | 一致 | VB は Servant(1) を処理して DeleteServant 1 を繰り返す。C# はリストの写しを回して最後に Clear する。Escape・Split が呼んだユニットの colServant を変えないので、結果は同じ |
+| Sub AddSlave | 29083 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.AddSlave | 一致 |  |
+| Sub DeleteSlave | 29088 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.DeleteSlave | 一致 |  |
+| Function CountSlave | 29105 | 3 | `SRCCore/Units/Unit.summon.cs` Unit.CountSlave | 一致 |  |
+| Function Slave | 29110 | 15 | `SRCCore/Units/Unit.summon.cs` Unit.Slave | 一致 |  |
+| Sub DismissSlave | 29127 | 22 | `SRCCore/Units/Unit.summon.cs` Unit.DismissSlave | 一致 |  |
+| Sub Dump | 29153 | 84 | `SRCCore/Units/Unit.cs` Unit.LinkData | 修正済み | SRC# は JSON で保存。特殊状態・効果中の SP・アビリティの残り回数（番号順）・追加サポートの ID を保存していなかったので足した（このブランチ） |
+| Sub Restore | 29239 | 163 | `SRCCore/Units/Unit.cs` Unit.Restore | 修正済み | 特殊状態・SP・追加サポート（Unit と IsAdditionalSupport も設定）を戻す。サポートは VB の AddSupport と同じく名前をキーにする（ID をキーにしていたので Support(名前) で引けなかった）。VB はレベルを StrToLng で整数に丸めるが、clevel を Double で宣言しており誤りとみなして丸めない |
+| Sub RestoreLinkInfo | 29404 | 107 | `SRCCore/Units/Unit.cs` Unit.RestoreLinkInfo | 修正済み | 新しく作った。Update の後で SetStock を番号で戻す。SRC.RestoreData（`SRCCore/SRC.save.cs`）から呼ぶ。武器の残弾数は WData と一緒に保存し、Update で名前で照合する（VB は番号。データを変えない限り同じ） |
+| Sub RestoreParameter | 29513 | 95 | `SRCCore/Units/Unit.cs` Unit.RestoreLinkInfo | 一致 | HP・EN は JSON の lngHP・intEN で戻し、RestoreLinkInfo の Update を通る。読み込んだ後の値は同じ |
+| Function IsOperational | 29613 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsOperational | 一致 |  |
+| Function IsEqual | 29632 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsEqual | 一致 |  |
+| Function CurrentForm | 29651 | 14 | `SRCCore/Units/Unit.otherform.cs` Unit.CurrentForm | 一致 |  |
+| Function IsHero | 29667 | 9 | `SRCCore/Units/Unit.lookup.cs` Unit.IsHero | 一致 |  |
+| Function LookForAttackHelp | 29678 | 73 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForAttackHelp | 一致 |  |
+| Function LookForGuardHelp | 29753 | 135 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForGuardHelp | 一致 |  |
+| Function MaxSupportAttack | 29890 | 5 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSupportAttack | 一致 |  |
+| Function MaxSupportGuard | 29897 | 5 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSupportGuard | 一致 |  |
+| Function MaxSyncAttack | 29904 | 3 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxSyncAttack | 一致 |  |
+| Function MaxCounterAttack | 29909 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.MaxCounterAttack | 一致 |  |
+| Function LookForSupportAttack | 29928 | 151 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportAttack | 一致 |  |
+| Function LookForSupportGuard | 30082 | 217 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportGuard | 一致 |  |
+| Function LookForSupport | 30301 | 109 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupport | 一致 |  |
+| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 修正済み | 合体技の種類（ctype）を引数に足した。武装なら同名の武器、アビリティなら同名のアビリティだけを調べる（以前は種類に関わらず武器、次にアビリティの順に探していた）。弾数・回数の有無はデータの値（Weapon(k).Bullet・Ability(k).Stock）で見る。出撃していないときに実際のユニットを返すのは以前からの C# の拡張（VB は要素数だけ） |
+| Function IsCombinationAttackAvailable | 30820 | 56 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsCombinationAttackAvailable | 修正済み | 射程１で隣の敵を基点にするときも check_formation を渡す。調べる順を VB と同じ左・右・上・下にした（SelectedPartners に残る組が変わる） |
+| Function IsCombinationAbilityAvailable | 30878 | 56 | `SRCCore/Units/UnitAbility.cs` UnitAbility.IsCombinationAbilityAvailable | 修正済み | 射程１は隣の味方（IsAlly）を基点にする（以前は IsEnemy）。check_formation を渡し、左・右・上・下の順に調べる。VB は下を調べる条件が `y > MapHeight` で常に偽だが、誤記とみなして下も調べる |
+| Function IsAbleToEnter | 30936 | 99 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAbleToEnter | 一致 |  |
+| Function IsAvailable | 31037 | 45 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAvailable | 一致 |  |
+| Function IsNecessarySkillSatisfied | 31084 | 50 | `SRCCore/Units/Unit.lookup.cs` Unit.IsNecessarySkillSatisfied | 一致 |  |
+| Function IsNecessarySkillSatisfied2 | 31135 | 570 | `SRCCore/Units/Unit.lookup.cs` Unit.IsNecessarySkillSatisfied2 | 修正済み | 「男性」「女性」は PilotNum > 1 なら Pilot(1) から調べる（以前は SubPilots で 1 人目を飛ばしていた） |
+| Function IsDisabled | 31707 | 18 | `SRCCore/Units/Unit.lookup.cs` Unit.IsDisabled | 一致 |  |
+| Function IsDefense | 31728 | 7 | `SRCCore/Units/Unit.lookup.cs` Unit.IsDefense | 一致 |  |
