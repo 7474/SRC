@@ -1148,7 +1148,8 @@ namespace SRCCore.Units
 
                             if (Data.PilotNum > 1)
                             {
-                                foreach (var pi in SubPilots)
+                                // VB は Pilot(1) から調べる（mp がメインパイロット以外のときも Pilot(1) を見る）
+                                foreach (var pi in Pilots)
                                 {
                                     if (pi.Sex == "男性")
                                     {
@@ -1189,7 +1190,8 @@ namespace SRCCore.Units
 
                             if (Data.PilotNum > 1)
                             {
-                                foreach (var pi in SubPilots)
+                                // VB は Pilot(1) から調べる（mp がメインパイロット以外のときも Pilot(1) を見る）
+                                foreach (var pi in Pilots)
                                 {
                                     if (pi.Sex == "女性")
                                     {
