@@ -44,32 +44,6 @@ namespace SRCCore.Units
         {
             // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
             RuntimeHelpers.EnsureSufficientExecutionStack();
-            //    WeaponData[] prev_wdata;
-            //    double[] prev_wbullets;
-            //    AbilityData[] prev_adata;
-            //    double[] prev_astocks;
-            //    short l, j, i, k, num;
-            //    string ch, buf;
-            //    FeatureData fd;
-            //    Item itm;
-            //    string stype, sdata;
-            //    double slevel;
-            //    string stype2, sdata2;
-            //    double slevel2;
-            //    string wname, wnickname;
-            //    string wnskill, wclass, wtype, sname;
-            //    string fdata;
-            //    short flen;
-            //    bool found, flag;
-            //    bool[] flags;
-            //    bool with_not;
-            //    short false_count;
-            //    var uadaption = new short[5];
-            //    double hp_ratio, en_ratio;
-            //    string ubitmap;
-            //    short pmorale;
-            //    bool is_stable, is_uncontrollable, is_invisible;
-
             // ＨＰとＥＮの値を記録
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
@@ -77,8 +51,8 @@ namespace SRCCore.Units
             var hasMaxHP = lngMaxHP > 0;
             var hasMaxEN = intMaxEN > 0;
 
-            //    // ユニット用画像ファイル名を記録しておく
-            //    ubitmap = get_Bitmap(false);
+            // ユニット用画像ファイル名を記録しておく
+            var ubitmap = get_Bitmap(false);
 
             // 非表示かどうか記録しておく
             var is_invisible = IsFeatureAvailable("非表示");
@@ -401,67 +375,26 @@ namespace SRCCore.Units
             // パイロット用特殊能力の付加＆強化が完了したので必要技能の判定が可能になった。
             UpdateFeatures();
 
-            //    // アイテムが必要技能を満たすか再度チェック。
-            //    found = false;
-            //    foreach (Item currentItm1 in colItem)
-            //    {
-            //        itm = currentItm1;
-            //        if (itm.Activated != itm.IsAvailable(this))
-            //        {
-            //            found = true;
-            //            break;
-            //        }
-            //    }
+            // アイテムが必要技能を満たすか再度チェック。
+            if (colItem.List.Any(itm => itm.Activated != itm.IsAvailable(this)))
+            {
+                // アイテムの使用可否が変化したので最初からやり直す
+                goto TryAgain;
+            }
 
-            //    if (found)
-            //    {
-            //        // アイテムの使用可否が変化したので最初からやり直す
-            //        goto TryAgain;
-            //    }
-
-            //    // ランクアップするか再度チェック。
-            //    {
-            //        var withBlock6 = Data;
-            //        if (withBlock6.IsFeatureAvailable("ランクアップ"))
-            //        {
-            //            if (Rank >= withBlock6.FeatureLevel("ランクアップ"))
-            //            {
-            //                if (IsNecessarySkillSatisfied(withBlock6.FeatureNecessarySkill(argIndex18), p: null))
-            //                {
-            //                    // ランクアップが可能になったので最初からやり直す
-            //                    goto TryAgain;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (CountPilot() > 0)
-            //    {
-            //        // パイロット能力をアップデート
-            //        var loopTo5 = CountPilot();
-            //        for (i = 2; i <= loopTo5; i++)
-            //        {
-            //            Pilot localPilot1() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //            localPilot1().Update();
-            //        }
-
-            //        var loopTo6 = CountSupport();
-            //        for (i = 1; i <= loopTo6; i++)
-            //        {
-            //            Pilot localSupport1() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //            localSupport1().Update();
-            //        }
-
-            //        // メインパイロットは他のパイロットのサポートを受ける関係上
-            //        // 最後にアップデートする
-            //        Pilot(1).Update();
-            //        if (!ReferenceEquals(MainPilot(), Pilot(1)))
-            //        {
-            //            MainPilot().Update();
-            //        }
-            //    }
+            // ランクアップするか再度チェック。
+            if (Data.IsFeatureAvailable("ランクアップ"))
+            {
+                var fd = Data.Feature("ランクアップ");
+                if (Rank >= fd.FeatureLevel)
+                {
+                    if (IsNecessarySkillSatisfied(fd.NecessarySkill))
+                    {
+                        // ランクアップが可能になったので最初からやり直す
+                        goto TryAgain;
+                    }
+                }
+            }
 
             // パイロット能力をアップデート
             if (CountPilot() > 0)
@@ -484,54 +417,24 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // ユニット画像用ファイル名に変化がある場合はユニット画像を更新
-            //    if (BitmapID != 0)
-            //    {
-            //        if ((ubitmap ?? "") != (get_Bitmap(false) ?? ""))
-            //        {
-            //            BitmapID = GUI.MakeUnitBitmap(this);
-            //            var loopTo7 = CountOtherForm();
-            //            for (i = 1; i <= loopTo7; i++)
-            //            {
-            //                Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
-
-            //                localOtherForm().BitmapID = 0;
-            //            }
-
-            //            if (!without_refresh)
-            //            {
-            //                if (Status == "出撃")
-            //                {
-            //                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //                    {
-            //                        GUI.PaintUnitBitmap(this);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // ユニットの表示、非表示が切り替わった場合
-            //    if (is_invisible != IsFeatureAvailable("非表示"))
-            //    {
-            //        if (Status == "出撃")
-            //        {
-            //            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                BitmapID = GUI.MakeUnitBitmap(this);
-            //                if (IsFeatureAvailable("非表示"))
-            //                {
-            //                    GUI.EraseUnitBitmap(x, y, !without_refresh);
-            //                }
-            //                else if (!without_refresh)
-            //                {
-            //                    GUI.PaintUnitBitmap(this);
-            //                }
-            //            }
-            //        }
-            //    }
+            // ユニット画像用ファイル名に変化がある場合はユニット画像を更新
+            // （元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない。描き直しだけを行う）
+            if ((ubitmap ?? "") != (get_Bitmap(false) ?? ""))
+            {
+                if (!without_refresh)
+                {
+                    if (Status == "出撃")
+                    {
+                        if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                        {
+                            GUI.PaintUnitBitmap(this);
+                        }
+                    }
+                }
+            }
 
             // ユニットの表示、非表示が切り替わった場合
+            // （元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない）
             if (is_invisible != IsFeatureAvailable("非表示"))
             {
                 if (Status == "出撃")
@@ -1077,43 +980,31 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // 空中に留まることが出来るかチェック
-            //    if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
-            //    {
-            //        // 地上(水中)に戻す
-            //        switch (Map.TerrainClass(x, y) ?? "")
-            //        {
-            //            case "陸":
-            //            case "屋内":
-            //                {
-            //                    Area = "地上";
-            //                    break;
-            //                }
+            // 空中に留まることが出来るかチェック
+            if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
+            {
+                // 地上(水中)に戻す
+                switch (Map.Terrain(x, y)?.Class ?? "")
+                {
+                    case "陸":
+                    case "屋内":
+                        Area = "地上";
+                        break;
 
-            //            case "水":
-            //            case "深水":
-            //                {
-            //                    if (IsTransAvailable("水上"))
-            //                    {
-            //                        Area = "水上";
-            //                    }
-            //                    else
-            //                    {
-            //                        Area = "水中";
-            //                    }
+                    case "水":
+                    case "深水":
+                        Area = IsTransAvailable("水上") ? "水上" : "水中";
+                        break;
+                }
 
-            //                    break;
-            //                }
-            //        }
-
-            //        if (!without_refresh)
-            //        {
-            //            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                GUI.PaintUnitBitmap(this);
-            //            }
-            //        }
-            //    }
+                if (!without_refresh)
+                {
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        GUI.PaintUnitBitmap(this);
+                    }
+                }
+            }
 
             // 攻撃への耐性を更新
             strAbsorb = "";
