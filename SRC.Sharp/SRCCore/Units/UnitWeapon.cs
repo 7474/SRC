@@ -326,14 +326,18 @@ namespace SRCCore.Units
 
             return WeaponPowerRet;
         }
-        public void SetPowerCorrection(int correction)
+        // applyLimits が false のときは最高値・最低値を適用しない
+        // （元の SRC の Unit.Update は、ダメージ固定武器（固）に最高値・最低値を適用しない）
+        public void SetPowerCorrection(int correction, bool applyLimits = true)
         {
             // もともと攻撃力が0の武器は0に固定
             // 攻撃力の最高値は99999
             // 最低値は1
             lngWeaponPower = WeaponData.Power == 0
                 ? 0
-                : Math.Min(99999, Math.Max(1, WeaponData.Power + correction));
+                : applyLimits
+                    ? Math.Min(99999, Math.Max(1, WeaponData.Power + correction))
+                    : WeaponData.Power + correction;
         }
 
         // 武器 w の地形 tarea におけるダメージ修正値

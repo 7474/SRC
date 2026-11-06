@@ -38,6 +38,53 @@ namespace SRCCore.Units
             return VBMath.CLng(baseValue + correction + value) - baseValue;
         }
 
+        // 武器強化・武器割合強化の武器指定に武器 w が当てはまるか（元の SRC の Unit.Update）。
+        // ダメージ固定武器（固）は、各指定が武器名・武器表示名・「固」のいずれかのときにだけ当てはまったとみなし、
+        // 「!」の指定・指定無し（すべての武器）の扱いはほかの武器と同じにする。
+        private static bool IsMatchWeaponPowerTarget(UnitWeapon w, IList<string> targets)
+        {
+            if (!w.IsWeaponClassifiedAs("固"))
+            {
+                return w.IsMatchFeatureTarget(targets);
+            }
+
+            var wname = w.Name;
+            var wnickname = w.WeaponNickname();
+            // 武器指定がない場合はすべての武器を強化
+            var flag = targets.Count == 0;
+            var false_count = 0;
+            foreach (var target in targets)
+            {
+                var wtype = target;
+                var with_not = Strings.Left(wtype, 1) == "!";
+                if (with_not)
+                {
+                    wtype = Strings.Mid(wtype, 2);
+                }
+
+                var found = wtype == "固" || wname == wtype || wnickname == wtype;
+                if (with_not)
+                {
+                    // !指定あり。条件を満たした場合は適用しない
+                    if (found)
+                    {
+                        flag = false;
+                        false_count++;
+                    }
+                }
+                else if (found)
+                {
+                    flag = true;
+                }
+                else
+                {
+                    false_count++;
+                }
+            }
+
+            return flag || false_count == 0;
+        }
+
         // ユニットの各種パラメータを更新するサブルーチン
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
@@ -1271,21 +1318,9 @@ namespace SRCCore.Units
                             fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
                         }
 
-                        if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
+                        if (IsMatchWeaponPowerTarget(w, GeneralLib.ToL(fdata)))
                         {
-                            if (w.IsWeaponClassifiedAs("固"))
-                            {
-                                // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
-                                // いずれかで行われた場合にのみ強化
-                                if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
-                                {
-                                    correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
-                                }
-                            }
-                            else
-                            {
-                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
-                            }
+                            correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1302,21 +1337,9 @@ namespace SRCCore.Units
                             fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
                         }
 
-                        if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
+                        if (IsMatchWeaponPowerTarget(w, GeneralLib.ToL(fdata)))
                         {
-                            if (w.IsWeaponClassifiedAs("固"))
-                            {
-                                // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
-                                // いずれかで行われた場合にのみ強化
-                                if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
-                                {
-                                    correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
-                                }
-                            }
-                            else
-                            {
-                                correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
-                            }
+                            correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
                         }
                     }
                 }
@@ -1324,8 +1347,8 @@ namespace SRCCore.Units
                 // ダメージ固定武器
                 if (w.IsWeaponClassifiedAs("固"))
                 {
-                    // 適用して次へ
-                    w.SetPowerCorrection(correction);
+                    // 適用して次へ（元の SRC は GoTo NextWeapon で、最高値 99999・最低値 1 を適用しない）
+                    w.SetPowerCorrection(correction, applyLimits: false);
                     continue;
                 }
 
@@ -1624,8 +1647,6 @@ namespace SRCCore.Units
             // 最大弾数を更新
             foreach (var w in Weapons)
             {
-                //intMaxBullet[i] = Weapon(i).Bullet;
-
                 // 最大弾数の増加率
                 var maxBulletRate = 0d;
 
@@ -1657,24 +1678,8 @@ namespace SRCCore.Units
             }
 
             // 弾数を更新
-            // UnitWeapon の構築で引き継ぎしている
-            //Array.Resize(dblBullet, CountWeapon() + 1);
-            //flags = new bool[Information.UBound(prev_wdata) + 1];
-            //var loopTo55 = CountWeapon();
-            //for (i = 1; i <= loopTo55; i++)
-            //{
-            //    dblBullet[i] = 1d;
-            //    var loopTo56 = Information.UBound(prev_wdata);
-            //    for (j = 1; j <= loopTo56; j++)
-            //    {
-            //        if (ReferenceEquals(WData[i], prev_wdata[j]) && !flags[j])
-            //        {
-            //            dblBullet[i] = prev_wbullets[j];
-            //            flags[j] = true;
-            //            break;
-            //        }
-            //    }
-            //}
+            // 武器データの構築（UnitWeapon.NewOrRef）で引き継いでいる。
+            // 同じ武器データのものを 1 つずつ引き継ぎ、新しい武器は弾数を最大にする
 
             // アビリティデータを更新
             // 使用回数は同じアビリティデータのものを引き継ぎ、新しいアビリティは最大にする
@@ -1695,155 +1700,49 @@ namespace SRCCore.Units
                     ua.SetStockFull();
                     return ua;
                 }).ToList();
-            //    prev_adata = new AbilityData[Information.UBound(adata) + 1];
-            //    prev_astocks = new double[Information.UBound(adata) + 1];
-            //    var loopTo57 = Information.UBound(adata);
-            //    for (i = 1; i <= loopTo57; i++)
-            //    {
-            //        prev_adata[i] = adata[i];
-            //        prev_astocks[i] = dblStock[i];
-            //    }
+            // 使用回数を更新
+            // 上のアビリティの構築で引き継いでいる（同じアビリティデータのものを 1 つずつ引き継ぎ、新しいアビリティは最大にする）
 
-            //    {
-            //        var withBlock25 = Data;
-            //        adata = new AbilityData[(withBlock25.CountAbility() + 1)];
-            //        var loopTo58 = withBlock25.CountAbility();
-            //        for (i = 1; i <= loopTo58; i++)
-            //        {
-            //            adata[i] = withBlock25.Ability(i);
-            //        }
-            //    }
+            if (Status != "出撃")
+            {
+                return;
+            }
 
-            //    if (CountPilot() > 0)
-            //    {
-            //        {
-            //            var withBlock26 = MainPilot().Data;
-            //            var loopTo59 = withBlock26.CountAbility();
-            //            for (i = 1; i <= loopTo59; i++)
-            //            {
-            //                Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                adata[Information.UBound(adata)] = withBlock26.Ability(i);
-            //            }
-            //        }
+            // 制御不能？
+            if (IsFeatureAvailable("制御不可"))
+            {
+                if (!is_uncontrollable)
+                {
+                    AddCondition("暴走", -1, cdata: "");
+                }
+            }
+            else if (is_uncontrollable)
+            {
+                if (IsConditionSatisfied("暴走"))
+                {
+                    DeleteCondition("暴走");
+                }
+            }
 
-            //        var loopTo60 = CountPilot();
-            //        for (i = 2; i <= loopTo60; i++)
-            //        {
-            //            Pilot localPilot3() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //            {
-            //                var withBlock27 = localPilot3().Data;
-            //                var loopTo61 = withBlock27.CountAbility();
-            //                for (j = 1; j <= loopTo61; j++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock27.Ability(j);
-            //                }
-            //            }
-            //        }
-
-            //        var loopTo62 = CountSupport();
-            //        for (i = 1; i <= loopTo62; i++)
-            //        {
-            //            Pilot localSupport3() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //            {
-            //                var withBlock28 = localSupport3().Data;
-            //                var loopTo63 = withBlock28.CountAbility();
-            //                for (j = 1; j <= loopTo63; j++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock28.Ability(j);
-            //                }
-            //            }
-            //        }
-
-            //        if (IsFeatureAvailable("追加サポート"))
-            //        {
-            //            {
-            //                var withBlock29 = AdditionalSupport().Data;
-            //                var loopTo64 = withBlock29.CountAbility();
-            //                for (i = 1; i <= loopTo64; i++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock29.Ability(i);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    foreach (Item currentItm6 in colItem)
-            //    {
-            //        itm = currentItm6;
-            //        if (itm.Activated)
-            //        {
-            //            var loopTo65 = itm.CountAbility();
-            //            for (i = 1; i <= loopTo65; i++)
-            //            {
-            //                Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                adata[Information.UBound(adata)] = itm.Ability(i);
-            //            }
-            //        }
-            //    }
-
-            //    // 使用回数を更新
-            //    Array.Resize(dblStock, CountAbility() + 1);
-            //    flags = new bool[Information.UBound(prev_adata) + 1];
-            //    var loopTo66 = CountAbility();
-            //    for (i = 1; i <= loopTo66; i++)
-            //    {
-            //        dblStock[i] = 1d;
-            //        var loopTo67 = Information.UBound(prev_adata);
-            //        for (j = 1; j <= loopTo67; j++)
-            //        {
-            //            if (ReferenceEquals(adata[i], prev_adata[j]) && !flags[j])
-            //            {
-            //                dblStock[i] = prev_astocks[j];
-            //                flags[j] = true;
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if (Status != "出撃")
-            //    {
-            //        return;
-            //    }
-
-            //    // 制御不能？
-            //    if (IsFeatureAvailable("制御不可"))
-            //    {
-            //        if (!is_uncontrollable)
-            //        {
-            //            AddCondition("暴走", -1, cdata: "");
-            //        }
-            //    }
-            //    else if (is_uncontrollable)
-            //    {
-            //        if (IsConditionSatisfied("暴走"))
-            //        {
-            //            DeleteCondition("暴走");
-            //        }
-            //    }
-
-            //    // 不安定？
-            //    if (IsFeatureAvailable("不安定"))
-            //    {
-            //        if (!is_stable)
-            //        {
-            //            if (HP <= MaxHP / 4)
-            //            {
-            //                AddCondition("暴走", -1, cdata: "");
-            //            }
-            //        }
-            //    }
-            //    else if (is_stable)
-            //    {
-            //        if (IsConditionSatisfied("暴走"))
-            //        {
-            //            DeleteCondition("暴走");
-            //        }
-            //    }
+            // 不安定？
+            if (IsFeatureAvailable("不安定"))
+            {
+                if (!is_stable)
+                {
+                    // VB: HP <= MaxHP \ 4（整数除算）
+                    if (HP <= MaxHP / 4)
+                    {
+                        AddCondition("暴走", -1, cdata: "");
+                    }
+                }
+            }
+            else if (is_stable)
+            {
+                if (IsConditionSatisfied("暴走"))
+                {
+                    DeleteCondition("暴走");
+                }
+            }
         }
 
         // 特殊能力仕様文字列（"タイプLv1=データ" 形式）を解析する
