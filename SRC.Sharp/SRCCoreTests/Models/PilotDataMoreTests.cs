@@ -82,12 +82,13 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void SpecialPower_HigherLevel_ReturnsNull_WhenNotAvailable()
+        public void SpecialPower_HigherLevel_ReturnsEmpty_WhenNotAvailable()
         {
+            // 元の SRC（PilotData.cls SpecialPower）は見つからなければ空文字列
             var src = CreateSRC();
             var pd = new PilotData(src) { Name = "テスト" };
             pd.AddSpecialPower("覚醒", 20, 60);
-            Assert.IsNull(pd.SpecialPower(1, 1));
+            Assert.AreEqual("", pd.SpecialPower(1, 1));
         }
 
         [TestMethod]

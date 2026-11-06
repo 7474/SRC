@@ -658,6 +658,7 @@ namespace SRCCore.Models
         /// ユニット・アイテムと異なり数値の項目で節を終えず、エラーとして扱う（PilotDataList.cls）。</param>
         public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isPilot = false)
         {
+            var isFirstLine = true;
             string line_buf = reader.GetLine();
             string buf = line_buf;
             string buf2;
@@ -665,7 +666,11 @@ namespace SRCCore.Models
             while (true)
             {
                 // パイロットデータ時には空行やデータ区切りでブレークする。
-                if (string.IsNullOrEmpty(line_buf) || line_buf == "===") { break; }
+                // ただし元の SRC（PilotDataList.cls）は「===」の直後の行だけは空行でも読み、
+                // 「行頭から1番目の特殊能力の設定が間違っています。」として次の行へ進む
+                if (line_buf == "===") { break; }
+                if (string.IsNullOrEmpty(line_buf) && !(isPilot && isFirstLine)) { break; }
+                isFirstLine = false;
 
                 i = i + 1;
                 int ret = 0;
@@ -1077,7 +1082,10 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        /// <param name="noBlankLineMessage">アビリティ名の後に「,」が無いときのエラー。
+        /// ユニットデータ（UnitDataList.cls）は「終りに」、パイロット・アイテムのデータは「終りには」。</param>
+        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC,
+            string noBlankLineMessage = "アビリティデータの終りに空行を置いてください。")
         {
             int ret;
             string buf;
@@ -1091,7 +1099,7 @@ namespace SRCCore.Models
                 ret = Strings.InStr(line_buf, ",");
                 if (ret == 0)
                 {
-                    throw reader.InvalidDataException(@"アビリティデータの終りに空行を置いてください。", data_name);
+                    throw reader.InvalidDataException(noBlankLineMessage, data_name);
                 }
 
                 string sname = Strings.Trim(Strings.Left(line_buf, ret - 1));

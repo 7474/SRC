@@ -10,4 +10,4 @@ VB 版の `SRC/SRC_20121125/ItemDataList.cls` の手続きと、C# の対応（[
 | Sub Delete | 50 | 3 | `SRCCore/Models/ItemDataList.cs` ItemDataList.Delete | 未確認 |  |
 | Function Item | 55 | 9 | `SRCCore/Models/ItemDataList.cs` ItemDataList.Item | 未確認 |  |
 | Function IsDefined | 66 | 11 | `SRCCore/Models/ItemDataList.cs` ItemDataList.IsDefined | 未確認 |  |
-| Sub Load | 79 | 763 | `SRCCore/Models/ItemDataList.cs` ItemDataList.Load | 未確認 |  |
+| Sub Load | 79 | 763 | `SRCCore/Models/ItemDataList.cs` ItemDataList.Load | 未確認 | #1498（Pilot）で見つけた手がかり: アビリティの「,」が無いときのエラーは VB では「終りには」（ItemDataList.cls:651）。UnitDataList.LoadAbility に足した引数で直せる |

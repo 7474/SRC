@@ -31,9 +31,31 @@ namespace SRCCore.Pilots
         [JsonConstructor]
         private Pilot() { }
 
+        // 一時中断用データからの復元（VB: Restore。値は JSON から読み込み済み）
+        // Unit は UnitId から引くので、VB の RestoreLinkInfo に当たる処理は要らない
         public void Restore(SRC src)
         {
             SRC = src;
+
+            // VB の Dump は IsAdditionalPilot を保存しないので、読み込んだ直後は False になる。
+            // 追加パイロットは Unit.MainPilot で改めて探され、そこで True に戻る
+            // （(ザコ)・(汎用) の追加パイロットを、ロードのたびに作り直さないようにする）
+            IsAdditionalPilot = false;
+        }
+
+        // 一時中断用データのパラメータ情報を復元する（VB: RestoreParameter）
+        // 霊力・ＳＰの最大値は特殊能力で変動するので、ユニットとのリンクと特殊能力の設定が
+        // 終わってから、保存した値を改めて設定し直す（最大値・最小値で切り詰める）。
+        // VB の Dump は SP・Plana のプロパティの値（追加パイロットなら第１パイロットに合わせた値）を保存するので、
+        // ここでもプロパティの値を設定し直す
+        public void RestoreParameter()
+        {
+            var sp = SP;
+            var morale = Morale;
+            var plana = Plana;
+            SP = sp;
+            Morale = morale;
+            Plana = plana;
         }
 
         [JsonProperty]
