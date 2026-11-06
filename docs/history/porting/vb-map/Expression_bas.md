@@ -4,28 +4,28 @@ VB 版の `SRC/SRC_20121125/Expression.bas` の手続きと、C# の対応（[�
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Function EvalExpr | 46 | 777 | `SRCCore/Expressions/Eval.cs` Expression.EvalExpr | 未確認 |  |
-| Function EvalTerm | 825 | 86 | `SRCCore/Expressions/Eval.cs` Expression.EvalTerm | 未確認 |  |
-| Function CallFunction | 916 | 2971 | `SRCCore/Expressions/Expression.function.cs` Expression.CallFunction | 未確認 |  |
-| Function EvalInfoFunc | 3889 | 2272 | （見つからない） | 未確認 |  |
-| Function GetVariable | 6166 | 926 | `SRCCore/Expressions/Variable.cs` Expression.GetVariable | 未確認 |  |
-| Function IsVariableDefined | 7094 | 113 | `SRCCore/Expressions/Variable.cs` Expression.IsVariableDefined | 未確認 |  |
-| Function IsSubLocalVariableDefined | 7209 | 12 | `SRCCore/Expressions/Variable.cs` Expression.IsSubLocalVariableDefined | 未確認 |  |
-| Function IsLocalVariableDefined | 7223 | 11 | `SRCCore/Expressions/Variable.cs` Expression.IsLocalVariableDefined | 未確認 |  |
-| Function IsGlobalVariableDefined | 7236 | 11 | `SRCCore/Expressions/Variable.cs` Expression.IsGlobalVariableDefined | 未確認 |  |
-| Sub SetVariable | 7249 | 376 | `SRCCore/Expressions/Variable.cs` Expression.SetVariable | 未確認 |  |
-| Sub SetVariableAsString | 7626 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsString | 未確認 |  |
-| Sub SetVariableAsDouble | 7630 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsDouble | 未確認 |  |
-| Sub SetVariableAsLong | 7634 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsLong | 未確認 |  |
-| Sub DefineGlobalVariable | 7639 | 10 | `SRCCore/Expressions/Variable.cs` Expression.DefineGlobalVariable | 未確認 |  |
-| Sub DefineLocalVariable | 7651 | 10 | `SRCCore/Expressions/Variable.cs` Expression.DefineLocalVariable | 未確認 |  |
-| Sub UndefineVariable | 7663 | 165 | `SRCCore/Expressions/Variable.cs` Expression.UndefineVariable | 未確認 |  |
-| Function GetValueAsString | 7834 | 10 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsString | 未確認 |  |
-| Function GetValueAsDouble | 7846 | 10 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsDouble | 未確認 |  |
-| Function GetValueAsLong | 7858 | 11 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsLong | 未確認 |  |
-| Function IsExpr | 7873 | 8 | （見つからない） | 未確認 |  |
-| Function IsOptionDefined | 7884 | 11 | `SRCCore/Expressions/Expression.option.cs` Expression.IsOptionDefined | 未確認 |  |
-| Sub ReplaceSubExpression | 7898 | 37 | `SRCCore/Expressions/Expression.replace.cs` Expression.ReplaceSubExpression | 未確認 |  |
-| Sub FormatMessage | 7937 | 11 | `SRCCore/Expressions/Expression.replace.cs` Expression.FormatMessage | 未確認 |  |
-| Function Term | 7952 | 42 | `SRCCore/Expressions/Expression.term.cs` Expression.Term | 未確認 |  |
-| Function GetVariableObject | 7997 | 306 | `SRCCore/Expressions/Variable.cs` Expression.GetVariableObject | 未確認 |  |
+| Function EvalExpr | 46 | 777 | `SRCCore/Expressions/Eval.cs` Expression.EvalExpr | 修正済み | 最後の項を演算子として見ない（VB の For i = 1 To tnum - 1。「1 +」「a =」は式のまま文字列）。Mod は両辺を偶数丸めで Long にしてから割った余り（除数が 0 ならエラー 11） |
+| Function EvalTerm | 825 | 86 | `SRCCore/Expressions/Eval.cs` Expression.EvalTerm | 一致 | 1 文字だけの「"」「`」は VB ではエラー 5、C# は空の文字列 |
+| Function CallFunction | 916 | 2971 | `SRCCore/Expressions/Expression.function.cs` Expression.CallFunction | 修正済み | #1498。CallFunction 前半（args〜isvardefined の前）: 修正済み。Call 関数の階層・引数の上限の判定を VB と同じ >（1 段早くエラーになっていた）、IsAvailable の引数 1 個のときのエリアス、CountItem の「未装備」の判定の順、IIf の分け方（ListSplitStrict）。VB の不具合（InStrRevB の UTF-16 の位置、Font(色) の BGR）は再現しない。Dir の並び順・隠しファイル、Format の日付の書式化は違う CallFunction 後半（isvardefined〜）: 修正済み。分かれ道で、システム関数が UndefinedType を返しても同じ名前のラベルを探さずにそのまま返す（関数名の集合が VB と同じことを確かめた）。ユーザー定義関数の呼び出し階層のチェックを `CallDepth > MaxCallDepth` に戻し、UpVar の段数を累計しない形に戻した（#736 で Call コマンドに合わせて変わっていた）。Max・Min は引数 0 個で 0。LSet・RSet は Shift_JIS の LenB で数える。RegExp・RegExpReplace は ECMAScript の動作（`\d`・`\w`・`\s` は ASCII だけ）、パターンの誤りはエラーを表示して続ける、RegExpReplace の大小区別は `pcount >= 4` のときだけ。Relation は 1 人目のパイロットがいないとき 2 つ目の引数を評価しない。Level()・Morale() はパイロットのいないユニットで 0。Item・ItemID の引数の評価の順と数。引数が多すぎるとき Level・Morale・Plana・SP・Skill・Party・Rank・SpecialPower・Status・Unit・UnitID・Weekday・ファイルのダイアログは値を求めない。VB の不具合として再現しないもの: Level(ユニット名) が 0 になる書き間違い、DiffTime の `Second(d2 - d1)`、WindowWidth・WindowHeight が UndefinedType で関数にならない、Round 系の Integer のあふれ、エラー 5 の場合（C# は空・0・NaN）。小さく違うもの: Item 系以外の AUnitFunction は引数が多すぎても 1 つ目を評価する、Skill のエリアスは ReplaceTypeName を使う。LoadFileDialog・SaveFileDialog でシナリオのフォルダの外を選んだときの VB の相対パスへの救済が無い（SRC# のファイルの選び方を確かめてから決める） |
+| Function EvalInfoFunc | 3889 | 2272 | `SRCCore/Expressions/Functions/Info.cs` Info.InvokeInternal | 修正済み | EvalInfoFunc 前半（〜運動性）: 修正済み。「性別」と第1引数が空のときの戻り値の型を VB に合わせた（途中の Exit Function の後、呼び出し元が etype に応じて変換する）。「特殊能力」の番号が範囲外のとき VB は Collection のエラー、C# は ""。後半（武器数〜オプション）: 修正済み。アビリティの効果の番号が範囲外で例外になっていた（"" にする。VB のユニットの分岐の And の書き誤りは再現しない）。武器・アビリティが見つからない・座標が範囲外のときの型を VB の呼び出し元と同じに。時間帯の透過率を CStr と同じく有効数字 15 桁で。ビットマップ名を Bitmap\Map からの相対のファイル名で。UseDirectMusic は常に "Off"（SRC# に DirectMusic は無い） |
+| Function GetVariable | 6166 | 926 | `SRCCore/Expressions/Variable.cs` Expression.GetVariable | 修正済み | #1498。GetVariableObject を通す作りをやめ、VB の順に書き直した（変数の読み出しは ReadVariableValue、システム変数は GetSystemVariable、コンフィグ変数は GetConfigVariable）。直したもの: 未定義の変数は数値として求めると 0（NumericType）、ほかは変数名（StringType）。これまでは UndefinedType を返していた。「選択」を文字列として求めたときは SelectedAlternative をそのまま返す（「007」を「7」にしない）。型を決めずに求めたときは StringType。「対象/相手ユニット使用武器番号」「対象ユニット使用アビリティ番号」が、どちらのユニットにも当たらないときは UndefinedType と空文字列。型が UndefinedType の変数を文字列として求めると FormatNum(NumericValue)。now は CStr(Now) の書式にした。そのほかのシステム変数（対象ユニット〜scenariopath）とコンフィグ変数は、変数ごとに突き合わせて一致した。 |
+| Function IsVariableDefined | 7094 | 113 | `SRCCore/Expressions/Variable.cs` Expression.IsVariableDefined | 一致 | 1 次元の添字の Trim$ の有無は、GetValueAsString（EvalExpr）が空白を読み飛ばすので結果は同じ。サブルーチンローカル変数を CallDepth = 0 で見る違いは IsSubLocalVariableDefined で直した |
+| Function IsSubLocalVariableDefined | 7209 | 12 | `SRCCore/Expressions/Variable.cs` Expression.IsSubLocalVariableDefined | 修正済み | #1498。VB は CallDepth > 0 のときだけ見る。C# は Event.SubLocalVars() の CallDepth = 0 かつ VarIndex > 0 の分岐で、イベントの外のスタックも見ていた。CallDepth > 0 の条件を足した（SetVariable・UndefineVariable・IsVariableDefined もこれを通る） |
+| Function IsLocalVariableDefined | 7223 | 11 | `SRCCore/Expressions/Variable.cs` Expression.IsLocalVariableDefined | 一致 | キーの比較は SrcCollection（#1477 で、大文字・小文字、全角・半角、ひらがな・カタカナを区別しない） |
+| Function IsGlobalVariableDefined | 7236 | 11 | `SRCCore/Expressions/Variable.cs` Expression.IsGlobalVariableDefined | 一致 | 同上 |
+| Sub SetVariable | 7249 | 376 | `SRCCore/Expressions/Variable.cs` Expression.SetVariable | 一致 | 左辺値を伴う関数（hp・en・sp・plana・action・eval）、配列、サブルーチンローカル配列の上限、システム変数（#1497 の偶数丸め）、未定義の配列のメインの ID の作成を突き合わせた。VarData.SetValue がもう一方の型の値も埋める点は VB と違うが、GetVariable の読み出しには表れない |
+| Sub SetVariableAsString | 7626 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsString | 一致 |  |
+| Sub SetVariableAsDouble | 7630 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsDouble | 一致 |  |
+| Sub SetVariableAsLong | 7634 | 3 | `SRCCore/Expressions/Variable.cs` Expression.SetVariableAsLong | 一致 | VB の Long（32 ビット）を int で受ける |
+| Sub DefineGlobalVariable | 7639 | 10 | `SRCCore/Expressions/Variable.cs` Expression.DefineGlobalVariable | 一致 | キーが重なると VB はエラー 457、C# は ArgumentException |
+| Sub DefineLocalVariable | 7651 | 10 | `SRCCore/Expressions/Variable.cs` Expression.DefineLocalVariable | 一致 | 同上 |
+| Sub UndefineVariable | 7663 | 165 | `SRCCore/Expressions/Variable.cs` Expression.UndefineVariable | 一致 | サブルーチンローカル変数は、VB が .Name = "" にするのに対し、C# は Clear で値も消す。名前が空になるので、どちらも参照されない。多次元の添字を Trim しない点も VB と同じ。InStr は Ordinal |
+| Function GetValueAsString | 7834 | 10 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsString | 一致 |  |
+| Function GetValueAsDouble | 7846 | 10 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsDouble | 一致 |  |
+| Function GetValueAsLong | 7858 | 11 | `SRCCore/Expressions/GetValue.cs` Expression.GetValueAsLong | 一致 |  |
+| Function IsExpr | 7873 | 8 | `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` PaintStringCmd.IsExpr | 一致 | 使っているのは PaintString だけ |
+| Function IsOptionDefined | 7884 | 11 | `SRCCore/Expressions/Expression.option.cs` Expression.IsOptionDefined | 一致 |  |
+| Sub ReplaceSubExpression | 7898 | 37 | `SRCCore/Expressions/Expression.replace.cs` Expression.ReplaceSubExpression | 一致 | 入れ子の深さの上限（10。#1411）は SRC# だけ（VB はスタックがあふれる） |
+| Sub FormatMessage | 7937 | 11 | `SRCCore/Expressions/Expression.replace.cs` Expression.FormatMessage | 修正済み | VB の If ReplaceString(――) … ElseIf ReplaceString(ーー) … に合わせた（4 つを無条件に置き換えていた） |
+| Function Term | 7952 | 42 | `SRCCore/Expressions/Expression.term.cs` Expression.Term | 一致 |  |
+| Function GetVariableObject | 7997 | 306 | `SRCCore/Expressions/Variable.cs` Expression.GetVariableObject | 修正済み | #1498。VB には無いコンフィグ変数の検索を除いた。now の書式を直し、意味の無い str_result の後始末を消した。argnum は VB の GetVariableObject の `ArgIndex - ArgIndexStack(CallDepth - 1 - UpVarLevel)` を使わず、GetVariable と同じ求め方のままにした。VB の式は UpVar の累計を見ず、添字が負にもなる不具合で、Swap・CopyArray に argnum を渡したときにしか表れない |
