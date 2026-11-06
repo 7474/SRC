@@ -43,7 +43,8 @@ namespace SRCCore.Units
 
             linkData.OtherFormIds.ForEach(x => colOtherForm.Add(SRC.UList.Item(x), x));
             linkData.PilotIds.ForEach(x => colPilot.Add(SRC.PList.Item(x), x));
-            linkData.SupportIds.ForEach(x => colSupport.Add(SRC.PList.Item(x), x));
+            // VB の AddSupport と同じくパイロットの名前をキーにする（Support(名前) で引けるように）
+            linkData.SupportIds.ForEach(x => AddSupport(SRC.PList.Item(x)));
             linkData.ItemIds.ForEach(x => colItem.Add(SRC.IList.Item(x), x));
             if (!string.IsNullOrEmpty(linkData.MasterId))
                 Master = SRC.UList.Item(linkData.MasterId);
@@ -51,6 +52,38 @@ namespace SRCCore.Units
                 Summoner = SRC.UList.Item(linkData.SummonerId);
             linkData.UnitOnBoardIds?.ForEach(x => { var u = SRC.UList.Item(x); if (u != null) colUnitOnBoard.Add(u, x); });
             linkData.ServantIds?.ForEach(x => { var u = SRC.UList.Item(x); if (u != null) colServant.Add(u, x); });
+            // 追加サポート（VB: Restore の AdditionalSupport）
+            if (!string.IsNullOrEmpty(linkData.AdditionalSupportId))
+            {
+                pltAdditionalSupport = SRC.PList.Item(linkData.AdditionalSupportId);
+                if (pltAdditionalSupport != null)
+                {
+                    pltAdditionalSupport.Unit = this;
+                    pltAdditionalSupport.IsAdditionalSupport = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 中断データから復元したユニットのステータスを更新し、アビリティの残り使用回数を戻す（VB: RestoreLinkInfo の Update と SetStock）。
+        /// 武器の残弾数は武器データ（WData）と一緒に保存し、Update で名前で照合して引き継ぐ。
+        /// </summary>
+        public void RestoreLinkInfo()
+        {
+            Update();
+
+            var stocks = linkData?.AbilityStocks;
+            if (stocks == null)
+            {
+                return;
+            }
+            for (var i = 1; i <= stocks.Count; i++)
+            {
+                if (i <= CountAbility())
+                {
+                    Ability(i).SetStock(stocks[i - 1]);
+                }
+            }
         }
         private SaveData linkData;
         [JsonProperty]
@@ -66,6 +99,8 @@ namespace SRCCore.Units
                 SummonerId = Summoner?.ID,
                 UnitOnBoardIds = UnitOnBoards.Select(x => x.ID).ToList(),
                 ServantIds = Servants.Select(x => x.ID).ToList(),
+                AdditionalSupportId = pltAdditionalSupport?.ID,
+                AbilityStocks = Abilities.Select(x => x.Stock()).ToList(),
             };
             set => linkData = value;
         }
@@ -112,6 +147,7 @@ namespace SRCCore.Units
         public string Status;
 
         // ユニットに対して使用されているスペシャルパワー
+        [JsonProperty]
         private SrcCollection<Condition> colSpecialPowerInEffect = new SrcCollection<Condition>();
 
         // サポートアタック＆ガードの使用回数
@@ -181,6 +217,7 @@ namespace SRCCore.Units
         public IList<Item> ItemList => colItem.List;
 
         // 現在の特殊ステータス
+        [JsonProperty]
         private SrcCollection<Condition> colCondition = new SrcCollection<Condition>();
         public IList<Condition> Conditions => colCondition.List;
 
@@ -258,6 +295,9 @@ namespace SRCCore.Units
             public string SummonerId { get; set; }
             public List<string> UnitOnBoardIds { get; set; }
             public List<string> ServantIds { get; set; }
+            public string AdditionalSupportId { get; set; }
+            // アビリティの残り使用回数（VB の Dump と同じく番号順の回数）
+            public List<int> AbilityStocks { get; set; }
         }
     }
 }

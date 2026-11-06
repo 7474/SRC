@@ -347,7 +347,8 @@ namespace SRCCore
                 GUI.MapY = data.MapY;
 
                 // XXX 仮処理
-                UList.Items.ToList().ForEach(x => x.Update());
+                // ユニットのステータスを更新してアビリティの残り使用回数を戻す（VB: Unit.RestoreLinkInfo）
+                UList.Items.ToList().ForEach(x => x.RestoreLinkInfo());
                 PList.Items.ToList().ForEach(x => x.Update());
 
                 // ＢＧＭ関連の設定を復元
