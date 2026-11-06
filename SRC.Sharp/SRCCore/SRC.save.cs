@@ -350,6 +350,8 @@ namespace SRCCore
                 // ユニットのステータスを更新してアビリティの残り使用回数を戻す（VB: Unit.RestoreLinkInfo）
                 UList.Items.ToList().ForEach(x => x.RestoreLinkInfo());
                 PList.Items.ToList().ForEach(x => x.Update());
+                // 支援効果による修正値はセーブしないので、パラメータを戻した後に計算し直す（VB: RestoreData の PList.UpdateSupportMod）
+                PList.UpdateSupportMod();
 
                 // ＢＧＭ関連の設定を復元
                 // BGMファイルを相対パスまたはファイル名で検索

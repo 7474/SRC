@@ -142,6 +142,8 @@ namespace SRCCore.Pilots
         }
 
         // リストからパイロットを検索
+        // 元の SRC は、ＩＤで見つかったパイロットが破棄されていれば名称・愛称で探し直し、
+        // それでも見つからなければＩＤで見つかった（破棄された）パイロットを返す（On Error GoTo の後も Item は代入されたまま）
         public Pilot Item(string Index)
         {
             Pilot p = colPilots[Index];
@@ -150,29 +152,26 @@ namespace SRCCore.Pilots
                 return p;
             }
 
+            return FindAliveByName(Index) ?? p;
+        }
+
+        // ＩＤで見つからなければ名称で、それでも見つからなければ愛称で、破棄されていないパイロットを検索
+        private Pilot FindAliveByName(string pname)
+        {
             // ＩＤで見つからなければ名称で検索
-            var pname = Index;
-            foreach (Pilot currentP in AlivePilots)
+            foreach (Pilot p in AlivePilots)
             {
-                p = currentP;
                 if ((p.Data.Name ?? "") == (pname ?? ""))
                 {
-                    if (p.Alive)
-                    {
-                        return p;
-                    }
+                    return p;
                 }
             }
             // それでも見つからなければ愛称で検索
-            foreach (Pilot currentP in AlivePilots)
+            foreach (Pilot p in AlivePilots)
             {
-                p = currentP;
                 if ((p.Data.Nickname ?? "") == (pname ?? ""))
                 {
-                    if (p.Alive)
-                    {
-                        return p;
-                    }
+                    return p;
                 }
             }
 
@@ -180,9 +179,16 @@ namespace SRCCore.Pilots
         }
 
         // パイロットが定義されているか
+        // Item と異なり、破棄されたパイロットは定義されていないものとする
         public bool IsDefined(string Index)
         {
-            return Item(Index) != null;
+            var p = colPilots[Index];
+            if (p?.Alive ?? false)
+            {
+                return true;
+            }
+
+            return FindAliveByName(Index) != null;
         }
 
         // パイロットを検索 (IDのみで検索)
