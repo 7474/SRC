@@ -65,12 +65,12 @@ namespace SRCCore
             }
 
             // ファイル名の本体部分を抜き出す
-            fname0 = Path.GetFileNameWithoutExtension(bgm_name);
+            fname0 = BGMBodyName(bgm_name);
 
             // 同じＢＧＭを演奏中であれば演奏を継続
             if (Strings.Len(BGMFileName) > 0)
             {
-                if (Strings.InStr(BGMFileName, @"\" + fname0 + ".") > 0)
+                if (IsBGMFileNameOf(fname0))
                 {
                     if (Player.BGMStatus == BGMStatus.Playing)
                     {
@@ -138,13 +138,15 @@ namespace SRCCore
         public void RestartBGM()
         {
             // 停止中でなければ何もしない
-            if (Player.BGMStatus != BGMStatus.Stopped)
+            // （元の SRC の BGMStatus は演奏中のファイルが無ければ空文字列を返すので、そのときも何もしない）
+            if (Strings.Len(BGMFileName) == 0 || Player.BGMStatus != BGMStatus.Stopped)
             {
                 return;
             }
             // リスタート
+            // 元の SRC はタイマー（Timer1）から RepeatMode のときに呼んで繰り返し演奏する。
+            // SRC# の Player は PlaySoundMode.Repeat で繰り返すので、SRCCore からは呼んでいない
             // ライブラリが再生時に get_Length してエラーする対応などとして複製したストリームを渡す
-            // XXX 止まってるってことはリピートしてないってことだろう。
             Player.Play(CH_BGM, FileSystem.Open(BGMFileName).ToMemoryStream(), Player.ResolveSoundType(BGMFileName), RepeatMode ? PlaySoundMode.Repeat : PlaySoundMode.None);
         }
 
@@ -192,16 +194,12 @@ namespace SRCCore
             }
 
             // ファイル名の本体部分を抜き出す
-            fname = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
-            if (GeneralLib.InStr2(fname, @"\") > 0)
-            {
-                fname = Strings.Mid(fname, GeneralLib.InStr2(fname, @"\") + 1);
-            }
+            fname = BGMBodyName(bgm_name);
 
             // 既に同じMIDIが演奏されていればそのまま演奏し続ける
             if (Strings.Len(BGMFileName) > 0)
             {
-                if (Strings.InStr(BGMFileName, @"\" + fname + ".") > 0)
+                if (IsBGMFileNameOf(fname))
                 {
                     return;
                 }
@@ -210,11 +208,7 @@ namespace SRCCore
             // 番号違い？
             if (Strings.Len(BGMFileName) > 5)
             {
-                fname2 = Strings.Left(BGMFileName, Strings.Len(BGMFileName) - 4);
-                if (GeneralLib.InStr2(fname2, @"\") > 0)
-                {
-                    fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, @"\") + 1);
-                }
+                fname2 = BGMBodyName(BGMFileName);
 
                 if (Strings.Len(fname2) > 4)
                 {
@@ -241,12 +235,33 @@ namespace SRCCore
                 }
             }
 
-            // XXX なんで？
             // 繰り返し演奏に設定
+            // （元の SRC と同じ。続く StartBGM が is_repeat_mode の既定値 true で設定し直すので結果は変わらない）
             RepeatMode = true;
 
             // 演奏開始
             StartBGM(bgm_name);
+        }
+
+        // ファイル名の本体部分（末尾の 4 文字（拡張子）を除き、最後の区切りより後ろ）を返す。
+        // 元の SRC は \ で区切る。SRC# のパスは / で区切ることもあるので、どちらも区切りとみなす
+        private static string BGMBodyName(string fname)
+        {
+            var body = Strings.Left(fname, Strings.Len(fname) - 4);
+            var idx = GeneralLib.InStr2(body.Replace('/', '\\'), @"\");
+            if (idx > 0)
+            {
+                body = Strings.Mid(body, idx + 1);
+            }
+            return body;
+        }
+
+        // 演奏中のファイル（BGMFileName）が、本体部分が body のファイルか。
+        // 元の SRC の InStr(BGMFileName, "\" & body & ".") > 0。/ の区切りも \ とみなし、
+        // フォルダの付いていない BGMFileName（SRC# で読み込み対象のフォルダの直下で見つけたとき）も同じに扱う
+        private bool IsBGMFileNameOf(string body)
+        {
+            return Strings.InStr(@"\" + (BGMFileName ?? "").Replace('/', '\\'), @"\" + body + ".") > 0;
         }
 
         // 指定されたファイルがシナリオパス内に存在するかを確認する
@@ -275,16 +290,19 @@ namespace SRCCore
             }
 
             // 引数1として渡された文字列をリストとして扱い、左から順にMIDIを検索
-            var midiNames = GeneralLib.ToList(midi_name);
-            var i = 0;
-            while (i < midiNames.Count)
+            // （元の SRC と同じく、括弧・クォートの対応が取れていなければ ListLength が -1 なので探さない）
+            var num = GeneralLib.ListLength(midi_name);
+            var i = 1;
+            while (i <= num)
             {
                 // スペースを含むファイル名への対応
+                // 元の SRC は名前を小文字にして探す（Windows はファイル名の大文字・小文字を区別しない）。
+                // SRC# は大文字・小文字を区別するファイルシステムでも見つけられるよう、名前をそのまま使う
                 var buf = "";
                 int j;
-                for (j = i; j < midiNames.Count; j++)
+                for (j = i; j <= num; j++)
                 {
-                    var buf2 = midiNames[j];
+                    var buf2 = GeneralLib.ListIndex(midi_name, j);
 
                     // 全体が()で囲まれている場合は()を外す
                     if (Strings.Left(buf2, 1) == "(" && Strings.Right(buf2, 1) == ")")
@@ -308,8 +326,8 @@ namespace SRCCore
                 var fnames = new List<string>();
                 if (FileSystem.IsAbsolutePath(fname))
                 {
-                    fnames.Add(fnameMp3);
-                    fnames.Add(fname);
+                    // フルパスでの指定。元の SRC と同じく、見つからなければ残りの候補は探さずに終える
+                    return new[] { fnameMp3, fname }.FirstOrDefault(x => FileSystem.FileExists(x));
                 }
                 else
                 {
@@ -423,7 +441,7 @@ namespace SRCCore
                 .Select(x => SRC.FileSystem.PathCombine(x, "Sound"))
                 .ToList();
 
-            // XXX なんで wave_name 分解したんだろう？
+            // 元の SRC と同じく、各フォルダの Sound フォルダに wave_name（サブフォルダを含んでよい）を付けて探す
             var existFile = baseDirs.Select(y => SRC.FileSystem.PathCombine(y, wave_name))
                 .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
 
