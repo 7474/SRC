@@ -35,7 +35,7 @@ namespace SRCCore.Models
         public void AddFeature(string fdef)
         {
             FeatureData fd;
-            string ftype, fdata = default;
+            string ftype, fdata = "";
             double flevel;
             int i, j;
             string buf;
@@ -140,6 +140,14 @@ namespace SRCCore.Models
             {
                 return 0d;
             }
+        }
+
+        // データをクリア
+        // VB と同じく番号と地形効果だけを消す（名称などは残る）
+        public void Clear()
+        {
+            ID = -1;
+            colFeature.Clear();
         }
 
         // 指定した地形効果を持っているか？

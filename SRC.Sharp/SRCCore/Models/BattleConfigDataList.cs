@@ -88,7 +88,7 @@ namespace SRCCore.Models
                         Delete(data_name);
                     }
 
-                    // XXX これでいいんか？　nullになったり上書きされそう。
+                    // VB と同じく、空行までの最後の行が計算式になる（式の行が無ければ空文字列のまま）
                     var cd = Add(data_name);
                     while (reader.HasMore)
                     {

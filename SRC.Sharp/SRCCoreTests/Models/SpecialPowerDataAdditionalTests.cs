@@ -150,11 +150,12 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void SetEffect_SimpleEffect_NullData()
+        public void SetEffect_SimpleEffect_EmptyData()
         {
+            // VB の String 配列の既定値は ""（#1498）
             var sp = new SpecialPowerData(CreateSrc());
             sp.SetEffect("必中");
-            Assert.IsNull(sp.Effects[0].strEffectData);
+            Assert.AreEqual("", sp.Effects[0].strEffectData);
         }
 
         // ──────────────────────────────────────────────
@@ -162,12 +163,14 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SetEffect_CalledTwice_Accumulates()
+        public void SetEffect_CalledTwice_Replaces()
         {
+            // VB の SetEffect は ReDim で作り直す（#1498）
             var sp = new SpecialPowerData(CreateSrc());
             sp.SetEffect("必中");
             sp.SetEffect("加速");
-            Assert.AreEqual(2, sp.CountEffect());
+            Assert.AreEqual(1, sp.CountEffect());
+            Assert.AreEqual("加速", sp.Effects[0].strEffectType);
         }
 
         // ──────────────────────────────────────────────
