@@ -84,7 +84,7 @@ def read_cs():
     for base in CS_DIRS:
         for path in base.rglob("*.cs"):
             rel = path.relative_to(ROOT / "SRC.Sharp").as_posix()
-            if "/obj/" in rel or "/bin/" in rel or rel.endswith(".ref.cs"):
+            if "/obj/" in rel or "/bin/" in rel:
                 continue
             current_type = None
             for i, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
@@ -306,7 +306,7 @@ def write_todo():
     base = ROOT / "SRC.Sharp"
     for file in sorted((base / "SRCCore").rglob("*.cs")):
         rel = file.relative_to(base).as_posix()
-        if "/obj/" in rel or "/bin/" in rel or rel.endswith(".ref.cs"):
+        if "/obj/" in rel or "/bin/" in rel:
             continue
         block = None
         for i, line in enumerate(file.read_text(encoding="utf-8", errors="replace").splitlines(), 1):

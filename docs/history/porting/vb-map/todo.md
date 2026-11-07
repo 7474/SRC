@@ -69,17 +69,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Pilots/Pilots.cs:210` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |
 | `SRCCore/Pilots/Pilots.cs:274`（307 行） | コード | { | SRC#で不要 | Pilots.cls の Save〜Clear。セーブデータは JSON（SRC.save.cs）で、読み込んだ後の状態は対応表の Save〜Clear の行に書いた |
 | `SRCCore/SRC.cs:244` | XXX | XXX 別な実装をするならコンストラクタでは設定しない | 未確認 |  |
-| `SRCCore/SRC.main.cs:25`（9 行） | コード | string fname; | SRC#で不要 | VB の Main の 2 重起動の禁止。SRC# ではホスト（GUI）が受け持つ（SRC_bas.md の Main の行） |
-| `SRCCore/SRC.main.cs:43`（22 行） | コード | bool localFileExists() { string argfname = AppPath + "Src.ini"; var ret = FileSystem.FileExists(argfname); return ret; } | SRC#で不要 | Src.ini の作成・乱数の初期化・時間解像度・フルスクリーン・マウスカーソル。設定は JSON（LocalFileConfig）で、画面は GUI が受け持つ。乱数は SRC が持つ Random で初期化する |
-| `SRCCore/SRC.main.cs:212`（173 行） | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
-| `SRCCore/SRC.main.cs:426`（212 行） | コード | buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation"); | SRC#で不要 | Src.ini の [Option] の読み込み。設定は JSON（LocalFileConfig・ComposedConfig）が持つ |
-| `SRCCore/SRC.main.cs:643`（101 行） | コード | buf = GeneralLib.ReadIni("Option", "ImageBufferNum"); | SRC#で不要 | Src.ini の画像バッファ・マウスボタンなどの読み込み。設定は JSON で、描画は GUI が受け持つ |
-| `SRCCore/SRC.main.cs:842` | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
-| `SRCCore/SRC.main.cs:846`（128 行） | コード | i = 0; | SRC#で不要 | ファイルをダイアログで選ぶ分岐。SRC# はホストがファイルを渡す |
-| `SRCCore/SRC.main.cs:975`（4 行） | コード | } | SRC#で不要 | ファイルをダイアログで選ぶ分岐の終わり |
-| `SRCCore/SRC.main.cs:995`（2 行） | コード | ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath"); | SRC#で不要 | ExtDataPath・ExtDataPath2 は JSON の設定（LoadScenarioConfig）から取る |
-| `SRCCore/SRC.main.cs:1005`（2 行） | コード | GUI.ChangeStatus(GuiStatus.Default); | SRC#で不要 | マウスカーソルは GUI が受け持つ |
-| `SRCCore/SRC.main.cs:1017`（4 行） | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
 | `SRCCore/Sound.cs:147` | XXX | XXX 止まってるってことはリピートしてないってことだろう。 | 未確認 |  |
 | `SRCCore/Sound.cs:244` | XXX | XXX なんで？ | 未確認 |  |
 | `SRCCore/Sound.cs:426` | XXX | XXX なんで wave_name 分解したんだろう？ | 未確認 |  |
