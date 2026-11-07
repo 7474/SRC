@@ -27,6 +27,20 @@ namespace SRCCore.Models
 
         public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
 
+        /// <summary>
+        /// 特殊能力・アビリティの効果の「Lv」の後を読む。元の SRC（AddFeature・SetEffect）は CDbl で読むので、
+        /// 数値でなければ実行時エラー 13 になり、Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る。
+        /// ここでは FormatException を投げ、読み込む側（UnitDataList）でデータエラーにする（7474/SRC#1526）
+        /// </summary>
+        public static double ParseLevel(string text)
+        {
+            if (!Information.IsNumeric(text))
+            {
+                throw new FormatException("レベルの指定が数値ではありません: " + text);
+            }
+            return Conversions.ToDouble(text);
+        }
+
         public double FeatureLevel => HasLevel ? Level : 1d;
         public string Data => StrData ?? "";
         public IList<string> DataL => GeneralLib.ToL(Data);

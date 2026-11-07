@@ -78,7 +78,7 @@ namespace SRCCore.Models
                     if (k > 0)
                     {
                         // データ指定があるもの
-                        dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
+                        dat.Level = FeatureData.ParseLevel(Strings.Mid(buf, j + 2, k - (j + 2)));
                         buf = Strings.Mid(buf, k + 1);
                         if (Strings.Left(buf, 1) == "\"")
                         {
@@ -127,7 +127,7 @@ namespace SRCCore.Models
                     else
                     {
                         // データ指定がないもの
-                        dat.Level = Conversions.ToDouble(Strings.Mid(buf, j + 2));
+                        dat.Level = FeatureData.ParseLevel(Strings.Mid(buf, j + 2));
                     }
                 }
                 else if (k > 0)
@@ -135,6 +135,12 @@ namespace SRCCore.Models
                     // データ指定を含む効果
                     dat.Name = Strings.Left(buf, k - 1);
                     buf = Strings.Mid(buf, k + 1);
+                    // 元の SRC は Asc(buf) で調べるので、「回復=」のように空だと実行時エラー 5 になり、
+                    // Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る
+                    if (string.IsNullOrEmpty(buf))
+                    {
+                        throw new FormatException("効果のデータが空です: " + eelm);
+                    }
                     if (Strings.Asc(buf) == 34) // "
                     {
                         buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
@@ -293,7 +299,8 @@ namespace SRCCore.Models
             // アビリティの効果は最低でも１ターン持続
             if (elevel2 != 0d)
             {
-                elevel2 = Math.Max(elevel2, 1d);
+                // 元の SRC の MaxLng は Long の引数なので、ここで整数に丸める（偶数丸め）
+                elevel2 = GeneralLib.MaxLng(VBMath.CLng(elevel2), 1);
             }
 
             switch (ae.Name ?? "")

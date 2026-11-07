@@ -174,12 +174,12 @@ namespace SRCCore.Models
                 ftype = Strings.Left(buf, i - 1);
                 if (j > 0)
                 {
-                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2, j - (i + 2)));
                     fdata = Strings.Mid(buf, j + 1);
                 }
                 else
                 {
-                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2));
                 }
             }
             else if (j > 0)
@@ -254,26 +254,62 @@ namespace SRCCore.Models
             return colFeature[Index];
         }
 
+        // 番号の特殊能力。範囲外なら null（元の SRC の On Error GoTo ErrorHandler に当たる）
+        private FeatureData FeatureAt(int Index)
+        {
+            return Index >= 1 && Index <= colFeature.Count ? colFeature[Index] : null;
+        }
+
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
-            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+            return FeatureName(colFeature[Index]);
         }
         public string FeatureName(int Index)
         {
-            return colFeature[Index]?.FeatureNameWithLv() ?? "";
+            return FeatureName(colFeature[Index]);
+        }
+
+        // アイテムデータ（ItemData.cls）では、レベルが指定されていれば（0 以下でも）レベルを付ける。
+        // ユニットデータ（UnitData.cls）の Level > 0 とは異なる
+        private static string FeatureName(FeatureData fd)
+        {
+            if (fd is null)
+            {
+                return "";
+            }
+
+            if (Strings.Len(fd.StrData) > 0)
+            {
+                return GeneralLib.ListIndex(fd.StrData, 1);
+            }
+            else if (fd.Level != Constants.DEFAULT_LEVEL)
+            {
+                return fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
+            }
+            else
+            {
+                return fd.Name;
+            }
         }
 
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
-            var level = colFeature[Index]?.Level ?? 0d;
-            return level == Constants.DEFAULT_LEVEL ? 1d : level;
+            return FeatureLevel(colFeature[Index]);
         }
         public double FeatureLevel(int Index)
         {
-            var level = colFeature[Index]?.Level ?? 0d;
-            return level == Constants.DEFAULT_LEVEL ? 1d : level;
+            return FeatureLevel(FeatureAt(Index));
+        }
+
+        private static double FeatureLevel(FeatureData fd)
+        {
+            if (fd is null)
+            {
+                return 0d;
+            }
+            return fd.Level == Constants.DEFAULT_LEVEL ? 1d : fd.Level;
         }
 
         // 特殊能力のデータ
@@ -283,7 +319,7 @@ namespace SRCCore.Models
         }
         public string FeatureData(int Index)
         {
-            return colFeature[Index]?.StrData ?? "";
+            return FeatureAt(Index)?.StrData ?? "";
         }
 
         // 指定した特殊能力を持っているか？
@@ -346,7 +382,8 @@ namespace SRCCore.Models
         {
             var new_adata = new AbilityData(SRC);
             new_adata.Name = aname;
-            colAbilityData.Add(new_adata, aname + SrcFormatter.Format(CountAbility()));
+            // 元の SRC（ItemData.cls）はアイテムの名前と番号をキーにする（UnitData.cls はアビリティの名前）
+            colAbilityData.Add(new_adata, Name + SrcFormatter.Format(CountAbility()));
             return new_adata;
         }
 
