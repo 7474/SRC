@@ -206,12 +206,12 @@ namespace SRCCore.Models
                 ftype = Strings.Left(buf, i - 1);
                 if (j > 0)
                 {
-                    flevel = Convert.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2, j - (i + 2)));
                     fdata = Strings.Mid(buf, j + 1);
                 }
                 else
                 {
-                    flevel = Convert.ToDouble(Strings.Mid(buf, i + 2));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2));
                 }
             }
             else if (j > 0)
@@ -272,18 +272,22 @@ namespace SRCCore.Models
         }
 
         // 特殊能力
+        // 元の SRC は名前（fd.Name）を返す。SRC# は FeatureData を返し、呼ぶ側で Name などを読む
         public FeatureData Feature(string Index)
         {
-            // XXX 元は Name を返却
             return colFeature[Index];
         }
         public FeatureData Feature(int Index)
         {
-            // XXX 参照先はNameだった
             return colFeature[Index];
         }
 
-        // XXX このくらいなら Feature(string Index) に統合できる気はする
+        // 番号の特殊能力。範囲外なら null（元の SRC の On Error GoTo ErrorHandler に当たる）
+        private FeatureData FeatureAt(int Index)
+        {
+            return Index >= 1 && Index <= colFeature.Count ? colFeature[Index] : null;
+        }
+
         // 特殊能力のレベル
         public double FeatureLevel(string Index)
         {
@@ -291,32 +295,19 @@ namespace SRCCore.Models
         }
         public double FeatureLevel(int Index)
         {
-            return colFeature[Index]?.FeatureLevel ?? 0d;
+            return FeatureAt(Index)?.FeatureLevel ?? 0d;
         }
 
         // 特殊能力のデータ
         public string FeatureData(string Index)
         {
-            try
-            {
-                return colFeature[Index]?.StrData ?? "";
-            }
-            catch
-            {
-                return "";
-            }
+            return colFeature[Index]?.StrData ?? "";
         }
         public string FeatureData(int Index)
         {
-            try
-            {
-                return colFeature[Index]?.StrData ?? "";
-            }
-            catch
-            {
-                return "";
-            }
+            return FeatureAt(Index)?.StrData ?? "";
         }
+
         // 特殊能力の名称
         public string FeatureName(string Index)
         {
