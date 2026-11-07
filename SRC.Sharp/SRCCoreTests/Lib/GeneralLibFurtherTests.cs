@@ -345,11 +345,11 @@ namespace SRCCore.Lib.Tests
         }
 
         [TestMethod]
-        public void ListTail_FromFirst_ReturnsEmpty()
+        public void ListTail_FromFirst_ReturnsWholeList()
         {
-            // idx=1はidx > 1 の条件に合わないので空文字列
+            // 元の SRC: idx=1 は最初の要素から（7474/SRC#1498）
             var result = GeneralLib.ListTail("a b c", 1);
-            Assert.AreEqual("", result);
+            Assert.AreEqual("a b c", result);
         }
 
         [TestMethod]

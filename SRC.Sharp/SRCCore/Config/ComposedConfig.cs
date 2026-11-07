@@ -85,7 +85,9 @@ namespace SRCCore.Config
 
         public string GetItem(string section, string name)
         {
-            return Scenario != null && Scenario.TryGetItem(section, name, out var value)
+            // 元の SRC の ReadIni と同じく、シナリオの値が空ならアプリの設定から読む
+            // （GetPrivateProfileString は空の値で 0 を返すので、本体側の Src.ini を読み直す）
+            return Scenario != null && Scenario.TryGetItem(section, name, out var value) && !string.IsNullOrEmpty(value)
                 ? value
                 : Base.GetItem(section, name);
         }

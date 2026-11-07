@@ -75,8 +75,8 @@ namespace SRCCore.Lib
             {
                 sw.Start();
             }
-            // XXX
-            return (int)(sw.ElapsedMilliseconds + Interlocked.Read(ref skippedMillis));
+            // VB の timeGetTime（Windows を起動してからのミリ秒）と同じく、Long（32 ビット）に収まらない分は桁が落ちて負の値に回る
+            return unchecked((int)(sw.ElapsedMilliseconds + Interlocked.Read(ref skippedMillis)));
         }
 
         /// <summary>
@@ -109,7 +109,17 @@ namespace SRCCore.Lib
         // 乱数系列の中で現在使用している値のインデックス
         public static int RndIndex;
 
+        /// <summary>
+        /// Option「乱数系列非保存」が設定されているか。<see cref="Dice"/> が見る。
+        /// GeneralLib は static なので、SRC を作ったときにその SRC のオプションを見るものを入れる
+        /// </summary>
+        public static Func<bool> IsRndHistoryUnsaved { get; set; }
+
+        // 乱数系列を使わないときの乱数（VB の Rnd）
+        private static readonly Random unsavedRand = new Random();
+
         // 乱数系列のリセット
+        // VB は Randomize RndSeed の後の Rnd で埋める。SRC# は .NET の Random で埋めるので、同じシード値でも系列は VB と違う
         public static void RndReset()
         {
             var rng = new Random(RndSeed);
@@ -127,6 +137,12 @@ namespace SRCCore.Lib
             if (max <= 1)
             {
                 return max;
+            }
+
+            // Option「乱数系列非保存」なら乱数系列を使わない（RndIndex は進まない）
+            if (IsRndHistoryUnsaved?.Invoke() ?? false)
+            {
+                return VBMath.Int((max * unsavedRand.NextDouble()) + 1);
             }
 
             RndIndex = (RndIndex + 1);
@@ -180,28 +196,31 @@ namespace SRCCore.Lib
         }
 
         // 文字列 ch が空白かどうか調べる
+        // VB と同じく、空文字列か、先頭の文字がタブ・CR・半角スペース・160 なら空白とみなす
         public static bool IsSpace(string ch)
         {
-            return string.IsNullOrWhiteSpace(ch);
+            if (string.IsNullOrEmpty(ch))
+            {
+                return true;
+            }
+
+            switch (ch[0])
+            {
+                case '\t':
+                case '\r':
+                case ' ':
+                case ' ':
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         // リスト list の要素を分割して返す (括弧を考慮)
+        // SRC# 独自。元の SRC の ListSplit と違い、閉じ括弧が多すぎる箇所の後ろを別の要素にして返し、
+        // 閉じていない括弧・クォートも区別しない。元の SRC と同じ結果が要るときは ListSplit・ListIndex・ListLength を使う
         public static IList<string> ToList(string list, bool removeKakko = false)
         {
-            bool hasError;
-            return ToListInternal(list, out hasError, removeKakko);
-        }
-
-        private static IList<string> ToListInternal(string list, out bool hasError, bool removeKakko = false)
-        {
-            return ToListInternal(list, out hasError, out _, removeKakko);
-        }
-
-        // isUnclosed: 末尾でクォートや括弧が閉じていない場合に true
-        private static IList<string> ToListInternal(string list, out bool hasError, out bool isUnclosed, bool removeKakko = false)
-        {
-            hasError = false;
-            isUnclosed = false;
             bool in_single_quote = false;
             bool in_double_quote = false;
             int i = -1;
@@ -255,7 +274,6 @@ namespace SRCCore.Lib
                             if (paren < 0)
                             {
                                 // 括弧の対応が取れていない
-                                hasError = true;
                                 result.Add(current.ToString());
                                 result.Add(new string(list.ToCharArray().Skip(i).ToArray()));
                                 return result;
@@ -272,7 +290,7 @@ namespace SRCCore.Lib
                             break;
                     }
                 }
-                // XXX リスト中のカッコ消えちゃうと困るしもとは消してないっぽいから消さないでおく
+                // removeKakko は一番外側の括弧を外す（SRC# 独自。元の SRC の ListIndex などは括弧を残す）
                 if (append || !removeKakko)
                 {
                     current.Append(c);
@@ -282,11 +300,130 @@ namespace SRCCore.Lib
             {
                 result.Add(current.ToString());
             }
-            isUnclosed = in_single_quote || in_double_quote || paren != 0;
             return result;
         }
 
+        // VB: ListIndex などの空白（タブ・半角スペース）
+        private static bool IsListSpace(char ch)
+        {
+            return ch == '\t' || ch == ' ';
+        }
+
+        // VB: ListIndex などが 1 文字ずつ括弧・クォートの状態を進める処理。
+        // 閉じ括弧が多すぎる（括弧の対応が取れていない）ときは false
+        private static bool ScanListChar(char ch, ref int paren, ref bool in_single_quote, ref bool in_double_quote)
+        {
+            if (in_single_quote)
+            {
+                if (ch == '`')
+                {
+                    in_single_quote = false;
+                }
+            }
+            else if (in_double_quote)
+            {
+                if (ch == '"')
+                {
+                    in_double_quote = false;
+                }
+            }
+            else
+            {
+                switch (ch)
+                {
+                    case '(':
+                    case '[':
+                        paren = paren + 1;
+                        break;
+
+                    case ')':
+                    case ']':
+                        paren = paren - 1;
+                        if (paren < 0)
+                        {
+                            // 括弧の対応が取れていない
+                            return false;
+                        }
+                        break;
+
+                    case '`':
+                        in_single_quote = true;
+                        break;
+
+                    case '"':
+                        in_double_quote = true;
+                        break;
+                }
+            }
+            return true;
+        }
+
+        // VB: ListIndex・ListTail の「idx 番目の要素まで読み飛ばす」。
+        // 見つかれば idx 番目の要素の先頭の位置（1 始まり）・その文字・括弧とクォートの状態を返す。
+        // その前に文字列の終わりに達したか、括弧の対応が取れていなければ false
+        private static bool SkipListElements(string list, int idx, out int pos, out char ch, out int paren, out bool in_single_quote, out bool in_double_quote)
+        {
+            var list_len = list.Length;
+            var n = 0;
+            var i = 0;
+            ch = '\0';
+            paren = 0;
+            in_single_quote = false;
+            in_double_quote = false;
+            pos = 0;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                while (true)
+                {
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        return false;
+                    }
+                    ch = list[i - 1];
+                    if (!IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
+
+                // 要素数を１つ増やす
+                n = n + 1;
+
+                // 求める要素？
+                if (n == idx)
+                {
+                    pos = i;
+                    return true;
+                }
+
+                // 要素を読み飛ばす
+                while (true)
+                {
+                    if (!ScanListChar(ch, ref paren, ref in_single_quote, ref in_double_quote))
+                    {
+                        return false;
+                    }
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        return false;
+                    }
+                    ch = list[i - 1];
+                    // 要素の末尾か判定
+                    if (!in_single_quote && !in_double_quote && paren == 0 && IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
         // リスト list から idx 番目の要素を返す (括弧を考慮)
+        // VB と同じく、括弧の対応が取れていなければ（閉じ括弧が多すぎれば）空文字列。末尾で閉じていない要素はそのまま返す
         public static string ListIndex(string list, int idx)
         {
             // idxが正の数でなければ空文字列を返す
@@ -294,39 +431,190 @@ namespace SRCCore.Lib
             {
                 return "";
             }
-            var listList = ToList(list);
-            return listList.Count >= idx ? listList[idx - 1] : "";
+
+            list = list ?? "";
+            if (!SkipListElements(list, idx, out var i, out var ch, out var paren, out var in_single_quote, out var in_double_quote))
+            {
+                return "";
+            }
+
+            // 求める要素を読み込む
+            var list_len = list.Length;
+            var begin = i;
+            while (true)
+            {
+                if (!ScanListChar(ch, ref paren, ref in_single_quote, ref in_double_quote))
+                {
+                    return "";
+                }
+                i = i + 1;
+                // 文字列の終り？
+                if (i > list_len)
+                {
+                    return list.Substring(begin - 1);
+                }
+                ch = list[i - 1];
+                // 要素の末尾か判定
+                if (!in_single_quote && !in_double_quote && paren == 0 && IsListSpace(ch))
+                {
+                    break;
+                }
+            }
+            return list.Substring(begin - 1, i - begin);
         }
 
         // リスト list の要素数を返す (括弧を考慮)
+        // VB と同じく、括弧・クォートの対応が取れていなければ -1
         public static int ListLength(string list)
         {
-            return ToList(list).Count;
+            list = list ?? "";
+            var list_len = list.Length;
+            var length = 0;
+            var i = 0;
+            var paren = 0;
+            var in_single_quote = false;
+            var in_double_quote = false;
+            char ch;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                while (true)
+                {
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        return length;
+                    }
+                    ch = list[i - 1];
+                    if (!IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
+
+                // 要素数を１つ増やす
+                length = length + 1;
+
+                // 要素を読み飛ばす
+                while (true)
+                {
+                    if (!ScanListChar(ch, ref paren, ref in_single_quote, ref in_double_quote))
+                    {
+                        // 括弧の対応が取れていない
+                        return -1;
+                    }
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        // クォートや括弧の対応が取れている？
+                        return in_single_quote || in_double_quote || paren != 0 ? -1 : length;
+                    }
+                    ch = list[i - 1];
+                    // 要素の末尾か判定
+                    if (!in_single_quote && !in_double_quote && paren == 0 && IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         // リスト list から、リストの要素の配列 larray を作成し、
         // リストの要素数を返す (括弧を考慮)
         // Convert: VBの配列と違って0オフセットな点に注意すること。
+        // VB と同じく、括弧・クォートの対応が取れていなければ -1。
+        // そのとき、最後の要素は対応の取れていない要素の先頭から文字列の終わりまで
         public static int ListSplit(string list, out string[] larray)
         {
-            bool hasError;
-            larray = ToListInternal(list, out hasError).ToArray();
-            return hasError ? -1 : larray.Length;
-        }
+            list = list ?? "";
+            var list_len = list.Length;
+            var result = new List<string>();
+            var n = 0;
+            var i = 0;
+            var paren = 0;
+            var in_single_quote = false;
+            var in_double_quote = false;
+            char ch;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                while (true)
+                {
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        larray = result.ToArray();
+                        return n;
+                    }
+                    ch = list[i - 1];
+                    if (!IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
 
-        // ListSplit と同様だが、VB版と同様に末尾でクォートや括弧が閉じていない場合も -1 を返す
-        public static int ListSplitStrict(string list, out string[] larray)
-        {
-            bool hasError;
-            bool isUnclosed;
-            larray = ToListInternal(list, out hasError, out isUnclosed).ToArray();
-            return hasError || isUnclosed ? -1 : larray.Length;
+                // 要素数を１つ増やす
+                n = n + 1;
+
+                // 要素を読み込む
+                var begin = i;
+                while (true)
+                {
+                    if (!ScanListChar(ch, ref paren, ref in_single_quote, ref in_double_quote))
+                    {
+                        // 括弧の対応が取れていない
+                        result.Add(list.Substring(begin - 1));
+                        larray = result.ToArray();
+                        return -1;
+                    }
+                    i = i + 1;
+                    // 文字列の終り？
+                    if (i > list_len)
+                    {
+                        result.Add(list.Substring(begin - 1));
+                        larray = result.ToArray();
+                        // クォートや括弧の対応が取れている？
+                        return !in_single_quote && !in_double_quote && paren == 0 ? n : -1;
+                    }
+                    ch = list[i - 1];
+                    // 要素の末尾か判定
+                    if (!in_single_quote && !in_double_quote && paren == 0 && IsListSpace(ch))
+                    {
+                        break;
+                    }
+                }
+                result.Add(list.Substring(begin - 1, i - begin));
+            }
         }
 
         // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
+        // VB と同じく、idx 番目の要素の先頭から文字列の終わりまでをそのまま返す（要素の間・末尾の空白は詰めない）。
+        // idx 番目の要素が無いか、その前の要素で括弧・クォートの対応が取れていなければ空文字列
         public static string ListTail(string list, int idx)
         {
-            return idx > 1 ? string.Join(" ", ToList(list ?? "").Skip(idx - 1)) : "";
+            // idxが正の数でなければ空文字列を返す
+            if (idx < 1)
+            {
+                return "";
+            }
+
+            list = list ?? "";
+            if (!SkipListElements(list, idx, out var i, out _, out _, out _, out _))
+            {
+                return "";
+            }
+            return list.Substring(i - 1);
+        }
+
+        // タブを考慮したTrim
+        // VB: TrimString。タブ・半角スペース・全角スペース（Asc が -32448）を前後から取り除く（VB は引数を書き換える Sub）
+        private static readonly char[] TrimStringChars = { '\t', ' ', '　' };
+        public static string TrimString(string str)
+        {
+            return string.IsNullOrEmpty(str) ? "" : str.Trim(TrimStringChars);
         }
 
         // 文字列 str 中に str2 が出現する位置を末尾から検索
@@ -395,15 +683,17 @@ namespace SRCCore.Lib
         }
 
         // aとbの最大値を返す (Double)
+        // VB と同じく a > b で比べる（NaN との比較は偽なので b を返す）
         public static double MaxDbl(double a, double b)
         {
-            return Math.Max(a, b);
+            return a > b ? a : b;
         }
 
         // aとbの最小値を返す (Double)
+        // VB と同じく a < b で比べる（NaN との比較は偽なので b を返す）
         public static double MinDbl(double a, double b)
         {
-            return Math.Min(a, b);
+            return a < b ? a : b;
         }
 
         // 文字列 buf の長さが length になるように左側にスペースを付加する
@@ -418,25 +708,13 @@ namespace SRCCore.Lib
             return buf + Strings.Space(MaxLng(length - StrWidth(buf), 0));
         }
 
-        // TODO 精査、 Byte length 系と統合する
-        // StrWidth は半角換算の文字幅を返す。VB5の LenB/StrConv による Byte 長計算との統合は将来の検討課題。
         /// <summary>
-        /// 半角英数と半角カナ
+        /// 半角換算の文字幅。VB の LenB(StrConv(buf, vbFromUnicode))（Shift_JIS のバイト数）と同じ。
+        /// Shift_JIS に無い文字は「?」の 1 バイトになる。
         /// </summary>
-        private static readonly Regex notHelfWidth = new Regex("[^ -ÿｰ-ﾟ]");
-        /// <summary>
-        /// 半角っぽい文字以外を2文字換算した文字数を返す。
-        /// </summary>
-        /// <param name="buf"></param>
-        /// <returns></returns>
         public static int StrWidth(string buf)
         {
-            if (string.IsNullOrEmpty(buf))
-            {
-                return 0;
-            }
-
-            return notHelfWidth.Replace(buf, "__").Length;
+            return Strings.LenB(buf);
         }
 
         // 文字列 s1 中の s2 を s3 に置換した文字列を返す
@@ -511,7 +789,6 @@ namespace SRCCore.Lib
 
         // 武器属性処理用の関数群。
 
-        // XXX ヒットを配列にして返すのがよさそう
         // 属性を一つ取得する。複数文字の属性もひとつとして取得する。
         // ただしＭは防御特性において単体文字として扱われるために除く。
         // 検索文字列 aname
