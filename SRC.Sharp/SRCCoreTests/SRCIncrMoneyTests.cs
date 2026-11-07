@@ -142,8 +142,8 @@ namespace SRCCore.Tests
             var src = CreateSrc();
             string id = "ガンダム";
             src.ConvertUnitID(ref id);
-            // 数値部分がないのでコロンが末尾に挿入される
-            Assert.AreEqual(":ガンダム", id);
+            // 数値部分がないのでコロンが末尾に挿入される（VB SRC.bas ConvertUnitID。数字でない文字で Exit Do）
+            Assert.AreEqual("ガンダム:", id);
         }
 
         [TestMethod]
