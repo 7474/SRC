@@ -45,7 +45,6 @@ namespace SRCCore.Models
         // ユニット u のシチュエーション msg_situation におけるダイアログを選択
         public Dialog SelectDialog(string msg_situation, Unit u, bool ignore_condition = false)
         {
-            // Impl ignore_condition
             return Items.SelectMessage(SRC, msg_situation, u, ignore_condition);
         }
     }

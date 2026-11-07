@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Collections.Generic;
 
 namespace SRCCore.Models
@@ -47,6 +48,7 @@ namespace SRCCore.Models
         // ダイアログに使われているパイロットが全て利用可能か判定
         public bool IsAvailable(Unit u, bool ignore_condition)
         {
+            // 元の SRC は u が Nothing だと実行時エラーになる（Unit.PilotMessage は常にユニットを渡すので起きない）
             if (u == null)
             {
                 return true;
@@ -72,9 +74,9 @@ namespace SRCCore.Models
                         {
                             var mp = partner.MainPilot();
                             if ((pname ?? "") != (mp.Name ?? "")
-                                && !pname.StartsWith(mp.Name + "(")
+                                && Strings.InStr(pname, mp.Name + "(") != 1
                                 && (pname ?? "") != (mp.get_Nickname(false) ?? "")
-                                && !pname.StartsWith(mp.get_Nickname(false) + "("))
+                                && Strings.InStr(pname, mp.get_Nickname(false) + "(") != 1)
                             {
                                 continue;
                             }
@@ -109,11 +111,14 @@ namespace SRCCore.Models
                     if (!SRC.PDList.IsDefined2(pname) && SRC.NPDList.IsDefined2(pname))
                     {
                         // 括弧部分を削除して基本名を取得
-                        for (int j = 2; j <= pname.Length; j++)
+                        // 元の SRC は Mid$(pname, Len(pname) - j, 1) を見る（末尾から j + 1 文字目）。
+                        // j = Len(pname) まで見つからないときは Mid$ の開始位置が 0 になり実行時エラーになるが、
+                        // ここでは見つからなかったものとして扱う
+                        for (int j = 2; j < Strings.Len(pname); j++)
                         {
-                            if (pname[pname.Length - j] == '(')
+                            if (Strings.Mid(pname, Strings.Len(pname) - j, 1) == "(")
                             {
-                                pname2 = pname.Substring(0, pname.Length - j - 1);
+                                pname2 = Strings.Left(pname, Strings.Len(pname) - j - 1);
                                 break;
                             }
                         }
