@@ -145,10 +145,11 @@ namespace SRCCore.Events.Tests
         }
 
         [TestMethod]
-        public void CurrentLabel_InitiallyZero()
+        public void CurrentLabel_InitiallyNoLabel()
         {
+            // VB の初期値 0（ラベルが無い）に当たる。C# は行番号が 0 から始まるので -1
             var src = CreateSrc();
-            Assert.AreEqual(0, src.Event.CurrentLabel);
+            Assert.AreEqual(-1, src.Event.CurrentLabel);
         }
 
         // ──────────────────────────────────────────────

@@ -6,16 +6,14 @@ namespace SRCCore.Events
 {
     public partial class Event
     {
+        // いまのサブルーチン呼び出しのサブルーチンローカル変数。
+        // VB と同じく CallDepth > 0 のときだけ見る（For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex）
         public IEnumerable<VarData> SubLocalVars()
         {
             if (CallDepth > 0)
             {
                 int i = VarIndexStack[CallDepth - 1];
                 return VarStack.Skip(i + 1).Take(VarIndex - i);
-            }
-            else if (VarIndex > 0)
-            {
-                return VarStack.Take(VarIndex + 1);
             }
             else
             {
