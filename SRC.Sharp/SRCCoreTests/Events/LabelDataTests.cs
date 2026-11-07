@@ -293,10 +293,11 @@ namespace SRCCore.Events.Tests
         }
 
         [TestMethod]
-        public void Para_OutOfRange_ReturnsNull()
+        public void Para_OutOfRange_ReturnsEmpty()
         {
+            // VB の String の既定値は空文字列
             var ld = Create("スタート");
-            Assert.IsNull(ld.Para(99));
+            Assert.AreEqual("", ld.Para(99));
         }
 
         // ──────────────────────────────────────────────

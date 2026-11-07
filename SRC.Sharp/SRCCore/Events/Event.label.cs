@@ -12,10 +12,9 @@ namespace SRCCore.Events
         public int SearchLabel(string lname, int start = -1)
         {
             // ラベルの各要素をあらかじめ解析
-            // XXX Indexがずれていて辛い。
+            // VB の litem は 1 始まりなので、先頭に空の要素を足して添字を合わせる
             string[] litem;
             int llen = GeneralLib.ListSplit(lname, out litem);
-            // XXX 死にたい
             litem = (new string[] { "" }).Concat(litem).ToArray();
 
             // ラベルの種類を判定
@@ -214,7 +213,7 @@ namespace SRCCore.Events
 
                 // 各パラメータが一致している？
                 var reversed = false;
-                var isMatch = IsMatch(ltype, lab, litem, lnum, is_unit, is_num, is_condition, reversed);
+                var isMatch = IsMatch(ltype, lab, litem, llen, lnum, is_unit, is_num, is_condition, reversed);
                 if (!isMatch && revrersible)
                 {
                     // 対象と相手を入れ替えたイベントラベルが存在するか判定
@@ -228,7 +227,7 @@ namespace SRCCore.Events
                     {
                         // 対象と相手を入れ替えて判定し直す
                         reversed = true;
-                        isMatch = IsMatch(ltype, lab, litem, lnum, is_unit, is_num, is_condition, reversed);
+                        isMatch = IsMatch(ltype, lab, litem, llen, lnum, is_unit, is_num, is_condition, reversed);
                     }
                 }
                 if (!isMatch)
@@ -257,13 +256,13 @@ namespace SRCCore.Events
             LabelType ltype,
             LabelData lab,
             string[] litem,
+            int llen,
             string[] lnum, bool[] is_unit, bool[] is_num, bool[] is_condition,
             bool reversed)
         {
             string str1;
             string str2;
-            // XXX 考えさせられる
-            int llen = litem.Length - 1;
+            // VB と同じく ListSplit の戻り値（括弧の対応が取れていなければ -1）までを比べる
             for (var i = 2; i <= llen; i++)
             {
                 // コマンド関連ラベルの最後のパラメータは条件式なのでチェックを省く
@@ -480,7 +479,7 @@ namespace SRCCore.Events
                 // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
-                lname2 = string.Join(" ", GeneralLib.ToList(lname));
+                lname2 = NormalizeLabelName(lname);
 
                 if (!IsLabelDefined(lname2))
                 {
@@ -534,17 +533,23 @@ namespace SRCCore.Events
                 // イベントラベルを追加
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
-                lname2 = string.Join(" ", GeneralLib.ToList(lname));
+                lname2 = NormalizeLabelName(lname);
 
                 if (!IsLabelDefined(lname2))
                 {
                     colEventLabelList.Add(new_label, lname2);
+                    registeringEventLabelIds?.Add(eventDataId);
                 }
                 else
                 {
-                    colEventLabelList.Add(new_label, lname2 + "(" + SrcFormatter.Format(eventDataId) + ")");
+                    // VB は On Error でキーの重複を無視する
+                    var lname3 = lname2 + "(" + SrcFormatter.Format(eventDataId) + ")";
+                    if (!IsLabelDefined(lname3))
+                    {
+                        colEventLabelList.Add(new_label, lname3);
+                        registeringEventLabelIds?.Add(eventDataId);
+                    }
                 }
-                registeringEventLabelIds?.Add(eventDataId);
             }
         }
 
@@ -672,11 +677,25 @@ namespace SRCCore.Events
 
             // パラメータ間の文字列の違いで一致しなかった可能性があるので
             // 文字列を半角スペース一文字のみにして検索してみる
-            lname2 = string.Join(" ", GeneralLib.ToList(lname));
+            lname2 = NormalizeLabelName(lname);
 
             // イベントラベルから検索
             FindLabelRet = FindEventLabel(lname2);
             return FindLabelRet;
+        }
+
+        // ラベルの各要素を半角スペース一文字で区切り直す。
+        // VB: lname2 = ListIndex(lname, 1): For i = 2 To ListLength(lname): lname2 = lname2 & " " & ListIndex(lname, i)
+        // （括弧の対応が取れていなければ ListLength は -1 なので、最初の要素だけになる）
+        private static string NormalizeLabelName(string lname)
+        {
+            var n = GeneralLib.ListSplitStrict(lname, out var items);
+            var lname2 = GeneralLib.ListIndex(lname, 1);
+            for (var i = 2; i <= n; i++)
+            {
+                lname2 = lname2 + " " + items[i - 1];
+            }
+            return lname2;
         }
 
         // イベントラベルを探す
