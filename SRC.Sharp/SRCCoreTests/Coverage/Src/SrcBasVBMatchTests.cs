@@ -190,8 +190,7 @@ namespace SRCCore.Coverage.Tests
 
         private static void LoadEvent(SrcPlayDataSaveFixture f, params string[] lines)
         {
-            // 先頭行のラベルは IsEventDefined が見落とすため、ダミーのラベルを先頭に置く
-            var path = f.Write("test.eve", new[] { "準備:", "Exit", "" }.Concat(lines).ToArray());
+            var path = f.Write("test.eve", lines);
             f.Src.Event.LoadEventData(path, "");
         }
 
