@@ -18,22 +18,15 @@ namespace SRCCore
                 return;
             }
 
-            // 数値部分を読み飛ばす
+            // 数値部分を読み飛ばす（数字でない文字で止まる。VB の Select Case の Case Else: Exit Do）
             i = Strings.Len(ID);
             while (i > 0)
             {
-                switch (Strings.Asc(Strings.Mid(ID, i, 1)))
+                var c = Strings.Asc(Strings.Mid(ID, i, 1));
+                // 0-9
+                if (c < 48 || 57 < c)
                 {
-                    // 0-9
-                    case var @case when 48 <= @case && @case <= 57:
-                        {
-                            break;
-                        }
-
-                    default:
-                        {
-                            break;
-                        }
+                    break;
                 }
 
                 i = (i - 1);

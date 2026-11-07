@@ -99,6 +99,13 @@ namespace SRCCore
                 return;
             }
 
+            if (FileSystem.GetFileSystemEntries(AppPath, "Ｂｉｔｍａｐ", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Bitmapフォルダのフォルダ名が全角文字になっています。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Ｂｉｔｍａｐ") + Environment.NewLine + "フォルダ名を半角文字に直してください。");
+                TerminateSRC();
+                return;
+            }
+
             if (FileSystem.GetFileSystemEntries(FileSystem.PathCombine(AppPath, "Bitmap"), "Bitmap", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Bitmapフォルダ内にさらにBitmapフォルダが存在します。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Bitmap", "Bitmap") + Environment.NewLine + "フォルダ構造を直してください。");
@@ -149,6 +156,13 @@ namespace SRCCore
             if (!FileSystem.GetFileSystemEntries(AppPath, "Sound", EntryOption.Directory).Any())
             {
                 GUI.ErrorMessage("Soundフォルダがありません。" + Environment.NewLine + "SRC.exeと同じフォルダに効果音集をインストールしてください。");
+                TerminateSRC();
+                return;
+            }
+
+            if (FileSystem.GetFileSystemEntries(AppPath, "Ｓｏｕｎｄ", EntryOption.Directory).Any())
+            {
+                GUI.ErrorMessage("Soundフォルダのフォルダ名が全角文字になっています。" + Environment.NewLine + FileSystem.PathCombine(AppPath, "Ｓｏｕｎｄ") + Environment.NewLine + "フォルダ名を半角文字に直してください。");
                 TerminateSRC();
                 return;
             }
@@ -894,15 +908,8 @@ namespace SRCCore
             //        }
             //    }
 
-            // オープニング曲演奏
-            Sound.StopBGM(true);
-            Sound.StartBGM(Sound.BGMName("Opening"), true);
-
-            // イベントデータを初期化
-            Event.InitEventData();
-
-            // タイトル画面を閉じる
-            GUI.CloseTitleForm();
+            // （ダイアログで選ぶ場合のオープニング曲の演奏・イベントデータの初期化・タイトル画面を閉じる処理は、
+            //   SRC# ではファイルを GUI 側で選んでから呼ばれるので、下のドラッグ＆ドロップの場合と同じところで 1 回だけ行う）
 
             //    // マウスカーソルを元に戻す
             //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
@@ -998,14 +1005,13 @@ namespace SRCCore
             //GUI.ChangeStatus(GuiStatus.Default);
             //}
 
-            //// ロングネームにしておく
-            //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //fname = ScenarioPath + FileSystem.Dir(fname);
-            //if (!FileSystem.FileExists(fname))
-            //{
-            //    GUI.ErrorMessage("指定したファイルが存在しません");
-            //    TerminateSRC();
-            //}
+            // 元の SRC はここでロングネームにしてから、ファイルがあるかを確かめる
+            // （セーブデータは FileSystem を通さずに開くので、FileSystem の外のファイルも認める）
+            if (!FileSystem.FileExists(fname) && !File.Exists(fname))
+            {
+                GUI.ErrorMessage("指定したファイルが存在しません");
+                TerminateSRC();
+            }
 
             //if (Strings.InStr(fname, "不要ファイル削除") == 0 && Strings.InStr(fname, "必須修正") == 0)
             //{
