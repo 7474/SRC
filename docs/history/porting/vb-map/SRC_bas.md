@@ -4,20 +4,20 @@ VB 版の `SRC/SRC_20121125/SRC.bas` の手続きと、C# の対応（[説明](R
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub Main | 117 | 748 | `SRCSharpForm/Program.cs` Program.Main | 未確認 |  |
-| Sub CreateIniFile | 867 | 142 | `SRCCore/SRC.config.cs` SRC.CreateIniFile | 未確認 |  |
-| Function IsBitBltFasterThanStretchBlt | 1012 | 54 | （見つからない） | 未確認 |  |
-| Sub StartScenario | 1069 | 195 | `SRCCore/SRC.play.cs` SRC.StartScenario | 未確認 |  |
-| Sub StartTurn | 1266 | 468 | `SRCCore/SRC.play.cs` SRC.StartTurn | 未確認 |  |
-| Sub GameOver | 1736 | 37 | `SRCCore/SRC.play.cs` SRC.GameOver | 未確認 |  |
-| Sub GameClear | 1775 | 3 | `SRCCore/SRC.play.cs` SRC.GameClear | 未確認 |  |
-| Sub ExitGame | 1780 | 39 | `SRCCore/SRC.play.cs` SRC.ExitGame | 未確認 |  |
-| Sub TerminateSRC | 1821 | 85 | `SRCCore/SRC.play.cs` SRC.TerminateSRC | 未確認 |  |
-| Sub SaveData | 1909 | 37 | `SRCCore/SRC.save.cs` SRC.SaveData | 未確認 |  |
-| Sub LoadData | 1948 | 137 | `SRCCore/SRC.save.cs` SRC.LoadData | 未確認 |  |
-| Sub DumpData | 2088 | 63 | `SRCCore/SRC.save.cs` SRC.DumpData | 未確認 |  |
-| Sub RestoreData | 2153 | 316 | `SRCCore/SRC.save.cs` SRC.RestoreData | 未確認 |  |
-| Sub ConvertUnitID | 2474 | 22 | `SRCCore/SRC.util.cs` SRC.ConvertUnitID | 未確認 |  |
-| Sub IncludeData | 2498 | 69 | `SRCCore/SRC.data.cs` SRC.IncludeData | 未確認 |  |
-| Function SearchDataFolder | 2569 | 61 | `SRCCore/SRC.data.cs` SRC.SearchDataFolder | 未確認 |  |
-| Sub IncrMoney | 2632 | 4 | `SRCCore/SRC.util.cs` SRC.IncrMoney | 未確認 |  |
+| Sub Main | 117 | 748 | `SRCCore/SRC.main.cs` SRC.Execute | 修正済み | ValidateEnvironment・ConfigureExecuteFile・LoadIni・ExecuteFile に分かれる。呼び出し元は SRCSharpForm/RootForm.cs・SRCRender/ScreenSession.cs。直したもの（#1498）: (1) オープニング曲の演奏・InitEventData・CloseTitleForm を 2 回していた（ダイアログで選ぶ分岐の名残）のを 1 回にした (2) ファイルが無いときに「指定したファイルが存在しません」で終わる（.srcs で例外になっていた） (3) SRC のフォルダの Ｂｉｔｍａｐ・Ｓｏｕｎｄ（全角の名前）を確かめる。合わせないもの: ファイルの種類は中身でなく拡張子（.srcs・.srcq・.eve）で見分ける（JSON 形式のため）。2 重起動の禁止・時間解像度・フルスクリーン・DirectSound／DirectMusic／MP3 の設定・マウスボタン・画像バッファ・Src.ini への書き込み（LastFolder など）は GUI と JSON の設定が受け持つ。乱数の種は Random.Next(1000000) で、VB の Int(1000000*Rnd) と同じ範囲 |
+| Sub CreateIniFile | 867 | 142 | `SRCCore/SRC.config.cs` SRC.CreateIniFile | SRC#で不要 | 設定は JSON（LocalFileConfig）で、既定値も LocalFileConfig が持つ。設定ファイルが無ければ GUI 側が Save で書き出す。コメントアウトしてあった Src.ini を書き出すコードは消した |
+| Function IsBitBltFasterThanStretchBlt | 1012 | 54 | （無い） | SRC#で不要 | KeepStretchedImage を決めるために Win32 の BitBlt と StretchBlt の速さを比べる処理。SRC# では KeepStretchedImage は設定の値で、描画は GUI が受け持つ |
+| Sub StartScenario | 1069 | 195 | `SRCCore/SRC.play.cs` SRC.StartScenario | 修正済み | 直したもの（#1498）: (1) ファイル名が空ならメッセージを出さずに終わる (2) シナリオ側のフォルダ名（Date、全角の Ｄａｔａ・Ｂｉｔｍａｐ・Ｌｉｂ・Ｍｉｄｉ・Ｓｏｕｎｄ）を確かめる（コメントアウトされていたのを戻した。サブステージでは確かめない） (3) マップが 1x1（ClearMap の後）なら 15x15 にする。合わせないもの: ウィンドウのタイトルは「SRC# - 名前」。セーブデータのファイル名は「…までクリア.srcs」。ClearUnitBitmap・PatBlt・フォント（GUI.ResetDrawString が受け持つ） |
+| Sub StartTurn | 1266 | 468 | `SRCCore/SRC.play.cs` SRC.StartTurn・SRC.CPUOperation | 修正済み | VB の状態回復は For Each SelectedUnit In UList で回すので、回り終えると SelectedUnit が Nothing になる。C# は最後のユニットを残していたので、ターンイベントの対象ユニットがそのユニットになっていた。両方のフェイズで null にした（#1498）。CPU の 5 段階の順番・護衛対象を 2 段たどる処理・接触／進入／行動終了イベントは一致。VB の For i = 1 To UList.Count はループの初めの数で回るが、C# も UList.Items（その時点の複製）で回るので同じ。オートプレイは SRC# で足したもの |
+| Sub GameOver | 1736 | 37 | `SRCCore/SRC.play.cs` SRC.GameOver | 一致 | non_pilot.txt は GameOver.eve と同じフォルダから読む。ScenarioFileName の設定も同じ |
+| Sub GameClear | 1775 | 3 | `SRCCore/SRC.play.cs` SRC.GameClear | 一致 |  |
+| Sub ExitGame | 1780 | 39 | `SRCCore/SRC.play.cs` SRC.ExitGame | 一致 | ScenarioFileName を変えないところも同じ |
+| Sub TerminateSRC | 1821 | 85 | `SRCCore/SRC.play.cs` SRC.TerminateSRC | SRC#で不要 | ウィンドウを閉じる・時間解像度と画面の解像度を戻す・音を止める処理は IGUI.Terminate が受け持ち、データはプロセスの終了で解放する。IGUI.Terminate が false を返すホスト（Web・Avalonia のセッション）は終了しない |
+| Sub SaveData | 1909 | 37 | `SRCCore/SRC.save.cs` SRC.SaveData | SRC#で不要 | JSON。保存する項目（使用作品・次ステージ・総ターン数・資金・グローバル変数・PList・UList・IList）は VB と同じ。版は実行ファイルの版で、取れなければ SRCCore の版にした（GetEntryAssembly が null だと例外になっていた） |
+| Sub LoadData | 1948 | 137 | `SRCCore/SRC.save.cs` SRC.LoadData | 修正済み | VB はグローバル変数を読み込んでから次ステージを設定する。C# は次ステージを設定してからグローバル変数の一覧を置き換えていたので、順を VB に合わせた（#1498）。リンク情報（PList・UList・IList の LoadLinkInfo）は JSON と Restore・Update で戻る。u.Reset と LoadEventData("") は一致 |
+| Sub DumpData | 2088 | 63 | `SRCCore/SRC.save.cs` SRC.DumpData | 違いあり | JSON（保存する項目は VB と同じ）。VB は書き終えてから LastSaveDataFileName を設定し、ファイル名に「_リスタート」「_クイックセーブ」が入っていればフラグを立てる。C# は種類（SRCSaveKind）でフラグを立てる。ストリームに書く DumpData（クイックセーブ）が LastSaveDataFileName を変えないので、QuickLoad コマンドがクイックセーブではなくリスタート用のデータを読む（#1530） |
+| Sub RestoreData | 2153 | 316 | `SRCCore/SRC.save.cs` SRC.RestoreData | 修正済み | 直したもの（#1498）: (1) VB は LoadEventData(…, "リストア") の後で RestoreEventData（変数）と PList.Restore などをする。C# は変数とターン数を先に入れていたので、DebugMode で LoadEventData が定義した Option(デバッグ) がセーブデータの変数で置き換わらなかった。順を VB に合わせた (2) ＢＧＭが見つからないとき、VB は RepeatMode・KeepBGM・BossBGM を読み飛ばすが、C# は戻していた。RestoreLinkInfo・RestoreParameter・PList.UpdateSupportMod は Unit.RestoreLinkInfo・Pilot.RestoreParameter・PList.UpdateSupportMod で一致する。IList の RestoreLinkInfo は JSON の UnitId で引くので要らず、RestoreParameter は何もしない。合わせないもの: 背景は一律に書き直す（#1466）。MakeUnitBitmap は GUI が受け持つ。SaveDataVersion は JSON なので使わない |
+| Sub ConvertUnitID | 2474 | 22 | `SRCCore/SRC.util.cs` SRC.ConvertUnitID | 修正済み | switch の break が while を抜けず、数字でない文字で止まらなかった。そのため「ガンダム12」が「:ガンダム12」になっていた。VB の Exit Do に合わせて「ガンダム:12」にした（#1498）。製品のコードからは呼ばれていない（旧形式のセーブデータを読む部分はコメントアウトされている） |
+| Sub IncludeData | 2498 | 69 | `SRCCore/SRC.data.cs` SRC.IncludeData・SRC.LoadDataDirectory | 修正済み | VB は作品ごとに DisplayLoadingProgress を 2 回呼ぶ（ロード画面の長さは作品数×2+5）。C# は 1 回だったので 2 回にした（#1498）。2 回目は読み込み終えた後で呼ぶ（LoadDataDirectory はゴールデンテストからも呼ぶため）。On Error で出す「Src.ini内のExtDataPathの値が不正です」は SRC#で不要（データの誤りは DataErrors に集める） |
+| Function SearchDataFolder | 2569 | 61 | `SRCCore/SRC.data.cs` SRC.SearchDataFolder | 一致 | VB の Static の判定結果は、インスタンスのフィールドに持つ |
+| Sub IncrMoney | 2632 | 4 | `SRCCore/SRC.util.cs` SRC.IncrMoney | 一致 |  |

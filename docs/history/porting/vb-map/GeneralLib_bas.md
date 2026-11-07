@@ -14,7 +14,7 @@ VB 版の `SRC/SRC_20121125/GeneralLib.bas` の手続きと、C# の対応（[�
 | Function SearchList | 248 | 12 | （見つからない） | 未確認 |  |
 | Function ListIndex | 263 | 150 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.ListIndex | 未確認 |  |
 | Function ListLength | 415 | 93 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.ListLength | 未確認 | #1504 で見つけた手がかり: VB の ListLength は括弧が合わないと -1 を返す（ForEach は ReDim ForEachSet(-1) でエラー）。C# の ListLength・ToList は -1 を返さず途中まで読む |
-| Function ListSplit | 511 | 100 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.ListSplit | 未確認 |  |
+| Function ListSplit | 511 | 100 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.ListSplit | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: VB の ListSplit は括弧・クォートが閉じていないと -1 を返すが、C# は返さない（LabelData は ListSplitStrict を使うようにした） |
 | Function ListTail | 613 | 98 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.ListTail | 未確認 |  |
 | Sub TrimString | 714 | 32 | （見つからない） | 未確認 |  |
 | Function InStr2 | 748 | 13 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.InStr2 | 未確認 |  |

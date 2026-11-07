@@ -17,8 +17,8 @@ VB 版の `SRC/SRC_20121125/Units.cls` の手続きと、C# の対応（[説明]
 | Function IsDefined | 330 | 24 | `SRCCore/Units/Units.cs` Units.IsDefined | 未確認 |  |
 | Function IsDefined2 | 356 | 11 | `SRCCore/Units/Units.cs` Units.IsDefined2 | 未確認 |  |
 | Sub Update | 369 | 332 | `SRCCore/Units/Units.cs` Units.Update | 未確認 |  |
-| Sub Save | 704 | 33 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Save<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Save<br>`SRCCore/Config/ScenarioConfig.cs` Value.Save | 未確認 |  |
-| Sub Load | 740 | 64 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Load<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Load<br>`SRCCore/Models/AliasDataList.cs` AliasDataList.Load | 未確認 |  |
+| Sub Save | 704 | 33 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Save<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Save<br>`SRCCore/Config/ScenarioConfig.cs` Value.Save | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: C# の候補は誤り。SRCCore/SRC.save.cs SRC.SaveData・SRC.DumpData（JSON）に当たる |
+| Sub Load | 740 | 64 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Load<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Load<br>`SRCCore/Models/AliasDataList.cs` AliasDataList.Load | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: C# の候補は誤り。SRCCore/SRC.save.cs SRC.LoadData（JSON）に当たる |
 | Sub LoadLinkInfo | 806 | 84 | （見つからない） | 未確認 |  |
 | Sub Dump | 893 | 9 | （見つからない） | 未確認 |  |
 | Sub Restore | 904 | 20 | `SRCCore/Units/Units.cs` Units.Restore | 未確認 |  |
