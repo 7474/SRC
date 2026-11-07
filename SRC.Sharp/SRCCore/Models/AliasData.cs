@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -112,12 +113,12 @@ namespace SRCCore.Models
                     atype = Strings.Left(buf, i - 1);
                     if (j > 0)
                     {
-                        alevel = Conversions.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
+                        alevel = Conversions.ToDouble(LevelText(Strings.Mid(buf, i + 2, j - (i + 2))));
                         adata = Strings.Mid(buf, j + 1);
                     }
                     else
                     {
-                        alevel = Conversions.ToDouble(Strings.Mid(buf, i + 2));
+                        alevel = Conversions.ToDouble(LevelText(Strings.Mid(buf, i + 2)));
                         adata = "";
                     }
                 }
@@ -139,6 +140,17 @@ namespace SRCCore.Models
 
                 Elements.Add(elm);
             }
+        }
+
+        // レベルの文字列。元の SRC は CDbl で数値にするので、数値でなければ実行時エラーになり、
+        // AliasDataList.Load がエラーの原因を書かないデータエラーで読み込みを打ち切る
+        private static string LevelText(string buf)
+        {
+            if (!Information.IsNumeric(buf))
+            {
+                throw new FormatException("エリアスのレベル「" + buf + "」が数値ではありません。");
+            }
+            return buf;
         }
 
         // 能力の置き換え名を取得する

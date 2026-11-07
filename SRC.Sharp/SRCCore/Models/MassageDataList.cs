@@ -70,21 +70,35 @@ namespace SRCCore.Models
             }
         }
 
+        // 特殊効果データor戦闘アニメデータのファイル名か？
+        // 元の SRC はファイル名に「effect.txt」「animation.txt」を含むかで決める（ext_animation.txt も含む）
+        public static bool IsEffectFileName(string fname)
+        {
+            var lname = Strings.LCase(fname ?? "");
+            return Strings.InStr(lname, "effect.txt") > 0 || Strings.InStr(lname, "animation.txt") > 0;
+        }
+
         /// <param name="fname"></param>
-        /// <param name="isEffect">特殊効果データor戦闘アニメデータか？</param>
+        /// <param name="isEffect">特殊効果データor戦闘アニメデータか？ false でもファイル名が IsEffectFileName に当たれば特殊効果データとして読む</param>
         /// <param name="stream"></param>
         public void Load(string fname, bool isEffect, Stream stream)
         {
+            isEffect = isEffect || IsEffectFileName(fname);
             using (var reader = new SrcDataReader(fname, stream))
             {
                 string line_buf = "";
-                while (reader.HasMore)
+                while (true)
                 {
-                    line_buf = reader.GetLine();
-                    while (reader.HasMore && string.IsNullOrEmpty(line_buf))
+                    // 空行を読み飛ばす。ファイルの終わりなら読み込みを終える
+                    do
                     {
+                        if (!reader.HasMore)
+                        {
+                            return;
+                        }
                         line_buf = reader.GetLine();
                     }
+                    while (Strings.Len(line_buf) == 0);
                     var data_name = line_buf;
 
                     if (Strings.InStr(line_buf, ",") > 0)
@@ -136,8 +150,8 @@ namespace SRCCore.Models
                             throw reader.InvalidDataException("「,」区切りが見つかりません。", data_name);
                         }
 
-                        var sname = Strings.Left(line_buf, (int)ret - 1);
-                        var msg = Strings.Trim(Strings.Mid(line_buf, (int)ret + 1));
+                        var sname = Strings.Left(line_buf, ret - 1);
+                        var msg = Strings.Trim(Strings.Mid(line_buf, ret + 1));
                         if (Strings.Len(sname) == 0)
                         {
                             throw reader.InvalidDataException("シチュエーションの指定が抜けています。", data_name);
@@ -147,7 +161,7 @@ namespace SRCCore.Models
 
                         if (!reader.HasMore)
                         {
-                            break;
+                            return;
                         }
                         line_buf = reader.GetLine();
                     }
