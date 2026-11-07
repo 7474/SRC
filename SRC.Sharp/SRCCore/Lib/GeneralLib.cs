@@ -639,9 +639,11 @@ namespace SRCCore.Lib
         }
 
         // 文字列をDoubleに変換
+        // VB: IsNumeric でなければ 0。VB の IsNumeric は「NaN」「Infinity」や Double を超える値を数値とみなさない
         public static double StrToDbl(string expr)
         {
-            return Conversions.ToDouble(expr);
+            var num = Conversions.ToDouble(expr);
+            return double.IsNaN(num) || double.IsInfinity(num) ? 0d : num;
         }
 
         // 文字列をLongに変換

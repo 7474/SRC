@@ -119,6 +119,17 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual("", GeneralLib.TrimString(null));
         }
 
+        [TestMethod]
+        public void StrToDbl_NonFiniteText_ReturnsZero()
+        {
+            // GeneralLib.bas:764 IsNumeric でなければ 0（VB の IsNumeric は「NaN」や Double を超える値を数値とみなさない）
+            Assert.AreEqual(0d, GeneralLib.StrToDbl("NaN"));
+            Assert.AreEqual(0d, GeneralLib.StrToDbl("1e400"));
+            Assert.AreEqual(0d, GeneralLib.StrToDbl("-Infinity"));
+            Assert.AreEqual(100000d, GeneralLib.StrToDbl("1e5"));
+            Assert.AreEqual(12d, GeneralLib.StrToDbl("１２"));
+        }
+
         // ──────────────────────────────────────────────
         // Dice
         // ──────────────────────────────────────────────
