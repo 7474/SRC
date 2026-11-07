@@ -75,12 +75,12 @@ namespace SRCCore
         // パイロット p の特殊能力の解説
         public string SkillHelpMessage(Pilot p, string sindex)
         {
-            string SkillHelpMessageRet = default;
+            string SkillHelpMessageRet = "";
             string sname, stype, sname0;
             double slevel;
             string sdata;
             bool is_level_specified;
-            var msg = default(string);
+            var msg = "";
             Unit u, u2 = default;
             string uname, fdata;
             int i;
@@ -1386,13 +1386,13 @@ namespace SRCCore
         }
         public string FeatureHelpMessage(Unit u, FeatureData fd, bool is_additional)
         {
-            string FeatureHelpMessageRet = default;
+            string FeatureHelpMessageRet = "";
             var fid = default(int);
             string fname, ftype, fname0;
             string fdata = default, opt;
             double flevel = default, lv_mod;
             var flevel_specified = default(bool);
-            var msg = default(string);
+            var msg = "";
             int i, idx;
             var buf = default(string);
             var prob = default(int);
@@ -4562,7 +4562,7 @@ namespace SRCCore
                             buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                         }
 
-                        msg = msg + "同時に相手の" + buf + "能力のレベルを、この能力のレベル分だけ下げる。";
+                        msg = msg + "同時に相手の" + buf + "能力の効果を無効化。";
                         msg = msg + ";思念誘導攻撃や近接攻撃には無効。";
                         break;
                     }
@@ -5149,7 +5149,7 @@ namespace SRCCore
         // ユニット u の武器＆アビリティ属性 atr の名称
         public string AttributeName(Unit u, string atr, bool is_ability = false)
         {
-            string AttributeNameRet = default;
+            string AttributeNameRet = "";
             string fdata;
             switch (atr ?? "")
             {
@@ -6061,10 +6061,10 @@ namespace SRCCore
         // ユニット u の idx 番目の武器＆アビリティの属性 atr の解説を表示
         public string AttributeHelpMessage(Unit u, string atr, int idx, bool is_ability)
         {
-            string AttributeHelpMessageRet = default;
+            string AttributeHelpMessageRet = "";
             string atype;
             double alevel;
-            string msg = default, whatsthis;
+            string msg = "", whatsthis;
             string wanickname, waname, uname = default;
             Pilot p;
             int i, j;
@@ -6407,16 +6407,17 @@ namespace SRCCore
 
                 case "合":
                     {
-                        var fd = u.Features.FirstOrDefault(fd => fd.Name == "合体技" && fd.DataL.First() == waname);
+                        // 元の SRC と同じく、データの 1 番目が武器名の合体技を探す（データが空でも例外にしない）
+                        var fd = u.Features.FirstOrDefault(x => x.Name == "合体技" && GeneralLib.LIndex(x.Data, 1) == (waname ?? ""));
                         if (fd == null)
                         {
                             GUI.ErrorMessage(u.Name + "の合体技「" + waname + "」に対応した合体技能力がありません");
                             return AttributeHelpMessageRet;
                         }
 
-                        if (fd.DataL.Count == 2)
+                        if (GeneralLib.LLength(fd.Data) == 2)
                         {
-                            uname = fd.DataL.Skip(1).First();
+                            uname = GeneralLib.LIndex(fd.Data, 2);
                             if (SRC.UDList.IsDefined(uname))
                             {
                                 uname = SRC.UDList.Item(uname).Nickname;
@@ -6604,10 +6605,11 @@ namespace SRCCore
                     {
                         if (u.IsFeatureAvailable("変形技"))
                         {
-                            var fd = u.Feature("変形技");
-                            if (fd.DataL.First() == (waname ?? ""))
+                            // 元の SRC と同じく、すべての変形技からデータの 1 番目が武器名のものを探す
+                            var fd = u.Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == (waname ?? ""));
+                            if (fd != null)
                             {
-                                uname = fd.DataL.Skip(1).First();
+                                uname = GeneralLib.LIndex(fd.Data, 2);
                             }
                         }
 
