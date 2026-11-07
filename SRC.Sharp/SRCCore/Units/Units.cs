@@ -140,8 +140,9 @@ namespace SRCCore.Units
             // パーツ合体先の形態
             if (ud.IsFeatureAvailable("パーツ合体"))
             {
-                var fd = ud.Feature("パーツ合体");
-                var uname2 = fd.DataL.FirstOrDefault();
+                // 元の SRC はリストの要素ではなくデータ全体を合体先の形態名として扱う
+                // （パーツ合体コマンドの Transform も同じ）
+                var uname2 = ud.FeatureData("パーツ合体");
                 if (string.IsNullOrEmpty(uname2))
                 {
                     GUI.ErrorMessage("ユニットデータ「" + uname + "」のパーツ合体先形態が指定されていません");

@@ -270,9 +270,8 @@ namespace SRCCore.Items
         // 特殊能力の必要技能
         public string FeatureNecessarySkill(string Index)
         {
-            string FeatureNecessarySkillRet = default;
-            FeatureNecessarySkillRet = Data.Feature(Index).NecessarySkill;
-            return FeatureNecessarySkillRet;
+            // VB の ItemData.FeatureNecessarySkill は、無い特殊能力なら On Error で "" を返す
+            return Data.Feature(Index)?.NecessarySkill ?? "";
         }
 
         // 指定した特殊能力を持っているか？

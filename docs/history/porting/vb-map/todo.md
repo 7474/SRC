@@ -18,6 +18,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Expressions/VarData.cs:126` | XXX | XXX 逆の側の型に値入れなくていいの？ | 未確認 | VB の VarData は渡した値だけを持つが、C# の SetValue はもう一方の型の値も埋める。GetVariable の読み出しには表れないが、フィールドを直接読む処理（Sort など）では違いうる。データの項目（VarData.cls）で判断する（#1498 の Expression.bas の突き合わせで見つけた） |
 | `SRCCore/Extensions/ListExtension.cs:11` | XXX | XXX EnumerableExtension | 未確認 |  |
 | `SRCCore/Extensions/ListExtension.cs:12` | XXX | XXX 多分遅い | 未確認 |  |
+| `SRCCore/Extensions/SituationExtension.cs:315` | コード | Select Case ch / Case 0 To 127 で英数字を除く。ここでは先頭の文字のコードで判定する | 未確認 |  |
 | `SRCCore/Extensions/StreamExtension.cs:42` | XXX | XXX あまりいい同期化ではないはず | 未確認 |  |
 | `SRCCore/Filesystem/LocalFilesystem.cs:33` | XXX | XXX NormalizePath で先頭 `\` を処理する？ | 未確認 |  |
 | `SRCCore/Filesystem/LocalFilesystem.cs:76` | XXX | XXX Log | 未確認 |  |
@@ -29,15 +30,8 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Maps/Map.cs:115` | XXX | XXX | SRC#で不要 | IsStatusView は VB の `MapFileName = ""` の判定をまとめたもの |
 | `SRCCore/Maps/Map.cs:466` | XXX | XXX MapのGUIインタフェースと実装に追い出す | SRC#で不要 | GUIMap.SetMapSize に移してある |
 | `SRCCore/Maps/Map.cs:476` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | SRC#で不要 | VB の ClearMap も MapWidth・MapHeight を 1 にする |
-| `SRCCore/Models/BattleConfigDataList.cs:91` | XXX | XXX これでいいんか？　nullになったり上書きされそう。 | 未確認 |  |
-| `SRCCore/Models/Condition.cs:14` | XXX | XXX 負数は無期限（多分） | 未確認 |  |
-| `SRCCore/Models/MessageData.cs:30` | XXX | XXX MessageDataItem#IsAvailable 常に真でいいか | 未確認 |  |
 | `SRCCore/Models/PilotData.cs:495` | XXX | XXX Readonlyにするとか | SRC#で不要 | SRC# で足した DefinedSpecialPowers の設計のメモ。VB に当たるコードは無い |
 | `SRCCore/Models/PilotData.cs:688` | XXX | XXX 例外処理要らんの？ | SRC#で不要 | VB の Feature にもエラーの処理は無く、無ければ実行時エラーになる |
-| `SRCCore/Models/UnitData.cs:277` | XXX | XXX 元は Name を返却 | 未確認 |  |
-| `SRCCore/Models/UnitData.cs:282` | XXX | XXX 参照先はNameだった | 未確認 |  |
-| `SRCCore/Models/UnitData.cs:286` | XXX | XXX このくらいなら Feature(string Index) に統合できる気はする | 未確認 |  |
-| `SRCCore/Models/UnitDataList.cs:304` | XXX | XXX 何で負数にしてるの？ | 未確認 |  |
 | `SRCCore/Pilots/Pilot.cs:74` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | SRC#で不要 | Unit を UnitId から引くという SRC# の保存の設計についての覚え書き。VB の動作とは関係しない |
 | `SRCCore/Pilots/Pilot.unit.cs:135` | XXX | XXX 外から操作したいものではない | SRC#で不要 | 作りについてのメモ。VB の `Set MapDataForUnit(.X, .Y) = Nothing` と同じ動作 |
 | `SRCCore/Pilots/Pilots.cs:209` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |

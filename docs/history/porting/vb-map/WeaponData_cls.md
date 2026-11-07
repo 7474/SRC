@@ -4,5 +4,5 @@ VB 版の `SRC/SRC_20121125/WeaponData.cls` の手続きと、C# の対応（[�
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Function Nickname | 47 | 7 | `SRCCore/Models/WeaponData.cs` WeaponData.Nickname | 未確認 |  |
-| Function IsItem | 56 | 10 | `SRCCore/Models/WeaponData.cs` WeaponData.IsItem | 未確認 |  |
+| Function Nickname | 47 | 7 | `SRCCore/Models/WeaponData.cs` WeaponData.Nickname | 一致 |  |
+| Function IsItem | 56 | 10 | `SRCCore/Models/WeaponData.cs` WeaponData.IsItem | 一致 |  |

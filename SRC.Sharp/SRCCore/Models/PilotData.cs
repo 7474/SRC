@@ -612,12 +612,12 @@ namespace SRCCore.Models
                 ftype = Strings.Left(buf, i - 1);
                 if (j > 0)
                 {
-                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2, j - (i + 2)));
                     fdata = Strings.Mid(buf, j + 1);
                 }
                 else
                 {
-                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2));
+                    flevel = Models.FeatureData.ParseLevel(Strings.Mid(buf, i + 2));
                 }
             }
             else if (j > 0)

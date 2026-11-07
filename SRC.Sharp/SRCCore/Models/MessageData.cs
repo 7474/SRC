@@ -27,7 +27,7 @@ namespace SRCCore.Models
 
         public bool IsAvailable(Unit u, bool ignore_condition)
         {
-            // XXX MessageDataItem#IsAvailable 常に真でいいか
+            // 元の SRC の MessageData.SelectMessage は話者の状態を調べない（Dialog.IsAvailable に当たるものは無い）
             return true;
         }
     }

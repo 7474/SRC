@@ -55,6 +55,8 @@ namespace SRCCore.Models
         // スペシャルパワーに効果を追加
         public void SetEffect(string elist)
         {
+            // VB は ReDim で効果を作り直す（追加ではなく置き換える）
+            effects.Clear();
             var list = GeneralLib.ToList(elist.Trim());
             foreach (var item in list)
             {
@@ -64,7 +66,8 @@ namespace SRCCore.Models
                 var k = Strings.InStr(buf, "=");
                 string strEffectType;
                 double dblEffectLevel = 0d;
-                string strEffectData = null;
+                // VB の String 配列の既定値は ""
+                string strEffectData = "";
                 if (j > 0 && (k == 0 || j < k))
                 {
                     // レベル指定のある効果(データ指定を伴うものを含む)
@@ -631,7 +634,8 @@ namespace SRCCore.Models
                             }
                             else
                             {
-                                if (t.Conditions.Any(x => x.Name.EndsWith("属性使用不能") && x.Lifetime > 0))
+                                // VB は名前が 6 文字より長いものだけを見る（「属性使用不能」そのものは対象外）
+                                if (t.Conditions.Any(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能" && t.ConditionLifetime(x.Name) > 0))
                                 {
                                     EffectiveRet = true;
                                     goto ExitFunc;
@@ -807,11 +811,10 @@ namespace SRCCore.Models
                             }
                             Apply(p, u, is_event);
                         }
-
-                        if (!is_event)
-                        {
-                            SRC.GUI.Sleep(300);
-                        }
+                    }
+                    if (!is_event)
+                    {
+                        SRC.GUI.Sleep(300);
                     }
                     break;
 
@@ -1333,6 +1336,9 @@ namespace SRCCore.Models
                             }
                             else
                             {
+                                // VB はメインパイロットのあと、サブ・サポート・追加サポートは
+                                // ＳＰが変わったときだけメッセージを出す
+                                var is_main = true;
                                 foreach (var tp in t.AllPilots)
                                 {
                                     var tmp = tp.SP;
@@ -1352,15 +1358,19 @@ namespace SRCCore.Models
                                         }
 
                                         displayed_string = true;
-                                        if (effect.dblEffectLevel >= 0d)
+                                        if (is_main || tp.SP != tmp)
                                         {
-                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tp.SP - tmp) + "回復した。");
-                                        }
-                                        else
-                                        {
-                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - tp.SP) + "減少した。");
+                                            if (effect.dblEffectLevel >= 0d)
+                                            {
+                                                GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tp.SP - tmp) + "回復した。");
+                                            }
+                                            else
+                                            {
+                                                GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - tp.SP) + "減少した。");
+                                            }
                                         }
                                     }
+                                    is_main = false;
                                 }
                             }
 
@@ -1444,7 +1454,7 @@ namespace SRCCore.Models
                                 && t.ConditionLifetime("術使用不能") <= 0
                                 && t.ConditionLifetime("技使用不能") <= 0
                                 // 弱、効属性は状態回復から除外。
-                                && t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").All(x =>
+                                && t.Conditions.Where(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能").All(x =>
                                 {
                                     return t.ConditionLifetime(x.Name) <= 0;
                                 }))
@@ -1602,7 +1612,7 @@ namespace SRCCore.Models
                             }
 
                             // 弱、効属性は状態回復から除外。
-                            foreach (var condition in t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").Where(x =>
+                            foreach (var condition in t.Conditions.Where(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能").Where(x =>
                             {
                                 return t.ConditionLifetime(x.Name) > 0;
                             }).ToList())

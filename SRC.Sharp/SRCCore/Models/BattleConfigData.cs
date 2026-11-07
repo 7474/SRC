@@ -13,7 +13,7 @@ namespace SRCCore.Models
         public string Name;
 
         // 計算式
-        public string ConfigCalc;
+        public string ConfigCalc = "";
 
         private SRC SRC { get; }
         public BattleConfigData(SRC src)
