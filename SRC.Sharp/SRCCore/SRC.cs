@@ -8,6 +8,7 @@ using SRCCore.Config;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Filesystem;
+using SRCCore.Lib;
 using SRCCore.Logging;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -243,6 +244,10 @@ namespace SRCCore
 
             // XXX 別な実装をするならコンストラクタでは設定しない
             SystemConfig = new LocalFileConfig();
+
+            // GeneralLib.Dice が Option「乱数系列非保存」を見られるようにする（最後に作った SRC のオプションを見る）
+            var self = new WeakReference<SRC>(this);
+            GeneralLib.IsRndHistoryUnsaved = () => self.TryGetTarget(out var src) && src.Expression.IsOptionDefined("乱数系列非保存");
         }
 
         public void LogError(Exception ex)
