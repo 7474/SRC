@@ -27,11 +27,8 @@ namespace SRCCore
             string fpath;
 
             // ロードのインジケータ表示を行う
-            // XXX frmNowLoading
-            //if (My.MyProject.Forms.frmNowLoading.Visible)
-            //{
+            // 元の SRC は frmNowLoading を表示しているときだけ呼ぶ。SRC# は表示しているかを GUI 側（DisplayLoadingProgress）で見る
             GUI.DisplayLoadingProgress();
-            //}
 
             // Dataフォルダの場所を探す
             fpath = SearchDataFolder(new_title);
@@ -40,13 +37,14 @@ namespace SRCCore
                 GUI.ErrorMessage("データ「" + new_title + "」のフォルダが見つかりません");
                 TerminateSRC();
             };
+            // 元の SRC は読み込みの実行時エラーを「Src.ini内のExtDataPathの値が不正です」で終了する（On Error）。
+            // SRC# はデータの誤りを DataErrors に集め、それ以外の例外はそのまま呼び出し元に返す
             LoadDataDirectory(fpath);
 
-            return;
-            //ErrorHandler:
-            //    ;
-            //    GUI.ErrorMessage(ref "Src.ini内のExtDataPathの値が不正です");
-            //    TerminateSRC();
+            // ロードのインジケータ表示を行う。
+            // 元の SRC は pilot.txt などとメッセージ・アニメのデータの間で進め、作品ごとに 2 回進める（ロード画面の長さは作品数 * 2 + 5）。
+            // LoadDataDirectory は GUI の無いところ（ゴールデンテスト）からも呼ぶので、読み込み終えてから進める
+            GUI.DisplayLoadingProgress();
         }
 
         // シナリオフォルダの Data フォルダ直下にあるローカルデータを読み込み
@@ -163,12 +161,6 @@ namespace SRCCore
             {
                 UDList.Load(unitFilePath);
             }
-
-            //// ロードのインジケータ表示を行う
-            //if (My.MyProject.Forms.frmNowLoading.Visible)
-            //{
-            //    GUI.DisplayLoadingProgress();
-            //}
 
             var pilotMessageFilePath = FileSystem.PathCombine(fpath, "pilot_message.txt");
             if (FileSystem.FileExists(pilotMessageFilePath))

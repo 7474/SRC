@@ -47,7 +47,9 @@ namespace SRCCore.Events
         // イベント呼び出しのキュー
         public List<string> EventQue;
         // 現在実行中のイベントラベル
-        public int CurrentLabel;
+        // VB の初期値 0（ラベルが無い）に当たる。C# は行番号が 0 から始まるので -1 にする
+        // （HandleEvent を通らずに引数なしの ClearEvent を実行しても 0 行目のラベルを消さない）
+        public int CurrentLabel = -1;
 
         // Askコマンドで選択した選択肢
         public string SelectedAlternative;
@@ -133,7 +135,7 @@ namespace SRCCore.Events
         {
             SetObjectDrawSetting(DefaultObjectDrawSetting);
         }
-        // XXX GUIの責務にしたい
+        // VB も ObjColor などの描画の設定を Event.bas に持つので、ここに置く
         public ObjectDrawSetting DefaultObjectDrawSetting = new ObjectDrawSetting
         {
             ObjColor = Color.White,

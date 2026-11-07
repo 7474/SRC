@@ -4,13 +4,13 @@ VB 版の `SRC/SRC_20121125/Sound.bas` の手続きと、C# の対応（[説明]
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub StartBGM | 69 | 71 | `SRCCore/Sound.cs` Sound.StartBGM | 未確認 |  |
+| Sub StartBGM | 69 | 71 | `SRCCore/Sound.cs` Sound.StartBGM | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: 同じ曲かの判定に \ を使うので、/ 区切りのパスでは同じ曲と判定できない（InterMissionCommand は / も \ とみなすようにした） |
 | Sub LoadBGM | 142 | 139 | （見つからない） | 未確認 |  |
 | Sub RestartBGM | 283 | 35 | `SRCCore/Sound.cs` Sound.RestartBGM | 未確認 |  |
 | Sub StopBGM | 320 | 49 | `SRCCore/Sound.cs` Sound.StopBGM | 未確認 |  |
 | Sub ResetBGM | 371 | 76 | （見つからない） | 未確認 |  |
 | Function BGMStatus | 449 | 71 | `SRCCore/UIInterface/IPlaySound.cs` BGMStatus<br>`SRCRender/NullSoundPlayer.cs` NullSoundPlayer.BGMStatus<br>`SRCSharpForm/Resoruces/WindowsManagedPlayer.cs` WindowsManagedPlayer.BGMStatus | 未確認 |  |
-| Sub ChangeBGM | 522 | 49 | `SRCCore/Sound.cs` Sound.ChangeBGM | 未確認 |  |
+| Sub ChangeBGM | 522 | 49 | `SRCCore/Sound.cs` Sound.ChangeBGM | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: 同じ曲かの判定に \ を使うので、/ 区切りのパスでは同じ曲と判定できない |
 | Sub InitDirectMusic | 574 | 122 | （見つからない） | 未確認 |  |
 | Function CreateDirectXObject | 698 | 5 | （見つからない） | 未確認 |  |
 | Sub CreateMIDIPortListFile | 705 | 27 | （見つからない） | 未確認 |  |

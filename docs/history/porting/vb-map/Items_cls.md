@@ -14,11 +14,11 @@ VB 版の `SRC/SRC_20121125/Items.cls` の手続きと、C# の対応（[説明]
 | Function IsDefined | 107 | 26 | `SRCCore/Items/Items.cs` Items.IsDefined | 未確認 |  |
 | Function IsDefined2 | 135 | 11 | `SRCCore/Items/Items.cs` Items.IsDefined2 | 未確認 |  |
 | Sub Update | 148 | 21 | `SRCCore/Items/Items.cs` Items.Update | 未確認 |  |
-| Sub Save | 172 | 16 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Save<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Save<br>`SRCCore/Config/ScenarioConfig.cs` Value.Save | 未確認 |  |
-| Sub Load | 190 | 34 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Load<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Load<br>`SRCCore/Models/AliasDataList.cs` AliasDataList.Load | 未確認 |  |
+| Sub Save | 172 | 16 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Save<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Save<br>`SRCCore/Config/ScenarioConfig.cs` Value.Save | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: C# の候補は誤り。SRCCore/SRC.save.cs SRC.SaveData・SRC.DumpData（JSON）に当たる |
+| Sub Load | 190 | 34 | `SRCCore/Config/ComposedConfig.cs` ComposedConfig.Load<br>`SRCCore/Config/LocalFileConfig.cs` LocalFileConfig.Load<br>`SRCCore/Models/AliasDataList.cs` AliasDataList.Load | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: C# の候補は誤り。SRCCore/SRC.save.cs SRC.LoadData（JSON）に当たる |
 | Sub LoadLinkInfo | 226 | 19 | （見つからない） | 未確認 |  |
 | Sub Dump | 248 | 8 | （見つからない） | 未確認 |  |
 | Sub Restore | 258 | 20 | `SRCCore/Items/Items.cs` Items.Restore | 未確認 |  |
-| Sub RestoreLinkInfo | 280 | 10 | （見つからない） | 未確認 |  |
-| Sub RestoreParameter | 292 | 10 | （見つからない） | 未確認 |  |
+| Sub RestoreLinkInfo | 280 | 10 | （見つからない） | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: JSON の Item.UnitId で引くので要らない（SRC#で不要でよさそう） |
+| Sub RestoreParameter | 292 | 10 | （見つからない） | 未確認 | #1498（Event.bas・Intermission.bas・SRC.bas・LabelData.cls）で見つけた手がかり: VB も何もしない（SRC#で不要でよさそう） |
 | Sub Clear | 305 | 7 | `SRCCore/Items/Items.cs` Items.Clear | 未確認 |  |

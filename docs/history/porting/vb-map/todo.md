@@ -17,38 +17,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Config/LocalFileConfig.cs:10` | TODO | TODO 項目の説明を設定ファイルに書けるようにする | 未確認 |  |
 | `SRCCore/Config/LocalFileConfig.cs:11` | XXX | XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。 | 未確認 |  |
 | `SRCCore/Config/LocalFileConfig.cs:30` | XXX | XXX Configの余地ないしConfigのプロパティではないかもな。 | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:18` | XXX | XXX 全般に1オフセットをどうするのかどっかで考えないといけない。 | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:41` | XXX | XXX List値それぞれの初期化 | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:47` | コード | CallStack.Clear(); | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:49`（2 行） | コード | ArgIndexStack.Clear(); | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:52` | コード | UpVarLevelStack.Clear(); | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:54`（2 行） | コード | VarIndexStack.Clear(); | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:57`（2 行） | コード | ForIndexStack.Clear(); | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:67` | XXX | XXX マッピング先が微妙。実装見て見直す。 | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:74` | XXX | XXX 本当か？　手抜きが祟っているだけでは？ | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:113` | XXX | XXX 要らんのでは | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:122` | XXX | XXX この辺がある時だけ再ロードするようにする | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:123`（3 行） | コード | bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = SRC.FileSystem.FileExi... | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:164` | XXX | XXX 要らんのでは | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:221` | XXX | XXX 多分要らん | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:223`（9 行） | コード | var loopTo8 = Information.UBound(EventData) - 1; | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:236` | XXX | XXX 多分要らん | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:239`（10 行） | コード | { | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:261` | XXX | XXX 多分要らん | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:264`（10 行） | コード | { | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:580` | XXX | XXX 条件こけてる気がする | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:815` | XXX | XXX これ消しとかないとまずいの？ | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:816` | コード | eventDataLine.Data = ""; | 未確認 |  |
-| `SRCCore/Events/Event.data.cs:1092` | XXX | XXX | 未確認 |  |
-| `SRCCore/Events/Event.data2.cs:15` | XXX | XXX 消し方。。。 | 未確認 |  |
-| `SRCCore/Events/Event.data2.cs:48`（599 行） | コード | { | 未確認 |  |
-| `SRCCore/Events/Event.handle.cs:120` | XXX | XXX 全滅の処理どこでやってんの？ | 未確認 |  |
-| `SRCCore/Events/Event.handle.cs:391` | XXX | XXX 位置はリセットしない？ | 未確認 |  |
-| `SRCCore/Events/Event.handle.cs:397` | XXX | XXX これはEventsが持ってていいのか？ | 未確認 |  |
-| `SRCCore/Events/Event.label.cs:15` | XXX | XXX Indexがずれていて辛い。 | 未確認 |  |
-| `SRCCore/Events/Event.label.cs:18` | XXX | XXX 死にたい | 未確認 |  |
-| `SRCCore/Events/Event.label.cs:265` | XXX | XXX 考えさせられる | 未確認 |  |
-| `SRCCore/Events/Event.props.cs:136` | XXX | XXX GUIの責務にしたい | 未確認 |  |
+| `SRCCore/Events/Event.data.cs:69` | XXX | XXX VB はシステム側のイベントラベルを消さずに残す（Enable も残る）ので、 | Issue | #1529 |
 | `SRCCore/Expressions/VarData.cs:111` | XXX | XXX Undefind 時の参照、Numeric？ | 未確認 |  |
 | `SRCCore/Expressions/VarData.cs:126` | XXX | XXX 逆の側の型に値入れなくていいの？ | 未確認 | VB の VarData は渡した値だけを持つが、C# の SetValue はもう一方の型の値も埋める。GetVariable の読み出しには表れないが、フィールドを直接読む処理（Sort など）では違いうる。データの項目（VarData.cls）で判断する（#1498 の Expression.bas の突き合わせで見つけた） |
 | `SRCCore/Extensions/ListExtension.cs:11` | XXX | XXX EnumerableExtension | 未確認 |  |
@@ -56,14 +25,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Extensions/StreamExtension.cs:42` | XXX | XXX あまりいい同期化ではないはず | 未確認 |  |
 | `SRCCore/Filesystem/LocalFilesystem.cs:33` | XXX | XXX NormalizePath で先頭 `\` を処理する？ | 未確認 |  |
 | `SRCCore/Filesystem/LocalFilesystem.cs:76` | XXX | XXX Log | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:63` | XXX | XXX Map.ClearMap(); していれば要らんのでは | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:618` | XXX | XXX 分離ユニット選択肢に加えるの？ | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:620`（130 行） | コード | { | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:1307` | XXX | XXX 全半角の処理 | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:1318` | XXX | XXX 全半角の処理 | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:1402` | XXX | XXX return でいいの？ | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:1881` | XXX | XXX 何か微妙 | 未確認 |  |
-| `SRCCore/Intermissions/Intermission.cs:2201` | XXX | XXX 処理系によってはファイル名が取れないかもしれない | 未確認 |  |
 | `SRCCore/Lib/GeneralLib.cs:23`（5 行） | コード | static extern int GetPrivateProfileString(string lpApplicationName, Any lpKeyName, string lpDefault, string lpReturne... | 未確認 |  |
 | `SRCCore/Lib/GeneralLib.cs:88` | XXX | XXX | 未確認 |  |
 | `SRCCore/Lib/GeneralLib.cs:112`（27 行） | コード | static extern int timeBeginPeriod(int uPeriod); | 未確認 |  |
@@ -107,47 +68,18 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Pilots/Pilot.unit.cs:135` | XXX | XXX 外から操作したいものではない | SRC#で不要 | 作りについてのメモ。VB の `Set MapDataForUnit(.X, .Y) = Nothing` と同じ動作 |
 | `SRCCore/Pilots/Pilots.cs:210` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |
 | `SRCCore/Pilots/Pilots.cs:274`（307 行） | コード | { | SRC#で不要 | Pilots.cls の Save〜Clear。セーブデータは JSON（SRC.save.cs）で、読み込んだ後の状態は対応表の Save〜Clear の行に書いた |
-| `SRCCore/SRC.config.cs:19`（147 行） | コード | { | 未確認 |  |
 | `SRCCore/SRC.cs:244` | XXX | XXX 別な実装をするならコンストラクタでは設定しない | 未確認 |  |
-| `SRCCore/SRC.data.cs:30` | XXX | XXX frmNowLoading | 未確認 |  |
-| `SRCCore/SRC.data.cs:32` | コード | { | 未確認 |  |
-| `SRCCore/SRC.data.cs:34` | コード | } | 未確認 |  |
-| `SRCCore/SRC.data.cs:47`（3 行） | コード | ; | 未確認 |  |
-| `SRCCore/SRC.data.cs:169`（3 行） | コード | { | 未確認 |  |
-| `SRCCore/SRC.main.cs:25`（9 行） | コード | string fname; | 未確認 |  |
-| `SRCCore/SRC.main.cs:43`（22 行） | コード | bool localFileExists() { string argfname = AppPath + "Src.ini"; var ret = FileSystem.FileExists(argfname); return ret; } | 未確認 |  |
-| `SRCCore/SRC.main.cs:198`（173 行） | コード | { | 未確認 |  |
-| `SRCCore/SRC.main.cs:412`（212 行） | コード | buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation"); | 未確認 |  |
-| `SRCCore/SRC.main.cs:629`（101 行） | コード | buf = GeneralLib.ReadIni("Option", "ImageBufferNum"); | 未確認 |  |
-| `SRCCore/SRC.main.cs:828` | コード | { | 未確認 |  |
-| `SRCCore/SRC.main.cs:832`（64 行） | コード | i = 0; | 未確認 |  |
-| `SRCCore/SRC.main.cs:909`（58 行） | コード | GUI.ChangeStatus(GuiStatus.Default); | 未確認 |  |
-| `SRCCore/SRC.main.cs:968`（4 行） | コード | } | 未確認 |  |
-| `SRCCore/SRC.main.cs:988`（2 行） | コード | ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath"); | 未確認 |  |
-| `SRCCore/SRC.main.cs:998`（17 行） | コード | GUI.ChangeStatus(GuiStatus.Default); | 未確認 |  |
-| `SRCCore/SRC.play.cs:30` | XXX | XXX ウィンドウのタイトルを設定するなら IGUI.MainFormText を見直す | 未確認 |  |
-| `SRCCore/SRC.play.cs:36`（29 行） | コード | { | 未確認 |  |
-| `SRCCore/SRC.play.cs:113` | XXX | XXX Mapサイズ処理が要りそうなら処理する | 未確認 |  |
-| `SRCCore/SRC.play.cs:115`（3 行） | コード | { | 未確認 |  |
-| `SRCCore/SRC.play.cs:161` | コード | GUI.MainForm.Refresh(); | 未確認 |  |
-| `SRCCore/SRC.play.cs:628` | XXX | XXX 二段階走査してるってこと？ | 未確認 |  |
-| `SRCCore/SRC.play.cs:705` | XXX | XXX | 未確認 |  |
-| `SRCCore/SRC.play.cs:706` | コード | Application.DoEvents(); | 未確認 |  |
-| `SRCCore/SRC.play.cs:890` | コード | Exit.eveを探す | 未確認 |  |
-| `SRCCore/SRC.play.cs:900` | コード | Exit.eveが無ければそのまま終了 | 未確認 |  |
-| `SRCCore/SRC.play.cs:910` | コード | Exit.eveを読み込み | 未確認 |  |
-| `SRCCore/SRC.play.cs:920` | コード | Exit.eveのプロローグイベントを実施 | 未確認 |  |
-| `SRCCore/SRC.play.cs:932`（37 行） | コード | { | 未確認 |  |
-| `SRCCore/SRC.save.cs:64` | TODO | TODO セーブ・ロードの精査（基本的な保存・読み込みは実装済み; 完全な互換性検証が残タスク） | 未確認 |  |
-| `SRCCore/SRC.save.cs:72` | XXX | XXX EntryなのかCoreなのか | 未確認 |  |
-| `SRCCore/SRC.save.cs:99` | XXX | XXX Version プロパティだけのオブジェクトでバージョンチェックなど | 未確認 |  |
-| `SRCCore/SRC.save.cs:131`（4 行） | コード | PList.LoadLinkInfo(); | 未確認 |  |
-| `SRCCore/SRC.save.cs:158` | XXX | XXX FileName | 未確認 |  |
-| `SRCCore/SRC.save.cs:173` | XXX | XXX EntryなのかCoreなのか | 未確認 |  |
-| `SRCCore/SRC.save.cs:269` | XXX | XXX FileName | 未確認 |  |
-| `SRCCore/SRC.save.cs:296` | XXX | XXX Version プロパティだけのオブジェクトでバージョンチェックなど | 未確認 |  |
-| `SRCCore/SRC.save.cs:298` | コード | SaveDataVersion = Conversions.ToInteger(fname2); | 未確認 |  |
-| `SRCCore/SRC.save.cs:394`（15 行） | コード | Event.SkipEventData(); | 未確認 | #1498（Unit.cls その他）で見つけた手がかり: UList.RestoreLinkInfo・RestoreParameter に当たる処理は Unit.RestoreLinkInfo と JSON で済んでいる。PList・IList の行と PList.UpdateSupportMod は SRC.bas の担当で見てもらう |
+| `SRCCore/SRC.main.cs:25`（9 行） | コード | string fname; | SRC#で不要 | VB の Main の 2 重起動の禁止。SRC# ではホスト（GUI）が受け持つ（SRC_bas.md の Main の行） |
+| `SRCCore/SRC.main.cs:43`（22 行） | コード | bool localFileExists() { string argfname = AppPath + "Src.ini"; var ret = FileSystem.FileExists(argfname); return ret; } | SRC#で不要 | Src.ini の作成・乱数の初期化・時間解像度・フルスクリーン・マウスカーソル。設定は JSON（LocalFileConfig）で、画面は GUI が受け持つ。乱数は SRC が持つ Random で初期化する |
+| `SRCCore/SRC.main.cs:212`（173 行） | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
+| `SRCCore/SRC.main.cs:426`（212 行） | コード | buf = GeneralLib.ReadIni("Option", "SpecialPowerAnimation"); | SRC#で不要 | Src.ini の [Option] の読み込み。設定は JSON（LocalFileConfig・ComposedConfig）が持つ |
+| `SRCCore/SRC.main.cs:643`（101 行） | コード | buf = GeneralLib.ReadIni("Option", "ImageBufferNum"); | SRC#で不要 | Src.ini の画像バッファ・マウスボタンなどの読み込み。設定は JSON で、描画は GUI が受け持つ |
+| `SRCCore/SRC.main.cs:842` | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
+| `SRCCore/SRC.main.cs:846`（128 行） | コード | i = 0; | SRC#で不要 | ファイルをダイアログで選ぶ分岐。SRC# はホストがファイルを渡す |
+| `SRCCore/SRC.main.cs:975`（4 行） | コード | } | SRC#で不要 | ファイルをダイアログで選ぶ分岐の終わり |
+| `SRCCore/SRC.main.cs:995`（2 行） | コード | ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath"); | SRC#で不要 | ExtDataPath・ExtDataPath2 は JSON の設定（LoadScenarioConfig）から取る |
+| `SRCCore/SRC.main.cs:1005`（2 行） | コード | GUI.ChangeStatus(GuiStatus.Default); | SRC#で不要 | マウスカーソルは GUI が受け持つ |
+| `SRCCore/SRC.main.cs:1017`（4 行） | コード | { | SRC#で不要 | Src.ini の LastFolder への書き込み。最後に開いたフォルダはホスト（GUI）が覚える |
 | `SRCCore/Sound.cs:147` | XXX | XXX 止まってるってことはリピートしてないってことだろう。 | 未確認 |  |
 | `SRCCore/Sound.cs:244` | XXX | XXX なんで？ | 未確認 |  |
 | `SRCCore/Sound.cs:426` | XXX | XXX なんで wave_name 分解したんだろう？ | 未確認 |  |

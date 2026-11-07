@@ -51,7 +51,7 @@ namespace SRCCore.Coverage.Tests
         public void UserDefinedCommand_LabelIsFormattedValueOfName()
         {
             // IntermissionCommand(名前) の「名前」は式として評価し、式置換した結果を表示する。
-            // コマンドの識別には変数名を使う
+            // 元の SRC と同じく、どのコマンドかは表示名（エリアスを適用する前）で分ける
             var (src, gui) = IntermissionCoverageFixture.CreateSrc();
             src.Expression.DefineGlobalVariable("次ステージ");
             src.Expression.SetVariableAsString("次ステージ", "next.eve");
@@ -66,7 +66,7 @@ namespace SRCCore.Coverage.Tests
 
             src.InterMission.InterMissionCommand(skip_update: true);
 
-            var item = captured.Items.Single(x => x.ListItemID == "IntermissionCommand(会議名)");
+            var item = captured.Items.Single(x => x.ListItemID == "第3回作戦会議");
             Assert.AreEqual("第3回作戦会議", item.Text);
             // 「SRCを終了」の直前に並ぶ
             Assert.AreEqual(captured.Items.Count - 2, captured.Items.IndexOf(item));

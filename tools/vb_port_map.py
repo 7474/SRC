@@ -294,11 +294,14 @@ def write_todo():
     """SRCCore の TODO・XXX・コメントアウトされたコードの一覧（todo.md）。手で書いた「状態」「メモ」は、ファイルと本文が同じ行に残す"""
     path = OUT_DIR / "todo.md"
     old = {}
+    # 同じファイルに同じ本文の行が複数あるときは、場所（ファイルと行）が同じ行の状態とメモを先に使う
+    old_at = {}
     if path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
             cols = [c.strip() for c in line.strip().strip("|").split("|")]
             if line.startswith("| `") and len(cols) == 5:
                 old[(cols[0].split(":")[0], cols[2])] = (cols[3], cols[4])
+                old_at[(cols[0], cols[2])] = (cols[3], cols[4])
     rows = []
     base = ROOT / "SRC.Sharp"
     for file in sorted((base / "SRCCore").rglob("*.cs")):
@@ -341,7 +344,7 @@ def write_todo():
         if len(text) > 120:
             text = text[:117] + "..."
         where = f"`{rel}:{i}`" + (f"（{r[4]} 行）" if kind == "コード" and r[4] > 1 else "")
-        state, memo = old.get((f"`{rel}", text), ("未確認", ""))
+        state, memo = old_at.get((where, text)) or old.get((f"`{rel}", text), ("未確認", ""))
         lines.append(f"| {where} | {kind} | {text} | {state} | {memo} |")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return len(rows)
