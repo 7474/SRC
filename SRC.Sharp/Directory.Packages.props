@@ -48,4 +48,19 @@
     <PackageVersion Include="System.Runtime.Caching" Version="10.0.14" />
     <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.14" />
   </ItemGroup>
+  <!--
+    次の .NET を試すとき（-p:SrcSharpTargetFramework=net11.0。Directory.Build.props）だけ使う版。
+    Blazor WebAssembly のパッケージは SDK・ランタイムとメジャーをそろえる必要がある。
+    SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っていて、.NET 11（Emscripten 6.0.2）向けは 4.156 から。
+    SkiaSharp は管理側とネイティブの版をそろえる（dependabot.yml）。
+    ほかの Microsoft.Extensions.* などは 10 の版のまま .NET 11 で動く。
+    .NET 11 に上げるときは、上の版をこれにそろえてこのグループを消す（docs/dotnet-upgrade.md）
+  -->
+  <ItemGroup Condition="'$(SrcSharpTargetFramework)' == 'net11.0'">
+    <PackageVersion Update="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0-rc.3.26522.148" />
+    <PackageVersion Update="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="11.0.0-rc.3.26522.148" />
+    <PackageVersion Update="SkiaSharp" Version="4.156.0-preview.1.26512.10" />
+    <PackageVersion Update="SkiaSharp.NativeAssets.Linux" Version="4.156.0-preview.1.26512.10" />
+    <PackageVersion Update="SkiaSharp.NativeAssets.WebAssembly" Version="4.156.0-preview.1.26512.10" />
+  </ItemGroup>
 </Project>

@@ -31,30 +31,6 @@ namespace SRCSharpForm
         public ToolTip ToolTip1;
         private Timer _Timer2;
 
-        public Timer Timer2
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer2;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer2 != null)
-                {
-                    _Timer2.Tick -= Timer2_Tick;
-                }
-
-                _Timer2 = value;
-                if (_Timer2 != null)
-                {
-                    _Timer2.Tick += Timer2_Tick;
-                }
-            }
-        }
-
         public TextBox txtComment;
         public TextBox txtMorale2;
         public TextBox txtMorale1;
@@ -71,30 +47,6 @@ namespace SRCSharpForm
         public PictureBox picUnit2;
         public PictureBox picUnit1;
         private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
 
         private ListBox lstItems;
         public PictureBox picBar;
