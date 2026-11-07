@@ -17,13 +17,10 @@ namespace SRCSharpForm.Resoruces
     {
         // https://github.com/naudio/NAudio/blob/master/Docs/PlayAudioFileWinForms.md
         public WaveOut outputDevice;
-        //public AudioFileReader audioFile;
         public bool repeat;
 
         public void Dispose()
         {
-            //audioFile?.Dispose();
-            //audioFile = null;
             outputDevice?.Dispose();
             outputDevice = null;
         }
@@ -145,7 +142,6 @@ namespace SRCSharpForm.Resoruces
             if (!outputMap.ContainsKey(channel))
             {
                 var outputDevice = new WaveOut();
-                //outputDevice.PlaybackStopped += OnPlaybackStopped;
                 outputMap[channel] = new WaveChannel()
                 {
                     outputDevice = outputDevice,
@@ -161,7 +157,6 @@ namespace SRCSharpForm.Resoruces
             waveChannel.outputDevice.Play();
         }
 
-
         private void StartMidiPlayback(Stream stream, PlaySoundMode mode)
         {
             midiFile = MidiFile.Read(stream);
@@ -176,8 +171,6 @@ namespace SRCSharpForm.Resoruces
                     new NotePlaybackData(data.NoteNumber, ScaleVelocity(data.Velocity, volume), data.OffVelocity, data.Channel);
                 midiPlayback.Start();
                 // XXX いい感じに無音シークしたい。
-                //Task.Delay(100).Wait();
-                //midiPlayback.MoveToNextSnapPoint(midiPlayback.Snapping.SnapToNotesStarts());
             }
             catch
             {
@@ -397,7 +390,6 @@ namespace SRCSharpForm.Resoruces
                 default:
                     // AudioFileReader は MediaFoundationReader に処理を移譲しているけれど、
                     // ファイル名があっても構築するのはちょっと大変そう
-                    //return new MediaFoundationReader(stream);
                     throw new InvalidOperationException(soundType + " is not supported.");
             }
         }

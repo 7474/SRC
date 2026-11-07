@@ -1182,7 +1182,6 @@ namespace SRCCore.Units
                 dmg = t.HP;
             }
 
-
             // 確実に発生する特殊効果
             int prev_en;
             if (w.IsWeaponClassifiedAs("減") && !t.SpecialEffectImmune("減"))
@@ -1688,7 +1687,6 @@ namespace SRCCore.Units
                     }
                 }
 
-                //// 破壊された場合の処理
                 int morale_mod;
                 if (t.HP == 0)
                 {
@@ -1939,7 +1937,6 @@ namespace SRCCore.Units
 
                 Cure:
                     ;
-
 
                     // ユニット破壊によるパーツ分離
                     if (separate_parts)

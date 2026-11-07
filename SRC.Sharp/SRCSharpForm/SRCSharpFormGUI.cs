@@ -186,51 +186,12 @@ namespace SRCSharpForm
         {
             Console.WriteLine("LoadForms");
 
-            //short X, Y;
-
-            //Load(frmToolTip);
             frmMessage = new frmMessage()
             {
                 SRC = SRC
             };
-            //Load(frmListBox);
             LockGUI();
-            //Commands.CommandState = "ユニット選択";
 
-            //// マップ画面に表示できるマップのサイズ
-            //switch (Strings.LCase(GeneralLib.ReadIni("Option", "NewGUI")) ?? "")
-            //{
-            //    case "on":
-            //        {
-            //            // MOD START MARGE
-            //            NewGUIMode = true;
-            //            // MOD END MARGE
-            //            MainWidth = 20;
-            //            break;
-            //        }
-
-            //    case "off":
-            //        {
-            //            MainWidth = 15;
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            MainWidth = 15;
-            //            SystemConfig.SetItem("Option", "NewGUI", "Off");
-            //            break;
-            //        }
-            //}
-            //// ADD START MARGE
-            //// Optionで定義されていればそちらを優先する
-            //if (Expression.IsOptionDefined("新ＧＵＩ"))
-            //{
-            //    NewGUIMode = true;
-            //    MainWidth = 20;
-            //}
-            //// ADD END MARGE
-            //MainHeight = 15;
             MainWidth = 15;
             MainHeight = 15;
 
@@ -335,10 +296,6 @@ namespace SRCSharpForm
 
             // 画面を更新
             RefreshScreen(false, late_refresh);
-
-            //'カーソルを再描画
-            //GetCursorPos PT
-            //ret = SetCursorPos(PT.X, PT.Y)
         }
 
         public void MaskScreen()
@@ -483,50 +440,6 @@ namespace SRCSharpForm
                 return;
             }
 
-            #region XXX 右ボタン参照
-            //GUI.GetCursorPos(PT);
-
-            //// メッセージウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            //{
-            //    {
-            //        var withBlock = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// メインウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //{
-            //    {
-            //        var withBlock1 = GUI.MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
-
             // 倒れる音
             switch (u.Area ?? "")
             {
@@ -640,51 +553,6 @@ namespace SRCSharpForm
             {
                 return;
             }
-
-            #region XXX 右ボタン参照
-            //GUI.GetCursorPos(PT);
-
-            //// メッセージウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            //{
-            //    {
-            //        var withBlock = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// メインウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //{
-            //    {
-            //        var withBlock1 = GUI.MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
-
 
             // 爆発音
             switch (tsize ?? "")
@@ -900,7 +768,6 @@ namespace SRCSharpForm
             }
         }
 
-
         public int ListBox(ListBoxArgs args)
         {
             frmListBox.ShowItems(MainForm, args);
@@ -1034,7 +901,6 @@ namespace SRCSharpForm
 
                 return Commands.SelectedItem;
             }
-
         }
 
         public bool IsInDeploymentSelection { get; private set; }
@@ -1229,13 +1095,6 @@ namespace SRCSharpForm
             {
                 // ユニット上まで移動
                 {
-                    //var withBlock2 = MainForm;
-                    //if (NewGUIMode)
-                    //{
-                    //    tx = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 4L);
-                    //    ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 16d);
-                    //}
-                    //else
                     {
                         tx = MainForm.Left + 32 * (t.x - (MapX - MainWidth / 2)) + 24;
                         ty = MainForm.Top + MainForm.Height - MainForm.ClientRectangle.Height + 32 * (t.y - (MapY - MainHeight / 2)) + 20;
@@ -1250,7 +1109,6 @@ namespace SRCSharpForm
             var prev_lock = IsGUILocked;
             IsGUILocked = true;
             // XXX
-            //Status.IsStatusWindowDisabled = true;
             for (var i = 1; i <= num; i++)
             {
                 Cursor.Position = new Point(
@@ -1259,7 +1117,6 @@ namespace SRCSharpForm
                 );
                 Sleep(10, true);
             }
-            //Status.IsStatusWindowDisabled = false;
             IsGUILocked = prev_lock;
 
             // 新しいカーソル位置を記録
@@ -1455,8 +1312,6 @@ namespace SRCSharpForm
                 }
                 telop.Close();
             }
-
-
         }
 
         public void SetTitle(string title)
@@ -1535,7 +1390,6 @@ namespace SRCSharpForm
             if (icon.HasValue)
             {
                 res = MsgBox.Show(owner, message, title, buttons, icon.Value);
-
             }
             else
             {
@@ -1568,12 +1422,6 @@ namespace SRCSharpForm
 
         public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
         {
-            //// 一旦「常に手前に表示」を解除
-            //if (My.MyProject.Forms.frmListBox.Visible)
-            //{
-            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
-            //}
-            
             var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
             string fname;
             using (var fsd = new SaveFileDialog())
@@ -1594,12 +1442,6 @@ namespace SRCSharpForm
                     return null;
                 }
             }
-
-            //// 再び「常に手前に表示」
-            //if (My.MyProject.Forms.frmListBox.Visible)
-            //{
-            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
-            //}
 
             // キャンセル？
             if (string.IsNullOrEmpty(fname))

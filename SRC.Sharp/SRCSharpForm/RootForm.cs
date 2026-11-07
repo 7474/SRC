@@ -145,16 +145,6 @@ namespace SRCSharpForm
             {
                 throw new Exception("hoge");
             });
-
-            // CurrentDomain.UnhandledException
-            //var newThread = new System.Threading.Thread(() =>
-            //{
-            //    throw new Exception("hoge");
-            //});
-            //newThread.Start();
-
-            // ThreadException（UIスレッド）
-            //throw new Exception("hoge");
         }
     }
 }

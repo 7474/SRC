@@ -18,16 +18,6 @@ namespace SRCCore.Lib
     // 汎用的な処理を行うモジュール
     public static class GeneralLib
     {
-        //        // iniファイルの読み出し
-        //        [DllImport("kernel32", EntryPoint = "GetPrivateProfileStringA")]
-        //        static extern int GetPrivateProfileString(string lpApplicationName, Any lpKeyName, string lpDefault, string lpReturnedString, int nSize, string lpFileName);
-
-        //        // iniファイルへの書き込み
-        //        [DllImport("kernel32", EntryPoint = "WritePrivateProfileStringA")]
-        //        static extern int WritePrivateProfileString(string lpApplicationName, Any lpKeyName, string lpString, string lpFileName);
-
-        //        // Windowsが起動してからの時間を返す(ミリ秒)
-        //        [DllImport("winmm.dll")]
         /// <summary>
         /// データ（ユニット・パイロット・非戦闘員）の画像に指定できるファイル名か。
         /// 元の SRC は .bmp だけだが、SRC# は PaintPicture コマンドなどと同じく .png・.jpg・.gif も受け付ける。
@@ -106,37 +96,6 @@ namespace SRCCore.Lib
             }
             Thread.Sleep(milliseconds);
         }
-
-        //        // 時間処理の解像度を変更する
-        //        [DllImport("winmm.dll")]
-        //        static extern int timeBeginPeriod(int uPeriod);
-        //        [DllImport("winmm.dll")]
-        //        static extern int timeEndPeriod(int uPeriod);
-
-        //        // ファイル属性を返す
-        //        [DllImport("kernel32", EntryPoint = "GetFileAttributesA")]
-        //        static extern int GetFileAttributes(string lpFileName);
-
-        //        // OSのバージョン情報を返す
-        //        public struct OSVERSIONINFO
-        //        {
-        //            public int dwOSVersionInfoSize;
-        //            public int dwMajorVersion;
-        //            public int dwMinorVersion;
-        //            public int dwBuildNumber;
-        //            public int dwPlatformId;
-        //            // UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-        //            [VBFixedString(128)]
-        //            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-        //            public char[] szCSDVersion;
-        //        }
-
-        //        // UPGRADE_WARNING: 構造体 OSVERSIONINFO に、この Declare ステートメントの引数としてマーシャリング属性を渡す必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' をクリックしてください。
-        //        [DllImport("kernel32", EntryPoint = "GetVersionExA")]
-        //        static extern int GetVersionEx(OSVERSIONINFO lpVersionInformation);
-
-        //        private const int VER_PLATFORM_WIN32_NT = 2;
-
 
         // 乱数発生用シード値
         public static int RndSeed;
@@ -225,45 +184,6 @@ namespace SRCCore.Lib
         {
             return string.IsNullOrWhiteSpace(ch);
         }
-
-        //        // リスト list に要素 str を追加
-        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static void LAppend(string list, string str)
-        //        {
-        //            list = Strings.Trim(list);
-        //            str = Strings.Trim(str);
-        //            if (!string.IsNullOrEmpty(list))
-        //            {
-        //                if (!string.IsNullOrEmpty(str))
-        //                {
-        //                    list = list + " " + str;
-        //                }
-        //            }
-        //            else if (!string.IsNullOrEmpty(str))
-        //            {
-        //                list = str;
-        //            }
-        //        }
-
-        //        // リスト list に str が登場する位置を返す
-        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static int SearchList(string list, string str)
-        //        {
-        //            int SearchListRet = default;
-        //            int i;
-        //            var loopTo = LLength(list);
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                if ((LIndex(list, i) ?? "") == (str ?? ""))
-        //                {
-        //                    SearchListRet = i;
-        //                    return SearchListRet;
-        //                }
-        //            }
-
-        //            SearchListRet = 0;
-        //            return SearchListRet;
-        //        }
 
         // リスト list の要素を分割して返す (括弧を考慮)
         public static IList<string> ToList(string list, bool removeKakko = false)
@@ -376,7 +296,6 @@ namespace SRCCore.Lib
             }
             var listList = ToList(list);
             return listList.Count >= idx ? listList[idx - 1] : "";
-
         }
 
         // リスト list の要素数を返す (括弧を考慮)
@@ -409,62 +328,6 @@ namespace SRCCore.Lib
         {
             return idx > 1 ? string.Join(" ", ToList(list ?? "").Skip(idx - 1)) : "";
         }
-
-        //        // タブを考慮したTrim
-        //        // UPGRADE_NOTE: str は str にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static void TrimString(string str)
-        //        {
-        //            int j, i, lstr;
-        //            lstr = Strings.Len(str);
-        //            i = 1;
-        //            j = lstr;
-
-        //            // 先頭の空白を検索
-        //            while (i <= j)
-        //            {
-        //                switch (Strings.Asc(Strings.Mid(str, i)))
-        //                {
-        //                    case 9:
-        //                    case 32:
-        //                    case -32448:
-        //                        {
-        //                            i = (i + 1);
-        //                            break;
-        //                        }
-
-        //                    default:
-        //                        {
-        //                            break;
-        //                        }
-        //                }
-        //            }
-
-        //            // 末尾の空白を検索
-        //            while (i < j)
-        //            {
-        //                switch (Strings.Asc(Strings.Mid(str, j)))
-        //                {
-        //                    case 9:
-        //                    case 32:
-        //                    case -32448:
-        //                        {
-        //                            j = (j - 1);
-        //                            break;
-        //                        }
-
-        //                    default:
-        //                        {
-        //                            break;
-        //                        }
-        //                }
-        //            }
-
-        //            // 空白があれば置き換え
-        //            if (i != 1 || j != lstr)
-        //            {
-        //                str = Strings.Mid(str, i, j - i + 1);
-        //            }
-        //        }
 
         // 文字列 str 中に str2 が出現する位置を末尾から検索
         public static int InStr2(string str, string str2)
@@ -576,68 +439,6 @@ namespace SRCCore.Lib
             return notHelfWidth.Replace(buf, "__").Length;
         }
 
-        //        // Src.ini ファイルの ini_section から ini_entry の値を読み出す
-        //        public static string ReadIni(string ini_section, string ini_entry)
-        //        {
-        //            string ReadIniRet = default;
-        //            var s = new Microsoft.VisualBasic.Compatibility.VB6.FixedLengthString(1024);
-        //            var ret = default;
-
-        //            // シナリオ側に Src.ini ファイルがあればそちらを優先
-        //            if (FileExists(SRC.ScenarioPath + "Src.ini"))
-        //            {
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.ScenarioPath + "Src.ini");
-        //                s.Value = arglpReturnedString;
-        //            }
-
-        //            // シナリオ側 Src.ini にエントリが無ければ本体側から読み出し
-        //            if (ret == 0)
-        //            {
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.AppPath + "Src.ini");
-        //                s.Value = arglpReturnedString1;
-        //            }
-
-        //            // 不要部分を削除
-        //            ReadIniRet = Strings.Left(s.Value, Strings.InStr(s.Value, Constants.vbNullChar) - 1);
-        //            return ReadIniRet;
-        //        }
-
-
-        //        // Src.ini ファイルの ini_section の ini_entry に値 ini_data を書き込む
-        //        public static void WriteIni(string ini_section, string ini_entry, string ini_data)
-        //        {
-        //            var s = new Microsoft.VisualBasic.Compatibility.VB6.FixedLengthString(1024);
-        //            var ret = default;
-
-        //            // LastFolderの設定のみは必ず本体側の Src.ini に書き込む
-        //            if (ini_entry == "LastFolder")
-        //            {
-        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.AppPath + "Src.ini");
-        //                return;
-        //            }
-
-        //            // シナリオ側に Src.ini ファイルがあればそちらを優先
-        //            bool localFileExists() { string argfname = SRC.ScenarioPath + "Src.ini"; var ret = FileExists(argfname); return ret; }
-
-        //            if (Strings.Len(SRC.ScenarioPath) > 0 && localFileExists())
-        //            {
-        //                // エントリが存在するかチェック
-        //                ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, SRC.ScenarioPath + "Src.ini");
-        //                s.Value = arglpReturnedString;
-        //                if (ret > 1)
-        //                {
-        //                    ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.ScenarioPath + "Src.ini");
-        //                }
-        //            }
-
-        //            // シナリオ側 Src.ini にエントリが無ければ本体側から読み出し
-        //            if (ret == 0)
-        //            {
-        //                ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, SRC.AppPath + "Src.ini");
-        //            }
-        //        }
-
-
         // 文字列 s1 中の s2 を s3 に置換した文字列を返す
         // VB版と同様に、s2 と s3 の長さが等しい場合は置換後の文字列の先頭から再検索する
         public static string ReplaceString(string s1, string s2, string s3)
@@ -673,131 +474,6 @@ namespace SRCCore.Lib
             return s1.Replace(s2, s3, StringComparison.Ordinal);
         }
 
-        //        // 文字列 s1 中の s2 を s3 に置換
-        //        // 置換を行ったときにはTrueを返す
-        //        public static bool ReplaceString(string s1, string s2, string s3)
-        //        {
-        //            bool ReplaceStringRet = default;
-        //            string buf;
-        //            int len2, len3;
-        //            int idx;
-        //            idx = Strings.InStr(s1, s2);
-
-        //            // 置換が必要？
-        //            if (idx == 0)
-        //            {
-        //                return ReplaceStringRet;
-        //            }
-
-        //            len2 = Strings.Len(s2);
-        //            len3 = Strings.Len(s3);
-
-        //            // &は遅いので出来るだけMidを使う
-        //            if (len2 == len3)
-        //            {
-        //                do
-        //                {
-        //                    StringType.MidStmtStr(s1, idx, len2, s3);
-        //                    idx = Strings.InStr(s1, s2);
-        //                }
-        //                while (idx > 0);
-        //            }
-        //            else
-        //            {
-        //                buf = s1;
-        //                s1 = "";
-        //                do
-        //                {
-        //                    s1 = s1 + Strings.Left(buf, idx - 1) + s3;
-        //                    buf = Strings.Mid(buf, idx + len2);
-        //                    idx = Strings.InStr(buf, s2);
-        //                }
-        //                while (idx > 0);
-        //                s1 = s1 + buf;
-        //            }
-
-        //            ReplaceStringRet = true;
-        //            return ReplaceStringRet;
-        //        }
-
-        //// ファイル fname が存在するか判定
-        //public static bool FileExists(string fname)
-        //{
-        //    return File.Exists(fname);
-        //}
-
-        //        // データファイルfnumからデータを一行読み込み、line_bufに格納するとともに
-        //        // 行番号line_numを更新する。
-        //        // 行頭に「#」がある場合は行の読み飛ばしを行う。
-        //        // 行中に「//」がある場合、そこからはコメントと見なして無視する。
-        //        // 行末に「_」がある場合は行の結合を行う。
-        //        public static void GetLine(int fnum, string line_buf, int line_num)
-        //        {
-        //            string buf;
-        //            int idx;
-        //            line_buf = "";
-        //            while (!FileSystem.EOF(fnum))
-        //            {
-        //                line_num = line_num + 1;
-        //                buf = FileSystem.LineInput(fnum);
-
-        //                // コメント行はスキップ
-        //                if (Strings.Left(buf, 1) == "#")
-        //                {
-        //                    goto NextLine;
-        //                }
-
-        //                // コメント部分を削除
-        //                idx = Strings.InStr(buf, "//");
-        //                if (idx > 0)
-        //                {
-        //                    buf = Strings.Left(buf, idx - 1);
-        //                }
-
-        //                // 行末が「_」でなければ行の読み込みを完了
-        //                if (Strings.Right(buf, 1) != "_")
-        //                {
-        //                    TrimString(buf);
-        //                    line_buf = line_buf + buf;
-        //                    break;
-        //                }
-
-        //                // 行末が「_」の場合は行を結合
-        //                TrimString(buf);
-        //                line_buf = line_buf + Strings.Left(buf, Strings.Len(buf) - 1);
-        //            NextLine:
-        //                ;
-        //            }
-
-        //            ReplaceString(line_buf, "，", ", ");
-        //        }
-
-
-        //        // Windowsのバージョンを判定する
-        //        public static int GetWinVersion()
-        //        {
-        //            int GetWinVersionRet = default;
-        //            var vinfo = default(OSVERSIONINFO);
-        //            int ret;
-        //            {
-        //                var withBlock = vinfo;
-        //                // dwOSVersionInfoSizeに構造体のサイズをセットする。
-        //                withBlock.dwOSVersionInfoSize = Strings.Len(vinfo);
-
-        //                // OSのバージョン情報を得る。
-        //                ret = GetVersionEx(vinfo);
-        //                if (ret == 0)
-        //                {
-        //                    return GetWinVersionRet;
-        //                }
-
-        //                GetWinVersionRet = (withBlock.dwMajorVersion * 100 + withBlock.dwMinorVersion);
-        //            }
-
-        //            return GetWinVersionRet;
-        //        }
-
-
         // 数値を指数表記を使わずに文字列表記する
         public static string FormatNum(double n)
         {
@@ -813,7 +489,6 @@ namespace SRCCore.Lib
 
             return FormatNumRet;
         }
-
 
         // 文字列 str が数値かどうか調べる
         public static bool IsNumber(string str)
@@ -833,7 +508,6 @@ namespace SRCCore.Lib
             IsNumberRet = true;
             return IsNumberRet;
         }
-
 
         // 武器属性処理用の関数群。
 

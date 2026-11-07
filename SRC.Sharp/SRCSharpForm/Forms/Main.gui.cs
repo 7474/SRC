@@ -314,11 +314,6 @@ namespace SRCSharpForm
             if (smode == "リフレッシュ無し" && GUI.ScreenIsSaved)
             {
                 buffer = MainBufferBack;
-                //// 表示画像を消去する際に使う描画領域を設定
-                //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(xx, 0));
-                //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(yy, 0));
-                //PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(xx + 32, MainPWidth - 1));
-                //PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(yy + 32, MainPHeight - 1));
             }
             else
             {

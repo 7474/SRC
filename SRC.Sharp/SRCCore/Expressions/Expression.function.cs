@@ -158,8 +158,6 @@ namespace SRCCore.Expressions
             int pcount;
             var is_term = new bool[(Event.MaxArgIndex + 1)];
             string dir_path;
-            //Static dir_list() As String
-            //Static dir_index As int
 
             // 関数呼び出しの書式に合っているかチェック
             if (Strings.Right(expr, 1) != ")")

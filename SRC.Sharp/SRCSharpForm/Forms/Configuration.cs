@@ -9,14 +9,12 @@ namespace SRCSharpForm
 {
     internal partial class frmConfiguration : Form
     {
-
         // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
         // 本プログラムはフリーソフトであり、無保証です。
         // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
         // 再頒布または改変することができます。
 
         // マップコマンド「設定変更」用ダイアログ
-
 
         // MP3Volumeを記録
         private float SavedMP3Volume;
@@ -31,17 +29,6 @@ namespace SRCSharpForm
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
         private void chkBattleAnimation_CheckStateChanged(object eventSender, EventArgs eventArgs)
         {
-            //// 戦闘アニメを表示しない場合は拡張戦闘アニメ、武器アニメ選択の項目を選択不能にする
-            //if ((int)chkBattleAnimation.CheckState == 1)
-            //{
-            //    chkExtendedAnimation.Enabled = true;
-            //    chkWeaponAnimation.Enabled = true;
-            //}
-            //else
-            //{
-            //    chkExtendedAnimation.Enabled = false;
-            //    chkWeaponAnimation.Enabled = false;
-            //}
         }
 
         // キャンセルボタンが押された
@@ -191,15 +178,6 @@ namespace SRCSharpForm
                 chkBattleAnimation.CheckState = CheckState.Unchecked;
             }
 
-            //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; 
-            //    var ret = SRC.FileSystem.FileExists(argfname); 
-            //    return ret; }
-
-            //if (!localFileExists())
-            //{
-            //    chkBattleAnimation.CheckState = CheckState.Indeterminate; // 無効
-            //}
-
             // 拡張戦闘アニメ表示
             if (SRC.ExtendedAnimation)
             {
@@ -277,37 +255,6 @@ namespace SRCSharpForm
             {
                 chkShowSquareLine.CheckState = CheckState.Unchecked;
             }
-
-            //// 味方フェイズ開始時のターン表示
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "Turn")) == "on")
-            //{
-            //    chkShowTurn.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkShowTurn.CheckState = CheckState.Unchecked;
-            //}
-
-            //// 敵フェイズ中にＢＧＭを変更しない
-            //if (SRC.KeepEnemyBGM)
-            //{
-            //    chkKeepEnemyBGM.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkKeepEnemyBGM.CheckState = CheckState.Unchecked;
-            //}
-
-            //// MIDI演奏にDirectMusicを使用する
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectMusic")) == "on")
-            //{
-            //    chkUseDirectMusic.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkUseDirectMusic.CheckState = CheckState.Unchecked;
-            //}
-
 
             // MP3音量
             SavedMP3Volume = Sound.Player.SoundVolume;

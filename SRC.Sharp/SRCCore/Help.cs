@@ -1170,11 +1170,8 @@ namespace SRCCore
                         break;
                     }
 
-                // ADD START MARGE
                 case "遊撃":
                     {
-                        // ADD END MARGE
-
                         msg = "移動後使用可能な武器・" + Expression.Term("アビリティ", u) + "を使った後に、残った移動力を使って移動できる。";
                         break;
                     }
@@ -3349,10 +3346,7 @@ namespace SRCCore
                             }
                             else
                             {
-                                // MOD START MARGE
-                                // msg = msg && buf && "阻止。"
                                 msg = msg + "阻止。";
-                                // MOD END MARGE
                             }
                         }
                         else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
@@ -3540,11 +3534,8 @@ namespace SRCCore
                         {
                             if (buf != "100")
                             {
-                                // MOD START MARGE
-                                // msg = msg && "%の確率で阻止。"
                                 msg = msg + buf + "%の確率で阻止。";
                             }
-                            // MOD END MARGE
                             else
                             {
                                 msg = msg + "阻止。";
@@ -5061,7 +5052,6 @@ namespace SRCCore
                         break;
                     }
 
-                // ADD START MARGE
                 case "地形効果無効化":
                     {
                         if (GeneralLib.LLength(fdata) > 1)
@@ -5083,7 +5073,6 @@ namespace SRCCore
                         {
                             msg = msg + "全地形の";
                         }
-                        // ADD END MARGE
 
                         msg = msg + "ＨＰ・ＥＮ減少や状態付加等の特殊効果を無効化する。";
                         break;

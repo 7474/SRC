@@ -35,18 +35,6 @@ namespace SRCCore.Maps
         {
             var map = data.Map;
             // XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう
-            //// マップファイル名, マップ描画方法
-            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf1);
-            //FileSystem.Input(SRC.SaveDataFileNumber, sbuf2);
-            //if (Strings.InStr(sbuf1, ":") == 0)
-            //{
-            //    sbuf1 = SRC.ScenarioPath + sbuf1;
-            //}
-            //if ((sbuf1 ?? "") != (MapFileName ?? ""))
-            //{
-            //    MapFileName = sbuf1;
-            //    is_map_changed = true;
-            //}
             // セーブデータはシナリオのフォルダからの相対パス（以前の版は絶対パス）で持つ（#1375）
             var mapFileName = SRC.ResolveSavedPath(map.MapFileName);
             // 背景書き換えの必要有り？（VB: RestoreMapData の is_map_changed）
@@ -153,7 +141,6 @@ namespace SRCCore.Maps
         [JsonProperty]
         public Src2DArray<MapCell> MapData;
 
-        //public Src2DArray<MapImageFileType> MapImageFileTypeData;
         public Src2DArray<string> MapUnderImageFilePath;
         public Src2DArray<string> MapUpperImageFilePath;
 
@@ -455,8 +442,6 @@ namespace SRCCore.Maps
             MapWidth = w;
             MapHeight = h;
 
-            //// マップデータ用配列の領域確保
-            //// マップデータ配列の初期化
             MapData = new Src2DArray<MapCell>(MapWidth, MapHeight);
             foreach (var x in MapData.XRange)
             {
@@ -479,8 +464,6 @@ namespace SRCCore.Maps
             PointInZOC = new int[MapWidth + 2, MapHeight + 2];
 
             // XXX MapのGUIインタフェースと実装に追い出す
-            //GUI.MapPWidth = (32 * w);
-            //GUI.MapPHeight = (32 * h);
             GUI.MapX = ((GUI.MainWidth + 1) / 2);
             GUI.MapY = ((GUI.MainHeight + 1) / 2);
             GUIMap.SetMapSize(w, h);
@@ -1415,7 +1398,6 @@ namespace SRCCore.Maps
         // ２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
         public void AreaInPointToPoint(int x1, int y1, int x2, int y2)
         {
-            //// まず全領域をマスク
             ClearMask();
 
             // 起点のマスクを解除

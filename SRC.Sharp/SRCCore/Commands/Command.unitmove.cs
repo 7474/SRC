@@ -23,14 +23,6 @@ namespace SRCCore.Commands
             }
 
             GUI.MaskScreen();
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Application.DoEvents();
-            //    Status.ClearUnitStatus();
-            //}
 
             CommandState = "ターゲット選択";
         }
@@ -142,7 +134,6 @@ namespace SRCCore.Commands
                 if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable("母艦")
                     && !(checkOwnCarrier && u.IsFeatureAvailable("母艦")))
                 {
-
                     res = GUI.Confirm("着艦しますか？", "着艦", GuiConfirmOption.OkCancel | GuiConfirmOption.Question);
                 }
                 else
@@ -171,14 +162,6 @@ namespace SRCCore.Commands
             }
 
             GUI.MaskScreen();
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Application.DoEvents();
-            //    Status.ClearUnitStatus();
-            //}
 
             CommandState = "ターゲット選択";
         }
@@ -307,16 +290,13 @@ namespace SRCCore.Commands
                     GUI.UnlockGUI();
                     return;
                 }
-                // ADD START MARGE
                 SelectedUnitMoveCost = 100;
-                // ADD END MARGE
             }
 
             CommandState = "移動後コマンド選択";
             GUI.UnlockGUI();
             ProceedCommand();
         }
-
 
         // 「ジャンプ」コマンドを開始
         private void StartJumpCommand()
@@ -329,14 +309,6 @@ namespace SRCCore.Commands
             }
 
             GUI.MaskScreen();
-            //// MOD START MARGE
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    // MOD END MARGE
-            //    Application.DoEvents();
-            //    Status.ClearUnitStatus();
-            //}
 
             CommandState = "ターゲット選択";
         }
@@ -344,7 +316,6 @@ namespace SRCCore.Commands
         // 「ジャンプ」コマンドを終了
         private void FinishJumpCommand()
         {
-            // MOD END MARGE
             int ret;
             GUI.LockGUI();
             {
@@ -458,9 +429,7 @@ namespace SRCCore.Commands
                     GUI.UnlockGUI();
                     return;
                 }
-                // ADD START MARGE
                 SelectedUnitMoveCost = 100;
-                // ADD END MARGE
             }
 
             CommandState = "移動後コマンド選択";

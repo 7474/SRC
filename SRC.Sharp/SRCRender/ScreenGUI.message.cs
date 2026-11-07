@@ -486,7 +486,6 @@ namespace SRCRender
             if (ru != null)
             {
                 // XXX これ常に真になるんじゃないか？　それによって常にバーアニメしてた？
-                //if (ru.HP != RightUnitHPRatio || ru.EN != RightUnitENRatio)
                 if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio || ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                 {
                     num = 8;
@@ -853,8 +852,6 @@ namespace SRCRender
                     .ToList();
 
                 // XXX 使ってないよなぁ？
-                //// メッセージ長判定のため、元のメッセージを再構築
-                //msg = string.Join("", messages);
 
                 // メッセージの表示
                 {
@@ -1754,7 +1751,6 @@ namespace SRCRender
                         case ".gif":
                         case ".png":
                             {
-
                                 // 右ボタンを押されていたらスキップ
                                 if (IsRButtonPressed())
                                 {
@@ -1910,7 +1906,6 @@ namespace SRCRender
                                         // １枚画像の場合
                                         DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
                                         // XXX picFace
-                                        //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                         if (wait_time > 0)
                                         {
                                             while (start_time + wait_time > GeneralLib.timeGetTime())
@@ -1926,7 +1921,6 @@ namespace SRCRender
                                             fname = fpath + fname0 + SrcFormatter.Format(j, "00") + fsuffix;
                                             DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
                                             // XXX picFace
-                                            //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                             if (wait_time > 0)
                                             {
                                                 wait_time2 = wait_time * (j - first_id + 1) / (last_id - first_id);
@@ -2155,7 +2149,6 @@ namespace SRCRender
                                 if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " + msg_mode))
                                 {
                                     // XXX picFace
-                                    //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                     messageDisplayedPilot = fname;
                                     DisplayMode = msg_mode;
                                 }

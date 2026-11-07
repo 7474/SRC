@@ -123,28 +123,6 @@ namespace SRCCore.Models
                 || IsFeatureAvailable("侵入禁止");
         }
 
-        //// 地形効果の名称
-        //public string FeatureName(string Index)
-        //{
-        //    string FeatureNameRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    if (Strings.Len(fd.StrData) > 0)
-        //    {
-        //        FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
-        //    }
-        //    else if (fd.Level != Constants.DEFAULT_LEVEL)
-        //    {
-        //        FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
-        //    }
-        //    else
-        //    {
-        //        FeatureNameRet = fd.Name;
-        //    }
-
-        //    return FeatureNameRet;
-        //}
-
         // 地形効果のレベル
         public double FeatureLevel(string Index)
         {
@@ -164,63 +142,10 @@ namespace SRCCore.Models
             }
         }
 
-        //// 地形効果のデータ
-        //public string FeatureData(string Index)
-        //{
-        //    string FeatureDataRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    FeatureDataRet = fd.StrData;
-        //    return FeatureDataRet;
-        //    ErrorHandler:
-        //    ;
-        //    FeatureDataRet = "";
-        //}
-
         // 指定した地形効果を持っているか？
         public bool IsFeatureAvailable(string fname)
         {
             return colFeature.Values.Any(x => (x.Name ?? "") == (fname ?? ""));
         }
-
-        //// 指定した地形効果はレベル指定がされているか？
-        //public bool IsFeatureLevelSpecified(string Index)
-        //{
-        //    bool IsFeatureLevelSpecifiedRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    if (fd.Level == Constants.DEFAULT_LEVEL)
-        //    {
-        //        IsFeatureLevelSpecifiedRet = false;
-        //    }
-        //    else
-        //    {
-        //        IsFeatureLevelSpecifiedRet = true;
-        //    }
-
-        //    return IsFeatureLevelSpecifiedRet;
-        //    ErrorHandler:
-        //    ;
-        //    IsFeatureLevelSpecifiedRet = false;
-        //}
-
-        //// データをクリア
-        //public void Clear()
-        //{
-
-        //    int i;
-        //    ID = -1;
-        //    if (colFeature is object)
-        //    {
-        //        {
-        //            var withBlock = colFeature;
-        //            var loopTo = withBlock.Count;
-        //            for (i = 1; i <= loopTo; i++)
-        //                withBlock.Remove(1);
-        //        }
-        //        // UPGRADE_NOTE: オブジェクト colFeature をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        colFeature = null;
-        //    }
-        //}
     }
 }

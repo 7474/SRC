@@ -105,8 +105,6 @@ namespace SRCCore.Models
         }
         public void Load(string fname, Stream stream)
         {
-            //try
-            //{
             using (var reader = new SrcDataReader(fname, stream))
             {
                 UnitData lastUd = null;
@@ -116,11 +114,6 @@ namespace SRCCore.Models
                 }
                 Raw = reader.Raw;
             }
-            //}
-            //catch (InvalidSrcDataException)
-            //{
-            //    throw;
-            //}
         }
 
         // reader から１つユニットを読み込む。
@@ -562,7 +555,6 @@ namespace SRCCore.Models
 
                 // アビリティデータ
                 line_buf = LoadAbility(data_name, ud, reader, SRC);
-
             }
             finally
             {

@@ -20,8 +20,6 @@ namespace SRCCore
 
         void DoEvents();
         void Sleep(int dwMilliseconds, bool withEvents = true);
-        //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
-        //void StartWaitClick();
 
         // マップ画面に表示できるマップのサイズ
         int MainWidth { get; set; }
@@ -34,7 +32,6 @@ namespace SRCCore
         // マップのサイズ（ピクセル）
         int MapPWidth { get; set; }
         int MapPHeight { get; set; }
-
 
         // 現在マップウィンドウがマスク表示されているか
         bool ScreenIsMasked { get; set; }
@@ -123,7 +120,6 @@ namespace SRCCore
         void LoadForms();
         // Optionによる新ＧＵＩが有効かどうかを再設定する
         void SetNewGUIMode();
-
 
         // === メッセージウィンドウに関する処理 ===
 
@@ -312,7 +308,6 @@ namespace SRCCore
 
         // ホットポイントの変化を反映する
         void UpdateHotPoint();
-
 
         // === MainForm 操作へのバイパス ===
 

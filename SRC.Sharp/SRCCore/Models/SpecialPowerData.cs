@@ -194,30 +194,6 @@ namespace SRCCore.Models
             return effects.Count;
         }
 
-        //        // idx番目の特殊効果タイプ
-        //        public string EffectType(int idx)
-        //        {
-        //            string EffectTypeRet = default;
-        //            EffectTypeRet = strEffectType[idx];
-        //            return EffectTypeRet;
-        //        }
-
-        //        // idx番目の特殊効果レベル
-        //        public double EffectLevel(int idx)
-        //        {
-        //            double EffectLevelRet = default;
-        //            EffectLevelRet = dblEffectLevel[idx];
-        //            return EffectLevelRet;
-        //        }
-
-        //        // idx番目の特殊効果データ
-        //        public string EffectData(int idx)
-        //        {
-        //            string EffectDataRet = default;
-        //            EffectDataRet = strEffectData[idx];
-        //            return EffectDataRet;
-        //        }
-
         // 特殊効果 ename を持っているか
         public bool IsEffectAvailable(string ename)
         {
@@ -776,7 +752,6 @@ namespace SRCCore.Models
         ExitFunc:
             ;
 
-
             // Unitが変化してしまった場合は元に戻しておく
             if (!ReferenceEquals(my_unit, p.Unit))
             {
@@ -785,7 +760,6 @@ namespace SRCCore.Models
 
             return EffectiveRet;
         }
-
 
         // スペシャルパワーを使用する
         // (パイロット p が使用した場合)
@@ -1633,7 +1607,6 @@ namespace SRCCore.Models
                                 return t.ConditionLifetime(x.Name) > 0;
                             }).ToList())
                             {
-
                                 t.DeleteCondition(condition.Name);
                             }
 
@@ -2200,7 +2173,6 @@ namespace SRCCore.Models
             return displayed_string;
         }
 
-
         // スペシャルパワーが有効なターゲットの総数を返す
         // (パイロット p が使用した場合)
         public int CountTarget(Pilot p)
@@ -2371,19 +2343,6 @@ namespace SRCCore.Models
         // スペシャルパワーのアニメーションを表示
         public bool PlayAnimation()
         {
-            //string anime;
-            //string[] animes;
-            //int anime_head;
-            //var buf = default(string);
-            //var ret = default(double);
-            //int i, j;
-            //string expr;
-            //int wait_time = 0;
-            //Color prev_obj_color;
-            //Color prev_obj_fill_color;
-            //HatchStyle prev_obj_fill_style;
-            //int prev_obj_draw_width;
-            //string prev_obj_draw_option;
             if (!SRC.SpecialPowerAnimation)
             {
                 return false;
