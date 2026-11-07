@@ -424,10 +424,6 @@ namespace SRCCore
                 .ToList();
 
             // XXX なんで wave_name 分解したんだろう？
-            //var waveNames = GeneralLib.ToList(wave_name, true);
-            //var existFile = waveNames
-            //    .SelectMany(x => baseDirs.Select(y => SRC.FileSystem.PathCombine(y, x)))
-            //    .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
             var existFile = baseDirs.Select(y => SRC.FileSystem.PathCombine(y, wave_name))
                 .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
 
@@ -466,9 +462,6 @@ namespace SRCCore
                 BossBGM = false;
                 StopBGM(true);
 
-                //// 音源初期化
-                //ResetBGM();
-
                 // WAVEファイル再生の停止
                 StopWave();
             }
@@ -497,11 +490,6 @@ namespace SRCCore
         }
 
         // // 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
-        // ~Sound()
-        // {
-        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {

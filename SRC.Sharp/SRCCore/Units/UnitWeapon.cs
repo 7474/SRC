@@ -129,7 +129,6 @@ namespace SRCCore.Units
         // tarea は敵のいる地形
         public int WeaponPower(string tarea)
         {
-            //// 攻撃補正一時保存
             int WeaponPowerRet = lngWeaponPower;
 
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
@@ -603,7 +602,6 @@ namespace SRCCore.Units
 
         CalcAdaption:
             ;
-
 
             // Optionコマンドの設定に従って地形適応値を算出
             if (Expression.IsOptionDefined("地形適応修正緩和"))
@@ -3206,7 +3204,6 @@ namespace SRCCore.Units
         SkipDamageMod:
             ;
 
-
             // 封印攻撃は弱点もしくは有効を持つユニット以外には効かない
             if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
             {
@@ -3565,7 +3562,6 @@ namespace SRCCore.Units
                     dmg_mod = dmg_mod + 10d * flevel + slevel;
                 }
             }
-
 
             DamageRet = (int)VBMath.IntDiv(DamageRet * (100d - dmg_mod), 100);
         SkipResist:
@@ -4994,7 +4990,6 @@ namespace SRCCore.Units
             return ExpDamageRet;
         }
 
-
         // 武器の使用によるＥＮ、弾薬の消費等を行う
         public void UseWeapon()
         {
@@ -5092,10 +5087,6 @@ namespace SRCCore.Units
             }
 
             // 元の SRC でもコメントアウトされている処理
-            // '合体技は１ターンに１回だけ使用可能
-            // If IsWeaponClassifiedAs(w, "合") Then
-            // AddCondition "合体技使用不可", 1, 0, "非表示"
-            // End If
         }
 
         // 弾数
@@ -5384,7 +5375,6 @@ namespace SRCCore.Units
                     throw new NotSupportedException();
             }
         }
-
     }
 
     public enum WeaponListMode

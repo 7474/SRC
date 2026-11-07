@@ -280,7 +280,6 @@ namespace SRCCore.Models
         public FeatureData Feature(int Index)
         {
             // XXX 参照先はNameだった
-            //FeatureRet = fd.Name;
             return colFeature[Index];
         }
 

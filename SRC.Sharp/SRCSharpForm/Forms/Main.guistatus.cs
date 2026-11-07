@@ -44,8 +44,6 @@ namespace SRCSharpForm
         public Color StatusFontColorNormalString = Color.FromArgb(0, 0, 0);
         public Color StatusFontColorWarning = Color.FromArgb(190, 0, 0);
 
-        //private Font StatusFont
-        //private Font StatusFont = new Font("Meiryo UI", 10f);
         private Font StatusFont = new Font("ＭＳ 明朝", 10f);
         // XXX 10.5より大きい感じする
         private Font HeadingFont = new Font("ＭＳ 明朝", 10.5f);
@@ -1070,7 +1068,6 @@ namespace SRCSharpForm
                                                 if (u.IsUnderSpecialPowerEffect("サポートガード不能"))
                                                 {
                                                     // MOD START 240a
-                                                    // upic.ForeColor = rgb(150, 0, 0)
                                                     upic.SetColor(StatusFontColorAbilityDisable);
                                                 }
 
@@ -1192,12 +1189,6 @@ namespace SRCSharpForm
                                 if (n > 0)
                                 {
                                     upic.Print();
-                                    //// ADD START 240a
-                                    //if (GUI.NewGUIMode)
-                                    //{
-                                    //    upic.CurrentX = 5;
-                                    //}
-                                    //// ADD  END  240a
                                 }
                                 upic.Print(sname);
                                 n = 2;
@@ -1214,12 +1205,6 @@ namespace SRCSharpForm
                             if (n > 1)
                             {
                                 upic.Print();
-                                //// ADD START 240a
-                                //if (GUI.NewGUIMode)
-                                //{
-                                //    upic.CurrentX = 5;
-                                //}
-                                //// ADD  END  240a
                                 n = 0;
                             }
 
@@ -1807,7 +1792,6 @@ namespace SRCSharpForm
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("耐性   ");
                                 // MOD START 240a
-                                // upic.ForeColor = rgb(0, 0, 0)
                                 upic.SetColor(StatusFontColorNormalString);
                                 upic.Print(GeneralLib.RightPaddedString(u.strResist, 12));
                                 n = (n + 1);
@@ -2436,7 +2420,6 @@ namespace SRCSharpForm
                                         if (pmorale < nmorale)
                                         {
                                             // MOD START 240a
-                                            // upic.ForeColor = rgb(150, 0, 0)
                                             upic.SetColor(StatusFontColorAbilityDisable);
                                         }
 
@@ -3065,12 +3048,6 @@ namespace SRCSharpForm
                         // 個々の武器を表示
                         foreach (var uw in weapons)
                         {
-                            // XXX 枠の外なら無視
-                            //if (upic.CurrentY > 420)
-                            //{
-                            //    break;
-                            //}
-
                             if (!uw.IsWeaponAvailable("ステータス"))
                             {
                                 // 習得していない技は表示しない
@@ -3148,12 +3125,6 @@ namespace SRCSharpForm
                         var abilities = u.Abilities;
                         foreach (var ua in abilities)
                         {
-                            // XXX 枠の外なら無視
-                            //if (upic.CurrentY > 420)
-                            //{
-                            //    break;
-                            //}
-
                             if (!ua.IsAbilityAvailable("ステータス"))
                             {
                                 // 習得していない技は表示しない
@@ -3219,17 +3190,11 @@ namespace SRCSharpForm
 
                 UpdateStatusWindow:
                     ;
-
-                    //// ステータスウィンドウをリフレッシュ
-                    //GUI.MainForm.picFace.Refresh();
-                    //ppic.Refresh();
-                    //upic.Refresh();
                 }
             }
             catch (Exception ex)
             {
                 SRC.LogWarn(ex);
-                //    GUI.ErrorMessage("パイロット用画像ファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
             }
         }
 

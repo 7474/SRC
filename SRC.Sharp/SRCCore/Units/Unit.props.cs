@@ -436,7 +436,6 @@ namespace SRCCore.Units
             }
         }
 
-        //// ＥＮ
         public int EN
         {
             get => intEN;
@@ -544,7 +543,6 @@ namespace SRCCore.Units
             }
         }
 
-
         // 移動形態
         public string Transportation
         {
@@ -596,7 +594,6 @@ namespace SRCCore.Units
                 return TransportationRet;
             }
         }
-
 
         // 地形適応
         public int get_Adaption(int idx)
@@ -942,7 +939,6 @@ namespace SRCCore.Units
 
             return AdaptionModRet;
         }
-
 
         // 装甲
         public int get_Armor(string ref_mode)

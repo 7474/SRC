@@ -317,11 +317,6 @@ namespace SRCCore.Commands
             var support_attack_done = default(bool);
             int w2;
             bool is_p_weapon;
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    Status.ClearUnitStatus();
-            //}
 
             GUI.LockGUI();
             var currentUnit = SelectedUnit;
@@ -1297,7 +1292,6 @@ namespace SRCCore.Commands
 
         EndAttack:
             ;
-
 
             // 合体技のパートナーの行動数を減らす
             if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))

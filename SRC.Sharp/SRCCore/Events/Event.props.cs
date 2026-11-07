@@ -27,7 +27,6 @@ namespace SRCCore.Events
         // シナリオ添付のシステムファイルがチェックされたかどうか
         private bool ScenarioLibChecked;
 
-        //// ラベルのリスト
         public SrcCollection<LabelData> colEventLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colSysNormalLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();

@@ -150,7 +150,6 @@ namespace SRCCore.Units
                                 }
 
                                 // VB には続けて「ハードポイント付きのものしかない場合」に Item(1) を外す
-                                // If Not itm2 Is Nothing の分岐があるが、VB の For Each は最後まで回ると
                                 // ループの変数が Nothing になり、外した場合も Set itm2 = Nothing するので
                                 // この分岐には入らない。ハードポイント付きのものしかなければ何も外さない
                                 if (!found_item)
@@ -412,7 +411,6 @@ namespace SRCCore.Units
 
         EquipItem:
             ;
-
 
             // 装備されたアイテムは常に存在するとみなす
             if (Status != "破棄")

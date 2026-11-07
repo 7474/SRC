@@ -11,10 +11,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="GUI.ref.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Melanchall.DryWetMidi" />
 		<PackageReference Include="Microsoft.Extensions.Logging" />
 		<PackageReference Include="NAudio" />
@@ -29,7 +25,6 @@
 	
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<None Include="GUI.ref.cs" />
 	</ItemGroup>
 	
 	<ItemGroup>

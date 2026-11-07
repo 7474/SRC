@@ -4,7 +4,6 @@ using System.Text;
 
 namespace SRCCore.VB
 {
-
     public enum VbStrConv
     {
         Wide,
@@ -317,7 +316,6 @@ namespace SRCCore.VB
                 // Basic katakana: add offset to get full-width
                 return (char)(c - 0xFF66 + 0x30A1);
             }
-            // For dakuten/handakuten marks and other special cases, return as-is
             // A full implementation would handle these properly
             return c;
         }
@@ -335,7 +333,6 @@ namespace SRCCore.VB
                 // Basic katakana: subtract offset to get half-width
                 return (char)(c - 0x30A1 + 0xFF66);
             }
-            // For special cases, return as-is
             return c;
         }
 

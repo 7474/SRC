@@ -187,21 +187,5 @@ namespace SRCCore.Models
 
             return true;
         }
-
-        //// idx番目のメッセージの話者
-        //public string Name(int idx)
-        //{
-        //    string NameRet = default;
-        //    NameRet = strName[idx];
-        //    return NameRet;
-        //}
-
-        //// idx番目のメッセージ
-        //public string Message(int idx)
-        //{
-        //    string MessageRet = default;
-        //    MessageRet = strMessage[idx];
-        //    return MessageRet;
-        //}
     }
 }

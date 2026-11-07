@@ -21,8 +21,6 @@ namespace SRCSharpForm
         public int MainPHeight => GUI.MainHeight * MapCellPx;
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
-        //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
-        //private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
         private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
@@ -111,27 +109,6 @@ namespace SRCSharpForm
             picPilotStatus.Size = new Size(155, 72);
             picUnitStatus.Location = new Point(MainPWidth + 16 + 4, 4 + 68 + 4);
             picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
-            //    if (NewGUIMode)
-            //    {
-            //        withBlock.picUnitStatus.Move(MainPWidth - 230 - 10, 10, 230, MainPHeight - 20);
-            //        withBlock.picUnitStatus.Visible = false;
-            //        withBlock.picPilotStatus.Visible = false;
-            //        withBlock.picFace.Visible = false;
-            //        Status.StatusWindowBackBolor = STATUSBACK;
-            //        Status.StatusWindowFrameColor = STATUSBACK;
-            //        Status.StatusWindowFrameWidth = 1;
-            //        withBlock.picUnitStatus.BackColor = Status.StatusWindowBackBolor;
-            //        Status.StatusFontColorAbilityName = Information.RGB(0, 0, 150);
-            //        Status.StatusFontColorAbilityEnable = ColorTranslator.ToOle(Color.Blue);
-            //        Status.StatusFontColorAbilityDisable = Information.RGB(150, 0, 0);
-            //        Status.StatusFontColorNormalString = ColorTranslator.ToOle(Color.Black);
-            //    }
-            //    else
-            //    {
-            //        withBlock.picFace.Move(MainPWidth + 24, 4);
-            //        withBlock.picPilotStatus.Move(MainPWidth + 24 + 68 + 4, 4, 155, 72);
-            //        withBlock.picUnitStatus.Move(MainPWidth + 24, 4 + 68 + 4, 225 + 5, MainPHeight - 64 + 16);
-            //    }
         }
 
         public void InitMapSize(int w, int h)
@@ -145,20 +122,8 @@ namespace SRCSharpForm
             // メインウィンドウの位置＆サイズを設定
             Width = Width - ClientRectangle.Width + (MainPWidth + 16 + 4 + 225 + 4);
             Height = Height - ClientRectangle.Height + (MainPHeight + 16);
-            //if (!NewGUIMode)
-            //{
-            //    withBlock.Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
-            //    withBlock.Height = Height - ClientRectangle.Height + (MainPHeight + 24);
-            //}
-            //else
-            //{
-            //    withBlock.Width = Width - ClientRectangle.Width + MainPWidth;
-            //    withBlock.Height = Height - ClientRectangle.Height + MainPHeight;
-            //}
 
             // XXX 画面中央に出すなら出す
-            //withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
-            //withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
 
             // スクロールバーの位置を設定
             VScrollBar.Location = new Point(MainPHeight, 0);
@@ -167,32 +132,11 @@ namespace SRCSharpForm
             HScrollBar.Location = new Point(0, MainPHeight);
             HScrollBar.Size = new Size(MainPWidth, 16);
             HScrollBar.Visible = true;
-            //if (!NewGUIMode)
-            //{
-            //    withBlock.VScroll.Move(MainPWidth + 4, 4, 16, MainPWidth);
-            //    withBlock.HScroll.Move(4, MainPHeight + 4, MainPWidth, 16);
-            //}
-            //else
-            //{
-            //    VScrollBar.Visible = false;
-            //    HScrollBar.Visible = false;
-            //}
 
             // マップウィンドウのサイズを設定
             picMain.Location = new Point(0, 0);
             picMain.Size = new Size(MainPWidth, MainPHeight);
             InitMainBuffer(MainPWidth, MainPHeight);
-
-            //    if (!NewGUIMode)
-            //    {
-            //        withBlock.picMain(0).Move(4, 4, MainPWidth, MainPHeight);
-            //        withBlock.picMain(1).Move(4, 4, MainPWidth, MainPHeight);
-            //    }
-            //    else
-            //    {
-            //        withBlock.picMain(0).Move(0, 0, MainPWidth, MainPHeight);
-            //        withBlock.picMain(1).Move(0, 0, MainPWidth, MainPHeight);
-            //    }
         }
         public void SetMapSize(int w, int h)
         {
@@ -206,18 +150,10 @@ namespace SRCSharpForm
             if (HScrollBar.Maximum != MapWidth)
             {
                 HScrollBar.Maximum = MapWidth;
-                //if (!GUI.NewGUIMode)
-                //{
-                //    withBlock2.Visible = true;
-                //}
             }
             if (VScrollBar.Maximum != MapHeight)
             {
                 VScrollBar.Maximum = MapHeight;
-                //if (!GUI.NewGUIMode)
-                //{
-                //    withBlock2.Visible = true;
-                //}
             }
         }
 
@@ -513,15 +449,8 @@ namespace SRCSharpForm
                             }
                         }
                         // XXX マスク
-                        //// マスク入りの画像を作成
-                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, SRCCOPY);
-                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picMask2.hDC, 0, 0, SRCINVERT);
                     }
                 }
-
-                //// 描画色を元に戻しておく
-                //pic.ForeColor = ColorTranslator.FromOle(prev_color);
-
             }
             // 画面が書き換えられたことを記録
             GUI.ScreenIsSaved = false;

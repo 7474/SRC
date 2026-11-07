@@ -149,7 +149,6 @@ namespace SRCCore
                     // もしくは２番目に強力な武器を使用し、
                     // その武器の攻撃力1800以上でかつ武器使用可能回数が限定されていれば
                     // 必殺技と見なしてフェイスアップ表示
-                    // with_face_up = True
                 }
 
                 // 空中移動専用形態は武器を手で構えない
@@ -174,7 +173,6 @@ namespace SRCCore
             if ((!SRC.WeaponAnimation && !SRC.ExtendedAnimation)
                 || Expression.IsOptionDefined("武器準備アニメ非表示"))
             {
-                // MOD END MARGE
                 WeaponInHand = "";
                 goto SkipWeaponAnimation;
             }
@@ -255,7 +253,6 @@ namespace SRCCore
 
         SkipInfightWeapon:
             ;
-
 
             // まずはビーム攻撃かどうか判定
             if (!IsBeamWeapon(wname, wclass, ref cname))
@@ -442,13 +439,11 @@ namespace SRCCore
         SkipShootingWeapon:
             ;
 
-
             // 対応する武器は見つからなかった
             WeaponInHand = "";
             goto SkipWeaponAnimation;
         FoundWeaponType:
             ;
-
 
             // 構えている武器を記録
             WeaponInHand = wtype;
@@ -496,7 +491,6 @@ namespace SRCCore
             ShowAnimation(aname);
         SkipWeaponAnimation:
             ;
-
 
             // 武器の準備アニメをスキップする場合はここから
 
@@ -1942,7 +1936,6 @@ namespace SRCCore
         SkipThrowingWeapon:
             ;
 
-
             // これより通常射撃攻撃
 
             // まずは手持ち武器の判定
@@ -2067,7 +2060,6 @@ namespace SRCCore
         SkipNormalHandWeapon:
             ;
 
-
             // (手持ちのビーム攻撃)
 
             if (Strings.InStr(wname, "ライフル") > 0
@@ -2137,7 +2129,6 @@ namespace SRCCore
 
         SkipHandWeapon:
             ;
-
 
             // 内蔵型射撃武器
             is_handy_weapon = false;
@@ -2532,8 +2523,6 @@ namespace SRCCore
             if (w.IsSpellWeapon()
                 || GeneralLib.InStrNotNest(wclass, "魔") > 0)
             {
-                // wtype = "魔法放射"
-                // cname = SpellColor(wname, wclass)
                 wtype = "デフォルト";
                 sname = "Whiz.wav";
                 goto FoundWeaponType;
@@ -2686,12 +2675,10 @@ namespace SRCCore
         SkipShootingWeapon:
             ;
 
-
             // 対応する武器は見つからなかった
             wtype = "デフォルト";
         FoundWeaponType:
             ;
-
 
             // 空中移動専用形態は武器を手で構えない。
             // また等身大基準の場合、非人間ユニットはメカであることが多いのでこちらも
@@ -2882,7 +2869,6 @@ namespace SRCCore
                         }
                 }
             }
-
 
             // 使用した攻撃手段を記録
             CurrentWeaponType = wtype;
@@ -3483,11 +3469,9 @@ namespace SRCCore
             Sound.IsWavePlayed = false;
         }
 
-
         // 武器命中時の特殊効果
         public void HitEffect(Unit u, UnitWeapon w, Unit t, int hit_count = 0)
         {
-
             // 右クリック中は特殊効果をスキップ
             if (GUI.IsRButtonPressed())
             {
@@ -4200,7 +4184,6 @@ namespace SRCCore
         SkipInfightWeapon:
             ;
 
-
             // 射撃武器(格闘投擲)
 
             if (Strings.InStr(wname, "斧") > 0
@@ -4332,7 +4315,6 @@ namespace SRCCore
 
         SkipNormalWeapon:
             ;
-
 
             // 射撃武器(エネルギー系)
 
@@ -4788,7 +4770,6 @@ namespace SRCCore
             wtype = "ダメージ";
         FoundWeaponType:
             ;
-
 
             // アニメの不整合を防ぐため、吹き飛ばし時はアニメ効果を打撃に抑えておく
             switch (wtype ?? "")

@@ -9,14 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Events\Event.ref.cs" />
-    <Compile Remove="Units\Unit.ref.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="Units\Unit.ref.cs" />
   </ItemGroup>
 
   <!-- VB 版からの移植で起きやすい誤りを見つけるアナライザー（SRCPortingAnalyzers/README.md）。パッケージには含めない -->

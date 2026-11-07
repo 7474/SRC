@@ -90,19 +90,6 @@ namespace SRCSharpForm
             // ＧＵＩをロック中？
             if (GUI.IsGUILocked)
             {
-                //// リストボックス表示中はキャンセル動作とみなす
-                //if (My.MyProject.Forms.frmListBox.Visible)
-                //{
-                //    Commands.SelectedItem = 0;
-                //    GUI.TopItem = (My.MyProject.Forms.frmListBox.lstItems.TopIndex + 1);
-                //    if (GUI.IsFormClicked)
-                //    {
-                //        My.MyProject.Forms.frmListBox.Hide();
-                //    }
-
-                //    GUI.IsFormClicked = true;
-                //}
-
                 // メッセージ表示中はメッセージ送りとみなす
                 if (GUI.MessageFormVisible)
                 {
@@ -180,13 +167,11 @@ namespace SRCSharpForm
 
         private void mnuUnitCommand_MouseClick(object sender, MouseEventArgs e)
         {
-            //Program.Log.LogDebug("mnuUnitCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
             IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
         }
 
         private void mnuMapCommand_MouseClick(object sender, MouseEventArgs e)
         {
-            //Program.Log.LogDebug("mnuMapCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
             IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
         }
 
@@ -208,7 +193,6 @@ namespace SRCSharpForm
                     return;
                 }
 
-                //// マップコマンドを実行
                 FormGUI.RunOnCore(() => Commands.MapCommand(uiCommand));
             }
         }
@@ -238,8 +222,6 @@ namespace SRCSharpForm
 
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             mnuUnitCommand.Items.Clear();
             mnuUnitCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,
@@ -255,7 +237,6 @@ namespace SRCSharpForm
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
         {
-            //GUI.MainForm.PopupMenu(GUI.MainForm.mnuMapCommand, 6, GUI.MouseX, GUI.MouseY + 6f);
             mnuMapCommand.Items.Clear();
             mnuMapCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,
@@ -406,8 +387,6 @@ namespace SRCSharpForm
         // マップ画面上でマウスカーソルを移動
         private void picMain_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
-            //Program.Log.LogDebug("picMain_MouseMove {0}", JsonConvert.SerializeObject(eventArgs));
-
             var X = eventArgs.X;
             var Y = eventArgs.Y;
 
@@ -444,11 +423,6 @@ namespace SRCSharpForm
             {
                 var cellUnit = Map.UnitAtPoint(xx, yy);
 
-                //// MOD START 240a
-                //// If MainWidth = 15 Then
-                //if (!GUI.NewGUIMode)
-                //{
-                //    // MOD  END
                 if (Map.IsInside(xx, yy))
                 {
                     if (cellUnit == null)
@@ -465,42 +439,6 @@ namespace SRCSharpForm
                     }
                 }
             });
-            //    // MOD  END
-            //    // ADD START 240a
-            //    else
-            //    {
-            //        // マップ外にカーソルがある場合
-            //        Status.DisplayGlobalStatus();
-            //        // ADD  END
-            //    }
-            //}
-            //// ADD ユニット選択追加・移動時も表示 240a
-            //// If (CommandState = "ターゲット選択" Or CommandState = "移動後ターゲット選択") _
-            //// '            And (SelectedCommand <> "移動" _
-            //// '                And SelectedCommand <> "テレポート" _
-            //// '                And SelectedCommand <> "ジャンプ") _
-            //// '        Then
-            //else if (Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択" || Commands.CommandState == "ユニット選択")
-            //{
-            //    if (1 <= xx && xx <= Map.MapWidth && 1 <= yy && yy <= Map.MapHeight)
-            //    {
-            //        if (Map.MapDataForUnit[xx, yy] is object)
-            //        {
-            //            picMain[0].Refresh();
-            //            // RedrawScreen
-            //            Status.InstantUnitStatusDisplay(xx, yy);
-            //        }
-            //        // ADD Else
-            //        else
-            //        {
-            //            Status.ClearUnitStatus();
-            //        }
-            //    }
-            //}
-            //else if (GUI.MouseX != (float)LastMouseX || GUI.MouseY != (float)LastMouseY)
-            //{
-            //    Status.ClearUnitStatus();
-            //}
 
             // マップをドラッグ中？
             if (IsDragging && ResolveMouseButton(eventArgs) == GuiButton.Left)
@@ -668,17 +606,6 @@ namespace SRCSharpForm
             if (e.Cancel) { return; }
             var IsErrorMessageVisible = default(bool);
 
-            //// エラーメッセージのダイアログは一番上に重ねられるため消去する必要がある
-            //if (My.MyProject.Forms.m_frmErrorMessage is object)
-            //{
-            //    IsErrorMessageVisible = My.MyProject.Forms.frmErrorMessage.Visible;
-            //}
-
-            //if (IsErrorMessageVisible)
-            //{
-            //    My.MyProject.Forms.frmErrorMessage.Hide();
-            //}
-
             // SRCを終了するか確認
             var ret = MsgBox.Show(this, "SRCを終了しますか？", "終了", MsgBoxButtons.OKCancel, MsgBoxIcon.Question);
             switch (ret)
@@ -694,12 +621,6 @@ namespace SRCSharpForm
                     e.Cancel = true;
                     break;
             }
-
-            //// エラーメッセージを表示
-            //if (IsErrorMessageVisible)
-            //{
-            //    My.MyProject.Forms.frmErrorMessage.Show();
-            //}
         }
     }
 }

@@ -267,20 +267,16 @@ namespace SRCSharpForm
             }
             else if (on_status_window)
             {
-                //// ステータスウィンドウへのパイロット画像の描画
                 MainForm.picUnitStatus.NewImageIfNull();
                 g = Graphics.FromImage(MainForm.picUnitStatus.Image);
             }
             else if (permanent)
             {
-                //// 背景への描画
                 MainForm.InitBackgroundBufferIfInvalid();
                 g = Graphics.FromImage(MainForm.BackgroundBuffer);
             }
             else
             {
-                //// マップウィンドウへの通常の描画
-                //pic = MainForm.picMain(0);
                 SaveScreen();
                 g = Graphics.FromImage(MainForm.MainBuffer);
             }
@@ -292,7 +288,6 @@ namespace SRCSharpForm
             {
                 using (var fillIamge = new Bitmap((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height))
                 {
-
                     // 特殊なファイル名を解決
                     // 読み込むファイルの探索
                     Image image = null;
@@ -360,7 +355,6 @@ namespace SRCSharpForm
                     var orig_height = image.Height;
                     Bitmap drawBuffer = null;
 
-
                     // 原画像の一部のみを描画？
                     if (sw != 0)
                     {
@@ -391,7 +385,6 @@ namespace SRCSharpForm
                     {
                         drawBuffer = new Bitmap(image);
                     }
-                    //LoadedPicture:
 
                     using (var gBuf = Graphics.FromImage(drawBuffer))
                     using (var bgBrush = new SolidBrush(BGColor))
@@ -470,14 +463,6 @@ namespace SRCSharpForm
                     // 特殊効果
                     if (is_monotone || is_sepia || is_sunset || is_water || is_colorfilter || bright_count > 0 || dark_count > 0 || negpos || is_sil || vrev || hrev || angle != 0)
                     {
-                        // 画像のサイズをチェック
-                        // XXX 別に4の倍数縛り要らないんじゃないかな。綺麗には出ないかもしれないけれど
-                        //if (orig_width * orig_height % 4 != 0)
-                        //{
-                        //    ErrorMessage(fname + "の画像サイズが4の倍数になっていません");
-                        //    return DrawPictureRet;
-                        //}
-
                         // 白黒
                         if (is_monotone)
                         {
@@ -524,14 +509,6 @@ namespace SRCSharpForm
                             drawBuffer.ColorFilter(fcolor, trans_par);
                         }
 
-                        //// 明 (多段指定可能)
-                        //for (i = 1; i <= bright_count; i++)
-                        //    Graphics.Bright(transparent);
-
-                        //// 暗 (多段指定可能)
-                        //for (i = 1; i <= dark_count; i++)
-                        //    Graphics.Dark(transparent);
-
                         // 左右反転
                         if (vrev)
                         {
@@ -550,7 +527,6 @@ namespace SRCSharpForm
                             drawBuffer.Rotate(angle, GetDrawBgColor(transparent));
                         }
                     }
-                    //EditedPicture:
 
                     // クリッピング処理
                     if (dw == Constants.DEFAULT_LEVEL)
@@ -630,38 +606,20 @@ namespace SRCSharpForm
                         || dw <= 0
                         || dh <= 0)
                     {
-                        //load_only = true;
                         return true;
                     }
                     g.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
 
-                    //DrewPicture:
                     if (permanent)
                     {
                         // 背景への描き込み
                         Map.IsMapDirty = true;
                         // XXX マスクは動的にやってるから要らん
-                        //// マスク入り背景画像画面にも画像を描き込む
-                        //ret = BitBlt(withBlock17.picMaskedBack.hDC, dx, dy, dw, dh, pic.hDC, dx, dy, SRCCOPY);
-                        //var loopTo15 = ((dx + dw - 1) / 32);
-                        //for (i = (dx / 32); i <= loopTo15; i++)
-                        //{
-                        //    var loopTo16 = ((dy + dh - 1) / 32);
-                        //    for (j = (dy / 32); j <= loopTo16; j++)
-                        //    {
-                        //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask.hDC, 0, 0, SRCAND);
-                        //        ret = BitBlt(withBlock17.picMaskedBack.hDC, 32 * (int)i, 32 * (int)j, 32, 32, withBlock17.picMask2.hDC, 0, 0, SRCINVERT);
-                        //    }
-                        //}
                     }
                     else if (!on_msg_window && !on_status_window)
                     {
                         // 表示画像を消去する際に使う描画領域を設定
                         // XXX ダーティエリアは使わない
-                        //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
-                        //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(dy, 0));
-                        //PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(dx + dw, MainPWidth - 1));
-                        //PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(dy + dh, MainPHeight - 1));
                         IsPictureDrawn = true;
                         IsPictureVisible = true;
                         IsCursorVisible = false;
@@ -737,13 +695,11 @@ namespace SRCSharpForm
             if (PermanentStringMode)
             {
                 // 背景書き込み
-                //// 背景への描画
                 MainForm.InitBackgroundBufferIfInvalid();
                 g = Graphics.FromImage(MainForm.BackgroundBuffer);
             }
             else
             {
-                //// マップウィンドウへの通常の描画
                 // 通常の書き込み
                 g = Graphics.FromImage(MainForm.MainBuffer);
                 SaveScreen();

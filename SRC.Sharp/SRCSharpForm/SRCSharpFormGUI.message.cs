@@ -83,9 +83,6 @@ namespace SRCSharpForm
             else
             {
                 // XXX 
-                //// メインウィンドウが表示されていない場合は画面中央に表示
-                //frmMessage.Left = SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(frmMessage.Width)) / 2d);
-                //frmMessage.Top = SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(frmMessage.Height)) / 2d);
             }
 
             // ウィンドウをクリアしておく
@@ -535,7 +532,6 @@ namespace SRCSharpForm
             if (ru != null)
             {
                 // XXX これ常に真になるんじゃないか？　それによって常にバーアニメしてた？
-                //if (ru.HP != RightUnitHPRatio || ru.EN != RightUnitENRatio)
                 if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio || ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                 {
                     num = 8;
@@ -901,8 +897,6 @@ namespace SRCSharpForm
                     .ToList();
 
                 // XXX 使ってないよなぁ？
-                //// メッセージ長判定のため、元のメッセージを再構築
-                //msg = string.Join("", messages);
 
                 // メッセージの表示
                 {
@@ -1790,7 +1784,6 @@ namespace SRCSharpForm
                         case ".gif":
                         case ".png":
                             {
-
                                 // 右ボタンを押されていたらスキップ
                                 if (IsRButtonPressed())
                                 {
@@ -1946,7 +1939,6 @@ namespace SRCSharpForm
                                         // １枚画像の場合
                                         DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
                                         // XXX picFace
-                                        //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                         if (wait_time > 0)
                                         {
                                             while (start_time + wait_time > GeneralLib.timeGetTime())
@@ -1962,7 +1954,6 @@ namespace SRCSharpForm
                                             fname = fpath + fname0 + SrcFormatter.Format(j, "00") + fsuffix;
                                             DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
                                             // XXX picFace
-                                            //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                             if (wait_time > 0)
                                             {
                                                 wait_time2 = wait_time * (j - first_id + 1) / (last_id - first_id);
@@ -2191,7 +2182,6 @@ namespace SRCSharpForm
                                 if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " + msg_mode))
                                 {
                                     // XXX picFace
-                                    //My.MyProject.Forms.frmMessage.picFace.Refresh();
                                     DisplayedPilot = fname;
                                     DisplayMode = msg_mode;
                                 }

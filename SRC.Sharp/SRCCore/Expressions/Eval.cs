@@ -416,7 +416,6 @@ namespace SRCCore.Expressions
             }
             else
             {
-                //// 右辺引数の連結処理
                 rop = string.Join(" ", terms.Skip(op_idx + 1));
             }
 

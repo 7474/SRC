@@ -336,7 +336,6 @@ namespace SRCCore.Events
             EventCmd.Clear();
             // 全eventDataを走査してコマンドを解析する（システムデータも含めて解析することで
             // 処理の整合性を保つ; パフォーマンス改善の余地はあるが現在の規模では問題ない）
-            //foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
             for (var lineIndex = 0; lineIndex < EventData.Count; lineIndex++)
             {
                 var eventDataLine = EventData[lineIndex];
