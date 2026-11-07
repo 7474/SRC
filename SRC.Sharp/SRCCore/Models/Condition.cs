@@ -10,8 +10,7 @@ namespace SRCCore.Models
     {
         // 名称
         public string Name;
-        // 有効期間
-        // XXX 負数は無期限（多分）
+        // 有効期間。負数は無期限（VB の Unit.AddCondition で Lifetime = -1 にする）
         public int Lifetime;
         // レベル
         public double Level;

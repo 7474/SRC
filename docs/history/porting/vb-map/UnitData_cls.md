@@ -4,27 +4,27 @@ VB 版の `SRC/SRC_20121125/UnitData.cls` の手続きと、C# の対応（[説�
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub Class_Terminate | 69 | 30 | （見つからない） | 未確認 |  |
-| Property Get Nickname | 101 | 7 | `SRCCore/Models/UnitData.cs` UnitData.Nickname | 未確認 |  |
-| Property Let Nickname | 109 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Nickname | 未確認 |  |
-| Property Get KanaName | 114 | 14 | `SRCCore/Models/UnitData.cs` UnitData.KanaName | 未確認 |  |
-| Property Let KanaName | 129 | 3 | `SRCCore/Models/UnitData.cs` UnitData.KanaName | 未確認 |  |
-| Property Get Bitmap0 | 134 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap0 | 未確認 |  |
-| Property Get Bitmap | 138 | 7 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap | 未確認 |  |
-| Property Let Bitmap | 146 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap | 未確認 |  |
-| Sub AddFeature | 152 | 157 | `SRCCore/Models/UnitData.cs` UnitData.AddFeature | 未確認 |  |
-| Function CountFeature | 311 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountFeature | 未確認 |  |
-| Function Feature | 319 | 6 | `SRCCore/Models/UnitData.cs` UnitData.Feature | 未確認 |  |
-| Function FeatureName | 327 | 14 | `SRCCore/Models/UnitData.cs` UnitData.FeatureName | 未確認 |  |
-| Function FeatureLevel | 343 | 15 | `SRCCore/Models/UnitData.cs` UnitData.FeatureLevel | 未確認 |  |
-| Function FeatureData | 360 | 11 | `SRCCore/Models/UnitData.cs` UnitData.FeatureData | 未確認 |  |
-| Function FeatureNecessarySkill | 373 | 11 | `SRCCore/Items/Item.cs` Item.FeatureNecessarySkill | 未確認 |  |
-| Function IsFeatureAvailable | 386 | 11 | `SRCCore/Models/UnitData.cs` UnitData.IsFeatureAvailable | 未確認 |  |
-| Function IsFeatureLevelSpecified | 399 | 16 | `SRCCore/Units/Unit.feature.cs` Unit.IsFeatureLevelSpecified | 未確認 |  |
-| Function AddWeapon | 417 | 10 | `SRCCore/Models/UnitData.cs` UnitData.AddWeapon | 未確認 |  |
-| Function CountWeapon | 429 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountWeapon | 未確認 |  |
-| Function Weapon | 437 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Weapon | 未確認 |  |
-| Function AddAbility | 442 | 10 | `SRCCore/Models/UnitData.cs` UnitData.AddAbility | 未確認 |  |
-| Function CountAbility | 454 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountAbility | 未確認 |  |
-| Function Ability | 462 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Ability | 未確認 |  |
-| Sub Clear | 467 | 19 | `SRCCore/Models/UnitData.cs` UnitData.Clear | 未確認 |  |
+| Sub Class_Terminate | 69 | 30 | （なし） | SRC#で不要 | Collection の解放 |
+| Property Get Nickname | 101 | 7 | `SRCCore/Models/UnitData.cs` UnitData.Nickname | 一致 |  |
+| Property Let Nickname | 109 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Nickname | 一致 |  |
+| Property Get KanaName | 114 | 14 | `SRCCore/Models/UnitData.cs` UnitData.KanaName | 一致 |  |
+| Property Let KanaName | 129 | 3 | `SRCCore/Models/UnitData.cs` UnitData.KanaName | 一致 |  |
+| Property Get Bitmap0 | 134 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap0 | 一致 |  |
+| Property Get Bitmap | 138 | 7 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap | 一致 |  |
+| Property Let Bitmap | 146 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Bitmap | 一致 |  |
+| Sub AddFeature | 152 | 157 | `SRCCore/Models/UnitData.cs` UnitData.AddFeature | 修正済み | 「Lv」の後を Convert.ToDouble で読んでいたので、数値でないときに例外が Load の外へ出ていた。FeatureData.ParseLevel にそろえ、Load で原因を書かないデータエラーにした（#1498・#1526）。エリアスの展開は AliasData.ExpandFeatureAlias |
+| Function CountFeature | 311 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountFeature | 一致 |  |
+| Function Feature | 319 | 6 | `SRCCore/Models/UnitData.cs` UnitData.Feature | 一致 | VB は名前を返す。C# は FeatureData を返し、呼ぶ側が Name を読む |
+| Function FeatureName | 327 | 14 | `SRCCore/Models/UnitData.cs` UnitData.FeatureName | 一致 | Level > 0 で「Lv」を付ける（FeatureNameWithLv） |
+| Function FeatureLevel | 343 | 15 | `SRCCore/Models/UnitData.cs` UnitData.FeatureLevel | 修正済み | 範囲外の番号で例外を投げていた。VB と同じく 0 を返すようにした（#1498） |
+| Function FeatureData | 360 | 11 | `SRCCore/Models/UnitData.cs` UnitData.FeatureData | 一致 | 範囲外のときは "" を返す（try/catch を範囲を確かめる書き方に直した） |
+| Function FeatureNecessarySkill | 373 | 11 | （なし。FeatureData.NecessarySkill） | SRC#で不要 | VB でもほかから呼ばれていない（Unit は自分の colFeature を見る） |
+| Function IsFeatureAvailable | 386 | 11 | `SRCCore/Models/UnitData.cs` UnitData.IsFeatureAvailable | 一致 | Collection のキー（大小を区別しない）で探す |
+| Function IsFeatureLevelSpecified | 399 | 16 | （なし。FeatureData.HasLevel） | SRC#で不要 | VB でもほかから呼ばれていない |
+| Function AddWeapon | 417 | 10 | `SRCCore/Models/UnitData.cs` UnitData.AddWeapon | 一致 |  |
+| Function CountWeapon | 429 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountWeapon | 一致 |  |
+| Function Weapon | 437 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Weapon | 一致 |  |
+| Function AddAbility | 442 | 10 | `SRCCore/Models/UnitData.cs` UnitData.AddAbility | 一致 | キーはアビリティの名前と番号（ItemData とは違う） |
+| Function CountAbility | 454 | 6 | `SRCCore/Models/UnitData.cs` UnitData.CountAbility | 一致 |  |
+| Function Ability | 462 | 3 | `SRCCore/Models/UnitData.cs` UnitData.Ability | 一致 |  |
+| Sub Clear | 467 | 19 | `SRCCore/Models/UnitData.cs` UnitData.Clear | 一致 |  |

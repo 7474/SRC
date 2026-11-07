@@ -4,4 +4,4 @@ VB 版の `SRC/SRC_20121125/BCVariable.bas` の手続きと、C# の対応（[�
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub DataReset | 56 | 10 | `SRCCore/Events/BCVariable.cs` BCVariable.DataReset | 未確認 |  |
+| Sub DataReset | 56 | 10 | `SRCCore/Events/BCVariable.cs` BCVariable.DataReset | 一致 | Armor をリセットしないのも VB と同じ |
