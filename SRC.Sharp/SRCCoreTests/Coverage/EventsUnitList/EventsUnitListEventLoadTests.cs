@@ -267,9 +267,10 @@ namespace SRCCore.Coverage.Tests.EventsUnitList
         public void LoadEventData_BlockAskInterruptedByExit_IsError()
         {
             // Ask ブロックの途中で Exit が現れたら End 抜けとして Ask の行を示す
+            // （VB はコマンドが Ask でもメッセージは「Talkに対応するEndがありません」）
             var (src, gui) = Load("スタート:", "Ask 選んでください", "はい", "Exit");
 
-            var error = src.DataErrors.FirstOrDefault(x => x.msg == "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
+            var error = src.DataErrors.FirstOrDefault(x => x.msg == "Talkに対応するEndがありません");
             Assert.IsNotNull(error, string.Join(",", ErrorMessages(src)));
             Assert.AreEqual("Ask 選んでください", error.line_buf);
             Assert.IsTrue(gui.TerminateCalled);

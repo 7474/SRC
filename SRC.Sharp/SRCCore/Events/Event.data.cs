@@ -15,8 +15,9 @@ namespace SRCCore.Events
 {
     public partial class Event
     {
-        // XXX 全般に1オフセットをどうするのかどっかで考えないといけない。
         // イベントデータを初期化
+        // SRC# の EventData・EventCmd とラベルの行番号（EventDataId）は 0 始まり。
+        // VB の行番号は 1 始まりで、ラベルが見つからないときの 0 は SRC# では -1 にしている
         public void InitEventData()
         {
             SRC.Titles = new List<string>();
@@ -38,24 +39,18 @@ namespace SRCCore.Events
             int sys_event_file_num = default;
 
             // データの初期化
-            // XXX List値それぞれの初期化
+            // VB の EventFileID・EventLineNum は EventDataLine が持つ。
+            // EventFileNames はシステム側のファイル（SysEventFileNum 個）だけを残す
             EventData = EventData.Where(x => x.IsSystemData).ToList();
-            EventFileNames = EventData.Where(x => x.IsSystemData).Select(x => x.File).ToList();
+            EventFileNames = (EventFileNames ?? new List<string>()).Take(SysEventFileNum).ToList();
             AdditionalEventFileNames = new List<string>();
             CurrentLineNum = SysEventDataSize;
+            // VB は各スタックの中身を消さず、添字だけを戻す
             CallDepth = 0;
-            //CallStack.Clear();
             ArgIndex = 0;
-            //ArgIndexStack.Clear();
-            //ArgStack.Clear();
             UpVarLevel = 0;
-            //UpVarLevelStack.Clear();
             VarIndex = -1;
-            //VarIndexStack.Clear();
-            //VarStack.Clear();
             ForIndex = 0;
-            //ForIndexStack.Clear();
-            //ForLimitStack.Clear();
             CallStack[CallDepth] = 0;
             ArgIndexStack[CallDepth] = ArgIndex;
             VarIndexStack[CallDepth] = VarIndex;
@@ -64,14 +59,15 @@ namespace SRCCore.Events
             HotPointList = new List<HotPoint>();
             ObjColor = Color.White;
             ObjFillColor = Color.White;
-            // XXX マッピング先が微妙。実装見て見直す。
+            // VB の vbFSTransparent
             ObjFillStyle = FillStyle.VbFSTransparent;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
 
             // ラベルの初期化
-            // 全部登録しなおしているので全部消してしまってよい
-            // XXX 本当か？　手抜きが祟っているだけでは？
+            // SRC# は EventData の全部の行のラベルを登録しなおすので、全部消す。
+            // XXX VB はシステム側のイベントラベルを消さずに残す（Enable も残る）ので、
+            // システム側のイベントラベルへの ClearEvent が LoadEventData のたびに戻るのが VB と違う
             colNormalLabelList.Clear();
             colEventLabelList.Clear();
             colSysNormalLabelList.Clear();
@@ -110,7 +106,6 @@ namespace SRCCore.Events
                 SRC.BattleAnimationUnavailable = !battleAnimeIncludeLoaded;
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
-                // XXX 要らんのでは
                 sys_event_data_size = EventData.Count;
                 sys_event_file_num = EventFileNames.Count;
             }
@@ -119,10 +114,9 @@ namespace SRCCore.Events
                 // シナリオ側のシステムデータをチェック
                 ScenarioLibChecked = true;
 
-                // XXX この辺がある時だけ再ロードするようにする
-                //bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-                //bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
-                //bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = SRC.FileSystem.FileExists(argfname); return ret; }
+                // VB はシナリオの Lib にスペシャルパワー.eve・精神コマンド.eve・汎用戦闘アニメ\include.eve の
+                // どれかがあるときだけ読み直す。無ければ読み直してもシステム側のロードと同じファイルを
+                // 同じ順に読むだけなので、SRC# はいつも読み直す
                 var hasScenarioSystemData = true;
                 if (hasScenarioSystemData)
                 {
@@ -161,7 +155,6 @@ namespace SRCCore.Events
                 LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.ScenarioPath, "Lib", "include.eve"), EventDataSource.System);
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
-                // XXX 要らんのでは
                 sys_event_data_size = EventData.Count;
                 sys_event_file_num = EventFileNames.Count;
 
@@ -218,34 +211,13 @@ namespace SRCCore.Events
                     || LoadEventData2IfExist(SRC.FileSystem.PathCombine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
             }
 
-            // XXX 多分要らん
-            //// 複数行に分割されたコマンドを結合
-            //var loopTo8 = Information.UBound(EventData) - 1;
-            //for (i = SysEventDataSize + 1; i <= loopTo8; i++)
-            //{
-            //    if (Strings.Right(EventData[i], 1) == "_")
-            //    {
-            //        EventData[i + 1] = Strings.Left(EventData[i], Strings.Len(EventData[i]) - 1) + EventData[i + 1];
-            //        EventData[i] = " ";
-            //    }
-            //}
+            // 複数行に分割されたコマンドの結合は SrcEveReader が行う
 
             // ラベルの登録
-            var label_error_found = RegisterLabel();
+            // VB はシステム側のロードではラベルの末尾の全角文字を調べない
+            var label_error_found = RegisterLabel(load_mode != "システム");
 
-            // XXX 多分要らん
-            //// コマンドデータ配列を設定
-            //if (Information.UBound(EventData) > Information.UBound(EventCmd))
-            //{
-            //    num = Information.UBound(EventCmd);
-            //    Array.Resize(EventCmd, Information.UBound(EventData) + 1);
-            //    var loopTo13 = Information.UBound(EventCmd);
-            //    for (i = num + 1; i <= loopTo13; i++)
-            //    {
-            //        EventCmd[i] = new CmdData();
-            //        EventCmd[i].LineNum = i;
-            //    }
-            //}
+            // コマンドデータ配列（EventCmd）は ParseCommand で作る
 
             // 書式チェックはシナリオ側にのみ実施
             if (load_mode != "システム")
@@ -254,23 +226,8 @@ namespace SRCCore.Events
                 ValidateCommandArgs();
             }
 
-            // シナリオ側のイベントデータの場合はここまでスキップ
-
-            // システム側のイベントデータの場合の処理
-
-            // XXX 多分要らん
-            //// CmdDataクラスのインスタンスの生成のみ行っておく
-            //else if (CurrentLineNum > Information.UBound(EventCmd))
-            //{
-            //    Array.Resize(EventCmd, CurrentLineNum + 1);
-            //    i = CurrentLineNum;
-            //    while (EventCmd[i] is null)
-            //    {
-            //        EventCmd[i] = new CmdData();
-            //        EventCmd[i].LineNum = i;
-            //        i = i - 1;
-            //    }
-            //}
+            // VB はシステム側のロードでは CmdData の生成だけを行う。
+            // SRC# の EventCmd はシナリオ側の ParseCommand でシステム側の行の分も作る
 
             // イベントデータの読み込みが終了したのでシステム側イベントデータのサイズを決定。
             // システム側イベントデータは読み込みを一度だけやればよい。
@@ -308,29 +265,33 @@ namespace SRCCore.Events
             }
         }
 
-        private bool RegisterLabel()
+        private bool RegisterLabel(bool checkSystemLabelSuffix = true)
         {
             // 「登録済なら無視」の判定に、登録済みの行の索引を使う
             registeringNormalLabelIds = new LabelIdIndex(colNormalLabelList);
             registeringEventLabelIds = new LabelIdIndex(colEventLabelList);
             registeringSysNormalLabelIds = new LabelIdIndex(colSysNormalLabelList);
+            // VB はラベルを登録する行を CurrentLineNum に入れ（LabelData のエラー表示に使う）、終わったら戻す
+            var num = CurrentLineNum;
             try
             {
-                return RegisterLabels();
+                return RegisterLabels(checkSystemLabelSuffix);
             }
             finally
             {
+                CurrentLineNum = num;
                 registeringNormalLabelIds = null;
                 registeringEventLabelIds = null;
                 registeringSysNormalLabelIds = null;
             }
         }
 
-        private bool RegisterLabels()
+        private bool RegisterLabels(bool checkSystemLabelSuffix)
         {
             var error_found = false;
             foreach (var line in EventData)
             {
+                CurrentLineNum = line.ID;
                 var lbuf = line.Data;
                 switch (Strings.Right(lbuf, 1) ?? "")
                 {
@@ -350,6 +311,10 @@ namespace SRCCore.Events
 
                     case "：":
                         {
+                            if (line.IsSystemData && !checkSystemLabelSuffix)
+                            {
+                                break;
+                            }
                             DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
                             error_found = true;
                             break;
@@ -372,8 +337,9 @@ namespace SRCCore.Events
             // 全eventDataを走査してコマンドを解析する（システムデータも含めて解析することで
             // 処理の整合性を保つ; パフォーマンス改善の余地はあるが現在の規模では問題ない）
             //foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
-            foreach (var eventDataLine in EventData)
+            for (var lineIndex = 0; lineIndex < EventData.Count; lineIndex++)
             {
+                var eventDataLine = EventData[lineIndex];
                 // コマンドの構文解析
                 var command = parser.Parse(SRC, eventDataLine, out var parsed);
                 EventCmd.Add(command);
@@ -577,7 +543,7 @@ namespace SRCCore.Events
                                         }
                                 }
                             }
-                            // XXX 条件こけてる気がする
+                            // VB と同じ（Talk の中では、どの Next も「Nextに対応するコマンドがありません」になる）
                             else if (StackTop() == CmdType.TalkCmd)
                             {
                                 switch (StackTop())
@@ -796,7 +762,7 @@ namespace SRCCore.Events
                                 case CmdType.AskCmd:
                                 case CmdType.QuestionCmd:
                                     {
-                                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talk/AutoTalk/Ask/Questionに対応するEndがありません");
+                                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
                                         cmdStack.Pop();
                                         cmdPosStack.Pop();
                                         error_found = true;
@@ -809,16 +775,46 @@ namespace SRCCore.Events
 
                     case CmdType.NopCmd:
                         {
-                            if (eventDataLine.Data == " ")
+                            // VB は "_" で結合した行・コメントの行を " " の行として残し、ここで "" にする。
+                            // SrcEveReader はそれらの行を EventData に入れないので、その処理は要らない
+                            switch (StackTop())
                             {
-                                // "_"で消去された行。Talk中の改行に対応するためのダミーの空白
-                                // XXX これ消しとかないとまずいの？
-                                //eventDataLine.Data = "";
-                            }
-                            else
-                            {
-                                // NopCmdがTalk/AutoTalk/Ask/Question内に現れた場合の中途検証は
-                                // ファイル末尾の未終了チェック（下記 cmdStack.Count > 0 の箇所）で対応済み。
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                case CmdType.AskCmd:
+                                case CmdType.QuestionCmd:
+                                    {
+                                        // 次の行の最初の語が対応するコマンド・End・Suspend 以外の半角文字だけの語なら、
+                                        // End が抜けているとみなす。
+                                        // VB は末尾にエラー表示用の空行を足すので、最後の行の次の行は空行とみなす
+                                        var nextData = lineIndex + 1 < EventData.Count ? EventData[lineIndex + 1].Data : "";
+                                        var buf = Strings.LCase(GeneralLib.ListIndex(nextData, 1));
+                                        string buf2;
+                                        switch (StackTop())
+                                        {
+                                            case CmdType.TalkCmd:
+                                                buf2 = "talk";
+                                                break;
+                                            case CmdType.AutoTalkCmd:
+                                                buf2 = "autotalk";
+                                                break;
+                                            case CmdType.AskCmd:
+                                                buf2 = "ask";
+                                                break;
+                                            default:
+                                                buf2 = "question";
+                                                break;
+                                        }
+                                        if (buf != buf2 && buf != "end" && buf != "suspend"
+                                            && Strings.Len(buf) == Strings.LenB(buf))
+                                        {
+                                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                            cmdStack.Pop();
+                                            cmdPosStack.Pop();
+                                            error_found = true;
+                                        }
+                                        break;
+                                    }
                             }
 
                             break;
@@ -904,6 +900,12 @@ namespace SRCCore.Events
             // 主なコマンドの引数の数をチェック
             foreach (var command in EventCmd)
             {
+                // VB はシナリオ側の行だけを調べる
+                if (command.EventData.IsSystemData)
+                {
+                    continue;
+                }
+
                 switch (command.Name)
                 {
                     case CmdType.CreateCmd:
@@ -1040,6 +1042,8 @@ namespace SRCCore.Events
             EventFileNames.Add(fname);
 
             var lineNumber = -1;
+            // 最後に読んだ行（VB の buf。エラーのメッセージを選ぶのに使う）
+            var buf = "";
             try
             {
                 using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
@@ -1049,6 +1053,7 @@ namespace SRCCore.Events
                     {
                         var line = reader.GetLine();
                         lineNumber = reader.LineNumber;
+                        buf = line;
 
                         var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>";
                         if (!isIncludeLine)
@@ -1089,8 +1094,14 @@ namespace SRCCore.Events
             catch (Exception ex)
             {
                 SRC.Log.LogError(ex, "イベントデータを読み込めません {File}({Line})", fname, lineNumber);
-                // XXX
-                GUI.ErrorMessage(fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です");
+                if (Strings.Len(buf) == 0)
+                {
+                    GUI.ErrorMessage(fname + "が開けません");
+                }
+                else
+                {
+                    GUI.ErrorMessage(fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です");
+                }
                 SRC.TerminateSRC();
                 throw;
             }
