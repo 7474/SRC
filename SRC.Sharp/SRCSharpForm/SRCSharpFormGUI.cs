@@ -1109,7 +1109,8 @@ namespace SRCSharpForm
             // カーソルを移動
             var prev_lock = IsGUILocked;
             IsGUILocked = true;
-            // XXX
+            // 元の SRC と同じく、動かしている間はカーソルの下のユニットをステータスに出さない
+            frmMain.IsStatusWindowDisabled = true;
             for (var i = 1; i <= num; i++)
             {
                 Cursor.Position = new Point(
@@ -1118,6 +1119,7 @@ namespace SRCSharpForm
                 );
                 Sleep(10, true);
             }
+            frmMain.IsStatusWindowDisabled = false;
             IsGUILocked = prev_lock;
 
             // 新しいカーソル位置を記録
