@@ -103,7 +103,8 @@ namespace SRCCore.Units
                 HasFlag = true,
                 lb_caption = caption_msg,
                 lb_info = ListBoxInfo(src),
-                lb_mode = "",
+                // 反撃の武器選択は選んでも閉じず（呼び出し元が閉じる）、カーソルをリストボックスへ動かす
+                lb_mode = Mode == WeaponListMode.Counter ? "連続表示,カーソル移動" : "",
             };
             while (true)
             {
