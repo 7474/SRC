@@ -533,7 +533,11 @@ namespace SRCRender
 
         private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
 
-        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        /// <summary>
+        /// ツールチップ（ToolTip.frm の ShowToolTip）。文字の幅＋6・高さ＋4 の大きさで、カーソルの 24 ピクセル下に出す。
+        /// 枠は上と左が灰色（RGB(200, 200, 200)）、下と右が黒。文字は (3, 2) から書く。
+        /// 元の SRC は画面からはみ出しても構わず出すが、SRC# は画面の中に収める
+        /// </summary>
         private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
         {
             using (var font = TooltipFont.ToSKFont())
@@ -541,22 +545,25 @@ namespace SRCRender
             {
                 var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
                 var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var width = lines.Max(x => font.MeasureText(x)) + 8;
-                var height = lineHeight * lines.Length + 6;
-                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
-                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
-                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                var width = (float)Math.Ceiling(lines.Max(x => font.MeasureText(x))) + 6;
+                var height = lineHeight * lines.Length + 4;
+                var left = Math.Min(tooltip.X, ScreenLayout.Width - width);
+                var top = Math.Min(tooltip.Y + 24, ScreenLayout.Height - height);
+                var rect = SKRect.Create((float)Math.Floor(Math.Max(0, left)), (float)Math.Floor(Math.Max(0, top)), width, height);
                 paint.Color = new SKColor(255, 255, 225);
                 canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
+                // 上と左は灰色、下と右は黒
+                paint.Color = new SKColor(200, 200, 200);
+                canvas.DrawRect(rect.Left, rect.Top, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Left, rect.Top, 1, rect.Height, paint);
                 paint.Color = SKColors.Black;
-                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
-                paint.Style = SKPaintStyle.Fill;
+                canvas.DrawRect(rect.Left, rect.Bottom - 1, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Right - 1, rect.Top, 1, rect.Height, paint);
                 paint.IsAntialias = true;
-                var y = rect.Top + 3;
+                var y = rect.Top + 2;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
             }
