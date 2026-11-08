@@ -17,6 +17,9 @@ namespace SRCRender
     {
         public void OpenMessageForm(Unit u1, Unit u2)
         {
+            RightUnit = null;
+            LeftUnit = null;
+
             // ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
             if (u1 is object)
             {
@@ -42,7 +45,9 @@ namespace SRCRender
                 frmMessage.Centered = true;
             }
             // ウィンドウをクリアしておく
-            ClearMessageForm();
+            // （元の SRC と同じく、UpdateMessageForm で表示したユニット（LeftUnit・RightUnit）は残す）
+            frmMessage.ClearForm();
+            messageDisplayedPilot = "";
 
             // ウィンドウを表示
             if (!frmMessage.Visible)
@@ -158,6 +163,10 @@ namespace SRCRender
 
         public void CloseMessageForm()
         {
+            if (!frmMessage.Visible)
+            {
+                return;
+            }
             frmMessage.Hide();
             DoEvents();
         }
@@ -732,12 +741,13 @@ namespace SRCRender
         public void DisplayMessage(string pname, string msg_org, string msg_mode)
         {
             var msg = msg_org;
-            ResetMessage();
+            // 元の SRC と同じく、メッセージ欄は表示するときに消す（メッセージが空ならそれまでの表示を残す）
+            State.Message.Lines.Clear();
             try
             {
                 string pnickname;
                 string left_margin;
-                DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
+                DisplayMessagePilot(pname, msg_mode, false, out pnickname, out left_margin);
                 State.Message.Speaker = pnickname;
 
                 // メッセージ中の式置換を処理
@@ -850,8 +860,6 @@ namespace SRCRender
                 var messages = Enumerable.Range(1, messageParts.Count)
                     .Select(x => string.Join("", messageParts.Take(x)))
                     .ToList();
-
-                // XXX 使ってないよなぁ？
 
                 // メッセージの表示
                 {
@@ -1149,6 +1157,12 @@ namespace SRCRender
                                 IsFormClicked = false;
                                 is_automode = AutoMessageMode;
                                 frmMessage.SetMessageModeCaption(AutoMessageMode);
+                                if (AutoMessageMode)
+                                {
+                                    // 元の SRC と同じく、自動送りにしたときから待ち直す
+                                    start_time = GeneralLib.timeGetTime();
+                                    wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250);
+                                }
                                 Present();
                             }
                         }
@@ -1165,15 +1179,20 @@ namespace SRCRender
                         }
                     }
                 }
-                // XXX 画像が見つからなかった時のエラー処理
+                // 元の SRC の ErrorHandler（画像の読み込みのエラー）は On Error で使っていないので要らない
             }
             finally
             {
-                ResetMessage();
+                // フォント設定を元に戻す。表示したメッセージは、元の SRC と同じく次に消すまで残す
+                ResetFont();
             }
         }
 
-        private void DisplayMessagePilot(string pname, string msg_mode, out string pnickname, out string left_margin)
+        /// <summary>
+        /// キャラ表示の描き換え。isBattleMessage のときは、元の SRC の DisplayBattleMessage と同じく pname が "-" なら何もしない
+        /// （DisplayMessage は "-" も話者として扱う）
+        /// </summary>
+        private void DisplayMessagePilot(string pname, string msg_mode, bool isBattleMessage, out string pnickname, out string left_margin)
         {
             pnickname = "";
             left_margin = "";
@@ -1186,9 +1205,8 @@ namespace SRCRender
                 messageDisplayedPilot = "";
                 left_margin = "";
             }
-            else if (!string.IsNullOrEmpty(pname) && pname != "-")
+            else if (!string.IsNullOrEmpty(pname) && !(isBattleMessage && pname == "-"))
             {
-                // XXX DisplayMessage 時は "-" 条件ないけれど問題ないやろ
                 // どのキャラ画像を使うか？
                 var fname = "-.bmp";
                 if (SRC.PList.IsDefined(pname))
@@ -1228,6 +1246,24 @@ namespace SRCRender
                             frmMessage.picFace.Refresh();
                             messageDisplayedPilot = "";
                             DisplayMode = "";
+
+                            // パイロット画像が存在しないことを記録しておく
+                            if (SRC.PList.IsDefined(pname))
+                            {
+                                var p = SRC.PList.Item(pname);
+                                if (p.get_Bitmap(false) == p.Data.Bitmap)
+                                {
+                                    p.Data.IsBitmapMissing = true;
+                                }
+                            }
+                            else if (SRC.PDList.IsDefined(pname))
+                            {
+                                SRC.PDList.Item(pname).IsBitmapMissing = true;
+                            }
+                            else if (SRC.NPDList.IsDefined(pname))
+                            {
+                                SRC.NPDList.Item(pname).IsBitmapMissing = true;
+                            }
                         }
                     }
                 }
@@ -1271,7 +1307,8 @@ namespace SRCRender
         {
             messageArea = frmMessage.picMessage.Size;
             frmMessage.picMessage.ClearImage(defaultBgColor);
-            currentMessagePoint = new PointF(0, 0);
+            // 元の SRC と同じく Cls してから CurrentX = 1 にする
+            currentMessagePoint = new PointF(1, 0);
         }
 
         private void ResetMessage()
@@ -1283,7 +1320,8 @@ namespace SRCRender
 
         private void CRMessage()
         {
-            currentMessagePoint = new PointF(0, currentMessagePoint.Y);
+            // 元の SRC の PrintMessage と同じく、改行したら CurrentX = 1 にする
+            currentMessagePoint = new PointF(1, currentMessagePoint.Y);
         }
 
         private void RefreshMessage()
@@ -1295,7 +1333,8 @@ namespace SRCRender
         {
             State.Message.Lines.Add(msg);
             using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
-            var max_y = currentMessagePoint.Y + currentMessageFont.GetHeight(g);
+            // 元の SRC と同じく 0 から数える（文字の大きさを変えたタグがあるときだけ使う）
+            var max_y = 0f;
 
             string cname;
             var in_tag = false;
@@ -1530,12 +1569,12 @@ namespace SRCRender
                                                         {
                                                             if (Strings.Asc(cname) == 35 && cname.Length == 7) // #
                                                             {
+                                                                // 元の SRC と同じく、16 進数として読めないときは色を変えない
                                                                 Color color;
-                                                                if (!ColorExtension.TryFromHexString(cname, out color))
+                                                                if (ColorExtension.TryFromHexString(cname, out color))
                                                                 {
-                                                                    throw new Exception(string.Format(Resources.Strings.InvalidColor, cname));
+                                                                    currentMessageFontColor = new SolidBrush(color);
                                                                 }
-                                                                currentMessageFontColor = new SolidBrush(color);
                                                             }
                                                             break;
                                                         }
@@ -1588,7 +1627,12 @@ namespace SRCRender
                 {
                     // 最後の括弧の位置は一番大きなサイズの文字に合わせる
                     PrintString(Strings.Mid(msg, head, Strings.Len(msg) - head), g);
-                    currentMessagePoint = new PointF(currentMessagePoint.X, max_y - currentMessageFont.GetHeight(g));
+                    var last_y = currentMessagePoint.Y;
+                    var height = currentMessageFont.GetHeight(g);
+                    if (last_y + height <= max_y)
+                    {
+                        currentMessagePoint = new PointF(currentMessagePoint.X, max_y - height);
+                    }
                     PrintString(Strings.Right(msg, 1), g);
                     currentMessagePoint = currentMessagePoint.AddY(currentMessageFont.GetHeight(g));
                 }
@@ -1623,11 +1667,23 @@ namespace SRCRender
             PrintString(msg, g);
         }
 
+        /// <summary>
+        /// 文字列を書いて改行する（元の SRC の p.Print msg）。改行した後の CurrentX は 0
+        /// </summary>
+        private void PrintLine(string msg)
+        {
+            State.Message.Lines.Add(msg);
+            using var g = Graphics.FromImage(frmMessage.picMessage.NewImageIfNull().Image);
+            PrintString(msg, g);
+            currentMessagePoint = new PointF(0, currentMessagePoint.Y + currentMessageFont.GetHeight(g));
+        }
+
         private void PrintString(string msg, Graphics g)
         {
             g.TextRenderingHint = RenderingConfig.TextHint;
             g.DrawString(msg, currentMessageFont, currentMessageFontColor, currentMessagePoint);
-            currentMessagePoint = currentMessagePoint.AddX(MessageLen(msg, g, currentMessageFont).Width);
+            // 書いた文字列そのものの幅だけ進める（タグを除いて測ると、<lt> などで書いた "<" の幅が 0 になる）
+            currentMessagePoint = currentMessagePoint.AddX(g.MeasureStringWithoutRightMargin(msg, currentMessageFont).Width);
         }
 
         private SizeF MessageLen(string msg)
@@ -1681,22 +1737,19 @@ namespace SRCRender
 
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)
         {
-            ResetMessage();
+            // 元の SRC と同じく、メッセージ欄はメッセージを書くときに消す（カットイン・効果音・ウェイトだけならそれまでの表示を残す）
+            State.Message.Lines.Clear();
             try
             {
-                // メッセージウィンドウが閉じられていれば表示しない
-                // XXX 元はWindowState見てたけれどどうかな
-                if (!MessageFormVisible)
-                {
-                    return;
-                }
+                // 元の SRC はメッセージウィンドウが最小化されていれば表示しない。
+                // この画面のメッセージウィンドウは最小化できないので、隠れていても（元の SRC と同じく）カットイン・効果音・待ちを行う
 
                 // ウィンドウのキャプションを設定
                 frmMessage.SetMessageModeCaption(false);
 
                 // キャラ表示の描き換え
                 string pnickname;
-                DisplayMessagePilot(pname, msg_mode, out pnickname, out _);
+                DisplayMessagePilot(pname, msg_mode, true, out pnickname, out _);
 
                 // メッセージが空なら表示は止める
                 if (string.IsNullOrEmpty(msg))
@@ -1905,7 +1958,7 @@ namespace SRCRender
                                     {
                                         // １枚画像の場合
                                         DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
-                                        // XXX picFace
+                                        frmMessage.picFace.Refresh();
                                         if (wait_time > 0)
                                         {
                                             while (start_time + wait_time > GeneralLib.timeGetTime())
@@ -1920,7 +1973,7 @@ namespace SRCRender
                                         {
                                             fname = fpath + fname0 + SrcFormatter.Format(j, "00") + fsuffix;
                                             DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options);
-                                            // XXX picFace
+                                            frmMessage.picFace.Refresh();
                                             if (wait_time > 0)
                                             {
                                                 wait_time2 = wait_time * (j - first_id + 1) / (last_id - first_id);
@@ -2114,7 +2167,8 @@ namespace SRCRender
                     // ウェイト
                     if (Information.IsNumeric(buf))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(buf));
+                        // 元の SRC と同じく Long に代入する（偶数丸め）
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(buf));
                         goto NextMessage;
                     }
 
@@ -2148,7 +2202,7 @@ namespace SRCRender
                                 var fname = Commands.SelectedUnit.MainPilot().get_Bitmap(false);
                                 if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " + msg_mode))
                                 {
-                                    // XXX picFace
+                                    frmMessage.picFace.Refresh();
                                     messageDisplayedPilot = fname;
                                     DisplayMode = msg_mode;
                                 }
@@ -2160,12 +2214,12 @@ namespace SRCRender
                         {
                             if (Commands.SelectedUnit.CountPilot() > 0)
                             {
-                                PrintString(Commands.SelectedUnit.MainPilot().get_Nickname(false));
+                                PrintLine(Commands.SelectedUnit.MainPilot().get_Nickname(false));
                             }
                         }
                         else if (!string.IsNullOrEmpty(pnickname))
                         {
-                            PrintString(pnickname);
+                            PrintLine(pnickname);
                         }
 
                         // メッセージが途中で終わっているか判定
@@ -2373,23 +2427,10 @@ namespace SRCRender
 
                             case " ":
                                 {
-                                    PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
-                                    lnum = (lnum + 1);
-                                    if (is_char_message)
+                                    // 元の SRC と同じく、"。" と同じ位置を超えていれば、空白を書かずに改行する
+                                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdKuten * messageArea.Width)
                                     {
-                                        PrintString("  ");
-                                    }
-
-                                    line_head = (j + 1);
-
-                                    break;
-                                }
-
-                            default:
-                                {
-                                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdOver * messageArea.Width)
-                                    {
-                                        PrintMessage(Strings.Mid(buf, line_head, j - line_head + 1), !is_char_message);
+                                        PrintMessage(Strings.Mid(buf, line_head, j - line_head), !is_char_message);
                                         lnum = (lnum + 1);
                                         if (is_char_message)
                                         {
@@ -2397,6 +2438,24 @@ namespace SRCRender
                                         }
 
                                         line_head = (j + 1);
+                                    }
+
+                                    break;
+                                }
+
+                            default:
+                                {
+                                    // 元の SRC と同じく、いまの文字は次の行に回す
+                                    if (MessageLen(Strings.Mid(buf, line_head, j - line_head)).Width > mesConfig.BrThresholdOver * messageArea.Width)
+                                    {
+                                        PrintMessage(Strings.Mid(buf, line_head, j - line_head), !is_char_message);
+                                        lnum = (lnum + 1);
+                                        if (is_char_message)
+                                        {
+                                            PrintString("  ");
+                                        }
+
+                                        line_head = j;
                                     }
 
                                     break;
@@ -2505,22 +2564,18 @@ namespace SRCRender
             }
             finally
             {
-                ResetMessage();
+                // フォント設定を元に戻す。表示したメッセージは、元の SRC と同じく次に消すまで残す
+                ResetFont();
             }
         }
 
         public void DisplaySysMessage(string msg, bool short_wait)
         {
+            // 元の SRC はメッセージウィンドウが最小化されていれば表示しない。
+            // この画面のメッセージウィンドウは最小化できないので、隠れていても（元の SRC と同じく）書いて待つ
             ResetMessage();
             try
             {
-                // メッセージウィンドウが閉じられていれば表示しない
-                // XXX 元はWindowState見てたけれどどうかな
-                if (!MessageFormVisible)
-                {
-                    return;
-                }
-
                 // ウィンドウのキャプションを設定
                 frmMessage.SetMessageModeCaption(false);
 
@@ -2579,7 +2634,8 @@ namespace SRCRender
                         }
                     }
 
-                    if (MessageLen(Strings.Mid(msg, line_head)).Width < MessageConfig.BrThresholdLimit * messageArea.Width)
+                    // 元の SRC と同じく、picMessage の幅（0.95 倍ではない）に収まるかを見る
+                    if (MessageLen(Strings.Mid(msg, line_head)).Width < messageArea.Width)
                     {
                         // 全体が一行に収まる場合
                         goto NextLoop;
@@ -2633,7 +2689,8 @@ namespace SRCRender
                 ResetFont();
 
                 // ウェイトを計算
-                var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
+                // 元の SRC と同じく Long に代入する（偶数丸め）
+                var wait_time = VBMath.CLng((0.8d + 0.5d * lnum) * MessageWait);
                 if (short_wait)
                 {
                     wait_time = wait_time / 2;
@@ -2665,7 +2722,8 @@ namespace SRCRender
             }
             finally
             {
-                ResetMessage();
+                // フォント設定を元に戻す。表示したメッセージは、元の SRC と同じく次に消すまで残す
+                ResetFont();
             }
         }
 
