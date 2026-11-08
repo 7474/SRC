@@ -363,13 +363,17 @@ namespace SRCRender
             }
 
             // ステータスウィンドウの顔グラフィックのクリックで、表示するパイロットを切り替える（Main.frm の picFace_Click）
+            // ダブルクリックの 2 回目は、VB では Click が起きない（picFace_DblClick は無い）ので切り替えない
             if (button == GuiButton.Left && IsOnStatusFace(x, y))
             {
-                game.Post(() =>
+                if (clickCount < 2)
                 {
-                    ChangeDisplayedPilot();
-                    Present();
-                });
+                    game.Post(() =>
+                    {
+                        ChangeDisplayedPilot();
+                        Present();
+                    });
+                }
                 return;
             }
 
@@ -380,6 +384,36 @@ namespace SRCRender
                 if (touch)
                 {
                     PlaceKeyCursorOnTouch(mx, my);
+                }
+                if (clickCount >= 2)
+                {
+                    // ダブルクリックの 2 回目は、VB では MouseDown が起きずに DblClick だけが起きる（Main.frm の picMain_DblClick）。
+                    // 右ボタンならキャンセルを連続実行し、左ボタンでは何もしない
+                    if (button == GuiButton.Right)
+                    {
+                        game.Post(() =>
+                        {
+                            if (!IsGUILocked)
+                            {
+                                switch (Commands.CommandState ?? "")
+                                {
+                                    case "マップコマンド":
+                                        Commands.CommandState = "ユニット選択";
+                                        break;
+
+                                    case "ユニット選択":
+                                        Commands.ProceedCommand(true);
+                                        break;
+
+                                    default:
+                                        Commands.CancelCommand();
+                                        break;
+                                }
+                            }
+                            Present();
+                        });
+                    }
+                    return;
                 }
                 if (button == GuiButton.Left)
                 {
@@ -393,24 +427,6 @@ namespace SRCRender
                 game.Post(() =>
                 {
                     Commands.ProceedInput(button, Map.CellAtPoint(mx, my), Map.UnitAtPoint(mx, my));
-                    // 右ダブルクリックはキャンセルを連続実行
-                    if (button == GuiButton.Right && clickCount >= 2 && !IsGUILocked)
-                    {
-                        switch (Commands.CommandState ?? "")
-                        {
-                            case "マップコマンド":
-                                Commands.CommandState = "ユニット選択";
-                                break;
-
-                            case "ユニット選択":
-                                Commands.ProceedCommand(true);
-                                break;
-
-                            default:
-                                Commands.CancelCommand();
-                                break;
-                        }
-                    }
                     Present();
                 });
             }
