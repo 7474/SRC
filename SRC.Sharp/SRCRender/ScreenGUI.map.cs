@@ -137,8 +137,9 @@ namespace SRCRender
             MapX = (MainWidth / 2 + 1);
             MapY = (MainHeight / 2 + 1);
 
-            var built = renderer.BuildBackground(src, Images);
-            built = ImageFilters.ApplyDrawMode(built, draw_mode, filter_color, filter_trans_par);
+            // 描画モードは地形とレイヤーに別々にかける（レイヤーは背景色を白として透過で処理する。元の SRC と同じ）
+            var built = renderer.BuildBackground(src, Images,
+                (image, isLayer) => ImageFilters.ApplyDrawMode(image, draw_mode, filter_color, filter_trans_par, transparent: isLayer));
             if (src.ShowSquareLine)
             {
                 // 元の SRC（GUI.bas の SetupBackground）と同じ位置に 1 ピクセルの線を引く。
@@ -180,8 +181,8 @@ namespace SRCRender
 
             // 元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd と同じく、そのマスだけを
             // 今の描画モードで描き直す（背景のほかのマスに描いたものと IsMapDirty はそのまま）
-            var cellImage = renderer.BuildMapCell(src, Images, X, Y);
-            cellImage = ImageFilters.ApplyDrawMode(cellImage, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+            var cellImage = renderer.BuildMapCell(src, Images, X, Y,
+                (image, isLayer) => ImageFilters.ApplyDrawMode(image, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent, transparent: isLayer));
             using (cellImage)
             {
                 if (src.ShowSquareLine)

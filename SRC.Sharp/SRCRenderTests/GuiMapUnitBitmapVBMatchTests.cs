@@ -339,5 +339,52 @@ namespace SRCRender.Tests
                 runner.WaitForTermination();
             }
         }
+
+        /// <summary>
+        /// 描画モードは地形とレイヤーに別々にかけ、レイヤーは背景色を白として透過で処理する
+        /// （GUI.bas の SetupBackground の ColorFilter ..., True）。描画色が白のときはレイヤーの色を (254, 255, 255) に寄せる。
+        /// </summary>
+        [TestMethod]
+        public void ColorFilter_LayerIsFilteredAsTransparent()
+        {
+            var path = Path.Combine(workspace.AppPath, "Bitmap", "Map", "sea0000.bmp");
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            using (var bitmap = new SKBitmap(32, 32))
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint { Color = new SKColor(201, 100, 50) })
+            {
+                canvas.Clear(SKColors.White);
+                canvas.DrawRect(0, 0, 32, 16, paint);
+                using (var image = SKImage.FromBitmap(bitmap))
+                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (var stream = File.Create(path))
+                {
+                    data.SaveTo(stream);
+                }
+            }
+            workspace.Write("test.eve",
+                "スタート:",
+                "ChangeMap test.map",
+                "ChangeLayer 7 5 海 0",
+                "ColorFilter #FFFFFF 50%",
+                "Talk システム",
+                "描画",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                StringAssert.Contains(runner.WaitForMessage(), "描画");
+                var gui = runner.GUI;
+                using (var bitmap = SKBitmap.Decode(runner.SnapshotPng()))
+                {
+                    // (201 * 50 + 254 * 50) \ 100 = 227（白に寄せずに混ぜると 228）
+                    Assert.AreEqual(new SKColor(227, 177, 152), bitmap.GetPixel(gui.MapToPixelX(7) + 5, gui.MapToPixelY(5) + 5));
+                }
+                runner.ClickMessage();
+                runner.WaitForTermination();
+            }
+        }
     }
 }
