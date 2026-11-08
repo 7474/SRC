@@ -8,6 +8,7 @@ namespace SRCRender.Compat
         private Graphics g;
         private Font currentFont;
         private Brush currentBrush;
+        private Color currentColor;
         private PointF currentPoint;
         private float gridCellWidth;
 
@@ -23,6 +24,9 @@ namespace SRCRender.Compat
         }
 
         public float CellWidth => gridCellWidth;
+
+        /// <summary>文字列を描いたときに、その位置（左上）・文字列・色を知らせる（テストで表示を確かめるため）</summary>
+        public System.Action<float, float, string, Color> Printed { get; set; }
         public Graphics Graphics => g;
 
         public Printer(Graphics g, Font font, Color color, float gridCellWidth)
@@ -48,6 +52,7 @@ namespace SRCRender.Compat
 
         public void SetColor(Color color)
         {
+            currentColor = color;
             currentBrush = new SolidBrush(color);
         }
 
@@ -90,11 +95,9 @@ namespace SRCRender.Compat
         public void Print(string str)
         {
             var textSize = g.MeasureStringWithoutRightMargin(str, currentFont);
-            if (currentPoint.X > 0 && g.VisibleClipBounds.Width < currentPoint.X + textSize.Width)
-            {
-                Print();
-            }
+            // 元の SRC（PictureBox.Print）は右端で折り返さず、はみ出した分は見えないだけ
             g.DrawString(str, currentFont, currentBrush, currentPoint);
+            Printed?.Invoke(currentPoint.X, currentPoint.Y, str, currentColor);
             currentPoint.X += textSize.Width;
         }
     }

@@ -398,7 +398,8 @@ namespace SRCCore.Units
             {
                 return 0;
             }
-            if (p == null)
+            // メインパイロットは pindex = 0 で表示する（Status.bas の DisplayPilotStatus は先にメインパイロットかを見る）
+            if (p == null || ReferenceEquals(p, MainPilot()))
             {
                 return IsMainPilotFirstPilotForStatus() ? 1 : 0;
             }
