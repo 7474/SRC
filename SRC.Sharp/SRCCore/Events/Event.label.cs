@@ -689,7 +689,7 @@ namespace SRCCore.Events
         // （括弧の対応が取れていなければ ListLength は -1 なので、最初の要素だけになる）
         private static string NormalizeLabelName(string lname)
         {
-            var n = GeneralLib.ListSplitStrict(lname, out var items);
+            var n = GeneralLib.ListSplit(lname, out var items);
             var lname2 = GeneralLib.ListIndex(lname, 1);
             for (var i = 2; i <= n; i++)
             {

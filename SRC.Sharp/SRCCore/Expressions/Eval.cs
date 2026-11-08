@@ -27,7 +27,7 @@ namespace SRCCore.Expressions
 
             // 式をあらかじめ要素に分解
             string[] terms;
-            var tcount = GeneralLib.ListSplitStrict(expr, out terms);
+            var tcount = GeneralLib.ListSplit(expr, out terms);
             switch (tcount)
             {
                 // 空白

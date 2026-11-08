@@ -39,7 +39,7 @@ namespace SRCCore.CmdDatas
                 // コマンドのパラメータ分割
                 string[] list;
                 // VB 版の ListSplit と同じく、末尾でクォートや括弧が閉じていなければ -1
-                var llength = GeneralLib.ListSplitStrict(edata, out list);
+                var llength = GeneralLib.ListSplit(edata, out list);
 
                 // コマンドの種類を判定
                 switch (Strings.LCase(list[0]) ?? "")

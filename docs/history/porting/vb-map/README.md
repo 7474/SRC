@@ -74,15 +74,15 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Dialog.cls](Dialog_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogData.cls](DialogData_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogDataList.cls](DialogDataList_cls.md) | 7 | 0 | 5 | 1 | 0 | 1 | 0 |
-| [Effect.bas](Effect_bas.md) | 23 | 23 | 0 | 0 | 0 | 0 | 0 |
+| [Effect.bas](Effect_bas.md) | 23 | 0 | 21 | 2 | 0 | 0 | 0 |
 | [Event.bas](Event_bas.md) | 31 | 0 | 15 | 7 | 2 | 7 | 0 |
 | [Expression.bas](Expression_bas.md) | 25 | 0 | 18 | 7 | 0 | 0 | 0 |
-| [FileDialog.bas](FileDialog_bas.md) | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
+| [FileDialog.bas](FileDialog_bas.md) | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | [Flash.bas](Flash_bas.md) | 3 | 3 | 0 | 0 | 0 | 0 | 0 |
 | [GUI.bas](GUI_bas.md) | 71 | 71 | 0 | 0 | 0 | 0 | 0 |
-| [GeneralLib.bas](GeneralLib_bas.md) | 33 | 33 | 0 | 0 | 0 | 0 | 0 |
+| [GeneralLib.bas](GeneralLib_bas.md) | 33 | 0 | 15 | 14 | 0 | 4 | 0 |
 | [Graphics.bas](Graphics_bas.md) | 25 | 25 | 0 | 0 | 0 | 0 | 0 |
-| [Help.bas](Help_bas.md) | 7 | 7 | 0 | 0 | 0 | 0 | 0 |
+| [Help.bas](Help_bas.md) | 7 | 0 | 3 | 4 | 0 | 0 | 0 |
 | [Intermission.bas](Intermission_bas.md) | 8 | 0 | 2 | 6 | 0 | 0 | 0 |
 | [Item.cls](Item_cls.md) | 31 | 0 | 26 | 0 | 0 | 5 | 0 |
 | [ItemData.cls](ItemData_cls.md) | 21 | 0 | 13 | 6 | 0 | 2 | 0 |
@@ -107,7 +107,7 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Pilots.cls](Pilots_cls.md) | 20 | 0 | 9 | 2 | 0 | 9 | 0 |
 | [SRC.bas](SRC_bas.md) | 17 | 0 | 5 | 7 | 1 | 4 | 0 |
 | [SafeMain.frm](SafeMain_frm.md) | 14 | 14 | 0 | 0 | 0 | 0 | 0 |
-| [Sound.bas](Sound_bas.md) | 18 | 18 | 0 | 0 | 0 | 0 | 0 |
+| [Sound.bas](Sound_bas.md) | 18 | 0 | 6 | 4 | 0 | 8 | 0 |
 | [SpecialPowerData.cls](SpecialPowerData_cls.md) | 13 | 0 | 9 | 4 | 0 | 0 | 0 |
 | [SpecialPowerDataList.cls](SpecialPowerDataList_cls.md) | 7 | 0 | 5 | 1 | 0 | 1 | 0 |
 | [Status.bas](Status_bas.md) | 7 | 7 | 0 | 0 | 0 | 0 | 0 |
@@ -122,4 +122,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 0 | 15 | 1 | 0 | 9 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 0 | 2 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 267 | 724 | 247 | 9 | 86 | 0 |
+| 計 | 1333 | 184 | 769 | 271 | 9 | 100 | 0 |

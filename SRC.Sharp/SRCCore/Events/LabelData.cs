@@ -308,7 +308,7 @@ namespace SRCCore.Events
 
                 // パラメータ
                 // VB の ListLength と同じく、括弧やクォートの対応が取れていなければ -1
-                intParaNum = GeneralLib.ListSplitStrict(value, out _);
+                intParaNum = GeneralLib.ListSplit(value, out _);
                 if (intParaNum == -1)
                 {
                     // VB はラベルを登録している行（CurrentLineNum）のエラーとして表示する

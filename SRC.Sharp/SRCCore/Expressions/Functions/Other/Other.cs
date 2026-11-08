@@ -102,7 +102,7 @@ namespace SRCCore.Expressions.Functions
 
             // 条件をリストとして分ける（VB の ListSplit。括弧・クォートが閉じていなければ -1 で Case Else）。
             // VB の Case 2 にある pname = ListIndex(expr, 2) は値を使っていないので移さない
-            var num = GeneralLib.ListSplitStrict(@params[1], out var larray);
+            var num = GeneralLib.ListSplit(@params[1], out var larray);
             var list = larray;
             var flag = false;
             // 条件が 1 語でパイロット名なら、そのパイロットが出撃中（出撃・格納）か。

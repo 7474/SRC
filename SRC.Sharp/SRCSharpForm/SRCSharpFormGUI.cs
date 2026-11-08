@@ -425,7 +425,8 @@ namespace SRCSharpForm
 
         public void DieAnimation(Unit u)
         {
-            EraseUnitBitmap(u.x, u.y, false);
+            // 元の SRC は EraseUnitBitmap の do_refresh を省略して呼ぶ（既定は True）。消したユニットをすぐ画面に出す
+            EraseUnitBitmap(u.x, u.y, true);
 
             // 人間ユニットでない場合は爆発を表示
             if (!u.IsHero())
