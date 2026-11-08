@@ -4,74 +4,74 @@ VB 版の `SRC/SRC_20121125/GUI.bas` の手続きと、C# の対応（[説明](R
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub LoadMainFormAndRegisterFlash | 337 | 24 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LoadMainFormAndRegisterFlash | 未確認 |  |
-| Sub LoadForms | 364 | 112 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LoadForms | 未確認 |  |
-| Sub SetNewGUIMode | 479 | 8 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SetNewGUIMode | 未確認 |  |
-| Sub OpenMessageForm | 493 | 158 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.OpenMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.OpenMessageForm | 未確認 |  |
-| Sub CloseMessageForm | 653 | 7 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.CloseMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.CloseMessageForm | 未確認 |  |
-| Sub ClearMessageForm | 662 | 10 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.ClearMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.ClearMessageForm | 未確認 |  |
-| Sub UpdateMessageForm | 674 | 419 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.UpdateMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.UpdateMessageForm | 未確認 |  |
-| Sub SaveMessageFormStatus | 1095 | 5 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.SaveMessageFormStatus<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.SaveMessageFormStatus | 未確認 |  |
-| Sub KeepMessageFormStatus | 1102 | 18 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.KeepMessageFormStatus<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.KeepMessageFormStatus | 未確認 |  |
-| Sub DisplayMessage | 1125 | 486 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplayMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplayMessage | 未確認 |  |
-| Sub PrintMessage | 1613 | 212 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.PrintMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.PrintMessage | 未確認 |  |
-| Function MessageLen | 1827 | 29 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.MessageLen<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.MessageLen | 未確認 |  |
-| Sub DisplayBattleMessage | 1858 | 724 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplayBattleMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplayBattleMessage | 未確認 |  |
-| Sub DisplaySysMessage | 2584 | 145 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplaySysMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplaySysMessage | 未確認 |  |
-| Sub SetupBackground | 2734 | 224 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.SetupBackground<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SetupBackground | 未確認 |  |
-| Sub RedrawScreen | 2960 | 13 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.RedrawScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RedrawScreen | 未確認 |  |
-| Sub MaskScreen | 2975 | 6 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MaskScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MaskScreen | 未確認 |  |
-| Sub RefreshScreen | 2984 | 9 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.RefreshScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RefreshScreen | 未確認 |  |
-| Sub RefreshScreenOld | 3000 | 272 | （見つからない） | 未確認 |  |
-| Sub RefreshScreenNew | 3275 | 401 | （見つからない） | 未確認 |  |
-| Sub DottedLine | 3680 | 22 | （見つからない） | 未確認 |  |
-| Sub Center | 3704 | 24 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.Center<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.Center | 未確認 |  |
-| Function MapToPixelX | 3733 | 10 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MapToPixelX<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MapToPixelX | 未確認 |  |
-| Function MapToPixelY | 3744 | 3 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MapToPixelY<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MapToPixelY | 未確認 |  |
-| Function PixelToMapX | 3749 | 16 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PixelToMapX<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.PixelToMapX | 未確認 |  |
-| Function PixelToMapY | 3766 | 9 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PixelToMapY<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.PixelToMapY | 未確認 |  |
-| Function FindUnitBitmap | 3780 | 132 | （見つからない） | 未確認 |  |
-| Function MakeUnitBitmap | 3914 | 75 | （見つからない） | 未確認 |  |
-| Sub LoadUnitBitmap | 3991 | 183 | （見つからない） | 未確認 |  |
-| Sub PaintUnitBitmap | 4176 | 89 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PaintUnitBitmap<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.PaintUnitBitmap | 未確認 |  |
-| Sub EraseUnitBitmap | 4267 | 39 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.EraseUnitBitmap<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.EraseUnitBitmap | 未確認 |  |
-| Sub MoveUnitBitmap | 4308 | 151 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MoveUnitBitmap<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MoveUnitBitmap | 未確認 |  |
-| Sub MoveUnitBitmap2 | 4462 | 90 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MoveUnitBitmap2<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MoveUnitBitmap2 | 未確認 |  |
-| Function ListBox | 4557 | 197 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ListBox | 未確認 |  |
-| Sub EnlargeListBoxHeight | 4756 | 15 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.EnlargeListBoxHeight<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.EnlargeListBoxHeight | 未確認 |  |
-| Sub ReduceListBoxHeight | 4773 | 15 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ReduceListBoxHeight<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ReduceListBoxHeight | 未確認 |  |
-| Sub EnlargeListBoxWidth | 4790 | 16 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.EnlargeListBoxWidth<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.EnlargeListBoxWidth | 未確認 |  |
-| Sub ReduceListBoxWidth | 4808 | 16 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ReduceListBoxWidth<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ReduceListBoxWidth | 未確認 |  |
-| Sub AddPartsToListBox | 4826 | 191 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.AddPartsToListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.AddPartsToListBox | 未確認 |  |
-| Sub RemovePartsOnListBox | 5019 | 32 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.RemovePartsOnListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RemovePartsOnListBox | 未確認 |  |
-| Function WeaponListBox | 5053 | 369 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.WeaponListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.WeaponListBox | 未確認 |  |
-| Function AbilityListBox | 5424 | 229 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.AbilityListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.AbilityListBox | 未確認 |  |
-| Function LIPS | 5655 | 43 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.LIPS<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LIPS | 未確認 |  |
-| Function MultiColumnListBox | 5700 | 68 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.MultiColumnListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MultiColumnListBox | 未確認 |  |
-| Function MultiSelectListBox | 5770 | 35 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.MultiSelectListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MultiSelectListBox | 未確認 |  |
-| Function DrawPicture | 5810 | 1868 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawPicture<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawPicture | 未確認 |  |
-| Sub MakePicBuf | 7680 | 24 | （見つからない） | 未確認 |  |
-| Function GetPicBuf | 7706 | 52 | （見つからない） | 未確認 |  |
-| Sub ReleasePicBuf | 7760 | 8 | （見つからない） | 未確認 |  |
-| Sub UsePicBuf | 7770 | 4 | （見つからない） | 未確認 |  |
-| Sub DrawString | 7779 | 151 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawString<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawString | 未確認 |  |
-| Sub DrawSysString | 7932 | 75 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawSysString<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawSysString | 未確認 |  |
-| Sub SaveScreen | 8012 | 12 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.SaveScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SaveScreen | 未確認 |  |
-| Sub ClearPicture | 8026 | 26 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.ClearPicture<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ClearPicture | 未確認 |  |
-| Sub ClearPicture2 | 8054 | 16 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.ClearPicture2<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ClearPicture2 | 未確認 |  |
-| Sub LockGUI | 8075 | 7 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LockGUI | 未確認 |  |
-| Sub UnlockGUI | 8084 | 7 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.UnlockGUI | 未確認 |  |
-| Sub SaveCursorPos | 8096 | 9 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.SaveCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SaveCursorPos | 未確認 |  |
-| Sub MoveCursorPos | 8107 | 127 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.MoveCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MoveCursorPos | 未確認 |  |
-| Sub RestoreCursorPos | 8236 | 40 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.RestoreCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RestoreCursorPos | 未確認 |  |
-| Sub OpenTitleForm | 8281 | 9 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.OpenTitleForm | 未確認 |  |
-| Sub CloseTitleForm | 8292 | 4 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.CloseTitleForm | 未確認 |  |
-| Sub OpenNowLoadingForm | 8301 | 10 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.OpenNowLoadingForm | 未確認 |  |
-| Sub CloseNowLoadingForm | 8313 | 5 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.CloseNowLoadingForm | 未確認 |  |
-| Sub DisplayLoadingProgress | 8320 | 4 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DisplayLoadingProgress | 未確認 |  |
-| Sub SetLoadImageSize | 8326 | 6 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SetLoadImageSize | 未確認 |  |
-| Sub ChangeDisplaySize | 8336 | 68 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ChangeDisplaySize | 未確認 |  |
-| Sub ErrorMessage | 8409 | 22 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ErrorMessage | 未確認 |  |
-| Sub DataErrorMessage | 8433 | 28 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DataErrorMessage | 未確認 |  |
-| Function IsRButtonPressed | 8464 | 43 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.IsRButtonPressed | 未確認 |  |
-| Sub DisplayTelop | 8510 | 34 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DisplayTelop | 未確認 |  |
+| Sub LoadMainFormAndRegisterFlash | 337 | 24 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LoadMainFormAndRegisterFlash<br>`SRCRender/ScreenGUI.cs` ScreenGUI.LoadMainFormAndRegisterFlash | SRC#で不要 | FlashControl.ocx を regsvr32 で登録し、frmMain か frmSafeMain をロードする処理（Win32 と VB の画面部品）。SRC#Form はメインウィンドウを作り、SRCRender は何もしない。呼び出し順（SRC.Execute の最初）は VB と同じ |
+| Sub LoadForms | 364 | 112 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LoadForms<br>`SRCRender/ScreenGUI.cs` ScreenGUI.LoadForms | 一致 | LockGUI を呼び、MainWidth・MainHeight を 15 にする（SRCRender はコンストラクタで ScreenLayout.MapColumns＝15）。SRC# は新ＧＵＩに対応しないので、Src.ini の NewGUI と Option(新ＧＵＩ) は見ない。CommandState = "ユニット選択" は StartScenario と RestoreData でも入れるので動作は同じ |
+| Sub SetNewGUIMode | 479 | 8 | `SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SetNewGUIMode<br>`SRCRender/ScreenGUI.cs` ScreenGUI.SetNewGUIMode | SRC#で不要 | SRC# は新ＧＵＩに対応しない。SRCCore は呼ばない |
+| Sub OpenMessageForm | 493 | 158 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.OpenMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.OpenMessageForm | 修正済み | VB と同じく、最初に LeftUnit・RightUnit を消すようにした。最後に ClearMessageForm を呼んでいたので、UpdateMessageForm で表示したユニットの記録が消え、KeepMessageFormStatus がユニットの表示の無いウィンドウで開き直していた。SRC#Form では、新ＧＵＩのときの中央寄せの符号、枠外の 350 Twip、メインウィンドウを隠しているときの画面中央も直した（#1498）。SRCRender は画面の外に描けないので、枠外でも左下に置く |
+| Sub CloseMessageForm | 653 | 7 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.CloseMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.CloseMessageForm | 修正済み | VB と同じく、隠れていれば何もしない（DoEvents もしない）ようにした（#1498） |
+| Sub ClearMessageForm | 662 | 10 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.ClearMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.ClearMessageForm | 一致 |  |
+| Sub UpdateMessageForm | 674 | 419 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.UpdateMessageForm<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.UpdateMessageForm | 一致 | 補間は VBMath.IntDiv を使う。VB は右のユニットについて ru.HP と RightUnitHPRatio（割合）を比べる書き間違いがあり、右のユニットがあるとほぼ常に 160 ミリ秒待つ。これには合わせない |
+| Sub SaveMessageFormStatus | 1095 | 5 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.SaveMessageFormStatus<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.SaveMessageFormStatus | 一致 |  |
+| Sub KeepMessageFormStatus | 1102 | 18 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.KeepMessageFormStatus<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.KeepMessageFormStatus | 一致 | OpenMessageForm を直したので、記録したユニットの表示付きで開き直すようになった |
+| Sub DisplayMessage | 1125 | 486 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplayMessage・ScreenGUI.DisplayMessagePilot<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplayMessage・SRCSharpFormGUI.DisplayMessagePilot | 修正済み | (1) 話者が "-" のときも VB と同じく話者として扱う（顔の画像を消し、left_margin を入れる） (2) 顔の画像が描けなければ IsBitmapMissing を立てる (3) 待っている間に自動送りに切り替えたら、そこから待ち直す (4) 表示したメッセージを最後に消さず、次に消すまで残す（#1498）。分割・; の改行・禁則・改行の位置・4 行ごとのページ・ウェイトの式は一致 |
+| Sub PrintMessage | 1613 | 212 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.PrintMessage・ScreenGUI.PrintString<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.PrintMessage・SRCSharpFormGUI.PrintString | 修正済み | CurrentX = 1 から書き、改行したら 1 に戻す。max_y を 0 から数えるので、small や size の行の次の行は小さい文字の高さの下から書く。最後の」の位置の式。color=# の値が 16 進数として読めなければ色を変えない。PrintString は、書いた文字列そのものの幅だけ進める（lt・gt・タグでない括弧などで次の文字が重なっていた）（#1498）。#RGB を受けないのは前と同じ |
+| Function MessageLen | 1827 | 29 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.MessageLen<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.MessageLen | 一致 | タグを除いて測る処理は一致。VB は Integer で返すが、SRCRender の書体は Windows と幅が違うので丸めていない |
+| Sub DisplayBattleMessage | 1858 | 724 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplayBattleMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplayBattleMessage | 修正済み | (1) 話者名を 1 行に書き、せりふを次の行から書く (2) 空白で改行するのは "。" と同じ位置を超えたときだけにし、空白は書かない (3) 長さの超過で改行するときは、いまの文字を次の行に回す (4) VB と同じく最小化しているときだけ止める (5) @ のパイロット画像と、話者 "-" の顔を描いたら picFace を更新する。ウェイトの 100 * CDbl を偶数丸めにし、表示を次に消すまで残す（#1498）。in_tag を前のメッセージから持ち越す VB の癖には合わせない |
+| Sub DisplaySysMessage | 2584 | 145 | `SRCRender/ScreenGUI.message.cs` ScreenGUI.DisplaySysMessage<br>`SRCSharpForm/SRCSharpFormGUI.message.cs` SRCSharpFormGUI.DisplaySysMessage | 修正済み | 1 行に収まるかは幅の 0.95 倍ではなく 1 倍で見る。待ち時間 (0.8 + 0.5 * lnum) * MessageWait を偶数丸めにする。隠れていても書いて待つ（SRC#Form は最小化のときだけ止める）。表示を次に消すまで残す（#1498） |
+| Sub SetupBackground | 2734 | 224 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.SetupBackground・`SRCRender/ScreenRenderer.cs` ScreenRenderer.BuildBackground<br>`SRCSharpForm/Forms/Main.guimap.cs` frmMain.SetupBackground | 修正済み | マス目の線の位置を VB に合わせた（横線は各マスの下端 y = 32i - 1、縦線は各マスの左端、外枠は (0,0)-(MapPWidth-1, MapPHeight-1)）。BuildBackground が別に引いていた半透明の黒い線は VB に無いので消した。描画モードは地形とレイヤーに別々にかけ、レイヤーは透過（白は背景）で処理する（#1498）。SRCSharpForm は線の位置もレイヤーの透過も直していない |
+| Sub RedrawScreen | 2960 | 13 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.RedrawScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RedrawScreen | 一致 | カーソルの描き直し（SetCursorPos）は SRC# では要らない |
+| Sub MaskScreen | 2975 | 6 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MaskScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MaskScreen | 一致 |  |
+| Sub RefreshScreen | 2984 | 9 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.RefreshScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RefreshScreen | 一致 | NewGUIMode の分岐は SRC# では要らない |
+| Sub RefreshScreenOld | 3000 | 272 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.RefreshScreen<br>`SRCSharpForm/Forms/Main.guimap.cs` frmMain.RefreshScreen | 修正済み | 行動済み・マスクの網掛けを VB の picMask・picMask2 と同じ市松模様にした（x+y が奇数のピクセルを、行動済みは黒、マスクは RGB(140,140,140)）。マスクしたユニットの場所の線は点線（DottedLine）、場所の実線は x = 0〜30（#1498）。VB は PaintedArea を空に戻すが C# は戻さない（読むのはテストだけ）。SRCSharpForm は半透明の灰色を重ねたまま |
+| Sub RefreshScreenNew | 3275 | 401 | （なし） | SRC#で不要 | 新ＧＵＩに対応しない |
+| Sub DottedLine | 3680 | 22 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.DrawAreaLine | 修正済み | マスクしたユニットの場所の線を点線にした（x が奇数のピクセル）（#1498）。half_size は新ＧＵＩだけで使う |
+| Sub Center | 3704 | 24 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.Center<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.Center | 一致 | MapFileName が空のとき VB は ByVal の引数を変えるだけで何もしない |
+| Function MapToPixelX | 3733 | 10 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MapToPixelX<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MapToPixelX | 一致 | NewGUIMode の分岐は SRC# では要らない |
+| Function MapToPixelY | 3744 | 3 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MapToPixelY<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MapToPixelY | 一致 |  |
+| Function PixelToMapX | 3749 | 16 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PixelToMapX<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.PixelToMapX | 一致 | NewGUIMode の分岐は SRC# では要らない |
+| Function PixelToMapY | 3766 | 9 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PixelToMapY<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.PixelToMapY | 一致 |  |
+| Function FindUnitBitmap | 3780 | 132 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.CreateUnitImage | 修正済み | ファイル名に「\-.bmp」を含む（画像に「-」を指定した）ユニットは、名前の頭文字を描かずに陣営のタイルだけにした（#1498） |
+| Function MakeUnitBitmap | 3914 | 75 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.CreateUnitImage | 修正済み | 行動済み（2 段目）とマスク入り（3 段目）の画像の作り方を市松模様にした（#1498）。画像の番号の管理（picUnitBitmap）は SRC# では要らない |
+| Sub LoadUnitBitmap | 3991 | 183 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.CreateUnitImage<br>`SRCSharpForm/Forms/Main.guimap.cs` frmMain.DrawUnit | 一致 | 地形ユニット・陣営のタイル・発光・描画モードの順は同じ。画像が無いユニットの名前の頭文字は SRC# の素材なしの表示（docs/assets.md） |
+| Sub PaintUnitBitmap | 4176 | 89 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.PaintUnitBitmap<br>`SRCSharpForm/Forms/Main.gui.cs` frmMain.PaintUnitBitmap | 修正済み | 画面外の判定が常に真になっていたのを VB と同じにした。「リフレッシュ無し」でないときに ScreenIsSaved = False にする（#1498）。SRCSharpForm は直していない |
+| Sub EraseUnitBitmap | 4267 | 39 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.EraseUnitBitmap<br>`SRCSharpForm/Forms/Main.gui.cs` frmMain.EraseUnitBitmap | 修正済み | 画面外では SaveScreen もしない。do_refresh のときに ScreenIsSaved = False にする（#1498）。SRCSharpForm は直していない |
+| Sub MoveUnitBitmap | 4308 | 151 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MoveUnitBitmap<br>`SRCSharpForm/Forms/Main.gui.cs` frmMain.MoveUnitBitmap | 修正済み | 行動済みでも網掛けしない画像（1 段目）で動かす。動き出す前の消去は、VB と同じく両方のバッファを背景で消す（#1498）。コマごとの消去は今の画面から描き直す（画面と退避が違うときだけ差が出る） |
+| Sub MoveUnitBitmap2 | 4462 | 90 | `SRCRender/ScreenGUI.map.cs` ScreenGUI.MoveUnitBitmap2<br>`SRCSharpForm/Forms/Main.gui.cs` frmMain.MoveUnitBitmap2 | 修正済み | 行動済みでも網掛けしない画像で動かす（#1498） |
+| Function ListBox | 4557 | 197 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ShowItems<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.ShowItems | 一致 | VB は最初に選ぶ項目が無い（ListIndex = -1）。SRC# は先頭を選んでおく（キー操作のための SRC# の利便性） |
+| Sub EnlargeListBoxHeight | 4756 | 15 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.EnlargeListBoxHeight<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.EnlargeListBoxHeight | 一致 | 2400 twip は 160 ピクセル |
+| Sub ReduceListBoxHeight | 4773 | 15 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ReduceListBoxHeight<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.ReduceListBoxHeight | 一致 |  |
+| Sub EnlargeListBoxWidth | 4790 | 16 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.EnlargeListBoxWidth<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.EnlargeListBoxWidth | 修正済み | 一覧と見出しの幅を 643 から VB と同じ 637 にした（#1498）。SRCSharpForm は前から 637 |
+| Sub ReduceListBoxWidth | 4808 | 16 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.ReduceListBoxWidth<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.ReduceListBoxWidth | 一致 |  |
+| Sub AddPartsToListBox | 4826 | 191 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.AddPartsToListBox<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.AddPartsToListBox | 修正済み | ユニット側の「HP」の用語をユニットを指定せずに引く。ユニットの画像は描画モードの色を変えず、行動済みの網掛けも場所の線も付けない（#1498）。描画モードが空でない非表示のユニットは、VB はユニットの画像を出すが SRC# は地形のタイル（小さな違い）。SRCSharpForm は画像を直していない |
+| Sub RemovePartsOnListBox | 5019 | 32 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.RemovePartsOnListBox<br>`SRCSharpForm/Forms/ListBox.cs` frmListBox.RemovePartsOnListBox | 修正済み | 見出しの Top を VB と同じ 4 にした（#1498） |
+| Function WeaponListBox | 5053 | 369 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.WeaponListBox・`SRCCore/Units/UnitWeaponList.cs` UnitWeaponList.SelectWeapon<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.WeaponListBox | 修正済み | 一覧を出してから、AutoMoveCursor ならカーソルを最後の使える武器へ（一覧ではリストボックスへ）動かし、BGM を変えてから選択を待つ。選んでも一覧のときは閉じない。反撃は「連続表示,カーソル移動」で出す（#1498）。列・文言・並び・選べない項目の印は一致。SRCSharpForm は BGM と反撃のモードだけ入れた |
+| Function AbilityListBox | 5424 | 229 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.AbilityListBox・`SRCCore/Units/UnitAbilityList.cs` UnitAbilityList.ToListBoxItems<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.AbilityListBox | 修正済み | アイテムの使用効果（必要技能「アイテム」）はアイテムの選択だけに、ほかのアビリティはアビリティの選択だけに出す（is_item を使っていなかった）。一覧を出してからカーソルを動かし、一覧のときは閉じない（#1498）。SRCSharpForm は is_item だけ入れた |
+| Function LIPS | 5655 | 43 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.LIPS<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LIPS | 一致 | 制限時間は Timer1（0.1 秒）と同じ単位。最初に選ぶ項目は ListBox と同じく合わせない |
+| Function MultiColumnListBox | 5700 | 68 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.MultiColumnListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MultiColumnListBox | 一致 | 項目を選ばない（ListIndex = -1）のは VB と同じ |
+| Function MultiSelectListBox | 5770 | 35 | `SRCRender/ScreenGUI.list.cs` ScreenGUI.MultiSelectListBox<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MultiSelectListBox | 一致 | CommandState・見出しの全角空白・並べ替えボタンの文言・選んだ数を返すことは同じ |
+| Function DrawPicture | 5810 | 1868 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawPicture<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawPicture | 修正済み | 回転で空いた部分を背景色（白・#rrggbb）で塗る。部分表示を VB の Line BF と同じ整数の座標で塗る（斜めは列ごとに 45 度）。black.bmp・white.bmp は部分表示・透過・効果のオプションを使わない。「保持」は描いたあとの画面の範囲を picMain(1) に写す。描いた範囲を PaintedArea に記録する。透過色は効果・反転・回転のあとで抜く（MakeMask）。透過のとき効果は背景色の画素を変えない。フィルタの透過率を Double にした。SRC#Form では抜けていた「明」「暗」も掛ける（#1498）。合わせないもの: 画像バッファ（picBuf）と last_path の最適化、画像の大きさが 4 の倍数でないとエラーにする VB の制約、ExtDataPath なども探す範囲の広さ（SRC# の利便性）。SRC#Form は効果のあとで透過色を抜く順の直しを入れていない |
+| Sub MakePicBuf | 7680 | 24 | （なし） | SRC#で不要 | VB の画像バッファの PictureBox を作る処理。SRC# は ImageCache で持つ |
+| Function GetPicBuf | 7706 | 52 | （なし） | SRC#で不要 | 同上（古いバッファから外す処理は ImageCache の容量の上限で行う） |
+| Sub ReleasePicBuf | 7760 | 8 | （なし） | SRC#で不要 | 同上 |
+| Sub UsePicBuf | 7770 | 4 | （なし） | SRC#で不要 | 同上 |
+| Sub DrawString | 7779 | 151 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawString<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawString | 修正済み | 改行しない PaintString（Print msg;）は文字列の右端に続けて書く（X を戻していた）。中央揃えは VB と同じく整数の割り算（\）にする（#1498）。フォントのスムージングの切り替えは Win32 API なので SRC#で不要 |
+| Sub DrawSysString | 7932 | 75 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.DrawSysString<br>`SRCSharpForm/SRCSharpFormGUI.draw.cs` SRCSharpFormGUI.DrawSysString | 修正済み | フォントが逆だった。戦闘アニメを使うときは 9pt 太字、使わないときは 8pt。中央揃えは \ で割る（#1498）。PaintedArea の Min・Max の取り違え（VB の不具合）は VB と同じ |
+| Sub SaveScreen | 8012 | 12 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.SaveScreen<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SaveScreen | 一致 |  |
+| Sub ClearPicture | 8026 | 26 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.ClearPicture<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ClearPicture | 一致 | VB は PaintedArea の範囲だけを戻すが、SRC# は全体を戻す。違いが出るのは VB の DrawSysString の範囲の誤りで消えない場合だけ（VB の不具合として合わせない。C# の Line などのコマンドは PaintedArea を記録していない） |
+| Sub ClearPicture2 | 8054 | 16 | `SRCRender/ScreenGUI.draw.cs` ScreenGUI.ClearPicture2<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ClearPicture2 | 一致 |  |
+| Sub LockGUI | 8075 | 7 | `SRCRender/ScreenGUI.cs` ScreenGUI.LockGUI<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.LockGUI | 一致 | スクロールバーを無効にする処理は SRCRender にスクロールバーが無いので要らない |
+| Sub UnlockGUI | 8084 | 7 | `SRCRender/ScreenGUI.cs` ScreenGUI.UnlockGUI<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.UnlockGUI | 一致 | 同上 |
+| Sub SaveCursorPos | 8096 | 9 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.SaveCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SaveCursorPos | 一致 |  |
+| Sub MoveCursorPos | 8107 | 127 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.MoveCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.MoveCursorPos | 修正済み | 動かしている間は IsStatusWindowDisabled を立てる（#1498。動かしている間だけの状態なのでテストは無い）。位置は SRC# の画面の座標で計算する。VB の武器選択の最後の項目を探す処理の添字のずれ（VB の不具合）には合わせない |
+| Sub RestoreCursorPos | 8236 | 40 | `SRCRender/ScreenGUI.animation.cs` ScreenGUI.RestoreCursorPos<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.RestoreCursorPos | 一致 |  |
+| Sub OpenTitleForm | 8281 | 9 | `SRCRender/ScreenGUI.cs` ScreenGUI.OpenTitleForm<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.OpenTitleForm | 一致 |  |
+| Sub CloseTitleForm | 8292 | 4 | `SRCRender/ScreenGUI.cs` ScreenGUI.CloseTitleForm<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.CloseTitleForm | 一致 |  |
+| Sub OpenNowLoadingForm | 8301 | 10 | `SRCRender/ScreenGUI.cs` ScreenGUI.OpenNowLoadingForm<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.OpenNowLoadingForm | 一致 | マウスカーソルを砂時計にする処理は SRC#で不要 |
+| Sub CloseNowLoadingForm | 8313 | 5 | `SRCRender/ScreenGUI.cs` ScreenGUI.CloseNowLoadingForm<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.CloseNowLoadingForm | 一致 |  |
+| Sub DisplayLoadingProgress | 8320 | 4 | `SRCRender/ScreenGUI.cs` ScreenGUI.DisplayLoadingProgress<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DisplayLoadingProgress | 違いあり | SRCSharpForm は一致。SRCRender は進み具合のバーが無く何もしない（Splash の文字だけを出す）（#1536） |
+| Sub SetLoadImageSize | 8326 | 6 | `SRCRender/ScreenGUI.cs` ScreenGUI.SetLoadImageSize<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.SetLoadImageSize | 違いあり | 同上（#1536） |
+| Sub ChangeDisplaySize | 8336 | 68 | `SRCRender/ScreenGUI.cs` ScreenGUI.ChangeDisplaySize<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ChangeDisplaySize | SRC#で不要 | 画面の解像度を変える Win32 API（ChangeDisplaySettings） |
+| Sub ErrorMessage | 8409 | 22 | `SRCRender/ScreenGUI.cs` ScreenGUI.ErrorMessage<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.ErrorMessage | 一致 | 非モーダルで最前面に出すのは窓の部品の都合。SRC# はダイアログで待つ |
+| Sub DataErrorMessage | 8433 | 28 | `SRCRender/ScreenGUI.cs` ScreenGUI.DataErrorMessage<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DataErrorMessage | 修正済み | SRCRender の文言の順を VB に合わせた（ファイル名と行・データ名・原因・データの行。原因がデータの行の後ろになっていた）。データ名も原因も無いときの「データが不正です。」を足し、行を CR LF で区切る（#1498。リソース DataErrorInvalid を 15 言語の resx に足した）。SRC#Form は元から一致 |
+| Function IsRButtonPressed | 8464 | 43 | `SRCRender/ScreenGUI.cs` ScreenGUI.IsRButtonPressed<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.IsRButtonPressed | 一致 | VB は前面の窓とカーソルの位置を見るが、SRC# はその窓での右ボタンだけを見る（Win32 API の代わり）。SRCRender は Esc も右ボタンとみなす（SRC# の利便性） |
+| Sub DisplayTelop | 8510 | 34 | `SRCRender/ScreenGUI.cs` ScreenGUI.DisplayTelop・`SRCRender/ScreenRenderer.cs` ScreenRenderer.DrawTelop<br>`SRCSharpForm/SRCSharpFormGUI.cs` SRCSharpFormGUI.DisplayTelop | 修正済み | 最初の 2 つの「.」だけを改行にする（SRCRender は置き換えておらず、SRC#Form はすべて置き換えていた）。右ボタンを押していれば待たず、その判定に MessageWait を使わない。SRCRender の見た目を Telop.frm に合わせた（枠の無い白地・ＭＳ Ｐ明朝 15.75pt の太字斜体・黒・中央揃え・幅 378px、高さは 1 行なら 53px、改行すれば 78px）（#1498） |
