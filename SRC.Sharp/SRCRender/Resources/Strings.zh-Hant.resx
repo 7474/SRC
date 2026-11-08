@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>{0}的資料無效。</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>資料無效。</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>

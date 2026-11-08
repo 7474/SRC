@@ -17,8 +17,8 @@ namespace SRCRender
 
         private static readonly PaintFont DefaultPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 16, Bold = true };
         private static readonly PaintFont StatusPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 9 };
-        private static readonly PaintFont SysPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 9, Bold = true };
-        private static readonly PaintFont BattleAnimePaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 8 };
+        private static readonly PaintFont SysAnimationPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 9, Bold = true };
+        private static readonly PaintFont SysNormalPaintFont = new PaintFont { Name = "ＭＳ Ｐ明朝", Size = 8 };
 
         private SKPoint currentDrawStringPoint;
 
@@ -152,6 +152,16 @@ namespace SRCRender
                 target = mainBuffer;
             }
 
+            // 元の SRC の black.bmp・white.bmp は塗りつぶすだけで、部分表示・透過・効果のオプションを使わない（DrewPicture へ飛ぶ）
+            var solid = IsSolidPicture(fname);
+            if (solid)
+            {
+                topPart = bottomPart = leftPart = rightPart = tleftPart = trightPart = bleftPart = brightPart = false;
+                transparent = isMonotone = isSepia = isSunset = isWater = isColorFilter = hrev = vrev = negpos = isSil = false;
+                brightCount = darkCount = 0;
+                angle = 0;
+            }
+
             // 部分表示（指定外の部分を背景色で塗りつぶす）。元の SRC と同じく、塗りつぶしてから透過色を抜く
             var partial = topPart || bottomPart || leftPart || rightPart || tleftPart || trightPart || bleftPart || brightPart;
             var whiteTransparent = transparent && bgColor.ToArgb() == Color.White.ToArgb();
@@ -193,18 +203,23 @@ namespace SRCRender
             {
                 if (partial)
                 {
+                    // 元の SRC と同じく Line (x1, y1)-(x2, y2), BGColor, BF の整数の座標で塗る（両端を含む）。
+                    // 斜めの部分表示は列ごとに縦線を引くため、縦横の比に関わらず 45 度で塗る
                     using (var canvas = new SKCanvas(drawBuffer))
                     using (var paint = new SKPaint { Color = ToSKColor(bgColor), IsAntialias = false })
                     {
-                        float w = drawBuffer.Width, h = origHeight;
-                        if (topPart) canvas.DrawRect(0, h / 2f, w, h / 2f, paint);
-                        if (bottomPart) canvas.DrawRect(0, 0, w, h / 2f, paint);
-                        if (leftPart) canvas.DrawRect(w / 2f, 0, w / 2f, h, paint);
-                        if (rightPart) canvas.DrawRect(0, 0, w / 2f, h, paint);
-                        if (tleftPart) FillTriangle(canvas, paint, origWidth - 1, 0, origWidth - 1, origHeight - 1, 0, origHeight - 1);
-                        if (trightPart) FillTriangle(canvas, paint, 0, 0, origWidth - 1, origHeight - 1, 0, origHeight - 1);
-                        if (bleftPart) FillTriangle(canvas, paint, 0, 0, origWidth - 1, 0, origWidth - 1, origHeight - 1);
-                        if (brightPart) FillTriangle(canvas, paint, 0, 0, origWidth - 1, 0, 0, origHeight - 1);
+                        int w = origWidth, h = origHeight;
+                        if (topPart) FillBox(canvas, paint, 0, h / 2, w - 1, h - 1);
+                        if (bottomPart) FillBox(canvas, paint, 0, 0, w - 1, h / 2 - 1);
+                        if (leftPart) FillBox(canvas, paint, w / 2, 0, w - 1, h - 1);
+                        if (rightPart) FillBox(canvas, paint, 0, 0, w / 2 - 1, h - 1);
+                        for (var i = 0; i < w; i++)
+                        {
+                            if (tleftPart) FillBox(canvas, paint, i, h - 1 - i, i, h - 1);
+                            if (trightPart) FillBox(canvas, paint, i, i, i, h - 1);
+                            if (bleftPart) FillBox(canvas, paint, i, 0, i, i);
+                            if (brightPart) FillBox(canvas, paint, i, 0, i, h - 1 - i);
+                        }
                     }
                 }
 
@@ -231,7 +246,8 @@ namespace SRCRender
                 if (hrev || vrev) drawBuffer = ImageFilters.Flip(drawBuffer, hrev, vrev);
                 if (angle != 0)
                 {
-                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, transparent ? SKColors.Transparent : ToSKColor(BGColor));
+                    // 元の SRC と同じく、空いた部分は背景色（白、または #rrggbb で指定した色）で塗る。透過するなら抜く
+                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, transparent ? SKColors.Transparent : ToSKColor(bgColor));
                 }
 
                 if (dw == Constants.DEFAULT_LEVEL) dw = origWidth;
@@ -282,14 +298,25 @@ namespace SRCRender
                 }
                 else if (!onMsgWindow && !onStatusWindow)
                 {
+                    // 表示画像を消去する際に使う描画領域を設定
+                    PaintedAreaX1 = Math.Min(PaintedAreaX1, Math.Max(dx, 0));
+                    PaintedAreaY1 = Math.Min(PaintedAreaY1, Math.Max(dy, 0));
+                    PaintedAreaX2 = Math.Max(PaintedAreaX2, Math.Min(dx + dw, MainPWidth - 1));
+                    PaintedAreaY2 = Math.Max(PaintedAreaY2, Math.Min(dy + dh, MainPHeight - 1));
+
                     IsPictureDrawn = true;
                     IsPictureVisible = true;
                     IsCursorVisible = false;
                     if (keepPicture)
                     {
-                        using (var canvas = new SKCanvas(mainBufferBack))
+                        // 元の SRC と同じく、描いたあとの画面のその範囲を写す（透過した部分は下に描いてあったものが残る）
+                        var area = SKRect.Intersect(dest, SKRect.Create(0, 0, target.Width, target.Height));
+                        if (!area.IsEmpty)
                         {
-                            canvas.DrawBitmap(drawBuffer, dest, SKSamplingOptions.Default);
+                            using (var canvas = new SKCanvas(mainBufferBack))
+                            {
+                                canvas.DrawBitmap(target, area, area, SKSamplingOptions.Default);
+                            }
                         }
                     }
                 }
@@ -301,16 +328,25 @@ namespace SRCRender
             }
         }
 
-        private static void FillTriangle(SKCanvas canvas, SKPaint paint, float x1, float y1, float x2, float y2, float x3, float y3)
+        /// <summary>VB の Line (x1, y1)-(x2, y2), , BF と同じく、2 つの角を含む長方形を塗る</summary>
+        private static void FillBox(SKCanvas canvas, SKPaint paint, int x1, int y1, int x2, int y2)
         {
-            using (var builder = new SKPathBuilder())
+            var left = Math.Min(x1, x2);
+            var top = Math.Min(y1, y2);
+            canvas.DrawRect(left, top, Math.Abs(x2 - x1) + 1, Math.Abs(y2 - y1) + 1, paint);
+        }
+
+        private static bool IsSolidPicture(string fname)
+        {
+            switch (Strings.LCase(fname) ?? "")
             {
-                builder.MoveTo(x1, y1);
-                builder.LineTo(x2, y2);
-                builder.LineTo(x3, y3);
-                builder.Close();
-                using var path = builder.Detach();
-                canvas.DrawPath(path, paint);
+                case "black.bmp":
+                case @"event\black.bmp":
+                case "white.bmp":
+                case @"event\white.bmp":
+                    return true;
+                default:
+                    return false;
             }
         }
 
@@ -437,7 +473,8 @@ namespace SRCRender
                 var size = MeasureText(msg, font);
                 if (HCentering)
                 {
-                    tx = (target.Width - size.Width) / 2;
+                    // 元の SRC と同じく \ で割る（整数の位置にする）
+                    tx = VBMath.IntDiv(target.Width - size.Width, 2);
                 }
                 else if (X != Constants.DEFAULT_LEVEL)
                 {
@@ -445,7 +482,7 @@ namespace SRCRender
                 }
                 if (VCentering)
                 {
-                    ty = (target.Height - size.Height) / 2;
+                    ty = VBMath.IntDiv(target.Height - size.Height, 2);
                 }
                 else if (Y != Constants.DEFAULT_LEVEL)
                 {
@@ -467,9 +504,11 @@ namespace SRCRender
                         DrawTextTop(canvas, msg, tx, ty, font, paint);
                     }
                 }
-                currentDrawStringPoint = new SKPoint(
-                    X != Constants.DEFAULT_LEVEL ? X : prevX,
-                    without_cr ? ty : ty + Compat.SkiaFonts.LineHeight(font));
+                // 元の SRC の Print msg（改行あり）は次の行へ進み、X 座標を指定した値（無ければ前の値）に戻す。
+                // Print msg;（改行なし）は文字列の右端に続けて書く
+                currentDrawStringPoint = without_cr
+                    ? new SKPoint(tx + size.Width, ty)
+                    : new SKPoint(X != Constants.DEFAULT_LEVEL ? X : prevX, ty + Compat.SkiaFonts.LineHeight(font));
                 if (!PermanentStringMode)
                 {
                     // 元の SRC は Print で描くため、次の DoEvents で画面に出る
@@ -490,12 +529,12 @@ namespace SRCRender
                 return;
             }
             SaveScreen();
-            using (var font = CreateFont(src.BattleAnimation ? BattleAnimePaintFont : SysPaintFont))
+            using (var font = CreateFont(SysStringPaintFont(src.BattleAnimation)))
             using (var paint = new SKPaint { IsAntialias = true })
             using (var canvas = new SKCanvas(mainBuffer))
             {
                 var size = MeasureText(msg, font);
-                var tx = MapToPixelX(X) + (ScreenLayout.CellPx - size.Width) / 2 - 1;
+                var tx = MapToPixelX(X) + VBMath.IntDiv(ScreenLayout.CellPx - size.Width, 2) - 1;
                 var ty = MapToPixelY(Y + 1) - size.Height;
                 paint.Color = SKColors.White;
                 canvas.DrawRect(tx, ty, size.Width, size.Height, paint);
@@ -510,6 +549,14 @@ namespace SRCRender
             PaintedAreaY1 = Math.Max(PaintedAreaY1, MapToPixelY(Y) + 16);
             PaintedAreaX2 = Math.Min(PaintedAreaX2, MapToPixelX(X) + 36);
             PaintedAreaY2 = Math.Max(PaintedAreaY2, MapToPixelY(Y) + 32);
+        }
+
+        /// <summary>
+        /// DrawSysString のフォント。元の SRC と同じく、戦闘アニメを使うときは 9pt の太字、使わないときは 8pt
+        /// </summary>
+        internal static PaintFont SysStringPaintFont(bool battleAnimation)
+        {
+            return battleAnimation ? SysAnimationPaintFont : SysNormalPaintFont;
         }
 
         public SizeF MeasureString(string msg)
