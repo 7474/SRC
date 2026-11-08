@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>{0} 데이터가 올바르지 않습니다.</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>데이터가 올바르지 않습니다.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>취소</value>
   </data>

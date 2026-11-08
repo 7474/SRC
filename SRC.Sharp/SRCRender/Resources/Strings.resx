@@ -23,6 +23,10 @@
     <value>{0}のデータが不正です。</value>
     <comment>{0}: データの名称</comment>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>データが不正です。</value>
+    <comment>データ名も原因も無いとき</comment>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>

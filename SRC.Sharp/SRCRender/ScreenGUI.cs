@@ -1418,13 +1418,31 @@ namespace SRCRender
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
-            var text = string.Format(Resources.Strings.DataErrorLine, fname, line_num) + Environment.NewLine;
+            ErrorMessage(FormatDataErrorMessage(msg, fname, line_num, line_buf, dname));
+        }
+
+        /// <summary>
+        /// データのエラーの文言。元の SRC（GUI.bas の DataErrorMessage）と同じく、ファイル名と行・データ名・原因
+        /// （どちらも無ければ「データが不正です。」）・データの行の順に、行を CR LF で区切る
+        /// </summary>
+        internal static string FormatDataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
+        {
+            const string crlf = "\r\n";
+            var text = string.Format(Resources.Strings.DataErrorLine, fname, line_num) + crlf;
             if (!string.IsNullOrEmpty(dname))
             {
-                text += string.Format(Resources.Strings.DataErrorInvalidData, dname) + Environment.NewLine;
+                text += string.Format(Resources.Strings.DataErrorInvalidData, dname) + crlf;
             }
-            text += line_buf + Environment.NewLine + msg;
-            ErrorMessage(text);
+            if (!string.IsNullOrEmpty(msg))
+            {
+                text += msg + crlf;
+            }
+            if (string.IsNullOrEmpty(dname) && string.IsNullOrEmpty(msg))
+            {
+                text += Resources.Strings.DataErrorInvalid + crlf;
+            }
+            text += line_buf;
+            return text;
         }
 
         public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
@@ -1461,11 +1479,34 @@ namespace SRCRender
             return task.GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// テロップの文字列。元の SRC（GUI.bas の DisplayTelop）と同じく、最初の 2 つの「.」を改行にする
+        /// （1 つ目で高さを 2 行分にし、表示する前にもう 1 つ置き換える）
+        /// </summary>
+        internal static string TelopText(string msg)
+        {
+            msg = msg ?? "";
+            for (var n = 0; n < 2; n++)
+            {
+                var i = msg.IndexOf('.');
+                if (i < 0)
+                {
+                    break;
+                }
+                msg = msg.Substring(0, i) + "\n" + msg.Substring(i + 1);
+            }
+            return msg;
+        }
+
         public void DisplayTelop(string msg)
         {
-            State.Telop = msg;
+            State.Telop = TelopText(msg);
             Present();
-            Sleep(1000);
+            // 元の SRC と同じく、右ボタンを押していれば待たない（メッセージのウエイトには関わらない）
+            if (!IsRButtonPressed(true))
+            {
+                Sleep(1000);
+            }
             State.Telop = null;
             Present();
         }

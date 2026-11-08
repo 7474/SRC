@@ -436,36 +436,35 @@ namespace SRCRender
             canvas.Restore();
         }
 
-        private static readonly Compat.Font TelopFont = new Compat.Font("ＭＳ Ｐ明朝", 15.75F, Compat.FontStyle.Bold);
+        // 元の SRC の frmTelop（Telop.frm）: 枠の無い白い窓（幅 5670 twip。高さは 1 行なら 800、「.」で改行すれば 1170）に、
+        // ラベル（左 120・上 240・幅 5355 twip、中央揃え、折り返し）で ＭＳ Ｐ明朝 15.75pt の太字・斜体・黒の文字を書く
+        private const int TelopWidth = 378;
+        private const int TelopHeight = 53;
+        private const int TelopTwoLineHeight = 78;
+        private const int TelopLabelLeft = 8;
+        private const int TelopLabelTop = 16;
+        private const int TelopLabelWidth = 357;
 
-        /// <summary>
-        /// テロップ（Telop.frm）。枠の無い白いウィンドウ（幅 378 ピクセル）に、Label1（左 8・上 16・幅 357、ＭＳ Ｐ明朝 15.75 ポイントの太字、黒、中央揃え）を書く。
-        /// 高さは GUI.bas の DisplayTelop と同じく、"." があれば 2 行（78 ピクセル）、無ければ 53 ピクセル。最初の "." で改行する
-        /// </summary>
         private void DrawTelop(SKCanvas canvas, string telop, bool mainFormVisible)
         {
-            const int width = 378;
-            var dot = telop.IndexOf('.');
-            var text = dot >= 0 ? telop.Substring(0, dot) + "\n" + telop.Substring(dot + 1) : telop;
-            var lines = text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
-            var height = dot >= 0 ? 78 : 53;
-            using (var font = TelopFont.ToSKFont())
-            using (var paint = new SKPaint { IsAntialias = false })
+            using (var paint = new SKPaint { IsAntialias = true })
+            using (var telopFont = Compat.SkiaFonts.Create("ＭＳ Ｐ明朝", 15.75f * 96f / 72f, true, true))
             {
                 // 元の SRC（GUI.bas の DisplayTelop）と同じく、メインウィンドウを表示していればマップの中央、隠していれば画面の中央
                 var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
-                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.Top + (area.Height - height) / 2, width, height);
+                var height = telop.Contains('\n') ? TelopTwoLineHeight : TelopHeight;
+                var box = SKRect.Create(area.Left + (area.Width - TelopWidth) / 2, area.Top + (area.Height - height) / 2, TelopWidth, height);
                 paint.Color = SKColors.White;
                 canvas.DrawRect(box, paint);
-                paint.Color = SKColors.Black;
-                paint.IsAntialias = true;
+
                 canvas.Save();
                 canvas.ClipRect(box);
-                var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var y = box.Top + 16;
-                foreach (var line in lines)
+                paint.Color = SKColors.Black;
+                var lineHeight = Compat.SkiaFonts.LineHeight(telopFont);
+                var y = box.Top + TelopLabelTop + Compat.SkiaFonts.Ascent(telopFont);
+                foreach (var line in WrapText(telop, TelopLabelWidth, telopFont))
                 {
-                    canvas.DrawText(line, box.Left + 8 + 357 / 2f, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Center, font, paint);
+                    canvas.DrawText(line, box.Left + TelopLabelLeft + TelopLabelWidth / 2f, y, SKTextAlign.Center, telopFont, paint);
                     y += lineHeight;
                 }
                 canvas.Restore();

@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>Geçersiz {0} verisi.</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>Geçersiz veri.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>İptal</value>
   </data>

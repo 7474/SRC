@@ -11,11 +11,6 @@ namespace SRCSharpForm
 {
     public partial class SRCSharpFormGUI
     {
-        private Color GetDrawBgColor(bool transparent)
-        {
-            return transparent ? Color.Transparent : BGColor;
-        }
-
         // 画像をウィンドウに描画
         public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
         {
@@ -292,6 +287,20 @@ namespace SRCSharpForm
                     // 読み込むファイルの探索
                     Image image = null;
 
+                    // 元の SRC の black.bmp・white.bmp は塗りつぶすだけで、部分表示・透過・効果のオプションを使わない（DrewPicture へ飛ぶ）
+                    switch (Strings.LCase(fname) ?? "")
+                    {
+                        case "black.bmp":
+                        case @"event\black.bmp":
+                        case "white.bmp":
+                        case @"event\white.bmp":
+                            top_part = bottom_part = left_part = right_part = tleft_part = tright_part = bleft_part = bright_part = false;
+                            transparent = is_monotone = is_sepia = is_sunset = is_water = is_colorfilter = hrev = vrev = negpos = is_sil = false;
+                            bright_count = dark_count = 0;
+                            angle = 0;
+                            break;
+                    }
+
                     // 特殊なファイル名
                     switch (Strings.LCase(fname) ?? "")
                     {
@@ -390,68 +399,43 @@ namespace SRCSharpForm
                     using (var bgBrush = new SolidBrush(BGColor))
                     {
                         // 画像の一部を塗りつぶして描画する場合
+                        // 元の SRC と同じく Line (x1, y1)-(x2, y2), BGColor, BF の整数の座標で塗る（両端を含む）。
+                        // 斜めの部分表示は列ごとに縦線を引くため、縦横の比に関わらず 45 度で塗る
+                        void FillBox(int x1, int y1, int x2, int y2)
+                        {
+                            gBuf.FillRectangle(bgBrush, Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(x2 - x1) + 1, Math.Abs(y2 - y1) + 1);
+                        }
+                        int w = orig_width, h = orig_height;
                         if (top_part)
                         {
                             // 上半分
-                            gBuf.FillRectangle(bgBrush, 0f, orig_height / 2f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                            FillBox(0, h / 2, w - 1, h - 1);
                         }
-
                         if (bottom_part)
                         {
                             // 下半分
-                            gBuf.FillRectangle(bgBrush, 0f, 0f, gBuf.VisibleClipBounds.Width, orig_height / 2f);
+                            FillBox(0, 0, w - 1, h / 2 - 1);
                         }
-
                         if (left_part)
                         {
                             // 左半分
-                            gBuf.FillRectangle(bgBrush, gBuf.VisibleClipBounds.Width / 2, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                            FillBox(w / 2, 0, w - 1, h - 1);
                         }
-
                         if (right_part)
                         {
                             // 右半分
-                            gBuf.FillRectangle(bgBrush, 0f, 0f, gBuf.VisibleClipBounds.Width / 2f, orig_height);
+                            FillBox(0, 0, w / 2 - 1, h - 1);
                         }
-
-                        if (tleft_part)
+                        for (var i = 0; i < w; i++)
                         {
                             // 左上
-                            gBuf.FillPolygon(bgBrush, new Point[]{
-                            new Point(orig_width -1,0),
-                            new Point(orig_width -1,orig_height - 1),
-                            new Point(0,orig_height - 1),
-                        });
-                        }
-
-                        if (tright_part)
-                        {
+                            if (tleft_part) FillBox(i, h - 1 - i, i, h - 1);
                             // 右上
-                            gBuf.FillPolygon(bgBrush, new Point[]{
-                            new Point(0,0),
-                            new Point(orig_width -1,orig_height - 1),
-                            new Point(0,orig_height - 1),
-                        });
-                        }
-
-                        if (bleft_part)
-                        {
+                            if (tright_part) FillBox(i, i, i, h - 1);
                             // 左下
-                            gBuf.FillPolygon(bgBrush, new Point[]{
-                            new Point(0,0),
-                            new Point(orig_width -1,0),
-                            new Point(orig_width -1,orig_height - 1),
-                        });
-                        }
-
-                        if (bright_part)
-                        {
+                            if (bleft_part) FillBox(i, 0, i, i);
                             // 右下
-                            gBuf.FillPolygon(bgBrush, new Point[]{
-                            new Point(0,0),
-                            new Point(orig_width -1,0),
-                            new Point(0,orig_height - 1),
-                        });
+                            if (bright_part) FillBox(i, 0, i, h - 1 - i);
                         }
                     }
                     // 透過色（#rrggbb で指定した色。指定が無ければ白）を抜く
@@ -509,6 +493,24 @@ namespace SRCSharpForm
                             drawBuffer.ColorFilter(fcolor, trans_par);
                         }
 
+                        // 明 (多段指定可能)。元の SRC と同じく各色 +80
+                        for (var i = 1; i <= bright_count; i++)
+                        {
+                            drawBuffer.ApplyColorMatrix(new System.Drawing.Imaging.ColorMatrix(new float[][]{
+                                new float[]{1, 0, 0, 0, 0},
+                                new float[]{0, 1, 0, 0, 0},
+                                new float[]{0, 0, 1, 0, 0},
+                                new float[]{0, 0, 0, 1, 0},
+                                new float[]{80f / 255f, 80f / 255f, 80f / 255f, 0, 1}
+                            }));
+                        }
+
+                        // 暗 (多段指定可能)
+                        for (var i = 1; i <= dark_count; i++)
+                        {
+                            drawBuffer.Dark();
+                        }
+
                         // 左右反転
                         if (vrev)
                         {
@@ -524,7 +526,8 @@ namespace SRCSharpForm
                         // 回転
                         if (angle != 0)
                         {
-                            drawBuffer.Rotate(angle, GetDrawBgColor(transparent));
+                            // 元の SRC と同じく、空いた部分は背景色（白、または #rrggbb で指定した色）で塗る。透過するなら抜く
+                            drawBuffer.Rotate(angle, transparent ? Color.Transparent : BGColor);
                         }
                     }
 
@@ -619,16 +622,21 @@ namespace SRCSharpForm
                     else if (!on_msg_window && !on_status_window)
                     {
                         // 表示画像を消去する際に使う描画領域を設定
-                        // XXX ダーティエリアは使わない
+                        PaintedAreaX1 = Math.Min(PaintedAreaX1, Math.Max(dx, 0));
+                        PaintedAreaY1 = Math.Min(PaintedAreaY1, Math.Max(dy, 0));
+                        PaintedAreaX2 = Math.Max(PaintedAreaX2, Math.Min(dx + dw, MainPWidth - 1));
+                        PaintedAreaY2 = Math.Max(PaintedAreaY2, Math.Min(dy + dh, MainPHeight - 1));
+
                         IsPictureDrawn = true;
                         IsPictureVisible = true;
                         IsCursorVisible = false;
                         if (keep_picture)
                         {
-                            // picMain(1)にも描画
+                            // picMain(1)にも描画。元の SRC と同じく、描いたあとの画面のその範囲を写す
+                            var rect = new Rectangle(dx, dy, dw, dh);
                             using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
                             {
-                                gBack.DrawImage(drawBuffer, new Rectangle(dx, dy, dw, dh));
+                                gBack.DrawImage(MainForm.MainBuffer, rect, rect, GraphicsUnit.Pixel);
                             }
                         }
                     }
@@ -716,7 +724,8 @@ namespace SRCSharpForm
                 // 書き込み先の座標を求める
                 if (HCentering)
                 {
-                    tx = (g.VisibleClipBounds.Width - msgSize.Width) / 2;
+                    // 元の SRC と同じく \ で割る（整数の位置にする）
+                    tx = VBMath.IntDiv(g.VisibleClipBounds.Width - msgSize.Width, 2);
                 }
                 else if (X != Constants.DEFAULT_LEVEL)
                 {
@@ -725,7 +734,7 @@ namespace SRCSharpForm
 
                 if (VCentering)
                 {
-                    ty = (g.VisibleClipBounds.Height - msgSize.Height) / 2;
+                    ty = VBMath.IntDiv(g.VisibleClipBounds.Height - msgSize.Height, 2);
                 }
                 else if (Y != Constants.DEFAULT_LEVEL)
                 {
@@ -752,9 +761,10 @@ namespace SRCSharpForm
                 }
 
                 // 次回の書き込みのため、X座標位置を設定し直す
-                currentDrawStringPoint = new PointF(
-                    X != Constants.DEFAULT_LEVEL ? X : prev_cx,
-                    without_cr ? ty : ty + currentDrawFont.GetHeight(g));
+                // 元の SRC の Print msg;（改行なし）は文字列の右端に続けて書く
+                currentDrawStringPoint = without_cr
+                    ? new PointF(tx + msgSize.Width, ty)
+                    : new PointF(X != Constants.DEFAULT_LEVEL ? X : prev_cx, ty + currentDrawFont.GetHeight(g));
 
                 if (!PermanentStringMode)
                 {
@@ -788,12 +798,13 @@ namespace SRCSharpForm
             {
                 g.TextRenderingHint = RenderingConfig.TextHint;
                 // フォント設定をシステム用に切り替え
-                var font = SRC.BattleAnimation ? battleAnimeFont : sysFont;
+                // 元の SRC と同じく、戦闘アニメを使うときは 9pt の太字、使わないときは 8pt
+                var font = SRC.BattleAnimation ? sysFont : battleAnimeFont;
 
                 // メッセージの書き込み
                 // ここでは描画にあたって既定の余白を取っておく
                 var msgSize = g.MeasureString(msg, font);
-                var tx = MapToPixelX(X) + (frmMain.MapCellPx - msgSize.Width) / 2 - 1;
+                var tx = MapToPixelX(X) + VBMath.IntDiv(frmMain.MapCellPx - msgSize.Width, 2) - 1;
                 var ty = MapToPixelY(Y + 1) - msgSize.Height;
 
                 g.FillRectangle(sysFontBackColor, tx, ty, msgSize.Width, msgSize.Height);

@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>ข้อมูล {0} ไม่ถูกต้อง</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>ข้อมูลไม่ถูกต้อง</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>ยกเลิก</value>
   </data>
