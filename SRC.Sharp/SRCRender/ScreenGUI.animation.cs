@@ -259,7 +259,10 @@ namespace SRCRender
 
             var prev_lock = IsGUILocked;
             IsGUILocked = true;
+            // 元の SRC と同じく、動かしている間はカーソルの下のユニットをステータスに出さない
+            IsStatusWindowDisabled = true;
             AnimateCursor(posX, posY, tx, ty, 25);
+            IsStatusWindowDisabled = false;
             IsGUILocked = prev_lock;
 
             // 新しいカーソル位置を記録

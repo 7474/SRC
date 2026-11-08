@@ -179,7 +179,12 @@ namespace SRCRender
         /// <summary>
         /// マップ全体の背景（地形）を描画した画像を作る。
         /// </summary>
-        public SKBitmap BuildBackground(SRC src, ImageCache images)
+        /// <param name="filter">
+        /// マップの描画モードで色を変える処理（第 2 引数はレイヤーの画像か）。元の SRC の SetupBackground と同じく、
+        /// 地形の画像とレイヤーの画像に別々にかける（レイヤーは背景色を白として透過で処理する）。
+        /// マス目の線は描かない（呼び出し側が描画モードをかけたあとに引く）
+        /// </param>
+        public SKBitmap BuildBackground(SRC src, ImageCache images, Func<SKBitmap, bool, SKBitmap> filter = null)
         {
             var map = src.Map;
             var bitmap = new SKBitmap(Math.Max(1, map.MapWidth * ScreenLayout.CellPx), Math.Max(1, map.MapHeight * ScreenLayout.CellPx));
@@ -194,20 +199,7 @@ namespace SRCRender
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found);
-                    }
-                }
-                if (src.ShowSquareLine)
-                {
-                    paint.Color = new SKColor(0, 0, 0, 0x60);
-                    paint.Style = SKPaintStyle.Stroke;
-                    for (var x = 1; x < map.MapWidth; x++)
-                    {
-                        canvas.DrawLine(x * ScreenLayout.CellPx, 0, x * ScreenLayout.CellPx, bitmap.Height, paint);
-                    }
-                    for (var y = 1; y < map.MapHeight; y++)
-                    {
-                        canvas.DrawLine(0, y * ScreenLayout.CellPx, bitmap.Width, y * ScreenLayout.CellPx, paint);
+                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found, filter);
                     }
                 }
             }
@@ -217,8 +209,9 @@ namespace SRCRender
         /// <summary>
         /// マップの (x, y) のマス 1 つ分の背景（地形とレイヤー）を描画した画像を作る。
         /// <see cref="BuildBackground"/> のそのマスと同じ絵になる（ChangeTerrain・ChangeLayer でそのマスだけを描き直すのに使う）。
+        /// マス目の線は描かない（呼び出し側が引く）。
         /// </summary>
-        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y)
+        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y, Func<SKBitmap, bool, SKBitmap> filter = null)
         {
             var map = src.Map;
             var bitmap = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx);
@@ -227,42 +220,42 @@ namespace SRCRender
             {
                 canvas.Clear(BackColor);
                 var rect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null);
-                if (src.ShowSquareLine)
-                {
-                    // マップ全体のマス目のうち、このマスの左端・上端の線
-                    paint.Color = new SKColor(0, 0, 0, 0x60);
-                    paint.Style = SKPaintStyle.Stroke;
-                    if (x > 1)
-                    {
-                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
-                    }
-                    if (y > 1)
-                    {
-                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
-                    }
-                }
+                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null, filter);
             }
             return bitmap;
         }
 
-        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect, IDictionary<(string Name, int No), string> found)
+        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect,
+            IDictionary<(string Name, int No), string> found, Func<SKBitmap, bool, SKBitmap> filter)
         {
-            var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
-            if (image != null)
+            // 地形の画像（描画モードをかけるときは 1 マス分の画像にしてからかける）
+            using (var tile = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx, SKColorType.Bgra8888, SKAlphaType.Premul))
             {
-                canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
-            }
-            else
-            {
-                // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
-                canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
-                paint.Color = new SKColor(0, 0, 0, 0x40);
-                canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
-                paint.Style = SKPaintStyle.Fill;
+                using (var tileCanvas = new SKCanvas(tile))
+                {
+                    tileCanvas.Clear(BackColor);
+                    var tileRect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                    var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
+                    if (image != null)
+                    {
+                        tileCanvas.DrawBitmap(image, tileRect, SKSamplingOptions.Default);
+                    }
+                    else
+                    {
+                        // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                        paint.Style = SKPaintStyle.Fill;
+                        paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
+                        tileCanvas.DrawRect(tileRect, paint);
+                        paint.Style = SKPaintStyle.Stroke;
+                        paint.Color = new SKColor(0, 0, 0, 0x40);
+                        tileCanvas.DrawRect(SKRect.Create(0.5f, 0.5f, tileRect.Width - 1, tileRect.Height - 1), paint);
+                        paint.Style = SKPaintStyle.Fill;
+                    }
+                }
+                using (var filtered = filter == null ? null : filter(ImageFilters.Copy(tile), false))
+                {
+                    canvas.DrawBitmap(filtered ?? tile, rect, SKSamplingOptions.Default);
+                }
             }
             // レイヤーの画像は「通常」「画像限定」のマスだけ描く（元の SRC の SetupBackground）
             if (cell.IsLayerBitmapVisible)
@@ -270,7 +263,10 @@ namespace SRCRender
                 var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
                 if (layer != null)
                 {
-                    canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
+                    using (var filtered = filter == null ? null : filter(ImageFilters.Copy(layer), true))
+                    {
+                        canvas.DrawBitmap(filtered ?? layer, rect, SKSamplingOptions.Default);
+                    }
                 }
             }
         }
@@ -436,18 +432,38 @@ namespace SRCRender
             canvas.Restore();
         }
 
+        // 元の SRC の frmTelop（Telop.frm）: 枠の無い白い窓（幅 5670 twip。高さは 1 行なら 800、「.」で改行すれば 1170）に、
+        // ラベル（左 120・上 240・幅 5355 twip、中央揃え、折り返し）で ＭＳ Ｐ明朝 15.75pt の太字・斜体・黒の文字を書く
+        private const int TelopWidth = 378;
+        private const int TelopHeight = 53;
+        private const int TelopTwoLineHeight = 78;
+        private const int TelopLabelLeft = 8;
+        private const int TelopLabelTop = 16;
+        private const int TelopLabelWidth = 357;
+
         private void DrawTelop(SKCanvas canvas, string telop, bool mainFormVisible)
         {
-            using (var paint = new SKPaint())
+            using (var paint = new SKPaint { IsAntialias = true })
+            using (var telopFont = Compat.SkiaFonts.Create("ＭＳ Ｐ明朝", 15.75f * 96f / 72f, true, true))
             {
                 // 元の SRC（GUI.bas の DisplayTelop）と同じく、メインウィンドウを表示していればマップの中央、隠していれば画面の中央
                 var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
-                var width = Math.Min(area.Width - 32, largeFont.MeasureText(telop) + 48);
-                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.MidY - 32, width, 64);
-                DrawPanel(canvas, box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(telop, box.MidX, box.MidY + largeFont.Size / 2 - 4, SKTextAlign.Center, largeFont, paint);
+                var height = telop.Contains('\n') ? TelopTwoLineHeight : TelopHeight;
+                var box = SKRect.Create(area.Left + (area.Width - TelopWidth) / 2, area.Top + (area.Height - height) / 2, TelopWidth, height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(box, paint);
+
+                canvas.Save();
+                canvas.ClipRect(box);
+                paint.Color = SKColors.Black;
+                var lineHeight = Compat.SkiaFonts.LineHeight(telopFont);
+                var y = box.Top + TelopLabelTop + Compat.SkiaFonts.Ascent(telopFont);
+                foreach (var line in WrapText(telop, TelopLabelWidth, telopFont))
+                {
+                    canvas.DrawText(line, box.Left + TelopLabelLeft + TelopLabelWidth / 2f, y, SKTextAlign.Center, telopFont, paint);
+                    y += lineHeight;
+                }
+                canvas.Restore();
             }
         }
 
@@ -533,7 +549,11 @@ namespace SRCRender
 
         private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
 
-        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        /// <summary>
+        /// ツールチップ（ToolTip.frm の ShowToolTip）。文字の幅＋6・高さ＋4 の大きさで、カーソルの 24 ピクセル下に出す。
+        /// 枠は上と左が灰色（RGB(200, 200, 200)）、下と右が黒。文字は (3, 2) から書く。
+        /// 元の SRC は画面からはみ出しても構わず出すが、SRC# は画面の中に収める
+        /// </summary>
         private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
         {
             using (var font = TooltipFont.ToSKFont())
@@ -541,22 +561,25 @@ namespace SRCRender
             {
                 var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
                 var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var width = lines.Max(x => font.MeasureText(x)) + 8;
-                var height = lineHeight * lines.Length + 6;
-                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
-                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
-                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                var width = (float)Math.Ceiling(lines.Max(x => font.MeasureText(x))) + 6;
+                var height = lineHeight * lines.Length + 4;
+                var left = Math.Min(tooltip.X, ScreenLayout.Width - width);
+                var top = Math.Min(tooltip.Y + 24, ScreenLayout.Height - height);
+                var rect = SKRect.Create((float)Math.Floor(Math.Max(0, left)), (float)Math.Floor(Math.Max(0, top)), width, height);
                 paint.Color = new SKColor(255, 255, 225);
                 canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
+                // 上と左は灰色、下と右は黒
+                paint.Color = new SKColor(200, 200, 200);
+                canvas.DrawRect(rect.Left, rect.Top, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Left, rect.Top, 1, rect.Height, paint);
                 paint.Color = SKColors.Black;
-                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
-                paint.Style = SKPaintStyle.Fill;
+                canvas.DrawRect(rect.Left, rect.Bottom - 1, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Right - 1, rect.Top, 1, rect.Height, paint);
                 paint.IsAntialias = true;
-                var y = rect.Top + 3;
+                var y = rect.Top + 2;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
             }

@@ -56,11 +56,18 @@ namespace SRCCore.Units
 
         // アビリティ選択用リストボックスの各アビリティの表示内容（GUI.bas の AbilityListBox）
         // 効果の解説が長いアビリティは 2 行にする。2 行目も ListItemObject は同じアビリティ。
-        public IList<ListBoxItem<UnitAbility>> ToListBoxItems()
+        // is_item が真ならアイテムの使用効果だけを、偽ならアイテムでないアビリティだけを出す
+        // （一覧では、ステータス画面で使えないアビリティはアイテムかどうかに関わらず出す。元の SRC と同じ）。
+        public IList<ListBoxItem<UnitAbility>> ToListBoxItems(bool is_item = false)
         {
             var list = new List<ListBoxItem<UnitAbility>>();
             foreach (var item in Items)
             {
+                if (item.Ability.Data.IsItem() != is_item
+                    && (Mode != AbilityListMode.List || item.Ability.IsAbilityAvailable("ステータス")))
+                {
+                    continue;
+                }
                 foreach (var text in ListBoxTexts(item.Ability))
                 {
                     list.Add(new ListBoxItem<UnitAbility>

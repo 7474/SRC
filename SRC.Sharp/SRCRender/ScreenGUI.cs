@@ -329,8 +329,9 @@ namespace SRCRender
                 return;
             }
 
-            // メッセージウィンドウのクリック（顔グラフィックのクリックで自動送りの切り替え）
-            if (frmMessage.Visible && button == GuiButton.Left)
+            // メッセージウィンドウのクリック（顔グラフィックのクリックで自動送りの切り替え）。
+            // Message.frm の picFace_MouseDown・picMessage_MouseDown・Form_MouseDown と同じく、どのボタンでも受け付ける
+            if (frmMessage.Visible)
             {
                 var origin = renderer.MessageWindowOrigin(frmMessage);
                 var mx = x - origin.X;
@@ -362,13 +363,17 @@ namespace SRCRender
             }
 
             // ステータスウィンドウの顔グラフィックのクリックで、表示するパイロットを切り替える（Main.frm の picFace_Click）
+            // ダブルクリックの 2 回目は、VB では Click が起きない（picFace_DblClick は無い）ので切り替えない
             if (button == GuiButton.Left && IsOnStatusFace(x, y))
             {
-                game.Post(() =>
+                if (clickCount < 2)
                 {
-                    ChangeDisplayedPilot();
-                    Present();
-                });
+                    game.Post(() =>
+                    {
+                        ChangeDisplayedPilot();
+                        Present();
+                    });
+                }
                 return;
             }
 
@@ -380,6 +385,36 @@ namespace SRCRender
                 {
                     PlaceKeyCursorOnTouch(mx, my);
                 }
+                if (clickCount >= 2)
+                {
+                    // ダブルクリックの 2 回目は、VB では MouseDown が起きずに DblClick だけが起きる（Main.frm の picMain_DblClick）。
+                    // 右ボタンならキャンセルを連続実行し、左ボタンでは何もしない
+                    if (button == GuiButton.Right)
+                    {
+                        game.Post(() =>
+                        {
+                            if (!IsGUILocked)
+                            {
+                                switch (Commands.CommandState ?? "")
+                                {
+                                    case "マップコマンド":
+                                        Commands.CommandState = "ユニット選択";
+                                        break;
+
+                                    case "ユニット選択":
+                                        Commands.ProceedCommand(true);
+                                        break;
+
+                                    default:
+                                        Commands.CancelCommand();
+                                        break;
+                                }
+                            }
+                            Present();
+                        });
+                    }
+                    return;
+                }
                 if (button == GuiButton.Left)
                 {
                     // ドラッグによるマップのスクロールの開始
@@ -388,29 +423,10 @@ namespace SRCRender
                     PrevMouseX = x;
                     PrevMouseY = y;
                     isDragging = true;
-                    lastDragPoint = (x, y);
                 }
                 game.Post(() =>
                 {
                     Commands.ProceedInput(button, Map.CellAtPoint(mx, my), Map.UnitAtPoint(mx, my));
-                    // 右ダブルクリックはキャンセルを連続実行
-                    if (button == GuiButton.Right && clickCount >= 2 && !IsGUILocked)
-                    {
-                        switch (Commands.CommandState ?? "")
-                        {
-                            case "マップコマンド":
-                                Commands.CommandState = "ユニット選択";
-                                break;
-
-                            case "ユニット選択":
-                                Commands.ProceedCommand(true);
-                                break;
-
-                            default:
-                                Commands.CancelCommand();
-                                break;
-                        }
-                    }
                     Present();
                 });
             }
@@ -449,7 +465,6 @@ namespace SRCRender
             PrevMouseX = x;
             PrevMouseY = y;
             isDragging = true;
-            lastDragPoint = (x, y);
         }
 
         /// <summary>マップのドラッグを終える（<see cref="BeginMapDrag"/> の対）。</summary>
@@ -460,8 +475,6 @@ namespace SRCRender
 
         // マップウィンドウがドラッグされているか？
         private volatile bool isDragging;
-        private (float x, float y) lastDragPoint;
-        private const float DragMoveThresholdRate = 0.5f;
 
         /// <summary>
         /// マップのドラッグ（WinForms 版 picMain_MouseMove と同じ移動量）。
@@ -472,14 +485,10 @@ namespace SRCRender
             {
                 return;
             }
-            // 移動量が少なければ無視する
-            if (Math.Abs(lastDragPoint.x - x) + Math.Abs(lastDragPoint.y - y) <= ScreenLayout.CellPx * DragMoveThresholdRate)
-            {
-                return;
-            }
-            lastDragPoint = (x, y);
-            var newX = Math.Max(1, Math.Min(Map.MapWidth, (int)(PrevMapX - (x - PrevMouseX) / ScreenLayout.CellPx)));
-            var newY = Math.Max(1, Math.Min(Map.MapHeight, (int)(PrevMapY - (y - PrevMouseY) / ScreenLayout.CellPx)));
+            // 移動量は Main.frm の picMain_MouseMove と同じく、ドラッグを始めた位置からの差を \ 32 で割る
+            // （割る前に整数に丸め、商は 0 の側へ切り捨てる。右・下へ 1 マスに満たない分は動かない）
+            var newX = Math.Max(1, Math.Min(Map.MapWidth, (int)(PrevMapX - VBMath.IntDiv(x - PrevMouseX, ScreenLayout.CellPx))));
+            var newY = Math.Max(1, Math.Min(Map.MapHeight, (int)(PrevMapY - VBMath.IntDiv(y - PrevMouseY, ScreenLayout.CellPx))));
             if (Map.IsStatusView)
             {
                 // ステータス画面の場合は移動量を限定
@@ -554,8 +563,14 @@ namespace SRCRender
             lastHoverCell = cell;
             game.Post(() =>
             {
-                if (IsGUILocked || !Map.IsInside(cell.x, cell.y))
+                if (IsGUILocked)
                 {
+                    return;
+                }
+                if (!Map.IsInside(cell.x, cell.y))
+                {
+                    // マップ外にカーソルがある場合（Main.frm の picMain_MouseMove。ステータス表示でも出す）
+                    DisplayGlobalStatus();
                     return;
                 }
                 if (Map.UnitAtPoint(cell.x, cell.y) == null)
@@ -1403,13 +1418,31 @@ namespace SRCRender
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
-            var text = string.Format(Resources.Strings.DataErrorLine, fname, line_num) + Environment.NewLine;
+            ErrorMessage(FormatDataErrorMessage(msg, fname, line_num, line_buf, dname));
+        }
+
+        /// <summary>
+        /// データのエラーの文言。元の SRC（GUI.bas の DataErrorMessage）と同じく、ファイル名と行・データ名・原因
+        /// （どちらも無ければ「データが不正です。」）・データの行の順に、行を CR LF で区切る
+        /// </summary>
+        internal static string FormatDataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
+        {
+            const string crlf = "\r\n";
+            var text = string.Format(Resources.Strings.DataErrorLine, fname, line_num) + crlf;
             if (!string.IsNullOrEmpty(dname))
             {
-                text += string.Format(Resources.Strings.DataErrorInvalidData, dname) + Environment.NewLine;
+                text += string.Format(Resources.Strings.DataErrorInvalidData, dname) + crlf;
             }
-            text += line_buf + Environment.NewLine + msg;
-            ErrorMessage(text);
+            if (!string.IsNullOrEmpty(msg))
+            {
+                text += msg + crlf;
+            }
+            if (string.IsNullOrEmpty(dname) && string.IsNullOrEmpty(msg))
+            {
+                text += Resources.Strings.DataErrorInvalid + crlf;
+            }
+            text += line_buf;
+            return text;
         }
 
         public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
@@ -1446,11 +1479,34 @@ namespace SRCRender
             return task.GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// テロップの文字列。元の SRC（GUI.bas の DisplayTelop）と同じく、最初の 2 つの「.」を改行にする
+        /// （1 つ目で高さを 2 行分にし、表示する前にもう 1 つ置き換える）
+        /// </summary>
+        internal static string TelopText(string msg)
+        {
+            msg = msg ?? "";
+            for (var n = 0; n < 2; n++)
+            {
+                var i = msg.IndexOf('.');
+                if (i < 0)
+                {
+                    break;
+                }
+                msg = msg.Substring(0, i) + "\n" + msg.Substring(i + 1);
+            }
+            return msg;
+        }
+
         public void DisplayTelop(string msg)
         {
-            State.Telop = msg;
+            State.Telop = TelopText(msg);
             Present();
-            Sleep(1000);
+            // 元の SRC と同じく、右ボタンを押していれば待たない（メッセージのウエイトには関わらない）
+            if (!IsRButtonPressed(true))
+            {
+                Sleep(1000);
+            }
             State.Telop = null;
             Present();
         }

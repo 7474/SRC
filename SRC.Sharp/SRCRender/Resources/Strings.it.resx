@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>Dati di {0} non validi.</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>Dati non validi.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>

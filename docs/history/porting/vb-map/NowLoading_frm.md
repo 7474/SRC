@@ -4,4 +4,4 @@ VB 版の `SRC/SRC_20121125/NowLoading.frm` の手続きと、C# の対応（[�
 
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
-| Sub Progress | 73 | 6 | `SRCSharpForm/Forms/NowLoading.cs` frmNowLoading.Progress | 未確認 |  |
+| Sub Progress | 73 | 6 | `SRCSharpForm/Forms/NowLoading.cs` frmNowLoading.Progress | 違いあり | SRCSharpForm は ProgressBar で一致。SRCRender は「Now Loading...」の文字だけで進み具合のバーが無い（#1536） |
