@@ -436,18 +436,39 @@ namespace SRCRender
             canvas.Restore();
         }
 
+        private static readonly Compat.Font TelopFont = new Compat.Font("ＭＳ Ｐ明朝", 15.75F, Compat.FontStyle.Bold);
+
+        /// <summary>
+        /// テロップ（Telop.frm）。枠の無い白いウィンドウ（幅 378 ピクセル）に、Label1（左 8・上 16・幅 357、ＭＳ Ｐ明朝 15.75 ポイントの太字、黒、中央揃え）を書く。
+        /// 高さは GUI.bas の DisplayTelop と同じく、"." があれば 2 行（78 ピクセル）、無ければ 53 ピクセル。最初の "." で改行する
+        /// </summary>
         private void DrawTelop(SKCanvas canvas, string telop, bool mainFormVisible)
         {
-            using (var paint = new SKPaint())
+            const int width = 378;
+            var dot = telop.IndexOf('.');
+            var text = dot >= 0 ? telop.Substring(0, dot) + "\n" + telop.Substring(dot + 1) : telop;
+            var lines = text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+            var height = dot >= 0 ? 78 : 53;
+            using (var font = TelopFont.ToSKFont())
+            using (var paint = new SKPaint { IsAntialias = false })
             {
                 // 元の SRC（GUI.bas の DisplayTelop）と同じく、メインウィンドウを表示していればマップの中央、隠していれば画面の中央
                 var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
-                var width = Math.Min(area.Width - 32, largeFont.MeasureText(telop) + 48);
-                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.MidY - 32, width, 64);
-                DrawPanel(canvas, box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(telop, box.MidX, box.MidY + largeFont.Size / 2 - 4, SKTextAlign.Center, largeFont, paint);
+                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.Top + (area.Height - height) / 2, width, height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(box, paint);
+                paint.Color = SKColors.Black;
+                paint.IsAntialias = true;
+                canvas.Save();
+                canvas.ClipRect(box);
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                var y = box.Top + 16;
+                foreach (var line in lines)
+                {
+                    canvas.DrawText(line, box.Left + 8 + 357 / 2f, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Center, font, paint);
+                    y += lineHeight;
+                }
+                canvas.Restore();
             }
         }
 
@@ -533,7 +554,11 @@ namespace SRCRender
 
         private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
 
-        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        /// <summary>
+        /// ツールチップ（ToolTip.frm の ShowToolTip）。文字の幅＋6・高さ＋4 の大きさで、カーソルの 24 ピクセル下に出す。
+        /// 枠は上と左が灰色（RGB(200, 200, 200)）、下と右が黒。文字は (3, 2) から書く。
+        /// 元の SRC は画面からはみ出しても構わず出すが、SRC# は画面の中に収める
+        /// </summary>
         private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
         {
             using (var font = TooltipFont.ToSKFont())
@@ -541,22 +566,25 @@ namespace SRCRender
             {
                 var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
                 var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var width = lines.Max(x => font.MeasureText(x)) + 8;
-                var height = lineHeight * lines.Length + 6;
-                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
-                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
-                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                var width = (float)Math.Ceiling(lines.Max(x => font.MeasureText(x))) + 6;
+                var height = lineHeight * lines.Length + 4;
+                var left = Math.Min(tooltip.X, ScreenLayout.Width - width);
+                var top = Math.Min(tooltip.Y + 24, ScreenLayout.Height - height);
+                var rect = SKRect.Create((float)Math.Floor(Math.Max(0, left)), (float)Math.Floor(Math.Max(0, top)), width, height);
                 paint.Color = new SKColor(255, 255, 225);
                 canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
+                // 上と左は灰色、下と右は黒
+                paint.Color = new SKColor(200, 200, 200);
+                canvas.DrawRect(rect.Left, rect.Top, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Left, rect.Top, 1, rect.Height, paint);
                 paint.Color = SKColors.Black;
-                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
-                paint.Style = SKPaintStyle.Fill;
+                canvas.DrawRect(rect.Left, rect.Bottom - 1, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Right - 1, rect.Top, 1, rect.Height, paint);
                 paint.IsAntialias = true;
-                var y = rect.Top + 3;
+                var y = rect.Top + 2;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
             }

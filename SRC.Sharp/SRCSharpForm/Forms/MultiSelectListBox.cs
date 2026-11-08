@@ -22,6 +22,8 @@ namespace SRCSharpForm
         // 最大選択数
         private int MaxListItem;
 
+        // 呼び出し元の一覧（VB は ListItemID を並べ替えるので、出撃させる順も並べ替えた順になる）
+        private IList<ListBoxItem> Items;
         private List<MultiSelectListBoxItem> ListBoxItemSource;
         private BindingList<MultiSelectListBoxItem> ListBoxItems;
 
@@ -32,7 +34,8 @@ namespace SRCSharpForm
             lblCaption.Text = "　" + args.lb_info;
             cmdSort.Text = "名称順に並べ替え";
 
-            ListBoxItemSource = args.Items.Select(x => new MultiSelectListBoxItem(x)).ToList();
+            Items = args.Items.IsReadOnly ? args.Items.ToList() : args.Items;
+            ListBoxItemSource = Items.Select(x => new MultiSelectListBoxItem(x)).ToList();
             ListBoxItems = new BindingList<MultiSelectListBoxItem>(ListBoxItemSource);
             MaxListItem = max_num;
 
@@ -95,21 +98,23 @@ namespace SRCSharpForm
             if (cmdSort.Text == "レベル順に並べ替え")
             {
                 // メインパイロットのレベル順に並べ替え
-                ListBoxItemSource.Sort((x, y) => SRC.UList.Item(x.ListItemID).MainPilot().Level
-                    .CompareTo(SRC.UList.Item(y.ListItemID).MainPilot().Level));
-                ListBoxItems.ResetBindings();
+                MultiSelectListBoxSort.SortByLevel(Items, SRC.UList);
                 // 並べ替え方法をトグルで切り替え
                 cmdSort.Text = "名称順に並べ替え";
             }
             else
             {
                 // ユニットの名称順に並べ替え
-                ListBoxItemSource.Sort((x, y) => -SRC.UList.Item(x.ListItemID).KanaName
-                    .CompareTo(SRC.UList.Item(y.ListItemID).KanaName));
-                ListBoxItems.ResetBindings();
+                MultiSelectListBoxSort.SortByName(Items, SRC.UList);
                 // 並べ替え方法をトグルで切り替え
                 cmdSort.Text = "レベル順に並べ替え";
             }
+
+            // リスト表示を更新する
+            ListBoxItemSource.Clear();
+            ListBoxItemSource.AddRange(Items.Select(x => new MultiSelectListBoxItem(x)));
+            ListBoxItems.ResetBindings();
+            _lstItems.TopIndex = 0;
         }
 
         // フォームを表示
@@ -168,7 +173,13 @@ namespace SRCSharpForm
             // カーソルがあるアイテムを算出
             var point = _lstItems.PointToClient(Cursor.Position);
             int index = _lstItems.IndexFromPoint(point);
-            if (index >= 0 && index != _lstItems.SelectedIndex)
+            if (index < 0)
+            {
+                // 項目の無いところではどの項目もハイライトしない（VB の lstItems_MouseMove は ListIndex = -1）
+                _lstItems.SelectedIndex = -1;
+                return;
+            }
+            if (index != _lstItems.SelectedIndex)
             {
                 // カーソルがあるアイテムをハイライト表示
                 _lstItems.SelectedIndex = index;

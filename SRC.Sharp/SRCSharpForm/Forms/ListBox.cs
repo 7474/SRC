@@ -844,6 +844,42 @@ namespace SRCSharpForm
         // 選択されているアイテムに対応するユニットのステータス表示
         private void Timer2_Tick(object eventSender, EventArgs eventArgs)
         {
+            if (!Visible || MainForm == null || !MainForm.Visible)
+            {
+                return;
+            }
+
+            if (lstItems.SelectedIndex == -1 || ListBoxItems == null || lstItems.SelectedIndex >= ListBoxItems.Count)
+            {
+                return;
+            }
+
+            var id = SelectedItem?.ListItemID;
+            MainForm.FormGUI.RunOnCore(() =>
+            {
+                // 選択されたユニットが存在する？
+                if (string.IsNullOrEmpty(id) || !SRC.UList.IsDefined2(id))
+                {
+                    return;
+                }
+
+                var u = SRC.UList.Item2(id);
+
+                // 選択されたユニットにパイロットが乗っている？
+                if (u.CountPilot() == 0)
+                {
+                    return;
+                }
+
+                // 既に表示している？
+                if (ReferenceEquals(Status.DisplayedUnit, u))
+                {
+                    return;
+                }
+
+                // 選択されたユニットをステータスウィンドウに表示
+                Status.DisplayUnitStatus(u);
+            });
         }
         private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
         {

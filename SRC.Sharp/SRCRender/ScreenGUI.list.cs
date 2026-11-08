@@ -418,7 +418,7 @@ namespace SRCRender
                 // ユニットステータスを表示しているユニットを入れ替え
                 var su = Commands.SelectedUnit;
                 var st = Commands.SelectedTarget;
-                if (DisplayedUnit != null && su != null && st != null)
+                if (MainFormVisible && DisplayedUnit != null && su != null && st != null)
                 {
                     DisplayUnitStatus((DisplayedUnit.ID ?? "") == (su.ID ?? "") ? st : su);
                 }
@@ -433,8 +433,26 @@ namespace SRCRender
                 return;
             }
             var client = w.ToClient(x, y);
-            var index = w.lstItems.IndexFromPoint(client.X - w.lstItems.Left, client.Y - w.lstItems.Top);
-            if (index < 0 || index == w.lstItems.SelectedIndex)
+            var lstItems = w.lstItems;
+            var lx = client.X - lstItems.Left;
+            var ly = client.Y - lstItems.Top;
+            var index = lstItems.IndexFromPoint(lx, ly);
+            if (index < 0)
+            {
+                // 項目の無いところ（最後の項目より下）では、どの項目もハイライトしない
+                // （ListBox.frm・MultiColumListBox.frm・MultiSelectListBox.frm の lstItems_MouseMove）。
+                // VB の MouseMove はスクロールバーの上では起きないので、スクロールバーの上では変えない
+                var onScrollBar = lstItems.HasScrollBar && (lstItems.MultiColumn
+                    ? ly >= lstItems.Height - ListBoxControl.ScrollBarWidth
+                    : lx >= lstItems.Width - ListBoxControl.ScrollBarWidth);
+                if (Form.HitTest(lstItems, client) && !onScrollBar && lstItems.SelectedIndex >= 0)
+                {
+                    lstItems.SelectedIndex = -1;
+                    Present();
+                }
+                return;
+            }
+            if (index == w.lstItems.SelectedIndex)
             {
                 return;
             }
@@ -720,7 +738,8 @@ namespace SRCRender
         #region 出撃ユニット選択用リストボックス（WinForms 版 Forms/MultiSelectListBox.cs）
 
         private readonly MultiSelectListWindow frmMultiSelectListBox = new MultiSelectListWindow();
-        private List<ListBoxItem> multiSelectItems;
+        // 呼び出し元の一覧をそのまま並べ替える（VB は ListItemID を並べ替えるので、出撃させる順も並べ替えた順になる）
+        private IList<ListBoxItem> multiSelectItems;
         private int multiSelectMax;
         private int multiSelectedNum;
         private bool multiSelectClosed;
@@ -740,7 +759,7 @@ namespace SRCRender
             box.lblCaption.Text = "　" + args.lb_info;
             box.cmdSort.Text = Resources.Strings.SortByName;
             multiSelectSortByLevel = false;
-            multiSelectItems = args.Items.ToList();
+            multiSelectItems = args.Items.IsReadOnly ? args.Items.ToList() : args.Items;
             listBoxItems = multiSelectItems;
             listHasFlag = false;
             multiSelectMax = max_num;
@@ -853,36 +872,22 @@ namespace SRCRender
                 if (multiSelectSortByLevel)
                 {
                     // メインパイロットのレベル順に並べ替え
-                    StableSort(multiSelectItems, (a, b) => SRC.UList.Item(a.ListItemID).MainPilot().Level
-                        .CompareTo(SRC.UList.Item(b.ListItemID).MainPilot().Level));
+                    MultiSelectListBoxSort.SortByLevel(multiSelectItems, SRC.UList);
                     box.cmdSort.Text = Resources.Strings.SortByName;
                     multiSelectSortByLevel = false;
                 }
                 else
                 {
                     // ユニットの名称順に並べ替え
-                    StableSort(multiSelectItems, (a, b) => -SRC.UList.Item(a.ListItemID).KanaName
-                        .CompareTo(SRC.UList.Item(b.ListItemID).KanaName));
+                    MultiSelectListBoxSort.SortByName(multiSelectItems, SRC.UList);
                     box.cmdSort.Text = Resources.Strings.SortByLevel;
                     multiSelectSortByLevel = true;
                 }
                 UpdateMultiSelectList(box);
+                // リスト表示を更新したら先頭から表示する
+                box.lstItems.TopIndex = 0;
             }
             Present();
-        }
-
-        private static void StableSort(List<ListBoxItem> items, Comparison<ListBoxItem> comparison)
-        {
-            var sorted = items.Select((x, i) => (x, i))
-                .OrderBy(x => x, Comparer<(ListBoxItem x, int i)>.Create((a, b) =>
-                {
-                    var c = comparison(a.x, b.x);
-                    return c != 0 ? c : a.i.CompareTo(b.i);
-                }))
-                .Select(x => x.x)
-                .ToList();
-            items.Clear();
-            items.AddRange(sorted);
         }
 
         private void MultiSelectToggle(MultiSelectListWindow box)

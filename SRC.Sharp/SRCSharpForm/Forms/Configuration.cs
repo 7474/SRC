@@ -29,6 +29,17 @@ namespace SRCSharpForm
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
         private void chkBattleAnimation_CheckStateChanged(object eventSender, EventArgs eventArgs)
         {
+            // 戦闘アニメを表示しない場合は拡張戦闘アニメ、武器アニメ選択の項目を選択不能にする
+            if ((int)chkBattleAnimation.CheckState == 1)
+            {
+                chkExtendedAnimation.Enabled = true;
+                chkWeaponAnimation.Enabled = true;
+            }
+            else
+            {
+                chkExtendedAnimation.Enabled = false;
+                chkWeaponAnimation.Enabled = false;
+            }
         }
 
         // キャンセルボタンが押された
@@ -59,6 +70,8 @@ namespace SRCSharpForm
             if ((int)chkBattleAnimation.CheckState == 1)
             {
                 SystemConfig.BattleAnimation = true;
+                // 汎用戦闘アニメが無くて使えなくしていた戦闘アニメも、選び直したら使う（SRCRender の設定変更と同じ）
+                SRC.BattleAnimationUnavailable = false;
             }
             else
             {
@@ -254,6 +267,26 @@ namespace SRCSharpForm
             else
             {
                 chkShowSquareLine.CheckState = CheckState.Unchecked;
+            }
+
+            // 味方フェイズ開始時のターン表示
+            if ((SRC.Config.GetItem("Option", "Turn") ?? "").ToLower() == "on")
+            {
+                chkShowTurn.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkShowTurn.CheckState = CheckState.Unchecked;
+            }
+
+            // 敵フェイズ中にＢＧＭを変更しない
+            if (SRC.Config.KeepEnemyBGM)
+            {
+                chkKeepEnemyBGM.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkKeepEnemyBGM.CheckState = CheckState.Unchecked;
             }
 
             // MP3音量
