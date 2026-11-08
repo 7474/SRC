@@ -30,6 +30,8 @@ namespace SRCRender
         // Questionコマンド用（経過時間と制限時間、ミリ秒）
         private int listCurrentTime;
         private int listTimeLimit;
+        // リストボックスを表示してから選択を待つ前に行う処理（WeaponListBox・AbilityListBox のカーソル移動・ＢＧＭ）
+        private Action listBoxShown;
 
         /// <summary>リストボックス</summary>
         public ListWindow ListWindow => frmListBox;
@@ -98,8 +100,9 @@ namespace SRCRender
             {
                 case "S":
                     frmListBox.Width += 157;
-                    frmListBox.lstItems.Width = 643;
-                    frmListBox.labCaption.Width = 643;
+                    // 元の SRC と同じく 637（フォームの最初の幅 643 には戻らない）
+                    frmListBox.lstItems.Width = 637;
+                    frmListBox.labCaption.Width = 637;
                     frmListBox.HorizontalSize = "M";
                     break;
             }
@@ -133,11 +136,12 @@ namespace SRCRender
                 part.Visible = true;
             }
 
-            DisplayListBoxUnit(u, t, w.imgPilot1, w.txtLevel1, w.txtMorale1, w.picUnit1, w.labHP1, w.txtHP1, w.picHP1, w.labEN1, w.txtEN1, w.picEN1);
-            DisplayListBoxUnit(t, t, w.imgPilot2, w.txtLevel2, w.txtMorale2, w.picUnit2, w.labHP2, w.txtHP2, w.picHP2, w.labEN2, w.txtEN2, w.picEN2);
+            // 元の SRC はユニット側の「HP」の用語をユニットを指定せずに引き、「EN」の用語は両側ともターゲットで引く
+            DisplayListBoxUnit(u, null, t, w.imgPilot1, w.txtLevel1, w.txtMorale1, w.picUnit1, w.labHP1, w.txtHP1, w.picHP1, w.labEN1, w.txtEN1, w.picEN1);
+            DisplayListBoxUnit(t, t, t, w.imgPilot2, w.txtLevel2, w.txtMorale2, w.picUnit2, w.labHP2, w.txtHP2, w.picHP2, w.labEN2, w.txtEN2, w.picEN2);
         }
 
-        private void DisplayListBoxUnit(Unit u, Unit t, PictureBox imgPilot, Label txtLevel, Label txtMorale, PictureBox picUnit,
+        private void DisplayListBoxUnit(Unit u, Unit hpTermUnit, Unit t, PictureBox imgPilot, Label txtLevel, Label txtMorale, PictureBox picUnit,
             Label labHP, Label txtHP, PictureBox picHP, Label labEN, Label txtEN, PictureBox picEN)
         {
             if (u == null)
@@ -153,7 +157,10 @@ namespace SRCRender
             using (var g = Graphics.FromImage(picUnit.Image))
             {
                 g.Clear(System.Drawing.Color.White);
-                DrawUnit(g.Canvas, Map.CellAtPoint(u.x, u.y), u, SkiaSharp.SKRect.Create(0, 0, picUnit.Width, picUnit.Height));
+                // 元の SRC は描画モードの色を変えない画像（MapDrawMode が空なら picUnitBitmap の 1 段目、
+                // それ以外は LoadUnitBitmap の use_orig_color）を出し、行動済みの網掛けと場所の線は付けない
+                DrawUnit(g.Canvas, Map.CellAtPoint(u.x, u.y), u, SkiaSharp.SKRect.Create(0, 0, picUnit.Width, picUnit.Height),
+                    useOrigColor: true, withActed: false, withAreaLine: false);
             }
 
             if (u.IsConditionSatisfied("データ不明"))
@@ -163,7 +170,7 @@ namespace SRCRender
             }
             else
             {
-                labHP.Text = SRC.Expression.Term("HP", u);
+                labHP.Text = SRC.Expression.Term("HP", hpTermUnit);
                 txtHP.Text = (u.HP < 100000 ? SrcFormatter.Format(u.HP) : "?????")
                     + "/" + (u.MaxHP < 100000 ? SrcFormatter.Format(u.MaxHP) : "?????");
             }
@@ -187,7 +194,8 @@ namespace SRCRender
         {
             var w = frmListBox;
             w.Height -= 35;
-            w.labCaption.Top = 5;
+            // 元の SRC と同じく 4（フォームの最初の位置 5 には戻らない）
+            w.labCaption.Top = 4;
             w.lstItems.Top = 32;
             foreach (var part in w.UnitParts)
             {
@@ -284,6 +292,9 @@ namespace SRCRender
             {
                 MoveCursorPos("ダイアログ");
             }
+            var shown = listBoxShown;
+            listBoxShown = null;
+            shown?.Invoke();
 
             var start = Environment.TickCount;
             while (!IsFormClicked)
@@ -590,7 +601,42 @@ namespace SRCRender
         {
             TopItem = -1;
             // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
-            return weapons.SelectWeapon(SRC, caption_msg, ListBox);
+            if (weapons.Mode == WeaponListMode.Counter)
+            {
+                // 反撃は「連続表示,カーソル移動」で出す（UnitWeaponList.SelectWeapon が指定する）
+                return weapons.SelectWeapon(SRC, caption_msg, ListBox);
+            }
+
+            // 元の SRC は「表示のみ」で出してから、カーソルを最後の使える武器（一覧ではリストボックス）へ動かし、
+            // ＢＧＭを変えてから選択を待つ。援護攻撃の行で出し直すときは、カーソルもＢＧＭもそのまま
+            var first = true;
+            var ret = weapons.SelectWeapon(SRC, caption_msg, args =>
+            {
+                if (first)
+                {
+                    first = false;
+                    listBoxShown = () =>
+                    {
+                        if (SRC.AutoMoveCursor)
+                        {
+                            MoveCursorPos(lb_mode != "一覧" ? "武器選択" : "ダイアログ");
+                        }
+                        if (!string.IsNullOrEmpty(BGM))
+                        {
+                            SRC.Sound.ChangeBGM(BGM);
+                        }
+                    };
+                }
+                // 選んでもすぐには閉じない（元の SRC は「表示のみ」で出して選択を待つ）
+                args.lb_mode = "連続表示";
+                return ListBox(args);
+            });
+            // 一覧では閉じない（呼び出し元が次のリストボックスを出すか、閉じる）
+            if (lb_mode != "一覧")
+            {
+                HideListBox();
+            }
+            return ret;
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
@@ -603,19 +649,32 @@ namespace SRCRender
                 return ability;
             }
             // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
-            var list = abilities.ToListBoxItems();
+            var list = abilities.ToListBoxItems(is_item);
             if (list.Count == 0)
             {
                 return null;
             }
+            // 元の SRC は「表示のみ」で出してから、カーソルをリストボックスへ動かして選択を待つ
+            listBoxShown = () =>
+            {
+                if (SRC.AutoMoveCursor)
+                {
+                    MoveCursorPos("ダイアログ");
+                }
+            };
             var ret = ListBox(new ListBoxArgs
             {
                 Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
                 lb_info = abilities.ListBoxInfo(SRC),
-                lb_mode = "",
+                lb_mode = "連続表示",
             });
+            // 一覧では閉じない（呼び出し元が次のリストボックスを出すか、閉じる）
+            if (lb_mode != "一覧")
+            {
+                HideListBox();
+            }
             return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 

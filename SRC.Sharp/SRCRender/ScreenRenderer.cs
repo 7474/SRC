@@ -179,7 +179,12 @@ namespace SRCRender
         /// <summary>
         /// マップ全体の背景（地形）を描画した画像を作る。
         /// </summary>
-        public SKBitmap BuildBackground(SRC src, ImageCache images)
+        /// <param name="filter">
+        /// マップの描画モードで色を変える処理（第 2 引数はレイヤーの画像か）。元の SRC の SetupBackground と同じく、
+        /// 地形の画像とレイヤーの画像に別々にかける（レイヤーは背景色を白として透過で処理する）。
+        /// マス目の線は描かない（呼び出し側が描画モードをかけたあとに引く）
+        /// </param>
+        public SKBitmap BuildBackground(SRC src, ImageCache images, Func<SKBitmap, bool, SKBitmap> filter = null)
         {
             var map = src.Map;
             var bitmap = new SKBitmap(Math.Max(1, map.MapWidth * ScreenLayout.CellPx), Math.Max(1, map.MapHeight * ScreenLayout.CellPx));
@@ -194,20 +199,7 @@ namespace SRCRender
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found);
-                    }
-                }
-                if (src.ShowSquareLine)
-                {
-                    paint.Color = new SKColor(0, 0, 0, 0x60);
-                    paint.Style = SKPaintStyle.Stroke;
-                    for (var x = 1; x < map.MapWidth; x++)
-                    {
-                        canvas.DrawLine(x * ScreenLayout.CellPx, 0, x * ScreenLayout.CellPx, bitmap.Height, paint);
-                    }
-                    for (var y = 1; y < map.MapHeight; y++)
-                    {
-                        canvas.DrawLine(0, y * ScreenLayout.CellPx, bitmap.Width, y * ScreenLayout.CellPx, paint);
+                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found, filter);
                     }
                 }
             }
@@ -217,8 +209,9 @@ namespace SRCRender
         /// <summary>
         /// マップの (x, y) のマス 1 つ分の背景（地形とレイヤー）を描画した画像を作る。
         /// <see cref="BuildBackground"/> のそのマスと同じ絵になる（ChangeTerrain・ChangeLayer でそのマスだけを描き直すのに使う）。
+        /// マス目の線は描かない（呼び出し側が引く）。
         /// </summary>
-        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y)
+        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y, Func<SKBitmap, bool, SKBitmap> filter = null)
         {
             var map = src.Map;
             var bitmap = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx);
@@ -227,42 +220,42 @@ namespace SRCRender
             {
                 canvas.Clear(BackColor);
                 var rect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null);
-                if (src.ShowSquareLine)
-                {
-                    // マップ全体のマス目のうち、このマスの左端・上端の線
-                    paint.Color = new SKColor(0, 0, 0, 0x60);
-                    paint.Style = SKPaintStyle.Stroke;
-                    if (x > 1)
-                    {
-                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
-                    }
-                    if (y > 1)
-                    {
-                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
-                    }
-                }
+                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null, filter);
             }
             return bitmap;
         }
 
-        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect, IDictionary<(string Name, int No), string> found)
+        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect,
+            IDictionary<(string Name, int No), string> found, Func<SKBitmap, bool, SKBitmap> filter)
         {
-            var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
-            if (image != null)
+            // 地形の画像（描画モードをかけるときは 1 マス分の画像にしてからかける）
+            using (var tile = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx, SKColorType.Bgra8888, SKAlphaType.Premul))
             {
-                canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
-            }
-            else
-            {
-                // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
-                canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
-                paint.Color = new SKColor(0, 0, 0, 0x40);
-                canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
-                paint.Style = SKPaintStyle.Fill;
+                using (var tileCanvas = new SKCanvas(tile))
+                {
+                    tileCanvas.Clear(BackColor);
+                    var tileRect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                    var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
+                    if (image != null)
+                    {
+                        tileCanvas.DrawBitmap(image, tileRect, SKSamplingOptions.Default);
+                    }
+                    else
+                    {
+                        // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                        paint.Style = SKPaintStyle.Fill;
+                        paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
+                        tileCanvas.DrawRect(tileRect, paint);
+                        paint.Style = SKPaintStyle.Stroke;
+                        paint.Color = new SKColor(0, 0, 0, 0x40);
+                        tileCanvas.DrawRect(SKRect.Create(0.5f, 0.5f, tileRect.Width - 1, tileRect.Height - 1), paint);
+                        paint.Style = SKPaintStyle.Fill;
+                    }
+                }
+                using (var filtered = filter == null ? null : filter(ImageFilters.Copy(tile), false))
+                {
+                    canvas.DrawBitmap(filtered ?? tile, rect, SKSamplingOptions.Default);
+                }
             }
             // レイヤーの画像は「通常」「画像限定」のマスだけ描く（元の SRC の SetupBackground）
             if (cell.IsLayerBitmapVisible)
@@ -270,7 +263,10 @@ namespace SRCRender
                 var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
                 if (layer != null)
                 {
-                    canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
+                    using (var filtered = filter == null ? null : filter(ImageFilters.Copy(layer), true))
+                    {
+                        canvas.DrawBitmap(filtered ?? layer, rect, SKSamplingOptions.Default);
+                    }
                 }
             }
         }

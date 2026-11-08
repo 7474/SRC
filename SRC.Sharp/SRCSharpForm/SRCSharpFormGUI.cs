@@ -826,6 +826,11 @@ namespace SRCSharpForm
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             TopItem = -1;
+            // 元の SRC はリストボックスを出したところでＢＧＭを変える（反撃のときは BGM を渡さない）
+            if (!string.IsNullOrEmpty(BGM))
+            {
+                SRC.Sound.ChangeBGM(BGM);
+            }
             // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
             var ret = weapons.SelectWeapon(SRC, caption_msg, ListBox);
             Application.DoEvents();
@@ -842,7 +847,7 @@ namespace SRCSharpForm
                 return ability;
             }
             // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
-            var list = abilities.ToListBoxItems();
+            var list = abilities.ToListBoxItems(is_item);
             if (list.Count == 0)
             {
                 return null;
