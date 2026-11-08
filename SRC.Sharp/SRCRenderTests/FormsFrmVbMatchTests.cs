@@ -128,6 +128,50 @@ namespace SRCRender.Tests
             }
         }
 
+        // Telop.frm: 枠の無い白いウィンドウ（幅 378、"." が無ければ高さ 53）をマップの中央に出す
+        [TestMethod]
+        public void Telop_WhiteWindowLikeTelopFrm()
+        {
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Telop 第１話",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                // テロップは 1 秒で消えるので、出ている間にそのまま撮る
+                byte[] png = null;
+                var mainFormVisible = false;
+                runner.WaitFor(s =>
+                {
+                    if (s.Telop == null)
+                    {
+                        return false;
+                    }
+                    mainFormVisible = s.MainFormVisible;
+                    using (var stream = new MemoryStream())
+                    {
+                        runner.GUI.SnapshotPng(stream);
+                        png = stream.ToArray();
+                    }
+                    return true;
+                }, "telop");
+                using (var bitmap = SKBitmap.Decode(png))
+                {
+                    var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
+                    var left = area.Left + (area.Width - 378) / 2;
+                    var top = area.Top + (area.Height - 53) / 2;
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(left + 1, top + 1));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(left + 376, top + 51));
+                    Assert.AreNotEqual(SKColors.White, bitmap.GetPixel(left - 2, top + 1));
+                    Assert.AreNotEqual(SKColors.White, bitmap.GetPixel(left + 1, top + 53 + 1));
+                }
+                runner.WaitForTermination();
+            }
+        }
+
         // ListBox.frm の lstItems_MouseMove: 最後の項目より下では ListIndex = -1（どの項目もハイライトしない）
         [TestMethod]
         public void ListBox_HoverBelowLastItem_ClearsHighlight()
