@@ -220,18 +220,18 @@ namespace SRCRender
                 if (isSepia) drawBuffer = ImageFilters.ApplySepia(drawBuffer);
                 if (isSunset) drawBuffer = ImageFilters.ApplySunset(drawBuffer);
                 if (isWater) drawBuffer = ImageFilters.ApplyWater(drawBuffer);
-                if (isSil) drawBuffer = ImageFilters.ApplySilhouette(drawBuffer);
+                if (isSil) drawBuffer = ImageFilters.ApplySilhouette(drawBuffer, background: ToSKColor(bgColor));
                 if (negpos) drawBuffer = ImageFilters.ApplyNegPos(drawBuffer);
                 if (isColorFilter)
                 {
-                    drawBuffer = ImageFilters.ApplyColorFilter(drawBuffer, fcolor, transPar < 0f ? 0.5f : transPar);
+                    drawBuffer = ImageFilters.ApplyColorFilter(drawBuffer, fcolor, transPar < 0f ? 0.5 : transPar, transparent: transparent, background: ToSKColor(bgColor));
                 }
-                for (var i = 0; i < brightCount; i++) drawBuffer = ImageFilters.ApplyBright(drawBuffer);
+                for (var i = 0; i < brightCount; i++) drawBuffer = ImageFilters.ApplyBright(drawBuffer, transparent: transparent);
                 for (var i = 0; i < darkCount; i++) drawBuffer = ImageFilters.ApplyDark(drawBuffer);
                 if (hrev || vrev) drawBuffer = ImageFilters.Flip(drawBuffer, hrev, vrev);
                 if (angle != 0)
                 {
-                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, transparent ? SKColors.Transparent : ToSKColor(BGColor));
+                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, transparent ? SKColors.Transparent : ToSKColor(bgColor));
                 }
 
                 if (dw == Constants.DEFAULT_LEVEL) dw = origWidth;
