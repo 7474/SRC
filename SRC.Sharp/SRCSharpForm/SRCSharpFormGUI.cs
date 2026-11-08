@@ -1285,7 +1285,12 @@ namespace SRCSharpForm
                 Expression.FormatMessage(ref msg);
                 if (Strings.InStr(msg, ".") > 0)
                 {
-                    msg = msg.Replace(".", Environment.NewLine);
+                    // 元の SRC と同じく、最初の 2 つの「.」を改行にする
+                    for (var n = 0; n < 2 && msg.IndexOf('.') >= 0; n++)
+                    {
+                        var i = msg.IndexOf('.');
+                        msg = msg.Substring(0, i) + Environment.NewLine + msg.Substring(i + 1);
+                    }
                     telop.Height = 78;
                 }
                 else
@@ -1307,7 +1312,8 @@ namespace SRCSharpForm
                 telop.Label1.Text = msg;
                 telop.Show();
                 telop.Refresh();
-                if (!IsRButtonPressed())
+                // 元の SRC と同じく、右ボタンを押していれば待たない（メッセージのウエイトには関わらない）
+                if (!IsRButtonPressed(true))
                 {
                     Sleep(1000);
                 }
