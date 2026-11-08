@@ -32,7 +32,8 @@ namespace SRCRender
             SetMessageWindowUnit(u1, u2);
 
             // メッセージウィンドウの位置（GUI.bas の OpenMessageForm）。メインウィンドウを表示していれば、
-            // 開いたときにメインウィンドウの左下に合わせる（開いたままなら動かさない）。隠していれば画面の中央
+            // 開いたときにメインウィンドウの左下に合わせる（開いたままなら動かさない）。隠していれば画面の中央。
+            // 元の SRC の「枠外」（MessageWindowIsOut）はメインウィンドウの下の外に出すが、この画面は外に描けないので左下に置く
             if (MainFormVisible)
             {
                 if (!frmMessage.Visible)
@@ -494,7 +495,8 @@ namespace SRCRender
 
             if (ru != null)
             {
-                // XXX これ常に真になるんじゃないか？　それによって常にバーアニメしてた？
+                // 元の SRC は ru.HP と RightUnitHPRatio（割合）を比べる書き間違いで、右のユニットがあればほぼ常に 8 回（160 ミリ秒）待つ。
+                // SRC# は左のユニットと同じく割合で比べる（変化が無ければ待たない）
                 if (ru.HP / (double)ru.MaxHP != RightUnitHPRatio || ru.EN / (double)ru.MaxEN != RightUnitENRatio)
                 {
                     num = 8;
