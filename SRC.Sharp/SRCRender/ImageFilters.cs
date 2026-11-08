@@ -1,120 +1,35 @@
 using SkiaSharp;
+using SRCCore.VB;
+using System;
 using System.Drawing;
 
 namespace SRCRender
 {
     /// <summary>
-    /// SRC の画像効果（暗・セピア・白黒・夕焼け・水中・シルエット・ネガポジ反転・カラーフィルタ・回転・反転）。
-    /// 行列は WinForms 版（GDI+ の ColorMatrix）と同じ値を使う。
+    /// SRC の画像効果（暗・明・セピア・白黒・夕焼け・水中・シルエット・ネガポジ反転・カラーフィルタ・回転・反転）。
+    /// 元の SRC の Graphics.bas と同じく、画素ごとに同じ式（Double から Long・Byte への代入は銀行丸め、\ は切り捨て）で計算する。
+    /// 透明な画素（アルファが 0）は変えない。元の SRC の透過の指定（is_transparent）では背景色の画素を変えずに後で抜くので、
+    /// 先に背景色を抜いてある SRC# ではこれに当たる。
     /// </summary>
     public static class ImageFilters
     {
-        // GDI+ の ColorMatrix（行: 入力 R,G,B,A,1 / 列: 出力 R,G,B,A,W）
-        private static readonly float[,] Dark =
-        {
-            { 0.5f, 0, 0, 0, 0 },
-            { 0, 0.5f, 0, 0, 0 },
-            { 0, 0, 0.5f, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 0, 0, 0, 0, 1 },
-        };
-
-        private static readonly float[,] Sepia =
-        {
-            { 0.299f * 1.1f, 0.299f * 0.9f, 0.299f * 0.7f, 0, 0 },
-            { 0.587f * 1.1f, 0.587f * 0.9f, 0.587f * 0.7f, 0, 0 },
-            { 0.114f * 1.1f, 0.114f * 0.9f, 0.114f * 0.7f, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 0, 0, 0, 0, 1 },
-        };
-
-        private static readonly float[,] Monochrome =
-        {
-            { 0.3086f, 0.3086f, 0.3086f, 0, 0 },
-            { 0.6094f, 0.6094f, 0.6094f, 0, 0 },
-            { 0.0820f, 0.0820f, 0.0820f, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 0, 0, 0, 0, 1 },
-        };
-
-        private static readonly float[,] Water =
-        {
-            { 0.299f * 0.6f, 0.299f * 0.8f, 0.299f, 0, 0 },
-            { 0.587f * 0.6f, 0.587f * 0.8f, 0.587f, 0, 0 },
-            { 0.114f * 0.6f, 0.114f * 0.8f, 0.114f, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 0, 0, 0, 0, 1 },
-        };
-
-        private static readonly float[,] Sunset =
-        {
-            { 0.299f * 1.3f + 0.2f, 0.299f * 0.4f, 0.299f * 0.2f, 0, 0 },
-            { 0.587f * 1.3f, 0.587f * 0.4f + 0.2f, 0.587f * 0.2f, 0, 0 },
-            { 0.114f * 1.3f, 0.114f * 0.4f, 0.114f * 0.2f + 0.2f, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 0, 0, 0, 0, 1 },
-        };
-
-        private static readonly float[,] Silhouette =
-        {
-            { 255, 255, 255, 0, 0 },
-            { 255, 255, 255, 0, 0 },
-            { 255, 255, 255, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { -764, -764, -764, 0, 1 },
-        };
-
-        private static readonly float[,] NegPos =
-        {
-            { -1, 0, 0, 0, 0 },
-            { 0, -1, 0, 0, 0 },
-            { 0, 0, -1, 0, 0 },
-            { 0, 0, 0, 1, 0 },
-            { 1, 1, 1, 0, 1 },
-        };
-
-        private static float[,] ColorFilterMatrix(Color color, float alpha)
-        {
-            return new float[,]
-            {
-                { 1f - alpha, 0, 0, 0, 0 },
-                { 0, 1f - alpha, 0, 0, 0 },
-                { 0, 0, 1f - alpha, 0, 0 },
-                { 0, 0, 0, 1, 0 },
-                { color.R * alpha / 255f, color.G * alpha / 255f, color.B * alpha / 255f, 0, 1 },
-            };
-        }
-
         /// <summary>
-        /// GDI+ の ColorMatrix を Skia のカラーマトリクス（4x5、平行移動は 0〜1）に変換する。
+        /// 画素ごとに RGB を変えた画像を返す（元の画像は変更しない）。アルファは変えず、透明な画素はそのまま。
         /// </summary>
-        private static SKColorFilter ToColorFilter(float[,] m)
+        private static SKBitmap MapPixels(SKBitmap source, Func<SKColor, SKColor> map)
         {
-            var skia = new float[20];
-            for (var c = 0; c < 4; c++)
+            var pixels = source.Pixels;
+            for (var i = 0; i < pixels.Length; i++)
             {
-                for (var i = 0; i < 4; i++)
+                var c = pixels[i];
+                if (c.Alpha == 0)
                 {
-                    skia[c * 5 + i] = m[i, c];
+                    continue;
                 }
-                skia[c * 5 + 4] = m[4, c];
+                pixels[i] = map(c).WithAlpha(c.Alpha);
             }
-            return SKColorFilter.CreateColorMatrix(skia);
-        }
-
-        /// <summary>
-        /// カラーマトリクスを適用した画像を返す（元の画像は変更しない）。
-        /// </summary>
-        private static SKBitmap Apply(SKBitmap source, float[,] matrix)
-        {
             var result = new SKBitmap(source.Width, source.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            using (var canvas = new SKCanvas(result))
-            using (var filter = ToColorFilter(matrix))
-            using (var paint = new SKPaint { ColorFilter = filter })
-            {
-                canvas.Clear(SKColors.Transparent);
-                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default, paint);
-            }
+            result.Pixels = pixels;
             return result;
         }
 
@@ -127,32 +42,128 @@ namespace SRCRender
             return result;
         }
 
-        public static SKBitmap ApplyDark(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Dark), dispose);
-        public static SKBitmap ApplySepia(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Sepia), dispose);
-        public static SKBitmap ApplyMonotone(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Monochrome), dispose);
-        public static SKBitmap ApplySunset(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Sunset), dispose);
-        public static SKBitmap ApplyWater(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Water), dispose);
-        public static SKBitmap ApplySilhouette(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, Silhouette), dispose);
-        public static SKBitmap ApplyNegPos(SKBitmap b, bool dispose = true) => Replace(b, Apply(b, NegPos), dispose);
-        public static SKBitmap ApplyColorFilter(SKBitmap b, Color color, float alpha, bool dispose = true) => Replace(b, Apply(b, ColorFilterMatrix(color, alpha)), dispose);
+        private static byte ToByte(double x) => (byte)VBMath.CLng(x);
 
-        /// <summary>明るくする（元の SRC と同じく各色 +80）</summary>
-        public static SKBitmap ApplyBright(SKBitmap b, bool dispose = true)
-        {
-            const float add = 80f / 255f;
-            var m = new float[,]
+        // rgb = 0.299 * .Red + 0.587 * .Green + 0.114 * .Blue（Long への代入で銀行丸め）
+        private static int Luminance(SKColor c) => VBMath.CLng(0.299 * c.Red + 0.587 * c.Green + 0.114 * c.Blue);
+
+        /// <summary>Graphics.bas の Dark（各色 \ 2）</summary>
+        public static SKBitmap ApplyDark(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c => new SKColor((byte)(c.Red / 2), (byte)(c.Green / 2), (byte)(c.Blue / 2))), dispose);
+
+        /// <summary>Graphics.bas の Sepia</summary>
+        public static SKBitmap ApplySepia(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c =>
             {
-                { 1, 0, 0, 0, 0 },
-                { 0, 1, 0, 0, 0 },
-                { 0, 0, 1, 0, 0 },
-                { 0, 0, 0, 1, 0 },
-                { add, add, add, 0, 1 },
-            };
-            return Replace(b, Apply(b, m), dispose);
+                var rgb = Luminance(c);
+                return new SKColor((byte)Math.Min(VBMath.CLng(1.1 * rgb), 255), ToByte(0.9 * rgb), ToByte(0.7 * rgb));
+            }), dispose);
+
+        /// <summary>Graphics.bas の Monotone</summary>
+        public static SKBitmap ApplyMonotone(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c =>
+            {
+                var rgb = (byte)Luminance(c);
+                return new SKColor(rgb, rgb, rgb);
+            }), dispose);
+
+        /// <summary>Graphics.bas の Sunset</summary>
+        public static SKBitmap ApplySunset(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c =>
+            {
+                var rgb = Luminance(c);
+                return new SKColor(
+                    (byte)Math.Min(VBMath.CLng(0.2 * c.Red + 1.3 * rgb), 255),
+                    ToByte(0.2 * c.Green + 0.4 * rgb),
+                    ToByte(0.2 * c.Blue + 0.2 * rgb));
+            }), dispose);
+
+        /// <summary>Graphics.bas の Water</summary>
+        public static SKBitmap ApplyWater(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c =>
+            {
+                var rgb = Luminance(c);
+                return new SKColor(ToByte(0.6 * rgb), ToByte(0.8 * rgb), (byte)rgb);
+            }), dispose);
+
+        /// <summary>
+        /// Graphics.bas の Silhouette。背景色（省略したときは元の SRC の BGColor の既定の白）の画素を白に、ほかを黒にする。
+        /// </summary>
+        public static SKBitmap ApplySilhouette(SKBitmap b, bool dispose = true, SKColor? background = null)
+        {
+            var bg = background ?? SKColors.White;
+            return Replace(b, MapPixels(b, c =>
+                c.Red == bg.Red && c.Green == bg.Green && c.Blue == bg.Blue
+                    ? SKColors.White
+                    : SKColors.Black), dispose);
         }
 
-        /// <summary>マップの描画モード（夜・セピア・白黒・夕焼け・水中・フィルタ）を適用する。</summary>
-        public static SKBitmap ApplyDrawMode(SKBitmap b, string drawMode, Color filterColor, double filterTransPercent, bool dispose = true)
+        /// <summary>Graphics.bas の NegPosReverse</summary>
+        public static SKBitmap ApplyNegPos(SKBitmap b, bool dispose = true)
+            => Replace(b, MapPixels(b, c => new SKColor((byte)(255 - c.Red), (byte)(255 - c.Green), (byte)(255 - c.Blue))), dispose);
+
+        /// <summary>
+        /// Graphics.bas の ColorFilter。透過率 transPar（0〜1）を百分率の整数に丸め、
+        /// (元の色 * (100 - 透過率) + 描画色 * 透過率) \ 100 にする。
+        /// 透過のとき、描画色が背景色と同じなら、透過で抜けないように描画色を少しずらす（255 の成分を 254 にする）。
+        /// </summary>
+        public static SKBitmap ApplyColorFilter(SKBitmap b, Color color, double transPar, bool dispose = true,
+            bool transparent = false, SKColor? background = null)
+        {
+            var bg = background ?? SKColors.White;
+            // tratio = MinLng(MaxLng(100 * trans_par, 0), 100)（Long の引数への代入で銀行丸め）
+            var tratio = Math.Min(Math.Max(VBMath.CLng(100 * transPar), 0), 100);
+            if (tratio == 0)
+            {
+                // 透過しない場合はそのまま
+                return dispose ? b : Copy(b);
+            }
+
+            int r2 = color.R, g2 = color.G, b2 = color.B;
+            if (transparent && bg.Red == r2 && bg.Green == g2 && bg.Blue == b2)
+            {
+                if (r2 == 255)
+                {
+                    r2 = 254;
+                }
+                else if (g2 == 255)
+                {
+                    g2 = 254;
+                }
+                else if (b2 == 255)
+                {
+                    b2 = 254;
+                }
+            }
+
+            // 元の SRC の「trans_par = 100」の分岐は、透過率が 0〜1 なので通らない（100% は下の式で描画色そのものになる）
+            return Replace(b, MapPixels(b, c => new SKColor(
+                (byte)((c.Red * (100 - tratio) + r2 * tratio) / 100),
+                (byte)((c.Green * (100 - tratio) + g2 * tratio) / 100),
+                (byte)((c.Blue * (100 - tratio) + b2 * tratio) / 100))), dispose);
+        }
+
+        /// <summary>
+        /// Graphics.bas の Bright（各色 +80）。透過のときは、255 の成分はそのまま、ほかは 254 で止める
+        /// （元の SRC は背景色の白を後で抜くので、白にならないようにしている）。
+        /// </summary>
+        public static SKBitmap ApplyBright(SKBitmap b, bool dispose = true, bool transparent = false)
+        {
+            if (transparent)
+            {
+                static byte Up(byte v) => v == 255 ? v : (byte)Math.Min(v + 80, 254);
+                return Replace(b, MapPixels(b, c => new SKColor(Up(c.Red), Up(c.Green), Up(c.Blue))), dispose);
+            }
+            return Replace(b, MapPixels(b, c => new SKColor(
+                (byte)Math.Min(c.Red + 80, 255), (byte)Math.Min(c.Green + 80, 255), (byte)Math.Min(c.Blue + 80, 255))), dispose);
+        }
+
+        /// <summary>
+        /// マップの描画モード（夜・セピア・白黒・夕焼け・水中・フィルタ）を適用する。
+        /// 元の SRC の GUI.bas の SetupBackground・DrawMapLayer で呼ぶ Graphics.bas の処理と同じ。
+        /// </summary>
+        public static SKBitmap ApplyDrawMode(SKBitmap b, string drawMode, Color filterColor, double filterTransPercent, bool dispose = true,
+            bool transparent = false)
         {
             switch (drawMode ?? "")
             {
@@ -167,37 +178,128 @@ namespace SRCRender
                 case "水中":
                     return ApplyWater(b, dispose);
                 case "フィルタ":
-                    return ApplyColorFilter(b, filterColor, (float)filterTransPercent, dispose);
+                    // レイヤーの画像は背景色を白として透過で処理する（元の SRC の BGColor = vbWhite）
+                    return ApplyColorFilter(b, filterColor, filterTransPercent, dispose, transparent, SKColors.White);
                 default:
                     return b;
             }
         }
 
-        /// <summary>左右・上下反転</summary>
+        /// <summary>Graphics.bas の HReverse（左右反転）・VReverse（上下反転）</summary>
         public static SKBitmap Flip(SKBitmap source, bool horizontal, bool vertical, bool dispose = true)
         {
-            var result = new SKBitmap(source.Width, source.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            using (var canvas = new SKCanvas(result))
+            int w = source.Width, h = source.Height;
+            var src = source.Pixels;
+            var dst = new SKColor[src.Length];
+            for (var i = 0; i < h; i++)
             {
-                canvas.Clear(SKColors.Transparent);
-                canvas.Scale(horizontal ? -1 : 1, vertical ? -1 : 1, source.Width / 2f, source.Height / 2f);
-                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default);
+                var si = vertical ? h - i - 1 : i;
+                for (var j = 0; j < w; j++)
+                {
+                    var sj = horizontal ? w - j - 1 : j;
+                    dst[w * i + j] = src[w * si + sj];
+                }
             }
+            var result = new SKBitmap(w, h, SKColorType.Bgra8888, SKAlphaType.Premul);
+            result.Pixels = dst;
             return Replace(source, result, dispose);
         }
 
-        /// <summary>中心を軸に右回転（度）。はみ出した部分は切り取り、空いた部分は background で塗る。</summary>
-        public static SKBitmap Rotate(SKBitmap source, float angle, SKColor background, bool dispose = true)
+        /// <summary>
+        /// Graphics.bas の Rotate。中心を軸に右に angle 度回す。はみ出した部分は切り取り、空いた部分は background で塗る。
+        /// 元の SRC と同じく、各画素について回転前の位置を三角関数で求め、CLng で丸めた画素を取る（補間しない）。
+        /// doSame が false のとき、90 度の倍数（90・270 度は正方形のときだけ）は画素の入れ替えで回す。
+        /// </summary>
+        public static SKBitmap Rotate(SKBitmap source, int angle, SKColor background, bool dispose = true, bool doSame = false)
         {
-            var result = new SKBitmap(source.Width, source.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            using (var canvas = new SKCanvas(result))
+            int w = source.Width, h = source.Height;
+            var src = source.Pixels;
+            var dst = new SKColor[src.Length];
+
+            // 360 度で一回転。負の場合は正の角度に
+            angle %= 360;
+            if (angle < 0)
             {
-                canvas.Clear(background);
-                canvas.RotateDegrees(angle % 360, source.Width / 2f, source.Height / 2f);
-                canvas.DrawBitmap(source, 0, 0, SKSamplingOptions.Default);
+                angle = 360 + angle;
             }
+
+            var done = false;
+            if (!doSame)
+            {
+                switch (angle)
+                {
+                    case 0:
+                        return dispose ? source : Copy(source);
+                    case 90:
+                        if (w == h)
+                        {
+                            for (var i = 0; i < h; i++)
+                            {
+                                for (var j = 0; j < w; j++)
+                                {
+                                    dst[w * i + j] = src[w * (w - j - 1) + i];
+                                }
+                            }
+                            done = true;
+                        }
+                        break;
+                    case 180:
+                        for (var i = 0; i < h; i++)
+                        {
+                            for (var j = 0; j < w; j++)
+                            {
+                                dst[w * i + j] = src[w * (h - i - 1) + w - j - 1];
+                            }
+                        }
+                        done = true;
+                        break;
+                    case 270:
+                        if (w == h)
+                        {
+                            for (var i = 0; i < h; i++)
+                            {
+                                for (var j = 0; j < w; j++)
+                                {
+                                    dst[w * i + j] = src[w * j + h - i - 1];
+                                }
+                            }
+                            done = true;
+                        }
+                        break;
+                }
+            }
+
+            if (!done)
+            {
+                // 座標の計算は画像の中心を座標原点にして行う
+                var xbase = (w - 1) / 2d;
+                var ybase = (h - 1) / 2d;
+                // 回転によるベクトル（元の SRC の円周率は 3.14159265）
+                var rad = (double)(90 - angle) * 3.14159265 / 180;
+                var dsin = Math.Sin(rad);
+                var dcos = Math.Cos(rad);
+                for (var i = 0; i < h; i++)
+                {
+                    var yoffset = i - ybase;
+                    var xsrc0 = xbase + yoffset * dcos;
+                    var ysrc0 = ybase + yoffset * dsin;
+                    for (var j = 0; j < w; j++)
+                    {
+                        var xoffset = j - xbase;
+                        var xsrc = VBMath.CLng(xsrc0 + xoffset * dsin);
+                        var ysrc = VBMath.CLng(ysrc0 - xoffset * dcos);
+                        dst[w * i + j] = xsrc < 0 || w <= xsrc || ysrc < 0 || h <= ysrc
+                            ? background
+                            : src[w * ysrc + xsrc];
+                    }
+                }
+            }
+
+            var result = new SKBitmap(w, h, SKColorType.Bgra8888, SKAlphaType.Premul);
+            result.Pixels = dst;
             return Replace(source, result, dispose);
         }
+
 
         /// <summary>透明・半透明の画素を持つか（PNG などのアルファチャネル）。</summary>
         public static bool HasTransparency(SKBitmap source)

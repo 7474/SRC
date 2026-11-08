@@ -51,7 +51,7 @@ namespace SRCRender
             }
 
             var bgColor = Color.White;
-            float transPar = -1;
+            double transPar = -1;
             bool permanent = false, transparent = false;
             int brightCount = 0, darkCount = 0;
             bool isMonotone = false, isSepia = false, isSunset = false, isWater = false, isColorFilter = false;
@@ -117,7 +117,7 @@ namespace SRCRender
                     default:
                         if (Strings.Right(opt, 1) == "%" && Information.IsNumeric(Strings.Left(opt, Strings.Len(opt) - 1)))
                         {
-                            transPar = (float)Math.Max(0d, Math.Min(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
+                            transPar = Math.Max(0d, Math.Min(1d, Conversions.ToDouble(Strings.Left(opt, Strings.Len(opt) - 1)) / 100d));
                         }
                         else if (isColorFilter)
                         {
@@ -162,10 +162,14 @@ namespace SRCRender
                 angle = 0;
             }
 
-            // 部分表示（指定外の部分を背景色で塗りつぶす）。元の SRC と同じく、塗りつぶしてから透過色を抜く
+            // 元の SRC と同じく、部分表示の塗りつぶし・効果・反転・回転のあとで透過色を抜く（MakeMask）。
+            // 加工しないで白を抜くだけなら、透過色を抜いた画像のキャッシュを使う
             var partial = topPart || bottomPart || leftPart || rightPart || tleftPart || trightPart || bleftPart || brightPart;
+            var edited = partial || isMonotone || isSepia || isSunset || isWater || isSil || negpos || isColorFilter
+                || brightCount > 0 || darkCount > 0 || hrev || vrev || angle != 0;
             var whiteTransparent = transparent && bgColor.ToArgb() == Color.White.ToArgb();
-            var image = LoadPicture(fname, target, whiteTransparent && !partial);
+            var useCachedTransparent = whiteTransparent && !edited;
+            var image = LoadPicture(fname, target, useCachedTransparent);
             if (image == null)
             {
                 return false;
@@ -223,31 +227,39 @@ namespace SRCRender
                     }
                 }
 
-                // 透過色（#rrggbb で指定した色。指定が無ければ白）を抜く
-                if (transparent && !(whiteTransparent && !partial))
+                // 効果。元の SRC は透過するとき、その時点で背景色（透過色）と同じ画素を変えない（シルエットは除く）
+                var bg = ToSKColor(bgColor);
+                SKBitmap Effect(SKBitmap b, Func<SKBitmap, SKBitmap> filter)
                 {
-                    var t = ImageFilters.MakeTransparent(drawBuffer, ToSKColor(bgColor));
-                    drawBuffer.Dispose();
-                    drawBuffer = t;
+                    return transparent ? ApplySkippingColor(b, bg, filter) : filter(b);
                 }
-
-                if (isMonotone) drawBuffer = ImageFilters.ApplyMonotone(drawBuffer);
-                if (isSepia) drawBuffer = ImageFilters.ApplySepia(drawBuffer);
-                if (isSunset) drawBuffer = ImageFilters.ApplySunset(drawBuffer);
-                if (isWater) drawBuffer = ImageFilters.ApplyWater(drawBuffer);
-                if (isSil) drawBuffer = ImageFilters.ApplySilhouette(drawBuffer);
-                if (negpos) drawBuffer = ImageFilters.ApplyNegPos(drawBuffer);
+                if (isMonotone) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyMonotone(b));
+                if (isSepia) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplySepia(b));
+                if (isSunset) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplySunset(b));
+                if (isWater) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyWater(b));
+                if (isSil) drawBuffer = ImageFilters.ApplySilhouette(drawBuffer, background: bg);
+                if (negpos) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyNegPos(b));
                 if (isColorFilter)
                 {
-                    drawBuffer = ImageFilters.ApplyColorFilter(drawBuffer, fcolor, transPar < 0f ? 0.5f : transPar);
+                    drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyColorFilter(b, fcolor, transPar < 0d ? 0.5 : transPar, transparent: transparent, background: bg));
                 }
-                for (var i = 0; i < brightCount; i++) drawBuffer = ImageFilters.ApplyBright(drawBuffer);
-                for (var i = 0; i < darkCount; i++) drawBuffer = ImageFilters.ApplyDark(drawBuffer);
+                for (var i = 0; i < brightCount; i++) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyBright(b, transparent: transparent));
+                for (var i = 0; i < darkCount; i++) drawBuffer = Effect(drawBuffer, b => ImageFilters.ApplyDark(b));
                 if (hrev || vrev) drawBuffer = ImageFilters.Flip(drawBuffer, hrev, vrev);
                 if (angle != 0)
                 {
-                    // 元の SRC と同じく、空いた部分は背景色（白、または #rrggbb で指定した色）で塗る。透過するなら抜く
-                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, transparent ? SKColors.Transparent : ToSKColor(bgColor));
+                    // 元の SRC と同じく、空いた部分は背景色（白、または #rrggbb で指定した色）で塗る。透過するなら下で抜く
+                    // （アルファで透過する画像は色で抜かないので、透明にする）
+                    var hasAlpha = transparent && ImageFilters.HasTransparency(drawBuffer);
+                    drawBuffer = ImageFilters.Rotate(drawBuffer, angle, hasAlpha ? SKColors.Transparent : bg);
+                }
+
+                // 透過色（#rrggbb で指定した色。指定が無ければ白）を抜く（元の SRC の MakeMask。効果で背景色になった画素も抜ける）
+                if (transparent && !useCachedTransparent)
+                {
+                    var t = ImageFilters.MakeTransparent(drawBuffer, bg);
+                    drawBuffer.Dispose();
+                    drawBuffer = t;
                 }
 
                 if (dw == Constants.DEFAULT_LEVEL) dw = origWidth;
@@ -326,6 +338,38 @@ namespace SRCRender
             {
                 drawBuffer.Dispose();
             }
+        }
+
+        /// <summary>
+        /// color と同じ色の画素を変えずに効果を掛ける（元の SRC の Monotone などの is_transparent）。
+        /// その画素をいったん透明にして効果を掛け（透明な画素は変わらない）、元の色に戻す。b は破棄する
+        /// </summary>
+        private static SKBitmap ApplySkippingColor(SKBitmap b, SKColor color, Func<SKBitmap, SKBitmap> filter)
+        {
+            var pixels = b.Pixels;
+            var skipped = new List<int>();
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                var c = pixels[i];
+                if (c.Alpha == 255 && c.Red == color.Red && c.Green == color.Green && c.Blue == color.Blue)
+                {
+                    skipped.Add(i);
+                    pixels[i] = SKColors.Transparent;
+                }
+            }
+            if (skipped.Count == 0)
+            {
+                return filter(b);
+            }
+            b.Pixels = pixels;
+            var result = filter(b);
+            var resultPixels = result.Pixels;
+            foreach (var i in skipped)
+            {
+                resultPixels[i] = color.WithAlpha(255);
+            }
+            result.Pixels = resultPixels;
+            return result;
         }
 
         /// <summary>VB の Line (x1, y1)-(x2, y2), , BF と同じく、2 つの角を含む長方形を塗る</summary>

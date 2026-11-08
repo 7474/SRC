@@ -23,13 +23,22 @@ namespace SRCRender.Tests
         }
 
         /// <summary>単色の画像を書く</summary>
-        private static void WriteSolidImage(ScenarioWorkspace workspace, string name, int width, int height, SKColor color)
+        private static void WriteSolidImage(ScenarioWorkspace workspace, string name, int width, int height, SKColor color, SKColor? square = null)
         {
             var path = Path.Combine(workspace.AppPath, "Bitmap", "Event", name);
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             using (var bitmap = new SKBitmap(width, height))
             {
                 bitmap.Erase(color);
+                if (square != null)
+                {
+                    // 中央に 16x16 の四角
+                    using (var canvas = new SKCanvas(bitmap))
+                    using (var paint = new SKPaint { Color = square.Value, IsAntialias = false })
+                    {
+                        canvas.DrawRect(width / 2 - 8, height / 2 - 8, 16, 16, paint);
+                    }
+                }
                 using (var image = SKImage.FromBitmap(bitmap))
                 using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
                 using (var stream = File.Create(path))
@@ -131,6 +140,42 @@ namespace SRCRender.Tests
         /// <summary>
         /// black.bmp・white.bmp は塗りつぶすだけで、透過・効果のオプションを使わない（GUI.bas の DrawPicture は DrewPicture へ飛ぶ）。
         /// </summary>
+        /// <summary>
+        /// 透過色は効果を掛けたあとで抜く（GUI.bas の DrawPicture は効果のあとで MakeMask する）。
+        /// 効果で背景色になった画素も抜け、シルエットで白にした背景（背景色が白でないとき）は残る。
+        /// </summary>
+        [TestMethod]
+        public void DrawPicture_TransparentAfterEffects()
+        {
+            Play(new[]
+            {
+                // 白地に黒の四角: ネガポジ反転で黒が白になって抜ける。白地は変えずに抜ける
+                "PaintPicture black.png 0 0 透過 ネガポジ反転",
+                // 青地に赤の四角: シルエットで青地は白、赤は黒になり、青が無いので何も抜けない
+                "PaintPicture blue.png 100 0 透過 #0000FF シルエット",
+                "Refresh",
+                "Wait Click",
+            }, workspace =>
+            {
+                WriteSolidImage(workspace, "black.png", 32, 32, SKColors.White, SKColors.Black);
+                WriteSolidImage(workspace, "blue.png", 32, 32, SKColors.Blue, SKColors.Red);
+            }, runner =>
+            {
+                using (var bitmap = WaitClick(runner))
+                {
+                    bool IsTerrain(int x, int y)
+                    {
+                        var c = bitmap.GetPixel(x, y);
+                        return c != SKColors.White && c != SKColors.Black;
+                    }
+                    Assert.IsTrue(IsTerrain(16, 16), "効果で白になった画素も抜ける");
+                    Assert.IsTrue(IsTerrain(2, 2), "白地は抜ける");
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(100 + 2, 2));
+                    Assert.AreEqual(SKColors.Black, bitmap.GetPixel(100 + 16, 16));
+                }
+            });
+        }
+
         [TestMethod]
         public void DrawPicture_WhiteBmpIgnoresOptions()
         {
