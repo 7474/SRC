@@ -418,7 +418,7 @@ namespace SRCRender
                 // ユニットステータスを表示しているユニットを入れ替え
                 var su = Commands.SelectedUnit;
                 var st = Commands.SelectedTarget;
-                if (DisplayedUnit != null && su != null && st != null)
+                if (MainFormVisible && DisplayedUnit != null && su != null && st != null)
                 {
                     DisplayUnitStatus((DisplayedUnit.ID ?? "") == (su.ID ?? "") ? st : su);
                 }
@@ -433,8 +433,26 @@ namespace SRCRender
                 return;
             }
             var client = w.ToClient(x, y);
-            var index = w.lstItems.IndexFromPoint(client.X - w.lstItems.Left, client.Y - w.lstItems.Top);
-            if (index < 0 || index == w.lstItems.SelectedIndex)
+            var lstItems = w.lstItems;
+            var lx = client.X - lstItems.Left;
+            var ly = client.Y - lstItems.Top;
+            var index = lstItems.IndexFromPoint(lx, ly);
+            if (index < 0)
+            {
+                // 項目の無いところ（最後の項目より下）では、どの項目もハイライトしない
+                // （ListBox.frm・MultiColumListBox.frm・MultiSelectListBox.frm の lstItems_MouseMove）。
+                // VB の MouseMove はスクロールバーの上では起きないので、スクロールバーの上では変えない
+                var onScrollBar = lstItems.HasScrollBar && (lstItems.MultiColumn
+                    ? ly >= lstItems.Height - ListBoxControl.ScrollBarWidth
+                    : lx >= lstItems.Width - ListBoxControl.ScrollBarWidth);
+                if (Form.HitTest(lstItems, client) && !onScrollBar && lstItems.SelectedIndex >= 0)
+                {
+                    lstItems.SelectedIndex = -1;
+                    Present();
+                }
+                return;
+            }
+            if (index == w.lstItems.SelectedIndex)
             {
                 return;
             }

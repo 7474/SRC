@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Maps;
+using SRCCore.VB;
 using SRCSharpForm.Lib;
 using System;
 using System.Collections.Generic;
@@ -73,8 +74,6 @@ namespace SRCSharpForm
         private double LastMouseY;
         private int LastMapX;
         private int LastMapY;
-        private PointF lastDraggPoint;
-        private const float draggMoveThresholdRate = 0.5f;
 
         // ポップアップメニュー選択が右クリックだったか？
         private bool IsRightClick;
@@ -143,16 +142,17 @@ namespace SRCSharpForm
                         }
                         break;
 
+                    // 元の SRC と同じく、マウスカーソルの位置での右クリック・左クリックとみなす（picMain_MouseDown 0, 2 / 0, 1）
                     case Keys.Escape:
                     case Keys.Delete:
                     case Keys.Back:
-                        // XXX 元はマウスダウンでキャンセル相当の動作をさせていたかも
-                        SimpleClick();
+                        GUI.MouseButton = GuiButton.Right;
+                        ProceedMapInput(GuiButton.Right, (int)GUI.MouseX, (int)GUI.MouseY);
                         break;
 
                     default:
-                        SimpleClick();
-                        // XXX 元はマウスダウンでキャンセル相当の動作をさせていたかも
+                        GUI.MouseButton = GuiButton.Left;
+                        ProceedMapInput(GuiButton.Left, (int)GUI.MouseX, (int)GUI.MouseY);
                         break;
                 }
             }
@@ -303,6 +303,12 @@ namespace SRCSharpForm
                 return;
             }
 
+            ProceedMapInput(button, X, Y);
+        }
+
+        // マップ画面の (X, Y) でのクリックを処理する（picMain_MouseDown の CommandState ごとの分岐）
+        private void ProceedMapInput(GuiButton button, int X, int Y)
+        {
             var xx = GUI.PixelToMapX(X);
             var yy = GUI.PixelToMapY(Y);
             FormGUI.RunOnCore(() =>
@@ -379,8 +385,6 @@ namespace SRCSharpForm
                 GUI.PrevMouseX = X;
                 GUI.PrevMouseY = Y;
                 IsDragging = true;
-                lastDraggPoint.X = X;
-                lastDraggPoint.Y = Y;
             }
         }
 
@@ -438,18 +442,19 @@ namespace SRCSharpForm
                         Status.InstantUnitStatusDisplay(xx, yy);
                     }
                 }
+                else
+                {
+                    // マップ外にカーソルがある場合
+                    Status.DisplayGlobalStatus();
+                }
             });
 
             // マップをドラッグ中？
             if (IsDragging && ResolveMouseButton(eventArgs) == GuiButton.Left)
             {
-                // 移動量が少なければ無視する
-                if (Math.Abs(lastDraggPoint.X - X) + Math.Abs(lastDraggPoint.Y - Y) > MapCellPx * draggMoveThresholdRate)
                 {
-                    lastDraggPoint.X = X;
-                    lastDraggPoint.Y = Y;
-                    // Ｘ軸の移動量を算出
-                    GUI.MapX = (int)(GUI.PrevMapX - (X - GUI.PrevMouseX) / MapCellPx);
+                    // Ｘ軸の移動量を算出（VB の \ と同じく、割る前に整数に丸めて商を 0 の側へ切り捨てる）
+                    GUI.MapX = (int)(GUI.PrevMapX - VBMath.IntDiv(X - GUI.PrevMouseX, MapCellPx));
                     if (GUI.MapX < 1)
                     {
                         GUI.MapX = 1;
@@ -460,7 +465,7 @@ namespace SRCSharpForm
                     }
 
                     // Ｙ軸の移動量を算出
-                    GUI.MapY = (int)(GUI.PrevMapY - (Y - GUI.PrevMouseY) / 32L);
+                    GUI.MapY = (int)(GUI.PrevMapY - VBMath.IntDiv(Y - GUI.PrevMouseY, MapCellPx));
                     if (GUI.MapY < 1)
                     {
                         GUI.MapY = 1;
@@ -484,7 +489,7 @@ namespace SRCSharpForm
                         }
                     }
 
-                    // XXX LastXXX保存しないような気がする
+                    // VB も LastMapX・LastMapY を更新しない（いつも 0）ので、ドラッグ中は動かすたびに書き換える
                     // マップ画面を新しい座標で更新
                     if (!(GUI.MapX == LastMapX) || !(GUI.MapY == LastMapY))
                     {
