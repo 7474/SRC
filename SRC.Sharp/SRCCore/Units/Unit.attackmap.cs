@@ -1128,22 +1128,12 @@ namespace SRCCore.Units
             // アイテムを消費
             else if (w.WeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
             {
-                // アイテムを削除
-                // 元の SRC は武器の番号を数えて、その武器を持つアイテムを探す。
-                // ユニット・パイロットの武器の数え方に、2 人目からしかサポートを数えず、
-                // 装備していないアイテムの武器も数える誤りがあるため、ここでは武器の一覧の作り方（Update）に合わせて数える
-                var wno = w.WeaponNo();
-                var activeItems = ItemList.Where(itm => itm.Activated).ToList();
-                var num = Weapons.Count - activeItems.Sum(itm => itm.Data.Weapons.Count);
-                foreach (var itm in activeItems)
+                // アイテムを削除（元の SRC と同じく、武器の番号が入るアイテムを消す）
+                var itm = ItemOfWeapon(w);
+                if (itm != null)
                 {
-                    num = num + itm.Data.Weapons.Count;
-                    if (wno > 0 && wno <= num)
-                    {
-                        itm.Exist = false;
-                        DeleteItem(itm);
-                        break;
-                    }
+                    itm.Exist = false;
+                    DeleteItem(itm);
                 }
             }
 

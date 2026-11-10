@@ -2697,8 +2697,8 @@ namespace SRCCore.Units
                 // アイテムを消費
                 else if (w.WeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
                 {
-                    // アイテムを削除
-                    var itm = ItemList.FirstOrDefault(itm => itm.Data.Weapons.Any(x => x.Name == w.WeaponData.Name));
+                    // アイテムを削除（元の SRC と同じく、武器の番号が入るアイテムを消す）
+                    var itm = ItemOfWeapon(w);
                     if (itm != null)
                     {
                         itm.Exist = false;

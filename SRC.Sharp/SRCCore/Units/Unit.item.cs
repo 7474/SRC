@@ -565,6 +565,43 @@ namespace SRCCore.Units
             }
         }
 
+        // 使い切った武器・アビリティを付加したアイテム（7474/SRC#1508）。
+        // 元の SRC（Attack・MapAttack・ExecuteAbility・ExecuteMapAbility の「アイテムを消費」）は
+        // 武器・アビリティの番号を数えて、その番号が入るアイテムを消す（同名の武器・アビリティを持つ最初のアイテムではない）。
+        // VB の数え方には、2 人目からしかサポートを数えず、装備していないアイテムの武器・アビリティも数える誤りがあるため、
+        // ここでは武器・アビリティの一覧の作り方（Update）に合わせて数える
+        public Item ItemOfWeapon(UnitWeapon w)
+        {
+            var activeItems = ItemList.Where(itm => itm.Activated).ToList();
+            return ItemOfIndex(w.WeaponNo(), Weapons.Count, activeItems, activeItems.Select(itm => itm.Data.Weapons.Count));
+        }
+
+        public Item ItemOfAbility(UnitAbility a)
+        {
+            var activeItems = ItemList.Where(itm => itm.Activated).ToList();
+            return ItemOfIndex(a.AbilityNo(), Abilities.Count, activeItems, activeItems.Select(itm => itm.Data.Abilities.Count));
+        }
+
+        private static Item ItemOfIndex(int no, int total, IList<Item> activeItems, IEnumerable<int> counts)
+        {
+            var countList = counts.ToList();
+            // VB と同じく、ユニット・パイロットの武器・アビリティの番号でも最初のアイテムに当たる
+            var num = total - countList.Sum();
+            if (no <= 0)
+            {
+                return null;
+            }
+            for (var i = 0; i < activeItems.Count; i++)
+            {
+                num += countList[i];
+                if (no <= num)
+                {
+                    return activeItems[i];
+                }
+            }
+            return null;
+        }
+
         // 装備個所ごとのハードポイントのサイズ
         private Dictionary<string, int> HardPointSizes(bool includeItemParts)
         {
