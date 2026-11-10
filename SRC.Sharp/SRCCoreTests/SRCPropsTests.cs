@@ -82,10 +82,11 @@ namespace SRCCore.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Stage_DefaultIsNull()
+        public void Stage_DefaultIsEmpty()
         {
+            // VB の String の初期値は ""
             var src = CreateSrc();
-            Assert.IsNull(src.Stage);
+            Assert.AreEqual("", src.Stage);
         }
 
         [TestMethod]

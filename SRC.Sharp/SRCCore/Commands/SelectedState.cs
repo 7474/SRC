@@ -8,21 +8,22 @@ namespace SRCCore.Commands
     public class SelectedState
     {
         // Command
+        // VB の String の変数の初期値は空文字列なので、文字列は "" で始める
         public Unit SelectedUnit; // ユニット
-        public string SelectedCommand; // コマンド
+        public string SelectedCommand = ""; // コマンド
         public Unit SelectedTarget; // ターゲット
         public int SelectedX; // Ｘ座標
         public int SelectedY; // Ｙ座標
         public int SelectedWeapon; // 武器
-        public string SelectedWeaponName;
+        public string SelectedWeaponName = "";
         public int SelectedTWeapon; // 反撃武器
-        public string SelectedTWeaponName;
-        public string SelectedDefenseOption; // 防御方法
+        public string SelectedTWeaponName = "";
+        public string SelectedDefenseOption = ""; // 防御方法
         public int SelectedAbility; // アビリティ
-        public string SelectedAbilityName;
+        public string SelectedAbilityName = "";
         public Pilot SelectedPilot; // パイロット
         public int SelectedItem; // リストボックス中のアイテム
-        public string SelectedSpecialPower; // スペシャルパワー
+        public string SelectedSpecialPower = ""; // スペシャルパワー
         public IList<Unit> SelectedPartners; // 合体技のパートナー
         public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
         // Event

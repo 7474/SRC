@@ -37,10 +37,11 @@ namespace SRCCore.Commands.Tests
         }
 
         [TestMethod]
-        public void Constructor_SelectedCommand_IsNull()
+        public void Constructor_SelectedCommand_IsEmpty()
         {
+            // VB の String の初期値は ""
             var state = new SelectedState();
-            Assert.IsNull(state.SelectedCommand);
+            Assert.AreEqual("", state.SelectedCommand);
         }
 
         [TestMethod]
