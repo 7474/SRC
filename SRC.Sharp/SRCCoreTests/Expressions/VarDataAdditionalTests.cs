@@ -41,7 +41,8 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData();
             v.SetValue("x", ValueType.NumericType, "", 999999d);
             Assert.AreEqual(999999d, v.NumericValue);
-            Assert.AreEqual("999999", v.StringValue);
+            // VB と同じく、渡した文字列値をそのまま持つ
+            Assert.AreEqual("", v.StringValue);
         }
 
         [TestMethod]
@@ -50,7 +51,7 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData();
             v.SetValue("x", ValueType.NumericType, "", -100d);
             Assert.AreEqual(-100d, v.NumericValue);
-            Assert.AreEqual("-100", v.StringValue);
+            Assert.AreEqual("", v.StringValue);
         }
 
         [TestMethod]
@@ -63,11 +64,12 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void SetValue_StringType_NumericString_ParsesNumber()
+        public void SetValue_StringType_NumericString_KeepsPassedNumericValue()
         {
             var v = new VarData();
             v.SetValue("val", ValueType.StringType, "3.14", 0d);
-            Assert.AreEqual(3.14d, v.NumericValue, 1e-10);
+            // VB と同じく、文字列から数値を作らない
+            Assert.AreEqual(0d, v.NumericValue);
             Assert.AreEqual("3.14", v.StringValue);
         }
 

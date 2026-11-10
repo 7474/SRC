@@ -82,14 +82,14 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void SetValue_StringType_DerivesNumericValue()
+        public void SetValue_StringType_KeepsPassedNumericValue()
         {
             var v = new VarData();
             v.SetValue("x", ValueType.StringType, "3.14", 0d);
             Assert.AreEqual(ValueType.StringType, v.VariableType);
             Assert.AreEqual("3.14", v.StringValue);
-            // StringType では NumericValue は文字列から変換される
-            Assert.AreEqual(3.14, v.NumericValue, 1e-9);
+            // VB と同じく、文字列から数値を作らない
+            Assert.AreEqual(0d, v.NumericValue);
         }
 
         [TestMethod]
