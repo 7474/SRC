@@ -193,6 +193,29 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void CanFix_MultipleNegatedRepairBlocks_RejectsEveryFixer()
+        {
+            // VB（StartFixCommand・TryFix）は先頭から順に見て、「!名称」が修理装置の名称と違えば修理できない。
+            // 「!」を 2 つ書くと、どちらの修理装置も片方の「!」に当たって修理できない
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            ud.AddFeature("修理不可=修理不可 !修理装置 !応急修理");
+            var unit = CreateUnit(src, ud);
+            var fixerData = AddUnitData(src, "修理機");
+            fixerData.AddFeature("修理装置");
+            var fixer = src.UList.Add("修理機", 0, "味方");
+            fixer.Update();
+            var otherData = AddUnitData(src, "応急修理機");
+            otherData.AddFeature("修理装置=応急修理");
+            var other = src.UList.Add("応急修理機", 0, "味方");
+            other.Update();
+            unit.HP = 500;
+
+            Assert.IsFalse(unit.CanFix(fixer));
+            Assert.IsFalse(unit.CanFix(other));
+        }
+
+        [TestMethod]
         public void CanFix_FullHP_IsFalse()
         {
             var src = CreateSrc();

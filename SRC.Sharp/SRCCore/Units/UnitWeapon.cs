@@ -55,7 +55,7 @@ namespace SRCCore.Units
         }
 
         // 簡易的に最強武器かを判断する
-        // XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？
+        // 元の SRC（COM の TryMapAttack の w = .CountWeapon）と同じく最後の武器とする（アイテムの武器が最後にあればそれになる）
         public bool IsLastWeapon()
         {
             return WeaponNo() == Unit.Weapons.Count;

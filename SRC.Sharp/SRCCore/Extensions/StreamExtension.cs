@@ -39,8 +39,8 @@ namespace SRCCore.Extensions
                     var converting = stream.ToMemoryStream().ToUTF8Async();
                     return converting.IsCompleted ? converting.Result : Task.Run(() => converting).Result;
                 }
-                // XXX あまりいい同期化ではないはず
-                // Streamには同期メソッドがあるはずなので、同期処理したいなら同期メソッドを一貫して使うメソッドにするのがよさそう
+                // データの読み込みは同期で行うので、文字コードの変換（非同期）が終わるのを待つ。
+                // スレッドプールで待つので、同期コンテキストのある画面のスレッドから呼んでもデッドロックしない
                 return Task.Run(() => stream.ToUTF8Async()).Result;
             }
             else

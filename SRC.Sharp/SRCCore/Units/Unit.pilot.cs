@@ -332,7 +332,9 @@ namespace SRCCore.Units
         /// <summary>
         /// 全てのパイロット
         /// MainPilotを解決、追加サポート含む
-        /// TODO 使用している個所でもともと追加サポートを処理していたか精査
+        /// （元の SRC の MainPilot・Pilot(2 To CountPilot)・Support(1 To CountSupport)・追加サポートの AdditionalSupport の順。
+        /// 使っている処理（スペシャルパワー・アビリティのＳＰ回復、「本当に乗っている？」の判定、メッセージのパイロット名、
+        /// パイロットの武器・アビリティ）は、元の SRC でも追加サポートを含む）
         /// </summary>
         public IEnumerable<Pilot> AllPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())

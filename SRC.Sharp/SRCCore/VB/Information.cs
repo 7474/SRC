@@ -20,7 +20,7 @@ namespace SRCCore.VB
                 {
                     return true;
                 }
-                // XXX
+                // XXX VB の IsNumeric は &H・&O・括弧（(1)）・通貨記号も数値とみなすが、ここでは読まない。decimal.TryParse は実行する環境の言語の書式で読む
                 return false;
             }
             catch
