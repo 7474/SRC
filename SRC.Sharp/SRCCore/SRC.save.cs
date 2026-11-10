@@ -42,7 +42,10 @@ namespace SRCCore
         public string ScenarioFileName { get; set; }
         public int Turn { get; set; }
         public SrcCollection<VarData> LocalVariableList { get; set; }
+        // 古いセーブ（EventLabelEnabled を持たないもの）と以前の版の SRC# のために書く。読むのは EventLabelEnabled が無いときだけ
         public IList<string> DisableEventLabels { get; set; }
+        // イベントラベルの有効・無効を colEventLabelList の順に持つ（VB: DumpEventData の lab.Enable、#1529）
+        public IList<bool> EventLabelEnabled { get; set; }
         public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
         public int MapX { get; set; }
@@ -170,6 +173,7 @@ namespace SRCCore
             {
                 DumpData(stream, saveKind);
             }
+            IsLastSaveDataQuikSaveStream = false;
         }
 
         // 一時中断用データをファイルにセーブする
@@ -195,6 +199,7 @@ namespace SRCCore
                     Turn = Turn,
                     LocalVariableList = Event.LocalVariableList,
                     DisableEventLabels = Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data).Distinct().ToList(),
+                    EventLabelEnabled = Event.colEventLabelList.List.Select(x => x.Enable).ToList(),
                     AdditionalEventFileNames = Event.AdditionalEventFileNames.ToList(),
                     Map = Map,
                     MapX = GUI.MapX,
@@ -219,6 +224,8 @@ namespace SRCCore
                 else if (saveKind == SRCSaveKind.Quik)
                 {
                     IsQuickSaveDataAvailable = true;
+                    // クイックセーブのストリームに書いた（読んだ）。ファイルに書く（読む）ときは呼び出し元で倒す（#1530）
+                    IsLastSaveDataQuikSaveStream = true;
                 }
             }
             catch (Exception ex)
@@ -281,6 +288,7 @@ namespace SRCCore
             {
                 RestoreData(stream, saveKind);
             }
+            IsLastSaveDataQuikSaveStream = false;
         }
         // 一時中断用データをロード
         public void RestoreData(Stream stream, SRCSaveKind saveKind)
@@ -480,6 +488,8 @@ namespace SRCCore
                 else if (saveKind == SRCSaveKind.Quik)
                 {
                     IsQuickSaveDataAvailable = true;
+                    // クイックセーブのストリームに書いた（読んだ）。ファイルに書く（読む）ときは呼び出し元で倒す（#1530）
+                    IsLastSaveDataQuikSaveStream = true;
                 }
             }
             catch (Exception ex)

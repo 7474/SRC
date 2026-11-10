@@ -2169,8 +2169,8 @@ namespace SRCCore.Units
             // アイテムを消費
             else if (a.Data.IsItem() && a.Stock() == 0 && a.MaxStock() > 0)
             {
-                // アイテムを削除
-                var itm = ItemList.FirstOrDefault(itm => itm.Abilities.Any(x => x.Name == a.Data.Name));
+                // アイテムを削除（元の SRC と同じく、アビリティの番号が入るアイテムを消す）
+                var itm = ItemOfAbility(a);
                 if (itm != null)
                 {
                     itm.Exist = false;
@@ -3020,8 +3020,8 @@ namespace SRCCore.Units
             // アイテムを消費
             else if (a.Data.IsItem() && a.Stock() == 0 && a.MaxStock() > 0)
             {
-                // アイテムを削除
-                var itm = ItemList.FirstOrDefault(itm => itm.Abilities.Any(x => x.Name == a.Data.Name));
+                // アイテムを削除（元の SRC と同じく、アビリティの番号が入るアイテムを消す）
+                var itm = ItemOfAbility(a);
                 if (itm != null)
                 {
                     itm.Exist = false;

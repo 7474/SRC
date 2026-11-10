@@ -270,8 +270,19 @@ namespace SRCCore.CmdDatas.Commands
                                     || (Strings.Left(aname, 1) == "`" && Strings.Right(aname, 1) == "`")
                                     || (Strings.InStr(Strings.LCase(aname), "list(") == 1 && Strings.Right(aname, 1) == ")")))
                             {
+                                // VB: ReDim ForEachSet(ListLength(buf))、ForEachSet(i) = ListIndex(buf, i)。
+                                // 括弧・クォートの対応が取れていない（ListLength が -1）と ReDim ForEachSet(-1) が実行時エラーになり、
+                                // Exec の ErrorHandler が「イベントデータが不正です」を出してイベントを止める
                                 var buf = Expression.GetValueAsString(aname);
-                                Event.ForEachSet = GeneralLib.ToList(buf);
+                                var num = GeneralLib.ListLength(buf);
+                                if (num < 0)
+                                {
+                                    throw new EventErrorException(this, "イベントデータが不正です");
+                                }
+                                for (var i = 1; i <= num; i++)
+                                {
+                                    Event.ForEachSet.Add(GeneralLib.ListIndex(buf, i));
+                                }
                             }
                         }
 

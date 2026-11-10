@@ -1741,7 +1741,9 @@ namespace SRCCore.Units
                         clevel = 0;
                     }
 
-                    clist = GeneralLib.ToList(fd.Data).Skip(1).ToList();
+                    // VB: clist = ListTail(FeatureData(i), 2)、cnum = LLength(clist)、uname = LIndex(clist, i)。
+                    // 先頭の合体技名は括弧・クォートを考えて読み飛ばし、パートナーは空白だけで分ける
+                    clist = GeneralLib.ToL(GeneralLib.ListTail(fd.Data, 2));
                     cnum = clist.Count;
                     break;
                 }

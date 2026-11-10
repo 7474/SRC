@@ -57,10 +57,11 @@ namespace SRCCore
 
             // ＢＧＭを変更
             // 元の SRC は ChangeBGM を使わず、インターミッションのＢＧＭでなければ止めてから演奏し直す
-            // （番号違いのＢＧＭも別の曲とみなす）。パスの区切りは / でも \ とみなす
+            // （番号違いのＢＧＭも別の曲とみなす）。VB: InStr(BGMFileName, "\" & BGMName("Intermission")) = 0。
+            // StartBGM・ChangeBGM（本体部分 & "." で比べる）と違い、拡張子まで含めた名前で比べる
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
-            if (Strings.InStr((Sound.BGMFileName ?? "").Replace('/', '\\'), @"\" + Sound.BGMName("Intermission")) == 0)
+            if (!Sound.BGMFileNameContains(Sound.BGMName("Intermission")))
             {
                 Sound.StopBGM();
                 Sound.StartBGM(Sound.BGMName("Intermission"));

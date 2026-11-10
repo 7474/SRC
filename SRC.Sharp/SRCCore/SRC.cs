@@ -119,6 +119,10 @@ namespace SRCCore
 
         // 最新のセーブデータのファイル名
         public string LastSaveDataFileName = "";
+        // 最新のセーブデータがクイックセーブのストリーム（GUI.OpenQuikSaveStream）かどうか。
+        // 元の SRC はクイックセーブもファイル（_クイックセーブ.src）なので LastSaveDataFileName で足りるが、
+        // SRC# のクイックセーブは保存先を GUI が決め、ファイル名を知らないので、こちらで覚える（#1530）
+        public bool IsLastSaveDataQuikSaveStream;
         // リスタート用セーブデータが利用可能かどうか
         public bool IsRestartSaveDataAvailable;
         // クイックロード用セーブデータが利用可能かどうか

@@ -47,9 +47,25 @@ namespace SRCCore.Events
             }
 
             // イベント用ラベルを設定
-            foreach (var lab in colEventLabelList.List)
+            // VB: RestoreEventData は保存した有効・無効を colEventLabelList の順に戻し、
+            // 保存したものより多いラベルは有効にする（#1529）
+            if (data.EventLabelEnabled != null)
             {
-                lab.Enable = !data.DisableEventLabels.Contains(lab.Data);
+                var i = 0;
+                foreach (var lab in colEventLabelList.List)
+                {
+                    lab.Enable = i < data.EventLabelEnabled.Count ? data.EventLabelEnabled[i] : true;
+                    i++;
+                }
+            }
+            else
+            {
+                // 古いセーブ（DisableEventLabels だけのもの）は、ラベルの文字列で戻す
+                var disabled = data.DisableEventLabels ?? new List<string>();
+                foreach (var lab in colEventLabelList.List)
+                {
+                    lab.Enable = !disabled.Contains(lab.Data);
+                }
             }
         }
     }

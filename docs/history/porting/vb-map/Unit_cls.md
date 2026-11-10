@@ -144,7 +144,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function Effective | 8582 | 37 | `SRCCore/Units/Unit.attribute.cs` Unit.Effective | 修正済み | Absorb と同じ |
 | Function SpecialEffectImmune | 8621 | 26 | `SRCCore/Units/Unit.attribute.cs` Unit.SpecialEffectImmune | 一致 |  |
 | Function IsAttributeClassified | 8650 | 65 | `SRCCore/Units/Unit.attribute.cs` Unit.IsAttributeClassified | 修正済み | Exit Do が switch の break でループを抜けていなかった。該当した属性の後ろの「!」と、「魔」で魔法武器のときの判定が VB と違っていた |
-| Sub Attack | 8724 | 2147 | `SRCCore/Units/Unit.attack.cs` Unit.Attack | 修正済み | 浄化を探す相手から追加サポートを外した。レベルの無い連属性は攻撃回数 1 回（VB は実行時エラー。SRC# の利便性）。消費したアイテムは武器名で探す（VB の数え方の不具合は再現しない）。BitmapID・新ＧＵＩの ClearUnitStatus は SRC# では不要 |
+| Sub Attack | 8724 | 2147 | `SRCCore/Units/Unit.attack.cs` Unit.Attack | 修正済み | 浄化を探す相手から追加サポートを外した。レベルの無い連属性は攻撃回数 1 回（VB は実行時エラー。SRC# の利便性）。消費したアイテムは VB と同じく武器の番号で決める（#1508 で直した。VB の数え方の不具合は再現しない）。BitmapID・新ＧＵＩの ClearUnitStatus は SRC# では不要 |
 | Function CheckDodgeFeature | 10873 | 450 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDodgeFeature | 一致 |  |
 | Function CheckParryFeature | 11326 | 1054 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckParryFeature | 修正済み | 迎撃用の武器の自動選択と永続武器の条件を、残弾ではなく武器データの弾数（VB の Weapon(i).Bullet）で見る。迎撃用の武器が無くても Dice(16) を振る（VB の And は短絡しない） |
 | Function CheckDummyFeature | 12382 | 114 | `SRCCore/Units/Unit.attackcheck.cs` Unit.CheckDummyFeature | 一致 |  |
@@ -185,8 +185,8 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function Stock | 18875 | 3 | `SRCCore/Units/UnitAbility.cs` UnitAbility.Stock | 一致 |  |
 | Function MaxStock | 18880 | 7 | `SRCCore/Units/UnitAbility.cs` UnitAbility.MaxStock | 一致 |  |
 | Sub SetStock | 18889 | 9 | `SRCCore/Units/UnitAbility.cs` UnitAbility.SetStock | 一致 |  |
-| Function ExecuteAbility | 18904 | 1737 | `SRCCore/Units/Unit.ability.cs` Unit.ExecuteAbility | 修正済み | 変身と召喚の Exit For（後ろの効果を適用していた）、メッセージ欄を開く判定（MainFormVisible を見ていた）、ＳＰ回復の表示はメインパイロットだけ、合体技パートナーの自・失・変・霊・プ（ほぼ未実装だった）、変形技の照合名。使い切ったアイテムの決め方は違いあり（#1508）。強化のエリアスの `.AliasType(i)`（j の書き誤り）は再現しない |
-| Sub ExecuteMapAbility | 20643 | 627 | `SRCCore/Units/Unit.ability.cs` Unit.ExecuteMapAbility | 修正済み | 対象の並べ替え（VB と同じ選択ソート）、パートナーは「合」のときだけ探す、同名のアビリティのパートナーの後の break でループごと抜けていた、パーツ分離の LIndex を 2 に、自爆・HP 消費の Die の後に「破壊」イベント、VB に無い終了アニメと画像の復元を除いた、変形技の名前は LIndex で取る。使い切ったアイテムの決め方は違いあり（#1508） |
+| Function ExecuteAbility | 18904 | 1737 | `SRCCore/Units/Unit.ability.cs` Unit.ExecuteAbility | 修正済み | 変身と召喚の Exit For（後ろの効果を適用していた）、メッセージ欄を開く判定（MainFormVisible を見ていた）、ＳＰ回復の表示はメインパイロットだけ、合体技パートナーの自・失・変・霊・プ（ほぼ未実装だった）、変形技の照合名。使い切ったアイテムは VB と同じく番号で決める（#1508 で直した）。強化のエリアスの `.AliasType(i)`（j の書き誤り）は再現しない |
+| Sub ExecuteMapAbility | 20643 | 627 | `SRCCore/Units/Unit.ability.cs` Unit.ExecuteMapAbility | 修正済み | 対象の並べ替え（VB と同じ選択ソート）、パートナーは「合」のときだけ探す、同名のアビリティのパートナーの後の break でループごと抜けていた、パーツ分離の LIndex を 2 に、自爆・HP 消費の Die の後に「破壊」イベント、VB に無い終了アニメと画像の復元を除いた、変形技の名前は LIndex で取る。使い切ったアイテムは VB と同じく番号で決める（#1508 で直した） |
 | Sub UseAbility | 21272 | 87 | `SRCCore/Units/UnitAbility.cs` UnitAbility.UseAbility | 修正済み | 「斉」を VB の `MinLng(MaxStock(i) * Stock(a) \ MaxStock(a), Stock(i))` に。VB に無い「永」の判定（武器の属性）を除いた |
 | Function MaxItemNum | 21364 | 15 | `SRCCore/Units/Unit.item.cs` Unit.MaxItemNum | 一致 |  |
 | Function CountItem | 21381 | 3 | `SRCCore/Units/Unit.item.cs` Unit.CountItem | 一致 |  |
@@ -271,7 +271,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function LookForSupportAttack | 29928 | 151 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportAttack | 一致 |  |
 | Function LookForSupportGuard | 30082 | 217 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportGuard | 一致 |  |
 | Function LookForSupport | 30301 | 109 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupport | 一致 |  |
-| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 修正済み | 合体技の種類（ctype）を引数に足した。武装なら同名の武器、アビリティなら同名のアビリティだけを調べる（以前は種類に関わらず武器、次にアビリティの順に探していた）。弾数・回数の有無はデータの値（Weapon(k).Bullet・Ability(k).Stock）で見る。出撃していないときに実際のユニットを返すのは以前からの C# の拡張（VB は要素数だけ） |
+| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 修正済み | 合体技の種類（ctype）を引数に足した。武装なら同名の武器、アビリティなら同名のアビリティだけを調べる（以前は種類に関わらず武器、次にアビリティの順に探していた）。弾数・回数の有無はデータの値（Weapon(k).Bullet・Ability(k).Stock）で見る。出撃していないときに実際のユニットを返すのは以前からの C# の拡張（VB は要素数だけ）。パートナーの並びを VB と同じく ListTail(…, 2)・LLength・LIndex で読む（#1534 で直した） |
 | Function IsCombinationAttackAvailable | 30820 | 56 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsCombinationAttackAvailable | 修正済み | 射程１で隣の敵を基点にするときも check_formation を渡す。調べる順を VB と同じ左・右・上・下にした（SelectedPartners に残る組が変わる） |
 | Function IsCombinationAbilityAvailable | 30878 | 56 | `SRCCore/Units/UnitAbility.cs` UnitAbility.IsCombinationAbilityAvailable | 修正済み | 射程１は隣の味方（IsAlly）を基点にする（以前は IsEnemy）。check_formation を渡し、左・右・上・下の順に調べる。VB は下を調べる条件が `y > MapHeight` で常に偽だが、誤記とみなして下も調べる |
 | Function IsAbleToEnter | 30936 | 99 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAbleToEnter | 一致 |  |

@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.VB
 {
@@ -78,9 +80,37 @@ namespace SRCCore.VB
             return VBMath.CLng(rounded);
         }
 
+        // 指数表記の数値（「1e5」「1.5E-3」「1d5」）を読む。VB（OLE Automation の VarParseNumFromStr）と同じく、
+        // 指数の記号には E のほか D も使え、記号の後ろには符号と 1 桁以上の数字が要る（「1e」「e5」は数値ではない）。
+        // text は NumericText で全角を半角にし、前後の空白を除いたもの
+        private static readonly Regex ExponentPattern = new Regex(
+            @"^[+-]?(?:[0-9][0-9,]*(?:\.[0-9]*)?|\.[0-9]+)[eEdD][+-]?[0-9]+$",
+            RegexOptions.CultureInvariant);
+        internal static bool TryParseExponent(string text, out double value)
+        {
+            value = 0d;
+            if (string.IsNullOrEmpty(text) || !ExponentPattern.IsMatch(text))
+            {
+                return false;
+            }
+            var normalized = text.Replace(",", "").Replace('d', 'e').Replace('D', 'e');
+            if (!double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out value)
+                || double.IsInfinity(value) || double.IsNaN(value))
+            {
+                // 範囲を超える値（「1e400」）は数値とみなさない（VB ではオーバーフロー）
+                value = 0d;
+                return false;
+            }
+            return true;
+        }
+
         public static double ToDouble(string Value)
         {
             Value = NumericText(Value);
+            if (TryParseExponent(Value, out double exp))
+            {
+                return exp;
+            }
             if (double.TryParse(Value, out double ret))
             {
                 return ret;

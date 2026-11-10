@@ -76,6 +76,23 @@ namespace SRCCore.Intermissions.Tests
         }
 
         [TestMethod]
+        public void Bgm_SameIntermissionBgm_WithoutFolder_KeepsPlaying()
+        {
+            // 7474/SRC#1534: SRC# は読み込み対象のフォルダの直下で見つけた曲を、フォルダの付かない名前で BGMFileName に入れる。
+            // 元の SRC の BGMFileName には必ずフォルダが付くので、同じ曲なら InStr(BGMFileName, "\" & BGMName("Intermission")) > 0 で止めない
+            var calls = StopCallsBeforeMenu("Intermission.mid", "Intermission.mid");
+            CollectionAssert.DoesNotContain(calls, "Stop");
+        }
+
+        [TestMethod]
+        public void Bgm_SameBodyWithOtherExtension_IsRestarted()
+        {
+            // Intermission.bas:24 は拡張子まで含めた BGMName("Intermission") で比べる（ChangeBGM の本体部分の比較とは違う）
+            var calls = StopCallsBeforeMenu(@"C:\SRC\Midi\Intermission.mp3", "Intermission.mid");
+            CollectionAssert.Contains(calls, "Stop");
+        }
+
+        [TestMethod]
         public void UserCommand_LabelOfBuiltinCommand_RunsBuiltinCommand()
         {
             // Intermission.bas:183 Select Case cmd_list(ret) はコマンドの表示名で分ける。

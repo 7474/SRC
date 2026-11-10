@@ -5,7 +5,7 @@ VB 版の `SRC/SRC_20121125/SpecialPowerData.cls` の手続きと、C# の対応
 | VB | 行 | 行数 | C# | 状態 | メモ |
 |---|---|---|---|---|---|
 | Sub Class_Initialize | 48 | 5 | `SRCCore/Models/SpecialPowerData.cs` SpecialPowerData | 一致 | VB は 3 つの配列を ReDim (0) する。C# は効果の List を空で作る |
-| Sub SetEffect | 56 | 106 | `SRCCore/Models/SpecialPowerData.cs` SpecialPowerData.SetEffect | 修正済み | VB は ReDim で効果を作り直すのに、C# は追加していたので置き換えにした。効果名だけのときの効果データは VB と同じく "" にした（#1498）。CDbl に失敗するとき、VB は Load の On Error でデータエラーになって終了するが、C# の Conversions.ToDouble は 0 を返す（合わせていない） |
+| Sub SetEffect | 56 | 106 | `SRCCore/Models/SpecialPowerData.cs` SpecialPowerData.SetEffect | 修正済み | VB は ReDim で効果を作り直すのに、C# は追加していたので置き換えにした。効果名だけのときの効果データは VB と同じく "" にした（#1498）。CDbl に失敗するとき、VB は Load の On Error でデータエラーになって終了するが、C# の Conversions.ToDouble は 0 を返す（合わせていない）。効果の並びを VB と同じく TrimString・ListLength・ListIndex で読む。括弧・クォートの対応が取れていない（-1）と VB は ReDim (-1) の実行時エラーで読み込みを打ち切るので、原因を書かないデータエラーにした（#1534 で直した） |
 | Function CountEffect | 165 | 3 | `SRCCore/Models/SpecialPowerData.cs` SpecialPowerData.CountEffect | 一致 |  |
 | Function EffectType | 170 | 3 | `SRCCore/Models/SpecialPowerEffect.cs` SpecialPowerEffect.strEffectType | 一致 | 番号ではなく Effects の要素で引く |
 | Function EffectLevel | 175 | 3 | `SRCCore/Models/SpecialPowerEffect.cs` SpecialPowerEffect.dblEffectLevel | 一致 | 同上 |
