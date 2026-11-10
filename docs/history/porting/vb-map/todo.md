@@ -13,7 +13,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Config/LocalFileConfig.cs:10` | TODO | TODO 項目の説明を設定ファイルに書けるようにする | SRC#で不要 | SRC# の設定ファイル（JSON）の機能の希望で、VB の ReadIni・WriteIni との違いではない（#1498 の GeneralLib の項目で確かめた） |
 | `SRCCore/Config/LocalFileConfig.cs:11` | XXX | XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。 | SRC#で不要 | 同上 |
 | `SRCCore/Config/LocalFileConfig.cs:30` | XXX | XXX Configの余地ないしConfigのプロパティではないかもな。 | SRC#で不要 | 設計の覚え書きで、動作に関係しない |
-| `SRCCore/Events/Event.data.cs:69` | XXX | XXX VB はシステム側のイベントラベルを消さずに残す（Enable も残る）ので、 | Issue | #1529 |
 | `SRCCore/Maps/Map.cs:37` | XXX | XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう | SRC#で不要 | JSON の Map から復元する形で動いている。RestoreMapData と突き合わせ済み |
 | `SRCCore/Maps/Map.cs:115` | XXX | XXX | SRC#で不要 | IsStatusView は VB の `MapFileName = ""` の判定をまとめたもの |
 | `SRCCore/Maps/Map.cs:466` | XXX | XXX MapのGUIインタフェースと実装に追い出す | SRC#で不要 | GUIMap.SetMapSize に移してある |
@@ -25,9 +24,9 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Pilots/Pilots.cs:209` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |
 | `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | SRC#で不要 | メソッドの置き場所の設計のメモで、動作に関係しない |
 | `SRCCore/Units/Unit.feature.cs:18` | コード | For i = .AdditionalFeaturesNum + 1 To .CountAllFeature / fname = .AllFeatureName(i)) | SRC#で不要 | StatusFeatures の説明として VB の参照元（Status.bas）を書いたコメント。コメントアウトしたコードではない |
-| `SRCCore/Units/Unit.lookup.cs:1857` | XXX | XXX もうちょいいい感じにしたいもんだ | SRC#で不要 | 書き方についての感想で、動作は VB と同じ |
+| `SRCCore/Units/Unit.lookup.cs:1859` | XXX | XXX もうちょいいい感じにしたいもんだ | SRC#で不要 | 書き方についての感想で、動作は VB と同じ |
 | `SRCCore/Units/UnitAbility.cs:631` | XXX | XXX 変形技が妥当に定義されていなかった場合 | SRC#で不要 | VB もデータの誤りで実行時エラーになる |
 | `SRCCore/Units/UnitWeapon.cs:162` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3968` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4288` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
-| `SRCCore/VB/Information.cs:18` | XXX | XXX VB の IsNumeric は指数（1e5）・&H・&O・括弧（(1)）・通貨記号も数値とみなすが、decimal.TryParse は読まない。実行する環境の言語の書式で読む | Issue | 番号は起票後に書く。IsNumeric（と CDbl に当たる Conversions.ToDouble）を VB（OLE の VarParseNumFromStr）の数値の書き方と日本語の書式に合わせる（#1498 の todo の締めくくりで見つけた） |
+| `SRCCore/VB/Information.cs:23` | XXX | XXX VB の IsNumeric は &H・&O・括弧（(1)）・通貨記号も数値とみなすが、ここでは読まない。decimal.TryParse は実行する環境の言語の書式で読む | Issue | #1545。指数表記は #1534 で直した。&H・&O・括弧の負の数・通貨記号と、実行環境の言語の書式が残る |
