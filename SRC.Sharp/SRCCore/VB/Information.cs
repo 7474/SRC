@@ -15,6 +15,11 @@ namespace SRCCore.VB
                 {
                     return true;
                 }
+                // 指数表記（「1e5」「1d5」）も数値とみなす（VB: IsNumeric("1e5") は True）
+                if (Conversions.TryParseExponent(str, out _))
+                {
+                    return true;
+                }
                 // XXX
                 return false;
             }
