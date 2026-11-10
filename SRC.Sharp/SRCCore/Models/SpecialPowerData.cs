@@ -57,10 +57,19 @@ namespace SRCCore.Models
         {
             // VB は ReDim で効果を作り直す（追加ではなく置き換える）
             effects.Clear();
-            var list = GeneralLib.ToList(elist.Trim());
-            foreach (var item in list)
+            // VB: ReDim strEffectType(ListLength(elist))、TrimString elist、For i = 1 To ListLength(elist)、buf = ListIndex(elist, i)。
+            // 括弧・クォートの対応が取れていない（ListLength が -1）と ReDim (-1) が実行時エラーになり、
+            // Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る。
+            // ここでは FormatException を投げ、読み込む側（SpecialPowerDataList）でデータエラーにする
+            elist = GeneralLib.TrimString(elist);
+            var num = GeneralLib.ListLength(elist);
+            if (num < 0)
             {
-                var buf = item;
+                throw new FormatException("効果の括弧・クォートの対応が取れていません: " + elist);
+            }
+            for (var i = 1; i <= num; i++)
+            {
+                var buf = GeneralLib.ListIndex(elist, i);
                 string elevel, etype, edata;
                 var j = Strings.InStr(buf, "Lv");
                 var k = Strings.InStr(buf, "=");

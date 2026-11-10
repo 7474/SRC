@@ -257,11 +257,17 @@ namespace SRCCore
         }
 
         // 演奏中のファイル（BGMFileName）が、本体部分が body のファイルか。
-        // 元の SRC の InStr(BGMFileName, "\" & body & ".") > 0。/ の区切りも \ とみなし、
-        // フォルダの付いていない BGMFileName（SRC# で読み込み対象のフォルダの直下で見つけたとき）も同じに扱う
+        // 元の SRC の InStr(BGMFileName, "\" & body & ".") > 0
         private bool IsBGMFileNameOf(string body)
         {
-            return Strings.InStr(@"\" + (BGMFileName ?? "").Replace('/', '\\'), @"\" + body + ".") > 0;
+            return BGMFileNameContains(body + ".");
+        }
+
+        // 演奏中のファイル（BGMFileName）に、\ と name を続けた文字列が含まれるか。元の SRC の InStr(BGMFileName, "\" & name) > 0。
+        // / の区切りも \ とみなし、フォルダの付いていない BGMFileName（SRC# で読み込み対象のフォルダの直下で見つけたとき）も同じに扱う
+        public bool BGMFileNameContains(string name)
+        {
+            return Strings.InStr(@"\" + (BGMFileName ?? "").Replace('/', '\\'), @"\" + (name ?? "").Replace('/', '\\')) > 0;
         }
 
         // 指定されたファイルがシナリオパス内に存在するかを確認する

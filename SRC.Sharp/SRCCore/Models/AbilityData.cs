@@ -61,9 +61,13 @@ namespace SRCCore.Models
         // アビリティに効果を追加
         public void SetEffect(string elist)
         {
-            elist = (elist ?? "").Trim();
-            foreach (var eelm in GeneralLib.ToList(elist))
+            // VB: TrimString elist、For i = 1 To ListLength(elist)、buf = ListIndex(elist, i)。
+            // 括弧・クォートの対応が取れていない（ListLength が -1）なら効果を 1 つも追加しない
+            elist = GeneralLib.TrimString(elist);
+            var num = GeneralLib.ListLength(elist);
+            for (var i = 1; i <= num; i++)
             {
+                var eelm = GeneralLib.ListIndex(elist, i);
                 var dat = new AbilityEffect();
                 var buf = eelm;
                 var j = Strings.InStr(buf, "Lv");

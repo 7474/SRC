@@ -228,11 +228,7 @@ namespace SRCCore.Units
                 {
                     if (mu.IsFeatureAvailable("分離"))
                     {
-                        var buf = mu.FeatureData("分離");
-                        foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
-                        {
-                            RankUpPart(pu, hp_ratio, en_ratio);
-                        }
+                        RankUpParts(mu.FeatureData("分離"), hp_ratio, en_ratio);
                     }
                 }
             }
@@ -240,8 +236,19 @@ namespace SRCCore.Units
             // 合体ユニットの場合は分離形態のユニットのランクも上げる
             if (IsFeatureAvailable("分離"))
             {
-                var buf = FeatureData("分離");
-                foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                RankUpParts(FeatureData("分離"), hp_ratio, en_ratio);
+            }
+        }
+
+        // 特殊能力「分離」のデータ buf に並ぶ分離形態のユニットのランクを上げる。
+        // VB: For i = 2 To LLength(buf)、UList.IsDefined(LIndex(buf, i))（括弧・クォートを考えず、空白だけで分ける）
+        private void RankUpParts(string buf, double hp_ratio, double en_ratio)
+        {
+            var num = GeneralLib.LLength(buf);
+            for (var i = 2; i <= num; i++)
+            {
+                var pu = SRC.UList.Item(GeneralLib.LIndex(buf, i));
+                if (pu != null)
                 {
                     RankUpPart(pu, hp_ratio, en_ratio);
                 }

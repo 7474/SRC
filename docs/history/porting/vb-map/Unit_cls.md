@@ -271,7 +271,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function LookForSupportAttack | 29928 | 151 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportAttack | 一致 |  |
 | Function LookForSupportGuard | 30082 | 217 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupportGuard | 一致 |  |
 | Function LookForSupport | 30301 | 109 | `SRCCore/Units/Unit.lookup.cs` Unit.LookForSupport | 一致 |  |
-| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 修正済み | 合体技の種類（ctype）を引数に足した。武装なら同名の武器、アビリティなら同名のアビリティだけを調べる（以前は種類に関わらず武器、次にアビリティの順に探していた）。弾数・回数の有無はデータの値（Weapon(k).Bullet・Ability(k).Stock）で見る。出撃していないときに実際のユニットを返すのは以前からの C# の拡張（VB は要素数だけ） |
+| Sub CombinationPartner | 30412 | 406 | `SRCCore/Units/Unit.lookup.cs` Unit.CombinationPartner | 修正済み | 合体技の種類（ctype）を引数に足した。武装なら同名の武器、アビリティなら同名のアビリティだけを調べる（以前は種類に関わらず武器、次にアビリティの順に探していた）。弾数・回数の有無はデータの値（Weapon(k).Bullet・Ability(k).Stock）で見る。出撃していないときに実際のユニットを返すのは以前からの C# の拡張（VB は要素数だけ）。パートナーの並びを VB と同じく ListTail(…, 2)・LLength・LIndex で読む（#1534 で直した） |
 | Function IsCombinationAttackAvailable | 30820 | 56 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.IsCombinationAttackAvailable | 修正済み | 射程１で隣の敵を基点にするときも check_formation を渡す。調べる順を VB と同じ左・右・上・下にした（SelectedPartners に残る組が変わる） |
 | Function IsCombinationAbilityAvailable | 30878 | 56 | `SRCCore/Units/UnitAbility.cs` UnitAbility.IsCombinationAbilityAvailable | 修正済み | 射程１は隣の味方（IsAlly）を基点にする（以前は IsEnemy）。check_formation を渡し、左・右・上・下の順に調べる。VB は下を調べる条件が `y > MapHeight` で常に偽だが、誤記とみなして下も調べる |
 | Function IsAbleToEnter | 30936 | 99 | `SRCCore/Units/Unit.lookup.cs` Unit.IsAbleToEnter | 一致 |  |

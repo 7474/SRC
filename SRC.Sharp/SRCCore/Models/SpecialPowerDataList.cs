@@ -6,6 +6,7 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -230,7 +231,15 @@ namespace SRCCore.Models
                         throw reader.InvalidDataException("効果が指定されていません。", data_name);
                     }
 
-                    sd.SetEffect(line_buf);
+                    try
+                    {
+                        sd.SetEffect(line_buf);
+                    }
+                    catch (FormatException)
+                    {
+                        // 元の SRC で SetEffect が実行時エラーになるとき。Load の ErrorHandler は err_msg が空のまま DataErrorMessage を出す
+                        throw reader.InvalidDataException("", data_name);
+                    }
 
                     // 解説
                     line_buf = reader.GetLine();

@@ -28,9 +28,10 @@ namespace SRCCore.CmdDatas.Commands
             // 最後のSPlayMIDIから順にMIDIファイルを検索
             foreach (var cmd in playCmds.Reverse<CmdData>())
             {
-                var fnameList = GeneralLib.ToList(cmd.EventData.Data).Skip(1).ToList();
-                fname = string.Join(" ", fnameList);
-                if (fnameList.Count == 1)
+                // VB: fname = ListTail(EventData(i), 2)、If ListLength(fname) = 1 Then
+                // （括弧・クォートの対応が取れていない（-1）ときは、2 つ以上のときと同じく括弧で囲む）
+                fname = GeneralLib.ListTail(cmd.EventData.Data, 2);
+                if (GeneralLib.ListLength(fname) == 1)
                 {
                     if (Strings.Left(fname, 2) == "$(")
                     {

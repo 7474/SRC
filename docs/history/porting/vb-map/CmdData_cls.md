@@ -81,7 +81,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecFixCmd | 5692 | 30 | `SRCCore/CmdDatas/Commands/Unit/FixCmd.cs` FixCmd | 一致 |  |
 | Function ExecFontCmd | 5723 | 85 | `SRCCore/CmdDatas/Commands/Screan/FontCmd.cs` FontCmd | 修正済み | 引数なしで既定の書式に戻す。大きさを CInt と同じく偶数丸めで整数にし、数値でなければ「イベントデータが不正です」 |
 | Function ExecForCmd | 5809 | 57 | `SRCCore/CmdDatas/Commands/Control/ForCmd.cs` ForCmd | 一致 | 入れ子が MaxCallDepth を超えたとき VB は範囲外に書き込み（範囲チェックなし）、C# は例外 |
-| Function ExecForEachCmd | 5867 | 491 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs` ForEachCmd | 修正済み | パイロット一覧・ユニット一覧の並び順を VB の選択ソートに合わせた（値が同じ要素の順）。名称の比較を vbTextCompare と同じに |
+| Function ExecForEachCmd | 5867 | 491 | `SRCCore/CmdDatas/Commands/Control/ForEachCmd.cs` ForEachCmd | 修正済み | パイロット一覧・ユニット一覧の並び順を VB の選択ソートに合わせた（値が同じ要素の順）。名称の比較を vbTextCompare と同じに。リストに対する ForEach を ListLength・ListIndex で分ける。ListLength が -1 だと VB は ReDim ForEachSet(-1) の実行時エラーになるので、「イベントデータが不正です」でイベントを止める（#1534 で直した） |
 | Function ExecNextCmd | 6359 | 71 | `SRCCore/CmdDatas/Commands/Control/NextCmd.cs` NextCmd | 一致 |  |
 | Function ExecForgetCmd | 6431 | 24 | `SRCCore/CmdDatas/Commands/Other/ForgetCmd.cs` ForgetCmd | 一致 |  |
 | Function ExecFreeMemoryCmd | 6456 | 6 | `SRCCore/CmdDatas/Commands/Other/FreeMemoryCmd.cs` FreeMemoryCmd | 一致 |  |
@@ -126,7 +126,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecPaintStringCmd | 9000 | 70 | `SRCCore/CmdDatas/Commands/Screan/PaintStringCmd.cs` PaintStringCmd | 修正済み | 座標指定が確定しているかを構文解析のときの項（「-」・IsNumeric・「$」「(」で始まる式）で決め、確定していれば数値でない値は「イベントデータが不正です」 |
 | Function ExecPaintSysStringCmd | 9071 | 18 | `SRCCore/CmdDatas/Commands/Screan/PaintSysStringCmd.cs` PaintSysStringCmd | 一致 |  |
 | Function ExecPilotCmd | 9090 | 44 | `SRCCore/CmdDatas/Commands/Pilot/PilotCmd.cs` PilotCmd | 一致 |  |
-| Function ExecPlayMIDICmd | 9135 | 39 | `SRCCore/CmdDatas/Commands/Sound/ABGMCmd.cs` ABGMCmd | 一致 |  |
+| Function ExecPlayMIDICmd | 9135 | 39 | `SRCCore/CmdDatas/Commands/Sound/ABGMCmd.cs` ABGMCmd | 一致 | ファイル名を VB と同じく ListTail(…, 2)・ListLength で読む（#1534 で直した） |
 | Function ExecPlaySoundCmd | 9175 | 12 | `SRCCore/CmdDatas/Commands/Sound/PlaySoundCmd.cs` PlaySoundCmd | 一致 |  |
 | Function ExecPolygonCmd | 9188 | 109 | `SRCCore/CmdDatas/Commands/Screan/PolygonCmd.cs` PolygonCmd | 一致 |  |
 | Function ExecPrintCmd | 9298 | 50 | `SRCCore/CmdDatas/Commands/File/PrintCmd.cs` PrintCmd | 一致 |  |
@@ -176,7 +176,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecSortCmd | 11712 | 239 | `SRCCore/CmdDatas/Commands/Variable/SortCmd.cs` SortCmd | 修正済み | VB と同じ交換ソート（同じ値の順）。文字の比較は vbTextCompare 相当、全角の数字も数値として読む、配列名の前方一致は大文字・小文字を区別する |
 | Function ExecSpecialPowerCmd | 11952 | 90 | `SRCCore/CmdDatas/Commands/Unit/SpecialPowerCmd.cs` SpecialPowerCmd | 一致 |  |
 | Function ExecSplitCmd | 12043 | 49 | `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs` SplitCmd | 違いあり | 退避した選択も分離後の 1 番機に書き換えるので、RestoreSelections の後の選択が VB と違う（#1521） |
-| Function ExecStartBGMCmd | 12093 | 39 | `SRCCore/CmdDatas/Commands/Sound/StartBGMCmd.cs` StartBGMCmd<br>`SRCCore/CmdDatas/Commands/Sound/ABGMCmd.cs` ABGMCmd | 一致 |  |
+| Function ExecStartBGMCmd | 12093 | 39 | `SRCCore/CmdDatas/Commands/Sound/StartBGMCmd.cs` StartBGMCmd<br>`SRCCore/CmdDatas/Commands/Sound/ABGMCmd.cs` ABGMCmd | 一致 | ファイル名を VB と同じく ListTail(…, 2)・ListLength で読む（#1534 で直した） |
 | Function ExecStopBGMCmd | 12133 | 9 | `SRCCore/CmdDatas/Commands/Sound/StopBGMCmd.cs` StopBGMCmd | 一致 |  |
 | Function ExecStopSummoningCmd | 12143 | 18 | `SRCCore/CmdDatas/Commands/Unit/StopSummoningCmd.cs` StopSummoningCmd | 一致 |  |
 | Function ExecSunsetCmd | 12162 | 57 | `SRCCore/CmdDatas/Commands/Map/SunsetCmd.cs` SunsetCmd | 修正済み | SetupBackground の後に表示位置を戻す |

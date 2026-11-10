@@ -6,7 +6,7 @@ VB 版の `SRC/SRC_20121125/AbilityData.cls` の手続きと、C# の対応（[�
 |---|---|---|---|---|---|
 | Sub Class_Terminate | 42 | 10 | （なし） | SRC#で不要 | Collection の解放 |
 | Function Nickname | 54 | 7 | `SRCCore/Models/AbilityData.cs` AbilityData.Nickname | 一致 |  |
-| Sub SetEffect | 63 | 120 | `SRCCore/Models/AbilityData.cs` AbilityData.SetEffect | 修正済み | 「Lv」の後が数値でないとき、VB は CDbl の実行時エラーになるが、C# は 0 として読んでいた。「回復=」のようにデータが空のときも、VB は Asc("") の実行時エラーになるが、C# は IndexOutOfRangeException が Load の外へ出ていた。どちらも LoadAbility で原因を書かないデータエラーとして打ち切るようにした（#1498） |
+| Sub SetEffect | 63 | 120 | `SRCCore/Models/AbilityData.cs` AbilityData.SetEffect | 修正済み | 「Lv」の後が数値でないとき、VB は CDbl の実行時エラーになるが、C# は 0 として読んでいた。「回復=」のようにデータが空のときも、VB は Asc("") の実行時エラーになるが、C# は IndexOutOfRangeException が Load の外へ出ていた。どちらも LoadAbility で原因を書かないデータエラーとして打ち切るようにした（#1498）。効果の並びを VB と同じく TrimString・ListLength・ListIndex で読む。括弧・クォートの対応が取れていない（-1）なら効果を追加しない（#1534 で直した） |
 | Function NewAbilityEffect | 184 | 4 | （なし） | SRC#で不要 | new AbilityEffect() で済む |
 | Function CountEffect | 190 | 3 | `SRCCore/Models/AbilityData.cs` AbilityData.CountEffect | 一致 |  |
 | Function EffectType | 195 | 3 | `SRCCore/Models/AbilityEffect.cs` AbilityEffect.EffectType | 一致 |  |
