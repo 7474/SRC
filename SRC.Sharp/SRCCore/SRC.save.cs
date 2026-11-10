@@ -173,6 +173,7 @@ namespace SRCCore
             {
                 DumpData(stream, saveKind);
             }
+            IsLastSaveDataQuikSaveStream = false;
         }
 
         // 一時中断用データをファイルにセーブする
@@ -223,6 +224,8 @@ namespace SRCCore
                 else if (saveKind == SRCSaveKind.Quik)
                 {
                     IsQuickSaveDataAvailable = true;
+                    // クイックセーブのストリームに書いた（読んだ）。ファイルに書く（読む）ときは呼び出し元で倒す（#1530）
+                    IsLastSaveDataQuikSaveStream = true;
                 }
             }
             catch (Exception ex)
@@ -285,6 +288,7 @@ namespace SRCCore
             {
                 RestoreData(stream, saveKind);
             }
+            IsLastSaveDataQuikSaveStream = false;
         }
         // 一時中断用データをロード
         public void RestoreData(Stream stream, SRCSaveKind saveKind)
@@ -484,6 +488,8 @@ namespace SRCCore
                 else if (saveKind == SRCSaveKind.Quik)
                 {
                     IsQuickSaveDataAvailable = true;
+                    // クイックセーブのストリームに書いた（読んだ）。ファイルに書く（読む）ときは呼び出し元で倒す（#1530）
+                    IsLastSaveDataQuikSaveStream = true;
                 }
             }
             catch (Exception ex)

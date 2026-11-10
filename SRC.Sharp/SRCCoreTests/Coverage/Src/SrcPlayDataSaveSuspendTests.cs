@@ -639,6 +639,134 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual(2d, f.Src.Expression.GetValueAsDouble("再開回数"));
         }
 
+        // ── QuickLoad コマンドが読むデータ（#1530） ──
+        // VB: DumpData・RestoreData は LastSaveDataFileName を最後に書いた（読んだ）ファイルにし、
+        // ファイル名に _リスタート・_クイックセーブ が入っていればそれぞれのフラグを立てる。
+        // ExecQuickLoadCmd は RestoreData LastSaveDataFileName, True で最後のセーブデータを読む。
+
+        // クイックセーブのストリームの中身を返すようにしておく
+        private static byte[] QuickSaveToStream(SrcPlayDataSaveFixture f)
+        {
+            byte[] saved = null;
+            f.Gui.Handle("OpenQuikSaveStream", args =>
+            {
+                if ((FileAccess)args[0] == FileAccess.Write)
+                {
+                    return new CapturingStream(bytes => saved = bytes);
+                }
+                return new MemoryStream(saved);
+            });
+            using (var stream = f.Src.GUI.OpenQuikSaveStream(FileAccess.Write))
+            {
+                f.Src.DumpData(stream, SRCSaveKind.Quik);
+            }
+            return saved;
+        }
+
+        private sealed class CapturingStream : MemoryStream
+        {
+            private readonly System.Action<byte[]> onClose;
+            public CapturingStream(System.Action<byte[]> onClose) { this.onClose = onClose; }
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing) { onClose(ToArray()); }
+                base.Dispose(disposing);
+            }
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_AfterQuickSave_ReadsQuickSaveData()
+        {
+            // リスタート用のデータを書いたあとにクイックセーブすれば、QuickLoad はクイックセーブを読む
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            f.Src.Money = 1000;
+            f.Src.DumpData(Path.Combine(f.ScenarioDir, "_リスタート.srcq"), SRCSaveKind.Restart);
+            f.Src.Money = 3000;
+            QuickSaveToStream(f);
+            f.Src.Money = 1;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(3000, f.Src.Money);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_AfterQuickSaveThenFileDump_ReadsFile()
+        {
+            // クイックセーブのあとにファイルへセーブすれば、QuickLoad はそのファイルを読む
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            f.Src.Money = 3000;
+            QuickSaveToStream(f);
+            f.Src.Money = 1000;
+            f.Src.DumpData(Path.Combine(f.ScenarioDir, "_リスタート.srcq"), SRCSaveKind.Restart);
+            f.Src.Money = 1;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(1000, f.Src.Money);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_AfterQuickLoadCommand_ReadsQuickSaveData()
+        {
+            // クイックロード（マップコマンド）で読んだあとも、最後のセーブデータはクイックセーブ
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            f.Src.Money = 3000;
+            var saved = QuickSaveToStream(f);
+            f.Src.Money = 1000;
+            f.Src.DumpData(Path.Combine(f.ScenarioDir, "_リスタート.srcq"), SRCSaveKind.Restart);
+            f.Src.RestoreData(new MemoryStream(saved), SRCSaveKind.Quik);
+            f.Src.Money = 1;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(3000, f.Src.Money);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_RestartData_SetsRestartFlagOnly()
+        {
+            // リスタート用のデータを読んだら、立てるのはリスタートのフラグ（VB: RestoreData のファイル名の判定）
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            f.Src.DumpData(Path.Combine(f.ScenarioDir, "_リスタート.srcq"), SRCSaveKind.Restart);
+            f.Src.IsRestartSaveDataAvailable = false;
+            f.Src.IsQuickSaveDataAvailable = false;
+
+            ExecQuickLoad(f);
+
+            Assert.IsTrue(f.Src.IsRestartSaveDataAvailable);
+            Assert.IsFalse(f.Src.IsQuickSaveDataAvailable);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void QuickLoadCmd_SuspendData_SetsNoFlag()
+        {
+            // 中断データを読んだら、どちらのフラグも立てない。クイックロードとして読む（スタートイベントは発生しない）
+            using var f = new SrcPlayDataSaveFixture();
+            PrepareScenario(f);
+            var fname = Path.Combine(f.ScenarioDir, "testを中断.srcq");
+            f.Src.DumpData(fname, SRCSaveKind.Suspend);
+            f.Src.IsRestartSaveDataAvailable = false;
+            f.Src.IsQuickSaveDataAvailable = false;
+            f.Src.Money = 1;
+
+            ExecQuickLoad(f);
+
+            Assert.AreEqual(5000, f.Src.Money);
+            Assert.IsFalse(f.Src.IsRestartSaveDataAvailable);
+            Assert.IsFalse(f.Src.IsQuickSaveDataAvailable);
+            Assert.AreEqual(0d, f.Src.Expression.GetValueAsDouble("スタート回数"));
+        }
+
         private static void ExecQuickLoad(SrcPlayDataSaveFixture f)
         {
             var line = new EventDataLine(0, EventDataSource.Scenario, "test", 0, "QuickLoad");

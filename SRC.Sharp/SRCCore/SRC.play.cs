@@ -83,6 +83,7 @@ namespace SRCCore
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
             LastSaveDataFileName = "";
+            IsLastSaveDataQuikSaveStream = false;
             IsRestartSaveDataAvailable = false;
             IsQuickSaveDataAvailable = false;
             Commands.CommandState = "ユニット選択";

@@ -132,7 +132,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecPrintCmd | 9298 | 50 | `SRCCore/CmdDatas/Commands/File/PrintCmd.cs` PrintCmd | 一致 |  |
 | Function ExecPSetCmd | 9349 | 94 | `SRCCore/CmdDatas/Commands/Screan/PSetCmd.cs` PSetCmd | 修正済み | 画面の外なら色指定を確かめずに終わる。色の「#RGB」も受け付ける（SRC# の利便性） |
 | Function ExecQuestionCmd | 9444 | 53 | `SRCCore/CmdDatas/Commands/Input/QuestionCmd.cs` QuestionCmd | 修正済み | 終わりの判定を式置換の後の行が "end" かに（「End x」は選択肢）。引数の数は選択肢があるときだけ確かめる。End が無いときは VB の判定の誤りを再現せずエラー |
-| Function ExecQuickLoadCmd | 9498 | 36 | `SRCCore/CmdDatas/Commands/Other/QuickLoadCmd.cs` QuickLoadCmd | 一致 |  |
+| Function ExecQuickLoadCmd | 9498 | 36 | `SRCCore/CmdDatas/Commands/Other/QuickLoadCmd.cs` QuickLoadCmd | 一致 | 最後のセーブがクイックセーブならクイックセーブを読むように直した（#1530） |
 | Function ExecQuitCmd | 9535 | 3 | `SRCCore/CmdDatas/Commands/Stage/QuitCmd.cs` QuitCmd | 一致 |  |
 | Function ExecRankUpCmd | 9539 | 118 | `SRCCore/CmdDatas/Commands/Unit/RankUpCmd.cs` RankUpCmd | 一致 | MaxHP・MaxEN が 0 のとき VB は 0 での割り算のエラー、C# は割合を 100 にする |
 | Function ExecReadCmd | 9658 | 18 | `SRCCore/CmdDatas/Commands/File/ReadCmd.cs` ReadCmd | 修正済み | ファイルの終わりで読むとエラー（Input # のエラー 62） |
