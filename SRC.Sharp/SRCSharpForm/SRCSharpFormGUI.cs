@@ -43,7 +43,7 @@ namespace SRCSharpForm
         }
 
         public bool IsGUILocked { get; set; }
-        public short TopItem { get; set; }
+        public int TopItem { get; set; }
         public bool MessageWindowIsOut { get; set; }
         public bool IsFormClicked { get; set; }
         public bool IsMordal { get; set; }
@@ -109,7 +109,6 @@ namespace SRCSharpForm
         public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
         public Color CurrentPaintColor => (currentDrawFontColor as SolidBrush).Color;
-        int IGUI.TopItem { get; set; }
 
         private frmNowLoading frmNowLoading;
         private frmTitle frmTitle;
@@ -1087,8 +1086,8 @@ namespace SRCSharpForm
                         }
                         else
                         {
-                            // そうでなければ最初のアイテムに
-                            i = TopItem;
+                            // そうでなければ最初のアイテムに（GUI.bas の MoveCursorPos と同じく、表示している先頭の項目）
+                            i = frmListBox.ListBox.TopIndex + 1;
                         }
 
                         // XXX これでいい感じが維持されるかは分からん

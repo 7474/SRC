@@ -105,7 +105,7 @@ namespace SRCCore
         public bool IsCanceled;
 
         // フェイズ名
-        public string Stage;
+        public string Stage = "";
         // ターン数
         public int Turn;
         // 総ターン数
@@ -118,7 +118,7 @@ namespace SRCCore
         public bool IsLocalDataLoaded;
 
         // 最新のセーブデータのファイル名
-        public string LastSaveDataFileName;
+        public string LastSaveDataFileName = "";
         // リスタート用セーブデータが利用可能かどうか
         public bool IsRestartSaveDataAvailable;
         // クイックロード用セーブデータが利用可能かどうか

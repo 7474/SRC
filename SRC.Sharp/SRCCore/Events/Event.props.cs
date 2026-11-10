@@ -51,7 +51,7 @@ namespace SRCCore.Events
         public int CurrentLabel = -1;
 
         // Askコマンドで選択した選択肢
-        public string SelectedAlternative;
+        public string SelectedAlternative = "";
 
         // 関数呼び出し用変数
 
