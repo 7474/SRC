@@ -214,6 +214,8 @@ def write_readme(vb):
         "",
         "表は手続き（Function・Sub・Property）を単位にしているので、次のものは載っていない。手続きを突き合わせるときに、そのモジュールの分を一緒に見る。",
         "",
+        "`Const`・`Type`・`Enum`・モジュールの変数を突き合わせた結果は [declarations.md](declarations.md) にある（7474/SRC#1498 の最後の項目）。",
+        "",
         "| 種類 | 見ること |",
         "|---|---|",
         "| モジュールの変数の宣言（手続きの外。約 600） | 型（Integer・Long・Single・Double・String・Variant）。代入の丸め・あふれ・既定値が型で決まる。初期値は `Class_Initialize` の行で見る |",
