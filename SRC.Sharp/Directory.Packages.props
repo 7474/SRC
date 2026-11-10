@@ -40,8 +40,8 @@
     <PackageVersion Include="ShiftJISExtension" Version="1.1.0" />
     <PackageVersion Include="Silk.NET.OpenAL" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL.Soft.Native" Version="1.23.1" />
-    <PackageVersion Include="SkiaSharp" Version="4.154.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.154.0" />
+    <PackageVersion Include="SkiaSharp" Version="4.155.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.155.0" />
     <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.154.0" />
     <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="10.0.14" />
