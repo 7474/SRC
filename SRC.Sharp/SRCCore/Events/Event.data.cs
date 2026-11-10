@@ -66,8 +66,17 @@ namespace SRCCore.Events
 
             // ラベルの初期化
             // SRC# は EventData の全部の行のラベルを登録しなおすので、全部消す。
-            // XXX VB はシステム側のイベントラベルを消さずに残す（Enable も残る）ので、
-            // システム側のイベントラベルへの ClearEvent が LoadEventData のたびに戻るのが VB と違う
+            // VB はシステム側のイベントラベル（LineNum <= SysEventDataSize）を消さずに残すので、Enable もステージをまたいで残る。
+            // SRC# は登録し直した後に、システム側のイベントラベルの Enable を行（EventDataId）ごとに戻す（#1529）。
+            // システムデータを読み直すとき（システム側のロードと、最初のシナリオのロードでのシナリオの Lib の読み直し）は戻さない
+            var keepSystemEventLabelEnable = load_mode != "システム" && ScenarioLibChecked;
+            // ここでの EventData はシステム側の行だけになっている
+            var systemEventDataIds = new HashSet<int>(EventData.Select(x => x.ID));
+            var systemEventLabelEnable = keepSystemEventLabelEnable
+                ? colEventLabelList.List.Where(x => systemEventDataIds.Contains(x.EventDataId))
+                    .GroupBy(x => x.EventDataId)
+                    .ToDictionary(x => x.Key, x => x.First().Enable)
+                : null;
             colNormalLabelList.Clear();
             colEventLabelList.Clear();
             colSysNormalLabelList.Clear();
@@ -216,6 +225,16 @@ namespace SRCCore.Events
             // ラベルの登録
             // VB はシステム側のロードではラベルの末尾の全角文字を調べない
             var label_error_found = RegisterLabel(load_mode != "システム");
+            if (systemEventLabelEnable != null)
+            {
+                foreach (var lab in colEventLabelList.List)
+                {
+                    if (systemEventLabelEnable.TryGetValue(lab.EventDataId, out var enable))
+                    {
+                        lab.Enable = enable;
+                    }
+                }
+            }
 
             // コマンドデータ配列（EventCmd）は ParseCommand で作る
 
