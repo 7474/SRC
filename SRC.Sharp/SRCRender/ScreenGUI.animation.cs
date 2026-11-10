@@ -244,7 +244,9 @@ namespace SRCRender
                     }
                     else
                     {
-                        i = TopItem;
+                        // 表示している先頭の項目（GUI.bas の MoveCursorPos の .lstItems.TopIndex + 1）。
+                        // TopItem は WeaponListBox・AbilityListBox で -1 になっていることがあるので使わない
+                        i = w.lstItems.TopIndex + 1;
                     }
                     ty = w.ScreenTop + Compat.Form.TitleBarHeight + w.lstItems.Top + 2
                         + w.lstItems.ItemHeight * (i - 1 - w.lstItems.TopIndex) + w.lstItems.ItemHeight / 2f;

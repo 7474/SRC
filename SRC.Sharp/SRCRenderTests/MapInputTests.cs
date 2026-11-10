@@ -259,5 +259,43 @@ namespace SRCRender.Tests
                 Assert.AreEqual(100f, runner.CursorY, 0.5f);
             }
         }
+
+        [TestMethod]
+        public void MoveCursorPos_DialogMovesToTopVisibleItemEvenIfTopItemIsMinusOne()
+        {
+            // GUI.bas の MoveCursorPos は、武器選択でないリストボックスでは .lstItems.TopIndex + 1 の項目へ動かす。
+            // AbilityListBox は TopItem = -1 にしてから MoveCursorPos "ダイアログ" を呼ぶが、TopItem は使わない
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Talk システム",
+                "カーソルのテスト",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.CursorEnabled = true;
+                runner.CursorX = 100;
+                runner.CursorY = 100;
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+
+                using (var done = new ManualResetEventSlim())
+                {
+                    runner.Session.Game.Post(() =>
+                    {
+                        runner.GUI.TopItem = -1;
+                        runner.GUI.MoveCursorPos("ダイアログ");
+                        done.Set();
+                    });
+                    Assert.IsTrue(done.Wait(ScreenScenarioRunner.Timeout));
+                }
+                var w = runner.GUI.ListWindow;
+                var expectedY = w.ScreenTop + Compat.Form.TitleBarHeight + w.lstItems.Top + 2
+                    + w.lstItems.ItemHeight * (1 - 1 - w.lstItems.TopIndex) + w.lstItems.ItemHeight / 2f;
+                Assert.AreEqual(expectedY, runner.CursorY, 0.5f);
+            }
+        }
     }
 }
