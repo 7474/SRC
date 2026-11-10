@@ -312,7 +312,8 @@ namespace SRCCore.Extensions
                 for (var i = 1; i <= loopTo9; i++)
                 {
                     // 元の SRC（MessageData）は属性のまとまり（「弱火」など）を GetClassBundle で取り出し、
-                    // Select Case ch / Case 0 To 127 で英数字を除く。ここでは先頭の文字のコードで判定する
+                    // 「Case 0 To 127」（ch は String）で英数字を除く。ここではまとまりの先頭の文字のコードで判定する
+                    // （VB6 で String を数値の範囲と比べたときの動作は実機で確かめていない）
                     var ch = GeneralLib.GetClassBundle(wclass, ref i) ?? "";
                     if (ch.Length > 0 && ch[0] > 127)
                     {

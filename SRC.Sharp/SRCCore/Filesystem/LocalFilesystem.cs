@@ -30,7 +30,7 @@ namespace SRCCore.Filesystem
 
         public bool PathEquals(string a, string b)
         {
-            // XXX NormalizePath で先頭 `\` を処理する？
+            // 先頭の `\` は PathCombine で取り除いてから比べる
             return NormalizePath(PathCombine(a)).ToLower() == NormalizePath(PathCombine(b)).ToLower();
         }
 
@@ -73,7 +73,7 @@ namespace SRCCore.Filesystem
                     basePath
                 ));
             }
-            // XXX Log
+            // 無いフォルダは重ねない（呼び出し元が拡張データのフォルダなどの有無を問わずに渡す）
         }
 
         /// <summary>重ねた zip アーカイブを閉じる（Windows では開いている間、zip を削除・置き換えできない）</summary>

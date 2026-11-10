@@ -5,7 +5,6 @@
 
 using Newtonsoft.Json;
 using SRCCore.Lib;
-using SRCCore.VB;
 
 namespace SRCCore.Expressions
 {
@@ -50,20 +49,14 @@ namespace SRCCore.Expressions
             SetValue(name, ValueType.StringType, "", 0d);
         }
 
+        // VB（SetVariable の With new_var ～ End With）と同じく、渡した値をそのまま入れる。
+        // もう一方の型の値は作らない（読み出しは VariableType を見て変換する。StringValue・NumericValue を直接読む処理も VB と同じ値を見る）
         public void SetValue(string name, ValueType etype, string str_value, double num_value)
         {
             Name = name;
             VariableType = etype;
             StringValue = str_value;
             NumericValue = num_value;
-            if (etype == ValueType.StringType)
-            {
-                NumericValue = Conversions.ToDouble(str_value);
-            }
-            else if (etype == ValueType.NumericType)
-            {
-                StringValue = Conversions.ToString(num_value);
-            }
         }
         /// <summary>
         /// Name も含めて指定した値を設定する。
@@ -87,6 +80,7 @@ namespace SRCCore.Expressions
             NumericValue = v.NumericValue;
         }
 
+        // VB の CallFunction の「実はシステム定義のグローバル変数？」で値を読む部分
         public ValueType ReferenceValue(ValueType etype, out string str_result, out double num_result)
         {
             str_result = "";
@@ -101,15 +95,15 @@ namespace SRCCore.Expressions
                         }
                         else
                         {
-                            num_result = Conversions.ToDouble(StringValue);
+                            num_result = GeneralLib.StrToDbl(StringValue);
                         }
                         return ValueType.NumericType;
                     }
 
                 case ValueType.StringType:
                     {
-                        // XXX Undefind 時の参照、Numeric？
-                        if (VariableType != ValueType.NumericType)
+                        // VB と同じく、文字列の変数でなければ（UndefinedType も）数値を書式化する
+                        if (VariableType == ValueType.StringType)
                         {
                             str_result = StringValue;
                         }
@@ -123,7 +117,7 @@ namespace SRCCore.Expressions
                 case ValueType.UndefinedType:
                 default:
                     {
-                        // XXX 逆の側の型に値入れなくていいの？
+                        // 求めた型が無いときは変数の型の値だけを返し、もう一方の結果は書き換えない（VB と同じ）
                         if (VariableType == ValueType.StringType)
                         {
                             str_result = StringValue;

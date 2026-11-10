@@ -38,26 +38,26 @@ namespace SRCCore.Expressions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SetValue_NumericType_SetsStringFromNumber()
+        public void SetValue_NumericType_KeepsPassedStringValue()
         {
             var v = new VarData();
             v.SetValue("x", ValueType.NumericType, "", 3.14);
             Assert.AreEqual("x", v.Name);
             Assert.AreEqual(ValueType.NumericType, v.VariableType);
             Assert.AreEqual(3.14, v.NumericValue);
-            // NumericType の場合は StringValue も数値から自動変換される
-            Assert.AreEqual("3.14", v.StringValue);
+            // VB と同じく、数値から文字列を作らない
+            Assert.AreEqual("", v.StringValue);
         }
 
         [TestMethod]
-        public void SetValue_StringType_SetsNumericFromString()
+        public void SetValue_StringType_KeepsPassedNumericValue()
         {
             var v = new VarData();
             v.SetValue("s", ValueType.StringType, "100", 0d);
             Assert.AreEqual("s", v.Name);
             Assert.AreEqual(ValueType.StringType, v.VariableType);
             Assert.AreEqual("100", v.StringValue);
-            Assert.AreEqual(100d, v.NumericValue);
+            Assert.AreEqual(0d, v.NumericValue);
         }
 
         [TestMethod]

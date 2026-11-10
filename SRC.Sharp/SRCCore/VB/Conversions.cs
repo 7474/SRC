@@ -119,14 +119,46 @@ namespace SRCCore.VB
         }
 
         // 以下 Microsoft.VisualBasic.Conversions とは関係ないが便宜上変換処理として配置している関数。
+        // VB の IsDate と CDate（日付の関数・DiffTime が使う）。
+        // 日本語版の Windows と同じく、実行する環境の言語によらず日本語の書式（「2024/01/02」「2024年1月2日」「午後 1:30」など）で読む。
+        // 日本語の書式で読めなければ、英語の月の名前（「Jan 2, 2024」）なども読めるインバリアントの書式で読む（VB も英語の月の名前を読む）。
+        // 時刻だけの文字列は、VB の日付の 0（1899/12/30）のその時刻にする（今日の日付にしない）
         public static bool TryToDateTime(string value, out DateTime dateTime)
         {
-            // XXX DateTime パースの精査
-            return DateTime.TryParse(value, out dateTime);
+            const DateTimeStyles styles = DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault;
+            if (!DateTime.TryParse(value, DateCulture, styles, out dateTime)
+                && !DateTime.TryParse(value, CultureInfo.InvariantCulture, styles, out dateTime))
+            {
+                return false;
+            }
+            if (dateTime.Date == DateTime.MinValue.Date)
+            {
+                dateTime = VBDateZero + dateTime.TimeOfDay;
+            }
+            return true;
         }
+
+        // VB の日付の 0（CDate(0)）
+        private static readonly DateTime VBDateZero = new DateTime(1899, 12, 30);
+
+        private static readonly CultureInfo DateCulture = GetDateCulture();
+
+        private static CultureInfo GetDateCulture()
+        {
+            try
+            {
+                return CultureInfo.GetCultureInfo("ja-JP");
+            }
+            catch (CultureNotFoundException)
+            {
+                // カルチャのデータが無い環境（InvariantGlobalization）
+                return CultureInfo.InvariantCulture;
+            }
+        }
+
+        // VB の Now（日付の関数・DiffTime・変数 Now が使う）。IsDate・CDate の代わりと並べて置く
         public static DateTime GetNow()
         {
-            // XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。
             return DateTime.Now;
         }
     }

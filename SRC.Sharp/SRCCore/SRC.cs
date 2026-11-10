@@ -246,7 +246,7 @@ namespace SRCCore
             UList = new Units.Units(this);
             IList = new Items.Items(this);
 
-            // XXX 別な実装をするならコンストラクタでは設定しない
+            // 既定の設定（Src.ini の代わりの設定ファイル）。画面（SRCSharpForm・SRCRender）は作ったあとに自分の設定に差し替える
             SystemConfig = new LocalFileConfig();
 
             // GeneralLib.Dice が Option「乱数系列非保存」を見られるようにする（最後に作った SRC のオプションを見る）

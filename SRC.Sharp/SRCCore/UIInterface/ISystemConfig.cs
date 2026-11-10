@@ -15,7 +15,7 @@ namespace SRCCore
         // 自動防御モードを使うか
         bool AutoMoveCursor { get; set; }
 
-        // XXX GUIの関心毎
+        // 以下は表示の設定（元の SRC の SRC.bas の「システムオプション」の変数と Src.ini の [Option]）
         // マス目の表示をするか
         bool ShowSquareLine { get; set; }
         // スペシャルパワーアニメを表示するか
@@ -31,19 +31,18 @@ namespace SRCCore
         // メッセージのウェイト（メッセージスピード。元の SRC の Src.ini の [Option] MessageWait）
         int MessageWait { get; set; }
 
-        // XXX この辺はSRCのコア的にはどうでもいい
+        // 画像バッファの設定（元の SRC の Src.ini の [Option]。SRC# のコアの処理では使わず、画面が使う）
         // 画像バッファの枚数
         int ImageBufferSize { get; set; }
         // 画像バッファの最大バイト数
         int MaxImageBufferByteSize { get; set; }
         // 拡大画像を画像バッファに保存するか
         bool KeepStretchedImage { get; set; }
-        // XXX /この辺はSRCのコア的にはどうでもいい
 
         // Optionセクションから展開したもの
         bool AutoDefense { get; set; }
 
-        // XXX この辺に依存する処理はあんまり嬉しくない
+        // フォルダの場所（元の SRC の AppPath・ExtDataPath・ExtDataPath2）
         // SRC.exeのある場所
         string AppPath { get; set; }
         // 拡張データフォルダへのパス

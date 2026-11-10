@@ -138,12 +138,14 @@ namespace SRCCore.VB
             throw new NotSupportedException();
         }
 
+        // VB の Collection には値で消す手続きが無い（Remove はキーか番号）。
+        // SRC# で、同じオブジェクトを 1 か所にだけ持つ一覧（パイロット・ユニット・特殊能力など）から、そのオブジェクトを消すために使う。
+        // 同じ値が複数あるときは最初のものを消す
         public bool Remove(V item)
         {
-            // XXX 本当にこんな処理になるのか？
             foreach (string key in dict.Keys.Cast<string>())
             {
-                if (dict[key].Equals(item))
+                if (EqualityComparer<V>.Default.Equals((V)dict[key], item))
                 {
                     return Remove(key);
                 }
@@ -166,9 +168,16 @@ namespace SRCCore.VB
             return Remove(item.Key);
         }
 
+        /// <summary>
+        /// 1オフセット。VB の Collection.Remove に番号を渡したときと同じく、その番号の要素を消す
+        /// </summary>
         public void RemoveAt(int index)
         {
-            Remove(this[index]);
+            if (index <= 0 || index > dict.Count)
+            {
+                throw new IndexOutOfRangeException($"{index} is out of range.");
+            }
+            dict.RemoveAt(index - 1);
         }
 
         public bool TryGetValue(string key, out V value)
