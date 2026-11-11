@@ -143,17 +143,38 @@ namespace SRCCore
                 PList = data.PList;
                 UList = data.UList;
                 IList = data.IList;
+                // 元の SRC の Pilots.Save は追加パイロット・追加サポートを書かず、Pilots.Load は残りのパイロットを「味方」・生存で Add し直す。
+                // JSON はそれらも持つので、元の SRC の形式から読んだときと同じにする（以前は PList.Update で消していた。#1579）。
+                // 追加パイロットかどうかは Pilot.Restore が戻すので、その前に調べる
+                foreach (var p in PList.Items.Where(x => x.IsAdditionalPilot || x.IsAdditionalSupport).ToList())
+                {
+                    PList.Delete(p.ID);
+                }
+                foreach (var p in PList.Items)
+                {
+                    p.Party = "味方";
+                    p.Alive = true;
+                }
                 PList.Restore(this);
                 UList.Restore(this);
                 IList.Restore(this);
 
-                PList.Update();
-                UList.Update();
-                IList.Update();
-
                 // 元の SRC はここでセーブファイルを読み直してリンクデータ（パイロットとユニット、ユニットと他形態・パイロット・アイテム）を
-                // 戻し（PList・UList・IList の LoadLinkInfo）、全ユニットを Update する。
-                // SRC# はつながりを JSON（UnitId など）で持ち、上の Restore・Update で戻している
+                // 戻し（PList・UList・IList の LoadLinkInfo）、全ユニットを Update(True) する（Units.LoadLinkInfo の終わり）。
+                // SRC# はつながりを JSON（UnitId など）で持ち、上の Restore で戻している。
+                // 元の SRC の LoadData は PList・UList・IList の Update を呼ばないので、ここでも呼ばない
+                // （呼ぶと一時的な他形態が消えるなど、元の SRC の形式から読んだ状態と変わる。#1579）
+                foreach (Unit u in UList.Items)
+                {
+                    u.Update(true);
+                }
+                // 元の SRC の形式はパイロットのＳＰ・気力・霊力を書かず、Pilots.Load は Add で作り直す（FullRecover）。
+                // JSON はそれらの値も持つので、全回復して元の SRC の形式から読んだときと同じにする
+                // （ユニットに乗っているパイロットは、下の Reset でも全回復する）
+                foreach (var p in PList.Items)
+                {
+                    p.FullRecover();
+                }
                 GUI.DisplayLoadingProgress();
 
                 // ユニットの状態を回復

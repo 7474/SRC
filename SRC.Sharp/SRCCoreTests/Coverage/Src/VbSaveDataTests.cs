@@ -66,6 +66,24 @@ namespace SRCCore.Coverage.Tests
                 "試験ライフル, 1200, 1, 4, +0, 6, -, -, AABA, +0, Ｐ",
                 "===",
                 "応急処置, 回復Lv1, 1, 1, 3, 10, -",
+                "",
+                "試験変形機",
+                "試験変形機, しけんへんけいき, 試験, 1, 2",
+                "陸, 4, M, 1000, 100",
+                "特殊能力",
+                "変形=変形 試験変形機(高速)",
+                "3000, 100, 600, 80",
+                "AAAA, -.bmp",
+                "試験ライフル, 1200, 1, 4, +0, 6, -, -, AABA, +0, Ｐ",
+                "",
+                "試験変形機(高速)",
+                "試験変形機(高速), しけんへんけいき, 試験, 1, 2",
+                "陸, 6, M, 1000, 100",
+                "特殊能力",
+                "変形=変形 試験変形機",
+                "2800, 100, 500, 90",
+                "AAAA, -.bmp",
+                "試験ライフル, 1200, 1, 4, +0, 6, -, -, AABA, +0, Ｐ",
                 "");
             f.Write("Data/item.txt",
                 "試験フレーム",
@@ -768,6 +786,79 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual(300, aki.Exp);
             Assert.AreEqual("試験フレーム", aki.Unit.ItemList.Single().Name);
             Assert.AreEqual(1, aki.Unit.Rank);
+        }
+
+        // ── SRC# の JSON から読んだ状態を、元の SRC の形式から読んだ状態と比べる（#1579） ──
+
+        /// <summary>試験変形機の形態（他形態・装備したアイテム）を行にする</summary>
+        private static List<string> Forms(SRC src)
+        {
+            return src.UList.Items
+                .Where(u => u.Name.StartsWith("試験変形機"))
+                .Select(u => $"{u.ID} {u.Name} {u.Status} 他形態[{string.Join(",", u.OtherForms.Select(x => x.ID))}] アイテム[{string.Join(",", u.ItemList.Select(x => x.ID))}]")
+                .ToList();
+        }
+
+        [TestMethod]
+        public void LoadData_Json_KeepsOtherFormsLikeOriginalFormat()
+        {
+            // 元の SRC の LoadData は PList・UList・IList の Update を呼ばない（Units.LoadLinkInfo の終わりで各ユニットを Update するだけ）。
+            // SRC# の JSON の LoadData が UList.Update を呼ぶと、特殊能力を読み込む前に一時的な形態を消す処理が走り、変形の形態が消えていた
+            using var f = new SrcPlayDataSaveFixture();
+            Prepare(f);
+            var u = f.Src.UList.Add("試験変形機", 0, "味方");
+            Assert.AreEqual(1, u.OtherForms.Count);
+            var json = new MemoryStream();
+            f.Src.SaveData(json);
+            var original = new VbSaveDataWriter().SaveData(f.Src).ToBytes();
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(original));
+            var expected = Forms(f.Src);
+            Assert.AreEqual(2, expected.Count);
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(json.ToArray()));
+            Assert.IsFalse(f.Gui.IsTerminated);
+            CollectionAssert.AreEqual(expected, Forms(f.Src));
+            Assert.AreEqual("試験変形機(高速)", f.Src.UList.Item(u.ID).OtherForms.Single().Name);
+        }
+
+        [TestMethod]
+        public void LoadData_Json_PilotsAreAddedAgainLikeOriginalFormat()
+        {
+            // 元の SRC の Pilots.Load は、書いたパイロットを「味方」・生存で Add し直す（全回復する。ＳＰ・気力は書かない）。
+            // シナリオの途中の SaveData では、味方でないパイロットや減ったＳＰが残っていることがある
+            using var f = new SrcPlayDataSaveFixture();
+            Prepare(f);
+            // SaveData の前の UList.Update は味方でないユニットを消す（パイロットは残る）
+            var u2 = f.Src.UList.Items.Single(x => x.Party0 == "敵");
+            var haru = f.Src.PList.Item("試験員ハル");
+            haru.Unit = null;
+            f.Src.UList.Delete(u2.ID);
+            haru.SP = 1;
+            haru.Morale = 120;
+            var json = new MemoryStream();
+            f.Src.SaveData(json);
+            var original = new VbSaveDataWriter().SaveData(f.Src).ToBytes();
+
+            string Digest(SRC src) => string.Join("\n", src.PList.Items.Select(p => $"{p.ID} {p.Party} 生存{p.Alive} SP{p.SP}/{p.MaxSP} 気力{p.Morale} ユニット{p.Unit?.ID}"));
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(original));
+            var expected = Digest(f.Src);
+            var loaded = f.Src.PList.Item("試験員ハル");
+            Assert.AreEqual("味方", loaded.Party);
+            Assert.AreEqual(loaded.MaxSP, loaded.SP);
+            Assert.AreEqual(100, loaded.Morale);
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(json.ToArray()));
+            Assert.IsFalse(f.Gui.IsTerminated);
+            Assert.AreEqual(expected, Digest(f.Src));
         }
 
         // ── 種類の判定（拡張子 .src） ──
