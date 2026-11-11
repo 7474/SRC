@@ -1,5 +1,5 @@
-# 「トレス島試験記録」の第七話を単体で始めて、合体したまま中断から再開することと、クイックセーブからの再開を
-# 決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
+# 「トレス島試験記録」の第七話を単体で始めて、合体したまま中断から再開することと、クイックセーブからの再開、
+# 合体したミカヅチのマップ攻撃と合体技（隣の標的の援護防御との組み合わせ）を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
 #   srcsharp play Compat/torres/ep07.eve --script Compat/torres-ep07.play --app-path Content/basic-data --skip-wait
 
 choose 試験は失敗した あきらめる
@@ -30,7 +30,7 @@ expect eval CountPilot(カイ) = 2
 cell 1 1 right
 menu クイックセーブ
 auto 30
-cell 4 6
+cell 4 9
 menu 共鳴解放
 auto 30
 expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
@@ -42,6 +42,51 @@ auto 30
 expect eval Unit(白瀬ノア) = 試作機カスミ
 expect eval Pilot(UnitID(白瀬ノア)) = 白瀬ノア
 expect eval 再開記録 = 1
+expect eval HP(標本Ａ) = 2000
+expect eval Info(ユニット, UnitID(見張り蟲), 残りサポートガード数) = 1
+
+# マップ攻撃と援護防御：クイックセーブ → 合体したミカヅチの雷鳴陣（Ｍ全・識・ＥＮ 50）で、(8,9) の訓練標的を撃つ → クイックロード。
+# マップ攻撃は援護防御で受けられない（元の SRC の Unit.LookForSupportGuard）ので、隣の見張り蟲はかばわず、ＨＰも援護防御の回数も減らない。
+# 隣のカスミ（味方）は「識」で巻き込まない
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 5 9
+menu 攻撃
+wait list
+list 雷鳴陣
+cell 8 9
+auto 60
+expect eval Action(カイ) = 0
+expect eval EN(カイ) = Info(ユニット, UnitID(カイ), 最大ＥＮ) - 50
+expect eval HP(標本Ａ) < 2000
+expect eval HP(見張り蟲) = 8000
+expect eval Info(ユニット, UnitID(見張り蟲), 残りサポートガード数) = 1
+expect eval HP(ノア) = Info(ユニット, UnitID(ノア), 最大ＨＰ)
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Action(カイ) = 1
+expect eval EN(カイ) = Info(ユニット, UnitID(カイ), 最大ＥＮ)
+expect eval HP(標本Ａ) = 2000
+
+# 合体した機体の合体技：ミカヅチの雷光連撃（射程 3・ＥＮ 30）で、同じ訓練標的を撃つ。パートナーは隣のカスミで、行動済みになりＥＮを 30 使う。
+# 合体技は援護防御で受けられるので、隣の見張り蟲が標的をかばい、標的のＨＰは減らない（見張り蟲は大型でＨＰが多いので、倒されることを恐れずにかばう）
+cell 5 9
+menu 攻撃
+wait list
+list 雷光連撃
+cell 8 9
+auto 60
+expect eval Action(カイ) = 0
+expect eval EN(カイ) = Info(ユニット, UnitID(カイ), 最大ＥＮ) - 30
+expect eval Action(ノア) = 0
+expect eval EN(ノア) = 130
+expect eval HP(標本Ａ) = 2000
+expect eval HP(見張り蟲) < 8000
+expect eval Info(ユニット, UnitID(見張り蟲), 残りサポートガード数) = 0
 # ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
 # 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
 holdlist コマンド
