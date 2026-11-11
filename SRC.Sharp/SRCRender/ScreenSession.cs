@@ -47,6 +47,8 @@ namespace SRCRender
             SRC.Sound.Player.SoundVolume = config.SoundVolume / 100f;
             // 汎用グラフィック集などの素材が無くても動かす
             SRC.AllowMissingAssets = true;
+            // ゲームとして実行するので、元の SRC と同じくデータの誤りをダイアログに出し、読み込みを打ち切る誤りでは終了する
+            SRC.ShowDataErrorDialogs = true;
             try
             {
                 fileSystem.AddPath(SRC.AppPath);

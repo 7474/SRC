@@ -95,10 +95,9 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
-            {
-                Load(fname, stream);
-            }
+            // 元の SRC の Load の ErrorHandler（開けない・打ち切る誤りのダイアログ）。
+            // TerrainDataList.cls は TerminateSRC ではなく End で終わるが、SRC# は画面の後始末を GUI に任せるため TerminateSRC で終える
+            SRC.LoadDataFile(fname, stream => Load(fname, stream));
         }
         public void Load(string fname, Stream stream)
         {
