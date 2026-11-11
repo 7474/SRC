@@ -155,6 +155,12 @@ namespace SRCCore
                     p.Party = "味方";
                     p.Alive = true;
                 }
+                // 元の SRC の Items.Load はアイテムを装備しているユニットを読まず、Units.LoadLinkInfo の AddItem0 で
+                // ユニットが装備しているアイテムにだけ設定する。ここでも持ち主を空にしてから、UList.Restore（Unit.Restore）で設定する（#1579）
+                foreach (var it in IList.List)
+                {
+                    it.Unit = null;
+                }
                 PList.Restore(this);
                 UList.Restore(this);
                 IList.Restore(this);

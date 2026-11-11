@@ -861,6 +861,56 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual(expected, Digest(f.Src));
         }
 
+        [TestMethod]
+        public void LoadData_Json_SetsOwnerOfEquippedItemLikeOriginalFormat()
+        {
+            // 合体した後などは、装備したアイテムの Item.Unit が空のことがある（元の SRC も同じ。UnitFormChangeVbTests）。
+            // 元の SRC の Units.LoadLinkInfo は、装備しているアイテムの Unit が空なら AddItem0 で設定する
+            using var f = new SrcPlayDataSaveFixture();
+            Prepare(f);
+            var item = f.Src.UList.Item("試験機:1").ItemList.Single();
+            item.Unit = null;
+            var json = new MemoryStream();
+            f.Src.SaveData(json);
+            var original = new VbSaveDataWriter().SaveData(f.Src).ToBytes();
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(original));
+            Assert.AreEqual("試験機:1", f.Src.IList.Item(item.ID).Unit?.ID);
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.LoadData(new MemoryStream(json.ToArray()));
+            Assert.IsFalse(f.Gui.IsTerminated);
+            Assert.AreEqual("試験機:1", f.Src.IList.Item(item.ID).Unit?.ID);
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void RestoreData_Json_SetsOwnerOfEquippedItemLikeOriginalFormat()
+        {
+            // 元の SRC の Unit.RestoreLinkInfo は、装備しているアイテムを AddItem0 で戻す（Item.Unit も設定する）
+            using var f = new SrcPlayDataSaveFixture();
+            Prepare(f);
+            var item = f.Src.UList.Item("試験機:1").ItemList.Single();
+            item.Unit = null;
+            var json = new MemoryStream();
+            f.Src.DumpData(json, SRCSaveKind.Suspend);
+            var original = new VbSaveDataWriter().DumpData(f.Src).ToBytes();
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.RestoreData(new MemoryStream(original), SRCSaveKind.Suspend);
+            Assert.AreEqual("試験機:1", f.Src.IList.Item(item.ID).Unit?.ID);
+
+            f.NewSession();
+            WriteData(f);
+            f.Src.RestoreData(new MemoryStream(json.ToArray()), SRCSaveKind.Suspend);
+            Assert.IsFalse(f.Gui.IsTerminated);
+            Assert.AreEqual("試験機:1", f.Src.IList.Item(item.ID).Unit?.ID);
+        }
+
         // ── 種類の判定（拡張子 .src） ──
 
         [TestMethod]
