@@ -15,10 +15,11 @@ namespace SRCRender.Tests
     /// 元の SRC（VB5）のセーブデータ（中断データ・クリアデータ）を、検証用のシナリオ「トレス島試験記録」（SRC.Sharp/Compat/torres）で読む（#1577）。
     /// <list type="bullet">
     /// <item>各話の PlayScript（Compat/torres-ep02.play〜torres-ep08.play）の「中断」のところで、元の SRC の形式（VbSaveDataWriter。元の SRC の DumpData を写したもの）で
-    /// 中断データを書き、そのファイル（.src）から再開して、中断の前と同じ状態になり、PlayScript の続き（再開の後の expect）が通ることを確かめる</item>
+    /// 中断データを書き、そのファイル（.src）から再開して、中断の前・SRC# の JSON の中断データから読んだ状態と同じになり、
+    /// PlayScript の続き（再開の後の expect）が通ることを確かめる</item>
     /// <item>見本を作るシナリオ（Compat/savedata/savedata.eve）を流し、元の SRC の形式のもの
     /// （実機で作った見本 Compat/savedata-expected/suspend.src・clear.src があればそれ、無ければ VbSaveDataWriter で書いたもの）を読んで、
-    /// 中断データは SRC# の JSON の中断データから読んだ状態と、クリアデータはデータセーブしたときの状態と同じになることを確かめる。
+    /// SRC# の JSON の中断データ・クリアデータから読んだ状態と同じになることを確かめる（クリアデータはデータセーブしたときの状態とも比べる）。
     /// 実機の見本の作り方は Compat/PROBE.md</item>
     /// </list>
     /// </summary>
@@ -70,7 +71,12 @@ namespace SRCRender.Tests
                 // 再開のイベントのメッセージで止まったところで、中断の前と比べる
                 runner.Restart(file);
                 runner.WaitFor(s => s.Message.Visible && s.Message.Waiting, "再開のメッセージ");
-                AssertSameState(expected, Digest(runner.Session.SRC, ResumeVariables), "中断の前と、元の SRC の形式から再開した後");
+                var resumed = Digest(runner.Session.SRC, ResumeVariables);
+                AssertSameState(expected, resumed, "中断の前と、元の SRC の形式から再開した後");
+
+                // SRC# の JSON の中断データから読んだ状態とも比べる
+                var json = LoadHeadless(scenario, src => src.RestoreData(captured.Path, SRCSaveKind.Suspend));
+                AssertSameState(Digest(json, ResumeVariables), resumed, "JSON と元の SRC の形式から再開した後");
 
                 // PlayScript の続き（再開の後の expect と手順）
                 script.Run(lines.Skip(resume + 1).Append("expect error none"));
@@ -127,10 +133,11 @@ namespace SRCRender.Tests
                 Assert.AreEqual("局所の値", original.Event.LocalVariableList["見本の局所"].StringValue);
                 Assert.IsTrue(original.Event.colEventLabelList.List.Any(x => x.Data == "ターン 1 味方" && !x.Enable));
 
-                // クリアデータは、データセーブしたときの状態と比べる。
-                // SRC# の JSON の LoadData は読んだ後で PList・UList・IList の Update をする（元の SRC の LoadData はしない）ので、
-                // 一時的な他形態が消えるなど、JSON から読んだ状態とは比べられない
+                // クリアデータは、JSON から読んだ状態と、元の SRC の形式から読んだ状態を比べる。
+                // データセーブしたときの状態とも比べる
+                json = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(Path.Combine(scenario, "clear.srcs"))));
                 original = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(clearSample)));
+                AssertSameState(Digest(json, clear: true), Digest(original, clear: true), "クリアデータ（JSON と元の SRC の形式）");
                 AssertSameState(saved, Digest(original, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
                 Assert.AreEqual("savedata.eve", original.Expression.GetValueAsString("次ステージ"));
             });
@@ -140,6 +147,8 @@ namespace SRCRender.Tests
         {
             public byte[] Bytes;
             public List<string> Digest;
+            /// <summary>SRC# が JSON で書いたファイル</summary>
+            public string Path;
         }
 
         /// <summary>
@@ -155,9 +164,11 @@ namespace SRCRender.Tests
                 if (captured.Bytes == null)
                 {
                     captured.Bytes = write(runner.Session.SRC);
-                    captured.Digest = Digest(runner.Session.SRC, ResumeVariables);
+                    captured.Digest = Digest(runner.Session.SRC, ResumeVariables, relinkItems: true);
                 }
-                return inner(request);
+                var path = inner(request);
+                captured.Path = captured.Path ?? path;
+                return path;
             };
             return captured;
         }
@@ -253,9 +264,12 @@ namespace SRCRender.Tests
         /// <summary>
         /// セーブデータで戻す状態（ユニット・パイロット・アイテム・資金・ターン・変数・マップ・イベントラベル）を行にする。
         /// 元の SRC は数値の変数も文字列で書くので、変数は文字列にして比べる。追加パイロットは元の SRC も書かないので比べない。
-        /// clear はクリアデータ（ターン・ローカル変数・イベントラベル・マップ・ユニットの位置と場所を書かない）
+        /// clear はクリアデータ（ターン・ローカル変数・イベントラベル・マップ・ユニットの位置と場所を書かない）。
+        /// relinkItems は、アイテムの持ち主を中断データを読んだ後のもの（元の SRC の RestoreData）にする。
+        /// 元の SRC の Unit.RestoreLinkInfo は装備しているアイテムの Unit を AddItem0 で設定し直すので、
+        /// 合体した後などで Item.Unit が空のまま装備しているアイテム（第二話のミカヅチ。元の SRC も同じ）は、読んだ後は装備しているユニットが持ち主になる（#1579）
         /// </summary>
-        internal static List<string> Digest(SRC src, string[] ignoredVariables = null, bool clear = false)
+        internal static List<string> Digest(SRC src, string[] ignoredVariables = null, bool clear = false, bool relinkItems = false)
         {
             ignoredVariables = ignoredVariables ?? new string[0];
             var lines = new List<string>
@@ -288,12 +302,10 @@ namespace SRCRender.Tests
                     + $" 回数{Ids(Enumerable.Range(1, u.CountAbility()), i => u.Ability(i).Stock().ToString())}"
                     + $" 主{u.Master?.ID} 召喚主{u.Summoner?.ID}");
             }
-            // アイテムを装備しているユニットは、ユニットの行（アイテム）で比べる。
-            // 元の SRC の Unit.RestoreLinkInfo は装備したアイテムの Unit を設定し直す（AddItem0）が、
-            // SRC# で合体したユニットのアイテムは、中断の前に Item.Unit が空のことがある（第二話のミカヅチ）
             foreach (var it in src.IList.List)
             {
-                lines.Add($"アイテム {it.ID} {it.Name} 存在{it.Exist}");
+                var owner = relinkItems ? src.UList.Items.LastOrDefault(u => u.ItemList.Contains(it)) ?? it.Unit : it.Unit;
+                lines.Add($"アイテム {it.ID} {it.Name} 存在{it.Exist} 装備{owner?.ID}");
             }
             if (clear)
             {
