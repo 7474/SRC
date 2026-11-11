@@ -40,7 +40,7 @@ namespace SRCPlay
     ///   expect finished        シナリオが終わっていることを確かめる
     ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる（画面の折り返しはまたいで探す。戦闘中のメッセージも探す）
     ///   expect log 文字列      操作の記録（phase の「攻撃: 敵の名前」など）にその文字列があることを確かめる
-    ///   expect error none      エラーが起きていないことを確かめる
+    ///   expect error none      エラー（例外と、イベントのエラーなどのエラーのダイアログ）が起きていないことを確かめる
     ///   expect eval 式 演算子 式  SRC の式を評価して比べる（例: expect eval HP(標的) &lt; MaxHP(標的)）
     /// </summary>
     public sealed class PlayScript
@@ -61,6 +61,21 @@ namespace SRCPlay
                 {
                     battleMessages.Add(msg);
                 }
+            };
+            // エラーのダイアログ（イベントのエラーなど）。ダイアログは auto が OK を押して進めるので、出たことを覚えておく（expect error none で見る）
+            runner.GUI.ErrorShown += msg =>
+            {
+                // 終了（GameClear・Quit など）の後は、打ち切りの例外を実行中のコマンドが捕まえて「イベントデータが不正です」と出すことがある。
+                // シナリオの誤りではないので数えない
+                if (runner.IsTerminated)
+                {
+                    return;
+                }
+                lock (errorMessages)
+                {
+                    errorMessages.Add(msg);
+                }
+                Record($"{DateTime.Now:HH:mm:ss} ERROR {msg?.Replace("\r\n", " / ").Replace("\n", " / ")}");
             };
             // 止まって押した位置（スクリプトが描いたクリック領域があればその ID）を記録する
             auto.Trace = m =>
@@ -103,6 +118,20 @@ namespace SRCPlay
                 lock (battleMessages)
                 {
                     return battleMessages.ToList();
+                }
+            }
+        }
+
+        private readonly List<string> errorMessages = new List<string>();
+
+        /// <summary>これまでに出たエラーのダイアログ（イベントのエラー・データのエラーなど）の文言</summary>
+        public IList<string> ErrorMessages
+        {
+            get
+            {
+                lock (errorMessages)
+                {
+                    return errorMessages.ToList();
                 }
             }
         }
@@ -339,6 +368,11 @@ namespace SRCPlay
                     if (runner.Error != null && !(runner.Error is SRCCore.TestLib.HeadlessTerminatedException))
                     {
                         throw new PlayScriptException("エラーが発生しています: " + runner.Error);
+                    }
+                    // イベントのエラーは例外にならず、ダイアログを出して続く（元の SRC と同じ）ので、ダイアログが出たかも見る
+                    if (ErrorMessages.Count > 0)
+                    {
+                        throw new PlayScriptException("エラーのダイアログが出ています: " + string.Join(" / ", ErrorMessages));
                     }
                     break;
                 case "eval":

@@ -41,11 +41,18 @@ namespace SRCCore
             // マップを初期化
             Map.InitMap();
 
-            GeneralLib.RndSeed = new Random().Next(1000000);
+            // 元の SRC は起動のたびに乱数の種を変える（Randomize の後の Rnd）。自動のプレイで結果を固定するときは InitialRndSeed で決める
+            GeneralLib.RndSeed = InitialRndSeed ?? new Random().Next(1000000);
             GeneralLib.RndReset();
 
             ExecuteFile(fname);
         }
+
+        /// <summary>
+        /// 起動のときの乱数の種。null（既定）なら元の SRC と同じく起動のたびに変える。
+        /// 自動のプレイ（srcsharp play --seed）で、同じ手順なら同じ結果になるようにするのに使う
+        /// </summary>
+        public int? InitialRndSeed { get; set; }
 
         private void ValidateEnvironment()
         {
